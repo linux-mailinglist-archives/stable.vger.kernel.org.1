@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207305-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE5DFD0922A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7286AD09C0A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E07B03012652
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C4236313A1AD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A785350A37;
-	Fri,  9 Jan 2026 11:59:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9CC2F359FA1;
+	Fri,  9 Jan 2026 12:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoPzENm4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VcRW6nv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0BA335561;
-	Fri,  9 Jan 2026 11:59:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A4B638FA3;
+	Fri,  9 Jan 2026 12:27:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959958; cv=none; b=KwnzbmuBBgf7Oph28qt2iw4eVScHEVBGW5lrbvsZ2OUsVRtLcVzGzO/gHEbYX3kt9uAxb8Xb8ZsR6XJhapo4qjFnFKumjcRbLDa3/wgLs4aLCw0ePso1V/WxGlQnfwwmYg6Ado4YtcZu88Gb58iCwEle3ERJ2g6WTzGyUavgpOw=
+	t=1767961677; cv=none; b=G2v5tMlAdZncwdk1YIGi36YE8BVKr1m6Y9IN8AIL0JmvAOjFy/WYfBYlz4NnoVToCSspJsg1zgyujx0szrTH0EQlHxioQjZXOQjKRRP9M9SdoCwzKnBNLEn+m3WI0AmRR/JuJyxSbg5CpQPt9CgkEDMhlMz6n366UnFtUTrBk/U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959958; c=relaxed/simple;
-	bh=tsut64ycdIVvS0RDKjUxmFT3Kh/4xIo3vT9GQnbzJ1I=;
+	s=arc-20240116; t=1767961677; c=relaxed/simple;
+	bh=IbWHQExm4/ubDBKZKH3QAQmZpVoM770q47lvnbHYdqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hMNWAJZyM+JuTgRtMVqunw7YPuwrPaR+flKESbmy5ogq/be0MpbjFuRR1g4nJmipI1EVmmi9ClCGuIFmuG7d6D1i7kAqD9dReAc8b4U3ZTWzhNGlLFAksyaMAX1wcT3+zzxXH4SXi8pVIBCj6jpbZc2DF/dF5Wy12QmfYsLOW8o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoPzENm4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A833C4CEF1;
-	Fri,  9 Jan 2026 11:59:18 +0000 (UTC)
+	 MIME-Version; b=BE6bTmKPALl1HWFUh5faGbe6IwneYxhN6YngTQwu4M1qDN4b12d7uxSVvCYaLbEzZvcvEj8M5a/hrzysPI0xflfz/8YHx3XVfV3mh5IfFIF4E5uqsWAU0bCmestp2DOdeStxXVA5tPnaFA5yc6lTGCknfP8RSQ5otikW2n65p8s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VcRW6nv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D995BC19421;
+	Fri,  9 Jan 2026 12:27:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959958;
-	bh=tsut64ycdIVvS0RDKjUxmFT3Kh/4xIo3vT9GQnbzJ1I=;
+	s=korg; t=1767961677;
+	bh=IbWHQExm4/ubDBKZKH3QAQmZpVoM770q47lvnbHYdqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HoPzENm4aUzivsx6t9IxkEdDZG7fxmVRcQENfue+7sYSkN13/AmC59aYdIXWV9S1A
-	 IoJAxZz2ABtomRnuTqzO6datvh/z00sZKRkxgLzKF8tRq4SVvm1k5KFlsC+jVbCFrQ
-	 s9LjhQ7KAAtkEU1Axu+jsM2Rx7WNBz3jp6m2KPCk=
+	b=VcRW6nv8xy0PyKNSD4EyMp9aDK45bsffLfq/6QjqmbmSCxvENe7hOhP3aIITeVvix
+	 gV6t/SekRwaV1axmKXawIPqbvMeLnIrrKp5UmgoA37tKki1mQk4anXP8r2RuO03GaR
+	 KaYcu6XWZDJ39NcfrRHqCFYmpKLcs2qR79UQadVY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sparkhuang <huangshaobo3@xiaomi.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 235/737] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
+Subject: [PATCH 6.1 096/634] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
 Date: Fri,  9 Jan 2026 12:36:14 +0100
-Message-ID: <20260109112142.838642028@linuxfoundation.org>
+Message-ID: <20260109112121.046759661@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,109 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sparkhuang <huangshaobo3@xiaomi.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
+[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
 
-regulator_supply_alias_list was accessed without any locking in
-regulator_supply_alias(), regulator_register_supply_alias(), and
-regulator_unregister_supply_alias(). Concurrent registration,
-unregistration and lookups can race, leading to:
+Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
+have region for DWC controllers as it has the Root Port and controller
+specific registers, while ELBI has optional registers.
 
-1 use-after-free if an alias entry is removed while being read,
-2 duplicate entries when two threads register the same alias,
-3 inconsistent alias mappings observed by consumers.
+Hence, fix the binding. Though this is an ABI break, this change is needed
+to accurately describe the PCI memory map.
 
-Protect all traversals, insertions and deletions on
-regulator_supply_alias_list with the existing regulator_list_mutex.
-
-Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
-Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 465f4f870162f..23cdf220ca7db 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1970,6 +1970,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- {
- 	struct regulator_supply_alias *map;
+diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+index a5bd90bc0712e..9c3b8e65c42a3 100644
+--- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
++++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+@@ -36,13 +36,13 @@ properties:
  
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(*dev, *supply);
- 	if (map) {
- 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
-@@ -1978,6 +1979,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- 		*dev = map->alias_dev;
- 		*supply = map->alias_supply;
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
+   reg:
+     items:
+-      - description: External local bus interface registers
++      - description: Data Bus Interface registers
+       - description: Meson designed configuration registers
+       - description: PCIe configuration space
  
- static int regulator_match(struct device *dev, const void *data)
-@@ -2456,22 +2458,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
- 				    const char *alias_id)
- {
- 	struct regulator_supply_alias *map;
-+	struct regulator_supply_alias *new_map;
+   reg-names:
+     items:
+-      - const: elbi
++      - const: dbi
+       - const: cfg
+       - const: config
  
--	map = regulator_find_supply_alias(dev, id);
--	if (map)
--		return -EEXIST;
--
--	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
--	if (!map)
-+	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
-+	if (!new_map)
- 		return -ENOMEM;
- 
--	map->src_dev = dev;
--	map->src_supply = id;
--	map->alias_dev = alias_dev;
--	map->alias_supply = alias_id;
--
--	list_add(&map->list, &regulator_supply_alias_list);
-+	mutex_lock(&regulator_list_mutex);
-+	map = regulator_find_supply_alias(dev, id);
-+	if (map) {
-+		mutex_unlock(&regulator_list_mutex);
-+		kfree(new_map);
-+		return -EEXIST;
-+	}
- 
-+	new_map->src_dev = dev;
-+	new_map->src_supply = id;
-+	new_map->alias_dev = alias_dev;
-+	new_map->alias_supply = alias_id;
-+	list_add(&new_map->list, &regulator_supply_alias_list);
-+	mutex_unlock(&regulator_list_mutex);
- 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
- 		id, dev_name(dev), alias_id, dev_name(alias_dev));
- 
-@@ -2491,11 +2497,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(dev, id);
- 	if (map) {
- 		list_del(&map->list);
- 		kfree(map);
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
- 
+@@ -113,7 +113,7 @@ examples:
+     pcie: pcie@f9800000 {
+         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
+         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
+-        reg-names = "elbi", "cfg", "config";
++        reg-names = "dbi", "cfg", "config";
+         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
+         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
+         clock-names = "pclk", "port", "general";
 -- 
 2.51.0
 
