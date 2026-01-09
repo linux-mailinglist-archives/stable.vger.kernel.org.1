@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206646-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3808ED09CDC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C083FD09281
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 52A1D30533DB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0F1E30115CE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB75D26ED41;
-	Fri,  9 Jan 2026 12:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A771F33290A;
+	Fri,  9 Jan 2026 11:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y8Bqg78s"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J/Z3vo5u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF0F62737EE;
-	Fri,  9 Jan 2026 12:24:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AE742DEA6F;
+	Fri,  9 Jan 2026 11:56:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961483; cv=none; b=qXy5ZJPZDD290LnoNmO1oyxmtKBliLyPMM6siR1kMkFqNzGDNsszeCYA81Zr3fluBVifI71AMjgMAyuDJW3X+DZdwOdJMxtu0eF1muD7eNSksqaeZ11GpBOj1WtPjD5HTroDM9Bdc4vuzy4fqrOKIJUCRC2l6HyFm6mLq/WSvEc=
+	t=1767959797; cv=none; b=Ok/sLOdY5PX0APdbQjZIxkCxQZMD6UW3pKuwBjC4++i0mQBSpggjhDbPSNL0+96+Ku/N8NcXlrF+po07vbTF6iOMVqC1KxdSDGCCFms6GblqgJHr65yAUnlGT/JDuuQz8JMyk1UXxNe/sqBaTWDWk0uPDlIEFGLsrI05a2TcdAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961483; c=relaxed/simple;
-	bh=F8K+mhDla6oCu39u3sW5m7WeBD12mkcztrmNHfTedsg=;
+	s=arc-20240116; t=1767959797; c=relaxed/simple;
+	bh=MyoGFJleQapWyIOZnosg//7BJowsW7dqptFVerAxs3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SbWZb9o43wIm47BWfHRZaZPR2HhI47oQAxLyBcyPfBWqSVZIeCAL6T303gEafB1hoqJvGpX8txIKjqsv/1OxFVPD8wbf3V5l+kJeSR+rBxJfCGP6ZS5n6uF7G/3SDBx0O7zgwUMAgo7pmRtqgX079oT3C2MZo3OejMjF8q4IteY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y8Bqg78s; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3617FC4CEF1;
-	Fri,  9 Jan 2026 12:24:43 +0000 (UTC)
+	 MIME-Version; b=FlM2x7QJSLfCbWgT8E1RIZK5wF8EJpnh3zFU191aI3cEY7wzMbJXi0gSXROHazVSmlG20kdTtTzyBnhJ3KD/gyAVYVgm5/qW3PkNueKKQyhUhmBm9xCte4Cckn1o6busTPyCOETIe6tHqfuyfH0VOolGu+3wN4zzqKQODOibkdE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J/Z3vo5u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE962C4CEF1;
+	Fri,  9 Jan 2026 11:56:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961483;
-	bh=F8K+mhDla6oCu39u3sW5m7WeBD12mkcztrmNHfTedsg=;
+	s=korg; t=1767959797;
+	bh=MyoGFJleQapWyIOZnosg//7BJowsW7dqptFVerAxs3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y8Bqg78saWgFlJvDE/NGbxTAObBacrThCuCfUIHdbv38DrRmMB4GHFEC27TbEk8IG
-	 5gggCgISo2kgoZezBFhGeY5a5PoaFetpqOtdKXB1KBADB9yz2V1apuvy0f2la1wP3d
-	 07SLCOR3VA6XS5Y9c8oUVPS8zAnhRzwlVt5fm5uA=
+	b=J/Z3vo5uJv6ngd6rwfV90J3nH2xP/DJbgtLaeHHyhjYBLwlMIwo6QZHLY3/YGbYyE
+	 Id6HV9UAeKJ3TvrxBAGe/PQFNDu0NRaoVxo0puHRDUp5lyZQbhsleD5iLY1Cct+sFz
+	 uvh74ETLhjE7UCFBysMzmoXpth3f35QjTNO5jB4Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stefan Kalscheuer <stefan@stklcode.de>,
-	Lee Jones <lee@kernel.org>,
+	Leo Yan <leo.yan@arm.com>,
+	Mike Leach <mike.leach@linaro.org>,
+	James Clark <james.clark@linaro.org>,
+	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 006/634] leds: spi-byte: Use devm_led_classdev_register_ext()
+Subject: [PATCH 6.6 145/737] coresight: etm4x: Extract the trace unit controlling
 Date: Fri,  9 Jan 2026 12:34:44 +0100
-Message-ID: <20260109112117.663064395@linuxfoundation.org>
+Message-ID: <20260109112139.452677867@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,173 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Kalscheuer <stefan@stklcode.de>
+From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit ccc35ff2fd2911986b716a87fe65e03fac2312c9 ]
+[ Upstream commit 40f682ae5086366d51e29e66eb8a344501245d0d ]
 
-Use extended classdev registration to generate generic device names from
-color and function enums instead of reading only the label from the
-device tree.
+The trace unit is controlled in the ETM hardware enabling and disabling.
+The sequential changes for support AUX pause and resume will reuse the
+same operations.
 
-Signed-off-by: Stefan Kalscheuer <stefan@stklcode.de>
-Link: https://lore.kernel.org/r/20240204150726.29783-1-stefan@stklcode.de
-Signed-off-by: Lee Jones <lee@kernel.org>
+Extract the operations in the etm4_{enable|disable}_trace_unit()
+functions.  A minor improvement in etm4_enable_trace_unit() is for
+returning the timeout error to callers.
+
+Signed-off-by: Leo Yan <leo.yan@arm.com>
+Reviewed-by: Mike Leach <mike.leach@linaro.org>
+Reviewed-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
+Link: https://lore.kernel.org/r/20250401180708.385396-2-leo.yan@arm.com
+Stable-dep-of: 64eb04ae5452 ("coresight: etm4x: Add context synchronization before enabling trace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-spi-byte.c | 11 ++++++-----
- 1 file changed, 6 insertions(+), 5 deletions(-)
+ .../coresight/coresight-etm4x-core.c          | 103 +++++++++++-------
+ 1 file changed, 62 insertions(+), 41 deletions(-)
 
-diff --git a/drivers/leds/leds-spi-byte.c b/drivers/leds/leds-spi-byte.c
-index 065a2bcb7c14b..eb6481df5997f 100644
---- a/drivers/leds/leds-spi-byte.c
-+++ b/drivers/leds/leds-spi-byte.c
-@@ -83,7 +83,7 @@ static int spi_byte_probe(struct spi_device *spi)
- 	struct device_node *child;
- 	struct device *dev = &spi->dev;
- 	struct spi_byte_led *led;
--	const char *name = "leds-spi-byte::";
-+	struct led_init_data init_data = {};
- 	const char *state;
- 	int ret;
+diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+index cc35175abd504..a53816f24cd94 100644
+--- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
++++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
+@@ -422,6 +422,44 @@ static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
+ 	return coresight_timeout(csa, TRCSTATR, pos, val);
+ }
  
-@@ -96,12 +96,9 @@ static int spi_byte_probe(struct spi_device *spi)
- 	if (!led)
- 		return -ENOMEM;
- 
--	of_property_read_string(child, "label", &name);
--	strscpy(led->name, name, sizeof(led->name));
- 	led->spi = spi;
- 	mutex_init(&led->mutex);
- 	led->cdef = device_get_match_data(dev);
--	led->ldev.name = led->name;
- 	led->ldev.brightness = LED_OFF;
- 	led->ldev.max_brightness = led->cdef->max_value - led->cdef->off_value;
- 	led->ldev.brightness_set_blocking = spi_byte_brightness_set_blocking;
-@@ -121,7 +118,11 @@ static int spi_byte_probe(struct spi_device *spi)
- 	spi_byte_brightness_set_blocking(&led->ldev,
- 					 led->ldev.brightness);
- 
--	ret = devm_led_classdev_register(&spi->dev, &led->ldev);
-+	init_data.fwnode = of_fwnode_handle(child);
-+	init_data.devicename = "leds-spi-byte";
-+	init_data.default_label = ":";
++static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
++{
++	struct coresight_device *csdev = drvdata->csdev;
++	struct device *etm_dev = &csdev->dev;
++	struct csdev_access *csa = &csdev->access;
 +
-+	ret = devm_led_classdev_register_ext(&spi->dev, &led->ldev, &init_data);
- 	if (ret) {
- 		of_node_put(child);
- 		mutex_destroy(&led->mutex);
++	/*
++	 * ETE mandates that the TRCRSR is written to before
++	 * enabling it.
++	 */
++	if (etm4x_is_ete(drvdata))
++		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
++
++	etm4x_allow_trace(drvdata);
++	/* Enable the trace unit */
++	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
++
++	/* Synchronize the register updates for sysreg access */
++	if (!csa->io_mem)
++		isb();
++
++	/* wait for TRCSTATR.IDLE to go back down to '0' */
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0)) {
++		dev_err(etm_dev,
++			"timeout while waiting for Idle Trace Status\n");
++		return -ETIME;
++	}
++
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using the
++	 * memory-mapped interface") of ARM IHI 0064D
++	 */
++	dsb(sy);
++	isb();
++
++	return 0;
++}
++
+ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ {
+ 	int i, rc;
+@@ -531,33 +569,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, trcpdcr | TRCPDCR_PU, TRCPDCR);
+ 	}
+ 
+-	/*
+-	 * ETE mandates that the TRCRSR is written to before
+-	 * enabling it.
+-	 */
+-	if (etm4x_is_ete(drvdata))
+-		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
+-
+-	etm4x_allow_trace(drvdata);
+-	/* Enable the trace unit */
+-	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
+-
+-	/* Synchronize the register updates for sysreg access */
+-	if (!csa->io_mem)
+-		isb();
+-
+-	/* wait for TRCSTATR.IDLE to go back down to '0' */
+-	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
+-		dev_err(etm_dev,
+-			"timeout while waiting for Idle Trace Status\n");
+-
+-	/*
+-	 * As recommended by section 4.3.7 ("Synchronization when using the
+-	 * memory-mapped interface") of ARM IHI 0064D
+-	 */
+-	dsb(sy);
+-	isb();
+-
++	rc = etm4_enable_trace_unit(drvdata);
+ done:
+ 	etm4_cs_lock(drvdata, csa);
+ 
+@@ -886,25 +898,12 @@ static int etm4_enable(struct coresight_device *csdev, struct perf_event *event,
+ 	return ret;
+ }
+ 
+-static void etm4_disable_hw(void *info)
++static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+ {
+ 	u32 control;
+-	struct etmv4_drvdata *drvdata = info;
+-	struct etmv4_config *config = &drvdata->config;
+ 	struct coresight_device *csdev = drvdata->csdev;
+ 	struct device *etm_dev = &csdev->dev;
+ 	struct csdev_access *csa = &csdev->access;
+-	int i;
+-
+-	etm4_cs_unlock(drvdata, csa);
+-	etm4_disable_arch_specific(drvdata);
+-
+-	if (!drvdata->skip_power_up) {
+-		/* power can be removed from the trace unit now */
+-		control = etm4x_relaxed_read32(csa, TRCPDCR);
+-		control &= ~TRCPDCR_PU;
+-		etm4x_relaxed_write32(csa, control, TRCPDCR);
+-	}
+ 
+ 	control = etm4x_relaxed_read32(csa, TRCPRGCTLR);
+ 
+@@ -945,6 +944,28 @@ static void etm4_disable_hw(void *info)
+ 	 * of ARM IHI 0064H.b.
+ 	 */
+ 	isb();
++}
++
++static void etm4_disable_hw(void *info)
++{
++	u32 control;
++	struct etmv4_drvdata *drvdata = info;
++	struct etmv4_config *config = &drvdata->config;
++	struct coresight_device *csdev = drvdata->csdev;
++	struct csdev_access *csa = &csdev->access;
++	int i;
++
++	etm4_cs_unlock(drvdata, csa);
++	etm4_disable_arch_specific(drvdata);
++
++	if (!drvdata->skip_power_up) {
++		/* power can be removed from the trace unit now */
++		control = etm4x_relaxed_read32(csa, TRCPDCR);
++		control &= ~TRCPDCR_PU;
++		etm4x_relaxed_write32(csa, control, TRCPDCR);
++	}
++
++	etm4_disable_trace_unit(drvdata);
+ 
+ 	/* read the status of the single shot comparators */
+ 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
 -- 
 2.51.0
 
