@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-206833-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D0B3D094EB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1109D09DD8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E173D30186A4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 372113149AC8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 544EA35A925;
-	Fri,  9 Jan 2026 12:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E24D235A95B;
+	Fri,  9 Jan 2026 12:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DL+R8+Cp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ma0exD4K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1443C359F98;
-	Fri,  9 Jan 2026 12:05:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A28833C53A;
+	Fri,  9 Jan 2026 12:34:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960329; cv=none; b=f4xDtQdH3yh41qxSGt8cn1rxR89kn/RsqCTngeagplmouqK+uN3b5y6zYz9zIPy4ptreLPG+S6TD4NZxpsCOy3UL5X4peQC3tfVFcITEXN/dxaEO9zmWS6xActdTFZlt4MmyEl2I+PvpCxrmwnCP9n7ZV33KRRXjypPZ06fFYsc=
+	t=1767962046; cv=none; b=rRhQuZkpiCACYP+Ag7sPJckwYK5N5j8yttRVj/oL6PXbvw05hcdM2BEX4odJM25lCO+64jmTQiI8P5dqriMqVa9fqOs02+wMKSvHo1kPNEfIv3PMsEIQV6ZA+tkRqZlJXyumb18MHGw5AIeczld0F1RF5Ef1GNnqeHEHmC9L8yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960329; c=relaxed/simple;
-	bh=Y/52YD8SAOa5w9Hil0SrPQ+OlB6BxZrV7qJoSqNAXQU=;
+	s=arc-20240116; t=1767962046; c=relaxed/simple;
+	bh=dMFmX7MtSQY7JG1TSWUstlM4+ar6xdtivTD1Pqo4bac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tLeP2IrtIaFx7MvDl4HU5vPfl7B3UWx3sIVjO6Xil875OYsGRz4qmS8ZKtJN7W7U2X+viqqoYU2z+BeiyZRm7mxNIPcbhohK2ucqwhrKLG/X/8Zx55LrU4TLequVTEAGVMZAzETF5ux1vQG6ywf8YqAMrda/y5DKMCi6QUI4ae4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DL+R8+Cp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 824D1C4CEF1;
-	Fri,  9 Jan 2026 12:05:28 +0000 (UTC)
+	 MIME-Version; b=hEuSCtSSNfng8DeQ5FI3kqGm6BRQqJnPwljXPAUInyBMUSsp+TmoS+WUkRd54XWbjBdSOcqxJTWYYPPXsjNqtHZRbnSWnT4+s4m4KiUa+atLvo5D+J+I7bpnj/RcFB4dm3eGzbZU4VxRzCmTzWxA2/D23Yk2duvV4zvcbJUaR3o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ma0exD4K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245D9C4CEF1;
+	Fri,  9 Jan 2026 12:34:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960328;
-	bh=Y/52YD8SAOa5w9Hil0SrPQ+OlB6BxZrV7qJoSqNAXQU=;
+	s=korg; t=1767962046;
+	bh=dMFmX7MtSQY7JG1TSWUstlM4+ar6xdtivTD1Pqo4bac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DL+R8+CpJOkubJqc6CN66ix3uTD2J1Z/WQo/ToFO/H0GLVScaEMh5n5jbuXBOm4PA
-	 uKJd+nKgkE9efC6QjVtV1Nl/TyJKDhLMEAzP43kLobBLlTr97YS2yM0MwrRyOl8m8E
-	 lYbMNGW6niqvqzsNB9gqfJBJdOrzjPhQfgm3FpHU=
+	b=Ma0exD4KElykSs+1E5zdLG5uihEngfzAFiqDBw6JFOixUOInC8ftfQ5Soa8/i9v73
+	 75y4rBppztmT8lWJc3/oOmjMeubEEinD/aqqKm26UzahWdnQ3GReD6cZYHMCjTEwCx
+	 koKufi2hkbpsSqXWuTEC6DavguJ94Am2aLWfIwg8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Juergen Gross <jgross@suse.com>,
+	syzbot+eadd98df8bceb15d7fed@syzkaller.appspotmail.com,
+	Qu Wenruo <wqu@suse.com>,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 366/737] x86/xen: Fix sparse warning in enlighten_pv.c
+Subject: [PATCH 6.1 227/634] btrfs: fix memory leak of fs_devices in degraded seed device path
 Date: Fri,  9 Jan 2026 12:38:25 +0100
-Message-ID: <20260109112147.764549785@linuxfoundation.org>
+Message-ID: <20260109112125.972286489@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit e5aff444e3a7bdeef5ea796a2099fc3c60a070fa ]
+[ Upstream commit b57f2ddd28737db6ff0e9da8467f0ab9d707e997 ]
 
-The sparse tool issues a warning for arch/x76/xen/enlighten_pv.c:
+In open_seed_devices(), when find_fsid() fails and we're in DEGRADED
+mode, a new fs_devices is allocated via alloc_fs_devices() but is never
+added to the seed_list before returning. This contrasts with the normal
+path where fs_devices is properly added via list_add().
 
-   arch/x86/xen/enlighten_pv.c:120:9: sparse: sparse: incorrect type
-     in initializer (different address spaces)
-     expected void const [noderef] __percpu *__vpp_verify
-     got bool *
+If any error occurs later in read_one_dev() or btrfs_read_chunk_tree(),
+the cleanup code iterates seed_list to free seed devices, but this
+orphaned fs_devices is never found and never freed, causing a memory
+leak. Any devices allocated via add_missing_dev() and attached to this
+fs_devices are also leaked.
 
-This is due to the percpu variable xen_in_preemptible_hcall being
-exported via EXPORT_SYMBOL_GPL() instead of EXPORT_PER_CPU_SYMBOL_GPL().
+Fix this by adding the newly allocated fs_devices to seed_list in the
+degraded path, consistent with the normal path.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512140856.Ic6FetG6-lkp@intel.com/
-Fixes: fdfd811ddde3 ("x86/xen: allow privcmd hypercalls to be preempted")
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20251215115112.15072-1-jgross@suse.com>
+Fixes: 5f37583569442 ("Btrfs: move the missing device to its own fs device list")
+Reported-by: syzbot+eadd98df8bceb15d7fed@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=eadd98df8bceb15d7fed
+Tested-by: syzbot+eadd98df8bceb15d7fed@syzkaller.appspotmail.com
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/xen/enlighten_pv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/btrfs/volumes.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 72b58fa4bc17..bfcd6ffc57df 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -110,7 +110,7 @@ static int xen_cpu_dead_pv(unsigned int cpu);
-  * calls.
-  */
- DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
--EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
-+EXPORT_PER_CPU_SYMBOL_GPL(xen_in_preemptible_hcall);
+diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
+index 628238493167f..366cf2e8c51cb 100644
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -7416,6 +7416,7 @@ static struct btrfs_fs_devices *open_seed_devices(struct btrfs_fs_info *fs_info,
  
- /*
-  * In case of scheduling the flag must be cleared and restored after
+ 		fs_devices->seeding = true;
+ 		fs_devices->opened = 1;
++		list_add(&fs_devices->seed_list, &fs_info->fs_devices->seed_list);
+ 		return fs_devices;
+ 	}
+ 
 -- 
 2.51.0
 
