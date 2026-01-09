@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-207757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8CB5D0A44C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C3A5D0A455
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DC1FA32F5784
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3112432F6ABF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F1DE35C19C;
-	Fri,  9 Jan 2026 12:49:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA73C35CB78;
+	Fri,  9 Jan 2026 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rANM5kRY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iOAMv/Sn"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D791933032C;
-	Fri,  9 Jan 2026 12:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C5CC23F417;
+	Fri,  9 Jan 2026 12:49:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962960; cv=none; b=MbBvK+koQajR/ekS29aJ7RLcqlW1nqtnIXOYNDPywhJOTaytv5iUm/o/KcJ78sGcG7FN14pw+M3vJ/uH6oi3Mb6d0MAgDuuQa9ZP7pYjauBoX6Ptjrk/pSh8yrlqDUwNgDLk4Tl/D+9WOuVjBnu4LA9PMyw5+iiCw0qiQSFmYgA=
+	t=1767962975; cv=none; b=qelnWgvxe3Oz7FGYsKMviEAXekXPjyW8reJWbRMps4pdQeZUgYKN74PWClo2JwyjuFQUEeAKvx/IdEH32k0IBk7aKQ8kaWkfCksVdj2s21g9hsajD55Xj3jwGMSbNVhH/r0Yq5riLoD+z2P5FzKxgLjpzrtvlC0KRyo8liofJF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962960; c=relaxed/simple;
-	bh=x6qQIB93cZgq9ZcqImbPIuN5JCFirZeAb4lazCO2Gdg=;
+	s=arc-20240116; t=1767962975; c=relaxed/simple;
+	bh=hlSLSRJUHhZCPpjjWrJX3+vZ8u0prIVMWH77iPZJhM0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UCUI69UQHTcOLslqK7XDEDn1zFtdIsku5TeVGo8GTDHRxM/VLv/8Zsx3govpY8VMXU7frDR18UoryE2LF1qL+y0GVh7dGpohQ6NluUUFuQv9/jAVfd6G19PkAJkD6KjMpL/qzreQOebz4O67KCyAsTYGZFuL1VHOSNzaBKjnuqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rANM5kRY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63A06C16AAE;
-	Fri,  9 Jan 2026 12:49:20 +0000 (UTC)
+	 MIME-Version; b=azFdh16lc74E23ATuBT1igFVKGtwi7fF4GJU0pj3LNNqobzOzSRWZPUIlvJ4vCwVdoYt3zk9ENqfFaZkh7vuDm/D38gn+KwyC4KYNJzLW28Hsdr1F0sGu6hMp7ZbheelXU0tJrl5u7uB47RfYV4oKatPTQKfTsmPgu5MB6IHWx4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iOAMv/Sn; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3C2FC4CEF1;
+	Fri,  9 Jan 2026 12:49:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962960;
-	bh=x6qQIB93cZgq9ZcqImbPIuN5JCFirZeAb4lazCO2Gdg=;
+	s=korg; t=1767962975;
+	bh=hlSLSRJUHhZCPpjjWrJX3+vZ8u0prIVMWH77iPZJhM0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rANM5kRYkKpn6hFKWfo+3b8r1fHbTpHjaG86Df3jiP0cMd81DXfP8xz7UawDMlrXP
-	 LoUJVj2w9LsJz9kRdI/OYM++RZUYo4OqRkY+viwKEUqnCGYHPApWqTFbth8N5SPRHr
-	 nsfuVCSQEyDA7IAXbJV/iiTk+ClONVmNSVXtY6W0=
+	b=iOAMv/SnLngw3wq3KuT4hUwbYUu2Q1VugTePAoypEF5ig758scT9hJE69lhM2GMuA
+	 Rne6Dw6jzbqy03w9vHR5A1O+aVHVWt/yt3PJycLctxR+REjLDA7ipWxfKZWUQrGC/D
+	 DWo5SIVqpUScytsEC8jOQKQSxQcIZvivv6oSxjbI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 548/634] mptcp: pm: ignore unknown endpoint flags
-Date: Fri,  9 Jan 2026 12:43:46 +0100
-Message-ID: <20260109112138.211676374@linuxfoundation.org>
+Subject: [PATCH 6.1 552/634] f2fs: remove unused GC_FAILURE_PIN
+Date: Fri,  9 Jan 2026 12:43:50 +0100
+Message-ID: <20260109112138.364587141@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,66 +64,137 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
+[ Upstream commit 968c4f72b23c0c8f1e94e942eab89b8c5a3022e7 ]
 
-Before this patch, the kernel was saving any flags set by the userspace,
-even unknown ones. This doesn't cause critical issues because the kernel
-is only looking at specific ones. But on the other hand, endpoints dumps
-could tell the userspace some recent flags seem to be supported on older
-kernel versions.
+After commit 3db1de0e582c ("f2fs: change the current atomic write way"),
+we removed all GC_FAILURE_ATOMIC usage, let's change i_gc_failures[]
+array to i_pin_failure for cleanup.
 
-Instead, ignore all unknown flags when parsing them. By doing that, the
-userspace can continue to set unsupported flags, but it has a way to
-verify what is supported by the kernel.
+Meanwhile, let's define i_current_depth and i_gc_failures as union
+variable due to they won't be valid at the same time.
 
-Note that it sounds better to continue accepting unsupported flags not
-to change the behaviour, but also that eases things on the userspace
-side by adding "optional" endpoint types only supported by newer kernel
-versions without having to deal with the different kernel versions.
-
-A note for the backports: there will be conflicts in mptcp.h on older
-versions not having the mentioned flags, the new line should still be
-added last, and the '5' needs to be adapted to have the same value as
-the last entry.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ GENMASK(5, 0) => GENMASK(4, 0) + context ]
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 10b591e7fb7c ("f2fs: fix to avoid updating compression context during writeback")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/mptcp.h |    1 +
- net/mptcp/pm_netlink.c     |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/f2fs.h     |   14 +++++---------
+ fs/f2fs/file.c     |   12 +++++-------
+ fs/f2fs/inode.c    |    6 ++----
+ fs/f2fs/recovery.c |    3 +--
+ 4 files changed, 13 insertions(+), 22 deletions(-)
 
---- a/include/uapi/linux/mptcp.h
-+++ b/include/uapi/linux/mptcp.h
-@@ -88,6 +88,7 @@ enum {
- #define MPTCP_PM_ADDR_FLAG_BACKUP			(1 << 2)
- #define MPTCP_PM_ADDR_FLAG_FULLMESH			(1 << 3)
- #define MPTCP_PM_ADDR_FLAG_IMPLICIT			(1 << 4)
-+#define MPTCP_PM_ADDR_FLAGS_MASK			GENMASK(4, 0)
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -747,11 +747,6 @@ enum {
  
+ #define DEF_DIR_LEVEL		0
+ 
+-enum {
+-	GC_FAILURE_PIN,
+-	MAX_GC_FAILURE
+-};
+-
+ /* used for f2fs_inode_info->flags */
  enum {
- 	MPTCP_PM_CMD_UNSPEC,
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1424,7 +1424,8 @@ int mptcp_pm_parse_entry(struct nlattr *
+ 	FI_NEW_INODE,		/* indicate newly allocated inode */
+@@ -797,9 +792,10 @@ struct f2fs_inode_info {
+ 	unsigned long i_flags;		/* keep an inode flags for ioctl */
+ 	unsigned char i_advise;		/* use to give file attribute hints */
+ 	unsigned char i_dir_level;	/* use for dentry level for large dir */
+-	unsigned int i_current_depth;	/* only for directory depth */
+-	/* for gc failure statistic */
+-	unsigned int i_gc_failures[MAX_GC_FAILURE];
++	union {
++		unsigned int i_current_depth;	/* only for directory depth */
++		unsigned int i_gc_failures;	/* for gc failure statistic */
++	};
+ 	unsigned int i_pino;		/* parent inode number */
+ 	umode_t i_acl_mode;		/* keep file acl mode temporarily */
+ 
+@@ -3100,7 +3096,7 @@ static inline void f2fs_i_depth_write(st
+ static inline void f2fs_i_gc_failures_write(struct inode *inode,
+ 					unsigned int count)
+ {
+-	F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN] = count;
++	F2FS_I(inode)->i_gc_failures = count;
+ 	f2fs_mark_inode_dirty_sync(inode, true);
+ }
+ 
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3247,13 +3247,11 @@ int f2fs_pin_file_control(struct inode *
+ 
+ 	/* Use i_gc_failures for normal file as a risk signal. */
+ 	if (inc)
+-		f2fs_i_gc_failures_write(inode,
+-				fi->i_gc_failures[GC_FAILURE_PIN] + 1);
++		f2fs_i_gc_failures_write(inode, fi->i_gc_failures + 1);
+ 
+-	if (fi->i_gc_failures[GC_FAILURE_PIN] > sbi->gc_pin_file_threshold) {
++	if (fi->i_gc_failures > sbi->gc_pin_file_threshold) {
+ 		f2fs_warn(sbi, "%s: Enable GC = ino %lx after %x GC trials",
+-			  __func__, inode->i_ino,
+-			  fi->i_gc_failures[GC_FAILURE_PIN]);
++			  __func__, inode->i_ino, fi->i_gc_failures);
+ 		clear_inode_flag(inode, FI_PIN_FILE);
+ 		return -EAGAIN;
+ 	}
+@@ -3312,7 +3310,7 @@ static int f2fs_ioc_set_pin_file(struct
  	}
  
- 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
--		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
-+		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
-+			       MPTCP_PM_ADDR_FLAGS_MASK;
+ 	set_inode_flag(inode, FI_PIN_FILE);
+-	ret = F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN];
++	ret = F2FS_I(inode)->i_gc_failures;
+ done:
+ 	f2fs_update_time(F2FS_I_SB(inode), REQ_TIME);
+ out:
+@@ -3327,7 +3325,7 @@ static int f2fs_ioc_get_pin_file(struct
+ 	__u32 pin = 0;
  
- 	if (tb[MPTCP_PM_ADDR_ATTR_PORT])
- 		entry->addr.port = htons(nla_get_u16(tb[MPTCP_PM_ADDR_ATTR_PORT]));
+ 	if (is_inode_flag_set(inode, FI_PIN_FILE))
+-		pin = F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN];
++		pin = F2FS_I(inode)->i_gc_failures;
+ 	return put_user(pin, (u32 __user *)arg);
+ }
+ 
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -362,8 +362,7 @@ static int do_read_inode(struct inode *i
+ 	if (S_ISDIR(inode->i_mode))
+ 		fi->i_current_depth = le32_to_cpu(ri->i_current_depth);
+ 	else if (S_ISREG(inode->i_mode))
+-		fi->i_gc_failures[GC_FAILURE_PIN] =
+-					le16_to_cpu(ri->i_gc_failures);
++		fi->i_gc_failures = le16_to_cpu(ri->i_gc_failures);
+ 	fi->i_xattr_nid = le32_to_cpu(ri->i_xattr_nid);
+ 	fi->i_flags = le32_to_cpu(ri->i_flags);
+ 	if (S_ISREG(inode->i_mode))
+@@ -623,8 +622,7 @@ void f2fs_update_inode(struct inode *ino
+ 		ri->i_current_depth =
+ 			cpu_to_le32(F2FS_I(inode)->i_current_depth);
+ 	else if (S_ISREG(inode->i_mode))
+-		ri->i_gc_failures =
+-			cpu_to_le16(F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN]);
++		ri->i_gc_failures = cpu_to_le16(F2FS_I(inode)->i_gc_failures);
+ 	ri->i_xattr_nid = cpu_to_le32(F2FS_I(inode)->i_xattr_nid);
+ 	ri->i_flags = cpu_to_le32(F2FS_I(inode)->i_flags);
+ 	ri->i_pino = cpu_to_le32(F2FS_I(inode)->i_pino);
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -330,8 +330,7 @@ static int recover_inode(struct inode *i
+ 	F2FS_I(inode)->i_advise = raw->i_advise;
+ 	F2FS_I(inode)->i_flags = le32_to_cpu(raw->i_flags);
+ 	f2fs_set_inode_flags(inode);
+-	F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN] =
+-				le16_to_cpu(raw->i_gc_failures);
++	F2FS_I(inode)->i_gc_failures = le16_to_cpu(raw->i_gc_failures);
+ 
+ 	recover_inline_flags(inode, raw);
+ 
 
 
 
