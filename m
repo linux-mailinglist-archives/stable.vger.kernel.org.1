@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206746-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD743D092B4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4BC30D09E80
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E0770301E177
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E309F311DEC7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6363359FBA;
-	Fri,  9 Jan 2026 12:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B48E33372B;
+	Fri,  9 Jan 2026 12:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1T/I5eai"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W7cY7NXm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89B60359F98;
-	Fri,  9 Jan 2026 12:01:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F0FF336EDA;
+	Fri,  9 Jan 2026 12:31:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960081; cv=none; b=M5zIkWCxhdztX2rnbHNGAR8Q5lR78vVgNXX9YGIihoFCI0Q+ysT0keOsH99FS/hCfod620TsmHTnQ8WMGJNTgVYF+YRnv/hUK4eMxYN74O6A8MQDF9xFSdJFwoeuqxY3pNd7MKKkkEnKIoMeYvRkNmQws6FCKB/MTqwg87AJx00=
+	t=1767961888; cv=none; b=ghiYKj2Mn4hVsxGTjx+Nr5N5IcPAoenTudHOjPNijw5Agq2v3hqSNoafmedu5F/dMOEqA4rEI42E04uCUsUzCL5M7IZkaoVTQCoqQv8E2nAkMM++p8RupeMiHgMAcqD80RW/HHnOgXBVHu8ZFL97Ll7o9ONjKbVOEvqIWUZScck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960081; c=relaxed/simple;
-	bh=wybHX70yiGLBPHze8xthcSXHx5VCkZaHu/5twCwJFEQ=;
+	s=arc-20240116; t=1767961888; c=relaxed/simple;
+	bh=bOJy2FdXY1sMZtPQqxPl2RMAczJ8DtdmdWUKiIwBfuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tOts+8uOrKohRaOzy5yoRunYrh5Oy96Eng7PALPdetFzz0CicnefT+V2WGyOzkRkOMAU+eTGwdWBBYppsUbmarff+IlmMgiS2iqPv5ZSngJ5weYMyd8hLooyhbqrXgXziuNpyoHFk1VUn6l5kb0mlyePUrw+SKYfRBTEct5HVEc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1T/I5eai; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1283FC4CEF1;
-	Fri,  9 Jan 2026 12:01:20 +0000 (UTC)
+	 MIME-Version; b=Fj8pKcQlJ2WU6DX9wk8+fLcr1Hjs+jDb932++/HBsle5k3/hcxLCLEzsxoptvHflonjIeEHW7uDmc2weFXA1E8so69ENwgwE29WONPE/agxmQnpa85NxIqBSnGxN/vp0aM4FNz5CvmiqMQ1ijh+123KBf/mg6xzwOezbGkgz2w8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W7cY7NXm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3F3C4CEF1;
+	Fri,  9 Jan 2026 12:31:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960081;
-	bh=wybHX70yiGLBPHze8xthcSXHx5VCkZaHu/5twCwJFEQ=;
+	s=korg; t=1767961888;
+	bh=bOJy2FdXY1sMZtPQqxPl2RMAczJ8DtdmdWUKiIwBfuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1T/I5eai/qTRkvi1x+BoLBCFvuiv8kGvoxW+haXQi/cL7fGAxspAI4YXAvf658dQZ
-	 HkEoE7P/Nn3wKcnIXUtQX9kRZV9lEBlKH5hVJiNN5Lkyb+wCrYu6asrD/9zLXBv0p+
-	 rt0NBXUJxso6jAwpdCPwCfnYkZu5T3g8wlPd8VJI=
+	b=W7cY7NXm7u8qyFBxsnZJhXVK5zrPUH03R2BBRxjk5SyvtDWJ+H+2GlSuwZppV19jz
+	 vKvv5K+BxUX5AshGxBQdMeB+BCQBquSbIrtQYxoIDNLDTD+5NvYUujOcMTRA0b+vsD
+	 YwkyXpD1D87SyjV1PbEbMbyBhOwUbMbKPyX+LDYw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Israel Rukshin <israelr@nvidia.com>,
-	Max Gurtovoy <mgurtovoy@nvidia.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Keith Busch <kbusch@kernel.org>,
+	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
+	Gopi Krishna Menon <krishnagopi487@gmail.com>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 277/737] nvme-auth: use kvfree() for memory allocated with kvcalloc()
-Date: Fri,  9 Jan 2026 12:36:56 +0100
-Message-ID: <20260109112144.428629229@linuxfoundation.org>
+Subject: [PATCH 6.1 139/634] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
+Date: Fri,  9 Jan 2026 12:36:57 +0100
+Message-ID: <20260109112122.685909628@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Israel Rukshin <israelr@nvidia.com>
+From: Gopi Krishna Menon <krishnagopi487@gmail.com>
 
-[ Upstream commit bb9f4cca7c031de6f0e85f7ba24abf0172829f85 ]
+[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
 
-Memory allocated by kvcalloc() may come from vmalloc or kmalloc,
-so use kvfree() instead of kfree() for proper deallocation.
+The previous commit removed the PAGE_SIZE limit on transfer length of
+raw_io buffer in order to avoid any problems with emulating USB devices
+whose full configuration descriptor exceeds PAGE_SIZE in length. However
+this also removes the upperbound on user supplied length, allowing very
+large values to be passed to the allocator.
 
-Fixes: aa36d711e945 ("nvme-auth: convert dhchap_auth_list to an array")
-Signed-off-by: Israel Rukshin <israelr@nvidia.com>
-Reviewed-by: Max Gurtovoy <mgurtovoy@nvidia.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+syzbot on fuzzing the transfer length with very large value (1.81GB)
+results in kmalloc() to fall back to the page allocator, which triggers
+a kernel warning as the page allocator cannot handle allocations more
+than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
+
+Since there is no limit imposed on the size of buffer for both control
+and non control transfers, cap the raw_io transfer length to
+KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
+prevent any warnings from the page allocator.
+
+Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
+Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
+Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
+Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
+Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/auth.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/nvme/host/auth.c b/drivers/nvme/host/auth.c
-index 811541ce206bf..f1b0a8e7af896 100644
---- a/drivers/nvme/host/auth.c
-+++ b/drivers/nvme/host/auth.c
-@@ -997,7 +997,7 @@ void nvme_auth_free(struct nvme_ctrl *ctrl)
- 	if (ctrl->dhchap_ctxs) {
- 		for (i = 0; i < ctrl_max_dhchaps(ctrl); i++)
- 			nvme_auth_free_dhchap(&ctrl->dhchap_ctxs[i]);
--		kfree(ctrl->dhchap_ctxs);
-+		kvfree(ctrl->dhchap_ctxs);
- 	}
- 	if (ctrl->host_key) {
- 		nvme_auth_free_key(ctrl->host_key);
+diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
+index 2deab4a6030d7..8aa1a8408ae33 100644
+--- a/drivers/usb/gadget/legacy/raw_gadget.c
++++ b/drivers/usb/gadget/legacy/raw_gadget.c
+@@ -39,6 +39,7 @@ MODULE_LICENSE("GPL");
+ 
+ static DEFINE_IDA(driver_id_numbers);
+ #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
++#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
+ 
+ #define RAW_EVENT_QUEUE_SIZE	16
+ 
+@@ -620,6 +621,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
+ 		return ERR_PTR(-EINVAL);
+ 	if (!usb_raw_io_flags_valid(io->flags))
+ 		return ERR_PTR(-EINVAL);
++	if (io->length > USB_RAW_IO_LENGTH_MAX)
++		return ERR_PTR(-EINVAL);
+ 	if (get_from_user)
+ 		data = memdup_user(ptr + sizeof(*io), io->length);
+ 	else {
 -- 
 2.51.0
 
