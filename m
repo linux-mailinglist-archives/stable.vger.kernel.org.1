@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207115-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2093BD09AAB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B06A5D0A262
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7BE7130C7D7C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CF0B73026A5E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0057932AAB5;
-	Fri,  9 Jan 2026 12:18:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0596735CBB3;
+	Fri,  9 Jan 2026 12:47:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpUybN7k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NRlyHIKZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B789C224D6;
-	Fri,  9 Jan 2026 12:18:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A58A635B138;
+	Fri,  9 Jan 2026 12:47:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961133; cv=none; b=g0VZm/t70AJoIueUL6Fl5mPQ3mdOSfCg4E+RAb/AE4MAu7Y6lO+QTnEcm7RyhCgK3EqgALugWQRpSrof46wVpJ+bnvaVEf6oB5adeBWQvJPqhuRE/PiA/MkECqDGQLKFu8EP4fIif+0AImV4QLkniIIq5w3ET6Smz2ItzIjF+qU=
+	t=1767962846; cv=none; b=YYnsU33l4rYF35RBHqaMPtgJKkwekpEJoSCAicCGEDFhmE8tWY+p73e0gyMcCeFYUaUHimOXme28HgXVpSKOwmZGOYmt07/KEck+evK5eenzLe9ohIckDwY240/kiwQckWCFINfunG8iPIhC+sTOyDL4goMIjzQjE7mOlaPRIQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961133; c=relaxed/simple;
-	bh=fgWJBF3jvwE/1WOnRv5F8ed0iSaN7EDD/qNm6gf6K0A=;
+	s=arc-20240116; t=1767962846; c=relaxed/simple;
+	bh=eTGiundHwuXVLq7M0d8QX+uf9ziD2sYS5kUmcGTkZD0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nuCBqq/pbkAf/V0psU6U4aXSExYA/bsq1nZjjtAKbOr8etr6NuLtSO6zFUvPgdqcTnbHRMRWj4kxit2QMeSplU2DD37moMM03t1+kpiVXxUDlU4uABYUJmTEb3AY2spwD+iqII5Gw+8QJdM/311IxdkPH+MkV8MvJU39tygAOqA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpUybN7k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 435B7C16AAE;
-	Fri,  9 Jan 2026 12:18:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JuyVPL8DTP++AoscNUZiFKHe/FIDeOgSnUBozdPxdJKkMjIx4pO4e0PapENHtSHUIvd+kmHY9hmJQNKHDoxhQIa+I2bx4M1GL8j5YyO7gwxVty/+Uespr8qAXh25Z4v7I/pi+lW8w3aC7vD1n9HuMT8UAKyXPlg+fmqv8BwZgdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NRlyHIKZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34DEFC4CEF1;
+	Fri,  9 Jan 2026 12:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961133;
-	bh=fgWJBF3jvwE/1WOnRv5F8ed0iSaN7EDD/qNm6gf6K0A=;
+	s=korg; t=1767962846;
+	bh=eTGiundHwuXVLq7M0d8QX+uf9ziD2sYS5kUmcGTkZD0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpUybN7kx1f+IdYcsF9Gg2aD5Az9FRpEa2Auj3FB+e8hxD3dD7rK767eakxKPog3g
-	 XHLUZ72BU5Aaj+Bli59kuLjvLvGxzuTn9IT10GF9PD5t0/Vw3jWUL8aA/dWNNjriQS
-	 nfdwGxuvZPqnXCzaXo37DOZNg0jkGMTaoBZ9nmJw=
+	b=NRlyHIKZkosBQhZ56lg+jrYNWl7cbsRj1ZIYW86mIQUU86oU/GkWBljRm4Dn8kPRS
+	 QgD3T+6PunTJ0U51HkgHvhdkrCxAefkQSd9nljpPXUc++FZNyCor1BnDtT61QCAJkB
+	 SoubPbdD0VJpbjQVMbebPu89KzZs0Spt4jPrYzeo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 647/737] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	stable@kernel.org,
+	Thomas Zimmermann <tzimmermann@suse.de>
+Subject: [PATCH 6.1 508/634] drm/mgag200: Fix big-endian support
 Date: Fri,  9 Jan 2026 12:43:06 +0100
-Message-ID: <20260109112158.355440662@linuxfoundation.org>
+Message-ID: <20260109112136.666772275@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,61 +58,74 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 27d17641cacfedd816789b75d342430f6b912bd2 ]
+commit 6cb31fba137d45e682ce455b8ea364f44d5d4f98 upstream.
 
->>From RFC 8881:
+Unlike the original, deleted Matrox mga driver, the new mgag200 driver
+has the XRGB frame-buffer byte swapped on big-endian "RISC"
+systems. Fix by enabling byte swapping "PowerPC" OPMODE for any
+__BIG_ENDIAN config.
 
-5.8.1.14. Attribute 75: suppattr_exclcreat
-
-> The bit vector that would set all REQUIRED and RECOMMENDED
-> attributes that are supported by the EXCLUSIVE4_1 method of file
-> creation via the OPEN operation. The scope of this attribute
-> applies to all objects with a matching fsid.
-
-There's nothing in RFC 8881 that states that suppattr_exclcreat is
-or is not allowed to contain bits for attributes that are clear in
-the reported supported_attrs bitmask. But it doesn't make sense for
-an NFS server to indicate that it /doesn't/ implement an attribute,
-but then also indicate that clients /are/ allowed to set that
-attribute using OPEN(create) with EXCLUSIVE4_1.
-
-Ensure that the SECURITY_LABEL and ACL bits are not set in the
-suppattr_exclcreat bitmask when they are also not set in the
-supported_attrs bitmask.
-
-Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
-Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 414c45310625 ("mgag200: initial g200se driver (v2)")
+Signed-off-by: René Rebe <rene@exactco.de>
+Cc: stable@kernel.org
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patch.msgid.link/20251208.141827.965103015954471168.rene@exactco.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/mgag200/mgag200_mode.c |   25 +++++++++++++++++++++++++
+ 1 file changed, 25 insertions(+)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3419,6 +3419,11 @@ out_acl:
- 		u32 supp[3];
+--- a/drivers/gpu/drm/mgag200/mgag200_mode.c
++++ b/drivers/gpu/drm/mgag200/mgag200_mode.c
+@@ -173,6 +173,30 @@ static void mgag200_set_startadd(struct
+ 	WREG_ECRT(0x00, crtcext0);
+ }
  
- 		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
-+		if (!IS_POSIXACL(d_inode(dentry)))
-+			supp[0] &= ~FATTR4_WORD0_ACL;
-+		if (!contextsupport)
-+			supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
++/*
++ * Set the opmode for the hardware swapper for Big-Endian processor
++ * support for the frame buffer aperture and DMAWIN space.
++ */
++static void mgag200_set_datasiz(struct mga_device *mdev, u32 format)
++{
++#if defined(__BIG_ENDIAN)
++	u32 opmode = RREG32(MGAREG_OPMODE);
 +
- 		supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
- 		supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
- 		supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
++	opmode &= ~(GENMASK(17, 16) | GENMASK(9, 8) | GENMASK(3, 2));
++
++	/* Big-endian byte-swapping */
++	switch (format) {
++	case DRM_FORMAT_RGB565:
++		opmode |= 0x10100;
++		break;
++	case DRM_FORMAT_XRGB8888:
++		opmode |= 0x20200;
++		break;
++	}
++	WREG32(MGAREG_OPMODE, opmode);
++#endif
++}
++
+ void mgag200_init_registers(struct mga_device *mdev)
+ {
+ 	u8 crtc11, misc;
+@@ -506,6 +530,7 @@ void mgag200_primary_plane_helper_atomic
+ 	if (!fb)
+ 		return;
+ 
++	mgag200_set_datasiz(mdev, fb->format->format);
+ 	drm_atomic_helper_damage_iter_init(&iter, old_plane_state, plane_state);
+ 	drm_atomic_for_each_plane_damage(&iter, &damage) {
+ 		mgag200_handle_damage(mdev, shadow_plane_state->data, fb, &damage);
 
 
 
