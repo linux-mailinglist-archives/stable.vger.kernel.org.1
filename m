@@ -1,121 +1,95 @@
-Return-Path: <stable+bounces-206432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD228D0837A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:33:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D8AD08398
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:34:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CD19D30082CC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:31:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5F42D300ACA6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:34:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49A53563D5;
-	Fri,  9 Jan 2026 09:31:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD123590B2;
+	Fri,  9 Jan 2026 09:34:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="E2LN2Okl"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lR79fTbk"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f51.google.com (mail-qv1-f51.google.com [209.85.219.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9DD133343C
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:31:25 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAEC333445
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:34:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951087; cv=none; b=X1o2KhQu0GWxkszyNZvEzDdG/0KmK7yP4wp9bTezXvNx9Do5G9jDL3O/B7NMbK4cVz8n3tJ9IM/F+s5HSRTlZgFU/dSDzocKQV0DH5GFwlym49s9KNeVLcWPQzcC6OXda5+v1XD4yg1JRgX203XK1NZeMqg7nETaZ/FVssj4+28=
+	t=1767951245; cv=none; b=eWwo/bZFr1KM95IVqH5CEKMCSDI9nO47SfQvtuq7Ui+IC9Iqxf+o2LDQOgt190eDTXUlPSvBYDLKcxXXJ/1KHkot2t1zX0X2KFi9bZV1xp5UeT9F9LaKe0U/S2iK8PHyot/NCGhZwfi/T3koxs/ERHKCFLPBuMMXlcShkMSjahE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951087; c=relaxed/simple;
-	bh=HOUvCNWeC/QU/EutK4DSQdm70DXyuV5GqGuLIHtLRCs=;
+	s=arc-20240116; t=1767951245; c=relaxed/simple;
+	bh=eOPj6csaxqSh/pD94Xiow8fswoPt4epubaYlDPDsNMI=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=OSg2wPCg4AvgA+M9YnYoDf5+lmy5CARkYrpdDDOXZT+4vQxtKOzPEYJRAlJn2vcEuZOKCZzamD3h6zSpOzAJn/ZFuoADPNC/qohHJYqRQyzEjk9IwcWMrpo2KNeZEuzCS+g7JAIlOPmcwtnDjANoslCpTJFLtFge/0qvf1qgIcM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=E2LN2Okl; arc=none smtp.client-ip=209.85.219.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
-Received: by mail-qv1-f51.google.com with SMTP id 6a1803df08f44-8888a16d243so36998256d6.1
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:31:25 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1767951085; x=1768555885; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=mHnWhSbgGLtJHz6aBPfGHzXRQNyBXUT1iG+fdLJ00Bc=;
-        b=E2LN2OklxhUTYxe+6j9IomTwaGFt4u6zrIA6Aa+MdSMWAEyj5b3BtJ0pjpb29hz85G
-         kGz6Y8bJwA8+q/DK5FDo58IQd1gMpHuXQRbuI1Zre3YG3UpuLWwVjCe7YgQDhhFbbcq6
-         Vj6VUNLBp/UFH5wCwhYQebaLqARoMRB70J6C7o+ubU/goqs6V6/M2b0NvHsrFAKh4lZf
-         A4dMJ2TyszaH0Cy3HFLs9cuvDpUwMplU7cKZQVkr7Nfxe1r9QeqQrKlS0BNsEtjv6Is7
-         C09rJyxDqvOrJ4ahdfxq3topIkRUzbKy3n8kZCp8YR8lGE/uUiEqYmcY+sdzJB+5H+i6
-         GRIA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767951085; x=1768555885;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mHnWhSbgGLtJHz6aBPfGHzXRQNyBXUT1iG+fdLJ00Bc=;
-        b=oFQhZpg5Qvt1FnJUtMn5wK2KPgKFbCzDMfxOZ+StifeiD9tnzpCFRH7DAoI956Eb5u
-         lM1GQR/qXzaccQNPUqFSgGeMgQU2yOJJ178FL4T8uFn20sUMAzVFrB39CYOTT7L2085v
-         79CLmY7dwYklKjzKCHIO+pBd+ACxBSeyKYotUjPCsUKnoWK2nca8iEi8OffqLvBYDlhW
-         j59SKY6ZOdmdrL1OyssQEbM/8pCQJ6jn30sB3hOgniDgX5VM94z7t32dFZJWNYO+CVtx
-         Rb5K7PQ01rFzOGN2WzsDfV/zUGNr6iYcRP9tjP9lK6HAYRrToU2CEpiiornl7iD4bEc4
-         kk0w==
-X-Forwarded-Encrypted: i=1; AJvYcCXs5k/19yh65vUgocC5T/3ce7zrbWz8lw9ab215l8T0I567+ovQIj666YFMeHnJJ7lgTlCAD9s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YztUjTMYQSaMtXcjcGCQfEnORnFyniLFPPh0XI8q4jz30QKmzzg
-	u6nS7ZrdyieUyfL+7lh9Corz5FGJNZdh1LSyR9lF7faA2TaWREEBwwhG+5HrIXOMvAsNmskqNgL
-	k/pwzjOQDaiVx4dRRei+EgC084syJfebQMdLr1Z2z
-X-Gm-Gg: AY/fxX6/EU/5MoBzKVmZt7EWPA32OiLdbu2pyD6GwgZB8AssuDEGPPnGGwppTxBNwKY
-	ZGVHgDBXdlFQoToFqjueyWksYkhx/VOtKLxeSt1TtzPtu175hSYJE/54LlWjzZ1FZwXDt6z5lcj
-	glbVKjVGPULEfYVYs0s8wnDiN8zG3551XNFUZ2GfEQd8kvgG1o6Rt6LIuE70zvH2T2vkYUqYgZ7
-	ojOQHLNnNI52fJt0sKcE5L+PUrdEIB5TOBONmxP7tKxKiZ2XNPcxSewVqBY5dnX1rqq1oc=
-X-Google-Smtp-Source: AGHT+IFuFRZsFV/d44doIWgLvsMS/CZDqe4Cye+eagGw1hb+ysMh9BDNkivJ6fQHv4v5oqRYdhbNmI5coNvj7Pn6Sz0=
-X-Received: by 2002:a05:6214:485:b0:888:8088:209e with SMTP id
- 6a1803df08f44-890841a3ab6mr123084486d6.16.1767951084728; Fri, 09 Jan 2026
- 01:31:24 -0800 (PST)
+	 To:Cc:Content-Type; b=VrT2Cho4dPhVnK612hVtJAXUoxviYN92hnyqjrN65QJ/V8GCYa8/zGzBNH5hWKMAX/53OTtCRV8ju+88BVTtPRHh/oUry498FZ7+H3mkB54+vzctnr0a04X7GlhVEAFJx/9MHwZI4vhROuKXmCHLnjVa5W/KQHUgzwmeMSfmaV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lR79fTbk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D64DC16AAE
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:34:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767951245;
+	bh=eOPj6csaxqSh/pD94Xiow8fswoPt4epubaYlDPDsNMI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=lR79fTbkQsjgiDlA6fkXm7nFk8wVuLWHxfCcZhKMCzk6nFbpiobQdH+19xNX1Edq8
+	 Xu5QeqrJLJmlalUk0cX4DpHpHY9k1VxZ9yB7U7Fe08DVHs5dkYebQbpdDXSk1uGuMs
+	 3NYEBRMjDXEQ7EyKut2fYDHiQqGOmhTyuFTWnsUWJnC8lAwsVSYvpIYCNB7FLTDCS9
+	 C4J4iJ2k1oQ1yXqnsNmHma70GA7ZUgrFAVWtMfhy0tgm/5HSq9wirt4ixPTU16Mu2c
+	 +lkpNLrYinmglFCoxuv5/Pzb5FFZDnCN4e5KeD4MboWw+Xp6Yv+qC9MI6/n5qR1hfs
+	 PV1vQd6HCvjWg==
+Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-78fc0f33998so42002067b3.0
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:34:05 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWdNDJcXur4Pgc7xyyyMdMGhdHqbjpy1dVpurVmW+0u8JPKrrr4vtdFyigY/K9pMYDdAiUJ/Nw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzRG/V4jEZdX/KGZ0kiizB0gQ8a3uV7j6I9EVmHHnkT1n9rmjul
+	Lm5kSyHDWzzf788OWU02ASCF2ZOrUCe6Zp3tv+oxJ3c9Mk/ghKV9iZsv9HX/7CfIoksqLTeGRck
+	jxSsYpV2rZsdGO0Ww6Qkj35CMBKYe1xM=
+X-Google-Smtp-Source: AGHT+IEn0vqdkw8bEaFTh2evg/3/Gk5M0wvdcElU6mMy3Wg7wsSj3AKZVzV8/gWPdmB4yzqWtFjvi9yu72g/ac8yxEo=
+X-Received: by 2002:a05:690c:18:b0:789:2be7:ae80 with SMTP id
+ 00721157ae682-790b582a8f8mr187013807b3.54.1767951244425; Fri, 09 Jan 2026
+ 01:34:04 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260105080230.13171-1-harry.yoo@oracle.com> <20260105080230.13171-2-harry.yoo@oracle.com>
- <CAG_fn=XCx9-uYOhRQXTde7ud=H9kwM_Sf3ZjHQd9hfYDspzeOA@mail.gmail.com> <aWBfZ4ga9HQ8L8KM@hyeyoo>
-In-Reply-To: <aWBfZ4ga9HQ8L8KM@hyeyoo>
-From: Alexander Potapenko <glider@google.com>
-Date: Fri, 9 Jan 2026 10:30:47 +0100
-X-Gm-Features: AZwV_Qj86V__IEzdz2ouZQE2ozn-rnAWTPpJPtDCUGLbUdOgH8MfcTAHgVsMofI
-Message-ID: <CAG_fn=Wyw-fGGQ802A1cUpkHHTnZi5gN7wZzRaF1s31SPOpC9g@mail.gmail.com>
-Subject: Re: [PATCH V5 1/8] mm/slab: use unsigned long for orig_size to ensure
- proper metadata align
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: akpm@linux-foundation.org, vbabka@suse.cz, andreyknvl@gmail.com, 
-	cl@gentwo.org, dvyukov@google.com, hannes@cmpxchg.org, linux-mm@kvack.org, 
-	mhocko@kernel.org, muchun.song@linux.dev, rientjes@google.com, 
-	roman.gushchin@linux.dev, ryabinin.a.a@gmail.com, shakeel.butt@linux.dev, 
-	surenb@google.com, vincenzo.frascino@arm.com, yeoreum.yun@arm.com, 
-	tytso@mit.edu, adilger.kernel@dilger.ca, linux-ext4@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, cgroups@vger.kernel.org, hao.li@linux.dev, 
+References: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
+In-Reply-To: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 9 Jan 2026 10:33:53 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkaKgGDTbzjdWNPFSF85VDx3HCnOdbF8GSeEZRp3jDbCQ@mail.gmail.com>
+X-Gm-Features: AZwV_Qh3gljFKlGTGVVG8Mveu2qlxxn_p3yMb-Bc-OOzKbAyx_Ef35y9X6nAS98
+Message-ID: <CAD++jLkaKgGDTbzjdWNPFSF85VDx3HCnOdbF8GSeEZRp3jDbCQ@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: meson: amlogic-a4: mark the GPIO controller as sleeping
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
 	stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-> > Instead of calculating the offset of the original size in several
-> > places, should we maybe introduce a function that returns a pointer to
-> > it?
->
-> Good point.
->
-> The calculation of various metadata offset (including the original size)
-> is repeated in several places, and perhaps it's worth cleaning up,
-> something like this:
->
-> enum {
->   FREE_POINTER_OFFSET,
->   ALLOC_TRACK_OFFSET,
->   FREE_TRACK_OFFSET,
->   ORIG_SIZE_OFFSET,
->   KASAN_ALLOC_META_OFFSET,
->   OBJ_EXT_OFFSET,
->   FINAL_ALIGNMENT_PADDING_OFFSET,
->   ...
-> };
->
-> orig_size = *(unsigned long *)get_metadata_ptr(p, ORIG_SIZE_OFFSET);
+On Tue, Jan 6, 2026 at 9:53=E2=80=AFAM Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
 
-An alternative would be to declare a struct containing all the
-metadata fields and use offsetof() (or simply do a cast and access the
-fields via the struct pointer)
+> The GPIO controller is configured as non-sleeping but it uses generic
+> pinctrl helpers which use a mutex for synchronization. This will cause
+> lockdep splats when used together with shared GPIOs going through the
+> GPIO shared proxy driver.
+>
+> Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
+> Cc: stable@vger.kernel.org
+> Reported-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+> Closes: https://lore.kernel.org/all/CAFBinCAc7CO8gfNQakCu3LfkYXuyTd2iRpMR=
+m8EKXSL0mwOnJw@mail.gmail.com/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+
+Patch applied for fixes!
+
+Yours,
+Linus Walleij
 
