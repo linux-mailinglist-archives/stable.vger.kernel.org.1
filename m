@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206642-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 906FAD09AD0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:32:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0ED7D093BF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 448E53072886
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01A403097B6B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C34235B13A;
-	Fri,  9 Jan 2026 12:26:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B0533290A;
+	Fri,  9 Jan 2026 11:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B19crETN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H0aKF/Vw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2474359709;
-	Fri,  9 Jan 2026 12:26:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9C7E335561;
+	Fri,  9 Jan 2026 11:56:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961589; cv=none; b=G9FAYOzCzxVgi9YfukWJhDGD9uaFUn9QXefLU+opWR5E9Znkhg4LLxP/H9CfVwA3FOlckWToOIqFmzboyLuZ7oDbIPdMAlskXto/GLf91lIsHhfFYv5Z/twjqr6GyZDlKPU1mN/86uXDBZuRwWN34mTyPnS5puqaa6Uj4jBFwSg=
+	t=1767959785; cv=none; b=WhCMWx/Bg4BdJfeImQX9X1snH/sjcb8ZQpF7H0jlaHJstLoqcAhL/+TmIhvEtMJMndtbLgkeE9XbNI0y1RQpY+Of2+nrmkJv0EJYK0YHtgKfPeJd+wwun69p5NH8SQgHow48chG4p7bHauw4MfoPkuykXiKL32/rNUus5xhB7UI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961589; c=relaxed/simple;
-	bh=WxwoCjRlNb4QzTHdv9jumtTS9w5uwbh9cAEJLotKx9Y=;
+	s=arc-20240116; t=1767959785; c=relaxed/simple;
+	bh=Htl+usSXiOyucQriXuxGpYZg1XrdqRhcN+8uTnn6WRc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkkERl5FPJoeIUwAEiIPAo1YdyQifE5zorx9/8Mu5Vt3OQ9UKJjDCcc2dwm8t21JGHGPHEnzJ9VmIyCGKnUK5dzra4207A+SfLAJk7DjGu93al68VQdG32r3GrjY9abkza4QUjK6uSlNqcr09aHaDqFu3p76mrzgP+YbE+kqsQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B19crETN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BA6BC4CEF1;
-	Fri,  9 Jan 2026 12:26:29 +0000 (UTC)
+	 MIME-Version; b=pos+z/JjY1sVUGgzxgq+pN8shjvdtDHcbiYJbZbZ43jbl3XjvQMz3UNuffKCP8DlFffi0+9OSGwbSonpERwa4NkI2ha4FJRkqewPgNwPUEyA6zFGT5WFd85iMxjwJDzupewmJ4aAPxFxPtWD4nFqD1dvLk2S19FAXdHn/Uv1uPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H0aKF/Vw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A118C4CEF1;
+	Fri,  9 Jan 2026 11:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961589;
-	bh=WxwoCjRlNb4QzTHdv9jumtTS9w5uwbh9cAEJLotKx9Y=;
+	s=korg; t=1767959785;
+	bh=Htl+usSXiOyucQriXuxGpYZg1XrdqRhcN+8uTnn6WRc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=B19crETNur3bA5qPbOBHk9cUZG3G3Emw+hGavl6MiJ3lrAvmlYzt49wYCMNeYuWiM
-	 1s99N75wawprkkz3rEAZYHi+nXR7xQh/u6SULFgTZXQgyTR9cXVfwwBBlFq68TAahI
-	 cs8h39TGiw68ljN8xQeA285TY8TKAGK2AE1EcFgY=
+	b=H0aKF/VwvnCrIvcctLb+4Q24X1mhW89kk+2bPxkjXZXpe6NYjsSBR8y3TsoIOk3Vz
+	 iUFk96UXr2Ld5CrQFV6Vjo1asnYbAqn+6yRWSPHdDHrD1RniWV9zPQjtb7F2XB0Xem
+	 WPedgEBbB6rGwTjWovm7wKPu6hQf3iaC6OsBFpwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Torvalds <torvalds@linux-foundation.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jay Liu <jay.liu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 034/634] samples: work around glibc redefining some of our defines wrong
+Subject: [PATCH 6.6 173/737] drm/mediatek: Fix CCORR mtk_ctm_s31_32_to_s1_n function issue
 Date: Fri,  9 Jan 2026 12:35:12 +0100
-Message-ID: <20260109112118.730837397@linuxfoundation.org>
+Message-ID: <20260109112140.500146341@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,96 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Linus Torvalds <torvalds@linux-foundation.org>
+From: Jay Liu <jay.liu@mediatek.com>
 
-[ Upstream commit a48f822908982353c3256e35a089e9e7d0d61580 ]
+[ Upstream commit 20ac36b71c53b8c36c6903b5ca87c75226700a97 ]
 
-Apparently as of version 2.42, glibc headers define AT_RENAME_NOREPLACE
-and some of the other flags for renameat2() and friends in <stdio.h>.
+if matrixbit is 11,
+The range of color matrix is from 0 to (BIT(12) - 1).
+Values from 0 to (BIT(11) - 1) represent positive numbers,
+values from BIT(11) to (BIT(12) - 1) represent negative numbers.
+For example, -1 need converted to 8191.
+so convert S31.32 to HW Q2.11 format by drm_color_ctm_s31_32_to_qm_n,
+and set int_bits to 2.
 
-Which would all be fine, except for inexplicable reasons glibc decided
-to define them _differently_ from the kernel definitions, which then
-makes some of our sample code that includes both kernel headers and user
-space headers unhappy, because the compiler will (correctly) complain
-about redefining things.
-
-Now, mixing kernel headers and user space headers is always a somewhat
-iffy proposition due to namespacing issues, but it's kind of inevitable
-in our sample and selftest code.  And this is just glibc being stupid.
-
-Those defines come from the kernel, glibc is exposing the kernel
-interfaces, and glibc shouldn't make up some random new expressions for
-these values.
-
-It's not like glibc headers changed the actual result values, but they
-arbitrarily just decided to use a different expression to describe those
-values.  The kernel just does
-
-    #define AT_RENAME_NOREPLACE  0x0001
-
-while glibc does
-
-    # define RENAME_NOREPLACE (1 << 0)
-    # define AT_RENAME_NOREPLACE RENAME_NOREPLACE
-
-instead.  Same value in the end, but very different macro definition.
-
-For absolutely no reason.
-
-This has since been fixed in the glibc development tree, so eventually
-we'll end up with the canonical expressions and no clashes.  But in the
-meantime the broken headers are in the glibc-2.42 release and have made
-it out into distributions.
-
-Do a minimal work-around to make the samples build cleanly by just
-undefining the affected macros in between the user space header include
-and the kernel header includes.
-
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Fixes: 738ed4156fba ("drm/mediatek: Add matrix_bits private data for ccorr")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jay Liu <jay.liu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250921055416.25588-2-jay.liu@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- samples/vfs/test-statx.c         | 6 ++++++
- samples/watch_queue/watch_test.c | 6 ++++++
- 2 files changed, 12 insertions(+)
+ drivers/gpu/drm/mediatek/mtk_disp_ccorr.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/samples/vfs/test-statx.c b/samples/vfs/test-statx.c
-index 49c7a46cee073..424a6fa15723c 100644
---- a/samples/vfs/test-statx.c
-+++ b/samples/vfs/test-statx.c
-@@ -19,6 +19,12 @@
- #include <time.h>
- #include <sys/syscall.h>
- #include <sys/types.h>
-+
-+// Work around glibc header silliness
-+#undef AT_RENAME_NOREPLACE
-+#undef AT_RENAME_EXCHANGE
-+#undef AT_RENAME_WHITEOUT
-+
- #include <linux/stat.h>
- #include <linux/fcntl.h>
- #define statx foo
-diff --git a/samples/watch_queue/watch_test.c b/samples/watch_queue/watch_test.c
-index 8c6cb57d5cfc5..24cf7d7a19725 100644
---- a/samples/watch_queue/watch_test.c
-+++ b/samples/watch_queue/watch_test.c
-@@ -16,6 +16,12 @@
- #include <errno.h>
- #include <sys/ioctl.h>
- #include <limits.h>
-+
-+// Work around glibc header silliness
-+#undef AT_RENAME_NOREPLACE
-+#undef AT_RENAME_EXCHANGE
-+#undef AT_RENAME_WHITEOUT
-+
- #include <linux/watch_queue.h>
- #include <linux/unistd.h>
- #include <linux/keyctl.h>
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+index 4234ff7485e88..2126cb95ae920 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+@@ -80,27 +80,6 @@ void mtk_ccorr_stop(struct device *dev)
+ 	writel_relaxed(0x0, ccorr->regs + DISP_CCORR_EN);
+ }
+ 
+-/* Converts a DRM S31.32 value to the HW S1.n format. */
+-static u16 mtk_ctm_s31_32_to_s1_n(u64 in, u32 n)
+-{
+-	u16 r;
+-
+-	/* Sign bit. */
+-	r = in & BIT_ULL(63) ? BIT(n + 1) : 0;
+-
+-	if ((in & GENMASK_ULL(62, 33)) > 0) {
+-		/* identity value 0x100000000 -> 0x400(mt8183), */
+-		/* identity value 0x100000000 -> 0x800(mt8192), */
+-		/* if bigger this, set it to max 0x7ff. */
+-		r |= GENMASK(n, 0);
+-	} else {
+-		/* take the n+1 most important bits. */
+-		r |= (in >> (32 - n)) & GENMASK(n, 0);
+-	}
+-
+-	return r;
+-}
+-
+ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ {
+ 	struct mtk_disp_ccorr *ccorr = dev_get_drvdata(dev);
+@@ -119,7 +98,7 @@ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ 	input = ctm->matrix;
+ 
+ 	for (i = 0; i < ARRAY_SIZE(coeffs); i++)
+-		coeffs[i] = mtk_ctm_s31_32_to_s1_n(input[i], matrix_bits);
++		coeffs[i] = drm_color_ctm_s31_32_to_qm_n(input[i], 2, matrix_bits);
+ 
+ 	mtk_ddp_write(cmdq_pkt, coeffs[0] << 16 | coeffs[1],
+ 		      &ccorr->cmdq_reg, ccorr->regs, DISP_CCORR_COEF_0);
 -- 
 2.51.0
 
