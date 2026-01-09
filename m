@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-206853-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207485-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B39B4D095CF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:36 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 492C4D09F76
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B1F6310B0E6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0B88430B471B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43D77359F99;
-	Fri,  9 Jan 2026 12:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2249935BDA5;
+	Fri,  9 Jan 2026 12:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Y31f5QZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i3HZQwhm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 080EB1946C8;
-	Fri,  9 Jan 2026 12:06:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA40735B158;
+	Fri,  9 Jan 2026 12:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960386; cv=none; b=VQFKEuUCmugA2VnNJMFGIqN0b4i2KOczrDt1U52ePvitcQd78z7MNsjBAGVrLsqhM30lMQFNRSy2xy2TswKGdMOWmegg+E1USdArYlbzXiYDnwlcmZYdCKCYn8Yzp1K6wCi/H1U8qQI89c+ufFX1+fIjJVsjHzA77AVO7h2V6pg=
+	t=1767962188; cv=none; b=Ci6p0bVOw9K2LKi+wEyM2exdNmHtbG9rTphBgzkB7r1XrmoZDCxb/pFxvQkAp02ozr3hR5iZKzDfHfEHaMoqPA1ITkNTc1+LA4e/oXGVsS2ZIlcusfcVjON5HAnauylTjUXs0LLewAFgxyy2GwfvLJ3xkBj5txxK4017S3Xupn4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960386; c=relaxed/simple;
-	bh=Lmg2KYA9IN7CeA9e97X7okti4DtqO4Xmwv6knAmlW8I=;
+	s=arc-20240116; t=1767962188; c=relaxed/simple;
+	bh=H+ZfWNowBp+x7/SqDlLG8E8a4/ZEOPg/gt3O0fuPeRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1OGuulOhQQeO0DRWBLlTOCRYEKslhL9/0UcEK6HcpubAKxfDCD7+wJFM/r/xCiZgAym05YpIwZcTmto/+1B3XOHf9N3cRh8Hj8nvQD4oIS/9ncs/1fEo2CtgwjJT+B6q0R0TsggkM9AJglwva5yTi10Kbgc2eU1ewa0MaXvDJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Y31f5QZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 827A3C16AAE;
-	Fri,  9 Jan 2026 12:06:25 +0000 (UTC)
+	 MIME-Version; b=OMDsae5eQY4u3ULxgRmlt8KK4TdQ9VJU6WcCXW7NAH1QMKRJogiyHG3sQBolpXhFcJWNXusibUvKkUNGm8rB9Zi9pk81bqCUDMA0qZ89CL9M0qQLkRAuHItxCFGG4FbFijx+4gcMus66chX8cj7dkfOL0btkLTfaAFZ15Ibwgqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i3HZQwhm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6872AC19422;
+	Fri,  9 Jan 2026 12:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960385;
-	bh=Lmg2KYA9IN7CeA9e97X7okti4DtqO4Xmwv6knAmlW8I=;
+	s=korg; t=1767962188;
+	bh=H+ZfWNowBp+x7/SqDlLG8E8a4/ZEOPg/gt3O0fuPeRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Y31f5QZdOxvJcSm3VH3CLElscnl60hnV4efBvKCqERoWIo0ADJ7zFH7i3rCVSPeC
-	 E4GyFwSof0TbxpPy7ZzfgDft4ZmTP4Mgdi9FnYH93CNdo31EwCPxRJfZK8coIDagSK
-	 iZKwDPCwDh+v63g6EtuwMobMuw2HoqeYC2A5JoBQ=
+	b=i3HZQwhmeTtyf1OOPMPRXMhK3fIO+sXjXYDs+ZgB0VSUp0KGyAEP9gHD7XLjmE+kR
+	 TEBGh/kjZi25rv7taDpyYai4QslR4D37n5GHnK1K3Ozd1KPu6lhbomJwHjZdsqz96b
+	 Bu52jZkvVF9kPWB9ptDV6l5u4un5kDbLIeNV37dw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
-	Shipei Qu <qu@darknavy.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 384/737] ALSA: usb-mixer: us16x08: validate meter packet indices
+Subject: [PATCH 6.1 245/634] ksmbd: fix use-after-free in ksmbd_tree_connect_put under concurrency
 Date: Fri,  9 Jan 2026 12:38:43 +0100
-Message-ID: <20260109112148.446008305@linuxfoundation.org>
+Message-ID: <20260109112126.760866222@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +62,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shipei Qu <qu@darknavy.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 5526c1c6ba1d0913c7dfcbbd6fe1744ea7c55f1e ]
+[ Upstream commit b39a1833cc4a2755b02603eec3a71a85e9dff926 ]
 
-get_meter_levels_from_urb() parses the 64-byte meter packets sent by
-the device and fills the per-channel arrays meter_level[],
-comp_level[] and master_level[] in struct snd_us16x08_meter_store.
+Under high concurrency, A tree-connection object (tcon) is freed on
+a disconnect path while another path still holds a reference and later
+executes *_put()/write on it.
 
-Currently the function derives the channel index directly from the
-meter packet (MUB2(meter_urb, s) - 1) and uses it to index those
-arrays without validating the range. If the packet contains a
-negative or out-of-range channel number, the driver may write past
-the end of these arrays.
-
-Introduce a local channel variable and validate it before updating the
-arrays. We reject negative indices, limit meter_level[] and
-comp_level[] to SND_US16X08_MAX_CHANNELS, and guard master_level[]
-updates with ARRAY_SIZE(master_level).
-
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
-Closes: https://lore.kernel.org/tencent_21C112743C44C1A2517FF219@qq.com
-Signed-off-by: Shipei Qu <qu@darknavy.com>
-Link: https://patch.msgid.link/20251217024630.59576-1-qu@darknavy.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_us16x08.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ fs/smb/server/mgmt/tree_connect.c | 18 ++++--------------
+ fs/smb/server/mgmt/tree_connect.h |  1 -
+ fs/smb/server/smb2pdu.c           |  3 ---
+ 3 files changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index 20ac32635f1f..d05cb54de788 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -656,17 +656,25 @@ static void get_meter_levels_from_urb(int s,
- 	u8 *meter_urb)
- {
- 	int val = MUC2(meter_urb, s) + (MUC3(meter_urb, s) << 8);
-+	int ch = MUB2(meter_urb, s) - 1;
-+
-+	if (ch < 0)
-+		return;
+diff --git a/fs/smb/server/mgmt/tree_connect.c b/fs/smb/server/mgmt/tree_connect.c
+index 94a52a75014a4..9bde1b58f9c46 100644
+--- a/fs/smb/server/mgmt/tree_connect.c
++++ b/fs/smb/server/mgmt/tree_connect.c
+@@ -77,7 +77,6 @@ ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
+ 	tree_conn->t_state = TREE_NEW;
+ 	status.tree_conn = tree_conn;
+ 	atomic_set(&tree_conn->refcount, 1);
+-	init_waitqueue_head(&tree_conn->refcount_q);
  
- 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
- 		MUA2(meter_urb, s) == 0x04 && MUB0(meter_urb, s) == 0x62) {
--		if (MUC0(meter_urb, s) == 0x72)
--			store->meter_level[MUB2(meter_urb, s) - 1] = val;
--		if (MUC0(meter_urb, s) == 0xb2)
--			store->comp_level[MUB2(meter_urb, s) - 1] = val;
-+		if (ch < SND_US16X08_MAX_CHANNELS) {
-+			if (MUC0(meter_urb, s) == 0x72)
-+				store->meter_level[ch] = val;
-+			if (MUC0(meter_urb, s) == 0xb2)
-+				store->comp_level[ch] = val;
-+		}
- 	}
- 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
--		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62)
--		store->master_level[MUB2(meter_urb, s) - 1] = val;
-+		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62) {
-+		if (ch < ARRAY_SIZE(store->master_level))
-+			store->master_level[ch] = val;
-+	}
+ 	ret = xa_err(xa_store(&sess->tree_conns, tree_conn->id, tree_conn,
+ 			      GFP_KERNEL));
+@@ -99,14 +98,8 @@ ksmbd_tree_conn_connect(struct ksmbd_work *work, const char *share_name)
+ 
+ void ksmbd_tree_connect_put(struct ksmbd_tree_connect *tcon)
+ {
+-	/*
+-	 * Checking waitqueue to releasing tree connect on
+-	 * tree disconnect. waitqueue_active is safe because it
+-	 * uses atomic operation for condition.
+-	 */
+-	if (!atomic_dec_return(&tcon->refcount) &&
+-	    waitqueue_active(&tcon->refcount_q))
+-		wake_up(&tcon->refcount_q);
++	if (atomic_dec_and_test(&tcon->refcount))
++		kfree(tcon);
  }
  
- /* Function to retrieve current meter values from the device.
+ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
+@@ -118,14 +111,11 @@ int ksmbd_tree_conn_disconnect(struct ksmbd_session *sess,
+ 	xa_erase(&sess->tree_conns, tree_conn->id);
+ 	write_unlock(&sess->tree_conns_lock);
+ 
+-	if (!atomic_dec_and_test(&tree_conn->refcount))
+-		wait_event(tree_conn->refcount_q,
+-			   atomic_read(&tree_conn->refcount) == 0);
+-
+ 	ret = ksmbd_ipc_tree_disconnect_request(sess->id, tree_conn->id);
+ 	ksmbd_release_tree_conn_id(sess, tree_conn->id);
+ 	ksmbd_share_config_put(tree_conn->share_conf);
+-	kfree(tree_conn);
++	if (atomic_dec_and_test(&tree_conn->refcount))
++		kfree(tree_conn);
+ 	return ret;
+ }
+ 
+diff --git a/fs/smb/server/mgmt/tree_connect.h b/fs/smb/server/mgmt/tree_connect.h
+index a42cdd0510411..f0023d86716f2 100644
+--- a/fs/smb/server/mgmt/tree_connect.h
++++ b/fs/smb/server/mgmt/tree_connect.h
+@@ -33,7 +33,6 @@ struct ksmbd_tree_connect {
+ 	int				maximal_access;
+ 	bool				posix_extensions;
+ 	atomic_t			refcount;
+-	wait_queue_head_t		refcount_q;
+ 	unsigned int			t_state;
+ };
+ 
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index c50dbbfc4cd62..fe3d3d766719a 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -2181,7 +2181,6 @@ int smb2_tree_disconnect(struct ksmbd_work *work)
+ 		goto err_out;
+ 	}
+ 
+-	WARN_ON_ONCE(atomic_dec_and_test(&tcon->refcount));
+ 	tcon->t_state = TREE_DISCONNECTED;
+ 	write_unlock(&sess->tree_conns_lock);
+ 
+@@ -2191,8 +2190,6 @@ int smb2_tree_disconnect(struct ksmbd_work *work)
+ 		goto err_out;
+ 	}
+ 
+-	work->tcon = NULL;
+-
+ 	rsp->StructureSize = cpu_to_le16(4);
+ 	err = ksmbd_iov_pin_rsp(work, rsp,
+ 				sizeof(struct smb2_tree_disconnect_rsp));
 -- 
 2.51.0
 
