@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-206858-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207426-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65703D0943B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A0B0D09D3C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EC1EA301D1DD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 618653066B33
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9597E359FBB;
-	Fri,  9 Jan 2026 12:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 659B131E107;
+	Fri,  9 Jan 2026 12:33:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zflqiDh3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vd9f6EdH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59690359F99;
-	Fri,  9 Jan 2026 12:06:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F113191D2;
+	Fri,  9 Jan 2026 12:33:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960400; cv=none; b=rOHoAbf7uiN+g6I3FFg7rXmzfjNxUTKBC3XBP/YhOZyHZAq+2XPBlxSU+3w/PFU+RRwDoGEOSsFzhZU+YscNp36WoEwfcZ/G9g0FTsY7TCFRarB8SdOi8sY30HOxPl9LCAO71QKUx28Wnz072+kQSqUHuyv+nXGVMahDdbtCUZ8=
+	t=1767962021; cv=none; b=ZgnggWJ4pK+f2wa0pdP4brxdrkX7VoTkDokBELD7yfoW9UWiOlFHFC7bc8Co5W6a2ampezKqjm4nSgTIVOUrMGkCdsO5LeVYndReSTlPWh6az8lGKT7CRA49uk67G6SBUxs11XUpz/RjFym+LDU0MB8JWZFYMujCd/XpLcWAtzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960400; c=relaxed/simple;
-	bh=obkef75NRodlE4i3ScSRpVG+u/eSEegHMnddeUXQ+Wc=;
+	s=arc-20240116; t=1767962021; c=relaxed/simple;
+	bh=y2MCf8ebwa0S6yphx8E9zrkpIiMCdR7VbwGcMvx4PO8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EFkvkmNKMFY+qiKgpE738SeBYbufwBTc3PJyqmhQVqgw2eTl4rk8Cg0qaGMzucYevq0IqhDq7UV4b6ojYbV3nEsHDHeUMxq/e/5e0Xg7E+QQg2lSojWHJMzISbUS7sqh3FDszLwHnY022l/BRGxx7KOdmR/YkFH1F2PPUnNTlIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zflqiDh3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A763FC4CEF1;
-	Fri,  9 Jan 2026 12:06:39 +0000 (UTC)
+	 MIME-Version; b=eCajojtE+wRwJ83BJNAwmez0VaflKNKEu/BXbyX0OMEDmkKeMjz4qGo08WCNkLkFLmf8+QAg8DSJx9mC2gCtTs17DeohYomjSurL9X3PeiSuafAMbcIWXJehL4L7+PWP3XpBSn4oIdRcOUUI7rScObsfsXqimqodkrUq8pvvM54=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vd9f6EdH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C0EDC4CEF1;
+	Fri,  9 Jan 2026 12:33:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960400;
-	bh=obkef75NRodlE4i3ScSRpVG+u/eSEegHMnddeUXQ+Wc=;
+	s=korg; t=1767962020;
+	bh=y2MCf8ebwa0S6yphx8E9zrkpIiMCdR7VbwGcMvx4PO8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zflqiDh35jLHQM1w8F291oDlh6owEXLfAHRFo60MQZTMuTVVGGX+qiT/wbn8zTW3O
-	 FxZa2VUT2wGeU5p8uApEBamil1zftwKQcW/iWLq/xB+mhoOxiYBYpEeK2ZJZVy2AzZ
-	 k9ySHoV73m3IvIOcDt5vzAcqmSikFunqGPwxv6Rw=
+	b=vd9f6EdHxQnFgX7Et1K//BQ4f93ELuV5TUsk25kl6p1/IScyEETbmyeqekkRM/b7q
+	 +ig9W3/skQXiO/HmmzE0GBuPO+p+Iv1detMuKy8uX7A6euGmak3NL3OngjvKhDzzew
+	 jsBY3XH7Uv+kI7TpB+A+ax+YR/XscIlvlDYBDUo0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 357/737] net: enetc: do not transmit redirected XDP frames when the link is down
-Date: Fri,  9 Jan 2026 12:38:16 +0100
-Message-ID: <20260109112147.425574267@linuxfoundation.org>
+	Tianyang Zhang <zhangtianyang@loongson.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.1 219/634] [PATCH 6.12] LoongArch: Add machine_kexec_mask_interrupts() implementation
+Date: Fri,  9 Jan 2026 12:38:17 +0100
+Message-ID: <20260109112125.673670115@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +59,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Huacai Chen <chenhuacai@loongson.cn>
 
-[ Upstream commit 2939203ffee818f1e5ebd60bbb85a174d63aab9c ]
-
-In the current implementation, the enetc_xdp_xmit() always transmits
-redirected XDP frames even if the link is down, but the frames cannot
-be transmitted from TX BD rings when the link is down, so the frames
-are still kept in the TX BD rings. If the XDP program is uninstalled,
-users will see the following warning logs.
-
-fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clear
-
-More worse, the TX BD ring cannot work properly anymore, because the
-HW PIR and CIR are not equal after the re-initialization of the TX
-BD ring. At this point, the BDs between CIR and PIR are invalid,
-which will cause a hardware malfunction.
-
-Another reason is that there is internal context in the ring prefetch
-logic that will retain the state from the first incarnation of the ring
-and continue prefetching from the stale location when we re-initialize
-the ring. The internal context is only reset by an FLR. That is to say,
-for LS1028A ENETC, software cannot set the HW CIR and PIR when
-initializing the TX BD ring.
-
-It does not make sense to transmit redirected XDP frames when the link is
-down. Add a link status check to prevent transmission in this condition.
-This fixes part of the issue, but more complex cases remain. For example,
-the TX BD ring may still contain unsent frames when the link goes down.
-Those situations require additional patches, which will build on this
+Commit 863a320dc6fd7c855f47da4b ("LoongArch: Mask all interrupts during
+kexec/kdump") is backported to LTS branches, but they lack a generic
+machine_kexec_mask_interrupts() implementation, so add an arch-specific
 one.
 
-Fixes: 9d2b68cc108d ("net: enetc: add support for XDP_REDIRECT")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/20251211020919.121113-1-wei.fang@nxp.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tianyang Zhang <zhangtianyang@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/loongarch/kernel/machine_kexec.c |   22 ++++++++++++++++++++++
+ 1 file changed, 22 insertions(+)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
-index 7accf3a3e9f0d..e3ab6f4f8dbba 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.c
-@@ -1429,7 +1429,8 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
- 	int xdp_tx_bd_cnt, i, k;
- 	int xdp_tx_frm_cnt = 0;
+--- a/arch/loongarch/kernel/machine_kexec.c
++++ b/arch/loongarch/kernel/machine_kexec.c
+@@ -136,6 +136,28 @@ void kexec_reboot(void)
+ 	BUG();
+ }
  
--	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags)))
-+	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags) ||
-+		     !netif_carrier_ok(ndev)))
- 		return -ENETDOWN;
++static void machine_kexec_mask_interrupts(void)
++{
++	unsigned int i;
++	struct irq_desc *desc;
++
++	for_each_irq_desc(i, desc) {
++		struct irq_chip *chip;
++
++		chip = irq_desc_get_chip(desc);
++		if (!chip)
++			continue;
++
++		if (chip->irq_eoi && irqd_irq_inprogress(&desc->irq_data))
++			chip->irq_eoi(&desc->irq_data);
++
++		if (chip->irq_mask)
++			chip->irq_mask(&desc->irq_data);
++
++		if (chip->irq_disable && !irqd_irq_disabled(&desc->irq_data))
++			chip->irq_disable(&desc->irq_data);
++	}
++}
  
- 	enetc_lock_mdio();
--- 
-2.51.0
-
+ #ifdef CONFIG_SMP
+ static void kexec_shutdown_secondary(void *regs)
 
 
 
