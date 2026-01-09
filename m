@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206778-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E71AD09F19
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53041D0932F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 63708311148E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0E12930028AA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6538F35B135;
-	Fri,  9 Jan 2026 12:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D178359FBE;
+	Fri,  9 Jan 2026 12:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsVwcfh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W70+edHm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A90359F8D;
-	Fri,  9 Jan 2026 12:32:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40F93359F98;
+	Fri,  9 Jan 2026 12:02:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961936; cv=none; b=fll5Pll45AJLo70RO271bLCEvS+QASTelSjiYEa5jbBoMOXWRe64fF0HB4ZDTovshpxsUY5VpvhrOX4Do+sDz1RqGlHKh1KFckv7sv1kK5AXJ8Gnhp8MFQ2SkvmIKqr2Rxn4GZX4XzDgJi1HtjBfACddtUGCiXSZHIOCOLoW7dA=
+	t=1767960172; cv=none; b=FbqqYTUFnFSrsPWRHvxoznMCCehmjUJTcAKLYCgrvb4tI/Lk37AcMjuKJ+XMDvY8t72zRZldthAXEe9h2Vq9CvhYJQFjK7G2cZVmxVVBlCWVFFpcAuB2bZaC4/K/qjRIC152PPqWOOslKV4M5zPA0tPxR4gv/U6OEvXbt4QpI7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961936; c=relaxed/simple;
-	bh=Q7oAXds72TqiSn6o9RPZAUECs2/t8vmOkcSn3/Lruyc=;
+	s=arc-20240116; t=1767960172; c=relaxed/simple;
+	bh=IkQOhTSP3mHTTcoGXeA7N9XfwEp91BrHZ6r/YGCCgIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S3K7Ijy1dOG6GZ1Z1rc9Mn4Wy3DAZT0X4pJduhMM8HSOvhBKQhJfGVQJnxjn8E7fKemlS3Q2VaGb7y2DzUtOznRPClGcSP7aIDNjEZkc8oKIFtPp0bJuZQsPTgw1k/IQRrhHkegKWNhUSwkEoZ0LS0q5/Or6G7ELiTmJXourlsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsVwcfh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6530C4CEF1;
-	Fri,  9 Jan 2026 12:32:15 +0000 (UTC)
+	 MIME-Version; b=KIvXxrD7czTMTmxyT1V+1WAR9VHKK+ScVChQEmK+om2UB5fPwTcMqWUmwsMOtR3Ox3y4ey18grbMDUf+ugN1t9XjGb9uYbClBAbohLlnDb1dNPCd+VcpnNgUU/f0x8woOlyn/pWdyhyfv2hYGOsmYurvFDviZ8mEIKhphfTHmLU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W70+edHm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DE4C4CEF1;
+	Fri,  9 Jan 2026 12:02:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961936;
-	bh=Q7oAXds72TqiSn6o9RPZAUECs2/t8vmOkcSn3/Lruyc=;
+	s=korg; t=1767960172;
+	bh=IkQOhTSP3mHTTcoGXeA7N9XfwEp91BrHZ6r/YGCCgIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TsVwcfh6a2GqVg1/Ri6wXnJmAV29bvPYLimumhOJHlN9AY6CtlPRk22kvlu6/7xMC
-	 XpNLoffHQ+aVdFvRbxpViSu/xQk3lyUFl8Omft+loLO+BUxDpVVt93WluqmLnw/87K
-	 rdZDRU8kClDdhIetYnfarGJe1X7IA39QcLtuFYBw=
+	b=W70+edHmwQc6eqbYoE6xD5PL6goBaggvFzdEjkFjY7n1e4zkg6Klic1tCkIjOKr8y
+	 Ct/HSwsYiY5+4FpyIVmTNxjbdZbAr4+KuVnslkuKMCQ3/QRE6yjSI3MOWhedCGMRQf
+	 7zlI6THYoUy/DR+gz5RXhup9JKTmWkmMtmtIpbgk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 171/634] resource: introduce is_type_match() helper and use it
+Subject: [PATCH 6.6 310/737] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
 Date: Fri,  9 Jan 2026 12:37:29 +0100
-Message-ID: <20260109112123.880385128@linuxfoundation.org>
+Message-ID: <20260109112145.665871039@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit ba1eccc114ffc62c4495a5e15659190fa2c42308 ]
+[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
 
-There are already a couple of places where we may replace a few lines of
-code by calling a helper, which increases readability while deduplicating
-the code.
+Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+property API is somewhat problematic as the latter is used in the
+impelementation of the former. Instead of using
+fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+acpi_get_next_subnode() directly instead.
 
-Introduce is_type_match() helper and use it.
-
-Link: https://lkml.kernel.org/r/20240925154355.1170859-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ drivers/acpi/property.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 20cb54f387e71..1170ed58404fb 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -310,6 +310,11 @@ int release_resource(struct resource *old)
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 1b8f3958b0edb..6bb85c12b5a02 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1370,7 +1370,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
  
- EXPORT_SYMBOL(release_resource);
+ 	if (!prev) {
+ 		do {
+-			port = fwnode_get_next_child_node(fwnode, port);
++			port = acpi_get_next_subnode(fwnode, port);
+ 			/*
+ 			 * The names of the port nodes begin with "port@"
+ 			 * followed by the number of the port node and they also
+@@ -1388,13 +1388,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
  
-+static bool is_type_match(struct resource *p, unsigned long flags, unsigned long desc)
-+{
-+	return (p->flags & flags) == flags && (desc == IORES_DESC_NONE || desc == p->desc);
-+}
-+
- /**
-  * find_next_iomem_res - Finds the lowest iomem resource that covers part of
-  *			 [@start..@end].
-@@ -352,13 +357,9 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
- 		if (p->end < start)
- 			continue;
- 
--		if ((p->flags & flags) != flags)
--			continue;
--		if ((desc != IORES_DESC_NONE) && (desc != p->desc))
--			continue;
--
- 		/* Found a match, break */
--		break;
-+		if (is_type_match(p, flags, desc))
-+			break;
+-	endpoint = fwnode_get_next_child_node(port, prev);
++	endpoint = acpi_get_next_subnode(port, prev);
+ 	while (!endpoint) {
+-		port = fwnode_get_next_child_node(fwnode, port);
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (!port)
+ 			break;
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = fwnode_get_next_child_node(port, NULL);
++			endpoint = acpi_get_next_subnode(port, NULL);
  	}
  
- 	if (p) {
-@@ -501,7 +502,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 	int type = 0; int other = 0;
- 	struct resource *p, *dp;
- 	struct resource res, o;
--	bool is_type, covered;
-+	bool covered;
- 
- 	res.start = start;
- 	res.end = start + size - 1;
-@@ -509,9 +510,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 	for (p = parent->child; p ; p = p->sibling) {
- 		if (!resource_intersection(p, &res, &o))
- 			continue;
--		is_type = (p->flags & flags) == flags &&
--			(desc == IORES_DESC_NONE || desc == p->desc);
--		if (is_type) {
-+		if (is_type_match(p, flags, desc)) {
- 			type++;
- 			continue;
- 		}
-@@ -531,9 +530,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 		for_each_resource(p, dp, false) {
- 			if (!resource_overlaps(dp, &res))
- 				continue;
--			is_type = (dp->flags & flags) == flags &&
--				(desc == IORES_DESC_NONE || desc == dp->desc);
--			if (is_type) {
-+			if (is_type_match(dp, flags, desc)) {
- 				type++;
- 				/*
- 				 * Range from 'o.start' to 'dp->start'
+ 	/*
 -- 
 2.51.0
 
