@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207713-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 816BCD0A12F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C5224D09B62
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C7FF132847BF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3855230E1029
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A625635BDD4;
-	Fri,  9 Jan 2026 12:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B994735A941;
+	Fri,  9 Jan 2026 12:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UiAevl/E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nznsprjy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69EFC15ADB4;
-	Fri,  9 Jan 2026 12:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CC7D35971B;
+	Fri,  9 Jan 2026 12:20:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962835; cv=none; b=oWPbRAmtXHZoLHRCaHa4qEBaH5qmUo9kQjwL5Qw7xTxyZhyYqBmzQCeL1/qVTs6qAVC3VrMVg7mJipYja5ZPuSMe731+7FJjnm4RTPbV1E0Rw+sJmkBAx6ZXSQLyMNgWMIQa1y1bNVebjM0SBfodDhe5pzuOHC1pGjJCH7jlYC4=
+	t=1767961219; cv=none; b=AS+/Bh+8HULLrXiz1hGNf2OlYEcuZMc8j8wT0deTHzFCx63hOyG21giudirbcaG8InH54qfaXrf38aSyv9XmaBbrn5BgJI1dLl8NzyvkAATts8F2eTm0sYFGbhACDqSZoeYPtJE0SAd8aC/8mMkjiTbfUBVkjduP1BnvMej/Jtc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962835; c=relaxed/simple;
-	bh=0vqjeH9O4QXUIj2WFVU4qItS0Ovtz8LAkvNr+60b2Iw=;
+	s=arc-20240116; t=1767961219; c=relaxed/simple;
+	bh=JH5yilMbDU6TIzVxuhF99NBJ3bn5b5iLK19ySpTOCes=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tGdBVzKSqhJCrmkucUIoKNzbO6FBLXnHjMbs5LyrwYPDiwqL9SW+kMLquUFyGPicF9RtrYaYJuUAZ5SCeMxcf9Db4p+LjREbS/E1/wiRURScC5/n5GDh/F6oFIz1JZtrEh6tqYh8yF1K1EpZSLzjQ0DNyJnvU94QQ0QGCU9rtHc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UiAevl/E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07E0C4CEF1;
-	Fri,  9 Jan 2026 12:47:14 +0000 (UTC)
+	 MIME-Version; b=aAeqhwS7MMcXvIoImsQXOjC4fJfB8xsmtYHV35ePMXjSdGU4F/9FfNu8VGqfxTBALpP+L3j+79B90CxyaKk1cm0BtiA0QOuO+3TB7cX+eeW9RXE8kMdlnF3oAoNRWAUFQeCSGG/bhjWH1K7vhH2RvL18ovP+RUzEdcGj+bC2dO8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nznsprjy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09149C16AAE;
+	Fri,  9 Jan 2026 12:20:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962835;
-	bh=0vqjeH9O4QXUIj2WFVU4qItS0Ovtz8LAkvNr+60b2Iw=;
+	s=korg; t=1767961219;
+	bh=JH5yilMbDU6TIzVxuhF99NBJ3bn5b5iLK19ySpTOCes=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UiAevl/E2BpyF2+fBCddFFQJlPNrwoMFmhQqEQz8GQJO3MKocT9BO0ajoHU8ZjSp2
-	 1OLffMo+L5Xagwb3v0RKOYIJkI38IyPBQ7nb4NUYR/Ru5KoueaErDKNhFKQ4IQHoZW
-	 XfCYxYHfQoakO/IyL//EhbPj7svr0ImUBHr4EZ20=
+	b=NznsprjymA98tZM0S8xZHZIYXQY4egeZJ1srNKa4/umqKSYR0fzIHchitC2989oOo
+	 HW+HTlUgYJAiPGCBESCgUcKjXOlmo3kATFu7YK6glLA67HN98R/j2OTKfOAd9DTtrQ
+	 sGBrVitMMmCgc7ZTkkcB5g6t/hgkfPuaUTCmhvig=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>
-Subject: [PATCH 6.1 505/634] drm/msm/a6xx: Fix out of bound IO access in a6xx_get_gmu_registers
+	Mat Martineau <martineau@kernel.org>,
+	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 644/737] mptcp: pm: ignore unknown endpoint flags
 Date: Fri,  9 Jan 2026 12:43:03 +0100
-Message-ID: <20260109112136.555117347@linuxfoundation.org>
+Message-ID: <20260109112158.241067741@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
 
-commit 779b68a5bf2764c8ed3aa800e41ba0d5d007e1e7 upstream.
+[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
 
-REG_A6XX_GMU_AO_AHB_FENCE_CTRL register falls under GMU's register
-range. So, use gmu_write() routines to write to this register.
+Before this patch, the kernel was saving any flags set by the userspace,
+even unknown ones. This doesn't cause critical issues because the kernel
+is only looking at specific ones. But on the other hand, endpoints dumps
+could tell the userspace some recent flags seem to be supported on older
+kernel versions.
 
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Instead, ignore all unknown flags when parsing them. By doing that, the
+userspace can continue to set unsupported flags, but it has a way to
+verify what is supported by the kernel.
+
+Note that it sounds better to continue accepting unsupported flags not
+to change the behaviour, but also that eases things on the userspace
+side by adding "optional" endpoint types only supported by newer kernel
+versions without having to deal with the different kernel versions.
+
+A note for the backports: there will be conflicts in mptcp.h on older
+versions not having the mentioned flags, the new line should still be
+added last, and the '5' needs to be adapted to have the same value as
+the last entry.
+
+Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
 Cc: stable@vger.kernel.org
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688993/
-Message-ID: <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Reviewed-by: Mat Martineau <martineau@kernel.org>
+Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
+Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ GENMASK(5, 0) => GENMASK(4, 0) + context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/uapi/linux/mptcp.h |    1 +
+ net/mptcp/pm_netlink.c     |    3 ++-
+ 2 files changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -801,7 +801,7 @@ static void a6xx_get_gmu_registers(struc
- 		return;
+--- a/include/uapi/linux/mptcp.h
++++ b/include/uapi/linux/mptcp.h
+@@ -88,6 +88,7 @@ enum {
+ #define MPTCP_PM_ADDR_FLAG_BACKUP			(1 << 2)
+ #define MPTCP_PM_ADDR_FLAG_FULLMESH			(1 << 3)
+ #define MPTCP_PM_ADDR_FLAG_IMPLICIT			(1 << 4)
++#define MPTCP_PM_ADDR_FLAGS_MASK			GENMASK(4, 0)
  
- 	/* Set the fence to ALLOW mode so we can access the registers */
--	gpu_write(gpu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
-+	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
+ enum {
+ 	MPTCP_PM_CMD_UNSPEC,
+--- a/net/mptcp/pm_netlink.c
++++ b/net/mptcp/pm_netlink.c
+@@ -1435,7 +1435,8 @@ int mptcp_pm_parse_entry(struct nlattr *
+ 	}
  
- 	_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gmu_reglist[2],
- 		&a6xx_state->gmu_registers[2], false);
+ 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
+-		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
++		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
++			       MPTCP_PM_ADDR_FLAGS_MASK;
+ 
+ 	if (tb[MPTCP_PM_ADDR_ATTR_PORT])
+ 		entry->addr.port = htons(nla_get_u16(tb[MPTCP_PM_ADDR_ATTR_PORT]));
 
 
 
