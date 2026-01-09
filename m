@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207366-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206765-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA44D09C73
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28AC2D09581
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 697C9304F45B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B86E3016F9F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AC423328EA;
-	Fri,  9 Jan 2026 12:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88961359F99;
+	Fri,  9 Jan 2026 12:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O95Ve221"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KV9ijaYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD6D35A95C;
-	Fri,  9 Jan 2026 12:30:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A802335561;
+	Fri,  9 Jan 2026 12:02:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961851; cv=none; b=YVq7yEok5DTtMWIcOh08EP8PohKwIT7D5fJNty9hHzHG7TjCdLkhaVsOOUEuK3Hpqyoq0zHuVxCZ4BAar2V0X12/UEePx+RMhhUjgo/CEUwLSVOKw9qZACCHW85zm1vdjnyobVSjSMMb+rCqZUlerhnBqoph+3+Oh5SfZ+S5V4w=
+	t=1767960135; cv=none; b=Qp0snoMj6tfb9EKQeHHCdxyPX60aJ1BUqajONAdi8jSjhWe2k+TTBcKRLVLeIcjXTXladWm9WCrF9FTmZCOrZGtmWaY/AcWi3JHzM3+Pu1w0e2vRrsZiNfAjY+fcDbXkiBJbBPvxeWRo+wI1q4PSNTSt0PdBix9NXE2btEdx7mA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961851; c=relaxed/simple;
-	bh=koo+zDC5KfKDv9nu+BUlqlxVIMtfMJ/gl+nPje0i5Zs=;
+	s=arc-20240116; t=1767960135; c=relaxed/simple;
+	bh=XYjgFRddtoFiFtqPuMssmcjwvQJ9g7PbWDkOlaPTJlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DcjgYG9U2G2LtFjXxgkLy19ATrrN6TneU1sF7uKA9PqkDgUIAFTXoDAU4djsvP4QSK2RTWSoinIT2LI7kls5m1VMQqH0lRENIS3F59cH8ZtEX2OuUtY9haUuhLEGriBfOYsj+dDo/EuCrbNlN3P2Qq0uJOQ86zVTShoymKWPSrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O95Ve221; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD0D9C4CEF1;
-	Fri,  9 Jan 2026 12:30:50 +0000 (UTC)
+	 MIME-Version; b=ppNaWOUhSyr40aiGmIjrauyqZkWOLt8rByms0RpWmZa7XBTVCw40SToFB4JnVeEL17e8fJKCL3LyIFcVLqpKGwMmS9vkLETk6hW1ijhSmz4nVx+Bh0hCQtfHMESTLUo2U4zwtaTIWiN9yPfiSccem4FIXV3j8U7rJyKoarYVFbA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KV9ijaYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB4C6C19421;
+	Fri,  9 Jan 2026 12:02:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961851;
-	bh=koo+zDC5KfKDv9nu+BUlqlxVIMtfMJ/gl+nPje0i5Zs=;
+	s=korg; t=1767960135;
+	bh=XYjgFRddtoFiFtqPuMssmcjwvQJ9g7PbWDkOlaPTJlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O95Ve221a/zbPfz7Zk2Q4mZBgCgkYfHoZIYWkTqk55a6Mo4xisdefHSrdRHQXopI1
-	 pW/l4cqoLnnqmi1+6x6BRA+wMp82KaYy1WmYQHxZQjSGCpOpU/ru8N+jYaUnCFFm6r
-	 H+oDtfH9+Dd7AwwiozDQjLHZrNZ2UAiv/AzFpHNA=
+	b=KV9ijaYIXsprX91FKuoumd6xRVM9PuLLUEZOD4BKq5ZZwanYay0/CnSWpFn4RL+3K
+	 ixjUHK+yYEN4geSpWiG4pQqp/4Ynh75rlcGAbbCVpuK0EWdextpA6eOSLKrLltpNy1
+	 8ZhtglBOnbiCMIwBahC2axu7fuAYZey3pB+18t9w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 158/634] drm/amd/display: Fix logical vs bitwise bug in get_embedded_panel_info_v2_1()
-Date: Fri,  9 Jan 2026 12:37:16 +0100
-Message-ID: <20260109112123.397081771@linuxfoundation.org>
+	Jianlin Shi <jishi@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	David Ahern <dsahern@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 298/737] ipv6: add exception routes to GC list in rt6_insert_exception
+Date: Fri,  9 Jan 2026 12:37:17 +0100
+Message-ID: <20260109112145.219156163@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 1a79482699b4d1e43948d14f0c7193dc1dcad858 ]
+commit cfe82469a00f0c0983bf4652de3a2972637dfc56 upstream.
 
-The .H_SYNC_POLARITY and .V_SYNC_POLARITY variables are 1 bit bitfields
-of a u32.  The ATOM_HSYNC_POLARITY define is 0x2 and the
-ATOM_VSYNC_POLARITY is 0x4.  When we do a bitwise negate of 0, 2, or 4
-then the last bit is always 1 so this code always sets .H_SYNC_POLARITY
-and .V_SYNC_POLARITY to true.
+Commit 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list
+of routes.") introduced a separated list for managing route expiration via
+the GC timer.
 
-This code is instead intended to check if the ATOM_HSYNC_POLARITY or
-ATOM_VSYNC_POLARITY flags are set and reverse the result.  In other
-words, it's supposed to be a logical negate instead of a bitwise negate.
+However, it missed adding exception routes (created by ip6_rt_update_pmtu()
+and rt6_do_redirect()) to this GC list. As a result, these exceptions were
+never considered for expiration and removal, leading to stale entries
+persisting in the routing table.
 
-Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch fixes the issue by calling fib6_add_gc_list() in
+rt6_insert_exception(), ensuring that exception routes are properly tracked
+and garbage collected when expired.
+
+Fixes: 5eb902b8e719 ("net/ipv6: Remove expired routes with a separated list of routes.")
+Reported-by: Jianlin Shi <jishi@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/837e7506ffb63f47faa2b05d9b85481aad28e1a4.1744134377.git.lucien.xin@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/ipv6/route.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 75e44d8a7b40f..f2d37572f2a69 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -1480,10 +1480,10 @@ static enum bp_result get_embedded_panel_info_v2_1(
- 	/* not provided by VBIOS */
- 	info->lcd_timing.misc_info.HORIZONTAL_CUT_OFF = 0;
- 
--	info->lcd_timing.misc_info.H_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
--			& ATOM_HSYNC_POLARITY);
--	info->lcd_timing.misc_info.V_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
--			& ATOM_VSYNC_POLARITY);
-+	info->lcd_timing.misc_info.H_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
-+						       ATOM_HSYNC_POLARITY);
-+	info->lcd_timing.misc_info.V_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
-+						       ATOM_VSYNC_POLARITY);
- 
- 	/* not provided by VBIOS */
- 	info->lcd_timing.misc_info.VERTICAL_CUT_OFF = 0;
--- 
-2.51.0
-
+--- a/net/ipv6/route.c
++++ b/net/ipv6/route.c
+@@ -1772,6 +1772,7 @@ out:
+ 	if (!err) {
+ 		spin_lock_bh(&f6i->fib6_table->tb6_lock);
+ 		fib6_update_sernum(net, f6i);
++		fib6_add_gc_list(f6i);
+ 		spin_unlock_bh(&f6i->fib6_table->tb6_lock);
+ 		fib6_force_start_gc(net);
+ 	}
 
 
 
