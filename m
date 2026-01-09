@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-207723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207727-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92237D0A44F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B8A6D0A404
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2A96831D709E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 47EA030D985D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1068935CBD0;
-	Fri,  9 Jan 2026 12:47:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9130A35E52A;
+	Fri,  9 Jan 2026 12:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d+GHj9xX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1CMkznd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C83DA35CBCD;
-	Fri,  9 Jan 2026 12:47:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3B35E52C;
+	Fri,  9 Jan 2026 12:47:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962863; cv=none; b=NyM0SY/ZgDddn1Xb54z+08ifRn4yu/tkL4VKYQM0jicQIQCetUf+YpIyNlkzvYDQcolrNuJCgE41frp1mCp82XPKB6g92qhsuI1A1y+XLBmlyzsKH9vsJkoGnIEYITTBSiww9qCWkmnsSKE67rTyUov54QuZ6qPscePMxFwT2Ug=
+	t=1767962875; cv=none; b=r4hC98nmg6K+6WOokmoKjc4own2oHllsU8WYTSedWWV1dxNvh9ZI18v/6mwxdlivC729LO6rpkbKmnXh0Di2xBIl8/uHBeIXKgfH99r3a8uHECD0KBIEqfc9dOM1SydhbFgZOJngoN2SburdQU7zXlE70xb3WMMtekHuwkltky0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962863; c=relaxed/simple;
-	bh=8o0q58lklegSf8LYT6qZivRd5dZMYiTddTVj7NsQLmE=;
+	s=arc-20240116; t=1767962875; c=relaxed/simple;
+	bh=vYv7aXh9nLQCPrNoDi38hRpgngM0YOVsmzvrJxaXZyE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=M04cgSXdkGwn9harqdiBsj6nYWhB6fvIzKX0AA4uCvpLwfrcZ75iPLO5zaaOfojSbPgedHwm+iCjT2JbGfib4J7RNfE84+BuMWlSG+7L6cKKwdO0Dq8OBk6MJS9nO7FIwNExPl4ggafyYD+EX+yPONMAa+NKaOnqxHXI36dy9xc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d+GHj9xX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D22C16AAE;
-	Fri,  9 Jan 2026 12:47:43 +0000 (UTC)
+	 MIME-Version; b=Au8vlrrTC9+xQeHfc0aV4EfJjFqDROINEZbvdfK0OkO3sYD3J/tHe/boU47hLioaZKoazjyZ1hZkB8+wVlJvxpKBtAOYl5fHQ2YlSM3T52oI9Bg8p/tbqzw3bmD4aSwQX2w0AV9kyY4BDPWg4NXGqkAxx9TScLg+l3CGAo3x1dE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1CMkznd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A4FC4CEF1;
+	Fri,  9 Jan 2026 12:47:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962863;
-	bh=8o0q58lklegSf8LYT6qZivRd5dZMYiTddTVj7NsQLmE=;
+	s=korg; t=1767962875;
+	bh=vYv7aXh9nLQCPrNoDi38hRpgngM0YOVsmzvrJxaXZyE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d+GHj9xXrpsFnsR1fqXh1i6K2QvCVAVhZaJTPSWzXhPGqDS8wCTFRy1pT1KrIf7VJ
-	 MkIerx4mvAh5eqKPOMi2GlfcCZLeBDYSEy3OoLXSVYfv1SPLdywqx5F0ZTGEwkhx5p
-	 J8cae6rM6XhoCi1TJh9b/HGxjBwilUasZczBczuU=
+	b=c1CMkzndiwogCXs+avjyB35M/Xti4irhdcijpZavU77ltwvrH19NgeSUrrNfQlcxW
+	 EPthzpVQMIGDqf+L8BdWyZxLGhXF1ofiw0LlH7by3oV7sKSaYlBj/2DEWMzg0ImMuU
+	 Y4X2+vS293xIBURJSWDmpOfwCrLtUTKkR2wc1O0Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Gow <davidgow@google.com>,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 514/634] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
-Date: Fri,  9 Jan 2026 12:43:12 +0100
-Message-ID: <20260109112136.894496028@linuxfoundation.org>
+Subject: [PATCH 6.1 517/634] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
+Date: Fri,  9 Jan 2026 12:43:15 +0100
+Message-ID: <20260109112137.009673459@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -68,16 +68,16 @@ Content-Transfer-Encoding: 8bit
 
 From: SeongJae Park <sj@kernel.org>
 
-commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e upstream.
+commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e upstream.
 
-damon_test_split_evenly_fail() is assuming all dynamic memory allocation
+damon_test_split_evenly_succ() is assuming all dynamic memory allocation
 in it will succeed.  Those are indeed likely in the real use cases since
 those allocations are too small to fail, but theoretically those could
 fail.  In the case, inappropriate memory access can happen.  Fix it by
 appropriately cleanup pre-allocated memory and skip the execution of the
 remaining tests in the failure cases.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
+Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
 Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>
@@ -87,29 +87,30 @@ Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ mm/damon/vaddr-test.h |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
 --- a/mm/damon/vaddr-test.h
 +++ b/mm/damon/vaddr-test.h
-@@ -242,7 +242,16 @@ static void damon_test_split_evenly_fail
- 		unsigned long start, unsigned long end, unsigned int nr_pieces)
+@@ -276,10 +276,17 @@ static void damon_test_split_evenly_succ
+ 	unsigned long start, unsigned long end, unsigned int nr_pieces)
  {
  	struct damon_target *t = damon_new_target();
 -	struct damon_region *r = damon_new_region(start, end);
 +	struct damon_region *r;
-+
+ 	unsigned long expected_width = (end - start) / nr_pieces;
+ 	unsigned long i = 0;
+ 
 +	if (!t)
 +		kunit_skip(test, "target alloc fail");
-+
 +	r = damon_new_region(start, end);
 +	if (!r) {
 +		damon_free_target(t);
 +		kunit_skip(test, "region alloc fail");
 +	}
- 
  	damon_add_region(r, t);
  	KUNIT_EXPECT_EQ(test,
+ 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
 
 
 
