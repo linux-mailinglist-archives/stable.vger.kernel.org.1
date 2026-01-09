@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206973-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207576-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519DED096D2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C51CBD0A14D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3345330205A1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7567630D69BB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 546FE35A951;
-	Fri,  9 Jan 2026 12:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6735F35BDC8;
+	Fri,  9 Jan 2026 12:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g4bem4t4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g9FxnI8z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 090CE35A941;
-	Fri,  9 Jan 2026 12:12:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C9E35BDC9;
+	Fri,  9 Jan 2026 12:40:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960732; cv=none; b=Kxrqd/zuCO81s8uN+2duVfINxBbGw6rwsTtavewIPxYyx5slfXaqMgiITxtl4gpmfknp1v22c5JyJ3C+nstGOzPaPmz4mbsaMgQojqI0n05oteGZqdlhxixyjAkrNq2k/X+oMKsCHG6FnI0D03d6vOklxBEQrLqAG6irhDqkBYY=
+	t=1767962448; cv=none; b=ej6btty103pURHQwr7gEFIkwgvO/PQVYOwDl3uFTeZudeDsVCiTW0PxaRp9txjEy0St5etw9h3Yen/cJVYBc6Et2buDs7Q+mMirEmYimM6oWzD7Fy/I7YfRn44+kYPpHkyyCN7mg+F95KWNWSXHWRhQzcj/QN22NI8TDLgCjth4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960732; c=relaxed/simple;
-	bh=BRuYznMgKAT9H2HHWW7TywJBnSSp+DU9lglECBxLOWI=;
+	s=arc-20240116; t=1767962448; c=relaxed/simple;
+	bh=u9JH3aw8k9FfIT0jWqqz3pVcluseXNLHGjQU6caxWRM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MO8JS2KhxYmxVcoJytsNw10aGdUcEOSIlh2KgrMrgIgGfaGvYMd7azRBwGPUm5FVI51INeb8W2NxIF4wYl/k6LM6cR9aPpsnFdqzU5trFdMlG4wQBP/Y5D4l5xRXj/8caEPEKV3qvWcvwM79nA7vNGlYb4ZLL0x/ZyYZuRh0GYE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g4bem4t4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E29C4CEF1;
-	Fri,  9 Jan 2026 12:12:11 +0000 (UTC)
+	 MIME-Version; b=Tf5AdUgsCKcG8igpvBlma6T+/0N7S4uBDY+3lHsTWrOc1B2f8QbeBVqOfUpvXOym6HPdwRl7D0548e9rnIm1GVNE+88grgCj572cSx3j+t4E8OBOWHUWXV3YuPPiFiqsF+WyhG0e3VIrhjCKCYxwUPTrJTwCywp5cCrMzaAtYFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g9FxnI8z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79D4C4CEF1;
+	Fri,  9 Jan 2026 12:40:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960731;
-	bh=BRuYznMgKAT9H2HHWW7TywJBnSSp+DU9lglECBxLOWI=;
+	s=korg; t=1767962448;
+	bh=u9JH3aw8k9FfIT0jWqqz3pVcluseXNLHGjQU6caxWRM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g4bem4t4UlrHdogOJTV+Kqo8MKWiG8Fy64gREGTvsSthH8f93sia5j6RCjuKL4yhl
-	 hW9R/+FuIfy0ZCl8cDSRm92a+GihX+UWtuwUH5bossOVGzzpAeFxbDoQ593L8S1fsT
-	 N282buExoD1Lqm2GpaYG87vXCOKqHhmwsoVOrFQs=
+	b=g9FxnI8zjWqkprZRFuHGYe4bj00Q6amaNN9U2+bUd4c8iPx1C8OQ7AftdGIs4Rk5Z
+	 qN8IAqLVro8WTJsQFUqGdW/9/mCOBMjyyJ/kFOwqD3K9NRdkQaBpXAp4PZH9qBpp14
+	 yVInLk+yUcsPls137bYf1+lH6Y7ReQwf3zeSZpTs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 506/737] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
-Date: Fri,  9 Jan 2026 12:40:45 +0100
-Message-ID: <20260109112153.028454749@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.1 368/634] xfs: fix a memory leak in xfs_buf_item_init()
+Date: Fri,  9 Jan 2026 12:40:46 +0100
+Message-ID: <20260109112131.378124302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
+commit fc40459de82543b565ebc839dca8f7987f16f62e upstream.
 
-As soon as crypto_aead_encrypt is called, the underlying request
-may be freed by an asynchronous completion.  Thus dereferencing
-req->iv after it returns is invalid.
+xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
+free the memory in the error path.
 
-Instead of checking req->iv against info, create a new variable
-unaligned_info and use it for that purpose instead.
-
-Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
-Reported-by: Xiumei Mu <xmu@redhat.com>
-Reported-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/seqiv.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ fs/xfs/xfs_buf_item.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/crypto/seqiv.c b/crypto/seqiv.c
-index 17e11d51ddc3..04928df0095b 100644
---- a/crypto/seqiv.c
-+++ b/crypto/seqiv.c
-@@ -50,6 +50,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
- 	struct aead_request *subreq = aead_request_ctx(req);
- 	crypto_completion_t compl;
-+	bool unaligned_info;
- 	void *data;
- 	u8 *info;
- 	unsigned int ivsize = 8;
-@@ -79,8 +80,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 			return err;
- 	}
+--- a/fs/xfs/xfs_buf_item.c
++++ b/fs/xfs/xfs_buf_item.c
+@@ -900,6 +900,7 @@ xfs_buf_item_init(
+ 		map_size = DIV_ROUND_UP(chunks, NBWORD);
  
--	if (unlikely(!IS_ALIGNED((unsigned long)info,
--				 crypto_aead_alignmask(geniv) + 1))) {
-+	unaligned_info = !IS_ALIGNED((unsigned long)info,
-+				     crypto_aead_alignmask(geniv) + 1);
-+	if (unlikely(unaligned_info)) {
- 		info = kmemdup(req->iv, ivsize, req->base.flags &
- 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
- 			       GFP_ATOMIC);
-@@ -100,7 +102,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
- 
- 	err = crypto_aead_encrypt(subreq);
--	if (unlikely(info != req->iv))
-+	if (unlikely(unaligned_info))
- 		seqiv_aead_encrypt_complete2(req, err);
- 	return err;
- }
--- 
-2.51.0
-
+ 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
++			xfs_buf_item_free_format(bip);
+ 			kmem_cache_free(xfs_buf_item_cache, bip);
+ 			xfs_err(mp,
+ 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
 
 
 
