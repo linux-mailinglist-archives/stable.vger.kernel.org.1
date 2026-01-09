@@ -1,52 +1,55 @@
-Return-Path: <stable+bounces-206889-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207523-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA945D094A6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 331D9D0A01E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3F0C8302194A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5F4F3302B0DE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C4319330337;
-	Fri,  9 Jan 2026 12:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4832335971B;
+	Fri,  9 Jan 2026 12:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I6577D8J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tePmg9Q8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 860FA35A930;
-	Fri,  9 Jan 2026 12:08:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B43C358D30;
+	Fri,  9 Jan 2026 12:38:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960488; cv=none; b=oxhhN6+5xZR8NYIIRlI0wSpPeXQtbdByUMgax3CFigOJJnOOe2f01fTt7NR4n1yF4tFTedZinMqCL+2JNcdc4mdFrHv86KAEQr0izwVTv/V5qTjx+2GNYKu7IqFlVO4qUIK+AmjqRxZcB9ypOfM14L6Z3u528mMY7+rKlV5dmoM=
+	t=1767962296; cv=none; b=rnXzZMSG2XF+TxuNX8CN80UmnXxnEHG98flnOMlQqTUvgLyMsvRz/ujsfpaFFHlJfiZv7lDgq2isNHNjK/te9f8NBMb2mII0TdI/JeZHmsxV7eWp2/Zqiuwybwc/zPrjpx1uP3q/0YAHczUYZwuSYdFiZG4VyT718Ypf7fMA+Lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960488; c=relaxed/simple;
-	bh=vXX3wvBu27XZeI40LlZv/CaiEvZdLaxxVIS8M8U09Yw=;
+	s=arc-20240116; t=1767962296; c=relaxed/simple;
+	bh=Wq67FhFgAN2dZv/byromzdazjiKOY5SbGcN25s1PYlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i/Mc7yllgzKW0WH47xeP0njU2eA04z+iS348kIor8b+u0zskaLQG/F02q2BBdfvOiFVuPtVz41H/4qSHJk/NNoi9crf6o/fRXOjowWBxYvzOuJMc4mNDwXSYaAPLyzYnetoh180h3+qX2YJB9y13oFBLSZhVj0iFrWk59KVV+98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I6577D8J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07628C16AAE;
-	Fri,  9 Jan 2026 12:08:07 +0000 (UTC)
+	 MIME-Version; b=KpWFGBQughg4x4ohkLR7xdXWKNfN+tTqNbVwK82jNo1gp8vgUzt9cDP8jR+k+Uti+3kihuXX8GNKK9xpnjHa8BLjop6G9EbkflVy4JLQcE+DL6x2oNb4tLQO1sENxx5Y77JTjoNdERycPR4KB2E4k4LXv38DvkTPYZsUbP17Nr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tePmg9Q8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B0E0C4CEF1;
+	Fri,  9 Jan 2026 12:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960488;
-	bh=vXX3wvBu27XZeI40LlZv/CaiEvZdLaxxVIS8M8U09Yw=;
+	s=korg; t=1767962295;
+	bh=Wq67FhFgAN2dZv/byromzdazjiKOY5SbGcN25s1PYlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I6577D8JPqJyVr92UPW4Xcj65vnVyFBZGhGxHlbfJdGrR43Z06ytPyTMcnAQvi0Pb
-	 GoCKRnCktC5JJDb4YqI5jIeazeO6QpjII6Tf1mUtWDIwvkj608fINc6Jct9hMFS6Qd
-	 9GX/8IHedydTDE6A043/aN2B/5O6ALDYoy63gNvE=
+	b=tePmg9Q8eNPI/I6l9LZ0y5QgBbdfW5uu1rMjwWIxReUTl87iyC3pZ3wNH70YovHl6
+	 E/3Zzhlf+eZw9UxY1TKK2mIEWq9VzcW4vazPHdFLYvcHEL0xhT1HemqwhqI0xZg9Xo
+	 +27WyW+R46RrpB7mlzajyVeCtqhNgSjKahMP4RRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Subject: [PATCH 6.6 420/737] fs/ntfs3: fix mount failure for sparse runs in run_unpack()
-Date: Fri,  9 Jan 2026 12:39:19 +0100
-Message-ID: <20260109112149.794636763@linuxfoundation.org>
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 282/634] block: rnbd-clt: Fix leaked ID in init_dev()
+Date: Fri,  9 Jan 2026 12:39:20 +0100
+Message-ID: <20260109112128.143742795@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,46 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 801f614ba263cb37624982b27b4c82f3c3c597a9 upstream.
+[ Upstream commit c9b5645fd8ca10f310e41b07540f98e6a9720f40 ]
 
-Some NTFS volumes failed to mount because sparse data runs were not
-handled correctly during runlist unpacking. The code performed arithmetic
-on the special SPARSE_LCN64 marker, leading to invalid LCN values and
-mount errors.
+If kstrdup() fails in init_dev(), then the newly allocated ID is lost.
 
-Add an explicit check for the case described above, marking the run as
-sparse without applying arithmetic.
-
-Fixes: 736fc7bf5f68 ("fs: ntfs3: Fix integer overflow in run_unpack()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/run.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/block/rnbd/rnbd-clt.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/fs/ntfs3/run.c
-+++ b/fs/ntfs3/run.c
-@@ -984,8 +984,12 @@ int run_unpack(struct runs_tree *run, st
- 			if (!dlcn)
- 				return -EINVAL;
+diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
+index 5eb8c7855970..4291bdbe36ba 100644
+--- a/drivers/block/rnbd/rnbd-clt.c
++++ b/drivers/block/rnbd/rnbd-clt.c
+@@ -1440,9 +1440,11 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 		goto out_alloc;
+ 	}
  
--			if (check_add_overflow(prev_lcn, dlcn, &lcn))
-+			/* Check special combination: 0 + SPARSE_LCN64. */
-+			if (!prev_lcn && dlcn == SPARSE_LCN64) {
-+				lcn = SPARSE_LCN64;
-+			} else if (check_add_overflow(prev_lcn, dlcn, &lcn)) {
- 				return -EINVAL;
-+			}
- 			prev_lcn = lcn;
- 		} else
- 			return -EINVAL;
+-	ret = ida_alloc_max(&index_ida, (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
+-			    GFP_KERNEL);
+-	if (ret < 0) {
++	dev->clt_device_id = ida_alloc_max(&index_ida,
++					   (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
++					   GFP_KERNEL);
++	if (dev->clt_device_id < 0) {
++		ret = dev->clt_device_id;
+ 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
+ 		       pathname, sess->sessname, ret);
+ 		goto out_queues;
+@@ -1451,10 +1453,9 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 	dev->pathname = kstrdup(pathname, GFP_KERNEL);
+ 	if (!dev->pathname) {
+ 		ret = -ENOMEM;
+-		goto out_queues;
++		goto out_ida;
+ 	}
+ 
+-	dev->clt_device_id	= ret;
+ 	dev->sess		= sess;
+ 	dev->access_mode	= access_mode;
+ 	dev->nr_poll_queues	= nr_poll_queues;
+@@ -1470,6 +1471,8 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 
+ 	return dev;
+ 
++out_ida:
++	ida_free(&index_ida, dev->clt_device_id);
+ out_queues:
+ 	kfree(dev->hw_queues);
+ out_alloc:
+-- 
+2.51.0
+
 
 
 
