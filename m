@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-206802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207405-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F271FD0951E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 56430D09D09
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCDAA30A32DA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8635930FC2EA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C5E359FBB;
-	Fri,  9 Jan 2026 12:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5B86358D30;
+	Fri,  9 Jan 2026 12:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYUzPTpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GZiLFIcL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A5833CE9A;
-	Fri,  9 Jan 2026 12:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8922531E107;
+	Fri,  9 Jan 2026 12:32:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960240; cv=none; b=HlL0p/Myibwr+u27RxWxdrO3T8GVNG4hLog9h8uC37/O3f0dJJeV463K5c0PqBPCcjvMV5isbp1exif5zAB/GY3OGly9RSspjJVFQJhpt5xgQ5c8OkZ6BJfh49XzCet3wPCqbvLAQAvM+JAeitcvrE1p9bXT/TaWkiC/4FLXt94=
+	t=1767961961; cv=none; b=pchgi7n6C6xKzLIKgNEKKHYCOmVcn8+exRuqSOwoA1VoXEZI7L9k/Kujjok+47ukMgJibYdOp91WnZbCBuKhzkfEHYwio+ihxmntXiF7JtPzyea1M56CZlCykcmusI9Oox4qRN5zfcfeWZaovnzAp3Xhd3TtCLX1z1fUvHTxQz0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960240; c=relaxed/simple;
-	bh=yATn79dCKJiqC8KwdvJhY2eRun8K3FTzPkdMYhHcPqM=;
+	s=arc-20240116; t=1767961961; c=relaxed/simple;
+	bh=lfyp+rdkpORbEoBepapd+PZcBPtCx7IVIEBUE1cQ5KA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kPEiWLchb+CG8fVHhhZNBiy8OF5EIXcSg6Zki9rEdoXIKLkEjLrEbCZ5xNnHBkejSugOL0FHPjEsV7fV6I4VT1V9pz+nmNLOZaee/3MWgmWvgL8+FUJJdqJAEqQzr84Jqdae6zL3Di0yPQ+Tcco0DblKszpr7++mxWDoT/1gHbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYUzPTpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B353FC4CEF1;
-	Fri,  9 Jan 2026 12:03:59 +0000 (UTC)
+	 MIME-Version; b=Mxx8rgSix9OPsTl9yuOHaGhmtByY/hRmMPmNIsVwRfQgwIque1O4sqTcijj1Rq6WLWunVET5QpfKjYKf7z23tD4mqaNmn9TJZYWg/hIkbQy/KR9IbNiJ86Acsel4CdVegWEbV6hrI627Msz9yNIJ8I3dAkY3e8+AayEEETwMU9U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GZiLFIcL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D55C4CEF1;
+	Fri,  9 Jan 2026 12:32:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960240;
-	bh=yATn79dCKJiqC8KwdvJhY2eRun8K3FTzPkdMYhHcPqM=;
+	s=korg; t=1767961961;
+	bh=lfyp+rdkpORbEoBepapd+PZcBPtCx7IVIEBUE1cQ5KA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XYUzPTpzoOR1B8oeSvG1/23xPjGHBRWnAMKqZNbol8++ZXnc6fuPkB5qNLbj8HtCz
-	 NYJYFgRKFqXPXmddMzhP+16poTYkJCTEQUZmQRpu2ETnLaU+IOG+1H37iYbILcL7F1
-	 fDmzA9M5uBhydL5WDszxYXhX0dVakM11VC1nAKSI=
+	b=GZiLFIcLrSbstT6ydGnvVxkySymHlqmnozXmWBpYmFADAnSmdgE6wr7TqrUpAItIk
+	 Sy0wsBDd2OOxLqMCE/bYmAc3kTGwJpknenwByTsLj6hHpyWC5WGSuM3zrj0MpMsSGD
+	 Nbt8tVDIpHD4z+iANghP6dWFj7RIC3BjtrNMf9x4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Petr Machata <petrm@nvidia.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@primarydata.com>,
+	Lance Shelton <lance.shelton@hammerspace.com>,
+	Benjamin Coddington <bcodding@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 335/737] mlxsw: spectrum_router: Fix possible neighbour reference count leak
-Date: Fri,  9 Jan 2026 12:37:54 +0100
-Message-ID: <20260109112146.594553475@linuxfoundation.org>
+Subject: [PATCH 6.1 197/634] Expand the type of nfs_fattr->valid
+Date: Fri,  9 Jan 2026 12:37:55 +0100
+Message-ID: <20260109112124.848077084@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +63,129 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Trond Myklebust <trond.myklebust@primarydata.com>
 
-[ Upstream commit b6b638bda240395dff49a87403b2e32493e56d2a ]
+[ Upstream commit ce60ab3964782df9ba34f0a64c0bc766dd508bde ]
 
-mlxsw_sp_router_schedule_work() takes a reference on a neighbour,
-expecting a work item to release it later on. However, we might fail to
-schedule the work item, in which case the neighbour reference count will
-be leaked.
+We need to be able to track more than 32 attributes per inode.
 
-Fix by taking the reference just before scheduling the work item. Note
-that mlxsw_sp_router_schedule_work() can receive a NULL neighbour
-pointer, but neigh_clone() handles that correctly.
-
-Spotted during code review, did not actually observe the reference count
-leak.
-
-Fixes: 151b89f6025a ("mlxsw: spectrum_router: Reuse work neighbor initialization in work scheduler")
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/ec2934ae4aca187a8d8c9329a08ce93cca411378.1764695650.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@primarydata.com>
+Signed-off-by: Lance Shelton <lance.shelton@hammerspace.com>
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Link: https://lore.kernel.org/r/1e3405fca54efd0be7c91c1da77917b94f5dfcc4.1748515333.git.bcodding@redhat.com
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: 2b092175f5e3 ("NFS: Fix inheritance of the block sizes when automounting")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/nfs/inode.c            |  2 +-
+ include/linux/nfs_fs_sb.h |  2 +-
+ include/linux/nfs_xdr.h   | 54 +++++++++++++++++++--------------------
+ 3 files changed, 29 insertions(+), 29 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index 0534b10e29c5c..f5c34218ba85b 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -2857,6 +2857,11 @@ static int mlxsw_sp_router_schedule_work(struct net *net,
- 	if (!net_work)
- 		return NOTIFY_BAD;
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 627410be2e884..11e690942dbb3 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -2075,7 +2075,7 @@ static int nfs_update_inode(struct inode *inode, struct nfs_fattr *fattr)
+ 	bool attr_changed = false;
+ 	bool have_delegation;
  
-+	/* Take a reference to ensure the neighbour won't be destructed until
-+	 * we drop the reference in the work item.
-+	 */
-+	neigh_clone(n);
-+
- 	INIT_WORK(&net_work->work, cb);
- 	net_work->mlxsw_sp = router->mlxsw_sp;
- 	net_work->n = n;
-@@ -2880,11 +2885,6 @@ static int mlxsw_sp_router_schedule_neigh_work(struct mlxsw_sp_router *router,
- 	struct net *net;
+-	dfprintk(VFS, "NFS: %s(%s/%lu fh_crc=0x%08x ct=%d info=0x%x)\n",
++	dfprintk(VFS, "NFS: %s(%s/%lu fh_crc=0x%08x ct=%d info=0x%llx)\n",
+ 			__func__, inode->i_sb->s_id, inode->i_ino,
+ 			nfs_display_fhandle_hash(NFS_FH(inode)),
+ 			atomic_read(&inode->i_count), fattr->valid);
+diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
+index a9671f9300848..eb1d41d87be30 100644
+--- a/include/linux/nfs_fs_sb.h
++++ b/include/linux/nfs_fs_sb.h
+@@ -155,8 +155,8 @@ struct nfs_server {
+ #define NFS_MOUNT_WRITE_WAIT		0x02000000
+ #define NFS_MOUNT_TRUNK_DISCOVERY	0x04000000
  
- 	net = neigh_parms_net(n->parms);
--
--	/* Take a reference to ensure the neighbour won't be destructed until we
--	 * drop the reference in delayed work.
--	 */
--	neigh_clone(n);
- 	return mlxsw_sp_router_schedule_work(net, router, n,
- 					     mlxsw_sp_router_neigh_event_work);
- }
+-	unsigned int		fattr_valid;	/* Valid attributes */
+ 	unsigned int		caps;		/* server capabilities */
++	__u64			fattr_valid;	/* Valid attributes */
+ 	unsigned int		rsize;		/* read size */
+ 	unsigned int		rpages;		/* read size (in pages) */
+ 	unsigned int		wsize;		/* write size */
+diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
+index 2fd973d188c47..0a380d41e4d95 100644
+--- a/include/linux/nfs_xdr.h
++++ b/include/linux/nfs_xdr.h
+@@ -45,7 +45,7 @@ struct nfs4_threshold {
+ };
+ 
+ struct nfs_fattr {
+-	unsigned int		valid;		/* which fields are valid */
++	__u64			valid;		/* which fields are valid */
+ 	umode_t			mode;
+ 	__u32			nlink;
+ 	kuid_t			uid;
+@@ -80,32 +80,32 @@ struct nfs_fattr {
+ 	struct nfs4_label	*label;
+ };
+ 
+-#define NFS_ATTR_FATTR_TYPE		(1U << 0)
+-#define NFS_ATTR_FATTR_MODE		(1U << 1)
+-#define NFS_ATTR_FATTR_NLINK		(1U << 2)
+-#define NFS_ATTR_FATTR_OWNER		(1U << 3)
+-#define NFS_ATTR_FATTR_GROUP		(1U << 4)
+-#define NFS_ATTR_FATTR_RDEV		(1U << 5)
+-#define NFS_ATTR_FATTR_SIZE		(1U << 6)
+-#define NFS_ATTR_FATTR_PRESIZE		(1U << 7)
+-#define NFS_ATTR_FATTR_BLOCKS_USED	(1U << 8)
+-#define NFS_ATTR_FATTR_SPACE_USED	(1U << 9)
+-#define NFS_ATTR_FATTR_FSID		(1U << 10)
+-#define NFS_ATTR_FATTR_FILEID		(1U << 11)
+-#define NFS_ATTR_FATTR_ATIME		(1U << 12)
+-#define NFS_ATTR_FATTR_MTIME		(1U << 13)
+-#define NFS_ATTR_FATTR_CTIME		(1U << 14)
+-#define NFS_ATTR_FATTR_PREMTIME		(1U << 15)
+-#define NFS_ATTR_FATTR_PRECTIME		(1U << 16)
+-#define NFS_ATTR_FATTR_CHANGE		(1U << 17)
+-#define NFS_ATTR_FATTR_PRECHANGE	(1U << 18)
+-#define NFS_ATTR_FATTR_V4_LOCATIONS	(1U << 19)
+-#define NFS_ATTR_FATTR_V4_REFERRAL	(1U << 20)
+-#define NFS_ATTR_FATTR_MOUNTPOINT	(1U << 21)
+-#define NFS_ATTR_FATTR_MOUNTED_ON_FILEID (1U << 22)
+-#define NFS_ATTR_FATTR_OWNER_NAME	(1U << 23)
+-#define NFS_ATTR_FATTR_GROUP_NAME	(1U << 24)
+-#define NFS_ATTR_FATTR_V4_SECURITY_LABEL (1U << 25)
++#define NFS_ATTR_FATTR_TYPE		BIT_ULL(0)
++#define NFS_ATTR_FATTR_MODE		BIT_ULL(1)
++#define NFS_ATTR_FATTR_NLINK		BIT_ULL(2)
++#define NFS_ATTR_FATTR_OWNER		BIT_ULL(3)
++#define NFS_ATTR_FATTR_GROUP		BIT_ULL(4)
++#define NFS_ATTR_FATTR_RDEV		BIT_ULL(5)
++#define NFS_ATTR_FATTR_SIZE		BIT_ULL(6)
++#define NFS_ATTR_FATTR_PRESIZE		BIT_ULL(7)
++#define NFS_ATTR_FATTR_BLOCKS_USED	BIT_ULL(8)
++#define NFS_ATTR_FATTR_SPACE_USED	BIT_ULL(9)
++#define NFS_ATTR_FATTR_FSID		BIT_ULL(10)
++#define NFS_ATTR_FATTR_FILEID		BIT_ULL(11)
++#define NFS_ATTR_FATTR_ATIME		BIT_ULL(12)
++#define NFS_ATTR_FATTR_MTIME		BIT_ULL(13)
++#define NFS_ATTR_FATTR_CTIME		BIT_ULL(14)
++#define NFS_ATTR_FATTR_PREMTIME		BIT_ULL(15)
++#define NFS_ATTR_FATTR_PRECTIME		BIT_ULL(16)
++#define NFS_ATTR_FATTR_CHANGE		BIT_ULL(17)
++#define NFS_ATTR_FATTR_PRECHANGE	BIT_ULL(18)
++#define NFS_ATTR_FATTR_V4_LOCATIONS	BIT_ULL(19)
++#define NFS_ATTR_FATTR_V4_REFERRAL	BIT_ULL(20)
++#define NFS_ATTR_FATTR_MOUNTPOINT	BIT_ULL(21)
++#define NFS_ATTR_FATTR_MOUNTED_ON_FILEID BIT_ULL(22)
++#define NFS_ATTR_FATTR_OWNER_NAME	BIT_ULL(23)
++#define NFS_ATTR_FATTR_GROUP_NAME	BIT_ULL(24)
++#define NFS_ATTR_FATTR_V4_SECURITY_LABEL BIT_ULL(25)
+ 
+ #define NFS_ATTR_FATTR (NFS_ATTR_FATTR_TYPE \
+ 		| NFS_ATTR_FATTR_MODE \
 -- 
 2.51.0
 
