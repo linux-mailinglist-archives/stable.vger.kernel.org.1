@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207429-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206829-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FD07D09D48
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C973D0958E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A7A3F307C4E9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EDEF430E1E2F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D79336EDA;
-	Fri,  9 Jan 2026 12:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C173335A925;
+	Fri,  9 Jan 2026 12:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orQJT6A1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K6b/tcdP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DAF31E107;
-	Fri,  9 Jan 2026 12:33:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8474033D50F;
+	Fri,  9 Jan 2026 12:05:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962029; cv=none; b=stRIPw2+svf09vWBVtnBPnh2tsxqwZaBsQGj7nk4wuGRhISGvAmNWh5EfwjcJX8IGo9ggE6atMPklIzlPw2XjxCipsEdPdpTZ5i4NqMoUR5B4aluqdkz8xEs7BZ5/REbJvAaj/7mWhzhXlIUqZ9+QVIaS+POiPv/fd3iScrQP7o=
+	t=1767960317; cv=none; b=p41XMfAiBV5cZcD2UURmFrF4kwGCftWODNXmZ7wkWTHrj7gTWO1Mugngab3aql7UxYB+6EwHcT1WKesFv6upkuAuq6hCRDfKqhf6SWkUpviGmSszXlSvKf57NBzYdJPZhb44FBIZq//VT62gNw+Do8YaQV1fSQP9F2vuwE2qq8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962029; c=relaxed/simple;
-	bh=Mu9qPlnzTbpA5Dt/ixntFStxqvzS3P4Y4bW/ZXr0CwM=;
+	s=arc-20240116; t=1767960317; c=relaxed/simple;
+	bh=NHJAL0kyyFZNMac4IxKbC1qWWCkVTcK2kVMnBi76uNM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vq/1oH1H9Ju9eQyrS46pQBmWuHak5fdKZ1aBKGkSu8ywL9RDWGEt7rdpEBxh3Fn4x+5jWqfMWVK73jTKDkE7AzUNC3Ul6ViCHUFiTCi6pU4VAA2TxmqtuKAPaEkgiHAvFtfG4XblbTgguD7n1KIY5L0Z1mnC9llOXNULgbxPlms=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orQJT6A1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BB8C4CEF1;
-	Fri,  9 Jan 2026 12:33:48 +0000 (UTC)
+	 MIME-Version; b=n/TtYLuV0WuF23Q5etFvkdORUFzEHda756A0VbMzSnsSkMCN+th5Q8qJyHKVSldS6CIwlR9RHkw8i2qSuL67dW8akumkhQJd1VFTDhoNKfyVy2eDeo+1TIvseuYg/B28KoIyOzgsbPkfCBuoaMlAmTkVMoimWelwydQkYKi0dmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K6b/tcdP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5D9EC4CEF1;
+	Fri,  9 Jan 2026 12:05:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962029;
-	bh=Mu9qPlnzTbpA5Dt/ixntFStxqvzS3P4Y4bW/ZXr0CwM=;
+	s=korg; t=1767960317;
+	bh=NHJAL0kyyFZNMac4IxKbC1qWWCkVTcK2kVMnBi76uNM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=orQJT6A1urZG4pdqulgwWLMO+WF8e6W1cKyCNFhCYjGmInmky8ARy+RUcQrPs+KnU
-	 RrWKvLloX2icEs8VIoLL0twCjeG4tyS46sbnchHxXxCkUj+zAEgQByvIvsx5Lt3aVV
-	 s5krzeJm4ovMzfeLQr1IsK/R7RIlvuwGSQXGQkG4=
+	b=K6b/tcdPCjGHE7z/Yqaz6iu2Zc4Y4lnbScUYwTR9aK7LyUsd3tXqL40dR8pEI1Inn
+	 l9Y0De7JfuGcRzqiGFmNziurIw5jirs9P0A4rhtpi+Lq6+FDM++PpJ6QwlArkVUwQT
+	 I8TkPIWvavn5Fa4LCCpBSrZC2Egub2y4DSbvZ0Dk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Subject: [PATCH 6.1 222/634] usb: phy: Initialize struct usb_phy list_head
-Date: Fri,  9 Jan 2026 12:38:20 +0100
-Message-ID: <20260109112125.786899310@linuxfoundation.org>
+	Alexey Simakov <bigalex934@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 362/737] hwmon: (tmp401) fix overflow caused by default conversion rate value
+Date: Fri,  9 Jan 2026 12:38:21 +0100
+Message-ID: <20260109112147.613087425@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
+[ Upstream commit 82f2aab35a1ab2e1460de06ef04c726460aed51c ]
 
-As part of the registration of a new 'struct usb_phy' with the USB PHY core
-via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
-usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
-order for the new instance x to be stored in phy_list, a static list
-kept internally by the core.
+The driver computes conversion intervals using the formula:
 
-After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-when executing either of the registration functions above it is possible
-that usb_add_extcon() fails, leading to either function returning before
-the call to list_add_tail(), leaving x->head uninitialized.
+    interval = (1 << (7 - rate)) * 125ms
 
-Then, when a driver tries to undo the failed registration by calling
-usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
-list_del(&x->head) acting on an uninitialized variable, and thus a
-possible NULL pointer dereference.
+where 'rate' is the sensor's conversion rate register value. According to
+the datasheet, the power-on reset value of this register is 0x8, which
+could be assigned to the register, after handling i2c general call.
+Using this default value causes a result greater than the bit width of
+left operand and an undefined behaviour in the calculation above, since
+shifting by values larger than the bit width is undefined behaviour as
+per C language standard.
 
-Fix this by initializing x->head before usb_add_extcon() has a
-chance to fail. Note that this was not needed before 7d21114dc6a2 since
-list_add_phy() was executed unconditionally and it guaranteed that x->head
-was initialized.
+Limit the maximum usable 'rate' value to 7 to prevent undefined
+behaviour in calculations.
 
-Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Note (groeck):
+    This does not matter in practice unless someone overwrites the chip
+    configuration from outside the driver while the driver is loaded.
+    The conversion time register is initialized with a value of 5 (500ms)
+    when the driver is loaded, and the driver never writes a bad value.
+
+Fixes: ca53e7640de7 ("hwmon: (tmp401) Convert to _info API")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Link: https://lore.kernel.org/r/20251211164342.6291-1-bigalex934@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hwmon/tmp401.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -672,6 +672,8 @@ int usb_add_phy(struct usb_phy *x, enum
- 		return -EINVAL;
- 	}
- 
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
-@@ -722,6 +724,8 @@ int usb_add_phy_dev(struct usb_phy *x)
- 		return -EINVAL;
- 	}
- 
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
+diff --git a/drivers/hwmon/tmp401.c b/drivers/hwmon/tmp401.c
+index 91f2314568cf..5cc932ef0460 100644
+--- a/drivers/hwmon/tmp401.c
++++ b/drivers/hwmon/tmp401.c
+@@ -408,7 +408,7 @@ static int tmp401_chip_read(struct device *dev, u32 attr, int channel, long *val
+ 		ret = regmap_read(data->regmap, TMP401_CONVERSION_RATE, &regval);
+ 		if (ret < 0)
+ 			return ret;
+-		*val = (1 << (7 - regval)) * 125;
++		*val = (1 << (7 - min(regval, 7))) * 125;
+ 		break;
+ 	case hwmon_chip_temp_reset_history:
+ 		*val = 0;
+-- 
+2.51.0
+
 
 
 
