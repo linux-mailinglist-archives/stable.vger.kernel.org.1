@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E023D09C3A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 069A6D0A189
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A059F307B505
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EA2223306A0A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01DD1359FA0;
-	Fri,  9 Jan 2026 12:22:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B5632BF21;
+	Fri,  9 Jan 2026 12:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o4OuqVvY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFsoR27a"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9A9515ADB4;
-	Fri,  9 Jan 2026 12:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709EE326D51;
+	Fri,  9 Jan 2026 12:50:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961328; cv=none; b=pp5YeNXgEvN1IOD6q37Mni/CQVhu6BypQ3FJCiMjzYKSZeFbsBlkDG/g+PB0ySAZuWsHnAPXX96EMxy788Sct1MXAcC7IRRv9NaGt29KG8aZ7hs7ZBq9u85Stsr4gQza5e0Ik8VHWjRN3x3L449N0MceCrIZYA0o98pNL88ZY28=
+	t=1767963038; cv=none; b=jttEmAE2XvaJ8s0rFIq1c0u1qULuQ0pM9YhhSUsQ+K0PxBkYiVVPCdRuiBnT3Ja59EFu5rXXaNN/DaQ7DG4OMWuMF6s4EP6AUBbCGu4uj1mXXvFXXWwtpdWBuoNl/FPsAa63eMnFi/iyT48P2yKhS10UYHln75Du4wnLwV+ubHU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961328; c=relaxed/simple;
-	bh=eEnHAQ+ufIMDIm+e9JsdmWs/XdNUcogYo1WVXYvFsyU=;
+	s=arc-20240116; t=1767963038; c=relaxed/simple;
+	bh=yT2awBSBDOWG+Bp0ZTdm4fQCJchc3W+83i1vBm02IqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nzff0V0SddhZup4xN1cLkNSMbTLMCGERynfTK859ODsJRVHJCMQtVhQg3PESBMGKFdXun6MqsMLpYwB5pSYK35oYbfHABMNP3cgj28dhL5JklzEVLaTgoMf9fKCoWCgLRC+WAPfcKscpQDYee2TEdYkh60YoyOGdSZQk3cC575k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o4OuqVvY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D392C4CEF1;
-	Fri,  9 Jan 2026 12:22:08 +0000 (UTC)
+	 MIME-Version; b=atIzzwxtfaxgTvo1tRUaoHV/GZo6b5cwYyYD2nnedijxBBlCMxF8+6yloLH26V4MBZXLbe/lMo8kJLR7LcEsznjLjTWABF+M1MnpDRhcC4vCICCbRCFZZbmIE0QgW3d2Xc2o+d8TVgpHey0xZfrAxFq7xtxkWHtJM743PcGqxxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFsoR27a; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FB1C4CEF1;
+	Fri,  9 Jan 2026 12:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961328;
-	bh=eEnHAQ+ufIMDIm+e9JsdmWs/XdNUcogYo1WVXYvFsyU=;
+	s=korg; t=1767963038;
+	bh=yT2awBSBDOWG+Bp0ZTdm4fQCJchc3W+83i1vBm02IqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o4OuqVvYJO5m/AFthDEnCDZNgiQCXcrJx30LzzeTXm2ZHDW/bf9GB4I/FQc/gQogy
-	 0OeJjDOpB3j5lL7WwUFyhHqkRot2aDlfBpBH5GuZZ1k1Gibx6LzI1UD3qBJVIVByNC
-	 Kw7qJWlBe85Vl7ZAxiDLKkB49U2JMOr72T/5nuto=
+	b=QFsoR27aVLjTm50o0qbe/pm88n981owTVq0+7TZY/gZPgExaGtwa+BfjYBj7lUohf
+	 jAgruN91brCR60tUP5iBHdAFwJeLot2dcnL/TnmxC02M2VPOCbGbHFqt0gTz5dJZtW
+	 g6t0Vi8NSEEM0lHaPZ02ddjITbmfTXSN9PSbyi8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Daisuke Matsuda <matsuda-daisuke@fujitsu.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.6 715/737] RDMA/rxe: Fix the failure of ibv_query_device() and ibv_query_device_ex() tests
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Jim Quinlan <james.quinlan@broadcom.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 576/634] PCI: brcmstb: Fix disabling L0s capability
 Date: Fri,  9 Jan 2026 12:44:14 +0100
-Message-ID: <20260109112200.979393823@linuxfoundation.org>
+Message-ID: <20260109112139.283002377@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,140 +62,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Jim Quinlan <james.quinlan@broadcom.com>
 
-[ Upstream commit 8ce2eb9dfac8743d1c423b86339336a5b6a6069e ]
+[ Upstream commit 9583f9d22991d2cfb5cc59a2552040c4ae98d998 ]
 
-In rdma-core, the following failures appear.
+caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
+set PCI_EXP_LNKCAP_ASPM_L1 and (optionally) PCI_EXP_LNKCAP_ASPM_L0S in
+PCI_EXP_LNKCAP (aka PCIE_RC_CFG_PRIV1_LINK_CAPABILITY in brcmstb).
 
-"
-$ ./build/bin/run_tests.py -k device
-ssssssss....FF........s
-======================================================================
-FAIL: test_query_device (tests.test_device.DeviceTest.test_query_device)
-Test ibv_query_device()
-----------------------------------------------------------------------
-Traceback (most recent call last):
-   File "/home/ubuntu/rdma-core/tests/test_device.py", line 63, in
-   test_query_device
-     self.verify_device_attr(attr, dev)
-   File "/home/ubuntu/rdma-core/tests/test_device.py", line 200, in
-   verify_device_attr
-     assert attr.sys_image_guid != 0
-            ^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
+But instead of using PCI_EXP_LNKCAP_ASPM_L1 and PCI_EXP_LNKCAP_ASPM_L0S
+directly, it used PCIE_LINK_STATE_L1 and PCIE_LINK_STATE_L0S, which are
+Linux-created values that only coincidentally matched the PCIe spec.
+b478e162f227 ("PCI/ASPM: Consolidate link state defines") later changed
+them so they no longer matched the PCIe spec, so the bits ended up in the
+wrong place in PCI_EXP_LNKCAP.
 
-======================================================================
-FAIL: test_query_device_ex (tests.test_device.DeviceTest.test_query_device_ex)
-Test ibv_query_device_ex()
-----------------------------------------------------------------------
-Traceback (most recent call last):
-   File "/home/ubuntu/rdma-core/tests/test_device.py", line 222, in
-   test_query_device_ex
-     self.verify_device_attr(attr_ex.orig_attr, dev)
-   File "/home/ubuntu/rdma-core/tests/test_device.py", line 200, in
-   verify_device_attr
-     assert attr.sys_image_guid != 0
-            ^^^^^^^^^^^^^^^^^^^^^^^^
-AssertionError
-"
+Use PCI_EXP_LNKCAP_ASPM_L0S to clear L0s support when there's an
+'aspm-no-l0s' property.  Rely on brcmstb hardware to advertise L0s and/or
+L1 support otherwise.
 
-The root cause is: before a net device is set with rxe, this net device
-is used to generate a sys_image_guid.
-
-Fixes: 2ac5415022d1 ("RDMA/rxe: Remove the direct link to net_device")
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Link: https://patch.msgid.link/20250302215444.3742072-1-yanjun.zhu@linux.dev
-Reviewed-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Tested-by: Daisuke Matsuda <matsuda-daisuke@fujitsu.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
+Reported-by: Bjorn Helgaas <bhelgaas@google.com>
+Closes: https://lore.kernel.org/linux-pci/20250925194424.GA2197200@bhelgaas
+Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
+[mani: reworded subject and description, added closes tag and CCed stable]
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+[bhelgaas: commit log]
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251003170436.1446030-1-james.quinlan@broadcom.com
+[ adapted context due to missing link width negotiation defines and variables ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: Modified to apply on 6.6.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/rxe/rxe.c |   25 ++++++-------------------
- 1 file changed, 6 insertions(+), 19 deletions(-)
+ drivers/pci/controller/pcie-brcmstb.c |   10 +++-------
+ 1 file changed, 3 insertions(+), 7 deletions(-)
 
---- a/drivers/infiniband/sw/rxe/rxe.c
-+++ b/drivers/infiniband/sw/rxe/rxe.c
-@@ -38,10 +38,8 @@ void rxe_dealloc(struct ib_device *ib_de
- }
+--- a/drivers/pci/controller/pcie-brcmstb.c
++++ b/drivers/pci/controller/pcie-brcmstb.c
+@@ -45,7 +45,6 @@
+ #define  PCIE_RC_CFG_PRIV1_ID_VAL3_CLASS_CODE_MASK	0xffffff
  
- /* initialize rxe device parameters */
--static void rxe_init_device_param(struct rxe_dev *rxe)
-+static void rxe_init_device_param(struct rxe_dev *rxe, struct net_device *ndev)
- {
--	struct net_device *ndev;
--
- 	rxe->max_inline_data			= RXE_MAX_INLINE_DATA;
+ #define PCIE_RC_CFG_PRIV1_LINK_CAPABILITY			0x04dc
+-#define  PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK	0xc00
  
- 	rxe->attr.vendor_id			= RXE_VENDOR_ID;
-@@ -74,15 +72,9 @@ static void rxe_init_device_param(struct
- 	rxe->attr.max_pkeys			= RXE_MAX_PKEYS;
- 	rxe->attr.local_ca_ack_delay		= RXE_LOCAL_CA_ACK_DELAY;
+ #define PCIE_RC_DL_MDIO_ADDR				0x1100
+ #define PCIE_RC_DL_MDIO_WR_DATA				0x1104
+@@ -869,7 +868,7 @@ static int brcm_pcie_setup(struct brcm_p
+ 	void __iomem *base = pcie->base;
+ 	struct pci_host_bridge *bridge;
+ 	struct resource_entry *entry;
+-	u32 tmp, burst, aspm_support;
++	u32 tmp, burst;
+ 	int num_out_wins = 0;
+ 	int ret, memc;
  
--	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
--	if (!ndev)
--		return;
--
- 	addrconf_addr_eui48((unsigned char *)&rxe->attr.sys_image_guid,
- 			ndev->dev_addr);
+@@ -963,12 +962,9 @@ static int brcm_pcie_setup(struct brcm_p
+ 	writel(tmp, base + PCIE_MISC_RC_BAR3_CONFIG_LO);
  
--	dev_put(ndev);
--
- 	rxe->max_ucontext			= RXE_MAX_UCONTEXT;
- }
+ 	/* Don't advertise L0s capability if 'aspm-no-l0s' */
+-	aspm_support = PCIE_LINK_STATE_L1;
+-	if (!of_property_read_bool(pcie->np, "aspm-no-l0s"))
+-		aspm_support |= PCIE_LINK_STATE_L0S;
+ 	tmp = readl(base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
+-	u32p_replace_bits(&tmp, aspm_support,
+-		PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK);
++	if (of_property_read_bool(pcie->np, "aspm-no-l0s"))
++		tmp &= ~PCI_EXP_LNKCAP_ASPM_L0S;
+ 	writel(tmp, base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
  
-@@ -115,18 +107,13 @@ static void rxe_init_port_param(struct r
- /* initialize port state, note IB convention that HCA ports are always
-  * numbered from 1
-  */
--static void rxe_init_ports(struct rxe_dev *rxe)
-+static void rxe_init_ports(struct rxe_dev *rxe, struct net_device *ndev)
- {
- 	struct rxe_port *port = &rxe->port;
--	struct net_device *ndev;
- 
- 	rxe_init_port_param(port);
--	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
--	if (!ndev)
--		return;
- 	addrconf_addr_eui48((unsigned char *)&port->port_guid,
- 			    ndev->dev_addr);
--	dev_put(ndev);
- 	spin_lock_init(&port->port_lock);
- }
- 
-@@ -144,12 +131,12 @@ static void rxe_init_pools(struct rxe_de
- }
- 
- /* initialize rxe device state */
--static void rxe_init(struct rxe_dev *rxe)
-+static void rxe_init(struct rxe_dev *rxe, struct net_device *ndev)
- {
- 	/* init default device parameters */
--	rxe_init_device_param(rxe);
-+	rxe_init_device_param(rxe, ndev);
- 
--	rxe_init_ports(rxe);
-+	rxe_init_ports(rxe, ndev);
- 	rxe_init_pools(rxe);
- 
- 	/* init pending mmap list */
-@@ -186,7 +173,7 @@ void rxe_set_mtu(struct rxe_dev *rxe, un
- int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name,
- 			struct net_device *ndev)
- {
--	rxe_init(rxe);
-+	rxe_init(rxe, ndev);
- 	rxe_set_mtu(rxe, mtu);
- 
- 	return rxe_register_device(rxe, ibdev_name, ndev);
+ 	/*
 
 
 
