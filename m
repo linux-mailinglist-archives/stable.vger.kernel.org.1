@@ -1,50 +1,53 @@
-Return-Path: <stable+bounces-207063-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1DC1D0998C
+	by mail.lfdr.de (Postfix) with ESMTPS id CFD1CD0998B
 	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BDD2308DBDB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BDB1E3097B66
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA6A435B128;
-	Fri,  9 Jan 2026 12:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34974334C24;
+	Fri,  9 Jan 2026 12:16:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arG2ZxVG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GanpXK4L"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D03735A952;
-	Fri,  9 Jan 2026 12:16:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E93F232AAB5;
+	Fri,  9 Jan 2026 12:16:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960985; cv=none; b=VL7FW3QbLI98cNErVYeFrrT4b19NWahmzQl8KmymVfsRyT5OnwkBnORjbDV+8XjDGbazWEEWhyJ6ZD2KcnzVzCzFsxY5VqR2oZjAN3HfrtbR9qP2sslVS8fwibJF/K6Q+Ov0Gs3hfkeL/eaRDA26tiehZGYzGRuk9aPKrBjNkp0=
+	t=1767960991; cv=none; b=X8NyuV8VlI1+IGytCMAsYvi+k6iziI/NZvcwyRv9ecIuSImYTX0PuSGcEPd3nVBfneSKzBWDQW90fRp4lMXn+QUMkmA2UmQNv8qdQ4UyLoBo1Y5ZxxNCCt65hDIwSn1cpfdY9wqbANwVg9SubbQMN6RoIfXpqu7iFJyfCK4ZQF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960985; c=relaxed/simple;
-	bh=Jeno3/cLI1Bx7fg3TDNJhOqgPJFllchbmemGOQNyLLE=;
+	s=arc-20240116; t=1767960991; c=relaxed/simple;
+	bh=GmZDOhSgMUThpuLItwcQHDyXPLHC0rRIV2DJVVntydM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eeUONmxNKDq9TCl+uzu21N6A6mffmIXOur3M2KehKjV0irinkmm8LvQ6XqqyOgQdkhW12UKZvVnih0b85PwhIeAzUQYpu6Ql5pKVG1MIzmFVgKMf5upEtUlemG/SKsyT5DwolK8ISdARNdec+e5NjcOT6cXOeKlGwmzYEnadt44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arG2ZxVG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D844AC16AAE;
-	Fri,  9 Jan 2026 12:16:24 +0000 (UTC)
+	 MIME-Version; b=TBH9rHJvs9xMpBLzUbt44fcqNJjHH9hP68cXDIeYMhkKOeXFD9Mz49a7jc4B+SMauczNPBITxh+7C4hnMCScPauKjIgNaUxUedKdQBf1EuX38s13AiZ695hWiAGyaRjWqj0911UEMBVqJKsVkAgCb0j5u33RFlaVYun6+uPSx+c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GanpXK4L; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76698C4CEF1;
+	Fri,  9 Jan 2026 12:16:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960985;
-	bh=Jeno3/cLI1Bx7fg3TDNJhOqgPJFllchbmemGOQNyLLE=;
+	s=korg; t=1767960990;
+	bh=GmZDOhSgMUThpuLItwcQHDyXPLHC0rRIV2DJVVntydM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=arG2ZxVGZbwAYMKgWQeobmvAw6mQ0EQKce7pabqPfRak6RO4rlbPe9hjHZnpRCkYM
-	 5ziCuWYWzAWTZGOHHvTTWc50o4P+sJPyFUqWGyY5bL3QxWGK6byP9R+qwL2eyxAGdd
-	 BNxfDJnt7ttwbS5OV5AaJ3p06r2ukJApZVxOyyqw=
+	b=GanpXK4L2p2rNakAc02LLYsgBTVYCXSOqlXmZnkCLtePwfyrxn1y9G1+e8415lCQ7
+	 BUt6p+Qos2rkdGNA1umv+kWw0CaIobuXdP57gOOBYjiPEBXpG+nZnBOyPSlStbISKC
+	 pjWwAK9KVdjaLaaIdP8wzv1NMBLLiTgGh+vMvudw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 594/737] media: i2c: adv7842: Remove redundant cancel_delayed_work in probe
-Date: Fri,  9 Jan 2026 12:42:13 +0100
-Message-ID: <20260109112156.346966731@linuxfoundation.org>
+Subject: [PATCH 6.6 595/737] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
+Date: Fri,  9 Jan 2026 12:42:14 +0100
+Message-ID: <20260109112156.384135601@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -63,51 +66,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8 upstream.
+commit cdd0f118ef87db8a664fb5ea366fd1766d2df1cd upstream.
 
-The delayed_work delayed_work_enable_hotplug is initialized with
-INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
-anywhere in the probe function.
+vpu_get_plat_device() increases the reference count of the returned
+platform device. However, when devm_kzalloc() fails, the reference
+is not released, causing a reference leak.
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
+Fix this by calling put_device() on fw_pdev->dev before returning
+on the error path.
 
-Remove the redundant cancel_delayed_work() from error handling
-path and adjust the goto label accordingly to simplify the code
-and avoid potential confusion.
-
-Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7842.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -3564,7 +3564,7 @@ static int adv7842_probe(struct i2c_clie
- 	err = media_entity_pads_init(&sd->entity, ADV7842_PAD_SOURCE + 1,
- 				     state->pads);
- 	if (err)
--		goto err_work_queues;
-+		goto err_i2c;
+--- a/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mediatek/vcodec/common/mtk_vcodec_fw_vpu.c
+@@ -117,8 +117,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_
+ 		vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_enc_handler, priv, rst_id);
  
- 	err = adv7842_core_init(sd);
- 	if (err)
-@@ -3585,8 +3585,6 @@ static int adv7842_probe(struct i2c_clie
- 
- err_entity:
- 	media_entity_cleanup(&sd->entity);
--err_work_queues:
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
- err_i2c:
- 	adv7842_unregister_clients(sd);
- err_hdl:
+ 	fw = devm_kzalloc(&plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		put_device(&fw_pdev->dev);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 	fw->type = VPU;
+ 	fw->ops = &mtk_vcodec_vpu_msg;
+ 	fw->pdev = fw_pdev;
 
 
 
