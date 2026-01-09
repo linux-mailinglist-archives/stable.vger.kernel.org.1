@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207234-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A886D09A4B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39A2ED0916D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74A3E30E07A3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:35 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 92DB8302194A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3334515ADB4;
-	Fri,  9 Jan 2026 12:24:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CA5359F86;
+	Fri,  9 Jan 2026 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2NG9GCtE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nPFt0lY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB05A335567;
-	Fri,  9 Jan 2026 12:24:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C80359FB0;
+	Fri,  9 Jan 2026 11:55:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961475; cv=none; b=i8PHgC2DQw2thjgqSPFm8D1OOIzZv3nl5oskFJbbuNqYrt2Spo3Isxn0tcohDqBnDynocqlGXAdq+FemRyyIeMvZ6ae2KYe8vW+UnljGlrMUSfVGbsmZ8OC2FC7s0AI8OJHcp2M1FdiZchzfqj4G2/cLZ2mfiAt2b4GmFF9RXTQ=
+	t=1767959743; cv=none; b=sPQIzUZDfOJ/RjQcQ5/tYyM1e7/pma3cqBd32sgWCypdV/nPiS9M/wtZpxfeswu+BmKYYERObbeU8Q6Qxt4Q+1sPoZysvYKTPNSN0zpcUwrszAKyvtCzG+8njOAnpzHCzLbZDhWgdwz5Vlwx8SVarqrWsDWYsagxPIrZrCcoBWY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961475; c=relaxed/simple;
-	bh=AxfSTdgLIdk4mPIxmG98puQ7ftcH37JwWz/RCwLy6SQ=;
+	s=arc-20240116; t=1767959743; c=relaxed/simple;
+	bh=2SAmvGCB4fMPuaK8wZ4so5LAP5wDzbDsyo8D5NuedZY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tVfcKtkx3XHE23+6t4VgfevozDDKuvPMMVC6zw09PtETpVZa4FLXM5K3HTII1JbV2SyL15nCIaGlV+qfkgdZl+vW/OkiqHKKmw9+1QSLYmXuOOyp/MhfwkFqow1l0+thpXdTOIJiqKoLbN6dl2YjONr68Ft9NkPwANZow+43kRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2NG9GCtE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB8DC4CEF1;
-	Fri,  9 Jan 2026 12:24:34 +0000 (UTC)
+	 MIME-Version; b=tuxzf0UawpUe6cJTdfgJ15rrU3fwrSRxy5sepO/p/1iR/YNZH9ZhieX5X4npqbhCZaH7V+g3V9hhx2sTvImxPb4ffaeNJdBWTmKOHy/DJaOBv5W++piG+JdawfemOzJRX6eHoKN7mxjADnCK+FGT6v4xZrelL9PzJ1hFUu3+dw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nPFt0lY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47A5C4CEF1;
+	Fri,  9 Jan 2026 11:55:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961474;
-	bh=AxfSTdgLIdk4mPIxmG98puQ7ftcH37JwWz/RCwLy6SQ=;
+	s=korg; t=1767959743;
+	bh=2SAmvGCB4fMPuaK8wZ4so5LAP5wDzbDsyo8D5NuedZY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2NG9GCtEvKeH7aiZYiZjRphXqNe0CQDoHkhNIdTns55iWFFEHOIfMuAPl2LOZtWPo
-	 ltWzet/OthjOQrlouPPCKOrcrpExoBidS8oGQoC7S/02Wx5m/kfMKrjdti8LfDzzQ7
-	 lDD6d+0gV4ZmYb24KPyF6Dc8MOvENAGQwFv5ryzM=
+	b=0nPFt0lYP4rWB8eN78DPb2hpooV4KVrfb+d084vEk94xmxW1xhpUNUs6D7QgrEIrt
+	 l+/o510Vf+aNaMjUiFO27ETsZ51DVv28hTUUbGrHyxE3/uHpQnsQzwB3SjatTbQwgc
+	 PnbvXWH5S36NO08XkMfO0nmaJacpsTXohtFKJE4w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/634] xfrm: also call xfrm_state_delete_tunnel at destroy time for states that were never added
+Subject: [PATCH 6.6 142/737] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
 Date: Fri,  9 Jan 2026 12:34:41 +0100
-Message-ID: <20260109112117.547094043@linuxfoundation.org>
+Message-ID: <20260109112139.341163768@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 10deb69864840ccf96b00ac2ab3a2055c0c04721 ]
+[ Upstream commit 5e88e864118c20e63a1571d0ff0a152e5d684959 ]
 
-In commit b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x"), I
-missed the case where state creation fails between full
-initialization (->init_state has been called) and being inserted on
-the lists.
+In one of the error paths, the memory allocated for skb_rx is not freed.
+Fix that by freeing it before returning.
 
-In this situation, ->init_state has been called, so for IPcomp
-tunnels, the fallback tunnel has been created and added onto the
-lists, but the user state never gets added, because we fail before
-that. The user state doesn't go through __xfrm_state_delete, so we
-don't call xfrm_state_delete_tunnel for those states, and we end up
-leaking the FB tunnel.
-
-There are several codepaths affected by this: the add/update paths, in
-both net/key and xfrm, and the migrate code (xfrm_migrate,
-xfrm_state_migrate). A "proper" rollback of the init_state work would
-probably be doable in the add/update code, but for migrate it gets
-more complicated as multiple states may be involved.
-
-At some point, the new (not-inserted) state will be destroyed, so call
-xfrm_state_delete_tunnel during xfrm_state_gc_destroy. Most states
-will have their fallback tunnel cleaned up during __xfrm_state_delete,
-which solves the issue that b441cf3f8c4b (and other patches before it)
-aimed at. All states (including FB tunnels) will be removed from the
-lists once xfrm_state_fini has called flush_work(&xfrm_state_gc_work).
-
-Reported-by: syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=999eb23467f83f9bf9bf
-Fixes: b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Link: https://patch.msgid.link/20251110175316.106591-1-nihaal@cse.iitm.ac.in
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_state.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index f45b4611b1b3b..78d9900db4387 100644
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -498,6 +498,7 @@ void xfrm_state_free(struct xfrm_state *x)
- }
- EXPORT_SYMBOL(xfrm_state_free);
+diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
+index 3b4ded2ac801c..37232ee220375 100644
+--- a/drivers/net/wireless/st/cw1200/bh.c
++++ b/drivers/net/wireless/st/cw1200/bh.c
+@@ -317,10 +317,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
  
-+static void xfrm_state_delete_tunnel(struct xfrm_state *x);
- static void xfrm_state_gc_destroy(struct xfrm_state *x)
- {
- 	hrtimer_cancel(&x->mtimer);
-@@ -512,6 +513,7 @@ static void xfrm_state_gc_destroy(struct xfrm_state *x)
- 	kfree(x->preplay_esn);
- 	if (x->type_offload)
- 		xfrm_put_type_offload(x->type_offload);
-+	xfrm_state_delete_tunnel(x);
- 	if (x->type) {
- 		x->type->destructor(x);
- 		xfrm_put_type(x->type);
-@@ -671,7 +673,6 @@ void __xfrm_state_destroy(struct xfrm_state *x)
- }
- EXPORT_SYMBOL(__xfrm_state_destroy);
+ 	if (wsm_id & 0x0400) {
+ 		int rc = wsm_release_tx_buffer(priv, 1);
+-		if (WARN_ON(rc < 0))
++		if (WARN_ON(rc < 0)) {
++			dev_kfree_skb(skb_rx);
+ 			return rc;
+-		else if (rc > 0)
++		} else if (rc > 0) {
+ 			*tx = 1;
++		}
+ 	}
  
--static void xfrm_state_delete_tunnel(struct xfrm_state *x);
- int __xfrm_state_delete(struct xfrm_state *x)
- {
- 	struct net *net = xs_net(x);
+ 	/* cw1200_wsm_rx takes care on SKB livetime */
 -- 
 2.51.0
 
