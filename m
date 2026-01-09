@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207219-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71EE2D09320
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDCDFD099EE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B66C308C086
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EED5630D1C72
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4452C335561;
-	Fri,  9 Jan 2026 11:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DFEC35B127;
+	Fri,  9 Jan 2026 12:23:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvXzc2+P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mA+BFoaO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0695E31A7EA;
-	Fri,  9 Jan 2026 11:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2F5835A93E;
+	Fri,  9 Jan 2026 12:23:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959721; cv=none; b=TYy3CXHIjHw/ZOGZXeVlerdYDY38ubkTx8OxTruWyiQJDZXxhaH/d3prpWvz9EubXjBoBExKI0hfG1nKagUyFGAltWBMTAAVfW+Ao9HFgFijCkzPlN8Rjt75rhNXlvtWUHKfZRb5si/sdGeOhYhp64XC/8prpcGyVnfZJ6CNKLE=
+	t=1767961432; cv=none; b=LZl1myWEK/VD+koelgbMIr1FwpY54KmA1iZTCSJqS+mlzmxq2+Ghg8tUAZfeJBW56rgpWZDSlTGzcN+xiIg4P6mhCXnS5WBHz1nrH0x/bAyyks/EkT1GXkrkCQq9gQ17bkjaquqO9PBQsQ2Jld2TQOXmCCGZ9uV7ixPVKuEKyt4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959721; c=relaxed/simple;
-	bh=K3sv4FxOxBx/Dzvqyf5Ovy47LEDkmc8KWOvdMUpTwJQ=;
+	s=arc-20240116; t=1767961432; c=relaxed/simple;
+	bh=4ZNW1AwaUhY7FURpKj+AUJKrn1lNq0dNbYH85xBuBp0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bofoACqAn7rpEx+Kf9QMi25LLePHbSZEplQ/sLk7E4zNhGeZBxcg9VPRvmbrsZgY+JoUwtIscLz4GRr2yzgb9/mYe/edrbCe1CFheKLmmtjo/xKRSM7E5E7mEu8oCMvd0jLcMIn1XcDSYdLR89afrwtbmnTs8C5L8CJTkWD6DQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvXzc2+P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8273FC4CEF1;
-	Fri,  9 Jan 2026 11:55:20 +0000 (UTC)
+	 MIME-Version; b=JnF7hkYqRIxk6n4UMRaIwwuz1QStU7fpOV5k0E6G2eYSrqKB0poyBNmq22iSsm8IzyWCNgAaaeYHCCYaOzT6JhkVwNAalZVSSjgM6JVX3wwPds7CRr/FQzRKLckjNshDLtQR+OtBkyIe6PkoK+s5utmhyYtPJw3al79c7IawNH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mA+BFoaO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8215CC16AAE;
+	Fri,  9 Jan 2026 12:23:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959720;
-	bh=K3sv4FxOxBx/Dzvqyf5Ovy47LEDkmc8KWOvdMUpTwJQ=;
+	s=korg; t=1767961431;
+	bh=4ZNW1AwaUhY7FURpKj+AUJKrn1lNq0dNbYH85xBuBp0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IvXzc2+PUjPmurpD/W6aFKveK7WEcDHIkTn0rnwq9GO9YoAMMstw6ZPN9PKVkpLKP
-	 ByCkF+dAsUpX+oSU6DdOB/xgS/Sdd7lNYmnK5OwBPF0aOfkZqM6u+c0L3mQRgOPvy6
-	 A+o8rL/ajJEwEUNvP9/MCLmHBk/qEowCn6NcI3s8=
+	b=mA+BFoaO6qthYafYhYY97CJjSEx21PEhyQ+q+0KANKQvgin7/zIpg/9CFhl4B+KhR
+	 vtmn+oe04ZZ4aaaniddThKLk0++BGuLLdeWpiMfYFejZUlf27JJ7s3e0UPvHPdlPpT
+	 WPBIZzBFhduO3V2X5+6zKBykk3wPsQoPygEZRY/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <Markus.Elfring@web.de>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 152/737] leds: netxbig: Fix GPIO descriptor leak in error paths
+	syzbot+fce5d9d5bd067d6fbe9b@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 013/634] comedi: pcl818: fix null-ptr-deref in pcl818_ai_cancel()
 Date: Fri,  9 Jan 2026 12:34:51 +0100
-Message-ID: <20260109112139.715639815@linuxfoundation.org>
+Message-ID: <20260109112117.934107855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
+commit a51f025b5038abd3d22eed2ede4cd46793d89565 upstream.
 
-The function netxbig_gpio_ext_get() acquires GPIO descriptors but
-fails to release them when errors occur mid-way through initialization.
-The cleanup callback registered by devm_add_action_or_reset() only
-runs on success, leaving acquired GPIOs leaked on error paths.
+Syzbot identified an issue [1] in pcl818_ai_cancel(), which stems from
+the fact that in case of early device detach via pcl818_detach(),
+subdevice dev->read_subdev may not have initialized its pointer to
+&struct comedi_async as intended. Thus, any such dereferencing of
+&s->async->cmd will lead to general protection fault and kernel crash.
 
-Add goto-based error handling to release all acquired GPIOs before
-returning errors.
+Mitigate this problem by removing a call to pcl818_ai_cancel() from
+pcl818_detach() altogether. This way, if the subdevice setups its
+support for async commands, everything async-related will be
+handled via subdevice's own ->cancel() function in
+comedi_device_detach_locked() even before pcl818_detach(). If no
+support for asynchronous commands is provided, there is no need
+to cancel anything either.
 
-Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
-Suggested-by: Markus Elfring <Markus.Elfring@web.de>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] Syzbot crash:
+Oops: general protection fault, probably for non-canonical address 0xdffffc0000000005: 0000 [#1] SMP KASAN PTI
+KASAN: null-ptr-deref in range [0x0000000000000028-0x000000000000002f]
+CPU: 1 UID: 0 PID: 6050 Comm: syz.0.18 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 08/18/2025
+RIP: 0010:pcl818_ai_cancel+0x69/0x3f0 drivers/comedi/drivers/pcl818.c:762
+...
+Call Trace:
+ <TASK>
+ pcl818_detach+0x66/0xd0 drivers/comedi/drivers/pcl818.c:1115
+ comedi_device_detach_locked+0x178/0x750 drivers/comedi/drivers.c:207
+ do_devconfig_ioctl drivers/comedi/comedi_fops.c:848 [inline]
+ comedi_unlocked_ioctl+0xcde/0x1020 drivers/comedi/comedi_fops.c:2178
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+...
+
+Reported-by: syzbot+fce5d9d5bd067d6fbe9b@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=fce5d9d5bd067d6fbe9b
+Fixes: 00aba6e7b565 ("staging: comedi: pcl818: remove 'neverending_ai' from private data")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20251023141457.398685-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ drivers/comedi/drivers/pcl818.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
-index 6692de0af68f1..ea0801b9cb010 100644
---- a/drivers/leds/leds-netxbig.c
-+++ b/drivers/leds/leds-netxbig.c
-@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 	if (!addr)
- 		return -ENOMEM;
+--- a/drivers/comedi/drivers/pcl818.c
++++ b/drivers/comedi/drivers/pcl818.c
+@@ -1111,10 +1111,9 @@ static void pcl818_detach(struct comedi_
+ {
+ 	struct pcl818_private *devpriv = dev->private;
  
-+	gpio_ext->addr = addr;
-+	gpio_ext->num_addr = 0;
+-	if (devpriv) {
+-		pcl818_ai_cancel(dev, dev->read_subdev);
++	if (devpriv)
+ 		pcl818_reset(dev);
+-	}
 +
- 	/*
- 	 * We cannot use devm_ managed resources with these GPIO descriptors
- 	 * since they are associated with the "GPIO extension device" which
-@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_set_code;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
- 		addr[i] = gpiod;
-+		gpio_ext->num_addr++;
- 	}
--	gpio_ext->addr = addr;
--	gpio_ext->num_addr = num_addr;
- 
- 	ret = gpiod_count(gpio_ext_dev, "data");
- 	if (ret < 0) {
- 		dev_err(dev,
- 			"Failed to count GPIOs in DT property data-gpios\n");
--		return ret;
-+		goto err_free_addr;
- 	}
- 	num_data = ret;
- 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
--	if (!data)
--		return -ENOMEM;
-+	if (!data) {
-+		ret = -ENOMEM;
-+		goto err_free_addr;
-+	}
-+
-+	gpio_ext->data = data;
-+	gpio_ext->num_data = 0;
- 
- 	for (i = 0; i < num_data; i++) {
- 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_free_data;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
- 		data[i] = gpiod;
-+		gpio_ext->num_data++;
- 	}
--	gpio_ext->data = data;
--	gpio_ext->num_data = num_data;
- 
- 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(gpiod)) {
- 		dev_err(dev,
- 			"Failed to get GPIO from DT property enable-gpio\n");
--		return PTR_ERR(gpiod);
-+		goto err_free_data;
- 	}
- 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
- 	gpio_ext->enable = gpiod;
- 
- 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
-+
-+err_free_data:
-+	for (i = 0; i < gpio_ext->num_data; i++)
-+		gpiod_put(gpio_ext->data[i]);
-+err_set_code:
-+	ret = PTR_ERR(gpiod);
-+err_free_addr:
-+	for (i = 0; i < gpio_ext->num_addr; i++)
-+		gpiod_put(gpio_ext->addr[i]);
-+	return ret;
+ 	pcl818_free_dma(dev);
+ 	comedi_legacy_detach(dev);
  }
- 
- static int netxbig_leds_get_of_pdata(struct device *dev,
--- 
-2.51.0
-
 
 
 
