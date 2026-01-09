@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207399-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2982DD09E95
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14D25D0950F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C2B03122A91
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A53C309305F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA7C35B14C;
-	Fri,  9 Jan 2026 12:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DC631946C8;
+	Fri,  9 Jan 2026 12:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C4aL/GWl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSfG9sGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADD0E35A95C;
-	Fri,  9 Jan 2026 12:32:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52091335561;
+	Fri,  9 Jan 2026 12:03:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961944; cv=none; b=oMFf3/6IVB+mJo9L1F5xsshA926m1d2gmBVdG7MvOEgsSk8Oro7OTZqJW5nQ4vhQw+8v0WAi4vssF+7KKtbn3cEihv1q5seF13pojq5PGVPuqjg9VBr7NWrKlIEib9cwtkVP+aN27fqbbs5BnDS5bAmw1yj7QyuApuSdTeg8tps=
+	t=1767960226; cv=none; b=Ab+eoDy2Dh9AV/s4ZIxfFyHsRyxd6YFYGUtJv0B1S79w1KEIiCPLu1GwCKF4vZbmvrG/c12upaag8Ki6Bm6hbOxn8fjeY7eHKVDHqqoUCzKK85lZQfExoiO4Sf6w8rhrc/Iul4KvPC9hXcAXB/JfJqgDabfIbXt4afrhpDb81k8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961944; c=relaxed/simple;
-	bh=bdguDp9SvKWKhWRMfcz3C9h0bkxFVRRyfx2g7TVCoRE=;
+	s=arc-20240116; t=1767960226; c=relaxed/simple;
+	bh=0gfQMq628D0gy2AA1VgPVxIOJNhkCesxPPgQLRy8nu0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKKc+WDhpJ01fbyIYgy5vuZAI9iXbnEcMRIgXPYVRud8lfV0aiG5Q79j2lesqDgef+z1RbYg7O/cql48hE6zmapkexS2OZuuv/pf7R48cpvJK1rlmt8UNhCcZli6iGj60iz72B5ol7gx4OXOW1IWkBE028pnkLVfjYpwXzV+tQI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C4aL/GWl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B5ECC16AAE;
-	Fri,  9 Jan 2026 12:32:24 +0000 (UTC)
+	 MIME-Version; b=XJ6HrbzulrA6RxEwvRAB96+BFLkYaZUFbehqCWv676hD+mwbEpownzvAZ0hpNAh1HTui3rX3ebgM+TS3fAO9SUqXjnsJQU42TL4I341IiHg2G7T4EyvXuqAcK+wL/l7L4+WzZDbftYfXmXT3SHGW13YRPkOrFmxgv3RcuPJTTC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSfG9sGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97D85C4CEF1;
+	Fri,  9 Jan 2026 12:03:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961944;
-	bh=bdguDp9SvKWKhWRMfcz3C9h0bkxFVRRyfx2g7TVCoRE=;
+	s=korg; t=1767960226;
+	bh=0gfQMq628D0gy2AA1VgPVxIOJNhkCesxPPgQLRy8nu0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C4aL/GWlPNo/41TLQM1Uw6bVrQUq+A++v3n3jQo98e20q2P9x9hpGQz+ydqtjLAK+
-	 jqOdBkQwJEEQ/jlK4zIW9fUDFiy51cupv+ztIEkqDqf47pmStE8Lco3N+Dzzg7DoEd
-	 FVlT/iauO7Rd0oWDTQ0ZBAnWxwadcFMq16y1h4eU=
+	b=iSfG9sGEldljplCyOd3wVtJTvmd1MFojrKFHSuCXZMW0NHTKl3fzxuTTSpe2IxQ/Q
+	 GrUTTx054IgD8le1DXkuT81V3JphjsDfwrHXcrmMa4HzivIbNyDe5YWbQ97uAkEZ83
+	 8WlXBqPlAsMygYfRTMiSL+dAbiL2+/OHfk5ojpIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Curley <jcurley@purestorage.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Stephen Zhang <starzhangzsd@gmail.com>,
+	Andreas Gruenbacher <agruenba@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 191/634] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
+Subject: [PATCH 6.6 330/737] gfs2: Fix use of bio_chain
 Date: Fri,  9 Jan 2026 12:37:49 +0100
-Message-ID: <20260109112124.625018451@linuxfoundation.org>
+Message-ID: <20260109112146.407680032@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Curley <jcurley@purestorage.com>
+From: Andreas Gruenbacher <agruenba@redhat.com>
 
-[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
+[ Upstream commit 8a157e0a0aa5143b5d94201508c0ca1bb8cfb941 ]
 
-Fixes a crash when layout is null during this call stack:
+In gfs2_chain_bio(), the call to bio_chain() has its arguments swapped.
+The result is leaked bios and incorrect synchronization (only the last
+bio will actually be waited for).  This code is only used during mount
+and filesystem thaw, so the bug normally won't be noticeable.
 
-write_inode
-    -> nfs4_write_inode
-        -> pnfs_layoutcommit_inode
-
-pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
-around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
-to reference a null layout.
-
-Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
-Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reported-by: Stephen Zhang <starzhangzsd@gmail.com>
+Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/gfs2/lops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index 86f008241c56b..43cd2d6a0836a 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -465,6 +465,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 	struct pnfs_layout_segment *lseg, *next;
- 
- 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
-+	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
- 		pnfs_clear_lseg_state(lseg, lseg_list);
- 	pnfs_clear_layoutreturn_info(lo);
+diff --git a/fs/gfs2/lops.c b/fs/gfs2/lops.c
+index 483f698070622..b25b741e3c96a 100644
+--- a/fs/gfs2/lops.c
++++ b/fs/gfs2/lops.c
+@@ -492,7 +492,7 @@ static struct bio *gfs2_chain_bio(struct bio *prev, unsigned int nr_iovecs)
+ 	new = bio_alloc(prev->bi_bdev, nr_iovecs, prev->bi_opf, GFP_NOIO);
+ 	bio_clone_blkg_association(new, prev);
+ 	new->bi_iter.bi_sector = bio_end_sector(prev);
+-	bio_chain(new, prev);
++	bio_chain(prev, new);
+ 	submit_bio(prev);
+ 	return new;
+ }
 -- 
 2.51.0
 
