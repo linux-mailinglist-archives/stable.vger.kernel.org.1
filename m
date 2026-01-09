@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE982D0A15F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1512AD08FC9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:46:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B69FD32F7667
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B9993082E9E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E1CA35C197;
-	Fri,  9 Jan 2026 12:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBA38359703;
+	Fri,  9 Jan 2026 11:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UFB/qG7b"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IiEggDY9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1130623F417;
-	Fri,  9 Jan 2026 12:49:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A085333C52A;
+	Fri,  9 Jan 2026 11:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962981; cv=none; b=dZTu690XTwUaaE4h89ZHUmSnXPHeeDp4N6FPDnQ1Q9JLGB+Gj2Zedkuqrozchoi4kvdKqqYWcXZKN5uaPo3a9d7FgDy2F7UyL99pMbSopNmPpO9CODUGLM8SNuJ6nvub1yE3G2xibuv7LUuIHCy+h1RO2qM9iG5wLH6dfUk1iZY=
+	t=1767959064; cv=none; b=uLxZ1WrdCMfqHUMM5LAv7ydVc35wrUaiRUrF4YnUZEX+/O5tlNIJV+ucp5pMUC3DSub5CB73m5upV/rpX5e86DiTXWv4u+U/+lCt4jkCyjQQzUt5bHRPzITo3En/O07TclZ3CCrvarDPB/9wOyGf7wvUI2ECWM7D95qoK77YZks=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962981; c=relaxed/simple;
-	bh=OxXooTu1sgZFdBcAif6OVF4oKjo4AHW48+4EvzpuhN8=;
+	s=arc-20240116; t=1767959064; c=relaxed/simple;
+	bh=nup5CeBqLMU6bAXTt3iZKYh6st9ZBaveso5cq3eoIY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OV/aBRW8KdrmIyCvY7Ns7/1i6FDCtPJiKLg75kir3t2reC9CgMe0rgTjxWgb3/zAsJuSPz+/X8zdhO7VJWB4FzbhRPjPIINDQLzhdFrTkbeDtzo1cU1foecVDWBBYXWRtTPLSnc/HvgI92c9x1BM9ujDY2AuHw7+MN9V5z9xZz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UFB/qG7b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89289C4CEF1;
-	Fri,  9 Jan 2026 12:49:40 +0000 (UTC)
+	 MIME-Version; b=UATxwj4NRWBIRYKBsptL9ZexLRXfCNfuB/MlfB0Ayd+jWnMhiAaaUMJi6FzYPlQDbDZ90a9MktOxAKMyXzYEmT8zFF3YtZeNiZp594fwg/azByyM1ZvtFYjpaQfYknglAnjVmCajiesd0H53smbZAmF3N1bceHwlm777WXlUPJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IiEggDY9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7D99C16AAE;
+	Fri,  9 Jan 2026 11:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962980;
-	bh=OxXooTu1sgZFdBcAif6OVF4oKjo4AHW48+4EvzpuhN8=;
+	s=korg; t=1767959064;
+	bh=nup5CeBqLMU6bAXTt3iZKYh6st9ZBaveso5cq3eoIY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UFB/qG7b0lxaAA2UB76EBndYn6FXfMO8OnFRlWmcNLAsEEAwbHD4mXq8+aYHLdXU8
-	 9BTWbJE7d2yFHUUBFamCp3s58KY7vOaZZUjbu+jLZzLNGtL9H8rj1vItpD+wJujnZe
-	 pwTvcog8cauFTWHS4KeXh8A+7Ggdzr3wQhdOtAws=
+	b=IiEggDY9NLFTUm0mAX8BYQkXGqE8Jdh0ujL6QVbTp900BrsfamkEFXNCfX68L9zGB
+	 M7CFobQ4c+EJWDWkUjMUCl4tWoHdnrIg6rGHoCxL+rqZI+PVlGDZD7redJBVs4kcCS
+	 oNvkngBGxwh6AqpNnUn/OUOVNfCyRuMKV79kJaVw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 554/634] f2fs: drop inode from the donation list when the last file is closed
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Chris Mason <clm@meta.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>
+Subject: [PATCH 6.12 11/16] sched/fair: Small cleanup to sched_balance_newidle()
 Date: Fri,  9 Jan 2026 12:43:52 +0100
-Message-ID: <20260109112138.441487402@linuxfoundation.org>
+Message-ID: <20260109111951.850357777@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jaegeuk Kim <jaegeuk@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 078cad8212ce4f4ebbafcc0936475b8215e1ca2a ]
+commit e78e70dbf603c1425f15f32b455ca148c932f6c1 upstream.
 
-Let's drop the inode from the donation list when there is no other
-open file.
+Pull out the !sd check to simplify code.
 
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Stable-dep-of: 10b591e7fb7c ("f2fs: fix to avoid updating compression context during writeback")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://patch.msgid.link/20251107161739.525916173@infradead.org
+[ Ajay: Modified to apply on v6.12 ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    2 ++
- fs/f2fs/file.c  |    8 +++++++-
- fs/f2fs/inode.c |    2 +-
- fs/f2fs/super.c |    1 +
- 4 files changed, 11 insertions(+), 2 deletions(-)
+ kernel/sched/fair.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -824,6 +824,7 @@ struct f2fs_inode_info {
- 	/* linked in global inode list for cache donation */
- 	struct list_head gdonate_list;
- 	pgoff_t donate_start, donate_end; /* inclusive */
-+	atomic_t open_count;		/* # of open files */
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12864,14 +12864,16 @@ static int sched_balance_newidle(struct
  
- 	struct task_struct *atomic_write_task;	/* store atomic write task */
- 	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
-@@ -3473,6 +3474,7 @@ int f2fs_try_to_free_nats(struct f2fs_sb
- void f2fs_update_inode(struct inode *inode, struct page *node_page);
- void f2fs_update_inode_page(struct inode *inode);
- int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc);
-+void f2fs_remove_donate_inode(struct inode *inode);
- void f2fs_evict_inode(struct inode *inode);
- void f2fs_handle_failed_inode(struct inode *inode);
+ 	rcu_read_lock();
+ 	sd = rcu_dereference_check_sched_domain(this_rq->sd);
++	if (!sd) {
++		rcu_read_unlock();
++		goto out;
++	}
  
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -595,7 +595,10 @@ static int f2fs_file_open(struct inode *
- 	if (err)
- 		return err;
+ 	if (!get_rd_overloaded(this_rq->rd) ||
+-	    (sd && this_rq->avg_idle < sd->max_newidle_lb_cost)) {
++	    this_rq->avg_idle < sd->max_newidle_lb_cost) {
  
--	return finish_preallocate_blocks(inode);
-+	err = finish_preallocate_blocks(inode);
-+	if (!err)
-+		atomic_inc(&F2FS_I(inode)->open_count);
-+	return err;
- }
- 
- void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
-@@ -1923,6 +1926,9 @@ out:
- 
- static int f2fs_release_file(struct inode *inode, struct file *filp)
- {
-+	if (atomic_dec_and_test(&F2FS_I(inode)->open_count))
-+		f2fs_remove_donate_inode(inode);
-+
- 	/*
- 	 * f2fs_release_file is called at every close calls. So we should
- 	 * not drop any inmemory pages by close called by other process.
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -743,7 +743,7 @@ int f2fs_write_inode(struct inode *inode
- 	return 0;
- }
- 
--static void f2fs_remove_donate_inode(struct inode *inode)
-+void f2fs_remove_donate_inode(struct inode *inode)
- {
- 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
- 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1425,6 +1425,7 @@ static struct inode *f2fs_alloc_inode(st
- 	/* Initialize f2fs-specific inode info */
- 	atomic_set(&fi->dirty_pages, 0);
- 	atomic_set(&fi->i_compr_blocks, 0);
-+	atomic_set(&fi->open_count, 0);
- 	init_f2fs_rwsem(&fi->i_sem);
- 	spin_lock_init(&fi->i_size_lock);
- 	INIT_LIST_HEAD(&fi->dirty_list);
+-		if (sd)
+-			update_next_balance(sd, &next_balance);
++		update_next_balance(sd, &next_balance);
+ 		rcu_read_unlock();
+-
+ 		goto out;
+ 	}
+ 	rcu_read_unlock();
 
 
 
