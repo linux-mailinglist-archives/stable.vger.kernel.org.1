@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207458-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E839D09EF8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 296BFD09714
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CCB333068AA9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CFEFD30B7272
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C2135A95B;
-	Fri,  9 Jan 2026 12:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9781DE885;
+	Fri,  9 Jan 2026 12:08:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KY8phF/V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf8Cv13x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C899B359701;
-	Fri,  9 Jan 2026 12:35:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E72D33B6F1;
+	Fri,  9 Jan 2026 12:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962112; cv=none; b=amdUMov9tGb9cdYQ9l1ijq9PHQbebVC0mGz+U9PIA01qKCccSrDnFPyehiHEx5xIiqvxJTNwxs3Ek3NR04D3862UGI2EYs1C6gPiUp6ZZhZSUPt0h+YFM49mnAgomuXSDXazf+URWJeDLDr3X62dU2oyCFk0ePOcE4W1BHh8kfo=
+	t=1767960480; cv=none; b=WI8elzSoPv+p9kvQ24nIdPgjlmSKt5O3GOI2GwcbNqzex83itiuPgIltI4s2XcN7XH3KFdBBst9nThhBk4VRGl3dudEiKPfqbvlqVQ9eEmf67dVK9Zjstk4SoYqV264pYbpCqhJdQt6vk7ZypoASBPrbP0liTMjLoxgDwIK40uQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962112; c=relaxed/simple;
-	bh=cdpJeQ+0BooxRpiFtJOWLKYE5WFVy6bY61K5o/1EwGo=;
+	s=arc-20240116; t=1767960480; c=relaxed/simple;
+	bh=khWmye2FjZ+JldMV98CPs8Vj9Ry+ngik0fZf9Wii64E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u4b/en/Ylom9QyxFUyyfdj0ES1p5s3PRe71hWHhOjLHcQfAtQncGpV0pAAil14vswY3ZNcOWm/7DVjL7eRFUL0G0TOQYWA8fqbtiYYkK5i1HEcZ3IvdWejedVWruEaIkTTcwBXFUPnNQHpRCA+3EVtBmep7hE2BWPQLdXq4BxzA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KY8phF/V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152A2C4CEF1;
-	Fri,  9 Jan 2026 12:35:11 +0000 (UTC)
+	 MIME-Version; b=jzEdJpS44ZdTz1fO8+/MIG1vK0Wma9zpdB4saEf5rrQdjj/ltleB8/T8xi5MN/LdsAeya/tONGH2MtVV4V7ZOnXq+T+cw6NUukLShnexxAMvovH3JF6Z0L0XGQ9T34mWfUrEls3rSTUHy/p2F+6VGR3pjRIdExqzwQO7ezej+H4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf8Cv13x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A90C4CEF1;
+	Fri,  9 Jan 2026 12:07:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962112;
-	bh=cdpJeQ+0BooxRpiFtJOWLKYE5WFVy6bY61K5o/1EwGo=;
+	s=korg; t=1767960479;
+	bh=khWmye2FjZ+JldMV98CPs8Vj9Ry+ngik0fZf9Wii64E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KY8phF/VSDEJ+jBwhId6wXVNRKJu5snwsIigqJikgactSIuO0Ho2e7m1uzPWWgRxQ
-	 ZzOEbq62l/DMWHDb8zRd4TlL00URPaqSyLe5cY6zKyXHsRIHqsp9BomqZ2syQ3BSsl
-	 OhlaNRY5hoARSp6vAaxF3pEIYN2pwmD8Vvhp2IMg=
+	b=qf8Cv13x21REcwsUIQLgTqpBf4L2C7/sAHOMSGQAr4nlPH4IjeFKsEY8wjz5lDbdO
+	 OZsrCqSzrnyUCJ+02g4+zAREVEZCrf2Icj5eomD2R8IBmIBNOmv1a/4iFmd43POnD4
+	 DiUCsXObXGBxU7d6f0bwOppSiGvuK1DYg5Jim5iU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 251/634] mlxsw: spectrum_router: Fix neighbour use-after-free
-Date: Fri,  9 Jan 2026 12:38:49 +0100
-Message-ID: <20260109112126.983767708@linuxfoundation.org>
+Subject: [PATCH 6.6 391/737] scsi: qla2xxx: Fix lost interrupts with qlini_mode=disabled
+Date: Fri,  9 Jan 2026 12:38:50 +0100
+Message-ID: <20260109112148.707786094@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,201 +60,195 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit 8b0e69763ef948fb872a7767df4be665d18f5fd4 ]
+[ Upstream commit 4f6aaade2a22ac428fa99ed716cf2b87e79c9837 ]
 
-We sometimes observe use-after-free when dereferencing a neighbour [1].
-The problem seems to be that the driver stores a pointer to the
-neighbour, but without holding a reference on it. A reference is only
-taken when the neighbour is used by a nexthop.
+When qla2xxx is loaded with qlini_mode=disabled,
+ha->flags.disable_msix_handshake is used before it is set, resulting in
+the wrong interrupt handler being used on certain HBAs
+(qla2xxx_msix_rsp_q_hs() is used when qla2xxx_msix_rsp_q() should be
+used).  The only difference between these two interrupt handlers is that
+the _hs() version writes to a register to clear the "RISC" interrupt,
+whereas the other version does not.  So this bug results in the RISC
+interrupt being cleared when it should not be.  This occasionally causes
+a different interrupt handler qla24xx_msix_default() for a different
+vector to see ((stat & HSRX_RISC_INT) == 0) and ignore its interrupt,
+which then causes problems like:
 
-Fix by simplifying the reference counting scheme. Always take a
-reference when storing a neighbour pointer in a neighbour entry. Avoid
-taking a referencing when the neighbour is used by a nexthop as the
-neighbour entry associated with the nexthop already holds a reference.
+qla2xxx [0000:02:00.0]-d04c:6: MBX Command timeout for cmd 20,
+  iocontrol=8 jiffies=1090c0300 mb[0-3]=[0x4000 0x0 0x40 0xda] mb7 0x500
+  host_status 0x40000010 hccr 0x3f00
+qla2xxx [0000:02:00.0]-101e:6: Mailbox cmd timeout occurred, cmd=0x20,
+  mb[0]=0x20. Scheduling ISP abort
+(the cmd varies; sometimes it is 0x20, 0x22, 0x54, 0x5a, 0x5d, or 0x6a)
 
-Tested by running the test that uncovered the problem over 300 times.
-Without this patch the problem was reproduced after a handful of
-iterations.
+This problem can be reproduced with a 16 or 32 Gbps HBA by loading
+qla2xxx with qlini_mode=disabled and running a high IOPS test while
+triggering frequent RSCN database change events.
 
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_neigh_entry_update+0x2d4/0x310
-Read of size 8 at addr ffff88817f8e3420 by task ip/3929
+While analyzing the problem I discovered that even with
+disable_msix_handshake forced to 0, it is not necessary to clear the
+RISC interrupt from qla2xxx_msix_rsp_q_hs() (more below).  So just
+completely remove qla2xxx_msix_rsp_q_hs() and the logic for selecting
+it, which also fixes the bug with qlini_mode=disabled.
 
-CPU: 3 UID: 0 PID: 3929 Comm: ip Not tainted 6.18.0-rc4-virtme-g36b21a067510 #3 PREEMPT(full)
-Hardware name: Nvidia SN5600/VMOD0013, BIOS 5.13 05/31/2023
-Call Trace:
- <TASK>
- dump_stack_lvl+0x6f/0xa0
- print_address_description.constprop.0+0x6e/0x300
- print_report+0xfc/0x1fb
- kasan_report+0xe4/0x110
- mlxsw_sp_neigh_entry_update+0x2d4/0x310
- mlxsw_sp_router_rif_gone_sync+0x35f/0x510
- mlxsw_sp_rif_destroy+0x1ea/0x730
- mlxsw_sp_inetaddr_port_vlan_event+0xa1/0x1b0
- __mlxsw_sp_inetaddr_lag_event+0xcc/0x130
- __mlxsw_sp_inetaddr_event+0xf5/0x3c0
- mlxsw_sp_router_netdevice_event+0x1015/0x1580
- notifier_call_chain+0xcc/0x150
- call_netdevice_notifiers_info+0x7e/0x100
- __netdev_upper_dev_unlink+0x10b/0x210
- netdev_upper_dev_unlink+0x79/0xa0
- vrf_del_slave+0x18/0x50
- do_set_master+0x146/0x7d0
- do_setlink.isra.0+0x9a0/0x2880
- rtnl_newlink+0x637/0xb20
- rtnetlink_rcv_msg+0x6fe/0xb90
- netlink_rcv_skb+0x123/0x380
- netlink_unicast+0x4a3/0x770
- netlink_sendmsg+0x75b/0xc90
- __sock_sendmsg+0xbe/0x160
- ____sys_sendmsg+0x5b2/0x7d0
- ___sys_sendmsg+0xfd/0x180
- __sys_sendmsg+0x124/0x1c0
- do_syscall_64+0xbb/0xfd0
- entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[...]
+The test below describes the justification for not needing
+qla2xxx_msix_rsp_q_hs():
 
-Allocated by task 109:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x7b/0x90
- __kmalloc_noprof+0x2c1/0x790
- neigh_alloc+0x6af/0x8f0
- ___neigh_create+0x63/0xe90
- mlxsw_sp_nexthop_neigh_init+0x430/0x7e0
- mlxsw_sp_nexthop_type_init+0x212/0x960
- mlxsw_sp_nexthop6_group_info_init.constprop.0+0x81f/0x1280
- mlxsw_sp_nexthop6_group_get+0x392/0x6a0
- mlxsw_sp_fib6_entry_create+0x46a/0xfd0
- mlxsw_sp_router_fib6_replace+0x1ed/0x5f0
- mlxsw_sp_router_fib6_event_work+0x10a/0x2a0
- process_one_work+0xd57/0x1390
- worker_thread+0x4d6/0xd40
- kthread+0x355/0x5b0
- ret_from_fork+0x1d4/0x270
- ret_from_fork_asm+0x11/0x20
+Force disable_msix_handshake to 0:
+qla24xx_config_rings():
+if (0 && (ha->fw_attributes & BIT_6) && (IS_MSIX_NACK_CAPABLE(ha)) &&
+    (ha->flags.msix_enabled)) {
 
-Freed by task 154:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_save_free_info+0x3b/0x60
- __kasan_slab_free+0x43/0x70
- kmem_cache_free_bulk.part.0+0x1eb/0x5e0
- kvfree_rcu_bulk+0x1f2/0x260
- kfree_rcu_work+0x130/0x1b0
- process_one_work+0xd57/0x1390
- worker_thread+0x4d6/0xd40
- kthread+0x355/0x5b0
- ret_from_fork+0x1d4/0x270
- ret_from_fork_asm+0x11/0x20
+In qla24xx_msix_rsp_q() and qla2xxx_msix_rsp_q_hs(), check:
+  (rd_reg_dword(&reg->host_status) & HSRX_RISC_INT)
 
-Last potentially related work creation:
- kasan_save_stack+0x30/0x50
- kasan_record_aux_stack+0x8c/0xa0
- kvfree_call_rcu+0x93/0x5b0
- mlxsw_sp_router_neigh_event_work+0x67d/0x860
- process_one_work+0xd57/0x1390
- worker_thread+0x4d6/0xd40
- kthread+0x355/0x5b0
- ret_from_fork+0x1d4/0x270
- ret_from_fork_asm+0x11/0x20
+Count the number of calls to each function with HSRX_RISC_INT set and
+the number with HSRX_RISC_INT not set while performing some I/O.
 
-Fixes: 6cf3c971dc84 ("mlxsw: spectrum_router: Add private neigh table")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/92d75e21d95d163a41b5cea67a15cd33f547cba6.1764695650.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+If qla2xxx_msix_rsp_q_hs() clears the RISC interrupt (original code):
+qla24xx_msix_rsp_q:    50% of calls have HSRX_RISC_INT set
+qla2xxx_msix_rsp_q_hs:  5% of calls have HSRX_RISC_INT set
+(# of qla2xxx_msix_rsp_q_hs interrupts) =
+    (# of qla24xx_msix_rsp_q interrupts) * 3
+
+If qla2xxx_msix_rsp_q_hs() does not clear the RISC interrupt (patched
+code):
+qla24xx_msix_rsp_q:    100% of calls have HSRX_RISC_INT set
+qla2xxx_msix_rsp_q_hs:   9% of calls have HSRX_RISC_INT set
+(# of qla2xxx_msix_rsp_q_hs interrupts) =
+    (# of qla24xx_msix_rsp_q interrupts) * 3
+
+In the case of the original code, qla24xx_msix_rsp_q() was seeing
+HSRX_RISC_INT set only 50% of the time because qla2xxx_msix_rsp_q_hs()
+was clearing it when it shouldn't have been.  In the patched code,
+qla24xx_msix_rsp_q() sees HSRX_RISC_INT set 100% of the time, which
+makes sense if that interrupt handler needs to clear the RISC interrupt
+(which it does).  qla2xxx_msix_rsp_q_hs() sees HSRX_RISC_INT only 9% of
+the time, which is just overlap from the other interrupt during the
+high IOPS test.
+
+Tested with SCST on:
+QLE2742  FW:v9.08.02 (32 Gbps 2-port)
+QLE2694L FW:v9.10.11 (16 Gbps 4-port)
+QLE2694L FW:v9.08.02 (16 Gbps 4-port)
+QLE2672  FW:v8.07.12 (16 Gbps 2-port)
+both initiator and target mode
+
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/56d378eb-14ad-49c7-bae9-c649b6c7691e@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ethernet/mellanox/mlxsw/spectrum_router.c   | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/scsi/qla2xxx/qla_def.h |  1 -
+ drivers/scsi/qla2xxx/qla_gbl.h |  2 +-
+ drivers/scsi/qla2xxx/qla_isr.c | 32 +++-----------------------------
+ drivers/scsi/qla2xxx/qla_mid.c |  4 +---
+ 4 files changed, 5 insertions(+), 34 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-index a00dd0ee524e1..3fa790c5ef747 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
-@@ -2163,6 +2163,7 @@ mlxsw_sp_neigh_entry_alloc(struct mlxsw_sp *mlxsw_sp, struct neighbour *n,
- 	if (!neigh_entry)
- 		return NULL;
+diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
+index 78a10d4979e9..4f7248643335 100644
+--- a/drivers/scsi/qla2xxx/qla_def.h
++++ b/drivers/scsi/qla2xxx/qla_def.h
+@@ -3504,7 +3504,6 @@ struct isp_operations {
+ #define QLA_MSIX_RSP_Q			0x01
+ #define QLA_ATIO_VECTOR		0x02
+ #define QLA_MSIX_QPAIR_MULTIQ_RSP_Q	0x03
+-#define QLA_MSIX_QPAIR_MULTIQ_RSP_Q_HS	0x04
  
-+	neigh_hold(n);
- 	neigh_entry->key.n = n;
- 	neigh_entry->rif = rif;
- 	INIT_LIST_HEAD(&neigh_entry->nexthop_list);
-@@ -2172,6 +2173,7 @@ mlxsw_sp_neigh_entry_alloc(struct mlxsw_sp *mlxsw_sp, struct neighbour *n,
+ #define QLA_MIDX_DEFAULT	0
+ #define QLA_MIDX_RSP_Q		1
+diff --git a/drivers/scsi/qla2xxx/qla_gbl.h b/drivers/scsi/qla2xxx/qla_gbl.h
+index e556f57c91af..59f448e2e319 100644
+--- a/drivers/scsi/qla2xxx/qla_gbl.h
++++ b/drivers/scsi/qla2xxx/qla_gbl.h
+@@ -768,7 +768,7 @@ extern int qla2x00_dfs_remove(scsi_qla_host_t *);
  
- static void mlxsw_sp_neigh_entry_free(struct mlxsw_sp_neigh_entry *neigh_entry)
- {
-+	neigh_release(neigh_entry->key.n);
- 	kfree(neigh_entry);
+ /* Globa function prototypes for multi-q */
+ extern int qla25xx_request_irq(struct qla_hw_data *, struct qla_qpair *,
+-	struct qla_msix_entry *, int);
++	struct qla_msix_entry *);
+ extern int qla25xx_init_req_que(struct scsi_qla_host *, struct req_que *);
+ extern int qla25xx_init_rsp_que(struct scsi_qla_host *, struct rsp_que *);
+ extern int qla25xx_create_req_que(struct qla_hw_data *, uint16_t, uint8_t,
+diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
+index d48007e18288..a85d3a40ee49 100644
+--- a/drivers/scsi/qla2xxx/qla_isr.c
++++ b/drivers/scsi/qla2xxx/qla_isr.c
+@@ -4473,32 +4473,6 @@ qla2xxx_msix_rsp_q(int irq, void *dev_id)
+ 	return IRQ_HANDLED;
  }
  
-@@ -4027,6 +4029,8 @@ mlxsw_sp_nexthop_dead_neigh_replace(struct mlxsw_sp *mlxsw_sp,
- 	if (err)
- 		goto err_neigh_entry_insert;
- 
-+	neigh_release(old_n);
-+
- 	read_lock_bh(&n->lock);
- 	nud_state = n->nud_state;
- 	dead = n->dead;
-@@ -4035,14 +4039,10 @@ mlxsw_sp_nexthop_dead_neigh_replace(struct mlxsw_sp *mlxsw_sp,
- 
- 	list_for_each_entry(nh, &neigh_entry->nexthop_list,
- 			    neigh_list_node) {
--		neigh_release(old_n);
--		neigh_clone(n);
- 		__mlxsw_sp_nexthop_neigh_update(nh, !entry_connected);
- 		mlxsw_sp_nexthop_group_refresh(mlxsw_sp, nh->nhgi->nh_grp);
- 	}
- 
--	neigh_release(n);
+-irqreturn_t
+-qla2xxx_msix_rsp_q_hs(int irq, void *dev_id)
+-{
+-	struct qla_hw_data *ha;
+-	struct qla_qpair *qpair;
+-	struct device_reg_24xx __iomem *reg;
+-	unsigned long flags;
 -
- 	return 0;
- 
- err_neigh_entry_insert:
-@@ -4130,6 +4130,11 @@ static int mlxsw_sp_nexthop_neigh_init(struct mlxsw_sp *mlxsw_sp,
- 		}
- 	}
- 
-+	/* Release the reference taken by neigh_lookup() / neigh_create() since
-+	 * neigh_entry already holds one.
-+	 */
-+	neigh_release(n);
-+
- 	/* If that is the first nexthop connected to that neigh, add to
- 	 * nexthop_neighs_list
- 	 */
-@@ -4156,11 +4161,9 @@ static void mlxsw_sp_nexthop_neigh_fini(struct mlxsw_sp *mlxsw_sp,
- 					struct mlxsw_sp_nexthop *nh)
- {
- 	struct mlxsw_sp_neigh_entry *neigh_entry = nh->neigh_entry;
--	struct neighbour *n;
- 
- 	if (!neigh_entry)
- 		return;
--	n = neigh_entry->key.n;
- 
- 	__mlxsw_sp_nexthop_neigh_update(nh, true);
- 	list_del(&nh->neigh_list_node);
-@@ -4174,8 +4177,6 @@ static void mlxsw_sp_nexthop_neigh_fini(struct mlxsw_sp *mlxsw_sp,
- 
- 	if (!neigh_entry->connected && list_empty(&neigh_entry->nexthop_list))
- 		mlxsw_sp_neigh_entry_destroy(mlxsw_sp, neigh_entry);
+-	qpair = dev_id;
+-	if (!qpair) {
+-		ql_log(ql_log_info, NULL, 0x505b,
+-		    "%s: NULL response queue pointer.\n", __func__);
+-		return IRQ_NONE;
+-	}
+-	ha = qpair->hw;
 -
--	neigh_release(n);
+-	reg = &ha->iobase->isp24;
+-	spin_lock_irqsave(&ha->hardware_lock, flags);
+-	wrt_reg_dword(&reg->hccr, HCCRX_CLR_RISC_INT);
+-	spin_unlock_irqrestore(&ha->hardware_lock, flags);
+-
+-	queue_work(ha->wq, &qpair->q_work);
+-
+-	return IRQ_HANDLED;
+-}
+-
+ /* Interrupt handling helpers. */
+ 
+ struct qla_init_msix_entry {
+@@ -4511,7 +4485,6 @@ static const struct qla_init_msix_entry msix_entries[] = {
+ 	{ "rsp_q", qla24xx_msix_rsp_q },
+ 	{ "atio_q", qla83xx_msix_atio_q },
+ 	{ "qpair_multiq", qla2xxx_msix_rsp_q },
+-	{ "qpair_multiq_hs", qla2xxx_msix_rsp_q_hs },
+ };
+ 
+ static const struct qla_init_msix_entry qla82xx_msix_entries[] = {
+@@ -4798,9 +4771,10 @@ qla2x00_free_irqs(scsi_qla_host_t *vha)
  }
  
- static bool mlxsw_sp_ipip_netdev_ul_up(struct net_device *ol_dev)
+ int qla25xx_request_irq(struct qla_hw_data *ha, struct qla_qpair *qpair,
+-	struct qla_msix_entry *msix, int vector_type)
++	struct qla_msix_entry *msix)
+ {
+-	const struct qla_init_msix_entry *intr = &msix_entries[vector_type];
++	const struct qla_init_msix_entry *intr =
++		&msix_entries[QLA_MSIX_QPAIR_MULTIQ_RSP_Q];
+ 	scsi_qla_host_t *vha = pci_get_drvdata(ha->pdev);
+ 	int ret;
+ 
+diff --git a/drivers/scsi/qla2xxx/qla_mid.c b/drivers/scsi/qla2xxx/qla_mid.c
+index 79879c4743e6..9946899dd83b 100644
+--- a/drivers/scsi/qla2xxx/qla_mid.c
++++ b/drivers/scsi/qla2xxx/qla_mid.c
+@@ -899,9 +899,7 @@ qla25xx_create_rsp_que(struct qla_hw_data *ha, uint16_t options,
+ 	    rsp->options, rsp->id, rsp->rsp_q_in,
+ 	    rsp->rsp_q_out);
+ 
+-	ret = qla25xx_request_irq(ha, qpair, qpair->msix,
+-		ha->flags.disable_msix_handshake ?
+-		QLA_MSIX_QPAIR_MULTIQ_RSP_Q : QLA_MSIX_QPAIR_MULTIQ_RSP_Q_HS);
++	ret = qla25xx_request_irq(ha, qpair, qpair->msix);
+ 	if (ret)
+ 		goto que_failed;
+ 
 -- 
 2.51.0
 
