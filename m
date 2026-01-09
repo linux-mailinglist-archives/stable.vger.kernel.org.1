@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206749-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 516D1D09EDF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A10D092C3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8500430C7E51
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E6C53000EBE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F7633C53C;
-	Fri,  9 Jan 2026 12:31:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52C4333032C;
+	Fri,  9 Jan 2026 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYV6F61F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z1xeYYU+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1B33372B;
-	Fri,  9 Jan 2026 12:31:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16CAB33CE9A;
+	Fri,  9 Jan 2026 12:01:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961894; cv=none; b=HyEz+FcDtafS+VkRl4Zxx4aZ3/VXoQUlYekwD5qE/nfqc2XRjbfM+2wo6pJDfKXnI211Fek9UJcrArSubG2tIk0OhAwErlP+UXHfLXsCd8PLJjZxfCf/T7rTtsF8rCSoLHaEJUn39c3sUjd4aSL/JrKyuagRLXhqJcT2gpqPDC4=
+	t=1767960090; cv=none; b=kKR1G4wykqivHNKIcryhx3dZIjDLfe3GkU+xPg6HUIdbJ+iTKqaNLweKmSER4hRqUq4Em02xoW/jUbSKxUiBConHth+lS1rJwhjqj6qZSB2C2TSicfhosuflWoAbyEOM/weq6nU/3oAoMOU+ABt9y/zPgLKe5FO44mmLnasnqIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961894; c=relaxed/simple;
-	bh=1V30GIKS4pCuI//P+wh8cySKXq9559XMAX7IjUDmNF4=;
+	s=arc-20240116; t=1767960090; c=relaxed/simple;
+	bh=0omRgO/lcvHjEb37dq1t70BP85/yV+JgzII4ZBFE8vc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WSN+x24iOmXkB8/tE/iZeiFvnnCpc7U2csdguMaibE60mm+S/yaSS/wXBYCZ57jdZyfCV7+42Shy6hLkUIA3d9XAx+dshJirXkFBWhnYw4xt0bGJp17FkpETzWkKf97wR1GnJuVmShT+Dd4uk5+vF+FrGGHdw68glSY3A1SWl7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYV6F61F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E196C4CEF1;
-	Fri,  9 Jan 2026 12:31:33 +0000 (UTC)
+	 MIME-Version; b=HMBCe7ElXM3HCoztmIx4dcwHTrndcmyL7kEhnRZyFvRkGYbPa5PgI1jiMnZxso/XVDlm5Yzoe/nVOeGSKRrQgSTCN1k7wQYioo9sbg+RQJgxjBmR3cZ6YtTStK29wMRsDjL8wmexUNY1/0bYFTwT61EB2Pw4ew6cneez0KmdzC0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z1xeYYU+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95CC2C4CEF1;
+	Fri,  9 Jan 2026 12:01:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961893;
-	bh=1V30GIKS4pCuI//P+wh8cySKXq9559XMAX7IjUDmNF4=;
+	s=korg; t=1767960090;
+	bh=0omRgO/lcvHjEb37dq1t70BP85/yV+JgzII4ZBFE8vc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYV6F61FBruNo1Q6FOEkAAu+P8vqVtH3/4pxOOcSm3SrJjxudArlCQTZ+r1TJZov+
-	 CiF6EBPKzcTCW/hf62o0thGdqQ6UwxhbSxC1YXuncTBW5PoxbatIEXgWP+qNXg6+Vl
-	 34j1tvYaDKH3Uq6rqhKJ6Z1cK/HXCiqnYGw4q0RQ=
+	b=z1xeYYU+qunH5Odf6V9OZrh9j2EDLgiqXmyWJ9wIEvKaQQ/IjrnxuY4Qrq0KM0SHo
+	 naIB/vOnUZ57/E2vuS1rZYG3h19b6x5S58BEs7JDc9ir0MLoUOlQDFM9YSOiBDv0AM
+	 Za50X4lXWAt9TFYEREJHRbGXJTtuU3fQyHGw3duo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Andres J Rosa <andyrosa@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 141/634] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
+Subject: [PATCH 6.6 280/737] ALSA: uapi: Fix typo in asound.h comment
 Date: Fri,  9 Jan 2026 12:36:59 +0100
-Message-ID: <20260109112122.761676665@linuxfoundation.org>
+Message-ID: <20260109112144.544232527@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Andres J Rosa <andyrosa@gmail.com>
 
-[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
+[ Upstream commit 9a97857db0c5655b8932f86b5d18bb959079b0ee ]
 
-Currently, test_perf_branches_no_hw() relies on the busy loop within
-test_perf_branches_common() being slow enough to allow at least one
-perf event sample tick to occur before starting to tear down the
-backing perf event BPF program. With a relatively small fixed
-iteration count of 1,000,000, this is not guaranteed on modern fast
-CPUs, resulting in the test run to subsequently fail with the
-following:
+Fix 'level-shit' to 'level-shift' in struct snd_cea_861_aud_if comment.
 
-bpf_testmod.ko is already unloaded.
-Loading bpf_testmod.ko...
-Successfully loaded bpf_testmod.ko.
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:PASS:output not valid 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_bad_sample:FAIL:output not valid no valid sample from prog
-Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
-Successfully unloaded bpf_testmod.ko.
-
-On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
-million increments of a volatile integer can take significantly less
-than 1 millisecond. If the spin loop and detachment of the perf event
-BPF program elapses before the first 1 ms sampling interval elapses,
-the perf event will never end up firing. Fix this by bumping the loop
-iteration counter a little within test_perf_branches_common(), along
-with ensuring adding another loop termination condition which is
-directly influenced by the backing perf event BPF program
-executing. Notably, a concious decision was made to not adjust the
-sample_freq value as that is just not a reliable way to go about
-fixing the problem. It effectively still leaves the race window open.
-
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 7ba1c40b536e ("ALSA: Add definitions for CEA-861 Audio InfoFrames")
+Signed-off-by: Andres J Rosa <andyrosa@gmail.com>
+Link: https://patch.msgid.link/20251203162509.1822-1-andyrosa@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
- .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ include/uapi/sound/asound.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index 06c7986131d96..0a7ef770c487c 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
- 	int pbe_size = sizeof(struct perf_branch_entry);
- 	int duration = 0;
+diff --git a/include/uapi/sound/asound.h b/include/uapi/sound/asound.h
+index f9939da411227..10966a9250cd9 100644
+--- a/include/uapi/sound/asound.h
++++ b/include/uapi/sound/asound.h
+@@ -60,7 +60,7 @@ struct snd_cea_861_aud_if {
+ 	unsigned char db2_sf_ss; /* sample frequency and size */
+ 	unsigned char db3; /* not used, all zeros */
+ 	unsigned char db4_ca; /* channel allocation code */
+-	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shit values */
++	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shift values */
+ };
  
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
- 	int written_stack = skel->bss->written_stack_out;
- 	int duration = 0;
- 
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
- 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
- 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
- 		goto out_destroy;
--	/* spin the loop for a while (random high number) */
--	for (i = 0; i < 1000000; ++i)
-+
-+	/* Spin the loop for a while by using a high iteration count, and by
-+	 * checking whether the specific run count marker has been explicitly
-+	 * incremented at least once by the backing perf_event BPF program.
-+	 */
-+	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
- 		++j;
- 
- 	test_perf_branches__detach(skel);
-diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-index a1ccc831c882f..05ac9410cd68c 100644
---- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
-+++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-@@ -8,6 +8,7 @@
- #include <bpf/bpf_tracing.h>
- 
- int valid = 0;
-+int run_cnt = 0;
- int required_size_out = 0;
- int written_stack_out = 0;
- int written_global_out = 0;
-@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
- 	__u64 entries[4 * 3] = {0};
- 	int required_size, written_stack, written_global;
- 
-+	++run_cnt;
-+
- 	/* write to stack */
- 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
- 	/* ignore spurious events */
+ /****************************************************************************
 -- 
 2.51.0
 
