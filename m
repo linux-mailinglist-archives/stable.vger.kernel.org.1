@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-207703-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207669-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33F75D0A3DA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E16DD0A3A0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 61D9730DFAA7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B7DF63106497
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:45:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7ED4335CB83;
-	Fri,  9 Jan 2026 12:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 976F135C1BD;
+	Fri,  9 Jan 2026 12:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="omF31A/X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CH6hqDs1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40EED33032C;
-	Fri,  9 Jan 2026 12:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 541A635C1AF;
+	Fri,  9 Jan 2026 12:45:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962807; cv=none; b=G1mJUtRhzBW5H8xJBj3FTLspxD8jOARgMhvy8eGe3OnOQYkkIET6FMCE+/dMIYPGVMU7577vqJUvuYlP2kL8zRW8aO1b0l+tT5tAYip9VpnP6kae2c/tJdJ1Uy0V2VmWlzxJjzmNFykYRjkffcCfvWrQ3/iBEzvc78SE45IOWAw=
+	t=1767962710; cv=none; b=eSb/Oap76zSQsXtS64pZUK6O8KqwUgIMsq6vkd7U7qYgZ/nPXa+UsRXugpcn4dK+NScEEMjYoJlKJGxyFBZl8srZ5GgY6YvikqGh7UbJAot1FZtxJVzTRrGGuBHXf6YFCV+aR0aphOdKBbhKq6gKCjpPzw/n/+MBhBFpghw8wDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962807; c=relaxed/simple;
-	bh=k112OGGGXYzRV7opfFucio6E4xPBMUGvKp1dTE3kr1o=;
+	s=arc-20240116; t=1767962710; c=relaxed/simple;
+	bh=u+l0O9FXMuxN9RXc8D0JV3NriOo2PPnqD4OBwcmDGVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=od82/3llRQxRNALrYbGAF5/XxHeY0EAMvFWXSjA9hZIl0tNeNlYJ1AqPysk/YgDLryzPugW+EZ7GqENhX2fHy+QmcEqH24cs0HKJ0csuK6d0II+ZFn+IY1VJz33nHHNrI2LYkrJKWonNJzZ47Mh9c3vDtVFrmakvSR46jJKf3e0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=omF31A/X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54501C4CEF1;
-	Fri,  9 Jan 2026 12:46:46 +0000 (UTC)
+	 MIME-Version; b=W6azkrN2hcPVnTc2kKdT9pf6HvzRAfSZYMbEJ4tS5UMO8+Qs4TG1UtlGqhVxiOnvTnsNOyOw5HBP8SYm+zrLPKfhNlkBCXhPixBL8ZQSfOe/dSfGKfL8RImztJvga3KIVTd/u2xrXC6wWVh8pag8p5wr0V1Lh28PnLnrw706NYM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CH6hqDs1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F65C4CEF1;
+	Fri,  9 Jan 2026 12:45:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962806;
-	bh=k112OGGGXYzRV7opfFucio6E4xPBMUGvKp1dTE3kr1o=;
+	s=korg; t=1767962710;
+	bh=u+l0O9FXMuxN9RXc8D0JV3NriOo2PPnqD4OBwcmDGVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=omF31A/XFOAHwatw/bV6S/0Qur84cC4QeuyCN6TcjkEF2UShO/mSSINkehgRkyz51
-	 u4KNi7pmOzlzvYvkK+pw7Hyz2HuNG7YUFJ4GSMMlb+vT48km2dt8NIh0k0mqhXAcwU
-	 ZrdXoulYpYNjcQU6Dx09QpCpIedA+wadacf9zLeU=
+	b=CH6hqDs14QY+5YatNseJ2TNbe6yCtXohMopQOZXBXpUNzTRV8zi9GJvqtYxZB6RMT
+	 reJUxz2q9CPvpI6JNLvPGGWk2JVhthwP/8gpqCKrTF+w83CZKDa57zYz+02D/SExSU
+	 pA5WvLdY4iaWv7lJueV+Bt8NRgacL7O0w5LXkPiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Damm <damm+renesas@opensource.se>,
+	Honghui Zhang <honghui.zhang@mediatek.com>,
 	Robin Murphy <robin.murphy@arm.com>,
+	Yong Wu <yong.wu@mediatek.com>,
 	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
 	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.1 452/634] iommu/ipmmu-vmsa: fix device leak on of_xlate()
-Date: Fri,  9 Jan 2026 12:42:10 +0100
-Message-ID: <20260109112134.551476002@linuxfoundation.org>
+Subject: [PATCH 6.1 453/634] iommu/mediatek-v1: fix device leak on probe_device()
+Date: Fri,  9 Jan 2026 12:42:11 +0100
+Message-ID: <20260109112134.589430716@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -67,33 +69,35 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-commit 80aa518452c4aceb9459f9a8e3184db657d1b441 upstream.
+commit c77ad28bfee0df9cbc719eb5adc9864462cfb65b upstream.
 
 Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+looking up its driver data during probe_device().
 
-Fixes: 7b2d59611fef ("iommu/ipmmu-vmsa: Replace local utlb code with fwspec ids")
-Cc: stable@vger.kernel.org	# 4.14
-Cc: Magnus Damm <damm+renesas@opensource.se>
+Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Honghui Zhang <honghui.zhang@mediatek.com>
 Acked-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
 Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/ipmmu-vmsa.c |    2 ++
+ drivers/iommu/mtk_iommu_v1.c |    2 ++
  1 file changed, 2 insertions(+)
 
---- a/drivers/iommu/ipmmu-vmsa.c
-+++ b/drivers/iommu/ipmmu-vmsa.c
-@@ -714,6 +714,8 @@ static int ipmmu_init_platform_device(st
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -422,6 +422,8 @@ static int mtk_iommu_v1_create_mapping(s
+ 			return -EINVAL;
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(ipmmu_pdev));
- 
-+	put_device(&ipmmu_pdev->dev);
+ 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
 +
- 	return 0;
- }
++		put_device(&m4updev->dev);
+ 	}
  
+ 	ret = iommu_fwspec_add_ids(dev, args->args, 1);
 
 
 
