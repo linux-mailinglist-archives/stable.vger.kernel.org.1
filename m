@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206891-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57264D094AC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:05 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D42ED0A027
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 338683028333
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D822430178CD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AA32359F98;
-	Fri,  9 Jan 2026 12:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F008E35971B;
+	Fri,  9 Jan 2026 12:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="enXwh5T1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N24LbA7Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3422F359F8C;
-	Fri,  9 Jan 2026 12:08:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F9D035B159;
+	Fri,  9 Jan 2026 12:38:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960494; cv=none; b=aTHMbQzToSgdfcbojhMr1AlnFtoo9kpLeMqMFmNBLqOp1dk6kbq3A2Sln0l8bDfSu5BVQMHSuLYuUVk0ih4rP+Ze6O+RgaApfGICFNDciX12I4rf0tfB8C9sCDlCF/+lzHMfNPNEnA7sx5UehyEjfEvlAmAiwcx4k36q5MurSf4=
+	t=1767962299; cv=none; b=QnmYuO3gPS23uOlJqxVEwQJlWZpr15uSHybZxudHcFWJ8BST75bO4+jd9GW+dj1RLlf8wqnU42pDBEApRmrc3qQlhSEbhq+29aPhsy/oPsAPifNdHiPSa9yC2Hn+27Db7RGQ9z8WgtWoQ+8rHMXuX+nQyE2M3QbTCuQgqnjzgnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960494; c=relaxed/simple;
-	bh=rLcQoBTcXIP6J9p18HEB+ieqiu9/zDACuD0i+b1wXpo=;
+	s=arc-20240116; t=1767962299; c=relaxed/simple;
+	bh=gjwEXrLBMZ2HZzIMprZc/xgmuVwpb9luZ+lyvMtSHYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WCDeirI9kqzlpWItznoAZz0x105z4uNBe3xUyrz5zS423mpPgwCVf0a934Cq1X+wlemmfp2BesQe8Ye2BY6MHhgUNveb+SUeuLr3FC2m93DGURkcV2+VirF9VF1cJ1TE12aaQdW/lLBGeGlgolOCViy0rFYG6TouAhAjEDA2SgU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=enXwh5T1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF78DC4CEF1;
-	Fri,  9 Jan 2026 12:08:13 +0000 (UTC)
+	 MIME-Version; b=Fa2s7WL/5AbHq2PXb6STZ/IyDAYH+SRqXNFKnXlRVp1OnRwrTjed8gkcVVws3eA7wF/HdB5vPA9ePgvkmF3RVXNFB/Gfefmux+oGgRWaU/KljaPj4gXvjvpNbFsF0+57+USULOrxIl2zL/DvtrQRUOV7B7dxu+Bvhcqudm936Ng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N24LbA7Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656ACC4CEF1;
+	Fri,  9 Jan 2026 12:38:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960494;
-	bh=rLcQoBTcXIP6J9p18HEB+ieqiu9/zDACuD0i+b1wXpo=;
+	s=korg; t=1767962298;
+	bh=gjwEXrLBMZ2HZzIMprZc/xgmuVwpb9luZ+lyvMtSHYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=enXwh5T1YzYXnNLYlHFziGrbzt7DJ/3/dAsg27bwPDJGmepfJeXEWfrd08r+v1fga
-	 ThIIxsxdIZRwNfZuR9IDGFON368zn17PMxpRAL1iOZA8j3Evf1JXBwbGkWO2WNQYYY
-	 kiULmWrPlSIk24WM6PtiO0jbMasf8g7LrNKgFI2k=
+	b=N24LbA7QKoodWAKN9gmwgJ2bcpeIZuP0VczwxPMulI3OafYQEDe1jA/UNMVzc746K
+	 73e3L9D8XCTRtsj5ro712Pzgu0vkl9rH+JhyREHzGM86o0k0E9B1Ba7+qdNada3rLh
+	 GjskashL9f5Ac/PsSE3DN4nFh+qzYWQBKviPmeP8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Karina Yankevich <k.yankevich@omp.ru>,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Baokun Li <libaokun1@huawei.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 422/737] ext4: xattr: fix null pointer deref in ext4_raw_inode()
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 283/634] ksmbd: skip lock-range check on equal size to avoid size==0 underflow
 Date: Fri,  9 Jan 2026 12:39:21 +0100
-Message-ID: <20260109112149.869952856@linuxfoundation.org>
+Message-ID: <20260109112128.181308182@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Karina Yankevich <k.yankevich@omp.ru>
+From: Qianchang Zhao <pioooooooooip@gmail.com>
 
-commit b97cb7d6a051aa6ebd57906df0e26e9e36c26d14 upstream.
+commit 5d510ac31626ed157d2182149559430350cf2104 upstream.
 
-If ext4_get_inode_loc() fails (e.g. if it returns -EFSCORRUPTED),
-iloc.bh will remain set to NULL. Since ext4_xattr_inode_dec_ref_all()
-lacks error checking, this will lead to a null pointer dereference
-in ext4_raw_inode(), called right after ext4_get_inode_loc().
+When size equals the current i_size (including 0), the code used to call
+check_lock_range(filp, i_size, size - 1, WRITE), which computes `size - 1`
+and can underflow for size==0. Skip the equal case.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
-Cc: stable@kernel.org
-Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Message-ID: <20251022093253.3546296-1-k.yankevich@omp.ru>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/xattr.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ fs/smb/server/vfs.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -1191,7 +1191,11 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
- 	if (block_csum)
- 		end = (void *)bh->b_data + bh->b_size;
- 	else {
--		ext4_get_inode_loc(parent, &iloc);
-+		err = ext4_get_inode_loc(parent, &iloc);
-+		if (err) {
-+			EXT4_ERROR_INODE(parent, "parent inode loc (error %d)", err);
-+			return;
-+		}
- 		end = (void *)ext4_raw_inode(&iloc) + EXT4_SB(parent->i_sb)->s_inode_size;
- 	}
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -330,6 +330,9 @@ static int check_lock_range(struct file
+ 	struct file_lock_context *ctx = file_inode(filp)->i_flctx;
+ 	int error = 0;
  
++	if (start == end)
++		return 0;
++
+ 	if (!ctx || list_empty_careful(&ctx->flc_posix))
+ 		return 0;
+ 
+@@ -830,7 +833,7 @@ int ksmbd_vfs_truncate(struct ksmbd_work
+ 		if (size < inode->i_size) {
+ 			err = check_lock_range(filp, size,
+ 					       inode->i_size - 1, WRITE);
+-		} else {
++		} else if (size > inode->i_size) {
+ 			err = check_lock_range(filp, inode->i_size,
+ 					       size - 1, WRITE);
+ 		}
 
 
 
