@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207307-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E961D0934A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B8121D09C10
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12D1530CBA6E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E4745313B28A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE2E833B97F;
-	Fri,  9 Jan 2026 11:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5567F2EC54D;
+	Fri,  9 Jan 2026 12:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q0kIB2O4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WG02OLA8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B122A32FA3D;
-	Fri,  9 Jan 2026 11:57:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1815A335083;
+	Fri,  9 Jan 2026 12:28:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959879; cv=none; b=S/KK457T8CxV+b89y1vtSYzn4dCJpiBstm1yDFfWSOg+BHfwKJW1YSL6Lfg/+bHWKjR0t9K3p25JGGOsU1+yQNI4Rn4JCxEa1QWLdeejLTFgb3j3Z8AJm8M0b8grg/GulheJyTbI3zwYbETMNdp9/Z2bfkgWEmhCHITf4y5cSlU=
+	t=1767961683; cv=none; b=hX+boPnN3hfMy+sMl5+KVI7iPCysbGwFSoKfDvgAp6t9TwxzE0A9h8V5Rt7OhkW+uJx7K9sWH4O0mjs5zsVZ+GCDWRnCmPPzhzl9fgx8n/Y6dxk3ke0Bx8Z7iXeNzTrAGRRLNHRERl2ZRAxRn5SCreTTtXliB4TIEg5ri4kvuNA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959879; c=relaxed/simple;
-	bh=6NJrVZrKTUSABspteSLMBGpQrUd5L+PqzOJdU5AGcjw=;
+	s=arc-20240116; t=1767961683; c=relaxed/simple;
+	bh=9Uw1cIqodQK7d4IpCgrLU1sXKYnroQxCZt1Xwhgu69c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VuVUV7bjTASdRx32Fi1rd5S/uq7Ax+SpeksIKvt7o7SijXcVSuxJpj2bgmKrUmWnUpuo8cxkwUfpLmRJf/Lt2PO7AsGFXTkC9w3/2O4s8SB8XTY4InhGNcyvQ95AB/jN3cVeEGQZIB2DUwP8X8xvISU7r1OWDfm7sfgCgFfMYX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q0kIB2O4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B9CEC4CEF1;
-	Fri,  9 Jan 2026 11:57:59 +0000 (UTC)
+	 MIME-Version; b=ki+A76KiLWTLRWHOrrZeJUP3E6TGTdaC23Tdpm+ZKvpa3jD+z7itgvpSIdP5/s/42yzY1goEg7KeruaB32FW2nUuPNaJfjc0l9HlnzQDZdwm5gnS11GwlFb8ydr3WR8WvT9S6I3JvxJoYp0cOiDdxFNPCoZF9D8cHTv9IrgRKXc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WG02OLA8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99A9AC19421;
+	Fri,  9 Jan 2026 12:28:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959879;
-	bh=6NJrVZrKTUSABspteSLMBGpQrUd5L+PqzOJdU5AGcjw=;
+	s=korg; t=1767961683;
+	bh=9Uw1cIqodQK7d4IpCgrLU1sXKYnroQxCZt1Xwhgu69c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q0kIB2O4Av5PusCXT3GT0TuSDQXAKUZMcdDk5X3QY8umADHuqYirY1MS+4G1VMRhH
-	 cnXHduM3HGq8qO6FvLsQvSCf43NqrgAEE0Uqnh7JMFm/uTRZchCwLpZyuMQoxuiFFe
-	 gV+DaxET/TTWmeilAChAOGNFiicFQJBIaalOn0CI=
+	b=WG02OLA8TK5UQh4BKADXZ/MWUB48viDFwlst5mk5s2w3kJK83JkhUOwO8DaP+fctf
+	 Tn4X1DoV5B7fP/yTmm+fMy4OmOFKBhjzAPfIJX5RboM2+LIjiE/w0NGMzaKLDRaS7m
+	 75FqUX7gtYp7Lfe/JVAIzZh1i8rTDpJZH19WsyIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christoph Hellwig <hch@lst.de>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Christian Brauner <brauner@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 206/737] iomap: factor out a iomap_dio_done helper
+Subject: [PATCH 6.1 067/634] sctp: Defer SCTP_DBG_OBJCNT_DEC() to sctp_destroy_sock().
 Date: Fri,  9 Jan 2026 12:35:45 +0100
-Message-ID: <20260109112141.749898532@linuxfoundation.org>
+Message-ID: <20260109112119.967245124@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit ae2f33a519af3730cacd1c787ebe1f7475df5ba8 ]
+[ Upstream commit 622e8838a29845316668ec2e7648428878df7f9a ]
 
-Split out the struct iomap-dio level final completion from
-iomap_dio_bio_end_io into a helper to clean up the code and make it
-reusable.
+SCTP_DBG_OBJCNT_INC() is called only when sctp_init_sock()
+returns 0 after successfully allocating sctp_sk(sk)->ep.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20250206064035.2323428-7-hch@lst.de
-Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Stable-dep-of: ddb4873286e0 ("iomap: always run error completions in user context")
+OTOH, SCTP_DBG_OBJCNT_DEC() is called in sctp_close().
+
+The code seems to expect that the socket is always exposed
+to userspace once SCTP_DBG_OBJCNT_INC() is incremented, but
+there is a path where the assumption is not true.
+
+In sctp_accept(), sctp_sock_migrate() could fail after
+sctp_init_sock().
+
+Then, sk_common_release() does not call inet_release() nor
+sctp_close().  Instead, it calls sk->sk_prot->destroy().
+
+Let's move SCTP_DBG_OBJCNT_DEC() from sctp_close() to
+sctp_destroy_sock().
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
+Acked-by: Xin Long <lucien.xin@gmail.com>
+Link: https://patch.msgid.link/20251023231751.4168390-2-kuniyu@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/direct-io.c | 76 ++++++++++++++++++++++----------------------
- 1 file changed, 38 insertions(+), 38 deletions(-)
+ net/sctp/socket.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/fs/iomap/direct-io.c b/fs/iomap/direct-io.c
-index bcd3f8cf5ea42..1b0f06e7e58de 100644
---- a/fs/iomap/direct-io.c
-+++ b/fs/iomap/direct-io.c
-@@ -156,43 +156,31 @@ static inline void iomap_dio_set_error(struct iomap_dio *dio, int ret)
- 	cmpxchg(&dio->error, 0, ret);
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 8a8a5cf8d8e65..090a2fadf4bb3 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -1552,8 +1552,6 @@ static void sctp_close(struct sock *sk, long timeout)
+ 	spin_unlock_bh(&net->sctp.addr_wq_lock);
+ 
+ 	sock_put(sk);
+-
+-	SCTP_DBG_OBJCNT_DEC(sock);
  }
  
--void iomap_dio_bio_end_io(struct bio *bio)
-+/*
-+ * Called when dio->ref reaches zero from an I/O completion.
-+ */
-+static void iomap_dio_done(struct iomap_dio *dio)
- {
--	struct iomap_dio *dio = bio->bi_private;
--	bool should_dirty = (dio->flags & IOMAP_DIO_DIRTY);
- 	struct kiocb *iocb = dio->iocb;
- 
--	if (bio->bi_status)
--		iomap_dio_set_error(dio, blk_status_to_errno(bio->bi_status));
--	if (!atomic_dec_and_test(&dio->ref))
--		goto release_bio;
--
--	/*
--	 * Synchronous dio, task itself will handle any completion work
--	 * that needs after IO. All we need to do is wake the task.
--	 */
- 	if (dio->wait_for_completion) {
-+		/*
-+		 * Synchronous I/O, task itself will handle any completion work
-+		 * that needs after IO. All we need to do is wake the task.
-+		 */
- 		struct task_struct *waiter = dio->submit.waiter;
- 
- 		WRITE_ONCE(dio->submit.waiter, NULL);
- 		blk_wake_io_task(waiter);
--		goto release_bio;
--	}
--
--	/*
--	 * Flagged with IOMAP_DIO_INLINE_COMP, we can complete it inline
--	 */
--	if (dio->flags & IOMAP_DIO_INLINE_COMP) {
-+	} else if (dio->flags & IOMAP_DIO_INLINE_COMP) {
- 		WRITE_ONCE(iocb->private, NULL);
- 		iomap_dio_complete_work(&dio->aio.work);
--		goto release_bio;
--	}
--
--	/*
--	 * If this dio is flagged with IOMAP_DIO_CALLER_COMP, then schedule
--	 * our completion that way to avoid an async punt to a workqueue.
--	 */
--	if (dio->flags & IOMAP_DIO_CALLER_COMP) {
-+	} else if (dio->flags & IOMAP_DIO_CALLER_COMP) {
-+		/*
-+		 * If this dio is flagged with IOMAP_DIO_CALLER_COMP, then
-+		 * schedule our completion that way to avoid an async punt to a
-+		 * workqueue.
-+		 */
- 		/* only polled IO cares about private cleared */
- 		iocb->private = dio;
- 		iocb->dio_complete = iomap_dio_deferred_complete;
-@@ -210,19 +198,31 @@ void iomap_dio_bio_end_io(struct bio *bio)
- 		 * issuer.
- 		 */
- 		iocb->ki_complete(iocb, 0);
--		goto release_bio;
-+	} else {
-+		struct inode *inode = file_inode(iocb->ki_filp);
-+
-+		/*
-+		 * Async DIO completion that requires filesystem level
-+		 * completion work gets punted to a work queue to complete as
-+		 * the operation may require more IO to be issued to finalise
-+		 * filesystem metadata changes or guarantee data integrity.
-+		 */
-+		INIT_WORK(&dio->aio.work, iomap_dio_complete_work);
-+		queue_work(inode->i_sb->s_dio_done_wq, &dio->aio.work);
+ /* Handle EPIPE error. */
+@@ -5105,9 +5103,12 @@ static void sctp_destroy_sock(struct sock *sk)
+ 		sp->do_auto_asconf = 0;
+ 		list_del(&sp->auto_asconf_list);
  	}
-+}
 +
-+void iomap_dio_bio_end_io(struct bio *bio)
-+{
-+	struct iomap_dio *dio = bio->bi_private;
-+	bool should_dirty = (dio->flags & IOMAP_DIO_DIRTY);
+ 	sctp_endpoint_free(sp->ep);
 +
-+	if (bio->bi_status)
-+		iomap_dio_set_error(dio, blk_status_to_errno(bio->bi_status));
-+
-+	if (atomic_dec_and_test(&dio->ref))
-+		iomap_dio_done(dio);
+ 	sk_sockets_allocated_dec(sk);
+ 	sock_prot_inuse_add(sock_net(sk), sk->sk_prot, -1);
++	SCTP_DBG_OBJCNT_DEC(sock);
+ }
  
--	/*
--	 * Async DIO completion that requires filesystem level completion work
--	 * gets punted to a work queue to complete as the operation may require
--	 * more IO to be issued to finalise filesystem metadata changes or
--	 * guarantee data integrity.
--	 */
--	INIT_WORK(&dio->aio.work, iomap_dio_complete_work);
--	queue_work(file_inode(iocb->ki_filp)->i_sb->s_dio_done_wq,
--			&dio->aio.work);
--release_bio:
- 	if (should_dirty) {
- 		bio_check_pages_dirty(bio);
- 	} else {
+ /* Triggered when there are no references on the socket anymore */
 -- 
 2.51.0
 
