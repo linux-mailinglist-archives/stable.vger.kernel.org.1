@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-207708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABE51D0A1BF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68DD4D09B4D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 91AD43194E9A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D30CD30DD870
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 563FA35CB95;
-	Fri,  9 Jan 2026 12:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73CF635A92E;
+	Fri,  9 Jan 2026 12:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rHUNR/LE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bo6GsQYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B8035C19C;
-	Fri,  9 Jan 2026 12:47:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36F652737EE;
+	Fri,  9 Jan 2026 12:20:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962821; cv=none; b=NbrbJXU95f0G/Gumkm8Bi5ELGOHxif0TyJoX1anEd3udxTtfrlILXFXbZSQe3lUk7sSGCNII1l+ZMjLvUdtxdyMxOtyHP+DFMMqNfeLdcqSc+TfuaMp9W1WFZaZqdTdURPO1dCbymPcJyo/bSlkYtUUzlDO3LkSozgQsKAI1o4I=
+	t=1767961208; cv=none; b=L9we2eMLj9hmoTm9Mb0BPegTMxqfbO4kY5+3cd4hYXKIJbiqBNxnZNOpJGQx98fxxyGb+zTcMEoLjU1+Fk6j1oBQuwHMidnaWuBCJ2umbj5oTWHaSz/bz37Kfumru/eLAE3v+z0Ow8KEfSrybQNUz4j2z/NSqAilnCrvElvFoo8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962821; c=relaxed/simple;
-	bh=WVKF4nYu0/aT48/mE5tyMllhBcmIjdRHhi5SJlyOJ1A=;
+	s=arc-20240116; t=1767961208; c=relaxed/simple;
+	bh=LwkaHipD2NWcfnMNjCih0zrEajvzuiV2d9mYFMvT9mo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=S/UJXAgl/DBIXLA93Oe40DqINGyOCwN7tFnE/snYzBQ/JubqHKPXZFLyvRG0guUK6+p+Y9p/gIsG6RyNlwljiZtyE5+asXkLmGAIPaYu7zUBBu/G1UC1KjxBCyWbHpXn7fPmpDIwiFMf9VKOEqhM7d7bOjK2+5sxpwWA6JTxBnY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rHUNR/LE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C265C4CEF1;
-	Fri,  9 Jan 2026 12:47:00 +0000 (UTC)
+	 MIME-Version; b=fOhXgbpx5x/fb2/suvOyiNpXJ0YvxHHXtw9WVDt7FWWPB3T3Xe/q0HX/TYZWhZJfOQxW+g2Yi+0T5ozKo+KwJiWNB3xh7FaWSHb/UjposhBiTJBT6AcHjTOU5t2wbhK1ZTMmvQ17Yyyytqgu+tkScJl9rp8X4twDT9Y/V/yyVTo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bo6GsQYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B80D8C4CEF1;
+	Fri,  9 Jan 2026 12:20:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962821;
-	bh=WVKF4nYu0/aT48/mE5tyMllhBcmIjdRHhi5SJlyOJ1A=;
+	s=korg; t=1767961208;
+	bh=LwkaHipD2NWcfnMNjCih0zrEajvzuiV2d9mYFMvT9mo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rHUNR/LECQSW8MyRguy8t9+2ymz3BpAWnb7Yy/EX1EmBfU9S/c8XxiRo/0xOJ+4ed
-	 MIP/I1U31rooflgHgy7VC2I967ckpJNCwFOM6c1bliKLDZixMEC06PECDP4Ve896nH
-	 6B2l9c/GPMCSruHcKvXr63wt1b3cmRMck5YPWc2c=
+	b=bo6GsQYQz/ymla04opY5BCq7svQzFkAnP78nTFzPtJ3zsyKVXnNCq8YAQhybd1Wtc
+	 UV3ps50t+yZvj+3myWbhKl4zUtqgp+vGdp8YGBHmRXLEJAqxSK7ZU6KPfjZe+5Gcyb
+	 c3bZ+HvzbmjT/GnBuAuBmA2UMCqEuTOOqgFFkuJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 500/634] LoongArch: BPF: Zero-extend bpf_tail_call() index
-Date: Fri,  9 Jan 2026 12:42:58 +0100
-Message-ID: <20260109112136.368823382@linuxfoundation.org>
+	xu xin <xu.xin16@zte.com.cn>,
+	Stefan Roesch <shr@devkernel.io>,
+	David Hildenbrand <david@redhat.com>,
+	Jinjiang Tu <tujinjiang@huawei.com>,
+	Wang Yaxin <wang.yaxin@zte.com.cn>,
+	Yang Yang <yang.yang29@zte.com.cn>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 640/737] mm/ksm: fix exec/fork inheritance support for prctl
+Date: Fri,  9 Jan 2026 12:42:59 +0100
+Message-ID: <20260109112158.086767461@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +65,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: xu xin <xu.xin16@zte.com.cn>
 
-commit eb71f5c433e1c6dff089b315881dec40a88a7baf upstream.
+[ Upstream commit 590c03ca6a3fbb114396673314e2aa483839608b ]
 
-The bpf_tail_call() index should be treated as a u32 value. Let's
-zero-extend it to avoid calling wrong BPF progs. See similar fixes
-for x86 [1]) and arm64 ([2]) for more details.
+Patch series "ksm: fix exec/fork inheritance", v2.
 
-  [1]: https://github.com/torvalds/linux/commit/90caccdd8cc0215705f18b92771b449b01e2474a
-  [2]: https://github.com/torvalds/linux/commit/16338a9b3ac30740d49f5dfed81bac0ffa53b9c7
+This series fixes exec/fork inheritance.  See the detailed description of
+the issue below.
 
-Cc: stable@vger.kernel.org
-Fixes: 5dc615520c4d ("LoongArch: Add BPF JIT support")
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+This patch (of 2):
+
+Background
+==========
+
+commit d7597f59d1d33 ("mm: add new api to enable ksm per process")
+introduced MMF_VM_MERGE_ANY for mm->flags, and allowed user to set it by
+prctl() so that the process's VMAs are forcibly scanned by ksmd.
+
+Subsequently, the 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+supported inheriting the MMF_VM_MERGE_ANY flag when a task calls execve().
+
+Finally, commit 3a9e567ca45fb ("mm/ksm: fix ksm exec support for prctl")
+fixed the issue that ksmd doesn't scan the mm_struct with MMF_VM_MERGE_ANY
+by adding the mm_slot to ksm_mm_head in __bprm_mm_init().
+
+Problem
+=======
+
+In some extreme scenarios, however, this inheritance of MMF_VM_MERGE_ANY
+during exec/fork can fail.  For example, when the scanning frequency of
+ksmd is tuned extremely high, a process carrying MMF_VM_MERGE_ANY may
+still fail to pass it to the newly exec'd process.  This happens because
+ksm_execve() is executed too early in the do_execve flow (prematurely
+adding the new mm_struct to the ksm_mm_slot list).
+
+As a result, before do_execve completes, ksmd may have already performed a
+scan and found that this new mm_struct has no VM_MERGEABLE VMAs, thus
+clearing its MMF_VM_MERGE_ANY flag.  Consequently, when the new program
+executes, the flag MMF_VM_MERGE_ANY inheritance missed.
+
+Root reason
+===========
+
+commit d7597f59d1d33 ("mm: add new api to enable ksm per process") clear
+the flag MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE VMAs.
+
+Solution
+========
+
+Firstly, Don't clear MMF_VM_MERGE_ANY when ksmd found no VM_MERGEABLE
+VMAs, because perhaps their mm_struct has just been added to ksm_mm_slot
+list, and its process has not yet officially started running or has not
+yet performed mmap/brk to allocate anonymous VMAS.
+
+Secondly, recheck MMF_VM_MERGEABLE again if a process takes
+MMF_VM_MERGE_ANY, and create a mm_slot and join it into ksm_scan_list
+again.
+
+Link: https://lkml.kernel.org/r/20251007182504440BJgK8VXRHh8TD7IGSUIY4@zte.com.cn
+Link: https://lkml.kernel.org/r/20251007182821572h_SoFqYZXEP1mvWI4n9VL@zte.com.cn
+Fixes: 3c6f33b7273a ("mm/ksm: support fork/exec for prctl")
+Fixes: d7597f59d1d3 ("mm: add new api to enable ksm per process")
+Signed-off-by: xu xin <xu.xin16@zte.com.cn>
+Cc: Stefan Roesch <shr@devkernel.io>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Jinjiang Tu <tujinjiang@huawei.com>
+Cc: Wang Yaxin <wang.yaxin@zte.com.cn>
+Cc: Yang Yang <yang.yang29@zte.com.cn>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+[ changed mm_flags_test() and mm_flags_clear() calls to test_bit() and clear_bit() ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/net/bpf_jit.c |    2 ++
- 1 file changed, 2 insertions(+)
+ mm/ksm.c |   18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
---- a/arch/loongarch/net/bpf_jit.c
-+++ b/arch/loongarch/net/bpf_jit.c
-@@ -224,6 +224,8 @@ static int emit_bpf_tail_call(struct jit
- 	 *	 goto out;
- 	 */
- 	tc_ninsn = insn ? ctx->offset[insn+1] - ctx->offset[insn] : ctx->offset[0];
-+	emit_zext_32(ctx, a2, true);
-+
- 	off = offsetof(struct bpf_array, map.max_entries);
- 	emit_insn(ctx, ldwu, t1, a1, off);
- 	/* bgeu $a2, $t1, jmp_offset */
+--- a/mm/ksm.c
++++ b/mm/ksm.c
+@@ -2451,8 +2451,14 @@ no_vmas:
+ 		spin_unlock(&ksm_mmlist_lock);
+ 
+ 		mm_slot_free(mm_slot_cache, mm_slot);
++		/*
++		 * Only clear MMF_VM_MERGEABLE. We must not clear
++		 * MMF_VM_MERGE_ANY, because for those MMF_VM_MERGE_ANY process,
++		 * perhaps their mm_struct has just been added to ksm_mm_slot
++		 * list, and its process has not yet officially started running
++		 * or has not yet performed mmap/brk to allocate anonymous VMAS.
++		 */
+ 		clear_bit(MMF_VM_MERGEABLE, &mm->flags);
+-		clear_bit(MMF_VM_MERGE_ANY, &mm->flags);
+ 		mmap_read_unlock(mm);
+ 		mmdrop(mm);
+ 	} else {
+@@ -2567,8 +2573,16 @@ void ksm_add_vma(struct vm_area_struct *
+ {
+ 	struct mm_struct *mm = vma->vm_mm;
+ 
+-	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags))
++	if (test_bit(MMF_VM_MERGE_ANY, &mm->flags)) {
+ 		__ksm_add_vma(vma);
++		/*
++		 * Generally, the flags here always include MMF_VM_MERGEABLE.
++		 * However, in rare cases, this flag may be cleared by ksmd who
++		 * scans a cycle without finding any mergeable vma.
++		 */
++		if (unlikely(!test_bit(MMF_VM_MERGEABLE, &mm->flags)))
++			__ksm_enter(mm);
++	}
+ }
+ 
+ static void ksm_add_vmas(struct mm_struct *mm)
 
 
 
