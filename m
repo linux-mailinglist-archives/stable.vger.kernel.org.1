@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207176-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8CAFBD0A27A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AAFBFD099C4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF4AD30896FA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9FB6D3077C1F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5FB435C1A7;
-	Fri,  9 Jan 2026 12:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7027C33B6F0;
+	Fri,  9 Jan 2026 12:21:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n5g11u0x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ik+/+l4H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68CB735BDBA;
-	Fri,  9 Jan 2026 12:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2098535A948;
+	Fri,  9 Jan 2026 12:21:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962923; cv=none; b=N+4XBYsPoUE54YUGhh8/ztly9tj3RszyNeSmbF0X9UDlJPt2CYim53K9v9CGh4gOyFb8xMTe2vPIF33ZX6OwYLd+UWfRdTVbS4GGdm1xDKnGBU0cPC+BOKU4hyVRIhnfPuy27uvbyibJXj8F5qkESNSGYjYLlaAwHhjG8l8ctaM=
+	t=1767961309; cv=none; b=pq4See2hxbFizPYz2QqMM4ViZjhx5nEuyrHHoltq+z8w7d9l1jv9Uk9u2wsnBtYIAqEoGd7XctUtI4HnkZPaMRxs6IZvhSGiiuJaCHy/LN6rqJzQ0N0m+M6v/lkUvLIqFUiFmCB7cQiJUszTy2+mUTdQsMIWuKucoW09Op3eX3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962923; c=relaxed/simple;
-	bh=XGKykEELojTfxsT14qHpV040b0JqJEl9MYqlPy/utEE=;
+	s=arc-20240116; t=1767961309; c=relaxed/simple;
+	bh=SA+iJc+3ee93QYk010eDkeYsV9QR1srbhxXr+Olwt50=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c3/ifrIvup1lt40L5Mg+HZBkY7IgtaMhfcstG3PyM77kkrmspjwRcB8/oXmdHejUVWy03a6sSxNli/d+GFu8dLEZgQdsu4oRuEwMkmIXT+LXF52/fKf0gPlFspU3jvPFsg91IR5f7EdzKi8KAP1R0o6uBWTN511PudtbzKO6k4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n5g11u0x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A61B3C4CEF1;
-	Fri,  9 Jan 2026 12:48:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WCkFJmV/tQ2ecjTaxx0zczfSwMIiBvxKNQtCyeL6mTwm5vZesrdq9AscL71NxzeBA8aYqkK6ewdtLdJ4+McioRg7qL8sITulSBAn+PwxF6b58R4KpZrZ55LnUG1ETHSeE7q0uf/bgZP16uylBGcOfVXLvLKrjFliIJT/d+Wq5W0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ik+/+l4H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0851FC4CEF1;
+	Fri,  9 Jan 2026 12:21:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962923;
-	bh=XGKykEELojTfxsT14qHpV040b0JqJEl9MYqlPy/utEE=;
+	s=korg; t=1767961308;
+	bh=SA+iJc+3ee93QYk010eDkeYsV9QR1srbhxXr+Olwt50=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n5g11u0xh6KCSz11PYXv9en3HKe0KSnSudeY/P2UDDrBe6A5mZracQ0XVXVp7N9vN
-	 5gQrnY42L1soCyEREM14UTqBJwOG+9No3TKOklX+HSDZdtkUd8Fyp8ZwLbBgAaDnjm
-	 YHrruxZH2ZYUlpL7SBuECZSLrpJ9TkIp5P7oOukY=
+	b=ik+/+l4HbnAQTPYHpHftMulAohDmYX/yXWeSVp/ojbCCs1Imp/po1OlygBAbRqjZt
+	 4Gob1ez8KwMzq8ylWQ11REIPDfC4Dq4VQNjIxTUu45DRA59SXWak4PG5BEve3X614f
+	 ukcOad4L3qOv/UaRdBMFOXPvqitVSRzcDX1MAIbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 536/634] ALSA: wavefront: Clear substream pointers on close
-Date: Fri,  9 Jan 2026 12:43:34 +0100
-Message-ID: <20260109112137.745699599@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
+Subject: [PATCH 6.6 676/737] ext4: introduce ITAIL helper
+Date: Fri,  9 Jan 2026 12:43:35 +0100
+Message-ID: <20260109112159.480755324@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,51 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit e11c5c13ce0ab2325d38fe63500be1dd88b81e38 ]
+[ Upstream commit 69f3a3039b0d0003de008659cafd5a1eaaa0a7a4 ]
 
-Clear substream pointers in close functions to avoid leaving dangling
-pointers, helping to improve code safety and
-prevents potential issues.
+Introduce ITAIL helper to get the bound of xattr in inode.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250208063141.1539283-2-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: David Nyström <david.nystrom@est.tech>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/isa/wavefront/wavefront_midi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/ext4/xattr.c |   10 +++++-----
+ fs/ext4/xattr.h |    3 +++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
---- a/sound/isa/wavefront/wavefront_midi.c
-+++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -278,6 +278,7 @@ static int snd_wavefront_midi_input_clos
- 	        return -EIO;
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -653,7 +653,7 @@ ext4_xattr_ibody_get(struct inode *inode
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -797,7 +797,7 @@ ext4_xattr_ibody_list(struct dentry *den
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -883,7 +883,7 @@ int ext4_get_inode_usage(struct inode *i
+ 			goto out;
+ 		raw_inode = ext4_raw_inode(&iloc);
+ 		header = IHDR(inode, raw_inode);
+-		end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++		end = ITAIL(inode, raw_inode);
+ 		ret = xattr_check_inode(inode, header, end);
+ 		if (ret)
+ 			goto out;
+@@ -2248,7 +2248,7 @@ int ext4_xattr_ibody_find(struct inode *
+ 	header = IHDR(inode, raw_inode);
+ 	is->s.base = is->s.first = IFIRST(header);
+ 	is->s.here = is->s.first;
+-	is->s.end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	is->s.end = ITAIL(inode, raw_inode);
+ 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
+ 		error = xattr_check_inode(inode, header, is->s.end);
+ 		if (error)
+@@ -2799,7 +2799,7 @@ retry:
+ 	 */
  
- 	guard(spinlock_irqsave)(&midi->open);
-+	midi->substream_input[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
+ 	base = IFIRST(header);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	min_offs = end - base;
+ 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
  
- 	return 0;
-@@ -300,6 +301,7 @@ static int snd_wavefront_midi_output_clo
- 	        return -EIO;
+--- a/fs/ext4/xattr.h
++++ b/fs/ext4/xattr.h
+@@ -68,6 +68,9 @@ struct ext4_xattr_entry {
+ 		((void *)raw_inode + \
+ 		EXT4_GOOD_OLD_INODE_SIZE + \
+ 		EXT4_I(inode)->i_extra_isize))
++#define ITAIL(inode, raw_inode) \
++	((void *)(raw_inode) + \
++	 EXT4_SB((inode)->i_sb)->s_inode_size)
+ #define IFIRST(hdr) ((struct ext4_xattr_entry *)((hdr)+1))
  
- 	guard(spinlock_irqsave)(&midi->open);
-+	midi->substream_output[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
- 	return 0;
- }
+ /*
 
 
 
