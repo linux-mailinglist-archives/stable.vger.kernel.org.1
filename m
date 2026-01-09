@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206731-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEBDFD0945B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11411D09CA6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E3FE931126F3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2255530D2D21
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8192033032C;
-	Fri,  9 Jan 2026 12:00:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EE39306483;
+	Fri,  9 Jan 2026 12:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QhZQB5bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TbV1zVii"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34BB1359FAD;
-	Fri,  9 Jan 2026 12:00:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41BE62737EE;
+	Fri,  9 Jan 2026 12:29:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960039; cv=none; b=cO+s1kbnme8Tsh0KZbzUWVIrubKFQmVwIRBTabN8rqCBL29zSg6aSKw+aflfNeC/Eh1xImDFIFA3P48FcXBRTOlmOU5cv1F3PM5eoDEqfi/OLK/weYvfItkLYdrHZi/b5t6hCE49ZEak7OiKPdwkVq/KfmjTsnF2wqOvH8FkEeE=
+	t=1767961757; cv=none; b=qJ/CDzNrG4R6ebA2VGXPCHCvA+yD/U5XEnbAXaO/JizB0UO2lLBI3/Tfrm9IgQP0QsopGpw1TZAEmMq9+xdWUpsXmviYI3udCRYApxItWWTyoxpq0YSxsqXBCw8dKAjR+eqiubzpqtPsrF1LciO0PRg0le1wol/7ZoDdBUGNQkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960039; c=relaxed/simple;
-	bh=UyqFWlCnJylVBiOIYDz3BuQgMWHzDqT7fOiWHr5J8Y0=;
+	s=arc-20240116; t=1767961757; c=relaxed/simple;
+	bh=TQMJCHfRwN2uGKkPuKMiSVmsKlUNJRHnQ73EEiinvZo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iaWQb05PDs6teMHt6Eee41GsF0E30LKlNGXk9Eb3W4Q4I1xDhI9dTnjpkpKfQ8winZJKiDVPA80q7KKqIIxw0Fn/S0qEiUAynfGQRTM+Vwx/qKZc1MAKcVVM6TMNtECyCKUe0HfSns7+z0P2oABIwLU9F45QXrszbN0oHdeEMBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QhZQB5bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63B0CC4CEF1;
-	Fri,  9 Jan 2026 12:00:38 +0000 (UTC)
+	 MIME-Version; b=MlvXjlJ7ya0HNfzXMy/elE0pnQAJbXUDpoJVwIIebeGFKUFRDqKNuzVgfiIBcIgdcKoozuubItX2f2/AiP/ymRxoFIuIp0B2hcleUfLCetJFnGri5+CR0W7vwosV86d9Bkl0W8id1IAyeAX4DkKeeY9tv1wObbtfZUGwdjYEbKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TbV1zVii; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89AB2C4CEF1;
+	Fri,  9 Jan 2026 12:29:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960038;
-	bh=UyqFWlCnJylVBiOIYDz3BuQgMWHzDqT7fOiWHr5J8Y0=;
+	s=korg; t=1767961756;
+	bh=TQMJCHfRwN2uGKkPuKMiSVmsKlUNJRHnQ73EEiinvZo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QhZQB5bg412LEyUvp3fDbp//TYrdScauS+JUrwWP8S+D2euiYj43TPU96R9n74jkn
-	 pz+14vtBkMLBxVfJ5kOQ6CYprDyiXi9oV7Uy1FMCppX2BQ8gKOG8vyaD2NZCaih1aW
-	 dLH6gbQt0dgTcTmw3tIpzpvaWwH5eq2KVy4ucyxM=
+	b=TbV1zVii0AQ1WDSaamxFcOCtD6jngPUpGUvG0lCXMj53VnMxUt3KPpnz95RnnjyA0
+	 DgHiZoW3GnT+LxbvanEj3LMkepO0rK5qS2JgZ6g7InVsmLbw9XWPc938TrOf2RIVFW
+	 2U1P2EDej5fWhZeqKWRXDuAlAIl6xJ6F+GiOx270=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alkis Georgopoulos <alkisg@gmail.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 264/737] Revert "nfs: ignore SB_RDONLY when remounting nfs"
+Subject: [PATCH 6.1 125/634] fs/ntfs3: Prevent memory leaks in add sub record
 Date: Fri,  9 Jan 2026 12:36:43 +0100
-Message-ID: <20260109112143.923809770@linuxfoundation.org>
+Message-ID: <20260109112122.148544440@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 400fa37afbb11a601c204b72af0f0e5bc2db695c ]
+[ Upstream commit ccc4e86d1c24260c18ae94541198c3711c140da6 ]
 
-This reverts commit 80c4de6ab44c14e910117a02f2f8241ffc6ec54a.
+If a rb node with the same ino already exists in the rb tree, the newly
+alloced mft_inode in ni_add_subrecord() will not have its memory cleaned
+up, which leads to the memory leak issue reported by syzbot.
 
-Silently ignoring the "ro" and "rw" mount options causes user confusion,
-and regressions.
+The best option to avoid this issue is to put the newly alloced mft node
+when a rb node with the same ino already exists in the rb tree and return
+the rb node found in the rb tree to the parent layer.
 
-Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
-Cc: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 80c4de6ab44c ("nfs: ignore SB_RDONLY when remounting nfs")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+syzbot reported:
+BUG: memory leak
+unreferenced object 0xffff888110bef280 (size 128):
+  backtrace (crc 126a088f):
+    ni_add_subrecord+0x31/0x180 fs/ntfs3/frecord.c:317
+    ntfs_look_free_mft+0xf0/0x790 fs/ntfs3/fsntfs.c:715
+
+BUG: memory leak
+unreferenced object 0xffff888109093400 (size 1024):
+  backtrace (crc 7197c55e):
+    mi_init+0x2b/0x50 fs/ntfs3/record.c:105
+    mi_format_new+0x40/0x220 fs/ntfs3/record.c:422
+
+Fixes: 4342306f0f0d ("fs/ntfs3: Add file operations and implementation")
+Reported-by: syzbot+3932ccb896e06f7414c9@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 10 ----------
- 1 file changed, 10 deletions(-)
+ fs/ntfs3/frecord.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 4e72ee57fc8fc..59bf4b2c0f86e 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1020,16 +1020,6 @@ int nfs_reconfigure(struct fs_context *fc)
+diff --git a/fs/ntfs3/frecord.c b/fs/ntfs3/frecord.c
+index f1f5b84e2ef17..1ac0a7b87c651 100644
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -377,8 +377,10 @@ bool ni_add_subrecord(struct ntfs_inode *ni, CLST rno, struct mft_inode **mi)
  
- 	sync_filesystem(sb);
+ 	mi_get_ref(&ni->mi, &m->mrec->parent_ref);
  
--	/*
--	 * The SB_RDONLY flag has been removed from the superblock during
--	 * mounts to prevent interference between different filesystems.
--	 * Similarly, it is also necessary to ignore the SB_RDONLY flag
--	 * during reconfiguration; otherwise, it may also result in the
--	 * creation of redundant superblocks when mounting a directory with
--	 * different rw and ro flags multiple times.
--	 */
--	fc->sb_flags_mask &= ~SB_RDONLY;
--
- 	/*
- 	 * Userspace mount programs that send binary options generally send
- 	 * them populated with default values. We have no way to know which
+-	ni_add_mi(ni, m);
+-	*mi = m;
++	*mi = ni_ins_mi(ni, &ni->mi_tree, m->rno, &m->node);
++	if (*mi != m)
++		mi_put(m);
++
+ 	return true;
+ }
+ 
 -- 
 2.51.0
 
