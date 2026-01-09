@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207388-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9322FD09CBB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ED58D093D7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9382F3017667
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:54 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9D5C302427F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDE335A95B;
-	Fri,  9 Jan 2026 12:31:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4B2359FBB;
+	Fri,  9 Jan 2026 12:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AH0+hSsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h22173P3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E033372B;
-	Fri,  9 Jan 2026 12:31:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD13A1946C8;
+	Fri,  9 Jan 2026 12:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961913; cv=none; b=OI811tIQjrXF1qP57t8qV+kETuqgTq4EebnoOs8G5j3eGQALcJAWutioM+uriKnMi1mKSH2IeGDexz6ZciOeysCN3SLGepOgoALraYAPVPV1xjXg2jd12hfGuZAR+fv2NQufJ0T95NaTXP8UEk8p1Ye7EquNGovl4F1OkNYpBiY=
+	t=1767960277; cv=none; b=swiQuERWh1YhX3/ElJXXyFa4grMWU9K4+cu63Ul6ae1D72IrY2nR7U6UvsE2fnoWTYaFehaY/uAR+tfy7rUa6Qc72tvnzUZf4YMC5aWM87egf+9GV2sQvsnQEbUpIDWGevOcgX5ItqPs6EkXPFhrmVnCteOzOCQ0rUR8g64WAJ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961913; c=relaxed/simple;
-	bh=z1yHUMVoZm+JVs2V0IKff+/PMGsKbrzmcFoTHF8Xjug=;
+	s=arc-20240116; t=1767960277; c=relaxed/simple;
+	bh=pX/RlAFSoduCQunTQIlR8Qmc78ikAisfoHFbLHwtEAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4ewm8aI5aV+Gu9nOU9eU2AbIrPJ2RAAtf5k6HprHAi49sPsipmWM7kgCnJ2WCosxCG2wKtPMOu9Pwvd25Vf4npE7Zfz9AdfvYyvxled5X7qNq/Vrs1heI5kOt1PHJtbY+6skM82fMqFqiOszP6Q/oHVNE7W//vkG7N83mRIESg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AH0+hSsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527B1C4CEF1;
-	Fri,  9 Jan 2026 12:31:53 +0000 (UTC)
+	 MIME-Version; b=dAAifxgBc/kb5Ae7oa8UzYNBsA6PayFH9EX3zfMKE3r4kJ6dE+/EA3nmM2dzsF3sxDXgauRB/FWgLAisXJWHkCbwjYajqM83Xlv+J+Z0us/iHEozxvM9ZW7Ama6v2yWws739ni/UcbSyxFcCbKuZrw2L1nVI0L35ivNtRbdFPQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h22173P3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E870AC4CEF1;
+	Fri,  9 Jan 2026 12:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961913;
-	bh=z1yHUMVoZm+JVs2V0IKff+/PMGsKbrzmcFoTHF8Xjug=;
+	s=korg; t=1767960277;
+	bh=pX/RlAFSoduCQunTQIlR8Qmc78ikAisfoHFbLHwtEAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AH0+hSsLlHtiL5QXVnHXonzdYmlMNuevSTJzP3/zY85O2/LuAcKUMdEcQlbXpCvXN
-	 S5FyEV/fkEJWmMWG89rHtZgKF6NdMrxLuoHSCbPA8yivN5pC8k4ZrNqMdDHlyHtXDg
-	 bhbx/C+7aMfqgZgj8h1KE2PxH0TJLukNE/FXsU24=
+	b=h22173P3yXCiYlH2aZqdMH5jU11GQAbEOjEPBfDWc9MDj06ot0HUBYqdOwUYS7ThJ
+	 0I4pYkT6LF834zh2I0g64baCVd7NbUkaDrhLZ4gIOrY19waKE05d6+cxVhaSQAfOPm
+	 DquBlrPwWASyyzOzpH/u0gU59JZv7/b3QD8380lY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 181/634] md/raid5: fix IO hang when array is broken with IO inflight
+Subject: [PATCH 6.6 320/737] hfsplus: Verify inode mode when loading from disk
 Date: Fri,  9 Jan 2026 12:37:39 +0100
-Message-ID: <20260109112124.252250327@linuxfoundation.org>
+Message-ID: <20260109112146.037760977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +61,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
+[ Upstream commit 005d4b0d33f6b4a23d382b7930f7a96b95b01f39 ]
 
-Following test can cause IO hang:
+syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
+the S_IFMT bits of the 16bits "mode" field loaded from disk are corrupted.
 
-mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
-sleep 5
-echo 1 > /sys/block/sda/device/delete
-echo 1 > /sys/block/sdb/device/delete
-echo 1 > /sys/block/sdc/device/delete
-echo 1 > /sys/block/sdd/device/delete
+According to [1], the permissions field was treated as reserved in Mac OS
+8 and 9. According to [2], the reserved field was explicitly initialized
+with 0, and that field must remain 0 as long as reserved. Therefore, when
+the "mode" field is not 0 (i.e. no longer reserved), the file must be
+S_IFDIR if dir == 1, and the file must be one of S_IFREG/S_IFLNK/S_IFCHR/
+S_IFBLK/S_IFIFO/S_IFSOCK if dir == 0.
 
-dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
-
-Root cause:
-
-1) all disks removed, however all rdevs in the array is still in sync,
-IO will be issued normally.
-
-2) IO failure from sda, and set badblocks failed, sda will be faulty
-and MD_SB_CHANGING_PENDING will be set.
-
-3) error recovery try to recover this IO from other disks, IO will be
-issued to sdb, sdc, and sdd.
-
-4) IO failure from sdb, and set badblocks failed again, now array is
-broken and will become read-only.
-
-5) IO failure from sdc and sdd, however, stripe can't be handled anymore
-because MD_SB_CHANGING_PENDING is set:
-
-handle_stripe
- handle_stripe
- if (test_bit MD_SB_CHANGING_PENDING)
-  set_bit STRIPE_HANDLE
-  goto finish
-  // skip handling failed stripe
-
-release_stripe
- if (test_bit STRIPE_HANDLE)
-  list_add_tail conf->hand_list
-
-6) later raid5d can't handle failed stripe as well:
-
-raid5d
- md_check_recovery
-  md_update_sb
-   if (!md_is_rdwr())
-    // can't clear pending bit
-    return
- if (test_bit MD_SB_CHANGING_PENDING)
-  break;
-  // can't handle failed stripe
-
-Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
-fix this problem by skip this checking for read-only array.
-
-Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
-Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Link: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#HFSPlusPermissions [1]
+Link: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#ReservedAndPadFields [2]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/04ded9f9-73fb-496c-bfa5-89c4f5d1d7bb@I-love.SAKURA.ne.jp
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/hfsplus/inode.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index 6e80a439ec456..bce6d0d10a7cd 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5044,7 +5044,8 @@ static void handle_stripe(struct stripe_head *sh)
- 		goto finish;
+diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
+index 73ff191ff2adc..2619e5371ec9c 100644
+--- a/fs/hfsplus/inode.c
++++ b/fs/hfsplus/inode.c
+@@ -183,13 +183,29 @@ const struct dentry_operations hfsplus_dentry_operations = {
+ 	.d_compare    = hfsplus_compare_dentry,
+ };
  
- 	if (s.handle_bad_blocks ||
--	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
-+	    (md_is_rdwr(conf->mddev) &&
-+	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
- 		set_bit(STRIPE_HANDLE, &sh->state);
- 		goto finish;
- 	}
-@@ -6802,7 +6803,8 @@ static void raid5d(struct md_thread *thread)
- 		int batch_size, released;
- 		unsigned int offset;
+-static void hfsplus_get_perms(struct inode *inode,
+-		struct hfsplus_perm *perms, int dir)
++static int hfsplus_get_perms(struct inode *inode,
++			     struct hfsplus_perm *perms, int dir)
+ {
+ 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(inode->i_sb);
+ 	u16 mode;
  
--		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+		if (md_is_rdwr(mddev) &&
-+		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
- 			break;
+ 	mode = be16_to_cpu(perms->mode);
++	if (dir) {
++		if (mode && !S_ISDIR(mode))
++			goto bad_type;
++	} else if (mode) {
++		switch (mode & S_IFMT) {
++		case S_IFREG:
++		case S_IFLNK:
++		case S_IFCHR:
++		case S_IFBLK:
++		case S_IFIFO:
++		case S_IFSOCK:
++			break;
++		default:
++			goto bad_type;
++		}
++	}
  
- 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ 	i_uid_write(inode, be32_to_cpu(perms->owner));
+ 	if ((test_bit(HFSPLUS_SB_UID, &sbi->flags)) || (!i_uid_read(inode) && !mode))
+@@ -215,6 +231,10 @@ static void hfsplus_get_perms(struct inode *inode,
+ 		inode->i_flags |= S_APPEND;
+ 	else
+ 		inode->i_flags &= ~S_APPEND;
++	return 0;
++bad_type:
++	pr_err("invalid file type 0%04o for inode %lu\n", mode, inode->i_ino);
++	return -EIO;
+ }
+ 
+ static int hfsplus_file_open(struct inode *inode, struct file *file)
+@@ -519,7 +539,9 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 		}
+ 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
+ 					sizeof(struct hfsplus_cat_folder));
+-		hfsplus_get_perms(inode, &folder->permissions, 1);
++		res = hfsplus_get_perms(inode, &folder->permissions, 1);
++		if (res)
++			goto out;
+ 		set_nlink(inode, 1);
+ 		inode->i_size = 2 + be32_to_cpu(folder->valence);
+ 		inode->i_atime = hfsp_mt2ut(folder->access_date);
+@@ -547,7 +569,9 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 
+ 		hfsplus_inode_read_fork(inode, HFSPLUS_IS_RSRC(inode) ?
+ 					&file->rsrc_fork : &file->data_fork);
+-		hfsplus_get_perms(inode, &file->permissions, 0);
++		res = hfsplus_get_perms(inode, &file->permissions, 0);
++		if (res)
++			goto out;
+ 		set_nlink(inode, 1);
+ 		if (S_ISREG(inode->i_mode)) {
+ 			if (file->permissions.dev)
 -- 
 2.51.0
 
