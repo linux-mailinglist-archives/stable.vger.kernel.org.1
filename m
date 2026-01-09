@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206734-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C81FDD09485
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B467AD09BB0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4D4F43039992
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A2AE93021E6C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EFDA32F748;
-	Fri,  9 Jan 2026 12:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F2B323406;
+	Fri,  9 Jan 2026 12:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XWrN++lk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z2BNsSdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4046F33032C;
-	Fri,  9 Jan 2026 12:00:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90C5235A952;
+	Fri,  9 Jan 2026 12:29:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960047; cv=none; b=cuKQeXkMybThHg2VHwDxYo3ZbYyrn+Qgl74wTpg1Wskr4K6n1ECJIGX2mtegwRJniEDM46ZH5CNk+S/JDbmpo0R9BeAg8/PK7nv4nqqKItlaSWgvHxc2vbeVBQazGLMDbXJbNmEb8G7LkwBGwgTOtS8cPMQG2a7rtAqUFxBmf/w=
+	t=1767961768; cv=none; b=rLRvieGaH1d3zGzS9b28ZLZTke0mn9qI5mJERLKtHgg1IN7ZNjrIjPDeSm8cfT6q3EGdGyyr0zE55xUyJc2FEFauAskBLC5hOSA1xRht8SqmpY6z0mDd3HpSwTcPeFD4CtIkJvgFUV2nDOggsENtKscPuyeSXxQSA8BzS+Zsix4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960047; c=relaxed/simple;
-	bh=V7TKtz5rX9QvdZXABNKzkfGBQXfuClrEh3faoeWr/g4=;
+	s=arc-20240116; t=1767961768; c=relaxed/simple;
+	bh=h1ql0isgTkkrYXCVEX891tWzNjgZ40o9xB8UIgFvNwg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byNG5eXC6LoSR9cC5DgK9rAF5U47aAeoBPfZOz6X7eE0fUDcLO/F6fHAa87MrqI+GQPuGg8cYn9FxCx0UtT3xu8/6j/c8jiuNcPQcxwGSr38BVBnLJK0GSR5xW8lNvHfhHggWRbe+6Ez0tQSC5XMTNYcObf8aufY1I1ycU929I0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XWrN++lk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1C64C4CEF1;
-	Fri,  9 Jan 2026 12:00:46 +0000 (UTC)
+	 MIME-Version; b=iZkZt7tDy1yQrIDUO0Xv83rjJzZ7IWVHttDrmtcCKjwTACpFmJZ5/MbyV0FGbXMTT1/qN+m6YHlO3zSLRPiNgBH7aIY6DJmPsRm4du9PuYUYXUBdQWWLnPGy1HsMG8WYxoX4BhgbI1sXM6nd8xQMCKopYmM55I0/e0/V4CEyPOo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z2BNsSdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F375AC4CEF1;
+	Fri,  9 Jan 2026 12:29:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960047;
-	bh=V7TKtz5rX9QvdZXABNKzkfGBQXfuClrEh3faoeWr/g4=;
+	s=korg; t=1767961768;
+	bh=h1ql0isgTkkrYXCVEX891tWzNjgZ40o9xB8UIgFvNwg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XWrN++lkYsoH+RikcJsyJjAYHk5cG7VoBQ9G3gt/Zc88w57GHs3xMqe9phayi085I
-	 C8DgUsQGH3209iQkoXmsZZfs48SS7QUcVWzNax7F3PnELdPbTwJA3Hn5THfvQwJYl3
-	 sHjUT9bwovVNqgExcaWe/ww+5iHyPVnCcaQL5hRE=
+	b=z2BNsSdy6OYSFZPzzdI9TVtO9DjtqNvnp6Loa68ZcK6rbM92ImwVK9Kynh0qSSg8Z
+	 lBOm9vniVmB98H/XtWE05yXDI+CVMzS+Yvnk8f9fyixVEoY8oQwTG4ehtQfU0U1jXm
+	 IDMPQzRY5EZYD1Q96zg+B5izhFmAgcE30S3Igc/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alkis Georgopoulos <alkisg@gmail.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 266/737] Revert "nfs: ignore SB_RDONLY when mounting nfs"
-Date: Fri,  9 Jan 2026 12:36:45 +0100
-Message-ID: <20260109112144.000560143@linuxfoundation.org>
+Subject: [PATCH 6.1 128/634] mfd: mt6397-irq: Fix missing irq_domain_remove() in error path
+Date: Fri,  9 Jan 2026 12:36:46 +0100
+Message-ID: <20260109112122.265509115@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,40 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
+[ Upstream commit b4b1bd1f330fdd13706382be6c90ce9f58cee3f5 ]
 
-This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
+If devm_request_threaded_irq() fails after irq_domain_create_linear()
+succeeds in mt6397_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-Silently ignoring the "ro" and "rw" mount options causes user confusion,
-and regressions.
+Call irq_domain_remove() in the error path after a successful
+irq_domain_create_linear() to properly release the IRQ domain.
 
-Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
-Cc: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: a4872e80ce7d ("mfd: mt6397: Extract IRQ related code from core driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121500.605-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/mt6397-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index bde81e0abf0ae..161c8fffbc1d9 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -12,7 +12,7 @@
- #include <linux/nfs_page.h>
- #include <linux/wait_bit.h>
- 
--#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
-+#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
- 
- extern const struct export_operations nfs_export_ops;
+diff --git a/drivers/mfd/mt6397-irq.c b/drivers/mfd/mt6397-irq.c
+index eff53fed8fe73..eee40ec162ceb 100644
+--- a/drivers/mfd/mt6397-irq.c
++++ b/drivers/mfd/mt6397-irq.c
+@@ -213,6 +213,7 @@ int mt6397_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "failed to register irq=%d; err: %d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
  
 -- 
 2.51.0
