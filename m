@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207481-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B490BD09470
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A66FBD09F59
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8142F301D68C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BDBB313806F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 422AD359FA9;
-	Fri,  9 Jan 2026 12:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2BF5358D30;
+	Fri,  9 Jan 2026 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y7lU5Xtp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M1W1Qw2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0316A35A92D;
-	Fri,  9 Jan 2026 12:07:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86B5833C53A;
+	Fri,  9 Jan 2026 12:36:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960460; cv=none; b=dVvIpZJVPFH6gqt8EHkyppnzXhaqEpWPOnyqjFGRKA6r1t/jQNAAfnvktynPB8kuHiK/Hb+OSwQ5/T2pqQbmND27XzX7zcuF7ZYsbAq26vvFF/iAlUe1ask7R5Yk1jhW3qRn/YBMlp1wL3eUuro+MYBMyFC5lWXkmkd26J+8g54=
+	t=1767962177; cv=none; b=n29D6GyXFPWiA9CkQmqDOArfPO462fQj6jxfIRR/IDiHegH+z2ypNZetuVhFsTVlbjC9vT0qs4MDPvVLt8n1mWY2IqCXNDM6KueyMjY7pOp71XCykX4MlRIgOXO68mHVQgGIpw+U5lkOGv9WuyxY8OEsRss0NNA9UBsBAfCHhsY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960460; c=relaxed/simple;
-	bh=oogJmf3jWsoZP8sIXJiCZghc6mUFps+AToIMedNNtEI=;
+	s=arc-20240116; t=1767962177; c=relaxed/simple;
+	bh=RYVAtNulQ1ARIURvvQMnbiWznu9nHtxSIGJASIPoVxo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=puxcQn8aC8kTTJ3zFfIynL4X28rzzhKePZ3CRJ8c3Ui+1asDoFJpcBGNAOgByGCbBOyy1RADFDbI26IVPoMHeiTvH9MTkWv6HyOEzicS5LQzHc+LFl5Y6F4h4bB7QV8uVEDn0+xQ70/0SDXHKruI0+blW67sRMe3OEa4UyzsDNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y7lU5Xtp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864E1C4CEF1;
-	Fri,  9 Jan 2026 12:07:39 +0000 (UTC)
+	 MIME-Version; b=FZr7lz7E0uaT0a1jdGvabcAiqYUgBVccKFZXuE/W6J3Xr9UUlekdePUqROqh4ZzPXYJdcMAAyCVdqi6mTIOS7b+z/ZgOZ2z43mCnm1TzC4TGimk8/KcY63plMrdT7rHtmEHdNvANjLHwOAl8Jko2MBegjiRTwtmeXM0bAo7KAww=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M1W1Qw2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 150F7C4CEF1;
+	Fri,  9 Jan 2026 12:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960459;
-	bh=oogJmf3jWsoZP8sIXJiCZghc6mUFps+AToIMedNNtEI=;
+	s=korg; t=1767962177;
+	bh=RYVAtNulQ1ARIURvvQMnbiWznu9nHtxSIGJASIPoVxo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y7lU5XtpyZhesNPlO7Ea7jQAJ6kwmyQj4tEeOPim8ZEPs09S6+VOHjKXFIDeMQlRb
-	 Ep6XrQCv/3ryHtTVMdrPQoh5ysEjFIu8sv9YimpPJ7A/aM2SidqEX3SwDyYvVlQwPL
-	 DE+TWrZGij6nezduPgigaT470S2sHqv3/tE0lnHg=
+	b=M1W1Qw2yp9Xj0f8VJa/XQM3+x1Et9EXjvAgdAL2wqcLq/dyCjF4dz8tuLA+Pj1bBJ
+	 XFsqvVAVjFHvsc5SkgJrFQHWFZaxLruOJX3Tc1tmErktRdmRY5Jqg+FnEcgQXagabc
+	 xxhHlm4zwCAABla6VTTBdjCEH6gTvdolIEXjjJyI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	Steve French <stfrench@microsoft.com>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Guenter Roeck <linux@roeck-us.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 411/737] cifs: Fix memory and information leak in smb3_reconfigure()
+Subject: [PATCH 6.1 272/634] hwmon: (ibmpex) fix use-after-free in high/low store
 Date: Fri,  9 Jan 2026 12:39:10 +0100
-Message-ID: <20260109112149.457434261@linuxfoundation.org>
+Message-ID: <20260109112127.769896229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit cb6d5aa9c0f10074f1ad056c3e2278ad2cc7ec8d ]
+[ Upstream commit 6946c726c3f4c36f0f049e6f97e88c510b15f65d ]
 
-In smb3_reconfigure(), if smb3_sync_session_ctx_passwords() fails, the
-function returns immediately without freeing and erasing the newly
-allocated new_password and new_password2. This causes both a memory leak
-and a potential information leak.
+The ibmpex_high_low_store() function retrieves driver data using
+dev_get_drvdata() and uses it without validation. This creates a race
+condition where the sysfs callback can be invoked after the data
+structure is freed, leading to use-after-free.
 
-Fix this by calling kfree_sensitive() on both password buffers before
-returning in this error case.
+Fix by adding a NULL check after dev_get_drvdata(), and reordering
+operations in the deletion path to prevent TOCTOU.
 
-Fixes: 0f0e357902957 ("cifs: during remount, make sure passwords are in sync")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 57c7c3a0fdea ("hwmon: IBM power meter driver")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://lore.kernel.org/r/MEYPR01MB7886BE2F51BFE41875B74B60AFA0A@MEYPR01MB7886.ausprd01.prod.outlook.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/fs_context.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwmon/ibmpex.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
-index 6358f2483c86..37b04c23ee89 100644
---- a/fs/smb/client/fs_context.c
-+++ b/fs/smb/client/fs_context.c
-@@ -979,6 +979,8 @@ static int smb3_reconfigure(struct fs_context *fc)
- 	rc = smb3_sync_session_ctx_passwords(cifs_sb, ses);
- 	if (rc) {
- 		mutex_unlock(&ses->session_mutex);
-+		kfree_sensitive(new_password);
-+		kfree_sensitive(new_password2);
- 		return rc;
- 	}
+diff --git a/drivers/hwmon/ibmpex.c b/drivers/hwmon/ibmpex.c
+index 1837cccd993c..9c7e2fa395db 100644
+--- a/drivers/hwmon/ibmpex.c
++++ b/drivers/hwmon/ibmpex.c
+@@ -282,6 +282,9 @@ static ssize_t ibmpex_high_low_store(struct device *dev,
+ {
+ 	struct ibmpex_bmc_data *data = dev_get_drvdata(dev);
  
++	if (!data)
++		return -ENODEV;
++
+ 	ibmpex_reset_high_low_data(data);
+ 
+ 	return count;
+@@ -514,6 +517,9 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
+ {
+ 	int i, j;
+ 
++	hwmon_device_unregister(data->hwmon_dev);
++	dev_set_drvdata(data->bmc_device, NULL);
++
+ 	device_remove_file(data->bmc_device,
+ 			   &sensor_dev_attr_reset_high_low.dev_attr);
+ 	device_remove_file(data->bmc_device, &sensor_dev_attr_name.dev_attr);
+@@ -527,8 +533,7 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
+ 		}
+ 
+ 	list_del(&data->list);
+-	dev_set_drvdata(data->bmc_device, NULL);
+-	hwmon_device_unregister(data->hwmon_dev);
++
+ 	ipmi_destroy_user(data->user);
+ 	kfree(data->sensors);
+ 	kfree(data);
 -- 
 2.51.0
 
