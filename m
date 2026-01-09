@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-207752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207151-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7F08D0A156
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1524CD09B2F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D0B632F18FE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:20 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A77973020093
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40D935BDDC;
-	Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF0F35B138;
+	Fri,  9 Jan 2026 12:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2c3K1N6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zOlbsI3p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B667E35CB6D;
-	Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70CC635A941;
+	Fri,  9 Jan 2026 12:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962946; cv=none; b=ggEYM33bjbQ9+apwnZcitoI/xFu8xCezlydL9GouMWge2UMniUzg/F8B+AEcWLQmD7551RCK287gDGCVbdS4sqDdOZk22tzlh9uHMyrlMwYIQz6FhAgTzjBCxnH6eUMWwSX1adbfsEj18BznyyDuw5anwFgiYnq+w44YV3E4DDE=
+	t=1767961236; cv=none; b=fTgQaTcHWzStP0/k0mJ762b4mEXkxIMZh2F66D8+EJyGpPoeVpOUB9jhqy8WUXGXr/UA8QcwwvYMR4owAn9JKqxgg3lgoePrmt0S5MyVRzLFEDrBkWQyoGTJLo23CGBp5vNE8TXTwjyOIJMj6m74X8EaCYECHE+iyHlSs+ZTtJI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962946; c=relaxed/simple;
-	bh=vP84XvXyNDq3vTcyK+4OQfWh8X9b3PW3OWgYiGPvbwA=;
+	s=arc-20240116; t=1767961236; c=relaxed/simple;
+	bh=1rBozJdxO96E6vSGX+prPv9MjLnU2l0225EkKNVjv/4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1daJLj8YUxyUjFistUi2c90r2AtmeoMGk2usr5/fYVEbzPYemIgpIKvlK+l7lRRej7v5QVJbL3bVogKRoZ758OIaKRRjZhJSOD/5bFAxjOa1kv+m3iuD//ocItWuNDuqJ30Er7Ne2fhWX+T80f28LzV55BWMoW1rcAiTnR1ndE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2c3K1N6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41D58C4CEF1;
-	Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
+	 MIME-Version; b=AdvhI/c7lALF7vHIJzrUGotq5DiJaYX5oqyBRG3ceYKakl6etuZ73R0hdXAGPAhiYV+swOg/ecwrRVMKu+izDCGPEy4QtrV7VhyJCI6yDeMx+e5l2CG30XnUONNwXbT1Xllo4fhV7pMajS2Dmcit5Qxe8inKAfyegV6e3+3XL00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zOlbsI3p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01596C4CEF1;
+	Fri,  9 Jan 2026 12:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962946;
-	bh=vP84XvXyNDq3vTcyK+4OQfWh8X9b3PW3OWgYiGPvbwA=;
+	s=korg; t=1767961236;
+	bh=1rBozJdxO96E6vSGX+prPv9MjLnU2l0225EkKNVjv/4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2c3K1N6lzv70jIFTarwpmjXRjGXo35Hzuuem3g3iHGoc5MqGwfO1c+B35UTuoU1b6
-	 39Zq6tJWQ95NNCjp+x3d8tc6upaiyqnDxMj+7pmsNnOtFCmgSrJKiAfz4idrFHgScj
-	 OuUVwsOfiKTjJ9ts0G3EQERBC1bCfkqNbB2o+eNg=
+	b=zOlbsI3p8ptHACdqQvqAxGCszx2SCC8HKHZSl8Gl6jp2mn8w80MjWgXOSHusD3+Qv
+	 Uk3967rZUublQWhaPdwsRNZCKn81zAOnaYtXgdBspEwRW9t9XwMb4ou9fWPBCrVoJV
+	 6gyIsuRNroLMPOUdCp+BMEu9vrPTkL3uHhGXh1SY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 543/634] jbd2: fix the inconsistency between checksum and data in memory for journal sb
-Date: Fri,  9 Jan 2026 12:43:41 +0100
-Message-ID: <20260109112138.019469884@linuxfoundation.org>
+	Gyeyoung Baek <gye976@gmail.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH 6.6 683/737] genirq/irq_sim: Initialize work context pointers properly
+Date: Fri,  9 Jan 2026 12:43:42 +0100
+Message-ID: <20260109112159.748620931@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Gyeyoung Baek <gye976@gmail.com>
 
-[ Upstream commit 6abfe107894af7e8ce3a2e120c619d81ee764ad5 ]
+[ Upstream commit 8a2277a3c9e4cc5398f80821afe7ecbe9bdf2819 ]
 
-Copying the file system while it is mounted as read-only results in
-a mount failure:
-[~]# mkfs.ext4 -F /dev/sdc
-[~]# mount /dev/sdc -o ro /mnt/test
-[~]# dd if=/dev/sdc of=/dev/sda bs=1M
-[~]# mount /dev/sda /mnt/test1
-[ 1094.849826] JBD2: journal checksum error
-[ 1094.850927] EXT4-fs (sda): Could not load journal inode
-mount: mount /dev/sda on /mnt/test1 failed: Bad message
+Initialize `ops` member's pointers properly by using kzalloc() instead of
+kmalloc() when allocating the simulation work context. Otherwise the
+pointers contain random content leading to invalid dereferencing.
 
-The process described above is just an abstracted way I came up with to
-reproduce the issue. In the actual scenario, the file system was mounted
-read-only and then copied while it was still mounted. It was found that
-the mount operation failed. The user intended to verify the data or use
-it as a backup, and this action was performed during a version upgrade.
-Above issue may happen as follows:
-ext4_fill_super
- set_journal_csum_feature_set(sb)
-  if (ext4_has_metadata_csum(sb))
-   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
-  if (test_opt(sb, JOURNAL_CHECKSUM)
-   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
-    lock_buffer(journal->j_sb_buffer);
-    sb->s_feature_incompat  |= cpu_to_be32(incompat);
-    //The data in the journal sb was modified, but the checksum was not
-      updated, so the data remaining in memory has a mismatch between the
-      data and the checksum.
-    unlock_buffer(journal->j_sb_buffer);
-
-In this case, the journal sb copied over is in a state where the checksum
-and data are inconsistent, so mounting fails.
-To solve the above issue, update the checksum in memory after modifying
-the journal sb.
-
-Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Changed jbd2_superblock_csum(sb) to jbd2_superblock_csum(journal, sb) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Gyeyoung Baek <gye976@gmail.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Link: https://lore.kernel.org/all/20250612124827.63259-1-gye976@gmail.com
+[ The context change is due to the commit 011f583781fa
+("genirq/irq_sim: add an extended irq_sim initializer")
+which is irrelevant to the logic of this patch. ]
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ kernel/irq/irq_sim.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -2393,6 +2393,12 @@ int jbd2_journal_set_features(journal_t
- 	sb->s_feature_compat    |= cpu_to_be32(compat);
- 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
- 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
- 	unlock_buffer(journal->j_sb_buffer);
- 	journal->j_revoke_records_per_block =
- 				journal_revoke_records_per_block(journal);
-@@ -2423,9 +2429,17 @@ void jbd2_journal_clear_features(journal
+--- a/kernel/irq/irq_sim.c
++++ b/kernel/irq/irq_sim.c
+@@ -166,7 +166,7 @@ struct irq_domain *irq_domain_create_sim
+ {
+ 	struct irq_sim_work_ctx *work_ctx;
  
- 	sb = journal->j_superblock;
+-	work_ctx = kmalloc(sizeof(*work_ctx), GFP_KERNEL);
++	work_ctx = kzalloc(sizeof(*work_ctx), GFP_KERNEL);
+ 	if (!work_ctx)
+ 		goto err_out;
  
-+	lock_buffer(journal->j_sb_buffer);
- 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
- 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
- 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
-+	unlock_buffer(journal->j_sb_buffer);
- 	journal->j_revoke_records_per_block =
- 				journal_revoke_records_per_block(journal);
- }
 
 
 
