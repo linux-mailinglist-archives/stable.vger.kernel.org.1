@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-207005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207632-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B0EFD09744
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 07FF1D0A033
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2BBAC3075EA1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A4B33030935
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B110B359F99;
-	Fri,  9 Jan 2026 12:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8731D33C53A;
+	Fri,  9 Jan 2026 12:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otIE8mxg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AVZ9Ouxa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5607C359F8C;
-	Fri,  9 Jan 2026 12:13:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A8051DF72C;
+	Fri,  9 Jan 2026 12:43:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960822; cv=none; b=jC6kV1S3P6a0SjTcVuqnnUOC8p0HcWL5XuIDp+sd3Hd0tMIJ39lSgupvfDZUIm9hSRjXFrQ+UIbUgVSE9Vl3tFzisxF5JYFJjhs2gLOK4EHOhvLg7ZyqTCpyNbUzpZ9DUX0RPxdjnstdCnF4npp5mFrPQcpLpRDTrgFOg1yloAs=
+	t=1767962603; cv=none; b=DOYp06HKM41KbUVqGAU6aYzcrwviyqjlHUmvcH/F/sO8aJDCAN6YPFmiJagGseGwlj7n3YS7UzeWYlfZWIqc0l0zkSGAw4Kw9jbapN/WYG2hFb2qMnunn0CXevqwoR/OU75ECDF3QSJCOPCu2M2Xi3McBrdkkAVY8U0iEhYeQrg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960822; c=relaxed/simple;
-	bh=JeZdNnFZJMFj6fMz+VpYR4TyuSMpyFPjoeWl8qzi2jo=;
+	s=arc-20240116; t=1767962603; c=relaxed/simple;
+	bh=4zS/UTtNXeuKsQS3DpyN8tLCoM3V016O+PlGnLGi3JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pE8By3TK9GsG0Mi0W6HYcZDqcDgjgKzFYTwSfbYdy05OtU0hJdyzYvNE/Mw3AEanFFKDZKJ8US86HJkqsE25mO0dVhvttHyn3AjqftAUxSLkdtU3GMqhhbuH1UkTaGabnz+X68/YGVwBSkyBAtGxW1xbiZioxuRTlmacDem5vaU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otIE8mxg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53C7C4CEF1;
-	Fri,  9 Jan 2026 12:13:41 +0000 (UTC)
+	 MIME-Version; b=F4fuW5puXzX/7KYLA0bhDWnicGMOW/FvoHQsE+wWoiqEuk6GgkJyzvTw70acrA99/GbmEtzugsyU4BfWOYcxUvXgcY1U7po1IFUhEea10Tvenl/1Gv1yi5cAyJej0NI7+XNywWWRPo9q8um7OSOtEGrW6grRTWdLJ7b0CaDxgEc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AVZ9Ouxa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F20C4CEF1;
+	Fri,  9 Jan 2026 12:43:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960822;
-	bh=JeZdNnFZJMFj6fMz+VpYR4TyuSMpyFPjoeWl8qzi2jo=;
+	s=korg; t=1767962603;
+	bh=4zS/UTtNXeuKsQS3DpyN8tLCoM3V016O+PlGnLGi3JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=otIE8mxgHr9fHwy+6qjm86qFxWWDfPaMH6BSMCzyvlSDvjYGXdpJfkNRGFCvoXxa1
-	 WNEFoBTHT9+4ycwbMCFpbhx5rWf8eDtwpOjn9e7tNM2pEjoOzifQ3hUne8673mH2wS
-	 i8kqmBHyB4MMEieOehd1KopcV9fmTAySjvigdfcc=
+	b=AVZ9OuxadiRmzhctRPIQXrp2DHldNNzR6EY3ufOxDl0gFU0m3hxLCuDf1Pw9Ry5kc
+	 xpExyOmk1VoPwKJ6Xhg7FljZMUshKoULkWXUpZ0kB6/WHSKjpBc+Zj+iYjQrIyZgY5
+	 viZ7XU8DF8+paCjDnr60//n0ClrVqQJL5rNROWtE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Sela <tomsela@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
+	Aloka Dixit <quic_alokad@quicinc.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 530/737] RDMA/efa: Remove possible negative shift
+Subject: [PATCH 6.1 391/634] wifi: cfg80211: move puncturing bitmap validation from mac80211
 Date: Fri,  9 Jan 2026 12:41:09 +0100
-Message-ID: <20260109112153.934093727@linuxfoundation.org>
+Message-ID: <20260109112132.244200275@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +60,235 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Aloka Dixit <quic_alokad@quicinc.com>
 
-[ Upstream commit 85463eb6a46caf2f1e0e1a6d0731f2f3bab17780 ]
+[ Upstream commit b25413fed3d43e1ed3340df4d928971bb8639f66 ]
 
-The page size used for device might in some cases be smaller than
-PAGE_SIZE what results in a negative shift when calculating the number of
-host pages in PAGE_SIZE for a debug log. Remove the debug line together
-with the calculation.
+- Move ieee80211_valid_disable_subchannel_bitmap() from mlme.c to
+  chan.c, rename it as cfg80211_valid_disable_subchannel_bitmap()
+  and export it.
+- Modify the prototype to include struct cfg80211_chan_def instead
+  of only bandwidth to support a check which returns false if the
+  primary channel is punctured.
 
-Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
-Link: https://patch.msgid.link/r/20251210173656.8180-1-mrgolin@amazon.com
-Reviewed-by: Tom Sela <tomsela@amazon.com>
-Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Signed-off-by: Aloka Dixit <quic_alokad@quicinc.com>
+Link: https://lore.kernel.org/r/20230131001227.25014-2-quic_alokad@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: a519be2f5d95 ("wifi: mac80211: do not use old MBSSID elements")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/efa/efa_verbs.c | 4 ----
- 1 file changed, 4 deletions(-)
+ include/net/cfg80211.h | 12 +++++++
+ net/mac80211/mlme.c    | 73 ++++--------------------------------------
+ net/wireless/chan.c    | 69 +++++++++++++++++++++++++++++++++++++++
+ 3 files changed, 87 insertions(+), 67 deletions(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
-index 0f8ca99d0827..2a5b93ef4b33 100644
---- a/drivers/infiniband/hw/efa/efa_verbs.c
-+++ b/drivers/infiniband/hw/efa/efa_verbs.c
-@@ -1224,13 +1224,9 @@ static int umem_to_page_list(struct efa_dev *dev,
- 			     u32 hp_cnt,
- 			     u8 hp_shift)
- {
--	u32 pages_in_hp = BIT(hp_shift - PAGE_SHIFT);
- 	struct ib_block_iter biter;
- 	unsigned int hp_idx = 0;
+diff --git a/include/net/cfg80211.h b/include/net/cfg80211.h
+index d15033420ca3..bf79788f1c5d 100644
+--- a/include/net/cfg80211.h
++++ b/include/net/cfg80211.h
+@@ -9056,4 +9056,16 @@ static inline int cfg80211_color_change_notify(struct net_device *dev)
+ 					 0, 0);
+ }
  
--	ibdev_dbg(&dev->ibdev, "hp_cnt[%u], pages_in_hp[%u]\n",
--		  hp_cnt, pages_in_hp);
++/**
++ * cfg80211_valid_disable_subchannel_bitmap - validate puncturing bitmap
++ * @bitmap: bitmap to be validated
++ * @chandef: channel definition
++ *
++ * Validate the puncturing bitmap.
++ *
++ * Return: %true if the bitmap is valid. %false otherwise.
++ */
++bool cfg80211_valid_disable_subchannel_bitmap(u16 *bitmap,
++					      const struct cfg80211_chan_def *chandef);
++
+ #endif /* __NET_CFG80211_H */
+diff --git a/net/mac80211/mlme.c b/net/mac80211/mlme.c
+index 25483596f22e..1fb41e5cc577 100644
+--- a/net/mac80211/mlme.c
++++ b/net/mac80211/mlme.c
+@@ -88,67 +88,6 @@ MODULE_PARM_DESC(probe_wait_ms,
+  */
+ #define IEEE80211_SIGNAL_AVE_MIN_COUNT	4
+ 
+-struct ieee80211_per_bw_puncturing_values {
+-	u8 len;
+-	const u16 *valid_values;
+-};
 -
- 	rdma_umem_for_each_dma_block(umem, &biter, BIT(hp_shift))
- 		page_list[hp_idx++] = rdma_block_iter_dma_address(&biter);
+-static const u16 puncturing_values_80mhz[] = {
+-	0x8, 0x4, 0x2, 0x1
+-};
+-
+-static const u16 puncturing_values_160mhz[] = {
+-	 0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1, 0xc0, 0x30, 0xc, 0x3
+-};
+-
+-static const u16 puncturing_values_320mhz[] = {
+-	0xc000, 0x3000, 0xc00, 0x300, 0xc0, 0x30, 0xc, 0x3, 0xf000, 0xf00,
+-	0xf0, 0xf, 0xfc00, 0xf300, 0xf0c0, 0xf030, 0xf00c, 0xf003, 0xc00f,
+-	0x300f, 0xc0f, 0x30f, 0xcf, 0x3f
+-};
+-
+-#define IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(_bw) \
+-	{ \
+-		.len = ARRAY_SIZE(puncturing_values_ ## _bw ## mhz), \
+-		.valid_values = puncturing_values_ ## _bw ## mhz \
+-	}
+-
+-static const struct ieee80211_per_bw_puncturing_values per_bw_puncturing[] = {
+-	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(80),
+-	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(160),
+-	IEEE80211_PER_BW_VALID_PUNCTURING_VALUES(320)
+-};
+-
+-static bool ieee80211_valid_disable_subchannel_bitmap(u16 *bitmap,
+-						      enum nl80211_chan_width bw)
+-{
+-	u32 idx, i;
+-
+-	switch (bw) {
+-	case NL80211_CHAN_WIDTH_80:
+-		idx = 0;
+-		break;
+-	case NL80211_CHAN_WIDTH_160:
+-		idx = 1;
+-		break;
+-	case NL80211_CHAN_WIDTH_320:
+-		idx = 2;
+-		break;
+-	default:
+-		*bitmap = 0;
+-		break;
+-	}
+-
+-	if (!*bitmap)
+-		return true;
+-
+-	for (i = 0; i < per_bw_puncturing[idx].len; i++)
+-		if (per_bw_puncturing[idx].valid_values[i] == *bitmap)
+-			return true;
+-
+-	return false;
+-}
+-
+ /*
+  * Extract from the given disabled subchannel bitmap (raw format
+  * from the EHT Operation Element) the bits for the subchannel
+@@ -206,8 +145,8 @@ ieee80211_handle_puncturing_bitmap(struct ieee80211_link_data *link,
+ 			ieee80211_extract_dis_subch_bmap(eht_oper, chandef,
+ 							 bitmap);
  
+-		if (ieee80211_valid_disable_subchannel_bitmap(&bitmap,
+-							      chandef->width))
++		if (cfg80211_valid_disable_subchannel_bitmap(&bitmap,
++							     chandef))
+ 			break;
+ 		link->u.mgd.conn_flags |=
+ 			ieee80211_chandef_downgrade(chandef);
+@@ -5621,8 +5560,8 @@ static bool ieee80211_config_puncturing(struct ieee80211_link_data *link,
+ 	    extracted == link->conf->eht_puncturing)
+ 		return true;
+ 
+-	if (!ieee80211_valid_disable_subchannel_bitmap(&bitmap,
+-						       link->conf->chandef.width)) {
++	if (!cfg80211_valid_disable_subchannel_bitmap(&bitmap,
++						      &link->conf->chandef)) {
+ 		link_info(link,
+ 			  "Got an invalid disable subchannel bitmap from AP %pM: bitmap = 0x%x, bw = 0x%x. disconnect\n",
+ 			  link->u.mgd.bssid,
+@@ -7110,8 +7049,8 @@ ieee80211_setup_assoc_link(struct ieee80211_sub_if_data *sdata,
+ 			u16 bitmap;
+ 
+ 			bitmap = get_unaligned_le16(disable_subchannel_bitmap);
+-			if (ieee80211_valid_disable_subchannel_bitmap(&bitmap,
+-								      link->conf->chandef.width))
++			if (cfg80211_valid_disable_subchannel_bitmap(&bitmap,
++								     &link->conf->chandef))
+ 				ieee80211_handle_puncturing_bitmap(link,
+ 								   eht_oper,
+ 								   bitmap,
+diff --git a/net/wireless/chan.c b/net/wireless/chan.c
+index 0e5835cd8c61..0b7e81db383d 100644
+--- a/net/wireless/chan.c
++++ b/net/wireless/chan.c
+@@ -1460,3 +1460,72 @@ struct cfg80211_chan_def *wdev_chandef(struct wireless_dev *wdev,
+ 	}
+ }
+ EXPORT_SYMBOL(wdev_chandef);
++
++struct cfg80211_per_bw_puncturing_values {
++	u8 len;
++	const u16 *valid_values;
++};
++
++static const u16 puncturing_values_80mhz[] = {
++	0x8, 0x4, 0x2, 0x1
++};
++
++static const u16 puncturing_values_160mhz[] = {
++	 0x80, 0x40, 0x20, 0x10, 0x8, 0x4, 0x2, 0x1, 0xc0, 0x30, 0xc, 0x3
++};
++
++static const u16 puncturing_values_320mhz[] = {
++	0xc000, 0x3000, 0xc00, 0x300, 0xc0, 0x30, 0xc, 0x3, 0xf000, 0xf00,
++	0xf0, 0xf, 0xfc00, 0xf300, 0xf0c0, 0xf030, 0xf00c, 0xf003, 0xc00f,
++	0x300f, 0xc0f, 0x30f, 0xcf, 0x3f
++};
++
++#define CFG80211_PER_BW_VALID_PUNCTURING_VALUES(_bw) \
++	{ \
++		.len = ARRAY_SIZE(puncturing_values_ ## _bw ## mhz), \
++		.valid_values = puncturing_values_ ## _bw ## mhz \
++	}
++
++static const struct cfg80211_per_bw_puncturing_values per_bw_puncturing[] = {
++	CFG80211_PER_BW_VALID_PUNCTURING_VALUES(80),
++	CFG80211_PER_BW_VALID_PUNCTURING_VALUES(160),
++	CFG80211_PER_BW_VALID_PUNCTURING_VALUES(320)
++};
++
++bool cfg80211_valid_disable_subchannel_bitmap(u16 *bitmap,
++					      const struct cfg80211_chan_def *chandef)
++{
++	u32 idx, i, start_freq;
++
++	switch (chandef->width) {
++	case NL80211_CHAN_WIDTH_80:
++		idx = 0;
++		start_freq = chandef->center_freq1 - 40;
++		break;
++	case NL80211_CHAN_WIDTH_160:
++		idx = 1;
++		start_freq = chandef->center_freq1 - 80;
++		break;
++	case NL80211_CHAN_WIDTH_320:
++		idx = 2;
++		start_freq = chandef->center_freq1 - 160;
++		break;
++	default:
++		*bitmap = 0;
++		break;
++	}
++
++	if (!*bitmap)
++		return true;
++
++	/* check if primary channel is punctured */
++	if (*bitmap & (u16)BIT((chandef->chan->center_freq - start_freq) / 20))
++		return false;
++
++	for (i = 0; i < per_bw_puncturing[idx].len; i++)
++		if (per_bw_puncturing[idx].valid_values[i] == *bitmap)
++			return true;
++
++	return false;
++}
++EXPORT_SYMBOL(cfg80211_valid_disable_subchannel_bitmap);
 -- 
 2.51.0
 
