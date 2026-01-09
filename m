@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-206531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36A11D0907D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:51:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F97D09083
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 699253024A4E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:51:14 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5E199302195E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:51:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F16332FA3D;
-	Fri,  9 Jan 2026 11:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5722833290A;
+	Fri,  9 Jan 2026 11:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RVtrDKWh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwP9wjwa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 329AB30FF1D;
-	Fri,  9 Jan 2026 11:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 174B332BF21;
+	Fri,  9 Jan 2026 11:51:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959471; cv=none; b=WRWPH9mQw6GFqI2oHQu1/iyUiMO1cp5i6W40OfVjEFJMCBNdYlcPJykRqZQ8V9HWTUsi6Yq3moexsZA2Weknvot8B8ajUXB9DuWcL+kdjUYeIVW/IY9IMlIe1jdytCagilpnq21xJ+FX67TcLI+jyNoNh03evsZdJarHRM36Mzw=
+	t=1767959477; cv=none; b=IBe4HrfQY5iLNFyxNHMv8p+e+YOIqOEQQbtshGWjogIi0Ee1R7Ga3y7i2Zr9rogTQczvm5ZDOSpEyVWkH5Ut5E1rH/dw11mJeRJiL2hqo1Dc5Zm1Nm17ok9NRMG0f89wZDxlrehmnFvK7ltrilUIRzdfYu9yGiirNq5Ibl3P0BY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959471; c=relaxed/simple;
-	bh=cS1pACqQ+Tcv2HLolleqyzGvVD+3kZsnvaQ1Dr65Wtk=;
+	s=arc-20240116; t=1767959477; c=relaxed/simple;
+	bh=3lV5DtEoPickH6k/riqMi8+Yn9fMrjUn9fHmu8P+x8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t0xQQX9ZFne9qT1A+sGrmk8fM4dn90AtlGT7tL3CUqRf4n4ayHTOb0ijJQKrBtSeXIwVQOPokcwSVg4ykxv/DTFFONs8bq/SOaN6zRxIUSJIokkFF8XcZnMN31Rrrk8jzmHh1KGl84aylP0tJQhABV6ng9HgfmyBWCB0ExXKp9k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RVtrDKWh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2DF3C4CEF1;
-	Fri,  9 Jan 2026 11:51:10 +0000 (UTC)
+	 MIME-Version; b=aek4uXuSje6t3MCG8hhLgzs32NCDe/l8Z1h7HOGbiRVq7hXV5lhO8P9mMttnMJUmKvmnSvu7OQXsKQsVaAfIiFeYdea1JPjm0SEgTx0sNJqlQ3hUP6g4dGTQQw58Vc9wzHapbhphPO6rirdtnojGSR/VyV1ieMUFk2XLgMCfJ80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwP9wjwa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90099C4CEF1;
+	Fri,  9 Jan 2026 11:51:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959471;
-	bh=cS1pACqQ+Tcv2HLolleqyzGvVD+3kZsnvaQ1Dr65Wtk=;
+	s=korg; t=1767959477;
+	bh=3lV5DtEoPickH6k/riqMi8+Yn9fMrjUn9fHmu8P+x8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RVtrDKWhPHthvAudj4ANW8nbxvnSXNTqDln9bjG1XycZa9HxyVj1IrZCfiS97MBuy
-	 u0qg8jwJwFmhAo4T49vyQnRvJkcPHPrcuwGUrYmO/z958ZNDb9lz981/fk326OSvgs
-	 nXYTPfF6vxouolLjMetJKB5P1Nhui10aGi/PNjU8=
+	b=JwP9wjwaZOYa0yrfr8mCONBVjmaeWZcrI+zB6d8p8e2WbWKp2lWbo/Wc4FbTOv0Ho
+	 P/hQ0DxSUMaxEgNc2+q4I9GZg4BsoSDg7zbTtgYwEEzujvh8HDYPTNlKPjtC4fw8gx
+	 feXPPovXm383luPNsFPlpDW96jYUt6BWVJ1Q8kIU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -44,9 +44,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Thomas Gleixner <tglx@linutronix.de>,
 	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 063/737] irqchip/irq-bcm7038-l1: Fix section mismatch
-Date: Fri,  9 Jan 2026 12:33:22 +0100
-Message-ID: <20260109112136.369574447@linuxfoundation.org>
+Subject: [PATCH 6.6 064/737] irqchip/irq-bcm7120-l2: Fix section mismatch
+Date: Fri,  9 Jan 2026 12:33:23 +0100
+Message-ID: <20260109112136.406736956@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -67,46 +67,75 @@ Content-Transfer-Encoding: 8bit
 
 From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e9db5332caaf4789ae3bafe72f61ad8e6e0c2d81 ]
+[ Upstream commit bfc0c5beab1fde843677923cf008f41d583c980a ]
 
 Platform drivers can be probed after their init sections have been
-discarded so the irqchip init callback must not live in init.
+discarded so the irqchip init callbacks must not live in init.
 
-Fixes: c057c799e379 ("irqchip/irq-bcm7038-l1: Switch to IRQCHIP_PLATFORM_DRIVER")
+Fixes: 3ac268d5ed22 ("irqchip/irq-bcm7120-l2: Switch to IRQCHIP_PLATFORM_DRIVER")
 Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-bcm7038-l1.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ drivers/irqchip/irq-bcm7120-l2.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/irqchip/irq-bcm7038-l1.c b/drivers/irqchip/irq-bcm7038-l1.c
-index 24ca1d656adc5..51d38a92ec200 100644
---- a/drivers/irqchip/irq-bcm7038-l1.c
-+++ b/drivers/irqchip/irq-bcm7038-l1.c
-@@ -219,9 +219,8 @@ static int bcm7038_l1_set_affinity(struct irq_data *d,
+diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+index 1e9dab6e0d86f..bb6e56629e532 100644
+--- a/drivers/irqchip/irq-bcm7120-l2.c
++++ b/drivers/irqchip/irq-bcm7120-l2.c
+@@ -147,8 +147,7 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
+ 	return 0;
  }
- #endif
  
--static int __init bcm7038_l1_init_one(struct device_node *dn,
--				      unsigned int idx,
--				      struct bcm7038_l1_chip *intc)
-+static int bcm7038_l1_init_one(struct device_node *dn, unsigned int idx,
-+			       struct bcm7038_l1_chip *intc)
+-static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
+-					     struct bcm7120_l2_intc_data *data)
++static int bcm7120_l2_intc_iomap_7120(struct device_node *dn, struct bcm7120_l2_intc_data *data)
  {
- 	struct resource res;
- 	resource_size_t sz;
-@@ -395,8 +394,7 @@ static const struct irq_domain_ops bcm7038_l1_domain_ops = {
- 	.map			= bcm7038_l1_map,
- };
+ 	int ret;
  
--static int __init bcm7038_l1_of_init(struct device_node *dn,
--			      struct device_node *parent)
-+static int bcm7038_l1_of_init(struct device_node *dn, struct device_node *parent)
+@@ -181,8 +180,7 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
+ 	return 0;
+ }
+ 
+-static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+-					     struct bcm7120_l2_intc_data *data)
++static int bcm7120_l2_intc_iomap_3380(struct device_node *dn, struct bcm7120_l2_intc_data *data)
  {
- 	struct bcm7038_l1_chip *intc;
- 	int idx, ret;
+ 	unsigned int gc_idx;
+ 
+@@ -212,10 +210,9 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+ 	return 0;
+ }
+ 
+-static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+-				 struct device_node *parent,
++static int bcm7120_l2_intc_probe(struct device_node *dn, struct device_node *parent,
+ 				 int (*iomap_regs_fn)(struct device_node *,
+-					struct bcm7120_l2_intc_data *),
++						      struct bcm7120_l2_intc_data *),
+ 				 const char *intc_name)
+ {
+ 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+@@ -343,15 +340,13 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+ 	return ret;
+ }
+ 
+-static int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
+-					     struct device_node *parent)
++static int bcm7120_l2_intc_probe_7120(struct device_node *dn, struct device_node *parent)
+ {
+ 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_7120,
+ 				     "BCM7120 L2");
+ }
+ 
+-static int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
+-					     struct device_node *parent)
++static int bcm7120_l2_intc_probe_3380(struct device_node *dn, struct device_node *parent)
+ {
+ 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_3380,
+ 				     "BCM3380 L2");
 -- 
 2.51.0
 
