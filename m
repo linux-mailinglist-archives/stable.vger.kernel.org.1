@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-207768-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207137-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1380D0A165
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE544D09B3B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C2C8430F0994
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9DB7B30D9992
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D2732BF21;
-	Fri,  9 Jan 2026 12:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D0CC2737EE;
+	Fri,  9 Jan 2026 12:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDsv1xZW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLvo+Inq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605CE35C1B6;
-	Fri,  9 Jan 2026 12:49:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0064232AAB5;
+	Fri,  9 Jan 2026 12:19:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962992; cv=none; b=OlOhvotpRWa5gYfl39FC4cMwWKzgwkdBGSDQq7RQ4Hj+29C/EuKpfgmzkMnAbnstolMXV+BJlAKZh86yPj1wXG+zvd4cSyqAXJf2Ip6ApXN83prQ6FOii+qmeG9SlzC6CCuARZCuex0+g5Vcd9YtFAvMouFnCeaSSNdKZrIWdFM=
+	t=1767961197; cv=none; b=JZI1/oKiDTBSY2Yqautb0HiJS39YY3bNIFOeohQpVIKBNTfoJLjuo9EwJ4sBjnhYTeATpReomj6lEtJLv1sAnGEyDU9YPLYbZuet4/uHPSRnXjqPGkXz4fn069uoKCsypfONJd8sBDWu4qdfXaW2bnih6zwUcWcBVJpxdu3V2d8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962992; c=relaxed/simple;
-	bh=JUD5bUOPNLUkTZ22CtgkgZoknJEZW21/35NOMdS0dWI=;
+	s=arc-20240116; t=1767961197; c=relaxed/simple;
+	bh=zOEf6U8S/zzCN7BLHx/V1OtjmtzebZVMpuB/VJr/F2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i9tDHEvwVKnJ/8PuqiwAd1OJLgI+UqYXkMVjEQ81xtKveH7ayVUTCQxDSgypHpK6Jxz9pWffevV+0QD8/eXBFZ0DmvFfGCdVNIap+ZAAnWMMngpwZUDuroVZE/NMst0ImX9SUwNa+ZOspNfT664q270oTXTc4GGJlVFf6oipNpk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDsv1xZW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E219EC4CEF1;
-	Fri,  9 Jan 2026 12:49:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ukiFThE/1It2S+IxcE3mugwBerEUyqjzb8T+Np1V0rzO6hTrGbE3mCoeGADqiHIZ6ZIPNSNvOFK7IPn5zZ0ETof++pFhnHKwib5KBDilmIXlxEyeAde/q/Lds44I+s1KGCU+Zj7N8IZsYyKYSM4NhTEmotDKMQg3pnXtsCKAzIk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLvo+Inq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44DE0C4CEF1;
+	Fri,  9 Jan 2026 12:19:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962992;
-	bh=JUD5bUOPNLUkTZ22CtgkgZoknJEZW21/35NOMdS0dWI=;
+	s=korg; t=1767961196;
+	bh=zOEf6U8S/zzCN7BLHx/V1OtjmtzebZVMpuB/VJr/F2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NDsv1xZWVupmVh3DE2ECmiWC9eCgIrXO8fmRAeYgjU7W/eqwGkEFYcgrcBvXClSTN
-	 l+Ehx2n9HeMGqZfTDU2u53Co3iMaFd11W0HaBJ8iYgvROATCEIeqlRF/iC38/fF6yM
-	 liEni/kZQ6fAhn5wCgfDug6ta3sqhi8QSYzMZCAs=
+	b=mLvo+Inq+yAhSW1EGKAP7aVm4fxD6edOmfCyoFAwY18kA0fpXa4D7HquSw7zOZnzZ
+	 4yCTPh7eYq/zQCxttxdkCCO8okQJrDlNTYPKz5KEG2BvHA2NqkRTvCam8uGncW/19B
+	 PIFPtICLR+D5blygZHpR5sSqvT2p31uomB19rIfg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Baokun Li <libaokun1@huawei.com>,
-	David Howells <dhowells@redhat.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Chen Yu <xnguchen@sina.cn>
-Subject: [PATCH 6.1 527/634] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
-Date: Fri,  9 Jan 2026 12:43:25 +0100
-Message-ID: <20260109112137.396227194@linuxfoundation.org>
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	Karsten Keil <isdn@linux-pingi.de>,
+	David Lin <dtwlin@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Alex Elder <elder@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
+	Marcel Holtmann <marcel@holtmann.org>,
+	Johan Hedberg <johan.hedberg@gmail.com>,
+	Luiz Augusto von Dentz <luiz.dentz@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 667/737] tty: introduce and use tty_port_tty_vhangup() helper
+Date: Fri,  9 Jan 2026 12:43:26 +0100
+Message-ID: <20260109112159.135465510@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +66,238 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
 
-commit 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f upstream.
+[ Upstream commit 2b5eac0f8c6e79bc152c8804f9f88d16717013ab ]
 
-The fscache_cookie_lru_timer is initialized when the fscache module
-is inserted, but is not deleted when the fscache module is removed.
-If timer_reduce() is called before removing the fscache module,
-the fscache_cookie_lru_timer will be added to the timer list of
-the current cpu. Afterwards, a use-after-free will be triggered
-in the softIRQ after removing the fscache module, as follows:
+This code (tty_get -> vhangup -> tty_put) is repeated on few places.
+Introduce a helper similar to tty_port_tty_hangup() (asynchronous) to
+handle even vhangup (synchronous).
 
-==================================================================
-BUG: unable to handle page fault for address: fffffbfff803c9e9
- PF: supervisor read access in kernel mode
- PF: error_code(0x0000) - not-present page
-PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
-Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
-CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
-Tainted: [W]=WARN
-RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
-Call Trace:
- <IRQ>
- tmigr_handle_remote_up+0x627/0x810
- __walk_groups.isra.0+0x47/0x140
- tmigr_handle_remote+0x1fa/0x2f0
- handle_softirqs+0x180/0x590
- irq_exit_rcu+0x84/0xb0
- sysvec_apic_timer_interrupt+0x6e/0x90
- </IRQ>
- <TASK>
- asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:default_idle+0xf/0x20
- default_idle_call+0x38/0x60
- do_idle+0x2b5/0x300
- cpu_startup_entry+0x54/0x60
- start_secondary+0x20d/0x280
- common_startup_64+0x13e/0x148
- </TASK>
-Modules linked in: [last unloaded: netfs]
-==================================================================
+And use it on those places.
 
-Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
+In fact, reuse the tty_port_tty_hangup()'s code and call tty_vhangup()
+depending on a new bool parameter.
 
-Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
-Cc: stable@kernel.org
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
-Acked-by: David Howells <dhowells@redhat.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Changed the file path due to missing commit:47757ea83a54 ("netfs,
-fscache: Move fs/fscache/* into fs/netfs/") ]
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Cc: Karsten Keil <isdn@linux-pingi.de>
+Cc: David Lin <dtwlin@gmail.com>
+Cc: Johan Hovold <johan@kernel.org>
+Cc: Alex Elder <elder@kernel.org>
+Cc: Oliver Neukum <oneukum@suse.com>
+Cc: Marcel Holtmann <marcel@holtmann.org>
+Cc: Johan Hedberg <johan.hedberg@gmail.com>
+Cc: Luiz Augusto von Dentz <luiz.dentz@gmail.com>
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Link: https://lore.kernel.org/r/20250611100319.186924-2-jirislaby@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 74098cc06e75 ("xhci: dbgtty: fix device unregister: fixup")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/fscache/main.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/isdn/capi/capi.c         |    8 +-------
+ drivers/staging/greybus/uart.c   |    7 +------
+ drivers/tty/serial/serial_core.c |    7 +------
+ drivers/tty/tty_port.c           |   12 ++++++++----
+ drivers/usb/class/cdc-acm.c      |    7 +------
+ drivers/usb/serial/usb-serial.c  |    7 +------
+ include/linux/tty_port.h         |   12 +++++++++++-
+ net/bluetooth/rfcomm/tty.c       |    7 +------
+ 8 files changed, 25 insertions(+), 42 deletions(-)
 
---- a/fs/fscache/main.c
-+++ b/fs/fscache/main.c
-@@ -114,6 +114,7 @@ static void __exit fscache_exit(void)
+--- a/drivers/isdn/capi/capi.c
++++ b/drivers/isdn/capi/capi.c
+@@ -304,15 +304,9 @@ static void capincci_alloc_minor(struct
+ static void capincci_free_minor(struct capincci *np)
+ {
+ 	struct capiminor *mp = np->minorp;
+-	struct tty_struct *tty;
  
- 	kmem_cache_destroy(fscache_cookie_jar);
- 	fscache_proc_cleanup();
-+	timer_shutdown_sync(&fscache_cookie_lru_timer);
- 	destroy_workqueue(fscache_wq);
- 	pr_notice("Unloaded\n");
+ 	if (mp) {
+-		tty = tty_port_tty_get(&mp->port);
+-		if (tty) {
+-			tty_vhangup(tty);
+-			tty_kref_put(tty);
+-		}
+-
++		tty_port_tty_vhangup(&mp->port);
+ 		capiminor_free(mp);
+ 	}
  }
+--- a/drivers/staging/greybus/uart.c
++++ b/drivers/staging/greybus/uart.c
+@@ -914,7 +914,6 @@ static void gb_uart_remove(struct gbphy_
+ {
+ 	struct gb_tty *gb_tty = gb_gbphy_get_data(gbphy_dev);
+ 	struct gb_connection *connection = gb_tty->connection;
+-	struct tty_struct *tty;
+ 	int ret;
+ 
+ 	ret = gbphy_runtime_get_sync(gbphy_dev);
+@@ -927,11 +926,7 @@ static void gb_uart_remove(struct gbphy_
+ 	wake_up_all(&gb_tty->wioctl);
+ 	mutex_unlock(&gb_tty->mutex);
+ 
+-	tty = tty_port_tty_get(&gb_tty->port);
+-	if (tty) {
+-		tty_vhangup(tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(&gb_tty->port);
+ 
+ 	gb_connection_disable_rx(connection);
+ 	tty_unregister_device(gb_tty_driver, gb_tty->minor);
+--- a/drivers/tty/serial/serial_core.c
++++ b/drivers/tty/serial/serial_core.c
+@@ -3250,7 +3250,6 @@ static void serial_core_remove_one_port(
+ 	struct uart_state *state = drv->state + uport->line;
+ 	struct tty_port *port = &state->port;
+ 	struct uart_port *uart_port;
+-	struct tty_struct *tty;
+ 
+ 	mutex_lock(&port->mutex);
+ 	uart_port = uart_port_check(state);
+@@ -3269,11 +3268,7 @@ static void serial_core_remove_one_port(
+ 	 */
+ 	tty_port_unregister_device(port, drv->tty_driver, uport->line);
+ 
+-	tty = tty_port_tty_get(port);
+-	if (tty) {
+-		tty_vhangup(port->tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(port);
+ 
+ 	/*
+ 	 * If the port is used as a console, unregister it
+--- a/drivers/tty/tty_port.c
++++ b/drivers/tty/tty_port.c
+@@ -414,15 +414,19 @@ EXPORT_SYMBOL(tty_port_hangup);
+  * @port: tty port
+  * @check_clocal: hang only ttys with %CLOCAL unset?
+  */
+-void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
++void __tty_port_tty_hangup(struct tty_port *port, bool check_clocal, bool async)
+ {
+ 	struct tty_struct *tty = tty_port_tty_get(port);
+ 
+-	if (tty && (!check_clocal || !C_CLOCAL(tty)))
+-		tty_hangup(tty);
++	if (tty && (!check_clocal || !C_CLOCAL(tty))) {
++		if (async)
++			tty_hangup(tty);
++		else
++			tty_vhangup(tty);
++	}
+ 	tty_kref_put(tty);
+ }
+-EXPORT_SYMBOL_GPL(tty_port_tty_hangup);
++EXPORT_SYMBOL_GPL(__tty_port_tty_hangup);
+ 
+ /**
+  * tty_port_tty_wakeup - helper to wake up a tty
+--- a/drivers/usb/class/cdc-acm.c
++++ b/drivers/usb/class/cdc-acm.c
+@@ -1572,7 +1572,6 @@ err_put_port:
+ static void acm_disconnect(struct usb_interface *intf)
+ {
+ 	struct acm *acm = usb_get_intfdata(intf);
+-	struct tty_struct *tty;
+ 	int i;
+ 
+ 	/* sibling interface is already cleaning up */
+@@ -1599,11 +1598,7 @@ static void acm_disconnect(struct usb_in
+ 	usb_set_intfdata(acm->data, NULL);
+ 	mutex_unlock(&acm->mutex);
+ 
+-	tty = tty_port_tty_get(&acm->port);
+-	if (tty) {
+-		tty_vhangup(tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(&acm->port);
+ 
+ 	cancel_delayed_work_sync(&acm->dwork);
+ 
+--- a/drivers/usb/serial/usb-serial.c
++++ b/drivers/usb/serial/usb-serial.c
+@@ -1178,7 +1178,6 @@ static void usb_serial_disconnect(struct
+ 	struct usb_serial *serial = usb_get_intfdata(interface);
+ 	struct device *dev = &interface->dev;
+ 	struct usb_serial_port *port;
+-	struct tty_struct *tty;
+ 
+ 	/* sibling interface is cleaning up */
+ 	if (!serial)
+@@ -1193,11 +1192,7 @@ static void usb_serial_disconnect(struct
+ 
+ 	for (i = 0; i < serial->num_ports; ++i) {
+ 		port = serial->port[i];
+-		tty = tty_port_tty_get(&port->port);
+-		if (tty) {
+-			tty_vhangup(tty);
+-			tty_kref_put(tty);
+-		}
++		tty_port_tty_vhangup(&port->port);
+ 		usb_serial_port_poison_urbs(port);
+ 		wake_up_interruptible(&port->port.delta_msr_wait);
+ 		cancel_work_sync(&port->work);
+--- a/include/linux/tty_port.h
++++ b/include/linux/tty_port.h
+@@ -235,7 +235,7 @@ bool tty_port_carrier_raised(struct tty_
+ void tty_port_raise_dtr_rts(struct tty_port *port);
+ void tty_port_lower_dtr_rts(struct tty_port *port);
+ void tty_port_hangup(struct tty_port *port);
+-void tty_port_tty_hangup(struct tty_port *port, bool check_clocal);
++void __tty_port_tty_hangup(struct tty_port *port, bool check_clocal, bool async);
+ void tty_port_tty_wakeup(struct tty_port *port);
+ int tty_port_block_til_ready(struct tty_port *port, struct tty_struct *tty,
+ 		struct file *filp);
+@@ -254,4 +254,14 @@ static inline int tty_port_users(struct
+ 	return port->count + port->blocked_open;
+ }
+ 
++static inline void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
++{
++	__tty_port_tty_hangup(port, check_clocal, true);
++}
++
++static inline void tty_port_tty_vhangup(struct tty_port *port)
++{
++	__tty_port_tty_hangup(port, false, false);
++}
++
+ #endif
+--- a/net/bluetooth/rfcomm/tty.c
++++ b/net/bluetooth/rfcomm/tty.c
+@@ -438,7 +438,6 @@ static int __rfcomm_release_dev(void __u
+ {
+ 	struct rfcomm_dev_req req;
+ 	struct rfcomm_dev *dev;
+-	struct tty_struct *tty;
+ 
+ 	if (copy_from_user(&req, arg, sizeof(req)))
+ 		return -EFAULT;
+@@ -464,11 +463,7 @@ static int __rfcomm_release_dev(void __u
+ 		rfcomm_dlc_close(dev->dlc, 0);
+ 
+ 	/* Shut down TTY synchronously before freeing rfcomm_dev */
+-	tty = tty_port_tty_get(&dev->port);
+-	if (tty) {
+-		tty_vhangup(tty);
+-		tty_kref_put(tty);
+-	}
++	tty_port_tty_vhangup(&dev->port);
+ 
+ 	if (!test_bit(RFCOMM_TTY_OWNED, &dev->status))
+ 		tty_port_put(&dev->port);
 
 
 
