@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-206461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A9A9D08FCC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCE4FD09BA5
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C3C0300ACCF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D7C53110CD2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93344359702;
-	Fri,  9 Jan 2026 11:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91E7135B123;
+	Fri,  9 Jan 2026 12:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RG6c6NJ4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G6lyu7AI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 091BB32AAB5;
-	Fri,  9 Jan 2026 11:44:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BC735A94B;
+	Fri,  9 Jan 2026 12:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959082; cv=none; b=CEf7DtLDRC1Od3SpZjR76H7IV0xRo4CwrBRNHZyvPlKa0SJr47sYKhcVlBuSPWP19T0EDdEm8Dxe84mao1SCKg2d46osoemMkM1kffV9sh7vXSB6CK945WHNaKj5LVo6bCScGsmS6W7b88AU6pb1ey9S9Ghv2/08OVFB/G3VEDA=
+	t=1767961239; cv=none; b=ocq9jgXNLhZDIjezj5aSw5YMsQ+hShtx64tEoBkK5omk14DxkUyTLHT9dWsxtcs1VXzE5bh7MVmFMKP18DtSbTPY6/7CPtSCiS1fquzjPuQfTh2uWjFleRCEKVf1Jaw6aTvRgaKBZkiNN30KKMsnTbANMb6BKp3FcdNFiFZmoJw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959082; c=relaxed/simple;
-	bh=Jfeeewcf1E5z4psEk3KUURdUY5jzT1KM3E87r5y+tYA=;
+	s=arc-20240116; t=1767961239; c=relaxed/simple;
+	bh=rpuDW2NWkLk1NcVZ1Oymw9CDQWpKmbMnlKJawW/qSlI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tp6A/TocF+DvylihFlsX8S4cwFP4eCt8ITy1M0jstwMglFuz7ZbhYRE9Dek6e/qzr26M7/A2JMnHOzYw3eBLtm3Lwjwo5H6uwED9NJre2/D+GmRd7o8Y7S0/FrJM+evu7EjceCKR/fyDGchW3vXtHGWDs+Pugt+XtEdAUI0qQA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RG6c6NJ4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DC8EC4CEF1;
-	Fri,  9 Jan 2026 11:44:40 +0000 (UTC)
+	 MIME-Version; b=L+Ewu/wHsG39eJJ7awraKVfQsVRY6GrJ2HUFmiLSrkV36XN2motUNTpO8O7wK/oKoblMySU7+jnYBJrUA1AXKBVDbZnugZtgwBWaPc8HDl24ZJW32XqBqfoH7zQEFEIZJY3FFzfCnyQyY5TMWFEaIRskKdUaPwufXhuQcLCsBDE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G6lyu7AI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4765C4CEF1;
+	Fri,  9 Jan 2026 12:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959081;
-	bh=Jfeeewcf1E5z4psEk3KUURdUY5jzT1KM3E87r5y+tYA=;
+	s=korg; t=1767961239;
+	bh=rpuDW2NWkLk1NcVZ1Oymw9CDQWpKmbMnlKJawW/qSlI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RG6c6NJ47/lpczFkAuiazYOrQb19d1Klia/8O4eI+1VjIaPFVvv/XkrzVjAKiPZ9e
-	 RHP5z1wpj8TOY73W1mlsNzZQhbSU+Crqy7eU+UWiV4dEx826usr0oQm2vUYYwX1W4I
-	 WxEDGwrz39VwbMw1rP5uQaT9xoKb0upmOUI0+QHc=
+	b=G6lyu7AIw9rKKiwKse34FY0mQfHxYkskm2izfhNgPr4t3plDawUfMTv0V4pmM0jgx
+	 gGxvsTBNs+x1xuOA/CgmTnuieQedzqxZF+Z3qoRJQ3yQHEX/QFXMiChPaA340JNb5l
+	 Z21AO4yBmUzdLt6u3uuYkZragP9OnEuAVS6YtF8s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Gordeev <agordeev@linux.ibm.com>,
-	Marc Hartmayer <mhartmay@linux.ibm.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	Wei Yang <richard.weiyang@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 02/16] mm/page_alloc: change all pageblocks migrate type on coalescing
+Subject: [PATCH 6.6 684/737] f2fs: remove unused GC_FAILURE_PIN
 Date: Fri,  9 Jan 2026 12:43:43 +0100
-Message-ID: <20260109111951.509933253@linuxfoundation.org>
+Message-ID: <20260109112159.787235721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,196 +60,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Gordeev <agordeev@linux.ibm.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 7838a4eb8a1d23160bd3f588ea7f2b8f7c00c55b ]
+[ Upstream commit 968c4f72b23c0c8f1e94e942eab89b8c5a3022e7 ]
 
-When a page is freed it coalesces with a buddy into a higher order page
-while possible.  When the buddy page migrate type differs, it is expected
-to be updated to match the one of the page being freed.
+After commit 3db1de0e582c ("f2fs: change the current atomic write way"),
+we removed all GC_FAILURE_ATOMIC usage, let's change i_gc_failures[]
+array to i_pin_failure for cleanup.
 
-However, only the first pageblock of the buddy page is updated, while the
-rest of the pageblocks are left unchanged.
+Meanwhile, let's define i_current_depth and i_gc_failures as union
+variable due to they won't be valid at the same time.
 
-That causes warnings in later expand() and other code paths (like below),
-since an inconsistency between migration type of the list containing the
-page and the page-owned pageblocks migration types is introduced.
-
-[  308.986589] ------------[ cut here ]------------
-[  308.987227] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987275] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:812 expand+0x23c/0x270
-[  308.987293] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.987439] Unloaded tainted modules: hmac_s390(E):2
-[  308.987650] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G            E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.987657] Tainted: [E]=UNSIGNED_MODULE
-[  308.987661] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.987666] Krnl PSW : 0404f00180000000 00000349976fa600 (expand+0x240/0x270)
-[  308.987676]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.987682] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.987688]            0000000000000005 0000034980000005 000002be803ac000 0000023efe6c8300
-[  308.987692]            0000000000000008 0000034998d57290 000002be00000100 0000023e00000008
-[  308.987696]            0000000000000000 0000000000000000 00000349976fa5fc 000002c99b1eb6f0
-[  308.987708] Krnl Code: 00000349976fa5f0: c020008a02f2	larl	%r2,000003499883abd4
-                          00000349976fa5f6: c0e5ffe3f4b5	brasl	%r14,0000034997378f60
-                         #00000349976fa5fc: af000000		mc	0,0
-                         >00000349976fa600: a7f4ff4c		brc	15,00000349976fa498
-                          00000349976fa604: b9040026		lgr	%r2,%r6
-                          00000349976fa608: c0300088317f	larl	%r3,0000034998800906
-                          00000349976fa60e: c0e5fffdb6e1	brasl	%r14,00000349976b13d0
-                          00000349976fa614: af000000		mc	0,0
-[  308.987734] Call Trace:
-[  308.987738]  [<00000349976fa600>] expand+0x240/0x270
-[  308.987744] ([<00000349976fa5fc>] expand+0x23c/0x270)
-[  308.987749]  [<00000349976ff95e>] rmqueue_bulk+0x71e/0x940
-[  308.987754]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.987759]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.987763]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.987768]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.987774]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.987781]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.987786]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.987791]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.987799]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.987804]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.987809]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.987813]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.987822]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.987830]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.987838] 3 locks held by mempig_verify/5224:
-[  308.987842]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.987859]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.987871]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.987886] Last Breaking-Event-Address:
-[  308.987890]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.987897] irq event stamp: 52330356
-[  308.987901] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.987907] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.987913] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.987922] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.987929] ---[ end trace 0000000000000000 ]---
-[  308.987936] ------------[ cut here ]------------
-[  308.987940] page type is 0, passed migratetype is 1 (nr=256)
-[  308.987951] WARNING: CPU: 1 PID: 5224 at mm/page_alloc.c:860 __del_page_from_free_list+0x1be/0x1e0
-[  308.987960] Modules linked in: algif_hash(E) af_alg(E) nft_fib_inet(E) nft_fib_ipv4(E) nft_fib_ipv6(E) nft_fib(E) nft_reject_inet(E) nf_reject_ipv4(E) nf_reject_ipv6(E) nft_reject(E) nft_ct(E) nft_chain_nat(E) nf_nat(E) nf_conntrack(E) nf_defrag_ipv6(E) nf_defrag_ipv4(E) nf_tables(E) s390_trng(E) vfio_ccw(E) mdev(E) vfio_iommu_type1(E) vfio(E) sch_fq_codel(E) drm(E) i2c_core(E) drm_panel_orientation_quirks(E) loop(E) nfnetlink(E) vsock_loopback(E) vmw_vsock_virtio_transport_common(E) vsock(E) ctcm(E) fsm(E) diag288_wdt(E) watchdog(E) zfcp(E) scsi_transport_fc(E) ghash_s390(E) prng(E) aes_s390(E) des_generic(E) des_s390(E) libdes(E) sha3_512_s390(E) sha3_256_s390(E) sha_common(E) paes_s390(E) crypto_engine(E) pkey_cca(E) pkey_ep11(E) zcrypt(E) rng_core(E) pkey_pckmo(E) pkey(E) autofs4(E)
-[  308.988070] Unloaded tainted modules: hmac_s390(E):2
-[  308.988087] CPU: 1 UID: 0 PID: 5224 Comm: mempig_verify Kdump: loaded Tainted: G        W   E       6.18.0-gcc-bpf-debug #431 PREEMPT
-[  308.988095] Tainted: [W]=WARN, [E]=UNSIGNED_MODULE
-[  308.988100] Hardware name: IBM 3906 M04 704 (z/VM 7.3.0)
-[  308.988105] Krnl PSW : 0404f00180000000 00000349976f9e32 (__del_page_from_free_list+0x1c2/0x1e0)
-[  308.988118]            R:0 T:1 IO:0 EX:0 Key:0 M:1 W:0 P:0 AS:3 CC:3 PM:0 RI:0 EA:3
-[  308.988127] Krnl GPRS: 0000034980000004 0000000000000005 0000000000000030 000003499a0e6d88
-[  308.988133]            0000000000000005 0000034980000005 0000034998d57290 0000023efe6c8300
-[  308.988139]            0000000000000001 0000000000000008 000002be00000100 000002be803ac000
-[  308.988144]            0000000000000000 0000000000000001 00000349976f9e2e 000002c99b1eb728
-[  308.988153] Krnl Code: 00000349976f9e22: c020008a06d9	larl	%r2,000003499883abd4
-                          00000349976f9e28: c0e5ffe3f89c	brasl	%r14,0000034997378f60
-                         #00000349976f9e2e: af000000		mc	0,0
-                         >00000349976f9e32: a7f4ff4e		brc	15,00000349976f9cce
-                          00000349976f9e36: b904002b		lgr	%r2,%r11
-                          00000349976f9e3a: c030008a06e7	larl	%r3,000003499883ac08
-                          00000349976f9e40: c0e5fffdbac8	brasl	%r14,00000349976b13d0
-                          00000349976f9e46: af000000		mc	0,0
-[  308.988184] Call Trace:
-[  308.988188]  [<00000349976f9e32>] __del_page_from_free_list+0x1c2/0x1e0
-[  308.988195] ([<00000349976f9e2e>] __del_page_from_free_list+0x1be/0x1e0)
-[  308.988202]  [<00000349976ff946>] rmqueue_bulk+0x706/0x940
-[  308.988208]  [<00000349976ffd7e>] __rmqueue_pcplist+0x1fe/0x2a0
-[  308.988214]  [<0000034997700966>] rmqueue.isra.0+0xb46/0xf40
-[  308.988221]  [<0000034997703ec8>] get_page_from_freelist+0x198/0x8d0
-[  308.988227]  [<0000034997706fa8>] __alloc_frozen_pages_noprof+0x198/0x400
-[  308.988233]  [<00000349977536f8>] alloc_pages_mpol+0xb8/0x220
-[  308.988240]  [<0000034997753bf6>] folio_alloc_mpol_noprof+0x26/0xc0
-[  308.988247]  [<0000034997753e4c>] vma_alloc_folio_noprof+0x6c/0xa0
-[  308.988253]  [<0000034997775b22>] vma_alloc_anon_folio_pmd+0x42/0x240
-[  308.988260]  [<000003499777bfea>] __do_huge_pmd_anonymous_page+0x3a/0x210
-[  308.988267]  [<00000349976cb08e>] __handle_mm_fault+0x4de/0x500
-[  308.988273]  [<00000349976cb14c>] handle_mm_fault+0x9c/0x3a0
-[  308.988279]  [<000003499734d70e>] do_exception+0x1de/0x540
-[  308.988286]  [<0000034998387390>] __do_pgm_check+0x130/0x220
-[  308.988293]  [<000003499839a934>] pgm_check_handler+0x114/0x160
-[  308.988300] 3 locks held by mempig_verify/5224:
-[  308.988305]  #0: 0000023ea44c1e08 (vm_lock){++++}-{0:0}, at: lock_vma_under_rcu+0xb2/0x2a0
-[  308.988322]  #1: 0000023ee4d41b18 (&pcp->lock){+.+.}-{2:2}, at: rmqueue.isra.0+0xad6/0xf40
-[  308.988334]  #2: 0000023efe6c8998 (&zone->lock){..-.}-{2:2}, at: rmqueue_bulk+0x5a/0x940
-[  308.988346] Last Breaking-Event-Address:
-[  308.988350]  [<0000034997379096>] __warn_printk+0x136/0x140
-[  308.988356] irq event stamp: 52330356
-[  308.988360] hardirqs last  enabled at (52330355): [<000003499838742e>] __do_pgm_check+0x1ce/0x220
-[  308.988366] hardirqs last disabled at (52330356): [<000003499839932e>] _raw_spin_lock_irqsave+0x9e/0xe0
-[  308.988373] softirqs last  enabled at (52329882): [<0000034997383786>] handle_softirqs+0x2c6/0x530
-[  308.988380] softirqs last disabled at (52329859): [<0000034997382f86>] __irq_exit_rcu+0x126/0x140
-[  308.988388] ---[ end trace 0000000000000000 ]---
-
-Link: https://lkml.kernel.org/r/20251215081002.3353900A9c-agordeev@linux.ibm.com
-Link: https://lkml.kernel.org/r/20251212151457.3898073Add-agordeev@linux.ibm.com
-Fixes: e6cf9e1c4cde ("mm: page_alloc: fix up block types when merging compatible blocks")
-Signed-off-by: Alexander Gordeev <agordeev@linux.ibm.com>
-Reported-by: Marc Hartmayer <mhartmay@linux.ibm.com>
-Closes: https://lore.kernel.org/linux-mm/87wmalyktd.fsf@linux.ibm.com/
-Acked-by: Vlastimil Babka <vbabka@suse.cz>
-Acked-by: Johannes Weiner <hannes@cmpxchg.org>
-Reviewed-by: Wei Yang <richard.weiyang@gmail.com>
-Cc: Marc Hartmayer <mhartmay@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ adapted context for function removal ]
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 10b591e7fb7c ("f2fs: fix to avoid updating compression context during writeback")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/page_alloc.c |   24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ fs/f2fs/f2fs.h     |   14 +++++---------
+ fs/f2fs/file.c     |   12 +++++-------
+ fs/f2fs/inode.c    |    6 ++----
+ fs/f2fs/recovery.c |    3 +--
+ 4 files changed, 13 insertions(+), 22 deletions(-)
 
---- a/mm/page_alloc.c
-+++ b/mm/page_alloc.c
-@@ -744,6 +744,17 @@ buddy_merge_likely(unsigned long pfn, un
- 			NULL) != NULL;
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -762,11 +762,6 @@ enum {
+ 
+ #define DEF_DIR_LEVEL		0
+ 
+-enum {
+-	GC_FAILURE_PIN,
+-	MAX_GC_FAILURE
+-};
+-
+ /* used for f2fs_inode_info->flags */
+ enum {
+ 	FI_NEW_INODE,		/* indicate newly allocated inode */
+@@ -814,9 +809,10 @@ struct f2fs_inode_info {
+ 	unsigned long i_flags;		/* keep an inode flags for ioctl */
+ 	unsigned char i_advise;		/* use to give file attribute hints */
+ 	unsigned char i_dir_level;	/* use for dentry level for large dir */
+-	unsigned int i_current_depth;	/* only for directory depth */
+-	/* for gc failure statistic */
+-	unsigned int i_gc_failures[MAX_GC_FAILURE];
++	union {
++		unsigned int i_current_depth;	/* only for directory depth */
++		unsigned int i_gc_failures;	/* for gc failure statistic */
++	};
+ 	unsigned int i_pino;		/* parent inode number */
+ 	umode_t i_acl_mode;		/* keep file acl mode temporarily */
+ 
+@@ -3173,7 +3169,7 @@ static inline void f2fs_i_depth_write(st
+ static inline void f2fs_i_gc_failures_write(struct inode *inode,
+ 					unsigned int count)
+ {
+-	F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN] = count;
++	F2FS_I(inode)->i_gc_failures = count;
+ 	f2fs_mark_inode_dirty_sync(inode, true);
  }
  
-+static void change_pageblock_range(struct page *pageblock_page,
-+				   int start_order, int migratetype)
-+{
-+	int nr_pageblocks = 1 << (start_order - pageblock_order);
-+
-+	while (nr_pageblocks--) {
-+		set_pageblock_migratetype(pageblock_page, migratetype);
-+		pageblock_page += pageblock_nr_pages;
-+	}
-+}
-+
- /*
-  * Freeing function for a buddy system allocator.
-  *
-@@ -830,7 +841,7 @@ static inline void __free_one_page(struc
- 			 * expand() down the line puts the sub-blocks
- 			 * on the right freelists.
- 			 */
--			set_pageblock_migratetype(buddy, migratetype);
-+			change_pageblock_range(buddy, order, migratetype);
- 		}
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -3329,13 +3329,11 @@ int f2fs_pin_file_control(struct inode *
  
- 		combined_pfn = buddy_pfn & pfn;
-@@ -1817,17 +1828,6 @@ move:
+ 	/* Use i_gc_failures for normal file as a risk signal. */
+ 	if (inc)
+-		f2fs_i_gc_failures_write(inode,
+-				fi->i_gc_failures[GC_FAILURE_PIN] + 1);
++		f2fs_i_gc_failures_write(inode, fi->i_gc_failures + 1);
+ 
+-	if (fi->i_gc_failures[GC_FAILURE_PIN] > sbi->gc_pin_file_threshold) {
++	if (fi->i_gc_failures > sbi->gc_pin_file_threshold) {
+ 		f2fs_warn(sbi, "%s: Enable GC = ino %lx after %x GC trials",
+-			  __func__, inode->i_ino,
+-			  fi->i_gc_failures[GC_FAILURE_PIN]);
++			  __func__, inode->i_ino, fi->i_gc_failures);
+ 		clear_inode_flag(inode, FI_PIN_FILE);
+ 		return -EAGAIN;
+ 	}
+@@ -3404,7 +3402,7 @@ static int f2fs_ioc_set_pin_file(struct
+ 	}
+ 
+ 	set_inode_flag(inode, FI_PIN_FILE);
+-	ret = F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN];
++	ret = F2FS_I(inode)->i_gc_failures;
+ done:
+ 	f2fs_update_time(sbi, REQ_TIME);
+ out:
+@@ -3419,7 +3417,7 @@ static int f2fs_ioc_get_pin_file(struct
+ 	__u32 pin = 0;
+ 
+ 	if (is_inode_flag_set(inode, FI_PIN_FILE))
+-		pin = F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN];
++		pin = F2FS_I(inode)->i_gc_failures;
+ 	return put_user(pin, (u32 __user *)arg);
  }
- #endif /* CONFIG_MEMORY_ISOLATION */
  
--static void change_pageblock_range(struct page *pageblock_page,
--					int start_order, int migratetype)
--{
--	int nr_pageblocks = 1 << (start_order - pageblock_order);
--
--	while (nr_pageblocks--) {
--		set_pageblock_migratetype(pageblock_page, migratetype);
--		pageblock_page += pageblock_nr_pages;
--	}
--}
--
- /*
-  * When we are falling back to another migratetype during allocation, try to
-  * steal extra free pages from the same pageblocks to satisfy further
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -428,8 +428,7 @@ static int do_read_inode(struct inode *i
+ 	if (S_ISDIR(inode->i_mode))
+ 		fi->i_current_depth = le32_to_cpu(ri->i_current_depth);
+ 	else if (S_ISREG(inode->i_mode))
+-		fi->i_gc_failures[GC_FAILURE_PIN] =
+-					le16_to_cpu(ri->i_gc_failures);
++		fi->i_gc_failures = le16_to_cpu(ri->i_gc_failures);
+ 	fi->i_xattr_nid = le32_to_cpu(ri->i_xattr_nid);
+ 	fi->i_flags = le32_to_cpu(ri->i_flags);
+ 	if (S_ISREG(inode->i_mode))
+@@ -691,8 +690,7 @@ void f2fs_update_inode(struct inode *ino
+ 		ri->i_current_depth =
+ 			cpu_to_le32(F2FS_I(inode)->i_current_depth);
+ 	else if (S_ISREG(inode->i_mode))
+-		ri->i_gc_failures =
+-			cpu_to_le16(F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN]);
++		ri->i_gc_failures = cpu_to_le16(F2FS_I(inode)->i_gc_failures);
+ 	ri->i_xattr_nid = cpu_to_le32(F2FS_I(inode)->i_xattr_nid);
+ 	ri->i_flags = cpu_to_le32(F2FS_I(inode)->i_flags);
+ 	ri->i_pino = cpu_to_le32(F2FS_I(inode)->i_pino);
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -330,8 +330,7 @@ static int recover_inode(struct inode *i
+ 	F2FS_I(inode)->i_advise = raw->i_advise;
+ 	F2FS_I(inode)->i_flags = le32_to_cpu(raw->i_flags);
+ 	f2fs_set_inode_flags(inode);
+-	F2FS_I(inode)->i_gc_failures[GC_FAILURE_PIN] =
+-				le16_to_cpu(raw->i_gc_failures);
++	F2FS_I(inode)->i_gc_failures = le16_to_cpu(raw->i_gc_failures);
+ 
+ 	recover_inline_flags(inode, raw);
+ 
 
 
 
