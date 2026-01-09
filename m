@@ -1,58 +1,60 @@
-Return-Path: <stable+bounces-207160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206454-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E021AD09BBF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE3D4D08FC6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:46:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F269330E99E1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C205B3079CB0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91EA135A93E;
-	Fri,  9 Jan 2026 12:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 87583359716;
+	Fri,  9 Jan 2026 11:44:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PRPngebo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WGysL5/C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5503533B6F0;
-	Fri,  9 Jan 2026 12:21:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB1E1359708;
+	Fri,  9 Jan 2026 11:44:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961262; cv=none; b=K0q+OHBcUEg4VPLQ2vl0RN5OYqXbW783d0+AMx6emohwlSvJwmATwx5jjcztiQP1iRarVjpZHuKDe/Sb+kXHOh1b8yQ1qsSEg1XhQChQbN6ryqs4BINqBWr/Pz9XKPFmkM3U50K1TxFNbqGuMIYCBBMXRWuwM+dAyaIVtOTjR/M=
+	t=1767959061; cv=none; b=h+nPP+b1f97pux8CKi2bdBxCa3kwkmLZUuPWy+G9Gs8HLnvUbpJ5P4iaR5oGjtognQr1lDGFtDOX0/1kaDvGudw3p7RLUxExm3nJGA7VrZKnrMd2usS8Lh9td4T33eDtuTQxtHBf7xy97NFQzF2qswYevig9Cnafki2MhFPEico=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961262; c=relaxed/simple;
-	bh=FpfCihGBNdBMRSZm75APa6765pnVXF74jfPqdge7WZI=;
+	s=arc-20240116; t=1767959061; c=relaxed/simple;
+	bh=+SNpbcqt/+qicvzhUBMJ0EhPUkwEKXHwg4Pp7LnKsms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fPCyzzzNvEY8YpEwB607JCbnhjHPu4HUJBP2q7f7sd2tGw+CBYIfCv7huYrk+OV/fOe7Zv6wMitL66dQ10Zo+LZPtaFRbSfx2beK68uQMWfxwGjsVINBBigXxG8fYxB4VNu4EVKFF98LAwFAeDIlDHRI3PaQiKmVFvQAurgAhoU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PRPngebo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82AF5C4CEF1;
-	Fri,  9 Jan 2026 12:21:01 +0000 (UTC)
+	 MIME-Version; b=i4m5BARgLIn6fmGz9olc1UNj2F3a2qJhZAV7J49hYtmNyEU7JYhbwIQc8zjUFf7glZdIRfVz99/ZyE5ZIrCkk67kEgo58SUR4dP9ELjTvqFowPXML9bgAhezTOICaV1wYg70I83G7r77Tb6hE+l/iGJgQwH5o+pMX81csFHHtqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WGysL5/C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21FD3C4CEF1;
+	Fri,  9 Jan 2026 11:44:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961261;
-	bh=FpfCihGBNdBMRSZm75APa6765pnVXF74jfPqdge7WZI=;
+	s=korg; t=1767959061;
+	bh=+SNpbcqt/+qicvzhUBMJ0EhPUkwEKXHwg4Pp7LnKsms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PRPngeboHSa8NAQcp/+KwKKw5r6wz7PNwyViKZdU7iRTfPnzMhTTud8QcysjI7oso
-	 2fg58r1SVTXmnAFPbaO7ggYr1SxSpcLD8s9CUSCfqf0iP30EpPqY9sQI94hyMJt3Qx
-	 wlKQ5Dfx0v9Ynr4y0lq1JHWylCRxAAUqS2aUun90=
+	b=WGysL5/CIbnVFLXvOJFNgZLtPBFoJvLqo3MRBBhAeeZrW83qgL50lSaLBH39t+LhV
+	 p3J6IxkL1yTO032GrDgEsFN8fANAM1yN9jO9axaQLNLiJEEuHjR9DCgWI3PlTrO+LQ
+	 fJw8gda0HGyB7AKmE2uoUzEeeWFIEkYWfikxyzBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Andrzej Pietrasiewicz <andrzej.p@collabora.com>,
-	Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-	Mauro Carvalho Chehab <mchehab@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 691/737] media: verisilicon: Store chroma and motion vectors offset
-Date: Fri,  9 Jan 2026 12:43:50 +0100
-Message-ID: <20260109112200.057207833@linuxfoundation.org>
+	syzkaller <syzkaller@googlegroups.com>,
+	yan kang <kangyan91@outlook.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.12 10/16] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
+Date: Fri,  9 Jan 2026 12:43:51 +0100
+Message-ID: <20260109111951.812919085@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,75 +66,302 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-[ Upstream commit 545bf944f978b7468d3a6bd668d9ff6953bc542e ]
+commit ed3ba9b6e280e14cc3148c1b226ba453f02fa76c upstream.
 
-Store computed values of chroma and motion vectors offset because
-they depends on width and height values which change if the resolution
-change.
+SIOCBRDELIF is passed to dev_ioctl() first and later forwarded to
+br_ioctl_call(), which causes unnecessary RTNL dance and the splat
+below [0] under RTNL pressure.
 
-Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Reviewed-by: Andrzej Pietrasiewicz <andrzej.p@collabora.com>
-CC: Ezequiel Garcia <ezequiel@vanguardiasur.com.ar>
-CC: Philipp Zabel <p.zabel@pengutronix.de>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Stable-dep-of: 19c286b75507 ("media: verisilicon: Fix CPU stalls on G2 bus error")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Let's say Thread A is trying to detach a device from a bridge and
+Thread B is trying to remove the bridge.
+
+In dev_ioctl(), Thread A bumps the bridge device's refcnt by
+netdev_hold() and releases RTNL because the following br_ioctl_call()
+also re-acquires RTNL.
+
+In the race window, Thread B could acquire RTNL and try to remove
+the bridge device.  Then, rtnl_unlock() by Thread B will release RTNL
+and wait for netdev_put() by Thread A.
+
+Thread A, however, must hold RTNL after the unlock in dev_ifsioc(),
+which may take long under RTNL pressure, resulting in the splat by
+Thread B.
+
+  Thread A (SIOCBRDELIF)           Thread B (SIOCBRDELBR)
+  ----------------------           ----------------------
+  sock_ioctl                       sock_ioctl
+  `- sock_do_ioctl                 `- br_ioctl_call
+     `- dev_ioctl                     `- br_ioctl_stub
+        |- rtnl_lock                     |
+        |- dev_ifsioc                    '
+        '  |- dev = __dev_get_by_name(...)
+           |- netdev_hold(dev, ...)      .
+       /   |- rtnl_unlock  ------.       |
+       |   |- br_ioctl_call       `--->  |- rtnl_lock
+  Race |   |  `- br_ioctl_stub           |- br_del_bridge
+  Window   |     |                       |  |- dev = __dev_get_by_name(...)
+       |   |     |  May take long        |  `- br_dev_delete(dev, ...)
+       |   |     |  under RTNL pressure  |     `- unregister_netdevice_queue(dev, ...)
+       |   |     |               |       `- rtnl_unlock
+       \   |     |- rtnl_lock  <-'          `- netdev_run_todo
+           |     |- ...                        `- netdev_run_todo
+           |     `- rtnl_unlock                   |- __rtnl_unlock
+           |                                      |- netdev_wait_allrefs_any
+           |- netdev_put(dev, ...)  <----------------'
+                                                Wait refcnt decrement
+                                                and log splat below
+
+To avoid blocking SIOCBRDELBR unnecessarily, let's not call
+dev_ioctl() for SIOCBRADDIF and SIOCBRDELIF.
+
+In the dev_ioctl() path, we do the following:
+
+  1. Copy struct ifreq by get_user_ifreq in sock_do_ioctl()
+  2. Check CAP_NET_ADMIN in dev_ioctl()
+  3. Call dev_load() in dev_ioctl()
+  4. Fetch the master dev from ifr.ifr_name in dev_ifsioc()
+
+3. can be done by request_module() in br_ioctl_call(), so we move
+1., 2., and 4. to br_ioctl_stub().
+
+Note that 2. is also checked later in add_del_if(), but it's better
+performed before RTNL.
+
+SIOCBRADDIF and SIOCBRDELIF have been processed in dev_ioctl() since
+the pre-git era, and there seems to be no specific reason to process
+them there.
+
+[0]:
+unregister_netdevice: waiting for wpan3 to become free. Usage count = 2
+ref_tracker: wpan3@ffff8880662d8608 has 1/1 users at
+     __netdev_tracker_alloc include/linux/netdevice.h:4282 [inline]
+     netdev_hold include/linux/netdevice.h:4311 [inline]
+     dev_ifsioc+0xc6a/0x1160 net/core/dev_ioctl.c:624
+     dev_ioctl+0x255/0x10c0 net/core/dev_ioctl.c:826
+     sock_do_ioctl+0x1ca/0x260 net/socket.c:1213
+     sock_ioctl+0x23a/0x6c0 net/socket.c:1318
+     vfs_ioctl fs/ioctl.c:51 [inline]
+     __do_sys_ioctl fs/ioctl.c:906 [inline]
+     __se_sys_ioctl fs/ioctl.c:892 [inline]
+     __x64_sys_ioctl+0x1a4/0x210 fs/ioctl.c:892
+     do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+     do_syscall_64+0xcb/0x250 arch/x86/entry/common.c:83
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
+
+Fixes: 893b19587534 ("net: bridge: fix ioctl locking")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: yan kang <kangyan91@outlook.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/netdev/SY8P300MB0421225D54EB92762AE8F0F2A1D32@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250316192851.19781-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[cascardo: fixed conflict at dev_ifsioc]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/verisilicon/hantro.h            |    2 ++
- drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c |    6 ++++--
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ include/linux/if_bridge.h |    6 ++----
+ net/bridge/br_ioctl.c     |   36 +++++++++++++++++++++++++++++++++---
+ net/bridge/br_private.h   |    3 +--
+ net/core/dev_ioctl.c      |   16 ----------------
+ net/socket.c              |   19 +++++++++----------
+ 5 files changed, 45 insertions(+), 35 deletions(-)
 
---- a/drivers/media/platform/verisilicon/hantro.h
-+++ b/drivers/media/platform/verisilicon/hantro.h
-@@ -328,6 +328,8 @@ struct hantro_vp9_decoded_buffer_info {
- 	/* Info needed when the decoded frame serves as a reference frame. */
- 	unsigned short width;
- 	unsigned short height;
-+	size_t chroma_offset;
-+	size_t mv_offset;
- 	u32 bit_depth : 4;
- };
+--- a/include/linux/if_bridge.h
++++ b/include/linux/if_bridge.h
+@@ -65,11 +65,9 @@ struct br_ip_list {
+ #define BR_DEFAULT_AGEING_TIME	(300 * HZ)
  
---- a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-@@ -158,9 +158,11 @@ static void config_output(struct hantro_
+ struct net_bridge;
+-void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
+-			     unsigned int cmd, struct ifreq *ifr,
++void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
+ 			     void __user *uarg));
+-int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg);
++int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg);
  
- 	chroma_addr = luma_addr + chroma_offset(ctx, dec_params);
- 	hantro_write_addr(ctx->dev, G2_OUT_CHROMA_ADDR, chroma_addr);
-+	dst->vp9.chroma_offset = chroma_offset(ctx, dec_params);
- 
- 	mv_addr = luma_addr + mv_offset(ctx, dec_params);
- 	hantro_write_addr(ctx->dev, G2_OUT_MV_ADDR, mv_addr);
-+	dst->vp9.mv_offset = mv_offset(ctx, dec_params);
+ #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_IGMP_SNOOPING)
+ int br_multicast_list_adjacent(struct net_device *dev,
+--- a/net/bridge/br_ioctl.c
++++ b/net/bridge/br_ioctl.c
+@@ -394,10 +394,26 @@ static int old_deviceless(struct net *ne
+ 	return -EOPNOTSUPP;
  }
  
- struct hantro_vp9_ref_reg {
-@@ -195,7 +197,7 @@ static void config_ref(struct hantro_ctx
- 	luma_addr = hantro_get_dec_buf_addr(ctx, &buf->base.vb.vb2_buf);
- 	hantro_write_addr(ctx->dev, ref_reg->y_base, luma_addr);
+-int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg)
++int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg)
+ {
+ 	int ret = -EOPNOTSUPP;
++	struct ifreq ifr;
++
++	if (cmd == SIOCBRADDIF || cmd == SIOCBRDELIF) {
++		void __user *data;
++		char *colon;
++
++		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
++			return -EPERM;
++
++		if (get_user_ifreq(&ifr, &data, uarg))
++			return -EFAULT;
++
++		ifr.ifr_name[IFNAMSIZ - 1] = 0;
++		colon = strchr(ifr.ifr_name, ':');
++		if (colon)
++			*colon = 0;
++	}
  
--	chroma_addr = luma_addr + chroma_offset(ctx, dec_params);
-+	chroma_addr = luma_addr + buf->vp9.chroma_offset;
- 	hantro_write_addr(ctx->dev, ref_reg->c_base, chroma_addr);
+ 	rtnl_lock();
+ 
+@@ -430,7 +446,21 @@ int br_ioctl_stub(struct net *net, struc
+ 		break;
+ 	case SIOCBRADDIF:
+ 	case SIOCBRDELIF:
+-		ret = add_del_if(br, ifr->ifr_ifindex, cmd == SIOCBRADDIF);
++	{
++		struct net_device *dev;
++
++		dev = __dev_get_by_name(net, ifr.ifr_name);
++		if (!dev || !netif_device_present(dev)) {
++			ret = -ENODEV;
++			break;
++		}
++		if (!netif_is_bridge_master(dev)) {
++			ret = -EOPNOTSUPP;
++			break;
++		}
++
++		ret = add_del_if(netdev_priv(dev), ifr.ifr_ifindex, cmd == SIOCBRADDIF);
++	}
+ 		break;
+ 	}
+ 
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -953,8 +953,7 @@ br_port_get_check_rtnl(const struct net_
+ /* br_ioctl.c */
+ int br_dev_siocdevprivate(struct net_device *dev, struct ifreq *rq,
+ 			  void __user *data, int cmd);
+-int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg);
++int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg);
+ 
+ /* br_multicast.c */
+ #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -514,7 +514,6 @@ static int dev_ifsioc(struct net *net, s
+ 	int err;
+ 	struct net_device *dev = __dev_get_by_name(net, ifr->ifr_name);
+ 	const struct net_device_ops *ops;
+-	netdevice_tracker dev_tracker;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+@@ -577,19 +576,6 @@ static int dev_ifsioc(struct net *net, s
+ 	case SIOCWANDEV:
+ 		return dev_siocwandev(dev, &ifr->ifr_settings);
+ 
+-	case SIOCBRADDIF:
+-	case SIOCBRDELIF:
+-		if (!netif_device_present(dev))
+-			return -ENODEV;
+-		if (!netif_is_bridge_master(dev))
+-			return -EOPNOTSUPP;
+-		netdev_hold(dev, &dev_tracker, GFP_KERNEL);
+-		rtnl_unlock();
+-		err = br_ioctl_call(net, netdev_priv(dev), cmd, ifr, NULL);
+-		netdev_put(dev, &dev_tracker);
+-		rtnl_lock();
+-		return err;
+-
+ 	case SIOCDEVPRIVATE ... SIOCDEVPRIVATE + 15:
+ 		return dev_siocdevprivate(dev, ifr, data, cmd);
+ 
+@@ -770,8 +756,6 @@ int dev_ioctl(struct net *net, unsigned
+ 	case SIOCBONDRELEASE:
+ 	case SIOCBONDSETHWADDR:
+ 	case SIOCBONDCHANGEACTIVE:
+-	case SIOCBRADDIF:
+-	case SIOCBRDELIF:
+ 	case SIOCSHWTSTAMP:
+ 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			return -EPERM;
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -1173,12 +1173,10 @@ static ssize_t sock_write_iter(struct ki
+  */
+ 
+ static DEFINE_MUTEX(br_ioctl_mutex);
+-static int (*br_ioctl_hook)(struct net *net, struct net_bridge *br,
+-			    unsigned int cmd, struct ifreq *ifr,
++static int (*br_ioctl_hook)(struct net *net, unsigned int cmd,
+ 			    void __user *uarg);
+ 
+-void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
+-			     unsigned int cmd, struct ifreq *ifr,
++void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
+ 			     void __user *uarg))
+ {
+ 	mutex_lock(&br_ioctl_mutex);
+@@ -1187,8 +1185,7 @@ void brioctl_set(int (*hook)(struct net
  }
+ EXPORT_SYMBOL(brioctl_set);
  
-@@ -238,7 +240,7 @@ static void config_ref_registers(struct
- 	config_ref(ctx, dst, &ref_regs[2], dec_params, dec_params->alt_frame_ts);
+-int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg)
++int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg)
+ {
+ 	int err = -ENOPKG;
  
- 	mv_addr = hantro_get_dec_buf_addr(ctx, &mv_ref->base.vb.vb2_buf) +
--		  mv_offset(ctx, dec_params);
-+		  mv_ref->vp9.mv_offset;
- 	hantro_write_addr(ctx->dev, G2_REF_MV_ADDR(0), mv_addr);
+@@ -1197,7 +1194,7 @@ int br_ioctl_call(struct net *net, struc
  
- 	hantro_reg_write(ctx->dev, &vp9_last_sign_bias,
+ 	mutex_lock(&br_ioctl_mutex);
+ 	if (br_ioctl_hook)
+-		err = br_ioctl_hook(net, br, cmd, ifr, uarg);
++		err = br_ioctl_hook(net, cmd, uarg);
+ 	mutex_unlock(&br_ioctl_mutex);
+ 
+ 	return err;
+@@ -1297,7 +1294,9 @@ static long sock_ioctl(struct file *file
+ 		case SIOCSIFBR:
+ 		case SIOCBRADDBR:
+ 		case SIOCBRDELBR:
+-			err = br_ioctl_call(net, NULL, cmd, NULL, argp);
++		case SIOCBRADDIF:
++		case SIOCBRDELIF:
++			err = br_ioctl_call(net, cmd, argp);
+ 			break;
+ 		case SIOCGIFVLAN:
+ 		case SIOCSIFVLAN:
+@@ -3466,6 +3465,8 @@ static int compat_sock_ioctl_trans(struc
+ 	case SIOCGPGRP:
+ 	case SIOCBRADDBR:
+ 	case SIOCBRDELBR:
++	case SIOCBRADDIF:
++	case SIOCBRDELIF:
+ 	case SIOCGIFVLAN:
+ 	case SIOCSIFVLAN:
+ 	case SIOCGSKNS:
+@@ -3505,8 +3506,6 @@ static int compat_sock_ioctl_trans(struc
+ 	case SIOCGIFPFLAGS:
+ 	case SIOCGIFTXQLEN:
+ 	case SIOCSIFTXQLEN:
+-	case SIOCBRADDIF:
+-	case SIOCBRDELIF:
+ 	case SIOCGIFNAME:
+ 	case SIOCSIFNAME:
+ 	case SIOCGMIIPHY:
 
 
 
