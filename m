@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-206656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207257-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA04FD093DA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD6ECD09C4F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A55883065B5E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 74F4830A53D8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C74D633290A;
-	Fri,  9 Jan 2026 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF46E359FBE;
+	Fri,  9 Jan 2026 12:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHbzNlwg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9/DPlXI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B50531A7EA;
-	Fri,  9 Jan 2026 11:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C56C33ADB8;
+	Fri,  9 Jan 2026 12:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959826; cv=none; b=qOHO0uSjR0Byn8Ny5cX7T+6Si1vlm8fESkqXFmYlRh5PX5ms3GZUq+wihwRPfeDet/Hja2RciaOVGy4C0h4rn4/xdVk50LDlqEZU2GgQ6zNhaGYazm3Q8WSvw+Vdm7LIu0HXVOS8hFJAgedUVb/665J7MC5uA3BXCEWReXsuaTY=
+	t=1767961541; cv=none; b=SjpE5vj2zqpzA+RrDhRiXanoh2impdCUbxlJTAa60bsL3br0HUAY0xpD+2wpDjkciVrq+kTU9xag0MGygf5Bz3FMtwjS9nEBXzxh/xFPybeeG8nSXUQ6JHsVtfa/KxmoTebOodCqqqizNYpp0io4Pv+W7jpZWTHh9J4+aU02CqQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959826; c=relaxed/simple;
-	bh=fHSTnhSQrA4wXvmkr++JrnMMdSMKc76vrT8Cz9vrn+M=;
+	s=arc-20240116; t=1767961541; c=relaxed/simple;
+	bh=JqH2ngMffk5ONLhjhHVpHId4kXIX9gtg8YOwXSF/crw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s1iBNdAlxTaNRGvdGRnPfFqTFHzS0/2fG8HJpbdEhrWgCSii/rfNatbaLHMTq5rCtlX8/IbDXDD9r1kbmfi+uZiry9H5QMBrvDPJMTE71pZ19nyO6j//v8UnPmW8/6i4rfKvHPcceyjSCkyQi6sUhit9DDDDJGPD+cFUejiKPGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHbzNlwg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18659C4CEF1;
-	Fri,  9 Jan 2026 11:57:05 +0000 (UTC)
+	 MIME-Version; b=d6/lM63jJMiGI2BSPHljf9A1Tus9mMqNNHE6ERLkfWryJqecs642w+B9eC8xErmAu5a9wz7/mD4ZthGPi1qadkBNMxt65AB4Q75AHnsY88R7u/arc4wfa2l/MhYPAuMuePWmGIn0f+OOOD6Q3irgK2PICgzI/SALsj2MGd/n5tc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9/DPlXI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C922BC4CEF1;
+	Fri,  9 Jan 2026 12:25:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959826;
-	bh=fHSTnhSQrA4wXvmkr++JrnMMdSMKc76vrT8Cz9vrn+M=;
+	s=korg; t=1767961541;
+	bh=JqH2ngMffk5ONLhjhHVpHId4kXIX9gtg8YOwXSF/crw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHbzNlwg5CVgOgOTDTimqAsMkEfPHfGHoEvtgOl8VowVk6FVQeGzwchw1pI5jfRfh
-	 R87VlHDkWKljhpSDxV5R/j2FNa3LmOdawyqTGmikxEsMfJZFADs5uqDGqm1AVGNGUr
-	 UcXHMQZiuDGHG3VyMhxop8dsUOuLdT8ZSAWtI6cM=
+	b=X9/DPlXIN9D6O7w9+GPdd3c7vT2NJ4aBEyi0oy0MU1KVsXEz+QmgSvF47f6gA7CuN
+	 nGmpLaIffqh94ltzuS+xevQPRItr1eZPL2EOq1WXkXJ99jCeBclULmEIlffud38kFP
+	 TDMEVgE/5zhh8TL9z3pE2NccjAWBjalp2qV6mQSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Johan Hovold <johan@kernel.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 189/737] usb: chaoskey: fix locking for O_NONBLOCK
+Subject: [PATCH 6.1 050/634] irqchip/irq-bcm7120-l2: Fix section mismatch
 Date: Fri,  9 Jan 2026 12:35:28 +0100
-Message-ID: <20260109112141.105146660@linuxfoundation.org>
+Message-ID: <20260109112119.328511735@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
+[ Upstream commit bfc0c5beab1fde843677923cf008f41d583c980a ]
 
-A failure to take a lock with O_NONBLOCK needs to result
-in -EAGAIN. Change it.
+Platform drivers can be probed after their init sections have been
+discarded so the irqchip init callbacks must not live in init.
 
-Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ac268d5ed22 ("irqchip/irq-bcm7120-l2: Switch to IRQCHIP_PLATFORM_DRIVER")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/irqchip/irq-bcm7120-l2.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index 225863321dc47..45cff32656c6e 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -444,9 +444,19 @@ static ssize_t chaoskey_read(struct file *file,
- 			goto bail;
- 		mutex_unlock(&dev->rng_lock);
+diff --git a/drivers/irqchip/irq-bcm7120-l2.c b/drivers/irqchip/irq-bcm7120-l2.c
+index 1e9dab6e0d86f..bb6e56629e532 100644
+--- a/drivers/irqchip/irq-bcm7120-l2.c
++++ b/drivers/irqchip/irq-bcm7120-l2.c
+@@ -147,8 +147,7 @@ static int bcm7120_l2_intc_init_one(struct device_node *dn,
+ 	return 0;
+ }
  
--		result = mutex_lock_interruptible(&dev->lock);
--		if (result)
--			goto bail;
-+		if (file->f_flags & O_NONBLOCK) {
-+			result = mutex_trylock(&dev->lock);
-+			if (result == 0) {
-+				result = -EAGAIN;
-+				goto bail;
-+			} else {
-+				result = 0;
-+			}
-+		} else {
-+			result = mutex_lock_interruptible(&dev->lock);
-+			if (result)
-+				goto bail;
-+		}
- 		if (dev->valid == dev->used) {
- 			result = _chaoskey_fill(dev);
- 			if (result < 0) {
+-static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
+-					     struct bcm7120_l2_intc_data *data)
++static int bcm7120_l2_intc_iomap_7120(struct device_node *dn, struct bcm7120_l2_intc_data *data)
+ {
+ 	int ret;
+ 
+@@ -181,8 +180,7 @@ static int __init bcm7120_l2_intc_iomap_7120(struct device_node *dn,
+ 	return 0;
+ }
+ 
+-static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+-					     struct bcm7120_l2_intc_data *data)
++static int bcm7120_l2_intc_iomap_3380(struct device_node *dn, struct bcm7120_l2_intc_data *data)
+ {
+ 	unsigned int gc_idx;
+ 
+@@ -212,10 +210,9 @@ static int __init bcm7120_l2_intc_iomap_3380(struct device_node *dn,
+ 	return 0;
+ }
+ 
+-static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+-				 struct device_node *parent,
++static int bcm7120_l2_intc_probe(struct device_node *dn, struct device_node *parent,
+ 				 int (*iomap_regs_fn)(struct device_node *,
+-					struct bcm7120_l2_intc_data *),
++						      struct bcm7120_l2_intc_data *),
+ 				 const char *intc_name)
+ {
+ 	unsigned int clr = IRQ_NOREQUEST | IRQ_NOPROBE | IRQ_NOAUTOEN;
+@@ -343,15 +340,13 @@ static int __init bcm7120_l2_intc_probe(struct device_node *dn,
+ 	return ret;
+ }
+ 
+-static int __init bcm7120_l2_intc_probe_7120(struct device_node *dn,
+-					     struct device_node *parent)
++static int bcm7120_l2_intc_probe_7120(struct device_node *dn, struct device_node *parent)
+ {
+ 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_7120,
+ 				     "BCM7120 L2");
+ }
+ 
+-static int __init bcm7120_l2_intc_probe_3380(struct device_node *dn,
+-					     struct device_node *parent)
++static int bcm7120_l2_intc_probe_3380(struct device_node *dn, struct device_node *parent)
+ {
+ 	return bcm7120_l2_intc_probe(dn, parent, bcm7120_l2_intc_iomap_3380,
+ 				     "BCM3380 L2");
 -- 
 2.51.0
 
