@@ -1,99 +1,54 @@
-Return-Path: <stable+bounces-206462-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2990DD08FCF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:47:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A66B4D0A21A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6B55B308BA33
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 59BF231AF68E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9A0359F88;
-	Fri,  9 Jan 2026 11:44:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7656F35CB76;
+	Fri,  9 Jan 2026 12:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZNqBBGE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7y+9b/I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A13D359716;
-	Fri,  9 Jan 2026 11:44:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3693F35C19C;
+	Fri,  9 Jan 2026 12:49:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959085; cv=none; b=GNg4/Xs4o/bMe6EkpCpk4zjBJQWCGAdg919u5c83z5/oEtayA4XT1ZgiVPZD2P1TXnc1yfJarNOd6juGH/fzERVQayMMHnMSbUFSw/aoXZneq9HtJ2tM6ve8jkF4skDwY2hwPhKbGbrtLTUHhaMmhIJ80Cj5ICn27LDdnsq9fnI=
+	t=1767962955; cv=none; b=mNfRrL5mj6vHmHdp/Sz1fB19cilGeV3sc2hWhercgBDk5dHFJZm+qxsV0x4hkHRC4O5z5ca5Bbii2FKJPJqgVhj3u2zaxrlhnDJl2FNmZOU2HKesndwTFr2XRy+OVW5w5EBSBTBa4N3fjieDMLq/Es8v1OXwYreYG8Q/Lbrq8Ic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959085; c=relaxed/simple;
-	bh=/xMBYw8rzxERxbETQfaB5mfH5phSHdpeBLUXYFzKsQQ=;
+	s=arc-20240116; t=1767962955; c=relaxed/simple;
+	bh=6tAz5Mc+DEDB78WxSRLwWDGQuypC6nFwsUecGdfQbIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EwGfsJgzZan286/ZX0D6VCYvRz5n0m4g/46PUVvvZPemXYCJlyLod20uGjETSXEzYz7LGYzCOmroQ4S6CPB1C9LSeVs5tIPW6nZXN8GhR2VrUOAUdhyLI84O6dhz9aiXSST2QA6xF455aEVsPTRQqoHknrBYGZUBMQeoDctNoEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZNqBBGE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD64C16AAE;
-	Fri,  9 Jan 2026 11:44:43 +0000 (UTC)
+	 MIME-Version; b=SC35L1CP/UoU/V4gR5Unt1zXO5imQ7CwGBa8A+gEB3PByjzpmWP6Z+JTwVaiMRI5HMODXRQaZPz/EnSGfV6rsgt9mtB1xO7IygBoiza17Y4IsjF40DQ4e/Ww1c0UCIqf9kB087q3jFD16BfmLYd/uTkastgtf2X/fZIz8U2FISw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7y+9b/I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C26C2BCAF;
+	Fri,  9 Jan 2026 12:49:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959085;
-	bh=/xMBYw8rzxERxbETQfaB5mfH5phSHdpeBLUXYFzKsQQ=;
+	s=korg; t=1767962955;
+	bh=6tAz5Mc+DEDB78WxSRLwWDGQuypC6nFwsUecGdfQbIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZNqBBGErQnt9/mv+MFZN50byQ2Z6hY7x+4q1Xe89Ab4e+tE0fe+88iDp9JZHvyBt
-	 +SmoCHeqyyzcXFY0DKnKeBnBWBZFLGgUgvq3tnnTwK6C3dJJw4TTvsrUWvHvcE/Yv2
-	 WG5B6YqFzAvaf4uUzhzaqCbLIVdRQ1Z7Ekr9yBOc=
+	b=h7y+9b/I66MkMnxeH4WMWXt8tZnqT8539VWismcwuKN4XuoZJAIiXpcL26Xh18pgW
+	 1vvpdW0HAUfgKCG57BNxN3Qawh8YMGiASV6/rkbPQrxWwqngtM88AMfkIGoBuO2khA
+	 OCBU+D9k7/u5vf7Tp3bfBw0htF7v+FX7+3m5vVFc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christian Brauner <brauner@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jason Wang <jasowang@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 03/16] mm: simplify folio_expected_ref_count()
+Subject: [PATCH 6.1 546/634] usb: ohci-nxp: Use helper function devm_clk_get_enabled()
 Date: Fri,  9 Jan 2026 12:43:44 +0100
-Message-ID: <20260109111951.548019950@linuxfoundation.org>
+Message-ID: <20260109112138.135841826@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -103,105 +58,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-[ Upstream commit 78cb1a13c42a6d843e21389f74d1edb90ed07288 ]
+[ Upstream commit c146ede472717f352b7283a525bd9a1a2b15e2cf ]
 
-Now that PAGE_MAPPING_MOVABLE is gone, we can simplify and rely on the
-folio_test_anon() test only.
+devm_clk_get() and clk_prepare_enable() can be replaced by helper
+function devm_clk_get_enabled(). Let's use devm_clk_get_enabled() to
+simplify code and avoid calling clk_disable_unprepare().
 
-... but staring at the users, this function should never even have been
-called on movable_ops pages. E.g.,
-* __buffer_migrate_folio() does not make sense for them
-* folio_migrate_mapping() does not make sense for them
-* migrate_huge_page_move_mapping() does not make sense for them
-* __migrate_folio() does not make sense for them
-* ... and khugepaged should never stumble over them
-
-Let's simply refuse typed pages (which includes slab) except hugetlb, and
-WARN.
-
-Link: https://lkml.kernel.org/r/20250704102524.326966-26-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: f183663901f2 ("mm: consider non-anon swap cache folios in folio_expected_ref_count()")
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240902123020.29267-3-zhangzekun11@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b4c61e542faf ("usb: ohci-nxp: fix device leak on probe failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/ohci-nxp.c |   18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2238,13 +2238,13 @@ static inline int folio_expected_ref_cou
- 	const int order = folio_order(folio);
- 	int ref_count = 0;
+--- a/drivers/usb/host/ohci-nxp.c
++++ b/drivers/usb/host/ohci-nxp.c
+@@ -51,8 +51,6 @@ static struct hc_driver __read_mostly oh
  
--	if (WARN_ON_ONCE(folio_test_slab(folio)))
-+	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+ static struct i2c_client *isp1301_i2c_client;
  
- 	if (folio_test_anon(folio)) {
- 		/* One reference per page from the swapcache. */
- 		ref_count += folio_test_swapcache(folio) << order;
--	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
-+	} else {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+-static struct clk *usb_host_clk;
+-
+ static void isp1301_configure_lpc32xx(void)
+ {
+ 	/* LPC32XX only supports DAT_SE0 USB mode */
+@@ -155,6 +153,7 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	struct resource *res;
+ 	int ret = 0, irq;
+ 	struct device_node *isp1301_node;
++	struct clk *usb_host_clk;
+ 
+ 	if (pdev->dev.of_node) {
+ 		isp1301_node = of_parse_phandle(pdev->dev.of_node,
+@@ -180,26 +179,20 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	}
+ 
+ 	/* Enable USB host clock */
+-	usb_host_clk = devm_clk_get(&pdev->dev, NULL);
++	usb_host_clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(usb_host_clk)) {
+-		dev_err(&pdev->dev, "failed to acquire USB OHCI clock\n");
++		dev_err(&pdev->dev, "failed to acquire and start USB OHCI clock\n");
+ 		ret = PTR_ERR(usb_host_clk);
+ 		goto fail_disable;
+ 	}
+ 
+-	ret = clk_prepare_enable(usb_host_clk);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "failed to start USB OHCI clock\n");
+-		goto fail_disable;
+-	}
+-
+ 	isp1301_configure();
+ 
+ 	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
+ 	if (!hcd) {
+ 		dev_err(&pdev->dev, "Failed to allocate HC buffer\n");
+ 		ret = -ENOMEM;
+-		goto fail_hcd;
++		goto fail_disable;
+ 	}
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+@@ -230,8 +223,6 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	ohci_nxp_stop_hc();
+ fail_resource:
+ 	usb_put_hcd(hcd);
+-fail_hcd:
+-	clk_disable_unprepare(usb_host_clk);
+ fail_disable:
+ 	isp1301_i2c_client = NULL;
+ 	return ret;
+@@ -244,7 +235,6 @@ static int ohci_hcd_nxp_remove(struct pl
+ 	usb_remove_hcd(hcd);
+ 	ohci_nxp_stop_hc();
+ 	usb_put_hcd(hcd);
+-	clk_disable_unprepare(usb_host_clk);
+ 	isp1301_i2c_client = NULL;
+ 
+ 	return 0;
 
 
 
