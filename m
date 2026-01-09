@@ -1,99 +1,56 @@
-Return-Path: <stable+bounces-207125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69094D099B8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6773D0A1E1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53B003071D34
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3AF9F31A1058
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E157A35A940;
-	Fri,  9 Jan 2026 12:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A53D3590C8;
+	Fri,  9 Jan 2026 12:47:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NhYDFkGz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ejip169I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3DC5359FA0;
-	Fri,  9 Jan 2026 12:19:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1D4435BDDB;
+	Fri,  9 Jan 2026 12:47:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961162; cv=none; b=PPH5xWmPNzvuJSIIBmh94taWskrW9ErLQZmH5pxGJgQTCWdaIXWJxAKvFs8sQ8UlhULxglB2V6S63l4Q1C7Yb+qswUQTYcZ/GAIV0vIAwxUfmnY0NOlYAUdqSf9/NuWbkE/5HT1DrYqPkgz9Hz8bIn1wvvOzqs0hMHWoKWoCZMg=
+	t=1767962878; cv=none; b=NndHD5TWHP5bK6C9KU2e3Sa3WasIrNm61H/mrf/Ex3vIBY/yP1xhIYApBXXrHgyGkrp3EtYlDFjXtG5Qb0d8iCqZ4dwixUne2TTMcXSOUG46TLwtXDCRj2XkIcJ4W0ly8Q8UkRmsdYvW6tCdKPh2mw2J9GpWyX9TsLtmWa1IKN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961162; c=relaxed/simple;
-	bh=g0f1iTJDLtPOJcI3w7PqhrSMuh8OZx8iTiDBvaiWwHg=;
+	s=arc-20240116; t=1767962878; c=relaxed/simple;
+	bh=oC9TqyRypVH63q6tpcD9CSvmPnUyJhwQFmouiJE1+Oc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hlEv8kmoyPNriSVKLYOQLCiETAiOg+gWAQsZAlEbXsJpaL72JNwS+XpOp5UXjrhcTu6qb9mJgS70bZLV1RKcXBHMFazP/Rh6XG5l2sSwVpBqRZiy3TZ4Dk3IJX0HdSX22pn29o5Y9LciiblQrXuSSvqBJGR5hOihZCX/zroMnI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NhYDFkGz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 552C0C4CEF1;
-	Fri,  9 Jan 2026 12:19:21 +0000 (UTC)
+	 MIME-Version; b=S4oMEq/xjHJY4ZFyqJ5oyWHJLZeA6xqdMTTpWT+Fsye8dty1EesyaBMVdJHHsLnCJzfbPTLtg3iUAwLuNtyq3Ou20x+3SqKhDzSA8t7GtlWMjhZyuRrfLdH+Asq3UA+yhke/fAHnB9iD9Xh+UGK2htQsJcBmAnGevpooUdZts0w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ejip169I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67D5CC4CEF1;
+	Fri,  9 Jan 2026 12:47:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961162;
-	bh=g0f1iTJDLtPOJcI3w7PqhrSMuh8OZx8iTiDBvaiWwHg=;
+	s=korg; t=1767962877;
+	bh=oC9TqyRypVH63q6tpcD9CSvmPnUyJhwQFmouiJE1+Oc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NhYDFkGziD61HUxTbIRFpjEjfPCIVLmroQ5w7EltZof8moxawDZk85m7DOA/c+e3M
-	 TjAaFeLs0MMwtZbmfILa+KyEdG366v7qfEi0X2yNRybhg8xsueblzMcF3vr6ir1zJ1
-	 1LYjs3kCw5k3novibzECZpYEelL8E/Cp1IAGDx4Q=
+	b=Ejip169I1/00l9/GsIe6Yz+QBnNS3OjYPwHHG5RbSl8hS/gyfIZbMX23J9KuAuBNH
+	 QenCBG8UhiQyzRctdsev8pzsSUrJIIEmsQZKw1zzVhe05sYaFk5wPa72SmyF64jOEu
+	 HFF8Qbf1TVXYcATm7HQTFWApaIYZMsu18ew2oP44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christian Brauner <brauner@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jason Wang <jasowang@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 656/737] mm: simplify folio_expected_ref_count()
-Date: Fri,  9 Jan 2026 12:43:15 +0100
-Message-ID: <20260109112158.702661952@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 518/634] mm/damon/tests/core-kunit: handle allocation failures in damon_test_regions()
+Date: Fri,  9 Jan 2026 12:43:16 +0100
+Message-ID: <20260109112137.049622388@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -103,105 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 78cb1a13c42a6d843e21389f74d1edb90ed07288 ]
+commit e16fdd4f754048d6e23c56bd8d920b71e41e3777 upstream.
 
-Now that PAGE_MAPPING_MOVABLE is gone, we can simplify and rely on the
-folio_test_anon() test only.
+damon_test_regions() is assuming all dynamic memory allocation in it will
+succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-... but staring at the users, this function should never even have been
-called on movable_ops pages. E.g.,
-* __buffer_migrate_folio() does not make sense for them
-* folio_migrate_mapping() does not make sense for them
-* migrate_huge_page_move_mapping() does not make sense for them
-* __migrate_folio() does not make sense for them
-* ... and khugepaged should never stumble over them
-
-Let's simply refuse typed pages (which includes slab) except hugetlb, and
-WARN.
-
-Link: https://lkml.kernel.org/r/20250704102524.326966-26-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: Harry Yoo <harry.yoo@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
+Link: https://lkml.kernel.org/r/20251101182021.74868-3-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: f183663901f2 ("mm: consider non-anon swap cache folios in folio_expected_ref_count()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ mm/damon/core-test.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -2194,13 +2194,13 @@ static inline int folio_expected_ref_cou
- 	const int order = folio_order(folio);
- 	int ref_count = 0;
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -20,11 +20,17 @@ static void damon_test_regions(struct ku
+ 	struct damon_target *t;
  
--	if (WARN_ON_ONCE(folio_test_slab(folio)))
-+	if (WARN_ON_ONCE(page_has_type(&folio->page) && !folio_test_hugetlb(folio)))
- 		return 0;
+ 	r = damon_new_region(1, 2);
++	if (!r)
++		kunit_skip(test, "region alloc fail");
+ 	KUNIT_EXPECT_EQ(test, 1ul, r->ar.start);
+ 	KUNIT_EXPECT_EQ(test, 2ul, r->ar.end);
+ 	KUNIT_EXPECT_EQ(test, 0u, r->nr_accesses);
  
- 	if (folio_test_anon(folio)) {
- 		/* One reference per page from the swapcache. */
- 		ref_count += folio_test_swapcache(folio) << order;
--	} else if (!((unsigned long)folio->mapping & PAGE_MAPPING_FLAGS)) {
-+	} else {
- 		/* One reference per page from the pagecache. */
- 		ref_count += !!folio->mapping << order;
- 		/* One reference from PG_private. */
+ 	t = damon_new_target();
++	if (!t) {
++		damon_free_region(r);
++		kunit_skip(test, "target alloc fail");
++	}
+ 	KUNIT_EXPECT_EQ(test, 0u, damon_nr_regions(t));
+ 
+ 	damon_add_region(r, t);
 
 
 
