@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-207251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1E59D09CC7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3072CD0936B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5E003302BBDD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 96E7330D3922
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B54DF359FBB;
-	Fri,  9 Jan 2026 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D13F33C511;
+	Fri,  9 Jan 2026 11:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mLqvvh/3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cvbHf3H/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78585335567;
-	Fri,  9 Jan 2026 12:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C7DF33A712;
+	Fri,  9 Jan 2026 11:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961524; cv=none; b=McDv7njtq5L8hN/3/oHdfug1MGbzy+2u9+PPBessDOekrrYplzlMFZZEXukY0OFjNIZ4uDKT811GYLaB+IQFy+VbHIf3+DrLgkw10c5YPAh7+HK+f+sz+s/HNHU9aaGCB3ay/iy8t1SZDljXNO0FF0tAoHl2lV+FLw+gPEPSO90=
+	t=1767959905; cv=none; b=RdQWC1MWMN4WMC8+DFLa6GkosNTLTO4GRqCTt5YSDhPK4DrfhqvtoHMe3XdHMjPo0G6hh23CsutYPm+tc/pqb6uTpOntNpfEG945jM1dxWd7eBKSk7KwltZ4f/ZZMMLqAd5Tr9j/xVK+nsF69XX1iMM2TTM6GeCslOtCwDFKbOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961524; c=relaxed/simple;
-	bh=iT+1eZA3Htg+s8MacbZ8B7GVvzP8PG6iB98H4Dj0akU=;
+	s=arc-20240116; t=1767959905; c=relaxed/simple;
+	bh=mim64aLuLOSZRNdD+ajai/y9jQuCSM5lOaWlPVwBtt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZL/Reln5R57BIXEfjIFNvY1KqgYyEVBKWrhRYSUgLwZTfIkEEMtXYPVlVaKaFe2+VHsDKhrYfU5CsIZQtA2PtAXX+s00ogbWoJXvdBZWAWkJQZHit+XOaA5V3xCcLTquAY1E9FGCDxT0JD1aUWkhiuX7JGzEkoAZ6Gl5GN5U+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mLqvvh/3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB3FFC4CEF1;
-	Fri,  9 Jan 2026 12:25:23 +0000 (UTC)
+	 MIME-Version; b=VTND+frynU4W1buj9ClIBy2XEMQS2PDAiDzgkAxSjtb/iFzsw6foeVEMQrckx0busD9eUPuuQIzwGn60oEqAm992SJmglZBgHnvTtlQoAO24KIMQ4OAf34YBGU9vcHqD+Jb/Xz3AhDO0+Nn4Ypo7k+G/sAijQY87Li06de8GmkQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cvbHf3H/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0736C4CEF1;
+	Fri,  9 Jan 2026 11:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961524;
-	bh=iT+1eZA3Htg+s8MacbZ8B7GVvzP8PG6iB98H4Dj0akU=;
+	s=korg; t=1767959905;
+	bh=mim64aLuLOSZRNdD+ajai/y9jQuCSM5lOaWlPVwBtt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mLqvvh/3fMDkKDcYmt7vJFtoErijWCKrbqBA19bYRrp0PuR5U7j46nTw7eT9enz7j
-	 PABD5geQf1pswiJuSxNVvGQ+ZD38XJ+vz5sAjkOZABO7mSj5WlpJIvItCDBElByI9v
-	 yvyoU93dL/yTbpjkWxIb7dhjCPmaZ1fU4M78s3Ik=
+	b=cvbHf3H/dsx7276RAB4IcgT4pUKP1KJb4o61YOHWOBk7ipTDF4k3KntUdcKPQyBYv
+	 jWpjuW48xpqPEJqazXYvXmaGOZ5JAIhFBFl11EHqoETOgBW/rzoaOQX4GtyZlRDQXi
+	 q6PftKNrC3acStyo2hb93N2VwSVoKBMLpAIaGhRE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Biju Das <biju.das.jz@bp.renesas.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Wolfram Sang <wsa+renesas@sang-engineering.com>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	Vinod Koul <vkoul@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/634] USB: Fix descriptor count when handling invalid MBIM extended descriptor
+Subject: [PATCH 6.6 184/737] phy: renesas: rcar-gen3-usb2: Fix an error handling path in rcar_gen3_phy_usb2_probe()
 Date: Fri,  9 Jan 2026 12:35:23 +0100
-Message-ID: <20260109112119.142238935@linuxfoundation.org>
+Message-ID: <20260109112140.917293547@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +64,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 5570ad1423ee60f6e972dadb63fb2e5f90a54cbe ]
+[ Upstream commit 662bb179d3381c7c069e44bb177396bcaee31cc8 ]
 
-In cdc_parse_cdc_header(), the check for the USB_CDC_MBIM_EXTENDED_TYPE
-descriptor was using 'break' upon detecting an invalid length.
+If an error occurs after the reset_control_deassert(),
+reset_control_assert() must be called, as already done in the remove
+function.
 
-This was incorrect because 'break' only exits the switch statement,
-causing the code to fall through to cnt++, thus incorrectly
-incrementing the count of parsed descriptors for a descriptor that was
-actually invalid and being discarded.
+Use devm_add_action_or_reset() to add the missing call and simplify the
+.remove() function accordingly.
 
-This patch changes 'break' to 'goto next_desc;' to ensure that the
-logic skips the counter increment and correctly proceeds to the next
-descriptor in the buffer. This maintains an accurate count of only
-the successfully parsed descriptors.
+While at it, drop struct rcar_gen3_chan::rstc as it is not used aymore.
 
-Fixes: e4c6fb7794982 ("usbnet: move the CDC parser into USB core")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Link: https://lore.kernel.org/r/20250928185611.764589-1-eeodqql09@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[claudiu.beznea: removed "struct reset_control *rstc = data;" from
+ rcar_gen3_reset_assert(), dropped struct rcar_gen3_chan::rstc]
+
+Fixes: 4eae16375357 ("phy: renesas: rcar-gen3-usb2: Add support to initialize the bus")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Reviewed-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Tested-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Signed-off-by: Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>
+Link: https://patch.msgid.link/20251023135810.1688415-3-claudiu.beznea.uj@bp.renesas.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/message.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/phy/renesas/phy-rcar-gen3-usb2.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-index 1673e5d089263..9f65556dc3745 100644
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -2386,7 +2386,7 @@ int cdc_parse_cdc_header(struct usb_cdc_parsed_header *hdr,
- 			break;
- 		case USB_CDC_MBIM_EXTENDED_TYPE:
- 			if (elength < sizeof(struct usb_cdc_mbim_extended_desc))
--				break;
-+				goto next_desc;
- 			hdr->usb_cdc_mbim_extended_desc =
- 				(struct usb_cdc_mbim_extended_desc *)buffer;
- 			break;
+diff --git a/drivers/phy/renesas/phy-rcar-gen3-usb2.c b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+index 9a6391361a0be..89a9693c9f577 100644
+--- a/drivers/phy/renesas/phy-rcar-gen3-usb2.c
++++ b/drivers/phy/renesas/phy-rcar-gen3-usb2.c
+@@ -117,7 +117,6 @@ struct rcar_gen3_chan {
+ 	struct extcon_dev *extcon;
+ 	struct rcar_gen3_phy rphys[NUM_OF_PHYS];
+ 	struct regulator *vbus;
+-	struct reset_control *rstc;
+ 	struct work_struct work;
+ 	spinlock_t lock;	/* protects access to hardware and driver data structure. */
+ 	enum usb_dr_mode dr_mode;
+@@ -658,21 +657,31 @@ static enum usb_dr_mode rcar_gen3_get_dr_mode(struct device_node *np)
+ 	return candidate;
+ }
+ 
++static void rcar_gen3_reset_assert(void *data)
++{
++	reset_control_assert(data);
++}
++
+ static int rcar_gen3_phy_usb2_init_bus(struct rcar_gen3_chan *channel)
+ {
+ 	struct device *dev = channel->dev;
++	struct reset_control *rstc;
+ 	int ret;
+ 	u32 val;
+ 
+-	channel->rstc = devm_reset_control_array_get_shared(dev);
+-	if (IS_ERR(channel->rstc))
+-		return PTR_ERR(channel->rstc);
++	rstc = devm_reset_control_array_get_shared(dev);
++	if (IS_ERR(rstc))
++		return PTR_ERR(rstc);
+ 
+ 	ret = pm_runtime_resume_and_get(dev);
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = reset_control_deassert(channel->rstc);
++	ret = reset_control_deassert(rstc);
++	if (ret)
++		goto rpm_put;
++
++	ret = devm_add_action_or_reset(dev, rcar_gen3_reset_assert, rstc);
+ 	if (ret)
+ 		goto rpm_put;
+ 
+@@ -814,7 +823,6 @@ static void rcar_gen3_phy_usb2_remove(struct platform_device *pdev)
+ 	if (channel->is_otg_channel)
+ 		device_remove_file(&pdev->dev, &dev_attr_role);
+ 
+-	reset_control_assert(channel->rstc);
+ 	pm_runtime_disable(&pdev->dev);
+ };
+ 
 -- 
 2.51.0
 
