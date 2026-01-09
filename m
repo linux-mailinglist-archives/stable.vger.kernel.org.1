@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206757-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207348-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31E63D092FC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A8F5CD09BDB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 98EA9302438C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 17061303279C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5ACA33CE9A;
-	Fri,  9 Jan 2026 12:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4513235B158;
+	Fri,  9 Jan 2026 12:30:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nOzIkDBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peZB6sKk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 88B0B359FB6;
-	Fri,  9 Jan 2026 12:01:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2F9F35B153;
+	Fri,  9 Jan 2026 12:29:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960112; cv=none; b=oMu1szqiETDPWf6Jogul9Y8m8VwbWhpCx1+9LyeDmfblYpshCVx8oXCTrL/Fw5vwdu3vKLToDvnmadgWY8B27ltNsR5AkQP6O2cRkGu9+Ii/vD3GFYhdxYNnuVikl6tOcps6AilvIBWs7rUoeW703j7NzRtER0Fof0zW65iXLbY=
+	t=1767961800; cv=none; b=sWaxGySdKMf0N6xAzNDFgeLAbJuGyLx+cs+KQ2LNKXNKJ8w4LUa9zNKWpcsBt61Eu9pAaON5EcRqaA39Tuby2SptF8pkzhPegNc98a5kgqhMr4rzGAZBAiwgGphePDb/RdLkYTaiIAVq4spZ/Td/dx/fYSUn+EQYTE8Git+icGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960112; c=relaxed/simple;
-	bh=oDkdIrThQ9xJMcyh44t/EkPF19PEu3/LTVR1AFtXHdI=;
+	s=arc-20240116; t=1767961800; c=relaxed/simple;
+	bh=F41EzkFY3/wE0GOEjXoo2n6raNlOMtO+HG0PWOC4N2s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XRgm0DKrGx/wQvM3K4NRDcT2cOSYDDYLoPo6XJE10jLKB3r7OeTrr/SSCg1hrWJLp+9YW4hwm1+Hxtribr4oKjdeoxr3WwkM/16pP2Go1GZVDx5CMuHtZ9z+eaIauVm2S0rUewJvx+ixN+kFD/SsqHC/NteOFO1+WgOeXZFl6a8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nOzIkDBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 186F3C4CEF1;
-	Fri,  9 Jan 2026 12:01:51 +0000 (UTC)
+	 MIME-Version; b=pxye/c8n4yek9OnQX0MC0JJDXjH9sJR+9ri1SWHX6V9NzT/ypTLA69yq7dO7ePnTzGnwK3Jj/GXBXKrk5IyRRZVKw6q7aYh2mgTwCKtRIYw4TNuDcdILSMYvlkRMf6XmShDPJhgmVpwK++2dapq3+TpvN5wfYdzZGt3WCqh0QEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peZB6sKk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA57C19423;
+	Fri,  9 Jan 2026 12:29:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960112;
-	bh=oDkdIrThQ9xJMcyh44t/EkPF19PEu3/LTVR1AFtXHdI=;
+	s=korg; t=1767961799;
+	bh=F41EzkFY3/wE0GOEjXoo2n6raNlOMtO+HG0PWOC4N2s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nOzIkDBA7W4R9V3kyFMWg6QBfq/8yI80AV25cuwF0u7OaSQcZcPaIhURxbHcqB1zl
-	 qUXIhIexdVme/hc4iLM+2IdSq9A2+KngZt41P9bi/U9GSpg8bCmyrSDs6GVdcg6zIs
-	 m4TLmLKFKpzvonkdt1l9+b0gV0EIKmugRpvfAvkM=
+	b=peZB6sKkG2qCM/Ch7/L+8Ck7OEc8QE7kPEJH3uSWszqaLSAD5YdFE0bbPWOcRAO4z
+	 kRcI3GQpAlflDUoESn0vgPfm+1KDgNQX8STp78kj8tNsQmtkwEmqYd5sdRCWpk/Bdb
+	 cyDIXela5Ve6sA3jOMIb6XfT8uHDF4DZ07INjnO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	Benjamin Poirier <bpoirier@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 246/737] selftests: bonding: Add more missing config options
+Subject: [PATCH 6.1 107/634] soc: renesas: r9a06g032-sysctrl: Handle h2mode setting based on USBF presence
 Date: Fri,  9 Jan 2026 12:36:25 +0100
-Message-ID: <20260109112143.247524077@linuxfoundation.org>
+Message-ID: <20260109112121.460660311@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Poirier <bpoirier@nvidia.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit dd2d40acdbb2b9e6bcddd5424b0e00c1760ecf26 ]
+[ Upstream commit e9fee814b054e4f6f2faf3d9c1944869fe41c9dd ]
 
-As a followup to commit 03fb8565c880 ("selftests: bonding: add missing
-build configs"), add more networking-specific config options which are
-needed for bonding tests.
+The CFG_USB[H2MODE] allows to switch the USB configuration. The
+configuration supported are:
+  - One host and one device
+or
+  - Two hosts
 
-For testing, I used the minimal config generated by virtme-ng and I added
-the options in the config file. All bonding tests passed.
+Set CFG_USB[H2MODE] based on the USBF controller (USB device)
+availability.
 
-Fixes: bbb774d921e2 ("net: Add tests for bonding and team address list management") # for ipv6
-Fixes: 6cbe791c0f4e ("kselftest: bonding: add num_grat_arp test") # for tc options
-Fixes: 222c94ec0ad4 ("selftests: bonding: add tests for ether type changes") # for nlmon
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Benjamin Poirier <bpoirier@nvidia.com>
-Link: https://lore.kernel.org/r/20240116154926.202164-1-bpoirier@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Stable-dep-of: 2c28ee720ad1 ("selftests: bonding: add delay before each xvlan_over_bond connectivity check")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230105152257.310642-3-herve.codina@bootlin.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: f8def051bbcf ("clk: renesas: r9a06g032: Fix memory leak in error path")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/bonding/config | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/clk/renesas/r9a06g032-clocks.c | 28 ++++++++++++++++++++++++++
+ 1 file changed, 28 insertions(+)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/config b/tools/testing/selftests/drivers/net/bonding/config
-index f85b16fc5128c..899d7fb6ea8e9 100644
---- a/tools/testing/selftests/drivers/net/bonding/config
-+++ b/tools/testing/selftests/drivers/net/bonding/config
-@@ -1,5 +1,10 @@
- CONFIG_BONDING=y
- CONFIG_BRIDGE=y
- CONFIG_DUMMY=y
-+CONFIG_IPV6=y
- CONFIG_MACVLAN=y
-+CONFIG_NET_ACT_GACT=y
-+CONFIG_NET_CLS_FLOWER=y
-+CONFIG_NET_SCH_INGRESS=y
-+CONFIG_NLMON=y
- CONFIG_VETH=y
+diff --git a/drivers/clk/renesas/r9a06g032-clocks.c b/drivers/clk/renesas/r9a06g032-clocks.c
+index 983faa5707b9c..087146f2ee068 100644
+--- a/drivers/clk/renesas/r9a06g032-clocks.c
++++ b/drivers/clk/renesas/r9a06g032-clocks.c
+@@ -25,6 +25,8 @@
+ #include <linux/spinlock.h>
+ #include <dt-bindings/clock/r9a06g032-sysctrl.h>
+ 
++#define R9A06G032_SYSCTRL_USB    0x00
++#define R9A06G032_SYSCTRL_USB_H2MODE  (1<<1)
+ #define R9A06G032_SYSCTRL_DMAMUX 0xA0
+ 
+ struct r9a06g032_gate {
+@@ -918,6 +920,29 @@ static void r9a06g032_clocks_del_clk_provider(void *data)
+ 	of_clk_del_provider(data);
+ }
+ 
++static void __init r9a06g032_init_h2mode(struct r9a06g032_priv *clocks)
++{
++	struct device_node *usbf_np = NULL;
++	u32 usb;
++
++	while ((usbf_np = of_find_compatible_node(usbf_np, NULL,
++						  "renesas,rzn1-usbf"))) {
++		if (of_device_is_available(usbf_np))
++			break;
++	}
++
++	usb = readl(clocks->reg + R9A06G032_SYSCTRL_USB);
++	if (usbf_np) {
++		/* 1 host and 1 device mode */
++		usb &= ~R9A06G032_SYSCTRL_USB_H2MODE;
++		of_node_put(usbf_np);
++	} else {
++		/* 2 hosts mode */
++		usb |= R9A06G032_SYSCTRL_USB_H2MODE;
++	}
++	writel(usb, clocks->reg + R9A06G032_SYSCTRL_USB);
++}
++
+ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+@@ -947,6 +972,9 @@ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
+ 	clocks->reg = of_iomap(np, 0);
+ 	if (WARN_ON(!clocks->reg))
+ 		return -ENOMEM;
++
++	r9a06g032_init_h2mode(clocks);
++
+ 	for (i = 0; i < ARRAY_SIZE(r9a06g032_clocks); ++i) {
+ 		const struct r9a06g032_clkdesc *d = &r9a06g032_clocks[i];
+ 		const char *parent_name = d->source ?
 -- 
 2.51.0
 
