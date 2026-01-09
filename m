@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207616-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207013-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4739AD09FCD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 91509D0977D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7A3D2308B6CB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 131303090A7C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5DE93590C4;
-	Fri,  9 Jan 2026 12:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 988D633B6F1;
+	Fri,  9 Jan 2026 12:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2IgDuSU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HFxVqP0+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 992D042AA6;
-	Fri,  9 Jan 2026 12:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C9AC2F0C7F;
+	Fri,  9 Jan 2026 12:14:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962558; cv=none; b=fcHEBA85NFnzftLFtB2kpOEJ3CD4CEZW83eBw5Mk4qKk1AIc9sBRRRlWX5oGBUCX+MgDjhOc1kJVeNR9D+rH0PXl4Zdk/5gIA2CLfeDw+6Zjt4b0NA7hvrN1gkWtwBLHDDFO/RA49mXCIdukFJ5DJr0TBbBBXRShlo4jloTUAdg=
+	t=1767960845; cv=none; b=MBiddVnIhqeyYOQHGoZu2dlplp/Zu0Bqy2FFjtmrQY5zJA0vR4yid0zym8z/inqnm3uroVhB6P79XRkYFw0X7G6kP/9BULmv7SvLGxBp2GZMQC1m+kXOLf7CTsiMkSvkaXkxAd5iBkwlpEHZA1qSAKvjMzsQ3MNQfSnkwwQrmi4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962558; c=relaxed/simple;
-	bh=Tq50qmVUqI1Y8xpbvv1Lr8583uaa4yMHzCzQVoO58jM=;
+	s=arc-20240116; t=1767960845; c=relaxed/simple;
+	bh=ZpXbQA56tNTCU3jt80opTnPTKoEdUYmPOfa04Ak7Eps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KgvO7uv0D88oWB8d8rv3g19WR3brWTqN5VD26trdtc20Y7K2fSF73gI7sdqe7gX7d3tklXjNLJ8uEJ1M9jS7TiI9vuqvi69k5v5yLp2q5cAK3ozmALg2Upwa9r/XFnlVBy6+y4uyP6nvzyvmRi7jp5la1KiNuFxq24esC6SVaNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2IgDuSU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26C53C4CEF1;
-	Fri,  9 Jan 2026 12:42:37 +0000 (UTC)
+	 MIME-Version; b=jCF/b+8qSjX4D/HYvtOgZ6LSfZLEwr6Njj0YLqae+3HUiHlTEV5SPPzQrs2qZHiEa4G6hLkHgvIvzZYWJOHW3pLixstrot5pzRwzcJJq0BSvmMuQUlpGsUBp9+VAfs8856RsppgpnXRgTbaKcyEz1/L33k/8C3mIaUvdHd8HN1g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HFxVqP0+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCD78C4CEF1;
+	Fri,  9 Jan 2026 12:14:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962558;
-	bh=Tq50qmVUqI1Y8xpbvv1Lr8583uaa4yMHzCzQVoO58jM=;
+	s=korg; t=1767960845;
+	bh=ZpXbQA56tNTCU3jt80opTnPTKoEdUYmPOfa04Ak7Eps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2IgDuSUjO23ZDERsFOzDVAHT/ZvTHX7nN3zM4Kcuxffv07fo2gtp3tbR91NEcEd9
-	 7M0QJUHWgc1ymqbfIpap58AoQMLVHb36D3mTXOrQVuDSoNawAVKmfSDTSrDE1i5GQs
-	 3XDTkBb9Rp176ELW4DGE3DVB+qRH/SkX/s7q36iE=
+	b=HFxVqP0+Llwt5rKfXNTVgVCyxn34zsv8uLbraQrCojWf2IsdqAQxpMgd63gBnXsMG
+	 r/Rn3LGBizk54r4jhP8DnpSAASkKMDTQ8lMSDS8G353NbAfD2zcYUY6bg5yHFhBqqR
+	 UE0lk4Fektc064OgKGX61GDJJyyZY+wUk9gX8Hq4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 407/634] ip6_gre: make ip6gre_header() robust
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 6.6 546/737] ASoC: qcom: q6asm-dai: perform correct state check before closing
 Date: Fri,  9 Jan 2026 12:41:25 +0100
-Message-ID: <20260109112132.845608275@linuxfoundation.org>
+Message-ID: <20260109112154.535012766@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,81 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit db5b4e39c4e63700c68a7e65fc4e1f1375273476 ]
+commit bfbb12dfa144d45575bcfe139a71360b3ce80237 upstream.
 
-Over the years, syzbot found many ways to crash the kernel
-in ip6gre_header() [1].
+Do not stop a q6asm stream if its not started, this can result in
+unnecessary dsp command which will timeout anyway something like below:
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
+q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
 
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ip6gre device.
+Fix this by correctly checking the state.
 
-[1]
-skbuff: skb_under_panic: text:ffffffff8a1d69a8 len:136 put:40 head:ffff888059bc7000 data:ffff888059bc6fe8 tail:0x70 end:0x6c0 dev:team0
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:213 !
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ip6gre_header+0xc8/0x790 net/ipv6/ip6_gre.c:1371
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  neigh_output include/net/neighbour.h:556 [inline]
-  ip6_finish_output2+0xfb3/0x1480 net/ipv6/ip6_output.c:136
- __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
-  ip6_finish_output+0x234/0x7d0 net/ipv6/ip6_output.c:220
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-
-Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
-Reported-by: syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/693b002c.a70a0220.33cd7b.0033.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251211173550.2032674-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-5-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_gre.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 718fcad69cf1..249c613a9280 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1405,9 +1405,16 @@ static int ip6gre_header(struct sk_buff *skb, struct net_device *dev,
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct ipv6hdr *ipv6h;
-+	int needed;
- 	__be16 *p;
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -237,13 +237,14 @@ static int q6asm_dai_prepare(struct snd_
+ 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
+ 	prtd->pcm_irq_pos = 0;
+ 	/* rate and channels are sent to audio driver */
+-	if (prtd->state) {
++	if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 		/* clear the previous setup if any  */
+ 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
+ 		q6asm_unmap_memory_regions(substream->stream,
+ 					   prtd->audio_client);
+ 		q6routing_stream_close(soc_prtd->dai_link->id,
+ 					 substream->stream);
++		prtd->state = Q6ASM_STREAM_STOPPED;
+ 	}
  
--	ipv6h = skb_push(skb, t->hlen + sizeof(*ipv6h));
-+	needed = t->hlen + sizeof(*ipv6h);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
-+
-+	ipv6h = skb_push(skb, needed);
- 	ip6_flow_hdr(ipv6h, 0, ip6_make_flowlabel(dev_net(dev), skb,
- 						  t->fl.u.ip6.flowlabel,
- 						  true, &t->fl.u.ip6));
--- 
-2.51.0
-
+ 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
 
 
 
