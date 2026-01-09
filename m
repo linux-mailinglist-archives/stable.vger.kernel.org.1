@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-207583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE632D09F37
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:45 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A208D096F6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6DF343028884
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7385F302F6BA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1111B35BDDB;
-	Fri,  9 Jan 2026 12:41:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8960F3346AF;
+	Fri,  9 Jan 2026 12:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1MRZQDsl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H4C9T3XC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3EC635BDD9;
-	Fri,  9 Jan 2026 12:41:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1C31946C8;
+	Fri,  9 Jan 2026 12:12:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962468; cv=none; b=BC+24FH1PQLhQmKUge6Fa8Qh8WqJrQIwrabtPyja2v936EGpn+tcM3WvpGl78w1alD3RVGKf/xNwDyySTT4zZQkJzN40isdcGjLl/8xx5VdzL5Q/uXu04WIeufN3iNCiIX19aVXpHmaEBZCXnRNjqKOUBy2QMtHCiGw2FOFn5zc=
+	t=1767960757; cv=none; b=sFvqtvSO7bXi/NT9giWmPSL4KxXWRk80Db7zDBjblrfLztvLXDG2MXJquBsCaBFLvC73DbUvbDUFKWah01SY51j8m56iz+7i4NDQbNGYsxGg9MYygm2B833GWuwVt8aeGfIV5Upze5u71top/Dmd3BLfGigsgtusAqZaOkYiPag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962468; c=relaxed/simple;
-	bh=cld9MrDRqu7tOpvHspDK/8Vrs/bHeuANH+wcw6oAnyA=;
+	s=arc-20240116; t=1767960757; c=relaxed/simple;
+	bh=kq13Au0kcEuX995GN5KoJCQU/62UC9TuI0QGzHegaDA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FwM8HDG//weSYCV7e0bYz7fyBKRFt5pawBwVxRujCwTA9SbQaqn+n3/1uydjX1kEEP5w89SqSX/4nsgAAGhzd0PjppPTeWIqwayuyhkPZNOx+EOiMiS25gsm/oGi20vASoiCg3bOgSGfZPBxeLJcRzLRYu3ixdvvQE4ppPRwmlE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1MRZQDsl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90586C4CEF1;
-	Fri,  9 Jan 2026 12:41:07 +0000 (UTC)
+	 MIME-Version; b=Ygih2suMiweZyrHj3eKFl3oaIP20bgB+qsxX60gbHNp3Hns2dOXJQ/A5u1yjWit1JmtZ032ZRNJehCICiVgIkDLyKzwcXu1prdhwes7g9NCvHSCNHHmj8ExPEG6mFZvd7W7f6EeERS+0iBAYv2Fc+bHUkDLJt0947UV6P25KDic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H4C9T3XC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D8EC4CEF1;
+	Fri,  9 Jan 2026 12:12:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962468;
-	bh=cld9MrDRqu7tOpvHspDK/8Vrs/bHeuANH+wcw6oAnyA=;
+	s=korg; t=1767960757;
+	bh=kq13Au0kcEuX995GN5KoJCQU/62UC9TuI0QGzHegaDA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1MRZQDsltI1ceswzIF3VVa3nhrgZZlXUcrSQBBw619b6Ft8lSfySamwmDFL/ElZG9
-	 /xJoTFtivWeiWGhUtTllRSekcJiAn2qVWpX6HOAKqMV2WUOuBYbQoRbFSOR76Gagui
-	 u/uWqpwXCDiGywEXMPvNbo19FH+v6AQqkIY+msmo=
+	b=H4C9T3XCCdCfWVT80bw6FYw7OzFMRqFX1xztgt1/yE+xfHSI05w/IEDkj8Tmxajv9
+	 WcZt4skT0vcPiBsuw+f9OvoOTFgOkQNu3tnvaMrUzirfvd+7VvYsrZKU6UpzYYf8VF
+	 kPUk3qnZ7Qda+S6Rg1f99PP4yONfav5FZnhgCHDk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sachin P Bappalige <sachinpb@linux.ibm.com>,
-	Srikar Dronamraju <srikar@linux.ibm.com>,
-	"Nysal Jan K.A." <nysal@linux.ibm.com>,
-	Samir M <samir@linux.ibm.com>,
-	Sourabh Jain <sourabhjain@linux.ibm.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>
-Subject: [PATCH 6.1 375/634] powerpc/kexec: Enable SMT before waking offline CPUs
+	Raju Rangoju <Raju.Rangoju@amd.com>,
+	Simon Horman <horms@kernel.org>,
+	Shyam Sundar S K <Shyam-sundar.S-k@amd.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 514/737] amd-xgbe: reset retries and mode on RX adapt failures
 Date: Fri,  9 Jan 2026 12:40:53 +0100
-Message-ID: <20260109112131.641224266@linuxfoundation.org>
+Message-ID: <20260109112153.335500559@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,88 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nysal Jan K.A. <nysal@linux.ibm.com>
+From: Raju Rangoju <Raju.Rangoju@amd.com>
 
-commit c2296a1e42418556efbeb5636c4fa6aa6106713a upstream.
+[ Upstream commit df60c332caf95d70f967aeace826e7e2f0847361 ]
 
-If SMT is disabled or a partial SMT state is enabled, when a new kernel
-image is loaded for kexec, on reboot the following warning is observed:
+During the stress tests, early RX adaptation handshakes can fail, such
+as missing the RX_ADAPT ACK or not receiving a coefficient update before
+block lock is established. Continuing to retry RX adaptation in this
+state is often ineffective if the current mode selection is not viable.
 
-kexec: Waking offline cpu 228.
-WARNING: CPU: 0 PID: 9062 at arch/powerpc/kexec/core_64.c:223 kexec_prepare_cpus+0x1b0/0x1bc
-[snip]
- NIP kexec_prepare_cpus+0x1b0/0x1bc
- LR  kexec_prepare_cpus+0x1a0/0x1bc
- Call Trace:
-  kexec_prepare_cpus+0x1a0/0x1bc (unreliable)
-  default_machine_kexec+0x160/0x19c
-  machine_kexec+0x80/0x88
-  kernel_kexec+0xd0/0x118
-  __do_sys_reboot+0x210/0x2c4
-  system_call_exception+0x124/0x320
-  system_call_vectored_common+0x15c/0x2ec
+Resetting the RX adaptation retry counter when an RX_ADAPT request fails
+to receive ACK or a coefficient update prior to block lock, and clearing
+mode_set so the next bring-up performs a fresh mode selection rather
+than looping on a likely invalid configuration.
 
-This occurs as add_cpu() fails due to cpu_bootable() returning false for
-CPUs that fail the cpu_smt_thread_allowed() check or non primary
-threads if SMT is disabled.
-
-Fix the issue by enabling SMT and resetting the number of SMT threads to
-the number of threads per core, before attempting to wake up all present
-CPUs.
-
-Fixes: 38253464bc82 ("cpu/SMT: Create topology_smt_thread_allowed()")
-Reported-by: Sachin P Bappalige <sachinpb@linux.ibm.com>
-Cc: stable@vger.kernel.org # v6.6+
-Reviewed-by: Srikar Dronamraju <srikar@linux.ibm.com>
-Signed-off-by: Nysal Jan K.A. <nysal@linux.ibm.com>
-Tested-by: Samir M <samir@linux.ibm.com>
-Reviewed-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/20251028105516.26258-1-nysal@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 4f3b20bfbb75 ("amd-xgbe: add support for rx-adaptation")
+Signed-off-by: Raju Rangoju <Raju.Rangoju@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Shyam Sundar S K <Shyam-sundar.S-k@amd.com>
+Link: https://patch.msgid.link/20251215151728.311713-1-Raju.Rangoju@amd.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kexec/core_64.c |   19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/arch/powerpc/kexec/core_64.c
-+++ b/arch/powerpc/kexec/core_64.c
-@@ -202,6 +202,23 @@ static void kexec_prepare_cpus_wait(int
- 	mb();
- }
- 
-+
-+/*
-+ * The add_cpu() call in wake_offline_cpus() can fail as cpu_bootable()
-+ * returns false for CPUs that fail the cpu_smt_thread_allowed() check
-+ * or non primary threads if SMT is disabled. Re-enable SMT and set the
-+ * number of SMT threads to threads per core.
-+ */
-+static void kexec_smt_reenable(void)
-+{
-+#if defined(CONFIG_SMP) && defined(CONFIG_HOTPLUG_SMT)
-+	lock_device_hotplug();
-+	cpu_smt_num_threads = threads_per_core;
-+	cpu_smt_control = CPU_SMT_ENABLED;
-+	unlock_device_hotplug();
-+#endif
-+}
-+
- /*
-  * We need to make sure each present CPU is online.  The next kernel will scan
-  * the device tree and assume primary threads are online and query secondary
-@@ -216,6 +233,8 @@ static void wake_offline_cpus(void)
+diff --git a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+index 32e633d11348..6d2c401bb246 100644
+--- a/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
++++ b/drivers/net/ethernet/amd/xgbe/xgbe-phy-v2.c
+@@ -2036,6 +2036,7 @@ static void xgbe_set_rx_adap_mode(struct xgbe_prv_data *pdata,
  {
- 	int cpu = 0;
+ 	if (pdata->rx_adapt_retries++ >= MAX_RX_ADAPT_RETRIES) {
+ 		pdata->rx_adapt_retries = 0;
++		pdata->mode_set = false;
+ 		return;
+ 	}
  
-+	kexec_smt_reenable();
-+
- 	for_each_present_cpu(cpu) {
- 		if (!cpu_online(cpu)) {
- 			printk(KERN_INFO "kexec: Waking offline cpu %d.\n",
+@@ -2082,6 +2083,7 @@ static void xgbe_rx_adaptation(struct xgbe_prv_data *pdata)
+ 		 */
+ 		netif_dbg(pdata, link, pdata->netdev, "Block_lock done");
+ 		pdata->rx_adapt_done = true;
++		pdata->rx_adapt_retries = 0;
+ 		pdata->mode_set = false;
+ 		return;
+ 	}
+-- 
+2.51.0
+
 
 
 
