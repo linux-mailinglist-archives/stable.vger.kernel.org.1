@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207214-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43FD3D099C1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B29CD0A177
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DB3B30B78D4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D7583303824
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 259BF359F9C;
-	Fri,  9 Jan 2026 12:23:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED93435CB93;
+	Fri,  9 Jan 2026 12:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JZF2XkPb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sZ+X9L1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D72B633C1B6;
-	Fri,  9 Jan 2026 12:23:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E1B35B149;
+	Fri,  9 Jan 2026 12:50:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961419; cv=none; b=cH1LounpBpe9MexuoM56xONSmt7zLJ1EET1Esgqacigd6wIdrhNxMMKIewhWsWJG0xgP+KxsSfZtKliMw/CounyPcebUG37f82aL/T1EeaSOAoKTSkAoEHbobjLEtAf0MBcPj7fCj33LLLVkGHd6+o2/Q/oo2qVMZUif/eekk14=
+	t=1767963012; cv=none; b=DLlU8vbgwqFpLYlJYpmrviqDzSOseSF73DB16o10o7KbarLSpvA/Iuf0Cfl96sxlmzaJeO0gGQtuBenY3o5AImTv6hxDsUvBMB5akFZfcnJJUSYNONkd2uz/HWGQmEUZsLkd1RTYeamCgc6roMa76Yby1eP1gSqDGZqF3LZ0+uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961419; c=relaxed/simple;
-	bh=WVAL0M1h3P4g9CRuuoW76d0zchqi5xy8/uuQ7KDvTYI=;
+	s=arc-20240116; t=1767963012; c=relaxed/simple;
+	bh=sEUPC6bfssgJQmTWoLIMsK4RMy60bvmMNsAeYNV6c7s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOK93NEmSF5bOx5ElFipaAz6gWlokjfGsP8Y8/zOXjQSaOh8k6zeoDffVzfG4p85AT5kcJdVI+hok4IeNEFsITW2E5QyLhKGNzOldDY+/1s4QawDs/pv8EuCNuxA48ybUeOXFSF3Zchj2d6yoejMFGj5AEUMXAJpqEP1qQhQdAQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JZF2XkPb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 656F7C16AAE;
-	Fri,  9 Jan 2026 12:23:37 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Z/n8eNLlgqABXJenrx75+O+MUm/9C3WeSkFZK9wu03cg+GQwE4ji0co7gNc8ydjjRmxu+QEhhpHCjVmqKDDxcwO/F06bmTft2dK3UUDRSr421OoqCKn9/JV4qXjux1BJhVIqnTzrS+q8CQpG6/Cdz1TqWEaY0fBEOEe9mdjNTCM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sZ+X9L1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1CDC4CEF1;
+	Fri,  9 Jan 2026 12:50:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961417;
-	bh=WVAL0M1h3P4g9CRuuoW76d0zchqi5xy8/uuQ7KDvTYI=;
+	s=korg; t=1767963012;
+	bh=sEUPC6bfssgJQmTWoLIMsK4RMy60bvmMNsAeYNV6c7s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JZF2XkPbL9f2nJrZvCT8JPibGh3lMjvPDbtPRLP6Q2II1N9Bkb6O2QHpTooKmzZOW
-	 tug3acTp3lv7sfN+33RhH1RRQ7+dgHz+ybrNMsilFaakQnNa2wYviJHnP5GzZ0+5ym
-	 qH16Jh+Yf+ZNnTexI+++adL19C0KgVmhZbeJTH8g=
+	b=0sZ+X9L1oLMKPxmXdoPPnzD6wnqljweKzuizObfhpZ17/Z+Ug4R3jK/ZdEJd+EbGK
+	 vyhUC5yz3Hgpi/OP0J7ldwK10DF47j3amwYuDQhvVqj6joOVEilC8kmnutPy+806+v
+	 aLJdATTheIcfKke/6Q4hPIjk75pWMk1EAJI8OLFs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	Sean Christopherson <seanjc@google.com>,
-	Paolo Bonzini <pbonzini@redhat.com>
-Subject: [PATCH 6.6 705/737] KVM: SVM: Fix redundant updates of LBR MSR intercepts
-Date: Fri,  9 Jan 2026 12:44:04 +0100
-Message-ID: <20260109112200.593371613@linuxfoundation.org>
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <jroedel@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 567/634] iommu/mtk_iommu_v1: Convert to platform remove callback returning void
+Date: Fri,  9 Jan 2026 12:44:05 +0100
+Message-ID: <20260109112138.940152581@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,102 +59,67 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-commit 3fa05f96fc08dff5e846c2cc283a249c1bf029a1 upstream.
+[ Upstream commit 85e1049e50da9409678fc247ebad4c019d68041f ]
 
-Don't update the LBR MSR intercept bitmaps if they're already up-to-date,
-as unconditionally updating the intercepts forces KVM to recalculate the
-MSR bitmaps for vmcb02 on every nested VMRUN.  The redundant updates are
-functionally okay; however, they neuter an optimization in Hyper-V
-nested virtualization enlightenments and this manifests as a self-test
-failure.
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
-In particular, Hyper-V lets L1 mark "nested enlightenments" as clean, i.e.
-tell KVM that no changes were made to the MSR bitmap since the last VMRUN.
-The hyperv_svm_test KVM selftest intentionally changes the MSR bitmap
-"without telling KVM about it" to verify that KVM honors the clean hint,
-correctly fails because KVM notices the changed bitmap anyway:
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-  ==== Test Assertion Failure ====
-  x86/hyperv_svm_test.c:120: vmcb->control.exit_code == 0x081
-  pid=193558 tid=193558 errno=4 - Interrupted system call
-     1	0x0000000000411361: assert_on_unhandled_exception at processor.c:659
-     2	0x0000000000406186: _vcpu_run at kvm_util.c:1699
-     3	 (inlined by) vcpu_run at kvm_util.c:1710
-     4	0x0000000000401f2a: main at hyperv_svm_test.c:175
-     5	0x000000000041d0d3: __libc_start_call_main at libc-start.o:?
-     6	0x000000000041f27c: __libc_start_main_impl at ??:?
-     7	0x00000000004021a0: _start at ??:?
-  vmcb->control.exit_code == SVM_EXIT_VMMCALL
-
-Do *not* fix this by skipping svm_hv_vmcb_dirty_nested_enlightenments()
-when svm_set_intercept_for_msr() performs a no-op change.  changes to
-the L0 MSR interception bitmap are only triggered by full CPUID updates
-and MSR filter updates, both of which should be rare.  Changing
-svm_set_intercept_for_msr() risks hiding unintended pessimizations
-like this one, and is actually more complex than this change.
-
-Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251112013017.1836863-1-yosry.ahmed@linux.dev
-[Rewritten commit message based on mailing list discussion. - Paolo]
-Reviewed-by: Sean Christopherson <seanjc@google.com>
-Tested-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Paolo Bonzini <pbonzini@redhat.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Link: https://lore.kernel.org/r/20230321084125.337021-9-u.kleine-koenig@pengutronix.de
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Stable-dep-of: 46207625c9f3 ("iommu/mediatek-v1: fix device leaks on probe()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |    6 ++++++
- arch/x86/kvm/svm/svm.h |    1 +
- 2 files changed, 7 insertions(+)
+ drivers/iommu/mtk_iommu_v1.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -1017,6 +1017,9 @@ static void svm_recalc_lbr_msr_intercept
- 	struct vcpu_svm *svm = to_svm(vcpu);
- 	bool intercept = !(svm->vmcb->control.virt_ext & LBR_CTL_ENABLE_MASK);
- 
-+	if (intercept == svm->lbr_msrs_intercepted)
-+		return;
-+
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHFROMIP,
- 			     !intercept, !intercept);
- 	set_msr_interception(vcpu, svm->msrpm, MSR_IA32_LASTBRANCHTOIP,
-@@ -1029,6 +1032,8 @@ static void svm_recalc_lbr_msr_intercept
- 	if (sev_es_guest(vcpu->kvm))
- 		set_msr_interception(vcpu, svm->msrpm, MSR_IA32_DEBUGCTLMSR,
- 				     !intercept, !intercept);
-+
-+	svm->lbr_msrs_intercepted = intercept;
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -708,7 +708,7 @@ out_clk_unprepare:
+ 	return ret;
  }
  
- static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
-@@ -1473,6 +1478,7 @@ static int svm_vcpu_create(struct kvm_vc
- 	}
+-static int mtk_iommu_v1_remove(struct platform_device *pdev)
++static void mtk_iommu_v1_remove(struct platform_device *pdev)
+ {
+ 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
  
- 	svm->x2avic_msrs_intercepted = true;
-+	svm->lbr_msrs_intercepted = true;
+@@ -718,7 +718,6 @@ static int mtk_iommu_v1_remove(struct pl
+ 	clk_disable_unprepare(data->bclk);
+ 	devm_free_irq(&pdev->dev, data->irq, data);
+ 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
+-	return 0;
+ }
  
- 	svm->vmcb01.ptr = page_address(vmcb01_page);
- 	svm->vmcb01.pa = __sme_set(page_to_pfn(vmcb01_page) << PAGE_SHIFT);
---- a/arch/x86/kvm/svm/svm.h
-+++ b/arch/x86/kvm/svm/svm.h
-@@ -288,6 +288,7 @@ struct vcpu_svm {
- 	bool guest_state_loaded;
+ static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
+@@ -757,7 +756,7 @@ static const struct dev_pm_ops mtk_iommu
  
- 	bool x2avic_msrs_intercepted;
-+	bool lbr_msrs_intercepted;
- 
- 	/* Guest GIF value, used when vGIF is not enabled */
- 	bool guest_gif;
+ static struct platform_driver mtk_iommu_v1_driver = {
+ 	.probe	= mtk_iommu_v1_probe,
+-	.remove	= mtk_iommu_v1_remove,
++	.remove_new = mtk_iommu_v1_remove,
+ 	.driver	= {
+ 		.name = "mtk-iommu-v1",
+ 		.of_match_table = mtk_iommu_v1_of_ids,
 
 
 
