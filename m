@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-206991-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207610-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 61155D09826
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AB118D0A2B0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDDAD30FBFD9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:05 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8560230D66F0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4D4F32F748;
-	Fri,  9 Jan 2026 12:13:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE056358D30;
+	Fri,  9 Jan 2026 12:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EHz170S0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt1pXuVX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F4FB320CB6;
-	Fri,  9 Jan 2026 12:13:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25A4335BCD;
+	Fri,  9 Jan 2026 12:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960783; cv=none; b=ZqNAJ244Vu4RHVWZUceASSscWNaa1M92p6Ssrelr3MJZpFbgsVXYpgdbVKqxx9kxSF2o6owFcUe9veZ0sElwVezpDJ6KxPhMTqzZTXo2CV8OVEGWj4PTQ3oRT4osxIFYOG5zBSLAVf6JBC3M7JEn532hkKIucvmZ0iqtTj82aRg=
+	t=1767962541; cv=none; b=XXdhxD7RLNoxxpNLea6Sc7HBFWIFkZNUhGsw3Yu744erVbWdFxfiFB8KBfn0A6hOIHtQ47u6LS5OmsisYQy2z/EFdAdYHgP9kb7MPpt4FILrbCKWPP7ib9JPJXqaTZHq+AxcfK9OcGtpFxwmHZBG86wHYvDct52GYTBMay6Ti0s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960783; c=relaxed/simple;
-	bh=46w9UfnD2IK+oqzecefTyx5Px8G+ozJ1+rpjf58ODZc=;
+	s=arc-20240116; t=1767962541; c=relaxed/simple;
+	bh=9anle2/v1JjC/zvzCMeDmKkNh6aLzGSsq3fYnaHqbl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZdMLR2G8YkEC8jm3bZqG5PbIfZ2fx6tt62NFsdDFEjldraS6X7rKxFRBe7Y/wcZIEeJfmirluyOi0SVV2s/Zqo4TqmmJRskYXUqeVKH/7w4MtaIcub3ltbrq03EIecM1sX0a8bNS4TpL/if7Ao/zj7N+aP3kSdG6CHexvAby6iU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EHz170S0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C634C4CEF1;
-	Fri,  9 Jan 2026 12:13:02 +0000 (UTC)
+	 MIME-Version; b=bpCUslISXl+UKmSVtPTHeVgR8+PZN7Hy52JRLrZj5HFkpjNtTHKo95YMGeDSPSeHHHMhKO25k3yka5rXtCYrGw4kst1e8pWj9dWQerEG40hV0i9s87CbogerWP3CDDCxOxhCDp6YinZHdl/Pn77ocWrQYJKZhS23t+2RjcnSbsQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt1pXuVX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B404C4CEF1;
+	Fri,  9 Jan 2026 12:42:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960782;
-	bh=46w9UfnD2IK+oqzecefTyx5Px8G+ozJ1+rpjf58ODZc=;
+	s=korg; t=1767962541;
+	bh=9anle2/v1JjC/zvzCMeDmKkNh6aLzGSsq3fYnaHqbl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EHz170S0ROxsJVT5IbTUd//nnkHl1CO7OyJshYvFmU1IFhx2caHaMag7XxfLTPlGQ
-	 blImwAHyzwgT0OUlK6gumgTOYysSdAxtF3Scd1wOY48GLHICNKAQWrCc0UpBEKe/62
-	 UQuSrFYGVoDCONlZ/MwFUIYh5Q2fEuNu6yAlx9OE=
+	b=jt1pXuVXxyKv8nqHpPVOg13g9rgAx5G60EY6XE+d8AIdVuruV4ra93v9zZD/p7Ozs
+	 g5pChTnKLXbTv/2jYnbltMpkvIeT6sN8gRrjxgYgBn7WGMqUfdPfNPdNf/zGHiacIp
+	 xhPV+fJflqFzjJiW510glZuiwDC47z9Qej9RHX+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 523/737] platform/x86: hp-bioscfg: Fix out-of-bounds array access in ACPI package parsing
+	Ma Ke <make24@iscas.ac.cn>,
+	Andi Shyti <andi.shyti@kernel.org>
+Subject: [PATCH 6.1 384/634] i2c: amd-mp2: fix reference leak in MP2 PCI device
 Date: Fri,  9 Jan 2026 12:41:02 +0100
-Message-ID: <20260109112153.674060392@linuxfoundation.org>
+Message-ID: <20260109112131.981008891@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,133 +57,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit e44c42c830b7ab36e3a3a86321c619f24def5206 ]
+commit a6ee6aac66fb394b7f6e6187c73bdcd873f2d139 upstream.
 
-The hp_populate_*_elements_from_package() functions in the hp-bioscfg
-driver contain out-of-bounds array access vulnerabilities.
+In i2c_amd_probe(), amd_mp2_find_device() utilizes
+driver_find_next_device() which internally calls driver_find_device()
+to locate the matching device. driver_find_device() increments the
+reference count of the found device by calling get_device(), but
+amd_mp2_find_device() fails to call put_device() to decrement the
+reference count before returning. This results in a reference count
+leak of the PCI device each time i2c_amd_probe() is executed, which
+may prevent the device from being properly released and cause a memory
+leak.
 
-These functions parse ACPI packages into internal data structures using
-a for loop with index variable 'elem' that iterates through
-enum_obj/integer_obj/order_obj/password_obj/string_obj arrays.
+Found by code review.
 
-When processing multi-element fields like PREREQUISITES and
-ENUM_POSSIBLE_VALUES, these functions read multiple consecutive array
-elements using expressions like 'enum_obj[elem + reqs]' and
-'enum_obj[elem + pos_values]' within nested loops.
-
-The bug is that the bounds check only validated elem, but did not consider
-the additional offset when accessing elem + reqs or elem + pos_values.
-
-The fix changes the bounds check to validate the actual accessed index.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: e6c7b3e15559 ("platform/x86: hp-bioscfg: string-attributes")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB788173D7DD4EA2CB6383683DAFB0A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
+Link: https://lore.kernel.org/r/20251022095402.8846-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c       | 4 ++--
- drivers/platform/x86/hp/hp-bioscfg/int-attributes.c        | 2 +-
- drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c | 5 +++++
- drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c  | 5 +++++
- drivers/platform/x86/hp/hp-bioscfg/string-attributes.c     | 2 +-
- 5 files changed, 14 insertions(+), 4 deletions(-)
+ drivers/i2c/busses/i2c-amd-mp2-pci.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-index a2402d31c146..20de4596e301 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/enum-attributes.c
-@@ -210,7 +210,7 @@ static int hp_populate_enumeration_elements_from_package(union acpi_object *enum
- 		case PREREQUISITES:
- 			size = min_t(u32, enum_data->common.prerequisites_size, MAX_PREREQUISITES_SIZE);
- 			for (reqs = 0; reqs < size; reqs++) {
--				if (elem >= enum_obj_count) {
-+				if (elem + reqs >= enum_obj_count) {
- 					pr_err("Error enum-objects package is too small\n");
- 					return -EINVAL;
- 				}
-@@ -261,7 +261,7 @@ static int hp_populate_enumeration_elements_from_package(union acpi_object *enum
+--- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
++++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
+@@ -449,13 +449,16 @@ struct amd_mp2_dev *amd_mp2_find_device(
+ {
+ 	struct device *dev;
+ 	struct pci_dev *pci_dev;
++	struct amd_mp2_dev *mp2_dev;
  
- 			for (pos_values = 0; pos_values < size && pos_values < MAX_VALUES_SIZE;
- 			     pos_values++) {
--				if (elem >= enum_obj_count) {
-+				if (elem + pos_values >= enum_obj_count) {
- 					pr_err("Error enum-objects package is too small\n");
- 					return -EINVAL;
- 				}
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
-index 86b7ac63fec2..875a807ccb89 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/int-attributes.c
-@@ -228,7 +228,7 @@ static int hp_populate_integer_elements_from_package(union acpi_object *integer_
- 			size = min_t(u32, integer_data->common.prerequisites_size, MAX_PREREQUISITES_SIZE);
+ 	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
+ 	if (!dev)
+ 		return NULL;
  
- 			for (reqs = 0; reqs < size; reqs++) {
--				if (elem >= integer_obj_count) {
-+				if (elem + reqs >= integer_obj_count) {
- 					pr_err("Error elem-objects package is too small\n");
- 					return -EINVAL;
- 				}
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
-index 1ff09dfb7d7e..94a95ee57810 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/order-list-attributes.c
-@@ -220,6 +220,11 @@ static int hp_populate_ordered_list_elements_from_package(union acpi_object *ord
- 			size = min_t(u32, ordered_list_data->common.prerequisites_size,
- 				     MAX_PREREQUISITES_SIZE);
- 			for (reqs = 0; reqs < size; reqs++) {
-+				if (elem + reqs >= order_obj_count) {
-+					pr_err("Error elem-objects package is too small\n");
-+					return -EINVAL;
-+				}
-+
- 				ret = hp_convert_hexstr_to_str(order_obj[elem + reqs].string.pointer,
- 							       order_obj[elem + reqs].string.length,
- 							       &str_value, &value_len);
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
-index 03d0188804ba..6775a7ca74f5 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/passwdobj-attributes.c
-@@ -309,6 +309,11 @@ static int hp_populate_password_elements_from_package(union acpi_object *passwor
- 				     MAX_PREREQUISITES_SIZE);
+ 	pci_dev = to_pci_dev(dev);
+-	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
++	put_device(dev);
++	return mp2_dev;
+ }
+ EXPORT_SYMBOL_GPL(amd_mp2_find_device);
  
- 			for (reqs = 0; reqs < size; reqs++) {
-+				if (elem + reqs >= password_obj_count) {
-+					pr_err("Error elem-objects package is too small\n");
-+					return -EINVAL;
-+				}
-+
- 				ret = hp_convert_hexstr_to_str(password_obj[elem + reqs].string.pointer,
- 							       password_obj[elem + reqs].string.length,
- 							       &str_value, &value_len);
-diff --git a/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c b/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
-index f0c20070094d..5b3eac7f1685 100644
---- a/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
-+++ b/drivers/platform/x86/hp/hp-bioscfg/string-attributes.c
-@@ -219,7 +219,7 @@ static int hp_populate_string_elements_from_package(union acpi_object *string_ob
- 				     MAX_PREREQUISITES_SIZE);
- 
- 			for (reqs = 0; reqs < size; reqs++) {
--				if (elem >= string_obj_count) {
-+				if (elem + reqs >= string_obj_count) {
- 					pr_err("Error elem-objects package is too small\n");
- 					return -EINVAL;
- 				}
--- 
-2.51.0
-
 
 
 
