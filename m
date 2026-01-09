@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-207052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207637-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4BFCD097F8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E544D0A045
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4224B303DF50
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D0C24303D6A1
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DA9E535A95A;
-	Fri,  9 Jan 2026 12:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C08835971B;
+	Fri,  9 Jan 2026 12:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HXI4ouVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MNQBjquU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A4E835A943;
-	Fri,  9 Jan 2026 12:15:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0601933C53A;
+	Fri,  9 Jan 2026 12:43:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960957; cv=none; b=Ktu9pB/ntzP/48YL3k8o7n+Mm1Kd6o9C5wLKf3SZhWdsjcCM0DJzlsDi0cCSNcONZyll2gm3kYTNv0DFGnTQuAckCP8VXAdPEwCi1LRgJuG40uYa70et8Vex6lk64EdD3ISd+jHUQ5VnpBiGGdGL1Ozik0ZpEYJQc9+R5SjUSLY=
+	t=1767962618; cv=none; b=Q6wwR+ioi5W+Bn/0MjsWPVAi5c/QQEgo4dUsL91bnZ1IuNXLU3l75TAqdX/MEAl9eoXSxzD9IONZ+K4h5rd5YUeM/BpWbTW/bB+e1Ers9irDpRWdQjF4a3uVAsCqWaWvvUhMB3bKf3FVvDZDesaPOww/hSIogxfNQXYDc1kDogY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960957; c=relaxed/simple;
-	bh=MLRzOcwe52rOz00AychhaKP/WI1J/UZhOGiTEdjhGR4=;
+	s=arc-20240116; t=1767962618; c=relaxed/simple;
+	bh=j1cVmS1Nq2YKQYCFwkebXLaur0AgeFYONQ9y/MvD+6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K75BlrVw4kyEwpv1iR/4NGTGUmnEEVOPZjQzwfUCVZuDQ5wLwXfA5iX47+fwBo51ssIYIS5DRbAPDjLuhaljgkvj4lgpmtJ3MypxLPOV6UZHGgYeObVCphJTXUOCbQ4RMD3EVpYpC6xo9hSPxoV+YQO9ckX1rkJWjyLhNAd46js=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HXI4ouVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 828E8C4CEF1;
-	Fri,  9 Jan 2026 12:15:56 +0000 (UTC)
+	 MIME-Version; b=ESAqBJpih5POBuk+apwkmIzkIeFgi0V6TSiXWEWwDfu0uTY21MCrWRWU4IzphoncgI1f4uj/5eKN0XqMbqeCg2ykFgNStVnwE8hrWGuULojk6OhsaL17xveTohgyVQW4dU/Ah7rcfaFBTnCNOsHfQq8jhzAa3KQ5d/vug+WT/mw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MNQBjquU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43D5DC4CEF1;
+	Fri,  9 Jan 2026 12:43:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960956;
-	bh=MLRzOcwe52rOz00AychhaKP/WI1J/UZhOGiTEdjhGR4=;
+	s=korg; t=1767962617;
+	bh=j1cVmS1Nq2YKQYCFwkebXLaur0AgeFYONQ9y/MvD+6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HXI4ouVs0ddKy3Qp2vs7QCpI8u2r1tJxJohNIiiGRyAJkB5OMkqwLGAuyPOtK2wfS
-	 YGitJJO1Aa1la5VXCGl06mank3H4fdvrHTQ2kRGGoYEMsMIQZDhUBMmFhwEHleTLlH
-	 hQ72giIhXc4G+PJ/c52iK8Ujv7g0gaO5cstFq95Q=
+	b=MNQBjquUzC7dEb+9TamCQGvwplTxjtFMBD6YNjpHtPO/5k++uv0m8+9tM9A59Ky4a
+	 ozpX91C2Ii4G0YDpeoA2FsTEFUfDIIrRwkhRA9ITwcNPkTC2/xUzgb7d1iQcAgmpLz
+	 /5ILu4x00NyEpfOOKWm8B/jR0lv2DJayNp/3sJn8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hitz <christian.hitz@bbv.ch>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 567/737] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
-Date: Fri,  9 Jan 2026 12:41:46 +0100
-Message-ID: <20260109112155.330979030@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 429/634] ipv4: Fix reference count leak when using error routes with nexthop objects
+Date: Fri,  9 Jan 2026 12:41:47 +0100
+Message-ID: <20260109112133.687359973@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit 5246e3673eeeccb4f5bf4f42375dd495d465ac15 upstream.
+[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
 
-LP5009 supports 9 LED outputs that are grouped into 3 modules.
+When a nexthop object is deleted, it is marked as dead and then
+fib_table_flush() is called to flush all the routes that are using the
+dead nexthop.
 
-Cc: stable@vger.kernel.org
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Link: https://patch.msgid.link/20251022063305.972190-1-christian@klarinett.li
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current logic in fib_table_flush() is to only flush error routes
+(e.g., blackhole) when it is called as part of network namespace
+dismantle (i.e., with flush_all=true). Therefore, error routes are not
+flushed when their nexthop object is deleted:
+
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip route add 198.51.100.1/32 nhid 1
+ # ip route add blackhole 198.51.100.2/32 nhid 1
+ # ip nexthop del id 1
+ # ip route show
+ blackhole 198.51.100.2 nhid 1 dev dummy1
+
+As such, they keep holding a reference on the nexthop object which in
+turn holds a reference on the nexthop device, resulting in a reference
+count leak:
+
+ # ip link del dev dummy1
+ [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
+
+Fix by flushing error routes when their nexthop is marked as dead.
+
+IPv6 does not suffer from this problem.
+
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp50xx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/fib_trie.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -56,7 +56,7 @@
- /* There are 3 LED outputs per bank */
- #define LP50XX_LEDS_PER_MODULE	3
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index fa54b36b241a..4d148d089232 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2059,10 +2059,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 				continue;
+ 			}
  
--#define LP5009_MAX_LED_MODULES	2
-+#define LP5009_MAX_LED_MODULES	3
- #define LP5012_MAX_LED_MODULES	4
- #define LP5018_MAX_LED_MODULES	6
- #define LP5024_MAX_LED_MODULES	8
+-			/* Do not flush error routes if network namespace is
+-			 * not being dismantled
++			/* When not flushing the entire table, skip error
++			 * routes that are not marked for deletion.
+ 			 */
+-			if (!flush_all && fib_props[fa->fa_type].error) {
++			if (!flush_all && fib_props[fa->fa_type].error &&
++			    !(fi->fib_flags & RTNH_F_DEAD)) {
+ 				slen = fa->fa_slen;
+ 				continue;
+ 			}
+-- 
+2.51.0
+
 
 
 
