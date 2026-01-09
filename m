@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 248CDD09F7F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F798D095A2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 267CB3075792
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D7F4302823A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FCA35A95B;
-	Fri,  9 Jan 2026 12:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1E9359F8C;
+	Fri,  9 Jan 2026 12:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udm96323"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BG2K8YS2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D00B33C53A;
-	Fri,  9 Jan 2026 12:36:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 415D81946C8;
+	Fri,  9 Jan 2026 12:07:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962205; cv=none; b=JgduLhhutrkXoM6Tu883JjvzF1CmYvVKvmLdfRAYhBuj+vSqP98291u5qyxaP/ZSmjqATxHKkrhYFKcgyzRqN1sWbnwpmrExBCdJmiuE2cfYOAxet94XYm3lLkbNenTA8CABOSfR6blKO+L0FLimK7QX95X9ZrrFbtp6bc13l4k=
+	t=1767960471; cv=none; b=MW0BHn6iALka3Jm9XuB7P9O93VKMfW6AjNerHmROftb0rTMGOASzcvJqMVnXTPwoTfIJ5DzqnGZ9zaxUm0HZpJwLtmq8bxXrlUWK3VfnMH8h4y+o9RiOtLXAc/Tt92g94D6hpx5/HpgYJ2qfESLEsWGFzNJHcB2FMSOljloEHUQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962205; c=relaxed/simple;
-	bh=2lUnh4ZGIGMVdf2hCvA3HvtuodQD+uts4vOVKeq9Ie8=;
+	s=arc-20240116; t=1767960471; c=relaxed/simple;
+	bh=xRgKlAsuFg04jU9QivvhMhn0F7vWcc2op6TegL9vacs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BNQOxhew7hbE6B9qo+0ps/Iqcv04yLCQTECTsm99SIf6Jwek0b143hA5pExFpQt6R6yS/QulhnRBkjb+9Y8WDceZEy6zGmiDWdQDQSC0SNGv2lT7eabE3YpklhagK+tvLQSY9VU301UNNIyvFxXNod0WK/Ed6iLAdaEH7LroT04=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udm96323; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7E9C16AAE;
-	Fri,  9 Jan 2026 12:36:44 +0000 (UTC)
+	 MIME-Version; b=KgAEyt4R4wb3tDTZCMEQqGP1Pzzg/D9pHbVNBiCVG63cX4vYuWxoQN//RVtO8/KRPrMZlDf72/IT1FPREIMuaK37GmwEyqptWaauSzEtmWTi6NrOj9EMVVHzSJX7quyVz63A8Brr+v6odyo3f+Y7iHXF/4EikDVoY2kFJ/rFgvY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BG2K8YS2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C685EC16AAE;
+	Fri,  9 Jan 2026 12:07:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962205;
-	bh=2lUnh4ZGIGMVdf2hCvA3HvtuodQD+uts4vOVKeq9Ie8=;
+	s=korg; t=1767960471;
+	bh=xRgKlAsuFg04jU9QivvhMhn0F7vWcc2op6TegL9vacs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=udm96323EmCCYLdMSVFwybt3Qk0r7N4ADIbVyNtaID5TKRNly+Pj9BwCF2OJ+PhOD
-	 5lsi3cSKQ1NZO57jeUbHxxm9NfGhva7XiFYnFM4QmepgN+Haa7sRb/fxbSdZRpdzxD
-	 n4ua3ejW6MuQrZlvFqc5TgI9jTNmL8b52rTKmNUo=
+	b=BG2K8YS23Y/gSv2t87vVvuBRSDnttzQhe0HzOFksf5gGupUnEIhTOcNGjiRP7R8ny
+	 jkHVLR7jBe8v3EMYguFcvijTeqkWbxm/IihdnZ6L0KorH8TCAJddyeK4XqtPDw370a
+	 pA2swXkNY6cEayMy3p5jWW//5m0oX64U//nKqi+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-	Juergen Gross <jgross@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 276/634] x86/xen: Fix sparse warning in enlighten_pv.c
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.6 415/737] lib/crypto: x86/blake2s: Fix 32-bit arg treated as 64-bit
 Date: Fri,  9 Jan 2026 12:39:14 +0100
-Message-ID: <20260109112127.918389498@linuxfoundation.org>
+Message-ID: <20260109112149.607702460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +59,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juergen Gross <jgross@suse.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit e5aff444e3a7bdeef5ea796a2099fc3c60a070fa ]
+commit 2f22115709fc7ebcfa40af3367a508fbbd2f71e9 upstream.
 
-The sparse tool issues a warning for arch/x76/xen/enlighten_pv.c:
+In the C code, the 'inc' argument to the assembly functions
+blake2s_compress_ssse3() and blake2s_compress_avx512() is declared with
+type u32, matching blake2s_compress().  The assembly code then reads it
+from the 64-bit %rcx.  However, the ABI doesn't guarantee zero-extension
+to 64 bits, nor do gcc or clang guarantee it.  Therefore, fix these
+functions to read this argument from the 32-bit %ecx.
 
-   arch/x86/xen/enlighten_pv.c:120:9: sparse: sparse: incorrect type
-     in initializer (different address spaces)
-     expected void const [noderef] __percpu *__vpp_verify
-     got bool *
+In theory, this bug could have caused the wrong 'inc' value to be used,
+causing incorrect BLAKE2s hashes.  In practice, probably not: I've fixed
+essentially this same bug in many other assembly files too, but there's
+never been a real report of it having caused a problem.  In x86_64, all
+writes to 32-bit registers are zero-extended to 64 bits.  That results
+in zero-extension in nearly all situations.  I've only been able to
+demonstrate a lack of zero-extension with a somewhat contrived example
+involving truncation, e.g. when the C code has a u64 variable holding
+0x1234567800000040 and passes it as a u32 expecting it to be truncated
+to 0x40 (64).  But that's not what the real code does, of course.
 
-This is due to the percpu variable xen_in_preemptible_hcall being
-exported via EXPORT_SYMBOL_GPL() instead of EXPORT_PER_CPU_SYMBOL_GPL().
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202512140856.Ic6FetG6-lkp@intel.com/
-Fixes: fdfd811ddde3 ("x86/xen: allow privcmd hypercalls to be preempted")
-Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
-Signed-off-by: Juergen Gross <jgross@suse.com>
-Message-ID: <20251215115112.15072-1-jgross@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ed0356eda153 ("crypto: blake2s - x86_64 SIMD implementation")
+Cc: stable@vger.kernel.org
+Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20251102234209.62133-2-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/xen/enlighten_pv.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/crypto/blake2s-core.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
-index 9a54049744bf..772970fce042 100644
---- a/arch/x86/xen/enlighten_pv.c
-+++ b/arch/x86/xen/enlighten_pv.c
-@@ -109,7 +109,7 @@ static int xen_cpu_dead_pv(unsigned int cpu);
-  * calls.
-  */
- DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
--EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
-+EXPORT_PER_CPU_SYMBOL_GPL(xen_in_preemptible_hcall);
- 
- /*
-  * In case of scheduling the flag must be cleared and restored after
--- 
-2.51.0
-
+--- a/arch/x86/crypto/blake2s-core.S
++++ b/arch/x86/crypto/blake2s-core.S
+@@ -54,7 +54,7 @@ SYM_FUNC_START(blake2s_compress_ssse3)
+ 	movdqa		ROT16(%rip),%xmm12
+ 	movdqa		ROR328(%rip),%xmm13
+ 	movdqu		0x20(%rdi),%xmm14
+-	movq		%rcx,%xmm15
++	movd		%ecx,%xmm15
+ 	leaq		SIGMA+0xa0(%rip),%r8
+ 	jmp		.Lbeginofloop
+ 	.align		32
+@@ -179,7 +179,7 @@ SYM_FUNC_START(blake2s_compress_avx512)
+ 	vmovdqu		(%rdi),%xmm0
+ 	vmovdqu		0x10(%rdi),%xmm1
+ 	vmovdqu		0x20(%rdi),%xmm4
+-	vmovq		%rcx,%xmm5
++	vmovd		%ecx,%xmm5
+ 	vmovdqa		IV(%rip),%xmm14
+ 	vmovdqa		IV+16(%rip),%xmm15
+ 	jmp		.Lblake2s_compress_avx512_mainloop
 
 
 
