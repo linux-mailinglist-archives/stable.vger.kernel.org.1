@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-206602-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206604-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3AC9D0924E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8FDD0925D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 43EEC30F081B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:54:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 175A430F317D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:54:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38C5332FA3D;
-	Fri,  9 Jan 2026 11:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C8933B97F;
+	Fri,  9 Jan 2026 11:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IyWFAYUg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fRgmBkgq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE36C33C511;
-	Fri,  9 Jan 2026 11:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCD333290A;
+	Fri,  9 Jan 2026 11:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959673; cv=none; b=KR/g3S9xePXG7rPd7PmCRcWhUvNWtLFk2wd7RphDLMF9LRrGulf9stqWPJPMQD4u4cxuEdHpNE8xgt4ADs211RsFavs0SveqZVimv1EJb8M+efg2Uo6xZqxoEmDdRVFP3Nu5oGYH5hwCQnQUiEcwx18av0+0u266VG+YmQvIegY=
+	t=1767959678; cv=none; b=hAX5AZm13MhUT+I4g4vNO7IwyhCW85hVH5lur8TDKxftQeidbA1LnlppsXakpQjZeUGgxXytYwheXGrxw5/CnJoxyQulzCWCgF2bIAbge4uQHYPfJNXhRL9TMnVw+zvZ0X/MFxYcfVcKMGSgfh+mi2h5fJggPDpKB/2tJiJ7nh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959673; c=relaxed/simple;
-	bh=l1Ykn/WoEesvZzCiQ76LlHUmUsMOhCaUC9BjNhRYClI=;
+	s=arc-20240116; t=1767959678; c=relaxed/simple;
+	bh=fqxPh2IEwfAffS6v3gUpMQodRsi4nko5BYRNbpVPTAI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hz5x+RH64vYabt8AVFVFUPOcPEh0Kha+DrgtKNxlmrcioMACmXSdKGk8YwBfhYbSgjtTUIOI9F5YxyZGm1CzDWZHHUfnb61eFdR5+IJ6jIErwgaHvtFUK4T8MGPpcat1CxKmd6jMSFetNYB24dkuZVuYVO3+HdFRMt6tCWGwrGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IyWFAYUg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 794F7C4CEF1;
-	Fri,  9 Jan 2026 11:54:32 +0000 (UTC)
+	 MIME-Version; b=CQzhDr5fhvQjZvx3U/T2dwfupjZK8ALs+ryLDNcsinBDUdFCylmDS6J3uYKz2vhXxPt1EU6AHNmn7voS8fPCHAZOWHup/fX/R0FmEYgJcsJSqY+5PtjKR/H3RSHAaFVgQtTY+wkGUnx/UOb+GBHU6JV/nKEVolJ37hYZx0TA1O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fRgmBkgq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D953C4CEF1;
+	Fri,  9 Jan 2026 11:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959672;
-	bh=l1Ykn/WoEesvZzCiQ76LlHUmUsMOhCaUC9BjNhRYClI=;
+	s=korg; t=1767959678;
+	bh=fqxPh2IEwfAffS6v3gUpMQodRsi4nko5BYRNbpVPTAI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IyWFAYUgxtRnh9w30iF4voVKMF5EcMc+oh5r8q7L3aS7RCSRYlAEeI3XQkopibhP0
-	 uyjw+SeWwdXgrK3z9U5wiE4Jv9MOR2gDkszaGBCUX5KMxq8zZo/bjEo0ECULF7GWRW
-	 AGOq1QGM5/71tTgDL3BUL8K+Ly2Ix9hk/1zZGU80=
+	b=fRgmBkgqJLdAJts4zY2YycCLeCgGY/p+YrdwJtenhE+CR5/1X43EbEW89t9I2CVXt
+	 5b3uG9MgVYAVPRtwkZp9MnnUGjw/S+r7oG7roS2KrAH7In6Br4ogAVJpZEQjqJ6Z44
+	 kvMDE1I67LZGCPMYMAb32hb511LO2K/g439KbZMg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 134/737] dt-bindings: PCI: amlogic: Fix the register name of the DBI region
-Date: Fri,  9 Jan 2026 12:34:33 +0100
-Message-ID: <20260109112139.042041353@linuxfoundation.org>
+Subject: [PATCH 6.6 135/737] RDMA/rtrs: server: Fix error handling in get_or_create_srv
+Date: Fri,  9 Jan 2026 12:34:34 +0100
+Message-ID: <20260109112139.079507691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,55 +65,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 4813dea9e272ba0a57c50b8d51d440dd8e3ccdd7 ]
+[ Upstream commit a338d6e849ab31f32c08b4fcac11c0c72afbb150 ]
 
-Binding incorrectly specifies the 'DBI' region as 'ELBI'. DBI is a must
-have region for DWC controllers as it has the Root Port and controller
-specific registers, while ELBI has optional registers.
+After device_initialize() is called, use put_device() to release the
+device according to kernel device management rules. While direct
+kfree() work in this case, using put_device() is more correct.
 
-Hence, fix the binding. Though this is an ABI break, this change is needed
-to accurately describe the PCI memory map.
+Found by code review.
 
-Fixes: 7cd210391101 ("dt-bindings: PCI: meson: add DT bindings for Amlogic Meson PCIe controller")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Link: https://patch.msgid.link/20251101-pci-meson-fix-v1-1-c50dcc56ed6a@oss.qualcomm.com
+Fixes: 9cb837480424 ("RDMA/rtrs: server: main functionality")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20251110005158.13394-1-make24@iscas.ac.cn
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/ulp/rtrs/rtrs-srv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-index a5bd90bc0712e..9c3b8e65c42a3 100644
---- a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-+++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-@@ -36,13 +36,13 @@ properties:
+diff --git a/drivers/infiniband/ulp/rtrs/rtrs-srv.c b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+index 84d1654148d76..5dbf315630c1a 100644
+--- a/drivers/infiniband/ulp/rtrs/rtrs-srv.c
++++ b/drivers/infiniband/ulp/rtrs/rtrs-srv.c
+@@ -1443,7 +1443,7 @@ static struct rtrs_srv_sess *get_or_create_srv(struct rtrs_srv_ctx *ctx,
+ 	kfree(srv->chunks);
  
-   reg:
-     items:
--      - description: External local bus interface registers
-+      - description: Data Bus Interface registers
-       - description: Meson designed configuration registers
-       - description: PCIe configuration space
+ err_free_srv:
+-	kfree(srv);
++	put_device(&srv->dev);
+ 	return ERR_PTR(-ENOMEM);
+ }
  
-   reg-names:
-     items:
--      - const: elbi
-+      - const: dbi
-       - const: cfg
-       - const: config
- 
-@@ -113,7 +113,7 @@ examples:
-     pcie: pcie@f9800000 {
-         compatible = "amlogic,axg-pcie", "snps,dw-pcie";
-         reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
--        reg-names = "elbi", "cfg", "config";
-+        reg-names = "dbi", "cfg", "config";
-         interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
-         clocks = <&pclk>, <&clk_port>, <&clk_phy>;
-         clock-names = "pclk", "port", "general";
 -- 
 2.51.0
 
