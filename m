@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-206862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4F44D095E7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FD07D09D48
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A6309310CA5B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7A3F307C4E9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1444B35A92E;
-	Fri,  9 Jan 2026 12:06:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75D79336EDA;
+	Fri,  9 Jan 2026 12:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ql17fNG7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="orQJT6A1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8001359FB0;
-	Fri,  9 Jan 2026 12:06:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DAF31E107;
+	Fri,  9 Jan 2026 12:33:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960411; cv=none; b=RHRHBHcmuUZ57R7KL+tWe1YiIHcqaYUWPJfcaTW84rnpZUb1HfjKpgMZ9GlHhsyDfHm8JpLyc3qs55OPUp5iyuUygmx8rpcO22VHAZj2peG5lGTYxnZeBhL3uL+wmb3zwYIAS/msN6hsA4gPjNtRFuq6z+GPSJvjlDVrzvmveeM=
+	t=1767962029; cv=none; b=stRIPw2+svf09vWBVtnBPnh2tsxqwZaBsQGj7nk4wuGRhISGvAmNWh5EfwjcJX8IGo9ggE6atMPklIzlPw2XjxCipsEdPdpTZ5i4NqMoUR5B4aluqdkz8xEs7BZ5/REbJvAaj/7mWhzhXlIUqZ9+QVIaS+POiPv/fd3iScrQP7o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960411; c=relaxed/simple;
-	bh=ZnfdM2ZNn5OawAqJ5hnTrHDYEkv7uf3lIFGglFSmG9U=;
+	s=arc-20240116; t=1767962029; c=relaxed/simple;
+	bh=Mu9qPlnzTbpA5Dt/ixntFStxqvzS3P4Y4bW/ZXr0CwM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YZqiBfNQirEfrIUJfrxZiJA2EawSEvGNGn2YtRh5bxdaHYVIrAZQe+4OXWmmAspsbZbSt4D8ET03e4GEs8IuLR9wsshY52Li3sxthamCEjWqO/8N0fdFmvwdXFl8xNyfiZnqB/Ml4C4GjWwURmWIpYADRHg2zTJ1ALQdcTP15Hw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ql17fNG7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5201EC4CEF1;
-	Fri,  9 Jan 2026 12:06:51 +0000 (UTC)
+	 MIME-Version; b=Vq/1oH1H9Ju9eQyrS46pQBmWuHak5fdKZ1aBKGkSu8ywL9RDWGEt7rdpEBxh3Fn4x+5jWqfMWVK73jTKDkE7AzUNC3Ul6ViCHUFiTCi6pU4VAA2TxmqtuKAPaEkgiHAvFtfG4XblbTgguD7n1KIY5L0Z1mnC9llOXNULgbxPlms=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=orQJT6A1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BB8C4CEF1;
+	Fri,  9 Jan 2026 12:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960411;
-	bh=ZnfdM2ZNn5OawAqJ5hnTrHDYEkv7uf3lIFGglFSmG9U=;
+	s=korg; t=1767962029;
+	bh=Mu9qPlnzTbpA5Dt/ixntFStxqvzS3P4Y4bW/ZXr0CwM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ql17fNG7T1vbjh6fvTpqAsrnQTeRBEE0DKmbDovJcPKicoj0mOT/fiDs/wKoTb6KP
-	 DlGyRMZMFigHZftFB7KModHua6lEml76KA4syL2qxi8Ur3VpDHNVoDxPRg6EJTownJ
-	 A1hzn0SCZFkrzI1LKlVAbP+VbzeW2IvTCrBMnjlg=
+	b=orQJT6A1urZG4pdqulgwWLMO+WF8e6W1cKyCNFhCYjGmInmky8ARy+RUcQrPs+KnU
+	 RrWKvLloX2icEs8VIoLL0twCjeG4tyS46sbnchHxXxCkUj+zAEgQByvIvsx5Lt3aVV
+	 s5krzeJm4ovMzfeLQr1IsK/R7RIlvuwGSQXGQkG4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 361/737] hwmon: (ibmpex) fix use-after-free in high/low store
+	stable <stable@kernel.org>,
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Subject: [PATCH 6.1 222/634] usb: phy: Initialize struct usb_phy list_head
 Date: Fri,  9 Jan 2026 12:38:20 +0100
-Message-ID: <20260109112147.575881385@linuxfoundation.org>
+Message-ID: <20260109112125.786899310@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +59,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-[ Upstream commit 6946c726c3f4c36f0f049e6f97e88c510b15f65d ]
+commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
 
-The ibmpex_high_low_store() function retrieves driver data using
-dev_get_drvdata() and uses it without validation. This creates a race
-condition where the sysfs callback can be invoked after the data
-structure is freed, leading to use-after-free.
+As part of the registration of a new 'struct usb_phy' with the USB PHY core
+via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
+usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
+order for the new instance x to be stored in phy_list, a static list
+kept internally by the core.
 
-Fix by adding a NULL check after dev_get_drvdata(), and reordering
-operations in the deletion path to prevent TOCTOU.
+After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+when executing either of the registration functions above it is possible
+that usb_add_extcon() fails, leading to either function returning before
+the call to list_add_tail(), leaving x->head uninitialized.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 57c7c3a0fdea ("hwmon: IBM power meter driver")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://lore.kernel.org/r/MEYPR01MB7886BE2F51BFE41875B74B60AFA0A@MEYPR01MB7886.ausprd01.prod.outlook.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Then, when a driver tries to undo the failed registration by calling
+usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
+list_del(&x->head) acting on an uninitialized variable, and thus a
+possible NULL pointer dereference.
+
+Fix this by initializing x->head before usb_add_extcon() has a
+chance to fail. Note that this was not needed before 7d21114dc6a2 since
+list_add_phy() was executed unconditionally and it guaranteed that x->head
+was initialized.
+
+Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/ibmpex.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/usb/phy/phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hwmon/ibmpex.c b/drivers/hwmon/ibmpex.c
-index db066b368918..40fff7e95ea1 100644
---- a/drivers/hwmon/ibmpex.c
-+++ b/drivers/hwmon/ibmpex.c
-@@ -282,6 +282,9 @@ static ssize_t ibmpex_high_low_store(struct device *dev,
- {
- 	struct ibmpex_bmc_data *data = dev_get_drvdata(dev);
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -672,6 +672,8 @@ int usb_add_phy(struct usb_phy *x, enum
+ 		return -EINVAL;
+ 	}
  
-+	if (!data)
-+		return -ENODEV;
++	INIT_LIST_HEAD(&x->head);
 +
- 	ibmpex_reset_high_low_data(data);
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
+@@ -722,6 +724,8 @@ int usb_add_phy_dev(struct usb_phy *x)
+ 		return -EINVAL;
+ 	}
  
- 	return count;
-@@ -514,6 +517,9 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
- {
- 	int i, j;
- 
-+	hwmon_device_unregister(data->hwmon_dev);
-+	dev_set_drvdata(data->bmc_device, NULL);
++	INIT_LIST_HEAD(&x->head);
 +
- 	device_remove_file(data->bmc_device,
- 			   &sensor_dev_attr_reset_high_low.dev_attr);
- 	device_remove_file(data->bmc_device, &sensor_dev_attr_name.dev_attr);
-@@ -527,8 +533,7 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
- 		}
- 
- 	list_del(&data->list);
--	dev_set_drvdata(data->bmc_device, NULL);
--	hwmon_device_unregister(data->hwmon_dev);
-+
- 	ipmi_destroy_user(data->user);
- 	kfree(data->sensors);
- 	kfree(data);
--- 
-2.51.0
-
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
 
 
 
