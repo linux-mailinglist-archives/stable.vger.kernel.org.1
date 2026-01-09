@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-207696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 963C9D0A438
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F783D0A3E6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 44D643075911
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CD6CF307FAAE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6A9135CB6D;
-	Fri,  9 Jan 2026 12:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E05C35CBAA;
+	Fri,  9 Jan 2026 12:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbwimvPu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GJuaWicb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6935E35C181;
-	Fri,  9 Jan 2026 12:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C75815ADB4;
+	Fri,  9 Jan 2026 12:47:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962787; cv=none; b=mu8oehP7EUGmM0S5b0kANHYw3OvNDbvKW+v43JY4uX/Egt0r0EbHC4uL+CPp3O/ZWLaOEuDWvFuVgYxuMGwAfTW0O3hu1V4pWt98RMZRlctnwIvwVv3AFuqrGut3n78+PE081gv4e7D4U/mhelhnZptpVkXKp85lesy+HIMWlSg=
+	t=1767962841; cv=none; b=OHJVP2PwYp8CZUGMEVqRLyoCtsNE38r/R2ejaCiHk71M8rrmv41D1sHpotJuzGOwnrYNc6Dh0A3bciNS53U/Lkfa6r9nv9TFJDZZA5y+2z5gui94E3WFiwUWRY2dd6sInQJhXkdigc8htQnV7W9gD0s+S6JgLf2lRbrUiegGgL8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962787; c=relaxed/simple;
-	bh=CjuhRLC+RtHLka8zWkIbIgRGJDSGYaEN86G2qlRsvuc=;
+	s=arc-20240116; t=1767962841; c=relaxed/simple;
+	bh=urb5GoPVSel5Vzn8AqHco8THmyRjEjWIWFSZjkA/dx8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FaeDnvksUJ7lE0+QnePRteCAjLOInHScD7HGM0Y182RA8EkTypOm5jFrchns6M/7Y8rvJesbb9j3GiaU2dJYS5lI35uFthgyfb4C80qb4I21yZ5qf1fPqMqwjxe9Z2wlzPTtOh0ZhKc9Bl81s9EgZA4d3lLn3bG91niY1OK4cQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbwimvPu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEBAC4CEF1;
-	Fri,  9 Jan 2026 12:46:26 +0000 (UTC)
+	 MIME-Version; b=Va/ILFanRYinoMaNjo0d3zt2j9c5NgkysTNYy5TjpJdCfQks0BnTdVy4S/9hkgWVjUlZZOo22XDf5DRsWjGwKvU2LC/5eBF+2FWkR+1o6yOiwEg8Tg8e+P0+pEQGlHeUlOeGFBSYIfvLFoowDfFnXpNy1iR2/CwEc3x5PQHa0DU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GJuaWicb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BD9BC4CEF1;
+	Fri,  9 Jan 2026 12:47:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962787;
-	bh=CjuhRLC+RtHLka8zWkIbIgRGJDSGYaEN86G2qlRsvuc=;
+	s=korg; t=1767962841;
+	bh=urb5GoPVSel5Vzn8AqHco8THmyRjEjWIWFSZjkA/dx8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbwimvPuLwUIKwRquDBi6xW1IaC5zBmUe68MsmgXkv4tPxbPqfzb9ZcxFAA9051gm
-	 xq82IgmnA+3KuDWgEdGYbiy8BKOcNKtWqiIfvi8wKG7NXbcIHhIiNaeXYhnhWrS3RW
-	 4N2Egn9eojZqKFk+aEj8AjyyqqbAK2HTIXHZl0R0=
+	b=GJuaWicb5eSBk216bAfqCGukvPYZryXmTnJ+dsb229a0jBKgAvzfzdAki0omAynyz
+	 P1e39pK0B284o7McOzi6yxDbhCm5TvgLfhhPvq0r0SdfAeBRF2YatheGiqm/4AKka0
+	 yeZOf/ATjSh3b+ms90/lind+girCg3ygGwlGLtFk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 486/634] media: vpif_display: fix section mismatch
-Date: Fri,  9 Jan 2026 12:42:44 +0100
-Message-ID: <20260109112135.833604529@linuxfoundation.org>
+Subject: [PATCH 6.1 489/634] media: i2c: adv7842: Remove redundant cancel_delayed_work in probe
+Date: Fri,  9 Jan 2026 12:42:47 +0100
+Message-ID: <20260109112135.946137241@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,47 +63,51 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 59ca64bf98e4209df8ace8057d31ae3c80f948cd upstream.
+commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8 upstream.
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init.
+The delayed_work delayed_work_enable_hotplug is initialized with
+INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
+anywhere in the probe function.
 
-Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
-mismatch warning") incorrectly suppressed the modpost warning.
+Calling cancel_delayed_work() on a work that has never been
+scheduled is redundant and unnecessary, as there is no pending
+work to cancel.
 
-Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
-Fixes: e7332e3a552f ("V4L/DVB (12176): davinci/vpif_display: Add VPIF display driver")
-Cc: stable@vger.kernel.org	# 2.6.32
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Remove the redundant cancel_delayed_work() from error handling
+path and adjust the goto label accordingly to simplify the code
+and avoid potential confusion.
+
+Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/ti/davinci/vpif_display.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/i2c/adv7842.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/media/platform/ti/davinci/vpif_display.c
-+++ b/drivers/media/platform/ti/davinci/vpif_display.c
-@@ -1215,7 +1215,7 @@ probe_out:
-  * vpif_probe: This function creates device entries by register itself to the
-  * V4L2 driver and initializes fields of each channel objects
-  */
--static __init int vpif_probe(struct platform_device *pdev)
-+static int vpif_probe(struct platform_device *pdev)
- {
- 	struct vpif_subdev_info *subdevdata;
- 	struct i2c_adapter *i2c_adap;
-@@ -1393,7 +1393,7 @@ static int vpif_resume(struct device *de
+--- a/drivers/media/i2c/adv7842.c
++++ b/drivers/media/i2c/adv7842.c
+@@ -3565,7 +3565,7 @@ static int adv7842_probe(struct i2c_clie
+ 	err = media_entity_pads_init(&sd->entity, ADV7842_PAD_SOURCE + 1,
+ 				     state->pads);
+ 	if (err)
+-		goto err_work_queues;
++		goto err_i2c;
  
- static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
+ 	err = adv7842_core_init(sd);
+ 	if (err)
+@@ -3586,8 +3586,6 @@ static int adv7842_probe(struct i2c_clie
  
--static __refdata struct platform_driver vpif_driver = {
-+static struct platform_driver vpif_driver = {
- 	.driver	= {
- 			.name	= VPIF_DRIVER_NAME,
- 			.pm	= &vpif_pm_ops,
+ err_entity:
+ 	media_entity_cleanup(&sd->entity);
+-err_work_queues:
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
+ err_i2c:
+ 	adv7842_unregister_clients(sd);
+ err_hdl:
 
 
 
