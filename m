@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-206775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA452D095AB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00D48D09C9A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6BC8030A8C07
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A7AD83054655
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154EB359F99;
-	Fri,  9 Jan 2026 12:02:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC49435B12B;
+	Fri,  9 Jan 2026 12:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PIROp9xZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSNBnfcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC25833375D;
-	Fri,  9 Jan 2026 12:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE9033B6E8;
+	Fri,  9 Jan 2026 12:31:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960163; cv=none; b=sWzu/zbUWJa5c3at5GsmcdsosFFl9zawjf839vOo4pPPXUgQmRGElD3lobIWa01lBkHFZt94J/VV5lSkriqhxuBD0QmFf7kV+nZL11wooeKUzICxEgWcLa56EcXssi0oitp/R8KbNqPXrVnKJqUxGY1LyK0VvnU1ALYdFQtImqo=
+	t=1767961882; cv=none; b=kKGZzzIqwqxe3q7cadKRICqRjJLoQP6P7E6N0bXU3YyL57F7KeDZ/f26n0zegAjUb08rS+rIkbbOeg8gTXYuHdKjq7iifrjGJ8yO3vY+Rkk+MD38wiSrHR73whEkdk6LWMp+Mfi1E3xzpzGxXuBOxh3qzdUReKb+GGhn/oON0xI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960163; c=relaxed/simple;
-	bh=RV3+lQoKzSlP8VT3jCVcPpkMkouZHdKpKoYS2oNxEGw=;
+	s=arc-20240116; t=1767961882; c=relaxed/simple;
+	bh=RQtRq9I3sJWw1pDKqOtHhNo1/dEGyHNq0gWM6gjWN3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YFqka8UUUCaiGrnKKQJaPzGLHuhWMPiLn4P8Kcuu7bLkWQq6Nw4z4peaOF6kLinOdBvwj1OSMqPMRTYySqui8m4S407lKq/egAQKzGqxvqc71g1aisdaz8Qmd4YAkBLYPVLl5BBRqDe/EJxbiYz8/tWcObvjNPGTSVInswrX5Ls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PIROp9xZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5214CC4CEF1;
-	Fri,  9 Jan 2026 12:02:43 +0000 (UTC)
+	 MIME-Version; b=kRsDsAi1JzMMgRdrXQ2jsajPA1Cbv6sYilEaXBgQzqMg6zTYXK4qE/GT8Dfu1MZ8J3DUo6gKq01Vn5vPitiMJPgEr8jT3yT0adiEpGD9WYVCOc6CfYjyM9SA7URn/o/O8VS903EKY1gHb5FKaIjGlT+GM+wKjiU+/3OwFaCxOMs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSNBnfcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E513C19421;
+	Fri,  9 Jan 2026 12:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960163;
-	bh=RV3+lQoKzSlP8VT3jCVcPpkMkouZHdKpKoYS2oNxEGw=;
+	s=korg; t=1767961882;
+	bh=RQtRq9I3sJWw1pDKqOtHhNo1/dEGyHNq0gWM6gjWN3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PIROp9xZSo0sY+/RoWd9HaEkXCK1T8jLQMnU0XW+9+fRIHAN6eZGS3h/7MLJXNI3C
-	 6iLBsCPu9oQheoh/Yv8T6zWrTT/7r5PnuU32oVQJzak24IX9BzSijGDwock0V0b91t
-	 vNuVxXC3zZW502jVQ4ZYeXsld8n6AuOR2LHdNJZA=
+	b=zSNBnfcRj7xcB78Ug1rNwS8hzwnyekaRuu0sVP5yjXKxuy+lmbWI05ifEKAYRpqyq
+	 Kvtws+2UgHfnmwPQxygn9V3FgfZ0AXZf9zxJYhz/DHNUutDh/DGUHX+vxV3+R4p10a
+	 vjsCUDljERfqxQdFGUAOhXyw5hWBn8U7ZLBhRNYc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joseph Salisbury <joseph.salisbury@oracle.com>,
-	Adam Li <adamli@os.amperecomputing.com>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Chris Mason <clm@meta.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 307/737] sched/fair: Revert max_newidle_lb_cost bump
+Subject: [PATCH 6.1 168/634] resource: Replace printk(KERN_WARNING) by pr_warn(), printk() by pr_info()
 Date: Fri,  9 Jan 2026 12:37:26 +0100
-Message-ID: <20260109112145.554848375@linuxfoundation.org>
+Message-ID: <20260109112123.769310027@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,79 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d206fbad9328ddb68ebabd7cf7413392acd38081 ]
+[ Upstream commit 2a4e628570d42fcc13a94f1acf25e3cfeaec08f6 ]
 
-Many people reported regressions on their database workloads due to:
+Replace printk(KERN_WARNING) by pr_warn() and printk() by pr_info().
 
-  155213a2aed4 ("sched/fair: Bump sd->max_newidle_lb_cost when newidle balance fails")
+While at it, use %pa for the resource_size_t variables. With that,
+for the sake of consistency, introduce a temporary variable for
+the end address in iomem_map_sanity_check() like it's done in another
+function in the same module.
 
-For instance Adam Li reported a 6% regression on SpecJBB.
-
-Conversely this will regress schbench again; on my machine from 2.22
-Mrps/s down to 2.04 Mrps/s.
-
-Reported-by: Joseph Salisbury <joseph.salisbury@oracle.com>
-Reported-by: Adam Li <adamli@os.amperecomputing.com>
-Reported-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Reported-by: Hazem Mohamed Abuelfotoh <abuehaze@amazon.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://lkml.kernel.org/r/20250626144017.1510594-2-clm@fb.com
-Link: https://lkml.kernel.org/r/006c9df2-b691-47f1-82e6-e233c3f91faf@oracle.com
-Link: https://patch.msgid.link/20251107161739.406147760@infradead.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
+Link: https://lore.kernel.org/r/20221109155618.42276-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/fair.c | 19 +++----------------
- 1 file changed, 3 insertions(+), 16 deletions(-)
+ kernel/resource.c | 17 +++++++----------
+ 1 file changed, 7 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index cf3a51f323e32..38cc72d203c07 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -11722,14 +11722,8 @@ static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
- 		 * next wakeup on the CPU.
--		 *
--		 * sched_balance_newidle() bumps the cost whenever newidle
--		 * balance fails, and we don't want things to grow out of
--		 * control.  Use the sysctl_sched_migration_cost as the upper
--		 * limit, plus a litle extra to avoid off by ones.
+diff --git a/kernel/resource.c b/kernel/resource.c
+index ca0a59f5bc2bd..eb713a984c749 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -930,7 +930,7 @@ void insert_resource_expand_to_fit(struct resource *root, struct resource *new)
+ 		if (conflict->end > new->end)
+ 			new->end = conflict->end;
+ 
+-		printk("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
++		pr_info("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
+ 	}
+ 	write_unlock(&resource_lock);
+ }
+@@ -1325,9 +1325,7 @@ void __release_region(struct resource *parent, resource_size_t start,
+ 
+ 	write_unlock(&resource_lock);
+ 
+-	printk(KERN_WARNING "Trying to free nonexistent resource "
+-		"<%016llx-%016llx>\n", (unsigned long long)start,
+-		(unsigned long long)end);
++	pr_warn("Trying to free nonexistent resource <%pa-%pa>\n", &start, &end);
+ }
+ EXPORT_SYMBOL(__release_region);
+ 
+@@ -1686,6 +1684,7 @@ __setup("reserve=", reserve_setup);
+ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+ {
+ 	struct resource *p = &iomem_resource;
++	resource_size_t end = addr + size - 1;
+ 	int err = 0;
+ 	loff_t l;
+ 
+@@ -1695,12 +1694,12 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+ 		 * We can probably skip the resources without
+ 		 * IORESOURCE_IO attribute?
  		 */
--		sd->max_newidle_lb_cost =
--			min(cost, sysctl_sched_migration_cost + 200);
-+		sd->max_newidle_lb_cost = cost;
- 		sd->last_decay_max_lb_cost = jiffies;
- 	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
+-		if (p->start >= addr + size)
++		if (p->start > end)
+ 			continue;
+ 		if (p->end < addr)
+ 			continue;
+ 		if (PFN_DOWN(p->start) <= PFN_DOWN(addr) &&
+-		    PFN_DOWN(p->end) >= PFN_DOWN(addr + size - 1))
++		    PFN_DOWN(p->end) >= PFN_DOWN(end))
+ 			continue;
  		/*
-@@ -12415,17 +12409,10 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
+ 		 * if a resource is "BUSY", it's not a hardware resource
+@@ -1711,10 +1710,8 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+ 		if (p->flags & IORESOURCE_BUSY)
+ 			continue;
  
- 			t1 = sched_clock_cpu(this_cpu);
- 			domain_cost = t1 - t0;
-+			update_newidle_cost(sd, domain_cost);
-+
- 			curr_cost += domain_cost;
- 			t0 = t1;
--
--			/*
--			 * Failing newidle means it is not effective;
--			 * bump the cost so we end up doing less of it.
--			 */
--			if (!pulled_task)
--				domain_cost = (3 * sd->max_newidle_lb_cost) / 2;
--
--			update_newidle_cost(sd, domain_cost);
- 		}
- 
- 		/*
+-		printk(KERN_WARNING "resource sanity check: requesting [mem %#010llx-%#010llx], which spans more than %s %pR\n",
+-		       (unsigned long long)addr,
+-		       (unsigned long long)(addr + size - 1),
+-		       p->name, p);
++		pr_warn("resource sanity check: requesting [mem %pa-%pa], which spans more than %s %pR\n",
++			&addr, &end, p->name, p);
+ 		err = -1;
+ 		break;
+ 	}
 -- 
 2.51.0
 
