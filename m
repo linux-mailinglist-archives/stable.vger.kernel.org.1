@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-206704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207349-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A827FD093D1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6B80D09E0E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 79CBB30B2826
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:22 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4650030BABE7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1795033C53C;
-	Fri,  9 Jan 2026 11:59:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145DA336EDA;
+	Fri,  9 Jan 2026 12:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vd8+fWU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujNl7n8v"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF1EA33B97F;
-	Fri,  9 Jan 2026 11:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB23359701;
+	Fri,  9 Jan 2026 12:30:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959961; cv=none; b=DGi4ruNwcnpPAvLJ8kedzaA1dMB6+YFg8cUCLA1bfbnKonokw3xHbPaZUSEPmPGqCEfMn3UKO1jMnkS5BnoXNdZMdbvJcw+Rb2BLtMuOjghiDCW0kmFUCFW5/sqvri/Cff72RhoQUjRLhDOpiJ2aks/ALh1ILntJTJmL9oKK2xs=
+	t=1767961803; cv=none; b=oqQ1T59hgkTSspKr+qS3On9HZ00Bl/NXJtbV2j+TYOz4nOtNLjHeq7B5C3KLFzHAPEKwTAArAA8wkJ0JYcqFt9ebD7DiiTXSfnh6rbRRPrINYzzUBLK7fYgpf89/RV7+nNcpGH/VCTCi+VlvAoI1N+gN9NJHpoqJsjkb2CF7AOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959961; c=relaxed/simple;
-	bh=t1OiQLYvfV8S1fbYgrBlnq9yGLNSFT2krUsYS2jazoA=;
+	s=arc-20240116; t=1767961803; c=relaxed/simple;
+	bh=cPvOsCWwLQU8z52gEZTQpvR9TqpsCzRIP89fr8cXGCg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uUIDetGdXrd4WPl9+ksS21vT597kMMpK04z2ngyi5ibpLC7GQwcQr1zMSMwnvVhrMQI1BFz6nhr9enOXSuqTpShqxxEdLyZwZUttEzbE6BOLPD9evHUfnq26VYLCnI2vGVrJCCsLgDRZo8gtundxm61RyJFgo4huXRZPdc8weBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vd8+fWU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50AE0C4CEF1;
-	Fri,  9 Jan 2026 11:59:21 +0000 (UTC)
+	 MIME-Version; b=tB1VxG3HpDm+8CD9787UKDQOl9y8QMdqwNiXnQI2GhGZmJkxMUUckuQt1KohDZYTkkoVdS8YaefueqS/pma93XvXDicHhhodB/x8kQ4OZuCWNaBK4x2/r0dbBDX5cisDzATSx/P5rzHLX0HlK87pI/zvdMNJtW+nyy3C0tTiWuo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujNl7n8v; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE84C4CEF1;
+	Fri,  9 Jan 2026 12:30:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959961;
-	bh=t1OiQLYvfV8S1fbYgrBlnq9yGLNSFT2krUsYS2jazoA=;
+	s=korg; t=1767961802;
+	bh=cPvOsCWwLQU8z52gEZTQpvR9TqpsCzRIP89fr8cXGCg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vd8+fWU7GI1ra+Q+UC7K319Z3kgBBJv15R9UgdpMqc0WOsDenJBQ75W0YXoua/bU7
-	 vWurDw86ny28YvY0w0stbomr1vpaIQ4296ltdHLx1VVLNTALoVIg76ncIau0x44flM
-	 hM9HxEqfkjArH5m6EBC8y9gZ71+Ih6D7eV8C0LPE=
+	b=ujNl7n8vpMM0stQroT87GTzDVegKfC3gpdR3joUheJXmSgY+UvtTw8D1CS8GflvJQ
+	 s1toA1BGfcoO2QNfmwoJtAo3NSeTOKCxgxy02Dyz2X8Fwe4exTADx4AKWRo8vee1ZJ
+	 gjT+PSfcQwJVijXUR5C9Zv0Vjd9zBN2gG1y76R10=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com,
+	Edward Adam Davis <eadavis@qq.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 236/737] resource: Reuse for_each_resource() macro
-Date: Fri,  9 Jan 2026 12:36:15 +0100
-Message-ID: <20260109112142.875951386@linuxfoundation.org>
+Subject: [PATCH 6.1 098/634] ntfs3: init run lock for extend inode
+Date: Fri,  9 Jan 2026 12:36:16 +0100
+Message-ID: <20260109112121.121773933@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,103 +61,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Edward Adam Davis <eadavis@qq.com>
 
-[ Upstream commit 441f0dd8fa035a2c7cfe972047bb905d3be05c1b ]
+[ Upstream commit be99c62ac7e7af514e4b13f83c891a3cccefaa48 ]
 
-We have a few places where for_each_resource() is open coded.
-Replace that by the macro. This makes code easier to read and
-understand.
+After setting the inode mode of $Extend to a regular file, executing the
+truncate system call will enter the do_truncate() routine, causing the
+run_lock uninitialized error reported by syzbot.
 
-With this, compile r_next() only for CONFIG_PROC_FS=y.
+Prior to patch 4e8011ffec79, if the inode mode of $Extend was not set to
+a regular file, the do_truncate() routine would not be entered.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230912165312.402422-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
+Add the run_lock initialization when loading $Extend.
+
+syzbot reported:
+INFO: trying to register non-static key.
+Call Trace:
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ assign_lock_key+0x133/0x150 kernel/locking/lockdep.c:984
+ register_lock_class+0x105/0x320 kernel/locking/lockdep.c:1299
+ __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
+ lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
+ down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
+ ntfs_set_size+0x140/0x200 fs/ntfs3/inode.c:860
+ ntfs_extend+0x1d9/0x970 fs/ntfs3/file.c:387
+ ntfs_setattr+0x2e8/0xbe0 fs/ntfs3/file.c:808
+
+Fixes: 4e8011ffec79 ("ntfs3: pretend $Extend records as regular files")
+Reported-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=bdeb22a4b9a09ab9aa45
+Tested-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
+Signed-off-by: Edward Adam Davis <eadavis@qq.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c | 34 +++++++++++++++++++---------------
- 1 file changed, 19 insertions(+), 15 deletions(-)
+ fs/ntfs3/inode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 6506839f8a811..79fba72cb7d2e 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -77,13 +77,6 @@ static struct resource *next_resource_skip_children(struct resource *p)
- 	     (_p) = (_skip_children) ? next_resource_skip_children(_p) : \
- 				       next_resource(_p))
- 
--static void *r_next(struct seq_file *m, void *v, loff_t *pos)
--{
--	struct resource *p = v;
--	(*pos)++;
--	return (void *)next_resource(p);
--}
--
- #ifdef CONFIG_PROC_FS
- 
- enum { MAX_IORES_LEVEL = 5 };
-@@ -91,14 +84,26 @@ enum { MAX_IORES_LEVEL = 5 };
- static void *r_start(struct seq_file *m, loff_t *pos)
- 	__acquires(resource_lock)
- {
--	struct resource *p = pde_data(file_inode(m->file));
--	loff_t l = 0;
-+	struct resource *root = pde_data(file_inode(m->file));
-+	struct resource *p;
-+	loff_t l = *pos;
-+
- 	read_lock(&resource_lock);
--	for (p = p->child; p && l < *pos; p = r_next(m, p, &l))
--		;
-+	for_each_resource(root, p, false) {
-+		if (l-- == 0)
-+			break;
-+	}
-+
- 	return p;
- }
- 
-+static void *r_next(struct seq_file *m, void *v, loff_t *pos)
-+{
-+	struct resource *p = v;
-+	(*pos)++;
-+	return (void *)next_resource(p);
-+}
-+
- static void r_stop(struct seq_file *m, void *v)
- 	__releases(resource_lock)
- {
-@@ -336,7 +341,7 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
- 
- 	read_lock(&resource_lock);
- 
--	for (p = iomem_resource.child; p; p = next_resource(p)) {
-+	for_each_resource(&iomem_resource, p, false) {
- 		/* If we passed the resource we are looking for, stop */
- 		if (p->start > end) {
- 			p = NULL;
-@@ -1684,13 +1689,12 @@ __setup("reserve=", reserve_setup);
-  */
- int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
- {
--	struct resource *p = &iomem_resource;
- 	resource_size_t end = addr + size - 1;
-+	struct resource *p;
- 	int err = 0;
--	loff_t l;
- 
- 	read_lock(&resource_lock);
--	for (p = p->child; p ; p = r_next(NULL, p, &l)) {
-+	for_each_resource(&iomem_resource, p, false) {
- 		/*
- 		 * We can probably skip the resources without
- 		 * IORESOURCE_IO attribute?
+diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
+index 785aa1673359a..e47eec61f2379 100644
+--- a/fs/ntfs3/inode.c
++++ b/fs/ntfs3/inode.c
+@@ -457,6 +457,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
+ 		/* Records in $Extend are not a files or general directories. */
+ 		inode->i_op = &ntfs_file_inode_operations;
+ 		mode = S_IFREG;
++		init_rwsem(&ni->file.run_lock);
+ 	} else {
+ 		err = -EINVAL;
+ 		goto out;
 -- 
 2.51.0
 
