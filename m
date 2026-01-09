@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207108-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3D1DD098C5
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FDC6D0A1E4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B59E8304922C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7BDE33064EB1
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:46:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DD2B35A952;
-	Fri,  9 Jan 2026 12:18:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC8E135CBC9;
+	Fri,  9 Jan 2026 12:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4jeQAY8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EVhbaYs9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D34FF35B121;
-	Fri,  9 Jan 2026 12:18:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 99B3635C195;
+	Fri,  9 Jan 2026 12:45:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961113; cv=none; b=IVHKaqBBx1ZYQESTjtYWeilNCZzIfHIdGaha7UyQpOGkVz0meXrRKFclcaF/6a3yZ0CK2F/E/nOYfOcSh4p/lc2YI1WHwR0dGd8pKpdR2uGKNce6PG5W40I9P7D8lJ+YuireOj6SfAGzlLiwS0Qr3AcZlqwhma6d+r8o6N4gxng=
+	t=1767962727; cv=none; b=No8vFgQF+wUsWwiAIsK+X/up/RKXynuJNB/8Opt/anrWz4mFgTl4w3EatJEdphoj92btKn1nOPUyjfKfohzH9moV8YGX/rOqg/Ihh5oXCaK4kiaHpqidoDd0wtB5hx191nm63ExPooTl98KX80M7MSdN6pK01Pbn2w6baWo/R1k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961113; c=relaxed/simple;
-	bh=yVWGZDzneT/qNASpI8n2yKDdtVbrXD8f/ycms/5M9yE=;
+	s=arc-20240116; t=1767962727; c=relaxed/simple;
+	bh=9GNkYbypoitebq+3D7l9GiczlPfb43Rcy2OS0UTs48Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QU2wS7wIYcQQQcc/SXnyOuqT9sGb07Sx6yMAM6O9SZWZI4stpU2vqVdl78/sQIv4aNk9iRREnPRO/Mwk10Es8TTBN3Zt0RSe4ylrHWvrskxXrIvB0XpOtZ4MH4JDyJobJQI9RIQoMaCHk9s98AfR5I27fadgPAJaTnWVt+3do1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4jeQAY8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607A6C4CEF1;
-	Fri,  9 Jan 2026 12:18:33 +0000 (UTC)
+	 MIME-Version; b=jk8d7ZTCyQ1J0WITEjGOA3SYLje4y0aAPphtS9eWvRSKNUNoPsEXBW0OuI5YnqClxjpfD2eCDEZXDUy9PNe0GG/pe0C4KZpaeJGHFLhz6W/ujchzZeQUcr68XeqW+5o3TtfJI8n9llu3Q4Nn5JVlZ8irZ2zze0vcl9KpLwASHZE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EVhbaYs9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD241C19421;
+	Fri,  9 Jan 2026 12:45:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961113;
-	bh=yVWGZDzneT/qNASpI8n2yKDdtVbrXD8f/ycms/5M9yE=;
+	s=korg; t=1767962727;
+	bh=9GNkYbypoitebq+3D7l9GiczlPfb43Rcy2OS0UTs48Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J4jeQAY8m2iZkP8GX0/dX7FhYLPfDlZiOU6DC2l/HagQgl9Y1CoRFtPG0fyghZlqp
-	 UaY3MhLNKG0gGf2OMsURWq+gWcTR0qlj0GU+BWBhtcmzPgHJMTQK9uhA0/HDeHe1Lm
-	 guH2d+4CxcF+PDfoJICfxcpnJlxQ2TxnWjB/0AVM=
+	b=EVhbaYs9P4pK61/qQTx3ifJGfhbXZ1sTD3PXxkOkBzgdQ3zFA2a/hsEHin33ZXPg4
+	 pEo85kSLbUG8rm1Gfm3Fivw8Ya/qMGd9f21fLaJ0YlftSOWWG1PrNBRy3QfSL6/MtZ
+	 pnxbbGnLvZ1IYzRB1PZ85aWcZ6weZ/6Oi5l+uvdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Youling Tang <tangyouling@kylinos.cn>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Chenghao Duan <duanchenghao@kylinos.cn>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 606/737] samples/ftrace: Adjust LoongArch register restore order in direct calls
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 467/634] media: rc: st_rc: Fix reset control resource leak
 Date: Fri,  9 Jan 2026 12:42:25 +0100
-Message-ID: <20260109112156.802477086@linuxfoundation.org>
+Message-ID: <20260109112135.121917918@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,122 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chenghao Duan <duanchenghao@kylinos.cn>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit bb85d206be208bbf834883e948125a35ac59993a upstream.
+commit 1240abf4b71f632f0117b056e22488e4d9808938 upstream.
 
-Ensure that in the ftrace direct call logic, the CPU register state
-(with ra = parent return address) is restored to the correct state after
-the execution of the custom trampoline function and before returning to
-the traced function. Additionally, guarantee the correctness of the jump
-logic for jr t0 (traced function address).
+The driver calls reset_control_get_optional_exclusive() but never calls
+reset_control_put() in error paths or in the remove function. This causes
+a resource leak when probe fails after successfully acquiring the reset
+control, or when the driver is unloaded.
 
+Switch to devm_reset_control_get_optional_exclusive() to automatically
+manage the reset control resource.
+
+Fixes: a4b80242d046 ("media: st-rc: explicitly request exclusive reset control")
 Cc: stable@vger.kernel.org
-Fixes: 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
-Reported-by: Youling Tang <tangyouling@kylinos.cn>
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- samples/ftrace/ftrace-direct-modify.c       |    8 ++++----
- samples/ftrace/ftrace-direct-multi-modify.c |    8 ++++----
- samples/ftrace/ftrace-direct-multi.c        |    4 ++--
- samples/ftrace/ftrace-direct-too.c          |    4 ++--
- samples/ftrace/ftrace-direct.c              |    4 ++--
- 5 files changed, 14 insertions(+), 14 deletions(-)
+ drivers/media/rc/st_rc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/samples/ftrace/ftrace-direct-modify.c
-+++ b/samples/ftrace/ftrace-direct-modify.c
-@@ -141,8 +141,8 @@ asm (
- "	st.d	$t0, $sp, 0\n"
- "	st.d	$ra, $sp, 8\n"
- "	bl	my_direct_func1\n"
--"	ld.d	$t0, $sp, 0\n"
--"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$ra, $sp, 0\n"
-+"	ld.d	$t0, $sp, 8\n"
- "	addi.d	$sp, $sp, 16\n"
- "	jr	$t0\n"
- "	.size		my_tramp1, .-my_tramp1\n"
-@@ -154,8 +154,8 @@ asm (
- "	st.d	$t0, $sp, 0\n"
- "	st.d	$ra, $sp, 8\n"
- "	bl	my_direct_func2\n"
--"	ld.d	$t0, $sp, 0\n"
--"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$ra, $sp, 0\n"
-+"	ld.d	$t0, $sp, 8\n"
- "	addi.d	$sp, $sp, 16\n"
- "	jr	$t0\n"
- "	.size		my_tramp2, .-my_tramp2\n"
---- a/samples/ftrace/ftrace-direct-multi-modify.c
-+++ b/samples/ftrace/ftrace-direct-multi-modify.c
-@@ -158,8 +158,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func1\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp1, .-my_tramp1\n"
-@@ -174,8 +174,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func2\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp2, .-my_tramp2\n"
---- a/samples/ftrace/ftrace-direct-multi.c
-+++ b/samples/ftrace/ftrace-direct-multi.c
-@@ -106,8 +106,8 @@ asm (
- "	move	$a0, $t0\n"
- "	bl	my_direct_func\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
---- a/samples/ftrace/ftrace-direct-too.c
-+++ b/samples/ftrace/ftrace-direct-too.c
-@@ -115,8 +115,8 @@ asm (
- "	ld.d	$a0, $sp, 0\n"
- "	ld.d	$a1, $sp, 8\n"
- "	ld.d	$a2, $sp, 16\n"
--"	ld.d	$t0, $sp, 24\n"
--"	ld.d	$ra, $sp, 32\n"
-+"	ld.d	$ra, $sp, 24\n"
-+"	ld.d	$t0, $sp, 32\n"
- "	addi.d	$sp, $sp, 48\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
---- a/samples/ftrace/ftrace-direct.c
-+++ b/samples/ftrace/ftrace-direct.c
-@@ -100,8 +100,8 @@ asm (
- "	st.d	$ra, $sp, 16\n"
- "	bl	my_direct_func\n"
- "	ld.d	$a0, $sp, 0\n"
--"	ld.d	$t0, $sp, 8\n"
--"	ld.d	$ra, $sp, 16\n"
-+"	ld.d	$ra, $sp, 8\n"
-+"	ld.d	$t0, $sp, 16\n"
- "	addi.d	$sp, $sp, 32\n"
- "	jr	$t0\n"
- "	.size		my_tramp, .-my_tramp\n"
+--- a/drivers/media/rc/st_rc.c
++++ b/drivers/media/rc/st_rc.c
+@@ -284,7 +284,7 @@ static int st_rc_probe(struct platform_d
+ 	else
+ 		rc_dev->rx_base = rc_dev->base;
+ 
+-	rc_dev->rstc = reset_control_get_optional_exclusive(dev, NULL);
++	rc_dev->rstc = devm_reset_control_get_optional_exclusive(dev, NULL);
+ 	if (IS_ERR(rc_dev->rstc)) {
+ 		ret = PTR_ERR(rc_dev->rstc);
+ 		goto err;
 
 
 
