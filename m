@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206957-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5194BD098A7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF8F9D09F73
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 24E2230F1598
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1DD653032BA4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C55F53346AF;
-	Fri,  9 Jan 2026 12:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FE5359703;
+	Fri,  9 Jan 2026 12:41:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g/blZzwc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbbZgGIg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 885E223ED5B;
-	Fri,  9 Jan 2026 12:11:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D190E35971B;
+	Fri,  9 Jan 2026 12:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960686; cv=none; b=jwJlT9La0Ejp8CLFOUj0dXtTTzDA/oc4SRaR4k25GjzVbBuAFbzBuEPHZh5Rtjndm7IhQiCN2KOtbCDzbY07YzqVz+HQ1rwWO7cfSyT7zDqQAwvXvjmRZXtbExKi76o9gdY4oKWgpjdwQxSAupKl95AFU41gQqybmbXbmQ/qGwM=
+	t=1767962490; cv=none; b=dFxC7QkDmrsZouPhIJY42wHXAgGrfdKok9UPze7cn6ghcfQZpVqJgKB+eK58jKhgOjyFdFuCYRpzgoiLMw3zkOVdjUd2fBStsifUDeUKWM6j+zDrLqOoowgxpgOhAHOZvGoJVXtf+IxEmG6o05tnmDDFoLYM3siQZ2DqHdWEbF8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960686; c=relaxed/simple;
-	bh=OMjRsb6yrLYg7LqI4jdwyTXI3JrJrnc0IlSw/XP9mTw=;
+	s=arc-20240116; t=1767962490; c=relaxed/simple;
+	bh=FsGc6PCrZR9tf6K6aerUQwG7pSh47R0dYHZdV8/HcUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fgwHOd+EJQn4LpJ/xc08iMveQNAQYovlr+YqOs+UXNt6BFuLPlrdeYs7nr3eXSpSLeWFVTRWzb12jQw5GHr9KPYrfqk9UWqltujqYgPnWitbqwVm96EBLQucQSr1TyTTOQ5uEv5UXeud8SS9oELTHiqMxgbcX4pG6mBipNtE2v0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g/blZzwc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1EC2C4CEF1;
-	Fri,  9 Jan 2026 12:11:25 +0000 (UTC)
+	 MIME-Version; b=pAGxaaPPg1vjHM0j9gS4kXtXizP+ugN4Dce6ku8ldKF4g1PpMST0WI3DUtUXathnX0QjjFI1Tlq7tXROenefkiVSlPKLwLIzF9ZCWtvupwWHD8lh1YP0uM2629cIR0KhhWp3dopVoJgfTrswcxbNaVWAFyYuZMvC2I1188JNMUA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbbZgGIg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE55C4CEF1;
+	Fri,  9 Jan 2026 12:41:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960686;
-	bh=OMjRsb6yrLYg7LqI4jdwyTXI3JrJrnc0IlSw/XP9mTw=;
+	s=korg; t=1767962490;
+	bh=FsGc6PCrZR9tf6K6aerUQwG7pSh47R0dYHZdV8/HcUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g/blZzwc21e0CbtRrf5Tpb6gduF98cLFhLRl52m8aP2ShpOgpqrzEpCxOI2aZVGs1
-	 c/U8RrfPbjOqBF8wHPYPKHJyAiNtamzOo8sb1qQ6lMeopeE3zU9waHSsNETOu6fy3+
-	 PaW7omfZJBpqjg+A3zjhmMnb+gYqPOlkaF3k7crU=
+	b=LbbZgGIgvJasQ7YguyWtxj7RfERHm6T6NbsEOebJ8nN6iw6xnvHTCpLYryKkdz2bJ
+	 7VkAv5L847ont1gdpFp7n1ZKs5z2gvVX0pUpcxdBOwL43ZOsNAAxdLNU2vCEIyr2DJ
+	 nY8IVCd9rpbmn2EkhNQqzHj4wH+vAcTkcs2MolNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.6 488/737] crypto: caam - Add check for kcalloc() in test_len()
-Date: Fri,  9 Jan 2026 12:40:27 +0100
-Message-ID: <20260109112152.344961451@linuxfoundation.org>
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>
+Subject: [PATCH 6.1 350/634] f2fs: fix return value of f2fs_recover_fsync_data()
+Date: Fri,  9 Jan 2026 12:40:28 +0100
+Message-ID: <20260109112130.694166016@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +60,85 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Chao Yu <chao@kernel.org>
 
-commit 7cf6e0b69b0d90ab042163e5bbddda0dfcf8b6a7 upstream.
+commit 01fba45deaddcce0d0b01c411435d1acf6feab7b upstream.
 
-As kcalloc() may fail, check its return value to avoid a NULL pointer
-dereference when passing the buffer to rng->read(). On allocation
-failure, log the error and return since test_len() returns void.
+With below scripts, it will trigger panic in f2fs:
 
-Fixes: 2be0d806e25e ("crypto: caam - add a test for the RNG")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+mkfs.f2fs -f /dev/vdd
+mount /dev/vdd /mnt/f2fs
+touch /mnt/f2fs/foo
+sync
+echo 111 >> /mnt/f2fs/foo
+f2fs_io fsync /mnt/f2fs/foo
+f2fs_io shutdown 2 /mnt/f2fs
+umount /mnt/f2fs
+mount -o ro,norecovery /dev/vdd /mnt/f2fs
+or
+mount -o ro,disable_roll_forward /dev/vdd /mnt/f2fs
+
+F2FS-fs (vdd): f2fs_recover_fsync_data: recovery fsync data, check_only: 0
+F2FS-fs (vdd): Mounted with checkpoint version = 7f5c361f
+F2FS-fs (vdd): Stopped filesystem due to reason: 0
+F2FS-fs (vdd): f2fs_recover_fsync_data: recovery fsync data, check_only: 1
+Filesystem f2fs get_tree() didn't set fc->root, returned 1
+------------[ cut here ]------------
+kernel BUG at fs/super.c:1761!
+Oops: invalid opcode: 0000 [#1] SMP PTI
+CPU: 3 UID: 0 PID: 722 Comm: mount Not tainted 6.18.0-rc2+ #721 PREEMPT(voluntary)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:vfs_get_tree.cold+0x18/0x1a
+Call Trace:
+ <TASK>
+ fc_mount+0x13/0xa0
+ path_mount+0x34e/0xc50
+ __x64_sys_mount+0x121/0x150
+ do_syscall_64+0x84/0x800
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+RIP: 0033:0x7fa6cc126cfe
+
+The root cause is we missed to handle error number returned from
+f2fs_recover_fsync_data() when mounting image w/ ro,norecovery or
+ro,disable_roll_forward mount option, result in returning a positive
+error number to vfs_get_tree(), fix it.
+
+Cc: stable@kernel.org
+Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/caam/caamrng.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/super.c |   14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/crypto/caam/caamrng.c b/drivers/crypto/caam/caamrng.c
-index b3d14a7f4dd1..0eb43c862516 100644
---- a/drivers/crypto/caam/caamrng.c
-+++ b/drivers/crypto/caam/caamrng.c
-@@ -181,7 +181,9 @@ static inline void test_len(struct hwrng *rng, size_t len, bool wait)
- 	struct device *dev = ctx->ctrldev;
- 
- 	buf = kcalloc(CAAM_RNG_MAX_FIFO_STORE_SIZE, sizeof(u8), GFP_KERNEL);
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -4497,11 +4497,15 @@ try_onemore:
+ 		}
+ 	} else {
+ 		err = f2fs_recover_fsync_data(sbi, true);
 -
-+	if (!buf) {
-+		return;
-+	}
- 	while (len > 0) {
- 		read_len = rng->read(rng, buf, len, wait);
+-		if (!f2fs_readonly(sb) && err > 0) {
+-			err = -EINVAL;
+-			f2fs_err(sbi, "Need to recover fsync data");
+-			goto free_meta;
++		if (err > 0) {
++			if (!f2fs_readonly(sb)) {
++				f2fs_err(sbi, "Need to recover fsync data");
++				err = -EINVAL;
++				goto free_meta;
++			} else {
++				f2fs_info(sbi, "drop all fsynced data");
++				err = 0;
++			}
+ 		}
+ 	}
  
--- 
-2.52.0
-
 
 
 
