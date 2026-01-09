@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206804-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40B69D09447
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9322FD09CBB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CB6BB302A134
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9382F3017667
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D350359F99;
-	Fri,  9 Jan 2026 12:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BDE335A95B;
+	Fri,  9 Jan 2026 12:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlTXQoV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AH0+hSsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C133CE9A;
-	Fri,  9 Jan 2026 12:04:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56E033372B;
+	Fri,  9 Jan 2026 12:31:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960246; cv=none; b=MjCjg5NjBJcDHTLLtjRglxq6Jvb/n+m9EOHxArNvp+UNChyTxXNMiwxjYxo/eeYNfZGMih8e9CBd9pyqk/RKrbykterVBLcdXk0EPbbTUP4jZpVha2Nni2PkWwg/tps9mlqNS87IZXtJ61Ga6SaWoDiRMkVXdBxgNT1iQkBSwdo=
+	t=1767961913; cv=none; b=OI811tIQjrXF1qP57t8qV+kETuqgTq4EebnoOs8G5j3eGQALcJAWutioM+uriKnMi1mKSH2IeGDexz6ZciOeysCN3SLGepOgoALraYAPVPV1xjXg2jd12hfGuZAR+fv2NQufJ0T95NaTXP8UEk8p1Ye7EquNGovl4F1OkNYpBiY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960246; c=relaxed/simple;
-	bh=D1LB8D3tCaFC+lf+AZwbCDX3DOFADtVNXtP53j2pPCY=;
+	s=arc-20240116; t=1767961913; c=relaxed/simple;
+	bh=z1yHUMVoZm+JVs2V0IKff+/PMGsKbrzmcFoTHF8Xjug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KtjZRaRJAAdBcuBsaofV2eVR305WlCfNDQgbqrTw9lmsWUx//Istb2iNmWj9+7qOeQFyRDdPWDKzA6cgIgazlUBmvCset6sw221RasCpr1EEvFfSqnx+fqL3k6sWpPovGtiD4Q8iWsiZnBFULWS3zBMNC57BmCIrsn0Y+92KBH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlTXQoV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B759C4CEF1;
-	Fri,  9 Jan 2026 12:04:05 +0000 (UTC)
+	 MIME-Version; b=Z4ewm8aI5aV+Gu9nOU9eU2AbIrPJ2RAAtf5k6HprHAi49sPsipmWM7kgCnJ2WCosxCG2wKtPMOu9Pwvd25Vf4npE7Zfz9AdfvYyvxled5X7qNq/Vrs1heI5kOt1PHJtbY+6skM82fMqFqiOszP6Q/oHVNE7W//vkG7N83mRIESg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AH0+hSsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 527B1C4CEF1;
+	Fri,  9 Jan 2026 12:31:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960245;
-	bh=D1LB8D3tCaFC+lf+AZwbCDX3DOFADtVNXtP53j2pPCY=;
+	s=korg; t=1767961913;
+	bh=z1yHUMVoZm+JVs2V0IKff+/PMGsKbrzmcFoTHF8Xjug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JlTXQoV2oIrKj59NF4l/hyEXO5+Qdg8HDdXexNQMBLjTu5qrnupFGP8+96Gmr8UT+
-	 eE6JDkdYBCj6JWZrVf4nyZ2uWCH5JbXielNRB6et/MK8Tpp79qufGkIERrRsitbEug
-	 9cuB8Yb4gSTBZt1rTTBoqLBj8XCD+B5343auPzHQ=
+	b=AH0+hSsLlHtiL5QXVnHXonzdYmlMNuevSTJzP3/zY85O2/LuAcKUMdEcQlbXpCvXN
+	 S5FyEV/fkEJWmMWG89rHtZgKF6NdMrxLuoHSCbPA8yivN5pC8k4ZrNqMdDHlyHtXDg
+	 bhbx/C+7aMfqgZgj8h1KE2PxH0TJLukNE/FXsU24=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com,
-	Yang Chenzhi <yang.chenzhi@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Li Nan <linan122@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 319/737] hfsplus: fix missing hfs_bnode_get() in __hfs_bnode_create
-Date: Fri,  9 Jan 2026 12:37:38 +0100
-Message-ID: <20260109112146.000961895@linuxfoundation.org>
+Subject: [PATCH 6.1 181/634] md/raid5: fix IO hang when array is broken with IO inflight
+Date: Fri,  9 Jan 2026 12:37:39 +0100
+Message-ID: <20260109112124.252250327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +60,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Chenzhi <yang.chenzhi@vivo.com>
+From: Yu Kuai <yukuai@fnnas.com>
 
-[ Upstream commit 152af114287851583cf7e0abc10129941f19466a ]
+[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
 
-When sync() and link() are called concurrently, both threads may
-enter hfs_bnode_find() without finding the node in the hash table
-and proceed to create it.
+Following test can cause IO hang:
 
-Thread A:
-  hfsplus_write_inode()
-    -> hfsplus_write_system_inode()
-      -> hfs_btree_write()
-        -> hfs_bnode_find(tree, 0)
-          -> __hfs_bnode_create(tree, 0)
+mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
+sleep 5
+echo 1 > /sys/block/sda/device/delete
+echo 1 > /sys/block/sdb/device/delete
+echo 1 > /sys/block/sdc/device/delete
+echo 1 > /sys/block/sdd/device/delete
 
-Thread B:
-  hfsplus_create_cat()
-    -> hfs_brec_insert()
-      -> hfs_bnode_split()
-        -> hfs_bmap_alloc()
-          -> hfs_bnode_find(tree, 0)
-            -> __hfs_bnode_create(tree, 0)
+dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
 
-In this case, thread A creates the bnode, sets refcnt=1, and hashes it.
-Thread B also tries to create the same bnode, notices it has already
-been inserted, drops its own instance, and uses the hashed one without
-getting the node.
+Root cause:
 
-```
+1) all disks removed, however all rdevs in the array is still in sync,
+IO will be issued normally.
 
-	node2 = hfs_bnode_findhash(tree, cnid);
-	if (!node2) {                                 <- Thread A
-		hash = hfs_bnode_hash(cnid);
-		node->next_hash = tree->node_hash[hash];
-		tree->node_hash[hash] = node;
-		tree->node_hash_cnt++;
-	} else {                                      <- Thread B
-		spin_unlock(&tree->hash_lock);
-		kfree(node);
-		wait_event(node2->lock_wq,
-			!test_bit(HFS_BNODE_NEW, &node2->flags));
-		return node2;
-	}
-```
+2) IO failure from sda, and set badblocks failed, sda will be faulty
+and MD_SB_CHANGING_PENDING will be set.
 
-However, hfs_bnode_find() requires each call to take a reference.
-Here both threads end up setting refcnt=1. When they later put the node,
-this triggers:
+3) error recovery try to recover this IO from other disks, IO will be
+issued to sdb, sdc, and sdd.
 
-BUG_ON(!atomic_read(&node->refcnt))
+4) IO failure from sdb, and set badblocks failed again, now array is
+broken and will become read-only.
 
-In this scenario, Thread B in fact finds the node in the hash table
-rather than creating a new one, and thus must take a reference.
+5) IO failure from sdc and sdd, however, stripe can't be handled anymore
+because MD_SB_CHANGING_PENDING is set:
 
-Fix this by calling hfs_bnode_get() when reusing a bnode newly created by
-another thread to ensure the refcount is updated correctly.
+handle_stripe
+ handle_stripe
+ if (test_bit MD_SB_CHANGING_PENDING)
+  set_bit STRIPE_HANDLE
+  goto finish
+  // skip handling failed stripe
 
-A similar bug was fixed in HFS long ago in commit
-a9dc087fd3c4 ("fix missing hfs_bnode_get() in __hfs_bnode_create")
-but the same issue remained in HFS+ until now.
+release_stripe
+ if (test_bit STRIPE_HANDLE)
+  list_add_tail conf->hand_list
 
-Reported-by: syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com
-Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250829093912.611853-1-yang.chenzhi@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+6) later raid5d can't handle failed stripe as well:
+
+raid5d
+ md_check_recovery
+  md_update_sb
+   if (!md_is_rdwr())
+    // can't clear pending bit
+    return
+ if (test_bit MD_SB_CHANGING_PENDING)
+  break;
+  // can't handle failed stripe
+
+Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
+fix this problem by skip this checking for read-only array.
+
+Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
+Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
+Signed-off-by: Yu Kuai <yukuai@fnnas.com>
+Reviewed-by: Li Nan <linan122@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/bnode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/raid5.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index aa095e6fb20e8..c0089849be50e 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -481,6 +481,7 @@ static struct hfs_bnode *__hfs_bnode_create(struct hfs_btree *tree, u32 cnid)
- 		tree->node_hash[hash] = node;
- 		tree->node_hash_cnt++;
- 	} else {
-+		hfs_bnode_get(node2);
- 		spin_unlock(&tree->hash_lock);
- 		kfree(node);
- 		wait_event(node2->lock_wq,
+diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
+index 6e80a439ec456..bce6d0d10a7cd 100644
+--- a/drivers/md/raid5.c
++++ b/drivers/md/raid5.c
+@@ -5044,7 +5044,8 @@ static void handle_stripe(struct stripe_head *sh)
+ 		goto finish;
+ 
+ 	if (s.handle_bad_blocks ||
+-	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
++	    (md_is_rdwr(conf->mddev) &&
++	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
+ 		set_bit(STRIPE_HANDLE, &sh->state);
+ 		goto finish;
+ 	}
+@@ -6802,7 +6803,8 @@ static void raid5d(struct md_thread *thread)
+ 		int batch_size, released;
+ 		unsigned int offset;
+ 
+-		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
++		if (md_is_rdwr(mddev) &&
++		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
+ 			break;
+ 
+ 		released = release_stripe_list(conf, conf->temp_inactive_list);
 -- 
 2.51.0
 
