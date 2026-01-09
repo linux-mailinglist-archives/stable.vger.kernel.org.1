@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADCD0D09353
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55703D09C1C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC54730CD390
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F57930B40FB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DF662DEA6F;
-	Fri,  9 Jan 2026 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E2D329E7B;
+	Fri,  9 Jan 2026 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CHQuBlN/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rhbMnXvJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 61FD8318EFA;
-	Fri,  9 Jan 2026 11:58:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74CE023F417;
+	Fri,  9 Jan 2026 12:28:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959885; cv=none; b=urAJf1alIQEqyxWfCHF7jX4KLm//QozTzrSwKHqO82TbXHiM/PKAMw9h9EsIz5GmiwLkWERDUD/MwqMUW/6Vif6xOkH5+waIdldqD3vcLGw8g1ZYSKp0loS8YtDrmL+uq2pbKMniAxA4Os11zZBQka14zqcN0Nb8UT6XTcYliXE=
+	t=1767961691; cv=none; b=RYQQQzuM4IGXGzOiJG7j5uQvDsbaUwqXMRMReSxlLO+QG79CblXNNwl8OMI+TzF6CLdosNOk0AkSH7gW9sqO70ZVw502HPbXwL5wb0PKmi674LYx5MxedQYHoEPOAEGFak6+bLgCt/bGFOpNo64tSaz4czcqtO42/hkX/kjwSv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959885; c=relaxed/simple;
-	bh=WoSbJNGxvA+tD+/PCPlFXTF4SUxcHB0R9MUHaG0NCzM=;
+	s=arc-20240116; t=1767961691; c=relaxed/simple;
+	bh=yI64JihuP2h9PgVOtQ3BLRljZTkJSflKwOJ/cbJT3oU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PG2U7l4NiRSJkRVssVXC86OJpROrEkscrdhSr2Rpwic49xmOAaoOqxqInw/e/ffZDmocoEsW1kfUhE/0ZkMqk+bOlxH8bm+1KbM49xPbQU1a/pYxsVCWXqUmSgGyqiJDA8nTK6uTXUEeQ2jUAzpBOp6WBV1uEXvS+DnSFCfduuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CHQuBlN/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9CC3C4CEF1;
-	Fri,  9 Jan 2026 11:58:04 +0000 (UTC)
+	 MIME-Version; b=XbqWuCRrVb3n8b7OD/vamqADRTYw2Upi0t3Yyd5TVf81bk0Vy5jeBRWq0/8XebNPFuHPHV4XcFzKp5HcmEh58C/5jeGPsFueANFCRRZ5zu0rasysSHl9cvu6/q45TmppKsGBqI6GAwKBMYiJyrdSHmfjOyLMWQvks6bLGNZM+7I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rhbMnXvJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04ECBC4CEF1;
+	Fri,  9 Jan 2026 12:28:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959885;
-	bh=WoSbJNGxvA+tD+/PCPlFXTF4SUxcHB0R9MUHaG0NCzM=;
+	s=korg; t=1767961691;
+	bh=yI64JihuP2h9PgVOtQ3BLRljZTkJSflKwOJ/cbJT3oU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CHQuBlN/cZaAOuMn/LOMRpOgicQFIslXAD6kI4cTEyN4dcS+Y1xWqGmEFhe4DWVKW
-	 6fkocm80PePLjvSPLHywZ0zV4isgr6KERu7PUTFXQz07BUhyaHnfAfwjiHyEOvAr0t
-	 +OkmrcShWMAkoQU3VqbLgkE3P2na1cMP4G3C3hhI=
+	b=rhbMnXvJiwGB6fPaVAMuAM9yI+GebhiH+dQ33ym7d2QtqFyiRSqDs4pI2RPkBowA9
+	 FHhb9vOAbsaVaeKiwDa9kq59C7Tv4oCwtOG/2P6AQW+Cmu7y6kvUAstOGsiHYNQOBo
+	 rHe6jpS5B2Uhu2QD/eApgOy0x9GSP+5aAzhKn84Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ria Thomas <ria.thomas@morsemicro.com>,
-	Jeff Johnson <jeff.johnson@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 208/737] wifi: ieee80211: correct FILS status codes
-Date: Fri,  9 Jan 2026 12:35:47 +0100
-Message-ID: <20260109112141.823871223@linuxfoundation.org>
+Subject: [PATCH 6.1 070/634] soc: qcom: smem: fix hwspinlock resource leak in probe error paths
+Date: Fri,  9 Jan 2026 12:35:48 +0100
+Message-ID: <20260109112120.078486273@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ria Thomas <ria.thomas@morsemicro.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 24d4da5c2565313c2ad3c43449937a9351a64407 ]
+[ Upstream commit dc5db35073a19f6d3c30bea367b551c1a784ef8f ]
 
-The FILS status codes are set to 108/109, but the IEEE 802.11-2020
-spec defines them as 112/113. Update the enum so it matches the
-specification and keeps the kernel consistent with standard values.
+The hwspinlock acquired via hwspin_lock_request_specific() is not
+released on several error paths. This results in resource leakage
+when probe fails.
 
-Fixes: a3caf7440ded ("cfg80211: Add support for FILS shared key authentication offload")
-Signed-off-by: Ria Thomas <ria.thomas@morsemicro.com>
-Reviewed-by: Jeff Johnson <jeff.johnson@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251124125637.3936154-1-ria.thomas@morsemicro.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Switch to devm_hwspin_lock_request_specific() to automatically
+handle cleanup on probe failure. Remove the manual hwspin_lock_free()
+in qcom_smem_remove() as devm handles it automatically.
+
+Fixes: 20bb6c9de1b7 ("soc: qcom: smem: map only partitions used by local HOST")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20251029022733.255-1-vulab@iscas.ac.cn
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/ieee80211.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/soc/qcom/smem.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/include/linux/ieee80211.h b/include/linux/ieee80211.h
-index 0ff10007eb1a5..38e3e81b880fb 100644
---- a/include/linux/ieee80211.h
-+++ b/include/linux/ieee80211.h
-@@ -3297,8 +3297,8 @@ enum ieee80211_statuscode {
- 	WLAN_STATUS_DENIED_WITH_SUGGESTED_BAND_AND_CHANNEL = 99,
- 	WLAN_STATUS_DENIED_DUE_TO_SPECTRUM_MANAGEMENT = 103,
- 	/* 802.11ai */
--	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 108,
--	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 109,
-+	WLAN_STATUS_FILS_AUTHENTICATION_FAILURE = 112,
-+	WLAN_STATUS_UNKNOWN_AUTHENTICATION_SERVER = 113,
- 	WLAN_STATUS_SAE_HASH_TO_ELEMENT = 126,
- 	WLAN_STATUS_SAE_PK = 127,
- };
+diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+index e4e6c6d69bf55..06958de43f8ca 100644
+--- a/drivers/soc/qcom/smem.c
++++ b/drivers/soc/qcom/smem.c
+@@ -1105,7 +1105,7 @@ static int qcom_smem_probe(struct platform_device *pdev)
+ 		return hwlock_id;
+ 	}
+ 
+-	smem->hwlock = hwspin_lock_request_specific(hwlock_id);
++	smem->hwlock = devm_hwspin_lock_request_specific(&pdev->dev, hwlock_id);
+ 	if (!smem->hwlock)
+ 		return -ENXIO;
+ 
+@@ -1158,7 +1158,6 @@ static int qcom_smem_remove(struct platform_device *pdev)
+ {
+ 	platform_device_unregister(__smem->socinfo);
+ 
+-	hwspin_lock_free(__smem->hwlock);
+ 	__smem = NULL;
+ 
+ 	return 0;
 -- 
 2.51.0
 
