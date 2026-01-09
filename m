@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-207204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206474-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04584D09979
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF26D09002
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEFF03087910
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E9A530B239A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B5E2737EE;
-	Fri,  9 Jan 2026 12:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF8C359F92;
+	Fri,  9 Jan 2026 11:45:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZRP/+wY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryXPTQiw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CDE432AAB5;
-	Fri,  9 Jan 2026 12:23:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9037232AAB5;
+	Fri,  9 Jan 2026 11:45:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961389; cv=none; b=j1vF9XRmpEa+tdloGTcjmpwbsrpYyLRM4lLj0FXACgLPv56NZZV82dOokz33mFlV17q4HpBaPgyJCYKLZMC9EVaQ0LHLGR2EIgaUiY4f9M/iHNnn9j4P663dPAH/lrgZmHykS+/x6IysiU18Na247AR/XNnN37IK2+tfdqN3FHw=
+	t=1767959120; cv=none; b=GsLY58wiZw3wsxziJ4ooPwlu7rgtSuLyeXH1D5i+ITnIpup8UEEuac97u2Ivur3WjdIS5i1kf0L4RqUZ7JjAqEq72poAGpJruRotAb99nb6cPH0EREcZmFrdQSJyfygMv2IVe7eIzlOGK5HC92EE1nBJSS8DpRtPfQew0cq+uBM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961389; c=relaxed/simple;
-	bh=i1kgx993EoJ5tsrKj+xvRm/JHluPmRw/z3fQsQulwVQ=;
+	s=arc-20240116; t=1767959120; c=relaxed/simple;
+	bh=mNId9po01GmHIXiop9AU6MdCcMn/0hkV/pc7QmQ+k44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wfz2zP/R41SCLnWPrdM2rUDK4k/7pKldmDp+Tn1FF/9SuUOVS9NS2kPgnmk/gXCBBC3mK/kWgP0C83WZI0RmrfPJ+u4tJsW0KuVtIRwQ9rhqhkJVQOjqf1xZFoXp6pV3HrQ7qdVJblkPxJO7em2B2WMJuC3pDeZksTA3E3mBNlQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZRP/+wY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCA7CC4CEF1;
-	Fri,  9 Jan 2026 12:23:08 +0000 (UTC)
+	 MIME-Version; b=Z+TREy+ycL0zXrbgG8sblCP+gYfwNRzBPEXgjTR07wipraEQtZRz8XlY7EDzvBZH4k9iz3mBiAMf9W9yuys4jHg5lKQFHDbPCikA+ZU/tBDhL+ZuU5LDoY8uQGtyvu+TGqh+rVoNM+8AJ4r4LjtdhTNaZeMm93BRS9eA9LvDe4k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryXPTQiw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBA4C19422;
+	Fri,  9 Jan 2026 11:45:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961389;
-	bh=i1kgx993EoJ5tsrKj+xvRm/JHluPmRw/z3fQsQulwVQ=;
+	s=korg; t=1767959119;
+	bh=mNId9po01GmHIXiop9AU6MdCcMn/0hkV/pc7QmQ+k44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZRP/+wYUJv2lZzoX8rELb05ci8M29O7wLrcfJIY7zAMfVrfxa7w9QAJPLVAKNyFm
-	 Yai+JanAvKcN3jeYn4oHAwm49uLlGMt7RYMCAwNvigLf3p2YQDg7GPOQrluc8JHx+r
-	 jIwQ6CSrNPq7y3x2vwGUTCN8bXJmwROltpzNTG/Q=
+	b=ryXPTQiwa24APXGLpowa4cpEH1278swiQvHW6Pm72iWLRAm/jiUphU3cYLL3rN8Mb
+	 v+LIC7Q+CaYsvinfEfkdqDw/QbXETERFRBl7ra1fkYrkbV9H/EVDYeAV6uGxE3RW6A
+	 nNLMfHJfI0UfvF09kWdajG9enCv0WD8Oy9sA5deo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.6 708/737] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
+	Zorro Lang <zlang@redhat.com>,
+	Mike Snitzer <snitzer@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.18 5/5] nfs/localio: fix regression due to out-of-order __put_cred
 Date: Fri,  9 Jan 2026 12:44:07 +0100
-Message-ID: <20260109112200.706709012@linuxfoundation.org>
+Message-ID: <20260109111950.550738956@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
+References: <20260109111950.344681501@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit d0706bfd3ee40923c001c6827b786a309e2a8713 upstream.
+commit 3af870aedbff10bfed220e280b57a405e972229f upstream.
 
-Call Trace:
+Commit f2060bdc21d7 ("nfs/localio: add refcounting for each iocb IO
+associated with NFS pgio header") inadvertantly reintroduced the same
+potential for __put_cred() triggering BUG_ON(cred == current->cred) that
+commit 992203a1fba5 ("nfs/localio: restore creds before releasing pageio
+data") fixed.
 
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- strlen+0x93/0xa0 lib/string.c:420
- __fortify_strlen include/linux/fortify-string.h:268 [inline]
- get_kobj_path_length lib/kobject.c:118 [inline]
- kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
- kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
- ib_register_device drivers/infiniband/core/device.c:1472 [inline]
- ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
- rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
- rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
- rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
- nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
- rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
- rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Fix this by saving and restoring the cred around each {read,write}_iter
+call within the respective for loop of nfs_local_call_{read,write} using
+scoped_with_creds().
 
-This problem is similar to the problem that the
-commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
-fixes.
+NOTE: this fix started by first reverting the following commits:
 
-The root cause is: the function ib_device_rename() renames the name with
-lock. But in the function kobject_uevent(), this name is accessed without
-lock protection at the same time.
+ 94afb627dfc2 ("nfs: use credential guards in nfs_local_call_read()")
+ bff3c841f7bd ("nfs: use credential guards in nfs_local_call_write()")
+ 1d18101a644e ("Merge tag 'kernel-6.19-rc1.cred' of git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs")
 
-The solution is to add the lock protection when this name is accessed in
-the function kobject_uevent().
+followed by narrowly fixing the cred lifetime issue by using
+scoped_with_creds().  In doing so, this commit's changes appear more
+extensive than they really are (as evidenced by comparing to v6.18's
+fs/nfs/localio.c).
 
-Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
-Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
-Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Ajay: Modified to apply on v5.10.y-v6.6.y
-        ib_device_notify_register() not present in v5.10.y-v6.6.y,
-        so directly added lock for kobject_uevent() ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Reported-by: Zorro Lang <zlang@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Acked-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Link: https://lore.kernel.org/linux-next/20251205111942.4150b06f@canb.auug.org.au/
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfs/localio.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -1450,8 +1450,13 @@ int ib_register_device(struct ib_device
- 		return ret;
- 	}
- 	dev_set_uevent_suppress(&device->dev, false);
-+
-+	down_read(&devices_rwsem);
-+
- 	/* Mark for userspace that device is ready */
- 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-+
-+	up_read(&devices_rwsem);
- 	ib_device_put(device);
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -623,8 +623,6 @@ static void nfs_local_call_read(struct w
+ 	ssize_t status;
+ 	int n_iters;
  
- 	return 0;
+-	save_cred = override_creds(filp->f_cred);
+-
+ 	n_iters = atomic_read(&iocb->n_iters);
+ 	for (int i = 0; i < n_iters ; i++) {
+ 		if (iocb->iter_is_dio_aligned[i]) {
+@@ -637,7 +635,10 @@ static void nfs_local_call_read(struct w
+ 		} else
+ 			iocb->kiocb.ki_flags &= ~IOCB_DIRECT;
+ 
++		save_cred = override_creds(filp->f_cred);
+ 		status = filp->f_op->read_iter(&iocb->kiocb, &iocb->iters[i]);
++		revert_creds(save_cred);
++
+ 		if (status != -EIOCBQUEUED) {
+ 			if (unlikely(status >= 0 && status < iocb->iters[i].count))
+ 				force_done = true; /* Partial read */
+@@ -647,8 +648,6 @@ static void nfs_local_call_read(struct w
+ 			}
+ 		}
+ 	}
+-
+-	revert_creds(save_cred);
+ }
+ 
+ static int
+@@ -830,7 +829,6 @@ static void nfs_local_call_write(struct
+ 	int n_iters;
+ 
+ 	current->flags |= PF_LOCAL_THROTTLE | PF_MEMALLOC_NOIO;
+-	save_cred = override_creds(filp->f_cred);
+ 
+ 	file_start_write(filp);
+ 	n_iters = atomic_read(&iocb->n_iters);
+@@ -845,7 +843,10 @@ static void nfs_local_call_write(struct
+ 		} else
+ 			iocb->kiocb.ki_flags &= ~IOCB_DIRECT;
+ 
++		save_cred = override_creds(filp->f_cred);
+ 		status = filp->f_op->write_iter(&iocb->kiocb, &iocb->iters[i]);
++		revert_creds(save_cred);
++
+ 		if (status != -EIOCBQUEUED) {
+ 			if (unlikely(status >= 0 && status < iocb->iters[i].count))
+ 				force_done = true; /* Partial write */
+@@ -857,7 +858,6 @@ static void nfs_local_call_write(struct
+ 	}
+ 	file_end_write(filp);
+ 
+-	revert_creds(save_cred);
+ 	current->flags = old_flags;
+ }
+ 
 
 
 
