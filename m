@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-206459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id C99ECD08F9F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:44:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B57D09BA4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DE413008D79
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 41E373022018
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33E4C339B30;
-	Fri,  9 Jan 2026 11:44:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84C8733B6F0;
+	Fri,  9 Jan 2026 12:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAqirCdx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cE9gmqj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DBF33C52A;
-	Fri,  9 Jan 2026 11:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48A0426ED41;
+	Fri,  9 Jan 2026 12:21:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959075; cv=none; b=cdWzWYACWkzXVQ4zqgbE/wqZfomVGXY8eAeDhfQZwOTso1BlcapO3PxdvV1+JK0/9uhn4xQFs792yd2CM63A9pNXuE4QqQM22AUzLMeOGJFhQ0nENt4ZK8jWhSi8h2ZyAP0b+YwgRiXc0Y8CLmVA+znhHHCeuJ+TSQsxfsbYn9U=
+	t=1767961280; cv=none; b=gB1tAyKAibC1eyLKG5ByJDCa5NSCB36+67l5ysrA2eD9WOelr9VD3uGPoHbKPVQ5fuD0jjqBwntRdswk4j3QhAPQ524ktHz70fuOgvU0Pp8SxZaJ0gY5buowR6i0ZXBNvWgEmBJQ5U5pyHjMIrdabOFNJeeqtNWey3dbZYItWSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959075; c=relaxed/simple;
-	bh=h6MnrMzkEqmj49Vob0ca+nD68Yd4gC7YOHR6o8Jei/M=;
+	s=arc-20240116; t=1767961280; c=relaxed/simple;
+	bh=Ch75+uAqu9hlhMxyERCLmvib/Yimd5y6BBpfsjD864I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WSXcd2aZt8p8PDBVRnNvaTyweJlIOaqAmlGFbG6VlIOtfhTb7VQMuFfFxjFRDAYdwflAUxe2xvM+ScSUbnj1iakDEgAe/jSBlKXAuI/8LWAhjfduVab6bBnACn+Py9VkkDDu/G4SOyCEQjypSCufKsnxDZhRrk294nqiJVFjvug=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAqirCdx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D8BC4CEF1;
-	Fri,  9 Jan 2026 11:44:35 +0000 (UTC)
+	 MIME-Version; b=qvI4Qj822Ikmc5Ra5via46+bQtU3tTmId2XTLHrekSBIFHQSVWsnwiQOGlOMIA9oGyuDK344JgF1Np4tQxgpO0amHFY07QJ3RvyNath/jyI3R6urTjpYfy9zUShBMkHFeZiH3YQC2T2oHNX/dyE5nVQw4LIOrYa23dhW3LiB/5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cE9gmqj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C92F9C4CEF1;
+	Fri,  9 Jan 2026 12:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959075;
-	bh=h6MnrMzkEqmj49Vob0ca+nD68Yd4gC7YOHR6o8Jei/M=;
+	s=korg; t=1767961280;
+	bh=Ch75+uAqu9hlhMxyERCLmvib/Yimd5y6BBpfsjD864I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAqirCdxw3kKckYgiTgOVQHMnA76ofkvMuN9aCf1S0947o0Nu0RPrypOHtolADqyZ
-	 BNg++FItvFbKBPcOVThAEDb5c9KgC6H/lV59k5EMEAqA82Ptr218AJfPLDZmfIVVho
-	 SlMPZLugrGXyGiTr2tiZeub7PRGiDPTMUQMIaHQU=
+	b=cE9gmqj1MDEUZ0yeV+Nt3bOx8Ws1hxie0tk389MpWs8x79DSd/BM7iXfPPOFs/Rer
+	 wC5n+xydDKvhXUD1YBPGcGMZeK92IpEBfjExvLFjiGTGwHM/36LOlAUavOb1d2n8RB
+	 sKa//pAwE7dZ4hGVLV6ZG0A70UH6vC7sxGdvThTk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=F6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 6.12 15/16] pwm: stm32: Always program polarity
+	Chao Gao <chao.gao@intel.com>,
+	Dongli Zhang <dongli.zhang@oracle.com>,
+	Sean Christopherson <seanjc@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 697/737] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
 Date: Fri,  9 Jan 2026 12:43:56 +0100
-Message-ID: <20260109111951.995524512@linuxfoundation.org>
+Message-ID: <20260109112200.287875829@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,43 +59,97 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Dongli Zhang <dongli.zhang@oracle.com>
 
-Commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling") triggered a
-regression where PWM polarity changes could be ignored.
+[ Upstream commit 29763138830916f46daaa50e83e7f4f907a3236b ]
 
-stm32_pwm_set_polarity() was skipped due to a mismatch between the
-cached pwm->state.polarity and the actual hardware state, leaving the
-hardware polarity unchanged.
+If an APICv status updated was pended while L2 was active, immediately
+refresh vmcs01's controls instead of pending KVM_REQ_APICV_UPDATE as
+kvm_vcpu_update_apicv() only calls into vendor code if a change is
+necessary.
 
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org # <= 6.12
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Co-developed-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+E.g. if APICv is inhibited, and then activated while L2 is running:
+
+  kvm_vcpu_update_apicv()
+  |
+  -> __kvm_vcpu_update_apicv()
+     |
+     -> apic->apicv_active = true
+      |
+      -> vmx_refresh_apicv_exec_ctrl()
+         |
+         -> vmx->nested.update_vmcs01_apicv_status = true
+          |
+          -> return
+
+Then L2 exits to L1:
+
+  __nested_vmx_vmexit()
+  |
+  -> kvm_make_request(KVM_REQ_APICV_UPDATE)
+
+  vcpu_enter_guest(): KVM_REQ_APICV_UPDATE
+  -> kvm_vcpu_update_apicv()
+     |
+     -> __kvm_vcpu_update_apicv()
+        |
+        -> return // because if (apic->apicv_active == activate)
+
+Reported-by: Chao Gao <chao.gao@intel.com>
+Closes: https://lore.kernel.org/all/aQ2jmnN8wUYVEawF@intel.com
+Fixes: 7c69661e225c ("KVM: nVMX: Defer APICv updates while L2 is active until L1 is active")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
+[sean: write changelog]
+Link: https://patch.msgid.link/20251205231913.441872-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+[ exported vmx_refresh_apicv_exec_ctrl() and added declaration in vmx.h ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/vmx/nested.c |    2 +-
+ arch/x86/kvm/vmx/vmx.c    |    2 +-
+ arch/x86/kvm/vmx/vmx.h    |    1 +
+ 3 files changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_ch
- 		return 0;
+--- a/arch/x86/kvm/vmx/nested.c
++++ b/arch/x86/kvm/vmx/nested.c
+@@ -4908,7 +4908,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *
+ 
+ 	if (vmx->nested.update_vmcs01_apicv_status) {
+ 		vmx->nested.update_vmcs01_apicv_status = false;
+-		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
++		vmx_refresh_apicv_exec_ctrl(vcpu);
  	}
  
--	if (state->polarity != pwm->state.polarity)
--		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-+	stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
+ 	if (vmx->nested.update_vmcs01_hwapic_isr) {
+--- a/arch/x86/kvm/vmx/vmx.c
++++ b/arch/x86/kvm/vmx/vmx.c
+@@ -4451,7 +4451,7 @@ static u32 vmx_vmexit_ctrl(void)
+ 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
+ }
  
- 	ret = stm32_pwm_config(priv, pwm->hwpwm,
- 			       state->duty_cycle, state->period);
+-static void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
+ {
+ 	struct vcpu_vmx *vmx = to_vmx(vcpu);
+ 
+--- a/arch/x86/kvm/vmx/vmx.h
++++ b/arch/x86/kvm/vmx/vmx.h
+@@ -395,6 +395,7 @@ void __vmx_set_segment(struct kvm_vcpu *
+ u64 construct_eptp(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
+ 
+ bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
++void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu);
+ void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
+ bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
+ bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
 
 
 
