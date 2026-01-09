@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207478-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCAE8D09F4C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:02 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A9656D095C6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B8E33133843
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED466311F049
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70133359701;
-	Fri,  9 Jan 2026 12:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AEFA633CE9A;
+	Fri,  9 Jan 2026 12:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrNruMXN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v5nP4vCm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32328352952;
-	Fri,  9 Jan 2026 12:36:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66DE1359F99;
+	Fri,  9 Jan 2026 12:06:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962169; cv=none; b=OJpPKpXEAQbodK8HMdmVL/hZxqjW7zFwLiWfihsv9vL6gE7O+y2ja0T2Q9gJe6cFN7g5QXA7E157Qdl0pqNwwmG4WkVN4lyCN5vEHqOScGBqhxaLZ+wVTsuRUpVnSHHi2EJe4fy5Vv9hXi6Jc4sECx3TveztOz5o36zfv0vm/A0=
+	t=1767960380; cv=none; b=g2TSGIUer48yjuRJ6/Izt6uNFMS244L2ryAvEdSgS56JxC9PG6u3UsUFZBv9rWrcGlM50ukd3FDW4eXOQMYhhSknvOvMkoMwZ/4UxQmr+Awcomx8wZZdfJ8a5V/19IxsF/JCPjS3sn+BAXoD+jP9mQm20+fJ9lupR5jzn2M+6Rk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962169; c=relaxed/simple;
-	bh=lXsqlU4ianSQ91voobz7S62tAkvPdlMcj5XMZN58nVo=;
+	s=arc-20240116; t=1767960380; c=relaxed/simple;
+	bh=AFfVFw6ybepoCeWUd+5NAukNv0ipACKLa5cRmpxgQJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=exFJqG+89cs70vsENn3iONtYWdpZ/JY/xtaHqPJYb9eWgI5mNoEHLEZ1XVstYn9/X53f8OXRjF2EvpsXo2Xuty42CnzWFbiiZJZ39uhC+voz9vXEKfcP1Vv5Zee6ORl9Q3jQVPZFo/4eP56tOGIFOMFLMdPxsioffcVe4GOid1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrNruMXN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0EF7C4CEF1;
-	Fri,  9 Jan 2026 12:36:08 +0000 (UTC)
+	 MIME-Version; b=B1gCtKa6IOOSYsRCqiDkomqUSLJ1X4rrsLOYw4Grxe2FYJ5fIWgD7tMvzO8tKgyvz+RJ0dmNosF79QgJHbm+pY43IS2D9tElblXJmXKpyNYdVu65mQxb1IY5TNXRX3IYJ7QHSqqdFBNIeV8lYVCESSZviFuQ24gNJqv/bnszROA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v5nP4vCm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4936C19421;
+	Fri,  9 Jan 2026 12:06:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962169;
-	bh=lXsqlU4ianSQ91voobz7S62tAkvPdlMcj5XMZN58nVo=;
+	s=korg; t=1767960380;
+	bh=AFfVFw6ybepoCeWUd+5NAukNv0ipACKLa5cRmpxgQJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrNruMXNXAG6KkdUJlqXB6ElqHSrIxuC+ZEP4cJfVONv9Y3KlY1beuXUWF/FHwTXm
-	 PvgxCfGmz+c8d668vfMh+Xi6AYtHAab8ABD6O4Ws4Wuc82rGHEA9ZV2FLEpk/jH8oI
-	 orCHiUOnMmktSYq56C3Vh8JEsO+DYw4XNzrj0q2g=
+	b=v5nP4vCmie1VwL2tVV3XszL7MsUrarVMsqHjEoO/DIGZwuheXyYaiC1fWsYA/L2fp
+	 aO14LrrZ7IDQ+YXZroHKBkXT7LjGNJx08k2jocelnwNvBeLEyYXqxElh4z4suvkLOx
+	 cyVAAL4t5vXgMzLZeY+1y229btN+bUm4k9OiQXac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 243/634] btrfs: scrub: always update btrfs_scrub_progress::last_physical
+Subject: [PATCH 6.6 382/737] ALSA: vxpocket: Fix resource leak in vxpocket_probe error path
 Date: Fri,  9 Jan 2026 12:38:41 +0100
-Message-ID: <20260109112126.686013897@linuxfoundation.org>
+Message-ID: <20260109112148.371705494@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 54df8b80cc63aa0f22c4590cad11542731ed43ff ]
+[ Upstream commit 2a03b40deacbd293ac9aed0f9b11197dad54fe5f ]
 
-[BUG]
-When a scrub failed immediately without any byte scrubbed, the returned
-btrfs_scrub_progress::last_physical will always be 0, even if there is a
-non-zero @start passed into btrfs_scrub_dev() for resume cases.
+When vxpocket_config() fails, vxpocket_probe() returns the error code
+directly without freeing the sound card resources allocated by
+snd_card_new(), which leads to a memory leak.
 
-This will reset the progress and make later scrub resume start from the
-beginning.
+Add proper error handling to free the sound card and clear the
+allocation bit when vxpocket_config() fails.
 
-[CAUSE]
-The function btrfs_scrub_dev() accepts a @progress parameter to copy its
-updated progress to the caller, there are cases where we either don't
-touch progress::last_physical at all or copy 0 into last_physical:
-
-- last_physical not updated at all
-  If some error happened before scrubbing any super block or chunk, we
-  will not copy the progress, leaving the @last_physical untouched.
-
-  E.g. failed to allocate @sctx, scrubbing a missing device or even
-  there is already a running scrub and so on.
-
-  All those cases won't touch @progress at all, resulting the
-  last_physical untouched and will be left as 0 for most cases.
-
-- Error out before scrubbing any bytes
-  In those case we allocated @sctx, and sctx->stat.last_physical is all
-  zero (initialized by kvzalloc()).
-  Unfortunately some critical errors happened during
-  scrub_enumerate_chunks() or scrub_supers() before any stripe is really
-  scrubbed.
-
-  In that case although we will copy sctx->stat back to @progress, since
-  no byte is really scrubbed, last_physical will be overwritten to 0.
-
-[FIX]
-Make sure the parameter @progress always has its @last_physical member
-updated to @start parameter inside btrfs_scrub_dev().
-
-At the very beginning of the function, set @progress->last_physical to
-@start, so that even if we error out without doing progress copying,
-last_physical is still at @start.
-
-Then after we got @sctx allocated, set sctx->stat.last_physical to
-@start, this will make sure even if we didn't get any byte scrubbed, at
-the progress copying stage the @last_physical is not left as zero.
-
-This should resolve the resume progress reset problem.
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251215042652.695-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pcmcia/vx/vxpocket.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index ce8a9c226534f..8cae31edc68d7 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -4294,6 +4294,10 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	unsigned int nofs_flag;
- 	bool need_commit = false;
+diff --git a/sound/pcmcia/vx/vxpocket.c b/sound/pcmcia/vx/vxpocket.c
+index 7a0f0e73ceb2..867a477d53ae 100644
+--- a/sound/pcmcia/vx/vxpocket.c
++++ b/sound/pcmcia/vx/vxpocket.c
+@@ -295,7 +295,13 @@ static int vxpocket_probe(struct pcmcia_device *p_dev)
  
-+	/* Set the basic fallback @last_physical before we got a sctx. */
-+	if (progress)
-+		progress->last_physical = start;
-+
- 	if (btrfs_fs_closing(fs_info))
- 		return -EAGAIN;
+ 	vxp->p_dev = p_dev;
  
-@@ -4312,6 +4316,7 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	sctx = scrub_setup_ctx(fs_info, is_dev_replace);
- 	if (IS_ERR(sctx))
- 		return PTR_ERR(sctx);
-+	sctx->stat.last_physical = start;
+-	return vxpocket_config(p_dev);
++	err = vxpocket_config(p_dev);
++	if (err < 0) {
++		card_alloc &= ~(1 << i);
++		snd_card_free(card);
++		return err;
++	}
++	return 0;
+ }
  
- 	ret = scrub_workers_get(fs_info, is_dev_replace);
- 	if (ret)
+ static void vxpocket_detach(struct pcmcia_device *link)
 -- 
 2.51.0
 
