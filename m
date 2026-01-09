@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-207431-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6FF3D09DC6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:31 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A52ED09617
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 44C07307CED2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A956330FDB58
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A34D358D30;
-	Fri,  9 Jan 2026 12:33:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FBC3359F98;
+	Fri,  9 Jan 2026 12:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5Pl/MkJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACmLDeZS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FA3336EDA;
-	Fri,  9 Jan 2026 12:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E881946C8;
+	Fri,  9 Jan 2026 12:05:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962034; cv=none; b=GaZs6wlB5daA3CgBtfeJoB+/g3L9T9nVgpJdUcsGCIK8WHq516Zn3VKSNrpwcbIvcYkUkHenJparR1YC6xjLiGfw1zr9VHBwbJxQCsYddwYcaRqLjEancL18OQMZRnEfohy7GXAJqw1sYavcRvF8WStuB1RvZ8QrpU+OsaT5fK0=
+	t=1767960323; cv=none; b=CAxx9AzmJLVeFdA9IGJnPpxQltr+S73ciX12tare1IfkBh8EP/3VtYjkDC+a6MGOTK1PhmGSEZXZJIlkQwXnMLXT++/d3JuQDIyD1jtDZiULr6G58/hhdTOK1n1vl/YXhSHvp+J4fqYcEQKcqkgDa0wK3U4Rkq29+I4mkpALlTM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962034; c=relaxed/simple;
-	bh=/NkByLhiYW+D/zIBOBZQ1hUoX3oGDVAkP7Wkb6h0s0Q=;
+	s=arc-20240116; t=1767960323; c=relaxed/simple;
+	bh=bF08xcUAreejH1gEgMm+bTsy5d90siujNZeIQBU4RCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwHTAl5vxBIQJzIi4ziIiF6ejUAJwxds5gt57SeozdZ3m/HEibG8o7OxUx4Uv/Cch861qRURP8M1R7zfbGunHR1BMZ7vMaqR+ioG4uTxE8lVCsIyx5V/qyF3CdQz7h7EiFknMPevCRUHCHvbios1L0tt4+taPY3zoxu/a1ZtwNI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5Pl/MkJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5ACC4CEF1;
-	Fri,  9 Jan 2026 12:33:54 +0000 (UTC)
+	 MIME-Version; b=hrCArwktsiCNJneb8/2XLpYf1bm4qQWeWDFRxfpQbu88vZK9NOk3I+Masp603PLwAv9ePT/nD92E5Q2aXuGMsZH8wpM01owd9OGb/Jt3STi3rEavavbCNSSRb3fpW+5NZuM2XWgsRY6XRZNsETpdpDYrxMoS0SMq+owmbX+Ujkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACmLDeZS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABE17C4CEF1;
+	Fri,  9 Jan 2026 12:05:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962034;
-	bh=/NkByLhiYW+D/zIBOBZQ1hUoX3oGDVAkP7Wkb6h0s0Q=;
+	s=korg; t=1767960323;
+	bh=bF08xcUAreejH1gEgMm+bTsy5d90siujNZeIQBU4RCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i5Pl/MkJfOax57l1kXAC90QoIf1F2YLzR4o6dU4rfhMNbBn3dHtKYVUQ/9PMslUvz
-	 4AXcYc4HoGrkGDZEl0zi88H9oYQvp6cAKNxQz+T/K5Hp2bP8EMSSwvYFy9xr+c7/k8
-	 0j6A4EQZFIkToJ+s6kmb7o4wZbDwmB+XKvP439J4=
+	b=ACmLDeZS5CtNIoz6bRvUZRwgN/+ZHUTtnPUH+nETeFEjZohCGQbyi5Pm419w9aUS1
+	 TmzBb1XRx2VRFdSxZIVfSd4b5nidcEJb2Rbv6vRiAHRk+bgVQa4jUmblt1xweQDIDM
+	 7UJXPY3r8mNnLWbJJ3J1rjLt96LGx2yoxTTuDKKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 224/634] ASoC: fsl_xcvr: get channel status data when PHY is not exists
-Date: Fri,  9 Jan 2026 12:38:22 +0100
-Message-ID: <20260109112125.861394477@linuxfoundation.org>
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Douglas Anderson <dianders@chromium.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Martin Botka <martin.botka@somainline.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 364/737] drm/panel: sony-td4353-jdi: Enable prepare_prev_first
+Date: Fri,  9 Jan 2026 12:38:23 +0100
+Message-ID: <20260109112147.689570949@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Marijn Suijten <marijn.suijten@somainline.org>
 
-commit ca592e20659e0304ebd8f4dabb273da4f9385848 upstream.
+[ Upstream commit 2b973ca48ff3ef1952091c8f988d7796781836c8 ]
 
-There is no PHY for the XCVR module on i.MX93, the channel status needs
-to be obtained from FSL_XCVR_RX_CS_DATA_* registers. And channel status
-acknowledge (CSA) bit should be set once channel status is processed.
+The DSI host must be enabled before our prepare function can run, which
+has to send its init sequence over DSI.  Without enabling the host first
+the panel will not probe.
 
-Fixes: e240b9329a30 ("ASoC: fsl_xcvr: Add support for i.MX93 platform")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20250710030405.3370671-2-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9e15123eca79 ("drm/msm/dsi: Stop unconditionally powering up DSI hosts at modeset")
+Signed-off-by: Marijn Suijten <marijn.suijten@somainline.org>
+Reviewed-by: Douglas Anderson <dianders@chromium.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Martin Botka <martin.botka@somainline.org>
+Signed-off-by: Douglas Anderson <dianders@chromium.org>
+Link: https://patch.msgid.link/20251130-sony-akari-fix-panel-v1-1-1d27c60a55f5@somainline.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_xcvr.c |   20 ++++++++++++++++++++
- 1 file changed, 20 insertions(+)
+ drivers/gpu/drm/panel/panel-sony-td4353-jdi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -1166,6 +1166,26 @@ static irqreturn_t irq0_isr(int irq, voi
- 				/* clear CS control register */
- 				writel_relaxed(0, reg_ctrl);
- 			}
-+		} else {
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_0,
-+				    (u32 *)&xcvr->rx_iec958.status[0]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_1,
-+				    (u32 *)&xcvr->rx_iec958.status[4]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_2,
-+				    (u32 *)&xcvr->rx_iec958.status[8]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_3,
-+				    (u32 *)&xcvr->rx_iec958.status[12]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_4,
-+				    (u32 *)&xcvr->rx_iec958.status[16]);
-+			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_5,
-+				    (u32 *)&xcvr->rx_iec958.status[20]);
-+			for (i = 0; i < 6; i++) {
-+				val = *(u32 *)(xcvr->rx_iec958.status + i * 4);
-+				*(u32 *)(xcvr->rx_iec958.status + i * 4) =
-+					bitrev32(val);
-+			}
-+			regmap_set_bits(xcvr->regmap, FSL_XCVR_RX_DPTH_CTRL,
-+					FSL_XCVR_RX_DPTH_CTRL_CSA);
- 		}
- 	}
- 	if (isr & FSL_XCVR_IRQ_NEW_UD) {
+diff --git a/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c b/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c
+index 1bde2f01786b..e7383a0e3d36 100644
+--- a/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c
++++ b/drivers/gpu/drm/panel/panel-sony-td4353-jdi.c
+@@ -283,6 +283,8 @@ static int sony_td4353_jdi_probe(struct mipi_dsi_device *dsi)
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "Failed to get backlight\n");
+ 
++	ctx->panel.prepare_prev_first = true;
++
+ 	drm_panel_add(&ctx->panel);
+ 
+ 	ret = mipi_dsi_attach(dsi);
+-- 
+2.51.0
+
 
 
 
