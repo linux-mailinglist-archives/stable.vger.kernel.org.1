@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206726-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57EC1D09BA1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D93BD0941F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5F91E301FD99
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EDF930B7173
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39055359708;
-	Fri,  9 Jan 2026 12:29:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACCF359FB0;
+	Fri,  9 Jan 2026 12:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykFL+8Lw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EZZSf9FM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5478306483;
-	Fri,  9 Jan 2026 12:28:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2BE5359FAD;
+	Fri,  9 Jan 2026 12:00:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961740; cv=none; b=JHeQJH7tDyTRJ2SSnLufShe4SF5VqomkFleJ2f+12zYnKhE++o6XsbxG7O0kQzsZFt5DN8DuHqDct3mAsBNBK6ecMTBbZO0RVnzgqiwl/0cjDnVqDorafxcSdcA4SSSmCaY2PQLe1iD/PRN30Y3QUzInjh2hk+jH8Wege7uibGo=
+	t=1767960024; cv=none; b=H6I5aPLy4pcvKlKRopIyIHpTFtWeNqip1oWcd7RN5cfMIScOtIwqMrTnHyzRQYeYlZX6pvW7TP8uf8ckZBwOSWxVzMWINgJq2lpwEd96bza82jm9qcRlOW4cSW2BTeLf5QNvjt/C15B1stYuATt9CJBzVshfPkvNgldwrFTjFV4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961740; c=relaxed/simple;
-	bh=79xUYWUI6rgdd5jOMdCZVzzChM/dydsgg0JC/cKEk+I=;
+	s=arc-20240116; t=1767960024; c=relaxed/simple;
+	bh=7lclaEovQlYU3cUczFlKv1XFrgFY2BcD8WzEiGUtJHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ukz0v977qiocaBCIliaXhTba7uO9B323XInxJwOv2jWvJKCeKj6YbaVXqQX3fyfMVPsdT7BKyRpXalmhZ/lsEAoKCfLHRGyDjwimpqMWBydK+FhZpv3cM9TuslQEcrtBNpr0YNgpNeTWT/DmbOkDKtkD9ZmCl/23j3U4isaRf8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykFL+8Lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E77CC4CEF1;
-	Fri,  9 Jan 2026 12:28:59 +0000 (UTC)
+	 MIME-Version; b=iUMBXeflvl76tNJD1dJ/oxqnlOFw7U0Jj120vAdjkzRN+r1xqOazLrBm1jHAgOHiZN5JsaeCfTNgl0Jak6jp8bSHMuYgVI7E+VeYIy3y1k77Y7BNoZWWOHSidxwN6VRioqa/BJwOlX+oGg9zC2Ot1lWQA3NQdtBMRPLF1+QMf84=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EZZSf9FM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 566C8C4CEF1;
+	Fri,  9 Jan 2026 12:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961739;
-	bh=79xUYWUI6rgdd5jOMdCZVzzChM/dydsgg0JC/cKEk+I=;
+	s=korg; t=1767960024;
+	bh=7lclaEovQlYU3cUczFlKv1XFrgFY2BcD8WzEiGUtJHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykFL+8LwhQk+Jbsvj0qSTU0+H49yqFa0h83XA2YJkf/KJBzStTrtIlNMVfhQv3vpi
-	 17syJjPEW07uGwCE5wap4pthERICeMmBKik46tnHuovKFIyJBJQvskaAwMgrTlMGXp
-	 HjxokxxhTxL/tDy93dKUw4H+A/KjHTE+erHM4xcg=
+	b=EZZSf9FMRSqhNQZv+KwaNaH+g81hWgusYRUmADD+YxjJr4cogAhq0MgiiiKbLXzzM
+	 5s36GAfkyG9Y5MctH6wJMhFzagWza37BFIp+OG+0ql+ZImbiSjLZzMM2Xt5xQluxzB
+	 dy/LeSuwGAQmg7RPa/DbKbmX/4MjdJOZVbDi5pSM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Aiden Lambert <alambert48@gatech.edu>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 119/634] NFSD/blocklayout: Fix minlength check in proc_layoutget
-Date: Fri,  9 Jan 2026 12:36:37 +0100
-Message-ID: <20260109112121.915138704@linuxfoundation.org>
+Subject: [PATCH 6.6 259/737] NFS: Avoid changing nlink when file removes and attribute updates race
+Date: Fri,  9 Jan 2026 12:36:38 +0100
+Message-ID: <20260109112143.734550757@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
+[ Upstream commit bd4928ec799b31c492eb63f9f4a0c1e0bb4bb3f7 ]
 
-The extent returned by the file system may have a smaller offset than
-the segment offset requested by the client. In this case, the minimum
-segment length must be checked against the requested range. Otherwise,
-the client may not be able to continue the read/write operation.
+If a file removal races with another operation that updates its
+attributes, then skip the change to nlink, and just mark the attributes
+as being stale.
 
-Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Reported-by: Aiden Lambert <alambert48@gatech.edu>
+Fixes: 59a707b0d42e ("NFS: Ensure we revalidate the inode correctly after remove or rename")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/nfs/dir.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
-index 59f119cce3dc6..3a9415fd77546 100644
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -23,6 +23,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- {
- 	struct nfsd4_layout_seg *seg = &args->lg_seg;
- 	struct super_block *sb = inode->i_sb;
-+	u64 length;
- 	u32 block_size = i_blocksize(inode);
- 	struct pnfs_block_extent *bex;
- 	struct iomap iomap;
-@@ -53,7 +54,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- 		goto out_error;
- 	}
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 385baf871800c..70f55df9e4f95 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1901,13 +1901,15 @@ static int nfs_dentry_delete(const struct dentry *dentry)
+ }
  
--	if (iomap.length < args->lg_minlength) {
-+	length = iomap.offset + iomap.length - seg->offset;
-+	if (length < args->lg_minlength) {
- 		dprintk("pnfsd: extent smaller than minlength\n");
- 		goto out_layoutunavailable;
+ /* Ensure that we revalidate inode->i_nlink */
+-static void nfs_drop_nlink(struct inode *inode)
++static void nfs_drop_nlink(struct inode *inode, unsigned long gencount)
+ {
++	struct nfs_inode *nfsi = NFS_I(inode);
++
+ 	spin_lock(&inode->i_lock);
+ 	/* drop the inode if we're reasonably sure this is the last link */
+-	if (inode->i_nlink > 0)
++	if (inode->i_nlink > 0 && gencount == nfsi->attr_gencount)
+ 		drop_nlink(inode);
+-	NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
++	nfsi->attr_gencount = nfs_inc_attr_generation_counter();
+ 	nfs_set_cache_invalid(
+ 		inode, NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
+ 			       NFS_INO_INVALID_NLINK);
+@@ -1921,8 +1923,9 @@ static void nfs_drop_nlink(struct inode *inode)
+ static void nfs_dentry_iput(struct dentry *dentry, struct inode *inode)
+ {
+ 	if (dentry->d_flags & DCACHE_NFSFS_RENAMED) {
++		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
+ 		nfs_complete_unlink(dentry, inode);
+-		nfs_drop_nlink(inode);
++		nfs_drop_nlink(inode, gencount);
  	}
+ 	iput(inode);
+ }
+@@ -2475,9 +2478,11 @@ static int nfs_safe_remove(struct dentry *dentry)
+ 
+ 	trace_nfs_remove_enter(dir, dentry);
+ 	if (inode != NULL) {
++		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
++
+ 		error = NFS_PROTO(dir)->remove(dir, dentry);
+ 		if (error == 0)
+-			nfs_drop_nlink(inode);
++			nfs_drop_nlink(inode, gencount);
+ 	} else
+ 		error = NFS_PROTO(dir)->remove(dir, dentry);
+ 	if (error == -ENOENT)
+@@ -2682,6 +2687,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ {
+ 	struct inode *old_inode = d_inode(old_dentry);
+ 	struct inode *new_inode = d_inode(new_dentry);
++	unsigned long new_gencount = 0;
+ 	struct dentry *dentry = NULL;
+ 	struct rpc_task *task;
+ 	bool must_unblock = false;
+@@ -2734,6 +2740,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 		} else {
+ 			block_revalidate(new_dentry);
+ 			must_unblock = true;
++			new_gencount = NFS_I(new_inode)->attr_gencount;
+ 			spin_unlock(&new_dentry->d_lock);
+ 		}
+ 
+@@ -2773,7 +2780,7 @@ int nfs_rename(struct mnt_idmap *idmap, struct inode *old_dir,
+ 			new_dir, new_dentry, error);
+ 	if (!error) {
+ 		if (new_inode != NULL)
+-			nfs_drop_nlink(new_inode);
++			nfs_drop_nlink(new_inode, new_gencount);
+ 		/*
+ 		 * The d_move() should be here instead of in an async RPC completion
+ 		 * handler because we need the proper locks to move the dentry.  If
 -- 
 2.51.0
 
