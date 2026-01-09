@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207086-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207689-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D22D09A0C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D1C7D0A120
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36D70301BDF5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA1D2323B433
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF231334C24;
-	Fri,  9 Jan 2026 12:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E124F35BDC9;
+	Fri,  9 Jan 2026 12:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gn8EKkk5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0w6QBTbO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A33B52FD699;
-	Fri,  9 Jan 2026 12:17:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4AA433372B;
+	Fri,  9 Jan 2026 12:46:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961050; cv=none; b=TPDQ/iQmOQFb94e1cdRf1lj5B4L6i/c/3rjTvTJo/wDjizfHIaHZhvmp71KboLzKul5OOh7vDukSaloWJvZkHwxsrQxtNfYX1ik99hNj8RLTXl8CF2mnQ6Ka0iwXh5fI/gp77Ef2iIshEMCWrmsmWosulXpfb6iah87xL7SS+eY=
+	t=1767962767; cv=none; b=NsIlKzCTPVKJ6NJz+NcnFRQyY8TbqYbOoeMTv+pGRSlXIVEyxOSFk25TJ8Hmwh9iQxP+A46fsB/zqURiKEuYUF4pvi3DMevwGVTdRjfuEGv9/GkNA5z8EYWnxd2nv/PRl4Rx9wV3HoBePqXDKgXwb1Tp4SXoPfxeuoQHXtJJu1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961050; c=relaxed/simple;
-	bh=4oEAy41KD23830qeiI23R/B7JI8etF85ru0y58teaKw=;
+	s=arc-20240116; t=1767962767; c=relaxed/simple;
+	bh=gQ+mljWJEO4nLAODSS+7Bqp6kML/bK982rnZPNaux3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rr8ERw92ix6/eFLoOz7+c9vBabk47zKtV9stb6+N617TD/wqSsCSriwXToRplIz3/e6pWxcgynb+BspTz9b6Fmi2C8KGJdNsseDm5dd+Jh5y+cfUUy/Gf1crF/XW0CmHaKiF4ICPAAxSVOosW8iMYcyLPeC4/atUlazcO7RRazo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gn8EKkk5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31CA6C4CEF1;
-	Fri,  9 Jan 2026 12:17:30 +0000 (UTC)
+	 MIME-Version; b=lLvXgBtf3AP3mBz85ej5U5iE1Hwt2V8yzgS5uBIaac9kcao706MImgLxpOPmnYTz4mTQzsPoMFxf5WwC8fjtAteeFqXeUakrTi2gZDmKi8wvFdZ7CLCririED927WjqtxZUxn6SKzDOojDCEaCnnILCozzM3iIQOgXzCINEf+F0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0w6QBTbO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93D9C4CEF1;
+	Fri,  9 Jan 2026 12:46:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961050;
-	bh=4oEAy41KD23830qeiI23R/B7JI8etF85ru0y58teaKw=;
+	s=korg; t=1767962767;
+	bh=gQ+mljWJEO4nLAODSS+7Bqp6kML/bK982rnZPNaux3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gn8EKkk5i8jAc0i2noVO7WyPU32gJSM2a3vvCqm7G2kQlGcb18OXRc1VFbLrgd2Br
-	 RtA9mJKlmRa6i5zE1u6Ep1pR2qnRffZOLpoU21BATbpQiEZQ9KFbk3jOlrVUV9R6j1
-	 AlA1vQAQLeHYKA1i8NfXGkxf3qyjBCbcsbhqeN9k=
+	b=0w6QBTbO6pxeoe3cHyi5i3qALERCVPlsYV8JrDaV9rb23odtk99Rc/aD8rLZW1tfe
+	 6cAQIkE+h0PngH9ULaIUTO+DZhwGcRvUdR/z1W6omEry51SJahsOipF1bm0hOVBg+w
+	 dpYMaNHKtEo3lzbRVCkKIu50n2mtASbI992qmjs8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
-	Rob Clark <robin.clark@oss.qualcomm.com>
-Subject: [PATCH 6.6 618/737] drm/msm/a6xx: Fix out of bound IO access in a6xx_get_gmu_registers
-Date: Fri,  9 Jan 2026 12:42:37 +0100
-Message-ID: <20260109112157.250899735@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 480/634] media: renesas: rcar_drif: fix device node reference leak in rcar_drif_bond_enabled
+Date: Fri,  9 Jan 2026 12:42:38 +0100
+Message-ID: <20260109112135.608977295@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,40 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 779b68a5bf2764c8ed3aa800e41ba0d5d007e1e7 upstream.
+commit 445e1658894fd74eab7e53071fa16233887574ed upstream.
 
-REG_A6XX_GMU_AO_AHB_FENCE_CTRL register falls under GMU's register
-range. So, use gmu_write() routines to write to this register.
+The function calls of_parse_phandle() which returns
+a device node with an incremented reference count. When the bonded device
+is not available, the function
+returns NULL without releasing the reference, causing a reference leak.
 
-Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Add of_node_put(np) to release the device node reference.
+The of_node_put function handles NULL pointers.
+
+Found through static analysis by reviewing the doc of of_parse_phandle()
+and cross-checking its usage patterns across the codebase.
+
+Fixes: 7625ee981af1 ("[media] media: platform: rcar_drif: Add DRIF support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Patchwork: https://patchwork.freedesktop.org/patch/688993/
-Message-ID: <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
-Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/renesas/rcar_drif.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-+++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
-@@ -834,7 +834,7 @@ static void a6xx_get_gmu_registers(struc
- 		return;
+--- a/drivers/media/platform/renesas/rcar_drif.c
++++ b/drivers/media/platform/renesas/rcar_drif.c
+@@ -1248,6 +1248,7 @@ static struct device_node *rcar_drif_bon
+ 	if (np && of_device_is_available(np))
+ 		return np;
  
- 	/* Set the fence to ALLOW mode so we can access the registers */
--	gpu_write(gpu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
-+	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
++	of_node_put(np);
+ 	return NULL;
+ }
  
- 	_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gmu_reglist[2],
- 		&a6xx_state->gmu_registers[2], false);
 
 
 
