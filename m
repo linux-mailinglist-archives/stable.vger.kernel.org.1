@@ -1,190 +1,125 @@
-Return-Path: <stable+bounces-207859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6200BD0A753
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:40:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0437AD0A79E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:46:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C3B8230B333B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:35:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18520307F22F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:40:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0A94359F8C;
-	Fri,  9 Jan 2026 13:35:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 405A435CB93;
+	Fri,  9 Jan 2026 13:40:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pP6aHjod"
+	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="IMKAVE+W"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2EED2E8B94;
-	Fri,  9 Jan 2026 13:35:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD75735A952;
+	Fri,  9 Jan 2026 13:40:44 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767965737; cv=none; b=sMW8j5jSmSL8vW+x66ohbI2+pOuM5cNHWSyRFe3hvO5DilLKkfJn0RXHRZpn1k++we17dHpm/KSFGdm3J/xiu1Wc18BhnimgSIrpOOpM+0tL4xNEgLMpfpKeu+dm94qx5tjLfGevLXClkvU2jq0+03fXDPJJtemRjj3hJgWjMWo=
+	t=1767966048; cv=none; b=qjFU/nCsYC/5l6Qo0Rg6dFkFzjZu3365WYmKx8BGLuVdIipSkmbVlGlQxw/bK5KXnbopfI2OSVH26KXOUv1H2PV+5toaluPj5bepnrH+kmGlZkvle5/DJyD4QUz3ReAAYE4+NYjrtNwcVdh8lR5k5FEoh9pde9lw/+88Bkp26aU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767965737; c=relaxed/simple;
-	bh=exifGmoeBWKaTcVyJ3wiaGfoVWeC28oP0FSI8jCjcl0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=iUqUqyWum+zDQ5xy9eyav7Q8cFlBLJ5CI7VRL6xirntQ7qfyt8MZK8yaz7jUjQwrwpyKYaWwl9TWzDXNnVU7YWRm3TmS0rloHR++B1t9fw29m0dYEQk3x/JotnIcUuVRHCXx1UbjPObTO/JhaBMBaDwQbUv9pzS00pilsqzSAKg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pP6aHjod; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EADC4CEF1;
-	Fri,  9 Jan 2026 13:35:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767965737;
-	bh=exifGmoeBWKaTcVyJ3wiaGfoVWeC28oP0FSI8jCjcl0=;
-	h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-	b=pP6aHjod+CV1fq62S93+oUyzwnEyxfSqNUY3XaFVSFmapOMT6Bfigb48hI5J1jbHB
-	 uCTDiMptwfOAKzz7Dq4va/oC46yrIOiK0ab+KKjE9LaLNLDf5LH/lJt3cbE7q1aNtB
-	 QyxGQ4VOwTYN1bH7N/5WhWm0ppX1ybW/PEudFgGmez04Xav2UlflhM/9KUX3d/kCEa
-	 257HWHrDRJwF69fAgr2tS3kJhq+kdDTD33AU1sIqk/yvG+Fb2sCJ5M3K3RwWaLqIYO
-	 X2OZYG4jJMYG/1WKUsHN1goQq0EJ6G3CSMwA1grYnpttcHMA1N0DjhDnTZlX//oPy8
-	 7qvmhYVs/riYA==
-Message-ID: <2a77740f-12af-43d7-9a70-43e7afc79a58@kernel.org>
-Date: Fri, 9 Jan 2026 14:35:33 +0100
+	s=arc-20240116; t=1767966048; c=relaxed/simple;
+	bh=G/p1x2YBAJeOLuNkk8WAicrllcn4KYPv9RqNynVAaYI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=u82JUzgzQX3Ap8VMACbCDHFupkt6jrZn8na4QaSsqeOKeQQqMGOU+47OL4QvNBW03ncEGf/WwkWwZJcIgKcMPktWC+b1hcdzkEomwy0cgPL49sNr854Rml9xKqPUKP0yTpk/Szak3U3/lXxxt5vmn1gCZmFeXJpmC23gTZaQZ5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=IMKAVE+W; arc=none smtp.client-ip=213.97.179.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+	s=20170329; h=In-Reply-To:Content-Type:MIME-Version:References:Message-ID:
+	Subject:Cc:To:From:Date:Sender:Reply-To:Content-Transfer-Encoding:Content-ID:
+	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
+	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+	List-Post:List-Owner:List-Archive;
+	bh=mHMWYBgydm9Inr+rqCvfzF3QaGT77USiVccdvrYveKQ=; b=IMKAVE+WHBbsesk0CBNBlDP5op
+	aE6CrnkPMQwGU3ldknG/tscquJk+jYN/RJ/zwKBAO3ybAE8f0QJIQ8KBq7WArxjPsnOT45J6IrvJA
+	wjHdPt78XDQFZxlZ3iBhzcabMD2Amo4wv9i8/xeV/loSbmKbjWmIND4i5bOU3zfCETN4rgCUFo5ju
+	F3qr4o4mangv0akYDvrQ+xEtRbzQ08q17cKn1y80tchFxsc+YJ6OCBh0fpfXXeOBipGqQ1ZLMiZgz
+	1eeJ5l83u0PT6doNFkrHGkZ3/lLIDkCcLMK9IP/94IN8BxaA0eAh7tvR4pXwn4ncUhDJ8De6V9dte
+	WTfNEZpg==;
+Received: from 179-125-75-246-dinamico.pombonet.net.br ([179.125.75.246] helo=quatroqueijos.cascardo.eti.br)
+	by fanzine2.igalia.com with esmtpsa 
+	(Cipher TLS1.3:ECDHE_SECP256R1__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+	id 1veCjH-003Qq7-Od; Fri, 09 Jan 2026 14:40:40 +0100
+Date: Fri, 9 Jan 2026 10:40:34 -0300
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>, Theodore Tso <tytso@mit.edu>
+Subject: Re: [PATCH 6.6 731/737] ext4: filesystems without casefold feature
+ cannot be mounted with siphash
+Message-ID: <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
+References: <20260109112133.973195406@linuxfoundation.org>
+ <20260109112201.603806562@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v3 1/2] nfc: llcp: avoid double release/put on LLCP_CLOSED
- in nfc_llcp_recv_disc()
-To: Paolo Abeni <pabeni@redhat.com>, Qianchang Zhao
- <pioooooooooip@gmail.com>, netdev@vger.kernel.org
-Cc: Jakub Kicinski <kuba@kernel.org>, "David S. Miller"
- <davem@davemloft.net>, Eric Dumazet <edumazet@google.com>,
- Simon Horman <horms@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org, Zhitong Liu <liuzhitong1993@gmail.com>
-References: <20251218025923.22101-1-pioooooooooip@gmail.com>
- <20251218025923.22101-2-pioooooooooip@gmail.com>
- <c7851c67-dd52-41d4-b191-807aa5e26d9d@redhat.com>
- <88741cf8-7649-49e1-8d82-5440fccd618f@redhat.com>
-From: Krzysztof Kozlowski <krzk@kernel.org>
-Content-Language: en-US
-Autocrypt: addr=krzk@kernel.org; keydata=
- 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 a/A=
-In-Reply-To: <88741cf8-7649-49e1-8d82-5440fccd618f@redhat.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109112201.603806562@linuxfoundation.org>
 
-On 28/12/2025 10:16, Paolo Abeni wrote:
-> On 12/28/25 10:02 AM, Paolo Abeni wrote:
->> On 12/18/25 3:59 AM, Qianchang Zhao wrote:
->>> nfc_llcp_sock_get() takes a reference on the LLCP socket via sock_hold().
->>>
->>> In nfc_llcp_recv_disc(), when the socket is already in LLCP_CLOSED state,
->>> the code used to perform release_sock() and nfc_llcp_sock_put() in the
->>> CLOSED branch but then continued execution and later performed the same
->>> cleanup again on the common exit path. This results in refcount imbalance
->>> (double put) and unbalanced lock release.
->>>
->>> Remove the redundant CLOSED-branch cleanup so that release_sock() and
->>> nfc_llcp_sock_put() are performed exactly once via the common exit path, 
->>> while keeping the existing DM_DISC reply behavior.
->>>
->>> Fixes: d646960f7986 ("NFC: Initial LLCP support")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
->>> ---
->>>  net/nfc/llcp_core.c | 5 -----
->>>  1 file changed, 5 deletions(-)
->>>
->>> diff --git a/net/nfc/llcp_core.c b/net/nfc/llcp_core.c
->>> index beeb3b4d2..ed37604ed 100644
->>> --- a/net/nfc/llcp_core.c
->>> +++ b/net/nfc/llcp_core.c
->>> @@ -1177,11 +1177,6 @@ static void nfc_llcp_recv_disc(struct nfc_llcp_local *local,
->>>  
->>>  	nfc_llcp_socket_purge(llcp_sock);
->>>  
->>> -	if (sk->sk_state == LLCP_CLOSED) {
->>> -		release_sock(sk);
->>> -		nfc_llcp_sock_put(llcp_sock);
->>
->> To rephrase Krzysztof concernt, this does not looks like the correct
->> fix: later on nfc_llcp_recv_disc() will try a send over a closed socket,
->> which looks wrong. Instead you could just return after
->> nfc_llcp_sock_put(), or do something alike:
->>
->> 	if (sk->sk_state == LLCP_CLOSED)
->> 		goto cleanup;
->>
->> 	// ...
->>
->>
->> cleanup:
->> 	release_sock(sk);
->> 	nfc_llcp_sock_put(llcp_sock);
->> }
-> 
-> I'm sorry for the confusing feedback above.
-> 
-> I read the comments on patch 2/2 only after processing this one.
-> 
-> Indeed following the half-interrupted discussion on old revision, with
-> bad patch splitting is quite difficult.
-> 
-> @Qianchang Zhao: my _guess_ is that on LLCP_CLOSED the code has to
-> release the final sk reference... In any case discussion an a patch
-> series revision is not concluded until the reviewer agrees on that.
+Hi, Greg.
 
-I would expect the code to return on LLCP_CLOSED, instead of proceeding
-to sending nfc_llcp_send_dm() disconnect, because nfc_llcp_send_dm()
-should happen earlier (before marking LLCP socket as closed), but that's
-more of my assumption than actual knowledge.
+The followup to 985b67cd86392310d9e9326de941c22fc9340eec, that I submitted
+in the same thread, has not been picked up.
 
+20260108150350.3354622-2-cascardo@igalia.com
+https://lore.kernel.org/stable/20260108150350.3354622-2-cascardo@igalia.com/
+a2187431c395 ("ext4: fix error message when rejecting the default hash")
+
+You picked it up for 6.1 and 5.15 though.
+
+Regards.
+Cascardo.
+
+On Fri, Jan 09, 2026 at 12:44:30PM +0100, Greg Kroah-Hartman wrote:
+> 6.6-stable review patch.  If anyone has any objections, please let me know.
 > 
-> @Krzysztof: ... but still it looks like in the current code there is a
-> double release on the sk socket lock, which looks wrong, what am I
-> missing here?
-
-Author focused only on get/put and of course from that point of view
-there is imbalance. But I asked at v2, for which there was still no
-answer, what about releasing the initial reference from
-nfc_llcp_sock_from_sn(). Maybe that was the intention here?
-
-Best regards,
-Krzysztof
+> ------------------
+> 
+> From: Lizhi Xu <lizhi.xu@windriver.com>
+> 
+> commit 985b67cd86392310d9e9326de941c22fc9340eec upstream.
+> 
+> When mounting the ext4 filesystem, if the default hash version is set to
+> DX_HASH_SIPHASH but the casefold feature is not set, exit the mounting.
+> 
+> Reported-by: syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com
+> Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+> Link: https://patch.msgid.link/20240605012335.44086-1-lizhi.xu@windriver.com
+> Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+> [cascardo: small conflict fixup]
+> Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  fs/ext4/super.c |    8 ++++++++
+>  1 file changed, 8 insertions(+)
+> 
+> --- a/fs/ext4/super.c
+> +++ b/fs/ext4/super.c
+> @@ -3632,6 +3632,14 @@ int ext4_feature_set_ok(struct super_blo
+>  	}
+>  #endif
+>  
+> +	if (EXT4_SB(sb)->s_es->s_def_hash_version == DX_HASH_SIPHASH &&
+> +	    !ext4_has_feature_casefold(sb)) {
+> +		ext4_msg(sb, KERN_ERR,
+> +			 "Filesystem without casefold feature cannot be "
+> +			 "mounted with siphash");
+> +		return 0;
+> +	}
+> +
+>  	if (readonly)
+>  		return 1;
+>  
+> 
+> 
 
