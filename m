@@ -1,63 +1,57 @@
-Return-Path: <stable+bounces-207039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FF07D097D1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FF6CD0A2AD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EED3F3066B0B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F2A02318CC8B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5734435A956;
-	Fri,  9 Jan 2026 12:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3044735BDB2;
+	Fri,  9 Jan 2026 12:42:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tBJYLU+Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dEkCQVoy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A16435A953;
-	Fri,  9 Jan 2026 12:15:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E705535B137;
+	Fri,  9 Jan 2026 12:42:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960920; cv=none; b=LIPD0FXH1EE7LoHr7f9Ng/J8J+BLXk9G2BriRnfX5n4QVrVTRNF5s6u1k4CpUwmU8J3sG2CXCGctR/kVKneIarWdrZl1CVhcr3+FlGUhkfcNhrAhdwgshfp2JAeJ+VuxP3YUsjU5jkgSKyYowQoZVHK4A7YwNmjB6gLAJHNcmsw=
+	t=1767962536; cv=none; b=j1q35XNkBm/61baQxT+Fgj8rpXf//2q2DfKsSL/+BgipPrS3us9wKVf2n1lXv49fgQEdPqX66nZHPGe29sa4eahR8AiGZ06EYmxhweFwPRpeE2E/LrgYhMdlXPy6BOcz7+9j1Khpx0cTnnpuEnmVUnemIy6BRg9+/iWAd3MXTrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960920; c=relaxed/simple;
-	bh=gHcdV4fjOmWGtBo/HvvUVyvIxxCcmayNCqByRGrwFP8=;
+	s=arc-20240116; t=1767962536; c=relaxed/simple;
+	bh=MZc8gHxe+Uqg27NfyKvODjsXM3DqbgKj/67vVy2OOqI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1NnFIcl/zAZJdi3QS5SG/1hEoCYUto8M3mypsog8AUVmCrK2608pMror/Oeu7CC9V4dfpJAMhHLsp1DpVHANcW/gjQIzWvuAqKlvTpVPZYgGH1yZ1vWwg4NtzL//hqJ6r2l7ENF4RQZJLSUddsAINVs6j5WtILdsFtXnnMioB8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tBJYLU+Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62DECC19421;
-	Fri,  9 Jan 2026 12:15:19 +0000 (UTC)
+	 MIME-Version; b=IZOoJYQYmSNRcPkeGmOuAm2blfkSvPseJu0SSw5S30kByBZL3QvPwn6jZGrS1nIUJTelyp7RwvCTPlqBdGXXvbmM7/9N8q2tA0u4ujQ3UclLa3j7nHhfmZiPHDH5fmR69Pt5rqwxGBr0Ci9BOE5HQV22oFE7UVymZwSZLMlNUsk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dEkCQVoy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E63C4CEF1;
+	Fri,  9 Jan 2026 12:42:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960919;
-	bh=gHcdV4fjOmWGtBo/HvvUVyvIxxCcmayNCqByRGrwFP8=;
+	s=korg; t=1767962535;
+	bh=MZc8gHxe+Uqg27NfyKvODjsXM3DqbgKj/67vVy2OOqI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tBJYLU+ZEeODvqaysxz7ajqoVdfP2gEBjrOfKU4BT6fX7tUiD+z/eXlNZrrn5iUcl
-	 2XyzU1wgxpt1nJPkcyLTAgprL5PpdbZpVYvc+3BbepBltOa9/BlxRhkkIK9klxji4D
-	 uYgtt+4YWF0iXUdDRCgZZVOZG+HlAyktjMJ3qGJo=
+	b=dEkCQVoyJRXdVx53n2R2KnbWKZBMHWswaqGIU2KH0r+lRV4UHRwIQmGpOSkUx3RK9
+	 6+m3N9MkMmrOERC6nDj9Ps7VB4gXRr5CF61WouEWj++okI1W0POaw8gEdvcsyJEbig
+	 lCWq2H3BTKm470BRUikIjxFrRsh4SrRt9/yZMLa0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tim Chen <tim.c.chen@linux.intel.com>,
-	Juri Lelli <juri.lelli@redhat.com>,
-	Andrew Theurer <atheurer@redhat.com>,
-	Joe Mario <jmario@redhat.com>,
-	Sebastian Jug <sejug@redhat.com>,
-	Frederic Weisbecker <frederic@kernel.org>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Tejun Heo <tj@kernel.org>,
-	Ming Lei <ming.lei@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Michal Schmidt <mschmidt@redhat.com>,
+	Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>,
+	Ivan Vecera <ivecera@redhat.com>,
+	Simon Horman <horms@kernel.org>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 538/737] blk-mq: dont schedule block kworker on isolated CPUs
-Date: Fri,  9 Jan 2026 12:41:17 +0100
-Message-ID: <20260109112154.233772162@linuxfoundation.org>
+Subject: [PATCH 6.1 400/634] i40e: Refactor argument of i40e_detect_recover_hung()
+Date: Fri,  9 Jan 2026 12:41:18 +0100
+Message-ID: <20260109112132.580810064@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -69,160 +63,83 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Ivan Vecera <ivecera@redhat.com>
 
-[ Upstream commit a46c27026da10a126dd870f7b65380010bd20db5 ]
+[ Upstream commit 7033ada04e33048c8b33294fecbb0d73f3cd1088 ]
 
-Kernel parameter of `isolcpus=` or 'nohz_full=' are used to isolate CPUs
-for specific task, and it isn't expected to let block IO disturb these CPUs.
-blk-mq kworker shouldn't be scheduled on isolated CPUs. Also if isolated
-CPUs is run for blk-mq kworker, long block IO latency can be caused.
+Commit 07d44190a389 ("i40e/i40evf: Detect and recover hung queue
+scenario") changes i40e_detect_recover_hung() argument type from
+i40e_pf* to i40e_vsi* to be shareable by both i40e and i40evf.
+Because the i40evf does not exist anymore and the function is
+exclusively used by i40e we can revert this change.
 
-Kernel workqueue only respects CPU isolation for WQ_UNBOUND, for bound
-WQ, the responsibility is on user because CPU is specified as WQ API
-parameter, such as mod_delayed_work_on(cpu), queue_delayed_work_on(cpu)
-and queue_work_on(cpu).
-
-So not run blk-mq kworker on isolated CPUs by removing isolated CPUs
-from hctx->cpumask. Meantime use queue map to check if all CPUs in this
-hw queue are offline instead of hctx->cpumask, this way can avoid any
-cost in fast IO code path, and is safe since hctx->cpumask are only
-used in the two cases.
-
-Cc: Tim Chen <tim.c.chen@linux.intel.com>
-Cc: Juri Lelli <juri.lelli@redhat.com>
-Cc: Andrew Theurer <atheurer@redhat.com>
-Cc: Joe Mario <jmario@redhat.com>
-Cc: Sebastian Jug <sejug@redhat.com>
-Cc: Frederic Weisbecker <frederic@kernel.org>
-Cc: Bart Van Assche <bvanassche@acm.org>
-Cc: Tejun Heo <tj@kernel.org>
-Tesed-by: Joe Mario <jmario@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Link: https://lore.kernel.org/r/20240322021244.1056223-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 10845a105bbc ("blk-mq: skip CPU offline notify on unmapped hctx")
+Reviewed-by: Michal Schmidt <mschmidt@redhat.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Signed-off-by: Ivan Vecera <ivecera@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Stable-dep-of: 699428342153 ("i40e: validate ring_len parameter against hardware-specific values")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-mq.c | 57 +++++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 47 insertions(+), 10 deletions(-)
+ drivers/net/ethernet/intel/i40e/i40e_main.c |  2 +-
+ drivers/net/ethernet/intel/i40e/i40e_txrx.c | 10 ++++++----
+ drivers/net/ethernet/intel/i40e/i40e_txrx.h |  2 +-
+ 3 files changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/block/blk-mq.c b/block/blk-mq.c
-index 01fe1e715669..a3cd5079557b 100644
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -30,6 +30,7 @@
- #include <linux/prefetch.h>
- #include <linux/blk-crypto.h>
- #include <linux/part_stat.h>
-+#include <linux/sched/isolation.h>
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index fb0dd6f33090..f64ef96ed4f7 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -11304,7 +11304,7 @@ static void i40e_service_task(struct work_struct *work)
+ 		return;
  
- #include <trace/events/block.h>
+ 	if (!test_bit(__I40E_RECOVERY_MODE, pf->state)) {
+-		i40e_detect_recover_hung(pf->vsi[pf->lan_vsi]);
++		i40e_detect_recover_hung(pf);
+ 		i40e_sync_filters_subtask(pf);
+ 		i40e_reset_subtask(pf);
+ 		i40e_handle_mdd_event(pf);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.c b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+index 2ede35ba3919..d6fe9e3a8482 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.c
+@@ -867,13 +867,15 @@ u32 i40e_get_tx_pending(struct i40e_ring *ring, bool in_sw)
  
-@@ -2193,6 +2194,15 @@ static inline int blk_mq_first_mapped_cpu(struct blk_mq_hw_ctx *hctx)
- 	return cpu;
- }
- 
-+/*
-+ * ->next_cpu is always calculated from hctx->cpumask, so simply use
-+ * it for speeding up the check
-+ */
-+static bool blk_mq_hctx_empty_cpumask(struct blk_mq_hw_ctx *hctx)
-+{
-+        return hctx->next_cpu >= nr_cpu_ids;
-+}
-+
- /*
-  * It'd be great if the workqueue API had a way to pass
-  * in a mask and had some smarts for more clever placement.
-@@ -2204,7 +2214,8 @@ static int blk_mq_hctx_next_cpu(struct blk_mq_hw_ctx *hctx)
- 	bool tried = false;
- 	int next_cpu = hctx->next_cpu;
- 
--	if (hctx->queue->nr_hw_queues == 1)
-+	/* Switch to unbound if no allowable CPUs in this hctx */
-+	if (hctx->queue->nr_hw_queues == 1 || blk_mq_hctx_empty_cpumask(hctx))
- 		return WORK_CPU_UNBOUND;
- 
- 	if (--hctx->next_cpu_batch <= 0) {
-@@ -3535,14 +3546,30 @@ static bool blk_mq_hctx_has_requests(struct blk_mq_hw_ctx *hctx)
- 	return data.has_rq;
- }
- 
--static inline bool blk_mq_last_cpu_in_hctx(unsigned int cpu,
--		struct blk_mq_hw_ctx *hctx)
-+static bool blk_mq_hctx_has_online_cpu(struct blk_mq_hw_ctx *hctx,
-+		unsigned int this_cpu)
+ /**
+  * i40e_detect_recover_hung - Function to detect and recover hung_queues
+- * @vsi:  pointer to vsi struct with tx queues
++ * @pf: pointer to PF struct
+  *
+- * VSI has netdev and netdev has TX queues. This function is to check each of
+- * those TX queues if they are hung, trigger recovery by issuing SW interrupt.
++ * LAN VSI has netdev and netdev has TX queues. This function is to check
++ * each of those TX queues if they are hung, trigger recovery by issuing
++ * SW interrupt.
+  **/
+-void i40e_detect_recover_hung(struct i40e_vsi *vsi)
++void i40e_detect_recover_hung(struct i40e_pf *pf)
  {
--	if (cpumask_first_and(hctx->cpumask, cpu_online_mask) != cpu)
--		return false;
--	if (cpumask_next_and(cpu, hctx->cpumask, cpu_online_mask) < nr_cpu_ids)
--		return false;
--	return true;
-+	enum hctx_type type = hctx->type;
-+	int cpu;
-+
-+	/*
-+	 * hctx->cpumask has to rule out isolated CPUs, but userspace still
-+	 * might submit IOs on these isolated CPUs, so use the queue map to
-+	 * check if all CPUs mapped to this hctx are offline
-+	 */
-+	for_each_online_cpu(cpu) {
-+		struct blk_mq_hw_ctx *h = blk_mq_map_queue_type(hctx->queue,
-+				type, cpu);
-+
-+		if (h != hctx)
-+			continue;
-+
-+		/* this hctx has at least one online CPU */
-+		if (this_cpu != cpu)
-+			return true;
-+	}
-+
-+	return false;
- }
- 
- static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
-@@ -3551,8 +3578,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
- 			struct blk_mq_hw_ctx, cpuhp_online);
- 	int ret = 0;
- 
--	if (!cpumask_test_cpu(cpu, hctx->cpumask) ||
--	    !blk_mq_last_cpu_in_hctx(cpu, hctx))
-+	if (blk_mq_hctx_has_online_cpu(hctx, cpu))
- 		return 0;
- 
- 	/*
-@@ -4045,6 +4071,8 @@ static void blk_mq_map_swqueue(struct request_queue *q)
- 	}
- 
- 	queue_for_each_hw_ctx(q, hctx, i) {
-+		int cpu;
-+
- 		/*
- 		 * If no software queues are mapped to this hardware queue,
- 		 * disable it and free the request entries.
-@@ -4071,6 +4099,15 @@ static void blk_mq_map_swqueue(struct request_queue *q)
- 		 */
- 		sbitmap_resize(&hctx->ctx_map, hctx->nr_ctx);
- 
-+		/*
-+		 * Rule out isolated CPUs from hctx->cpumask to avoid
-+		 * running block kworker on isolated CPUs
-+		 */
-+		for_each_cpu(cpu, hctx->cpumask) {
-+			if (cpu_is_isolated(cpu))
-+				cpumask_clear_cpu(cpu, hctx->cpumask);
-+		}
-+
- 		/*
- 		 * Initialize batch roundrobin counts
- 		 */
++	struct i40e_vsi *vsi = pf->vsi[pf->lan_vsi];
+ 	struct i40e_ring *tx_ring = NULL;
+ 	struct net_device *netdev;
+ 	unsigned int i;
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_txrx.h b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+index 6e567d343e03..8188ec7e3ef2 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_txrx.h
++++ b/drivers/net/ethernet/intel/i40e/i40e_txrx.h
+@@ -465,7 +465,7 @@ void i40e_free_rx_resources(struct i40e_ring *rx_ring);
+ int i40e_napi_poll(struct napi_struct *napi, int budget);
+ void i40e_force_wb(struct i40e_vsi *vsi, struct i40e_q_vector *q_vector);
+ u32 i40e_get_tx_pending(struct i40e_ring *ring, bool in_sw);
+-void i40e_detect_recover_hung(struct i40e_vsi *vsi);
++void i40e_detect_recover_hung(struct i40e_pf *pf);
+ int __i40e_maybe_stop_tx(struct i40e_ring *tx_ring, int size);
+ bool __i40e_chk_linearize(struct sk_buff *skb);
+ int i40e_xdp_xmit(struct net_device *dev, int n, struct xdp_frame **frames,
 -- 
 2.51.0
 
