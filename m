@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207386-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0DE1D094D7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:30 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36BF0D09EE1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5C2BA3019480
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BF728311FCA0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC21E359FB0;
-	Fri,  9 Jan 2026 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6075833C53C;
+	Fri,  9 Jan 2026 12:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hjIE50SH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eKjWmQZH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F0B035A925;
-	Fri,  9 Jan 2026 12:05:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24457336EDA;
+	Fri,  9 Jan 2026 12:31:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960311; cv=none; b=uAThQOT0gTcPUbdkFgBVxhXHCeukPqcWCTMQ8Bb83ff9b/9lYnBrMaheLCilY3C73HzKm4hkAFUc6nWC5vpa7HzuRlZJLfc/lN4jSfRmmKm8+0xmLXJAK641eBIPkLLkphSvAcFDIB6btEIjGyF5kLTy5XHvoyrgixZlQfncHD8=
+	t=1767961908; cv=none; b=D1BTUdqySQsdGK8bgUn4lRe7M8EZxnIdfW26CVa5tjGmMfYDpojo/D+sVI8iCRZPWVV1zijtW3b6PgpbmhW1PVtt2tX74JCs6F88j4MXtk/itjvyIqXH8XOz8cULTSSgkBIrU1prkXLjT4I/bvc4pxDxnFKDezo0/CnHeltI3oY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960311; c=relaxed/simple;
-	bh=++rBdbm1iRTlB4bpfCJUh8PFTLrJ3m6CoxvXMOAV17E=;
+	s=arc-20240116; t=1767961908; c=relaxed/simple;
+	bh=d9Qyni7KfhUm5NiBpvybrAJScBgguA8YPyor0LTQ/Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kwYiMiMMjc+EbfCMPMt6a5xIezObFPpwOnt6r+sBzUI7HdyOtrvz7sThdw9aY/+C+tn9VdEeI4QEWfjk2M5mcUNDGjp1EOaBv7lNRyrDFrMnxQUKnwSnUr6tJ4SnkeWzpziiK5yOIQU9eC/DFv4rclIBphg5Q0X2Ffpj0jW6PLg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hjIE50SH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C55FC16AAE;
-	Fri,  9 Jan 2026 12:05:10 +0000 (UTC)
+	 MIME-Version; b=sIEwPMWLyS/QCx2xw8oO903ddMs+tPFb9R2fnRdTe4Fwi2yD/hzsOSN7S+TNVgXKL3oxu1pcsGNU4qWzPgBWqfI5w/YkwHGPM24LSDgqVxqKyL7JiL+qGT/AUcQhhlQ8bnMbsiwQ/Gb7JvqR12fUHnInzY8gu5dGn44DcXsR1OU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eKjWmQZH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6B59C4CEF1;
+	Fri,  9 Jan 2026 12:31:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960311;
-	bh=++rBdbm1iRTlB4bpfCJUh8PFTLrJ3m6CoxvXMOAV17E=;
+	s=korg; t=1767961908;
+	bh=d9Qyni7KfhUm5NiBpvybrAJScBgguA8YPyor0LTQ/Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hjIE50SHJbAPjfV8USwQ8YpxjefG8qewrajopAj++7j/ag5jjeoQaCwdmRi5M4zj2
-	 qLsz2/ReF0SNMUTDwnhIsn6IT+EikXCqZW+3P4Ejb2VXPpheLzF7Bu9ukCf6zEHBas
-	 g85YYLmvEZ+aurbXYLw+XZNKlxK+/qUKo2MMZukY=
+	b=eKjWmQZHPNtKPAa2Dc6ErimfBXgk7PPHOOGeYAJEiGG8k4cYnN0BLD0d68dvNh7Tw
+	 w3D8FZW3kBbV+1ok0txrdsaoi3Pmve9/cpyGk+0czRpLOcp7DR7/vkcfl2f8FSk1lH
+	 RJE4AoFzYSJZFhI9FlyyAbnlARSlHGLRtYuD/Go0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f4f84b57a01d6b8364ad@syzkaller.appspotmail.com,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 317/737] ntfs: set dummy blocksize to read boot_block when mounting
-Date: Fri,  9 Jan 2026 12:37:36 +0100
-Message-ID: <20260109112145.926826013@linuxfoundation.org>
+Subject: [PATCH 6.1 179/634] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
+Date: Fri,  9 Jan 2026 12:37:37 +0100
+Message-ID: <20260109112124.177998988@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,62 +60,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
 
-[ Upstream commit d1693a7d5a38acf6424235a6070bcf5b186a360d ]
+[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
 
-When mounting, sb->s_blocksize is used to read the boot_block without
-being defined or validated. Set a dummy blocksize before attempting to
-read the boot_block.
+The "qcom,halt-regs" consists of a phandle reference followed by the
+three offsets within syscon for halt registers. Thus, we need to
+request 4 integers from of_property_read_variable_u32_array(), with
+the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
 
-The issue can be triggered with the following syz reproducer:
+With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
+-EOVERFLOW, causing .probe() to fail.
 
-  mkdirat(0xffffffffffffff9c, &(0x7f0000000080)='./file1\x00', 0x0)
-  r4 = openat$nullb(0xffffffffffffff9c, &(0x7f0000000040), 0x121403, 0x0)
-  ioctl$FS_IOC_SETFLAGS(r4, 0x40081271, &(0x7f0000000980)=0x4000)
-  mount(&(0x7f0000000140)=@nullb, &(0x7f0000000040)='./cgroup\x00',
-        &(0x7f0000000000)='ntfs3\x00', 0x2208004, 0x0)
-  syz_clone(0x88200200, 0x0, 0x0, 0x0, 0x0, 0x0)
+Increase MAX_HALT_REG to 4, and update the indexes accordingly.
 
-Here, the ioctl sets the bdev block size to 16384. During mount,
-get_tree_bdev_flags() calls sb_set_blocksize(sb, block_size(bdev)),
-but since block_size(bdev) > PAGE_SIZE, sb_set_blocksize() leaves
-sb->s_blocksize at zero.
-
-Later, ntfs_init_from_boot() attempts to read the boot_block while
-sb->s_blocksize is still zero, which triggers the bug.
-
-Reported-by: syzbot+f4f84b57a01d6b8364ad@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=f4f84b57a01d6b8364ad
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-[almaz.alexandrovich@paragon-software.com: changed comment style, added
-return value handling]
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
+Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/super.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/fs/ntfs3/super.c b/fs/ntfs3/super.c
-index c14b55cdea85c..0b96d0f995c61 100644
---- a/fs/ntfs3/super.c
-+++ b/fs/ntfs3/super.c
-@@ -885,6 +885,11 @@ static int ntfs_init_from_boot(struct super_block *sb, u32 sector_size,
+diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
+index ba24d745b2d65..2bb94cdd60136 100644
+--- a/drivers/remoteproc/qcom_q6v5_wcss.c
++++ b/drivers/remoteproc/qcom_q6v5_wcss.c
+@@ -85,7 +85,7 @@
+ #define TCSR_WCSS_CLK_MASK	0x1F
+ #define TCSR_WCSS_CLK_ENABLE	0x14
  
- 	sbi->volume.blocks = dev_size >> PAGE_SHIFT;
+-#define MAX_HALT_REG		3
++#define MAX_HALT_REG		4
+ enum {
+ 	WCSS_IPQ8074,
+ 	WCSS_QCS404,
+@@ -864,9 +864,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
+ 		return -EINVAL;
+ 	}
  
-+	/* Set dummy blocksize to read boot_block. */
-+	if (!sb_min_blocksize(sb, PAGE_SIZE)) {
-+		return -EINVAL;
-+	}
-+
- read_boot:
- 	bh = ntfs_bread(sb, boot_block);
- 	if (!bh)
+-	wcss->halt_q6 = halt_reg[0];
+-	wcss->halt_wcss = halt_reg[1];
+-	wcss->halt_nc = halt_reg[2];
++	wcss->halt_q6 = halt_reg[1];
++	wcss->halt_wcss = halt_reg[2];
++	wcss->halt_nc = halt_reg[3];
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
