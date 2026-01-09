@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206706-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23A12D0924B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAF7D09C82
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3ED783009D58
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B650E30CD392
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC7133A712;
-	Fri,  9 Jan 2026 11:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70A0E359701;
+	Fri,  9 Jan 2026 12:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrLSr1Qg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nwRNr+iU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F0D2DEA6F;
-	Fri,  9 Jan 2026 11:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28DE031A7EA;
+	Fri,  9 Jan 2026 12:28:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959967; cv=none; b=TxqtV2LgFoBkcQSDgr3xHgdKw5iMTIWKafvbpggkMl/yv80ctGiP/0ZgFi2HDrViN45TczipUgTrc8XvDg2lu0GkZhqheoCpl/ryNK/5IPUmkswDyI13py42qUrqr+Mp58muq9BcEek0Tz+nbwzQrSgcVGLCuz0ZdG8v/gyNU/I=
+	t=1767961734; cv=none; b=kSV8joVoyhHS9Qklq9pBbOe7fsOSQSIXwpYeXexp8WTkOLFPZD1bruEanHzPJZ2H8M2Itb8NSD5/QvnFYjgH9gH2WJDdUq9GLsL6vLFmQuUkc2joc6BjRktHShFaMoZh3h2shuP4rqqmNJO/Mt3UBqNQYkis3nZDlccM+mAlPbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959967; c=relaxed/simple;
-	bh=lefDbjO632IEzbVcLyqHgDPjOUuHXOQrPpEUVFeQzJQ=;
+	s=arc-20240116; t=1767961734; c=relaxed/simple;
+	bh=L5j6SjJ3hKedrdjRRcSsnwCx+dSRhUjpIXNruNUIqaI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XSr/m+WR0oX5n3aCoifk2TcttEG1/6ggN1W62iL9UocQD3G5uy3e+SLScX/ztfI6wnJOn917J4f2YHpbM/tCweQUYYlIzAf6+rDNppIqlMYbGPHbiE2ldx77rjSimOLPoHJC3rHn5/DDk0cgNTZocjSbP3YQYAOLDrOgJJ0JBNo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrLSr1Qg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02623C4CEF1;
-	Fri,  9 Jan 2026 11:59:26 +0000 (UTC)
+	 MIME-Version; b=S1sswNrttUfrvRnvFTsWaifyXQIzvXfZJV60zUdZVTJ4/jh40Zze7BeutionUPC+7Jgg3qFvQlYVjoDBWCUuYiY12QwikP54C0V3tgFy11RFUA3/Ot5U4Hvs33Cdo7hCr9Db9jU2IQOmeZoV/2nVFwSlgc1WlFcisRemReJoNVE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nwRNr+iU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6F7BC4CEF1;
+	Fri,  9 Jan 2026 12:28:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959967;
-	bh=lefDbjO632IEzbVcLyqHgDPjOUuHXOQrPpEUVFeQzJQ=;
+	s=korg; t=1767961734;
+	bh=L5j6SjJ3hKedrdjRRcSsnwCx+dSRhUjpIXNruNUIqaI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TrLSr1Qgilq7mAu5pF6QlooXAPdcDkDX07dmB+wpPeGK2MPVGkY357Sua5O4Vp+eP
-	 7dC7eMHADjeIMm0DlFBFq0X84UWB/HyhAhoRdnD/V0a8zfNiK+n4gQnJ7kCMyqczwy
-	 G6B3T/1SYmqtGOGwHRDQR75Xe4gMwX85nm3lds1I=
+	b=nwRNr+iUjxcp4FontytDSR3H1DEcK+oRb2f5Bbzfn4TKBKTZftSC44zLItELsU8iM
+	 R0TRJLSbb8KDaW6MdPSqOYqPt25PR/H/WtZl1WeasOE/HwzbeSl0aNXbVrUrITWlLJ
+	 lVYGmtYvK5dNA++FhU3zmZTb92pqZ0urSvg7WkuI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 238/737] resource: introduce is_type_match() helper and use it
-Date: Fri,  9 Jan 2026 12:36:17 +0100
-Message-ID: <20260109112142.951153270@linuxfoundation.org>
+Subject: [PATCH 6.1 100/634] powerpc/32: Fix unpaired stwcx. on interrupt exit
+Date: Fri,  9 Jan 2026 12:36:18 +0100
+Message-ID: <20260109112121.196437729@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit ba1eccc114ffc62c4495a5e15659190fa2c42308 ]
+[ Upstream commit 10e1c77c3636d815db802ceef588522c2d2d947c ]
 
-There are already a couple of places where we may replace a few lines of
-code by calling a helper, which increases readability while deduplicating
-the code.
+Commit b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C
+exception exit from ppc64") erroneouly copied to powerpc/32 the logic
+from powerpc/64 based on feature CPU_FTR_STCX_CHECKS_ADDRESS which is
+always 0 on powerpc/32.
 
-Introduce is_type_match() helper and use it.
+Re-instate the logic implemented by commit b64f87c16f3c ("[POWERPC]
+Avoid unpaired stwcx. on some processors") which is based on
+CPU_FTR_NEED_PAIRED_STWCX feature.
 
-Link: https://lkml.kernel.org/r/20240925154355.1170859-3-andriy.shevchenko@linux.intel.com
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
+Fixes: b96bae3ae2cb ("powerpc/32: Replace ASM exception exit by C exception exit from ppc64")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/6040b5dbcf5cdaa1cd919fcf0790f12974ea6e5a.1757666244.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c | 23 ++++++++++-------------
- 1 file changed, 10 insertions(+), 13 deletions(-)
+ arch/powerpc/kernel/entry_32.S | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/resource.c b/kernel/resource.c
-index dcc3b564c0537..67410132b40e1 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -310,6 +310,11 @@ int release_resource(struct resource *old)
+diff --git a/arch/powerpc/kernel/entry_32.S b/arch/powerpc/kernel/entry_32.S
+index d4fc546762db4..ca0f0abc49262 100644
+--- a/arch/powerpc/kernel/entry_32.S
++++ b/arch/powerpc/kernel/entry_32.S
+@@ -310,10 +310,9 @@ interrupt_return:
+ 	mtspr	SPRN_SRR1,r12
  
- EXPORT_SYMBOL(release_resource);
+ BEGIN_FTR_SECTION
++	lwarx   r0,0,r1
++END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	stwcx.	r0,0,r1		/* to clear the reservation */
+-FTR_SECTION_ELSE
+-	lwarx	r0,0,r1
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
  
-+static bool is_type_match(struct resource *p, unsigned long flags, unsigned long desc)
-+{
-+	return (p->flags & flags) == flags && (desc == IORES_DESC_NONE || desc == p->desc);
-+}
-+
- /**
-  * find_next_iomem_res - Finds the lowest iomem resource that covers part of
-  *			 [@start..@end].
-@@ -352,13 +357,9 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
- 		if (p->end < start)
- 			continue;
+ 	lwz	r3,_CCR(r1)
+ 	lwz	r4,_LINK(r1)
+@@ -356,10 +355,9 @@ ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
+ 	mtspr	SPRN_SRR1,r12
  
--		if ((p->flags & flags) != flags)
--			continue;
--		if ((desc != IORES_DESC_NONE) && (desc != p->desc))
--			continue;
--
- 		/* Found a match, break */
--		break;
-+		if (is_type_match(p, flags, desc))
-+			break;
- 	}
+ BEGIN_FTR_SECTION
++	lwarx   r0,0,r1
++END_FTR_SECTION_IFSET(CPU_FTR_NEED_PAIRED_STWCX)
+ 	stwcx.	r0,0,r1		/* to clear the reservation */
+-FTR_SECTION_ELSE
+-	lwarx	r0,0,r1
+-ALT_FTR_SECTION_END_IFCLR(CPU_FTR_STCX_CHECKS_ADDRESS)
  
- 	if (p) {
-@@ -501,7 +502,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 	int type = 0; int other = 0;
- 	struct resource *p, *dp;
- 	struct resource res, o;
--	bool is_type, covered;
-+	bool covered;
- 
- 	res.start = start;
- 	res.end = start + size - 1;
-@@ -509,9 +510,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 	for (p = parent->child; p ; p = p->sibling) {
- 		if (!resource_intersection(p, &res, &o))
- 			continue;
--		is_type = (p->flags & flags) == flags &&
--			(desc == IORES_DESC_NONE || desc == p->desc);
--		if (is_type) {
-+		if (is_type_match(p, flags, desc)) {
- 			type++;
- 			continue;
- 		}
-@@ -531,9 +530,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
- 		for_each_resource(p, dp, false) {
- 			if (!resource_overlaps(dp, &res))
- 				continue;
--			is_type = (dp->flags & flags) == flags &&
--				(desc == IORES_DESC_NONE || desc == dp->desc);
--			if (is_type) {
-+			if (is_type_match(dp, flags, desc)) {
- 				type++;
- 				/*
- 				 * Range from 'o.start' to 'dp->start'
+ 	lwz	r3,_LINK(r1)
+ 	lwz	r4,_CTR(r1)
 -- 
 2.51.0
 
