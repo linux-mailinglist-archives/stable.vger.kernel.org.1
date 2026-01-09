@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-206828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207422-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0281D09599
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 42B22D09D31
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2ED830FC841
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A337311D216
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A013D35A92E;
-	Fri,  9 Jan 2026 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBFA35B137;
+	Fri,  9 Jan 2026 12:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YYf5A0rB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Z6SHGt+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 604C8359F99;
-	Fri,  9 Jan 2026 12:05:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E95533C53A;
+	Fri,  9 Jan 2026 12:33:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960314; cv=none; b=NrajJILJiSVHUHAhKCIeuhQ4Bj98EPUe7why7AMm7EJ6VF286sECW92WpG7mhF9YVb6ozNfot3LMIz82vEf+4hzIKPyoCzJqO2Oxu9+llxWfQ8IBLMybDRDt/CWMSqB2T5YwT3NhbF2q9Veco1TeQbeTo/tRpBsi6tf1k4Gpl6s=
+	t=1767962009; cv=none; b=jrkcDSbrCuDE2MVBv0ZeQmRxDho40zYXWi78fqJDAPUNefGdp9RePy6g32OWjJxbmDv8zabZ00TzWfnWGHLFBAdVPlBcMMgNiAAHKl7kCrNZjHekToAfb5jg6iMssiYBBioiEDoxRT6Y+/v2uBrn1F+f9C0DRnwlpTMvzsxE8W0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960314; c=relaxed/simple;
-	bh=v8gqTsdVCNj5bWLnpFPU3Lti4n0zQ/X+JKXaux1ev1M=;
+	s=arc-20240116; t=1767962009; c=relaxed/simple;
+	bh=GOM9yPlL3KzW8LeWkdyt2mrLTYboOrY73vDk6mP8eIw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxUpF28WgpVSewCK4Bdy0aJXuxjve/KnqwR1QjrraLkL5E/xdnM/Ez3M3XN+rX2QFVYw2jKuTm3blS16x5joWnEOCSeoxG+Y9DgbFwpMXnO1Eewlg4IRNur9UZleZO53VgOdmU4BGzEsVsSonat6YzcmZNuVMihoeoPTcngkJPA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YYf5A0rB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC23C4CEF1;
-	Fri,  9 Jan 2026 12:05:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=kG7oQNTPlwvHZZtXCPAZVb0dRfQOt7wlcWlVzjlIjFRQIQTRGSNp/+CqfD/pUkwIE0OA1kK4omZIeH2cKo47dGA0SYPYqV643aykMjUzRKMHpo1QL2dT8xeTMaxL/UtwTpOZgMidf7VGtrhcVKtfSfxJsEf3weMNdsvRkDofS34=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Z6SHGt+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC48C4CEF1;
+	Fri,  9 Jan 2026 12:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960314;
-	bh=v8gqTsdVCNj5bWLnpFPU3Lti4n0zQ/X+JKXaux1ev1M=;
+	s=korg; t=1767962009;
+	bh=GOM9yPlL3KzW8LeWkdyt2mrLTYboOrY73vDk6mP8eIw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YYf5A0rBF1yFB7krBxE+br/KajuTIFbfBGMrwQ+OmsU9WUPAAHcujvhMAUrVqla89
-	 VLeqy652EUApCvV/cMo6I5E6UDxU41lZDqGCWk+VyvJhixDoedeQrUP8IVCz+hFf8J
-	 0MqX1P0tzWtYCqOdKBDwveBR0ZMpfGslp4aJgHag=
+	b=0Z6SHGt+V9R5q7AAi4aXtxge9o551ufKcA34t7p0r1bbD4oDilZXJsjmLfoxjC0Jr
+	 CbY75hXUI5rVtwoydPAediJzhYNbHNOBr3Rs7fiKswbGhSlgz/xmFeQhxPrB8rl1jn
+	 UFzFdsJtU+K8s0b9nBB/1YRINslgqjZmyl/V/80c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 353/737] net/mlx5: fw_tracer, Handle escaped percent properly
-Date: Fri,  9 Jan 2026 12:38:12 +0100
-Message-ID: <20260109112147.274754083@linuxfoundation.org>
+Subject: [PATCH 6.1 215/634] efi/cper: Adjust infopfx size to accept an extra space
+Date: Fri,  9 Jan 2026 12:38:13 +0100
+Message-ID: <20260109112125.525225578@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,87 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit c0289f67f7d6a0dfba0e92cfe661a5c70c8c6e92 ]
+[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
 
-The firmware tracer's format string validation and parameter counting
-did not properly handle escaped percent signs (%%). This caused
-fw_tracer to count more parameters when trace format strings contained
-literal percent characters.
+Compiling with W=1 with werror enabled produces an error:
 
-To fix it, allow %% to pass string validation and skip %% sequences when
-counting parameters since they represent literal percent signs rather
-than format specifiers.
+drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
+drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                                                                ^
+drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-5-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+As the logic there adds an space at the end of infopx buffer.
+Add an extra space to avoid such warning.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/diag/fw_tracer.c       | 20 +++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/firmware/efi/cper-arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 197c306d350bf..0a33ab5f53fd3 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -368,11 +368,11 @@ static bool mlx5_is_valid_spec(const char *str)
- 	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
- 		str++;
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index 36d3b8b9da47e..f4b7a48327fbb 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -241,7 +241,7 @@ void cper_print_proc_arm(const char *pfx,
+ 	int i, len, max_ctx_type;
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+-	char newpfx[64], infopfx[64];
++	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
  
--	/* Check if it's a valid integer/hex specifier:
-+	/* Check if it's a valid integer/hex specifier or %%:
- 	 * Valid formats: %x, %d, %i, %u, etc.
- 	 */
- 	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
--	    *str != 'u' && *str != 'c')
-+	    *str != 'u' && *str != 'c' && *str != '%')
- 		return false;
- 
- 	return true;
-@@ -390,7 +390,11 @@ static bool mlx5_tracer_validate_params(const char *str)
- 		if (!mlx5_is_valid_spec(substr + 1))
- 			return false;
- 
--		substr = strstr(substr + 1, PARAM_CHAR);
-+		if (*(substr + 1) == '%')
-+			substr = strstr(substr + 2, PARAM_CHAR);
-+		else
-+			substr = strstr(substr + 1, PARAM_CHAR);
-+
- 	}
- 
- 	return true;
-@@ -469,11 +473,15 @@ static int mlx5_tracer_get_num_of_params(char *str)
- 		substr = strstr(pstr, VAL_PARM);
- 	}
- 
--	/* count all the % characters */
-+	/* count all the % characters, but skip %% (escaped percent) */
- 	substr = strstr(str, PARAM_CHAR);
- 	while (substr) {
--		num_of_params += 1;
--		str = substr + 1;
-+		if (*(substr + 1) != '%') {
-+			num_of_params += 1;
-+			str = substr + 1;
-+		} else {
-+			str = substr + 2;
-+		}
- 		substr = strstr(str, PARAM_CHAR);
- 	}
+ 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
  
 -- 
 2.51.0
