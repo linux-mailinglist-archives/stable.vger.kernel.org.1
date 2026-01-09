@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207719-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207118-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37832D0A133
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C85DBD098EC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E010D32999CA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F2E6B3035E85
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8994435CBC0;
-	Fri,  9 Jan 2026 12:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B9DE35B121;
+	Fri,  9 Jan 2026 12:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSYpj/nY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BNj0Hsk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4A3C0326D51;
-	Fri,  9 Jan 2026 12:47:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D63632AAB5;
+	Fri,  9 Jan 2026 12:19:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962852; cv=none; b=DZCqUQsN86zVWKJxuZCQAYPmLHi7CUNNkTw0ANoJX+Vzixv8TB7uB424ElGijhj0tPac8FOSxg220uJfoer354/DUV2cUPXsDiuTkxvBnXpnwXtqnos8AWgZpRMXvmP6ArV81cEEgPynCHgrAiElHGy+NSS6USZ37iyQTKv3biA=
+	t=1767961142; cv=none; b=ZGBJRMGGVqfRiYQtxo7StarbsoEHCD+OljF81HPjblfZZTQEz5WP48VFu8dxxjHuHvWg+NQjUUEiDT4rpfLalrLb/hZDRkVdwMd3D+Mv2Ku9r8TwBZ+kBtLEgKV6Tatc6t0UQh8omzrREoLCzirWJaC9lq1yuYuKCEKlwe5u1n4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962852; c=relaxed/simple;
-	bh=HSkj32ykIovpLGSh+deJVR/g0/n9el7rgR3TsyFRW3U=;
+	s=arc-20240116; t=1767961142; c=relaxed/simple;
+	bh=FGQQYItcNKNyD/QRCY8pkPRPZTuJmrEnbWjgZd4eYGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mjd4XVZ2no77oQg/ALh8IxVCklKDGMg3Plm0BFdA58Fb+jOPYa3YkIfueY9KMryLLZwlSDnxACoHHJKkXwk28OyYkjin5I+a0Jf2GtlRdeV+EmXOvY/29pR9iU2Bp72JFElHlqVBGEd/Hh9RF999Ig3RFllIsvDU0OPKV1nrcI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSYpj/nY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8CFAC4CEF1;
-	Fri,  9 Jan 2026 12:47:31 +0000 (UTC)
+	 MIME-Version; b=KGgvE/4PCk/IvyuLkyjUy9nnocpeji0FNNWi/Y0/y0OBNanxqLMCdu5AASai+CEbrC3/aqo+zdVu1f1Dx6ocoWMewK7NPksNx6ihhwkMXowKlo8CVY57TpdVv+FIa/kBUVjP3+33hFaBMz4z2eQQ5fWQhAQShPh3q9ul5Ltojqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BNj0Hsk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2975C4CEF1;
+	Fri,  9 Jan 2026 12:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962852;
-	bh=HSkj32ykIovpLGSh+deJVR/g0/n9el7rgR3TsyFRW3U=;
+	s=korg; t=1767961142;
+	bh=FGQQYItcNKNyD/QRCY8pkPRPZTuJmrEnbWjgZd4eYGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSYpj/nY2JvZp5Ij6hhV1L/xqvom+eQiTr4GJXPAdVsQERd63me7uEOcGDE2tYm9z
-	 YZO7QVMcw966pNeN9j4yj6gJNI5vlI7+GEGtGIWz1FXZByTcLVvgqcQL6V57vcE70N
-	 rinIn6Oz+J4qsfG4MnyDbUebl+Kfvu5SAwWTfhcQ=
+	b=1BNj0Hskb3Q1nk1rHRCNdpOX9fdhEDMY7vm5eAZRS9c6pYIAZtbHKJ2Y9hBk2SLrk
+	 UsHs3GXOZ5uA+XnFwSmEvwz16KKgl8wkVZ/xz8OIUnMRDsod3of5PSjyekc8uAD0XJ
+	 qdIP5oWdC61QgsI508FarNkcUd22qTe1ZS0/KYXk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lyude Paul <lyude@redhat.com>,
-	Dave Airlie <airlied@redhat.com>
-Subject: [PATCH 6.1 510/634] drm/nouveau/dispnv50: Dont call drm_atomic_get_crtc_state() in prepare_fb
-Date: Fri,  9 Jan 2026 12:43:08 +0100
-Message-ID: <20260109112136.742650283@linuxfoundation.org>
+	Joshua Rogers <linux@joshua.hu>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 650/737] svcrdma: bound check rq_pages index in inline path
+Date: Fri,  9 Jan 2026 12:43:09 +0100
+Message-ID: <20260109112158.472084245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lyude Paul <lyude@redhat.com>
+From: Joshua Rogers <linux@joshua.hu>
 
-commit 560271e10b2c86e95ea35afa9e79822e4847f07a upstream.
+[ Upstream commit d1bea0ce35b6095544ee82bb54156fc62c067e58 ]
 
-Since we recently started warning about uses of this function after the
-atomic check phase completes, we've started getting warnings about this in
-nouveau. It appears a misplaced drm_atomic_get_crtc_state() call has been
-hiding in our .prepare_fb callback for a while.
+svc_rdma_copy_inline_range indexed rqstp->rq_pages[rc_curpage] without
+verifying rc_curpage stays within the allocated page array. Add guards
+before the first use and after advancing to a new page.
 
-So, fix this by adding a new nv50_head_atom_get_new() function and use that
-in our .prepare_fb callback instead.
-
-Signed-off-by: Lyude Paul <lyude@redhat.com>
-Reviewed-by: Dave Airlie <airlied@redhat.com>
-Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
-Cc: <stable@vger.kernel.org> # v4.18+
-Link: https://patch.msgid.link/20251211190256.396742-1-lyude@redhat.com
+Fixes: d7cc73972661 ("svcrdma: support multiple Read chunks per RPC")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joshua Rogers <linux@joshua.hu>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted rc_curpage and rq_maxpages fields to ri_pageno and RPCSVC_MAXPAGES constant ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/nouveau/dispnv50/atom.h |   13 +++++++++++++
- drivers/gpu/drm/nouveau/dispnv50/wndw.c |    2 +-
- 2 files changed, 14 insertions(+), 1 deletion(-)
+ net/sunrpc/xprtrdma/svc_rdma_rw.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/nouveau/dispnv50/atom.h
-+++ b/drivers/gpu/drm/nouveau/dispnv50/atom.h
-@@ -152,8 +152,21 @@ static inline struct nv50_head_atom *
- nv50_head_atom_get(struct drm_atomic_state *state, struct drm_crtc *crtc)
- {
- 	struct drm_crtc_state *statec = drm_atomic_get_crtc_state(state, crtc);
-+
- 	if (IS_ERR(statec))
- 		return (void *)statec;
-+
-+	return nv50_head_atom(statec);
-+}
-+
-+static inline struct nv50_head_atom *
-+nv50_head_atom_get_new(struct drm_atomic_state *state, struct drm_crtc *crtc)
-+{
-+	struct drm_crtc_state *statec = drm_atomic_get_new_crtc_state(state, crtc);
-+
-+	if (!statec)
-+		return NULL;
-+
- 	return nv50_head_atom(statec);
- }
+--- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
++++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
+@@ -815,6 +815,9 @@ static int svc_rdma_copy_inline_range(st
+ 	for (page_no = 0; page_no < numpages; page_no++) {
+ 		unsigned int page_len;
  
---- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-+++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
-@@ -567,7 +567,7 @@ nv50_wndw_prepare_fb(struct drm_plane *p
- 	asyw->image.offset[0] = nvbo->offset;
- 
- 	if (wndw->func->prepare) {
--		asyh = nv50_head_atom_get(asyw->state.state, asyw->state.crtc);
-+		asyh = nv50_head_atom_get_new(asyw->state.state, asyw->state.crtc);
- 		if (IS_ERR(asyh))
- 			return PTR_ERR(asyh);
++		if (info->ri_pageno >= RPCSVC_MAXPAGES)
++			return -EINVAL;
++
+ 		page_len = min_t(unsigned int, remaining,
+ 				 PAGE_SIZE - info->ri_pageoff);
  
 
 
