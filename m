@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207441-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D68E7D095B1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6BE2D09EB9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5E30731187BD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1AE0309D9E4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21DE2359FBA;
-	Fri,  9 Jan 2026 12:05:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F42E35B14C;
+	Fri,  9 Jan 2026 12:34:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkM4xXik"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NSFNOKRu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D81D533D50F;
-	Fri,  9 Jan 2026 12:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0F735B13F;
+	Fri,  9 Jan 2026 12:34:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960348; cv=none; b=Kqkysley3rFoTjzSDNrb24kAJaN2sxNBpbHQI2/BxlmTAbncJK2iXzhIwtzztzWRd/k0J3tdKI8qiZH0mAjyEM99Vo49dmL5dvgnPSsok/q9qSqRohePJDtmJEO8p9U24FYRTZw05VwxgExy7d+X3yEzWqkV1X7Fb3718CqmU2w=
+	t=1767962063; cv=none; b=VLL9LKf9ngR7GYgKq6QUyra5PGEsuXcxzqpggp20P7SuxN1+ng1yx6Jp5SD/yEkUEKgQ7mGMp1l+9NsnMFe3g7uNjUEN4Fecz076l1LwHNK5569uePEIqHH0A35dVUG1Ek6r5ior7H9UIfnOYYwqMXLSK+NJDS/kjZGt7WwoRI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960348; c=relaxed/simple;
-	bh=GypZXVQG1fvbNKVgUPj6ZIGDQIOEtHrtBVGZWABsrqg=;
+	s=arc-20240116; t=1767962063; c=relaxed/simple;
+	bh=+smaygD2mIOt8sI4Vhmj0DM7SFdmpt5Vxz0tGJhLXBo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dpzoTZEz3T/tQbZ5Ie85RxdmfxltxOHp6DOGx6Mz8cGfGaYlOvHF9C7DCekXBL5PpjjIh0iM2oo5Gb9gwaAsoRNy7Qlp7iPoV69isfVx7XaGyOjgMeeRCINnrcFbuFTLXkW2YGLQPjjmL7jCk8Aa+R8AyavdbqTzUX7A2nIsiKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkM4xXik; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68030C4CEF1;
-	Fri,  9 Jan 2026 12:05:48 +0000 (UTC)
+	 MIME-Version; b=YWMimhXAzcV42rq6roRAPKDpWAex/g0WzZQ+rASnfTcrFkr2jYgoabAi7MElkG5Qv7bR0gw9MMEY3c3Uyi5gO5WMV9SddKh2TJ+ck7K7HvUcX0r4dJ/a5oRVAYpjusMBt+L1j6AEscJXGX2ISOtju6Ohb8WDwUThRerAuvM0sP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NSFNOKRu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4230C4CEF1;
+	Fri,  9 Jan 2026 12:34:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960348;
-	bh=GypZXVQG1fvbNKVgUPj6ZIGDQIOEtHrtBVGZWABsrqg=;
+	s=korg; t=1767962063;
+	bh=+smaygD2mIOt8sI4Vhmj0DM7SFdmpt5Vxz0tGJhLXBo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zkM4xXikcalNOeJR/L/L1n5fWi2L/ngFSVCer5GlHnPBAst42w6TFdsi7D4roulX6
-	 beb3SoVogWoqpkNxhR1bM31o6QCq7vwOpuJsNew5XFTmRoqGp53vjqhHPyLgc8UKzD
-	 H0B0iyXF/qE11RBomwbfKWN9112mfsTTvcfHXMB0=
+	b=NSFNOKRuzwsQTnr6DfT2YfIGKpCF1ydQKrhCNVqhfVLlchjqYlviGeTBq/HvEdiwU
+	 dZkqa6HuVKmWldp/mBcoTAaG9sjK04HtvrHlEc5WjksloSSbZWc8VtKnu5qNyXFjen
+	 dEx9TWxIGQvREecrplri/wVDPp4CHGthSXqQhbtk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ping Cheng <ping.cheng@wacom.com>,
-	stable@kernel.org,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 6.6 372/737] HID: input: map HID_GD_Z to ABS_DISTANCE for stylus/pen
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 233/634] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
 Date: Fri,  9 Jan 2026 12:38:31 +0100
-Message-ID: <20260109112147.988120842@linuxfoundation.org>
+Message-ID: <20260109112126.196258387@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping Cheng <pinglinux@gmail.com>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-commit 7953794f741e94d30df9dafaaa4c031c85b891d6 upstream.
+[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
 
-HID_GD_Z is mapped to ABS_Z for stylus and pen in hid-input.c. But HID_GD_Z
-should be used to report ABS_DISTANCE for stylus and pen as described at:
-Documentation/input/event-codes.rst#n226
+Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+property API is somewhat problematic as the latter is used in the
+impelementation of the former. Instead of using
+fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+acpi_get_next_subnode() directly instead.
 
-* ABS_DISTANCE:
-
-  - Used to describe the distance of a tool from an interaction surface. This
-    event should only be emitted while the tool is hovering, meaning in close
-    proximity of the device and while the value of the BTN_TOUCH code is 0. If
-    the input device may be used freely in three dimensions, consider ABS_Z
-    instead.
-  - BTN_TOOL_<name> should be set to 1 when the tool comes into detectable
-    proximity and set to 0 when the tool leaves detectable proximity.
-    BTN_TOOL_<name> signals the type of tool that is currently detected by the
-    hardware and is otherwise independent of ABS_DISTANCE and/or BTN_TOUCH.
-
-This patch makes the correct mapping. The ABS_DISTANCE is currently not mapped
-by any HID usage in hid-generic driver.
-
-Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
-Cc: stable@kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-input.c |   18 +++++++++++++++++-
- 1 file changed, 17 insertions(+), 1 deletion(-)
+ drivers/acpi/property.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/hid/hid-input.c
-+++ b/drivers/hid/hid-input.c
-@@ -864,7 +864,7 @@ static void hidinput_configure_usage(str
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 0ff1c3d2504d4..577942d29d133 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1382,7 +1382,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
  
- 		switch (usage->hid) {
- 		/* These usage IDs map directly to the usage codes. */
--		case HID_GD_X: case HID_GD_Y: case HID_GD_Z:
-+		case HID_GD_X: case HID_GD_Y:
- 		case HID_GD_RX: case HID_GD_RY: case HID_GD_RZ:
- 			if (field->flags & HID_MAIN_ITEM_RELATIVE)
- 				map_rel(usage->hid & 0xf);
-@@ -872,6 +872,22 @@ static void hidinput_configure_usage(str
- 				map_abs_clear(usage->hid & 0xf);
+ 	if (!prev) {
+ 		do {
+-			port = fwnode_get_next_child_node(fwnode, port);
++			port = acpi_get_next_subnode(fwnode, port);
+ 			/*
+ 			 * The names of the port nodes begin with "port@"
+ 			 * followed by the number of the port node and they also
+@@ -1400,13 +1400,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
+ 
+-	endpoint = fwnode_get_next_child_node(port, prev);
++	endpoint = acpi_get_next_subnode(port, prev);
+ 	while (!endpoint) {
+-		port = fwnode_get_next_child_node(fwnode, port);
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (!port)
  			break;
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = fwnode_get_next_child_node(port, NULL);
++			endpoint = acpi_get_next_subnode(port, NULL);
+ 	}
  
-+		case HID_GD_Z:
-+			/* HID_GD_Z is mapped to ABS_DISTANCE for stylus/pen */
-+			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
-+				map_rel(usage->hid & 0xf);
-+			} else {
-+				if (field->application == HID_DG_PEN ||
-+				    field->physical == HID_DG_PEN ||
-+				    field->logical == HID_DG_STYLUS ||
-+				    field->physical == HID_DG_STYLUS ||
-+				    field->application == HID_DG_DIGITIZER)
-+					map_abs_clear(ABS_DISTANCE);
-+				else
-+					map_abs_clear(usage->hid & 0xf);
-+			}
-+			break;
-+
- 		case HID_GD_WHEEL:
- 			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
- 				set_bit(REL_WHEEL, input->relbit);
+ 	/*
+-- 
+2.51.0
+
 
 
 
