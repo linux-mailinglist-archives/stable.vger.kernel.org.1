@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-206927-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207496-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB0AD0960E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 200D4D09FA3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A6783057B1E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63926316863A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2C87B33B6F1;
-	Fri,  9 Jan 2026 12:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0231F35971B;
+	Fri,  9 Jan 2026 12:37:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BWrqcP1U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5dq3AQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEC2135A932;
-	Fri,  9 Jan 2026 12:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA8C631ED6D;
+	Fri,  9 Jan 2026 12:36:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960595; cv=none; b=rEd3hDZ4zXIGqTVn82PvAzeC7gVxazA1IKgGYg3Uim5M242VZH7/CYFW1PvOvvPo+0ViFpArRvyeiVz1mGXOEj0s3Mqc29+mOanyW4C1rVJtG+Ofv8USljeFX71tZ/p4WqYahFq6+L6mL/FTJp2MUP8pnYUjYvaVsPXWTnu7h0Y=
+	t=1767962219; cv=none; b=it2R86LxC/2jRXj7Y0GdwBI5h0FGfjJ4dew7y8dqiOH2/wAiv3BaQAdXndT/KaaoexkWrojEk7EoVudk5dPXaXseQ//fmibHzVDAXBiXH/pR6au5XtIt5mpUWBWoSKVypf+NQ36+i1+5/WeA854C9oB8rajgzyEOzTnQUToR2Ao=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960595; c=relaxed/simple;
-	bh=kumB04/Sg2Z5Q+Gb05wGl6ttn/TGCCB0ICqp+x2mGPA=;
+	s=arc-20240116; t=1767962219; c=relaxed/simple;
+	bh=QhwJBMHTpWQYi8+MrwLepyAEohxAfSbeUVQhmJfg2Bc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IKFJSJ0zMq3ZUc4dK7X0sQe7oo852clAeOJzfellahRe52yUhDo+e4ticsTYjLK9m+s3oGJ1rrYqH6rMAp80bt74Nc7Xps6uEm0U6Zx1VvYTC2pi5jDXqYGu9W5euu+vAAZdX5p6cKzhnmEqIQUWxXE2PGayeqBfOlRs7xCGM9g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BWrqcP1U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BB09C4CEF1;
-	Fri,  9 Jan 2026 12:09:55 +0000 (UTC)
+	 MIME-Version; b=My//3mx8gvTZOaZlPbs+ERL0/WjsQKwfyP9kgOPogl0i43qDWe563mqh6YTARvchGrQcEAh6ZMMqO6y4J7a7iaxzotrkXauf0ibsRUpY3iHGtjQRuAzH0+FWI4OpbGmsyyk3PQEf6Lgz7gJO7jdb4HY9MAxC8VycvfecxBT/CFo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5dq3AQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47AAAC4CEF1;
+	Fri,  9 Jan 2026 12:36:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960595;
-	bh=kumB04/Sg2Z5Q+Gb05wGl6ttn/TGCCB0ICqp+x2mGPA=;
+	s=korg; t=1767962219;
+	bh=QhwJBMHTpWQYi8+MrwLepyAEohxAfSbeUVQhmJfg2Bc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BWrqcP1ULkI36gZghcpwvAAN4jSz5dONTeSN3+ZaIuw1Y2sG/T4pJVyWKqwSd4W56
-	 Zcdsr4Ro//eIlmIxog8WBEPiVum8rWPgMnsMDixNlnIFsbSqSdl5WrWGf/SFetx7B/
-	 rgfxUS6iWEXr53h3XrcfYehl9VYpEfKHPBwIjojc=
+	b=i5dq3AQ2KPV1KvePp+A74W+tGL1q+YZBeTv8mt0PiN3ASx//5+AWQGUGO7sGAKXJa
+	 y9UBZMxVydT7Z7Y1Kh0UPMjhdL2xwCEP1qkmoU0aeP+lOaMtlX0D6/G8SnycTRgLCC
+	 Kolwkvha1IgyuOLdDieIWE+RLZLN+LqDujpFVlik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byungchul Park <byungchul@sk.com>,
-	Jan Kara <jack@suse.cz>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.6 427/737] jbd2: use a weaker annotation in journal handling
-Date: Fri,  9 Jan 2026 12:39:26 +0100
-Message-ID: <20260109112150.059310341@linuxfoundation.org>
+	Pengjie Zhang <zhangpengjie2@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.1 289/634] ACPI: CPPC: Fix missing PCC check for guaranteed_perf
+Date: Fri,  9 Jan 2026 12:39:27 +0100
+Message-ID: <20260109112128.405250200@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +59,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byungchul Park <byungchul@sk.com>
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
+commit 6ea3a44cef28add2d93b1ef119d84886cb1e3c9b upstream.
 
-jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
-to be placed between start_this_handle() and stop_this_handle().  So it
-marks the region with rwsem_acquire_read() and rwsem_release().
+The current implementation overlooks the 'guaranteed_perf'
+register in this check.
 
-However, the annotation is too strong for that purpose.  We don't have
-to use more than try lock annotation for that.
+If the Guaranteed Performance register is located in the PCC
+subspace, the function currently attempts to read it without
+acquiring the lock and without sending the CMD_READ doorbell
+to the firmware. This can result in reading stale data.
 
-rwsem_acquire_read() implies:
-
-   1. might be a waiter on contention of the lock.
-   2. enter to the critical section of the lock.
-
-All we need in here is to act 2, not 1.  So trylock version of
-annotation is sufficient for that purpose.  Now that dept partially
-relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
-potential wait and might report a deadlock by the wait.
-
-Replace it with trylock version of annotation.
-
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: stable@kernel.org
-Message-ID: <20251024073940.1063-1-byungchul@sk.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: 29523f095397 ("ACPI / CPPC: Add support for guaranteed performance")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+Cc: 4.20+ <stable@vger.kernel.org> # 4.20+
+[ rjw: Subject and changelog edits ]
+Link: https://patch.msgid.link/20251210132227.1988380-1-zhangpengjie2@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -445,7 +445,7 @@ repeat:
- 	read_unlock(&journal->j_state_lock);
- 	current->journal_info = handle;
- 
--	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
-+	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
- 	jbd2_journal_free_transaction(new_transaction);
- 	/*
- 	 * Ensure that no allocations done while the transaction is open are
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1267,7 +1267,8 @@ int cppc_get_perf_caps(int cpunum, struc
+ 	/* Are any of the regs PCC ?*/
+ 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
+ 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
+-		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg)) {
++		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
++		CPC_IN_PCC(guaranteed_reg)) {
+ 		if (pcc_ss_id < 0) {
+ 			pr_debug("Invalid pcc_ss_id\n");
+ 			return -ENODEV;
 
 
 
