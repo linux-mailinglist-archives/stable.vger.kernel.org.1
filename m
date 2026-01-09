@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-207615-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207012-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D460D09FC7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73CEAD097DA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5215A308A925
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 10189308434E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EA1A358D30;
-	Fri,  9 Jan 2026 12:42:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE30338911;
+	Fri,  9 Jan 2026 12:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tr694bxB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EeUIr+Q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 225D133C53A;
-	Fri,  9 Jan 2026 12:42:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816672F0C7F;
+	Fri,  9 Jan 2026 12:14:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962556; cv=none; b=IT2oPkNFVuXL4nVN5g1lDOgl359cAoZYAZ3BNCy/ia/qY7Mk0S4h2oSb7XAH/q9HT4po/UuBIJHs86+ixYbEY8A89KnABoCVQvlkoGZeDRDUE7Yoqr4FdLMGpulOC+eUzFHxwNMyWmPzRgXKuK+g5JRgXLhLE3S8wi0DrE5avbw=
+	t=1767960842; cv=none; b=vET4LeYPoS96b+NWxEIOCTH5Rbk9ZZsP0MyFj91JK1HbmcJexN3NNNNG0rtkEBmHnKhrB5bFDnm/4ZlvZN5WMokzmVvTFN3Pj1Oa0Up5iKt35rBpvJoO7X7YSzBz9Fm8lOVtbB+YHWhzbX2oR7MPj0FYvve6TeAtaaZpKRmWdt0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962556; c=relaxed/simple;
-	bh=xit5Pv/VI0QuADik4YBhzSp9SJcGWPxMgl1Gdb4UNrg=;
+	s=arc-20240116; t=1767960842; c=relaxed/simple;
+	bh=f3/CIEGQKgJz2u7q8epQI82PDpATFLoYyX1LR3YAMrA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Zhl8W3aqfeFOHrGBOchCeoDZlm5FLWPlJWkS7Tb2Fd1W4XAcI+bSc8aDxpf8vrJ2z+AWNAWLHpOBAKbrVg+IObffDLnn46zkx7fofSGrRD+eU9BBpP4ya5m+rSw5ncw1avI2dcVz/7iB/FTUy1sTJfOyxB+n2bFUtD1kO5UuEvs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tr694bxB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6495EC4CEF1;
-	Fri,  9 Jan 2026 12:42:35 +0000 (UTC)
+	 MIME-Version; b=TqpREe/swGNZgcYEJekkvVW4ALrnveX6DsFMe3dFopG9dH6+hNUyP8obswNxXD1UaeZiZOhgYo++dpgec3en1St1BOLo5pl2DqE5QhXzF9PYuz1pT1IDkTvzzH/f++bNUHa/dy5tsLb7ymx4t9z6x2yJaz/s0X1E/USFoo4/Pwo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EeUIr+Q7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EFDDC4CEF1;
+	Fri,  9 Jan 2026 12:14:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962555;
-	bh=xit5Pv/VI0QuADik4YBhzSp9SJcGWPxMgl1Gdb4UNrg=;
+	s=korg; t=1767960842;
+	bh=f3/CIEGQKgJz2u7q8epQI82PDpATFLoYyX1LR3YAMrA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tr694bxBgsXMwK99zsmvxWIMaSnR7iUjd2G7ldmfCmHbN4xxGKXLaOhxDEONZwzFR
-	 QRjFch6I2FaMFZ3OiAlR5q3fZdOcqpyyER0WEc0s7KWLSu5tbi44t8/GUZbkFSk/tN
-	 SrQoE1Tdo8AIElNB6OnTzeHONG8gVrX0axKTINBo=
+	b=EeUIr+Q7mLh3FZQxH5MfEJbqMraOJUVGQlBjMmzYoHhHi2G9Rk7qqgd0NUX/m5t/C
+	 RQt4Kx3j/F6lki7ellYpfb7NpkYoCSd15SL/oBSeIWDYCeb7xatYObKP6yHiCBLG9y
+	 +j+sSRN0SQUXv3HvLrgnOBhvCTvuYS7kx/rsUa/s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 406/634] net: openvswitch: Avoid needlessly taking the RTNL on vport destroy
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 6.6 545/737] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
 Date: Fri,  9 Jan 2026 12:41:24 +0100
-Message-ID: <20260109112132.807674871@linuxfoundation.org>
+Message-ID: <20260109112154.497517319@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 5498227676303e3ffa9a3a46214af96bc3e81314 ]
+commit 950a4e5788fc7dc6e8e93614a7d4d0449c39fb8d upstream.
 
-The openvswitch teardown code will immediately call
-ovs_netdev_detach_dev() in response to a NETDEV_UNREGISTER notification.
-It will then start the dp_notify_work workqueue, which will later end up
-calling the vport destroy() callback. This callback takes the RTNL to do
-another ovs_netdev_detach_port(), which in this case is unnecessary.
-This causes extra pressure on the RTNL, in some cases leading to
-"unregister_netdevice: waiting for XX to become free" warnings on
-teardown.
+Driver does not expect the appl_ptr to move backward and requires
+explict sync. Make sure that the userspace does not do appl_ptr rewinds
+by specifying the correct flags in pcm_info.
 
-We can straight-forwardly avoid the extra RTNL lock acquisition by
-checking the device flags before taking the lock, and skip the locking
-altogether if the IFF_OVS_DATAPATH flag has already been unset.
+Without this patch, the result could be a forever loop as current logic assumes
+that appl_ptr can only move forward.
 
-Fixes: b07c26511e94 ("openvswitch: fix vport-netdev unregister")
-Tested-by: Adrian Moreno <amorenoz@redhat.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251211115006.228876-1-toke@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/vport-netdev.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
-index 2f61d5bdce1a..7126ff104550 100644
---- a/net/openvswitch/vport-netdev.c
-+++ b/net/openvswitch/vport-netdev.c
-@@ -153,10 +153,19 @@ void ovs_netdev_detach_dev(struct vport *vport)
- 
- static void netdev_destroy(struct vport *vport)
- {
--	rtnl_lock();
--	if (netif_is_ovs_port(vport->dev))
--		ovs_netdev_detach_dev(vport);
--	rtnl_unlock();
-+	/* When called from ovs_db_notify_wq() after a dp_device_event(), the
-+	 * port has already been detached, so we can avoid taking the RTNL by
-+	 * checking this first.
-+	 */
-+	if (netif_is_ovs_port(vport->dev)) {
-+		rtnl_lock();
-+		/* Check again while holding the lock to ensure we don't race
-+		 * with the netdev notifier and detach twice.
-+		 */
-+		if (netif_is_ovs_port(vport->dev))
-+			ovs_netdev_detach_dev(vport);
-+		rtnl_unlock();
-+	}
- 
- 	call_rcu(&vport->rcu, vport_netdev_free);
- }
--- 
-2.51.0
-
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -85,6 +85,7 @@ static struct snd_pcm_hardware q6apm_dai
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_48000,
+@@ -104,6 +105,7 @@ static struct snd_pcm_hardware q6apm_dai
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_192000,
 
 
 
