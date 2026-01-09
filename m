@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206911-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08F98D0A1C6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52BF2D095B4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 854E83108C36
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E698C302E588
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3C035B12B;
-	Fri,  9 Jan 2026 12:37:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE6F350A12;
+	Fri,  9 Jan 2026 12:09:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDWI3M7U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TGL6ifV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37DC336EDA;
-	Fri,  9 Jan 2026 12:37:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C6635A942;
+	Fri,  9 Jan 2026 12:09:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962265; cv=none; b=ro+8itSEm75J5LQz/9c40s7MC+ANe0BRcTA6pDXa/X8esEB1ScH9g0QUhG/QsrDv7GsOdR5OCMQgCXB7zX+MDovl955JqyVBpSSzpKWrfYrKFtnJDeQVJwKHWu8/5Mz1rE/+rfuGR7aomYJjGZZD42cOcRCry/Hr9OVIFhy8T6Q=
+	t=1767960550; cv=none; b=lYXntFFnuGf0+1OPAA0zKlqd40w/sSVcKjuhYrOJZ4uhnSBz8+/txC//UteW50Dvqc7CgU5YMlEj4XKd304+FNJGsCeYy30LslIJwro6AIm02eZJo9zsehxCUq88BGd8E4YpS3z6ZSYW1pE3kjXRSNieyzPIFhjP2hn6uMQjM0Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962265; c=relaxed/simple;
-	bh=nyVg/81JEWLhc5UrfDldTk1nRRkyMPhbSS6Kbp3f1ic=;
+	s=arc-20240116; t=1767960550; c=relaxed/simple;
+	bh=Pw22IraXcasHyBNW5rbiDu0s6Dy6+1MmNyb8NlMJ7xI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QwvF9idItCezS+VWS3JBdju1SzES4gRF2ap5gv81BSLi5ElHsP9/CcqobuZN0z2O2zmif5kwaPIL4Y9CFt6ZI5oEh26VqBCd6Z+dvdKqS94Nxu+PiQyb303t6kIMTTYxl307HsSu+TpWpB+3uskxwyorx7fEMNJ+l0F56yoafOk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDWI3M7U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741C0C4CEF1;
-	Fri,  9 Jan 2026 12:37:44 +0000 (UTC)
+	 MIME-Version; b=ERsSaE/LtGdAc3QcOyZYHN1wanCYHuXxbaY6n8e+AG4hHvZkO+znEPQMHmU+NGu+sU+uULPCSdy57eBewevnpVaZLjdzIT5zZ72/J3KaaUEKMoxKIlI2Zolj7szlXSsENEtZLjG2SR+emapviYmQRgOAmnt2ZzdBjI+4RbeStDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TGL6ifV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19257C4CEF1;
+	Fri,  9 Jan 2026 12:09:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962264;
-	bh=nyVg/81JEWLhc5UrfDldTk1nRRkyMPhbSS6Kbp3f1ic=;
+	s=korg; t=1767960550;
+	bh=Pw22IraXcasHyBNW5rbiDu0s6Dy6+1MmNyb8NlMJ7xI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dDWI3M7URkoqktatLetRP3qdyBcnkO749teO7LAUodMDX67zWHfQV7qNn6RD44GtL
-	 VOXS5eKVOvC835ekPD8O+zmYeZlUL9vbvwzico9ok3WSL5pdc5we7AoZ48F2zdnaql
-	 KTAJv6jqRH/tlaRpmS19LHcsDF92UesFfGwU+SzI=
+	b=TGL6ifV2VABmfLz61OuH4JYzOqhmK/I9Shgz4GDZh7/4uUkH7gsiarQ4evM0/s7Y9
+	 q2KifR34QN3iI16y1aFTJH4LQE6oEvQ7WtGteNYphW22G1gLBTOKhZ9PwKL0yQ5NkT
+	 7Ib7FTjyN6sNmiLt+m8dmCn9JgntgGDpDKj9YekY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Battersby <tonyb@cybernetics.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 304/634] scsi: qla2xxx: Use reinit_completion on mbx_intr_comp
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Christian Loehle <christian.loehle@arm.com>
+Subject: [PATCH 6.6 443/737] cpuidle: governors: teo: Drop misguided target residency check
 Date: Fri,  9 Jan 2026 12:39:42 +0100
-Message-ID: <20260109112128.973147431@linuxfoundation.org>
+Message-ID: <20260109112150.658343123@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 957aa5974989fba4ae4f807ebcb27f12796edd4d ]
+commit a03b2011808ab02ccb7ab6b573b013b77fbb5921 upstream.
 
-If a mailbox command completes immediately after
-wait_for_completion_timeout() times out, ha->mbx_intr_comp could be left
-in an inconsistent state, causing the next mailbox command not to wait
-for the hardware.  Fix by reinitializing the completion before use.
+When the target residency of the current candidate idle state is
+greater than the expected time till the closest timer (the sleep
+length), it does not matter whether or not the tick has already been
+stopped or if it is going to be stopped.  The closest timer will
+trigger anyway at its due time, so if an idle state with target
+residency above the sleep length is selected, energy will be wasted
+and there may be excess latency.
 
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://patch.msgid.link/11b6485e-0bfd-4784-8f99-c06a196dad94@cybernetics.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Of course, if the closest timer were canceled before it could trigger,
+a deeper idle state would be more suitable, but this is not expected
+to happen (generally speaking, hrtimers are not expected to be
+canceled as a rule).
+
+Accordingly, the teo_state_ok() check done in that case causes energy to
+be wasted more often than it allows any energy to be saved (if it allows
+any energy to be saved at all), so drop it and let the governor use the
+teo_find_shallower_state() return value as the new candidate idle state
+index.
+
+Fixes: 21d28cd2fa5f ("cpuidle: teo: Do not call tick_nohz_get_sleep_length() upfront")
+Cc: All applicable <stable@vger.kernel.org>
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-by: Christian Loehle <christian.loehle@arm.com>
+Tested-by: Christian Loehle <christian.loehle@arm.com>
+Link: https://patch.msgid.link/5955081.DvuYhMxLoT@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/qla2xxx/qla_mbx.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/cpuidle/governors/teo.c |    7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
-index 77b23d9dcb3c..33a499dea7ad 100644
---- a/drivers/scsi/qla2xxx/qla_mbx.c
-+++ b/drivers/scsi/qla2xxx/qla_mbx.c
-@@ -253,6 +253,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
- 	/* Issue set host interrupt command to send cmd out. */
- 	ha->flags.mbox_int = 0;
- 	clear_bit(MBX_INTERRUPT, &ha->mbx_cmd_flags);
-+	reinit_completion(&ha->mbx_intr_comp);
+--- a/drivers/cpuidle/governors/teo.c
++++ b/drivers/cpuidle/governors/teo.c
+@@ -595,11 +595,8 @@ static int teo_select(struct cpuidle_dri
+ 	 * If the closest expected timer is before the terget residency of the
+ 	 * candidate state, a shallower one needs to be found.
+ 	 */
+-	if (drv->states[idx].target_residency_ns > duration_ns) {
+-		i = teo_find_shallower_state(drv, dev, idx, duration_ns, false);
+-		if (teo_state_ok(i, drv))
+-			idx = i;
+-	}
++	if (drv->states[idx].target_residency_ns > duration_ns)
++		idx = teo_find_shallower_state(drv, dev, idx, duration_ns, false);
  
- 	/* Unlock mbx registers and wait for interrupt */
- 	ql_dbg(ql_dbg_mbx, vha, 0x100f,
-@@ -279,6 +280,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
- 			    "cmd=%x Timeout.\n", command);
- 			spin_lock_irqsave(&ha->hardware_lock, flags);
- 			clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
-+			reinit_completion(&ha->mbx_intr_comp);
- 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
- 
- 			if (chip_reset != ha->chip_reset) {
--- 
-2.51.0
-
+ 	/*
+ 	 * If the selected state's target residency is below the tick length
 
 
 
