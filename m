@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-206742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207350-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54E12D092A2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7EED6D09BF3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 717F23022C88
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2A4F430378AD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A556359FBA;
-	Fri,  9 Jan 2026 12:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF6C359701;
+	Fri,  9 Jan 2026 12:30:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="azshA/ZM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k3gfOHec"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E0CB359FB0;
-	Fri,  9 Jan 2026 12:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2DD035A92E;
+	Fri,  9 Jan 2026 12:30:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960070; cv=none; b=jnqvzwT76eMx+oqiR0SF7sfVXEPR4aYx1rva5HfYYtK4aWtC2lWKzQbDluhX8VLRl1mhPtUwFebKrKEYwlpvJIPvkT3yqWJBeNZRRqfn6nNx0NEhoUTfzvWJB8TdMlubqdUQKfZTiB0F3FhdvLKbMECqnJbOtQ4HKa7ihqG8hAk=
+	t=1767961806; cv=none; b=qzmu4F/hVigtsU/jvgLqdbP8kwbEujxxOmq4IMAG5vAilFxbegp0RJRktMh/zpnVUkTfklzCmT3XJVb5Et8p9H6dHsaI/XDzqyeUuiVSfU5wQdPveVRdNslPkVbKS3lka8mBefCwiZRb1yY4J3Ew3Oi3rgNCZOW9t0FuETuwMng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960070; c=relaxed/simple;
-	bh=oCakpsF/9tpVd/g4k/PZKOKYuWcBHtAnzQFSCmPGN9A=;
+	s=arc-20240116; t=1767961806; c=relaxed/simple;
+	bh=0lk+PxISYgCotwZ0/yM5TCwDciplkG8WqomRZwCQQZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZuBAW0EtZui4EkdrOVHD4HldOBMMam/0wiEhQV+Eo1zwrPosY7UXU+Ok8PYmFXyFfLo261e8YqgszZ9rzTC9b9mme8ZFiJcQ7D1ZYUsjDG91lrBHHFtRuHOaNFNvAdvEsihQiknnu+gZiS7TaPMwFJyI5EgJpRzmyg8AEcbReqU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=azshA/ZM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9664EC19421;
-	Fri,  9 Jan 2026 12:01:09 +0000 (UTC)
+	 MIME-Version; b=XvxVBBF+tk94O7Cvw0ge1K0HPKcgpoZmISWC6tem0FBaR0J7JwmF+Z75gIBGWZRJ/rD3ydLzY+5x+FTHWjSBPMoDzqeTl9ot6qmp2XIcwx+tYTmLMCtSUKokJSElnVLVldjwdVc4Ec1iUgEyZ3Uw9MQi+N3bSUeZDWDLnZvKbzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k3gfOHec; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C59DC4CEF1;
+	Fri,  9 Jan 2026 12:30:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960070;
-	bh=oCakpsF/9tpVd/g4k/PZKOKYuWcBHtAnzQFSCmPGN9A=;
+	s=korg; t=1767961805;
+	bh=0lk+PxISYgCotwZ0/yM5TCwDciplkG8WqomRZwCQQZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=azshA/ZMinM/wLyUJCHgtRbYGvOVoiEY/CkzrRQh2IyW4dZZAkTYr55t4tXI2+c01
-	 AR+AAso58NhjYZ1kqAMeJeWBulA9BZ9iMV6tlLm579T3nNtaaW5JDvCLFKH7Qe9WwY
-	 3XgBExLXzYkEpVwpe0PD+uDXwej9jkK1igV6qPWo=
+	b=k3gfOHeceI1TzioUiHLE6samE/NwtyrKy7NveVTwuYwAcrUZzBEUdJ2SCsX8MjEID
+	 Gh0r9ZbrbdWtFoyqV383JuU01eYrw5bV6Gbd8Row3yOmfHgNG9fbxiHkh2goqjvbQW
+	 RHMg6vtS0CPdaphH6N9E+K0TgsfddYQ9I1tJVR6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 274/737] ASoC: ak5558: Disable regulator when error happens
+Subject: [PATCH 6.1 135/634] usb: chaoskey: fix locking for O_NONBLOCK
 Date: Fri,  9 Jan 2026 12:36:53 +0100
-Message-ID: <20260109112144.307512371@linuxfoundation.org>
+Message-ID: <20260109112122.533159152@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 1f8f726a2a29c28f65b30880335a1610c5e63594 ]
+[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
 
-Disable regulator in runtime resume when error happens to balance
-the reference count of regulator.
+A failure to take a lock with O_NONBLOCK needs to result
+in -EAGAIN. Change it.
 
-Fixes: 2ff6d5a108c6 ("ASoC: ak5558: Add regulator support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20251203100529.3841203-3-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak5558.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/codecs/ak5558.c b/sound/soc/codecs/ak5558.c
-index 442e2cb42df4f..aeec8dabfe3fd 100644
---- a/sound/soc/codecs/ak5558.c
-+++ b/sound/soc/codecs/ak5558.c
-@@ -372,7 +372,15 @@ static int __maybe_unused ak5558_runtime_resume(struct device *dev)
- 	regcache_cache_only(ak5558->regmap, false);
- 	regcache_mark_dirty(ak5558->regmap);
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index d99d424c05a7a..50909cc9a0bb2 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -445,9 +445,19 @@ static ssize_t chaoskey_read(struct file *file,
+ 			goto bail;
+ 		mutex_unlock(&dev->rng_lock);
  
--	return regcache_sync(ak5558->regmap);
-+	ret = regcache_sync(ak5558->regmap);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	regcache_cache_only(ak5558->regmap, true);
-+	regulator_bulk_disable(ARRAY_SIZE(ak5558->supplies), ak5558->supplies);
-+	return ret;
- }
- 
- static const struct dev_pm_ops ak5558_pm = {
+-		result = mutex_lock_interruptible(&dev->lock);
+-		if (result)
+-			goto bail;
++		if (file->f_flags & O_NONBLOCK) {
++			result = mutex_trylock(&dev->lock);
++			if (result == 0) {
++				result = -EAGAIN;
++				goto bail;
++			} else {
++				result = 0;
++			}
++		} else {
++			result = mutex_lock_interruptible(&dev->lock);
++			if (result)
++				goto bail;
++		}
+ 		if (dev->valid == dev->used) {
+ 			result = _chaoskey_fill(dev);
+ 			if (result < 0) {
 -- 
 2.51.0
 
