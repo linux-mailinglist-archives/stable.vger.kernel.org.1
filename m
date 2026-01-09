@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-206963-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207530-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACD05D098BC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:10 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 418E8D09D9C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 070833019958
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7135E302BFA0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA7633B6F1;
-	Fri,  9 Jan 2026 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93E8235B14E;
+	Fri,  9 Jan 2026 12:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WvPh3dS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cGdOpWAV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE8C23ED5B;
-	Fri,  9 Jan 2026 12:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 576B035B12B;
+	Fri,  9 Jan 2026 12:38:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960703; cv=none; b=MqpRuZHv8UXMDhIQqU74wGPLQ45vminPaAX3BZY+iBS9uX0XksFJIqK8BsZczAdIj4q06aDG3AANcWK9Xvhb4sATDM7Lloy+x4Qm77fMPwSIOTqdRRc4u3YjFKhFIBU/h33A0FUt6LnqTavbBnnymt8jtXnubyQIlvEDwvhOQUk=
+	t=1767962316; cv=none; b=rFJDgPcm2FxJRPhw3goJhNnNurXKQKD8VXKiu3Pwu7lg5IY+Bhss8+h8zqY9YLsVYIvqHPa8Phkir5fLtELeovcdAuhDeKiea75e5v7MwbFiQPPib0+hQ2zJsnXHgr44zDX139SudHtxw6GDEqjiLpcquxKlfXLZNyjgCIx4kLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960703; c=relaxed/simple;
-	bh=iu6sLnUNmS+4Z3S8pTfs20lcFaqSYvMof0XLBr5NX9k=;
+	s=arc-20240116; t=1767962316; c=relaxed/simple;
+	bh=kECFhJVYj0uaF0n9SN5cjq0UNqvltYNt8+UkaiHaNuI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IsSu0ClUzAQISVqA4nhkItrEcmdiBW2Y2fLUuxlmUhj7X0PgjxyAusbOWMiM2S1WmsaDdKiTPbWSqmR0Tr0u6uQuFWsFETtze8L4wLrkVFRWBzhWgc+e52Js+8p+COhnuq8XgvAZucYyCMQ1stQyOgM80iYZorwp0pTwmmC7dTw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WvPh3dS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BF0C4CEF1;
-	Fri,  9 Jan 2026 12:11:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=HnkMPZT/aQ0CAPtWSryOIGStl+TBM+jN+FV6T5CK9/ZMjtVaWlDFA85TegRUAX3i4UgwJaa2kEgIj6+4HrwXSIHr7LKbJS2gHtGCNoGFOB03NNMpQmef/yCVALjAEZx672b/fVYOuHry7LHuqHsm/HmNi+2nx5OUwYJuTlr46yQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cGdOpWAV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D5D8C4CEF1;
+	Fri,  9 Jan 2026 12:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960703;
-	bh=iu6sLnUNmS+4Z3S8pTfs20lcFaqSYvMof0XLBr5NX9k=;
+	s=korg; t=1767962316;
+	bh=kECFhJVYj0uaF0n9SN5cjq0UNqvltYNt8+UkaiHaNuI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1WvPh3dSNQjC25zonrGmRvvw9B+0QZq2a0/aBkmWU4EAJUSRLIqHtVUlvDcm0NeU/
-	 7CKVOYA4xWQRoGz+1bjDjVWFB4OvuCFAsAQovnhRp9lbxsIfKX8Eubye/2U9OcejXB
-	 eqn42UhPuJxJDju4rd1IBjiARLoZ8ZRlxQ4Zn67I=
+	b=cGdOpWAVe+eUdCNJwHhdQ9GQzWNq7DiW/rIpuLWnpyilLj+Rc5wkQfoER9eJNgujK
+	 w3Xiclxc03NCpR/uQQmWd+JtC9V6s0XzYBOWIQyE/tur2UIhLG7bLM2YxpVH0gVmFU
+	 RTkrTmyFhBVBQww2K6kGSrIFoBDJZRDOIhdHnBlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 462/737] KVM: x86: WARN if hrtimer callback for periodic APIC timer fires with period=0
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 323/634] floppy: fix for PAGE_SIZE != 4KB
 Date: Fri,  9 Jan 2026 12:40:01 +0100
-Message-ID: <20260109112151.370875881@linuxfoundation.org>
+Message-ID: <20260109112129.684003823@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,43 +57,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Rene Rebe <rene@exactco.de>
 
-commit 0ea9494be9c931ddbc084ad5e11fda91b554cf47 upstream.
+commit 82d20481024cbae2ea87fe8b86d12961bfda7169 upstream.
 
-WARN and don't restart the hrtimer if KVM's callback runs with the guest's
-APIC timer in periodic mode but with a period of '0', as not advancing the
-hrtimer's deadline would put the CPU into an infinite loop of hrtimer
-events.  Observing a period of '0' should be impossible, even when the
-hrtimer is running on a different CPU than the vCPU, as KVM is supposed to
-cancel the hrtimer before changing (or zeroing) the period, e.g. when
-switching from periodic to one-shot.
+For years I wondered why the floppy driver does not just work on
+sparc64, e.g:
+
+root@SUNW_375_0066:# disktype /dev/fd0
+disktype: Can't open /dev/fd0: No such device or address
+
+[  525.341906] disktype: attempt to access beyond end of device
+fd0: rw=0, sector=0, nr_sectors = 16 limit=8
+[  525.341991] floppy: error 10 while reading block 0
+
+Turns out floppy.c __floppy_read_block_0 tries to read one page for
+the first test read to determine the disk size and thus fails if that
+is greater than 4k. Adjust minimum MAX_DISK_SIZE to PAGE_SIZE to fix
+floppy on sparc64 and likely all other PAGE_SIZE != 4KB configs.
 
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251113205114.1647493-2-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    2 +-
+ drivers/block/floppy.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2855,7 +2855,7 @@ static enum hrtimer_restart apic_timer_f
+--- a/drivers/block/floppy.c
++++ b/drivers/block/floppy.c
+@@ -331,7 +331,7 @@ static bool initialized;
+  * This default is used whenever the current disk size is unknown.
+  * [Now it is rather a minimum]
+  */
+-#define MAX_DISK_SIZE 4		/* 3984 */
++#define MAX_DISK_SIZE (PAGE_SIZE / 1024)
  
- 	apic_timer_expired(apic, true);
- 
--	if (lapic_is_periodic(apic)) {
-+	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
- 		advance_periodic_target_expiration(apic);
- 		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
- 		return HRTIMER_RESTART;
+ /*
+  * globals used by 'result()'
 
 
 
