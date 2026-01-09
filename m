@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 069A6D0A189
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C6A5D099D0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EA2223306A0A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 27DA1302BFAF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B5632BF21;
-	Fri,  9 Jan 2026 12:50:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 183D8359FA0;
+	Fri,  9 Jan 2026 12:22:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QFsoR27a"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PDRMxIQM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 709EE326D51;
-	Fri,  9 Jan 2026 12:50:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF49433B6F0;
+	Fri,  9 Jan 2026 12:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963038; cv=none; b=jttEmAE2XvaJ8s0rFIq1c0u1qULuQ0pM9YhhSUsQ+K0PxBkYiVVPCdRuiBnT3Ja59EFu5rXXaNN/DaQ7DG4OMWuMF6s4EP6AUBbCGu4uj1mXXvFXXWwtpdWBuoNl/FPsAa63eMnFi/iyT48P2yKhS10UYHln75Du4wnLwV+ubHU=
+	t=1767961331; cv=none; b=CmIURafMRJWHTrbM/wpJssB+dAzuPOCmYabPU0OFJKrFhT6qTgUrhtwmJ9KRbdJQaYRHg5W1Jld3vxBaP6J1YF8Y73q3Ml9aBZvNuG6BnPZyKaDrNyP7v+XSDp3nMvg5aQLnqA82DgqGXaxGoMJW6Wv+GC+HhVhXwQ7G0accRfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963038; c=relaxed/simple;
-	bh=yT2awBSBDOWG+Bp0ZTdm4fQCJchc3W+83i1vBm02IqI=;
+	s=arc-20240116; t=1767961331; c=relaxed/simple;
+	bh=/gait5QiVVF/xu0P2riVF6Y06rcApmpol2p3rDk82Ok=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atIzzwxtfaxgTvo1tRUaoHV/GZo6b5cwYyYD2nnedijxBBlCMxF8+6yloLH26V4MBZXLbe/lMo8kJLR7LcEsznjLjTWABF+M1MnpDRhcC4vCICCbRCFZZbmIE0QgW3d2Xc2o+d8TVgpHey0xZfrAxFq7xtxkWHtJM743PcGqxxU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QFsoR27a; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5FB1C4CEF1;
-	Fri,  9 Jan 2026 12:50:37 +0000 (UTC)
+	 MIME-Version; b=QA4d7yPrpNFKh+XHg0gkQ2uipVrKFpn1qLgG2aIgDta5Db7XJGNRzUBmsiW8UUuQ872oGrcEewXDVAn8GosOXM0xf1eOaqftdmPh+8rebVY0kE2RrV31GcDd/DR27H89JjKdWYaq0x79/5JcAoCXUP+kMMbHYqLn+8PTScEX5E4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PDRMxIQM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41EBBC4CEF1;
+	Fri,  9 Jan 2026 12:22:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963038;
-	bh=yT2awBSBDOWG+Bp0ZTdm4fQCJchc3W+83i1vBm02IqI=;
+	s=korg; t=1767961331;
+	bh=/gait5QiVVF/xu0P2riVF6Y06rcApmpol2p3rDk82Ok=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QFsoR27aVLjTm50o0qbe/pm88n981owTVq0+7TZY/gZPgExaGtwa+BfjYBj7lUohf
-	 jAgruN91brCR60tUP5iBHdAFwJeLot2dcnL/TnmxC02M2VPOCbGbHFqt0gTz5dJZtW
-	 g6t0Vi8NSEEM0lHaPZ02ddjITbmfTXSN9PSbyi8g=
+	b=PDRMxIQMwJ54dHWwWHqqW27Ephp/iU6kh3mxnHaWEQmEEjOTUNHo2uI994EjaWQS1
+	 Adwgfjkqb0+sCMAL2IRJyKKR8KoFEQW3XhPXy3Mh4s4ymV4mMYrYuF9s95NNy4aSWj
+	 PoMnRzvJI3o8y+AC4VvNePEiSAKPYxICTtkvKb0s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 576/634] PCI: brcmstb: Fix disabling L0s capability
-Date: Fri,  9 Jan 2026 12:44:14 +0100
-Message-ID: <20260109112139.283002377@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 716/737] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
+Date: Fri,  9 Jan 2026 12:44:15 +0100
+Message-ID: <20260109112201.017972892@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 9583f9d22991d2cfb5cc59a2552040c4ae98d998 ]
+commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e upstream.
 
-caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
-set PCI_EXP_LNKCAP_ASPM_L1 and (optionally) PCI_EXP_LNKCAP_ASPM_L0S in
-PCI_EXP_LNKCAP (aka PCIE_RC_CFG_PRIV1_LINK_CAPABILITY in brcmstb).
+damon_test_split_evenly_succ() is assuming all dynamic memory allocation
+in it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-But instead of using PCI_EXP_LNKCAP_ASPM_L1 and PCI_EXP_LNKCAP_ASPM_L0S
-directly, it used PCIE_LINK_STATE_L1 and PCIE_LINK_STATE_L0S, which are
-Linux-created values that only coincidentally matched the PCIe spec.
-b478e162f227 ("PCI/ASPM: Consolidate link state defines") later changed
-them so they no longer matched the PCIe spec, so the bits ended up in the
-wrong place in PCI_EXP_LNKCAP.
-
-Use PCI_EXP_LNKCAP_ASPM_L0S to clear L0s support when there's an
-'aspm-no-l0s' property.  Rely on brcmstb hardware to advertise L0s and/or
-L1 support otherwise.
-
-Fixes: caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
-Reported-by: Bjorn Helgaas <bhelgaas@google.com>
-Closes: https://lore.kernel.org/linux-pci/20250925194424.GA2197200@bhelgaas
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-[mani: reworded subject and description, added closes tag and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251003170436.1446030-1-james.quinlan@broadcom.com
-[ adapted context due to missing link width negotiation defines and variables ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ mm/damon/vaddr-test.h |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -45,7 +45,6 @@
- #define  PCIE_RC_CFG_PRIV1_ID_VAL3_CLASS_CODE_MASK	0xffffff
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -284,10 +284,17 @@ static void damon_test_split_evenly_succ
+ 	unsigned long start, unsigned long end, unsigned int nr_pieces)
+ {
+ 	struct damon_target *t = damon_new_target();
+-	struct damon_region *r = damon_new_region(start, end);
++	struct damon_region *r;
+ 	unsigned long expected_width = (end - start) / nr_pieces;
+ 	unsigned long i = 0;
  
- #define PCIE_RC_CFG_PRIV1_LINK_CAPABILITY			0x04dc
--#define  PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK	0xc00
- 
- #define PCIE_RC_DL_MDIO_ADDR				0x1100
- #define PCIE_RC_DL_MDIO_WR_DATA				0x1104
-@@ -869,7 +868,7 @@ static int brcm_pcie_setup(struct brcm_p
- 	void __iomem *base = pcie->base;
- 	struct pci_host_bridge *bridge;
- 	struct resource_entry *entry;
--	u32 tmp, burst, aspm_support;
-+	u32 tmp, burst;
- 	int num_out_wins = 0;
- 	int ret, memc;
- 
-@@ -963,12 +962,9 @@ static int brcm_pcie_setup(struct brcm_p
- 	writel(tmp, base + PCIE_MISC_RC_BAR3_CONFIG_LO);
- 
- 	/* Don't advertise L0s capability if 'aspm-no-l0s' */
--	aspm_support = PCIE_LINK_STATE_L1;
--	if (!of_property_read_bool(pcie->np, "aspm-no-l0s"))
--		aspm_support |= PCIE_LINK_STATE_L0S;
- 	tmp = readl(base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
--	u32p_replace_bits(&tmp, aspm_support,
--		PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK);
-+	if (of_property_read_bool(pcie->np, "aspm-no-l0s"))
-+		tmp &= ~PCI_EXP_LNKCAP_ASPM_L0S;
- 	writel(tmp, base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
- 
- 	/*
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++	r = damon_new_region(start, end);
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 	KUNIT_EXPECT_EQ(test,
+ 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
 
 
 
