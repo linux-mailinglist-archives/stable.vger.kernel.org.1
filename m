@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206473-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A6FED09931
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0114BD09008
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:48:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F36A53032116
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F1AE30B6B6A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FD1335567;
-	Fri,  9 Jan 2026 12:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2CCC2F12D4;
+	Fri,  9 Jan 2026 11:45:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7+aQa94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zi+IY9In"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E65F15ADB4;
-	Fri,  9 Jan 2026 12:22:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2E733B943;
+	Fri,  9 Jan 2026 11:45:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961357; cv=none; b=O3cYHpW+j3sGuMDuM/bbGbowta5KV2oxaxk6yu4OffzJTCkdQyd8dUXVFrQ06ihkiUj4DJjHZ0JAC3n9uQq4AS0nogQETEhgocZ4ibbOPTXIgZoM1V5RmOg7yGb5wxYp/pHzcmBAJ5DBTTqYQPMttwXZn7iIgjJpTi7ymfbK2FA=
+	t=1767959119; cv=none; b=m9g2HqC6iET5EnZftel/bsOIEiNSFifjDqCQdXMajRrK/axJ8bZ+RI6o7R8bc4d3ip4Ig9gE5dUXKcU+OonI+3YQbk2cLahinS5oHmbFHuks+QAbhvi7DFJZH78bGnp6nHsRYPKDRs6NN2x07y1Ymi3DIVCzvBoEv0KxJUhXtCA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961357; c=relaxed/simple;
-	bh=WKS31AP09BZepchob93cdBDJ4gXfcWlBnTrE1lTDz/o=;
+	s=arc-20240116; t=1767959119; c=relaxed/simple;
+	bh=abskf/h/km/SnBS4/avYvRuXzxTNt5Gzi3CIoF8SPl4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZFf7r1xOfRAsxUODY6e9ylyhq399yvb6GS0qgVx8kzME0mNZfFzIEf2aj1ncNV70q9esMbFPQiL9M2dg1R658xQgRAFLjzivJRwi3+j13W8gueixNtJi8jvAq8j4eViWP7+tPJARO2AcTgMhJvHvGkNqG27awnUahBhM2ZBpL94=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7+aQa94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F78C4CEF1;
-	Fri,  9 Jan 2026 12:22:36 +0000 (UTC)
+	 MIME-Version; b=Sral2gXo2y9HTG2SQCqu3fQ5P1Ftr9xA/jG+q06+Z413a08MLtmrCouj2F7kNrWeqNZ3YhrbOpyDrqQkEQD3pttVrfiyPxlc5GKXshpLIXehFLMlDaUkSAMzvyQgAkhfXsEoI0NjVKc46vaQHb5iNBU0uzU9OBgwVqsvlLo8VAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zi+IY9In; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E815C16AAE;
+	Fri,  9 Jan 2026 11:45:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961357;
-	bh=WKS31AP09BZepchob93cdBDJ4gXfcWlBnTrE1lTDz/o=;
+	s=korg; t=1767959116;
+	bh=abskf/h/km/SnBS4/avYvRuXzxTNt5Gzi3CIoF8SPl4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N7+aQa94znGJt10nMytm8ld/AORRbETroCh1mAaCFzzdKWVKQH7kiy3bS26obhE0z
-	 cDBu/bqnIi34IbRVt9PYdtJCu410wlvlDfpdsm4vKCYhxQoZahmIupf3Qm8Sl+Rc4U
-	 q5sWwqJzYv6ZSFcA5XMSIWrRLpJ2ksbipnqUyFCI=
+	b=zi+IY9In005iERCeux5Qu4AlAJ1Af1/x2VWEWtkELop3tR+/Zm+gBwOM4xezkl8z6
+	 5FM04CGevuJB1I8F/4sayd6IDu+VN2clX+hNIvFYpjEylS2xCWNan+V0wp5VwMJwou
+	 n2FJqiTo6SnnbVdmFtyYRBbEpCz9DMfvczbsJYEQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 707/737] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Chris Mason <clm@meta.com>
+Subject: [PATCH 6.18 4/5] sched/fair: Proportional newidle balance
 Date: Fri,  9 Jan 2026 12:44:06 +0100
-Message-ID: <20260109112200.668653338@linuxfoundation.org>
+Message-ID: <20260109111950.513989719@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
+References: <20260109111950.344681501@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +60,205 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 upstream.
+commit 33cf66d88306663d16e4759e9d24766b0aaa2e17 upstream.
 
-damon_do_test_apply_three_regions() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+Add a randomized algorithm that runs newidle balancing proportional to
+its success rate.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+This improves schbench significantly:
+
+ 6.18-rc4:			2.22 Mrps/s
+ 6.18-rc4+revert:		2.04 Mrps/s
+ 6.18-rc4+revert+random:	2.18 Mrps/S
+
+Conversely, per Adam Li this affects SpecJBB slightly, reducing it by 1%:
+
+ 6.17:			-6%
+ 6.17+revert:		 0%
+ 6.17+revert+random:	-1%
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://lkml.kernel.org/r/6825c50d-7fa7-45d8-9b81-c6e7e25738e2@meta.com
+Link: https://patch.msgid.link/20251107161739.770122091@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ include/linux/sched/topology.h |    3 ++
+ kernel/sched/core.c            |    3 ++
+ kernel/sched/fair.c            |   44 +++++++++++++++++++++++++++++++++++++----
+ kernel/sched/features.h        |    5 ++++
+ kernel/sched/sched.h           |    7 ++++++
+ kernel/sched/topology.c        |    6 +++++
+ 6 files changed, 64 insertions(+), 4 deletions(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -136,8 +136,14 @@ static void damon_do_test_apply_three_re
- 	int i;
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -92,6 +92,9 @@ struct sched_domain {
+ 	unsigned int nr_balance_failed; /* initialise to 0 */
  
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	for (i = 0; i < nr_regions / 2; i++) {
- 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
-+		if (!r) {
-+			damon_destroy_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
- 		damon_add_region(r, t);
- 	}
+ 	/* idle_balance() stats */
++	unsigned int newidle_call;
++	unsigned int newidle_success;
++	unsigned int newidle_ratio;
+ 	u64 max_newidle_lb_cost;
+ 	unsigned long last_decay_max_lb_cost;
  
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -121,6 +121,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_updat
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
+ 
+ #ifdef CONFIG_SCHED_PROXY_EXEC
+ DEFINE_STATIC_KEY_TRUE(__sched_proxy_exec);
+@@ -8591,6 +8592,8 @@ void __init sched_init_smp(void)
+ {
+ 	sched_init_numa(NUMA_NO_NODE);
+ 
++	prandom_init_once(&sched_rnd_state);
++
+ 	/*
+ 	 * There's no userspace yet to cause hotplug operations; hence all the
+ 	 * CPU masks are stable and all blatant races in the below code cannot
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12122,11 +12122,27 @@ void update_max_interval(void)
+ 	max_load_balance_interval = HZ*num_online_cpus()/10;
+ }
+ 
+-static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
++static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
++{
++	sd->newidle_call++;
++	sd->newidle_success += success;
++
++	if (sd->newidle_call >= 1024) {
++		sd->newidle_ratio = sd->newidle_success;
++		sd->newidle_call /= 2;
++		sd->newidle_success /= 2;
++	}
++}
++
++static inline bool
++update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
+ {
+ 	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
+ 	unsigned long now = jiffies;
+ 
++	if (cost)
++		update_newidle_stats(sd, success);
++
+ 	if (cost > sd->max_newidle_lb_cost) {
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+@@ -12174,7 +12190,7 @@ static void sched_balance_domains(struct
+ 		 * Decay the newidle max times here because this is a regular
+ 		 * visit to all the domains.
+ 		 */
+-		need_decay = update_newidle_cost(sd, 0);
++		need_decay = update_newidle_cost(sd, 0, 0);
+ 		max_cost += sd->max_newidle_lb_cost;
+ 
+ 		/*
+@@ -12819,6 +12835,22 @@ static int sched_balance_newidle(struct
+ 			break;
+ 
+ 		if (sd->flags & SD_BALANCE_NEWIDLE) {
++			unsigned int weight = 1;
++
++			if (sched_feat(NI_RANDOM)) {
++				/*
++				 * Throw a 1k sided dice; and only run
++				 * newidle_balance according to the success
++				 * rate.
++				 */
++				u32 d1k = sched_rng() % 1024;
++				weight = 1 + sd->newidle_ratio;
++				if (d1k > weight) {
++					update_newidle_stats(sd, 0);
++					continue;
++				}
++				weight = (1024 + weight/2) / weight;
++			}
+ 
+ 			pulled_task = sched_balance_rq(this_cpu, this_rq,
+ 						   sd, CPU_NEWLY_IDLE,
+@@ -12826,10 +12858,14 @@ static int sched_balance_newidle(struct
+ 
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
++
++			/*
++			 * Track max cost of a domain to make sure to not delay the
++			 * next wakeup on the CPU.
++			 */
++			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
+ 		}
+ 
+ 		/*
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -121,3 +121,8 @@ SCHED_FEAT(WA_BIAS, true)
+ SCHED_FEAT(UTIL_EST, true)
+ 
+ SCHED_FEAT(LATENCY_WARN, false)
++
++/*
++ * Do newidle balancing proportional to its success rate using randomization.
++ */
++SCHED_FEAT(NI_RANDOM, true)
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -5,6 +5,7 @@
+ #ifndef _KERNEL_SCHED_SCHED_H
+ #define _KERNEL_SCHED_SCHED_H
+ 
++#include <linux/prandom.h>
+ #include <linux/sched/affinity.h>
+ #include <linux/sched/autogroup.h>
+ #include <linux/sched/cpufreq.h>
+@@ -1349,6 +1350,12 @@ static inline bool is_migration_disabled
+ }
+ 
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
++
++static inline u32 sched_rng(void)
++{
++	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
++}
+ 
+ #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
+ #define this_rq()		this_cpu_ptr(&runqueues)
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1662,6 +1662,12 @@ sd_init(struct sched_domain_topology_lev
+ 
+ 		.last_balance		= jiffies,
+ 		.balance_interval	= sd_weight,
++
++		/* 50% success rate */
++		.newidle_call		= 512,
++		.newidle_success	= 256,
++		.newidle_ratio		= 512,
++
+ 		.max_newidle_lb_cost	= 0,
+ 		.last_decay_max_lb_cost	= jiffies,
+ 		.child			= child,
 
 
 
