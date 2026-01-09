@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207032-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6116D0A0C9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E707FD09829
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EF3630E9063
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAF5E30C59FE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE1B359703;
-	Fri,  9 Jan 2026 12:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AF173590C6;
+	Fri,  9 Jan 2026 12:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jRPzsbse"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bUPkfz5I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B321F335BCD;
-	Fri,  9 Jan 2026 12:44:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A86A33C530;
+	Fri,  9 Jan 2026 12:15:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962697; cv=none; b=bxSPfQV3z9zArkj/8TQBPsxlFX68uIPF4R8Gn8DGRS3UGthHnIcHC4/Zag4wlv9Kwj4NWq44TKOC0QgpP6omNYdnZZ0OlXrFalyjkZxVoJgfTABkT3kuGY0N8Zv4xCZPX3LfpqdFi8Cp/gd5g2T3bFkyLPw5xyCOrNOzCklR0KI=
+	t=1767960900; cv=none; b=RT4YMiVjRl3LarCWvod+VaEkSRQ9B2knVvuTePKYHOcEDgt0PM1MNkLDPMRANO28eiQKrnHb6RBYV7mC4QhtsnL16bjvvyWWwzgH3Vs1s93g8XXsrScxmHd8OjU1+3BrrBPeK3dqoxE4fytWHdpmRru64zZboihfElZLr+5oNew=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962697; c=relaxed/simple;
-	bh=54RjP9svvz0o7HYFFTCn9htzJg8rYFuZ664VcURq+MY=;
+	s=arc-20240116; t=1767960900; c=relaxed/simple;
+	bh=WcQW8epb1y722o8br+2l0TKHQGw5cUjCRSIu5LO+eT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EhI0RxcIuHUiwJwKEJ/nYW+QkUbL5aA2+VLfttQ/u7EO1BrOzf1CtyZiFPTp7UI2mUeCq6pfWOq5IcsoPHTZSDS9zIjboongwfERWFq5h+YUYu2xF7U74FRlfaVkzGiM3AQa0tdRBLVlwvK7F6prxsT7gfat73hrmY+lCNKrFYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jRPzsbse; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D94CC4CEF1;
-	Fri,  9 Jan 2026 12:44:57 +0000 (UTC)
+	 MIME-Version; b=bXu4nmn9CPeqduVeA8ITL1ET3jHtfkW6AGSyV7Vp9CUg2zQRTBXO8mMg6FM6eA6gFZ/CdF3K1tvrjp7fkAwDRZzUJxwxbj2/W8kmwGXbn2TsWPCTKWFHseOzbGZUSExPerfkuA58MgarzpEdZu3l87eRC/ot4vbSGJ7uZnlnsfM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bUPkfz5I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8AC8C4CEF1;
+	Fri,  9 Jan 2026 12:14:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962697;
-	bh=54RjP9svvz0o7HYFFTCn9htzJg8rYFuZ664VcURq+MY=;
+	s=korg; t=1767960900;
+	bh=WcQW8epb1y722o8br+2l0TKHQGw5cUjCRSIu5LO+eT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jRPzsbseVrb3DCW9OcgWAVaBjPVXPbmtJppbjJzuIr4o3Pn7An1h/Js2/kRjjT7yB
-	 sX+sK1ZVSzzDXV+jyFwDe1QqsXcRVMAbr+a0QR2VRnLD6J3bHfnBTJKw2leFzOS2NJ
-	 NiHc0SIJBWqA/pUyVC/C3F+RbZS7vton/Ln7uAQw=
+	b=bUPkfz5Ie3lZP+5j21G/Yu7tzlQZkQKbgoesleJ+H41Q/aPqEvyOspo9VQRN7U1th
+	 +8i66NEULQVzKqkDmlnZRaK+jb3NDGCUADwuDHn4OF4vD/S01jCCKZGkSaWNS8g2sR
+	 6ToZJHdF8bj6GqX8nBA3Xc1rLKHRtDQPMzmdD9m0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Yoong Siang <yoong.siang.song@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Jesper Dangaard Brouer <brouer@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 424/634] net: stmmac: introduce wrapper for struct xdp_buff
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Yemike Abhilash Chandra <y-abhilashchandra@ti.com>,
+	Vignesh Raghavendra <vigneshr@ti.com>
+Subject: [PATCH 6.6 563/737] arm64: dts: ti: k3-j721e-sk: Fix pinmux for pin Y1 used by power regulator
 Date: Fri,  9 Jan 2026 12:41:42 +0100
-Message-ID: <20260109112133.496945670@linuxfoundation.org>
+Message-ID: <20260109112155.182551257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Yoong Siang <yoong.siang.song@intel.com>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 5b24324a907c996faf47ea3969499e04beea9c4f ]
+commit 51f89c488f2ecc020f82bfedd77482584ce8027a upstream.
 
-Introduce struct stmmac_xdp_buff as a preparation to support XDP Rx
-metadata via kfuncs.
+The SoC pin Y1 is incorrectly defined in the WKUP Pinmux device-tree node
+(pinctrl@4301c000) leading to the following silent failure:
 
-Signed-off-by: Song Yoong Siang <yoong.siang.song@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Acked-by: Jesper Dangaard Brouer <brouer@redhat.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: a48e23221000 ("net: stmmac: fix the crash issue for zero copy XDP_TX action")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+    pinctrl-single 4301c000.pinctrl: mux offset out of range: 0x1dc (0x178)
+
+According to the datasheet for the J721E SoC [0], the pin Y1 belongs to the
+MAIN Pinmux device-tree node (pinctrl@11c000). This is confirmed by the
+address of the pinmux register for it on page 142 of the datasheet which is
+0x00011C1DC.
+
+Hence fix it.
+
+[0]: https://www.ti.com/lit/ds/symlink/tda4vm.pdf
+
+Fixes: 97b67cc102dc ("arm64: dts: ti: k3-j721e-sk: Add DT nodes for power regulators")
+Cc: stable@vger.kernel.org
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Reviewed-by: Yemike Abhilash Chandra <y-abhilashchandra@ti.com>
+Link: https://patch.msgid.link/20251119160148.2752616-1-s-vadapalli@ti.com
+Signed-off-by: Vignesh Raghavendra <vigneshr@ti.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac.h   |  4 ++++
- .../net/ethernet/stmicro/stmmac/stmmac_main.c  | 18 +++++++++---------
- 2 files changed, 13 insertions(+), 9 deletions(-)
+ arch/arm64/boot/dts/ti/k3-j721e-sk.dts |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac.h b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-index 46944c02b45e..b9b41dd18cde 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac.h
-@@ -92,6 +92,10 @@ struct stmmac_rx_buffer {
- 	dma_addr_t sec_addr;
+--- a/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
++++ b/arch/arm64/boot/dts/ti/k3-j721e-sk.dts
+@@ -571,6 +571,12 @@
+ 			J721E_IOPAD(0x234, PIN_INPUT, 7) /* (U3) EXT_REFCLK1.GPIO1_12 */
+ 		>;
+ 	};
++
++	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
++		pinctrl-single,pins = <
++			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
++		>;
++	};
  };
  
-+struct stmmac_xdp_buff {
-+	struct xdp_buff xdp;
-+};
-+
- struct stmmac_rx_queue {
- 	u32 rx_count_frames;
- 	u32 queue_index;
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 0483e8c2f1de..4aeacb5fe81e 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5217,7 +5217,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 	enum dma_data_direction dma_dir;
- 	unsigned int desc_size;
- 	struct sk_buff *skb = NULL;
--	struct xdp_buff xdp;
-+	struct stmmac_xdp_buff ctx;
- 	int xdp_status = 0;
- 	int buf_sz;
+ &wkup_pmx0 {
+@@ -626,12 +632,6 @@
+ 		>;
+ 	};
  
-@@ -5339,17 +5339,17 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 			dma_sync_single_for_cpu(priv->device, buf->addr,
- 						buf1_len, dma_dir);
- 
--			xdp_init_buff(&xdp, buf_sz, &rx_q->xdp_rxq);
--			xdp_prepare_buff(&xdp, page_address(buf->page),
-+			xdp_init_buff(&ctx.xdp, buf_sz, &rx_q->xdp_rxq);
-+			xdp_prepare_buff(&ctx.xdp, page_address(buf->page),
- 					 buf->page_offset, buf1_len, false);
- 
--			pre_len = xdp.data_end - xdp.data_hard_start -
-+			pre_len = ctx.xdp.data_end - ctx.xdp.data_hard_start -
- 				  buf->page_offset;
--			skb = stmmac_xdp_run_prog(priv, &xdp);
-+			skb = stmmac_xdp_run_prog(priv, &ctx.xdp);
- 			/* Due xdp_adjust_tail: DMA sync for_device
- 			 * cover max len CPU touch
- 			 */
--			sync_len = xdp.data_end - xdp.data_hard_start -
-+			sync_len = ctx.xdp.data_end - ctx.xdp.data_hard_start -
- 				   buf->page_offset;
- 			sync_len = max(sync_len, pre_len);
- 
-@@ -5359,7 +5359,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 
- 				if (xdp_res & STMMAC_XDP_CONSUMED) {
- 					page_pool_put_page(rx_q->page_pool,
--							   virt_to_head_page(xdp.data),
-+							   virt_to_head_page(ctx.xdp.data),
- 							   sync_len, true);
- 					buf->page = NULL;
- 					priv->dev->stats.rx_dropped++;
-@@ -5387,7 +5387,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 
- 		if (!skb) {
- 			/* XDP program may expand or reduce tail */
--			buf1_len = xdp.data_end - xdp.data;
-+			buf1_len = ctx.xdp.data_end - ctx.xdp.data;
- 
- 			skb = napi_alloc_skb(&ch->rx_napi, buf1_len);
- 			if (!skb) {
-@@ -5397,7 +5397,7 @@ static int stmmac_rx(struct stmmac_priv *priv, int limit, u32 queue)
- 			}
- 
- 			/* XDP program may adjust header */
--			skb_copy_to_linear_data(skb, xdp.data, buf1_len);
-+			skb_copy_to_linear_data(skb, ctx.xdp.data, buf1_len);
- 			skb_put(skb, buf1_len);
- 
- 			/* Data payload copied into SKB, page ready for recycle */
--- 
-2.51.0
-
+-	vdd_sd_dv_pins_default: vdd-sd-dv-default-pins {
+-		pinctrl-single,pins = <
+-			J721E_IOPAD(0x1dc, PIN_OUTPUT, 7) /* (Y1) SPI1_CLK.GPIO0_118 */
+-		>;
+-	};
+-
+ 	wkup_uart0_pins_default: wkup-uart0-default-pins {
+ 		pinctrl-single,pins = <
+ 			J721E_WKUP_IOPAD(0xa0, PIN_INPUT, 0) /* (J29) WKUP_UART0_RXD */
 
 
 
