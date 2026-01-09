@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206964-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207531-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7766D098C0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C47DD09DAF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 018C9304F653
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DF45A303076D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 38504359708;
-	Fri,  9 Jan 2026 12:11:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2023335BDA9;
+	Fri,  9 Jan 2026 12:38:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q012h1p4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QErtF5fD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFD6132F748;
-	Fri,  9 Jan 2026 12:11:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D766735BDAF;
+	Fri,  9 Jan 2026 12:38:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960706; cv=none; b=jIVCJH9C7gMuu7UNYSgk5obYZj2JmaAGax2AnKbSrhrf+sJpM5VPydbC6KqO7u2ZBEjxsWwSJMpZ0JoR9aQmLY0H9YoRMMs4I3nzwAfNSCreWQMTqL0FeuMOgrE2v6ZbReUZo/uzU/vYWdTeCug7Nm6pOE3xQxDtcgUchydETiY=
+	t=1767962318; cv=none; b=B/Nj0TbQRxVoPkd1s0RuEyAZrDG3F6IS6GWD3URVLi+0oO8aV9lqJyfsyRLqGWqRfRTrqqH9ZEwfVv466AUOaE060OUVOFGvLXQ3/d2qMrohgr09N7+iU8r84vQkaNhbNs86GWz04t70GWAHmj8/gLHoPbYQ51gHrokz0YcYxFQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960706; c=relaxed/simple;
-	bh=MhhhkozYOPeLnok7kr6NliB3VqhJqjfQQqQCZR9DVKo=;
+	s=arc-20240116; t=1767962318; c=relaxed/simple;
+	bh=/J87qUkbuBsqobjUjzzi9JXgUpmIQcdHMPISnN9Hdgs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OK+JiIam67WqPzYwXKCw8WhfqNSR01G80+GUyys6nJ8YYLrSwmDSBMYNS0AJO+WyNwv8rL5XjlrEsb23AOlc4pZW1tUcC0qnHsx1Pabp+2kU/XFc6/JXZGGR63hCPCUhu1Fbmj7OtsU1ZmB312qlaaLCP256WEu9hWT5R4xLzLU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q012h1p4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B4E8C4CEF1;
-	Fri,  9 Jan 2026 12:11:45 +0000 (UTC)
+	 MIME-Version; b=udpvyU/RoE3/2afKbjzFnQdp5zynCbfVKpqvz643Mvi+WKrpAUj1hu61g+Jsg49htrulfYvtS6Yl7jTnAUOuk2JYFbpyvlR1p6NvH/1wgriIsKXSeYd0RwTRYZK2FMOg2y53D93kzBQqx74z4A0p+Isg2s+V1RctiihGfncD+hI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QErtF5fD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F51C16AAE;
+	Fri,  9 Jan 2026 12:38:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960705;
-	bh=MhhhkozYOPeLnok7kr6NliB3VqhJqjfQQqQCZR9DVKo=;
+	s=korg; t=1767962318;
+	bh=/J87qUkbuBsqobjUjzzi9JXgUpmIQcdHMPISnN9Hdgs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q012h1p4ICDIFGv3hVOzxh6tGK4txy+VWiG7AC7iPuokm1OqHGf1dMCKgcCeZ4klo
-	 wxE8of9AlYQeolOZMINJT4EyoNkudH0AUgUxpdH5i0PI7wQjGKm4+3fxSfhoSlwy/V
-	 7vQVZfWA/061gqT4lf6KqA1lm9tY5D2WPG8nIrGw=
+	b=QErtF5fDS8zYsC0BP/3o4LT6twZiu/prvv6Rl7cxz4HZeQHpzl8adK+JN/E321tOi
+	 55H1MTr+t2Fpg3RcBe31SMbzRd/34ob4BQky0UWYyTKNVpcFnxwhTQRHRRgTAwclLA
+	 gCZ2dhdQJexj8EaEmXAHh4I9Vo8pto4A18RhGLjc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	fuqiang wang <fuqiang.wng@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 463/737] KVM: x86: Explicitly set new periodic hrtimer expiration in apic_timer_fn()
+	Zheng Yejian <zhengyejian@huaweicloud.com>,
+	Gary Guo <gary@garyguo.net>,
+	Miguel Ojeda <ojeda@kernel.org>
+Subject: [PATCH 6.1 324/634] kallsyms: Fix wrong "big" kernel symbol type read from procfs
 Date: Fri,  9 Jan 2026 12:40:02 +0100
-Message-ID: <20260109112151.407679933@linuxfoundation.org>
+Message-ID: <20260109112129.720885335@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fuqiang wang <fuqiang.wng@gmail.com>
+From: Zheng Yejian <zhengyejian@huaweicloud.com>
 
-commit 9633f180ce994ab293ce4924a9b7aaf4673aa114 upstream.
+commit f3f9f42232dee596d15491ca3f611d02174db49c upstream.
 
-When restarting an hrtimer to emulate a the guest's APIC timer in periodic
-mode, explicitly set the expiration using the target expiration computed
-by advance_periodic_target_expiration() instead of adding the period to
-the existing timer.  This will allow making adjustments to the expiration,
-e.g. to deal with expirations far in the past, without having to implement
-the same logic in both advance_periodic_target_expiration() and
-apic_timer_fn().
+Currently when the length of a symbol is longer than 0x7f characters,
+its type shown in /proc/kallsyms can be incorrect.
+
+I found this issue when reading the code, but it can be reproduced by
+following steps:
+
+  1. Define a function which symbol length is 130 characters:
+
+    #define X13(x) x##x##x##x##x##x##x##x##x##x##x##x##x
+    static noinline void X13(x123456789)(void)
+    {
+        printk("hello world\n");
+    }
+
+  2. The type in vmlinux is 't':
+
+    $ nm vmlinux | grep x123456
+    ffffffff816290f0 t x123456789x123456789x123456789x12[...]
+
+  3. Then boot the kernel, the type shown in /proc/kallsyms becomes 'g'
+     instead of the expected 't':
+
+    # cat /proc/kallsyms | grep x123456
+    ffffffff816290f0 g x123456789x123456789x123456789x12[...]
+
+The root cause is that, after commit 73bbb94466fd ("kallsyms: support
+"big" kernel symbols"), ULEB128 was used to encode symbol name length.
+That is, for "big" kernel symbols of which name length is longer than
+0x7f characters, the length info is encoded into 2 bytes.
+
+kallsyms_get_symbol_type() expects to read the first char of the
+symbol name which indicates the symbol type. However, due to the
+"big" symbol case not being handled, the symbol type read from
+/proc/kallsyms may be wrong, so handle it properly.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: fuqiang wang <fuqiang.wng@gmail.com>
-[sean: split to separate patch, write changelog]
-Link: https://patch.msgid.link/20251113205114.1647493-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Fixes: 73bbb94466fd ("kallsyms: support "big" kernel symbols")
+Signed-off-by: Zheng Yejian <zhengyejian@huaweicloud.com>
+Acked-by: Gary Guo <gary@garyguo.net>
+Link: https://patch.msgid.link/20241011143853.3022643-1-zhengyejian@huaweicloud.com
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/kallsyms.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2857,7 +2857,7 @@ static enum hrtimer_restart apic_timer_f
+--- a/kernel/kallsyms.c
++++ b/kernel/kallsyms.c
+@@ -103,8 +103,11 @@ static char kallsyms_get_symbol_type(uns
+ {
+ 	/*
+ 	 * Get just the first code, look it up in the token table,
+-	 * and return the first char from this token.
++	 * and return the first char from this token. If MSB of length
++	 * is 1, it is a "big" symbol, so needs an additional byte.
+ 	 */
++	if (kallsyms_names[off] & 0x80)
++		off++;
+ 	return kallsyms_token_table[kallsyms_token_index[kallsyms_names[off + 1]]];
+ }
  
- 	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
- 		advance_periodic_target_expiration(apic);
--		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
-+		hrtimer_set_expires(&ktimer->timer, ktimer->target_expiration);
- 		return HRTIMER_RESTART;
- 	} else
- 		return HRTIMER_NORESTART;
 
 
 
