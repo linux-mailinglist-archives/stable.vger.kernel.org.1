@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207243-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA32D09374
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 227F1D09A66
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4A23130FE337
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3D5A30E8420
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1518C350A12;
-	Fri,  9 Jan 2026 11:58:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D3881531E8;
+	Fri,  9 Jan 2026 12:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bivZYIPF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s6skMXfa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCFC032BF21;
-	Fri,  9 Jan 2026 11:58:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403162737EE;
+	Fri,  9 Jan 2026 12:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959910; cv=none; b=dRpORVFyLYG3qidLsrJT1+OgwifoV5VqYWP4XjVgLYxtDdjKL+4jUnFPnpSnC8eRPbzFKp/lQ7s5XCImT6tTueLMbvcvfmK4G1E0fNpEXHumsP5hiu8uCWHncPz4mdY7b3VrGzEmIX+pyb/bCbM6cX0ihCAhX2lfJdWblV8kSDw=
+	t=1767961501; cv=none; b=le2DBlHxo7sPlg24trpYgE+lHUdNdNc2fhskQZBM0cINr6o3DUe+2ycpQxkNhl6qCcPB6egt0TJ0Dp5abW6rjTkz6jj78MxWzXxFUbazz/Mw5j29KZUNh7dD0QweV5KAWPUzRFr772brqHY5AJiT+KHwZEavZFCZ3afCXH2LkHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959910; c=relaxed/simple;
-	bh=3VCmg8GlUvj5gb8QPCr2TZ74wkJ8kP6gi4uc+FIOtoc=;
+	s=arc-20240116; t=1767961501; c=relaxed/simple;
+	bh=6CxA22hLdgShFlyMbV3VfcpVDwmZfzPouHmFBdY12zA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=byWQuPlN4GaJUla6Z/g6a8F9lC04fciZWp34PmCq5C+qZrxuSItwKBe1HbyDHA4pguC/IVopbTj95+yDSB0SHxZhTKzdIFDP+6VZIdTisDTBQaPZvQ+ubhNxzWwH+0KxtJeMFZO1/znWcPUyimTSJFjwo7pw+R3oXXkmJU3ZJdE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bivZYIPF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595F3C4CEF1;
-	Fri,  9 Jan 2026 11:58:30 +0000 (UTC)
+	 MIME-Version; b=sj0yUV2ZgN8hTIMwfFN6w9OIl4b1b/CeinIA2MvGmbRZpaIk40ysifkMyv8nMimIcVYwx7cY0mG21Mrm3YyXJNrbwTB6RODhRSyOl0fL1aPlIUWMJHxgdsG9xaUmYqoIKuxzrFf//K6gdp3QYLNEv6pC4eNGE55++iL6hDeGZWc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s6skMXfa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7DC9C4CEF1;
+	Fri,  9 Jan 2026 12:25:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959910;
-	bh=3VCmg8GlUvj5gb8QPCr2TZ74wkJ8kP6gi4uc+FIOtoc=;
+	s=korg; t=1767961501;
+	bh=6CxA22hLdgShFlyMbV3VfcpVDwmZfzPouHmFBdY12zA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bivZYIPFziRXAeTFIwrhYUJ4leTmpeFQ7LFLZbfanGYHCZI1+0sBG7EkPSdHsIFrG
-	 FnibFtKkTmyd/BPXNU6WPfsTS7omso4jqsHR5tbeNqq5DyTUEqQhA9nSXLDJdyVcSv
-	 l2KWY8m6YFm9RzQxat2lElkdBNYpG6H/GLr7HzTI=
+	b=s6skMXfatD40wI80lngA+D0qcEG3D1VhDjOE/WSDnij2vhEM7Id+CZOzZrO6hggdZ
+	 Re2O8Ye0ce2bXHEm0xb7VaT8RXjbUW8jPzFWZYgWNB0pwYidRTSZXRNqYL88Gy+VZ2
+	 UOhaXJNxJeCJqyRCqXPUWYykkhbOKd83brbbVfx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 176/737] perf arm-spe: Extend branch operations
+	syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Subject: [PATCH 6.1 037/634] comedi: check devices attached status in compat ioctls
 Date: Fri,  9 Jan 2026 12:35:15 +0100
-Message-ID: <20260109112140.612481185@linuxfoundation.org>
+Message-ID: <20260109112118.843776483@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,99 +61,151 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 64d86c03e1441742216b6332bdfabfb6ede31662 ]
+commit 0de7d9cd07a2671fa6089173bccc0b2afe6b93ee upstream.
 
-In Arm ARM (ARM DDI 0487, L.a), the section "D18.2.7 Operation Type
-packet", the branch subclass is extended for Call Return (CR), Guarded
-control stack data access (GCS).
+Syzbot identified an issue [1] that crashes kernel, seemingly due to
+unexistent callback dev->get_valid_routes(). By all means, this should
+not occur as said callback must always be set to
+get_zero_valid_routes() in __comedi_device_postconfig().
 
-This commit adds support CR and GCS operations.  The IND (indirect)
-operation is defined only in bit [1], its macro is updated accordingly.
+As the crash seems to appear exclusively in i386 kernels, at least,
+judging from [1] reports, the blame lies with compat versions
+of standard IOCTL handlers. Several of them are modified and
+do not use comedi_unlocked_ioctl(). While functionality of these
+ioctls essentially copy their original versions, they do not
+have required sanity check for device's attached status. This,
+in turn, leads to a possibility of calling select IOCTLs on a
+device that has not been properly setup, even via COMEDI_DEVCONFIG.
 
-Move the COND (Conditional) macro into the same group with other
-operations for better maintenance.
+Doing so on unconfigured devices means that several crucial steps
+are missed, for instance, specifying dev->get_valid_routes()
+callback.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Link: https://lore.kernel.org/r/20250304111240.3378214-8-leo.yan@arm.com
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Stable-dep-of: 33e1fffea492 ("perf arm_spe: Fix memset subclass in operation")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this somewhat crudely by ensuring device's attached status before
+performing any ioctls, improving logic consistency between modern
+and compat functions.
+
+[1] Syzbot report:
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+...
+CR2: ffffffffffffffd6 CR3: 000000006c717000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ get_valid_routes drivers/comedi/comedi_fops.c:1322 [inline]
+ parse_insn+0x78c/0x1970 drivers/comedi/comedi_fops.c:1401
+ do_insnlist_ioctl+0x272/0x700 drivers/comedi/comedi_fops.c:1594
+ compat_insnlist drivers/comedi/comedi_fops.c:3208 [inline]
+ comedi_compat_ioctl+0x810/0x990 drivers/comedi/comedi_fops.c:3273
+ __do_compat_sys_ioctl fs/ioctl.c:695 [inline]
+ __se_compat_sys_ioctl fs/ioctl.c:638 [inline]
+ __ia32_compat_sys_ioctl+0x242/0x370 fs/ioctl.c:638
+ do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
+...
+
+Reported-by: syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=ab8008c24e84adee93ff
+Fixes: 3fbfd2223a27 ("comedi: get rid of compat_alloc_user_space() mess in COMEDI_CHANINFO compat")
+Cc: stable <stable@kernel.org>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://patch.msgid.link/20251023132234.395794-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c  | 12 +++++++++---
- .../perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h  | 11 ++++++++---
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/comedi/comedi_fops.c |   42 ++++++++++++++++++++++++++++++++++++------
+ 1 file changed, 36 insertions(+), 6 deletions(-)
 
-diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
-index a454c6737563d..7b45fcf2454be 100644
---- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
-+++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.c
-@@ -410,10 +410,16 @@ static int arm_spe_pkt_desc_op_type(const struct arm_spe_pkt *packet,
+--- a/drivers/comedi/comedi_fops.c
++++ b/drivers/comedi/comedi_fops.c
+@@ -2966,7 +2966,12 @@ static int compat_chaninfo(struct file *
+ 	chaninfo.rangelist = compat_ptr(chaninfo32.rangelist);
  
- 		if (payload & SPE_OP_PKT_COND)
- 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " COND");
--
--		if (SPE_OP_PKT_IS_INDIRECT_BRANCH(payload))
-+		if (payload & SPE_OP_PKT_INDIRECT_BRANCH)
- 			arm_spe_pkt_out_string(&err, &buf, &buf_len, " IND");
--
-+		if (payload & SPE_OP_PKT_GCS)
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " GCS");
-+		if (SPE_OP_PKT_CR_BL(payload))
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " CR-BL");
-+		if (SPE_OP_PKT_CR_RET(payload))
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " CR-RET");
-+		if (SPE_OP_PKT_CR_NON_BL_RET(payload))
-+			arm_spe_pkt_out_string(&err, &buf, &buf_len, " CR-NON-BL-RET");
- 		break;
- 	default:
- 		/* Unknown index */
-diff --git a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
-index 464a912b221cd..32d760ede7013 100644
---- a/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
-+++ b/tools/perf/util/arm-spe-decoder/arm-spe-pkt-decoder.h
-@@ -7,6 +7,7 @@
- #ifndef INCLUDE__ARM_SPE_PKT_DECODER_H__
- #define INCLUDE__ARM_SPE_PKT_DECODER_H__
+ 	mutex_lock(&dev->mutex);
+-	err = do_chaninfo_ioctl(dev, &chaninfo);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		err = -ENODEV;
++	} else {
++		err = do_chaninfo_ioctl(dev, &chaninfo);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	return err;
+ }
+@@ -2987,7 +2992,12 @@ static int compat_rangeinfo(struct file
+ 	rangeinfo.range_ptr = compat_ptr(rangeinfo32.range_ptr);
  
-+#include <linux/bitfield.h>
- #include <stddef.h>
- #include <stdint.h>
+ 	mutex_lock(&dev->mutex);
+-	err = do_rangeinfo_ioctl(dev, &rangeinfo);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		err = -ENODEV;
++	} else {
++		err = do_rangeinfo_ioctl(dev, &rangeinfo);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	return err;
+ }
+@@ -3063,7 +3073,12 @@ static int compat_cmd(struct file *file,
+ 		return rc;
  
-@@ -116,8 +117,6 @@ enum arm_spe_events {
+ 	mutex_lock(&dev->mutex);
+-	rc = do_cmd_ioctl(dev, &cmd, &copy, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_cmd_ioctl(dev, &cmd, &copy, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	if (copy) {
+ 		/* Special case: copy cmd back to user. */
+@@ -3088,7 +3103,12 @@ static int compat_cmdtest(struct file *f
+ 		return rc;
  
- #define SPE_OP_PKT_IS_OTHER_SVE_OP(v)		(((v) & (BIT(7) | BIT(3) | BIT(0))) == 0x8)
+ 	mutex_lock(&dev->mutex);
+-	rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	if (copy) {
+ 		err = put_compat_cmd(compat_ptr(arg), &cmd);
+@@ -3148,7 +3168,12 @@ static int compat_insnlist(struct file *
+ 	}
  
--#define SPE_OP_PKT_COND				BIT(0)
--
- #define SPE_OP_PKT_LDST_SUBCLASS_GET(v)		((v) & GENMASK_ULL(7, 1))
- #define SPE_OP_PKT_LDST_SUBCLASS_GP_REG		0x0
- #define SPE_OP_PKT_LDST_SUBCLASS_SIMD_FP	0x4
-@@ -148,7 +147,13 @@ enum arm_spe_events {
- #define SPE_OP_PKT_SVE_PRED			BIT(2)
- #define SPE_OP_PKT_SVE_FP			BIT(1)
+ 	mutex_lock(&dev->mutex);
+-	rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	kfree(insns);
+ 	return rc;
+@@ -3167,7 +3192,12 @@ static int compat_insn(struct file *file
+ 		return rc;
  
--#define SPE_OP_PKT_IS_INDIRECT_BRANCH(v)	(((v) & GENMASK_ULL(7, 1)) == 0x2)
-+#define SPE_OP_PKT_CR_MASK			GENMASK_ULL(4, 3)
-+#define SPE_OP_PKT_CR_BL(v)			(FIELD_GET(SPE_OP_PKT_CR_MASK, (v)) == 1)
-+#define SPE_OP_PKT_CR_RET(v)			(FIELD_GET(SPE_OP_PKT_CR_MASK, (v)) == 2)
-+#define SPE_OP_PKT_CR_NON_BL_RET(v)		(FIELD_GET(SPE_OP_PKT_CR_MASK, (v)) == 3)
-+#define SPE_OP_PKT_GCS				BIT(2)
-+#define SPE_OP_PKT_INDIRECT_BRANCH		BIT(1)
-+#define SPE_OP_PKT_COND				BIT(0)
- 
- const char *arm_spe_pkt_name(enum arm_spe_pkt_type);
- 
--- 
-2.51.0
-
+ 	mutex_lock(&dev->mutex);
+-	rc = do_insn_ioctl(dev, &insn, file);
++	if (!dev->attached) {
++		dev_dbg(dev->class_dev, "no driver attached\n");
++		rc = -ENODEV;
++	} else {
++		rc = do_insn_ioctl(dev, &insn, file);
++	}
+ 	mutex_unlock(&dev->mutex);
+ 	return rc;
+ }
 
 
 
