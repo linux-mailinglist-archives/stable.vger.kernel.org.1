@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207539-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206938-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BEA1FD0A224
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 15C0CD097E0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4328B30F3423
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D36143088342
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0AE1E35C192;
-	Fri,  9 Jan 2026 12:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67069359708;
+	Fri,  9 Jan 2026 12:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T9vybeMV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+B+bFW2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FFC35BDCC;
-	Fri,  9 Jan 2026 12:39:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29924320CB6;
+	Fri,  9 Jan 2026 12:10:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962341; cv=none; b=LgBI8qBpPhH/SQgD/dVS9aijtiMjDQBJgZvEewkIdH3iSD/iifCxrdD5I2OL3r+ZwQbdM0gq41mXy6PmKuM39nC0EzQW3Hcv31MwcCDljpfTD7tTusIDYY8OgyKuASJxtCKFEOaQk0dgoGw7sFym3ToKjYmssJ4mhie8FAvtwN8=
+	t=1767960632; cv=none; b=m+Sm3f5olni4+frMRfBoEnSC4UOaXWJRrMvevA/O/7WXWZpdhzmHstafyj42nw9NcW+lPj1fg4uaQRtS8r3NL+iuOvDgeRgp/yu+LgulRntIQoqzmZaj8Sun/Lwtn8ijf1XtWPZz0/avlAdRTZSpp53JzvB6zoMiRtKU4wzdu0w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962341; c=relaxed/simple;
-	bh=Z2LQ9abonvVOaVcQ2/JOhCMABcpyRy9iof58SvfPbn4=;
+	s=arc-20240116; t=1767960632; c=relaxed/simple;
+	bh=LKla7+glKh9Z3oiK6f2CGXEQ6Nx/zj7F8JQPW5dWgkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eXW314r+dZX1DUHKycQIL0Dkpc3Zrvnqdl/bQEbekBhB9r2nR4zSsneEtmbo7MUV+3ugO1zRYhH3yTTPJMKYe3ByQXVWytSeLrXdLade4seAjDy3IAoOf1FCK7o35fk45lhD8L29lNUlSs3dVzVXYFHByOXYo+J1vKTL0X1eZgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T9vybeMV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AFE0C16AAE;
-	Fri,  9 Jan 2026 12:39:01 +0000 (UTC)
+	 MIME-Version; b=tb2aCtEiZQLy31T4eeLHTUF6MQjf4Dsd60Pv0kM4XMsexnYuQRawgYsaD++DJicQ/xL8NSOw7Gnz4GLNbd/VPaymKQnOZKUinDViM3/33LWG9OhTbVOVGA/jBA/FYcOwz6HCDdBwzFAjGIUl0/RFyfoFOFwE09ZpEilPIi6TY9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+B+bFW2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD75C19425;
+	Fri,  9 Jan 2026 12:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962341;
-	bh=Z2LQ9abonvVOaVcQ2/JOhCMABcpyRy9iof58SvfPbn4=;
+	s=korg; t=1767960632;
+	bh=LKla7+glKh9Z3oiK6f2CGXEQ6Nx/zj7F8JQPW5dWgkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T9vybeMVIz0anVJOQPtm8HBR6qu8JCZTRscCnTT6EFBYB2/ya6oTI+Dkx8PP2rWSm
-	 12TLjyRmnghJ7Ark27ZyQbmEeHBQ7esVdoLJ3uIStdEgqe78aWC5jv3NkG1xfJl5d8
-	 bFH1l+2l38l2liFSzbIUfmk0j4wHDmaXv0TvAIzE=
+	b=i+B+bFW2kgE4JhXMRRjMKaPfVOgL9G3G7Xq+s1+CCDDAf/nHuS3MaonCekQXGMv/M
+	 t9O2Swup6VeLCSKczhI+rqX4VJdWwGm2YTgusMm5hXAWhocFf8mBRFI6/NY1A3T06k
+	 FnxybSvch1S7cwuSOH2KoZITFo1hEk6neWckopRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byungchul Park <byungchul@sk.com>,
-	Jan Kara <jack@suse.cz>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 331/634] jbd2: use a weaker annotation in journal handling
-Date: Fri,  9 Jan 2026 12:40:09 +0100
-Message-ID: <20260109112129.981487557@linuxfoundation.org>
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Christoph Hellwig <hch@lst.de>,
+	Carlos Maiolino <cmaiolino@redhat.com>,
+	Carlos Maiolino <cem@kernel.org>
+Subject: [PATCH 6.6 471/737] xfs: fix a memory leak in xfs_buf_item_init()
+Date: Fri,  9 Jan 2026 12:40:10 +0100
+Message-ID: <20260109112151.705509082@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +61,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byungchul Park <byungchul@sk.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
+commit fc40459de82543b565ebc839dca8f7987f16f62e upstream.
 
-jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
-to be placed between start_this_handle() and stop_this_handle().  So it
-marks the region with rwsem_acquire_read() and rwsem_release().
+xfs_buf_item_get_format() may allocate memory for bip->bli_formats,
+free the memory in the error path.
 
-However, the annotation is too strong for that purpose.  We don't have
-to use more than try lock annotation for that.
-
-rwsem_acquire_read() implies:
-
-   1. might be a waiter on contention of the lock.
-   2. enter to the critical section of the lock.
-
-All we need in here is to act 2, not 1.  So trylock version of
-annotation is sufficient for that purpose.  Now that dept partially
-relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
-potential wait and might report a deadlock by the wait.
-
-Replace it with trylock version of annotation.
-
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: stable@kernel.org
-Message-ID: <20251024073940.1063-1-byungchul@sk.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: c3d5f0c2fb85 ("xfs: complain if anyone tries to create a too-large buffer log item")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Carlos Maiolino <cmaiolino@redhat.com>
+Signed-off-by: Carlos Maiolino <cem@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/xfs/xfs_buf_item.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -460,7 +460,7 @@ repeat:
- 	read_unlock(&journal->j_state_lock);
- 	current->journal_info = handle;
+--- a/fs/xfs/xfs_buf_item.c
++++ b/fs/xfs/xfs_buf_item.c
+@@ -900,6 +900,7 @@ xfs_buf_item_init(
+ 		map_size = DIV_ROUND_UP(chunks, NBWORD);
  
--	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
-+	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
- 	jbd2_journal_free_transaction(new_transaction);
- 	/*
- 	 * Ensure that no allocations done while the transaction is open are
+ 		if (map_size > XFS_BLF_DATAMAP_SIZE) {
++			xfs_buf_item_free_format(bip);
+ 			kmem_cache_free(xfs_buf_item_cache, bip);
+ 			xfs_err(mp,
+ 	"buffer item dirty bitmap (%u uints) too small to reflect %u bytes!",
 
 
 
