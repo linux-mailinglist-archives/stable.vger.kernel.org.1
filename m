@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-207606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207038-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B053D0A0D8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:54:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00A98D0996D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:26:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A363F3045B8F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AB7DD3033E71
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C502A35B151;
-	Fri,  9 Jan 2026 12:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C360233C1B6;
+	Fri,  9 Jan 2026 12:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHydQQdv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oqFdWZ5M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8926735B12B;
-	Fri,  9 Jan 2026 12:42:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84DE9359F8C;
+	Fri,  9 Jan 2026 12:15:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962530; cv=none; b=CDLT0FBNZdRt7Bti7iP2OWxUFgAQqqpa19Zq2A6kM/t0hk2C3V3LeNLY3AHLdVoYXA5wfsLwWRw5GlczKZHL68mClmtksHfxBuGJ4Qg5pDtPUOIL/GRGKHrXOsp09+Alg8pbNYrxInT195QarIHnr+Rrxae1K2zLpNnfo1adoiU=
+	t=1767960917; cv=none; b=RHbosrj8UnqIhT61Yaw5h3Q9qj2aZpy9LJ63pyZAaKyPQdiH5ARUjlmSPKYlU5vYINWD2cUnV6eFE/gW3ZtM+LNtxTRalm/l2wNsSB7LY00qEYXyUgbP/djC0qJdMnHXEZrwDgeT4ysDVLsb0kblVbGwJqcp5mHmRIAzNqFfBJ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962530; c=relaxed/simple;
-	bh=D6QcGFjE/5ZUpy0yzV7406IFYvm3lBqEI8Cgwa9kza0=;
+	s=arc-20240116; t=1767960917; c=relaxed/simple;
+	bh=1Oytcy73WiC/q3q8ykX/htCYbISixIMyqXP+htpuRXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=py44RXOKu2aOEBCJmhu6NvmxBDgOu6/cYer9ar993iJWWrkdbVfgYHUprXtGv7ehJNZxx7SW3rbZYG0firoPWFFZWBl/P72wfRwZHbY/WiMyfsBaa70RULfO6hXSGCkkkUoEUImK9ETVnLtDL4uV1czQRhMZNjzNJ0jlVsBupn4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHydQQdv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F9EC4CEF1;
-	Fri,  9 Jan 2026 12:42:09 +0000 (UTC)
+	 MIME-Version; b=NjrgRCZWgKmq+fceGzfuy+o16b47SOytcIXPubd2tuuhrFuWsrYZ3VZiUO/PlgbaSKvU/DjWH1o1zZWzmE9oXxs0glO9ruNo6Y86vm+E6K+B4mpwbLrfEGN8CvarIciLuZJ2RJxNo/CrOVY1cs8fRriH1aJeEvrYL3LsUrmJI0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oqFdWZ5M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0A04C4CEF1;
+	Fri,  9 Jan 2026 12:15:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962530;
-	bh=D6QcGFjE/5ZUpy0yzV7406IFYvm3lBqEI8Cgwa9kza0=;
+	s=korg; t=1767960917;
+	bh=1Oytcy73WiC/q3q8ykX/htCYbISixIMyqXP+htpuRXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pHydQQdvlbMah6QqjBeZYHhupHP99Z2MyE6h3iGgGbx9xFleQlqgOPEllZWH/v3oO
-	 MYZeeycYHAtYjcMRrp42ANGe5Dfmurok/uJSzWr6C72PusUNTt7jFMKVo88DvecAPu
-	 cdY0m9GUTFNklcj2g1Q70M56LR2RgWq2gvfzPjtc=
+	b=oqFdWZ5MJ+SWK8HlccO6MuRz9PzuQSShsG5LE8SAvaoB0hfMdYLxRtR9rxp0ECiym
+	 zl1itkVh4YmkW3+zPOhIRXpcQtyH72CKJL4FBp6BJ/Pep3cPKAjFVjSDQ+rBdnzqI8
+	 6l5ljj3cKb9bgBMrisJll/PLC9IOOhTd/vIQRqh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 6.1 398/634] i40e: fix scheduling in set_rx_mode
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 537/737] RDMA/bnxt_re: fix dma_free_coherent() pointer
 Date: Fri,  9 Jan 2026 12:41:16 +0100
-Message-ID: <20260109112132.504876238@linuxfoundation.org>
+Message-ID: <20260109112154.196659722@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
+[ Upstream commit fcd431a9627f272b4c0bec445eba365fe2232a94 ]
 
-Add service task schedule to set_rx_mode.
-In some cases there are error messages printed out in PTP application
-(ptp4l):
+The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
+The dma_free_coherent() should pass the same buffer to
+dma_free_coherent() and not page-aligned.
 
-ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
-
-This happens when service task would not run immediately after
-set_rx_mode, and we need it for setup tasks. This service task checks, if
-PTP RX packets are hung in firmware, and propagate correct settings such
-as multicast address for IEEE 1588 Precision Time Protocol.
-RX timestamping depends on some of these filters set. Bug happens only
-with high PTP packets frequency incoming, and not every run since
-sometimes service task is being ran from a different place immediately
-after starting ptp4l.
-
-Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
-Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20251230085121.8023-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 522267314160..5823229ae598 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -2252,6 +2252,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
- 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
- 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
- 	}
-+	i40e_service_event_schedule(vsi->back);
- }
- 
- /**
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index 1c56a0107d1e..d2c8f21468dc 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -70,9 +70,7 @@ static void __free_pbl(struct bnxt_qplib_res *res, struct bnxt_qplib_pbl *pbl,
+ 		for (i = 0; i < pbl->pg_count; i++) {
+ 			if (pbl->pg_arr[i])
+ 				dma_free_coherent(&pdev->dev, pbl->pg_size,
+-						  (void *)((unsigned long)
+-						   pbl->pg_arr[i] &
+-						  PAGE_MASK),
++						  pbl->pg_arr[i],
+ 						  pbl->pg_map_arr[i]);
+ 			else
+ 				dev_warn(&pdev->dev,
 -- 
 2.51.0
 
