@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 89BB3D09DBD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84942D095DB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A35BB3044DA9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 768BC3092A9F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A64B336EDA;
-	Fri,  9 Jan 2026 12:30:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4034359FB0;
+	Fri,  9 Jan 2026 12:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t4HPZYPB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1zbtOCFB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E104633372B;
-	Fri,  9 Jan 2026 12:30:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89C0935A948;
+	Fri,  9 Jan 2026 12:03:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961829; cv=none; b=eI/v72GSHkDOpfGOROXQqjX3Kxh9ABPgtDiJXBW2VtWGEfvVnuCe1nb+WmZeXJLKo2K7jrolv/7lSKsyu0QrQxdeOeUD+2bdyvXLsFwyaFxvE9mNMM/FAEAfPHeDSedz3KgJ2DuCU8vPR2r58p3KPZHKV5qSd8d/gMDI1/LN19w=
+	t=1767960206; cv=none; b=jZoyNQXhWQ6MxJSGxe9tm+mPzcWYbjrjOjqkMJWgbNJcyso64GlQSRQNdL/dMkEJLYAHtWDSz4hc00qXSP1nH8Zx+j/HlJGAsmcnkQGucfvNR85GZT5x3d6wflXOmmgcy9waTupw9OfbWzlCbIyikaSR27pDFI+spyaYMBZhFnw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961829; c=relaxed/simple;
-	bh=x1Yhl0MUjeGJBYbHNu/Hl/vadyEFyrIQPapkoy1yhIc=;
+	s=arc-20240116; t=1767960206; c=relaxed/simple;
+	bh=1WHL+Vjoy1D1ONz1EFkX4QaFwY9sIhxDI7uF1U3q54A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FA1S1oizCU80JtuHVAHjqd4O4czSGacy6kkQ3H8q0JaFyAU1AEjpUpLfmCbLUJSWKac4CWSBmIrcr6zOy9w+ttZwIuonkTSvizl7biLMwCGUwlLPydrYWNaBH5ePHPeWDGJj0zmI5aofALIml0qSML1fugukKmTfD4ty9sbpKNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t4HPZYPB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4146AC4CEF1;
-	Fri,  9 Jan 2026 12:30:28 +0000 (UTC)
+	 MIME-Version; b=BK+hOYw+udEUUXFLMl7dKW0SjUKikvjbDqHqsx/Frr/wZ12zcZfDRImKvnnb3HimSmzFxxtpI9up8IOZu5dF66UzBUEhiJnEIjvFyzLLxKVaqwy7FKRWeTWoMymAzkm88Y7ueK0PqUotcbUgWAgKPy7jJjiIxMV5OxN6fE+bbyQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1zbtOCFB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18259C16AAE;
+	Fri,  9 Jan 2026 12:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961828;
-	bh=x1Yhl0MUjeGJBYbHNu/Hl/vadyEFyrIQPapkoy1yhIc=;
+	s=korg; t=1767960206;
+	bh=1WHL+Vjoy1D1ONz1EFkX4QaFwY9sIhxDI7uF1U3q54A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t4HPZYPBXXmwcXs4p0ECRsGdYzrUFH3h+3ZXIZxRPdWBJQMRAT88LuhjjH5xQOQOX
-	 IFCWleJ4oEpHXV07HnTJp1Wk2z3vWb5ItUgZ7aIme4aKAiAXXD7JgVMxh7daDzEOAX
-	 qBRzFd30dfdy6Mr0DtyPkaf4TqosxZfdUrU845z0=
+	b=1zbtOCFBc8pZDopsXaMSf/bADC2uwqJT3z1XGRjuK0LDZq03YmV7hLY38/OTfSWL5
+	 xFwiBNSNbCwSsNyB6oaxwD582mHVhZVw9anjP92tUXWHtTZs5I58G4g+ww1Edgb0aV
+	 UwsER/dZC2AoXcH8d7ZSnPZbatHPd4UZHIs+W7MA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 151/634] backlight: lp855x: Fix lp855x.h kernel-doc warnings
+Subject: [PATCH 6.6 290/737] irqchip/mchp-eic: Fix error code in mchp_eic_domain_alloc()
 Date: Fri,  9 Jan 2026 12:37:09 +0100
-Message-ID: <20260109112123.134927112@linuxfoundation.org>
+Message-ID: <20260109112144.921125768@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
+[ Upstream commit 7dbc0d40d8347bd9de55c904f59ea44bcc8dedb7 ]
 
-Add a missing struct short description and a missing leading " *" to
-lp855x.h to avoid kernel-doc warnings:
+If irq_domain_translate_twocell() sets "hwirq" to >= MCHP_EIC_NIRQ (2) then
+it results in an out of bounds access.
 
-Warning: include/linux/platform_data/lp855x.h:126 missing initial short
- description on line:
- * struct lp855x_platform_data
-Warning: include/linux/platform_data/lp855x.h:131 bad line:
-   Only valid when mode is PWM_BASED.
+The code checks for invalid values, but doesn't set the error code.  Return
+-EINVAL in that case, instead of returning success.
 
-Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 00fa3461c86d ("irqchip/mchp-eic: Add support for the Microchip EIC")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Reviewed-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Link: https://patch.msgid.link/aTfHmOz6IBpTIPU5@stanley.mountain
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/platform_data/lp855x.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/irqchip/irq-mchp-eic.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
-index ab222dd05bbc2..3b4a891acefe9 100644
---- a/include/linux/platform_data/lp855x.h
-+++ b/include/linux/platform_data/lp855x.h
-@@ -124,12 +124,12 @@ struct lp855x_rom_data {
- };
+diff --git a/drivers/irqchip/irq-mchp-eic.c b/drivers/irqchip/irq-mchp-eic.c
+index 5dcd94c000a26..8a5baa0987a4b 100644
+--- a/drivers/irqchip/irq-mchp-eic.c
++++ b/drivers/irqchip/irq-mchp-eic.c
+@@ -166,7 +166,7 @@ static int mchp_eic_domain_alloc(struct irq_domain *domain, unsigned int virq,
  
- /**
-- * struct lp855x_platform_data
-+ * struct lp855x_platform_data - lp855 platform-specific data
-  * @name : Backlight driver name. If it is not defined, default name is set.
-  * @device_control : value of DEVICE CONTROL register
-  * @initial_brightness : initial value of backlight brightness
-  * @period_ns : platform specific pwm period value. unit is nano.
--		Only valid when mode is PWM_BASED.
-+ *		Only valid when mode is PWM_BASED.
-  * @size_program : total size of lp855x_rom_data
-  * @rom_data : list of new eeprom/eprom registers
-  */
+ 	ret = irq_domain_translate_twocell(domain, fwspec, &hwirq, &type);
+ 	if (ret || hwirq >= MCHP_EIC_NIRQ)
+-		return ret;
++		return ret ?: -EINVAL;
+ 
+ 	switch (type) {
+ 	case IRQ_TYPE_EDGE_RISING:
 -- 
 2.51.0
 
