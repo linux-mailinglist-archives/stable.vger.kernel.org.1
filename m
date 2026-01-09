@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207353-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CD465D0949A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4373CD09BFB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B34F1301CEB4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DE13A3038E36
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 224FB359FB0;
-	Fri,  9 Jan 2026 12:02:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D4F335BDA6;
+	Fri,  9 Jan 2026 12:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PiXUWAd7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MgSqlrph"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA1C733375D;
-	Fri,  9 Jan 2026 12:02:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB13035B129;
+	Fri,  9 Jan 2026 12:30:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960177; cv=none; b=F05ceUSMmE56fEkyvViViuoJTQqRG9K2o0bOM2QQ42mFOL4d87Oo8PK+GANYda9ijjfRQMzzGNCzyAfEeTPXBvQVL3yq1VNdeDncPlxfQjz4zRkz3I6gPWC985a8rS+LMT71+ufGeuztdUlV6pRZmm1qTm1G8fhpm3m9AROkAno=
+	t=1767961814; cv=none; b=hT98ZPuGZ/SZxQcy0hofE8Ysm6M1IFM6C9rHcz5byn1vRQJ5+J9bEfFEQVkOn0PRYQkRmu1yk4KPLu0iLJf9S9KxYxFNlMqcxbfWJlagmjDhuOUlelccMEldtXztfTyNdg6zyC6yy5qdooj8sr6cMaWSLc++hmbQt+9tzuH8sL4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960177; c=relaxed/simple;
-	bh=yFN2jDZMfESxOutXYYCbtjNU2Fnxj6hGdJW64fhj6cQ=;
+	s=arc-20240116; t=1767961814; c=relaxed/simple;
+	bh=mft0QLBMtDmef1LhCEb3+r6XtsoGyono1JrRlRLLfjg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U5RJgEJTgAeq3vBuAvGXxFsHbFxyhNEisqhSATP40CyWZyfKz3DehEKK/uAIkc3UkzArHr05hjkvXvxGoDg4J+oD3YAbQFM7uKqZnII+seHqD3HpLXRNnynMKcjWDzLZ1Vy1TSVf8dMNJxIyzadzr7pIzR1b/rcMWPD0ZgqO7rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PiXUWAd7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57BD3C4CEF1;
-	Fri,  9 Jan 2026 12:02:57 +0000 (UTC)
+	 MIME-Version; b=f6I/DXJ9diImQXCEVFWmViHgdj25ohedVxIuyIb5vBxpL4TuLKSYxYRacqDH8kb/eqMm2rzvJHrVl0O7ZzcyGne1LPzpVhFQgLFyL2Xhc68yFC3LGJIkJGaIg5N2z3fzCAk+6/febRGII3x3wxz3fuzlYQbKo+h8vKX/Y2vHVV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MgSqlrph; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4046C4CEF1;
+	Fri,  9 Jan 2026 12:30:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960177;
-	bh=yFN2jDZMfESxOutXYYCbtjNU2Fnxj6hGdJW64fhj6cQ=;
+	s=korg; t=1767961814;
+	bh=mft0QLBMtDmef1LhCEb3+r6XtsoGyono1JrRlRLLfjg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PiXUWAd7M11t3TramK5zUyEJMlG6IjlR3OSGXkgDVYeQfgY14yrWw905InUXd969f
-	 pC9v0bMYFxGpb6oSBZ3zAhbpzC7z9wZpNK8yiYvQ+eF2vXdFjtOXWSeGnvLYBd/nD3
-	 OvLfMv4ZU5ETGEqNUW73YHjZ+CN5hdJOKxwjyQFQ=
+	b=MgSqlrphGzUWTtywsC13RcdKPJA9Ankj4VohurlcC7wbGusJ8YDr7p7edAaBXaspJ
+	 uFS/PNGWdwQYBdkf4IPx/qawOZWd9ms3r5Mns0RQs25bka1CySymE7BGMKKP7/hr8a
+	 88zpuRE+sHfSHfLjWJVe9U+ZlmEdFoznn1rbRzDo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Jianglei Nie <niejianglei2021@163.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 285/737] dm-raid: fix possible NULL dereference with undefined raid type
+Subject: [PATCH 6.1 146/634] staging: fbtft: core: fix potential memory leak in fbtft_probe_common()
 Date: Fri,  9 Jan 2026 12:37:04 +0100
-Message-ID: <20260109112144.733414702@linuxfoundation.org>
+Message-ID: <20260109112122.948515822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Jianglei Nie <niejianglei2021@163.com>
 
-[ Upstream commit 2f6cfd6d7cb165a7af8877b838a9f6aab4159324 ]
+[ Upstream commit 47d3949a9b04cbcb0e10abae30c2b53e98706e11 ]
 
-rs->raid_type is assigned from get_raid_type_by_ll(), which may return
-NULL. This NULL value could be dereferenced later in the condition
-'if (!(rs_is_raid10(rs) && rt_is_raid0(rs->raid_type)))'.
+fbtft_probe_common() allocates a memory chunk for "info" with
+fbtft_framebuffer_alloc(). When "display->buswidth == 0" is true, the
+function returns without releasing the "info", which will lead to a
+memory leak.
 
-Add a fail-fast check to return early with an error if raid_type is NULL,
-similar to other uses of this function.
+Fix it by calling fbtft_framebuffer_release() when "display->buswidth
+== 0" is true.
 
-Found by Linux Verification Center (linuxtesting.org) with Svace.
-
-Fixes: 33e53f06850f ("dm raid: introduce extended superblock and new raid types to support takeover/reshaping")
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20251112192235.2088654-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-raid.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/staging/fbtft/fbtft-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
-index f23edd79df45e..0c4ab6865182b 100644
---- a/drivers/md/dm-raid.c
-+++ b/drivers/md/dm-raid.c
-@@ -2259,6 +2259,8 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 7b802b0226273..c20e1afc0ada2 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -1225,8 +1225,8 @@ int fbtft_probe_common(struct fbtft_display *display,
+ 	par->pdev = pdev;
  
- 			mddev->reshape_position = le64_to_cpu(sb->reshape_position);
- 			rs->raid_type = get_raid_type_by_ll(mddev->level, mddev->layout);
-+			if (!rs->raid_type)
-+				return -EINVAL;
- 		}
+ 	if (display->buswidth == 0) {
+-		dev_err(dev, "buswidth is not set\n");
+-		return -EINVAL;
++		ret = dev_err_probe(dev, -EINVAL, "buswidth is not set\n");
++		goto out_release;
+ 	}
  
- 	} else {
+ 	/* write register functions */
 -- 
 2.51.0
 
