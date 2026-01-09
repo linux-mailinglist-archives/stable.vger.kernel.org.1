@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-207641-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD12D0A32E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:06:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17C91D0A33B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:07:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92FED304F605
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C2C1B304F639
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34FAD1DF72C;
-	Fri,  9 Jan 2026 12:43:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F9C33C53A;
+	Fri,  9 Jan 2026 12:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E9yBAo3j"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MONQg/a/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC77933D511;
-	Fri,  9 Jan 2026 12:43:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC6B1A2545;
+	Fri,  9 Jan 2026 12:43:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962629; cv=none; b=kKOnXSWfnv0Hf4rhaWRIdwH0wMyzjE7ZAotsmlDpSH/GLO0UWp87k0KqpApy0X2CpIOsn7PHe6eSS5LMgR/9PQbuiymlF/iD8tV+cM3dNGLMvXvRc5eLHvWc3yokm/gyjUfUSJMpybv0eESDwmKq8XdC2NI4YEN/yzKwDShV708=
+	t=1767962634; cv=none; b=qj+tvs+hXRvRyiqX4k+bK9BrkDrvf22yJBpUId5vGlyXfK+6PM1MyWTFn/8lTWuGze8RXoAVqtbX87yr3Tv4nomwBSmZKOsxfOy9iJX4HdifNm07Woiu1EDPtqSVPfK9/yNjkd9PzoQp0HtjNtuqq8Hv4KmAwodbRTjGpV3PPKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962629; c=relaxed/simple;
-	bh=85pUWt99SvTJIXHCGnIi+Sj/zFQWaz4KN1oFlNFutfI=;
+	s=arc-20240116; t=1767962634; c=relaxed/simple;
+	bh=wDpGKE/30esVBeQclq0N++/ZUSD3FJvExmxmXOdXd2g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fjO28fnWutZq5fYmma6pC8taclKMmbvc4R7C0LIjYByg+nIQOI+85ik1Ayp/yZUpF2NUcyM1boSMui6Mi9Kmk96+tdegEm8wcE/hGXn6jAjcvI8gD2Om4/9Sy3h4fcFkf/bNn+ZZnm3uDVdW1qPpMzXZJRJEZaTMjJPHLyObmWY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E9yBAo3j; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 781BDC4CEF1;
-	Fri,  9 Jan 2026 12:43:48 +0000 (UTC)
+	 MIME-Version; b=iboQQoSRi7ZkYbTvs9MYyeKxeEgUpa8MWsioP5jaVYEqr9oZ4SP878vatAMXZtOA+8Dy0sHOU91ei9aw5vAi+wOHQ24+hgBu/APV9wlI7kggjBFxokQc0k4qQqrE7ULbIceEPFIKopX2ksTo2+kXtf0B38y9GR3IkojByKOgo4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MONQg/a/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FF5C4CEF1;
+	Fri,  9 Jan 2026 12:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962628;
-	bh=85pUWt99SvTJIXHCGnIi+Sj/zFQWaz4KN1oFlNFutfI=;
+	s=korg; t=1767962634;
+	bh=wDpGKE/30esVBeQclq0N++/ZUSD3FJvExmxmXOdXd2g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E9yBAo3jFTMmnModQlnBeFt/ce8RuNbvtsAKrZ2xA0KThQSsCojYNcAgRu/5O5O/a
-	 clyASK1ZcGVCzzmqTngRgK33/ZDCyPzK7I5zh4vMRNLdXztIyekRLnKTazr/afky99
-	 KE1FxUIX0wy7EIlfsmC6wC6p7C5zI8gqepmYw3Lk=
+	b=MONQg/a/JVwJacAJMOUTStOZjGfNqqQzy+TGLjek+FFvK8d7f1tjWK93P9YI1JSA7
+	 u/ZFIaFphWZVPuGMTbFxFGGlzr+wuGGuWNOVLcGGOznq8xjhTN4Nx++WcE4U7M/8Hf
+	 oFqQ5xqLjHfCyoClkSjB93iVbnTDOpa0lQkoaBRw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jang Ingyu <ingyujang25@korea.ac.kr>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 433/634] RDMA/core: Fix logic error in ib_get_gids_from_rdma_hdr()
-Date: Fri,  9 Jan 2026 12:41:51 +0100
-Message-ID: <20260109112133.837061133@linuxfoundation.org>
+Subject: [PATCH 6.1 435/634] RDMA/bnxt_re: Fix IB_SEND_IP_CSUM handling in post_send
+Date: Fri,  9 Jan 2026 12:41:53 +0100
+Message-ID: <20260109112133.911316582@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -64,37 +65,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Jang Ingyu <ingyujang25@korea.ac.kr>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 8aaa848eaddd9ef8680fc6aafbd3a0646da5df40 ]
+[ Upstream commit f01765a2361323e78e3d91b1cb1d5527a83c5cf7 ]
 
-Fix missing comparison operator for RDMA_NETWORK_ROCE_V1 in the
-conditional statement. The constant was used directly instead of
-being compared with net_type, causing the condition to always
-evaluate to true.
+The bnxt_re SEND path checks wr->send_flags to enable features such as
+IP checksum offload. However, send_flags is a bitmask and may contain
+multiple flags (e.g. IB_SEND_SIGNALED | IB_SEND_IP_CSUM), while the
+existing code uses a switch() statement that only matches when
+send_flags is exactly IB_SEND_IP_CSUM.
 
-Fixes: 1c15b4f2a42f ("RDMA/core: Modify enum ib_gid_type and enum rdma_network_type")
-Signed-off-by: Jang Ingyu <ingyujang25@korea.ac.kr>
-Link: https://patch.msgid.link/20251219041508.1725947-1-ingyujang25@korea.ac.kr
+As a result, checksum offload is not enabled when additional SEND
+flags are present.
+
+Replace the switch() with a bitmask test:
+
+    if (wr->send_flags & IB_SEND_IP_CSUM)
+
+This ensures IP checksum offload is enabled correctly when multiple
+SEND flags are used.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20251219093308.2415620-1-alok.a.tiwari@oracle.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index 97a116960f31..d0c8ad45f3c2 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -732,7 +732,7 @@ int ib_get_gids_from_rdma_hdr(const union rdma_network_hdr *hdr,
- 				       (struct in6_addr *)dgid);
- 		return 0;
- 	} else if (net_type == RDMA_NETWORK_IPV6 ||
--		   net_type == RDMA_NETWORK_IB || RDMA_NETWORK_ROCE_V1) {
-+		   net_type == RDMA_NETWORK_IB || net_type == RDMA_NETWORK_ROCE_V1) {
- 		*dgid = hdr->ibgrh.dgid;
- 		*sgid = hdr->ibgrh.sgid;
- 		return 0;
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 94c34ba103ea..edd1457a99b2 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2650,14 +2650,9 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
+ 				wqe.rawqp1.lflags |=
+ 					SQ_SEND_RAWETH_QP1_LFLAGS_ROCE_CRC;
+ 			}
+-			switch (wr->send_flags) {
+-			case IB_SEND_IP_CSUM:
++			if (wr->send_flags & IB_SEND_IP_CSUM)
+ 				wqe.rawqp1.lflags |=
+ 					SQ_SEND_RAWETH_QP1_LFLAGS_IP_CHKSUM;
+-				break;
+-			default:
+-				break;
+-			}
+ 			fallthrough;
+ 		case IB_WR_SEND_WITH_INV:
+ 			rc = bnxt_re_build_send_wqe(qp, wr, &wqe);
 -- 
 2.51.0
 
