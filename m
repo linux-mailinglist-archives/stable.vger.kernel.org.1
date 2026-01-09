@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-207148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99D87D0995B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:26:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C56BD09BB9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F226303C7E7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCD4D30E86C2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5212E35A953;
-	Fri,  9 Jan 2026 12:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B6C9359FA0;
+	Fri,  9 Jan 2026 12:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajlcOKCp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nGNkr1PN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132D126ED41;
-	Fri,  9 Jan 2026 12:20:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F6AA33B6F0;
+	Fri,  9 Jan 2026 12:20:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961228; cv=none; b=ON/nBdAy7OxuKgfp1L8XMkQ4iQwas1rLIEYcuwu/3H8gVlQhURon2pnd63wjGb+v7fvywje9bSRKGFdq8pky50qF1n40s8MnPuPJZAt/OBPDnboXNKn2XmKyZzH1PVGCzemGoyNKJMu7pJoRij+m0zsGsgqrC73Db1ctuR4+tPU=
+	t=1767961259; cv=none; b=n4Gt269U6aL6JEUN5Ez6EcucY/WbqwWjjdCJIwfBTaKneJCgwpFGhafV2ditT7unV1zHBXyxobFaRABnL3wSsmgsU7WN5rzXBi52gtbXWmfG8bIcPK1259qWyBK8IE7juB+E+PYbSYlcaKQEhg+4x8MelN25m9+nESHh0ZT+v0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961228; c=relaxed/simple;
-	bh=QPf9kjo/KbZjFH9KBKFNFFhPNg4aoaRDi8ASGqvq8ME=;
+	s=arc-20240116; t=1767961259; c=relaxed/simple;
+	bh=x6AXOFH6tikA0icU2ZdXYbi9fSZsvyPz3w4Kck+Y0sY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ZNHY215zfUaQ1ka1RFyRU2OfM+Ty6LiGOuvztT1tsamV9PPiqTrDq5Pr80L4C/P1QqHnilly1YhTzgftZNNOtnOmvP4+ZkqhHbL4c+5op9/rNj9bCDvocVA4aPOZun94U84a50kLUuay6TFiN0wZUy25TD7XCTX96uK6wpNrsGQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajlcOKCp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 962E6C4CEF1;
-	Fri,  9 Jan 2026 12:20:27 +0000 (UTC)
+	 MIME-Version; b=kmPLHP5mOhgrc8iyq0m24CSMIGFjyuVA2VKGz77wM5caGfQAvvkavmaVa+wajOL9Bk5eyyvccUpSSYY/t2wLc2evURmTYyFpuVAw5XovldASRrHP8IU+v3MGaC89F3gikBcXjVPwyUnKdcgaZDhecb5k9XmjIMS/65a4dw4erbE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nGNkr1PN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A311BC4CEF1;
+	Fri,  9 Jan 2026 12:20:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961228;
-	bh=QPf9kjo/KbZjFH9KBKFNFFhPNg4aoaRDi8ASGqvq8ME=;
+	s=korg; t=1767961259;
+	bh=x6AXOFH6tikA0icU2ZdXYbi9fSZsvyPz3w4Kck+Y0sY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajlcOKCp54TlHP4WYXhiSiXzAAOptDHHezKt4kHG3PuE39QKLoAyvEQgCUPtR8gHu
-	 eWa28ECu/ND5DFPWAZ3TyAJkQiLwTRgveKLZfRPLTipz0TbVnLFlbVuumw0SRNoHPy
-	 FYr0IOEfUtaJKZxTCkRB28Cj+KuiF9HR0w2lmyGs=
+	b=nGNkr1PNZSrG/aUjijtkcglQgZEuYVjY4+ZlWt/aqxi4p6HysW1wz1VcjONV8mqiW
+	 rFJaCk0xsIj70h35Rvjtq1GvnqSSlZHJMg71N43EPOjzJUZcOKdkvrzJXI8hsDegko
+	 8uGuR4cD1IMsRGOCRtxEGLrbkpkUk5oRBs6YfmoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aurabindo Pillai <aurabindo.pillai@amd.com>,
-	Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
-Subject: [PATCH 6.6 672/737] drm/amd/display: Fix null pointer deref in dcn20_resource.c
-Date: Fri,  9 Jan 2026 12:43:31 +0100
-Message-ID: <20260109112159.330731622@linuxfoundation.org>
+	Chenghao Duan <duanchenghao@kylinos.cn>,
+	Huacai Chen <chenhuacai@loongson.cn>
+Subject: [PATCH 6.6 673/737] LoongArch: Refactor register restoration in ftrace_common_return
+Date: Fri,  9 Jan 2026 12:43:32 +0100
+Message-ID: <20260109112159.367499336@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -59,87 +57,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Chenghao Duan <duanchenghao@kylinos.cn>
 
-[ Upstream commit ecbf60782662f0a388493685b85a645a0ba1613c ]
+commit 45cb47c628dfbd1994c619f3eac271a780602826 upstream.
 
-Fixes a hang thats triggered when MPV is run on a DCN401 dGPU:
+Refactor the register restoration sequence in the ftrace_common_return
+function to clearly distinguish between the logic of normal returns and
+direct call returns in function tracing scenarios. The logic is as
+follows:
 
-mpv --hwdec=vaapi --vo=gpu --hwdec-codecs=all
+1. In the case of a normal return, the execution flow returns to the
+traced function, and ftrace must ensure that the register data is
+consistent with the state when the function was entered.
 
-and then enabling fullscreen playback (double click on the video)
+ra = parent return address; t0 = traced function return address.
 
-The following calltrace will be seen:
+2. In the case of a direct call return, the execution flow jumps to the
+custom trampoline function, and ftrace must ensure that the register
+data is consistent with the state when ftrace was entered.
 
-[  181.843989] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[  181.843997] #PF: supervisor instruction fetch in kernel mode
-[  181.844003] #PF: error_code(0x0010) - not-present page
-[  181.844009] PGD 0 P4D 0
-[  181.844020] Oops: 0010 [#1] PREEMPT SMP NOPTI
-[  181.844028] CPU: 6 PID: 1892 Comm: gnome-shell Tainted: G        W  OE      6.5.0-41-generic #41~22.04.2-Ubuntu
-[  181.844038] Hardware name: System manufacturer System Product Name/CROSSHAIR VI HERO, BIOS 6302 10/23/2018
-[  181.844044] RIP: 0010:0x0
-[  181.844079] Code: Unable to access opcode bytes at 0xffffffffffffffd6.
-[  181.844084] RSP: 0018:ffffb593c2b8f7b0 EFLAGS: 00010246
-[  181.844093] RAX: 0000000000000000 RBX: 0000000000000000 RCX: 0000000000000004
-[  181.844099] RDX: ffffb593c2b8f804 RSI: ffffb593c2b8f7e0 RDI: ffff9e3c8e758400
-[  181.844105] RBP: ffffb593c2b8f7b8 R08: ffffb593c2b8f9c8 R09: ffffb593c2b8f96c
-[  181.844110] R10: 0000000000000000 R11: 0000000000000000 R12: ffffb593c2b8f9c8
-[  181.844115] R13: 0000000000000001 R14: ffff9e3c88000000 R15: 0000000000000005
-[  181.844121] FS:  00007c6e323bb5c0(0000) GS:ffff9e3f85f80000(0000) knlGS:0000000000000000
-[  181.844128] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  181.844134] CR2: ffffffffffffffd6 CR3: 0000000140fbe000 CR4: 00000000003506e0
-[  181.844141] Call Trace:
-[  181.844146]  <TASK>
-[  181.844153]  ? show_regs+0x6d/0x80
-[  181.844167]  ? __die+0x24/0x80
-[  181.844179]  ? page_fault_oops+0x99/0x1b0
-[  181.844192]  ? do_user_addr_fault+0x31d/0x6b0
-[  181.844204]  ? exc_page_fault+0x83/0x1b0
-[  181.844216]  ? asm_exc_page_fault+0x27/0x30
-[  181.844237]  dcn20_get_dcc_compression_cap+0x23/0x30 [amdgpu]
-[  181.845115]  amdgpu_dm_plane_validate_dcc.constprop.0+0xe5/0x180 [amdgpu]
-[  181.845985]  amdgpu_dm_plane_fill_plane_buffer_attributes+0x300/0x580 [amdgpu]
-[  181.846848]  fill_dc_plane_info_and_addr+0x258/0x350 [amdgpu]
-[  181.847734]  fill_dc_plane_attributes+0x162/0x350 [amdgpu]
-[  181.848748]  dm_update_plane_state.constprop.0+0x4e3/0x6b0 [amdgpu]
-[  181.849791]  ? dm_update_plane_state.constprop.0+0x4e3/0x6b0 [amdgpu]
-[  181.850840]  amdgpu_dm_atomic_check+0xdfe/0x1760 [amdgpu]
+ra = traced function return address; t0 = parent return address.
 
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: David Nyström <david.nystrom@est.tech>
+Cc: stable@vger.kernel.org
+Fixes: 9cdc3b6a299c ("LoongArch: ftrace: Add direct call support")
+Signed-off-by: Chenghao Duan <duanchenghao@kylinos.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c |    9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ arch/loongarch/kernel/mcount_dyn.S |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn20/dcn20_resource.c
-@@ -2179,10 +2179,11 @@ bool dcn20_get_dcc_compression_cap(const
- 		const struct dc_dcc_surface_param *input,
- 		struct dc_surface_dcc_cap *output)
- {
--	return dc->res_pool->hubbub->funcs->get_dcc_compression_cap(
--			dc->res_pool->hubbub,
--			input,
--			output);
-+	if (dc->res_pool->hubbub->funcs->get_dcc_compression_cap)
-+		return dc->res_pool->hubbub->funcs->get_dcc_compression_cap(
-+			dc->res_pool->hubbub, input, output);
+--- a/arch/loongarch/kernel/mcount_dyn.S
++++ b/arch/loongarch/kernel/mcount_dyn.S
+@@ -93,7 +93,6 @@ SYM_INNER_LABEL(ftrace_graph_call, SYM_L
+  * at the callsite, so there is no need to restore the T series regs.
+  */
+ ftrace_common_return:
+-	PTR_L		ra, sp, PT_R1
+ 	PTR_L		a0, sp, PT_R4
+ 	PTR_L		a1, sp, PT_R5
+ 	PTR_L		a2, sp, PT_R6
+@@ -103,12 +102,17 @@ ftrace_common_return:
+ 	PTR_L		a6, sp, PT_R10
+ 	PTR_L		a7, sp, PT_R11
+ 	PTR_L		fp, sp, PT_R22
+-	PTR_L		t0, sp, PT_ERA
+ 	PTR_L		t1, sp, PT_R13
+-	PTR_ADDI	sp, sp, PT_SIZE
+ 	bnez		t1, .Ldirect
 +
-+	return false;
- }
++	PTR_L		ra, sp, PT_R1
++	PTR_L		t0, sp, PT_ERA
++	PTR_ADDI	sp, sp, PT_SIZE
+ 	jr		t0
+ .Ldirect:
++	PTR_L		t0, sp, PT_R1
++	PTR_L		ra, sp, PT_ERA
++	PTR_ADDI	sp, sp, PT_SIZE
+ 	jr		t1
+ SYM_CODE_END(ftrace_common)
  
- static void dcn20_destroy_resource_pool(struct resource_pool **pool)
+@@ -155,6 +159,8 @@ SYM_CODE_END(return_to_handler)
+ 
+ #ifdef CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS
+ SYM_CODE_START(ftrace_stub_direct_tramp)
+-	jr		t0
++	move		t1, ra
++	move		ra, t0
++	jr		t1
+ SYM_CODE_END(ftrace_stub_direct_tramp)
+ #endif /* CONFIG_DYNAMIC_FTRACE_WITH_DIRECT_CALLS */
 
 
 
