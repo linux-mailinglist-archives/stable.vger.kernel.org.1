@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207457-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206864-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C866D09EF2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 81890D095EA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E6D1D306831C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B0EA130E8D7D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 398BC35A95C;
-	Fri,  9 Jan 2026 12:35:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE98635A923;
+	Fri,  9 Jan 2026 12:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fteLZLu/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1w9JjW7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F081B33C53A;
-	Fri,  9 Jan 2026 12:35:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9201D359FBB;
+	Fri,  9 Jan 2026 12:06:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962110; cv=none; b=DI9Chr9UOf7f6OGOoipZdAeLGasTwPnpzBkHBm43J/YDHhMo3FarKfu3RWSec6H56RxRKm+gMDdFbnR5q75dPxS4Rox9ABrUkAhoiwxEBiLvmxRwqDSMQ4OYuMLTaGHIKJEPTNerfWy3qYEP9kaJIoko7ZxHKHQ8neZK+WLhASg=
+	t=1767960417; cv=none; b=GK8LUGrMMCqHmsK8SDJUDj6zfJsWTTQjyeholNQF5r6K7BECmmagznfHYYvqBBJArHAW/E9rH/xRlaVXN6MyAp8fJreugWr0EDW0jYgNehbdp8eKn2gk583hnkZpheVLnw+PPOuR8pceryMsfas0PuroUPPP61iiK3/qmEmc3Sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962110; c=relaxed/simple;
-	bh=7HzOkxB8LIa4FbaTNBWp89xmdIRnaB4yNOvBHzaL4Sg=;
+	s=arc-20240116; t=1767960417; c=relaxed/simple;
+	bh=Og6PUvba5Hq34MaSNFHVIkcnK4ZsSFZk0VDI6J7DQrQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oXkcgOxI8EsPLDG+SK4ASz+huMUNitdKskkfR8MiXXnXRCLIkddu2uu+2eCbkVKQQ/XtQBzveEGPoyEWvuHpz/qG+7w0PQZdhgqAggtw05uhl+4yW4dLZfx4S3Lp/+Xd0sQSRn/nCA9kS/HOFiRgU/5TYorjGilbXzrIc/aqijU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fteLZLu/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40294C16AAE;
-	Fri,  9 Jan 2026 12:35:09 +0000 (UTC)
+	 MIME-Version; b=hItQDm2ZDShrS4o4FSYyZsn2XQ/W0JqvrS+eTgRKxjszVbEsefDlQ0tMdKlsgfiquTFnFj3he2lVU8KTS4YTDpHLjNjpDStiQOjTnb/EXQo/gXAOKNnAk3EKTve71+j+qUCKIIVxHrhHBjHHGmxpCY0fzpvuuSGJR04HwLg+D9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1w9JjW7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 160A1C4CEF1;
+	Fri,  9 Jan 2026 12:06:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962109;
-	bh=7HzOkxB8LIa4FbaTNBWp89xmdIRnaB4yNOvBHzaL4Sg=;
+	s=korg; t=1767960417;
+	bh=Og6PUvba5Hq34MaSNFHVIkcnK4ZsSFZk0VDI6J7DQrQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fteLZLu/T09AOnLf78k596egyTbw/Sn8k4xPijMKx4hLs3ZUXhler2jmXIlAbQI0H
-	 iEU/GnLgmPN/F9EtfFSS0DAvzCva2prd8w/OJV7WD/lyNeVtkwb0oAyj5vp9SF3zJD
-	 9tORfyFYAY3koG8Rh2o4G5BPiIaxU4IzlxRBvj4E=
+	b=S1w9JjW7I4shEcz2uOOlEJrbdjG2ckNTCmhJyA/Ei5QMY+L80pCuAjOla9avNv/Yi
+	 u3RMfSabgYvRhhyh0ODpgfR4lbFDKETVRlauWqaXamx8y+8fCSFJT2noZdr5Eyc7Dl
+	 xQ2mbEi71gIXrqgR41lkKyx0MyfQVH3gJ3rFhoqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Skorodumov <skorodumov.dmitry@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Josua Mayer <josua@solid-run.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 250/634] ipvlan: Ignore PACKET_LOOPBACK in handle_mode_l2()
+Subject: [PATCH 6.6 389/737] clk: mvebu: cp110 add CLK_IGNORE_UNUSED to pcie_x10, pcie_x11 & pcie_x4
 Date: Fri,  9 Jan 2026 12:38:48 +0100
-Message-ID: <20260109112126.946498819@linuxfoundation.org>
+Message-ID: <20260109112148.633515423@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,50 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 0c57ff008a11f24f7f05fa760222692a00465fec ]
+[ Upstream commit f0e6bc0c3ef4b4afb299bd6912586cafd5d864e9 ]
 
-Packets with pkt_type == PACKET_LOOPBACK are captured by
-handle_frame() function, but they don't have L2 header.
-We should not process them in handle_mode_l2().
+CP110 based platforms rely on the bootloader for pci port
+initialization.
+TF-A actively prevents non-uboot re-configuration of pci lanes, and many
+boards do not have software control over the pci card reset.
 
-This doesn't affect old L2 functionality, since handling
-was anyway incorrect.
+If a pci port had link at boot-time and the clock is stopped at a later
+point, the link fails and can not be recovered.
 
-Handle them the same way as in br_handle_frame():
-just pass the skb.
+PCI controller driver probe - and by extension ownership of a driver for
+the pci clocks - may be delayed especially on large modular kernels,
+causing the clock core to start disabling unused clocks.
 
-To observe invalid behaviour, just start "ping -b" on bcast address
-of port-interface.
+Add the CLK_IGNORE_UNUSED flag to the three pci port's clocks to ensure
+they are not stopped before the pci controller driver has taken
+ownership and tested for an existing link.
 
-Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
-Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
-Link: https://patch.msgid.link/20251202103906.4087675-1-skorodumov.dmitry@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+This fixes failed pci link detection when controller driver probes late,
+e.g. with arm64 defconfig and CONFIG_PHY_MVEBU_CP110_COMPHY=m.
+
+Closes: https://lore.kernel.org/r/b71596c7-461b-44b6-89ab-3cfbd492639f@solid-run.com
+Signed-off-by: Josua Mayer <josua@solid-run.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/clk/mvebu/cp110-system-controller.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
-index eea81a7334052..a8017424ab538 100644
---- a/drivers/net/ipvlan/ipvlan_core.c
-+++ b/drivers/net/ipvlan/ipvlan_core.c
-@@ -738,6 +738,9 @@ static rx_handler_result_t ipvlan_handle_mode_l2(struct sk_buff **pskb,
- 	struct ethhdr *eth = eth_hdr(skb);
- 	rx_handler_result_t ret = RX_HANDLER_PASS;
+diff --git a/drivers/clk/mvebu/cp110-system-controller.c b/drivers/clk/mvebu/cp110-system-controller.c
+index 03c59bf22106..b47c86906046 100644
+--- a/drivers/clk/mvebu/cp110-system-controller.c
++++ b/drivers/clk/mvebu/cp110-system-controller.c
+@@ -110,6 +110,25 @@ static const char * const gate_base_names[] = {
+ 	[CP110_GATE_EIP197]	= "eip197"
+ };
  
-+	if (unlikely(skb->pkt_type == PACKET_LOOPBACK))
-+		return RX_HANDLER_PASS;
++static unsigned long gate_flags(const u8 bit_idx)
++{
++	switch (bit_idx) {
++	case CP110_GATE_PCIE_X1_0:
++	case CP110_GATE_PCIE_X1_1:
++	case CP110_GATE_PCIE_X4:
++		/*
++		 * If a port had an active link at boot time, stopping
++		 * the clock creates a failed state from which controller
++		 * driver can not recover.
++		 * Prevent stopping this clock till after a driver has taken
++		 * ownership.
++		 */
++		return CLK_IGNORE_UNUSED;
++	default:
++		return 0;
++	}
++};
 +
- 	if (is_multicast_ether_addr(eth->h_dest)) {
- 		if (ipvlan_external_frame(skb, port)) {
- 			struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
+ struct cp110_gate_clk {
+ 	struct clk_hw hw;
+ 	struct regmap *regmap;
+@@ -171,6 +190,7 @@ static struct clk_hw *cp110_register_gate(const char *name,
+ 	init.ops = &cp110_gate_ops;
+ 	init.parent_names = &parent_name;
+ 	init.num_parents = 1;
++	init.flags = gate_flags(bit_idx);
+ 
+ 	gate->regmap = regmap;
+ 	gate->bit_idx = bit_idx;
 -- 
 2.51.0
 
