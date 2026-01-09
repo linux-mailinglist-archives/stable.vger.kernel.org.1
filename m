@@ -1,143 +1,159 @@
-Return-Path: <stable+bounces-207855-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37D72D0A5BE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:19:22 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AF9D8D0A585
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:18:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 151BE30B0A04
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:59:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 29F42301BB16
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA66235A94E;
-	Fri,  9 Jan 2026 12:59:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BEF2857FA;
+	Fri,  9 Jan 2026 13:18:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="Y2kjmFmE"
+	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="BfhCXra8"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BDBF359712
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 12:59:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD5835B153;
+	Fri,  9 Jan 2026 13:18:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963550; cv=none; b=H2NvpHxFvXBflxq8yS3AEZlgW/3TCi2HMSSqmcbww0CMIg/uWLRZ4S5dCNenKswM0gxo/B8n2CgfvHU9kwuUgp047N+rkzUSJhjI5bmwQTKb0ypA9Iea44qrTE/p2tRjjZPCdjnOiKX4oi5tPc8HL424+f6Pn+mMHH+3MD9nGLw=
+	t=1767964696; cv=none; b=EdhsjWy7rCJme57TrmhvcW1uJJkQiKqa6r0POrCrHaVz1oGswruxVve18F2i90YW5NLk9d1RWBCjKOjZcjAhKvpDZuf5zHeZtRAoVD3Mwe/tjP86appwTO5C1O4ZeYS7FTlC/jAce+kANcdsk2NPDI+6Dlwvcx5f3rQ0T7HLnns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963550; c=relaxed/simple;
-	bh=Lj7FW/Ss02uEjzkvInMPwccOzjdFOllU0vpLKFIoNh8=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=FjfG28VK7LJm1+MzpEfzd7riYxWzlJ0T5SoKmQlRX3QPgLRf8aKGS+sKTLT5ZvO6DD49t8fpMAPR1lvxhnlhhKa4SVBSl23Wrnxni8h8ys9R2icgdkYgcSsKQ1MS9TLvxZfBY7F7jcXLXWk8uGLOeazYphMLEHWUsj7vw4G+Teg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=Y2kjmFmE; arc=none smtp.client-ip=74.125.82.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-122008d4054so1051617c88.1
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 04:59:09 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1767963548; x=1768568348; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=01UM7TA6QZjuSwMA6LlWuRLm/8SHAKfUzElv9tU3Nwc=;
-        b=Y2kjmFmE4PJF3IdfuiwONpS0A2/gLmymM+yf7phdCHEsMYm4iCkOwnzXh+3hudWL0O
-         MKt/H2fQA2B9EJnxigXH5NkCplTLz0Rdt+5jT1U8/KfXQ3BucZ6zwJS9+pyDe72TU4Bg
-         wnYQmVvss0n64RgJBdzqaR6Kcdsrm2AcZNDFHu133gBZXf32rd4KVDIa3igcSQ/svRDW
-         heD+Wq3sTTvpu48QG4FUa4fYSFYj2hyRkgwUT5QsjWVRUVxPdj8exzveEm3R20RTZ29F
-         2WJDrrDjCyAGSoTREUDNsEmGKNQCMV/rh7iIyTrMV+iXmXOKh0D2OcPeb587wZNu/n9i
-         9FGQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767963548; x=1768568348;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=01UM7TA6QZjuSwMA6LlWuRLm/8SHAKfUzElv9tU3Nwc=;
-        b=BCGJaGvkK1enagH/lMok7EiIUscyLNNGdhIel3Y5RkykD/XE9kN4WzOiIQlRJ0kupE
-         0GKzUXk0QnbQg5uOG+NU1T92eX4nRGwsd4FnjxKW4a7PmmN16fPXgK+kz1ib9QSANd27
-         QynE2RCFig7laKjDanyQgY+WNYtNn+dVBUUuvmBoIyRqaj1vdFUTkxoj94oGJhHeP8R8
-         LZGctZvx2m+ggehjiK7shwqsVZSk654h+BdCduhvnXkRroJGtkc0/IatPWBYVQw3x+7x
-         peMU2Llxw97H0q+ENWigvnW7Bx2R7z2Tg9m72f6LrPrQxp1NLxm+xOnDu8vlZIycg+mC
-         7cSg==
-X-Forwarded-Encrypted: i=1; AJvYcCX0G+7x2uYKJCWVey/wlaHDxLkZ0nH8n59pm3vAZtU6z6lPrKDlk3gMAPku5OxxsT4rpgIYNgk=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxxeXM3OcjxJfCF39oTW0MakNfu1g+TfxDemU9dz85TlcRPHBC+
-	+oDc6hxp3ahgr7/eep0Wck4jPjvy88a2nQURQsK+iBwNBIpUNKz2B37jbFWOJtoCXkc=
-X-Gm-Gg: AY/fxX4pAEohj0bNpnRCRTJa/stGvPnYZr4VW8qNvhm5ZPU68bjVNWSI0SGUfBmnNVA
-	NpZXYKnPIWCk2irR46uVVXLGSdfzCYojLOKCYi6XEtfdM8+B4z6QEGTLI02H73+1V5VDM5K36mz
-	WAz7U3dXNYy4hAOTF0n0zF4r65XYjMSe3C6B6cn7RSlulq5OoyMhvFuPqkjzBpO1DfgtHnxfaiy
-	9wlCNWFcZIxaQQu9i/r9CUOKHdR4bu3D59tAy08hOlfWnT29JPorjcWAAlV0j9jPoEcsCQQKiJf
-	AaAY20jg44BlWIty1IYjnQ39vjykKIrWTEBKKR+yTbRzpT01VNi94EmwjJbDjT2RKc3Z+ODcE/i
-	hpp7rT0GLEtUKvWrMW+O7p+osZZPozPq86OEfyFr8pX+tjz/4/td75T0fUsa6DKDXBBj9DymILY
-	pZvEWktNSNy+XhEg8=
-X-Google-Smtp-Source: AGHT+IGaacjZ6NfjCKP1WrWU792hZU1DdxVpSJPvGN2H8rzUyR/Cv//8ViJ9mi6it3KejMosoEmnMA==
-X-Received: by 2002:a05:7022:43a3:b0:11a:468a:cf9b with SMTP id a92af1059eb24-121f1adaecdmr11891270c88.9.1767963548283;
-        Fri, 09 Jan 2026 04:59:08 -0800 (PST)
-Received: from 1c5061884604 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f243f384sm16566991c88.6.2026.01.09.04.59.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 04:59:07 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1767964696; c=relaxed/simple;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F3ntp+VAKIsA7HgZk95BBFKuss65BxBpx2Mfs2OcNpZBNopNAx8U79BX82WjNimENPLXLyQsfVWI9Vat0nfANO0r2uI5VEr4jtigYd97cq8O3ECpAWcjDogoashpKGJ1iIDR1toT7ZkovOWi157jDqHt0wHVgCvFtUxbP/nar7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=BfhCXra8; arc=none smtp.client-ip=212.227.17.20
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
+	s=s31663417; t=1767964666; x=1768569466; i=rwarsow@gmx.de;
+	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=BfhCXra8es73FJJ2hfFLvB0E2dOVXqJR9WfMFhjrPXRTKAT3HPt589Qtm+FCOHNL
+	 OX124xyECHuM4wt1NbZ+ZqL0iTBJtgf32LKeYxo2T+9a7oj2++qwx/h+DPEVNtf5B
+	 VXYbxXoWYCBQdNHhhnAHnEXfsQnLyWj3tFZMpyW/KmCprYNW2eSdEsFPVHBJIsw8e
+	 Aq1ZkMBrmv7hbSVRaeX8ZGAQoLTYF1RThKAvQuFY+efJNtEvWunu7+wren/5mgxiz
+	 hUGt99d6svU4Wd4YTeb2YVeVvu/7t9RUBZo1kjQsFx3/zJZxz6UZ5CO9o0JlQvyLw
+	 FAXLup0Oz6BfLu1FMQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.200.20] ([46.142.33.225]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1MybKf-1w3X9D0xvZ-00wBG3; Fri, 09
+ Jan 2026 14:17:46 +0100
+Message-ID: <7959eb36-a916-4232-af5a-cdeb71fe1106@gmx.de>
+Date: Fri, 9 Jan 2026 14:17:43 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6.18 0/5] 6.18.5-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
+ hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
+ sr@sladewatkins.com
+References: <20260109111950.344681501@linuxfoundation.org>
+From: Ronald Warsow <rwarsow@gmx.de>
+Content-Language: de-DE, en-US
+In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) cleanup argument not a
- function
- in drivers/soc/imx/gpc.o (drivers/...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Fri, 09 Jan 2026 12:59:07 -0000
-Message-ID: <176796354712.952.12790348360913442147@1c5061884604>
+X-Provags-ID: V03:K1:gGdareBbHE3OG36YmgQt8r5gALyZIrPtwJ702nA/U6RKY5h08Cq
+ kxVkhraN5ldiiH8jed737QJ8Ocax77Vq8h/gYmrzu4a+o+sPLBZa5xj9oZPd2ay5n7R3cVd
+ DoqEPBElEdpC5QkCioH/V5v/rvwLB6PgLo6b1RYpZ6L76gfCf2kUIcJdQ+PmfgaNflKt9EY
+ gRcYj3SUeyWIcKprxsztA==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:Uib/vOEdVWs=;NjWZ5kiFWbSYIoZZTfbCfo2nB79
+ +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
+ z2F/7I2WJ16RzGFEKl7fUg98vk=
 
+Hi
 
+no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
 
+Thanks
 
-
-Hello,
-
-New build issue found on stable-rc/linux-5.10.y:
-
----
- cleanup argument not a function in drivers/soc/imx/gpc.o (drivers/soc/imx/gpc.c) [logspec:kbuild,kbuild.compiler.error]
----
-
-- dashboard: https://d.kernelci.org/i/maestro:bea6505e24b1cadfc26a9e61cdc705523ba4153d
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  c4fc4bf97778e67ad01a3ca95dd8fbb05f226590
-
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/soc/imx/gpc.c:409:17: error: cleanup argument not a function
-  409 |                 = of_get_child_by_name(pdev->dev.of_node, "pgc");
-      |                 ^
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## imx_v6_v7_defconfig on (arm):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-arm-imx_v6_v7_defconfig-6960eef8cbfd84c3cde53de3/.config
-- dashboard: https://d.kernelci.org/build/maestro:6960eef8cbfd84c3cde53de3
-
-## multi_v7_defconfig on (arm):
-- compiler: gcc-14
-- config: https://files.kernelci.org/kbuild-gcc-14-arm-multi_v7_defconfig-6960eeffcbfd84c3cde53de9/.config
-- dashboard: https://d.kernelci.org/build/maestro:6960eeffcbfd84c3cde53de9
-
-
-#kernelci issue maestro:bea6505e24b1cadfc26a9e61cdc705523ba4153d
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
