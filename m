@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A30F7D09C61
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 83EC9D0930B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 353EF304EABB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4AA8D3020749
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 41DFF35BDBE;
-	Fri,  9 Jan 2026 12:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AFA733CE9A;
+	Fri,  9 Jan 2026 12:02:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gh3K0Fn4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EY42gJAc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03FB53596FE;
-	Fri,  9 Jan 2026 12:30:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F35D11946C8;
+	Fri,  9 Jan 2026 12:02:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961843; cv=none; b=gOF3bcUsbOANZvNRNNQ+pNWHLQ6E1uBx3RQFGbIjyMZMV3hEa32iHti+AT9OWI5iFzg9Jw1Q8cKE6ZSiH7VSAZC+rqbmv2/187T1n8Q+m/On3s9dQAi1GmgCj9PNEBkqszq2Tvrc/RGpT3iFaDzi6IABWenLxzF5B+K8LTBK/qI=
+	t=1767960124; cv=none; b=WPoFoSFqqHsrd/oNufdVATBGkXV8yRbGL4OiZP9YXUwWzgGeD6eKBGrJZWbiYq2L8NJU7bnhsB1aznDqJeH8TiMp3MvvGvehTnAYWGio4uvIGIXkCb5zFXqAlGKa7WJbiPPmPqT9E8ipDt9zIJmN59gVc24F1w7xGUv8iXGx/xM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961843; c=relaxed/simple;
-	bh=osB9cTRsEXhld3q+FrxbvIJHwv69uVGwj057mZX9xJg=;
+	s=arc-20240116; t=1767960124; c=relaxed/simple;
+	bh=dWjsvSBF4V6PkMhYYBOHe9XiAMXGU/+gqCCwxcZWruA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XWH4xOXY/kptnNU3xW3iA3OHj3aVHWYBUd2LZr3FcjxnEAz6uZkDxKy2yKEMJzilkBOCmv72CZbxD37mkO3pD1hPqqCZ3WSHaRBI9rUUx7HWSBKtm720fUfRAunS6sKfhAkST66HSrL0NxkfeUTodJlrHMMqHed7nXrM4Zg7Jgc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gh3K0Fn4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82B7CC4CEF1;
-	Fri,  9 Jan 2026 12:30:42 +0000 (UTC)
+	 MIME-Version; b=kMOmlYhHZHTvA+bI8DkDb5+HS6SlvWgAKB3iyfoj1wunJlcgbgNo2v222U1LLiSLNGQub4foORRekc8ekCDedDmExegGCgY5BNFc+kNxxFO0agnPKHi05SEMTeBTjDE5aqFkQGQH+EYCnohNcUWmYdgq8jp770Y0btZvDfluf7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EY42gJAc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BEB1C4CEF1;
+	Fri,  9 Jan 2026 12:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961842;
-	bh=osB9cTRsEXhld3q+FrxbvIJHwv69uVGwj057mZX9xJg=;
+	s=korg; t=1767960123;
+	bh=dWjsvSBF4V6PkMhYYBOHe9XiAMXGU/+gqCCwxcZWruA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gh3K0Fn46BQ8WiAv/QoSALZy9i4NTfOrUbmdQiQzIPCVGcR9JpK+KIzX3dlEm3PPI
-	 ICxk80jc42AZ1w50VOWmSXnPMPFvR3Z/QRKLrv6z1p9/7ghJLABB06CHK1kwg/FmIW
-	 3ei1dYhyEH3rwoNpm9Z14Q/X/vlLJNLDGwjJT9YY=
+	b=EY42gJAcDp9VEwovJjZHYW1qWxLUPNGhixb5ykHXrK3NR402aKE2KyIOdQv7o0Yp4
+	 Wi9fXkWoyORIpI8eP4gkp7hiQ3hymMSC0hmyrYuWLA++Aw7M+1JfSyPY0+Hp52Di5K
+	 PrKFQvUums/Hl3Lzqb/p6mAmH1QJW6wgmJeG2UEw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 155/634] ASoC: fsl_xcvr: Add Counter registers
+	stable <stable@kernel.org>,
+	Haotien Hsu <haotienh@nvidia.com>,
+	Wayne Chang <waynec@nvidia.com>
+Subject: [PATCH 6.6 294/737] usb: gadget: tegra-xudc: Always reinitialize data toggle when clear halt
 Date: Fri,  9 Jan 2026 12:37:13 +0100
-Message-ID: <20260109112123.284339063@linuxfoundation.org>
+Message-ID: <20260109112145.070701861@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,161 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Haotien Hsu <haotienh@nvidia.com>
 
-[ Upstream commit 107d170dc46e14cfa575d1b995107ef2f2e51dfe ]
+commit 2585973c7f9ee31d21e5848c996fab2521fd383d upstream.
 
-These counter registers are part of register list,
-add them to complete the register map
+The driver previously skipped handling ClearFeature(ENDPOINT_HALT)
+when the endpoint was already not halted. This prevented the
+controller from resetting the data sequence number and reinitializing
+the endpoint state.
 
-- DMAC counter control registers
-- Data path Timestamp counter register
-- Data path bit counter register
-- Data path bit count timestamp register
-- Data path bit read timestamp register
+According to USB 3.2 specification Rev. 1.1, section 9.4.5,
+ClearFeature(ENDPOINT_HALT) must always reset the data sequence and
+set the stream state machine to Disabled, regardless of whether the
+endpoint was halted.
 
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://lore.kernel.org/r/1666940627-7611-1-git-send-email-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 73b97d46dde6 ("ASoC: fsl_xcvr: clear the channel status control memory")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Remove the early return so that ClearFeature(ENDPOINT_HALT) always
+resets the endpoint sequence state as required by the specification.
+
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://patch.msgid.link/20251127033540.2287517-1-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_xcvr.c | 40 ++++++++++++++++++++++++++++++++++++++++
- sound/soc/fsl/fsl_xcvr.h | 21 +++++++++++++++++++++
- 2 files changed, 61 insertions(+)
+ drivers/usb/gadget/udc/tegra-xudc.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
-index 4c5864e8267d0..6c8a2519cc1bd 100644
---- a/sound/soc/fsl/fsl_xcvr.c
-+++ b/sound/soc/fsl/fsl_xcvr.c
-@@ -934,6 +934,14 @@ static const struct reg_default fsl_xcvr_reg_defaults[] = {
- 	{ FSL_XCVR_RX_DPTH_CTRL_SET,	0x00002C89 },
- 	{ FSL_XCVR_RX_DPTH_CTRL_CLR,	0x00002C89 },
- 	{ FSL_XCVR_RX_DPTH_CTRL_TOG,	0x00002C89 },
-+	{ FSL_XCVR_RX_DPTH_CNTR_CTRL,	0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_SET, 0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR, 0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG, 0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_TSCR, 0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_BCR,  0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_BCTR, 0x00000000 },
-+	{ FSL_XCVR_RX_DPTH_BCRR, 0x00000000 },
- 	{ FSL_XCVR_TX_DPTH_CTRL,	0x00000000 },
- 	{ FSL_XCVR_TX_DPTH_CTRL_SET,	0x00000000 },
- 	{ FSL_XCVR_TX_DPTH_CTRL_CLR,	0x00000000 },
-@@ -944,6 +952,14 @@ static const struct reg_default fsl_xcvr_reg_defaults[] = {
- 	{ FSL_XCVR_TX_CS_DATA_3,	0x00000000 },
- 	{ FSL_XCVR_TX_CS_DATA_4,	0x00000000 },
- 	{ FSL_XCVR_TX_CS_DATA_5,	0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_CNTR_CTRL,	0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_CNTR_CTRL_SET, 0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR, 0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG, 0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_TSCR, 0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_BCR,	 0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_BCTR, 0x00000000 },
-+	{ FSL_XCVR_TX_DPTH_BCRR, 0x00000000 },
- 	{ FSL_XCVR_DEBUG_REG_0,		0x00000000 },
- 	{ FSL_XCVR_DEBUG_REG_1,		0x00000000 },
- };
-@@ -975,6 +991,14 @@ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
- 	case FSL_XCVR_RX_DPTH_CTRL_SET:
- 	case FSL_XCVR_RX_DPTH_CTRL_CLR:
- 	case FSL_XCVR_RX_DPTH_CTRL_TOG:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL_SET:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG:
-+	case FSL_XCVR_RX_DPTH_TSCR:
-+	case FSL_XCVR_RX_DPTH_BCR:
-+	case FSL_XCVR_RX_DPTH_BCTR:
-+	case FSL_XCVR_RX_DPTH_BCRR:
- 	case FSL_XCVR_TX_DPTH_CTRL:
- 	case FSL_XCVR_TX_DPTH_CTRL_SET:
- 	case FSL_XCVR_TX_DPTH_CTRL_CLR:
-@@ -985,6 +1009,14 @@ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
- 	case FSL_XCVR_TX_CS_DATA_3:
- 	case FSL_XCVR_TX_CS_DATA_4:
- 	case FSL_XCVR_TX_CS_DATA_5:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL_SET:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG:
-+	case FSL_XCVR_TX_DPTH_TSCR:
-+	case FSL_XCVR_TX_DPTH_BCR:
-+	case FSL_XCVR_TX_DPTH_BCTR:
-+	case FSL_XCVR_TX_DPTH_BCRR:
- 	case FSL_XCVR_DEBUG_REG_0:
- 	case FSL_XCVR_DEBUG_REG_1:
- 		return true;
-@@ -1017,6 +1049,10 @@ static bool fsl_xcvr_writeable_reg(struct device *dev, unsigned int reg)
- 	case FSL_XCVR_RX_DPTH_CTRL_SET:
- 	case FSL_XCVR_RX_DPTH_CTRL_CLR:
- 	case FSL_XCVR_RX_DPTH_CTRL_TOG:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL_SET:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR:
-+	case FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG:
- 	case FSL_XCVR_TX_DPTH_CTRL_SET:
- 	case FSL_XCVR_TX_DPTH_CTRL_CLR:
- 	case FSL_XCVR_TX_DPTH_CTRL_TOG:
-@@ -1026,6 +1062,10 @@ static bool fsl_xcvr_writeable_reg(struct device *dev, unsigned int reg)
- 	case FSL_XCVR_TX_CS_DATA_3:
- 	case FSL_XCVR_TX_CS_DATA_4:
- 	case FSL_XCVR_TX_CS_DATA_5:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL_SET:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR:
-+	case FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG:
- 		return true;
- 	default:
- 		return false;
-diff --git a/sound/soc/fsl/fsl_xcvr.h b/sound/soc/fsl/fsl_xcvr.h
-index 7f2853c60085e..4769b0fca21de 100644
---- a/sound/soc/fsl/fsl_xcvr.h
-+++ b/sound/soc/fsl/fsl_xcvr.h
-@@ -49,6 +49,16 @@
- #define FSL_XCVR_RX_DPTH_CTRL_CLR	0x188
- #define FSL_XCVR_RX_DPTH_CTRL_TOG	0x18c
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -1554,12 +1554,6 @@ static int __tegra_xudc_ep_set_halt(stru
+ 		return -ENOTSUPP;
+ 	}
  
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL	0x1C0
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_SET	0x1C4
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR	0x1C8
-+#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG	0x1CC
-+
-+#define FSL_XCVR_RX_DPTH_TSCR		0x1D0
-+#define FSL_XCVR_RX_DPTH_BCR		0x1D4
-+#define FSL_XCVR_RX_DPTH_BCTR		0x1D8
-+#define FSL_XCVR_RX_DPTH_BCRR		0x1DC
-+
- #define FSL_XCVR_TX_DPTH_CTRL		0x220 /* TX datapath ctrl reg */
- #define FSL_XCVR_TX_DPTH_CTRL_SET	0x224
- #define FSL_XCVR_TX_DPTH_CTRL_CLR	0x228
-@@ -59,6 +69,17 @@
- #define FSL_XCVR_TX_CS_DATA_3		0x23C
- #define FSL_XCVR_TX_CS_DATA_4		0x240
- #define FSL_XCVR_TX_CS_DATA_5		0x244
-+
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL	0x260
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_SET	0x264
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR	0x268
-+#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG	0x26C
-+
-+#define FSL_XCVR_TX_DPTH_TSCR		0x270
-+#define FSL_XCVR_TX_DPTH_BCR		0x274
-+#define FSL_XCVR_TX_DPTH_BCTR		0x278
-+#define FSL_XCVR_TX_DPTH_BCRR		0x27C
-+
- #define FSL_XCVR_DEBUG_REG_0		0x2E0
- #define FSL_XCVR_DEBUG_REG_1		0x2F0
- 
--- 
-2.51.0
-
+-	if (!!(xudc_readl(xudc, EP_HALT) & BIT(ep->index)) == halt) {
+-		dev_dbg(xudc->dev, "EP %u already %s\n", ep->index,
+-			halt ? "halted" : "not halted");
+-		return 0;
+-	}
+-
+ 	if (halt) {
+ 		ep_halt(xudc, ep->index);
+ 	} else {
 
 
 
