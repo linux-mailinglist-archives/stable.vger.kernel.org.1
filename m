@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-207203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5240CD09973
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B9ADD09982
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AF0F13081E28
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BFAF8308FEB3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACD3233C1B6;
-	Fri,  9 Jan 2026 12:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F07933C1B6;
+	Fri,  9 Jan 2026 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oY8s3QFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q/Se26u3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DBC92737EE;
-	Fri,  9 Jan 2026 12:23:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4229315ADB4;
+	Fri,  9 Jan 2026 12:23:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961386; cv=none; b=e65cGHOzzWUBEIZubpVVaoNTV5Kc5dOA937Z5JZVqxfxc+LBLUeuSkDe4PR9bhdVuTAmPMQzlzk+tg2yOiH7cA37WUrJvQnplC3vShTgMnykEf+ZyZS5jrq2xBLLXsZXx+zuFu+gMsUsa5OGBMBXeNPfFcvYQBhLB01BsDH0JwY=
+	t=1767961392; cv=none; b=KVzXuLTW7i0eonndVTIaZbdVOuy3um2llu5RvHdN+7tNOd0TY28hbUDAa5FecGWaZclaw4fYix3Jc4508ZTlDwzHc7krlS/dr7ruyRd1TcpRMwpqSwaktsPttz93LpCec2uz5xMnefdxzYx1enI/NONvIX2caeHrYuw4Jvjz+3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961386; c=relaxed/simple;
-	bh=OUrDelyIiGkrQava8XMS+aNdDv+ukQczoBPhBwwDaA8=;
+	s=arc-20240116; t=1767961392; c=relaxed/simple;
+	bh=sglgP4nrzMf9AieQM4DL+n/6UDGucMH6MJ8uQ8T0/fg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AkWpi2nT5I7qKgylQbchiSYP6p1HHQmVEG0lHzBSEu5zH9d2kpqlNA9LBdVX+N3c0OvoC7IgKgRR+x1bRttJce3vi5J+rM4Qm+WYa6H9onJMmYzPg8aua68JopDs2Lm/gtVLmTtNbivapqzHOAgjaUMEzKtWmnJpfetSxPfIeDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oY8s3QFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0DE6C4CEF1;
-	Fri,  9 Jan 2026 12:23:05 +0000 (UTC)
+	 MIME-Version:Content-Type; b=tMLMz2czkei56sody+rrN4vaWnwyFfNWoJuimlubbwptITBJD5sdwdiujE9lxwSjvf4YxNqPgV9ngwhFywzFTsWBfOtANgU2uDbYyqJqLLeSOunWdbdgYUUmPXq/+oj9M4wgBEFKD2lXbnzk06dAdTPGJy971daTyeZy0VWRaJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q/Se26u3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1ED4C4CEF1;
+	Fri,  9 Jan 2026 12:23:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961386;
-	bh=OUrDelyIiGkrQava8XMS+aNdDv+ukQczoBPhBwwDaA8=;
+	s=korg; t=1767961392;
+	bh=sglgP4nrzMf9AieQM4DL+n/6UDGucMH6MJ8uQ8T0/fg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oY8s3QFwGuLMiGZATM6wRb6t4uOgjvibSuiDbGdW2bULXAAmuYPSVfGxaHooq9pmq
-	 5sESfUm4YWKB+QKrPGdI7/airXzNd0KID9weEJB9KSijfoSj+1F9EVFOnBLQOs2cOt
-	 UuMrjriBEBuxveHtBHtMyU3LIrUDSlwbufVANC9c=
+	b=q/Se26u3A4laP0HIFVuZRl4034idAhiB/vnYByX/t9ZYD7iZ8LEqxwta3J05K/yDt
+	 B7VA2xabgnXU+ksx+ZdRyJMdN9QNek8Edd+oIpB0sWSCdmloZjVcCNemhKYO4ITnhr
+	 u/XW/n4rlrBoNGhFlpyFI3VppBqoKQXKuy5ADvwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ming Lei <ming.lei@redhat.com>,
-	Christoph Hellwig <hch@lst.de>,
-	John Garry <john.g.garry@oracle.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Rick Koch <mr.rickkoch@gmail.com>
-Subject: [PATCH 6.6 734/737] blk-mq: setup queue ->tag_set before initializing hctx
-Date: Fri,  9 Jan 2026 12:44:33 +0100
-Message-ID: <20260109112201.718575279@linuxfoundation.org>
+	"Jiri Slaby (SUSE)" <jirislaby@kernel.org>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	linux-doc@vger.kernel.org
+Subject: [PATCH 6.6 735/737] tty: fix tty_port_tty_*hangup() kernel-doc
+Date: Fri,  9 Jan 2026 12:44:34 +0100
+Message-ID: <20260109112201.755593272@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -60,62 +59,86 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Lei <ming.lei@redhat.com>
+From: Jiri Slaby (SUSE) <jirislaby@kernel.org>
 
-commit c25c0c9035bb8b28c844dfddeda7b8bdbcfcae95 upstream.
+commit 6241b49540a65a6d5274fa938fd3eb4cbfe2e076 upstream.
 
-Commit 7b815817aa58 ("blk-mq: add helper for checking if one CPU is mapped to specified hctx")
-needs to check queue mapping via tag set in hctx's cpuhp handler.
+The commit below added a new helper, but omitted to move (and add) the
+corressponding kernel-doc. Do it now.
 
-However, q->tag_set may not be setup yet when the cpuhp handler is
-enabled, then kernel oops is triggered.
-
-Fix the issue by setup queue tag_set before initializing hctx.
-
-Cc: stable@vger.kernel.org
-Reported-and-tested-by: Rick Koch <mr.rickkoch@gmail.com>
-Closes: https://lore.kernel.org/linux-block/CANa58eeNDozLaBHKPLxSAhEy__FPfJT_F71W=sEQw49UCrC9PQ@mail.gmail.com
-Fixes: 7b815817aa58 ("blk-mq: add helper for checking if one CPU is mapped to specified hctx")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20241014005115.2699642-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: "Jiri Slaby (SUSE)" <jirislaby@kernel.org>
+Fixes: 2b5eac0f8c6e ("tty: introduce and use tty_port_tty_vhangup() helper")
+Link: https://lore.kernel.org/all/b23d566c-09dc-7374-cc87-0ad4660e8b2e@linux.intel.com/
+Reported-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: linux-doc@vger.kernel.org
+Link: https://lore.kernel.org/r/20250624080641.509959-6-jirislaby@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-mq.c |    8 ++++++--
- 1 file changed, 6 insertions(+), 2 deletions(-)
+ Documentation/driver-api/tty/tty_port.rst |    5 +++--
+ drivers/tty/tty_port.c                    |    5 -----
+ include/linux/tty_port.h                  |    9 +++++++++
+ 3 files changed, 12 insertions(+), 7 deletions(-)
 
---- a/block/blk-mq.c
-+++ b/block/blk-mq.c
-@@ -4453,6 +4453,12 @@ int blk_mq_init_allocated_queue(struct b
- 	/* mark the queue as mq asap */
- 	q->mq_ops = set->ops;
+--- a/Documentation/driver-api/tty/tty_port.rst
++++ b/Documentation/driver-api/tty/tty_port.rst
+@@ -42,9 +42,10 @@ TTY Refcounting
+ TTY Helpers
+ -----------
  
-+	/*
-+	 * ->tag_set has to be setup before initialize hctx, which cpuphp
-+	 * handler needs it for checking queue mapping
-+	 */
-+	q->tag_set = set;
-+
- 	if (blk_mq_alloc_ctxs(q))
- 		goto err_exit;
- 
-@@ -4471,8 +4477,6 @@ int blk_mq_init_allocated_queue(struct b
- 	INIT_WORK(&q->timeout_work, blk_mq_timeout_work);
- 	blk_queue_rq_timeout(q, set->timeout ? set->timeout : 30 * HZ);
- 
--	q->tag_set = set;
++.. kernel-doc::  include/linux/tty_port.h
++   :identifiers: tty_port_tty_hangup tty_port_tty_vhangup
+ .. kernel-doc::  drivers/tty/tty_port.c
+-   :identifiers: tty_port_tty_hangup tty_port_tty_wakeup
 -
- 	q->queue_flags |= QUEUE_FLAG_MQ_DEFAULT;
- 	blk_mq_update_poll_flag(q);
++   :identifiers: tty_port_tty_wakeup
  
+ Modem Signals
+ -------------
+--- a/drivers/tty/tty_port.c
++++ b/drivers/tty/tty_port.c
+@@ -409,11 +409,6 @@ void tty_port_hangup(struct tty_port *po
+ }
+ EXPORT_SYMBOL(tty_port_hangup);
+ 
+-/**
+- * tty_port_tty_hangup - helper to hang up a tty
+- * @port: tty port
+- * @check_clocal: hang only ttys with %CLOCAL unset?
+- */
+ void __tty_port_tty_hangup(struct tty_port *port, bool check_clocal, bool async)
+ {
+ 	struct tty_struct *tty = tty_port_tty_get(port);
+--- a/include/linux/tty_port.h
++++ b/include/linux/tty_port.h
+@@ -254,11 +254,20 @@ static inline int tty_port_users(struct
+ 	return port->count + port->blocked_open;
+ }
+ 
++/**
++ * tty_port_tty_hangup - helper to hang up a tty asynchronously
++ * @port: tty port
++ * @check_clocal: hang only ttys with %CLOCAL unset?
++ */
+ static inline void tty_port_tty_hangup(struct tty_port *port, bool check_clocal)
+ {
+ 	__tty_port_tty_hangup(port, check_clocal, true);
+ }
+ 
++/**
++ * tty_port_tty_vhangup - helper to hang up a tty synchronously
++ * @port: tty port
++ */
+ static inline void tty_port_tty_vhangup(struct tty_port *port)
+ {
+ 	__tty_port_tty_hangup(port, false, false);
 
 
 
