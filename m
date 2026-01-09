@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207231-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71426D09C8E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0424ED09173
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id ABCE63088252
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1BA943005322
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C29F1531E8;
-	Fri,  9 Jan 2026 12:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C4D318EFA;
+	Fri,  9 Jan 2026 11:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zB9F6UMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpr12PKa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D27433C1B6;
-	Fri,  9 Jan 2026 12:24:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8638831A7EA;
+	Fri,  9 Jan 2026 11:55:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961466; cv=none; b=uqnmukt+XLtUaQBs/KgJ+6GvpMI8IAnuCIZaJvY1Gb22z+ZKaf5+TYg+8o/uOSxJXi9tqB0Nf3G22LzCIotnVN6aDh7Ejuv1uyy9BnqRgaTvYDU437IW7SDcKFTSAtoHYRkMAz4CQc1kVXSWY7KnLAoRrbbRzgMNjrFE7eDGw44=
+	t=1767959754; cv=none; b=U6t85a4gCjHMZd5vPCd29pp0YvD/hw2f0gZevdW1Xvymp48idzIK+UjQq0ULTMzLM9QvZqfvOO+73KLM500YyOseZGA8x/uvTsEZq22NZNwu27+t1EJ9CPIlxPZ/sa8f9ceKXhPFz3/CWtvC0Ei+I/3+3kvwj/Y11hQvvgRIrSQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961466; c=relaxed/simple;
-	bh=8+YgfyGY5RN+Y7MXBEa0FXJu99h3JNen6PDXwvdpegA=;
+	s=arc-20240116; t=1767959754; c=relaxed/simple;
+	bh=hxAr4HYFMeCuunCJwzig0AJNO6AH7LSCNACy909R+Ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AxqZi68BsuNOc1rIZG3FOvPQ4zkYIqIyVninaiZEtcY0tmydjFzJVkcbjOCuHosAmSAReIDSqg5t88mzYUVtqKRtz8BAkk50rwlTfGw5Ic56X4uldM5q1OOGVP81DBMZPB4LDsbtNGHXhES11j5uTDG6ox6S+2ete/LH8L71Ejk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zB9F6UMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE31DC4CEF1;
-	Fri,  9 Jan 2026 12:24:25 +0000 (UTC)
+	 MIME-Version; b=Zl4P2aitkMm5/RzwKVHqFfzwV/fV78eJmqEE2k7FCQvyCFSTq1wM5XddrozQjjlIk3VEj5Yi9XbP+YuEpP2I3kblyzb5gxS8+3H1oQ04jUlQ1y911V+I2geg6JiqWIwVqRVjtIeN/DC0xg89AdgwsF2RAnpT7+Ex84nNH9vXR4I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpr12PKa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6A3C4CEF1;
+	Fri,  9 Jan 2026 11:55:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961466;
-	bh=8+YgfyGY5RN+Y7MXBEa0FXJu99h3JNen6PDXwvdpegA=;
+	s=korg; t=1767959754;
+	bh=hxAr4HYFMeCuunCJwzig0AJNO6AH7LSCNACy909R+Ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zB9F6UMlY99AW5a4Awb9PB1yapKnGF2Y6v7BHok5oR+Ep72Yo2LnVUe9z3aL1ApBu
-	 t4iLDnpwXDytkNsseCuIlFdU1ceIjdF4om8sroBdEELkIqx3Rm17RYIl/ouRBtf+zf
-	 0gDzoWy7ldCD95By6zUoJpVTOm03HLOWQCu327ok=
+	b=rpr12PKaK5A4Ak++cnmeJ0pRWsKOu6+nejBAEq1PcYx1fpNRYm8eapIfBNF6zr0Yn
+	 JGY7RB5l948Vu3geCzA987rWn+I2lc4gfmo3bDBxUPJx7FqhmEUjIX7TGXSK2xJoyC
+	 FFnn4cGmn9A4FmCBCxcsitWN8p/B/D25B0jzcy1k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Zack Rusin <zack.rusin@broadcom.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Al Viro <viro@zeniv.linux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 024/634] drm/vmwgfx: Use kref in vmw_bo_dirty
+Subject: [PATCH 6.6 163/737] tracefs: fix a leak in eventfs_create_events_dir()
 Date: Fri,  9 Jan 2026 12:35:02 +0100
-Message-ID: <20260109112118.355507757@linuxfoundation.org>
+Message-ID: <20260109112140.125741643@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Forbes <ian.forbes@broadcom.com>
+From: Al Viro <viro@zeniv.linux.org.uk>
 
-[ Upstream commit c1962742ffff7e245f935903a4658eb6f94f6058 ]
+[ Upstream commit 798a401660a151633cb171738a72a8f1efb9b0b4 ]
 
-Rather than using an ad hoc reference count use kref which is atomic
-and has underflow warnings.
+If we have LOCKDOWN_TRACEFS, the function bails out - *after*
+having locked the parent directory and without bothering to
+undo that.  Just check it before tracefs_start_creating()...
 
-Signed-off-by: Ian Forbes <ian.forbes@broadcom.com>
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Link: https://patch.msgid.link/20251030193640.153697-1-ian.forbes@broadcom.com
+Fixes: e24709454c45 "tracefs/eventfs: Add missing lockdown checks"
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ fs/tracefs/event_inode.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-index 7bc99b1279f7d..09e938498442c 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_page_dirty.c
-@@ -50,22 +50,22 @@ enum vmw_bo_dirty_method {
- 
- /**
-  * struct vmw_bo_dirty - Dirty information for buffer objects
-+ * @ref_count: Reference count for this structure. Must be first member!
-  * @start: First currently dirty bit
-  * @end: Last currently dirty bit + 1
-  * @method: The currently used dirty method
-  * @change_count: Number of consecutive method change triggers
-- * @ref_count: Reference count for this structure
-  * @bitmap_size: The size of the bitmap in bits. Typically equal to the
-  * nuber of pages in the bo.
-  * @bitmap: A bitmap where each bit represents a page. A set bit means a
-  * dirty page.
-  */
- struct vmw_bo_dirty {
-+	struct   kref ref_count;
- 	unsigned long start;
- 	unsigned long end;
- 	enum vmw_bo_dirty_method method;
- 	unsigned int change_count;
--	unsigned int ref_count;
- 	unsigned long bitmap_size;
- 	unsigned long bitmap[];
- };
-@@ -235,7 +235,7 @@ int vmw_bo_dirty_add(struct vmw_buffer_object *vbo)
- 	int ret;
- 
- 	if (dirty) {
--		dirty->ref_count++;
-+		kref_get(&dirty->ref_count);
- 		return 0;
- 	}
- 
-@@ -249,7 +249,7 @@ int vmw_bo_dirty_add(struct vmw_buffer_object *vbo)
- 	dirty->bitmap_size = num_pages;
- 	dirty->start = dirty->bitmap_size;
- 	dirty->end = 0;
--	dirty->ref_count = 1;
-+	kref_init(&dirty->ref_count);
- 	if (num_pages < PAGE_SIZE / sizeof(pte_t)) {
- 		dirty->method = VMW_BO_DIRTY_PAGETABLE;
- 	} else {
-@@ -288,10 +288,8 @@ void vmw_bo_dirty_release(struct vmw_buffer_object *vbo)
+diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
+index 73a08db3b7a85..4190e61550449 100644
+--- a/fs/tracefs/event_inode.c
++++ b/fs/tracefs/event_inode.c
+@@ -827,7 +827,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 						const struct eventfs_entry *entries,
+ 						int size, void *data)
  {
- 	struct vmw_bo_dirty *dirty = vbo->dirty;
+-	struct dentry *dentry = tracefs_start_creating(name, parent);
++	struct dentry *dentry;
+ 	struct eventfs_root_inode *rei;
+ 	struct eventfs_inode *ei;
+ 	struct tracefs_inode *ti;
+@@ -838,6 +838,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
+ 	if (security_locked_down(LOCKDOWN_TRACEFS))
+ 		return NULL;
  
--	if (dirty && --dirty->ref_count == 0) {
--		kvfree(dirty);
-+	if (dirty && kref_put(&dirty->ref_count, (void *)kvfree))
- 		vbo->dirty = NULL;
--	}
- }
++	dentry = tracefs_start_creating(name, parent);
+ 	if (IS_ERR(dentry))
+ 		return ERR_CAST(dentry);
  
- /**
 -- 
 2.51.0
 
