@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 67AE5D09DDE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 945C9D094C2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 79E5030AFDE4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 83B6E3056579
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2201435A956;
-	Fri,  9 Jan 2026 12:30:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45766359F99;
+	Fri,  9 Jan 2026 12:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SfiWylOO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lP6QnHQN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D762333AD89;
-	Fri,  9 Jan 2026 12:30:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09822335561;
+	Fri,  9 Jan 2026 12:03:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961822; cv=none; b=X86f5OhcWSmnQesczdfzPymZCkYHcBdvHTttBW94bl/89B4Cw4cOLTzyn6B4c0BcCpfn8qvrpxVpRVDprO8FVDr5owr1l+RT90+aXcF1LkYTFeEAQuR2EPc1uLHI+7yxxr1oLNhxDxxdkmqlTE8/yOzm3JiKgf3hmqB+b4GWk00=
+	t=1767960201; cv=none; b=W3CzfxF4JG1AnfPE2lsumTw8elZW5dmzUn2uX7i+zL4d/x/H1ECXFlkLM7ErkuKSlgi5D9AjLPJVdCcs3kIfczKUkoBsTV/jUPm9tzCbrAs1/AIjVY2Xt1y5XT9klx8CB/VSOR1XTLpjSjKwuVCBsLV0NzgvYC+tjxfeCJlKifs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961822; c=relaxed/simple;
-	bh=cH4CHVBC2NMi6fDKpgbuymlmQacup/UU4usIhNb0EdA=;
+	s=arc-20240116; t=1767960201; c=relaxed/simple;
+	bh=/LOoF4K6XpreJlL/7H8BE0+oy91xQtOD7jgdEDXHyWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RDOpywKNoKKRvGRXIC887iaBR0JcZZZ1px1ZCyTITbtVZ87uUXqCZXsYfERHM0qi8nlByQsMN/vfw1EsDC7N2lbuOtgSYsa8Lw6fBY53ehE8iHwNrZ/sJQALFa86A8n++4AowX54H1X1QyBfpyKsNckldB7WhAO8bS6mioR3HD0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SfiWylOO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64C97C4CEF1;
-	Fri,  9 Jan 2026 12:30:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=jYQlbkPioT4sh0tYYZ+bW69AZ6BAitMXpFiO9vBvl0xQXjEYtEgqAIOHEYMe7i17V+gJ8vIjmnNcBCOICWvu/1TSvT81mI6odRNObvZJ6hjDxBEDVrUcFtPr2vutxZCCWkISBiTx13KiBRCrC1k1TzkHP5PA6ySKJzz+TKs6LK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lP6QnHQN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2F0C4CEF1;
+	Fri,  9 Jan 2026 12:03:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961822;
-	bh=cH4CHVBC2NMi6fDKpgbuymlmQacup/UU4usIhNb0EdA=;
+	s=korg; t=1767960200;
+	bh=/LOoF4K6XpreJlL/7H8BE0+oy91xQtOD7jgdEDXHyWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SfiWylOOK2GaBhcZrqkfCIbylcqWxOMFvR4t+sESYFQT+dmyBvnfKalFcI9+D52JH
-	 5Vl5jad8Y28cuQEPort0TQcozV85rN6ZJhb9qeZ6KzY7E3zT+rBuSN7nI+5KU4kD0M
-	 KB/f43inA2XjpMP+N6PyDM9s6C9KmuEFVKDYtQ+I=
+	b=lP6QnHQNTHmyfIC5oLRohA4f7DF5QRl1I7VUF5IrDMA/sz79a6+4XRZp6GG7wE6YN
+	 ll6hI+husMejdkPJneaF9LNzpB+UiZHoMG3p5+YkW5V7PqSVvosCXCo4o+rVltAqcI
+	 EK4VXXqw4wl5oRP1ZclvMHZrpus4Nn600r0Sx4WQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mans Rullgard <mans@mansr.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 149/634] backlight: led_bl: Take led_access lock when required
+Subject: [PATCH 6.6 288/737] efi/cper: Adjust infopfx size to accept an extra space
 Date: Fri,  9 Jan 2026 12:37:07 +0100
-Message-ID: <20260109112123.060533095@linuxfoundation.org>
+Message-ID: <20260109112144.844938142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +60,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mans Rullgard <mans@mansr.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit a33677b9211b6c328ad359b072043af94f7c9592 ]
+[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
 
-The led_access lock must be held when calling led_sysfs_enable() and
-led_sysfs_disable().  This fixes warnings such as this:
+Compiling with W=1 with werror enabled produces an error:
 
-[    2.432495] ------------[ cut here ]------------
-[    2.437316] WARNING: CPU: 0 PID: 22 at drivers/leds/led-core.c:349 led_sysfs_disable+0x54/0x58
-[    2.446105] Modules linked in:
-[    2.449218] CPU: 0 PID: 22 Comm: kworker/u2:1 Not tainted 6.3.8+ #1
-[    2.456268] Hardware name: Generic AM3517 (Flattened Device Tree)
-[    2.462402] Workqueue: events_unbound deferred_probe_work_func
-[    2.468353]  unwind_backtrace from show_stack+0x10/0x14
-[    2.473632]  show_stack from dump_stack_lvl+0x24/0x2c
-[    2.478759]  dump_stack_lvl from __warn+0x9c/0xc4
-[    2.483551]  __warn from warn_slowpath_fmt+0x64/0xc0
-[    2.488586]  warn_slowpath_fmt from led_sysfs_disable+0x54/0x58
-[    2.494567]  led_sysfs_disable from led_bl_probe+0x20c/0x3b0
-[    2.500305]  led_bl_probe from platform_probe+0x5c/0xb8
-[    2.505615]  platform_probe from really_probe+0xc8/0x2a0
-[    2.510986]  really_probe from __driver_probe_device+0x88/0x19c
-[    2.516967]  __driver_probe_device from driver_probe_device+0x30/0xcc
-[    2.523498]  driver_probe_device from __device_attach_driver+0x94/0xc4
-[    2.530090]  __device_attach_driver from bus_for_each_drv+0x80/0xcc
-[    2.536437]  bus_for_each_drv from __device_attach+0xf8/0x19c
-[    2.542236]  __device_attach from bus_probe_device+0x8c/0x90
-[    2.547973]  bus_probe_device from deferred_probe_work_func+0x80/0xb0
-[    2.554504]  deferred_probe_work_func from process_one_work+0x228/0x4c0
-[    2.561187]  process_one_work from worker_thread+0x1fc/0x4d0
-[    2.566925]  worker_thread from kthread+0xb4/0xd0
-[    2.571685]  kthread from ret_from_fork+0x14/0x2c
-[    2.576446] Exception stack(0xd0079fb0 to 0xd0079ff8)
-[    2.581573] 9fa0:                                     00000000 00000000 00000000 00000000
-[    2.589813] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    2.598052] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[    2.604888] ---[ end trace 0000000000000000 ]---
+drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
+drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                                                                ^
+drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
+  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
+      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Signed-off-by: Mans Rullgard <mans@mansr.com>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://lore.kernel.org/r/20230619160249.10414-1-mans@mansr.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 9341d6698f4c ("backlight: led-bl: Add devlink to supplier LEDs")
+As the logic there adds an space at the end of infopx buffer.
+Add an extra space to avoid such warning.
+
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/led_bl.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/cper-arm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 589dae9ebb638..d360def24747d 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -209,8 +209,11 @@ static int led_bl_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->bl_dev);
- 	}
+diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
+index fa9c1c3bf168b..eb7ee6af55f23 100644
+--- a/drivers/firmware/efi/cper-arm.c
++++ b/drivers/firmware/efi/cper-arm.c
+@@ -240,7 +240,7 @@ void cper_print_proc_arm(const char *pfx,
+ 	int i, len, max_ctx_type;
+ 	struct cper_arm_err_info *err_info;
+ 	struct cper_arm_ctx_info *ctx_info;
+-	char newpfx[64], infopfx[64];
++	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
  
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_disable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
- 
- 	backlight_update_status(priv->bl_dev);
+ 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
  
 -- 
 2.51.0
