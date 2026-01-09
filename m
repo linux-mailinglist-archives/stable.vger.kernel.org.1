@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3EC6D09BB6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B02FBD092C6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 18C8330224B1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:46 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BCF52301BEBF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1805359FA0;
-	Fri,  9 Jan 2026 12:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3661233CE9A;
+	Fri,  9 Jan 2026 12:01:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RtluQO0m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GNyBQlPs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4A3430FF1D;
-	Fri,  9 Jan 2026 12:29:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED75D335561;
+	Fri,  9 Jan 2026 12:01:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961782; cv=none; b=Vcb3FFUxVawYcWdF2FE2TKN3gUfzqCoAZOTxuAasGO/zDquk7Jjdv47wMNloY2uxJ43QRP5yjKnh2ago/QCqwFH3Uxjld9Ajf+b+viknp1P0LLAnCzipCS5VtZYoLgIGZI3IHkFb2BsXN4YJXZ9+U2UWJ4SqGPbl0j8DfRb8bd0=
+	t=1767960065; cv=none; b=RWE8X17dfhidkXxO5FqRN/XJPV5tIMJLIgFdxViXHkZe9tnZEjmfupvmrHHBocXAt2fmH8a1hT/6vdwUJ2DQAvfFL1lgzmQJq/b/fd3wxWC5cA4AiDHxZMButcLBM5RcxwdzapjBGRbNsdHGLiy6fRVwX9jqUKfas0RRwhkUZJ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961782; c=relaxed/simple;
-	bh=ONE6s//qI3BcEXwp6FoeJlEHt8WMv3UqDOqZGE76Rrk=;
+	s=arc-20240116; t=1767960065; c=relaxed/simple;
+	bh=v3IBwyJXk0QD/BF6EN6J4AoGaO/x4iJXsicAHxu/NB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niXnQXJY65leJGoMG1dKd7njGDYBGLYD4G2A55kXPx45YN4XnzID4OP0VbdyfLq0qQxuzkNb4ShcVHHYDXEys7H5fXhOKhPoGbpJ7YVcSz2ROUqhF7cCv2uJfMy2XqeyYxhIwrMSgmfoC0oAdlgQXfQ/3bje2iYAmxZC4IAaeEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RtluQO0m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EEADC4CEF1;
-	Fri,  9 Jan 2026 12:29:42 +0000 (UTC)
+	 MIME-Version; b=bDLYSQhxPC4CZgdgvmgdWsdvfbzPmML9tvnhQobeVSE0QR0jOFxpS7frKZNEag0xQOIOtTXbsMeTrDkCOYVnGrgGqK8iA2W83aKP47LIyryVerlWq+ASmYcG3QjPOT4+mbaRLYxgPng5+Nn7Re/3qeFR/BAfCt/4uH/BoRbAYM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GNyBQlPs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E686FC4CEF1;
+	Fri,  9 Jan 2026 12:01:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961782;
-	bh=ONE6s//qI3BcEXwp6FoeJlEHt8WMv3UqDOqZGE76Rrk=;
+	s=korg; t=1767960064;
+	bh=v3IBwyJXk0QD/BF6EN6J4AoGaO/x4iJXsicAHxu/NB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RtluQO0mI9MN7PBUI4j89K0SGI/DK3k5pmrH09JKXI0Zbuz6YvxLs4+BVM8b1MjmO
-	 +keQx64Audl15KK9qnHZXNQOXBelwxhN4LiBg9n82eVOKymMQM3OZM7WXZxJOyO3bs
-	 X0WS/QKpd4H7eXZ9+zYwpuaiAy/TqsOr61a9gA34=
+	b=GNyBQlPsG4gIFDwN6c+XamU0OeTpHx9mX0fXZNws4Ft/BJFAxF6OXvsLhAh1zzpBh
+	 Q2mm0C9oTpwBsNFWrH5vSZXfUWA7lwjxwBHDE+Dmr1I6lZqUSrJUIwmonqJWLA4q9i
+	 lk3Cg2TVMt3GCz9qIHIUrr3tZlDrGQs2festXKtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 133/634] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
+Subject: [PATCH 6.6 272/737] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
 Date: Fri,  9 Jan 2026 12:36:51 +0100
-Message-ID: <20260109112122.457129866@linuxfoundation.org>
+Message-ID: <20260109112144.231395063@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
+[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+bcm63xx_soc_pcm_new() does not check the return value of
+of_dma_configure(), which may fail with -EPROBE_DEFER or
+other errors, allowing PCM setup to continue with incomplete
+DMA configuration.
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
+Add error checking for of_dma_configure() and return on failure.
 
-Add length checks for both rtl8187 and rtl8187b descriptor headers
-before attempting to access them, dropping the packet cleanly if the
-check fails.
-
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
+Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index fa3fb93f4485d..fd67c11bbf618 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
- 	skb_put(skb, urb->actual_length);
+diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
+index 2c600b017524f..760cb18870908 100644
+--- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
++++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
+@@ -354,7 +354,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
  
--	if (unlikely(urb->status)) {
--		dev_kfree_skb_irq(skb);
--		return;
--	}
-+	if (unlikely(urb->status))
-+		goto free_skb;
+ 	i2s_priv = dev_get_drvdata(asoc_rtd_to_cpu(rtd, 0)->dev);
  
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
-@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		skb_unlink(skb, &priv->rx_queue);
- 		dev_kfree_skb_irq(skb);
- 	}
-+	return;
-+
-+free_skb:
-+	dev_kfree_skb_irq(skb);
-+	return;
- }
+-	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
++	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
++	if (ret)
++		return ret;
  
- static int rtl8187_init_urbs(struct ieee80211_hw *dev)
+ 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
+ 	if (ret)
 -- 
 2.51.0
 
