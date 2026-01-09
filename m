@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-206567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206574-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E529D0923C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C1BDD090DA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:53:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 825483077473
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:52:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C44E7300875A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:53:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74BC733B6F1;
-	Fri,  9 Jan 2026 11:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E69622F77B;
+	Fri,  9 Jan 2026 11:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GB+CA48D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H20W1Pha"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 340C532FA3D;
-	Fri,  9 Jan 2026 11:52:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1015A32FA3D;
+	Fri,  9 Jan 2026 11:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959573; cv=none; b=XdhcqWkYZ6EY0CAKn7SJVz2sI2oxeMFcL0gRjryWAUZU4tijSw53b5EIT1YuN56zHdBH1CaDLVFflXGhw+IksO6sKZNP8DX8WKEJWg7Xp0nUIpIjv3/KfcHZFiUHctnQsVeCx4WbjSVjmLT2kGqMNOYMPxgdghWF6OGgjEG/fVc=
+	t=1767959593; cv=none; b=f07tZ6AxouZOgBUAjxiyE356Y+PDMlupL3poavrrIVsx/lSApOO0+O7HnCWfezHmfKhm5ltSFA9c6+L1ZmY7LTFykHAp3eMhteCI7zfBKoVA8a2xyUM/a9hKP1Xk3W0VBOiTNuKKKRyJ2RUjWqOL5nz9QUhThN+dopkEOGZn0hI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959573; c=relaxed/simple;
-	bh=yrhltUoT1a8VSsL82cJmw4fAcAUTbFBqnaJFAC4Ki8M=;
+	s=arc-20240116; t=1767959593; c=relaxed/simple;
+	bh=5bTYUTKF7cNUPVGLGb65qED3gy3jba3kiyMhsmxrIVU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sPK6x4BSS+lpVEo3ngvoABTWGMQSxiJ1/r53h/VwLLfOzIeXbjrFFp3ABfFe/FzOl/SsRFwhY2KihxGa3gJl7NY5O3gPq6/RHLNdfKaYuuQUPsXKjL7PzZixz2H5aadniRNnHzhvZvl4NUkyAvdEaAuirlArHloc2Dfy6xBRTqE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GB+CA48D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5426C4CEF1;
-	Fri,  9 Jan 2026 11:52:52 +0000 (UTC)
+	 MIME-Version; b=gIkatCMN/wycx1dAzS5iYyzssa8XGSTrlRcY2x49K/mjqi5oG6vdFaK6QvEpOK5oy7ylbmWl/pLPHIxIP6+5xptK7m2pn5rJP3cJIZUS8VkPQn43nhTDeU2+XFvM1q+p8uiCgpQ6dMiBf8U4Khzgv6sSovBGMmKs1nkzO4Ju1Mg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H20W1Pha; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 946CBC4CEF1;
+	Fri,  9 Jan 2026 11:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959573;
-	bh=yrhltUoT1a8VSsL82cJmw4fAcAUTbFBqnaJFAC4Ki8M=;
+	s=korg; t=1767959592;
+	bh=5bTYUTKF7cNUPVGLGb65qED3gy3jba3kiyMhsmxrIVU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GB+CA48DNGZNH2iRdwkvFlKV5gQJ06Cbrzik3b4cNBaT8CCr9AzF1FvY5KUnmFv85
-	 2v4Abg+Mt6ZLAceSETL0dJcYQnzHr7aPTPH59VjPpjXtI6lzWOUxtvqiI76Rcbmq+S
-	 HTheQxebC9YYIVfI71ap9FDCNc/+RC2gXOqH4VOM=
+	b=H20W1PhazBVor2c/cJ/iWc4dRu7OUwvyGvTtQTkVW/0LYXQfLq/AOeKd4du8OTDxG
+	 m9iPSApdcgGpC3/4LsA0UkhFF9Y23KApZsNmXDy73jRokrCLG6Bo29wwJKtVVFbnCo
+	 /xbG7ys2eOZoUnzwg+AtIEbT48ELV9eVpE6GRVSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Francesco Lavra <flavra@baylibre.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 072/737] inet: Avoid ehash lookup race in inet_ehash_insert()
-Date: Fri,  9 Jan 2026 12:33:31 +0100
-Message-ID: <20260109112136.705031527@linuxfoundation.org>
+Subject: [PATCH 6.6 073/737] iio: imu: st_lsm6dsx: Fix measurement unit for odr struct member
+Date: Fri,  9 Jan 2026 12:33:32 +0100
+Message-ID: <20260109112136.742680663@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -67,92 +65,35 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+From: Francesco Lavra <flavra@baylibre.com>
 
-[ Upstream commit 1532ed0d0753c83e72595f785f82b48c28bbe5dc ]
+[ Upstream commit c6d702f2b77194b62fb2098c63bb7f2a87da142d ]
 
-Since ehash lookups are lockless, if one CPU performs a lookup while
-another concurrently deletes and inserts (removing reqsk and inserting sk),
-the lookup may fail to find the socket, an RST may be sent.
+The `odr` field in struct st_lsm6dsx_sensor contains a data rate
+value expressed in mHz, not in Hz.
 
-The call trace map is drawn as follows:
-   CPU 0                           CPU 1
-   -----                           -----
-				inet_ehash_insert()
-                                spin_lock()
-                                sk_nulls_del_node_init_rcu(osk)
-__inet_lookup_established()
-	(lookup failed)
-                                __sk_nulls_add_node_rcu(sk, list)
-                                spin_unlock()
-
-As both deletion and insertion operate on the same ehash chain, this patch
-introduces a new sk_nulls_replace_node_init_rcu() helper functions to
-implement atomic replacement.
-
-Fixes: 5e0724d027f0 ("tcp/dccp: fix hashdance race for passive sessions")
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251015020236.431822-3-xuanqiang.luo@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: f8710f0357bc3 ("iio: imu: st_lsm6dsx: express odr in mHZ")
+Signed-off-by: Francesco Lavra <flavra@baylibre.com>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h         | 13 +++++++++++++
- net/ipv4/inet_hashtables.c |  8 ++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index f8e029cc48ccc..d516ed8050084 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -825,6 +825,19 @@ static inline bool sk_nulls_del_node_init_rcu(struct sock *sk)
- 	return rc;
- }
- 
-+static inline bool sk_nulls_replace_node_init_rcu(struct sock *old,
-+						  struct sock *new)
-+{
-+	if (sk_hashed(old)) {
-+		hlist_nulls_replace_init_rcu(&old->sk_nulls_node,
-+					     &new->sk_nulls_node);
-+		__sock_put(old);
-+		return true;
-+	}
-+
-+	return false;
-+}
-+
- static inline void __sk_add_node(struct sock *sk, struct hlist_head *list)
- {
- 	hlist_add_head(&sk->sk_node, list);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index 60e81f6b1c6d4..7292f70176251 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -676,8 +676,11 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	spin_lock(lock);
- 	if (osk) {
- 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
--		ret = sk_nulls_del_node_init_rcu(osk);
--	} else if (found_dup_sk) {
-+		ret = sk_nulls_replace_node_init_rcu(osk, sk);
-+		goto unlock;
-+	}
-+
-+	if (found_dup_sk) {
- 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
- 		if (*found_dup_sk)
- 			ret = false;
-@@ -686,6 +689,7 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	if (ret)
- 		__sk_nulls_add_node_rcu(sk, list);
- 
-+unlock:
- 	spin_unlock(lock);
- 
- 	return ret;
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 35325d2e1ce6c..33b5c660103e4 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -381,7 +381,7 @@ enum st_lsm6dsx_fifo_mode {
+  * @id: Sensor identifier.
+  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
+  * @gain: Configured sensor sensitivity.
+- * @odr: Output data rate of the sensor [Hz].
++ * @odr: Output data rate of the sensor [mHz].
+  * @samples_to_discard: Number of samples to discard for filters settling time.
+  * @watermark: Sensor watermark level.
+  * @decimator: Sensor decimation factor.
 -- 
 2.51.0
 
