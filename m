@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206674-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D3027D09A7C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CE91D09347
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D0BD30F2736
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88A4030CBA48
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 640BE35A92E;
-	Fri,  9 Jan 2026 12:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26A8A335561;
+	Fri,  9 Jan 2026 11:57:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2gYxYA12"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="skkRcjSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 282DB321F5E;
-	Fri,  9 Jan 2026 12:25:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE86C31A7EA;
+	Fri,  9 Jan 2026 11:57:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961510; cv=none; b=YK47ZbsGSzY3v3xE3MRyLJA0wbVgEPBtjxGGePfkTrOMFByR/XaZ2E/OXRPHwbm92BEaIGIyBIOzyNnniAo/aZTrwpaz/3VePZOtHsnyEfRHm3hCi5iZXeYKez3uXouNPAH1d/Rb+dkubBViEx5MLmBCok6MV7Tr819LYAyneLE=
+	t=1767959876; cv=none; b=RLy0JLx0Xvhaq2nNAPqHINmLcKy2EX/UivJY3fO5w66PdwQTHYxkYQh5naTJm7XWi+ReIbnxXt8YSGz+RHL1UbTCDvLhObN03XGJvhS1Apw3csoSilWEaCLoXaa6KyKRzHHLDQyq5mv6lNvWLD7HWbtAazxO1yaqXFUbsa5IisA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961510; c=relaxed/simple;
-	bh=tJY2wCGxm1mpfSy+OtmHOzpqig6Jv5gOqOXkKdeeQvc=;
+	s=arc-20240116; t=1767959876; c=relaxed/simple;
+	bh=iw+xVwBNsaZYuRGBDyJhXImT1EEkuX0IDgWxlyQVX1g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bgcfESUZ/oj4DdhmHi45ZUrAKH4yKFz6xJYbg/qwUGG9388v0NLkL2VXTGLlLR0/8xwvmnjMZ9ZNDik5zqRm9mnI3b8cJlGuvRCIqoPbMbx9nknZ+kIEYTYTDuRbNlh0XI25f5MOmE2JFKgObBWvm7rklH1b6YBX/3zNRpr7O1E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2gYxYA12; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61FB1C4CEF1;
-	Fri,  9 Jan 2026 12:25:09 +0000 (UTC)
+	 MIME-Version; b=P4MckzzPmKr8LTWZ01DXnvvIG3E0CLD4MuQ8DAIGPntBcStFaQvqJoVeBQNohQ6mEG/esWBFjh6xBBiZHcZ2w4sFMwv5Srorq0ngKsiSVAv1Le3+O/X8wkwnHY7xYPK4ibHZZuTn0bdsvCvYG4yapm2TP7Qj8Hoky0eJQSvSTng=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=skkRcjSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B2A5C4CEF1;
+	Fri,  9 Jan 2026 11:57:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961509;
-	bh=tJY2wCGxm1mpfSy+OtmHOzpqig6Jv5gOqOXkKdeeQvc=;
+	s=korg; t=1767959876;
+	bh=iw+xVwBNsaZYuRGBDyJhXImT1EEkuX0IDgWxlyQVX1g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2gYxYA12NZap2h2OWM3W1Or4/P+gu3aJNDvLNChw+C99ROJJwqQDZ76ACH7DszIkB
-	 AGQvqii9uEvkNFLxPnSkrReILc/tSTYtuBgQVPN6aDH+Hw3Lif0AEHHraHdX5NjLBe
-	 imYMXO89s5+uS17Ts52rsdtJXGVvgAAYhxIVTdzk=
+	b=skkRcjSl+00HwRWhqb/6IU5+G21ZH6fcMOZ0gmBk1Wpu9BJA5tRCxzUwQIf3Ofgk+
+	 G6H/Cqmb4iSbs91lYjSEj/x10Hy6cZh1iF/FOVevqcXyQbDJiUzWIEC2xyVHXc6qwc
+	 Y6Hxqcz4yTccX8Fg3Ju9tAg//qjS+/wg4mTzPzm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Navaneeth K <knavaneeth786@gmail.com>,
-	stable <stable@kernel.org>
-Subject: [PATCH 6.1 040/634] staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
+	Zilin Guan <zilin@seu.edu.cn>,
+	Himanshu Madhani <hmadhani2024@gmail.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 179/737] scsi: qla2xxx: Fix improper freeing of purex item
 Date: Fri,  9 Jan 2026 12:35:18 +0100
-Message-ID: <20260109112118.955499218@linuxfoundation.org>
+Message-ID: <20260109112140.727394248@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +61,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Navaneeth K <knavaneeth786@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 502ddcc405b69fa92e0add6c1714d654504f6fd7 upstream.
+[ Upstream commit 78b1a242fe612a755f2158fd206ee6bb577d18ca ]
 
-The Extended Supported Rates (ESR) IE handling in OnBeacon accessed
-*(p + 1 + ielen) and *(p + 2 + ielen) without verifying that these
-offsets lie within the received frame buffer. A malformed beacon with
-an ESR IE positioned at the end of the buffer could cause an
-out-of-bounds read, potentially triggering a kernel panic.
+In qla2xxx_process_purls_iocb(), an item is allocated via
+qla27xx_copy_multiple_pkt(), which internally calls
+qla24xx_alloc_purex_item().
 
-Add a boundary check to ensure that the ESR IE body and the subsequent
-bytes are within the limits of the frame before attempting to access
-them.
+The qla24xx_alloc_purex_item() function may return a pre-allocated item
+from a per-adapter pool for small allocations, instead of dynamically
+allocating memory with kzalloc().
 
-This prevents OOB reads caused by malformed beacon frames.
+An error handling path in qla2xxx_process_purls_iocb() incorrectly uses
+kfree() to release the item. If the item was from the pre-allocated
+pool, calling kfree() on it is a bug that can lead to memory corruption.
 
-Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
-Cc: stable <stable@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by using the correct deallocation function,
+qla24xx_free_purex_item(), which properly handles both dynamically
+allocated and pre-allocated items.
+
+Fixes: 875386b98857 ("scsi: qla2xxx: Add Unsolicited LS Request and Response Support for NVMe")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Himanshu Madhani <hmadhani2024@gmail.com>
+Link: https://patch.msgid.link/20251113151246.762510-1-zilin@seu.edu.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/scsi/qla2xxx/qla_nvme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-+++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -582,9 +582,11 @@ unsigned int OnBeacon(struct adapter *pa
- 
- 	p = rtw_get_ie(pframe + sizeof(struct ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, WLAN_EID_EXT_SUPP_RATES, &ielen, precv_frame->u.hdr.len - sizeof(struct ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
- 	if (p && ielen > 0) {
--		if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
--			/* Invalid value 0x2D is detected in Extended Supported Rates (ESR) IE. Try to fix the IE length to avoid failed Beacon parsing. */
--			*(p + 1) = ielen - 1;
-+		if (p + 2 + ielen < pframe + len) {
-+			if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
-+				/* Invalid value 0x2D is detected in Extended Supported Rates (ESR) IE. Try to fix the IE length to avoid failed Beacon parsing. */
-+				*(p + 1) = ielen - 1;
-+		}
+diff --git a/drivers/scsi/qla2xxx/qla_nvme.c b/drivers/scsi/qla2xxx/qla_nvme.c
+index 080670cb2aa51..38cb3281c6350 100644
+--- a/drivers/scsi/qla2xxx/qla_nvme.c
++++ b/drivers/scsi/qla2xxx/qla_nvme.c
+@@ -1293,7 +1293,7 @@ void qla2xxx_process_purls_iocb(void **pkt, struct rsp_que **rsp)
+ 		a.reason = FCNVME_RJT_RC_LOGIC;
+ 		a.explanation = FCNVME_RJT_EXP_NONE;
+ 		xmt_reject = true;
+-		kfree(item);
++		qla24xx_free_purex_item(item);
+ 		goto out;
  	}
  
- 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
+-- 
+2.51.0
+
 
 
 
