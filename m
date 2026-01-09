@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6CD68D0A4D0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:15:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68617D0A4A0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:13:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 738C533469F6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99BA431F82E8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3D0135BDD9;
-	Fri,  9 Jan 2026 12:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A37735C19A;
+	Fri,  9 Jan 2026 12:52:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSrwJ52f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E6NvnJhd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6985227EA8;
-	Fri,  9 Jan 2026 12:52:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2CEA235BDB6;
+	Fri,  9 Jan 2026 12:52:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963144; cv=none; b=nJZ9nkx3u+bsWA0c6QKYQwXijO7/NEzfLC4JiOko2UHV3yAoPMyOCR0pBjVoc23ymEEZlzbvQfl20rWrS00dlBOra5fIa1o4OwQSVK/QfMH3HQKcblvp5Ts4BfUag+hdk6nf/eeEJ5BSEpzU/Da1vk0qKGZ3M127Nvx8waKjp6o=
+	t=1767963153; cv=none; b=DT5vMttPS30QQyEZu0PR4YGKov2TpXe0HYHSAhivubJu25Z4bYjShdgt9ONsaOHCyQ8Mj6AXrojEzFaJ3S9cXHtFiY++wnCCRfbTkyAKkQSNxtro1Bo5Pn2iflsNRBX8VococDbvs+8I/OTzWVF+j9LEF9wO6aR5yA0qgZh9Fcg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963144; c=relaxed/simple;
-	bh=ggOsNEpcNLkNzQ/5ytWC7PTuVOGOHNY/ygb0u7niSCM=;
+	s=arc-20240116; t=1767963153; c=relaxed/simple;
+	bh=CiPbIIAyf0/NIpEzGbGU1Scp6qcBPJ8KcsOtx93BnuU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DkxOzSPniPTFOSJAJkzrsnD6T//OqHAEN9dlk6Ek0F986YVDu6GANlkf1EqP/7wOsMPOY/HMbd0LzV3iVUgCOlR7GtFkkR6BmGPPdHftqOxEky49UNbitYBkS9wsnWeAFC9IbRni3q7Mz8xeEzHYUizUUH3alpUvmRiMgNwaHXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSrwJ52f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32675C4CEF1;
-	Fri,  9 Jan 2026 12:52:24 +0000 (UTC)
+	 MIME-Version; b=GpuKooSyJwJmuOfZBEgNKy1r/HhXaHsJ+MZSvK1Yhz27P42WCZMp+7XoyX6262DcOYcWUPlw9++XKu0urKfp2Ix2+mjTPRPFuJOTzdjQslYQQp9fa8vzG1Ua0aZMsQdOqlGFdu78Cl+QHr7aWvmiVQIHWgwIVQTmJzAmQOKM8aI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E6NvnJhd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8EFC4CEF1;
+	Fri,  9 Jan 2026 12:52:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963144;
-	bh=ggOsNEpcNLkNzQ/5ytWC7PTuVOGOHNY/ygb0u7niSCM=;
+	s=korg; t=1767963152;
+	bh=CiPbIIAyf0/NIpEzGbGU1Scp6qcBPJ8KcsOtx93BnuU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSrwJ52fxFQcKQ/HlwnaBMoG8NWLfg6RFCYHPZNdVxOOfetRCH5/g5QZHgCBYFi07
-	 RDA9SRo+TQRecr+E7LDFSsgSAmo50JqBg40v80jf1hw73DutTrlvyWzpqk3lhqIeEJ
-	 1jyfwm2iusOOBhZZuI33rOXZYD4lAQz2zFVdc75I=
+	b=E6NvnJhdhuKe1l2cbLrrgCwlxWOKHN0bBCovNiDhwqN1mUqc48BNbB8BRL2BXsThg
+	 iWxrCJLIocZHZO1dRPH0tF1eshmBFujc97WHAVCK+mHxZR3Uj/ta4S/EGVLL9P3Yso
+	 2t5CkcSrcFP+DuHxhFBfwVgzvbYAcZlRZdSPBfwU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.1 612/634] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
-Date: Fri,  9 Jan 2026 12:44:50 +0100
-Message-ID: <20260109112140.662840075@linuxfoundation.org>
+	"mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, yin.ding@broadcom.com, tapas.kundu@broadcom.com, Chris Mason" <clm@meta.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Chris Mason <clm@meta.com>
+Subject: [PATCH 6.1 615/634] sched/fair: Small cleanup to sched_balance_newidle()
+Date: Fri,  9 Jan 2026 12:44:53 +0100
+Message-ID: <20260109112140.778372254@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -68,78 +66,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
+commit e78e70dbf603c1425f15f32b455ca148c932f6c1 upstream.
 
-Check that the resource which is converted to a surface exists before
-trying to use the cursor snooper on it.
+Pull out the !sd check to simplify code.
 
-vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
-because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
-unfortunately functions that accept the actual surfaces as objects might
-(and in case of the cursor snooper, do not) be able to handle null
-objects. Make sure that we validate not only the identifier (via the
-vmw_cmd_res_check) but also check that the actual resource exists before
-trying to do something with it.
-
-Fixes unchecked null-ptr reference in the snooping code.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
-Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: Modified to apply on v5.10.y-v6.1.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://patch.msgid.link/20251107161739.525916173@infradead.org
+[ Ajay: Modified to apply on v6.1 ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ kernel/sched/fair.c |   11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1507,6 +1507,7 @@ static int vmw_cmd_dma(struct vmw_privat
- 		       SVGA3dCmdHeader *header)
- {
- 	struct vmw_buffer_object *vmw_bo = NULL;
-+	struct vmw_resource *res;
- 	struct vmw_surface *srf = NULL;
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
- 	int ret;
-@@ -1542,18 +1543,24 @@ static int vmw_cmd_dma(struct vmw_privat
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -11589,14 +11589,15 @@ static int sched_balance_newidle(struct
  
- 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
- 		VMW_RES_DIRTY_SET : 0;
--	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
--				dirty, user_surface_converter,
--				&cmd->body.host.sid, NULL);
-+	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
-+				user_surface_converter, &cmd->body.host.sid,
-+				NULL);
- 	if (unlikely(ret != 0)) {
- 		if (unlikely(ret != -ERESTARTSYS))
- 			VMW_DEBUG_USER("could not find surface for DMA.\n");
- 		return ret;
- 	}
- 
--	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
-+	res = sw_context->res_cache[vmw_res_surface].res;
-+	if (!res) {
-+		VMW_DEBUG_USER("Invalid DMA surface.\n");
-+		return -EINVAL;
+ 	rcu_read_lock();
+ 	sd = rcu_dereference_check_sched_domain(this_rq->sd);
++	if (!sd) {
++		rcu_read_unlock();
++		goto out;
 +	}
  
--	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base, header);
-+	srf = vmw_res_to_srf(res);
-+	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base,
-+			     header);
- 
- 	return 0;
- }
+ 	if (!READ_ONCE(this_rq->rd->overload) ||
+-	    (sd && this_rq->avg_idle < sd->max_newidle_lb_cost)) {
+-
+-		if (sd)
+-			update_next_balance(sd, &next_balance);
++	    this_rq->avg_idle < sd->max_newidle_lb_cost) {
++		update_next_balance(sd, &next_balance);
+ 		rcu_read_unlock();
+-
+ 		goto out;
+ 	}
+ 	rcu_read_unlock();
 
 
 
