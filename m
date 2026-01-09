@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DB8D8D093EC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BB8D09CD3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 079843025C6D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8C0D0302D5D7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9FF8F359FBE;
-	Fri,  9 Jan 2026 12:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7D435A95B;
+	Fri,  9 Jan 2026 12:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Etgfm1y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TiIG29Ss"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6329E359F98;
-	Fri,  9 Jan 2026 12:05:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0169D359701;
+	Fri,  9 Jan 2026 12:32:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960300; cv=none; b=FZ1zguZMGptcX1wjnB40PL9+KSBEKKomVVD43gxp2YAHWRuJi1ZpJWZ/l1HtUTVPHJVzzJHr9QcCZ5OyC+/jTqIP/umTIxGxMye38pJLhdtBfL5xr5oj5/LhmA/yc+/jj7GYpUofRRLN1Oss21o5euiItP1nVImIiHabho4NchY=
+	t=1767961922; cv=none; b=ZjmpMSDeVcSp71O9h1sdJ8QsaAbp+7GrQhS58UWn7WYfx5wouShWQuJZ+4KaUzplJzLuZSOkMMG9ix92PIjeg1z6ywFjObrx7xLU1fl2s9Z/Yda2kp/9hw0DqkExjWS1j4jQZl15fKSKHeOzHn67QRXZFr+5/PODDISDwGM1hhw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960300; c=relaxed/simple;
-	bh=NHN5YcBAXnzbnDnlDdADl89jQ7fjCIqnVD4OlKqGyls=;
+	s=arc-20240116; t=1767961922; c=relaxed/simple;
+	bh=qVXigCfdcTBk5BLaEl9LlH0SxMl9O77EJXoapZorBr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VEKmhIQM1V1URNUaRxMxcf8ydVLu7hJl2lJ6VICaVvVjBmlHa819KUACTp/cM0CQOxXtdFut9zkwRl1D4qzmsGOS6rJ6WQShQKz8qfTQ4nNOh8okFjsxG6CB7jj3OhbrCN9XkBg6qkoKgEJy7hJH1IMAzxtJwB9GNoczQPHVaaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Etgfm1y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D063EC4CEF1;
-	Fri,  9 Jan 2026 12:04:59 +0000 (UTC)
+	 MIME-Version; b=FKyc76siMBKqGv3XKXkSwnmVWVe0QItnMd+ZxJHbGgHaWn6/i/l63lKXygOuY0xMjNN/QN9bcN9oFAtrdkO0mE+fmvZI7rkmrAe9IfrhsJKJInggs3WZx9kMi0rWwI6HsjXEjy+qe11AEF4CDns2OCVWgSsw4XzNMi1F4DAmyis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TiIG29Ss; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 852A9C4CEF1;
+	Fri,  9 Jan 2026 12:32:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960300;
-	bh=NHN5YcBAXnzbnDnlDdADl89jQ7fjCIqnVD4OlKqGyls=;
+	s=korg; t=1767961921;
+	bh=qVXigCfdcTBk5BLaEl9LlH0SxMl9O77EJXoapZorBr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Etgfm1y6K7RyfmSzHQS8yEdh8Rb4JWGvvA8ASc0suqiH9G3nTcLRcRAVMU/AjjX+
-	 g1unhREoKWmyXodD5azJ9nQcw9lS0FywFIWt6yMPvp5ECzpuyH3x1ldTWojYWOnkdN
-	 1Zw4Zneq5Xj77k+NivS++rkwVbSIvHp3R3JD39a4=
+	b=TiIG29SsIwgnj7wx1YdmIr5L+/velKPawSr/JMctajBFmavQbgU/5grL1fvhhZHpd
+	 dD8cTZ9001E0A+kZ7newSdbz5BdpOY0+z73rSO/jojoTrMfV3br7LU2Cf2ru3vC8Fd
+	 6LFE1Ma8R8qPAVwbs0quri3uL413iN1IXDQ28mrU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Matthijs Kooijman <matthijs@stdin.nl>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 323/737] btrfs: scrub: always update btrfs_scrub_progress::last_physical
+Subject: [PATCH 6.1 184/634] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
 Date: Fri,  9 Jan 2026 12:37:42 +0100
-Message-ID: <20260109112146.149541716@linuxfoundation.org>
+Message-ID: <20260109112124.364376980@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Matthijs Kooijman <matthijs@stdin.nl>
 
-[ Upstream commit 54df8b80cc63aa0f22c4590cad11542731ed43ff ]
+[ Upstream commit b5fe46efc147516a908d2d31bf40eb858ab76d51 ]
 
-[BUG]
-When a scrub failed immediately without any byte scrubbed, the returned
-btrfs_scrub_progress::last_physical will always be 0, even if there is a
-non-zero @start passed into btrfs_scrub_dev() for resume cases.
+The pinctrl-single driver handles pin_config_set by looking up the
+requested setting in a DT-defined lookup table, which defines what bits
+correspond to each setting. There is no way to add
+PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
+code to disable the bias by applying the disable values of both the
+pullup and pulldown entries in the table.
 
-This will reset the progress and make later scrub resume start from the
-beginning.
+However, this code is inside the table-lookup loop, so it would only
+execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
+which can never exist, so this code never runs.
 
-[CAUSE]
-The function btrfs_scrub_dev() accepts a @progress parameter to copy its
-updated progress to the caller, there are cases where we either don't
-touch progress::last_physical at all or copy 0 into last_physical:
+This commit lifts the offending code out of the loop, so it just
+executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
+skippipng the table lookup loop.
 
-- last_physical not updated at all
-  If some error happened before scrubbing any super block or chunk, we
-  will not copy the progress, leaving the @last_physical untouched.
+This also introduces a new `param` variable to make the code slightly
+more readable.
 
-  E.g. failed to allocate @sctx, scrubbing a missing device or even
-  there is already a running scrub and so on.
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
+versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
+the lookup table, but that was removed, which is probably how this bug
+was introduced.
 
-  All those cases won't touch @progress at all, resulting the
-  last_physical untouched and will be left as 0 for most cases.
-
-- Error out before scrubbing any bytes
-  In those case we allocated @sctx, and sctx->stat.last_physical is all
-  zero (initialized by kvzalloc()).
-  Unfortunately some critical errors happened during
-  scrub_enumerate_chunks() or scrub_supers() before any stripe is really
-  scrubbed.
-
-  In that case although we will copy sctx->stat back to @progress, since
-  no byte is really scrubbed, last_physical will be overwritten to 0.
-
-[FIX]
-Make sure the parameter @progress always has its @last_physical member
-updated to @start parameter inside btrfs_scrub_dev().
-
-At the very beginning of the function, set @progress->last_physical to
-@start, so that even if we error out without doing progress copying,
-last_physical is still at @start.
-
-Then after we got @sctx allocated, set sctx->stat.last_physical to
-@start, this will make sure even if we didn't get any byte scrubbed, at
-the progress copying stage the @last_physical is not left as zero.
-
-This should resolve the resume progress reset problem.
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
+Reviewed-by: Haojian Zhuang <haojian.zhuang@linaro.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Message-ID: <20240319110633.230329-1-matthijs@stdin.nl>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 61d1bb53547d ("pinctrl: single: Fix incorrect type for error return variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pinctrl/pinctrl-single.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index a69dce114c5ba..3338e2e7a9a02 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -2858,6 +2858,10 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	unsigned int nofs_flag;
- 	bool need_commit = false;
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index a72911e8ea82d..b81297084f097 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -557,21 +557,30 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 	unsigned offset = 0, shift = 0, i, data, ret;
+ 	u32 arg;
+ 	int j;
++	enum pin_config_param param;
  
-+	/* Set the basic fallback @last_physical before we got a sctx. */
-+	if (progress)
-+		progress->last_physical = start;
-+
- 	if (btrfs_fs_closing(fs_info))
- 		return -EAGAIN;
- 
-@@ -2876,6 +2880,7 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	sctx = scrub_setup_ctx(fs_info, is_dev_replace);
- 	if (IS_ERR(sctx))
- 		return PTR_ERR(sctx);
-+	sctx->stat.last_physical = start;
- 
- 	ret = scrub_workers_get(fs_info);
+ 	ret = pcs_get_function(pctldev, pin, &func);
  	if (ret)
+ 		return ret;
+ 
+ 	for (j = 0; j < num_configs; j++) {
++		param = pinconf_to_config_param(configs[j]);
++
++		/* BIAS_DISABLE has no entry in the func->conf table */
++		if (param == PIN_CONFIG_BIAS_DISABLE) {
++			/* This just disables all bias entries */
++			pcs_pinconf_clear_bias(pctldev, pin);
++			continue;
++		}
++
+ 		for (i = 0; i < func->nconfs; i++) {
+-			if (pinconf_to_config_param(configs[j])
+-				!= func->conf[i].param)
++			if (param != func->conf[i].param)
+ 				continue;
+ 
+ 			offset = pin * (pcs->width / BITS_PER_BYTE);
+ 			data = pcs->read(pcs->base + offset);
+ 			arg = pinconf_to_config_argument(configs[j]);
+-			switch (func->conf[i].param) {
++			switch (param) {
+ 			/* 2 parameters */
+ 			case PIN_CONFIG_INPUT_SCHMITT:
+ 			case PIN_CONFIG_DRIVE_STRENGTH:
+@@ -583,9 +592,6 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 				data |= (arg << shift) & func->conf[i].mask;
+ 				break;
+ 			/* 4 parameters */
+-			case PIN_CONFIG_BIAS_DISABLE:
+-				pcs_pinconf_clear_bias(pctldev, pin);
+-				break;
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+ 				if (arg) {
 -- 
 2.51.0
 
