@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-207640-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72905D0A04E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C27BD099F4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F02413048EC0
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 32DBF3049593
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D4E035971B;
-	Fri,  9 Jan 2026 12:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F13635971B;
+	Fri,  9 Jan 2026 12:16:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM5AFm4T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ergj6tfd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB1933C53A;
-	Fri,  9 Jan 2026 12:43:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D637326ED41;
+	Fri,  9 Jan 2026 12:16:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962626; cv=none; b=IjpbJsDBv1DpKmkDXI3pn//X9EHzs5jrBmwvfA6rRtJHnJ73QNNqtrdElYLrDWIwX0RR0oOfxH0V/dNLdzkFRa4A+Fe8tiXx+EDTalKe+Q937f6bU2j3WARROwG8uXUGfchP6CvexLBlAQX7k9UjGAerSr4FYIab2xzoVMspYOs=
+	t=1767961010; cv=none; b=nuKO3/QII8Rocj7Vtjv8O0UwOSSkIp6ize/EL0MDsPL+PDcZewtdSKi/b8O/sR1X1zTJqLItHjVE+zKGnWogtwLjSIpUcPnnYeyGPbGmyWg3YwmPzAKHz0/JaHRbISDt78VXfjFaj4p4vXUB3dpxZfPlKogmH5EOqfWcrhdrhls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962626; c=relaxed/simple;
-	bh=fPJ97FBYquqpOUTQ8Xvx7bbzZSPfP+rNoJPzBQY1VVM=;
+	s=arc-20240116; t=1767961010; c=relaxed/simple;
+	bh=dhU+kX8Ef5Z3BDZXqEX/z2pw68rbBJEH7Sm/ij3oTHk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jdFvEUeCAtU9iEzyQ45ldieCZPli7APSj7cmpzHqIjffXE6t3yXZJ2fyXvzc2A/lj1qNvc1ca8qgDWfOmYuA4Kj6yrNDb8nTLxMMLB1GfDvL9tA3sndjcxOSK0DWok2ARAioHbzmM/Y8dkA0B3H1nkIiJuc4yqi75KT66AM43lU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM5AFm4T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F0FDC16AAE;
-	Fri,  9 Jan 2026 12:43:45 +0000 (UTC)
+	 MIME-Version; b=dmNO8kTIa1R94bm2aqMQIYGuGo66Na4E10Vl604dsbdP3nnkkjJkaQDFWpDEUB1CXkr+HOi+qii+zR7DBKn6B7obvGlE9awHWWz+kYIeXVMYBz4aBmrmfJifxh5bsr9nWR6gJwZ1k8WEvsD+RNQUdJ/zyudbFQksiamz0HJG9iU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ergj6tfd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FB58C4CEF1;
+	Fri,  9 Jan 2026 12:16:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962626;
-	bh=fPJ97FBYquqpOUTQ8Xvx7bbzZSPfP+rNoJPzBQY1VVM=;
+	s=korg; t=1767961010;
+	bh=dhU+kX8Ef5Z3BDZXqEX/z2pw68rbBJEH7Sm/ij3oTHk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tM5AFm4T37uQB/2R4Z2GffeJQ/bbEEW1x+ZETB+CGqECT1l5vC4RH8l1B2lhRm3zF
-	 y7ImGqMRJ7GhzKoaO0sni0lbxMGegvMePsFFVeZOSP88E/ELohUYUyY4aMKLqxOCAR
-	 tZcyRVaqSpL3Ck9qqzqdtwHYHa/JzqPQ1iudhEKs=
+	b=Ergj6tfd0zryZ7wQkaHorVO+NkPFK2RtMfhFzgvGbayfzcAucrXwDW3UklAVtFlWq
+	 Vv/fm7CdpadzkQur93IRtecngETK9U1+cVzSqcK/+bk5zDwxP2rVlkL80Y7fhtKkC/
+	 FFc6hMEz4rWlOwkypAnBYrKQhvKQhRF8XwovrLPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Sela <tomsela@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 432/634] RDMA/efa: Remove possible negative shift
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 6.6 571/737] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
 Date: Fri,  9 Jan 2026 12:41:50 +0100
-Message-ID: <20260109112133.798949521@linuxfoundation.org>
+Message-ID: <20260109112155.480873374@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +59,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 85463eb6a46caf2f1e0e1a6d0731f2f3bab17780 ]
+commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
 
-The page size used for device might in some cases be smaller than
-PAGE_SIZE what results in a negative shift when calculating the number of
-host pages in PAGE_SIZE for a debug log. Remove the debug line together
-with the calculation.
+MAX77620 is most likely always a single device on the board, however
+nothing stops board designers to have two of them, thus same device
+driver could probe twice. Or user could manually try to probing second
+time.
 
-Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
-Link: https://patch.msgid.link/r/20251210173656.8180-1-mrgolin@amazon.com
-Reviewed-by: Tom Sela <tomsela@amazon.com>
-Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Device driver is not ready for that case, because it allocates
+statically 'struct regmap_irq_chip' as non-const and stores during
+probe in 'irq_drv_data' member a pointer to per-probe state
+container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
+make a copy of 'struct regmap_irq_chip' but store the pointer.
+
+Second probe - either successful or failure - would overwrite the
+'irq_drv_data' from previous device probe, so interrupts would be
+executed in a wrong context.
+
+Cc: stable@vger.kernel.org
+Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/efa/efa_verbs.c | 4 ----
- 1 file changed, 4 deletions(-)
+ drivers/mfd/max77620.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
-index 90d5f1a96f3e..a22ddb2088f6 100644
---- a/drivers/infiniband/hw/efa/efa_verbs.c
-+++ b/drivers/infiniband/hw/efa/efa_verbs.c
-@@ -1214,13 +1214,9 @@ static int umem_to_page_list(struct efa_dev *dev,
- 			     u32 hp_cnt,
- 			     u8 hp_shift)
- {
--	u32 pages_in_hp = BIT(hp_shift - PAGE_SHIFT);
- 	struct ib_block_iter biter;
- 	unsigned int hp_idx = 0;
+--- a/drivers/mfd/max77620.c
++++ b/drivers/mfd/max77620.c
+@@ -253,7 +253,7 @@ static int max77620_irq_global_unmask(vo
+ 	return ret;
+ }
  
--	ibdev_dbg(&dev->ibdev, "hp_cnt[%u], pages_in_hp[%u]\n",
--		  hp_cnt, pages_in_hp);
--
- 	rdma_umem_for_each_dma_block(umem, &biter, BIT(hp_shift))
- 		page_list[hp_idx++] = rdma_block_iter_dma_address(&biter);
+-static struct regmap_irq_chip max77620_top_irq_chip = {
++static const struct regmap_irq_chip max77620_top_irq_chip = {
+ 	.name = "max77620-top",
+ 	.irqs = max77620_top_irqs,
+ 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
+@@ -498,6 +498,7 @@ static int max77620_probe(struct i2c_cli
+ 	const struct i2c_device_id *id = i2c_client_get_device_id(client);
+ 	const struct regmap_config *rmap_config;
+ 	struct max77620_chip *chip;
++	struct regmap_irq_chip *chip_desc;
+ 	const struct mfd_cell *mfd_cells;
+ 	int n_mfd_cells;
+ 	bool pm_off;
+@@ -508,6 +509,14 @@ static int max77620_probe(struct i2c_cli
+ 		return -ENOMEM;
  
--- 
-2.51.0
-
+ 	i2c_set_clientdata(client, chip);
++
++	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
++				 sizeof(max77620_top_irq_chip),
++				 GFP_KERNEL);
++	if (!chip_desc)
++		return -ENOMEM;
++	chip_desc->irq_drv_data = chip;
++
+ 	chip->dev = &client->dev;
+ 	chip->chip_irq = client->irq;
+ 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
+@@ -544,11 +553,9 @@ static int max77620_probe(struct i2c_cli
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	max77620_top_irq_chip.irq_drv_data = chip;
+ 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
+ 				       IRQF_ONESHOT | IRQF_SHARED, 0,
+-				       &max77620_top_irq_chip,
+-				       &chip->top_irq_data);
++				       chip_desc, &chip->top_irq_data);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
+ 		return ret;
 
 
 
