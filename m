@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-207638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207070-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88A35D0A048
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BCF1D099E6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0B224304249C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E8ECC3035F07
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1AF3596F1;
-	Fri,  9 Jan 2026 12:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471632FD699;
+	Fri,  9 Jan 2026 12:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b4bx7N7W"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bhdZ7TGw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D393335BCD;
-	Fri,  9 Jan 2026 12:43:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A1B13176E4;
+	Fri,  9 Jan 2026 12:16:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962620; cv=none; b=DJfMoZZmqg5ISyaa9wO+qq89CGS5YXc99wjMgitvJMz0UhohSDWFWalG49xuyPWBn551AWvoXpvZ9DP1cAqvsltgkbulT5rRiPY7z5d+/Pgpkbk0fdCfB46G/MbNcaPhu8LIGkdrAJ/IGzdUxCb9CcGj5YBqVgSqEJpZKvFn1cc=
+	t=1767961005; cv=none; b=SmrhNJXjrOTiQKW2Z7K7C+zEZgqS/fuuE7WQsGq9Cc/6wtS2VsOBbLyFnwouMExJDnmF7rEvzwHF0bfKLq1ia+xDWcsPFD/z0sriLhiVzz7hPpFzCmGK+tnSxquiXmg382KlEMF1Q3NsKfaH1l7TDHZVA/iwfhtYX3G67QUCDfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962620; c=relaxed/simple;
-	bh=OVkbW6vFZ2e+l1WHI+UeIpQIVALe8WnxZoAQjrRnyGw=;
+	s=arc-20240116; t=1767961005; c=relaxed/simple;
+	bh=vXhdU9KhzkxU80rFHsB7Ez2cnyOIcz3Y1JWSFNuVkLE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KV6aIG26h8X32U5VOhloJGwvRfU+nbWTsVgQQ3oOftndbIi6zSr/+9aKctWk2Lz1EllCOzyaR1deAtPAkQvI21lYfJw5IJdfLtC4hqND5Bt++pab3U7aq3QRHsCBiKkOs/yWP7FEho1PMnhEqLXPxZR0MJ5+pWWIaWQIRmTZqmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b4bx7N7W; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A096C4CEF1;
-	Fri,  9 Jan 2026 12:43:39 +0000 (UTC)
+	 MIME-Version; b=kJxBv6hbavsWG2A57aUyawy8+BeY5klzq/GUIwFDAlQaY4o4HcVy8JTl5GACAaC6SbwqVvDde1QrrbunuLhgtQYpL5X/31jQI6PO58cKwS44+H9cW7BllrQPo8xHiZgXUsbiiYazEnznMXNJ5fxP0I0RlOnj9gPt52YQTwSbSsg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bhdZ7TGw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B914C16AAE;
+	Fri,  9 Jan 2026 12:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962620;
-	bh=OVkbW6vFZ2e+l1WHI+UeIpQIVALe8WnxZoAQjrRnyGw=;
+	s=korg; t=1767961004;
+	bh=vXhdU9KhzkxU80rFHsB7Ez2cnyOIcz3Y1JWSFNuVkLE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b4bx7N7Wi9UPimH6azfVGF0tlrdZ7J3PkjEfUqnEVcP8qCR6NVnFXEZQzhZk4Entd
-	 9F2J0WKAsn4OjS+cnSkvZ94/saMdz4bmk0EzyFsPN1FTQkYiBMhabTYYrymKiPDS0/
-	 E7JIbnDRGybfJH89UbprQgkIfHaJUwfOTHxfUPrQ=
+	b=bhdZ7TGwxcE6gX5VZr+dN23bxumppq50Qmy6C7f/AImdPvx2eCREaHLjf5A4GUkTo
+	 0iL5cStqgB8fJ12vfYmpeF+whD20XUZ7c7il2g6Zvdm3V9EbpybcNjmZkt8sz/skSl
+	 OXo5rMvlTzTFQCno0dztv+3kBCD+NXsNZ8jOJ43c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fatma Alwasmi <falwasmi@purdue.edu>,
-	Pwnverse <stanksal@purdue.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 430/634] net: rose: fix invalid array index in rose_kill_by_device()
+	Jochen Sprickerhof <jochen@sprickerhof.de>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Kees Cook <kees@kernel.org>,
+	Sam Protsenko <semen.protsenko@linaro.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.6 569/737] clk: samsung: exynos-clkout: Assign .num before accessing .hws
 Date: Fri,  9 Jan 2026 12:41:48 +0100
-Message-ID: <20260109112133.724790741@linuxfoundation.org>
+Message-ID: <20260109112155.405557560@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,53 +63,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pwnverse <stanksal@purdue.edu>
+From: Nathan Chancellor <nathan@kernel.org>
 
-[ Upstream commit 6595beb40fb0ec47223d3f6058ee40354694c8e4 ]
+commit cf33f0b7df13685234ccea7be7bfe316b60db4db upstream.
 
-rose_kill_by_device() collects sockets into a local array[] and then
-iterates over them to disconnect sockets bound to a device being brought
-down.
+Commit f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with
+__counted_by") annotated the hws member of 'struct clk_hw_onecell_data'
+with __counted_by, which informs the bounds sanitizer (UBSAN_BOUNDS)
+about the number of elements in .hws[], so that it can warn when .hws[]
+is accessed out of bounds. As noted in that change, the __counted_by
+member must be initialized with the number of elements before the first
+array access happens, otherwise there will be a warning from each access
+prior to the initialization because the number of elements is zero. This
+occurs in exynos_clkout_probe() due to .num being assigned after .hws[]
+has been accessed:
 
-The loop mistakenly indexes array[cnt] instead of array[i]. For cnt <
-ARRAY_SIZE(array), this reads an uninitialized entry; for cnt ==
-ARRAY_SIZE(array), it is an out-of-bounds read. Either case can lead to
-an invalid socket pointer dereference and also leaks references taken
-via sock_hold().
+  UBSAN: array-index-out-of-bounds in drivers/clk/samsung/clk-exynos-clkout.c:178:18
+  index 0 is out of range for type 'clk_hw *[*]'
 
-Fix the index to use i.
+Move the .num initialization to before the first access of .hws[],
+clearing up the warning.
 
-Fixes: 64b8bc7d5f143 ("net/rose: fix races in rose_kill_by_device()")
-Co-developed-by: Fatma Alwasmi <falwasmi@purdue.edu>
-Signed-off-by: Fatma Alwasmi <falwasmi@purdue.edu>
-Signed-off-by: Pwnverse <stanksal@purdue.edu>
-Link: https://patch.msgid.link/20251222212227.4116041-1-ritviktanksalkar@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: f316cdff8d67 ("clk: Annotate struct clk_hw_onecell_data with __counted_by")
+Reported-by: Jochen Sprickerhof <jochen@sprickerhof.de>
+Closes: https://lore.kernel.org/aSIYDN5eyKFKoXKL@eldamar.lan/
+Tested-by: Jochen Sprickerhof <jochen@sprickerhof.de>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Reviewed-by: Kees Cook <kees@kernel.org>
+Reviewed-by: Sam Protsenko <semen.protsenko@linaro.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/rose/af_rose.c | 2 +-
+ drivers/clk/samsung/clk-exynos-clkout.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
-index 5a0bf022a84b..d13ec76a1fec 100644
---- a/net/rose/af_rose.c
-+++ b/net/rose/af_rose.c
-@@ -205,7 +205,7 @@ static void rose_kill_by_device(struct net_device *dev)
- 	spin_unlock_bh(&rose_list_lock);
+--- a/drivers/clk/samsung/clk-exynos-clkout.c
++++ b/drivers/clk/samsung/clk-exynos-clkout.c
+@@ -168,6 +168,7 @@ static int exynos_clkout_probe(struct pl
+ 	clkout->mux.shift = EXYNOS_CLKOUT_MUX_SHIFT;
+ 	clkout->mux.lock = &clkout->slock;
  
- 	for (i = 0; i < cnt; i++) {
--		sk = array[cnt];
-+		sk = array[i];
- 		rose = rose_sk(sk);
- 		lock_sock(sk);
- 		spin_lock_bh(&rose_list_lock);
--- 
-2.51.0
-
++	clkout->data.num = EXYNOS_CLKOUT_NR_CLKS;
+ 	clkout->data.hws[0] = clk_hw_register_composite(NULL, "clkout",
+ 				parent_names, parent_count, &clkout->mux.hw,
+ 				&clk_mux_ops, NULL, NULL, &clkout->gate.hw,
+@@ -178,7 +179,6 @@ static int exynos_clkout_probe(struct pl
+ 		goto err_unmap;
+ 	}
+ 
+-	clkout->data.num = EXYNOS_CLKOUT_NR_CLKS;
+ 	ret = of_clk_add_hw_provider(clkout->np, of_clk_hw_onecell_get, &clkout->data);
+ 	if (ret)
+ 		goto err_clk_unreg;
 
 
 
