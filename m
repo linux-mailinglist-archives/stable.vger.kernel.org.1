@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-206830-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B0D6D09614
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6FF3D09DC6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6009A30E115D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 44C07307CED2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72FA635A921;
-	Fri,  9 Jan 2026 12:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A34D358D30;
+	Fri,  9 Jan 2026 12:33:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OEXlb9Bv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i5Pl/MkJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29C961946C8;
-	Fri,  9 Jan 2026 12:05:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1FA3336EDA;
+	Fri,  9 Jan 2026 12:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960320; cv=none; b=eDY9ar5r3evU8GuwYxaPoTNhz5sx9ksFRV0ZrHy+rIf0j2hrl3M9h1fFkKTQ3skyUDrUFrCwJ/ddJ7hv8jzQBzgmGxH2cY/HSN7rKsvmSUDrn5jMO8eKPV2dilkAi1xBP8gN0sQc5hD4Qb1IHgKOPpOFyL4wZEfLcN047k09w18=
+	t=1767962034; cv=none; b=GaZs6wlB5daA3CgBtfeJoB+/g3L9T9nVgpJdUcsGCIK8WHq516Zn3VKSNrpwcbIvcYkUkHenJparR1YC6xjLiGfw1zr9VHBwbJxQCsYddwYcaRqLjEancL18OQMZRnEfohy7GXAJqw1sYavcRvF8WStuB1RvZ8QrpU+OsaT5fK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960320; c=relaxed/simple;
-	bh=I9bkMIaKOhdP072fWbDlZhF1KvaaV4VzKTbZaKMI/dY=;
+	s=arc-20240116; t=1767962034; c=relaxed/simple;
+	bh=/NkByLhiYW+D/zIBOBZQ1hUoX3oGDVAkP7Wkb6h0s0Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hce/rNT+NYUnq40M/5q4z9XVlzYm7d0rTmhXuuXRkoqsfSwSfyuthC9fCNS9sPTLLTnyEMXkjsOekQJsrsjwlcsrV/sqg1HNZHsy+T064pNP+52AdunypJPCgpsfL8OTRHFDT7vY1M1rN3377SePaDVuqUa2vehkRfDuTA/QHIo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OEXlb9Bv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8276C4CEF1;
-	Fri,  9 Jan 2026 12:05:19 +0000 (UTC)
+	 MIME-Version; b=kwHTAl5vxBIQJzIi4ziIiF6ejUAJwxds5gt57SeozdZ3m/HEibG8o7OxUx4Uv/Cch861qRURP8M1R7zfbGunHR1BMZ7vMaqR+ioG4uTxE8lVCsIyx5V/qyF3CdQz7h7EiFknMPevCRUHCHvbios1L0tt4+taPY3zoxu/a1ZtwNI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i5Pl/MkJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F5ACC4CEF1;
+	Fri,  9 Jan 2026 12:33:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960320;
-	bh=I9bkMIaKOhdP072fWbDlZhF1KvaaV4VzKTbZaKMI/dY=;
+	s=korg; t=1767962034;
+	bh=/NkByLhiYW+D/zIBOBZQ1hUoX3oGDVAkP7Wkb6h0s0Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OEXlb9Bvk3CfjgTAWBdt4D8ULaiPmxmQcSg53jV3wnVRBJ3qT+F8dq1iSqJBrRUKy
-	 jdIO9i0kcnLk8oKNNXpdVMF1vtE9ZgKRZ2lV2VaXZC4ElxMdLVzh567UGg5rcitMBV
-	 UxFmFITmwVoDb+WlTHyWTftxg2Zbw47XAzlc6HlI=
+	b=i5Pl/MkJfOax57l1kXAC90QoIf1F2YLzR4o6dU4rfhMNbBn3dHtKYVUQ/9PMslUvz
+	 4AXcYc4HoGrkGDZEl0zi88H9oYQvp6cAKNxQz+T/K5Hp2bP8EMSSwvYFy9xr+c7/k8
+	 0j6A4EQZFIkToJ+s6kmb7o4wZbDwmB+XKvP439J4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 363/737] MIPS: Fix a reference leak bug in ip22_check_gio()
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 224/634] ASoC: fsl_xcvr: get channel status data when PHY is not exists
 Date: Fri,  9 Jan 2026 12:38:22 +0100
-Message-ID: <20260109112147.651454166@linuxfoundation.org>
+Message-ID: <20260109112125.861394477@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-[ Upstream commit 680ad315caaa2860df411cb378bf3614d96c7648 ]
+commit ca592e20659e0304ebd8f4dabb273da4f9385848 upstream.
 
-If gio_device_register fails, gio_dev_put() is required to
-drop the gio_dev device reference.
+There is no PHY for the XCVR module on i.MX93, the channel status needs
+to be obtained from FSL_XCVR_RX_CS_DATA_* registers. And channel status
+acknowledge (CSA) bit should be set once channel status is processed.
 
-Fixes: e84de0c61905 ("MIPS: GIO bus support for SGI IP22/28")
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e240b9329a30 ("ASoC: fsl_xcvr: Add support for i.MX93 platform")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20250710030405.3370671-2-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/sgi-ip22/ip22-gio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_xcvr.c |   20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
-index 81c9f0a8880b..7026b464b02e 100644
---- a/arch/mips/sgi-ip22/ip22-gio.c
-+++ b/arch/mips/sgi-ip22/ip22-gio.c
-@@ -373,7 +373,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
- 		gio_dev->resource.flags = IORESOURCE_MEM;
- 		gio_dev->irq = irq;
- 		dev_set_name(&gio_dev->dev, "%d", slotno);
--		gio_device_register(gio_dev);
-+		if (gio_device_register(gio_dev))
-+			gio_dev_put(gio_dev);
- 	} else
- 		printk(KERN_INFO "GIO: slot %d : Empty\n", slotno);
- }
--- 
-2.51.0
-
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1166,6 +1166,26 @@ static irqreturn_t irq0_isr(int irq, voi
+ 				/* clear CS control register */
+ 				writel_relaxed(0, reg_ctrl);
+ 			}
++		} else {
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_0,
++				    (u32 *)&xcvr->rx_iec958.status[0]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_1,
++				    (u32 *)&xcvr->rx_iec958.status[4]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_2,
++				    (u32 *)&xcvr->rx_iec958.status[8]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_3,
++				    (u32 *)&xcvr->rx_iec958.status[12]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_4,
++				    (u32 *)&xcvr->rx_iec958.status[16]);
++			regmap_read(xcvr->regmap, FSL_XCVR_RX_CS_DATA_5,
++				    (u32 *)&xcvr->rx_iec958.status[20]);
++			for (i = 0; i < 6; i++) {
++				val = *(u32 *)(xcvr->rx_iec958.status + i * 4);
++				*(u32 *)(xcvr->rx_iec958.status + i * 4) =
++					bitrev32(val);
++			}
++			regmap_set_bits(xcvr->regmap, FSL_XCVR_RX_DPTH_CTRL,
++					FSL_XCVR_RX_DPTH_CTRL_CSA);
+ 		}
+ 	}
+ 	if (isr & FSL_XCVR_IRQ_NEW_UD) {
 
 
 
