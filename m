@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECA2ED0A003
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C4FCD09683
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A225304A8EA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F85B309C05C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31061352952;
-	Fri,  9 Jan 2026 12:35:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E1B932F748;
+	Fri,  9 Jan 2026 12:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mj4EFajC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iaYwrCT7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85E5335BCD;
-	Fri,  9 Jan 2026 12:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1671B359F93;
+	Fri,  9 Jan 2026 12:07:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962158; cv=none; b=m1F6MDIYjuxwFaVcI3OKUFTEBaiImLWYKWRffNgjA0IsOOKsCt0VcbkpM1HOdri++8jWGQPgRYAYqmW3EQ3W/zpb64JKozsIuq68mQyAq1+VwV41sp1toCh671U47Wcxdbun8A0DeT+rsaLXPwOuXHsF6WEsHNYJ7CtqT1YAits=
+	t=1767960440; cv=none; b=KjwInpHZLzB9Fg5B+HFweHvaTzPhs/zLBkMVfu8DixTK0NUMfMynwT48ftzpQTLYJpYs9nchg5wtSlWgyfr5rk1gG/vSoK1FCdK3m92K6Q6p+qHQ7JrXL47Z0JFNzxD+O5KFLPvX/dgw2FoePSoZ1OQngfY1Ygk9pey5LH735hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962158; c=relaxed/simple;
-	bh=sEETfLI0UAOpePwKWddQTco0WJEsN3je2X0q3fZgY18=;
+	s=arc-20240116; t=1767960440; c=relaxed/simple;
+	bh=m6c/Dtb7p9Iq8PfrfvfrkC2TNZn3p89zEZSZ+1Ya8QI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfl1pJh8vbV2oOLbNrx9Agf1yszJmQpxKi+WKsFSnCsSYmHP2cy85JmlNACOsRMkfyORXO4tqho9i1DIUimfYw8PFst9VdtK6O9yuC3C39Xd3rYzOLbyQ2+n9hrx4ZPMu6Qd2qRMLrtKNqQHN6D9EkSDqM5vF+QVt8vyPB07IuU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mj4EFajC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753FCC4CEF1;
-	Fri,  9 Jan 2026 12:35:57 +0000 (UTC)
+	 MIME-Version; b=eykDGM/p0hb9CjPZaIZAZqmHv/RuOR7lgZ3g3x16vCpF1kc4FSD+FZMx4P0F6Q02YVX+OKLxIkB3/RHTvd1nwq26Lu+x8CaYRRagWZoeTJTHDAcdbd4LF/Xg31joLaD++MyCHeqD+5bcmexezNYib0q1s/808Ke/tGRf2hjA9uc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iaYwrCT7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A0D1C4CEF1;
+	Fri,  9 Jan 2026 12:07:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962157;
-	bh=sEETfLI0UAOpePwKWddQTco0WJEsN3je2X0q3fZgY18=;
+	s=korg; t=1767960440;
+	bh=m6c/Dtb7p9Iq8PfrfvfrkC2TNZn3p89zEZSZ+1Ya8QI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mj4EFajCi3c5IktJf3HtC++gFEg4kxEqkfQs3ys49nYHMIdv7kqY2sWwRk8/6ECZS
-	 Vc6HKW409LYNRzUAW23VCHzxozn8Wg2ZjSI5MsnDKGdKO2uYOm4ihst5bflqRHm3bt
-	 5nxJu4VfzHShYnFMIgGVlSiRH6BkGPfyA77J4qm4=
+	b=iaYwrCT7SToCK4ueUjwCTcSwmXlKSWgzpneSOe38+sTp+5ql9CflLHxFSEd3RfVce
+	 eXl4ehpY/H/gJ2Vc7Wj2a3n+a2B9yZBISMZKjGKSU2pyZcKXNwrS/FkMw88qAohFc4
+	 x/GhApuwEIAj0ZH7A0/uYZgORz0PuH9sDfnkZLuA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Saeed Mahameed <saeedm@nvidia.com>,
+	Ingo Molnar <mingo@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	Thomas Richter <tmricht@linux.ibm.com>,
+	Namhyung Kim <namhyung@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/634] net/mlx5: fw_tracer, Add support for unrecognized string
+Subject: [PATCH 6.6 405/737] libperf cpumap: Fix perf_cpu_map__max for an empty/NULL map
 Date: Fri,  9 Jan 2026 12:39:04 +0100
-Message-ID: <20260109112127.545152487@linuxfoundation.org>
+Message-ID: <20260109112149.234801007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,96 +62,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit f7133135235dbd11e7cb5fe62fe5d05ce5e82eeb ]
+[ Upstream commit a0a4173631bfcfd3520192c0a61cf911d6a52c3a ]
 
-In case FW is publishing a string which isn't found in the driver's
-string DBs, keep the string as raw data.
+Passing an empty map to perf_cpu_map__max triggered a SEGV. Explicitly
+test for the empty map.
 
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Stable-dep-of: b35966042d20 ("net/mlx5: fw_tracer, Validate format string parameters")
+Reported-by: Ingo Molnar <mingo@kernel.org>
+Closes: https://lore.kernel.org/linux-perf-users/aSwt7yzFjVJCEmVp@gmail.com/
+Tested-by: Ingo Molnar <mingo@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Tested-by: Thomas Richter <tmricht@linux.ibm.com>
+Signed-off-by: Namhyung Kim <namhyung@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../mellanox/mlx5/core/diag/fw_tracer.c       | 25 +++++++++++++++++--
- .../mellanox/mlx5/core/diag/fw_tracer.h       |  1 +
- 2 files changed, 24 insertions(+), 2 deletions(-)
+ tools/lib/perf/cpumap.c | 10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 3ba54ffa54bfe..83a3074a725b1 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -460,6 +460,7 @@ static void poll_trace(struct mlx5_fw_tracer *tracer,
+diff --git a/tools/lib/perf/cpumap.c b/tools/lib/perf/cpumap.c
+index 2a5a29217374..97f76d5457b9 100644
+--- a/tools/lib/perf/cpumap.c
++++ b/tools/lib/perf/cpumap.c
+@@ -367,10 +367,12 @@ struct perf_cpu perf_cpu_map__max(const struct perf_cpu_map *map)
+ 		.cpu = -1
+ 	};
  
- 	tracer_event->event_id = MLX5_GET(tracer_event, trace, event_id);
- 	tracer_event->lost_event = MLX5_GET(tracer_event, trace, lost);
-+	tracer_event->out = trace;
- 
- 	switch (tracer_event->event_id) {
- 	case TRACER_EVENT_TYPE_TIMESTAMP:
-@@ -582,6 +583,26 @@ void mlx5_tracer_print_trace(struct tracer_string_format *str_frmt,
- 	mlx5_tracer_clean_message(str_frmt);
+-	// cpu_map__trim_new() qsort()s it, cpu_map__default_new() sorts it as well.
+-	return __perf_cpu_map__nr(map) > 0
+-		? __perf_cpu_map__cpu(map, __perf_cpu_map__nr(map) - 1)
+-		: result;
++	if (!map)
++		return result;
++
++	// The CPUs are always sorted and nr is always > 0 as 0 length map is
++	// encoded as NULL.
++	return __perf_cpu_map__cpu(map, __perf_cpu_map__nr(map) - 1);
  }
  
-+static int mlx5_tracer_handle_raw_string(struct mlx5_fw_tracer *tracer,
-+					 struct tracer_event *tracer_event)
-+{
-+	struct tracer_string_format *cur_string;
-+
-+	cur_string = mlx5_tracer_message_insert(tracer, tracer_event);
-+	if (!cur_string)
-+		return -1;
-+
-+	cur_string->event_id = tracer_event->event_id;
-+	cur_string->timestamp = tracer_event->string_event.timestamp;
-+	cur_string->lost = tracer_event->lost_event;
-+	cur_string->string = "0x%08x%08x";
-+	cur_string->num_of_params = 2;
-+	cur_string->params[0] = upper_32_bits(*tracer_event->out);
-+	cur_string->params[1] = lower_32_bits(*tracer_event->out);
-+	list_add_tail(&cur_string->list, &tracer->ready_strings_list);
-+	return 0;
-+}
-+
- static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
- 					   struct tracer_event *tracer_event)
- {
-@@ -590,7 +611,7 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
- 	if (tracer_event->string_event.tdsn == 0) {
- 		cur_string = mlx5_tracer_get_string(tracer, tracer_event);
- 		if (!cur_string)
--			return -1;
-+			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
- 
- 		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
- 		cur_string->last_param_num = 0;
-@@ -605,7 +626,7 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
- 		if (!cur_string) {
- 			pr_debug("%s Got string event for unknown string tmsn: %d\n",
- 				 __func__, tracer_event->string_event.tmsn);
--			return -1;
-+			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
- 		}
- 		cur_string->last_param_num += 1;
- 		if (cur_string->last_param_num > TRACER_MAX_PARAMS) {
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
-index 4762b55b0b0ee..3ff412999a3e2 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
-@@ -158,6 +158,7 @@ struct tracer_event {
- 		struct tracer_string_event string_event;
- 		struct tracer_timestamp_event timestamp_event;
- 	};
-+	u64 *out;
- };
- 
- struct mlx5_ifc_tracer_event_bits {
+ /** Is 'b' a subset of 'a'. */
 -- 
 2.51.0
 
