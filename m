@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A88D09841
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:27 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 00C6ED0A05A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2DA0830DE7D4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3AAB930E1146
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BDC935B123;
-	Fri,  9 Jan 2026 12:09:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C06AB35B138;
+	Fri,  9 Jan 2026 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0dcjAAq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RqpIezYz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3324334C24;
-	Fri,  9 Jan 2026 12:09:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C4D435BDCD;
+	Fri,  9 Jan 2026 12:40:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960570; cv=none; b=MW9r2+m9vxtNlsrcwrSfU0Lxqc4HnSsQXhs8bGSC8vZJR64QNkk/4CUBv3ZJHIrcD9snP4ZIjdS7DAiPkDFyqpoJF/WChwlycCDj6BcPio6r/W40IcMHr7zwGuEzKxq5e+e4KqCBXpp8DrwdujvODiir4LNOmaPt4D/mu4nzqes=
+	t=1767962405; cv=none; b=tqsiiNsSPOipjDFzu2mPuxQHxCG4DVmXLqYMAqyhMet5JJQGAAwWDCX76AQQ1CYP/4BWidzufQLdJ82h9lpPz6oZc5oRMG0Wd6mqhTosQ4lx4N/7oYhjcaTGd1/NygJf65uwusChc/bFAcJkmvxqUwLJabPAFUOyArirWm+XppY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960570; c=relaxed/simple;
-	bh=B04M0zZpBFZUeIcrHOlRjC05UYobZXQ7nMqvjZNmHM4=;
+	s=arc-20240116; t=1767962405; c=relaxed/simple;
+	bh=JvSZ8nz2CbcahI1nNN6HKzRt2FG7zEkH+EJFHLqfaSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V5uTxTQGYvZIgiYBa4AM+/fU9h7/mKGqVe07gBQWQQsKweUDnKilytZjtkA+lwC8uQMCrNEuALqWrDudOOFl9xDZwszfTB8N3IXSXt87ys3VzRv3HP6k8QhVQrrbDI6wIvZR5zpOfl0SIjd3K9sW9rzgbWvb9tArA2gohlukNLY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0dcjAAq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13DBEC4CEF1;
-	Fri,  9 Jan 2026 12:09:29 +0000 (UTC)
+	 MIME-Version; b=Pv7PSWV1mHiP/4erL0iWZ7ovUECo2zbRYNK8GGh6YMcJaXzCGKKDKaf55F688pfFIawVHu8CQv0L4ak4u6HYowcmspzKnxIcXfQrGYcLYhEWuO2z/dk115lqZ3n6pWvuC2DAimsts0eeae5l2C5VeSAxpDhlBYEa93FsdJ9PKWU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RqpIezYz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01EE2C4CEF1;
+	Fri,  9 Jan 2026 12:40:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960570;
-	bh=B04M0zZpBFZUeIcrHOlRjC05UYobZXQ7nMqvjZNmHM4=;
+	s=korg; t=1767962405;
+	bh=JvSZ8nz2CbcahI1nNN6HKzRt2FG7zEkH+EJFHLqfaSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0dcjAAqhRJLdVA1QTrxa0AWxw2JR/IhOERddQh4s808VZfF5w4CRjx3G6s5Qd0KX
-	 B9TT9G8do1vNFbBsIDuwFclhRO+95jCcO/BlTHgiT2aKjG7p7dkN15atJkqCVB1/JJ
-	 pUDnQHLjLPyfJkkl6x7Oe/lPsjjm6EyS6VLXVTHc=
+	b=RqpIezYzUaYGWYc7NFHHKZNYRQKuEzPD0HhSPlXR+QhIciFptE6Av9eu/RYYipTZ4
+	 JG4v4y1sFE7OW7TgC0uRxr51YIfSMG8xnABy1+lP2VrMe7kWb/qhLTElAFvk4+zCFE
+	 Kt7QR3qV8ufK40p/vjATdLuoPzHwHBqiiwp6fPqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 450/737] f2fs: fix to avoid updating zero-sized extent in extent cache
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 311/634] usb: xhci: limit run_graceperiod for only usb 3.0 devices
 Date: Fri,  9 Jan 2026 12:39:49 +0100
-Message-ID: <20260109112150.924037883@linuxfoundation.org>
+Message-ID: <20260109112129.234398248@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-commit 7c37c79510329cd951a4dedf3f7bf7e2b18dccec upstream.
+[ Upstream commit 8d34983720155b8f05de765f0183d9b0e1345cc0 ]
 
-As syzbot reported:
+run_graceperiod blocks usb 2.0 devices from auto suspending after
+xhci_start for 500ms.
 
-F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/extent_cache.c:678!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
-Call Trace:
- <TASK>
- f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
- f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
- f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
- f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
- vfs_fallocate+0x669/0x7e0 fs/open.c:342
- ioctl_preallocate fs/ioctl.c:289 [inline]
- file_ioctl+0x611/0x780 fs/ioctl.c:-1
- do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
- __do_sys_ioctl fs/ioctl.c:595 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f07bc58eec9
+Log shows:
+[   13.387170] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.387177] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.387182] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.387188] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.387191] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.387193] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.387296] hub_event:5779: hub 3-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.393343] handle_port_status:2034: xhci-hcd PNP0D10:02: handle_port_status: starting usb5 port polling.
+[   13.393353] xhci_hub_control:1271: xhci-hcd PNP0D10:02: Get port status 5-1 read: 0x206e1, return 0x10101
+[   13.400047] hub_suspend:3903: hub 3-0:1.0: hub_suspend
+[   13.403077] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.403080] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.403085] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.403087] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.403090] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.403093] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.403095] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.405002] handle_port_status:1913: xhci-hcd PNP0D10:04: Port change event, 9-1, id 1, portsc: 0x6e1
+[   13.405016] hub_activate:1169: usb usb5-port1: status 0101 change 0001
+[   13.405026] xhci_clear_port_change_bit:658: xhci-hcd PNP0D10:02: clear port1 connect change, portsc: 0x6e1
+[   13.413275] hcd_bus_suspend:2250: usb usb3: bus auto-suspend, wakeup 1
+[   13.419081] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.419086] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.419095] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.419100] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.419106] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.419110] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.419112] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.420455] handle_port_status:2034: xhci-hcd PNP0D10:04: handle_port_status: starting usb9 port polling.
+[   13.420493] handle_port_status:1913: xhci-hcd PNP0D10:05: Port change event, 10-1, id 1, portsc: 0x6e1
+[   13.425332] hcd_bus_suspend:2279: usb usb3: suspend raced with wakeup event
+[   13.431931] handle_port_status:2034: xhci-hcd PNP0D10:05: handle_port_status: starting usb10 port polling.
+[   13.435080] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.435084] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.435092] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.435096] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.435102] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.435106] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
 
-In error path of f2fs_zero_range(), it may add a zero-sized extent
-into extent cache, it should be avoided.
+usb7 and other usb 2.0 root hub were rapidly toggling between suspend
+and resume states. More, "suspend raced with wakeup event" confuses people.
 
-Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
-Cc: stable@kernel.org
-Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+So, limit run_graceperiod for only usb 3.0 devices
+
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251119142417.2820519-2-mathias.nyman@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/file.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/usb/host/xhci-hub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1584,8 +1584,11 @@ static int f2fs_do_zero_range(struct dno
- 		f2fs_set_data_blkaddr(dn, NEW_ADDR);
- 	}
- 
--	f2fs_update_read_extent_cache_range(dn, start, 0, index - start);
--	f2fs_update_age_extent_cache_range(dn, start, index - start);
-+	if (index > start) {
-+		f2fs_update_read_extent_cache_range(dn, start, 0,
-+							index - start);
-+		f2fs_update_age_extent_cache_range(dn, start, index - start);
-+	}
- 
- 	return ret;
- }
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index 4619d5e89d5b..6a7f3047ead3 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1652,7 +1652,7 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
+ 	 * SS devices are only visible to roothub after link training completes.
+ 	 * Keep polling roothubs for a grace period after xHC start
+ 	 */
+-	if (xhci->run_graceperiod) {
++	if (hcd->speed >= HCD_USB3 && xhci->run_graceperiod) {
+ 		if (time_before(jiffies, xhci->run_graceperiod))
+ 			status = 1;
+ 		else
+-- 
+2.51.0
+
 
 
 
