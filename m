@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207192-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0927D0A192
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D2FBD0992C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 73B3A30F90BE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F416C302FA37
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2940435BDAB;
-	Fri,  9 Jan 2026 12:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB3EC32AAB5;
+	Fri,  9 Jan 2026 12:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M+nAIMrw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LwDImtFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DFD151482E8;
-	Fri,  9 Jan 2026 12:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEE8B15ADB4;
+	Fri,  9 Jan 2026 12:22:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963067; cv=none; b=QOkYiDwF79nmPwFh0o8YTid8Au+RhvZZHZJfunaQpCuoXNcykmwu+gfcuu3T/BVNrSkxgwxBtoBTFTAzshHqmIC4rYqk+2twFxsTxtDMSfS8HK6XtoD4K0OhA2uXLdkABVzWkUu5G4dIt6yClJ3YgHrNafb3XHvplvJGWCng3p8=
+	t=1767961354; cv=none; b=TIRgcb5ApswyZoquWmkwNQTrbOlnO3iJzpxQfpF0oAiZNEjjPwGhDRGPhHx7fuHeqCClTQi1dR8GPjmW/sDYETeCiU4jnt+Th858LJw7ehq4sxfJAO45PBG4iafQ0vG92KBl8GbQyTjVJS5AAltThCyvUCcavRcQIe/lfqeYrh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963067; c=relaxed/simple;
-	bh=W3dKOcuJw2JX9vgqQEXzFHlTX+/ehyCAZfEX75vsr/Q=;
+	s=arc-20240116; t=1767961354; c=relaxed/simple;
+	bh=1etv07OoI+3AGORUJUBuXUXRc5JxRm63nKgezP7gQ9Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JYtsiW0MncgI1bA+Qk79Z+F9XzmfynC9yqY1B6JhnUvrlGrOk9Cu79mzZ7WgQL/G8vPzxdghUkSLc+g9R+PSvUyxgcOcRi00LFR8ouvwlCW6vTjPBNdmGBT0r3ozl/KtHCsBIouJ/5adrlnO07Uwv1VBVr6uUP8EqKQXNppJ1W8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M+nAIMrw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AFF1C4CEF1;
-	Fri,  9 Jan 2026 12:51:07 +0000 (UTC)
+	 MIME-Version; b=a4932tzefGqEzaxap3bSVz7kdEloPDaG6t8BgwzKBoVWZsJe2PdAkmrywC4Vm2+J3WkWpzyBJ/Thrzv7miU19N2XX3GyoWdB26/44It/HTU8wOAdnsu37nfPOp2cKBMcH+Va0XanYsAAddga17imULk5WTTrllc5o6SI358yAlU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LwDImtFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38D2FC4CEF1;
+	Fri,  9 Jan 2026 12:22:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963067;
-	bh=W3dKOcuJw2JX9vgqQEXzFHlTX+/ehyCAZfEX75vsr/Q=;
+	s=korg; t=1767961354;
+	bh=1etv07OoI+3AGORUJUBuXUXRc5JxRm63nKgezP7gQ9Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M+nAIMrwnYc5RGOfOvYNw1Ewj0JmIYKtNJ9iqX7nhdPe6kQp2TZfZuGNRq0785xeb
-	 hme5LLf+89CxvRZzV/IIljWAbsB52k9jmd8jBSyPHumaNYOQVJzEOaUWL1Stu1Vvnx
-	 KDEJvakU1ggzT0hyyqjiavNDOzGqYzKTcrUy2m/Y=
+	b=LwDImtFvEBinQDd69Dpokuq6a+eFwOa50mu4Llxna0YE1ty/j8ZK9QdvCxAReO/ou
+	 5rkESPe7LP4O3eKJVFPnc3auF3LG2qzK+jCTGmBU2VDN+C7ZDJmsKYr6U5A4cwE7zu
+	 hIjmVPVumapD9DUQCllEqJVcpxrZQLV5y1hRsMaI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 585/634] pmdomain: Use device_get_match_data()
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 724/737] mm/damon/tests/core-kunit: handle memory alloc failure from damon_test_aggregate()
 Date: Fri,  9 Jan 2026 12:44:23 +0100
-Message-ID: <20260109112139.629660773@linuxfoundation.org>
+Message-ID: <20260109112201.327695276@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,139 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 3ba9fdfaa550936837b50b73d6c27ac401fde875 ]
+commit f79f2fc44ebd0ed655239046be3e80e8804b5545 upstream.
 
-Use preferred device_get_match_data() instead of of_match_device() to
-get the driver match data. With this, adjust the includes to explicitly
-include the correct headers.
+damon_test_aggregate() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20231006224614.444488-1-robh@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 73cb5f6eafb0 ("pmdomain: imx: Fix reference count leak in imx_gpc_probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-5-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/actions/owl-sps.c     |   16 +++++-----------
- drivers/soc/imx/gpc.c             |    7 +++----
- drivers/soc/rockchip/pm_domains.c |   13 ++++---------
- 3 files changed, 12 insertions(+), 24 deletions(-)
+ mm/damon/core-test.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/soc/actions/owl-sps.c
-+++ b/drivers/soc/actions/owl-sps.c
-@@ -8,8 +8,10 @@
-  * Copyright (c) 2017 Andreas Färber
-  */
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -97,8 +97,15 @@ static void damon_test_aggregate(struct
+ 	struct damon_region *r;
+ 	int it, ir;
  
-+#include <linux/mod_devicetable.h>
- #include <linux/of_address.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/pm_domain.h>
- #include <linux/soc/actions/owl-sps.h>
- #include <dt-bindings/power/owl-s500-powergate.h>
-@@ -96,24 +98,16 @@ static int owl_sps_init_domain(struct ow
- 
- static int owl_sps_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *match;
- 	const struct owl_sps_info *sps_info;
- 	struct owl_sps *sps;
- 	int i, ret;
- 
--	if (!pdev->dev.of_node) {
--		dev_err(&pdev->dev, "no device node\n");
--		return -ENODEV;
--	}
--
--	match = of_match_device(pdev->dev.driver->of_match_table, &pdev->dev);
--	if (!match || !match->data) {
-+	sps_info = device_get_match_data(&pdev->dev);
-+	if (!sps_info) {
- 		dev_err(&pdev->dev, "unknown compatible or missing data\n");
- 		return -EINVAL;
++	if (!ctx)
++		kunit_skip(test, "ctx alloc fail");
++
+ 	for (it = 0; it < 3; it++) {
+ 		t = damon_new_target();
++		if (!t) {
++			damon_destroy_ctx(ctx);
++			kunit_skip(test, "target alloc fail");
++		}
+ 		damon_add_target(ctx, t);
  	}
  
--	sps_info = match->data;
--
- 	sps = devm_kzalloc(&pdev->dev,
- 			   struct_size(sps, domains, sps_info->num_domains),
- 			   GFP_KERNEL);
---- a/drivers/soc/imx/gpc.c
-+++ b/drivers/soc/imx/gpc.c
-@@ -7,9 +7,10 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/io.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
-@@ -403,9 +404,7 @@ clk_err:
- 
- static int imx_gpc_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *of_id =
--			of_match_device(imx_gpc_dt_ids, &pdev->dev);
--	const struct imx_gpc_dt_data *of_id_data = of_id->data;
-+	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
- 	struct device_node *pgc_node;
- 	struct regmap *regmap;
- 	void __iomem *base;
---- a/drivers/soc/rockchip/pm_domains.c
-+++ b/drivers/soc/rockchip/pm_domains.c
-@@ -9,11 +9,13 @@
- #include <linux/iopoll.h>
- #include <linux/err.h>
- #include <linux/mutex.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_clock.h>
- #include <linux/pm_domain.h>
-+#include <linux/property.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_clk.h>
--#include <linux/of_platform.h>
- #include <linux/clk.h>
- #include <linux/regmap.h>
- #include <linux/mfd/syscon.h>
-@@ -770,7 +772,6 @@ static int rockchip_pm_domain_probe(stru
- 	struct device_node *node;
- 	struct device *parent;
- 	struct rockchip_pmu *pmu;
--	const struct of_device_id *match;
- 	const struct rockchip_pmu_info *pmu_info;
- 	int error;
- 
-@@ -779,13 +780,7 @@ static int rockchip_pm_domain_probe(stru
- 		return -ENODEV;
- 	}
- 
--	match = of_match_device(dev->driver->of_match_table, dev);
--	if (!match || !match->data) {
--		dev_err(dev, "missing pmu data\n");
--		return -EINVAL;
--	}
--
--	pmu_info = match->data;
-+	pmu_info = device_get_match_data(dev);
- 
- 	pmu = devm_kzalloc(dev,
- 			   struct_size(pmu, domains, pmu_info->num_domains),
+@@ -106,6 +113,10 @@ static void damon_test_aggregate(struct
+ 	damon_for_each_target(t, ctx) {
+ 		for (ir = 0; ir < 3; ir++) {
+ 			r = damon_new_region(saddr[it][ir], eaddr[it][ir]);
++			if (!r) {
++				damon_destroy_ctx(ctx);
++				kunit_skip(test, "region alloc fail");
++			}
+ 			r->nr_accesses = accesses[it][ir];
+ 			damon_add_region(r, t);
+ 		}
 
 
 
