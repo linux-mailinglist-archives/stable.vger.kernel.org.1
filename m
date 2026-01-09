@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207396-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCF03D0948E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E71AD09F19
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 48FDF300EA07
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:50 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63708311148E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA4EC359F99;
-	Fri,  9 Jan 2026 12:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6538F35B135;
+	Fri,  9 Jan 2026 12:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pmqEViYk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TsVwcfh6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE0FA1946C8;
-	Fri,  9 Jan 2026 12:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 28A90359F8D;
+	Fri,  9 Jan 2026 12:32:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960169; cv=none; b=Uvu7QlAc+hj4Ujsp6uaEwxLlnPrx3Np+jTi4uLGfm77kMCCHgGYZXbRl20fbV8BkIEc06/4NOzXqkPIADPIbhFke3Qe2B1lY1xp7LExCVCzObTc4vB2RxlX5wBGO8iWoZUWiYhSj+m0V2qEP3PJUzLqd7dOgAFiwt4qEyPrC/+w=
+	t=1767961936; cv=none; b=fll5Pll45AJLo70RO271bLCEvS+QASTelSjiYEa5jbBoMOXWRe64fF0HB4ZDTovshpxsUY5VpvhrOX4Do+sDz1RqGlHKh1KFckv7sv1kK5AXJ8Gnhp8MFQ2SkvmIKqr2Rxn4GZX4XzDgJi1HtjBfACddtUGCiXSZHIOCOLoW7dA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960169; c=relaxed/simple;
-	bh=NGfJWgMPHWHIVPh6ve6hX+pHrB0e52oSksfKk1sHTw8=;
+	s=arc-20240116; t=1767961936; c=relaxed/simple;
+	bh=Q7oAXds72TqiSn6o9RPZAUECs2/t8vmOkcSn3/Lruyc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwRXl2GPnChl1nPL/eAGPTYYG7J0Ii3g/i5oxVGWi5/lRsKCLPOgaotqnYEzjQaVCvAwl70u90de4kExboOu9ovRuE/xHaNrvSicydKUlZHAR+cxyEDYyQUIvjgyNAp9OUDWOO4EWnH5KTpWf4ulZM6iFiNTw+1MJDgIYF10isA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pmqEViYk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFC15C4CEF1;
-	Fri,  9 Jan 2026 12:02:48 +0000 (UTC)
+	 MIME-Version; b=S3K7Ijy1dOG6GZ1Z1rc9Mn4Wy3DAZT0X4pJduhMM8HSOvhBKQhJfGVQJnxjn8E7fKemlS3Q2VaGb7y2DzUtOznRPClGcSP7aIDNjEZkc8oKIFtPp0bJuZQsPTgw1k/IQRrhHkegKWNhUSwkEoZ0LS0q5/Or6G7ELiTmJXourlsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TsVwcfh6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6530C4CEF1;
+	Fri,  9 Jan 2026 12:32:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960169;
-	bh=NGfJWgMPHWHIVPh6ve6hX+pHrB0e52oSksfKk1sHTw8=;
+	s=korg; t=1767961936;
+	bh=Q7oAXds72TqiSn6o9RPZAUECs2/t8vmOkcSn3/Lruyc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pmqEViYkzAGxsO5yD0to6Ap/pE3KccIoqQUE1qtdPAh8YAQSZN/TJLdd7nAHIMv9e
-	 l1lPXA1EiFj5HSSF5DERG0IW+msU8KNf64/vdMvL+en+BZfR8GFaGXkNcyebzpj6pn
-	 VrgDcL2GMH754nsxeLSvKtmbNDN+UGSXrJ7YVl5I=
+	b=TsVwcfh6a2GqVg1/Ri6wXnJmAV29bvPYLimumhOJHlN9AY6CtlPRk22kvlu6/7xMC
+	 XpNLoffHQ+aVdFvRbxpViSu/xQk3lyUFl8Omft+loLO+BUxDpVVt93WluqmLnw/87K
+	 rdZDRU8kClDdhIetYnfarGJe1X7IA39QcLtuFYBw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	WangYuli <wangyl5933@chinaunicom.cn>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 309/737] ACPICA: Avoid walking the Namespace if start_node is NULL
-Date: Fri,  9 Jan 2026 12:37:28 +0100
-Message-ID: <20260109112145.628662539@linuxfoundation.org>
+Subject: [PATCH 6.1 171/634] resource: introduce is_type_match() helper and use it
+Date: Fri,  9 Jan 2026 12:37:29 +0100
+Message-ID: <20260109112123.880385128@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 9d6c58dae8f6590c746ac5d0012ffe14a77539f0 ]
+[ Upstream commit ba1eccc114ffc62c4495a5e15659190fa2c42308 ]
 
-Although commit 0c9992315e73 ("ACPICA: Avoid walking the ACPI Namespace
-if it is not there") fixed the situation when both start_node and
-acpi_gbl_root_node are NULL, the Linux kernel mainline now still crashed
-on Honor Magicbook 14 Pro [1].
+There are already a couple of places where we may replace a few lines of
+code by calling a helper, which increases readability while deduplicating
+the code.
 
-That happens due to the access to the member of parent_node in
-acpi_ns_get_next_node().  The NULL pointer dereference will always
-happen, no matter whether or not the start_node is equal to
-ACPI_ROOT_OBJECT, so move the check of start_node being NULL
-out of the if block.
+Introduce is_type_match() helper and use it.
 
-Unfortunately, all the attempts to contact Honor have failed, they
-refused to provide any technical support for Linux.
-
-The bad DSDT table's dump could be found on GitHub [2].
-
-DMI: HONOR FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025
-
-Link: https://github.com/acpica/acpica/commit/1c1b57b9eba4554cb132ee658dd942c0210ed20d
-Link: https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7 [1]
-Link: https://github.com/denis-bb/honor-fmb-p-dsdt [2]
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
-[ rjw: Subject adjustment, changelog edits ]
-Link: https://patch.msgid.link/20251125-acpica-v1-1-99e63b1b25f8@linux.dev
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Link: https://lkml.kernel.org/r/20240925154355.1170859-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/nswalk.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ kernel/resource.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
-index eee396a77baec..1b000ccbf8e1f 100644
---- a/drivers/acpi/acpica/nswalk.c
-+++ b/drivers/acpi/acpica/nswalk.c
-@@ -169,9 +169,12 @@ acpi_ns_walk_namespace(acpi_object_type type,
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 20cb54f387e71..1170ed58404fb 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -310,6 +310,11 @@ int release_resource(struct resource *old)
  
- 	if (start_node == ACPI_ROOT_OBJECT) {
- 		start_node = acpi_gbl_root_node;
--		if (!start_node) {
--			return_ACPI_STATUS(AE_NO_NAMESPACE);
--		}
-+	}
+ EXPORT_SYMBOL(release_resource);
+ 
++static bool is_type_match(struct resource *p, unsigned long flags, unsigned long desc)
++{
++	return (p->flags & flags) == flags && (desc == IORES_DESC_NONE || desc == p->desc);
++}
 +
-+	/* Avoid walking the namespace if the StartNode is NULL */
-+
-+	if (!start_node) {
-+		return_ACPI_STATUS(AE_NO_NAMESPACE);
+ /**
+  * find_next_iomem_res - Finds the lowest iomem resource that covers part of
+  *			 [@start..@end].
+@@ -352,13 +357,9 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 		if (p->end < start)
+ 			continue;
+ 
+-		if ((p->flags & flags) != flags)
+-			continue;
+-		if ((desc != IORES_DESC_NONE) && (desc != p->desc))
+-			continue;
+-
+ 		/* Found a match, break */
+-		break;
++		if (is_type_match(p, flags, desc))
++			break;
  	}
  
- 	/* Null child means "get first node" */
+ 	if (p) {
+@@ -501,7 +502,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 	int type = 0; int other = 0;
+ 	struct resource *p, *dp;
+ 	struct resource res, o;
+-	bool is_type, covered;
++	bool covered;
+ 
+ 	res.start = start;
+ 	res.end = start + size - 1;
+@@ -509,9 +510,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 	for (p = parent->child; p ; p = p->sibling) {
+ 		if (!resource_intersection(p, &res, &o))
+ 			continue;
+-		is_type = (p->flags & flags) == flags &&
+-			(desc == IORES_DESC_NONE || desc == p->desc);
+-		if (is_type) {
++		if (is_type_match(p, flags, desc)) {
+ 			type++;
+ 			continue;
+ 		}
+@@ -531,9 +530,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 		for_each_resource(p, dp, false) {
+ 			if (!resource_overlaps(dp, &res))
+ 				continue;
+-			is_type = (dp->flags & flags) == flags &&
+-				(desc == IORES_DESC_NONE || desc == dp->desc);
+-			if (is_type) {
++			if (is_type_match(dp, flags, desc)) {
+ 				type++;
+ 				/*
+ 				 * Range from 'o.start' to 'dp->start'
 -- 
 2.51.0
 
