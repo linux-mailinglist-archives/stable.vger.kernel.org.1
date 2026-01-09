@@ -1,51 +1,57 @@
-Return-Path: <stable+bounces-207140-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207181-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D34AAD09B12
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74E5ED09C22
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8169530631E2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3F6530FA5C5
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA7D935A92E;
-	Fri,  9 Jan 2026 12:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 161A035A93E;
+	Fri,  9 Jan 2026 12:22:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZUMvdyIc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W6lgU9Gg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D81F2737EE;
-	Fri,  9 Jan 2026 12:20:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD9CF26ED41;
+	Fri,  9 Jan 2026 12:22:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961205; cv=none; b=XVJjPDnOrHATh8KtHCFIWY04kH5SiTRQsZa7uKXGH1PqfxTimdLbKBm2IeLlPCk18UTyqPgwqhq+wcsi5/BWc3rfkR7RYrbrrO5F+VY6fPbC+jToNqOg7SqeqbzT/eEk6veTlcjXjObiyKC8YzP8IcSpCjLdPZ9QvDLpmUq3IfY=
+	t=1767961322; cv=none; b=IDk3+Z/qQZJqG1kqE+b8h6nmYzSJ3omx847YRN5+z/O3hwebsGeXpYlMRngGzj1h4nVB/xuawaTmSdQqJqggnOd20jeBcE2T4SEMjUcZNYqb50czV/DtBelDQo6zDdCys3oQqLABuxkiG2igwUhin58ZvEXoYbgOtIPvOmYGKUo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961205; c=relaxed/simple;
-	bh=Iay4Xb187A9KPhOr9pnOVSXo9pFp91o4ghom94FInTQ=;
+	s=arc-20240116; t=1767961322; c=relaxed/simple;
+	bh=vR4u7Oa47OhpisSw71E21q9yoGrCgDeGF6wj3BbBf2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FkXg9VvPOnkEKHB7lw0BJlc/KKviUm05Fs4byBTMzzY1b3hJtO4G8nQodBdy/4ZDs3TMddIhckMz3PZJxInc3uAGUq7Sh2fLKPO+pHrYTQMHekG5yv+GER622E2aWZWcS8kViuxEUOKCi0Bv8DUwmileOERCO2Tp6txUReIFSrI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZUMvdyIc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A4DC4CEF1;
-	Fri,  9 Jan 2026 12:20:04 +0000 (UTC)
+	 MIME-Version; b=d1HvcOHzIk1NHiT+P/M6pL24GTa/ipsSTFMHjfkyMQZhF47tEh++4OMBHXGejJSc+p2UIzQX63WH9cz4kTwBzFnGK2Ui7+yt+4m4+TCciMfBdUAPC3NM38JBqBVtuyRCKar1zF3ygxLoJeU3tvp/YCqgP0ZCbn1U+bfowBG2l2k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W6lgU9Gg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 556D7C4CEF1;
+	Fri,  9 Jan 2026 12:22:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961205;
-	bh=Iay4Xb187A9KPhOr9pnOVSXo9pFp91o4ghom94FInTQ=;
+	s=korg; t=1767961322;
+	bh=vR4u7Oa47OhpisSw71E21q9yoGrCgDeGF6wj3BbBf2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZUMvdyIceX3uLSwO40UQLisof96+e6bws0tPpMqWYUSMxU78Y6slWIiJEM7KdmYXX
-	 PGkJjs23J1YBTHsapZCgiZhUi4x3jSMUCpF9AHmFbkbfY5/DNvHyfpXkWg2kW+poNC
-	 Hxz1dNhiFAEfjkMXyajKOqBdNBXMMicprXXawn2A=
+	b=W6lgU9Ggz1kpngva59TR5Q/LOz5d3f8sw8DXxm1CSxFfpI9/ZRyANuyaLGSoFWO1m
+	 uyUeXERDo49Hba+Upq8T9HoU3fBr78KHp6JF2+U4rqseGszgUuBRzz4KU2KK4KZaNY
+	 52fqTAodMm1pwhIXYhrDRgnDiB7QrLRNjY8wYym8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.6 670/737] usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-Date: Fri,  9 Jan 2026 12:43:29 +0100
-Message-ID: <20260109112159.253552002@linuxfoundation.org>
+	syzkaller <syzkaller@googlegroups.com>,
+	yan kang <kangyan91@outlook.com>,
+	yue sun <samsun1006219@gmail.com>,
+	Kuniyuki Iwashima <kuniyu@amazon.com>,
+	Stanislav Fomichev <sdf@fomichev.me>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 6.6 671/737] net: Remove RTNL dance for SIOCBRADDIF and SIOCBRDELIF.
+Date: Fri,  9 Jan 2026 12:43:30 +0100
+Message-ID: <20260109112159.292432019@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,114 +70,298 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 
-commit bb0ba4cb1065e87f9cc75db1fa454e56d0894d01 upstream.
+commit ed3ba9b6e280e14cc3148c1b226ba453f02fa76c upstream.
 
-Two clearly different specimens of NEC uPD720200 (one with start/stop
-bug, one without) were seen to cause IOMMU faults after some Missed
-Service Errors. Faulting address is immediately after a transfer ring
-segment and patched dynamic debug messages revealed that the MSE was
-received when waiting for a TD near the end of that segment:
+SIOCBRDELIF is passed to dev_ioctl() first and later forwarded to
+br_ioctl_call(), which causes unnecessary RTNL dance and the splat
+below [0] under RTNL pressure.
 
-[ 1.041954] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ffa08fe0
-[ 1.042120] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09000 flags=0x0000]
-[ 1.042146] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09040 flags=0x0000]
+Let's say Thread A is trying to detach a device from a bridge and
+Thread B is trying to remove the bridge.
 
-It gets even funnier if the next page is a ring segment accessible to
-the HC. Below, it reports MSE in segment at ff1e8000, plows through a
-zero-filled page at ff1e9000 and starts reporting events for TRBs in
-page at ff1ea000 every microframe, instead of jumping to seg ff1e6000.
+In dev_ioctl(), Thread A bumps the bridge device's refcnt by
+netdev_hold() and releases RTNL because the following br_ioctl_call()
+also re-acquires RTNL.
 
-[ 7.041671] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.041999] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.042011] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042028] xhci_hcd: All TDs skipped for slot 1 ep 2. Clear skip flag.
-[ 7.042134] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042138] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042144] xhci_hcd: Looking for event-dma 00000000ff1ea040 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.042259] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042262] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042266] xhci_hcd: Looking for event-dma 00000000ff1ea050 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+In the race window, Thread B could acquire RTNL and try to remove
+the bridge device.  Then, rtnl_unlock() by Thread B will release RTNL
+and wait for netdev_put() by Thread A.
 
-At some point completion events change from Isoch Buffer Overrun to
-Short Packet and the HC finally finds cycle bit mismatch in ff1ec000.
+Thread A, however, must hold RTNL after the unlock in dev_ifsioc(),
+which may take long under RTNL pressure, resulting in the splat by
+Thread B.
 
-[ 7.098130] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098132] xhci_hcd: Looking for event-dma 00000000ff1ecc50 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098254] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098256] xhci_hcd: Looking for event-dma 00000000ff1ecc60 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098379] xhci_hcd: Overrun event on slot 1 ep 2
+  Thread A (SIOCBRDELIF)           Thread B (SIOCBRDELBR)
+  ----------------------           ----------------------
+  sock_ioctl                       sock_ioctl
+  `- sock_do_ioctl                 `- br_ioctl_call
+     `- dev_ioctl                     `- br_ioctl_stub
+        |- rtnl_lock                     |
+        |- dev_ifsioc                    '
+        '  |- dev = __dev_get_by_name(...)
+           |- netdev_hold(dev, ...)      .
+       /   |- rtnl_unlock  ------.       |
+       |   |- br_ioctl_call       `--->  |- rtnl_lock
+  Race |   |  `- br_ioctl_stub           |- br_del_bridge
+  Window   |     |                       |  |- dev = __dev_get_by_name(...)
+       |   |     |  May take long        |  `- br_dev_delete(dev, ...)
+       |   |     |  under RTNL pressure  |     `- unregister_netdevice_queue(dev, ...)
+       |   |     |               |       `- rtnl_unlock
+       \   |     |- rtnl_lock  <-'          `- netdev_run_todo
+           |     |- ...                        `- netdev_run_todo
+           |     `- rtnl_unlock                   |- __rtnl_unlock
+           |                                      |- netdev_wait_allrefs_any
+           |- netdev_put(dev, ...)  <----------------'
+                                                Wait refcnt decrement
+                                                and log splat below
 
-It's possible that data from the isochronous device were written to
-random buffers of pending TDs on other endpoints (either IN or OUT),
-other devices or even other HCs in the same IOMMU domain.
+To avoid blocking SIOCBRDELBR unnecessarily, let's not call
+dev_ioctl() for SIOCBRADDIF and SIOCBRDELIF.
 
-Lastly, an error from a different USB device on another HC. Was it
-caused by the above? I don't know, but it may have been. The disk
-was working without any other issues and generated PCIe traffic to
-starve the NEC of upstream BW and trigger those MSEs. The two HCs
-shared one x1 slot by means of a commercial "PCIe splitter" board.
+In the dev_ioctl() path, we do the following:
 
-[ 7.162604] usb 10-2: reset SuperSpeed USB device number 3 using xhci_hcd
-[ 7.178990] sd 9:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
-[ 7.179001] sd 9:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 04 02 ae 00 00 02 00 00
-[ 7.179004] I/O error, dev sdb, sector 67284480 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 0
+  1. Copy struct ifreq by get_user_ifreq in sock_do_ioctl()
+  2. Check CAP_NET_ADMIN in dev_ioctl()
+  3. Call dev_load() in dev_ioctl()
+  4. Fetch the master dev from ifr.ifr_name in dev_ifsioc()
 
-Fortunately, it appears that this ridiculous bug is avoided by setting
-the chain bit of Link TRBs on isochronous rings. Other ancient HCs are
-known which also expect the bit to be set and they ignore Link TRBs if
-it's not. Reportedly, 0.95 spec guaranteed that the bit is set.
+3. can be done by request_module() in br_ioctl_call(), so we move
+1., 2., and 4. to br_ioctl_stub().
 
-The bandwidth-starved NEC HC running a 32KB/uframe UVC endpoint reports
-tens of MSEs per second and runs into the bug within seconds. Chaining
-Link TRBs allows the same workload to run for many minutes, many times.
+Note that 2. is also checked later in add_del_if(), but it's better
+performed before RTNL.
 
-No negative side effects seen in UVC recording and UAC playback with a
-few devices at full speed, high speed and SuperSpeed.
+SIOCBRADDIF and SIOCBRDELIF have been processed in dev_ioctl() since
+the pre-git era, and there seems to be no specific reason to process
+them there.
 
-The problem doesn't reproduce on the newer Renesas uPD720201/uPD720202
-and on old Etron EJ168 and VIA VL805 (but the VL805 has other bug).
+[0]:
+unregister_netdevice: waiting for wpan3 to become free. Usage count = 2
+ref_tracker: wpan3@ffff8880662d8608 has 1/1 users at
+     __netdev_tracker_alloc include/linux/netdevice.h:4282 [inline]
+     netdev_hold include/linux/netdevice.h:4311 [inline]
+     dev_ifsioc+0xc6a/0x1160 net/core/dev_ioctl.c:624
+     dev_ioctl+0x255/0x10c0 net/core/dev_ioctl.c:826
+     sock_do_ioctl+0x1ca/0x260 net/socket.c:1213
+     sock_ioctl+0x23a/0x6c0 net/socket.c:1318
+     vfs_ioctl fs/ioctl.c:51 [inline]
+     __do_sys_ioctl fs/ioctl.c:906 [inline]
+     __se_sys_ioctl fs/ioctl.c:892 [inline]
+     __x64_sys_ioctl+0x1a4/0x210 fs/ioctl.c:892
+     do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+     do_syscall_64+0xcb/0x250 arch/x86/entry/common.c:83
+     entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-[shorten line length of log snippets in commit messge -Mathias]
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-14-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Shivani: Modified to apply on 6.6.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Fixes: 893b19587534 ("net: bridge: fix ioctl locking")
+Reported-by: syzkaller <syzkaller@googlegroups.com>
+Reported-by: yan kang <kangyan91@outlook.com>
+Reported-by: yue sun <samsun1006219@gmail.com>
+Closes: https://lore.kernel.org/netdev/SY8P300MB0421225D54EB92762AE8F0F2A1D32@SY8P300MB0421.AUSP300.PROD.OUTLOOK.COM/
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Acked-by: Stanislav Fomichev <sdf@fomichev.me>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20250316192851.19781-1-kuniyu@amazon.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+[cascardo: fixed conflict at dev_ifsioc]
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ include/linux/if_bridge.h |    6 ++----
+ net/bridge/br_ioctl.c     |   36 +++++++++++++++++++++++++++++++++---
+ net/bridge/br_private.h   |    3 +--
+ net/core/dev_ioctl.c      |   16 ----------------
+ net/socket.c              |   19 +++++++++----------
+ 5 files changed, 45 insertions(+), 35 deletions(-)
 
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1785,11 +1785,20 @@ static inline void xhci_write_64(struct
+--- a/include/linux/if_bridge.h
++++ b/include/linux/if_bridge.h
+@@ -65,11 +65,9 @@ struct br_ip_list {
+ #define BR_DEFAULT_AGEING_TIME	(300 * HZ)
+ 
+ struct net_bridge;
+-void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
+-			     unsigned int cmd, struct ifreq *ifr,
++void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
+ 			     void __user *uarg));
+-int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg);
++int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg);
+ 
+ #if IS_ENABLED(CONFIG_BRIDGE) && IS_ENABLED(CONFIG_BRIDGE_IGMP_SNOOPING)
+ int br_multicast_list_adjacent(struct net_device *dev,
+--- a/net/bridge/br_ioctl.c
++++ b/net/bridge/br_ioctl.c
+@@ -394,10 +394,26 @@ static int old_deviceless(struct net *ne
+ 	return -EOPNOTSUPP;
  }
  
- 
--/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+/*
-+ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
-+ * Other chapters and later specs say that it should only be set if the link is inside a TD
-+ * which continues from the end of one segment to the next segment.
-+ *
-+ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
-+ *
-+ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
-+ * "resynchronizing the pipe" after a Missed Service Error.
-+ */
- static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+-int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg)
++int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg)
  {
- 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
--	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
-+	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
- }
+ 	int ret = -EOPNOTSUPP;
++	struct ifreq ifr;
++
++	if (cmd == SIOCBRADDIF || cmd == SIOCBRDELIF) {
++		void __user *data;
++		char *colon;
++
++		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
++			return -EPERM;
++
++		if (get_user_ifreq(&ifr, &data, uarg))
++			return -EFAULT;
++
++		ifr.ifr_name[IFNAMSIZ - 1] = 0;
++		colon = strchr(ifr.ifr_name, ':');
++		if (colon)
++			*colon = 0;
++	}
  
- /* xHCI debugging */
+ 	rtnl_lock();
+ 
+@@ -430,7 +446,21 @@ int br_ioctl_stub(struct net *net, struc
+ 		break;
+ 	case SIOCBRADDIF:
+ 	case SIOCBRDELIF:
+-		ret = add_del_if(br, ifr->ifr_ifindex, cmd == SIOCBRADDIF);
++	{
++		struct net_device *dev;
++
++		dev = __dev_get_by_name(net, ifr.ifr_name);
++		if (!dev || !netif_device_present(dev)) {
++			ret = -ENODEV;
++			break;
++		}
++		if (!netif_is_bridge_master(dev)) {
++			ret = -EOPNOTSUPP;
++			break;
++		}
++
++		ret = add_del_if(netdev_priv(dev), ifr.ifr_ifindex, cmd == SIOCBRADDIF);
++	}
+ 		break;
+ 	}
+ 
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -948,8 +948,7 @@ br_port_get_check_rtnl(const struct net_
+ /* br_ioctl.c */
+ int br_dev_siocdevprivate(struct net_device *dev, struct ifreq *rq,
+ 			  void __user *data, int cmd);
+-int br_ioctl_stub(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg);
++int br_ioctl_stub(struct net *net, unsigned int cmd, void __user *uarg);
+ 
+ /* br_multicast.c */
+ #ifdef CONFIG_BRIDGE_IGMP_SNOOPING
+--- a/net/core/dev_ioctl.c
++++ b/net/core/dev_ioctl.c
+@@ -517,7 +517,6 @@ static int dev_ifsioc(struct net *net, s
+ 	int err;
+ 	struct net_device *dev = __dev_get_by_name(net, ifr->ifr_name);
+ 	const struct net_device_ops *ops;
+-	netdevice_tracker dev_tracker;
+ 
+ 	if (!dev)
+ 		return -ENODEV;
+@@ -580,19 +579,6 @@ static int dev_ifsioc(struct net *net, s
+ 	case SIOCWANDEV:
+ 		return dev_siocwandev(dev, &ifr->ifr_settings);
+ 
+-	case SIOCBRADDIF:
+-	case SIOCBRDELIF:
+-		if (!netif_device_present(dev))
+-			return -ENODEV;
+-		if (!netif_is_bridge_master(dev))
+-			return -EOPNOTSUPP;
+-		netdev_hold(dev, &dev_tracker, GFP_KERNEL);
+-		rtnl_unlock();
+-		err = br_ioctl_call(net, netdev_priv(dev), cmd, ifr, NULL);
+-		netdev_put(dev, &dev_tracker);
+-		rtnl_lock();
+-		return err;
+-
+ 	case SIOCDEVPRIVATE ... SIOCDEVPRIVATE + 15:
+ 		return dev_siocdevprivate(dev, ifr, data, cmd);
+ 
+@@ -773,8 +759,6 @@ int dev_ioctl(struct net *net, unsigned
+ 	case SIOCBONDRELEASE:
+ 	case SIOCBONDSETHWADDR:
+ 	case SIOCBONDCHANGEACTIVE:
+-	case SIOCBRADDIF:
+-	case SIOCBRDELIF:
+ 	case SIOCSHWTSTAMP:
+ 		if (!ns_capable(net->user_ns, CAP_NET_ADMIN))
+ 			return -EPERM;
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -1168,12 +1168,10 @@ static ssize_t sock_write_iter(struct ki
+  */
+ 
+ static DEFINE_MUTEX(br_ioctl_mutex);
+-static int (*br_ioctl_hook)(struct net *net, struct net_bridge *br,
+-			    unsigned int cmd, struct ifreq *ifr,
++static int (*br_ioctl_hook)(struct net *net, unsigned int cmd,
+ 			    void __user *uarg);
+ 
+-void brioctl_set(int (*hook)(struct net *net, struct net_bridge *br,
+-			     unsigned int cmd, struct ifreq *ifr,
++void brioctl_set(int (*hook)(struct net *net, unsigned int cmd,
+ 			     void __user *uarg))
+ {
+ 	mutex_lock(&br_ioctl_mutex);
+@@ -1182,8 +1180,7 @@ void brioctl_set(int (*hook)(struct net
+ }
+ EXPORT_SYMBOL(brioctl_set);
+ 
+-int br_ioctl_call(struct net *net, struct net_bridge *br, unsigned int cmd,
+-		  struct ifreq *ifr, void __user *uarg)
++int br_ioctl_call(struct net *net, unsigned int cmd, void __user *uarg)
+ {
+ 	int err = -ENOPKG;
+ 
+@@ -1192,7 +1189,7 @@ int br_ioctl_call(struct net *net, struc
+ 
+ 	mutex_lock(&br_ioctl_mutex);
+ 	if (br_ioctl_hook)
+-		err = br_ioctl_hook(net, br, cmd, ifr, uarg);
++		err = br_ioctl_hook(net, cmd, uarg);
+ 	mutex_unlock(&br_ioctl_mutex);
+ 
+ 	return err;
+@@ -1292,7 +1289,9 @@ static long sock_ioctl(struct file *file
+ 		case SIOCSIFBR:
+ 		case SIOCBRADDBR:
+ 		case SIOCBRDELBR:
+-			err = br_ioctl_call(net, NULL, cmd, NULL, argp);
++		case SIOCBRADDIF:
++		case SIOCBRDELIF:
++			err = br_ioctl_call(net, cmd, argp);
+ 			break;
+ 		case SIOCGIFVLAN:
+ 		case SIOCSIFVLAN:
+@@ -3454,6 +3453,8 @@ static int compat_sock_ioctl_trans(struc
+ 	case SIOCGPGRP:
+ 	case SIOCBRADDBR:
+ 	case SIOCBRDELBR:
++	case SIOCBRADDIF:
++	case SIOCBRDELIF:
+ 	case SIOCGIFVLAN:
+ 	case SIOCSIFVLAN:
+ 	case SIOCGSKNS:
+@@ -3493,8 +3494,6 @@ static int compat_sock_ioctl_trans(struc
+ 	case SIOCGIFPFLAGS:
+ 	case SIOCGIFTXQLEN:
+ 	case SIOCSIFTXQLEN:
+-	case SIOCBRADDIF:
+-	case SIOCBRDELIF:
+ 	case SIOCGIFNAME:
+ 	case SIOCSIFNAME:
+ 	case SIOCGMIIPHY:
 
 
 
