@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207486-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 98D82D0963B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA2CD09F5E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8D2293063187
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 81EA23071754
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED3CB359FB0;
-	Fri,  9 Jan 2026 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E849935A95C;
+	Fri,  9 Jan 2026 12:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1ZLwJ2Py"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1hZqi0Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEFCB33CE9A;
-	Fri,  9 Jan 2026 12:06:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2EE35B12B;
+	Fri,  9 Jan 2026 12:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960388; cv=none; b=OhHC4KZGfOPuxbKspZ7mBNU74iFiAlEWVKcruILSD8dhbDZTMoULzWuMbeofHYYlDqk66Br6Q5vMtbGPWEYPcgyssQqIGPeRWq0+rh6PeVjE6AqBB+AmIbl1kv9oc8bIChRU2NAM3qaAcqmW+SsAd5hVqo+gDZ4BroFAZTTDGAU=
+	t=1767962191; cv=none; b=lqd+L0dwTXMrnXWB58i11u69l/7qn580trK4fEiSuISjroo3LgV/rrdfJYLbUxC0RBU918PCel8ouXIPIE5qU0KCeIwI6AOawaPmNBsbrxrMNlIeA2bDf5s6PAg+Ga13AYI7Ehnakyt7B/FeKUoTM+zIz7wuAfQbiinxtd7YOqw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960388; c=relaxed/simple;
-	bh=//O/ZgPhS9RjBRV7eq57+5/RgC6iq/5jRMRQhfNoRLI=;
+	s=arc-20240116; t=1767962191; c=relaxed/simple;
+	bh=ErqcVaOthKmVkq0OduW8WbfS/XrOuR5OSItBDIlAsG8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t3zEb/Xrm2OnBvf8gonWkoyWGn71hC6B5EGQWz2fj6cZ+/6yJM8wMjIYW48JY5GaPmT3gRt4L5DStjRBaB75Dwv4Q6377by2dWC4GmGXVxCsPW0GGxSAGvgtDWEN30mYKkHBFSvgu6wz2rZynypld5KQXNLAii8tBf6yb9tCWW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1ZLwJ2Py; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41AF7C19421;
-	Fri,  9 Jan 2026 12:06:28 +0000 (UTC)
+	 MIME-Version; b=GD3hfZTIfrdHBlvyN8GXyzNlaULw6eUWjyOey+cPnZsbeZEjPFFfxFYaSNFaN7GqXCXc94GydTJs9bBQLjW0eFkcYvXKCZihiW0Yu7COOSGrRRGhYNU3OarDFmrxgm41gxPWkJscphMkRvMP29F1m/0NJ4vNQ0xZivc7fm3caE4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1hZqi0Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEC9C4CEF1;
+	Fri,  9 Jan 2026 12:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960388;
-	bh=//O/ZgPhS9RjBRV7eq57+5/RgC6iq/5jRMRQhfNoRLI=;
+	s=korg; t=1767962191;
+	bh=ErqcVaOthKmVkq0OduW8WbfS/XrOuR5OSItBDIlAsG8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1ZLwJ2PylPvfJQdl6V9578Qo2FfRihJE1512WsjQPwBPcN1LFbEJBXM1wsc4VvY1K
-	 jDkdRIoPLcF8U5Yx17SDmRrNjHLnPo9iiJoYA5SXd+2343rI8L0m7pBjuxhUbEdLZR
-	 sAYQcyili3IQ07IOP8qqSmwZgCK+90SOa++Yte74=
+	b=n1hZqi0YSATTT42sigSHg0260nhe4zsR1nHR6hMWDlDp8DtPfbf8CaXEm0FSuWUbT
+	 a9XLfsy5ec/kRZ55txJSmqpE2NGSoCZvesgu7pd4LOJJ1u1BGbFfncEOLrDq5205MN
+	 QOrIKFlUIoNQy4P26RSHhJHRAK51SgsU6OAy5WOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Gongwei Li <ligongwei@kylinos.cn>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 385/737] ipmi: Fix the race between __scan_channels() and deliver_response()
+Subject: [PATCH 6.1 246/634] Bluetooth: btusb: Add new VID/PID 13d3/3533 for RTL8821CE
 Date: Fri,  9 Jan 2026 12:38:44 +0100
-Message-ID: <20260109112148.483120545@linuxfoundation.org>
+Message-ID: <20260109112126.798430327@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Gongwei Li <ligongwei@kylinos.cn>
 
-[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
+[ Upstream commit 525459da4bd62a81142fea3f3d52188ceb4d8907 ]
 
-The race window between __scan_channels() and deliver_response() causes
-the parameters of some channels to be set to 0.
+Add VID 13d3 & PID 3533 for Realtek RTL8821CE USB Bluetooth chip.
 
-1.[CPUA] __scan_channels() issues an IPMI request and waits with
-         wait_event() until all channels have been scanned.
-         wait_event() internally calls might_sleep(), which might
-         yield the CPU. (Moreover, an interrupt can preempt
-         wait_event() and force the task to yield the CPU.)
-2.[CPUB] deliver_response() is invoked when the CPU receives the
-         IPMI response. After processing a IPMI response,
-         deliver_response() directly assigns intf->wchannels to
-         intf->channel_list and sets intf->channels_ready to true.
-         However, not all channels are actually ready for use.
-3.[CPUA] Since intf->channels_ready is already true, wait_event()
-         never enters __wait_event(). __scan_channels() immediately
-         clears intf->null_user_handler and exits.
-4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
-         ignores further IPMI responses, leaving the remaining
-	 channels zero-initialized and unusable.
+The information in /sys/kernel/debug/usb/devices about the Bluetooth
+device is listed as the below.
 
-CPUA                             CPUB
--------------------------------  -----------------------------
-__scan_channels()
- intf->null_user_handler
-       = channel_handler;
- send_channel_info_cmd(intf,
-       0);
- wait_event(intf->waitq,
-       intf->channels_ready);
-  do {
-   might_sleep();
-                                 deliver_response()
-                                  channel_handler()
-                                   intf->channel_list =
-				         intf->wchannels + set;
-                                   intf->channels_ready = true;
-                                   send_channel_info_cmd(intf,
-                                         intf->curr_channel);
-   if (condition)
-    break;
-   __wait_event(wq_head,
-          condition);
-  } while(0)
- intf->null_user_handler
-       = NULL;
-                                 deliver_response()
-                                  if (!msg->user)
-                                   if (intf->null_user_handler)
-                                    rv = -EINVAL;
-                                  return rv;
--------------------------------  -----------------------------
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
+D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=13d3 ProdID=3533 Rev= 1.10
+S:  Manufacturer=Realtek
+S:  Product=Bluetooth Radio
+S:  SerialNumber=00e04c000001
+C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
+I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
+I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
+I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
+I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
+I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
+E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
 
-Fix the race between __scan_channels() and deliver_response() by
-deferring both the assignment intf->channel_list = intf->wchannels
-and the flag intf->channels_ready = true until all channels have
-been successfully scanned or until the IPMI request has failed.
-
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Signed-off-by: Gongwei Li <ligongwei@kylinos.cn>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 2 --
- 1 file changed, 2 deletions(-)
+ drivers/bluetooth/btusb.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index b7d8bf202ed2..4619ee5c744c 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -3414,8 +3414,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
- 			intf->channels_ready = true;
- 			wake_up(&intf->waitq);
- 		} else {
--			intf->channel_list = intf->wchannels + set;
--			intf->channels_ready = true;
- 			rv = send_channel_info_cmd(intf, intf->curr_channel);
- 		}
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 70cdcef684138..9837946329272 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -496,6 +496,8 @@ static const struct usb_device_id blacklist_table[] = {
+ 	/* Realtek 8821CE Bluetooth devices */
+ 	{ USB_DEVICE(0x13d3, 0x3529), .driver_info = BTUSB_REALTEK |
+ 						     BTUSB_WIDEBAND_SPEECH },
++	{ USB_DEVICE(0x13d3, 0x3533), .driver_info = BTUSB_REALTEK |
++						     BTUSB_WIDEBAND_SPEECH },
  
+ 	/* Realtek 8822CE Bluetooth devices */
+ 	{ USB_DEVICE(0x0bda, 0xb00c), .driver_info = BTUSB_REALTEK |
 -- 
 2.51.0
 
