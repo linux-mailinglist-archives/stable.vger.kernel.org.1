@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207083-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2B76D09874
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C3187D0A115
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B594D302CB28
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:23 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0E6A831071BE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C9233B97A;
-	Fri,  9 Jan 2026 12:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D867735CB65;
+	Fri,  9 Jan 2026 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KbS4gh6N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LXFOarK2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6705732936C;
-	Fri,  9 Jan 2026 12:17:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A9D533372B;
+	Fri,  9 Jan 2026 12:45:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961042; cv=none; b=KKQtN+/7V0wBG6srmg6kUU4flHlCyZiATYIhWS+nO0YnHmoHQsSrLbhTdVGvP8j2+65sBOow/51DpI9irKJihS/J6rmRzcwaGWRaO4RYBldHpawJDmuWktrgQJyyaVhhI4Cv58E/qpitpRo2UHURssq10EyLrea8SgzQj+bjVAw=
+	t=1767962758; cv=none; b=BWduvnlBOLFF7ktcBiqWknVUN/deY+4InbQAijTYJqEcYaIWLSAgTQHtStlP0RqpVbJGBopzF2ELyUgQHPlzv4IqmFlyI1mYLSV/xzZ72ZF7OhdY6OrAZXkoVU3G8ioVZu+eQdxkc1sRZ5F42XdE7yIcMQVF3yalwgrjS4zj4Lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961042; c=relaxed/simple;
-	bh=1BACs9Eg/Qy/+R+u0zJtTt4DxjpNGLJKPrXoih8Bjvc=;
+	s=arc-20240116; t=1767962758; c=relaxed/simple;
+	bh=c6mBhJ7f7yI8eAT3XmUAhbwNKGf9C3JKbZP6V53VjtM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YF8bhOyJC/iRoXvwMVH/6CpIEGXErfVutCBRU/ZCrI9/9stF30t4l0mH0PJOiN/PxH9BL8AOAI9dh8venpzJUM/rQCI832JHkIvGBFVR58ZjSFWNH8V0voWEYSv+BcRfIn2mXqtP7GSrVOlKZBOjflSkGkSpGtWxtqCsTf07bVU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KbS4gh6N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5B27C4CEF1;
-	Fri,  9 Jan 2026 12:17:21 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YBUYgOAYubbkWI1SVtRO6sIwSBSULIZR9CafS+zTNkgVYsrzH2p/Ay9wPRszzxcdi4t1CLPuNYANcCRPDRW9BZ5w0IDC9izztKWkQmqQ8yt5dnmbMa5hfQCnMz1ZlmyTDKAeVb6plk7aKQCLPUbEUqli/NlBv4ZuzfUrzolD73k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LXFOarK2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 272C3C4CEF1;
+	Fri,  9 Jan 2026 12:45:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961042;
-	bh=1BACs9Eg/Qy/+R+u0zJtTt4DxjpNGLJKPrXoih8Bjvc=;
+	s=korg; t=1767962758;
+	bh=c6mBhJ7f7yI8eAT3XmUAhbwNKGf9C3JKbZP6V53VjtM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KbS4gh6NOQvCQ6S0UqxhAX4WEZpDkgeVdJpc/+b6iVs0uiMOLjYKLec/+5GTbnF6t
-	 Ilo8UiiyTMz9phloyI1QBSWUF/F5l7QCro6kxMtNpH9ck83gPzuooJhsoJBih2ShrJ
-	 m1ynFronazkDxGgo6xMlfxO2y3G2O9yd4IVS73Z0=
+	b=LXFOarK2iccBH3Ke5KFdhoifaWTQtabRU4I6yi4FpweFkZKHPqDxOQ8T7tXjJdq7y
+	 Tb0HqVEByYNuIpLK0fEBQMnMhMdM4ZnTQRLOjxtt/xMw1f/Q20ApgtstlE7Clh783C
+	 m0vfGn8NtSZ4Oci6GcPXQWFz1zJw1ruFvklLlIso=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.6 615/737] net: nfc: fix deadlock between nfc_unregister_device and rfkill_fop_write
-Date: Fri,  9 Jan 2026 12:42:34 +0100
-Message-ID: <20260109112157.139712691@linuxfoundation.org>
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 6.1 477/634] fbdev: tcx.c fix mem_map to correct smem_start offset
+Date: Fri,  9 Jan 2026 12:42:35 +0100
+Message-ID: <20260109112135.496642781@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,98 +57,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: René Rebe <rene@exactco.de>
 
-commit 1ab526d97a57e44d26fadcc0e9adeb9c0c0182f5 upstream.
+commit 35fa2b4bf96415b88d7edaa5cf8af5185d9ce76e upstream.
 
-A deadlock can occur between nfc_unregister_device() and rfkill_fop_write()
-due to lock ordering inversion between device_lock and rfkill_global_mutex.
+403ae52ac047 ("sparc: fix drivers/video/tcx.c warning") changed the
+physbase initializing breaking the user-space mmap, e.g. for Xorg
+entirely.
 
-The problematic lock order is:
+Fix fbdev mmap table so the sbus mmap helper work correctly, and
+not try to map vastly (physbase) offset memory.
 
-Thread A (rfkill_fop_write):
-  rfkill_fop_write()
-    mutex_lock(&rfkill_global_mutex)
-      rfkill_set_block()
-        nfc_rfkill_set_block()
-          nfc_dev_down()
-            device_lock(&dev->dev)    <- waits for device_lock
-
-Thread B (nfc_unregister_device):
-  nfc_unregister_device()
-    device_lock(&dev->dev)
-      rfkill_unregister()
-        mutex_lock(&rfkill_global_mutex)  <- waits for rfkill_global_mutex
-
-This creates a classic ABBA deadlock scenario.
-
-Fix this by moving rfkill_unregister() and rfkill_destroy() outside the
-device_lock critical section. Store the rfkill pointer in a local variable
-before releasing the lock, then call rfkill_unregister() after releasing
-device_lock.
-
-This change is safe because rfkill_fop_write() holds rfkill_global_mutex
-while calling the rfkill callbacks, and rfkill_unregister() also acquires
-rfkill_global_mutex before cleanup. Therefore, rfkill_unregister() will
-wait for any ongoing callback to complete before proceeding, and
-device_del() is only called after rfkill_unregister() returns, preventing
-any use-after-free.
-
-The similar lock ordering in nfc_register_device() (device_lock ->
-rfkill_global_mutex via rfkill_register) is safe because during
-registration the device is not yet in rfkill_list, so no concurrent
-rfkill operations can occur on this device.
-
-Fixes: 3e3b5dfcd16a ("NFC: reorder the logic in nfc_{un,}register_device")
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=4ef89409a235d804c6c2
-Link: https://lore.kernel.org/all/20251217054908.178907-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251218012355.279940-1-kartikey406@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 403ae52ac047 ("sparc: fix drivers/video/tcx.c warning")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/nfc/core.c |    9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/tcx.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/nfc/core.c
-+++ b/net/nfc/core.c
-@@ -1154,6 +1154,7 @@ EXPORT_SYMBOL(nfc_register_device);
- void nfc_unregister_device(struct nfc_dev *dev)
- {
- 	int rc;
-+	struct rfkill *rfk = NULL;
- 
- 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
- 
-@@ -1164,13 +1165,17 @@ void nfc_unregister_device(struct nfc_de
- 
- 	device_lock(&dev->dev);
- 	if (dev->rfkill) {
--		rfkill_unregister(dev->rfkill);
--		rfkill_destroy(dev->rfkill);
-+		rfk = dev->rfkill;
- 		dev->rfkill = NULL;
+--- a/drivers/video/fbdev/tcx.c
++++ b/drivers/video/fbdev/tcx.c
+@@ -436,7 +436,7 @@ static int tcx_probe(struct platform_dev
+ 			j = i;
+ 			break;
+ 		}
+-		par->mmap_map[i].poff = op->resource[j].start;
++		par->mmap_map[i].poff = op->resource[j].start - info->fix.smem_start;
  	}
- 	dev->shutting_down = true;
- 	device_unlock(&dev->dev);
  
-+	if (rfk) {
-+		rfkill_unregister(rfk);
-+		rfkill_destroy(rfk);
-+	}
-+
- 	if (dev->ops->check_presence) {
- 		del_timer_sync(&dev->check_pres_timer);
- 		cancel_work_sync(&dev->check_pres_work);
+ 	info->flags = FBINFO_DEFAULT;
 
 
 
