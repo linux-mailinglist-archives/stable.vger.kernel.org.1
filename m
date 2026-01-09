@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207782-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207213-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA56D0A186
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE773D099AC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D6A33305F19
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17D5830A5679
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0C1B35BDB2;
-	Fri,  9 Jan 2026 12:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F1C332AAB5;
+	Fri,  9 Jan 2026 12:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iwQM0yn/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y+8bMQHA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 943E2326D51;
-	Fri,  9 Jan 2026 12:50:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C582737EE;
+	Fri,  9 Jan 2026 12:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963032; cv=none; b=Qa4p4/J+9mQiHHekZQoqMzqbNtKzwbikLFCoSSYQHGmZTgAGKaKfqJf9iNtuRZlCEmthl9jb8HQAZ4BIYtlRN58z2Up9rjdQsey2XBANv7AWwrPBZmHArF6i7K/p3XK4iBqIPJVAb4d0Yb6XuVfoE65nocSCVkGuPDEGzB8HAZ8=
+	t=1767961415; cv=none; b=jmPyTthHcAeEt+II3+kLoteo7ronfRoPwYq1e/z7J+OqYs61fJqnkyW+E0ZDNxM6SRX676iQVMRdPyu/SOjqGCHct6tVICM2U/FeWIpqCZCrQfVyWY6Qe+TqCa0bq0s8b78NO7rj2d9Fo5KYhPnO/LqNFa8I75QBF4kew6aLBU8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963032; c=relaxed/simple;
-	bh=ELL54DuV3ICW6j6QC7Km3mG74DY+WZg28whYIzFX4SU=;
+	s=arc-20240116; t=1767961415; c=relaxed/simple;
+	bh=Ap2ClbY57MQ+OGTvQkP2frIx2SfgH9GONjZ/gfV9U7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D1J1kia6eJGT0r6YasuEMDrW20xZ3sT3Hr8OciYNmn7miDuxLEjfL2FirXJ5J0G7ReU1vzJYfZ9lXRvf4c1fBWAAEPhZvW+wCIOawHIdJKtf+ZEL8m1gk/xcvcd11JrJu0Q9IDHTvmvKKSVj8cyk+k0oYh9a/65+CB6DNHCFU44=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iwQM0yn/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2327FC4CEF1;
-	Fri,  9 Jan 2026 12:50:31 +0000 (UTC)
+	 MIME-Version; b=dfSGC0g6lMWegvFCgjctw6Ma2OMXPP0UQZQ5kAJf+r10nC+Gl1A34lN88aKtFzeQ5ZcpiwcbHrUyzMZ5+/2za/QwAm98wJBAVI27pfKIGthlt0sNz7E2TFOqkym7FtRFx9j4Xnm5NhTv/wYpB5kK1IDhwVdkpPV4UXtC1FP0bQI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y+8bMQHA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A44BC4CEF1;
+	Fri,  9 Jan 2026 12:23:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963032;
-	bh=ELL54DuV3ICW6j6QC7Km3mG74DY+WZg28whYIzFX4SU=;
+	s=korg; t=1767961415;
+	bh=Ap2ClbY57MQ+OGTvQkP2frIx2SfgH9GONjZ/gfV9U7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iwQM0yn/Gw4vuUgP1ipu1Php5L0nBd/jsZ1w8yodbIyBfbCnFaAwArx5msjtuUtXL
-	 ealDwGHFvpRhjm6EIbdY8Fs+ecX4VDUemzUOSsn9rARdbSijYxCDaue51ihdkUfKVW
-	 m09qYAqYDg53OiVywQvE3t1KzJVcSQiwkb574f5o=
+	b=y+8bMQHA9kUNZn9RpjEnhg7NIcBLI3+6IpLKugLBEUqSL6sDDxOryURjCXT2pZdce
+	 pBOeBJbwzPSIU1Mr3K3UHoPCOBr3BMX9mdDBW3J+DSYQ6Is07o0EQ1oUZZMkpBW56j
+	 9uhvnuzAdsIVdT7b+e+yY2SQmgUpvXa7BWBDQDYs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 574/634] media: verisilicon: Fix CPU stalls on G2 bus error
-Date: Fri,  9 Jan 2026 12:44:12 +0100
-Message-ID: <20260109112139.206576613@linuxfoundation.org>
+	syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com,
+	Zhu Yanjun <yanjun.zhu@linux.dev>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 714/737] RDMA/rxe: Remove the direct link to net_device
+Date: Fri,  9 Jan 2026 12:44:13 +0100
+Message-ID: <20260109112200.938251822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,238 +62,418 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+From: Zhu Yanjun <yanjun.zhu@linux.dev>
 
-[ Upstream commit 19c286b755072a22a063052f530a6b1fac8a1f63 ]
+[ Upstream commit 2ac5415022d16d63d912a39a06f32f1f51140261 ]
 
-In some seek stress tests, we are getting IRQ from the G2 decoder where
-the dec_bus_int and the dec_e bits are high, meaning the decoder is
-still running despite the error.
+The similar patch in siw is in the link:
+https://git.kernel.org/rdma/rdma/c/16b87037b48889
 
-Fix this by reworking the IRQ handler to only finish the job once we
-have reached completion and move the software reset to when our software
-watchdog triggers.
+This problem also occurred in RXE. The following analyze this problem.
+In the following Call Traces:
+"
+BUG: KASAN: slab-use-after-free in dev_get_flags+0x188/0x1d0 net/core/dev.c:8782
+Read of size 4 at addr ffff8880554640b0 by task kworker/1:4/5295
 
-This way, we let the hardware continue on errors when it did not self
-reset and in worse case scenario the hardware timeout will
-automatically stop it. The actual error will be fixed in a follow up
-patch.
+CPU: 1 UID: 0 PID: 5295 Comm: kworker/1:4 Not tainted
+6.12.0-rc3-syzkaller-00399-g9197b73fd7bb #0
+Hardware name: Google Compute Engine/Google Compute Engine,
+BIOS Google 09/13/2024
+Workqueue: infiniband ib_cache_event_task
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:377 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:488
+ kasan_report+0x143/0x180 mm/kasan/report.c:601
+ dev_get_flags+0x188/0x1d0 net/core/dev.c:8782
+ rxe_query_port+0x12d/0x260 drivers/infiniband/sw/rxe/rxe_verbs.c:60
+ __ib_query_port drivers/infiniband/core/device.c:2111 [inline]
+ ib_query_port+0x168/0x7d0 drivers/infiniband/core/device.c:2143
+ ib_cache_update+0x1a9/0xb80 drivers/infiniband/core/cache.c:1494
+ ib_cache_event_task+0xf3/0x1e0 drivers/infiniband/core/cache.c:1568
+ process_one_work kernel/workqueue.c:3229 [inline]
+ process_scheduled_works+0xa65/0x1850 kernel/workqueue.c:3310
+ worker_thread+0x870/0xd30 kernel/workqueue.c:3391
+ kthread+0x2f2/0x390 kernel/kthread.c:389
+ ret_from_fork+0x4d/0x80 arch/x86/kernel/process.c:147
+ ret_from_fork_asm+0x1a/0x30 arch/x86/entry/entry_64.S:244
+ </TASK>
+"
 
-Fixes: 3385c514ecc5a ("media: hantro: Convert imx8m_vpu_g2_irq to helper")
-Cc: stable@vger.kernel.org
-Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+1). In the link [1],
+
+"
+ infiniband syz2: set down
+"
+
+This means that on 839.350575, the event ib_cache_event_task was sent andi
+queued in ib_wq.
+
+2). In the link [1],
+
+"
+ team0 (unregistering): Port device team_slave_0 removed
+"
+
+It indicates that before 843.251853, the net device should be freed.
+
+3). In the link [1],
+
+"
+ BUG: KASAN: slab-use-after-free in dev_get_flags+0x188/0x1d0
+"
+
+This means that on 850.559070, this slab-use-after-free problem occurred.
+
+In all, on 839.350575, the event ib_cache_event_task was sent and queued
+in ib_wq,
+
+before 843.251853, the net device veth was freed.
+
+on 850.559070, this event was executed, and the mentioned freed net device
+was called. Thus, the above call trace occurred.
+
+[1] https://syzkaller.appspot.com/x/log.txt?x=12e7025f980000
+
+Reported-by: syzbot+4b87489410b4efd181bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4b87489410b4efd181bf
+Fixes: 8700e3e7c485 ("Soft RoCE driver")
+Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
+Link: https://patch.msgid.link/20241220222325.2487767-1-yanjun.zhu@linux.dev
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: - exported ib_device_get_netdev() function.
+          - added ib_device_get_netdev() to ib_verbs.h.]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/verisilicon/hantro_g2.c          |   84 ++++++++++++----
- drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c |    2 
- drivers/media/platform/verisilicon/hantro_g2_regs.h     |   13 ++
- drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c  |    2 
- drivers/media/platform/verisilicon/hantro_hw.h          |    1 
- drivers/media/platform/verisilicon/imx8m_vpu_hw.c       |    2 
- 6 files changed, 83 insertions(+), 21 deletions(-)
+ drivers/infiniband/core/device.c      |    1 +
+ drivers/infiniband/sw/rxe/rxe.c       |   23 +++++++++++++++++++----
+ drivers/infiniband/sw/rxe/rxe.h       |    3 ++-
+ drivers/infiniband/sw/rxe/rxe_mcast.c |   22 ++++++++++++++++++++--
+ drivers/infiniband/sw/rxe/rxe_net.c   |   25 ++++++++++++++++++++-----
+ drivers/infiniband/sw/rxe/rxe_verbs.c |   26 +++++++++++++++++++++-----
+ drivers/infiniband/sw/rxe/rxe_verbs.h |   11 ++++++++---
+ include/rdma/ib_verbs.h               |    2 ++
+ 8 files changed, 93 insertions(+), 20 deletions(-)
 
---- a/drivers/media/platform/verisilicon/hantro_g2.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2.c
-@@ -5,40 +5,90 @@
-  * Copyright (C) 2021 Collabora Ltd, Andrzej Pietrasiewicz <andrzej.p@collabora.com>
+--- a/drivers/infiniband/core/device.c
++++ b/drivers/infiniband/core/device.c
+@@ -2259,6 +2259,7 @@ struct net_device *ib_device_get_netdev(
+ 
+ 	return res;
+ }
++EXPORT_SYMBOL(ib_device_get_netdev);
+ 
+ /**
+  * ib_device_get_by_netdev - Find an IB device associated with a netdev
+--- a/drivers/infiniband/sw/rxe/rxe.c
++++ b/drivers/infiniband/sw/rxe/rxe.c
+@@ -40,6 +40,8 @@ void rxe_dealloc(struct ib_device *ib_de
+ /* initialize rxe device parameters */
+ static void rxe_init_device_param(struct rxe_dev *rxe)
+ {
++	struct net_device *ndev;
++
+ 	rxe->max_inline_data			= RXE_MAX_INLINE_DATA;
+ 
+ 	rxe->attr.vendor_id			= RXE_VENDOR_ID;
+@@ -71,8 +73,15 @@ static void rxe_init_device_param(struct
+ 	rxe->attr.max_fast_reg_page_list_len	= RXE_MAX_FMR_PAGE_LIST_LEN;
+ 	rxe->attr.max_pkeys			= RXE_MAX_PKEYS;
+ 	rxe->attr.local_ca_ack_delay		= RXE_LOCAL_CA_ACK_DELAY;
++
++	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
++	if (!ndev)
++		return;
++
+ 	addrconf_addr_eui48((unsigned char *)&rxe->attr.sys_image_guid,
+-			rxe->ndev->dev_addr);
++			ndev->dev_addr);
++
++	dev_put(ndev);
+ 
+ 	rxe->max_ucontext			= RXE_MAX_UCONTEXT;
+ }
+@@ -109,10 +118,15 @@ static void rxe_init_port_param(struct r
+ static void rxe_init_ports(struct rxe_dev *rxe)
+ {
+ 	struct rxe_port *port = &rxe->port;
++	struct net_device *ndev;
+ 
+ 	rxe_init_port_param(port);
++	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
++	if (!ndev)
++		return;
+ 	addrconf_addr_eui48((unsigned char *)&port->port_guid,
+-			    rxe->ndev->dev_addr);
++			    ndev->dev_addr);
++	dev_put(ndev);
+ 	spin_lock_init(&port->port_lock);
+ }
+ 
+@@ -169,12 +183,13 @@ void rxe_set_mtu(struct rxe_dev *rxe, un
+ /* called by ifc layer to create new rxe device.
+  * The caller should allocate memory for rxe by calling ib_alloc_device.
   */
- 
-+#include <linux/delay.h>
- #include "hantro_hw.h"
- #include "hantro_g2_regs.h"
- 
--void hantro_g2_check_idle(struct hantro_dev *vpu)
-+static bool hantro_g2_active(struct hantro_ctx *ctx)
+-int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name)
++int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name,
++			struct net_device *ndev)
  {
--	int i;
-+	struct hantro_dev *vpu = ctx->dev;
-+	u32 status;
-+
-+	status = vdpu_read(vpu, G2_REG_INTERRUPT);
-+
-+	return (status & G2_REG_INTERRUPT_DEC_E);
-+}
+ 	rxe_init(rxe);
+ 	rxe_set_mtu(rxe, mtu);
  
--	for (i = 0; i < 3; i++) {
--		u32 status;
-+/**
-+ * hantro_g2_reset:
-+ * @ctx: the hantro context
-+ *
-+ * Emulates a reset using Hantro abort function. Failing this procedure would
-+ * results in programming a running IP which leads to CPU hang.
-+ *
-+ * Using a hard reset procedure instead is prefferred.
-+ */
-+void hantro_g2_reset(struct hantro_ctx *ctx)
+-	return rxe_register_device(rxe, ibdev_name);
++	return rxe_register_device(rxe, ibdev_name, ndev);
+ }
+ 
+ static int rxe_newlink(const char *ibdev_name, struct net_device *ndev)
+--- a/drivers/infiniband/sw/rxe/rxe.h
++++ b/drivers/infiniband/sw/rxe/rxe.h
+@@ -139,7 +139,8 @@ enum resp_states {
+ 
+ void rxe_set_mtu(struct rxe_dev *rxe, unsigned int dev_mtu);
+ 
+-int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name);
++int rxe_add(struct rxe_dev *rxe, unsigned int mtu, const char *ibdev_name,
++			struct net_device *ndev);
+ 
+ void rxe_rcv(struct sk_buff *skb);
+ 
+--- a/drivers/infiniband/sw/rxe/rxe_mcast.c
++++ b/drivers/infiniband/sw/rxe/rxe_mcast.c
+@@ -31,10 +31,19 @@
+ static int rxe_mcast_add(struct rxe_dev *rxe, union ib_gid *mgid)
+ {
+ 	unsigned char ll_addr[ETH_ALEN];
++	struct net_device *ndev;
++	int ret;
++
++	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
++	if (!ndev)
++		return -ENODEV;
+ 
+ 	ipv6_eth_mc_map((struct in6_addr *)mgid->raw, ll_addr);
+ 
+-	return dev_mc_add(rxe->ndev, ll_addr);
++	ret = dev_mc_add(ndev, ll_addr);
++	dev_put(ndev);
++
++	return ret;
+ }
+ 
+ /**
+@@ -47,10 +56,19 @@ static int rxe_mcast_add(struct rxe_dev
+ static int rxe_mcast_del(struct rxe_dev *rxe, union ib_gid *mgid)
+ {
+ 	unsigned char ll_addr[ETH_ALEN];
++	struct net_device *ndev;
++	int ret;
++
++	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
++	if (!ndev)
++		return -ENODEV;
+ 
+ 	ipv6_eth_mc_map((struct in6_addr *)mgid->raw, ll_addr);
+ 
+-	return dev_mc_del(rxe->ndev, ll_addr);
++	ret = dev_mc_del(ndev, ll_addr);
++	dev_put(ndev);
++
++	return ret;
+ }
+ 
+ /**
+--- a/drivers/infiniband/sw/rxe/rxe_net.c
++++ b/drivers/infiniband/sw/rxe/rxe_net.c
+@@ -509,7 +509,16 @@ out:
+  */
+ const char *rxe_parent_name(struct rxe_dev *rxe, unsigned int port_num)
+ {
+-	return rxe->ndev->name;
++	struct net_device *ndev;
++	char *ndev_name;
++
++	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
++	if (!ndev)
++		return NULL;
++	ndev_name = ndev->name;
++	dev_put(ndev);
++
++	return ndev_name;
+ }
+ 
+ int rxe_net_add(const char *ibdev_name, struct net_device *ndev)
+@@ -521,9 +530,7 @@ int rxe_net_add(const char *ibdev_name,
+ 	if (!rxe)
+ 		return -ENOMEM;
+ 
+-	rxe->ndev = ndev;
+-
+-	err = rxe_add(rxe, ndev->mtu, ibdev_name);
++	err = rxe_add(rxe, ndev->mtu, ibdev_name, ndev);
+ 	if (err) {
+ 		ib_dealloc_device(&rxe->ib_dev);
+ 		return err;
+@@ -571,10 +578,18 @@ void rxe_port_down(struct rxe_dev *rxe)
+ 
+ void rxe_set_port_state(struct rxe_dev *rxe)
+ {
+-	if (netif_running(rxe->ndev) && netif_carrier_ok(rxe->ndev))
++	struct net_device *ndev;
++
++	ndev = rxe_ib_device_get_netdev(&rxe->ib_dev);
++	if (!ndev)
++		return;
++
++	if (netif_running(ndev) && netif_carrier_ok(ndev))
+ 		rxe_port_up(rxe);
+ 	else
+ 		rxe_port_down(rxe);
++
++	dev_put(ndev);
+ }
+ 
+ static int rxe_notify(struct notifier_block *not_blk,
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.c
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.c
+@@ -41,6 +41,7 @@ static int rxe_query_port(struct ib_devi
+ 			  u32 port_num, struct ib_port_attr *attr)
+ {
+ 	struct rxe_dev *rxe = to_rdev(ibdev);
++	struct net_device *ndev;
+ 	int err, ret;
+ 
+ 	if (port_num != 1) {
+@@ -51,19 +52,26 @@ static int rxe_query_port(struct ib_devi
+ 
+ 	memcpy(attr, &rxe->port.attr, sizeof(*attr));
+ 
++	ndev = rxe_ib_device_get_netdev(ibdev);
++	if (!ndev) {
++		err = -ENODEV;
++		goto err_out;
++	}
++
+ 	mutex_lock(&rxe->usdev_lock);
+ 	ret = ib_get_eth_speed(ibdev, port_num, &attr->active_speed,
+ 			       &attr->active_width);
+ 
+ 	if (attr->state == IB_PORT_ACTIVE)
+ 		attr->phys_state = IB_PORT_PHYS_STATE_LINK_UP;
+-	else if (dev_get_flags(rxe->ndev) & IFF_UP)
++	else if (dev_get_flags(ndev) & IFF_UP)
+ 		attr->phys_state = IB_PORT_PHYS_STATE_POLLING;
+ 	else
+ 		attr->phys_state = IB_PORT_PHYS_STATE_DISABLED;
+ 
+ 	mutex_unlock(&rxe->usdev_lock);
+ 
++	dev_put(ndev);
+ 	return ret;
+ 
+ err_out:
+@@ -1428,9 +1436,16 @@ static const struct attribute_group rxe_
+ static int rxe_enable_driver(struct ib_device *ib_dev)
+ {
+ 	struct rxe_dev *rxe = container_of(ib_dev, struct rxe_dev, ib_dev);
++	struct net_device *ndev;
++
++	ndev = rxe_ib_device_get_netdev(ib_dev);
++	if (!ndev)
++		return -ENODEV;
+ 
+ 	rxe_set_port_state(rxe);
+-	dev_info(&rxe->ib_dev.dev, "added %s\n", netdev_name(rxe->ndev));
++	dev_info(&rxe->ib_dev.dev, "added %s\n", netdev_name(ndev));
++
++	dev_put(ndev);
+ 	return 0;
+ }
+ 
+@@ -1498,7 +1513,8 @@ static const struct ib_device_ops rxe_de
+ 	INIT_RDMA_OBJ_SIZE(ib_mw, rxe_mw, ibmw),
+ };
+ 
+-int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name)
++int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name,
++						struct net_device *ndev)
+ {
+ 	int err;
+ 	struct ib_device *dev = &rxe->ib_dev;
+@@ -1510,13 +1526,13 @@ int rxe_register_device(struct rxe_dev *
+ 	dev->num_comp_vectors = num_possible_cpus();
+ 	dev->local_dma_lkey = 0;
+ 	addrconf_addr_eui48((unsigned char *)&dev->node_guid,
+-			    rxe->ndev->dev_addr);
++			    ndev->dev_addr);
+ 
+ 	dev->uverbs_cmd_mask |= BIT_ULL(IB_USER_VERBS_CMD_POST_SEND) |
+ 				BIT_ULL(IB_USER_VERBS_CMD_REQ_NOTIFY_CQ);
+ 
+ 	ib_set_device_ops(dev, &rxe_dev_ops);
+-	err = ib_device_set_netdev(&rxe->ib_dev, rxe->ndev, 1);
++	err = ib_device_set_netdev(&rxe->ib_dev, ndev, 1);
+ 	if (err)
+ 		return err;
+ 
+--- a/drivers/infiniband/sw/rxe/rxe_verbs.h
++++ b/drivers/infiniband/sw/rxe/rxe_verbs.h
+@@ -369,6 +369,7 @@ struct rxe_port {
+ 	u32			qp_gsi_index;
+ };
+ 
++#define	RXE_PORT	1
+ struct rxe_dev {
+ 	struct ib_device	ib_dev;
+ 	struct ib_device_attr	attr;
+@@ -376,8 +377,6 @@ struct rxe_dev {
+ 	int			max_inline_data;
+ 	struct mutex	usdev_lock;
+ 
+-	struct net_device	*ndev;
+-
+ 	struct rxe_pool		uc_pool;
+ 	struct rxe_pool		pd_pool;
+ 	struct rxe_pool		ah_pool;
+@@ -405,6 +404,11 @@ struct rxe_dev {
+ 	struct crypto_shash	*tfm;
+ };
+ 
++static inline struct net_device *rxe_ib_device_get_netdev(struct ib_device *dev)
 +{
-+	struct hantro_dev *vpu = ctx->dev;
-+	u32 status;
- 
--		/* Make sure the VPU is idle */
--		status = vdpu_read(vpu, G2_REG_INTERRUPT);
--		if (status & G2_REG_INTERRUPT_DEC_E) {
--			dev_warn(vpu->dev, "device still running, aborting");
--			status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
--			vdpu_write(vpu, status, G2_REG_INTERRUPT);
--		}
-+	status = vdpu_read(vpu, G2_REG_INTERRUPT);
-+	if (status & G2_REG_INTERRUPT_DEC_E) {
-+		dev_warn_ratelimited(vpu->dev, "device still running, aborting");
-+		status |= G2_REG_INTERRUPT_DEC_ABORT_E | G2_REG_INTERRUPT_DEC_IRQ_DIS;
-+		vdpu_write(vpu, status, G2_REG_INTERRUPT);
++	return ib_device_get_netdev(dev, RXE_PORT);
++}
 +
-+		do {
-+			mdelay(1);
-+		} while (hantro_g2_active(ctx));
- 	}
- }
- 
- irqreturn_t hantro_g2_irq(int irq, void *dev_id)
+ static inline void rxe_counter_inc(struct rxe_dev *rxe, enum rxe_counters index)
  {
- 	struct hantro_dev *vpu = dev_id;
--	enum vb2_buffer_state state;
- 	u32 status;
- 
- 	status = vdpu_read(vpu, G2_REG_INTERRUPT);
--	state = (status & G2_REG_INTERRUPT_DEC_RDY_INT) ?
--		 VB2_BUF_STATE_DONE : VB2_BUF_STATE_ERROR;
- 
--	vdpu_write(vpu, 0, G2_REG_INTERRUPT);
--	vdpu_write(vpu, G2_REG_CONFIG_DEC_CLK_GATE_E, G2_REG_CONFIG);
-+	if (!(status & G2_REG_INTERRUPT_DEC_IRQ))
-+		return IRQ_NONE;
-+
-+	hantro_reg_write(vpu, &g2_dec_irq, 0);
-+	hantro_reg_write(vpu, &g2_dec_int_stat, 0);
-+	hantro_reg_write(vpu, &g2_clk_gate_e, 1);
-+
-+	if (status & G2_REG_INTERRUPT_DEC_RDY_INT) {
-+		hantro_irq_done(vpu, VB2_BUF_STATE_DONE);
-+		return IRQ_HANDLED;
-+	}
-+
-+	if (status & G2_REG_INTERRUPT_DEC_ABORT_INT) {
-+		/* disabled on abort, though lets be safe and handle it */
-+		dev_warn_ratelimited(vpu->dev, "decode operation aborted.");
-+		return IRQ_HANDLED;
-+	}
-+
-+	if (status & G2_REG_INTERRUPT_DEC_LAST_SLICE_INT)
-+		dev_warn_ratelimited(vpu->dev, "not all macroblocks were decoded.");
-+
-+	if (status & G2_REG_INTERRUPT_DEC_BUS_INT)
-+		dev_warn_ratelimited(vpu->dev, "bus error detected.");
-+
-+	if (status & G2_REG_INTERRUPT_DEC_ERROR_INT)
-+		dev_warn_ratelimited(vpu->dev, "decode error detected.");
- 
--	hantro_irq_done(vpu, state);
-+	if (status & G2_REG_INTERRUPT_DEC_TIMEOUT)
-+		dev_warn_ratelimited(vpu->dev, "frame decode timed out.");
-+
-+	/**
-+	 * If the decoding haven't stopped, let it continue. The hardware timeout
-+	 * will trigger if it is trully stuck.
-+	 */
-+	if (status & G2_REG_INTERRUPT_DEC_E)
-+		return IRQ_HANDLED;
- 
-+	hantro_irq_done(vpu, VB2_BUF_STATE_ERROR);
- 	return IRQ_HANDLED;
+ 	atomic64_inc(&rxe->stats_counters[index]);
+@@ -470,6 +474,7 @@ static inline struct rxe_pd *rxe_mw_pd(s
+ 	return to_rpd(mw->ibmw.pd);
  }
---- a/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_hevc_dec.c
-@@ -592,8 +592,6 @@ int hantro_g2_hevc_dec_run(struct hantro
- 	struct hantro_dev *vpu = ctx->dev;
- 	int ret;
  
--	hantro_g2_check_idle(vpu);
--
- 	/* Prepare HEVC decoder context. */
- 	ret = hantro_hevc_dec_prepare_run(ctx);
- 	if (ret)
---- a/drivers/media/platform/verisilicon/hantro_g2_regs.h
-+++ b/drivers/media/platform/verisilicon/hantro_g2_regs.h
-@@ -22,7 +22,14 @@
- #define G2_REG_VERSION			G2_SWREG(0)
+-int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name);
++int rxe_register_device(struct rxe_dev *rxe, const char *ibdev_name,
++						struct net_device *ndev);
  
- #define G2_REG_INTERRUPT		G2_SWREG(1)
-+#define G2_REG_INTERRUPT_DEC_LAST_SLICE_INT	BIT(19)
-+#define G2_REG_INTERRUPT_DEC_TIMEOUT	BIT(18)
-+#define G2_REG_INTERRUPT_DEC_ERROR_INT	BIT(16)
-+#define G2_REG_INTERRUPT_DEC_BUF_INT	BIT(14)
-+#define G2_REG_INTERRUPT_DEC_BUS_INT	BIT(13)
- #define G2_REG_INTERRUPT_DEC_RDY_INT	BIT(12)
-+#define G2_REG_INTERRUPT_DEC_ABORT_INT	BIT(11)
-+#define G2_REG_INTERRUPT_DEC_IRQ	BIT(8)
- #define G2_REG_INTERRUPT_DEC_ABORT_E	BIT(5)
- #define G2_REG_INTERRUPT_DEC_IRQ_DIS	BIT(4)
- #define G2_REG_INTERRUPT_DEC_E		BIT(0)
-@@ -35,6 +42,9 @@
- #define BUS_WIDTH_128			2
- #define BUS_WIDTH_256			3
- 
-+#define g2_dec_int_stat		G2_DEC_REG(1, 11, 0xf)
-+#define g2_dec_irq		G2_DEC_REG(1, 8, 0x1)
-+
- #define g2_strm_swap		G2_DEC_REG(2, 28, 0xf)
- #define g2_strm_swap_old	G2_DEC_REG(2, 27, 0x1f)
- #define g2_pic_swap		G2_DEC_REG(2, 22, 0x1f)
-@@ -225,6 +235,9 @@
- #define vp9_filt_level_seg5	G2_DEC_REG(19,  8, 0x3f)
- #define vp9_quant_seg5		G2_DEC_REG(19,  0, 0xff)
- 
-+#define g2_timemout_override_e	G2_DEC_REG(45, 31, 0x1)
-+#define g2_timemout_cycles	G2_DEC_REG(45, 0, 0x7fffffff)
-+
- #define hevc_cur_poc_00		G2_DEC_REG(46, 24, 0xff)
- #define hevc_cur_poc_01		G2_DEC_REG(46, 16, 0xff)
- #define hevc_cur_poc_02		G2_DEC_REG(46, 8,  0xff)
---- a/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-+++ b/drivers/media/platform/verisilicon/hantro_g2_vp9_dec.c
-@@ -909,8 +909,6 @@ int hantro_g2_vp9_dec_run(struct hantro_
- 	struct vb2_v4l2_buffer *dst;
- 	int ret;
- 
--	hantro_g2_check_idle(ctx->dev);
--
- 	ret = start_prepare_run(ctx, &decode_params);
- 	if (ret) {
- 		hantro_end_prepare_run(ctx);
---- a/drivers/media/platform/verisilicon/hantro_hw.h
-+++ b/drivers/media/platform/verisilicon/hantro_hw.h
-@@ -436,6 +436,7 @@ void hantro_g2_vp9_dec_done(struct hantr
- int hantro_vp9_dec_init(struct hantro_ctx *ctx);
- void hantro_vp9_dec_exit(struct hantro_ctx *ctx);
- void hantro_g2_check_idle(struct hantro_dev *vpu);
-+void hantro_g2_reset(struct hantro_ctx *ctx);
- irqreturn_t hantro_g2_irq(int irq, void *dev_id);
- 
- #endif /* HANTRO_HW_H_ */
---- a/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-+++ b/drivers/media/platform/verisilicon/imx8m_vpu_hw.c
-@@ -310,11 +310,13 @@ static const struct hantro_codec_ops imx
- static const struct hantro_codec_ops imx8mq_vpu_g2_codec_ops[] = {
- 	[HANTRO_MODE_HEVC_DEC] = {
- 		.run = hantro_g2_hevc_dec_run,
-+		.reset = hantro_g2_reset,
- 		.init = hantro_hevc_dec_init,
- 		.exit = hantro_hevc_dec_exit,
- 	},
- 	[HANTRO_MODE_VP9_DEC] = {
- 		.run = hantro_g2_vp9_dec_run,
-+		.reset = hantro_g2_reset,
- 		.done = hantro_g2_vp9_dec_done,
- 		.init = hantro_vp9_dec_init,
- 		.exit = hantro_vp9_dec_exit,
+ #endif /* RXE_VERBS_H */
+--- a/include/rdma/ib_verbs.h
++++ b/include/rdma/ib_verbs.h
+@@ -4444,6 +4444,8 @@ struct net_device *ib_get_net_dev_by_par
+ 					    const struct sockaddr *addr);
+ int ib_device_set_netdev(struct ib_device *ib_dev, struct net_device *ndev,
+ 			 unsigned int port);
++struct net_device *ib_device_get_netdev(struct ib_device *ib_dev,
++					u32 port);
+ struct ib_wq *ib_create_wq(struct ib_pd *pd,
+ 			   struct ib_wq_init_attr *init_attr);
+ int ib_destroy_wq_user(struct ib_wq *wq, struct ib_udata *udata);
 
 
 
