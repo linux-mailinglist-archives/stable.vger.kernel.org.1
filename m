@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-206870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207472-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B04AD09461
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F06BAD09F31
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06E01302249C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id F14C5306D9A3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B29C535A933;
-	Fri,  9 Jan 2026 12:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D372F358D30;
+	Fri,  9 Jan 2026 12:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K1rY1eew"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kgwJtK24"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 707B035A930;
-	Fri,  9 Jan 2026 12:07:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 962EA335BCD;
+	Fri,  9 Jan 2026 12:35:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960434; cv=none; b=IX1NodYLAXFeeloBHsnbu6vlCBdMXMJfht5TA8sDfLbWMqNy4+t26OYrR9y2lwNDYZr01j0Cfr/dSokZucsZlGeIdanfX0TMuAapW3Cm2xqrjmZ0Xs/v4Dvpo26BEDN2Va62rioZJJ8syJN6Mw2sO6FzL0yeaeHkWMwU7U9agD4=
+	t=1767962152; cv=none; b=F463WbxFORrG/lPZs1D9cqjG7sH+v2j5pKyBA+iGEDA86q2maRJdCiVblyEPHg/uIJmmFIwuYARM10JNxV3f0fEbzSKmU9HXCRVnWheKaIv7T+TqBvbervbk6j2q+NkJ8dph0fWpt6bFvTizk92VaP5B/4jNd62JVnWPr6vuGow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960434; c=relaxed/simple;
-	bh=Pe/72xKvFpWtH4VGeGBAd6qbzKbuM6WD0woaNV1g1CY=;
+	s=arc-20240116; t=1767962152; c=relaxed/simple;
+	bh=8kF99doKl7yBNxxP40HB1pCrl4vGYjdLhkYUHPZ2k9g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=A7OIk5b+VAM+nJIo5mqJR0xcq/ZN0WVsbmoKYrtd/9cIt9V5RUfUj+hhgf4TjMGGSvrArurTA6x2MgzG4CtTv7n1/zoMZ0zeFGL7d8jthJcyAnasFobd7c7tHQVOCNI8584xZ49fqYJDk6f8NDlDb7atOk77hA7VmWXPztVBKMA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K1rY1eew; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B96C4CEF1;
-	Fri,  9 Jan 2026 12:07:13 +0000 (UTC)
+	 MIME-Version; b=JVE0vaJ8j6NG3/JJXkpFxSRmaPKI6BJ7szixVy83CSj3Bci0ZaWW+2e/OyQ1IUAzASeW79rhhg7fUc3OESYHdZDpxCnepYOGE5faKoqzAn7dABZVtn3t9H9G+SpGZGK1bB0raEuB9QeKs4DYaLIlvQKq+VQBjvhhGN98gLn+bnM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kgwJtK24; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCF84C4CEF1;
+	Fri,  9 Jan 2026 12:35:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960434;
-	bh=Pe/72xKvFpWtH4VGeGBAd6qbzKbuM6WD0woaNV1g1CY=;
+	s=korg; t=1767962152;
+	bh=8kF99doKl7yBNxxP40HB1pCrl4vGYjdLhkYUHPZ2k9g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K1rY1eewHE2qHH2oK+MUuHFgrTgNi7Tz5V8zc0k9lRCaTDz28G9EPL4NSQpaGgbo4
-	 kOKX0tvsArR0xUAxghkXI+NWY5vd1ASRlj2AG5Y4X+2L8X83b9VFCntd9Z8Ryv70Hk
-	 PBeJ4KZzPvg561+A4txCBpXdXj5prZGFP+/Snc6g=
+	b=kgwJtK24hIMzsMO6eHCPwMr3P+gqhqqU+3yi73kGNvlvt0fbjMAmDCArGAE5nG0tE
+	 bCI93fkZ4hW2bmT0ZRUIs8juJyifRpUYCSenak5NJn+5A1R34VVOzzOfwR7R3JF9IZ
+	 fca+GR4KlPFLOqjV0nnRfG7puW0elzyGXrWlOms0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Changcheng <chenchangcheng@kylinos.cn>,
+	Parav Pandit <parav@mellanox.com>,
+	Bodong Wang <bodong@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 403/737] usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
+Subject: [PATCH 6.1 264/634] net/mlx5: Create a new profile for SFs
 Date: Fri,  9 Jan 2026 12:39:02 +0100
-Message-ID: <20260109112149.159620762@linuxfoundation.org>
+Message-ID: <20260109112127.470717539@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +61,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Changcheng <chenchangcheng@kylinos.cn>
+From: Parav Pandit <parav@mellanox.com>
 
-[ Upstream commit 955a48a5353f4fe009704a9a4272a3adf627cd35 ]
+[ Upstream commit 9df839a711aee437390b16ee39cf0b5c1620be6a ]
 
-The optical drive of EL-R12 has the same vid and pid as INIC-3069,
-as follows:
-T:  Bus=02 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=13fd ProdID=3940 Rev= 3.10
-S:  Manufacturer=HL-DT-ST
-S:  Product= DVD+-RW GT80N
-S:  SerialNumber=423349524E4E38303338323439202020
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=144mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=02 Prot=50 Driver=usb-storage
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+Create a new profile for SFs in order to disable the command cache.
+Each function command cache consumes ~500KB of memory, when using a
+large number of SFs this savings is notable on memory constarined
+systems.
 
-This will result in the optical drive device also adding
-the quirks of US_FL_NO_ATA_1X. When performing an erase operation,
-it will fail, and the reason for the failure is as follows:
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 Send: scmd 0x00000000d20c33a7
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 Done: SUCCESS Result: hostbyte=DID_TARGET_FAILURE driverbyte=DRIVER_OK cmd_age=0s
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Add. Sense: Invalid field in cdb
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 scsi host busy 1 failed 0
-[  388.967803] sr 5:0:0:0: Notifying upper driver of completion (result 8100002)
-[  388.967834] sr 5:0:0:0: [sr0] tag#0 0 sectors total, 0 bytes done.
+Use a new profile to provide for future differences between SFs and PFs.
 
-For the EL-R12 standard optical drive, all operational commands
-and usage scenarios were tested without adding the IGNORE_RESIDUE quirks,
-and no issues were encountered. It can be reasonably concluded
-that removing the IGNORE_RESIDUE quirks has no impact.
+The mr_cache not used for non-PF functions, so it is excluded from the
+new profile.
 
-Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
-Link: https://patch.msgid.link/20251121064020.29332-1-chenchangcheng@kylinos.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Parav Pandit <parav@mellanox.com>
+Reviewed-by: Bodong Wang <bodong@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: 5846a365fc64 ("net/mlx5: Drain firmware reset in shutdown callback")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/cmd.c           | 6 +++---
+ drivers/net/ethernet/mellanox/mlx5/core/main.c          | 9 +++++++++
+ drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h     | 1 +
+ drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c | 2 +-
+ include/linux/mlx5/driver.h                             | 1 +
+ 5 files changed, 15 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
-index 1477e31d7763..b695f5ba9a40 100644
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
- 		US_FL_NO_ATA_1X),
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+index 4c614a256ee05..ff45b7b5e1c21 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/cmd.c
+@@ -1833,7 +1833,7 @@ static struct mlx5_cmd_msg *alloc_msg(struct mlx5_core_dev *dev, int in_size,
+ 	if (in_size <= 16)
+ 		goto cache_miss;
  
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
--UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
-+UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
- 		"Initio Corporation",
- 		"INIC-3069",
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+-	for (i = 0; i < MLX5_NUM_COMMAND_CACHES; i++) {
++	for (i = 0; i < dev->profile.num_cmd_caches; i++) {
+ 		ch = &cmd->cache[i];
+ 		if (in_size > ch->max_inbox_size)
+ 			continue;
+@@ -2129,7 +2129,7 @@ static void destroy_msg_cache(struct mlx5_core_dev *dev)
+ 	struct mlx5_cmd_msg *n;
+ 	int i;
+ 
+-	for (i = 0; i < MLX5_NUM_COMMAND_CACHES; i++) {
++	for (i = 0; i < dev->profile.num_cmd_caches; i++) {
+ 		ch = &dev->cmd.cache[i];
+ 		list_for_each_entry_safe(msg, n, &ch->head, list) {
+ 			list_del(&msg->list);
+@@ -2159,7 +2159,7 @@ static void create_msg_cache(struct mlx5_core_dev *dev)
+ 	int k;
+ 
+ 	/* Initialize and fill the caches with initial entries */
+-	for (k = 0; k < MLX5_NUM_COMMAND_CACHES; k++) {
++	for (k = 0; k < dev->profile.num_cmd_caches; k++) {
+ 		ch = &cmd->cache[k];
+ 		spin_lock_init(&ch->lock);
+ 		INIT_LIST_HEAD(&ch->head);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/main.c b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+index a53f222e3feed..891b625a6dc71 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/main.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/main.c
+@@ -103,15 +103,19 @@ enum {
+ static struct mlx5_profile profile[] = {
+ 	[0] = {
+ 		.mask           = 0,
++		.num_cmd_caches = MLX5_NUM_COMMAND_CACHES,
+ 	},
+ 	[1] = {
+ 		.mask		= MLX5_PROF_MASK_QP_SIZE,
+ 		.log_max_qp	= 12,
++		.num_cmd_caches = MLX5_NUM_COMMAND_CACHES,
++
+ 	},
+ 	[2] = {
+ 		.mask		= MLX5_PROF_MASK_QP_SIZE |
+ 				  MLX5_PROF_MASK_MR_CACHE,
+ 		.log_max_qp	= LOG_MAX_SUPPORTED_QPS,
++		.num_cmd_caches = MLX5_NUM_COMMAND_CACHES,
+ 		.mr_cache[0]	= {
+ 			.size	= 500,
+ 			.limit	= 250
+@@ -177,6 +181,11 @@ static struct mlx5_profile profile[] = {
+ 			.limit	= 4
+ 		},
+ 	},
++	[3] = {
++		.mask		= MLX5_PROF_MASK_QP_SIZE,
++		.log_max_qp	= LOG_MAX_SUPPORTED_QPS,
++		.num_cmd_caches = 0,
++	},
+ };
+ 
+ static int wait_fw_init(struct mlx5_core_dev *dev, u32 max_wait_mili,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+index 7d90f311b8560..07b5c86fc26a4 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/mlx5_core.h
+@@ -142,6 +142,7 @@ enum mlx5_semaphore_space_address {
+ };
+ 
+ #define MLX5_DEFAULT_PROF       2
++#define MLX5_SF_PROF		3
+ 
+ static inline int mlx5_flexible_inlen(struct mlx5_core_dev *dev, size_t fixed,
+ 				      size_t item_size, size_t num_items,
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+index d6850eb0ed7f4..f314ad1e8c312 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/sf/dev/driver.c
+@@ -28,7 +28,7 @@ static int mlx5_sf_dev_probe(struct auxiliary_device *adev, const struct auxilia
+ 	mdev->priv.adev_idx = adev->id;
+ 	sf_dev->mdev = mdev;
+ 
+-	err = mlx5_mdev_init(mdev, MLX5_DEFAULT_PROF);
++	err = mlx5_mdev_init(mdev, MLX5_SF_PROF);
+ 	if (err) {
+ 		mlx5_core_warn(mdev, "mlx5_mdev_init on err=%d\n", err);
+ 		goto mdev_err;
+diff --git a/include/linux/mlx5/driver.h b/include/linux/mlx5/driver.h
+index 9af7180eac9e3..0e8705c3a460d 100644
+--- a/include/linux/mlx5/driver.h
++++ b/include/linux/mlx5/driver.h
+@@ -755,6 +755,7 @@ enum {
+ struct mlx5_profile {
+ 	u64	mask;
+ 	u8	log_max_qp;
++	u8	num_cmd_caches;
+ 	struct {
+ 		int	size;
+ 		int	limit;
 -- 
 2.51.0
 
