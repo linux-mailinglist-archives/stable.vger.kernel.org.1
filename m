@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207480-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D211D09F3A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C24AD0946A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0B96230240BF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ED6C530213EE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073AB359701;
-	Fri,  9 Jan 2026 12:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C68935970E;
+	Fri,  9 Jan 2026 12:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n4YAU+55"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zf1CD0k0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF719336EDA;
-	Fri,  9 Jan 2026 12:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36A0433BBBD;
+	Fri,  9 Jan 2026 12:07:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962174; cv=none; b=Eu8vLBCDGNbaD7iDoWzeV8TMmIyZAXRyTrv6ZcNjLSzNufWWmDcN29FxVG4gNB98IX7U8yQlJdrGRrLtGCTyspn3DWwj5IoAEhUctd4jLKAHv+oLOB0UZ7Qxuyr0Uig28MGNy5oj+JU+8EJmzj/vD8WPBeIPCSlj1s9m5EdvtQs=
+	t=1767960457; cv=none; b=KBtkDkXZs7rdidBvxbaxt0fg70T35W1yT3+hFWc8pNCzIh4+/Vb1IR2zUL2uDO4TcyCiYRQJljvPiBhWMX6VDMKP2Z0hlwpG8k8OEhPVaaS8sB2LrssvoSFT7EJF/s/VgzkzZYhLe2rqFjIu18mF3wcsV2ZDlDmB/cx7eybsjh0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962174; c=relaxed/simple;
-	bh=hE599tQlvlRIuLRoCPXgqOagVAmVs+c3F24GHv9QkBY=;
+	s=arc-20240116; t=1767960457; c=relaxed/simple;
+	bh=asaiBddWMjcVuMFtmQjorg6G6oVfNWMaLXve+fXBRKQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VXAVbECFv5fStkMfSp52PB9pjs8dtOJeGhCGi/bhdfsidUMJYAi6ZrChT/F387aonTYO5bMRyrvu7UA1y4nh710LRb1uP4dyfOu5uWyC8qs0Oadfy1Awkq90P0E9KVi69JTUumou0e9IcRAOdkwCiUnzNuC8asf+B88XTzhAGcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n4YAU+55; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D267C4CEF1;
-	Fri,  9 Jan 2026 12:36:14 +0000 (UTC)
+	 MIME-Version; b=S5K//8pa3yAVQ8wsgGs2xsgq5hDReD9W2A8oy2fAlaMrOcjt/OSzHvDsjKIIiW4kggyZ9178ycPRiIaL1x4A0YhYMLp2qmQrIs2BpL+ofYzfrCV7j4tWyskib8Ypaxm5NFtnVIgyyoufspZSlQxlaVK+ZrGOmLIrAxrKR81uZmY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zf1CD0k0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B743BC16AAE;
+	Fri,  9 Jan 2026 12:07:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962174;
-	bh=hE599tQlvlRIuLRoCPXgqOagVAmVs+c3F24GHv9QkBY=;
+	s=korg; t=1767960457;
+	bh=asaiBddWMjcVuMFtmQjorg6G6oVfNWMaLXve+fXBRKQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n4YAU+554MwlBY+Z97Wna4WiBI1nNvss8dUNiyzBDEN3JyCbPgsTct+ZE/yMSM9Ts
-	 OP896YgkUiLME1B94pygThRR+rZEKWM8yupcVSYF0HNkMuOiJywFWyOSZEmeAQX/1E
-	 3qA7J1sjM+eiIXNULRtmqtatECBYuNY3nPZrLquU=
+	b=Zf1CD0k0njbvRsZEUOSnNxcIG49AB1jeQzrgOsBRn/1WS8OUi3itjIh1dNSdnwdPz
+	 rH1PF6p2AH7qCZIBeakb5s2XR32i9rvCxJRz2UT+KvZ6tSVFdRaUIx1FDDEuqPHqfA
+	 gD0Eq5CtH9LdFHCPufrISVhMjSrs9LDshdUqj5HA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	stefanha@redhat.com,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 271/634] net: hns3: add VLAN id validation before using
+Subject: [PATCH 6.6 410/737] vhost/vsock: improve RCU read sections around vhost_vsock_get()
 Date: Fri,  9 Jan 2026 12:39:09 +0100
-Message-ID: <20260109112127.732773829@linuxfoundation.org>
+Message-ID: <20260109112149.420511079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +62,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Stefano Garzarella <sgarzare@redhat.com>
 
-[ Upstream commit 6ef935e65902bfed53980ad2754b06a284ea8ac1 ]
+[ Upstream commit d8ee3cfdc89b75dc059dc21c27bef2c1440f67eb ]
 
-Currently, the VLAN id may be used without validation when
-receive a VLAN configuration mailbox from VF. The length of
-vlan_del_fail_bmap is BITS_TO_LONGS(VLAN_N_VID). It may cause
-out-of-bounds memory access once the VLAN id is bigger than
-or equal to VLAN_N_VID.
+vhost_vsock_get() uses hash_for_each_possible_rcu() to find the
+`vhost_vsock` associated with the `guest_cid`. hash_for_each_possible_rcu()
+should only be called within an RCU read section, as mentioned in the
+following comment in include/linux/rculist.h:
 
-Therefore, VLAN id needs to be checked to ensure it is within
-the range of VLAN_N_VID.
+/**
+ * hlist_for_each_entry_rcu - iterate over rcu list of given type
+ * @pos:	the type * to use as a loop cursor.
+ * @head:	the head for your list.
+ * @member:	the name of the hlist_node within the struct.
+ * @cond:	optional lockdep expression if called from non-RCU protection.
+ *
+ * This list-traversal primitive may safely run concurrently with
+ * the _rcu list-mutation primitives such as hlist_add_head_rcu()
+ * as long as the traversal is guarded by rcu_read_lock().
+ */
 
-Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251211023737.2327018-4-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Currently, all calls to vhost_vsock_get() are between rcu_read_lock()
+and rcu_read_unlock() except for calls in vhost_vsock_set_cid() and
+vhost_vsock_reset_orphans(). In both cases, the current code is safe,
+but we can make improvements to make it more robust.
+
+About vhost_vsock_set_cid(), when building the kernel with
+CONFIG_PROVE_RCU_LIST enabled, we get the following RCU warning when the
+user space issues `ioctl(dev, VHOST_VSOCK_SET_GUEST_CID, ...)` :
+
+  WARNING: suspicious RCU usage
+  6.18.0-rc7 #62 Not tainted
+  -----------------------------
+  drivers/vhost/vsock.c:74 RCU-list traversed in non-reader section!!
+
+  other info that might help us debug this:
+
+  rcu_scheduler_active = 2, debug_locks = 1
+  1 lock held by rpc-libvirtd/3443:
+   #0: ffffffffc05032a8 (vhost_vsock_mutex){+.+.}-{4:4}, at: vhost_vsock_dev_ioctl+0x2ff/0x530 [vhost_vsock]
+
+  stack backtrace:
+  CPU: 2 UID: 0 PID: 3443 Comm: rpc-libvirtd Not tainted 6.18.0-rc7 #62 PREEMPT(none)
+  Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.17.0-7.fc42 06/10/2025
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x75/0xb0
+   dump_stack+0x14/0x1a
+   lockdep_rcu_suspicious.cold+0x4e/0x97
+   vhost_vsock_get+0x8f/0xa0 [vhost_vsock]
+   vhost_vsock_dev_ioctl+0x307/0x530 [vhost_vsock]
+   __x64_sys_ioctl+0x4f2/0xa00
+   x64_sys_call+0xed0/0x1da0
+   do_syscall_64+0x73/0xfa0
+   entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   ...
+   </TASK>
+
+This is not a real problem, because the vhost_vsock_get() caller, i.e.
+vhost_vsock_set_cid(), holds the `vhost_vsock_mutex` used by the hash
+table writers. Anyway, to prevent that warning, add lockdep_is_held()
+condition to hash_for_each_possible_rcu() to verify that either the
+caller is in an RCU read section or `vhost_vsock_mutex` is held when
+CONFIG_PROVE_RCU_LIST is enabled; and also clarify the comment for
+vhost_vsock_get() to better describe the locking requirements and the
+scope of the returned pointer validity.
+
+About vhost_vsock_reset_orphans(), currently this function is only
+called via vsock_for_each_connected_socket(), which holds the
+`vsock_table_lock` spinlock (which is also an RCU read-side critical
+section). However, add an explicit RCU read lock there to make the code
+more robust and explicit about the RCU requirements, and to prevent
+issues if the calling context changes in the future or if
+vhost_vsock_reset_orphans() is called from other contexts.
+
+Fixes: 834e772c8db0 ("vhost/vsock: fix use-after-free in network stack callers")
+Cc: stefanha@redhat.com
+Signed-off-by: Stefano Garzarella <sgarzare@redhat.com>
+Reviewed-by: Stefan Hajnoczi <stefanha@redhat.com>
+Message-Id: <20251126133826.142496-1-sgarzare@redhat.com>
+Message-ID: <20251126210313.GA499503@fedora>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/vhost/vsock.c | 15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index c45340f26ee49..a92f056b25613 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10585,6 +10585,9 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
- 	bool writen_to_tbl = false;
- 	int ret = 0;
+diff --git a/drivers/vhost/vsock.c b/drivers/vhost/vsock.c
+index 2ec0d5260685..912e5153b1f8 100644
+--- a/drivers/vhost/vsock.c
++++ b/drivers/vhost/vsock.c
+@@ -64,14 +64,15 @@ static u32 vhost_transport_get_local_cid(void)
+ 	return VHOST_VSOCK_DEFAULT_HOST_CID;
+ }
  
-+	if (vlan_id >= VLAN_N_VID)
-+		return -EINVAL;
+-/* Callers that dereference the return value must hold vhost_vsock_mutex or the
+- * RCU read lock.
++/* Callers must be in an RCU read section or hold the vhost_vsock_mutex.
++ * The return value can only be dereferenced while within the section.
+  */
+ static struct vhost_vsock *vhost_vsock_get(u32 guest_cid)
+ {
+ 	struct vhost_vsock *vsock;
+ 
+-	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid) {
++	hash_for_each_possible_rcu(vhost_vsock_hash, vsock, hash, guest_cid,
++				   lockdep_is_held(&vhost_vsock_mutex)) {
+ 		u32 other_cid = vsock->guest_cid;
+ 
+ 		/* Skip instances that have no CID yet */
+@@ -695,9 +696,15 @@ static void vhost_vsock_reset_orphans(struct sock *sk)
+ 	 * executing.
+ 	 */
+ 
++	rcu_read_lock();
 +
- 	/* When device is resetting or reset failed, firmware is unable to
- 	 * handle mailbox. Just record the vlan id, and remove it after
- 	 * reset finished.
+ 	/* If the peer is still valid, no need to reset connection */
+-	if (vhost_vsock_get(vsk->remote_addr.svm_cid))
++	if (vhost_vsock_get(vsk->remote_addr.svm_cid)) {
++		rcu_read_unlock();
+ 		return;
++	}
++
++	rcu_read_unlock();
+ 
+ 	/* If the close timeout is pending, let it expire.  This avoids races
+ 	 * with the timeout callback.
 -- 
 2.51.0
 
