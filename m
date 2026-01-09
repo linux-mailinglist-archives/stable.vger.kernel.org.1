@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207613-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207010-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6B3D0A0CC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86B51D097CE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0DC9030FD6AF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 54275307C4C6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F86335B149;
-	Fri,  9 Jan 2026 12:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B92338911;
+	Fri,  9 Jan 2026 12:13:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cXO3SRSt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e8juBqe1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22DB935A955;
-	Fri,  9 Jan 2026 12:42:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BFD042F0C7F;
+	Fri,  9 Jan 2026 12:13:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962550; cv=none; b=q0o0FyUCBsyr2Otul8tWm7uhQMNK0wvDXT4Qixh6rcsMJjCiGA7QjzAcBvguLnblfP5TdXu7pyB0Dosx4n9frxEUJlfJ0K/Luadrojx8puBFt7RcCZS9SaeyhptSsAK6ZMCS4xuGQVYBBKjrg+8FhuJyERI4ulQ3mxPHj12YEwE=
+	t=1767960836; cv=none; b=kmAuMlV8X2uBRRGaoHaSv6MXFZJZ2ic2eqnlu/GfIVht4ecrog2ggv8SlX0O/iNQ4zu1+Zlt5w1rMxCrRTiArI043vF54vh5CtXNXO1BMvys+i2YaSMXhpBgpHqyX41BBgZ9hTojmQsnb48Llk98VHr355oV5k5GvBazUkUnYwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962550; c=relaxed/simple;
-	bh=/jmcWKSO+ef6sjmyMzquY9dsx5z2oLiyVRW64zk3ynw=;
+	s=arc-20240116; t=1767960836; c=relaxed/simple;
+	bh=VZT3GIa+3nZ2GLeJolzWVE+S51n8Twv+OLk4M31o6ts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PVMKqSvXNcaIf3yIMgVsdkFVfgzHqK+gEMzDykqj++y6HJlVvAzsbV+/KF93oDEbw6qrvuwGlM9u8KCXsbsHyAWfPX/UHZyfgck/emjzGbWZy4hNHfz7Q0hHs8JLxIH9CGWuutWkRT68Z5bIrb6o1NzhgiD5so38Jk7rrDcrdsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cXO3SRSt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7188C4CEF1;
-	Fri,  9 Jan 2026 12:42:29 +0000 (UTC)
+	 MIME-Version; b=U4l8/KLZdxFra3oqqvVa/GMKfSH/LegAjMoQVBf9kRnBh0WnCj7HX2TOmIpM6/eO4thQ7xUaJxlJohTCCZfoa6gZ9awjK2+VE1xBwbNx+UvUtQIkOxiFptJC/fqahgrG6Rafmk6VgSzTu5CvSmI3q8SC3fu+kQc2tv0RkQyMLRs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e8juBqe1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489ACC4CEF1;
+	Fri,  9 Jan 2026 12:13:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962550;
-	bh=/jmcWKSO+ef6sjmyMzquY9dsx5z2oLiyVRW64zk3ynw=;
+	s=korg; t=1767960836;
+	bh=VZT3GIa+3nZ2GLeJolzWVE+S51n8Twv+OLk4M31o6ts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cXO3SRStoyIqQGoJgXXsbDvARSLFRkxa31zDjWSdvFwDH88kU26j4r+etn+DJpnXe
-	 rxEZZNJMa8pCj2uztiE5a90D/7v7hg60HSPyXBHuGuPNLIoN5+WJKFBb3btf8MyRoJ
-	 eyeThM5ybx0DFjRo8THACu+J/vD437vrOoPu9G9E=
+	b=e8juBqe1tSlehpQBawalU68OzFWX0pLX4x8BV9hbE4Y9el5Z98hl5YyQGEUi2ZN3i
+	 hS6/t/18dMtz/iJPXkzQBP9HcFTv4LrQBmkH3xi8kciylvxnFD9SyNu3uF0QTw5RnO
+	 934VwKorRHhFfmOlkfcWXO98yMJgcXm0O5TJUDco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 404/634] Bluetooth: btusb: revert use of devm_kzalloc in btusb
+	Olivier Moysan <olivier.moysan@st.com>,
+	Johan Hovold <johan@kernel.org>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 543/737] ASoC: stm32: sai: fix clk prepare imbalance on probe failure
 Date: Fri,  9 Jan 2026 12:41:22 +0100
-Message-ID: <20260109112132.730397465@linuxfoundation.org>
+Message-ID: <20260109112154.421241312@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +61,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 252714f1e8bdd542025b16321c790458014d6880 ]
+commit 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7 upstream.
 
-This reverts commit 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in
-btusb.c file").
+Make sure to unprepare the parent clock also on probe failures (e.g.
+probe deferral).
 
-In btusb_probe(), we use devm_kzalloc() to allocate the btusb data. This
-ties the lifetime of all the btusb data to the binding of a driver to
-one interface, INTF. In a driver that binds to other interfaces, ISOC
-and DIAG, this is an accident waiting to happen.
-
-The issue is revealed in btusb_disconnect(), where calling
-usb_driver_release_interface(&btusb_driver, data->intf) will have devm
-free the data that is also being used by the other interfaces of the
-driver that may not be released yet.
-
-To fix this, revert the use of devm and go back to freeing memory
-explicitly.
-
-Fixes: 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in btusb.c file")
-Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a14bf98c045b ("ASoC: stm32: sai: fix possible circular locking")
+Cc: stable@vger.kernel.org	# 5.5
+Cc: Olivier Moysan <olivier.moysan@st.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-3-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btusb.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c |   28 +++++++++++++++++++++-------
+ 1 file changed, 21 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 983794632927..c6ac351209c0 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -3849,7 +3849,7 @@ static int btusb_probe(struct usb_interface *intf,
- 			return -ENODEV;
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1501,14 +1501,21 @@ static int stm32_sai_sub_parse_of(struct
+ 	if (of_property_present(np, "#clock-cells")) {
+ 		ret = stm32_sai_add_mclk_provider(sai);
+ 		if (ret < 0)
+-			return ret;
++			goto err_unprepare_pclk;
+ 	} else {
+ 		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk))
+-			return PTR_ERR(sai->sai_mclk);
++		if (IS_ERR(sai->sai_mclk)) {
++			ret = PTR_ERR(sai->sai_mclk);
++			goto err_unprepare_pclk;
++		}
  	}
  
--	data = devm_kzalloc(&intf->dev, sizeof(*data), GFP_KERNEL);
-+	data = kzalloc(sizeof(*data), GFP_KERNEL);
- 	if (!data)
- 		return -ENOMEM;
- 
-@@ -3872,8 +3872,10 @@ static int btusb_probe(struct usb_interface *intf,
- 		}
- 	}
- 
--	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep)
-+	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep) {
-+		kfree(data);
- 		return -ENODEV;
-+	}
- 
- 	if (id->driver_info & BTUSB_AMP) {
- 		data->cmdreq_type = USB_TYPE_CLASS | 0x01;
-@@ -3920,8 +3922,10 @@ static int btusb_probe(struct usb_interface *intf,
- 	data->recv_acl = hci_recv_frame;
- 
- 	hdev = hci_alloc_dev_priv(priv_size);
--	if (!hdev)
-+	if (!hdev) {
-+		kfree(data);
- 		return -ENOMEM;
-+	}
- 
- 	hdev->bus = HCI_USB;
- 	hci_set_drvdata(hdev, data);
-@@ -4182,6 +4186,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (data->reset_gpio)
- 		gpiod_put(data->reset_gpio);
- 	hci_free_dev(hdev);
-+	kfree(data);
- 	return err;
+ 	return 0;
++
++err_unprepare_pclk:
++	clk_unprepare(sai->pdata->pclk);
++
++	return ret;
  }
  
-@@ -4227,6 +4232,7 @@ static void btusb_disconnect(struct usb_interface *intf)
+ static int stm32_sai_sub_probe(struct platform_device *pdev)
+@@ -1552,26 +1559,33 @@ static int stm32_sai_sub_probe(struct pl
+ 			       IRQF_SHARED, dev_name(&pdev->dev), sai);
+ 	if (ret) {
+ 		dev_err(&pdev->dev, "IRQ request returned %d\n", ret);
+-		return ret;
++		goto err_unprepare_pclk;
  	}
  
- 	hci_free_dev(hdev);
-+	kfree(data);
+ 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
+ 		conf = &stm32_sai_pcm_config_spdif;
+ 
+ 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
+-	if (ret)
+-		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
++	if (ret) {
++		ret = dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
++		goto err_unprepare_pclk;
++	}
+ 
+ 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
+ 					 &sai->cpu_dai_drv, 1);
+ 	if (ret) {
+ 		snd_dmaengine_pcm_unregister(&pdev->dev);
+-		return ret;
++		goto err_unprepare_pclk;
+ 	}
+ 
+ 	pm_runtime_enable(&pdev->dev);
+ 
+ 	return 0;
++
++err_unprepare_pclk:
++	clk_unprepare(sai->pdata->pclk);
++
++	return ret;
  }
  
- #ifdef CONFIG_PM
--- 
-2.51.0
-
+ static void stm32_sai_sub_remove(struct platform_device *pdev)
 
 
 
