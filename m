@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206877-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 006D2D0951F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:48 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E9B2D09F4F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25EC83022018
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 62E9930963DA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAD3A33A6E0;
-	Fri,  9 Jan 2026 12:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33BB8358D30;
+	Fri,  9 Jan 2026 12:36:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZsSoOr+8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jaoBBA3D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EDDA50094F;
-	Fri,  9 Jan 2026 12:07:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB8D231ED6D;
+	Fri,  9 Jan 2026 12:36:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960454; cv=none; b=VAf8GMPo5xyWCYYvljO196wYyj3t/LpZbZ2YLc7Sc+qYaHeA/VyzPItxuXKUWILUhwK9O/F/vCBj6Fn6JMadEYVmlJ915j81qWnpvxssKId+KqK+XUeODDzQKuLJ51L8j/zjdWStxroeagJ/1SIWYLu1pihR2JskSLbGFedPl78=
+	t=1767962172; cv=none; b=t31ZLDQb22ohzYLwJENolnaE77ZLJN3IMjHLBs9pthL++A3O4DXhHQnrLgPrpklCnYGNlO2xmkFY5bXx/0zndP2EqT7p2mnxa4DhObPkqJ3BiEBWa6kMPPDwPKEE9jfONUJyrYdLSEjkHKsypxasiPNBjgHkXhqxTyrCY4OYFxw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960454; c=relaxed/simple;
-	bh=wd79A7SiHCs7iXBMP449YGGJJjraxghwpoPYDHxxh1k=;
+	s=arc-20240116; t=1767962172; c=relaxed/simple;
+	bh=af9y6kQGyURp6aXLVvRbyytMQ4J+MasBAGlBsEXqXVw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LjbeHwG3Hqvg2ogqYFnuEutVvN0T0Foz3NUgo53BlvyM0+9GtOvWq1edWiC7l5ALomTaCXv3lCsA7kNE8/MGoZ/6brXZLIS076kniE5734yAL5iqYSwGr+zb6hJ1/JgDXFu64mEdEg4120ZyluQaLWfhPOF2/KGtcxR/Jfz/GBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZsSoOr+8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8538C4CEF1;
-	Fri,  9 Jan 2026 12:07:33 +0000 (UTC)
+	 MIME-Version; b=DSz9Sbogx9K/sTzlkP6Kfe1uJj90Fat+fofS2nh01UWnGfsx93b4xnC4rX58ltb+rCLmopTNCRzX21W/WB9FyjZkTqJGF3qJldfb0xAVOsnLnZkKk0zLN3mno72Z5w4FmvQ1Ip8ea5jYqpYyG2Y31G1e8oYr/xXNRJkD/MJqZdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jaoBBA3D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A4C9C4CEF1;
+	Fri,  9 Jan 2026 12:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960454;
-	bh=wd79A7SiHCs7iXBMP449YGGJJjraxghwpoPYDHxxh1k=;
+	s=korg; t=1767962171;
+	bh=af9y6kQGyURp6aXLVvRbyytMQ4J+MasBAGlBsEXqXVw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZsSoOr+8r9A6GPxZOfVv5CzM4xDHFh5/Le72pDVctRaOMtKLKRferWi6FrXjHoN/7
-	 mMbVvzTPz5EnOC9cLPWO1VrMLpjuzQZpNmp0cA6a4ycmWpFiI3eI/e05l7rph5vjow
-	 zFwiVdRaGwpnWQnKH46Npx8eqwOUSE0agXLMmvNo=
+	b=jaoBBA3DE0kfoqqXsLafaSloQXg2yVww2qftJxZnr2u28JHjAQdGF6eBeqM7ayIFF
+	 u2Ncg0U+lu/RdVxjjTqL/X+eIG3tC1koAlM/8OcvXSSoo4Z8pi50KcIySFkXvQf1aP
+	 5sYGTJHTvYR/RRGyfIHqOoEhlQyTbvr1u9ivmD+4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 409/737] block: rnbd-clt: Fix signedness bug in init_dev()
+Subject: [PATCH 6.1 270/634] net: hns3: using the num_tqps to check whether tqp_index is out of range when vf get ring info from mbx
 Date: Fri,  9 Jan 2026 12:39:08 +0100
-Message-ID: <20260109112149.382994672@linuxfoundation.org>
+Message-ID: <20260109112127.695431012@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,39 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 1ddb815fdfd45613c32e9bd1f7137428f298e541 ]
+[ Upstream commit d180c11aa8a6fa735f9ac2c72c61364a9afc2ba7 ]
 
-The "dev->clt_device_id" variable is set using ida_alloc_max() which
-returns an int and in particular it returns negative error codes.
-Change the type from u32 to int to fix the error checking.
+Currently, rss_size = num_tqps / tc_num. If tc_num is 1, then num_tqps
+equals rss_size. However, if the tc_num is greater than 1, then rss_size
+will be less than num_tqps, causing the tqp_index check for subsequent TCs
+using rss_size to always fail.
 
-Fixes: c9b5645fd8ca ("block: rnbd-clt: Fix leaked ID in init_dev()")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+This patch uses the num_tqps to check whether tqp_index is out of range,
+instead of rss_size.
+
+Fixes: 326334aad024 ("net: hns3: add a check for tqp_index in hclge_get_ring_chain_from_mbx()")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251211023737.2327018-3-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/rnbd/rnbd-clt.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/block/rnbd/rnbd-clt.h b/drivers/block/rnbd/rnbd-clt.h
-index a48e040abe63..fbc1ed766025 100644
---- a/drivers/block/rnbd/rnbd-clt.h
-+++ b/drivers/block/rnbd/rnbd-clt.h
-@@ -112,7 +112,7 @@ struct rnbd_clt_dev {
- 	struct rnbd_queue	*hw_queues;
- 	u32			device_id;
- 	/* local Idr index - used to track minor number allocations. */
--	u32			clt_device_id;
-+	int			clt_device_id;
- 	struct mutex		lock;
- 	enum rnbd_clt_dev_state	dev_state;
- 	refcount_t		refcount;
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+index 61e155c4d441e..a961e90a85a67 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
+@@ -193,10 +193,10 @@ static int hclge_get_ring_chain_from_mbx(
+ 		return -EINVAL;
+ 
+ 	for (i = 0; i < ring_num; i++) {
+-		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.rss_size) {
++		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.num_tqps) {
+ 			dev_err(&hdev->pdev->dev, "tqp index(%u) is out of range(0-%u)\n",
+ 				req->msg.param[i].tqp_index,
+-				vport->nic.kinfo.rss_size - 1U);
++				vport->nic.kinfo.num_tqps - 1U);
+ 			return -EINVAL;
+ 		}
+ 	}
 -- 
 2.51.0
 
