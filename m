@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206804-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323CDD09E89
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 40B69D09447
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A02630CCE90
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CB6BB302A134
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F22C33C53C;
-	Fri,  9 Jan 2026 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D350359F99;
+	Fri,  9 Jan 2026 12:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zqaXkEoR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JlTXQoV2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 019AC33372B;
-	Fri,  9 Jan 2026 12:31:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 010C133CE9A;
+	Fri,  9 Jan 2026 12:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961911; cv=none; b=KdXf9hEef+KD/wSZfunjATSGUBt4LeNEm+IppEOm7ajlGmvdqGI4FBYPLePFInptVsKS3/z5srCEVcArzF6gMgXGRNMH2o/Ygig4A5AqykrlnxvuC9EtHFGUN9QYCfGkQhuDoqC9jqcQEr/0uqbu/3j5xH6j+QdB5Urjp3IR0h8=
+	t=1767960246; cv=none; b=MjCjg5NjBJcDHTLLtjRglxq6Jvb/n+m9EOHxArNvp+UNChyTxXNMiwxjYxo/eeYNfZGMih8e9CBd9pyqk/RKrbykterVBLcdXk0EPbbTUP4jZpVha2Nni2PkWwg/tps9mlqNS87IZXtJ61Ga6SaWoDiRMkVXdBxgNT1iQkBSwdo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961911; c=relaxed/simple;
-	bh=DqWX3epzI1ARJ7PBKIu92xLpzuWBHe3D8jl+VMVyvUA=;
+	s=arc-20240116; t=1767960246; c=relaxed/simple;
+	bh=D1LB8D3tCaFC+lf+AZwbCDX3DOFADtVNXtP53j2pPCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OE8dTIA+X4KP5qxylEvV1KJY8H+nF1VFMCMSIkF48uFpn7SXJxAYvOEdF38pe2JrkdQkRujCgBYN0Fnjtg8mCJ7IBZE0Pv2J2ttrzNwidVp5Y7TrrWw3+Ix/ayrLJQRiogZ0IP0Polr0Is3y769KWH4e58Vx3dtCdIw3clxMXJQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zqaXkEoR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F930C4CEF1;
-	Fri,  9 Jan 2026 12:31:50 +0000 (UTC)
+	 MIME-Version; b=KtjZRaRJAAdBcuBsaofV2eVR305WlCfNDQgbqrTw9lmsWUx//Istb2iNmWj9+7qOeQFyRDdPWDKzA6cgIgazlUBmvCset6sw221RasCpr1EEvFfSqnx+fqL3k6sWpPovGtiD4Q8iWsiZnBFULWS3zBMNC57BmCIrsn0Y+92KBH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JlTXQoV2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B759C4CEF1;
+	Fri,  9 Jan 2026 12:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961910;
-	bh=DqWX3epzI1ARJ7PBKIu92xLpzuWBHe3D8jl+VMVyvUA=;
+	s=korg; t=1767960245;
+	bh=D1LB8D3tCaFC+lf+AZwbCDX3DOFADtVNXtP53j2pPCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zqaXkEoR0D1u5QRGK/kkBFlwFPZCyCbHn4zZfPKPb3S7BWUekLtPujcXVsF/ter2x
-	 9vp8fSVUTP12vIe3C8GIuxGFqFcXu5C0cuecQAf3UWsH6RccE8XzA/1/Oz1oJVol1e
-	 Bpcwp6SeWALMBCkzD6mq4ITgRNzWKDASNVpG8lPs=
+	b=JlTXQoV2oIrKj59NF4l/hyEXO5+Qdg8HDdXexNQMBLjTu5qrnupFGP8+96Gmr8UT+
+	 eE6JDkdYBCj6JWZrVf4nyZ2uWCH5JbXielNRB6et/MK8Tpp79qufGkIERrRsitbEug
+	 9cuB8Yb4gSTBZt1rTTBoqLBj8XCD+B5343auPzHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Song Liu <song@kernel.org>,
+	syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com,
+	Yang Chenzhi <yang.chenzhi@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 180/634] md: export md_is_rdwr() and is_md_suspended()
+Subject: [PATCH 6.6 319/737] hfsplus: fix missing hfs_bnode_get() in __hfs_bnode_create
 Date: Fri,  9 Jan 2026 12:37:38 +0100
-Message-ID: <20260109112124.215109288@linuxfoundation.org>
+Message-ID: <20260109112146.000961895@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,89 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Yang Chenzhi <yang.chenzhi@vivo.com>
 
-[ Upstream commit 431e61257d631157e1d374f1368febf37aa59f7c ]
+[ Upstream commit 152af114287851583cf7e0abc10129941f19466a ]
 
-The two apis will be used later to fix a deadlock in raid456, there are
-no functional changes.
+When sync() and link() are called concurrently, both threads may
+enter hfs_bnode_find() without finding the node in the hash table
+and proceed to create it.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Song Liu <song@kernel.org>
-Link: https://lore.kernel.org/r/20230512015610.821290-4-yukuai1@huaweicloud.com
-Stable-dep-of: a913d1f6a7f6 ("md/raid5: fix IO hang when array is broken with IO inflight")
+Thread A:
+  hfsplus_write_inode()
+    -> hfsplus_write_system_inode()
+      -> hfs_btree_write()
+        -> hfs_bnode_find(tree, 0)
+          -> __hfs_bnode_create(tree, 0)
+
+Thread B:
+  hfsplus_create_cat()
+    -> hfs_brec_insert()
+      -> hfs_bnode_split()
+        -> hfs_bmap_alloc()
+          -> hfs_bnode_find(tree, 0)
+            -> __hfs_bnode_create(tree, 0)
+
+In this case, thread A creates the bnode, sets refcnt=1, and hashes it.
+Thread B also tries to create the same bnode, notices it has already
+been inserted, drops its own instance, and uses the hashed one without
+getting the node.
+
+```
+
+	node2 = hfs_bnode_findhash(tree, cnid);
+	if (!node2) {                                 <- Thread A
+		hash = hfs_bnode_hash(cnid);
+		node->next_hash = tree->node_hash[hash];
+		tree->node_hash[hash] = node;
+		tree->node_hash_cnt++;
+	} else {                                      <- Thread B
+		spin_unlock(&tree->hash_lock);
+		kfree(node);
+		wait_event(node2->lock_wq,
+			!test_bit(HFS_BNODE_NEW, &node2->flags));
+		return node2;
+	}
+```
+
+However, hfs_bnode_find() requires each call to take a reference.
+Here both threads end up setting refcnt=1. When they later put the node,
+this triggers:
+
+BUG_ON(!atomic_read(&node->refcnt))
+
+In this scenario, Thread B in fact finds the node in the hash table
+rather than creating a new one, and thus must take a reference.
+
+Fix this by calling hfs_bnode_get() when reusing a bnode newly created by
+another thread to ensure the refcount is updated correctly.
+
+A similar bug was fixed in HFS long ago in commit
+a9dc087fd3c4 ("fix missing hfs_bnode_get() in __hfs_bnode_create")
+but the same issue remained in HFS+ until now.
+
+Reported-by: syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com
+Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250829093912.611853-1-yang.chenzhi@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md.c | 16 ----------------
- drivers/md/md.h | 17 +++++++++++++++++
- 2 files changed, 17 insertions(+), 16 deletions(-)
+ fs/hfsplus/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/md/md.c b/drivers/md/md.c
-index a9fcfcbc2d110..fa1f487eb0300 100644
---- a/drivers/md/md.c
-+++ b/drivers/md/md.c
-@@ -93,18 +93,6 @@ static int remove_and_add_spares(struct mddev *mddev,
- 				 struct md_rdev *this);
- static void mddev_detach(struct mddev *mddev);
- 
--enum md_ro_state {
--	MD_RDWR,
--	MD_RDONLY,
--	MD_AUTO_READ,
--	MD_MAX_STATE
--};
--
--static bool md_is_rdwr(struct mddev *mddev)
--{
--	return (mddev->ro == MD_RDWR);
--}
--
- /*
-  * Default number of read corrections we'll attempt on an rdev
-  * before ejecting it from the array. We divide the read error
-@@ -380,10 +368,6 @@ EXPORT_SYMBOL_GPL(md_new_event);
- static LIST_HEAD(all_mddevs);
- static DEFINE_SPINLOCK(all_mddevs_lock);
- 
--static bool is_md_suspended(struct mddev *mddev)
--{
--	return percpu_ref_is_dying(&mddev->active_io);
--}
- /* Rather than calling directly into the personality make_request function,
-  * IO requests come here first so that we can check if the device is
-  * being suspended pending a reconfiguration.
-diff --git a/drivers/md/md.h b/drivers/md/md.h
-index 1fda5e139beb0..1d048976e7432 100644
---- a/drivers/md/md.h
-+++ b/drivers/md/md.h
-@@ -555,6 +555,23 @@ enum recovery_flags {
- 	MD_RESYNCING_REMOTE,	/* remote node is running resync thread */
- };
- 
-+enum md_ro_state {
-+	MD_RDWR,
-+	MD_RDONLY,
-+	MD_AUTO_READ,
-+	MD_MAX_STATE
-+};
-+
-+static inline bool md_is_rdwr(struct mddev *mddev)
-+{
-+	return (mddev->ro == MD_RDWR);
-+}
-+
-+static inline bool is_md_suspended(struct mddev *mddev)
-+{
-+	return percpu_ref_is_dying(&mddev->active_io);
-+}
-+
- static inline int __must_check mddev_lock(struct mddev *mddev)
- {
- 	return mutex_lock_interruptible(&mddev->reconfig_mutex);
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index aa095e6fb20e8..c0089849be50e 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -481,6 +481,7 @@ static struct hfs_bnode *__hfs_bnode_create(struct hfs_btree *tree, u32 cnid)
+ 		tree->node_hash[hash] = node;
+ 		tree->node_hash_cnt++;
+ 	} else {
++		hfs_bnode_get(node2);
+ 		spin_unlock(&tree->hash_lock);
+ 		kfree(node);
+ 		wait_event(node2->lock_wq,
 -- 
 2.51.0
 
