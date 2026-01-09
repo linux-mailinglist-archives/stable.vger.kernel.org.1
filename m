@@ -1,178 +1,201 @@
-Return-Path: <stable+bounces-207883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2BFE5D0B11A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 16:55:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1CB4D0B2B3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 17:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6318301D33A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 15:50:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 34BA53007CAD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 16:15:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C492D35CB63;
-	Fri,  9 Jan 2026 15:49:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558702773DA;
+	Fri,  9 Jan 2026 16:15:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YElPG/0V"
+	dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b="bcf+6vwU"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from PH0PR06CU001.outbound.protection.outlook.com (mail-westus3azon11011054.outbound.protection.outlook.com [40.107.208.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595C35CBDF;
-	Fri,  9 Jan 2026 15:49:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767973796; cv=none; b=O0Fc5un7ogT5Go8Iq4Z5fnexc+xs0AbjnvR/eoSBEpfngtwkuQfiNxROSSgwi6FAkzGiQnZ7k22KKb71Ih8URS9TDasf0LsEn1B14yJvn7D/asqHeI/Z3dP5NZ6kxa1LXnQ18eI7sBt0OOIip1UsEMIPI7dvHydwxfIUJgJY7lA=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767973796; c=relaxed/simple;
-	bh=ks5cLM4HjmJnxZRS9mtcBfjstrm3sF2xoB7Xv8yMahY=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=A0+wzTxu/tH+CFY3cCkH6y6WsEL5l1QElF9bX8ZERKgqkAoaWqN3lV53Hfyf/frNXPYnkIg+X9hOVF6wmC25vFO9AbFTM7gAqp+8k1K9eEWpmLXCjznhNRKxzs/9Dj3gc0UOz20asio6jEB+nGOXBWIzZxwg37UgkKD3vGejt9I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YElPG/0V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AE3C4CEF1;
-	Fri,  9 Jan 2026 15:49:54 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767973796;
-	bh=ks5cLM4HjmJnxZRS9mtcBfjstrm3sF2xoB7Xv8yMahY=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=YElPG/0Vu5oezq25vOQYaGh3AArlcnn+slPhobPg6WMdAtTPsU3Doq7YBYHeYGd2J
-	 JnLQuh+7XC9szSlkxLZuLrQDdnVboOsLE2b7TvbU9GINrYW8+PMtktV+xsTI6IbKwh
-	 iHvoVNbQW2km3yqIeuJxe+mB4bEvXgvTIgkb83Q/1msPWxjuGnZdX193NHneuPMsR0
-	 sISbHmWRnvNGow01JHBUXoRbsIH7TY2pQ9EFgW5Avs0g1KiP5/xmGhC8l1ExyS1ZKI
-	 d561TxHnO2zptZiqQQSQlHzOBu3/26HLB+cpqcs/4VkHi0c6d4AsJpP2kfWdjpPmtY
-	 N4aNNwHU6T6tQ==
-Date: Fri, 9 Jan 2026 09:49:52 -0600
-From: Bjorn Andersson <andersson@kernel.org>
-To: Stephan Gerhold <stephan.gerhold@linaro.org>
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
-	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
-	Taniya Das <quic_tdas@quicinc.com>, Konrad Dybcio <konradybcio@kernel.org>, 
-	Bartosz Golaszewski <brgl@kernel.org>, Shazad Hussain <quic_shazhuss@quicinc.com>, 
-	Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
-	Melody Olvera <quic_molvera@quicinc.com>, Dmitry Baryshkov <lumag@kernel.org>, 
-	Taniya Das <taniya.das@oss.qualcomm.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
-	Imran Shaik <quic_imrashai@quicinc.com>, Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org, 
-	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	Rajendra Nayak <quic_rjendra@quicinc.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 0/7] clk: qcom: gcc: Do not turn off PCIe GDSCs during
- gdsc_disable()
-Message-ID: <jejrexm235dxondzjbk5ek46ilq2gbrrhoojfcghkcpclqvtks@yfsgrxueo5es>
-References: <20260102-pci_gdsc_fix-v1-0-b17ed3d175bc@oss.qualcomm.com>
- <a42f963f-a869-4789-a353-e574ba22eca8@oss.qualcomm.com>
- <edca97aa-429e-4a6b-95a0-2a6dfe510ef2@oss.qualcomm.com>
- <500313f1-51fd-450e-877e-e4626b7652bc@oss.qualcomm.com>
- <4d61e8b3-0d40-4b78-9f40-a68b05284a3d@oss.qualcomm.com>
- <e917e98a-4ff3-45b8-87a0-fe0d6823ac2e@oss.qualcomm.com>
- <2lpx7rsko24e45gexsv3jp4ntwwenag47vgproqljqeuk4j7iy@zgh6hrln4h4e>
- <aVuIsUR0pinI0Wp7@linaro.org>
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D1E21ABC1;
+	Fri,  9 Jan 2026 16:15:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=40.107.208.54
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1767975334; cv=fail; b=c1GEZ2b2dPJ6fBznpD9+OJQNX4SEJeAwg/VoSa9AMmjRCA0lEqDCjJiVRFpzFEgGK2jndJ3MH3MpRenfcLBPfaruXzOqeeQmub67Z2r/IpJYuNwCUkXF7xIfkyNO2gyQ9F9oRO0BAuPEoMKIZ3FtUHZ/jugfSKLCtS7mCYVA6pI=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1767975334; c=relaxed/simple;
+	bh=00iyz8sJ05b5Q5h/iSo7I6CwPfnSk2gPDTDljGmVbyo=;
+	h=From:To:CC:Subject:In-Reply-To:References:Content-Type:
+	 MIME-Version:Message-ID:Date; b=hdx9RnUcRSmx3hNO1xcOGuPxRxzJH3ts3hgEAWJtl9b2jjfUOuE/IEXS6q4IkqSqtrAj3ON1YsEA2iOMmD/UlAabF7vP0IwJGftl9Vk+2z/CkFbHlEopRQ6IR85/3JxZEZe6ffWwi7z+ETcF89C0zywcVpUTQkLEQrnS0bwGUk8=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com; spf=fail smtp.mailfrom=nvidia.com; dkim=pass (2048-bit key) header.d=Nvidia.com header.i=@Nvidia.com header.b=bcf+6vwU; arc=fail smtp.client-ip=40.107.208.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nvidia.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=nvidia.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=NvGLPWx3dabI+SdtO3fxFkkkDDM152sBpotbjGyKv67TjJgMD8XYIgkBKGTJHsxaK5cSF1Jvybvmrvg1cFy4DyxNK0ZZAjdsEl7NRICRTJ8z1eNxFDCcUw5RKeOgq/h7J1VJbgiuwcflhaNJqlWPkEBskvrDtN3BbMPmklOMv4DJSIwH9Gjtw3UHXJ4MVmsKzT2F2Y4rhXMmmrKiThZvjjvUmoFEbrtnEqx389oH+VAY4MgdZ9Aqw6iKi3j0M1NEsrj5G45Z70hnWm1pd19IfobvQ/UPTzKWmMyS4t7Aeuh6+5lX9siYPEoUMmUKLxeaJEmUM+ChD6B1xMBfEBGrWw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=V0siLS7FP4zmLky49Tt02BWASToOW5nOP0Fv8hIUYLo=;
+ b=e7dHnIcITu3GT33N2KvNLy5kp8wnpzLwI/SeNv8Vh16lDFJ5Q7p2v2xSuKseZi8SboHV6NxTV0VTa5zBu0NgkeTBkfIyUnMSAdUxwZ4AVAhZqtsm40qATxIMD1BlkzMh73J8dylshxNITfqubK7JlGXe5DA+KaT7LCRu/vmLa2tntmpWj4ei+YOn7D7SWRFjJGv9XV5cTbh/fqNX1PgFWRMM/izSV3mKBLe0oCeeH2NeY8o6ENmOqSBEy+GBOyRVhxve+NMLE4sW+isEMrdj75Lw8uvff6SpShBBdNrsTRhOuYvh+Pu48qzwDEeB1AxndgRFufBaQYQ4FRULDIvC7w==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=V0siLS7FP4zmLky49Tt02BWASToOW5nOP0Fv8hIUYLo=;
+ b=bcf+6vwU82vN9EHw/dia8OvKeqMK9D4YI0Xw6vw5AmeOIsZIZjojvO4kGWcO8r1/7q5l235EKXqaNg2ntVx76O5vWhrwINAP2zsF1T8j1yFubOB1XcrgBtAM5vh3rydqX+kwuLSgCydIN9hqbuaN4mAeZvvf3BS5xDnHpVNQZFmASbwHA3XhmkMSA7FbdxZ4gIuPwLyWQlYMuo0HdvWAVE0TjWm6pFHdzuJqK4Ri50KyGNVRwK9uJxmcQuYvLSJf6+FiG3v1rfAZ/QqBVVGz7oiIHgQAvI2/KepuYBX0+XRFm6hdRRidbjBpoIehJsZd4hOgCGP82jRsugMELyYetg==
+Received: from SJ0PR13CA0212.namprd13.prod.outlook.com (2603:10b6:a03:2c1::7)
+ by DS0PR12MB6488.namprd12.prod.outlook.com (2603:10b6:8:c3::13) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.4; Fri, 9 Jan
+ 2026 16:15:26 +0000
+Received: from SJ5PEPF000001CE.namprd05.prod.outlook.com
+ (2603:10b6:a03:2c1:cafe::f5) by SJ0PR13CA0212.outlook.office365.com
+ (2603:10b6:a03:2c1::7) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.0 via Frontend Transport; Fri, 9
+ Jan 2026 16:15:26 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ SJ5PEPF000001CE.mail.protection.outlook.com (10.167.242.38) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9520.1 via Frontend Transport; Fri, 9 Jan 2026 16:15:25 +0000
+Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 9 Jan
+ 2026 08:15:05 -0800
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail201.nvidia.com
+ (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20; Fri, 9 Jan
+ 2026 08:15:05 -0800
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.2562.20 via Frontend
+ Transport; Fri, 9 Jan 2026 08:15:04 -0800
+From: Jon Hunter <jonathanh@nvidia.com>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	<patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+	<torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+	<linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+	<lkft-triage@lists.linaro.org>, <pavel@denx.de>, <jonathanh@nvidia.com>,
+	<f.fainelli@gmail.com>, <sudipm.mukherjee@gmail.com>, <rwarsow@gmx.de>,
+	<conor@kernel.org>, <hargar@microsoft.com>, <broonie@kernel.org>,
+	<achill@achill.org>, <sr@sladewatkins.com>, <linux-tegra@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: Re: [PATCH 6.12 00/16] 6.12.65-rc1 review
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <aVuIsUR0pinI0Wp7@linaro.org>
+Message-ID: <fee10920-1df4-4aa7-84ae-29510cd915ea@rnnvmail202.nvidia.com>
+Date: Fri, 9 Jan 2026 08:15:04 -0800
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001CE:EE_|DS0PR12MB6488:EE_
+X-MS-Office365-Filtering-Correlation-Id: 97a0f791-a523-496a-3e48-08de4f9a4c59
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|7416014|376014|36860700013|1800799024|82310400026|13003099007;
+X-Microsoft-Antispam-Message-Info:
+	=?utf-8?B?dTZHVnl4RHFaNW15bDRoeGQzRFY5ZE9EbXM1QzNzb2x1Rk5yc25iVExSNHY3?=
+ =?utf-8?B?MSttb3ZCbmxJY0VPZGZzRkY5Wm1zSzJxUTdIMEVsRXJDZVZTL2dDbXllWDNS?=
+ =?utf-8?B?Qkl6OWVqVjErekx6WXEvanAveHk0QVBGS2JYQmh5cHV1U1ZrQ05FU29na3Q4?=
+ =?utf-8?B?MFBoMUVBQ2tiQUN1cUJkcDJGdlpMNENzNjgxNDdxZnE2L3BUcFhuNlUrMC9P?=
+ =?utf-8?B?MGpENGFkSVJTOFp2ZE5XYi8vQnlDMFJlVDhaVW10ejgvSXVoZFJBWTZBOVE3?=
+ =?utf-8?B?bjBnd0UrWVVHTmlvUFNrZGtKQmxNVUtUOXNhczRmdkdzbnFleVhrajIrMjZP?=
+ =?utf-8?B?cERDMmltUEpoM3piN2lSWkRacmVxOXJ4SWFBV2FRM0phQlJESVJ3T0J4bXlr?=
+ =?utf-8?B?bjZOckZFOWZENm01ZE04WnZSaCsvK1N4RVVmUEY4cm5vcVo4QUhPd1gyM0E1?=
+ =?utf-8?B?czdDS09GK0pNVUFiZlZZdndiYXlOT1Vnai9udWlQSEJSMncycU1NS0g1UVZX?=
+ =?utf-8?B?clJudjlnaTIrRWw4alA3MDJzLzZ0ZWNDbGVyT1lSNDZrRFExVCtLaWpDaWwy?=
+ =?utf-8?B?NU9MWEZsUTYrUU5TcEdsc0M0Ym1lbmZWUUZOajA0MU00UEpqUWZScDZXMnFP?=
+ =?utf-8?B?b3l6eWlWQ2R4TkpNNXJmSG1wRHlKZzVBRkNYUmpLaDRxWkZQcDBlTWJkamFI?=
+ =?utf-8?B?WUJhZklxLzZ6eThQZUpOTFB1bVBkN2RiREo4ZUZhK0I3Y0RabUtjSGlNZUR3?=
+ =?utf-8?B?MGUvelN0Wm5sR2NucDFQbUJKRWFIUTZhVm03TDJsVTlneTV6U04ySktFaVpD?=
+ =?utf-8?B?RnlTS2ZPeGZzakFkMFVVUDZLRmZ2NGZXRFdaNGIwMjVJMkNSVHFiMk9mWHZ6?=
+ =?utf-8?B?OGd0YnhwZllESW83RHBtVmQ2WURYTHUzOFgwMXZha25UajFjdkFvUVdnM2xF?=
+ =?utf-8?B?LzdHYnlCbEUyUDJRZGVkUnZ2M28rcSt4K3VBWjB2YkpCenJiOFlRKzRrVnU1?=
+ =?utf-8?B?MFFtaCtpYnUzbWl3UVRNVDlSc1lJQWd0UWhUUHUxOWhTbC9JL0dhbmhWakRE?=
+ =?utf-8?B?T3dGSFlCNDRQWDh0WThPYXRpWkNDYjB0V0llNUdzSzNmdEl4Q3ZTdkdiY0Rq?=
+ =?utf-8?B?eTRBcjNuVXFUaXpRY091ZWJIN01FbENNQzRpVjkwTUdHS0tXQWk4VmZNYXdV?=
+ =?utf-8?B?TXZWd2gwWWpOdHNtTEk4MllkbWQ5MTd5QVJPVjNxVmpIWlB2c0tqaEEzaThB?=
+ =?utf-8?B?c3ZNUzJxQkhSbU5BdE5Ld3Z5a2FlWkxiQlcxRW8vcG0wTC9vZnJUSUVkbTZv?=
+ =?utf-8?B?NDJ6Mjl4MEJSdENMMWpPNkN5N1YzUm1abUcxb2hCUlFJS282RnZtWHpoTDdQ?=
+ =?utf-8?B?Y2Q0SVNKR0ZQZWxpMnBtL3piWllEdzlJR0hoU3I1ZHZrT2Vqa2crWStoQkl1?=
+ =?utf-8?B?NGNudk9QZHFmQ2wzYjNTbmcxNE9YZEdhYWFSMlkxNzloR1RKSnZ6MGV3Ym9o?=
+ =?utf-8?B?R29UR05FMkljVnBjdmI1UTNYcTdIT3hNY1l1UWJFR2RtSU8vdDlSN1VXaFZV?=
+ =?utf-8?B?c3Z4Zmlmb0RrdjJMNUg3U3BJS2NrN2ZpWkV2MVhiSVhqUjROTnJab1NWZlJZ?=
+ =?utf-8?B?ZFY2Z28yQXlBL1Y3Si92M2xkL05GRlk0aTZVbEtsTmEzMDMrLytwUEx1WnR6?=
+ =?utf-8?B?YVVZVlB0SCtDb2V3K3UrYnhCTi80cUxabDRDZGJ5dkpHTHZIL2Nma3VVMXM0?=
+ =?utf-8?B?S1k4OU5mUlZxdHJlWjBicXBJYXBUVVVvSmhTRnlUcXpFTE43SG1WRXJieHY4?=
+ =?utf-8?B?OENBTWxnVUtVY3BFcjdxV0k3cmJ2ajVMb2FMN05Ya05GN253S09ZSGdnd1V5?=
+ =?utf-8?B?WFJUWVJSY1FkRjdtL3I1WnFCdnMzczREUVRFM1JSOCt2NG03bFlNVlNISmho?=
+ =?utf-8?B?N0VyVnhMRkJhT21jbWNLM3lkODZxUlMxTlZaQmpkWUNqeFNWV0haRy8zSDJj?=
+ =?utf-8?B?REoyd1JwYnprYUEwbmtmcnFaWkpjMFZqdzhXWWJVejNpcFBWZ2dyVWxYQytl?=
+ =?utf-8?B?Ry9sYjA1MTVMOUlHSHAzelRMNnlSa0lRMlRmdDQ0cVNGaXlJWTBkdE1mMWZF?=
+ =?utf-8?Q?QOik=3D?=
+X-Forefront-Antispam-Report:
+	CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230040)(7416014)(376014)(36860700013)(1800799024)(82310400026)(13003099007);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 09 Jan 2026 16:15:25.6353
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 97a0f791-a523-496a-3e48-08de4f9a4c59
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001CE.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB6488
 
-On Mon, Jan 05, 2026 at 10:47:29AM +0100, Stephan Gerhold wrote:
-> On Mon, Jan 05, 2026 at 10:44:39AM +0530, Manivannan Sadhasivam wrote:
-> > On Fri, Jan 02, 2026 at 02:57:56PM +0100, Konrad Dybcio wrote:
-> > > On 1/2/26 2:19 PM, Krishna Chaitanya Chundru wrote:
-> > > > On 1/2/2026 5:09 PM, Konrad Dybcio wrote:
-> > > >> On 1/2/26 12:36 PM, Krishna Chaitanya Chundru wrote:
-> > > >>> On 1/2/2026 5:04 PM, Konrad Dybcio wrote:
-> > > >>>> On 1/2/26 10:43 AM, Krishna Chaitanya Chundru wrote:
-> > > >>>>> With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
-> > > >>>>> can happen during scenarios such as system suspend and breaks the resume
-> > > >>>>> of PCIe controllers from suspend.
-> > > >>>> Isn't turning the GDSCs off what we want though? At least during system
-> > > >>>> suspend?
-> > > >>> If we are keeping link in D3cold it makes sense, but currently we are not keeping in D3cold
-> > > >>> so we don't expect them to get off.
-> > > >> Since we seem to be tackling that in parallel, it seems to make sense
-> > > >> that adding a mechanism to let the PCIe driver select "on" vs "ret" vs
-> > > >> "off" could be useful for us
-> > > > At least I am not aware of such API where we can tell genpd not to turn off gdsc
-> > > > at runtime if we are keeping the device in D3cold state.
-> > > > But anyway the PCIe gdsc supports Retention, in that case adding this flag here makes
-> > > > more sense as it represents HW.
-> > > > sm8450,sm8650 also had similar problem which are fixed by mani[1].
-> > > 
-> > > Perhaps I should ask for a clarification - is retention superior to
-> > > powering the GDSC off? Does it have any power costs?
-> > > 
-> > 
-> > In terms of power saving it is not superior, but that's not the only factor we
-> > should consider here. If we keep GDSCs PWRSTS_OFF_ON, then the devices (PCIe)
-> > need to be be in D3Cold. Sure we can change that using the new genpd API
-> > dev_pm_genpd_rpm_always_on() dynamically, but I would prefer to avoid doing
-> > that.
-> > 
-> > In my POV, GDSCs default state should be retention, so that the GDSCs will stay
-> > ON if the rentention is not entered in hw and enter retention otherwise. This
-> > requires no extra modification in the genpd client drivers. One more benefit is,
-> > the hw can enter low power state even when the device is not in D3Cold state
-> > i.e., during s2idle (provided we unvote other resources).
-> > 
+On Fri, 09 Jan 2026 12:43:41 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.12.65 release.
+> There are 16 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 > 
-> What about PCIe instances that are completely unused? The boot firmware
-> on X1E for example is notorious for powering on completely unused PCIe
-> links and powering them down in some half-baked off state (the &pcie3
-> instance, in particular). I'm not sure if the GDSC remains on, but if it
-> does then the unused PD cleanup would also only put them in retention
-> state. I can't think of a good reason to keep those on at all.
+> Responses should be made by Sun, 11 Jan 2026 11:19:41 +0000.
+> Anything received after that time might be too late.
 > 
-
-Conceptually I agree, but do we have any data indicating that there's
-practical benefit to this complication?
-
-> The implementation of PWRSTS_RET_ON essentially makes the PD power_off()
-> callback a no-op. Everything in Linux (sysfs, debugfs, ...) will tell
-> you that the power domain has been shut down, but at the end it will
-> remain fully powered until you manage to reach a retention state for the
-> parent power domain. Due to other consumers, that will likely happen
-> only if you reach VDDmin or some equivalent SoC-wide low-power state,
-> something barely any (or none?) of the platforms supported upstream is
-> capable of today.
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.12.65-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.12.y
+> and the diffstat can be found below.
 > 
-
-Yes, PWRSTS_RET_ON effectively means that Linux has "dropped its vote"
-on the GDSC and its parents. But with the caveat that we assume when
-going to ON again some state will have been retained.
-
-> PWRSTS_RET_ON is actually pretty close to setting GENPD_FLAG_ALWAYS_ON,
-> the only advantage of PWRSTS_RET_ON I can think of is that unused GDSCs
-> remain off iff you are lucky enough that the boot firmware has not
-> already turned them on.
+> thanks,
 > 
+> greg k-h
 
-Doesn't GENPD_FLAG_ALWAYS_ON imply that the parent will also be always
-on?
+All tests passing for Tegra ...
 
-> IMHO, for GDSCs that support OFF state in the hardware, PWRSTS_RET_ON is
-> a hack to workaround limitations in the consumer drivers. They should
-> either save/restore registers and handle the power collapse or they
-> should vote for the power domain to stay on. That way, sysfs/debugfs
-> will show the real votes held by Linux and you won't be mislead when
-> looking at those while trying to optimize power consumption.
-> 
+Test results for stable-v6.12:
+    10 builds:	10 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    120 tests:	120 pass, 0 fail
 
-No, it's not working around limitations in the consumer drivers.
+Linux version:	6.12.65-rc1-g7f79b90fd937
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra186-p3509-0000+p3636-0001, tegra194-p2972-0000,
+                tegra194-p3509-0000+p3668-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra210-p3450-0000,
+                tegra30-cardhu-a04
 
-It does work around a limitation in the API, in that the consumer
-drivers can't indicate in which cases they would be willing to restore
-and in which cases they would prefer retention. This is something the
-downstream solution has had, but we don't have a sensible and generic
-way to provide this.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Keeping GDSCs in retention is a huge gain when it comes to the time it
-takes to resume the system after being in low power. PCIe is a good
-example of this, where the GDSC certainly support entering OFF, at the
-cost of tearing link and all down.
-
-Regards,
-Bjorn
-
-> Thanks,
-> Stephan
+Jon
 
