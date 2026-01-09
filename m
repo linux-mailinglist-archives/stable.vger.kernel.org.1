@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 271F6D09D21
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C519FD094D6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 34E4D3097FA2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C7831304321C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E31E635B14E;
-	Fri,  9 Jan 2026 12:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE473335561;
+	Fri,  9 Jan 2026 12:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LdLFgFK2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BbEXtyXW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5039336EDA;
-	Fri,  9 Jan 2026 12:33:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 719FD35A93B;
+	Fri,  9 Jan 2026 12:03:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961995; cv=none; b=EJzAxFfwuK102PbSf0QOZvQ3ibEbvvxtkVUiBLf4UYaaObBE/s/60xXdS39nT6mIkwv+j91nzSbPrtxcb2rp4d0U58+koEDQqC2wqZq9OptFBOKIIC36zRdue4AGXMNkbuji5PUKtEK73pvLBh4T3qH+IQ6NVMlMNYUzxxQnxK0=
+	t=1767960189; cv=none; b=W9P4OMvSa816f3XNEruD6La/uK78n56kU4+0kQbt1t9mSaSbeG3OQOcMNReQRJbVXL2ONSFiQZWOaV3gnGnf0VGs6dkzUTbHAFCtHOMzLOYd7txC89vzHXKVRxVkzsnLWSr0s+Q1sEv2UQQscgld4Wo1sb0gpFXSoksMuEIl1vA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961995; c=relaxed/simple;
-	bh=xcdlSMEtU+1Z5/6d1QDxoNNdVmjoqKaXqm2DJXdjWc0=;
+	s=arc-20240116; t=1767960189; c=relaxed/simple;
+	bh=so+CwicG8gLN0wFF0RK15lJ4yYOvBSndTWxHZLfW/gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AcK8G8acdGvNPQ41mrl/w8q21W1kuBPuURrdoIYhOaXLz9MygKlXys7yMUJOscZegXM4Xzya6o7icgGeX3GXV6IcLf8UYvCK8O58Ne8Za3Ipy5JXL1hUEAN0sF9EbcSCCYNBh4rLOHIEfSxOlZDuLpLvNngpeE1G8M5/P5BZXfk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LdLFgFK2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3459C4CEF1;
-	Fri,  9 Jan 2026 12:33:14 +0000 (UTC)
+	 MIME-Version; b=m8m53QLRzETNNnCS82mam9kXlAGDGOczgtIrCmPKwPXp8JGi6oUYGLsRfmCK4PJpxZIGlpa8XDKfalHN25KpnYaSvwvNMlLrxvLy+1HXWQtMi9NIUZdWElwgnvlcODqvGVsft/hCH+8hVCV4QZgYUi7JfDoUXHrVH8FHjnV/GAo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BbEXtyXW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2DAAC4CEF1;
+	Fri,  9 Jan 2026 12:03:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961995;
-	bh=xcdlSMEtU+1Z5/6d1QDxoNNdVmjoqKaXqm2DJXdjWc0=;
+	s=korg; t=1767960189;
+	bh=so+CwicG8gLN0wFF0RK15lJ4yYOvBSndTWxHZLfW/gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LdLFgFK2Hey8sKSZAk+y4V54Bp9ElZ1RmD+DstN0qGOrJogREsAVMB4/yPRAcvKdU
-	 Q4lxE+ldWfvoJo7GhiqRbwFL6NPL1qLtlalk/1RRB+AaYIm4fWOMEhojU+SKf3VGNl
-	 ntwjrZcilwTcRi8qHHImKMlqY7zO2l//Xw/maIyM=
+	b=BbEXtyXWmz3TwHJR/cNSZVmWHfyA2+De55fTQ4kqjYQMOUM/nsJXwJgcLv73O+897
+	 r/deI4sZ0IDzxsFp0ecVnoAv3g/zetj+2KHy6BrC3c0y77plm76M/1FBjeHiS3grWC
+	 6QaruB31f1DPKT7UyZ6XOR5TS1JtUKX5Vg9IFA1M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 176/634] net: stmmac: fix rx limit check in stmmac_rx_zc()
+Subject: [PATCH 6.6 315/737] fs/ntfs3: Support timestamps prior to epoch
 Date: Fri,  9 Jan 2026 12:37:34 +0100
-Message-ID: <20260109112124.066698229@linuxfoundation.org>
+Message-ID: <20260109112145.850860996@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +59,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 8048168df56e225c94e50b04cb7b0514135d7a1c ]
+[ Upstream commit 5180138604323895b5c291eca6aa7c20be494ade ]
 
-The extra "count >= limit" check in stmmac_rx_zc() is redundant and
-has no effect because the value of "count" doesn't change after the
-while condition at this point.
+Before it used an unsigned 64-bit type, which prevented proper handling
+of timestamps earlier than 1970-01-01. Switch to a signed 64-bit type to
+support pre-epoch timestamps. The issue was caught by xfstests.
 
-However, it can change after "read_again:" label:
-
-        while (count < limit) {
-            ...
-
-            if (count >= limit)
-                break;
-    read_again:
-            ...
-            /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
-            if (likely(status & rx_not_ls)) {
-                xsk_buff_free(buf->xdp);
-                buf->xdp = NULL;
-                dirty++;
-                count++;
-                goto read_again;
-            }
-            ...
-
-This patch addresses the same issue previously resolved in stmmac_rx()
-by commit fa02de9e7588 ("net: stmmac: fix rx budget limit check").
-The fix is the same: move the check after the label to ensure that it
-bounds the goto loop.
-
-Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20251126104327.175590-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/ntfs_fs.h | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 03fbb611b2a67..202c43d73a2bd 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5065,10 +5065,10 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
- 			len = 0;
- 		}
+diff --git a/fs/ntfs3/ntfs_fs.h b/fs/ntfs3/ntfs_fs.h
+index 72810d8f62ee9..31f57ee9a1a9b 100644
+--- a/fs/ntfs3/ntfs_fs.h
++++ b/fs/ntfs3/ntfs_fs.h
+@@ -990,11 +990,12 @@ static inline __le64 kernel2nt(const struct timespec64 *ts)
+  */
+ static inline void nt2kernel(const __le64 tm, struct timespec64 *ts)
+ {
+-	u64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
++	s32 t32;
++	/* use signed 64 bit to support timestamps prior to epoch. xfstest 258. */
++	s64 t = le64_to_cpu(tm) - _100ns2seconds * SecondsToStartOf1970;
  
-+read_again:
- 		if (count >= limit)
- 			break;
+-	// WARNING: do_div changes its first argument(!)
+-	ts->tv_nsec = do_div(t, _100ns2seconds) * 100;
+-	ts->tv_sec = t;
++	ts->tv_sec = div_s64_rem(t, _100ns2seconds, &t32);
++	ts->tv_nsec = t32 * 100;
+ }
  
--read_again:
- 		buf1_len = 0;
- 		entry = next_entry;
- 		buf = &rx_q->buf_pool[entry];
+ static inline struct ntfs_sb_info *ntfs_sb(struct super_block *sb)
 -- 
 2.51.0
 
