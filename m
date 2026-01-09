@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-207217-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206617-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C05F4D099FA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E75DBD09311
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 469F13026D9C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 397F7308B7FA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D8F32AAB5;
-	Fri,  9 Jan 2026 12:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F01133C52A;
+	Fri,  9 Jan 2026 11:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GtWjt6zK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T1Gb68e3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4FB40303C87;
-	Fri,  9 Jan 2026 12:23:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A258335561;
+	Fri,  9 Jan 2026 11:55:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961426; cv=none; b=YQz7QCSAS/2IkzoyNgARd0NzVDxxtbYN3uQABcMQM62+DmkCLA2dm+9IRH160Qx1DpDvwC2dq9mfVcSxBySt7cSyTpEAx48v59G7YdSmMRU7SVhWiF+qkRXl/VV8UPxF3pSG5umTURTor1oN7VhVXY1YJDzcGi/Lfi0kDPiZ8FI=
+	t=1767959715; cv=none; b=cFlx8pb1E9dHgwfgp+xBqbGQBk7zhdc0d4tZZBjz80rRderdvUdg0CMMydpY1O7Mb0Vpafw20xzT6fYu+bijFMsaF+fDgQaC7R4nBjZjlQ9DZVzirCCD0vXWT7gBB5SofWurGs054a4kyvd3DF1HncvTNabHtvtZEQnm57WzBRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961426; c=relaxed/simple;
-	bh=JLrr+f6EbzqsjGHrD7jMnAIQ+8J05MrCI/7rbDBorR8=;
+	s=arc-20240116; t=1767959715; c=relaxed/simple;
+	bh=LWTeG71UT1ITPGZUIt0DbLfU1jEdX+GLrGjd47+kvI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PdI4cGP6qlw8vLxhH2CHNnZKfAruGTQMGG1F59yFxzKj3EaVgcKV+lUeI2a6F0ULnxvAfXkkiFTct4sMQUMjFI7Ja1i+9NuhVsQNaZLvvTVYfB8xycjdg0FQVBrUvgqT4Xr3DBsv39XtH/O7XEECDpqy7/OqCrNYsi5HnddM4K0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GtWjt6zK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD96DC4CEF1;
-	Fri,  9 Jan 2026 12:23:45 +0000 (UTC)
+	 MIME-Version; b=VFVUzR9069A3Cg7zMoKYhyHwH+A5A4hGFQKrdlM4Cs5yVh/UoRGfmAYa+lzv+6Ha8i8n5vqsD3WqpCYqR6PC60Fwa/51tV51epy7le1urOdyor1UguP1ywoEghgYFE9ENjXgGH+2j+CAfz1w4PwSl4z3m5xPlmgmXk+0To1nGso=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T1Gb68e3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF862C4CEF1;
+	Fri,  9 Jan 2026 11:55:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961426;
-	bh=JLrr+f6EbzqsjGHrD7jMnAIQ+8J05MrCI/7rbDBorR8=;
+	s=korg; t=1767959715;
+	bh=LWTeG71UT1ITPGZUIt0DbLfU1jEdX+GLrGjd47+kvI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GtWjt6zKjLxlYFmZIsbkdKtiMhg8yNSeA7fLnnmrsTLWlANt0UXPWWhaEktlpyE2W
-	 rcFOPxmIZ8gp7iYM2zduLG7fKzt2RobK/lZWhyF7CK5BSFeXaJzTPhaxUixZIVI0kx
-	 PcrRHp/FF8gA1X8BSTRgBhBZSV3OyTQdgI5zvcsc=
+	b=T1Gb68e3AsK5Zf0WlTYUZV9BrPVIYsvsPAaOlzLjaYRkb1KZBSDVIwhr7gYmqII2b
+	 Ct+YTuBhbaweQf6sGwAVBSRvOh39C+igE1v5bygOs1x8Kx3DkPxpjr3OfuMFlFpIqS
+	 gXdXzcM8u8wRrYcA5s6XQ46p/BLtClM3C2MJfA5Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Freihofer <adrian.freihofer@siemens.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Boqun Feng <boqun.feng@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	"Paul E. McKenney" <paulmck@kernel.org>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 6.1 011/634] locking/spinlock/debug: Fix data-race in do_raw_write_lock
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 150/737] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
 Date: Fri,  9 Jan 2026 12:34:49 +0100
-Message-ID: <20260109112117.855601149@linuxfoundation.org>
+Message-ID: <20260109112139.641032898@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,70 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit c14ecb555c3ee80eeb030a4e46d00e679537f03a upstream.
+[ Upstream commit 593ee49222a0d751062fd9a5e4a963ade4ec028a ]
 
-KCSAN reports:
+acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
+parent fwnode but returns without calling fwnode_handle_put() on it. This
+potentially leads to a fwnode refcount leak and prevents the parent node
+from being released properly.
 
-BUG: KCSAN: data-race in do_raw_write_lock / do_raw_write_lock
+Call fwnode_handle_put() on the parent fwnode before returning to prevent
+the leak from occurring.
 
-write (marked) to 0xffff800009cf504c of 4 bytes by task 1102 on cpu 1:
- do_raw_write_lock+0x120/0x204
- _raw_write_lock_irq
- do_exit
- call_usermodehelper_exec_async
- ret_from_fork
-
-read to 0xffff800009cf504c of 4 bytes by task 1103 on cpu 0:
- do_raw_write_lock+0x88/0x204
- _raw_write_lock_irq
- do_exit
- call_usermodehelper_exec_async
- ret_from_fork
-
-value changed: 0xffffffff -> 0x00000001
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 1103 Comm: kworker/u4:1 6.1.111
-
-Commit 1a365e822372 ("locking/spinlock/debug: Fix various data races") has
-adressed most of these races, but seems to be not consistent/not complete.
-
->From do_raw_write_lock() only debug_write_lock_after() part has been
-converted to WRITE_ONCE(), but not debug_write_lock_before() part.
-Do it now.
-
-Fixes: 1a365e822372 ("locking/spinlock/debug: Fix various data races")
-Reported-by: Adrian Freihofer <adrian.freihofer@siemens.com>
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Signed-off-by: Boqun Feng <boqun.feng@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Paul E. McKenney <paulmck@kernel.org>
-Acked-by: Waiman Long <longman@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251111075000.1828-1-vulab@iscas.ac.cn
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/locking/spinlock_debug.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/acpi/property.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/kernel/locking/spinlock_debug.c
-+++ b/kernel/locking/spinlock_debug.c
-@@ -183,8 +183,8 @@ void do_raw_read_unlock(rwlock_t *lock)
- static inline void debug_write_lock_before(rwlock_t *lock)
- {
- 	RWLOCK_BUG_ON(lock->magic != RWLOCK_MAGIC, lock, "bad magic");
--	RWLOCK_BUG_ON(lock->owner == current, lock, "recursion");
--	RWLOCK_BUG_ON(lock->owner_cpu == raw_smp_processor_id(),
-+	RWLOCK_BUG_ON(READ_ONCE(lock->owner) == current, lock, "recursion");
-+	RWLOCK_BUG_ON(READ_ONCE(lock->owner_cpu) == raw_smp_processor_id(),
- 							lock, "cpu recursion");
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index d02b332744e64..1b8f3958b0edb 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1622,6 +1622,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
+ 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
+ 
++	fwnode_handle_put(port_fwnode);
+ 	return 0;
  }
  
+-- 
+2.51.0
+
 
 
 
