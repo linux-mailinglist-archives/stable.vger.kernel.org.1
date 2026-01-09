@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-206721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC6E6D09428
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 77DE2D0937D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07BA9310CA4E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B6CCE30D693F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B917E359FAD;
-	Fri,  9 Jan 2026 12:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4554833C52A;
+	Fri,  9 Jan 2026 11:58:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="inAf2bpH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ch5m0thW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C166359F99;
-	Fri,  9 Jan 2026 12:00:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 007832C21E6;
+	Fri,  9 Jan 2026 11:58:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960010; cv=none; b=FnGXin6qfFKme/e4n0k7qCuBEU2z8RZAHS8P7Ow4apov2qjJ8rb8Q28C3fqwG/GojYuApvG8HlZxMeslWSnhzaa+LxhvsnBPUAkXkE9ypJPZN41lcF3UvBFuRXrPppL+PJ+1MRUSmdyo1EFq55ymqcuGx4R9tZRt5Tkc1bjlHYg=
+	t=1767959914; cv=none; b=rKBW/h5uGsFdf+GbVPOmXbtVkrbI14Rcdfe46lsGmw+hDIRCEwFjatSedlS3rBjc6R7tq9wICzj5+d0YUjd+kOnygt3gGjVUw/dv+Up9Tr4jD93FLAASMer6T31hAPpGAQHELJo5/unPDSZnurVoaliaBpQzWdhS0evNhkbJG2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960010; c=relaxed/simple;
-	bh=NfsLdxRemgBf7enV3mrJm833IQ2BX8Elh0RN3xdpn4g=;
+	s=arc-20240116; t=1767959914; c=relaxed/simple;
+	bh=9i4PUurDdkBo6Z3Qv16yr8s6NZSio1hqqstj6WIW6ow=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ej+yw9XDvFh8YkPLMKXZF7gtZTfSrmUh+yXXu7MxYC7LS/iIOjcWd3J8NsVgDKXVgUPEML2B0zzMXN3NniRnnKaCKbtoCztBsgGa+Gn+91xh0KU9A8jKAj/RXDXsU6J4PCB3pc64RTvStpl0qqu6/MRrzvTQcr+jnt+VCWmYMzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=inAf2bpH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 09419C4CEF1;
-	Fri,  9 Jan 2026 12:00:09 +0000 (UTC)
+	 MIME-Version; b=aQJN1MC/PfV+txXWR4nyeyRSJWxkTnDrunCKpeb2I6vJOH1Zeqmi3IcmAqWog7stmAH9IeaphnJD/dLWjsLmnoOVw911Zx4bC5qGK7HDA4bnFGh8cLtFBXHRdxuj3+b2E7cg2ei/V8uUq6w1XkDp/vA/GOJ1xcEVNj4a5oaNAFU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ch5m0thW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36146C4CEF1;
+	Fri,  9 Jan 2026 11:58:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960010;
-	bh=NfsLdxRemgBf7enV3mrJm833IQ2BX8Elh0RN3xdpn4g=;
+	s=korg; t=1767959913;
+	bh=9i4PUurDdkBo6Z3Qv16yr8s6NZSio1hqqstj6WIW6ow=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=inAf2bpHuoCwuykG3BzfT3zXPy8Q1NGk0lpzbp/Li2YXWnPQRCaXGZ6kCsCY/6tZN
-	 SPVPb30g7MDf3SOz2aIkdh4ejapxfmJwal/C7+ovCEjf0vUU5OcMOtobrW/1mtj8Iu
-	 hWJZQ9cU1JIKpoIFqfCIeqiXW6o46RMkfu4B0xkI=
+	b=Ch5m0thWYMFO3zcD01Z9PHm6mGtAhdLZlUCFZMdVW/1cbpm9ZcRnZEeOxiZKvh/wp
+	 L/+Hp4undcH1/RC90+ED9KfiIjDr1o3E1w/ZM9ReP6m4GcpJZs1FqhK3vzMg8K6KFE
+	 lq4xJzqUsfkEAu1ARwO083sMN91dfikD4n9VNgHg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephan Gerhold <stephan.gerhold@linaro.org>,
-	Will Deacon <will@kernel.org>,
+	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
+	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
+	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 211/737] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
-Date: Fri,  9 Jan 2026 12:35:50 +0100
-Message-ID: <20260109112141.935082915@linuxfoundation.org>
+Subject: [PATCH 6.6 212/737] RDMA/irdma: Fix data race in irdma_sc_ccq_arm
+Date: Fri,  9 Jan 2026 12:35:51 +0100
+Message-ID: <20260109112141.972225016@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,82 +65,76 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Stephan Gerhold <stephan.gerhold@linaro.org>
+From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
 
-[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
+[ Upstream commit a521928164433de44fed5aaf5f49aeb3f1fb96f5 ]
 
-Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
-matching groups. This is more than what is defined as maximum by the ARM
-SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
-Limit the SMR groups to 128") disabled use of the additional groups because
-they don't exhibit the same behavior as the architecture supported ones.
+Adds a lock around irdma_sc_ccq_arm body to prevent inter-thread data race.
+Fixes data race in irdma_sc_ccq_arm() reported by KCSAN:
 
-It seems like this is just another quirk of the hypervisor: When running
-bare-metal without the hypervisor, the additional groups appear to behave
-just like all others. The boot firmware uses some of the additional groups,
-so ignoring them in this situation leads to stream match conflicts whenever
-we allocate a new SMR group for the same SID.
+BUG: KCSAN: data-race in irdma_sc_ccq_arm [irdma] / irdma_sc_ccq_arm [irdma]
 
-The workaround exists primarily because the bypass quirk detection fails
-when using a S2CR register from the additional matching groups, so let's
-perform the test with the last reliable S2CR (127) and then limit the
-number of SMR groups only if we detect that we are running below the
-hypervisor (because of the bypass quirk).
+read to 0xffff9d51b4034220 of 8 bytes by task 255 on cpu 11:
+ irdma_sc_ccq_arm+0x36/0xd0 [irdma]
+ irdma_cqp_ce_handler+0x300/0x310 [irdma]
+ cqp_compl_worker+0x2a/0x40 [irdma]
+ process_one_work+0x402/0x7e0
+ worker_thread+0xb3/0x6d0
+ kthread+0x178/0x1a0
+ ret_from_fork+0x2c/0x50
 
-Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
-Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
-Signed-off-by: Will Deacon <will@kernel.org>
+write to 0xffff9d51b4034220 of 8 bytes by task 89 on cpu 3:
+ irdma_sc_ccq_arm+0x7e/0xd0 [irdma]
+ irdma_cqp_ce_handler+0x300/0x310 [irdma]
+ irdma_wait_event+0xd4/0x3e0 [irdma]
+ irdma_handle_cqp_op+0xa5/0x220 [irdma]
+ irdma_hw_flush_wqes+0xb1/0x300 [irdma]
+ irdma_flush_wqes+0x22e/0x3a0 [irdma]
+ irdma_cm_disconn_true+0x4c7/0x5d0 [irdma]
+ irdma_disconnect_worker+0x35/0x50 [irdma]
+ process_one_work+0x402/0x7e0
+ worker_thread+0xb3/0x6d0
+ kthread+0x178/0x1a0
+ ret_from_fork+0x2c/0x50
+
+value changed: 0x0000000000024000 -> 0x0000000000034000
+
+Fixes: 3f49d6842569 ("RDMA/irdma: Implement HW Admin Queue OPs")
+Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
+Link: https://patch.msgid.link/20251125025350.180-2-tatyana.e.nikolova@intel.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ drivers/infiniband/hw/irdma/ctrl.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-index 3d03136697963..62e2ab488c1be 100644
---- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-+++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
-@@ -295,17 +295,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+diff --git a/drivers/infiniband/hw/irdma/ctrl.c b/drivers/infiniband/hw/irdma/ctrl.c
+index 8a6200e55c542..ebbece4f09a22 100644
+--- a/drivers/infiniband/hw/irdma/ctrl.c
++++ b/drivers/infiniband/hw/irdma/ctrl.c
+@@ -3316,11 +3316,13 @@ int irdma_sc_cqp_destroy(struct irdma_sc_cqp *cqp)
+  */
+ void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
+ {
++	unsigned long flags;
+ 	u64 temp_val;
+ 	u16 sw_cq_sel;
+ 	u8 arm_next_se;
+ 	u8 arm_seq_num;
  
- 	/*
- 	 * Some platforms support more than the Arm SMMU architected maximum of
--	 * 128 stream matching groups. For unknown reasons, the additional
--	 * groups don't exhibit the same behavior as the architected registers,
--	 * so limit the groups to 128 until the behavior is fixed for the other
--	 * groups.
-+	 * 128 stream matching groups. The additional registers appear to have
-+	 * the same behavior as the architected registers in the hardware.
-+	 * However, on some firmware versions, the hypervisor does not
-+	 * correctly trap and emulate accesses to the additional registers,
-+	 * resulting in unexpected behavior.
-+	 *
-+	 * If there are more than 128 groups, use the last reliable group to
-+	 * detect if we need to apply the bypass quirk.
- 	 */
--	if (smmu->num_mapping_groups > 128) {
--		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
--		smmu->num_mapping_groups = 128;
--	}
--
--	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
-+	if (smmu->num_mapping_groups > 128)
-+		last_s2cr = ARM_SMMU_GR0_S2CR(127);
-+	else
-+		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
++	spin_lock_irqsave(&ccq->dev->cqp_lock, flags);
+ 	get_64bit_val(ccq->cq_uk.shadow_area, 32, &temp_val);
+ 	sw_cq_sel = (u16)FIELD_GET(IRDMA_CQ_DBSA_SW_CQ_SELECT, temp_val);
+ 	arm_next_se = (u8)FIELD_GET(IRDMA_CQ_DBSA_ARM_NEXT_SE, temp_val);
+@@ -3331,6 +3333,7 @@ void irdma_sc_ccq_arm(struct irdma_sc_cq *ccq)
+ 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT_SE, arm_next_se) |
+ 		   FIELD_PREP(IRDMA_CQ_DBSA_ARM_NEXT, 1);
+ 	set_64bit_val(ccq->cq_uk.shadow_area, 32, temp_val);
++	spin_unlock_irqrestore(&ccq->dev->cqp_lock, flags);
  
- 	/*
- 	 * With some firmware versions writes to S2CR of type FAULT are
-@@ -328,6 +330,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ 	dma_wmb(); /* make sure shadow area is updated before arming */
  
- 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
- 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
-+
-+		if (smmu->num_mapping_groups > 128) {
-+			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
-+			smmu->num_mapping_groups = 128;
-+		}
- 	}
- 
- 	for (i = 0; i < smmu->num_mapping_groups; i++) {
 -- 
 2.51.0
 
