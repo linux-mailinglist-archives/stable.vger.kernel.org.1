@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-207027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207034-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2CCC7D0978F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CD807D097AB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E4914305A94D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9CC9C30BD6F2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12CB635A948;
-	Fri,  9 Jan 2026 12:14:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24C71359F8C;
+	Fri,  9 Jan 2026 12:15:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eivqLPim"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vlYMcB1J"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C8E1133C530;
-	Fri,  9 Jan 2026 12:14:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD2C52DEA6F;
+	Fri,  9 Jan 2026 12:15:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960885; cv=none; b=RSZkOoJiz+XbUcEz5E1xQsJCj9sk/F/KEFF27h2iw0X00WGFEWGWd1MarYf84GyI75yT7B3KhUCNlDqauipIty2DJDcWbHJCRhTBtQcs0f4NoJM8LB04+6wKFdZHGZggaVDFDjf6zq7/Q9s1EtQ4MezOAnOjWbautAXV0GQ7pm8=
+	t=1767960905; cv=none; b=cRy8x1/7UrDsYoA8sezFFNrPZXolHNsam/fMamtn8oMmkd3m838tR7uXQcSgKit5FVBb1yjptLa+b+08O4T7lmxUGBOyb0eIi8a0IgAAbxKE4FlzsGxs5Ixxl4NTOQvlZG61/MGAFQgd/6RwjcLZr6sCmsEinBjelgxSw3XDCRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960885; c=relaxed/simple;
-	bh=DFqH3SKrkLCdqVcsQqt0RQTzcg3r21IQiiWn+WVAGZk=;
+	s=arc-20240116; t=1767960905; c=relaxed/simple;
+	bh=UNGYZ1kIvBF9oAHJKGZMeVKxEIVfQx3OR3sdjawX/2o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=F9pqoIzMVE5/uFqWJWCRDqDQ+hB7LundDmIZJHpchRRzu7i6PgptTcgHDQWjv9I3pVwjmZsc9WvWx7ZQ9olMflMC/40Z9CvLmvWka6B6oFHR4rmn08Ein+Y4KeUtq7H3eKhYol2SycXpHSa6Gx7Jp54l3W82DS7ptd6tuypaxmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eivqLPim; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 535F4C4CEF1;
-	Fri,  9 Jan 2026 12:14:45 +0000 (UTC)
+	 MIME-Version; b=nj8z910vzelBUc0ojZ2zTht5tSboJ9XMsHhLlfqgQxhVHi8I7f2AP1kDstZUWooReZUE2reCeE9SzM7MDrVpvqUlLUCuqabmCW61x6Lc/G/Awoybi0SFUhJo/L3uiT7j/9WGGaECY6rPpBYv7CcRYl1VxcHbtDN/KWzlYBUftT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vlYMcB1J; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A5DC4CEF1;
+	Fri,  9 Jan 2026 12:15:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960885;
-	bh=DFqH3SKrkLCdqVcsQqt0RQTzcg3r21IQiiWn+WVAGZk=;
+	s=korg; t=1767960905;
+	bh=UNGYZ1kIvBF9oAHJKGZMeVKxEIVfQx3OR3sdjawX/2o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eivqLPim+BpxepNpbwMukFCXB6NMV5JBv/7PxHX/CM/aRQfDONiMHy5bLiNNjFNfk
-	 pNcubj9JdT/0kGOVtyuKLdks7WFRf0oru/pqRxMCKhkmlO4zLz92pXU53hSCE2rOwD
-	 dWvFZ6fTpR7ntWKE9c8KNk9eq3kOQK9BdY3lcB7c=
+	b=vlYMcB1JSdMYijgCnKbB1soyUM0S7eacps5lLHE4/rKCs/JTSDjrm++XLemj3dC8y
+	 Png7ufPTYzkcfEvYP2Nz/81KRpZOOsnzPMTFovDH+9jFZcZ+06zc7ePoR+jq77QoMX
+	 whtoUEFEAqU/Mpum2mKCDPZM/WmUa4REpdK+AqGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -44,9 +44,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
 	Leon Romanovsky <leon@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 532/737] RDMA/bnxt_re: Fix incorrect BAR check in bnxt_qplib_map_creq_db()
-Date: Fri,  9 Jan 2026 12:41:11 +0100
-Message-ID: <20260109112154.009252351@linuxfoundation.org>
+Subject: [PATCH 6.6 533/737] RDMA/bnxt_re: Fix IB_SEND_IP_CSUM handling in post_send
+Date: Fri,  9 Jan 2026 12:41:12 +0100
+Message-ID: <20260109112154.046678460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -67,41 +67,54 @@ Content-Transfer-Encoding: 8bit
 
 From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 145a417a39d7efbc881f52e829817376972b278c ]
+[ Upstream commit f01765a2361323e78e3d91b1cb1d5527a83c5cf7 ]
 
-RCFW_COMM_CONS_PCI_BAR_REGION is defined as BAR 2, so checking
-!creq_db->reg.bar_id is incorrect and always false.
+The bnxt_re SEND path checks wr->send_flags to enable features such as
+IP checksum offload. However, send_flags is a bitmask and may contain
+multiple flags (e.g. IB_SEND_SIGNALED | IB_SEND_IP_CSUM), while the
+existing code uses a switch() statement that only matches when
+send_flags is exactly IB_SEND_IP_CSUM.
 
-pci_resource_start() returns the BAR base address, and a value of 0
-indicates that the BAR is unassigned. Update the condition to test
-bar_base == 0 instead.
+As a result, checksum offload is not enabled when additional SEND
+flags are present.
 
-This ensures the driver detects and logs an error for an unassigned
-RCFW communication BAR.
+Replace the switch() with a bitmask test:
 
-Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
+    if (wr->send_flags & IB_SEND_IP_CSUM)
+
+This ensures IP checksum offload is enabled correctly when multiple
+SEND flags are used.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
 Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251217100158.752504-1-alok.a.tiwari@oracle.com
+Link: https://patch.msgid.link/20251219093308.2415620-1-alok.a.tiwari@oracle.com
 Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-index e82bd37158ad..2accda5a04a1 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
-@@ -1116,7 +1116,7 @@ static int bnxt_qplib_map_creq_db(struct bnxt_qplib_rcfw *rcfw, u32 reg_offt)
- 	creq_db->dbinfo.flags = 0;
- 	creq_db->reg.bar_id = RCFW_COMM_CONS_PCI_BAR_REGION;
- 	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
--	if (!creq_db->reg.bar_id)
-+	if (!creq_db->reg.bar_base)
- 		dev_err(&pdev->dev,
- 			"QPLIB: CREQ BAR region %d resc start is 0!",
- 			creq_db->reg.bar_id);
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 31fff5885f1a..5a4644f7ad98 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2771,14 +2771,9 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
+ 				wqe.rawqp1.lflags |=
+ 					SQ_SEND_RAWETH_QP1_LFLAGS_ROCE_CRC;
+ 			}
+-			switch (wr->send_flags) {
+-			case IB_SEND_IP_CSUM:
++			if (wr->send_flags & IB_SEND_IP_CSUM)
+ 				wqe.rawqp1.lflags |=
+ 					SQ_SEND_RAWETH_QP1_LFLAGS_IP_CHKSUM;
+-				break;
+-			default:
+-				break;
+-			}
+ 			fallthrough;
+ 		case IB_WR_SEND_WITH_INV:
+ 			rc = bnxt_re_build_send_wqe(qp, wr, &wqe);
 -- 
 2.51.0
 
