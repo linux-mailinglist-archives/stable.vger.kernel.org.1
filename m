@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206816-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77A00D095F9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3C61D09FA6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6969F30B06FD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E98C2307B529
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AB835A92E;
-	Fri,  9 Jan 2026 12:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51BEA33B6E8;
+	Fri,  9 Jan 2026 12:34:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEONWaCF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r3kp12ev"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABC51946C8;
-	Fri,  9 Jan 2026 12:04:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E5A8335A95C;
+	Fri,  9 Jan 2026 12:34:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960280; cv=none; b=pp8U/xBj3f4U62CWJUxgRFZM0iPS/O7C5r9/oTNdQ+/5HEn1YRkZ3bLFRKmRUx1iJxKJeNf5tdveui5TPm4VGG+kzZbHyigQsrQkImrdQ6hedZDVkjBDf55QRqJ/EBNG1f7NJYCK7pGvU0GbyoGYNc8zYhtiejVeEUhF7V2HOKw=
+	t=1767962070; cv=none; b=i4HcNqKOGiISYUV0awPBHStBODkR9pT75V8lxJy71jf/I9z5IQtRc26Lh2RNz72ALL1qJc7ctmE6SxOjDAX7kbcW0TiJW2P4cBmdbV+WPAbq0gOc8PLUwV5RN/6LIAZFqz/ucXx9HfHVIKB4TkGovq1zacCwUQGXQblZPnKPim4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960280; c=relaxed/simple;
-	bh=2APAvV8RcCe9MkgGpbfwlJdL8SnG2PCdoYO12yU5urM=;
+	s=arc-20240116; t=1767962070; c=relaxed/simple;
+	bh=zhPVLryAJw9Wt0LJGFGxc0BKDrIBgHr2nptmnVwCQK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iRJp4LxV/Gxa3xJZsBTEoG6gERj0E5x09M5wgYJYNWnStjkR7CW0qrXVQf8rbewT3C6W/Bv7reAGQkZ0U1jFn9J8VH2BfmAm3cU37RKcYM6kJgtTLe9JzOmseKadktWli6zWI8Xh2m25g0so/DI0Z5sWZ4LeF71p4P2zQynKono=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEONWaCF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF3AC4CEF1;
-	Fri,  9 Jan 2026 12:04:39 +0000 (UTC)
+	 MIME-Version; b=Ci4CHZzWqdKIM4k+eEmvmxe5B3qSdjb3uJ4pBzVbKXW9HuD9mR3vKso596EwmQyQ3f5t5GLJ5DypFlkwLI+q4Hb2dzUTKhUAfC9t5nziMLfAguJ1Ad7q78CBafkp+DZs+If3S9gbP3SGwQ+kht0k+gA34ytZ8opBuHuJxUgcPqs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r3kp12ev; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30BFEC4CEF1;
+	Fri,  9 Jan 2026 12:34:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960280;
-	bh=2APAvV8RcCe9MkgGpbfwlJdL8SnG2PCdoYO12yU5urM=;
+	s=korg; t=1767962069;
+	bh=zhPVLryAJw9Wt0LJGFGxc0BKDrIBgHr2nptmnVwCQK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UEONWaCFn3S1+aFuLlXHtgz/y5JX5MDqozVrGgbe6kn61NEetXzmshaWqO5KJFqMg
-	 9M9wMbeuw+RqDVsIR60otcn4ORl6wE+MoyKk2CH1m2ssvOZBuTckmPX9nnnteAFrKg
-	 mRtEsnDCdYihCs+eeFIw/fvuKUxFhom+1CRgoeAc=
+	b=r3kp12ev+7QuZX48XazVJUG4hb5BJGS3h6tU7v0Y04Ff6LkF0ypUV6aBLBvN1iLqI
+	 IaIwMNsP25REjHlovlpdzwxsn6mNA5zAryBC/G5WjD0rUKg9/dY/DbhrQKtDFI+brs
+	 Zdx+uuYpkwuduH90IY3HQQHuGzKJYU+aComw+wUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Florian Westphal <fw@strlen.de>,
+	Andres J Rosa <andyrosa@gmail.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 347/737] netfilter: nf_tables: remove redundant chain validation on register store
+Subject: [PATCH 6.1 208/634] ALSA: uapi: Fix typo in asound.h comment
 Date: Fri,  9 Jan 2026 12:38:06 +0100
-Message-ID: <20260109112147.039919271@linuxfoundation.org>
+Message-ID: <20260109112125.265090963@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Andres J Rosa <andyrosa@gmail.com>
 
-[ Upstream commit a67fd55f6a09f4119b7232c19e0f348fe31ab0db ]
+[ Upstream commit 9a97857db0c5655b8932f86b5d18bb959079b0ee ]
 
-This validation predates the introduction of the state machine that
-determines when to enter slow path validation for error reporting.
+Fix 'level-shit' to 'level-shift' in struct snd_cea_861_aud_if comment.
 
-Currently, table validation is perform when:
-
-- new rule contains expressions that need validation.
-- new set element with jump/goto verdict.
-
-Validation on register store skips most checks with no basechains, still
-this walks the graph searching for loops and ensuring expressions are
-called from the right hook. Remove this.
-
-Fixes: a654de8fdc18 ("netfilter: nf_tables: fix chain dependency validation")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 7ba1c40b536e ("ALSA: Add definitions for CEA-861 Audio InfoFrames")
+Signed-off-by: Andres J Rosa <andyrosa@gmail.com>
+Link: https://patch.msgid.link/20251203162509.1822-1-andyrosa@gmail.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ include/uapi/sound/asound.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 8b8895e4372d9..394ee65e1d35f 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10964,21 +10964,10 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
- 				       enum nft_data_types type,
- 				       unsigned int len)
- {
--	int err;
--
- 	switch (reg) {
- 	case NFT_REG_VERDICT:
- 		if (type != NFT_DATA_VERDICT)
- 			return -EINVAL;
--
--		if (data != NULL &&
--		    (data->verdict.code == NFT_GOTO ||
--		     data->verdict.code == NFT_JUMP)) {
--			err = nft_chain_validate(ctx, data->verdict.chain);
--			if (err < 0)
--				return err;
--		}
--
- 		break;
- 	default:
- 		if (type != NFT_DATA_VALUE)
+diff --git a/include/uapi/sound/asound.h b/include/uapi/sound/asound.h
+index de6810e94abed..02b6f8eb0e29a 100644
+--- a/include/uapi/sound/asound.h
++++ b/include/uapi/sound/asound.h
+@@ -60,7 +60,7 @@ struct snd_cea_861_aud_if {
+ 	unsigned char db2_sf_ss; /* sample frequency and size */
+ 	unsigned char db3; /* not used, all zeros */
+ 	unsigned char db4_ca; /* channel allocation code */
+-	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shit values */
++	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shift values */
+ };
+ 
+ /****************************************************************************
 -- 
 2.51.0
 
