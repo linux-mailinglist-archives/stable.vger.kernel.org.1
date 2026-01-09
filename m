@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206460-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207168-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06424D08FA2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:44:55 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A2F3D09BF8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B0FBC3011EE1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:44:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9BCD430EFF8D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A72533C52A;
-	Fri,  9 Jan 2026 11:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40AAB35A941;
+	Fri,  9 Jan 2026 12:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGsqu2ks"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXBWOCly"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F218E32AAB5;
-	Fri,  9 Jan 2026 11:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03E2E26ED41;
+	Fri,  9 Jan 2026 12:21:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959079; cv=none; b=hCV0cmyEHR3Q6MnUcDfIXiRz/ssSoaij2BlnKetiJLKFyPZLf1zlL/7h7Tv56m6KFVlCc4wqFXWyvR3VLSnKjRbmXauzUifQcN+gIyBD+mCcKvBQas9yfMwLDk+6UULZOJu9eWetwcQM+arDW9kFGadQYg/rqk5Mn3Gs0dSakms=
+	t=1767961286; cv=none; b=MQlg5J7RJi+vVUMPX+99pgKpAdN8XocfdAqGXl9ZoGH9VlcQoF59VTQ7oyDuC+r8EAuCnUDbzBSamc6AdV+q/AmuZ6z+5hDBfrfY4vBMbI/2mhkgfQSK8yHgGi6/4BAhS5xym+CB832lyqnf9dMNmuTOsW09NVSFJO+jumQmBx8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959079; c=relaxed/simple;
-	bh=N1G52x+4xittAMqEFoDVCiv9h+KpwgGiDKmRNwSscM8=;
+	s=arc-20240116; t=1767961286; c=relaxed/simple;
+	bh=aLti+W1ZVJH7mdwwcjeCMbKXamVIOioTXWcupi2BsTI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BwAFANMrd57GsVNSEP423ImShRzDIS68hE7A9tL7B2wgCXxtMZGo7vCrxp1JO373qGSkUU+jFEzWcYWMxW/uJbIlFbQO9lwfMA//NduI3ywp1OWJg06cHQjXdzQ9nrJSPq8C/7s2ux2O503ncykmFmlxBy80Xhyqy+6MY90dhV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGsqu2ks; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 457A4C4CEF1;
-	Fri,  9 Jan 2026 11:44:38 +0000 (UTC)
+	 MIME-Version; b=cjS4wzUXC4uB9z/fx0zPIA/jP8uAD/WI2qQL+nw66aY1sOUn08PiHLY5qqi1bc7urxMA67f49iA9nWUqbgBnUBcKHDVQ3NWdqw8wRTeIk44Q5XfJ4ULP47U/keVL1OfMS2jTSA2STozDKUaDjkqvXbEfeu86217/g4S7PuKStbc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXBWOCly; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78144C4CEF1;
+	Fri,  9 Jan 2026 12:21:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959078;
-	bh=N1G52x+4xittAMqEFoDVCiv9h+KpwgGiDKmRNwSscM8=;
+	s=korg; t=1767961285;
+	bh=aLti+W1ZVJH7mdwwcjeCMbKXamVIOioTXWcupi2BsTI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KGsqu2ksH5Lit2VCIEAj5UFAGFguJgb7aOS8KUha1H65eS+RKAwV7nf+KCeS0VD9/
-	 Yinlmgki88FpwoAh6HXNRBWFFklsmPnv4qPxzVKMdziFj/W4UQS8cEsGkbJKk4OR8i
-	 p+uJ49PkNlMJTufY1dFPDvh/VNibebmu+A+jvjqM=
+	b=UXBWOCly5c1qKkA+1SRDHbqzREbQQrHAUNAETywXFHUFjZyjt7sv6Fg5ppTuDpP0D
+	 FxDBiTqU8kz1pINUuSB91LTREwR8qUlvPq4YnOnqq1yxosPv1Fp4vUXL/8MldDkWR3
+	 oJIhwCm+DHO9QQC3t7m4xSOfCCqPOl3TS4xRB+V4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ashish Kalra <ashish.kalra@amd.com>,
-	Vasant Hegde <vasant.hegde@amd.com>,
-	Sairaj Kodilkar <sarunkod@amd.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Ming Qian <ming.qian@oss.nxp.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 16/16] Revert "iommu/amd: Skip enabling command/event buffers for kdump"
-Date: Fri,  9 Jan 2026 12:43:57 +0100
-Message-ID: <20260109111952.032873905@linuxfoundation.org>
+Subject: [PATCH 6.6 699/737] media: amphion: Make some vpu_v4l2 functions static
+Date: Fri,  9 Jan 2026 12:43:58 +0100
+Message-ID: <20260109112200.364384475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
 
-This reverts commit 3344716ddee01d7caa35b470d30fd87781c661b1 which is
-commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb upstream.
+[ Upstream commit 5d1e54bb4dc6741284a3ed587e994308ddee2f16 ]
 
-This causes problems in older kernel trees as SNP host kdump is not
-supported in them, so drop it from the stable branches.
+Some functions defined in vpu_v4l2.c are never used outside of that
+compilation unit. Make them static.
 
-Reported-by: Ashish Kalra <ashish.kalra@amd.com>
-Link: https://lore.kernel.org/r/dacdff7f-0606-4ed5-b056-2de564404d51@amd.com
-Cc: Vasant Hegde <vasant.hegde@amd.com>
-Cc: Sairaj Kodilkar <sarunkod@amd.com>
-Cc: Joerg Roedel <joerg.roedel@amd.com>
-Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Ming Qian <ming.qian@oss.nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Stable-dep-of: 634c2cd17bd0 ("media: amphion: Remove vpu_vb_is_codecconfig")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/amd/init.c |   28 +++++++++-------------------
- 1 file changed, 9 insertions(+), 19 deletions(-)
+ drivers/media/platform/amphion/vpu_v4l2.c |   12 +++++++++---
+ drivers/media/platform/amphion/vpu_v4l2.h |    8 --------
+ 2 files changed, 9 insertions(+), 11 deletions(-)
 
---- a/drivers/iommu/amd/init.c
-+++ b/drivers/iommu/amd/init.c
-@@ -816,16 +816,11 @@ static void iommu_enable_command_buffer(
+--- a/drivers/media/platform/amphion/vpu_v4l2.c
++++ b/drivers/media/platform/amphion/vpu_v4l2.c
+@@ -24,6 +24,11 @@
+ #include "vpu_msgs.h"
+ #include "vpu_helpers.h"
  
- 	BUG_ON(iommu->cmd_buf == NULL);
- 
--	if (!is_kdump_kernel()) {
--		/*
--		 * Command buffer is re-used for kdump kernel and setting
--		 * of MMIO register is not required.
--		 */
--		entry = iommu_virt_to_phys(iommu->cmd_buf);
--		entry |= MMIO_CMD_SIZE_512;
--		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
--			    &entry, sizeof(entry));
--	}
-+	entry = iommu_virt_to_phys(iommu->cmd_buf);
-+	entry |= MMIO_CMD_SIZE_512;
++static char *vpu_type_name(u32 type)
++{
++	return V4L2_TYPE_IS_OUTPUT(type) ? "output" : "capture";
++}
 +
-+	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
-+		    &entry, sizeof(entry));
- 
- 	amd_iommu_reset_cmd_buffer(iommu);
+ void vpu_inst_lock(struct vpu_inst *inst)
+ {
+ 	mutex_lock(&inst->lock);
+@@ -42,7 +47,7 @@ dma_addr_t vpu_get_vb_phy_addr(struct vb
+ 			vb->planes[plane_no].data_offset;
  }
-@@ -874,15 +869,10 @@ static void iommu_enable_event_buffer(st
  
- 	BUG_ON(iommu->evt_buf == NULL);
+-unsigned int vpu_get_vb_length(struct vb2_buffer *vb, u32 plane_no)
++static unsigned int vpu_get_vb_length(struct vb2_buffer *vb, u32 plane_no)
+ {
+ 	if (plane_no >= vb->num_planes)
+ 		return 0;
+@@ -74,7 +79,7 @@ void vpu_v4l2_set_error(struct vpu_inst
+ 	vpu_inst_unlock(inst);
+ }
  
--	if (!is_kdump_kernel()) {
--		/*
--		 * Event buffer is re-used for kdump kernel and setting
--		 * of MMIO register is not required.
--		 */
--		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
--		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
--			    &entry, sizeof(entry));
--	}
-+	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
-+
-+	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
-+		    &entry, sizeof(entry));
+-int vpu_notify_eos(struct vpu_inst *inst)
++static int vpu_notify_eos(struct vpu_inst *inst)
+ {
+ 	static const struct v4l2_event ev = {
+ 		.id = 0,
+@@ -546,7 +551,8 @@ static void vpu_vb2_buf_finish(struct vb
+ 		call_void_vop(inst, on_queue_empty, q->type);
+ }
  
- 	/* set head and tail to zero manually */
- 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
+-void vpu_vb2_buffers_return(struct vpu_inst *inst, unsigned int type, enum vb2_buffer_state state)
++static void vpu_vb2_buffers_return(struct vpu_inst *inst, unsigned int type,
++				   enum vb2_buffer_state state)
+ {
+ 	struct vb2_v4l2_buffer *buf;
+ 
+--- a/drivers/media/platform/amphion/vpu_v4l2.h
++++ b/drivers/media/platform/amphion/vpu_v4l2.h
+@@ -25,15 +25,12 @@ void vpu_skip_frame(struct vpu_inst *ins
+ struct vb2_v4l2_buffer *vpu_find_buf_by_sequence(struct vpu_inst *inst, u32 type, u32 sequence);
+ struct vb2_v4l2_buffer *vpu_find_buf_by_idx(struct vpu_inst *inst, u32 type, u32 idx);
+ void vpu_v4l2_set_error(struct vpu_inst *inst);
+-int vpu_notify_eos(struct vpu_inst *inst);
+ int vpu_notify_source_change(struct vpu_inst *inst);
+ int vpu_set_last_buffer_dequeued(struct vpu_inst *inst, bool eos);
+-void vpu_vb2_buffers_return(struct vpu_inst *inst, unsigned int type, enum vb2_buffer_state state);
+ int vpu_get_num_buffers(struct vpu_inst *inst, u32 type);
+ bool vpu_is_source_empty(struct vpu_inst *inst);
+ 
+ dma_addr_t vpu_get_vb_phy_addr(struct vb2_buffer *vb, u32 plane_no);
+-unsigned int vpu_get_vb_length(struct vb2_buffer *vb, u32 plane_no);
+ static inline struct vpu_format *vpu_get_format(struct vpu_inst *inst, u32 type)
+ {
+ 	if (V4L2_TYPE_IS_OUTPUT(type))
+@@ -42,11 +39,6 @@ static inline struct vpu_format *vpu_get
+ 		return &inst->cap_format;
+ }
+ 
+-static inline char *vpu_type_name(u32 type)
+-{
+-	return V4L2_TYPE_IS_OUTPUT(type) ? "output" : "capture";
+-}
+-
+ static inline int vpu_vb_is_codecconfig(struct vb2_v4l2_buffer *vbuf)
+ {
+ #ifdef V4L2_BUF_FLAG_CODECCONFIG
 
 
 
