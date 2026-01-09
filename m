@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-206474-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CF26D09002
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:48:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6D810D0A17A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E9A530B239A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:45:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96DA9312A96D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AF8C359F92;
-	Fri,  9 Jan 2026 11:45:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9E9535C198;
+	Fri,  9 Jan 2026 12:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ryXPTQiw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/ClfOGk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9037232AAB5;
-	Fri,  9 Jan 2026 11:45:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6CE7D35BDDE;
+	Fri,  9 Jan 2026 12:50:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959120; cv=none; b=GsLY58wiZw3wsxziJ4ooPwlu7rgtSuLyeXH1D5i+ITnIpup8UEEuac97u2Ivur3WjdIS5i1kf0L4RqUZ7JjAqEq72poAGpJruRotAb99nb6cPH0EREcZmFrdQSJyfygMv2IVe7eIzlOGK5HC92EE1nBJSS8DpRtPfQew0cq+uBM=
+	t=1767963018; cv=none; b=dtRu3RjrkN6i/LycIAJV2O5pxQH9s90XndPIqPPhLdYmnGj7O4TXP4j92Q4JiO2DicQwH0DLb50tbjsS5psXolpmIO4kP+P+eYCHV/6//jMmYvpBZ0xxEj4qqwoIesGqHx+AEN9cWP58V2zbgQ64cszii9m0OIe1+xj+wTQynj4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959120; c=relaxed/simple;
-	bh=mNId9po01GmHIXiop9AU6MdCcMn/0hkV/pc7QmQ+k44=;
+	s=arc-20240116; t=1767963018; c=relaxed/simple;
+	bh=xOMH+MhAXZoIE3AtxOEwybPx6bkFjSsrQHZ1tx4YAEo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z+TREy+ycL0zXrbgG8sblCP+gYfwNRzBPEXgjTR07wipraEQtZRz8XlY7EDzvBZH4k9iz3mBiAMf9W9yuys4jHg5lKQFHDbPCikA+ZU/tBDhL+ZuU5LDoY8uQGtyvu+TGqh+rVoNM+8AJ4r4LjtdhTNaZeMm93BRS9eA9LvDe4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ryXPTQiw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBA4C19422;
-	Fri,  9 Jan 2026 11:45:18 +0000 (UTC)
+	 MIME-Version; b=WpXHzv+gV0+pm2AgjQOMa4Y0yrpoJL+2n7L62cAp3ve01AMM+1fNBDInzayRCtg/whV32/SHIZW2+PEtj0A8zYK4eTYyf01iTf2D/u0KrQQV/6wxF91rAKOUlb9CkONhg8j8ymaoOaWu8FgQCXXYaLIZt79Mz5sNEUqVLe46a9c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/ClfOGk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E31AEC4CEF1;
+	Fri,  9 Jan 2026 12:50:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959119;
-	bh=mNId9po01GmHIXiop9AU6MdCcMn/0hkV/pc7QmQ+k44=;
+	s=korg; t=1767963018;
+	bh=xOMH+MhAXZoIE3AtxOEwybPx6bkFjSsrQHZ1tx4YAEo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ryXPTQiwa24APXGLpowa4cpEH1278swiQvHW6Pm72iWLRAm/jiUphU3cYLL3rN8Mb
-	 v+LIC7Q+CaYsvinfEfkdqDw/QbXETERFRBl7ra1fkYrkbV9H/EVDYeAV6uGxE3RW6A
-	 nNLMfHJfI0UfvF09kWdajG9enCv0WD8Oy9sA5deo=
+	b=H/ClfOGkrxIZXSsKtpunn37UDQlmY0dWtEybNPtCEdQ2XT1GKxLZv+W2b+y08DpGA
+	 1BkkMjh/M0IOxkk2uH07bQxyNv3ZL7SQIKYS+yLrcX+CIgi1JurWMp8nIh4Ga6/+s0
+	 ir8C+gL9eBSMI4Bwyd+7BLkOQXigohhbF00YUR7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zorro Lang <zlang@redhat.com>,
-	Mike Snitzer <snitzer@kernel.org>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.18 5/5] nfs/localio: fix regression due to out-of-order __put_cred
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 569/634] ASoC: stm32: sai: Use the devm_clk_get_optional() helper
 Date: Fri,  9 Jan 2026 12:44:07 +0100
-Message-ID: <20260109111950.550738956@linuxfoundation.org>
+Message-ID: <20260109112139.016149108@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
-References: <20260109111950.344681501@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,105 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 3af870aedbff10bfed220e280b57a405e972229f upstream.
+[ Upstream commit 374628fb668e50b42fe81f2a63af616182415bcd ]
 
-Commit f2060bdc21d7 ("nfs/localio: add refcounting for each iocb IO
-associated with NFS pgio header") inadvertantly reintroduced the same
-potential for __put_cred() triggering BUG_ON(cred == current->cred) that
-commit 992203a1fba5 ("nfs/localio: restore creds before releasing pageio
-data") fixed.
+Use devm_clk_get_optional() instead of hand writing it.
+This saves some LoC and improves the semantic.
 
-Fix this by saving and restoring the cred around each {read,write}_iter
-call within the respective for loop of nfs_local_call_{read,write} using
-scoped_with_creds().
-
-NOTE: this fix started by first reverting the following commits:
-
- 94afb627dfc2 ("nfs: use credential guards in nfs_local_call_read()")
- bff3c841f7bd ("nfs: use credential guards in nfs_local_call_write()")
- 1d18101a644e ("Merge tag 'kernel-6.19-rc1.cred' of git://git.kernel.org/pub/scm/linux/kernel/git/vfs/vfs")
-
-followed by narrowly fixing the cred lifetime issue by using
-scoped_with_creds().  In doing so, this commit's changes appear more
-extensive than they really are (as evidenced by comparing to v6.18's
-fs/nfs/localio.c).
-
-Reported-by: Zorro Lang <zlang@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Acked-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Christian Brauner <brauner@kernel.org>
-Link: https://lore.kernel.org/linux-next/20251205111942.4150b06f@canb.auug.org.au/
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/f7987f18dadf77bfa09969fd4c82d5a0f4e4e3b7.1684594838.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 312ec2f0d9d1 ("ASoC: stm32: sai: fix clk prepare imbalance on probe failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/localio.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/fs/nfs/localio.c
-+++ b/fs/nfs/localio.c
-@@ -623,8 +623,6 @@ static void nfs_local_call_read(struct w
- 	ssize_t status;
- 	int n_iters;
- 
--	save_cred = override_creds(filp->f_cred);
--
- 	n_iters = atomic_read(&iocb->n_iters);
- 	for (int i = 0; i < n_iters ; i++) {
- 		if (iocb->iter_is_dio_aligned[i]) {
-@@ -637,7 +635,10 @@ static void nfs_local_call_read(struct w
- 		} else
- 			iocb->kiocb.ki_flags &= ~IOCB_DIRECT;
- 
-+		save_cred = override_creds(filp->f_cred);
- 		status = filp->f_op->read_iter(&iocb->kiocb, &iocb->iters[i]);
-+		revert_creds(save_cred);
-+
- 		if (status != -EIOCBQUEUED) {
- 			if (unlikely(status >= 0 && status < iocb->iters[i].count))
- 				force_done = true; /* Partial read */
-@@ -647,8 +648,6 @@ static void nfs_local_call_read(struct w
- 			}
- 		}
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1485,12 +1485,9 @@ static int stm32_sai_sub_parse_of(struct
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		sai->sai_mclk = devm_clk_get(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk)) {
+-			if (PTR_ERR(sai->sai_mclk) != -ENOENT)
+-				return PTR_ERR(sai->sai_mclk);
+-			sai->sai_mclk = NULL;
+-		}
++		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
++		if (IS_ERR(sai->sai_mclk))
++			return PTR_ERR(sai->sai_mclk);
  	}
--
--	revert_creds(save_cred);
- }
  
- static int
-@@ -830,7 +829,6 @@ static void nfs_local_call_write(struct
- 	int n_iters;
- 
- 	current->flags |= PF_LOCAL_THROTTLE | PF_MEMALLOC_NOIO;
--	save_cred = override_creds(filp->f_cred);
- 
- 	file_start_write(filp);
- 	n_iters = atomic_read(&iocb->n_iters);
-@@ -845,7 +843,10 @@ static void nfs_local_call_write(struct
- 		} else
- 			iocb->kiocb.ki_flags &= ~IOCB_DIRECT;
- 
-+		save_cred = override_creds(filp->f_cred);
- 		status = filp->f_op->write_iter(&iocb->kiocb, &iocb->iters[i]);
-+		revert_creds(save_cred);
-+
- 		if (status != -EIOCBQUEUED) {
- 			if (unlikely(status >= 0 && status < iocb->iters[i].count))
- 				force_done = true; /* Partial write */
-@@ -857,7 +858,6 @@ static void nfs_local_call_write(struct
- 	}
- 	file_end_write(filp);
- 
--	revert_creds(save_cred);
- 	current->flags = old_flags;
- }
- 
+ 	return 0;
 
 
 
