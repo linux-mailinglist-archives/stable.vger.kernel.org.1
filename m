@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-206912-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207515-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4021D0982C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2D5ED09FF4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id ABC0530D9D5A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3C61B3081D5F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2E1935A956;
-	Fri,  9 Jan 2026 12:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B413435A95C;
+	Fri,  9 Jan 2026 12:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A/ycVWQh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m32igkbk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51DD335A952;
-	Fri,  9 Jan 2026 12:09:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 68FB033C53A;
+	Fri,  9 Jan 2026 12:37:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960553; cv=none; b=Ue494VfZGFXut6hI377o8ObdXMNT7ChItpuXfnHUgsktbqXG00wGGrzdpXMGlQ/aLZ88cSUoAcQsOTDTr7j3B9mqfQpJeGNPHtOa+rsdlEm4ABrkm/AEjXDVGNmzSVUZYgTxZmhzrHichVFLcdaUNUKZWMz0CR3cchD2Yah0TrA=
+	t=1767962273; cv=none; b=Ugc3RRD8XDKLdK1StJHxTon9U6+dFs1DzVBY6v/WdQ888TVIQv53f8widagxE+Ff0v41oklQq3ln8C6VsusP/N/PLlNbhScfIRQE8GwUavSItyd8TUXSfywMFk+fT8PVvMFudHSVh2uvcvOlfV7M7YI7sA677f6bFebpzRUGKTg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960553; c=relaxed/simple;
-	bh=fMqT/7ljsmkqpwxNjYty9tVOIf/LgIdcJ87Jfzvx2Zs=;
+	s=arc-20240116; t=1767962273; c=relaxed/simple;
+	bh=qZt/JDmhjNzf2/WoH7uxxo1yUU9uXZO7wuzs5Q7mhdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KdvdbVNJew+ass6p3wY5eV9Dy4oefCFvKDIy2c9E558wPp/lS5dv24+fSIW6GQNgXCpbHIb7gQmlW9vjQR8cKhJMHjsF1paqwO3fuNoqJgIKrIGpVPDn5KiKhgcr2IXp6IVmSwFczAxMUsHDASgLJiiygzl+WHDC5578lMePd3Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A/ycVWQh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9F96C4CEF1;
-	Fri,  9 Jan 2026 12:09:12 +0000 (UTC)
+	 MIME-Version; b=FUhT0X5/WvHQ8dhN6/e8LQFhNL1hHmI/I9Ev0Mb9/eK++4Y+JsE9k3mmWRt2Esn2HWQggDwnnpPIaUNJEXQfMSxqkh5Rq3hBHgtN49PTXIsAgJ1MVGIOX5PnKO7yKv22m+yma5109K1pmTWh9plDEduA6+YfF0T9gfcyU+2oFOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m32igkbk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC7BBC4CEF1;
+	Fri,  9 Jan 2026 12:37:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960553;
-	bh=fMqT/7ljsmkqpwxNjYty9tVOIf/LgIdcJ87Jfzvx2Zs=;
+	s=korg; t=1767962273;
+	bh=qZt/JDmhjNzf2/WoH7uxxo1yUU9uXZO7wuzs5Q7mhdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A/ycVWQhZQsjPzj+Bg+Soom9oJsZR2EjLeVvM1n0ozT8UXJwXFYdphR34DL/GdiqC
-	 GlQWLCStKFHI7z6d8H0NF0BPRfYr1MCQzem1S3DCdiwYjcAmVknkMEHlc5fnZ/DgLv
-	 vO4co6z/yZ0pSI4asFdAfzxnByOxNschGaq5fKVs=
+	b=m32igkbkaw4PQ8W+MuItJxP1VnvVASmaopKLR270XvdTtYqIvpOAKfEScFN2xpKWL
+	 SS3jPpvizCMZ7ZKoZ6dK0o9DaU0zJdDMU3QXlAaAC3KYIUg8Ht9NQET2BPS76BobZm
+	 GP8ahFsQ2epndujWAgfM8JYsUXlsk+M4Pp7ofxLw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.6 444/737] cpufreq: nforce2: fix reference count leak in nforce2
-Date: Fri,  9 Jan 2026 12:39:43 +0100
-Message-ID: <20260109112150.698958006@linuxfoundation.org>
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Encrow Thorne <jyc0019@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 306/634] reset: fix BIT macro reference
+Date: Fri,  9 Jan 2026 12:39:44 +0100
+Message-ID: <20260109112129.048360653@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Encrow Thorne <jyc0019@gmail.com>
 
-commit 9600156bb99852c216a2128cdf9f114eb67c350f upstream.
+[ Upstream commit f3d8b64ee46c9b4b0b82b1a4642027728bac95b8 ]
 
-There are two reference count leaks in this driver:
+RESET_CONTROL_FLAGS_BIT_* macros use BIT(), but reset.h does not
+include bits.h. This causes compilation errors when including
+reset.h standalone.
 
-1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
-   of the PCI device, but pci_dev_put() is never called to release it,
-   thus leaking the reference.
+Include bits.h to make reset.h self-contained.
 
-2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
-   nforce2_dev which is stored in a global variable, but the reference
-   is never released when the module is unloaded.
-
-Fix both by:
-- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
-  the configuration.
-- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
-  global device reference.
-
-Found via static analysis.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Suggested-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Encrow Thorne <jyc0019@gmail.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-nforce2.c |    3 +++
- 1 file changed, 3 insertions(+)
+ include/linux/reset.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/cpufreq/cpufreq-nforce2.c
-+++ b/drivers/cpufreq/cpufreq-nforce2.c
-@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int
- 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
- 	fsb /= 1000000;
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 514ddf003efc..4b31d683776e 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_RESET_H_
+ #define _LINUX_RESET_H_
  
-+	pci_dev_put(nforce2_sub5);
-+
- 	/* Check if PLL register is already set */
- 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
- 
-@@ -432,6 +434,7 @@ static int __init nforce2_init(void)
- static void __exit nforce2_exit(void)
- {
- 	cpufreq_unregister_driver(&nforce2_driver);
-+	pci_dev_put(nforce2_dev);
- }
- 
- module_init(nforce2_init);
++#include <linux/bits.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/types.h>
+-- 
+2.51.0
+
 
 
 
