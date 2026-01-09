@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 79074D09BE1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1968D09437
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5BE15312FDCB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56AFF30ED976
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B723635B15A;
-	Fri,  9 Jan 2026 12:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2243C359F8B;
+	Fri,  9 Jan 2026 12:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdpLEG0f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A67B8+c1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A8A35B158;
-	Fri,  9 Jan 2026 12:27:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBA2B359F89;
+	Fri,  9 Jan 2026 12:00:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961621; cv=none; b=HFmU8znRdhgA39tDFJW+T59ZNMOvMKjQUnrV45/ZDQNRPaCBk4j9sircWPvZ/tBlGMbcwScOL7hV7UEPFclvVGlq+kEiLedOV8wN2XHm3upSZc7kQpfYqlcanmXfY5THwnN17Krt7CxJAlwP869n65+RPWd1MxL5yS9Gzc8xqA8=
+	t=1767960004; cv=none; b=eBGzcA9ChacR/j1MKMJiDEg/BAuZAmz0i1v6mj35XdbZufYiGCtalf5EUk6rFtAdLr0XV/IUn0nBcFixrH4e/FyQsicB2euyw76vNu/RjsiGqwwErbQmb4Lt/T/CLp+WK/vfwx17f8aL9Kftgpf4uxsKFPwsA12jD6ZtpC3FilQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961621; c=relaxed/simple;
-	bh=rqfGPDsp+K2F+CLGq8lTkOpaL1ns+ZgWnzZ1LD4rjp4=;
+	s=arc-20240116; t=1767960004; c=relaxed/simple;
+	bh=TfuoK51h41i94HJII5w23kRX6JBd819auhIOD32ARbY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gibF7RElJBvj/QDkMTXxn+hFC8ry1akvZCxKDPdiWzFXkHGWJ7lYPcNoAuVImr/3BXjACF7ecxWD6km376v/ZWuguptlPZ7RZw0+3y1PcqwDpYc/K5PKwVAe9YBx0T1yFd2wdQLpQgigH/nYTSTsc177DMA+R+wZwPsxj+9+YPM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdpLEG0f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87AAC19422;
-	Fri,  9 Jan 2026 12:27:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=AxCNEuE5I/2Gzx0mnTqW5fC4BAcV+I5o1I8WYiET5s0rhpInWEnzF0InYGDdXCaOK3OUXlyalUopmroCQ5ZidXJZMk2my/UM/4kr5MPWg6oWiW3FOpkfr0bkpJHqI8SVjfIxLARFeVImodxutLXXx8fCD9ptaQxVEDMm6vC/upw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A67B8+c1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CADDC4CEF1;
+	Fri,  9 Jan 2026 12:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961621;
-	bh=rqfGPDsp+K2F+CLGq8lTkOpaL1ns+ZgWnzZ1LD4rjp4=;
+	s=korg; t=1767960004;
+	bh=TfuoK51h41i94HJII5w23kRX6JBd819auhIOD32ARbY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hdpLEG0f8IlyXIZBhT4i12xV7x1G75iYrxoOnDVBCSsunUtyuZAjEdj0+O5K7kwg3
-	 lMnVyl4OqfGqbTphH6H8f2E4fKo8pBIMPM1/8nF0LkkdFWQ+y/gyygqo3wstAyOXkw
-	 wpQ23sEO2fAhBlWMKzv6L2uKzkZGUeVbn1EpO3dQ=
+	b=A67B8+c1KQnRCKnWFaamNQAVlh09ZmJ103BTxJDROJGLvHL/ziXDhsuA2SIe2Mhnt
+	 KFT1Na+rOQb/TboteH5H9oVrRoClo3/T6YrC9Nc6uKA39hLZkcC+XCLkxYK+47PXmy
+	 i8a1zcZdxhSlgW6YtIYjnES2Rql6HPkhVONx8BAY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 079/634] power: supply: wm831x: Check wm831x_set_bits() return value
-Date: Fri,  9 Jan 2026 12:35:57 +0100
-Message-ID: <20260109112120.412812635@linuxfoundation.org>
+Subject: [PATCH 6.6 219/737] ACPI: processor_core: fix map_x2apic_id for amd-pstate on am4
+Date: Fri,  9 Jan 2026 12:35:58 +0100
+Message-ID: <20260109112142.242511939@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,58 +58,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
+[ Upstream commit 17e7972979e147cc51d4a165e6b6b0f93273ca68 ]
 
-Since wm831x_set_bits() may return error, log failure and exit from
-wm831x_usb_limit_change() in such case.
+On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
+and equivalent Gigabyte, amd-pstate does not initialize when the
+x2apic is enabled in the BIOS. Kernel debug messages include:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
+[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
+[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
 
-Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+I tracked this down to map_x2apic_id() checking device_declaration
+passed in via the type argument of acpi_get_phys_id() via
+map_madt_entry() while map_lapic_id() does not.
+
+It appears these BIOSes use Processor statements for declaring the CPUs
+in the ACPI namespace instead of processor device objects (which should
+have been used). CPU declarations via Processor statements were
+deprecated in ACPI 6.0 that was released 10 years ago. They should not
+be used any more in any contemporary platform firmware.
+
+I tried to contact Asus support multiple times, but never received a
+reply nor did any BIOS update ever change this.
+
+Fix amd-pstate w/ x2apic on am4 by allowing map_x2apic_id() to work with
+CPUs declared via Processor statements for IDs less than 255, which is
+consistent with ACPI 5.0 that still allowed Processor statements to be
+used for declaring CPUs.
+
+Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
+Signed-off-by: René Rebe <rene@exactco.de>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251126.165513.1373131139292726554.rene@exactco.de
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/wm831x_power.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ drivers/acpi/processor_core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
-index 82e31066c746e..bbae77982d086 100644
---- a/drivers/power/supply/wm831x_power.c
-+++ b/drivers/power/supply/wm831x_power.c
-@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 							 struct wm831x_power,
- 							 usb_notify);
- 	unsigned int i, best;
-+	int ret;
+diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
+index 7dd6dbaa98c34..dea60d694343f 100644
+--- a/drivers/acpi/processor_core.c
++++ b/drivers/acpi/processor_core.c
+@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
+ 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
+ 		return -ENODEV;
  
- 	/* Find the highest supported limit */
- 	best = 0;
-@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 	dev_dbg(wm831x_power->wm831x->dev,
- 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
- 
--	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
--		        WM831X_USB_ILIM_MASK, best);
-+	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
-+			      WM831X_USB_ILIM_MASK, best);
-+	if (ret < 0) {
-+		dev_err(wm831x_power->wm831x->dev,
-+			"Failed to set USB current limit: %d\n", ret);
-+		return ret;
-+	}
- 
- 	return 0;
- }
+-	if (device_declaration && (apic->uid == acpi_id)) {
++	if (apic->uid == acpi_id && (device_declaration || acpi_id < 255)) {
+ 		*apic_id = apic->local_apic_id;
+ 		return 0;
+ 	}
 -- 
 2.51.0
 
