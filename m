@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206910-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207493-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDB6D0970B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFF8CD09F91
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43425305DA68
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A6A5B3167BDE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A6E935A94A;
-	Fri,  9 Jan 2026 12:09:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8158E35A95C;
+	Fri,  9 Jan 2026 12:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRW1a6mD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ebpGeMl0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8E635B135;
-	Fri,  9 Jan 2026 12:09:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457C031ED6D;
+	Fri,  9 Jan 2026 12:36:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960547; cv=none; b=jx4Jpop3ql6VmptPUqtUq0gdRPlM8HCUlAK136Pt7AnqDYO2ePPFF/3VS62jsvmfq9lOB+pqEJlZpLNHJ8DCFMbtGVfK6qIloqEkYy/ZhlfS74KZbJLy/UUhoWYpTmnxG1catE/KDLJZva/fAGqSlOOaH7KlhBot4yI1DYuEBV0=
+	t=1767962211; cv=none; b=BnovGgNZLFRfaRj6e+X3NaXW39z3+OxDo+5erA8zoqEO7sB8wfSn4ozH1ZmQXv9MxFjVQGqVJepimXB+ZZW3RlC4bO0b4yXuO3YrPtOnA2wRHUCFLD54z6JtkblcCxhLXgcI2LxBIVpZv6y35FuuOhcclinENbao3KgMCQ5mAKA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960547; c=relaxed/simple;
-	bh=EyZuUazGu5AWry6LBNIigVcgfYzpHCTa+Wyqf63i8Dc=;
+	s=arc-20240116; t=1767962211; c=relaxed/simple;
+	bh=7DmcFliDCamXxp4OX6LyGOQDKA96MjN4+QJtMjKJ9S0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gOBkJY4N+jcUHtBWafA1XQ7GRj3TeGA3a+YN490U8FRrUKYP2YztN6sDBsVTmpJwvswWjcAT05eH0CJyFabXek5hAcSd7kEsRu4xlDz14JxbaqNGH3unDSwK7OZzsvQ3bo1lwg4VFnNyGm3UMVSSf2o4TJgESl72g1rS5jGeLN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRW1a6mD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C621C16AAE;
-	Fri,  9 Jan 2026 12:09:07 +0000 (UTC)
+	 MIME-Version; b=ZyIcjbOowP0RDTQk3pE7CQ2ErZaab4IGyNUYuOlCYcpzIJIOk8XjZgEW1R5nyo5cyQ5GJbDJOlz83HbjDXacpXhuOqdFfZjqnu2bLSQpQ4ogI0/rOKlFA1yez5YzlaSn3cZHngrqPIjEvQGzAUvpKu6Vqp58LBke4IbhJun+CQw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ebpGeMl0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C579AC4CEF1;
+	Fri,  9 Jan 2026 12:36:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960547;
-	bh=EyZuUazGu5AWry6LBNIigVcgfYzpHCTa+Wyqf63i8Dc=;
+	s=korg; t=1767962211;
+	bh=7DmcFliDCamXxp4OX6LyGOQDKA96MjN4+QJtMjKJ9S0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xRW1a6mDi3dHPnBfVOnoUfsow+EGE9MgH/uKAUt1Rk5pMnNvhZU9pBLVko3/0kUNN
-	 DMY96b7sXNLq1h3WAd15uMjLk858AN/rYa+Y32fW04lVdIUN8eqEuAh/Avv9Tz/30e
-	 kvTNpw94ByGH2O0PUKIl0NI29CRuIpBA00mRinek=
+	b=ebpGeMl0W1aQ8X8refMYLNMhJ5MR2zWZ9S0G4d409NMtArq5xw6ejXtsHjfJA0ACH
+	 oFrsNNLUXdLoTXVdqFFgoti1FBlL/urpQAv4wyhl6/B7kjmpPWbvSalORg/EBAaHQA
+	 NN7dLKNvfzt3QJbxU5YwE4U8+vsKZnxp43u4u8A4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 425/737] ext4: align max orphan file size with e2fsprogs limit
+	Ping Cheng <ping.cheng@wacom.com>,
+	stable@kernel.org,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 6.1 286/634] HID: input: map HID_GD_Z to ABS_DISTANCE for stylus/pen
 Date: Fri,  9 Jan 2026 12:39:24 +0100
-Message-ID: <20260109112149.984718531@linuxfoundation.org>
+Message-ID: <20260109112128.293759142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +58,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Ping Cheng <pinglinux@gmail.com>
 
-commit 7c11c56eb32eae96893eebafdbe3decadefe88ad upstream.
+commit 7953794f741e94d30df9dafaaa4c031c85b891d6 upstream.
 
-Kernel commit 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
-limits the maximum supported orphan file size to 8 << 20.
+HID_GD_Z is mapped to ABS_Z for stylus and pen in hid-input.c. But HID_GD_Z
+should be used to report ABS_DISTANCE for stylus and pen as described at:
+Documentation/input/event-codes.rst#n226
 
-However, in e2fsprogs, the orphan file size is set to 32–512 filesystem
-blocks when creating a filesystem.
+* ABS_DISTANCE:
 
-With 64k block size, formatting an ext4 fs >32G gives an orphan file bigger
-than the kernel allows, so mount prints an error and fails:
+  - Used to describe the distance of a tool from an interaction surface. This
+    event should only be emitted while the tool is hovering, meaning in close
+    proximity of the device and while the value of the BTN_TOUCH code is 0. If
+    the input device may be used freely in three dimensions, consider ABS_Z
+    instead.
+  - BTN_TOOL_<name> should be set to 1 when the tool comes into detectable
+    proximity and set to 0 when the tool leaves detectable proximity.
+    BTN_TOOL_<name> signals the type of tool that is currently detected by the
+    hardware and is otherwise independent of ABS_DISTANCE and/or BTN_TOUCH.
 
-    EXT4-fs (vdb): orphan file too big: 8650752
-    EXT4-fs (vdb): mount failed
+This patch makes the correct mapping. The ABS_DISTANCE is currently not mapped
+by any HID usage in hid-generic driver.
 
-To prevent this issue and allow previously created 64KB filesystems to
-mount, we updates the maximum allowed orphan file size in the kernel to
-512 filesystem blocks.
-
-Fixes: 0a6ce20c1564 ("ext4: verify orphan file size is not too big")
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251120134233.2994147-1-libaokun@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Ping Cheng <ping.cheng@wacom.com>
 Cc: stable@kernel.org
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/orphan.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/hid-input.c |   18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/orphan.c
-+++ b/fs/ext4/orphan.c
-@@ -8,6 +8,8 @@
- #include "ext4.h"
- #include "ext4_jbd2.h"
+--- a/drivers/hid/hid-input.c
++++ b/drivers/hid/hid-input.c
+@@ -871,7 +871,7 @@ static void hidinput_configure_usage(str
  
-+#define EXT4_MAX_ORPHAN_FILE_BLOCKS 512
+ 		switch (usage->hid) {
+ 		/* These usage IDs map directly to the usage codes. */
+-		case HID_GD_X: case HID_GD_Y: case HID_GD_Z:
++		case HID_GD_X: case HID_GD_Y:
+ 		case HID_GD_RX: case HID_GD_RY: case HID_GD_RZ:
+ 			if (field->flags & HID_MAIN_ITEM_RELATIVE)
+ 				map_rel(usage->hid & 0xf);
+@@ -879,6 +879,22 @@ static void hidinput_configure_usage(str
+ 				map_abs_clear(usage->hid & 0xf);
+ 			break;
+ 
++		case HID_GD_Z:
++			/* HID_GD_Z is mapped to ABS_DISTANCE for stylus/pen */
++			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
++				map_rel(usage->hid & 0xf);
++			} else {
++				if (field->application == HID_DG_PEN ||
++				    field->physical == HID_DG_PEN ||
++				    field->logical == HID_DG_STYLUS ||
++				    field->physical == HID_DG_STYLUS ||
++				    field->application == HID_DG_DIGITIZER)
++					map_abs_clear(ABS_DISTANCE);
++				else
++					map_abs_clear(usage->hid & 0xf);
++			}
++			break;
 +
- static int ext4_orphan_file_add(handle_t *handle, struct inode *inode)
- {
- 	int i, j, start;
-@@ -589,7 +591,7 @@ int ext4_init_orphan_info(struct super_b
- 	 * consuming absurd amounts of memory when pinning blocks of orphan
- 	 * file in memory.
- 	 */
--	if (inode->i_size > 8 << 20) {
-+	if (inode->i_size > (EXT4_MAX_ORPHAN_FILE_BLOCKS << inode->i_blkbits)) {
- 		ext4_msg(sb, KERN_ERR, "orphan file too big: %llu",
- 			 (unsigned long long)inode->i_size);
- 		ret = -EFSCORRUPTED;
+ 		case HID_GD_WHEEL:
+ 			if (field->flags & HID_MAIN_ITEM_RELATIVE) {
+ 				set_bit(REL_WHEEL, input->relbit);
 
 
 
