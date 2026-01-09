@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0424ED09173
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C74AD09A3F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1BA943005322
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6960430124DA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1C4D318EFA;
-	Fri,  9 Jan 2026 11:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 450642EC54D;
+	Fri,  9 Jan 2026 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rpr12PKa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xdmzXAhQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8638831A7EA;
-	Fri,  9 Jan 2026 11:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0812032AAB5;
+	Fri,  9 Jan 2026 12:24:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959754; cv=none; b=U6t85a4gCjHMZd5vPCd29pp0YvD/hw2f0gZevdW1Xvymp48idzIK+UjQq0ULTMzLM9QvZqfvOO+73KLM500YyOseZGA8x/uvTsEZq22NZNwu27+t1EJ9CPIlxPZ/sa8f9ceKXhPFz3/CWtvC0Ei+I/3+3kvwj/Y11hQvvgRIrSQ=
+	t=1767961469; cv=none; b=ARq+x1P4TNvBDvPyjZwWrgbn7vt27do8ZgBdeT+vvxpAvkk55WZfoIiM3eQAXtoe6xHCMpjDA8Vt0BQlqgwv4V6ftOR2QgU+ie+sm1avmtjKerx94ME3TwVdkN7RSqIoSY01JYb1bLIysA7zDA2N/5/S6MDcJOwe5AxiEk2pO2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959754; c=relaxed/simple;
-	bh=hxAr4HYFMeCuunCJwzig0AJNO6AH7LSCNACy909R+Ow=;
+	s=arc-20240116; t=1767961469; c=relaxed/simple;
+	bh=TOHvDTH/YlgLz2IdVq2d/soJM6ucsydALq26dU7u3xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zl4P2aitkMm5/RzwKVHqFfzwV/fV78eJmqEE2k7FCQvyCFSTq1wM5XddrozQjjlIk3VEj5Yi9XbP+YuEpP2I3kblyzb5gxS8+3H1oQ04jUlQ1y911V+I2geg6JiqWIwVqRVjtIeN/DC0xg89AdgwsF2RAnpT7+Ex84nNH9vXR4I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rpr12PKa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F6A3C4CEF1;
-	Fri,  9 Jan 2026 11:55:53 +0000 (UTC)
+	 MIME-Version; b=kAhHNA9zdkHZnXFRKgDSoT6mfXQl3mvX8vwMpb2bwdELD998kz9qD75ZMxAn/wdmvTR6BVRVvWXlBCHCnoaQN+3w+BirVV15g8xdSWXXKHqjPY/1FXlcVMjYWdqIawE0NhcTU4ugm3Cd04ZPrO4geeBykmGfX7Z601ti/LYgdDk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xdmzXAhQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856B2C4CEF1;
+	Fri,  9 Jan 2026 12:24:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959754;
-	bh=hxAr4HYFMeCuunCJwzig0AJNO6AH7LSCNACy909R+Ow=;
+	s=korg; t=1767961468;
+	bh=TOHvDTH/YlgLz2IdVq2d/soJM6ucsydALq26dU7u3xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rpr12PKaK5A4Ak++cnmeJ0pRWsKOu6+nejBAEq1PcYx1fpNRYm8eapIfBNF6zr0Yn
-	 JGY7RB5l948Vu3geCzA987rWn+I2lc4gfmo3bDBxUPJx7FqhmEUjIX7TGXSK2xJoyC
-	 FFnn4cGmn9A4FmCBCxcsitWN8p/B/D25B0jzcy1k=
+	b=xdmzXAhQeN/d+v5TzpnI7enDmVplszKvKbHA/VHyR/hNnWkZ7dNBR5FYI98imWKZ4
+	 agPLAfnJ/Pfc26b6wMos3Iw0a3XpEvVtXbuXcbJJmjuKTbUxwQZShZRWrGiyRX0ncX
+	 HKzrNtap34vqxspidOpqnkPP6b1R8ppRIGxztQaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Al Viro <viro@zeniv.linux.org.uk>,
+	Yiqi Sun <sunyiqixm@gmail.com>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 163/737] tracefs: fix a leak in eventfs_create_events_dir()
-Date: Fri,  9 Jan 2026 12:35:02 +0100
-Message-ID: <20260109112140.125741643@linuxfoundation.org>
+Subject: [PATCH 6.1 025/634] smb: fix invalid username check in smb3_fs_context_parse_param()
+Date: Fri,  9 Jan 2026 12:35:03 +0100
+Message-ID: <20260109112118.393525489@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Al Viro <viro@zeniv.linux.org.uk>
+From: Yiqi Sun <sunyiqixm@gmail.com>
 
-[ Upstream commit 798a401660a151633cb171738a72a8f1efb9b0b4 ]
+[ Upstream commit ed6612165b74f09db00ef0abaf9831895ab28b7f ]
 
-If we have LOCKDOWN_TRACEFS, the function bails out - *after*
-having locked the parent directory and without bothering to
-undo that.  Just check it before tracefs_start_creating()...
+Since the maximum return value of strnlen(..., CIFS_MAX_USERNAME_LEN)
+is CIFS_MAX_USERNAME_LEN, length check in smb3_fs_context_parse_param()
+is always FALSE and invalid.
 
-Fixes: e24709454c45 "tracefs/eventfs: Add missing lockdown checks"
-Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Al Viro <viro@zeniv.linux.org.uk>
+Fix the comparison in if statement.
+
+Signed-off-by: Yiqi Sun <sunyiqixm@gmail.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/tracefs/event_inode.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/smb/client/fs_context.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/tracefs/event_inode.c b/fs/tracefs/event_inode.c
-index 73a08db3b7a85..4190e61550449 100644
---- a/fs/tracefs/event_inode.c
-+++ b/fs/tracefs/event_inode.c
-@@ -827,7 +827,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 						const struct eventfs_entry *entries,
- 						int size, void *data)
- {
--	struct dentry *dentry = tracefs_start_creating(name, parent);
-+	struct dentry *dentry;
- 	struct eventfs_root_inode *rei;
- 	struct eventfs_inode *ei;
- 	struct tracefs_inode *ti;
-@@ -838,6 +838,7 @@ struct eventfs_inode *eventfs_create_events_dir(const char *name, struct dentry
- 	if (security_locked_down(LOCKDOWN_TRACEFS))
- 		return NULL;
+diff --git a/fs/smb/client/fs_context.c b/fs/smb/client/fs_context.c
+index e6d2e4162b081..9000299e98cb4 100644
+--- a/fs/smb/client/fs_context.c
++++ b/fs/smb/client/fs_context.c
+@@ -1183,7 +1183,7 @@ static int smb3_fs_context_parse_param(struct fs_context *fc,
+ 			break;
+ 		}
  
-+	dentry = tracefs_start_creating(name, parent);
- 	if (IS_ERR(dentry))
- 		return ERR_CAST(dentry);
- 
+-		if (strnlen(param->string, CIFS_MAX_USERNAME_LEN) >
++		if (strnlen(param->string, CIFS_MAX_USERNAME_LEN) ==
+ 		    CIFS_MAX_USERNAME_LEN) {
+ 			pr_warn("username too long\n");
+ 			goto cifs_parse_mount_err;
 -- 
 2.51.0
 
