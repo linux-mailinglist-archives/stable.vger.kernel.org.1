@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207015-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C161FD0A0E1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:54:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAE5D09786
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AD5C030F083C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 654B23094838
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2101CAB3;
-	Fri,  9 Jan 2026 12:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3263346AF;
+	Fri,  9 Jan 2026 12:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5K3Wtta"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X7CN8Vjc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF0D310636;
-	Fri,  9 Jan 2026 12:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00C442EAD10;
+	Fri,  9 Jan 2026 12:14:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962561; cv=none; b=ExvEmPoB3lC8iEQPx6ky3Tg/HQLnduxSVFGRp87mqyqy9ChiglSQAEKsqZ9IfXxjK4Vl0k83kNUWQ6YP7RMXXNcDSX7K0jW7Nf17iR19rhL339VE9NF46NS6L4Iw+/oOEQ7Z1OZOu8zexF8Qn/2SnoraVqMgoQzXumMHDdcnfXM=
+	t=1767960851; cv=none; b=fKWSDU9AW0pHDPi5tPdo6mbfut5r7DaaB+8VdCpBk/8964nzyIwUg7m8Guv8Asj/n9wVXKSTS2GSAqTMV8I6b0sqQ0pC/26kOUaAOa6RHXe1M85CcSihLyItlUPYjLuXgHI6Gi1L/2sksAYoEVAF8MWFF30bbr8JcINhyy9Ima0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962561; c=relaxed/simple;
-	bh=Ul766+HfMNwT/NI/l+cpVjVgLK5gbHKakbLww6f4dsQ=;
+	s=arc-20240116; t=1767960851; c=relaxed/simple;
+	bh=sqxqCaARzjEF4AJZBIw4rnH1yFmknHjDtdkIGCrLRhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jVhOcNg9MPqpMSz0kPqRQAclwWya7OEA1UCs7RmEV0HlyH/XIFzYeYHeN4lfmaLcpGvTgsoz1WVg0uox8mEb3dkyyIhvHU7rkXBFEM7Yc/CyHrcoFBBT9bAltJ4Jnx+IHchEb63iNsghajqPs+i6RR85ZTln15CBs4t35J/XMI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5K3Wtta; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3916C4CEF1;
-	Fri,  9 Jan 2026 12:42:40 +0000 (UTC)
+	 MIME-Version; b=PVfiUEw1D+xZLjY/F3dsBY3Jh+bulzMGVwsHN+6Zsn+0RuwofWTmlBd1XQMfx7Uun78GuC7WoXWOqnhbq+Mk4Vn5zZXYhmWTwMtX1rFJgFXB7X723uuVjcsyOXfIxz92jz7EuHYOajryS87pT6x8fdJzOsaP8E9XVtwK58Kp9QM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X7CN8Vjc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E26C4CEF1;
+	Fri,  9 Jan 2026 12:14:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962561;
-	bh=Ul766+HfMNwT/NI/l+cpVjVgLK5gbHKakbLww6f4dsQ=;
+	s=korg; t=1767960850;
+	bh=sqxqCaARzjEF4AJZBIw4rnH1yFmknHjDtdkIGCrLRhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=C5K3WttajGQO23KBXrz63iKf3TwO4J47lV1/wY02/uoAK5ybPII5SgxI2ScFfPHsw
-	 jRNWO13uOWXaVcIISiWXhLjZ4p7RgHMh3w1PvZKI08D24ENlG1M5Y50iKaHZ418Kj8
-	 VyowN4CSH/kLE3Vq+MVsEaw7+TwvfIzS6UHZH0qw=
+	b=X7CN8VjcL8qwn70pCFwuIsKfK5OOlSvYHF4YnQIl7pJAH93/6JYfY+epJrtJTrCKL
+	 S24G48BpI0TtE+oXRU0oOuRDJNlAAXqOXST38KQNzIrcj6kXzodL36MTsY7xCUpcsg
+	 cps7FOErPpxhtAOMo/lduPF5L6CkEM/MepOqTSjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 408/634] platform/x86: msi-laptop: add missing sysfs_remove_group()
-Date: Fri,  9 Jan 2026 12:41:26 +0100
-Message-ID: <20260109112132.882961874@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 6.6 548/737] ASoC: qcom: qdsp6: q6asm-dai: set 10 ms period and buffer alignment.
+Date: Fri,  9 Jan 2026 12:41:27 +0100
+Message-ID: <20260109112154.610563438@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,47 +59,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit 1461209cf813b6ee6d40f29b96b544587df6d2b1 ]
+commit 81c53b52de21b8d5a3de55ebd06b6bf188bf7efd upstream.
 
-A sysfs group is created in msi_init() when old_ec_model is enabled, but
-never removed. Remove the msipf_old_attribute_group in that case.
+DSP expects the periods to be aligned to fragment sizes, currently
+setting up to hw constriants on periods bytes is not going to work
+correctly as we can endup with periods sizes aligned to 32 bytes however
+not aligned to fragment size.
 
-Fixes: 03696e51d75a ("msi-laptop: Disable brightness control for new EC")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20251217103617.27668-2-fourier.thomas@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Update the constriants to use fragment size, and also set at step of
+10ms for period size to accommodate DSP requirements of 10ms latency.
+
+Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-4-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/msi-laptop.c | 3 +++
- 1 file changed, 3 insertions(+)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/msi-laptop.c b/drivers/platform/x86/msi-laptop.c
-index f4c6c36e05a5..2a8839135492 100644
---- a/drivers/platform/x86/msi-laptop.c
-+++ b/drivers/platform/x86/msi-laptop.c
-@@ -1130,6 +1130,9 @@ static void __exit msi_cleanup(void)
- 	sysfs_remove_group(&msipf_device->dev.kobj, &msipf_attribute_group);
- 	if (!quirks->old_ec_model && threeg_exists)
- 		device_remove_file(&msipf_device->dev, &dev_attr_threeg);
-+	if (quirks->old_ec_model)
-+		sysfs_remove_group(&msipf_device->dev.kobj,
-+				   &msipf_old_attribute_group);
- 	platform_device_unregister(msipf_device);
- 	platform_driver_unregister(&msipf_driver);
- 	backlight_device_unregister(msibl_device);
--- 
-2.51.0
-
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -413,13 +413,13 @@ static int q6asm_dai_open(struct snd_soc
+ 	}
+ 
+ 	ret = snd_pcm_hw_constraint_step(runtime, 0,
+-		SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
++		SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
+ 	if (ret < 0) {
+ 		dev_err(dev, "constraint for period bytes step ret = %d\n",
+ 								ret);
+ 	}
+ 	ret = snd_pcm_hw_constraint_step(runtime, 0,
+-		SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
++		SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
+ 	if (ret < 0) {
+ 		dev_err(dev, "constraint for buffer bytes step ret = %d\n",
+ 								ret);
 
 
 
