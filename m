@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-206647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207239-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18C9BD09287
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D6D66D09A54
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9B2EB301FB4A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 58A45303F799
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 077D933C511;
-	Fri,  9 Jan 2026 11:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E41C35A953;
+	Fri,  9 Jan 2026 12:24:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gomo8VqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDpTgvsl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF343335561;
-	Fri,  9 Jan 2026 11:56:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32E2E35A952;
+	Fri,  9 Jan 2026 12:24:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959800; cv=none; b=mL0o0iNYHvqYkzvuBAFRjW7V2NT0BrLEgJX/4RnUR5wH1kZcvVJzJUHKZDNpPQF7ngV2lKz6PQ1NIweqwrwinwIFlDT7aETyDi4T3COphjrorKW08yOfTH4K9ucorVY6cTJJlCYbGzsRVlM0bUi1nJFcdMQj2iniSIEbhAU1Qbw=
+	t=1767961490; cv=none; b=cXFCsT1h0c2aUGNUwuSrvYAU2VH/74pXUTMvc1Oq89eYmM4ExjJaKWF2xKJOEEDCnvHfwgIvOVP084ec+7qmPI1bzyamhG7gBb5qsNnC2NOlnBgC6uDURkycrRkfSFrgxQKaQ+FhIg0hw7ov0SQBApaFn4DNX8KdWqqW9iwhhzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959800; c=relaxed/simple;
-	bh=0Mfy+kL6EUfdC9/44fOugChKA91MpARCYg+WBq0k4f0=;
+	s=arc-20240116; t=1767961490; c=relaxed/simple;
+	bh=CLUSL3eocEn6zZzq845oEnmWDg8Xcxc1hfPYy/CPmTY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XCrhZNViBZwKufCoH/Ly7Q4MmOqsgXogEOa2NwjURtWnNUnFqfaPPTfBGhYJE/WG1cY41g7EdqefOnnmjhLIb7HUbutFVTgFgH5YCt67MeR5qNIPsjLWcZ/grF5hOQKCF+lJQKPZwhPEkDgYI3+cxNP8imTcrGW9PNOu8O3MV6c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gomo8VqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AD04C4CEF1;
-	Fri,  9 Jan 2026 11:56:40 +0000 (UTC)
+	 MIME-Version; b=lIIF220Kq1gP1aKIdlpRXJtdO9nD5pqxFIAvkHcZktFLeMAbmCWb43OCGnzvheYMmiRPaDlYf9Ws+XS6kb+qsuMe5ngD5zas+WlGyIqVZx2g0PJ3fsroXUVcwduqPGmSacAQMBqjHJcZ1w/J7RZvN65dI5xoOdFOjOheD+z/0Fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDpTgvsl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D449AC4CEF1;
+	Fri,  9 Jan 2026 12:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959800;
-	bh=0Mfy+kL6EUfdC9/44fOugChKA91MpARCYg+WBq0k4f0=;
+	s=korg; t=1767961489;
+	bh=CLUSL3eocEn6zZzq845oEnmWDg8Xcxc1hfPYy/CPmTY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Gomo8VqK7/Ft1L/f8VqcBEYuqDlbOWoqVazZYQoioORCFkG20dsdQIBbKdq20v3b8
-	 z+L8VB3ESbVfWiS31M5Ax9Wl5ZudD3C8PGkPXe+7fi6nC0HR/UUAUhiiONkiJ+vNSR
-	 1ng0IjMOM6JTJta6oDC1vKVCT7KuMw+rCWPlDRUw=
+	b=mDpTgvslpeCo016jOZ2ZMa6HNuxUY5dMyhm9Aq2htfKSbI64xVQ5s0JhVSt9DhJ7K
+	 8n5THGXSoiKlwCTx+vnNmZ9hRvcxR1ORPrz26lSSbuKDspCJxoCRFRAt0PR0GR9agf
+	 GFdhdBVBbJQwXp4baX9sITWGBZyIRv2wZ3AUbrhg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Leach <mike.leach@linaro.org>,
-	Yeoreun Yun <yeoreum.yun@arm.com>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 146/737] coresight: etm4x: Add context synchronization before enabling trace
-Date: Fri,  9 Jan 2026 12:34:45 +0100
-Message-ID: <20260109112139.490274164@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 6.1 008/634] jbd2: avoid bug_on in jbd2_journal_get_create_access() when file system corrupted
+Date: Fri,  9 Jan 2026 12:34:46 +0100
+Message-ID: <20260109112117.741745840@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,92 +61,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
+commit 986835bf4d11032bba4ab8414d18fce038c61bb4 upstream.
 
-According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
-Context synchronization event is required before enabling the trace
-unit.
+There's issue when file system corrupted:
+------------[ cut here ]------------
+kernel BUG at fs/jbd2/transaction.c:1289!
+Oops: invalid opcode: 0000 [#1] SMP KASAN PTI
+CPU: 5 UID: 0 PID: 2031 Comm: mkdir Not tainted 6.18.0-rc1-next
+RIP: 0010:jbd2_journal_get_create_access+0x3b6/0x4d0
+RSP: 0018:ffff888117aafa30 EFLAGS: 00010202
+RAX: 0000000000000000 RBX: ffff88811a86b000 RCX: ffffffff89a63534
+RDX: 1ffff110200ec602 RSI: 0000000000000004 RDI: ffff888100763010
+RBP: ffff888100763000 R08: 0000000000000001 R09: ffff888100763028
+R10: 0000000000000003 R11: 0000000000000000 R12: 0000000000000000
+R13: ffff88812c432000 R14: ffff88812c608000 R15: ffff888120bfc000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f91d6970c99 CR3: 00000001159c4000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ __ext4_journal_get_create_access+0x42/0x170
+ ext4_getblk+0x319/0x6f0
+ ext4_bread+0x11/0x100
+ ext4_append+0x1e6/0x4a0
+ ext4_init_new_dir+0x145/0x1d0
+ ext4_mkdir+0x326/0x920
+ vfs_mkdir+0x45c/0x740
+ do_mkdirat+0x234/0x2f0
+ __x64_sys_mkdir+0xd6/0x120
+ do_syscall_64+0x5f/0xfa0
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-An ISB is added to meet this requirement, particularly for guarding the
-operations in the flow:
+The above issue occurs with us in errors=continue mode when accompanied by
+storage failures. There have been many inconsistencies in the file system
+data.
+In the case of file system data inconsistency, for example, if the block
+bitmap of a referenced block is not set, it can lead to the situation where
+a block being committed is allocated and used again. As a result, the
+following condition will not be satisfied then trigger BUG_ON. Of course,
+it is entirely possible to construct a problematic image that can trigger
+this BUG_ON through specific operations. In fact, I have constructed such
+an image and easily reproduced this issue.
+Therefore, J_ASSERT() holds true only under ideal conditions, but it may
+not necessarily be satisfied in exceptional scenarios. Using J_ASSERT()
+directly in abnormal situations would cause the system to crash, which is
+clearly not what we want. So here we directly trigger a JBD abort instead
+of immediately invoking BUG_ON.
 
-  etm4x_allow_trace()
-   `> kvm_tracing_set_el1_configuration()
-	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
-
-Improved the barrier comments to provide more accurate information.
-
-Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 470decc613ab ("[PATCH] jbd2: initial copy of files from jbd")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251025072657.307851-1-yebin@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
- 1 file changed, 23 insertions(+), 4 deletions(-)
+ fs/jbd2/transaction.c |   19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index a53816f24cd94..c5928f63475a0 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -436,10 +436,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
- 
- 	etm4x_allow_trace(drvdata);
-+
-+	/*
-+	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee the trace unit
-+	 * will observe the new values of the System registers.
-+	 */
-+	if (!csa->io_mem)
-+		isb();
-+
- 	/* Enable the trace unit */
- 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
- 
--	/* Synchronize the register updates for sysreg access */
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using system
-+	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
-+	 * self-hosted trace analyzer must perform a Context synchronization
-+	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
-+	 */
- 	if (!csa->io_mem)
- 		isb();
- 
-@@ -916,11 +930,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1293,14 +1293,23 @@ int jbd2_journal_get_create_access(handl
+ 	 * committing transaction's lists, but it HAS to be in Forget state in
+ 	 * that case: the transaction must have deleted the buffer for it to be
+ 	 * reused here.
++	 * In the case of file system data inconsistency, for example, if the
++	 * block bitmap of a referenced block is not set, it can lead to the
++	 * situation where a block being committed is allocated and used again.
++	 * As a result, the following condition will not be satisfied, so here
++	 * we directly trigger a JBD abort instead of immediately invoking
++	 * bugon.
  	 */
- 	etm4x_prohibit_trace(drvdata);
- 	/*
--	 * Make sure everything completes before disabling, as recommended
--	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
--	 * SSTATUS") of ARM IHI 0064D
-+	 * Prevent being speculative at the point of disabling the trace unit,
-+	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
-+	 * Register, SSTATUS") of ARM IHI 0064D
- 	 */
- 	dsb(sy);
-+	/*
-+	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
-+	 * execute a Context synchronization event to guarantee no new
-+	 * program-flow trace is generated.
-+	 */
- 	isb();
- 	/* Trace synchronization barrier, is a nop if not supported */
- 	tsb_csync();
--- 
-2.51.0
-
+ 	spin_lock(&jh->b_state_lock);
+-	J_ASSERT_JH(jh, (jh->b_transaction == transaction ||
+-		jh->b_transaction == NULL ||
+-		(jh->b_transaction == journal->j_committing_transaction &&
+-			  jh->b_jlist == BJ_Forget)));
++	if (!(jh->b_transaction == transaction || jh->b_transaction == NULL ||
++	      (jh->b_transaction == journal->j_committing_transaction &&
++	       jh->b_jlist == BJ_Forget)) || jh->b_next_transaction != NULL) {
++		err = -EROFS;
++		spin_unlock(&jh->b_state_lock);
++		jbd2_journal_abort(journal, err);
++		goto out;
++	}
+ 
+-	J_ASSERT_JH(jh, jh->b_next_transaction == NULL);
+ 	J_ASSERT_JH(jh, buffer_locked(jh2bh(jh)));
+ 
+ 	if (jh->b_transaction == NULL) {
 
 
 
