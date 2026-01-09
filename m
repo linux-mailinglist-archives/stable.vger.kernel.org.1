@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207755-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A66B4D0A21A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:33 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0777D0997F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 59BF231AF68E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A4DF306334E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7656F35CB76;
-	Fri,  9 Jan 2026 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1BD5435971B;
+	Fri,  9 Jan 2026 12:20:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h7y+9b/I"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FJ+939V7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3693F35C19C;
-	Fri,  9 Jan 2026 12:49:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3647359FA0;
+	Fri,  9 Jan 2026 12:20:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962955; cv=none; b=mNfRrL5mj6vHmHdp/Sz1fB19cilGeV3sc2hWhercgBDk5dHFJZm+qxsV0x4hkHRC4O5z5ca5Bbii2FKJPJqgVhj3u2zaxrlhnDJl2FNmZOU2HKesndwTFr2XRy+OVW5w5EBSBTBa4N3fjieDMLq/Es8v1OXwYreYG8Q/Lbrq8Ic=
+	t=1767961244; cv=none; b=rEjjOgMzVzDdNj0UeTU9HxFdF/vonKS/vsAtAXknrO/0NEpinW/B+YbnbSCuNaANdaM4vnlxcJRkRlxbKaQFKHcmjWHepiL1RLDINgx9zOpS5zfDw2Q5at+EcETCHOnyH/C8NQ8yREyYSyaVa4UIIGwH72Imjredtow3kGmc134=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962955; c=relaxed/simple;
-	bh=6tAz5Mc+DEDB78WxSRLwWDGQuypC6nFwsUecGdfQbIo=;
+	s=arc-20240116; t=1767961244; c=relaxed/simple;
+	bh=hA7wW4jOOmBt5CQdXgVoIWhS2rakVyuvko09btGdnoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SC35L1CP/UoU/V4gR5Unt1zXO5imQ7CwGBa8A+gEB3PByjzpmWP6Z+JTwVaiMRI5HMODXRQaZPz/EnSGfV6rsgt9mtB1xO7IygBoiza17Y4IsjF40DQ4e/Ww1c0UCIqf9kB087q3jFD16BfmLYd/uTkastgtf2X/fZIz8U2FISw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h7y+9b/I; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C26C2BCAF;
-	Fri,  9 Jan 2026 12:49:14 +0000 (UTC)
+	 MIME-Version; b=oOjA+MtrWBcpZJ+FKZg2DFRKn+gole6WSTnhCQFmgiVc+sc+KswjQEMslObzah1C+hLQi+CJqtnF2236ayGvLEvfVzxj3TYi0BWut/fLLhXJAuvvdB36hHGboWT02vw8F/OaIGlrDd3Zb4pZS09Nq8V5OYsgm4mkOIzYRObduiM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FJ+939V7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6386EC4CEF1;
+	Fri,  9 Jan 2026 12:20:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962955;
-	bh=6tAz5Mc+DEDB78WxSRLwWDGQuypC6nFwsUecGdfQbIo=;
+	s=korg; t=1767961244;
+	bh=hA7wW4jOOmBt5CQdXgVoIWhS2rakVyuvko09btGdnoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h7y+9b/I66MkMnxeH4WMWXt8tZnqT8539VWismcwuKN4XuoZJAIiXpcL26Xh18pgW
-	 1vvpdW0HAUfgKCG57BNxN3Qawh8YMGiASV6/rkbPQrxWwqngtM88AMfkIGoBuO2khA
-	 OCBU+D9k7/u5vf7Tp3bfBw0htF7v+FX7+3m5vVFc=
+	b=FJ+939V7of8T35hpC7Qk7s2/vWjpl4bc0b+XDp6T5cbcYinWqQYslR9tfZZwASP/m
+	 0aX1MJ3DsvdkhaAZZreC0TZgn4KTcF+pMZuXL6Z6bNm4hWKFAwjv2v7zk2OraX+Amq
+	 HGc4zIUsvVC2B1/Xzeors8Uz5tM8zYlH9x0q7gYQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 546/634] usb: ohci-nxp: Use helper function devm_clk_get_enabled()
-Date: Fri,  9 Jan 2026 12:43:44 +0100
-Message-ID: <20260109112138.135841826@linuxfoundation.org>
+Subject: [PATCH 6.6 686/737] f2fs: drop inode from the donation list when the last file is closed
+Date: Fri,  9 Jan 2026 12:43:45 +0100
+Message-ID: <20260109112159.865479823@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Jaegeuk Kim <jaegeuk@kernel.org>
 
-[ Upstream commit c146ede472717f352b7283a525bd9a1a2b15e2cf ]
+[ Upstream commit 078cad8212ce4f4ebbafcc0936475b8215e1ca2a ]
 
-devm_clk_get() and clk_prepare_enable() can be replaced by helper
-function devm_clk_get_enabled(). Let's use devm_clk_get_enabled() to
-simplify code and avoid calling clk_disable_unprepare().
+Let's drop the inode from the donation list when there is no other
+open file.
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240902123020.29267-3-zhangzekun11@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: b4c61e542faf ("usb: ohci-nxp: fix device leak on probe failure")
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 10b591e7fb7c ("f2fs: fix to avoid updating compression context during writeback")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-nxp.c |   18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ fs/f2fs/f2fs.h  |    2 ++
+ fs/f2fs/file.c  |    8 +++++++-
+ fs/f2fs/inode.c |    2 +-
+ fs/f2fs/super.c |    1 +
+ 4 files changed, 11 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -51,8 +51,6 @@ static struct hc_driver __read_mostly oh
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -841,6 +841,7 @@ struct f2fs_inode_info {
+ 	/* linked in global inode list for cache donation */
+ 	struct list_head gdonate_list;
+ 	pgoff_t donate_start, donate_end; /* inclusive */
++	atomic_t open_count;		/* # of open files */
  
- static struct i2c_client *isp1301_i2c_client;
+ 	struct task_struct *atomic_write_task;	/* store atomic write task */
+ 	struct extent_tree *extent_tree[NR_EXTENT_CACHES];
+@@ -3560,6 +3561,7 @@ int f2fs_try_to_free_nats(struct f2fs_sb
+ void f2fs_update_inode(struct inode *inode, struct page *node_page);
+ void f2fs_update_inode_page(struct inode *inode);
+ int f2fs_write_inode(struct inode *inode, struct writeback_control *wbc);
++void f2fs_remove_donate_inode(struct inode *inode);
+ void f2fs_evict_inode(struct inode *inode);
+ void f2fs_handle_failed_inode(struct inode *inode);
  
--static struct clk *usb_host_clk;
--
- static void isp1301_configure_lpc32xx(void)
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -621,7 +621,10 @@ static int f2fs_file_open(struct inode *
+ 	if (err)
+ 		return err;
+ 
+-	return finish_preallocate_blocks(inode);
++	err = finish_preallocate_blocks(inode);
++	if (!err)
++		atomic_inc(&F2FS_I(inode)->open_count);
++	return err;
+ }
+ 
+ void f2fs_truncate_data_blocks_range(struct dnode_of_data *dn, int count)
+@@ -1966,6 +1969,9 @@ out:
+ 
+ static int f2fs_release_file(struct inode *inode, struct file *filp)
  {
- 	/* LPC32XX only supports DAT_SE0 USB mode */
-@@ -155,6 +153,7 @@ static int ohci_hcd_nxp_probe(struct pla
- 	struct resource *res;
- 	int ret = 0, irq;
- 	struct device_node *isp1301_node;
-+	struct clk *usb_host_clk;
- 
- 	if (pdev->dev.of_node) {
- 		isp1301_node = of_parse_phandle(pdev->dev.of_node,
-@@ -180,26 +179,20 @@ static int ohci_hcd_nxp_probe(struct pla
- 	}
- 
- 	/* Enable USB host clock */
--	usb_host_clk = devm_clk_get(&pdev->dev, NULL);
-+	usb_host_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(usb_host_clk)) {
--		dev_err(&pdev->dev, "failed to acquire USB OHCI clock\n");
-+		dev_err(&pdev->dev, "failed to acquire and start USB OHCI clock\n");
- 		ret = PTR_ERR(usb_host_clk);
- 		goto fail_disable;
- 	}
- 
--	ret = clk_prepare_enable(usb_host_clk);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "failed to start USB OHCI clock\n");
--		goto fail_disable;
--	}
--
- 	isp1301_configure();
- 
- 	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
- 	if (!hcd) {
- 		dev_err(&pdev->dev, "Failed to allocate HC buffer\n");
- 		ret = -ENOMEM;
--		goto fail_hcd;
-+		goto fail_disable;
- 	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -230,8 +223,6 @@ static int ohci_hcd_nxp_probe(struct pla
- 	ohci_nxp_stop_hc();
- fail_resource:
- 	usb_put_hcd(hcd);
--fail_hcd:
--	clk_disable_unprepare(usb_host_clk);
- fail_disable:
- 	isp1301_i2c_client = NULL;
- 	return ret;
-@@ -244,7 +235,6 @@ static int ohci_hcd_nxp_remove(struct pl
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
--	clk_disable_unprepare(usb_host_clk);
- 	isp1301_i2c_client = NULL;
- 
++	if (atomic_dec_and_test(&F2FS_I(inode)->open_count))
++		f2fs_remove_donate_inode(inode);
++
+ 	/*
+ 	 * f2fs_release_file is called at every close calls. So we should
+ 	 * not drop any inmemory pages by close called by other process.
+--- a/fs/f2fs/inode.c
++++ b/fs/f2fs/inode.c
+@@ -811,7 +811,7 @@ int f2fs_write_inode(struct inode *inode
  	return 0;
+ }
+ 
+-static void f2fs_remove_donate_inode(struct inode *inode)
++void f2fs_remove_donate_inode(struct inode *inode)
+ {
+ 	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+ 
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1409,6 +1409,7 @@ static struct inode *f2fs_alloc_inode(st
+ 	/* Initialize f2fs-specific inode info */
+ 	atomic_set(&fi->dirty_pages, 0);
+ 	atomic_set(&fi->i_compr_blocks, 0);
++	atomic_set(&fi->open_count, 0);
+ 	init_f2fs_rwsem(&fi->i_sem);
+ 	spin_lock_init(&fi->i_size_lock);
+ 	INIT_LIST_HEAD(&fi->dirty_list);
 
 
 
