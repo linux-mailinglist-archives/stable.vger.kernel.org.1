@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-206807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF8F6D0939E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:45 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A41ABD09D75
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E68733024F64
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A7AF83063FA0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD70F35A939;
-	Fri,  9 Jan 2026 12:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5937635A95B;
+	Fri,  9 Jan 2026 12:32:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvXAuNtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VqIRFrA0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6B735A923;
-	Fri,  9 Jan 2026 12:04:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 186A231E107;
+	Fri,  9 Jan 2026 12:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960254; cv=none; b=FENHKbGpY5YYz2eYsHQCrn48ASYimJIvL7jae1kCMsegg9HgXRZA1zD/e2gPlizTglurEV7bBN3gUiY/I642qbKzdnEgeC5REz/LMvSNEp3wCglENtu3lWcoD60zUD1DHxRWEhaH15dZxSytGt/fT+uEOL3NhbWt3ONDTIALrUs=
+	t=1767961973; cv=none; b=eQqZ1sZ7wgTiDRl4kEuu62fk7fo1TDE9pYM4gE+E5vaBiVS9AsZwF3/Ert4Rqy1yRdaT5FudlvLyb718woQiVKxuSNC3B9jtHGATQnzoQqgwbW+4W/eg2+NWmH1Co1/nhMJz+rG5o2rRuvkb5F8WnxVY7kxSYJ9HznsUr7XV/10=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960254; c=relaxed/simple;
-	bh=RapC4nHjmoyqOCrEgyWULpx5qp7G1P/ZnHlehpljzAY=;
+	s=arc-20240116; t=1767961973; c=relaxed/simple;
+	bh=PT/BSTb7I0iBrv1AdMlmGkAcLUIKP0BpRjmp4VbmL1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZygolFMd8zmBwDiIJprpKFPsFoPRYZ73+xL/jZyEicFT5d8v7QIrhXA7m4f8Y3ZXhvk+NQQWw6ZhnKRRf2vfKd6omYLFtp7ToqsmtZgM9AS/6iRAUIqypi4brPA5wa1YRQ+JjA+yxZUmzmvvrWBYQ8m/LIH3gSilixicg9uJfEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvXAuNtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090A9C4CEF1;
-	Fri,  9 Jan 2026 12:04:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=GBOUVOXkKpJGLSuGOTbGAeNLY+Q9wYx9snw8QmizV3SGptuoPrPqUvZMKDMmdGJGJa3JsrXRNKlsrKFwUrH3+aPaTDp2sNPpx6d6GxhyRfhoXFtz08nJM0QMipGDIjaShrZO4NXE/K8FdGPsS/XoPoiO3tGlwczkMssvJUs+MOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VqIRFrA0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F2B2C4CEF1;
+	Fri,  9 Jan 2026 12:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960254;
-	bh=RapC4nHjmoyqOCrEgyWULpx5qp7G1P/ZnHlehpljzAY=;
+	s=korg; t=1767961972;
+	bh=PT/BSTb7I0iBrv1AdMlmGkAcLUIKP0BpRjmp4VbmL1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvXAuNtHQj4eCjP/fZ8O8hNYU5+qs0RTM4oYoFSV0k6559yvxyylMoC06bcGILRRM
-	 dZzZzsXuiGyWYCyIsRaqO730HODC6y5KpXVIN8oZP2U8DNwabDUyiogxtbMn3d6Hxq
-	 TOv/yU6Nl5sgxOHgbIWNv0sP9wlVN3NU8nBCYMio=
+	b=VqIRFrA0dOGx1yzUX4grpcfNi5Na8lCQmClOeLteI2kmd2kbJU3N79XXNSByUhU9x
+	 8D5gBxeSxUVrl0DwDhkt/o6Mc1eSzMkWH+jayy768DqYC0uLMv4SqIugNcE+geZbxP
+	 QzA/DOSFDogfrplAlDcGSNIJk34JPRdddHkcOUx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Anton Khirnov <anton@khirnov.net>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Denis Benato <benato.denis96@gmail.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 339/737] broadcom: b44: prevent uninitialized value usage
+Subject: [PATCH 6.1 200/634] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
 Date: Fri,  9 Jan 2026 12:37:58 +0100
-Message-ID: <20260109112146.742430421@linuxfoundation.org>
+Message-ID: <20260109112124.959576991@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,80 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Anton Khirnov <anton@khirnov.net>
 
-[ Upstream commit 50b3db3e11864cb4e18ff099cfb38e11e7f87a68 ]
+[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
 
-On execution path with raised B44_FLAG_EXTERNAL_PHY, b44_readphy()
-leaves bmcr value uninitialized and it is used later in the code.
+kbd_led_set() can sleep, and so may not be used as the brightness_set()
+callback.
 
-Add check of this flag at the beginning of the b44_nway_reset() and
-exit early of the function with restarting autonegotiation if an
-external PHY is used.
+Otherwise using this led with a trigger leads to system hangs
+accompanied by:
+BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
+CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
+Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
+Call Trace:
+ <TASK>
+ [...]
+ schedule_timeout+0xbd/0x100
+ __down_common+0x175/0x290
+ down_timeout+0x67/0x70
+ acpi_os_wait_semaphore+0x57/0x90
+ [...]
+ asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
+ led_trigger_event+0x3f/0x60
+ [...]
 
-Fixes: 753f492093da ("[B44]: port to native ssb support")
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251205155815.4348-1-bigalex934@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
+Signed-off-by: Anton Khirnov <anton@khirnov.net>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Reviewed-by: Denis Benato <benato.denis96@gmail.com>
+Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/b44.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/x86/asus-wmi.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
-index 1be6d14030bcf..ba40549536e46 100644
---- a/drivers/net/ethernet/broadcom/b44.c
-+++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -1789,6 +1789,9 @@ static int b44_nway_reset(struct net_device *dev)
- 	u32 bmcr;
- 	int r;
+diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
+index 33eacb4fc4c45..ed6ea8782558c 100644
+--- a/drivers/platform/x86/asus-wmi.c
++++ b/drivers/platform/x86/asus-wmi.c
+@@ -1046,14 +1046,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
+ 	kbd_led_update(asus);
+ }
  
-+	if (bp->flags & B44_FLAG_EXTERNAL_PHY)
-+		return phy_ethtool_nway_reset(dev);
-+
- 	spin_lock_irq(&bp->lock);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
+-static void kbd_led_set(struct led_classdev *led_cdev,
+-			enum led_brightness value)
++static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
+ {
+ 	/* Prevent disabling keyboard backlight on module unregister */
+ 	if (led_cdev->flags & LED_UNREGISTERING)
+-		return;
++		return 0;
+ 
+ 	do_kbd_led_set(led_cdev, value);
++	return 0;
+ }
+ 
+ static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
+@@ -1206,7 +1206,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
+ 		asus->kbd_led_wk = led_val;
+ 		asus->kbd_led.name = "asus::kbd_backlight";
+ 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
+-		asus->kbd_led.brightness_set = kbd_led_set;
++		asus->kbd_led.brightness_set_blocking = kbd_led_set;
+ 		asus->kbd_led.brightness_get = kbd_led_get;
+ 		asus->kbd_led.max_brightness = 3;
+ 
 -- 
 2.51.0
 
