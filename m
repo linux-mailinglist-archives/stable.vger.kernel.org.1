@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-206886-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 296BFD09714
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B20B6D09E29
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CFEFD30B7272
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 948253155D00
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A9781DE885;
-	Fri,  9 Jan 2026 12:08:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76111E8836;
+	Fri,  9 Jan 2026 12:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qf8Cv13x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/x88/X6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E72D33B6F1;
-	Fri,  9 Jan 2026 12:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A973359701;
+	Fri,  9 Jan 2026 12:35:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960480; cv=none; b=WI8elzSoPv+p9kvQ24nIdPgjlmSKt5O3GOI2GwcbNqzex83itiuPgIltI4s2XcN7XH3KFdBBst9nThhBk4VRGl3dudEiKPfqbvlqVQ9eEmf67dVK9Zjstk4SoYqV264pYbpCqhJdQt6vk7ZypoASBPrbP0liTMjLoxgDwIK40uQ=
+	t=1767962115; cv=none; b=QW6iQXqzG/cCEaV8GHb4zYa3fc/BrChqc1UOlTjO+4nIgSt9ASxw3uge/EgGFHLOQ4E2tLzj726kocZITCqVhWfpi8eI/DaC+As2I1uJW6aFjmv1mZ9K4vSVpclGROoybewoOvi+0fPGwt536OUck4jTybXDiOX4sD32TQCiptI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960480; c=relaxed/simple;
-	bh=khWmye2FjZ+JldMV98CPs8Vj9Ry+ngik0fZf9Wii64E=;
+	s=arc-20240116; t=1767962115; c=relaxed/simple;
+	bh=RMiM3+Ng7WlovtdZ6r+YBTRbwg6t425AEXcWFD5BfDs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jzEdJpS44ZdTz1fO8+/MIG1vK0Wma9zpdB4saEf5rrQdjj/ltleB8/T8xi5MN/LdsAeya/tONGH2MtVV4V7ZOnXq+T+cw6NUukLShnexxAMvovH3JF6Z0L0XGQ9T34mWfUrEls3rSTUHy/p2F+6VGR3pjRIdExqzwQO7ezej+H4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qf8Cv13x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64A90C4CEF1;
-	Fri,  9 Jan 2026 12:07:59 +0000 (UTC)
+	 MIME-Version; b=LBBH16HfliLgeM94cyu7noqHcskiaqupAFslOFZixNetYOR4f080d5gc/oH0wt0XDxHIphdePPmNiMq7+RnRpRTFUQuSLw1ye2hCjV8rL19hnTocFMsmP/Xq/YV+TsLfdF0wm9K3vSDcUwTxvnj0zs0BwL1J2fnC21ADi3WA0Cg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/x88/X6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F8FC4CEF1;
+	Fri,  9 Jan 2026 12:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960479;
-	bh=khWmye2FjZ+JldMV98CPs8Vj9Ry+ngik0fZf9Wii64E=;
+	s=korg; t=1767962115;
+	bh=RMiM3+Ng7WlovtdZ6r+YBTRbwg6t425AEXcWFD5BfDs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qf8Cv13x21REcwsUIQLgTqpBf4L2C7/sAHOMSGQAr4nlPH4IjeFKsEY8wjz5lDbdO
-	 OZsrCqSzrnyUCJ+02g4+zAREVEZCrf2Icj5eomD2R8IBmIBNOmv1a/4iFmd43POnD4
-	 DiUCsXObXGBxU7d6f0bwOppSiGvuK1DYg5Jim5iU=
+	b=p/x88/X6qZkRSbaeRugYt4KwQhFR5IrIGeOHN4Liwi6e6z+nR3jnYIZTYa9TyLC+T
+	 lchC+qPfm/yUkyc63Z0Kam2TEf2rWBO5lANs5UA9rH1Lsoe8c4ZU3Qz8AcudA0Tout
+	 F7wfhxxol85SHHy0WQHNwCEc5b5X7bVVHE17UexE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tony Battersby <tonyb@cybernetics.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 391/737] scsi: qla2xxx: Fix lost interrupts with qlini_mode=disabled
+Subject: [PATCH 6.1 252/634] mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats
 Date: Fri,  9 Jan 2026 12:38:50 +0100
-Message-ID: <20260109112148.707786094@linuxfoundation.org>
+Message-ID: <20260109112127.021597961@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,194 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 4f6aaade2a22ac428fa99ed716cf2b87e79c9837 ]
+[ Upstream commit 8ac1dacec458f55f871f7153242ed6ab60373b90 ]
 
-When qla2xxx is loaded with qlini_mode=disabled,
-ha->flags.disable_msix_handshake is used before it is set, resulting in
-the wrong interrupt handler being used on certain HBAs
-(qla2xxx_msix_rsp_q_hs() is used when qla2xxx_msix_rsp_q() should be
-used).  The only difference between these two interrupt handlers is that
-the _hs() version writes to a register to clear the "RISC" interrupt,
-whereas the other version does not.  So this bug results in the RISC
-interrupt being cleared when it should not be.  This occasionally causes
-a different interrupt handler qla24xx_msix_default() for a different
-vector to see ((stat & HSRX_RISC_INT) == 0) and ignore its interrupt,
-which then causes problems like:
+Cited commit added a dedicated mutex (instead of RTNL) to protect the
+multicast route list, so that it will not change while the driver
+periodically traverses it in order to update the kernel about multicast
+route stats that were queried from the device.
 
-qla2xxx [0000:02:00.0]-d04c:6: MBX Command timeout for cmd 20,
-  iocontrol=8 jiffies=1090c0300 mb[0-3]=[0x4000 0x0 0x40 0xda] mb7 0x500
-  host_status 0x40000010 hccr 0x3f00
-qla2xxx [0000:02:00.0]-101e:6: Mailbox cmd timeout occurred, cmd=0x20,
-  mb[0]=0x20. Scheduling ISP abort
-(the cmd varies; sometimes it is 0x20, 0x22, 0x54, 0x5a, 0x5d, or 0x6a)
+One instance of list entry deletion (during route replace) was missed
+and it can result in a use-after-free [1].
 
-This problem can be reproduced with a 16 or 32 Gbps HBA by loading
-qla2xxx with qlini_mode=disabled and running a high IOPS test while
-triggering frequent RSCN database change events.
+Fix by acquiring the mutex before deleting the entry from the list and
+releasing it afterwards.
 
-While analyzing the problem I discovered that even with
-disable_msix_handshake forced to 0, it is not necessary to clear the
-RISC interrupt from qla2xxx_msix_rsp_q_hs() (more below).  So just
-completely remove qla2xxx_msix_rsp_q_hs() and the logic for selecting
-it, which also fixes the bug with qlini_mode=disabled.
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
+Read of size 8 at addr ffff8881523c2fa8 by task kworker/2:5/22043
 
-The test below describes the justification for not needing
-qla2xxx_msix_rsp_q_hs():
+CPU: 2 UID: 0 PID: 22043 Comm: kworker/2:5 Not tainted 6.18.0-rc1-custom-g1a3d6d7cd014 #1 PREEMPT(full)
+Hardware name: Mellanox Technologies Ltd. MSN2010/SA002610, BIOS 5.6.5 08/24/2017
+Workqueue: mlxsw_core mlxsw_sp_mr_stats_update [mlxsw_spectrum]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ print_report+0x174/0x4f5
+ kasan_report+0xdf/0x110
+ mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
 
-Force disable_msix_handshake to 0:
-qla24xx_config_rings():
-if (0 && (ha->fw_attributes & BIT_6) && (IS_MSIX_NACK_CAPABLE(ha)) &&
-    (ha->flags.msix_enabled)) {
+Allocated by task 29933:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ mlxsw_sp_mr_route_add+0xd8/0x4770 [mlxsw_spectrum]
+ mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
 
-In qla24xx_msix_rsp_q() and qla2xxx_msix_rsp_q_hs(), check:
-  (rd_reg_dword(&reg->host_status) & HSRX_RISC_INT)
+Freed by task 29933:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_save_free_info+0x3b/0x70
+ __kasan_slab_free+0x43/0x70
+ kfree+0x14e/0x700
+ mlxsw_sp_mr_route_add+0x2dea/0x4770 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:444 [mlxsw_spectrum]
+ mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
 
-Count the number of calls to each function with HSRX_RISC_INT set and
-the number with HSRX_RISC_INT not set while performing some I/O.
-
-If qla2xxx_msix_rsp_q_hs() clears the RISC interrupt (original code):
-qla24xx_msix_rsp_q:    50% of calls have HSRX_RISC_INT set
-qla2xxx_msix_rsp_q_hs:  5% of calls have HSRX_RISC_INT set
-(# of qla2xxx_msix_rsp_q_hs interrupts) =
-    (# of qla24xx_msix_rsp_q interrupts) * 3
-
-If qla2xxx_msix_rsp_q_hs() does not clear the RISC interrupt (patched
-code):
-qla24xx_msix_rsp_q:    100% of calls have HSRX_RISC_INT set
-qla2xxx_msix_rsp_q_hs:   9% of calls have HSRX_RISC_INT set
-(# of qla2xxx_msix_rsp_q_hs interrupts) =
-    (# of qla24xx_msix_rsp_q interrupts) * 3
-
-In the case of the original code, qla24xx_msix_rsp_q() was seeing
-HSRX_RISC_INT set only 50% of the time because qla2xxx_msix_rsp_q_hs()
-was clearing it when it shouldn't have been.  In the patched code,
-qla24xx_msix_rsp_q() sees HSRX_RISC_INT set 100% of the time, which
-makes sense if that interrupt handler needs to clear the RISC interrupt
-(which it does).  qla2xxx_msix_rsp_q_hs() sees HSRX_RISC_INT only 9% of
-the time, which is just overlap from the other interrupt during the
-high IOPS test.
-
-Tested with SCST on:
-QLE2742  FW:v9.08.02 (32 Gbps 2-port)
-QLE2694L FW:v9.10.11 (16 Gbps 4-port)
-QLE2694L FW:v9.08.02 (16 Gbps 4-port)
-QLE2672  FW:v8.07.12 (16 Gbps 2-port)
-both initiator and target mode
-
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://patch.msgid.link/56d378eb-14ad-49c7-bae9-c649b6c7691e@cybernetics.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: f38656d06725 ("mlxsw: spectrum_mr: Protect multicast route list with a lock")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/f996feecfd59fde297964bfc85040b6d83ec6089.1764695650.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qla2xxx/qla_def.h |  1 -
- drivers/scsi/qla2xxx/qla_gbl.h |  2 +-
- drivers/scsi/qla2xxx/qla_isr.c | 32 +++-----------------------------
- drivers/scsi/qla2xxx/qla_mid.c |  4 +---
- 4 files changed, 5 insertions(+), 34 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/qla2xxx/qla_def.h b/drivers/scsi/qla2xxx/qla_def.h
-index 78a10d4979e9..4f7248643335 100644
---- a/drivers/scsi/qla2xxx/qla_def.h
-+++ b/drivers/scsi/qla2xxx/qla_def.h
-@@ -3504,7 +3504,6 @@ struct isp_operations {
- #define QLA_MSIX_RSP_Q			0x01
- #define QLA_ATIO_VECTOR		0x02
- #define QLA_MSIX_QPAIR_MULTIQ_RSP_Q	0x03
--#define QLA_MSIX_QPAIR_MULTIQ_RSP_Q_HS	0x04
- 
- #define QLA_MIDX_DEFAULT	0
- #define QLA_MIDX_RSP_Q		1
-diff --git a/drivers/scsi/qla2xxx/qla_gbl.h b/drivers/scsi/qla2xxx/qla_gbl.h
-index e556f57c91af..59f448e2e319 100644
---- a/drivers/scsi/qla2xxx/qla_gbl.h
-+++ b/drivers/scsi/qla2xxx/qla_gbl.h
-@@ -768,7 +768,7 @@ extern int qla2x00_dfs_remove(scsi_qla_host_t *);
- 
- /* Globa function prototypes for multi-q */
- extern int qla25xx_request_irq(struct qla_hw_data *, struct qla_qpair *,
--	struct qla_msix_entry *, int);
-+	struct qla_msix_entry *);
- extern int qla25xx_init_req_que(struct scsi_qla_host *, struct req_que *);
- extern int qla25xx_init_rsp_que(struct scsi_qla_host *, struct rsp_que *);
- extern int qla25xx_create_req_que(struct qla_hw_data *, uint16_t, uint8_t,
-diff --git a/drivers/scsi/qla2xxx/qla_isr.c b/drivers/scsi/qla2xxx/qla_isr.c
-index d48007e18288..a85d3a40ee49 100644
---- a/drivers/scsi/qla2xxx/qla_isr.c
-+++ b/drivers/scsi/qla2xxx/qla_isr.c
-@@ -4473,32 +4473,6 @@ qla2xxx_msix_rsp_q(int irq, void *dev_id)
- 	return IRQ_HANDLED;
- }
- 
--irqreturn_t
--qla2xxx_msix_rsp_q_hs(int irq, void *dev_id)
--{
--	struct qla_hw_data *ha;
--	struct qla_qpair *qpair;
--	struct device_reg_24xx __iomem *reg;
--	unsigned long flags;
--
--	qpair = dev_id;
--	if (!qpair) {
--		ql_log(ql_log_info, NULL, 0x505b,
--		    "%s: NULL response queue pointer.\n", __func__);
--		return IRQ_NONE;
--	}
--	ha = qpair->hw;
--
--	reg = &ha->iobase->isp24;
--	spin_lock_irqsave(&ha->hardware_lock, flags);
--	wrt_reg_dword(&reg->hccr, HCCRX_CLR_RISC_INT);
--	spin_unlock_irqrestore(&ha->hardware_lock, flags);
--
--	queue_work(ha->wq, &qpair->q_work);
--
--	return IRQ_HANDLED;
--}
--
- /* Interrupt handling helpers. */
- 
- struct qla_init_msix_entry {
-@@ -4511,7 +4485,6 @@ static const struct qla_init_msix_entry msix_entries[] = {
- 	{ "rsp_q", qla24xx_msix_rsp_q },
- 	{ "atio_q", qla83xx_msix_atio_q },
- 	{ "qpair_multiq", qla2xxx_msix_rsp_q },
--	{ "qpair_multiq_hs", qla2xxx_msix_rsp_q_hs },
- };
- 
- static const struct qla_init_msix_entry qla82xx_msix_entries[] = {
-@@ -4798,9 +4771,10 @@ qla2x00_free_irqs(scsi_qla_host_t *vha)
- }
- 
- int qla25xx_request_irq(struct qla_hw_data *ha, struct qla_qpair *qpair,
--	struct qla_msix_entry *msix, int vector_type)
-+	struct qla_msix_entry *msix)
- {
--	const struct qla_init_msix_entry *intr = &msix_entries[vector_type];
-+	const struct qla_init_msix_entry *intr =
-+		&msix_entries[QLA_MSIX_QPAIR_MULTIQ_RSP_Q];
- 	scsi_qla_host_t *vha = pci_get_drvdata(ha->pdev);
- 	int ret;
- 
-diff --git a/drivers/scsi/qla2xxx/qla_mid.c b/drivers/scsi/qla2xxx/qla_mid.c
-index 79879c4743e6..9946899dd83b 100644
---- a/drivers/scsi/qla2xxx/qla_mid.c
-+++ b/drivers/scsi/qla2xxx/qla_mid.c
-@@ -899,9 +899,7 @@ qla25xx_create_rsp_que(struct qla_hw_data *ha, uint16_t options,
- 	    rsp->options, rsp->id, rsp->rsp_q_in,
- 	    rsp->rsp_q_out);
- 
--	ret = qla25xx_request_irq(ha, qpair, qpair->msix,
--		ha->flags.disable_msix_handshake ?
--		QLA_MSIX_QPAIR_MULTIQ_RSP_Q : QLA_MSIX_QPAIR_MULTIQ_RSP_Q_HS);
-+	ret = qla25xx_request_irq(ha, qpair, qpair->msix);
- 	if (ret)
- 		goto que_failed;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
+index 1f6bc0c7e91dd..c39aca54a0d6b 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
+@@ -440,7 +440,9 @@ int mlxsw_sp_mr_route_add(struct mlxsw_sp_mr_table *mr_table,
+ 		rhashtable_remove_fast(&mr_table->route_ht,
+ 				       &mr_orig_route->ht_node,
+ 				       mlxsw_sp_mr_route_ht_params);
++		mutex_lock(&mr_table->route_list_lock);
+ 		list_del(&mr_orig_route->node);
++		mutex_unlock(&mr_table->route_list_lock);
+ 		mlxsw_sp_mr_route_destroy(mr_table, mr_orig_route);
+ 	}
  
 -- 
 2.51.0
