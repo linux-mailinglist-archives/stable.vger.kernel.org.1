@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-207743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEA2ED0A42B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id DE6DAD0A42E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 64F0031A626E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 92E0E31A7001
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80B7435C1BD;
-	Fri,  9 Jan 2026 12:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C74335BDBA;
+	Fri,  9 Jan 2026 12:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X0vp8bvE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fN2Kn1OO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42DBE336ED1;
-	Fri,  9 Jan 2026 12:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2042D31A069;
+	Fri,  9 Jan 2026 12:48:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962920; cv=none; b=UnyPKPtT1PmH/LqYO2QvrkQ6uR9RXYuqLCxra/scUn/1Bv3IX//Zd2r9F5OZapYuvPJXaLMcOvsiDRsAxavqb0vATBTH8bf9eL1QOYlMLWh8DB9OyEHfzJRCKvyG/g8QDtKZ43ziQ79uYXio6g1Ko73CkT0ULPuyUpba3xSNdaE=
+	t=1767962926; cv=none; b=Z2f0azv9MLAdnAy0D+AY6U2DMK9AkFVExKxeM3SGWzub/1WU2t/gVyuxp8LO/kWkwuezmocf5FSfhZMjNrfLeSHjPwddMjKLhilYySyfU1JbDenMt8eJwTnsdFt9BnySxvVNtz0VKv0a8Vy4msCitw8Qgc4+DVSF8qLTB8sgeUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962920; c=relaxed/simple;
-	bh=nXyg28i9raOOAmfKRlwxKXjk3Ca4L8FLJs4DhhduNfw=;
+	s=arc-20240116; t=1767962926; c=relaxed/simple;
+	bh=sgt2Q9MJTIhCbM72cKOgfudd4I7cBUEuYqwvxjUK94E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y1BSXpuvb6BLIGSYJkXhaOnzPYy0jyrDDTtthuXGf6fwZu4TadwMAULaFZQvVHLL8PSJm4RPXqzxcnBFvtkYwoh4sc09ytMzk9sJHfr7vw/G2xaiUfyzR2QWnze/mhQsGotIbj5hqAsTFOWhiXizr5bNXYPmgIDZZdAasCf0Ivc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X0vp8bvE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4087C4CEF1;
-	Fri,  9 Jan 2026 12:48:39 +0000 (UTC)
+	 MIME-Version; b=ZZ5zpl3ufc6K92IYW+SJU3cxnX5K90BvVTlzo/5jCGTfPFyMNooOiNAJ7RgIaWKPwxXncYmbcoV0+FeZdaF/AII83ZbQV4YGN0ZFwwp6oA3CqY/cJ/4AGeHSeDkQDS9wFEHiqK/VkNVu/otFllST1x/apXxDMcYYDPEycpkqkSY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fN2Kn1OO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7650AC4CEF1;
+	Fri,  9 Jan 2026 12:48:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962920;
-	bh=nXyg28i9raOOAmfKRlwxKXjk3Ca4L8FLJs4DhhduNfw=;
+	s=korg; t=1767962926;
+	bh=sgt2Q9MJTIhCbM72cKOgfudd4I7cBUEuYqwvxjUK94E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X0vp8bvE+PZawSHDB7xpbw1u0OFO2F0beEJKt7zQL98RivDwx0hRMComNGuUZt5bP
-	 bNOGygc7vrDKgdhpEqJFt90+5y24T3GPevsEpkMejECkzQn8c8pFpx2PnKuChOPw9P
-	 w00Z/hig0uQ7KRwZeUClXZwm7GNXdN7HUm1EYo/c=
+	b=fN2Kn1OOetVyYZBJ0AZk3BFuvCbINmvkB/eHKmmsvKD77xXWwm9DehJ9Q+/lLz+1l
+	 XEeytvNECcaUYTy0w9OuiMQYVeO4nEhA75yPHkfIizbfFz3kUVs1zkpymhr2Azko28
+	 IriiHxY40IuFmqVN5q/+6G/tkce5dc4bIztScBTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Jaroslav Kysela <perex@perex.cz>,
 	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 535/634] ALSA: wavefront: Use guard() for spin locks
-Date: Fri,  9 Jan 2026 12:43:33 +0100
-Message-ID: <20260109112137.706113617@linuxfoundation.org>
+Subject: [PATCH 6.1 537/634] ALSA: wavefront: Use standard print API
+Date: Fri,  9 Jan 2026 12:43:35 +0100
+Message-ID: <20260109112137.785410189@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,363 +66,996 @@ Content-Transfer-Encoding: 8bit
 
 From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4b97f8e614ba46a50bd181d40b5a1424411a211a ]
+[ Upstream commit 8b4ac5429938dd5f1fbf2eea0687f08cbcccb6be ]
 
-Clean up the code using guard() for spin locks.
+Use the standard print API with dev_*() instead of the old house-baked
+one.  It gives better information and allows dynamically control of
+debug prints.
 
-Merely code refactoring, and no behavior change.
-
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250829145300.5460-19-tiwai@suse.de
-Stable-dep-of: e11c5c13ce0a ("ALSA: wavefront: Clear substream pointers on close")
+Link: https://patch.msgid.link/20240807133452.9424-36-tiwai@suse.de
+Stable-dep-of: 0c4a13ba8859 ("ALSA: wavefront: Fix integer overflow in sample size validation")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/isa/wavefront/wavefront_midi.c  |  127 +++++++++++++---------------------
- sound/isa/wavefront/wavefront_synth.c |   18 ++--
- 2 files changed, 59 insertions(+), 86 deletions(-)
+ include/sound/snd_wavefront.h         |    4 
+ sound/isa/wavefront/wavefront.c       |   61 +++++-----
+ sound/isa/wavefront/wavefront_fx.c    |   36 +++---
+ sound/isa/wavefront/wavefront_midi.c  |   15 +-
+ sound/isa/wavefront/wavefront_synth.c |  196 +++++++++++++++++-----------------
+ 5 files changed, 158 insertions(+), 154 deletions(-)
 
+--- a/include/sound/snd_wavefront.h
++++ b/include/sound/snd_wavefront.h
+@@ -137,8 +137,4 @@ extern int  snd_wavefront_fx_ioctl  (str
+ extern int snd_wavefront_fx_open    (struct snd_hwdep *, struct file *);
+ extern int snd_wavefront_fx_release (struct snd_hwdep *, struct file *);
+ 
+-/* prefix in all snd_printk() delivered messages */
+-
+-#define LOGNAME "WaveFront: "
+-
+ #endif  /* __SOUND_SND_WAVEFRONT_H__ */
+--- a/sound/isa/wavefront/wavefront.c
++++ b/sound/isa/wavefront/wavefront.c
+@@ -140,7 +140,7 @@ snd_wavefront_pnp (int dev, snd_wavefron
+ 
+ 	err = pnp_activate_dev(pdev);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "PnP WSS pnp configure failure\n");
++		dev_err(&pdev->dev, "PnP WSS pnp configure failure\n");
+ 		return err;
+ 	}
+ 
+@@ -156,7 +156,7 @@ snd_wavefront_pnp (int dev, snd_wavefron
+ 	
+ 	err = pnp_activate_dev(pdev);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "PnP ICS2115 pnp configure failure\n");
++		dev_err(&pdev->dev, "PnP ICS2115 pnp configure failure\n");
+ 		return err;
+ 	}
+ 
+@@ -174,26 +174,27 @@ snd_wavefront_pnp (int dev, snd_wavefron
+ 
+ 		err = pnp_activate_dev(pdev);
+ 		if (err < 0) {
+-			snd_printk(KERN_ERR "PnP MPU401 pnp configure failure\n");
++			dev_err(&pdev->dev, "PnP MPU401 pnp configure failure\n");
+ 			cs4232_mpu_port[dev] = SNDRV_AUTO_PORT;
+ 		} else {
+ 			cs4232_mpu_port[dev] = pnp_port_start(pdev, 0);
+ 			cs4232_mpu_irq[dev] = pnp_irq(pdev, 0);
+ 		}
+ 
+-		snd_printk (KERN_INFO "CS4232 MPU: port=0x%lx, irq=%i\n", 
+-			    cs4232_mpu_port[dev], 
+-			    cs4232_mpu_irq[dev]);
++		dev_info(&pdev->dev, "CS4232 MPU: port=0x%lx, irq=%i\n",
++			 cs4232_mpu_port[dev],
++			 cs4232_mpu_irq[dev]);
+ 	}
+ 
+-	snd_printdd ("CS4232: pcm port=0x%lx, fm port=0x%lx, dma1=%i, dma2=%i, irq=%i\nICS2115: port=0x%lx, irq=%i\n", 
+-		    cs4232_pcm_port[dev], 
+-		    fm_port[dev],
+-		    dma1[dev], 
+-		    dma2[dev], 
+-		    cs4232_pcm_irq[dev],
+-		    ics2115_port[dev], 
+-		    ics2115_irq[dev]);
++	dev_dbg(&pdev->dev,
++		"CS4232: pcm port=0x%lx, fm port=0x%lx, dma1=%i, dma2=%i, irq=%i\nICS2115: port=0x%lx, irq=%i\n",
++		cs4232_pcm_port[dev],
++		fm_port[dev],
++		dma1[dev],
++		dma2[dev],
++		cs4232_pcm_irq[dev],
++		ics2115_port[dev],
++		ics2115_irq[dev]);
+ 	
+ 	return 0;
+ }
+@@ -251,7 +252,7 @@ static struct snd_hwdep *snd_wavefront_n
+ 	struct snd_hwdep *fx_processor;
+ 
+ 	if (snd_wavefront_fx_start (&acard->wavefront)) {
+-		snd_printk (KERN_ERR "cannot initialize YSS225 FX processor");
++		dev_err(card->dev, "cannot initialize YSS225 FX processor");
+ 		return NULL;
+ 	}
+ 
+@@ -282,7 +283,7 @@ static struct snd_rawmidi *snd_wavefront
+ 		first = 0;
+ 		acard->wavefront.midi.base = port;
+ 		if (snd_wavefront_midi_start (acard)) {
+-			snd_printk (KERN_ERR "cannot initialize MIDI interface\n");
++			dev_err(card->dev, "cannot initialize MIDI interface\n");
+ 			return NULL;
+ 		}
+ 	}
+@@ -349,7 +350,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 			     cs4232_pcm_irq[dev], dma1[dev], dma2[dev],
+ 			     WSS_HW_DETECT, 0, &chip);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "can't allocate WSS device\n");
++		dev_err(card->dev, "can't allocate WSS device\n");
+ 		return err;
+ 	}
+ 
+@@ -369,7 +370,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 		err = snd_opl3_create(card, fm_port[dev], fm_port[dev] + 2,
+ 				      OPL3_HW_OPL3_CS, 0, &opl3);
+ 		if (err < 0) {
+-			snd_printk (KERN_ERR "can't allocate or detect OPL3 synth\n");
++			dev_err(card->dev, "can't allocate or detect OPL3 synth\n");
+ 			return err;
+ 		}
+ 
+@@ -385,14 +386,14 @@ snd_wavefront_probe (struct snd_card *ca
+ 		devm_request_region(card->dev, ics2115_port[dev], 16,
+ 				    "ICS2115");
+ 	if (acard->wavefront.res_base == NULL) {
+-		snd_printk(KERN_ERR "unable to grab ICS2115 i/o region 0x%lx-0x%lx\n",
+-			   ics2115_port[dev], ics2115_port[dev] + 16 - 1);
++		dev_err(card->dev, "unable to grab ICS2115 i/o region 0x%lx-0x%lx\n",
++			ics2115_port[dev], ics2115_port[dev] + 16 - 1);
+ 		return -EBUSY;
+ 	}
+ 	if (devm_request_irq(card->dev, ics2115_irq[dev],
+ 			     snd_wavefront_ics2115_interrupt,
+ 			     0, "ICS2115", acard)) {
+-		snd_printk(KERN_ERR "unable to use ICS2115 IRQ %d\n", ics2115_irq[dev]);
++		dev_err(card->dev, "unable to use ICS2115 IRQ %d\n", ics2115_irq[dev]);
+ 		return -EBUSY;
+ 	}
+ 	
+@@ -402,7 +403,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 
+ 	wavefront_synth = snd_wavefront_new_synth(card, hw_dev, acard);
+ 	if (wavefront_synth == NULL) {
+-		snd_printk (KERN_ERR "can't create WaveFront synth device\n");
++		dev_err(card->dev, "can't create WaveFront synth device\n");
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -414,7 +415,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 
+ 	err = snd_wss_mixer(chip);
+ 	if (err < 0) {
+-		snd_printk (KERN_ERR "can't allocate mixer device\n");
++		dev_err(card->dev, "can't allocate mixer device\n");
+ 		return err;
+ 	}
+ 
+@@ -425,7 +426,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 					  cs4232_mpu_port[dev], 0,
+ 					  cs4232_mpu_irq[dev], NULL);
+ 		if (err < 0) {
+-			snd_printk (KERN_ERR "can't allocate CS4232 MPU-401 device\n");
++			dev_err(card->dev, "can't allocate CS4232 MPU-401 device\n");
+ 			return err;
+ 		}
+ 		midi_dev++;
+@@ -441,7 +442,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 						ics2115_port[dev],
+ 						internal_mpu);
+ 		if (ics2115_internal_rmidi == NULL) {
+-			snd_printk (KERN_ERR "can't setup ICS2115 internal MIDI device\n");
++			dev_err(card->dev, "can't setup ICS2115 internal MIDI device\n");
+ 			return -ENOMEM;
+ 		}
+ 		midi_dev++;
+@@ -457,7 +458,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 						ics2115_port[dev],
+ 						external_mpu);
+ 		if (ics2115_external_rmidi == NULL) {
+-			snd_printk (KERN_ERR "can't setup ICS2115 external MIDI device\n");
++			dev_err(card->dev, "can't setup ICS2115 external MIDI device\n");
+ 			return -ENOMEM;
+ 		}
+ 		midi_dev++;
+@@ -471,7 +472,7 @@ snd_wavefront_probe (struct snd_card *ca
+ 						     acard,
+ 						     ics2115_port[dev]);
+ 		if (fx_processor == NULL) {
+-			snd_printk (KERN_ERR "can't setup FX device\n");
++			dev_err(card->dev, "can't setup FX device\n");
+ 			return -ENOMEM;
+ 		}
+ 
+@@ -525,11 +526,11 @@ static int snd_wavefront_isa_match(struc
+ 		return 0;
+ #endif
+ 	if (cs4232_pcm_port[dev] == SNDRV_AUTO_PORT) {
+-		snd_printk(KERN_ERR "specify CS4232 port\n");
++		dev_err(pdev, "specify CS4232 port\n");
+ 		return 0;
+ 	}
+ 	if (ics2115_port[dev] == SNDRV_AUTO_PORT) {
+-		snd_printk(KERN_ERR "specify ICS2115 port\n");
++		dev_err(pdev, "specify ICS2115 port\n");
+ 		return 0;
+ 	}
+ 	return 1;
+@@ -585,7 +586,7 @@ static int snd_wavefront_pnp_detect(stru
+ 
+ 	if (snd_wavefront_pnp (dev, card->private_data, pcard, pid) < 0) {
+ 		if (cs4232_pcm_port[dev] == SNDRV_AUTO_PORT) {
+-			snd_printk (KERN_ERR "isapnp detection failed\n");
++			dev_err(card->dev, "isapnp detection failed\n");
+ 			return -ENODEV;
+ 		}
+ 	}
+--- a/sound/isa/wavefront/wavefront_fx.c
++++ b/sound/isa/wavefront/wavefront_fx.c
+@@ -38,7 +38,7 @@ wavefront_fx_idle (snd_wavefront_t *dev)
+ 	}
+ 
+ 	if (x & 0x80) {
+-		snd_printk ("FX device never idle.\n");
++		dev_err(dev->card->dev, "FX device never idle.\n");
+ 		return 0;
+ 	}
+ 
+@@ -64,14 +64,14 @@ wavefront_fx_memset (snd_wavefront_t *de
+ 		     unsigned short *data)
+ {
+ 	if (page < 0 || page > 7) {
+-		snd_printk ("FX memset: "
+-			"page must be >= 0 and <= 7\n");
++		dev_err(dev->card->dev,
++			"FX memset: page must be >= 0 and <= 7\n");
+ 		return -EINVAL;
+ 	}
+ 
+ 	if (addr < 0 || addr > 0x7f) {
+-		snd_printk ("FX memset: "
+-			"addr must be >= 0 and <= 7f\n");
++		dev_err(dev->card->dev,
++			"FX memset: addr must be >= 0 and <= 7f\n");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -83,7 +83,7 @@ wavefront_fx_memset (snd_wavefront_t *de
+ 		outb ((data[0] >> 8), dev->fx_dsp_msb);
+ 		outb ((data[0] & 0xff), dev->fx_dsp_lsb);
+ 
+-		snd_printk ("FX: addr %d:%x set to 0x%x\n",
++		dev_err(dev->card->dev, "FX: addr %d:%x set to 0x%x\n",
+ 			page, addr, data[0]);
+ 
+ 	} else {
+@@ -102,9 +102,9 @@ wavefront_fx_memset (snd_wavefront_t *de
+ 		}
+ 
+ 		if (i != cnt) {
+-			snd_printk ("FX memset "
+-				    "(0x%x, 0x%x, 0x%lx, %d) incomplete\n",
+-				    page, addr, (unsigned long) data, cnt);
++			dev_err(dev->card->dev,
++				"FX memset (0x%x, 0x%x, 0x%lx, %d) incomplete\n",
++				page, addr, (unsigned long) data, cnt);
+ 			return -EIO;
+ 		}
+ 	}
+@@ -123,7 +123,7 @@ snd_wavefront_fx_detect (snd_wavefront_t
+ 	*/
+ 
+ 	if (inb (dev->fx_status) & 0x80) {
+-		snd_printk ("Hmm, probably a Maui or Tropez.\n");
++		dev_err(dev->card->dev, "Hmm, probably a Maui or Tropez.\n");
+ 		return -1;
+ 	}
+ 
+@@ -180,15 +180,15 @@ snd_wavefront_fx_ioctl (struct snd_hwdep
+ 
+ 	case WFFX_MEMSET:
+ 		if (r.data[2] <= 0) {
+-			snd_printk ("cannot write "
+-				"<= 0 bytes to FX\n");
++			dev_err(dev->card->dev,
++				"cannot write <= 0 bytes to FX\n");
+ 			return -EIO;
+ 		} else if (r.data[2] == 1) {
+ 			pd = (unsigned short *) &r.data[3];
+ 		} else {
+ 			if (r.data[2] > 256) {
+-				snd_printk ("cannot write "
+-					    "> 512 bytes to FX\n");
++				dev_err(dev->card->dev,
++					"cannot write > 512 bytes to FX\n");
+ 				return -EIO;
+ 			}
+ 			page_data = memdup_user((unsigned char __user *)
+@@ -208,8 +208,8 @@ snd_wavefront_fx_ioctl (struct snd_hwdep
+ 		break;
+ 
+ 	default:
+-		snd_printk ("FX: ioctl %d not yet supported\n",
+-			    r.request);
++		dev_err(dev->card->dev, "FX: ioctl %d not yet supported\n",
++			r.request);
+ 		return -ENOTTY;
+ 	}
+ 	return err;
+@@ -254,8 +254,8 @@ snd_wavefront_fx_start (snd_wavefront_t
+ 				goto out;
+ 			}
+ 		} else {
+-			snd_printk(KERN_ERR "invalid address"
+-				   " in register data\n");
++			dev_err(dev->card->dev,
++				"invalid address in register data\n");
+ 			err = -1;
+ 			goto out;
+ 		}
 --- a/sound/isa/wavefront/wavefront_midi.c
 +++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -113,7 +113,6 @@ static void snd_wavefront_midi_output_wr
- {
- 	snd_wavefront_midi_t *midi = &card->wavefront.midi;
- 	snd_wavefront_mpu_id  mpu;
--	unsigned long flags;
- 	unsigned char midi_byte;
- 	int max = 256, mask = 1;
- 	int timeout;
-@@ -142,11 +141,9 @@ static void snd_wavefront_midi_output_wr
- 				break;
- 		}
- 	
--		spin_lock_irqsave (&midi->virtual, flags);
--		if ((midi->mode[midi->output_mpu] & MPU401_MODE_OUTPUT) == 0) {
--			spin_unlock_irqrestore (&midi->virtual, flags);
-+		guard(spinlock_irqsave)(&midi->virtual);
-+		if ((midi->mode[midi->output_mpu] & MPU401_MODE_OUTPUT) == 0)
- 			goto __second;
--		}
- 		if (output_ready (midi)) {
- 			if (snd_rawmidi_transmit(midi->substream_output[midi->output_mpu], &midi_byte, 1) == 1) {
- 				if (!midi->isvirtual ||
-@@ -160,14 +157,11 @@ static void snd_wavefront_midi_output_wr
- 						del_timer(&midi->timer);
- 				}
- 				midi->mode[midi->output_mpu] &= ~MPU401_MODE_OUTPUT_TRIGGER;
--				spin_unlock_irqrestore (&midi->virtual, flags);
- 				goto __second;
- 			}
- 		} else {
--			spin_unlock_irqrestore (&midi->virtual, flags);
- 			return;
- 		}
--		spin_unlock_irqrestore (&midi->virtual, flags);
+@@ -476,7 +476,8 @@ snd_wavefront_midi_start (snd_wavefront_
+ 	for (i = 0; i < 30000 && !output_ready (midi); i++);
+ 
+ 	if (!output_ready (midi)) {
+-		snd_printk ("MIDI interface not ready for command\n");
++		dev_err(card->wavefront.card->dev,
++			"MIDI interface not ready for command\n");
+ 		return -1;
  	}
  
-       __second:
-@@ -185,15 +179,13 @@ static void snd_wavefront_midi_output_wr
- 				break;
- 		}
- 	
--		spin_lock_irqsave (&midi->virtual, flags);
-+		guard(spinlock_irqsave)(&midi->virtual);
- 		if (!midi->isvirtual)
- 			mask = 0;
- 		mpu = midi->output_mpu ^ mask;
- 		mask = 0;	/* don't invert the value from now */
--		if ((midi->mode[mpu] & MPU401_MODE_OUTPUT) == 0) {
--			spin_unlock_irqrestore (&midi->virtual, flags);
-+		if ((midi->mode[mpu] & MPU401_MODE_OUTPUT) == 0)
- 			return;
--		}
- 		if (snd_rawmidi_transmit_empty(midi->substream_output[mpu]))
- 			goto __timer;
- 		if (output_ready (midi)) {
-@@ -215,20 +207,16 @@ static void snd_wavefront_midi_output_wr
- 						del_timer(&midi->timer);
- 				}
- 				midi->mode[mpu] &= ~MPU401_MODE_OUTPUT_TRIGGER;
--				spin_unlock_irqrestore (&midi->virtual, flags);
- 				return;
- 			}
- 		} else {
--			spin_unlock_irqrestore (&midi->virtual, flags);
- 			return;
- 		}
--		spin_unlock_irqrestore (&midi->virtual, flags);
+@@ -498,7 +499,8 @@ snd_wavefront_midi_start (snd_wavefront_
  	}
- }
  
- static int snd_wavefront_midi_input_open(struct snd_rawmidi_substream *substream)
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	snd_wavefront_mpu_id mpu;
+ 	if (!ok) {
+-		snd_printk ("cannot set UART mode for MIDI interface");
++		dev_err(card->wavefront.card->dev,
++			"cannot set UART mode for MIDI interface");
+ 		dev->interrupts_are_midi = 0;
+ 		return -1;
+ 	}
+@@ -506,7 +508,8 @@ snd_wavefront_midi_start (snd_wavefront_
+ 	/* Route external MIDI to WaveFront synth (by default) */
+     
+ 	if (snd_wavefront_cmd (dev, WFC_MISYNTH_ON, rbuf, wbuf)) {
+-		snd_printk ("can't enable MIDI-IN-2-synth routing.\n");
++		dev_warn(card->wavefront.card->dev,
++			 "can't enable MIDI-IN-2-synth routing.\n");
+ 		/* XXX error ? */
+ 	}
  
-@@ -243,17 +231,15 @@ static int snd_wavefront_midi_input_open
- 	if (!midi)
- 	        return -EIO;
+@@ -522,14 +525,16 @@ snd_wavefront_midi_start (snd_wavefront_
+ 	*/
  
--	spin_lock_irqsave (&midi->open, flags);
-+	guard(spinlock_irqsave)(&midi->open);
- 	midi->mode[mpu] |= MPU401_MODE_INPUT;
- 	midi->substream_input[mpu] = substream;
--	spin_unlock_irqrestore (&midi->open, flags);
+ 	if (snd_wavefront_cmd (dev, WFC_VMIDI_OFF, rbuf, wbuf)) { 
+-		snd_printk ("virtual MIDI mode not disabled\n");
++		dev_warn(card->wavefront.card->dev,
++			 "virtual MIDI mode not disabled\n");
+ 		return 0; /* We're OK, but missing the external MIDI dev */
+ 	}
  
+ 	snd_wavefront_midi_enable_virtual (card);
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_VMIDI_ON, rbuf, wbuf)) {
+-		snd_printk ("cannot enable virtual MIDI mode.\n");
++		dev_warn(card->wavefront.card->dev,
++			 "cannot enable virtual MIDI mode.\n");
+ 		snd_wavefront_midi_disable_virtual (card);
+ 	} 
  	return 0;
- }
- 
- static int snd_wavefront_midi_output_open(struct snd_rawmidi_substream *substream)
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	snd_wavefront_mpu_id mpu;
- 
-@@ -268,17 +254,15 @@ static int snd_wavefront_midi_output_ope
- 	if (!midi)
- 	        return -EIO;
- 
--	spin_lock_irqsave (&midi->open, flags);
-+	guard(spinlock_irqsave)(&midi->open);
- 	midi->mode[mpu] |= MPU401_MODE_OUTPUT;
- 	midi->substream_output[mpu] = substream;
--	spin_unlock_irqrestore (&midi->open, flags);
- 
- 	return 0;
- }
- 
- static int snd_wavefront_midi_input_close(struct snd_rawmidi_substream *substream)
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	snd_wavefront_mpu_id mpu;
- 
-@@ -293,16 +277,14 @@ static int snd_wavefront_midi_input_clos
- 	if (!midi)
- 	        return -EIO;
- 
--	spin_lock_irqsave (&midi->open, flags);
-+	guard(spinlock_irqsave)(&midi->open);
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
--	spin_unlock_irqrestore (&midi->open, flags);
- 
- 	return 0;
- }
- 
- static int snd_wavefront_midi_output_close(struct snd_rawmidi_substream *substream)
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	snd_wavefront_mpu_id mpu;
- 
-@@ -317,15 +299,13 @@ static int snd_wavefront_midi_output_clo
- 	if (!midi)
- 	        return -EIO;
- 
--	spin_lock_irqsave (&midi->open, flags);
-+	guard(spinlock_irqsave)(&midi->open);
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
--	spin_unlock_irqrestore (&midi->open, flags);
- 	return 0;
- }
- 
- static void snd_wavefront_midi_input_trigger(struct snd_rawmidi_substream *substream, int up)
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	snd_wavefront_mpu_id mpu;
- 
-@@ -341,30 +321,27 @@ static void snd_wavefront_midi_input_tri
- 	if (!midi)
- 		return;
- 
--	spin_lock_irqsave (&midi->virtual, flags);
-+	guard(spinlock_irqsave)(&midi->virtual);
- 	if (up) {
- 		midi->mode[mpu] |= MPU401_MODE_INPUT_TRIGGER;
- 	} else {
- 		midi->mode[mpu] &= ~MPU401_MODE_INPUT_TRIGGER;
- 	}
--	spin_unlock_irqrestore (&midi->virtual, flags);
- }
- 
- static void snd_wavefront_midi_output_timer(struct timer_list *t)
- {
- 	snd_wavefront_midi_t *midi = from_timer(midi, t, timer);
- 	snd_wavefront_card_t *card = midi->timer_card;
--	unsigned long flags;
- 	
--	spin_lock_irqsave (&midi->virtual, flags);
--	mod_timer(&midi->timer, 1 + jiffies);
--	spin_unlock_irqrestore (&midi->virtual, flags);
-+	scoped_guard(spinlock_irqsave, &midi->virtual) {
-+		mod_timer(&midi->timer, 1 + jiffies);
-+	}
- 	snd_wavefront_midi_output_write(card);
- }
- 
- static void snd_wavefront_midi_output_trigger(struct snd_rawmidi_substream *substream, int up)
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	snd_wavefront_mpu_id mpu;
- 
-@@ -380,22 +357,22 @@ static void snd_wavefront_midi_output_tr
- 	if (!midi)
- 		return;
- 
--	spin_lock_irqsave (&midi->virtual, flags);
--	if (up) {
--		if ((midi->mode[mpu] & MPU401_MODE_OUTPUT_TRIGGER) == 0) {
--			if (!midi->istimer) {
--				timer_setup(&midi->timer,
--					    snd_wavefront_midi_output_timer,
--					    0);
--				mod_timer(&midi->timer, 1 + jiffies);
-+	scoped_guard(spinlock_irqsave, &midi->virtual) {
-+		if (up) {
-+			if ((midi->mode[mpu] & MPU401_MODE_OUTPUT_TRIGGER) == 0) {
-+				if (!midi->istimer) {
-+					timer_setup(&midi->timer,
-+						    snd_wavefront_midi_output_timer,
-+						    0);
-+					mod_timer(&midi->timer, 1 + jiffies);
-+				}
-+				midi->istimer++;
-+				midi->mode[mpu] |= MPU401_MODE_OUTPUT_TRIGGER;
- 			}
--			midi->istimer++;
--			midi->mode[mpu] |= MPU401_MODE_OUTPUT_TRIGGER;
-+		} else {
-+			midi->mode[mpu] &= ~MPU401_MODE_OUTPUT_TRIGGER;
- 		}
--	} else {
--		midi->mode[mpu] &= ~MPU401_MODE_OUTPUT_TRIGGER;
- 	}
--	spin_unlock_irqrestore (&midi->virtual, flags);
- 
- 	if (up)
- 		snd_wavefront_midi_output_write((snd_wavefront_card_t *)substream->rmidi->card->private_data);
-@@ -405,7 +382,6 @@ void
- snd_wavefront_midi_interrupt (snd_wavefront_card_t *card)
- 
- {
--	unsigned long flags;
- 	snd_wavefront_midi_t *midi;
- 	static struct snd_rawmidi_substream *substream = NULL;
- 	static int mpu = external_mpu; 
-@@ -419,37 +395,37 @@ snd_wavefront_midi_interrupt (snd_wavefr
- 		return;
- 	}
- 
--	spin_lock_irqsave (&midi->virtual, flags);
--	while (--max) {
-+	scoped_guard(spinlock_irqsave, &midi->virtual) {
-+		while (--max) {
- 
--		if (input_avail (midi)) {
--			byte = read_data (midi);
-+			if (input_avail(midi)) {
-+				byte = read_data(midi);
- 
--			if (midi->isvirtual) {				
--				if (byte == WF_EXTERNAL_SWITCH) {
--					substream = midi->substream_input[external_mpu];
--					mpu = external_mpu;
--				} else if (byte == WF_INTERNAL_SWITCH) { 
--					substream = midi->substream_output[internal_mpu];
-+				if (midi->isvirtual) {
-+					if (byte == WF_EXTERNAL_SWITCH) {
-+						substream = midi->substream_input[external_mpu];
-+						mpu = external_mpu;
-+					} else if (byte == WF_INTERNAL_SWITCH) {
-+						substream = midi->substream_output[internal_mpu];
-+						mpu = internal_mpu;
-+					} /* else just leave it as it is */
-+				} else {
-+					substream = midi->substream_input[internal_mpu];
- 					mpu = internal_mpu;
--				} /* else just leave it as it is */
--			} else {
--				substream = midi->substream_input[internal_mpu];
--				mpu = internal_mpu;
--			}
-+				}
- 
--			if (substream == NULL) {
--				continue;
--			}
-+				if (substream == NULL) {
-+					continue;
-+				}
- 
--			if (midi->mode[mpu] & MPU401_MODE_INPUT_TRIGGER) {
--				snd_rawmidi_receive(substream, &byte, 1);
-+				if (midi->mode[mpu] & MPU401_MODE_INPUT_TRIGGER) {
-+					snd_rawmidi_receive(substream, &byte, 1);
-+				}
-+			} else {
-+				break;
- 			}
--		} else {
--			break;
- 		}
--	} 
--	spin_unlock_irqrestore (&midi->virtual, flags);
-+	}
- 
- 	snd_wavefront_midi_output_write(card);
- }
-@@ -471,13 +447,10 @@ void
- snd_wavefront_midi_disable_virtual (snd_wavefront_card_t *card)
- 
- {
--	unsigned long flags;
--
--	spin_lock_irqsave (&card->wavefront.midi.virtual, flags);
-+	guard(spinlock_irqsave)(&card->wavefront.midi.virtual);
- 	// snd_wavefront_midi_input_close (card->ics2115_external_rmidi);
- 	// snd_wavefront_midi_output_close (card->ics2115_external_rmidi);
- 	card->wavefront.midi.isvirtual = 0;
--	spin_unlock_irqrestore (&card->wavefront.midi.virtual, flags);
- }
- 
- int
 --- a/sound/isa/wavefront/wavefront_synth.c
 +++ b/sound/isa/wavefront/wavefront_synth.c
-@@ -1740,10 +1740,10 @@ snd_wavefront_internal_interrupt (snd_wa
- 		return;
+@@ -116,7 +116,7 @@ MODULE_PARM_DESC(osrun_time, "how many s
+ 
+ #define DPRINT(cond, ...) \
+        if ((dev->debug & (cond)) == (cond)) { \
+-	     snd_printk (__VA_ARGS__); \
++	     pr_debug(__VA_ARGS__); \
+        }
+ #else
+ #define DPRINT(cond, args...)
+@@ -341,7 +341,7 @@ snd_wavefront_cmd (snd_wavefront_t *dev,
+ 
+ 	wfcmd = wavefront_get_command(cmd);
+ 	if (!wfcmd) {
+-		snd_printk ("command 0x%x not supported.\n",
++		dev_err(dev->card->dev, "command 0x%x not supported.\n",
+ 			cmd);
+ 		return 1;
+ 	}
+@@ -623,7 +623,7 @@ wavefront_get_sample_status (snd_wavefro
+ 	/* check sample status */
+     
+ 	if (snd_wavefront_cmd (dev, WFC_GET_NSAMPLES, rbuf, wbuf)) {
+-		snd_printk ("cannot request sample count.\n");
++		dev_err(dev->card->dev, "cannot request sample count.\n");
+ 		return -1;
+ 	} 
+     
+@@ -635,8 +635,8 @@ wavefront_get_sample_status (snd_wavefro
+ 		wbuf[1] = i >> 7;
+ 
+ 		if (snd_wavefront_cmd (dev, WFC_IDENTIFY_SAMPLE_TYPE, rbuf, wbuf)) {
+-			snd_printk(KERN_WARNING "cannot identify sample "
+-				   "type of slot %d\n", i);
++			dev_warn(dev->card->dev,
++				 "cannot identify sample type of slot %d\n", i);
+ 			dev->sample_status[i] = WF_ST_EMPTY;
+ 			continue;
+ 		}
+@@ -661,9 +661,9 @@ wavefront_get_sample_status (snd_wavefro
+ 			break;
+ 
+ 		default:
+-			snd_printk ("unknown sample type for "
+-				    "slot %d (0x%x)\n", 
+-				    i, rbuf[0]);
++			dev_err(dev->card->dev,
++				"unknown sample type for slot %d (0x%x)\n",
++				i, rbuf[0]);
+ 		}
+ 
+ 		if (rbuf[0] != WF_ST_EMPTY) {
+@@ -671,9 +671,10 @@ wavefront_get_sample_status (snd_wavefro
+ 		} 
  	}
  
--	spin_lock(&dev->irq_lock);
--	dev->irq_ok = 1;
--	dev->irq_cnt++;
--	spin_unlock(&dev->irq_lock);
-+	scoped_guard(spinlock, &dev->irq_lock) {
-+		dev->irq_ok = 1;
-+		dev->irq_cnt++;
-+	}
- 	wake_up(&dev->interrupt_sleeper);
+-	snd_printk ("%d samples used (%d real, %d aliases, %d multi), "
+-		    "%d empty\n", dev->samples_used, sc_real, sc_alias, sc_multi,
+-		    WF_MAX_SAMPLE - dev->samples_used);
++	dev_info(dev->card->dev,
++		 "%d samples used (%d real, %d aliases, %d multi), %d empty\n",
++		 dev->samples_used, sc_real, sc_alias, sc_multi,
++		 WF_MAX_SAMPLE - dev->samples_used);
+ 
+ 
+ 	return (0);
+@@ -706,8 +707,8 @@ wavefront_get_patch_status (snd_wavefron
+ 		} else if (x == 3) { /* Bad patch number */
+ 			dev->patch_status[i] = 0;
+ 		} else {
+-			snd_printk ("upload patch "
+-				    "error 0x%x\n", x);
++			dev_err(dev->card->dev,
++				"upload patch error 0x%x\n", x);
+ 			dev->patch_status[i] = 0;
+ 			return 1;
+ 		}
+@@ -724,7 +725,8 @@ wavefront_get_patch_status (snd_wavefron
+ 		}
+ 	
+ 	}
+-	snd_printk ("%d patch slots filled, %d in use\n", cnt, cnt2);
++	dev_info(dev->card->dev, "%d patch slots filled, %d in use\n",
++		 cnt, cnt2);
+ 
+ 	return (0);
+ }
+@@ -760,8 +762,8 @@ wavefront_get_program_status (snd_wavefr
+ 		} else if (x == 1) { /* Bad program number */
+ 			dev->prog_status[i] = 0;
+ 		} else {
+-			snd_printk ("upload program "
+-				    "error 0x%x\n", x);
++			dev_err(dev->card->dev,
++				"upload program error 0x%x\n", x);
+ 			dev->prog_status[i] = 0;
+ 		}
+ 	}
+@@ -772,7 +774,7 @@ wavefront_get_program_status (snd_wavefr
+ 		}
+ 	}
+ 
+-	snd_printk ("%d programs slots in use\n", cnt);
++	dev_info(dev->card->dev, "%d programs slots in use\n", cnt);
+ 
+ 	return (0);
+ }
+@@ -796,7 +798,7 @@ wavefront_send_patch (snd_wavefront_t *d
+ 	munge_buf ((unsigned char *)&header->hdr.p, bptr, WF_PATCH_BYTES);
+     
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_PATCH, NULL, buf)) {
+-		snd_printk ("download patch failed\n");
++		dev_err(dev->card->dev, "download patch failed\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -837,7 +839,7 @@ wavefront_send_program (snd_wavefront_t
+ 	munge_buf ((unsigned char *)&header->hdr.pr, &buf[1], WF_PROGRAM_BYTES);
+     
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_PROGRAM, NULL, buf)) {
+-		snd_printk ("download patch failed\n");	
++		dev_err(dev->card->dev, "download patch failed\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -851,7 +853,7 @@ wavefront_freemem (snd_wavefront_t *dev)
+ 	char rbuf[8];
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_REPORT_FREE_MEMORY, rbuf, NULL)) {
+-		snd_printk ("can't get memory stats.\n");
++		dev_err(dev->card->dev, "can't get memory stats.\n");
+ 		return -1;
+ 	} else {
+ 		return demunge_int32 (rbuf, 4);
+@@ -901,7 +903,7 @@ wavefront_send_sample (snd_wavefront_t *
+ 		x = wavefront_find_free_sample(dev);
+ 		if (x < 0)
+ 			return -ENOMEM;
+-		snd_printk ("unspecified sample => %d\n", x);
++		dev_info(dev->card->dev, "unspecified sample => %d\n", x);
+ 		header->number = x;
+ 	}
+ 
+@@ -935,9 +937,9 @@ wavefront_send_sample (snd_wavefront_t *
+ 
+ 		if (dev->rom_samples_rdonly) {
+ 			if (dev->sample_status[header->number] & WF_SLOT_ROM) {
+-				snd_printk ("sample slot %d "
+-					    "write protected\n",
+-					    header->number);
++				dev_err(dev->card->dev,
++					"sample slot %d write protected\n",
++					header->number);
+ 				return -EACCES;
+ 			}
+ 		}
+@@ -949,9 +951,9 @@ wavefront_send_sample (snd_wavefront_t *
+ 		dev->freemem = wavefront_freemem (dev);
+ 
+ 		if (dev->freemem < (int)header->size) {
+-			snd_printk ("insufficient memory to "
+-				    "load %d byte sample.\n",
+-				    header->size);
++			dev_err(dev->card->dev,
++				"insufficient memory to load %d byte sample.\n",
++				header->size);
+ 			return -ENOMEM;
+ 		}
+ 	
+@@ -960,8 +962,8 @@ wavefront_send_sample (snd_wavefront_t *
+ 	skip = WF_GET_CHANNEL(&header->hdr.s);
+ 
+ 	if (skip > 0 && header->hdr.s.SampleResolution != LINEAR_16BIT) {
+-		snd_printk ("channel selection only "
+-			    "possible on 16-bit samples");
++		dev_err(dev->card->dev,
++			"channel selection only possible on 16-bit samples");
+ 		return -EINVAL;
+ 	}
+ 
+@@ -1057,8 +1059,8 @@ wavefront_send_sample (snd_wavefront_t *
+ 			   header->size ?
+ 			   WFC_DOWNLOAD_SAMPLE : WFC_DOWNLOAD_SAMPLE_HEADER,
+ 			   NULL, sample_hdr)) {
+-		snd_printk ("sample %sdownload refused.\n",
+-			    header->size ? "" : "header ");
++		dev_err(dev->card->dev, "sample %sdownload refused.\n",
++			header->size ? "" : "header ");
+ 		return -EIO;
+ 	}
+ 
+@@ -1083,8 +1085,8 @@ wavefront_send_sample (snd_wavefront_t *
+ 		}
+ 
+ 		if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_BLOCK, NULL, NULL)) {
+-			snd_printk ("download block "
+-				    "request refused.\n");
++			dev_err(dev->card->dev,
++				"download block request refused.\n");
+ 			return -EIO;
+ 		}
+ 
+@@ -1145,13 +1147,13 @@ wavefront_send_sample (snd_wavefront_t *
+ 		dma_ack = wavefront_read(dev);
+ 		if (dma_ack != WF_DMA_ACK) {
+ 			if (dma_ack == -1) {
+-				snd_printk ("upload sample "
+-					    "DMA ack timeout\n");
++				dev_err(dev->card->dev,
++					"upload sample DMA ack timeout\n");
+ 				return -EIO;
+ 			} else {
+-				snd_printk ("upload sample "
+-					    "DMA ack error 0x%x\n",
+-					    dma_ack);
++				dev_err(dev->card->dev,
++					"upload sample DMA ack error 0x%x\n",
++					dma_ack);
+ 				return -EIO;
+ 			}
+ 		}
+@@ -1195,7 +1197,7 @@ wavefront_send_alias (snd_wavefront_t *d
+ 	munge_int32 (*(&header->hdr.a.FrequencyBias+1), &alias_hdr[23], 2);
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_SAMPLE_ALIAS, NULL, alias_hdr)) {
+-		snd_printk ("download alias failed.\n");
++		dev_err(dev->card->dev, "download alias failed.\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -1248,7 +1250,7 @@ wavefront_send_multisample (snd_wavefron
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_MULTISAMPLE, 
+ 			   (unsigned char *) (long) ((num_samples*2)+3),
+ 			   msample_hdr)) {
+-		snd_printk ("download of multisample failed.\n");
++		dev_err(dev->card->dev, "download of multisample failed.\n");
+ 		kfree(msample_hdr);
+ 		return -EIO;
+ 	}
+@@ -1271,7 +1273,7 @@ wavefront_fetch_multisample (snd_wavefro
+ 	munge_int32 (header->number, number, 2);
+     
+ 	if (snd_wavefront_cmd (dev, WFC_UPLOAD_MULTISAMPLE, log_ns, number)) {
+-		snd_printk ("upload multisample failed.\n");
++		dev_err(dev->card->dev, "upload multisample failed.\n");
+ 		return -EIO;
+ 	}
+     
+@@ -1290,16 +1292,16 @@ wavefront_fetch_multisample (snd_wavefro
+ 	
+ 		val = wavefront_read(dev);
+ 		if (val == -1) {
+-			snd_printk ("upload multisample failed "
+-				    "during sample loop.\n");
++			dev_err(dev->card->dev,
++				"upload multisample failed during sample loop.\n");
+ 			return -EIO;
+ 		}
+ 		d[0] = val;
+ 
+ 		val = wavefront_read(dev);
+ 		if (val == -1) {
+-			snd_printk ("upload multisample failed "
+-				    "during sample loop.\n");
++			dev_err(dev->card->dev,
++				"upload multisample failed during sample loop.\n");
+ 			return -EIO;
+ 		}
+ 		d[1] = val;
+@@ -1334,7 +1336,7 @@ wavefront_send_drum (snd_wavefront_t *de
+ 	}
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_DOWNLOAD_EDRUM_PROGRAM, NULL, drumbuf)) {
+-		snd_printk ("download drum failed.\n");
++		dev_err(dev->card->dev, "download drum failed.\n");
+ 		return -EIO;
+ 	}
+ 
+@@ -1352,7 +1354,7 @@ wavefront_find_free_sample (snd_wavefron
+ 			return i;
+ 		}
+ 	}
+-	snd_printk ("no free sample slots!\n");
++	dev_err(dev->card->dev, "no free sample slots!\n");
+ 	return -1;
  }
  
-@@ -1795,11 +1795,11 @@ wavefront_should_cause_interrupt (snd_wa
- 	wait_queue_entry_t wait;
+@@ -1368,7 +1370,7 @@ wavefront_find_free_patch (snd_wavefront
+ 			return i;
+ 		}
+ 	}
+-	snd_printk ("no free patch slots!\n");
++	dev_err(dev->card->dev, "no free patch slots!\n");
+ 	return -1;
+ }
+ #endif
+@@ -1385,7 +1387,7 @@ wavefront_load_patch (snd_wavefront_t *d
  
- 	init_waitqueue_entry(&wait, current);
--	spin_lock_irq(&dev->irq_lock);
--	add_wait_queue(&dev->interrupt_sleeper, &wait);
--	dev->irq_ok = 0;
--	outb (val,port);
--	spin_unlock_irq(&dev->irq_lock);
-+	scoped_guard(spinlock_irq, &dev->irq_lock) {
-+		add_wait_queue(&dev->interrupt_sleeper, &wait);
-+		dev->irq_ok = 0;
-+		outb(val, port);
-+	}
- 	while (!dev->irq_ok && time_before(jiffies, timeout)) {
- 		schedule_timeout_uninterruptible(1);
- 		barrier();
+ 	if (copy_from_user (header, addr, sizeof(wavefront_patch_info) -
+ 			    sizeof(wavefront_any))) {
+-		snd_printk ("bad address for load patch.\n");
++		dev_err(dev->card->dev, "bad address for load patch.\n");
+ 		err = -EFAULT;
+ 		goto __error;
+ 	}
+@@ -1463,8 +1465,8 @@ wavefront_load_patch (snd_wavefront_t *d
+ 		break;
+ 
+ 	default:
+-		snd_printk ("unknown patch type %d.\n",
+-			    header->subkey);
++		dev_err(dev->card->dev, "unknown patch type %d.\n",
++			header->subkey);
+ 		err = -EINVAL;
+ 		break;
+ 	}
+@@ -1527,13 +1529,13 @@ wavefront_synth_control (snd_wavefront_c
+ 	switch (wc->cmd) {
+ 		
+ 	case WFC_DISABLE_INTERRUPTS:
+-		snd_printk ("interrupts disabled.\n");
++		dev_dbg(dev->card->dev, "interrupts disabled.\n");
+ 		outb (0x80|0x20, dev->control_port);
+ 		dev->interrupts_are_midi = 1;
+ 		return 0;
+ 
+ 	case WFC_ENABLE_INTERRUPTS:
+-		snd_printk ("interrupts enabled.\n");
++		dev_dbg(dev->card->dev, "interrupts enabled.\n");
+ 		outb (0x80|0x40|0x20, dev->control_port);
+ 		dev->interrupts_are_midi = 1;
+ 		return 0;
+@@ -1550,7 +1552,7 @@ wavefront_synth_control (snd_wavefront_c
+ 	case WFC_IDENTIFY_SLOT_TYPE:
+ 		i = wc->wbuf[0] | (wc->wbuf[1] << 7);
+ 		if (i <0 || i >= WF_MAX_SAMPLE) {
+-			snd_printk ("invalid slot ID %d\n",
++			dev_err(dev->card->dev, "invalid slot ID %d\n",
+ 				i);
+ 			wc->status = EINVAL;
+ 			return -EINVAL;
+@@ -1561,7 +1563,7 @@ wavefront_synth_control (snd_wavefront_c
+ 
+ 	case WFC_DEBUG_DRIVER:
+ 		dev->debug = wc->wbuf[0];
+-		snd_printk ("debug = 0x%x\n", dev->debug);
++		dev_dbg(dev->card->dev, "debug = 0x%x\n", dev->debug);
+ 		return 0;
+ 
+ 	case WFC_UPLOAD_PATCH:
+@@ -1578,8 +1580,8 @@ wavefront_synth_control (snd_wavefront_c
+ 		return 0;
+ 
+ 	case WFC_UPLOAD_SAMPLE_ALIAS:
+-		snd_printk ("support for sample alias upload "
+-			"being considered.\n");
++		dev_err(dev->card->dev,
++			"support for sample alias upload being considered.\n");
+ 		wc->status = EINVAL;
+ 		return -EINVAL;
+ 	}
+@@ -1620,9 +1622,8 @@ wavefront_synth_control (snd_wavefront_c
+ 			break;
+ 
+ 		case WFC_UPLOAD_SAMPLE_ALIAS:
+-			snd_printk ("support for "
+-				    "sample aliases still "
+-				    "being considered.\n");
++			dev_err(dev->card->dev,
++				"support for sample aliases still being considered.\n");
+ 			break;
+ 
+ 		case WFC_VMIDI_OFF:
+@@ -1760,7 +1761,7 @@ snd_wavefront_internal_interrupt (snd_wa
+ */
+ 
+ static int
+-snd_wavefront_interrupt_bits (int irq)
++snd_wavefront_interrupt_bits(snd_wavefront_t *dev, int irq)
+ 
+ {
+ 	int bits;
+@@ -1780,7 +1781,7 @@ snd_wavefront_interrupt_bits (int irq)
+ 		break;
+ 	
+ 	default:
+-		snd_printk ("invalid IRQ %d\n", irq);
++		dev_err(dev->card->dev, "invalid IRQ %d\n", irq);
+ 		bits = -1;
+ 	}
+ 
+@@ -1815,7 +1816,7 @@ wavefront_reset_to_cleanliness (snd_wave
+ 
+ 	/* IRQ already checked */
+ 
+-	bits = snd_wavefront_interrupt_bits (dev->irq);
++	bits = snd_wavefront_interrupt_bits(dev, dev->irq);
+ 
+ 	/* try reset of port */
+ 
+@@ -1885,7 +1886,7 @@ wavefront_reset_to_cleanliness (snd_wave
+ 	 */
+ 
+ 	if (!dev->irq_ok) {
+-		snd_printk ("intr not received after h/w un-reset.\n");
++		dev_err(dev->card->dev, "intr not received after h/w un-reset.\n");
+ 		goto gone_bad;
+ 	} 
+ 
+@@ -1909,18 +1910,18 @@ wavefront_reset_to_cleanliness (snd_wave
+ 					 dev->data_port, ramcheck_time*HZ);
+ 
+ 	if (!dev->irq_ok) {
+-		snd_printk ("post-RAM-check interrupt not received.\n");
++		dev_err(dev->card->dev, "post-RAM-check interrupt not received.\n");
+ 		goto gone_bad;
+ 	} 
+ 
+ 	if (!wavefront_wait (dev, STAT_CAN_READ)) {
+-		snd_printk ("no response to HW version cmd.\n");
++		dev_err(dev->card->dev, "no response to HW version cmd.\n");
+ 		goto gone_bad;
+ 	}
+ 	
+ 	hwv[0] = wavefront_read(dev);
+ 	if (hwv[0] == -1) {
+-		snd_printk ("board not responding correctly.\n");
++		dev_err(dev->card->dev, "board not responding correctly.\n");
+ 		goto gone_bad;
+ 	}
+ 
+@@ -1932,11 +1933,11 @@ wavefront_reset_to_cleanliness (snd_wave
+ 		
+ 		hwv[0] = wavefront_read(dev);
+ 		if (hwv[0] == -1) {
+-			snd_printk ("on-board RAM test failed "
+-				    "(bad error code).\n");
++			dev_err(dev->card->dev,
++				"on-board RAM test failed (bad error code).\n");
+ 		} else {
+-			snd_printk ("on-board RAM test failed "
+-				    "(error code: 0x%x).\n",
++			dev_err(dev->card->dev,
++				"on-board RAM test failed (error code: 0x%x).\n",
+ 				hwv[0]);
+ 		}
+ 		goto gone_bad;
+@@ -1946,12 +1947,12 @@ wavefront_reset_to_cleanliness (snd_wave
+ 
+ 	hwv[1] = wavefront_read(dev);
+ 	if (hwv[1] == -1) {
+-		snd_printk ("incorrect h/w response.\n");
++		dev_err(dev->card->dev, "incorrect h/w response.\n");
+ 		goto gone_bad;
+ 	}
+ 
+-	snd_printk ("hardware version %d.%d\n",
+-		    hwv[0], hwv[1]);
++	dev_info(dev->card->dev, "hardware version %d.%d\n",
++		 hwv[0], hwv[1]);
+ 
+ 	return 0;
+ 
+@@ -1971,7 +1972,7 @@ wavefront_download_firmware (snd_wavefro
+ 
+ 	err = request_firmware(&firmware, path, dev->card->dev);
+ 	if (err < 0) {
+-		snd_printk(KERN_ERR "firmware (%s) download failed!!!\n", path);
++		dev_err(dev->card->dev, "firmware (%s) download failed!!!\n", path);
+ 		return 1;
+ 	}
+ 
+@@ -1982,16 +1983,16 @@ wavefront_download_firmware (snd_wavefro
+ 		if (section_length == 0)
+ 			break;
+ 		if (section_length < 0 || section_length > WF_SECTION_MAX) {
+-			snd_printk(KERN_ERR
+-				   "invalid firmware section length %d\n",
+-				   section_length);
++			dev_err(dev->card->dev,
++				"invalid firmware section length %d\n",
++				section_length);
+ 			goto failure;
+ 		}
+ 		buf++;
+ 		len++;
+ 
+ 		if (firmware->size < len + section_length) {
+-			snd_printk(KERN_ERR "firmware section read error.\n");
++			dev_err(dev->card->dev, "firmware section read error.\n");
+ 			goto failure;
+ 		}
+ 
+@@ -2008,15 +2009,14 @@ wavefront_download_firmware (snd_wavefro
+ 	
+ 		/* get ACK */
+ 		if (!wavefront_wait(dev, STAT_CAN_READ)) {
+-			snd_printk(KERN_ERR "time out for firmware ACK.\n");
++			dev_err(dev->card->dev, "time out for firmware ACK.\n");
+ 			goto failure;
+ 		}
+ 		err = inb(dev->data_port);
+ 		if (err != WF_ACK) {
+-			snd_printk(KERN_ERR
+-				   "download of section #%d not "
+-				   "acknowledged, ack = 0x%x\n",
+-				   section_cnt_downloaded + 1, err);
++			dev_err(dev->card->dev,
++				"download of section #%d not acknowledged, ack = 0x%x\n",
++				section_cnt_downloaded + 1, err);
+ 			goto failure;
+ 		}
+ 
+@@ -2028,7 +2028,7 @@ wavefront_download_firmware (snd_wavefro
+ 
+  failure:
+ 	release_firmware(firmware);
+-	snd_printk(KERN_ERR "firmware download failed!!!\n");
++	dev_err(dev->card->dev, "firmware download failed!!!\n");
+ 	return 1;
+ }
+ 
+@@ -2040,7 +2040,7 @@ wavefront_do_reset (snd_wavefront_t *dev
+ 	char voices[1];
+ 
+ 	if (wavefront_reset_to_cleanliness (dev)) {
+-		snd_printk ("hw reset failed.\n");
++		dev_err(dev->card->dev, "hw reset failed.\n");
+ 		goto gone_bad;
+ 	}
+ 
+@@ -2064,7 +2064,7 @@ wavefront_do_reset (snd_wavefront_t *dev
+ 						  (osrun_time*HZ));
+ 
+ 		if (!dev->irq_ok) {
+-			snd_printk ("no post-OS interrupt.\n");
++			dev_err(dev->card->dev, "no post-OS interrupt.\n");
+ 			goto gone_bad;
+ 		}
+ 		
+@@ -2074,7 +2074,7 @@ wavefront_do_reset (snd_wavefront_t *dev
+ 						  dev->data_port, (10*HZ));
+ 		
+ 		if (!dev->irq_ok) {
+-			snd_printk ("no post-OS interrupt(2).\n");
++			dev_err(dev->card->dev, "no post-OS interrupt(2).\n");
+ 			goto gone_bad;
+ 		}
+ 
+@@ -2094,20 +2094,20 @@ wavefront_do_reset (snd_wavefront_t *dev
+ 	if (dev->freemem < 0)
+ 		goto gone_bad;
+ 		
+-	snd_printk ("available DRAM %dk\n", dev->freemem / 1024);
++	dev_info(dev->card->dev, "available DRAM %dk\n", dev->freemem / 1024);
+ 
+ 	if (wavefront_write (dev, 0xf0) ||
+ 	    wavefront_write (dev, 1) ||
+ 	    (wavefront_read (dev) < 0)) {
+ 		dev->debug = 0;
+-		snd_printk ("MPU emulation mode not set.\n");
++		dev_err(dev->card->dev, "MPU emulation mode not set.\n");
+ 		goto gone_bad;
+ 	}
+ 
+ 	voices[0] = 32;
+ 
+ 	if (snd_wavefront_cmd (dev, WFC_SET_NVOICES, NULL, voices)) {
+-		snd_printk ("cannot set number of voices to 32.\n");
++		dev_err(dev->card->dev, "cannot set number of voices to 32.\n");
+ 		goto gone_bad;
+ 	}
+ 
+@@ -2187,8 +2187,8 @@ snd_wavefront_detect (snd_wavefront_card
+ 		dev->fw_version[0] = rbuf[0];
+ 		dev->fw_version[1] = rbuf[1];
+ 
+-		snd_printk ("firmware %d.%d already loaded.\n",
+-			    rbuf[0], rbuf[1]);
++		dev_info(dev->card->dev, "firmware %d.%d already loaded.\n",
++			 rbuf[0], rbuf[1]);
+ 
+ 		/* check that a command actually works */
+       
+@@ -2197,22 +2197,24 @@ snd_wavefront_detect (snd_wavefront_card
+ 			dev->hw_version[0] = rbuf[0];
+ 			dev->hw_version[1] = rbuf[1];
+ 		} else {
+-			snd_printk ("not raw, but no "
+-				    "hardware version!\n");
++			dev_err(dev->card->dev,
++				"not raw, but no hardware version!\n");
+ 			return -1;
+ 		}
+ 
+ 		if (!wf_raw) {
+ 			return 0;
+ 		} else {
+-			snd_printk ("reloading firmware as you requested.\n");
++			dev_info(dev->card->dev,
++				 "reloading firmware as you requested.\n");
+ 			dev->israw = 1;
+ 		}
+ 
+ 	} else {
+ 
+ 		dev->israw = 1;
+-		snd_printk ("no response to firmware probe, assume raw.\n");
++		dev_info(dev->card->dev,
++			 "no response to firmware probe, assume raw.\n");
+ 
+ 	}
+ 
 
 
 
