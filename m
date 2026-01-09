@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-207406-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206806-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9EB3AD09D72
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:41:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5977D09395
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CCFBC30FDBB8
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4A21B3024274
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6613358D30;
-	Fri,  9 Jan 2026 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDE951946C8;
+	Fri,  9 Jan 2026 12:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCG+L9Vc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ng8lhho7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A17931E107;
-	Fri,  9 Jan 2026 12:32:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A04DD35A922;
+	Fri,  9 Jan 2026 12:04:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961964; cv=none; b=X9jdgKdCP6O89v4I8dzDYOesGFGdbrWxjOxRa6y1MASsexEhx4fbrs2xpBXka/Bi4YvA73V3KUt58qrSu4Mt5Uav3pQ86yoDY6MKkgfuFxoL+jPjfm/yL9hIiq4oHMPYoKEaXnNepaUxW7QIjSG7hNMeiyIlHlYttz474Ut2Ngk=
+	t=1767960251; cv=none; b=V1Gh6RXZPfjh0yHHa4OVG6MQdsfMKKpL51CmTzgKthPRLbq9GPChSL8kfdGJcr9eAEC68gSkCLon3KNfAUkyNkhua5efkm883Uyffbz6tq8okqE6nSI0PeIdZL+9W2O9AX7/5uZlHtiVdKlnop5EaPUa50wcwoopTIbOfYV71ws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961964; c=relaxed/simple;
-	bh=EAhSv5kY/znuFvDz/FA/lU12XNWi6T5XOU5XwlzmKuk=;
+	s=arc-20240116; t=1767960251; c=relaxed/simple;
+	bh=+nTHMCUAILCD4PR5Mz9pmIzoL2MjkofxWU1LKjk9muY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=squqXYMuJ+3mlccX3vLX/wjrQQ7IKroFt4PR4Q6N/O2cQcbOrDvVxg4PQpANvRQhQ3X069n545ubBJBZurdepEV5VCvzRsGvd/OcsheLPLqL9kTYzfIg2UJ4vFu0+G5ew6Pj+JRjt8JQHR8WR2SJMiiOQRLfQaVWlIiRBsDJBJ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCG+L9Vc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85CBC4CEF1;
-	Fri,  9 Jan 2026 12:32:43 +0000 (UTC)
+	 MIME-Version; b=ljkb8yidlJmTw3+Ztp9Iqq4M+k1veNfUX8udD3NGGd9vOYEgzfv6XpF6vAHFrqYAIoRosF58N1lQfwI3apRPk8IobxHjjawiCYtMhXR2AisrFq7sSfWrtdI9mFgvFmgbzmd1N8l2RLmflVynwAGnug75pVECaXQN77D2YDYwbes=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ng8lhho7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E438C16AAE;
+	Fri,  9 Jan 2026 12:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961964;
-	bh=EAhSv5kY/znuFvDz/FA/lU12XNWi6T5XOU5XwlzmKuk=;
+	s=korg; t=1767960251;
+	bh=+nTHMCUAILCD4PR5Mz9pmIzoL2MjkofxWU1LKjk9muY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jCG+L9Vc1NfPscrs97uweAgKPOcO0Mcq/JEFJb+O4CzzfZjNYYjXvHrcCgjTBRJbe
-	 duqEpGfkudSyEEgzD4ZK7oSu97yIQc8w/ETPxL2HSfwMIGiVPTgWG2RnOy4rKYvPbJ
-	 EGJvnyebm0UxD7w9HKoEQLvisgStsp+nXFPqYO2g=
+	b=ng8lhho7r9ipPxhPSOewNfvs8rTTyHsh0rZ8MNNuCjAKG6cBHCsYIhVFZVnnxcixq
+	 jhG9b3lvDf0FpYAuv9b8wbCm4QMgrRgGYMMt1dWttNS4f2U2CcmA/NzIWRAQp+NxQZ
+	 D41zh8VM/YskeDERb51YcS+ORAlzJFE6eXxMl3bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Junvy Yang <zhuque@tencent.com>,
+	Ilya Maximets <i.maximets@ovn.org>,
+	Aaron Conole <aconole@redhat.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 198/634] NFS: Fix inheritance of the block sizes when automounting
-Date: Fri,  9 Jan 2026 12:37:56 +0100
-Message-ID: <20260109112124.885711650@linuxfoundation.org>
+Subject: [PATCH 6.6 338/737] net: openvswitch: fix middle attribute validation in push_nsh() action
+Date: Fri,  9 Jan 2026 12:37:57 +0100
+Message-ID: <20260109112146.704813055@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,180 +62,113 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ilya Maximets <i.maximets@ovn.org>
 
-[ Upstream commit 2b092175f5e301cdaa935093edfef2be9defb6df ]
+[ Upstream commit 5ace7ef87f059d68b5f50837ef3e8a1a4870c36e ]
 
-Only inherit the block sizes that were actually specified as mount
-parameters for the parent mount.
+The push_nsh() action structure looks like this:
 
-Fixes: 62a55d088cd8 ("NFS: Additional refactoring for fs_context conversion")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+ OVS_ACTION_ATTR_PUSH_NSH(OVS_KEY_ATTR_NSH(OVS_NSH_KEY_ATTR_BASE,...))
+
+The outermost OVS_ACTION_ATTR_PUSH_NSH attribute is OK'ed by the
+nla_for_each_nested() inside __ovs_nla_copy_actions().  The innermost
+OVS_NSH_KEY_ATTR_BASE/MD1/MD2 are OK'ed by the nla_for_each_nested()
+inside nsh_key_put_from_nlattr().  But nothing checks if the attribute
+in the middle is OK.  We don't even check that this attribute is the
+OVS_KEY_ATTR_NSH.  We just do a double unwrap with a pair of nla_data()
+calls - first time directly while calling validate_push_nsh() and the
+second time as part of the nla_for_each_nested() macro, which isn't
+safe, potentially causing invalid memory access if the size of this
+attribute is incorrect.  The failure may not be noticed during
+validation due to larger netlink buffer, but cause trouble later during
+action execution where the buffer is allocated exactly to the size:
+
+ BUG: KASAN: slab-out-of-bounds in nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
+ Read of size 184 at addr ffff88816459a634 by task a.out/22624
+
+ CPU: 8 UID: 0 PID: 22624 6.18.0-rc7+ #115 PREEMPT(voluntary)
+ Call Trace:
+  <TASK>
+  dump_stack_lvl+0x51/0x70
+  print_address_description.constprop.0+0x2c/0x390
+  kasan_report+0xdd/0x110
+  kasan_check_range+0x35/0x1b0
+  __asan_memcpy+0x20/0x60
+  nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
+  push_nsh+0x82/0x120 [openvswitch]
+  do_execute_actions+0x1405/0x2840 [openvswitch]
+  ovs_execute_actions+0xd5/0x3b0 [openvswitch]
+  ovs_packet_cmd_execute+0x949/0xdb0 [openvswitch]
+  genl_family_rcv_msg_doit+0x1d6/0x2b0
+  genl_family_rcv_msg+0x336/0x580
+  genl_rcv_msg+0x9f/0x130
+  netlink_rcv_skb+0x11f/0x370
+  genl_rcv+0x24/0x40
+  netlink_unicast+0x73e/0xaa0
+  netlink_sendmsg+0x744/0xbf0
+  __sys_sendto+0x3d6/0x450
+  do_syscall_64+0x79/0x2c0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  </TASK>
+
+Let's add some checks that the attribute is properly sized and it's
+the only one attribute inside the action.  Technically, there is no
+real reason for OVS_KEY_ATTR_NSH to be there, as we know that we're
+pushing an NSH header already, it just creates extra nesting, but
+that's how uAPI works today.  So, keeping as it is.
+
+Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
+Reported-by: Junvy Yang <zhuque@tencent.com>
+Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
+Acked-by: Eelco Chaudron echaudro@redhat.com
+Reviewed-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20251204105334.900379-1-i.maximets@ovn.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/client.c           | 21 +++++++++++++++++----
- fs/nfs/internal.h         |  1 -
- fs/nfs/namespace.c        |  5 ++++-
- fs/nfs/nfs4client.c       | 18 ++++++++++++++----
- fs/nfs/super.c            | 10 +++-------
- include/linux/nfs_fs_sb.h |  5 +++++
- 6 files changed, 43 insertions(+), 17 deletions(-)
+ net/openvswitch/flow_netlink.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/client.c b/fs/nfs/client.c
-index 2ca04dcb192aa..948bf8d7aed00 100644
---- a/fs/nfs/client.c
-+++ b/fs/nfs/client.c
-@@ -745,10 +745,18 @@ static int nfs_init_server(struct nfs_server *server,
- 		server->fattr_valid = NFS_ATTR_FATTR_V4;
- 	}
+diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
+index 836e8e705d40e..1d9a44d6216af 100644
+--- a/net/openvswitch/flow_netlink.c
++++ b/net/openvswitch/flow_netlink.c
+@@ -2788,13 +2788,20 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
+ 	return err;
+ }
  
--	if (ctx->rsize)
-+	if (ctx->bsize) {
-+		server->bsize = ctx->bsize;
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_BSIZE;
-+	}
-+	if (ctx->rsize) {
- 		server->rsize = nfs_io_size(ctx->rsize, clp->cl_proto);
--	if (ctx->wsize)
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_RSIZE;
-+	}
-+	if (ctx->wsize) {
- 		server->wsize = nfs_io_size(ctx->wsize, clp->cl_proto);
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_WSIZE;
-+	}
- 
- 	server->acregmin = ctx->acregmin * HZ;
- 	server->acregmax = ctx->acregmax * HZ;
-@@ -940,8 +948,13 @@ EXPORT_SYMBOL_GPL(nfs_probe_server);
- void nfs_server_copy_userdata(struct nfs_server *target, struct nfs_server *source)
+-static bool validate_push_nsh(const struct nlattr *attr, bool log)
++static bool validate_push_nsh(const struct nlattr *a, bool log)
  {
- 	target->flags = source->flags;
--	target->rsize = source->rsize;
--	target->wsize = source->wsize;
-+	target->automount_inherit = source->automount_inherit;
-+	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_BSIZE)
-+		target->bsize = source->bsize;
-+	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_RSIZE)
-+		target->rsize = source->rsize;
-+	if (source->automount_inherit & NFS_AUTOMOUNT_INHERIT_WSIZE)
-+		target->wsize = source->wsize;
- 	target->acregmin = source->acregmin;
- 	target->acregmax = source->acregmax;
- 	target->acdirmin = source->acdirmin;
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 323f50962a786..ec2e0d7ed7e36 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -145,7 +145,6 @@ struct nfs_fs_context {
- 		struct super_block	*sb;
- 		struct dentry		*dentry;
- 		struct nfs_fattr	*fattr;
--		unsigned int		inherited_bsize;
- 	} clone_data;
- };
++	struct nlattr *nsh_key = nla_data(a);
+ 	struct sw_flow_match match;
+ 	struct sw_flow_key key;
  
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 789baa1cf768c..663f1a3f7cc3e 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -190,6 +190,10 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	ctx->nfs_mod		= client->cl_nfs_mod;
- 	__module_get(ctx->nfs_mod->owner);
- 
-+	/* Inherit block sizes if they were specified as mount parameters */
-+	if (server->automount_inherit & NFS_AUTOMOUNT_INHERIT_BSIZE)
-+		ctx->bsize = server->bsize;
++	/* There must be one and only one NSH header. */
++	if (!nla_ok(nsh_key, nla_len(a)) ||
++	    nla_total_size(nla_len(nsh_key)) != nla_len(a) ||
++	    nla_type(nsh_key) != OVS_KEY_ATTR_NSH)
++		return false;
 +
- 	ret = client->rpc_ops->submount(fc, server);
- 	if (ret < 0) {
- 		mnt = ERR_PTR(ret);
-@@ -289,7 +293,6 @@ int nfs_do_submount(struct fs_context *fc)
- 		return -ENOMEM;
+ 	ovs_match_init(&match, &key, true, NULL);
+-	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
++	return !nsh_key_put_from_nlattr(nsh_key, &match, false, true, log);
+ }
  
- 	ctx->internal		= true;
--	ctx->clone_data.inherited_bsize = ctx->clone_data.sb->s_blocksize_bits;
+ /* Return false if there are any non-masked bits set.
+@@ -3351,7 +3358,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
+ 					return -EINVAL;
+ 			}
+ 			mac_proto = MAC_PROTO_NONE;
+-			if (!validate_push_nsh(nla_data(a), log))
++			if (!validate_push_nsh(a, log))
+ 				return -EINVAL;
+ 			break;
  
- 	p = nfs_devname(dentry, buffer, 4096);
- 	if (IS_ERR(p)) {
-diff --git a/fs/nfs/nfs4client.c b/fs/nfs/nfs4client.c
-index 4cb405e343b83..f8a50f6453dd1 100644
---- a/fs/nfs/nfs4client.c
-+++ b/fs/nfs/nfs4client.c
-@@ -1149,10 +1149,20 @@ static int nfs4_init_server(struct nfs_server *server, struct fs_context *fc)
- 	if (error < 0)
- 		return error;
- 
--	if (ctx->rsize)
--		server->rsize = nfs_io_size(ctx->rsize, server->nfs_client->cl_proto);
--	if (ctx->wsize)
--		server->wsize = nfs_io_size(ctx->wsize, server->nfs_client->cl_proto);
-+	if (ctx->bsize) {
-+		server->bsize = ctx->bsize;
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_BSIZE;
-+	}
-+	if (ctx->rsize) {
-+		server->rsize =
-+			nfs_io_size(ctx->rsize, server->nfs_client->cl_proto);
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_RSIZE;
-+	}
-+	if (ctx->wsize) {
-+		server->wsize =
-+			nfs_io_size(ctx->wsize, server->nfs_client->cl_proto);
-+		server->automount_inherit |= NFS_AUTOMOUNT_INHERIT_WSIZE;
-+	}
- 
- 	server->acregmin = ctx->acregmin * HZ;
- 	server->acregmax = ctx->acregmax * HZ;
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 3a002bc75d22a..9a81f34362930 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1057,8 +1057,9 @@ static void nfs_fill_super(struct super_block *sb, struct nfs_fs_context *ctx)
- 	sb->s_blocksize = 0;
- 	sb->s_xattr = server->nfs_client->cl_nfs_mod->xattr;
- 	sb->s_op = server->nfs_client->cl_nfs_mod->sops;
--	if (ctx->bsize)
--		sb->s_blocksize = nfs_block_size(ctx->bsize, &sb->s_blocksize_bits);
-+	if (server->bsize)
-+		sb->s_blocksize =
-+			nfs_block_size(server->bsize, &sb->s_blocksize_bits);
- 
- 	switch (server->nfs_client->rpc_ops->version) {
- 	case 2:
-@@ -1303,13 +1304,8 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	}
- 
- 	if (!s->s_root) {
--		unsigned bsize = ctx->clone_data.inherited_bsize;
- 		/* initial superblock/root creation */
- 		nfs_fill_super(s, ctx);
--		if (bsize) {
--			s->s_blocksize_bits = bsize;
--			s->s_blocksize = 1U << bsize;
--		}
- 		error = nfs_get_cache_cookie(s, ctx);
- 		if (error < 0)
- 			goto error_splat_super;
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index eb1d41d87be30..877d5523239cf 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -155,6 +155,11 @@ struct nfs_server {
- #define NFS_MOUNT_WRITE_WAIT		0x02000000
- #define NFS_MOUNT_TRUNK_DISCOVERY	0x04000000
- 
-+	unsigned int		automount_inherit; /* Properties inherited by automount */
-+#define NFS_AUTOMOUNT_INHERIT_BSIZE	0x0001
-+#define NFS_AUTOMOUNT_INHERIT_RSIZE	0x0002
-+#define NFS_AUTOMOUNT_INHERIT_WSIZE	0x0004
-+
- 	unsigned int		caps;		/* server capabilities */
- 	__u64			fattr_valid;	/* Valid attributes */
- 	unsigned int		rsize;		/* read size */
 -- 
 2.51.0
 
