@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207249-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3925D09CBE
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97D77D09368
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9DF753008724
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8CE5530D2C18
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF7B335A92E;
-	Fri,  9 Jan 2026 12:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97FC132FA3D;
+	Fri,  9 Jan 2026 11:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PCENn5yC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UnSKbqQF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92877335567;
-	Fri,  9 Jan 2026 12:25:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD7A2DEA6F;
+	Fri,  9 Jan 2026 11:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961518; cv=none; b=Iog6sA91r4WRDViwFsBDIerP+ZMag0KkT4N0eloAMbXvPU5A3hndaAvmuP91iaB4s2qnynd1y57l5VvfCnO1vTpxb+GGa8DKEJSkPlg71fksn9y6h2R8vEhdciHXLVXCCrYoGvIglt1vtYa0W8xmpfSdIB1exXRr0gJy6D7NHYM=
+	t=1767959902; cv=none; b=ivJkNIEwS7yhnmdWD+RMRdqP/lh+4bnrslck5YdOSnlNw/S46gf3s/a6UUJbqWjluGbu+U5FAxht8+s7kysvclbvuUIDFADgNtpr3DlrrzFmRtiZlLBvFze2fTwLYzRShXuCoTGHYAqVUMy+5GzoRaBwEb+T5XBc1ZmZyXuZZxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961518; c=relaxed/simple;
-	bh=dJjk/wu6Fxk+JA9EPVSo6ICD5iq5rRQmrBD/hfreiS8=;
+	s=arc-20240116; t=1767959902; c=relaxed/simple;
+	bh=uyMcUj2fnMgP7hvzmJCKm7jHE5ecqdEnNZpA0o0pOCk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gEmxR+SeSitIQH/WLr4TiFJUhbJiCWCDIDceeqhvoOA+KqgQjTISftP/PPP5z0VGaHkUXgdlVG6HJQLWww7VLWTAtRu4GiAnlI6Y0xD3Pkrjo2vKFG0t9BCwG1ldZiSzwzvdQIrOuDjEv2vzhNHO1QzQg5Sy6OYnl2NvMrKLAus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PCENn5yC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17C0EC4CEF1;
-	Fri,  9 Jan 2026 12:25:17 +0000 (UTC)
+	 MIME-Version; b=T2DOM9gpoWMAm92hpR/RYBMhRy+i6vqB3sDLvd8PRAEyu2qwFg55FazMFZ573phXh0cvDxMA+g7yOJxnZiLoKY4Q3plN+iTDYPnAdnwRmXeKJQJBhURFJX568DpSn9yDIUkBdlv5ZAI5m0Fr798L2gLAgvXX1BZirnyzT/cuVJk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UnSKbqQF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBFE0C19421;
+	Fri,  9 Jan 2026 11:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961518;
-	bh=dJjk/wu6Fxk+JA9EPVSo6ICD5iq5rRQmrBD/hfreiS8=;
+	s=korg; t=1767959902;
+	bh=uyMcUj2fnMgP7hvzmJCKm7jHE5ecqdEnNZpA0o0pOCk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PCENn5yCfDCfO7v5tweekAARLW7P19t3Mo5S/wx5A8ocGBZg4Mm8LxEb1o5Caswzd
-	 bn0SM0oL6IoNZijSQRmLAWGBoKwEr6mnjnp4XIM3IdHJgs4o9bbF9JyQe8s7V3gRhC
-	 hUnf+7hoHNTNYvybkeahT2NmZJ+B9FCozRKKFBM0=
+	b=UnSKbqQFQVE87MkCgAewaBaShmUEaI4G8C9pi//g3YdnyNDKtZ70mGunjy7WCo2mR
+	 8Yuo/c+RyPpxn878fQQpqtrdfFU8ghlbrttTyikaVRoMLVvuDeUKNZ/Oi8eUSVgscN
+	 iVjFiy2lpQTNgqrH8/Ax3Sdo16Pw2WiaYNgPMZyE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	=?UTF-8?q?Guido=20G=C3=BCnther?= <agx@sigxcpu.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 043/634] drm/panel: visionox-rm69299: Dont clear all mode flags
-Date: Fri,  9 Jan 2026 12:35:21 +0100
-Message-ID: <20260109112119.066675756@linuxfoundation.org>
+Subject: [PATCH 6.6 183/737] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
+Date: Fri,  9 Jan 2026 12:35:22 +0100
+Message-ID: <20260109112140.879380362@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guido Günther <agx@sigxcpu.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 39144b611e9cd4f5814f4098c891b545dd70c536 ]
+[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
 
-Don't clear all mode flags. We only want to maek sure we use HS mode
-during unprepare.
+If devm_request_threaded_irq() fails after irq_domain_add_linear()
+succeeds in mt6358_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-Fixes: c7f66d32dd431 ("drm/panel: add support for rm69299 visionox panel")
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Guido Günther <agx@sigxcpu.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20250910-shift6mq-panel-v3-2-a7729911afb9@sigxcpu.org
+Call irq_domain_remove() in the error path after a successful
+irq_domain_add_linear() to properly release the IRQ domain.
+
+Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-visionox-rm69299.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/mt6358-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-visionox-rm69299.c b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-index b380bbb0e0d0a..eb8bc6f6c118c 100644
---- a/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-+++ b/drivers/gpu/drm/panel/panel-visionox-rm69299.c
-@@ -64,7 +64,7 @@ static int visionox_rm69299_unprepare(struct drm_panel *panel)
- 	struct visionox_rm69299 *ctx = panel_to_ctx(panel);
- 	int ret;
+diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
+index 49830b526ee88..10a0952615a17 100644
+--- a/drivers/mfd/mt6358-irq.c
++++ b/drivers/mfd/mt6358-irq.c
+@@ -286,6 +286,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
  
--	ctx->dsi->mode_flags = 0;
-+	ctx->dsi->mode_flags &= ~MIPI_DSI_MODE_LPM;
- 
- 	ret = mipi_dsi_dcs_write(ctx->dsi, MIPI_DCS_SET_DISPLAY_OFF, NULL, 0);
- 	if (ret < 0)
 -- 
 2.51.0
 
