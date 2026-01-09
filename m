@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207501-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4330D09F85
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8162ED096E7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 716753090F4B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2C59830CC87C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D8335B135;
-	Fri,  9 Jan 2026 12:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D970D35B12E;
+	Fri,  9 Jan 2026 12:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UD25ZA7H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRXOt0TL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C6835B13F;
-	Fri,  9 Jan 2026 12:37:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C8D535B129;
+	Fri,  9 Jan 2026 12:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962234; cv=none; b=N2gz6XY1SH1Xvf+f8V4hwCPp37j/7MdlupVFa/4dFrd8sK66VbmKnNmTEhRr80vckG+pL+Zag8pPFQ0fmbxbXDEZgooQRlOQ/Qc+ZYHGLW07Y7HRMMh+egXd+4WK3Kp504xQEdN8S4UiGDjpqFH8MuYRpadQ+CWzensRku+neLc=
+	t=1767960519; cv=none; b=YsbdccE5qLT3BGrZ+P5UyMf735GkL04KkdRX88J9Eo3IUQLAeLoRcpuj0fZoVBAi0tP31q2XqaYmWdFNxF9XHBnBcm9KLG/kETdiKOEB0t6Y3a/RmpHickFpWVIpBUBSPG1t9Lp6RkDDlIEkJoQy/qibx17Lb26YBghnVWpuDBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962234; c=relaxed/simple;
-	bh=XjLFq8WDA1ikcwqyAffvFNiSCZlGALbp5yk8L9G2Pkw=;
+	s=arc-20240116; t=1767960519; c=relaxed/simple;
+	bh=B+RIXjEiVok8W2amvEdNaGA3yYvtacBkpbb7lgZghLk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dGrDVwCmiHISrCR7mzVilVZkaP4aq2OmwdQimOaUeBH1AdRi0I1nFs+RPBhO7OAXvLHEFaQ1IfNnza3V0RssbGKrOxC7PVzDsJj8obD3lZ/tpET8TmHT7ZBGey5y4E1MBLUc+rbfIVZND5CORZ6ytiWd/WgI79o1DtgsKwaY6lM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UD25ZA7H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DB1C4CEF1;
-	Fri,  9 Jan 2026 12:37:13 +0000 (UTC)
+	 MIME-Version; b=eiUx4VdoNVIFHhjkPqhnzf1jHzzzwcTcwFKYBiLL8UFlbWkuCulcI1jBBSHdPwsyveT+vA/oG6ABq3aObKRL1quNqTZX413/1VLqwb02ygk7ED89EMu8IL7GKO1KBeYYN1lGWrJydZ6XhioJL0AdFVPAtU/f7RVZvRzutuFqJTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRXOt0TL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3EA6C19423;
+	Fri,  9 Jan 2026 12:08:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962233;
-	bh=XjLFq8WDA1ikcwqyAffvFNiSCZlGALbp5yk8L9G2Pkw=;
+	s=korg; t=1767960519;
+	bh=B+RIXjEiVok8W2amvEdNaGA3yYvtacBkpbb7lgZghLk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UD25ZA7HDjdKerRHZIXaT+Rl5po+7r7GWXNfu+kVareoKRpRqJxWQVUQ+w/LI3W8f
-	 9ZLokmR2zUwHzlenFXz0KqISh2BVMBB0OdUi8IDYRddUeo3Vfh+cwRf5Cquc4iFuqE
-	 09Yj7alZgXWnrZ69g69Qc+96rdZX0RCXjSuUGStw=
+	b=xRXOt0TL1N59utXtulc8Vm6KkInegGIuL/LUFSW+DkAXZwrWoYRREMpW7qyPPF5zA
+	 EE4v/J8XxaaMiCbkhFNqucxatfxsHvn/dBpiqohtVQB8pNo9EPv8p3O4v60HG/bM+F
+	 t+bdxWMJXl7eHlP+qWCv7htiqCGIuu40FAe9yJi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 294/634] ALSA: pcmcia: Fix resource leak in snd_pdacf_probe error path
+	Colin Ian King <colin.i.king@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 433/737] media: pvrusb2: Fix incorrect variable used in trace message
 Date: Fri,  9 Jan 2026 12:39:32 +0100
-Message-ID: <20260109112128.593321530@linuxfoundation.org>
+Message-ID: <20260109112150.281884715@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +59,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Colin Ian King <colin.i.king@gmail.com>
 
-[ Upstream commit 5032347c04ba7ff9ba878f262e075d745c06a2a8 ]
+commit be440980eace19c035a0745fd6b6e42707bc4f49 upstream.
 
-When pdacf_config() fails, snd_pdacf_probe() returns the error code
-directly without freeing the sound card resources allocated by
-snd_card_new(), which leads to a memory leak.
+The pvr2_trace message is reporting an error about control read
+transfers, however it is using the incorrect variable write_len
+instead of read_lean. Fix this by using the correct variable
+read_len.
 
-Add proper error handling to free the sound card and clear the card
-list entry when pdacf_config() fails.
-
-Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
-Suggested-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251215090433.211-1-vulab@iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: d855497edbfb ("V4L/DVB (4228a): pvrusb2 to kernel 2.6.18")
+Cc: stable@vger.kernel.org
+Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pcmcia/pdaudiocf/pdaudiocf.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/media/usb/pvrusb2/pvrusb2-hdw.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/pcmcia/pdaudiocf/pdaudiocf.c b/sound/pcmcia/pdaudiocf/pdaudiocf.c
-index 8363ec08df5d..4468d81683ec 100644
---- a/sound/pcmcia/pdaudiocf/pdaudiocf.c
-+++ b/sound/pcmcia/pdaudiocf/pdaudiocf.c
-@@ -132,7 +132,13 @@ static int snd_pdacf_probe(struct pcmcia_device *link)
- 	link->config_index = 1;
- 	link->config_regs = PRESENT_OPTION;
- 
--	return pdacf_config(link);
-+	err = pdacf_config(link);
-+	if (err < 0) {
-+		card_list[i] = NULL;
-+		snd_card_free(card);
-+		return err;
-+	}
-+	return 0;
- }
- 
- 
--- 
-2.51.0
-
+--- a/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
++++ b/drivers/media/usb/pvrusb2/pvrusb2-hdw.c
+@@ -3622,7 +3622,7 @@ static int pvr2_send_request_ex(struct p
+ 		pvr2_trace(
+ 			PVR2_TRACE_ERROR_LEGS,
+ 			"Attempted to execute %d byte control-read transfer (limit=%d)",
+-			write_len,PVR2_CTL_BUFFSIZE);
++			read_len, PVR2_CTL_BUFFSIZE);
+ 		return -EINVAL;
+ 	}
+ 	if ((!write_len) && (!read_len)) {
 
 
 
