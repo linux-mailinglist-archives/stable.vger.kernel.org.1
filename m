@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207422-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206839-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 42B22D09D31
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5162ED09626
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A337311D216
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4846130B0F5F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBBFA35B137;
-	Fri,  9 Jan 2026 12:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5BF3F35A925;
+	Fri,  9 Jan 2026 12:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Z6SHGt+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nbuXJiy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E95533C53A;
-	Fri,  9 Jan 2026 12:33:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D5E9359FB0;
+	Fri,  9 Jan 2026 12:05:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962009; cv=none; b=jrkcDSbrCuDE2MVBv0ZeQmRxDho40zYXWi78fqJDAPUNefGdp9RePy6g32OWjJxbmDv8zabZ00TzWfnWGHLFBAdVPlBcMMgNiAAHKl7kCrNZjHekToAfb5jg6iMssiYBBioiEDoxRT6Y+/v2uBrn1F+f9C0DRnwlpTMvzsxE8W0=
+	t=1767960346; cv=none; b=NRD/1q7di15309YHJGpY/eYgLTHP0qq8AP2W5IknaviDwZSGnLG2VT4u/AT5RcPiLQ1SPcYCdK64E12tgFVUcQ59Ro5oeP2UL2ZAtOYNh45xMPMoORbofFXFZ8N3IqljqIpw5TN40KKcJp6W9a4FKo6tC3OMZrtJcvc3tz/HH9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962009; c=relaxed/simple;
-	bh=GOM9yPlL3KzW8LeWkdyt2mrLTYboOrY73vDk6mP8eIw=;
+	s=arc-20240116; t=1767960346; c=relaxed/simple;
+	bh=U/hxFRAUYp/xllQp1BYY9Gof5+CVKemf60jz3rAioqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kG7oQNTPlwvHZZtXCPAZVb0dRfQOt7wlcWlVzjlIjFRQIQTRGSNp/+CqfD/pUkwIE0OA1kK4omZIeH2cKo47dGA0SYPYqV643aykMjUzRKMHpo1QL2dT8xeTMaxL/UtwTpOZgMidf7VGtrhcVKtfSfxJsEf3weMNdsvRkDofS34=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Z6SHGt+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AC48C4CEF1;
-	Fri,  9 Jan 2026 12:33:28 +0000 (UTC)
+	 MIME-Version; b=eChScPDGZqysZgKyo2CiwL/6kVZ5ElvfHL4Q6KSZeaYzmskJy9Pd4KNy03q05L40nPvDuDw8M2t+xYBCYuPd1sv+yZoTAyWWcSfQfqpjyXYQaS9AnHATfYA8Rn79HV8Ry6TrMtWGg3fg/CLBP3MhSBf+xl3qPDXO16HESNeRBe8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nbuXJiy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C207C4CEF1;
+	Fri,  9 Jan 2026 12:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962009;
-	bh=GOM9yPlL3KzW8LeWkdyt2mrLTYboOrY73vDk6mP8eIw=;
+	s=korg; t=1767960346;
+	bh=U/hxFRAUYp/xllQp1BYY9Gof5+CVKemf60jz3rAioqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0Z6SHGt+V9R5q7AAi4aXtxge9o551ufKcA34t7p0r1bbD4oDilZXJsjmLfoxjC0Jr
-	 CbY75hXUI5rVtwoydPAediJzhYNbHNOBr3Rs7fiKswbGhSlgz/xmFeQhxPrB8rl1jn
-	 UFzFdsJtU+K8s0b9nBB/1YRINslgqjZmyl/V/80c=
+	b=nbuXJiy0rGmmdYBcmGTaTgLgoYLbSN44b0WJxamQKTPhTj50mumrGn4G3oKka50Pp
+	 mcEqFwk+6jxfUs+g/tBzyyxnUdb9F3cpaLosHfeh/r97XfnPvFz4d7bbbHIz5MhnSV
+	 LdlKOP8jy93nNmggYhim659K0I9qI+qXt5NjwG8g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 215/634] efi/cper: Adjust infopfx size to accept an extra space
+Subject: [PATCH 6.6 354/737] net/mlx5: Skip HotPlug check on sync reset using hot reset
 Date: Fri,  9 Jan 2026 12:38:13 +0100
-Message-ID: <20260109112125.525225578@linuxfoundation.org>
+Message-ID: <20260109112147.312156491@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +60,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Moshe Shemesh <moshe@nvidia.com>
 
-[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
+[ Upstream commit 48bb52b0bc6693afb17a6024bab925b25fec44a1 ]
 
-Compiling with W=1 with werror enabled produces an error:
+Sync reset request is nacked by the driver when PCIe bridge connected to
+mlx5 device has HotPlug interrupt enabled. However, when using reset
+method of hot reset this check can be skipped as Hotplug is supported on
+this reset method.
 
-drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
-drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                                                                ^
-drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-As the logic there adds an space at the end of infopx buffer.
-Add an extra space to avoid such warning.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Link: https://patch.msgid.link/20240911201757.1505453-12-saeed@kernel.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Stable-dep-of: 367e501f8b09 ("net/mlx5: Serialize firmware reset with devlink")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/cper-arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 36d3b8b9da47e..f4b7a48327fbb 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -241,7 +241,7 @@ void cper_print_proc_arm(const char *pfx,
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
--	char newpfx[64], infopfx[64];
-+	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index dc7afc9e7777d..bdcd9e5306331 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -396,7 +396,8 @@ static int mlx5_check_dev_ids(struct mlx5_core_dev *dev, u16 dev_id)
+ 	return 0;
+ }
  
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
+-static bool mlx5_is_reset_now_capable(struct mlx5_core_dev *dev)
++static bool mlx5_is_reset_now_capable(struct mlx5_core_dev *dev,
++				      u8 reset_method)
+ {
+ 	u16 dev_id;
+ 	int err;
+@@ -412,9 +413,11 @@ static bool mlx5_is_reset_now_capable(struct mlx5_core_dev *dev)
+ 	}
  
+ #if IS_ENABLED(CONFIG_HOTPLUG_PCI_PCIE)
+-	err = mlx5_check_hotplug_interrupt(dev);
+-	if (err)
+-		return false;
++	if (reset_method != MLX5_MFRL_REG_PCI_RESET_METHOD_HOT_RESET) {
++		err = mlx5_check_hotplug_interrupt(dev);
++		if (err)
++			return false;
++	}
+ #endif
+ 
+ 	err = pci_read_config_word(dev->pdev, PCI_DEVICE_ID, &dev_id);
+@@ -435,7 +438,7 @@ static void mlx5_sync_reset_request_event(struct work_struct *work)
+ 		mlx5_core_warn(dev, "Failed reading MFRL, err %d\n", err);
+ 
+ 	if (err || test_bit(MLX5_FW_RESET_FLAGS_NACK_RESET_REQUEST, &fw_reset->reset_flags) ||
+-	    !mlx5_is_reset_now_capable(dev)) {
++	    !mlx5_is_reset_now_capable(dev, fw_reset->reset_method)) {
+ 		err = mlx5_fw_reset_set_reset_sync_nack(dev);
+ 		mlx5_core_warn(dev, "PCI Sync FW Update Reset Nack %s",
+ 			       err ? "Failed" : "Sent");
 -- 
 2.51.0
 
