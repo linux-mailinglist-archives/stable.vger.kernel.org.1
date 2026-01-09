@@ -1,109 +1,147 @@
-Return-Path: <stable+bounces-206430-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206431-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3DFB4D07E17
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 09:41:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E81D0833B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:30:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1A3A8301BEAF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 08:40:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 464B8300AC8B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:30:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02CD1350D61;
-	Fri,  9 Jan 2026 08:40:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4773233343B;
+	Fri,  9 Jan 2026 09:30:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="QT8Fx9DA"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hu7+oOeN"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lf1-f50.google.com (mail-lf1-f50.google.com [209.85.167.50])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C2F02EB5CD
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 08:40:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 041B4332ECB
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:30:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767948029; cv=none; b=ss34zCtnnIAjnARARJ6PGEBl53VmK/RMvUpcj3imkHdVgnIDa3pJ8BMOojuQ8zoyG7Y29sZL5QMLOGTIPB/Pfw8+VRUICCKDlv/F5U5zjFIkpnUjHqgisbjj57ujzYjBwXdnn18e2pLa7xu+mdCUs9vn7OG9EXAias8CduuU2q4=
+	t=1767951048; cv=none; b=A9Byun3O6n4/wF6AIfNkUg4bpkX2nugQM/qdrXTVu9sBwY2/1iBUDjhRDhRWDXSxaI/AeEFlELRXv3g+uMdGIrj95kHE9nyodtkXKU0ePUdKE1v+mysGdK8a+EfITG4izTbHjdcGXX4eO3qrMw0Sc3M8jC5JjaY9L4qFF49L0rI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767948029; c=relaxed/simple;
-	bh=qgQguY/3yJH9vjqUKAYyFPM3gXFuXFaFqMIhKXi9SEE=;
+	s=arc-20240116; t=1767951048; c=relaxed/simple;
+	bh=6LNdm3fUgjKNrloN/NydUJPrfwSNFkztsLyEogcqh/g=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Hry8CHxT32vaSbwQ59NM1ADcPQ3stVggSyaR1VAWzWFXJGYu2Qzm0ytD3YrAGma3lRsTMoVt8vWXGvCP+pcEqBISzMUX1/O1aPNJgGMLQZuNf7xS0ka9Sx2cZxX9r4MrDCdJ1pYursbUcTnYhkEKv9HCUWk4NRKl6w6bgMxyPVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=QT8Fx9DA; arc=none smtp.client-ip=209.85.167.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
-Received: by mail-lf1-f50.google.com with SMTP id 2adb3069b0e04-59b6f59c4f5so3808948e87.3
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 00:40:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=suse.com; s=google; t=1767948026; x=1768552826; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=qgQguY/3yJH9vjqUKAYyFPM3gXFuXFaFqMIhKXi9SEE=;
-        b=QT8Fx9DAWvWJmui7LlD1abQGoVPGdLNQoQxUwR9mN9RTUd31zoLXCSK64kSFScumCR
-         UVim8gjoVsOPoKQ0W/s1L6l63TPfnZHyf2bXPYSlcVdutfyNbV2zYrh40QANl4u9vtKJ
-         Ol9GfbkQbdK/AHshVPcpaT4vqgEcQTOFaMsZKZo5MdfgJZh94uYlLiznoZDJ06SpKmXr
-         dOL/ICWqrD0yFutfLLyGq6Nj2wGfqfuRd63UuPFyu4UPECBjAY1fxWbTl7StDCqepFKd
-         hYxhNP0LeYcjcK2eHlkB71D195tCOE0ApMdEcia2AF+PlCKAR4K+CY4OfIgB0gbI5Sea
-         58gg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767948026; x=1768552826;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=qgQguY/3yJH9vjqUKAYyFPM3gXFuXFaFqMIhKXi9SEE=;
-        b=gr0Wwuyp5pUNeTWXnOhDAJzRGS5eVL+2NoW5B1wVHP5lbjd+K02MIDojUdCXQEE2xc
-         46ktEj1dMJHohWW5gEQZIaHI1L8rZ0oMb9FUcAfLizw4xiiSsfrfoYydO6O8Tyk+CEAx
-         GHsWw6vuKCmYqiY2MM2771VZZqOU9cbyeBmmui0ZdsUwQnqPZwPVGpDhHrNAii7ay8rk
-         AQmz8IciOnkuiuXjaZbcDHHORv3QebutAkML/ivoJ11zYanpAsF6HPZ0wRowSvd7k5Oy
-         zjpn+V2y9TA9C5MWfBUpEQ4L+LEg8Esl9uKmx5qPTaK/F1o4gjqOkp2qYw0bwgv/kZV2
-         RZOQ==
-X-Forwarded-Encrypted: i=1; AJvYcCXMCAL4nGd1lqi9hoSz+k7v7/LxXf+iMzL7deUGfsjrTRpIlD+wQCwvl5kFauMjzASNn1xnRYY=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxORB4ZDhFyD9BwBy5xqHeM/88/48WIRzndrF8PCwaIaJk8XkSy
-	MEybM1jb3qTywljJl3gAWepFKyZNyAISJj/0G3tXHFzGLLbvGjMNKAcM3mOM+bUaBgs6rX6Gl0d
-	bAitFqflvvi2EE9N6CvTAqm0dJ5/WrdlhDiQFt4dgFQ==
-X-Gm-Gg: AY/fxX6emRh7wjcwOG3L5cjZKBb+MACYVHNdoCCR71dIKXJaaEmUM0Npk42NFF4EzR8
-	JETvrTYQhDmQ7EA7fr49og+pKEZsoJMbQudIpXsrAUJyH0pHy7Pn1f44aNeKTtQDJBsq8kGKpAN
-	NGNZy+1DNnYcjsgQsZgYCaZ6D1a27xuozb5YBzRTNvHYF9Yv1Y5PNcqZAjUWHe14zTkqhckO04l
-	iLdtUy3Q1wIHkRf3jqZ8X0C7nPF09TRSQtUf1VvKAStA90BF0X8J04mHCeUhzLtfrnHsk6hqABY
-	F65oYoPouwm47IbeK0uM0COu1np0
-X-Google-Smtp-Source: AGHT+IFXtN+0YseD+T9APEL+SkiwbT/sxspD361H4WQpvC6fXEypZdSjIbUo+lRliv69WpOghJ3hZ0q6u2fo/hSlbqM=
-X-Received: by 2002:a05:6512:b90:b0:594:768d:c3ef with SMTP id
- 2adb3069b0e04-59b6f036b83mr3136147e87.30.1767948026027; Fri, 09 Jan 2026
- 00:40:26 -0800 (PST)
+	 To:Cc:Content-Type; b=iyY9/V3r5yn+wJ60L34IAMZ8yUAJe4oSscEkWjrRZxg8DpQNKsF7QliIWznZuu/JDfvrej9j7KEIN4JlHQSHMbk9yD4YUyoxz8TBRvjxRL56QcgCYTVLuxGeR8rAzvuSXevcC6x118Wy5YRzR6EusPL5c7v3XtcCDWXIq/HPrHY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hu7+oOeN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA8DC19425
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:30:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767951047;
+	bh=6LNdm3fUgjKNrloN/NydUJPrfwSNFkztsLyEogcqh/g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=hu7+oOeN1CG6qA4cqOd65h7eTJRVtcKJ3o8a7JrrBjmyiyeyd8g3/uch0eUalhG/d
+	 EMWtRORiXIOoxHNQgaHvM6xf5UirHxHmfnPLE34i54UfeYOG8uD+O72ewmJOhQvrOX
+	 Fb+82va25549OQTLb7sFjXJ/XnqKbDc8HRPdT94nLHFFMIUfIelVV1nbyR62IEBdWh
+	 F7JvWPg5FoncdSX9Xa5XAbsWXyBDqD525oTOU20B3c6Ij+jiwfWqFVbIgJbGJvYG4t
+	 YHSiWA4FzOKY/R+qjWIUt/kKXq1X5sjLS6SkjXfvNy/nFnZ4iDiHVqdcShysGAnU/v
+	 IlWna3lwVNzVA==
+Received: by mail-yw1-f175.google.com with SMTP id 00721157ae682-790b7b3e594so26978227b3.3
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:30:47 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWDC+MHSkEV05jWB7W0mSFm0avOcQAWP5rmBNZNnbUPlqxeOUkvvmtCbQA5UAj7XLTRSPzyb4g=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw2hVUDRuzd3BxPpN19Fde5k9jPa883AijAYGZRSWhJOtWCr62K
+	AX7HHeZ/2pbuk/Q/vgl69wUeWkinFNLv/NmYTCCd3/nTok0xFhTYkuurXAd1CZ1keZftYZLnIUh
+	zVD6uPA955d7Nqf6uVm3ba7hbWbu+ENc=
+X-Google-Smtp-Source: AGHT+IHW9AloGVPNneim+o5wu5kst869KHt4MS2BcIEWf1BhFWXSHQH3d/MN0P4Js6T3JHk+sgUFV5uMx0nD8b2J3Z0=
+X-Received: by 2002:a05:690c:6c08:b0:788:14a2:8bda with SMTP id
+ 00721157ae682-790b580708bmr83145167b3.38.1767951047030; Fri, 09 Jan 2026
+ 01:30:47 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260108180148.423062-1-marco.crivellari@suse.com> <aV/5KRqR6zma/ZnR@lstrano-desk.jf.intel.com>
-In-Reply-To: <aV/5KRqR6zma/ZnR@lstrano-desk.jf.intel.com>
-From: Marco Crivellari <marco.crivellari@suse.com>
-Date: Fri, 9 Jan 2026 09:40:15 +0100
-X-Gm-Features: AQt7F2q0EjRPIBo-O6epKd7ztDdCOc6wx1_RFqjOb_frYVIgnRnJP8VDXYpdajg
-Message-ID: <CAAofZF4F9ZvLMj-=ge2esbvpgoFyyzCdBc2E82inbXry8kKLrA@mail.gmail.com>
-Subject: Re: [PATCH] drm/xe: fix WQ_MEM_RECLAIM passed as max_active to alloc_workqueue()
-To: Matthew Brost <matthew.brost@intel.com>
-Cc: linux-kernel@vger.kernel.org, intel-xe@lists.freedesktop.org, 
-	dri-devel@lists.freedesktop.org, Tejun Heo <tj@kernel.org>, 
-	Lai Jiangshan <jiangshanlai@gmail.com>, Frederic Weisbecker <frederic@kernel.org>, 
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>, Michal Hocko <mhocko@suse.com>, 
-	Thomas Hellstrom <thomas.hellstrom@linux.intel.com>, Rodrigo Vivi <rodrigo.vivi@intel.com>, 
-	David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, stable@vger.kernel.org
+References: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
+In-Reply-To: <20260105150509.56537-1-bartosz.golaszewski@oss.qualcomm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 9 Jan 2026 10:30:36 +0100
+X-Gmail-Original-Message-ID: <CAD++jLkHTX-bJ6Fi7n2kGX3VvEk4eaBfTDc+vpd-2QWQvKWfSQ@mail.gmail.com>
+X-Gm-Features: AZwV_QifJwM8PVt6EB8CPnUaPiq8Laa3KkCYXyF0XiD2OsUIzet-cnQ9j7hifFk
+Message-ID: <CAD++jLkHTX-bJ6Fi7n2kGX3VvEk4eaBfTDc+vpd-2QWQvKWfSQ@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: meson: mark the GPIO controller as sleeping
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, Marek Szyprowski <m.szyprowski@samsung.com>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, Jan 8, 2026 at 7:36=E2=80=AFPM Matthew Brost <matthew.brost@intel.c=
-om> wrote:
-> [...]
-> Yikes - thanks for the fix. Will apply our tree shortly.
+On Mon, Jan 5, 2026 at 4:05=E2=80=AFPM Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
+
+> The GPIO controller is configured as non-sleeping but it uses generic
+> pinctrl helpers which use a mutex for synchronization.
 >
-> With that:
-> Reviewed-by: Matthew Brost <matthew.brost@intel.com>
+> This can cause the following lockdep splat with shared GPIOs enabled on
+> boards which have multiple devices using the same GPIO:
+>
+> BUG: sleeping function called from invalid context at
+> kernel/locking/mutex.c:591
+> in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 142, name:
+> kworker/u25:3
+> preempt_count: 1, expected: 0
+> RCU nest depth: 0, expected: 0
+> INFO: lockdep is turned off.
+> irq event stamp: 46379
+> hardirqs last  enabled at (46379): [<ffff8000813acb24>]
+> _raw_spin_unlock_irqrestore+0x74/0x78
+> hardirqs last disabled at (46378): [<ffff8000813abf38>]
+> _raw_spin_lock_irqsave+0x84/0x88
+> softirqs last  enabled at (46330): [<ffff8000800c71b4>]
+> handle_softirqs+0x4c4/0x4dc
+> softirqs last disabled at (46295): [<ffff800080010674>]
+> __do_softirq+0x14/0x20
+> CPU: 1 UID: 0 PID: 142 Comm: kworker/u25:3 Tainted: G C
+> 6.19.0-rc4-next-20260105+ #11963 PREEMPT
+> Tainted: [C]=3DCRAP
+> Hardware name: Khadas VIM3 (DT)
+> Workqueue: events_unbound deferred_probe_work_func
+> Call trace:
+>   show_stack+0x18/0x24 (C)
+>   dump_stack_lvl+0x90/0xd0
+>   dump_stack+0x18/0x24
+>   __might_resched+0x144/0x248
+>   __might_sleep+0x48/0x98
+>   __mutex_lock+0x5c/0x894
+>   mutex_lock_nested+0x24/0x30
+>   pinctrl_get_device_gpio_range+0x44/0x128
+>   pinctrl_gpio_set_config+0x40/0xdc
+>   gpiochip_generic_config+0x28/0x3c
+>   gpio_do_set_config+0xa8/0x194
+>   gpiod_set_config+0x34/0xfc
+>   gpio_shared_proxy_set_config+0x6c/0xfc [gpio_shared_proxy]
+>   gpio_do_set_config+0xa8/0x194
+>   gpiod_set_transitory+0x4c/0xf0
+>   gpiod_configure_flags+0xa4/0x480
+>   gpiod_find_and_request+0x1a0/0x574
+>   gpiod_get_index+0x58/0x84
+>   devm_gpiod_get_index+0x20/0xb4
+>   devm_gpiod_get+0x18/0x24
+>   mmc_pwrseq_emmc_probe+0x40/0xb8
+>   platform_probe+0x5c/0xac
+>   really_probe+0xbc/0x298
+>   __driver_probe_device+0x78/0x12c
+>   driver_probe_device+0xdc/0x164
+>   __device_attach_driver+0xb8/0x138
+>   bus_for_each_drv+0x80/0xdc
+>   __device_attach+0xa8/0x1b0
+>
+> Fixes: 6ac730951104 ("pinctrl: add driver for Amlogic Meson SoCs")
+> Cc: stable@vger.kernel.org
+> Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> Closes: https://lore.kernel.org/all/00107523-7737-4b92-a785-14ce4e93b8cb@=
+samsung.com/
+> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-Thanks Matthew! :-)
+Patch applied for fixes!
 
---=20
-
-Marco Crivellari
-
-L3 Support Engineer
+Yours,
+Linus Walleij
 
