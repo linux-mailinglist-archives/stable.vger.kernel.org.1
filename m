@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 50A39D09D0F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB02AD095F0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 29CA63104AB2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3A06930CD3B8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9CE935B133;
-	Fri,  9 Jan 2026 12:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97D8335A952;
+	Fri,  9 Jan 2026 12:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mihiGZ1K"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWyQfLCR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D5943191D2;
-	Fri,  9 Jan 2026 12:32:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A73335A942;
+	Fri,  9 Jan 2026 12:04:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961978; cv=none; b=RStZcdhSN/Xte4npgt3MxjfYK718eyearbfUfk9laPCPVTqDOtrNXgSdyxfgaB4STJViYYMVmcsA4Jp/t3u5jQd3lowPb6CmAH8yIlo/jLJdhFRsF3yIKhK2SL8tVLjPmsjirbUC1Pr/CrP2tbeX7B7BJmAnJO1YeUJ223mn1V0=
+	t=1767960263; cv=none; b=uypkZmn00eNsHKJKx472dF2zSTXra1D3w5fa8i/x7H5WdM1j/KY+uomuzSg1b3yG4XQSRArGvmepTdTxKWwwCyT/7D6+IX8qrfTJRM/zM1MkrA10oUFLydivfuiMb+taaV+5CVgvOpU5n7i8I4di7xKtbomYOiLdKHDf6HifCrc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961978; c=relaxed/simple;
-	bh=u867Rx7IrJXlNs5pJePJs0eXSmMyZYoMvK11wy61pBQ=;
+	s=arc-20240116; t=1767960263; c=relaxed/simple;
+	bh=kJIYUbEpwMpGrOZJ99MBjpYHI8iTG/qBr+RrieEvYlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BE9CYEBl/cTb0mIoJzdN+rYuZOaHzsy2p/dZ6FCf1XDMUn+SFDtHJdR2QB94/wjcdn7RXhd9/k+pXNXa3/czLDcfj7rmHYIrvDuyNE0k8ZcONF69HpT20Qatk8ZhmDfYR0AFKVDYlC+3Y34iVAsqjejhpHbYZVVzjdPhR4Czq8Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mihiGZ1K; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED765C4CEF1;
-	Fri,  9 Jan 2026 12:32:57 +0000 (UTC)
+	 MIME-Version; b=TRHX5Ut726ZfDnrOCgLtcVyVxTvCc9s6TQ8Xhx5IvWw10jyRqS5QgihQul8OCXE05W/TGzyX7R401yXnFKv7wWnirWoUh92uIZGmjAlCpqyRNpEW3yMEDMovt78uwHBHgTrTwBTx9MZm4IqIQR17w8ikcyDiEmLG78g2XFM7TNY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWyQfLCR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8342C4CEF1;
+	Fri,  9 Jan 2026 12:04:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961978;
-	bh=u867Rx7IrJXlNs5pJePJs0eXSmMyZYoMvK11wy61pBQ=;
+	s=korg; t=1767960263;
+	bh=kJIYUbEpwMpGrOZJ99MBjpYHI8iTG/qBr+RrieEvYlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mihiGZ1KtRSAxuLHtompBZLQSJbN34QOCuLC7duy/tEbn0aTUYCzEEqBR6i1FFzxn
-	 afn9d3UNGQ99YR+FiMAqZD2YFrlOfRI+1hmjsWslZRGWr3xlHdjrQo8EgK0wiHlNBB
-	 aB0yPmIGA3qWbyas3VGkAd8UeQxDRQKLl0Xtdd/w=
+	b=cWyQfLCRIrljhBLj1O1Rmhc80+PHvIW1qnqmcYpt7iylgx57OeD3WjXQKkB6iUYie
+	 LhUpY1zmon31hPAJfi4xekkz9b0kvRfa2kn7b3Xzz5WHZ9082NajtmFMDBd2MyVmEC
+	 3qJXSm7a/hYgBo1kmJ0ipY4mhtVWMfDwIsdqxPzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 202/634] ASoC: ak4458: Disable regulator when error happens
-Date: Fri,  9 Jan 2026 12:38:00 +0100
-Message-ID: <20260109112125.033736041@linuxfoundation.org>
+Subject: [PATCH 6.6 342/737] caif: fix integer underflow in cffrml_receive()
+Date: Fri,  9 Jan 2026 12:38:01 +0100
+Message-ID: <20260109112146.854387548@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit ae585fabb9713a43e358cf606451386757225c95 ]
+[ Upstream commit 8a11ff0948b5ad09b71896b7ccc850625f9878d1 ]
 
-Disable regulator in runtime resume when error happens to balance
-the reference count of regulator.
+The cffrml_receive() function extracts a length field from the packet
+header and, when FCS is disabled, subtracts 2 from this length without
+validating that len >= 2.
 
-Fixes: 7e3096e8f823 ("ASoC: ak4458: Add regulator support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20251203100529.3841203-2-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If an attacker sends a malicious packet with a length field of 0 or 1
+to an interface with FCS disabled, the subtraction causes an integer
+underflow.
+
+This can lead to memory exhaustion and kernel instability, potential
+information disclosure if padding contains uninitialized kernel memory.
+
+Fix this by validating that len >= 2 before performing the subtraction.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/SYBPR01MB7881511122BAFEA8212A1608AFA6A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak4458.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ net/caif/cffrml.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/ak4458.c b/sound/soc/codecs/ak4458.c
-index 1db73552c7466..fd7f2cc0abdc9 100644
---- a/sound/soc/codecs/ak4458.c
-+++ b/sound/soc/codecs/ak4458.c
-@@ -674,7 +674,15 @@ static int __maybe_unused ak4458_runtime_resume(struct device *dev)
- 	regcache_cache_only(ak4458->regmap, false);
- 	regcache_mark_dirty(ak4458->regmap);
+diff --git a/net/caif/cffrml.c b/net/caif/cffrml.c
+index 6651a8dc62e04..d4d63586053ad 100644
+--- a/net/caif/cffrml.c
++++ b/net/caif/cffrml.c
+@@ -92,8 +92,15 @@ static int cffrml_receive(struct cflayer *layr, struct cfpkt *pkt)
+ 	len = le16_to_cpu(tmp);
  
--	return regcache_sync(ak4458->regmap);
-+	ret = regcache_sync(ak4458->regmap);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	regcache_cache_only(ak4458->regmap, true);
-+	regulator_bulk_disable(ARRAY_SIZE(ak4458->supplies), ak4458->supplies);
-+	return ret;
- }
- #endif /* CONFIG_PM */
+ 	/* Subtract for FCS on length if FCS is not used. */
+-	if (!this->dofcs)
++	if (!this->dofcs) {
++		if (len < 2) {
++			++cffrml_rcv_error;
++			pr_err("Invalid frame length (%d)\n", len);
++			cfpkt_destroy(pkt);
++			return -EPROTO;
++		}
+ 		len -= 2;
++	}
  
+ 	if (cfpkt_setlen(pkt, len) < 0) {
+ 		++cffrml_rcv_error;
 -- 
 2.51.0
 
