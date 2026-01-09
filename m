@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B24DD09DB4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58FD8D0939B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD72630CE22A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AD61030DBBF9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F7C359709;
-	Fri,  9 Jan 2026 12:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 794B135970E;
+	Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I0Ib5WW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUjqlKoN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E079A38FA3;
-	Fri,  9 Jan 2026 12:27:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B422359703;
+	Fri,  9 Jan 2026 11:58:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961655; cv=none; b=DggXEF6THPjTNWbINsXozbe5FFPnO5U4W7H5fjkdU9zhM+m+7Z+g4o/XKjNze557KryajJlDx4TBSDgLEP9M4CkeIIyr+0AeiCHAUpBAbPAaquBpfyqS6ncdKnl4D/EPOM6GVeOLHUWgZkuu8jwJuAal7w40zLsMq6t5AoOvUGI=
+	t=1767959936; cv=none; b=fn/vhM0TyMLKHNOxUdpiUywh3EcjT/KKHCieyicO/n2SKKKqHofhZ6yyHIeTzxh7KOmoC86grwsNzulY9dRn7s4jvwO3tCvn+oWluxOfwr3FMaozX9rd1AYIU94GVKyiqcH8WtyHsggcKpbpXwtyLk6bM9ylK05GnYbBTUIPcnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961655; c=relaxed/simple;
-	bh=HFFjeTpBddLZv0bsMKSAXCAta1Kyv1gUT9RdBcv4oKY=;
+	s=arc-20240116; t=1767959936; c=relaxed/simple;
+	bh=iTRsOwhOSAsMdDAQWBF15WODjZhdwNOe5gO5d5+nZys=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JH9cWGiF+SfeCjNWLZ1DADv3/Ux7XN+6Zw3fF1IYTvc1dV6cn1KktPFFEI/Dcg1gm8mhtg5V8d1bKx8odwFf7Jw4A0HW2rOzUF2UfSpft0362i5lOd0twjbvfqGW9j35ojSyIOb7sAwl5P4dQMB64zBCMjiiaRnzmn+6rEk8TpQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I0Ib5WW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2A2C4CEF1;
-	Fri,  9 Jan 2026 12:27:34 +0000 (UTC)
+	 MIME-Version; b=Q7tBEtCr9NCk1vNQAhkBXsf7OD9Ayq0PCuzA7ew+A8fvjcMssTb5+rAnh6kLen4lIsZcEQDLi0hl7k7DazD/UcN1g6vCdjaHqY7aozuyQKE3hpvS0sfqim8WXkl0myyVU61V/eg9FzBV8BZ/1zOhsUiHVhbSMtMQyfGzNXVTQM0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUjqlKoN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA13EC4CEF1;
+	Fri,  9 Jan 2026 11:58:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961654;
-	bh=HFFjeTpBddLZv0bsMKSAXCAta1Kyv1gUT9RdBcv4oKY=;
+	s=korg; t=1767959936;
+	bh=iTRsOwhOSAsMdDAQWBF15WODjZhdwNOe5gO5d5+nZys=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I0Ib5WW/Zi3pP8k1/PGl6Rr+GxAPNPOx3UE16f3zgReWdtarHaI37FSofUO/duaZv
-	 oF+lnuzGtvL04XiTG26/XloBlwrPNEIEznwBq4WxHYYRMSiGkRPgHvGOkGkaa8++SE
-	 BCMldAa1OBWUt9AaZgkpnPkwHHaoEqSuC5KiqUWM=
+	b=IUjqlKoNubxpleCwWKm3k+FAmpYkA0HAl+C1edZ42ZufZhuAu5MdVwk1hELSVf3Y6
+	 z8WQsMgAP2S0EoK1Qi1HqFESHvpV1wIwFz8VaX6NHMM6787LTBeec74wl96YbqAzpq
+	 l45vhi56Cj2CC3eXBUtyZq8+oqEgN7S6PSqw6sZg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 089/634] nbd: defer config put in recv_work
+Subject: [PATCH 6.6 228/737] virtio: fix virtqueue_set_affinity() docs
 Date: Fri,  9 Jan 2026 12:36:07 +0100
-Message-ID: <20260109112120.783844878@linuxfoundation.org>
+Message-ID: <20260109112142.576911619@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,104 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 9517b82d8d422d426a988b213fdd45c6b417b86d ]
+[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
 
-There is one uaf issue in recv_work when running NBD_CLEAR_SOCK and
-NBD_CMD_RECONFIGURE:
-  nbd_genl_connect     // conf_ref=2 (connect and recv_work A)
-  nbd_open	       // conf_ref=3
-  recv_work A done     // conf_ref=2
-  NBD_CLEAR_SOCK       // conf_ref=1
-  nbd_genl_reconfigure // conf_ref=2 (trigger recv_work B)
-  close nbd	       // conf_ref=1
-  recv_work B
-    config_put         // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+Rewrite the comment for better grammar and clarity.
 
-Or only running NBD_CLEAR_SOCK:
-  nbd_genl_connect   // conf_ref=2
-  nbd_open 	     // conf_ref=3
-  NBD_CLEAR_SOCK     // conf_ref=2
-  close nbd
-    nbd_release
-      config_put     // conf_ref=1
-  recv_work
-    config_put 	     // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
-
-Commit 87aac3a80af5 ("nbd: call nbd_config_put() before notifying the
-waiter") moved nbd_config_put() to run before waking up the waiter in
-recv_work, in order to ensure that nbd_start_device_ioctl() would not
-be woken up while nbd->task_recv was still uncleared.
-
-However, in nbd_start_device_ioctl(), after being woken up it explicitly
-calls flush_workqueue() to make sure all current works are finished.
-Therefore, there is no need to move the config put ahead of the wakeup.
-
-Move nbd_config_put() to the end of recv_work, so that the reference is
-held for the whole lifetime of the worker thread. This makes sure the
-config cannot be freed while recv_work is still running, even if clear
-+ reconfigure interleave.
-
-In addition, we don't need to worry about recv_work dropping the last
-nbd_put (which causes deadlock):
-
-path A (netlink with NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=1 (trigger recv_work)
-  open nbd // nbd_refs=2
-  NBD_CLEAR_SOCK
-  close nbd
-    nbd_release
-      nbd_disconnect_and_put
-        flush_workqueue // recv_work done
-      nbd_config_put
-        nbd_put // nbd_refs=1
-      nbd_put // nbd_refs=0
-        queue_work
-
-path B (netlink without NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=2 (trigger recv_work)
-  open nbd // nbd_refs=3
-  NBD_CLEAR_SOCK // conf_refs=2
-  close nbd
-    nbd_release
-      nbd_config_put // conf_refs=1
-      nbd_put // nbd_refs=2
-  recv_work done // conf_refs=0, nbd_refs=1
-  rmmod // nbd_refs=0
-
-Reported-by: syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6907edce.a70a0220.37351b.0014.GAE@google.com/T/
-Fixes: 87aac3a80af5 ("nbd: make the config put is called before the notifying the waiter")
-Depends-on: e2daec488c57 ("nbd: Fix hungtask when nbd_config_put")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
+Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 2 +-
+ include/linux/virtio_config.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 2a959c08bd3cb..80a2d346a51cc 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -889,9 +889,9 @@ static void recv_work(struct work_struct *work)
- 	nbd_mark_nsock_dead(nbd, nsock, 1);
- 	mutex_unlock(&nsock->tx_lock);
- 
--	nbd_config_put(nbd);
- 	atomic_dec(&config->recv_threads);
- 	wake_up(&config->recv_wq);
-+	nbd_config_put(nbd);
- 	kfree(args);
- }
- 
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index f106d3177476b..7528255068fd8 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -310,7 +310,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
+  * @vq: the virtqueue
+  * @cpu_mask: the cpu mask
+  *
+- * Pay attention the function are best-effort: the affinity hint may not be set
++ * Note that this function is best-effort: the affinity hint may not be set
+  * due to config support, irq type and sharing.
+  *
+  */
 -- 
 2.51.0
 
