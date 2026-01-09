@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207381-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D79D094FD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 516D1D09EDF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2E1913080991
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8500430C7E51
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8D4359FB0;
-	Fri,  9 Jan 2026 12:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28F7633C53C;
+	Fri,  9 Jan 2026 12:31:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+cda4Ed"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYV6F61F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324A5335561;
-	Fri,  9 Jan 2026 12:01:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0C1B33372B;
+	Fri,  9 Jan 2026 12:31:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960087; cv=none; b=s0DkdlB4zSMEtZeeSs7cXh3ycJcetPs1KXozsQs2hYYk/OWTyXYk4eIzylFPvxG+z2IS+Dws1k8FeggQ2KAJXvGJvkhUrajFCay0nt2p6LSbskx9OrLaZGupF7rdzW26984fyvbNMsSKFiPPcfMF+DXMNV9TVRwFi4RLKMgMSko=
+	t=1767961894; cv=none; b=HyEz+FcDtafS+VkRl4Zxx4aZ3/VXoQUlYekwD5qE/nfqc2XRjbfM+2wo6pJDfKXnI211Fek9UJcrArSubG2tIk0OhAwErlP+UXHfLXsCd8PLJjZxfCf/T7rTtsF8rCSoLHaEJUn39c3sUjd4aSL/JrKyuagRLXhqJcT2gpqPDC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960087; c=relaxed/simple;
-	bh=V556lk7IU/IvJsWI9zNNFkR99szWxHuYrueSc/NF0ek=;
+	s=arc-20240116; t=1767961894; c=relaxed/simple;
+	bh=1V30GIKS4pCuI//P+wh8cySKXq9559XMAX7IjUDmNF4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YpjfYy10eP6ioIlvR31dA/onnvP2Ezo2hDc8EY/2Tp5biM1IP1X/vRJU7JWGoBTEca1Le4y+x2UbnBYXto9iIRuDEkCWwxqMFWyPI49wQBWSKEv5PHxqgwi8tRbx7Q2cepmm/V70uElhmNObN7rt2/OQSfjK1o9wdCffoBBiG5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+cda4Ed; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B24C7C4CEF1;
-	Fri,  9 Jan 2026 12:01:26 +0000 (UTC)
+	 MIME-Version; b=WSN+x24iOmXkB8/tE/iZeiFvnnCpc7U2csdguMaibE60mm+S/yaSS/wXBYCZ57jdZyfCV7+42Shy6hLkUIA3d9XAx+dshJirXkFBWhnYw4xt0bGJp17FkpETzWkKf97wR1GnJuVmShT+Dd4uk5+vF+FrGGHdw68glSY3A1SWl7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYV6F61F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E196C4CEF1;
+	Fri,  9 Jan 2026 12:31:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960087;
-	bh=V556lk7IU/IvJsWI9zNNFkR99szWxHuYrueSc/NF0ek=;
+	s=korg; t=1767961893;
+	bh=1V30GIKS4pCuI//P+wh8cySKXq9559XMAX7IjUDmNF4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+cda4EdzGrcT75nllgH6kezuR74O5XmHZM5s/YW0w1Pr22oe+rP2/s61jYi0AtlM
-	 P0Tgbh7BH662YnRjdYZUV4khuroOq8rWNe4gVA10qnTdfbfu23/53YyLgXZzWsj+Tt
-	 93o+eOT4qrrH96IfJeMJaZ+AWWrsOzKVMQwNIZb0=
+	b=nYV6F61FBruNo1Q6FOEkAAu+P8vqVtH3/4pxOOcSm3SrJjxudArlCQTZ+r1TJZov+
+	 CiF6EBPKzcTCW/hf62o0thGdqQ6UwxhbSxC1YXuncTBW5PoxbatIEXgWP+qNXg6+Vl
+	 34j1tvYaDKH3Uq6rqhKJ6Z1cK/HXCiqnYGw4q0RQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Matt Bobrowski <mattbobrowski@google.com>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 279/737] dma/pool: eliminate alloc_pages warning in atomic_pool_expand
-Date: Fri,  9 Jan 2026 12:36:58 +0100
-Message-ID: <20260109112144.505340400@linuxfoundation.org>
+Subject: [PATCH 6.1 141/634] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
+Date: Fri,  9 Jan 2026 12:36:59 +0100
+Message-ID: <20260109112122.761676665@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Matt Bobrowski <mattbobrowski@google.com>
 
-[ Upstream commit 463d439becb81383f3a5a5d840800131f265a09c ]
+[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
 
-atomic_pool_expand iteratively tries the allocation while decrementing
-the page order. There is no need to issue a warning if an attempted
-allocation fails.
+Currently, test_perf_branches_no_hw() relies on the busy loop within
+test_perf_branches_common() being slow enough to allow at least one
+perf event sample tick to occur before starting to tear down the
+backing perf event BPF program. With a relatively small fixed
+iteration count of 1,000,000, this is not guaranteed on modern fast
+CPUs, resulting in the test run to subsequently fail with the
+following:
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
-[mszyprow: fixed typo]
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251202152810.142370-1-dave.kleikamp@oracle.com
+bpf_testmod.ko is already unloaded.
+Loading bpf_testmod.ko...
+Successfully loaded bpf_testmod.ko.
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_good_sample:PASS:output not valid 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_stack 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_global 0 nsec
+check_good_sample:PASS:read_branches_size 0 nsec
+test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
+test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
+test_perf_branches_common:PASS:attach_perf_event 0 nsec
+test_perf_branches_common:PASS:set_affinity 0 nsec
+check_bad_sample:FAIL:output not valid no valid sample from prog
+Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
+Successfully unloaded bpf_testmod.ko.
+
+On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
+million increments of a volatile integer can take significantly less
+than 1 millisecond. If the spin loop and detachment of the perf event
+BPF program elapses before the first 1 ms sampling interval elapses,
+the perf event will never end up firing. Fix this by bumping the loop
+iteration counter a little within test_perf_branches_common(), along
+with ensuring adding another loop termination condition which is
+directly influenced by the backing perf event BPF program
+executing. Notably, a concious decision was made to not adjust the
+sample_freq value as that is just not a reliable way to go about
+fixing the problem. It effectively still leaves the race window open.
+
+Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
+Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
+ .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
+ 2 files changed, 17 insertions(+), 2 deletions(-)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 6b0be9598a973..b3b9c7ec5fc54 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -93,7 +93,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
- 			page = dma_alloc_from_contiguous(NULL, 1 << order,
- 							 order, false);
- 		if (!page)
--			page = alloc_pages(gfp, order);
-+			page = alloc_pages(gfp | __GFP_NOWARN, order);
- 	} while (!page && order-- > 0);
- 	if (!page)
- 		goto out;
+diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+index 06c7986131d96..0a7ef770c487c 100644
+--- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
++++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
+@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
+ 	int pbe_size = sizeof(struct perf_branch_entry);
+ 	int duration = 0;
+ 
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
++
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
+ 	int written_stack = skel->bss->written_stack_out;
+ 	int duration = 0;
+ 
++	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
++		  "checked sample validity before prog run"))
++		return;
++
+ 	if (CHECK(!skel->bss->valid, "output not valid",
+ 		 "no valid sample from prog"))
+ 		return;
+@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
+ 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
+ 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
+ 		goto out_destroy;
+-	/* spin the loop for a while (random high number) */
+-	for (i = 0; i < 1000000; ++i)
++
++	/* Spin the loop for a while by using a high iteration count, and by
++	 * checking whether the specific run count marker has been explicitly
++	 * incremented at least once by the backing perf_event BPF program.
++	 */
++	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
+ 		++j;
+ 
+ 	test_perf_branches__detach(skel);
+diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+index a1ccc831c882f..05ac9410cd68c 100644
+--- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
++++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
+@@ -8,6 +8,7 @@
+ #include <bpf/bpf_tracing.h>
+ 
+ int valid = 0;
++int run_cnt = 0;
+ int required_size_out = 0;
+ int written_stack_out = 0;
+ int written_global_out = 0;
+@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
+ 	__u64 entries[4 * 3] = {0};
+ 	int required_size, written_stack, written_global;
+ 
++	++run_cnt;
++
+ 	/* write to stack */
+ 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
+ 	/* ignore spurious events */
 -- 
 2.51.0
 
