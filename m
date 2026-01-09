@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-206662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 084A1D092DB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8EF0ED09AC0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8654930704F4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0D35B303829C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6661032FA3D;
-	Fri,  9 Jan 2026 11:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A88D4335083;
+	Fri,  9 Jan 2026 12:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K2LV9AsU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uHATPHUM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 299EE2F12D4;
-	Fri,  9 Jan 2026 11:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C6DF1531E8;
+	Fri,  9 Jan 2026 12:26:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959843; cv=none; b=VlGFYYQxN0gj1Lp/FKik31IZiZpeMZEfFCJatmRVCwUoeniseK7jrbjuMAFjXoKN5jR9krt6xp6/6hx+/yLKViq4o1ZO3JdNBCRXWbi1GJCXyLSWbxBVw9ULSuvYDaNfg/plvg+8lDHeZOJ3mHUMS/xLPVvOvzJx2GbsYjkc4Nc=
+	t=1767961564; cv=none; b=aRWNvUNudLnQLOrVdyow9aHqXeBopgdkFTjzwjjaYFCCSvqFLTg6q49qaZUGVwsxqYA14Jb0biDLqD77BjxK0FNuAZlfYgFJuV1LegVdMD1A67korpd/BGEgM0lh6JvZ5u1KQMdSnr/PT8Fj21ggmEQy+3j4j7tc35wFtTD8dUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959843; c=relaxed/simple;
-	bh=jXQse7awfSeMkZIn1gmWHAzc4clSOVyPz/jiy0db2BA=;
+	s=arc-20240116; t=1767961564; c=relaxed/simple;
+	bh=dcKMx55f6eG4cS2xz/2EJgDTUpl8Jd4KLmi3iFxA29Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HcLTiKN03551ai/XPTzW065K45EZZxfArZjBwy7ZAL2x/7kUufypa9adKpCru++4atLigdr5nap/vfCaWzns99EE+y62x7ASVUsiAFdvlctAtgVlhN97y+xkn00DTc0xZn8VawU7eCch7WkfVU/paB3E3s5thY8NJBNdq6WTNfM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K2LV9AsU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACD68C4CEF1;
-	Fri,  9 Jan 2026 11:57:22 +0000 (UTC)
+	 MIME-Version; b=WpWbki4EaLvtiimbamNNCcAOXUvdjOpP8p6hMrC6AatE9Qh8JTeeYZHoLpPJButrVHcpWG3qzWc5A8Unuvk2bKqbKg0JzqrDhYRMdbbpu0kFhclDiQNwqSVALtY2+m+SGgiN79T3pXEiDXYksgDOluLsd28ojArb+eJyLVBPjuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uHATPHUM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F326C4CEF1;
+	Fri,  9 Jan 2026 12:26:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959843;
-	bh=jXQse7awfSeMkZIn1gmWHAzc4clSOVyPz/jiy0db2BA=;
+	s=korg; t=1767961564;
+	bh=dcKMx55f6eG4cS2xz/2EJgDTUpl8Jd4KLmi3iFxA29Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K2LV9AsUF7vioRGQh4ZLQDPFX1eDFkaYJXLKCl6yhLtbpxJ3UAm9PNHW3Y93MmMTJ
-	 Dwt5q7t6f+eG6GdXf6Xi6nGOcLHcUCnbsruD7OMnjwXymxoR0u0INNCQ1Vxfj4U602
-	 lg10e7FVO7pzodrwHBc2DC24K6CAfIifvXrcTWKM=
+	b=uHATPHUM7MgvzdPKO6cT0PN3kmU0RxfRbEOCBuLQ7HdWN55HFMuBQpgXS26ryL/AP
+	 /KImWYaAcPVeM5sfF693eTnf9IcYBwX4C5EG1J+9QxIIjx29C8Mf2nxdkNLLo24MYU
+	 /HjNckKGLzi4TLRB9rXhBa6QUSjcc6Jq2p7MRD0E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Kuniyuki Iwashima <kuniyu@google.com>,
+	Jiayuan Chen <jiayuan.chen@linux.dev>,
+	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 195/737] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
-Date: Fri,  9 Jan 2026 12:35:34 +0100
-Message-ID: <20260109112141.330357643@linuxfoundation.org>
+Subject: [PATCH 6.1 057/634] inet: Avoid ehash lookup race in inet_ehash_insert()
+Date: Fri,  9 Jan 2026 12:35:35 +0100
+Message-ID: <20260109112119.590394405@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +63,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
 
-[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
+[ Upstream commit 1532ed0d0753c83e72595f785f82b48c28bbe5dc ]
 
-Currently, test_perf_branches_no_hw() relies on the busy loop within
-test_perf_branches_common() being slow enough to allow at least one
-perf event sample tick to occur before starting to tear down the
-backing perf event BPF program. With a relatively small fixed
-iteration count of 1,000,000, this is not guaranteed on modern fast
-CPUs, resulting in the test run to subsequently fail with the
-following:
+Since ehash lookups are lockless, if one CPU performs a lookup while
+another concurrently deletes and inserts (removing reqsk and inserting sk),
+the lookup may fail to find the socket, an RST may be sent.
 
-bpf_testmod.ko is already unloaded.
-Loading bpf_testmod.ko...
-Successfully loaded bpf_testmod.ko.
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:PASS:output not valid 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_bad_sample:FAIL:output not valid no valid sample from prog
-Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
-Successfully unloaded bpf_testmod.ko.
+The call trace map is drawn as follows:
+   CPU 0                           CPU 1
+   -----                           -----
+				inet_ehash_insert()
+                                spin_lock()
+                                sk_nulls_del_node_init_rcu(osk)
+__inet_lookup_established()
+	(lookup failed)
+                                __sk_nulls_add_node_rcu(sk, list)
+                                spin_unlock()
 
-On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
-million increments of a volatile integer can take significantly less
-than 1 millisecond. If the spin loop and detachment of the perf event
-BPF program elapses before the first 1 ms sampling interval elapses,
-the perf event will never end up firing. Fix this by bumping the loop
-iteration counter a little within test_perf_branches_common(), along
-with ensuring adding another loop termination condition which is
-directly influenced by the backing perf event BPF program
-executing. Notably, a concious decision was made to not adjust the
-sample_freq value as that is just not a reliable way to go about
-fixing the problem. It effectively still leaves the race window open.
+As both deletion and insertion operate on the same ehash chain, this patch
+introduces a new sk_nulls_replace_node_init_rcu() helper functions to
+implement atomic replacement.
 
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 5e0724d027f0 ("tcp/dccp: fix hashdance race for passive sessions")
+Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
+Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
+Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20251015020236.431822-3-xuanqiang.luo@linux.dev
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
- .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ include/net/sock.h         | 13 +++++++++++++
+ net/ipv4/inet_hashtables.c |  8 ++++++--
+ 2 files changed, 19 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index 06c7986131d96..0a7ef770c487c 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
- 	int pbe_size = sizeof(struct perf_branch_entry);
- 	int duration = 0;
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 2da169ea7cc18..2d34dd5941e79 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -821,6 +821,19 @@ static inline bool sk_nulls_del_node_init_rcu(struct sock *sk)
+ 	return rc;
+ }
  
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
++static inline bool sk_nulls_replace_node_init_rcu(struct sock *old,
++						  struct sock *new)
++{
++	if (sk_hashed(old)) {
++		hlist_nulls_replace_init_rcu(&old->sk_nulls_node,
++					     &new->sk_nulls_node);
++		__sock_put(old);
++		return true;
++	}
 +
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
- 	int written_stack = skel->bss->written_stack_out;
- 	int duration = 0;
- 
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
++	return false;
++}
 +
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
- 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
- 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
- 		goto out_destroy;
--	/* spin the loop for a while (random high number) */
--	for (i = 0; i < 1000000; ++i)
+ static inline void __sk_add_node(struct sock *sk, struct hlist_head *list)
+ {
+ 	hlist_add_head(&sk->sk_node, list);
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index 5e7cdcebd64f8..24e4bec52bb2f 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -663,8 +663,11 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	spin_lock(lock);
+ 	if (osk) {
+ 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
+-		ret = sk_nulls_del_node_init_rcu(osk);
+-	} else if (found_dup_sk) {
++		ret = sk_nulls_replace_node_init_rcu(osk, sk);
++		goto unlock;
++	}
 +
-+	/* Spin the loop for a while by using a high iteration count, and by
-+	 * checking whether the specific run count marker has been explicitly
-+	 * incremented at least once by the backing perf_event BPF program.
-+	 */
-+	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
- 		++j;
++	if (found_dup_sk) {
+ 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
+ 		if (*found_dup_sk)
+ 			ret = false;
+@@ -673,6 +676,7 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
+ 	if (ret)
+ 		__sk_nulls_add_node_rcu(sk, list);
  
- 	test_perf_branches__detach(skel);
-diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-index a1ccc831c882f..05ac9410cd68c 100644
---- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
-+++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-@@ -8,6 +8,7 @@
- #include <bpf/bpf_tracing.h>
++unlock:
+ 	spin_unlock(lock);
  
- int valid = 0;
-+int run_cnt = 0;
- int required_size_out = 0;
- int written_stack_out = 0;
- int written_global_out = 0;
-@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
- 	__u64 entries[4 * 3] = {0};
- 	int required_size, written_stack, written_global;
- 
-+	++run_cnt;
-+
- 	/* write to stack */
- 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
- 	/* ignore spurious events */
+ 	return ret;
 -- 
 2.51.0
 
