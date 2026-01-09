@@ -1,107 +1,178 @@
-Return-Path: <stable+bounces-207882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207883-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7127ED0B078
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 16:48:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2BFE5D0B11A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 16:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 545CA3019B67
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 15:46:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C6318301D33A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 15:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 04950325720;
-	Fri,  9 Jan 2026 15:46:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C492D35CB63;
+	Fri,  9 Jan 2026 15:49:57 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="YElPG/0V"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 055DA322B7F;
-	Fri,  9 Jan 2026 15:46:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.84
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9595C35CBDF;
+	Fri,  9 Jan 2026 15:49:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767973600; cv=none; b=E07na9+utTPrXmFReiq5pNoQG52e+pkX6aBB9bm6NGmTrAoboNnuMaQtch7skJJuNv7J4RcjZojYvHSBVuyUsJQ2rBEuCINhT40pX9Z6f1nR8HmzNUR1kO9bXPBuw3Q55MV3UqEohh0rDHg2EoLQWJQtMAU+sTGMGjkkmGSqd7c=
+	t=1767973796; cv=none; b=O0Fc5un7ogT5Go8Iq4Z5fnexc+xs0AbjnvR/eoSBEpfngtwkuQfiNxROSSgwi6FAkzGiQnZ7k22KKb71Ih8URS9TDasf0LsEn1B14yJvn7D/asqHeI/Z3dP5NZ6kxa1LXnQ18eI7sBt0OOIip1UsEMIPI7dvHydwxfIUJgJY7lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767973600; c=relaxed/simple;
-	bh=oZ4iIotgV0UmeOT9DyhskHAwYqu4GF9jJQoNguGEXhM=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NGIPHDovMySUQU218ZlGHhCKVVUxLU04cCsDIf7+WqXtNPABBM2F4T+Ic7mEURv/cwdj5uJg6TyT3i/kIO4gJozrXlaO1aG5uVE0qrCurSaqNPt7U9l15pmfmKel5HFQaym6mLj1KYIQZ1ADZMabz7bJ85w+jwkblevBSRKoEG4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.84
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
-Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
-	by APP-05 (Coremail) with SMTP id zQCowADHWQ3WImFpQNY5BA--.1321S2;
-	Fri, 09 Jan 2026 23:46:30 +0800 (CST)
-From: Wentao Liang <vulab@iscas.ac.cn>
-To: vkoul@kernel.org,
-	kishon@kernel.org,
-	heiko@sntech.de
-Cc: linux-phy@lists.infradead.org,
-	linux-rockchip@lists.infradead.org,
-	linux-kernel@vger.kernel.org,
-	linux-arm-kernel@lists.infradead.org,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v2] phy: rockchip: inno-usb2: Fix a double free bug in rockchip_usb2phy_probe()
-Date: Fri,  9 Jan 2026 15:46:26 +0000
-Message-Id: <20260109154626.2452034-1-vulab@iscas.ac.cn>
-X-Mailer: git-send-email 2.34.1
+	s=arc-20240116; t=1767973796; c=relaxed/simple;
+	bh=ks5cLM4HjmJnxZRS9mtcBfjstrm3sF2xoB7Xv8yMahY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=A0+wzTxu/tH+CFY3cCkH6y6WsEL5l1QElF9bX8ZERKgqkAoaWqN3lV53Hfyf/frNXPYnkIg+X9hOVF6wmC25vFO9AbFTM7gAqp+8k1K9eEWpmLXCjznhNRKxzs/9Dj3gc0UOz20asio6jEB+nGOXBWIzZxwg37UgkKD3vGejt9I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=YElPG/0V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AE3C4CEF1;
+	Fri,  9 Jan 2026 15:49:54 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767973796;
+	bh=ks5cLM4HjmJnxZRS9mtcBfjstrm3sF2xoB7Xv8yMahY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=YElPG/0Vu5oezq25vOQYaGh3AArlcnn+slPhobPg6WMdAtTPsU3Doq7YBYHeYGd2J
+	 JnLQuh+7XC9szSlkxLZuLrQDdnVboOsLE2b7TvbU9GINrYW8+PMtktV+xsTI6IbKwh
+	 iHvoVNbQW2km3yqIeuJxe+mB4bEvXgvTIgkb83Q/1msPWxjuGnZdX193NHneuPMsR0
+	 sISbHmWRnvNGow01JHBUXoRbsIH7TY2pQ9EFgW5Avs0g1KiP5/xmGhC8l1ExyS1ZKI
+	 d561TxHnO2zptZiqQQSQlHzOBu3/26HLB+cpqcs/4VkHi0c6d4AsJpP2kfWdjpPmtY
+	 N4aNNwHU6T6tQ==
+Date: Fri, 9 Jan 2026 09:49:52 -0600
+From: Bjorn Andersson <andersson@kernel.org>
+To: Stephan Gerhold <stephan.gerhold@linaro.org>
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>, 
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>, Krishna Chaitanya Chundru <krishna.chundru@oss.qualcomm.com>, 
+	Michael Turquette <mturquette@baylibre.com>, Stephen Boyd <sboyd@kernel.org>, 
+	Taniya Das <quic_tdas@quicinc.com>, Konrad Dybcio <konradybcio@kernel.org>, 
+	Bartosz Golaszewski <brgl@kernel.org>, Shazad Hussain <quic_shazhuss@quicinc.com>, 
+	Sibi Sankar <sibi.sankar@oss.qualcomm.com>, Bryan O'Donoghue <bryan.odonoghue@linaro.org>, 
+	Melody Olvera <quic_molvera@quicinc.com>, Dmitry Baryshkov <lumag@kernel.org>, 
+	Taniya Das <taniya.das@oss.qualcomm.com>, Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>, 
+	Imran Shaik <quic_imrashai@quicinc.com>, Abel Vesa <abelvesa@kernel.org>, linux-arm-msm@vger.kernel.org, 
+	linux-clk@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Rajendra Nayak <quic_rjendra@quicinc.com>, stable@vger.kernel.org
+Subject: Re: [PATCH 0/7] clk: qcom: gcc: Do not turn off PCIe GDSCs during
+ gdsc_disable()
+Message-ID: <jejrexm235dxondzjbk5ek46ilq2gbrrhoojfcghkcpclqvtks@yfsgrxueo5es>
+References: <20260102-pci_gdsc_fix-v1-0-b17ed3d175bc@oss.qualcomm.com>
+ <a42f963f-a869-4789-a353-e574ba22eca8@oss.qualcomm.com>
+ <edca97aa-429e-4a6b-95a0-2a6dfe510ef2@oss.qualcomm.com>
+ <500313f1-51fd-450e-877e-e4626b7652bc@oss.qualcomm.com>
+ <4d61e8b3-0d40-4b78-9f40-a68b05284a3d@oss.qualcomm.com>
+ <e917e98a-4ff3-45b8-87a0-fe0d6823ac2e@oss.qualcomm.com>
+ <2lpx7rsko24e45gexsv3jp4ntwwenag47vgproqljqeuk4j7iy@zgh6hrln4h4e>
+ <aVuIsUR0pinI0Wp7@linaro.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:zQCowADHWQ3WImFpQNY5BA--.1321S2
-X-Coremail-Antispam: 1UD129KBjvJXoWruw4xZryrXFW3Xr17WFWxJFb_yoW8JrWUpa
-	yDCrWDtrW8Ka18Wr1qyrn8uFsYyFWDJ3yrGFZ7C3WfZ3Zxtr1DZ34fuFy5WrnxJFWrZFsx
-	trs8ta4UAF45Zw7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-	9KBjDU0xBIdaVrnRJUUUvq14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
-	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
-	1l84ACjcxK6xIIjxv20xvE14v26r4j6ryUM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
-	6F4UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I0E14v26rxl6s
-	0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26rWY6Fy7McIj6I8E87Iv67AKxVW2oVWaowAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7MxkF7I0En4kS14v26r1q
-	6r43MxkIecxEwVAFwVW5WwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8Jw
-	C20s026c02F40E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAF
-	wI0_Jw0_GFylIxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjx
-	v20xvEc7CjxVAFwI0_Jr0_Gr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2
-	jsIE14v26r1j6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0x
-	ZFpf9x0pRED7-UUUUU=
-X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBgsCA2lhGJoUnAAAsO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aVuIsUR0pinI0Wp7@linaro.org>
 
-The for_each_available_child_of_node() calls of_node_put() to
-release child_np in each success loop. After breaking from the
-loop with the child_np has been released, the code will jump to
-the put_child label and will call the of_node_put() again if the
-devm_request_threaded_irq() fails. These cause a double free bug.
+On Mon, Jan 05, 2026 at 10:47:29AM +0100, Stephan Gerhold wrote:
+> On Mon, Jan 05, 2026 at 10:44:39AM +0530, Manivannan Sadhasivam wrote:
+> > On Fri, Jan 02, 2026 at 02:57:56PM +0100, Konrad Dybcio wrote:
+> > > On 1/2/26 2:19 PM, Krishna Chaitanya Chundru wrote:
+> > > > On 1/2/2026 5:09 PM, Konrad Dybcio wrote:
+> > > >> On 1/2/26 12:36 PM, Krishna Chaitanya Chundru wrote:
+> > > >>> On 1/2/2026 5:04 PM, Konrad Dybcio wrote:
+> > > >>>> On 1/2/26 10:43 AM, Krishna Chaitanya Chundru wrote:
+> > > >>>>> With PWRSTS_OFF_ON, PCIe GDSCs are turned off during gdsc_disable(). This
+> > > >>>>> can happen during scenarios such as system suspend and breaks the resume
+> > > >>>>> of PCIe controllers from suspend.
+> > > >>>> Isn't turning the GDSCs off what we want though? At least during system
+> > > >>>> suspend?
+> > > >>> If we are keeping link in D3cold it makes sense, but currently we are not keeping in D3cold
+> > > >>> so we don't expect them to get off.
+> > > >> Since we seem to be tackling that in parallel, it seems to make sense
+> > > >> that adding a mechanism to let the PCIe driver select "on" vs "ret" vs
+> > > >> "off" could be useful for us
+> > > > At least I am not aware of such API where we can tell genpd not to turn off gdsc
+> > > > at runtime if we are keeping the device in D3cold state.
+> > > > But anyway the PCIe gdsc supports Retention, in that case adding this flag here makes
+> > > > more sense as it represents HW.
+> > > > sm8450,sm8650 also had similar problem which are fixed by mani[1].
+> > > 
+> > > Perhaps I should ask for a clarification - is retention superior to
+> > > powering the GDSC off? Does it have any power costs?
+> > > 
+> > 
+> > In terms of power saving it is not superior, but that's not the only factor we
+> > should consider here. If we keep GDSCs PWRSTS_OFF_ON, then the devices (PCIe)
+> > need to be be in D3Cold. Sure we can change that using the new genpd API
+> > dev_pm_genpd_rpm_always_on() dynamically, but I would prefer to avoid doing
+> > that.
+> > 
+> > In my POV, GDSCs default state should be retention, so that the GDSCs will stay
+> > ON if the rentention is not entered in hw and enter retention otherwise. This
+> > requires no extra modification in the genpd client drivers. One more benefit is,
+> > the hw can enter low power state even when the device is not in D3Cold state
+> > i.e., during s2idle (provided we unvote other resources).
+> > 
+> 
+> What about PCIe instances that are completely unused? The boot firmware
+> on X1E for example is notorious for powering on completely unused PCIe
+> links and powering them down in some half-baked off state (the &pcie3
+> instance, in particular). I'm not sure if the GDSC remains on, but if it
+> does then the unused PD cleanup would also only put them in retention
+> state. I can't think of a good reason to keep those on at all.
+> 
 
-Fix by returning directly to avoid the duplicate of_node_put().
+Conceptually I agree, but do we have any data indicating that there's
+practical benefit to this complication?
 
-Fixes: ed2b5a8e6b98 ("phy: phy-rockchip-inno-usb2: support muxed interrupts")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> The implementation of PWRSTS_RET_ON essentially makes the PD power_off()
+> callback a no-op. Everything in Linux (sysfs, debugfs, ...) will tell
+> you that the power domain has been shut down, but at the end it will
+> remain fully powered until you manage to reach a retention state for the
+> parent power domain. Due to other consumers, that will likely happen
+> only if you reach VDDmin or some equivalent SoC-wide low-power state,
+> something barely any (or none?) of the platforms supported upstream is
+> capable of today.
+> 
 
----
-Changes in v2:
-- Drop error jumping label.
----
- drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Yes, PWRSTS_RET_ON effectively means that Linux has "dropped its vote"
+on the GDSC and its parents. But with the caveat that we assume when
+going to ON again some state will have been retained.
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-index b0f23690ec30..fe97a26297af 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-@@ -1491,7 +1491,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
- 						rphy);
- 		if (ret) {
- 			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
--			goto put_child;
-+			return ret;
- 		}
- 	}
- 
--- 
-2.34.1
+> PWRSTS_RET_ON is actually pretty close to setting GENPD_FLAG_ALWAYS_ON,
+> the only advantage of PWRSTS_RET_ON I can think of is that unused GDSCs
+> remain off iff you are lucky enough that the boot firmware has not
+> already turned them on.
+> 
 
+Doesn't GENPD_FLAG_ALWAYS_ON imply that the parent will also be always
+on?
+
+> IMHO, for GDSCs that support OFF state in the hardware, PWRSTS_RET_ON is
+> a hack to workaround limitations in the consumer drivers. They should
+> either save/restore registers and handle the power collapse or they
+> should vote for the power domain to stay on. That way, sysfs/debugfs
+> will show the real votes held by Linux and you won't be mislead when
+> looking at those while trying to optimize power consumption.
+> 
+
+No, it's not working around limitations in the consumer drivers.
+
+It does work around a limitation in the API, in that the consumer
+drivers can't indicate in which cases they would be willing to restore
+and in which cases they would prefer retention. This is something the
+downstream solution has had, but we don't have a sensible and generic
+way to provide this.
+
+Keeping GDSCs in retention is a huge gain when it comes to the time it
+takes to resume the system after being in low power. PCIe is a good
+example of this, where the GDSC certainly support entering OFF, at the
+cost of tearing link and all down.
+
+Regards,
+Bjorn
+
+> Thanks,
+> Stephan
 
