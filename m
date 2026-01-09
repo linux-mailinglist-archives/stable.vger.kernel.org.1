@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-207567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207000-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F7F1D0A277
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:03:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A0B9D098FB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D3B17300B6B8
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B6FF4309287A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B10135CB95;
-	Fri,  9 Jan 2026 12:40:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BE1359F9C;
+	Fri,  9 Jan 2026 12:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRD8QL3i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FMYrQg4O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62F335CB96;
-	Fri,  9 Jan 2026 12:40:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C849328B58;
+	Fri,  9 Jan 2026 12:13:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962422; cv=none; b=u7p98bFzGbX3xrCpSMIFNSm5FV8vXnX//BoZTptxelkDAvfzZYt8gTGnDUA0DaxEFWQFzQguWA/InDjkne1qbjgLYwCATCiU+Y3AK6hEr+2E0Ia2uuP5n/4WEczt+zM8BceDJ/HJatK2DeafIcl7dnNxsw7MgY5DNs57ZJHVfM0=
+	t=1767960808; cv=none; b=RTxEJyw/C8kcYh6zhCPHZrrdbbl9+jCccWTHmfqNJxmDlrhY6JBFr23bXbO/Mb8gFxoUE8ACdysik6yQ+Iy8XBUaiwI5sWELfZVGmJcMnMSEEiCRnTAUUXxfOYMWs5W9Wwdjsf2tInlymeBJmPzBfYhcG/12Ry4A3+shVFJzEjM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962422; c=relaxed/simple;
-	bh=EQ+/YBbhvX0PhFa9ycBoo52H5GVeARvzPO/Fiy1Y0jk=;
+	s=arc-20240116; t=1767960808; c=relaxed/simple;
+	bh=L/UGCnH3F4JzhcJuKRcqUH/Mf8lNvZQxKEMcetj1zP4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AwFA9iJ6nZmqxPm7J7udjAVqSjvcIyoTNU7Uj8pVY65/4tAmMIalB81OcLhvT1MQ6cM2naOFJurcvgvcijfVwK1P/g9J5oftbVTqQILd7wrdVlI0NQ61GhyhQ8L9rv2LfObSWFarOw3dw12LK9Uc9OHlEZWO5zVpQD7oSw7ls6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRD8QL3i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E033EC4CEF1;
-	Fri,  9 Jan 2026 12:40:21 +0000 (UTC)
+	 MIME-Version; b=KrMWhs3CmASSe3OK01oaCltvK8F68YQZjc486fE5iwOD5aZkAVXY0oqweZTmfO4WGclbS6X1ttoMVZbWbt6HCWIvqcYtM70XXsj4cibBDLqqv4Hn5Ru+QJfNmoD+70vRov6zfjW8cV84Qpfh44hpIidvP50F+NEXWco//apgWYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FMYrQg4O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C501C4CEF1;
+	Fri,  9 Jan 2026 12:13:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962422;
-	bh=EQ+/YBbhvX0PhFa9ycBoo52H5GVeARvzPO/Fiy1Y0jk=;
+	s=korg; t=1767960808;
+	bh=L/UGCnH3F4JzhcJuKRcqUH/Mf8lNvZQxKEMcetj1zP4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZRD8QL3i/7VX57QQNWeCWJ0ghTy4DM7wrM9gBkAVgPTAVZTjz+I96Q4iqpvBQ9m0a
-	 sI+5N0m74PHikTMw1WZSPSRVL5ixQyO0DIqGBiJwHtLeim+fiFW5pgujPkpKqStZSn
-	 HQdCmN6d+JDQteJZaypvw3N9O/Buwd0kc3GUbtuQ=
+	b=FMYrQg4O3PozPfvrCLOFwr8+QM9wk7utt9tfntgjGKZHpHv83LBdStUy0AVugTipl
+	 B7Fa+Z9Yjlvtl7KAB7ljFWe10l9T0CN3YrsGovfJPr9+M4BP99PFeBE+f42TIfRwda
+	 j5rKsCt4c6fFaYkb8NzqUFFV0l2eW3DyoYHVcyEk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	fuqiang wang <fuqiang.wng@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 360/634] KVM: x86: Explicitly set new periodic hrtimer expiration in apic_timer_fn()
-Date: Fri,  9 Jan 2026 12:40:38 +0100
-Message-ID: <20260109112131.069462752@linuxfoundation.org>
+	Yong Wu <yong.wu@mediatek.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.6 500/737] iommu/mediatek: fix use-after-free on probe deferral
+Date: Fri,  9 Jan 2026 12:40:39 +0100
+Message-ID: <20260109112152.803035225@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +62,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fuqiang wang <fuqiang.wng@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 9633f180ce994ab293ce4924a9b7aaf4673aa114 upstream.
+commit de83d4617f9fe059623e97acf7e1e10d209625b5 upstream.
 
-When restarting an hrtimer to emulate a the guest's APIC timer in periodic
-mode, explicitly set the expiration using the target expiration computed
-by advance_periodic_target_expiration() instead of adding the period to
-the existing timer.  This will allow making adjustments to the expiration,
-e.g. to deal with expirations far in the past, without having to implement
-the same logic in both advance_periodic_target_expiration() and
-apic_timer_fn().
+The driver is dropping the references taken to the larb devices during
+probe after successful lookup as well as on errors. This can
+potentially lead to a use-after-free in case a larb device has not yet
+been bound to its driver so that the iommu driver probe defers.
 
+Fix this by keeping the references as expected while the iommu driver is
+bound.
+
+Fixes: 26593928564c ("iommu/mediatek: Add error path for loop of mm_dts_parse")
 Cc: stable@vger.kernel.org
-Signed-off-by: fuqiang wang <fuqiang.wng@gmail.com>
-[sean: split to separate patch, write changelog]
-Link: https://patch.msgid.link/20251113205114.1647493-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
+Cc: Yong Wu <yong.wu@mediatek.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/lapic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/mtk_iommu.c |   25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2639,7 +2639,7 @@ static enum hrtimer_restart apic_timer_f
+--- a/drivers/iommu/mtk_iommu.c
++++ b/drivers/iommu/mtk_iommu.c
+@@ -1196,16 +1196,19 @@ static int mtk_iommu_mm_dts_parse(struct
+ 		}
  
- 	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
- 		advance_periodic_target_expiration(apic);
--		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
-+		hrtimer_set_expires(&ktimer->timer, ktimer->target_expiration);
- 		return HRTIMER_RESTART;
- 	} else
- 		return HRTIMER_NORESTART;
+ 		component_match_add(dev, match, component_compare_dev, &plarbdev->dev);
+-		platform_device_put(plarbdev);
+ 	}
+ 
+-	if (!frst_avail_smicomm_node)
+-		return -EINVAL;
++	if (!frst_avail_smicomm_node) {
++		ret = -EINVAL;
++		goto err_larbdev_put;
++	}
+ 
+ 	pcommdev = of_find_device_by_node(frst_avail_smicomm_node);
+ 	of_node_put(frst_avail_smicomm_node);
+-	if (!pcommdev)
+-		return -ENODEV;
++	if (!pcommdev) {
++		ret = -ENODEV;
++		goto err_larbdev_put;
++	}
+ 	data->smicomm_dev = &pcommdev->dev;
+ 
+ 	link = device_link_add(data->smicomm_dev, dev,
+@@ -1213,7 +1216,8 @@ static int mtk_iommu_mm_dts_parse(struct
+ 	platform_device_put(pcommdev);
+ 	if (!link) {
+ 		dev_err(dev, "Unable to link %s.\n", dev_name(data->smicomm_dev));
+-		return -EINVAL;
++		ret = -EINVAL;
++		goto err_larbdev_put;
+ 	}
+ 	return 0;
+ 
+@@ -1385,8 +1389,12 @@ out_sysfs_remove:
+ 	iommu_device_sysfs_remove(&data->iommu);
+ out_list_del:
+ 	list_del(&data->list);
+-	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM))
++	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
+ 		device_link_remove(data->smicomm_dev, dev);
++
++		for (i = 0; i < MTK_LARB_NR_MAX; i++)
++			put_device(data->larb_imu[i].dev);
++	}
+ out_runtime_disable:
+ 	pm_runtime_disable(dev);
+ 	return ret;
+@@ -1406,6 +1414,9 @@ static void mtk_iommu_remove(struct plat
+ 	if (MTK_IOMMU_IS_TYPE(data->plat_data, MTK_IOMMU_TYPE_MM)) {
+ 		device_link_remove(data->smicomm_dev, &pdev->dev);
+ 		component_master_del(&pdev->dev, &mtk_iommu_com_ops);
++
++		for (i = 0; i < MTK_LARB_NR_MAX; i++)
++			put_device(data->larb_imu[i].dev);
+ 	}
+ 	pm_runtime_disable(&pdev->dev);
+ 	for (i = 0; i < data->plat_data->banks_num; i++) {
 
 
 
