@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207621-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206993-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C34BD0A1A1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:50 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A90F5D096FF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:17:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B5E1030F3966
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1B0C3026DB0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D9535B15A;
-	Fri,  9 Jan 2026 12:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3931359F99;
+	Fri,  9 Jan 2026 12:13:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQhxq9U0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bR4hQ1x+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3F3359703;
-	Fri,  9 Jan 2026 12:42:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E14432F748;
+	Fri,  9 Jan 2026 12:13:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962572; cv=none; b=Fd7zvcyi1xRvsYRlujSCY2Nvzg0x8RjxCqEqKU8zkcFW6IPrgKZOHXG4GBmIclm/1qO7mPY0kwhRyVN7VfaRCoLk2UvOyyElvrxSsS0DvuUdOby0bAe8+mt8J2lFBJ+dMoKukoKwlT4EwQE7nbaqDNIEA7N+naWFzLF5BrSxFeo=
+	t=1767960789; cv=none; b=loAN2bKncsRA0l7OLVHvPlexL+kqN/QpYl3mVTmjDYKaMFMH8vFVNxRs45cpZsrxrjylsXjJEn73VqDus12pbqqHgRbQ/nZZ9HYy3il3TNps9ur+VFOuTUlt6HZpBr2ELasB7Eaoem+XaVEjtt3T7F4UBHyYDmq+5NJHrsNDc0I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962572; c=relaxed/simple;
-	bh=a0AnuVmTsUuLZGIrrktIr6cCREZKPSUxp0I4H5rza3U=;
+	s=arc-20240116; t=1767960789; c=relaxed/simple;
+	bh=1ORy2YvJZ3sLybl0wTg9JKs6ddRiSCxz0e6T7bZye58=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pA8NwEo9CiFq3tZUUD+cu/O9fPF8AZLJgcofklXX+WoF4iTg/uZPeHx5O52V1I3gFR+Nwoe1pqpQQGUAGy6TH60c/c51xaywT3zK2a36k0KSwJbaa8lqrtRvG3LijAdZG5oAhFTDoL1q4Lw5JsgH3Pb9+d2dKovUFLKLAI4SUf0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQhxq9U0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192A3C4CEF1;
-	Fri,  9 Jan 2026 12:42:51 +0000 (UTC)
+	 MIME-Version; b=ITLSsYduEQWLFPAX2+9OmS4MpfB5WBa/oo0o70uUUiPcK1ZVWbPMU3mAG60OXPoKGN45SuMesoYT1aAyc+ESFhbxqhHqFeXDfwHRZvGcJfYYFh4DXmXILBJKaFfg+XNUVpJwgcTy3XBqlRU9/tXHMPEIYZeECFozZbJgAQRxh8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bR4hQ1x+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D6D8C4CEF1;
+	Fri,  9 Jan 2026 12:13:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962572;
-	bh=a0AnuVmTsUuLZGIrrktIr6cCREZKPSUxp0I4H5rza3U=;
+	s=korg; t=1767960788;
+	bh=1ORy2YvJZ3sLybl0wTg9JKs6ddRiSCxz0e6T7bZye58=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZQhxq9U0ljjs6xSTaXrA67boZiisOxrhb/AfUUqBsWkbJUTOQtOeeG02QZ0xZzHD1
-	 eUfPyNfXZLHl6PDr7n51Bx4jQoDZIjUd1nFZ6X4+y1e2m6Ah6ERN7InKQx/m9GJw7K
-	 OFrRTxd5fEQ8fZ1zXmo0IMnV5sXssUyAulBO+WQI=
+	b=bR4hQ1x+FSNi1yJf0aDDncPqPIaefm0unR/owk+9Vuvlk0oJjKyB093FfQf0t73Y6
+	 r1T6BzYrPz9txLc+g9OQPJQ5xBoyCwfuSeafzMqCleMQKXqQxOytn1PIGGzKUww/tf
+	 qefWhF4Q3IVLT5Ekts+sdW8f7SsXlhvNjhAIIqf0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 385/634] hwmon: (max16065) Use local variable to avoid TOCTOU
+	Anshumali Gaur <agaur@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 524/737] octeontx2-pf: fix "UBSAN: shift-out-of-bounds error"
 Date: Fri,  9 Jan 2026 12:41:03 +0100
-Message-ID: <20260109112132.018986575@linuxfoundation.org>
+Message-ID: <20260109112153.710822516@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Anshumali Gaur <agaur@marvell.com>
 
-commit b8d5acdcf525f44e521ca4ef51dce4dac403dab4 upstream.
+[ Upstream commit 85f4b0c650d9f9db10bda8d3acfa1af83bf78cf7 ]
 
-In max16065_current_show, data->curr_sense is read twice: once for the
-error check and again for the calculation. Since
-i2c_smbus_read_byte_data returns negative error codes on failure, if the
-data changes to an error code between the check and the use, ADC_TO_CURR
-results in an incorrect calculation.
+This patch ensures that the RX ring size (rx_pending) is not
+set below the permitted length. This avoids UBSAN
+shift-out-of-bounds errors when users passes small or zero
+ring sizes via ethtool -G.
 
-Read data->curr_sense into a local variable to ensure consistency. Note
-that data->curr_gain is constant and safe to access directly.
-
-This aligns max16065_current_show with max16065_input_show, which
-already uses a local variable for the same reason.
-
-Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20251128124709.3876-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d45d8979840d ("octeontx2-pf: Add basic ethtool support")
+Signed-off-by: Anshumali Gaur <agaur@marvell.com>
+Link: https://patch.msgid.link/20251219062226.524844-1-agaur@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/max16065.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -216,12 +216,13 @@ static ssize_t max16065_current_show(str
- 				     struct device_attribute *da, char *buf)
- {
- 	struct max16065_data *data = max16065_update_device(dev);
-+	int curr_sense = data->curr_sense;
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 532e84bc38c7..bd01c538f208 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -432,6 +432,14 @@ static int otx2_set_ringparam(struct net_device *netdev,
+ 	 */
+ 	if (rx_count < pfvf->hw.rq_skid)
+ 		rx_count =  pfvf->hw.rq_skid;
++
++	if (ring->rx_pending < 16) {
++		netdev_err(netdev,
++			   "rx ring size %u invalid, min is 16\n",
++			   ring->rx_pending);
++		return -EINVAL;
++	}
++
+ 	rx_count = Q_COUNT(Q_SIZE(rx_count, 3));
  
--	if (unlikely(data->curr_sense < 0))
--		return data->curr_sense;
-+	if (unlikely(curr_sense < 0))
-+		return curr_sense;
- 
- 	return sysfs_emit(buf, "%d\n",
--			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
-+			  ADC_TO_CURR(curr_sense, data->curr_gain));
- }
- 
- static ssize_t max16065_limit_store(struct device *dev,
+ 	/* Due pipelining impact minimum 2000 unused SQ CQE's
+-- 
+2.51.0
+
 
 
 
