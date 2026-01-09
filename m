@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206903-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B98CD09E9B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06471D0969E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB45230CD9D4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A2774304D363
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A102F359701;
-	Fri,  9 Jan 2026 12:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2EF7035B145;
+	Fri,  9 Jan 2026 12:08:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y09b5d/k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R78JngLO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63ED5358D30;
-	Fri,  9 Jan 2026 12:37:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6C57359F99;
+	Fri,  9 Jan 2026 12:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962245; cv=none; b=FNttXj5sa0mdrr1hG2weqiPNy+Zpkvu0dOgKpU/Pyk5Cx/gokSLI6EmJIU2QRlNdCtwR6iOD3jMbpJhTG+nH6SHX88KSP3B89lwoSizTlvyt8dgA1ZHHtmX7yOlmir0xWcapCUlHIhHCM3o10KQJSeXow5O4CUYhumU/b4jsOy0=
+	t=1767960528; cv=none; b=pBSNtrWHa7psLr6fr2qKT3T0Xa4I3syj2iUerhDVNlcq2zY2Lj+uCCaUFdEM9O6fsXV45HnJzLJuv/nf13YwlDpMC5EF7wAHw98DmlZL2nCs399ZNJVWF/KVlWDHmpvADeLVIG1AGoQShid7Z6B025yvU/N373vIsRwJvWG6wqk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962245; c=relaxed/simple;
-	bh=qHPyUWDsoHyf3vKXz7IkY8RJsxIoE6Z7r4QECvqXgVo=;
+	s=arc-20240116; t=1767960528; c=relaxed/simple;
+	bh=thu/zXgw42K4YnIwBDKvHaAdKf3h4gUiLCmJXC/VnH8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nb/Y6bO3evpa7z4DwZWFQwKZsZPi9PBiDFXFCoFfgsj/+/0Dl86/M0P9pAzqSaQ9Nf2jNx8s0byUJPdKsK6H6srHEUWQnz7BDLc+jzG6n+gQmY/FWsPsOg5wnPqBHS5MZHv57nPemN6TSoN7N+N76dU9QhMIW8Ritx/Fv+GlBsY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y09b5d/k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5BA6C16AAE;
-	Fri,  9 Jan 2026 12:37:24 +0000 (UTC)
+	 MIME-Version; b=U+CMcKh8BTpIOyG1M17IlVMos2STU4FdGI9QZZzdv69Jt2tUvt9YEsIVKIGq04sBrfC35Ja6w0TS0soPkI8Tckz5JJH0m3CMkybfEsLthM3EFbC7SdUqZufYYiYtkTAt1SKmyu+Z7ms3mYBzj6amReOUMuvyQZy64hPR9pfj0hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R78JngLO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 734FBC19423;
+	Fri,  9 Jan 2026 12:08:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962245;
-	bh=qHPyUWDsoHyf3vKXz7IkY8RJsxIoE6Z7r4QECvqXgVo=;
+	s=korg; t=1767960527;
+	bh=thu/zXgw42K4YnIwBDKvHaAdKf3h4gUiLCmJXC/VnH8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y09b5d/kqUrvJDlKp+UGBAAaTr2ogUGfziCfKwWARJwfzQzoNVlEYg7FHPK2k8fK9
-	 aFc3j1SC8HDWbht79I8EEFLw9c08S5beNZC65RjXQHnWVSDFmYEMvGnLF4eFPcETXP
-	 TWHIGysVT/QvNTUNnLOA1qnHND4Y/fpPrNtYy5Y4=
+	b=R78JngLOOQ9LpOb2jXzB80RveNK6jUjjWqdz+AA2joAffn80+VaCiYpo4VWkfOcxs
+	 TsnwI82A/43yEFRQO8qTZFQhprAoGv2wWanmUkFnS9B6COzV0HCf+t3rhLE38OpP/1
+	 qctExJCnxObkglnWNhE//cHQhJjmDfScFDnefI6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 297/634] ipmi: Fix __scan_channels() failing to rescan channels
+	stable <stable@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 6.6 436/737] usb: phy: fsl-usb: Fix use-after-free in delayed work during device removal
 Date: Fri,  9 Jan 2026 12:39:35 +0100
-Message-ID: <20260109112128.707312699@linuxfoundation.org>
+Message-ID: <20260109112150.394719356@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,90 +59,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-[ Upstream commit 6bd30d8fc523fb880b4be548e8501bc0fe8f42d4 ]
+commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f upstream.
 
-channel_handler() sets intf->channels_ready to true but never
-clears it, so __scan_channels() skips any rescan. When the BMC
-firmware changes a rescan is required. Allow it by clearing
-the flag before starting a new scan.
+The delayed work item otg_event is initialized in fsl_otg_conf() and
+scheduled under two conditions:
+1. When a host controller binds to the OTG controller.
+2. When the USB ID pin state changes (cable insertion/removal).
 
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Message-ID: <20250930074239.2353-3-guojinhui.liam@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+A race condition occurs when the device is removed via fsl_otg_remove():
+the fsl_otg instance may be freed while the delayed work is still pending
+or executing. This leads to use-after-free when the work function
+fsl_otg_event() accesses the already freed memory.
+
+The problematic scenario:
+
+(detach thread)            | (delayed work)
+fsl_otg_remove()           |
+  kfree(fsl_otg_dev) //FREE| fsl_otg_event()
+                           |   og = container_of(...) //USE
+                           |   og-> //USE
+
+Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
+before deallocating the fsl_otg structure. This ensures the delayed work
+is properly canceled and completes execution prior to memory deallocation.
+
+This bug was identified through static analysis.
+
+Fixes: 0807c500a1a6 ("USB: add Freescale USB OTG Transceiver driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20251205034831.12846-1-duoming@zju.edu.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ drivers/usb/phy/phy-fsl-usb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index b7f6cec0383f..8bc8da7f70bb 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -613,7 +613,8 @@ static void __ipmi_bmc_unregister(struct ipmi_smi *intf);
- static int __ipmi_bmc_register(struct ipmi_smi *intf,
- 			       struct ipmi_device_id *id,
- 			       bool guid_set, guid_t *guid, int intf_num);
--static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id);
-+static int __scan_channels(struct ipmi_smi *intf,
-+				struct ipmi_device_id *id, bool rescan);
- 
- 
- /**
-@@ -2665,7 +2666,7 @@ static int __bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
- 		if (__ipmi_bmc_register(intf, &id, guid_set, &guid, intf_num))
- 			need_waiter(intf); /* Retry later on an error. */
- 		else
--			__scan_channels(intf, &id);
-+			__scan_channels(intf, &id, false);
- 
- 
- 		if (!intf_set) {
-@@ -2685,7 +2686,7 @@ static int __bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
- 		goto out_noprocessing;
- 	} else if (memcmp(&bmc->fetch_id, &bmc->id, sizeof(bmc->id)))
- 		/* Version info changes, scan the channels again. */
--		__scan_channels(intf, &bmc->fetch_id);
-+		__scan_channels(intf, &bmc->fetch_id, true);
- 
- 	bmc->dyn_id_expiry = jiffies + IPMI_DYN_DEV_ID_EXPIRY;
- 
-@@ -3435,10 +3436,17 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
- /*
-  * Must be holding intf->bmc_reg_mutex to call this.
-  */
--static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id)
-+static int __scan_channels(struct ipmi_smi *intf,
-+				struct ipmi_device_id *id,
-+				bool rescan)
+--- a/drivers/usb/phy/phy-fsl-usb.c
++++ b/drivers/usb/phy/phy-fsl-usb.c
+@@ -987,6 +987,7 @@ static void fsl_otg_remove(struct platfo
  {
- 	int rv;
+ 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
  
-+	if (rescan) {
-+		/* Clear channels_ready to force channels rescan. */
-+		intf->channels_ready = false;
-+	}
-+
- 	if (ipmi_version_major(id) > 1
- 			|| (ipmi_version_major(id) == 1
- 			    && ipmi_version_minor(id) >= 5)) {
-@@ -3641,7 +3649,7 @@ int ipmi_add_smi(struct module         *owner,
- 	}
++	disable_delayed_work_sync(&fsl_otg_dev->otg_event);
+ 	usb_remove_phy(&fsl_otg_dev->phy);
+ 	free_irq(fsl_otg_dev->irq, fsl_otg_dev);
  
- 	mutex_lock(&intf->bmc_reg_mutex);
--	rv = __scan_channels(intf, &id);
-+	rv = __scan_channels(intf, &id, false);
- 	mutex_unlock(&intf->bmc_reg_mutex);
- 	if (rv)
- 		goto out_err_bmc_reg;
--- 
-2.51.0
-
 
 
 
