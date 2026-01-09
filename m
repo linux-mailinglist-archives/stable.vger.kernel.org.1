@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207375-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5246D0935F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50F3BD09ECE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1610E3008F22
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 89AA6311D537
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6979333CE9A;
-	Fri,  9 Jan 2026 12:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECFA359701;
+	Fri,  9 Jan 2026 12:31:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L5VbHEdP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uT0UeH+H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2311946C8;
-	Fri,  9 Jan 2026 12:02:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19B935A95B;
+	Fri,  9 Jan 2026 12:31:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960158; cv=none; b=NNqZIyXnQiZmaGoR3NOfgBymdeajVV4S8Ck9CD3sQhfC3VK5t6zToGY4fG4nUo4g3GqZnjPziBosKPb5RASvXGglz9QsOs911Y4ACy0YEYAZ4EVpSiBRV7z5jt4bAr9UfVeOR+F/lGhzcepbu7mQAKJhXStbT8cBXbeWdsTznRE=
+	t=1767961877; cv=none; b=IBp4/sox3k0mCK9IoP2TY88h/sN12VJBICAnkozvp4FQpfjba+Us199ug2z+ihxeB2+EO80PHyXCNpAlJ+KDTrMi62wjatNRi/R7KMhsby4e5AXQ3z7LHrpcTul2hDB67UX/m4MwtK850s92kMbJUjDp2vfGqxxBeS1Y7k69G20=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960158; c=relaxed/simple;
-	bh=t0nfZyK4uLsKMLdV/Iy1qyhNpe2gLS208NjF9YykYp8=;
+	s=arc-20240116; t=1767961877; c=relaxed/simple;
+	bh=rutcdPqCiej+RJmBFXTHcdial/nK99mt74UhwSgWoQs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kMYMhXCnGFhwRXkQnWds/TOM9Xz47o085/1bCw0ZLwhY9hMLqI1tHiOCxVKM7SRjWSN6Ykgk68nh6a0Nsvmayu8znnEi2XRjpIWSKp2clRY5HsKQ/1qKr+ODcwo/5CwtMRSr7aLlFGiOe636ZCnzWbTDWLAi+jbCZZUQcpAWx8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L5VbHEdP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4A9C4CEF1;
-	Fri,  9 Jan 2026 12:02:37 +0000 (UTC)
+	 MIME-Version; b=eeTMmvAwtl9kdMaNNkuOGneUlNMcUvtJY6mg4llkv9gLKKNcXwrJPcdZO2XEIKa/tRLxCV/cbX+iRlA38tAj/3XZpdZdv3qQy+uFaJgajGPNfk2A7/zzq5+nm0IPYs/FUreU7sxo/kQd0RV2iHdBLaiFKvi6OHiLkMQdrgNHZsY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uT0UeH+H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C346C4CEF1;
+	Fri,  9 Jan 2026 12:31:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960158;
-	bh=t0nfZyK4uLsKMLdV/Iy1qyhNpe2gLS208NjF9YykYp8=;
+	s=korg; t=1767961876;
+	bh=rutcdPqCiej+RJmBFXTHcdial/nK99mt74UhwSgWoQs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L5VbHEdP6ngqc08dU/Dgrxu9p85x+EFqghMQeHpC0+WCbBLCbwhlhrsvexlNta6Mq
-	 kOtMMtr6o1+jnpO56sWrsYTAN+KPXnM82RilYUbic5IQush+pXttzI9692dSXoQ8wL
-	 lxAxIacVfVw3htD818hai/Q2hoi+/Eo1M+ZL2VMw=
+	b=uT0UeH+Huh2C4rh0NEcJhh+IROHPuJd+aljw1FsN9vbJMq9Zp6g8PcJkyxyGAHp5v
+	 LBwKIrSE7N0d6yiKgLYLbZ48D7LK8zQl1i/0JNRsj1HEw0MIqGficToMyZjIOzBnb+
+	 JRQPYyhSV+OIcu5XCj9dA9qxiGna2jq+KZ4uqEb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzkaller <syzkaller@googlegroups.com>,
-	George Kennedy <george.kennedy@oracle.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Cezary Rojewski <cezary.rojewski@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 305/737] perf/x86/amd: Check event before enable to avoid GPF
+Subject: [PATCH 6.1 166/634] ASoC: Intel: catpt: Fix error path in hw_params()
 Date: Fri,  9 Jan 2026 12:37:24 +0100
-Message-ID: <20260109112145.479378203@linuxfoundation.org>
+Message-ID: <20260109112123.694660321@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: George Kennedy <george.kennedy@oracle.com>
+From: Cezary Rojewski <cezary.rojewski@intel.com>
 
-[ Upstream commit 866cf36bfee4fba6a492d2dcc5133f857e3446b0 ]
+[ Upstream commit 86a5b621be658fc8fe594ca6db317d64de30cce1 ]
 
-On AMD machines cpuc->events[idx] can become NULL in a subtle race
-condition with NMI->throttle->x86_pmu_stop().
+Do not leave any resources hanging on the DSP side if
+applying user settings fails.
 
-Check event for NULL in amd_pmu_enable_all() before enable to avoid a GPF.
-This appears to be an AMD only issue.
-
-Syzkaller reported a GPF in amd_pmu_enable_all.
-
-INFO: NMI handler (perf_event_nmi_handler) took too long to run: 13.143
-    msecs
-Oops: general protection fault, probably for non-canonical address
-    0xdffffc0000000034: 0000  PREEMPT SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x00000000000001a0-0x00000000000001a7]
-CPU: 0 UID: 0 PID: 328415 Comm: repro_36674776 Not tainted 6.12.0-rc1-syzk
-RIP: 0010:x86_pmu_enable_event (arch/x86/events/perf_event.h:1195
-    arch/x86/events/core.c:1430)
-RSP: 0018:ffff888118009d60 EFLAGS: 00010012
-RAX: dffffc0000000000 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 0000000000000034 RSI: 0000000000000000 RDI: 00000000000001a0
-RBP: 0000000000000001 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: 0000000000000002
-R13: ffff88811802a440 R14: ffff88811802a240 R15: ffff8881132d8601
-FS:  00007f097dfaa700(0000) GS:ffff888118000000(0000) GS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000200001c0 CR3: 0000000103d56000 CR4: 00000000000006f0
-Call Trace:
- <IRQ>
-amd_pmu_enable_all (arch/x86/events/amd/core.c:760 (discriminator 2))
-x86_pmu_enable (arch/x86/events/core.c:1360)
-event_sched_out (kernel/events/core.c:1191 kernel/events/core.c:1186
-    kernel/events/core.c:2346)
-__perf_remove_from_context (kernel/events/core.c:2435)
-event_function (kernel/events/core.c:259)
-remote_function (kernel/events/core.c:92 (discriminator 1)
-    kernel/events/core.c:72 (discriminator 1))
-__flush_smp_call_function_queue (./arch/x86/include/asm/jump_label.h:27
-    ./include/linux/jump_label.h:207 ./include/trace/events/csd.h:64
-    kernel/smp.c:135 kernel/smp.c:540)
-__sysvec_call_function_single (./arch/x86/include/asm/jump_label.h:27
-    ./include/linux/jump_label.h:207
-    ./arch/x86/include/asm/trace/irq_vectors.h:99 arch/x86/kernel/smp.c:272)
-sysvec_call_function_single (arch/x86/kernel/smp.c:266 (discriminator 47)
-    arch/x86/kernel/smp.c:266 (discriminator 47))
- </IRQ>
-
-Reported-by: syzkaller <syzkaller@googlegroups.com>
-Signed-off-by: George Kennedy <george.kennedy@oracle.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 768a3a3b327d ("ASoC: Intel: catpt: Optimize applying user settings")
+Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://patch.msgid.link/20251126095523.3925364-4-cezary.rojewski@intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/amd/core.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/intel/catpt/pcm.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/x86/events/amd/core.c b/arch/x86/events/amd/core.c
-index aa8fc2cf1bde7..211f429750f5f 100644
---- a/arch/x86/events/amd/core.c
-+++ b/arch/x86/events/amd/core.c
-@@ -745,7 +745,12 @@ static void amd_pmu_enable_all(int added)
- 		if (!test_bit(idx, cpuc->active_mask))
- 			continue;
+diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
+index 30ca5416c9a3f..a30cdc94871d1 100644
+--- a/sound/soc/intel/catpt/pcm.c
++++ b/sound/soc/intel/catpt/pcm.c
+@@ -417,8 +417,10 @@ static int catpt_dai_hw_params(struct snd_pcm_substream *substream,
+ 		return CATPT_IPC_ERROR(ret);
  
--		amd_pmu_enable_event(cpuc->events[idx]);
-+		/*
-+		 * FIXME: cpuc->events[idx] can become NULL in a subtle race
-+		 * condition with NMI->throttle->x86_pmu_stop().
-+		 */
-+		if (cpuc->events[idx])
-+			amd_pmu_enable_event(cpuc->events[idx]);
- 	}
- }
+ 	ret = catpt_dai_apply_usettings(dai, stream);
+-	if (ret)
++	if (ret) {
++		catpt_ipc_free_stream(cdev, stream->info.stream_hw_id);
+ 		return ret;
++	}
  
+ 	stream->allocated = true;
+ 	return 0;
 -- 
 2.51.0
 
