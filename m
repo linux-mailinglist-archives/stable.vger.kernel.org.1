@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-206543-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206511-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EEB4BD091A9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 991FDD09071
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:51:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8F5A305A752
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:51:45 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA4C2301D1E6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:50:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B3AD32FA3D;
-	Fri,  9 Jan 2026 11:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61DB533A712;
+	Fri,  9 Jan 2026 11:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PH+G02xv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l4Oldjw6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D0CB33987D;
-	Fri,  9 Jan 2026 11:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2525C32FA3D;
+	Fri,  9 Jan 2026 11:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959505; cv=none; b=q6ChMLQbpafallSm7VtVMA5KTwKET+ikGAAdjsc8kZT1WviB50h0tddm089IZdpApNCaaN8nrLlverks1ViJqERk9tpsC7/EcaYtxwiDtrc/fKiaW52acrmf/3PkPCtXD+PX63Di2ga8Qop6NUo8HH4o5HJbk7YEKtvi5xtjoTs=
+	t=1767959414; cv=none; b=kv7i7BH3DE4o732TFwz5eR5OEQxbWQUe74jCT4mc+EM6UFrpHZ2CxsmmxEjdehj74JvFiEjyXDy0kFnjje4i5e7/c1jlyjrDAhqiGzfOGcpZBR98B0CAq7cGorpFcW+qRueItXXIQUKXWJD9LhTH+wxtiSNcrM/iZrDb2GaZcwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959505; c=relaxed/simple;
-	bh=xN9dmowEr6ucLVBMVvDdAIUSyTKpftDn43XWYqojIno=;
+	s=arc-20240116; t=1767959414; c=relaxed/simple;
+	bh=zOpN+vQIZXeOLPe2Rk+wIGGxBmkfImZiaaf9hKRbR7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6ZgoxTsww8dLO8I4HWF2+MCG9GVVV2cHjhCc/rcTqoLaEQJ438Q1P2IDc7NXNAOcOC+RI0NBX9zSiCgwCB6KGsY09BrLIcRMW+yeaod3IAdRmZ9E5cOYjthfEOz5z3RUS58s8ROtRcReO+Zh6B4s4RsGskBiyFdxOsitsQ/wqo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PH+G02xv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBB2C4CEF1;
-	Fri,  9 Jan 2026 11:51:44 +0000 (UTC)
+	 MIME-Version; b=ka8vtRu6NwFHHVbF2W/VCqVoRHVsnUzpPtDlqJdmKVOkcnsYkE+OtZHjzywsh6LsqBxgxuG5oi6pOcZc04czM7HVwGJr3B2w8GuDMUxSVjzYT08dmYawwNXwfI+sy3pnVZRytuQKaX3jmn3MT1IOXoiKHlBnofeCtYOno75CsV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l4Oldjw6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6259FC4CEF1;
+	Fri,  9 Jan 2026 11:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959505;
-	bh=xN9dmowEr6ucLVBMVvDdAIUSyTKpftDn43XWYqojIno=;
+	s=korg; t=1767959413;
+	bh=zOpN+vQIZXeOLPe2Rk+wIGGxBmkfImZiaaf9hKRbR7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PH+G02xvRakwppTPCjlNzpuTYm0yjZ5f3JkZqYH/UtdOffRmpxNK+r16wbxtRJ9MU
-	 0HMqp1CljmrOvZFkPtYrABx7nYG0XQplWyS9s89nN5l54Vy9fEqw9pZ4/Mj1JrS0Y+
-	 T4t09HQ35zRC+j2UH6DmMaMM91z6UagidL2dmQJ0=
+	b=l4Oldjw6dEqVwceHcYU3AlwN/fU5tgv0AKAVER09w8+A4cjOFulXOsROnxES4gxbK
+	 UJzHqfCNKJVR0jwwgQq/3Bku8eSAolV/BUX3yW3/bNO5lKYhLCz8rtPhnEsBy3QS9g
+	 LIQ8bc5snWFW5y1xvfS8vgCEj4Qb222NbaQg4N6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>,
-	Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Subject: [PATCH 6.6 043/737] comedi: check devices attached status in compat ioctls
-Date: Fri,  9 Jan 2026 12:33:02 +0100
-Message-ID: <20260109112135.616059551@linuxfoundation.org>
+	Navaneeth K <knavaneeth786@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.6 044/737] staging: rtl8723bs: fix out-of-bounds read in rtw_get_ie() parser
+Date: Fri,  9 Jan 2026 12:33:03 +0100
+Message-ID: <20260109112135.652942233@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -65,146 +63,62 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Navaneeth K <knavaneeth786@gmail.com>
 
-commit 0de7d9cd07a2671fa6089173bccc0b2afe6b93ee upstream.
+commit 154828bf9559b9c8421fc2f0d7f7f76b3683aaed upstream.
 
-Syzbot identified an issue [1] that crashes kernel, seemingly due to
-unexistent callback dev->get_valid_routes(). By all means, this should
-not occur as said callback must always be set to
-get_zero_valid_routes() in __comedi_device_postconfig().
+The Information Element (IE) parser rtw_get_ie() trusted the length
+byte of each IE without validating that the IE body (len bytes after
+the 2-byte header) fits inside the remaining frame buffer. A malformed
+frame can advertise an IE length larger than the available data, causing
+the parser to increment its pointer beyond the buffer end. This results
+in out-of-bounds reads or, depending on the pattern, an infinite loop.
 
-As the crash seems to appear exclusively in i386 kernels, at least,
-judging from [1] reports, the blame lies with compat versions
-of standard IOCTL handlers. Several of them are modified and
-do not use comedi_unlocked_ioctl(). While functionality of these
-ioctls essentially copy their original versions, they do not
-have required sanity check for device's attached status. This,
-in turn, leads to a possibility of calling select IOCTLs on a
-device that has not been properly setup, even via COMEDI_DEVCONFIG.
+Fix by validating that (offset + 2 + len) does not exceed the limit
+before accepting the IE or advancing to the next element.
 
-Doing so on unconfigured devices means that several crucial steps
-are missed, for instance, specifying dev->get_valid_routes()
-callback.
+This prevents OOB reads and ensures the parser terminates safely on
+malformed frames.
 
-Fix this somewhat crudely by ensuring device's attached status before
-performing any ioctls, improving logic consistency between modern
-and compat functions.
-
-[1] Syzbot report:
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-...
-CR2: ffffffffffffffd6 CR3: 000000006c717000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- get_valid_routes drivers/comedi/comedi_fops.c:1322 [inline]
- parse_insn+0x78c/0x1970 drivers/comedi/comedi_fops.c:1401
- do_insnlist_ioctl+0x272/0x700 drivers/comedi/comedi_fops.c:1594
- compat_insnlist drivers/comedi/comedi_fops.c:3208 [inline]
- comedi_compat_ioctl+0x810/0x990 drivers/comedi/comedi_fops.c:3273
- __do_compat_sys_ioctl fs/ioctl.c:695 [inline]
- __se_compat_sys_ioctl fs/ioctl.c:638 [inline]
- __ia32_compat_sys_ioctl+0x242/0x370 fs/ioctl.c:638
- do_syscall_32_irqs_on arch/x86/entry/syscall_32.c:83 [inline]
-...
-
-Reported-by: syzbot+ab8008c24e84adee93ff@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=ab8008c24e84adee93ff
-Fixes: 3fbfd2223a27 ("comedi: get rid of compat_alloc_user_space() mess in COMEDI_CHANINFO compat")
+Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
 Cc: stable <stable@kernel.org>
-Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://patch.msgid.link/20251023132234.395794-1-n.zhandarovich@fintech.ru
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/comedi/comedi_fops.c |   42 ++++++++++++++++++++++++++++++++++++------
- 1 file changed, 36 insertions(+), 6 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_ieee80211.c |   14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
---- a/drivers/comedi/comedi_fops.c
-+++ b/drivers/comedi/comedi_fops.c
-@@ -2971,7 +2971,12 @@ static int compat_chaninfo(struct file *
- 	chaninfo.rangelist = compat_ptr(chaninfo32.rangelist);
+--- a/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
++++ b/drivers/staging/rtl8723bs/core/rtw_ieee80211.c
+@@ -139,22 +139,24 @@ u8 *rtw_get_ie(u8 *pbuf, signed int inde
+ 	signed int tmp, i;
+ 	u8 *p;
  
- 	mutex_lock(&dev->mutex);
--	err = do_chaninfo_ioctl(dev, &chaninfo);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		err = -ENODEV;
-+	} else {
-+		err = do_chaninfo_ioctl(dev, &chaninfo);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	return err;
- }
-@@ -2992,7 +2997,12 @@ static int compat_rangeinfo(struct file
- 	rangeinfo.range_ptr = compat_ptr(rangeinfo32.range_ptr);
+-	if (limit < 1)
++	if (limit < 2)
+ 		return NULL;
  
- 	mutex_lock(&dev->mutex);
--	err = do_rangeinfo_ioctl(dev, &rangeinfo);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		err = -ENODEV;
-+	} else {
-+		err = do_rangeinfo_ioctl(dev, &rangeinfo);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	return err;
- }
-@@ -3068,7 +3078,12 @@ static int compat_cmd(struct file *file,
- 		return rc;
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_cmd_ioctl(dev, &cmd, &copy, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_cmd_ioctl(dev, &cmd, &copy, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	if (copy) {
- 		/* Special case: copy cmd back to user. */
-@@ -3093,7 +3108,12 @@ static int compat_cmdtest(struct file *f
- 		return rc;
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_cmdtest_ioctl(dev, &cmd, &copy, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	if (copy) {
- 		err = put_compat_cmd(compat_ptr(arg), &cmd);
-@@ -3153,7 +3173,12 @@ static int compat_insnlist(struct file *
+ 	p = pbuf;
+ 	i = 0;
+ 	*len = 0;
+-	while (1) {
++	while (i + 2 <= limit) {
++		tmp = *(p + 1);
++		if (i + 2 + tmp > limit)
++			break;
++
+ 		if (*p == index) {
+-			*len = *(p + 1);
++			*len = tmp;
+ 			return p;
+ 		}
+-		tmp = *(p + 1);
++
+ 		p += (tmp + 2);
+ 		i += (tmp + 2);
+-		if (i >= limit)
+-			break;
  	}
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_insnlist_ioctl(dev, insns, insnlist32.n_insns, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	kfree(insns);
- 	return rc;
-@@ -3172,7 +3197,12 @@ static int compat_insn(struct file *file
- 		return rc;
- 
- 	mutex_lock(&dev->mutex);
--	rc = do_insn_ioctl(dev, &insn, file);
-+	if (!dev->attached) {
-+		dev_dbg(dev->class_dev, "no driver attached\n");
-+		rc = -ENODEV;
-+	} else {
-+		rc = do_insn_ioctl(dev, &insn, file);
-+	}
- 	mutex_unlock(&dev->mutex);
- 	return rc;
+ 	return NULL;
  }
 
 
