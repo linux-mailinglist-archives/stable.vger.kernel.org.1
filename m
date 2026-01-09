@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81735D09464
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79074D09BE1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 052183009755
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BE15312FDCB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D48233BBBD;
-	Fri,  9 Jan 2026 12:00:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B723635B15A;
+	Fri,  9 Jan 2026 12:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VRXtS65r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hdpLEG0f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F14C32DEA6F;
-	Fri,  9 Jan 2026 12:00:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71A8A35B158;
+	Fri,  9 Jan 2026 12:27:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960002; cv=none; b=O+M6EuyVmIPkX4sgx+wtuo+DRbLFoUDBm9hsk66SZ+1RVR9in18WTYO+CZJVxQLaME7QXx9mfH/INOiZvNjBwimKbmZsIMaqzrbB601XTzsE52Fo6B6ZIybjutY6B006AZVtSy/lhpT465DXLr6Olx4U73RQDZVJ9KXY2PqBhqA=
+	t=1767961621; cv=none; b=HFmU8znRdhgA39tDFJW+T59ZNMOvMKjQUnrV45/ZDQNRPaCBk4j9sircWPvZ/tBlGMbcwScOL7hV7UEPFclvVGlq+kEiLedOV8wN2XHm3upSZc7kQpfYqlcanmXfY5THwnN17Krt7CxJAlwP869n65+RPWd1MxL5yS9Gzc8xqA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960002; c=relaxed/simple;
-	bh=yjf9wsyzmMXz5DpoHRPcgTZNfbuo7fFY40LPpgzVPJA=;
+	s=arc-20240116; t=1767961621; c=relaxed/simple;
+	bh=rqfGPDsp+K2F+CLGq8lTkOpaL1ns+ZgWnzZ1LD4rjp4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YvHw9V++Z02BJ1g8ZxH1DqwHKY6/86yEg43z8MULBDsDfE8hQW9cXMtJCg27djTom6Ol/b0gzKcifrAdoJjrJX2QAT7MOOd3+xE2cpq3g9dJrxq64TkeRf9IDY53GOxWi2pGHHOozMrjaGMqJfQEkSfaT4iT/FJ7Hj40yurIz38=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VRXtS65r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CF6CC4CEF1;
-	Fri,  9 Jan 2026 12:00:01 +0000 (UTC)
+	 MIME-Version; b=gibF7RElJBvj/QDkMTXxn+hFC8ry1akvZCxKDPdiWzFXkHGWJ7lYPcNoAuVImr/3BXjACF7ecxWD6km376v/ZWuguptlPZ7RZw0+3y1PcqwDpYc/K5PKwVAe9YBx0T1yFd2wdQLpQgigH/nYTSTsc177DMA+R+wZwPsxj+9+YPM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hdpLEG0f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A87AAC19422;
+	Fri,  9 Jan 2026 12:27:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960001;
-	bh=yjf9wsyzmMXz5DpoHRPcgTZNfbuo7fFY40LPpgzVPJA=;
+	s=korg; t=1767961621;
+	bh=rqfGPDsp+K2F+CLGq8lTkOpaL1ns+ZgWnzZ1LD4rjp4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VRXtS65rUCmE4ohUFi/XTe8MZNDRctDzLm3VzYwVHUWn5sr4SjKnxGGchpUkwjzVE
-	 69KzO/73+R287j+sZrQ3q54ssa8dB53V6dwWoQxf/8DWm/56stzWTxSUqL8d0v+F+X
-	 iNdXnq9NJV0Yp9azbahPoXBDWW8ihjGXKlyZQ7uQ=
+	b=hdpLEG0f8IlyXIZBhT4i12xV7x1G75iYrxoOnDVBCSsunUtyuZAjEdj0+O5K7kwg3
+	 lMnVyl4OqfGqbTphH6H8f2E4fKo8pBIMPM1/8nF0LkkdFWQ+y/gyygqo3wstAyOXkw
+	 wpQ23sEO2fAhBlWMKzv6L2uKzkZGUeVbn1EpO3dQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guenter Roeck <linux@roeck-us.net>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 218/737] hwmon: sy7636a: Fix regulator_enable resource leak on error path
+Subject: [PATCH 6.1 079/634] power: supply: wm831x: Check wm831x_set_bits() return value
 Date: Fri,  9 Jan 2026 12:35:57 +0100
-Message-ID: <20260109112142.205471388@linuxfoundation.org>
+Message-ID: <20260109112120.412812635@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +60,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 2f88425ef590b7fcc2324334b342e048edc144a9 ]
+[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
 
-In sy7636a_sensor_probe(), regulator_enable() is called but if
-devm_hwmon_device_register_with_info() fails, the function returns
-without calling regulator_disable(), leaving the regulator enabled
-and leaking the reference count.
+Since wm831x_set_bits() may return error, log failure and exit from
+wm831x_usb_limit_change() in such case.
 
-Switch to devm_regulator_get_enable() to automatically
-manage the regulator resource.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: de34a4053250 ("hwmon: sy7636a: Add temperature driver for sy7636a")
-Suggested-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20251126162602.2086-1-vulab@iscas.ac.cn
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/sy7636a-hwmon.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/power/supply/wm831x_power.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/sy7636a-hwmon.c b/drivers/hwmon/sy7636a-hwmon.c
-index a12fc0ce70e76..d51daaf63d632 100644
---- a/drivers/hwmon/sy7636a-hwmon.c
-+++ b/drivers/hwmon/sy7636a-hwmon.c
-@@ -66,18 +66,13 @@ static const struct hwmon_chip_info sy7636a_chip_info = {
- static int sy7636a_sensor_probe(struct platform_device *pdev)
- {
- 	struct regmap *regmap = dev_get_regmap(pdev->dev.parent, NULL);
--	struct regulator *regulator;
- 	struct device *hwmon_dev;
- 	int err;
+diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
+index 82e31066c746e..bbae77982d086 100644
+--- a/drivers/power/supply/wm831x_power.c
++++ b/drivers/power/supply/wm831x_power.c
+@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 							 struct wm831x_power,
+ 							 usb_notify);
+ 	unsigned int i, best;
++	int ret;
  
- 	if (!regmap)
- 		return -EPROBE_DEFER;
+ 	/* Find the highest supported limit */
+ 	best = 0;
+@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 	dev_dbg(wm831x_power->wm831x->dev,
+ 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
  
--	regulator = devm_regulator_get(&pdev->dev, "vcom");
--	if (IS_ERR(regulator))
--		return PTR_ERR(regulator);
--
--	err = regulator_enable(regulator);
-+	err = devm_regulator_get_enable(&pdev->dev, "vcom");
- 	if (err)
- 		return err;
+-	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
+-		        WM831X_USB_ILIM_MASK, best);
++	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
++			      WM831X_USB_ILIM_MASK, best);
++	if (ret < 0) {
++		dev_err(wm831x_power->wm831x->dev,
++			"Failed to set USB current limit: %d\n", ret);
++		return ret;
++	}
  
+ 	return 0;
+ }
 -- 
 2.51.0
 
