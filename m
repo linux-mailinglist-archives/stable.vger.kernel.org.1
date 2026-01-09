@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-206579-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9F85D091F4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:58:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 47124D0909B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:52:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9E1830D1C77
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:53:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D8CFA3010678
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:52:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56A7F359703;
-	Fri,  9 Jan 2026 11:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED099359F8A;
+	Fri,  9 Jan 2026 11:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lkIsGzxW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lpkaskuG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A75E33C52A;
-	Fri,  9 Jan 2026 11:53:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8F233C511;
+	Fri,  9 Jan 2026 11:51:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959607; cv=none; b=atCdFZktPvP+YMJJ1PCXE4/DiFUcjTvFV84Kh8fdZakV71gccbtVrjAtqQuQwi0L4HORV0gD6ugfD36MKQjvyl0VTYBTUm7Ia3b1b10QVhJmRvEGJzeznD8umCPULz/ghcrCuQ9uXIEpT7zbUeKbhAtEgH5uiGDkE0fNbX8W+ms=
+	t=1767959513; cv=none; b=Nw7ikxTCz1khBZe/FBtkIUtqKBFa8+aEY320auKfeM2zCOANkV5FysY8xqH9VVQlMVrLrOtnd0pDkzoRyelWp11ZPNOC+gwC0UXB5ZxgX5+np2Hp9xjfzzO0gjF/9YOFL89A6mUBLmicVbaPo/KQs19nDVJn1iIHaVBtfVNzFto=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959607; c=relaxed/simple;
-	bh=RnFfg3PZZFKaZS1sU+CUZwUQdWF3BPNBshvHLJ3ff/I=;
+	s=arc-20240116; t=1767959513; c=relaxed/simple;
+	bh=+e29otBe0yEWImE7S6vbzG8yAHMDth1u0SyVF/FZi9I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=DFrUzhPiyyBTTa0Obq0VyfGXLYBw4SDRjy30WSzfJlz6gs4U6jqhnLjKPXJ6Aosagt5A/r/gQVLNBNTYKPSwu5+5VJHfkOaV+IhqsL1gI2DNd55kKUy/s32zaQcVykh7ZZURWQTqJMdKEcdItC/eeovrwTM39eFRzlvRbnPrHaY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lkIsGzxW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92847C16AAE;
-	Fri,  9 Jan 2026 11:53:26 +0000 (UTC)
+	 MIME-Version; b=SmpcnA2ZlEVVHt2na5j5m7CokMgh7PEMbIPQ7+F7sYv5Og2dR7BBPAB89Ssrr70klVOHkPqf4dJesXkgKqL2cG6Ym8F9XlDAtKSCpkTWyzFh3KYQjIdp9Qm74tBeYgzw5kU2gFetyY2/hrnqT5JcxqhybJUVpCJijw03tFLaY4U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lpkaskuG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A8CDC4CEF1;
+	Fri,  9 Jan 2026 11:51:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959606;
-	bh=RnFfg3PZZFKaZS1sU+CUZwUQdWF3BPNBshvHLJ3ff/I=;
+	s=korg; t=1767959513;
+	bh=+e29otBe0yEWImE7S6vbzG8yAHMDth1u0SyVF/FZi9I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lkIsGzxWYEnb4LjOMo7NFtlCtccdkGxqjpx80JcG4RNpHtSMpRS1EaQtltoMiKuRy
-	 n3HdBN2nZEiH1degjmKb2n4Q/JOslp36cmlRR/T2VVQQQVRV27gVhoFYJwIiTm2GUK
-	 AjpXnhCqZKN0W7MmYOe2YkYzYM1Gn/fv6YiD4Zvo=
+	b=lpkaskuGAgZ1FqTSHlbo+qc8kmTZ9/7yB1HiBdihuYY+BGeQgLbxC3phHZZucl3LC
+	 BOLaXqeuqD/z4a8YOTyp5pZPey2DAXMQzmu0XOMF7mWhSZolPDXMTnHJtkiqy5J6Fs
+	 pIvAcu9XspJQ0Qc6rA82sznDgOrPBLPd8GOCB1fk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Li Qiang <liqiang01@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 078/737] PCI: rcar-gen2: Drop ARM dependency from PCI_RCAR_GEN2
-Date: Fri,  9 Jan 2026 12:33:37 +0100
-Message-ID: <20260109112136.929330115@linuxfoundation.org>
+Subject: [PATCH 6.6 079/737] uio: uio_fsl_elbc_gpcm:: Add null pointer check to uio_fsl_elbc_gpcm_probe
+Date: Fri,  9 Jan 2026 12:33:38 +0100
+Message-ID: <20260109112136.967360189@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -60,57 +57,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Li Qiang <liqiang01@kylinos.cn>
 
-[ Upstream commit d312742f686582e6457070bcfd24bee8acfdf213 ]
+[ Upstream commit d48fb15e6ad142e0577428a8c5028136e10c7b3d ]
 
-Since the reliance on ARM-specific struct pci_sys_data was removed, this
-driver can be compile-tested on other architectures.
+devm_kasprintf() returns a pointer to dynamically allocated memory
+which can be NULL upon failure.
 
-While at it, make the help text a bit more generic, as some members of
-the R-Car Gen2 family have a different number of internal PCI
-controllers.
-
-Fixes: 4a957563fe0231e0 ("PCI: rcar-gen2: Convert to use modern host bridge probe functions")
-Suggested-by: Ilpo Jarvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: add rcar-gen2 to subject]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Link: https://patch.msgid.link/00f75d6732eacce93f04ffaeedc415d2db714cd6.1759480426.git.geert+renesas@glider.be
+Fixes: d57801c45f53e ("uio: uio_fsl_elbc_gpcm: use device-managed allocators")
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+Link: https://patch.msgid.link/20251015064020.56589-1-liqiang01@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/Kconfig | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/uio/uio_fsl_elbc_gpcm.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/pci/controller/Kconfig b/drivers/pci/controller/Kconfig
-index c0c3f28249907..7736817d5daba 100644
---- a/drivers/pci/controller/Kconfig
-+++ b/drivers/pci/controller/Kconfig
-@@ -257,12 +257,11 @@ config PCIE_RCAR_EP
+diff --git a/drivers/uio/uio_fsl_elbc_gpcm.c b/drivers/uio/uio_fsl_elbc_gpcm.c
+index 82dda799f327d..a433bc84313fa 100644
+--- a/drivers/uio/uio_fsl_elbc_gpcm.c
++++ b/drivers/uio/uio_fsl_elbc_gpcm.c
+@@ -384,6 +384,11 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
  
- config PCI_RCAR_GEN2
- 	bool "Renesas R-Car Gen2 Internal PCI controller"
--	depends on ARCH_RENESAS || COMPILE_TEST
--	depends on ARM
-+	depends on (ARCH_RENESAS && ARM) || COMPILE_TEST
- 	help
- 	  Say Y here if you want internal PCI support on R-Car Gen2 SoC.
--	  There are 3 internal PCI controllers available with a single
--	  built-in EHCI/OHCI host controller present on each one.
-+	  Each internal PCI controller contains a single built-in EHCI/OHCI
-+	  host controller.
- 
- config PCIE_ROCKCHIP
- 	bool
+ 	/* set all UIO data */
+ 	info->mem[0].name = devm_kasprintf(&pdev->dev, GFP_KERNEL, "%pOFn", node);
++	if (!info->mem[0].name) {
++		ret = -ENODEV;
++		goto out_err3;
++	}
++
+ 	info->mem[0].addr = res.start;
+ 	info->mem[0].size = resource_size(&res);
+ 	info->mem[0].memtype = UIO_MEM_PHYS;
+@@ -423,6 +428,8 @@ static int uio_fsl_elbc_gpcm_probe(struct platform_device *pdev)
+ out_err2:
+ 	if (priv->shutdown)
+ 		priv->shutdown(info, true);
++
++out_err3:
+ 	iounmap(info->mem[0].internal_addr);
+ 	return ret;
+ }
 -- 
 2.51.0
 
