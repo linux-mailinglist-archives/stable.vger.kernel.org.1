@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207089-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D77CD09A46
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62053D0A241
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1761930AB1DA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 17FD731B4367
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECA6224D6;
-	Fri,  9 Jan 2026 12:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 529B635BDC8;
+	Fri,  9 Jan 2026 12:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM9KTtkD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGIVxDvY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723872737EE;
-	Fri,  9 Jan 2026 12:17:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 165E833D511;
+	Fri,  9 Jan 2026 12:46:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961059; cv=none; b=d8s0qqULl8LZqg2zEaAohSL2URC3aMs5K/TAT0BML9f3hdEftNGzUUxydScTpD+nUxlXGtpu7tiJ2BO49UYkacEf/sFqzglTxBiA4iAXnBC5zlMNb4KgthHihexMRMOajQu7f4p0k7eegF7T00zHSgRR5Lhib3OwfOP2zswYT04=
+	t=1767962770; cv=none; b=o8DPdhDzx66tQv6s029sJ452zOxhbjIhSAulZcyHrqFeR7fqXYHlOuDZsQr9LUMKXJkYH/upV2j44Q5F0v8GQFBUIhv6pFxuuhlR/98uKvD/JeK/WNW/v9ksBirWXzMRw+5diSXnzbQ3w78QB8m7+pnMPYTX05sNvyn0TrqmD/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961059; c=relaxed/simple;
-	bh=LQwO7B3SlV9PyhSTOceCGDTm9c15SnzB4cARyc2CcFI=;
+	s=arc-20240116; t=1767962770; c=relaxed/simple;
+	bh=7ghR4DZK3outQrA0XTzedylPrOEjehalLXmrQF2NwBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r50tGv44aJR6qX77MJVBXf6df0UxxM1DrOtnYDXvMjl/XnZItiOdG3OeiUcQw9jZ0saRVLhmSUdsCPyq4OsaRDeZsFAeUcB8S8S+uKS19wjBoV82H3GjLXybh5qTivasCT25qC9vxIryO+fzij89bzhY5V9jDRq/jXd7ZaiGibk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zM9KTtkD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05DBC16AAE;
-	Fri,  9 Jan 2026 12:17:38 +0000 (UTC)
+	 MIME-Version; b=EV/Jcm7ZoPJeq3LLmKlE74Rcb6HPEnlftAws4BAP/OA+PpTXAeb0c3GWouDYDgWOKckp1s41m6lNhC837r4jwxL5ZMJIH8brKls2VriC0cMALBCoRGSJVGKi/UHozdaB+pPSuOsHt3PgqQuLJKVyf4TRIMAGRY/WTeJXtR005fg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGIVxDvY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C6EBC4CEF1;
+	Fri,  9 Jan 2026 12:46:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961059;
-	bh=LQwO7B3SlV9PyhSTOceCGDTm9c15SnzB4cARyc2CcFI=;
+	s=korg; t=1767962770;
+	bh=7ghR4DZK3outQrA0XTzedylPrOEjehalLXmrQF2NwBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zM9KTtkD9bVkwpRe4QJbL72u9IlmfAi4KbZJKwD/REnES3UXZg6Qzq3f4bnBkXGZP
-	 mVzVPh3XOdtRGTQTxVUWHWEj/f6QkhKO7l/Gbyde0IercLrhbG6BBK3ZxMjZ5HS33r
-	 4duSwo56VzlPvlsunkBRqXe7MkR7LYmT2UmSmyDA=
+	b=mGIVxDvYryTle49gQzzQyQl9uQGRIH8JyEhXP3Fj3gFq12g95rFvL9lyTI260egra
+	 qKPhooHYYKKXJZW6J4yRkBYShJx/w8TM1t4QZPGijYlsACKMzsECWtTw8k4tozVBi7
+	 RDaJNYNqF4F+KpHHe0bCSublsJBNYnIuvUyf5URY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Markus Schneider-Pargmann <msp@baylibre.com>,
-	CK Hu <ck.hu@mediatek.com>,
-	Chun-Kuang Hu <chunkuang.hu@kernel.org>
-Subject: [PATCH 6.6 620/737] drm/mediatek: Fix device node reference leak in mtk_dp_dt_parse()
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Sylwester Nawrocki <s.nawrocki@samsung.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 481/634] media: samsung: exynos4-is: fix potential ABBA deadlock on init
 Date: Fri,  9 Jan 2026 12:42:39 +0100
-Message-ID: <20260109112157.326373418@linuxfoundation.org>
+Message-ID: <20260109112135.646306043@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Marek Szyprowski <m.szyprowski@samsung.com>
 
-commit a846505a193d7492ad3531e33cacfca31e4bcdd1 upstream.
+commit 17dc8ccd6dd5ffe30aa9b0d36e2af1389344ce2b upstream.
 
-The function mtk_dp_dt_parse() calls of_graph_get_endpoint_by_regs()
-to get the endpoint device node, but fails to call of_node_put() to release
-the reference when the function returns. This results in a device node
-reference leak.
+v4l2_device_register_subdev_nodes() must called without taking
+media_dev->graph_mutex to avoid potential AB-BA deadlock on further
+subdevice driver initialization.
 
-Fix this by adding the missing of_node_put() call before returning from
-the function.
-
-Found via static analysis and code review.
-
-Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Fixes: fa91f1056f17 ("[media] exynos4-is: Add support for asynchronous subdevices registration")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20251029072307.10955-1-linmq006@gmail.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dp.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/platform/samsung/exynos4-is/media-dev.c |   10 ++++++----
+ 1 file changed, 6 insertions(+), 4 deletions(-)
 
---- a/drivers/gpu/drm/mediatek/mtk_dp.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dp.c
-@@ -1969,6 +1969,7 @@ static int mtk_dp_dt_parse(struct mtk_dp
- 	endpoint = of_graph_get_endpoint_by_regs(pdev->dev.of_node, 1, -1);
- 	len = of_property_count_elems_of_size(endpoint,
- 					      "data-lanes", sizeof(u32));
-+	of_node_put(endpoint);
- 	if (len < 0 || len > 4 || len == 3) {
- 		dev_err(dev, "invalid data lane size: %d\n", len);
- 		return -EINVAL;
+--- a/drivers/media/platform/samsung/exynos4-is/media-dev.c
++++ b/drivers/media/platform/samsung/exynos4-is/media-dev.c
+@@ -1411,12 +1411,14 @@ static int subdev_notifier_complete(stru
+ 	mutex_lock(&fmd->media_dev.graph_mutex);
+ 
+ 	ret = fimc_md_create_links(fmd);
+-	if (ret < 0)
+-		goto unlock;
++	if (ret < 0) {
++		mutex_unlock(&fmd->media_dev.graph_mutex);
++		return ret;
++	}
+ 
+-	ret = v4l2_device_register_subdev_nodes(&fmd->v4l2_dev);
+-unlock:
+ 	mutex_unlock(&fmd->media_dev.graph_mutex);
++
++	ret = v4l2_device_register_subdev_nodes(&fmd->v4l2_dev);
+ 	if (ret < 0)
+ 		return ret;
+ 
 
 
 
