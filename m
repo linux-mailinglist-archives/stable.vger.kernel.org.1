@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C3F7D0989E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA6C2D09F9A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F02FE30F09B2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:22 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B3DDE3035BF3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6971D359F9C;
-	Fri,  9 Jan 2026 12:11:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10D2F358D30;
+	Fri,  9 Jan 2026 12:41:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Br6SEZgF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NOTfXcI1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24BE8328B58;
-	Fri,  9 Jan 2026 12:11:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6CC91CAB3;
+	Fri,  9 Jan 2026 12:41:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960675; cv=none; b=HeMRUQpKQpDKZH7cR7yjYHWHb2red7o/nEmJrazsqRxdt/KopAWKJThdKfpv2xYuDYZSfxnIP/VAKj+ncUIGs/POUJDkSnJltGYJfTChpmf+sY3toOpx9zfqD0fe9md2fZWKzWmXXiwa6uF2A+loFLdsWm/cA7by7mkHp0vhNH4=
+	t=1767962507; cv=none; b=YeqhCGX4tJ18IyX2zUxzwA/+aU/mt+zO70Thm2SdjzEfqKOhZKX6DxjEJTXFWW1Qr/bPl2yKvB5h7T39BDU5D1epXRTU0I1PT/3foU89fpoyVdWfY2XSXk58T/Vwcuxvkplfiv1ktZPuYduZyYbU4cloWFSPypWIgRsOLPvZ3WM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960675; c=relaxed/simple;
-	bh=tDy25k0Geii++Bw0j5yKaMwx8CFeKcWjqU1sHAXZdOg=;
+	s=arc-20240116; t=1767962507; c=relaxed/simple;
+	bh=JIFdScJo7rTVoiIY3WLOONdq+jWUpq2LmyV2YcA94Ko=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X0efumxc22EdFUXTRqVDPJOsx8Pdj09LP8tmIDn1H8IcqIPfmfb3VT2Odzv6G3OdhergnfQsUH/9El04Tw3K26xnY9X/LhHW/NNhQXbM81q7a549012CV9uQ+iWNYdxxpeJYiEW89Ni96tdDpPvhQ+KxXNM8dLERRlVs6clYvvg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Br6SEZgF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74E08C4CEF1;
-	Fri,  9 Jan 2026 12:11:14 +0000 (UTC)
+	 MIME-Version; b=EUQ3I9jiqrb9gFoLMX92wmDCyxMi56CKQsHLebuL50jketWd/sfldjyyPUY4GWKWjQFmsIjmNtr/BLZylsB2pGrJARHHggeIWYlhFXDEYjXBVvC+9UewJSwG0eUAWqPtBgRO9z48nscs2eV5Y+AD0Hbec3SvNXN97OVZRXstxJM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NOTfXcI1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 494F4C4CEF1;
+	Fri,  9 Jan 2026 12:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960674;
-	bh=tDy25k0Geii++Bw0j5yKaMwx8CFeKcWjqU1sHAXZdOg=;
+	s=korg; t=1767962507;
+	bh=JIFdScJo7rTVoiIY3WLOONdq+jWUpq2LmyV2YcA94Ko=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Br6SEZgFzguNWc/8gVXN5BwMwoHpCcgac6uUMtK/cuX15qr700y/nuDllj4rI2eZV
-	 dM1bxM/PJNEe10kV/ntrbfJPw1/tVL9nUMArv6/UvZEjp9zw9HlBydV9fdvRlxuGib
-	 MsGQBCt3AQpYCeCZYFc959K8r+fld6U3MEqjp4Cw=
+	b=NOTfXcI1ZA1wZVf0dx5/68q4o5dBTsKCaMzE6m9KQ98bfNMdJLK4vCgaVRRTUQRpj
+	 rJthHuxA+Rza8WlUflyJG5xFZOZrrF0ZcBXlL02pXarT0XtgNKEYI3514OfiFtaFoO
+	 t4+cAvTJqEyCddCgYwSfL9xB6is4oCZ8Yplj2+cA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.6 485/737] drm/amd/display: Use GFP_ATOMIC in dc_create_plane_state()
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 346/634] scsi: aic94xx: fix use-after-free in device removal path
 Date: Fri,  9 Jan 2026 12:40:24 +0100
-Message-ID: <20260109112152.231025728@linuxfoundation.org>
+Message-ID: <20260109112130.544329767@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit 3c41114dcdabb7b25f5bc33273c6db9c7af7f4a7 upstream.
+commit f6ab594672d4cba08540919a4e6be2e202b60007 upstream.
 
-This can get called from an atomic context.
+The asd_pci_remove() function fails to synchronize with pending tasklets
+before freeing the asd_ha structure, leading to a potential
+use-after-free vulnerability.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4470
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8acdad9344cc7b4e7bc01f0dfea80093eb3768db)
+When a device removal is triggered (via hot-unplug or module unload),
+race condition can occur.
+
+The fix adds tasklet_kill() before freeing the asd_ha structure,
+ensuring all scheduled tasklets complete before cleanup proceeds.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 2908d778ab3e ("[SCSI] aic94xx: new driver")
 Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/aic94xx/aic94xx_init.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-@@ -104,7 +104,7 @@ void enable_surface_flip_reporting(struc
- struct dc_plane_state *dc_create_plane_state(struct dc *dc)
- {
- 	struct dc_plane_state *plane_state = kvzalloc(sizeof(*plane_state),
--							GFP_KERNEL);
-+							GFP_ATOMIC);
+--- a/drivers/scsi/aic94xx/aic94xx_init.c
++++ b/drivers/scsi/aic94xx/aic94xx_init.c
+@@ -897,6 +897,9 @@ static void asd_pci_remove(struct pci_de
  
- 	if (NULL == plane_state)
- 		return NULL;
+ 	asd_disable_ints(asd_ha);
+ 
++	/* Ensure all scheduled tasklets complete before freeing resources */
++	tasklet_kill(&asd_ha->seq.dl_tasklet);
++
+ 	asd_remove_dev_attrs(asd_ha);
+ 
+ 	/* XXX more here as needed */
 
 
 
