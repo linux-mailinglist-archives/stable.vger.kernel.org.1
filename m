@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-207826-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E18BD0A2E6
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 07271D0A2F2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7F3F3308FEA4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0474930B1E11
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C3E35C1AD;
-	Fri,  9 Jan 2026 12:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22B5635B15C;
+	Fri,  9 Jan 2026 12:52:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+XSouxi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qMu9Wc72"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF4235BDB6;
-	Fri,  9 Jan 2026 12:52:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9D6533B6ED;
+	Fri,  9 Jan 2026 12:52:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963158; cv=none; b=IYLnWR+iFdIx22dP8K7bGTA57CylZW8cvg5Oor9qCrdpZkTqirdOQqTFR9mMKbrS65AvfUVS58lFueGz73XVSMX7r8CKE5zzbvHREBDpxWZKOzqX0Wml6NY/DXZlW41mBPqNRyNmi2ZBKmtJTeqSboE0HorBVor25KEKMoljaqE=
+	t=1767963175; cv=none; b=mXUoUijiZj2R1zdg7weymehHwyZtrmFZtUWm2MffeN7WR957H+NP9nS5Tjb70NYz3xP0GHe3M7ll2wt27xRFhrgMZ5KCVeZLPsAstiYocdwNVp9hR+7nmsLHtduWBm+J5Do/L+75jXK2OJ47Dn0XbNAztjBzyoscX1pDarWVcbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963158; c=relaxed/simple;
-	bh=uUUKkTgqbcUXm/BCMLiFrCYq9ukqgWy5mxThZS/2q80=;
+	s=arc-20240116; t=1767963175; c=relaxed/simple;
+	bh=C/1t6DK0C6g0OhT1U6phfMViiJqw1udC7d+E5on8OHw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jpRxur48DhFT/Ty68Ul6cX/zSV9aTSff6OjPG1Ch70U5TMfznweNRq0JlizCJ3NJxWa0Tw4OsKWVk7Jb08FpbIYLf88P3/PaO/bL1I3YhL0a6vxvVsCuU4URk4EMvGTKPnwjRNT5YuoEFlH4vmLH9PoUMHo3msN9Y/1jWhWrItQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+XSouxi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095ABC4CEF1;
-	Fri,  9 Jan 2026 12:52:37 +0000 (UTC)
+	 MIME-Version; b=lkoZYhAi+pq8FeBgqrJRiE252h1ZlsFtIq8IbXdqJauV+HF5xo5KNKArSRLvlNVEMcv1V56qEEZ6ySFv9AnMkO3sqt13sH3CgWSupjch0EtHx9lkmPos7axjFVxJFaP953WrUGVq9LK3eExd3QMPpmoam4Skw+BYVmaFH7mRB3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qMu9Wc72; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28452C4CEF1;
+	Fri,  9 Jan 2026 12:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963158;
-	bh=uUUKkTgqbcUXm/BCMLiFrCYq9ukqgWy5mxThZS/2q80=;
+	s=korg; t=1767963175;
+	bh=C/1t6DK0C6g0OhT1U6phfMViiJqw1udC7d+E5on8OHw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k+XSouxiInfSQUlPU/CxS9vEvE2NusHpoXw/8R1TvzUjRIZiF8k0xpVA1jozJQ30/
-	 WYqfr4InxD60zlHrZs0PFtrXpR8+8iTgTx4SSv0fyBMpyuK23VMRW7/Qm71mdZeuEI
-	 Mz9KdtYPlUeMErxJtu14M2RBK9HFUdoCnNYBNskQ=
+	b=qMu9Wc72w7xe1GieyuNr2ISRv0r64rcXiBwEO1lRaB5B6Dw3v1SBLRR06lItkNWFT
+	 UshJgz0fIgdjgRXc+EN6ATjr3wHSCVWlE6Zu/86QbKaBCT91/Nj+vPP5g+xpZLty8Z
+	 xI6YvIUeYN0khoH2DtOCLNAt44j9CGWdS5xQB/Ec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, yin.ding@broadcom.com, tapas.kundu@broadcom.com, Chris Mason" <clm@meta.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Dietmar Eggemann <dietmar.eggemann@arm.com>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Chris Mason <clm@meta.com>
-Subject: [PATCH 6.1 617/634] sched/fair: Proportional newidle balance
-Date: Fri,  9 Jan 2026 12:44:55 +0100
-Message-ID: <20260109112140.852402316@linuxfoundation.org>
+	Ming Lei <ming.lei@redhat.com>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Rick Koch <mr.rickkoch@gmail.com>
+Subject: [PATCH 6.1 622/634] blk-mq: setup queue ->tag_set before initializing hctx
+Date: Fri,  9 Jan 2026 12:45:00 +0100
+Message-ID: <20260109112141.043152618@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -66,205 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 33cf66d88306663d16e4759e9d24766b0aaa2e17 upstream.
+commit c25c0c9035bb8b28c844dfddeda7b8bdbcfcae95 upstream.
 
-Add a randomized algorithm that runs newidle balancing proportional to
-its success rate.
+Commit 7b815817aa58 ("blk-mq: add helper for checking if one CPU is mapped to specified hctx")
+needs to check queue mapping via tag set in hctx's cpuhp handler.
 
-This improves schbench significantly:
+However, q->tag_set may not be setup yet when the cpuhp handler is
+enabled, then kernel oops is triggered.
 
- 6.18-rc4:			2.22 Mrps/s
- 6.18-rc4+revert:		2.04 Mrps/s
- 6.18-rc4+revert+random:	2.18 Mrps/S
+Fix the issue by setup queue tag_set before initializing hctx.
 
-Conversely, per Adam Li this affects SpecJBB slightly, reducing it by 1%:
-
- 6.17:			-6%
- 6.17+revert:		 0%
- 6.17+revert+random:	-1%
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Tested-by: Chris Mason <clm@meta.com>
-Link: https://lkml.kernel.org/r/6825c50d-7fa7-45d8-9b81-c6e7e25738e2@meta.com
-Link: https://patch.msgid.link/20251107161739.770122091@infradead.org
-[ Ajay: Modified to apply on v6.1 ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
+Cc: stable@vger.kernel.org
+Reported-and-tested-by: Rick Koch <mr.rickkoch@gmail.com>
+Closes: https://lore.kernel.org/linux-block/CANa58eeNDozLaBHKPLxSAhEy__FPfJT_F71W=sEQw49UCrC9PQ@mail.gmail.com
+Fixes: 7b815817aa58 ("blk-mq: add helper for checking if one CPU is mapped to specified hctx")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://lore.kernel.org/r/20241014005115.2699642-1-ming.lei@redhat.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/sched/topology.h |    3 ++
- kernel/sched/core.c            |    3 ++
- kernel/sched/fair.c            |   44 +++++++++++++++++++++++++++++++++++++----
- kernel/sched/features.h        |    5 ++++
- kernel/sched/sched.h           |    7 ++++++
- kernel/sched/topology.c        |    6 +++++
- 6 files changed, 64 insertions(+), 4 deletions(-)
+ block/blk-mq.c |    8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/include/linux/sched/topology.h
-+++ b/include/linux/sched/topology.h
-@@ -106,6 +106,9 @@ struct sched_domain {
- 	unsigned int nr_balance_failed; /* initialise to 0 */
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -4337,6 +4337,12 @@ int blk_mq_init_allocated_queue(struct b
+ 	if (!q->poll_cb)
+ 		goto err_exit;
  
- 	/* idle_balance() stats */
-+	unsigned int newidle_call;
-+	unsigned int newidle_success;
-+	unsigned int newidle_ratio;
- 	u64 max_newidle_lb_cost;
- 	unsigned long last_decay_max_lb_cost;
- 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -112,6 +112,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_
- EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
- 
- DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
-+DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
- 
- #ifdef CONFIG_SCHED_DEBUG
- /*
-@@ -9632,6 +9633,8 @@ void __init sched_init_smp(void)
- {
- 	sched_init_numa(NUMA_NO_NODE);
- 
-+	prandom_init_once(&sched_rnd_state);
++	/*
++	 * ->tag_set has to be setup before initialize hctx, which cpuphp
++	 * handler needs it for checking queue mapping
++	 */
++	q->tag_set = set;
 +
- 	/*
- 	 * There's no userspace yet to cause hotplug operations; hence all the
- 	 * CPU masks are stable and all blatant races in the below code cannot
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -10935,11 +10935,27 @@ void update_max_interval(void)
- 	max_load_balance_interval = HZ*num_online_cpus()/10;
- }
+ 	if (blk_mq_alloc_ctxs(q))
+ 		goto err_poll;
  
--static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
-+static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
-+{
-+	sd->newidle_call++;
-+	sd->newidle_success += success;
-+
-+	if (sd->newidle_call >= 1024) {
-+		sd->newidle_ratio = sd->newidle_success;
-+		sd->newidle_call /= 2;
-+		sd->newidle_success /= 2;
-+	}
-+}
-+
-+static inline bool
-+update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
- {
- 	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
- 	unsigned long now = jiffies;
+@@ -4355,8 +4361,6 @@ int blk_mq_init_allocated_queue(struct b
+ 	INIT_WORK(&q->timeout_work, blk_mq_timeout_work);
+ 	blk_queue_rq_timeout(q, set->timeout ? set->timeout : 30 * HZ);
  
-+	if (cost)
-+		update_newidle_stats(sd, success);
-+
- 	if (cost > sd->max_newidle_lb_cost) {
- 		/*
- 		 * Track max cost of a domain to make sure to not delay the
-@@ -10987,7 +11003,7 @@ static void rebalance_domains(struct rq
- 		 * Decay the newidle max times here because this is a regular
- 		 * visit to all the domains.
- 		 */
--		need_decay = update_newidle_cost(sd, 0);
-+		need_decay = update_newidle_cost(sd, 0, 0);
- 		max_cost += sd->max_newidle_lb_cost;
- 
- 		/*
-@@ -11621,6 +11637,22 @@ static int sched_balance_newidle(struct
- 			break;
- 
- 		if (sd->flags & SD_BALANCE_NEWIDLE) {
-+			unsigned int weight = 1;
-+
-+			if (sched_feat(NI_RANDOM)) {
-+				/*
-+				 * Throw a 1k sided dice; and only run
-+				 * newidle_balance according to the success
-+				 * rate.
-+				 */
-+				u32 d1k = sched_rng() % 1024;
-+				weight = 1 + sd->newidle_ratio;
-+				if (d1k > weight) {
-+					update_newidle_stats(sd, 0);
-+					continue;
-+				}
-+				weight = (1024 + weight/2) / weight;
-+			}
- 
- 			pulled_task = load_balance(this_cpu, this_rq,
- 						   sd, CPU_NEWLY_IDLE,
-@@ -11628,10 +11660,14 @@ static int sched_balance_newidle(struct
- 
- 			t1 = sched_clock_cpu(this_cpu);
- 			domain_cost = t1 - t0;
--			update_newidle_cost(sd, domain_cost);
+-	q->tag_set = set;
 -
- 			curr_cost += domain_cost;
- 			t0 = t1;
-+
-+			/*
-+			 * Track max cost of a domain to make sure to not delay the
-+			 * next wakeup on the CPU.
-+			 */
-+			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
- 		}
+ 	q->queue_flags |= QUEUE_FLAG_MQ_DEFAULT;
+ 	blk_mq_update_poll_flag(q);
  
- 		/*
---- a/kernel/sched/features.h
-+++ b/kernel/sched/features.h
-@@ -99,5 +99,10 @@ SCHED_FEAT(UTIL_EST_FASTUP, true)
- 
- SCHED_FEAT(LATENCY_WARN, false)
- 
-+/*
-+ * Do newidle balancing proportional to its success rate using randomization.
-+ */
-+SCHED_FEAT(NI_RANDOM, true)
-+
- SCHED_FEAT(ALT_PERIOD, true)
- SCHED_FEAT(BASE_SLICE, true)
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -5,6 +5,7 @@
- #ifndef _KERNEL_SCHED_SCHED_H
- #define _KERNEL_SCHED_SCHED_H
- 
-+#include <linux/prandom.h>
- #include <linux/sched/affinity.h>
- #include <linux/sched/autogroup.h>
- #include <linux/sched/cpufreq.h>
-@@ -1190,6 +1191,12 @@ static inline bool is_migration_disabled
- }
- 
- DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
-+DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
-+
-+static inline u32 sched_rng(void)
-+{
-+	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
-+}
- 
- #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
- #define this_rq()		this_cpu_ptr(&runqueues)
---- a/kernel/sched/topology.c
-+++ b/kernel/sched/topology.c
-@@ -1584,6 +1584,12 @@ sd_init(struct sched_domain_topology_lev
- 
- 		.last_balance		= jiffies,
- 		.balance_interval	= sd_weight,
-+
-+		/* 50% success rate */
-+		.newidle_call		= 512,
-+		.newidle_success	= 256,
-+		.newidle_ratio		= 512,
-+
- 		.max_newidle_lb_cost	= 0,
- 		.last_decay_max_lb_cost	= jiffies,
- 		.child			= child,
 
 
 
