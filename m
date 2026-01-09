@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207177-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8608D09B86
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACE6D0A202
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8C2C830772D1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB00D300E154
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84B5B35A92E;
-	Fri,  9 Jan 2026 12:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4918535BDB3;
+	Fri,  9 Jan 2026 12:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="19T2ILuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XdHxxJFv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47A0A26ED41;
-	Fri,  9 Jan 2026 12:21:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C8961482E8;
+	Fri,  9 Jan 2026 12:48:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961311; cv=none; b=hhX2aK5B5XMiJJ2yMVcIBYUb+GDckDVxLclS4clrcJizJFDimHRIEy1O/3dbtTS5LFmJLezLFVi1xvdTlG0D6PgzcbpqgiVPolIbuQebr4/pVQhooKhrW0llpSUSqBh67EV7Srg4Ag8v0knHRxl5ZTbFxak6yPlDr98qJt0O6dY=
+	t=1767962929; cv=none; b=OkvDf0o2hYrBv6q3kHJUEvPjXZpH4XTu9sXT4ouUhuKDZqxxuQclokuw2y+j1xCuSgKxk4ytb5Nd5FIESx+qNTE3hWyJ82zqKnXDUHaUyqsNj/lAhqXRCacgBmwciOItFiv9pdq1sk2w1AmbbKZ5Wx5JjceqAhIwJw5twgZjYyU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961311; c=relaxed/simple;
-	bh=uY+f0otxTD+3xgF0im+2uUt9SQjqhj8dGTBTYp2lm/I=;
+	s=arc-20240116; t=1767962929; c=relaxed/simple;
+	bh=m8GWsUj1qd7CgjeSiJAnAFDas5zSQq1TIeUB4tHBVro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=oNMk+O5bXeuydWvcuzV0PvnkI4q5PF64eEDHUl3SfvIHQ4VoPOJvQINpcRzxYJ14QM+ig9pvCPwfx+bI+Qxo8q0/07Ctw6pNk+sKwyJEHFjfEQRA0IqqJ3J6YpAv8pncUSfkD7Ewuiiv46uy0/NaV3Q6e1rw9hL27cxw6BqyD+I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=19T2ILuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AF7C4CEF1;
-	Fri,  9 Jan 2026 12:21:50 +0000 (UTC)
+	 MIME-Version; b=fMgfB6B2y8+wlNLyZlpth0hWG8JHHKe+JxzX9sxFbHFnnRgT/g1UVVC/CHysGB1bmwh3tC5YmogR4mYiUSpVq5ORDOzaMAJKn2JOEGJbuEE7LoF/5G4fAFGXbvb9wlVNJkEs9Cv3HsV9JzPXYHMStJqf3zqUFNiQK3dvFeJBpxA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XdHxxJFv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1E1C4CEF1;
+	Fri,  9 Jan 2026 12:48:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961311;
-	bh=uY+f0otxTD+3xgF0im+2uUt9SQjqhj8dGTBTYp2lm/I=;
+	s=korg; t=1767962928;
+	bh=m8GWsUj1qd7CgjeSiJAnAFDas5zSQq1TIeUB4tHBVro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=19T2ILuIlFei1hnxHSzTwq5jqQSMtzLy+TEH0IN741XHvDfe+TxIYiNlCohJFwXlt
-	 jUeG4PVLWxRhpEOjXj28mitSUYLweYecRPLuX0CMi5QJbzXS1JEg98H4nKHshuwPuN
-	 gCMpCmG5RXoF7C3CWbRQ9Cy2f0dfFuloqAFZph+k=
+	b=XdHxxJFvjvHlAA1+eY5A5DILY4IjsiwtvwBGN4NueiHIcdke2TvcCJlMu/aQGIQAO
+	 PMz2JW57f83oHZlO9d32pJtgGEpammSDCOF5riz7mbLUTgqwQNvotRfDr8Bvt0LYkn
+	 jQpZSs3LEBO52cN0a/sntiHSEMEEnkoi56QPqhWs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
-Subject: [PATCH 6.6 677/737] ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all()
+	Junrui Luo <moonafterrain@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 538/634] ALSA: wavefront: Fix integer overflow in sample size validation
 Date: Fri,  9 Jan 2026 12:43:36 +0100
-Message-ID: <20260109112159.519222465@linuxfoundation.org>
+Message-ID: <20260109112137.825611696@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,199 +58,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 5701875f9609b000d91351eaa6bfd97fe2f157f4 ]
+[ Upstream commit 0c4a13ba88594fd4a27292853e736c6b4349823d ]
 
-There's issue as follows:
-BUG: KASAN: use-after-free in ext4_xattr_inode_dec_ref_all+0x6ff/0x790
-Read of size 4 at addr ffff88807b003000 by task syz-executor.0/15172
+The wavefront_send_sample() function has an integer overflow issue
+when validating sample size. The header->size field is u32 but gets
+cast to int for comparison with dev->freemem
 
-CPU: 3 PID: 15172 Comm: syz-executor.0
-Call Trace:
- __dump_stack lib/dump_stack.c:82 [inline]
- dump_stack+0xbe/0xfd lib/dump_stack.c:123
- print_address_description.constprop.0+0x1e/0x280 mm/kasan/report.c:400
- __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
- kasan_report+0x3a/0x50 mm/kasan/report.c:585
- ext4_xattr_inode_dec_ref_all+0x6ff/0x790 fs/ext4/xattr.c:1137
- ext4_xattr_delete_inode+0x4c7/0xda0 fs/ext4/xattr.c:2896
- ext4_evict_inode+0xb3b/0x1670 fs/ext4/inode.c:323
- evict+0x39f/0x880 fs/inode.c:622
- iput_final fs/inode.c:1746 [inline]
- iput fs/inode.c:1772 [inline]
- iput+0x525/0x6c0 fs/inode.c:1758
- ext4_orphan_cleanup fs/ext4/super.c:3298 [inline]
- ext4_fill_super+0x8c57/0xba40 fs/ext4/super.c:5300
- mount_bdev+0x355/0x410 fs/super.c:1446
- legacy_get_tree+0xfe/0x220 fs/fs_context.c:611
- vfs_get_tree+0x8d/0x2f0 fs/super.c:1576
- do_new_mount fs/namespace.c:2983 [inline]
- path_mount+0x119a/0x1ad0 fs/namespace.c:3316
- do_mount+0xfc/0x110 fs/namespace.c:3329
- __do_sys_mount fs/namespace.c:3540 [inline]
- __se_sys_mount+0x219/0x2e0 fs/namespace.c:3514
- do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
- entry_SYSCALL_64_after_hwframe+0x67/0xd1
+Fix by using unsigned comparison to avoid integer overflow.
 
-Memory state around the buggy address:
- ffff88807b002f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- ffff88807b002f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
->ffff88807b003000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-                   ^
- ffff88807b003080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
- ffff88807b003100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
-
-Above issue happens as ext4_xattr_delete_inode() isn't check xattr
-is valid if xattr is in inode.
-To solve above issue call xattr_check_inode() check if xattr if valid
-in inode. In fact, we can directly verify in ext4_iget_extra_inode(),
-so that there is no divergent verification.
-
-Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://patch.msgid.link/20250208063141.1539283-3-yebin@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: David Nyström <david.nystrom@est.tech>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB7881B47789D1B060CE8BF4C3AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inode.c |    5 +++++
- fs/ext4/xattr.c |   26 +-------------------------
- fs/ext4/xattr.h |    7 +++++++
- 3 files changed, 13 insertions(+), 25 deletions(-)
+ sound/isa/wavefront/wavefront_synth.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4728,6 +4728,11 @@ static inline int ext4_iget_extra_inode(
- 	    *magic == cpu_to_le32(EXT4_XATTR_MAGIC)) {
- 		int err;
+--- a/sound/isa/wavefront/wavefront_synth.c
++++ b/sound/isa/wavefront/wavefront_synth.c
+@@ -950,9 +950,9 @@ wavefront_send_sample (snd_wavefront_t *
+ 	if (header->size) {
+ 		dev->freemem = wavefront_freemem (dev);
  
-+		err = xattr_check_inode(inode, IHDR(inode, raw_inode),
-+					ITAIL(inode, raw_inode));
-+		if (err)
-+			return err;
-+
- 		ext4_set_inode_state(inode, EXT4_STATE_XATTR);
- 		err = ext4_find_inline_data_nolock(inode);
- 		if (!err && ext4_has_inline_data(inode))
---- a/fs/ext4/xattr.c
-+++ b/fs/ext4/xattr.c
-@@ -312,7 +312,7 @@ __ext4_xattr_check_block(struct inode *i
- 	__ext4_xattr_check_block((inode), (bh),  __func__, __LINE__)
- 
- 
--static inline int
-+int
- __xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
- 			 void *end, const char *function, unsigned int line)
- {
-@@ -320,9 +320,6 @@ __xattr_check_inode(struct inode *inode,
- 			    function, line);
- }
- 
--#define xattr_check_inode(inode, header, end) \
--	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
--
- static int
- xattr_find_entry(struct inode *inode, struct ext4_xattr_entry **pentry,
- 		 void *end, int name_index, const char *name, int sorted)
-@@ -654,9 +651,6 @@ ext4_xattr_ibody_get(struct inode *inode
- 	raw_inode = ext4_raw_inode(&iloc);
- 	header = IHDR(inode, raw_inode);
- 	end = ITAIL(inode, raw_inode);
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
- 	entry = IFIRST(header);
- 	error = xattr_find_entry(inode, &entry, end, name_index, name, 0);
- 	if (error)
-@@ -787,7 +781,6 @@ ext4_xattr_ibody_list(struct dentry *den
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_inode *raw_inode;
- 	struct ext4_iloc iloc;
--	void *end;
- 	int error;
- 
- 	if (!ext4_test_inode_state(inode, EXT4_STATE_XATTR))
-@@ -797,14 +790,9 @@ ext4_xattr_ibody_list(struct dentry *den
- 		return error;
- 	raw_inode = ext4_raw_inode(&iloc);
- 	header = IHDR(inode, raw_inode);
--	end = ITAIL(inode, raw_inode);
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
- 	error = ext4_xattr_list_entries(dentry, IFIRST(header),
- 					buffer, buffer_size);
- 
--cleanup:
- 	brelse(iloc.bh);
- 	return error;
- }
-@@ -872,7 +860,6 @@ int ext4_get_inode_usage(struct inode *i
- 	struct ext4_xattr_ibody_header *header;
- 	struct ext4_xattr_entry *entry;
- 	qsize_t ea_inode_refs = 0;
--	void *end;
- 	int ret;
- 
- 	lockdep_assert_held_read(&EXT4_I(inode)->xattr_sem);
-@@ -883,10 +870,6 @@ int ext4_get_inode_usage(struct inode *i
- 			goto out;
- 		raw_inode = ext4_raw_inode(&iloc);
- 		header = IHDR(inode, raw_inode);
--		end = ITAIL(inode, raw_inode);
--		ret = xattr_check_inode(inode, header, end);
--		if (ret)
--			goto out;
- 
- 		for (entry = IFIRST(header); !IS_LAST_ENTRY(entry);
- 		     entry = EXT4_XATTR_NEXT(entry))
-@@ -2250,9 +2233,6 @@ int ext4_xattr_ibody_find(struct inode *
- 	is->s.here = is->s.first;
- 	is->s.end = ITAIL(inode, raw_inode);
- 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
--		error = xattr_check_inode(inode, header, is->s.end);
--		if (error)
--			return error;
- 		/* Find the named attribute. */
- 		error = xattr_find_entry(inode, &is->s.here, is->s.end,
- 					 i->name_index, i->name, 0);
-@@ -2803,10 +2783,6 @@ retry:
- 	min_offs = end - base;
- 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
- 
--	error = xattr_check_inode(inode, header, end);
--	if (error)
--		goto cleanup;
--
- 	ifree = ext4_xattr_free_space(base, &min_offs, base, &total_ino);
- 	if (ifree >= isize_diff)
- 		goto shift;
---- a/fs/ext4/xattr.h
-+++ b/fs/ext4/xattr.h
-@@ -210,6 +210,13 @@ extern int ext4_xattr_ibody_set(handle_t
- extern struct mb_cache *ext4_xattr_create_cache(void);
- extern void ext4_xattr_destroy_cache(struct mb_cache *);
- 
-+extern int
-+__xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
-+		    void *end, const char *function, unsigned int line);
-+
-+#define xattr_check_inode(inode, header, end) \
-+	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
-+
- #ifdef CONFIG_EXT4_FS_SECURITY
- extern int ext4_init_security(handle_t *handle, struct inode *inode,
- 			      struct inode *dir, const struct qstr *qstr);
+-		if (dev->freemem < (int)header->size) {
++		if (dev->freemem < 0 || dev->freemem < header->size) {
+ 			dev_err(dev->card->dev,
+-				"insufficient memory to load %d byte sample.\n",
++				"insufficient memory to load %u byte sample.\n",
+ 				header->size);
+ 			return -ENOMEM;
+ 		}
 
 
 
