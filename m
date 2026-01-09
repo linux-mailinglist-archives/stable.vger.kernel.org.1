@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206901-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207503-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAAF9D09509
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C67CD09F79
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 499E33027E77
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 85A00306EC1C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3C035B135;
-	Fri,  9 Jan 2026 12:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1FDB358D30;
+	Fri,  9 Jan 2026 12:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kSyZw1vX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecsJPcFr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30CD035A941;
-	Fri,  9 Jan 2026 12:08:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96465335BCD;
+	Fri,  9 Jan 2026 12:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960522; cv=none; b=BFcQf9jYCF8ZI/fpuKjphC9/8ALvKX9l0RFhW48Of/oFQ0FpHOZQMMcybcOhf13PpCZVVSUC+IAsWjmiD8YHIS6XqnTHmotz+R/Xb060P5Sc0x5gJBSlldbRx53x5GD8ZpdUpjpfdv3ho7TvqH1EiinuMDccJ7dmlTzUJImPjbc=
+	t=1767962239; cv=none; b=kC6criStwCScwDm/3gExpl89mammXTF/Hqg3M0n2Pp2MWHCGi6ajK+layNuNIBOcHvJlOH7QMXoLljeKwG7PokYSA9gA2RFnrtYCkHNzP83zV0foPY+cAtEGThy2gOOZy7sq5gs27X9Xb6Ohwmf1ClRQLOIqukU9r5FICoGty9w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960522; c=relaxed/simple;
-	bh=iHRBpsgarRXnnDpZFPg5KWvonWmmEGo7jibjqzhDVcc=;
+	s=arc-20240116; t=1767962239; c=relaxed/simple;
+	bh=KGrGollUQbb2Few+W3xAeJG7UqOVLoE/hz+NMtPE5UM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=FRBHkkUBVf1mgCq09JKGb3vPp0D4frKODu+brl5dsOgSh8lsQuXa/N5rSpdkPqUc+2uEDODo0GXe+IWeX2RNUb7+lTx78wsWG9+GZPEVbW6ViEx0Mqj52qBNmrqwl4sDFvbEtLKJW/pbe8JG7pSS5MeSK7sYi2lFLCqp6pjDLYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kSyZw1vX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1911C16AAE;
-	Fri,  9 Jan 2026 12:08:41 +0000 (UTC)
+	 MIME-Version; b=jLS8taVBR+Wasaf7rNFxc1ljm2C8JdmtkPkbtvQ2N2nqslS3u6WDARU7996yZ1py1JEPmV3qFRpmnvJvys4G3IN5eGNl/mXjfCe6h9VXNVDkjXFMv8iQRC0F6tRjKQ9y4vZCZ5wBRX3LtWNtdvntWBX9RXHj9JuHOXcQCncBAjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecsJPcFr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 289DBC4CEF1;
+	Fri,  9 Jan 2026 12:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960522;
-	bh=iHRBpsgarRXnnDpZFPg5KWvonWmmEGo7jibjqzhDVcc=;
+	s=korg; t=1767962239;
+	bh=KGrGollUQbb2Few+W3xAeJG7UqOVLoE/hz+NMtPE5UM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kSyZw1vXExDXQP9zFE0Oi6ZJ3cuQ184cmVhYxui3GH4XQq2YPWUfepZEG/ZLtmkEK
-	 KLaaHDrEoF42ReBCwlpYVREgJrWMTAaCickVXwZwzAu9i5qRQ8r2Rn/bP+4xl1pUJA
-	 IjqRZBIE6wKKJ6z3WMTYWq15aWnXQjCPx996x//s=
+	b=ecsJPcFrAox5SXOmWdYUNAb2bEWk5IEFZ5MFGB25Xgf5v+Z7JgzScP/utF/YfYA4H
+	 3p/9f7Jf4mTdofM57TTe9vlToYqsbTGHNyOdJ2YHT1SrwN38ShfmZCNw2l3WRMqy71
+	 kPWxXl9OHt8fmx9/QuTzQLdkclNnKnuJewY6mMGE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.6 434/737] phy: broadcom: bcm63xx-usbh: fix section mismatches
+	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
+	Shipei Qu <qu@darknavy.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 295/634] ALSA: usb-mixer: us16x08: validate meter packet indices
 Date: Fri,  9 Jan 2026 12:39:33 +0100
-Message-ID: <20260109112150.318619129@linuxfoundation.org>
+Message-ID: <20260109112128.631767980@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +59,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Shipei Qu <qu@darknavy.com>
 
-commit 356d1924b9a6bc2164ce2bf1fad147b0c37ae085 upstream.
+[ Upstream commit 5526c1c6ba1d0913c7dfcbbd6fe1744ea7c55f1e ]
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function and match table must not live in init.
+get_meter_levels_from_urb() parses the 64-byte meter packets sent by
+the device and fills the per-channel arrays meter_level[],
+comp_level[] and master_level[] in struct snd_us16x08_meter_store.
 
-Fixes: 783f6d3dcf35 ("phy: bcm63xx-usbh: Add BCM63xx USBH driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251017054537.6884-1-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Currently the function derives the channel index directly from the
+meter packet (MUB2(meter_urb, s) - 1) and uses it to index those
+arrays without validating the range. If the packet contains a
+negative or out-of-range channel number, the driver may write past
+the end of these arrays.
+
+Introduce a local channel variable and validate it before updating the
+arrays. We reject negative indices, limit meter_level[] and
+comp_level[] to SND_US16X08_MAX_CHANNELS, and guard master_level[]
+updates with ARRAY_SIZE(master_level).
+
+Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
+Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
+Closes: https://lore.kernel.org/tencent_21C112743C44C1A2517FF219@qq.com
+Signed-off-by: Shipei Qu <qu@darknavy.com>
+Link: https://patch.msgid.link/20251217024630.59576-1-qu@darknavy.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-bcm63xx-usbh.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ sound/usb/mixer_us16x08.c | 20 ++++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
---- a/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-+++ b/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-@@ -375,7 +375,7 @@ static struct phy *bcm63xx_usbh_phy_xlat
- 	return of_phy_simple_xlate(dev, args);
- }
- 
--static int __init bcm63xx_usbh_phy_probe(struct platform_device *pdev)
-+static int bcm63xx_usbh_phy_probe(struct platform_device *pdev)
+diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
+index 20ac32635f1f..d05cb54de788 100644
+--- a/sound/usb/mixer_us16x08.c
++++ b/sound/usb/mixer_us16x08.c
+@@ -656,17 +656,25 @@ static void get_meter_levels_from_urb(int s,
+ 	u8 *meter_urb)
  {
- 	struct device *dev = &pdev->dev;
- 	struct bcm63xx_usbh_phy	*usbh;
-@@ -432,7 +432,7 @@ static int __init bcm63xx_usbh_phy_probe
- 	return 0;
+ 	int val = MUC2(meter_urb, s) + (MUC3(meter_urb, s) << 8);
++	int ch = MUB2(meter_urb, s) - 1;
++
++	if (ch < 0)
++		return;
+ 
+ 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
+ 		MUA2(meter_urb, s) == 0x04 && MUB0(meter_urb, s) == 0x62) {
+-		if (MUC0(meter_urb, s) == 0x72)
+-			store->meter_level[MUB2(meter_urb, s) - 1] = val;
+-		if (MUC0(meter_urb, s) == 0xb2)
+-			store->comp_level[MUB2(meter_urb, s) - 1] = val;
++		if (ch < SND_US16X08_MAX_CHANNELS) {
++			if (MUC0(meter_urb, s) == 0x72)
++				store->meter_level[ch] = val;
++			if (MUC0(meter_urb, s) == 0xb2)
++				store->comp_level[ch] = val;
++		}
+ 	}
+ 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
+-		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62)
+-		store->master_level[MUB2(meter_urb, s) - 1] = val;
++		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62) {
++		if (ch < ARRAY_SIZE(store->master_level))
++			store->master_level[ch] = val;
++	}
  }
  
--static const struct of_device_id bcm63xx_usbh_phy_ids[] __initconst = {
-+static const struct of_device_id bcm63xx_usbh_phy_ids[] = {
- 	{ .compatible = "brcm,bcm6318-usbh-phy", .data = &usbh_bcm6318 },
- 	{ .compatible = "brcm,bcm6328-usbh-phy", .data = &usbh_bcm6328 },
- 	{ .compatible = "brcm,bcm6358-usbh-phy", .data = &usbh_bcm6358 },
-@@ -443,7 +443,7 @@ static const struct of_device_id bcm63xx
- };
- MODULE_DEVICE_TABLE(of, bcm63xx_usbh_phy_ids);
- 
--static struct platform_driver bcm63xx_usbh_phy_driver __refdata = {
-+static struct platform_driver bcm63xx_usbh_phy_driver = {
- 	.driver	= {
- 		.name = "bcm63xx-usbh-phy",
- 		.of_match_table = bcm63xx_usbh_phy_ids,
+ /* Function to retrieve current meter values from the device.
+-- 
+2.51.0
+
 
 
 
