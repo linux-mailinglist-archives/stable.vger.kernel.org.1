@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-206626-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1283DD0915B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:55:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 18707D09A0D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F069830028AF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 335333032B82
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EA633C511;
-	Fri,  9 Jan 2026 11:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C662EC54D;
+	Fri,  9 Jan 2026 12:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QqDji3nQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06dyZDcR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 857A22F12D4;
-	Fri,  9 Jan 2026 11:55:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BE3D335567;
+	Fri,  9 Jan 2026 12:24:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959740; cv=none; b=TKkEnjNVInieGaFfCTwImyl+Y3SA8Myq6L+13v7/DgC2FJ25DLXGs5r/HFXL+V+koJDkplxbqst7BgA/Han/Q8j+inJSR2g6Fz2zhUdXEtBa9cZoW8o24Pfma9UJruuSSr+CHEMFYTCWfjYLcj/iZPs0mxa/pLONVYxaXlO9Fso=
+	t=1767961457; cv=none; b=sSCb3c1bYwhs4iUOhDbzl3iKRjw/Gd+B+DjWBkfujGTP52P4Wc0pk6ClWaGpuvxYg/kJbHtAAZAI7FGdHPX7K89Hn5jXEA/YH3pCDD184VDp82IEJL4r5pgokIT0DskdOgm3umEvPNl6ywYwzQRm8j6s+sMDkBBZEM1z1WaYk2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959740; c=relaxed/simple;
-	bh=Co/LSFeuP8MlCObTDrCERn+CVBeNUEsoyPkAfoFT1QI=;
+	s=arc-20240116; t=1767961457; c=relaxed/simple;
+	bh=BSALS3uJFjDSrLI92TyK0Nk5AMt30A7+7v0EIfbInng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I/FYihv1Uvd68dDfhjoDh/FfjwHkWSrWulJW3uzbCwmawJkfsm0Qy6Ll3Vkz9iJDTw+TtFwStH5x1GCZGndkUKQ9SZ/kHb8zPJq9ikgJ7vdmGUF7QZal0gZL4YJ4cnpNcfAKTBGpB4ixiZOdAHlaz7cOE6fxjN/704MW2QvYpI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QqDji3nQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EC77C4CEF1;
-	Fri,  9 Jan 2026 11:55:39 +0000 (UTC)
+	 MIME-Version; b=rXTYuCcDy2C5m907ay75tDIHG7tvBiRjxqfLJoukX0Kd6Sk52XQJ2XSYc732fpgag+5CWZa7IRtypCzYDUmRxljJeqX6D+bdjMci2BepRwabXpYJwoWF1sHagOj7a1/GmIHcUEpOmK7+mJbecDs8dT/5ETfEDARIVdYEAslY1Go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06dyZDcR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE996C4CEF1;
+	Fri,  9 Jan 2026 12:24:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959740;
-	bh=Co/LSFeuP8MlCObTDrCERn+CVBeNUEsoyPkAfoFT1QI=;
+	s=korg; t=1767961457;
+	bh=BSALS3uJFjDSrLI92TyK0Nk5AMt30A7+7v0EIfbInng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QqDji3nQyetWOvjC2kQ/5mHqfJoNDQQaDO+8dJt27yAmNtNqBIpN+pv7tWv4UaSUe
-	 XSdpGIbuV1DVZO3suc4amCz3pzkWnWXT/MfVIg3oqq57mbjI+SbegjtY5Ehuz0pvmA
-	 AF3mJIdyHrI9YxntlDQCLu101BbXTYi+aLSKn62c=
+	b=06dyZDcRxN3aefr1kbO4CzdF9zzFsXu9V1LfhyDVH0fadjBUJntgKKahqBbljR9Kz
+	 SE7+GYCENnf3EqvFJ5OrRvxpPlp+w1b5ucDUmW+Qi0QQEr60r91pAdLmk7zwH9WpI6
+	 VkGueNBeCEu7X/j2DVM+OQMunDvtFQ+N+d1AnCak=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	Song Liu <song@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
 	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 159/737] selftests/bpf: Fix failure paths in send_signal test
-Date: Fri,  9 Jan 2026 12:34:58 +0100
-Message-ID: <20260109112139.976866666@linuxfoundation.org>
+Subject: [PATCH 6.1 021/634] ftrace: bpf: Fix IPMODIFY + DIRECT in modify_ftrace_direct()
+Date: Fri,  9 Jan 2026 12:34:59 +0100
+Message-ID: <20260109112118.232757294@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +62,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit c13339039891dbdfa6c1972f0483bd07f610b776 ]
+[ Upstream commit 3e9a18e1c3e931abecf501cbb23d28d69f85bb56 ]
 
-When test_send_signal_kern__open_and_load() fails parent closes the
-pipe which cases ASSERT_EQ(read(pipe_p2c...)) to fail, but child
-continues and enters infinite loop, while parent is stuck in wait(NULL).
-Other error paths have similar issue, so kill the child before waiting on it.
+ftrace_hash_ipmodify_enable() checks IPMODIFY and DIRECT ftrace_ops on
+the same kernel function. When needed, ftrace_hash_ipmodify_enable()
+calls ops->ops_func() to prepare the direct ftrace (BPF trampoline) to
+share the same function as the IPMODIFY ftrace (livepatch).
 
-The bug was discovered while compiling all of selftests with -O1 instead of -O2
-which caused progs/test_send_signal_kern.c to fail to load.
+ftrace_hash_ipmodify_enable() is called in register_ftrace_direct() path,
+but not called in modify_ftrace_direct() path. As a result, the following
+operations will break livepatch:
 
-Fixes: ab8b7f0cb358 ("tools/bpf: Add self tests for bpf_send_signal_thread()")
+1. Load livepatch to a kernel function;
+2. Attach fentry program to the kernel function;
+3. Attach fexit program to the kernel function.
+
+After 3, the kernel function being used will not be the livepatched
+version, but the original version.
+
+Fix this by adding __ftrace_hash_update_ipmodify() to
+__modify_ftrace_direct() and adjust some logic around the call.
+
+Signed-off-by: Song Liu <song@kernel.org>
+Reviewed-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20251027175023.1521602-3-song@kernel.org
 Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20251113171153.2583-1-alexei.starovoitov@gmail.com
+Acked-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/send_signal.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ kernel/trace/ftrace.c | 40 +++++++++++++++++++++++++++++++---------
+ 1 file changed, 31 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/send_signal.c b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-index 9adcda7f1fedc..61c9035000149 100644
---- a/tools/testing/selftests/bpf/prog_tests/send_signal.c
-+++ b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-@@ -145,6 +145,11 @@ static void test_send_signal_common(struct perf_event_attr *attr,
- skel_open_load_failure:
- 	close(pipe_c2p[0]);
- 	close(pipe_p2c[1]);
-+	/*
-+	 * Child is either about to exit cleanly or stuck in case of errors.
-+	 * Nudge it to exit.
-+	 */
-+	kill(pid, SIGKILL);
- 	wait(NULL);
+diff --git a/kernel/trace/ftrace.c b/kernel/trace/ftrace.c
+index a46e2f32ee5fc..e24906e7fcc5d 100644
+--- a/kernel/trace/ftrace.c
++++ b/kernel/trace/ftrace.c
+@@ -1895,7 +1895,8 @@ static void ftrace_hash_rec_enable_modify(struct ftrace_ops *ops,
+  */
+ static int __ftrace_hash_update_ipmodify(struct ftrace_ops *ops,
+ 					 struct ftrace_hash *old_hash,
+-					 struct ftrace_hash *new_hash)
++					 struct ftrace_hash *new_hash,
++					 bool update_target)
+ {
+ 	struct ftrace_page *pg;
+ 	struct dyn_ftrace *rec, *end = NULL;
+@@ -1930,10 +1931,13 @@ static int __ftrace_hash_update_ipmodify(struct ftrace_ops *ops,
+ 		if (rec->flags & FTRACE_FL_DISABLED)
+ 			continue;
+ 
+-		/* We need to update only differences of filter_hash */
++		/*
++		 * Unless we are updating the target of a direct function,
++		 * we only need to update differences of filter_hash
++		 */
+ 		in_old = !!ftrace_lookup_ip(old_hash, rec->ip);
+ 		in_new = !!ftrace_lookup_ip(new_hash, rec->ip);
+-		if (in_old == in_new)
++		if (!update_target && (in_old == in_new))
+ 			continue;
+ 
+ 		if (in_new) {
+@@ -1944,7 +1948,16 @@ static int __ftrace_hash_update_ipmodify(struct ftrace_ops *ops,
+ 				if (is_ipmodify)
+ 					goto rollback;
+ 
+-				FTRACE_WARN_ON(rec->flags & FTRACE_FL_DIRECT);
++				/*
++				 * If this is called by __modify_ftrace_direct()
++				 * then it is only changing where the direct
++				 * pointer is jumping to, and the record already
++				 * points to a direct trampoline. If it isn't,
++				 * then it is a bug to update ipmodify on a direct
++				 * caller.
++				 */
++				FTRACE_WARN_ON(!update_target &&
++					       (rec->flags & FTRACE_FL_DIRECT));
+ 
+ 				/*
+ 				 * Another ops with IPMODIFY is already
+@@ -2001,7 +2014,7 @@ static int ftrace_hash_ipmodify_enable(struct ftrace_ops *ops)
+ 	if (ftrace_hash_empty(hash))
+ 		hash = NULL;
+ 
+-	return __ftrace_hash_update_ipmodify(ops, EMPTY_HASH, hash);
++	return __ftrace_hash_update_ipmodify(ops, EMPTY_HASH, hash, false);
  }
+ 
+ /* Disabling always succeeds */
+@@ -2012,7 +2025,7 @@ static void ftrace_hash_ipmodify_disable(struct ftrace_ops *ops)
+ 	if (ftrace_hash_empty(hash))
+ 		hash = NULL;
+ 
+-	__ftrace_hash_update_ipmodify(ops, hash, EMPTY_HASH);
++	__ftrace_hash_update_ipmodify(ops, hash, EMPTY_HASH, false);
+ }
+ 
+ static int ftrace_hash_ipmodify_update(struct ftrace_ops *ops,
+@@ -2026,7 +2039,7 @@ static int ftrace_hash_ipmodify_update(struct ftrace_ops *ops,
+ 	if (ftrace_hash_empty(new_hash))
+ 		new_hash = NULL;
+ 
+-	return __ftrace_hash_update_ipmodify(ops, old_hash, new_hash);
++	return __ftrace_hash_update_ipmodify(ops, old_hash, new_hash, false);
+ }
+ 
+ static void print_ip_ins(const char *fmt, const unsigned char *p)
+@@ -5736,7 +5749,7 @@ EXPORT_SYMBOL_GPL(unregister_ftrace_direct_multi);
+ static int
+ __modify_ftrace_direct_multi(struct ftrace_ops *ops, unsigned long addr)
+ {
+-	struct ftrace_hash *hash;
++	struct ftrace_hash *hash = ops->func_hash->filter_hash;
+ 	struct ftrace_func_entry *entry, *iter;
+ 	static struct ftrace_ops tmp_ops = {
+ 		.func		= ftrace_stub,
+@@ -5755,13 +5768,21 @@ __modify_ftrace_direct_multi(struct ftrace_ops *ops, unsigned long addr)
+ 	if (err)
+ 		return err;
+ 
++	/*
++	 * Call __ftrace_hash_update_ipmodify() here, so that we can call
++	 * ops->ops_func for the ops. This is needed because the above
++	 * register_ftrace_function_nolock() worked on tmp_ops.
++	 */
++	err = __ftrace_hash_update_ipmodify(ops, hash, hash, true);
++	if (err)
++		goto out;
++
+ 	/*
+ 	 * Now the ftrace_ops_list_func() is called to do the direct callers.
+ 	 * We can safely change the direct functions attached to each entry.
+ 	 */
+ 	mutex_lock(&ftrace_lock);
+ 
+-	hash = ops->func_hash->filter_hash;
+ 	size = 1 << hash->size_bits;
+ 	for (i = 0; i < size; i++) {
+ 		hlist_for_each_entry(iter, &hash->buckets[i], hlist) {
+@@ -5774,6 +5795,7 @@ __modify_ftrace_direct_multi(struct ftrace_ops *ops, unsigned long addr)
+ 
+ 	mutex_unlock(&ftrace_lock);
+ 
++out:
+ 	/* Removing the tmp_ops will add the updated direct callers to the functions */
+ 	unregister_ftrace_function(&tmp_ops);
  
 -- 
 2.51.0
