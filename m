@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-207113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36B78D098CF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4352DD09907
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3B0C2304D4B5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 55CF9308EC33
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F6B335A926;
-	Fri,  9 Jan 2026 12:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56C2926ED41;
+	Fri,  9 Jan 2026 12:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uAx1b1i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0xyxl7kK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 121A4334C24;
-	Fri,  9 Jan 2026 12:18:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 110CB2737EE;
+	Fri,  9 Jan 2026 12:19:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961128; cv=none; b=U1UJ4oB8b/ZibKbRFIEDadghz5GBfO/pb5RQSlCYJyUORwOUHKEQdfOzTqSAf0gDs1jWgbOgK7SQbZDRmTWOQajCM+FlJO01HO7pPySlMRHyPaDomYU9G6CG/6BbSsdo5RK4nq+kb+Dea2vrFumorRfgs4wMTP4gBa8BaHNE3z0=
+	t=1767961159; cv=none; b=LfF+rSmoom0I522juusaRN0Py1DphEnW0jikiPpJtmrEeoTrtBfoVK0W91adTv197j3EuAqSCxQ64bk34yE1Rxw8/5v7IJlxlpR40vzivMSCZJtwWZ85hMHJGPruxBUItdOjJezA7EBLTH6en6gAu/S6TKIp+EQ/GU6YR7Ik1nw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961128; c=relaxed/simple;
-	bh=wTo7SaQJqadzU1S8YWiITtpJFN3h1XhLEvmtd4ZypBg=;
+	s=arc-20240116; t=1767961159; c=relaxed/simple;
+	bh=342LNpSvL03neXmnM43ZNT+cjiYCO2sDJ2vOGeqjjyU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OQ4c2CU6n6Ui7fVadpEMQil+37PNdG1DspLlwW49+FKnffmpoDA0WmpsMoCkSZTiDbioGaRUo9i6Hdk1Tz+MYMXXgx0Gc0NzvDSZAx7YZLcfV5O2QQw43z4IW8Q3WugpMSLHEmOOQspx6waibL/9oA/UFAOVMnwY2BUR17s/3C0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uAx1b1i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94548C16AAE;
-	Fri,  9 Jan 2026 12:18:47 +0000 (UTC)
+	 MIME-Version; b=a7gptAkuZHV7Nu/X7btZn9oRuG+6a/KeaThcJD/dVghwln1ZiKLDL4/GvhNmIXO0Ku/KoTJyfC35IjeL0eLYsuqmFA8D6fVwX5/Z8Y4GIJoPLXI7YDfM0xA9VUda2iAqH+OuJZAno04vGZrOQ9sJ5Q17OfQExwxais3ffKXWUVI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0xyxl7kK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BC8C4CEF1;
+	Fri,  9 Jan 2026 12:19:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961128;
-	bh=wTo7SaQJqadzU1S8YWiITtpJFN3h1XhLEvmtd4ZypBg=;
+	s=korg; t=1767961159;
+	bh=342LNpSvL03neXmnM43ZNT+cjiYCO2sDJ2vOGeqjjyU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1uAx1b1iWBf+E3NaB7pz5nWArxJe22CJjNeWhisys+Hy+gH4Ie6Vl/c6593EsUNgf
-	 E+QJFdgDZMHlaMsE22SGrda1sDPUOYavJiHsMXZ8jyWTtC4kZHCpWw+qGz43rDcXLb
-	 3atN4IA1H1uImsyPZ8qhnk7X550lKqfY+cTpmph8=
+	b=0xyxl7kKk33Hlu5oIFzdQ42tDLejSDG9rZreZ85sZlHPt8kaIPqLShSQoENT/5TQq
+	 tgCrAocg9s9xnqJAUZHpAI4xcIm+0nRPxSRduHpku3B7voDgnXCFYxP1+Jw3Tkyw1J
+	 /HJcKrjMu322mSrrNF7c6bFWEHIbi88ZClIjQH/M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Velichayshiy <a.velichayshiy@ispras.ru>,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Daniel Vacek <neelx@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 637/737] gfs2: fix freeze error handling
-Date: Fri,  9 Jan 2026 12:42:56 +0100
-Message-ID: <20260109112157.971588767@linuxfoundation.org>
+Subject: [PATCH 6.6 638/737] btrfs: dont rewrite ret from inode_permission
+Date: Fri,  9 Jan 2026 12:42:57 +0100
+Message-ID: <20260109112158.009658311@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,45 +66,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
+From: Josef Bacik <josef@toxicpanda.com>
 
-[ Upstream commit 4cfc7d5a4a01d2133b278cdbb1371fba1b419174 ]
+[ Upstream commit 0185c2292c600993199bc6b1f342ad47a9e8c678 ]
 
-After commit b77b4a4815a9 ("gfs2: Rework freeze / thaw logic"),
-the freeze error handling is broken because gfs2_do_thaw()
-overwrites the 'error' variable, causing incorrect processing
-of the original freeze error.
+In our user safe ino resolve ioctl we'll just turn any ret into -EACCES
+from inode_permission().  This is redundant, and could potentially be
+wrong if we had an ENOMEM in the security layer or some such other
+error, so simply return the actual return value.
 
-Fix this by calling gfs2_do_thaw() when gfs2_lock_fs_check_clean()
-fails but ignoring its return value to preserve the original
-freeze error for proper reporting.
+Note: The patch was taken from v5 of fscrypt patchset
+(https://lore.kernel.org/linux-btrfs/cover.1706116485.git.josef@toxicpanda.com/)
+which was handled over time by various people: Omar Sandoval, Sweet Tea
+Dorminy, Josef Bacik.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: b77b4a4815a9 ("gfs2: Rework freeze / thaw logic")
-Cc: stable@vger.kernel.org # v6.5+
-Signed-off-by: Alexey Velichayshiy <a.velichayshiy@ispras.ru>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
-[ gfs2_do_thaw() only takes one param ]
+Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
+CC: stable@vger.kernel.org # 5.4+
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Josef Bacik <josef@toxicpanda.com>
+Signed-off-by: Daniel Vacek <neelx@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+[ add note ]
+Signed-off-by: David Sterba <dsterba@suse.com>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/gfs2/super.c |    4 +---
+ fs/btrfs/ioctl.c |    4 +---
  1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -776,9 +776,7 @@ static int gfs2_freeze_super(struct supe
- 		if (!error)
- 			break;  /* success */
+--- a/fs/btrfs/ioctl.c
++++ b/fs/btrfs/ioctl.c
+@@ -2006,10 +2006,8 @@ static int btrfs_search_path_in_tree_use
+ 			ret = inode_permission(idmap, temp_inode,
+ 					       MAY_READ | MAY_EXEC);
+ 			iput(temp_inode);
+-			if (ret) {
+-				ret = -EACCES;
++			if (ret)
+ 				goto out_put;
+-			}
  
--		error = gfs2_do_thaw(sdp);
--		if (error)
--			goto out;
-+		(void)gfs2_do_thaw(sdp);
- 
- 		if (error == -EBUSY)
- 			fs_err(sdp, "waiting for recovery before freeze\n");
+ 			if (key.offset == upper_limit.objectid)
+ 				break;
 
 
 
