@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2B29CD0A177
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E3409D09C37
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D7583303824
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0369D30D9D43
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED93435CB93;
-	Fri,  9 Jan 2026 12:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F509334C24;
+	Fri,  9 Jan 2026 12:22:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0sZ+X9L1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otTCANO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E1B35B149;
-	Fri,  9 Jan 2026 12:50:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE8C32737EE;
+	Fri,  9 Jan 2026 12:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963012; cv=none; b=DLlU8vbgwqFpLYlJYpmrviqDzSOseSF73DB16o10o7KbarLSpvA/Iuf0Cfl96sxlmzaJeO0gGQtuBenY3o5AImTv6hxDsUvBMB5akFZfcnJJUSYNONkd2uz/HWGQmEUZsLkd1RTYeamCgc6roMa76Yby1eP1gSqDGZqF3LZ0+uo=
+	t=1767961325; cv=none; b=QmYvdn1hRhHUs1bLNdUy2NFy71IbPY7IPirAN8Kw8EQYZNnG5CWNAxpkoA2KfPrH2hM5i5cC7tjp79jBNVKs6C5BH0z6DUcsE/2geWAmUol0TYsg6BuLh7/mXDn2GpqMgexNqhWkeScCNjb8ePs521unwJurjmaCzA8ucspQItc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963012; c=relaxed/simple;
-	bh=sEUPC6bfssgJQmTWoLIMsK4RMy60bvmMNsAeYNV6c7s=;
+	s=arc-20240116; t=1767961325; c=relaxed/simple;
+	bh=4wl4/xANb/4tRKX/vkdAerueqJr36wYqyob6yz5Gi/8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Z/n8eNLlgqABXJenrx75+O+MUm/9C3WeSkFZK9wu03cg+GQwE4ji0co7gNc8ydjjRmxu+QEhhpHCjVmqKDDxcwO/F06bmTft2dK3UUDRSr421OoqCKn9/JV4qXjux1BJhVIqnTzrS+q8CQpG6/Cdz1TqWEaY0fBEOEe9mdjNTCM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0sZ+X9L1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B1CDC4CEF1;
-	Fri,  9 Jan 2026 12:50:12 +0000 (UTC)
+	 MIME-Version; b=KKsYy2V9dB8PbxGODEbdbwVfs07LOdYpZPZ7JB42F0UxpXmbJ5bcI970PG7576hlmYF8IXIMKOVBRJ4FLRzLRLYoUyC8zSSJ84dxjuGifMXK/WsGFdSxN04I7Nexpu4wdEiiBpMhw6MR7fjjNqk+0gE7kmNRgGFZavbUPj/WNyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otTCANO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF92C19421;
+	Fri,  9 Jan 2026 12:22:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963012;
-	bh=sEUPC6bfssgJQmTWoLIMsK4RMy60bvmMNsAeYNV6c7s=;
+	s=korg; t=1767961325;
+	bh=4wl4/xANb/4tRKX/vkdAerueqJr36wYqyob6yz5Gi/8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0sZ+X9L1oLMKPxmXdoPPnzD6wnqljweKzuizObfhpZ17/Z+Ug4R3jK/ZdEJd+EbGK
-	 vyhUC5yz3Hgpi/OP0J7ldwK10DF47j3amwYuDQhvVqj6joOVEilC8kmnutPy+806+v
-	 aLJdATTheIcfKke/6Q4hPIjk75pWMk1EAJI8OLFs=
+	b=otTCANO8bICT4XFqULXmD57w96n2BHxnGhF2g4Xj+GYwFTn3n+56xRV0aE0++Xmwc
+	 4zbq7yaQZvkpG+n2JldirYSETDytAJ5vV+A/55BDsXvYSeyLdHtSe1m/j0uaefHCcD
+	 QhHnfRJ3nwKkyjbRi7L3fkSRrQnyH4gG2Vu9c8mw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <jroedel@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 567/634] iommu/mtk_iommu_v1: Convert to platform remove callback returning void
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 706/737] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
 Date: Fri,  9 Jan 2026 12:44:05 +0100
-Message-ID: <20260109112138.940152581@linuxfoundation.org>
+Message-ID: <20260109112200.630246247@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 85e1049e50da9409678fc247ebad4c019d68041f ]
+commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+damon_test_split_evenly_fail() is assuming all dynamic memory allocation
+in it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
-
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Link: https://lore.kernel.org/r/20230321084125.337021-9-u.kleine-koenig@pengutronix.de
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
-Stable-dep-of: 46207625c9f3 ("iommu/mediatek-v1: fix device leaks on probe()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/mtk_iommu_v1.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/damon/vaddr-test.h |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -708,7 +708,7 @@ out_clk_unprepare:
- 	return ret;
- }
- 
--static int mtk_iommu_v1_remove(struct platform_device *pdev)
-+static void mtk_iommu_v1_remove(struct platform_device *pdev)
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -250,7 +250,16 @@ static void damon_test_split_evenly_fail
+ 		unsigned long start, unsigned long end, unsigned int nr_pieces)
  {
- 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
+ 	struct damon_target *t = damon_new_target();
+-	struct damon_region *r = damon_new_region(start, end);
++	struct damon_region *r;
++
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++
++	r = damon_new_region(start, end);
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
  
-@@ -718,7 +718,6 @@ static int mtk_iommu_v1_remove(struct pl
- 	clk_disable_unprepare(data->bclk);
- 	devm_free_irq(&pdev->dev, data->irq, data);
- 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
--	return 0;
- }
- 
- static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
-@@ -757,7 +756,7 @@ static const struct dev_pm_ops mtk_iommu
- 
- static struct platform_driver mtk_iommu_v1_driver = {
- 	.probe	= mtk_iommu_v1_probe,
--	.remove	= mtk_iommu_v1_remove,
-+	.remove_new = mtk_iommu_v1_remove,
- 	.driver	= {
- 		.name = "mtk-iommu-v1",
- 		.of_match_table = mtk_iommu_v1_of_ids,
+ 	damon_add_region(r, t);
+ 	KUNIT_EXPECT_EQ(test,
 
 
 
