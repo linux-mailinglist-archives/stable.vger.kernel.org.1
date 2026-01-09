@@ -1,121 +1,164 @@
-Return-Path: <stable+bounces-206434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206435-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54F8AD0843A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:39:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F1A10D08443
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B923D306388F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:34:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DE9E1304A59D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:35:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0703590CA;
-	Fri,  9 Jan 2026 09:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DA7332EB8;
+	Fri,  9 Jan 2026 09:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ELs1J/xO"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCB935295B
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:34:23 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C2E3563C8;
+	Fri,  9 Jan 2026 09:35:08 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951265; cv=none; b=aph7D4QRlnv7Fmr7KKA46hy0tGgx2G7DBuxURq5EM9eCRPMeoGme4WceyyscqREnAH3JATHQLuOnSS5azqngsg1VxsrX8nOR83+CsFsnXq6OSh/T6Qxw7GABLqtfm5fYEZPSEdEA00OA39weGC2nsXRTAy6hGWQTOWEP1yqDrCk=
+	t=1767951308; cv=none; b=qCye/ooWfbYx55Jp8eCSh9u6RRwJ8im6GG7N8erP0wd3/GXIFUnSCDYN1t6KhR9pbexS5mtAZ74oChHrd/n2aUMyoBvuItYzamK8meIGMgSIZlxR/NKxHhGUNnzVCSlkuccA0pJPwMUF5VCs36Inw6b4NuaIgsBEatEZzcapgKY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951265; c=relaxed/simple;
-	bh=HGOwSk8S8HDT4sJ9Vum/VM++nG1mV7e0WrIwcS0eQ3E=;
+	s=arc-20240116; t=1767951308; c=relaxed/simple;
+	bh=BLyZo/dkd1iG7Ef2JVu0zskylPKhZ49BKz8mVO/zYL0=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=aTXAFLw0BA/Yh6d/38bQEh6kBUVA3KxQsGlRkVq57jqnw0rUxeMOVT2dOWpdHMS06XKeYGX86uXh9GefyFJsGtZ/Fg5wZq27Uib2oevrgO5VIRJ9m0kfyJTWrLy/9cHYp8BDZu/envhOXk2aVbg05GkV9+nEGsg70keohwKEbRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ve8ss-0006P6-Ot; Fri, 09 Jan 2026 10:34:18 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1ve8ss-009p1x-1o;
-	Fri, 09 Jan 2026 10:34:18 +0100
-Received: from pengutronix.de (unknown [IPv6:2a03:2260:2009::])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 0F8504C96C4;
-	Fri, 09 Jan 2026 09:34:17 +0000 (UTC)
-Date: Fri, 9 Jan 2026 10:34:17 +0100
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-To: Vincent Mailhol <mailhol@kernel.org>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-Message-ID: <20260109-corgi-of-massive-art-abe72a-mkl@pengutronix.de>
-References: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
+	 Content-Type:Content-Disposition:In-Reply-To; b=Pdj9kQmyLmlx0uPvm7eA4WvdMTvs8aE4shSi+KgI04C65dn6BzYkEegcFu1ZTc0knAfH7TkhE8h2Cx8ow1sgP/nT6GNC00G5VoQt/WI+uxZR4CAkHuF+/SfT0AWIQ/WU4gnO1lD7Eqy9FkVJ2lMxOVBm1mNInNDq91uRtc8Nsxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ELs1J/xO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397F8C19422;
+	Fri,  9 Jan 2026 09:35:07 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767951308;
+	bh=BLyZo/dkd1iG7Ef2JVu0zskylPKhZ49BKz8mVO/zYL0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ELs1J/xOkGyBDNwvnXE8Kl+vE3nFa7GGeQhaGy1O94HlkS4oIWFFc+XicyGs9I5Q3
+	 vkndz2e/KPW00z5k9cR3ZOtU+CSKrJrAdTmS+cxTYtiZoLIycOtP2yD+8HZ7Kf+ydY
+	 RufOXU9g9Bx75p1n3JI9PPLHzvYKLqemfVpdOSYoFmQVfskExbkhPCeESracsyCwG0
+	 9rRlb5rxigstJUy8iyPre0xuN/amI4n+8uRVNuZ5Joqljc2lGCon5Tj/DvM3J9GGoG
+	 bfGNAEzq42GsM5PJEmfw4w0HK6kD2nXh+L3s4hKZPFI/3vkD3WYaPTdS5O/WRdVMY/
+	 xoj0WpApesi4Q==
+Date: Fri, 9 Jan 2026 09:35:04 +0000
+From: Lee Jones <lee@kernel.org>
+To: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Cc: Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@kernel.org>,
+	linux-leds@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] leds: led-class: Only Add LED to leds_list when it is
+ fully ready
+Message-ID: <20260109093504.GA1118061@google.com>
+References: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
+ <2bbtf7out2t52pge4hezfc7dryu6te2qstfm5kzez7zrw3dvqq@wxvqnjbulxc4>
+ <585dc6a5-64e3-4f54-8ff3-9b9f1fc3d54d@oss.qualcomm.com>
+ <20260108121142.GI302752@google.com>
+ <70e4dec3-e4d9-409d-9ac3-aec814aec3bb@oss.qualcomm.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-	protocol="application/pgp-signature"; boundary="qv5uwemshev6tpyd"
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <70e4dec3-e4d9-409d-9ac3-aec814aec3bb@oss.qualcomm.com>
 
+On Thu, 08 Jan 2026, Hans de Goede wrote:
 
---qv5uwemshev6tpyd
-Content-Type: text/plain; protected-headers=v1; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
-Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
- URB memory leak
-MIME-Version: 1.0
+> Hi Lee,
+> 
+> On 8-Jan-26 13:11, Lee Jones wrote:
+> > On Fri, 12 Dec 2025, Hans de Goede wrote:
+> > 
+> >> Hi,
+> >>
+> >> On 12-Dec-25 07:49, Sebastian Reichel wrote:
+> >>> Hi,
+> >>>
+> >>> On Thu, Dec 11, 2025 at 05:37:27PM +0100, Hans de Goede wrote:
+> >>>> Before this change the LED was added to leds_list before led_init_core()
+> >>>> gets called adding it the list before led_classdev.set_brightness_work gets
+> >>>> initialized.
+> >>>>
+> >>>> This leaves a window where led_trigger_register() of a LED's default
+> >>>> trigger will call led_trigger_set() which calls led_set_brightness()
+> >>>> which in turn will end up queueing the *uninitialized*
+> >>>> led_classdev.set_brightness_work.
+> >>>>
+> >>>> This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
+> >>>> 2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
+> >>>> succession. The first led_classdev_register() causes an async modprobe of
+> >>>> snd_ctl_led to run and that async modprobe manages to exactly hit
+> >>>> the window where the second LED is on the leds_list without led_init_core()
+> >>>> being called for it, resulting in:
+> >>>>
+> >>>>  ------------[ cut here ]------------
+> >>>>  WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
+> >>>>  Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
+> >>>>  ...
+> >>>>  Call trace:
+> >>>>   __flush_work+0x344/0x390 (P)
+> >>>>   flush_work+0x2c/0x50
+> >>>>   led_trigger_set+0x1c8/0x340
+> >>>>   led_trigger_register+0x17c/0x1c0
+> >>>>   led_trigger_register_simple+0x84/0xe8
+> >>>>   snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
+> >>>>   do_one_initcall+0x5c/0x318
+> >>>>   do_init_module+0x9c/0x2b8
+> >>>>   load_module+0x7e0/0x998
+> >>>>
+> >>>> Close the race window by moving the adding of the LED to leds_list to
+> >>>> after the led_init_core() call.
+> >>>>
+> >>>> Cc: Sebastian Reichel <sre@kernel.org>
+> >>>> Cc: stable@vger.kernel.org
+> >>>> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+> >>>> ---
+> >>>
+> >>> heh, I've never hit this. But I guess that is not too surprising
+> >>> considering it is a race condition. The change looks good to me:
+> >>>
+> >>> Reviewed-by: Sebastian Reichel <sre@kernel.org>
+> >>
+> >> Thx.
+> >>  
+> >>>> Note no Fixes tag as this problem has been around for a long long time,
+> >>>> so I could not really find a good commit for the Fixes tag.
+> >>>
+> >>> My suggestion would be:
+> >>>
+> >>> Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
+> >>
+> >> Ack, that works for me.
+> >>
+> >> Lee can you add this Fixes tag while merging ?
+> >>
+> >> Also (in case it is not obvious) this is a bugfix so it would be
+> >> nice if this could go in a fixes pull-request for 6.19.
+> > 
+> > Yes, I can add the Fixes: tag and no, I have no plans to send this for
+> > -fixes.  As you rightly mentioned, this issue has been around for a long
+> > time already.  I tend to only send -fixes pull-requests for things that
+> > broke in -rc1 of the same release.
+> 
+> Even though this has been around for a long time, it would be good
+> to get this in as a fix for 6.19-rc# because as described in the commit
+> msg the lenovo-thinkpad-t14s embedded-controller driver, which is new in
+> 6.19-rc1 manages to reliably trigger the race (for me, with a Fedora
+> kernel distconfig).
+> 
+> I was surprised I could hit the race pretty reliably, but it did make
+> debugging this easier.
+> 
+> Hitting the race also leads to a crash due to a NULL ptr deref after
+> the WARN(). I did not elaborate on this in the commit msg, because
+> the WARN() is the first sign of trying to use uninitialized mem.
+> 
+> IMHO having a reproducable race which causes a crash is
+> a good reason to submit this as a fix for 6.19 .
 
-On 05.01.2026 13:35:54, Marc Kleine-Budde wrote:
-> In gs_can_open(), the URBs for USB-in transfers are allocated, added to t=
-he
-> parent->rx_submitted anchor and submitted. In the complete callback
-> gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
-> gs_can_close() the URBs are freed by calling
-> usb_kill_anchored_urbs(parent->rx_submitted).
->
-> However, this does not take into account that the USB framework
-> unanchors the URB before the close function is called. This means that
-                               ^^^^^
-                               complete
+Noted.  Leave it with me.
 
-I've fixed it in my tree.
-
-regards,
-Marc
-
---=20
-Pengutronix e.K.                 | Marc Kleine-Budde          |
-Embedded Linux                   | https://www.pengutronix.de |
-Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
-Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
-
---qv5uwemshev6tpyd
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlgy5YACgkQDHRl3/mQ
-kZwgkgf+MWbPiXPJJAcxBDnav8A43ecX3Dgz9TPWd9qSDjaN5wcQY/SlmWbo+38B
-BpN5MKkOm3XTsF2K6MEMi4bh50raC2rqKRRaSpbHVd1vGh8Nonm9CsEQvO8o/dfT
-Wi7RVEUjTqLhC9JgivaWgp57Uwxm4zdCEaIICMgkBH2aV653Hzvpz8fjSDxLV2Js
-SnzfUToAG0dFZWNxy7rV92R+WRGgPOpdKWENE8d6F/2qo8cvegwRAxphWQd40yBH
-ZaT2sPeoLQ85qv1S4+BKy/plczkZNlhxd16oYYKGvcN9L2eFnrGqydPf1nQM3A+H
-mSy+X49pymouLbaVVTmhm5AHb7l4TA==
-=LK1S
------END PGP SIGNATURE-----
-
---qv5uwemshev6tpyd--
+-- 
+Lee Jones [李琼斯]
 
