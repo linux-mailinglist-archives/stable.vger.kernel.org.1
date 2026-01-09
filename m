@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206732-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E7505D0927B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72A87D09CA9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B1091300E4E5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56E7C301A197
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D18EE359F99;
-	Fri,  9 Jan 2026 12:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 116CC350D74;
+	Fri,  9 Jan 2026 12:29:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWCeJXUs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ghm6uzP1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95C2133032C;
-	Fri,  9 Jan 2026 12:00:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75C5306483;
+	Fri,  9 Jan 2026 12:29:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960041; cv=none; b=W3zpTzoorVPtue5lN0X0K+jZkQ9/KMnPjspoAYSOT1P3r4bZF/sNLJnUJ620GYFjS4ZuOwembCAizOMePyFVUgI4kW4DK/2tY+5f5keAwnpWcLUB+GWix+jVWvMlSq9D3WzaoKNd14l3At2jHHeqEUMv0n6dwnGbN2LPYqEUQI4=
+	t=1767961759; cv=none; b=BcudIuP2qic7OFxcNf2BvlC8uxSak3rwp9mk6M4dsxmWRvytLiKjxqY1mrVijb4zpsb9AX+spcfod3w/OcrTrEXOfF3ANYAp2Tu7jG9Pj6WaANtyQWh9LsXyp8lQc/GfdVwEOo4b9YJEi840J+mDhnFmfbeorE/NJYFaLmaHavc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960041; c=relaxed/simple;
-	bh=luZyloHN2DMSIU/RTHgHVbRiBsxxOAyzyq7dDiK+Yh4=;
+	s=arc-20240116; t=1767961759; c=relaxed/simple;
+	bh=ul5qDvwMd7iM30Rc8JjZBQGByi1+9DbDWvRaRvfLcjc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rz5Yhtf7RzfIsM72Z0+fnk+hNhqRa2Kzzm6M21+8/3m3roHItloxVgysn0KVuzD9jC8p1ltBSqcO10VDYAgtjZMeFEFy8RBz3wZTndcAX0vAhAKCX/n2wRJ10FcKrGkSHV5tE3Hd5rqsAF8VF0E5IrsNUWA6nHTMdXXMwrvULYU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWCeJXUs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26556C4CEF1;
-	Fri,  9 Jan 2026 12:00:40 +0000 (UTC)
+	 MIME-Version; b=RpTntWX9uXI96QtbMy2uoxzWmqlP1hbapxAB8NZTRV8C31DXoL1tQvrTWkU6q0ZHUtkgC94CgnQYoUxD5gt+EGxe4HAPkLkqWolDHjGXq4MoIgQ7oiDjIz7ob0nmlasjidkZWMljASakpbFjVagMy4V1GJ12krsEyZQQnpw/Afc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ghm6uzP1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51EDEC4CEF1;
+	Fri,  9 Jan 2026 12:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960041;
-	bh=luZyloHN2DMSIU/RTHgHVbRiBsxxOAyzyq7dDiK+Yh4=;
+	s=korg; t=1767961759;
+	bh=ul5qDvwMd7iM30Rc8JjZBQGByi1+9DbDWvRaRvfLcjc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hWCeJXUs5/p2tCseWwNtkILd47aB6BvFpy2qI7SueIp8sGgy+v4OIMkmGDGHNOE35
-	 sNYkQGd5vEh3tW2/ldbhjPzgiUxnwCWA90p6SrYjOE6w/5f6aRXYDrvZXGrkwQER31
-	 e0DYYkDha3TPOHjaTV6S82ecvJJzc/Zi16hnxgIo=
+	b=ghm6uzP1lcHjF63SrHxfhn7Dc4b6/gICf8k8swGZpqHRAdB4/fdPOF2fzozPKPP/g
+	 K8ljBP2qXAVbL6h7lh/mMfpKqBruO5reaudryciHUxEqfMUh2hoM92dp/skLVypu5f
+	 0YGd5z3sROBejZFRNVUg1i1ysF0fq4o4Vrd1CTwQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alkis Georgopoulos <alkisg@gmail.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Jay Liu <jay.liu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 265/737] Revert "nfs: clear SB_RDONLY before getting superblock"
+Subject: [PATCH 6.1 126/634] drm/mediatek: Fix CCORR mtk_ctm_s31_32_to_s1_n function issue
 Date: Fri,  9 Jan 2026 12:36:44 +0100
-Message-ID: <20260109112143.962519299@linuxfoundation.org>
+Message-ID: <20260109112122.188158830@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jay Liu <jay.liu@mediatek.com>
 
-[ Upstream commit d216b698d44e33417ad4cc796cb04ccddbb8c0ee ]
+[ Upstream commit 20ac36b71c53b8c36c6903b5ca87c75226700a97 ]
 
-This reverts commit 8cd9b785943c57a136536250da80ba1eb6f8eb18.
+if matrixbit is 11,
+The range of color matrix is from 0 to (BIT(12) - 1).
+Values from 0 to (BIT(11) - 1) represent positive numbers,
+values from BIT(11) to (BIT(12) - 1) represent negative numbers.
+For example, -1 need converted to 8191.
+so convert S31.32 to HW Q2.11 format by drm_color_ctm_s31_32_to_qm_n,
+and set int_bits to 2.
 
-Silently ignoring the "ro" and "rw" mount options causes user confusion,
-and regressions.
-
-Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
-Cc: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 8cd9b785943c ("nfs: clear SB_RDONLY before getting superblock")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 738ed4156fba ("drm/mediatek: Add matrix_bits private data for ccorr")
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Jay Liu <jay.liu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20250921055416.25588-2-jay.liu@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/super.c | 9 ---------
- 1 file changed, 9 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_disp_ccorr.c | 23 +----------------------
+ 1 file changed, 1 insertion(+), 22 deletions(-)
 
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 59bf4b2c0f86e..e1bcad5906ae7 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1277,17 +1277,8 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (IS_ERR(server))
- 		return PTR_ERR(server);
+diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+index 3a53ebc4e1724..2d090bdf5a009 100644
+--- a/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
++++ b/drivers/gpu/drm/mediatek/mtk_disp_ccorr.c
+@@ -85,27 +85,6 @@ void mtk_ccorr_stop(struct device *dev)
+ 	writel_relaxed(0x0, ccorr->regs + DISP_CCORR_EN);
+ }
  
--	/*
--	 * When NFS_MOUNT_UNSHARED is not set, NFS forces the sharing of a
--	 * superblock among each filesystem that mounts sub-directories
--	 * belonging to a single exported root path.
--	 * To prevent interference between different filesystems, the
--	 * SB_RDONLY flag should be removed from the superblock.
--	 */
- 	if (server->flags & NFS_MOUNT_UNSHARED)
- 		compare_super = NULL;
--	else
--		fc->sb_flags &= ~SB_RDONLY;
+-/* Converts a DRM S31.32 value to the HW S1.n format. */
+-static u16 mtk_ctm_s31_32_to_s1_n(u64 in, u32 n)
+-{
+-	u16 r;
+-
+-	/* Sign bit. */
+-	r = in & BIT_ULL(63) ? BIT(n + 1) : 0;
+-
+-	if ((in & GENMASK_ULL(62, 33)) > 0) {
+-		/* identity value 0x100000000 -> 0x400(mt8183), */
+-		/* identity value 0x100000000 -> 0x800(mt8192), */
+-		/* if bigger this, set it to max 0x7ff. */
+-		r |= GENMASK(n, 0);
+-	} else {
+-		/* take the n+1 most important bits. */
+-		r |= (in >> (32 - n)) & GENMASK(n, 0);
+-	}
+-
+-	return r;
+-}
+-
+ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ {
+ 	struct mtk_disp_ccorr *ccorr = dev_get_drvdata(dev);
+@@ -124,7 +103,7 @@ void mtk_ccorr_ctm_set(struct device *dev, struct drm_crtc_state *state)
+ 	input = ctm->matrix;
  
- 	/* -o noac implies -o sync */
- 	if (server->flags & NFS_MOUNT_NOAC)
+ 	for (i = 0; i < ARRAY_SIZE(coeffs); i++)
+-		coeffs[i] = mtk_ctm_s31_32_to_s1_n(input[i], matrix_bits);
++		coeffs[i] = drm_color_ctm_s31_32_to_qm_n(input[i], 2, matrix_bits);
+ 
+ 	mtk_ddp_write(cmdq_pkt, coeffs[0] << 16 | coeffs[1],
+ 		      &ccorr->cmdq_reg, ccorr->regs, DISP_CCORR_COEF_0);
 -- 
 2.51.0
 
