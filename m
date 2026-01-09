@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62566D0A16C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2663BD09B11
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B256232FAB43
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 43EC03062BEB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4165C35C1BF;
-	Fri,  9 Jan 2026 12:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E312D359FA0;
+	Fri,  9 Jan 2026 12:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tgh+ydy9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PySpDPwE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051F0359F8E;
-	Fri,  9 Jan 2026 12:49:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A63F62737EE;
+	Fri,  9 Jan 2026 12:20:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962998; cv=none; b=qyRTFu0rApz6JDXeJAXhVvDdTSp7LmehpFJOJnV2J1IWSL/fAqC0bc8c1RTWWZFPihPFWVXZzRq+tHte07ts3t3SExJS0YNe0d/mhGy6Ta65g8216Y9bWgmB5upMmx2VUhgWvoumsjmnjW4/3mabxoYgOAMzUpEp53AwqG9XSsA=
+	t=1767961202; cv=none; b=qPBnBHI4sTdSYt0AtNUZKwM0cIwmVfBqUqBrXmycFYqWO8iwrgVxzBcZYAXq48ds07RMLydcBwrnlOLYPGy9B59Lm4RV16exCgdrf5oGJBebDTD0uOFTqOsFi6enjzqFpBkZqZQqINfWmoK5YYTStKh74fOF9deE6yu8vf42GRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962998; c=relaxed/simple;
-	bh=p0C/GEoEQ6vUJbbjUQMSqyu/za+HPl/3+PPLte63Iac=;
+	s=arc-20240116; t=1767961202; c=relaxed/simple;
+	bh=RPcDCtxt7mdMG7SaPuIgs61SOnlh8P6eBT18CDzeDec=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EEL4hoi/XYf/geSYSOnXgj2jGVVDk5WU/XfsGThWCm7tWHMw3sziNIdUTP38IIFKFjfNY2VkKnrc0Ts3Ij5Z1knW6wRiXVS8KCVMq+MnZc8qZCUMtjvKCLGBRgDcE157+D/DArROkTQvvDtH6CiFIHEfiapevUeOroogrT9q2bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tgh+ydy9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877BBC4CEF1;
-	Fri,  9 Jan 2026 12:49:57 +0000 (UTC)
+	 MIME-Version; b=r4URwYD+ZrFckiIX/4isajeWtS6pRJyAa664Hu9l/57YRIv8zLWrj6GgnlMdafAx0BmMpX3s1HNxsCwKIJEDyt536nlV6B2pB1sYVPra30w9Hg7DFBw90usd+Aj9jS+v4s8UJMs2ctdF2db9jfMlrIx5FAmhWoppSI96WcGC7Vs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PySpDPwE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E423C4CEF1;
+	Fri,  9 Jan 2026 12:20:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962997;
-	bh=p0C/GEoEQ6vUJbbjUQMSqyu/za+HPl/3+PPLte63Iac=;
+	s=korg; t=1767961202;
+	bh=RPcDCtxt7mdMG7SaPuIgs61SOnlh8P6eBT18CDzeDec=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Tgh+ydy9OhCArZ6tZTKAF5uo9LMbrX4chHlBnqXCArP2uX6WOe5AX/uYWP6d0ca5F
-	 4wgy4VmVmMYiUjTq89sKQrbPswBi+w4CKUX+YahOlrpIAZN6wVumPi6QBJ7F9CsKIo
-	 CsjQtLtvZQgl6KlMFeqzsUurhKi/B1KcNmA8QEvw=
+	b=PySpDPwEYRX0W12g8eWZW1tUD4oUSz5kjKwQpazx/1Qt6o06GPwFikfxCxC6PqDV7
+	 M1n1eNez3lSB64iUeF8kjd/1DTDZuksgQOgm8KXGrgo7eV/AxTYaJGN8vdIc5DH4cd
+	 /3vco5klOxT/piAhMUjeGDJB3ffzf2aIzSeiJegI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Norbert Szetei <norbert@doyensec.com>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 6.1 529/634] ksmbd: fix out-of-bounds in parse_sec_desc()
-Date: Fri,  9 Jan 2026 12:43:27 +0100
-Message-ID: <20260109112137.472791216@linuxfoundation.org>
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 6.6 669/737] usb: xhci: move link chain bit quirk checks into one helper function.
+Date: Fri,  9 Jan 2026 12:43:28 +0100
+Message-ID: <20260109112159.215601207@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-commit d6e13e19063db24f94b690159d0633aaf72a0f03 upstream.
+commit 7476a2215c07703db5e95efaa3fc5b9f957b9417 upstream.
 
-If osidoffset, gsidoffset and dacloffset could be greater than smb_ntsd
-struct size. If it is smaller, It could cause slab-out-of-bounds.
-And when validating sid, It need to check it included subauth array size.
+Older 0.95 xHCI hosts and some other specific newer hosts require the
+chain bit to be set for Link TRBs even if the link TRB is not in the
+middle of a transfer descriptor (TD).
 
-Cc: stable@vger.kernel.org
-Reported-by: Norbert Szetei <norbert@doyensec.com>
-Tested-by: Norbert Szetei <norbert@doyensec.com>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Rajani Kantha <681739313@139.com>
+move the checks for all those cases  into one xhci_link_chain_quirk()
+function to clean up and avoid code duplication.
+
+No functional changes.
+
+[skip renaming chain_links flag, reword commit message -Mathias]
+
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240626124835.1023046-10-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Shivani: Modified to apply on 6.6.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/smbacl.c |   16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ drivers/usb/host/xhci-mem.c  |   10 ++--------
+ drivers/usb/host/xhci-ring.c |    8 ++------
+ drivers/usb/host/xhci.h      |    7 +++++--
+ 3 files changed, 9 insertions(+), 16 deletions(-)
 
---- a/fs/smb/server/smbacl.c
-+++ b/fs/smb/server/smbacl.c
-@@ -815,6 +815,13 @@ static int parse_sid(struct smb_sid *psi
- 		return -EINVAL;
- 	}
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -136,10 +136,7 @@ static void xhci_link_rings(struct xhci_
+ 	if (!ring || !first || !last)
+ 		return;
  
-+	if (!psid->num_subauth)
-+		return 0;
-+
-+	if (psid->num_subauth > SID_MAX_SUB_AUTHORITIES ||
-+	    end_of_acl < (char *)psid + 8 + sizeof(__le32) * psid->num_subauth)
-+		return -EINVAL;
-+
- 	return 0;
+-	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
+-	chain_links = !!(xhci_link_trb_quirk(xhci) ||
+-			 (ring->type == TYPE_ISOC &&
+-			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
++	chain_links = xhci_link_chain_quirk(xhci, ring->type);
+ 
+ 	next = ring->enq_seg->next;
+ 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
+@@ -330,10 +327,7 @@ static int xhci_alloc_segments_for_ring(
+ 	unsigned int num = 0;
+ 	bool chain_links;
+ 
+-	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
+-	chain_links = !!(xhci_link_trb_quirk(xhci) ||
+-			 (type == TYPE_ISOC &&
+-			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
++	chain_links = xhci_link_chain_quirk(xhci, type);
+ 
+ 	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, num, flags);
+ 	if (!prev)
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -245,9 +245,7 @@ static void inc_enq(struct xhci_hcd *xhc
+ 		 * AMD 0.96 host, carry over the chain bit of the previous TRB
+ 		 * (which may mean the chain bit is cleared).
+ 		 */
+-		if (!(ring->type == TYPE_ISOC &&
+-		      (xhci->quirks & XHCI_AMD_0x96_HOST)) &&
+-		    !xhci_link_trb_quirk(xhci)) {
++		if (!xhci_link_chain_quirk(xhci, ring->type)) {
+ 			next->link.control &= cpu_to_le32(~TRB_CHAIN);
+ 			next->link.control |= cpu_to_le32(chain);
+ 		}
+@@ -3381,9 +3379,7 @@ static int prepare_ring(struct xhci_hcd
+ 		/* If we're not dealing with 0.95 hardware or isoc rings
+ 		 * on AMD 0.96 host, clear the chain bit.
+ 		 */
+-		if (!xhci_link_trb_quirk(xhci) &&
+-		    !(ep_ring->type == TYPE_ISOC &&
+-		      (xhci->quirks & XHCI_AMD_0x96_HOST)))
++		if (!xhci_link_chain_quirk(xhci, ep_ring->type))
+ 			ep_ring->enqueue->link.control &=
+ 				cpu_to_le32(~TRB_CHAIN);
+ 		else
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1784,9 +1784,12 @@ static inline void xhci_write_64(struct
+ 	lo_hi_writeq(val, regs);
  }
  
-@@ -856,6 +863,9 @@ int parse_sec_desc(struct user_namespace
- 	pntsd->type = cpu_to_le16(DACL_PRESENT);
- 
- 	if (pntsd->osidoffset) {
-+		if (le32_to_cpu(pntsd->osidoffset) < sizeof(struct smb_ntsd))
-+			return -EINVAL;
+-static inline int xhci_link_trb_quirk(struct xhci_hcd *xhci)
 +
- 		rc = parse_sid(owner_sid_ptr, end_of_acl);
- 		if (rc) {
- 			pr_err("%s: Error %d parsing Owner SID\n", __func__, rc);
-@@ -871,6 +881,9 @@ int parse_sec_desc(struct user_namespace
- 	}
++/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
++static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+ {
+-	return xhci->quirks & XHCI_LINK_TRB_QUIRK;
++	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
++	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
+ }
  
- 	if (pntsd->gsidoffset) {
-+		if (le32_to_cpu(pntsd->gsidoffset) < sizeof(struct smb_ntsd))
-+			return -EINVAL;
-+
- 		rc = parse_sid(group_sid_ptr, end_of_acl);
- 		if (rc) {
- 			pr_err("%s: Error %d mapping Owner SID to gid\n",
-@@ -892,6 +905,9 @@ int parse_sec_desc(struct user_namespace
- 		pntsd->type |= cpu_to_le16(DACL_PROTECTED);
- 
- 	if (dacloffset) {
-+		if (dacloffset < sizeof(struct smb_ntsd))
-+			return -EINVAL;
-+
- 		parse_dacl(user_ns, dacl_ptr, end_of_acl,
- 			   owner_sid_ptr, group_sid_ptr, fattr);
- 	}
+ /* xHCI debugging */
 
 
 
