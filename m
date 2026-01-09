@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-206814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8EA9D0957E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:11:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77A00D095F9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 198DC30D45DD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6969F30B06FD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C732E359FBA;
-	Fri,  9 Jan 2026 12:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AB835A92E;
+	Fri,  9 Jan 2026 12:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DqOBUo8+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UEONWaCF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A83F1946C8;
-	Fri,  9 Jan 2026 12:04:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7ABC51946C8;
+	Fri,  9 Jan 2026 12:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960274; cv=none; b=Qr3FpDHn5jgcCZOqy6Cqq+S073Ge9i5mcwO99i0n43vaHyszKvl0Q2NsFj1Zsl6yNxnDm2WSApVbfo+n2NTZ3WPfd7FfaK7NhvgyohcqiDDsFlXX7XBdOBERfbavPbRDEPUFsUHv1sOSceDcljZCXKTtwFWLi8BH2R6fXLv9RC4=
+	t=1767960280; cv=none; b=pp8U/xBj3f4U62CWJUxgRFZM0iPS/O7C5r9/oTNdQ+/5HEn1YRkZ3bLFRKmRUx1iJxKJeNf5tdveui5TPm4VGG+kzZbHyigQsrQkImrdQ6hedZDVkjBDf55QRqJ/EBNG1f7NJYCK7pGvU0GbyoGYNc8zYhtiejVeEUhF7V2HOKw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960274; c=relaxed/simple;
-	bh=7Sp6/TkT40NXzkvqnwleiT1rFc8tGHgxtEfZqFqPC5w=;
+	s=arc-20240116; t=1767960280; c=relaxed/simple;
+	bh=2APAvV8RcCe9MkgGpbfwlJdL8SnG2PCdoYO12yU5urM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/vXvR7WqsMvuQMerxfLv4OcnkZzdGZM5UVHGcna5CT9kKyQTvG4+aR6/YLIxXE4yj37rdlQV+wK0ytJevKAz8Bz6vHgvw0GE2p8RNugktPPrS0y4oBm3waCFNSD/v8+aC3gGzkbzvwNlreNoOjbhdFsgGMbESa+JyNNU+GKswI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DqOBUo8+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 157C9C4CEF1;
-	Fri,  9 Jan 2026 12:04:33 +0000 (UTC)
+	 MIME-Version; b=iRJp4LxV/Gxa3xJZsBTEoG6gERj0E5x09M5wgYJYNWnStjkR7CW0qrXVQf8rbewT3C6W/Bv7reAGQkZ0U1jFn9J8VH2BfmAm3cU37RKcYM6kJgtTLe9JzOmseKadktWli6zWI8Xh2m25g0so/DI0Z5sWZ4LeF71p4P2zQynKono=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UEONWaCF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEF3AC4CEF1;
+	Fri,  9 Jan 2026 12:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960274;
-	bh=7Sp6/TkT40NXzkvqnwleiT1rFc8tGHgxtEfZqFqPC5w=;
+	s=korg; t=1767960280;
+	bh=2APAvV8RcCe9MkgGpbfwlJdL8SnG2PCdoYO12yU5urM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DqOBUo8+FkBLj/QHCH4mNgnECicyh0Vyd1agYjcwxEYnc7XJ9Me0CQ9yjfH6Fzek1
-	 FlJlxbckpEhStc+Ojxb07OKbcaIl5yymed3FHwi69ymqWdQCIttYmZAhPLmXKuUgMp
-	 YSFrl6D4JNYSTLTc0MDqNgexsVnQFfeWi744j8H0=
+	b=UEONWaCFn3S1+aFuLlXHtgz/y5JX5MDqozVrGgbe6kn61NEetXzmshaWqO5KJFqMg
+	 9M9wMbeuw+RqDVsIR60otcn4ORl6wE+MoyKk2CH1m2ssvOZBuTckmPX9nnnteAFrKg
+	 mRtEsnDCdYihCs+eeFIw/fvuKUxFhom+1CRgoeAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
 	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 346/737] netfilter: nf_tables: allow loads only when register is initialized
-Date: Fri,  9 Jan 2026 12:38:05 +0100
-Message-ID: <20260109112147.003750344@linuxfoundation.org>
+Subject: [PATCH 6.6 347/737] netfilter: nf_tables: remove redundant chain validation on register store
+Date: Fri,  9 Jan 2026 12:38:06 +0100
+Message-ID: <20260109112147.039919271@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,150 +64,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-[ Upstream commit 14fb07130c7ddd257e30079b87499b3f89097b09 ]
+[ Upstream commit a67fd55f6a09f4119b7232c19e0f348fe31ab0db ]
 
-Reject rules where a load occurs from a register that has not seen a store
-early in the same rule.
+This validation predates the introduction of the state machine that
+determines when to enter slow path validation for error reporting.
 
-commit 4c905f6740a3 ("netfilter: nf_tables: initialize registers in
-nft_do_chain()")
-had to add a unconditional memset to the nftables register space to avoid
-leaking stack information to userspace.
+Currently, table validation is perform when:
 
-This memset shows up in benchmarks.  After this change, this commit can
-be reverted again.
+- new rule contains expressions that need validation.
+- new set element with jump/goto verdict.
 
-Note that this breaks userspace compatibility, because theoretically
-you can do
+Validation on register store skips most checks with no basechains, still
+this walks the graph searching for loops and ensuring expressions are
+called from the right hook. Remove this.
 
-  rule 1: reg2 := meta load iif, reg2  == 1 jump ...
-  rule 2: reg2 == 2 jump ...   // read access with no store in this rule
-
-... after this change this is rejected.
-
-Neither nftables nor iptables-nft generate such rules, each rule is
-always standalone.
-
-This resuts in a small increase of nft_ctx structure by sizeof(long).
-
-To cope with hypothetical rulesets like the example above one could emit
-on-demand "reg[x] = 0" store when generating the datapath blob in
-nf_tables_commit_chain_prepare().
-
-A patch that does this is linked to below.
-
-For now, lets disable this.  In nf_tables, a rule is the smallest
-unit that can be replaced from userspace, i.e. a hypothetical ruleset
-that relies on earlier initialisations of registers can't be changed
-at will as register usage would need to be coordinated.
-
-Link: https://lore.kernel.org/netfilter-devel/20240627135330.17039-4-fw@strlen.de/
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: a654de8fdc18 ("netfilter: nf_tables: fix chain dependency validation")
 Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: a67fd55f6a09 ("netfilter: nf_tables: remove redundant chain validation on register store")
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/netfilter/nf_tables.h |  1 +
- net/netfilter/nf_tables_api.c     | 38 +++++++++++++++++++++++++++----
- 2 files changed, 35 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index 917edb4380e58..a8fcbdb37a7f9 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -221,6 +221,7 @@ struct nft_ctx {
- 	u8				family;
- 	u8				level;
- 	bool				report;
-+	DECLARE_BITMAP(reg_inited, NFT_REG32_NUM);
- };
- 
- enum nft_data_desc_flags {
 diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 7bccfb1a8a725..8b8895e4372d9 100644
+index 8b8895e4372d9..394ee65e1d35f 100644
 --- a/net/netfilter/nf_tables_api.c
 +++ b/net/netfilter/nf_tables_api.c
-@@ -146,6 +146,8 @@ static void nft_ctx_init(struct nft_ctx *ctx,
- 	ctx->report	= nlmsg_report(nlh);
- 	ctx->flags	= nlh->nlmsg_flags;
- 	ctx->seq	= nlh->nlmsg_seq;
-+
-+	bitmap_zero(ctx->reg_inited, NFT_REG32_NUM);
- }
- 
- static struct nft_trans *nft_trans_alloc_gfp(const struct nft_ctx *ctx,
-@@ -10915,8 +10917,8 @@ static int nft_validate_register_load(enum nft_registers reg, unsigned int len)
- int nft_parse_register_load(const struct nft_ctx *ctx,
- 			    const struct nlattr *attr, u8 *sreg, u32 len)
+@@ -10964,21 +10964,10 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
+ 				       enum nft_data_types type,
+ 				       unsigned int len)
  {
--	u32 reg;
 -	int err;
-+	int err, invalid_reg;
-+	u32 reg, next_register;
- 
- 	err = nft_parse_register(attr, &reg);
- 	if (err < 0)
-@@ -10926,11 +10928,36 @@ int nft_parse_register_load(const struct nft_ctx *ctx,
- 	if (err < 0)
- 		return err;
- 
-+	next_register = DIV_ROUND_UP(len, NFT_REG32_SIZE) + reg;
-+
-+	/* Can't happen: nft_validate_register_load() should have failed */
-+	if (WARN_ON_ONCE(next_register > NFT_REG32_NUM))
-+		return -EINVAL;
-+
-+	/* find first register that did not see an earlier store. */
-+	invalid_reg = find_next_zero_bit(ctx->reg_inited, NFT_REG32_NUM, reg);
-+
-+	/* invalid register within the range that we're loading from? */
-+	if (invalid_reg < next_register)
-+		return -ENODATA;
-+
- 	*sreg = reg;
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(nft_parse_register_load);
- 
-+static void nft_saw_register_store(const struct nft_ctx *__ctx,
-+				   int reg, unsigned int len)
-+{
-+	unsigned int registers = DIV_ROUND_UP(len, NFT_REG32_SIZE);
-+	struct nft_ctx *ctx = (struct nft_ctx *)__ctx;
-+
-+	if (WARN_ON_ONCE(len == 0 || reg < 0))
-+		return;
-+
-+	bitmap_set(ctx->reg_inited, reg, registers);
-+}
-+
- static int nft_validate_register_store(const struct nft_ctx *ctx,
- 				       enum nft_registers reg,
- 				       const struct nft_data *data,
-@@ -10952,7 +10979,7 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
- 				return err;
- 		}
- 
--		return 0;
-+		break;
+-
+ 	switch (reg) {
+ 	case NFT_REG_VERDICT:
+ 		if (type != NFT_DATA_VERDICT)
+ 			return -EINVAL;
+-
+-		if (data != NULL &&
+-		    (data->verdict.code == NFT_GOTO ||
+-		     data->verdict.code == NFT_JUMP)) {
+-			err = nft_chain_validate(ctx, data->verdict.chain);
+-			if (err < 0)
+-				return err;
+-		}
+-
+ 		break;
  	default:
  		if (type != NFT_DATA_VALUE)
- 			return -EINVAL;
-@@ -10965,8 +10992,11 @@ static int nft_validate_register_store(const struct nft_ctx *ctx,
- 		    sizeof_field(struct nft_regs, data))
- 			return -ERANGE;
- 
--		return 0;
-+		break;
- 	}
-+
-+	nft_saw_register_store(ctx, reg, len);
-+	return 0;
- }
- 
- int nft_parse_register_store(const struct nft_ctx *ctx,
 -- 
 2.51.0
 
