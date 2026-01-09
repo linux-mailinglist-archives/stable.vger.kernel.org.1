@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-206885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54DF6D09723
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id CFB33D09FEB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B97F130210F4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:57 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B720A301703A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44077338911;
-	Fri,  9 Jan 2026 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912EA359701;
+	Fri,  9 Jan 2026 12:37:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NRUao39"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaXJQApj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078B432F748;
-	Fri,  9 Jan 2026 12:07:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552D633372B;
+	Fri,  9 Jan 2026 12:37:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960477; cv=none; b=MGgylppSSrSGnCPcBKuqS0EAWVsPjA7wVRYUFka3nBTPpdXsaNarK4rAiAHJYwBhdWj+C6r+D0De4iOvyaB/AhczlyS3kyih0V4PawcjYnnAfm+MmFB1dDuHute6Qm3pEBp4P/ykEQ27x9RhrChkCURnacknLXjA5fpqwup5iNQ=
+	t=1767962268; cv=none; b=p/Sp1bUFWD/yOtpy4dahapLY6I+UHnu8lssxAXyZR54U2URlYiVgGIxtDqkflFKvGIAp7856Ww015e+bM8F+n+Uq1vh76FiPuGwj7f2+EXKPq+1Rgg4jnu9L4CF51RISkdBWZvzUT3xIP6PBoj3PDJjb4V/g8KSdx5aSLIgSTxE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960477; c=relaxed/simple;
-	bh=h8GINoNvc5YMtcm8L2okufLpAKQYw16LH56PubBHUoI=;
+	s=arc-20240116; t=1767962268; c=relaxed/simple;
+	bh=RGOnBfNblh0yO9+dAsgQd++7rEYDHh71wEgTMG0O1yA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iFiF43N/6KShpVkTWOSbIQfpDSlrZuLcJ9Lx/dgqbPh+zvGnRrutYTYYMkwyWy71a5lxqgO7CMQSE4WMLaE/DciAhh/aBSI7T7NwtpYV7Fs4RyrOXsx36ozAAioF1HD3/i2kseHA3P3Yv5+G1k9+E3LE1M9TUcLdpnhGiQeUDZA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NRUao39; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D2CC4CEF1;
-	Fri,  9 Jan 2026 12:07:56 +0000 (UTC)
+	 MIME-Version; b=Cbg/B/HH82cnH7vWA826pNPvXOWDTeq4vBil0hvxrsl6iucoRPDNgH2UpiF2BXhWSG398m5QerMPVevoBYdeb5FJmXGAkyruVUQcf4ng9S3MswDQ+eyoHsDo84tLtsdRYeUI5bbjyK3cDnor/HyeZzlTFcAYJZpZondN6mq5YzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaXJQApj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587DFC4CEF1;
+	Fri,  9 Jan 2026 12:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960476;
-	bh=h8GINoNvc5YMtcm8L2okufLpAKQYw16LH56PubBHUoI=;
+	s=korg; t=1767962267;
+	bh=RGOnBfNblh0yO9+dAsgQd++7rEYDHh71wEgTMG0O1yA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1NRUao39sVpAh5hwgI1aeHF2xSj8gkP4KTdVhEBHI9E85y2vuTJe4/ThaxPgbcjAo
-	 8uYH2jG7onCzxnPz8i2XZjZRqSHJ9iujYGx8QR/aUXib3tVNwOyB4of2etEz5p01nX
-	 Pro6z/sdEMcu/JITCOcKnlp279THjwyV29V51ODc=
+	b=VaXJQApjHLmY3/WM8DZpo+j5cAqGOi2InxQZMQ8lGvrCu6ZtJ9ywk1bMwA6E6qZp2
+	 pgognLDKiaHUABp6z+tioPmI85F2lX2DBmFHqlqiiO3WbkVWAzRIkM4UzshJwIATp0
+	 vfgOFnkXBzgd4bitbbz7R8m1MdoMUknI+gOIyBx4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <chenl311@chinatelecom.cn>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 417/737] block: rate-limit capacity change info log
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 278/634] spi: cadence-quadspi: Add compatible for AMD Pensando Elba SoC
 Date: Fri,  9 Jan 2026 12:39:16 +0100
-Message-ID: <20260109112149.683291761@linuxfoundation.org>
+Message-ID: <20260109112127.993363791@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +58,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <chenl311@chinatelecom.cn>
+From: Brad Larson <blarson@amd.com>
 
-commit 3179a5f7f86bcc3acd5d6fb2a29f891ef5615852 upstream.
+[ Upstream commit f5c2f9f9584353bc816d76a65c97dd03dc61678c ]
 
-loop devices under heavy stress-ng loop streessor can trigger many
-capacity change events in a short time. Each event prints an info
-message from set_capacity_and_notify(), flooding the console and
-contributing to soft lockups on slow consoles.
+The AMD Pensando Elba SoC has the Cadence QSPI controller integrated.
 
-Switch the printk in set_capacity_and_notify() to
-pr_info_ratelimited() so frequent capacity changes do not spam
-the log while still reporting occasional changes.
+The quirk CQSPI_NEEDS_APB_AHB_HAZARD_WAR is added and if enabled
+a dummy readback from the controller is performed to ensure
+synchronization.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Brad Larson <blarson@amd.com
+Link: https://lore.kernel.org/r/20230515181606.65953-8-blarson@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org
+Stable-dep-of: 1889dd208197 ("spi: cadence-quadspi: Fix clock disable on probe failure path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/genhd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/spi/spi-cadence-quadspi.c | 19 +++++++++++++++++++
+ 1 file changed, 19 insertions(+)
 
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -83,7 +83,7 @@ bool set_capacity_and_notify(struct gend
- 	    (disk->flags & GENHD_FL_HIDDEN))
- 		return false;
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index fe537b8d87e5..ca393f3fcd90 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -40,6 +40,7 @@
+ #define CQSPI_SUPPORT_EXTERNAL_DMA	BIT(2)
+ #define CQSPI_NO_SUPPORT_WR_COMPLETION	BIT(3)
+ #define CQSPI_SLOW_SRAM		BIT(4)
++#define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
  
--	pr_info("%s: detected capacity change from %lld to %lld\n",
-+	pr_info_ratelimited("%s: detected capacity change from %lld to %lld\n",
- 		disk->disk_name, capacity, size);
+ /* Capabilities */
+ #define CQSPI_SUPPORTS_OCTAL		BIT(0)
+@@ -89,6 +90,7 @@ struct cqspi_st {
+ 	u32			pd_dev_id;
+ 	bool			wr_completion;
+ 	bool			slow_sram;
++	bool			apb_ahb_hazard;
+ };
  
- 	/*
+ struct cqspi_driver_platdata {
+@@ -983,6 +985,13 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
+ 	if (cqspi->wr_delay)
+ 		ndelay(cqspi->wr_delay);
+ 
++	/*
++	 * If a hazard exists between the APB and AHB interfaces, perform a
++	 * dummy readback from the controller to ensure synchronization.
++	 */
++	if (cqspi->apb_ahb_hazard)
++		readl(reg_base + CQSPI_REG_INDIRECTWR);
++
+ 	while (remaining > 0) {
+ 		size_t write_words, mod_bytes;
+ 
+@@ -1717,6 +1726,8 @@ static int cqspi_probe(struct platform_device *pdev)
+ 			cqspi->wr_completion = false;
+ 		if (ddata->quirks & CQSPI_SLOW_SRAM)
+ 			cqspi->slow_sram = true;
++		if (ddata->quirks & CQSPI_NEEDS_APB_AHB_HAZARD_WAR)
++			cqspi->apb_ahb_hazard = true;
+ 
+ 		if (of_device_is_compatible(pdev->dev.of_node,
+ 					    "xlnx,versal-ospi-1.0")) {
+@@ -1851,6 +1862,10 @@ static const struct cqspi_driver_platdata jh7110_qspi = {
+ 	.quirks = CQSPI_DISABLE_DAC_MODE,
+ };
+ 
++static const struct cqspi_driver_platdata pensando_cdns_qspi = {
++	.quirks = CQSPI_NEEDS_APB_AHB_HAZARD_WAR | CQSPI_DISABLE_DAC_MODE,
++};
++
+ static const struct of_device_id cqspi_dt_ids[] = {
+ 	{
+ 		.compatible = "cdns,qspi-nor",
+@@ -1880,6 +1895,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
+ 		.compatible = "starfive,jh7110-qspi",
+ 		.data = &jh7110_qspi,
+ 	},
++	{
++		.compatible = "amd,pensando-elba-qspi",
++		.data = &pensando_cdns_qspi,
++	},
+ 	{ /* end of table */ }
+ };
+ 
+-- 
+2.51.0
+
 
 
 
