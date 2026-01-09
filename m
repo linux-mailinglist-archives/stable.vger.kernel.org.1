@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206992-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF3BD09940
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:26:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1CF77D0A066
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A01BA30FD059
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6819F30EC901
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C02E33B6F1;
-	Fri,  9 Jan 2026 12:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 070FA35BDCC;
+	Fri,  9 Jan 2026 12:40:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G0vYBTmY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w7X/+i/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E1E4D359F9C;
-	Fri,  9 Jan 2026 12:13:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B03B035CB7C;
+	Fri,  9 Jan 2026 12:40:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960786; cv=none; b=GgoiFctAz+VWCVhr6ckFNFAErYrXw1OATBAHHchjVYiJ0//8C4Ocn1r4bugJKwXdZ/SIOpsKQZqQoUZvdRnVKST9seh5Btbb9+YdANnytCFDcnx+vLJnXfVgfnVY4qv0lnQ0361OmoKfhsxMWiSQe08YoYMPUNKeftI3v1HJgdA=
+	t=1767962416; cv=none; b=CWI6ilF8UHy070EaC7dJfsGzAft3LErIzmjXtBmWWPQMjkpdi/K3jCkQHluBbK1RChxImmpe/IBIdVyx4SWhMebcACxvqZOPO8TuvRDnCK3la1gchdVT9Lyn5useHeurk0lfSYGgGaVq3wj1I0lrrtXlovsrnOT1IwRu89IBfpc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960786; c=relaxed/simple;
-	bh=uoFlOhy6O5dJA6mYd8j+PUovjwjV3jLfKCA4i6H9Opk=;
+	s=arc-20240116; t=1767962416; c=relaxed/simple;
+	bh=+iWPMUsG8lIs/9XWGNhH9+5kpzOE16TtwZe1RDczNJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dbuMXfHaJu9QZpayC+k59fHE+50Gm9JmUNJo0oOvx1+ocWlKRQ6hokEQszz0v1EKt8iBEuQhD0e6pyCsG0GHS+zlL8JeusMxHsFVKXbWt4sTvVDWiDJyspu6lcwxfsijmoWdRpZC+PmAu5IBqz8csfyNvYJoOLWkj5JcRxw8RIs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G0vYBTmY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 599A5C4CEF1;
-	Fri,  9 Jan 2026 12:13:05 +0000 (UTC)
+	 MIME-Version; b=DK5u6vftCLajF8Pxxn4SQaNjqS2nvd3Vn+/8eUc1r2XmOuC5VIkUrpXchtW2NfXvppFfr7ku0ZOh1mJv38GsAKpon/N7JFELFlkVrhqo+n2raiN4SSvuXIzInAzNq/ZvVdVf45sgiAMS2asNpQwMczj4vxrsACR1ejWLfcZaapc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w7X/+i/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E845C16AAE;
+	Fri,  9 Jan 2026 12:40:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960785;
-	bh=uoFlOhy6O5dJA6mYd8j+PUovjwjV3jLfKCA4i6H9Opk=;
+	s=korg; t=1767962416;
+	bh=+iWPMUsG8lIs/9XWGNhH9+5kpzOE16TtwZe1RDczNJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G0vYBTmYALv4CcTuL2Dd12Wl2NHWsaRQKoIJJD2cw5yhgDKWCob4tABrIKmOCfR0y
-	 cdQmeK7sgZryRHYmXbG93FjmpsnDLXOr9hs/+crFVZmGHgfoefug+NYXgYn9wZMO7D
-	 GSGqNiIVDqKyL7D7UcGH3NSCKs5SgQ4i6BgS0Fas=
+	b=w7X/+i/RjhEXRNr1Ki/yq99EJdT6i0upcNFE4aBx/4JqQRgUhQN/fPcHY4drBIoSr
+	 RHFNnOFx96SKubxU4XLQMjhR/cGljd3sDEZWTbsgnCBxQ3JkmCyLN56yGQVurHJxyL
+	 1/FG3BuPGGPdXRKvcHWNkY775sY0HWK96/ZRdTlI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.6 497/737] hwmon: (w83791d) Convert macros to functions to avoid TOCTOU
+	ziming zhang <ezrakiez@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 6.1 358/634] libceph: make decode_pool() more resilient against corrupted osdmaps
 Date: Fri,  9 Jan 2026 12:40:36 +0100
-Message-ID: <20260109112152.688381848@linuxfoundation.org>
+Message-ID: <20260109112130.994727857@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,84 +60,226 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 670d7ef945d3a84683594429aea6ab2cdfa5ceb4 upstream.
+commit 8c738512714e8c0aa18f8a10c072d5b01c83db39 upstream.
 
-The macro FAN_FROM_REG evaluates its arguments multiple times. When used
-in lockless contexts involving shared driver data, this leads to
-Time-of-Check to Time-of-Use (TOCTOU) race conditions, potentially
-causing divide-by-zero errors.
+If the osdmap is (maliciously) corrupted such that the encoded length
+of ceph_pg_pool envelope is less than what is expected for a particular
+encoding version, out-of-bounds reads may ensue because the only bounds
+check that is there is based on that length value.
 
-Convert the macro to a static function. This guarantees that arguments
-are evaluated only once (pass-by-value), preventing the race
-conditions.
+This patch adds explicit bounds checks for each field that is decoded
+or skipped.
 
-Additionally, in store_fan_div, move the calculation of the minimum
-limit inside the update lock. This ensures that the read-modify-write
-sequence operates on consistent data.
-
-Adhere to the principle of minimal changes by only converting macros
-that evaluate arguments multiple times and are used in lockless
-contexts.
-
-Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-Fixes: 9873964d6eb2 ("[PATCH] HWMON: w83791d: New hardware monitoring driver for the Winbond W83791D")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20251202180105.12842-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Reported-by: ziming zhang <ezrakiez@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Tested-by: ziming zhang <ezrakiez@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/w83791d.c |   17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ net/ceph/osdmap.c |  118 ++++++++++++++++++++++++------------------------------
+ 1 file changed, 53 insertions(+), 65 deletions(-)
 
---- a/drivers/hwmon/w83791d.c
-+++ b/drivers/hwmon/w83791d.c
-@@ -218,9 +218,14 @@ static u8 fan_to_reg(long rpm, int div)
- 	return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 254);
- }
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -806,51 +806,49 @@ static int decode_pool(void **p, void *e
+ 	ceph_decode_need(p, end, len, bad);
+ 	pool_end = *p + len;
  
--#define FAN_FROM_REG(val, div)	((val) == 0 ? -1 : \
--				((val) == 255 ? 0 : \
--					1350000 / ((val) * (div))))
-+static int fan_from_reg(int val, int div)
-+{
-+	if (val == 0)
-+		return -1;
-+	if (val == 255)
-+		return 0;
-+	return 1350000 / (val * div);
-+}
++	ceph_decode_need(p, end, 4 + 4 + 4, bad);
+ 	pi->type = ceph_decode_8(p);
+ 	pi->size = ceph_decode_8(p);
+ 	pi->crush_ruleset = ceph_decode_8(p);
+ 	pi->object_hash = ceph_decode_8(p);
+-
+ 	pi->pg_num = ceph_decode_32(p);
+ 	pi->pgp_num = ceph_decode_32(p);
  
- /* for temp1 which is 8-bit resolution, LSB = 1 degree Celsius */
- #define TEMP1_FROM_REG(val)	((val) * 1000)
-@@ -521,7 +526,7 @@ static ssize_t show_##reg(struct device
- 	struct w83791d_data *data = w83791d_update_device(dev); \
- 	int nr = sensor_attr->index; \
- 	return sprintf(buf, "%d\n", \
--		FAN_FROM_REG(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
-+		fan_from_reg(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
- }
+-	*p += 4 + 4;  /* skip lpg* */
+-	*p += 4;      /* skip last_change */
+-	*p += 8 + 4;  /* skip snap_seq, snap_epoch */
++	/* lpg*, last_change, snap_seq, snap_epoch */
++	ceph_decode_skip_n(p, end, 8 + 4 + 8 + 4, bad);
  
- show_fan_reg(fan);
-@@ -585,10 +590,10 @@ static ssize_t store_fan_div(struct devi
- 	if (err)
- 		return err;
+ 	/* skip snaps */
+-	num = ceph_decode_32(p);
++	ceph_decode_32_safe(p, end, num, bad);
+ 	while (num--) {
+-		*p += 8;  /* snapid key */
+-		*p += 1 + 1; /* versions */
+-		len = ceph_decode_32(p);
+-		*p += len;
++		/* snapid key, pool snap (with versions) */
++		ceph_decode_skip_n(p, end, 8 + 2, bad);
++		ceph_decode_skip_string(p, end, bad);
+ 	}
  
-+	mutex_lock(&data->update_lock);
- 	/* Save fan_min */
--	min = FAN_FROM_REG(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
-+	min = fan_from_reg(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
+-	/* skip removed_snaps */
+-	num = ceph_decode_32(p);
+-	*p += num * (8 + 8);
++	/* removed_snaps */
++	ceph_decode_skip_map(p, end, 64, 64, bad);
  
--	mutex_lock(&data->update_lock);
- 	data->fan_div[nr] = div_to_reg(nr, val);
++	ceph_decode_need(p, end, 8 + 8 + 4, bad);
+ 	*p += 8;  /* skip auid */
+ 	pi->flags = ceph_decode_64(p);
+ 	*p += 4;  /* skip crash_replay_interval */
  
- 	switch (nr) {
+ 	if (ev >= 7)
+-		pi->min_size = ceph_decode_8(p);
++		ceph_decode_8_safe(p, end, pi->min_size, bad);
+ 	else
+ 		pi->min_size = pi->size - pi->size / 2;
+ 
+ 	if (ev >= 8)
+-		*p += 8 + 8;  /* skip quota_max_* */
++		/* quota_max_* */
++		ceph_decode_skip_n(p, end, 8 + 8, bad);
+ 
+ 	if (ev >= 9) {
+-		/* skip tiers */
+-		num = ceph_decode_32(p);
+-		*p += num * 8;
++		/* tiers */
++		ceph_decode_skip_set(p, end, 64, bad);
+ 
++		ceph_decode_need(p, end, 8 + 1 + 8 + 8, bad);
+ 		*p += 8;  /* skip tier_of */
+ 		*p += 1;  /* skip cache_mode */
+-
+ 		pi->read_tier = ceph_decode_64(p);
+ 		pi->write_tier = ceph_decode_64(p);
+ 	} else {
+@@ -858,86 +856,76 @@ static int decode_pool(void **p, void *e
+ 		pi->write_tier = -1;
+ 	}
+ 
+-	if (ev >= 10) {
+-		/* skip properties */
+-		num = ceph_decode_32(p);
+-		while (num--) {
+-			len = ceph_decode_32(p);
+-			*p += len; /* key */
+-			len = ceph_decode_32(p);
+-			*p += len; /* val */
+-		}
+-	}
++	if (ev >= 10)
++		/* properties */
++		ceph_decode_skip_map(p, end, string, string, bad);
+ 
+ 	if (ev >= 11) {
+-		/* skip hit_set_params */
+-		*p += 1 + 1; /* versions */
+-		len = ceph_decode_32(p);
+-		*p += len;
++		/* hit_set_params (with versions) */
++		ceph_decode_skip_n(p, end, 2, bad);
++		ceph_decode_skip_string(p, end, bad);
+ 
+-		*p += 4; /* skip hit_set_period */
+-		*p += 4; /* skip hit_set_count */
++		/* hit_set_period, hit_set_count */
++		ceph_decode_skip_n(p, end, 4 + 4, bad);
+ 	}
+ 
+ 	if (ev >= 12)
+-		*p += 4; /* skip stripe_width */
++		/* stripe_width */
++		ceph_decode_skip_32(p, end, bad);
+ 
+-	if (ev >= 13) {
+-		*p += 8; /* skip target_max_bytes */
+-		*p += 8; /* skip target_max_objects */
+-		*p += 4; /* skip cache_target_dirty_ratio_micro */
+-		*p += 4; /* skip cache_target_full_ratio_micro */
+-		*p += 4; /* skip cache_min_flush_age */
+-		*p += 4; /* skip cache_min_evict_age */
+-	}
+-
+-	if (ev >=  14) {
+-		/* skip erasure_code_profile */
+-		len = ceph_decode_32(p);
+-		*p += len;
+-	}
++	if (ev >= 13)
++		/* target_max_*, cache_target_*, cache_min_* */
++		ceph_decode_skip_n(p, end, 16 + 8 + 8, bad);
++
++	if (ev >= 14)
++		/* erasure_code_profile */
++		ceph_decode_skip_string(p, end, bad);
+ 
+ 	/*
+ 	 * last_force_op_resend_preluminous, will be overridden if the
+ 	 * map was encoded with RESEND_ON_SPLIT
+ 	 */
+ 	if (ev >= 15)
+-		pi->last_force_request_resend = ceph_decode_32(p);
++		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
+ 	else
+ 		pi->last_force_request_resend = 0;
+ 
+ 	if (ev >= 16)
+-		*p += 4; /* skip min_read_recency_for_promote */
++		/* min_read_recency_for_promote */
++		ceph_decode_skip_32(p, end, bad);
+ 
+ 	if (ev >= 17)
+-		*p += 8; /* skip expected_num_objects */
++		/* expected_num_objects */
++		ceph_decode_skip_64(p, end, bad);
+ 
+ 	if (ev >= 19)
+-		*p += 4; /* skip cache_target_dirty_high_ratio_micro */
++		/* cache_target_dirty_high_ratio_micro */
++		ceph_decode_skip_32(p, end, bad);
+ 
+ 	if (ev >= 20)
+-		*p += 4; /* skip min_write_recency_for_promote */
++		/* min_write_recency_for_promote */
++		ceph_decode_skip_32(p, end, bad);
+ 
+ 	if (ev >= 21)
+-		*p += 1; /* skip use_gmt_hitset */
++		/* use_gmt_hitset */
++		ceph_decode_skip_8(p, end, bad);
+ 
+ 	if (ev >= 22)
+-		*p += 1; /* skip fast_read */
++		/* fast_read */
++		ceph_decode_skip_8(p, end, bad);
+ 
+-	if (ev >= 23) {
+-		*p += 4; /* skip hit_set_grade_decay_rate */
+-		*p += 4; /* skip hit_set_search_last_n */
+-	}
++	if (ev >= 23)
++		/* hit_set_grade_decay_rate, hit_set_search_last_n */
++		ceph_decode_skip_n(p, end, 4 + 4, bad);
+ 
+ 	if (ev >= 24) {
+-		/* skip opts */
+-		*p += 1 + 1; /* versions */
+-		len = ceph_decode_32(p);
+-		*p += len;
++		/* opts (with versions) */
++		ceph_decode_skip_n(p, end, 2, bad);
++		ceph_decode_skip_string(p, end, bad);
+ 	}
+ 
+ 	if (ev >= 25)
+-		pi->last_force_request_resend = ceph_decode_32(p);
++		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
+ 
+ 	/* ignore the rest */
+ 
 
 
 
