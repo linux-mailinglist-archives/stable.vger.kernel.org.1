@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207304-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206703-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D1F9BD09B98
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE5DFD0922A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9C513139B8C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E07B03012652
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47A635B135;
-	Fri,  9 Jan 2026 12:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A785350A37;
+	Fri,  9 Jan 2026 11:59:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXLYiHpf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HoPzENm4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8703E38FA3;
-	Fri,  9 Jan 2026 12:27:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE0BA335561;
+	Fri,  9 Jan 2026 11:59:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961674; cv=none; b=HaIWYK1xtCuheIPPiuRfgQKmrCSkOFkQ4505aX90gR+adHX8SZY/Gg64vfEfkhQVng9CO+j1vi9p2PBEhCYAqTij/qg01ZRa8J1YVsOCA1rVRe83vMwJqeSeSUcn0l0zQ5M7Ac24oYzZDBGVSdDCk2tj14Ht8OJh7bE+qrEMV2s=
+	t=1767959958; cv=none; b=KwnzbmuBBgf7Oph28qt2iw4eVScHEVBGW5lrbvsZ2OUsVRtLcVzGzO/gHEbYX3kt9uAxb8Xb8ZsR6XJhapo4qjFnFKumjcRbLDa3/wgLs4aLCw0ePso1V/WxGlQnfwwmYg6Ado4YtcZu88Gb58iCwEle3ERJ2g6WTzGyUavgpOw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961674; c=relaxed/simple;
-	bh=BDa7bj9uDsbeyKO38m4azPKnQ09ocTWWtjweHgvvIxA=;
+	s=arc-20240116; t=1767959958; c=relaxed/simple;
+	bh=tsut64ycdIVvS0RDKjUxmFT3Kh/4xIo3vT9GQnbzJ1I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X/sS4bF10uMgAPPXAXTHPrFJ9kZzOU/OcgBbMhFJ/7SScyacC5GSm6QYrL4l5O0VDyPpkPUxpV+KBYZ7BVUG8EEjJiSDYt+StYYjxM5DIOz6cGuiz8q3ltzVJT11xTe+YOfjk1tRwjgMsO/7IZkGg1ORO9s++A59d8ypy6zNSZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXLYiHpf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158B8C4CEF1;
-	Fri,  9 Jan 2026 12:27:53 +0000 (UTC)
+	 MIME-Version; b=hMNWAJZyM+JuTgRtMVqunw7YPuwrPaR+flKESbmy5ogq/be0MpbjFuRR1g4nJmipI1EVmmi9ClCGuIFmuG7d6D1i7kAqD9dReAc8b4U3ZTWzhNGlLFAksyaMAX1wcT3+zzxXH4SXi8pVIBCj6jpbZc2DF/dF5Wy12QmfYsLOW8o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HoPzENm4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A833C4CEF1;
+	Fri,  9 Jan 2026 11:59:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961674;
-	bh=BDa7bj9uDsbeyKO38m4azPKnQ09ocTWWtjweHgvvIxA=;
+	s=korg; t=1767959958;
+	bh=tsut64ycdIVvS0RDKjUxmFT3Kh/4xIo3vT9GQnbzJ1I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eXLYiHpfZ4+PdPyQnkl2JZyy6+1ZE+/FYQIHYkpWTQg4LuoFF2cWP/jTaWWHD1ak8
-	 ruKT3cCRKSn5qGQ2enn/nRHMYSVCLB3UNoqFphga67DnS63b7wGQAMkjkcMJipue01
-	 TWVpgOwuPHH9+j3BYcvHEbp9QiCRPKlQN+ybiZoI=
+	b=HoPzENm4aUzivsx6t9IxkEdDZG7fxmVRcQENfue+7sYSkN13/AmC59aYdIXWV9S1A
+	 IoJAxZz2ABtomRnuTqzO6datvh/z00sZKRkxgLzKF8tRq4SVvm1k5KFlsC+jVbCFrQ
+	 s9LjhQ7KAAtkEU1Axu+jsM2Rx7WNBz3jp6m2KPCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Lorenzo Pieralisi <lpieralisi@kernel.org>,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	sparkhuang <huangshaobo3@xiaomi.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 095/634] dt-bindings: PCI: convert amlogic,meson-pcie.txt to dt-schema
-Date: Fri,  9 Jan 2026 12:36:13 +0100
-Message-ID: <20260109112121.009051955@linuxfoundation.org>
+Subject: [PATCH 6.6 235/737] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
+Date: Fri,  9 Jan 2026 12:36:14 +0100
+Message-ID: <20260109112142.838642028@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,246 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Neil Armstrong <neil.armstrong@linaro.org>
+From: sparkhuang <huangshaobo3@xiaomi.com>
 
-[ Upstream commit b80b848bdf56bd402b7a91aea5b77cec93dfe4c2 ]
+[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
 
-Convert the Amlogic Meson AXG DWC PCIe SoC controller bindings to
-dt-schema.
+regulator_supply_alias_list was accessed without any locking in
+regulator_supply_alias(), regulator_register_supply_alias(), and
+regulator_unregister_supply_alias(). Concurrent registration,
+unregistration and lookups can race, leading to:
 
-Link: https://lore.kernel.org/r/20221117-b4-amlogic-bindings-convert-v4-5-34e623dbf789@linaro.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Stable-dep-of: 4813dea9e272 ("dt-bindings: PCI: amlogic: Fix the register name of the DBI region")
+1 use-after-free if an alias entry is removed while being read,
+2 duplicate entries when two threads register the same alias,
+3 inconsistent alias mappings observed by consumers.
+
+Protect all traversals, insertions and deletions on
+regulator_supply_alias_list with the existing regulator_list_mutex.
+
+Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
+Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../bindings/pci/amlogic,axg-pcie.yaml        | 134 ++++++++++++++++++
- .../bindings/pci/amlogic,meson-pcie.txt       |  70 ---------
- 2 files changed, 134 insertions(+), 70 deletions(-)
- create mode 100644 Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
- delete mode 100644 Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt
+ drivers/regulator/core.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-new file mode 100644
-index 0000000000000..a5bd90bc0712e
---- /dev/null
-+++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
-@@ -0,0 +1,134 @@
-+# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
-+%YAML 1.2
-+---
-+$id: http://devicetree.org/schemas/pci/amlogic,axg-pcie.yaml#
-+$schema: http://devicetree.org/meta-schemas/core.yaml#
-+
-+title: Amlogic Meson AXG DWC PCIe SoC controller
-+
-+maintainers:
-+  - Neil Armstrong <neil.armstrong@linaro.org>
-+
-+description:
-+  Amlogic Meson PCIe host controller is based on the Synopsys DesignWare PCI core.
-+
-+allOf:
-+  - $ref: /schemas/pci/pci-bus.yaml#
-+  - $ref: /schemas/pci/snps,dw-pcie-common.yaml#
-+
-+# We need a select here so we don't match all nodes with 'snps,dw-pcie'
-+select:
-+  properties:
-+    compatible:
-+      enum:
-+        - amlogic,axg-pcie
-+        - amlogic,g12a-pcie
-+  required:
-+    - compatible
-+
-+properties:
-+  compatible:
-+    items:
-+      - enum:
-+          - amlogic,axg-pcie
-+          - amlogic,g12a-pcie
-+      - const: snps,dw-pcie
-+
-+  reg:
-+    items:
-+      - description: External local bus interface registers
-+      - description: Meson designed configuration registers
-+      - description: PCIe configuration space
-+
-+  reg-names:
-+    items:
-+      - const: elbi
-+      - const: cfg
-+      - const: config
-+
-+  interrupts:
-+    maxItems: 1
-+
-+  clocks:
-+    items:
-+      - description: PCIe GEN 100M PLL clock
-+      - description: PCIe RC clock gate
-+      - description: PCIe PHY clock
-+
-+  clock-names:
-+    items:
-+      - const: pclk
-+      - const: port
-+      - const: general
-+
-+  phys:
-+    maxItems: 1
-+
-+  phy-names:
-+    const: pcie
-+
-+  resets:
-+    items:
-+      - description: Port Reset
-+      - description: Shared APB reset
-+
-+  reset-names:
-+    items:
-+      - const: port
-+      - const: apb
-+
-+  num-lanes:
-+    const: 1
-+
-+  power-domains:
-+    maxItems: 1
-+
-+required:
-+  - compatible
-+  - reg
-+  - reg-names
-+  - interrupts
-+  - clock
-+  - clock-names
-+  - "#address-cells"
-+  - "#size-cells"
-+  - "#interrupt-cells"
-+  - interrupt-map
-+  - interrupt-map-mask
-+  - ranges
-+  - bus-range
-+  - device_type
-+  - num-lanes
-+  - phys
-+  - phy-names
-+  - resets
-+  - reset-names
-+
-+unevaluatedProperties: false
-+
-+examples:
-+  - |
-+    #include <dt-bindings/interrupt-controller/irq.h>
-+    #include <dt-bindings/interrupt-controller/arm-gic.h>
-+    pcie: pcie@f9800000 {
-+        compatible = "amlogic,axg-pcie", "snps,dw-pcie";
-+        reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
-+        reg-names = "elbi", "cfg", "config";
-+        interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
-+        clocks = <&pclk>, <&clk_port>, <&clk_phy>;
-+        clock-names = "pclk", "port", "general";
-+        resets = <&reset_pcie_port>, <&reset_pcie_apb>;
-+        reset-names = "port", "apb";
-+        phys = <&pcie_phy>;
-+        phy-names = "pcie";
-+        #interrupt-cells = <1>;
-+        interrupt-map-mask = <0 0 0 0>;
-+        interrupt-map = <0 0 0 0 &gic GIC_SPI 179 IRQ_TYPE_EDGE_RISING>;
-+        bus-range = <0x0 0xff>;
-+        #address-cells = <3>;
-+        #size-cells = <2>;
-+        device_type = "pci";
-+        num-lanes = <1>;
-+        ranges = <0x82000000 0 0 0xf9c00000 0 0x00300000>;
-+    };
-+...
-diff --git a/Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt b/Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt
-deleted file mode 100644
-index c3a75ac6e59d1..0000000000000
---- a/Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt
-+++ /dev/null
-@@ -1,70 +0,0 @@
--Amlogic Meson AXG DWC PCIE SoC controller
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 465f4f870162f..23cdf220ca7db 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1970,6 +1970,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
+ {
+ 	struct regulator_supply_alias *map;
+ 
++	mutex_lock(&regulator_list_mutex);
+ 	map = regulator_find_supply_alias(*dev, *supply);
+ 	if (map) {
+ 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
+@@ -1978,6 +1979,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
+ 		*dev = map->alias_dev;
+ 		*supply = map->alias_supply;
+ 	}
++	mutex_unlock(&regulator_list_mutex);
+ }
+ 
+ static int regulator_match(struct device *dev, const void *data)
+@@ -2456,22 +2458,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
+ 				    const char *alias_id)
+ {
+ 	struct regulator_supply_alias *map;
++	struct regulator_supply_alias *new_map;
+ 
+-	map = regulator_find_supply_alias(dev, id);
+-	if (map)
+-		return -EEXIST;
 -
--Amlogic Meson PCIe host controller is based on the Synopsys DesignWare PCI core.
--It shares common functions with the PCIe DesignWare core driver and
--inherits common properties defined in
--Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml.
+-	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
+-	if (!map)
++	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
++	if (!new_map)
+ 		return -ENOMEM;
+ 
+-	map->src_dev = dev;
+-	map->src_supply = id;
+-	map->alias_dev = alias_dev;
+-	map->alias_supply = alias_id;
 -
--Additional properties are described here:
--
--Required properties:
--- compatible:
--	should contain :
--	- "amlogic,axg-pcie" for AXG SoC Family
--	- "amlogic,g12a-pcie" for G12A SoC Family
--	to identify the core.
--- reg:
--	should contain the configuration address space.
--- reg-names: Must be
--	- "elbi"	External local bus interface registers
--	- "cfg"		Meson specific registers
--	- "config"	PCIe configuration space
--- reset-gpios: The GPIO to generate PCIe PERST# assert and deassert signal.
--- clocks: Must contain an entry for each entry in clock-names.
--- clock-names: Must include the following entries:
--	- "pclk"       PCIe GEN 100M PLL clock
--	- "port"       PCIe_x(A or B) RC clock gate
--	- "general"    PCIe Phy clock
--- resets: phandle to the reset lines.
--- reset-names: must contain "port" and "apb"
--       - "port"        Port A or B reset
--       - "apb"         Share APB reset
--- phys: should contain a phandle to the PCIE phy
--- phy-names: must contain "pcie"
--
--- device_type:
--	should be "pci". As specified in snps,dw-pcie.yaml
--
--
--Example configuration:
--
--	pcie: pcie@f9800000 {
--			compatible = "amlogic,axg-pcie", "snps,dw-pcie";
--			reg = <0x0 0xf9800000 0x0 0x400000
--					0x0 0xff646000 0x0 0x2000
--					0x0 0xf9f00000 0x0 0x100000>;
--			reg-names = "elbi", "cfg", "config";
--			reset-gpios = <&gpio GPIOX_19 GPIO_ACTIVE_HIGH>;
--			interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
--			#interrupt-cells = <1>;
--			interrupt-map-mask = <0 0 0 0>;
--			interrupt-map = <0 0 0 0 &gic GIC_SPI 179 IRQ_TYPE_EDGE_RISING>;
--			bus-range = <0x0 0xff>;
--			#address-cells = <3>;
--			#size-cells = <2>;
--			device_type = "pci";
--			ranges = <0x82000000 0 0 0x0 0xf9c00000 0 0x00300000>;
--
--			clocks = <&clkc CLKID_USB
--					&clkc CLKID_PCIE_A
--					&clkc CLKID_PCIE_CML_EN0>;
--			clock-names = "general",
--					"pclk",
--					"port";
--			resets = <&reset RESET_PCIE_A>,
--				<&reset RESET_PCIE_APB>;
--			reset-names = "port",
--					"apb";
--			phys = <&pcie_phy>;
--			phy-names = "pcie";
--	};
+-	list_add(&map->list, &regulator_supply_alias_list);
++	mutex_lock(&regulator_list_mutex);
++	map = regulator_find_supply_alias(dev, id);
++	if (map) {
++		mutex_unlock(&regulator_list_mutex);
++		kfree(new_map);
++		return -EEXIST;
++	}
+ 
++	new_map->src_dev = dev;
++	new_map->src_supply = id;
++	new_map->alias_dev = alias_dev;
++	new_map->alias_supply = alias_id;
++	list_add(&new_map->list, &regulator_supply_alias_list);
++	mutex_unlock(&regulator_list_mutex);
+ 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
+ 		id, dev_name(dev), alias_id, dev_name(alias_dev));
+ 
+@@ -2491,11 +2497,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
+ {
+ 	struct regulator_supply_alias *map;
+ 
++	mutex_lock(&regulator_list_mutex);
+ 	map = regulator_find_supply_alias(dev, id);
+ 	if (map) {
+ 		list_del(&map->list);
+ 		kfree(map);
+ 	}
++	mutex_unlock(&regulator_list_mutex);
+ }
+ EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
+ 
 -- 
 2.51.0
 
