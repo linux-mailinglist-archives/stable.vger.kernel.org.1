@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-207643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207654-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C91D0A33B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:07:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 460D3D0A362
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:07:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C2C1B304F639
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5A628302F785
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7F9C33C53A;
-	Fri,  9 Jan 2026 12:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF9C335BCD;
+	Fri,  9 Jan 2026 12:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MONQg/a/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sGWZhaBu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABC6B1A2545;
-	Fri,  9 Jan 2026 12:43:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3CF53590C4;
+	Fri,  9 Jan 2026 12:44:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962634; cv=none; b=qj+tvs+hXRvRyiqX4k+bK9BrkDrvf22yJBpUId5vGlyXfK+6PM1MyWTFn/8lTWuGze8RXoAVqtbX87yr3Tv4nomwBSmZKOsxfOy9iJX4HdifNm07Woiu1EDPtqSVPfK9/yNjkd9PzoQp0HtjNtuqq8Hv4KmAwodbRTjGpV3PPKw=
+	t=1767962665; cv=none; b=hakUJBNMJQqpU/2fm1AQqcDDlz06KJlc/rO/9KgsdzcsiedRmSn1m0q0UJlQZ18c07HBIsRB1SjVzg3uBgQMNVx0e43nkJCksr+JmDhxF2MWEzhrWB0VXuz9bv8vqx3KrZ0g69wlsH43xuWyFQFX4fWaBOqH5aA1QpD8uW3jwNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962634; c=relaxed/simple;
-	bh=wDpGKE/30esVBeQclq0N++/ZUSD3FJvExmxmXOdXd2g=;
+	s=arc-20240116; t=1767962665; c=relaxed/simple;
+	bh=+oWiy4JT5rtsGwFhypmu3LRp61YBcf9MX3nXtis62o4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iboQQoSRi7ZkYbTvs9MYyeKxeEgUpa8MWsioP5jaVYEqr9oZ4SP878vatAMXZtOA+8Dy0sHOU91ei9aw5vAi+wOHQ24+hgBu/APV9wlI7kggjBFxokQc0k4qQqrE7ULbIceEPFIKopX2ksTo2+kXtf0B38y9GR3IkojByKOgo4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MONQg/a/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36FF5C4CEF1;
-	Fri,  9 Jan 2026 12:43:54 +0000 (UTC)
+	 MIME-Version; b=QOEYfSnbNJh7z24sTgMdVw03h6pMrNDPGMabynYiz3LPkRMd63R/UJXUtpzFOVggNgDFuGWzzpya979uTQtVdOmAB/QDIo0Cw97xJbRQ7+GCXQ84qwqc00iunWsEPdE5ZPKmqn4rGfO8lwB4I9W1N1ZR6kk/mfnsV5ZcTDqNwyI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sGWZhaBu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 379E6C4CEF1;
+	Fri,  9 Jan 2026 12:44:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962634;
-	bh=wDpGKE/30esVBeQclq0N++/ZUSD3FJvExmxmXOdXd2g=;
+	s=korg; t=1767962665;
+	bh=+oWiy4JT5rtsGwFhypmu3LRp61YBcf9MX3nXtis62o4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MONQg/a/JVwJacAJMOUTStOZjGfNqqQzy+TGLjek+FFvK8d7f1tjWK93P9YI1JSA7
-	 u/ZFIaFphWZVPuGMTbFxFGGlzr+wuGGuWNOVLcGGOznq8xjhTN4Nx++WcE4U7M/8Hf
-	 oFqQ5xqLjHfCyoClkSjB93iVbnTDOpa0lQkoaBRw=
+	b=sGWZhaBuwX9+cGRz97bXnE5Z3UdnWV8ZgnYgvXtHxkWI27RFMq44tdHcQqZ/DoTQg
+	 wkbJMMBMaAEk73LANgOTgLu/PSTj4bdtA8mrHvQVXnA4z6KDGkvn/P5YVKTIktUVAh
+	 oetfFy2J/2q7tp/v04otpv64FquHxtpJZIq4/Zqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 435/634] RDMA/bnxt_re: Fix IB_SEND_IP_CSUM handling in post_send
-Date: Fri,  9 Jan 2026 12:41:53 +0100
-Message-ID: <20260109112133.911316582@linuxfoundation.org>
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 6.1 445/634] ASoC: qcom: q6apm-dai: set flags to reflect correct operation of appl_ptr
+Date: Fri,  9 Jan 2026 12:42:03 +0100
+Message-ID: <20260109112134.282965889@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,59 +65,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit f01765a2361323e78e3d91b1cb1d5527a83c5cf7 ]
+commit 950a4e5788fc7dc6e8e93614a7d4d0449c39fb8d upstream.
 
-The bnxt_re SEND path checks wr->send_flags to enable features such as
-IP checksum offload. However, send_flags is a bitmask and may contain
-multiple flags (e.g. IB_SEND_SIGNALED | IB_SEND_IP_CSUM), while the
-existing code uses a switch() statement that only matches when
-send_flags is exactly IB_SEND_IP_CSUM.
+Driver does not expect the appl_ptr to move backward and requires
+explict sync. Make sure that the userspace does not do appl_ptr rewinds
+by specifying the correct flags in pcm_info.
 
-As a result, checksum offload is not enabled when additional SEND
-flags are present.
+Without this patch, the result could be a forever loop as current logic assumes
+that appl_ptr can only move forward.
 
-Replace the switch() with a bitmask test:
-
-    if (wr->send_flags & IB_SEND_IP_CSUM)
-
-This ensures IP checksum offload is enabled correctly when multiple
-SEND flags are used.
-
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251219093308.2415620-1-alok.a.tiwari@oracle.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 3d4a4411aa8b ("ASoC: q6apm-dai: schedule all available frames to avoid dsp under-runs")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ sound/soc/qcom/qdsp6/q6apm-dai.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 94c34ba103ea..edd1457a99b2 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2650,14 +2650,9 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
- 				wqe.rawqp1.lflags |=
- 					SQ_SEND_RAWETH_QP1_LFLAGS_ROCE_CRC;
- 			}
--			switch (wr->send_flags) {
--			case IB_SEND_IP_CSUM:
-+			if (wr->send_flags & IB_SEND_IP_CSUM)
- 				wqe.rawqp1.lflags |=
- 					SQ_SEND_RAWETH_QP1_LFLAGS_IP_CHKSUM;
--				break;
--			default:
--				break;
--			}
- 			fallthrough;
- 		case IB_WR_SEND_WITH_INV:
- 			rc = bnxt_re_build_send_wqe(qp, wr, &wqe);
--- 
-2.51.0
-
+--- a/sound/soc/qcom/qdsp6/q6apm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6apm-dai.c
+@@ -66,6 +66,7 @@ static struct snd_pcm_hardware q6apm_dai
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_48000,
+@@ -85,6 +86,7 @@ static struct snd_pcm_hardware q6apm_dai
+ 	.info =                 (SNDRV_PCM_INFO_MMAP | SNDRV_PCM_INFO_BLOCK_TRANSFER |
+ 				 SNDRV_PCM_INFO_MMAP_VALID | SNDRV_PCM_INFO_INTERLEAVED |
+ 				 SNDRV_PCM_INFO_PAUSE | SNDRV_PCM_INFO_RESUME |
++				 SNDRV_PCM_INFO_NO_REWINDS | SNDRV_PCM_INFO_SYNC_APPLPTR |
+ 				 SNDRV_PCM_INFO_BATCH),
+ 	.formats =              (SNDRV_PCM_FMTBIT_S16_LE | SNDRV_PCM_FMTBIT_S24_LE),
+ 	.rates =                SNDRV_PCM_RATE_8000_192000,
 
 
 
