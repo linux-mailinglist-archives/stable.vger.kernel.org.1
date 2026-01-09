@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 785E5D09605
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id BBD75D09D57
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17A7730DF725
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 150AD303271A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9127333CE9A;
-	Fri,  9 Jan 2026 12:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1EC13191D2;
+	Fri,  9 Jan 2026 12:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IXDbux7R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bl+4+LGd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5485C33D50F;
-	Fri,  9 Jan 2026 12:05:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 950D3336EDA;
+	Fri,  9 Jan 2026 12:32:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960303; cv=none; b=m7DHThrAfuk1zLswoYUOR+zakdzN/R0p8tl2Ih2tREN1KMXYBcpevHi91LXcZHOHp/PnlI6pSrM8uWuJRF4+SEx7fFDh5mFUJvu8ftVkahoxBRuiCkhmsHa8bsPv1vscXjkrqjV2OmFYtWjCsgin/8KsaU2MAXEaiZwDWFs74aY=
+	t=1767961927; cv=none; b=A2uMdqaJQUzGFNmFuRL05nOgYtfhCh7TL/BhTXGxs9Dgv6tfUVZHhd6RKCRVN4W9ayrVMHf91fyLRNLz2NKkWJwW2icwsfNMWwDakta8lpzPq7L6GKIeEk3XxawTlNmNbze3x/jYPXe/yJGacgvzZ0KzDVYs0JoQJuYvT7o0qtQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960303; c=relaxed/simple;
-	bh=5KBJt7nqAMNDchb4528VJHS9YCD5x9/STsK/vttw8RY=;
+	s=arc-20240116; t=1767961927; c=relaxed/simple;
+	bh=pCt9L5GlTOzLmmIIJNUbXP3A7Cx8c8vvWydPlZtRCtw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bDq3KbqMCdMd4T+rB1m3hWYu/1FJW0VQMbwAxAdQKCtUQD0SclhJPPK83McLImsuYYBavjB7x/t0gSFn0V17kq7h9v4LREtCoNBiIZ6K/GaTmIYKnclmTs3a4piyevWRXedLTULQhUctqI93F61JPqzSKzjt0+Xzpkg4PoqDBS8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IXDbux7R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1DF2C4CEF1;
-	Fri,  9 Jan 2026 12:05:02 +0000 (UTC)
+	 MIME-Version; b=oC+s/LGtw2mPpHlwAKjy4K6SiaHxYca0SyJEI6f74d014tkeZjbFdkpPIKv6HGeeRyD9kkd2O9FccJtOzDZ/7woyLytlbqJWe5YrpjgexgN7iWck87kUToNQvEpvhHNsST/Y+jh+Ztf0JREzzA8mSNN8XYi+Pj+YnaamDHRkg6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bl+4+LGd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DFC9C4CEF1;
+	Fri,  9 Jan 2026 12:32:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960303;
-	bh=5KBJt7nqAMNDchb4528VJHS9YCD5x9/STsK/vttw8RY=;
+	s=korg; t=1767961927;
+	bh=pCt9L5GlTOzLmmIIJNUbXP3A7Cx8c8vvWydPlZtRCtw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IXDbux7R3Yg/9YX4LprlBW6s3h82npVoQ//1Fu8c/QzC7hfNo48yPRlvVJ7aXVfxG
-	 DpPu7cpnKC4Aw/JHtqiH0bZQtouhvJbi+hcy58DCEYxJ8c11GRh6e1/ArEmh3IS489
-	 wcEffm1nb6noWbh4k/RKnMdOATY0avxPntrB1XK0=
+	b=bl+4+LGdwiHux5KCiS/QP1QCcGpcOIDF6STZMDcQZfsch5tvtC4kdQX15rgWQ4bv4
+	 xqrU7RbOai9c6bByBD5Vk/lcHefK9YkFyYjbJ0/4byDZ1lRQ4S9PZbQT9aJr1n7U3I
+	 0UeZwAB/C9XhFTcEhRinEJIaHN/cXZMkwt7XheK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andreas Gruenbacher <agruenba@redhat.com>,
+	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
+	Helge Deller <deller@gmx.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 324/737] gfs2: fix remote evict for read-only filesystems
-Date: Fri,  9 Jan 2026 12:37:43 +0100
-Message-ID: <20260109112146.186162760@linuxfoundation.org>
+Subject: [PATCH 6.1 186/634] fbdev: ssd1307fb: fix potential page leak in ssd1307fb_probe()
+Date: Fri,  9 Jan 2026 12:37:44 +0100
+Message-ID: <20260109112124.438940796@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andreas Gruenbacher <agruenba@redhat.com>
+From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
 
-[ Upstream commit 64c10ed9274bc46416f502afea48b4ae11279669 ]
+[ Upstream commit 164312662ae9764b83b84d97afb25c42eb2be473 ]
 
-When a node tries to delete an inode, it first requests exclusive access
-to the iopen glock.  This triggers demote requests on all remote nodes
-currently holding the iopen glock.  To satisfy those requests, the
-remote nodes evict the inode in question, or they poke the corresponding
-inode glock to signal that the inode is still in active use.
+The page allocated for vmem using __get_free_pages() is not freed on the
+error paths after it. Fix that by adding a corresponding __free_pages()
+call to the error path.
 
-This behavior doesn't depend on whether or not a filesystem is
-read-only, so remove the incorrect read-only check.
-
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memory.")
+Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/glops.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/video/fbdev/ssd1307fb.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/gfs2/glops.c b/fs/gfs2/glops.c
-index 1c854d4e2d491..4a169c60bce65 100644
---- a/fs/gfs2/glops.c
-+++ b/fs/gfs2/glops.c
-@@ -640,8 +640,7 @@ static void iopen_go_callback(struct gfs2_glock *gl, bool remote)
- 	struct gfs2_inode *ip = gl->gl_object;
- 	struct gfs2_sbd *sdp = gl->gl_name.ln_sbd;
+diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
+index 5c891aa00d596..b9fefa844574e 100644
+--- a/drivers/video/fbdev/ssd1307fb.c
++++ b/drivers/video/fbdev/ssd1307fb.c
+@@ -732,7 +732,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 	if (!ssd1307fb_defio) {
+ 		dev_err(dev, "Couldn't allocate deferred io.\n");
+ 		ret = -ENOMEM;
+-		goto fb_alloc_error;
++		goto fb_defio_error;
+ 	}
  
--	if (!remote || sb_rdonly(sdp->sd_vfs) ||
--	    test_bit(SDF_KILL, &sdp->sd_flags))
-+	if (!remote || test_bit(SDF_KILL, &sdp->sd_flags))
- 		return;
- 
- 	if (gl->gl_demote_state == LM_ST_UNLOCKED &&
+ 	ssd1307fb_defio->delay = HZ / refreshrate;
+@@ -812,6 +812,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
+ 		regulator_disable(par->vbat_reg);
+ reset_oled_error:
+ 	fb_deferred_io_cleanup(info);
++fb_defio_error:
++	__free_pages(vmem, get_order(vmem_size));
+ fb_alloc_error:
+ 	framebuffer_release(info);
+ 	return ret;
 -- 
 2.51.0
 
