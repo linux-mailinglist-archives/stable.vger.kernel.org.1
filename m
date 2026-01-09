@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-206614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206582-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6E56D092FF
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB9CD091F8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:58:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F162F308AC5A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 76AC230AB4AB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:53:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6895F3590C6;
-	Fri,  9 Jan 2026 11:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6D433B6F1;
+	Fri,  9 Jan 2026 11:53:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBqA6Jen"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MnuI8oxj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B9862F12D4;
-	Fri,  9 Jan 2026 11:55:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A62802F12D4;
+	Fri,  9 Jan 2026 11:53:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959707; cv=none; b=OcQ3XpxHMtW3im4ioDy++fiS17UDZdNfqSzRMDtA60VgutjmcdUyKvXMrcAafFk/mbybej83Gvuwckpa+HAFo8HYYtdL03u88RqG8ejWAZWpKyCr9ydjoe7j+YLHuHHeK+05mhUyohm0idEJWJj4pA1780/y5dBdpeGIlgNEFrw=
+	t=1767959615; cv=none; b=PZqRK8lB6k86/lfFbpN4FOJ55pdGoYB6JRBeceD0p5TIkJXaMr/MVrR2sOPZNDIEt1JBMGlj9RXkl8/opzwoR4tcfT8hI47YX1vbEFkCh3Up5V3tLcXO75/MPKPXeDdLGcCEVcxvAdngjEBQSpuQVMUjn8SpknFYK0iCIlmoWuc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959707; c=relaxed/simple;
-	bh=heQh4Gmu2e364sIdiK+yU4Tyim3+t9qmGHXKhZUj9yc=;
+	s=arc-20240116; t=1767959615; c=relaxed/simple;
+	bh=EbBIxW4oZRfblB34ZskzVYmMgur95tLBvSIcS+S5PYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oosfz8jyZkIpSRmPOz25xmblQQ7ozJI9k6/uBkOmgkIJ6vaJ+CfHhZKrAxR18grZwtmEUAC/3n0btZe2a7tdZfKgcpBZQCOjYL1AX8NXp20hOHaJOJ7o03y2Tq96I4QZjw6dzMRtECH1JgIshTrL5/BLx2ZrGxdV4Cgzt6WOCjk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBqA6Jen; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7DD5C4CEF1;
-	Fri,  9 Jan 2026 11:55:06 +0000 (UTC)
+	 MIME-Version; b=DJ3j4OgxYWNAuJRVbOGqDZXahPr47ATMe6cOBR/XndC13/2P7SKwyvQrl8Nlg3oznmj1KfVUmdysUVRHrEXgLilheaJp3SCdkgdArJ3ct9IkSaci4pgdRnLOl4uQTs4UObZ2X0SZeGuER+YzS+/sqXWAsPjQYqUR0J5ZrbvumEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MnuI8oxj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2461AC4CEF1;
+	Fri,  9 Jan 2026 11:53:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959707;
-	bh=heQh4Gmu2e364sIdiK+yU4Tyim3+t9qmGHXKhZUj9yc=;
+	s=korg; t=1767959615;
+	bh=EbBIxW4oZRfblB34ZskzVYmMgur95tLBvSIcS+S5PYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBqA6JenzehiBgljyJIF+sXPEsBF/8UtpEEv5TIzKxK5hzdhRI+4HrR/u7XHQAzF1
-	 MY622IubDHOqqKfeLC+Pyk3vxkjNQYhwxfrmZztunu1D6Jdn9mdmDxOxF4J5hiKnKt
-	 6Ag+DeUtLgdYXtlFnXVRuRWRXGNY2kHQPKvnhM8Q=
+	b=MnuI8oxjK59/YfUEA372Pu84ecpZgaga/+L8FCMsyqZ5EgxXs24TAxEBbB1tLOMUf
+	 4Wxp9sc77AvqQ+qRarc+pHg3m8MsDA9Hr3+AIAKdqAhq/RSfWnthv4cCQurve7wFLs
+	 odGT9yxoScNY51apCoS5KrdAO+aUBihvwvuWYFpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Murad Masimov <m.masimov@mt-integration.ru>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
 	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 114/737] power: supply: rt9467: Prevent using uninitialized local variable in rt9467_set_value_from_ranges()
-Date: Fri,  9 Jan 2026 12:34:13 +0100
-Message-ID: <20260109112138.293256749@linuxfoundation.org>
+Subject: [PATCH 6.6 115/737] power: supply: wm831x: Check wm831x_set_bits() return value
+Date: Fri,  9 Jan 2026 12:34:14 +0100
+Message-ID: <20260109112138.330981464@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,37 +64,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Murad Masimov <m.masimov@mt-integration.ru>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 15aca30cc6c69806054b896a2ccf7577239cb878 ]
+[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
 
-There is a typo in rt9467_set_value_from_ranges() that can cause leaving local
-variable sel with an undefined value which is then used in regmap_field_write().
+Since wm831x_set_bits() may return error, log failure and exit from
+wm831x_usb_limit_change() in such case.
 
 Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 6f7f70e3a8dd ("power: supply: rt9467: Add Richtek RT9467 charger driver")
-Signed-off-by: Murad Masimov <m.masimov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009145308.1830893-1-m.masimov@mt-integration.ru
+Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
 Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/rt9467-charger.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/wm831x_power.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/power/supply/rt9467-charger.c b/drivers/power/supply/rt9467-charger.c
-index 1462d630e399c..1e16593267511 100644
---- a/drivers/power/supply/rt9467-charger.c
-+++ b/drivers/power/supply/rt9467-charger.c
-@@ -376,7 +376,7 @@ static int rt9467_set_value_from_ranges(struct rt9467_chg_data *data,
- 	if (rsel == RT9467_RANGE_VMIVR) {
- 		ret = linear_range_get_selector_high(range, value, &sel, &found);
- 		if (ret)
--			value = range->max_sel;
-+			sel = range->max_sel;
- 	} else {
- 		linear_range_get_selector_within(range, value, &sel);
- 	}
+diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
+index 82e31066c746e..bbae77982d086 100644
+--- a/drivers/power/supply/wm831x_power.c
++++ b/drivers/power/supply/wm831x_power.c
+@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 							 struct wm831x_power,
+ 							 usb_notify);
+ 	unsigned int i, best;
++	int ret;
+ 
+ 	/* Find the highest supported limit */
+ 	best = 0;
+@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 	dev_dbg(wm831x_power->wm831x->dev,
+ 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
+ 
+-	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
+-		        WM831X_USB_ILIM_MASK, best);
++	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
++			      WM831X_USB_ILIM_MASK, best);
++	if (ret < 0) {
++		dev_err(wm831x_power->wm831x->dev,
++			"Failed to set USB current limit: %d\n", ret);
++		return ret;
++	}
+ 
+ 	return 0;
+ }
 -- 
 2.51.0
 
