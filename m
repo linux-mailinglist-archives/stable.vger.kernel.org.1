@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206644-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACCCFD09278
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:54 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEC16D09B02
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:32:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 998863019B8D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AFDF430A3E80
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8747D31A7EA;
-	Fri,  9 Jan 2026 11:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4D9335BDCD;
+	Fri,  9 Jan 2026 12:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNNf3T5E"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILVd/WcH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48671335561;
-	Fri,  9 Jan 2026 11:56:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 775D135BDB9;
+	Fri,  9 Jan 2026 12:26:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959791; cv=none; b=nn1cAml2AGzf+GSIAaBQwerRxKpjUfqDz0mlnK60DkpXTSQ2HjCz0a2DHnRCafWhH5i8nxSHybjauuHITd5u5pGh0F/0UblNDDjSEOGApw984tk6ey2ge94vllZnShha13o5r38Zo+NuGn5EcI9Ufbzhb46QHm/kJ3/7dQ2VuEQ=
+	t=1767961595; cv=none; b=nQkSjn9FOC0y/9U1FUH+cblwekNP7M1e7KsDRkO7o4d4cWH/vzEepdub2mlw/69SyUpsIU1ZcW916CxkNJIDgAjnjhKQX18Ms1bUzN2dGRJ6Ql4lqrgl83L6SQumiw1KU2R5o+Zb+/fgiUVmq4ZhjvnYOqajy4e9dEwwQ6JtWoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959791; c=relaxed/simple;
-	bh=4NYoMnBG2lHhaOYipHZBAPteiswGp7z/lvPOy4ocaMM=;
+	s=arc-20240116; t=1767961595; c=relaxed/simple;
+	bh=KIUldL/VWWJw7lH30LykBsjersQ1K9ivD2baWxyYRCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRH4dzN2p8nH2218sBHCt6toYVZQGXuRM3ee7WjCrM4Hw5ZYlscjJ7QNMfbBPKDS6OjoLADcs9p1fl8yUxgNEZX3ZGmJe/RU6mKj22Zbv0IF/BveYYoTNYxH6JLYOaK7FnisQfHkLI3TD/86u0K4GwONh0ZQrXkbHs5ojBQ8xE8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNNf3T5E; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7D3AC4CEF1;
-	Fri,  9 Jan 2026 11:56:30 +0000 (UTC)
+	 MIME-Version; b=TaUNdbbxV4xS/RhIES3eRTy+X811kwvfyK1XN8Od6BCEsrKUqZtiucGGfpgUqXrbQHwh/Gw0LZX2CnEIOWw4iiJ4Q4MxydkgfFYj8/DocdXkuj/cmRebbHYbxsrbNumpG0Bee+IP6GFL7ybFY8K1ZJhi5b03S7cmkQkHOvLhZzc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILVd/WcH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DC0C4CEF1;
+	Fri,  9 Jan 2026 12:26:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959791;
-	bh=4NYoMnBG2lHhaOYipHZBAPteiswGp7z/lvPOy4ocaMM=;
+	s=korg; t=1767961595;
+	bh=KIUldL/VWWJw7lH30LykBsjersQ1K9ivD2baWxyYRCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNNf3T5E+VLrNxn/P9rTEmklpZaDi6aF3N4bK7pwf2bC571dnaeDAC6mZs9Wo271Q
-	 iPrXou0ZCfzizM0nJl2K2MkKBRalTS6VEsfkEy4ZpAR3KImWcLigzEf/WeHnB8Ji8N
-	 Hj80Mlbch/uPB5S8HRuf0Z6dHwk84SUhkm+79meY=
+	b=ILVd/WcHDuUdc9KY5UIPkeBhl/D3MZvp0fQiucNfjXfX+X/sIVnz3sc/nYcZUcoy/
+	 j/6zUKzEAMUb5OLdLugltwxRVD7KfD/mOlf8PxcMVYluZXTPNw2BCWERqMDFqofIPu
+	 7SyCP16YVaOq3r6V21gUEcud9DksDO/6LO4UKtI8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Garri Djavadyan <g.djavadyan@gmail.com>,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	David Ahern <dsahern@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 175/737] ipv6: clear RA flags when adding a static route
+	syzbot+7811bb68a317954a0347@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 036/634] comedi: multiq3: sanitize config options in multiq3_attach()
 Date: Fri,  9 Jan 2026 12:35:14 +0100
-Message-ID: <20260109112140.574945818@linuxfoundation.org>
+Message-ID: <20260109112118.806506405@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit f72514b3c5698e4b900b25345e09f9ed33123de6 ]
+commit f24c6e3a39fa355dabfb684c9ca82db579534e72 upstream.
 
-When an IPv6 Router Advertisement (RA) is received for a prefix, the
-kernel creates the corresponding on-link route with flags RTF_ADDRCONF
-and RTF_PREFIX_RT configured and RTF_EXPIRES if lifetime is set.
+Syzbot identified an issue [1] in multiq3_attach() that induces a
+task timeout due to open() or COMEDI_DEVCONFIG ioctl operations,
+specifically, in the case of multiq3 driver.
 
-If later a user configures a static IPv6 address on the same prefix the
-kernel clears the RTF_EXPIRES flag but it doesn't clear the RTF_ADDRCONF
-and RTF_PREFIX_RT. When the next RA for that prefix is received, the
-kernel sees the route as RA-learned and wrongly configures back the
-lifetime. This is problematic because if the route expires, the static
-address won't have the corresponding on-link route.
+This problem arose when syzkaller managed to craft weird configuration
+options used to specify the number of channels in encoder subdevice.
+If a particularly great number is passed to s->n_chan in
+multiq3_attach() via it->options[2], then multiple calls to
+multiq3_encoder_reset() at the end of driver-specific attach() method
+will be running for minutes, thus blocking tasks and affected devices
+as well.
 
-This fix clears the RTF_ADDRCONF and RTF_PREFIX_RT flags preventing that
-the lifetime is configured when the next RA arrives. If the static
-address is deleted, the route becomes RA-learned again.
+While this issue is most likely not too dangerous for real-life
+devices, it still makes sense to sanitize configuration inputs. Enable
+a sensible limit on the number of encoder chips (4 chips max, each
+with 2 channels) to stop this behaviour from manifesting.
 
-Fixes: 14ef37b6d00e ("ipv6: fix route lookup in addrconf_prefix_rcv()")
-Reported-by: Garri Djavadyan <g.djavadyan@gmail.com>
-Closes: https://lore.kernel.org/netdev/ba807d39aca5b4dcf395cc11dca61a130a52cfd3.camel@gmail.com/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20251115095939.6967-1-fmancera@suse.de
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[1] Syzbot crash:
+INFO: task syz.2.19:6067 blocked for more than 143 seconds.
+...
+Call Trace:
+ <TASK>
+ context_switch kernel/sched/core.c:5254 [inline]
+ __schedule+0x17c4/0x4d60 kernel/sched/core.c:6862
+ __schedule_loop kernel/sched/core.c:6944 [inline]
+ schedule+0x165/0x360 kernel/sched/core.c:6959
+ schedule_preempt_disabled+0x13/0x30 kernel/sched/core.c:7016
+ __mutex_lock_common kernel/locking/mutex.c:676 [inline]
+ __mutex_lock+0x7e6/0x1350 kernel/locking/mutex.c:760
+ comedi_open+0xc0/0x590 drivers/comedi/comedi_fops.c:2868
+ chrdev_open+0x4cc/0x5e0 fs/char_dev.c:414
+ do_dentry_open+0x953/0x13f0 fs/open.c:965
+ vfs_open+0x3b/0x340 fs/open.c:1097
+...
+
+Reported-by: syzbot+7811bb68a317954a0347@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7811bb68a317954a0347
+Fixes: 77e01cdbad51 ("Staging: comedi: add multiq3 driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Reviewed-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20251023132205.395753-1-n.zhandarovich@fintech.ru
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/ip6_fib.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/comedi/drivers/multiq3.c |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index ab84e2dd682f8..646ff1276aff2 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -1136,6 +1136,10 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 					fib6_set_expires(iter, rt->expires);
- 					fib6_add_gc_list(iter);
- 				}
-+				if (!(rt->fib6_flags & (RTF_ADDRCONF | RTF_PREFIX_RT))) {
-+					iter->fib6_flags &= ~RTF_ADDRCONF;
-+					iter->fib6_flags &= ~RTF_PREFIX_RT;
-+				}
+--- a/drivers/comedi/drivers/multiq3.c
++++ b/drivers/comedi/drivers/multiq3.c
+@@ -67,6 +67,11 @@
+ #define MULTIQ3_TRSFRCNTR_OL		0x10	/* xfer CNTR to OL (x and y) */
+ #define MULTIQ3_EFLAG_RESET		0x06	/* reset E bit of flag reg */
  
- 				if (rt->fib6_pmtu)
- 					fib6_metric_set(iter, RTAX_MTU,
--- 
-2.51.0
-
++/*
++ * Limit on the number of optional encoder channels
++ */
++#define MULTIQ3_MAX_ENC_CHANS		8
++
+ static void multiq3_set_ctrl(struct comedi_device *dev, unsigned int bits)
+ {
+ 	/*
+@@ -312,6 +317,10 @@ static int multiq3_attach(struct comedi_
+ 	s->insn_read	= multiq3_encoder_insn_read;
+ 	s->insn_config	= multiq3_encoder_insn_config;
+ 
++	/* sanity check for number of encoder channels */
++	if (s->n_chan > MULTIQ3_MAX_ENC_CHANS)
++		s->n_chan = MULTIQ3_MAX_ENC_CHANS;
++
+ 	for (i = 0; i < s->n_chan; i++)
+ 		multiq3_encoder_reset(dev, i);
+ 
 
 
 
