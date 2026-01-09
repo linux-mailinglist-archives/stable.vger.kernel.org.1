@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206673-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 808CBD09C76
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1BBFD09344
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 527ED30B0E5D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 77E7E30FA22F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5263590DA;
-	Fri,  9 Jan 2026 12:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 543362DEA6F;
+	Fri,  9 Jan 2026 11:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0COhw1P"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Z8+/Sv8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CDD23F417;
-	Fri,  9 Jan 2026 12:27:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17525335561;
+	Fri,  9 Jan 2026 11:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961666; cv=none; b=aw7NRyCCzMGh0fQ76cFH6KTQqsapKLc9CBAkNnnugNscLyt1u44UFvVVbwdn0b7ScIXEG6QCxB0OVQHr3jyGQAHny0qUL2va8rfs3f4T/xtxOHKQk/nvImX1xOYhf0hdVZRauUkH0iH7R0Ramt3MsS6AfgAw1TMmaOr8gm/yfaU=
+	t=1767959874; cv=none; b=AEKSLz07sA46s46BhAzJPw+PaIQC6ROaZAi5mH1Qy3Wz+mP8U5QnK2tgm66uxz5pr8SJVzahHPn5RAjJ0Bhx/kCGYL4jPT2VO98TIHGqaDa2mR10qOLIBQa4oJicNEkT2it8wWh8LdXP/CeCRfTM+wqhBNj5ZYenVK+0L0HH/NE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961666; c=relaxed/simple;
-	bh=lPctdfPk6MRXxq6Y4/eyyxSVoZZt29Gay/pOREJP/0s=;
+	s=arc-20240116; t=1767959874; c=relaxed/simple;
+	bh=+fFrH0ige1nlQJNQUxpnE4O2aSiUNT4Mluh40+qCZu8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRI/tk1afyxn7935sZlmInX8D/29F7LaDOnuohoXZgeymLlyyQFE7RlDZpkrWRG259r+E0FGIFkZ1Ia61j9gt2vvRPXfmdXpvyr3f9zyENV9oHTwnk22iokntCMOPPUmzpwf3fg5IjIOST+lGEkft3Tb4ZdmF0XNn6st5PjGB7k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0COhw1P; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FD3C4CEF1;
-	Fri,  9 Jan 2026 12:27:45 +0000 (UTC)
+	 MIME-Version; b=f6P8vrCk10AIhIj1eMQawbWeA/Vx5dRdGkZh5Hq74YNb5IOWfZ51nIy2NPc5czvOBkL+LbwVZj6Ur+7EuloIDeNT2rYMqeyRr7BFCzxXki/zR6qYxWUsZZ356PIu0SlqURIjileGMfyxPRt5ybr8+HL7ZxAVLebys4Xdbuc+gdg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Z8+/Sv8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86212C4CEF1;
+	Fri,  9 Jan 2026 11:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961666;
-	bh=lPctdfPk6MRXxq6Y4/eyyxSVoZZt29Gay/pOREJP/0s=;
+	s=korg; t=1767959873;
+	bh=+fFrH0ige1nlQJNQUxpnE4O2aSiUNT4Mluh40+qCZu8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n0COhw1PiiyfN4AxV0vQ5PV9a2LkaFHLA5Xqf+NpsOUYR9hchsfXg7Xt/2gQd357R
-	 WWTfpMmrtn5gCAp3r8WkpAoycGHaDYegegcboRLDe2G+mY6X5R7XZgo/mTXilvXpyO
-	 bsURfSDT7PNvNLQEXD5lPvRNGujT+3VWZ5KvQLiA=
+	b=2Z8+/Sv8N4OJ/Yh21VjAcl0I+jKJgq0QUP/c3D0mAzAcZk9wUSNm0+IZdlFyT2LdM
+	 jNaWC7yK/5rfoOvGBHZgKQc6AvRPeJMVQ3rsz3DTfAkKxQ5LCtKxbRi6503y4Shu0R
+	 7QBfgXZeWsfXPWroifiAdBDnSbvm6991Nsznf0fs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Chevallier <maxime.chevallier@bootlin.com>,
-	Horatiu Vultur <horatiu.vultur@microchip.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Timur Tabi <ttabi@nvidia.com>,
+	Lyude Paul <lyude@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 066/634] phy: mscc: Fix PTP for VSC8574 and VSC8572
+Subject: [PATCH 6.6 205/737] drm/nouveau: restrict the flush page to a 32-bit address
 Date: Fri,  9 Jan 2026 12:35:44 +0100
-Message-ID: <20260109112119.929825018@linuxfoundation.org>
+Message-ID: <20260109112141.712948520@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Horatiu Vultur <horatiu.vultur@microchip.com>
+From: Timur Tabi <ttabi@nvidia.com>
 
-[ Upstream commit ea5df88aeca112aac69e6c32e3dd1433a113b0c9 ]
+[ Upstream commit 04d98b3452331fa53ec3b698b66273af6ef73288 ]
 
-The PTP initialization is two-step. First part are the function
-vsc8584_ptp_probe_once() and vsc8584_ptp_probe() at probe time which
-initialize the locks, queues, creates the PTP device. The second part is
-the function vsc8584_ptp_init() at config_init() time which initialize
-PTP in the HW.
+The flush page DMA address is stored in a special register that is not
+associated with the GPU's standard DMA range.  For example, on Turing,
+the GPU's MMU can handle 47-bit addresses, but the flush page address
+register is limited to 40 bits.
 
-For VSC8574 and VSC8572, the PTP initialization is incomplete. It is
-missing the first part but it makes the second part. Meaning that the
-ptp_clock_register() is never called.
+At the point during device initialization when the flush page is
+allocated, the DMA mask is still at its default of 32 bits.  So even
+though it's unlikely that the flush page could exist above a 40-bit
+address, the dma_map_page() call could fail, e.g. if IOMMU is disabled
+and the address is above 32 bits.  The simplest way to achieve all
+constraints is to allocate the page in the DMA32 zone.  Since the flush
+page is literally just a page, this is an acceptable limitation.  The
+alternative is to temporarily set the DMA mask to 40 (or 52 for Hopper
+and later) bits, but that could have unforseen side effects.
 
-There is no crash without the first part when enabling PTP but this is
-unexpected because some PHys have PTP functionality exposed by the
-driver and some don't even though they share the same PTP clock PTP.
+In situations where the flush page is allocated above 32 bits and IOMMU
+is disabled, you will get an error like this:
 
-Fixes: 774626fa440e ("net: phy: mscc: Add PTP support for 2 more VSC PHYs")
-Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
-Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
-Link: https://patch.msgid.link/20251023191350.190940-3-horatiu.vultur@microchip.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+nouveau 0000:65:00.0: DMA addr 0x0000000107c56000+4096 overflow (mask ffffffff, bus limit 0).
+
+Fixes: 5728d064190e ("drm/nouveau/fb: handle sysmem flush page from common code")
+Signed-off-by: Timur Tabi <ttabi@nvidia.com>
+Reviewed-by: Lyude Paul <lyude@redhat.com>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Link: https://patch.msgid.link/20251113230323.1271726-1-ttabi@nvidia.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/mscc/mscc_main.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
-index 2fabb6a7d2415..d9ad8aac58098 100644
---- a/drivers/net/phy/mscc/mscc_main.c
-+++ b/drivers/net/phy/mscc/mscc_main.c
-@@ -2560,7 +2560,7 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
- 	.remove		= &vsc85xx_remove,
--	.probe		= &vsc8574_probe,
-+	.probe		= &vsc8584_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
- 	.get_tunable	= &vsc85xx_get_tunable,
-@@ -2581,12 +2581,12 @@ static struct phy_driver vsc85xx_driver[] = {
- 	.config_aneg    = &vsc85xx_config_aneg,
- 	.aneg_done	= &genphy_aneg_done,
- 	.read_status	= &vsc85xx_read_status,
--	.handle_interrupt = vsc85xx_handle_interrupt,
-+	.handle_interrupt = vsc8584_handle_interrupt,
- 	.config_intr    = &vsc85xx_config_intr,
- 	.suspend	= &genphy_suspend,
- 	.resume		= &genphy_resume,
- 	.remove		= &vsc85xx_remove,
--	.probe		= &vsc8574_probe,
-+	.probe		= &vsc8584_probe,
- 	.set_wol	= &vsc85xx_wol_set,
- 	.get_wol	= &vsc85xx_wol_get,
- 	.get_tunable	= &vsc85xx_get_tunable,
+diff --git a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
+index 8a286a9349ac6..7ce1b65e2c1c2 100644
+--- a/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
++++ b/drivers/gpu/drm/nouveau/nvkm/subdev/fb/base.c
+@@ -279,7 +279,7 @@ nvkm_fb_ctor(const struct nvkm_fb_func *func, struct nvkm_device *device,
+ 	mutex_init(&fb->tags.mutex);
+ 
+ 	if (func->sysmem.flush_page_init) {
+-		fb->sysmem.flush_page = alloc_page(GFP_KERNEL | __GFP_ZERO);
++		fb->sysmem.flush_page = alloc_page(GFP_KERNEL | GFP_DMA32 | __GFP_ZERO);
+ 		if (!fb->sysmem.flush_page)
+ 			return -ENOMEM;
+ 
 -- 
 2.51.0
 
