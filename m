@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-207823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207826-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA027D0A2E3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E18BD0A2E6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 885F4308E66E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F3F3308FEA4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:53:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 56D1835C193;
-	Fri,  9 Jan 2026 12:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C8C3E35C1AD;
+	Fri,  9 Jan 2026 12:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x7L3Asee"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k+XSouxi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 18F5331A069;
-	Fri,  9 Jan 2026 12:52:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF4235BDB6;
+	Fri,  9 Jan 2026 12:52:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963150; cv=none; b=ZUeFTuBy/GXMSgVu+lMkm/Oq8b8SVEzptJDBYJTPuyVMy3WcHT6X6CDgXcBhTW5/Vlukh0/2mo6QQo7trnqmOnQz4LfRw5lty/dZasNHUrtCXiUdb1gBBRSW+ruFHJIaiOYSZdTPowm/H+CoITregzrD6cOJm3POcSDGGjcNvkQ=
+	t=1767963158; cv=none; b=IYLnWR+iFdIx22dP8K7bGTA57CylZW8cvg5Oor9qCrdpZkTqirdOQqTFR9mMKbrS65AvfUVS58lFueGz73XVSMX7r8CKE5zzbvHREBDpxWZKOzqX0Wml6NY/DXZlW41mBPqNRyNmi2ZBKmtJTeqSboE0HorBVor25KEKMoljaqE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963150; c=relaxed/simple;
-	bh=7r7/5Q7+sKwDehPEjA+/RFGoyvtIg8/Q9JuJpS7ay30=;
+	s=arc-20240116; t=1767963158; c=relaxed/simple;
+	bh=uUUKkTgqbcUXm/BCMLiFrCYq9ukqgWy5mxThZS/2q80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ru3nEH0fUORzb7dKDsYp6o2C0aEmhT3YZp2CQ9jJokSaPZ/1gw4Q081V4UByPWNV6+OHnw40cULHd74z9301LeGujyHLsXlOyqdAHNuKcZm8GQABN5ZtOU6tDqm4WXjsLQ/Zek5pNZsQL2FHkZ5sHToYmdTPR7ELItBoYSUOa/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x7L3Asee; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DA3BC16AAE;
-	Fri,  9 Jan 2026 12:52:29 +0000 (UTC)
+	 MIME-Version; b=jpRxur48DhFT/Ty68Ul6cX/zSV9aTSff6OjPG1Ch70U5TMfznweNRq0JlizCJ3NJxWa0Tw4OsKWVk7Jb08FpbIYLf88P3/PaO/bL1I3YhL0a6vxvVsCuU4URk4EMvGTKPnwjRNT5YuoEFlH4vmLH9PoUMHo3msN9Y/1jWhWrItQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k+XSouxi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095ABC4CEF1;
+	Fri,  9 Jan 2026 12:52:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963150;
-	bh=7r7/5Q7+sKwDehPEjA+/RFGoyvtIg8/Q9JuJpS7ay30=;
+	s=korg; t=1767963158;
+	bh=uUUKkTgqbcUXm/BCMLiFrCYq9ukqgWy5mxThZS/2q80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x7L3AseeCN/qvEtDuWlflypRZsBy3zLes+V37GiHedTtKpHb0K2NA6VTlw9hPZO78
-	 OAl90SP89r4UbEtwN4K+xvLT06zVwHaSGi9lWtafzJ/C+kw8qGryAIVkfJ37ykcK0S
-	 J8oiwgE3DOfgyJew+XoAsiS5aYFB62UnluDV22as=
+	b=k+XSouxiInfSQUlPU/CxS9vEvE2NusHpoXw/8R1TvzUjRIZiF8k0xpVA1jozJQ30/
+	 WYqfr4InxD60zlHrZs0PFtrXpR8+8iTgTx4SSv0fyBMpyuK23VMRW7/Qm71mdZeuEI
+	 Mz9KdtYPlUeMErxJtu14M2RBK9HFUdoCnNYBNskQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Pecio <michal.pecio@gmail.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 6.1 614/634] usb: xhci: Apply the link chain quirk on NEC isoc endpoints
-Date: Fri,  9 Jan 2026 12:44:52 +0100
-Message-ID: <20260109112140.740124192@linuxfoundation.org>
+	"mingo@redhat.com, peterz@infradead.org, juri.lelli@redhat.com, vincent.guittot@linaro.org, dietmar.eggemann@arm.com, rostedt@goodmis.org, bsegall@google.com, mgorman@suse.de, vschneid@redhat.com, linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, yin.ding@broadcom.com, tapas.kundu@broadcom.com, Chris Mason" <clm@meta.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Dietmar Eggemann <dietmar.eggemann@arm.com>,
+	Ajay Kaher <ajay.kaher@broadcom.com>,
+	Chris Mason <clm@meta.com>
+Subject: [PATCH 6.1 617/634] sched/fair: Proportional newidle balance
+Date: Fri,  9 Jan 2026 12:44:55 +0100
+Message-ID: <20260109112140.852402316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -64,114 +66,205 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Pecio <michal.pecio@gmail.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit bb0ba4cb1065e87f9cc75db1fa454e56d0894d01 upstream.
+commit 33cf66d88306663d16e4759e9d24766b0aaa2e17 upstream.
 
-Two clearly different specimens of NEC uPD720200 (one with start/stop
-bug, one without) were seen to cause IOMMU faults after some Missed
-Service Errors. Faulting address is immediately after a transfer ring
-segment and patched dynamic debug messages revealed that the MSE was
-received when waiting for a TD near the end of that segment:
+Add a randomized algorithm that runs newidle balancing proportional to
+its success rate.
 
-[ 1.041954] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ffa08fe0
-[ 1.042120] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09000 flags=0x0000]
-[ 1.042146] xhci_hcd: AMD-Vi: Event logged [IO_PAGE_FAULT domain=0x0005 address=0xffa09040 flags=0x0000]
+This improves schbench significantly:
 
-It gets even funnier if the next page is a ring segment accessible to
-the HC. Below, it reports MSE in segment at ff1e8000, plows through a
-zero-filled page at ff1e9000 and starts reporting events for TRBs in
-page at ff1ea000 every microframe, instead of jumping to seg ff1e6000.
+ 6.18-rc4:			2.22 Mrps/s
+ 6.18-rc4+revert:		2.04 Mrps/s
+ 6.18-rc4+revert+random:	2.18 Mrps/S
 
-[ 7.041671] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.041999] xhci_hcd: Miss service interval error for slot 1 ep 2 expected TD DMA ff1e8fe0
-[ 7.042011] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042028] xhci_hcd: All TDs skipped for slot 1 ep 2. Clear skip flag.
-[ 7.042134] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042138] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042144] xhci_hcd: Looking for event-dma 00000000ff1ea040 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.042259] xhci_hcd: WARN: buffer overrun event for slot 1 ep 2 on endpoint
-[ 7.042262] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 31
-[ 7.042266] xhci_hcd: Looking for event-dma 00000000ff1ea050 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
+Conversely, per Adam Li this affects SpecJBB slightly, reducing it by 1%:
 
-At some point completion events change from Isoch Buffer Overrun to
-Short Packet and the HC finally finds cycle bit mismatch in ff1ec000.
+ 6.17:			-6%
+ 6.17+revert:		 0%
+ 6.17+revert+random:	-1%
 
-[ 7.098130] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098132] xhci_hcd: Looking for event-dma 00000000ff1ecc50 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098254] xhci_hcd: ERROR Transfer event TRB DMA ptr not part of current TD ep_index 2 comp_code 13
-[ 7.098256] xhci_hcd: Looking for event-dma 00000000ff1ecc60 trb-start 00000000ff1e6820 trb-end 00000000ff1e6820
-[ 7.098379] xhci_hcd: Overrun event on slot 1 ep 2
-
-It's possible that data from the isochronous device were written to
-random buffers of pending TDs on other endpoints (either IN or OUT),
-other devices or even other HCs in the same IOMMU domain.
-
-Lastly, an error from a different USB device on another HC. Was it
-caused by the above? I don't know, but it may have been. The disk
-was working without any other issues and generated PCIe traffic to
-starve the NEC of upstream BW and trigger those MSEs. The two HCs
-shared one x1 slot by means of a commercial "PCIe splitter" board.
-
-[ 7.162604] usb 10-2: reset SuperSpeed USB device number 3 using xhci_hcd
-[ 7.178990] sd 9:0:0:0: [sdb] tag#0 UNKNOWN(0x2003) Result: hostbyte=0x07 driverbyte=DRIVER_OK cmd_age=0s
-[ 7.179001] sd 9:0:0:0: [sdb] tag#0 CDB: opcode=0x28 28 00 04 02 ae 00 00 02 00 00
-[ 7.179004] I/O error, dev sdb, sector 67284480 op 0x0:(READ) flags 0x80700 phys_seg 5 prio class 0
-
-Fortunately, it appears that this ridiculous bug is avoided by setting
-the chain bit of Link TRBs on isochronous rings. Other ancient HCs are
-known which also expect the bit to be set and they ignore Link TRBs if
-it's not. Reportedly, 0.95 spec guaranteed that the bit is set.
-
-The bandwidth-starved NEC HC running a 32KB/uframe UVC endpoint reports
-tens of MSEs per second and runs into the bug within seconds. Chaining
-Link TRBs allows the same workload to run for many minutes, many times.
-
-No negative side effects seen in UVC recording and UAC playback with a
-few devices at full speed, high speed and SuperSpeed.
-
-The problem doesn't reproduce on the newer Renesas uPD720201/uPD720202
-and on old Etron EJ168 and VIA VL805 (but the VL805 has other bug).
-
-[shorten line length of log snippets in commit messge -Mathias]
-
-Signed-off-by: Michal Pecio <michal.pecio@gmail.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20250306144954.3507700-14-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Shivani: Modified to apply on v5.10.y-v6.1.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Tested-by: Chris Mason <clm@meta.com>
+Link: https://lkml.kernel.org/r/6825c50d-7fa7-45d8-9b81-c6e7e25738e2@meta.com
+Link: https://patch.msgid.link/20251107161739.770122091@infradead.org
+[ Ajay: Modified to apply on v6.1 ]
+Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci.h |   13 +++++++++++--
- 1 file changed, 11 insertions(+), 2 deletions(-)
+ include/linux/sched/topology.h |    3 ++
+ kernel/sched/core.c            |    3 ++
+ kernel/sched/fair.c            |   44 +++++++++++++++++++++++++++++++++++++----
+ kernel/sched/features.h        |    5 ++++
+ kernel/sched/sched.h           |    7 ++++++
+ kernel/sched/topology.c        |    6 +++++
+ 6 files changed, 64 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1789,11 +1789,20 @@ static inline void xhci_write_64(struct
- }
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -106,6 +106,9 @@ struct sched_domain {
+ 	unsigned int nr_balance_failed; /* initialise to 0 */
  
+ 	/* idle_balance() stats */
++	unsigned int newidle_call;
++	unsigned int newidle_success;
++	unsigned int newidle_ratio;
+ 	u64 max_newidle_lb_cost;
+ 	unsigned long last_decay_max_lb_cost;
  
--/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+/*
-+ * Reportedly, some chapters of v0.95 spec said that Link TRB always has its chain bit set.
-+ * Other chapters and later specs say that it should only be set if the link is inside a TD
-+ * which continues from the end of one segment to the next segment.
-+ *
-+ * Some 0.95 hardware was found to misbehave if any link TRB doesn't have the chain bit set.
-+ *
-+ * 0.96 hardware from AMD and NEC was found to ignore unchained isochronous link TRBs when
-+ * "resynchronizing the pipe" after a Missed Service Error.
-+ */
- static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -112,6 +112,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_util_
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
+ 
+ #ifdef CONFIG_SCHED_DEBUG
+ /*
+@@ -9632,6 +9633,8 @@ void __init sched_init_smp(void)
  {
- 	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
--	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
-+	       (type == TYPE_ISOC && (xhci->quirks & (XHCI_AMD_0x96_HOST | XHCI_NEC_HOST)));
+ 	sched_init_numa(NUMA_NO_NODE);
+ 
++	prandom_init_once(&sched_rnd_state);
++
+ 	/*
+ 	 * There's no userspace yet to cause hotplug operations; hence all the
+ 	 * CPU masks are stable and all blatant races in the below code cannot
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -10935,11 +10935,27 @@ void update_max_interval(void)
+ 	max_load_balance_interval = HZ*num_online_cpus()/10;
  }
  
- /* xHCI debugging */
+-static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
++static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
++{
++	sd->newidle_call++;
++	sd->newidle_success += success;
++
++	if (sd->newidle_call >= 1024) {
++		sd->newidle_ratio = sd->newidle_success;
++		sd->newidle_call /= 2;
++		sd->newidle_success /= 2;
++	}
++}
++
++static inline bool
++update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
+ {
+ 	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
+ 	unsigned long now = jiffies;
+ 
++	if (cost)
++		update_newidle_stats(sd, success);
++
+ 	if (cost > sd->max_newidle_lb_cost) {
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+@@ -10987,7 +11003,7 @@ static void rebalance_domains(struct rq
+ 		 * Decay the newidle max times here because this is a regular
+ 		 * visit to all the domains.
+ 		 */
+-		need_decay = update_newidle_cost(sd, 0);
++		need_decay = update_newidle_cost(sd, 0, 0);
+ 		max_cost += sd->max_newidle_lb_cost;
+ 
+ 		/*
+@@ -11621,6 +11637,22 @@ static int sched_balance_newidle(struct
+ 			break;
+ 
+ 		if (sd->flags & SD_BALANCE_NEWIDLE) {
++			unsigned int weight = 1;
++
++			if (sched_feat(NI_RANDOM)) {
++				/*
++				 * Throw a 1k sided dice; and only run
++				 * newidle_balance according to the success
++				 * rate.
++				 */
++				u32 d1k = sched_rng() % 1024;
++				weight = 1 + sd->newidle_ratio;
++				if (d1k > weight) {
++					update_newidle_stats(sd, 0);
++					continue;
++				}
++				weight = (1024 + weight/2) / weight;
++			}
+ 
+ 			pulled_task = load_balance(this_cpu, this_rq,
+ 						   sd, CPU_NEWLY_IDLE,
+@@ -11628,10 +11660,14 @@ static int sched_balance_newidle(struct
+ 
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
++
++			/*
++			 * Track max cost of a domain to make sure to not delay the
++			 * next wakeup on the CPU.
++			 */
++			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
+ 		}
+ 
+ 		/*
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -99,5 +99,10 @@ SCHED_FEAT(UTIL_EST_FASTUP, true)
+ 
+ SCHED_FEAT(LATENCY_WARN, false)
+ 
++/*
++ * Do newidle balancing proportional to its success rate using randomization.
++ */
++SCHED_FEAT(NI_RANDOM, true)
++
+ SCHED_FEAT(ALT_PERIOD, true)
+ SCHED_FEAT(BASE_SLICE, true)
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -5,6 +5,7 @@
+ #ifndef _KERNEL_SCHED_SCHED_H
+ #define _KERNEL_SCHED_SCHED_H
+ 
++#include <linux/prandom.h>
+ #include <linux/sched/affinity.h>
+ #include <linux/sched/autogroup.h>
+ #include <linux/sched/cpufreq.h>
+@@ -1190,6 +1191,12 @@ static inline bool is_migration_disabled
+ }
+ 
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
++
++static inline u32 sched_rng(void)
++{
++	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
++}
+ 
+ #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
+ #define this_rq()		this_cpu_ptr(&runqueues)
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1584,6 +1584,12 @@ sd_init(struct sched_domain_topology_lev
+ 
+ 		.last_balance		= jiffies,
+ 		.balance_interval	= sd_weight,
++
++		/* 50% success rate */
++		.newidle_call		= 512,
++		.newidle_success	= 256,
++		.newidle_ratio		= 512,
++
+ 		.max_newidle_lb_cost	= 0,
+ 		.last_decay_max_lb_cost	= jiffies,
+ 		.child			= child,
 
 
 
