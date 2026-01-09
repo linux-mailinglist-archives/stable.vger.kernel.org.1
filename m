@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-207049-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207652-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52841D0987A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 09A78D0A0AB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0397D30E843F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 24B9630B1E22
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C285135970A;
-	Fri,  9 Jan 2026 12:15:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34CAE35B138;
+	Fri,  9 Jan 2026 12:44:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="06KHpTH6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2QxnypuV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 743CC359FA0;
-	Fri,  9 Jan 2026 12:15:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB4F4335BCD;
+	Fri,  9 Jan 2026 12:44:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960949; cv=none; b=abNTaehoPUs0EVzNBwr0wYJDqm+HhjjAMB/ULxHnNiSW8/wbd603Q6hYlHkdBfmHbQu9jBGE/o/cXYUXBOIZAr/tLT+piMAsnjTnWfCM5qb4l+Y8bqwkEkPnXvxUzOlx37j9j7NgtHka48GtGs4O5yJfFawwmcaaFWNbINuOrqk=
+	t=1767962660; cv=none; b=r4g5wRjAeAj7WpJuyU1lE896aJn7GrZlOULWSwWz3Om+OoQg4FIDWSS0Qsm8dHxE156ciFTUQXXU0h4AlE24FWouEwtUhiVVA0q0XpNBC5mOi89clVn2QiZlsSVyDjQMMavqcWRaeExg/IzpjDo2gKyNa0HOknDbSf+PC22mqN4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960949; c=relaxed/simple;
-	bh=PsGQzOPj5Pm9xOk3RZpRthxBmGCw5WuyP1ceAm+PlCI=;
+	s=arc-20240116; t=1767962660; c=relaxed/simple;
+	bh=j5zUEmfsYtMDPfSEWrTKnIqYVURms0fz/7KnAJAmRZU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OnHkAUbDb0i7qCjv3GGo+50RYzMNxTSCYX9xJJ9sc6By60hFmASQyqgPlQQrvtfmtxYNjA28CbdcHeHooAqXCMsy1TAC7IF6fj2H8GhhTlErt7+wpUQEKo3e9memgxqt4/BNMQHNKsOMVFCy94cGcGNDEGdnjAU1LBdxLS6Vg0o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=06KHpTH6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1495FC4CEF1;
-	Fri,  9 Jan 2026 12:15:47 +0000 (UTC)
+	 MIME-Version; b=KF/sxBKjdly/qaFpfHIcBT3gwvI/ujlh0Tvf04adBen4nvtwMTb9xbqed1eAC7UXJ3xlQSGNdh+qaAcJiq+UlzMxy7BvtllaLwkHkvgB1OAJ3Ixzwpl9HWN3M9Bp3HXt9Dw+QfnLqIG9sVoPv+ZUvqMDCOMadEONLlcou1YanOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2QxnypuV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79544C4CEF1;
+	Fri,  9 Jan 2026 12:44:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960948;
-	bh=PsGQzOPj5Pm9xOk3RZpRthxBmGCw5WuyP1ceAm+PlCI=;
+	s=korg; t=1767962659;
+	bh=j5zUEmfsYtMDPfSEWrTKnIqYVURms0fz/7KnAJAmRZU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=06KHpTH6FnvZ4LmfRF3QqHhXjmFZTaPKNF9Zj3OjUyddD5c/mA2q5rVt74DMNaRdu
-	 Iq2xdn2ufmc4MT9YnMCIYe6EW2gVqjSDD9EXpbLLDV7VrCu8Cnzg8gAlMmyfGYtTJO
-	 n8+eXppMi4xmVH9zyui4D2OIDWoNR+394XlhmzyI=
+	b=2QxnypuVL/dCLeY6uYFKMkxGLKhGuSKYwTLd0JyH87+IHzcTS/7A1EwA08Xod0x0m
+	 Etusg75+0z1WRIE4l1P3RAxHp6xExtDO4KQFVIDzIfd0SQVKnWh+IDOY4Fe5lKc34Z
+	 avWiSTLDCt+p4GXmxHU/jPfnx9WS2iL6n3VdySk4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.6 582/737] fbdev: tcx.c fix mem_map to correct smem_start offset
+	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 6.1 443/634] ntfs: Do not overwrite uptodate pages
 Date: Fri,  9 Jan 2026 12:42:01 +0100
-Message-ID: <20260109112155.895155248@linuxfoundation.org>
+Message-ID: <20260109112134.207999414@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,44 +57,103 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit 35fa2b4bf96415b88d7edaa5cf8af5185d9ce76e upstream.
+commit 68f6bd128e75a032432eda9d16676ed2969a1096 upstream.
 
-403ae52ac047 ("sparc: fix drivers/video/tcx.c warning") changed the
-physbase initializing breaking the user-space mmap, e.g. for Xorg
-entirely.
+When reading a compressed file, we may read several pages in addition to
+the one requested.  The current code will overwrite pages in the page
+cache with the data from disc which can definitely result in changes
+that have been made being lost.
 
-Fix fbdev mmap table so the sbus mmap helper work correctly, and
-not try to map vastly (physbase) offset memory.
+For example if we have four consecutie pages ABCD in the file compressed
+into a single extent, on first access, we'll bring in ABCD.  Then we
+write to page B.  Memory pressure results in the eviction of ACD.
+When we attempt to write to page C, we will overwrite the data in page
+B with the data currently on disk.
 
-Fixes: 403ae52ac047 ("sparc: fix drivers/video/tcx.c warning")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+I haven't investigated the decompression code to check whether it's
+OK to overwrite a clean page or whether it might be possible to see
+corrupt data.  Out of an abundance of caution, decline to overwrite
+uptodate pages, not just dirty pages.
+
+Fixes: 4342306f0f0d (fs/ntfs3: Add file operations and implementation)
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/tcx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/frecord.c |   35 +++++++++++++++++++++++++++++------
+ 1 file changed, 29 insertions(+), 6 deletions(-)
 
---- a/drivers/video/fbdev/tcx.c
-+++ b/drivers/video/fbdev/tcx.c
-@@ -436,7 +436,7 @@ static int tcx_probe(struct platform_dev
- 			j = i;
- 			break;
- 		}
--		par->mmap_map[i].poff = op->resource[j].start;
-+		par->mmap_map[i].poff = op->resource[j].start - info->fix.smem_start;
- 	}
+--- a/fs/ntfs3/frecord.c
++++ b/fs/ntfs3/frecord.c
+@@ -2150,6 +2150,29 @@ out:
+ 	return err;
+ }
  
- 	info->fbops = &tcx_ops;
++static struct page *ntfs_lock_new_page(struct address_space *mapping,
++		pgoff_t index, gfp_t gfp)
++{
++	struct folio *folio = __filemap_get_folio(mapping, index,
++			FGP_LOCK | FGP_ACCESSED | FGP_CREAT, gfp);
++	struct page *page;
++
++	if (IS_ERR(folio))
++		return ERR_CAST(folio);
++
++	if (!folio_test_uptodate(folio))
++		return folio_file_page(folio, index);
++
++	/* Use a temporary page to avoid data corruption */
++	folio_unlock(folio);
++	folio_put(folio);
++	page = alloc_page(gfp);
++	if (!page)
++		return ERR_PTR(-ENOMEM);
++	__SetPageLocked(page);
++	return page;
++}
++
+ /*
+  * ni_readpage_cmpr
+  *
+@@ -2203,9 +2226,9 @@ int ni_readpage_cmpr(struct ntfs_inode *
+ 		if (i == idx)
+ 			continue;
+ 
+-		pg = find_or_create_page(mapping, index, gfp_mask);
+-		if (!pg) {
+-			err = -ENOMEM;
++		pg = ntfs_lock_new_page(mapping, index, gfp_mask);
++		if (IS_ERR(pg)) {
++			err = PTR_ERR(pg);
+ 			goto out1;
+ 		}
+ 		pages[i] = pg;
+@@ -2307,13 +2330,13 @@ int ni_decompress_file(struct ntfs_inode
+ 		for (i = 0; i < pages_per_frame; i++, index++) {
+ 			struct page *pg;
+ 
+-			pg = find_or_create_page(mapping, index, gfp_mask);
+-			if (!pg) {
++			pg = ntfs_lock_new_page(mapping, index, gfp_mask);
++			if (IS_ERR(pg)) {
+ 				while (i--) {
+ 					unlock_page(pages[i]);
+ 					put_page(pages[i]);
+ 				}
+-				err = -ENOMEM;
++				err = PTR_ERR(pg);
+ 				goto out;
+ 			}
+ 			pages[i] = pg;
 
 
 
