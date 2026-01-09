@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206995-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADF59D09708
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AF6ED0A1B3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DA57730348AE
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 474CC304D054
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6215D35A948;
-	Fri,  9 Jan 2026 12:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B1E03596F1;
+	Fri,  9 Jan 2026 12:43:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1mZWi5GB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpXdryf+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 230D235A940;
-	Fri,  9 Jan 2026 12:13:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2521335BCD;
+	Fri,  9 Jan 2026 12:43:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960794; cv=none; b=rDr93xwVy0IR/lJk4ju5fz1pWl8CmG2QznbQ3JZW/yTUHFNEmPFynKlXLSdHFc03P+YsmwWq6PtEImzLOYFNMh6GYQj+Op7UBAf6rDaZBgQSFVTN8Gw1IuZi4YauMoFKBsJPVtdBPTPBr/E/H8FilmvQYwJCToideNrj3qSHYEM=
+	t=1767962595; cv=none; b=HRyM2QiTXExRrsaYb1T2Eo0btENFFAfOdKYR/2TVoivXtW5uA81ppB9LJNnhOxqMrgJ1X+GMxnG3hjwmhbU5ERnJFBEg2DAY1xqLpNH3CXORoI9cUtKUvyaBHnBcLaivdmN9UDsavUBbWWhO1Uc5vZfrea/xiCDHGW8+g+C6i3I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960794; c=relaxed/simple;
-	bh=nQKFHlQUg4heIRcmf3tumMEAuDTuOuYjYhdbumXZrTw=;
+	s=arc-20240116; t=1767962595; c=relaxed/simple;
+	bh=S5x2OWkZCYITmK50IL7q+OGF/CCIBUYBqxnCTbHnqyw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oGa07A0llNRFkNm1z5x5VXvpJCdrCnRQBKcON6gqkpoimxMeiHC8tGBycx+EVqr+cJOlpwTPyGiOFNFPHEP/jgEqRN58nEKTCWZxREm8vyep8E/Fk7vmj7EFmVYh5wQl05eNXL4/zoUnNw91NwieLv5jG6XfGAnaUq9qaWZJNRw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1mZWi5GB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920EDC4CEF1;
-	Fri,  9 Jan 2026 12:13:13 +0000 (UTC)
+	 MIME-Version; b=U3UD8RZ6sjB9SKZ4LC70oqb/XUYpQaasreHgo+Uto3dAOU9rNQEw0c4iKDc93OPtqJMwMABCMyW02XNo2wCl7PdsiJ0dpRNaPDV0H/4TjS9KgdSkk+Qk972MCqn4rJvs8Moql5XrXh2p2xBjrQPjwnsP8mhT49OYRnrjvWV5LRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpXdryf+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71FDBC4CEF1;
+	Fri,  9 Jan 2026 12:43:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960793;
-	bh=nQKFHlQUg4heIRcmf3tumMEAuDTuOuYjYhdbumXZrTw=;
+	s=korg; t=1767962594;
+	bh=S5x2OWkZCYITmK50IL7q+OGF/CCIBUYBqxnCTbHnqyw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1mZWi5GBjJDTdHl4D6hgq1dZ3H9+Uta9FQGXOgkl3cxlqmMfgfGViKi5qTwedKcE3
-	 FKLJXvJ+WY/3p3x3ofInUlh4AJ4JgDGwKdwyXgEjhVyefJXBxi5dFnbG/l1cslqK9c
-	 n5kQtpkARsIR90SEH950xvN45G6LeOACQai1omJY=
+	b=DpXdryf+R0GqqOOw9ILoRCXiO7RwxI1hHs5BOP6ig6dRZuvdFNhTEPcH3M3iy0U98
+	 I52Q+cUUrcuQsR7XUbgGbcYX1TplCrwtH2+GnNE3H/UBhLYQ4FFKNoFthSmOGsAsPa
+	 Y/8xDPCnZplvf4NrJrDqBnjbDA4G7Vz/Dk8w+WMk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moore <paul@paul-moore.com>,
-	Will Rosenberg <whrosenb@asu.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 526/737] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
-Date: Fri,  9 Jan 2026 12:41:05 +0100
-Message-ID: <20260109112153.784589531@linuxfoundation.org>
+Subject: [PATCH 6.1 388/634] wifi: cfg80211: sme: store capped length in __cfg80211_connect_result()
+Date: Fri,  9 Jan 2026 12:41:06 +0100
+Message-ID: <20260109112132.131922992@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +60,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Rosenberg <whrosenb@asu.edu>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
+[ Upstream commit 2b77b9551d1184cb5af8271ff350e6e2c1b3db0d ]
 
-There exists a kernel oops caused by a BUG_ON(nhead < 0) at
-net/core/skbuff.c:2232 in pskb_expand_head().
-This bug is triggered as part of the calipso_skbuff_setattr()
-routine when skb_cow() is passed headroom > INT_MAX
-(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
+The QGenie AI code review tool says we should store the capped length to
+wdev->u.client.ssid_len.  The AI is correct.
 
-The root cause of the bug is due to an implicit integer cast in
-__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
-that delta = headroom - skb_headroom(skb) is never negative, otherwise
-we will trigger a BUG_ON in pskb_expand_head(). However, if
-headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
-becomes negative, and pskb_expand_head() is passed a negative value for
-nhead.
-
-Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
-"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
-by only using skb_cow() to grow headroom.
-
-PoC:
-	Using `netlabelctl` tool:
-
-        netlabelctl map del default
-        netlabelctl calipso add pass doi:7
-        netlabelctl map add default address:0::1/128 protocol:calipso,7
-
-        Then run the following PoC:
-
-        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-
-        // setup msghdr
-        int cmsg_size = 2;
-        int cmsg_len = 0x60;
-        struct msghdr msg;
-        struct sockaddr_in6 dest_addr;
-        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
-                        sizeof(struct cmsghdr) + cmsg_len);
-        msg.msg_name = &dest_addr;
-        msg.msg_namelen = sizeof(dest_addr);
-        msg.msg_iov = NULL;
-        msg.msg_iovlen = 0;
-        msg.msg_control = cmsg;
-        msg.msg_controllen = cmsg_len;
-        msg.msg_flags = 0;
-
-        // setup sockaddr
-        dest_addr.sin6_family = AF_INET6;
-        dest_addr.sin6_port = htons(31337);
-        dest_addr.sin6_flowinfo = htonl(31337);
-        dest_addr.sin6_addr = in6addr_loopback;
-        dest_addr.sin6_scope_id = 31337;
-
-        // setup cmsghdr
-        cmsg->cmsg_len = cmsg_len;
-        cmsg->cmsg_level = IPPROTO_IPV6;
-        cmsg->cmsg_type = IPV6_HOPOPTS;
-        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
-        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
-
-        sendmsg(fd, &msg, 0);
-
-Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 62b635dcd69c ("wifi: cfg80211: sme: cap SSID length in __cfg80211_connect_result()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Link: https://patch.msgid.link/aTAbp5RleyH_lnZE@stanley.mountain
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/calipso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/wireless/sme.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index 24666291c54a..72079ef2959b 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
- 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
- 	pad = ((new_end & 4) + (end & 7)) & 7;
- 	len_delta = new_end - (int)end + pad;
--	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
-+	ret_val = skb_cow(skb,
-+			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
- 	if (ret_val < 0)
- 		return ret_val;
+diff --git a/net/wireless/sme.c b/net/wireless/sme.c
+index ed16e852133e..26106802b17b 100644
+--- a/net/wireless/sme.c
++++ b/net/wireless/sme.c
+@@ -896,7 +896,7 @@ void __cfg80211_connect_result(struct net_device *dev,
  
+ 			ssid_len = min(ssid->datalen, IEEE80211_MAX_SSID_LEN);
+ 			memcpy(wdev->u.client.ssid, ssid->data, ssid_len);
+-			wdev->u.client.ssid_len = ssid->datalen;
++			wdev->u.client.ssid_len = ssid_len;
+ 			break;
+ 		}
+ 		rcu_read_unlock();
 -- 
 2.51.0
 
