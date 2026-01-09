@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207178-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207748-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF10CD099CD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3F10D0A208
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:00:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B112630C1D7F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:21:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8CF4301D664
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7BFA35A926;
-	Fri,  9 Jan 2026 12:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1458235BDC6;
+	Fri,  9 Jan 2026 12:48:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xZ4Uj/T5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gpq2VQ8W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 699B326ED41;
-	Fri,  9 Jan 2026 12:21:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C2D8135B149;
+	Fri,  9 Jan 2026 12:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961314; cv=none; b=Mh6zlg5jglgE16K0gIN7ydMdbNWemW49uyxLifTCiGMDbQthrYpC4dQi7y7xT3L4LgvpTCywwYsIgioKv1vvfJcUd8zjWGSvLM3/KEkJwv+ljKr43hksZg21YHGLYbBvyr4YvE9amx1coE44t34GlmRJ2LCYg21HlSgrtfeKa9M=
+	t=1767962934; cv=none; b=LOPBXsLQTkhtHV9mDQmmNSHWOmjg3JQKeOlShURvth35xEzoq3wIeUsyM64B1crBIsoY+4zDp8lcQLnSdL4EEVL5yX2FCYPymIV6Lbl16KlRERAEMBe257LecFbpqYgkwlnbLqANrDiyXyho+NGjunVTbRlBwt9zKWiM4+vFwic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961314; c=relaxed/simple;
-	bh=aK5em/I524puAY8om2jNwxm32FIz38ltiUpCWcG9G+k=;
+	s=arc-20240116; t=1767962934; c=relaxed/simple;
+	bh=NSKSlS53Vw0FDCxMj9jql7Pri4NB7A0UZE24jQtDwwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NG9BZ9n1s5gMZ//D6QezuzR2AjY8F60lkQJUxnM8mMTFT4gbHLzjO7xPDCmuuw/io2YDvD7rhKkU0TTtb2cyd6GF7g23xEDxptvx7Zjaa0BMAyUcQCy9z0FcwaNlqJougSryBZ8Zje+blQg6KcjyUaUZnoF8pRZ3DsayczfLl1g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xZ4Uj/T5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A33EDC4CEF1;
-	Fri,  9 Jan 2026 12:21:53 +0000 (UTC)
+	 MIME-Version; b=g+919rhysYb/R4Gm3dyhrWDlXL/O/m+dpkAIxVC2P+E3L6ttthOJ8a3aQ0ysyAz6yR4dnm3dsnp2v4aV9Ngcm+vCOCSUYfxOh4bqtOP+p9JK4OtWBk/R5sKpI1xKdTXHYlpX9ufEbtpXlENtExFbA0whuHuuQ9WkcmpbaOjiFuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gpq2VQ8W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45FD3C4CEF1;
+	Fri,  9 Jan 2026 12:48:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961314;
-	bh=aK5em/I524puAY8om2jNwxm32FIz38ltiUpCWcG9G+k=;
+	s=korg; t=1767962934;
+	bh=NSKSlS53Vw0FDCxMj9jql7Pri4NB7A0UZE24jQtDwwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xZ4Uj/T5c04vCJs8exNRy7J/3j2x6RoTK5bJZTmkpX9EOEddQhuH5dDj85IkDBBKG
-	 pW8eGMeqDZY+D0mez+xNcxoigklWBYCTXrPgndLR09Xr4zzkZMkmkVrgCJ24Nsz1O0
-	 /536OxZiOMR+W8UpKXR19+op9GieNWNzS1CQk3uc=
+	b=gpq2VQ8WPNyGzsKArAyms6Ly37lm/q5JAe5fYNFq53lhPH9wG4PwDuTyOT11mjCeI
+	 uLMXHDp+kURC2+RquXeAVVe5fSZ/vStD9j7YeO8TVzW49ey/2MFSqthg7qR8sF5XCq
+	 1+RSizBquPTvaYb85Ncj22IKmXOK6qaPDIHqAAY8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+5f9f31cb7d985f584d8e@syzkaller.appspotmail.com,
-	Florian Westphal <fw@strlen.de>,
-	Steffen Klassert <steffen.klassert@secunet.com>,
-	Rajani Kantha <681739313@139.com>,
-	Dmitry Vyukov <dvyukov@google.com>
-Subject: [PATCH 6.6 678/737] xfrm: state: fix out-of-bounds read during lookup
-Date: Fri,  9 Jan 2026 12:43:37 +0100
-Message-ID: <20260109112159.558812708@linuxfoundation.org>
+	"Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>,
+	Felix Fietkau <nbd@nbd.name>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 540/634] wifi: mt76: Fix DTS power-limits on little endian systems
+Date: Fri,  9 Jan 2026 12:43:38 +0100
+Message-ID: <20260109112137.904063744@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,277 +60,141 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: "Sven Eckelmann (Plasma Cloud)" <se@simonwunderlich.de>
 
-[ Upstream commit e952837f3ddb0ff726d5b582aa1aad9aa38d024d ]
+[ Upstream commit 38b845e1f9e810869b0a0b69f202b877b7b7fb12 ]
 
-lookup and resize can run in parallel.
+The power-limits for ru and mcs and stored in the devicetree as bytewise
+array (often with sizes which are not a multiple of 4). These arrays have a
+prefix which defines for how many modes a line is applied. This prefix is
+also only a byte - but the code still tried to fix the endianness of this
+byte with a be32 operation. As result, loading was mostly failing or was
+sending completely unexpected values to the firmware.
 
-The xfrm_state_hash_generation seqlock ensures a retry, but the hash
-functions can observe a hmask value that is too large for the new hlist
-array.
+Since the other rates are also stored in the devicetree as bytewise arrays,
+just drop the u32 access + be32_to_cpu conversion and directly access them
+as bytes arrays.
 
-rehash does:
-  rcu_assign_pointer(net->xfrm.state_bydst, ndst) [..]
-  net->xfrm.state_hmask = nhashmask;
-
-While state lookup does:
-  h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
-  hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
-
-This is only safe in case the update to state_bydst is larger than
-net->xfrm.xfrm_state_hmask (or if the lookup function gets
-serialized via state spinlock again).
-
-Fix this by prefetching state_hmask and the associated pointers.
-The xfrm_state_hash_generation seqlock retry will ensure that the pointer
-and the hmask will be consistent.
-
-The existing helpers, like xfrm_dst_hash(), are now unsafe for RCU side,
-add lockdep assertions to document that they are only safe for insert
-side.
-
-xfrm_state_lookup_byaddr() uses the spinlock rather than RCU.
-AFAICS this is an oversight from back when state lookup was converted to
-RCU, this lock should be replaced with RCU in a future patch.
-
-Reported-by: syzbot+5f9f31cb7d985f584d8e@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/CACT4Y+azwfrE3uz6A5ZErov5YN2LYBN5KrsymBerT36VU8qzBA@mail.gmail.com/
-Diagnosed-by: Dmitry Vyukov <dvyukov@google.com>
-Fixes: c2f672fc9464 ("xfrm: state lookup can be lockless")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-[ Minor context change fixed ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Cc: stable@vger.kernel.org
+Fixes: 22b980badc0f ("mt76: add functions for parsing rate power limits from DT")
+Fixes: a9627d992b5e ("mt76: extend DT rate power limits to support 11ax devices")
+Signed-off-by: Sven Eckelmann (Plasma Cloud) <se@simonwunderlich.de>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_state.c |   84 +++++++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 66 insertions(+), 18 deletions(-)
+ drivers/net/wireless/mediatek/mt76/eeprom.c |   37 ++++++++++++++++++----------
+ 1 file changed, 24 insertions(+), 13 deletions(-)
 
---- a/net/xfrm/xfrm_state.c
-+++ b/net/xfrm/xfrm_state.c
-@@ -34,6 +34,8 @@
- 
- #define xfrm_state_deref_prot(table, net) \
- 	rcu_dereference_protected((table), lockdep_is_held(&(net)->xfrm.xfrm_state_lock))
-+#define xfrm_state_deref_check(table, net) \
-+	rcu_dereference_check((table), lockdep_is_held(&(net)->xfrm.xfrm_state_lock))
- 
- static void xfrm_state_gc_task(struct work_struct *work);
- 
-@@ -62,6 +64,8 @@ static inline unsigned int xfrm_dst_hash
- 					 u32 reqid,
- 					 unsigned short family)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_dst_hash(daddr, saddr, reqid, family, net->xfrm.state_hmask);
+--- a/drivers/net/wireless/mediatek/mt76/eeprom.c
++++ b/drivers/net/wireless/mediatek/mt76/eeprom.c
+@@ -189,6 +189,19 @@ mt76_get_of_array(struct device_node *np
+ 	return prop->value;
  }
  
-@@ -70,6 +74,8 @@ static inline unsigned int xfrm_src_hash
- 					 const xfrm_address_t *saddr,
- 					 unsigned short family)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_src_hash(daddr, saddr, family, net->xfrm.state_hmask);
- }
- 
-@@ -77,11 +83,15 @@ static inline unsigned int
- xfrm_spi_hash(struct net *net, const xfrm_address_t *daddr,
- 	      __be32 spi, u8 proto, unsigned short family)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_spi_hash(daddr, spi, proto, family, net->xfrm.state_hmask);
- }
- 
- static unsigned int xfrm_seq_hash(struct net *net, u32 seq)
- {
-+	lockdep_assert_held(&net->xfrm.xfrm_state_lock);
-+
- 	return __xfrm_seq_hash(seq, net->xfrm.state_hmask);
- }
- 
-@@ -1025,16 +1035,38 @@ xfrm_init_tempstate(struct xfrm_state *x
- 	x->props.family = tmpl->encap_family;
- }
- 
--static struct xfrm_state *__xfrm_state_lookup_all(struct net *net, u32 mark,
-+struct xfrm_hash_state_ptrs {
-+	const struct hlist_head *bydst;
-+	const struct hlist_head *bysrc;
-+	const struct hlist_head *byspi;
-+	unsigned int hmask;
-+};
-+
-+static void xfrm_hash_ptrs_get(const struct net *net, struct xfrm_hash_state_ptrs *ptrs)
++static const s8 *
++mt76_get_of_array_s8(struct device_node *np, char *name, size_t *len, int min)
 +{
-+	unsigned int sequence;
++	struct property *prop = of_find_property(np, name, NULL);
 +
-+	do {
-+		sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
++	if (!prop || !prop->value || prop->length < min)
++		return NULL;
 +
-+		ptrs->bydst = xfrm_state_deref_check(net->xfrm.state_bydst, net);
-+		ptrs->bysrc = xfrm_state_deref_check(net->xfrm.state_bysrc, net);
-+		ptrs->byspi = xfrm_state_deref_check(net->xfrm.state_byspi, net);
-+		ptrs->hmask = net->xfrm.state_hmask;
-+	} while (read_seqcount_retry(&net->xfrm.xfrm_state_hash_generation, sequence));
++	*len = prop->length;
++
++	return prop->value;
 +}
 +
-+static struct xfrm_state *__xfrm_state_lookup_all(const struct xfrm_hash_state_ptrs *state_ptrs,
-+						  u32 mark,
- 						  const xfrm_address_t *daddr,
- 						  __be32 spi, u8 proto,
- 						  unsigned short family,
- 						  struct xfrm_dev_offload *xdo)
+ static struct device_node *
+ mt76_find_channel_node(struct device_node *np, struct ieee80211_channel *chan)
  {
--	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
-+	unsigned int h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs->hmask);
- 	struct xfrm_state *x;
- 
--	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
-+	hlist_for_each_entry_rcu(x, state_ptrs->byspi + h, byspi) {
- #ifdef CONFIG_XFRM_OFFLOAD
- 		if (xdo->type == XFRM_DEV_OFFLOAD_PACKET) {
- 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
-@@ -1068,15 +1100,16 @@ static struct xfrm_state *__xfrm_state_l
- 	return NULL;
+@@ -228,7 +241,7 @@ mt76_get_txs_delta(struct device_node *n
  }
  
--static struct xfrm_state *__xfrm_state_lookup(struct net *net, u32 mark,
-+static struct xfrm_state *__xfrm_state_lookup(const struct xfrm_hash_state_ptrs *state_ptrs,
-+					      u32 mark,
- 					      const xfrm_address_t *daddr,
- 					      __be32 spi, u8 proto,
- 					      unsigned short family)
+ static void
+-mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const __be32 *data,
++mt76_apply_array_limit(s8 *pwr, size_t pwr_len, const s8 *data,
+ 		       s8 target_power, s8 nss_delta, s8 *max_power)
  {
--	unsigned int h = xfrm_spi_hash(net, daddr, spi, proto, family);
-+	unsigned int h = __xfrm_spi_hash(daddr, spi, proto, family, state_ptrs->hmask);
- 	struct xfrm_state *x;
+ 	int i;
+@@ -237,15 +250,14 @@ mt76_apply_array_limit(s8 *pwr, size_t p
+ 		return;
  
--	hlist_for_each_entry_rcu(x, net->xfrm.state_byspi + h, byspi) {
-+	hlist_for_each_entry_rcu(x, state_ptrs->byspi + h, byspi) {
- 		if (x->props.family != family ||
- 		    x->id.spi       != spi ||
- 		    x->id.proto     != proto ||
-@@ -1093,15 +1126,16 @@ static struct xfrm_state *__xfrm_state_l
- 	return NULL;
+ 	for (i = 0; i < pwr_len; i++) {
+-		pwr[i] = min_t(s8, target_power,
+-			       be32_to_cpu(data[i]) + nss_delta);
++		pwr[i] = min_t(s8, target_power, data[i] + nss_delta);
+ 		*max_power = max(*max_power, pwr[i]);
+ 	}
  }
  
--static struct xfrm_state *__xfrm_state_lookup_byaddr(struct net *net, u32 mark,
-+static struct xfrm_state *__xfrm_state_lookup_byaddr(const struct xfrm_hash_state_ptrs *state_ptrs,
-+						     u32 mark,
- 						     const xfrm_address_t *daddr,
- 						     const xfrm_address_t *saddr,
- 						     u8 proto, unsigned short family)
+ static void
+ mt76_apply_multi_array_limit(s8 *pwr, size_t pwr_len, s8 pwr_num,
+-			     const __be32 *data, size_t len, s8 target_power,
++			     const s8 *data, size_t len, s8 target_power,
+ 			     s8 nss_delta, s8 *max_power)
  {
--	unsigned int h = xfrm_src_hash(net, daddr, saddr, family);
-+	unsigned int h = __xfrm_src_hash(daddr, saddr, family, state_ptrs->hmask);
- 	struct xfrm_state *x;
+ 	int i, cur;
+@@ -253,8 +265,7 @@ mt76_apply_multi_array_limit(s8 *pwr, si
+ 	if (!data)
+ 		return;
  
--	hlist_for_each_entry_rcu(x, net->xfrm.state_bysrc + h, bysrc) {
-+	hlist_for_each_entry_rcu(x, state_ptrs->bysrc + h, bysrc) {
- 		if (x->props.family != family ||
- 		    x->id.proto     != proto ||
- 		    !xfrm_addr_equal(&x->id.daddr, daddr, family) ||
-@@ -1121,14 +1155,17 @@ static struct xfrm_state *__xfrm_state_l
- static inline struct xfrm_state *
- __xfrm_state_locate(struct xfrm_state *x, int use_spi, int family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct net *net = xs_net(x);
- 	u32 mark = x->mark.v & x->mark.m;
+-	len /= 4;
+-	cur = be32_to_cpu(data[0]);
++	cur = data[0];
+ 	for (i = 0; i < pwr_num; i++) {
+ 		if (len < pwr_len + 1)
+ 			break;
+@@ -269,7 +280,7 @@ mt76_apply_multi_array_limit(s8 *pwr, si
+ 		if (!len)
+ 			break;
  
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
- 	if (use_spi)
--		return __xfrm_state_lookup(net, mark, &x->id.daddr,
-+		return __xfrm_state_lookup(&state_ptrs, mark, &x->id.daddr,
- 					   x->id.spi, x->id.proto, family);
- 	else
--		return __xfrm_state_lookup_byaddr(net, mark,
-+		return __xfrm_state_lookup_byaddr(&state_ptrs, mark,
- 						  &x->id.daddr,
- 						  &x->props.saddr,
- 						  x->id.proto, family);
-@@ -1191,6 +1228,7 @@ xfrm_state_find(const xfrm_address_t *da
- 		unsigned short family, u32 if_id)
- {
- 	static xfrm_address_t saddr_wildcard = { };
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct net *net = xp_net(pol);
- 	unsigned int h, h_wildcard;
- 	struct xfrm_state *x, *x0, *to_put;
-@@ -1207,8 +1245,10 @@ xfrm_state_find(const xfrm_address_t *da
- 	sequence = read_seqcount_begin(&net->xfrm.xfrm_state_hash_generation);
- 
- 	rcu_read_lock();
--	h = xfrm_dst_hash(net, daddr, saddr, tmpl->reqid, encap_family);
--	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h, bydst) {
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	h = __xfrm_dst_hash(daddr, saddr, tmpl->reqid, encap_family, state_ptrs.hmask);
-+	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h, bydst) {
- #ifdef CONFIG_XFRM_OFFLOAD
- 		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET) {
- 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
-@@ -1241,8 +1281,9 @@ xfrm_state_find(const xfrm_address_t *da
- 	if (best || acquire_in_progress)
- 		goto found;
- 
--	h_wildcard = xfrm_dst_hash(net, daddr, &saddr_wildcard, tmpl->reqid, encap_family);
--	hlist_for_each_entry_rcu(x, net->xfrm.state_bydst + h_wildcard, bydst) {
-+	h_wildcard = __xfrm_dst_hash(daddr, &saddr_wildcard, tmpl->reqid,
-+				     encap_family, state_ptrs.hmask);
-+	hlist_for_each_entry_rcu(x, state_ptrs.bydst + h_wildcard, bydst) {
- #ifdef CONFIG_XFRM_OFFLOAD
- 		if (pol->xdo.type == XFRM_DEV_OFFLOAD_PACKET) {
- 			if (x->xso.type != XFRM_DEV_OFFLOAD_PACKET)
-@@ -1277,7 +1318,7 @@ found:
- 	x = best;
- 	if (!x && !error && !acquire_in_progress) {
- 		if (tmpl->id.spi &&
--		    (x0 = __xfrm_state_lookup_all(net, mark, daddr,
-+		    (x0 = __xfrm_state_lookup_all(&state_ptrs, mark, daddr,
- 						  tmpl->id.spi, tmpl->id.proto,
- 						  encap_family,
- 						  &pol->xdo)) != NULL) {
-@@ -2032,10 +2073,13 @@ struct xfrm_state *
- xfrm_state_lookup(struct net *net, u32 mark, const xfrm_address_t *daddr, __be32 spi,
- 		  u8 proto, unsigned short family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct xfrm_state *x;
- 
- 	rcu_read_lock();
--	x = __xfrm_state_lookup(net, mark, daddr, spi, proto, family);
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	x = __xfrm_state_lookup(&state_ptrs, mark, daddr, spi, proto, family);
- 	rcu_read_unlock();
- 	return x;
+-		cur = be32_to_cpu(data[0]);
++		cur = data[0];
+ 	}
  }
-@@ -2046,10 +2090,14 @@ xfrm_state_lookup_byaddr(struct net *net
- 			 const xfrm_address_t *daddr, const xfrm_address_t *saddr,
- 			 u8 proto, unsigned short family)
- {
-+	struct xfrm_hash_state_ptrs state_ptrs;
- 	struct xfrm_state *x;
  
- 	spin_lock_bh(&net->xfrm.xfrm_state_lock);
--	x = __xfrm_state_lookup_byaddr(net, mark, daddr, saddr, proto, family);
-+
-+	xfrm_hash_ptrs_get(net, &state_ptrs);
-+
-+	x = __xfrm_state_lookup_byaddr(&state_ptrs, mark, daddr, saddr, proto, family);
- 	spin_unlock_bh(&net->xfrm.xfrm_state_lock);
- 	return x;
- }
+@@ -280,7 +291,7 @@ s8 mt76_get_rate_power_limits(struct mt7
+ {
+ 	struct mt76_dev *dev = phy->dev;
+ 	struct device_node *np;
+-	const __be32 *val;
++	const s8 *val;
+ 	char name[16];
+ 	u32 mcs_rates = dev->drv->mcs_rates;
+ 	u32 ru_rates = ARRAY_SIZE(dest->ru[0]);
+@@ -326,21 +337,21 @@ s8 mt76_get_rate_power_limits(struct mt7
+ 
+ 	txs_delta = mt76_get_txs_delta(np, hweight8(phy->antenna_mask));
+ 
+-	val = mt76_get_of_array(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
++	val = mt76_get_of_array_s8(np, "rates-cck", &len, ARRAY_SIZE(dest->cck));
+ 	mt76_apply_array_limit(dest->cck, ARRAY_SIZE(dest->cck), val,
+ 			       target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-ofdm",
+-				&len, ARRAY_SIZE(dest->ofdm));
++	val = mt76_get_of_array_s8(np, "rates-ofdm",
++				   &len, ARRAY_SIZE(dest->ofdm));
+ 	mt76_apply_array_limit(dest->ofdm, ARRAY_SIZE(dest->ofdm), val,
+ 			       target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-mcs", &len, mcs_rates + 1);
++	val = mt76_get_of_array_s8(np, "rates-mcs", &len, mcs_rates + 1);
+ 	mt76_apply_multi_array_limit(dest->mcs[0], ARRAY_SIZE(dest->mcs[0]),
+ 				     ARRAY_SIZE(dest->mcs), val, len,
+ 				     target_power, txs_delta, &max_power);
+ 
+-	val = mt76_get_of_array(np, "rates-ru", &len, ru_rates + 1);
++	val = mt76_get_of_array_s8(np, "rates-ru", &len, ru_rates + 1);
+ 	mt76_apply_multi_array_limit(dest->ru[0], ARRAY_SIZE(dest->ru[0]),
+ 				     ARRAY_SIZE(dest->ru), val, len,
+ 				     target_power, txs_delta, &max_power);
 
 
 
