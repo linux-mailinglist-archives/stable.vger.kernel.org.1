@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207704-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3058BD0A1B9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3096D0989B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 313D33193D9E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 163003033BD3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:18:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4CFE35CB84;
-	Fri,  9 Jan 2026 12:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B14903176E4;
+	Fri,  9 Jan 2026 12:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ySmubJwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EAzH7RvI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9856F358D30;
-	Fri,  9 Jan 2026 12:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73E472737EE;
+	Fri,  9 Jan 2026 12:17:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962809; cv=none; b=qRjGZKNWmTvXCXUMXSZNLPfw+inBrNypxXIdhJ4anHVJPjpp2/9kR+Lxe77VulRX8kbOB/g5rKS/bJmPL4OVzpaQJTLygB5zAc2AVn9/KsUdVmhGRwoJn3tGzpcyfPA3xm4SlnMW7WI6R0OI/+NV3fLhU8mXRy4ANGo2pZJSHE8=
+	t=1767961079; cv=none; b=LI3G6lpePuf6evVNU/qCU5dIYPTJsfj0mJqZG0t4FIZBb7b1FvNg1RwKIfEkJKL8pAfbg5nhWyovZm8f6krjO94/cnOZIyUDGehD/VDXjNHHW3YgqhTbORceOJgXz5pqo1ZPsRYAjQSpeCXYKGD+c9K5Q9/0dtAel7cnpGaOjbQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962809; c=relaxed/simple;
-	bh=QX+KWCdPEY14Kcd5HxedPMy9E8rUVwMaG681hBnDhoc=;
+	s=arc-20240116; t=1767961079; c=relaxed/simple;
+	bh=Aw4P+EWv2LP2qqn8fuckbrIntHXyExVnIQELwCqtnZg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JWw6FqeehHZVi9xAMrb1wroTaXFRPfNJt06uOFzU2yxEGAxIbYJwd4b9k7V7uaSC6b4sPDmnIqYYASn8z9Gw3thHjrC7qdMxdkJlsWtbl4imKwUd4GpP4lu0dPe7+VBpwdFz1mNx9zlHtc2HKOkr48i76jzxvsZ58k1IKVtOmfU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ySmubJwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E565C16AAE;
-	Fri,  9 Jan 2026 12:46:48 +0000 (UTC)
+	 MIME-Version; b=DKdJGvYa7Hca/IuzbIP3MLm/cpDRKZmz8nHJ5pPtpfg1y82+fNMxZ00M0+sh3m2iuG8wkiOnAFffNC+swD5b2mdrE7e0YRDcIZLPxqW+RrhNlfMwSc6xA9J9or73VWW4C0yVNK6ErB55ICA/SE30+l1b6fBm/ixyj4Zjn0AEilc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EAzH7RvI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 020F5C4CEF1;
+	Fri,  9 Jan 2026 12:17:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962809;
-	bh=QX+KWCdPEY14Kcd5HxedPMy9E8rUVwMaG681hBnDhoc=;
+	s=korg; t=1767961079;
+	bh=Aw4P+EWv2LP2qqn8fuckbrIntHXyExVnIQELwCqtnZg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ySmubJwlI9qrXYfwqpO3SOVlHKYNKqKg2XsvdtDvaLLLg/qDCBZwbGcPm2nPIw984
-	 OzW/sJXHbF6oRM+BKyUSiNJrWlA4mONxQ9oIh0dXROaUWhoeCv/4O/RJXOTzz2N4xB
-	 /c5Pvokg7Hff28+XqCZMWCpycxAAmQzEeaVv13SY=
+	b=EAzH7RvI3VlR6uG9Wsa4KjxlwiL6KNMEI71rG9fqh3U/J13Gb2ceiOmIxrX+aCrEg
+	 yGn9bcNDCDcwP3evL5DZk3A3Yxv+Mc1RF9Fd9rURrmG4145xI1q1T5tcRq6QDH9DhP
+	 hPwL7Kj6H9f9rezLS77OmWxte3MItVY9owrCSFUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 488/634] media: i2c: ADV7604: Remove redundant cancel_delayed_work in probe
+	Raju Cheerla <rcheerla@redhat.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 627/737] blk-mq: add helper for checking if one CPU is mapped to specified hctx
 Date: Fri,  9 Jan 2026 12:42:46 +0100
-Message-ID: <20260109112135.908550715@linuxfoundation.org>
+Message-ID: <20260109112157.589995726@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +60,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Ming Lei <ming.lei@redhat.com>
 
-commit 8f34f24355a607b98ecd9924837aab13c676eeca upstream.
+commit 7b815817aa58d2e2101feb2fcf64c60cae0b2695 upstream.
 
-The delayed_work delayed_work_enable_hotplug is initialized with
-INIT_DELAYED_WORK() in adv76xx_probe(), but it is never scheduled
-anywhere in the probe function.
+Commit a46c27026da1 ("blk-mq: don't schedule block kworker on isolated CPUs")
+rules out isolated CPUs from hctx->cpumask, and hctx->cpumask should only be
+used for scheduling kworker.
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
+Add helper blk_mq_cpu_mapped_to_hctx() and apply it into cpuhp handlers.
 
-Remove the redundant cancel_delayed_work() from error handling
-path and adjust the goto label accordingly to simplify the code
-and avoid potential confusion.
+This patch avoids to forget clearing INACTIVE of hctx state in case that one
+isolated CPU becomes online, and fixes hang issue when allocating request
+from this hctx's tags.
 
-Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
-Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: Raju Cheerla <rcheerla@redhat.com>
+Fixes: a46c27026da1 ("blk-mq: don't schedule block kworker on isolated CPUs")
+Signed-off-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20240517020514.149771-1-ming.lei@redhat.com
+Tested-by: Raju Cheerla <rcheerla@redhat.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7604.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ block/blk-mq.c |   20 ++++++++++++++++++--
+ 1 file changed, 18 insertions(+), 2 deletions(-)
 
---- a/drivers/media/i2c/adv7604.c
-+++ b/drivers/media/i2c/adv7604.c
-@@ -3617,7 +3617,7 @@ static int adv76xx_probe(struct i2c_clie
- 	err = media_entity_pads_init(&sd->entity, state->source_pad + 1,
- 				state->pads);
- 	if (err)
--		goto err_work_queues;
-+		goto err_i2c;
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -3617,12 +3617,28 @@ static int blk_mq_hctx_notify_offline(un
+ 	return ret;
+ }
  
- 	/* Configure regmaps */
- 	err = configure_regmaps(state);
-@@ -3658,8 +3658,6 @@ static int adv76xx_probe(struct i2c_clie
++/*
++ * Check if one CPU is mapped to the specified hctx
++ *
++ * Isolated CPUs have been ruled out from hctx->cpumask, which is supposed
++ * to be used for scheduling kworker only. For other usage, please call this
++ * helper for checking if one CPU belongs to the specified hctx
++ */
++static bool blk_mq_cpu_mapped_to_hctx(unsigned int cpu,
++		const struct blk_mq_hw_ctx *hctx)
++{
++	struct blk_mq_hw_ctx *mapped_hctx = blk_mq_map_queue_type(hctx->queue,
++			hctx->type, cpu);
++
++	return mapped_hctx == hctx;
++}
++
+ static int blk_mq_hctx_notify_online(unsigned int cpu, struct hlist_node *node)
+ {
+ 	struct blk_mq_hw_ctx *hctx = hlist_entry_safe(node,
+ 			struct blk_mq_hw_ctx, cpuhp_online);
  
- err_entity:
- 	media_entity_cleanup(&sd->entity);
--err_work_queues:
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
- err_i2c:
- 	adv76xx_unregister_clients(state);
- err_hdl:
+-	if (cpumask_test_cpu(cpu, hctx->cpumask))
++	if (blk_mq_cpu_mapped_to_hctx(cpu, hctx))
+ 		clear_bit(BLK_MQ_S_INACTIVE, &hctx->state);
+ 	return 0;
+ }
+@@ -3640,7 +3656,7 @@ static int blk_mq_hctx_notify_dead(unsig
+ 	enum hctx_type type;
+ 
+ 	hctx = hlist_entry_safe(node, struct blk_mq_hw_ctx, cpuhp_dead);
+-	if (!cpumask_test_cpu(cpu, hctx->cpumask))
++	if (!blk_mq_cpu_mapped_to_hctx(cpu, hctx))
+ 		return 0;
+ 
+ 	ctx = __blk_mq_get_ctx(hctx->queue, cpu);
 
 
 
