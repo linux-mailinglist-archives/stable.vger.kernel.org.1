@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACE17D0A195
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5727D0993A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9DE7C330DEA9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0030C303436A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B0DD35BDB2;
-	Fri,  9 Jan 2026 12:51:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4AD915ADB4;
+	Fri,  9 Jan 2026 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kvn7Emif"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoME0JeV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D31482E8;
-	Fri,  9 Jan 2026 12:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 97F0D2EC54D;
+	Fri,  9 Jan 2026 12:22:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963070; cv=none; b=eB6BhqtA/7HwDWZqPeoWx5SDy76Ynm3+MQCajtDtX+duzxsaNNsHZm5VR8EfkBM7DqEvsQJD4fqu4BXl7XYt6qdL4CdNtRXUAVws/GuLtf30sF2QQ594VcwPv74dvwQrpu5iIjqI9xBZixDvn9JeHo+e3gTaQU77AC51RIi84cc=
+	t=1767961360; cv=none; b=ndcwnoDWPm9VhwXmalZWoSRqjy5O36nckzPsbH94DPXAh+GQhx6xaPoY4h4lrdrDrmg5gicP6t5XH8SPI4WyIegx26324oBULYcU49JPEKF2uMVB0SAPpJyPtfqGnicwgH8zAEqMcUlsgjyVzdhtK08f9BwZMcaEUcBj6FhL4V4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963070; c=relaxed/simple;
-	bh=HyBNSu2o4NYlSILqH1bgpZ7trgtPPzBliOKn8YKdTYw=;
+	s=arc-20240116; t=1767961360; c=relaxed/simple;
+	bh=MWQaGEFy4Jm5il2qMFVeZFBg/ryXMeb0OyJ1LV2f8IM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uePjm7xiCFUpmPF+W05c0eBFxnEbBudT42IzorNlL5muOc1oLVAL2YLYAwZ5GvS0bawlNIHXc6MBXpHR/7PSHgRNbxTGhkwr/qZUeb3mTyA61eXS6olEOODIsaS+OITQWIFOxQRdgEmzHAR7jsNM4ixefhB311BF2+r3weO0T+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kvn7Emif; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 488A1C4CEF1;
-	Fri,  9 Jan 2026 12:51:10 +0000 (UTC)
+	 MIME-Version; b=AATzlW211DyWEI9JdH2nM+pTSb1M/3ksDsla4p/+Ps5rDMlmrj53PBdjkUp/WSi2erIsMCFFOhKlhaKGAkm/Ji0Y35onnRL43h1XIsP9i35EFcHcpECcu1+vyG17SOzhhpkgkzl5UhQKmrQkNY8/pAOd/+a2T0gIjNH69NuNU0M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoME0JeV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADA8C4CEF1;
+	Fri,  9 Jan 2026 12:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963070;
-	bh=HyBNSu2o4NYlSILqH1bgpZ7trgtPPzBliOKn8YKdTYw=;
+	s=korg; t=1767961360;
+	bh=MWQaGEFy4Jm5il2qMFVeZFBg/ryXMeb0OyJ1LV2f8IM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kvn7EmifoumGheqKWAwkwZNrIvm7FNjrKYs2ZvV2KmmJ4iZiniCCKavnskFrj5IrG
-	 Au0EfSkd8Q8Orx6vEBuAFnpL4P+qPb9Lmxcb01asWkfNWeOLGBDMJSm3xuvkX0RrbS
-	 USX71NDjy5+Nz28xSsAH7eAa4fdSfMuFzqg1Kuc4=
+	b=IoME0JeVlXBDcd6fQlBzcAILiKPm3Y/IbtACIlzHW35e0nnpaoA0vs+fihN0EXo44
+	 Gg1qmQ9y9ZUyiV3NnSv2wmiGxitmaGVuxYz5SxGQnqGlnGuqBZKld2mdAM8kMZ8YUv
+	 rki7xHM+Ar5Ayf+7nv1tokRkKnaB19urfca6VGPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wentao Liang <vulab@iscas.ac.cn>,
-	Frank Li <Frank.Li@nxp.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 586/634] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 725/737] mm/damon/tests/core-kunit: handle alloc failures on damos_test_filter_out()
 Date: Fri,  9 Jan 2026 12:44:24 +0100
-Message-ID: <20260109112139.668144043@linuxfoundation.org>
+Message-ID: <20260109112201.366644064@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wentao Liang <vulab@iscas.ac.cn>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 73cb5f6eafb0ac7aea8cdeb8ff12981aa741d8fb ]
+commit d14d5671e7c9cc788c5a1edfa94e6f9064275905 upstream.
 
-of_get_child_by_name() returns a node pointer with refcount incremented.
-Use the __free() attribute to manage the pgc_node reference, ensuring
-automatic of_node_put() cleanup when pgc_node goes out of scope.
+damon_test_filter_out() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-This eliminates the need for explicit error handling paths and avoids
-reference count leaks.
-
-Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-16-sj@kernel.org
+Fixes: 26713c890875 ("mm/damon/core-test: add a unit test for __damos_filter_out()")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[6.6+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/imx/gpc.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ mm/damon/core-test.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/soc/imx/gpc.c
-+++ b/drivers/soc/imx/gpc.c
-@@ -405,13 +405,12 @@ clk_err:
- static int imx_gpc_probe(struct platform_device *pdev)
- {
- 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
--	struct device_node *pgc_node;
-+	struct device_node *pgc_node __free(device_node)
-+		= of_get_child_by_name(pdev->dev.of_node, "pgc");
- 	struct regmap *regmap;
- 	void __iomem *base;
- 	int ret;
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -433,11 +433,22 @@ static void damos_test_filter_out(struct
+ 	struct damos_filter *f;
  
--	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
--
- 	/* bail out if DT too old and doesn't provide the necessary info */
- 	if (!of_property_read_bool(pdev->dev.of_node, "#power-domain-cells") &&
- 	    !pgc_node)
+ 	f = damos_new_filter(DAMOS_FILTER_TYPE_ADDR, true);
++	if (!f)
++		kunit_skip(test, "filter alloc fail");
+ 	f->addr_range = (struct damon_addr_range){
+ 		.start = DAMON_MIN_REGION * 2, .end = DAMON_MIN_REGION * 6};
+ 
+ 	t = damon_new_target();
++	if (!t) {
++		damos_destroy_filter(f);
++		kunit_skip(test, "target alloc fail");
++	}
+ 	r = damon_new_region(DAMON_MIN_REGION * 3, DAMON_MIN_REGION * 5);
++	if (!r) {
++		damos_destroy_filter(f);
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 
+ 	/* region in the range */
 
 
 
