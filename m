@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207416-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7CE36D09D2A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E7833D094BB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B85AE31194A6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 95CF33034A16
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2AF33191D2;
-	Fri,  9 Jan 2026 12:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2DCC35A92D;
+	Fri,  9 Jan 2026 12:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DPE8XCUV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZRPSjZhj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A651B35BDA5;
-	Fri,  9 Jan 2026 12:33:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 96195359FBB;
+	Fri,  9 Jan 2026 12:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961992; cv=none; b=tI7QYRk+Jus6iew23EQdrj5bqQ/iPWIN6cZ8aaZq6mUC/Fa4YnLknsz0b2+obvlq5O+R2heOc7E/04qLff6A1GWvut7R5Ad2M94ZFHuGDzjOcukvFKUWncVs6gfgsJFrlNb1sS6XIEFWyST9p0ANKI/Yls+EjVbzr9f9EP5QKwU=
+	t=1767960186; cv=none; b=pcq0Z0FzEzZUggtRdLLqOrrFYRccO9GxphlMjXXiPuC+ODoU1Gu/GOfdNvqMkwxNbdlbiQZa+rbam3FmFaamtO0wWVGxIZ/UmW504sLD0OiNEEGNcQh+jp6zCzyF+mdekLi23l1NWDX3sEX5V9XvPKTd13On5nfK0bcEF/cGgvc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961992; c=relaxed/simple;
-	bh=rcVKbIpRDGn/DCzagHoV3UXz5m4h6Z87YgSypmA5+04=;
+	s=arc-20240116; t=1767960186; c=relaxed/simple;
+	bh=+tQU/mkOQeDIE092eDUcV/8g/pNAGhaGFhnvlAX+A5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ltlSBcex6bpXnHd+wWUktbkUA1HinZUBNN4v9PzqPrzimL3/YocB1DMruODjSuDzT4ena+QRnD+EHXBxDGikroERlCOdm1ff8ZpULFC/Wvr8swnTXka/qK0RhHsJUp3YmDEolrlsUc93mLoC4EuC4IXqtb9BSijfDhXPwVhujLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DPE8XCUV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D9E4C16AAE;
-	Fri,  9 Jan 2026 12:33:12 +0000 (UTC)
+	 MIME-Version; b=YDQZgr5mnG/16M0WLE6pwpjDm8A4UtpkZmBetMstEOpC2MfstehiqIb0/yVWq2Sh9ivUkf6QFwMINJcLNPAYWsPaXl+fKHm29UGjLfmuBP8VL15JWSZrSGZviJSgwPUOZTOis7jkDOVogPg2Xp92mql/35VdHhWx2fFlokEtacw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZRPSjZhj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2250EC4AF09;
+	Fri,  9 Jan 2026 12:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961992;
-	bh=rcVKbIpRDGn/DCzagHoV3UXz5m4h6Z87YgSypmA5+04=;
+	s=korg; t=1767960186;
+	bh=+tQU/mkOQeDIE092eDUcV/8g/pNAGhaGFhnvlAX+A5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DPE8XCUVzRGT/W+D3wjG2tMnr+YkBuqK8e5plWXt8WN5NKzjK4v7pQERx0mZeLZmE
-	 tX66esPMDIuRDGfMmBsBtyu7D66H9VQfJRujdvIOUOUk3iWiH2szdD3lv+7IAJC9oA
-	 A2wBtxB4hm1nLgmHLh9R9GWKwGmgmbQtIRVjtOww=
+	b=ZRPSjZhjQg9HyzKxTQnlr6MJAemi8J54M4HpUyCZtqp6jt9ZwgNvDh9joN8VcUmdB
+	 DEXx6N79Q8xOVLbkJr4TSLeLO73gyCXBSP1b7QZK8gT0q5ualCZy2dY3TX+jfJCzsH
+	 Fx02HqFwkbrz3wIhMqv5PmSEUWsVHJsfGDi4KrOQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Song Liu <song@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 175/634] netfilter: nft_connlimit: update the count if add was skipped
+Subject: [PATCH 6.6 314/737] livepatch: Match old_sympos 0 and 1 in klp_find_func()
 Date: Fri,  9 Jan 2026 12:37:33 +0100
-Message-ID: <20260109112124.029172944@linuxfoundation.org>
+Message-ID: <20260109112145.813978533@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Song Liu <song@kernel.org>
 
-[ Upstream commit 69894e5b4c5e28cda5f32af33d4a92b7a4b93b0e ]
+[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
 
-Connlimit expression can be used for all kind of packets and not only
-for packets with connection state new. See this ruleset as example:
+When there is only one function of the same name, old_sympos of 0 and 1
+are logically identical. Match them in klp_find_func().
 
-table ip filter {
-        chain input {
-                type filter hook input priority filter; policy accept;
-                tcp dport 22 ct count over 4 counter
-        }
-}
+This is to avoid a corner case with different toolchain behavior.
 
-Currently, if the connection count goes over the limit the counter will
-count the packets. When a connection is closed, the connection count
-won't decrement as it should because it is only updated for new
-connections due to an optimization on __nf_conncount_add() that prevents
-updating the list if the connection is duplicated.
+In this specific issue, two versions of kpatch-build were used to
+build livepatch for the same kernel. One assigns old_sympos == 0 for
+unique local functions, the other assigns old_sympos == 1 for unique
+local functions. Both versions work fine by themselves. (PS: This
+behavior change was introduced in a downstream version of kpatch-build.
+This change does not exist in upstream kpatch-build.)
 
-To solve this problem, check whether the connection was skipped and if
-so, update the list. Adjust count_tree() too so the same fix is applied
-for xt_connlimit.
+However, during livepatch upgrade (with the replace flag set) from a
+patch built with one version of kpatch-build to the same fix built with
+the other version of kpatch-build, livepatching fails with errors like:
 
-Fixes: 976afca1ceba ("netfilter: nf_conncount: Early exit in nf_conncount_lookup() and cleanup")
-Closes: https://lore.kernel.org/netfilter/trinity-85c72a88-d762-46c3-be97-36f10e5d9796-1761173693813@3c-app-mailcom-bs12/
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
+...
+[   14.219466] Call Trace:
+[   14.219468]  <TASK>
+[   14.219469]  dump_stack_lvl+0x47/0x60
+[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
+[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
+[   14.219479]  kobject_add_internal+0x9e/0x260
+[   14.219483]  kobject_add+0x68/0x80
+[   14.219485]  ? kstrdup+0x3c/0xa0
+[   14.219486]  klp_enable_patch+0x320/0x830
+[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
+[   14.219491]  ? 0xffffffffa05eb000
+[   14.219492]  do_one_initcall+0x2e/0x190
+[   14.219494]  do_init_module+0x67/0x270
+[   14.219496]  init_module_from_file+0x75/0xa0
+[   14.219499]  idempotent_init_module+0x15a/0x240
+[   14.219501]  __x64_sys_finit_module+0x61/0xc0
+[   14.219503]  do_syscall_64+0x5b/0x160
+[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[   14.219507] RIP: 0033:0x7f545a4bd96d
+...
+[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
+    -EEXIST, don't try to register things with the same name ...
+
+This happens because klp_find_func() thinks somefunc with old_sympos==0
+is not the same as somefunc with old_sympos==1, and klp_add_object_nops
+adds another xxx/func,1 to the list of functions to patch.
+
+Signed-off-by: Song Liu <song@kernel.org>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+[pmladek@suse.com: Fixed some typos.]
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Tested-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c  | 12 ++++++++----
- net/netfilter/nft_connlimit.c | 13 +++++++++++--
- 2 files changed, 19 insertions(+), 6 deletions(-)
+ kernel/livepatch/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 7a8a6f72ff198..97b631a81484d 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -179,7 +179,7 @@ static int __nf_conncount_add(struct net *net,
- 	if (ct && nf_ct_is_confirmed(ct)) {
- 		if (refcounted)
- 			nf_ct_put(ct);
--		return 0;
-+		return -EEXIST;
- 	}
+diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+index ecbc9b6aba3a1..81fd438697446 100644
+--- a/kernel/livepatch/core.c
++++ b/kernel/livepatch/core.c
+@@ -90,8 +90,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
+ 	struct klp_func *func;
  
- 	if ((u32)jiffies == list->last_gc)
-@@ -398,7 +398,7 @@ insert_tree(struct net *net,
- 			int ret;
- 
- 			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
--			if (ret)
-+			if (ret && ret != -EEXIST)
- 				count = 0; /* hotdrop */
- 			else
- 				count = rbconn->list.count;
-@@ -501,10 +501,14 @@ count_tree(struct net *net,
- 			/* same source network -> be counted! */
- 			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
- 			spin_unlock_bh(&rbconn->list.list_lock);
--			if (ret)
-+			if (ret && ret != -EEXIST) {
- 				return 0; /* hotdrop */
--			else
-+			} else {
-+				/* -EEXIST means add was skipped, update the list */
-+				if (ret == -EEXIST)
-+					nf_conncount_gc_list(net, &rbconn->list);
- 				return rbconn->list.count;
-+			}
+ 	klp_for_each_func(obj, func) {
++		/*
++		 * Besides identical old_sympos, also consider old_sympos
++		 * of 0 and 1 are identical.
++		 */
+ 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
+-		    (old_func->old_sympos == func->old_sympos)) {
++		    ((old_func->old_sympos == func->old_sympos) ||
++		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
++		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
+ 			return func;
  		}
  	}
- 
-diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
-index 0edde415f6fc5..f47a4932dc734 100644
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -29,8 +29,17 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
- 
- 	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
- 	if (err) {
--		regs->verdict.code = NF_DROP;
--		return;
-+		if (err == -EEXIST) {
-+			/* Call gc to update the list count if any connection has
-+			 * been closed already. This is useful for softlimit
-+			 * connections like limiting bandwidth based on a number
-+			 * of open connections.
-+			 */
-+			nf_conncount_gc_list(nft_net(pkt), priv->list);
-+		} else {
-+			regs->verdict.code = NF_DROP;
-+			return;
-+		}
- 	}
- 
- 	count = priv->list->count;
 -- 
 2.51.0
 
