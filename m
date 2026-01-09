@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-207724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0D37D0A1DA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A0367D09901
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 549D9319E671
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5B06D30378B0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2EDD35E521;
-	Fri,  9 Jan 2026 12:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CEF35A92E;
+	Fri,  9 Jan 2026 12:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l6tgzTSh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I8PBqeIp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 843FD35CBD5;
-	Fri,  9 Jan 2026 12:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6888426ED41;
+	Fri,  9 Jan 2026 12:19:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962866; cv=none; b=FcqUfWOyC8a7UL+9DbNP5Jmw1e0sw6cceUCJdyrdtQXupyw8Wlip//XTpMYNnz90QMSbRtYhQi8OYAojPNrtfpbpJyZUV+Vach5bz4/0DXAU2XoNsYSVyOf5NwG3FyYfeV9QruPHpi0XSnFx8Fbh3SjUh7nPH06dthW50eHxm0U=
+	t=1767961153; cv=none; b=gc3YwGIpesOH5MAfdf7qtPnfJM5YjvMROXDmtj1ZTd4f7I7zZMs669lQvdSfaQDXMzk4ysDbifFTEP4gWUmGirHSIf/z/JU7bsgzNmOsyUMp9xMQB11eoLuFEzLQ3fmtI9hsKlUvxeb+Z9pX4XCEVXIONxT1L8Muwb/4SPg7sAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962866; c=relaxed/simple;
-	bh=lpdVPXQ3G1wFniadD+uHFVOXfKtIVFhvioE+0e5bNDs=;
+	s=arc-20240116; t=1767961153; c=relaxed/simple;
+	bh=JLj/STIVlXQjdHOR1EmHPNHQehjCkM8qdQzWtPdsiho=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QNhHQh612TiYZ9iq2rEAQ+76wOag0Id1F7ZfKzXRw9PAprr5mRNxcp5TNLkFn4O4Y6hCMhDXhy7rZE52ppSCLKRTWlICAFDCjJe8A3wCLKJ+Q6uFvdf8P9bnku7u8NSMtbrlTXS6wNmBV7y/8EbF+PnqlzpnN1hcS0EXYFu95q8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l6tgzTSh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1363EC16AAE;
-	Fri,  9 Jan 2026 12:47:45 +0000 (UTC)
+	 MIME-Version; b=an2y9W8Gh4pzb+DJYublXKndchF5lbCGkDyWkyRROdbCLhZxu18UdtSZVb0f0m3aXHYQck01PtI9127z0QrXi5hmDMxqZvN0DHRIWkCuoF4fHzcqj+m7ZOSF3XEcaBdgcrbHBSTvEIXXKCWkSe1RbsbX8A34LgA2k+g54zRTTtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I8PBqeIp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAB0C4CEF1;
+	Fri,  9 Jan 2026 12:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962866;
-	bh=lpdVPXQ3G1wFniadD+uHFVOXfKtIVFhvioE+0e5bNDs=;
+	s=korg; t=1767961153;
+	bh=JLj/STIVlXQjdHOR1EmHPNHQehjCkM8qdQzWtPdsiho=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l6tgzTSh2zjDXD1yyzGiBz2ahMWraJJVor5p/gnvaa+XQgTTHgVRZJC0xTyc+HKmk
-	 1Pfy7oGQ0ISo65rjqbrqGAPjoEpygJWm2pTPNSWDX+RNSLnQDgIHc82gZ648QRHi8O
-	 XYnHEpcJlH2Qb7ziOtjQ1znRM++sdb7Ft7+YjReM=
+	b=I8PBqeIpQ7PpJLctBHwDhtkFLVD1+Dwjoe0yBUdGU4utII9Mx/0ql8ekrM0jBzN+5
+	 qtoBgV0YsPCYbI0un4quHtuQJDQuLKQzBSR5d+LUGkTVuZUEXUEu2lsHPO0qyrWSoa
+	 7SzHfqF9mzYfBZg0gsTT21U0jUinH6Zp0MTq5HDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 515/634] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
+	Olga Kornievskaia <okorniev@redhat.com>,
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 654/737] lockd: fix vfs_test_lock() calls
 Date: Fri,  9 Jan 2026 12:43:13 +0100
-Message-ID: <20260109112136.933148496@linuxfoundation.org>
+Message-ID: <20260109112158.625799340@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +62,183 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: NeilBrown <neil@brown.name>
 
-commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 upstream.
+[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
 
-damon_do_test_apply_three_regions() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
+it is given a "lock" but this is not the case.  It is given a struct
+file_lock which contains some details of the sort of lock it should be
+looking for.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
+In particular passing a "file_lock" containing fl_lmops or fl_ops is
+meaningless and possibly confusing.
+
+This is particularly problematic in lockd.  nlmsvc_testlock() receives
+an initialised "file_lock" from xdr-decode, including manager ops and an
+owner.  It then mistakenly passes this to vfs_test_lock() which might
+replace the owner and the ops.  This can lead to confusion when freeing
+the lock.
+
+The primary role of the 'struct file_lock' passed to vfs_test_lock() is
+to report a conflicting lock that was found, so it makes more sense for
+nlmsvc_testlock() to pass "conflock", which it uses for returning the
+conflicting lock.
+
+With this change, freeing of the lock is not confused and code in
+__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
+
+Documentation for vfs_test_lock() is improved to reflect its real
+purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
+future.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
+Signed-off-by: NeilBrown <neil@brown.name>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted fl->c.flc_* field references to flat fl->fl_* naming convention ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/lockd/svc4proc.c |    4 +---
+ fs/lockd/svclock.c  |   21 ++++++++++++---------
+ fs/lockd/svcproc.c  |    5 +----
+ fs/locks.c          |   12 ++++++++++--
+ 4 files changed, 24 insertions(+), 18 deletions(-)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -128,8 +128,14 @@ static void damon_do_test_apply_three_re
- 	int i;
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
  
- 	t = damon_new_target();
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	for (i = 0; i < nr_regions / 2; i++) {
- 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
-+		if (!r) {
-+			damon_destroy_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
- 		damon_add_region(r, t);
+ 	dprintk("lockd: TEST4        called\n");
+@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+ 	/* Now check for conflicting locks */
+ 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
+ 	if (resp->status == nlm_drop_reply)
+@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	else
+ 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -615,7 +615,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
  	}
  
+ 	mode = lock_to_openmode(&lock->fl);
+-	error = vfs_test_lock(file->f_file[mode], &lock->fl);
++	locks_init_lock(&conflock->fl);
++	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
++	conflock->fl.fl_file = lock->fl.fl_file;
++	conflock->fl.fl_start = lock->fl.fl_start;
++	conflock->fl.fl_end = lock->fl.fl_end;
++	conflock->fl.fl_owner = lock->fl.fl_owner;
++	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
+ 	if (error) {
+ 		/* We can't currently deal with deferred test requests */
+ 		if (error == FILE_LOCK_DEFERRED)
+@@ -625,22 +631,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
+ 		goto out;
+ 	}
+ 
+-	if (lock->fl.fl_type == F_UNLCK) {
++	if (conflock->fl.fl_type == F_UNLCK) {
+ 		ret = nlm_granted;
+ 		goto out;
+ 	}
+ 
+ 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
+-		lock->fl.fl_type, (long long)lock->fl.fl_start,
+-		(long long)lock->fl.fl_end);
++		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
++		(long long)conflock->fl.fl_end);
+ 	conflock->caller = "somehost";	/* FIXME */
+ 	conflock->len = strlen(conflock->caller);
+ 	conflock->oh.len = 0;		/* don't return OH info */
+-	conflock->svid = lock->fl.fl_pid;
+-	conflock->fl.fl_type = lock->fl.fl_type;
+-	conflock->fl.fl_start = lock->fl.fl_start;
+-	conflock->fl.fl_end = lock->fl.fl_end;
+-	locks_release_private(&lock->fl);
++	conflock->svid = conflock->fl.fl_pid;
++	locks_release_private(&conflock->fl);
+ 
+ 	ret = nlm_lck_denied;
+ out:
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST          called\n");
+@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+-
+ 	/* Now check for conflicting locks */
+ 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
+ 	if (resp->status == nlm_drop_reply)
+@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 		dprintk("lockd: TEST          status %d vers %d\n",
+ 			ntohl(resp->status), rqstp->rq_vers);
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2124,13 +2124,21 @@ SYSCALL_DEFINE2(flock, unsigned int, fd,
+ /**
+  * vfs_test_lock - test file byte range lock
+  * @filp: The file to test lock for
+- * @fl: The lock to test; also used to hold result
++ * @fl: The byte-range in the file to test; also used to hold result
+  *
++ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
++ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
++ * should be ignored.  c.flc_type and c.flc_flags are ignored.
++ * Both fl_lmops and fl_ops in @fl must be NULL.
+  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
+- * setting conf->fl_type to something other than F_UNLCK.
++ * setting fl->fl_type to something other than F_UNLCK.
++ *
++ * If vfs_test_lock() does find a lock and return it, the caller must
++ * use locks_free_lock() or locks_release_private() on the returned lock.
+  */
+ int vfs_test_lock(struct file *filp, struct file_lock *fl)
+ {
++	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
+ 	WARN_ON_ONCE(filp != fl->fl_file);
+ 	if (filp->f_op->lock)
+ 		return filp->f_op->lock(filp, F_GETLK, fl);
 
 
 
