@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206989-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945EDD09F6E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B6FD09937
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D27D630309A5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:09 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFB163095D33
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E18235C196;
-	Fri,  9 Jan 2026 12:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406B832F748;
+	Fri,  9 Jan 2026 12:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g308Qpvx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDFJx/dI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51D46359703;
-	Fri,  9 Jan 2026 12:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038EF1946C8;
+	Fri,  9 Jan 2026 12:12:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962488; cv=none; b=XzWRLIqtFBrJvguW/eXcLRAosVaYU5LDyBMSmxG5TfrralY9pzBpdpm40OEtXHGOLFFTPPl6hb+48wBLkL7NFMn00yzmAUC9VVo3XRuewFyWmEfb0dv9bOZB4agY5GFpz23ipLsC67L4bVaL33U+xL7gMyTOBuTRW/E/XJv+I6o=
+	t=1767960777; cv=none; b=p8kugizaLAn1iFl/as7Y7pAHM8PxUxCrxNXBlNg7zKMxayINkdcd8pcS1I0inq/Qha8QYNuLoJ3VCTeKrzPIlh5r+5+HnaLM7FxwndYhVad3pfdOV9NbfwU5fidNhAvOV5+NqQ672RkGx2TS21R7KBifr9TXVMutQcX0BcDj7pQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962488; c=relaxed/simple;
-	bh=Ajc3SphGF3sQPug64cg4O/+kYy3duALiguqyUT9Qp2Q=;
+	s=arc-20240116; t=1767960777; c=relaxed/simple;
+	bh=L85XqhRnJ7U1d2xZzDxSAT0WPGAOdEmDlyJl+kbvYfw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=map0HqSeMiiNp5assNH4Y/bxoGjxGy5IJhhkUJQbxP6rUNo9rm/L7tWmzW2txSVXFcDLeU6b3j3kUkCdHVxpJStZQSnklT0zqYpcj+7jWcwlhLWux88gHUy62/hAA43Hq6O056JUCwvz30hUZRxdtu9G9GwABWZ3yEfBYJ8jJP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g308Qpvx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864CBC4CEF1;
-	Fri,  9 Jan 2026 12:41:27 +0000 (UTC)
+	 MIME-Version; b=rHmHz1uomziiJFIicsJko+D73BcSv1M5oNO+DDZBKG0UYdIUYoAIARHxq4cCJCtz6CBVtJCvyIT4yhMLspvrC+gw61lSQaMKgFydBotYGPnfi46ay+ipuQj172bgByp/MsIxK3W59yxrS+/w1zKxXdGAQewL/JVplNqTWijfI5M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDFJx/dI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C29C4CEF1;
+	Fri,  9 Jan 2026 12:12:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962487;
-	bh=Ajc3SphGF3sQPug64cg4O/+kYy3duALiguqyUT9Qp2Q=;
+	s=korg; t=1767960776;
+	bh=L85XqhRnJ7U1d2xZzDxSAT0WPGAOdEmDlyJl+kbvYfw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g308Qpvxcwu46KN17CZx3E4Ps/3Lkx/MAcBmEOk6sriiPIrb0o/ueutJXy1UQcFJS
-	 JoWGG+4GF9F/FzT3ormEbwBCPlsKltXZ0mVpcOPwgfIwYSp4kkjWvoMIhXobrntHK1
-	 RNAbWYB9SjZISfqSI7Pep57zqHrJmAxOtdjyq55g=
+	b=mDFJx/dInBEGOrdnR59X7yuFJn5g26oPU59qA+t8c22zqWym7WjOq6l5ipXTipcki
+	 diCyNfLbtntoNpu7pmSJ0JBLdr1S+jzsOs/9KTOKVz+NIX3VVbXNBWUr7NA4mDCkC8
+	 OneDHuj9oQRHR3hCCQT+0Jb3rDCssDANnkVOkVh8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 381/634] soc: amlogic: canvas: fix device leak on lookup
-Date: Fri,  9 Jan 2026 12:40:59 +0100
-Message-ID: <20260109112131.867224830@linuxfoundation.org>
+	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 521/737] net: usb: asix: validate PHY address before use
+Date: Fri,  9 Jan 2026 12:41:00 +0100
+Message-ID: <20260109112153.600044850@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 32200f4828de9d7e6db379909898e718747f4e18 upstream.
+[ Upstream commit a1e077a3f76eea0dc671ed6792e7d543946227e8 ]
 
-Make sure to drop the reference taken to the canvas platform device when
-looking up its driver data.
+The ASIX driver reads the PHY address from the USB device via
+asix_read_phy_addr(). A malicious or faulty device can return an
+invalid address (>= PHY_MAX_ADDR), which causes a warning in
+mdiobus_get_phy():
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+  addr 207 out of range
+  WARNING: drivers/net/phy/mdio_bus.c:76
 
-Also note that commit 28f851e6afa8 ("soc: amlogic: canvas: add missing
-put_device() call in meson_canvas_get()") fixed the leak in a lookup
-error path, but the reference is still leaking on success.
+Validate the PHY address in asix_read_phy_addr() and remove the
+now-redundant check in ax88172a.c.
 
-Fixes: d4983983d987 ("soc: amlogic: add meson-canvas driver")
-Cc: stable@vger.kernel.org	# 4.20: 28f851e6afa8
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20250926142454.5929-2-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
+Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
+Link: https://lore.kernel.org/all/20251217085057.270704-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251218011156.276824-1-kartikey406@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/amlogic/meson-canvas.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/usb/asix_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/soc/amlogic/meson-canvas.c
-+++ b/drivers/soc/amlogic/meson-canvas.c
-@@ -72,10 +72,9 @@ struct meson_canvas *meson_canvas_get(st
- 	 * current state, this driver probe cannot return -EPROBE_DEFER
- 	 */
- 	canvas = dev_get_drvdata(&canvas_pdev->dev);
--	if (!canvas) {
--		put_device(&canvas_pdev->dev);
-+	put_device(&canvas_pdev->dev);
-+	if (!canvas)
- 		return ERR_PTR(-EINVAL);
--	}
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 7fd763917ae2..6ab3486072cb 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -335,6 +335,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
+ 	offset = (internal ? 1 : 0);
+ 	ret = buf[offset];
  
- 	return canvas;
- }
++	if (ret >= PHY_MAX_ADDR) {
++		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
++		return -ENODEV;
++	}
++
+ 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
+ 		   internal ? "internal" : "external", ret);
+ 
+-- 
+2.51.0
+
 
 
 
