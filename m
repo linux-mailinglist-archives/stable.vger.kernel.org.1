@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-207040-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97F71D09974
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B0EFD09744
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 883BF30188DC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2BBAC3075EA1
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AB4235A92E;
-	Fri,  9 Jan 2026 12:15:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B110B359F99;
+	Fri,  9 Jan 2026 12:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P9a0J7oU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="otIE8mxg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC7C1359713;
-	Fri,  9 Jan 2026 12:15:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5607C359F8C;
+	Fri,  9 Jan 2026 12:13:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960922; cv=none; b=V/lTAa97NPpPAIYBB/XfYhVayNu001jkW3vhCkwuKMUtEUsRp0y3qhaf1HaVroQGcANQ6pWrF171YYKCd7GQP1ZXKLW9GG6WiHFgQCKE1RS2lY+NffJp2sw3ODtLFovNHH0O1AsJOjzEhMAgTDceuhr1hPaSP2dJA2VPWYNDOEg=
+	t=1767960822; cv=none; b=jC6kV1S3P6a0SjTcVuqnnUOC8p0HcWL5XuIDp+sd3Hd0tMIJ39lSgupvfDZUIm9hSRjXFrQ+UIbUgVSE9Vl3tFzisxF5JYFJjhs2gLOK4EHOhvLg7ZyqTCpyNbUzpZ9DUX0RPxdjnstdCnF4npp5mFrPQcpLpRDTrgFOg1yloAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960922; c=relaxed/simple;
-	bh=iGvpY4vs1BYhLHaxBs2vKMCmiw0NvWeHio15DK1GB9U=;
+	s=arc-20240116; t=1767960822; c=relaxed/simple;
+	bh=JeZdNnFZJMFj6fMz+VpYR4TyuSMpyFPjoeWl8qzi2jo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nv5qOUPbcaNLuw7f6tFY4Vljadok9T3vWxyHZDDpB2Wl9cIW1LsJKFs/kMIQznQrXGNWcxDcKE35x/vbDH2pTJw1SzWN7OVHyFaCSVUkOLJtyT9Ga690r3VkbU7KQESSd/n6qMha/tQriSKfb5XSEwkGSaqEX31y0sTPTL9koBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P9a0J7oU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67BB7C4CEF1;
-	Fri,  9 Jan 2026 12:15:22 +0000 (UTC)
+	 MIME-Version; b=pE8By3TK9GsG0Mi0W6HYcZDqcDgjgKzFYTwSfbYdy05OtU0hJdyzYvNE/Mw3AEanFFKDZKJ8US86HJkqsE25mO0dVhvttHyn3AjqftAUxSLkdtU3GMqhhbuH1UkTaGabnz+X68/YGVwBSkyBAtGxW1xbiZioxuRTlmacDem5vaU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=otIE8mxg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D53C7C4CEF1;
+	Fri,  9 Jan 2026 12:13:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960922;
-	bh=iGvpY4vs1BYhLHaxBs2vKMCmiw0NvWeHio15DK1GB9U=;
+	s=korg; t=1767960822;
+	bh=JeZdNnFZJMFj6fMz+VpYR4TyuSMpyFPjoeWl8qzi2jo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P9a0J7oU33U+veGQ9/+xfdfwlrNYqo2IZ3TmWnDnsFkndK1wkDjgYgy9ulPnfSkV3
-	 0Fvtd3QQ1PdBcVlAf2UhUpHMtA2brlxXRZfklZCiKUh/6Yt2NxX49SyLWnFLE0NTQ+
-	 QPVVl6fPY9lvbHnDOk1j4Am1z0/3axHk1Fhqb8Mw=
+	b=otIE8mxgHr9fHwy+6qjm86qFxWWDfPaMH6BSMCzyvlSDvjYGXdpJfkNRGFCvoXxa1
+	 WNEFoBTHT9+4ycwbMCFpbhx5rWf8eDtwpOjn9e7tNM2pEjoOzifQ3hUne8673mH2wS
+	 i8kqmBHyB4MMEieOehd1KopcV9fmTAySjvigdfcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Michal Schmidt <mschmidt@redhat.com>,
+	Tom Sela <tomsela@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
 	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 529/737] RDMA/irdma: avoid invalid read in irdma_net_event
-Date: Fri,  9 Jan 2026 12:41:08 +0100
-Message-ID: <20260109112153.896808547@linuxfoundation.org>
+Subject: [PATCH 6.6 530/737] RDMA/efa: Remove possible negative shift
+Date: Fri,  9 Jan 2026 12:41:09 +0100
+Message-ID: <20260109112153.934093727@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,81 +67,45 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Michal Schmidt <mschmidt@redhat.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-[ Upstream commit 6f05611728e9d0ab024832a4f1abb74a5f5d0bb0 ]
+[ Upstream commit 85463eb6a46caf2f1e0e1a6d0731f2f3bab17780 ]
 
-irdma_net_event() should not dereference anything from "neigh" (alias
-"ptr") until it has checked that the event is NETEVENT_NEIGH_UPDATE.
-Other events come with different structures pointed to by "ptr" and they
-may be smaller than struct neighbour.
+The page size used for device might in some cases be smaller than
+PAGE_SIZE what results in a negative shift when calculating the number of
+host pages in PAGE_SIZE for a debug log. Remove the debug line together
+with the calculation.
 
-Move the read of neigh->dev under the NETEVENT_NEIGH_UPDATE case.
-
-The bug is mostly harmless, but it triggers KASAN on debug kernels:
-
- BUG: KASAN: stack-out-of-bounds in irdma_net_event+0x32e/0x3b0 [irdma]
- Read of size 8 at addr ffffc900075e07f0 by task kworker/27:2/542554
-
- CPU: 27 PID: 542554 Comm: kworker/27:2 Kdump: loaded Not tainted 5.14.0-630.el9.x86_64+debug #1
- Hardware name: [...]
- Workqueue: events rt6_probe_deferred
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x60/0xb0
-  print_address_description.constprop.0+0x2c/0x3f0
-  print_report+0xb4/0x270
-  kasan_report+0x92/0xc0
-  irdma_net_event+0x32e/0x3b0 [irdma]
-  notifier_call_chain+0x9e/0x180
-  atomic_notifier_call_chain+0x5c/0x110
-  rt6_do_redirect+0xb91/0x1080
-  tcp_v6_err+0xe9b/0x13e0
-  icmpv6_notify+0x2b2/0x630
-  ndisc_redirect_rcv+0x328/0x530
-  icmpv6_rcv+0xc16/0x1360
-  ip6_protocol_deliver_rcu+0xb84/0x12e0
-  ip6_input_finish+0x117/0x240
-  ip6_input+0xc4/0x370
-  ipv6_rcv+0x420/0x7d0
-  __netif_receive_skb_one_core+0x118/0x1b0
-  process_backlog+0xd1/0x5d0
-  __napi_poll.constprop.0+0xa3/0x440
-  net_rx_action+0x78a/0xba0
-  handle_softirqs+0x2d4/0x9c0
-  do_softirq+0xad/0xe0
-  </IRQ>
-
-Fixes: 915cc7ac0f8e ("RDMA/irdma: Add miscellaneous utility definitions")
-Link: https://patch.msgid.link/r/20251127143150.121099-1-mschmidt@redhat.com
-Signed-off-by: Michal Schmidt <mschmidt@redhat.com>
+Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
+Link: https://patch.msgid.link/r/20251210173656.8180-1-mrgolin@amazon.com
+Reviewed-by: Tom Sela <tomsela@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
 Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/irdma/utils.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/infiniband/hw/efa/efa_verbs.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/infiniband/hw/irdma/utils.c b/drivers/infiniband/hw/irdma/utils.c
-index 6cd5cb85dafe..91ed7edcd788 100644
---- a/drivers/infiniband/hw/irdma/utils.c
-+++ b/drivers/infiniband/hw/irdma/utils.c
-@@ -251,7 +251,7 @@ int irdma_net_event(struct notifier_block *notifier, unsigned long event,
- 		    void *ptr)
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 0f8ca99d0827..2a5b93ef4b33 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -1224,13 +1224,9 @@ static int umem_to_page_list(struct efa_dev *dev,
+ 			     u32 hp_cnt,
+ 			     u8 hp_shift)
  {
- 	struct neighbour *neigh = ptr;
--	struct net_device *real_dev, *netdev = (struct net_device *)neigh->dev;
-+	struct net_device *real_dev, *netdev;
- 	struct irdma_device *iwdev;
- 	struct ib_device *ibdev;
- 	__be32 *p;
-@@ -260,6 +260,7 @@ int irdma_net_event(struct notifier_block *notifier, unsigned long event,
+-	u32 pages_in_hp = BIT(hp_shift - PAGE_SHIFT);
+ 	struct ib_block_iter biter;
+ 	unsigned int hp_idx = 0;
  
- 	switch (event) {
- 	case NETEVENT_NEIGH_UPDATE:
-+		netdev = neigh->dev;
- 		real_dev = rdma_vlan_dev_real_dev(netdev);
- 		if (!real_dev)
- 			real_dev = netdev;
+-	ibdev_dbg(&dev->ibdev, "hp_cnt[%u], pages_in_hp[%u]\n",
+-		  hp_cnt, pages_in_hp);
+-
+ 	rdma_umem_for_each_dma_block(umem, &biter, BIT(hp_shift))
+ 		page_list[hp_idx++] = rdma_block_iter_dma_address(&biter);
+ 
 -- 
 2.51.0
 
