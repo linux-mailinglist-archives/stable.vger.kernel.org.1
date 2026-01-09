@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-207529-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206963-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 87961D0A1D4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACD05D098BC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76E6A3111E90
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 070833019958
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81FC7335BCD;
-	Fri,  9 Jan 2026 12:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BA7633B6F1;
+	Fri,  9 Jan 2026 12:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eyLpMvu8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1WvPh3dS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46AFD33C53A;
-	Fri,  9 Jan 2026 12:38:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5FE8C23ED5B;
+	Fri,  9 Jan 2026 12:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962313; cv=none; b=IQWMotQXn4Ra333Oy0GlrF9bJYz1cJvwgAQhZBeOXcfANo258EroeHHGxilpTKnfq4zlluJcCvXBWfEi/kHA3XyWipsOtzFwQgNub5BYOr/esH2cst4caHHMGoVCfvC3Mjmpmcvohec4BmkD5aP9tCIMvMUQqx4pPuLRLCD1Gew=
+	t=1767960703; cv=none; b=MqpRuZHv8UXMDhIQqU74wGPLQ45vminPaAX3BZY+iBS9uX0XksFJIqK8BsZczAdIj4q06aDG3AANcWK9Xvhb4sATDM7Lloy+x4Qm77fMPwSIOTqdRRc4u3YjFKhFIBU/h33A0FUt6LnqTavbBnnymt8jtXnubyQIlvEDwvhOQUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962313; c=relaxed/simple;
-	bh=1v8alsF/CCGSs9sbj14ep4cP3d+1KTXGCVliGEKysj0=;
+	s=arc-20240116; t=1767960703; c=relaxed/simple;
+	bh=iu6sLnUNmS+4Z3S8pTfs20lcFaqSYvMof0XLBr5NX9k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i61fa9JL1GEQRmNPlJC1pNvGpwEY4vaFGJVj/QG9RVcFzbkRuST3UpaQ3O+8/uYs6FKqsJQW76p+tSEpyq+KBEC2wlcriXxUUmSgkgFfexwHJoI2bd8PrYhkllUAlTnec5n920H86ZUp/UvcJZ4d6JgpzA+CaeeV4jFE9z+OAco=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eyLpMvu8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C58BCC4CEF1;
-	Fri,  9 Jan 2026 12:38:32 +0000 (UTC)
+	 MIME-Version; b=IsSu0ClUzAQISVqA4nhkItrEcmdiBW2Y2fLUuxlmUhj7X0PgjxyAusbOWMiM2S1WmsaDdKiTPbWSqmR0Tr0u6uQuFWsFETtze8L4wLrkVFRWBzhWgc+e52Js+8p+COhnuq8XgvAZucYyCMQ1stQyOgM80iYZorwp0pTwmmC7dTw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1WvPh3dS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2BF0C4CEF1;
+	Fri,  9 Jan 2026 12:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962313;
-	bh=1v8alsF/CCGSs9sbj14ep4cP3d+1KTXGCVliGEKysj0=;
+	s=korg; t=1767960703;
+	bh=iu6sLnUNmS+4Z3S8pTfs20lcFaqSYvMof0XLBr5NX9k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eyLpMvu8s0398zmcz9cvVLqOtJ9YeIm+Eh61bFwOJ7zpLUgmb70ILq1rKkIabmSLO
-	 /GOit2FdDu9rBxa7KNVVcvkDppiHh2jSwGDOpw+71vY/hTe49UcaqOsk0I93Duqh8u
-	 Aiysurt3Ex4El6LBTT7ysUIJdj5yo/uC+TGQyFVE=
+	b=1WvPh3dSNQjC25zonrGmRvvw9B+0QZq2a0/aBkmWU4EAJUSRLIqHtVUlvDcm0NeU/
+	 7CKVOYA4xWQRoGz+1bjDjVWFB4OvuCFAsAQovnhRp9lbxsIfKX8Eubye/2U9OcejXB
+	 eqn42UhPuJxJDju4rd1IBjiARLoZ8ZRlxQ4Zn67I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Chen <chenl311@chinatelecom.cn>,
-	Chaitanya Kulkarni <kch@nvidia.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 322/634] block: rate-limit capacity change info log
-Date: Fri,  9 Jan 2026 12:40:00 +0100
-Message-ID: <20260109112129.647321920@linuxfoundation.org>
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 462/737] KVM: x86: WARN if hrtimer callback for periodic APIC timer fires with period=0
+Date: Fri,  9 Jan 2026 12:40:01 +0100
+Message-ID: <20260109112151.370875881@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +58,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Chen <chenl311@chinatelecom.cn>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 3179a5f7f86bcc3acd5d6fb2a29f891ef5615852 upstream.
+commit 0ea9494be9c931ddbc084ad5e11fda91b554cf47 upstream.
 
-loop devices under heavy stress-ng loop streessor can trigger many
-capacity change events in a short time. Each event prints an info
-message from set_capacity_and_notify(), flooding the console and
-contributing to soft lockups on slow consoles.
-
-Switch the printk in set_capacity_and_notify() to
-pr_info_ratelimited() so frequent capacity changes do not spam
-the log while still reporting occasional changes.
+WARN and don't restart the hrtimer if KVM's callback runs with the guest's
+APIC timer in periodic mode but with a period of '0', as not advancing the
+hrtimer's deadline would put the CPU into an infinite loop of hrtimer
+events.  Observing a period of '0' should be impossible, even when the
+hrtimer is running on a different CPU than the vCPU, as KVM is supposed to
+cancel the hrtimer before changing (or zeroing) the period, e.g. when
+switching from periodic to one-shot.
 
 Cc: stable@vger.kernel.org
-Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Link: https://patch.msgid.link/20251113205114.1647493-2-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/genhd.c |    2 +-
+ arch/x86/kvm/lapic.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/block/genhd.c
-+++ b/block/genhd.c
-@@ -88,7 +88,7 @@ bool set_capacity_and_notify(struct gend
- 	    (disk->flags & GENHD_FL_HIDDEN))
- 		return false;
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -2855,7 +2855,7 @@ static enum hrtimer_restart apic_timer_f
  
--	pr_info("%s: detected capacity change from %lld to %lld\n",
-+	pr_info_ratelimited("%s: detected capacity change from %lld to %lld\n",
- 		disk->disk_name, capacity, size);
+ 	apic_timer_expired(apic, true);
  
- 	/*
+-	if (lapic_is_periodic(apic)) {
++	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
+ 		advance_periodic_target_expiration(apic);
+ 		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
+ 		return HRTIMER_RESTART;
 
 
 
