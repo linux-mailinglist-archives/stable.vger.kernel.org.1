@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206959-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7548AD0969B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:17 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED6FCD0A168
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9EF8B3002BB1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 78D9A30433EF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 263EB338911;
-	Fri,  9 Jan 2026 12:11:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F051F35C191;
+	Fri,  9 Jan 2026 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d4hyb9Ky"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QeEoAhNe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD22E320CB6;
-	Fri,  9 Jan 2026 12:11:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9855235A955;
+	Fri,  9 Jan 2026 12:41:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960691; cv=none; b=NvIrIpZGB9lJix8GrACKGMakgylQUMvIGuWvHrCt/vlK1hxSSgH22kS+hS53XwjpGK+efvT0hQBZuIz8KCwKEIAID9GrWf/f88jC22y3xrhHh0I2SwJ6Lf2Ujz5dZj2TmbFE9YeDiH5V4GbzcyFGFTs/qQCQe/5qMogrNAfg5gc=
+	t=1767962493; cv=none; b=MN0edToGO+Dmdnp/2esCHp6zBYDksCJT3DqeEEXXLre868JdUZ+oUXhLJhPMKZu/rJ0XFLIKVirKL+bQsYtifyFCjHuNKjUvb3w7Ys+fLGsqEC/6In31HDQKbjR9LBxSo/D2rMcnDggeWnC4tNQ+P0yv7vpEQoMNQFP3C5RhN5Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960691; c=relaxed/simple;
-	bh=+EU/IC77tM/XYtMpH79gHddAmdgoNQaB4V9K8Dx8ZgU=;
+	s=arc-20240116; t=1767962493; c=relaxed/simple;
+	bh=QtRhzk5yf4QSOK+SlYXlTdtD4LQ0eHbE2AzC6PHYKaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5gUm/XlJzV0mXjrA6QZohJkn6S6i6K6muELnBUYTcCNjswG/B2dp6E6B57eusi471SblQ0VCTFVz8xv10l9gnJSxL73lst8hvfDiWGVPY83kC+Bu1mV6751SL/5Aoe31xic0KBxCWPNY2AZdvg5omQfjRYH032A8WBvPt13qlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d4hyb9Ky; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64100C4CEF1;
-	Fri,  9 Jan 2026 12:11:31 +0000 (UTC)
+	 MIME-Version; b=lTxU4ErvStGHKjLJ3nFhO+PRl+N5nuXty7FVb1a/IJJqrDHjK0JLKflA8mgk+4+bITrwwSMtQ0ASVzFTTlyJ/jOLAErvuYSEdaI8gXrAFsyvMCA4u3RUPT5xqclzoSo93hmuHWAaU6SuR5yjKSTQvqLnam8gs/a4jWKVsYxxJVw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QeEoAhNe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CE20C4CEF1;
+	Fri,  9 Jan 2026 12:41:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960691;
-	bh=+EU/IC77tM/XYtMpH79gHddAmdgoNQaB4V9K8Dx8ZgU=;
+	s=korg; t=1767962493;
+	bh=QtRhzk5yf4QSOK+SlYXlTdtD4LQ0eHbE2AzC6PHYKaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d4hyb9KyK9QLWXy84LbR+hwx2KhrSh582rdml8vt8cybq0vu9TymYCLn04c1aKSpq
-	 C6lX37GUnoZE5TJR2HpCaOq44z6InU6mD6cmNKhc4wetX9F4H6xDQzIRUGLKoQTlw4
-	 gRipc5qqzdTX0UvdxkSMBHsT7jo5peHtCAh7rcvg=
+	b=QeEoAhNeXtT91rctL3HBiNruvsbz0M5e/xfAj6dmgk5kgWtJQGqjEzZ36T9ytCaAT
+	 r87Elfn49T39y3LmzcZG8K1qaHXPqgRkTwg49+A17wQpYZd2sKRNakpmdUDwWYur7m
+	 isKFD+yZATg/qS5xZDvPPI9K6bPD2ejQ19D6zbCE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Masami Hiramatsu <mhiramat@kernel.org>,
-	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-	Douglas Raillard <douglas.raillard@arm.com>,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.6 490/737] tracing: Fix fixed array of synthetic event
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 6.1 351/634] tools/testing/nvdimm: Use per-DIMM device handle
 Date: Fri,  9 Jan 2026 12:40:29 +0100
-Message-ID: <20260109112152.423462560@linuxfoundation.org>
+Message-ID: <20260109112130.731574213@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Steven Rostedt <rostedt@goodmis.org>
+From: Alison Schofield <alison.schofield@intel.com>
 
-commit 47ef834209e5981f443240d8a8b45bf680df22aa upstream.
+commit f59b701b4674f7955170b54c4167c5590f4714eb upstream.
 
-The commit 4d38328eb442d ("tracing: Fix synth event printk format for str
-fields") replaced "%.*s" with "%s" but missed removing the number size of
-the dynamic and static strings. The commit e1a453a57bc7 ("tracing: Do not
-add length to print format in synthetic events") fixed the dynamic part
-but did not fix the static part. That is, with the commands:
+KASAN reports a global-out-of-bounds access when running these nfit
+tests: clear.sh, pmem-errors.sh, pfn-meta-errors.sh, btt-errors.sh,
+daxdev-errors.sh, and inject-error.sh.
 
-  # echo 's:wake_lat char[] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
-  # echo 'hist:keys=pid:ts=common_timestamp.usecs if !(common_flags & 0x18)' > /sys/kernel/tracing/events/sched/sched_waking/trigger
-  # echo 'hist:keys=next_pid:delta=common_timestamp.usecs-$ts:onmatch(sched.sched_waking).trace(wake_lat,next_comm,$delta)' > /sys/kernel/tracing/events/sched/sched_switch/trigger
+[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
+[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
+[] The buggy address belongs to the variable:
+[] handle+0x1c/0x1df4 [nfit_test]
 
-That caused the output of:
+nfit_test_search_spa() uses handle[nvdimm->id] to retrieve a device
+handle and triggers a KASAN error when it reads past the end of the
+handle array. It should not be indexing the handle array at all.
 
-          <idle>-0       [001] d..5.   193.428167: wake_lat: wakee=(efault)sshd-sessiondelta=155
-    sshd-session-879     [001] d..5.   193.811080: wake_lat: wakee=(efault)kworker/u34:5delta=58
-          <idle>-0       [002] d..5.   193.811198: wake_lat: wakee=(efault)bashdelta=91
+The correct device handle is stored in per-DIMM test data. Each DIMM
+has a struct nfit_mem that embeds a struct acpi_nfit_memdev that
+describes the NFIT device handle. Use that device handle here.
 
-The commit e1a453a57bc7 fixed the part where the synthetic event had
-"char[] wakee". But if one were to replace that with a static size string:
-
-  # echo 's:wake_lat char[16] wakee; u64 delta;' >> /sys/kernel/tracing/dynamic_events
-
-Where "wakee" is defined as "char[16]" and not "char[]" making it a static
-size, the code triggered the "(efaul)" again.
-
-Remove the added STR_VAR_LEN_MAX size as the string is still going to be
-nul terminated.
-
+Fixes: 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
 Cc: stable@vger.kernel.org
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: Douglas Raillard <douglas.raillard@arm.com>
-Link: https://patch.msgid.link/20251204151935.5fa30355@gandalf.local.home
-Fixes: e1a453a57bc7 ("tracing: Do not add length to print format in synthetic events")
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
+Link: https://patch.msgid.link/20251031234227.1303113-1-alison.schofield@intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_events_synth.c |    1 -
- 1 file changed, 1 deletion(-)
+ tools/testing/nvdimm/test/nfit.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/kernel/trace/trace_events_synth.c
-+++ b/kernel/trace/trace_events_synth.c
-@@ -382,7 +382,6 @@ static enum print_line_t print_synth_eve
- 				n_u64++;
- 			} else {
- 				trace_seq_printf(s, print_fmt, se->fields[i]->name,
--						 STR_VAR_LEN_MAX,
- 						 (char *)&entry->fields[n_u64].as_u64,
- 						 i == se->n_fields - 1 ? "" : " ");
- 				n_u64 += STR_VAR_LEN_MAX / sizeof(u64);
+--- a/tools/testing/nvdimm/test/nfit.c
++++ b/tools/testing/nvdimm/test/nfit.c
+@@ -670,6 +670,7 @@ static int nfit_test_search_spa(struct n
+ 		.addr = spa->spa,
+ 		.region = NULL,
+ 	};
++	struct nfit_mem *nfit_mem;
+ 	u64 dpa;
+ 
+ 	ret = device_for_each_child(&bus->dev, &ctx,
+@@ -687,8 +688,12 @@ static int nfit_test_search_spa(struct n
+ 	 */
+ 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
+ 	nvdimm = nd_mapping->nvdimm;
++	nfit_mem = nvdimm_provider_data(nvdimm);
++	if (!nfit_mem)
++		return -EINVAL;
+ 
+-	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
++	spa->devices[0].nfit_device_handle =
++		__to_nfit_memdev(nfit_mem)->device_handle;
+ 	spa->num_nvdimms = 1;
+ 	spa->devices[0].dpa = dpa;
+ 
 
 
 
