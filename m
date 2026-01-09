@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-207710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207142-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D5DBD0A1C2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C805D09B56
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:34:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B4CF83195FC9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AAC6430DE123
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE65635C19C;
-	Fri,  9 Jan 2026 12:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4FA29359FA0;
+	Fri,  9 Jan 2026 12:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="15dXgtNz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXxTyWWS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 984D235CB9A;
-	Fri,  9 Jan 2026 12:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D4332AAB5;
+	Fri,  9 Jan 2026 12:20:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962826; cv=none; b=TZp58HapdFAD0nWP8WZ/xlWcs5Gc73JuLFWh3y3vQ3C3+/P5QyDbab1qUi1vfpI+cYyVpYnwTPOagl/8nX8strF3R2YDbIgbfyWWjgldr7jjv/SJ/Tiyg0vSfWINmMVt4FBTnIf1EuvZUzIozIQo0wfBUET8qzzYwLCG7JyvisY=
+	t=1767961211; cv=none; b=mdVuoTrP7QNyxr1Dx3+loOM1sxvcmgKjHYor6pEZXvGzrVXiMtQnvUH3b3DhMYDsP/nBnWalRsQVirybRUkoEaP+F4dS3uRE8Ip09Yvf5oB3cTtzqvMBH1zrICf7hClSvNzthAbR+iqr0l/zBlweby7cgNkoPsEeAObvy6n02b8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962826; c=relaxed/simple;
-	bh=wN3Q4OdQPhQzaqWbAu42cfOrBk4MpCRSpWoOoxakpQg=;
+	s=arc-20240116; t=1767961211; c=relaxed/simple;
+	bh=rftGmQlQ0tTMnDjImFykJ9IW8Fdwf9fvyicAOmMQSBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R+l1SIvic4YsMxz8FOqShIfigLF+6++Q/ilBkeR4DnPmoUCN27HrAXKCw09nkWTr9WsK5b4J9nO0Vdb+JB/brHzzV57k5/smcxUc/08vM22NwdKlJtPAFuz9i5nqR/o/yZhdvASl2STjnGt52jOYxnHUFpFzAW+CN8aylTrEQYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=15dXgtNz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 245B8C4CEF1;
-	Fri,  9 Jan 2026 12:47:05 +0000 (UTC)
+	 MIME-Version; b=lILs9lGeTaQWhTdsekNzacTqNoqOQZmj5I9eq8Wc3V5fnuffM2PhZk536hwJqNkhcSREqTf72DlLIiQ94iFtkhs6dVDBBL0ChUQfenOFDccaVX8iAM+UlT1n5CFPkO29EbPf+C8boYHr3b0B+y7DImUy38e0w9jyxgOPoLQXB7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXxTyWWS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 913F3C4CEF1;
+	Fri,  9 Jan 2026 12:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962826;
-	bh=wN3Q4OdQPhQzaqWbAu42cfOrBk4MpCRSpWoOoxakpQg=;
+	s=korg; t=1767961211;
+	bh=rftGmQlQ0tTMnDjImFykJ9IW8Fdwf9fvyicAOmMQSBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=15dXgtNzkHCLOYNkKXShF7Y1zOmQGoAuyRIDyCcQYVkYnxLdQfpevwdkocJ7nZFh1
-	 EH1Rn56k1BU+jGj0e1uJUZ7WkpMVmx001cCaLdl4OMgSELVwdtNrWxbUIDJVMlfDKm
-	 xRRBV0C1uelVV9E2p1iuIynyaF5otcBvABRiquTc=
+	b=eXxTyWWSJuKxgm3veT8IaSb1a9GTZoO95obSGRNBhrIDOUmUpNuAOC0idU3O7QAYU
+	 2145LAjvSWLeLxI+MDQa6Kqnzd3JSCW5zndnc4QkSOgOpDpPRGotxIf9M0yEFs8DTx
+	 MKtkiGLd+Mp3bnUQei0BTko+2qlwmSbtRJE5iA/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 502/634] net: usb: sr9700: fix incorrect command used to write single register
+	Zhang Zekun <zhangzekun11@huawei.com>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 641/737] usb: ohci-nxp: Use helper function devm_clk_get_enabled()
 Date: Fri,  9 Jan 2026 12:43:00 +0100
-Message-ID: <20260109112136.442604366@linuxfoundation.org>
+Message-ID: <20260109112158.125341182@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Zhang Zekun <zhangzekun11@huawei.com>
 
-commit fa0b198be1c6775bc7804731a43be5d899d19e7a upstream.
+[ Upstream commit c146ede472717f352b7283a525bd9a1a2b15e2cf ]
 
-This fixes the device failing to initialize with "error reading MAC
-address" for me, probably because the incorrect write of NCR_RST to
-SR_NCR is not actually resetting the device.
+devm_clk_get() and clk_prepare_enable() can be replaced by helper
+function devm_clk_get_enabled(). Let's use devm_clk_get_enabled() to
+simplify code and avoid calling clk_disable_unprepare().
 
-Fixes: c9b37458e95629b1d1171457afdcc1bf1eb7881d ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20251221082400.50688-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Link: https://lore.kernel.org/r/20240902123020.29267-3-zhangzekun11@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b4c61e542faf ("usb: ohci-nxp: fix device leak on probe failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/usb/host/ohci-nxp.c |   18 ++++--------------
+ 1 file changed, 4 insertions(+), 14 deletions(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -52,7 +52,7 @@ static int sr_read_reg(struct usbnet *de
+--- a/drivers/usb/host/ohci-nxp.c
++++ b/drivers/usb/host/ohci-nxp.c
+@@ -51,8 +51,6 @@ static struct hc_driver __read_mostly oh
  
- static int sr_write_reg(struct usbnet *dev, u8 reg, u8 value)
+ static struct i2c_client *isp1301_i2c_client;
+ 
+-static struct clk *usb_host_clk;
+-
+ static void isp1301_configure_lpc32xx(void)
  {
--	return usbnet_write_cmd(dev, SR_WR_REGS, SR_REQ_WR_REG,
-+	return usbnet_write_cmd(dev, SR_WR_REG, SR_REQ_WR_REG,
- 				value, reg, NULL, 0);
- }
+ 	/* LPC32XX only supports DAT_SE0 USB mode */
+@@ -155,6 +153,7 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	struct resource *res;
+ 	int ret = 0, irq;
+ 	struct device_node *isp1301_node;
++	struct clk *usb_host_clk;
  
-@@ -65,7 +65,7 @@ static void sr_write_async(struct usbnet
+ 	if (pdev->dev.of_node) {
+ 		isp1301_node = of_parse_phandle(pdev->dev.of_node,
+@@ -180,26 +179,20 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	}
  
- static void sr_write_reg_async(struct usbnet *dev, u8 reg, u8 value)
- {
--	usbnet_write_cmd_async(dev, SR_WR_REGS, SR_REQ_WR_REG,
-+	usbnet_write_cmd_async(dev, SR_WR_REG, SR_REQ_WR_REG,
- 			       value, reg, NULL, 0);
+ 	/* Enable USB host clock */
+-	usb_host_clk = devm_clk_get(&pdev->dev, NULL);
++	usb_host_clk = devm_clk_get_enabled(&pdev->dev, NULL);
+ 	if (IS_ERR(usb_host_clk)) {
+-		dev_err(&pdev->dev, "failed to acquire USB OHCI clock\n");
++		dev_err(&pdev->dev, "failed to acquire and start USB OHCI clock\n");
+ 		ret = PTR_ERR(usb_host_clk);
+ 		goto fail_disable;
+ 	}
+ 
+-	ret = clk_prepare_enable(usb_host_clk);
+-	if (ret < 0) {
+-		dev_err(&pdev->dev, "failed to start USB OHCI clock\n");
+-		goto fail_disable;
+-	}
+-
+ 	isp1301_configure();
+ 
+ 	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
+ 	if (!hcd) {
+ 		dev_err(&pdev->dev, "Failed to allocate HC buffer\n");
+ 		ret = -ENOMEM;
+-		goto fail_hcd;
++		goto fail_disable;
+ 	}
+ 
+ 	hcd->regs = devm_platform_get_and_ioremap_resource(pdev, 0, &res);
+@@ -229,8 +222,6 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	ohci_nxp_stop_hc();
+ fail_resource:
+ 	usb_put_hcd(hcd);
+-fail_hcd:
+-	clk_disable_unprepare(usb_host_clk);
+ fail_disable:
+ 	isp1301_i2c_client = NULL;
+ 	return ret;
+@@ -243,7 +234,6 @@ static void ohci_hcd_nxp_remove(struct p
+ 	usb_remove_hcd(hcd);
+ 	ohci_nxp_stop_hc();
+ 	usb_put_hcd(hcd);
+-	clk_disable_unprepare(usb_host_clk);
+ 	isp1301_i2c_client = NULL;
  }
  
 
