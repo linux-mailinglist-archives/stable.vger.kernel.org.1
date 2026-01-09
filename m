@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-207186-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60317D09C44
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8771BD0A26B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 25B803119A3E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 546F831C5663
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF42F15ADB4;
-	Fri,  9 Jan 2026 12:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B027035B15F;
+	Fri,  9 Jan 2026 12:50:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POXyUGYW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DmtAr9gC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F797359FA0;
-	Fri,  9 Jan 2026 12:22:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F23C335BDBB;
+	Fri,  9 Jan 2026 12:50:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961337; cv=none; b=N/sP5o+krBx5NJqJdBxWkEv6lAlYJH17wDgUzlSezgfPn+fJOGEf05ZwVyej7x4CQ1PjhYb0/HlVFo9U0rX2OkSxMrkiRmivcrS5W0cF12/EDirKPwY5esYj2/hGVSffg0U9aIQrJ4DGXmNIiXrEfS8PVEq2M9c4Y/xXy6x3ngU=
+	t=1767963051; cv=none; b=Q3yrwx2+ejnAiFKcBhmZfuF/0BrHkFQwhE5+weE7l3knOA7xilskQ/Jz4hUvz7bozHfJDZbP8e2wmkWajY5+23FaUCzgIfYB23+sBSaaq+rKbKCRlk3mpN3D+Gejh/P/2dayKXmwI8B+Ij1AcNluLYKK9QhukbmC/RJTjzJdP0M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961337; c=relaxed/simple;
-	bh=S9Q3fglUvOaQtYe+qfj+CuA1tLrvDy/bKQSsH5u68ic=;
+	s=arc-20240116; t=1767963051; c=relaxed/simple;
+	bh=zzGLm+xVdohk4uXTuFsLz620iyF/UXUYajfBUpUp/3s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jj6iAoREdueyG3MOHF6kaT6a5Z2P0HEqRjBtNpr9t9L20C+grIc0u3z4PhaoXjLZwbh7kypjLoAYJRJy/WvF0/LgO7QER8ms55hsAYLE/zvJHUdTp8uVVfHgXIZYtZ7MfXnIjwR/+Aqlq4YKMp4YSkVbT9vSkz0lX6PcWhFh2eU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POXyUGYW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE03CC4CEF1;
-	Fri,  9 Jan 2026 12:22:16 +0000 (UTC)
+	 MIME-Version; b=P2BBALUecj6ILPZe7Itk1yu6XfVjMNAoDLas/ByNs9weXxUFKFYSNn20oneUjpYH4UdwbD+xstdfonFqNypRqgpfjx+J4Z/SIHNkvErB/wnTpCktM/OJXvSE8P9sXyoCs0TBzEWU2WqW5HEG+8NRkD9+HoB+zg5mFZ7D77z9s68=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DmtAr9gC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AF8DC16AAE;
+	Fri,  9 Jan 2026 12:50:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961337;
-	bh=S9Q3fglUvOaQtYe+qfj+CuA1tLrvDy/bKQSsH5u68ic=;
+	s=korg; t=1767963050;
+	bh=zzGLm+xVdohk4uXTuFsLz620iyF/UXUYajfBUpUp/3s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POXyUGYWrll22qmnth6vzZ9TzZsg9zPsw8P/NKj3oharDIVnLO3bG8U/bqv4vrkgO
-	 uQ/CKs/zPejW04bpDeYNF6AJ3uusj7Zqp45P7yIXQRtYTTyYShi9BDDoL1AM7giXZt
-	 UNRljkCjLri+4jK8wj74G0nXfj/KtpvD62MM1JN0=
+	b=DmtAr9gCKmBDAsZNVxQigL5gf5bCIir7033jetFLgzvG4+c1jFWQT+c99e+gLbEeF
+	 2gCGooB5Ib5hgYeoQ2KXAnWsIsEOGnP438kGyTbrxSUYaDCxcvTmZSjKzQwt67t9KK
+	 Uiu87EIbmKRGvbcs0xD+nbLCaq22usGUO1jklejM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 718/737] mm/damon/tests/core-kunit: handle allocation failures in damon_test_regions()
+	David Hildenbrand <david@redhat.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 579/634] powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
 Date: Fri,  9 Jan 2026 12:44:17 +0100
-Message-ID: <20260109112201.095391242@linuxfoundation.org>
+Message-ID: <20260109112139.398599935@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: David Hildenbrand <david@redhat.com>
 
-commit e16fdd4f754048d6e23c56bd8d920b71e41e3777 upstream.
+[ Upstream commit 0da2ba35c0d532ca0fe7af698b17d74c4d084b9a ]
 
-damon_test_regions() is assuming all dynamic memory allocation in it will
-succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+Let's properly adjust BALLOON_MIGRATE like the other drivers.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-3-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
+Note that the INFLATE/DEFLATE events are triggered from the core when
+enqueueing/dequeueing pages.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20251021100606.148294-3-david@redhat.com
+Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/core-test.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/powerpc/platforms/pseries/cmm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -20,11 +20,17 @@ static void damon_test_regions(struct ku
- 	struct damon_target *t;
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -532,6 +532,7 @@ static int cmm_migratepage(struct balloo
  
- 	r = damon_new_region(1, 2);
-+	if (!r)
-+		kunit_skip(test, "region alloc fail");
- 	KUNIT_EXPECT_EQ(test, 1ul, r->ar.start);
- 	KUNIT_EXPECT_EQ(test, 2ul, r->ar.end);
- 	KUNIT_EXPECT_EQ(test, 0u, r->nr_accesses);
+ 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+ 	balloon_page_insert(b_dev_info, newpage);
++	__count_vm_event(BALLOON_MIGRATE);
+ 	b_dev_info->isolated_pages--;
+ 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
  
- 	t = damon_new_target();
-+	if (!t) {
-+		damon_free_region(r);
-+		kunit_skip(test, "target alloc fail");
-+	}
- 	KUNIT_EXPECT_EQ(test, 0u, damon_nr_regions(t));
- 
- 	damon_add_region(r, t);
 
 
 
