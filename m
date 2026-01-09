@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-207037-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207606-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C08E2D097B0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B053D0A0D8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:54:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4491E303C8C6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:15 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A363F3045B8F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96D6A359F9C;
-	Fri,  9 Jan 2026 12:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C502A35B151;
+	Fri,  9 Jan 2026 12:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvA2FSti"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pHydQQdv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A622359F8C;
-	Fri,  9 Jan 2026 12:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8926735B12B;
+	Fri,  9 Jan 2026 12:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960914; cv=none; b=WrUdFxYAGwa0O+4ywjdgMwE+hk4ua8hwrmY1yrq0Q9NJ96FKSuJhHpUan66n2kVorZtqlzGmSt1fY1saFUrRRwCIWE+yv8QeWVV3kAt8qq/LDOWgB4i7WK9Po7s+iXmiPIoNgKvMEeJso1rdRBk24Ee67Gs5Yx9gh2UhJDBCIDs=
+	t=1767962530; cv=none; b=CDLT0FBNZdRt7Bti7iP2OWxUFgAQqqpa19Zq2A6kM/t0hk2C3V3LeNLY3AHLdVoYXA5wfsLwWRw5GlczKZHL68mClmtksHfxBuGJ4Qg5pDtPUOIL/GRGKHrXOsp09+Alg8pbNYrxInT195QarIHnr+Rrxae1K2zLpNnfo1adoiU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960914; c=relaxed/simple;
-	bh=pbgMsS581G9G9blVxPSwugjtB5eQg2LmOKAkDp3Kmnc=;
+	s=arc-20240116; t=1767962530; c=relaxed/simple;
+	bh=D6QcGFjE/5ZUpy0yzV7406IFYvm3lBqEI8Cgwa9kza0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LyesZIBGg+MjheXlzLApGoLVWrFV0qPb3V3/mi1wrXe/n90csF9o7foAAQw8yUYPVRi89SLHMiWLsjxtEgiReYWKYKKZr8UGicAkhiy73rUb+pn9P4j0oCA8/c4hSCE9A61ndHw8kHqLdsZ+SQ0rwiDhBUsiVpxdFCXXvzA/FZ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvA2FSti; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB168C4CEF1;
-	Fri,  9 Jan 2026 12:15:13 +0000 (UTC)
+	 MIME-Version; b=py44RXOKu2aOEBCJmhu6NvmxBDgOu6/cYer9ar993iJWWrkdbVfgYHUprXtGv7ehJNZxx7SW3rbZYG0firoPWFFZWBl/P72wfRwZHbY/WiMyfsBaa70RULfO6hXSGCkkkUoEUImK9ETVnLtDL4uV1czQRhMZNjzNJ0jlVsBupn4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pHydQQdv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0F9EC4CEF1;
+	Fri,  9 Jan 2026 12:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960914;
-	bh=pbgMsS581G9G9blVxPSwugjtB5eQg2LmOKAkDp3Kmnc=;
+	s=korg; t=1767962530;
+	bh=D6QcGFjE/5ZUpy0yzV7406IFYvm3lBqEI8Cgwa9kza0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CvA2FSti3kPvmZJB0l3ZFCstobuPkU2NZbueq0Iui8Kra3/VNo8AboX0L/q4YBe01
-	 /mhn53NCGNNQsREQuOajAKECsT75hhs+CUkhxanksP7VXueEF9RCtazbGMlhR04OXu
-	 olaGfsNsNqlawLlgrfncbcGJRMbONi2duk+k9bF8=
+	b=pHydQQdvlbMah6QqjBeZYHhupHP99Z2MyE6h3iGgGbx9xFleQlqgOPEllZWH/v3oO
+	 MYZeeycYHAtYjcMRrp42ANGe5Dfmurok/uJSzWr6C72PusUNTt7jFMKVo88DvecAPu
+	 cdY0m9GUTFNklcj2g1Q70M56LR2RgWq2gvfzPjtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 536/737] RDMA/rtrs: Fix clt_path::max_pages_per_mr calculation
-Date: Fri,  9 Jan 2026 12:41:15 +0100
-Message-ID: <20260109112154.158663118@linuxfoundation.org>
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.1 398/634] i40e: fix scheduling in set_rx_mode
+Date: Fri,  9 Jan 2026 12:41:16 +0100
+Message-ID: <20260109112132.504876238@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +64,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-[ Upstream commit 43bd09d5b750f700499ae8ec45fd41a4c48673e6 ]
+[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
 
-If device max_mr_size bits in the range [mr_page_shift+31:mr_page_shift]
-are zero, the `min3` function will set clt_path::max_pages_per_mr to
-zero.
+Add service task schedule to set_rx_mode.
+In some cases there are error messages printed out in PTP application
+(ptp4l):
 
-`alloc_path_reqs` will pass zero, which is invalid, as the third parameter
-to `ib_alloc_mr`.
+ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
+ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
+ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
 
-Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://patch.msgid.link/20251229025617.13241-1-honggangli@163.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This happens when service task would not run immediately after
+set_rx_mode, and we need it for setup tasks. This service task checks, if
+PTP RX packets are hung in firmware, and propagate correct settings such
+as multicast address for IEEE 1588 Precision Time Protocol.
+RX timestamping depends on some of these filters set. Bug happens only
+with high PTP packets frequency incoming, and not every run since
+sometimes service task is being ran from a different place immediately
+after starting ptp4l.
+
+Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
+Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index 82aa47efb807..eaf911e2ffa9 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -1465,6 +1465,7 @@ static void query_fast_reg_mode(struct rtrs_clt_path *clt_path)
- 	mr_page_shift      = max(12, ffs(ib_dev->attrs.page_size_cap) - 1);
- 	max_pages_per_mr   = ib_dev->attrs.max_mr_size;
- 	do_div(max_pages_per_mr, (1ull << mr_page_shift));
-+	max_pages_per_mr = min_not_zero((u32)max_pages_per_mr, U32_MAX);
- 	clt_path->max_pages_per_mr =
- 		min3(clt_path->max_pages_per_mr, (u32)max_pages_per_mr,
- 		     ib_dev->attrs.max_fast_reg_page_list_len);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index 522267314160..5823229ae598 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -2252,6 +2252,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
+ 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+ 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
+ 	}
++	i40e_service_event_schedule(vsi->back);
+ }
+ 
+ /**
 -- 
 2.51.0
 
