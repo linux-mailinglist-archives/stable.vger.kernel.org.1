@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-207240-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207216-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7313CD09A21
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 039C2D099C7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 598E13034F14
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E8CA30BB65B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D29E9335083;
-	Fri,  9 Jan 2026 12:24:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB40315ADB4;
+	Fri,  9 Jan 2026 12:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuBCiU5p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EdGq3n0y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A2E435B129;
-	Fri,  9 Jan 2026 12:24:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83841334C24;
+	Fri,  9 Jan 2026 12:23:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961492; cv=none; b=maxnPtuvvQaExOaLCJmxugmrmQLhZ0cxlQegzsnYpCM6a8okJ5ig5TEl+EsaOTjD8aSFtMbRoWtefxjjpw6GqfmJfbcCP62nDA/UjnORRkyCc8P72WATxdcPUvQL+Ha5NGlnaMuV5AVRshOWOhWdmyKgkG4IfuVQNWi1LBT6vtM=
+	t=1767961423; cv=none; b=LQWjK8xio+DS5hORzf+ZB2d+iuooIjMFWIkCyh32wmjWlmSttXFRVLzrdsbfP2CXSbTqjz28Subr4QUfpb4WVqWQODmr6HdoRZKL9hMDWXDiWLxH0/KVeYeuebmEy1xU7lpDQmlngknz4HTSxitWE3x5V7GjCH9pxmwV1ofsSkU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961492; c=relaxed/simple;
-	bh=XopXMY9mOHx+QTQolsebtcJuZ00r/hTZXoHMn3hse9I=;
+	s=arc-20240116; t=1767961423; c=relaxed/simple;
+	bh=cCwwqwdXMQ0j1tfCTuhCiAdD8k0bYoEgP+iMDcvsT54=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iZcP/Oi9Uf/E0f2JeJsOBBYNJTpVYuJU5qbgQB+z2NixClPnLBDQFTVcNcZdeAOLfQc6YmejSOMErMVFYnTB1HBR8+AhtgmrQjVmBe6FsJRRHVbAT3xYvAv6Xxv9mbGt5iPePPN4Sun1F/pVwnJ8pBwUi84QTxqQo6qaOq5ouyc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuBCiU5p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF34C4CEF1;
-	Fri,  9 Jan 2026 12:24:51 +0000 (UTC)
+	 MIME-Version; b=Oh7Ba9oJ02ufA5qOlUL9xHO8kr4RQpU41nCKxgncZBSuAGx7/y38ZDgHwIkQIrj3RPyaHjwaAuuLya5qZN1CUrrjfJ7nNud0b062/eI9nAnYcUKPCW3Ix2By3JyL6JQx9VSYlH0f0Q01c27GsFp93vxa4SuWRSRBBvQeLqJNgy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EdGq3n0y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0106EC4CEF1;
+	Fri,  9 Jan 2026 12:23:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961492;
-	bh=XopXMY9mOHx+QTQolsebtcJuZ00r/hTZXoHMn3hse9I=;
+	s=korg; t=1767961423;
+	bh=cCwwqwdXMQ0j1tfCTuhCiAdD8k0bYoEgP+iMDcvsT54=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuBCiU5pWjW+bRuxYIju9SHo9uRIuFObr9ro613C3w5tQaJmrg1h7NFmG2KhyG+BV
-	 tY6Kq+Jay9dYLl6mDWOfrZCwxz7OKRGQ2aOyJVHqMmZyYpvnxWltALtiSfshosKoYp
-	 obe8h89BCOPKHCsLA6awN0UaVC0rdgSsvEhM28RY=
+	b=EdGq3n0y5zKHO0Kqagd5ZV46KljJuSOk20wXH8Pza2JWIlux7R/hLKa13pyJL0DYB
+	 iGJk+LsdNmW5Z0BY6v11/Pusx1eKzP97j3x1bXothDw/z660Ja5PLvyZKueTazWuRG
+	 21lZH8OvaUyFVbcmcLfgd89ugXVVZQUD7sTtFthI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 6.1 009/634] ext4: refresh inline data size before write operations
-Date: Fri,  9 Jan 2026 12:34:47 +0100
-Message-ID: <20260109112117.778974018@linuxfoundation.org>
+	Qianchang Zhao <pioooooooooip@gmail.com>,
+	Zhitong Liu <liuzhitong1993@gmail.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 010/634] ksmbd: ipc: fix use-after-free in ipc_msg_send_request
+Date: Fri,  9 Jan 2026 12:34:48 +0100
+Message-ID: <20260109112117.817079190@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,68 +65,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Qianchang Zhao <pioooooooooip@gmail.com>
 
-commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
+commit 1fab1fa091f5aa97265648b53ea031deedd26235 upstream.
 
-The cached ei->i_inline_size can become stale between the initial size
-check and when ext4_update_inline_data()/ext4_create_inline_data() use
-it. Although ext4_get_max_inline_size() reads the correct value at the
-time of the check, concurrent xattr operations can modify i_inline_size
-before ext4_write_lock_xattr() is acquired.
+ipc_msg_send_request() waits for a generic netlink reply using an
+ipc_msg_table_entry on the stack. The generic netlink handler
+(handle_generic_event()/handle_response()) fills entry->response under
+ipc_msg_table_lock, but ipc_msg_send_request() used to validate and free
+entry->response without holding the same lock.
 
-This causes ext4_update_inline_data() and ext4_create_inline_data() to
-work with stale capacity values, leading to a BUG_ON() crash in
-ext4_write_inline_data():
+Under high concurrency this allows a race where handle_response() is
+copying data into entry->response while ipc_msg_send_request() has just
+freed it, leading to a slab-use-after-free reported by KASAN in
+handle_generic_event():
 
-  kernel BUG at fs/ext4/inline.c:1331!
-  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
+  BUG: KASAN: slab-use-after-free in handle_generic_event+0x3c4/0x5f0 [ksmbd]
+  Write of size 12 at addr ffff888198ee6e20 by task pool/109349
+  ...
+  Freed by task:
+    kvfree
+    ipc_msg_send_request [ksmbd]
+    ksmbd_rpc_open -> ksmbd_session_rpc_open [ksmbd]
 
-The race window:
-1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
-2. Size check passes for 50-byte write
-3. [Another thread adds xattr, i_inline_size changes to 40]
-4. ext4_write_lock_xattr() acquires lock
-5. ext4_update_inline_data() uses stale i_inline_size = 60
-6. Attempts to write 50 bytes but only 40 bytes actually available
-7. BUG_ON() triggers
+Fix by:
+- Taking ipc_msg_table_lock in ipc_msg_send_request() while validating
+  entry->response, freeing it when invalid, and removing the entry from
+  ipc_msg_table.
+- Returning the final entry->response pointer to the caller only after
+  the hash entry is removed under the lock.
+- Returning NULL in the error path, preserving the original API
+  semantics.
 
-Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
-immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
-and ext4_create_inline_data() work with current values that are protected
-from concurrent modifications.
+This makes all accesses to entry->response consistent with
+handle_response(), which already updates and fills the response buffer
+under ipc_msg_table_lock, and closes the race that allowed the UAF.
 
-This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
-inline_data file while its xattrs are changing") which fixed i_inline_off
-staleness. This patch addresses the related i_inline_size staleness issue.
-
-Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
-Cc: stable@kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@vger.kernel.org
+Reported-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Reported-by: Zhitong Liu <liuzhitong1993@gmail.com>
+Signed-off-by: Qianchang Zhao <pioooooooooip@gmail.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/inline.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_ipc.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -414,7 +414,12 @@ static int ext4_prepare_inline_data(hand
- 		return -ENOSPC;
+--- a/fs/smb/server/transport_ipc.c
++++ b/fs/smb/server/transport_ipc.c
+@@ -517,12 +517,16 @@ static void *ipc_msg_send_request(struct
+ 	up_write(&ipc_msg_table_lock);
  
- 	ext4_write_lock_xattr(inode, &no_expand);
--
-+	/*
-+	 * ei->i_inline_size may have changed since the initial check
-+	 * if other xattrs were added. Recalculate to ensure
-+	 * ext4_update_inline_data() validates against current capacity.
-+	 */
-+	(void) ext4_find_inline_data_nolock(inode);
- 	if (ei->i_inline_off)
- 		ret = ext4_update_inline_data(handle, inode, len);
- 	else
+ 	ret = ipc_msg_send(msg);
+-	if (ret)
++	if (ret) {
++		down_write(&ipc_msg_table_lock);
+ 		goto out;
++	}
+ 
+ 	ret = wait_event_interruptible_timeout(entry.wait,
+ 					       entry.response != NULL,
+ 					       IPC_WAIT_TIMEOUT);
++
++	down_write(&ipc_msg_table_lock);
+ 	if (entry.response) {
+ 		ret = ipc_validate_msg(&entry);
+ 		if (ret) {
+@@ -531,7 +535,6 @@ static void *ipc_msg_send_request(struct
+ 		}
+ 	}
+ out:
+-	down_write(&ipc_msg_table_lock);
+ 	hash_del(&entry.ipc_table_hlist);
+ 	up_write(&ipc_msg_table_lock);
+ 	return entry.response;
 
 
 
