@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF53AD09801
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 978A8D0A0C1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:53:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AFCA4306C05E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DD4D30DF737
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A7D2035A953;
-	Fri,  9 Jan 2026 12:16:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B1D3590C4;
+	Fri,  9 Jan 2026 12:44:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WF4WMYQO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HjUbzJE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6405135A948;
-	Fri,  9 Jan 2026 12:16:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98BC33372B;
+	Fri,  9 Jan 2026 12:44:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960971; cv=none; b=ULhGQCMwb4hfZmDzSPJoW+z1gi9Zy4ZYgAFExSqJGSpaTr2EjQkOQVx+DLJivo9oshTydTG+nVfYaLgd47u7heSfdlVd2CL9npZ5BitVjL4VqxPB556OsRWOPZE77HqRsHFdtkPfF7+3yrYLak8k6AzofsxqNrQZOmGapmWEzb4=
+	t=1767962683; cv=none; b=Lx7phDawpHbx0mc5NgKBw0UIRP5NMhSnq0dJPPcL+wVWyiqNJEXJIjwDRdKORf6vkkawbnarX65TXblXwvCYKdBUTqAae7yr0ClRuV+v2O99rdBvAYfi7XodOU9pVt70tq71dfOKC/TMXS5p68XxNoit3B7e4nDV/BcKQhJH7Vc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960971; c=relaxed/simple;
-	bh=WSytHhiofvseorJZshukS21osZBobBqnw2fnTCff5vY=;
+	s=arc-20240116; t=1767962683; c=relaxed/simple;
+	bh=vRTCZn91d0Vbw9UmarYJp7mvhBvMHMQP/cyz4ajlGZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ELtNXxV3PyN6diDKHySCe3NkbOy6x9ybVLam28T4Hva21FrjrvX/+4aVKKIuYKasOarv6Ek4hm1/YlPUX7JLKrgDkfhB3GT3KzUe3TBZQif4XX7qBLv9lVoSpHprk4JYjzHFDofgobyWILmDgB4MUR7XaMRWCzWkHIbEdjn1CA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WF4WMYQO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1A04C4CEF1;
-	Fri,  9 Jan 2026 12:16:10 +0000 (UTC)
+	 MIME-Version; b=qTppFZLBGoHkpP9SG9zphxE8QLmx2q0d2jbYemeRcW3H7+tqCzKXZIiU4lpuH/jCxnNF/x6Xfw4Dlg8ef5TEpMbY6ONoDXMxwn+p8R1yXTRVO5mHBsKboquMQcDfIB/RH22/KAtkxmkdCEh9CcpXi2Nn733UCkpeLQ927M/OAzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HjUbzJE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726A2C4CEF1;
+	Fri,  9 Jan 2026 12:44:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960971;
-	bh=WSytHhiofvseorJZshukS21osZBobBqnw2fnTCff5vY=;
+	s=korg; t=1767962682;
+	bh=vRTCZn91d0Vbw9UmarYJp7mvhBvMHMQP/cyz4ajlGZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WF4WMYQOBxvGSmfYK/wu4eCPmlURA+zIrc7ROcjX1ovLWzKTJuJTQ/0QZCossNzqk
-	 ZPtwGeM97ejEEuAQ1o1V6NQdfIBoBNgR291xjDNyJMBwaQBMmYojppy966uBW/clm9
-	 ngN02XNEtQdQMrfQ92gDFS7VuTX5qkRURPHLjGjQ=
+	b=HjUbzJE+4eqfbB6ZkRLjW8Hmkw2PHfDXktv3ElUdSLR84Zi5sXurhHcKT95PV3/Pw
+	 z6oBcOtGpg26Nb2Oj8VBQApLplVdcjzPr5Opn/l832o3Q87LRrmS82Qb9lHZLam/Rr
+	 IOd3X369ROpJp037DL39+XzCqAsk1ttIt4bPc53Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 589/737] media: videobuf2: Fix device reference leak in vb2_dc_alloc error path
+	Sven Peter <sven@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.1 450/634] iommu/apple-dart: fix device leak on of_xlate()
 Date: Fri,  9 Jan 2026 12:42:08 +0100
-Message-ID: <20260109112156.157283988@linuxfoundation.org>
+Message-ID: <20260109112134.473673810@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit 94de23a9aa487d7c1372efb161721d7949a177ae upstream.
+commit a6eaa872c52a181ae9a290fd4e40c9df91166d7a upstream.
 
-In vb2_dc_alloc(), get_device() is called to increment the device
-reference count. However, if subsequent DMA allocation fails
-(vb2_dc_alloc_coherent or vb2_dc_alloc_non_coherent returns error),
-the function returns without calling put_device(), causing a device
-reference leak.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-Add put_device() call in the error path before kfree() to properly
-release the device reference acquired earlier.
-
-Fixes: de27891f675e ("media: videobuf2: handle non-contiguous DMA allocations")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
+Cc: stable@vger.kernel.org	# 5.15
+Cc: Sven Peter <sven@kernel.org>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/common/videobuf2/videobuf2-dma-contig.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/apple-dart.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-+++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
-@@ -258,6 +258,7 @@ static void *vb2_dc_alloc(struct vb2_buf
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -634,6 +634,8 @@ static int apple_dart_of_xlate(struct de
+ 	struct apple_dart *cfg_dart;
+ 	int i, sid;
  
- 	if (ret) {
- 		dev_err(dev, "dma alloc of size %lu failed\n", size);
-+		put_device(buf->dev);
- 		kfree(buf);
- 		return ERR_PTR(-ENOMEM);
- 	}
++	put_device(&iommu_pdev->dev);
++
+ 	if (args->args_count != 1)
+ 		return -EINVAL;
+ 	sid = args->args[0];
 
 
 
