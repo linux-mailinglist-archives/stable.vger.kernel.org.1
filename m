@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207261-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 95A4BD093E9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1BA2ED09A5D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF0983099BFC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 02A8B3039939
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42D732FA3D;
-	Fri,  9 Jan 2026 11:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5F9ED321F5E;
+	Fri,  9 Jan 2026 12:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vLrog/Yw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VH2e0uo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A801A31A7EA;
-	Fri,  9 Jan 2026 11:57:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23A111A01C6;
+	Fri,  9 Jan 2026 12:25:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959837; cv=none; b=mDhj8Fkp+owvz6hJv0cXaTyPgz9I3sYNXca5ucwG0cWcIh3DMmf6eafpszlN2pXEkTyyJIFLERvp1QqB4VrtXHwH4V4yUr2ItUPI4C752s+yCdClr3wSZrP0xcg6g6v6xE+OGhHRDE09wlpeRBa1ooi0png9FgMy9NgBWJfMsUY=
+	t=1767961553; cv=none; b=Em5/1fT/alBaapKGgikJCmOpJ/vxiiAuXwtrOUujGctdSEQUjxIDwv6SAHiyCxevOlxlINwxDGzMPp+VAaFBaXcc7Giz9yFtUgE6c3HkLYBd9CPe7EjfzD35XOXQC4dSS2sAmCHW39GEiHPd/Nz+zL945KgbM7T3IE2J/XL+sCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959837; c=relaxed/simple;
-	bh=LTz7hWdukFt34VwUURAZERuygmUPmG7Tq5CiRP5aLyo=;
+	s=arc-20240116; t=1767961553; c=relaxed/simple;
+	bh=62zaWLtNuJtR1rHLp+vJRSKDHDzREvzydj5RH8J3KGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ck6ySWcDow1ZEW58n2Z3H9pYrl59T6ssuwxrZuNpp6E+4ItKKXAAW5tXn+zWc58sKH596mahwqG2lawr6zodtD6wz2lF6fYr8KhMKjZ2nrKSY71TbN6xSW7YWE0dKKXx4Pc46Qv/5kAyL8gP5eUNUyHym1wyMYKS3dC2RLySeV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vLrog/Yw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 377E3C16AAE;
-	Fri,  9 Jan 2026 11:57:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sV5O/D5DMen59tC14PzWWpPBdiLE6ua97Mb4k7R452D/d1Phtl4WQc9P5YOmSshkYbH+eQ8+in9ZGxSK4Tg9acwuypxLSX/9F1+zhYzW40W9Gj7Y5bHksV2p/h3ARzcPRiYW7q6TSqGOFa0HWSYr/cVRcXYFnJeX3JiYf7tfdvc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VH2e0uo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5635AC16AAE;
+	Fri,  9 Jan 2026 12:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959837;
-	bh=LTz7hWdukFt34VwUURAZERuygmUPmG7Tq5CiRP5aLyo=;
+	s=korg; t=1767961552;
+	bh=62zaWLtNuJtR1rHLp+vJRSKDHDzREvzydj5RH8J3KGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vLrog/YwDmiSEtz3HmIllmumM7OBQ4Lty5qXO7ktdMfxUeVm8IXEZKcQLZ9nLm/im
-	 +vu2Nb79dHToQhmIgiry5yjvrksm8qDlTaOXYVfqecLFPEsd8+cWohmAOfxLs2fumK
-	 nnDzOH2I5vjlk/p+vGwK8j6YXZ0ntluJNvw/O2/k=
+	b=1VH2e0uopx55YmAoHlskUqXBxGvV2rvstGB/oEc7SEJiZumpCHrHFYTGrBKgyRkkg
+	 S10PuoCufwrDHBU2wJ2vUpqcRUJFg8u7bOMv8ONtjCgfGGadx0fuOjX6ZwOPsP8Zqg
+	 NyTcX7wXpArhyzka3J3sQ8BHWp1lmkS5GqepfR2s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
+	syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 193/737] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
+Subject: [PATCH 6.1 054/634] ntfs3: fix uninit memory after failed mi_read in mi_format_new
 Date: Fri,  9 Jan 2026 12:35:32 +0100
-Message-ID: <20260109112141.255543367@linuxfoundation.org>
+Message-ID: <20260109112119.477927115@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
+[ Upstream commit 73e6b9dacf72a1e7a4265eacca46f8f33e0997d6 ]
 
-The previous commit removed the PAGE_SIZE limit on transfer length of
-raw_io buffer in order to avoid any problems with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length. However
-this also removes the upperbound on user supplied length, allowing very
-large values to be passed to the allocator.
+Fix a KMSAN un-init bug found by syzkaller.
 
-syzbot on fuzzing the transfer length with very large value (1.81GB)
-results in kmalloc() to fall back to the page allocator, which triggers
-a kernel warning as the page allocator cannot handle allocations more
-than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
+ntfs_get_bh() expects a buffer from sb_getblk(), that buffer may not be
+uptodate. We do not bring the buffer uptodate before setting it as
+uptodate. If the buffer were to not be uptodate, it could mean adding a
+buffer with un-init data to the mi record. Attempting to load that record
+will trigger KMSAN.
 
-Since there is no limit imposed on the size of buffer for both control
-and non control transfers, cap the raw_io transfer length to
-KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
-prevent any warnings from the page allocator.
+Avoid this by setting the buffer as uptodate, if it’s not already, by
+overwriting it.
 
-Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
-Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7a2ba6b7b66340cff225
+Tested-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Fixes: 4342306f0f0d5 ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/ntfs3/fsntfs.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
-index 2deab4a6030d7..8aa1a8408ae33 100644
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -39,6 +39,7 @@ MODULE_LICENSE("GPL");
- 
- static DEFINE_IDA(driver_id_numbers);
- #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
-+#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
- 
- #define RAW_EVENT_QUEUE_SIZE	16
- 
-@@ -620,6 +621,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
-+	if (io->length > USB_RAW_IO_LENGTH_MAX)
-+		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index a7e2009419c37..8c165b791a1c8 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1338,7 +1338,14 @@ int ntfs_get_bh(struct ntfs_sb_info *sbi, const struct runs_tree *run, u64 vbo,
+ 				}
+ 				if (buffer_locked(bh))
+ 					__wait_on_buffer(bh);
+-				set_buffer_uptodate(bh);
++
++				lock_buffer(bh);
++				if (!buffer_uptodate(bh))
++				{
++					memset(bh->b_data, 0, blocksize);
++					set_buffer_uptodate(bh);
++				}
++				unlock_buffer(bh);
+ 			} else {
+ 				bh = ntfs_bread(sb, block);
+ 				if (!bh) {
 -- 
 2.51.0
 
