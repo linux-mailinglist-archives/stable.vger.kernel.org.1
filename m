@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207024-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 24564D0980D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 676C7D0A2EF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A963330AD34D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 789D430BDB92
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:45:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5663533C52E;
-	Fri,  9 Jan 2026 12:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB1F235C1B6;
+	Fri,  9 Jan 2026 12:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3pNey3U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k7XE4oLv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A9153346AF;
-	Fri,  9 Jan 2026 12:14:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89FE733C53B;
+	Fri,  9 Jan 2026 12:45:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960877; cv=none; b=YSPViLurpaQSXv2EqgeFAE301QXK2bSwvn7eQ3Y0mb62ulsDBMvo7N48Jj5ItMVzAYAQDFAIFdMOrF8MRVxIqBeu4XB+rkJQMvzhUOGuFiqDvMEO84uZZtubjU8Rw/JxEgX1HFo7IlXCOljMxvwuY8XlE9F5JohZsEOoe4xkv4w=
+	t=1767962707; cv=none; b=KgnWyQrsKzRNmg4NW7lened1tF+NgmYT9oJrG7l7MOgIPvB6kJHoGlPnRhJXuz0StIyDv+4POoSXcMP5qXqjBJIi8NVYrYPPYaYIEAscLOv9ntpb5zntqoK/kSsbeO9m7r6z6TeZzHfr5WqKbwrje5OaVWUQ0xiUffsEtWcEbOs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960877; c=relaxed/simple;
-	bh=e8YkhYIOJijuLcEf2nJrL6eqDTa/ScPT2htwjbror/U=;
+	s=arc-20240116; t=1767962707; c=relaxed/simple;
+	bh=2R9cUBgTSekngyetQ6hDlpBnq7lCYwqoiH3IVZQPOBg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kvDJ6GYhaoBCFl/CXnQVku+WWRabxUvAc6/XN6dhtKnuqW1N/jQDdgWSfzm9SDywx0TodmbZDEs8Ur6b0vM1js5GhPocM0HrclvZn+5GhpyAZ1VmGzdD1PpIbLL+wDkRjnVWoZCGuttn9+Vs7pQfMT9ZEtWvVPm27Ekey3EWbXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3pNey3U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C3D8C4CEF1;
-	Fri,  9 Jan 2026 12:14:36 +0000 (UTC)
+	 MIME-Version; b=ubcGLp29WszCGkxeGA04uTwpGvPT61SXf1zQIrdrZ9R3Glwt9xk6wyqaoYPkiwDAYQEDHxWxKU109TVV885FT8cTH6JCtpdAidmJ8nclb9v+arh3ErxQv+VVaYDm+BrEdiu+rIV65mJjQ7z1R8mvAVVbau+XeBeTitY+IQ9t6zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k7XE4oLv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE94C16AAE;
+	Fri,  9 Jan 2026 12:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960876;
-	bh=e8YkhYIOJijuLcEf2nJrL6eqDTa/ScPT2htwjbror/U=;
+	s=korg; t=1767962707;
+	bh=2R9cUBgTSekngyetQ6hDlpBnq7lCYwqoiH3IVZQPOBg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3pNey3U0ca9M8jYxrrTYrBYQoNcby1OTM0G7lPGI9cCEDRIBUKFjCptWmySc2N/0
-	 //CQdaASBmhlhpUyGiY2aUxj4zk4612FHkLdeJcri8B/x5hI1UuxR0PDz48N/uEZZg
-	 iH90o0lwkg2MLgjpbr6B2d+DGZtmwmhk7S2U0Hqw=
+	b=k7XE4oLvvUOFpW0zGgmbkr8hU8yI2GKuiFlSxEZ9czuPQ3HhuLHc87oqQun+aZPGH
+	 KxdJa6vNHvLXfZ2ZC+UxGvVPbDcyEMDQ9U/HDx5rnsNb3HKsFa7yVP517NjyLjf9GO
+	 Vrlvpzm5gaO59B2llfMath4+eFupjbne2sASZrko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Suman Anna <s-anna@ti.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.6 556/737] iommu/omap: fix device leaks on probe_device()
+	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 417/634] net: usb: asix: validate PHY address before use
 Date: Fri,  9 Jan 2026 12:41:35 +0100
-Message-ID: <20260109112154.915969442@linuxfoundation.org>
+Message-ID: <20260109112133.228394007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit b5870691065e6bbe6ba0650c0412636c6a239c5a upstream.
+[ Upstream commit a1e077a3f76eea0dc671ed6792e7d543946227e8 ]
 
-Make sure to drop the references taken to the iommu platform devices
-when looking up their driver data during probe_device().
+The ASIX driver reads the PHY address from the USB device via
+asix_read_phy_addr(). A malicious or faulty device can return an
+invalid address (>= PHY_MAX_ADDR), which causes a warning in
+mdiobus_get_phy():
 
-Note that the arch data device pointer added by commit 604629bcb505
-("iommu/omap: add support for late attachment of iommu devices") has
-never been used. Remove it to underline that the references are not
-needed.
+  addr 207 out of range
+  WARNING: drivers/net/phy/mdio_bus.c:76
 
-Fixes: 9d5018deec86 ("iommu/omap: Add support to program multiple iommus")
-Fixes: 7d6827748d54 ("iommu/omap: Fix iommu archdata name for DT-based devices")
-Cc: stable@vger.kernel.org	# 3.18
-Cc: Suman Anna <s-anna@ti.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Validate the PHY address in asix_read_phy_addr() and remove the
+now-redundant check in ax88172a.c.
+
+Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
+Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
+Link: https://lore.kernel.org/all/20251217085057.270704-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251218011156.276824-1-kartikey406@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/omap-iommu.c |    2 +-
- drivers/iommu/omap-iommu.h |    2 --
- 2 files changed, 1 insertion(+), 3 deletions(-)
+ drivers/net/usb/asix_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/drivers/iommu/omap-iommu.c
-+++ b/drivers/iommu/omap-iommu.c
-@@ -1681,6 +1681,7 @@ static struct iommu_device *omap_iommu_p
- 		}
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 72ffc89b477a..9d6eb88083b6 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -335,6 +335,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
+ 	offset = (internal ? 1 : 0);
+ 	ret = buf[offset];
  
- 		oiommu = platform_get_drvdata(pdev);
-+		put_device(&pdev->dev);
- 		if (!oiommu) {
- 			of_node_put(np);
- 			kfree(arch_data);
-@@ -1688,7 +1689,6 @@ static struct iommu_device *omap_iommu_p
- 		}
++	if (ret >= PHY_MAX_ADDR) {
++		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
++		return -ENODEV;
++	}
++
+ 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
+ 		   internal ? "internal" : "external", ret);
  
- 		tmp->iommu_dev = oiommu;
--		tmp->dev = &pdev->dev;
- 
- 		of_node_put(np);
- 	}
---- a/drivers/iommu/omap-iommu.h
-+++ b/drivers/iommu/omap-iommu.h
-@@ -88,7 +88,6 @@ struct omap_iommu {
- /**
-  * struct omap_iommu_arch_data - omap iommu private data
-  * @iommu_dev: handle of the OMAP iommu device
-- * @dev: handle of the iommu device
-  *
-  * This is an omap iommu private data object, which binds an iommu user
-  * to its iommu device. This object should be placed at the iommu user's
-@@ -97,7 +96,6 @@ struct omap_iommu {
-  */
- struct omap_iommu_arch_data {
- 	struct omap_iommu *iommu_dev;
--	struct device *dev;
- };
- 
- struct cr_regs {
+-- 
+2.51.0
+
 
 
 
