@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-206873-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207475-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D27E2D09689
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27498D09F3D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8DBC7309EBEA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D756730A6AF9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EA1F350A12;
-	Fri,  9 Jan 2026 12:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1429A352952;
+	Fri,  9 Jan 2026 12:36:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzGwFZ6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ubiTmdIt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02005338911;
-	Fri,  9 Jan 2026 12:07:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBD8231ED6D;
+	Fri,  9 Jan 2026 12:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960443; cv=none; b=b2fmYFrW7KvWcutiprbBptDgGe6PgZlT7y72vzQuw2P3UuV6g2KUonWKnYCg/7s6pMiThSC4nrM5iooVlYUU+xJZ+59yUzg87J5XlJCIg0sbFSiway4a9vBw0KR3zlgOUATCd4I3Offw7WW82bW+t5IPiZAG/qI5o+kcroPh8vg=
+	t=1767962160; cv=none; b=GwfhYz2s0LF2kEXrsAhs3BbS3S9kC3tQ8EmkwS2uXG638zHQXVHu1hBJ6CFrAuNN0R5nsmCtfYGepfznKfp0zPeS3Dc6wkvh3oXLK2LWIvt3dI4ZjzAYkXB8B0bicd28nrdbzA6fLQn17BpXtoS886wk0A7yMk/UUoyaMetw7tQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960443; c=relaxed/simple;
-	bh=vhyoZ6PJFu6oxfZnxH4bwcPculY6V79HLRNMkxhO8fk=;
+	s=arc-20240116; t=1767962160; c=relaxed/simple;
+	bh=Vh578GMGnDOJY40gJn4uefTtkHyNoZOEhlzhcJltjS8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UYgmtmJ9W3x8nHFpLCqhv54JlrwniEQ8TPM/0slLq5Wd121yof0WIBns+FAjvvgJ5lRNlsGwiEtHAl2K2qRM5BvVy+JM7srqQEUgUsq8a+JOkm6ay45Qn53GbM6FWiIwtBoSsVN8yR2wllZRaTANt7ChSMapORhOc+SKiM1wO5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzGwFZ6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68550C4CEF1;
-	Fri,  9 Jan 2026 12:07:22 +0000 (UTC)
+	 MIME-Version; b=K1MKtRO3OfdPuZEF24/ZiI+KpK59xq+Dtuc1vAUvSRF3yhm7Nc10jowWAqLEawpdWVOKo3S0vzZHRTYBmvyLZyb5pyBvbOWd4fSytjoUiQaYdvtsckvzBhMuZKVNHzt4vN0V60K3BntddpOxWtWmHQ63HZlmHBf31Xr5qJ1Lx/k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ubiTmdIt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C43C4CEF1;
+	Fri,  9 Jan 2026 12:36:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960442;
-	bh=vhyoZ6PJFu6oxfZnxH4bwcPculY6V79HLRNMkxhO8fk=;
+	s=korg; t=1767962160;
+	bh=Vh578GMGnDOJY40gJn4uefTtkHyNoZOEhlzhcJltjS8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WzGwFZ6lZS1jlYWNJjwUzgeB5yCAXmW/2RyPNz2OF4hqbOMDugsdCIzfOa+DtkyoE
-	 nTTsxzO9YHltisURuesAmD1/gKIbCGC88cOhW5Tn8miZ5x56jTbGybDPrEhPoVTgX7
-	 wxmFZTaG90o/hH9vOHEJE8KiomtpAADnNBQ9+hJY=
+	b=ubiTmdItTru2gZFOPA9e1Me2NGmbBAPvy5eQvza//qr+MZ+NUpRdFZQlwJvuV5eWR
+	 pSMTYraVPX3yQXWEa0gr1jEtesd0Lsx4B2A5RBx0TZiIXi2t7wwbNmGaKudICXVbvO
+	 DAF/IiVjVifekyQLigV3uOjWei9/NUZrEskX/S08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mika Westerberg <mika.westerberg@linux.intel.com>,
-	Andi Shyti <andi.shyti@kernel.org>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 406/737] i2c: designware: Disable SMBus interrupts to prevent storms from mis-configured firmware
+Subject: [PATCH 6.1 267/634] net/mlx5: fw_tracer, Validate format string parameters
 Date: Fri,  9 Jan 2026 12:39:05 +0100
-Message-ID: <20260109112149.272432413@linuxfoundation.org>
+Message-ID: <20260109112127.582641603@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,61 +63,197 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit d3429178ee51dd7155445d15a5ab87a45fae3c73 ]
+[ Upstream commit b35966042d20b14e2d83330049f77deec5229749 ]
 
-When probing the I2C master, disable SMBus interrupts to prevent
-storms caused by broken firmware mis-configuring IC_SMBUS=1; the
-handler never services them and a mis-configured SMBUS Master
-extend-clock timeout or SMBUS Slave extend-clock timeout can
-flood the CPU.
+Add validation for format string parameters in the firmware tracer to
+prevent potential security vulnerabilities and crashes from malformed
+format strings received from firmware.
 
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Acked-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20251021075714.3712-2-guojinhui.liam@bytedance.com
+The firmware tracer receives format strings from the device firmware and
+uses them to format trace messages. Without proper validation, bad
+firmware could provide format strings with invalid format specifiers
+(e.g., %s, %p, %n) that could lead to crashes, or other undefined
+behavior.
+
+Add mlx5_tracer_validate_params() to validate that all format specifiers
+in trace strings are limited to safe integer/hex formats (%x, %d, %i,
+%u, %llx, %lx, etc.). Reject strings containing other format types that
+could be used to access arbitrary memory or cause crashes.
+Invalid format strings are added to the trace output for visibility with
+"BAD_FORMAT: " prefix.
+
+Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-core.h   | 1 +
- drivers/i2c/busses/i2c-designware-master.c | 7 +++++++
- 2 files changed, 8 insertions(+)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 83 ++++++++++++++++---
+ .../mellanox/mlx5/core/diag/fw_tracer.h       |  1 +
+ 2 files changed, 74 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/i2c/busses/i2c-designware-core.h b/drivers/i2c/busses/i2c-designware-core.h
-index e93870a0f9a4..f8feae20a7b2 100644
---- a/drivers/i2c/busses/i2c-designware-core.h
-+++ b/drivers/i2c/busses/i2c-designware-core.h
-@@ -79,6 +79,7 @@
- #define DW_IC_TX_ABRT_SOURCE			0x80
- #define DW_IC_ENABLE_STATUS			0x9c
- #define DW_IC_CLR_RESTART_DET			0xa8
-+#define DW_IC_SMBUS_INTR_MASK			0xcc
- #define DW_IC_COMP_PARAM_1			0xf4
- #define DW_IC_COMP_VERSION			0xf8
- #define DW_IC_SDA_HOLD_MIN_VERS			0x3131312A /* "111*" == v1.11* */
-diff --git a/drivers/i2c/busses/i2c-designware-master.c b/drivers/i2c/busses/i2c-designware-master.c
-index e865869ccc50..56f124f32cac 100644
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -184,6 +184,13 @@ static int i2c_dw_init_master(struct dw_i2c_dev *dev)
- 	/* Disable the adapter */
- 	__i2c_dw_disable(dev);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index 83a3074a725b1..2ce900b18f705 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -33,6 +33,7 @@
+ #include "lib/eq.h"
+ #include "fw_tracer.h"
+ #include "fw_tracer_tracepoint.h"
++#include <linux/ctype.h>
  
-+	/*
-+	 * Mask SMBus interrupts to block storms from broken
-+	 * firmware that leaves IC_SMBUS=1; the handler never
-+	 * services them.
+ static int mlx5_query_mtrc_caps(struct mlx5_fw_tracer *tracer)
+ {
+@@ -354,6 +355,43 @@ static const char *VAL_PARM		= "%llx";
+ static const char *REPLACE_64_VAL_PARM	= "%x%x";
+ static const char *PARAM_CHAR		= "%";
+ 
++static bool mlx5_is_valid_spec(const char *str)
++{
++	/* Parse format specifiers to find the actual type.
++	 * Structure: %[flags][width][.precision][length]type
++	 * Skip flags, width, precision & length.
 +	 */
-+	regmap_write(dev->map, DW_IC_SMBUS_INTR_MASK, 0);
++	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
++		str++;
 +
- 	/* Write standard speed timing parameters */
- 	regmap_write(dev->map, DW_IC_SS_SCL_HCNT, dev->ss_hcnt);
- 	regmap_write(dev->map, DW_IC_SS_SCL_LCNT, dev->ss_lcnt);
++	/* Check if it's a valid integer/hex specifier:
++	 * Valid formats: %x, %d, %i, %u, etc.
++	 */
++	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
++	    *str != 'u' && *str != 'c')
++		return false;
++
++	return true;
++}
++
++static bool mlx5_tracer_validate_params(const char *str)
++{
++	const char *substr = str;
++
++	if (!str)
++		return false;
++
++	substr = strstr(substr, PARAM_CHAR);
++	while (substr) {
++		if (!mlx5_is_valid_spec(substr + 1))
++			return false;
++
++		substr = strstr(substr + 1, PARAM_CHAR);
++	}
++
++	return true;
++}
++
+ static int mlx5_tracer_message_hash(u32 message_id)
+ {
+ 	return jhash_1word(message_id, 0) & (MESSAGE_HASH_SIZE - 1);
+@@ -413,6 +451,10 @@ static int mlx5_tracer_get_num_of_params(char *str)
+ 	char *substr, *pstr = str;
+ 	int num_of_params = 0;
+ 
++	/* Validate that all parameters are valid before processing */
++	if (!mlx5_tracer_validate_params(str))
++		return -EINVAL;
++
+ 	/* replace %llx with %x%x */
+ 	substr = strstr(pstr, VAL_PARM);
+ 	while (substr) {
+@@ -564,14 +606,17 @@ void mlx5_tracer_print_trace(struct tracer_string_format *str_frmt,
+ {
+ 	char	tmp[512];
+ 
+-	snprintf(tmp, sizeof(tmp), str_frmt->string,
+-		 str_frmt->params[0],
+-		 str_frmt->params[1],
+-		 str_frmt->params[2],
+-		 str_frmt->params[3],
+-		 str_frmt->params[4],
+-		 str_frmt->params[5],
+-		 str_frmt->params[6]);
++	if (str_frmt->invalid_string)
++		snprintf(tmp, sizeof(tmp), "BAD_FORMAT: %s", str_frmt->string);
++	else
++		snprintf(tmp, sizeof(tmp), str_frmt->string,
++			 str_frmt->params[0],
++			 str_frmt->params[1],
++			 str_frmt->params[2],
++			 str_frmt->params[3],
++			 str_frmt->params[4],
++			 str_frmt->params[5],
++			 str_frmt->params[6]);
+ 
+ 	trace_mlx5_fw(dev->tracer, trace_timestamp, str_frmt->lost,
+ 		      str_frmt->event_id, tmp);
+@@ -603,6 +648,13 @@ static int mlx5_tracer_handle_raw_string(struct mlx5_fw_tracer *tracer,
+ 	return 0;
+ }
+ 
++static void mlx5_tracer_handle_bad_format_string(struct mlx5_fw_tracer *tracer,
++						 struct tracer_string_format *cur_string)
++{
++	cur_string->invalid_string = true;
++	list_add_tail(&cur_string->list, &tracer->ready_strings_list);
++}
++
+ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 					   struct tracer_event *tracer_event)
+ {
+@@ -613,12 +665,18 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 		if (!cur_string)
+ 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 
+-		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
+-		cur_string->last_param_num = 0;
+ 		cur_string->event_id = tracer_event->event_id;
+ 		cur_string->tmsn = tracer_event->string_event.tmsn;
+ 		cur_string->timestamp = tracer_event->string_event.timestamp;
+ 		cur_string->lost = tracer_event->lost_event;
++		cur_string->last_param_num = 0;
++		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
++		if (cur_string->num_of_params < 0) {
++			pr_debug("%s Invalid format string parameters\n",
++				 __func__);
++			mlx5_tracer_handle_bad_format_string(tracer, cur_string);
++			return 0;
++		}
+ 		if (cur_string->num_of_params == 0) /* trace with no params */
+ 			list_add_tail(&cur_string->list, &tracer->ready_strings_list);
+ 	} else {
+@@ -628,6 +686,11 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 				 __func__, tracer_event->string_event.tmsn);
+ 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 		}
++		if (cur_string->num_of_params < 0) {
++			pr_debug("%s string parameter of invalid string, dumping\n",
++				 __func__);
++			return 0;
++		}
+ 		cur_string->last_param_num += 1;
+ 		if (cur_string->last_param_num > TRACER_MAX_PARAMS) {
+ 			pr_debug("%s Number of params exceeds the max (%d)\n",
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+index 3ff412999a3e2..c57c4f434c36a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+@@ -117,6 +117,7 @@ struct tracer_string_format {
+ 	struct list_head list;
+ 	u32 timestamp;
+ 	bool lost;
++	bool invalid_string;
+ };
+ 
+ enum mlx5_fw_tracer_ownership_state {
 -- 
 2.51.0
 
