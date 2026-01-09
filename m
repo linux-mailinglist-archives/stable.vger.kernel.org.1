@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207301-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99A59D09338
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 808CBD09C76
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BB38830C62E0
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 527ED30B0E5D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC65335561;
-	Fri,  9 Jan 2026 11:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5263590DA;
+	Fri,  9 Jan 2026 12:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r2RK1Wg0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n0COhw1P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25A3C33C511;
-	Fri,  9 Jan 2026 11:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23CDD23F417;
+	Fri,  9 Jan 2026 12:27:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959871; cv=none; b=BuHb2E5D2a5sLaaslXQD32iAGS9F1/37YdXA/DyNHx/TSDncpxvTRmwD+W7OO68o5H4d0KpnasVN/R8skTimSf1CNHoOm5Q9GowbXfupIybgrdycQ1Y+YM/vCZ3Os2U0iIzNhAdGPeiziKRZ5qxTqY48FdJauClu0VqjioLDlcY=
+	t=1767961666; cv=none; b=aw7NRyCCzMGh0fQ76cFH6KTQqsapKLc9CBAkNnnugNscLyt1u44UFvVVbwdn0b7ScIXEG6QCxB0OVQHr3jyGQAHny0qUL2va8rfs3f4T/xtxOHKQk/nvImX1xOYhf0hdVZRauUkH0iH7R0Ramt3MsS6AfgAw1TMmaOr8gm/yfaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959871; c=relaxed/simple;
-	bh=c3kb3XkYpZTT6WZ3LTJiT4Hhlfp7OSkFdRm8EKONDM8=;
+	s=arc-20240116; t=1767961666; c=relaxed/simple;
+	bh=lPctdfPk6MRXxq6Y4/eyyxSVoZZt29Gay/pOREJP/0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FrzySJ7G2pCxZF2WdDOR1KzieAbNfknJmsGix5iWnhxqVPvTDbdpsYYRpWLt8gP5IwwkBEucNeoD5TK1EIPFGKebjG7S/7h4lOAgMr5hdxH4AjeNYXWe9Cbl2MjlEcs1lJtsPORgM//NpLGh8o1N+0Lb2sij+fDtFL84FJMU698=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r2RK1Wg0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4C52C4CEF1;
-	Fri,  9 Jan 2026 11:57:50 +0000 (UTC)
+	 MIME-Version; b=SRI/tk1afyxn7935sZlmInX8D/29F7LaDOnuohoXZgeymLlyyQFE7RlDZpkrWRG259r+E0FGIFkZ1Ia61j9gt2vvRPXfmdXpvyr3f9zyENV9oHTwnk22iokntCMOPPUmzpwf3fg5IjIOST+lGEkft3Tb4ZdmF0XNn6st5PjGB7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n0COhw1P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5FD3C4CEF1;
+	Fri,  9 Jan 2026 12:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959871;
-	bh=c3kb3XkYpZTT6WZ3LTJiT4Hhlfp7OSkFdRm8EKONDM8=;
+	s=korg; t=1767961666;
+	bh=lPctdfPk6MRXxq6Y4/eyyxSVoZZt29Gay/pOREJP/0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2RK1Wg0Y7evLPdO8tSsxBu39OoL+MFGa+slyv8RtMtjHG98RWM6GS2DuaObOR9Az
-	 3lUopaDOcR+WPEXdU4acjvo0yJsxgT4TRtnZa3WaQ0Ds2L1PaptrImqEVJKuexB+a2
-	 ycUxIMqEbzu863KJIVAIjZQBqDrDk+fWGELi0GTA=
+	b=n0COhw1PiiyfN4AxV0vQ5PV9a2LkaFHLA5Xqf+NpsOUYR9hchsfXg7Xt/2gQd357R
+	 WWTfpMmrtn5gCAp3r8WkpAoycGHaDYegegcboRLDe2G+mY6X5R7XZgo/mTXilvXpyO
+	 bsURfSDT7PNvNLQEXD5lPvRNGujT+3VWZ5KvQLiA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shawn Lin <shawn.lin@rock-chips.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Maxime Chevallier <maxime.chevallier@bootlin.com>,
+	Horatiu Vultur <horatiu.vultur@microchip.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 204/737] PCI: dwc: Fix wrong PORT_LOGIC_LTSSM_STATE_MASK definition
-Date: Fri,  9 Jan 2026 12:35:43 +0100
-Message-ID: <20260109112141.674545520@linuxfoundation.org>
+Subject: [PATCH 6.1 066/634] phy: mscc: Fix PTP for VSC8574 and VSC8572
+Date: Fri,  9 Jan 2026 12:35:44 +0100
+Message-ID: <20260109112119.929825018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shawn Lin <shawn.lin@rock-chips.com>
+From: Horatiu Vultur <horatiu.vultur@microchip.com>
 
-[ Upstream commit bcc9a4a0bca3aee4303fa4a20302e57b24ac8f68 ]
+[ Upstream commit ea5df88aeca112aac69e6c32e3dd1433a113b0c9 ]
 
-As per DesignWare Cores PCI Express Controller Databook, section 5.50,
-SII: Debug Signals, cxpl_debug_info[63:0]:
+The PTP initialization is two-step. First part are the function
+vsc8584_ptp_probe_once() and vsc8584_ptp_probe() at probe time which
+initialize the locks, queues, creates the PTP device. The second part is
+the function vsc8584_ptp_init() at config_init() time which initialize
+PTP in the HW.
 
-  [5:0] smlh_ltssm_state: LTSSM current state. Encoding is same as the
-  dedicated smlh_ltssm_state output.
+For VSC8574 and VSC8572, the PTP initialization is incomplete. It is
+missing the first part but it makes the second part. Meaning that the
+ptp_clock_register() is never called.
 
-The mask should be 6 bits, from 0 to 5. Hence, fix the mask definition.
+There is no crash without the first part when enabling PTP but this is
+unexpected because some PHys have PTP functionality exposed by the
+driver and some don't even though they share the same PTP clock PTP.
 
-Fixes: 23fe5bd4be90 ("PCI: keystone: Cleanup ks_pcie_link_up()")
-Signed-off-by: Shawn Lin <shawn.lin@rock-chips.com>
-[mani: reworded description]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/1763122140-203068-1-git-send-email-shawn.lin@rock-chips.com
+Fixes: 774626fa440e ("net: phy: mscc: Add PTP support for 2 more VSC PHYs")
+Reviewed-by: Maxime Chevallier <maxime.chevallier@bootlin.com>
+Signed-off-by: Horatiu Vultur <horatiu.vultur@microchip.com>
+Link: https://patch.msgid.link/20251023191350.190940-3-horatiu.vultur@microchip.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pcie-designware.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/phy/mscc/mscc_main.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pcie-designware.h b/drivers/pci/controller/dwc/pcie-designware.h
-index ef0b2efa9f93e..fec9473869bce 100644
---- a/drivers/pci/controller/dwc/pcie-designware.h
-+++ b/drivers/pci/controller/dwc/pcie-designware.h
-@@ -92,7 +92,7 @@
- #define PORT_LINK_MODE_8_LANES		PORT_LINK_MODE(0xf)
- 
- #define PCIE_PORT_DEBUG0		0x728
--#define PORT_LOGIC_LTSSM_STATE_MASK	0x1f
-+#define PORT_LOGIC_LTSSM_STATE_MASK	0x3f
- #define PORT_LOGIC_LTSSM_STATE_L0	0x11
- #define PCIE_PORT_DEBUG1		0x72C
- #define PCIE_PORT_DEBUG1_LINK_UP		BIT(4)
+diff --git a/drivers/net/phy/mscc/mscc_main.c b/drivers/net/phy/mscc/mscc_main.c
+index 2fabb6a7d2415..d9ad8aac58098 100644
+--- a/drivers/net/phy/mscc/mscc_main.c
++++ b/drivers/net/phy/mscc/mscc_main.c
+@@ -2560,7 +2560,7 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
+ 	.remove		= &vsc85xx_remove,
+-	.probe		= &vsc8574_probe,
++	.probe		= &vsc8584_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+ 	.get_tunable	= &vsc85xx_get_tunable,
+@@ -2581,12 +2581,12 @@ static struct phy_driver vsc85xx_driver[] = {
+ 	.config_aneg    = &vsc85xx_config_aneg,
+ 	.aneg_done	= &genphy_aneg_done,
+ 	.read_status	= &vsc85xx_read_status,
+-	.handle_interrupt = vsc85xx_handle_interrupt,
++	.handle_interrupt = vsc8584_handle_interrupt,
+ 	.config_intr    = &vsc85xx_config_intr,
+ 	.suspend	= &genphy_suspend,
+ 	.resume		= &genphy_resume,
+ 	.remove		= &vsc85xx_remove,
+-	.probe		= &vsc8574_probe,
++	.probe		= &vsc8584_probe,
+ 	.set_wol	= &vsc85xx_wol_set,
+ 	.get_wol	= &vsc85xx_wol_get,
+ 	.get_tunable	= &vsc85xx_get_tunable,
 -- 
 2.51.0
 
