@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207041-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C0A9D0984D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53364D0A007
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3BC5530DA859
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 286853046A3B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52B3B310636;
-	Fri,  9 Jan 2026 12:15:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F24033C53A;
+	Fri,  9 Jan 2026 12:43:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hrhnv2Zc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TtueEfCh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1497733C1B6;
-	Fri,  9 Jan 2026 12:15:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D702C33032C;
+	Fri,  9 Jan 2026 12:43:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960926; cv=none; b=JoyN+VLUYYeQbewP2AoUYait8j2602MA7Dms/ryvcB4CCBWBDeluAtd0cZxraHbWg5hRE0TFWNR74X+P1BOJyUmtuiwsQs6HIsgzJNNvRlw+pmga4IRcVfojykpsJwu6a4CqHflLlQr+Rtvi2k4479FfhdSFHFubgx+s/T+A8hI=
+	t=1767962614; cv=none; b=t8O7FsCsSUWN93lTD1giaRway14dHA9B5PfCqV9B1E8ZPe6y1Jy0c9nbHchIASZtwBA+SbRgvBGFg7draT8SWIriD1GClk0rtqSmZYrPPXtuyNCbO3ilxjSc06QXP2mMDuGhHK6BDtcVASytFEMgn84d/avdHqj23XpEjVCW7vM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960926; c=relaxed/simple;
-	bh=xQ6tL8KkfVMencHs0dB0X2gK4W5vnKR7hhufRCgcfdc=;
+	s=arc-20240116; t=1767962614; c=relaxed/simple;
+	bh=1AXxg+aCDeKmQsMXtoo8ZE4NkeUJ7txozuzpTSl4tMo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aPKJBnCSWSkdQ1IwYbEKAc5vcPxTtiKpM+bmk1Tv0+4pRsXScCn/XV9aPCmHTBI2adz6WEMLjopzdd+kmsgzqctxs4fHyXIm/IChxwbcwCbS17sFzl1KapVbjlDbCAKFFkY7YDo4FRqkX8YUzwI/n7h5rlE5lL+o7IZRIFWI9zQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hrhnv2Zc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4444CC4CEF1;
-	Fri,  9 Jan 2026 12:15:25 +0000 (UTC)
+	 MIME-Version; b=CnprT5UhKbpuyXaehhdbt+pRIiWf9+Mx0Mf00LyHe0d0MogSSp+EcpnQ22X8cglwIvbGG05f0dfWSz+XnP1SO0xigcMY7+ecSZPvobZ+t3jJOy+rmO61UxUKMTkYgEvlMozFIp7QB5U291WrdekbTnreiSQ/ScnrWTCJqgf0WJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TtueEfCh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F977C4CEF1;
+	Fri,  9 Jan 2026 12:43:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960925;
-	bh=xQ6tL8KkfVMencHs0dB0X2gK4W5vnKR7hhufRCgcfdc=;
+	s=korg; t=1767962614;
+	bh=1AXxg+aCDeKmQsMXtoo8ZE4NkeUJ7txozuzpTSl4tMo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hrhnv2ZcSSDo4yfxC0NbP7aJJuv/81SFPU8B5Vj9ZctY697Xk+I8CzQh63CYPZ1oX
-	 mtWpBV3Ou1+rFwMjeZj7hK26A4Qu3zI72/1ThmobFFFzC4R0sfgIz23Ra7DSxe26rx
-	 4bEs/bRV3vn6Gnqlknf7PMds/qJpKbd83X4ccynQ=
+	b=TtueEfChMnGyk6ISsNakft6TRFl0SfOnFPdL4JKs7QavsB8IyMn7Ttv1RPVoeoOak
+	 yvSV8AUib47rPrbint83Xt0RCI+YvTH5bTW+bl4l4FMFTUwzFVe83ulzkI/lh1uC1x
+	 84FhIMHoIX4knQ0M28bg1DvtdiCz8Swe1mK1EFeE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hitz <christian.hitz@bbv.ch>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 6.6 566/737] leds: leds-lp50xx: Allow LED 0 to be added to module bank
-Date: Fri,  9 Jan 2026 12:41:45 +0100
-Message-ID: <20260109112155.294193787@linuxfoundation.org>
+	Paul Moore <paul@paul-moore.com>,
+	Will Rosenberg <whrosenb@asu.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 428/634] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
+Date: Fri,  9 Jan 2026 12:41:46 +0100
+Message-ID: <20260109112133.649559078@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+From: Will Rosenberg <whrosenb@asu.edu>
 
-commit 26fe74d598c32e7bc6f150edfc4aa43e1bee55db upstream.
+[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
 
-led_banks contains LED module number(s) that should be grouped into the
-module bank. led_banks is 0-initialized.
-By checking the led_banks entries for 0, un-set entries are detected.
-But a 0-entry also indicates that LED module 0 should be grouped into the
-module bank.
+There exists a kernel oops caused by a BUG_ON(nhead < 0) at
+net/core/skbuff.c:2232 in pskb_expand_head().
+This bug is triggered as part of the calipso_skbuff_setattr()
+routine when skb_cow() is passed headroom > INT_MAX
+(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
 
-By only iterating over the available entries no check for unused entries
-is required and LED module 0 can be added to bank.
+The root cause of the bug is due to an implicit integer cast in
+__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
+that delta = headroom - skb_headroom(skb) is never negative, otherwise
+we will trigger a BUG_ON in pskb_expand_head(). However, if
+headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
+becomes negative, and pskb_expand_head() is passed a negative value for
+nhead.
 
-Cc: stable@vger.kernel.org
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Link: https://patch.msgid.link/20251008123222.1117331-1-christian@klarinett.li
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
+"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
+by only using skb_cow() to grow headroom.
+
+PoC:
+	Using `netlabelctl` tool:
+
+        netlabelctl map del default
+        netlabelctl calipso add pass doi:7
+        netlabelctl map add default address:0::1/128 protocol:calipso,7
+
+        Then run the following PoC:
+
+        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+
+        // setup msghdr
+        int cmsg_size = 2;
+        int cmsg_len = 0x60;
+        struct msghdr msg;
+        struct sockaddr_in6 dest_addr;
+        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
+                        sizeof(struct cmsghdr) + cmsg_len);
+        msg.msg_name = &dest_addr;
+        msg.msg_namelen = sizeof(dest_addr);
+        msg.msg_iov = NULL;
+        msg.msg_iovlen = 0;
+        msg.msg_control = cmsg;
+        msg.msg_controllen = cmsg_len;
+        msg.msg_flags = 0;
+
+        // setup sockaddr
+        dest_addr.sin6_family = AF_INET6;
+        dest_addr.sin6_port = htons(31337);
+        dest_addr.sin6_flowinfo = htonl(31337);
+        dest_addr.sin6_addr = in6addr_loopback;
+        dest_addr.sin6_scope_id = 31337;
+
+        // setup cmsghdr
+        cmsg->cmsg_len = cmsg_len;
+        cmsg->cmsg_level = IPPROTO_IPV6;
+        cmsg->cmsg_type = IPV6_HOPOPTS;
+        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
+        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
+
+        sendmsg(fd, &msg, 0);
+
+Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
+Suggested-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-lp50xx.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ net/ipv6/calipso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -346,17 +346,15 @@ out:
- 	return ret;
- }
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index 24666291c54a..72079ef2959b 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
+ 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
+ 	pad = ((new_end & 4) + (end & 7)) & 7;
+ 	len_delta = new_end - (int)end + pad;
+-	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
++	ret_val = skb_cow(skb,
++			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
+ 	if (ret_val < 0)
+ 		return ret_val;
  
--static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[])
-+static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[], int num_leds)
- {
- 	u8 led_config_lo, led_config_hi;
- 	u32 bank_enable_mask = 0;
- 	int ret;
- 	int i;
- 
--	for (i = 0; i < priv->chip_info->max_modules; i++) {
--		if (led_banks[i])
--			bank_enable_mask |= (1 << led_banks[i]);
--	}
-+	for (i = 0; i < num_leds; i++)
-+		bank_enable_mask |= (1 << led_banks[i]);
- 
- 	led_config_lo = bank_enable_mask;
- 	led_config_hi = bank_enable_mask >> 8;
-@@ -412,7 +410,7 @@ static int lp50xx_probe_leds(struct fwno
- 			return ret;
- 		}
- 
--		ret = lp50xx_set_banks(priv, led_banks);
-+		ret = lp50xx_set_banks(priv, led_banks, num_leds);
- 		if (ret) {
- 			dev_err(priv->dev, "Cannot setup banked LEDs\n");
- 			return ret;
+-- 
+2.51.0
+
 
 
 
