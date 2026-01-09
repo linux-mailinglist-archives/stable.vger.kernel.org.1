@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207459-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B20B6D09E29
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6E2ED096B3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 948253155D00
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D2E330C0294
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A76111E8836;
-	Fri,  9 Jan 2026 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3AD2F35A939;
+	Fri,  9 Jan 2026 12:08:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/x88/X6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CEuJVhLl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A973359701;
-	Fri,  9 Jan 2026 12:35:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F160235A922;
+	Fri,  9 Jan 2026 12:08:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962115; cv=none; b=QW6iQXqzG/cCEaV8GHb4zYa3fc/BrChqc1UOlTjO+4nIgSt9ASxw3uge/EgGFHLOQ4E2tLzj726kocZITCqVhWfpi8eI/DaC+As2I1uJW6aFjmv1mZ9K4vSVpclGROoybewoOvi+0fPGwt536OUck4jTybXDiOX4sD32TQCiptI=
+	t=1767960497; cv=none; b=lux/qWsNGrcHaWHk9qRDIzq4Xok2qju65Lc8cy/69PXrzJcQ6dAIGpRKN7E5czy7POif9WRSt8AfX3Uix3JcMa0lohmtf1fgH95GOsACN00qwHXMxmHGw492ZyiAjS8dtvx2a3hGWoyfL7eYXhOyBkW2oMWoz+iTA9oCHcPa+eE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962115; c=relaxed/simple;
-	bh=RMiM3+Ng7WlovtdZ6r+YBTRbwg6t425AEXcWFD5BfDs=;
+	s=arc-20240116; t=1767960497; c=relaxed/simple;
+	bh=Ca3pPDM0ra7CRO53DwaqfJvb06Djj8OnJgG2ZMWwia0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LBBH16HfliLgeM94cyu7noqHcskiaqupAFslOFZixNetYOR4f080d5gc/oH0wt0XDxHIphdePPmNiMq7+RnRpRTFUQuSLw1ye2hCjV8rL19hnTocFMsmP/Xq/YV+TsLfdF0wm9K3vSDcUwTxvnj0zs0BwL1J2fnC21ADi3WA0Cg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/x88/X6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8F8FC4CEF1;
-	Fri,  9 Jan 2026 12:35:14 +0000 (UTC)
+	 MIME-Version; b=RZ4FOnCDP5SId4KVNK1S4aI5Kk5D/g0r1/Ivfi6vRd/EY3e17E2DUFjcmRN6xmUT3I1NzPQb5PcfUNzSVzs5qGmcMfazZlOEt/NXU3LPG9NyZ4eBqTAjeVtdKcYnAr1GF1fl26/Qt3ZBmWVzZszvVpTAyeSU0L9Ceh5+tA/CEis=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CEuJVhLl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 819A4C4CEF1;
+	Fri,  9 Jan 2026 12:08:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962115;
-	bh=RMiM3+Ng7WlovtdZ6r+YBTRbwg6t425AEXcWFD5BfDs=;
+	s=korg; t=1767960496;
+	bh=Ca3pPDM0ra7CRO53DwaqfJvb06Djj8OnJgG2ZMWwia0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/x88/X6qZkRSbaeRugYt4KwQhFR5IrIGeOHN4Liwi6e6z+nR3jnYIZTYa9TyLC+T
-	 lchC+qPfm/yUkyc63Z0Kam2TEf2rWBO5lANs5UA9rH1Lsoe8c4ZU3Qz8AcudA0Tout
-	 F7wfhxxol85SHHy0WQHNwCEc5b5X7bVVHE17UexE=
+	b=CEuJVhLlR4nbf7HFMoHYecFsACewZqX3PK62RtUXNGyHARh88rSYRRzbi5poP+Df0
+	 rfpIlthLda+JneiBm8OONsin/PRbDpQ30oSC3WRuyxEnRWS6E7FEbWSoSFCV4YaGJX
+	 cWoV46WTesZCkVTbQjr6SIF9UMbFMbWkm/ha+2tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ido Schimmel <idosch@nvidia.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 252/634] mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats
-Date: Fri,  9 Jan 2026 12:38:50 +0100
-Message-ID: <20260109112127.021597961@linuxfoundation.org>
+Subject: [PATCH 6.6 392/737] scsi: qla2xxx: Fix initiator mode with qlini_mode=exclusive
+Date: Fri,  9 Jan 2026 12:38:51 +0100
+Message-ID: <20260109112148.745013043@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,97 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit 8ac1dacec458f55f871f7153242ed6ab60373b90 ]
+[ Upstream commit 8f58fc64d559b5fda1b0a5e2a71422be61e79ab9 ]
 
-Cited commit added a dedicated mutex (instead of RTNL) to protect the
-multicast route list, so that it will not change while the driver
-periodically traverses it in order to update the kernel about multicast
-route stats that were queried from the device.
+When given the module parameter qlini_mode=exclusive, qla2xxx in
+initiator mode is initially unable to successfully send SCSI commands to
+devices it finds while scanning, resulting in an escalating series of
+resets until an adapter reset clears the issue.  Fix by checking the
+active mode instead of the module parameter.
 
-One instance of list entry deletion (during route replace) was missed
-and it can result in a use-after-free [1].
-
-Fix by acquiring the mutex before deleting the entry from the list and
-releasing it afterwards.
-
-[1]
-BUG: KASAN: slab-use-after-free in mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
-Read of size 8 at addr ffff8881523c2fa8 by task kworker/2:5/22043
-
-CPU: 2 UID: 0 PID: 22043 Comm: kworker/2:5 Not tainted 6.18.0-rc1-custom-g1a3d6d7cd014 #1 PREEMPT(full)
-Hardware name: Mellanox Technologies Ltd. MSN2010/SA002610, BIOS 5.6.5 08/24/2017
-Workqueue: mlxsw_core mlxsw_sp_mr_stats_update [mlxsw_spectrum]
-Call Trace:
- <TASK>
- dump_stack_lvl+0xba/0x110
- print_report+0x174/0x4f5
- kasan_report+0xdf/0x110
- mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
- process_one_work+0x9cc/0x18e0
- worker_thread+0x5df/0xe40
- kthread+0x3b8/0x730
- ret_from_fork+0x3e9/0x560
- ret_from_fork_asm+0x1a/0x30
- </TASK>
-
-Allocated by task 29933:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_kmalloc+0x8f/0xa0
- mlxsw_sp_mr_route_add+0xd8/0x4770 [mlxsw_spectrum]
- mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
- process_one_work+0x9cc/0x18e0
- worker_thread+0x5df/0xe40
- kthread+0x3b8/0x730
- ret_from_fork+0x3e9/0x560
- ret_from_fork_asm+0x1a/0x30
-
-Freed by task 29933:
- kasan_save_stack+0x30/0x50
- kasan_save_track+0x14/0x30
- __kasan_save_free_info+0x3b/0x70
- __kasan_slab_free+0x43/0x70
- kfree+0x14e/0x700
- mlxsw_sp_mr_route_add+0x2dea/0x4770 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:444 [mlxsw_spectrum]
- mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
- process_one_work+0x9cc/0x18e0
- worker_thread+0x5df/0xe40
- kthread+0x3b8/0x730
- ret_from_fork+0x3e9/0x560
- ret_from_fork_asm+0x1a/0x30
-
-Fixes: f38656d06725 ("mlxsw: spectrum_mr: Protect multicast route list with a lock")
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/f996feecfd59fde297964bfc85040b6d83ec6089.1764695650.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/1715ec14-ba9a-45dc-9cf2-d41aa6b81b5e@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-index 1f6bc0c7e91dd..c39aca54a0d6b 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
-@@ -440,7 +440,9 @@ int mlxsw_sp_mr_route_add(struct mlxsw_sp_mr_table *mr_table,
- 		rhashtable_remove_fast(&mr_table->route_ht,
- 				       &mr_orig_route->ht_node,
- 				       mlxsw_sp_mr_route_ht_params);
-+		mutex_lock(&mr_table->route_list_lock);
- 		list_del(&mr_orig_route->node);
-+		mutex_unlock(&mr_table->route_list_lock);
- 		mlxsw_sp_mr_route_destroy(mr_table, mr_orig_route);
- 	}
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index 0a3a5af67f0a..4c7cf581bc86 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -3459,13 +3459,7 @@ qla2x00_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 		ha->mqenable = 0;
  
+ 	if (ha->mqenable) {
+-		bool startit = false;
+-
+-		if (QLA_TGT_MODE_ENABLED())
+-			startit = false;
+-
+-		if (ql2x_ini_mode == QLA2XXX_INI_MODE_ENABLED)
+-			startit = true;
++		bool startit = !!(host->active_mode & MODE_INITIATOR);
+ 
+ 		/* Create start of day qpairs for Block MQ */
+ 		for (i = 0; i < ha->max_qpairs; i++)
 -- 
 2.51.0
 
