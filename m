@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18024D09EB3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B898AD095B7
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 93DD8309F702
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3713F30E860E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DFBE359701;
-	Fri,  9 Jan 2026 12:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E81D6359F98;
+	Fri,  9 Jan 2026 12:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pWoxKp+C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Jz7+jQe2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3141A336EDA;
-	Fri,  9 Jan 2026 12:34:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1951946C8;
+	Fri,  9 Jan 2026 12:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962066; cv=none; b=AkyBhhRoFfTpWdvwbPItvGxymKxe+3LqfND4Px+rDOXNXmfWRiFFkkP8gQdulHyuv13dQ0STfEJ1Bj8F0GgAt1laChdB+O6Yg9qPEho3xBcnLF4VpA69aLEcSyFSXWOCzN+6ao7014ppUpL2ecKH1oc7iDv4Krk9TjmhgRvqHSc=
+	t=1767960354; cv=none; b=Iw5YC2dcUbSJR91e+Rg0dAbGOUW0IdVjEobKGXcoR9eUbzJvYL72NsHg93R3sDJJNwlt4OJf2J098vAD71MKXOPn62K5uDFcqYQz101qfsdrisZRJlqXNXcduZTUIrY4Xl6szMqyW0upK5FjXo6h3azJKDDR9NBZj+CkPZcMmwA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962066; c=relaxed/simple;
-	bh=H4q7bG+TgWJ2NY5tGzPM4954tiN8JVzvsYTSEjfiy80=;
+	s=arc-20240116; t=1767960354; c=relaxed/simple;
+	bh=sPIAFPmaYwhtQcsA2MvFKsD3+PDI5kkllsMCPig/Pa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HfR87DTZL4u0Gg3kAmuZY1aPVvir5gcSfp4H4c4veKgAVJHsBy8ICTPzJxuwJ4OYq2IPPMHFZBUIYcmK+hl9u0zbrl2uwteqvKqmaB7Vj3uhxwV90xCCbIcyOTE5z9Butan/mHR5ZB5lt/ElfcvNpmQSBbrUZOrgicJZdT10Lsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pWoxKp+C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4648C4CEF1;
-	Fri,  9 Jan 2026 12:34:25 +0000 (UTC)
+	 MIME-Version; b=AQuopj6HGAdGvq5fqefYTi1oMlIDLgVhkaFBMpsT4qzSMnDzux079V71aOYD/8DYN37z/bk0KvS6vgwV5THcN/YSngca6cZIK4OWDmGr2+imAizVx7ngWFe3e9IIV/XJk5neDb/i79/qqQmzl14jtFpWT+RudCUQuVGPftPfnxU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Jz7+jQe2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 316A7C16AAE;
+	Fri,  9 Jan 2026 12:05:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962066;
-	bh=H4q7bG+TgWJ2NY5tGzPM4954tiN8JVzvsYTSEjfiy80=;
+	s=korg; t=1767960354;
+	bh=sPIAFPmaYwhtQcsA2MvFKsD3+PDI5kkllsMCPig/Pa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pWoxKp+CrnaZeP90uOw5SvXBcTcjWCjool4W3LUQkp9Xx0iTKSk7HbEB67WRZUGZc
-	 1MbMk4meq9DCa3Bxwi6kGbDbfquvmd4gCrD5WLkYy0hGmvgudH523TClnvjPULYNRX
-	 CiMEreyENMpFk3mc1Gh8dUdJnhqvPs+683Df0hqQ=
+	b=Jz7+jQe2UD5/JkCq12yToYwoqq+TdijB60204Fin81MsZwL/DzwrxG+APX+c/hmpI
+	 z+8ms+uFNE0XhxMFZsqMAz2Uxhj5/JTVhojJU7TPA+ysT/MyMSQsF5nAV8Xu5uwVKm
+	 DrZrj6OvrU7qDhDSizSX7BZHdQbvoQ//fUXybFik=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 234/634] cpufreq: s5pv210: fix refcount leak
-Date: Fri,  9 Jan 2026 12:38:32 +0100
-Message-ID: <20260109112126.233304967@linuxfoundation.org>
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.6 374/737] Input: i8042 - add TUXEDO InfinityBook Max Gen10 AMD to i8042 quirk table
+Date: Fri,  9 Jan 2026 12:38:33 +0100
+Message-ID: <20260109112148.063888971@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-[ Upstream commit 2de5cb96060a1664880d65b120e59485a73588a8 ]
+commit aed3716db7fff74919cc5775ca3a80c8bb246489 upstream.
 
-In function `s5pv210_cpu_init`, a possible refcount inconsistency has
-been identified, causing a resource leak.
+The device occasionally wakes up from suspend with missing input on the
+internal keyboard and the following suspend attempt results in an instant
+wake-up. The quirks fix both issues for this device.
 
-Why it is a bug:
-1. For every clk_get, there should be a matching clk_put on every
-successive error handling path.
-2. After calling `clk_get(dmc1_clk)`, variable `dmc1_clk` will not be
-freed even if any error happens.
-
-How it is fixed: For every failed path, an extra goto label is added to
-ensure `dmc1_clk` will be freed regardlessly.
-
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251124203336.64072-1-wse@tuxedocomputers.com
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/s5pv210-cpufreq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
-index 76c888ed8d160..d2fa42beae9c2 100644
---- a/drivers/cpufreq/s5pv210-cpufreq.c
-+++ b/drivers/cpufreq/s5pv210-cpufreq.c
-@@ -518,7 +518,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 
- 	if (policy->cpu != 0) {
- 		ret = -EINVAL;
--		goto out_dmc1;
-+		goto out;
- 	}
- 
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1169,6 +1169,13 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "X5KK45xS_X5SP45xS"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
  	/*
-@@ -530,7 +530,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
- 		pr_err("CPUFreq doesn't support this memory type\n");
- 		ret = -EINVAL;
--		goto out_dmc1;
-+		goto out;
- 	}
- 
- 	/* Find current refresh counter and frequency each DMC */
-@@ -544,6 +544,8 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 	cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
- 	return 0;
- 
-+out:
-+	clk_put(dmc1_clk);
- out_dmc1:
- 	clk_put(dmc0_clk);
- out_dmc0:
--- 
-2.51.0
-
+ 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
+ 	 * after suspend fixable with the forcenorestore quirk.
 
 
 
