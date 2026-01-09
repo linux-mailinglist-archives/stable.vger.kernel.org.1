@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-207007-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207611-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01FCBD09750
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AC33D09FC4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EDE04306F26C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D29CC308A034
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6072A32F748;
-	Fri,  9 Jan 2026 12:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA26D359703;
+	Fri,  9 Jan 2026 12:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1akivpG8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eh+KKyq4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21BEB33B6F1;
-	Fri,  9 Jan 2026 12:13:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D9AF1CAB3;
+	Fri,  9 Jan 2026 12:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960828; cv=none; b=j78DxSElQWwtrj+8LbXKuJxguB3f7li4NILtpzo/MAXy/EV0/KTxitkYM7Hdy4J2fejobNtpK02VHYAsgSS/0v2q7R9UeeQqXgULYDiwQy7oRJPZKxvZ5ov4aa0wgBZQzEf4kt46T27KeCysBXHH8r2JGYUc2ZQAm9QQyyvWQ88=
+	t=1767962544; cv=none; b=V+a7nZBJgplX3O/jrSglTzYtks2hJQaaxC0QRF2y378E5K4AWPyGoc038Yfb8mjSFBXCTtK9PYyOu+BCN4C29GISJPK/eN58V5JSJhCbMh61G3BUPvlT9aw9bQVkzb9FRBcHNMuoQE//tKmWl2D98EvazYVLaOBSs1c2t4Ft1ck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960828; c=relaxed/simple;
-	bh=b3pCPvGBfKnP028ynxW6PsM6f/93vJ8xsSMWMNK+hhM=;
+	s=arc-20240116; t=1767962544; c=relaxed/simple;
+	bh=XKzgaA9NCrOwMmZrutGkYcFYst4iw5qrZc/jCrs34Sg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfAaClECdMh5UqO53OLA6FK4YA/TDWlHzv995VlO+8KQyXaGmQPVFNG9y54+OFs5ap0ow27iP8kv+1x1FdtSGekRlebTTYQNYYCnZKGt4qvx/VFFJs5rKPI/nM1HeVt3r9selj9wr9HrUArMq8irjWHwuaYCVKw5KVG4F9dHTUo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1akivpG8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AFB8C4CEF1;
-	Fri,  9 Jan 2026 12:13:47 +0000 (UTC)
+	 MIME-Version; b=t2YC/I8udyU32F796e7RoXu9qGIL3/boIYiSAIZWs34duz2Zctzl8sqO7SqyOtUbVULr6nK9h5WjZ81CjEzK77dXYShL6EHTmLi84li/FxGkHE7bLnAQ32HlZwflApeNIPcO/bOe3tZN29EILmlpn/wrLxfreXyzCngJf+zv/5c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eh+KKyq4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 094E9C19421;
+	Fri,  9 Jan 2026 12:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960828;
-	bh=b3pCPvGBfKnP028ynxW6PsM6f/93vJ8xsSMWMNK+hhM=;
+	s=korg; t=1767962544;
+	bh=XKzgaA9NCrOwMmZrutGkYcFYst4iw5qrZc/jCrs34Sg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1akivpG8qfvfwbNPm/ADnjk+GRXH0Hw/saMqj4x46hviyjx3HKG+PEUNyw+CppEvY
-	 02Mr61kiWmmY/1v02X4n+Sn0WYiMYWg9JzWkc1jnpZzDl0ICay0RwD5eJlrKOL1qL/
-	 Tc0ZCyqaVbmaHghmEE3KLR5O4ydmM+sFAKQn+Bqg=
+	b=eh+KKyq4J6Sf0cRR7xL1A6v4TxwJ93F3yZxqMpxx1wKz42xeZ3jSLX/E80OOfmu26
+	 Xtc8qrZB+lded2MGUNcUevUrKArEixo9DEcD+Dj3BboD3oHAlBfcYZZQvuYEdcSYQY
+	 BW/NX250Gha3FQNQHj8Po50sJSZGkkS3/OHbkc4Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Kohei Enju <enjuk@amazon.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 540/737] selftests/ftrace: traceonoff_triggers: strip off names
-Date: Fri,  9 Jan 2026 12:41:19 +0100
-Message-ID: <20260109112154.308968767@linuxfoundation.org>
+Subject: [PATCH 6.1 402/634] iavf: fix off-by-one issues in iavf_config_rss_reg()
+Date: Fri,  9 Jan 2026 12:41:20 +0100
+Message-ID: <20260109112132.655881977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
+[ Upstream commit 6daa2893f323981c7894c68440823326e93a7d61 ]
 
-The func_traceonoff_triggers.tc sometimes goes to fail
-on my board, Kunpeng-920.
+There are off-by-one bugs when configuring RSS hash key and lookup
+table, causing out-of-bounds reads to memory [1] and out-of-bounds
+writes to device registers.
 
-[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
-=== Ftrace unit tests ===
-[1] ftrace - test for function traceon/off triggers     [FAIL]
-[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
+Before commit 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS"),
+the loop upper bounds were:
+    i <= I40E_VFQF_{HKEY,HLUT}_MAX_INDEX
+which is safe since the value is the last valid index.
 
-I look up the log, and it shows that the md5sum is different between csum1 and csum2.
+That commit changed the bounds to:
+    i <= adapter->rss_{key,lut}_size / 4
+where `rss_{key,lut}_size / 4` is the number of dwords, so the last
+valid index is `(rss_{key,lut}_size / 4) - 1`. Therefore, using `<=`
+accesses one element past the end.
 
-++ cnt=611
-++ sleep .1
-+++ cnt_trace
-+++ grep -v '^#' trace
-+++ wc -l
-++ cnt2=611
-++ '[' 611 -ne 611 ']'
-+++ cat tracing_on
-++ on=0
-++ '[' 0 '!=' 0 ']'
-+++ md5sum trace
-++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
-++ sleep .1
-+++ md5sum trace
-++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
-++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
-++ fail 'Tracing file is still changing'
-++ echo Tracing file is still changing
-Tracing file is still changing
-++ exit_fail
-++ exit 1
+Fix the issues by using `<` instead of `<=`, ensuring we do not exceed
+the bounds.
 
-So I directly dump the trace file before md5sum, the diff shows that:
+[1] KASAN splat about rss_key_size off-by-one
+  BUG: KASAN: slab-out-of-bounds in iavf_config_rss+0x619/0x800
+  Read of size 4 at addr ffff888102c50134 by task kworker/u8:6/63
 
-[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
-dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
-dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
-<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
-<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
+  CPU: 0 UID: 0 PID: 63 Comm: kworker/u8:6 Not tainted 6.18.0-rc2-enjuk-tnguy-00378-g3005f5b77652-dirty #156 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  Workqueue: iavf iavf_watchdog_task
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x6f/0xb0
+   print_report+0x170/0x4f3
+   kasan_report+0xe1/0x1a0
+   iavf_config_rss+0x619/0x800
+   iavf_watchdog_task+0x2be7/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
 
-And we can see that <...> filed be filled with names.
+  Allocated by task 63:
+   kasan_save_stack+0x30/0x50
+   kasan_save_track+0x14/0x30
+   __kasan_kmalloc+0x7f/0x90
+   __kmalloc_noprof+0x246/0x6f0
+   iavf_watchdog_task+0x28fc/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
 
-We can strip off the names there to fix that.
+  The buggy address belongs to the object at ffff888102c50100
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes to the right of
+   allocated 52-byte region [ffff888102c50100, ffff888102c50134)
 
-After strip off the names:
+  The buggy address belongs to the physical page:
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x102c50
+  flags: 0x200000000000000(node=0|zone=2)
+  page_type: f5(slab)
+  raw: 0200000000000000 ffff8881000418c0 dead000000000122 0000000000000000
+  raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+  page dumped because: kasan: bad access detected
 
-kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
-kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
-<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
-<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
-<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
+  Memory state around the buggy address:
+   ffff888102c50000: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+   ffff888102c50080: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+  >ffff888102c50100: 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc fc
+                                       ^
+   ffff888102c50180: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+   ffff888102c50200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
 
-Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
-Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../ftrace/test.d/ftrace/func_traceonoff_triggers.tc         | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-index aee22289536b..1b57771dbfdf 100644
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
-     fail "Tracing is not off"
- fi
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 7119bce4c091..467ad433a47b 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1783,11 +1783,11 @@ static int iavf_config_rss_reg(struct iavf_adapter *adapter)
+ 	u16 i;
  
--csum1=`md5sum trace`
-+# Cannot rely on names being around as they are only cached, strip them
-+csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
- sleep $SLEEP_TIME
--csum2=`md5sum trace`
-+csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ 	dw = (u32 *)adapter->rss_key;
+-	for (i = 0; i <= adapter->rss_key_size / 4; i++)
++	for (i = 0; i < adapter->rss_key_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HKEY(i), dw[i]);
  
- if [ "$csum1" != "$csum2" ]; then
-     fail "Tracing file is still changing"
+ 	dw = (u32 *)adapter->rss_lut;
+-	for (i = 0; i <= adapter->rss_lut_size / 4; i++)
++	for (i = 0; i < adapter->rss_lut_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HLUT(i), dw[i]);
+ 
+ 	iavf_flush(hw);
 -- 
 2.51.0
 
