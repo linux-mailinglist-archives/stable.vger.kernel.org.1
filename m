@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DAD2D09620
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 990C2D09EB0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 15D4D30DF07C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:05:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14E4D312D5B0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:34:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B0E5E359FB0;
-	Fri,  9 Jan 2026 12:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8771E8836;
+	Fri,  9 Jan 2026 12:34:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kACVhxuW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y0wHQ+hi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 751ED33D50F;
-	Fri,  9 Jan 2026 12:05:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3453B33B6E8;
+	Fri,  9 Jan 2026 12:34:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960340; cv=none; b=JtmffgEzyuLvsc9I1PZDWciK5c+mDzn5eT8SuYIqz6tMhDN9JmWEcOMW1ff/lKC5guskygxFy3YG8RYC10aF9PpsMNXBRPZgZTbBO25989UEf/o2mTG+foaxfsHnBea4OlKlyoBDfwi4jpXHRY2OOioiPVwiMxa79gcnU6Zdvnk=
+	t=1767962058; cv=none; b=PBjGBUD35pTpjdHK6/Qz/++R/6Wu08jXE3yHNENrMdNjyVl3ZrstWXK5z9AfCA+AxVGn1W1l6ZFBmRjMNdLqFIxmqdl/2vbdOH2rbe2WGe1PqxnZBZaPt3RQnneRB9fAlaLuomaqFUhqu7VZ+Yd924q0nJZtLdW50xGMj3sznk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960340; c=relaxed/simple;
-	bh=yNDRWy5kfg4Y610swwFa99+RjlnQJmuQR1ALI8WEI4I=;
+	s=arc-20240116; t=1767962058; c=relaxed/simple;
+	bh=BtcPqBE/Pyar9IOAf/sl5qvXcUXoPvBDjOgvwHrLm7c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Dii37VGV4UvlrFeoOzgbaAbBdOi55tkkH4az6Xzy6vhN08hWN56eZSzbSTIlUVRXGdAJJau4oR53t8S5PgEof51Zn7NtNLu3G8NmDwb/UikVLJ1kr+hHiCxoQ1dG+AKooBixBXx1glPlT/ZrdzcMSW+N4yDmGYpagmK5JlBNwd4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kACVhxuW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D7BC4CEF1;
-	Fri,  9 Jan 2026 12:05:39 +0000 (UTC)
+	 MIME-Version; b=DglQwHswmxVQscadRthElVAOb9ZU53+mXx9hn/3tZpEK0T/DyuHZkxoAoMioY+dW57naRhwV+Z7qqJZ/yI9Ht60rTkRgm5MAAiWBfyq4L7Q6VYDWCCRffaBdXstMI0l/l3LITyCaOGFM69g/lzRxbSdvm1hcQaNBU8bXkQjGNy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y0wHQ+hi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC76C4CEF1;
+	Fri,  9 Jan 2026 12:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960340;
-	bh=yNDRWy5kfg4Y610swwFa99+RjlnQJmuQR1ALI8WEI4I=;
+	s=korg; t=1767962057;
+	bh=BtcPqBE/Pyar9IOAf/sl5qvXcUXoPvBDjOgvwHrLm7c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kACVhxuWA5cVbrMvSXHsId8rrU5+TNVqv8FT2lisBWfbC9yq2FgawI6loe0vsXnXq
-	 6evhDdUo8XviRz6bRAF3XuXeiDVUFRt477Fl7Lq06xY3ESSIw9BpioaP5Dr9ywbRBG
-	 Cmqa69TSsU6WWJ1Pxezj2PSHHs8mgXZACg4+yfc4=
+	b=y0wHQ+hiBRMmxmu0NGI7sayEDwUQLz+zMCv/fwkNcGAjlpgc2OtPh268/zXeaWX2r
+	 GPBvs+sL2uTZ8Ao5ieSTBjEWsaMdQ/RnvzlYLngLYuwB7i56ifLeNR3tDV6nY+7U6/
+	 VsvanU5Z6IU3o3zET1X5DDcB4l9QOBMvgREyQaAU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre <roger.andersen@protonmail.com>,
-	Stanislas Polu <spolu@dust.tt>,
-	Namjae Jeon <linkinjeon@kernel.org>,
-	Steve French <stfrench@microsoft.com>
-Subject: [PATCH 6.6 370/737] ksmbd: Fix refcount leak when invalid session is found on session lookup
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Ingo Molnar <mingo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 231/634] x86/ptrace: Always inline trivial accessors
 Date: Fri,  9 Jan 2026 12:38:29 +0100
-Message-ID: <20260109112147.912959948@linuxfoundation.org>
+Message-ID: <20260109112126.121972748@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +60,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit cafb57f7bdd57abba87725eb4e82bbdca4959644 upstream.
+[ Upstream commit 1fe4002cf7f23d70c79bda429ca2a9423ebcfdfa ]
 
-When a session is found but its state is not SMB2_SESSION_VALID, It
-indicates that no valid session was found, but it is missing to decrement
-the reference count acquired by the session lookup, which results in
-a reference count leak. This patch fixes the issue by explicitly calling
-ksmbd_user_session_put to release the reference to the session.
+A KASAN build bloats these single load/store helpers such that
+it fails to inline them:
 
-Cc: stable@vger.kernel.org
-Reported-by: Alexandre <roger.andersen@protonmail.com>
-Reported-by: Stanislas Polu <spolu@dust.tt>
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  vmlinux.o: error: objtool: irqentry_exit+0x5e8: call to instruction_pointer_set() with UACCESS enabled
+
+Make sure the compiler isn't allowed to do stupid.
+
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Link: https://patch.msgid.link/20251031105435.GU4068168@noisy.programming.kicks-ass.net
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/mgmt/user_session.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/include/asm/ptrace.h | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
---- a/fs/smb/server/mgmt/user_session.c
-+++ b/fs/smb/server/mgmt/user_session.c
-@@ -312,8 +312,10 @@ struct ksmbd_session *ksmbd_session_look
- 	sess = ksmbd_session_lookup(conn, id);
- 	if (!sess && conn->binding)
- 		sess = ksmbd_session_lookup_slowpath(id);
--	if (sess && sess->state != SMB2_SESSION_VALID)
-+	if (sess && sess->state != SMB2_SESSION_VALID) {
-+		ksmbd_user_session_put(sess);
- 		sess = NULL;
-+	}
- 	return sess;
+diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
+index f4db78b09c8f0..87d8f3c492c19 100644
+--- a/arch/x86/include/asm/ptrace.h
++++ b/arch/x86/include/asm/ptrace.h
+@@ -109,12 +109,12 @@ convert_ip_to_linear(struct task_struct *child, struct pt_regs *regs);
+ extern void send_sigtrap(struct pt_regs *regs, int error_code, int si_code);
+ 
+ 
+-static inline unsigned long regs_return_value(struct pt_regs *regs)
++static __always_inline unsigned long regs_return_value(struct pt_regs *regs)
+ {
+ 	return regs->ax;
  }
  
+-static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
++static __always_inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
+ {
+ 	regs->ax = rc;
+ }
+@@ -199,34 +199,34 @@ static __always_inline bool ip_within_syscall_gap(struct pt_regs *regs)
+ }
+ #endif
+ 
+-static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
++static __always_inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
+ {
+ 	return regs->sp;
+ }
+ 
+-static inline unsigned long instruction_pointer(struct pt_regs *regs)
++static __always_inline unsigned long instruction_pointer(struct pt_regs *regs)
+ {
+ 	return regs->ip;
+ }
+ 
+-static inline void instruction_pointer_set(struct pt_regs *regs,
+-		unsigned long val)
++static __always_inline
++void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
+ {
+ 	regs->ip = val;
+ }
+ 
+-static inline unsigned long frame_pointer(struct pt_regs *regs)
++static __always_inline unsigned long frame_pointer(struct pt_regs *regs)
+ {
+ 	return regs->bp;
+ }
+ 
+-static inline unsigned long user_stack_pointer(struct pt_regs *regs)
++static __always_inline unsigned long user_stack_pointer(struct pt_regs *regs)
+ {
+ 	return regs->sp;
+ }
+ 
+-static inline void user_stack_pointer_set(struct pt_regs *regs,
+-		unsigned long val)
++static __always_inline
++void user_stack_pointer_set(struct pt_regs *regs, unsigned long val)
+ {
+ 	regs->sp = val;
+ }
+-- 
+2.51.0
+
 
 
 
