@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207349-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6B80D09E0E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3A6CED093CB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4650030BABE7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 380C4310624C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 145DA336EDA;
-	Fri,  9 Jan 2026 12:30:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAE7532BF21;
+	Fri,  9 Jan 2026 11:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ujNl7n8v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O/QlSMWh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FB23359701;
-	Fri,  9 Jan 2026 12:30:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F04433A712;
+	Fri,  9 Jan 2026 11:59:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961803; cv=none; b=oqQ1T59hgkTSspKr+qS3On9HZ00Bl/NXJtbV2j+TYOz4nOtNLjHeq7B5C3KLFzHAPEKwTAArAA8wkJ0JYcqFt9ebD7DiiTXSfnh6rbRRPrINYzzUBLK7fYgpf89/RV7+nNcpGH/VCTCi+VlvAoI1N+gN9NJHpoqJsjkb2CF7AOI=
+	t=1767959964; cv=none; b=r9u3m/gJQG0nzEDXhu19UZ7Etzbh68g6JQ/ILbQF4ZKEKrmZ1huVsxM4FzEr23T3O5W0Gg+F2mIigtb24JPy1GHZ65wX1/b3hvIgqAP4diGaYVvjD/9d7gfDqj4hKrnSGs8hcgZ6L6r4RMecmxJ/4U5ij9BF1327O1cXVDP9xMA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961803; c=relaxed/simple;
-	bh=cPvOsCWwLQU8z52gEZTQpvR9TqpsCzRIP89fr8cXGCg=;
+	s=arc-20240116; t=1767959964; c=relaxed/simple;
+	bh=IOqWqT2ydh5Jflf6NiBnc8//F+cHwDo95jkUXXl6250=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tB1VxG3HpDm+8CD9787UKDQOl9y8QMdqwNiXnQI2GhGZmJkxMUUckuQt1KohDZYTkkoVdS8YaefueqS/pma93XvXDicHhhodB/x8kQ4OZuCWNaBK4x2/r0dbBDX5cisDzATSx/P5rzHLX0HlK87pI/zvdMNJtW+nyy3C0tTiWuo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ujNl7n8v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BE84C4CEF1;
-	Fri,  9 Jan 2026 12:30:02 +0000 (UTC)
+	 MIME-Version; b=LMKj0+1lhS5xanFA2UVftt25B+b1Lc/sF5xlGIgQhgr/Rpfdt4ACGZO3h9fpCRTX3BXFBHO19leTsXt8NH1pezayn0bqeeYnfXjpWMok52LFANwYex4vR0o2ajsLuM8+TlHMrey8TXrdHgt+VyqzFUVnJF74Wu34vwr1FuWec0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O/QlSMWh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C190C16AAE;
+	Fri,  9 Jan 2026 11:59:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961802;
-	bh=cPvOsCWwLQU8z52gEZTQpvR9TqpsCzRIP89fr8cXGCg=;
+	s=korg; t=1767959964;
+	bh=IOqWqT2ydh5Jflf6NiBnc8//F+cHwDo95jkUXXl6250=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ujNl7n8vpMM0stQroT87GTzDVegKfC3gpdR3joUheJXmSgY+UvtTw8D1CS8GflvJQ
-	 s1toA1BGfcoO2QNfmwoJtAo3NSeTOKCxgxy02Dyz2X8Fwe4exTADx4AKWRo8vee1ZJ
-	 gjT+PSfcQwJVijXUR5C9Zv0Vjd9zBN2gG1y76R10=
+	b=O/QlSMWhe6UhZvJxk5Asaa/LZ2fDfq37ZVsp+q7LPXwMddkPKbttBUU9wR3NfM6YY
+	 DGTEN9p1LMyHQU9Lo4sWW0FGT8O7b+oKyU2PxkyAv7qdK3ne5UFimczQD+q7J1+4No
+	 WAZDYLzIUctDECg7PYmoHHxEmVrOZQ2TYk8V/i9M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 098/634] ntfs3: init run lock for extend inode
+Subject: [PATCH 6.6 237/737] resource: replace open coded resource_intersection()
 Date: Fri,  9 Jan 2026 12:36:16 +0100
-Message-ID: <20260109112121.121773933@linuxfoundation.org>
+Message-ID: <20260109112142.913847401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit be99c62ac7e7af514e4b13f83c891a3cccefaa48 ]
+[ Upstream commit 5c1edea773c98707fbb23d1df168bcff52f61e4b ]
 
-After setting the inode mode of $Extend to a regular file, executing the
-truncate system call will enter the do_truncate() routine, causing the
-run_lock uninitialized error reported by syzbot.
+Patch series "resource: A couple of cleanups".
 
-Prior to patch 4e8011ffec79, if the inode mode of $Extend was not set to
-a regular file, the do_truncate() routine would not be entered.
+A couple of ad-hoc cleanups since there was a recent development of
+the code in question. No functional changes intended.
 
-Add the run_lock initialization when loading $Extend.
+This patch (of 2):
 
-syzbot reported:
-INFO: trying to register non-static key.
-Call Trace:
- dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
- assign_lock_key+0x133/0x150 kernel/locking/lockdep.c:984
- register_lock_class+0x105/0x320 kernel/locking/lockdep.c:1299
- __lock_acquire+0x99/0xd20 kernel/locking/lockdep.c:5112
- lock_acquire+0x120/0x360 kernel/locking/lockdep.c:5868
- down_write+0x96/0x1f0 kernel/locking/rwsem.c:1590
- ntfs_set_size+0x140/0x200 fs/ntfs3/inode.c:860
- ntfs_extend+0x1d9/0x970 fs/ntfs3/file.c:387
- ntfs_setattr+0x2e8/0xbe0 fs/ntfs3/file.c:808
+__region_intersects() uses open coded resource_intersection().  Replace it
+with existing API which also make more clear what we are checking.
 
-Fixes: 4e8011ffec79 ("ntfs3: pretend $Extend records as regular files")
-Reported-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=bdeb22a4b9a09ab9aa45
-Tested-by: syzbot+bdeb22a4b9a09ab9aa45@syzkaller.appspotmail.com
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Link: https://lkml.kernel.org/r/20240925154355.1170859-1-andriy.shevchenko@linux.intel.com
+Link: https://lkml.kernel.org/r/20240925154355.1170859-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ntfs3/inode.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/resource.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/fs/ntfs3/inode.c b/fs/ntfs3/inode.c
-index 785aa1673359a..e47eec61f2379 100644
---- a/fs/ntfs3/inode.c
-+++ b/fs/ntfs3/inode.c
-@@ -457,6 +457,7 @@ static struct inode *ntfs_read_mft(struct inode *inode,
- 		/* Records in $Extend are not a files or general directories. */
- 		inode->i_op = &ntfs_file_inode_operations;
- 		mode = S_IFREG;
-+		init_rwsem(&ni->file.run_lock);
- 	} else {
- 		err = -EINVAL;
- 		goto out;
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 79fba72cb7d2e..dcc3b564c0537 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -498,17 +498,16 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 			       size_t size, unsigned long flags,
+ 			       unsigned long desc)
+ {
+-	resource_size_t ostart, oend;
+ 	int type = 0; int other = 0;
+ 	struct resource *p, *dp;
++	struct resource res, o;
+ 	bool is_type, covered;
+-	struct resource res;
+ 
+ 	res.start = start;
+ 	res.end = start + size - 1;
+ 
+ 	for (p = parent->child; p ; p = p->sibling) {
+-		if (!resource_overlaps(p, &res))
++		if (!resource_intersection(p, &res, &o))
+ 			continue;
+ 		is_type = (p->flags & flags) == flags &&
+ 			(desc == IORES_DESC_NONE || desc == p->desc);
+@@ -529,8 +528,6 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 		 * |-- "System RAM" --||-- "CXL Window 0a" --|
+ 		 */
+ 		covered = false;
+-		ostart = max(res.start, p->start);
+-		oend = min(res.end, p->end);
+ 		for_each_resource(p, dp, false) {
+ 			if (!resource_overlaps(dp, &res))
+ 				continue;
+@@ -539,17 +536,17 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 			if (is_type) {
+ 				type++;
+ 				/*
+-				 * Range from 'ostart' to 'dp->start'
++				 * Range from 'o.start' to 'dp->start'
+ 				 * isn't covered by matched resource.
+ 				 */
+-				if (dp->start > ostart)
++				if (dp->start > o.start)
+ 					break;
+-				if (dp->end >= oend) {
++				if (dp->end >= o.end) {
+ 					covered = true;
+ 					break;
+ 				}
+ 				/* Remove covered range */
+-				ostart = max(ostart, dp->end + 1);
++				o.start = max(o.start, dp->end + 1);
+ 			}
+ 		}
+ 		if (!covered)
 -- 
 2.51.0
 
