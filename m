@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206929-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207497-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA75D097C0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC0DAD09FAC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD93130E477F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DC5AD313DF28
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F22035B13A;
-	Fri,  9 Jan 2026 12:10:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E028835A95C;
+	Fri,  9 Jan 2026 12:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hJ61Qzyh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sdwkeddG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5BAA35A947;
-	Fri,  9 Jan 2026 12:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A137D359701;
+	Fri,  9 Jan 2026 12:37:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960601; cv=none; b=BGYeufdPVPCvHUe5kE7+u8vjCKyc1eMuJgHwbXzy13wPGEUAfYnQfVc7bvHd8F64npmvyuffnxwxMmOE7G+8ucT4zDFRrRXTcSimuZDs8VSWwpZNEozTBLzwaX/ANq8gqkM1BaYzjm4uZw5O4VC8ILAMBGawQVopsn4XwLlkSuU=
+	t=1767962222; cv=none; b=newM8ncmOEDBkGsO9o4i/DVREew0LNlshMgW+Og2E/ff1Qfl17wADF6YgouyQMm2r+H4qczgBI6Fha92MlDb7k/u25X+e3sUHXciXGqLZSVA1GAKpcj/gXjpH/NKr2xRdKQhNOfwsUBtni6OToW4iAWdKA5yCsNR3USxW4eB5aE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960601; c=relaxed/simple;
-	bh=wffMHlbkjJRorYBsuozl+bs3uNwyl69hxEck6jCk4To=;
+	s=arc-20240116; t=1767962222; c=relaxed/simple;
+	bh=1uqyp8IlEsiizIwuAFWLTKEQ4jHpljuAxGy6yBlV8VY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ugWWAwv7jV5fvZcQjky7lq9z5hgZnps46/cOeRFBrPs0ukmDjkXoWRyO4UJxBNpBV5lNp8yGjfy5JCvFjf6yrMA/e+n7D+4Ad9K/gGDOOBLXVZsb4NvehhagHSkIMG8RgQG0SwknKB1LkvQy4CZGUl+NszeAQ3nhf9BJLydaoDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hJ61Qzyh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1356CC4CEF1;
-	Fri,  9 Jan 2026 12:10:00 +0000 (UTC)
+	 MIME-Version; b=QSVNU3rHqhhZzsaXy3/bjiRh2iqA+GEArTipiX01sdtMnKPEZMBEIzp8SIblYet2hkpE1ZBz1zdR6SGXn6gSWvfz/hc6eexOtCjldFHQuvUMuzOcScub8wgPmaHHIL0YkFTCO1f7s79mDbxff6YpBjRx1TwQA+PCZ+AxAdHIV/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sdwkeddG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24998C4CEF1;
+	Fri,  9 Jan 2026 12:37:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960601;
-	bh=wffMHlbkjJRorYBsuozl+bs3uNwyl69hxEck6jCk4To=;
+	s=korg; t=1767962222;
+	bh=1uqyp8IlEsiizIwuAFWLTKEQ4jHpljuAxGy6yBlV8VY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hJ61Qzyh701Ky7Y3IZ8Ez/nvg5TGljvKo0+on3+bY5nRUswago8nqRzqF2m85NXCB
-	 qlV1X4+pS9KtXkaKQMGxXP2CCBLB6qJCSS+IdBZWi52+lAOPXoZsgqevDl6dZ3i/Vf
-	 i4ejIDsPnE1b2TchcWde3dEIbvXmD0C6O5AyRoZA=
+	b=sdwkeddGS9pu7ixjCc8epLnKvxdNEXhL9xD6g0D6dcxwGJZnyemlbUpi3knGSVQKG
+	 nrpxahHnr6qIPWlyNjoZI5S0AiSkOkSsjsl8qJwHfkOxWIVgDv6L+EMBHLZf1S5GGI
+	 dB5ee5u0r3Ah2TQHdp7FN7aFc9HJ2j4e0fkCuEcg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paolo Abeni <pabeni@redhat.com>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 429/737] mptcp: schedule rtx timer only after pushing data
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.1 290/634] spi: fsl-cpm: Check length parity before switching to 16 bit mode
 Date: Fri,  9 Jan 2026 12:39:28 +0100
-Message-ID: <20260109112150.135001931@linuxfoundation.org>
+Message-ID: <20260109112128.443700160@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,76 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paolo Abeni <pabeni@redhat.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit 2ea6190f42d0416a4310e60a7fcb0b49fcbbd4fb upstream.
+commit 1417927df8049a0194933861e9b098669a95c762 upstream.
 
-The MPTCP protocol usually schedule the retransmission timer only
-when there is some chances for such retransmissions to happen.
+Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
+with even size") failed to make sure that the size is really even
+before switching to 16 bit mode. Until recently the problem went
+unnoticed because kernfs uses a pre-allocated bounce buffer of size
+PAGE_SIZE for reading EEPROM.
 
-With a notable exception: __mptcp_push_pending() currently schedule
-such timer unconditionally, potentially leading to unnecessary rtx
-timer expiration.
+But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
+introduced an additional dynamically allocated bounce buffer whose size
+is exactly the size of the transfer, leading to a buffer overrun in
+the fsl-cpm driver when that size is odd.
 
-The issue is present since the blamed commit below but become easily
-reproducible after commit 27b0e701d387 ("mptcp: drop bogus optimization
-in __mptcp_check_push()")
+Add the missing length parity verification and remain in 8 bit mode
+when the length is not even.
 
-Fixes: 33d41c9cd74c ("mptcp: more accurate timeout")
+Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
 Cc: stable@vger.kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Reviewed-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-3-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mptcp/protocol.c |   15 +++++++++------
- 1 file changed, 9 insertions(+), 6 deletions(-)
+ drivers/spi/spi-fsl-spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/mptcp/protocol.c
-+++ b/net/mptcp/protocol.c
-@@ -1630,7 +1630,7 @@ void __mptcp_push_pending(struct sock *s
- 	struct mptcp_sendmsg_info info = {
- 				.flags = flags,
- 	};
--	bool do_check_data_fin = false;
-+	bool copied = false;
- 	int push_count = 1;
- 
- 	while (mptcp_send_head(sk) && (push_count > 0)) {
-@@ -1672,7 +1672,7 @@ void __mptcp_push_pending(struct sock *s
- 						push_count--;
- 					continue;
- 				}
--				do_check_data_fin = true;
-+				copied = true;
- 			}
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -352,7 +352,7 @@ static int fsl_spi_prepare_message(struc
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
+ 			if (t->bits_per_word == 8 && t->len >= 256 &&
+-			    (mpc8xxx_spi->flags & SPI_CPM1))
++			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
+ 				t->bits_per_word = 16;
  		}
  	}
-@@ -1681,11 +1681,14 @@ void __mptcp_push_pending(struct sock *s
- 	if (ssk)
- 		mptcp_push_release(ssk, &info);
- 
--	/* ensure the rtx timer is running */
--	if (!mptcp_rtx_timer_pending(sk))
--		mptcp_reset_rtx_timer(sk);
--	if (do_check_data_fin)
-+	/* Avoid scheduling the rtx timer if no data has been pushed; the timer
-+	 * will be updated on positive acks by __mptcp_cleanup_una().
-+	 */
-+	if (copied) {
-+		if (!mptcp_rtx_timer_pending(sk))
-+			mptcp_reset_rtx_timer(sk);
- 		mptcp_check_send_data_fin(sk);
-+	}
- }
- 
- static void __mptcp_subflow_push_pending(struct sock *sk, struct sock *ssk, bool first)
 
 
 
