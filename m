@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E64ED09A45
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45F4ED0917F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EE53230E044C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:32 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DDCC53022F1F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2199332AAB5;
-	Fri,  9 Jan 2026 12:24:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81A24359F89;
+	Fri,  9 Jan 2026 11:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ij4b7OcM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LyIJkqMw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA01E15ADB4;
-	Fri,  9 Jan 2026 12:24:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43EA63590AC;
+	Fri,  9 Jan 2026 11:56:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961471; cv=none; b=eNg+ISy39P5jYiG4aBfopbMxS+X0dlDGoXQKEaHhSi60Ec2ddY6shqfrtpCTsfsyMQzL0vmp+Kcmo7QbLVO+p0/eP85BjtMfy/oPjDGuvzNbcXNN+mnFuJPhMyuY50fO2bJfXImwJM0gBldPxvG6BYv3Cb4IyAnUCv/n0BOmp3M=
+	t=1767959760; cv=none; b=LjywqNSL0dBRj2xsEsCYYmFGWMdijmfUhYUvA+nsenKvVobbrH6srFLAywey8hNTO3JWU/6HcyU1xyZLhdIKiKfZiXZESeMWmlcNfwNOvGCTN+Lgz05xtRYpku50dGMWi4hVV3k2IFzNVky1ylxRYiqmf+l0r4cUAHtjOm02tM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961471; c=relaxed/simple;
-	bh=6btbjLg5aRHWvAQcOsgI1xa37tPJGZeWP5vYeQR54Og=;
+	s=arc-20240116; t=1767959760; c=relaxed/simple;
+	bh=oFIkGqaO8Zx7fTY6VXOb77p1xMqDVmRdeVWpEMtxPr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ndOFvgRqwekD1q84oCO6j5OD6ITyBKRpDmZCQo7CVG6RYivMAx1lyx+Jqb2dd8CoJCfFSL0yVplLLratvXj54R7Ii5w7jS+RY6Q21W5lLbRAF2FNFSykXvCb/L8/OMyhZFgORpTgY7buzFNQ1mT0PQ0l5opCAhvxp42++wjObsA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ij4b7OcM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644BEC4CEF1;
-	Fri,  9 Jan 2026 12:24:31 +0000 (UTC)
+	 MIME-Version; b=Rj66DxIEOpfsqcgMXfgpjvfPeqtpq9yo+cb2UobcL56WsJbTtggLikuKk0GANGv/hIIW+JnD+BleAY9y67A9P2gaCBNtN007S1uP//P+sCUOtLgxjvYFBTYo9Gun6uQuM6cgarWGVz3V4bTUWBI/r1ZONBlqFOajNEdNWbfl8vo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LyIJkqMw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3509C4CEF1;
+	Fri,  9 Jan 2026 11:55:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961471;
-	bh=6btbjLg5aRHWvAQcOsgI1xa37tPJGZeWP5vYeQR54Og=;
+	s=korg; t=1767959760;
+	bh=oFIkGqaO8Zx7fTY6VXOb77p1xMqDVmRdeVWpEMtxPr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ij4b7OcMB+5ninDHnCOlLsZrDuYIpsOD3C+fTJ+16AXuH1R+gkor8s+g98nWHZapx
-	 S2wlZWoUmB5C+i5r74DNPK7++fBEa+bv+gJJkEmaWtbau7O4son3EV5lQIev/yhNJh
-	 ZMYHiSQp1l6PEcIj53VYWUToizfqnuQe/OejlE0g=
+	b=LyIJkqMwPmqqTvpLzJyXgrSVKGURbL/ahg0VreMxvL7ucY5Xz1q4cGyd+4LDDnJvl
+	 MZ9blScVN3S4+HWSuWK3oJTV3+vREHMhvdUmkcFx3r9i1BgLnC4vGpuhq/vRJoFFax
+	 XLvThIFqIymfKc1FH4Rv74Q5J6OdWF8Hf0wTx5cU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lushih Hsieh <bruce@mail.kh.edu.tw>,
-	Takashi Iwai <tiwai@suse.de>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/634] ALSA: usb-audio: Add native DSD quirks for PureAudio DAC series
+Subject: [PATCH 6.6 165/737] drm/msm/a2xx: stop over-complaining about the legacy firmware
 Date: Fri,  9 Jan 2026 12:35:04 +0100
-Message-ID: <20260109112118.430840886@linuxfoundation.org>
+Message-ID: <20260109112140.200690998@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lushih Hsieh <bruce@mail.kh.edu.tw>
+From: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
 
-[ Upstream commit 21a9ab5b90b3716a631d559e62818029b4e7f5b7 ]
+[ Upstream commit a3a22373fce576560757f5616eb48dbf85891d9c ]
 
-The PureAudio APA DAC and Lotus DAC5 series are USB Audio
-2.0 Class devices that support native Direct Stream Digital (DSD)
-playback via specific vendor protocols.
+If the rootfs have a legacy A200 firmware, currently the driver will
+complain each time the hw is reinited (which can happen a lot). E.g.
+with GL testsuite the hw is reinited after each test, spamming the
+console.
 
-Without these quirks, the devices may only function in standard
-PCM mode, or fail to correctly report their DSD format capabilities
-to the ALSA framework, preventing native DSD playback under Linux.
+Make sure that the message is printed only once: when we detect the
+firmware that doesn't support protection.
 
-This commit adds new quirk entries for the mentioned DAC models
-based on their respective Vendor/Product IDs (VID:PID), for example:
-0x16d0:0x0ab1 (APA DAC), 0x16d0:0xeca1 (DAC5 series), etc.
-
-The quirk ensures correct DSD format handling by setting the required
-SNDRV_PCM_FMTBIT_DSD_U32_BE format bit and defining the DSD-specific
-Audio Class 2.0 (AC2.0) endpoint configurations. This allows the ALSA
-DSD API to correctly address the device for high-bitrate DSD streams,
-bypassing the need for DoP (DSD over PCM).
-
-Test on APA DAC and Lotus DAC5 SE under Arch Linux.
-
-Tested-by: Lushih Hsieh <bruce@mail.kh.edu.tw>
-Signed-off-by: Lushih Hsieh <bruce@mail.kh.edu.tw>
-Link: https://patch.msgid.link/20251114052053.54989-1-bruce@mail.kh.edu.tw
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 302295070d3c ("drm/msm/a2xx: support loading legacy (iMX) firmware")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688098/
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/quirks.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/msm/adreno/a2xx_gpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
-index aa5623e104c71..286ec4580718c 100644
---- a/sound/usb/quirks.c
-+++ b/sound/usb/quirks.c
-@@ -1920,6 +1920,8 @@ u64 snd_usb_interface_dsd_format_quirks(struct snd_usb_audio *chip,
- 	case USB_ID(0x16d0, 0x09d8): /* NuPrime IDA-8 */
- 	case USB_ID(0x16d0, 0x09db): /* NuPrime Audio DAC-9 */
- 	case USB_ID(0x16d0, 0x09dd): /* Encore mDSD */
-+	case USB_ID(0x16d0, 0x0ab1): /* PureAudio APA DAC */
-+	case USB_ID(0x16d0, 0xeca1): /* PureAudio Lotus DAC5, DAC5 SE, DAC5 Pro */
- 	case USB_ID(0x1db5, 0x0003): /* Bryston BDA3 */
- 	case USB_ID(0x20a0, 0x4143): /* WaveIO USB Audio 2.0 */
- 	case USB_ID(0x22e1, 0xca01): /* HDTA Serenade DSD */
-@@ -2187,6 +2189,10 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
- 		   QUIRK_FLAG_IGNORE_CLOCK_SOURCE),
- 	DEVICE_FLG(0x1686, 0x00dd, /* Zoom R16/24 */
- 		   QUIRK_FLAG_TX_LENGTH | QUIRK_FLAG_CTL_MSG_DELAY_1M),
-+	DEVICE_FLG(0x16d0, 0x0ab1, /* PureAudio APA DAC */
-+		   QUIRK_FLAG_DSD_RAW),
-+	DEVICE_FLG(0x16d0, 0xeca1, /* PureAudio Lotus DAC5, DAC5 SE and DAC5 Pro */
-+		   QUIRK_FLAG_DSD_RAW),
- 	DEVICE_FLG(0x17aa, 0x1046, /* Lenovo ThinkStation P620 Rear Line-in, Line-out and Microphone */
- 		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
- 	DEVICE_FLG(0x17aa, 0x104d, /* Lenovo ThinkStation P620 Internal Speaker + Front Headset */
+diff --git a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+index 0d8133f3174be..535c89ce5d62e 100644
+--- a/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
++++ b/drivers/gpu/drm/msm/adreno/a2xx_gpu.c
+@@ -234,7 +234,7 @@ static int a2xx_hw_init(struct msm_gpu *gpu)
+ 	 * word (0x20xxxx for A200, 0x220xxx for A220, 0x225xxx for A225).
+ 	 * Older firmware files, which lack protection support, have 0 instead.
+ 	 */
+-	if (ptr[1] == 0) {
++	if (ptr[1] == 0 && !a2xx_gpu->protection_disabled) {
+ 		dev_warn(gpu->dev->dev,
+ 			 "Legacy firmware detected, disabling protection support\n");
+ 		a2xx_gpu->protection_disabled = true;
 -- 
 2.51.0
 
