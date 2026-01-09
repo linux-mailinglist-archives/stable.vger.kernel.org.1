@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B60DFD097AA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:25 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A9CFD0A114
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:56:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A067C30E1A43
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 820EB302F7AC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FEA35A93E;
-	Fri,  9 Jan 2026 12:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B57435BDA8;
+	Fri,  9 Jan 2026 12:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLjEznVO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FesiIQBN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5260C338911;
-	Fri,  9 Jan 2026 12:09:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D05735B133;
+	Fri,  9 Jan 2026 12:39:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960587; cv=none; b=cEkVagR7aDFrx39+uo6i0NkD7naO7UgkuIFVYdVOQc9KHKC8BSuG35eiu76bkfyRB/ZW3uKWy3mM/SHrNajRhTrfxkZBeeKbTrn3PESJPCXBPu2BLf66lh4q5IbuVSXJ7sTHzx8/vyJ611ySTWvzmzPPePphAhZlYvn48IUDS3s=
+	t=1767962391; cv=none; b=XKoybqurRYuytmmq1IFfoxNqP7ammg756u50sByVTdOB8U/0Lr4kQaDVcg2p/t8uuF89Xm33cMYzqgqn15pdX+3VfApQBGPC2AyKSXcn/aPp4aTZjmUaMa6GVLxXXnNRSe3E1ondVl+unAM3FhKwVjSVPm7tzI/mGNNus+iT/H0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960587; c=relaxed/simple;
-	bh=fkgSClaGZL+dBYFM3Tjt7Td580VU57xjarfhNVqKM2c=;
+	s=arc-20240116; t=1767962391; c=relaxed/simple;
+	bh=Gy+cdAF8JJsfAUMxBt0eBnFLXyz29Ssdcf6xl7MgcZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOx0IfgHd8JtkVUrlhYMQrFFuqx6oXs2mNuhlxxf2tx7x9NUsgGNHaYySIhSGe/Vz09jcsMZORKIURBvW/IHfZosx2l9cpYOL2UfoG6iSskvS78it8AGvZceGGIpc+k81qFEf+Q3s7eQEMAFV6ZdJsWbMaPfomudP0n4Gn65v2I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLjEznVO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D4CC4CEF1;
-	Fri,  9 Jan 2026 12:09:46 +0000 (UTC)
+	 MIME-Version; b=fL+d7NWpHR3O8F8aXJOHRHhCdyHrv28en2ijdQr2O6ZJLRLMNluiShBU5Bc8XITHUJbS4+5XevEewpIQbX3HTrpxANCk0M4dNfQZaLv8fbqO9Dyu8sf2/xkf6PkSiCDGXPGgrE1ApPDIfMENxAMRjzdwJOZ3Hg5fcwE4Wc7X46w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FesiIQBN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3854C4CEF1;
+	Fri,  9 Jan 2026 12:39:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960587;
-	bh=fkgSClaGZL+dBYFM3Tjt7Td580VU57xjarfhNVqKM2c=;
+	s=korg; t=1767962391;
+	bh=Gy+cdAF8JJsfAUMxBt0eBnFLXyz29Ssdcf6xl7MgcZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dLjEznVOhuzfCHyyM6Bu2FJH8Tp7y7ebWeR+u/++YxIqx5YUu8ic8CHwK2ne6QDsO
-	 e8rWY1vASzSgd+/RX4aCVC8XgAkxgX+6STcCNFsJM16B58i78WNJmrv1PKMeaxmDgz
-	 qSCti0+YkIDQVs8yQ0i9T0y95wjov3LCU2fy90mk=
+	b=FesiIQBNs85KzFjHSDu8jJlMXko2dqvBtJw4YrI/m3RHX3hRRDz6At/NHSEq7cJ9c
+	 mzYxjNlr6egTt3qxCgr+eQbOnAWjdwHE1eYznNJNmaMY3KsTtgxp8eMqYHnGhApCNm
+	 pq/SnYNOdw+HGTyhJkUhMhQmL0dwsqMInhwpJ+2M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 455/737] media: vidtv: initialize local pointers upon transfer of memory ownership
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 316/634] block: rnbd-clt: Fix signedness bug in init_dev()
 Date: Fri,  9 Jan 2026 12:39:54 +0100
-Message-ID: <20260109112151.110825687@linuxfoundation.org>
+Message-ID: <20260109112129.422379579@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-commit 98aabfe2d79f74613abc2b0b1cef08f97eaf5322 upstream.
+[ Upstream commit 1ddb815fdfd45613c32e9bd1f7137428f298e541 ]
 
-vidtv_channel_si_init() creates a temporary list (program, service, event)
-and ownership of the memory itself is transferred to the PAT/SDT/EIT
-tables through vidtv_psi_pat_program_assign(),
-vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
+The "dev->clt_device_id" variable is set using ida_alloc_max() which
+returns an int and in particular it returns negative error codes.
+Change the type from u32 to int to fix the error checking.
 
-The problem here is that the local pointer where the memory ownership
-transfer was completed is not initialized to NULL. This causes the
-vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
-in the flow that jumps to free_eit, the memory that was freed by
-vidtv_psi_*_table_destroy() can be accessed again by
-vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so it
-is freed once again.
-
-Therefore, to prevent use-after-free and double-free vulnerability,
-local pointers must be initialized to NULL when transferring memory
-ownership.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1d9c0edea5907af239e0
-Fixes: 3be8037960bc ("media: vidtv: add error checks")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c9b5645fd8ca ("block: rnbd-clt: Fix leaked ID in init_dev()")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_channel.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/block/rnbd/rnbd-clt.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-@@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_m
- 
- 	/* assemble all programs and assign to PAT */
- 	vidtv_psi_pat_program_assign(m->si.pat, programs);
-+	programs = NULL;
- 
- 	/* assemble all services and assign to SDT */
- 	vidtv_psi_sdt_service_assign(m->si.sdt, services);
-+	services = NULL;
- 
- 	/* assemble all events and assign to EIT */
- 	vidtv_psi_eit_event_assign(m->si.eit, events);
-+	events = NULL;
- 
- 	m->si.pmt_secs = vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
- 								     m->pcr_pid);
+diff --git a/drivers/block/rnbd/rnbd-clt.h b/drivers/block/rnbd/rnbd-clt.h
+index a48e040abe63..fbc1ed766025 100644
+--- a/drivers/block/rnbd/rnbd-clt.h
++++ b/drivers/block/rnbd/rnbd-clt.h
+@@ -112,7 +112,7 @@ struct rnbd_clt_dev {
+ 	struct rnbd_queue	*hw_queues;
+ 	u32			device_id;
+ 	/* local Idr index - used to track minor number allocations. */
+-	u32			clt_device_id;
++	int			clt_device_id;
+ 	struct mutex		lock;
+ 	enum rnbd_clt_dev_state	dev_state;
+ 	refcount_t		refcount;
+-- 
+2.51.0
+
 
 
 
