@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96658D0A07E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 00300D09792
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18E9930D7AFB
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:33 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9636C305CC50
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6CA63590C4;
-	Fri,  9 Jan 2026 12:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F100E35A943;
+	Fri,  9 Jan 2026 12:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNQfWOsn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D9OV892Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B20133372B;
-	Fri,  9 Jan 2026 12:44:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B463835A92E;
+	Fri,  9 Jan 2026 12:14:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962671; cv=none; b=HV/6q7Buy1Vxv+KAZlZEILZ2d4+yzabqzQNrnKnMLBZ0ALLXS6hmBXN9q4Hm1+j4FZuWTH2uU7djiUzyjMxG0wKtKRgdKQq3YcIBY1lg+Uo7xPyzu7On3SYeUnO7xCv6v5jfVUT90kS29bF98okdXPrjxMpMtvAD0FjFWfkLdHc=
+	t=1767960888; cv=none; b=AUny9Wtg7fJbPT/Qs73/MSvURO5hYs2JUHe49sqU+f3yKEQObaB+HvaeiwhC2AgMfqyR/pLWyd27Y7fIKhAMpzN7vZmvsuKUXfncTGapY3i9VAFGytSBq1Awg1EA2YPYcn7ax/E2uc7GTgfJ75rsNf09/JvI/Sv3xV3aQKQHRYI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962671; c=relaxed/simple;
-	bh=TbQ4jTuu+bVhbE6zKtyxzqL6Ihy7j+4CUVRg4JRp4Sk=;
+	s=arc-20240116; t=1767960888; c=relaxed/simple;
+	bh=9H4fuH6tCkn3CWfWm7XAreTQjWU0Qe4yFAQ0Pa6x+Z0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ojUQTmrdZVd+0+u5aahJU0RLOdeDT6VzkSlqv1dmwjvNlkQHHpDPEPjkhOv7XcX47wWA5HhP44kaQ387AWJKoaZw7abJ1F9wDKrBrk4xlN7IofP1FahXXPO3ugHDPGlmZD40o4zCNiTfTWuP4Z5nTlZ3ZAM8Ni3yGIb5yGv+gEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNQfWOsn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DBB8C4CEF1;
-	Fri,  9 Jan 2026 12:44:30 +0000 (UTC)
+	 MIME-Version; b=Zcl0F6omo+NlHpXK1FtyTGLsgBAd/gSjj0QSom57OjlMcfS7HbSzyJqXwBlnxOJeaWNQBQKf4tzgn4OPYbTwKzmmZqqYzalgCcD2aWM7ep8YGay4n6W6pRwAN8cHi5bC34EIJo57CmXEBBRc7oBs8tnprcw0SzCi9S5veA4DcQU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D9OV892Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E6F4C4CEF1;
+	Fri,  9 Jan 2026 12:14:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962671;
-	bh=TbQ4jTuu+bVhbE6zKtyxzqL6Ihy7j+4CUVRg4JRp4Sk=;
+	s=korg; t=1767960888;
+	bh=9H4fuH6tCkn3CWfWm7XAreTQjWU0Qe4yFAQ0Pa6x+Z0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNQfWOsn5091whC4BiG0OdDCleN9X56HVTb9jTvkQKQjUvaPzeIRonvntVQL5tg6h
-	 nTJXtW6ZuJfneVbQGtABXf+iphTmFtzpYr/YnAn2tDv7fvZQxAuOZ5ECCqDABPNBzV
-	 3DrIrNdhkrrSjlMkokrt+Rbcbw5fTuSenLzXJdWY=
+	b=D9OV892QFQ/a0uBHLMMyDImQDvSzDaL4d/xZqKCFUgbmLDv0MVakn3glmHC9ZjZtX
+	 pAS8VmPLvE3RBAl2EHP6U9PlosOBiaa3MYmi4BCXWdRSzs5eCmJEfhYJXQU1M69p8d
+	 NaPSYMYR2dc2t3GLDDNZ8D5fTj5l7V6kI2YirAfk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Revanth Kumar Uppala <ruppala@nvidia.com>,
-	Jon Hunter <jonathanh@nvidia.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 420/634] net: stmmac: Power up SERDES after the PHY link
+	Miaoqian Lin <linmq006@gmail.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Thierry Reding <treding@nvidia.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.6 559/737] iommu/tegra: fix device leak on probe_device()
 Date: Fri,  9 Jan 2026 12:41:38 +0100
-Message-ID: <20260109112133.341697772@linuxfoundation.org>
+Message-ID: <20260109112155.031900700@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Revanth Kumar Uppala <ruppala@nvidia.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a46e9010124256f5bf5fc2c241a45cf1944b768e ]
+commit c08934a61201db8f1d1c66fcc63fb2eb526b656d upstream.
 
-The Tegra MGBE ethernet controller requires that the SERDES link is
-powered-up after the PHY link is up, otherwise the link fails to
-become ready following a resume from suspend. Add a variable to indicate
-that the SERDES link must be powered-up after the PHY link.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during probe_device().
 
-Signed-off-by: Revanth Kumar Uppala <ruppala@nvidia.com>
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: a48e23221000 ("net: stmmac: fix the crash issue for zero copy XDP_TX action")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that commit 9826e393e4a8 ("iommu/tegra-smmu: Fix missing
+put_device() call in tegra_smmu_find") fixed the leak in an error path,
+but the reference is still leaking on success.
+
+Fixes: 891846516317 ("memory: Add NVIDIA Tegra memory controller support")
+Cc: stable@vger.kernel.org	# 3.19: 9826e393e4a8
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Acked-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 7 +++++--
- include/linux/stmmac.h                            | 1 +
- 2 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/iommu/tegra-smmu.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 202c43d73a2b..0483e8c2f1de 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -994,6 +994,9 @@ static void stmmac_mac_link_up(struct phylink_config *config,
- 	struct stmmac_priv *priv = netdev_priv(to_net_dev(config->dev));
- 	u32 old_ctrl, ctrl;
+--- a/drivers/iommu/tegra-smmu.c
++++ b/drivers/iommu/tegra-smmu.c
+@@ -804,10 +804,9 @@ static struct tegra_smmu *tegra_smmu_fin
+ 		return NULL;
  
-+	if (priv->plat->serdes_up_after_phy_linkup && priv->plat->serdes_powerup)
-+		priv->plat->serdes_powerup(priv->dev, priv->plat->bsp_priv);
-+
- 	old_ctrl = readl(priv->ioaddr + MAC_CTRL_REG);
- 	ctrl = old_ctrl & ~priv->hw->link.speed_mask;
+ 	mc = platform_get_drvdata(pdev);
+-	if (!mc) {
+-		put_device(&pdev->dev);
++	put_device(&pdev->dev);
++	if (!mc)
+ 		return NULL;
+-	}
  
-@@ -3839,7 +3842,7 @@ static int __stmmac_open(struct net_device *dev,
- 
- 	stmmac_reset_queues_param(priv);
- 
--	if (priv->plat->serdes_powerup) {
-+	if (!priv->plat->serdes_up_after_phy_linkup && priv->plat->serdes_powerup) {
- 		ret = priv->plat->serdes_powerup(dev, priv->plat->bsp_priv);
- 		if (ret < 0) {
- 			netdev_err(priv->dev, "%s: Serdes powerup failed\n",
-@@ -7563,7 +7566,7 @@ int stmmac_resume(struct device *dev)
- 			stmmac_mdio_reset(priv->mii);
- 	}
- 
--	if (priv->plat->serdes_powerup) {
-+	if (!priv->plat->serdes_up_after_phy_linkup && priv->plat->serdes_powerup) {
- 		ret = priv->plat->serdes_powerup(ndev,
- 						 priv->plat->bsp_priv);
- 
-diff --git a/include/linux/stmmac.h b/include/linux/stmmac.h
-index 9f4a4f70270d..c97df9464f90 100644
---- a/include/linux/stmmac.h
-+++ b/include/linux/stmmac.h
-@@ -273,5 +273,6 @@ struct plat_stmmacenet_data {
- 	int msi_tx_base_vec;
- 	bool use_phy_wol;
- 	bool sph_disable;
-+	bool serdes_up_after_phy_linkup;
- };
- #endif
--- 
-2.51.0
-
+ 	return mc->smmu;
+ }
 
 
 
