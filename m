@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207544-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206942-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD3BAD0A105
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:55:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33984D097E6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 119213013154
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AA21630EAC57
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5B35735B15C;
-	Fri,  9 Jan 2026 12:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E947735A956;
+	Fri,  9 Jan 2026 12:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oK+A37w1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="deRgRGnv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E61733372B;
-	Fri,  9 Jan 2026 12:39:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB2F8359F99;
+	Fri,  9 Jan 2026 12:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962356; cv=none; b=HXkq2IlwwdCGqIcsY7OKo0RHymwRX9l7vMD7IE2gqRP0b6NBiR4dq1D6ix9bWwVcN1Frp0CTwhiHBeJI+jOmYLfZUoXTvShffIPqk7x6ULQgHqbhEetPT/9VfFF3+jRf0wNZyEIZSUfvw+v3/7Baa8dos5T1K1Oyi8b7O2p+QNU=
+	t=1767960643; cv=none; b=i01aRcoj4Pryiy0pwLm41HQFCHoQ/iWYauWyHR+EpsHh6o418L4Dl10q62bI3zOlqiwoL9Xee8/ngtXYxHvGB3xrpjsruLQra45IAyD45QXZODomK3AbqFOn9zfCyZaSZ9J+SSVy/cuzJN+A/my2D9x7vwSYzyWkkLwaQlL6MNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962356; c=relaxed/simple;
-	bh=wGHnIja0yTVBvHqPCethj5g5ld7t07NLW2/vj5njKG4=;
+	s=arc-20240116; t=1767960643; c=relaxed/simple;
+	bh=Tnl55jc8tzweAbKVDlQ+JaDbwoFhZgGXiNsda7+diPs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QIRH1U8JhX2uyJ+6RoPuGQ6QC9rCdceGDdkfLbE5E5Y0F8atBEOSqA+qqluXQoWlbKbr+KXtwbBkZXM2C8/EzEgDpB3DxnhORkbPvk5JC+9y9CJmulXArQSlroNKtlkq3NWxaE3IT+K8YDF05A3l1aeefWJ+vSDTUFh5umM0KHU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oK+A37w1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D81EC4CEF1;
-	Fri,  9 Jan 2026 12:39:15 +0000 (UTC)
+	 MIME-Version; b=K3SlULA/xZd/SGw3wQuNJ1vfG5Sj3Wg6O9Q5ilicnHDpeFnH9NtviOTVlyW6MRjGw86sWwGfKyOyk6dBlzJi0wo6uun3he3OSEp5MvBf4CP7Jeo+WQw+nxfQeh2FYWM++zsZmnE6irQHXkvr3yc7BH47FjTgvJDnQspohmezkKs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=deRgRGnv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 374E9C4CEF1;
+	Fri,  9 Jan 2026 12:10:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962356;
-	bh=wGHnIja0yTVBvHqPCethj5g5ld7t07NLW2/vj5njKG4=;
+	s=korg; t=1767960643;
+	bh=Tnl55jc8tzweAbKVDlQ+JaDbwoFhZgGXiNsda7+diPs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oK+A37w1jMGTR3hlJCiGUD7ZYKk2bkBhNTca41BpA21VEZ/fX8026ICuIcLXGWxOl
-	 dDERC7wtDacYeRdRqAouHX33AruruCgfYiQqC81WyCjMlhUJtb4anTaTVTLkQOClNw
-	 dT+ncXdhtDXTIefz305i/bnOQCrOajWy2swxwBnk=
+	b=deRgRGnvTL9y9a1mSYde8R/Ib9MqVBG8pa8gCluvyWGK4oC/7y3qsfEVMGFRb7LkZ
+	 XX0iySL/pGCrqDDtSV0vIdeABTTp9GI5FpfXah+rD/QRNfdrJQpG3221dwhjbjCyna
+	 pNje2wUDkxFkv2vaSC58fEJU3CThluM+cDGpi144=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 6.1 336/634] phy: broadcom: bcm63xx-usbh: fix section mismatches
+	Sudheendra Raghav Neela <sneela@tugraz.at>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 6.6 475/737] fsnotify: do not generate ACCESS/MODIFY events on child for special files
 Date: Fri,  9 Jan 2026 12:40:14 +0100
-Message-ID: <20260109112130.168872772@linuxfoundation.org>
+Message-ID: <20260109112151.854601020@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +58,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Amir Goldstein <amir73il@gmail.com>
 
-commit 356d1924b9a6bc2164ce2bf1fad147b0c37ae085 upstream.
+commit 635bc4def026a24e071436f4f356ea08c0eed6ff upstream.
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function and match table must not live in init.
+inotify/fanotify do not allow users with no read access to a file to
+subscribe to events (e.g. IN_ACCESS/IN_MODIFY), but they do allow the
+same user to subscribe for watching events on children when the user
+has access to the parent directory (e.g. /dev).
 
-Fixes: 783f6d3dcf35 ("phy: bcm63xx-usbh: Add BCM63xx USBH driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251017054537.6884-1-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Users with no read access to a file but with read access to its parent
+directory can still stat the file and see if it was accessed/modified
+via atime/mtime change.
+
+The same is not true for special files (e.g. /dev/null). Users will not
+generally observe atime/mtime changes when other users read/write to
+special files, only when someone sets atime/mtime via utimensat().
+
+Align fsnotify events with this stat behavior and do not generate
+ACCESS/MODIFY events to parent watchers on read/write of special files.
+The events are still generated to parent watchers on utimensat(). This
+closes some side-channels that could be possibly used for information
+exfiltration [1].
+
+[1] https://snee.la/pdf/pubs/file-notification-attacks.pdf
+
+Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
+CC: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/phy/broadcom/phy-bcm63xx-usbh.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/notify/fsnotify.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-+++ b/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-@@ -374,7 +374,7 @@ static struct phy *bcm63xx_usbh_phy_xlat
- 	return of_phy_simple_xlate(dev, args);
- }
- 
--static int __init bcm63xx_usbh_phy_probe(struct platform_device *pdev)
-+static int bcm63xx_usbh_phy_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct bcm63xx_usbh_phy	*usbh;
-@@ -431,7 +431,7 @@ static int __init bcm63xx_usbh_phy_probe
- 	return 0;
- }
- 
--static const struct of_device_id bcm63xx_usbh_phy_ids[] __initconst = {
-+static const struct of_device_id bcm63xx_usbh_phy_ids[] = {
- 	{ .compatible = "brcm,bcm6318-usbh-phy", .data = &usbh_bcm6318 },
- 	{ .compatible = "brcm,bcm6328-usbh-phy", .data = &usbh_bcm6328 },
- 	{ .compatible = "brcm,bcm6358-usbh-phy", .data = &usbh_bcm6358 },
-@@ -442,7 +442,7 @@ static const struct of_device_id bcm63xx
- };
- MODULE_DEVICE_TABLE(of, bcm63xx_usbh_phy_ids);
- 
--static struct platform_driver bcm63xx_usbh_phy_driver __refdata = {
-+static struct platform_driver bcm63xx_usbh_phy_driver = {
- 	.driver	= {
- 		.name = "bcm63xx-usbh-phy",
- 		.of_match_table = bcm63xx_usbh_phy_ids,
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -224,8 +224,15 @@ int __fsnotify_parent(struct dentry *den
+ 	/*
+ 	 * Include parent/name in notification either if some notification
+ 	 * groups require parent info or the parent is interested in this event.
++	 * The parent interest in ACCESS/MODIFY events does not apply to special
++	 * files, where read/write are not on the filesystem of the parent and
++	 * events can provide an undesirable side-channel for information
++	 * exfiltration.
+ 	 */
+-	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS;
++	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS &&
++			    !(data_type == FSNOTIFY_EVENT_PATH &&
++			      d_is_special(dentry) &&
++			      (mask & (FS_ACCESS | FS_MODIFY)));
+ 	if (parent_needed || parent_interested) {
+ 		/* When notifying parent, child should be passed as data */
+ 		WARN_ON_ONCE(inode != fsnotify_data_inode(data, data_type));
 
 
 
