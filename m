@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9FA2CD09F5E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63F29D0943A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 81EA23071754
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B4DE5301FD90
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E849935A95C;
-	Fri,  9 Jan 2026 12:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 143A535A923;
+	Fri,  9 Jan 2026 12:06:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n1hZqi0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sG4yfUww"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC2EE35B12B;
-	Fri,  9 Jan 2026 12:36:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC095359FBA;
+	Fri,  9 Jan 2026 12:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962191; cv=none; b=lqd+L0dwTXMrnXWB58i11u69l/7qn580trK4fEiSuISjroo3LgV/rrdfJYLbUxC0RBU918PCel8ouXIPIE5qU0KCeIwI6AOawaPmNBsbrxrMNlIeA2bDf5s6PAg+Ga13AYI7Ehnakyt7B/FeKUoTM+zIz7wuAfQbiinxtd7YOqw=
+	t=1767960391; cv=none; b=jFk0GpbLN5Nl0a4jo/FNePQUj7Vk0Dt1NgLvxkhu4wrbPnU72WjVh9ihKK0jdE2h2M5e6FsY7ybjtP2xwhpJduVNcLanHYtLzsirH++bWXWEqxpculLA8Zt9xFEP0N4rz/FmFnBwRtk7BYzjc5FrHMq/aeher0HAG0k4b7gdUNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962191; c=relaxed/simple;
-	bh=ErqcVaOthKmVkq0OduW8WbfS/XrOuR5OSItBDIlAsG8=;
+	s=arc-20240116; t=1767960391; c=relaxed/simple;
+	bh=vfIyUL9XwSv7n8uPBSgE6VfjDlVMoSjwc3CTAxRj1cE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GD3hfZTIfrdHBlvyN8GXyzNlaULw6eUWjyOey+cPnZsbeZEjPFFfxFYaSNFaN7GqXCXc94GydTJs9bBQLjW0eFkcYvXKCZihiW0Yu7COOSGrRRGhYNU3OarDFmrxgm41gxPWkJscphMkRvMP29F1m/0NJ4vNQ0xZivc7fm3caE4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n1hZqi0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CEC9C4CEF1;
-	Fri,  9 Jan 2026 12:36:31 +0000 (UTC)
+	 MIME-Version; b=A0YjLVkHnagbvooTgaP7eHEwWDktt37SfvJTButQ9Qc0/FUEUj0odCTUDMzwbzSW2hRG8NlOw+fw/CqpyQ+9IBpADi6Y32lkCP7JFWodRORwBCInZjiY7x8EaVEJQ2CMdl+gdxta86BpwCFH3UXspbmD/5gOshxWcg8F1NO1ogg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sG4yfUww; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C5D5C4CEF1;
+	Fri,  9 Jan 2026 12:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962191;
-	bh=ErqcVaOthKmVkq0OduW8WbfS/XrOuR5OSItBDIlAsG8=;
+	s=korg; t=1767960391;
+	bh=vfIyUL9XwSv7n8uPBSgE6VfjDlVMoSjwc3CTAxRj1cE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n1hZqi0YSATTT42sigSHg0260nhe4zsR1nHR6hMWDlDp8DtPfbf8CaXEm0FSuWUbT
-	 a9XLfsy5ec/kRZ55txJSmqpE2NGSoCZvesgu7pd4LOJJ1u1BGbFfncEOLrDq5205MN
-	 QOrIKFlUIoNQy4P26RSHhJHRAK51SgsU6OAy5WOM=
+	b=sG4yfUww3QgdDf1X8OFi+eEbnLKJI3xK322EIKiWaGDBXjbtob6o6oOOYLvZpzotQ
+	 PIirODZ87v73s79hDJFFw3fTEMrg9qW4iigffqMWgie3PMeTORG8RBGRb82WockFr0
+	 q6a+bRxGiOcLXb9EZD7ezjfMb5tC5eHzbX6wjGDc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gongwei Li <ligongwei@kylinos.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 246/634] Bluetooth: btusb: Add new VID/PID 13d3/3533 for RTL8821CE
-Date: Fri,  9 Jan 2026 12:38:44 +0100
-Message-ID: <20260109112126.798430327@linuxfoundation.org>
+Subject: [PATCH 6.6 386/737] ipmi: Fix __scan_channels() failing to rescan channels
+Date: Fri,  9 Jan 2026 12:38:45 +0100
+Message-ID: <20260109112148.521026160@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gongwei Li <ligongwei@kylinos.cn>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit 525459da4bd62a81142fea3f3d52188ceb4d8907 ]
+[ Upstream commit 6bd30d8fc523fb880b4be548e8501bc0fe8f42d4 ]
 
-Add VID 13d3 & PID 3533 for Realtek RTL8821CE USB Bluetooth chip.
+channel_handler() sets intf->channels_ready to true but never
+clears it, so __scan_channels() skips any rescan. When the BMC
+firmware changes a rescan is required. Allow it by clearing
+the flag before starting a new scan.
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
-
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3533 Rev= 1.10
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-
-Signed-off-by: Gongwei Li <ligongwei@kylinos.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Message-ID: <20250930074239.2353-3-guojinhui.liam@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/ipmi/ipmi_msghandler.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index 70cdcef684138..9837946329272 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -496,6 +496,8 @@ static const struct usb_device_id blacklist_table[] = {
- 	/* Realtek 8821CE Bluetooth devices */
- 	{ USB_DEVICE(0x13d3, 0x3529), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3533), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 4619ee5c744c..fc5f9d757b94 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -613,7 +613,8 @@ static void __ipmi_bmc_unregister(struct ipmi_smi *intf);
+ static int __ipmi_bmc_register(struct ipmi_smi *intf,
+ 			       struct ipmi_device_id *id,
+ 			       bool guid_set, guid_t *guid, int intf_num);
+-static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id);
++static int __scan_channels(struct ipmi_smi *intf,
++				struct ipmi_device_id *id, bool rescan);
  
- 	/* Realtek 8822CE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0xb00c), .driver_info = BTUSB_REALTEK |
+ 
+ /*
+@@ -2665,7 +2666,7 @@ static int __bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
+ 		if (__ipmi_bmc_register(intf, &id, guid_set, &guid, intf_num))
+ 			need_waiter(intf); /* Retry later on an error. */
+ 		else
+-			__scan_channels(intf, &id);
++			__scan_channels(intf, &id, false);
+ 
+ 
+ 		if (!intf_set) {
+@@ -2685,7 +2686,7 @@ static int __bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
+ 		goto out_noprocessing;
+ 	} else if (memcmp(&bmc->fetch_id, &bmc->id, sizeof(bmc->id)))
+ 		/* Version info changes, scan the channels again. */
+-		__scan_channels(intf, &bmc->fetch_id);
++		__scan_channels(intf, &bmc->fetch_id, true);
+ 
+ 	bmc->dyn_id_expiry = jiffies + IPMI_DYN_DEV_ID_EXPIRY;
+ 
+@@ -3435,10 +3436,17 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ /*
+  * Must be holding intf->bmc_reg_mutex to call this.
+  */
+-static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id)
++static int __scan_channels(struct ipmi_smi *intf,
++				struct ipmi_device_id *id,
++				bool rescan)
+ {
+ 	int rv;
+ 
++	if (rescan) {
++		/* Clear channels_ready to force channels rescan. */
++		intf->channels_ready = false;
++	}
++
+ 	if (ipmi_version_major(id) > 1
+ 			|| (ipmi_version_major(id) == 1
+ 			    && ipmi_version_minor(id) >= 5)) {
+@@ -3641,7 +3649,7 @@ int ipmi_add_smi(struct module         *owner,
+ 	}
+ 
+ 	mutex_lock(&intf->bmc_reg_mutex);
+-	rv = __scan_channels(intf, &id);
++	rv = __scan_channels(intf, &id, false);
+ 	mutex_unlock(&intf->bmc_reg_mutex);
+ 	if (rv)
+ 		goto out_err_bmc_reg;
 -- 
 2.51.0
 
