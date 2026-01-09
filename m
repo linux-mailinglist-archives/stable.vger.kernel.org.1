@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AD4DD09D06
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F271FD0951E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 74E4D30F8A37
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CCDAA30A32DA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDC535B141;
-	Fri,  9 Jan 2026 12:32:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88C5E359FBB;
+	Fri,  9 Jan 2026 12:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m/PZK/Wz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XYUzPTpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D5B336EDA;
-	Fri,  9 Jan 2026 12:32:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35A5833CE9A;
+	Fri,  9 Jan 2026 12:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961958; cv=none; b=tLLDHhUPKpwfCGLpzBOm/u0MZoRyIzH6OVd4R7WPcfXtHX+zIo5h47TOSM92lZ9rM7fM2rvgzRCx5gi3xrnNPCC/6hZvK5l8t6NSFgj6ozELvzPojzIHAv4a6xvkwbVo5ZlPx6IzF5h8tzYiXVa6m4vR+x5xGRYjHOh5b7CS7nA=
+	t=1767960240; cv=none; b=HlL0p/Myibwr+u27RxWxdrO3T8GVNG4hLog9h8uC37/O3f0dJJeV463K5c0PqBPCcjvMV5isbp1exif5zAB/GY3OGly9RSspjJVFQJhpt5xgQ5c8OkZ6BJfh49XzCet3wPCqbvLAQAvM+JAeitcvrE1p9bXT/TaWkiC/4FLXt94=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961958; c=relaxed/simple;
-	bh=Z9Bj5EmLXHZ5bqE35v6CJfsC7Gxr9mwm74Y7Ph0yEQA=;
+	s=arc-20240116; t=1767960240; c=relaxed/simple;
+	bh=yATn79dCKJiqC8KwdvJhY2eRun8K3FTzPkdMYhHcPqM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UeRutJjFhqZ/i2h9irvEw5agnSm/UQe0HkIrl5wS+0Z+Haylc27wW/5B4yXQt8K8FePaOonTmak893UzRhI/BPaNLpD7qzvWAhY7LAe/rwsc/q27rvkzyw5+pp+pqNogbYvIB7p4Y3ZCGP1Q9YYW88quHu3YHiB/ZvF3S6tCZhA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m/PZK/Wz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D80DC4CEF1;
-	Fri,  9 Jan 2026 12:32:38 +0000 (UTC)
+	 MIME-Version; b=kPEiWLchb+CG8fVHhhZNBiy8OF5EIXcSg6Zki9rEdoXIKLkEjLrEbCZ5xNnHBkejSugOL0FHPjEsV7fV6I4VT1V9pz+nmNLOZaee/3MWgmWvgL8+FUJJdqJAEqQzr84Jqdae6zL3Di0yPQ+Tcco0DblKszpr7++mxWDoT/1gHbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XYUzPTpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B353FC4CEF1;
+	Fri,  9 Jan 2026 12:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961958;
-	bh=Z9Bj5EmLXHZ5bqE35v6CJfsC7Gxr9mwm74Y7Ph0yEQA=;
+	s=korg; t=1767960240;
+	bh=yATn79dCKJiqC8KwdvJhY2eRun8K3FTzPkdMYhHcPqM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m/PZK/Wzfr55zls3gUvLE21qgnFbbHQhSgLPoABJURweW0HoEjnM4ASm9Fzph4lsH
-	 l7aXxaa17dYDETNe7D116EXgjnRmSCYw2yibCk6/CblpxpAqdfoSY1aZeLhvUrcaQq
-	 Lm6NOg+LS31cWazKdYkI5b972uG9hckrG0Mau/3o=
+	b=XYUzPTpzoOR1B8oeSvG1/23xPjGHBRWnAMKqZNbol8++ZXnc6fuPkB5qNLbj8HtCz
+	 NYJYFgRKFqXPXmddMzhP+16poTYkJCTEQUZmQRpu2ETnLaU+IOG+1H37iYbILcL7F1
+	 fDmzA9M5uBhydL5WDszxYXhX0dVakM11VC1nAKSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 196/634] NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags
+Subject: [PATCH 6.6 335/737] mlxsw: spectrum_router: Fix possible neighbour reference count leak
 Date: Fri,  9 Jan 2026 12:37:54 +0100
-Message-ID: <20260109112124.810329260@linuxfoundation.org>
+Message-ID: <20260109112146.594553475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit 8675c69816e4276b979ff475ee5fac4688f80125 ]
+[ Upstream commit b6b638bda240395dff49a87403b2e32493e56d2a ]
 
-When a filesystem is being automounted, it needs to preserve the
-user-set superblock mount options, such as the "ro" flag.
+mlxsw_sp_router_schedule_work() takes a reference on a neighbour,
+expecting a work item to release it later on. However, we might fail to
+schedule the work item, in which case the neighbour reference count will
+be leaked.
 
-Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
-Link: https://lore.kernel.org/all/20240604112636.236517-3-lilingfeng@huaweicloud.com/
-Fixes: f2aedb713c28 ("NFS: Add fs_context support.")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fix by taking the reference just before scheduling the work item. Note
+that mlxsw_sp_router_schedule_work() can receive a NULL neighbour
+pointer, but neigh_clone() handles that correctly.
+
+Spotted during code review, did not actually observe the reference count
+leak.
+
+Fixes: 151b89f6025a ("mlxsw: spectrum_router: Reuse work neighbor initialization in work scheduler")
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/ec2934ae4aca187a8d8c9329a08ce93cca411378.1764695650.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/namespace.c | 6 ++++++
- fs/nfs/super.c     | 4 ----
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 88a23af2bd5c9..789baa1cf768c 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -149,6 +149,7 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	struct vfsmount *mnt = ERR_PTR(-ENOMEM);
- 	struct nfs_server *server = NFS_SB(path->dentry->d_sb);
- 	struct nfs_client *client = server->nfs_client;
-+	unsigned long s_flags = path->dentry->d_sb->s_flags;
- 	int timeout = READ_ONCE(nfs_mountpoint_expiry_timeout);
- 	int ret;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+index 0534b10e29c5c..f5c34218ba85b 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c
+@@ -2857,6 +2857,11 @@ static int mlxsw_sp_router_schedule_work(struct net *net,
+ 	if (!net_work)
+ 		return NOTIFY_BAD;
  
-@@ -174,6 +175,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 		fc->net_ns = get_net(client->cl_net);
- 	}
- 
-+	/* Inherit the flags covered by NFS_SB_MASK */
-+	fc->sb_flags_mask |= NFS_SB_MASK;
-+	fc->sb_flags &= ~NFS_SB_MASK;
-+	fc->sb_flags |= s_flags & NFS_SB_MASK;
++	/* Take a reference to ensure the neighbour won't be destructed until
++	 * we drop the reference in the work item.
++	 */
++	neigh_clone(n);
 +
- 	/* for submounts we want the same server; referrals will reassign */
- 	memcpy(&ctx->nfs_server._address, &client->cl_addr, client->cl_addrlen);
- 	ctx->nfs_server.addrlen	= client->cl_addrlen;
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index cee68f34db85c..3a002bc75d22a 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1280,10 +1280,6 @@ int nfs_get_tree_common(struct fs_context *fc)
- 	if (server->flags & NFS_MOUNT_NOAC)
- 		fc->sb_flags |= SB_SYNCHRONOUS;
+ 	INIT_WORK(&net_work->work, cb);
+ 	net_work->mlxsw_sp = router->mlxsw_sp;
+ 	net_work->n = n;
+@@ -2880,11 +2885,6 @@ static int mlxsw_sp_router_schedule_neigh_work(struct mlxsw_sp_router *router,
+ 	struct net *net;
  
--	if (ctx->clone_data.sb)
--		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
--			fc->sb_flags |= SB_SYNCHRONOUS;
+ 	net = neigh_parms_net(n->parms);
 -
- 	/* Get a superblock - note that we may end up sharing one that already exists */
- 	fc->s_fs_info = server;
- 	s = sget_fc(fc, compare_super, nfs_set_super);
+-	/* Take a reference to ensure the neighbour won't be destructed until we
+-	 * drop the reference in delayed work.
+-	 */
+-	neigh_clone(n);
+ 	return mlxsw_sp_router_schedule_work(net, router, n,
+ 					     mlxsw_sp_router_neigh_event_work);
+ }
 -- 
 2.51.0
 
