@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207320-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D66BBD09C64
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C67CD092D3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:01:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7A8A730C59F6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E1137301FD02
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4944331A7EA;
-	Fri,  9 Jan 2026 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9121A359FBE;
+	Fri,  9 Jan 2026 12:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buxiUN4C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OPw22Yj1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1E12737EE;
-	Fri,  9 Jan 2026 12:28:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5506E359FB5;
+	Fri,  9 Jan 2026 12:01:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961720; cv=none; b=Tz0AozpxW0VhSG5DOdV/fCGd8ihvEwyfpjGcsijtSWzgM/G8/2i/4R4bU2c+gX+nyfnbbTdIgGkbW9eKn7raLfHzGYTkMJCq0c7049GGJH4ubk4xOmnkHdHTPtePfyD2ZwUMc5UClX43Ffx6CBqaioSQ31ciXXLgJd3xkzy+IGE=
+	t=1767960101; cv=none; b=R5YFQxvxXYfqJQ+BuBT1EZOUExDBMnZp8sf7jM0EC6xJyAGE/8q9qTPbo7DWcRU5zQlRaejjWv81fVnIHBg3tVhKzPR8T9IqlVm1RXv5MrX2eu2sY8DzCXHAb1PlMEC1EE515Qb1vJPiTwZgtdoMsrJi285aSf20z+Tlg2cbEO4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961720; c=relaxed/simple;
-	bh=6O0kOYmVdBvymnWFEN5Ej1rDMUiaqoUTy5V1ZQfhJMM=;
+	s=arc-20240116; t=1767960101; c=relaxed/simple;
+	bh=woyb9rQUKDR6ARE7Uys+1XOTt5ngZrKtJzwn3x6Mivc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MwtcuRWqwMIvNocr6xGOi8SUTakdUgs+o7tfyfpZ9UaO2iYsSq7IKA0yS27ojxoYdxG4yok3PavviJ4qxQlLt6J9h7a4M0L4k7jLo81sqCUbu6jjmjjoVVUFLRanjN2EFZ2VxzItHlqxTMwIAj7KiCARyp//yuu53vukI7U0n6U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buxiUN4C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87453C4CEF1;
-	Fri,  9 Jan 2026 12:28:39 +0000 (UTC)
+	 MIME-Version; b=MoYzDitgGW1KV5DMYtwxwPobYLbVvqrJmJ/34RovZb2bg1j3DJVLdP9oUMlfpmRsqbjmrTKMn4ySa41hHXJwQtQbvxCO3LLUlkT2PrCILmCm1XMHXSP41sDxqXvAmh+o3GtT7vc3BoOhcQIrA0rmSG5hE1qd3R0fde9GFMAWq4s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OPw22Yj1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA947C19421;
+	Fri,  9 Jan 2026 12:01:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961719;
-	bh=6O0kOYmVdBvymnWFEN5Ej1rDMUiaqoUTy5V1ZQfhJMM=;
+	s=korg; t=1767960101;
+	bh=woyb9rQUKDR6ARE7Uys+1XOTt5ngZrKtJzwn3x6Mivc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=buxiUN4CdraLj8OXe9Gq16PI2V7vhz5ehgnliflFkUJcEYxLOZygY61gXv92sdxoF
-	 vKKNLgYHfa1YZfP7IEviCTdGlOzAClS8CAMZMIY34Z6qQ5J9TTHcFwkWacAMc9dA+G
-	 Wb3JAxu1qC4pnoZO+B0EWtp1Ci5fa/lEYlwzgmYU=
+	b=OPw22Yj1GUIdzBpnYDt0bnj3NPWolO6YK3DTgkGjUwgb8X0KVW0wdXhCwi6lZBOr/
+	 j3+A11rT0/SQVWJQKQo5lEXUgvDXopfhGIGxC1zj+l2beZ3kRCh2fIlt4NCCDa8V5S
+	 48Hpk+HSOTqWWiInsI/MC4kn6rDkPZme7oi7y7+M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Markus Elfring <Markus.Elfring@web.de>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Johan Hovold <johan@kernel.org>,
+	Stephen Boyd <sboyd@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 113/634] leds: netxbig: Fix GPIO descriptor leak in error paths
+Subject: [PATCH 6.6 252/737] clk: keystone: fix compile testing
 Date: Fri,  9 Jan 2026 12:36:31 +0100
-Message-ID: <20260109112121.686033227@linuxfoundation.org>
+Message-ID: <20260109112143.471345110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,115 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
+[ Upstream commit b276445e98fe28609688fb85b89a81b803910e63 ]
 
-The function netxbig_gpio_ext_get() acquires GPIO descriptors but
-fails to release them when errors occur mid-way through initialization.
-The cleanup callback registered by devm_add_action_or_reset() only
-runs on success, leaving acquired GPIOs leaked on error paths.
+Some keystone clock drivers can be selected when COMPILE_TEST is
+enabled but since commit b745c0794e2f ("clk: keystone: Add sci-clk
+driver support") they are never actually built.
 
-Add goto-based error handling to release all acquired GPIOs before
-returning errors.
+Enable compile testing by allowing the build system to process the
+keystone drivers.
 
-Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
-Suggested-by: Markus Elfring <Markus.Elfring@web.de>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: b745c0794e2f ("clk: keystone: Add sci-clk driver support")
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 10 deletions(-)
+ drivers/clk/Makefile | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
-index 6692de0af68f1..ea0801b9cb010 100644
---- a/drivers/leds/leds-netxbig.c
-+++ b/drivers/leds/leds-netxbig.c
-@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 	if (!addr)
- 		return -ENOMEM;
- 
-+	gpio_ext->addr = addr;
-+	gpio_ext->num_addr = 0;
-+
- 	/*
- 	 * We cannot use devm_ managed resources with these GPIO descriptors
- 	 * since they are associated with the "GPIO extension device" which
-@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
- 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_set_code;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
- 		addr[i] = gpiod;
-+		gpio_ext->num_addr++;
- 	}
--	gpio_ext->addr = addr;
--	gpio_ext->num_addr = num_addr;
- 
- 	ret = gpiod_count(gpio_ext_dev, "data");
- 	if (ret < 0) {
- 		dev_err(dev,
- 			"Failed to count GPIOs in DT property data-gpios\n");
--		return ret;
-+		goto err_free_addr;
- 	}
- 	num_data = ret;
- 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
--	if (!data)
--		return -ENOMEM;
-+	if (!data) {
-+		ret = -ENOMEM;
-+		goto err_free_addr;
-+	}
-+
-+	gpio_ext->data = data;
-+	gpio_ext->num_data = 0;
- 
- 	for (i = 0; i < num_data; i++) {
- 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
- 					GPIOD_OUT_LOW);
- 		if (IS_ERR(gpiod))
--			return PTR_ERR(gpiod);
-+			goto err_free_data;
- 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
- 		data[i] = gpiod;
-+		gpio_ext->num_data++;
- 	}
--	gpio_ext->data = data;
--	gpio_ext->num_data = num_data;
- 
- 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
- 	if (IS_ERR(gpiod)) {
- 		dev_err(dev,
- 			"Failed to get GPIO from DT property enable-gpio\n");
--		return PTR_ERR(gpiod);
-+		goto err_free_data;
- 	}
- 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
- 	gpio_ext->enable = gpiod;
- 
- 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
-+
-+err_free_data:
-+	for (i = 0; i < gpio_ext->num_data; i++)
-+		gpiod_put(gpio_ext->data[i]);
-+err_set_code:
-+	ret = PTR_ERR(gpiod);
-+err_free_addr:
-+	for (i = 0; i < gpio_ext->num_addr; i++)
-+		gpiod_put(gpio_ext->addr[i]);
-+	return ret;
- }
- 
- static int netxbig_leds_get_of_pdata(struct device *dev,
+diff --git a/drivers/clk/Makefile b/drivers/clk/Makefile
+index 18969cbd4bb1e..8d572021977fd 100644
+--- a/drivers/clk/Makefile
++++ b/drivers/clk/Makefile
+@@ -95,8 +95,7 @@ obj-$(CONFIG_ARCH_HISI)			+= hisilicon/
+ obj-y					+= imgtec/
+ obj-y					+= imx/
+ obj-y					+= ingenic/
+-obj-$(CONFIG_ARCH_K3)			+= keystone/
+-obj-$(CONFIG_ARCH_KEYSTONE)		+= keystone/
++obj-y					+= keystone/
+ obj-y					+= mediatek/
+ obj-$(CONFIG_ARCH_MESON)		+= meson/
+ obj-y					+= microchip/
 -- 
 2.51.0
 
