@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF8F9D09F73
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2F3D5D09698
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1DD653032BA4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 36686300162E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19FE5359703;
-	Fri,  9 Jan 2026 12:41:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B2364338911;
+	Fri,  9 Jan 2026 12:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LbbZgGIg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSvccAs5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D190E35971B;
-	Fri,  9 Jan 2026 12:41:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614CE320CB6;
+	Fri,  9 Jan 2026 12:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962490; cv=none; b=dFxC7QkDmrsZouPhIJY42wHXAgGrfdKok9UPze7cn6ghcfQZpVqJgKB+eK58jKhgOjyFdFuCYRpzgoiLMw3zkOVdjUd2fBStsifUDeUKWM6j+zDrLqOoowgxpgOhAHOZvGoJVXtf+IxEmG6o05tnmDDFoLYM3siQZ2DqHdWEbF8=
+	t=1767960689; cv=none; b=bnDDO52KcodzPQ8IbE3TScQ7Ls48rZw3b2Q42iMqsHzhZj9PeUBMVmRycu75HKgXQURLHOvOqI32cDs04JC2hpcr2tRgZSzC/sD4qh9lGj7rXaVjDkM/FJOHOw6iz/V7yQuRjL7gt6vr+p1Fnj1sMbSJa2iOxdfRlONoHjNhmaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962490; c=relaxed/simple;
-	bh=FsGc6PCrZR9tf6K6aerUQwG7pSh47R0dYHZdV8/HcUY=;
+	s=arc-20240116; t=1767960689; c=relaxed/simple;
+	bh=0HZyDWBVImTyYIC2pkrktRG3lk97Tr5K8FHn/MnitYE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pAGxaaPPg1vjHM0j9gS4kXtXizP+ugN4Dce6ku8ldKF4g1PpMST0WI3DUtUXathnX0QjjFI1Tlq7tXROenefkiVSlPKLwLIzF9ZCWtvupwWHD8lh1YP0uM2629cIR0KhhWp3dopVoJgfTrswcxbNaVWAFyYuZMvC2I1188JNMUA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LbbZgGIg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EE55C4CEF1;
-	Fri,  9 Jan 2026 12:41:30 +0000 (UTC)
+	 MIME-Version; b=pRQjBH+rPteFsAerxQ6JswsJUVLRCn5a6X4YkBd4mZY9gjDnktrCi1D9W2YtjIRErcqUMI5dIELcyMnc4/J2ZkmZXkoPk4d6aODLAARQ9Lj9I/qezequG8BJHhQiNZryQ1JjikSZtu4mBxNkgm11yP0jJTBjBXcApxdoWYk5STA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSvccAs5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92C48C4CEF1;
+	Fri,  9 Jan 2026 12:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962490;
-	bh=FsGc6PCrZR9tf6K6aerUQwG7pSh47R0dYHZdV8/HcUY=;
+	s=korg; t=1767960688;
+	bh=0HZyDWBVImTyYIC2pkrktRG3lk97Tr5K8FHn/MnitYE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LbbZgGIgvJasQ7YguyWtxj7RfERHm6T6NbsEOebJ8nN6iw6xnvHTCpLYryKkdz2bJ
-	 7VkAv5L847ont1gdpFp7n1ZKs5z2gvVX0pUpcxdBOwL43ZOsNAAxdLNU2vCEIyr2DJ
-	 nY8IVCd9rpbmn2EkhNQqzHj4wH+vAcTkcs2MolNg=
+	b=XSvccAs5So4qZEoroNS40DezewvMO5dkS48uZGg1d6Zkjezfrq20pGOtXx+ILIJFX
+	 WtAM3WD2x0/ZV7kPgapSGAA0ZTInKpi/N299Amq0pltd7gPoR7i4VG1rNHKHWzPp+8
+	 Y4gPKM4VCChhqyHQRah6EvtLiX5tAUOa6+HrBz/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.1 350/634] f2fs: fix return value of f2fs_recover_fsync_data()
+	Johan Hovold <johan@kernel.org>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 6.6 489/737] amba: tegra-ahb: Fix device leak on SMMU enable
 Date: Fri,  9 Jan 2026 12:40:28 +0100
-Message-ID: <20260109112130.694166016@linuxfoundation.org>
+Message-ID: <20260109112152.384488254@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +59,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Johan Hovold <johan@kernel.org>
 
-commit 01fba45deaddcce0d0b01c411435d1acf6feab7b upstream.
+commit 500e1368e46928f4b2259612dcabb6999afae2a6 upstream.
 
-With below scripts, it will trigger panic in f2fs:
+Make sure to drop the reference taken to the AHB platform device when
+looking up its driver data while enabling the SMMU.
 
-mkfs.f2fs -f /dev/vdd
-mount /dev/vdd /mnt/f2fs
-touch /mnt/f2fs/foo
-sync
-echo 111 >> /mnt/f2fs/foo
-f2fs_io fsync /mnt/f2fs/foo
-f2fs_io shutdown 2 /mnt/f2fs
-umount /mnt/f2fs
-mount -o ro,norecovery /dev/vdd /mnt/f2fs
-or
-mount -o ro,disable_roll_forward /dev/vdd /mnt/f2fs
+Note that holding a reference to a device does not prevent its driver
+data from going away.
 
-F2FS-fs (vdd): f2fs_recover_fsync_data: recovery fsync data, check_only: 0
-F2FS-fs (vdd): Mounted with checkpoint version = 7f5c361f
-F2FS-fs (vdd): Stopped filesystem due to reason: 0
-F2FS-fs (vdd): f2fs_recover_fsync_data: recovery fsync data, check_only: 1
-Filesystem f2fs get_tree() didn't set fc->root, returned 1
-------------[ cut here ]------------
-kernel BUG at fs/super.c:1761!
-Oops: invalid opcode: 0000 [#1] SMP PTI
-CPU: 3 UID: 0 PID: 722 Comm: mount Not tainted 6.18.0-rc2+ #721 PREEMPT(voluntary)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:vfs_get_tree.cold+0x18/0x1a
-Call Trace:
- <TASK>
- fc_mount+0x13/0xa0
- path_mount+0x34e/0xc50
- __x64_sys_mount+0x121/0x150
- do_syscall_64+0x84/0x800
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-RIP: 0033:0x7fa6cc126cfe
-
-The root cause is we missed to handle error number returned from
-f2fs_recover_fsync_data() when mounting image w/ ro,norecovery or
-ro,disable_roll_forward mount option, result in returning a positive
-error number to vfs_get_tree(), fix it.
-
-Cc: stable@kernel.org
-Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 89c788bab1f0 ("ARM: tegra: Add SMMU enabler in AHB")
+Cc: stable@vger.kernel.org	# 3.5
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |   14 +++++++++-----
- 1 file changed, 9 insertions(+), 5 deletions(-)
+ drivers/amba/tegra-ahb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -4497,11 +4497,15 @@ try_onemore:
- 		}
- 	} else {
- 		err = f2fs_recover_fsync_data(sbi, true);
--
--		if (!f2fs_readonly(sb) && err > 0) {
--			err = -EINVAL;
--			f2fs_err(sbi, "Need to recover fsync data");
--			goto free_meta;
-+		if (err > 0) {
-+			if (!f2fs_readonly(sb)) {
-+				f2fs_err(sbi, "Need to recover fsync data");
-+				err = -EINVAL;
-+				goto free_meta;
-+			} else {
-+				f2fs_info(sbi, "drop all fsynced data");
-+				err = 0;
-+			}
- 		}
- 	}
- 
+--- a/drivers/amba/tegra-ahb.c
++++ b/drivers/amba/tegra-ahb.c
+@@ -144,6 +144,7 @@ int tegra_ahb_enable_smmu(struct device_
+ 	if (!dev)
+ 		return -EPROBE_DEFER;
+ 	ahb = dev_get_drvdata(dev);
++	put_device(dev);
+ 	val = gizmo_readl(ahb, AHB_ARBITRATION_XBAR_CTRL);
+ 	val |= AHB_ARBITRATION_XBAR_CTRL_SMMU_INIT_DONE;
+ 	gizmo_writel(ahb, val, AHB_ARBITRATION_XBAR_CTRL);
 
 
 
