@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-207564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206981-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21062D0A07B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE4B8D098AD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E4AF23035406
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 30A67308BC4D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F61335CB73;
-	Fri,  9 Jan 2026 12:40:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA19D3346AF;
+	Fri,  9 Jan 2026 12:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Luz3m4LH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vcWAjkb1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3237135CB68;
-	Fri,  9 Jan 2026 12:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CD072EAD10;
+	Fri,  9 Jan 2026 12:12:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962414; cv=none; b=sGbSRwKmXwPA4ZrITu1vetxbPbDkShCf16upIFopTFsWlsLWyFUkE0pmR3N4q17cQLH3xSrDgdJ3HwFhITPp3tNR1eNrao0xaNuS07t5F3xA55aoQe2NFojpPnXu65AfC2AMi2RJyRiCzkoCAcaw5yUHy6otO6Bk8LE36pa2/1s=
+	t=1767960754; cv=none; b=ebrs+1LKNr2EQhWM4XwttAjqG6doW/XrqG/fRKMAXJqU5nfEY3YpUhhhvPCxY13AhEkraMbIAy+QembJHuAmvD5XtYkMSm1mhZPoieBN69Jv1F70qx1PgcEG+E8iuV4i1H8IxSg3SnRY+yBolkL3puEovTUtS//aaBgPcYeI9lA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962414; c=relaxed/simple;
-	bh=oYQAxX+ujCuLQVAHNXebUNdL2Qo6KoVMuI27NL7BZF8=;
+	s=arc-20240116; t=1767960754; c=relaxed/simple;
+	bh=32VxY0U6qq+rbm+4l0WDwMTeSTZnU+ita20oCSx9VBk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QGo1B2tLk1BaHTQQj4bGQLQ58IETZQJvYuHKTb9G/IyLaXNxHSlAx9v7jO6AM/j5VwwSrg0JteHA0s8S0dU6BrFRj38pNIEShkh45FKAEYfC/owClQvuJPqjFYxJG8EDGnRF28gntrATef6A0YDnULdW2Thh/sGACTuHt+2qqCU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Luz3m4LH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 645E1C19421;
-	Fri,  9 Jan 2026 12:40:13 +0000 (UTC)
+	 MIME-Version; b=ktqXfVvYtaf6OQuswxsNCRaRqKaYagccFl0CDmS0OGeiWmuCvI/c+Jm+8azTAmBcSEHAfG2mzBLK2pOenlu4/UrN5G+ONTBVihLo+BsKjPoU3iGx7m6SGY/OsxTBYEbINjb9l4GYFUxSGbDjCZwAdEAQTMTCivgq9085Zx9D/YY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vcWAjkb1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A118C4CEF1;
+	Fri,  9 Jan 2026 12:12:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962413;
-	bh=oYQAxX+ujCuLQVAHNXebUNdL2Qo6KoVMuI27NL7BZF8=;
+	s=korg; t=1767960754;
+	bh=32VxY0U6qq+rbm+4l0WDwMTeSTZnU+ita20oCSx9VBk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Luz3m4LHowN227rekNPSz0PHvcmErY3e3sJ0X0wwpmkJ0V2d8mnxm3bkSwTBaO2qX
-	 OFZQoFr2owBWcKvHSwp6CSfjTwavfW2m8XzCjkyDnclybBAwy6rmQcKut/TUtENasn
-	 o5IDO1gni9EjUfYimP/GST3pzs+W91oUf6gFSymw=
+	b=vcWAjkb18seDeUyPWYcih+1K51pmqNPkIHBt8XDFfquOunw8QfEwGRxO37PvWnW0K
+	 BXNNmtAvyWze0lSVTlYJq8LHb23jnVW7/uZs2Xvp4zbSXFXrIUKeNjPM23ox0QrV15
+	 /Z8KyrEg9Hz8VACnPblhLeUTh0vd1Nr2+rWtARpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.1 357/634] parisc: Do not reprogram affinitiy on ASP chip
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.6 496/737] hwmon: (max16065) Use local variable to avoid TOCTOU
 Date: Fri,  9 Jan 2026 12:40:35 +0100
-Message-ID: <20260109112130.957698496@linuxfoundation.org>
+Message-ID: <20260109112152.649188212@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit dca7da244349eef4d78527cafc0bf80816b261f5 upstream.
+commit b8d5acdcf525f44e521ca4ef51dce4dac403dab4 upstream.
 
-The ASP chip is a very old variant of the GSP chip and is used e.g. in
-HP 730 workstations. When trying to reprogram the affinity it will crash
-with a HPMC as the relevant registers don't seem to be at the usual
-location.  Let's avoid the crash by checking the sversion. Also note,
-that reprogramming isn't necessary either, as the HP730 is a just a
-single-CPU machine.
+In max16065_current_show, data->curr_sense is read twice: once for the
+error check and again for the calculation. Since
+i2c_smbus_read_byte_data returns negative error codes on failure, if the
+data changes to an error code between the check and the use, ADC_TO_CURR
+results in an incorrect calculation.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Read data->curr_sense into a local variable to ensure consistency. Note
+that data->curr_gain is constant and safe to access directly.
+
+This aligns max16065_current_show with max16065_input_show, which
+already uses a local variable for the same reason.
+
+Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
 Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251128124709.3876-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/gsc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/parisc/gsc.c
-+++ b/drivers/parisc/gsc.c
-@@ -154,7 +154,9 @@ static int gsc_set_affinity_irq(struct i
- 	gsc_dev->eim = ((u32) gsc_dev->gsc_irq.txn_addr) | gsc_dev->gsc_irq.txn_data;
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -216,12 +216,13 @@ static ssize_t max16065_current_show(str
+ 				     struct device_attribute *da, char *buf)
+ {
+ 	struct max16065_data *data = max16065_update_device(dev);
++	int curr_sense = data->curr_sense;
  
- 	/* switch IRQ's for devices below LASI/WAX to other CPU */
--	gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
-+	/* ASP chip (svers 0x70) does not support reprogramming */
-+	if (gsc_dev->gsc->id.sversion != 0x70)
-+		gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
+-	if (unlikely(data->curr_sense < 0))
+-		return data->curr_sense;
++	if (unlikely(curr_sense < 0))
++		return curr_sense;
  
- 	irq_data_update_effective_affinity(d, &tmask);
+ 	return sysfs_emit(buf, "%d\n",
+-			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
++			  ADC_TO_CURR(curr_sense, data->curr_gain));
+ }
  
+ static ssize_t max16065_limit_store(struct device *dev,
 
 
 
