@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-207618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 000C6D0A0D2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:54:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AE20D097EC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:21:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D223C3192903
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 61614309D9CD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:14:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C25A42AA6;
-	Fri,  9 Jan 2026 12:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA00B359F8C;
+	Fri,  9 Jan 2026 12:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LM8P9HBV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gIO/zdYh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 389E2310636;
-	Fri,  9 Jan 2026 12:42:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC85F2EAD10;
+	Fri,  9 Jan 2026 12:14:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962564; cv=none; b=sNVALd81eRxU4QVJPvfXwcAKb2E4XewJlc80XWUWwz/OA38Npr9C4+HlJN3SONCfSkGr/f5QGmyZoLRgca/6WYDuLT9Ud4/TGjSiDFwELbDjS0JiqC15XyRrU1gpeQDxICWCt5xh2V9sM1/bdUQrOJFMGIA/zNRpYc884JKxoYs=
+	t=1767960856; cv=none; b=Gsh/79zXsYHJCwuTK+CM2z61FwsGqipU/o3Z4BbmLAojCf0auUDnkAY+yKlBa8SWyOnTSlFxt/ZY8M3Q+a0Q10m00w81gYqDS9bHgijegtblNp+1Uj4MwNk+HOb5CmzMGhWSyCeaAlQ+PsxXmJNJ/wo2VjPLlUPOpiyQ8Dt26cE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962564; c=relaxed/simple;
-	bh=D9gJL9X+3bRiE/8kNErbLv1X0ItFa/dGfJDJTI24rlQ=;
+	s=arc-20240116; t=1767960856; c=relaxed/simple;
+	bh=8Y19A86vwwpkk81fnwoffd2xRg+lG5+yihhYvCuVi08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=euaf3hrP277kRxny9NcH2P7W9Q1XJ2Pjls1zyobGW5CUYkS1IlTdPkv5FejPIqlm5Fj3vVlq8PseFA6pLUqZhZLft6iIUUMeH4Nk/VH6wcOegRhsyOgSm9lZ8iaOrSkXH/9Y9he6rKwBd2zQ1yMiFgn9aYZvD9EEBNttQ8SoGp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LM8P9HBV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD625C4CEF1;
-	Fri,  9 Jan 2026 12:42:43 +0000 (UTC)
+	 MIME-Version; b=o0vyG+t/dTD22wdgNDd9NIfIuZj8X4OTSmm3Fm0FUXone811kH6xGxgbr+q1Jzkn8663wEOUoGsMq7YD67bAeWs/Tg+XCjjDnwQBMfrze82OS5H7pVDWo+s6XNb0IbZEB5H4Z11d0ns3/VzNgZcUlk9lK784sNzrejqG+ZpuqH0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gIO/zdYh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37AA7C4CEF1;
+	Fri,  9 Jan 2026 12:14:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962564;
-	bh=D9gJL9X+3bRiE/8kNErbLv1X0ItFa/dGfJDJTI24rlQ=;
+	s=korg; t=1767960856;
+	bh=8Y19A86vwwpkk81fnwoffd2xRg+lG5+yihhYvCuVi08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LM8P9HBVU0mOfFCdZJxdxhfVDrBbTpI1VtUtXUeEwRSBBcLYgn3VFTI/jC/Ujx0+R
-	 O8327q8kQ1I3DqL07JHLAD1E2PynmkvJd5Ad+Na9k2CYya3QfKUQD5UA7MbFj60l4y
-	 6tK66DKpFWnG//vsAuVQiQWU8K9/rA4123TyvcxM=
+	b=gIO/zdYhYxko8qww5CIBtoedWPSHKpLPwCdxca5aMucjcq2zIEmLeWKegTJ6qCSFC
+	 aFuKoNeRRfGE+08mno/phEkj1WZtzeWlhLtst9RTuorN+7BZL46g7Vx8DAlxv685yj
+	 UYNybgU+1iuOIatiSnNZYsEbKxNugiy6goiuboIo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 409/634] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
-Date: Fri,  9 Jan 2026 12:41:27 +0100
-Message-ID: <20260109112132.920075113@linuxfoundation.org>
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 6.6 549/737] iommu/amd: Fix pci_segment memleak in alloc_pci_segment()
+Date: Fri,  9 Jan 2026 12:41:28 +0100
+Message-ID: <20260109112154.648590513@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +57,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
+commit 75ba146c2674ba49ed8a222c67f9abfb4a4f2a4f upstream.
 
-The ibm_rtl_init() function searches for the signature but has a pointer
-arithmetic error. The loop counter suggests searching at 4-byte intervals
-but the implementation only advances by 1 byte per iteration.
+Fix a memory leak of struct amd_iommu_pci_segment in alloc_pci_segment()
+when system memory (or contiguous memory) is insufficient.
 
-Fix by properly advancing the pointer by sizeof(unsigned int) bytes
-each iteration.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 04230c119930 ("iommu/amd: Introduce per PCI segment device table")
+Fixes: eda797a27795 ("iommu/amd: Introduce per PCI segment rlookup table")
+Fixes: 99fc4ac3d297 ("iommu/amd: Introduce per PCI segment alias_table")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ibm_rtl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/init.c |   15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
-index 5fc665f7d9b3..10cab7bdfe15 100644
---- a/drivers/platform/x86/ibm_rtl.c
-+++ b/drivers/platform/x86/ibm_rtl.c
-@@ -262,7 +262,7 @@ static int __init ibm_rtl_init(void) {
- 	/* search for the _RTL_ signature at the start of the table */
- 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
- 		struct ibm_rtl_table __iomem * tmp;
--		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
-+		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
- 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
- 			phys_addr_t addr;
- 			unsigned int plen;
--- 
-2.51.0
-
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -1666,13 +1666,22 @@ static struct amd_iommu_pci_seg *__init
+ 	list_add_tail(&pci_seg->list, &amd_iommu_pci_seg_list);
+ 
+ 	if (alloc_dev_table(pci_seg))
+-		return NULL;
++		goto err_free_pci_seg;
+ 	if (alloc_alias_table(pci_seg))
+-		return NULL;
++		goto err_free_dev_table;
+ 	if (alloc_rlookup_table(pci_seg))
+-		return NULL;
++		goto err_free_alias_table;
+ 
+ 	return pci_seg;
++
++err_free_alias_table:
++	free_alias_table(pci_seg);
++err_free_dev_table:
++	free_dev_table(pci_seg);
++err_free_pci_seg:
++	list_del(&pci_seg->list);
++	kfree(pci_seg);
++	return NULL;
+ }
+ 
+ static struct amd_iommu_pci_seg *__init get_pci_segment(u16 id,
 
 
 
