@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-207688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207694-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B060AD0A3CB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A6B02D0A3CE
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6976132331F0
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0565132497A7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B35EE35BDC3;
-	Fri,  9 Jan 2026 12:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1E5635CB75;
+	Fri,  9 Jan 2026 12:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jd4Tf3nM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bz0Vmg4R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76DC43590C6;
-	Fri,  9 Jan 2026 12:46:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7284035C188;
+	Fri,  9 Jan 2026 12:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962764; cv=none; b=PTFPePDreYNP8NdJDFGhJ4rEFeZ6RW6GRKs74ILLv9KuQ0Ex+Rr3tPFXn4jRn1iBvs5QQrpDKc5/YYPlNE9ZJdvdFuZewwfwXy7/W+SZo/TbtGAZhnnh0jsZmTrGZg2EOz53kcL2yGbAyHXoNDTmwuH7GwAl+ASTkdobMy/sM3E=
+	t=1767962781; cv=none; b=hWnLWiT3MWRRxPOpNcUPQNz94m8VdV6ebxSo0HvV1m51Ni+nKnW4euMGAePMKS7mfR4Kx2+Q6fDMJzAE9FoufgXbq7QJn0zBzpKwV1G8PorKEaSm6cGWiEgXqkNKWCH1gtGLjpZIGzHXKPRbO2uZ4F1x0HXb2UBWg7qGFQp25GQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962764; c=relaxed/simple;
-	bh=glQJWUgDnXhzGD4GrUcT6urJjK2d6XqL0to8OXgrvHc=;
+	s=arc-20240116; t=1767962781; c=relaxed/simple;
+	bh=JgkPr2G3E+MOBAlWdh4ylMOjYLwRi+mF6mJQacj73vQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PCsX7eDUmBVofC0z7pIoVPOf3WDLA7eQQZinJqYAZ8wzLi67Fsw1idgslg/Exe0x47LXKvb08YYDnvklRNlTRwqP6AZLg018CGC+P5bwn4iQne/Vzt2pExhwV6VHMmjZagoJ6IY4yZfyMA+3qkfMvyfbm/22nZvTC/VwBySfHwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jd4Tf3nM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 004DEC4CEF1;
-	Fri,  9 Jan 2026 12:46:03 +0000 (UTC)
+	 MIME-Version; b=cBcPYoLyGjS4kx6N0+7XHAZybJ2FIwEZ5eN0XB163QHmXL4HSUBMIHuAp6cyfadx7DvR6vfNcM6ONAnuntyBxWbAdkiu+FdMO/VGIpvRpbm8VVRdpc21XKxS3srsB3qUVI3V/AYDfpQ3hg5MjYkBhfpHqnhyfwFRwV2skwNXV3Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bz0Vmg4R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C1DC4CEF1;
+	Fri,  9 Jan 2026 12:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962764;
-	bh=glQJWUgDnXhzGD4GrUcT6urJjK2d6XqL0to8OXgrvHc=;
+	s=korg; t=1767962781;
+	bh=JgkPr2G3E+MOBAlWdh4ylMOjYLwRi+mF6mJQacj73vQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jd4Tf3nMVISLjGenguwlnyzdviYHoe5MMMPqperWD3vYIQqOVI8MJnkfwvsAx/xTa
-	 fI0EsDB3h201NGHf4Y5J4Fc5NJTMnsQQ3ZxRD6iaHZvRfNHtYeITJrXmx4A2bl/sLh
-	 eoqhvhEUOAdYyIYRfZPH3DeHT/iiASTU/UorhVl4=
+	b=Bz0Vmg4RNixprQG3s+T7uquK8in5EDexjF9U5Mp4E9miJKkoBt4wYoD2XdUT+BTzk
+	 ARR1uR5KHCZnGPukeLDW8drMSbnvJmjyJTh9jpmGCaWESmMLlWfDtv0/Lye9Ns0AIs
+	 HjkVdJsY0tGHcitsmAca+FJpOYLGc6EWYqUbSsjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
 	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 479/634] media: msp3400: Avoid possible out-of-bounds array accesses in msp3400c_thread()
-Date: Fri,  9 Jan 2026 12:42:37 +0100
-Message-ID: <20260109112135.571424118@linuxfoundation.org>
+Subject: [PATCH 6.1 484/634] media: videobuf2: Fix device reference leak in vb2_dc_alloc error path
+Date: Fri,  9 Jan 2026 12:42:42 +0100
+Message-ID: <20260109112135.757268566@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,40 +64,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit d2bceb2e20e783d57e739c71e4e50b4b9f4a3953 upstream.
+commit 94de23a9aa487d7c1372efb161721d7949a177ae upstream.
 
-It's possible for max1 to remain -1 if msp_read() always fail. This
-variable is further used as index for accessing arrays.
+In vb2_dc_alloc(), get_device() is called to increment the device
+reference count. However, if subsequent DMA allocation fails
+(vb2_dc_alloc_coherent or vb2_dc_alloc_non_coherent returns error),
+the function returns without calling put_device(), causing a device
+reference leak.
 
-Fix that by checking max1 prior to array accesses.
+Add put_device() call in the error path before kfree() to properly
+release the device reference acquired earlier.
 
-It seems that restart is the preferable action in case of out-of-bounds
-value.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 8a4b275f9c19 ("V4L/DVB (3427): audmode and rxsubchans fixes (VIDIOC_G/S_TUNER)")
+Fixes: de27891f675e ("media: videobuf2: handle non-contiguous DMA allocations")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Marek Szyprowski <m.szyprowski@samsung.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/msp3400-kthreads.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/common/videobuf2/videobuf2-dma-contig.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/msp3400-kthreads.c
-+++ b/drivers/media/i2c/msp3400-kthreads.c
-@@ -596,6 +596,8 @@ restart:
- 				"carrier2 val: %5d / %s\n", val, cd[i].name);
- 		}
+--- a/drivers/media/common/videobuf2/videobuf2-dma-contig.c
++++ b/drivers/media/common/videobuf2/videobuf2-dma-contig.c
+@@ -258,6 +258,7 @@ static void *vb2_dc_alloc(struct vb2_buf
  
-+		if (max1 < 0 || max1 > 3)
-+			goto restart;
- 		/* program the msp3400 according to the results */
- 		state->main = msp3400c_carrier_detect_main[max1].cdo;
- 		switch (max1) {
+ 	if (ret) {
+ 		dev_err(dev, "dma alloc of size %lu failed\n", size);
++		put_device(buf->dev);
+ 		kfree(buf);
+ 		return ERR_PTR(-ENOMEM);
+ 	}
 
 
 
