@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81116D09C49
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 37024D0945E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3ED4C301EFB9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B97443110C3F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0031A35A952;
-	Fri,  9 Jan 2026 12:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E84533032C;
+	Fri,  9 Jan 2026 12:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gs06NAuz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sDpRDTkr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FE3B30FF1D;
-	Fri,  9 Jan 2026 12:29:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B1A359F99;
+	Fri,  9 Jan 2026 12:00:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961751; cv=none; b=pzxEbcqMIvkZUCgpzxG1Pu22oVTIUbdfyZjD84+QAsNrhX3pYhZ4TFDsskt/bgBbxGferlnRWxW4lseVSVyLwB7kq3xDGERpNRblnueQjm86Gzq1vLoVY+MwOq11ZB+K55sdW++F2NVVSR+GqoP5yRr/xpRRtMb1kRABAwz8c08=
+	t=1767960033; cv=none; b=iwcyqt/OZ+zakeWipkg9wCS9BQY4g+c13lKYbkp4DEiBkAFrif8gliP3Uff/BtlXTk6kPhNCyNIj67p20vqwor3TUGlf5HNFY8yMo3C+RozAARr5cZgr8EwjTuIBYmUVvF4ErSKZJJ1yz2PkJe1kCqCtuTg+ile4I7pj746KOCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961751; c=relaxed/simple;
-	bh=bg9zqfclVmKLi2gnL7/vV0gkhIBKN0iNGuqvLsxZCfU=;
+	s=arc-20240116; t=1767960033; c=relaxed/simple;
+	bh=YGiFDbTuK43Q7J8skr1lbpjz5ZJkJJprz1ddJq6SN2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BBMnpBak8sS3EeKOM79+nhs/g/nZVI8kPnWYx1jtQ3QnX1wbgLkDnXUuGzSjw+7NFakqBimTeVNIU6HZKk11jA+lEribk/VB3eDNmeXBsQkHXBmAbwfL+kDMoZTwATwdl9s5seHpY0hG2kt44KLKX1fXduqDbElAAqJ5WghE8xs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gs06NAuz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEC39C19421;
-	Fri,  9 Jan 2026 12:29:10 +0000 (UTC)
+	 MIME-Version; b=M3yuEpRLlAyZwT4fEIummulMINvvKGS1ojdySqepZCU+hdAZhJkjqm8p04tNrbxqmJKZ6oxLSxX5WtGNQUcHrasXIhZaWfOjmOidM3dspgP9oRPh2lt/zQtiq0dCQb6mFbu5c2yZx7AtPcxiJ+fJnCNy89IFnFHr4b0S99AmkQY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sDpRDTkr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34FAC4CEF1;
+	Fri,  9 Jan 2026 12:00:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961751;
-	bh=bg9zqfclVmKLi2gnL7/vV0gkhIBKN0iNGuqvLsxZCfU=;
+	s=korg; t=1767960033;
+	bh=YGiFDbTuK43Q7J8skr1lbpjz5ZJkJJprz1ddJq6SN2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gs06NAuzS0C40DixcJH8IozY3H0OBN0VkcV5aIdxMr/6lvVcpo/IeMoxQU/jmEq1p
-	 jgBE2Q03132CnF20ecskz+e6PrenW17ixgugCiXyVslIXyE+ZIjoVit93FAZ/1kl9l
-	 BGBlCva9/fLDKgL3uSajOzcVaRxOGrueAMyusnXE=
+	b=sDpRDTkrWbbONdzDOPE+hpIEhSy/kHWqtyQ1oY4RU9wfDN243SJQEfIBqUh//NQMG
+	 hu4Q9GJDHKTEMRv/ot+GcrvSCpIY9ezAGEXsYrK87eoAWdItLdZvyNSDFXRLmxqOkA
+	 WClNcpZgb2W72czOWJNjblX7ym/GbiG8BlGwb/CE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/634] powerpc/64s/ptdump: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+Subject: [PATCH 6.6 262/737] NFS: Initialise verifiers for visible dentries in nfs_atomic_open()
 Date: Fri,  9 Jan 2026 12:36:41 +0100
-Message-ID: <20260109112122.072487855@linuxfoundation.org>
+Message-ID: <20260109112143.847472346@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit eae40a6da63faa9fb63ff61f8fa2b3b57da78a84 ]
+[ Upstream commit 518c32a1bc4f8df1a8442ee8cdfea3e2fcff20a0 ]
 
-HPTE format was changed since Power9 (ISA 3.0) onwards. While dumping
-kernel hash page tables, nothing gets printed on powernv P9+. This patch
-utilizes the helpers added in the patch tagged as fixes, to convert new
-format to old format and dump the hptes. This fix is only needed for
-native_find() (powernv), since pseries continues to work fine with the
-old format.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in nfs_atomic_open().
 
-Fixes: 6b243fcfb5f1e ("powerpc/64: Simplify adaptation to new ISA v3.00 HPTE format")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/4c2bb9e5b3cfbc0dd80b61b67cdd3ccfc632684c.1761834163.git.ritesh.list@gmail.com
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: 809fd143de88 ("NFSv4: Ensure nfs_atomic_open set the dentry verifier on ENOENT")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/ptdump/hashpagetable.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfs/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
-index 9a601587836b2..ee5e1dfe7932a 100644
---- a/arch/powerpc/mm/ptdump/hashpagetable.c
-+++ b/arch/powerpc/mm/ptdump/hashpagetable.c
-@@ -216,6 +216,8 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
- 	vpn  = hpt_vpn(ea, vsid, ssize);
- 	hash = hpt_hash(vpn, shift, ssize);
- 	want_v = hpte_encode_avpn(vpn, psize, ssize);
-+	if (cpu_has_feature(CPU_FTR_ARCH_300))
-+		want_v = hpte_old_to_new_v(want_v);
- 
- 	/* to check in the secondary hash table, we invert the hash */
- 	if (!primary)
-@@ -229,6 +231,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
- 			/* HPTE matches */
- 			*v = be64_to_cpu(hptep->v);
- 			*r = be64_to_cpu(hptep->r);
-+			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+				*v = hpte_new_to_old_v(*v, *r);
-+				*r = hpte_new_to_old_r(*r);
-+			}
- 			return 0;
- 		}
- 		++hpte_group;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index d47e908ef411c..32e922a20d0d4 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -2149,12 +2149,12 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 		d_drop(dentry);
+ 		switch (err) {
+ 		case -ENOENT:
+-			d_splice_alias(NULL, dentry);
+ 			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
+ 				dir_verifier = inode_peek_iversion_raw(dir);
+ 			else
+ 				dir_verifier = nfs_save_change_attribute(dir);
+ 			nfs_set_verifier(dentry, dir_verifier);
++			d_splice_alias(NULL, dentry);
+ 			break;
+ 		case -EISDIR:
+ 		case -ENOTDIR:
 -- 
 2.51.0
 
