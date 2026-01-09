@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92F7BD09A3C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1686D09443
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A18C13043560
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BB1CC308001C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49FD4359F9C;
-	Fri,  9 Jan 2026 12:25:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF97332FA3D;
+	Fri,  9 Jan 2026 11:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVYghBjg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OVTClfaV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0750F35A92E;
-	Fri,  9 Jan 2026 12:25:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7430C2DEA6F;
+	Fri,  9 Jan 2026 11:58:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961516; cv=none; b=D3+nedziPyq3k+W0SOE16nzAxkaWhXR8ka0udleZxMRMBVLelF7zBvWUI/pvg3xjJoues0hS9b8YZAD5W+B2rwK+ir3dRO4ssn9Fxna1Dx649wM6ugWl2mU3Lcp+rrgGbv/rEvo3u0pKrIv/6LhrMfyBZlQuBKPJRkvXx4vpKTE=
+	t=1767959899; cv=none; b=d1iXhEnW3przY9X9+X3XiQC74JOYIf85lYIbnol0m5DIPjzoanUoNIR0iQ0zNlZGP7M0cKWjLhrnqjA1csAmVd28yRT3YBISUsxiic3wLWi8zlwk59D1DIrWDBJTiS2MfALDyXKsgyK3TjQqdknZxsI095YqqDR1nPC2XjxOR6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961516; c=relaxed/simple;
-	bh=rzHyIRawzlRYeGDo2iq5PxmHdV+s1LwEZLo80kdEh+o=;
+	s=arc-20240116; t=1767959899; c=relaxed/simple;
+	bh=2pP+hrht66k6Xz8c+sGX7P94tH3JQXtSR8+DibfQgj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hPkvJtqlu5uCRuegU0G/inmnV66H7uKH7s3rW6kWU2uE7j25YBXtghu50gfMyjF1UspabO+PCXYJjI5XoL0dXjWTefTTCKci2nrk9ReNBRCmQWSzRH2a00eUAHtSJ/D9E8SgUuuurEDM1q93qVZTJTbmA4GpjLlQRra1DvXuTRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVYghBjg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BDE4C4CEF1;
-	Fri,  9 Jan 2026 12:25:15 +0000 (UTC)
+	 MIME-Version; b=Nt6FAib8GU1EPkVWGWdSpuQvalr+hpRS2tsVeFx72J7I70t/eGAWwKsI2teZTlUWABq9hqg5jYZF0K8YLrn2eynJZgGe3xlLt/rz5FYu7jSnLO8Pxc21DtW23zpquKACWfpjMQQxdw50KBWr0AsTdZ32hqITrZO5EAWcDsYoRHs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OVTClfaV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3008C4CEF1;
+	Fri,  9 Jan 2026 11:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961515;
-	bh=rzHyIRawzlRYeGDo2iq5PxmHdV+s1LwEZLo80kdEh+o=;
+	s=korg; t=1767959899;
+	bh=2pP+hrht66k6Xz8c+sGX7P94tH3JQXtSR8+DibfQgj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVYghBjgBnS0YD75iqaMGEVfk0fDEtFu8EvwDBUDr9wBtkpQUAUR36oGBgIjlqfej
-	 bcDoDNTq4Yvc7DZuwpZZszAeOGs4pAGHEzIo0dFWjcxAYEqG1BgkZBEN4hwoCNOQyC
-	 nG3JNWxG9D0FoOQCI7PuhACTBlBvsI1HMznMgx58=
+	b=OVTClfaVV9ZhLOD+JFftV5EPAGYlNWMbAPwThLEZPrtnxgUG4TAS1vnA2u36jy/uM
+	 VKAGP2EMwA16jkszY/YTN1NvptrUuCORaE4G+8wflSciRHkIObgnQHb0T6X2QEa0Nc
+	 rSYy1iNLOBwaNRxY4T3gB88YqD2M2zNh7ybQvOBo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mainak Sen <msen@nvidia.com>,
-	Mikko Perttunen <mperttunen@nvidia.com>,
-	Thierry Reding <treding@nvidia.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 042/634] gpu: host1x: Fix race in syncpt alloc/free
-Date: Fri,  9 Jan 2026 12:35:20 +0100
-Message-ID: <20260109112119.029864705@linuxfoundation.org>
+Subject: [PATCH 6.6 182/737] mfd: mt6397-irq: Fix missing irq_domain_remove() in error path
+Date: Fri,  9 Jan 2026 12:35:21 +0100
+Message-ID: <20260109112140.840776484@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,59 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mainak Sen <msen@nvidia.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit c7d393267c497502fa737607f435f05dfe6e3d9b ]
+[ Upstream commit b4b1bd1f330fdd13706382be6c90ce9f58cee3f5 ]
 
-Fix race condition between host1x_syncpt_alloc()
-and host1x_syncpt_put() by using kref_put_mutex()
-instead of kref_put() + manual mutex locking.
+If devm_request_threaded_irq() fails after irq_domain_create_linear()
+succeeds in mt6397_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-This ensures no thread can acquire the
-syncpt_mutex after the refcount drops to zero
-but before syncpt_release acquires it.
-This prevents races where syncpoints could
-be allocated while still being cleaned up
-from a previous release.
+Call irq_domain_remove() in the error path after a successful
+irq_domain_create_linear() to properly release the IRQ domain.
 
-Remove explicit mutex locking in syncpt_release
-as kref_put_mutex() handles this atomically.
-
-Signed-off-by: Mainak Sen <msen@nvidia.com>
-Fixes: f5ba33fb9690 ("gpu: host1x: Reserve VBLANK syncpoints at initialization")
-Signed-off-by: Mikko Perttunen <mperttunen@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Link: https://lore.kernel.org/r/20250707-host1x-syncpt-race-fix-v1-1-28b0776e70bc@nvidia.com
+Fixes: a4872e80ce7d ("mfd: mt6397: Extract IRQ related code from core driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121500.605-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/host1x/syncpt.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mfd/mt6397-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/host1x/syncpt.c b/drivers/gpu/host1x/syncpt.c
-index f87a8705f5183..51a1d2f95621b 100644
---- a/drivers/gpu/host1x/syncpt.c
-+++ b/drivers/gpu/host1x/syncpt.c
-@@ -393,8 +393,6 @@ static void syncpt_release(struct kref *ref)
- 
- 	sp->locked = false;
- 
--	mutex_lock(&sp->host->syncpt_mutex);
--
- 	host1x_syncpt_base_free(sp->base);
- 	kfree(sp->name);
- 	sp->base = NULL;
-@@ -417,7 +415,7 @@ void host1x_syncpt_put(struct host1x_syncpt *sp)
- 	if (!sp)
- 		return;
- 
--	kref_put(&sp->ref, syncpt_release);
-+	kref_put_mutex(&sp->ref, syncpt_release, &sp->host->syncpt_mutex);
- }
- EXPORT_SYMBOL(host1x_syncpt_put);
+diff --git a/drivers/mfd/mt6397-irq.c b/drivers/mfd/mt6397-irq.c
+index 886745b5b607c..1e83f7c7ce145 100644
+--- a/drivers/mfd/mt6397-irq.c
++++ b/drivers/mfd/mt6397-irq.c
+@@ -208,6 +208,7 @@ int mt6397_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "failed to register irq=%d; err: %d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
  
 -- 
 2.51.0
