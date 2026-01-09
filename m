@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB20D09506
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D66BBD09C64
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3579F308328B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A8A730C59F6
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D25C6359FB5;
-	Fri,  9 Jan 2026 12:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4944331A7EA;
+	Fri,  9 Jan 2026 12:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d1L/sYj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="buxiUN4C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9575D359FB6;
-	Fri,  9 Jan 2026 12:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1E12737EE;
+	Fri,  9 Jan 2026 12:28:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960098; cv=none; b=B8lQ7EAUSqmVMltklA7jf4hY/lD6GDAM1MQkav89J7C2nIIp23x29LfDm8BPWevCaoreBq2/IzMigSrTLhpcpI9O0GgvVQCAgM5QcCbVakmbRcFKZ3Q8xPePYqIuD/yx18Kl9yffwPl+WATspko4jn2zh1VNFcwBEcInIo0Wg18=
+	t=1767961720; cv=none; b=Tz0AozpxW0VhSG5DOdV/fCGd8ihvEwyfpjGcsijtSWzgM/G8/2i/4R4bU2c+gX+nyfnbbTdIgGkbW9eKn7raLfHzGYTkMJCq0c7049GGJH4ubk4xOmnkHdHTPtePfyD2ZwUMc5UClX43Ffx6CBqaioSQ31ciXXLgJd3xkzy+IGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960098; c=relaxed/simple;
-	bh=mRwFwJm7oc8O3rJ9hZIPWQUDQMg50oRFxakgXYFSpq0=;
+	s=arc-20240116; t=1767961720; c=relaxed/simple;
+	bh=6O0kOYmVdBvymnWFEN5Ej1rDMUiaqoUTy5V1ZQfhJMM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MttFBako6TLkiJU2AV2sI8CG5X3iKH1nsrOl94QfNIQwip02mCnV+kO4SQ3PM5b19LEXccKyz0NK314hydLIxL2Ayxj+H9Og9whTLxBCTwqn6b5nBsfJUm4tWOymW7C83SFD1jS+f2fRqpX5g08SnU6ktY5aEfEfBr55UX0y6Ak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d1L/sYj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F444C4CEF1;
-	Fri,  9 Jan 2026 12:01:37 +0000 (UTC)
+	 MIME-Version; b=MwtcuRWqwMIvNocr6xGOi8SUTakdUgs+o7tfyfpZ9UaO2iYsSq7IKA0yS27ojxoYdxG4yok3PavviJ4qxQlLt6J9h7a4M0L4k7jLo81sqCUbu6jjmjjoVVUFLRanjN2EFZ2VxzItHlqxTMwIAj7KiCARyp//yuu53vukI7U0n6U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=buxiUN4C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87453C4CEF1;
+	Fri,  9 Jan 2026 12:28:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960098;
-	bh=mRwFwJm7oc8O3rJ9hZIPWQUDQMg50oRFxakgXYFSpq0=;
+	s=korg; t=1767961719;
+	bh=6O0kOYmVdBvymnWFEN5Ej1rDMUiaqoUTy5V1ZQfhJMM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d1L/sYj49xi2cPa3OKdvAdi0rsjTYvx7B0NeCFrEWhnSvdcQOuwv44xdOJwYrnFsT
-	 1A1jOnXYxNkXrfY3Ui6EmgtxSK7KBAppVcGvkRtEEgKbzum9e5h/La9zbRm0UoPvvr
-	 rRKzsZL7WfJLtheG1Z6f87WZxj3hV+XkBV9MijkE=
+	b=buxiUN4CdraLj8OXe9Gq16PI2V7vhz5ehgnliflFkUJcEYxLOZygY61gXv92sdxoF
+	 vKKNLgYHfa1YZfP7IEviCTdGlOzAClS8CAMZMIY34Z6qQ5J9TTHcFwkWacAMc9dA+G
+	 Wb3JAxu1qC4pnoZO+B0EWtp1Ci5fa/lEYlwzgmYU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai@fnnas.com>,
-	Li Nan <linan122@huawei.com>,
+	Markus Elfring <Markus.Elfring@web.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 251/737] md/raid5: fix IO hang when array is broken with IO inflight
-Date: Fri,  9 Jan 2026 12:36:30 +0100
-Message-ID: <20260109112143.434465308@linuxfoundation.org>
+Subject: [PATCH 6.1 113/634] leds: netxbig: Fix GPIO descriptor leak in error paths
+Date: Fri,  9 Jan 2026 12:36:31 +0100
+Message-ID: <20260109112121.686033227@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,101 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai@fnnas.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit a913d1f6a7f607c110aeef8b58c8988f47a4b24e ]
+[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
 
-Following test can cause IO hang:
+The function netxbig_gpio_ext_get() acquires GPIO descriptors but
+fails to release them when errors occur mid-way through initialization.
+The cleanup callback registered by devm_add_action_or_reset() only
+runs on success, leaving acquired GPIOs leaked on error paths.
 
-mdadm -CvR /dev/md0 -l10 -n4 /dev/sd[abcd] --assume-clean --chunk=64K --bitmap=none
-sleep 5
-echo 1 > /sys/block/sda/device/delete
-echo 1 > /sys/block/sdb/device/delete
-echo 1 > /sys/block/sdc/device/delete
-echo 1 > /sys/block/sdd/device/delete
+Add goto-based error handling to release all acquired GPIOs before
+returning errors.
 
-dd if=/dev/md0 of=/dev/null bs=8k count=1 iflag=direct
-
-Root cause:
-
-1) all disks removed, however all rdevs in the array is still in sync,
-IO will be issued normally.
-
-2) IO failure from sda, and set badblocks failed, sda will be faulty
-and MD_SB_CHANGING_PENDING will be set.
-
-3) error recovery try to recover this IO from other disks, IO will be
-issued to sdb, sdc, and sdd.
-
-4) IO failure from sdb, and set badblocks failed again, now array is
-broken and will become read-only.
-
-5) IO failure from sdc and sdd, however, stripe can't be handled anymore
-because MD_SB_CHANGING_PENDING is set:
-
-handle_stripe
- handle_stripe
- if (test_bit MD_SB_CHANGING_PENDING)
-  set_bit STRIPE_HANDLE
-  goto finish
-  // skip handling failed stripe
-
-release_stripe
- if (test_bit STRIPE_HANDLE)
-  list_add_tail conf->hand_list
-
-6) later raid5d can't handle failed stripe as well:
-
-raid5d
- md_check_recovery
-  md_update_sb
-   if (!md_is_rdwr())
-    // can't clear pending bit
-    return
- if (test_bit MD_SB_CHANGING_PENDING)
-  break;
-  // can't handle failed stripe
-
-Since MD_SB_CHANGING_PENDING can never be cleared for read-only array,
-fix this problem by skip this checking for read-only array.
-
-Link: https://lore.kernel.org/linux-raid/20251117085557.770572-3-yukuai@fnnas.com
-Fixes: d87f064f5874 ("md: never update metadata when array is read-only.")
-Signed-off-by: Yu Kuai <yukuai@fnnas.com>
-Reviewed-by: Li Nan <linan122@huawei.com>
+Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
+Suggested-by: Markus Elfring <Markus.Elfring@web.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/md/raid5.c b/drivers/md/raid5.c
-index f69e4a6a8a592..aad2b8c0c5418 100644
---- a/drivers/md/raid5.c
-+++ b/drivers/md/raid5.c
-@@ -5002,7 +5002,8 @@ static void handle_stripe(struct stripe_head *sh)
- 		goto finish;
+diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
+index 6692de0af68f1..ea0801b9cb010 100644
+--- a/drivers/leds/leds-netxbig.c
++++ b/drivers/leds/leds-netxbig.c
+@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 	if (!addr)
+ 		return -ENOMEM;
  
- 	if (s.handle_bad_blocks ||
--	    test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags)) {
-+	    (md_is_rdwr(conf->mddev) &&
-+	     test_bit(MD_SB_CHANGE_PENDING, &conf->mddev->sb_flags))) {
- 		set_bit(STRIPE_HANDLE, &sh->state);
- 		goto finish;
++	gpio_ext->addr = addr;
++	gpio_ext->num_addr = 0;
++
+ 	/*
+ 	 * We cannot use devm_ managed resources with these GPIO descriptors
+ 	 * since they are associated with the "GPIO extension device" which
+@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_set_code;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
+ 		addr[i] = gpiod;
++		gpio_ext->num_addr++;
  	}
-@@ -6829,7 +6830,8 @@ static void raid5d(struct md_thread *thread)
- 		int batch_size, released;
- 		unsigned int offset;
+-	gpio_ext->addr = addr;
+-	gpio_ext->num_addr = num_addr;
  
--		if (test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
-+		if (md_is_rdwr(mddev) &&
-+		    test_bit(MD_SB_CHANGE_PENDING, &mddev->sb_flags))
- 			break;
+ 	ret = gpiod_count(gpio_ext_dev, "data");
+ 	if (ret < 0) {
+ 		dev_err(dev,
+ 			"Failed to count GPIOs in DT property data-gpios\n");
+-		return ret;
++		goto err_free_addr;
+ 	}
+ 	num_data = ret;
+ 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
+-	if (!data)
+-		return -ENOMEM;
++	if (!data) {
++		ret = -ENOMEM;
++		goto err_free_addr;
++	}
++
++	gpio_ext->data = data;
++	gpio_ext->num_data = 0;
  
- 		released = release_stripe_list(conf, conf->temp_inactive_list);
+ 	for (i = 0; i < num_data; i++) {
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_free_data;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
+ 		data[i] = gpiod;
++		gpio_ext->num_data++;
+ 	}
+-	gpio_ext->data = data;
+-	gpio_ext->num_data = num_data;
+ 
+ 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(gpiod)) {
+ 		dev_err(dev,
+ 			"Failed to get GPIO from DT property enable-gpio\n");
+-		return PTR_ERR(gpiod);
++		goto err_free_data;
+ 	}
+ 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
+ 	gpio_ext->enable = gpiod;
+ 
+ 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
++
++err_free_data:
++	for (i = 0; i < gpio_ext->num_data; i++)
++		gpiod_put(gpio_ext->data[i]);
++err_set_code:
++	ret = PTR_ERR(gpiod);
++err_free_addr:
++	for (i = 0; i < gpio_ext->num_addr; i++)
++		gpiod_put(gpio_ext->addr[i]);
++	return ret;
+ }
+ 
+ static int netxbig_leds_get_of_pdata(struct device *dev,
 -- 
 2.51.0
 
