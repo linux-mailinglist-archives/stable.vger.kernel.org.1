@@ -1,137 +1,153 @@
-Return-Path: <stable+bounces-207899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE98D0BBF1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 18:49:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C6FD0BBFA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 18:49:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5B148301D61B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 17:49:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09A6D30319F9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 17:49:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 232F528134C;
-	Fri,  9 Jan 2026 17:49:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DD2B36654F;
+	Fri,  9 Jan 2026 17:49:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TT6wTkwX"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="R/qV9noh"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F301FF7C8;
-	Fri,  9 Jan 2026 17:49:10 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503A654763
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 17:49:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.129.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767980950; cv=none; b=Fpuo5jdRBc7IsdJ73A6Y6Ustfa8bmnByx55+d2fkKEgOVZA+ysvQJjKfYNC1o8zlXEguYz4TLlGNTbI9TMTrYeovHQQfymg7pzW+JF2Wx9mAER3oI3DXzoaa4PHsG/88F5FwskugY/pXzL2ZdIWA3q9ka5uyVd6BUThohzr6J9Q=
+	t=1767980951; cv=none; b=ccok9GJdqMqcgtS6TXdf6fiZj0/Yu/KFZNyIalkTocH1VnUXJQ0DCswy5fdbj4b6fMZGQ7g2+qw/pLDEV1FwYONJVKuzPLcbjYfHV3AcaNvs+M8pSGsVl//tzChdb/Scv6X9to27cjMBG6j12WdZG4QHvotTgoZFZhfLE4g7Wxs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767980950; c=relaxed/simple;
-	bh=KqANF+/8+hFMayQW41t7F0PMYhy7fGU+vcCNFcFd13Q=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KPx/heu5d7DzGDaJ6ijXxM/fs+dfizQ6tKnEkfiTxp9a9ewGqvaB5eKyWKkLuaSvLx6ijd0NeGl3CNdAQl0tfY7K8JumW04QGMCINxZS25/DSXluVRQxmyBPnFXq5XXqguQbqPHbffSZkrcgy6eXQZkqID5siN0vsoB6CC9s9SQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TT6wTkwX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CEDBC4CEF1;
-	Fri,  9 Jan 2026 17:49:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767980950;
-	bh=KqANF+/8+hFMayQW41t7F0PMYhy7fGU+vcCNFcFd13Q=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=TT6wTkwXNQ3LgMOt4T2uW5f4FGwYnNaJ3voxrJD0/J1a+eHcTw2ZDtea0uK4Wml8q
-	 Ymtk0eiC4leJhhpsE5NXAPVtn1ZGonAs+YQ/PEWh52hfXYnfCfhCCTHtgcCSSVomOr
-	 2uvvpRqByi2TpYxTmWGE7R+Eu6znZSbSNPO7w3WUy3MwxrTTpJ+MM3wXaO9k6rNug7
-	 d9Ht3rWbX48s+I7eEfSaW6IHAhj/pe7uAe7VyStqF9Nzv9NZ+c7fiWmpLkYQlc5lGK
-	 z14zKFW5orFmVWcMUMuGJBx07/EliaU8fsmQ1bAu3UHkSG3QlgI8WqKiCfLHsbQQtA
-	 9Bw0FdN0Ovpbg==
-Date: Fri, 9 Jan 2026 17:49:05 +0000
-From: Lee Jones <lee@kernel.org>
-To: Andreas Kemnade <andreas@kemnade.info>
-Cc: Johan Hovold <johan@kernel.org>, Aaro Koskinen <aaro.koskinen@iki.fi>,
-	Kevin Hilman <khilman@baylibre.com>,
-	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
-	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: Re: [PATCH] mfd: omap-usb-host: fix OF populate on driver rebind
-Message-ID: <20260109174905.GB1893402@google.com>
-References: <20251219110714.23919-1-johan@kernel.org>
- <20260109163725.GB1808297@google.com>
- <20260109163939.GC1808297@google.com>
- <20260109181839.58ec0802@kemnade.info>
- <20260109183750.0d638710@kemnade.info>
+	s=arc-20240116; t=1767980951; c=relaxed/simple;
+	bh=oHG1dOag0Y1sp028swXHPmwQfCPM3G+HZq2qshlz39I=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=lU6MFAJDTCDVMFGRU9mJkLpL3fjwvGqnD/yjo2hyw/BjsBx7wnRXJtNeMwqI0tR8vBleCGAIdccEV2iUlhhAv4iJl1d9Jjnh76+w+EQ78hBV9w/bibcNheARG7+9IA/xKFZBjoViKbWgfCfDnRMXKWQnJes559ZIaRKstRkmMP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=R/qV9noh; arc=none smtp.client-ip=170.10.129.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767980949;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=5m9UCf/ZwMyk6gro66kViqJhDy8m7tCsKqGnFbpzlHs=;
+	b=R/qV9nohT7eOfXTXUbN55uPHIH4aB3KTzMpwCc/rpLRQbWUZlr3ZNDvme4Lcc8gTP+vrt8
+	GJ3If6gSABHE798W40v+xiyZO2SP5q+AtS+JB1Kj8yAyVktiHh8NklG6ns0Ajzo0L3lkFw
+	Imawdew9+KChrOuX6MVKpZPCKzLIVM0=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-263-cCCy3A4KOQWNdGvQheXX0w-1; Fri,
+ 09 Jan 2026 12:49:08 -0500
+X-MC-Unique: cCCy3A4KOQWNdGvQheXX0w-1
+X-Mimecast-MFC-AGG-ID: cCCy3A4KOQWNdGvQheXX0w_1767980947
+Received: from mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.12])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 25EED1956089;
+	Fri,  9 Jan 2026 17:49:07 +0000 (UTC)
+Received: from bfoster.redhat.com (unknown [10.22.88.127])
+	by mx-prod-int-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 7DFF61955F66;
+	Fri,  9 Jan 2026 17:49:06 +0000 (UTC)
+From: Brian Foster <bfoster@redhat.com>
+To: linux-xfs@vger.kernel.org
+Cc: stable@vger.kernel.org,
+	"Darrick J. Wong" <djwong@kernel.org>
+Subject: [PATCH v2] xfs: set max_agbno to allow sparse alloc of last full inode chunk
+Date: Fri,  9 Jan 2026 12:49:05 -0500
+Message-ID: <20260109174905.26372-1-bfoster@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+Content-Type: text/plain
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <20260109183750.0d638710@kemnade.info>
+X-Scanned-By: MIMEDefang 3.0 on 10.30.177.12
 
-On Fri, 09 Jan 2026, Andreas Kemnade wrote:
+Sparse inode cluster allocation sets min/max agbno values to avoid
+allocating an inode cluster that might map to an invalid inode
+chunk. For example, we can't have an inode record mapped to agbno 0
+or that extends past the end of a runt AG of misaligned size.
 
-> On Fri, 9 Jan 2026 18:18:39 +0100
-> Andreas Kemnade <andreas@kemnade.info> wrote:
-> 
-> > On Fri, 9 Jan 2026 16:39:39 +0000
-> > Lee Jones <lee@kernel.org> wrote:
-> > 
-> > > On Fri, 09 Jan 2026, Lee Jones wrote:
-> > >   
-> > > > On Fri, 19 Dec 2025, Johan Hovold wrote:
-> > > >     
-> > > > > Since commit c6e126de43e7 ("of: Keep track of populated platform
-> > > > > devices") child devices will not be created by of_platform_populate()
-> > > > > if the devices had previously been deregistered individually so that the
-> > > > > OF_POPULATED flag is still set in the corresponding OF nodes.
-> > > > > 
-> > > > > Switch to using of_platform_depopulate() instead of open coding so that
-> > > > > the child devices are created if the driver is rebound.
-> > > > > 
-> > > > > Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
-> > > > > Cc: stable@vger.kernel.org	# 3.16
-> > > > > Signed-off-by: Johan Hovold <johan@kernel.org>
-> > > > > ---
-> > > > >  drivers/mfd/omap-usb-host.c | 6 ++++--
-> > > > >  1 file changed, 4 insertions(+), 2 deletions(-)
-> > > > > 
-> > > > > diff --git a/drivers/mfd/omap-usb-host.c b/drivers/mfd/omap-usb-host.c
-> > > > > index a77b6fc790f2..4d29a6e2ed87 100644
-> > > > > --- a/drivers/mfd/omap-usb-host.c
-> > > > > +++ b/drivers/mfd/omap-usb-host.c
-> > > > > @@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
-> > > > >  {
-> > > > >  	pm_runtime_disable(&pdev->dev);
-> > > > >  
-> > > > > -	/* remove children */
-> > > > > -	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
-> > > > > +	if (pdev->dev.of_node)
-> > > > > +		of_platform_depopulate(&pdev->dev);    
-> > > > 
-> > > > devm_of_platform_populate()?
-> > > >     
-> > > > > +	else
-> > > > > +		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);    
-> > > > 
-> > > > What on earth is this driver even doing in MFD?
-> > > > 
-> > > > Nightmare - quick dig, bury it!    
-> > > 
-> > > Is the old platform method even supported anymore?
-> > > 
-> > > $ git grep \"usbhs_omap\""
-> > > drivers/mfd/omap-usb-host.c:#define USBHS_DRIVER_NAME   "usbhs_omap"
-> > >   
-> > :~/linux/arch/arm/boot/dts/ti/omap$ grep ti,usbhs-host *.dtsi
-> > omap3.dtsi:			compatible = "ti,usbhs-host";
-> > omap4-l4.dtsi:				compatible = "ti,usbhs-host";
-> > omap5-l4.dtsi:				compatible = "ti,usbhs-host";
-> > 
-> > So it is still in use.
-> > 
-> ok, that was just answering in panic mode to prevent removal of a needed
-> driver. Reading it again: I think omap2/3/4/5 without devicetree will not work
-> anyway, so we can remove anything done on !dev->of_node.
+The initial calculation of max_agbno is unnecessarily conservative,
+however. This has triggered a corner case allocation failure where a
+small runt AG (i.e. 2063 blocks) is mostly full save for an extent
+to the EOFS boundary: [2050,13]. max_agbno is set to 2048 in this
+case, which happens to be the offset of the last possible valid
+inode chunk in the AG. In practice, we should be able to allocate
+the 4-block cluster at agbno 2052 to map to the parent inode record
+at agbno 2048, but the max_agbno value precludes it.
 
-Okay, leave it with me.
+Note that this can result in filesystem shutdown via dirty trans
+cancel on stable kernels prior to commit 9eb775968b68 ("xfs: walk
+all AGs if TRYLOCK passed to xfs_alloc_vextent_iterate_ags") because
+the tail AG selection by the allocator sets t_highest_agno on the
+transaction. If the inode allocator spins around and finds an inode
+chunk with free inodes in an earlier AG, the subsequent dir name
+creation path may still fail to allocate due to the AG restriction
+and cancel.
 
+To avoid this problem, update the max_agbno calculation to the agbno
+prior to the last chunk aligned agbno in the AG. This is not
+necessarily the last valid allocation target for a sparse chunk, but
+since inode chunks (i.e. records) are chunk aligned and sparse
+allocs are cluster sized/aligned, this allows the sb_spino_align
+alignment restriction to take over and round down the max effective
+agbno to within the last valid inode chunk in the AG.
+
+Note that even though the allocator improvements in the
+aforementioned commit seem to avoid this particular dirty trans
+cancel situation, the max_agbno logic improvement still applies as
+we should be able to allocate from an AG that has been appropriately
+selected. The more important target for this patch however are
+older/stable kernels prior to this allocator rework/improvement.
+
+Cc: <stable@vger.kernel.org> # v4.2
+Fixes: 56d1115c9bc7 ("xfs: allocate sparse inode chunks on full chunk allocation failure")
+Signed-off-by: Brian Foster <bfoster@redhat.com>
+Reviewed-by: "Darrick J. Wong" <djwong@kernel.org>
+---
+
+v2:
+- Added misc. commit log tags.
+v1: https://lore.kernel.org/linux-xfs/20260108141129.7765-1-bfoster@redhat.com/
+
+ fs/xfs/libxfs/xfs_ialloc.c | 11 ++++++-----
+ 1 file changed, 6 insertions(+), 5 deletions(-)
+
+diff --git a/fs/xfs/libxfs/xfs_ialloc.c b/fs/xfs/libxfs/xfs_ialloc.c
+index d97295eaebe6..c19d6d713780 100644
+--- a/fs/xfs/libxfs/xfs_ialloc.c
++++ b/fs/xfs/libxfs/xfs_ialloc.c
+@@ -848,15 +848,16 @@ xfs_ialloc_ag_alloc(
+ 		 * invalid inode records, such as records that start at agbno 0
+ 		 * or extend beyond the AG.
+ 		 *
+-		 * Set min agbno to the first aligned, non-zero agbno and max to
+-		 * the last aligned agbno that is at least one full chunk from
+-		 * the end of the AG.
++		 * Set min agbno to the first chunk aligned, non-zero agbno and
++		 * max to one less than the last chunk aligned agbno from the
++		 * end of the AG. We subtract 1 from max so that the cluster
++		 * allocation alignment takes over and allows allocation within
++		 * the last full inode chunk in the AG.
+ 		 */
+ 		args.min_agbno = args.mp->m_sb.sb_inoalignmt;
+ 		args.max_agbno = round_down(xfs_ag_block_count(args.mp,
+ 							pag_agno(pag)),
+-					    args.mp->m_sb.sb_inoalignmt) -
+-				 igeo->ialloc_blks;
++					    args.mp->m_sb.sb_inoalignmt) - 1;
+ 
+ 		error = xfs_alloc_vextent_near_bno(&args,
+ 				xfs_agbno_to_fsb(pag,
 -- 
-Lee Jones [李琼斯]
+2.52.0
+
 
