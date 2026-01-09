@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-207293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B485D09BEC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:36:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED7A1D0938C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 044FA3131CC9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B684E30DA604
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03A4D35B125;
-	Fri,  9 Jan 2026 12:27:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9279D32BF21;
+	Fri,  9 Jan 2026 11:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WoWSHRxx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDgHNkJF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E581531E8;
-	Fri,  9 Jan 2026 12:27:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51EA133290A;
+	Fri,  9 Jan 2026 11:58:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961642; cv=none; b=XlcFBgwcqJdSW+v5WVYmV3xrmohzb9M8Krs1pBz+a7finuTIdoqKcGmSFJLqOugCYyucOwb5U04H7EYiGhlBBD1XUeW+q+xYuWiNh+MzWwXZy9JMuH76iUiPGP0crIEdX8DDyyKEBN79o4V3ZbEjh0SUedQrnvxGOdquEhF5DxE=
+	t=1767959925; cv=none; b=qCYrXcEXOR4Ath6oHc6ye6EcNuOgkj9UsBl3NVsWykrUPXvMJQ/MTf7gJidNAd1DL+r73E/R63YmYte4YklsDa79F29I4YKGs25w1JvWuq54RFlpgvQFx6lbQ00VNmoeMMs0aP+2s/MxDPkcRV+5/cWfrBzeZVkjjpFfoilpT9g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961642; c=relaxed/simple;
-	bh=CaIHTXbB20UGxQevxWWc1IjKt52zGK41QiqxGR5z3v8=;
+	s=arc-20240116; t=1767959925; c=relaxed/simple;
+	bh=OyaFcdiOTFkypCbm/4ax+JgXqQ2Or2Qi5Y0i2DF7O+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fmr3x1DvUXkEmWcNtTpEX3wRDLuEl39o2y1joDKqa1acUu1Em+GJeO/WG7duLz7g1s6I4hEK3hynVKqYNr/ECD5VLhpRwzolXOApQ9tkCRHO05QvJNjSOj7fnO5/hZ9fs8EjH6YFSz/vm6OpdwmcMXWi6LJ1283LHsGuPm+bsf4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WoWSHRxx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2A1C4CEF1;
-	Fri,  9 Jan 2026 12:27:21 +0000 (UTC)
+	 MIME-Version; b=mC9w0eKJeM8yu4+oz/yYlRnBVlEUPcPN4YkMHQ5JZ7i6ymGXLeTNAaSs9HynHDh7KOro/PmpyRLM0Ui7JiwW4z91sU51U5iz7WcfY2FjX6roLzZfDNBJcAWBiErKjAs/C23qebIC1WD3a984jlBxjQF8OHWaeAcETpmeksKp5lw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDgHNkJF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89CBEC4CEF1;
+	Fri,  9 Jan 2026 11:58:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961642;
-	bh=CaIHTXbB20UGxQevxWWc1IjKt52zGK41QiqxGR5z3v8=;
+	s=korg; t=1767959924;
+	bh=OyaFcdiOTFkypCbm/4ax+JgXqQ2Or2Qi5Y0i2DF7O+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WoWSHRxx++DeVmzAgO5QfLSWM7WdCLB4YEbjrgIBezJfxlSyXveyW3dIO93veZXnb
-	 zf+z2REuv90YPTGrFmucYuGEmxRJDCgCzxZJExeIJBtYU7zwGWHnXjB5lkvlOKKLan
-	 juvtkUw+xS+Zf2bXo7zl0MP4T4sQZk1pLtGAQOFI=
+	b=yDgHNkJFdJXPZ70JH6h/P84nyBQFzAAATbg4rNRdN3S8hA1Q4137ociB1f+T9vcB7
+	 iaseBcwK4K3b8cU8m6gld9dqgJ+HjpHof+EKsMga2f7Ea/UjCbFx3WNB0W5mCpAaE/
+	 fN3Z2sjwgSEIdnewhGrM2lzPebEjO66vY1mWtV3A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Jan Kara <jack@suse.cz>,
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 085/634] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Subject: [PATCH 6.6 224/737] ext4: improve integrity checking in __mb_check_buddy by enhancing order-0 validation
 Date: Fri,  9 Jan 2026 12:36:03 +0100
-Message-ID: <20260109112120.635933037@linuxfoundation.org>
+Message-ID: <20260109112142.428464208@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +62,149 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Yongjian Sun <sunyongjian1@huawei.com>
 
-[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
+[ Upstream commit d9ee3ff810f1cc0e253c9f2b17b668b973cb0e06 ]
 
-When da9055_device_init() fails after regmap_add_irq_chip()
-succeeds but mfd_add_devices() fails, the error handling path
-only calls mfd_remove_devices() but forgets to call
-regmap_del_irq_chip(). This results in a resource leak.
+When the MB_CHECK_ASSERT macro is enabled, we found that the
+current validation logic in __mb_check_buddy has a gap in
+detecting certain invalid buddy states, particularly related
+to order-0 (bitmap) bits.
 
-Fix this by adding regmap_del_irq_chip() to the error path so
-that resources are released properly.
+The original logic consists of three steps:
+1. Validates higher-order buddies: if a higher-order bit is
+set, at most one of the two corresponding lower-order bits
+may be free; if a higher-order bit is clear, both lower-order
+bits must be allocated (and their bitmap bits must be 0).
+2. For any set bit in order-0, ensures all corresponding
+higher-order bits are not free.
+3. Verifies that all preallocated blocks (pa) in the group
+have pa_pstart within bounds and their bitmap bits marked as
+allocated.
 
-Fixes: 2896434cf272 ("mfd: DA9055 core driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+However, this approach fails to properly validate cases where
+order-0 bits are incorrectly cleared (0), allowing some invalid
+configurations to pass:
+
+               corrupt            integral
+
+order 3           1                  1
+order 2       1       1          1       1
+order 1     1   1   1   1      1   1   1   1
+order 0    0 0 1 1 1 1 1 1    1 1 1 1 1 1 1 1
+
+Here we get two adjacent free blocks at order-0 with inconsistent
+higher-order state, and the right one shows the correct scenario.
+
+The root cause is insufficient validation of order-0 zero bits.
+To fix this and improve completeness without significant performance
+cost, we refine the logic:
+
+1. Maintain the top-down higher-order validation, but we no longer
+check the cases where the higher-order bit is 0, as this case will
+be covered in step 2.
+2. Enhance order-0 checking by examining pairs of bits:
+   - If either bit in a pair is set (1), all corresponding
+     higher-order bits must not be free.
+   - If both bits are clear (0), then exactly one of the
+     corresponding higher-order bits must be free
+3. Keep the preallocation (pa) validation unchanged.
+
+This change closes the validation gap, ensuring illegal buddy states
+involving order-0 are correctly detected, while removing redundant
+checks and maintaining efficiency.
+
+Fixes: c9de560ded61f ("ext4: Add multi block allocator for ext4")
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251106060614.631382-3-sunyongjian@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/da9055-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/mballoc.c | 49 +++++++++++++++++++++++++++++++----------------
+ 1 file changed, 32 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
-index c3bcbd8905c6c..a520890090ba4 100644
---- a/drivers/mfd/da9055-core.c
-+++ b/drivers/mfd/da9055-core.c
-@@ -388,6 +388,7 @@ int da9055_device_init(struct da9055 *da9055)
+diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
+index 9721ae0ff92ed..5304497c60e1f 100644
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -676,6 +676,24 @@ do {									\
+ 	}								\
+ } while (0)
  
- err:
- 	mfd_remove_devices(da9055->dev);
-+	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
- 	return ret;
- }
++/*
++ * Perform buddy integrity check with the following steps:
++ *
++ * 1. Top-down validation (from highest order down to order 1, excluding order-0 bitmap):
++ *    For each pair of adjacent orders, if a higher-order bit is set (indicating a free block),
++ *    at most one of the two corresponding lower-order bits may be clear (free).
++ *
++ * 2. Order-0 (bitmap) validation, performed on bit pairs:
++ *    - If either bit in a pair is set (1, allocated), then all corresponding higher-order bits
++ *      must not be free (0).
++ *    - If both bits in a pair are clear (0, free), then exactly one of the corresponding
++ *      higher-order bits must be free (0).
++ *
++ * 3. Preallocation (pa) list validation:
++ *    For each preallocated block (pa) in the group:
++ *    - Verify that pa_pstart falls within the bounds of this block group.
++ *    - Ensure the corresponding bit(s) in the order-0 bitmap are marked as allocated (1).
++ */
+ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				const char *function, int line)
+ {
+@@ -717,15 +735,6 @@ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				continue;
+ 			}
  
+-			/* both bits in buddy2 must be 1 */
+-			MB_CHECK_ASSERT(mb_test_bit(i << 1, buddy2));
+-			MB_CHECK_ASSERT(mb_test_bit((i << 1) + 1, buddy2));
+-
+-			for (j = 0; j < (1 << order); j++) {
+-				k = (i * (1 << order)) + j;
+-				MB_CHECK_ASSERT(
+-					!mb_test_bit(k, e4b->bd_bitmap));
+-			}
+ 			count++;
+ 		}
+ 		MB_CHECK_ASSERT(e4b->bd_info->bb_counters[order] == count);
+@@ -741,15 +750,21 @@ static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
+ 				fragments++;
+ 				fstart = i;
+ 			}
+-			continue;
++		} else {
++			fstart = -1;
+ 		}
+-		fstart = -1;
+-		/* check used bits only */
+-		for (j = 0; j < e4b->bd_blkbits + 1; j++) {
+-			buddy2 = mb_find_buddy(e4b, j, &max2);
+-			k = i >> j;
+-			MB_CHECK_ASSERT(k < max2);
+-			MB_CHECK_ASSERT(mb_test_bit(k, buddy2));
++		if (!(i & 1)) {
++			int in_use, zero_bit_count = 0;
++
++			in_use = mb_test_bit(i, buddy) || mb_test_bit(i + 1, buddy);
++			for (j = 1; j < e4b->bd_blkbits + 2; j++) {
++				buddy2 = mb_find_buddy(e4b, j, &max2);
++				k = i >> j;
++				MB_CHECK_ASSERT(k < max2);
++				if (!mb_test_bit(k, buddy2))
++					zero_bit_count++;
++			}
++			MB_CHECK_ASSERT(zero_bit_count == !in_use);
+ 		}
+ 	}
+ 	MB_CHECK_ASSERT(!EXT4_MB_GRP_NEED_INIT(e4b->bd_info));
 -- 
 2.51.0
 
