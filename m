@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207501-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 611EAD0985A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4330D09F85
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9227A3083289
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 716753090F4B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C99EC330337;
-	Fri,  9 Jan 2026 12:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 42D8335B135;
+	Fri,  9 Jan 2026 12:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHNA1a2X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UD25ZA7H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B8F835A95D;
-	Fri,  9 Jan 2026 12:10:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C6835B13F;
+	Fri,  9 Jan 2026 12:37:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960610; cv=none; b=EAxvf/hzYgCgxAliRLoGDZt9oj8dRcYrVwwl8tbh6sFf+hlKs2YZ3xjN1+M/GVPXh8hIb+wZTlgN4A2ejxG6z7Q8CzSQD62hmTacouJy7Xo5e3/9KuzrSj5g0pp6JA4nv2Zyl/6014MuTRWosvkiJB8ItdoqTEMdXi8IpFdNp/A=
+	t=1767962234; cv=none; b=N2gz6XY1SH1Xvf+f8V4hwCPp37j/7MdlupVFa/4dFrd8sK66VbmKnNmTEhRr80vckG+pL+Zag8pPFQ0fmbxbXDEZgooQRlOQ/Qc+ZYHGLW07Y7HRMMh+egXd+4WK3Kp504xQEdN8S4UiGDjpqFH8MuYRpadQ+CWzensRku+neLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960610; c=relaxed/simple;
-	bh=J5m45Smu2LN0dHk6v7wsWW68hoH6cA4M+kY5NnCIX6U=;
+	s=arc-20240116; t=1767962234; c=relaxed/simple;
+	bh=XjLFq8WDA1ikcwqyAffvFNiSCZlGALbp5yk8L9G2Pkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qw2Cbi3sr0daEfh7od2ss+SxgN4VsERNLyav7uWiTXePvnt75WAQIwyxCP5xWW5CIIWr8/trhczhyf8e8tQa6ZpcISt0OvBVHvVCwSwDXLDQGaumIN8klaP2/mPWnkpt8HwjNhZmnBhL6jFDitv4bub1zWhPGE0sXpzMQh0DZ0g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHNA1a2X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65C75C4CEF1;
-	Fri,  9 Jan 2026 12:10:09 +0000 (UTC)
+	 MIME-Version; b=dGrDVwCmiHISrCR7mzVilVZkaP4aq2OmwdQimOaUeBH1AdRi0I1nFs+RPBhO7OAXvLHEFaQ1IfNnza3V0RssbGKrOxC7PVzDsJj8obD3lZ/tpET8TmHT7ZBGey5y4E1MBLUc+rbfIVZND5CORZ6ytiWd/WgI79o1DtgsKwaY6lM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UD25ZA7H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86DB1C4CEF1;
+	Fri,  9 Jan 2026 12:37:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960609;
-	bh=J5m45Smu2LN0dHk6v7wsWW68hoH6cA4M+kY5NnCIX6U=;
+	s=korg; t=1767962233;
+	bh=XjLFq8WDA1ikcwqyAffvFNiSCZlGALbp5yk8L9G2Pkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHNA1a2XRnTtyoRoEdNSbBSQCmDvPZptUXMnLb0theYS4d9MjHcfHgBIubloBObF1
-	 lWBnyWqxCWMH/2Ww20Dw8qfsS9+RwcxH0nshTFANCSC9lu+wBuZ0FIJJBt2dFqEFpo
-	 LMYrxkgCFsEeVujRL+lWKDfgpefA2wSvy1wXVhOM=
+	b=UD25ZA7HDjdKerRHZIXaT+Rl5po+7r7GWXNfu+kVareoKRpRqJxWQVUQ+w/LI3W8f
+	 9ZLokmR2zUwHzlenFXz0KqISh2BVMBB0OdUi8IDYRddUeo3Vfh+cwRf5Cquc4iFuqE
+	 09Yj7alZgXWnrZ69g69Qc+96rdZX0RCXjSuUGStw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeongjun Park <aha310510@gmail.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.6 432/737] media: dvb-usb: dtv5100: fix out-of-bounds in dtv5100_i2c_msg()
-Date: Fri,  9 Jan 2026 12:39:31 +0100
-Message-ID: <20260109112150.245409960@linuxfoundation.org>
+	Takashi Iwai <tiwai@suse.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 294/634] ALSA: pcmcia: Fix resource leak in snd_pdacf_probe error path
+Date: Fri,  9 Jan 2026 12:39:32 +0100
+Message-ID: <20260109112128.593321530@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit b91e6aafe8d356086cc621bc03e35ba2299e4788 upstream.
+[ Upstream commit 5032347c04ba7ff9ba878f262e075d745c06a2a8 ]
 
-rlen value is a user-controlled value, but dtv5100_i2c_msg() does not
-check the size of the rlen value. Therefore, if it is set to a value
-larger than sizeof(st->data), an out-of-bounds vuln occurs for st->data.
+When pdacf_config() fails, snd_pdacf_probe() returns the error code
+directly without freeing the sound card resources allocated by
+snd_card_new(), which leads to a memory leak.
 
-Therefore, we need to add proper range checking to prevent this vuln.
+Add proper error handling to free the sound card and clear the card
+list entry when pdacf_config() fails.
 
-Fixes: 60688d5e6e6e ("V4L/DVB (8735): dtv5100: replace dummy frontend by zl10353")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251215090433.211-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/dvb-usb/dtv5100.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ sound/pcmcia/pdaudiocf/pdaudiocf.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/media/usb/dvb-usb/dtv5100.c
-+++ b/drivers/media/usb/dvb-usb/dtv5100.c
-@@ -55,6 +55,11 @@ static int dtv5100_i2c_msg(struct dvb_us
- 	}
- 	index = (addr << 8) + wbuf[0];
+diff --git a/sound/pcmcia/pdaudiocf/pdaudiocf.c b/sound/pcmcia/pdaudiocf/pdaudiocf.c
+index 8363ec08df5d..4468d81683ec 100644
+--- a/sound/pcmcia/pdaudiocf/pdaudiocf.c
++++ b/sound/pcmcia/pdaudiocf/pdaudiocf.c
+@@ -132,7 +132,13 @@ static int snd_pdacf_probe(struct pcmcia_device *link)
+ 	link->config_index = 1;
+ 	link->config_regs = PRESENT_OPTION;
  
-+	if (rlen > sizeof(st->data)) {
-+		warn("rlen = %x is too big!\n", rlen);
-+		return -EINVAL;
+-	return pdacf_config(link);
++	err = pdacf_config(link);
++	if (err < 0) {
++		card_list[i] = NULL;
++		snd_card_free(card);
++		return err;
 +	}
-+
- 	memcpy(st->data, rbuf, rlen);
- 	msleep(1); /* avoid I2C errors */
- 	return usb_control_msg(d->udev, pipe, request,
++	return 0;
+ }
+ 
+ 
+-- 
+2.51.0
+
 
 
 
