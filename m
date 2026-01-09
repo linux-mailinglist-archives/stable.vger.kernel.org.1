@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-206555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206557-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6EEF5D091C8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:30 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BF2CD091E8
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E69C230C9362
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:52:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AFCEC30CBA74
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:52:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C20C033B6F1;
-	Fri,  9 Jan 2026 11:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 465CA33B97F;
+	Fri,  9 Jan 2026 11:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="toYAULKo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gwe5lp+n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8646F2F12D4;
-	Fri,  9 Jan 2026 11:52:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 08B5C32FA3D;
+	Fri,  9 Jan 2026 11:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959539; cv=none; b=FlCTTEoKSMNq/WfbZQdh0Uh03mdTvuCaDflu3fav+Z/75ADmeMg0uZ4srrljJqQknsYyG1q8yYwn7l/f08U0h8Ypx4VxHDx8sj8iHTzWysEfYodhKlJB8SQGM7baVweCbDo0tAlpUM0puNF7TZmGAPogHOfn8mDnybyhmLrq2ZU=
+	t=1767959545; cv=none; b=vA1mt6PMb/vymKRCyIKuY0rctt1kOAwSsGmhrzFgo9Frd0RPf3niWR0dZHbMmDDOnR0Q7p6Cn9+Wm/65WziZVhmGcCIZtyz3X/kDgOnVVuAvwMPvsOr6O4XPnvNH69DiZUE0PDCUqmBrL7IlpTxqSv4WErckOvaW20gj631rqJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959539; c=relaxed/simple;
-	bh=pZjD4Bkdp1+zTTqWXZ40btNHIl+LD7VRLX3wUGfv36E=;
+	s=arc-20240116; t=1767959545; c=relaxed/simple;
+	bh=11bqN8Uhtw3FvQkc7oq9vezfn7nP+O7YVrVvB0vsQ+8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FKIKU5JzZj8j5WFhkpIVWhce0N1K7ei9emnohseoYrv1C65t7AVCh5eY/osyG0ZhJB3M+pR/Fx9PTQJN6rgNfp5LSG9nI/ljtfvqGcFRtyD3+j6c0I+YW2RnIDOzpeMcdrVtZurXKhcDcdLUwo4ciZnuuu1uNDnjoHx0T9+6W/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=toYAULKo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4304C4CEF1;
-	Fri,  9 Jan 2026 11:52:18 +0000 (UTC)
+	 MIME-Version; b=guwwnZFz6LcIcpKrbao2lj67ETM72g7wtBm30QSgQbmY6o51QLyaVKR1MOwXzjOItMt47T9nhldbUipATBZd8wMncBfWkqbRtnwYkNC69ycWJB22AdPfLWwb/Ay2mIU062DEnIEI8lHDh6DwI1O0+HCZ8Ya1I/CB/KiAyCkn2nE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gwe5lp+n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8733FC4CEF1;
+	Fri,  9 Jan 2026 11:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959539;
-	bh=pZjD4Bkdp1+zTTqWXZ40btNHIl+LD7VRLX3wUGfv36E=;
+	s=korg; t=1767959544;
+	bh=11bqN8Uhtw3FvQkc7oq9vezfn7nP+O7YVrVvB0vsQ+8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=toYAULKoAg4g42Yr1Jx6tsaYbRqprpL8Q+Ie/lwCadMPUe4lfN7c/7PRUKH2WbRiq
-	 X70/ixUkP7YRDqrV0Tpph86KTWA0D8lhyLky24EZDJ+d9PfVK23C+yxm8f3iRy+THW
-	 p3iDFfR7gKBRENSkjTJ/fqQ38m4lUEn6UHzBZDBc=
+	b=Gwe5lp+n38L5r+We+59HjrWDCrzvA8GiVXSzIeW7YmjKehuScLg3scA4LqmLNW5KN
+	 LO+YRqzfyygbfbcw9v+VJKhROiCSi0vP9UohYm52e/VBa7HlWFYHfQueQ1WPPWDijy
+	 yg7Ku/kU3OTYAlFdgeVRtJ8I8jzHws8NHZDnm9dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Peng Fan <peng.fan@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Gergo Koteles <soyer@irl.hu>,
+	David Heidelberg <david@ixit.cz>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 088/737] firmware: imx: scu-irq: fix OF node leak in
-Date: Fri,  9 Jan 2026 12:33:47 +0100
-Message-ID: <20260109112137.308516205@linuxfoundation.org>
+Subject: [PATCH 6.6 089/737] arm64: dts: qcom: sdm845-oneplus: Correct gpio used for slider
+Date: Fri,  9 Jan 2026 12:33:48 +0100
+Message-ID: <20260109112137.346559368@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -65,39 +66,39 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Gergo Koteles <soyer@irl.hu>
 
-[ Upstream commit ee67247843a2b62d1473cfa4df300e69b5190ccf ]
+[ Upstream commit d7ec7d34237498fab7a6afed8da4b7139b0e387c ]
 
-imx_scu_enable_general_irq_channel() calls of_parse_phandle_with_args(),
-but does not release the OF node reference. Add a of_node_put() call
-to release the reference.
+The previous GPIO numbers were wrong. Update them to the correct
+ones and fix the label.
 
-Fixes: 851826c7566e ("firmware: imx: enable imx scu general irq function")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 288ef8a42612 ("arm64: dts: sdm845: add oneplus6/6t devices")
+Signed-off-by: Gergo Koteles <soyer@irl.hu>
+Signed-off-by: David Heidelberg <david@ixit.cz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250927-slider-correct-v1-1-fb8cc7fdcedf@ixit.cz
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/imx/imx-scu-irq.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
-index 6125cccc9ba79..f2b902e95b738 100644
---- a/drivers/firmware/imx/imx-scu-irq.c
-+++ b/drivers/firmware/imx/imx-scu-irq.c
-@@ -226,8 +226,10 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
- 	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
+diff --git a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+index 9322b92a1e682..bccc52e01da38 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845-oneplus-common.dtsi
+@@ -780,8 +780,8 @@ hall_sensor_default: hall-sensor-default-state {
+ 		bias-disable;
+ 	};
  
- 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
--				       "#mbox-cells", 0, &spec))
-+				       "#mbox-cells", 0, &spec)) {
- 		i = of_alias_get_id(spec.np, "mu");
-+		of_node_put(spec.np);
-+	}
- 
- 	/* use mu1 as general mu irq channel if failed */
- 	if (i < 0)
+-	tri_state_key_default: tri-state-key-default-state {
+-		pins = "gpio40", "gpio42", "gpio26";
++	alert_slider_default: alert-slider-default-state {
++		pins = "gpio126", "gpio52", "gpio24";
+ 		function = "gpio";
+ 		drive-strength = <2>;
+ 		bias-disable;
 -- 
 2.51.0
 
