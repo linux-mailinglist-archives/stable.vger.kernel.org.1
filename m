@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-207513-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206887-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CFB33D09FEB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 518AAD096A4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B720A301703A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE45830B9ED4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 912EA359701;
-	Fri,  9 Jan 2026 12:37:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC9235A92D;
+	Fri,  9 Jan 2026 12:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaXJQApj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yV8iEcVY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 552D633372B;
-	Fri,  9 Jan 2026 12:37:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5049359FA9;
+	Fri,  9 Jan 2026 12:08:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962268; cv=none; b=p/Sp1bUFWD/yOtpy4dahapLY6I+UHnu8lssxAXyZR54U2URlYiVgGIxtDqkflFKvGIAp7856Ww015e+bM8F+n+Uq1vh76FiPuGwj7f2+EXKPq+1Rgg4jnu9L4CF51RISkdBWZvzUT3xIP6PBoj3PDJjb4V/g8KSdx5aSLIgSTxE=
+	t=1767960482; cv=none; b=dMzsdKgMZaUQzmDEUF1cb9Pj6KAaerOI1qp05/Re8eSbUUDBEKSr35Lq/0Kv7acc8HIfbjwu6KUfzKpHjUZdk5HqUM026ZPLzCsRdSzzJvdZ4b2+++zOtNTU6/9YywHEX1FGSGLjeZii6WtVN32WconPSDhjhNRQwEszcu/9Zy0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962268; c=relaxed/simple;
-	bh=RGOnBfNblh0yO9+dAsgQd++7rEYDHh71wEgTMG0O1yA=;
+	s=arc-20240116; t=1767960482; c=relaxed/simple;
+	bh=iZiQFYKoiMxWUfU0BLB0bquKeMtkMPxrS6v6kXLwMRE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cbg/B/HH82cnH7vWA826pNPvXOWDTeq4vBil0hvxrsl6iucoRPDNgH2UpiF2BXhWSG398m5QerMPVevoBYdeb5FJmXGAkyruVUQcf4ng9S3MswDQ+eyoHsDo84tLtsdRYeUI5bbjyK3cDnor/HyeZzlTFcAYJZpZondN6mq5YzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaXJQApj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 587DFC4CEF1;
-	Fri,  9 Jan 2026 12:37:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=F0Wk/fQ71EXCLSPYuZZmqGDqrLSdR7gBFsu/yvu1WH8nvpBykZVvFUZ3+2XIypkvUs+ZdPxUtPtqXwkBuqHUKQz3Y6RNzriDx2Ad/mWjVARQIYf1Ff4STUj8/nOxP3RZjcvt/lYkmkuxMoaMEsirRB+SCnQ4JvFdgC4R7Txt7Ec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yV8iEcVY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D75BC4CEF1;
+	Fri,  9 Jan 2026 12:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962267;
-	bh=RGOnBfNblh0yO9+dAsgQd++7rEYDHh71wEgTMG0O1yA=;
+	s=korg; t=1767960482;
+	bh=iZiQFYKoiMxWUfU0BLB0bquKeMtkMPxrS6v6kXLwMRE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VaXJQApjHLmY3/WM8DZpo+j5cAqGOi2InxQZMQ8lGvrCu6ZtJ9ywk1bMwA6E6qZp2
-	 pgognLDKiaHUABp6z+tioPmI85F2lX2DBmFHqlqiiO3WbkVWAzRIkM4UzshJwIATp0
-	 vfgOFnkXBzgd4bitbbz7R8m1MdoMUknI+gOIyBx4=
+	b=yV8iEcVYFhNumr4Buc5IH1HSjqoWaIWLBbU3CbWUC8wuR9swdttNTt7W1q6pyglvD
+	 Ts688CPXhJxywgoyknFnWbDAQqk8yItEs0AfL22Y6WAwsctXFxyT42z/T69iWJNaVd
+	 ioIzaL5/u8ks4fLS/89t0u8nR3PRe56am+vIjP0k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 278/634] spi: cadence-quadspi: Add compatible for AMD Pensando Elba SoC
-Date: Fri,  9 Jan 2026 12:39:16 +0100
-Message-ID: <20260109112127.993363791@linuxfoundation.org>
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 418/737] floppy: fix for PAGE_SIZE != 4KB
+Date: Fri,  9 Jan 2026 12:39:17 +0100
+Message-ID: <20260109112149.720434261@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,99 +57,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brad Larson <blarson@amd.com>
+From: Rene Rebe <rene@exactco.de>
 
-[ Upstream commit f5c2f9f9584353bc816d76a65c97dd03dc61678c ]
+commit 82d20481024cbae2ea87fe8b86d12961bfda7169 upstream.
 
-The AMD Pensando Elba SoC has the Cadence QSPI controller integrated.
+For years I wondered why the floppy driver does not just work on
+sparc64, e.g:
 
-The quirk CQSPI_NEEDS_APB_AHB_HAZARD_WAR is added and if enabled
-a dummy readback from the controller is performed to ensure
-synchronization.
+root@SUNW_375_0066:# disktype /dev/fd0
+disktype: Can't open /dev/fd0: No such device or address
 
-Signed-off-by: Brad Larson <blarson@amd.com
-Link: https://lore.kernel.org/r/20230515181606.65953-8-blarson@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org
-Stable-dep-of: 1889dd208197 ("spi: cadence-quadspi: Fix clock disable on probe failure path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[  525.341906] disktype: attempt to access beyond end of device
+fd0: rw=0, sector=0, nr_sectors = 16 limit=8
+[  525.341991] floppy: error 10 while reading block 0
+
+Turns out floppy.c __floppy_read_block_0 tries to read one page for
+the first test read to determine the disk size and thus fails if that
+is greater than 4k. Adjust minimum MAX_DISK_SIZE to PAGE_SIZE to fix
+floppy on sparc64 and likely all other PAGE_SIZE != 4KB configs.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-cadence-quadspi.c | 19 +++++++++++++++++++
- 1 file changed, 19 insertions(+)
+ drivers/block/floppy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index fe537b8d87e5..ca393f3fcd90 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -40,6 +40,7 @@
- #define CQSPI_SUPPORT_EXTERNAL_DMA	BIT(2)
- #define CQSPI_NO_SUPPORT_WR_COMPLETION	BIT(3)
- #define CQSPI_SLOW_SRAM		BIT(4)
-+#define CQSPI_NEEDS_APB_AHB_HAZARD_WAR	BIT(5)
+--- a/drivers/block/floppy.c
++++ b/drivers/block/floppy.c
+@@ -331,7 +331,7 @@ static bool initialized;
+  * This default is used whenever the current disk size is unknown.
+  * [Now it is rather a minimum]
+  */
+-#define MAX_DISK_SIZE 4		/* 3984 */
++#define MAX_DISK_SIZE (PAGE_SIZE / 1024)
  
- /* Capabilities */
- #define CQSPI_SUPPORTS_OCTAL		BIT(0)
-@@ -89,6 +90,7 @@ struct cqspi_st {
- 	u32			pd_dev_id;
- 	bool			wr_completion;
- 	bool			slow_sram;
-+	bool			apb_ahb_hazard;
- };
- 
- struct cqspi_driver_platdata {
-@@ -983,6 +985,13 @@ static int cqspi_indirect_write_execute(struct cqspi_flash_pdata *f_pdata,
- 	if (cqspi->wr_delay)
- 		ndelay(cqspi->wr_delay);
- 
-+	/*
-+	 * If a hazard exists between the APB and AHB interfaces, perform a
-+	 * dummy readback from the controller to ensure synchronization.
-+	 */
-+	if (cqspi->apb_ahb_hazard)
-+		readl(reg_base + CQSPI_REG_INDIRECTWR);
-+
- 	while (remaining > 0) {
- 		size_t write_words, mod_bytes;
- 
-@@ -1717,6 +1726,8 @@ static int cqspi_probe(struct platform_device *pdev)
- 			cqspi->wr_completion = false;
- 		if (ddata->quirks & CQSPI_SLOW_SRAM)
- 			cqspi->slow_sram = true;
-+		if (ddata->quirks & CQSPI_NEEDS_APB_AHB_HAZARD_WAR)
-+			cqspi->apb_ahb_hazard = true;
- 
- 		if (of_device_is_compatible(pdev->dev.of_node,
- 					    "xlnx,versal-ospi-1.0")) {
-@@ -1851,6 +1862,10 @@ static const struct cqspi_driver_platdata jh7110_qspi = {
- 	.quirks = CQSPI_DISABLE_DAC_MODE,
- };
- 
-+static const struct cqspi_driver_platdata pensando_cdns_qspi = {
-+	.quirks = CQSPI_NEEDS_APB_AHB_HAZARD_WAR | CQSPI_DISABLE_DAC_MODE,
-+};
-+
- static const struct of_device_id cqspi_dt_ids[] = {
- 	{
- 		.compatible = "cdns,qspi-nor",
-@@ -1880,6 +1895,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
- 		.compatible = "starfive,jh7110-qspi",
- 		.data = &jh7110_qspi,
- 	},
-+	{
-+		.compatible = "amd,pensando-elba-qspi",
-+		.data = &pensando_cdns_qspi,
-+	},
- 	{ /* end of table */ }
- };
- 
--- 
-2.51.0
-
+ /*
+  * globals used by 'result()'
 
 
 
