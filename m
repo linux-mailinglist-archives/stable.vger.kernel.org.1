@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39065D099CA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:28:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1380D0A165
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A24D03079D31
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C2C8430F0994
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 457B235A940;
-	Fri,  9 Jan 2026 12:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A0D2732BF21;
+	Fri,  9 Jan 2026 12:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="n2QBrBtH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NDsv1xZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0827B35971B;
-	Fri,  9 Jan 2026 12:19:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 605CE35C1B6;
+	Fri,  9 Jan 2026 12:49:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961194; cv=none; b=CFQGuHKp+BgTPRi81CyxCPDJu+HNvTowghikRkbGa+YSeHSPIKDCxhqkALD5tT3MYLkN362F6wuIpRE9ADkow07haccXM843fV7uTaAapqGNcCwF8nMFg6UK3wV/GHJuUzqCjnXIuBgaSie0433EpJ4FZq3xdJdNObWNGO/dQ7I=
+	t=1767962992; cv=none; b=OlOhvotpRWa5gYfl39FC4cMwWKzgwkdBGSDQq7RQ4Hj+29C/EuKpfgmzkMnAbnstolMXV+BJlAKZh86yPj1wXG+zvd4cSyqAXJf2Ip6ApXN83prQ6FOii+qmeG9SlzC6CCuARZCuex0+g5Vcd9YtFAvMouFnCeaSSNdKZrIWdFM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961194; c=relaxed/simple;
-	bh=U4maQHENNXwFBpOC94oXCKAFqMJaMjwrSLMPYcG3fNs=;
+	s=arc-20240116; t=1767962992; c=relaxed/simple;
+	bh=JUD5bUOPNLUkTZ22CtgkgZoknJEZW21/35NOMdS0dWI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q+olHEH+ZTn48q+8prOUoYPG+oUsF8eR8iAAeJp7TL75cPjvoIGQTdsC94xUqSs0trTDEkUFvtM3tTZhRuec3X5gCCQyfnznCwZvX1LYizHejPJYXn22tZ98ZArYlQTYCoSOWnh/fgBzeH38gtuSsgzlZ4EGTnMabRTomMTW6V8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=n2QBrBtH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87036C4CEF1;
-	Fri,  9 Jan 2026 12:19:53 +0000 (UTC)
+	 MIME-Version; b=i9tDHEvwVKnJ/8PuqiwAd1OJLgI+UqYXkMVjEQ81xtKveH7ayVUTCQxDSgypHpK6Jxz9pWffevV+0QD8/eXBFZ0DmvFfGCdVNIap+ZAAnWMMngpwZUDuroVZE/NMst0ImX9SUwNa+ZOspNfT664q270oTXTc4GGJlVFf6oipNpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NDsv1xZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E219EC4CEF1;
+	Fri,  9 Jan 2026 12:49:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961193;
-	bh=U4maQHENNXwFBpOC94oXCKAFqMJaMjwrSLMPYcG3fNs=;
+	s=korg; t=1767962992;
+	bh=JUD5bUOPNLUkTZ22CtgkgZoknJEZW21/35NOMdS0dWI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=n2QBrBtH9tJskpHJC0dmr9pRN6PBLECZm2llLj8Yt5qXwPQKX7GxUIIuJUl2f2BIp
-	 GY6nWiu7hxT7yJlEaH8rsI1gn1tT9effkD8gExBg/J4s63fwvQx+INAH9IZg4MDIf5
-	 8H9/L/DyUziObVYyl2wgY3TOSBuhVdItuTWvxqaA=
+	b=NDsv1xZWVupmVh3DE2ECmiWC9eCgIrXO8fmRAeYgjU7W/eqwGkEFYcgrcBvXClSTN
+	 l+Ehx2n9HeMGqZfTDU2u53Co3iMaFd11W0HaBJ8iYgvROATCEIeqlRF/iC38/fF6yM
+	 liEni/kZQ6fAhn5wCgfDug6ta3sqhi8QSYzMZCAs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Kory Maincent (TI.com)" <kory.maincent@bootlin.com>,
-	Douglas Anderson <dianders@chromium.org>,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 666/737] drm/tilcdc: Fix removal actions in case of failed probe
+	stable@kernel.org,
+	Baokun Li <libaokun1@huawei.com>,
+	David Howells <dhowells@redhat.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Chen Yu <xnguchen@sina.cn>
+Subject: [PATCH 6.1 527/634] fscache: delete fscache_cookie_lru_timer when fscache exits to avoid UAF
 Date: Fri,  9 Jan 2026 12:43:25 +0100
-Message-ID: <20260109112159.096916299@linuxfoundation.org>
+Message-ID: <20260109112137.396227194@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,215 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Kory Maincent (TI.com)" <kory.maincent@bootlin.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit a585c7ef9cabda58088916baedc6573e9a5cd2a7 ]
+commit 72a6e22c604c95ddb3b10b5d3bb85b6ff4dbc34f upstream.
 
-The drm_kms_helper_poll_fini() and drm_atomic_helper_shutdown() helpers
-should only be called when the device has been successfully registered.
-Currently, these functions are called unconditionally in tilcdc_fini(),
-which causes warnings during probe deferral scenarios.
+The fscache_cookie_lru_timer is initialized when the fscache module
+is inserted, but is not deleted when the fscache module is removed.
+If timer_reduce() is called before removing the fscache module,
+the fscache_cookie_lru_timer will be added to the timer list of
+the current cpu. Afterwards, a use-after-free will be triggered
+in the softIRQ after removing the fscache module, as follows:
 
-[    7.972317] WARNING: CPU: 0 PID: 23 at drivers/gpu/drm/drm_atomic_state_helper.c:175 drm_atomic_helper_crtc_duplicate_state+0x60/0x68
-...
-[    8.005820]  drm_atomic_helper_crtc_duplicate_state from drm_atomic_get_crtc_state+0x68/0x108
-[    8.005858]  drm_atomic_get_crtc_state from drm_atomic_helper_disable_all+0x90/0x1c8
-[    8.005885]  drm_atomic_helper_disable_all from drm_atomic_helper_shutdown+0x90/0x144
-[    8.005911]  drm_atomic_helper_shutdown from tilcdc_fini+0x68/0xf8 [tilcdc]
-[    8.005957]  tilcdc_fini [tilcdc] from tilcdc_pdev_probe+0xb0/0x6d4 [tilcdc]
+==================================================================
+BUG: unable to handle page fault for address: fffffbfff803c9e9
+ PF: supervisor read access in kernel mode
+ PF: error_code(0x0000) - not-present page
+PGD 21ffea067 P4D 21ffea067 PUD 21ffe6067 PMD 110a7c067 PTE 0
+Oops: Oops: 0000 [#1] PREEMPT SMP KASAN PTI
+CPU: 1 UID: 0 PID: 0 Comm: swapper/1 Tainted: G W 6.11.0-rc3 #855
+Tainted: [W]=WARN
+RIP: 0010:__run_timer_base.part.0+0x254/0x8a0
+Call Trace:
+ <IRQ>
+ tmigr_handle_remote_up+0x627/0x810
+ __walk_groups.isra.0+0x47/0x140
+ tmigr_handle_remote+0x1fa/0x2f0
+ handle_softirqs+0x180/0x590
+ irq_exit_rcu+0x84/0xb0
+ sysvec_apic_timer_interrupt+0x6e/0x90
+ </IRQ>
+ <TASK>
+ asm_sysvec_apic_timer_interrupt+0x1a/0x20
+RIP: 0010:default_idle+0xf/0x20
+ default_idle_call+0x38/0x60
+ do_idle+0x2b5/0x300
+ cpu_startup_entry+0x54/0x60
+ start_secondary+0x20d/0x280
+ common_startup_64+0x13e/0x148
+ </TASK>
+Modules linked in: [last unloaded: netfs]
+==================================================================
 
-Fix this by rewriting the failed probe cleanup path using the standard
-goto error handling pattern, which ensures that cleanup functions are
-only called on successfully initialized resources. Additionally, remove
-the now-unnecessary is_registered flag.
+Therefore delete fscache_cookie_lru_timer when removing the fscahe module.
 
-Cc: stable@vger.kernel.org
-Fixes: 3c4babae3c4a ("drm: Call drm_atomic_helper_shutdown() at shutdown/remove time for misc drivers")
-Signed-off-by: Kory Maincent (TI.com) <kory.maincent@bootlin.com>
-Reviewed-by: Douglas Anderson <dianders@chromium.org>
-Reviewed-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Signed-off-by: Douglas Anderson <dianders@chromium.org>
-Link: https://patch.msgid.link/20251125090546.137193-1-kory.maincent@bootlin.com
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 12bb21a29c19 ("fscache: Implement cookie user counting and resource pinning")
+Cc: stable@kernel.org
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Link: https://lore.kernel.org/r/20240826112056.2458299-1-libaokun@huaweicloud.com
+Acked-by: David Howells <dhowells@redhat.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+[ Changed the file path due to missing commit:47757ea83a54 ("netfs,
+fscache: Move fs/fscache/* into fs/netfs/") ]
+Signed-off-by: Chen Yu <xnguchen@sina.cn>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/tilcdc/tilcdc_crtc.c |    2 -
- drivers/gpu/drm/tilcdc/tilcdc_drv.c  |   53 +++++++++++++++++++++++------------
- drivers/gpu/drm/tilcdc/tilcdc_drv.h  |    2 -
- 3 files changed, 37 insertions(+), 20 deletions(-)
+ fs/fscache/main.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_crtc.c
-@@ -586,7 +586,7 @@ out:
- 	drm_modeset_unlock(&crtc->mutex);
+--- a/fs/fscache/main.c
++++ b/fs/fscache/main.c
+@@ -114,6 +114,7 @@ static void __exit fscache_exit(void)
+ 
+ 	kmem_cache_destroy(fscache_cookie_jar);
+ 	fscache_proc_cleanup();
++	timer_shutdown_sync(&fscache_cookie_lru_timer);
+ 	destroy_workqueue(fscache_wq);
+ 	pr_notice("Unloaded\n");
  }
- 
--static void tilcdc_crtc_destroy(struct drm_crtc *crtc)
-+void tilcdc_crtc_destroy(struct drm_crtc *crtc)
- {
- 	struct tilcdc_drm_private *priv = crtc->dev->dev_private;
- 
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.c
-@@ -171,8 +171,7 @@ static void tilcdc_fini(struct drm_devic
- 	if (priv->crtc)
- 		tilcdc_crtc_shutdown(priv->crtc);
- 
--	if (priv->is_registered)
--		drm_dev_unregister(dev);
-+	drm_dev_unregister(dev);
- 
- 	drm_kms_helper_poll_fini(dev);
- 	drm_atomic_helper_shutdown(dev);
-@@ -219,21 +218,21 @@ static int tilcdc_init(const struct drm_
- 	priv->wq = alloc_ordered_workqueue("tilcdc", 0);
- 	if (!priv->wq) {
- 		ret = -ENOMEM;
--		goto init_failed;
-+		goto put_drm;
- 	}
- 
- 	priv->mmio = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(priv->mmio)) {
- 		dev_err(dev, "failed to request / ioremap\n");
- 		ret = PTR_ERR(priv->mmio);
--		goto init_failed;
-+		goto free_wq;
- 	}
- 
- 	priv->clk = clk_get(dev, "fck");
- 	if (IS_ERR(priv->clk)) {
- 		dev_err(dev, "failed to get functional clock\n");
- 		ret = -ENODEV;
--		goto init_failed;
-+		goto free_wq;
- 	}
- 
- 	pm_runtime_enable(dev);
-@@ -312,7 +311,7 @@ static int tilcdc_init(const struct drm_
- 	ret = tilcdc_crtc_create(ddev);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to create crtc\n");
--		goto init_failed;
-+		goto disable_pm;
- 	}
- 	modeset_init(ddev);
- 
-@@ -323,46 +322,46 @@ static int tilcdc_init(const struct drm_
- 	if (ret) {
- 		dev_err(dev, "failed to register cpufreq notifier\n");
- 		priv->freq_transition.notifier_call = NULL;
--		goto init_failed;
-+		goto destroy_crtc;
- 	}
- #endif
- 
- 	if (priv->is_componentized) {
- 		ret = component_bind_all(dev, ddev);
- 		if (ret < 0)
--			goto init_failed;
-+			goto unregister_cpufreq_notif;
- 
- 		ret = tilcdc_add_component_encoder(ddev);
- 		if (ret < 0)
--			goto init_failed;
-+			goto unbind_component;
- 	} else {
- 		ret = tilcdc_attach_external_device(ddev);
- 		if (ret)
--			goto init_failed;
-+			goto unregister_cpufreq_notif;
- 	}
- 
- 	if (!priv->external_connector &&
- 	    ((priv->num_encoders == 0) || (priv->num_connectors == 0))) {
- 		dev_err(dev, "no encoders/connectors found\n");
- 		ret = -EPROBE_DEFER;
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	ret = drm_vblank_init(ddev, 1);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to initialize vblank\n");
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	ret = platform_get_irq(pdev, 0);
- 	if (ret < 0)
--		goto init_failed;
-+		goto unbind_component;
- 	priv->irq = ret;
- 
- 	ret = tilcdc_irq_install(ddev, priv->irq);
- 	if (ret < 0) {
- 		dev_err(dev, "failed to install IRQ handler\n");
--		goto init_failed;
-+		goto unbind_component;
- 	}
- 
- 	drm_mode_config_reset(ddev);
-@@ -371,15 +370,33 @@ static int tilcdc_init(const struct drm_
- 
- 	ret = drm_dev_register(ddev, 0);
- 	if (ret)
--		goto init_failed;
--	priv->is_registered = true;
-+		goto stop_poll;
- 
- 	drm_fbdev_dma_setup(ddev, bpp);
- 	return 0;
- 
--init_failed:
--	tilcdc_fini(ddev);
-+stop_poll:
-+	drm_kms_helper_poll_fini(ddev);
-+	tilcdc_irq_uninstall(ddev);
-+unbind_component:
-+	if (priv->is_componentized)
-+		component_unbind_all(dev, ddev);
-+unregister_cpufreq_notif:
-+#ifdef CONFIG_CPU_FREQ
-+	cpufreq_unregister_notifier(&priv->freq_transition,
-+				    CPUFREQ_TRANSITION_NOTIFIER);
-+destroy_crtc:
-+#endif
-+	tilcdc_crtc_destroy(priv->crtc);
-+disable_pm:
-+	pm_runtime_disable(dev);
-+	clk_put(priv->clk);
-+free_wq:
-+	destroy_workqueue(priv->wq);
-+put_drm:
- 	platform_set_drvdata(pdev, NULL);
-+	ddev->dev_private = NULL;
-+	drm_dev_put(ddev);
- 
- 	return ret;
- }
---- a/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-+++ b/drivers/gpu/drm/tilcdc/tilcdc_drv.h
-@@ -82,7 +82,6 @@ struct tilcdc_drm_private {
- 	struct drm_encoder *external_encoder;
- 	struct drm_connector *external_connector;
- 
--	bool is_registered;
- 	bool is_componentized;
- 	bool irq_enabled;
- };
-@@ -164,6 +163,7 @@ void tilcdc_crtc_set_panel_info(struct d
- void tilcdc_crtc_set_simulate_vesa_sync(struct drm_crtc *crtc,
- 					bool simulate_vesa_sync);
- void tilcdc_crtc_shutdown(struct drm_crtc *crtc);
-+void tilcdc_crtc_destroy(struct drm_crtc *crtc);
- int tilcdc_crtc_update_fb(struct drm_crtc *crtc,
- 		struct drm_framebuffer *fb,
- 		struct drm_pending_vblank_event *event);
 
 
 
