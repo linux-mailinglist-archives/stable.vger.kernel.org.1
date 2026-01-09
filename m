@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-207749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D32E3D0A434
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7DA2D0A48B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:13:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F003831A9118
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 97D16308B39F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43A9E1482E8;
-	Fri,  9 Jan 2026 12:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BCA0A35CB73;
+	Fri,  9 Jan 2026 12:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YwwuuYWg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CsimdkC6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0539735B14E;
-	Fri,  9 Jan 2026 12:48:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FB2435B135;
+	Fri,  9 Jan 2026 12:49:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962938; cv=none; b=NbbSSXKpJZ2dU23VmMZzs14ZdbGZ/smIZIJV3/wZ+3jISWAZKMOudcyNLTdEfOsTqbJiLcnD4xOw0MSftb9XnvTK8B2bvezjVpRvDOn2ltqWuVifgMP50u6bF85yVTKOvz8JtlebibXNy3L8QkgQOeea+R1vUijSG3XnN6zabBk=
+	t=1767962949; cv=none; b=C3ub8Psq7jUgWcjfXctnN/vp1dqxuQYjvfarUwqAkGoft8JShLBqF7hbkWxkrHDVGCBwSoE+Ij0t/UHDCxB12Ym++PPmV7Ib+/K94xM62/IKOEbqdOpmG4xGLNHVjHIMNVeEB4UYHIlz52aLlC0Lis8Cx4v+SCvrDlt08i9wJIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962938; c=relaxed/simple;
-	bh=oMNqkaoYXbVoiW5ysTOqaRhtc/iLjsMxvHTdeCGB7iE=;
+	s=arc-20240116; t=1767962949; c=relaxed/simple;
+	bh=c23e2ac08GFHq7YA1D6waojjU2+C7/+TrTPZLCcS/ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IQlFO0Cq2u2haDoIrGOuto+vFTJ3YJPU4PEOovUdGjGRmF0jggzUufmwt2+6yYhh6PU6Gm4+bCQFQdsgZrW4DVpOkuuFrtuI6cyYjDuJbmaBcxxWPjwVkOoLrAcwBJhEpA7hGI6OIONz6yO7EzNJGeQKP0nwcKqjybv1HyHAmKU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YwwuuYWg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48ED1C4CEF1;
-	Fri,  9 Jan 2026 12:48:57 +0000 (UTC)
+	 MIME-Version; b=XtNuBP0nn139mIGgxFq19cUjoaefczmHnehbAaGOBiz1o7LMTDZ5l998SwtGoKaZMLyoQNKOBr3bllTgKDndFpmkO+WvVeCTDItlz4esZC3/8Zy/HNSRhV57kYgVbkcOIoEIne1PYSz3hld7STmT4oQMEvzleKBNi59BWnaU6G0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CsimdkC6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F649C4CEF1;
+	Fri,  9 Jan 2026 12:49:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962937;
-	bh=oMNqkaoYXbVoiW5ysTOqaRhtc/iLjsMxvHTdeCGB7iE=;
+	s=korg; t=1767962949;
+	bh=c23e2ac08GFHq7YA1D6waojjU2+C7/+TrTPZLCcS/ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YwwuuYWgvC2fSW7VXxRbrHsdx6PoUeKMfZAH7GmmvO9EZCRpQKgPQzhZTkq9qyt/8
-	 goWWIXzuYjsZKGNzksplvM8qr2oFbPyzKFrSB2dMYmALrqKTVG79M1o7EFpDSMF98q
-	 131UQsqO/92+GFRs8fjNMmiZu6PejUy6UM0f05VY=
+	b=CsimdkC6dAWqpSUGynm6niYZQr7BMHt75WiMbr0I32SBnK3H08cRpl6FVMQXbHt38
+	 ySIspLht5GxPfnd24VKZqXpp/M9TRyaZSaR8hujutUMKJMKBFXN+thyXVxf+k9yrz+
+	 eCj0otiWbpFZJgFr2J+cjcppPeu6pwU7fZ1ImD1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Daniel Vacek <neelx@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Fedor Pchelkin <pchelkin@ispras.ru>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 541/634] btrfs: dont rewrite ret from inode_permission
-Date: Fri,  9 Jan 2026 12:43:39 +0100
-Message-ID: <20260109112137.942409895@linuxfoundation.org>
+Subject: [PATCH 6.1 544/634] ext4: fix string copying in parse_apply_sb_mount_options()
+Date: Fri,  9 Jan 2026 12:43:42 +0100
+Message-ID: <20260109112138.058066762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -66,49 +66,84 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 0185c2292c600993199bc6b1f342ad47a9e8c678 ]
+[ Upstream commit ee5a977b4e771cc181f39d504426dbd31ed701cc ]
 
-In our user safe ino resolve ioctl we'll just turn any ret into -EACCES
-from inode_permission().  This is redundant, and could potentially be
-wrong if we had an ENOMEM in the security layer or some such other
-error, so simply return the actual return value.
+strscpy_pad() can't be used to copy a non-NUL-term string into a NUL-term
+string of possibly bigger size.  Commit 0efc5990bca5 ("string.h: Introduce
+memtostr() and memtostr_pad()") provides additional information in that
+regard.  So if this happens, the following warning is observed:
 
-Note: The patch was taken from v5 of fscrypt patchset
-(https://lore.kernel.org/linux-btrfs/cover.1706116485.git.josef@toxicpanda.com/)
-which was handled over time by various people: Omar Sandoval, Sweet Tea
-Dorminy, Josef Bacik.
+strnlen: detected buffer overflow: 65 byte read of buffer size 64
+WARNING: CPU: 0 PID: 28655 at lib/string_helpers.c:1032 __fortify_report+0x96/0xc0 lib/string_helpers.c:1032
+Modules linked in:
+CPU: 0 UID: 0 PID: 28655 Comm: syz-executor.3 Not tainted 6.12.54-syzkaller-00144-g5f0270f1ba00 #0
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+RIP: 0010:__fortify_report+0x96/0xc0 lib/string_helpers.c:1032
+Call Trace:
+ <TASK>
+ __fortify_panic+0x1f/0x30 lib/string_helpers.c:1039
+ strnlen include/linux/fortify-string.h:235 [inline]
+ sized_strscpy include/linux/fortify-string.h:309 [inline]
+ parse_apply_sb_mount_options fs/ext4/super.c:2504 [inline]
+ __ext4_fill_super fs/ext4/super.c:5261 [inline]
+ ext4_fill_super+0x3c35/0xad00 fs/ext4/super.c:5706
+ get_tree_bdev_flags+0x387/0x620 fs/super.c:1636
+ vfs_get_tree+0x93/0x380 fs/super.c:1814
+ do_new_mount fs/namespace.c:3553 [inline]
+ path_mount+0x6ae/0x1f70 fs/namespace.c:3880
+ do_mount fs/namespace.c:3893 [inline]
+ __do_sys_mount fs/namespace.c:4103 [inline]
+ __se_sys_mount fs/namespace.c:4080 [inline]
+ __x64_sys_mount+0x280/0x300 fs/namespace.c:4080
+ do_syscall_x64 arch/x86/entry/common.c:52 [inline]
+ do_syscall_64+0x64/0x140 arch/x86/entry/common.c:83
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Fixes: 23d0b79dfaed ("btrfs: Add unprivileged version of ino_lookup ioctl")
-CC: stable@vger.kernel.org # 5.4+
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: Daniel Vacek <neelx@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-[ add note ]
-Signed-off-by: David Sterba <dsterba@suse.com>
-[ Adjust context ]
+Since userspace is expected to provide s_mount_opts field to be at most 63
+characters long with the ending byte being NUL-term, use a 64-byte buffer
+which matches the size of s_mount_opts, so that strscpy_pad() does its job
+properly.  Return with error if the user still managed to provide a
+non-NUL-term string here.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: 8ecb790ea8c3 ("ext4: avoid potential buffer over-read in parse_apply_sb_mount_options()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251101160430.222297-1-pchelkin@ispras.ru>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+[ adapted 2-argument strscpy_pad() call to 3-argument form with explicit sizeof() ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/ioctl.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ fs/ext4/super.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/ioctl.c
-+++ b/fs/btrfs/ioctl.c
-@@ -2897,10 +2897,8 @@ static int btrfs_search_path_in_tree_use
- 			ret = inode_permission(mnt_userns, temp_inode,
- 					       MAY_READ | MAY_EXEC);
- 			iput(temp_inode);
--			if (ret) {
--				ret = -EACCES;
-+			if (ret)
- 				goto out_put;
--			}
+--- a/fs/ext4/super.c
++++ b/fs/ext4/super.c
+@@ -2416,7 +2416,7 @@ static int parse_apply_sb_mount_options(
+ 					struct ext4_fs_context *m_ctx)
+ {
+ 	struct ext4_sb_info *sbi = EXT4_SB(sb);
+-	char s_mount_opts[65];
++	char s_mount_opts[64];
+ 	struct ext4_fs_context *s_ctx = NULL;
+ 	struct fs_context *fc = NULL;
+ 	int ret = -ENOMEM;
+@@ -2424,7 +2424,8 @@ static int parse_apply_sb_mount_options(
+ 	if (!sbi->s_es->s_mount_opts[0])
+ 		return 0;
  
- 			if (key.offset == upper_limit.objectid)
- 				break;
+-	strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts, sizeof(s_mount_opts));
++	if (strscpy_pad(s_mount_opts, sbi->s_es->s_mount_opts, sizeof(s_mount_opts)) < 0)
++		return -E2BIG;
+ 
+ 	fc = kzalloc(sizeof(struct fs_context), GFP_KERNEL);
+ 	if (!fc)
 
 
 
