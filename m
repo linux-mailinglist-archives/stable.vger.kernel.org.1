@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206924-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1A5ED0A05D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B60DFD097AA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 105E430A9CA3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A067C30E1A43
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EDB35BDD8;
-	Fri,  9 Jan 2026 12:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 91FEA35A93E;
+	Fri,  9 Jan 2026 12:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrKQCXEo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dLjEznVO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7749735BDCC;
-	Fri,  9 Jan 2026 12:39:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5260C338911;
+	Fri,  9 Jan 2026 12:09:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962388; cv=none; b=j0x9kG2v271flyy/HoAFqh8d3CSZI7HSQhYq/Z8BVMXOccWVRQg1ezdzzrhrsHVKaUN8bnhJ8OE2MEZ7kIM/04z61o48oIpSWkjTFg2LIPXuSwZAJRJpFb7KBmgmW0+UPh3sMKeFuNVK8egOkrBxLBaqmPlg23gxUFpN2Y/N7CE=
+	t=1767960587; cv=none; b=cEkVagR7aDFrx39+uo6i0NkD7naO7UgkuIFVYdVOQc9KHKC8BSuG35eiu76bkfyRB/ZW3uKWy3mM/SHrNajRhTrfxkZBeeKbTrn3PESJPCXBPu2BLf66lh4q5IbuVSXJ7sTHzx8/vyJ611ySTWvzmzPPePphAhZlYvn48IUDS3s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962388; c=relaxed/simple;
-	bh=jG96MmRpl/4GiRI+Puw+YTsweOMvYXDoUGgDO0jEjY4=;
+	s=arc-20240116; t=1767960587; c=relaxed/simple;
+	bh=fkgSClaGZL+dBYFM3Tjt7Td580VU57xjarfhNVqKM2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=joOXW+WqfGG2g68scjN6x/j/IH2o3mnHOsp3oRrD3Pl2qMgsv2QyT8QQAzgYNrXUc6rYhfpXzyAgza1kDbEW2I6KIzaOeLnhoCLhRkCTLsydmeAaJr5CNscM+7e9afhyRgj5VOJfREzF9HFlk9DK5PI2WEZlJr9rDkmpK8Va67w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrKQCXEo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06069C4CEF1;
-	Fri,  9 Jan 2026 12:39:47 +0000 (UTC)
+	 MIME-Version; b=EOx0IfgHd8JtkVUrlhYMQrFFuqx6oXs2mNuhlxxf2tx7x9NUsgGNHaYySIhSGe/Vz09jcsMZORKIURBvW/IHfZosx2l9cpYOL2UfoG6iSskvS78it8AGvZceGGIpc+k81qFEf+Q3s7eQEMAFV6ZdJsWbMaPfomudP0n4Gn65v2I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dLjEznVO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D4CC4CEF1;
+	Fri,  9 Jan 2026 12:09:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962388;
-	bh=jG96MmRpl/4GiRI+Puw+YTsweOMvYXDoUGgDO0jEjY4=;
+	s=korg; t=1767960587;
+	bh=fkgSClaGZL+dBYFM3Tjt7Td580VU57xjarfhNVqKM2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HrKQCXEohO4spMG74Z96cuekFbpfG2aYIqusVcNcfdrTnQ4EVLOJxmpbI4O6ayEZj
-	 RvSJGOR0bBwjfQWkpJnPKKpuqa/oMK4AmkEL1qFq3kPkJ0qHRJogTtx00O4ChSAty7
-	 rkPhnBu1Dp2hmYzPetwO1U/teTNTwC3xPd9gq6dI=
+	b=dLjEznVOhuzfCHyyM6Bu2FJH8Tp7y7ebWeR+u/++YxIqx5YUu8ic8CHwK2ne6QDsO
+	 e8rWY1vASzSgd+/RX4aCVC8XgAkxgX+6STcCNFsJM16B58i78WNJmrv1PKMeaxmDgz
+	 qSCti0+YkIDQVs8yQ0i9T0y95wjov3LCU2fy90mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 315/634] platform/x86/intel/hid: Add Dell Pro Rugged 10/12 tablet to VGBS DMI quirks
-Date: Fri,  9 Jan 2026 12:39:53 +0100
-Message-ID: <20260109112129.384949221@linuxfoundation.org>
+	syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 455/737] media: vidtv: initialize local pointers upon transfer of memory ownership
+Date: Fri,  9 Jan 2026 12:39:54 +0100
+Message-ID: <20260109112151.110825687@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +59,63 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+From: Jeongjun Park <aha310510@gmail.com>
 
-[ Upstream commit b169e1733cadb614e87f69d7a5ae1b186c50d313 ]
+commit 98aabfe2d79f74613abc2b0b1cef08f97eaf5322 upstream.
 
-Dell Pro Rugged 10/12 tablets has a reliable VGBS method.
-If VGBS is not called on boot, the on-screen keyboard won't appear if the
-device is booted without a keyboard.
+vidtv_channel_si_init() creates a temporary list (program, service, event)
+and ownership of the memory itself is transferred to the PAT/SDT/EIT
+tables through vidtv_psi_pat_program_assign(),
+vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
 
-Call VGBS on boot on thess devices to get the initial state of
-SW_TABLET_MODE in a reliable way.
+The problem here is that the local pointer where the memory ownership
+transfer was completed is not initialized to NULL. This causes the
+vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
+in the flow that jumps to free_eit, the memory that was freed by
+vidtv_psi_*_table_destroy() can be accessed again by
+vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so it
+is freed once again.
 
-Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
-Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251127070407.656463-1-acelan.kao@canonical.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Therefore, to prevent use-after-free and double-free vulnerability,
+local pointers must be initialized to NULL when transferring memory
+ownership.
+
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1d9c0edea5907af239e0
+Fixes: 3be8037960bc ("media: vidtv: add error checks")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/intel/hid.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ drivers/media/test-drivers/vidtv/vidtv_channel.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
-index c13837401c26..051f2bb786e9 100644
---- a/drivers/platform/x86/intel/hid.c
-+++ b/drivers/platform/x86/intel/hid.c
-@@ -144,6 +144,18 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite Dragonfly G2 Notebook PC"),
- 		},
- 	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 10 Tablet RA00260"),
-+		},
-+	},
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
-+		},
-+	},
- 	{ }
- };
+--- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+@@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_m
  
--- 
-2.51.0
-
+ 	/* assemble all programs and assign to PAT */
+ 	vidtv_psi_pat_program_assign(m->si.pat, programs);
++	programs = NULL;
+ 
+ 	/* assemble all services and assign to SDT */
+ 	vidtv_psi_sdt_service_assign(m->si.sdt, services);
++	services = NULL;
+ 
+ 	/* assemble all events and assign to EIT */
+ 	vidtv_psi_eit_event_assign(m->si.eit, events);
++	events = NULL;
+ 
+ 	m->si.pmt_secs = vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
+ 								     m->pcr_pid);
 
 
 
