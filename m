@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-206788-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207357-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 945C9D094C2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9EFC3D09DBA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:42:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83B6E3056579
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A877330433E0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 45766359F99;
-	Fri,  9 Jan 2026 12:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3344B33C53C;
+	Fri,  9 Jan 2026 12:30:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lP6QnHQN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1v3k5CoT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09822335561;
-	Fri,  9 Jan 2026 12:03:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAB8533372B;
+	Fri,  9 Jan 2026 12:30:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960201; cv=none; b=W3CzfxF4JG1AnfPE2lsumTw8elZW5dmzUn2uX7i+zL4d/x/H1ECXFlkLM7ErkuKSlgi5D9AjLPJVdCcs3kIfczKUkoBsTV/jUPm9tzCbrAs1/AIjVY2Xt1y5XT9klx8CB/VSOR1XTLpjSjKwuVCBsLV0NzgvYC+tjxfeCJlKifs=
+	t=1767961826; cv=none; b=rgRNOxmBpfO+eIPKMkbTNFWRryf5axtnGNZK06un56WnNY9u4DZBy6Xo07WLDKvUgW1tstyg5KJk/6Ft0ckzkV+zg9nfsS+ShmqAfLVcsM0ayhpWmpr9g2awIHJjYlcD1GaZ9DR2fzEtXXnic9Z5G9V11vwv3+wyZtp89plrpE0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960201; c=relaxed/simple;
-	bh=/LOoF4K6XpreJlL/7H8BE0+oy91xQtOD7jgdEDXHyWI=;
+	s=arc-20240116; t=1767961826; c=relaxed/simple;
+	bh=eDWaXgpVOE86DlwD8tySwc0P5qW5nNBWkG9RDMfXu8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=jYQlbkPioT4sh0tYYZ+bW69AZ6BAitMXpFiO9vBvl0xQXjEYtEgqAIOHEYMe7i17V+gJ8vIjmnNcBCOICWvu/1TSvT81mI6odRNObvZJ6hjDxBEDVrUcFtPr2vutxZCCWkISBiTx13KiBRCrC1k1TzkHP5PA6ySKJzz+TKs6LK0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lP6QnHQN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2F0C4CEF1;
-	Fri,  9 Jan 2026 12:03:20 +0000 (UTC)
+	 MIME-Version; b=rrPZSHam0RHxBFhdFzPy0EQS36J18ZsjQPXH+GqVqEM76q4mwWj71nk0UnputOddD1f6HP5mXjLXiVBfEhKxYEM4cS1VlcC2PCNHvxd4v9EtZthraK2v15/Yv4U9xI3W7hhgJAZLFahpHk8zLTcw+SDkFbvc6eV+aeQMPbTiYac=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1v3k5CoT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F419C4CEF1;
+	Fri,  9 Jan 2026 12:30:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960200;
-	bh=/LOoF4K6XpreJlL/7H8BE0+oy91xQtOD7jgdEDXHyWI=;
+	s=korg; t=1767961825;
+	bh=eDWaXgpVOE86DlwD8tySwc0P5qW5nNBWkG9RDMfXu8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lP6QnHQNTHmyfIC5oLRohA4f7DF5QRl1I7VUF5IrDMA/sz79a6+4XRZp6GG7wE6YN
-	 ll6hI+husMejdkPJneaF9LNzpB+UiZHoMG3p5+YkW5V7PqSVvosCXCo4o+rVltAqcI
-	 EK4VXXqw4wl5oRP1ZclvMHZrpus4Nn600r0Sx4WQ=
+	b=1v3k5CoTYM9fVDwIgwhLizSiu0Ix1Zcvtg7AVKBVz34nGqbBE4PBpjl8Zb3lDUX6K
+	 ZwxunTHkSXB7ad0trTGv78Em9Aj67hEafgnIUV5PwoIRUnjuR8T9Ke+h6Q8PTnDNyn
+	 C8zzLu22WnRS5EMkpdSg60aPywqWb9maDST9YlIk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Luca Ceresoli <luca.ceresoli@bootlin.com>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Herve Codina <herve.codina@bootlin.com>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 288/737] efi/cper: Adjust infopfx size to accept an extra space
-Date: Fri,  9 Jan 2026 12:37:07 +0100
-Message-ID: <20260109112144.844938142@linuxfoundation.org>
+Subject: [PATCH 6.1 150/634] backlight: led-bl: Add devlink to supplier LEDs
+Date: Fri,  9 Jan 2026 12:37:08 +0100
+Message-ID: <20260109112123.097228528@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,106 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
+[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
 
-Compiling with W=1 with werror enabled produces an error:
+LED Backlight is a consumer of one or multiple LED class devices, but
+devlink is currently unable to create correct supplier-producer links when
+the supplier is a class device. It creates instead a link where the
+supplier is the parent of the expected device.
 
-drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
-drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                                                                ^
-drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+One consequence is that removal order is not correctly enforced.
 
-As the logic there adds an space at the end of infopx buffer.
-Add an extra space to avoid such warning.
+Issues happen for example with the following sections in a device tree
+overlay:
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+    // An LED driver chip
+    pca9632@62 {
+        compatible = "nxp,pca9632";
+        reg = <0x62>;
+
+	// ...
+
+        addon_led_pwm: led-pwm@3 {
+            reg = <3>;
+            label = "addon:led:pwm";
+        };
+    };
+
+    backlight-addon {
+        compatible = "led-backlight";
+        leds = <&addon_led_pwm>;
+        brightness-levels = <255>;
+        default-brightness-level = <255>;
+    };
+
+In this example, the devlink should be created between the backlight-addon
+(consumer) and the pca9632@62 (supplier). Instead it is created between the
+backlight-addon (consumer) and the parent of the pca9632@62, which is
+typically the I2C bus adapter.
+
+On removal of the above overlay, the LED driver can be removed before the
+backlight device, resulting in:
+
+    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
+    ...
+    Call trace:
+     led_put+0xe0/0x140
+     devm_led_release+0x6c/0x98
+
+Another way to reproduce the bug without any device tree overlays is
+unbinding the LED class device (pca9632@62) before unbinding the consumer
+(backlight-addon):
+
+  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
+  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
+
+Fix by adding a devlink between the consuming led-backlight device and the
+supplying LED device, as other drivers and subsystems do as well.
+
+Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Reviewed-by: Herve Codina <herve.codina@bootlin.com>
+Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/cper-arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/video/backlight/led_bl.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index fa9c1c3bf168b..eb7ee6af55f23 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -240,7 +240,7 @@ void cper_print_proc_arm(const char *pfx,
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
--	char newpfx[64], infopfx[64];
-+	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
+diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
+index d360def24747d..223f078acfd9f 100644
+--- a/drivers/video/backlight/led_bl.c
++++ b/drivers/video/backlight/led_bl.c
+@@ -209,6 +209,19 @@ static int led_bl_probe(struct platform_device *pdev)
+ 		return PTR_ERR(priv->bl_dev);
+ 	}
  
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
++	for (i = 0; i < priv->nb_leds; i++) {
++		struct device_link *link;
++
++		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
++				       DL_FLAG_AUTOREMOVE_CONSUMER);
++		if (!link) {
++			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
++				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
++			backlight_device_unregister(priv->bl_dev);
++			return -EINVAL;
++		}
++	}
++
+ 	for (i = 0; i < priv->nb_leds; i++) {
+ 		mutex_lock(&priv->leds[i]->led_access);
+ 		led_sysfs_disable(priv->leds[i]);
 -- 
 2.51.0
 
