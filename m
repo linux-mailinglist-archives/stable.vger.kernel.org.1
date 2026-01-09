@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4667FD09B42
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9882AD09182
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 80CA33122E23
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:27:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E8C0130000A4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98FDB35A95C;
-	Fri,  9 Jan 2026 12:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CBA9350A12;
+	Fri,  9 Jan 2026 11:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UxnVG2/p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x5cOVKOE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C3862737EE;
-	Fri,  9 Jan 2026 12:26:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D29562DEA6F;
+	Fri,  9 Jan 2026 11:56:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961598; cv=none; b=YQnvBfLlIqvaoxzArEoVmEmzYsmyKA06x+LfrJ43GVZp4SH5hVo7HtHf+poEBA8pNr+RhUl+6BpBTIohGa1dg6TPjXpVfByDSxEBrfJk21pgHvJVqoBLxPWA0BYZoNEsg4iBYjHz3iCaZ3zvY0ePvDoc9ax37zuKkxmagliZDUY=
+	t=1767959765; cv=none; b=p3NGpanIgC8a3FNhwlFX/1MmGf1ZJiw3h/Ma7f94wKVH8Ssw/i+bEX+//1Ea5SIz1TNT7w1t/h0zuwrNon4QG4eAX9CvbbfA+XAtOIv+MvN2UgCrkCfgITRXZlGnHj0VCdngeljGlQTVxeke5QZVN87AdpUuKSMoxYZ6mVQV6lM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961598; c=relaxed/simple;
-	bh=4A3R+YuIFQ3Ouau8kOqfUfkRIxTimcTizL1+Isk7tIc=;
+	s=arc-20240116; t=1767959765; c=relaxed/simple;
+	bh=8gwl7X5NdgNvW8eAiohriBhENkeSmtSpzK8WgNcJkM4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dEGEhq5pzo6Urlr53oMmYeWTJ+vE8TJSvTeaRqDIZAWYXaqk0D2do1nvglCxZzL3baow2zfqsJ9EoIYSLKKbbp8djR4D6xX5K54QT2nstTpmirGaoas6JoUNRJ/I0KII75c4FqAigygunMatwRF24hCYOkrgdlk4fTmYh44FJXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UxnVG2/p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC39DC4CEF1;
-	Fri,  9 Jan 2026 12:26:37 +0000 (UTC)
+	 MIME-Version; b=n46yCufbZ19fz9KBo2ZzDtYpdjqvGcClPGSmdZYxnPXNzh+nSDw+cVU+b8fYQsZPFR9O3+l1RZQREBVYH0+v6QbHLyB5Okui6WYDOrvrRlSNdLsWQlfAecF7rc9+KecuNTvXajezQ+Wb8JSeAGs2zGwPvt6+pF5fx4Phje4ZvsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x5cOVKOE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D0ACC16AAE;
+	Fri,  9 Jan 2026 11:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961598;
-	bh=4A3R+YuIFQ3Ouau8kOqfUfkRIxTimcTizL1+Isk7tIc=;
+	s=korg; t=1767959765;
+	bh=8gwl7X5NdgNvW8eAiohriBhENkeSmtSpzK8WgNcJkM4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UxnVG2/pswnNCzyOtNIRhkV8MttrRXGL6tnW4rwFCS2kZxItW4uaYS7dgbRorZq+D
-	 6w3Ros4XZpWzA19oxxZtDH57ZHzijSMmmFvaDotWG1ckW6VHqgh9DspJsSi6zbmK74
-	 YznOSXgXiq4xvcw47i7HbAyaTmIWBOjEZuguZuws=
+	b=x5cOVKOEMA9ZAwDIUd1Ejpt21qfZhHZ+g20wVd1rwRLpQlvuQhPWshZri3I2ou5FC
+	 FLi7TFLPlGPeetzKn631anAog8tS08DLwf1cKs2HEUE/OKoaa/g45Yy9uc3NxIP15K
+	 0V9AvNl4ab1hA3hN+hM8sVBUVnjoK8INfPKbbeSo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Tigran Aivazian <aivazian.tigran@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Jose Fernandez <josef@netflix.com>,
+	Daniel Borkmann <daniel@iogearbox.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/634] bfs: Reconstruct file type when loading from disk
-Date: Fri,  9 Jan 2026 12:35:05 +0100
-Message-ID: <20260109112118.467654537@linuxfoundation.org>
+Subject: [PATCH 6.6 167/737] bpf: Improve program stats run-time calculation
+Date: Fri,  9 Jan 2026 12:35:06 +0100
+Message-ID: <20260109112140.276450917@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,75 +60,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Jose Fernandez <josef@netflix.com>
 
-[ Upstream commit 34ab4c75588c07cca12884f2bf6b0347c7a13872 ]
+[ Upstream commit ce09cbdd988887662546a1175bcfdfc6c8fdd150 ]
 
-syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
-the S_IFMT bits of the 32bits "mode" field loaded from disk are corrupted
-or when the 32bits "attributes" field loaded from disk are corrupted.
+This patch improves the run-time calculation for program stats by
+capturing the duration as soon as possible after the program returns.
 
-A documentation says that BFS uses only lower 9 bits of the "mode" field.
-But I can't find an explicit explanation that the unused upper 23 bits
-(especially, the S_IFMT bits) are initialized with 0.
+Previously, the duration included u64_stats_t operations. While the
+instrumentation overhead is part of the total time spent when stats are
+enabled, distinguishing between the program's native execution time and
+the time spent due to instrumentation is crucial for accurate
+performance analysis.
 
-Therefore, ignore the S_IFMT bits of the "mode" field loaded from disk.
-Also, verify that the value of the "attributes" field loaded from disk is
-either BFS_VREG or BFS_VDIR (because BFS supports only regular files and
-the root directory).
+By making this change, the patch facilitates more precise optimization
+of BPF programs, enabling users to understand their performance in
+environments without stats enabled.
 
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://patch.msgid.link/fabce673-d5b9-4038-8287-0fd65d80203b@I-love.SAKURA.ne.jp
-Reviewed-by: Tigran Aivazian <aivazian.tigran@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+I used a virtualized environment to measure the run-time over one minute
+for a basic raw_tracepoint/sys_enter program, which just increments a
+local counter. Although the virtualization introduced some performance
+degradation that could affect the results, I observed approximately a
+16% decrease in average run-time reported by stats with this change
+(310 -> 260 nsec).
+
+Signed-off-by: Jose Fernandez <josef@netflix.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20240402034010.25060-1-josef@netflix.com
+Stable-dep-of: 7dc211c1159d ("bpf: Fix invalid prog->stats access when update_effective_progs fails")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/bfs/inode.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ include/linux/filter.h  | 6 ++++--
+ kernel/bpf/trampoline.c | 3 ++-
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
-index 1926bec2c8500..07f7929d07fd8 100644
---- a/fs/bfs/inode.c
-+++ b/fs/bfs/inode.c
-@@ -60,7 +60,19 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 	off = (ino - BFS_ROOT_INO) % BFS_INODES_PER_BLOCK;
- 	di = (struct bfs_inode *)bh->b_data + off;
+diff --git a/include/linux/filter.h b/include/linux/filter.h
+index ad5a3d68b5552..f9fb83be935d4 100644
+--- a/include/linux/filter.h
++++ b/include/linux/filter.h
+@@ -599,14 +599,16 @@ static __always_inline u32 __bpf_prog_run(const struct bpf_prog *prog,
+ 	cant_migrate();
+ 	if (static_branch_unlikely(&bpf_stats_enabled_key)) {
+ 		struct bpf_prog_stats *stats;
+-		u64 start = sched_clock();
++		u64 duration, start = sched_clock();
+ 		unsigned long flags;
  
--	inode->i_mode = 0x0000FFFF & le32_to_cpu(di->i_mode);
-+	/*
-+	 * https://martin.hinner.info/fs/bfs/bfs-structure.html explains that
-+	 * BFS in SCO UnixWare environment used only lower 9 bits of di->i_mode
-+	 * value. This means that, although bfs_write_inode() saves whole
-+	 * inode->i_mode bits (which include S_IFMT bits and S_IS{UID,GID,VTX}
-+	 * bits), middle 7 bits of di->i_mode value can be garbage when these
-+	 * bits were not saved by bfs_write_inode().
-+	 * Since we can't tell whether middle 7 bits are garbage, use only
-+	 * lower 12 bits (i.e. tolerate S_IS{UID,GID,VTX} bits possibly being
-+	 * garbage) and reconstruct S_IFMT bits for Linux environment from
-+	 * di->i_vtype value.
-+	 */
-+	inode->i_mode = 0x00000FFF & le32_to_cpu(di->i_mode);
- 	if (le32_to_cpu(di->i_vtype) == BFS_VDIR) {
- 		inode->i_mode |= S_IFDIR;
- 		inode->i_op = &bfs_dir_inops;
-@@ -70,6 +82,11 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 		inode->i_op = &bfs_file_inops;
- 		inode->i_fop = &bfs_file_operations;
- 		inode->i_mapping->a_ops = &bfs_aops;
-+	} else {
-+		brelse(bh);
-+		printf("Unknown vtype=%u %s:%08lx\n",
-+		       le32_to_cpu(di->i_vtype), inode->i_sb->s_id, ino);
-+		goto error;
+ 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
++
++		duration = sched_clock() - start;
+ 		stats = this_cpu_ptr(prog->stats);
+ 		flags = u64_stats_update_begin_irqsave(&stats->syncp);
+ 		u64_stats_inc(&stats->cnt);
+-		u64_stats_add(&stats->nsecs, sched_clock() - start);
++		u64_stats_add(&stats->nsecs, duration);
+ 		u64_stats_update_end_irqrestore(&stats->syncp, flags);
+ 	} else {
+ 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
+diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
+index f8a58b4130701..e48791442acc5 100644
+--- a/kernel/bpf/trampoline.c
++++ b/kernel/bpf/trampoline.c
+@@ -870,12 +870,13 @@ static void notrace update_prog_stats(struct bpf_prog *prog,
+ 	     * Hence check that 'start' is valid.
+ 	     */
+ 	    start > NO_START_TIME) {
++		u64 duration = sched_clock() - start;
+ 		unsigned long flags;
+ 
+ 		stats = this_cpu_ptr(prog->stats);
+ 		flags = u64_stats_update_begin_irqsave(&stats->syncp);
+ 		u64_stats_inc(&stats->cnt);
+-		u64_stats_add(&stats->nsecs, sched_clock() - start);
++		u64_stats_add(&stats->nsecs, duration);
+ 		u64_stats_update_end_irqrestore(&stats->syncp, flags);
  	}
- 
- 	BFS_I(inode)->i_sblock =  le32_to_cpu(di->i_sblock);
+ }
 -- 
 2.51.0
 
