@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090B1D0992B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62014D0A20B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3654A3097905
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:19:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13DC6301E15B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF92332AAB5;
-	Fri,  9 Jan 2026 12:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6394535BDC9;
+	Fri,  9 Jan 2026 12:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jnWCPOH2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdEZhVyP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2B9933C1B6;
-	Fri,  9 Jan 2026 12:19:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2643935BDA8;
+	Fri,  9 Jan 2026 12:49:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961179; cv=none; b=EZ+9lbnpJdbLCUy0VpeNH2c5O0V6kNzqWekvYQ4cXAPNVZ3dIiaE3y3myj1FuDybfQWNmXE7j735EC7dg9L3QmBmJVY1JfLjSogOOYbTlCfI41GBUx78V0WW1NXAfPGDmIKb0JWVn/0C0rsPBlRxD6NV1hAyEEIXnYRg8xRHsh4=
+	t=1767962941; cv=none; b=loc9iTe49k2n/3yCaswdtk8yHe4fto2W8+F0U1OLQ3YORBrWDaUkoLTNEMpJ/YgxJaX3mP9Dt/Jm6UMWAtLWIfY5Qtr6a8Eodofc/r6zeTJ0Y2g6fTOvMePL39Q8g45rqJwuXn6eKjZQREx/+9g5I3uyxEaGHCnug6cjQ/hmQD8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961179; c=relaxed/simple;
-	bh=uSyX+aPQhDw6+F70Zltk1ftC+OMP2sTcCOQwSxE389I=;
+	s=arc-20240116; t=1767962941; c=relaxed/simple;
+	bh=fL3iR2AnJA+w1z/X7AcoF4C1+kxCsc+ZhaOVNVG+/pc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NWcBnTHrIsZTdE8lXs+xxqfH+HGSdJhZocc0g5/HiRBEoAT3EOUWwirxmMy0l1KI+CtWSlKNmXWet7L/oNGw03xfjfFyzAsdgpES62PmQi9LxLZyXWh/vsv/ws3Ji07T0UA20OnyzSCYu1We+5UUwIa0OsWIJITQ0hX23J9pLhE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jnWCPOH2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BB79C4CEF1;
-	Fri,  9 Jan 2026 12:19:39 +0000 (UTC)
+	 MIME-Version; b=lmIFM5hpABQsTJgZDD4tYpX7iqgCuE8EpURjGv5Z3WA3PaKoVOBK004ZAOhBx7zeMjYX5mYuYc3bEEEicaTwQh9DVA+KktObC5/EydFBtTBukdgN0m5l9RNrx9hX/Eyvhj63yFNykFEBiKTR0/4NwtctclsOGIBeZEsb5NFx8Bo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdEZhVyP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4186C16AAE;
+	Fri,  9 Jan 2026 12:49:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961179;
-	bh=uSyX+aPQhDw6+F70Zltk1ftC+OMP2sTcCOQwSxE389I=;
+	s=korg; t=1767962941;
+	bh=fL3iR2AnJA+w1z/X7AcoF4C1+kxCsc+ZhaOVNVG+/pc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jnWCPOH2nohHEcypFzePD/tZoC3Qh2BMbvb2myuC9vq42n1M/u5+slT9aa+PHh0mL
-	 5Z7A+A+XBVzttfvuBLs7Ds0h2VbP/MMZQc3q+HltSPj+qATMxxVJZZQydiZaPPAV2R
-	 riH5OG8gFqZWrpEOO+rf1QisM91O86yirOf+jyOg=
+	b=CdEZhVyP5wI0ge0bpH2NN/Zt7RAgEaHckGWsbXQDwqT02MDKt0o0RmFuqt5tU0SHJ
+	 seadCybJPnXavDQ2ENOYYjzI/OevM5BfWtXLgKeNdKVHq62R7UeEdA5uXdEyxGaX+t
+	 e9egeixXJkjZioGvU4tminuOocG6yQol2UpXME8I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Natalie Vock <natalie.vock@gmx.de>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 662/737] drm/amdgpu: Forward VMID reservation errors
-Date: Fri,  9 Jan 2026 12:43:21 +0100
-Message-ID: <20260109112158.943450673@linuxfoundation.org>
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 524/634] mm/damon/tests/core-kunit: handle memory alloc failure from damon_test_aggregate()
+Date: Fri,  9 Jan 2026 12:43:22 +0100
+Message-ID: <20260109112137.282107724@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,50 +60,65 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Natalie Vock <natalie.vock@gmx.de>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 8defb4f081a5feccc3ea8372d0c7af3522124e1f ]
+commit f79f2fc44ebd0ed655239046be3e80e8804b5545 upstream.
 
-Otherwise userspace may be fooled into believing it has a reserved VMID
-when in reality it doesn't, ultimately leading to GPU hangs when SPM is
-used.
+damon_test_aggregate() is assuming all dynamic memory allocation in it
+will succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-Fixes: 80e709ee6ecc ("drm/amdgpu: add option params to enforce process isolation between graphics and compute")
-Cc: stable@vger.kernel.org
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Natalie Vock <natalie.vock@gmx.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-[ adapted 3-argument amdgpu_vmid_alloc_reserved(adev, vm, vmhub) call to 2-argument version and added separate error check to preserve reserved_vmid tracking logic. ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-5-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/damon/core-test.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2496,10 +2496,12 @@ int amdgpu_vm_ioctl(struct drm_device *d
- 	case AMDGPU_VM_OP_RESERVE_VMID:
- 		/* We only have requirement to reserve vmid from gfxhub */
- 		if (!fpriv->vm.reserved_vmid[AMDGPU_GFXHUB(0)]) {
--			amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(0));
-+			int r = amdgpu_vmid_alloc_reserved(adev, AMDGPU_GFXHUB(0));
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -97,8 +97,15 @@ static void damon_test_aggregate(struct
+ 	struct damon_region *r;
+ 	int it, ir;
+ 
++	if (!ctx)
++		kunit_skip(test, "ctx alloc fail");
 +
-+			if (r)
-+				return r;
- 			fpriv->vm.reserved_vmid[AMDGPU_GFXHUB(0)] = true;
+ 	for (it = 0; it < 3; it++) {
+ 		t = damon_new_target();
++		if (!t) {
++			damon_destroy_ctx(ctx);
++			kunit_skip(test, "target alloc fail");
++		}
+ 		damon_add_target(ctx, t);
+ 	}
+ 
+@@ -106,6 +113,10 @@ static void damon_test_aggregate(struct
+ 	damon_for_each_target(t, ctx) {
+ 		for (ir = 0; ir < 3; ir++) {
+ 			r = damon_new_region(saddr[it][ir], eaddr[it][ir]);
++			if (!r) {
++				damon_destroy_ctx(ctx);
++				kunit_skip(test, "region alloc fail");
++			}
+ 			r->nr_accesses = accesses[it][ir];
+ 			damon_add_region(r, t);
  		}
--
- 		break;
- 	case AMDGPU_VM_OP_UNRESERVE_VMID:
- 		if (fpriv->vm.reserved_vmid[AMDGPU_GFXHUB(0)]) {
 
 
 
