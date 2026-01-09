@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-207769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D31CDD0A466
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:12:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D683CD0A428
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 087D132FA065
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4524931A5E2A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B890D35C1A8;
-	Fri,  9 Jan 2026 12:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A16BF35BDAB;
+	Fri,  9 Jan 2026 12:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kF1+vP52"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dr/hCUF2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703B235C1AE;
-	Fri,  9 Jan 2026 12:49:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 647A335E551;
+	Fri,  9 Jan 2026 12:48:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962995; cv=none; b=kcOfB0fZEYNEeeCpygeJGZgA3i3m6eXzcCWXWp8rjlKVjpPP45mojWJQH/ikrvcNBbOub5GjpdiPraXuzqeVV+twfvi3+rgipkT7RLjCYdfVp2p7VjjmgUY1iAAz1DxMapbVBbwXPnnHK0gWOJU64lXZ4tuyJb29DdZ4BZ3LQrQ=
+	t=1767962917; cv=none; b=h+tMpJwI+bwuTTK2Gcmkji97/BhbS3wA1FYpLZj/gvLMRRz9wlPbwktLRZhQzfVf2jb99eS3dm2UQyx39MxKJRDpRYh8x46fIynEDCL8xoVSTySdlp5cQeFOwXvqK3GxtRSKxoyQboW8ITmZ7/erNsYce8Lbiyna0Foer19Mk0A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962995; c=relaxed/simple;
-	bh=/9VL1ZNkA3lAfLjE39x1Ah0Cq2gjCc83pAe3erkgyfo=;
+	s=arc-20240116; t=1767962917; c=relaxed/simple;
+	bh=WOSJJDzCshTIulFLsjl4NCMgQk+NpQCrUHLJWAXOpIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Wmm70jvSgbryrYy7+g+R0O6/1NK1AY3nSEBh91o9wMqJskO3N9KkMh9cTx+utLunAO56dlqN2ke7IG3cZhql0OZhIuW8+Cb3m7dXrPsUdg8K/4glF1ucnPjND3lMBrcOGbp2r3XkX9UJ/lebG9JROtht3A5yGYYdL0AOo+I8FSw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kF1+vP52; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1817C19422;
-	Fri,  9 Jan 2026 12:49:54 +0000 (UTC)
+	 MIME-Version; b=IgayPhbKcv9ADNKO5DaP8Gx0YjBHxW1r4olFr440m9CShWmpghmjfDkSvldJT170bUl0pAwnm6tMgTO/DRfBBs8KFKzXjRGrHyB1Wr+vWtRsoZhuBckmr2GQGk4igMdxHHkG6qeo7suDWX/HVZzrDIyZYjMP1kqln4Jy7+Qkowc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dr/hCUF2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA0F3C4CEF1;
+	Fri,  9 Jan 2026 12:48:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962995;
-	bh=/9VL1ZNkA3lAfLjE39x1Ah0Cq2gjCc83pAe3erkgyfo=;
+	s=korg; t=1767962917;
+	bh=WOSJJDzCshTIulFLsjl4NCMgQk+NpQCrUHLJWAXOpIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kF1+vP52FzhjhYRhmWpJJFhcMfG0604pV7npvF9TgypenSUaZ926RGFtbCp4cMsD4
-	 lqAdfcMIx3V7nKTB99A3N2JsfIhONIvsI3koxmPgE3or9TnkhiD7IKzz8gKG1OglHh
-	 rFYnyLANQTiMdqD88WH3gsqT8FUin1iWwfa2cVXU=
+	b=Dr/hCUF2btO5fMuEj8Lz7DK5oIg9MdCCJVBd4rET3d/ziCLQBpe4xHEb4nG5OAn0v
+	 zZ+07XCWrrAtfFtUvzlYYf7y8QPEiVhEYqazBcLAHChDx4CtGkZLIBJXFPI54vjXAZ
+	 4Xay8PpZ7wWXDmU99B7FU0Pi9TBNwttT+FE2j5tg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Chen Yu <xnguchen@sina.cn>
-Subject: [PATCH 6.1 528/634] net: dsa: sja1105: fix kasan out-of-bounds warning in sja1105_table_delete_entry()
-Date: Fri,  9 Jan 2026 12:43:26 +0100
-Message-ID: <20260109112137.434508105@linuxfoundation.org>
+	Denis Arefev <arefev@swemel.ru>,
+	Richard Fitzgerald <rf@opensource.cirrus.com>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 534/634] ALSA: hda: cs35l41: Fix NULL pointer dereference in cs35l41_hda_read_acpi()
+Date: Fri,  9 Jan 2026 12:43:32 +0100
+Message-ID: <20260109112137.667226800@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -65,47 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Vladimir Oltean <vladimir.oltean@nxp.com>
+From: Denis Arefev <arefev@swemel.ru>
 
-[ Upstream commit 5f2b28b79d2d1946ee36ad8b3dc0066f73c90481 ]
+[ Upstream commit c34b04cc6178f33c08331568c7fd25c5b9a39f66 ]
 
-There are actually 2 problems:
-- deleting the last element doesn't require the memmove of elements
-  [i + 1, end) over it. Actually, element i+1 is out of bounds.
-- The memmove itself should move size - i - 1 elements, because the last
-  element is out of bounds.
+The acpi_get_first_physical_node() function can return NULL, in which
+case the get_device() function also returns NULL, but this value is
+then dereferenced without checking,so add a check to prevent a crash.
 
-The out-of-bounds element still remains out of bounds after being
-accessed, so the problem is only that we touch it, not that it becomes
-in active use. But I suppose it can lead to issues if the out-of-bounds
-element is part of an unmapped page.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 6666cebc5e30 ("net: dsa: sja1105: Add support for VLAN operations")
-Signed-off-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20250318115716.2124395-4-vladimir.oltean@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
+Fixes: 7b2f3eb492da ("ALSA: hda: cs35l41: Add support for CS35L41 in HDA systems")
+Cc: stable@vger.kernel.org
+Signed-off-by: Denis Arefev <arefev@swemel.ru>
+Reviewed-by: Richard Fitzgerald <rf@opensource.cirrus.com>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251202101338.11437-1-arefev@swemel.ru
+[ NULL check right after acpi_dev_put(adev) cleanup call ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/sja1105/sja1105_static_config.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ sound/pci/hda/cs35l41_hda.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/dsa/sja1105/sja1105_static_config.c
-+++ b/drivers/net/dsa/sja1105/sja1105_static_config.c
-@@ -1921,8 +1921,10 @@ int sja1105_table_delete_entry(struct sj
- 	if (i > table->entry_count)
- 		return -ERANGE;
+--- a/sound/pci/hda/cs35l41_hda.c
++++ b/sound/pci/hda/cs35l41_hda.c
+@@ -1278,6 +1278,8 @@ static int cs35l41_hda_read_acpi(struct
  
--	memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
--		(table->entry_count - i) * entry_size);
-+	if (i + 1 < table->entry_count) {
-+		memmove(entries + i * entry_size, entries + (i + 1) * entry_size,
-+			(table->entry_count - i - 1) * entry_size);
-+	}
+ 	physdev = get_device(acpi_get_first_physical_node(adev));
+ 	acpi_dev_put(adev);
++	if (!physdev)
++		return -ENODEV;
  
- 	table->entry_count--;
- 
+ 	sub = acpi_get_subsystem_id(ACPI_HANDLE(physdev));
+ 	if (IS_ERR(sub))
 
 
 
