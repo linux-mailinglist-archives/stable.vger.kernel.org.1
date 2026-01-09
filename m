@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 88B7CD09FB8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54DF6D09723
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 88FC23077FE6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B97F130210F4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD0431ED6D;
-	Fri,  9 Jan 2026 12:37:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44077338911;
+	Fri,  9 Jan 2026 12:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SgC2a7l6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1NRUao39"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D708E335BCD;
-	Fri,  9 Jan 2026 12:37:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 078B432F748;
+	Fri,  9 Jan 2026 12:07:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962236; cv=none; b=i02CLTo+mJkIfvb/1vrjC91B4EIEEgF9tVljXvazoJhxyKGWmNtCt1h9XDHpTfACIKrrtrSjq6ln7prrDz1OO0sCkkgNpBeBBi50BWDiGiZCUJbD1Cmh0xOQYcljZO14LLBQy9kpFjJ4JOSwg75slyrUEFDlXnl+Yd4weUFLexU=
+	t=1767960477; cv=none; b=MGgylppSSrSGnCPcBKuqS0EAWVsPjA7wVRYUFka3nBTPpdXsaNarK4rAiAHJYwBhdWj+C6r+D0De4iOvyaB/AhczlyS3kyih0V4PawcjYnnAfm+MmFB1dDuHute6Qm3pEBp4P/ykEQ27x9RhrChkCURnacknLXjA5fpqwup5iNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962236; c=relaxed/simple;
-	bh=a4joI7te4bnLkDaO4R0pjh3SRwTGE3wC/2zVOr0B5oo=;
+	s=arc-20240116; t=1767960477; c=relaxed/simple;
+	bh=h8GINoNvc5YMtcm8L2okufLpAKQYw16LH56PubBHUoI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tys78/20qi7oNZ1/X8oGgxyeshWSnpvMy/jCHZ5zGLU+ZuSJXAz8N9CTYmsY8sErLypR9FVqP+26rClXKUj4/Yrjm6ZEGEIfGfIK5C3vjyv3sCidKB5ug1aV5J5GkCXJBuO2rhthUxacYip22ZbGwNcYDnBRLEQAvITxxn92zG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SgC2a7l6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 635F5C4CEF1;
-	Fri,  9 Jan 2026 12:37:16 +0000 (UTC)
+	 MIME-Version; b=iFiF43N/6KShpVkTWOSbIQfpDSlrZuLcJ9Lx/dgqbPh+zvGnRrutYTYYMkwyWy71a5lxqgO7CMQSE4WMLaE/DciAhh/aBSI7T7NwtpYV7Fs4RyrOXsx36ozAAioF1HD3/i2kseHA3P3Yv5+G1k9+E3LE1M9TUcLdpnhGiQeUDZA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1NRUao39; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89D2CC4CEF1;
+	Fri,  9 Jan 2026 12:07:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962236;
-	bh=a4joI7te4bnLkDaO4R0pjh3SRwTGE3wC/2zVOr0B5oo=;
+	s=korg; t=1767960476;
+	bh=h8GINoNvc5YMtcm8L2okufLpAKQYw16LH56PubBHUoI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SgC2a7l6R/HraUmRHzrgGyeIccLwcSvVhA1sbu8nwq+amQo7dAAgPidp4JBxakR8G
-	 373pEenCad/+fochQmy1DpalfOVQDJWud9n/lUeIGpxxUwBsmRHj6XHYq/SQOQXIWD
-	 G0dzI+XKdqNALI3fAp/YjLE4eLh/ia+kk7D/Vx+s=
+	b=1NRUao39sVpAh5hwgI1aeHF2xSj8gkP4KTdVhEBHI9E85y2vuTJe4/ThaxPgbcjAo
+	 8uYH2jG7onCzxnPz8i2XZjZRqSHJ9iujYGx8QR/aUXib3tVNwOyB4of2etEz5p01nX
+	 Pro6z/sdEMcu/JITCOcKnlp279THjwyV29V51ODc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ziv Xu <ziv.xu@starfivetech.com>,
-	William Qiu <william.qiu@starfivetech.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 277/634] spi: cadence-quadspi: Add support for StarFive JH7110 QSPI
-Date: Fri,  9 Jan 2026 12:39:15 +0100
-Message-ID: <20260109112127.955684085@linuxfoundation.org>
+	Li Chen <chenl311@chinatelecom.cn>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.6 417/737] block: rate-limit capacity change info log
+Date: Fri,  9 Jan 2026 12:39:16 +0100
+Message-ID: <20260109112149.683291761@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,98 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Qiu <william.qiu@starfivetech.com>
+From: Li Chen <chenl311@chinatelecom.cn>
 
-[ Upstream commit 47fef94afeae2a125607b6b45145594713471320 ]
+commit 3179a5f7f86bcc3acd5d6fb2a29f891ef5615852 upstream.
 
-Add QSPI reset operation in device probe and add RISCV support to
-QUAD SPI Kconfig.
+loop devices under heavy stress-ng loop streessor can trigger many
+capacity change events in a short time. Each event prints an info
+message from set_capacity_and_notify(), flooding the console and
+contributing to soft lockups on slow consoles.
 
-Co-developed-by: Ziv Xu <ziv.xu@starfivetech.com>
-Signed-off-by: Ziv Xu <ziv.xu@starfivetech.com>
-Signed-off-by: William Qiu <william.qiu@starfivetech.com>
-Link: https://lore.kernel.org/r/20230302105221.197421-3-william.qiu@starfivetech.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 1889dd208197 ("spi: cadence-quadspi: Fix clock disable on probe failure path")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Switch the printk in set_capacity_and_notify() to
+pr_info_ratelimited() so frequent capacity changes do not spam
+the log while still reporting occasional changes.
+
+Cc: stable@vger.kernel.org
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/Kconfig               |  2 +-
- drivers/spi/spi-cadence-quadspi.c | 21 ++++++++++++++++++++-
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ block/genhd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/spi/Kconfig b/drivers/spi/Kconfig
-index 15ea11ebcbe0..834fc0b8e27e 100644
---- a/drivers/spi/Kconfig
-+++ b/drivers/spi/Kconfig
-@@ -230,7 +230,7 @@ config SPI_CADENCE
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -83,7 +83,7 @@ bool set_capacity_and_notify(struct gend
+ 	    (disk->flags & GENHD_FL_HIDDEN))
+ 		return false;
  
- config SPI_CADENCE_QUADSPI
- 	tristate "Cadence Quad SPI controller"
--	depends on OF && (ARM || ARM64 || X86 || COMPILE_TEST)
-+	depends on OF && (ARM || ARM64 || X86 || RISCV || COMPILE_TEST)
- 	help
- 	  Enable support for the Cadence Quad SPI Flash controller.
+-	pr_info("%s: detected capacity change from %lld to %lld\n",
++	pr_info_ratelimited("%s: detected capacity change from %lld to %lld\n",
+ 		disk->disk_name, capacity, size);
  
-diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
-index 3200e55136cd..fe537b8d87e5 100644
---- a/drivers/spi/spi-cadence-quadspi.c
-+++ b/drivers/spi/spi-cadence-quadspi.c
-@@ -1586,7 +1586,7 @@ static int cqspi_setup_flash(struct cqspi_st *cqspi)
- static int cqspi_probe(struct platform_device *pdev)
- {
- 	const struct cqspi_driver_platdata *ddata;
--	struct reset_control *rstc, *rstc_ocp;
-+	struct reset_control *rstc, *rstc_ocp, *rstc_ref;
- 	struct device *dev = &pdev->dev;
- 	struct spi_master *master;
- 	struct resource *res_ahb;
-@@ -1679,6 +1679,17 @@ static int cqspi_probe(struct platform_device *pdev)
- 		goto probe_reset_failed;
- 	}
- 
-+	if (of_device_is_compatible(pdev->dev.of_node, "starfive,jh7110-qspi")) {
-+		rstc_ref = devm_reset_control_get_optional_exclusive(dev, "rstc_ref");
-+		if (IS_ERR(rstc_ref)) {
-+			ret = PTR_ERR(rstc_ref);
-+			dev_err(dev, "Cannot get QSPI REF reset.\n");
-+			goto probe_reset_failed;
-+		}
-+		reset_control_assert(rstc_ref);
-+		reset_control_deassert(rstc_ref);
-+	}
-+
- 	reset_control_assert(rstc);
- 	reset_control_deassert(rstc);
- 
-@@ -1836,6 +1847,10 @@ static const struct cqspi_driver_platdata versal_ospi = {
- 	.get_dma_status = cqspi_get_versal_dma_status,
- };
- 
-+static const struct cqspi_driver_platdata jh7110_qspi = {
-+	.quirks = CQSPI_DISABLE_DAC_MODE,
-+};
-+
- static const struct of_device_id cqspi_dt_ids[] = {
- 	{
- 		.compatible = "cdns,qspi-nor",
-@@ -1861,6 +1876,10 @@ static const struct of_device_id cqspi_dt_ids[] = {
- 		.compatible = "intel,socfpga-qspi",
- 		.data = &socfpga_qspi,
- 	},
-+	{
-+		.compatible = "starfive,jh7110-qspi",
-+		.data = &jh7110_qspi,
-+	},
- 	{ /* end of table */ }
- };
- 
--- 
-2.51.0
-
+ 	/*
 
 
 
