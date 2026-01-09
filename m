@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-207610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id AB118D0A2B0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C34BD0A1A1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8560230D66F0
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B5E1030F3966
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE056358D30;
-	Fri,  9 Jan 2026 12:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9D9535B15A;
+	Fri,  9 Jan 2026 12:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jt1pXuVX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZQhxq9U0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A25A4335BCD;
-	Fri,  9 Jan 2026 12:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D3F3359703;
+	Fri,  9 Jan 2026 12:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962541; cv=none; b=XXdhxD7RLNoxxpNLea6Sc7HBFWIFkZNUhGsw3Yu744erVbWdFxfiFB8KBfn0A6hOIHtQ47u6LS5OmsisYQy2z/EFdAdYHgP9kb7MPpt4FILrbCKWPP7ib9JPJXqaTZHq+AxcfK9OcGtpFxwmHZBG86wHYvDct52GYTBMay6Ti0s=
+	t=1767962572; cv=none; b=Fd7zvcyi1xRvsYRlujSCY2Nvzg0x8RjxCqEqKU8zkcFW6IPrgKZOHXG4GBmIclm/1qO7mPY0kwhRyVN7VfaRCoLk2UvOyyElvrxSsS0DvuUdOby0bAe8+mt8J2lFBJ+dMoKukoKwlT4EwQE7nbaqDNIEA7N+naWFzLF5BrSxFeo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962541; c=relaxed/simple;
-	bh=9anle2/v1JjC/zvzCMeDmKkNh6aLzGSsq3fYnaHqbl4=;
+	s=arc-20240116; t=1767962572; c=relaxed/simple;
+	bh=a0AnuVmTsUuLZGIrrktIr6cCREZKPSUxp0I4H5rza3U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bpCUslISXl+UKmSVtPTHeVgR8+PZN7Hy52JRLrZj5HFkpjNtTHKo95YMGeDSPSeHHHMhKO25k3yka5rXtCYrGw4kst1e8pWj9dWQerEG40hV0i9s87CbogerWP3CDDCxOxhCDp6YinZHdl/Pn77ocWrQYJKZhS23t+2RjcnSbsQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jt1pXuVX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B404C4CEF1;
-	Fri,  9 Jan 2026 12:42:21 +0000 (UTC)
+	 MIME-Version; b=pA8NwEo9CiFq3tZUUD+cu/O9fPF8AZLJgcofklXX+WoF4iTg/uZPeHx5O52V1I3gFR+Nwoe1pqpQQGUAGy6TH60c/c51xaywT3zK2a36k0KSwJbaa8lqrtRvG3LijAdZG5oAhFTDoL1q4Lw5JsgH3Pb9+d2dKovUFLKLAI4SUf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZQhxq9U0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 192A3C4CEF1;
+	Fri,  9 Jan 2026 12:42:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962541;
-	bh=9anle2/v1JjC/zvzCMeDmKkNh6aLzGSsq3fYnaHqbl4=;
+	s=korg; t=1767962572;
+	bh=a0AnuVmTsUuLZGIrrktIr6cCREZKPSUxp0I4H5rza3U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jt1pXuVXxyKv8nqHpPVOg13g9rgAx5G60EY6XE+d8AIdVuruV4ra93v9zZD/p7Ozs
-	 g5pChTnKLXbTv/2jYnbltMpkvIeT6sN8gRrjxgYgBn7WGMqUfdPfNPdNf/zGHiacIp
-	 xhPV+fJflqFzjJiW510glZuiwDC47z9Qej9RHX+M=
+	b=ZQhxq9U0ljjs6xSTaXrA67boZiisOxrhb/AfUUqBsWkbJUTOQtOeeG02QZ0xZzHD1
+	 eUfPyNfXZLHl6PDr7n51Bx4jQoDZIjUd1nFZ6X4+y1e2m6Ah6ERN7InKQx/m9GJw7K
+	 OFrRTxd5fEQ8fZ1zXmo0IMnV5sXssUyAulBO+WQI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 6.1 384/634] i2c: amd-mp2: fix reference leak in MP2 PCI device
-Date: Fri,  9 Jan 2026 12:41:02 +0100
-Message-ID: <20260109112131.981008891@linuxfoundation.org>
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.1 385/634] hwmon: (max16065) Use local variable to avoid TOCTOU
+Date: Fri,  9 Jan 2026 12:41:03 +0100
+Message-ID: <20260109112132.018986575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,52 +63,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit a6ee6aac66fb394b7f6e6187c73bdcd873f2d139 upstream.
+commit b8d5acdcf525f44e521ca4ef51dce4dac403dab4 upstream.
 
-In i2c_amd_probe(), amd_mp2_find_device() utilizes
-driver_find_next_device() which internally calls driver_find_device()
-to locate the matching device. driver_find_device() increments the
-reference count of the found device by calling get_device(), but
-amd_mp2_find_device() fails to call put_device() to decrement the
-reference count before returning. This results in a reference count
-leak of the PCI device each time i2c_amd_probe() is executed, which
-may prevent the device from being properly released and cause a memory
-leak.
+In max16065_current_show, data->curr_sense is read twice: once for the
+error check and again for the calculation. Since
+i2c_smbus_read_byte_data returns negative error codes on failure, if the
+data changes to an error code between the check and the use, ADC_TO_CURR
+results in an incorrect calculation.
 
-Found by code review.
+Read data->curr_sense into a local variable to ensure consistency. Note
+that data->curr_gain is constant and safe to access directly.
 
+This aligns max16065_current_show with max16065_input_show, which
+already uses a local variable for the same reason.
+
+Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
 Cc: stable@vger.kernel.org
-Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20251022095402.8846-1-make24@iscas.ac.cn
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251128124709.3876-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-amd-mp2-pci.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
-+++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-@@ -449,13 +449,16 @@ struct amd_mp2_dev *amd_mp2_find_device(
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -216,12 +216,13 @@ static ssize_t max16065_current_show(str
+ 				     struct device_attribute *da, char *buf)
  {
- 	struct device *dev;
- 	struct pci_dev *pci_dev;
-+	struct amd_mp2_dev *mp2_dev;
+ 	struct max16065_data *data = max16065_update_device(dev);
++	int curr_sense = data->curr_sense;
  
- 	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
- 	if (!dev)
- 		return NULL;
+-	if (unlikely(data->curr_sense < 0))
+-		return data->curr_sense;
++	if (unlikely(curr_sense < 0))
++		return curr_sense;
  
- 	pci_dev = to_pci_dev(dev);
--	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-+	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-+	put_device(dev);
-+	return mp2_dev;
+ 	return sysfs_emit(buf, "%d\n",
+-			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
++			  ADC_TO_CURR(curr_sense, data->curr_gain));
  }
- EXPORT_SYMBOL_GPL(amd_mp2_find_device);
  
+ static ssize_t max16065_limit_store(struct device *dev,
 
 
 
