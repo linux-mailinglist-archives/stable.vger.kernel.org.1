@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-206627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206638-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39A2ED0916D
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39381D093B3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 92DB8302194A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D828302D88F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2CA5359F86;
-	Fri,  9 Jan 2026 11:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 961C033290A;
+	Fri,  9 Jan 2026 11:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0nPFt0lY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pp9ArP0c"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65C80359FB0;
-	Fri,  9 Jan 2026 11:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B5A2DEA6F;
+	Fri,  9 Jan 2026 11:56:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959743; cv=none; b=sPQIzUZDfOJ/RjQcQ5/tYyM1e7/pma3cqBd32sgWCypdV/nPiS9M/wtZpxfeswu+BmKYYERObbeU8Q6Qxt4Q+1sPoZysvYKTPNSN0zpcUwrszAKyvtCzG+8njOAnpzHCzLbZDhWgdwz5Vlwx8SVarqrWsDWYsagxPIrZrCcoBWY=
+	t=1767959774; cv=none; b=TDvqh9yQZ0c9YwcRYXpR6UrhBPFIU00L1XnHXO3CVsEqHPZJna4+LrwN8YsxYXXJcJsWX4UZ5ALAeiP4dJU1AP9chWS/oswLhB8EpJzJjBuoK+IB9627l236lIBF3mbJQbj/U++xgj57TzSyGFpixLlHdEPWyL6ctNG2EsGnM4I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959743; c=relaxed/simple;
-	bh=2SAmvGCB4fMPuaK8wZ4so5LAP5wDzbDsyo8D5NuedZY=;
+	s=arc-20240116; t=1767959774; c=relaxed/simple;
+	bh=o+8/dVG6sANh43FjfixBnJ3erT/rVpnkUB77FQZWZsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuxzf0UawpUe6cJTdfgJ15rrU3fwrSRxy5sepO/p/1iR/YNZH9ZhieX5X4npqbhCZaH7V+g3V9hhx2sTvImxPb4ffaeNJdBWTmKOHy/DJaOBv5W++piG+JdawfemOzJRX6eHoKN7mxjADnCK+FGT6v4xZrelL9PzJ1hFUu3+dw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0nPFt0lY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47A5C4CEF1;
-	Fri,  9 Jan 2026 11:55:42 +0000 (UTC)
+	 MIME-Version; b=sa/0NTICH/FBRE80PpultW8etmZ0s5McNzDB2pPHJuALnZF5RLkqjM744tRBxfntgp7goVsDtT9SIgNJtvAtC1PCV0Rh9AySh1ES0TXp+qsrbVFxQooLSSBn7F/IZuFzQgLKu7bT0TI6sK/Awe7ZZFokORurPM6pVeYgWG9aEzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pp9ArP0c; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD38FC4CEF1;
+	Fri,  9 Jan 2026 11:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959743;
-	bh=2SAmvGCB4fMPuaK8wZ4so5LAP5wDzbDsyo8D5NuedZY=;
+	s=korg; t=1767959774;
+	bh=o+8/dVG6sANh43FjfixBnJ3erT/rVpnkUB77FQZWZsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0nPFt0lYP4rWB8eN78DPb2hpooV4KVrfb+d084vEk94xmxW1xhpUNUs6D7QgrEIrt
-	 l+/o510Vf+aNaMjUiFO27ETsZ51DVv28hTUUbGrHyxE3/uHpQnsQzwB3SjatTbQwgc
-	 PnbvXWH5S36NO08XkMfO0nmaJacpsTXohtFKJE4w=
+	b=Pp9ArP0cPq0ax460/d2Sh48jKOLQSWspY52u/W9oHlExljYj3QUtLMt9zNma4gXTV
+	 zMnK6NzNYtPOkrBhYHikS+sRp2vD1sLZcqjFZ/Y+1EQPAPHdrEhB1lYuC7lR9y3hdH
+	 j1C2QEn96ofEISQeNBOUfyuN01T+4L+6P5qWknTg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 142/737] wifi: cw1200: Fix potential memory leak in cw1200_bh_rx_helper()
-Date: Fri,  9 Jan 2026 12:34:41 +0100
-Message-ID: <20260109112139.341163768@linuxfoundation.org>
+Subject: [PATCH 6.6 143/737] nbd: defer config unlock in nbd_genl_connect
+Date: Fri,  9 Jan 2026 12:34:42 +0100
+Message-ID: <20260109112139.378112719@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -64,41 +65,70 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-[ Upstream commit 5e88e864118c20e63a1571d0ff0a152e5d684959 ]
+[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
 
-In one of the error paths, the memory allocated for skb_rx is not freed.
-Fix that by freeing it before returning.
+There is one use-after-free warning when running NBD_CMD_CONNECT and
+NBD_CLEAR_SOCK:
 
-Fixes: a910e4a94f69 ("cw1200: add driver for the ST-E CW1100 & CW1200 WLAN chipsets")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Link: https://patch.msgid.link/20251110175316.106591-1-nihaal@cse.iitm.ac.in
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+nbd_genl_connect
+  nbd_alloc_and_init_config // config_refs=1
+  nbd_start_device // config_refs=2
+  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
+  recv_work done // config_refs=2
+						NBD_CLEAR_SOCK // config_refs=1
+						close nbd // config_refs=0
+  refcount_inc -> uaf
+
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
+ nbd_genl_connect+0x16d0/0x1ab0
+ genl_family_rcv_msg_doit+0x1f3/0x310
+ genl_rcv_msg+0x44a/0x790
+
+The issue can be easily reproduced by adding a small delay before
+refcount_inc(&nbd->config_refs) in nbd_genl_connect():
+
+        mutex_unlock(&nbd->config_lock);
+        if (!ret) {
+                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
++               printk("before sleep\n");
++               mdelay(5 * 1000);
++               printk("after sleep\n");
+                refcount_inc(&nbd->config_refs);
+                nbd_connect_reply(info, nbd->index);
+        }
+
+Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/st/cw1200/bh.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/block/nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/st/cw1200/bh.c b/drivers/net/wireless/st/cw1200/bh.c
-index 3b4ded2ac801c..37232ee220375 100644
---- a/drivers/net/wireless/st/cw1200/bh.c
-+++ b/drivers/net/wireless/st/cw1200/bh.c
-@@ -317,10 +317,12 @@ static int cw1200_bh_rx_helper(struct cw1200_common *priv,
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 9e190d220e98f..8b7f306ec976f 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2147,12 +2147,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
  
- 	if (wsm_id & 0x0400) {
- 		int rc = wsm_release_tx_buffer(priv, 1);
--		if (WARN_ON(rc < 0))
-+		if (WARN_ON(rc < 0)) {
-+			dev_kfree_skb(skb_rx);
- 			return rc;
--		else if (rc > 0)
-+		} else if (rc > 0) {
- 			*tx = 1;
-+		}
+ 	ret = nbd_start_device(nbd);
+ out:
+-	mutex_unlock(&nbd->config_lock);
+ 	if (!ret) {
+ 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
+ 		refcount_inc(&nbd->config_refs);
+ 		nbd_connect_reply(info, nbd->index);
  	}
- 
- 	/* cw1200_wsm_rx takes care on SKB livetime */
++	mutex_unlock(&nbd->config_lock);
++
+ 	nbd_config_put(nbd);
+ 	if (put_dev)
+ 		nbd_put(nbd);
 -- 
 2.51.0
 
