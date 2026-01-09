@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-207727-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B8A6D0A404
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9C4D0A40B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 47EA030D985D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4C9E931A1A1B
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9130A35E52A;
-	Fri,  9 Jan 2026 12:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECF935E529;
+	Fri,  9 Jan 2026 12:48:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1CMkznd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uri3KGx+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 53C3B35E52C;
-	Fri,  9 Jan 2026 12:47:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4D6635BDDB;
+	Fri,  9 Jan 2026 12:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962875; cv=none; b=r4hC98nmg6K+6WOokmoKjc4own2oHllsU8WYTSedWWV1dxNvh9ZI18v/6mwxdlivC729LO6rpkbKmnXh0Di2xBIl8/uHBeIXKgfH99r3a8uHECD0KBIEqfc9dOM1SydhbFgZOJngoN2SburdQU7zXlE70xb3WMMtekHuwkltky0=
+	t=1767962881; cv=none; b=LFnVZKl9qNgIeyRvOK2A5GIGLQ6WfqKRmZHyKmG2ieh/VWRkgMW1AQ+fDwh3wOpK2LI6dkw//tqcUKrkGMAo/3ooFnGZZNQKtGvqIrOM29fjReiNpQOsAz4M8krJ463BG1u0cCD8neeYpgM0qzCsfzbVcYve7YRViEWsaH85Lv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962875; c=relaxed/simple;
-	bh=vYv7aXh9nLQCPrNoDi38hRpgngM0YOVsmzvrJxaXZyE=;
+	s=arc-20240116; t=1767962881; c=relaxed/simple;
+	bh=r5XdO/b0EgL9Q9WI6e09DXZElVvDfMh9knnmSZfIVz4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Au8vlrrTC9+xQeHfc0aV4EfJjFqDROINEZbvdfK0OkO3sYD3J/tHe/boU47hLioaZKoazjyZ1hZkB8+wVlJvxpKBtAOYl5fHQ2YlSM3T52oI9Bg8p/tbqzw3bmD4aSwQX2w0AV9kyY4BDPWg4NXGqkAxx9TScLg+l3CGAo3x1dE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1CMkznd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94A4FC4CEF1;
-	Fri,  9 Jan 2026 12:47:54 +0000 (UTC)
+	 MIME-Version; b=eJdwgzh6IMpZgvSNCsMYqNS3poniaVaNmBJEPEaA42/oDVRrN+pItWzWhTSl0meOQO2Jhp9t+EegDvkE64I2PPJKVBGN+upfAM7YdTPt4ruOG7HOlCQFT/rew/pOIWj+PBWeuNXIWV+GMqlr2mtjjwCEiK4hnoaMTjj+dFPLOVU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uri3KGx+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BE04C4CEF1;
+	Fri,  9 Jan 2026 12:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962875;
-	bh=vYv7aXh9nLQCPrNoDi38hRpgngM0YOVsmzvrJxaXZyE=;
+	s=korg; t=1767962880;
+	bh=r5XdO/b0EgL9Q9WI6e09DXZElVvDfMh9knnmSZfIVz4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1CMkzndiwogCXs+avjyB35M/Xti4irhdcijpZavU77ltwvrH19NgeSUrrNfQlcxW
-	 EPthzpVQMIGDqf+L8BdWyZxLGhXF1ofiw0LlH7by3oV7sKSaYlBj/2DEWMzg0ImMuU
-	 Y4X2+vS293xIBURJSWDmpOfwCrLtUTKkR2wc1O0Y=
+	b=uri3KGx+Bn5nvb/AFxfQb7kNJUAIklCsbd4fUFBurxlp9y5xLlJU/Vq7Dybms15nk
+	 j2Go9EPRfNE1agHALJcr7kl/+a30M1HU3sLsi+cDCONh4/7UxNOBZ8qCs1mU22SlTm
+	 J0p2Mxld2o9SkXVjX7vnAP0rnr0JykB907oLLwlk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -45,9 +45,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	David Gow <davidgow@google.com>,
 	Kefeng Wang <wangkefeng.wang@huawei.com>,
 	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 517/634] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
-Date: Fri,  9 Jan 2026 12:43:15 +0100
-Message-ID: <20260109112137.009673459@linuxfoundation.org>
+Subject: [PATCH 6.1 519/634] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_at()
+Date: Fri,  9 Jan 2026 12:43:17 +0100
+Message-ID: <20260109112137.088807603@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -68,16 +68,16 @@ Content-Transfer-Encoding: 8bit
 
 From: SeongJae Park <sj@kernel.org>
 
-commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e upstream.
+commit 5e80d73f22043c59c8ad36452a3253937ed77955 upstream.
 
-damon_test_split_evenly_succ() is assuming all dynamic memory allocation
-in it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+damon_test_split_at() is assuming all dynamic memory allocation in it will
+succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
+Link: https://lkml.kernel.org/r/20251101182021.74868-6-sj@kernel.org
 Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
 Signed-off-by: SeongJae Park <sj@kernel.org>
 Cc: Brendan Higgins <brendan.higgins@linux.dev>
@@ -87,30 +87,31 @@ Cc: <stable@vger.kernel.org>	[5.15+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/damon/vaddr-test.h |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ mm/damon/core-test.h |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -276,10 +276,17 @@ static void damon_test_split_evenly_succ
- 	unsigned long start, unsigned long end, unsigned int nr_pieces)
- {
- 	struct damon_target *t = damon_new_target();
--	struct damon_region *r = damon_new_region(start, end);
-+	struct damon_region *r;
- 	unsigned long expected_width = (end - start) / nr_pieces;
- 	unsigned long i = 0;
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -129,8 +129,19 @@ static void damon_test_split_at(struct k
+ 	struct damon_target *t;
+ 	struct damon_region *r;
  
-+	if (!t)
++	if (!c)
++		kunit_skip(test, "ctx alloc fail");
+ 	t = damon_new_target();
++	if (!t) {
++		damon_destroy_ctx(c);
 +		kunit_skip(test, "target alloc fail");
-+	r = damon_new_region(start, end);
++	}
+ 	r = damon_new_region(0, 100);
 +	if (!r) {
++		damon_destroy_ctx(c);
 +		damon_free_target(t);
 +		kunit_skip(test, "region alloc fail");
 +	}
  	damon_add_region(r, t);
- 	KUNIT_EXPECT_EQ(test,
- 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
+ 	damon_split_region_at(t, r, 25);
+ 	KUNIT_EXPECT_EQ(test, r->ar.start, 0ul);
 
 
 
