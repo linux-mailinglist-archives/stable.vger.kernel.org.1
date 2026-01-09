@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-207680-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207061-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 46D8DD0A111
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:55:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 60727D09964
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:26:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D16EE30928BF
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF76A306525E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:16:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD503612E7;
-	Fri,  9 Jan 2026 12:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A2AB2737EE;
+	Fri,  9 Jan 2026 12:16:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G632S5jA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Abputwot"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FA663612DC;
-	Fri,  9 Jan 2026 12:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBEB833C1B6;
+	Fri,  9 Jan 2026 12:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962741; cv=none; b=r5OFX4S87qN2u29ydOvPHfPIV8h6WS6pVXke6odlUOKft+LSn22LFFFuR9m8QZnEmyNrDKmDC0eHZw+PlN/3fdXQQ/L2Wm49w9vHxFvtk8N5xCzvd3AHY81GpuGZM3nCDrllWVCieDkU3jtE4cv81XNRE9TC7Vj9cyAJCdGTCHM=
+	t=1767960982; cv=none; b=KQ9yjpgD5ojWUTOymMHNQexRNCWffPlW3qSOqjozc2qKN8bE56vYmrQQjwEQumiyubbl3Fvw5YLT5SJBjqlxeqaLc4uxaX+TpO2F4RmY54L9dRBn7uKDaDi/xmpn2qR4kW0IjzUI92DCyaSQaOeRBSfWbrhOrgP87bxkF0rhJwM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962741; c=relaxed/simple;
-	bh=OrpJ51227/QQfWFptBoVPZoPr6ReDSAOXUJKWkKk2mk=;
+	s=arc-20240116; t=1767960982; c=relaxed/simple;
+	bh=PUCYHNXeD9u0bVYf9fMsqlXRiL/EZ6pl4SjsuY1C75E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czxy9SIPIkUAVZIuzo9XBwQFn702T2QmKD+xJXqOIgxdmy9/TVt6JORPu8WShzChxs908EiNwK3NoGurbdXBNoLXzLWL6kxi7YD/Y93pXWqHeXbAghcRPQhSawckF5A3/oRqu0IudG3UTq2h0Ft43sLex/XQ6dZQwAm5mQ/MXis=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G632S5jA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28CA8C16AAE;
-	Fri,  9 Jan 2026 12:45:40 +0000 (UTC)
+	 MIME-Version; b=gUh0AwwpfzWaiJX0a2FOvh6PQvUY15Z8SvKL51opU2UrMcyEd+t/jZbrLDPwgJ7N1ecWGO9HXD57EcX9Bo4e8peRG1Rd47h9yUmMSgtbARI21up+i3OzCCyp6xMhG6CH5QlYoW8v5LQJFbD5tOIcrJyqTbasjzmNghWXDrGdnd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Abputwot; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 114F3C4CEF1;
+	Fri,  9 Jan 2026 12:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962741;
-	bh=OrpJ51227/QQfWFptBoVPZoPr6ReDSAOXUJKWkKk2mk=;
+	s=korg; t=1767960982;
+	bh=PUCYHNXeD9u0bVYf9fMsqlXRiL/EZ6pl4SjsuY1C75E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G632S5jAxnexmN0YYZY+5CoVB18lryEAM1BNAWiTsBubE44kPPsH9oH0tlVNiQn7C
-	 w9BiMGFIuYDkBD8Z1YzoP1tJIdvKu/E8CEICx0eJF//dhpOhH1My4c2YU1ZiIOW9+J
-	 b2H45d+KbAYO2EG13lc9Z30PdZuiJ9czOOetNfIQ=
+	b=AbputwotXK1eOSLMNqpkChRbnliEA6v7frPL9+hXbhgO/1cLIZRrvbxQWtTu8wxy6
+	 1aeD34y70fD3HP6V2bUYb4qBLc0UW2AH/anbTcIsKIQp8UKdEfeW19P6ycjF4B0For
+	 m4U0amyFSWk2aP7blgS3yBPVK1xFOTZCYEBBnCqw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Robin Murphy <robin.murphy@arm.com>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 6.1 454/634] iommu/mediatek: fix device leak on of_xlate()
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 593/737] media: i2c: ADV7604: Remove redundant cancel_delayed_work in probe
 Date: Fri,  9 Jan 2026 12:42:12 +0100
-Message-ID: <20260109112134.627354880@linuxfoundation.org>
+Message-ID: <20260109112156.310199338@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,40 +59,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit b3f1ee18280363ef17f82b564fc379ceba9ec86f upstream.
+commit 8f34f24355a607b98ecd9924837aab13c676eeca upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+The delayed_work delayed_work_enable_hotplug is initialized with
+INIT_DELAYED_WORK() in adv76xx_probe(), but it is never scheduled
+anywhere in the probe function.
 
-Fixes: 0df4fabe208d ("iommu/mediatek: Add mt8173 IOMMU driver")
-Cc: stable@vger.kernel.org	# 4.6
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Calling cancel_delayed_work() on a work that has never been
+scheduled is redundant and unnecessary, as there is no pending
+work to cancel.
+
+Remove the redundant cancel_delayed_work() from error handling
+path and adjust the goto label accordingly to simplify the code
+and avoid potential confusion.
+
+Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/mtk_iommu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/adv7604.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -894,6 +894,8 @@ static int mtk_iommu_of_xlate(struct dev
- 			return -EINVAL;
+--- a/drivers/media/i2c/adv7604.c
++++ b/drivers/media/i2c/adv7604.c
+@@ -3620,7 +3620,7 @@ static int adv76xx_probe(struct i2c_clie
+ 	err = media_entity_pads_init(&sd->entity, state->source_pad + 1,
+ 				state->pads);
+ 	if (err)
+-		goto err_work_queues;
++		goto err_i2c;
  
- 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
-+
-+		put_device(&m4updev->dev);
- 	}
+ 	/* Configure regmaps */
+ 	err = configure_regmaps(state);
+@@ -3661,8 +3661,6 @@ static int adv76xx_probe(struct i2c_clie
  
- 	return iommu_fwspec_add_ids(dev, args->args, 1);
+ err_entity:
+ 	media_entity_cleanup(&sd->entity);
+-err_work_queues:
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
+ err_i2c:
+ 	adv76xx_unregister_clients(state);
+ err_hdl:
 
 
 
