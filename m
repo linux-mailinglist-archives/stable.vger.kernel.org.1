@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF871D09479
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:14 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248CDD09F7F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B457930205BD
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 267CB3075792
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6E64334C24;
-	Fri,  9 Jan 2026 12:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9FCA35A95B;
+	Fri,  9 Jan 2026 12:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z129mKHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="udm96323"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 799021946C8;
-	Fri,  9 Jan 2026 12:07:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D00B33C53A;
+	Fri,  9 Jan 2026 12:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960468; cv=none; b=cUSexoRBm67hDeDdzWH4yV2Ax8QTTq2I/ktUQTFGT/iijDrkvj061k6WX3zyWanAyQ+iZjHGOGIXZEeUBybgW7of3Ti/WCCsswqLp2FH6T6Q2lOmx4YopbUhzSLs9l/6TuxjhZ7dzNtn+R6vlbtuABMADV/wLg1nLEI53pDOQh4=
+	t=1767962205; cv=none; b=JgduLhhutrkXoM6Tu883JjvzF1CmYvVKvmLdfRAYhBuj+vSqP98291u5qyxaP/ZSmjqATxHKkrhYFKcgyzRqN1sWbnwpmrExBCdJmiuE2cfYOAxet94XYm3lLkbNenTA8CABOSfR6blKO+L0FLimK7QX95X9ZrrFbtp6bc13l4k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960468; c=relaxed/simple;
-	bh=E/pDEk2uDMC3F4w0+ALzdlhC8sW9Nvs8mM6aNPnUyOU=;
+	s=arc-20240116; t=1767962205; c=relaxed/simple;
+	bh=2lUnh4ZGIGMVdf2hCvA3HvtuodQD+uts4vOVKeq9Ie8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RUBPD3GR87bXXR3LOnXG6/9cUEwaJMZl9RPoWioAmkSACwPXVgCYsVbcQh6I0vGJwhaLXrSfiWDHXIk6YKFvgUz1NyOHRUMxrK+dfhU+z4+ZXAALtGQC6EkWVKaNpbjCVqn4pq96r/2Bm/+h/TxFM4YSWcauJ7ekkSegPrdlVbQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z129mKHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012D8C4CEF1;
-	Fri,  9 Jan 2026 12:07:47 +0000 (UTC)
+	 MIME-Version; b=BNQOxhew7hbE6B9qo+0ps/Iqcv04yLCQTECTsm99SIf6Jwek0b143hA5pExFpQt6R6yS/QulhnRBkjb+9Y8WDceZEy6zGmiDWdQDQSC0SNGv2lT7eabE3YpklhagK+tvLQSY9VU301UNNIyvFxXNod0WK/Ed6iLAdaEH7LroT04=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=udm96323; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A7E9C16AAE;
+	Fri,  9 Jan 2026 12:36:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960468;
-	bh=E/pDEk2uDMC3F4w0+ALzdlhC8sW9Nvs8mM6aNPnUyOU=;
+	s=korg; t=1767962205;
+	bh=2lUnh4ZGIGMVdf2hCvA3HvtuodQD+uts4vOVKeq9Ie8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z129mKHYeOJAa13IgsCPraa9F41i0DZkTv4aB1SjuwwJT8MdB7hIi/oytsMFcSChI
-	 Ikbk8STzHuqSo3w2JohMUzM+B66qaTsCtYOhS3afp/MtYr6FffyGy5IO0PrN904xqV
-	 xtmqXLoZs0IeGRkO9O3L6NZ5NGIhhWj1WEhf/yak=
+	b=udm96323EmCCYLdMSVFwybt3Qk0r7N4ADIbVyNtaID5TKRNly+Pj9BwCF2OJ+PhOD
+	 5lsi3cSKQ1NZO57jeUbHxxm9NfGhva7XiFYnFM4QmepgN+Haa7sRb/fxbSdZRpdzxD
+	 n4ua3ejW6MuQrZlvFqc5TgI9jTNmL8b52rTKmNUo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <sarthak.garg@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 414/737] mmc: sdhci-msm: Avoid early clock doubling during HS400 transition
-Date: Fri,  9 Jan 2026 12:39:13 +0100
-Message-ID: <20260109112149.570960786@linuxfoundation.org>
+	kernel test robot <lkp@intel.com>,
+	Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+	Juergen Gross <jgross@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 276/634] x86/xen: Fix sparse warning in enlighten_pv.c
+Date: Fri,  9 Jan 2026 12:39:14 +0100
+Message-ID: <20260109112127.918389498@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
+From: Juergen Gross <jgross@suse.com>
 
-commit b1f856b1727c2eaa4be2c6d7cd7a8ed052bbeb87 upstream.
+[ Upstream commit e5aff444e3a7bdeef5ea796a2099fc3c60a070fa ]
 
-According to the hardware programming guide, the clock frequency must
-remain below 52MHz during the transition to HS400 mode.
+The sparse tool issues a warning for arch/x76/xen/enlighten_pv.c:
 
-However,in the current implementation, the timing is set to HS400 (a
-DDR mode) before adjusting the clock. This causes the clock to double
-prematurely to 104MHz during the transition phase, violating the
-specification and potentially resulting in CRC errors or CMD timeouts.
+   arch/x86/xen/enlighten_pv.c:120:9: sparse: sparse: incorrect type
+     in initializer (different address spaces)
+     expected void const [noderef] __percpu *__vpp_verify
+     got bool *
 
-This change ensures that clock doubling is avoided during intermediate
-transitions and is applied only when the card requires a 200MHz clock
-for HS400 operation.
+This is due to the percpu variable xen_in_preemptible_hcall being
+exported via EXPORT_SYMBOL_GPL() instead of EXPORT_PER_CPU_SYMBOL_GPL().
 
-Signed-off-by: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202512140856.Ic6FetG6-lkp@intel.com/
+Fixes: fdfd811ddde3 ("x86/xen: allow privcmd hypercalls to be preempted")
+Reviewed-by: Boris Ostrovsky <boris.ostrovsky@oracle.com>
+Signed-off-by: Juergen Gross <jgross@suse.com>
+Message-ID: <20251215115112.15072-1-jgross@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ arch/x86/xen/enlighten_pv.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -344,41 +344,43 @@ static void sdhci_msm_v5_variant_writel_
- 	writel_relaxed(val, host->ioaddr + offset);
- }
+diff --git a/arch/x86/xen/enlighten_pv.c b/arch/x86/xen/enlighten_pv.c
+index 9a54049744bf..772970fce042 100644
+--- a/arch/x86/xen/enlighten_pv.c
++++ b/arch/x86/xen/enlighten_pv.c
+@@ -109,7 +109,7 @@ static int xen_cpu_dead_pv(unsigned int cpu);
+  * calls.
+  */
+ DEFINE_PER_CPU(bool, xen_in_preemptible_hcall);
+-EXPORT_SYMBOL_GPL(xen_in_preemptible_hcall);
++EXPORT_PER_CPU_SYMBOL_GPL(xen_in_preemptible_hcall);
  
--static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host)
-+static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host,
-+						    unsigned int clock,
-+						    unsigned int timing)
- {
--	struct mmc_ios ios = host->mmc->ios;
- 	/*
- 	 * The SDHC requires internal clock frequency to be double the
- 	 * actual clock that will be set for DDR mode. The controller
- 	 * uses the faster clock(100/400MHz) for some of its parts and
- 	 * send the actual required clock (50/200MHz) to the card.
- 	 */
--	if (ios.timing == MMC_TIMING_UHS_DDR50 ||
--	    ios.timing == MMC_TIMING_MMC_DDR52 ||
--	    ios.timing == MMC_TIMING_MMC_HS400 ||
-+	if (timing == MMC_TIMING_UHS_DDR50 ||
-+	    timing == MMC_TIMING_MMC_DDR52 ||
-+	    (timing == MMC_TIMING_MMC_HS400 &&
-+	    clock == MMC_HS200_MAX_DTR) ||
- 	    host->flags & SDHCI_HS400_TUNING)
- 		return 2;
- 	return 1;
- }
- 
- static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
--					    unsigned int clock)
-+					    unsigned int clock,
-+					    unsigned int timing)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
--	struct mmc_ios curr_ios = host->mmc->ios;
- 	struct clk *core_clk = msm_host->bulk_clks[0].clk;
- 	unsigned long achieved_rate;
- 	unsigned int desired_rate;
- 	unsigned int mult;
- 	int rc;
- 
--	mult = msm_get_clock_mult_for_bus_mode(host);
-+	mult = msm_get_clock_mult_for_bus_mode(host, clock, timing);
- 	desired_rate = clock * mult;
- 	rc = dev_pm_opp_set_rate(mmc_dev(host->mmc), desired_rate);
- 	if (rc) {
- 		pr_err("%s: Failed to set clock at rate %u at timing %d\n",
--		       mmc_hostname(host->mmc), desired_rate, curr_ios.timing);
-+		       mmc_hostname(host->mmc), desired_rate, timing);
- 		return;
- 	}
- 
-@@ -397,7 +399,7 @@ static void msm_set_clock_rate_for_bus_m
- 	msm_host->clk_rate = desired_rate;
- 
- 	pr_debug("%s: Setting clock at rate %lu at timing %d\n",
--		 mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
-+		 mmc_hostname(host->mmc), achieved_rate, timing);
- }
- 
- /* Platform specific tuning */
-@@ -1239,7 +1241,7 @@ static int sdhci_msm_execute_tuning(stru
- 	 */
- 	if (host->flags & SDHCI_HS400_TUNING) {
- 		sdhci_msm_hc_select_mode(host);
--		msm_set_clock_rate_for_bus_mode(host, ios.clock);
-+		msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
- 		host->flags &= ~SDHCI_HS400_TUNING;
- 	}
- 
-@@ -1864,6 +1866,7 @@ static void sdhci_msm_set_clock(struct s
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	struct mmc_ios ios = host->mmc->ios;
- 
- 	if (!clock) {
- 		host->mmc->actual_clock = msm_host->clk_rate = 0;
-@@ -1872,7 +1875,7 @@ static void sdhci_msm_set_clock(struct s
- 
- 	sdhci_msm_hc_select_mode(host);
- 
--	msm_set_clock_rate_for_bus_mode(host, clock);
-+	msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
- out:
- 	__sdhci_msm_set_clock(host, clock);
- }
+ /*
+  * In case of scheduling the flag must be cleared and restored after
+-- 
+2.51.0
+
 
 
 
