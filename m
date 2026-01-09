@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-207499-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206931-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F9BBD09E8F
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAD3D09611
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7ABBF316CB3F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C83B630378B0
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93213358D38;
-	Fri,  9 Jan 2026 12:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52618334C24;
+	Fri,  9 Jan 2026 12:10:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ot281mS0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dAjdxIyy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 542C6359703;
-	Fri,  9 Jan 2026 12:37:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 410EE2EAD10;
+	Fri,  9 Jan 2026 12:10:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962228; cv=none; b=deHFdpx9GfnK/FS/waSgLPwF7lDd5NockCyGl35W8iBGA7abyhdbVgrFmF9p6e453VPFZXzu/nlKSQvvPTA125qXNdyERroDtQplM4IyZdIwzmsh4gpw0nsr3FSqbw94P2DOPodtY0HfKIZkGFP/tDglHSSwagS1O8gTaj1koAE=
+	t=1767960607; cv=none; b=J/UX53p5+E7gjLgr3Ej02JCfUTpUHyR0R5mX7sDR1NZww5rg8qOiTv5iOvCpjs+mCreT3PZfRJHh+WLz39SenY+yL/T7nq0vq+iqRc3JoNlRWNJdtVy/CnIMGtYHdQBGWo6knZODpC4+TRmb0e+SHgHJfwK1DiGWs3TAzYSxn4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962228; c=relaxed/simple;
-	bh=2O06WQEnZZH4oGMHuc0l5WH8ZehcGR955s06wDCii6c=;
+	s=arc-20240116; t=1767960607; c=relaxed/simple;
+	bh=PNxaQf6yEXX9pCF1AbF1BrBNuHoq73P4WbOO2sGAZAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JcOWIkdOmG6YJhyt3YLXIykLCekOkpcwnNDfKgsVFCnK9ot+bertceaUSVk0yU1EKdrkSeF1DWvGrzOlpg7mc/JNsb4Y5ifdDEdSzDE8POC3csbnflDwXAB5K8rhkGwYk1uWOnJO9F+IDiFGR2Iz7HbNLQk2vQpLQX6bkbcTV4o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ot281mS0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B1EC4CEF1;
-	Fri,  9 Jan 2026 12:37:07 +0000 (UTC)
+	 MIME-Version; b=CEsVIYW3MFDePHmDYa9raopiGX6NmpqY4Y36gBJof/L0YGnfNMg3aw55nMse6aoCIEi1i+JGeK/KP3UHjMPGIRHwPAnZfHsgSsgvooYfzvjjOT5e98UrvppHMO+XsvcMpmGAAT0HFwgzeEQa0SI6py5CmRZ79bOFX6RntlhRuoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dAjdxIyy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4DE1C4CEF1;
+	Fri,  9 Jan 2026 12:10:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962228;
-	bh=2O06WQEnZZH4oGMHuc0l5WH8ZehcGR955s06wDCii6c=;
+	s=korg; t=1767960607;
+	bh=PNxaQf6yEXX9pCF1AbF1BrBNuHoq73P4WbOO2sGAZAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ot281mS0EhsNah1ssTDOUOTvFQbB/7CEXGDzdIJ8Mk0ikJLiTRboWgC6rxlidbr3f
-	 XrDJhSiCYnksolSTBIYnEoEGENWvLMu7udnJwuokKhvyXJoGTr/IH9gseaV2YJbTC0
-	 R85fKYMRqc19IwzPQjuqz5l5Z7urv9G0SKMFDGYE=
+	b=dAjdxIyyYhzaxTsv/i0PiwE4fweFIrHg/MzExbV2DgRxrVrSKktZD6imIrY/TTa5q
+	 jsB/PvSuHZdhU0ZMKTgpfh1HeXoSKrp9ET30s+FBdJdfKRaicMUj2OQhYXRNAu6ygg
+	 3Kdx8oQKupZpzDU4Et8ocli4AlcEnwlfkvh6rzw0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.1 292/634] net/hsr: fix NULL pointer dereference in prp_get_untagged_frame()
+	Chen Changcheng <chenchangcheng@kylinos.cn>
+Subject: [PATCH 6.6 431/737] usb: usb-storage: Maintain minimal modifications to the bcdDevice range.
 Date: Fri,  9 Jan 2026 12:39:30 +0100
-Message-ID: <20260109112128.518285057@linuxfoundation.org>
+Message-ID: <20260109112150.208537778@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +58,36 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Chen Changcheng <chenchangcheng@kylinos.cn>
 
-commit 188e0fa5a679570ea35474575e724d8211423d17 upstream.
+commit 0831269b5f71594882accfceb02638124f88955d upstream.
 
-prp_get_untagged_frame() calls __pskb_copy() to create frame->skb_std
-but doesn't check if the allocation failed. If __pskb_copy() returns
-NULL, skb_clone() is called with a NULL pointer, causing a crash:
+We cannot determine which models require the NO_ATA_1X and
+IGNORE_RESIDUE quirks aside from the EL-R12 optical drive device.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
-CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
-Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
-RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
-RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
-RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
-RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
-R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
-R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
-FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
- hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
- hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
- __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
- __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
- __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
- netif_receive_skb_internal net/core/dev.c:6278 [inline]
- netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
- tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
- tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x5c9/0xb30 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0449f8e1ff
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
-RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
-RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
-RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
-R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
- </TASK>
-
-Add a NULL check immediately after __pskb_copy() to handle allocation
-failures gracefully.
-
-Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
-Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Reviewed-by: Felix Maurer <fmaurer@redhat.com>
-Tested-by: Felix Maurer <fmaurer@redhat.com>
-Link: https://patch.msgid.link/20251129093718.25320-1-ssrane_b23@ee.vjti.ac.in
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 955a48a5353f ("usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.")
+Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
+Link: https://patch.msgid.link/20251218012318.15978-1-chenchangcheng@kylinos.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/hsr/hsr_forward.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/storage/unusual_uas.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -176,6 +176,8 @@ struct sk_buff *prp_get_untagged_frame(s
- 				__pskb_copy(frame->skb_prp,
- 					    skb_headroom(frame->skb_prp),
- 					    GFP_ATOMIC);
-+			if (!frame->skb_std)
-+				return NULL;
- 		} else {
- 			/* Unexpected */
- 			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x01
+ 		US_FL_NO_ATA_1X),
+ 
+ /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
+-UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
++UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x0309,
+ 		"Initio Corporation",
+ 		"INIC-3069",
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 
 
 
