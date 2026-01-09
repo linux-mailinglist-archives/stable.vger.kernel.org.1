@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206713-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BAF3D09E6B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1937D093F2
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2EC8D3070D79
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 127EB310AE5E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F4AC35A92E;
-	Fri,  9 Jan 2026 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B87533C52A;
+	Fri,  9 Jan 2026 11:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pa6h1zXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l0WYpVnY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 02428324B2B;
-	Fri,  9 Jan 2026 12:29:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EED133ADB8;
+	Fri,  9 Jan 2026 11:59:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961794; cv=none; b=Tkc6NYmV1MOKH5kRUkpYCxk7qZw0qd9T4bOrdkXqfjAxuc5R0cGTxupCYjmWoxFlCudmbNMDRnUjJqdyFRjT0iWNnWOgirfjPwRQnTO4hkFrs4nkJMZA9EwNiOuEW57SMyYIBTKfXCyFadCONmxStHZPC0nCZZ042cOxYupV50o=
+	t=1767959987; cv=none; b=HzKPi5f4kRXtiUU++EfUxtyeUCo6/081sxnBfGfZaPcFbF1FYzqe3ceMXYYkDdXVGeSW9glfvTN6hdlAIpr/LDsoqz55UPwqKZXT6A8Y3XOmM8iz+QokuS0JnGHl9B3cB+2TGhQmNSuSiTLdYQY3LTLyMPlsAhtO+N9Odv4d8lw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961794; c=relaxed/simple;
-	bh=NcffoXtT9ycta9CD+ty99TJCLbPOe7s0lxpbRfiKcmg=;
+	s=arc-20240116; t=1767959987; c=relaxed/simple;
+	bh=E/iLuCnwoj9/h5gXE02oRnfc1PZ+s7oO9bbDXqlYTn8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QfJuI/B5wfRUr+Gi9gso70gIOzZPPqtrTnn0KeQk5yjGmZ1rtPKqSMT+eeiHHH76eY/IqTqOAgjzz3LuRBk8kCvXu2ioOJHpBXvl5WKAV7b2aX7AEwQBx6jLYJxqdt10UTLJ1cA5eTPGT/7DMyIIg8Ru2k0Sv1gjGksRO9k02a0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pa6h1zXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87E5FC4CEF1;
-	Fri,  9 Jan 2026 12:29:53 +0000 (UTC)
+	 MIME-Version; b=RenW6nFtYQIJiQcPtuVLfCrms4CDI0InITBjVDYt3FVabfUSHfahJTlURkCXDv5MfgOSpyLIhfwB8jy1JsyxTyiqikspNfiD/iog9xHwFWvWc8p8IdbN5jRivj4nv9yLq4erkAC+RDurVEWxtt4KcSD8AUyNmiF+gOR294hfMIU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l0WYpVnY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5581C4CEF1;
+	Fri,  9 Jan 2026 11:59:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961793;
-	bh=NcffoXtT9ycta9CD+ty99TJCLbPOe7s0lxpbRfiKcmg=;
+	s=korg; t=1767959987;
+	bh=E/iLuCnwoj9/h5gXE02oRnfc1PZ+s7oO9bbDXqlYTn8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pa6h1zXEsYA0qF42ZYz2HIeOwunsgsUtRuEVWYbOmBP1Bhyw1J192ocK64n/MqPcC
-	 Onk7ag3nUZHjEzX5nlLd+qOAhImXlc2QVJ4HNTWy6wxxiqsnnt/Ts+OU/odrx25T2U
-	 hPGVOqJZEfELBQ1SHbEUsNN3AVWrEKUGIl/hAQAw=
+	b=l0WYpVnY1tc8Yb1ZLfg5BAhwDs3dI2tPSBsoQDFBdpu5Y3p2CBIcvjmaBJ8xviUe/
+	 5qsuZTI0yhYo7e+cUnQq8pbJe+OjNfO/ccawFumaJQDuWU7fmzNon97FIPapHlKbx/
+	 bpHM5bnF4VYK7Yk2iO4/Dt9IGm91mC8js+2pk8B4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Miquel Raynal <miquel.raynal@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 105/634] coresight: etm4x: Extract the trace unit controlling
+Subject: [PATCH 6.6 244/737] mtd: rawnand: renesas: Handle devm_pm_runtime_enable() errors
 Date: Fri,  9 Jan 2026 12:36:23 +0100
-Message-ID: <20260109112121.384748255@linuxfoundation.org>
+Message-ID: <20260109112143.174289748@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,173 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 40f682ae5086366d51e29e66eb8a344501245d0d ]
+[ Upstream commit a3623e1ae1ed6be4d49b2ccb9996a9d2b65c1828 ]
 
-The trace unit is controlled in the ETM hardware enabling and disabling.
-The sequential changes for support AUX pause and resume will reuse the
-same operations.
+devm_pm_runtime_enable() can fail due to memory allocation failures.
+The current code ignores its return value and proceeds with
+pm_runtime_resume_and_get(), which may operate on incorrectly
+initialized runtime PM state.
 
-Extract the operations in the etm4_{enable|disable}_trace_unit()
-functions.  A minor improvement in etm4_enable_trace_unit() is for
-returning the timeout error to callers.
+Check the return value of devm_pm_runtime_enable() and return the
+error code if it fails.
 
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250401180708.385396-2-leo.yan@arm.com
-Stable-dep-of: 64eb04ae5452 ("coresight: etm4x: Add context synchronization before enabling trace")
+Fixes: 6a2277a0ebe7 ("mtd: rawnand: renesas: Use runtime PM instead of the raw clock API")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 103 +++++++++++-------
- 1 file changed, 62 insertions(+), 41 deletions(-)
+ drivers/mtd/nand/raw/renesas-nand-controller.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index a3553f9ca0786..b0185b4331523 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -392,6 +392,44 @@ static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
- 	return coresight_timeout(csa, TRCSTATR, pos, val);
- }
+diff --git a/drivers/mtd/nand/raw/renesas-nand-controller.c b/drivers/mtd/nand/raw/renesas-nand-controller.c
+index a9e79f0acbe2a..46af7666b3c96 100644
+--- a/drivers/mtd/nand/raw/renesas-nand-controller.c
++++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
+@@ -1342,7 +1342,10 @@ static int rnandc_probe(struct platform_device *pdev)
+ 	if (IS_ERR(rnandc->regs))
+ 		return PTR_ERR(rnandc->regs);
  
-+static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
-+{
-+	struct coresight_device *csdev = drvdata->csdev;
-+	struct device *etm_dev = &csdev->dev;
-+	struct csdev_access *csa = &csdev->access;
+-	devm_pm_runtime_enable(&pdev->dev);
++	ret = devm_pm_runtime_enable(&pdev->dev);
++	if (ret)
++		return ret;
 +
-+	/*
-+	 * ETE mandates that the TRCRSR is written to before
-+	 * enabling it.
-+	 */
-+	if (etm4x_is_ete(drvdata))
-+		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
-+
-+	etm4x_allow_trace(drvdata);
-+	/* Enable the trace unit */
-+	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
-+
-+	/* Synchronize the register updates for sysreg access */
-+	if (!csa->io_mem)
-+		isb();
-+
-+	/* wait for TRCSTATR.IDLE to go back down to '0' */
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0)) {
-+		dev_err(etm_dev,
-+			"timeout while waiting for Idle Trace Status\n");
-+		return -ETIME;
-+	}
-+
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using the
-+	 * memory-mapped interface") of ARM IHI 0064D
-+	 */
-+	dsb(sy);
-+	isb();
-+
-+	return 0;
-+}
-+
- static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- {
- 	int i, rc;
-@@ -501,33 +539,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, trcpdcr | TRCPDCR_PU, TRCPDCR);
- 	}
- 
--	/*
--	 * ETE mandates that the TRCRSR is written to before
--	 * enabling it.
--	 */
--	if (etm4x_is_ete(drvdata))
--		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
--
--	etm4x_allow_trace(drvdata);
--	/* Enable the trace unit */
--	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
--
--	/* Synchronize the register updates for sysreg access */
--	if (!csa->io_mem)
--		isb();
--
--	/* wait for TRCSTATR.IDLE to go back down to '0' */
--	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
--		dev_err(etm_dev,
--			"timeout while waiting for Idle Trace Status\n");
--
--	/*
--	 * As recommended by section 4.3.7 ("Synchronization when using the
--	 * memory-mapped interface") of ARM IHI 0064D
--	 */
--	dsb(sy);
--	isb();
--
-+	rc = etm4_enable_trace_unit(drvdata);
- done:
- 	etm4_cs_lock(drvdata, csa);
- 
-@@ -828,25 +840,12 @@ static int etm4_enable(struct coresight_device *csdev,
- 	return ret;
- }
- 
--static void etm4_disable_hw(void *info)
-+static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
- {
- 	u32 control;
--	struct etmv4_drvdata *drvdata = info;
--	struct etmv4_config *config = &drvdata->config;
- 	struct coresight_device *csdev = drvdata->csdev;
- 	struct device *etm_dev = &csdev->dev;
- 	struct csdev_access *csa = &csdev->access;
--	int i;
--
--	etm4_cs_unlock(drvdata, csa);
--	etm4_disable_arch_specific(drvdata);
--
--	if (!drvdata->skip_power_up) {
--		/* power can be removed from the trace unit now */
--		control = etm4x_relaxed_read32(csa, TRCPDCR);
--		control &= ~TRCPDCR_PU;
--		etm4x_relaxed_write32(csa, control, TRCPDCR);
--	}
- 
- 	control = etm4x_relaxed_read32(csa, TRCPRGCTLR);
- 
-@@ -887,6 +886,28 @@ static void etm4_disable_hw(void *info)
- 	 * of ARM IHI 0064H.b.
- 	 */
- 	isb();
-+}
-+
-+static void etm4_disable_hw(void *info)
-+{
-+	u32 control;
-+	struct etmv4_drvdata *drvdata = info;
-+	struct etmv4_config *config = &drvdata->config;
-+	struct coresight_device *csdev = drvdata->csdev;
-+	struct csdev_access *csa = &csdev->access;
-+	int i;
-+
-+	etm4_cs_unlock(drvdata, csa);
-+	etm4_disable_arch_specific(drvdata);
-+
-+	if (!drvdata->skip_power_up) {
-+		/* power can be removed from the trace unit now */
-+		control = etm4x_relaxed_read32(csa, TRCPDCR);
-+		control &= ~TRCPDCR_PU;
-+		etm4x_relaxed_write32(csa, control, TRCPDCR);
-+	}
-+
-+	etm4_disable_trace_unit(drvdata);
- 
- 	/* read the status of the single shot comparators */
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
+ 	ret = pm_runtime_resume_and_get(&pdev->dev);
+ 	if (ret < 0)
+ 		return ret;
 -- 
 2.51.0
 
