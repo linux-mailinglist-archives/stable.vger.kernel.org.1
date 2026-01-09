@@ -1,133 +1,78 @@
-Return-Path: <stable+bounces-207975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207980-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48B7CD0D9E8
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 18:30:29 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7975FD0DCE8
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 21:01:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 704583012A99
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:30:06 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7C5A730123D9
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 20:00:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2029C2BD015;
-	Sat, 10 Jan 2026 17:29:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C3AD280318;
+	Sat, 10 Jan 2026 20:00:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vXVohqWj"
 X-Original-To: stable@vger.kernel.org
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C0F1257845
-	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 17:29:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1F2B52459DD;
+	Sat, 10 Jan 2026 20:00:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768066196; cv=none; b=aiyQoW5m9f1Zqb+BySQLWvU//ZkWyHxm+6dkk37SUx/zYvfIB4BEmjy24OfaZjz6osK6pl6Fmln2FdoLEqOSasR3NxZ31Z3vMJc78ChgCUP59+q5PHKklzLukhjdxt0E2olZycefRlRb1f/40P1gqqAHxKX8dlFsjN+Ds+CqBM0=
+	t=1768075242; cv=none; b=AAiBR8fBCocgydKNwpjSdpRZCagMsuCOwc9wnZX0LSrHdb4lmTUHNPyuQDezXlVGaTQjGAJPvS9zB5NsxDMv1Xm84C/2SJfjCJ9hl1JsDyCs8bNaXwXleYvHZAVWlSw5cU3LPrYUlZ9ZDbxy4ng4sIAj6E04L8pMqCEFsi0yN6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768066196; c=relaxed/simple;
-	bh=3EgaE++Z5C+HH/5AV78kZyWIMoDtSGh5zMd6nygDiwA=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=T76m1+VvjbeLyRLoL4LLoQkI0uOroXODGSLgQaul4TU1TiqPhYPtI5r+ZBbUi9w+dG8yEfwyAs9Dbl2CFb6djsc5qUjYrjbblJiCpsHkQ9KscIKDmftMrYKHN/NbdPdpZosXPifxbizbHRHFVS+rYFw0zoe+NNFEeaQUJDgQ7AE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-	(Exim 4.92)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vecm7-0004Jo-T9; Sat, 10 Jan 2026 18:29:19 +0100
-Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
-	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
-	(Exim 4.96)
-	(envelope-from <mkl@pengutronix.de>)
-	id 1vecm7-00AEGZ-1l;
-	Sat, 10 Jan 2026 18:29:19 +0100
-Received: from hardanger.blackshift.org (unknown [IPv6:2a03:2260:2009::])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(Client did not present a certificate)
-	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id A2DF94CA208;
-	Sat, 10 Jan 2026 17:29:18 +0000 (UTC)
-From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 10 Jan 2026 18:28:56 +0100
-Subject: [PATCH can 5/5] can: usb_8dev: usb_8dev_read_bulk_callback(): fix
- URB memory leak
+	s=arc-20240116; t=1768075242; c=relaxed/simple;
+	bh=XhNuhcoBBONkDEFpQ9TxAOCaiCNwX6vm9uj5PPXhuoY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=tjq/8pY1C4YN6zWDf5q+f4mgglozg4EbuHf4DDVmjmB5HIpql8KdRqilYzmfES6xpXriIf3XurlUoYF4oDGgrL9NJpCk8H7qpmXGQsZUfWGHkzRbimIQmU+uClci3pcBtxWJ2i0rf+6dcu/tQm8J+Q+MW6/KcFqFEwDgQ03c9uA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vXVohqWj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4531CC4CEF1;
+	Sat, 10 Jan 2026 20:00:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768075241;
+	bh=XhNuhcoBBONkDEFpQ9TxAOCaiCNwX6vm9uj5PPXhuoY=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=vXVohqWjyluQMVcNJ3z0spXzJKTFeS7Ne6hKBsxG86q9Xc8GSYpSAb1p53Vucb0Lz
+	 HSiV6kQTlA2bx11re5lkZgGahEtBXB+ANzkpdTqMurlFJJVT+Oy0FsXXlAfFLbdMNb
+	 BOXZebJISWdNbZhaAUJ1yUeetNqk0gh/cGE7EioY=
+Date: Fri, 9 Jan 2026 15:13:55 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>, Theodore Tso <tytso@mit.edu>
+Subject: Re: [PATCH 6.6 731/737] ext4: filesystems without casefold feature
+ cannot be mounted with siphash
+Message-ID: <2026010942-overdue-repayment-b202@gregkh>
+References: <20260109112133.973195406@linuxfoundation.org>
+ <20260109112201.603806562@linuxfoundation.org>
+ <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-Message-Id: <20260110-can_usb-fix-memory-leak-v1-5-4a7c082a7081@pengutronix.de>
-References: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
-In-Reply-To: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
-To: Vincent Mailhol <mailhol@kernel.org>, 
- Wolfgang Grandegger <wg@grandegger.com>, 
- Sebastian Haas <haas@ems-wuensche.com>, 
- "David S. Miller" <davem@davemloft.net>, 
- Frank Jungclaus <frank.jungclaus@esd.eu>, socketcan@esd.eu, 
- Yasushi SHOJI <yashi@spacecubics.com>, Daniel Berglund <db@kvaser.com>, 
- Olivier Sobrie <olivier@sobrie.be>, 
- =?utf-8?q?Remigiusz_Ko=C5=82=C5=82=C4=85taj?= <remigiusz.kollataj@mobica.com>, 
- Bernd Krumboeck <b.krumboeck@gmail.com>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
- linux-kernel@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>, 
- stable@vger.kernel.org
-X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1616; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=3EgaE++Z5C+HH/5AV78kZyWIMoDtSGh5zMd6nygDiwA=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpYoxofF/0iTljBo2zuI1zmf1QmmIcb3NblJSYh
- QGTjjzPBvmJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaWKMaAAKCRAMdGXf+ZCR
- nGyiB/9iQYl3aFkXGZFpD8mLB91RMysUul7kkUVWmet55TrGF//icbvtI63JZeMZbm1zUyy3WNg
- x+Vu7C5w9djvy/7BvqS+HBSJ8B0SXTp6SH+7zkwI8oofW22IfyLm/TTbZJAchELWNi82i7bGd7/
- 72WLOHAbnDYoXaoLRQ2429PsS9+ML8lslKlqdJVyTu3BVtNTTSQ3JVO/fFWy339E/nkEFYaSGRr
- iEOWogruhszdYOgMbQOi9K635lRljCcbwuANDWadAnnsjrLgZwW2XYcwTKCcUa5ckDS0rL3mCu9
- z3Bzoencq2EE3M+b9uHu/W66rcCK5Y45c7tqigtNy5ZhZhkj
-X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
- fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: mkl@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
 
-Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
-gs_usb_receive_bulk_callback(): fix URB memory leak").
+On Fri, Jan 09, 2026 at 10:40:34AM -0300, Thadeu Lima de Souza Cascardo wrote:
+> Hi, Greg.
+> 
+> The followup to 985b67cd86392310d9e9326de941c22fc9340eec, that I submitted
+> in the same thread, has not been picked up.
+> 
+> 20260108150350.3354622-2-cascardo@igalia.com
+> https://lore.kernel.org/stable/20260108150350.3354622-2-cascardo@igalia.com/
+> a2187431c395 ("ext4: fix error message when rejecting the default hash")
+> 
+> You picked it up for 6.1 and 5.15 though.
 
-In usb_8dev_open() -> usb_8dev_start(), the URBs for USB-in transfers are
-allocated, added to the priv->rx_submitted anchor and submitted. In the
-complete callback usb_8dev_read_bulk_callback(), the URBs are processed and
-resubmitted. In usb_8dev_close() -> unlink_all_urbs() the URBs are freed by
-calling usb_kill_anchored_urbs(&priv->rx_submitted).
+It's in the queue, odd you didn't get an email.
 
-However, this does not take into account that the USB framework unanchors
-the URB before the complete function is called. This means that once an
-in-URB has been completed, it is no longer anchored and is ultimately not
-released in usb_kill_anchored_urbs().
+thanks,
 
-Fix the memory leak by anchoring the URB in the
-usb_8dev_read_bulk_callback() to the priv->rx_submitted anchor.
-
-Fixes: 0024d8ad1639 ("can: usb_8dev: Add support for USB2CAN interface from 8 devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
----
- drivers/net/can/usb/usb_8dev.c | 2 ++
- 1 file changed, 2 insertions(+)
-
-diff --git a/drivers/net/can/usb/usb_8dev.c b/drivers/net/can/usb/usb_8dev.c
-index 7449328f7cd7..f5896416a780 100644
---- a/drivers/net/can/usb/usb_8dev.c
-+++ b/drivers/net/can/usb/usb_8dev.c
-@@ -541,6 +541,8 @@ static void usb_8dev_read_bulk_callback(struct urb *urb)
- 			  urb->transfer_buffer, RX_BUFFER_SIZE,
- 			  usb_8dev_read_bulk_callback, priv);
- 
-+	usb_anchor_urb(urb, &priv->rx_submitted);
-+
- 	retval = usb_submit_urb(urb, GFP_ATOMIC);
- 
- 	if (retval == -ENODEV)
-
--- 
-2.51.0
-
+greg k-h
 
