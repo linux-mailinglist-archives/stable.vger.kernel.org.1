@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-206868-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207470-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13825D09677
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E5DCD09F13
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1C59F30EECF5
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B817730232B4
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 20FAB35A921;
-	Fri,  9 Jan 2026 12:07:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5130352952;
+	Fri,  9 Jan 2026 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w3S0QZiO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wCs8gsL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB533359F98;
-	Fri,  9 Jan 2026 12:07:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D9C1E8836;
+	Fri,  9 Jan 2026 12:35:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960428; cv=none; b=jzEYnKKvz4OVq3uJ33GLwnFlsp5WfQt4ej8/07dYz96OPw3aGIYDLrrhxhohSyUDUhkQbrZtIa1mkX3QzVjNi4CLhNaeUGwNKGNxmPNjema8gfgL38XDlstR9w3U9Q/x3VxRgVdpCK14GAA0b6mrg3cAlGuG8LZV/sg/N06QwkE=
+	t=1767962146; cv=none; b=Gka96p+7/QwyifVpy5NDtbmEZeSE0+hSn4RnfSCWDKVd0AMvT+ZQnIPUAaqZ3AwVwipKFW2rKZJgzoquvRYB0HByq1suFTIgzpDMVm/gXH+wnFUVyn19JLt44WMxXnZtsOp9fUJqS6tbfe8vyqR0QYeyMLu/K/+hyDOD06AD5xY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960428; c=relaxed/simple;
-	bh=K1KaalaLDlq4uIhcMwyQMN8n59z60CBWYm/2WGk+T1g=;
+	s=arc-20240116; t=1767962146; c=relaxed/simple;
+	bh=3ZpAjUF85QK3etpRH9h2dEPJZOGUJxyrJ+oXj4efsYI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ttCWJXwV5GlseugfBjX8I1HzdIVgiZEDf/tFfuU3H7K6HFHTvFI7/XHoYBhlQIju5VTIEHk2bLl2pnvV5fy0R0kKUm78wjiaJmewoT/fExl3IjMleQ4XQqqtufvrXoa4OMxGkijLAvXpUO9wBYIJzsCJCJG1FTSf+sq4d2+Gm2Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w3S0QZiO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5692DC4CEF1;
-	Fri,  9 Jan 2026 12:07:08 +0000 (UTC)
+	 MIME-Version; b=riiH9Xcu6LHjHdVwd4XvhFHsneauDTUPZrh88GZ3ke1syT5wRcjp9O/a45kSw53GU7SZb0vBegH3YDSUjwFSaEGnVU/Jjardg+Am1tkTquZdjYYayXMhKYJ4ymm7nQCIsQ5Ad4ZrOGLq+oNH/gteMd9XPs5t3M9RPakknHZdsFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wCs8gsL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A1C16AAE;
+	Fri,  9 Jan 2026 12:35:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960428;
-	bh=K1KaalaLDlq4uIhcMwyQMN8n59z60CBWYm/2WGk+T1g=;
+	s=korg; t=1767962146;
+	bh=3ZpAjUF85QK3etpRH9h2dEPJZOGUJxyrJ+oXj4efsYI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w3S0QZiOrPFQGo0sUv+AiNcZeWKXajvcJFjrz+6CqKZEb1ZEuZBAhk1J63strbuRj
-	 JlVuOypgzUy8n7lZEOh33eN9CKkO9du0ilsuU59qJq/f7ugqFSYCR/9ThgpcxotIDU
-	 4Y1kVOnbEW+3HcaZAsKkpuDVP+E1cVCqMlPosiCw=
+	b=1wCs8gsLgcBABSgchZcp/7kO5KwN4z1s2uK2EFZQUkyiVJhqYnoGexV8xS7WvdQNe
+	 s92hOQV/pFgl1BZPkRu8nBX8Y2rAkU9kHEm4Nywp+/W7yAKL2lgKiwH5kUx+wcZDvz
+	 alAD+no5/3NJMPgYTLXzXl8lLQtQiK2PO37/Nfco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Pei Xiao <xiaopei01@kylinos.cn>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 401/737] iio: adc: ti_am335x_adc: Limit step_avg to valid range for gcc complains
+Subject: [PATCH 6.1 262/634] ethtool: Avoid overflowing userspace buffer on stats query
 Date: Fri,  9 Jan 2026 12:39:00 +0100
-Message-ID: <20260109112149.085885317@linuxfoundation.org>
+Message-ID: <20260109112127.396598179@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pei Xiao <xiaopei01@kylinos.cn>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit c9fb952360d0c78bbe98239bd6b702f05c2dbb31 ]
+[ Upstream commit 7b07be1ff1cb6c49869910518650e8d0abc7d25f ]
 
-FIELD_PREP() checks that a value fits into the available bitfield, add a
-check for step_avg to fix gcc complains.
+The ethtool -S command operates across three ioctl calls:
+ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
+ETHTOOL_GSTATS for the values.
 
-which gcc complains about:
-  drivers/iio/adc/ti_am335x_adc.c: In function 'tiadc_step_config':
-  include/linux/compiler_types.h:572:38: error: call to
-'__compiletime_assert_491' declared with attribute error: FIELD_PREP: value
-too large for the field include/linux/mfd/ti_am335x_tscadc.h:58:29: note:
-in expansion of macro 'FIELD_PREP'
-    #define STEPCONFIG_AVG(val) FIELD_PREP(GENMASK(4, 2), (val))
-                                ^~~~~~~~~~
-drivers/iio/adc/ti_am335x_adc.c:127:17: note: in expansion of macro 'STEPCONFIG_AVG'
-	stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1)
+If the number of stats changes between these calls (e.g., due to device
+reconfiguration), userspace's buffer allocation will be incorrect,
+potentially leading to buffer overflow.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202510102117.Jqxrw1vF-lkp@intel.com/
-Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Drivers are generally expected to maintain stable stat counts, but some
+drivers (e.g., mlx5, bnx2x, bna, ksz884x) use dynamic counters, making
+this scenario possible.
+
+Some drivers try to handle this internally:
+- bnad_get_ethtool_stats() returns early in case stats.n_stats is not
+  equal to the driver's stats count.
+- micrel/ksz884x also makes sure not to write anything beyond
+  stats.n_stats and overflow the buffer.
+
+However, both use stats.n_stats which is already assigned with the value
+returned from get_sset_count(), hence won't solve the issue described
+here.
+
+Change ethtool_get_strings(), ethtool_get_stats(),
+ethtool_get_phy_stats() to not return anything in case of a mismatch
+between userspace's size and get_sset_size(), to prevent buffer
+overflow.
+The returned n_stats value will be equal to zero, to reflect that
+nothing has been returned.
+
+This could result in one of two cases when using upstream ethtool,
+depending on when the size change is detected:
+1. When detected in ethtool_get_strings():
+    # ethtool -S eth2
+    no stats available
+
+2. When detected in get stats, all stats will be reported as zero.
+
+Both cases are presumably transient, and a subsequent ethtool call
+should succeed.
+
+Other than the overflow avoidance, these two cases are very evident (no
+output/cleared stats), which is arguably better than presenting
+incorrect/shifted stats.
+I also considered returning an error instead of a "silent" response, but
+that seems more destructive towards userspace apps.
+
+Notes:
+- This patch does not claim to fix the inherent race, it only makes sure
+  that we do not overflow the userspace buffer, and makes for a more
+  predictable behavior.
+
+- RTNL lock is held during each ioctl, the race window exists between
+  the separate ioctl calls when the lock is released.
+
+- Userspace ethtool always fills stats.n_stats, but it is likely that
+  these stats ioctls are implemented in other userspace applications
+  which might not fill it. The added code checks that it's not zero,
+  to prevent any regressions.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20251208121901.3203692-1-gal@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/ti_am335x_adc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ethtool/ioctl.c | 30 ++++++++++++++++++++++++------
+ 1 file changed, 24 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
-index 32f1f91e2720..9e009b035eb5 100644
---- a/drivers/iio/adc/ti_am335x_adc.c
-+++ b/drivers/iio/adc/ti_am335x_adc.c
-@@ -123,7 +123,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 208a40ae4ccbb..0e45e7fd68bf2 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -1938,7 +1938,10 @@ static int ethtool_get_strings(struct net_device *dev, void __user *useraddr)
+ 		return -ENOMEM;
+ 	WARN_ON_ONCE(!ret);
  
- 		chan = adc_dev->channel_line[i];
+-	gstrings.len = ret;
++	if (gstrings.len && gstrings.len != ret)
++		gstrings.len = 0;
++	else
++		gstrings.len = ret;
  
--		if (adc_dev->step_avg[i])
-+		if (adc_dev->step_avg[i] && adc_dev->step_avg[i] <= STEPCONFIG_AVG_16)
- 			stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1) |
- 				     STEPCONFIG_FIFO1;
- 		else
+ 	if (gstrings.len) {
+ 		data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
+@@ -2053,10 +2056,13 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
+ 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
+ 		return -EFAULT;
+ 
+-	stats.n_stats = n_stats;
++	if (stats.n_stats && stats.n_stats != n_stats)
++		stats.n_stats = 0;
++	else
++		stats.n_stats = n_stats;
+ 
+-	if (n_stats) {
+-		data = vzalloc(array_size(n_stats, sizeof(u64)));
++	if (stats.n_stats) {
++		data = vzalloc(array_size(stats.n_stats, sizeof(u64)));
+ 		if (!data)
+ 			return -ENOMEM;
+ 		ops->get_ethtool_stats(dev, &stats, data);
+@@ -2068,7 +2074,9 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
+ 	if (copy_to_user(useraddr, &stats, sizeof(stats)))
+ 		goto out;
+ 	useraddr += sizeof(stats);
+-	if (n_stats && copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
++	if (stats.n_stats &&
++	    copy_to_user(useraddr, data,
++			 array_size(stats.n_stats, sizeof(u64))))
+ 		goto out;
+ 	ret = 0;
+ 
+@@ -2104,6 +2112,10 @@ static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
+ 		return -EOPNOTSUPP;
+ 
+ 	n_stats = phy_ops->get_sset_count(phydev);
++	if (stats->n_stats && stats->n_stats != n_stats) {
++		stats->n_stats = 0;
++		return 0;
++	}
+ 
+ 	ret = ethtool_vzalloc_stats_array(n_stats, data);
+ 	if (ret)
+@@ -2124,6 +2136,10 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
+ 		return -EOPNOTSUPP;
+ 
+ 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
++	if (stats->n_stats && stats->n_stats != n_stats) {
++		stats->n_stats = 0;
++		return 0;
++	}
+ 
+ 	ret = ethtool_vzalloc_stats_array(n_stats, data);
+ 	if (ret)
+@@ -2160,7 +2176,9 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
+ 	}
+ 
+ 	useraddr += sizeof(stats);
+-	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
++	if (stats.n_stats &&
++	    copy_to_user(useraddr, data,
++			 array_size(stats.n_stats, sizeof(u64))))
+ 		ret = -EFAULT;
+ 
+  out:
 -- 
 2.51.0
 
