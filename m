@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-207535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206968-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4188BD09DF4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F15CD096AA
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3BC833046A38
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4E104302D36A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC29635BDAB;
-	Fri,  9 Jan 2026 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4A233B6F1;
+	Fri,  9 Jan 2026 12:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hukzdvts"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBqEeOz1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64C335B15C;
-	Fri,  9 Jan 2026 12:38:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA712EAD10;
+	Fri,  9 Jan 2026 12:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962330; cv=none; b=VFbvJMEjaQe/eTdrm2jw3apsjwguLp+N+0FK3MMaXUADtKI3yeY4iYmnooj4hi8yfASwKzMLUh+yy4ZAACgOdi4EoxdJDTsROja4leN9hRxxWGSgT1fkhstHUkBpsiZYucxXBf9Een3s7Nhm5so7KjRco2cq8KEGXTQUsnhBbqE=
+	t=1767960717; cv=none; b=Rzw6afQP/YSufntMLFD3yx31dwPWrN6WuKoFgCidXlHQHb85nIkEZq4g4nydB6BbII7QqcHQ4AqOWjni9iahJ59wdj3NmUf0ZDRCm3037HvuC16ZwsnVgWE5JRKT3CdC2FLXK5LD5zUduwDJ5Xtmn7HgHnPCmKyiiT4GWHr8nKI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962330; c=relaxed/simple;
-	bh=aj0g1xPl874+FQLBNlteac/R812owkP4SF60SqktdyI=;
+	s=arc-20240116; t=1767960717; c=relaxed/simple;
+	bh=1Ng0hHngv2Hsy2VYY/YQlRGbTWCItNXs+JEem5H9u0E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u845CTHn2ykm8szHx358MpP412Qj1cGupLDRaWhtnnaRbhn0to0jwVrKzt663IpXXB+MGPmo/3wem7eEnYUF5UA5nn9rJhPQBJEiw1PnPyFQckYE0jkXEqGclSDOW11o2dBg1fH37JdFn6IuX8oFnRX31tODOHOQdH8DbdndTP4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hukzdvts; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAB7C4CEF1;
-	Fri,  9 Jan 2026 12:38:49 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hfolxFYXuTQszITVaQeb7JN6k21hpMzZbErjuy0sOj9Y7M8IyIDRh2kvlihG5UEJ7qAsBMj/dsafN1zK0BTD6alpwsjS/RiqRyMpmQ/xKN+4eOKnTTfoHN5KrMlGoLu5r6Nl3A7V8HmO+MJyfmHvxztcdJme7JxcM6QAGX3boDU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBqEeOz1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08919C4CEF1;
+	Fri,  9 Jan 2026 12:11:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962330;
-	bh=aj0g1xPl874+FQLBNlteac/R812owkP4SF60SqktdyI=;
+	s=korg; t=1767960717;
+	bh=1Ng0hHngv2Hsy2VYY/YQlRGbTWCItNXs+JEem5H9u0E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hukzdvts1wN1/Mw9L/RfDTzZzmz6hCpPldFAHy/Jb1NyNLqfc/VPiw2zCz1bJRhWF
-	 7JfK+uhPrhd8wZd+xLucGqf849NVc3AKTWmMmY4je6mmnX6cZjrh1Yzjg/itYM+RB7
-	 XQ3Ybl3tVagSQ/AolDlxayP5XC8XUsYCEGd6t2+A=
+	b=TBqEeOz16InQlrCffQgq1+hv6il7SYD9TztoKdEgamzkmeco3ACafMRX64KWGC+Mz
+	 dKKO/RzXhWclw1zJXBO6KTGbMOV5nwaggA2E9AkNPwhSK7sgavT9QDT7tAhPREeXD2
+	 nkK1QXWTWiDh/XfxM0LvNpyg2L/BCvM5pSRqV1Uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.1 328/634] ext4: clear i_state_flags when alloc inode
+	Matteo Rizzo <matteorizzo@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 6.6 467/737] KVM: nSVM: Propagate SVM_EXIT_CR0_SEL_WRITE correctly for LMSW emulation
 Date: Fri,  9 Jan 2026 12:40:06 +0100
-Message-ID: <20260109112129.870071948@linuxfoundation.org>
+Message-ID: <20260109112151.555936418@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +58,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-commit 4091c8206cfd2e3bb529ef260887296b90d9b6a2 upstream.
+commit 5674a76db0213f9db1e4d08e847ff649b46889c0 upstream.
 
-i_state_flags used on 32-bit archs, need to clear this flag when
-alloc inode.
-Find this issue when umount ext4, sometimes track the inode as orphan
-accidently, cause ext4 mesg dump.
+When emulating L2 instructions, svm_check_intercept() checks whether a
+write to CR0 should trigger a synthesized #VMEXIT with
+SVM_EXIT_CR0_SEL_WRITE. For MOV-to-CR0, SVM_EXIT_CR0_SEL_WRITE is only
+triggered if any bit other than CR0.MP and CR0.TS is updated. However,
+according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
 
-Fixes: acf943e9768e ("ext4: fix checks for orphan inodes")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+  The LMSW instruction treats the selective CR0-write
+  intercept as a non-selective intercept (i.e., it intercepts
+  regardless of the value being written).
+
+Skip checking the changed bits for x86_intercept_lmsw and always inject
+SVM_EXIT_CR0_SEL_WRITE.
+
+Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
+Cc: stable@vger.kernel.org
+Reported-by: Matteo Rizzo <matteorizzo@google.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251024192918.3191141-3-yosry.ahmed@linux.dev
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ialloc.c |    1 -
- fs/ext4/inode.c  |    1 -
- fs/ext4/super.c  |    1 +
- 3 files changed, 1 insertion(+), 2 deletions(-)
+ arch/x86/kvm/svm/svm.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -1300,7 +1300,6 @@ got:
- 					      sizeof(gen));
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -4573,20 +4573,20 @@ static int svm_check_intercept(struct kv
+ 		if (info->intercept == x86_intercept_clts)
+ 			break;
+ 
+-		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
+-		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
+-
++		/* LMSW always triggers INTERCEPT_SELECTIVE_CR0 */
+ 		if (info->intercept == x86_intercept_lmsw) {
+-			cr0 &= 0xfUL;
+-			val &= 0xfUL;
+-			/* lmsw can't clear PE - catch this here */
+-			if (cr0 & X86_CR0_PE)
+-				val |= X86_CR0_PE;
++			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
++			break;
+ 		}
+ 
++		/*
++		 * MOV-to-CR0 only triggers INTERCEPT_SELECTIVE_CR0 if any bit
++		 * other than SVM_CR0_SELECTIVE_MASK is changed.
++		 */
++		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
++		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
+ 		if (cr0 ^ val)
+ 			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
+-
+ 		break;
  	}
- 
--	ext4_clear_state_flags(ei); /* Only relevant on 32-bit archs */
- 	ext4_set_inode_state(inode, EXT4_STATE_NEW);
- 
- 	ei->i_extra_isize = sbi->s_want_extra_isize;
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4937,7 +4937,6 @@ struct inode *__ext4_iget(struct super_b
- 	ei->i_projid = make_kprojid(&init_user_ns, i_projid);
- 	set_nlink(inode, le16_to_cpu(raw_inode->i_links_count));
- 
--	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
- 	ei->i_inline_off = 0;
- 	ei->i_dir_start_lookup = 0;
- 	ei->i_dtime = le32_to_cpu(raw_inode->i_dtime);
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1327,6 +1327,7 @@ static struct inode *ext4_alloc_inode(st
- 
- 	inode_set_iversion(&ei->vfs_inode, 1);
- 	ei->i_flags = 0;
-+	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
- 	spin_lock_init(&ei->i_raw_lock);
- 	INIT_LIST_HEAD(&ei->i_prealloc_list);
- 	atomic_set(&ei->i_prealloc_active, 0);
+ 	case SVM_EXIT_READ_DR0:
 
 
 
