@@ -1,51 +1,50 @@
-Return-Path: <stable+bounces-207377-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207420-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00D48D09C9A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:38 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 12A92D09D2D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A7AD83054655
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9A6D4306591A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC49435B12B;
-	Fri,  9 Jan 2026 12:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4931935B151;
+	Fri,  9 Jan 2026 12:33:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zSNBnfcR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1+/M4wf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FE9033B6E8;
-	Fri,  9 Jan 2026 12:31:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F0D7435B137;
+	Fri,  9 Jan 2026 12:33:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961882; cv=none; b=kKGZzzIqwqxe3q7cadKRICqRjJLoQP6P7E6N0bXU3YyL57F7KeDZ/f26n0zegAjUb08rS+rIkbbOeg8gTXYuHdKjq7iifrjGJ8yO3vY+Rkk+MD38wiSrHR73whEkdk6LWMp+Mfi1E3xzpzGxXuBOxh3qzdUReKb+GGhn/oON0xI=
+	t=1767962004; cv=none; b=fYzhmGJYCuV0g2C1qzNybMkXvDGu9ZYA+oY7mThrOLD47XN7dDf2nx1+azMOprFJcljfmgd84JZQLa/+JZiW1XgEPEF/uZi/x4l2QOx791h7X+PemD7duBM8JD9Qyne0wvtOSvUET2z/uTxvcxvT5NNfd4XJBXqLf3mHJEW7DdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961882; c=relaxed/simple;
-	bh=RQtRq9I3sJWw1pDKqOtHhNo1/dEGyHNq0gWM6gjWN3A=;
+	s=arc-20240116; t=1767962004; c=relaxed/simple;
+	bh=wbhtO6I7ar89XIoxatr7QItwc6o6KPx5uBYsY1xCJ+M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kRsDsAi1JzMMgRdrXQ2jsajPA1Cbv6sYilEaXBgQzqMg6zTYXK4qE/GT8Dfu1MZ8J3DUo6gKq01Vn5vPitiMJPgEr8jT3yT0adiEpGD9WYVCOc6CfYjyM9SA7URn/o/O8VS903EKY1gHb5FKaIjGlT+GM+wKjiU+/3OwFaCxOMs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zSNBnfcR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E513C19421;
-	Fri,  9 Jan 2026 12:31:21 +0000 (UTC)
+	 MIME-Version; b=R20+B8s1tzvN2zfbF7LJ2JcuFxDQYWrPXcEURF1tVUd1POWx/ozlSAiTPW1DRIJFQ1CHR1FrucLkI5+SYyQruWQRA6eYRcm2FOtDJ3JezBpurkqSN/mVwXm2Ve0rIRScLNRxyaAfmc8rc2xZ4YZXlS/WEU7O3JlF6wfUEB8VfOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1+/M4wf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52704C16AAE;
+	Fri,  9 Jan 2026 12:33:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961882;
-	bh=RQtRq9I3sJWw1pDKqOtHhNo1/dEGyHNq0gWM6gjWN3A=;
+	s=korg; t=1767962003;
+	bh=wbhtO6I7ar89XIoxatr7QItwc6o6KPx5uBYsY1xCJ+M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zSNBnfcRj7xcB78Ug1rNwS8hzwnyekaRuu0sVP5yjXKxuy+lmbWI05ifEKAYRpqyq
-	 Kvtws+2UgHfnmwPQxygn9V3FgfZ0AXZf9zxJYhz/DHNUutDh/DGUHX+vxV3+R4p10a
-	 vjsCUDljERfqxQdFGUAOhXyw5hWBn8U7ZLBhRNYc=
+	b=k1+/M4wf4UsOMT3k0PwqvCWN9SSz4AVyGOjUJL2b5QpXXkjqpDf5l+CnaQgH6ZRIc
+	 6cpKMO27q3vBvXJACtQhRY3fpRKYXKZlo3E7YJNDCYabD5ztgcDuxr1VHsMbwng/Fn
+	 n5dLKYqcNJFD9QDjRC+miCoQnOPs4ATjG9dPh6iY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	"Rafael J. Wysocki" <rafael@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 168/634] resource: Replace printk(KERN_WARNING) by pr_warn(), printk() by pr_info()
-Date: Fri,  9 Jan 2026 12:37:26 +0100
-Message-ID: <20260109112123.769310027@linuxfoundation.org>
+Subject: [PATCH 6.1 169/634] resource: Reuse for_each_resource() macro
+Date: Fri,  9 Jan 2026 12:37:27 +0100
+Message-ID: <20260109112123.805985270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -66,85 +65,97 @@ Content-Transfer-Encoding: 8bit
 
 From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 2a4e628570d42fcc13a94f1acf25e3cfeaec08f6 ]
+[ Upstream commit 441f0dd8fa035a2c7cfe972047bb905d3be05c1b ]
 
-Replace printk(KERN_WARNING) by pr_warn() and printk() by pr_info().
+We have a few places where for_each_resource() is open coded.
+Replace that by the macro. This makes code easier to read and
+understand.
 
-While at it, use %pa for the resource_size_t variables. With that,
-for the sake of consistency, introduce a temporary variable for
-the end address in iomem_map_sanity_check() like it's done in another
-function in the same module.
+With this, compile r_next() only for CONFIG_PROC_FS=y.
 
 Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Rafael J. Wysocki <rafael@kernel.org>
-Link: https://lore.kernel.org/r/20221109155618.42276-1-andriy.shevchenko@linux.intel.com
+Link: https://lore.kernel.org/r/20230912165312.402422-1-andriy.shevchenko@linux.intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/resource.c | 17 +++++++----------
- 1 file changed, 7 insertions(+), 10 deletions(-)
+ kernel/resource.c | 34 +++++++++++++++++++---------------
+ 1 file changed, 19 insertions(+), 15 deletions(-)
 
 diff --git a/kernel/resource.c b/kernel/resource.c
-index ca0a59f5bc2bd..eb713a984c749 100644
+index eb713a984c749..6703fd889ae1b 100644
 --- a/kernel/resource.c
 +++ b/kernel/resource.c
-@@ -930,7 +930,7 @@ void insert_resource_expand_to_fit(struct resource *root, struct resource *new)
- 		if (conflict->end > new->end)
- 			new->end = conflict->end;
+@@ -77,13 +77,6 @@ static struct resource *next_resource_skip_children(struct resource *p)
+ 	     (_p) = (_skip_children) ? next_resource_skip_children(_p) : \
+ 				       next_resource(_p))
  
--		printk("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
-+		pr_info("Expanded resource %s due to conflict with %s\n", new->name, conflict->name);
- 	}
- 	write_unlock(&resource_lock);
+-static void *r_next(struct seq_file *m, void *v, loff_t *pos)
+-{
+-	struct resource *p = v;
+-	(*pos)++;
+-	return (void *)next_resource(p);
+-}
+-
+ #ifdef CONFIG_PROC_FS
+ 
+ enum { MAX_IORES_LEVEL = 5 };
+@@ -91,14 +84,26 @@ enum { MAX_IORES_LEVEL = 5 };
+ static void *r_start(struct seq_file *m, loff_t *pos)
+ 	__acquires(resource_lock)
+ {
+-	struct resource *p = pde_data(file_inode(m->file));
+-	loff_t l = 0;
++	struct resource *root = pde_data(file_inode(m->file));
++	struct resource *p;
++	loff_t l = *pos;
++
+ 	read_lock(&resource_lock);
+-	for (p = p->child; p && l < *pos; p = r_next(m, p, &l))
+-		;
++	for_each_resource(root, p, false) {
++		if (l-- == 0)
++			break;
++	}
++
+ 	return p;
  }
-@@ -1325,9 +1325,7 @@ void __release_region(struct resource *parent, resource_size_t start,
  
- 	write_unlock(&resource_lock);
++static void *r_next(struct seq_file *m, void *v, loff_t *pos)
++{
++	struct resource *p = v;
++	(*pos)++;
++	return (void *)next_resource(p);
++}
++
+ static void r_stop(struct seq_file *m, void *v)
+ 	__releases(resource_lock)
+ {
+@@ -336,7 +341,7 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
  
--	printk(KERN_WARNING "Trying to free nonexistent resource "
--		"<%016llx-%016llx>\n", (unsigned long long)start,
--		(unsigned long long)end);
-+	pr_warn("Trying to free nonexistent resource <%pa-%pa>\n", &start, &end);
- }
- EXPORT_SYMBOL(__release_region);
+ 	read_lock(&resource_lock);
  
-@@ -1686,6 +1684,7 @@ __setup("reserve=", reserve_setup);
+-	for (p = iomem_resource.child; p; p = next_resource(p)) {
++	for_each_resource(&iomem_resource, p, false) {
+ 		/* If we passed the resource we are looking for, stop */
+ 		if (p->start > end) {
+ 			p = NULL;
+@@ -1683,13 +1688,12 @@ __setup("reserve=", reserve_setup);
+  */
  int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
  {
- 	struct resource *p = &iomem_resource;
-+	resource_size_t end = addr + size - 1;
+-	struct resource *p = &iomem_resource;
+ 	resource_size_t end = addr + size - 1;
++	struct resource *p;
  	int err = 0;
- 	loff_t l;
+-	loff_t l;
  
-@@ -1695,12 +1694,12 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
+ 	read_lock(&resource_lock);
+-	for (p = p->child; p ; p = r_next(NULL, p, &l)) {
++	for_each_resource(&iomem_resource, p, false) {
+ 		/*
  		 * We can probably skip the resources without
  		 * IORESOURCE_IO attribute?
- 		 */
--		if (p->start >= addr + size)
-+		if (p->start > end)
- 			continue;
- 		if (p->end < addr)
- 			continue;
- 		if (PFN_DOWN(p->start) <= PFN_DOWN(addr) &&
--		    PFN_DOWN(p->end) >= PFN_DOWN(addr + size - 1))
-+		    PFN_DOWN(p->end) >= PFN_DOWN(end))
- 			continue;
- 		/*
- 		 * if a resource is "BUSY", it's not a hardware resource
-@@ -1711,10 +1710,8 @@ int iomem_map_sanity_check(resource_size_t addr, unsigned long size)
- 		if (p->flags & IORESOURCE_BUSY)
- 			continue;
- 
--		printk(KERN_WARNING "resource sanity check: requesting [mem %#010llx-%#010llx], which spans more than %s %pR\n",
--		       (unsigned long long)addr,
--		       (unsigned long long)(addr + size - 1),
--		       p->name, p);
-+		pr_warn("resource sanity check: requesting [mem %pa-%pa], which spans more than %s %pR\n",
-+			&addr, &end, p->name, p);
- 		err = -1;
- 		break;
- 	}
 -- 
 2.51.0
 
