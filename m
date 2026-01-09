@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-207090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207692-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A64BD09A30
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:43 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CF501D0A249
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9183230375F2
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 028633027696
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8773B33C1B6;
-	Fri,  9 Jan 2026 12:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B92335CB73;
+	Fri,  9 Jan 2026 12:46:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kn0cw4i1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+j+C6Kx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AD092FD699;
-	Fri,  9 Jan 2026 12:17:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3BEC3590C6;
+	Fri,  9 Jan 2026 12:46:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961062; cv=none; b=VuwnNdsVrxo+wHCoUkxA93vucXih7JYyN31G8nFfVpbwDFUFlnWxHKlhN43rOI7yA24FrpIDbWpFhwdj3deqvI+NtMs8vRuexr5IiWvmLnwi3dB7FbcQbPKddkoro81pV5Ivs9emlzgoHrGhyq31xDz4pT+o/FQxLOOMyAvBWzI=
+	t=1767962775; cv=none; b=abZeN0M7Le1727Kc5SvZf+1PWwDdiqT41w6NyoKpjwhpqEtFbUo8zb0/Ia4Y3Tu/R7ick78Glf6jZCssakUR/RPlD+2v7fj2Zsbf8KHFx/2sqcb6nU6nz5NpVjIWK22yKUCmpvicGZzdvNu+9N6465kmE2aRvD+6uBSJRHrXIGI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961062; c=relaxed/simple;
-	bh=m6b6YGAHskvvDlv30da2myaSRIpbTqXIoLlsS3EV4wU=;
+	s=arc-20240116; t=1767962775; c=relaxed/simple;
+	bh=3fu9JzRIxndSGnP/0a1SzBTciBMF3cdNqCqxu1vkVnM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=MzokI48agjPHABaNNelF9S5ZPtMig8HujqcH5heo06cg0NSVyaw/PNrHlY6/nNhNuGGifxFH/jESti2LWi0zJcgFXNcAdP3ZqMT8g4lc/2u03MSF46p7PsKCku71TADCRcQ0ZzkIE4t+/g9OUeZxqYwDTltsmAq8U6/hm0L7Enw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kn0cw4i1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9188C4CEF1;
-	Fri,  9 Jan 2026 12:17:41 +0000 (UTC)
+	 MIME-Version; b=UfWK4iHwHlbGJW5/xyf5Fnv1nArCeVb1R+N6s6e2IT/14CXFr3dBAlcjZ1tfWaQpR0PdJwzgYSVaySZyeONZNfoRbwlmmuC9tx2fon4sPTDEfYbY6XDrxsohXN+OypBiKrz50V7MkH2MKjLIB5+H+2XoTqUkgznoN6n7QCyd1jY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+j+C6Kx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE7FC16AAE;
+	Fri,  9 Jan 2026 12:46:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961062;
-	bh=m6b6YGAHskvvDlv30da2myaSRIpbTqXIoLlsS3EV4wU=;
+	s=korg; t=1767962775;
+	bh=3fu9JzRIxndSGnP/0a1SzBTciBMF3cdNqCqxu1vkVnM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kn0cw4i1Eo8WP1ZwiGxOGKAGSWzuLQK7L33cQCIB44PIVPcuXr4SXRZeZduSxp+ku
-	 WUKrPvG5MQJ57PJrlv0JkKvlJ5ZXRq6Lpqf69pcruRLsx7icHC+l2C2Z6TR1J3Jjq/
-	 xoh2lYDDa8jpJTpA1B+EtL17QQvlEdGjNmv7WvBo=
+	b=z+j+C6Kxjy4i2uh3Fz0ddUNK0bCTFAoPPrPM45+qpTEdL3HFtQT0Dw3nOTm6RDWYW
+	 qAMSWM4t8OJpP9gXoVpJQvUlVzYtmlry7zwr7yza4yPFYCBh1qkjE5Tcslk/xdtBCI
+	 93oe3FEQZwsZ+2N772vf/ZyaTJWIquQPgR2sbtGU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Simon Richter <Simon.Richter@hogyros.de>,
-	Matthew Brost <matthew.brost@intel.com>,
-	Shuicheng Lin <shuicheng.lin@intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>
-Subject: [PATCH 6.6 621/737] drm/ttm: Avoid NULL pointer deref for evicted BOs
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.1 482/634] media: TDA1997x: Remove redundant cancel_delayed_work in probe
 Date: Fri,  9 Jan 2026 12:42:40 +0100
-Message-ID: <20260109112157.363718527@linuxfoundation.org>
+Message-ID: <20260109112135.683534132@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +57,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Simon Richter <Simon.Richter@hogyros.de>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 491adc6a0f9903c32b05f284df1148de39e8e644 upstream.
+commit 29de195ca39fc2ac0af6fd45522994df9f431f80 upstream.
 
-It is possible for a BO to exist that is not currently associated with a
-resource, e.g. because it has been evicted.
+The delayed_work delayed_work_enable_hpd is initialized with
+INIT_DELAYED_WORK(), but it is never scheduled in tda1997x_probe().
 
-When devcoredump tries to read the contents of all BOs for dumping, we need
-to expect this as well -- in this case, ENODATA is recorded instead of the
-buffer contents.
+Calling cancel_delayed_work() on a work that has never been
+scheduled is redundant and unnecessary, as there is no pending
+work to cancel.
 
-Fixes: 7d08df5d0bd3 ("drm/ttm: Add ttm_bo_access")
-Fixes: 09ac4fcb3f25 ("drm/ttm: Implement vm_operations_struct.access v2")
-Cc: stable <stable@kernel.org>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6271
-Signed-off-by: Simon Richter <Simon.Richter@hogyros.de>
-Reviewed-by: Matthew Brost <matthew.brost@intel.com>
-Reviewed-by: Shuicheng Lin <shuicheng.lin@intel.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Matthew Brost <matthew.brost@intel.com>
-Link: https://patch.msgid.link/20251013161241.709916-1-Simon.Richter@hogyros.de
+Remove the redundant cancel_delayed_work() from error handling
+path in tda1997x_probe() to avoid potential confusion.
+
+Fixes: 9ac0038db9a7 ("media: i2c: Add TDA1997x HDMI receiver driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/ttm/ttm_bo_vm.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/media/i2c/tda1997x.c |    1 -
+ 1 file changed, 1 deletion(-)
 
---- a/drivers/gpu/drm/ttm/ttm_bo_vm.c
-+++ b/drivers/gpu/drm/ttm/ttm_bo_vm.c
-@@ -421,6 +421,11 @@ int ttm_bo_vm_access(struct vm_area_stru
- 	if (ret)
- 		return ret;
- 
-+	if (!bo->resource) {
-+		ret = -ENODATA;
-+		goto unlock;
-+	}
-+
- 	switch (bo->resource->mem_type) {
- 	case TTM_PL_SYSTEM:
- 		fallthrough;
-@@ -435,6 +440,7 @@ int ttm_bo_vm_access(struct vm_area_stru
- 			ret = -EIO;
- 	}
- 
-+unlock:
- 	ttm_bo_unreserve(bo);
- 
- 	return ret;
+--- a/drivers/media/i2c/tda1997x.c
++++ b/drivers/media/i2c/tda1997x.c
+@@ -2794,7 +2794,6 @@ err_free_media:
+ err_free_handler:
+ 	v4l2_ctrl_handler_free(&state->hdl);
+ err_free_mutex:
+-	cancel_delayed_work(&state->delayed_work_enable_hpd);
+ 	mutex_destroy(&state->page_lock);
+ 	mutex_destroy(&state->lock);
+ 	tda1997x_set_power(state, 0);
 
 
 
