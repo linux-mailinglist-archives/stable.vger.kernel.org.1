@@ -1,122 +1,166 @@
-Return-Path: <stable+bounces-206428-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206429-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 561DED07954
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 08:32:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8613CD07DDB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 09:39:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C6F63301785B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 07:31:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B95843049E36
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 08:38:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC52E2EDD62;
-	Fri,  9 Jan 2026 07:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DB27350A2C;
+	Fri,  9 Jan 2026 08:38:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b="jABOhxKZ"
+	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="Z9zrRtGV"
 X-Original-To: stable@vger.kernel.org
-Received: from smtpout-04.galae.net (smtpout-04.galae.net [185.171.202.116])
+Received: from mout.web.de (mout.web.de [212.227.17.11])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D94A82EBDE9
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 07:31:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.171.202.116
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 290BC318ECC;
+	Fri,  9 Jan 2026 08:38:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767943912; cv=none; b=IywHaDMDeMLbXSoqSxgGBlpfd7w3N4VjMI9R57tk0B246bDE3QPwZcm2eDBXiZqp4e6AtE36Be8ekkgRgFH/WDjj8YXJYVQ9C1RK3QTgc1Ls9Kc7HxwetogysLoFuLnaSoU8lZroHKHBp7rU2g0FeLhHAPpJylwHNZaTuDLK3oA=
+	t=1767947914; cv=none; b=p5ug5i2F0lu/0UWJT4BFOnCtU9CfRRhilyGrqylMhC1GXoZC3C9g7uDzFkGmzGwEPwv+QiXMEJTmusAUzeLktxveh6SoJF8CUzJVnRo+hEZz25PJ2/FD0SQ+EUzJFAreNBODdILZYZBLiDL7xY6VP4jdkd4DDLGn+RPJKjjqvRA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767943912; c=relaxed/simple;
-	bh=pW8Rqlf9CIE7RE0N7FuyghveRIlSbCH8G1NmOkF9Fkw=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=NCp2cCeLWY2gfNQ8mCozUhPFKskwq31YtvbCWP2I4sioGJyL9hvP656Lsv6Jqp03JI6ehXXhgP9Wqr78iMyR8zRMxbx5DHjBforCk/FGdNiQVx9SJntAM8d8zWSYCD/nigjLVqYC5IdjOEUOuc2tFEt0wjhwV7Gx41S1uzvcwgI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com; spf=pass smtp.mailfrom=bootlin.com; dkim=pass (2048-bit key) header.d=bootlin.com header.i=@bootlin.com header.b=jABOhxKZ; arc=none smtp.client-ip=185.171.202.116
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=bootlin.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=bootlin.com
-Received: from smtpout-01.galae.net (smtpout-01.galae.net [212.83.139.233])
-	by smtpout-04.galae.net (Postfix) with ESMTPS id 1536FC1F6CF;
-	Fri,  9 Jan 2026 07:31:23 +0000 (UTC)
-Received: from mail.galae.net (mail.galae.net [212.83.136.155])
-	by smtpout-01.galae.net (Postfix) with ESMTPS id 5418060734;
-	Fri,  9 Jan 2026 07:31:49 +0000 (UTC)
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id D2901103C87F9;
-	Fri,  9 Jan 2026 08:31:44 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=bootlin.com; s=dkim;
-	t=1767943907; h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 content-transfer-encoding:in-reply-to:references;
-	bh=7G0VQZhCL0E1RG/9vT5q4DhtmO9Jz5X+7mGnytpns6k=;
-	b=jABOhxKZYevXq35Y/dw2OauCpOzC4O5PvKI4NVE0SWcsexbyfyRaVjJEYfkRcMOwLrsmmc
-	JZsZZPMU/tn1RZ11AeFV8wudEjS0FpNduTmCweyYhIkpHZhJ6Eqj2YAzo7y3tpHyMpO4YE
-	lf02ZwqPTxUlrPRJYx7USyhoZDAaBgqH6PjXGbMgb0ZGuWHclq6JKI+OXUdiyPMtc8YV7l
-	sMbWc//+lnblF9FnL3mL3ARa2rq3yVQ5ZdEL3l30W+0O2P5acKrZd8YvanmZS8E0MAlh4B
-	G0CYNTSrWZ/AqT+N+3Ve0DGrsyljbGn7k5/X8BP40arYYyIZ5oRMhZipOEXDPQ==
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Date: Fri, 09 Jan 2026 08:31:32 +0100
-Subject: [PATCH v2 01/12] drm: of: drm_of_panel_bridge_remove(): fix
- device_node leak
+	s=arc-20240116; t=1767947914; c=relaxed/simple;
+	bh=wBLE+Q/eI31VMmf58y6FTCPFYwybMbrpRy7SEvxUB/w=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=KAJLZl4MFkx+0XVYIa11Hyq9/xc6iSdPuWTDPxBxsrZuNgi9WPAqZNL0ElF3pgvKPedzA9Le2CqspfB3Qky2pvbbVNtNmvuCCuO5ZPDc+tL89qSSqwZPTswZmE+3jPAvZ74Lh/VgmE4y0TWhXyYVqt7i+53Xy1wQp/DBvMQ/tzA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=Z9zrRtGV; arc=none smtp.client-ip=212.227.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
+	s=s29768273; t=1767947902; x=1768552702; i=markus.elfring@web.de;
+	bh=wBLE+Q/eI31VMmf58y6FTCPFYwybMbrpRy7SEvxUB/w=;
+	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
+	 References:From:In-Reply-To:Content-Type:
+	 Content-Transfer-Encoding:cc:content-transfer-encoding:
+	 content-type:date:from:message-id:mime-version:reply-to:subject:
+	 to;
+	b=Z9zrRtGV7/Fg4Dd7e7wXRv/9LQNoA0yrPTNef0bNYwWB8oweEdj+UfECDlrJYJCU
+	 eGNF5RPhpRghFLagni0iBEt0l9Il5mC0zTRBnLT35HjaTMfGRcVxdsMuYHhLj/UpD
+	 XROYsog03GRQe3GWV0Ldy+oPXw7fSdMXeFjMxZVxdkFxz8n5DrYddwvTSdUt6ujqN
+	 zQsPLabhplYOEi1KilJEGSBSkrdQSfRctmiHBFaTpWVRYthGVrffcrAQ0FmBsA8xA
+	 fjQFnAi4IEeS5dQw4eaBX/aHCRM88j1/8TWHnO8PeVimvhZ/qhv/ZsIpMrX1VM+NR
+	 7+C74sWrX5KYtCp8eQ==
+X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
+Received: from [192.168.178.29] ([94.31.69.182]) by smtp.web.de (mrweb105
+ [213.165.67.124]) with ESMTPSA (Nemesis) id 1Mf3qK-1wKJJU1hWs-00qEG4; Fri, 09
+ Jan 2026 09:38:22 +0100
+Message-ID: <e76fc27b-0742-4685-96e6-f6000bd62fa8@web.de>
+Date: Fri, 9 Jan 2026 09:37:44 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [v2] drm/amdkfd: fix a memory leak in device_queue_manager_init()
+To: =?UTF-8?Q?Felix_K=C3=BChling?= <felix.kuehling@amd.com>,
+ Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>, amd-gfx@lists.freedesktop.org,
+ dri-devel@lists.freedesktop.org, Alex Deucher <alexander.deucher@amd.com>,
+ =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+ David Airlie <airlied@gmail.com>, Oak Zeng <ozeng@amd.com>,
+ Simona Vetter <simona@ffwll.ch>
+Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
+References: <20260106015731.1906738-1-lihaoxiang@isrc.iscas.ac.cn>
+ <57a9f219-2612-4a64-a9fb-44b04e09ec15@web.de>
+ <cc24a955-f5b2-43e6-a4fd-ff446d699fce@amd.com>
+Content-Language: en-GB, de-DE
+From: Markus Elfring <Markus.Elfring@web.de>
+In-Reply-To: <cc24a955-f5b2-43e6-a4fd-ff446d699fce@amd.com>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-1-8bad3ef90b9f@bootlin.com>
-References: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
-In-Reply-To: <20260109-drm-bridge-alloc-getput-drm_of_find_bridge-2-v2-0-8bad3ef90b9f@bootlin.com>
-To: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>, 
- Maxime Ripard <mripard@kernel.org>, Thomas Zimmermann <tzimmermann@suse.de>, 
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>, 
- Philippe Cornu <philippe.cornu@st.com>, benjamin.gaignard@linaro.org, 
- Andrzej Hajda <andrzej.hajda@intel.com>, 
- Neil Armstrong <neil.armstrong@linaro.org>, Robert Foss <rfoss@kernel.org>, 
- Laurent Pinchart <Laurent.pinchart@ideasonboard.com>, 
- Jonas Karlman <jonas@kwiboo.se>, Jernej Skrabec <jernej.skrabec@gmail.com>, 
- Adrien Grassein <adrien.grassein@gmail.com>, Liu Ying <victor.liu@nxp.com>, 
- Shawn Guo <shawnguo@kernel.org>, Sascha Hauer <s.hauer@pengutronix.de>, 
- Pengutronix Kernel Team <kernel@pengutronix.de>, 
- Fabio Estevam <festevam@gmail.com>, Inki Dae <inki.dae@samsung.com>, 
- Jagan Teki <jagan@amarulasolutions.com>, 
- Marek Szyprowski <m.szyprowski@samsung.com>
-Cc: Hui Pu <Hui.Pu@gehealthcare.com>, 
- Thomas Petazzoni <thomas.petazzoni@bootlin.com>, 
- dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
- imx@lists.linux.dev, linux-arm-kernel@lists.infradead.org, 
- Luca Ceresoli <luca.ceresoli@bootlin.com>, stable@vger.kernel.org
-X-Mailer: b4 0.14.3
-X-Last-TLS-Session-Version: TLSv1.3
+X-Provags-ID: V03:K1:cWejsUk3C9iAgCaj5Bc1cLzfeORWS0ZJfJXrQJP0IHLeSADUth7
+ JyQtl2pc2rEmUUCcWLRdTpNXwVqDtewf1oh0RxFzZHCSl6lrVC44wk/Pk9yAmC7x2Ca3cYC
+ Jr+LogUzD7DxrJCRdtIQy9wzAqlNkcFrlKStpEDG9Z5SJZO+6qGbUgBXizCsabft283oOic
+ 2YUj29eP+IQVIAxP6DDRg==
+X-Spam-Flag: NO
+UI-OutboundReport: notjunk:1;M01:P0:RB3GDoPLNl4=;HBh0eWzJ87c4AHmzbG+3RIbq5Qu
+ 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
 
-drm_of_panel_bridge_remove() uses of_graph_get_remote_node() to get a
-device_node but does not put the node reference.
+> My conclusion is that this WARN is just unnecessary.
 
-Fixes: c70087e8f16f ("drm/drm_of: add drm_of_panel_bridge_remove function")
-Cc: stable@vger.kernel.org # v4.15
-Acked-by: Maxime Ripard <mripard@kernel.org>
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
----
- include/drm/drm_of.h | 3 +++
- 1 file changed, 3 insertions(+)
+Would you like to omit such a questionable macro call then?
 
-diff --git a/include/drm/drm_of.h b/include/drm/drm_of.h
-index 7f0256dae3f1..f3e55ea2174c 100644
---- a/include/drm/drm_of.h
-+++ b/include/drm/drm_of.h
-@@ -5,6 +5,7 @@
- #include <linux/err.h>
- #include <linux/of_graph.h>
- #if IS_ENABLED(CONFIG_OF) && IS_ENABLED(CONFIG_DRM_PANEL_BRIDGE)
-+#include <linux/of.h>
- #include <drm/drm_bridge.h>
- #endif
- 
-@@ -173,6 +174,8 @@ static inline int drm_of_panel_bridge_remove(const struct device_node *np,
- 	bridge = of_drm_find_bridge(remote);
- 	drm_panel_bridge_remove(bridge);
- 
-+	of_node_put(remote);
-+
- 	return 0;
- #else
- 	return -EINVAL;
 
--- 
-2.52.0
+> But it's also harmless.
 
+How do you think about to avoid special development concerns here?
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Documentation/process/coding-style.rst?h=v6.19-rc4#n1242
+
+Regards,
+Markus
 
