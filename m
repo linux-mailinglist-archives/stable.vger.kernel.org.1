@@ -1,219 +1,140 @@
-Return-Path: <stable+bounces-206442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206443-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA076D08879
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 11:23:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 81F52D088FF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 11:31:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4940D3055722
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 10:23:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3CB0C3023D66
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 10:31:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF49B3382C0;
-	Fri,  9 Jan 2026 10:23:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D2B5823BF9F;
+	Fri,  9 Jan 2026 10:31:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b="ZGI+t2nW";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="SFd3Rlw+"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="STg+EjJh";
+	dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b="s2THF+O7"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-b5-smtp.messagingengine.com (fhigh-b5-smtp.messagingengine.com [202.12.124.156])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BCE1336EC8;
-	Fri,  9 Jan 2026 10:23:11 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=202.12.124.156
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59CAC223DDF
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 10:31:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767954193; cv=none; b=H8QJhcjlkJeDgJSburJKmY6+RcvTOqbTNRnNDzjga2p+vdIug7c2vfnMmo0Q2m7jFXcBBuzml7zhKW2mdV95UMUjbOU6HbDPUYnCnnf+/3PlDuxRufdDUMa9DnwsJv0JAVOM0TB+wUrbG5lQGIy9xGJcbS1jwV+Vs/9mCVVNkdE=
+	t=1767954667; cv=none; b=EfZogR6nC3XOFyLSt9tZ2NdTdTlXVyrpy4bDOSIODClQfYqUr5N3VzrNVYdB3zE9+8QGy6cxC4QqrVN83ce75MHxFnzkRp6vaUazjWALpMToi4JfSurih1q2kvI7IOb/Pld/IHnMzcEA2B4tORxk2hrXQPFQ+T/EOyLCOXdhOSA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767954193; c=relaxed/simple;
-	bh=VNATSDjCrEY/jf8XaE9+O0ats9QWrtrAh4NUr3CL8s0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=nw35T/EDHsCH7xfqF+/ByW4y5hk+7l05rNnSunWnL/MsCVnOtDqdfn8s8oRegcF5BRWbDkqb32URt6jPgHJwIdHO92QWMoSEr7El4EnDJ4Ybn5c7vjKaEdSpAgomsZ0YKOtasNYWQQK2HkEDrwuGuDpbcCM9+2TUv5srE9zkQyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net; spf=pass smtp.mailfrom=jannau.net; dkim=pass (2048-bit key) header.d=jannau.net header.i=@jannau.net header.b=ZGI+t2nW; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=SFd3Rlw+; arc=none smtp.client-ip=202.12.124.156
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=jannau.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=jannau.net
-Received: from phl-compute-10.internal (phl-compute-10.internal [10.202.2.50])
-	by mailfhigh.stl.internal (Postfix) with ESMTP id 4DCF37A0159;
-	Fri,  9 Jan 2026 05:23:11 -0500 (EST)
-Received: from phl-frontend-04 ([10.202.2.163])
-  by phl-compute-10.internal (MEProxy); Fri, 09 Jan 2026 05:23:11 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=jannau.net; h=cc
-	:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1767954191; x=1768040591; bh=QyD5/S3P7h
-	Qhgp+mxf+HZfsHxt4R/xJ40k1a8U9/co8=; b=ZGI+t2nWoU+whtBN4otdN/Ep9W
-	SMkAffK4Gvk81+dnR2mIY27qv7kFjRugMwX23sPNh5kWr6nPokJ7FAD0gHtMYzKx
-	PtnOi4AjwZnIephM2weZAQSpTVGJHYddFoATUptKE8eV8rcyzVKZm6HxjgmmqaoR
-	IZePIH2JivWNGvVBIb1DmvL2vQmHuZMJ9GkSzZ8cEAV78ixWNKEKPS3slYnHjgL9
-	yty3Q/9/7HWg40v9A4t4EM7eAasYByETz6RHqjiJTVSqSHwtxKLcUlsRYajmadD8
-	8LuYl6ZMGDEx0tn58TcM/I22Z2cHNVD7JuQh/90SdpvTGRN0rxmSwlVKLlMg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1767954191; x=1768040591; bh=QyD5/S3P7hQhgp+mxf+HZfsHxt4R/xJ40k1
-	a8U9/co8=; b=SFd3Rlw+L5aou7JPLylh5yMmduWngesz6OC3jlrkt5xF32sFXAT
-	cCSnh61B2CbfGcdSzxz43BwVsBbQSTECZb1bo+fJMYTZGGU1vEaNp69HuHkdH9f9
-	I/8gI2WYT8q0vZpuRwBbL8dKdlECvj0iNC7ZcxM7JJCXX5OSZuogARIO2DWz/GsR
-	cbfIyDG7UY4p3GXWFHe1KaW94bZtpUuQX2Bzb/eTNxRP98CZXkNKWXnA9f/Mv+Dj
-	xmvhStvc8TcOCkuZkwib6BTpEVVDwckKRTtP0MNff/EkFxsZ/wAgokkQ4Wsof7MX
-	/7qz4qoxz1DEtOkXS41RNe0oHZ9zbLvIqFg==
-X-ME-Sender: <xms:DtdgaRdyhcMJucOoseeHa_yxjmGROU_SnYAML2vFoBkWk4F25UY9NA>
-    <xme:DtdgadfD_qX0DZHWFwvGyczWaTIeWoPeEHx5LGJ6uNMPKNEWTXVFpSIa_lIcUSx3s
-    nkI1Wfuj6d4cl06bSNM22vjma-6Pev3qXt2vSM9OjsnGCbkfvq0XKI>
-X-ME-Received: <xmr:DtdgaT3Q7oSNJ735QCddXUpMKolfpQNgiOgZSOuqRpyK66MdXTmfpnHuGQ93yM5B7nPzJfF7Lw5RkZ73A72vJuzhujyRNNcSbw8>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgddutdekheehucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtredttddtjeenucfhrhhomheplfgrnhhnvgcu
-    ifhruhhnrghuuceojhesjhgrnhhnrghurdhnvghtqeenucggtffrrghtthgvrhhnpefgvd
-    ffveelgedujeeffeehheekheelheefgfejffeftedugeethfeuudefheefteenucevlhhu
-    shhtvghrufhiiigvpedtnecurfgrrhgrmhepmhgrihhlfhhrohhmpehjsehjrghnnhgruh
-    drnhgvthdpnhgspghrtghpthhtohepuddtpdhmohguvgepshhmthhpohhuthdprhgtphht
-    thhopehsvhgvnheskhgvrhhnvghlrdhorhhgpdhrtghpthhtohepnhgvrghlsehgohhmph
-    grrdguvghvpdhrtghpthhtohepthhhihhnhhdrnhhguhihvghnsehshihnohhpshihshdr
-    tghomhdprhgtphhtthhopehgrhgvghhkhheslhhinhhugihfohhunhgurghtihhonhdroh
-    hrghdprhgtphhtthhopegrshgrhhhisehlihhsthhsrdhlihhnuhigrdguvghvpdhrtghp
-    thhtoheplhhinhhugidqrghrmhdqkhgvrhhnvghlsehlihhsthhsrdhinhhfrhgruggvrg
-    gurdhorhhgpdhrtghpthhtoheplhhinhhugidquhhssgesvhhgvghrrdhkvghrnhgvlhdr
-    ohhrghdprhgtphhtthhopehlihhnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlh
-    drohhrghdprhgtphhtthhopehjtggrlhhlihhgvghrohhsleelsehgmhgrihhlrdgtohhm
-X-ME-Proxy: <xmx:Dtdgad9K5v0acRiFtqxSTkV5bcwXjiToHXTmIf_IpzO-O2vmNNsfpw>
-    <xmx:DtdgaQ5WsTkBqmMoFd4pp24thbILTdc9j-WdF-vblOJwCh40GVJWpw>
-    <xmx:Dtdgadui6xmFHk4oKdV6nzGqOzsUj5OI3lJF4WBB99k9COGcXt6DBg>
-    <xmx:Dtdgaa1S2pG-wjfJYerCosMUsClraUwXBBgY921jqWf3p97yjgrtvw>
-    <xmx:D9dgacc9QpM8zOFf9mJEjXzxAXtmi_wEMmVGfhvEb4D94VZ-9N41SCEA>
-Feedback-ID: i47b949f6:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
- 9 Jan 2026 05:23:09 -0500 (EST)
-Date: Fri, 9 Jan 2026 11:23:09 +0100
-From: Janne Grunau <j@jannau.net>
-To: Sven Peter <sven@kernel.org>
-Cc: Neal Gompa <neal@gompa.dev>, Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	asahi@lists.linux.dev, linux-arm-kernel@lists.infradead.org,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	James Calligeros <jcalligeros99@gmail.com>, stable@vger.kernel.org
-Subject: Re: [PATCH] usb: dwc3: apple: Set USB2 PHY mode before dwc3 init
-Message-ID: <20260109102309.GE4068972@robin.jannau.net>
-References: <20260108-dwc3-apple-usb2phy-fix-v1-1-5dd7bc642040@kernel.org>
+	s=arc-20240116; t=1767954667; c=relaxed/simple;
+	bh=zDDwfQtnF1HziZxtkmsmfscNv0331XpYoakhHrBniDs=;
+	h=From:To:Cc:Subject:In-Reply-To:References:Date:Message-ID:
+	 MIME-Version:Content-Type; b=AcJNAnwYw2rOTE8kknW2qWjzZEtpdnWzGdX+xdFYNrn4ag22i7ZoGiOJzXBrLlzwKkTTkT7Y/bc0/O43dW7a/eb+DA79X0/srpsoCRxta3lsjvOGC0Q9KjrgWKvaXIaKrEa6FgmTffZ2oDaWqV6NNlF2aYV+v9HJTscM70Pu46M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=STg+EjJh; dkim=pass (2048-bit key) header.d=redhat.com header.i=@redhat.com header.b=s2THF+O7; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1767954665;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=fmV/NKJSbEeFZm+j3DpikZoea+NQWkrQbLuu4uv5h2A=;
+	b=STg+EjJhrSnfeBTLsm5e7qP08aGLuZDi1YIWrOjtacN9tVc5TtaZwyMkKIvBsSKZvYrYlQ
+	P7uXU4/FBFew7bysO8NGMoNaj5h3nFmUay1aS7ePP4GCqXuVU1PVXsL6tcASW2Ma0sUzX9
+	T8yV+QK5JqqKY9Il/N64cxhlf4atNdE=
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com
+ [209.85.221.71]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-44-T2GZrz4aOJuzd7LezWZtgg-1; Fri, 09 Jan 2026 05:31:04 -0500
+X-MC-Unique: T2GZrz4aOJuzd7LezWZtgg-1
+X-Mimecast-MFC-AGG-ID: T2GZrz4aOJuzd7LezWZtgg_1767954663
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-42fd46385c0so2367347f8f.0
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 02:31:03 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=redhat.com; s=google; t=1767954663; x=1768559463; darn=vger.kernel.org;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fmV/NKJSbEeFZm+j3DpikZoea+NQWkrQbLuu4uv5h2A=;
+        b=s2THF+O7oJdxJGMZ8mUblMKcGH23TVQn/D3UjOUuYprEMawuI7tzTezJxN4l0AbSor
+         MPBCPKRgQYGnpQ8GfYRwZWM8ODUEaavzhuGiffMQuc4L1YYs5iDFXDD5qgJbpenv1JUY
+         zs1yE+Y4V+drUGhm16u0+zhbBHHiqJRdkbjdh3eWmW3R4H3mIl6u6w5zEji+96bBqIg+
+         DV+vchCt190gN28LzD3HaaOWpwqbdIqqpbflYngBTsaRHSNSgd3l3ySsTjehVoszuzBQ
+         Xq0SzRJ+t4NTJceHyizO6lECZwlKNTeH/qZU6AcpW7A9BS1xNjBKOHGhUWPICd7H562w
+         tBBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1767954663; x=1768559463;
+        h=mime-version:message-id:date:references:in-reply-to:subject:cc:to
+         :from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=fmV/NKJSbEeFZm+j3DpikZoea+NQWkrQbLuu4uv5h2A=;
+        b=eVpsnsjNT3J1QzE/tngvpeVelHoKUQDFsptYUSHgUsJtBWd1wArQdL0ySYPp/9tgkb
+         8yKHHfGu44pb039Af/KTYjIvQdQWJw03wJu9/Z88rZCaI1ImJ9a9lescSHn2umAyeCkH
+         PcQNhyA9iLe7zgxjRJrmjPnmdhUjcWE2CDkvdRmdSc2T2chuELJbEGf+uryAkZfmKex3
+         6w9YUjTJJ6KKJnvR5N4WYOMpNkFnpjAHt9xGb3y8I3Vfgk67vAu87T2Wf3eUxTUjTNCP
+         16Qw3hDBT2iQH4QRHfk23/84CyPZV/e1Aro0zqiNEjQtbnkqRGlHvAPmmN5yFJZjRKNO
+         2ILQ==
+X-Forwarded-Encrypted: i=1; AJvYcCWVfJyKERoHYHirfRczshs1tpTi9GqNX1aoj1RK7uNgLmZkL2jpw5LxtbQwcbVZRFhm+FZnojs=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz9P0bpDWTHe3xp70/QsiiYxroDKKFXdDcSS5GkTlTZZ5jZV/H0
+	Rt42aGKKGJFmbL7UQJ07sjEHgIWpF4LOHf10MLqsQ7CACQMI6ExZbIrh8O73nRqRJf7TFZIl8jZ
+	zAJp0dVa2czPkD9YtNjelU6d2sKzn6M6o8Zbk6cKgYDFEYXLtJctJzJ+5Lw==
+X-Gm-Gg: AY/fxX6KrJkcmxk1KuGdQ9H3yz2j+MqlOIe8plcHCuqJKSHg+ElK296I4PY7ItMlzFb
+	spA6fuYRRO+c1XS2GcwcFamljAUQrgaQih9evC7HzeGBI2nKIbmqZToccGB0x7hpY4QdQhiKGli
+	Ja2QPgO7xtfmyhtbmuk4ViUYVTVIScwfyc00ODugRTvFlYhmxa/fO9G+9L0nMBshI3u+Jd6yS04
+	zI/6UjXIcgaF+qIYujW4TQbbUNcZcOVYYqHpFt0adffcbJGFz/QHYrirlH5x/jPhVRe9CvVQZEC
+	Tz8p5A3KptvTqeibo3sbN5CHceIEYwNQM8mG8tu+gxYYDsXexS+BS/2xYtQUwj995Z7Wth1gGkC
+	HRgBlm9S2vTpiuzDMowy472Enbx2AmuIchZ0okOiEHxl+D2OthpvIH5EpE+1uagrTkERc
+X-Received: by 2002:a5d:5c89:0:b0:431:5ca:c1a9 with SMTP id ffacd0b85a97d-432c3632a04mr10938592f8f.23.1767954662772;
+        Fri, 09 Jan 2026 02:31:02 -0800 (PST)
+X-Google-Smtp-Source: AGHT+IE4nrg8QB5rJOCXc0Rpx794/pjF2RLlPnnPcBH896+5wFAzWM1R8nKWuTEsys28GWir314rrg==
+X-Received: by 2002:a5d:5c89:0:b0:431:5ca:c1a9 with SMTP id ffacd0b85a97d-432c3632a04mr10938556f8f.23.1767954662306;
+        Fri, 09 Jan 2026 02:31:02 -0800 (PST)
+Received: from localhost (62-151-111-63.jazzfree.ya.com. [62.151.111.63])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dacdcsm21659038f8f.1.2026.01.09.02.31.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 09 Jan 2026 02:31:01 -0800 (PST)
+From: Javier Martinez Canillas <javierm@redhat.com>
+To: Thomas Zimmermann <tzimmermann@suse.de>, tzungbi@kernel.org,
+ briannorris@chromium.org, jwerner@chromium.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: chrome-platform@lists.linux.dev, dri-devel@lists.freedesktop.org, Thomas
+ Zimmermann <tzimmermann@suse.de>, stable@vger.kernel.org
+Subject: Re: [PATCH 6/8] drm/sysfb: Remove duplicate declarations
+In-Reply-To: <20260108145058.56943-7-tzimmermann@suse.de>
+References: <20260108145058.56943-1-tzimmermann@suse.de>
+ <20260108145058.56943-7-tzimmermann@suse.de>
+Date: Fri, 09 Jan 2026 11:31:00 +0100
+Message-ID: <87ecnzf57f.fsf@ocarina.mail-host-address-is-not-set>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20260108-dwc3-apple-usb2phy-fix-v1-1-5dd7bc642040@kernel.org>
+Content-Type: text/plain
 
-On Thu, Jan 08, 2026 at 08:21:45PM +0100, Sven Peter wrote:
-> Now that the upstream code has been getting broader test coverage by our
-> users we occasionally see issues with USB2 devices plugged in during boot.
-> Before Linux is running, the USB2 PHY has usually been running in device
-> mode and it turns out that sometimes host->device or device->host
-> transitions don't work.
-> The root cause: If the role inside the USB2 PHY is re-configured when it
-> has already been powered on or when dwc2 has already enabled the ULPI
+Thomas Zimmermann <tzimmermann@suse.de> writes:
 
-"dwc3", typo noticed by Mark Kettenis
-
-> interface the new configuration sometimes doesn't take affect until dwc3
-> is reset again. Fix this rare issue by configuring the role much earlier.
-> Note that the USB3 PHY does not suffer from this issue and actually
-> requires dwc3 to be up before the correct role can be configured there.
-> 
-> Reported-by: James Calligeros <jcalligeros99@gmail.com>
-> Reported-by: Janne Grunau <j@jannau.net>
-> Fixes: 0ec946d32ef7 ("usb: dwc3: Add Apple Silicon DWC3 glue layer driver")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Sven Peter <sven@kernel.org>
+> Commit 6046b49bafff ("drm/sysfb: Share helpers for integer validation")
+> and commit e8c086880b2b ("drm/sysfb: Share helpers for screen_info
+> validation") added duplicate function declarations. Remove the latter
+> ones.
+>
+> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+> Fixes: e8c086880b2b ("drm/sysfb: Share helpers for screen_info validation")
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: Javier Martinez Canillas <javierm@redhat.com>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: <stable@vger.kernel.org> # v6.16+
 > ---
->  drivers/usb/dwc3/dwc3-apple.c | 48 +++++++++++++++++++++++++++++--------------
->  1 file changed, 33 insertions(+), 15 deletions(-)
-> 
-> diff --git a/drivers/usb/dwc3/dwc3-apple.c b/drivers/usb/dwc3/dwc3-apple.c
-> index cc47cad232e397ac4498b09165dfdb5bd215ded7..c2ae8eb21d514e5e493d2927bc12908c308dfe19 100644
-> --- a/drivers/usb/dwc3/dwc3-apple.c
-> +++ b/drivers/usb/dwc3/dwc3-apple.c
-> @@ -218,25 +218,31 @@ static int dwc3_apple_core_init(struct dwc3_apple *appledwc)
->  	return ret;
->  }
->  
-> -static void dwc3_apple_phy_set_mode(struct dwc3_apple *appledwc, enum phy_mode mode)
-> -{
-> -	lockdep_assert_held(&appledwc->lock);
-> -
-> -	/*
-> -	 * This platform requires SUSPHY to be enabled here already in order to properly configure
-> -	 * the PHY and switch dwc3's PIPE interface to USB3 PHY.
-> -	 */
-> -	dwc3_enable_susphy(&appledwc->dwc, true);
-> -	phy_set_mode(appledwc->dwc.usb2_generic_phy[0], mode);
-> -	phy_set_mode(appledwc->dwc.usb3_generic_phy[0], mode);
-> -}
-> -
->  static int dwc3_apple_init(struct dwc3_apple *appledwc, enum dwc3_apple_state state)
->  {
->  	int ret, ret_reset;
->  
->  	lockdep_assert_held(&appledwc->lock);
->  
-> +	/*
-> +	 * The USB2 PHY on this platform must be configured for host or device mode while it is
-> +	 * still powered off and before dwc3 tries to access it. Otherwise, the new configuration
-> +	 * will sometimes only take affect after the *next* time dwc3 is brought up which causes
-> +	 * the connected device to just not work.
-> +	 * The USB3 PHY must be configured later after dwc3 has already been initialized.
-> +	 */
-> +	switch (state) {
-> +	case DWC3_APPLE_HOST:
-> +		phy_set_mode(appledwc->dwc.usb2_generic_phy[0], PHY_MODE_USB_HOST);
-> +		break;
-> +	case DWC3_APPLE_DEVICE:
-> +		phy_set_mode(appledwc->dwc.usb2_generic_phy[0], PHY_MODE_USB_DEVICE);
-> +		break;
-> +	default:
-> +		/* Unreachable unless there's a bug in this driver */
-> +		return -EINVAL;
-> +	}
-> +
->  	ret = reset_control_deassert(appledwc->reset);
->  	if (ret) {
->  		dev_err(appledwc->dev, "Failed to deassert reset, err=%d\n", ret);
-> @@ -257,7 +263,13 @@ static int dwc3_apple_init(struct dwc3_apple *appledwc, enum dwc3_apple_state st
->  	case DWC3_APPLE_HOST:
->  		appledwc->dwc.dr_mode = USB_DR_MODE_HOST;
->  		dwc3_apple_set_ptrcap(appledwc, DWC3_GCTL_PRTCAP_HOST);
-> -		dwc3_apple_phy_set_mode(appledwc, PHY_MODE_USB_HOST);
-> +		/*
-> +		 * This platform requires SUSPHY to be enabled here already in order to properly
-> +		 * configure the PHY and switch dwc3's PIPE interface to USB3 PHY. The USB2 PHY
-> +		 * has already been configured to the correct mode earlier.
-> +		 */
-> +		dwc3_enable_susphy(&appledwc->dwc, true);
-> +		phy_set_mode(appledwc->dwc.usb3_generic_phy[0], PHY_MODE_USB_HOST);
->  		ret = dwc3_host_init(&appledwc->dwc);
->  		if (ret) {
->  			dev_err(appledwc->dev, "Failed to initialize host, ret=%d\n", ret);
-> @@ -268,7 +280,13 @@ static int dwc3_apple_init(struct dwc3_apple *appledwc, enum dwc3_apple_state st
->  	case DWC3_APPLE_DEVICE:
->  		appledwc->dwc.dr_mode = USB_DR_MODE_PERIPHERAL;
->  		dwc3_apple_set_ptrcap(appledwc, DWC3_GCTL_PRTCAP_DEVICE);
-> -		dwc3_apple_phy_set_mode(appledwc, PHY_MODE_USB_DEVICE);
-> +		/*
-> +		 * This platform requires SUSPHY to be enabled here already in order to properly
-> +		 * configure the PHY and switch dwc3's PIPE interface to USB3 PHY. The USB2 PHY
-> +		 * has already been configured to the correct mode earlier.
-> +		 */
-> +		dwc3_enable_susphy(&appledwc->dwc, true);
-> +		phy_set_mode(appledwc->dwc.usb3_generic_phy[0], PHY_MODE_USB_DEVICE);
->  		ret = dwc3_gadget_init(&appledwc->dwc);
->  		if (ret) {
->  			dev_err(appledwc->dev, "Failed to initialize gadget, ret=%d\n", ret);
-> 
+>  drivers/gpu/drm/sysfb/drm_sysfb_helper.h | 9 ---------
+>  1 file changed, 9 deletions(-)
+>
 
-Tested-by: Janne Grunau <j@jannau.net>
-Reviewed-by: Janne Grunau <j@jannau.net>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
 
-Janne
+-- 
+Best regards,
+
+Javier Martinez Canillas
+Core Platforms
+Red Hat
+
 
