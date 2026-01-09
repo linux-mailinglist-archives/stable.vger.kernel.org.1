@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207483-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 407F4D096A1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26703D09F67
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8AB4630B4542
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C89C9313B485
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9C7833BBBD;
-	Fri,  9 Jan 2026 12:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E5CA352952;
+	Fri,  9 Jan 2026 12:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ecOf82wg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lEWcy0lO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8C8AD1946C8;
-	Fri,  9 Jan 2026 12:07:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 41E3D31ED6D;
+	Fri,  9 Jan 2026 12:36:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960465; cv=none; b=VrBC07Et+axeZcJaWB7+EIL2gSPTyKOcR09kk6mRHvq2kLrVxyuG+cxU5yvJmHGzDsgjI+dG+fpFHaWRLftk9RHCTyp5Pxb7d3rBh24T46DPMbHkcqaFOjS5x02zSnEzOqqIUCjBSi5oYoEEguHR1d1TGMcIVyyT+MxKY7htOTU=
+	t=1767962183; cv=none; b=shuh46sadNjAGoXhgfntvfg586zBIWeMuOStWvuqY3f7+vZSryYvQ3cP4cBMJtDqTrUqmP+P8A5VnzTLRc5Kug/3qR2WuP4vuV71vkS2B1ytqx52ZL23YFKKGJ+dahcSKKrv+/lbygynIBvncsSaghE55YZTRF6i20QNf9KYnM0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960465; c=relaxed/simple;
-	bh=q9nPpCzF6bPwQ2MMdj1DYMyUlQtW4I1tnfmRF+A4QsU=;
+	s=arc-20240116; t=1767962183; c=relaxed/simple;
+	bh=Af7U+ldP4WP6vwgALNA+sDS+d1UiFbQ9LKHU7PpN2Uo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e+xJivn2hmAumsy24w5vIIMtHupWESKvEPpRahuYfes0kyKZy/Wyhc6ZMf8z8TGuQdcIzouY0uJhPRwtdmyiPlDrYetC1gkUq/UCb56q/5qbnFwT0ZC7jIJGGaX0c7MSdDra3Z6tXdf1mFkcnLAlDsjustnU8Mpzbdmv/iDJRlo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ecOf82wg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A963C19421;
-	Fri,  9 Jan 2026 12:07:44 +0000 (UTC)
+	 MIME-Version; b=JLYp8Xij6atHEp1bLCCZ4+lMPktnXLaLpZGgPELMetJI9YTY2VxqtrcCWSOwMscQo5aN9ka6Pl0DCciITGmUPf51Wq5IqrY7st0VP2LFGcLvcHor5v19M4icKUQLbYr2eGmXhKrYRKNsGSnE1Cq/qFExDYXvoEurejs/C6C2Aw0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lEWcy0lO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C17EDC4CEF1;
+	Fri,  9 Jan 2026 12:36:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960465;
-	bh=q9nPpCzF6bPwQ2MMdj1DYMyUlQtW4I1tnfmRF+A4QsU=;
+	s=korg; t=1767962183;
+	bh=Af7U+ldP4WP6vwgALNA+sDS+d1UiFbQ9LKHU7PpN2Uo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ecOf82wgtVoBbsizVXsys+EKz9EMCmT5cIS50QUidDTuJpzvDrKy0xyUHMHJAO4OD
-	 xagm7gdH4OpxCzw5wzskeKS6PAwzu8sMDhMc3FB/lk4Sko8AllenEf8HqlUydeB8YJ
-	 x88T+1eVbGke71hrmpfkoJr0YBxRjF5rUBBJxeds=
+	b=lEWcy0lOjiP4zq1ftn7HhZEqe6xIwvJacTtW8UR6/07dTdlgW9fIxDfDz6fEi8FuT
+	 Aw8KzrJ4AXp5//UJnUv9hz3mWvSDyIE4JkdrS6q1NGTNSc5b3NXbL7zK3B7cak9Yiv
+	 h9hX6vnQa94OedQ04/524x+5JSCwfn+TvvdrAGSQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com,
-	Prithvi Tambewagh <activprithvi@gmail.com>,
-	Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.6 413/737] io_uring: fix filename leak in __io_openat_prep()
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 274/634] MIPS: Fix a reference leak bug in ip22_check_gio()
 Date: Fri,  9 Jan 2026 12:39:12 +0100
-Message-ID: <20260109112149.532510975@linuxfoundation.org>
+Message-ID: <20260109112127.843871861@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Prithvi Tambewagh <activprithvi@gmail.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-commit b14fad555302a2104948feaff70503b64c80ac01 upstream.
+[ Upstream commit 680ad315caaa2860df411cb378bf3614d96c7648 ]
 
- __io_openat_prep() allocates a struct filename using getname(). However,
-for the condition of the file being installed in the fixed file table as
-well as having O_CLOEXEC flag set, the function returns early. At that
-point, the request doesn't have REQ_F_NEED_CLEANUP flag set. Due to this,
-the memory for the newly allocated struct filename is not cleaned up,
-causing a memory leak.
+If gio_device_register fails, gio_dev_put() is required to
+drop the gio_dev device reference.
 
-Fix this by setting the REQ_F_NEED_CLEANUP for the request just after the
-successful getname() call, so that when the request is torn down, the
-filename will be cleaned up, along with other resources needing cleanup.
-
-Reported-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=00e61c43eb5e4740438f
-Tested-by: syzbot+00e61c43eb5e4740438f@syzkaller.appspotmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
-Fixes: b9445598d8c6 ("io_uring: openat directly into fixed fd table")
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e84de0c61905 ("MIPS: GIO bus support for SGI IP22/28")
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/openclose.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/sgi-ip22/ip22-gio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/io_uring/openclose.c
-+++ b/io_uring/openclose.c
-@@ -65,13 +65,13 @@ static int __io_openat_prep(struct io_ki
- 		open->filename = NULL;
- 		return ret;
- 	}
-+	req->flags |= REQ_F_NEED_CLEANUP;
- 
- 	open->file_slot = READ_ONCE(sqe->file_index);
- 	if (open->file_slot && (open->how.flags & O_CLOEXEC))
- 		return -EINVAL;
- 
- 	open->nofile = rlimit(RLIMIT_NOFILE);
--	req->flags |= REQ_F_NEED_CLEANUP;
- 	if (io_openat_force_async(open))
- 		req->flags |= REQ_F_FORCE_ASYNC;
- 	return 0;
+diff --git a/arch/mips/sgi-ip22/ip22-gio.c b/arch/mips/sgi-ip22/ip22-gio.c
+index 8686e8c1c4e5..5b3d3d208db0 100644
+--- a/arch/mips/sgi-ip22/ip22-gio.c
++++ b/arch/mips/sgi-ip22/ip22-gio.c
+@@ -373,7 +373,8 @@ static void ip22_check_gio(int slotno, unsigned long addr, int irq)
+ 		gio_dev->resource.flags = IORESOURCE_MEM;
+ 		gio_dev->irq = irq;
+ 		dev_set_name(&gio_dev->dev, "%d", slotno);
+-		gio_device_register(gio_dev);
++		if (gio_device_register(gio_dev))
++			gio_dev_put(gio_dev);
+ 	} else
+ 		printk(KERN_INFO "GIO: slot %d : Empty\n", slotno);
+ }
+-- 
+2.51.0
+
 
 
 
