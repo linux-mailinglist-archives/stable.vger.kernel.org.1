@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-206663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CE808D092E7
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:08 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 129EAD09A78
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:30:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 63FE3308D04A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:57:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 456EB30EEC0F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 36EE433290A;
-	Fri,  9 Jan 2026 11:57:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5037135A952;
+	Fri,  9 Jan 2026 12:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tgavJRZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gcGq4VCc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EE6A82DEA6F;
-	Fri,  9 Jan 2026 11:57:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1162C359FBE;
+	Fri,  9 Jan 2026 12:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959846; cv=none; b=O/BTYgkjrHkE8LuxdL58iCM3tbuu+CAK+Gx0VJvL7cwh1nV/a1WqalY/938BOvVVY5XN1HloAPr4KZX9JH8grZ5gj6RZNcz/zKFVL723xINfhE1+TX0V1PBzI1Iguj0WqBQUQjMFH0tMpJ2JxN/YEsO6IywA0peC+trK8+Vr2pE=
+	t=1767961507; cv=none; b=NG7/7jtLYmq6/mTpF8e9OZNM4QUhWeB2fjY/nV2nUxZD1DrY1Q87ifFIMDm7NP8eZcDPJeWAc4p3+g04EyAmCqmuPJQObxj77mXeNQPW6X/LVAuZp3+GYvk3XrDmiuOkoiYMKz8GX9hD8SNLSmDvInB/XwLRlDGeFrKBZqg0kbk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959846; c=relaxed/simple;
-	bh=yuIDU1nWS66lbnrxKw/cNdXC40n9mtj4vM/d8NXD3GE=;
+	s=arc-20240116; t=1767961507; c=relaxed/simple;
+	bh=gijgAIR+hv3DghbcCor7k0gtwfAMPR5H0Ks2t9pfVzQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=SsQO28c71ebBXo0be0FofegWaeD5sBKTaqsLS9EMOgrIQi39Cdl/atIBe94yITJWOs70f4N0JFgP1uIa6rePVIv/pvl5txtfYkDcapeDReW5MDUfo704uQDIOj+bq5TJPlGt+nBSzwv8hDezDHNaSd1cZ32JXnMpw0EKEOKC+5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tgavJRZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B45FC4CEF1;
-	Fri,  9 Jan 2026 11:57:25 +0000 (UTC)
+	 MIME-Version; b=iXPToLiRgzpdOBBHDGLiLSU8DIo4N0qZknERf+FOc89uePOk9slXFhphSA9JMMD4kz+K5ZtBQ9gALgkcOTY2Bi4s3Dv85eox3z8zzyNlWUBS9jzXYep/vXz9KGbg5EoSvCgxJ6DSbSqGsTvQE8Bkyw3MjBJb2TcwtiY4bhlGdZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gcGq4VCc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FA28C4CEF1;
+	Fri,  9 Jan 2026 12:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959845;
-	bh=yuIDU1nWS66lbnrxKw/cNdXC40n9mtj4vM/d8NXD3GE=;
+	s=korg; t=1767961506;
+	bh=gijgAIR+hv3DghbcCor7k0gtwfAMPR5H0Ks2t9pfVzQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tgavJRZApz96ruxRmgJoDivZXu/WnjG90HwndJPkPeg1r3RslTZWIinjtXK+YoUI0
-	 8b7iAdv9KYizHjWn3TC5SeMeYxP9/iGRX58fvPp4xanYfd/Hzk3ND8VXmemt/KRDDP
-	 G1Jdd5RI4+yjILrwuWBDljhp9Ykht5BbprJqgf70=
+	b=gcGq4VCc06e3AjpVnuyzxPe/bi8RYLq0seNIBMV4qTtKzrET2o4RosZ2b85F2TcP9
+	 VStjRquBjeSbENXsbal66xXOYbOCqEY86mNYv12kpUqgkMeHClGuYMhYGdE6JCUGCD
+	 mTj/e/8h2p0NWlkgT4ZKBkNq0nkNd1xXW/CCXqSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 178/737] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
+	Navaneeth K <knavaneeth786@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 6.1 039/634] staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
 Date: Fri,  9 Jan 2026 12:35:17 +0100
-Message-ID: <20260109112140.687455910@linuxfoundation.org>
+Message-ID: <20260109112118.918680616@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,92 +57,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Navaneeth K <knavaneeth786@gmail.com>
 
-[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
+commit 6ef0e1c10455927867cac8f0ed6b49f328f8cf95 upstream.
 
-The .free callback cleared among others the enable bit PWENx in the
-control register. When the PWM is requested later again this bit isn't
-restored but the core assumes the PWM is enabled and thus skips a
-request to configure the same state as before.
+The Supported Rates IE length from an incoming Association Request frame
+was used directly as the memcpy() length when copying into a fixed-size
+16-byte stack buffer (supportRate). A malicious station can advertise an
+IE length larger than 16 bytes, causing a stack buffer overflow.
 
-To fix that don't touch the hardware configuration in .free(). For
-symmetry also drop .request() and configure the mode completely in
-.apply().
+Clamp ie_len to the buffer size before copying the Supported Rates IE,
+and correct the bounds check when merging Extended Supported Rates to
+prevent a second potential overflow.
 
-Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This prevents kernel stack corruption triggered by malformed association
+requests.
+
+Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
-index bdfc2a5ec0d69..5a51ba9b26d92 100644
---- a/drivers/pwm/pwm-bcm2835.c
-+++ b/drivers/pwm/pwm-bcm2835.c
-@@ -35,29 +35,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
- 	return container_of(chip, struct bcm2835_pwm, chip);
- }
- 
--static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--
--	return 0;
--}
--
--static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--}
--
- static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			     const struct pwm_state *state)
- {
-@@ -109,6 +86,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	/* set polarity */
- 	val = readl(pc->base + PWM_CONTROL);
- 
-+	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
-+	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -1036,6 +1036,9 @@ unsigned int OnAssocReq(struct adapter *
+ 		status = WLAN_STATUS_CHALLENGE_FAIL;
+ 		goto OnAssocReqFail;
+ 	} else {
++		if (ie_len > sizeof(supportRate))
++			ie_len = sizeof(supportRate);
 +
- 	if (state->polarity == PWM_POLARITY_NORMAL)
- 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
- 	else
-@@ -126,8 +106,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- }
+ 		memcpy(supportRate, p+2, ie_len);
+ 		supportRateNum = ie_len;
  
- static const struct pwm_ops bcm2835_pwm_ops = {
--	.request = bcm2835_pwm_request,
--	.free = bcm2835_pwm_free,
- 	.apply = bcm2835_pwm_apply,
- 	.owner = THIS_MODULE,
- };
--- 
-2.51.0
-
+@@ -1043,7 +1046,7 @@ unsigned int OnAssocReq(struct adapter *
+ 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
+ 		if (p) {
+ 
+-			if (supportRateNum <= sizeof(supportRate)) {
++			if (supportRateNum + ie_len <= sizeof(supportRate)) {
+ 				memcpy(supportRate+supportRateNum, p+2, ie_len);
+ 				supportRateNum += ie_len;
+ 			}
 
 
 
