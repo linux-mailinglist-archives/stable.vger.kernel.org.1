@@ -1,55 +1,52 @@
-Return-Path: <stable+bounces-206624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207225-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2848FD0933B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D842D09A15
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 166363058BF7
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BAFE830169BE
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52CF833C511;
-	Fri,  9 Jan 2026 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F8BE2F4A19;
+	Fri,  9 Jan 2026 12:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jHXUok54"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r9tY46fv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1540432FA3D;
-	Fri,  9 Jan 2026 11:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E627C26ED41;
+	Fri,  9 Jan 2026 12:24:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959735; cv=none; b=qCYJIfq9Hc8ReHYzox049UeWVYAiKPYgNQbhtItlYdcObuNW8nO/ZYtPzb1xaijDv+HDqLVJY95m09Lx13wTzrpwKsfGyQxpWqUrBcFiEYjohOPkYVIuHhM9t2pDgbkCdxDPDfLmXIowVXBXf2cMupovR5TlfScYyrsGp1IrDtU=
+	t=1767961449; cv=none; b=WUPCnazwHx/1bxsyYOsXxzyodyvZANKD3wObi5XEBcnvL/6D6ujrZn+4i3uutufBV6fRAK/nGjxL8f0g/EibIohdiZK1UilVnVjToXeRG3XPJvxMlROP2YEN51uWFiyu1FHt60rB4Yr2NGmJVSlKwuxQAMH9710IEQOOBs06sWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959735; c=relaxed/simple;
-	bh=06BStZZTO3EhlDkOGQX1+4kKNIMDaWwANj9JfqRrqng=;
+	s=arc-20240116; t=1767961449; c=relaxed/simple;
+	bh=gmM5Gul3z4I4TdyIwS0zMNE8j7sLCDvVRcHbVPrFYCU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NWgzWzoaKAnA0bgBMCQFWgRHE2QNVaolMGH+dNaDk2BPbqNtRBHaqmUrOos3WAmWRnmj/ZHYg1OzIZ3IkU4sHttF5oEpplEzmmNkVLmekwB6oGKmwLgIZd6uk3HLftbwmRiA8rFXofFKQuvVFrbr4YWmQKyaoOXCRh+jVcpvIw0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jHXUok54; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 705F6C4CEF1;
-	Fri,  9 Jan 2026 11:55:34 +0000 (UTC)
+	 MIME-Version; b=DC6gSyKW3lE44eoe9QX5yJgQxHKOUh55CB79auPnjLv6xEpNnuV6KOB1ZUAXOaNKwwyGs6X0eXBKtq3RPfoCT+lo8YfCZ9YnOkVSD80mcshiqqVuRLeGNQwdezVx/gGpvZnNZyKDfDjh/NCJLK0HeJ8QlLH1vVUdHiYFhu9K8+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r9tY46fv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C5FC4CEF1;
+	Fri,  9 Jan 2026 12:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959734;
-	bh=06BStZZTO3EhlDkOGQX1+4kKNIMDaWwANj9JfqRrqng=;
+	s=korg; t=1767961448;
+	bh=gmM5Gul3z4I4TdyIwS0zMNE8j7sLCDvVRcHbVPrFYCU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jHXUok54PtWkZP+mjtGydg04tNTcFBu6h2nib3Le3IvjXxZR2iEokNV5Y2kcw/Ojq
-	 yxwlCdezhizRH6Av0IwcwrFpu58ATIBpL+pqYI58H/s37dBqRgJu+Ts/kKasxlO7s/
-	 9I1G5GSCRZkxSKMo8SPR6wAXVQ/Mjl/zWOFFydrM=
+	b=r9tY46fvW1YG+VjHe72wbMk/I4iG9O2wEmlyZPQR9zhzAvvGhc0V5l+yyo6NJAE1/
+	 AsnnJN/yp4eFu/aZ0podSY5EIcIXk789tvpUDDq3uw/fgrGUwBpOsDkgVfiolDMWih
+	 szTmH40mmT6H3hkYmcKXrmm/yOJXR+X9KIfylmKE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 157/737] ps3disk: use memcpy_{from,to}_bvec index
-Date: Fri,  9 Jan 2026 12:34:56 +0100
-Message-ID: <20260109112139.902161899@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 019/634] USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+Date: Fri,  9 Jan 2026 12:34:57 +0100
+Message-ID: <20260109112118.158872014@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,53 +56,85 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rene Rebe <rene@exactco.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 79bd8c9814a273fa7ba43399e1c07adec3fc95db ]
+commit b6e0b3016187446ddef9edac03cd9d544ac63f11 upstream.
 
-With 6e0a48552b8c (ps3disk: use memcpy_{from,to}_bvec) converting
-ps3disk to new bvec helpers, incrementing the offset was accidently
-lost, corrupting consecutive buffers. Restore index for non-corrupted
-data transfers.
+Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
+should not deassert any lines that are not in the mask.
 
-Fixes: 6e0a48552b8c (ps3disk: use memcpy_{from,to}_bvec)
-Signed-off-by: René Rebe <rene@exactco.de>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fix this long-standing regression dating back to 2003 when the
+tiocmset() callback was introduced.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/ps3disk.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/serial/belkin_sa.c |   28 +++++++++++++++++-----------
+ 1 file changed, 17 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/block/ps3disk.c b/drivers/block/ps3disk.c
-index 36d7b36c60c76..79d3779e1c7ad 100644
---- a/drivers/block/ps3disk.c
-+++ b/drivers/block/ps3disk.c
-@@ -85,10 +85,14 @@ static void ps3disk_scatter_gather(struct ps3_storage_device *dev,
- 	struct bio_vec bvec;
+--- a/drivers/usb/serial/belkin_sa.c
++++ b/drivers/usb/serial/belkin_sa.c
+@@ -430,7 +430,7 @@ static int belkin_sa_tiocmset(struct tty
+ 	struct belkin_sa_private *priv = usb_get_serial_port_data(port);
+ 	unsigned long control_state;
+ 	unsigned long flags;
+-	int retval;
++	int retval = 0;
+ 	int rts = 0;
+ 	int dtr = 0;
  
- 	rq_for_each_segment(bvec, req, iter) {
-+		dev_dbg(&dev->sbd.core, "%s:%u: %u sectors from %llu\n",
-+			__func__, __LINE__, bio_sectors(iter.bio),
-+			iter.bio->bi_iter.bi_sector);
- 		if (gather)
- 			memcpy_from_bvec(dev->bounce_buf + offset, &bvec);
- 		else
- 			memcpy_to_bvec(&bvec, dev->bounce_buf + offset);
-+		offset += bvec.bv_len;
+@@ -447,26 +447,32 @@ static int belkin_sa_tiocmset(struct tty
  	}
- }
+ 	if (clear & TIOCM_RTS) {
+ 		control_state &= ~TIOCM_RTS;
+-		rts = 0;
++		rts = 1;
+ 	}
+ 	if (clear & TIOCM_DTR) {
+ 		control_state &= ~TIOCM_DTR;
+-		dtr = 0;
++		dtr = 1;
+ 	}
  
--- 
-2.51.0
-
+ 	priv->control_state = control_state;
+ 	spin_unlock_irqrestore(&priv->lock, flags);
+ 
+-	retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST, rts);
+-	if (retval < 0) {
+-		dev_err(&port->dev, "Set RTS error %d\n", retval);
+-		goto exit;
++	if (rts) {
++		retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST,
++					!!(control_state & TIOCM_RTS));
++		if (retval < 0) {
++			dev_err(&port->dev, "Set RTS error %d\n", retval);
++			goto exit;
++		}
+ 	}
+ 
+-	retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST, dtr);
+-	if (retval < 0) {
+-		dev_err(&port->dev, "Set DTR error %d\n", retval);
+-		goto exit;
++	if (dtr) {
++		retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST,
++					!!(control_state & TIOCM_DTR));
++		if (retval < 0) {
++			dev_err(&port->dev, "Set DTR error %d\n", retval);
++			goto exit;
++		}
+ 	}
+ exit:
+ 	return retval;
 
 
 
