@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-207408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6538D09F34
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF8F6D0939E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:04:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D6CE130A9321
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:32:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E68733024F64
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D6CF35A95B;
-	Fri,  9 Jan 2026 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD70F35A939;
+	Fri,  9 Jan 2026 12:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cs82B2RF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CvXAuNtH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FD6731E107;
-	Fri,  9 Jan 2026 12:32:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E6B735A923;
+	Fri,  9 Jan 2026 12:04:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961970; cv=none; b=tDJNle1K/SRFNmE09eN1fABU0c3z1lMX975V2glQFDb5uLFjVUW+MGGaJl2+LJrbjoLUHgLF1vtIPRBrYkvBi8OB8ovM/dSp4eL8FMwysS8LKNpwGbGupOPz2PT0+w9Us/cDIdFcCQ6dHWJmPubSSyg44K/u97Yru9Id2pU2R88=
+	t=1767960254; cv=none; b=FENHKbGpY5YYz2eYsHQCrn48ASYimJIvL7jae1kCMsegg9HgXRZA1zD/e2gPlizTglurEV7bBN3gUiY/I642qbKzdnEgeC5REz/LMvSNEp3wCglENtu3lWcoD60zUD1DHxRWEhaH15dZxSytGt/fT+uEOL3NhbWt3ONDTIALrUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961970; c=relaxed/simple;
-	bh=XfkUsvOfmwf2GQJH+Ut7ClCzdau36x15dg0z5nD8ImY=;
+	s=arc-20240116; t=1767960254; c=relaxed/simple;
+	bh=RapC4nHjmoyqOCrEgyWULpx5qp7G1P/ZnHlehpljzAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=b2nXQijmCCdBe3FNhm8CImkc8dyRg9ut6u1R/85yVq3Wo3906ABL0U59jdihc5tQfFx/VEvDFwz5x6i1xje5F0LDAWw/KJklNkVrpRlzCdqjzkzztlyTZmszdDLHZ03r1DTK/ajmL2maJSYJ2BbgwWHpFvW0qBxdUFPPTTemmFU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cs82B2RF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1570C4CEF1;
-	Fri,  9 Jan 2026 12:32:49 +0000 (UTC)
+	 MIME-Version; b=ZygolFMd8zmBwDiIJprpKFPsFoPRYZ73+xL/jZyEicFT5d8v7QIrhXA7m4f8Y3ZXhvk+NQQWw6ZhnKRRf2vfKd6omYLFtp7ToqsmtZgM9AS/6iRAUIqypi4brPA5wa1YRQ+JjA+yxZUmzmvvrWBYQ8m/LIH3gSilixicg9uJfEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CvXAuNtH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090A9C4CEF1;
+	Fri,  9 Jan 2026 12:04:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961970;
-	bh=XfkUsvOfmwf2GQJH+Ut7ClCzdau36x15dg0z5nD8ImY=;
+	s=korg; t=1767960254;
+	bh=RapC4nHjmoyqOCrEgyWULpx5qp7G1P/ZnHlehpljzAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cs82B2RFYxMCxziHs9mc8G1bcaCbEt55lS4e74YPqTEW+jD5YMLSJkTHMr9i8s8ll
-	 UFfPvgZH65ik8UKBsKO9s+iq88jcNbPB12iePh9ZgRi+Hy3RNYLKGlKvoZ0QZ/nNUg
-	 Gtm5uH168s7Y/32XkEAcwdoOFne2N6LW4w0ms0wk=
+	b=CvXAuNtHQj4eCjP/fZ8O8hNYU5+qs0RTM4oYoFSV0k6559yvxyylMoC06bcGILRRM
+	 dZzZzsXuiGyWYCyIsRaqO730HODC6y5KpXVIN8oZP2U8DNwabDUyiogxtbMn3d6Hxq
+	 TOv/yU6Nl5sgxOHgbIWNv0sP9wlVN3NU8nBCYMio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 199/634] fs/nls: Fix inconsistency between utf8_to_utf32() and utf32_to_utf8()
-Date: Fri,  9 Jan 2026 12:37:57 +0100
-Message-ID: <20260109112124.922805770@linuxfoundation.org>
+Subject: [PATCH 6.6 339/737] broadcom: b44: prevent uninitialized value usage
+Date: Fri,  9 Jan 2026 12:37:58 +0100
+Message-ID: <20260109112146.742430421@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +61,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit c36f9d7b2869a003a2f7d6ff2c6bac9e62fd7d68 ]
+[ Upstream commit 50b3db3e11864cb4e18ff099cfb38e11e7f87a68 ]
 
-After commit 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion"),
-the return values of utf8_to_utf32() and utf32_to_utf8() are
-inconsistent when encountering an error: utf8_to_utf32() returns -1,
-while utf32_to_utf8() returns errno codes. Fix this inconsistency
-by modifying utf8_to_utf32() to return errno codes as well.
+On execution path with raised B44_FLAG_EXTERNAL_PHY, b44_readphy()
+leaves bmcr value uninitialized and it is used later in the code.
 
-Fixes: 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion")
-Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251129111535.8984-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Add check of this flag at the beginning of the b44_nway_reset() and
+exit early of the function with restarting autonegotiation if an
+external PHY is used.
+
+Fixes: 753f492093da ("[B44]: port to native ssb support")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20251205155815.4348-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/broadcom/b44.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index 7eacded3c17d1..f072eb6b563f6 100644
---- a/fs/nls/nls_base.c
-+++ b/fs/nls/nls_base.c
-@@ -67,19 +67,22 @@ int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
- 			l &= t->lmask;
- 			if (l < t->lval || l > UNICODE_MAX ||
- 					(l & SURROGATE_MASK) == SURROGATE_PAIR)
--				return -1;
-+				return -EILSEQ;
-+
- 			*pu = (unicode_t) l;
- 			return nc;
- 		}
- 		if (inlen <= nc)
--			return -1;
-+			return -EOVERFLOW;
-+
- 		s++;
- 		c = (*s ^ 0x80) & 0xFF;
- 		if (c & 0xC0)
--			return -1;
-+			return -EILSEQ;
-+
- 		l = (l << 6) | c;
- 	}
--	return -1;
-+	return -EILSEQ;
- }
- EXPORT_SYMBOL(utf8_to_utf32);
+diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
+index 1be6d14030bcf..ba40549536e46 100644
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
+@@ -1789,6 +1789,9 @@ static int b44_nway_reset(struct net_device *dev)
+ 	u32 bmcr;
+ 	int r;
  
++	if (bp->flags & B44_FLAG_EXTERNAL_PHY)
++		return phy_ethtool_nway_reset(dev);
++
+ 	spin_lock_irq(&bp->lock);
+ 	b44_readphy(bp, MII_BMCR, &bmcr);
+ 	b44_readphy(bp, MII_BMCR, &bmcr);
 -- 
 2.51.0
 
