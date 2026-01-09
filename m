@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-206848-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207456-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1C5AAD09629
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 957DFD09EE0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C601B300729F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2CDFF3066742
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 342FE359FBB;
-	Fri,  9 Jan 2026 12:06:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C491335B156;
+	Fri,  9 Jan 2026 12:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NMrRdPMJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nu4V9+Db"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF37B359F99;
-	Fri,  9 Jan 2026 12:06:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A12D335BCD;
+	Fri,  9 Jan 2026 12:35:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960371; cv=none; b=kfXHSKtuDy7cSp0u0XhfuWLGSB5bBGZ+D/s4n/H94soF//Ay/Ya1foWZKR5jRIUCDECOjoq/SRkk6FdWeHNaa+6ivUwjOOuq+yIhEeUv8FkrnfwZ6LaS6YiXXZAhtmURVhaP3+Kka4SenpVd/AboyLzYm6KBOAuZXfGSDqjRXG4=
+	t=1767962107; cv=none; b=jR4LkBTJfBYeHHXBed151XWTcxVkZRXcsLhKT5aoKkf9AzTw8xmzSPtFN7KwNAdiBofM7vuiHzU4UWdT8ydVAHzsfqYxC4h/fgU6uzCAwoi4s/Js9jH9s6rfFPWV6s752MyL8Ts6l0toL6DOec6dMMe1LeIuk3iwGedMKv1Xhtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960371; c=relaxed/simple;
-	bh=gYG+ai0pGCD28U2nLQJPJL70kz7Vs+0hRL/9suywcrM=;
+	s=arc-20240116; t=1767962107; c=relaxed/simple;
+	bh=Ye0ZYHi7vG2cg6epoqHNqm3+qvgSxZMMkCaka+F5GDI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=at6nu4CPjRM38B53UiP2UKZJBuhtp1+cxoNniwFp7w7mie6Cf+8E+EnUjmsWTVS/xZFWIFcvT+PMzZjU61N6+bwtR7jdhau3p8o1yzuPnQvWa1M9HtpYstOpCrQp2OlWHXdi7YjYBrggxqWJcUURuCGict05f+bAr+UY6VIviG0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NMrRdPMJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E999C4CEF1;
-	Fri,  9 Jan 2026 12:06:11 +0000 (UTC)
+	 MIME-Version; b=lgiVDHJnCiyZQPR0xj8XWtkPyulyuuNoPoKy86/dfRyVpPmdhzqK5zgqifPLfiJgCD8MuaiPau2cJs4kZ6CGEL5upm3nfG4VDTJcseQBx0xnui84/eYg5QNJqS8aMyGf4+f3DmBKEeD+rsjx1V5KgiAVR6CdTm0OUGEGFqDtP2A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nu4V9+Db; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D562C4CEF1;
+	Fri,  9 Jan 2026 12:35:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960371;
-	bh=gYG+ai0pGCD28U2nLQJPJL70kz7Vs+0hRL/9suywcrM=;
+	s=korg; t=1767962106;
+	bh=Ye0ZYHi7vG2cg6epoqHNqm3+qvgSxZMMkCaka+F5GDI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NMrRdPMJYN6HCAYA1mL/WCL/rvif+DO74vXWjLWHGvybn34H0/G+RfRhhjs43JX+E
-	 ufsiGgUmBO1EdgKxJKLE2WCxrUZB+G/EHzylt+7D9SPbd6lyKXpj6lSHYKBEw9spps
-	 Z+wjbX7aJ5nRKCk34ujUjX3g4excoJWePHFQa+x4=
+	b=nu4V9+DbZwRELUcMLXtuKyuaWHSDbyGQWyZroo/3Y4wuOErm81H26PLsvkdFPcpkv
+	 RYFSO1yvsjmgozho4y5McJ63G7FfddjdQ4a/spHZ+rPYMKIfP3ehIGEIeyt3qFIXDk
+	 DF3O8uDKVLvYaf/TQRDDjAqnbTrSTOlMAurlsSaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Jeffery <andrew@codeconstruct.com.au>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 6.6 380/737] dt-bindings: mmc: sdhci-of-aspeed: Switch ref to sdhci-common.yaml
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 241/634] hfsplus: fix volume corruption issue for generic/073
 Date: Fri,  9 Jan 2026 12:38:39 +0100
-Message-ID: <20260109112148.296172523@linuxfoundation.org>
+Message-ID: <20260109112126.610859245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,36 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Jeffery <andrew@codeconstruct.com.au>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit ed724ea1b82a800af4704311cb89e5ef1b4ea7ac upstream.
+[ Upstream commit 24e17a29cf7537f0947f26a50f85319abd723c6c ]
 
-Enable use of common SDHCI-related properties such as sdhci-caps-mask as
-found in the AST2600 EVB DTS.
+The xfstests' test-case generic/073 leaves HFS+ volume
+in corrupted state:
 
-Cc: stable@vger.kernel.org # v6.2+
-Signed-off-by: Andrew Jeffery <andrew@codeconstruct.com.au>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sudo ./check generic/073
+FSTYP -- hfsplus
+PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
+MKFS_OPTIONS -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/073 _check_generic_filesystem: filesystem on /dev/loop51 is inconsistent
+(see XFSTESTS-2/xfstests-dev/results//generic/073.full for details)
+
+Ran: generic/073
+Failures: generic/073
+Failed 1 of 1 tests
+
+sudo fsck.hfsplus -d /dev/loop51
+** /dev/loop51
+Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+Executing fsck_hfs (version 540.1-Linux).
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+Invalid directory item count
+(It should be 1 instead of 0)
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+CBTStat = 0x0000 CatStat = 0x00004000
+** Repairing volume.
+** Rechecking volume.
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled was repaired successfully.
+
+The test is doing these steps on final phase:
+
+mv $SCRATCH_MNT/testdir_1/bar $SCRATCH_MNT/testdir_2/bar
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/testdir_1
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/foo
+
+So, we move file bar from testdir_1 into testdir_2 folder. It means that HFS+
+logic decrements the number of entries in testdir_1 and increments number of
+entries in testdir_2. Finally, we do fsync only for testdir_1 and foo but not
+for testdir_2. As a result, this is the reason why fsck.hfsplus detects the
+volume corruption afterwards.
+
+This patch fixes the issue by means of adding the
+hfsplus_cat_write_inode() call for old_dir and new_dir in
+hfsplus_rename() after the successful ending of
+hfsplus_rename_cat(). This method makes modification of in-core
+inode objects for old_dir and new_dir but it doesn't save these
+modifications in Catalog File's entries. It was expected that
+hfsplus_write_inode() will save these modifications afterwards.
+However, because generic/073 does fsync only for testdir_1 and foo
+then testdir_2 modification hasn't beed saved into Catalog File's
+entry and it was flushed without this modification. And it was
+detected by fsck.hfsplus. Now, hfsplus_rename() stores in Catalog
+File all modified entries and correct state of Catalog File will
+be flushed during hfsplus_file_fsync() call. Finally, it makes
+fsck.hfsplus happy.
+
+sudo ./check generic/073
+FSTYP         -- hfsplus
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #93 SMP PREEMPT_DYNAMIC Wed Nov 12 14:37:49 PST 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/073 32s ...  32s
+Ran: generic/073
+Passed all 1 tests
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20251112232522.814038-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/hfsplus/dir.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-+++ b/Documentation/devicetree/bindings/mmc/aspeed,sdhci.yaml
-@@ -41,7 +41,7 @@ properties:
- patternProperties:
-   "^sdhci@[0-9a-f]+$":
-     type: object
--    $ref: mmc-controller.yaml
-+    $ref: sdhci-common.yaml
-     unevaluatedProperties: false
+diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
+index 84714bbccc123..98a30ca6354ce 100644
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -552,8 +552,13 @@ static int hfsplus_rename(struct user_namespace *mnt_userns,
+ 	res = hfsplus_rename_cat((u32)(unsigned long)old_dentry->d_fsdata,
+ 				 old_dir, &old_dentry->d_name,
+ 				 new_dir, &new_dentry->d_name);
+-	if (!res)
++	if (!res) {
+ 		new_dentry->d_fsdata = old_dentry->d_fsdata;
++
++		res = hfsplus_cat_write_inode(old_dir);
++		if (!res)
++			res = hfsplus_cat_write_inode(new_dir);
++	}
+ 	return res;
+ }
  
-     properties:
+-- 
+2.51.0
+
 
 
 
