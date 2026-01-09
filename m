@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-206909-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207512-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 453A8D095A8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08F98D0A1C6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0CE703045499
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 854E83108C36
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8A8A035A943;
-	Fri,  9 Jan 2026 12:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B3C035B12B;
+	Fri,  9 Jan 2026 12:37:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fh15djPo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDWI3M7U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D93935BDC3;
-	Fri,  9 Jan 2026 12:09:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E37DC336EDA;
+	Fri,  9 Jan 2026 12:37:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960545; cv=none; b=QJ2tlgy5RL6b2IjjaQm/d5A9OOY8RveQDY6XrWTzHWnoCXGgVcY/u7Ksj48QBWJfsu+JpNPVZUON9OVqXwgUC4hVU/Qd9vGfpd77rEDExyJQdreBtywwg4yxnMEj9t1LHT8ywzlZThVkJSjwsHIHr/gncF+2BDyfPsJL1mnE+kA=
+	t=1767962265; cv=none; b=ro+8itSEm75J5LQz/9c40s7MC+ANe0BRcTA6pDXa/X8esEB1ScH9g0QUhG/QsrDv7GsOdR5OCMQgCXB7zX+MDovl955JqyVBpSSzpKWrfYrKFtnJDeQVJwKHWu8/5Mz1rE/+rfuGR7aomYJjGZZD42cOcRCry/Hr9OVIFhy8T6Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960545; c=relaxed/simple;
-	bh=lSdJNrI98EkvGiF6fv7o1gcJrVx8QS9ijpsj6JpDpbc=;
+	s=arc-20240116; t=1767962265; c=relaxed/simple;
+	bh=nyVg/81JEWLhc5UrfDldTk1nRRkyMPhbSS6Kbp3f1ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOJ5tgUYzg8+cs1MaqnQRg6IVZD0ziCwoYW/X4I+jPVNOAgoYgKZ5gIL9hWG78znsGVqEsTMl2PH/vbsFq31ETDRfHzBTGcZFBbBNbho3GB5AWojH6hgpC+EphfWatkWUepX+qyzrYfhvywWWAGlPenrsi2tuJxBapxc9O+oGM8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fh15djPo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA53C19421;
-	Fri,  9 Jan 2026 12:09:04 +0000 (UTC)
+	 MIME-Version; b=QwvF9idItCezS+VWS3JBdju1SzES4gRF2ap5gv81BSLi5ElHsP9/CcqobuZN0z2O2zmif5kwaPIL4Y9CFt6ZI5oEh26VqBCd6Z+dvdKqS94Nxu+PiQyb303t6kIMTTYxl307HsSu+TpWpB+3uskxwyorx7fEMNJ+l0F56yoafOk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDWI3M7U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741C0C4CEF1;
+	Fri,  9 Jan 2026 12:37:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960544;
-	bh=lSdJNrI98EkvGiF6fv7o1gcJrVx8QS9ijpsj6JpDpbc=;
+	s=korg; t=1767962264;
+	bh=nyVg/81JEWLhc5UrfDldTk1nRRkyMPhbSS6Kbp3f1ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fh15djPotGTu5fCDj4Yd+TNrki/51jhm1Dc9e6CBHPVRuKDc7qO1G/j1Sz+W2ZvuO
-	 cLn6OBgn5oap8l4r7wjPB4SJJDLS/qLW6TngDkRKHHoyROEP+AW8NYDtJjziJIwJBl
-	 AWiI58HBgBrvY/m2REcK/pdQ3UgPlbNpXEjCo6vI=
+	b=dDWI3M7URkoqktatLetRP3qdyBcnkO749teO7LAUodMDX67zWHfQV7qNn6RD44GtL
+	 VOXS5eKVOvC835ekPD8O+zmYeZlUL9vbvwzico9ok3WSL5pdc5we7AoZ48F2zdnaql
+	 KTAJv6jqRH/tlaRpmS19LHcsDF92UesFfGwU+SzI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make24@iscas.ac.cn>
-Subject: [PATCH 6.6 442/737] intel_th: Fix error handling in intel_th_output_open
-Date: Fri,  9 Jan 2026 12:39:41 +0100
-Message-ID: <20260109112150.619392476@linuxfoundation.org>
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 304/634] scsi: qla2xxx: Use reinit_completion on mbx_intr_comp
+Date: Fri,  9 Jan 2026 12:39:42 +0100
+Message-ID: <20260109112128.973147431@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,76 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-commit 6d5925b667e4ed9e77c8278cc215191d29454a3f upstream.
+[ Upstream commit 957aa5974989fba4ae4f807ebcb27f12796edd4d ]
 
-intel_th_output_open() calls bus_find_device_by_devt() which
-internally increments the device reference count via get_device(), but
-this reference is not properly released in several error paths. When
-device driver is unavailable, file operations cannot be obtained, or
-the driver's open method fails, the function returns without calling
-put_device(), leading to a permanent device reference count leak. This
-prevents the device from being properly released and could cause
-resource exhaustion over time.
+If a mailbox command completes immediately after
+wait_for_completion_timeout() times out, ha->mbx_intr_comp could be left
+in an inconsistent state, causing the next mailbox command not to wait
+for the hardware.  Fix by reinitializing the completion before use.
 
-Found by code review.
-
-Cc: stable <stable@kernel.org>
-Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20251112091723.35963-1-make24@iscas.ac.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/11b6485e-0bfd-4784-8f99-c06a196dad94@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/intel_th/core.c |   20 +++++++++++++++-----
- 1 file changed, 15 insertions(+), 5 deletions(-)
+ drivers/scsi/qla2xxx/qla_mbx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hwtracing/intel_th/core.c
-+++ b/drivers/hwtracing/intel_th/core.c
-@@ -810,13 +810,17 @@ static int intel_th_output_open(struct i
- 	int err;
+diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
+index 77b23d9dcb3c..33a499dea7ad 100644
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -253,6 +253,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
+ 	/* Issue set host interrupt command to send cmd out. */
+ 	ha->flags.mbox_int = 0;
+ 	clear_bit(MBX_INTERRUPT, &ha->mbx_cmd_flags);
++	reinit_completion(&ha->mbx_intr_comp);
  
- 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
--	if (!dev || !dev->driver)
--		return -ENODEV;
-+	if (!dev || !dev->driver) {
-+		err = -ENODEV;
-+		goto out_no_device;
-+	}
+ 	/* Unlock mbx registers and wait for interrupt */
+ 	ql_dbg(ql_dbg_mbx, vha, 0x100f,
+@@ -279,6 +280,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
+ 			    "cmd=%x Timeout.\n", command);
+ 			spin_lock_irqsave(&ha->hardware_lock, flags);
+ 			clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
++			reinit_completion(&ha->mbx_intr_comp);
+ 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
  
- 	thdrv = to_intel_th_driver(dev->driver);
- 	fops = fops_get(thdrv->fops);
--	if (!fops)
--		return -ENODEV;
-+	if (!fops) {
-+		err = -ENODEV;
-+		goto out_put_device;
-+	}
- 
- 	replace_fops(file, fops);
- 
-@@ -824,10 +828,16 @@ static int intel_th_output_open(struct i
- 
- 	if (file->f_op->open) {
- 		err = file->f_op->open(inode, file);
--		return err;
-+		if (err)
-+			goto out_put_device;
- 	}
- 
- 	return 0;
-+
-+out_put_device:
-+	put_device(dev);
-+out_no_device:
-+	return err;
- }
- 
- static const struct file_operations intel_th_output_fops = {
+ 			if (chip_reset != ha->chip_reset) {
+-- 
+2.51.0
+
 
 
 
