@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-207247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B84E3D09A37
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF0CCD09365
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 406033040DF3
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A55D230CF586
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A24935A956;
-	Fri,  9 Jan 2026 12:25:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE01C33A712;
+	Fri,  9 Jan 2026 11:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Xv/mSms"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="STSuja26"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E41DB35A952;
-	Fri,  9 Jan 2026 12:25:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2ADD318EFA;
+	Fri,  9 Jan 2026 11:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961513; cv=none; b=hiH6XTqRSumZy6ZS/gFUt9gMKzLD6GfBPB93bxHcLlApQu9J1UAY45ASOvz23R21DA7MxdgvTh2eQij1MCFCjsQhQIXFlnOh9CCX2LeKefttpT8h3eoMt53FLxxko4AHeFIpkBKHf9Lf7rySFVpG9dAlvCZ7qeMOFoqKeU4nLvY=
+	t=1767959893; cv=none; b=tCQVdaAQXdrUssBQ9f+i0fd+mW3c20t8fkPD1dkTbkFek84wNqVw7pXry9sesEbqemFokaiQ/jlZoRaeD0AHiHMggKe8y2iX+FgoznVzfWHIjL29PhQ6hBrSdohcJs3k58jzLlkjDq0fI6QmXeooPXC6HDorDgSCw0+8mJg1la4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961513; c=relaxed/simple;
-	bh=kH43g4IVttJl/53DLlapi8WmT0UlYytzNReEKlkUf54=;
+	s=arc-20240116; t=1767959893; c=relaxed/simple;
+	bh=otHfUlzoxR9npC+VtnRymkMkXQwagBYdEQt6f3J89JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTbNY7Pd22dh5q6wub23uyYGra6QYTrBisUVo1YJsEB0wISALiNPC8WK0PymCCe93hd+c2cETT4eNXcfGer0vNIhEAJzX2uJmrJaJIrDcWApJXq5JlU7DhY9xJKP7AOB3ZUjgXUCc2w9d3bKtM6MA/ZIfaxuWi/xlRbl0cV303U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Xv/mSms; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F7CC4CEF1;
-	Fri,  9 Jan 2026 12:25:12 +0000 (UTC)
+	 MIME-Version; b=VNcjm4mdDb6RRwTDU0cwKjf7R6RMON6CJ5kbDXVaTyvrvgoP+WxcWcZ5F7TXi/hVrCXIJ+3A5xuRPv/0jEgMEmQvqieYMd4FO7RXMPkWPK/WLNBhlEImdBiH73eZOabOtaGy/HED75Y2hW8Jcylmzs0ZRlOpH5coA4GehHd9gZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=STSuja26; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D175C4CEF1;
+	Fri,  9 Jan 2026 11:58:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961512;
-	bh=kH43g4IVttJl/53DLlapi8WmT0UlYytzNReEKlkUf54=;
+	s=korg; t=1767959893;
+	bh=otHfUlzoxR9npC+VtnRymkMkXQwagBYdEQt6f3J89JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Xv/mSmsip3WdPNJt6V4e2H2SJglLX5Z/IuAgfKb4fBjKCEA0JgWneCDk2MhNgs7B
-	 SveO/RJP+AGU9lPAU/83Wz0TjcIJLVf4XTmYFfd8ulo/hjREiqh//vPByzt7b9P+XY
-	 nXn4veo2CSjlylNl23NYXwBNOOdRzgdSvuhdspwM=
+	b=STSuja265h31S2N7WHJcQomAAOSnEbIi5XT7karh8O/OFFOePBAJlrUmZbeqbpY8Q
+	 fWpcVcfuY3zQnPoMBLtU8A+xxLqSPOUCYB5kV00D+JRw4Pwa3XAAt751z9ek2OgNrL
+	 tSMHhtpE/lW91mw7dLXwliNkLZWmHZv2eFLrEOGs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Konstantin Andreev <andreev@swemel.ru>,
-	Casey Schaufler <casey@schaufler-ca.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/634] smack: fix bug: unprivileged task can create labels
+Subject: [PATCH 6.6 180/737] wifi: mac80211: remove RX_DROP_UNUSABLE
 Date: Fri,  9 Jan 2026 12:35:19 +0100
-Message-ID: <20260109112118.992578447@linuxfoundation.org>
+Message-ID: <20260109112140.764835316@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +59,504 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konstantin Andreev <andreev@swemel.ru>
+From: Johannes Berg <johannes.berg@intel.com>
 
-[ Upstream commit c147e13ea7fe9f118f8c9ba5e96cbd644b00d6b3 ]
+[ Upstream commit dccc9aa7ee84a9bed7a4840608829eba66f84cb9 ]
 
-If an unprivileged task is allowed to relabel itself
-(/smack/relabel-self is not empty),
-it can freely create new labels by writing their
-names into own /proc/PID/attr/smack/current
+Convert all instances of RX_DROP_UNUSABLE to indicate a
+better reason, and then remove RX_DROP_UNUSABLE.
 
-This occurs because do_setattr() imports
-the provided label in advance,
-before checking "relabel-self" list.
-
-This change ensures that the "relabel-self" list
-is checked before importing the label.
-
-Fixes: 38416e53936e ("Smack: limited capability for changing process label")
-Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
-Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Stable-dep-of: 353cda30d30e ("wifi: mac80211: fix CMAC functions not handling errors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/smack/smack_lsm.c | 41 +++++++++++++++++++++++++-------------
- 1 file changed, 27 insertions(+), 14 deletions(-)
+ net/mac80211/drop.h | 33 +++++++++++++++++++++++++++-
+ net/mac80211/rx.c   | 52 ++++++++++++++++++++++-----------------------
+ net/mac80211/wep.c  |  9 ++++----
+ net/mac80211/wpa.c  | 42 ++++++++++++++++++------------------
+ 4 files changed, 84 insertions(+), 52 deletions(-)
 
-diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
-index 285103ffc75c6..4b252646081b4 100644
---- a/security/smack/smack_lsm.c
-+++ b/security/smack/smack_lsm.c
-@@ -3624,8 +3624,8 @@ static int smack_setprocattr(const char *name, void *value, size_t size)
- 	struct task_smack *tsp = smack_cred(current_cred());
- 	struct cred *new;
- 	struct smack_known *skp;
--	struct smack_known_list_elem *sklep;
--	int rc;
-+	char *labelstr;
-+	int rc = 0;
+diff --git a/net/mac80211/drop.h b/net/mac80211/drop.h
+index 1570fac8411f4..725a07a5b6145 100644
+--- a/net/mac80211/drop.h
++++ b/net/mac80211/drop.h
+@@ -21,6 +21,38 @@ typedef unsigned int __bitwise ieee80211_rx_result;
+ 	R(RX_DROP_U_MIC_FAIL)			\
+ 	R(RX_DROP_U_REPLAY)			\
+ 	R(RX_DROP_U_BAD_MMIE)			\
++	R(RX_DROP_U_DUP)			\
++	R(RX_DROP_U_SPURIOUS)			\
++	R(RX_DROP_U_DECRYPT_FAIL)		\
++	R(RX_DROP_U_NO_KEY_ID)			\
++	R(RX_DROP_U_BAD_CIPHER)			\
++	R(RX_DROP_U_OOM)			\
++	R(RX_DROP_U_NONSEQ_PN)			\
++	R(RX_DROP_U_BAD_KEY_COLOR)		\
++	R(RX_DROP_U_BAD_4ADDR)			\
++	R(RX_DROP_U_BAD_AMSDU)			\
++	R(RX_DROP_U_BAD_AMSDU_CIPHER)		\
++	R(RX_DROP_U_INVALID_8023)		\
++	R(RX_DROP_U_RUNT_ACTION)		\
++	R(RX_DROP_U_UNPROT_ACTION)		\
++	R(RX_DROP_U_ACTION_UNKNOWN_SRC)		\
++	R(RX_DROP_U_REJECTED_ACTION_RESPONSE)	\
++	R(RX_DROP_U_EXPECT_DEFRAG_PROT)		\
++	R(RX_DROP_U_WEP_DEC_FAIL)		\
++	R(RX_DROP_U_NO_IV)			\
++	R(RX_DROP_U_NO_ICV)			\
++	R(RX_DROP_U_AP_RX_GROUPCAST)		\
++	R(RX_DROP_U_SHORT_MMIC)			\
++	R(RX_DROP_U_MMIC_FAIL)			\
++	R(RX_DROP_U_SHORT_TKIP)			\
++	R(RX_DROP_U_TKIP_FAIL)			\
++	R(RX_DROP_U_SHORT_CCMP)			\
++	R(RX_DROP_U_SHORT_CCMP_MIC)		\
++	R(RX_DROP_U_SHORT_GCMP)			\
++	R(RX_DROP_U_SHORT_GCMP_MIC)		\
++	R(RX_DROP_U_SHORT_CMAC)			\
++	R(RX_DROP_U_SHORT_CMAC256)		\
++	R(RX_DROP_U_SHORT_GMAC)			\
+ /* this line for the trailing \ - add before this */
  
- 	if (!smack_privileged(CAP_MAC_ADMIN) && list_empty(&tsp->smk_relabel))
- 		return -EPERM;
-@@ -3636,28 +3636,41 @@ static int smack_setprocattr(const char *name, void *value, size_t size)
- 	if (strcmp(name, "current") != 0)
- 		return -EINVAL;
+ /* having two enums allows for checking ieee80211_rx_result use with sparse */
+@@ -46,7 +78,6 @@ enum mac80211_drop_reason {
+ 	RX_CONTINUE	 = (__force ieee80211_rx_result)___RX_CONTINUE,
+ 	RX_QUEUED	 = (__force ieee80211_rx_result)___RX_QUEUED,
+ 	RX_DROP_MONITOR	 = (__force ieee80211_rx_result)___RX_DROP_MONITOR,
+-	RX_DROP_UNUSABLE = (__force ieee80211_rx_result)___RX_DROP_UNUSABLE,
+ #define DEF(x) x = (__force ieee80211_rx_result)___ ## x,
+ 	MAC80211_DROP_REASONS_MONITOR(DEF)
+ 	MAC80211_DROP_REASONS_UNUSABLE(DEF)
+diff --git a/net/mac80211/rx.c b/net/mac80211/rx.c
+index e6a0a65d4d43a..d27303b9f3a9b 100644
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -1436,7 +1436,7 @@ ieee80211_rx_h_check_dup(struct ieee80211_rx_data *rx)
+ 		     rx->sta->last_seq_ctrl[rx->seqno_idx] == hdr->seq_ctrl)) {
+ 		I802_DEBUG_INC(rx->local->dot11FrameDuplicateCount);
+ 		rx->link_sta->rx_stats.num_duplicates++;
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_DUP;
+ 	} else if (!(status->flag & RX_FLAG_AMSDU_MORE)) {
+ 		rx->sta->last_seq_ctrl[rx->seqno_idx] = hdr->seq_ctrl;
+ 	}
+@@ -1490,7 +1490,7 @@ ieee80211_rx_h_check(struct ieee80211_rx_data *rx)
+ 		    cfg80211_rx_spurious_frame(rx->sdata->dev,
+ 					       hdr->addr2,
+ 					       GFP_ATOMIC))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_SPURIOUS;
  
--	skp = smk_import_entry(value, size);
--	if (IS_ERR(skp))
--		return PTR_ERR(skp);
-+	labelstr = smk_parse_smack(value, size);
-+	if (IS_ERR(labelstr))
-+		return PTR_ERR(labelstr);
+ 		return RX_DROP_MONITOR;
+ 	}
+@@ -1883,7 +1883,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 	struct ieee80211_rx_status *status = IEEE80211_SKB_RXCB(skb);
+ 	struct ieee80211_hdr *hdr = (struct ieee80211_hdr *)skb->data;
+ 	int keyidx;
+-	ieee80211_rx_result result = RX_DROP_UNUSABLE;
++	ieee80211_rx_result result = RX_DROP_U_DECRYPT_FAIL;
+ 	struct ieee80211_key *sta_ptk = NULL;
+ 	struct ieee80211_key *ptk_idx = NULL;
+ 	int mmie_keyidx = -1;
+@@ -1933,7 +1933,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 			keyid = ieee80211_get_keyid(rx->skb);
  
- 	/*
- 	 * No process is ever allowed the web ("@") label
- 	 * and the star ("*") label.
- 	 */
--	if (skp == &smack_known_web || skp == &smack_known_star)
--		return -EINVAL;
-+	if (labelstr[1] == '\0' /* '@', '*' */) {
-+		const char c = labelstr[0];
-+
-+		if (c == *smack_known_web.smk_known ||
-+		    c == *smack_known_star.smk_known) {
-+			rc = -EPERM;
-+			goto free_labelstr;
-+		}
-+	}
+ 			if (unlikely(keyid < 0))
+-				return RX_DROP_UNUSABLE;
++				return RX_DROP_U_NO_KEY_ID;
  
- 	if (!smack_privileged(CAP_MAC_ADMIN)) {
--		rc = -EPERM;
-+		const struct smack_known_list_elem *sklep;
- 		list_for_each_entry(sklep, &tsp->smk_relabel, list)
--			if (sklep->smk_label == skp) {
--				rc = 0;
--				break;
--			}
--		if (rc)
--			return rc;
-+			if (strcmp(sklep->smk_label->smk_known, labelstr) == 0)
-+				goto free_labelstr;
-+		rc = -EPERM;
+ 			ptk_idx = rcu_dereference(rx->sta->ptk[keyid]);
+ 		}
+@@ -2038,7 +2038,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 		keyidx = ieee80211_get_keyid(rx->skb);
+ 
+ 		if (unlikely(keyidx < 0))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_NO_KEY_ID;
+ 
+ 		/* check per-station GTK first, if multicast packet */
+ 		if (is_multicast_ether_addr(hdr->addr1) && rx->link_sta)
+@@ -2104,7 +2104,7 @@ ieee80211_rx_h_decrypt(struct ieee80211_rx_data *rx)
+ 		result = ieee80211_crypto_gcmp_decrypt(rx);
+ 		break;
+ 	default:
+-		result = RX_DROP_UNUSABLE;
++		result = RX_DROP_U_BAD_CIPHER;
  	}
  
-+free_labelstr:
-+	kfree(labelstr);
-+	if (rc)
-+		return -EPERM;
-+
-+	skp = smk_import_entry(value, size);
-+	if (IS_ERR(skp))
-+		return PTR_ERR(skp);
-+
- 	new = prepare_creds();
- 	if (new == NULL)
- 		return -ENOMEM;
+ 	/* the hdr variable is invalid after the decrypt handlers */
+@@ -2249,7 +2249,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 	I802_DEBUG_INC(rx->local->rx_handlers_fragments);
+ 
+ 	if (skb_linearize(rx->skb))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_OOM;
+ 
+ 	/*
+ 	 *  skb_linearize() might change the skb->data and
+@@ -2312,11 +2312,11 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 		u8 pn[IEEE80211_CCMP_PN_LEN], *rpn;
+ 
+ 		if (!requires_sequential_pn(rx, fc))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_NONSEQ_PN;
+ 
+ 		/* Prevent mixed key and fragment cache attacks */
+ 		if (entry->key_color != rx->key->color)
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_BAD_KEY_COLOR;
+ 
+ 		memcpy(pn, entry->last_pn, IEEE80211_CCMP_PN_LEN);
+ 		for (i = IEEE80211_CCMP_PN_LEN - 1; i >= 0; i--) {
+@@ -2327,7 +2327,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 
+ 		rpn = rx->ccm_gcm.pn;
+ 		if (memcmp(pn, rpn, IEEE80211_CCMP_PN_LEN))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_REPLAY;
+ 		memcpy(entry->last_pn, pn, IEEE80211_CCMP_PN_LEN);
+ 	} else if (entry->is_protected &&
+ 		   (!rx->key ||
+@@ -2338,11 +2338,11 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 		 * if for TKIP Michael MIC should protect us, and WEP is a
+ 		 * lost cause anyway.
+ 		 */
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_EXPECT_DEFRAG_PROT;
+ 	} else if (entry->is_protected && rx->key &&
+ 		   entry->key_color != rx->key->color &&
+ 		   (status->flag & RX_FLAG_DECRYPTED)) {
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_BAD_KEY_COLOR;
+ 	}
+ 
+ 	skb_pull(rx->skb, ieee80211_hdrlen(fc));
+@@ -2361,7 +2361,7 @@ ieee80211_rx_h_defragment(struct ieee80211_rx_data *rx)
+ 					      GFP_ATOMIC))) {
+ 			I802_DEBUG_INC(rx->local->rx_handlers_drop_defrag);
+ 			__skb_queue_purge(&entry->skb_list);
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 		}
+ 	}
+ 	while ((skb = __skb_dequeue(&entry->skb_list))) {
+@@ -2910,10 +2910,10 @@ ieee80211_rx_mesh_data(struct ieee80211_sub_if_data *sdata, struct sta_info *sta
+ 		skb = NULL;
+ 
+ 		if (skb_cow_head(fwd_skb, hdrlen - sizeof(struct ethhdr)))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 
+ 		if (skb_linearize(fwd_skb))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 	}
+ 
+ 	fwd_hdr = skb_push(fwd_skb, hdrlen - sizeof(struct ethhdr));
+@@ -3010,7 +3010,7 @@ __ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx, u8 data_offset)
+ 					  rx->sdata->vif.addr,
+ 					  rx->sdata->vif.type,
+ 					  data_offset, true))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_BAD_AMSDU;
+ 
+ 	if (rx->sta->amsdu_mesh_control < 0) {
+ 		s8 valid = -1;
+@@ -3085,21 +3085,21 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
+ 		switch (rx->sdata->vif.type) {
+ 		case NL80211_IFTYPE_AP_VLAN:
+ 			if (!rx->sdata->u.vlan.sta)
+-				return RX_DROP_UNUSABLE;
++				return RX_DROP_U_BAD_4ADDR;
+ 			break;
+ 		case NL80211_IFTYPE_STATION:
+ 			if (!rx->sdata->u.mgd.use_4addr)
+-				return RX_DROP_UNUSABLE;
++				return RX_DROP_U_BAD_4ADDR;
+ 			break;
+ 		case NL80211_IFTYPE_MESH_POINT:
+ 			break;
+ 		default:
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_BAD_4ADDR;
+ 		}
+ 	}
+ 
+ 	if (is_multicast_ether_addr(hdr->addr1) || !rx->sta)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_BAD_AMSDU;
+ 
+ 	if (rx->key) {
+ 		/*
+@@ -3112,7 +3112,7 @@ ieee80211_rx_h_amsdu(struct ieee80211_rx_data *rx)
+ 		case WLAN_CIPHER_SUITE_WEP40:
+ 		case WLAN_CIPHER_SUITE_WEP104:
+ 		case WLAN_CIPHER_SUITE_TKIP:
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_BAD_AMSDU_CIPHER;
+ 		default:
+ 			break;
+ 		}
+@@ -3154,7 +3154,7 @@ ieee80211_rx_h_data(struct ieee80211_rx_data *rx)
+ 
+ 	err = __ieee80211_data_to_8023(rx, &port_control);
+ 	if (unlikely(err))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_INVALID_8023;
+ 
+ 	res = ieee80211_rx_mesh_data(rx->sdata, rx->sta, rx->skb);
+ 	if (res != RX_CONTINUE)
+@@ -3386,7 +3386,7 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
+ 	/* drop too small action frames */
+ 	if (ieee80211_is_action(mgmt->frame_control) &&
+ 	    rx->skb->len < IEEE80211_MIN_ACTION_SIZE)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_RUNT_ACTION;
+ 
+ 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    ieee80211_is_beacon(mgmt->frame_control) &&
+@@ -3408,7 +3408,7 @@ ieee80211_rx_h_mgmt_check(struct ieee80211_rx_data *rx)
+ 	}
+ 
+ 	if (ieee80211_drop_unencrypted_mgmt(rx))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_UNPROT_ACTION;
+ 
+ 	return RX_CONTINUE;
+ }
+@@ -3480,7 +3480,7 @@ ieee80211_rx_h_action(struct ieee80211_rx_data *rx)
+ 	if (!rx->sta && mgmt->u.action.category != WLAN_CATEGORY_PUBLIC &&
+ 	    mgmt->u.action.category != WLAN_CATEGORY_SELF_PROTECTED &&
+ 	    mgmt->u.action.category != WLAN_CATEGORY_SPECTRUM_MGMT)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_ACTION_UNKNOWN_SRC;
+ 
+ 	switch (mgmt->u.action.category) {
+ 	case WLAN_CATEGORY_HT:
+@@ -3885,7 +3885,7 @@ ieee80211_rx_h_action_return(struct ieee80211_rx_data *rx)
+ 
+ 	/* do not return rejected action frames */
+ 	if (mgmt->u.action.category & 0x80)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_REJECTED_ACTION_RESPONSE;
+ 
+ 	nskb = skb_copy_expand(rx->skb, local->hw.extra_tx_headroom, 0,
+ 			       GFP_ATOMIC);
+diff --git a/net/mac80211/wep.c b/net/mac80211/wep.c
+index 9a6e11d7b4db6..5c01e121481ab 100644
+--- a/net/mac80211/wep.c
++++ b/net/mac80211/wep.c
+@@ -3,6 +3,7 @@
+  * Software WEP encryption implementation
+  * Copyright 2002, Jouni Malinen <jkmaline@cc.hut.fi>
+  * Copyright 2003, Instant802 Networks, Inc.
++ * Copyright (C) 2023 Intel Corporation
+  */
+ 
+ #include <linux/netdevice.h>
+@@ -250,18 +251,18 @@ ieee80211_crypto_wep_decrypt(struct ieee80211_rx_data *rx)
+ 
+ 	if (!(status->flag & RX_FLAG_DECRYPTED)) {
+ 		if (skb_linearize(rx->skb))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 		if (ieee80211_wep_decrypt(rx->local, rx->skb, rx->key))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_WEP_DEC_FAIL;
+ 	} else if (!(status->flag & RX_FLAG_IV_STRIPPED)) {
+ 		if (!pskb_may_pull(rx->skb, ieee80211_hdrlen(fc) +
+ 					    IEEE80211_WEP_IV_LEN))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_NO_IV;
+ 		ieee80211_wep_remove_iv(rx->local, rx->skb, rx->key);
+ 		/* remove ICV */
+ 		if (!(status->flag & RX_FLAG_ICV_STRIPPED) &&
+ 		    pskb_trim(rx->skb, rx->skb->len - IEEE80211_WEP_ICV_LEN))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_NO_ICV;
+ 	}
+ 
+ 	return RX_CONTINUE;
+diff --git a/net/mac80211/wpa.c b/net/mac80211/wpa.c
+index 2d8e38b3bcb50..94dae7cb6dbd3 100644
+--- a/net/mac80211/wpa.c
++++ b/net/mac80211/wpa.c
+@@ -3,7 +3,7 @@
+  * Copyright 2002-2004, Instant802 Networks, Inc.
+  * Copyright 2008, Jouni Malinen <j@w1.fi>
+  * Copyright (C) 2016-2017 Intel Deutschland GmbH
+- * Copyright (C) 2020-2022 Intel Corporation
++ * Copyright (C) 2020-2023 Intel Corporation
+  */
+ 
+ #include <linux/netdevice.h>
+@@ -142,7 +142,7 @@ ieee80211_rx_h_michael_mic_verify(struct ieee80211_rx_data *rx)
+ 		 * group keys and only the AP is sending real multicast
+ 		 * frames in the BSS.
+ 		 */
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_AP_RX_GROUPCAST;
+ 	}
+ 
+ 	if (status->flag & RX_FLAG_MMIC_ERROR)
+@@ -150,10 +150,10 @@ ieee80211_rx_h_michael_mic_verify(struct ieee80211_rx_data *rx)
+ 
+ 	hdrlen = ieee80211_hdrlen(hdr->frame_control);
+ 	if (skb->len < hdrlen + MICHAEL_MIC_LEN)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_MMIC;
+ 
+ 	if (skb_linearize(rx->skb))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_OOM;
+ 	hdr = (void *)skb->data;
+ 
+ 	data = skb->data + hdrlen;
+@@ -188,7 +188,7 @@ ieee80211_rx_h_michael_mic_verify(struct ieee80211_rx_data *rx)
+ 				     NL80211_KEYTYPE_PAIRWISE,
+ 				     rx->key ? rx->key->conf.keyidx : -1,
+ 				     NULL, GFP_ATOMIC);
+-	return RX_DROP_UNUSABLE;
++	return RX_DROP_U_MMIC_FAIL;
+ }
+ 
+ static int tkip_encrypt_skb(struct ieee80211_tx_data *tx, struct sk_buff *skb)
+@@ -276,11 +276,11 @@ ieee80211_crypto_tkip_decrypt(struct ieee80211_rx_data *rx)
+ 		return RX_CONTINUE;
+ 
+ 	if (!rx->sta || skb->len - hdrlen < 12)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_TKIP;
+ 
+ 	/* it may be possible to optimize this a bit more */
+ 	if (skb_linearize(rx->skb))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_OOM;
+ 	hdr = (void *)skb->data;
+ 
+ 	/*
+@@ -298,7 +298,7 @@ ieee80211_crypto_tkip_decrypt(struct ieee80211_rx_data *rx)
+ 					  &rx->tkip.iv32,
+ 					  &rx->tkip.iv16);
+ 	if (res != TKIP_DECRYPT_OK)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_TKIP_FAIL;
+ 
+ 	/* Trim ICV */
+ 	if (!(status->flag & RX_FLAG_ICV_STRIPPED))
+@@ -523,12 +523,12 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
+ 
+ 	if (status->flag & RX_FLAG_DECRYPTED) {
+ 		if (!pskb_may_pull(rx->skb, hdrlen + IEEE80211_CCMP_HDR_LEN))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_SHORT_CCMP;
+ 		if (status->flag & RX_FLAG_MIC_STRIPPED)
+ 			mic_len = 0;
+ 	} else {
+ 		if (skb_linearize(rx->skb))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 	}
+ 
+ 	/* reload hdr - skb might have been reallocated */
+@@ -536,7 +536,7 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
+ 
+ 	data_len = skb->len - hdrlen - IEEE80211_CCMP_HDR_LEN - mic_len;
+ 	if (!rx->sta || data_len < 0)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_CCMP;
+ 
+ 	if (!(status->flag & RX_FLAG_PN_VALIDATED)) {
+ 		int res;
+@@ -574,7 +574,7 @@ ieee80211_crypto_ccmp_decrypt(struct ieee80211_rx_data *rx,
+ 
+ 	/* Remove CCMP header and MIC */
+ 	if (pskb_trim(skb, skb->len - mic_len))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_CCMP_MIC;
+ 	memmove(skb->data + IEEE80211_CCMP_HDR_LEN, skb->data, hdrlen);
+ 	skb_pull(skb, IEEE80211_CCMP_HDR_LEN);
+ 
+@@ -719,12 +719,12 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
+ 
+ 	if (status->flag & RX_FLAG_DECRYPTED) {
+ 		if (!pskb_may_pull(rx->skb, hdrlen + IEEE80211_GCMP_HDR_LEN))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_SHORT_GCMP;
+ 		if (status->flag & RX_FLAG_MIC_STRIPPED)
+ 			mic_len = 0;
+ 	} else {
+ 		if (skb_linearize(rx->skb))
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 	}
+ 
+ 	/* reload hdr - skb might have been reallocated */
+@@ -732,7 +732,7 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
+ 
+ 	data_len = skb->len - hdrlen - IEEE80211_GCMP_HDR_LEN - mic_len;
+ 	if (!rx->sta || data_len < 0)
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_GCMP;
+ 
+ 	if (!(status->flag & RX_FLAG_PN_VALIDATED)) {
+ 		int res;
+@@ -771,7 +771,7 @@ ieee80211_crypto_gcmp_decrypt(struct ieee80211_rx_data *rx)
+ 
+ 	/* Remove GCMP header and MIC */
+ 	if (pskb_trim(skb, skb->len - mic_len))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_GCMP_MIC;
+ 	memmove(skb->data + IEEE80211_GCMP_HDR_LEN, skb->data, hdrlen);
+ 	skb_pull(skb, IEEE80211_GCMP_HDR_LEN);
+ 
+@@ -924,7 +924,7 @@ ieee80211_crypto_aes_cmac_decrypt(struct ieee80211_rx_data *rx)
+ 	/* management frames are already linear */
+ 
+ 	if (skb->len < 24 + sizeof(*mmie))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_CMAC;
+ 
+ 	mmie = (struct ieee80211_mmie *)
+ 		(skb->data + skb->len - sizeof(*mmie));
+@@ -974,13 +974,13 @@ ieee80211_crypto_aes_cmac_256_decrypt(struct ieee80211_rx_data *rx)
+ 	/* management frames are already linear */
+ 
+ 	if (skb->len < 24 + sizeof(*mmie))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_CMAC256;
+ 
+ 	mmie = (struct ieee80211_mmie_16 *)
+ 		(skb->data + skb->len - sizeof(*mmie));
+ 	if (mmie->element_id != WLAN_EID_MMIE ||
+ 	    mmie->length != sizeof(*mmie) - 2)
+-		return RX_DROP_UNUSABLE; /* Invalid MMIE */
++		return RX_DROP_U_BAD_MMIE; /* Invalid MMIE */
+ 
+ 	bip_ipn_swap(ipn, mmie->sequence_number);
+ 
+@@ -1073,7 +1073,7 @@ ieee80211_crypto_aes_gmac_decrypt(struct ieee80211_rx_data *rx)
+ 	/* management frames are already linear */
+ 
+ 	if (skb->len < 24 + sizeof(*mmie))
+-		return RX_DROP_UNUSABLE;
++		return RX_DROP_U_SHORT_GMAC;
+ 
+ 	mmie = (struct ieee80211_mmie_16 *)
+ 		(skb->data + skb->len - sizeof(*mmie));
+@@ -1097,7 +1097,7 @@ ieee80211_crypto_aes_gmac_decrypt(struct ieee80211_rx_data *rx)
+ 
+ 		mic = kmalloc(GMAC_MIC_LEN, GFP_ATOMIC);
+ 		if (!mic)
+-			return RX_DROP_UNUSABLE;
++			return RX_DROP_U_OOM;
+ 		if (ieee80211_aes_gmac(key->u.aes_gmac.tfm, aad, nonce,
+ 				       skb->data + 24, skb->len - 24,
+ 				       mic) < 0 ||
 -- 
 2.51.0
 
