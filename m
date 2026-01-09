@@ -1,95 +1,121 @@
-Return-Path: <stable+bounces-206433-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206434-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0D8AD08398
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:34:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 54F8AD0843A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:39:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5F42D300ACA6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:34:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B923D306388F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BD123590B2;
-	Fri,  9 Jan 2026 09:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="lR79fTbk"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E0703590CA;
+	Fri,  9 Jan 2026 09:34:25 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAEC333445
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:34:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFCB935295B
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:34:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951245; cv=none; b=eWwo/bZFr1KM95IVqH5CEKMCSDI9nO47SfQvtuq7Ui+IC9Iqxf+o2LDQOgt190eDTXUlPSvBYDLKcxXXJ/1KHkot2t1zX0X2KFi9bZV1xp5UeT9F9LaKe0U/S2iK8PHyot/NCGhZwfi/T3koxs/ERHKCFLPBuMMXlcShkMSjahE=
+	t=1767951265; cv=none; b=aph7D4QRlnv7Fmr7KKA46hy0tGgx2G7DBuxURq5EM9eCRPMeoGme4WceyyscqREnAH3JATHQLuOnSS5azqngsg1VxsrX8nOR83+CsFsnXq6OSh/T6Qxw7GABLqtfm5fYEZPSEdEA00OA39weGC2nsXRTAy6hGWQTOWEP1yqDrCk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951245; c=relaxed/simple;
-	bh=eOPj6csaxqSh/pD94Xiow8fswoPt4epubaYlDPDsNMI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VrT2Cho4dPhVnK612hVtJAXUoxviYN92hnyqjrN65QJ/V8GCYa8/zGzBNH5hWKMAX/53OTtCRV8ju+88BVTtPRHh/oUry498FZ7+H3mkB54+vzctnr0a04X7GlhVEAFJx/9MHwZI4vhROuKXmCHLnjVa5W/KQHUgzwmeMSfmaV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=lR79fTbk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D64DC16AAE
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:34:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767951245;
-	bh=eOPj6csaxqSh/pD94Xiow8fswoPt4epubaYlDPDsNMI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=lR79fTbkQsjgiDlA6fkXm7nFk8wVuLWHxfCcZhKMCzk6nFbpiobQdH+19xNX1Edq8
-	 Xu5QeqrJLJmlalUk0cX4DpHpHY9k1VxZ9yB7U7Fe08DVHs5dkYebQbpdDXSk1uGuMs
-	 3NYEBRMjDXEQ7EyKut2fYDHiQqGOmhTyuFTWnsUWJnC8lAwsVSYvpIYCNB7FLTDCS9
-	 C4J4iJ2k1oQ1yXqnsNmHma70GA7ZUgrFAVWtMfhy0tgm/5HSq9wirt4ixPTU16Mu2c
-	 +lkpNLrYinmglFCoxuv5/Pzb5FFZDnCN4e5KeD4MboWw+Xp6Yv+qC9MI6/n5qR1hfs
-	 PV1vQd6HCvjWg==
-Received: by mail-yw1-f170.google.com with SMTP id 00721157ae682-78fc0f33998so42002067b3.0
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:34:05 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCWdNDJcXur4Pgc7xyyyMdMGhdHqbjpy1dVpurVmW+0u8JPKrrr4vtdFyigY/K9pMYDdAiUJ/Nw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzRG/V4jEZdX/KGZ0kiizB0gQ8a3uV7j6I9EVmHHnkT1n9rmjul
-	Lm5kSyHDWzzf788OWU02ASCF2ZOrUCe6Zp3tv+oxJ3c9Mk/ghKV9iZsv9HX/7CfIoksqLTeGRck
-	jxSsYpV2rZsdGO0Ww6Qkj35CMBKYe1xM=
-X-Google-Smtp-Source: AGHT+IEn0vqdkw8bEaFTh2evg/3/Gk5M0wvdcElU6mMy3Wg7wsSj3AKZVzV8/gWPdmB4yzqWtFjvi9yu72g/ac8yxEo=
-X-Received: by 2002:a05:690c:18:b0:789:2be7:ae80 with SMTP id
- 00721157ae682-790b582a8f8mr187013807b3.54.1767951244425; Fri, 09 Jan 2026
- 01:34:04 -0800 (PST)
+	s=arc-20240116; t=1767951265; c=relaxed/simple;
+	bh=HGOwSk8S8HDT4sJ9Vum/VM++nG1mV7e0WrIwcS0eQ3E=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=aTXAFLw0BA/Yh6d/38bQEh6kBUVA3KxQsGlRkVq57jqnw0rUxeMOVT2dOWpdHMS06XKeYGX86uXh9GefyFJsGtZ/Fg5wZq27Uib2oevrgO5VIRJ9m0kfyJTWrLy/9cHYp8BDZu/envhOXk2aVbg05GkV9+nEGsg70keohwKEbRw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ve8ss-0006P6-Ot; Fri, 09 Jan 2026 10:34:18 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1ve8ss-009p1x-1o;
+	Fri, 09 Jan 2026 10:34:18 +0100
+Received: from pengutronix.de (unknown [IPv6:2a03:2260:2009::])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 0F8504C96C4;
+	Fri, 09 Jan 2026 09:34:17 +0000 (UTC)
+Date: Fri, 9 Jan 2026 10:34:17 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Vincent Mailhol <mailhol@kernel.org>
+Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
+ URB memory leak
+Message-ID: <20260109-corgi-of-massive-art-abe72a-mkl@pengutronix.de>
+References: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
-In-Reply-To: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
-From: Linus Walleij <linusw@kernel.org>
-Date: Fri, 9 Jan 2026 10:33:53 +0100
-X-Gmail-Original-Message-ID: <CAD++jLkaKgGDTbzjdWNPFSF85VDx3HCnOdbF8GSeEZRp3jDbCQ@mail.gmail.com>
-X-Gm-Features: AZwV_Qh3gljFKlGTGVVG8Mveu2qlxxn_p3yMb-Bc-OOzKbAyx_Ef35y9X6nAS98
-Message-ID: <CAD++jLkaKgGDTbzjdWNPFSF85VDx3HCnOdbF8GSeEZRp3jDbCQ@mail.gmail.com>
-Subject: Re: [PATCH] pinctrl: meson: amlogic-a4: mark the GPIO controller as sleeping
-To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
-	Jerome Brunet <jbrunet@baylibre.com>, 
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
-	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
-	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="qv5uwemshev6tpyd"
+Content-Disposition: inline
+In-Reply-To: <20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+
+
+--qv5uwemshev6tpyd
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
+Subject: Re: [PATCH can v2] can: gs_usb: gs_usb_receive_bulk_callback(): fix
+ URB memory leak
+MIME-Version: 1.0
 
-On Tue, Jan 6, 2026 at 9:53=E2=80=AFAM Bartosz Golaszewski
-<bartosz.golaszewski@oss.qualcomm.com> wrote:
-
-> The GPIO controller is configured as non-sleeping but it uses generic
-> pinctrl helpers which use a mutex for synchronization. This will cause
-> lockdep splats when used together with shared GPIOs going through the
-> GPIO shared proxy driver.
+On 05.01.2026 13:35:54, Marc Kleine-Budde wrote:
+> In gs_can_open(), the URBs for USB-in transfers are allocated, added to t=
+he
+> parent->rx_submitted anchor and submitted. In the complete callback
+> gs_usb_receive_bulk_callback(), the URB is processed and resubmitted. In
+> gs_can_close() the URBs are freed by calling
+> usb_kill_anchored_urbs(parent->rx_submitted).
 >
-> Fixes: 6e9be3abb78c ("pinctrl: Add driver support for Amlogic SoCs")
-> Cc: stable@vger.kernel.org
-> Reported-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-> Closes: https://lore.kernel.org/all/CAFBinCAc7CO8gfNQakCu3LfkYXuyTd2iRpMR=
-m8EKXSL0mwOnJw@mail.gmail.com/
-> Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+> However, this does not take into account that the USB framework
+> unanchors the URB before the close function is called. This means that
+                               ^^^^^
+                               complete
 
-Patch applied for fixes!
+I've fixed it in my tree.
 
-Yours,
-Linus Walleij
+regards,
+Marc
+
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
+
+--qv5uwemshev6tpyd
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlgy5YACgkQDHRl3/mQ
+kZwgkgf+MWbPiXPJJAcxBDnav8A43ecX3Dgz9TPWd9qSDjaN5wcQY/SlmWbo+38B
+BpN5MKkOm3XTsF2K6MEMi4bh50raC2rqKRRaSpbHVd1vGh8Nonm9CsEQvO8o/dfT
+Wi7RVEUjTqLhC9JgivaWgp57Uwxm4zdCEaIICMgkBH2aV653Hzvpz8fjSDxLV2Js
+SnzfUToAG0dFZWNxy7rV92R+WRGgPOpdKWENE8d6F/2qo8cvegwRAxphWQd40yBH
+ZaT2sPeoLQ85qv1S4+BKy/plczkZNlhxd16oYYKGvcN9L2eFnrGqydPf1nQM3A+H
+mSy+X49pymouLbaVVTmhm5AHb7l4TA==
+=LK1S
+-----END PGP SIGNATURE-----
+
+--qv5uwemshev6tpyd--
 
