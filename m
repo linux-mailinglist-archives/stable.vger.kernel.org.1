@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-206628-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FB6FD0936C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:57 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 421D5D09C9D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 18ECA30BB47E
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id A4F773084C36
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:24:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C41C33C511;
-	Fri,  9 Jan 2026 11:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B88742F4A19;
+	Fri,  9 Jan 2026 12:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BrSVSo0r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KLT5gSnl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F2482F12D4;
-	Fri,  9 Jan 2026 11:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C2F515ADB4;
+	Fri,  9 Jan 2026 12:24:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959746; cv=none; b=O4Abh2h3qY6+vaTKRX3r/LqDAuCkVvbVj7S6A3Qg8nr2VN4mBSaZ4b41o5NkMhKj4uK8i5SUH5FLdp5bO4vX+/KiCyVnvR+Q0AoTWHkQ857l6Y5ZPmrDkH/fuqUJg767JElvoN6dSVkFwgyJaoOwJJv8pORD6NngJ6t3djWi9Zk=
+	t=1767961460; cv=none; b=K94ODYr80cYVrWDhvHOsX56Wv/P4lYo9TJQTuj+Lc3Dnc9SU5AgNX2VNg598Rw7wXRuoHf20H8POFAOnMqjyVqlxx00CI/1zaaD3h5QNfiEwlagpUL3jBPzSaDHNnBHwFcDfZTT8w5w57ZsLtrr7zc+AuRdFmR7lpyYdh1G8p1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959746; c=relaxed/simple;
-	bh=TDFUFgZsMbrnCYXAO/Y6mv8cBrImIbRzpvIpfbgVJRo=;
+	s=arc-20240116; t=1767961460; c=relaxed/simple;
+	bh=xeMQy65WlU8iZxGNCcdyA0YGBCxlenp2XA1MbcBh+Ic=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=avnQaXVhmKCBrzUutoKhDd5aOlL/8LNDEYR8WhQ/ySqAdX/XkKnj04ev2+vA0P+y0WqAT+Zsrk1mvl4vA7pfndnHAHpwgXcJdEeWML84Ic0TkHS52fhBFqoIbfAPqrP3Ec8Li0lAa5O4uHffuT6W5V8TWIZ+UvCzW7fF9wohgYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BrSVSo0r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1EAC4CEF1;
-	Fri,  9 Jan 2026 11:55:45 +0000 (UTC)
+	 MIME-Version; b=jBDXgshJx9z1Cgm3V490C6BZyBr1dT8foo7+SmoFqYHMn1jZTNn9dFVEGtVpsKRPqocAaXFTCkXu2kJTHpnOYru8n/cxWCfHyY2QqxMMknj+cK0k7sg0PJ1qKJdtVW+lwpH/PzBmcW5lX1lT5Od3TBmKIVXv9QxXk0nUUjgOBcM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KLT5gSnl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A36F9C4CEF1;
+	Fri,  9 Jan 2026 12:24:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959746;
-	bh=TDFUFgZsMbrnCYXAO/Y6mv8cBrImIbRzpvIpfbgVJRo=;
+	s=korg; t=1767961460;
+	bh=xeMQy65WlU8iZxGNCcdyA0YGBCxlenp2XA1MbcBh+Ic=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BrSVSo0rFIhjAcq8oW4H6TNVOSkKLBktGBAadcLACPbLsxq5dum9YTgg1CrNc48ks
-	 YKBdbG1EgF0yy1bp8fm49MRHZOc4aOZuK2zgSSfuap7MJiBPE5y9z8uRWlDFp0zQpI
-	 gDdLP5gzqc2Mh0tAiBnseXUfcOYY1H3A7q/CJ2yQ=
+	b=KLT5gSnllywQpPKPiZ0ayJHOj3OTEzK1zonKbxzk46gph1eZ8/lR8x+o9GYAHf57B
+	 5VRSsHUe9R6WDcOH8OPwdBLV+QNhvAv94TBW/5moDo/rlkxCDmsoe8EtR4ansDpA9m
+	 BR0mGtbWYM6F2s1jdvnQaJP13qAV6jb/KLeL1XBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jesper Dangaard Brouer <hawk@kernel.org>,
-	Kaiyan Mei <M202472210@hust.edu.cn>,
-	Yinhao Hu <dddddd@hust.edu.cn>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Alvaro Gamez Machado <alvaro.gamez@hazent.com>,
+	Ricardo Ribalda <ribalda@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 160/737] bpf: Check skb->transport_header is set in bpf_skb_check_mtu
-Date: Fri,  9 Jan 2026 12:34:59 +0100
-Message-ID: <20260109112140.014265364@linuxfoundation.org>
+Subject: [PATCH 6.1 022/634] spi: xilinx: increase number of retries before declaring stall
+Date: Fri,  9 Jan 2026 12:35:00 +0100
+Message-ID: <20260109112118.280195446@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,71 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin KaFai Lau <martin.lau@kernel.org>
+From: Alvaro Gamez Machado <alvaro.gamez@hazent.com>
 
-[ Upstream commit d946f3c98328171fa50ddb908593cf833587f725 ]
+[ Upstream commit 939edfaa10f1d22e6af6a84bf4bd96dc49c67302 ]
 
-The bpf_skb_check_mtu helper needs to use skb->transport_header when
-the BPF_MTU_CHK_SEGS flag is used:
+SPI devices using a (relative) slow frequency need a larger time.
 
-	bpf_skb_check_mtu(skb, ifindex, &mtu_len, 0, BPF_MTU_CHK_SEGS)
+For instance, microblaze running at 83.25MHz and performing a
+3 bytes transaction using a 10MHz/16 = 625kHz needed this stall
+value increased to at least 20. The SPI device is quite slow, but
+also is the microblaze, so set this value to 32 to give it even
+more margin.
 
-The transport_header is not always set. There is a WARN_ON_ONCE
-report when CONFIG_DEBUG_NET is enabled + skb->gso_size is set +
-bpf_prog_test_run is used:
-
-WARNING: CPU: 1 PID: 2216 at ./include/linux/skbuff.h:3071
- skb_gso_validate_network_len
- bpf_skb_check_mtu
- bpf_prog_3920e25740a41171_tc_chk_segs_flag # A test in the next patch
- bpf_test_run
- bpf_prog_test_run_skb
-
-For a normal ingress skb (not test_run), skb_reset_transport_header
-is performed but there is plan to avoid setting it as described in
-commit 2170a1f09148 ("net: no longer reset transport_header in __netif_receive_skb_core()").
-
-This patch fixes the bpf helper by checking
-skb_transport_header_was_set(). The check is done just before
-skb->transport_header is used, to avoid breaking the existing bpf prog.
-The WARN_ON_ONCE is limited to bpf_prog_test_run, so targeting bpf-next.
-
-Fixes: 34b2021cc616 ("bpf: Add BPF-helper for MTU checking")
-Cc: Jesper Dangaard Brouer <hawk@kernel.org>
-Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
-Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://lore.kernel.org/r/20251112232331.1566074-1-martin.lau@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Alvaro Gamez Machado <alvaro.gamez@hazent.com>
+Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
+Link: https://patch.msgid.link/20251106134545.31942-1-alvaro.gamez@hazent.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/filter.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/spi/spi-xilinx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/core/filter.c b/net/core/filter.c
-index 0564ee6ac8731..da1a617b7db94 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -6295,9 +6295,12 @@ BPF_CALL_5(bpf_skb_check_mtu, struct sk_buff *, skb,
- 	 */
- 	if (skb_is_gso(skb)) {
- 		ret = BPF_MTU_CHK_RET_SUCCESS;
--		if (flags & BPF_MTU_CHK_SEGS &&
--		    !skb_gso_validate_network_len(skb, mtu))
--			ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		if (flags & BPF_MTU_CHK_SEGS) {
-+			if (!skb_transport_header_was_set(skb))
-+				return -EINVAL;
-+			if (!skb_gso_validate_network_len(skb, mtu))
-+				ret = BPF_MTU_CHK_RET_SEGS_TOOBIG;
-+		}
- 	}
- out:
- 	*mtu_len = mtu;
+diff --git a/drivers/spi/spi-xilinx.c b/drivers/spi/spi-xilinx.c
+index 7377d3b813022..8e2ed8a068ca2 100644
+--- a/drivers/spi/spi-xilinx.c
++++ b/drivers/spi/spi-xilinx.c
+@@ -298,7 +298,7 @@ static int xilinx_spi_txrx_bufs(struct spi_device *spi, struct spi_transfer *t)
+ 
+ 		/* Read out all the data from the Rx FIFO */
+ 		rx_words = n_words;
+-		stalled = 10;
++		stalled = 32;
+ 		while (rx_words) {
+ 			if (rx_words == n_words && !(stalled--) &&
+ 			    !(sr & XSPI_SR_TX_EMPTY_MASK) &&
 -- 
 2.51.0
 
