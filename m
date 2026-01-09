@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-207418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206785-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F7A5D09EA1
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:45:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E023D095C3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F0BA3305E0B0
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 83182308F152
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5C4135B142;
-	Fri,  9 Jan 2026 12:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A343535A925;
+	Fri,  9 Jan 2026 12:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wl9YyxSn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wun6kpRk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65D42336EDA;
-	Fri,  9 Jan 2026 12:33:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 65703359F98;
+	Fri,  9 Jan 2026 12:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961998; cv=none; b=X+VtHgDtVO9fBIdMtpCDbYpd+8BqP971k9xFXZMGlWWpJ6diPqXbtiH8tNjJUdVhISz2ygbAJAbHHaXLgwqkSxpQ7LxLgA1xMnAa2k1bQAT+4/et25zhVjnyDR95CRw8SuEHfjiiAlFJp/nsaJMwRuKbEB6v9ueJ/5ayOuBe+lo=
+	t=1767960192; cv=none; b=OSr31FS8J+hJ4FOaIukagbEsO3598+MK/5z/mN5YRDv80zOQBUHL21tSZ+B5Ol5xTpW5HNlHgRd2AsyjoC6yqF7PPqwtboKGdE6t15Tu9hBBdQBneSUAqycELpqaf3gN3pnLTznX5Ndh+HDqgvIc15bHotnmaAz9qnmFZbYOo34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961998; c=relaxed/simple;
-	bh=FGiAEFmn6YLYCMEam9VtwqbXIf30N9XOI+fx1VktlLw=;
+	s=arc-20240116; t=1767960192; c=relaxed/simple;
+	bh=NmHApGR8+9V3afV5lPQJxmmrLiyqg6ZVNWXdU/e22So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N5GWdWbjKe2BnjKzZZNw8/JE0oYmiMyvTnzIBy2PgrUDy3HLqzTzpIhggeaXWGfq9KFgv++j7SpqPWskSuDA9ipaEGvAKFGoDoDOvgUyMczN8bl3OSza3IjWD0ZLgQ+xTb+FtVj99pdDYMvhEJ3HrmLXCUv1d/DFwwQIvAFBEXE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wl9YyxSn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B43C3C4CEF1;
-	Fri,  9 Jan 2026 12:33:17 +0000 (UTC)
+	 MIME-Version; b=B5bvROlCVE/jk2d7V+UVu9uJTArk122WV2C6uMU2FZNO+pS0Z135p0zXKGs3hfzB3fEV9KSVJ/U9hnqIaThInrSNABIB3sYCxdJhuUAjnueI/JN2JMNii5MjnduKdnC99AbDHBQNA+wWYSBzfB8RR5Z44uL0OmfkiAS+qj5/mas=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wun6kpRk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6DEBC4CEF1;
+	Fri,  9 Jan 2026 12:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961998;
-	bh=FGiAEFmn6YLYCMEam9VtwqbXIf30N9XOI+fx1VktlLw=;
+	s=korg; t=1767960192;
+	bh=NmHApGR8+9V3afV5lPQJxmmrLiyqg6ZVNWXdU/e22So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Wl9YyxSnatcPSSzv3L+3yXT2gUbJ/MTe5ryTDro3WLwUBiJozIMYSe9V1qZO1Cv0S
-	 v+umD0RoVLuoJOXKjSOuPL+G/bOAJkGVa5COW5WKpT/5MyORB/qvgtu9K2zi6Q95Di
-	 3VXmvlbhRB7mSzUOoN8kfHoidJgskqZbMRMlzLXM=
+	b=Wun6kpRkAIrpDKYuLejqRhXez9tdeIy1FhIMfhpGCgOTbkNfWDtn+nI50qbrf49M9
+	 jYHY+qZiWDiTreCKvES7y71vokf/dF1I2wSFBb3jWXX88QfMQ0JHG9K8eP0/Q9+J5A
+	 a/EVI/ba7HAWQEhvVsY0Fd7PjwsLFETSpjumQvL0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Geert Uytterhoeven <geert+renesas@glider.be>,
-	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Mikhail Malyshev <mike.malyshev@gmail.com>,
+	Nathan Chancellor <nathan@kernel.org>,
+	Nicolas Schier <nsc@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/634] mtd: rawnand: renesas: Handle devm_pm_runtime_enable() errors
+Subject: [PATCH 6.6 316/737] kbuild: Use objtree for module signing key path
 Date: Fri,  9 Jan 2026 12:37:35 +0100
-Message-ID: <20260109112124.104219436@linuxfoundation.org>
+Message-ID: <20260109112145.888904269@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,47 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Mikhail Malyshev <mike.malyshev@gmail.com>
 
-[ Upstream commit a3623e1ae1ed6be4d49b2ccb9996a9d2b65c1828 ]
+[ Upstream commit af61da281f52aba0c5b090bafb3a31c5739850ff ]
 
-devm_pm_runtime_enable() can fail due to memory allocation failures.
-The current code ignores its return value and proceeds with
-pm_runtime_resume_and_get(), which may operate on incorrectly
-initialized runtime PM state.
+When building out-of-tree modules with CONFIG_MODULE_SIG_FORCE=y,
+module signing fails because the private key path uses $(srctree)
+while the public key path uses $(objtree). Since signing keys are
+generated in the build directory during kernel compilation, both
+paths should use $(objtree) for consistency.
 
-Check the return value of devm_pm_runtime_enable() and return the
-error code if it fails.
+This causes SSL errors like:
+  SSL error:02001002:system library:fopen:No such file or directory
+  sign-file: /kernel-src/certs/signing_key.pem
 
-Fixes: 6a2277a0ebe7 ("mtd: rawnand: renesas: Use runtime PM instead of the raw clock API")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+The issue occurs because:
+- sig-key uses: $(srctree)/certs/signing_key.pem (source tree)
+- cmd_sign uses: $(objtree)/certs/signing_key.x509 (build tree)
+
+But both keys are generated in $(objtree) during the build.
+
+This complements commit 25ff08aa43e37 ("kbuild: Fix signing issue for
+external modules") which fixed the scripts path and public key path,
+but missed the private key path inconsistency.
+
+Fixes out-of-tree module signing for configurations with separate
+source and build directories (e.g., O=/kernel-out).
+
+Signed-off-by: Mikhail Malyshev <mike.malyshev@gmail.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Tested-by: Nicolas Schier <nsc@kernel.org>
+Link: https://patch.msgid.link/20251015163452.3754286-1-mike.malyshev@gmail.com
+Signed-off-by: Nicolas Schier <nsc@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/renesas-nand-controller.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ scripts/Makefile.modinst | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/renesas-nand-controller.c b/drivers/mtd/nand/raw/renesas-nand-controller.c
-index 3b6b0ada597ac..d57fd44e830d3 100644
---- a/drivers/mtd/nand/raw/renesas-nand-controller.c
-+++ b/drivers/mtd/nand/raw/renesas-nand-controller.c
-@@ -1342,7 +1342,10 @@ static int rnandc_probe(struct platform_device *pdev)
- 	if (IS_ERR(rnandc->regs))
- 		return PTR_ERR(rnandc->regs);
- 
--	devm_pm_runtime_enable(&pdev->dev);
-+	ret = devm_pm_runtime_enable(&pdev->dev);
-+	if (ret)
-+		return ret;
-+
- 	ret = pm_runtime_resume_and_get(&pdev->dev);
- 	if (ret < 0)
- 		return ret;
+diff --git a/scripts/Makefile.modinst b/scripts/Makefile.modinst
+index 0afd75472679f..3e8b069a04ff0 100644
+--- a/scripts/Makefile.modinst
++++ b/scripts/Makefile.modinst
+@@ -96,7 +96,7 @@ endif
+ # Don't stop modules_install even if we can't sign external modules.
+ #
+ ifeq ($(filter pkcs11:%, $(CONFIG_MODULE_SIG_KEY)),)
+-sig-key := $(if $(wildcard $(CONFIG_MODULE_SIG_KEY)),,$(srctree)/)$(CONFIG_MODULE_SIG_KEY)
++sig-key := $(if $(wildcard $(CONFIG_MODULE_SIG_KEY)),,$(objtree)/)$(CONFIG_MODULE_SIG_KEY)
+ else
+ sig-key := $(CONFIG_MODULE_SIG_KEY)
+ endif
 -- 
 2.51.0
 
