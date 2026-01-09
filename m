@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF67AD0953C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 993F0D09FD3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6B586303C652
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:09:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DEE63313D68D
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:37:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4404035A958;
-	Fri,  9 Jan 2026 12:08:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BB50358D30;
+	Fri,  9 Jan 2026 12:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TqgeSeFc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fw1XMU++"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06C57359F9C;
-	Fri,  9 Jan 2026 12:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E2AC358D38;
+	Fri,  9 Jan 2026 12:37:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960531; cv=none; b=IRigBVWqqEt3vUqJG5x6df50tUx6ErKupeG5JwITPalByxYoPxb6MuZVXbGs6X27Z3oKtmlnfyfFa0Z31r9LFyKDL0Swux7K42ASIb4s1QBNTbefyhxuoqfvvS2eMOjZbo3zGI1ywCqfjvs8LrqQNC3wZ3uGTpuy7VuTuih32T4=
+	t=1767962248; cv=none; b=CFiHnVlNaEM3wYrdD7k9o32FfUT/8L0Bk4CDM8Bu2EkT9PZ+vO/5dqv6pL2LrIxuSYyWt1kNEWvPAQhfH9/bT2fZeLSfQipyKuFXVB84z8YWBpgFWi+BECtzcO5DNHmLmVMRExYsWECDxoOUyA4krbOAal9WdQP5Vln57cv/sCE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960531; c=relaxed/simple;
-	bh=ycKm7fke58qLYEc/y7GlnH16a78s9+4oTIPnwx+lxu4=;
+	s=arc-20240116; t=1767962248; c=relaxed/simple;
+	bh=Bk3ThSoXTdrkP+/8QXIgqsQreohH4VZKyRKtAjuTVeY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KyAp0tr6UVmAU6/YVZM6/jiZVIuuH39QnHOuQDiGpvxkUjGXNoaa5JQmMtOFYn7vPeASnUmfuZ6h04Jh71nuJQOP518wQXDd7eB5r6UP7Nhz3zoS98TXE0XqDxc0Ox+VMIijrNwzuoP+yLrlAJl5HBFEemVKEgptivBf4BHcqQQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TqgeSeFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51AF1C4CEF1;
-	Fri,  9 Jan 2026 12:08:50 +0000 (UTC)
+	 MIME-Version; b=JmQKaclcqQtUyacl80FP6qJYa/bCZGe4cqWOzRITbel6HPN2q9+pCHXaN2z1J3y47gZiMyGWzQraI3iJPUP7ruWTa8ratmM3onAPDVZ4TxeRxILqh95z67ebV/rYqlBNi38HIKoAbBQiYZmPMsFBjut3kmyKDZIUd5qSttGLGXY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fw1XMU++; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE250C4CEF1;
+	Fri,  9 Jan 2026 12:37:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960530;
-	bh=ycKm7fke58qLYEc/y7GlnH16a78s9+4oTIPnwx+lxu4=;
+	s=korg; t=1767962248;
+	bh=Bk3ThSoXTdrkP+/8QXIgqsQreohH4VZKyRKtAjuTVeY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TqgeSeFcRgd7oXrbQ7yFRfVwI6lei6E1y6tDPD7f2SOAx0ZTwD+vnX9sSOOMvCrDX
-	 dZ6swfP91XK1QoIKLGjotN61bQEefwm09hMUkVZKHppLT3Jg43259JVl9mc+JeQCa8
-	 oY/u+ZupJj0awRKJuxnA8qG4WWrpM+ECm8/BlrTc=
+	b=Fw1XMU++8kt7t9jOwR3sHera8DBYV3M8/O6k/QMLTJGxN4UVwA/D53yFzX8rz7Cle
+	 6u6LhOr05C8fwKQz9QHpALTZZbWkPiww3bGFfJ4k+Y16TaXdpwcUnbfgqtiHNCCZg/
+	 Bm6ulEFbyuLA/6uBJGjeWK0BrBNEY1MBs4gzSPHI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>,
-	Vladimir Zapolskiy <vz@mleia.com>
-Subject: [PATCH 6.6 437/737] usb: phy: isp1301: fix non-OF device reference imbalance
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 298/634] firmware: imx: scu-irq: Init workqueue before request mbox channel
 Date: Fri,  9 Jan 2026 12:39:36 +0100
-Message-ID: <20260109112150.431061223@linuxfoundation.org>
+Message-ID: <20260109112128.745345131@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit b4b64fda4d30a83a7f00e92a0c8a1d47699609f3 upstream.
+[ Upstream commit 81fb53feb66a3aefbf6fcab73bb8d06f5b0c54ad ]
 
-A recent change fixing a device reference leak in a UDC driver
-introduced a potential use-after-free in the non-OF case as the
-isp1301_get_client() helper only increases the reference count for the
-returned I2C device in the OF case.
+With mailbox channel requested, there is possibility that interrupts may
+come in, so need to make sure the workqueue is initialized before
+the queue is scheduled by mailbox rx callback.
 
-Increment the reference count also for non-OF so that the caller can
-decrement it unconditionally.
-
-Note that this is inherently racy just as using the returned I2C device
-is since nothing is preventing the PHY driver from being unbound while
-in use.
-
-Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
-Cc: stable@vger.kernel.org
-Cc: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251218153519.19453-3-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-isp1301.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/firmware/imx/imx-scu-irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/phy/phy-isp1301.c
-+++ b/drivers/usb/phy/phy-isp1301.c
-@@ -149,7 +149,12 @@ struct i2c_client *isp1301_get_client(st
- 		return client;
+diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
+index 32b1ca4e1050..06c49a61a079 100644
+--- a/drivers/firmware/imx/imx-scu-irq.c
++++ b/drivers/firmware/imx/imx-scu-irq.c
+@@ -148,6 +148,8 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 	cl->dev = dev;
+ 	cl->rx_callback = imx_scu_irq_callback;
  
- 	/* non-DT: only one ISP1301 chip supported */
--	return isp1301_i2c_client;
-+	if (isp1301_i2c_client) {
-+		get_device(&isp1301_i2c_client->dev);
-+		return isp1301_i2c_client;
-+	}
++	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
 +
-+	return NULL;
- }
- EXPORT_SYMBOL_GPL(isp1301_get_client);
+ 	/* SCU general IRQ uses general interrupt channel 3 */
+ 	ch = mbox_request_channel_byname(cl, "gip3");
+ 	if (IS_ERR(ch)) {
+@@ -157,8 +159,6 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 		return ret;
+ 	}
  
+-	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
+-
+ 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+ 				       "#mbox-cells", 0, &spec)) {
+ 		i = of_alias_get_id(spec.np, "mu");
+-- 
+2.51.0
+
 
 
 
