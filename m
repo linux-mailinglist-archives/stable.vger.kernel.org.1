@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2ECDD09242
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1F9BD09B98
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:35:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E3FC8301AB2F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9C513139B8C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508593590C6;
-	Fri,  9 Jan 2026 11:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C47A635B135;
+	Fri,  9 Jan 2026 12:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fEu07Yk9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eXLYiHpf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1463633C511;
-	Fri,  9 Jan 2026 11:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8703E38FA3;
+	Fri,  9 Jan 2026 12:27:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959956; cv=none; b=dm/TovCKZApYZ3FdH1QeCs+EjMdIBodxonCr+M1qbc6zZIwRXgLSeroBYeUXwCvHgnfDtCDOk3X6uZUs3jltVrCl3aTcGSetakkaqd/keu+0gkb8LgHADWwv6waBTwccpZ/EZxvRfPup1HqYv3chEdNhMKEmRiA+9WIAqVJ48AU=
+	t=1767961674; cv=none; b=HaIWYK1xtCuheIPPiuRfgQKmrCSkOFkQ4505aX90gR+adHX8SZY/Gg64vfEfkhQVng9CO+j1vi9p2PBEhCYAqTij/qg01ZRa8J1YVsOCA1rVRe83vMwJqeSeSUcn0l0zQ5M7Ac24oYzZDBGVSdDCk2tj14Ht8OJh7bE+qrEMV2s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959956; c=relaxed/simple;
-	bh=Z12e10FKobwSlweUy+ugYHBkJOJ6i/DxhY/WAs4DDZs=;
+	s=arc-20240116; t=1767961674; c=relaxed/simple;
+	bh=BDa7bj9uDsbeyKO38m4azPKnQ09ocTWWtjweHgvvIxA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Usu+fLEcv7F0fqwR1zY+9UCxYKVEMv1X1hLKNPoX6G0UHnU72fkH9EnlrYXZGxVLr6x9ytJpDRxUMDaVBYKhvZ9EjdB4dfazTPIiBLX3J+bSYtXzsupSqlFYBkAIPmF7iQbHJMeqxVz1kD8/anonzoXhOXou/NGrEInOZABGc5g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fEu07Yk9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AB2DC4CEF1;
-	Fri,  9 Jan 2026 11:59:15 +0000 (UTC)
+	 MIME-Version; b=X/sS4bF10uMgAPPXAXTHPrFJ9kZzOU/OcgBbMhFJ/7SScyacC5GSm6QYrL4l5O0VDyPpkPUxpV+KBYZ7BVUG8EEjJiSDYt+StYYjxM5DIOz6cGuiz8q3ltzVJT11xTe+YOfjk1tRwjgMsO/7IZkGg1ORO9s++A59d8ypy6zNSZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eXLYiHpf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 158B8C4CEF1;
+	Fri,  9 Jan 2026 12:27:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959956;
-	bh=Z12e10FKobwSlweUy+ugYHBkJOJ6i/DxhY/WAs4DDZs=;
+	s=korg; t=1767961674;
+	bh=BDa7bj9uDsbeyKO38m4azPKnQ09ocTWWtjweHgvvIxA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fEu07Yk9hgXf4nIWbyD0401N5loNIpFzBHkCgEXazoYGjDuyGmq92YQD3TR+QO50n
-	 tSYDNwxS/HEimVf6Dv5HkrQJsWBtZzkFBSfhONz+GNjyyxi4AAzX6gbMqFG5t2cjtv
-	 GvFJ+uzK9GsqJBsnsKNtdyCKsAffJRYQhyuc0yro=
+	b=eXLYiHpfZ4+PdPyQnkl2JZyy6+1ZE+/FYQIHYkpWTQg4LuoFF2cWP/jTaWWHD1ak8
+	 ruKT3cCRKSn5qGQ2enn/nRHMYSVCLB3UNoqFphga67DnS63b7wGQAMkjkcMJipue01
+	 TWVpgOwuPHH9+j3BYcvHEbp9QiCRPKlQN+ybiZoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Krzysztof Kozlowski <krzk@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Lorenzo Pieralisi <lpieralisi@kernel.org>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 234/737] ARM: dts: samsung: exynos4412-midas: turn off SDIO WLAN chip during system suspend
+Subject: [PATCH 6.1 095/634] dt-bindings: PCI: convert amlogic,meson-pcie.txt to dt-schema
 Date: Fri,  9 Jan 2026 12:36:13 +0100
-Message-ID: <20260109112142.801401488@linuxfoundation.org>
+Message-ID: <20260109112121.009051955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,246 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Neil Armstrong <neil.armstrong@linaro.org>
 
-[ Upstream commit 2ff147fdfa99b8cbb8c2833e685fde7c42580ae6 ]
+[ Upstream commit b80b848bdf56bd402b7a91aea5b77cec93dfe4c2 ]
 
-Commit 8c3170628a9c ("wifi: brcmfmac: keep power during suspend if board
-requires it") changed default behavior of the BRCMFMAC driver, which now
-keeps SDIO card powered during system suspend to enable optional support
-for WOWL. This feature is not supported by the legacy Exynos4 based
-boards and leads to WLAN disfunction after system suspend/resume cycle.
-Fix this by annotating SDIO host used by WLAN chip with
-'cap-power-off-card' property, which should have been there from the
-beginning.
+Convert the Amlogic Meson AXG DWC PCIe SoC controller bindings to
+dt-schema.
 
-Fixes: f77cbb9a3e5d ("ARM: dts: exynos: Add bcm4334 device node to Trats2")
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://patch.msgid.link/20251126102618.3103517-5-m.szyprowski@samsung.com
-Signed-off-by: Krzysztof Kozlowski <krzk@kernel.org>
+Link: https://lore.kernel.org/r/20221117-b4-amlogic-bindings-convert-v4-5-34e623dbf789@linaro.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Stable-dep-of: 4813dea9e272 ("dt-bindings: PCI: amlogic: Fix the register name of the DBI region")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/samsung/exynos4412-midas.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ .../bindings/pci/amlogic,axg-pcie.yaml        | 134 ++++++++++++++++++
+ .../bindings/pci/amlogic,meson-pcie.txt       |  70 ---------
+ 2 files changed, 134 insertions(+), 70 deletions(-)
+ create mode 100644 Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+ delete mode 100644 Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt
 
-diff --git a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
-index 7daf25865551b..a77e57645f217 100644
---- a/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
-+++ b/arch/arm/boot/dts/samsung/exynos4412-midas.dtsi
-@@ -1440,6 +1440,7 @@ &sdhci_3 {
- 	#address-cells = <1>;
- 	#size-cells = <0>;
- 	non-removable;
-+	cap-power-off-card;
- 	bus-width = <4>;
- 
- 	mmc-pwrseq = <&wlan_pwrseq>;
+diff --git a/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+new file mode 100644
+index 0000000000000..a5bd90bc0712e
+--- /dev/null
++++ b/Documentation/devicetree/bindings/pci/amlogic,axg-pcie.yaml
+@@ -0,0 +1,134 @@
++# SPDX-License-Identifier: (GPL-2.0-only OR BSD-2-Clause)
++%YAML 1.2
++---
++$id: http://devicetree.org/schemas/pci/amlogic,axg-pcie.yaml#
++$schema: http://devicetree.org/meta-schemas/core.yaml#
++
++title: Amlogic Meson AXG DWC PCIe SoC controller
++
++maintainers:
++  - Neil Armstrong <neil.armstrong@linaro.org>
++
++description:
++  Amlogic Meson PCIe host controller is based on the Synopsys DesignWare PCI core.
++
++allOf:
++  - $ref: /schemas/pci/pci-bus.yaml#
++  - $ref: /schemas/pci/snps,dw-pcie-common.yaml#
++
++# We need a select here so we don't match all nodes with 'snps,dw-pcie'
++select:
++  properties:
++    compatible:
++      enum:
++        - amlogic,axg-pcie
++        - amlogic,g12a-pcie
++  required:
++    - compatible
++
++properties:
++  compatible:
++    items:
++      - enum:
++          - amlogic,axg-pcie
++          - amlogic,g12a-pcie
++      - const: snps,dw-pcie
++
++  reg:
++    items:
++      - description: External local bus interface registers
++      - description: Meson designed configuration registers
++      - description: PCIe configuration space
++
++  reg-names:
++    items:
++      - const: elbi
++      - const: cfg
++      - const: config
++
++  interrupts:
++    maxItems: 1
++
++  clocks:
++    items:
++      - description: PCIe GEN 100M PLL clock
++      - description: PCIe RC clock gate
++      - description: PCIe PHY clock
++
++  clock-names:
++    items:
++      - const: pclk
++      - const: port
++      - const: general
++
++  phys:
++    maxItems: 1
++
++  phy-names:
++    const: pcie
++
++  resets:
++    items:
++      - description: Port Reset
++      - description: Shared APB reset
++
++  reset-names:
++    items:
++      - const: port
++      - const: apb
++
++  num-lanes:
++    const: 1
++
++  power-domains:
++    maxItems: 1
++
++required:
++  - compatible
++  - reg
++  - reg-names
++  - interrupts
++  - clock
++  - clock-names
++  - "#address-cells"
++  - "#size-cells"
++  - "#interrupt-cells"
++  - interrupt-map
++  - interrupt-map-mask
++  - ranges
++  - bus-range
++  - device_type
++  - num-lanes
++  - phys
++  - phy-names
++  - resets
++  - reset-names
++
++unevaluatedProperties: false
++
++examples:
++  - |
++    #include <dt-bindings/interrupt-controller/irq.h>
++    #include <dt-bindings/interrupt-controller/arm-gic.h>
++    pcie: pcie@f9800000 {
++        compatible = "amlogic,axg-pcie", "snps,dw-pcie";
++        reg = <0xf9800000 0x400000>, <0xff646000 0x2000>, <0xf9f00000 0x100000>;
++        reg-names = "elbi", "cfg", "config";
++        interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
++        clocks = <&pclk>, <&clk_port>, <&clk_phy>;
++        clock-names = "pclk", "port", "general";
++        resets = <&reset_pcie_port>, <&reset_pcie_apb>;
++        reset-names = "port", "apb";
++        phys = <&pcie_phy>;
++        phy-names = "pcie";
++        #interrupt-cells = <1>;
++        interrupt-map-mask = <0 0 0 0>;
++        interrupt-map = <0 0 0 0 &gic GIC_SPI 179 IRQ_TYPE_EDGE_RISING>;
++        bus-range = <0x0 0xff>;
++        #address-cells = <3>;
++        #size-cells = <2>;
++        device_type = "pci";
++        num-lanes = <1>;
++        ranges = <0x82000000 0 0 0xf9c00000 0 0x00300000>;
++    };
++...
+diff --git a/Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt b/Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt
+deleted file mode 100644
+index c3a75ac6e59d1..0000000000000
+--- a/Documentation/devicetree/bindings/pci/amlogic,meson-pcie.txt
++++ /dev/null
+@@ -1,70 +0,0 @@
+-Amlogic Meson AXG DWC PCIE SoC controller
+-
+-Amlogic Meson PCIe host controller is based on the Synopsys DesignWare PCI core.
+-It shares common functions with the PCIe DesignWare core driver and
+-inherits common properties defined in
+-Documentation/devicetree/bindings/pci/snps,dw-pcie.yaml.
+-
+-Additional properties are described here:
+-
+-Required properties:
+-- compatible:
+-	should contain :
+-	- "amlogic,axg-pcie" for AXG SoC Family
+-	- "amlogic,g12a-pcie" for G12A SoC Family
+-	to identify the core.
+-- reg:
+-	should contain the configuration address space.
+-- reg-names: Must be
+-	- "elbi"	External local bus interface registers
+-	- "cfg"		Meson specific registers
+-	- "config"	PCIe configuration space
+-- reset-gpios: The GPIO to generate PCIe PERST# assert and deassert signal.
+-- clocks: Must contain an entry for each entry in clock-names.
+-- clock-names: Must include the following entries:
+-	- "pclk"       PCIe GEN 100M PLL clock
+-	- "port"       PCIe_x(A or B) RC clock gate
+-	- "general"    PCIe Phy clock
+-- resets: phandle to the reset lines.
+-- reset-names: must contain "port" and "apb"
+-       - "port"        Port A or B reset
+-       - "apb"         Share APB reset
+-- phys: should contain a phandle to the PCIE phy
+-- phy-names: must contain "pcie"
+-
+-- device_type:
+-	should be "pci". As specified in snps,dw-pcie.yaml
+-
+-
+-Example configuration:
+-
+-	pcie: pcie@f9800000 {
+-			compatible = "amlogic,axg-pcie", "snps,dw-pcie";
+-			reg = <0x0 0xf9800000 0x0 0x400000
+-					0x0 0xff646000 0x0 0x2000
+-					0x0 0xf9f00000 0x0 0x100000>;
+-			reg-names = "elbi", "cfg", "config";
+-			reset-gpios = <&gpio GPIOX_19 GPIO_ACTIVE_HIGH>;
+-			interrupts = <GIC_SPI 177 IRQ_TYPE_EDGE_RISING>;
+-			#interrupt-cells = <1>;
+-			interrupt-map-mask = <0 0 0 0>;
+-			interrupt-map = <0 0 0 0 &gic GIC_SPI 179 IRQ_TYPE_EDGE_RISING>;
+-			bus-range = <0x0 0xff>;
+-			#address-cells = <3>;
+-			#size-cells = <2>;
+-			device_type = "pci";
+-			ranges = <0x82000000 0 0 0x0 0xf9c00000 0 0x00300000>;
+-
+-			clocks = <&clkc CLKID_USB
+-					&clkc CLKID_PCIE_A
+-					&clkc CLKID_PCIE_CML_EN0>;
+-			clock-names = "general",
+-					"pclk",
+-					"port";
+-			resets = <&reset RESET_PCIE_A>,
+-				<&reset RESET_PCIE_APB>;
+-			reset-names = "port",
+-					"apb";
+-			phys = <&pcie_phy>;
+-			phy-names = "pcie";
+-	};
 -- 
 2.51.0
 
