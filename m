@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207385-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7E00FD0948B
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:08:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF364D09EFB
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A90BA3005FFC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E9DB2310E26F
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CCF6335561;
-	Fri,  9 Jan 2026 12:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E406359F8D;
+	Fri,  9 Jan 2026 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IvaoIVtA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0Qyjmx/H"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED3711946C8;
-	Fri,  9 Jan 2026 12:02:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AC933C53C;
+	Fri,  9 Jan 2026 12:31:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960167; cv=none; b=j0WemHqvqSfJSM9qHItATny4UxoprS2nElhD9IA/yf59Uh6lMgsKxLc/8yWhW8h1Qcpeg4iiCFp/xIPhIsAvVAiiAJgJeZmnIOk4Wky19CuplAmmraQgXaoxEL66KIInGuTOJ1SO1mp+zkaR+xN3FdY+b1xClvqJjeys57K2r8g=
+	t=1767961905; cv=none; b=YSANGhZkOIqxZE+x2SLerYe+qewJm2+i6RYAELIIEtqyk0OWltEh/VYRCrlUmiIkjPFJtEs0jZRdtvH16zz8wlZ2xlytssibmw9U+Pk2VbrWih4Npu7p6rbf79Ep3WIkfuVCjTn9NxvIQ38Zqv52nSlLTwYYIChFa/VwpkeHXLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960167; c=relaxed/simple;
-	bh=4ToilO3StlI1dEz5kPEOdA+Qmud4eodsg8x8kFW/ZAw=;
+	s=arc-20240116; t=1767961905; c=relaxed/simple;
+	bh=m09tiyIRPhjq+jSvAxi3rFhoAOgvX66yw23GErObFBs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YRiNLHrALV+T6qH65ra3szNeIwSkrk6/VqHDo4zQzxjQPsVuo+8zQzHXlLgB3iCK+CrFx3Df1pqlMthp/EoFzIOyYy8wSEeMVqrRsejXSTKngV77EqoLB7kPKu38UhatrEDtVZPK3F1YPUmYIx6xP6im71nryXujihoxp4DGvZg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IvaoIVtA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D89EC16AAE;
-	Fri,  9 Jan 2026 12:02:46 +0000 (UTC)
+	 MIME-Version; b=uxsH2l+teNKYEK1LMd46cdUyS6gp5hLFQsn9CAchV1zuW5lGKTHXxQuySdUJ85VVUkdfcsmAlrzFbjYbBIPDAcreBXeAM7iS0Jlj7b59/dyU10Nm/Z4K2YP94ia+Fv8Ksx+6hX4Z5DX6Mdqmyfiovm0vXFP31KSnqKOnO0XZazo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0Qyjmx/H; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF769C4CEF1;
+	Fri,  9 Jan 2026 12:31:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960166;
-	bh=4ToilO3StlI1dEz5kPEOdA+Qmud4eodsg8x8kFW/ZAw=;
+	s=korg; t=1767961905;
+	bh=m09tiyIRPhjq+jSvAxi3rFhoAOgvX66yw23GErObFBs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IvaoIVtAYntv20lqr/Ot41mi54PA4CtMQHtoZVmF8t6liJJLBa4BUk8z1oJAiitsi
-	 iqZoJVF6g2CZbldulSh2X1wucCwtkbBa58G3xCaprvNFQEMuM8H5txzpSp4Pykp7BK
-	 oq64LIQ+2EGOUxqN+GJLRor7/ZGMP2d04qgdLf7g=
+	b=0Qyjmx/H0t9HEJJD7J9j8NmaXdfTk65c1yCkvBbVyYNVdiNUXJPEy53V7H2HvAg33
+	 sIBNtln7qae69dPoy82adJYCafGI2Yl2u+9KQbPqhVMklvjXP9MmwimhMuupLUib4n
+	 WbGZV6C0KoA4yaLrdHdhFbMbEt1FYw84DZ77uhC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 308/737] x86/ptrace: Always inline trivial accessors
-Date: Fri,  9 Jan 2026 12:37:27 +0100
-Message-ID: <20260109112145.591848706@linuxfoundation.org>
+Subject: [PATCH 6.1 170/634] resource: replace open coded resource_intersection()
+Date: Fri,  9 Jan 2026 12:37:28 +0100
+Message-ID: <20260109112123.843547677@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1fe4002cf7f23d70c79bda429ca2a9423ebcfdfa ]
+[ Upstream commit 5c1edea773c98707fbb23d1df168bcff52f61e4b ]
 
-A KASAN build bloats these single load/store helpers such that
-it fails to inline them:
+Patch series "resource: A couple of cleanups".
 
-  vmlinux.o: error: objtool: irqentry_exit+0x5e8: call to instruction_pointer_set() with UACCESS enabled
+A couple of ad-hoc cleanups since there was a recent development of
+the code in question. No functional changes intended.
 
-Make sure the compiler isn't allowed to do stupid.
+This patch (of 2):
 
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/20251031105435.GU4068168@noisy.programming.kicks-ass.net
+__region_intersects() uses open coded resource_intersection().  Replace it
+with existing API which also make more clear what we are checking.
+
+Link: https://lkml.kernel.org/r/20240925154355.1170859-1-andriy.shevchenko@linux.intel.com
+Link: https://lkml.kernel.org/r/20240925154355.1170859-2-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/ptrace.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ kernel/resource.c | 15 ++++++---------
+ 1 file changed, 6 insertions(+), 9 deletions(-)
 
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index 5a83fbd9bc0b4..eb5b1e2aa7000 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -187,12 +187,12 @@ convert_ip_to_linear(struct task_struct *child, struct pt_regs *regs);
- extern void send_sigtrap(struct pt_regs *regs, int error_code, int si_code);
- 
- 
--static inline unsigned long regs_return_value(struct pt_regs *regs)
-+static __always_inline unsigned long regs_return_value(struct pt_regs *regs)
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 6703fd889ae1b..20cb54f387e71 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -498,17 +498,16 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 			       size_t size, unsigned long flags,
+ 			       unsigned long desc)
  {
- 	return regs->ax;
- }
+-	resource_size_t ostart, oend;
+ 	int type = 0; int other = 0;
+ 	struct resource *p, *dp;
++	struct resource res, o;
+ 	bool is_type, covered;
+-	struct resource res;
  
--static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
-+static __always_inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
- {
- 	regs->ax = rc;
- }
-@@ -277,34 +277,34 @@ static __always_inline bool ip_within_syscall_gap(struct pt_regs *regs)
- }
- #endif
+ 	res.start = start;
+ 	res.end = start + size - 1;
  
--static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
- {
- 	return regs->sp;
- }
- 
--static inline unsigned long instruction_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long instruction_pointer(struct pt_regs *regs)
- {
- 	return regs->ip;
- }
- 
--static inline void instruction_pointer_set(struct pt_regs *regs,
--		unsigned long val)
-+static __always_inline
-+void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
- {
- 	regs->ip = val;
- }
- 
--static inline unsigned long frame_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long frame_pointer(struct pt_regs *regs)
- {
- 	return regs->bp;
- }
- 
--static inline unsigned long user_stack_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long user_stack_pointer(struct pt_regs *regs)
- {
- 	return regs->sp;
- }
- 
--static inline void user_stack_pointer_set(struct pt_regs *regs,
--		unsigned long val)
-+static __always_inline
-+void user_stack_pointer_set(struct pt_regs *regs, unsigned long val)
- {
- 	regs->sp = val;
- }
+ 	for (p = parent->child; p ; p = p->sibling) {
+-		if (!resource_overlaps(p, &res))
++		if (!resource_intersection(p, &res, &o))
+ 			continue;
+ 		is_type = (p->flags & flags) == flags &&
+ 			(desc == IORES_DESC_NONE || desc == p->desc);
+@@ -529,8 +528,6 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 		 * |-- "System RAM" --||-- "CXL Window 0a" --|
+ 		 */
+ 		covered = false;
+-		ostart = max(res.start, p->start);
+-		oend = min(res.end, p->end);
+ 		for_each_resource(p, dp, false) {
+ 			if (!resource_overlaps(dp, &res))
+ 				continue;
+@@ -539,17 +536,17 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 			if (is_type) {
+ 				type++;
+ 				/*
+-				 * Range from 'ostart' to 'dp->start'
++				 * Range from 'o.start' to 'dp->start'
+ 				 * isn't covered by matched resource.
+ 				 */
+-				if (dp->start > ostart)
++				if (dp->start > o.start)
+ 					break;
+-				if (dp->end >= oend) {
++				if (dp->end >= o.end) {
+ 					covered = true;
+ 					break;
+ 				}
+ 				/* Remove covered range */
+-				ostart = max(ostart, dp->end + 1);
++				o.start = max(o.start, dp->end + 1);
+ 			}
+ 		}
+ 		if (!covered)
 -- 
 2.51.0
 
