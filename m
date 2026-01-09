@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207351-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 569C4D0933E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:08 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3DFB2D09DFC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:43:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 43AC9301582A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0A8B030BCA35
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:30:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01ED35A923;
-	Fri,  9 Jan 2026 12:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1208935B137;
+	Fri,  9 Jan 2026 12:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8tgf5ru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ujvtyz0P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6812F359FB5;
-	Fri,  9 Jan 2026 12:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C46F535A956;
+	Fri,  9 Jan 2026 12:30:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960115; cv=none; b=oc4a0/F61UtQ0tctmQaYjojDMH3Y9sWOHZnL++BlnFks30CC5nHLhB0hddJpj3UW/Mj1+qfYXBw1XS2G+VxUOMduvezj/JNNmKJlf2ZTxCr1amcA/HdaCuSR53y+tZvfi9EW63UaB0oJHc51OGdoWUgVux/FqBhGm+L28/PBWcs=
+	t=1767961808; cv=none; b=WF8GwdySIOzJMvMvKWa8BKZAxQi7b2qIVTGzRnGe6MChAQRv7ibCezUnJf9jrgjWUZ0jkQMF+iUCl2mb8BZmHR7mamriHWu216InC9HeuFqXbZQOxE7KGsfKkrE2vZ803GqbZeOdm5e399+vVfZ+fIiBSZNqVRVQTkQxBJhrsgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960115; c=relaxed/simple;
-	bh=WqK6fnFH3eIvAhUnGxhqxkw33leqSjll1MPiHOjEoNA=;
+	s=arc-20240116; t=1767961808; c=relaxed/simple;
+	bh=WOsqTEUdC5Utn5YO7i2Y9xuFX+Hd87UE01C2i1HBfsM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mfCPH+G+6ylXp5qbTmaMfVf0PXSJzM/FCs+4BbnwHrZHaO2HK4sRrAGc8Aww6Rfpt/ZvhVDHoU0kPWCi49D7tw7DOfgYmsNcPCX5jYYzZChx5MNXh+6pO5CVuHBB/Xw5sO1gC6cpBBlxoEzpKXGYgN8YpWaaWR3ycyizEQv6cuE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8tgf5ru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E757AC4CEF1;
-	Fri,  9 Jan 2026 12:01:54 +0000 (UTC)
+	 MIME-Version; b=LVZz+QVFlHt2beUPCqi9ppnXRdBwBUbW/w21yvWvQ81wYWhSgzbpc9MTR+aHCf8EZgaZv2G162GA2tQbFEYkZZmi1FWYz9cuNT9xzMzJ1F2BDAS01JszG1ykg6t6JKfqDy+7EexAAG/tsvcG6TZbddHPbFberbhurLvujKAmcFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ujvtyz0P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CF3C4CEF1;
+	Fri,  9 Jan 2026 12:30:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960115;
-	bh=WqK6fnFH3eIvAhUnGxhqxkw33leqSjll1MPiHOjEoNA=;
+	s=korg; t=1767961808;
+	bh=WOsqTEUdC5Utn5YO7i2Y9xuFX+Hd87UE01C2i1HBfsM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8tgf5ruxPA4ggF7vDrCItb8dtPmO/568PFaNBOOYhXu5XTsVAc7s0t3FaijwBHsg
-	 ilL+418onpNTCyCWZFW+RBNHHLgK6qxGRtMZ6GuPIaEpqT6z1bE0xgqv3DF+51nINy
-	 bl8aC/h9VIDPlxBQDFTVbgr6QaXoSMB2NpTLNEZc=
+	b=Ujvtyz0PtFTKK0bwg8sxpp6BWp75ZSRcTXpVyPS0xAVvyPb+No7Idm7JXIDTpisRW
+	 Bl0XjCaUQhRDUtIVbJ4NWFIi5MQjfWSh1n9XFpIEZPQyPeMfl6uXUR5+N40ukbgGna
+	 GqUQ1zwP9C1VZGKA0yz5xFzaRoLQHhaz2jSJII3g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yuanbin <xieyuanbin1@huawei.com>,
-	Liyuan Pang <pangliyuan1@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 283/737] ARM: 9464/1: fix input-only operand modification in load_unaligned_zeropad()
+Subject: [PATCH 6.1 144/634] mt76: mt7615: Fix memory leak in mt7615_mcu_wtbl_sta_add()
 Date: Fri,  9 Jan 2026 12:37:02 +0100
-Message-ID: <20260109112144.658426947@linuxfoundation.org>
+Message-ID: <20260109112122.873664268@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liyuan Pang <pangliyuan1@huawei.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit edb924a7211c9aa7a4a415e03caee4d875e46b8e ]
+[ Upstream commit 53d1548612670aa8b5d89745116cc33d9d172863 ]
 
-In the inline assembly inside load_unaligned_zeropad(), the "addr" is
-constrained as input-only operand. The compiler assumes that on exit
-from the asm statement these operands contain the same values as they
-had before executing the statement, but when kernel page fault happened, the assembly fixup code "bic %2 %2, #0x3" modify the value of "addr", which may lead to an unexpected behavior.
+In mt7615_mcu_wtbl_sta_add(), an skb sskb is allocated. If the
+subsequent call to mt76_connac_mcu_alloc_wtbl_req() fails, the function
+returns an error without freeing sskb, leading to a memory leak.
 
-Use a temporary variable "tmp" to handle it, instead of modifying the
-input-only operand, just like what arm64's load_unaligned_zeropad()
-does.
+Fix this by calling dev_kfree_skb() on sskb in the error handling path
+to ensure it is properly released.
 
-Fixes: b9a50f74905a ("ARM: 7450/1: dcache: select DCACHE_WORD_ACCESS for little-endian ARMv6+ CPUs")
-Co-developed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Liyuan Pang <pangliyuan1@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251113062415.103611-1-zilin@seu.edu.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/word-at-a-time.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
-index 352ab213520d2..2e6d0b4349f47 100644
---- a/arch/arm/include/asm/word-at-a-time.h
-+++ b/arch/arm/include/asm/word-at-a-time.h
-@@ -66,7 +66,7 @@ static inline unsigned long find_zero(unsigned long mask)
-  */
- static inline unsigned long load_unaligned_zeropad(const void *addr)
- {
--	unsigned long ret, offset;
-+	unsigned long ret, tmp;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index 3dac76e6df4d2..53f6766938ae2 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -869,8 +869,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
+ 						  WTBL_RESET_AND_SET, NULL,
+ 						  &wskb);
+-	if (IS_ERR(wtbl_hdr))
++	if (IS_ERR(wtbl_hdr)) {
++		dev_kfree_skb(sskb);
+ 		return PTR_ERR(wtbl_hdr);
++	}
  
- 	/* Load word from unaligned pointer addr */
- 	asm(
-@@ -74,9 +74,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"2:\n"
- 	"	.pushsection .text.fixup,\"ax\"\n"
- 	"	.align 2\n"
--	"3:	and	%1, %2, #0x3\n"
--	"	bic	%2, %2, #0x3\n"
--	"	ldr	%0, [%2]\n"
-+	"3:	bic	%1, %2, #0x3\n"
-+	"	ldr	%0, [%1]\n"
-+	"	and	%1, %2, #0x3\n"
- 	"	lsl	%1, %1, #0x3\n"
- #ifndef __ARMEB__
- 	"	lsr	%0, %0, %1\n"
-@@ -89,7 +89,7 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"	.align	3\n"
- 	"	.long	1b, 3b\n"
- 	"	.popsection"
--	: "=&r" (ret), "=&r" (offset)
-+	: "=&r" (ret), "=&r" (tmp)
- 	: "r" (addr), "Qo" (*(unsigned long *)addr));
- 
- 	return ret;
+ 	if (enable) {
+ 		mt76_connac_mcu_wtbl_generic_tlv(&dev->mt76, wskb, vif, sta,
 -- 
 2.51.0
 
