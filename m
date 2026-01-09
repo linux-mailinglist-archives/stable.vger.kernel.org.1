@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-206537-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0E9DD0917C
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:56:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1EDAD090E9
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:54:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 02D073008EBA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:51:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 993503022115
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:53:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E44BD33C511;
-	Fri,  9 Jan 2026 11:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B7D233B6F1;
+	Fri,  9 Jan 2026 11:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b8EMcoYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Teb0ZS/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6D96033290A;
-	Fri,  9 Jan 2026 11:51:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E146622F77B;
+	Fri,  9 Jan 2026 11:53:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959488; cv=none; b=CSXAiTFrUDw69/c4Kxa1ApBHEBrwDMLK6V6j4xmuTCYhN6cj0TA8oXn5NxuIhzM8db8V3gIzw+mfCj1zJmdEo72lJCCaOaUB36PPPHmeg11Ti3LoENzSQv5AAJFKiFel5wYhUDsIsQxiQMsOg3kw+7lzLfg/KCXHKB7Wy89WTDA=
+	t=1767959610; cv=none; b=lNC/zC2fGNBkDqlKRRx4YlsudQUj87KwczDzlU/cdDMcZZdyaVKjEjL9/WKpRfYyUnystyag8pWtxKMJb5M8VgfeNF9SYoAn8zDyiXli952GJlpycCS81rLS5e7r4IpVzxzb2iN4g3y5zkSrxf6c0yfBeOzOxk//aASZ6UHKL38=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959488; c=relaxed/simple;
-	bh=QqSbUpOCU7XrgJgkrz7sUjd6TW7eikbUKhx1KvFTFR4=;
+	s=arc-20240116; t=1767959610; c=relaxed/simple;
+	bh=VR40LFPXArYqcIJ8ORDG4js7QLiSypxyEc7liIRIMlk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cwm0MiBjm+wTvzm4D/MyHS0M6GrT1463gjjm9u8DVYuhX2E69+nym7tGtrOyyDg43fVDHoVpUZ/UVTjHt13hSVmqF0MQIkvIUn7O/OzKbiXGIu+6GlNxsdCinoYJImCRtDpNwrSARyuaEHMvbWBiCztpJcxZM51XTpTWrOXrYYY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b8EMcoYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA4E5C16AAE;
-	Fri,  9 Jan 2026 11:51:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=UMhtbO/awfGSyL0b+1kK9bQxBVXe5htpPrP1xK44l5JN2Ci6DV8Ns0tQ9XHkuZ01zb7h+KYHz+h4VdSicUiWL7aS8ygevrFWYvwHuTxIFopM/u21aHP0Z23z7ZsUoMQq9BR5GbPckuSsm8IOPJHwTG7PD/L3m043errVULgELpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Teb0ZS/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CD2C19421;
+	Fri,  9 Jan 2026 11:53:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959488;
-	bh=QqSbUpOCU7XrgJgkrz7sUjd6TW7eikbUKhx1KvFTFR4=;
+	s=korg; t=1767959609;
+	bh=VR40LFPXArYqcIJ8ORDG4js7QLiSypxyEc7liIRIMlk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b8EMcoYH7We17XyDO8boa6Seg3xpMoAOjqy+WVTE2jiA2KE7NcwQgSzlyHVW8K00Q
-	 hShWr9bRG69JF05EcaUsaTOpM1/5qUAbyTxGtIRcwIzJZ+dSaG/EuD4lLW3gcwfDS8
-	 zHmP3sdp0Pb/oqzEp1/H5Dy166qSa6No+PSFSdCg=
+	b=Teb0ZS/A2iUMNjelh8Eed6ynj3FEWJwItjP7WVv6La6IbY+Fvwm5UGZQfoiD1UlFy
+	 Jfn25HY1EWE9aHrm6XhUl3EYYF6ClfR/xL3ByrUWEq424nBhZdgMt9Ur9B45AR3UDB
+	 5S14QsGUj4g2hwhY/EXzAsFedsFWjuQKNq5N1y6s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ingo Franzki <ifranzki@linux.ibm.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 068/737] crypto: authenc - Correctly pass EINPROGRESS back up to the caller
-Date: Fri,  9 Jan 2026 12:33:27 +0100
-Message-ID: <20260109112136.555883762@linuxfoundation.org>
+Subject: [PATCH 6.6 069/737] ntfs3: fix uninit memory after failed mi_read in mi_format_new
+Date: Fri,  9 Jan 2026 12:33:28 +0100
+Message-ID: <20260109112136.593751286@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -59,206 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit 96feb73def02d175850daa0e7c2c90c876681b5c ]
+[ Upstream commit 73e6b9dacf72a1e7a4265eacca46f8f33e0997d6 ]
 
-When authenc is invoked with MAY_BACKLOG, it needs to pass EINPROGRESS
-notifications back up to the caller when the underlying algorithm
-returns EBUSY synchronously.
+Fix a KMSAN un-init bug found by syzkaller.
 
-However, if the EBUSY comes from the second part of an authenc call,
-i.e., it is asynchronous, both the EBUSY and the subsequent EINPROGRESS
-notification must not be passed to the caller.
+ntfs_get_bh() expects a buffer from sb_getblk(), that buffer may not be
+uptodate. We do not bring the buffer uptodate before setting it as
+uptodate. If the buffer were to not be uptodate, it could mean adding a
+buffer with un-init data to the mi record. Attempting to load that record
+will trigger KMSAN.
 
-Implement this by passing a mask to the function that starts the
-second half of authenc and using it to determine whether EBUSY
-and EINPROGRESS should be passed to the caller.
+Avoid this by setting the buffer as uptodate, if it’s not already, by
+overwriting it.
 
-This was a deficiency in the original implementation of authenc
-because it was not expected to be used with MAY_BACKLOG.
-
-Reported-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Reported-by: Mikulas Patocka <mpatocka@redhat.com>
-Fixes: 180ce7e81030 ("crypto: authenc - Add EINPROGRESS check")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Reported-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=7a2ba6b7b66340cff225
+Tested-by: syzbot+7a2ba6b7b66340cff225@syzkaller.appspotmail.com
+Fixes: 4342306f0f0d5 ("fs/ntfs3: Add file operations and implementation")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/authenc.c | 75 ++++++++++++++++++++++++++++++++----------------
- 1 file changed, 50 insertions(+), 25 deletions(-)
+ fs/ntfs3/fsntfs.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/authenc.c b/crypto/authenc.c
-index 3326c7343e867..ebaa035a54f4b 100644
---- a/crypto/authenc.c
-+++ b/crypto/authenc.c
-@@ -39,7 +39,7 @@ struct authenc_request_ctx {
- 
- static void authenc_request_complete(struct aead_request *req, int err)
- {
--	if (err != -EINPROGRESS)
-+	if (err != -EINPROGRESS && err != -EBUSY)
- 		aead_request_complete(req, err);
- }
- 
-@@ -109,27 +109,42 @@ static int crypto_authenc_setkey(struct crypto_aead *authenc, const u8 *key,
- 	return err;
- }
- 
--static void authenc_geniv_ahash_done(void *data, int err)
-+static void authenc_geniv_ahash_finish(struct aead_request *req)
- {
--	struct aead_request *req = data;
- 	struct crypto_aead *authenc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(authenc);
- 	struct authenc_instance_ctx *ictx = aead_instance_ctx(inst);
- 	struct authenc_request_ctx *areq_ctx = aead_request_ctx(req);
- 	struct ahash_request *ahreq = (void *)(areq_ctx->tail + ictx->reqoff);
- 
--	if (err)
--		goto out;
--
- 	scatterwalk_map_and_copy(ahreq->result, req->dst,
- 				 req->assoclen + req->cryptlen,
- 				 crypto_aead_authsize(authenc), 1);
-+}
- 
--out:
-+static void authenc_geniv_ahash_done(void *data, int err)
-+{
-+	struct aead_request *req = data;
+diff --git a/fs/ntfs3/fsntfs.c b/fs/ntfs3/fsntfs.c
+index e19b13db4f91e..446079b0866d4 100644
+--- a/fs/ntfs3/fsntfs.c
++++ b/fs/ntfs3/fsntfs.c
+@@ -1369,7 +1369,14 @@ int ntfs_get_bh(struct ntfs_sb_info *sbi, const struct runs_tree *run, u64 vbo,
+ 				}
+ 				if (buffer_locked(bh))
+ 					__wait_on_buffer(bh);
+-				set_buffer_uptodate(bh);
 +
-+	if (!err)
-+		authenc_geniv_ahash_finish(req);
- 	aead_request_complete(req, err);
- }
- 
--static int crypto_authenc_genicv(struct aead_request *req, unsigned int flags)
-+/*
-+ * Used when the ahash request was invoked in the async callback context
-+ * of the previous skcipher request.  Eat any EINPROGRESS notifications.
-+ */
-+static void authenc_geniv_ahash_done2(void *data, int err)
-+{
-+	struct aead_request *req = data;
-+
-+	if (!err)
-+		authenc_geniv_ahash_finish(req);
-+	authenc_request_complete(req, err);
-+}
-+
-+static int crypto_authenc_genicv(struct aead_request *req, unsigned int mask)
- {
- 	struct crypto_aead *authenc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(authenc);
-@@ -138,6 +153,7 @@ static int crypto_authenc_genicv(struct aead_request *req, unsigned int flags)
- 	struct crypto_ahash *auth = ctx->auth;
- 	struct authenc_request_ctx *areq_ctx = aead_request_ctx(req);
- 	struct ahash_request *ahreq = (void *)(areq_ctx->tail + ictx->reqoff);
-+	unsigned int flags = aead_request_flags(req) & ~mask;
- 	u8 *hash = areq_ctx->tail;
- 	int err;
- 
-@@ -148,7 +164,8 @@ static int crypto_authenc_genicv(struct aead_request *req, unsigned int flags)
- 	ahash_request_set_crypt(ahreq, req->dst, hash,
- 				req->assoclen + req->cryptlen);
- 	ahash_request_set_callback(ahreq, flags,
--				   authenc_geniv_ahash_done, req);
-+				   mask ? authenc_geniv_ahash_done2 :
-+					  authenc_geniv_ahash_done, req);
- 
- 	err = crypto_ahash_digest(ahreq);
- 	if (err)
-@@ -164,12 +181,11 @@ static void crypto_authenc_encrypt_done(void *data, int err)
- {
- 	struct aead_request *areq = data;
- 
--	if (err)
--		goto out;
--
--	err = crypto_authenc_genicv(areq, 0);
--
--out:
-+	if (err) {
-+		aead_request_complete(areq, err);
-+		return;
-+	}
-+	err = crypto_authenc_genicv(areq, CRYPTO_TFM_REQ_MAY_SLEEP);
- 	authenc_request_complete(areq, err);
- }
- 
-@@ -222,11 +238,18 @@ static int crypto_authenc_encrypt(struct aead_request *req)
- 	if (err)
- 		return err;
- 
--	return crypto_authenc_genicv(req, aead_request_flags(req));
-+	return crypto_authenc_genicv(req, 0);
-+}
-+
-+static void authenc_decrypt_tail_done(void *data, int err)
-+{
-+	struct aead_request *req = data;
-+
-+	authenc_request_complete(req, err);
- }
- 
- static int crypto_authenc_decrypt_tail(struct aead_request *req,
--				       unsigned int flags)
-+				       unsigned int mask)
- {
- 	struct crypto_aead *authenc = crypto_aead_reqtfm(req);
- 	struct aead_instance *inst = aead_alg_instance(authenc);
-@@ -237,6 +260,7 @@ static int crypto_authenc_decrypt_tail(struct aead_request *req,
- 	struct skcipher_request *skreq = (void *)(areq_ctx->tail +
- 						  ictx->reqoff);
- 	unsigned int authsize = crypto_aead_authsize(authenc);
-+	unsigned int flags = aead_request_flags(req) & ~mask;
- 	u8 *ihash = ahreq->result + authsize;
- 	struct scatterlist *src, *dst;
- 
-@@ -253,7 +277,9 @@ static int crypto_authenc_decrypt_tail(struct aead_request *req,
- 
- 	skcipher_request_set_tfm(skreq, ctx->enc);
- 	skcipher_request_set_callback(skreq, flags,
--				      req->base.complete, req->base.data);
-+				      mask ? authenc_decrypt_tail_done :
-+					     req->base.complete,
-+				      mask ? req : req->base.data);
- 	skcipher_request_set_crypt(skreq, src, dst,
- 				   req->cryptlen - authsize, req->iv);
- 
-@@ -264,12 +290,11 @@ static void authenc_verify_ahash_done(void *data, int err)
- {
- 	struct aead_request *req = data;
- 
--	if (err)
--		goto out;
--
--	err = crypto_authenc_decrypt_tail(req, 0);
--
--out:
-+	if (err) {
-+		aead_request_complete(req, err);
-+		return;
-+	}
-+	err = crypto_authenc_decrypt_tail(req, CRYPTO_TFM_REQ_MAY_SLEEP);
- 	authenc_request_complete(req, err);
- }
- 
-@@ -299,7 +324,7 @@ static int crypto_authenc_decrypt(struct aead_request *req)
- 	if (err)
- 		return err;
- 
--	return crypto_authenc_decrypt_tail(req, aead_request_flags(req));
-+	return crypto_authenc_decrypt_tail(req, 0);
- }
- 
- static int crypto_authenc_init_tfm(struct crypto_aead *tfm)
++				lock_buffer(bh);
++				if (!buffer_uptodate(bh))
++				{
++					memset(bh->b_data, 0, blocksize);
++					set_buffer_uptodate(bh);
++				}
++				unlock_buffer(bh);
+ 			} else {
+ 				bh = ntfs_bread(sb, block);
+ 				if (!bh) {
 -- 
 2.51.0
 
