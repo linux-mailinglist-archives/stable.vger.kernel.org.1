@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206897-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C603D09F16
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFFB0D09638
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3CC5430915E1
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 37F0830325CB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21828358D38;
-	Fri,  9 Jan 2026 12:35:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4675835A922;
+	Fri,  9 Jan 2026 12:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QHgVZTZ3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4Q7OJE7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8AC91E8836;
-	Fri,  9 Jan 2026 12:35:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5D633B6F1;
+	Fri,  9 Jan 2026 12:08:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962132; cv=none; b=RMiH8jLi5UquQTuBFHCti2OzpKcPE2MQarQm0rafLN3E2gsabyEpw32/Ie4V49YhFrFYtGpYgs1Rl3Phgts6ZbmyPXeW8b9uSEb7BPFgiXL69Dw30gZPRK+u9DbRzsacslAG/4g+u/ot71jdGO8+UEVL9q+RFLGmaWI/ljpB1kU=
+	t=1767960511; cv=none; b=adi1F1BqAUzzR25Jirj144DCW1zI5eYyz2zmON1Oj7h/j1KykbX+yJyR1LMS/fWm5MeAn6h74xh7xL/XxAeET58b4/mOrj2Ox7TI57235DGnKcLn01QoRufz3y/OyBlC8Vxedi+/wGJDYzmaOz5P+1T0UJpTPfAAiLFwkWa9lM8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962132; c=relaxed/simple;
-	bh=zNNwiUeIZ8yRKpFDo0ZU0kwRsE4ODScu//2tXUzOOXU=;
+	s=arc-20240116; t=1767960511; c=relaxed/simple;
+	bh=+YaKkBfovf0IrNKU7DrDwcyjzc2Bh2e8fmTg6aForvQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ax8K2tftwN56Q/+OhjdxgMWBiB5ElA82IMRWt1ki2jkHps2Yupb1YJQ0TmDf1ijR04yRD4znnRWVOa65rM+HF8qh1Khw0Zosi8mr764diG9vLac5sdh370tusTHa7VKLp51fxSIWo15PAuCR29ootO1XmDTaEDRPmJ5NF69Y/DA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QHgVZTZ3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19456C4CEF1;
-	Fri,  9 Jan 2026 12:35:31 +0000 (UTC)
+	 MIME-Version; b=lRPCsTWb6uTaI8kHSdv6H7c4Z5CuG9WAIF5rog4TfvLztra6KYRzdisvxAlBPc8z8oN1YG+HVViLNrHzIKxnOKPBpSLju2wrteIs2XCrXjsiQR7GSTC44QehMiB0/+BoNQGctMb2zWcaCGWbLpcY3m/tWT8fC1WYTnpRRoTZowo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4Q7OJE7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FE4CC16AAE;
+	Fri,  9 Jan 2026 12:08:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962132;
-	bh=zNNwiUeIZ8yRKpFDo0ZU0kwRsE4ODScu//2tXUzOOXU=;
+	s=korg; t=1767960510;
+	bh=+YaKkBfovf0IrNKU7DrDwcyjzc2Bh2e8fmTg6aForvQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QHgVZTZ3fa0sH2jqYlre+NfkapDot1d+DeOja5QbpoiRYv2Sejzn2KaS/Gdl0JWWM
-	 s39BnGwGB2LWxKz2hkEWLiMtqqnm6K1qXIBbm/C/dgHjZeC+BmdqjoI8tq/bqf6F7t
-	 jL293CusOg7Mp7FNLlicpkFsL1icRNnXHfzDEYz8=
+	b=s4Q7OJE7i5Dpz5QbK0unn2NXEJQjtcrev73N4GHuyDJ8uphs7us4EgX+8STPVXPkg
+	 /a2YXOc3LAMTKaN6OwkdfHciB8k/6oL1zYoA2q2Aele7tFkZIn6awV0VZFxQPX880U
+	 JuOoYBU1vsxgvNwl0KR0QWdGQNljZ/p1w3c95jCk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Victor Nogueira <victor@mojatatu.com>,
-	Petr Machata <petrm@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Encrow Thorne <jyc0019@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 258/634] net/sched: ets: Remove drr class from the active list if it changes to strict
+Subject: [PATCH 6.6 397/737] reset: fix BIT macro reference
 Date: Fri,  9 Jan 2026 12:38:56 +0100
-Message-ID: <20260109112127.246322303@linuxfoundation.org>
+Message-ID: <20260109112148.936082475@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,89 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Victor Nogueira <victor@mojatatu.com>
+From: Encrow Thorne <jyc0019@gmail.com>
 
-[ Upstream commit b1e125ae425aba9b45252e933ca8df52a843ec70 ]
+[ Upstream commit f3d8b64ee46c9b4b0b82b1a4642027728bac95b8 ]
 
-Whenever a user issues an ets qdisc change command, transforming a
-drr class into a strict one, the ets code isn't checking whether that
-class was in the active list and removing it. This means that, if a
-user changes a strict class (which was in the active list) back to a drr
-one, that class will be added twice to the active list [1].
+RESET_CONTROL_FLAGS_BIT_* macros use BIT(), but reset.h does not
+include bits.h. This causes compilation errors when including
+reset.h standalone.
 
-Doing so with the following commands:
+Include bits.h to make reset.h self-contained.
 
-tc qdisc add dev lo root handle 1: ets bands 2 strict 1
-tc qdisc add dev lo parent 1:2 handle 20: \
-    tbf rate 8bit burst 100b latency 1s
-tc filter add dev lo parent 1: basic classid 1:2
-ping -c1 -W0.01 -s 56 127.0.0.1
-tc qdisc change dev lo root handle 1: ets bands 2 strict 2
-tc qdisc change dev lo root handle 1: ets bands 2 strict 1
-ping -c1 -W0.01 -s 56 127.0.0.1
-
-Will trigger the following splat with list debug turned on:
-
-[   59.279014][  T365] ------------[ cut here ]------------
-[   59.279452][  T365] list_add double add: new=ffff88801d60e350, prev=ffff88801d60e350, next=ffff88801d60e2c0.
-[   59.280153][  T365] WARNING: CPU: 3 PID: 365 at lib/list_debug.c:35 __list_add_valid_or_report+0x17f/0x220
-[   59.280860][  T365] Modules linked in:
-[   59.281165][  T365] CPU: 3 UID: 0 PID: 365 Comm: tc Not tainted 6.18.0-rc7-00105-g7e9f13163c13-dirty #239 PREEMPT(voluntary)
-[   59.281977][  T365] Hardware name: Bochs Bochs, BIOS Bochs 01/01/2011
-[   59.282391][  T365] RIP: 0010:__list_add_valid_or_report+0x17f/0x220
-[   59.282842][  T365] Code: 89 c6 e8 d4 b7 0d ff 90 0f 0b 90 90 31 c0 e9 31 ff ff ff 90 48 c7 c7 e0 a0 22 9f 48 89 f2 48 89 c1 4c 89 c6 e8 b2 b7 0d ff 90 <0f> 0b 90 90 31 c0 e9 0f ff ff ff 48 89 f7 48 89 44 24 10 4c 89 44
-...
-[   59.288812][  T365] Call Trace:
-[   59.289056][  T365]  <TASK>
-[   59.289224][  T365]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   59.289546][  T365]  ets_qdisc_change+0xd2b/0x1e80
-[   59.289891][  T365]  ? __lock_acquire+0x7e7/0x1be0
-[   59.290223][  T365]  ? __pfx_ets_qdisc_change+0x10/0x10
-[   59.290546][  T365]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   59.290898][  T365]  ? __mutex_trylock_common+0xda/0x240
-[   59.291228][  T365]  ? __pfx___mutex_trylock_common+0x10/0x10
-[   59.291655][  T365]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   59.291993][  T365]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   59.292313][  T365]  ? trace_contention_end+0xc8/0x110
-[   59.292656][  T365]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   59.293022][  T365]  ? srso_alias_return_thunk+0x5/0xfbef5
-[   59.293351][  T365]  tc_modify_qdisc+0x63a/0x1cf0
-
-Fix this by always checking and removing an ets class from the active list
-when changing it to strict.
-
-[1] https://git.kernel.org/pub/scm/linux/kernel/git/netdev/net.git/tree/net/sched/sch_ets.c?id=ce052b9402e461a9aded599f5b47e76bc727f7de#n663
-
-Fixes: cd9b50adc6bb9 ("net/sched: ets: fix crash when flipping from 'strict' to 'quantum'")
-Acked-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Link: https://patch.msgid.link/20251208190125.1868423-1-victor@mojatatu.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Suggested-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Encrow Thorne <jyc0019@gmail.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ include/linux/reset.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index b732d09ede99a..6ff619277ffd9 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -664,6 +664,10 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 			q->classes[i].deficit = quanta[i];
- 		}
- 	}
-+	for (i = q->nstrict; i < nstrict; i++) {
-+		if (cl_is_active(&q->classes[i]))
-+			list_del_init(&q->classes[i].alist);
-+	}
- 	WRITE_ONCE(q->nstrict, nstrict);
- 	memcpy(q->prio2band, priomap, sizeof(priomap));
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 514ddf003efc..4b31d683776e 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_RESET_H_
+ #define _LINUX_RESET_H_
  
++#include <linux/bits.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/types.h>
 -- 
 2.51.0
 
