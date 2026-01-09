@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-207679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CCA43D0A3C8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:10:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4217CD0A407
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:11:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4C59C3179BAA
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 104933074DCB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:48:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEB235C1A8;
-	Fri,  9 Jan 2026 12:45:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E564F35FF57;
+	Fri,  9 Jan 2026 12:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+5C68dA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vmgAhXDD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1259533C53B;
-	Fri,  9 Jan 2026 12:45:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A91F21482E8;
+	Fri,  9 Jan 2026 12:45:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962739; cv=none; b=ZmdTBmfQJxOO+bQRrVKo1NG9WUi1yE7aFYPk67c4AkSFWqiojSp+Hp3H+evizYileXVp0vdpq+vLa+dsubwcz0a6taeucroqBiSOJXZ5zJ4MnZEJqNjMMauglg2ltYmaVXMFx6oH1pgbMRVZ2oo1iNqy286joCPhMC5N2UYIWXQ=
+	t=1767962744; cv=none; b=Igaz1U0T0p7I70eLO3m8SfR/SPo9nh4eN4OPhlERE9fHummXq7VWaaKfptT1Dkui++ctZW4k6BfCztVwp13ZadZCEL0Wr/Hc+cllEVBuOAFk8A18gjvm7xagMp1st3r2drEIJUdsbzgfh+rNbpyM7MW8NW5Y/OpIFO4Zx52f158=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962739; c=relaxed/simple;
-	bh=671Pm0HCdyLtWNQxQCQIs+LOz2+JUOH3DLIV63Lh0b8=;
+	s=arc-20240116; t=1767962744; c=relaxed/simple;
+	bh=+WmskWhzyfuXovCmVrm4mbVMP3ggxLfRiVaBne0yz8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ylj1oeYVOs2u5uc+PtxtPScVMccHvJTmXmMFc78HPDJOY9XiL6Lex/s6uhPUTO2hNGjJVnbu9x/jmXY55p7oXyimUeGAHnVOZ5OS+GRfIyatkxSzs6OQZ66q7267wsszGycrA5EFRWoAh4l99oJ4Vm2F+mqjXqRg3X8mHMTmolg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+5C68dA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CDEC16AAE;
-	Fri,  9 Jan 2026 12:45:38 +0000 (UTC)
+	 MIME-Version; b=XUv8HeV7k3Jn5PlC12Jm9mc801naxFSao7gJAtI1zKZWpRsprrrWcYBxqb+QsnnOn469fENMviv3oWjhM7SSvjXs8ay6BNMAlJtHvBLLzFO3o+4vN4ZeV0NfqnyUQX/oef7BGl4FylVaxtt5K7SBoKy8YdtqOa3MYoJ8iRKNVBg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vmgAhXDD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F048AC16AAE;
+	Fri,  9 Jan 2026 12:45:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962738;
-	bh=671Pm0HCdyLtWNQxQCQIs+LOz2+JUOH3DLIV63Lh0b8=;
+	s=korg; t=1767962744;
+	bh=+WmskWhzyfuXovCmVrm4mbVMP3ggxLfRiVaBne0yz8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+5C68dA71lCmZNDlxqNRRAZI80dEODjBPblM7neVZQDLvl0mnf4o6joR6t8NDOhO
-	 wPNc4gG/kuSjiG/5LgjHpwF+ZIGWnFfQU0oeiASUnoVbzICk50dGaZuHvD/Z7bxiGO
-	 mPfUmCEGts2jCT5l7FvFLW2o17xdDv7lavFYUlk8=
+	b=vmgAhXDDG4OdmdCxAIirBStWYHPh6FCFxCy6ao/p+yDEDvKGNIAfvoq8bV9yeT6AS
+	 bJzSTFKu132HyOJl1VaDBK+p7GnU/2uI+wIRmGCSyUMdM6RuRdBaS+Fa04DvGouxDC
+	 gLEJ/DI1PwMrQ59+WR0rgJGTL09QoGjw2HYpEKps=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 6.1 471/634] media: adv7842: Avoid possible out-of-bounds array accesses in adv7842_cp_log_status()
-Date: Fri,  9 Jan 2026 12:42:29 +0100
-Message-ID: <20260109112135.272996430@linuxfoundation.org>
+	Mahesh Rao <mahesh.rao@altera.com>,
+	Matthew Gerlach <matthew.gerlach@altera.com>,
+	Dinh Nguyen <dinguyen@kernel.org>
+Subject: [PATCH 6.1 472/634] firmware: stratix10-svc: Add mutex in stratix10 memory management
+Date: Fri,  9 Jan 2026 12:42:30 +0100
+Message-ID: <20260109112135.310955923@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
 References: <20260109112117.407257400@linuxfoundation.org>
@@ -63,58 +64,81 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: Mahesh Rao <mahesh.rao@altera.com>
 
-commit 8163419e3e05d71dcfa8fb49c8fdf8d76908fe51 upstream.
+commit 85f96cbbbc67b59652b2c1ec394b8ddc0ddf1b0b upstream.
 
-It's possible for cp_read() and hdmi_read() to return -EIO. Those
-values are further used as indexes for accessing arrays.
+Add mutex lock to stratix10_svc_allocate_memory and
+stratix10_svc_free_memory for thread safety. This prevents race
+conditions and ensures proper synchronization during memory operations.
+This is required for parallel communication with the Stratix10 service
+channel.
 
-Fix that by checking return values where it's needed.
-
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+Fixes: 7ca5ce896524f ("firmware: add Intel Stratix10 service layer driver")
 Cc: stable@vger.kernel.org
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Mahesh Rao <mahesh.rao@altera.com>
+Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
+Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7842.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/firmware/stratix10-svc.c |   11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -2680,6 +2680,7 @@ static int adv7842_cp_log_status(struct
- 	/* CP block */
- 	struct adv7842_state *state = to_state(sd);
- 	struct v4l2_dv_timings timings;
-+	int temp;
- 	u8 reg_io_0x02 = io_read(sd, 0x02);
- 	u8 reg_io_0x21 = io_read(sd, 0x21);
- 	u8 reg_rep_0x77 = rep_read(sd, 0x77);
-@@ -2802,8 +2803,9 @@ static int adv7842_cp_log_status(struct
- 		  (((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
- 			"(16-235)" : "(0-255)",
- 		  (reg_io_0x02 & 0x08) ? "enabled" : "disabled");
-+	temp = cp_read(sd, 0xf4) >> 4;
- 	v4l2_info(sd, "Color space conversion: %s\n",
--		  csc_coeff_sel_rb[cp_read(sd, 0xf4) >> 4]);
-+		  temp < 0 ? "" : csc_coeff_sel_rb[temp]);
+--- a/drivers/firmware/stratix10-svc.c
++++ b/drivers/firmware/stratix10-svc.c
+@@ -1,6 +1,7 @@
+ // SPDX-License-Identifier: GPL-2.0
+ /*
+  * Copyright (C) 2017-2018, Intel Corporation
++ * Copyright (C) 2025, Altera Corporation
+  */
  
- 	if (!is_digital_input(sd))
- 		return 0;
-@@ -2833,8 +2835,9 @@ static int adv7842_cp_log_status(struct
- 			hdmi_read(sd, 0x5f));
- 	v4l2_info(sd, "AV Mute: %s\n",
- 			(hdmi_read(sd, 0x04) & 0x40) ? "on" : "off");
-+	temp = hdmi_read(sd, 0x0b) >> 6;
- 	v4l2_info(sd, "Deep color mode: %s\n",
--			deep_color_mode_txt[hdmi_read(sd, 0x0b) >> 6]);
-+			temp < 0 ? "" : deep_color_mode_txt[temp]);
+ #include <linux/completion.h>
+@@ -175,6 +176,12 @@ static LIST_HEAD(svc_ctrl);
+ static LIST_HEAD(svc_data_mem);
  
- 	adv7842_log_infoframes(sd);
+ /**
++ * svc_mem_lock protects access to the svc_data_mem list for
++ * concurrent multi-client operations
++ */
++static DEFINE_MUTEX(svc_mem_lock);
++
++/**
+  * svc_pa_to_va() - translate physical address to virtual address
+  * @addr: to be translated physical address
+  *
+@@ -186,6 +193,7 @@ static void *svc_pa_to_va(unsigned long
+ 	struct stratix10_svc_data_mem *pmem;
  
+ 	pr_debug("claim back P-addr=0x%016x\n", (unsigned int)addr);
++	guard(mutex)(&svc_mem_lock);
+ 	list_for_each_entry(pmem, &svc_data_mem, node)
+ 		if (pmem->paddr == addr)
+ 			return pmem->vaddr;
+@@ -978,6 +986,7 @@ int stratix10_svc_send(struct stratix10_
+ 			p_data->flag = ct->flags;
+ 		}
+ 	} else {
++		guard(mutex)(&svc_mem_lock);
+ 		list_for_each_entry(p_mem, &svc_data_mem, node)
+ 			if (p_mem->vaddr == p_msg->payload) {
+ 				p_data->paddr = p_mem->paddr;
+@@ -1060,6 +1069,7 @@ void *stratix10_svc_allocate_memory(stru
+ 	if (!pmem)
+ 		return ERR_PTR(-ENOMEM);
+ 
++	guard(mutex)(&svc_mem_lock);
+ 	va = gen_pool_alloc(genpool, s);
+ 	if (!va)
+ 		return ERR_PTR(-ENOMEM);
+@@ -1088,6 +1098,7 @@ EXPORT_SYMBOL_GPL(stratix10_svc_allocate
+ void stratix10_svc_free_memory(struct stratix10_svc_chan *chan, void *kaddr)
+ {
+ 	struct stratix10_svc_data_mem *pmem;
++	guard(mutex)(&svc_mem_lock);
+ 
+ 	list_for_each_entry(pmem, &svc_data_mem, node)
+ 		if (pmem->vaddr == kaddr) {
 
 
 
