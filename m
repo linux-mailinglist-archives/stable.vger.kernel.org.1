@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-207776-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207193-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F35FD0A250
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:02:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1A6FED09931
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A3A031BF1F9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F36A53032116
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:22:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C27CD35C1AC;
-	Fri,  9 Jan 2026 12:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9FD1335567;
+	Fri,  9 Jan 2026 12:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="If8yk/9x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N7+aQa94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8553235B149;
-	Fri,  9 Jan 2026 12:50:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E65F15ADB4;
+	Fri,  9 Jan 2026 12:22:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963015; cv=none; b=D9izkeFxDCxLEkiTxCDbJ8Hr+daNPy63o2xPi4Z7zja1T2/JhD87bzc1/Sjr+vs/d2QqNpvvakv0/8YgKSimCVPoSqMRr4bRGCB8zsgc7qSjauXncpXFbkVgX3H31fKoeQtezr/2xBVgTmpzrIZHxvMXVJeqp/zifUSmC35Dc6M=
+	t=1767961357; cv=none; b=O3cYHpW+j3sGuMDuM/bbGbowta5KV2oxaxk6yu4OffzJTCkdQyd8dUXVFrQ06ihkiUj4DJjHZ0JAC3n9uQq4AS0nogQETEhgocZ4ibbOPTXIgZoM1V5RmOg7yGb5wxYp/pHzcmBAJ5DBTTqYQPMttwXZn7iIgjJpTi7ymfbK2FA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963015; c=relaxed/simple;
-	bh=rFRV5mx/56tIrJ1FibLyb0YrCLs5kD5qBOc0EsACGHU=;
+	s=arc-20240116; t=1767961357; c=relaxed/simple;
+	bh=WKS31AP09BZepchob93cdBDJ4gXfcWlBnTrE1lTDz/o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=P4qSklcRrn0V8rWVjmoUHgVmJThJHEigad0wcWM00KgEYIN0BQkvruIMmrYG6DeZsrWlzlp2RHPHB+ZIbPfXXWkMHzXCKQOqzNJMMVEBkYBOjrMiAidyLZrw6jd8HryL9iLCuwJilHngLsO5lJGD3l8Q6ZVlfwYma9qmj+bVdaA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=If8yk/9x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10C55C4CEF1;
-	Fri,  9 Jan 2026 12:50:14 +0000 (UTC)
+	 MIME-Version; b=ZFf7r1xOfRAsxUODY6e9ylyhq399yvb6GS0qgVx8kzME0mNZfFzIEf2aj1ncNV70q9esMbFPQiL9M2dg1R658xQgRAFLjzivJRwi3+j13W8gueixNtJi8jvAq8j4eViWP7+tPJARO2AcTgMhJvHvGkNqG27awnUahBhM2ZBpL94=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N7+aQa94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16F78C4CEF1;
+	Fri,  9 Jan 2026 12:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963015;
-	bh=rFRV5mx/56tIrJ1FibLyb0YrCLs5kD5qBOc0EsACGHU=;
+	s=korg; t=1767961357;
+	bh=WKS31AP09BZepchob93cdBDJ4gXfcWlBnTrE1lTDz/o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=If8yk/9xezr/Gl9tY3qXWEqJ7lgfYUjxsNCdtTQMqNoTwyAfIWWnfG3M/IJEcQ4s2
-	 kYucsk4+5xd1pswscDuNab485uKzgN351gLp39ehQkw7PLKGNdBT9CqFCnRj3+Cqpe
-	 DAj+EL563VBjIAyIOqnB6wEFqCagBwLhDgMu8Uug=
+	b=N7+aQa94znGJt10nMytm8ld/AORRbETroCh1mAaCFzzdKWVKQH7kiy3bS26obhE0z
+	 cDBu/bqnIi34IbRVt9PYdtJCu410wlvlDfpdsm4vKCYhxQoZahmIupf3Qm8Sl+Rc4U
+	 q5sWwqJzYv6ZSFcA5XMSIWrRLpJ2ksbipnqUyFCI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honghui Zhang <honghui.zhang@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 568/634] iommu/mediatek-v1: fix device leaks on probe()
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 707/737] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
 Date: Fri,  9 Jan 2026 12:44:06 +0100
-Message-ID: <20260109112138.978357413@linuxfoundation.org>
+Message-ID: <20260109112200.668653338@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,99 +62,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 46207625c9f33da0e43bb4ae1e91f0791b6ed633 ]
+commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 upstream.
 
-Make sure to drop the references taken to the larb devices during
-probe on probe failure (e.g. probe deferral) and on driver unbind.
+damon_do_test_apply_three_regions() is assuming all dynamic memory
+allocation in it will succeed.  Those are indeed likely in the real use
+cases since those allocations are too small to fail, but theoretically
+those could fail.  In the case, inappropriate memory access can happen.
+Fix it by appropriately cleanup pre-allocated memory and skip the
+execution of the remaining tests in the failure cases.
 
-Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
-Cc: stable@vger.kernel.org	# 4.8
-Cc: Honghui Zhang <honghui.zhang@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/mtk_iommu_v1.c |   23 ++++++++++++++++++-----
- 1 file changed, 18 insertions(+), 5 deletions(-)
+ mm/damon/vaddr-test.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -656,8 +656,10 @@ static int mtk_iommu_v1_probe(struct pla
- 		struct platform_device *plarbdev;
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -136,8 +136,14 @@ static void damon_do_test_apply_three_re
+ 	int i;
  
- 		larbnode = of_parse_phandle(dev->of_node, "mediatek,larbs", i);
--		if (!larbnode)
--			return -EINVAL;
-+		if (!larbnode) {
-+			ret = -EINVAL;
-+			goto out_put_larbs;
+ 	t = damon_new_target();
++	if (!t)
++		kunit_skip(test, "target alloc fail");
+ 	for (i = 0; i < nr_regions / 2; i++) {
+ 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
++		if (!r) {
++			damon_destroy_target(t);
++			kunit_skip(test, "region alloc fail");
 +		}
+ 		damon_add_region(r, t);
+ 	}
  
- 		if (!of_device_is_available(larbnode)) {
- 			of_node_put(larbnode);
-@@ -667,11 +669,14 @@ static int mtk_iommu_v1_probe(struct pla
- 		plarbdev = of_find_device_by_node(larbnode);
- 		if (!plarbdev) {
- 			of_node_put(larbnode);
--			return -ENODEV;
-+			ret = -ENODEV;
-+			goto out_put_larbs;
- 		}
- 		if (!plarbdev->dev.driver) {
- 			of_node_put(larbnode);
--			return -EPROBE_DEFER;
-+			put_device(&plarbdev->dev);
-+			ret = -EPROBE_DEFER;
-+			goto out_put_larbs;
- 		}
- 		data->larb_imu[i].dev = &plarbdev->dev;
- 
-@@ -683,7 +688,7 @@ static int mtk_iommu_v1_probe(struct pla
- 
- 	ret = mtk_iommu_v1_hw_init(data);
- 	if (ret)
--		return ret;
-+		goto out_put_larbs;
- 
- 	ret = iommu_device_sysfs_add(&data->iommu, &pdev->dev, NULL,
- 				     dev_name(&pdev->dev));
-@@ -705,12 +710,17 @@ out_sysfs_remove:
- 	iommu_device_sysfs_remove(&data->iommu);
- out_clk_unprepare:
- 	clk_disable_unprepare(data->bclk);
-+out_put_larbs:
-+	for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+		put_device(data->larb_imu[i].dev);
-+
- 	return ret;
- }
- 
- static void mtk_iommu_v1_remove(struct platform_device *pdev)
- {
- 	struct mtk_iommu_v1_data *data = platform_get_drvdata(pdev);
-+	int i;
- 
- 	iommu_device_sysfs_remove(&data->iommu);
- 	iommu_device_unregister(&data->iommu);
-@@ -718,6 +728,9 @@ static void mtk_iommu_v1_remove(struct p
- 	clk_disable_unprepare(data->bclk);
- 	devm_free_irq(&pdev->dev, data->irq, data);
- 	component_master_del(&pdev->dev, &mtk_iommu_v1_com_ops);
-+
-+	for (i = 0; i < MTK_LARB_NR_MAX; i++)
-+		put_device(data->larb_imu[i].dev);
- }
- 
- static int __maybe_unused mtk_iommu_v1_suspend(struct device *dev)
 
 
 
