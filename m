@@ -1,164 +1,89 @@
-Return-Path: <stable+bounces-206435-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206436-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1A10D08443
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:40:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB27D083B0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 10:35:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DE9E1304A59D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:35:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 23339301D5EB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 09:35:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2DA7332EB8;
-	Fri,  9 Jan 2026 09:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 082373563C8;
+	Fri,  9 Jan 2026 09:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ELs1J/xO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="AH/W5KKF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B6C2E3563C8;
-	Fri,  9 Jan 2026 09:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95B8533064A
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:35:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767951308; cv=none; b=qCye/ooWfbYx55Jp8eCSh9u6RRwJ8im6GG7N8erP0wd3/GXIFUnSCDYN1t6KhR9pbexS5mtAZ74oChHrd/n2aUMyoBvuItYzamK8meIGMgSIZlxR/NKxHhGUNnzVCSlkuccA0pJPwMUF5VCs36Inw6b4NuaIgsBEatEZzcapgKY=
+	t=1767951326; cv=none; b=UayMLojHhpRCdBYUKnRaO1tEfW2m1LGLyKJ6gs46zY5Iqi1L3INW2kiYYy0AS1uznb/bHrXu3QctFdF2dTZ9a0KYn81WP7W/wGuqBmLjtXr+04O7d6rJfipAYiSzDZjMChtDzQEGlYMrFRWbDPgKwLNlXronbcfCPg9V9+R/sX4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767951308; c=relaxed/simple;
-	bh=BLyZo/dkd1iG7Ef2JVu0zskylPKhZ49BKz8mVO/zYL0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=Pdj9kQmyLmlx0uPvm7eA4WvdMTvs8aE4shSi+KgI04C65dn6BzYkEegcFu1ZTc0knAfH7TkhE8h2Cx8ow1sgP/nT6GNC00G5VoQt/WI+uxZR4CAkHuF+/SfT0AWIQ/WU4gnO1lD7Eqy9FkVJ2lMxOVBm1mNInNDq91uRtc8Nsxo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ELs1J/xO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 397F8C19422;
-	Fri,  9 Jan 2026 09:35:07 +0000 (UTC)
+	s=arc-20240116; t=1767951326; c=relaxed/simple;
+	bh=7L+vSRDTKzVhMW5uhxK2UgtWU6MpTyHtxzs1hw/M3/g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=J/b+yCcpB84R7PR7Kw0ai3X++cMJM8T7fXzY/8D5BmMDRDrfW+ClXp8rr+EaqsfK4M3uRLUdWMBfrXHVaiXOJD1WmzEYvVGSQx1wfskZ9qPxnVQPEaIheyahNDGsoEj/+fcOsmq0HgghRp0fdNZ0z26lkfZbEfhQu6KuWiDicLo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=AH/W5KKF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48C60C4AF09
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 09:35:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1767951308;
-	bh=BLyZo/dkd1iG7Ef2JVu0zskylPKhZ49BKz8mVO/zYL0=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=ELs1J/xOkGyBDNwvnXE8Kl+vE3nFa7GGeQhaGy1O94HlkS4oIWFFc+XicyGs9I5Q3
-	 vkndz2e/KPW00z5k9cR3ZOtU+CSKrJrAdTmS+cxTYtiZoLIycOtP2yD+8HZ7Kf+ydY
-	 RufOXU9g9Bx75p1n3JI9PPLHzvYKLqemfVpdOSYoFmQVfskExbkhPCeESracsyCwG0
-	 9rRlb5rxigstJUy8iyPre0xuN/amI4n+8uRVNuZ5Joqljc2lGCon5Tj/DvM3J9GGoG
-	 bfGNAEzq42GsM5PJEmfw4w0HK6kD2nXh+L3s4hKZPFI/3vkD3WYaPTdS5O/WRdVMY/
-	 xoj0WpApesi4Q==
-Date: Fri, 9 Jan 2026 09:35:04 +0000
-From: Lee Jones <lee@kernel.org>
-To: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Cc: Sebastian Reichel <sre@kernel.org>, Pavel Machek <pavel@kernel.org>,
-	linux-leds@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] leds: led-class: Only Add LED to leds_list when it is
- fully ready
-Message-ID: <20260109093504.GA1118061@google.com>
-References: <20251211163727.366441-1-johannes.goede@oss.qualcomm.com>
- <2bbtf7out2t52pge4hezfc7dryu6te2qstfm5kzez7zrw3dvqq@wxvqnjbulxc4>
- <585dc6a5-64e3-4f54-8ff3-9b9f1fc3d54d@oss.qualcomm.com>
- <20260108121142.GI302752@google.com>
- <70e4dec3-e4d9-409d-9ac3-aec814aec3bb@oss.qualcomm.com>
+	s=k20201202; t=1767951326;
+	bh=7L+vSRDTKzVhMW5uhxK2UgtWU6MpTyHtxzs1hw/M3/g=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=AH/W5KKFf44NZgtKCeRwscvcd5f5OtMnEYBV1os7Xp3PrbVfqE5O8lmxtHr+rO2yr
+	 NcAgyZgBU4IMHzy3s0wz0/R7f1WwGy0v3zQSRSxCGkoAjzg2Ifl1gozBMs2DGIwtUA
+	 vNh35bPc7x64nokZhbHkMqQt3xbw+/nYKREnhzMJzWrVQVnpumY+9ME+PWH445hpXY
+	 0DsB9Y0bLVcpLaeDXTBX446uTpplwpcMUcrdkUGCj9AVvMxfOblx2kcHG+0wR+mnDF
+	 UEL1hUhhcM3FrpoFeHzKePOUEDOz0DFw6FckEIm4I6Go6IPaAjnl5eHXTq/KdIgGi/
+	 8Hrn1qmumtNhw==
+Received: by mail-yx1-f41.google.com with SMTP id 956f58d0204a3-6420c08f886so5696700d50.3
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 01:35:26 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCXy/DVVqP7/Xc3fwXnLxjYc+DOu9K83Prgz4PknMjM52vzlDwd0pdKkLITnXZoO0vP0PVXAric=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwTwn5361Siqriys7YW17DljzAda0m8tmKXJQkz/yUhgDm5DnSl
+	7SX5BN6ditf/d1u48cNsaj5OgIswB1Qw85hqCjdThS33PxC3SvQ5+qhI5yCOkVDn1DTu+So7koy
+	hEWKHcBEpXp0t+HVpTbGSb2aL4coHFhY=
+X-Google-Smtp-Source: AGHT+IG1nuJdduHBaBbJWNLEpBHS/0bPJdMz2cSjVZpwv/kW086sM7bXE/jQGK5lNaXH05HMk/BcWVmQ+kqn/43rNZQ=
+X-Received: by 2002:a05:690e:1516:b0:63f:b18a:7819 with SMTP id
+ 956f58d0204a3-64716b70afcmr7942611d50.23.1767951325652; Fri, 09 Jan 2026
+ 01:35:25 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <70e4dec3-e4d9-409d-9ac3-aec814aec3bb@oss.qualcomm.com>
+References: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
+In-Reply-To: <20260106085253.20858-1-bartosz.golaszewski@oss.qualcomm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 9 Jan 2026 10:35:14 +0100
+X-Gmail-Original-Message-ID: <CAD++jLmdBefq9JJrfw27Y-FkvywJ9bzJBSOo1RXmS0HjoC5h+Q@mail.gmail.com>
+X-Gm-Features: AZwV_Qixm-JNI9h7N_giBE-Mr4reCD8lf22oFl6XaRV7hyd7tvwUPsENCkrLvCY
+Message-ID: <CAD++jLmdBefq9JJrfw27Y-FkvywJ9bzJBSOo1RXmS0HjoC5h+Q@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: meson: amlogic-a4: mark the GPIO controller as sleeping
+To: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Cc: Neil Armstrong <neil.armstrong@linaro.org>, Kevin Hilman <khilman@baylibre.com>, 
+	Jerome Brunet <jbrunet@baylibre.com>, 
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>, Bartosz Golaszewski <brgl@kernel.org>, 
+	linux-gpio@vger.kernel.org, linux-arm-kernel@lists.infradead.org, 
+	linux-amlogic@lists.infradead.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-On Thu, 08 Jan 2026, Hans de Goede wrote:
+On Tue, Jan 6, 2026 at 9:53=E2=80=AFAM Bartosz Golaszewski
+<bartosz.golaszewski@oss.qualcomm.com> wrote:
 
-> Hi Lee,
-> 
-> On 8-Jan-26 13:11, Lee Jones wrote:
-> > On Fri, 12 Dec 2025, Hans de Goede wrote:
-> > 
-> >> Hi,
-> >>
-> >> On 12-Dec-25 07:49, Sebastian Reichel wrote:
-> >>> Hi,
-> >>>
-> >>> On Thu, Dec 11, 2025 at 05:37:27PM +0100, Hans de Goede wrote:
-> >>>> Before this change the LED was added to leds_list before led_init_core()
-> >>>> gets called adding it the list before led_classdev.set_brightness_work gets
-> >>>> initialized.
-> >>>>
-> >>>> This leaves a window where led_trigger_register() of a LED's default
-> >>>> trigger will call led_trigger_set() which calls led_set_brightness()
-> >>>> which in turn will end up queueing the *uninitialized*
-> >>>> led_classdev.set_brightness_work.
-> >>>>
-> >>>> This race gets hit by the lenovo-thinkpad-t14s EC driver which registers
-> >>>> 2 LEDs with a default trigger provided by snd_ctl_led.ko in quick
-> >>>> succession. The first led_classdev_register() causes an async modprobe of
-> >>>> snd_ctl_led to run and that async modprobe manages to exactly hit
-> >>>> the window where the second LED is on the leds_list without led_init_core()
-> >>>> being called for it, resulting in:
-> >>>>
-> >>>>  ------------[ cut here ]------------
-> >>>>  WARNING: CPU: 11 PID: 5608 at kernel/workqueue.c:4234 __flush_work+0x344/0x390
-> >>>>  Hardware name: LENOVO 21N2S01F0B/21N2S01F0B, BIOS N42ET93W (2.23 ) 09/01/2025
-> >>>>  ...
-> >>>>  Call trace:
-> >>>>   __flush_work+0x344/0x390 (P)
-> >>>>   flush_work+0x2c/0x50
-> >>>>   led_trigger_set+0x1c8/0x340
-> >>>>   led_trigger_register+0x17c/0x1c0
-> >>>>   led_trigger_register_simple+0x84/0xe8
-> >>>>   snd_ctl_led_init+0x40/0xf88 [snd_ctl_led]
-> >>>>   do_one_initcall+0x5c/0x318
-> >>>>   do_init_module+0x9c/0x2b8
-> >>>>   load_module+0x7e0/0x998
-> >>>>
-> >>>> Close the race window by moving the adding of the LED to leds_list to
-> >>>> after the led_init_core() call.
-> >>>>
-> >>>> Cc: Sebastian Reichel <sre@kernel.org>
-> >>>> Cc: stable@vger.kernel.org
-> >>>> Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-> >>>> ---
-> >>>
-> >>> heh, I've never hit this. But I guess that is not too surprising
-> >>> considering it is a race condition. The change looks good to me:
-> >>>
-> >>> Reviewed-by: Sebastian Reichel <sre@kernel.org>
-> >>
-> >> Thx.
-> >>  
-> >>>> Note no Fixes tag as this problem has been around for a long long time,
-> >>>> so I could not really find a good commit for the Fixes tag.
-> >>>
-> >>> My suggestion would be:
-> >>>
-> >>> Fixes: d23a22a74fde ("leds: delay led_set_brightness if stopping soft-blink")
-> >>
-> >> Ack, that works for me.
-> >>
-> >> Lee can you add this Fixes tag while merging ?
-> >>
-> >> Also (in case it is not obvious) this is a bugfix so it would be
-> >> nice if this could go in a fixes pull-request for 6.19.
-> > 
-> > Yes, I can add the Fixes: tag and no, I have no plans to send this for
-> > -fixes.  As you rightly mentioned, this issue has been around for a long
-> > time already.  I tend to only send -fixes pull-requests for things that
-> > broke in -rc1 of the same release.
-> 
-> Even though this has been around for a long time, it would be good
-> to get this in as a fix for 6.19-rc# because as described in the commit
-> msg the lenovo-thinkpad-t14s embedded-controller driver, which is new in
-> 6.19-rc1 manages to reliably trigger the race (for me, with a Fedora
-> kernel distconfig).
-> 
-> I was surprised I could hit the race pretty reliably, but it did make
-> debugging this easier.
-> 
-> Hitting the race also leads to a crash due to a NULL ptr deref after
-> the WARN(). I did not elaborate on this in the commit msg, because
-> the WARN() is the first sign of trying to use uninitialized mem.
-> 
-> IMHO having a reproducable race which causes a crash is
-> a good reason to submit this as a fix for 6.19 .
+> The GPIO controller is configured as non-sleeping but it uses generic
+> pinctrl helpers which use a mutex for synchronization. This will cause
+> lockdep splats when used together with shared GPIOs going through the
+> GPIO shared proxy driver.
 
-Noted.  Leave it with me.
+BTW it is a very *welcome* side-effect of the new shared GPIO rework
+that it just happens to find these old bugs, I'm very pleased with this :)
 
--- 
-Lee Jones [李琼斯]
+Yours,
+Linus Walleij
 
