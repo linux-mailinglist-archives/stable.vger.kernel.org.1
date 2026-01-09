@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-207138-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10ABED09B41
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:33:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 62566D0A16C
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 640C130D9850
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:20:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B256232FAB43
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:50:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A64D35971B;
-	Fri,  9 Jan 2026 12:20:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4165C35C1BF;
+	Fri,  9 Jan 2026 12:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m7y8m2fr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tgh+ydy9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C197226ED41;
-	Fri,  9 Jan 2026 12:19:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 051F0359F8E;
+	Fri,  9 Jan 2026 12:49:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961199; cv=none; b=Q6Fspn1FKPUsP5rrxAowxPM4UloumGz9oZAiO7RJCkZ0uEN8//1yJi5ubKZQ6FYz9ep+r/E/Hn2cr4C3MMpOixF1mlhAbFJmAhjxmArhJzH8WwgZR71oC3Xbl05v2EPf9o2J60Y1c7Rl1WkRtEw3s/hLgwmHk0UK8KQ7SfmS9NY=
+	t=1767962998; cv=none; b=qyRTFu0rApz6JDXeJAXhVvDdTSp7LmehpFJOJnV2J1IWSL/fAqC0bc8c1RTWWZFPihPFWVXZzRq+tHte07ts3t3SExJS0YNe0d/mhGy6Ta65g8216Y9bWgmB5upMmx2VUhgWvoumsjmnjW4/3mabxoYgOAMzUpEp53AwqG9XSsA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961199; c=relaxed/simple;
-	bh=ajmXznLHH7K9v1tURci6vhdTot1IPQ3MWr9ngvy6fno=;
+	s=arc-20240116; t=1767962998; c=relaxed/simple;
+	bh=p0C/GEoEQ6vUJbbjUQMSqyu/za+HPl/3+PPLte63Iac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=iJ4SKdpMuC8MbPi9gVZ0z2UYTPjjrez6oiNNiG82s0+dQ7gDjEKN3wqOv62nbgpxauI8IycKeddsFDa9lGcBE+9+ia4oGrrte69ZJZourziqTjw3xs3oqNnbmzWvC4AN3Yk8+u+n30UbPlfMsj84LYAWEnKEmK14pi3fIaoWdJ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m7y8m2fr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44FFFC4CEF1;
-	Fri,  9 Jan 2026 12:19:59 +0000 (UTC)
+	 MIME-Version; b=EEL4hoi/XYf/geSYSOnXgj2jGVVDk5WU/XfsGThWCm7tWHMw3sziNIdUTP38IIFKFjfNY2VkKnrc0Ts3Ij5Z1knW6wRiXVS8KCVMq+MnZc8qZCUMtjvKCLGBRgDcE157+D/DArROkTQvvDtH6CiFIHEfiapevUeOroogrT9q2bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tgh+ydy9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877BBC4CEF1;
+	Fri,  9 Jan 2026 12:49:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961199;
-	bh=ajmXznLHH7K9v1tURci6vhdTot1IPQ3MWr9ngvy6fno=;
+	s=korg; t=1767962997;
+	bh=p0C/GEoEQ6vUJbbjUQMSqyu/za+HPl/3+PPLte63Iac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m7y8m2frRavlT704oQVaJqOJFZG+j3T/wfts51slLwoE0uscay5B3ftIG/MWm90bc
-	 isl+Ll651qh9LeOfRPrKRfLV7si7tSH+YQHHGuXEibKXHAnrEjm7xD8VhTB6peaQ8K
-	 96DQrQSa+8sFjuIi7Mv2tG0IJJi6zdRrtmPm/pFs=
+	b=Tgh+ydy9OhCArZ6tZTKAF5uo9LMbrX4chHlBnqXCArP2uX6WOe5AX/uYWP6d0ca5F
+	 4wgy4VmVmMYiUjTq89sKQrbPswBi+w4CKUX+YahOlrpIAZN6wVumPi6QBJ7F9CsKIo
+	 CsjQtLtvZQgl6KlMFeqzsUurhKi/B1KcNmA8QEvw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 668/737] xhci: dbgtty: fix device unregister: fixup
+	Norbert Szetei <norbert@doyensec.com>,
+	Namjae Jeon <linkinjeon@kernel.org>,
+	Steve French <stfrench@microsoft.com>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 6.1 529/634] ksmbd: fix out-of-bounds in parse_sec_desc()
 Date: Fri,  9 Jan 2026 12:43:27 +0100
-Message-ID: <20260109112159.172694969@linuxfoundation.org>
+Message-ID: <20260109112137.472791216@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,45 +59,77 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 74098cc06e753d3ffd8398b040a3a1dfb65260c0 ]
+commit d6e13e19063db24f94b690159d0633aaf72a0f03 upstream.
 
-This fixup replaces tty_vhangup() call with call to
-tty_port_tty_vhangup(). Both calls hangup tty device
-synchronously however tty_port_tty_vhangup() increases
-reference count during the hangup operation using
-scoped_guard(tty_port_tty).
+If osidoffset, gsidoffset and dacloffset could be greater than smb_ntsd
+struct size. If it is smaller, It could cause slab-out-of-bounds.
+And when validating sid, It need to check it included subauth array size.
 
-Cc: stable <stable@kernel.org>
-Fixes: 1f73b8b56cf3 ("xhci: dbgtty: fix device unregister")
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Link: https://patch.msgid.link/20251127111644.3161386-1-ukaszb@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: Norbert Szetei <norbert@doyensec.com>
+Tested-by: Norbert Szetei <norbert@doyensec.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Rajani Kantha <681739313@139.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/smbacl.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -522,7 +522,7 @@ static void xhci_dbc_tty_unregister_devi
- 	 * Hang up the TTY. This wakes up any blocked
- 	 * writers and causes subsequent writes to fail.
- 	 */
--	tty_vhangup(port->port.tty);
-+	tty_port_tty_vhangup(&port->port);
+--- a/fs/smb/server/smbacl.c
++++ b/fs/smb/server/smbacl.c
+@@ -815,6 +815,13 @@ static int parse_sid(struct smb_sid *psi
+ 		return -EINVAL;
+ 	}
  
- 	tty_unregister_device(dbc_tty_driver, port->minor);
- 	xhci_dbc_tty_exit_port(port);
++	if (!psid->num_subauth)
++		return 0;
++
++	if (psid->num_subauth > SID_MAX_SUB_AUTHORITIES ||
++	    end_of_acl < (char *)psid + 8 + sizeof(__le32) * psid->num_subauth)
++		return -EINVAL;
++
+ 	return 0;
+ }
+ 
+@@ -856,6 +863,9 @@ int parse_sec_desc(struct user_namespace
+ 	pntsd->type = cpu_to_le16(DACL_PRESENT);
+ 
+ 	if (pntsd->osidoffset) {
++		if (le32_to_cpu(pntsd->osidoffset) < sizeof(struct smb_ntsd))
++			return -EINVAL;
++
+ 		rc = parse_sid(owner_sid_ptr, end_of_acl);
+ 		if (rc) {
+ 			pr_err("%s: Error %d parsing Owner SID\n", __func__, rc);
+@@ -871,6 +881,9 @@ int parse_sec_desc(struct user_namespace
+ 	}
+ 
+ 	if (pntsd->gsidoffset) {
++		if (le32_to_cpu(pntsd->gsidoffset) < sizeof(struct smb_ntsd))
++			return -EINVAL;
++
+ 		rc = parse_sid(group_sid_ptr, end_of_acl);
+ 		if (rc) {
+ 			pr_err("%s: Error %d mapping Owner SID to gid\n",
+@@ -892,6 +905,9 @@ int parse_sec_desc(struct user_namespace
+ 		pntsd->type |= cpu_to_le16(DACL_PROTECTED);
+ 
+ 	if (dacloffset) {
++		if (dacloffset < sizeof(struct smb_ntsd))
++			return -EINVAL;
++
+ 		parse_dacl(user_ns, dacl_ptr, end_of_acl,
+ 			   owner_sid_ptr, group_sid_ptr, fattr);
+ 	}
 
 
 
