@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-207470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206869-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1E5DCD09F13
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DFE3CD0967A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:15:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B817730232B4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CD3B330EF8EC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5130352952;
-	Fri,  9 Jan 2026 12:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D486335A92E;
+	Fri,  9 Jan 2026 12:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1wCs8gsL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tc738+i+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98D9C1E8836;
-	Fri,  9 Jan 2026 12:35:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FD333BBBD;
+	Fri,  9 Jan 2026 12:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962146; cv=none; b=Gka96p+7/QwyifVpy5NDtbmEZeSE0+hSn4RnfSCWDKVd0AMvT+ZQnIPUAaqZ3AwVwipKFW2rKZJgzoquvRYB0HByq1suFTIgzpDMVm/gXH+wnFUVyn19JLt44WMxXnZtsOp9fUJqS6tbfe8vyqR0QYeyMLu/K/+hyDOD06AD5xY=
+	t=1767960431; cv=none; b=aTkaByWakG7FCw1byT/IZCPsaw9DVNMFL77HSDr4UEwtT8uK4uktCXV51wgrrHtr6c22xJLzJw3D3PEEOIFn9leQs4I00Hp3HrkUIgHAQrnUbhBfM4ahrE+PMjgR9u7jPLpKMMXMJUG+J4w+6p3AoGfPeD4g01592nDeNW4acdE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962146; c=relaxed/simple;
-	bh=3ZpAjUF85QK3etpRH9h2dEPJZOGUJxyrJ+oXj4efsYI=;
+	s=arc-20240116; t=1767960431; c=relaxed/simple;
+	bh=+jhtF2w5o39ujaWBZPlppcombXM0SqcL6p65ZQUF6XQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=riiH9Xcu6LHjHdVwd4XvhFHsneauDTUPZrh88GZ3ke1syT5wRcjp9O/a45kSw53GU7SZb0vBegH3YDSUjwFSaEGnVU/Jjardg+Am1tkTquZdjYYayXMhKYJ4ymm7nQCIsQ5Ad4ZrOGLq+oNH/gteMd9XPs5t3M9RPakknHZdsFY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1wCs8gsL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 244A1C16AAE;
-	Fri,  9 Jan 2026 12:35:45 +0000 (UTC)
+	 MIME-Version; b=Nr6O+Dz7mJdopKGF2SB+HdQT3AKjFgRt9v4EnIWX3vEWWFnxLYBVzGEyrYyIW6FrMxC7S17i83tZGV1bRhmUzQkQdQcMthT6daEPc2Sh35ZeIVDUILEUO2VkD4K+zdhd1HGYMahftA92WHCOSMfX/o0vDeW+rHBpUlS6ZCwGIyk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tc738+i+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21F6AC4CEF1;
+	Fri,  9 Jan 2026 12:07:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962146;
-	bh=3ZpAjUF85QK3etpRH9h2dEPJZOGUJxyrJ+oXj4efsYI=;
+	s=korg; t=1767960431;
+	bh=+jhtF2w5o39ujaWBZPlppcombXM0SqcL6p65ZQUF6XQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1wCs8gsLgcBABSgchZcp/7kO5KwN4z1s2uK2EFZQUkyiVJhqYnoGexV8xS7WvdQNe
-	 s92hOQV/pFgl1BZPkRu8nBX8Y2rAkU9kHEm4Nywp+/W7yAKL2lgKiwH5kUx+wcZDvz
-	 alAD+no5/3NJMPgYTLXzXl8lLQtQiK2PO37/Nfco=
+	b=tc738+i+NgiNL/hTjkrgz5FKfqDPVVPpSr7u2DgEyubzwBP+hqNlM8QT/cf02GS2/
+	 6gNI+zi75JssPs1IGjH5FKCIV3VWYGtOAnCcLhyd/VAe1MJ+xHoCcCHS6DWfGJhbjX
+	 uzeue49lcDnnZADiLQYy8n5QriaNiib2hh0Z8PY0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 262/634] ethtool: Avoid overflowing userspace buffer on stats query
-Date: Fri,  9 Jan 2026 12:39:00 +0100
-Message-ID: <20260109112127.396598179@linuxfoundation.org>
+Subject: [PATCH 6.6 402/737] usb: xhci: limit run_graceperiod for only usb 3.0 devices
+Date: Fri,  9 Jan 2026 12:39:01 +0100
+Message-ID: <20260109112149.122663140@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit 7b07be1ff1cb6c49869910518650e8d0abc7d25f ]
+[ Upstream commit 8d34983720155b8f05de765f0183d9b0e1345cc0 ]
 
-The ethtool -S command operates across three ioctl calls:
-ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
-ETHTOOL_GSTATS for the values.
+run_graceperiod blocks usb 2.0 devices from auto suspending after
+xhci_start for 500ms.
 
-If the number of stats changes between these calls (e.g., due to device
-reconfiguration), userspace's buffer allocation will be incorrect,
-potentially leading to buffer overflow.
+Log shows:
+[   13.387170] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.387177] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.387182] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.387188] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.387191] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.387193] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.387296] hub_event:5779: hub 3-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.393343] handle_port_status:2034: xhci-hcd PNP0D10:02: handle_port_status: starting usb5 port polling.
+[   13.393353] xhci_hub_control:1271: xhci-hcd PNP0D10:02: Get port status 5-1 read: 0x206e1, return 0x10101
+[   13.400047] hub_suspend:3903: hub 3-0:1.0: hub_suspend
+[   13.403077] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.403080] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.403085] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.403087] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.403090] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.403093] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.403095] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.405002] handle_port_status:1913: xhci-hcd PNP0D10:04: Port change event, 9-1, id 1, portsc: 0x6e1
+[   13.405016] hub_activate:1169: usb usb5-port1: status 0101 change 0001
+[   13.405026] xhci_clear_port_change_bit:658: xhci-hcd PNP0D10:02: clear port1 connect change, portsc: 0x6e1
+[   13.413275] hcd_bus_suspend:2250: usb usb3: bus auto-suspend, wakeup 1
+[   13.419081] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.419086] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.419095] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.419100] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.419106] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.419110] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.419112] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.420455] handle_port_status:2034: xhci-hcd PNP0D10:04: handle_port_status: starting usb9 port polling.
+[   13.420493] handle_port_status:1913: xhci-hcd PNP0D10:05: Port change event, 10-1, id 1, portsc: 0x6e1
+[   13.425332] hcd_bus_suspend:2279: usb usb3: suspend raced with wakeup event
+[   13.431931] handle_port_status:2034: xhci-hcd PNP0D10:05: handle_port_status: starting usb10 port polling.
+[   13.435080] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.435084] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.435092] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.435096] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.435102] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.435106] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
 
-Drivers are generally expected to maintain stable stat counts, but some
-drivers (e.g., mlx5, bnx2x, bna, ksz884x) use dynamic counters, making
-this scenario possible.
+usb7 and other usb 2.0 root hub were rapidly toggling between suspend
+and resume states. More, "suspend raced with wakeup event" confuses people.
 
-Some drivers try to handle this internally:
-- bnad_get_ethtool_stats() returns early in case stats.n_stats is not
-  equal to the driver's stats count.
-- micrel/ksz884x also makes sure not to write anything beyond
-  stats.n_stats and overflow the buffer.
+So, limit run_graceperiod for only usb 3.0 devices
 
-However, both use stats.n_stats which is already assigned with the value
-returned from get_sset_count(), hence won't solve the issue described
-here.
-
-Change ethtool_get_strings(), ethtool_get_stats(),
-ethtool_get_phy_stats() to not return anything in case of a mismatch
-between userspace's size and get_sset_size(), to prevent buffer
-overflow.
-The returned n_stats value will be equal to zero, to reflect that
-nothing has been returned.
-
-This could result in one of two cases when using upstream ethtool,
-depending on when the size change is detected:
-1. When detected in ethtool_get_strings():
-    # ethtool -S eth2
-    no stats available
-
-2. When detected in get stats, all stats will be reported as zero.
-
-Both cases are presumably transient, and a subsequent ethtool call
-should succeed.
-
-Other than the overflow avoidance, these two cases are very evident (no
-output/cleared stats), which is arguably better than presenting
-incorrect/shifted stats.
-I also considered returning an error instead of a "silent" response, but
-that seems more destructive towards userspace apps.
-
-Notes:
-- This patch does not claim to fix the inherent race, it only makes sure
-  that we do not overflow the userspace buffer, and makes for a more
-  predictable behavior.
-
-- RTNL lock is held during each ioctl, the race window exists between
-  the separate ioctl calls when the lock is released.
-
-- Userspace ethtool always fills stats.n_stats, but it is likely that
-  these stats ioctls are implemented in other userspace applications
-  which might not fill it. The added code checks that it's not zero,
-  to prevent any regressions.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251208121901.3203692-1-gal@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251119142417.2820519-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/ioctl.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/usb/host/xhci-hub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 208a40ae4ccbb..0e45e7fd68bf2 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -1938,7 +1938,10 @@ static int ethtool_get_strings(struct net_device *dev, void __user *useraddr)
- 		return -ENOMEM;
- 	WARN_ON_ONCE(!ret);
- 
--	gstrings.len = ret;
-+	if (gstrings.len && gstrings.len != ret)
-+		gstrings.len = 0;
-+	else
-+		gstrings.len = ret;
- 
- 	if (gstrings.len) {
- 		data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
-@@ -2053,10 +2056,13 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
- 		return -EFAULT;
- 
--	stats.n_stats = n_stats;
-+	if (stats.n_stats && stats.n_stats != n_stats)
-+		stats.n_stats = 0;
-+	else
-+		stats.n_stats = n_stats;
- 
--	if (n_stats) {
--		data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (stats.n_stats) {
-+		data = vzalloc(array_size(stats.n_stats, sizeof(u64)));
- 		if (!data)
- 			return -ENOMEM;
- 		ops->get_ethtool_stats(dev, &stats, data);
-@@ -2068,7 +2074,9 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_to_user(useraddr, &stats, sizeof(stats)))
- 		goto out;
- 	useraddr += sizeof(stats);
--	if (n_stats && copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		goto out;
- 	ret = 0;
- 
-@@ -2104,6 +2112,10 @@ static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = phy_ops->get_sset_count(phydev);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2124,6 +2136,10 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2160,7 +2176,9 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
- 	}
- 
- 	useraddr += sizeof(stats);
--	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		ret = -EFAULT;
- 
-  out:
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index d3d535ed00b5..61642c8d529f 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1669,7 +1669,7 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
+ 	 * SS devices are only visible to roothub after link training completes.
+ 	 * Keep polling roothubs for a grace period after xHC start
+ 	 */
+-	if (xhci->run_graceperiod) {
++	if (hcd->speed >= HCD_USB3 && xhci->run_graceperiod) {
+ 		if (time_before(jiffies, xhci->run_graceperiod))
+ 			status = 1;
+ 		else
 -- 
 2.51.0
 
