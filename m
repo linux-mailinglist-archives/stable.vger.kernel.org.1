@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-206921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207494-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69DBBD09795
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75570D09F9D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:49:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B843730E1106
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A95430BA7F7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66BCC35B133;
-	Fri,  9 Jan 2026 12:09:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62D5235A95C;
+	Fri,  9 Jan 2026 12:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qJs/ELvX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yYD+5Ug5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A99B35A93E;
-	Fri,  9 Jan 2026 12:09:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26709359701;
+	Fri,  9 Jan 2026 12:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960579; cv=none; b=E8wmN5iJbKnsl6Sfz4p8LTTE6DKBKqYHFm6GSRweDp45DANgLb2Cyq31E+4FDeCZWVjh+SgywLew6b8hH1W+C/kh+FinmUqAXZNIN8mlKg/AYf9InrFMQdB9LK07FN8e25FHVHyf5jdGJwEQRZeU0KI6Tv7l2hNBwGwNY5s4MBg=
+	t=1767962214; cv=none; b=ePnhyYV8HhPeLqg7N91VL23sfIbL85UVr6t8vFH7ATwXWi8lzRUYMSwBaHshghCcBDgdVVp9k6GIafAsVts386fL68tkDTHGF2Cug0YNo3eer2hkQrcirrOjt98WPWsYycyHrWHCBzAmO6kr8V+sIMOk5cjnfjSNh5ZN5y8tmag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960579; c=relaxed/simple;
-	bh=nxkqlgKp4mm+zUZ/+UBYOW2Auw7opM10syhuVKhAX6A=;
+	s=arc-20240116; t=1767962214; c=relaxed/simple;
+	bh=kUPLV/BQoquMBodr1PHn5HrZBicHOs3B6VE1tDoNanE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g8Rj89kRfgof/Qi9BlcElwKe0Un/o5cHGRZzGs0zJeH6A9a8UOrz4p8TSh0qM62mwN3txUw/3lAxrpKYIZZ0pOdR3fB4pBMr+xlkTrNxmdEEhUdhrF3AxLvK21+tFKVm8O4k+5L0mO+ZIvwVdz5vQaXbS0EjGVLCMuwbgBBM7wE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qJs/ELvX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A345C4CEF1;
-	Fri,  9 Jan 2026 12:09:38 +0000 (UTC)
+	 MIME-Version; b=Avq4KLuGecOqZn4kJ9CMjOhRUiX+n19RcAEslJxBE1tPcktt3HlyBa/O3sOFAK8OHsOE67+aLN1Bqr7R3uQzzSYCFkf2sqNgu2wkGgeRw9pY03UM4M27Vc5ED6TdKTTyBWrANUhZco3KOUsJusAbFVBP4/IgSnifxwt2LYqdf60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yYD+5Ug5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4EE5C4CEF1;
+	Fri,  9 Jan 2026 12:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960578;
-	bh=nxkqlgKp4mm+zUZ/+UBYOW2Auw7opM10syhuVKhAX6A=;
+	s=korg; t=1767962214;
+	bh=kUPLV/BQoquMBodr1PHn5HrZBicHOs3B6VE1tDoNanE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qJs/ELvXn6aJxzeiZZCrIKvlgBnhbmrLyvnOpdcVxgDtkohuGKodo+nD9AZ02SbMv
-	 lZoVqKQ7nraXMOxYxRmNX8qB3RMuTQdFflVzLu0oe5q+3jMnjZZTHPfN4SDi9P87yT
-	 QSk4jNPC0C1Alur0QyhwYqBifHyQDlfY2CkKavH8=
+	b=yYD+5Ug5i4ZV6diiaMV6TUM30BbUfdfFVsrJd+orsmwC5K7ZuEZ4vKCyKoLrwVi5w
+	 Mic8GH5PNls2NHd2DmjvNPBoq+OS6Yloy45NyXBZ1OCE7oAoUDwlwfMEm1qey0pOTv
+	 XcOFg4bCzij5ot7eoklOeuC7+g6L6BmTgt3+OAzE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6e493c165d26d6fcbf72@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 6.6 426/737] jbd2: use a per-journal lock_class_key for jbd2_trans_commit_key
+	Junjie Cao <junjie.cao@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 6.1 287/634] Input: ti_am335x_tsc - fix off-by-one error in wire_order validation
 Date: Fri,  9 Jan 2026 12:39:25 +0100
-Message-ID: <20260109112150.022039632@linuxfoundation.org>
+Message-ID: <20260109112128.330629254@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Junjie Cao <junjie.cao@intel.com>
 
-commit 524c3853831cf4f7e1db579e487c757c3065165c upstream.
+commit 248d3a73a0167dce15ba100477c3e778c4787178 upstream.
 
-syzbot is reporting possibility of deadlock due to sharing lock_class_key
-for jbd2_handle across ext4 and ocfs2. But this is a false positive, for
-one disk partition can't have two filesystems at the same time.
+The current validation 'wire_order[i] > ARRAY_SIZE(config_pins)' allows
+wire_order[i] to equal ARRAY_SIZE(config_pins), which causes out-of-bounds
+access when used as index in 'config_pins[wire_order[i]]'.
 
-Reported-by: syzbot+6e493c165d26d6fcbf72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6e493c165d26d6fcbf72
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Tested-by: syzbot+6e493c165d26d6fcbf72@syzkaller.appspotmail.com
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <987110fc-5470-457a-a218-d286a09dd82f@I-love.SAKURA.ne.jp>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Since config_pins has 4 elements (indices 0-3), the valid range for
+wire_order should be 0-3. Fix the off-by-one error by using >= instead
+of > in the validation check.
+
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Link: https://patch.msgid.link/20251114062817.852698-1-junjie.cao@intel.com
+Fixes: bb76dc09ddfc ("input: ti_am33x_tsc: Order of TSC wires, made configurable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c    |    6 ++++--
- include/linux/jbd2.h |    6 ++++++
- 2 files changed, 10 insertions(+), 2 deletions(-)
+ drivers/input/touchscreen/ti_am335x_tsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -1563,7 +1563,6 @@ static journal_t *journal_init_common(st
- 			struct block_device *fs_dev,
- 			unsigned long long start, int len, int blocksize)
- {
--	static struct lock_class_key jbd2_trans_commit_key;
- 	journal_t *journal;
- 	int err;
- 	int n;
-@@ -1572,6 +1571,7 @@ static journal_t *journal_init_common(st
- 	if (!journal)
- 		return ERR_PTR(-ENOMEM);
+--- a/drivers/input/touchscreen/ti_am335x_tsc.c
++++ b/drivers/input/touchscreen/ti_am335x_tsc.c
+@@ -86,7 +86,7 @@ static int titsc_config_wires(struct tit
+ 		wire_order[i] = ts_dev->config_inp[i] & 0x0F;
+ 		if (WARN_ON(analog_line[i] > 7))
+ 			return -EINVAL;
+-		if (WARN_ON(wire_order[i] > ARRAY_SIZE(config_pins)))
++		if (WARN_ON(wire_order[i] >= ARRAY_SIZE(config_pins)))
+ 			return -EINVAL;
+ 	}
  
-+	lockdep_register_key(&journal->jbd2_trans_commit_key);
- 	journal->j_blocksize = blocksize;
- 	journal->j_dev = bdev;
- 	journal->j_fs_dev = fs_dev;
-@@ -1601,7 +1601,7 @@ static journal_t *journal_init_common(st
- 	journal->j_max_batch_time = 15000; /* 15ms */
- 	atomic_set(&journal->j_reserved_credits, 0);
- 	lockdep_init_map(&journal->j_trans_commit_map, "jbd2_handle",
--			 &jbd2_trans_commit_key, 0);
-+			 &journal->jbd2_trans_commit_key, 0);
- 
- 	/* The journal is marked for error until we succeed with recovery! */
- 	journal->j_flags = JBD2_ABORT;
-@@ -1648,6 +1648,7 @@ err_cleanup:
- 	kfree(journal->j_wbuf);
- 	jbd2_journal_destroy_revoke(journal);
- 	journal_fail_superblock(journal);
-+	lockdep_unregister_key(&journal->jbd2_trans_commit_key);
- 	kfree(journal);
- 	return ERR_PTR(err);
- }
-@@ -2229,6 +2230,7 @@ int jbd2_journal_destroy(journal_t *jour
- 		crypto_free_shash(journal->j_chksum_driver);
- 	kfree(journal->j_fc_wbuf);
- 	kfree(journal->j_wbuf);
-+	lockdep_unregister_key(&journal->jbd2_trans_commit_key);
- 	kfree(journal);
- 
- 	return err;
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1266,6 +1266,12 @@ struct journal_s
- 	 */
- 	struct lockdep_map	j_trans_commit_map;
- #endif
-+	/**
-+	 * @jbd2_trans_commit_key:
-+	 *
-+	 * "struct lock_class_key" for @j_trans_commit_map
-+	 */
-+	struct lock_class_key	jbd2_trans_commit_key;
- 
- 	/**
- 	 * @j_fc_cleanup_callback:
 
 
 
