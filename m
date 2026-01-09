@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207220-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206620-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE171D09C6A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 55E13D09323
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5634530830B9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E5773301E9A2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:55:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDBD315ADB4;
-	Fri,  9 Jan 2026 12:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 07B51335561;
+	Fri,  9 Jan 2026 11:55:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMWKpLuL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UXsEtDbA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0F1326ED41;
-	Fri,  9 Jan 2026 12:23:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BF79B2DEA6F;
+	Fri,  9 Jan 2026 11:55:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961434; cv=none; b=sN3x97LzcSXUOrTjvGJ4LH53mGHcGb20HHo650VXyjG3Xa7uF0lIjrD0DqIVHH/YNYAjSUTaa7Ky+WYgbR4l3Uu81SXgmHvB7+YaiWF0uPIB3W66ShcCMILmPhfmOW1SZnu9extwHbY4DcIDZ5+B/QxYvSnIByRBSf+QvexXKAw=
+	t=1767959723; cv=none; b=TjfCm45RJnFnk8ArpEUzaf4eR3ragj4k8MldBmfX+MBtPqJeW2RG6wFwW/7sHtlZqY31ZSkbKw3BgG+7T0pfDYfROUXhlsah46CCG35TiT+3gB5rF2M5Xm0I3DQZ0T8zTqVO6xPcqfFyT6IQk5CAtmJgd0CGuS2GXTblsnQEHKU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961434; c=relaxed/simple;
-	bh=UExppCFPnefQuGfgYfG/WQg5tYKfdyn4Gqk5hYD8hyA=;
+	s=arc-20240116; t=1767959723; c=relaxed/simple;
+	bh=ciYRqC6gU4NpvSZwHpurON4Ap6SXR3w/82end/3XDNQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KN9vzL85g5Upf5naEFV9lQm/09AhnMbMoHrVV4c53YxYpI3IFqfxRXKlmGjAOm0PAalDHDQBSkiX+xWNFkgZyY5RpBwU5eq7xHcsUsIdueV/hRlTikC8TAv7Z7Y8A+mlS+zlqBY2aOKdUMmyZlW/0vMdCQVklsPujI8Wa5wHnrE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMWKpLuL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41F4FC4CEF1;
-	Fri,  9 Jan 2026 12:23:54 +0000 (UTC)
+	 MIME-Version; b=SS4+UT2BhOtsvhs8rn+B6y7gnxGTZBfYuDoX58hbJ4a6dd1zr3gU6TiWzv+DtjtGdLI57niKhics4/3ruWwdvCIVigIQae39oSJFb0WGb0mhNicEVBSoka11BJOQ4P/CDBIwV7jjYPLv6HzDuQ6c9ezsM2uJxi319p3PpMlvPoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UXsEtDbA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5A5C4CEF1;
+	Fri,  9 Jan 2026 11:55:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961434;
-	bh=UExppCFPnefQuGfgYfG/WQg5tYKfdyn4Gqk5hYD8hyA=;
+	s=korg; t=1767959723;
+	bh=ciYRqC6gU4NpvSZwHpurON4Ap6SXR3w/82end/3XDNQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kMWKpLuLnqePaH4EowkxbHGgC40fU4yxfgR56g7nuluQFuEi8VxQA+iiqoI4UeKjm
-	 bxVIbhg+4663j9ZSC3d0olPairM3zj+VaxjXBamHPCJ3uVJyN2IYlXuvQccsIYwRmb
-	 NlK6AkkwzL3IGmRNFX2Fjg/dyDQZqKn/7W6dB3sc=
+	b=UXsEtDbAWIKT0Ns7DUm+87XTD34Zzn0KagLryFMv00LAenjA7ivAhpUetTA0Xo+0H
+	 3o1joXuNG7vrE/29lXjW7rVW7jKUFU4pHaeH+vLLNbN0ZLNUqHZ9uHtvaqCqCzF3Gn
+	 pO3FxXAZK6XO2U7QOAbbOTfDAHsvfZTl+Y9wUQPs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slark Xiao <slark_xiao@163.com>,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 014/634] USB: serial: option: add Foxconn T99W760
+	Leon Hwang <leon.hwang@linux.dev>,
+	Yonghong Song <yonghong.song@linux.dev>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 153/737] bpf: Free special fields when update [lru_,]percpu_hash maps
 Date: Fri,  9 Jan 2026 12:34:52 +0100
-Message-ID: <20260109112117.971469422@linuxfoundation.org>
+Message-ID: <20260109112139.753137882@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,65 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Leon Hwang <leon.hwang@linux.dev>
 
-commit 7970b4969c4c99bcdaf105f9f39c6d2021f6d244 upstream.
+[ Upstream commit 6af6e49a76c9af7d42eb923703e7648cb2bf401a ]
 
-T99W760 is designed based on Qualcomm SDX35 (5G redcap) chip. There are
-three serial ports to be enumerated: Modem, NMEA and Diag.
+As [lru_,]percpu_hash maps support BPF_KPTR_{REF,PERCPU}, missing
+calls to 'bpf_obj_free_fields()' in 'pcpu_copy_value()' could cause the
+memory referenced by BPF_KPTR_{REF,PERCPU} fields to be held until the
+map gets freed.
 
-test evidence as below:
-T:  Bus=03 Lev=01 Prnt=01 Port=03 Cnt=01 Dev#=  4 Spd=5000  MxCh= 0
-D:  Ver= 3.20 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e123 Rev=05.15
-S:  Manufacturer=QCOM
-S:  Product=SDXBAAGHA-IDP _SN:39A8D3E4
-S:  SerialNumber=39a8d3e4
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=896mA
-I:  If#= 0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-E:  Ad=82(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-E:  Ad=01(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=81(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-I:  If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=02(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=84(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-E:  Ad=85(I) Atr=03(Int.) MxPS=  64 Ivl=32ms
-I:  If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-E:  Ad=03(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-I:  If#= 5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-E:  Ad=04(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+Fix this by calling 'bpf_obj_free_fields()' after
+'copy_map_value[,_long]()' in 'pcpu_copy_value()'.
 
-0&1: MBIM, 2:Modem, 3:GNSS(non-serial port), 4: NMEA, 5:Diag
-
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 65334e64a493 ("bpf: Support kptrs in percpu hashmap and percpu LRU hashmap")
+Signed-off-by: Leon Hwang <leon.hwang@linux.dev>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20251105151407.12723-2-leon.hwang@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/option.c |    2 ++
- 1 file changed, 2 insertions(+)
+ kernel/bpf/hashtab.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2376,6 +2376,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
- 	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe123, 0xff),			/* Foxconn T99W760 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe145, 0xff),			/* Foxconn T99W651 RNDIS */
- 	  .driver_info = RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe15f, 0xff),                     /* Foxconn T99W709 */
+diff --git a/kernel/bpf/hashtab.c b/kernel/bpf/hashtab.c
+index 8a3eadf17f785..8bac6ae1204dc 100644
+--- a/kernel/bpf/hashtab.c
++++ b/kernel/bpf/hashtab.c
+@@ -957,15 +957,21 @@ static void free_htab_elem(struct bpf_htab *htab, struct htab_elem *l)
+ static void pcpu_copy_value(struct bpf_htab *htab, void __percpu *pptr,
+ 			    void *value, bool onallcpus)
+ {
++	void *ptr;
++
+ 	if (!onallcpus) {
+ 		/* copy true value_size bytes */
+-		copy_map_value(&htab->map, this_cpu_ptr(pptr), value);
++		ptr = this_cpu_ptr(pptr);
++		copy_map_value(&htab->map, ptr, value);
++		bpf_obj_free_fields(htab->map.record, ptr);
+ 	} else {
+ 		u32 size = round_up(htab->map.value_size, 8);
+ 		int off = 0, cpu;
+ 
+ 		for_each_possible_cpu(cpu) {
+-			copy_map_value_long(&htab->map, per_cpu_ptr(pptr, cpu), value + off);
++			ptr = per_cpu_ptr(pptr, cpu);
++			copy_map_value_long(&htab->map, ptr, value + off);
++			bpf_obj_free_fields(htab->map.record, ptr);
+ 			off += size;
+ 		}
+ 	}
+-- 
+2.51.0
+
 
 
 
