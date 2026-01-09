@@ -1,86 +1,86 @@
-Return-Path: <stable+bounces-207864-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C6B3D0A86A
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 15:00:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8326D0A8C0
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 15:07:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5A9303024D79
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:55:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6051A3029C48
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 14:05:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC77535CB9A;
-	Fri,  9 Jan 2026 13:55:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D834954763;
+	Fri,  9 Jan 2026 14:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="Zut1qHYK"
+	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="lqcS1iOo"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
+Received: from mail-ed1-f53.google.com (mail-ed1-f53.google.com [209.85.208.53])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29E4635B137
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 13:55:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B93E35CB91
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 14:05:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.53
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767966950; cv=none; b=o05fhBcYynj55pXEc++P95aw2qcx5D++Xuw3xsRMH9lOLvsZZX/i1TMLwiYQz5xOWnFfIfKzKjcOZJGIjLu8G0Sj9BfB1d3AlTUwF2e0BSuNbIQiffuvK552Mo8WffRU9k9auJPKvXIKR3KtZuXDHPozdATboC/kYavsIREtIzE=
+	t=1767967525; cv=none; b=TdKeKG5dGB0kqBs/hGtpZN3HCGnGLzhrQL7ju94D3HOnCs8I1G5OmmGWCipcmEvjhVK1pbOo1T0ImvzMfQ+ko4W+lWxQmsrZr9k6/0sZvfYan6WU6w7XIV0HcXnxpnUE3u2ea5FVkw7fIzXMkFt2bcsG0Vtndh4ObGo23kLm2OE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767966950; c=relaxed/simple;
-	bh=2Yo3C5ERmMfDM4ZSWlEcKdZbPH4vlI6N2Ud2n/PFc6g=;
+	s=arc-20240116; t=1767967525; c=relaxed/simple;
+	bh=wx4vAWq4HWRPnv+paI/7ZmkP7FxxJlu+civ+LVmv6WY=;
 	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=FWGoYADo4EQg7dXd6VEAKDkdgikVeLADvKQiNJ/H+PznqlZLnGGwNk9J0njtduDcSXPdkCH+iheCr7ZiCHy3UGpC4LRd2TGznEDwV8E2eONGQaNBmopaj/Y+mbRWGL+34qEXihmbFVIMB5fcvPOa9F9RbT6HK1EF6XecLgxLQtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=Zut1qHYK; arc=none smtp.client-ip=209.85.208.47
+	 To:Cc:Content-Type; b=bVBvUB9NvqSB8rLnrGloptMazea9CI3b6/vhiVMcMiVg+tRb4qK/x6WOdUcR9p3xt4eBHa4ZZLqe3S/8EUvA1CH76+dlFai5KbZyoMsDrKJ2AiBkz3S5QDW8CtopLjuISUR39/Rr+sj1HMtEUB1NHvBvwnjOrYSom6XUMr1Zm78=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=lqcS1iOo; arc=none smtp.client-ip=209.85.208.53
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-6505d3b84bcso6690655a12.3
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 05:55:48 -0800 (PST)
+Received: by mail-ed1-f53.google.com with SMTP id 4fb4d7f45d1cf-65089cebdb4so5052087a12.0
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 06:05:23 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sladewatkins.com; s=google; t=1767966947; x=1768571747; darn=vger.kernel.org;
+        d=sladewatkins.com; s=google; t=1767967522; x=1768572322; darn=vger.kernel.org;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=PpFrTZ0+VBSyjied1Kan5BDiMM1vNNW7nvgXJ0c0ilc=;
-        b=Zut1qHYKlVj9WT4INnP7vo6YM5mxis5NeuZKgaczZiWtfoFt3JuxnM4zjH+0kSSW1C
-         VcqL69vk6VdFolRrwRfTD1Eb+0JBzWDSJQroDmKBTO+IkAvkXm1bJqfY+BizAQ3Vxtji
-         S0M6Ll4SSK1QxPdojtb0xuEtkI7XX7pagPJE4hXmu+32m5oc3QHQU39HKVUQXBhNdSV1
-         +WscoCd+iglh9FKEpNczuD3luNSBoclSh/d/rk5Z6GaRX3WloNRzlpr1bsgPBICNLmez
-         luBcNB732clm1oqedQaSA2DV2vqMF2PiepGV1h1FXynm0PFvVeHBQ3HY+Mfy4JV38aN7
-         7/bg==
+        bh=zHeZsUsxb8pqM5+6KSuIQpRYBszdo4M9nQezvPEaXNg=;
+        b=lqcS1iOooRBYpaEcLoJm/u1znB4Vt+PbKFQ/FUeHGLzD3On7HhkRGI0yjbn3rkwSJP
+         JcwWnwF0h/ZxzrlKeENmjfnZEa9OGNI/QAVeoL8nSH89cGnNKfU2ttQm0O67sfUyXNIk
+         CRBYvzb159zpFf1Hvw6VK7QdfEOChLt6vt2CyEtWNSgv5ujMgy61U++prFKlBe166Vk5
+         RK5uF4iQ/vcJz8E0S6fO/hHAylcmIw+7KyQ8GCYUZ2IBpF+FGuugs0a8OsSNZomN3GyO
+         QgOrM37nRW8c7kSMzssKb40c/1w9A8+xkRkFuBO9zf/DyJEWRswtC76HNabFPHdLA7DU
+         +sug==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767966947; x=1768571747;
+        d=1e100.net; s=20230601; t=1767967522; x=1768572322;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
          :to:cc:subject:date:message-id:reply-to;
-        bh=PpFrTZ0+VBSyjied1Kan5BDiMM1vNNW7nvgXJ0c0ilc=;
-        b=Cueykov6ov+Rmyw0T4W9hR6j4AapGrVxnW0M9a2LlDoRkIsgs7DZqB2TfPMmzUZeoI
-         5c1fA0cUQLxgz7tLvfEzh2X6ILEKWscaZE241LvdRDi29w2YUZKxV0f46CZAZTHXH+Zw
-         lhb51JEO9qsmp8Uii+ULhzntL2qcWJk9BeT4PsC1wKXGtF8KviHLx3Jpy+MG9YcEOmZI
-         S2lOEDAvPK79+E3gmpaCYxVHMxpx+wS73hl/yNFZZIYpgq8vUJZJu9bnUq0u3Tt2yxX/
-         1NJhzDHUMJev6GGqCxw0LHAWFSABud4QOelpRG/T2JcmBDZOWr/OyS24xITaWuzNUi7s
-         hyug==
-X-Gm-Message-State: AOJu0Yw01DbLkcrV0kBi2UcAneRzNv6mURqjCa1o7rOmmSeSn9jI4HZz
-	4BE8KgzQmV0acxs7/4jndvZiw3v+CifdSr6/etzzci19aI1fwafHM/mV6AymYRPlQDIWmjTNbCu
-	L4ByovaKT0mYrBt2nVzu7eOrMsltmtfEMfxZq7wJje1u/4yQ9Po9qdbjlL/Y71pfEp7finNNOkO
-	ctUe2tN7TpqAUXQSeNIg0DH2klL94=
-X-Gm-Gg: AY/fxX5NLjIew6LbzPYqm1hjkKhROYMLrxW8OvJpzmFJUHSyv6bOQqZpMRtQ05X3tWB
-	4fQpgu+FfQDUeZh2xgLjEDJNJ//YGEMAhWp/vWJMEY5stF6jErUDu62IirshRDGk6DYOKQxvUI9
-	dypJ1gxWWExKcYhazPRq3Abhio22UW43C2QYYTb0MSP5Yu4mj8E80m1FBOe4ZE/FuzDqCaRPMdR
-	oEHxpSTEN5SIqgBJt2PCcY91IzE0YUk1igP6YfgOLydBeRB17M5uLhbViG9kRVpF1E0eq2dgVCy
-	+8IPqvdWGpWAbU3AHrtnWA6GnKJM
-X-Google-Smtp-Source: AGHT+IHAv4n9Z5meAss2Wg84D8PKp50SiiL5mtVKvS2pIvI3+Rn21z7q+hkwG9BUVjX7iLyv4GEHwejLyq1Sh98UR78=
-X-Received: by 2002:a05:6402:34d5:b0:64d:57a8:1ff3 with SMTP id
- 4fb4d7f45d1cf-65097dcdcfdmr9011967a12.4.1767966946654; Fri, 09 Jan 2026
- 05:55:46 -0800 (PST)
+        bh=zHeZsUsxb8pqM5+6KSuIQpRYBszdo4M9nQezvPEaXNg=;
+        b=lDCxJqfIl3EqWZDjDkn1b6ZC6p9nfhw3wSXHjblTn0lPAx6uFuiZYXX0UqS1vCpnq4
+         4dJGT5sRdYXF9toC+pC5wtXN84cZAiNYqJnPcnpQjVrG4zgUKKHyAcMXqnLcqBYp/juh
+         PlyFmJChJ33T3oa+B94ZfbRx9gXyqy7gM7H3z9mIc6bx+Rma1Ccf3Idm9hJ9nMnwWGP4
+         yY6mCH4wUw4YEGHqyqqS8uF2bY6a6moRMpCkx4MwGhNeh587W1obq50TiyOVs4AWQ8PO
+         D9zmVDvtmyir5TMAsqoNl+XBCEYyr+BXVU1AbAGN5OngdwwLzRCqBZVtHSKHKYoQI1HD
+         +IpQ==
+X-Gm-Message-State: AOJu0Yw9MQkmuA7koGC0Am29NwnoJIEIXbsd6qfY9I8WGgPmONh0/DkF
+	tSfclzOShMy8iQ5hiONJN5cHrXgMTmmB3akh2sDB8KhWC7NoxFnnE1haA3sa6TmVOXqTWsCCB1Z
+	dZf9mFItiDhiczzkX+jPEd3AnbWKPQ3Q53UC2Yqr8vo/3p/5UXm4fnebp1zKXrjepQmHl5vIDG2
+	WyDeg+p+bACSR9DyL1liDUxln+tjQ=
+X-Gm-Gg: AY/fxX59naBkA+ikyzSE9Nev2veeoKyQfSwojIQ71T1JHT5HrSez8GH+pLnoeGjvCi+
+	TMoWr0siWbAheKdA9qpqXhje1dphh4k59NYhJkbMkrQRUpkPievtfjwTxS5ZReml852Hgk9wtDk
+	nMkc2QDeOR/J/s3HzOzMHDdY516EcrqHP0CBozdgZeaghJLhSKjIl6rz3d3i5BRn/KctMfVlM8D
+	Df8JnOuxHqV2Xa66ouqEFEkojRaUBab7zO8Q8wQ8EJTTj+UPJexuzY7DXCUVlKFk9Uiue7Wo8PH
+	sWS6TrTaE3wpMvsV25dvQG+5F8UjscfJbzYh8dg=
+X-Google-Smtp-Source: AGHT+IEI/djWWBT7/VsY+1PsEGYxbDvWFPBavsKV+H+zDI4yBu1Iz0hEh9i74ky3XJTniZbaXUHwa96Js+M6bQXbP+4=
+X-Received: by 2002:aa7:c705:0:b0:64c:69e6:ad64 with SMTP id
+ 4fb4d7f45d1cf-65097e5a118mr6730160a12.24.1767967522257; Fri, 09 Jan 2026
+ 06:05:22 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260109111950.344681501@linuxfoundation.org>
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
+References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
 From: Slade Watkins <sr@sladewatkins.com>
-Date: Fri, 9 Jan 2026 08:55:35 -0500
-X-Gm-Features: AQt7F2obc11Ixda_pyW8d42vhGcxIIDXRy4rNoe8mp-6Sgs8-JHlVw4m3X8UdQY
-Message-ID: <CAMC4fzJQ1kVczNs7XhZSVRRY0iX82UQD1VrbmX6bFOmAvsFxsQ@mail.gmail.com>
-Subject: Re: [PATCH 6.18 0/5] 6.18.5-rc1 review
+Date: Fri, 9 Jan 2026 09:05:09 -0500
+X-Gm-Features: AQt7F2pf1Gj_cPAF-AJJHCZlCWO36ykXfYS6WUbDLNq5yrZvTtLi49NZBVKYFk8
+Message-ID: <CAMC4fzJhT4Mwao3=9TbAm=rWP=zfGJcFTsmAFCK=p3UoqGQTcQ@mail.gmail.com>
+Subject: Re: [PATCH 6.12 00/16] 6.12.65-rc1 review
 To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
 	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
@@ -97,15 +97,15 @@ X-SW-RGPM-AntispamVer: Reporting (SpamAssassin 4.0.1-sladew)
 On Fri, Jan 9, 2026 at 6:45=E2=80=AFAM Greg Kroah-Hartman
 <gregkh@linuxfoundation.org> wrote:
 >
-> This is the start of the stable review cycle for the 6.18.5 release.
-> There are 5 patches in this series, all will be posted as a response
+> This is the start of the stable review cycle for the 6.12.65 release.
+> There are 16 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >
 > Responses should be made by Sun, 11 Jan 2026 11:19:41 +0000.
 > Anything received after that time might be too late.
 
-6.18.5-rc1 built and run on my x86_64 test system (AMD Ryzen 9 9900X,
+6.12.65-rc1 built and run on my x86_64 test system (AMD Ryzen 9 9900X,
 System76 thelio-mira-r4-n3). No errors or regressions.
 
 Tested-by: Slade Watkins <sr@sladewatkins.com>
