@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-206968-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206935-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F15CD096AA
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D54D7D097D4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4E104302D36A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 63CE330E7751
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED4A233B6F1;
-	Fri,  9 Jan 2026 12:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC65135B144;
+	Fri,  9 Jan 2026 12:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TBqEeOz1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CfeWSD5P"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AFA712EAD10;
-	Fri,  9 Jan 2026 12:11:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9047F35A93D;
+	Fri,  9 Jan 2026 12:10:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960717; cv=none; b=Rzw6afQP/YSufntMLFD3yx31dwPWrN6WuKoFgCidXlHQHb85nIkEZq4g4nydB6BbII7QqcHQ4AqOWjni9iahJ59wdj3NmUf0ZDRCm3037HvuC16ZwsnVgWE5JRKT3CdC2FLXK5LD5zUduwDJ5Xtmn7HgHnPCmKyiiT4GWHr8nKI=
+	t=1767960618; cv=none; b=O3MulRbkl+PusPb0X2OvB/GG/WcCqhOqV/pKFay6V0mvDdrhhoZgeMK5CawAXVx8LPuYkJDlL73XcQFSwAE4dO6Y8koSPaA+qxlISDRQcbmbsXb6PXjDT8lLVVtWe2fYBMnAtAkzNe357ZRTvzjI8e0Y+gbgjSBXD+Xh+oC7ILE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960717; c=relaxed/simple;
-	bh=1Ng0hHngv2Hsy2VYY/YQlRGbTWCItNXs+JEem5H9u0E=;
+	s=arc-20240116; t=1767960618; c=relaxed/simple;
+	bh=DtetrF+s8XhnbuXFvcijRgBp7NjPER7O1twII2XTLlM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=hfolxFYXuTQszITVaQeb7JN6k21hpMzZbErjuy0sOj9Y7M8IyIDRh2kvlihG5UEJ7qAsBMj/dsafN1zK0BTD6alpwsjS/RiqRyMpmQ/xKN+4eOKnTTfoHN5KrMlGoLu5r6Nl3A7V8HmO+MJyfmHvxztcdJme7JxcM6QAGX3boDU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TBqEeOz1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08919C4CEF1;
-	Fri,  9 Jan 2026 12:11:56 +0000 (UTC)
+	 MIME-Version; b=kFLKLt831YV4BbG4ooeNMTJFMgelHx+jUj3ZUNKmEGZq7rMXioVqn0icKXRdqOjpUbIjTdgeOKTCsozQ3JJ4MHLSS0RFqIxPUx/CnlT93FO7HbLHDSriYYpJfjRqn67hlr7/pew6T4hklZFccvPEkfDXX9YA6VTUsPRaOOiIAV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CfeWSD5P; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA95C19425;
+	Fri,  9 Jan 2026 12:10:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960717;
-	bh=1Ng0hHngv2Hsy2VYY/YQlRGbTWCItNXs+JEem5H9u0E=;
+	s=korg; t=1767960618;
+	bh=DtetrF+s8XhnbuXFvcijRgBp7NjPER7O1twII2XTLlM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TBqEeOz16InQlrCffQgq1+hv6il7SYD9TztoKdEgamzkmeco3ACafMRX64KWGC+Mz
-	 dKKO/RzXhWclw1zJXBO6KTGbMOV5nwaggA2E9AkNPwhSK7sgavT9QDT7tAhPREeXD2
-	 nkK1QXWTWiDh/XfxM0LvNpyg2L/BCvM5pSRqV1Uo=
+	b=CfeWSD5P2fBNoK1pYuEmOYwl5Y5PzCDahsHj8UyCv7Lyyd1BZpj0YNCN0SaaLveyI
+	 6Z0v024xa8M/ZZodeHETrdLxgjERkNZq1Yzb27vyvdhm3zcPh8FxxNh/XLH2NWKlro
+	 qQeumPNNIybt6vM/mm0ZV7Fm0oFj1ALsVn457wbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Matteo Rizzo <matteorizzo@google.com>,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Jim Mattson <jmattson@google.com>,
 	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.6 467/737] KVM: nSVM: Propagate SVM_EXIT_CR0_SEL_WRITE correctly for LMSW emulation
-Date: Fri,  9 Jan 2026 12:40:06 +0100
-Message-ID: <20260109112151.555936418@linuxfoundation.org>
+Subject: [PATCH 6.6 468/737] KVM: SVM: Mark VMCB_PERM_MAP as dirty on nested VMRUN
+Date: Fri,  9 Jan 2026 12:40:07 +0100
+Message-ID: <20260109112151.593870842@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -58,73 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
+From: Jim Mattson <jmattson@google.com>
 
-commit 5674a76db0213f9db1e4d08e847ff649b46889c0 upstream.
+commit 93c9e107386dbe1243287a5b14ceca894de372b9 upstream.
 
-When emulating L2 instructions, svm_check_intercept() checks whether a
-write to CR0 should trigger a synthesized #VMEXIT with
-SVM_EXIT_CR0_SEL_WRITE. For MOV-to-CR0, SVM_EXIT_CR0_SEL_WRITE is only
-triggered if any bit other than CR0.MP and CR0.TS is updated. However,
-according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
+Mark the VMCB_PERM_MAP bit as dirty in nested_vmcb02_prepare_control()
+on every nested VMRUN.
 
-  The LMSW instruction treats the selective CR0-write
-  intercept as a non-selective intercept (i.e., it intercepts
-  regardless of the value being written).
+If L1 changes MSR interception (INTERCEPT_MSR_PROT) between two VMRUN
+instructions on the same L1 vCPU, the msrpm_base_pa in the associated
+vmcb02 will change, and the VMCB_PERM_MAP clean bit should be cleared.
 
-Skip checking the changed bits for x86_intercept_lmsw and always inject
-SVM_EXIT_CR0_SEL_WRITE.
-
-Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
-Cc: stable@vger.kernel.org
+Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
 Reported-by: Matteo Rizzo <matteorizzo@google.com>
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-Link: https://patch.msgid.link/20251024192918.3191141-3-yosry.ahmed@linux.dev
+Cc: stable@vger.kernel.org
+Signed-off-by: Jim Mattson <jmattson@google.com>
+Link: https://lore.kernel.org/r/20250922162935.621409-2-jmattson@google.com
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/svm.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ arch/x86/kvm/svm/nested.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/svm/svm.c
-+++ b/arch/x86/kvm/svm/svm.c
-@@ -4573,20 +4573,20 @@ static int svm_check_intercept(struct kv
- 		if (info->intercept == x86_intercept_clts)
- 			break;
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -676,6 +676,7 @@ static void nested_vmcb02_prepare_contro
+ 	vmcb02->control.nested_ctl = vmcb01->control.nested_ctl;
+ 	vmcb02->control.iopm_base_pa = vmcb01->control.iopm_base_pa;
+ 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
++	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
  
--		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
--		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
--
-+		/* LMSW always triggers INTERCEPT_SELECTIVE_CR0 */
- 		if (info->intercept == x86_intercept_lmsw) {
--			cr0 &= 0xfUL;
--			val &= 0xfUL;
--			/* lmsw can't clear PE - catch this here */
--			if (cr0 & X86_CR0_PE)
--				val |= X86_CR0_PE;
-+			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
-+			break;
- 		}
+ 	/* Done at vmrun: asid.  */
  
-+		/*
-+		 * MOV-to-CR0 only triggers INTERCEPT_SELECTIVE_CR0 if any bit
-+		 * other than SVM_CR0_SELECTIVE_MASK is changed.
-+		 */
-+		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
-+		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
- 		if (cr0 ^ val)
- 			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
--
- 		break;
- 	}
- 	case SVM_EXIT_READ_DR0:
 
 
 
