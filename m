@@ -1,53 +1,60 @@
-Return-Path: <stable+bounces-207560-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206934-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97960D0A054
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 800EFD0961A
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:14:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA61D3144157
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B2B0030592EF
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7EAA335BDAF;
-	Fri,  9 Jan 2026 12:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 594C835A92D;
+	Fri,  9 Jan 2026 12:10:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QCYAU844"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AoXU0hBC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42C0035B138;
-	Fri,  9 Jan 2026 12:40:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CFE823ED5B;
+	Fri,  9 Jan 2026 12:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962403; cv=none; b=EptAbYj9tFNVpAMsSRZas2vM7VZD+2toIQoooz7IslbLu/F6BKHTsRRYYO+wX0RxMKCGzyAWkwZ4hEaVaTJF068ZeO7c9rLuFCZxMJYpZxRNWvT1CCIya7Hu8JczdFi7XcCs91G9rpRhB9ehxjWWTBKcVGxWXZdBM6gJj/bEf5w=
+	t=1767960616; cv=none; b=e5zOQaVSy3qZHrLtmED4I06xfk2GvD4jq6N93xfC55AKwyuKYEq5BeQtM8asquU6bVrREApYu+19LvFhf6QY320C7xJaeN3PSz9Cb+v4TlzmmF/l6F1+DJFFfuOqtCfZ8Rc7hM4x4ZwU3SF3NKK4GIcFX5TMP5c54wHdAD2t+ZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962403; c=relaxed/simple;
-	bh=IAxSRecBVJ4RAcDMUWeStFhXFB3y1WuDRLkPoq8iBRs=;
+	s=arc-20240116; t=1767960616; c=relaxed/simple;
+	bh=9nzShEq1csnzae3gy/fHbRqG5JjkhwJ/+HzBhxuhWUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ln+7EC518CwjFzKKEZCIN8bzEh2U/rRhL3A0H3Lyi9AygvBUrN/dFPAeQatunemvdpyHxyUzla9yVHgrrJx8Zm16JE6UuwY5/8XcPoFZzJJzE1YjSXvKh3M8s/o+xX+ysJn65Wu12jfwSTmMZqUAbnk+o2x+0JFGYiRhAa3GVtw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QCYAU844; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E7D6C4CEF1;
-	Fri,  9 Jan 2026 12:40:02 +0000 (UTC)
+	 MIME-Version; b=PsqHpC3XOFl/wDAFp1/6vYg+568aJ0SZtb7ySP3hAEvTh+pughRogKJm7TVPgInvLQm/vY2bPP0nbEP1MZqUWMVHz9pU8mD8T7SQI8JE7ED6wmN8+5vZM2KW7Oi4bHkKz3tmgOdyaP7eb76N36yYaNT6LTjuoV8mmuMJ7+WfQT0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AoXU0hBC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3699BC19423;
+	Fri,  9 Jan 2026 12:10:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962402;
-	bh=IAxSRecBVJ4RAcDMUWeStFhXFB3y1WuDRLkPoq8iBRs=;
+	s=korg; t=1767960615;
+	bh=9nzShEq1csnzae3gy/fHbRqG5JjkhwJ/+HzBhxuhWUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QCYAU844zBl4hr+TgGEjgH8I9/rZORbhkdKI2q41VB1nrZm40ZyOJuKq8nRzxqXD6
-	 fL5hHWGxnxdyV/TzPZPZ+d2ayPOt+HlSQqOXzpbtqWfnIhWmn1qMzMPF092gGTJ2mU
-	 tQ5C2jc9/wWuAYyPnPeWbCqm4CW1QtOD0xJmc/tE=
+	b=AoXU0hBCoXBMP7xOAEs5Y+Tt3dQIKZY2Z2iYDRytRv0zDIRY7rcwaYeA5qEXplm0g
+	 r2EhM7AZi+O3wm3rIu/sUnT7bDlRIgdHOBVx/vdLs2ROmJiIdT37ydSVBl/uhjrrGS
+	 ZN7vWs8OraSBF/C5Mj+Fan4/4Cr75PJF9tobke68=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.1 320/634] lib/crypto: x86/blake2s: Fix 32-bit arg treated as 64-bit
+	Jiyuan Xie <xiejiyuan@vivo.com>,
+	Zhichi Lin <zhichi.lin@vivo.com>,
+	Sami Tolvanen <samitolvanen@google.com>,
+	Will Deacon <will@kernel.org>,
+	Andrey Konovalov <andreyknvl@gmail.com>,
+	Kees Cook <keescook@chromium.org>,
+	Marco Elver <elver@google.com>,
+	Yee Lee <yee.lee@mediatek.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.6 459/737] scs: fix a wrong parameter in __scs_magic
 Date: Fri,  9 Jan 2026 12:39:58 +0100
-Message-ID: <20260109112129.571897699@linuxfoundation.org>
+Message-ID: <20260109112151.258145909@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +66,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Zhichi Lin <zhichi.lin@vivo.com>
 
-commit 2f22115709fc7ebcfa40af3367a508fbbd2f71e9 upstream.
+commit 08bd4c46d5e63b78e77f2605283874bbe868ab19 upstream.
 
-In the C code, the 'inc' argument to the assembly functions
-blake2s_compress_ssse3() and blake2s_compress_avx512() is declared with
-type u32, matching blake2s_compress().  The assembly code then reads it
-from the 64-bit %rcx.  However, the ABI doesn't guarantee zero-extension
-to 64 bits, nor do gcc or clang guarantee it.  Therefore, fix these
-functions to read this argument from the 32-bit %ecx.
+__scs_magic() needs a 'void *' variable, but a 'struct task_struct *' is
+given.  'task_scs(tsk)' is the starting address of the task's shadow call
+stack, and '__scs_magic(task_scs(tsk))' is the end address of the task's
+shadow call stack.  Here should be '__scs_magic(task_scs(tsk))'.
 
-In theory, this bug could have caused the wrong 'inc' value to be used,
-causing incorrect BLAKE2s hashes.  In practice, probably not: I've fixed
-essentially this same bug in many other assembly files too, but there's
-never been a real report of it having caused a problem.  In x86_64, all
-writes to 32-bit registers are zero-extended to 64 bits.  That results
-in zero-extension in nearly all situations.  I've only been able to
-demonstrate a lack of zero-extension with a somewhat contrived example
-involving truncation, e.g. when the C code has a u64 variable holding
-0x1234567800000040 and passes it as a u32 expecting it to be truncated
-to 0x40 (64).  But that's not what the real code does, of course.
+The user-visible effect of this bug is that when CONFIG_DEBUG_STACK_USAGE
+is enabled, the shadow call stack usage checking function
+(scs_check_usage) would scan an incorrect memory range.  This could lead
+to:
 
-Fixes: ed0356eda153 ("crypto: blake2s - x86_64 SIMD implementation")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251102234209.62133-2-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+1. **Inaccurate stack usage reporting**: The function would calculate
+   wrong usage statistics for the shadow call stack, potentially showing
+   incorrect value in kmsg.
+
+2. **Potential kernel crash**: If the value of __scs_magic(tsk)is
+   greater than that of __scs_magic(task_scs(tsk)), the for loop may
+   access unmapped memory, potentially causing a kernel panic.  However,
+   this scenario is unlikely because task_struct is allocated via the slab
+   allocator (which typically returns lower addresses), while the shadow
+   call stack returned by task_scs(tsk) is allocated via vmalloc(which
+   typically returns higher addresses).
+
+However, since this is purely a debugging feature
+(CONFIG_DEBUG_STACK_USAGE), normal production systems should be not
+unaffected.  The bug only impacts developers and testers who are actively
+debugging stack usage with this configuration enabled.
+
+Link: https://lkml.kernel.org/r/20251011082222.12965-1-zhichi.lin@vivo.com
+Fixes: 5bbaf9d1fcb9 ("scs: Add support for stack usage debugging")
+Signed-off-by: Jiyuan Xie <xiejiyuan@vivo.com>
+Signed-off-by: Zhichi Lin <zhichi.lin@vivo.com>
+Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
+Acked-by: Will Deacon <will@kernel.org>
+Cc: Andrey Konovalov <andreyknvl@gmail.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Marco Elver <elver@google.com>
+Cc: Will Deacon <will@kernel.org>
+Cc: Yee Lee <yee.lee@mediatek.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/crypto/blake2s-core.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/scs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/crypto/blake2s-core.S
-+++ b/arch/x86/crypto/blake2s-core.S
-@@ -54,7 +54,7 @@ SYM_FUNC_START(blake2s_compress_ssse3)
- 	movdqa		ROT16(%rip),%xmm12
- 	movdqa		ROR328(%rip),%xmm13
- 	movdqu		0x20(%rdi),%xmm14
--	movq		%rcx,%xmm15
-+	movd		%ecx,%xmm15
- 	leaq		SIGMA+0xa0(%rip),%r8
- 	jmp		.Lbeginofloop
- 	.align		32
-@@ -179,7 +179,7 @@ SYM_FUNC_START(blake2s_compress_avx512)
- 	vmovdqu		(%rdi),%xmm0
- 	vmovdqu		0x10(%rdi),%xmm1
- 	vmovdqu		0x20(%rdi),%xmm4
--	vmovq		%rcx,%xmm5
-+	vmovd		%ecx,%xmm5
- 	vmovdqa		IV(%rip),%xmm14
- 	vmovdqa		IV+16(%rip),%xmm15
- 	jmp		.Lblake2s_compress_avx512_mainloop
+--- a/kernel/scs.c
++++ b/kernel/scs.c
+@@ -135,7 +135,7 @@ static void scs_check_usage(struct task_
+ 	if (!IS_ENABLED(CONFIG_DEBUG_STACK_USAGE))
+ 		return;
+ 
+-	for (p = task_scs(tsk); p < __scs_magic(tsk); ++p) {
++	for (p = task_scs(tsk); p < __scs_magic(task_scs(tsk)); ++p) {
+ 		if (!READ_ONCE_NOCHECK(*p))
+ 			break;
+ 		used += sizeof(*p);
 
 
 
