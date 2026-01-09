@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-207553-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206951-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B59BD09E56
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:44:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DB2DD09898
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:23:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 598FA30692D6
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:39:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8C8FD30F0790
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:11:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1208435BDC1;
-	Fri,  9 Jan 2026 12:39:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77C8635A933;
+	Fri,  9 Jan 2026 12:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gbcg+owW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="peEaSKuz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7CD035BDA6;
-	Fri,  9 Jan 2026 12:39:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A97A334C24;
+	Fri,  9 Jan 2026 12:11:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962382; cv=none; b=GJrbnuXJS8g7dSmyS2nX++57JqAgtY9z+0QBrXpleWpbOyqYE/8/+LDfiNI9H4MVRPOyyLlLLgnpMs0eoEpzPBScnqV5IQY2V3f6oLC+KO7BFIZAMab4N5TUjQdzeJY3FWHWfbsrikik4KhfTq8E5WQnF9LtJjtbbTmVXo9/ddg=
+	t=1767960669; cv=none; b=XKxjJBHH55HXRLtwdSTcb0q1uD5JR+i+Z4aHksEfz3gFKAtL8ndlVrwEHW6o6kxS2q9JlrOfK52jvdgyM+JVgJIIRHvfGg5EIEV1TMiEL3wV+8PeFjETbQHVqzWjREU8EYkfSc+oFu0ssJnIOLXeHapO3J5+wpYoHFX9sudX79g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962382; c=relaxed/simple;
-	bh=wC4a9zBT5YxMSKjNj7qvF32btG86D56MvP7yOsxFkRY=;
+	s=arc-20240116; t=1767960669; c=relaxed/simple;
+	bh=aMH0aMAFdl+2FNXCLNpTUfCFI+xiLT6FJhz38i3Rw/Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nbUcL7le7zyQVxScDDwjOxn+AarHrm8nSp1td5M5+gXGjxeNDmafdMTm83W6XqMIOD05QaOBM+WmICWwCdtpQ4mteXYwOwvBnOaX/qt7itci+2/w0DbdUg2aDFJ09QUUmRsgrusceu0czDiba4UHQnX1ZUWrxJ+YqqpPKVF2c1Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gbcg+owW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53047C4CEF1;
-	Fri,  9 Jan 2026 12:39:42 +0000 (UTC)
+	 MIME-Version; b=BQpK75AUUkW6W00px+leYSKQOeMiHLy1xAvi3m3w4hrOoeAPnB4iiMzZMOAqYOT/O72ojK1QnKy8vlIkZMYI3fq+FSXnKVDL+PBkgAc/PkciO0XDL/PRECrmi792JGDTBvlbfMSClXy9gcqcAJp0+kL20orVAKD7gzFqLIt9OC4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=peEaSKuz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B990DC19422;
+	Fri,  9 Jan 2026 12:11:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962382;
-	bh=wC4a9zBT5YxMSKjNj7qvF32btG86D56MvP7yOsxFkRY=;
+	s=korg; t=1767960669;
+	bh=aMH0aMAFdl+2FNXCLNpTUfCFI+xiLT6FJhz38i3Rw/Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gbcg+owWPBkO1fHcZ4oBvsstNZ39TlZfuGIgCvqvicp7bGfbpmh8sVsCLzNBYlwhm
-	 R2Ljw0wTTzVnI/HXVFv+d3O5qI67gAhGfHilYtL1dTGsDDYP6Nd0V8bYRSCsTIvjWk
-	 ps2lMS6Bb2WpVqw77s9GzD/xqmIGuraPy0tcoTMY=
+	b=peEaSKuzVugi+f/f6bV0q94tvK06u9tMMZ6rnYsLwUBust2zq/y92/BF6pCKGgjwN
+	 H+qWu9ekpRulQaNjl508z7Nsl0BYQWrqOFY3VvU4Q4tqGIBmYVKq38yCw0YWDg6Tm1
+	 44VMcFKgOuUIGG7bjJqLIUxlm232R8HD+f/73BPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.1 344/634] cpufreq: nforce2: fix reference count leak in nforce2
+	WangYuli <wangyl5933@chinaunicom.cn>,
+	Wentao Guan <guanwentao@uniontech.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.6 483/737] gpio: regmap: Fix memleak in error path in gpio_regmap_register()
 Date: Fri,  9 Jan 2026 12:40:22 +0100
-Message-ID: <20260109112130.467875974@linuxfoundation.org>
+Message-ID: <20260109112152.155758955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Wentao Guan <guanwentao@uniontech.com>
 
-commit 9600156bb99852c216a2128cdf9f114eb67c350f upstream.
+commit 52721cfc78c76b09c66e092b52617006390ae96a upstream.
 
-There are two reference count leaks in this driver:
+Call gpiochip_remove() to free the resources allocated by
+gpiochip_add_data() in error path.
 
-1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
-   of the PCI device, but pci_dev_put() is never called to release it,
-   thus leaking the reference.
-
-2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
-   nforce2_dev which is stored in a global variable, but the reference
-   is never released when the module is unloaded.
-
-Fix both by:
-- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
-  the configuration.
-- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
-  global device reference.
-
-Found via static analysis.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 553b75d4bfe9 ("gpio: regmap: Allow to allocate regmap-irq device")
+Fixes: ae495810cffe ("gpio: regmap: add the .fixed_direction_output configuration parameter")
+CC: stable@vger.kernel.org
+Co-developed-by: WangYuli <wangyl5933@chinaunicom.cn>
+Signed-off-by: WangYuli <wangyl5933@chinaunicom.cn>
+Signed-off-by: Wentao Guan <guanwentao@uniontech.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20251204101303.30353-1-guanwentao@uniontech.com
+[Bartosz: reworked the commit message]
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq-nforce2.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/gpio/gpio-regmap.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq-nforce2.c
-+++ b/drivers/cpufreq/cpufreq-nforce2.c
-@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int
- 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
- 	fsb /= 1000000;
+--- a/drivers/gpio/gpio-regmap.c
++++ b/drivers/gpio/gpio-regmap.c
+@@ -310,7 +310,7 @@ struct gpio_regmap *gpio_regmap_register
+ 						 config->regmap_irq_line, config->regmap_irq_flags,
+ 						 0, config->regmap_irq_chip, &gpio->irq_chip_data);
+ 		if (ret)
+-			goto err_free_bitmap;
++			goto err_remove_gpiochip;
  
-+	pci_dev_put(nforce2_sub5);
-+
- 	/* Check if PLL register is already set */
- 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
- 
-@@ -432,6 +434,7 @@ static int __init nforce2_init(void)
- static void __exit nforce2_exit(void)
- {
- 	cpufreq_unregister_driver(&nforce2_driver);
-+	pci_dev_put(nforce2_dev);
- }
- 
- module_init(nforce2_init);
+ 		irq_domain = regmap_irq_get_domain(gpio->irq_chip_data);
+ 	} else
 
 
 
