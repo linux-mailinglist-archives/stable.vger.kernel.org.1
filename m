@@ -1,54 +1,64 @@
-Return-Path: <stable+bounces-207044-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 090E0D09853
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:22:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E2E6D0A02D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CEC2B30DCC52
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:34 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 73A77305CC5A
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A21EA2F5306;
-	Fri,  9 Jan 2026 12:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E953035BDA7;
+	Fri,  9 Jan 2026 12:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IEDnBEKi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VQfv7Hmc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46D011C3C08;
-	Fri,  9 Jan 2026 12:15:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB55335B15A;
+	Fri,  9 Jan 2026 12:44:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960934; cv=none; b=JkRatcl0cxrBuW7KqILxXhSW6/Nm9jZg0jSlQzoERCIW3YQ9ug6CXZBDFTH12wfbkVT2707DWL4MQ70q6Pr1NvjVML/FEQOXNAi6aPEtpLHn/ySx5AwOrfsjf/BuTxgX+SwonY7Eu9PVpdNDk0cZavzh73tgEcFygSFNy9mg/14=
+	t=1767962648; cv=none; b=tKJaoCYChDUEN6VfYbt/mJInhiZm4Jtjqu/xGISF4iFIQppj2LgRj5IAC0WO1a1+hIatNkMVa/0Iqow+HKl1pdIfOk1d8iMOJHOivZt/3gur1Ke1Etq8EpkmHNqEMe0wnKbmMonZ6E8E5+kl0S8Y0OdlOcFldBUDgEY6oHGQW68=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960934; c=relaxed/simple;
-	bh=dAgXcEoerScpsTTI0Lm6wveXpFmBwZZB892EGS+GsvE=;
+	s=arc-20240116; t=1767962648; c=relaxed/simple;
+	bh=dSIZnFUG3wC640gUOjDd/AK8CUQzhZY67LyT6KxRmJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=goUZCIB7v5E1aGxzH8v86nVWDywMHU6XJg4VAKI1b2ECnsD+lKMDKgzDblaRK5pa2YZWj8TqP+zsyfrhORjGL2b6zJmmF5fQ2/3KyqZyIm2MGVcnw26sQqA/ik+fJuZ46NvjjqdoYf4/IJp8zeNupl/yeDxQTnbJZXpWUCOaGzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IEDnBEKi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7300C4CEF1;
-	Fri,  9 Jan 2026 12:15:33 +0000 (UTC)
+	 MIME-Version; b=cetGA0wBq8K9LHG3x66pZIkNftN+aUuTGKZhFmez6BZXo7zprSO7rgAsqn1rev1bH5YfTg87E/24JpuiNFZjd1g/QV+OHBNJAxsRnRQ+KXqFmy774X34aWDEja8z0S8xyY4vHlqEHfoadRtvnFmB5ZhdzgmIhm1kcYd4H2vdKtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VQfv7Hmc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F40C19423;
+	Fri,  9 Jan 2026 12:44:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960934;
-	bh=dAgXcEoerScpsTTI0Lm6wveXpFmBwZZB892EGS+GsvE=;
+	s=korg; t=1767962648;
+	bh=dSIZnFUG3wC640gUOjDd/AK8CUQzhZY67LyT6KxRmJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IEDnBEKimGtzRf4I84z9KjTMIHw8zwW7Ns3D9XsjKjK7LrhUxexGK7652GXoWJ33r
-	 oB9dXAV4jQHXuEmE58h/DAvRemSrAKDB/6KMmC3R0NGESnYURRnN7Cl/Pm/7yt2BqF
-	 fGRPw4G1dLLX62B2VOTRwb5KJTGPf5zdFaTYiOS4=
+	b=VQfv7HmcCRcf5ngnwWpTsdDO+D9+uBTZRnUgOtIJIx+ncJM3sCf14g7dQ9finLJWB
+	 ZQGt4NVwvPY5oL3HV6J0n/Cri8ucpmoNNP2vTSJyYYRzHH8fXc3N03xldXr9I+0a4a
+	 wpVFDQ1Qe0WS+SpX6c1K/Qq0U6YJ68VUhvplYIp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mahesh Rao <mahesh.rao@altera.com>,
-	Matthew Gerlach <matthew.gerlach@altera.com>,
-	Dinh Nguyen <dinguyen@kernel.org>
-Subject: [PATCH 6.6 577/737] firmware: stratix10-svc: Add mutex in stratix10 memory management
-Date: Fri,  9 Jan 2026 12:41:56 +0100
-Message-ID: <20260109112155.707033483@linuxfoundation.org>
+	Frederic Weisbecker <frederic@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Marcelo Tosatti <mtosatti@redhat.com>,
+	Muchun Song <muchun.song@linux.dev>,
+	Peter Zijlstra <peterz@infradead.org>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Shakeel Butt <shakeelb@google.com>,
+	Thomas Gleixner <tglx@linutronix.de>,
+	Leonardo Bras <leobras@redhat.com>,
+	Ingo Molnar <mingo@elte.hu>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 439/634] sched/isolation: add cpu_is_isolated() API
+Date: Fri,  9 Jan 2026 12:41:57 +0100
+Message-ID: <20260109112134.060269989@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,85 +70,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mahesh Rao <mahesh.rao@altera.com>
+From: Frederic Weisbecker <frederic@kernel.org>
 
-commit 85f96cbbbc67b59652b2c1ec394b8ddc0ddf1b0b upstream.
+[ Upstream commit a85c2257a8ac353af16dbcbf32c50d3380860bc5 ]
 
-Add mutex lock to stratix10_svc_allocate_memory and
-stratix10_svc_free_memory for thread safety. This prevents race
-conditions and ensures proper synchronization during memory operations.
-This is required for parallel communication with the Stratix10 service
-channel.
+Patch series "memcg, cpuisol: do not interfere pcp cache charges draining
+with cpuisol workloads".
 
-Fixes: 7ca5ce896524f ("firmware: add Intel Stratix10 service layer driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Mahesh Rao <mahesh.rao@altera.com>
-Reviewed-by: Matthew Gerlach <matthew.gerlach@altera.com>
-Signed-off-by: Dinh Nguyen <dinguyen@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Leonardo has reported [1] that pcp memcg charge draining can interfere
+with cpu isolated workloads.  The said draining is done from a WQ context
+with a pcp worker scheduled on each CPU which holds any cached charges for
+a specific memcg hierarchy.  Operation is not really a common operation
+[2].  It can be triggered from the userspace though so some care is
+definitely due.
+
+Leonardo has tried to address the issue by allowing remote charge draining
+[3].  This approach requires an additional locking to synchronize pcp
+caches sync from a remote cpu from local pcp consumers.  Even though the
+proposed lock was per-cpu there is still potential for contention and less
+predictable behavior.
+
+This patchset addresses the issue from a different angle.  Rather than
+dealing with a potential synchronization, cpus which are isolated are
+simply never scheduled to be drained.  This means that a small amount of
+charges could be laying around and waiting for a later use or they are
+flushed when a different memcg is charged from the same cpu.  More details
+are in patch 2.  The first patch from Frederic is implementing an
+abstraction to tell whether a specific cpu has been isolated and therefore
+require a special treatment.
+
+This patch (of 2):
+
+Provide this new API to check if a CPU has been isolated either through
+isolcpus= or nohz_full= kernel parameter.
+
+It aims at avoiding kernel load deemed to be safely spared on CPUs running
+sensitive workload that can't bear any disturbance, such as pcp cache
+draining.
+
+Link: https://lkml.kernel.org/r/20230317134448.11082-1-mhocko@kernel.org
+Link: https://lkml.kernel.org/r/20230317134448.11082-2-mhocko@kernel.org
+Signed-off-by: Frederic Weisbecker <frederic@kernel.org>
+Signed-off-by: Michal Hocko <mhocko@suse.com>
+Suggested-by: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Marcelo Tosatti <mtosatti@redhat.com>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Shakeel Butt <shakeelb@google.com>
+Cc: Thomas Gleixner <tglx@linutronix.de>
+Cc: Leonardo Bras <leobras@redhat.com>
+Cc: Ingo Molnar <mingo@elte.hu>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 10845a105bbc ("blk-mq: skip CPU offline notify on unmapped hctx")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/stratix10-svc.c |   11 +++++++++++
- 1 file changed, 11 insertions(+)
+ include/linux/sched/isolation.h | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -1,6 +1,7 @@
- // SPDX-License-Identifier: GPL-2.0
- /*
-  * Copyright (C) 2017-2018, Intel Corporation
-+ * Copyright (C) 2025, Altera Corporation
-  */
+diff --git a/include/linux/sched/isolation.h b/include/linux/sched/isolation.h
+index 8c15abd67aed..fe1a46f30d24 100644
+--- a/include/linux/sched/isolation.h
++++ b/include/linux/sched/isolation.h
+@@ -46,6 +46,12 @@ static inline bool housekeeping_enabled(enum hk_type type)
  
- #include <linux/completion.h>
-@@ -176,6 +177,12 @@ static LIST_HEAD(svc_ctrl);
- static LIST_HEAD(svc_data_mem);
- 
- /**
-+ * svc_mem_lock protects access to the svc_data_mem list for
-+ * concurrent multi-client operations
-+ */
-+static DEFINE_MUTEX(svc_mem_lock);
+ static inline void housekeeping_affine(struct task_struct *t,
+ 				       enum hk_type type) { }
 +
-+/**
-  * svc_pa_to_va() - translate physical address to virtual address
-  * @addr: to be translated physical address
-  *
-@@ -187,6 +194,7 @@ static void *svc_pa_to_va(unsigned long
- 	struct stratix10_svc_data_mem *pmem;
++static inline bool housekeeping_test_cpu(int cpu, enum hk_type type)
++{
++	return true;
++}
++
+ static inline void housekeeping_init(void) { }
+ #endif /* CONFIG_CPU_ISOLATION */
  
- 	pr_debug("claim back P-addr=0x%016x\n", (unsigned int)addr);
-+	guard(mutex)(&svc_mem_lock);
- 	list_for_each_entry(pmem, &svc_data_mem, node)
- 		if (pmem->paddr == addr)
- 			return pmem->vaddr;
-@@ -996,6 +1004,7 @@ int stratix10_svc_send(struct stratix10_
- 			p_data->flag = ct->flags;
- 		}
- 	} else {
-+		guard(mutex)(&svc_mem_lock);
- 		list_for_each_entry(p_mem, &svc_data_mem, node)
- 			if (p_mem->vaddr == p_msg->payload) {
- 				p_data->paddr = p_mem->paddr;
-@@ -1078,6 +1087,7 @@ void *stratix10_svc_allocate_memory(stru
- 	if (!pmem)
- 		return ERR_PTR(-ENOMEM);
+@@ -58,4 +64,10 @@ static inline bool housekeeping_cpu(int cpu, enum hk_type type)
+ 	return true;
+ }
  
-+	guard(mutex)(&svc_mem_lock);
- 	va = gen_pool_alloc(genpool, s);
- 	if (!va)
- 		return ERR_PTR(-ENOMEM);
-@@ -1106,6 +1116,7 @@ EXPORT_SYMBOL_GPL(stratix10_svc_allocate
- void stratix10_svc_free_memory(struct stratix10_svc_chan *chan, void *kaddr)
- {
- 	struct stratix10_svc_data_mem *pmem;
-+	guard(mutex)(&svc_mem_lock);
- 
- 	list_for_each_entry(pmem, &svc_data_mem, node)
- 		if (pmem->vaddr == kaddr) {
++static inline bool cpu_is_isolated(int cpu)
++{
++	return !housekeeping_test_cpu(cpu, HK_TYPE_DOMAIN) ||
++		 !housekeeping_test_cpu(cpu, HK_TYPE_TICK);
++}
++
+ #endif /* _LINUX_SCHED_ISOLATION_H */
+-- 
+2.51.0
+
 
 
 
