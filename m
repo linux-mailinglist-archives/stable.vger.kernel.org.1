@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F380D0A181
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:58:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C7F56D099A6
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C654312B7CC
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:51:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB62030A36FB
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58BA835C19A;
-	Fri,  9 Jan 2026 12:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D59D26ED41;
+	Fri,  9 Jan 2026 12:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T0OdplOz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QahODZqp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE5335BDB2;
-	Fri,  9 Jan 2026 12:50:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6198A303C87;
+	Fri,  9 Jan 2026 12:23:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963027; cv=none; b=u5bGByrBCcy5xa9ndrjyuXyvNdJdFj8LPdDyHS55lW6VWRHZ0cBkwF8SIv16hit1eV9eu43WY8ziRmguGWj9H8yfUrgFwAxzpn/Pjs+kESnomA3fKJPq6fV1wzbpIl25eUluOATnKH14OL8AWt5F9S/6iMYEYppHzYre40+EjBs=
+	t=1767961409; cv=none; b=XH5FlNuPueBrio/FxS8cvtZ2AbUKEjxy5q5N69dy9w0D5sK1RgmKzyO2UN73VR/FVOyIHSos1+jhAmQOXe51qXkqy/VpK2dSj2tICkAIXmQAXcVms6Ej+gOtfaU/ABc/fcl69u+RoC6lhH6/lvBf4qUnSz4kWLWUWvmOMuj/WqM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963027; c=relaxed/simple;
-	bh=wAKz5j7jCuUv2k7V0ONEfPx0jdxvGxEtLsb5lttMAfI=;
+	s=arc-20240116; t=1767961409; c=relaxed/simple;
+	bh=nHEEOiOal034vzwrP0Xwgau0Fns2xUojiJjLRavDIlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kZtdz9EsTdD3vzvEiHjflcGp9kOVf0QTIcJDwS/NHlHBUL4HjUaHSG1CIOStPZxiObr2mckv7gFcFDHPinLstjr59/vNML7vrKRhzOuqGICBHN/jGLLi4ISsat0fn5ztX/7IbWKKZwSDYHcjNY7OIJldZiAL8hCjKJFltkIMsCo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T0OdplOz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 864BFC4CEF1;
-	Fri,  9 Jan 2026 12:50:26 +0000 (UTC)
+	 MIME-Version; b=eskNhQ/g/xIE9/ClNaxrV1InnirFWsfZYW5QDWoXvKrZM2C08XGBCiewAg/8bKvIKVWSlc4QFWf31TMvK9jGsmk4Cik0MlXAvVIyl2eXffr4xtGb7r21zwoZ1XQWC/0ISPQmiRi4wy6OL/fPllG+EnPQPbGapFOgarToTKJ1obQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QahODZqp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9181C4CEF1;
+	Fri,  9 Jan 2026 12:23:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767963026;
-	bh=wAKz5j7jCuUv2k7V0ONEfPx0jdxvGxEtLsb5lttMAfI=;
+	s=korg; t=1767961409;
+	bh=nHEEOiOal034vzwrP0Xwgau0Fns2xUojiJjLRavDIlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T0OdplOzOEdXLQB0ooVV+5fJZrTsdzkN9P5wqehn6eLeGHM4uEJ28KPCHXDdXT4sG
-	 G+4xDu5RdZPjybZHR7oYB6uR4rRyHW0PD2PoYynX7j/3e4pJmLDxjzM+LTkht49Fhb
-	 sbCfwNaocShMGoh2MbLtpzL6AvH3ahObJMebNLtw=
+	b=QahODZqpgTKQ3+6Ngv6c/XPEyYRWWrGAzCmV+z1TNRefoDyt5CYdcN51Wq+ANrn9H
+	 o26fC8yf3maofKsibXB+QSzzE2N0vc95fCAbUrMgF36wqCEbIUJO4Sx9LweCc9NGk5
+	 fEtoyt7h7IkQQ/opJakSQ98LQNqutWXoMA6prYNU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Takashi Iwai <tiwai@suse.de>,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 572/634] ASoC: stm: stm32_sai_sub: Convert to platform remove callback returning void
-Date: Fri,  9 Jan 2026 12:44:10 +0100
-Message-ID: <20260109112139.130729675@linuxfoundation.org>
+	Jakub Kicinski <kuba@kernel.org>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Wen Yang <wen.yang@linux.dev>
+Subject: [PATCH 6.6 712/737] net: Remove conditional threaded-NAPI wakeup based on task state.
+Date: Fri,  9 Jan 2026 12:44:11 +0100
+Message-ID: <20260109112200.859495184@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +59,87 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit a3bd37e2e2bce4fb1757a940fa985d556662ba80 ]
+commit 56364c910691f6d10ba88c964c9041b9ab777bd6 upstream.
 
-The .remove() callback for a platform driver returns an int which makes
-many driver authors wrongly assume it's possible to do error handling by
-returning an error code. However the value returned is (mostly) ignored
-and this typically results in resource leaks. To improve here there is a
-quest to make the remove callback return void. In the first step of this
-quest all drivers are converted to .remove_new() which already returns
-void.
+A NAPI thread is scheduled by first setting NAPI_STATE_SCHED bit. If
+successful (the bit was not yet set) then the NAPI_STATE_SCHED_THREADED
+is set but only if thread's state is not TASK_INTERRUPTIBLE (is
+TASK_RUNNING) followed by task wakeup.
 
-Trivially convert this driver from always returning zero in the remove
-callback to the void returning variant.
+If the task is idle (TASK_INTERRUPTIBLE) then the
+NAPI_STATE_SCHED_THREADED bit is not set. The thread is no relying on
+the bit but always leaving the wait-loop after returning from schedule()
+because there must have been a wakeup.
 
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Acked-by: Takashi Iwai <tiwai@suse.de>
-Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20230315150745.67084-139-u.kleine-koenig@pengutronix.de
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 23261f0de094 ("ASoC: stm32: sai: fix OF node leak on probe")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The smpboot-threads implementation for per-CPU threads requires an
+explicit condition and does not support "if we get out of schedule()
+then there must be something to do".
+
+Removing this optimisation simplifies the following integration.
+
+Set NAPI_STATE_SCHED_THREADED unconditionally on wakeup and rely on it
+in the wait path by removing the `woken' condition.
+
+Acked-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Wen Yang <wen.yang@linux.dev>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_sai_sub.c |    6 ++----
- 1 file changed, 2 insertions(+), 4 deletions(-)
+ net/core/dev.c |   14 ++------------
+ 1 file changed, 2 insertions(+), 12 deletions(-)
 
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1570,7 +1570,7 @@ err_unprepare_pclk:
- 	return ret;
- }
+--- a/net/core/dev.c
++++ b/net/core/dev.c
+@@ -4526,13 +4526,7 @@ static inline void ____napi_schedule(str
+ 		 */
+ 		thread = READ_ONCE(napi->thread);
+ 		if (thread) {
+-			/* Avoid doing set_bit() if the thread is in
+-			 * INTERRUPTIBLE state, cause napi_thread_wait()
+-			 * makes sure to proceed with napi polling
+-			 * if the thread is explicitly woken from here.
+-			 */
+-			if (READ_ONCE(thread->__state) != TASK_INTERRUPTIBLE)
+-				set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
++			set_bit(NAPI_STATE_SCHED_THREADED, &napi->state);
+ 			wake_up_process(thread);
+ 			return;
+ 		}
+@@ -6688,8 +6682,6 @@ static int napi_poll(struct napi_struct
  
--static int stm32_sai_sub_remove(struct platform_device *pdev)
-+static void stm32_sai_sub_remove(struct platform_device *pdev)
+ static int napi_thread_wait(struct napi_struct *napi)
  {
- 	struct stm32_sai_sub_data *sai = dev_get_drvdata(&pdev->dev);
- 
-@@ -1578,8 +1578,6 @@ static int stm32_sai_sub_remove(struct p
- 	snd_dmaengine_pcm_unregister(&pdev->dev);
- 	snd_soc_unregister_component(&pdev->dev);
- 	pm_runtime_disable(&pdev->dev);
+-	bool woken = false;
 -
--	return 0;
- }
+ 	set_current_state(TASK_INTERRUPTIBLE);
  
- #ifdef CONFIG_PM_SLEEP
-@@ -1629,7 +1627,7 @@ static struct platform_driver stm32_sai_
- 		.pm = &stm32_sai_sub_pm_ops,
- 	},
- 	.probe = stm32_sai_sub_probe,
--	.remove = stm32_sai_sub_remove,
-+	.remove_new = stm32_sai_sub_remove,
- };
+ 	while (!kthread_should_stop()) {
+@@ -6698,15 +6690,13 @@ static int napi_thread_wait(struct napi_
+ 		 * Testing SCHED bit is not enough because SCHED bit might be
+ 		 * set by some other busy poll thread or by napi_disable().
+ 		 */
+-		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state) || woken) {
++		if (test_bit(NAPI_STATE_SCHED_THREADED, &napi->state)) {
+ 			WARN_ON(!list_empty(&napi->poll_list));
+ 			__set_current_state(TASK_RUNNING);
+ 			return 0;
+ 		}
  
- module_platform_driver(stm32_sai_sub_driver);
+ 		schedule();
+-		/* woken being true indicates this thread owns this napi. */
+-		woken = true;
+ 		set_current_state(TASK_INTERRUPTIBLE);
+ 	}
+ 	__set_current_state(TASK_RUNNING);
 
 
 
