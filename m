@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-207087-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1CFDBD098E9
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:24:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D77CD09A46
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:29:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 83DE6310D152
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1761930AB1DA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:17:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0B382FD699;
-	Fri,  9 Jan 2026 12:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AECA6224D6;
+	Fri,  9 Jan 2026 12:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oTmRIo45"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zM9KTtkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83644224D6;
-	Fri,  9 Jan 2026 12:17:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 723872737EE;
+	Fri,  9 Jan 2026 12:17:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961053; cv=none; b=tm2y93lNerX868bKtC8SCEkJBdspD/CIHPMUFUv/GDqFpIb+XsATpPpHxDr4ToTNrCPrj6dRVXAs6XLqIlEdvGJUhsxehFxdgiaLBCXwCj9uDteu5sk063f/XB4nBabfWs54WeSAu7UOSr0cIS+8dCEyw+IVs9lM1pwE40SnWe4=
+	t=1767961059; cv=none; b=d8s0qqULl8LZqg2zEaAohSL2URC3aMs5K/TAT0BML9f3hdEftNGzUUxydScTpD+nUxlXGtpu7tiJ2BO49UYkacEf/sFqzglTxBiA4iAXnBC5zlMNb4KgthHihexMRMOajQu7f4p0k7eegF7T00zHSgRR5Lhib3OwfOP2zswYT04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961053; c=relaxed/simple;
-	bh=6UADEA1sC0nV8Vxf0FLWj0k8gqvMEhQtwyXWQ5EaXdg=;
+	s=arc-20240116; t=1767961059; c=relaxed/simple;
+	bh=LQwO7B3SlV9PyhSTOceCGDTm9c15SnzB4cARyc2CcFI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WZbA8oXrkGLExIBthCf/yEsHkm2Lwz8A7/NSQC/u3Yn6FTNEvD2Mvuj7odJpaze8Myqs50zpQ2Y0Fk5GHYk5kI9Vb3/VW63R5xbklRnyHHfyKhlx2skUHMRMExIafKGIjdet40M2Qu5ObUb7THAHGAHlV1Hs0sD26sx6gHkJh4w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oTmRIo45; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10246C4CEF1;
-	Fri,  9 Jan 2026 12:17:32 +0000 (UTC)
+	 MIME-Version; b=r50tGv44aJR6qX77MJVBXf6df0UxxM1DrOtnYDXvMjl/XnZItiOdG3OeiUcQw9jZ0saRVLhmSUdsCPyq4OsaRDeZsFAeUcB8S8S+uKS19wjBoV82H3GjLXybh5qTivasCT25qC9vxIryO+fzij89bzhY5V9jDRq/jXd7ZaiGibk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zM9KTtkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F05DBC16AAE;
+	Fri,  9 Jan 2026 12:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961053;
-	bh=6UADEA1sC0nV8Vxf0FLWj0k8gqvMEhQtwyXWQ5EaXdg=;
+	s=korg; t=1767961059;
+	bh=LQwO7B3SlV9PyhSTOceCGDTm9c15SnzB4cARyc2CcFI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oTmRIo45Ase4v+lEgbbh3wubryoqcHeq3AA+KE0YtQhoAZz5E3pm1L3IAeK57lcNa
-	 lUZuqA1VOQT0gEHRTiXS7Un/9k0wYNoE2tJz0NASjVTU4HmCNSnPNxu9pEohEcJkp1
-	 mL5fDsI+jTfnwhpdDoAx7Q6AafzUbXQVGDLUoURw=
+	b=zM9KTtkD9bVkwpRe4QJbL72u9IlmfAi4KbZJKwD/REnES3UXZg6Qzq3f4bnBkXGZP
+	 mVzVPh3XOdtRGTQTxVUWHWEj/f6QkhKO7l/Gbyde0IercLrhbG6BBK3ZxMjZ5HS33r
+	 4duSwo56VzlPvlsunkBRqXe7MkR7LYmT2UmSmyDA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Stefan Christ <contact@stefanchrist.eu>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>
-Subject: [PATCH 6.6 619/737] drm/gma500: Remove unused helper psb_fbdev_fb_setcolreg()
-Date: Fri,  9 Jan 2026 12:42:38 +0100
-Message-ID: <20260109112157.288275284@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Markus Schneider-Pargmann <msp@baylibre.com>,
+	CK Hu <ck.hu@mediatek.com>,
+	Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Subject: [PATCH 6.6 620/737] drm/mediatek: Fix device node reference leak in mtk_dp_dt_parse()
+Date: Fri,  9 Jan 2026 12:42:39 +0100
+Message-ID: <20260109112157.326373418@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
 References: <20260109112133.973195406@linuxfoundation.org>
@@ -66,98 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit be729f9de6c64240645dc80a24162ac4d3fe00a8 upstream.
+commit a846505a193d7492ad3531e33cacfca31e4bcdd1 upstream.
 
-Remove psb_fbdev_fb_setcolreg(), which hasn't been called in almost
-a decade.
+The function mtk_dp_dt_parse() calls of_graph_get_endpoint_by_regs()
+to get the endpoint device node, but fails to call of_node_put() to release
+the reference when the function returns. This results in a device node
+reference leak.
 
-Gma500 commit 4d8d096e9ae8 ("gma500: introduce the framebuffer support
-code") added the helper psb_fbdev_fb_setcolreg() for setting the fbdev
-palette via fbdev's fb_setcolreg callback. Later
-commit 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for
-fb_ops") set several default helpers for fbdev emulation, including
-fb_setcmap.
+Fix this by adding the missing of_node_put() call before returning from
+the function.
 
-The fbdev subsystem always prefers fb_setcmap over fb_setcolreg. [1]
-Hence, the gma500 code is no longer in use and gma500 has been using
-drm_fb_helper_setcmap() for several years without issues.
+Found via static analysis and code review.
 
-Fixes: 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for fb_ops")
-Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Cc: Stefan Christ <contact@stefanchrist.eu>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.10+
-Link: https://elixir.bootlin.com/linux/v6.16.9/source/drivers/video/fbdev/core/fbcmap.c#L246 # [1]
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://lore.kernel.org/r/20250929082338.18845-1-tzimmermann@suse.de
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20251029072307.10955-1-linmq006@gmail.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/fbdev.c |   43 -----------------------------------------
- 1 file changed, 43 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/gpu/drm/gma500/fbdev.c
-+++ b/drivers/gpu/drm/gma500/fbdev.c
-@@ -51,48 +51,6 @@ static const struct vm_operations_struct
-  * struct fb_ops
-  */
- 
--#define CMAP_TOHW(_val, _width) ((((_val) << (_width)) + 0x7FFF - (_val)) >> 16)
--
--static int psb_fbdev_fb_setcolreg(unsigned int regno,
--				  unsigned int red, unsigned int green,
--				  unsigned int blue, unsigned int transp,
--				  struct fb_info *info)
--{
--	struct drm_fb_helper *fb_helper = info->par;
--	struct drm_framebuffer *fb = fb_helper->fb;
--	uint32_t v;
--
--	if (!fb)
--		return -ENOMEM;
--
--	if (regno > 255)
--		return 1;
--
--	red = CMAP_TOHW(red, info->var.red.length);
--	blue = CMAP_TOHW(blue, info->var.blue.length);
--	green = CMAP_TOHW(green, info->var.green.length);
--	transp = CMAP_TOHW(transp, info->var.transp.length);
--
--	v = (red << info->var.red.offset) |
--	    (green << info->var.green.offset) |
--	    (blue << info->var.blue.offset) |
--	    (transp << info->var.transp.offset);
--
--	if (regno < 16) {
--		switch (fb->format->cpp[0] * 8) {
--		case 16:
--			((uint32_t *) info->pseudo_palette)[regno] = v;
--			break;
--		case 24:
--		case 32:
--			((uint32_t *) info->pseudo_palette)[regno] = v;
--			break;
--		}
--	}
--
--	return 0;
--}
--
- static int psb_fbdev_fb_mmap(struct fb_info *info, struct vm_area_struct *vma)
- {
- 	if (vma->vm_pgoff != 0)
-@@ -137,7 +95,6 @@ static const struct fb_ops psb_fbdev_fb_
- 	.owner = THIS_MODULE,
- 	__FB_DEFAULT_IOMEM_OPS_RDWR,
- 	DRM_FB_HELPER_DEFAULT_OPS,
--	.fb_setcolreg = psb_fbdev_fb_setcolreg,
- 	__FB_DEFAULT_IOMEM_OPS_DRAW,
- 	.fb_mmap = psb_fbdev_fb_mmap,
- 	.fb_destroy = psb_fbdev_fb_destroy,
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -1969,6 +1969,7 @@ static int mtk_dp_dt_parse(struct mtk_dp
+ 	endpoint = of_graph_get_endpoint_by_regs(pdev->dev.of_node, 1, -1);
+ 	len = of_property_count_elems_of_size(endpoint,
+ 					      "data-lanes", sizeof(u32));
++	of_node_put(endpoint);
+ 	if (len < 0 || len > 4 || len == 3) {
+ 		dev_err(dev, "invalid data lane size: %d\n", len);
+ 		return -EINVAL;
 
 
 
