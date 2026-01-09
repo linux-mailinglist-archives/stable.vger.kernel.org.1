@@ -1,160 +1,118 @@
-Return-Path: <stable+bounces-207854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207856-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC780D0A1B0
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:10 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FA7DD0A2D4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:05:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4CB91302951C
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:59:10 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D90CC304D5C5
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F0AA35B14E;
-	Fri,  9 Jan 2026 12:59:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C554935BDBC;
+	Fri,  9 Jan 2026 13:01:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b="I3mjoDDT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i/ATWbT4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f65.google.com (mail-dl1-f65.google.com [74.125.82.65])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3F4435B12B
-	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 12:59:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.65
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A2E335971E;
+	Fri,  9 Jan 2026 13:01:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767963549; cv=none; b=N1eeAOuKd1vi8uYZVDyxVjfrIefGWFQoztlvJwvaSCAVM/nR4htEubmVSvJ3uDUfgTyk+VqeqORoJIgC+197T0CivverWvDCIVK6er0kDCE5hjJDckdANijJiDMbEcU1KnCn5DpMUE/PGd2VepApgXyy8q+NSI5A0kCKL00rb20=
+	t=1767963699; cv=none; b=IW/eDHzKRTfY/6ev4LwoLinTbZEyykcvLIifTWasecZAtU/ibbF7NRcXJYKlj9GmvelEAOCC3+wee+qpFY4x3ZEg5kbX9b+9vJcCAJ9ivL9bolOlz1EYy4RvNfTGfNfxhWrV4gIXoA8xF8InwqOcVP9azHtQK6vkRFWojj5AdMU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767963549; c=relaxed/simple;
-	bh=CHm0TspS7vT2csC3+LY77lroXDQwzl4TCYOYo/JP5lM=;
-	h=Content-Type:MIME-Version:Subject:From:To:Cc:Date:Message-ID; b=dUNMEMpd8TUzUD58MlW/LGLM1/oNeqrR/zqeIgeh5tD2bcJCXZ5CC7gOXkbEjMiBCmxnO/RN5UYqaty9WJeh2IT+POMKYh+1kRuJk6NmLjOms1ZftHS6GQDkrN3RBUPlKiYaGAmm18G23mHErtbXwA1Dgg+lYWRORsRGBMqCggw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org; spf=none smtp.mailfrom=kernelci.org; dkim=pass (2048-bit key) header.d=kernelci-org.20230601.gappssmtp.com header.i=@kernelci-org.20230601.gappssmtp.com header.b=I3mjoDDT; arc=none smtp.client-ip=74.125.82.65
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernelci.org
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=kernelci.org
-Received: by mail-dl1-f65.google.com with SMTP id a92af1059eb24-11f36012fb2so5248446c88.1
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 04:59:07 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1767963547; x=1768568347; darn=vger.kernel.org;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=q3tB//z5OTYgzFfI8JIq4G8PuLc/mV/hvIVq5dak6FM=;
-        b=I3mjoDDTn8SM1Ce+eb2uJlohYxu7hTHzapYGP8maA1GR9l+JXTyouo5yDhK9P575qG
-         +9Jgba1sotSSsauleQx61uP3KxpVwqUelxc+SxtErCDZZUIchu0dGjmdBh6lbDNAMNsQ
-         sf8zX6HYwEypWAPuYT08HHkS4NcSNMNUXGDt9MLGU5ZdYWpvtlEQTnRgjLIf8OKS1/f2
-         kSVFSusmpYUEBV0/8dpV5l1X5r3yqTPdUgMp+pT5/rKG6KSoHccBl29fkTBGHUA8SMAW
-         hk3ZZn8sJm8utpK5LskWLX8dUROniR3sn6XMUIsreIjDLBeoJvnNPH8dlA7JN+HpnNap
-         vzAw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1767963547; x=1768568347;
-        h=message-id:date:reply-to:cc:to:from:subject
-         :content-transfer-encoding:mime-version:x-gm-gg:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=q3tB//z5OTYgzFfI8JIq4G8PuLc/mV/hvIVq5dak6FM=;
-        b=SYviGQ4CpNC7gp8qX5XSyPdLc+Cjixkx0yGBuA6JvnoU3+aU3ynyQjdQE5Tmd9RfnA
-         Q9OIkChfjXLqB+pnaeDBLbHiKqurecAX/xxbGsXeR72OFCeDYNRv4qofmHXfv5svtHNk
-         LumT4Ux3uO+wqRvXBEIjV1xNdxTMpFjtGT+uNITVTrot4wO+llsj/l566w7hOod8bUi1
-         bjjV/NuGDVCWNnYfdiF+P0LRPt/fZeRfnsu+M+bFeeOVwDG7S3GegKyyuU+38Y//6cFK
-         SLXVuW71rbKEUxgakIVx0seEtrrDgr49J6r1HZNGh3Ima69UsWZCdNG5Jap1ta17yoQn
-         x7UA==
-X-Forwarded-Encrypted: i=1; AJvYcCVrCuK4B/TQ2RXvNy4OtlZ/OqWmc2aR9iCXBMGrWUFM9J200eObqV6udcwgU/efNXkgrl2PFLU=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yw2g9npbLTL2n17iH+ypRVJfVdRO6z/KjV9PHFw/dT+lQKwMRwO
-	JUhpvSm8mDvkoPYBgAdfV6mzyE4K57ZRVR27YVxWZOFrp2XEN62ABe20f32tpqwkMavk0cbopxp
-	Fa9ega4Q=
-X-Gm-Gg: AY/fxX6iCOCN6BIm17LyHeHDK39ERlXILSoQytbDsU+mNlG6eE3dYNyCX1hrdtNX7WG
-	4tiVFUciVQo8EWP02C8QfZd/linXFGv35p/Av6TfL0qfsmAgcBotm31zu68MMsQVNTbaX+WLSh9
-	NPhn91sMZMJtPeggrEIhVyR7nZKgOHvdMLyt9hKccgJ35hFfj7iQahJxeAzG46SZfQCqa6RbRWh
-	VCYsIxXv6YJpLXff5u2fHCZ6e9+WNoqG9JrRov7Hruza9LMPwKUNI1hLpdRrjmmYC5rIz6ubvD/
-	UR+zvLoUabK079EVAullnx7Fbb81d53xesNkpyT2zTsGH6Fie9uFiAJRbLrKrBEHeIThdtLdngk
-	H8yIfwir3CWjU/c9dHxKKAxACTnhU+JXX1c/Cbii2GKCb58TFrYHPSWWmtsPRd2AW3YmZL411qJ
-	i121gk
-X-Google-Smtp-Source: AGHT+IHvjF6joylTacAbmq/e2+d+9mDs2swlma5Pqg01Bcgxl6zS6g0LqwI+jEMqMFKemyqBUV3+Tw==
-X-Received: by 2002:a05:7022:248f:b0:11b:a514:b63e with SMTP id a92af1059eb24-121f8adce39mr8418634c88.14.1767963546915;
-        Fri, 09 Jan 2026 04:59:06 -0800 (PST)
-Received: from 1c5061884604 ([20.38.40.137])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-121f243f743sm13563379c88.8.2026.01.09.04.59.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 09 Jan 2026 04:59:06 -0800 (PST)
-Content-Type: text/plain; charset="utf-8"
+	s=arc-20240116; t=1767963699; c=relaxed/simple;
+	bh=k5A3WMP1tURQUV8YTaLgX8u93ATym8rJbdZ7P43xNSw=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=k7mLhttfnEc0kqRSfyuUBqYF+iAvR6xEPNZzD3Rxem3U1Ylq3v2e/pduU3ofZOF5RWtSvWoMEqkIMpCgRTKTO+Kx2ppT/o0bkibpfOQHa9w4n/GL9ZW9hWakszCL3JNyyrMko5z9chbJpWR0kSIgbrOm6PWh73TXhonW8gSFP9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i/ATWbT4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04D74C4CEF1;
+	Fri,  9 Jan 2026 13:01:38 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1767963699;
+	bh=k5A3WMP1tURQUV8YTaLgX8u93ATym8rJbdZ7P43xNSw=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=i/ATWbT4prdWjG98CYbmVw4tjZj8UEN6+C/3ltLVWXA65MLd6pxISSDlNezIHUwr2
+	 jQTXs0dwgYMk4IIekeuci2aI818BWvkL8ipzg1B4vrRPDXJk56gu8sQ+AV36JdIe98
+	 ukG4QEVdWJHW/g9u5+ndhqfp569jMmcj9GuNtWzM=
+Date: Fri, 9 Jan 2026 14:00:28 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: =?iso-8859-1?Q?G=FCnther?= Noack <gnoack@google.com>
+Cc: Filipe =?iso-8859-1?Q?La=EDns?= <lains@riseup.net>,
+	Bastien Nocera <hadess@hadess.net>, Jiri Kosina <jikos@kernel.org>,
+	Benjamin Tissoires <bentiss@kernel.org>, stable@vger.kernel.org,
+	linux-input@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH v2] HID: logitech-hidpp: Check maxfield in
+ hidpp_get_report_length()
+Message-ID: <2026010909-trapped-kindly-1cdf@gregkh>
+References: <20260109122557.3166556-3-gnoack@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7bit
-Subject: [REGRESSION] stable-rc/linux-5.10.y: (build) use of undeclared
- identifier
- '__free_device_node'; did you mean '_...
-From: KernelCI bot <bot@kernelci.org>
-To: kernelci-results@groups.io
-Cc: gus@collabora.com, stable@vger.kernel.org
-Reply-To: kernelci@lists.linux.dev
-Date: Fri, 09 Jan 2026 12:59:06 -0000
-Message-ID: <176796354572.952.11109816492206296711@1c5061884604>
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20260109122557.3166556-3-gnoack@google.com>
+
+On Fri, Jan 09, 2026 at 01:25:58PM +0100, Günther Noack wrote:
+> Do not crash when a report has no fields.
+> 
+> Fake USB gadgets can send their own HID report descriptors and can define report
+> structures without valid fields.  This can be used to crash the kernel over USB.
+> 
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Günther Noack <gnoack@google.com>
+> ---
+>  drivers/hid/hid-logitech-hidpp.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitech-hidpp.c
+> index 9ced0e4d46ae..c5e132a6c085 100644
+> --- a/drivers/hid/hid-logitech-hidpp.c
+> +++ b/drivers/hid/hid-logitech-hidpp.c
+> @@ -4313,7 +4313,7 @@ static int hidpp_get_report_length(struct hid_device *hdev, int id)
+>  
+>  	re = &(hdev->report_enum[HID_OUTPUT_REPORT]);
+>  	report = re->report_id_hash[id];
+> -	if (!report)
+> +	if (!report || !report->maxfield)
+>  		return 0;
+>  
+>  	return report->field[0]->report_count + 1;
+> -- 
+> 2.52.0.457.g6b5491de43-goog
+> 
 
 
+Hi,
 
+This is the friendly patch-bot of Greg Kroah-Hartman.  You have sent him
+a patch that has triggered this response.  He used to manually respond
+to these common problems, but in order to save his sanity (he kept
+writing the same thing over and over, yet to different people), I was
+created.  Hopefully you will not take offence and will fix the problem
+in your patch and resubmit it so that it can be accepted into the Linux
+kernel tree.
 
+You are receiving this message because of the following common error(s)
+as indicated below:
 
-Hello,
+- This looks like a new version of a previously submitted patch, but you
+  did not list below the --- line any changes from the previous version.
+  Please read the section entitled "The canonical patch format" in the
+  kernel file, Documentation/process/submitting-patches.rst for what
+  needs to be done here to properly describe this.
 
-New build issue found on stable-rc/linux-5.10.y:
+If you wish to discuss this problem further, or you have questions about
+how to resolve this issue, please feel free to respond to this email and
+Greg will reply once he has dug out from the pending patches received
+from other developers.
 
----
- use of undeclared identifier '__free_device_node'; did you mean '__free_device_del'? in drivers/soc/imx/gpc.o (drivers/soc/imx/gpc.c) [logspec:kbuild,kbuild.compiler.error]
----
+thanks,
 
-- dashboard: https://d.kernelci.org/i/maestro:998dfbb422b4d80c9d4f6176e9c36655d3481e74
-- giturl: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-- commit HEAD:  c4fc4bf97778e67ad01a3ca95dd8fbb05f226590
-
-
-Please include the KernelCI tag when submitting a fix:
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-
-
-Log excerpt:
-=====================================================
-drivers/soc/imx/gpc.c:408:31: error: use of undeclared identifier '__free_device_node'; did you mean '__free_device_del'?
-  408 |         struct device_node *pgc_node __free(device_node)
-      |                                      ^~~~~~~~~~~~~~~~~~~
-./include/linux/cleanup.h:40:33: note: expanded from macro '__free'
-   40 | #define __free(_name)   __cleanup(__free_##_name)
-      |                                   ^~~~~~~~~~~~~~
-<scratch space>:216:1: note: expanded from here
-  216 | __free_device_node
-      | ^~~~~~~~~~~~~~~~~~
-./include/linux/device.h:834:1: note: '__free_device_del' declared here
-  834 | DEFINE_FREE(device_del, struct device *, if (_T) device_del(_T))
-      | ^
-./include/linux/cleanup.h:38:21: note: expanded from macro 'DEFINE_FREE'
-   38 |         static inline void __free_##_name(void *p) { _type _T = *(_type *)p; _free; }
-      |                            ^
-<scratch space>:165:1: note: expanded from here
-  165 | __free_device_del
-      | ^
-1 error generated.
-
-=====================================================
-
-
-# Builds where the incident occurred:
-
-## defconfig+allmodconfig+CONFIG_FRAME_WARN=2048 on (arm):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm-allmodconfig-6960eee4cbfd84c3cde53db8/.config
-- dashboard: https://d.kernelci.org/build/maestro:6960eee4cbfd84c3cde53db8
-
-## multi_v7_defconfig on (arm):
-- compiler: clang-21
-- config: https://files.kernelci.org/kbuild-clang-21-arm-6960eee4cbfd84c3cde53db5/.config
-- dashboard: https://d.kernelci.org/build/maestro:6960eee4cbfd84c3cde53db5
-
-
-#kernelci issue maestro:998dfbb422b4d80c9d4f6176e9c36655d3481e74
-
---
-This is an experimental report format. Please send feedback in!
-Talk to us at kernelci@lists.linux.dev
-
-Made with love by the KernelCI team - https://kernelci.org
+greg k-h's patch email bot
 
