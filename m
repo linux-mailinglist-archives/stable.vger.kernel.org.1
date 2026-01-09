@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-206917-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207519-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5268CD095D2
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:12:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B4B5D0A006
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:50:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6E382303278D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2BA5E3140FAA
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:38:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1101B359FB6;
-	Fri,  9 Jan 2026 12:09:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0D93935B156;
+	Fri,  9 Jan 2026 12:38:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ifEc3Mp/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EjSeRK9t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5EA8359FBE;
-	Fri,  9 Jan 2026 12:09:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1A7C35B138;
+	Fri,  9 Jan 2026 12:38:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960567; cv=none; b=caXaLSH3pGnD6j1wq53bnw25sjuZr8kMEXhiNr7zZARp1NO2+5opFPh+VI4ZI5W60N4N509WrLkj4Whs5puJbU9D8ZN0kcaEcfdmjJ0ESlgSAvVRAQCVixkQEI/CcaWf/qgoXhs7Kxf7x1CkMRC31pjxeYjjtN3SLrjk2BStcLA=
+	t=1767962284; cv=none; b=ECQ2fsMk+FH9DvQe0z31S8LYm7p5hmwNvLtZFYDOoXFJiciRrYJb9GbbBCJj13VEDmBcoTCfb6ydKH5fAyXcdq9yho3BqCRv3OXxKTWHZpFu/X5fgaO6ZiqYFUuB6IOVD8U6WEfecTguqaDQetHMPELft0ApTJJB786su+fp318=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960567; c=relaxed/simple;
-	bh=jVUB01N7MbAL74g/eqlxiydNmrvmwpgKgPt/tL3lGfE=;
+	s=arc-20240116; t=1767962284; c=relaxed/simple;
+	bh=cAMeCkK4Sv7H+oDG0DdD5Bej7Awe4UH+eMbx5CxfNsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qxc2+TjcIgPel1UNP3H76cgiEVaUDvtsieBdunTTcVMTp8N9geQmfznkJ8WRakHxffLl7QcMp0YQA7BbrgQ/0sQWz6bt/iN5nMQdLhw/pxJklW81ABtNO8NNjXqgSKjGeUmNYbboP0zU/8Arp+cTOdux+/bLqs8c3e2Ubm5gLDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ifEc3Mp/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5470FC4CEF1;
-	Fri,  9 Jan 2026 12:09:27 +0000 (UTC)
+	 MIME-Version; b=DmiU6LTm2uYx7JHbdCnoESBxXg05BEmZx+RxZ08Bxsq2R5fD5DRb0oj/4oTUgEqZ7GFZJU0818azDaMK33rn28ABCGf4fhwT6raLNSdJfwL/FhHMNEehyDn02QyREwKs26G0HyzPWYj9kDX0MNIiK8+LITivtsRhVnfKgp340Ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EjSeRK9t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49066C19423;
+	Fri,  9 Jan 2026 12:38:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960567;
-	bh=jVUB01N7MbAL74g/eqlxiydNmrvmwpgKgPt/tL3lGfE=;
+	s=korg; t=1767962284;
+	bh=cAMeCkK4Sv7H+oDG0DdD5Bej7Awe4UH+eMbx5CxfNsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ifEc3Mp/ZgXYM6I3k2iC1Uu2LWmSUZPhWwKnokf3ZoF9ThOBbT1RVn0Drc13Z8dZt
-	 U0GXfKTmaNAxZ5K07TrDZP1rC11TfOvgGYdrYGcPt+uVcZNMkocY5M0U91TiTbtuVV
-	 BTuH34Il/8nPUyLE1+06OLXFB4lwhgdrr98PMvng=
+	b=EjSeRK9tcrBHi8mmBaIIDQygn2g8pHkRpbifiM5a70qdtQmi8we+PMVQ4OjShew/3
+	 1IV1vKek9xL72OwELGd5JXtdB/EC2wzZTEr9b7d/VTnvAULuwf+QVduvY9M+wC0bGe
+	 8lTYmbQrDEmrdjz1OhiaLW38atXSdek3GgX/OKoI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Jan Prusakowski <jprusakowski@google.com>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>
-Subject: [PATCH 6.6 449/737] f2fs: ensure node page reads complete before f2fs_put_super() finishes
+	kernel test robot <lkp@intel.com>,
+	Pei Xiao <xiaopei01@kylinos.cn>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 310/634] iio: adc: ti_am335x_adc: Limit step_avg to valid range for gcc complains
 Date: Fri,  9 Jan 2026 12:39:48 +0100
-Message-ID: <20260109112150.886150468@linuxfoundation.org>
+Message-ID: <20260109112129.196872302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Prusakowski <jprusakowski@google.com>
+From: Pei Xiao <xiaopei01@kylinos.cn>
 
-commit 297baa4aa263ff8f5b3d246ee16a660d76aa82c4 upstream.
+[ Upstream commit c9fb952360d0c78bbe98239bd6b702f05c2dbb31 ]
 
-Xfstests generic/335, generic/336 sometimes crash with the following message:
+FIELD_PREP() checks that a value fits into the available bitfield, add a
+check for step_avg to fix gcc complains.
 
-F2FS-fs (dm-0): detect filesystem reference count leak during umount, type: 9, count: 1
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/super.c:1939!
-Oops: invalid opcode: 0000 [#1] SMP NOPTI
-CPU: 1 UID: 0 PID: 609351 Comm: umount Tainted: G        W           6.17.0-rc5-xfstests-g9dd1835ecda5 #1 PREEMPT(none)
-Tainted: [W]=WARN
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-RIP: 0010:f2fs_put_super+0x3b3/0x3c0
-Call Trace:
- <TASK>
- generic_shutdown_super+0x7e/0x190
- kill_block_super+0x1a/0x40
- kill_f2fs_super+0x9d/0x190
- deactivate_locked_super+0x30/0xb0
- cleanup_mnt+0xba/0x150
- task_work_run+0x5c/0xa0
- exit_to_user_mode_loop+0xb7/0xc0
- do_syscall_64+0x1ae/0x1c0
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
- </TASK>
----[ end trace 0000000000000000 ]---
+which gcc complains about:
+  drivers/iio/adc/ti_am335x_adc.c: In function 'tiadc_step_config':
+  include/linux/compiler_types.h:572:38: error: call to
+'__compiletime_assert_491' declared with attribute error: FIELD_PREP: value
+too large for the field include/linux/mfd/ti_am335x_tscadc.h:58:29: note:
+in expansion of macro 'FIELD_PREP'
+    #define STEPCONFIG_AVG(val) FIELD_PREP(GENMASK(4, 2), (val))
+                                ^~~~~~~~~~
+drivers/iio/adc/ti_am335x_adc.c:127:17: note: in expansion of macro 'STEPCONFIG_AVG'
+	stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1)
 
-It appears that sometimes it is possible that f2fs_put_super() is called before
-all node page reads are completed.
-Adding a call to f2fs_wait_on_all_pages() for F2FS_RD_NODE fixes the problem.
-
-Cc: stable@kernel.org
-Fixes: 20872584b8c0b ("f2fs: fix to drop all dirty meta/node pages during umount()")
-Signed-off-by: Jan Prusakowski <jprusakowski@google.com>
-Reviewed-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202510102117.Jqxrw1vF-lkp@intel.com/
+Signed-off-by: Pei Xiao <xiaopei01@kylinos.cn>
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/super.c |   17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+ drivers/iio/adc/ti_am335x_adc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1637,14 +1637,6 @@ static void f2fs_put_super(struct super_
- 		truncate_inode_pages_final(META_MAPPING(sbi));
- 	}
+diff --git a/drivers/iio/adc/ti_am335x_adc.c b/drivers/iio/adc/ti_am335x_adc.c
+index 3ac253a27dd9..109adff1370e 100644
+--- a/drivers/iio/adc/ti_am335x_adc.c
++++ b/drivers/iio/adc/ti_am335x_adc.c
+@@ -124,7 +124,7 @@ static void tiadc_step_config(struct iio_dev *indio_dev)
  
--	for (i = 0; i < NR_COUNT_TYPE; i++) {
--		if (!get_pages(sbi, i))
--			continue;
--		f2fs_err(sbi, "detect filesystem reference count leak during "
--			"umount, type: %d, count: %lld", i, get_pages(sbi, i));
--		f2fs_bug_on(sbi, 1);
--	}
--
- 	f2fs_bug_on(sbi, sbi->fsync_node_num);
+ 		chan = adc_dev->channel_line[i];
  
- 	f2fs_destroy_compress_inode(sbi);
-@@ -1655,6 +1647,15 @@ static void f2fs_put_super(struct super_
- 	iput(sbi->meta_inode);
- 	sbi->meta_inode = NULL;
- 
-+	/* Should check the page counts after dropping all node/meta pages */
-+	for (i = 0; i < NR_COUNT_TYPE; i++) {
-+		if (!get_pages(sbi, i))
-+			continue;
-+		f2fs_err(sbi, "detect filesystem reference count leak during "
-+			"umount, type: %d, count: %lld", i, get_pages(sbi, i));
-+		f2fs_bug_on(sbi, 1);
-+	}
-+
- 	/*
- 	 * iput() can update stat information, if f2fs_write_checkpoint()
- 	 * above failed with error.
+-		if (adc_dev->step_avg[i])
++		if (adc_dev->step_avg[i] && adc_dev->step_avg[i] <= STEPCONFIG_AVG_16)
+ 			stepconfig = STEPCONFIG_AVG(ffs(adc_dev->step_avg[i]) - 1) |
+ 				     STEPCONFIG_FIFO1;
+ 		else
+-- 
+2.51.0
+
 
 
 
