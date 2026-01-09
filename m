@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-207612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207009-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78D5DD0A2B3
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:04:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE6EED09771
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:19:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 069BD3071A85
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:42:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DDDCF30773AC
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:13:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3BEE33C530;
-	Fri,  9 Jan 2026 12:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61B1833B6F1;
+	Fri,  9 Jan 2026 12:13:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kac/+BEF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hvLiIJxS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66A9A1CAB3;
-	Fri,  9 Jan 2026 12:42:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245752EAD10;
+	Fri,  9 Jan 2026 12:13:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962547; cv=none; b=Rg0JIZUjx53cz7pTDvDCwXxVw4LX2A4JsT3emq5pTDs1h64i/MSMdcNqAyMacNCIqSg+XqXOy3Z/1ar7JBMHP+DHP83jGuL4vzNM1fhMbhH2nyEZGgoVQfAIvRaPRPzyY3sDxoin2lMggcFYd81HKK/VM4+yWVYMSqj8C8mjoKw=
+	t=1767960834; cv=none; b=pVIQUSnWbo0jtyx55BdFpddJUGMSTaFrkavdUSjwuxjbMll0qYjMBIG1XVs6o6rVfomrueWa7AqM0X6FYfU/h7H3XlHhQ7c9uY1RtxqH/Ptwi2fpznZ0U4/5pibtMHRW6LuhnyiU+y8eXdqVBd4ShUkbv4Wl/4xwUgSbU25FBCY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962547; c=relaxed/simple;
-	bh=VsBrcQ8OuXTGeSZpWw1SusvdGVGf2q1zvTSN4900wW0=;
+	s=arc-20240116; t=1767960834; c=relaxed/simple;
+	bh=BSTyfSfNsVXkJUaZFS9JY1fG5OehZhSgC16YIErXyu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gEpVNGMIXJC+qUyL7kQIIplp+Igenqtznqhb+aX63v9xEsd2G4rZ07BKQBWspEZHoCkkzLBeJWamL7dBBXbFQSa8qtEZuJDeLtTfF3jacGu1iAzVEPS1hBNsWjNbCDTd1/3KinwfnNMljN7Y1t9fe34p5jG5UmiLnGERMXgNkyQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kac/+BEF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9B6DC4CEF1;
-	Fri,  9 Jan 2026 12:42:26 +0000 (UTC)
+	 MIME-Version; b=MY2gyosaMuVLUTk9GUnRgm4KsPldQPok/4+y7V4t4US8NAskWG9FNtpl+umCxp5I1qzwjhEwxuJm+zMJ3GJGdRdF4zq5x1LsNt7ZyIVRq3qVOR33r30CFLgCnMVY1UAh5gvAncscJbTWshcGz4BkppgPVm8Ir5FcWAQDKk3YW6o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hvLiIJxS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F76C4CEF1;
+	Fri,  9 Jan 2026 12:13:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962547;
-	bh=VsBrcQ8OuXTGeSZpWw1SusvdGVGf2q1zvTSN4900wW0=;
+	s=korg; t=1767960833;
+	bh=BSTyfSfNsVXkJUaZFS9JY1fG5OehZhSgC16YIErXyu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kac/+BEF7IDq7ej+YYfBqJq+L2Wzb7pE54eKUp5ddjL3RklsP6LcCh7JhUhZayaJ/
-	 TNtoHrcQcDASVfqKQ3Et5t2ZIzkeEMLnxnSOfwu0hDR17QZHGMcAPLMS3rcEbWAGDE
-	 nYmycAaj0nz3LnRwnlIrAZxM65hy7yoLkbIKeJR8=
+	b=hvLiIJxSs81Eu4NsEjY6oXRa5/nRpIDLLR86Dexa3fpc81gAb7tfG3wUhR29oIdLD
+	 daFDvedv0h7gBQOtL2c6micoSa4+V0Qdennnl2dgAA44CIUHNC9HagRzKEN0orKk35
+	 XV+K51V1oTtQQE1geFX1uHKcPZ+aGQA6oKTD0hbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 403/634] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
+	olivier moysan <olivier.moysan@st.com>,
+	Wen Yang <yellowriver2010@hotmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.6 542/737] ASoC: stm32: sai: fix device leak on probe
 Date: Fri,  9 Jan 2026 12:41:21 +0100
-Message-ID: <20260109112132.693052327@linuxfoundation.org>
+Message-ID: <20260109112154.383261898@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
+commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
 
-As soon as crypto_aead_encrypt is called, the underlying request
-may be freed by an asynchronous completion.  Thus dereferencing
-req->iv after it returns is invalid.
+Make sure to drop the reference taken when looking up the sync provider
+device and its driver data during DAI probe on probe failures and on
+unbind.
 
-Instead of checking req->iv against info, create a new variable
-unaligned_info and use it for that purpose instead.
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
-Reported-by: Xiumei Mu <xmu@redhat.com>
-Reported-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
+Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
+Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
+Cc: olivier moysan <olivier.moysan@st.com>
+Cc: Wen Yang <yellowriver2010@hotmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/seqiv.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ sound/soc/stm/stm32_sai.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/crypto/seqiv.c b/crypto/seqiv.c
-index b1bcfe537daf..562ab102226a 100644
---- a/crypto/seqiv.c
-+++ b/crypto/seqiv.c
-@@ -51,6 +51,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
- 	struct aead_request *subreq = aead_request_ctx(req);
- 	crypto_completion_t compl;
-+	bool unaligned_info;
- 	void *data;
- 	u8 *info;
- 	unsigned int ivsize = 8;
-@@ -80,8 +81,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 			return err;
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -127,6 +127,7 @@ static int stm32_sai_set_sync(struct stm
  	}
  
--	if (unlikely(!IS_ALIGNED((unsigned long)info,
--				 crypto_aead_alignmask(geniv) + 1))) {
-+	unaligned_info = !IS_ALIGNED((unsigned long)info,
-+				     crypto_aead_alignmask(geniv) + 1);
-+	if (unlikely(unaligned_info)) {
- 		info = kmemdup(req->iv, ivsize, req->base.flags &
- 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
- 			       GFP_ATOMIC);
-@@ -101,7 +103,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
+ 	sai_provider = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!sai_provider) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"SAI sync provider data not found\n");
+@@ -143,7 +144,6 @@ static int stm32_sai_set_sync(struct stm
+ 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
  
- 	err = crypto_aead_encrypt(subreq);
--	if (unlikely(info != req->iv))
-+	if (unlikely(unaligned_info))
- 		seqiv_aead_encrypt_complete2(req, err);
- 	return err;
+ error:
+-	put_device(&pdev->dev);
+ 	of_node_put(np_provider);
+ 	return ret;
  }
--- 
-2.51.0
-
 
 
 
