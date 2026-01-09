@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207389-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C18A3D093DD
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:05:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36A3DD09CBF
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3CEC03021941
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:04:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0CEBC301EF10
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1B04359FBB;
-	Fri,  9 Jan 2026 12:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8AA435B130;
+	Fri,  9 Jan 2026 12:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eG0Rb0h7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LJT+HtAk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9402933CE9A;
-	Fri,  9 Jan 2026 12:04:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1ACF33B6E8;
+	Fri,  9 Jan 2026 12:31:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960294; cv=none; b=sN9nvjGBt4vBF2a1WwoReRuiDGexJ9AlApN/ck7hNfBLx4jqd1WIe2//wo8kKOxOnanQEQwkCw0Qf7W+kZABWjbsVIlqA0SiNtkeX5YqzJBafyTvT2nO0uE914w4uh8/PrdQc7LPTfQEND4FhB0HT0xWmAn7T9eymP3BDIfNLL8=
+	t=1767961916; cv=none; b=lBwkMPr2eN8kWxGS1SnFfSzC6py8t5cnz0KNvrz7UPht/lYSBos8mEoRUFkLRaWeXaBbRrWxSKKJedVAPQhbW7TiKCZxhPCEnk+cElSQcxJJSQkul4GpXSVkLon18rZiu3QafT3XIBzBAZLn2em5nf2RmW2OtxQ8qARZ6+lLAws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960294; c=relaxed/simple;
-	bh=0I6F4CldaZ2RPhT6u7HHZv4WuOsVTLrci2EdzKcU1Rc=;
+	s=arc-20240116; t=1767961916; c=relaxed/simple;
+	bh=RVgOF16LJzt5HiQw/GKzXG36jOUs5rQszP9w6tTtQcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qFJiV7GD6hoCPHCwKyfarOqitEGgaP8gQmijOTGDTyrF55xp0xBuieo/BF4K9fMVcoyBuWmMC8a1mpZ1ey1Y/FGmQEZ8+6hDTr7F26Bk8iyD8di8vZa+Eo49YDYW/ySJ66JK75li2mT2kZC4v5cGUF/pBBYqFAwpgif+XliOt6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eG0Rb0h7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A13EC4CEF1;
-	Fri,  9 Jan 2026 12:04:53 +0000 (UTC)
+	 MIME-Version:Content-Type; b=r8H4E2r07UKO5BqNn7WtCumTLGGRANiKhE58wyTB/F3A80Jx7T3LCZYJImUfuA4mBcFP2B0KfnLWt2hHV4mfyD/Eo16monWs+uQgEs5GEcuxiXmKDl4bhMcsHd2p76BiYKiRgqEE5SXmY08bDiFrtHW3RpfFhU4ABVlSLpT2IWI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LJT+HtAk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13B97C4CEF1;
+	Fri,  9 Jan 2026 12:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960294;
-	bh=0I6F4CldaZ2RPhT6u7HHZv4WuOsVTLrci2EdzKcU1Rc=;
+	s=korg; t=1767961916;
+	bh=RVgOF16LJzt5HiQw/GKzXG36jOUs5rQszP9w6tTtQcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eG0Rb0h7luYYirT/N1s1Xp9ewCZGErEPikZveW7ncmFdeSDGs4ksIYPJZqxn/k6pK
-	 fl9NQH5DNXHwHF3NhT5X5GLcEnqosD7EvK8yVNrOz2TIOs7TcM6+Uhjn78KZjwn4AU
-	 H8oFhplwPh5+FfYiEgfFh6JEUa3dxr2sj3y0eVA0=
+	b=LJT+HtAkQcpNjOp44PslyyJRTcCRfaIG5yK421kAaK+bZnYQF4HwkHmYVMSmnrfP3
+	 Bbh9TlqooVUdBbHDTqUsKrUi/P+WSuV+GxlNlf6y9Drg5q/0yOxt7dPix6YF354bOO
+	 +YZKQno2u09PBYN2EEYukBg2xGuBfHZ8jsGteeLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
+	Xiang Mei <xmei5@asu.edu>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 321/737] hfsplus: fix volume corruption issue for generic/073
+Subject: [PATCH 6.1 182/634] net/sched: sch_cake: Fix incorrect qlen reduction in cake_drop
 Date: Fri,  9 Jan 2026 12:37:40 +0100
-Message-ID: <20260109112146.074701009@linuxfoundation.org>
+Message-ID: <20260109112124.289945563@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,127 +59,158 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit 24e17a29cf7537f0947f26a50f85319abd723c6c ]
+[ Upstream commit 9fefc78f7f02d71810776fdeb119a05a946a27cc ]
 
-The xfstests' test-case generic/073 leaves HFS+ volume
-in corrupted state:
+In cake_drop(), qdisc_tree_reduce_backlog() is used to update the qlen
+and backlog of the qdisc hierarchy. Its caller, cake_enqueue(), assumes
+that the parent qdisc will enqueue the current packet. However, this
+assumption breaks when cake_enqueue() returns NET_XMIT_CN: the parent
+qdisc stops enqueuing current packet, leaving the tree qlen/backlog
+accounting inconsistent. This mismatch can lead to a NULL dereference
+(e.g., when the parent Qdisc is qfq_qdisc).
 
-sudo ./check generic/073
-FSTYP -- hfsplus
-PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
-MKFS_OPTIONS -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+This patch computes the qlen/backlog delta in a more robust way by
+observing the difference before and after the series of cake_drop()
+calls, and then compensates the qdisc tree accounting if cake_enqueue()
+returns NET_XMIT_CN.
 
-generic/073 _check_generic_filesystem: filesystem on /dev/loop51 is inconsistent
-(see XFSTESTS-2/xfstests-dev/results//generic/073.full for details)
+To ensure correct compensation when ACK thinning is enabled, a new
+variable is introduced to keep qlen unchanged.
 
-Ran: generic/073
-Failures: generic/073
-Failed 1 of 1 tests
-
-sudo fsck.hfsplus -d /dev/loop51
-** /dev/loop51
-Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-Executing fsck_hfs (version 540.1-Linux).
-** Checking non-journaled HFS Plus Volume.
-The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-Invalid directory item count
-(It should be 1 instead of 0)
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
-CBTStat = 0x0000 CatStat = 0x00004000
-** Repairing volume.
-** Rechecking volume.
-** Checking non-journaled HFS Plus Volume.
-The volume name is untitled
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume untitled was repaired successfully.
-
-The test is doing these steps on final phase:
-
-mv $SCRATCH_MNT/testdir_1/bar $SCRATCH_MNT/testdir_2/bar
-$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/testdir_1
-$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/foo
-
-So, we move file bar from testdir_1 into testdir_2 folder. It means that HFS+
-logic decrements the number of entries in testdir_1 and increments number of
-entries in testdir_2. Finally, we do fsync only for testdir_1 and foo but not
-for testdir_2. As a result, this is the reason why fsck.hfsplus detects the
-volume corruption afterwards.
-
-This patch fixes the issue by means of adding the
-hfsplus_cat_write_inode() call for old_dir and new_dir in
-hfsplus_rename() after the successful ending of
-hfsplus_rename_cat(). This method makes modification of in-core
-inode objects for old_dir and new_dir but it doesn't save these
-modifications in Catalog File's entries. It was expected that
-hfsplus_write_inode() will save these modifications afterwards.
-However, because generic/073 does fsync only for testdir_1 and foo
-then testdir_2 modification hasn't beed saved into Catalog File's
-entry and it was flushed without this modification. And it was
-detected by fsck.hfsplus. Now, hfsplus_rename() stores in Catalog
-File all modified entries and correct state of Catalog File will
-be flushed during hfsplus_file_fsync() call. Finally, it makes
-fsck.hfsplus happy.
-
-sudo ./check generic/073
-FSTYP         -- hfsplus
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #93 SMP PREEMPT_DYNAMIC Wed Nov 12 14:37:49 PST 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/073 32s ...  32s
-Ran: generic/073
-Passed all 1 tests
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20251112232522.814038-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 15de71d06a40 ("net/sched: Make cake_enqueue return NET_XMIT_CN when past buffer_limit")
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Reviewed-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Link: https://patch.msgid.link/20251128001415.377823-1-xmei5@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/dir.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ net/sched/sch_cake.c | 58 ++++++++++++++++++++++++--------------------
+ 1 file changed, 32 insertions(+), 26 deletions(-)
 
-diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
-index f5c4b3e31a1c2..33154c720a4e9 100644
---- a/fs/hfsplus/dir.c
-+++ b/fs/hfsplus/dir.c
-@@ -552,8 +552,13 @@ static int hfsplus_rename(struct mnt_idmap *idmap,
- 	res = hfsplus_rename_cat((u32)(unsigned long)old_dentry->d_fsdata,
- 				 old_dir, &old_dentry->d_name,
- 				 new_dir, &new_dentry->d_name);
--	if (!res)
-+	if (!res) {
- 		new_dentry->d_fsdata = old_dentry->d_fsdata;
+diff --git a/net/sched/sch_cake.c b/net/sched/sch_cake.c
+index d99e1603c32a6..e4fd66a1c5cd4 100644
+--- a/net/sched/sch_cake.c
++++ b/net/sched/sch_cake.c
+@@ -1608,7 +1608,6 @@ static unsigned int cake_drop(struct Qdisc *sch, struct sk_buff **to_free)
+ 
+ 	__qdisc_drop(skb, to_free);
+ 	sch->q.qlen--;
+-	qdisc_tree_reduce_backlog(sch, 1, len);
+ 
+ 	cake_heapify(q, 0);
+ 
+@@ -1754,14 +1753,14 @@ static void cake_reconfigure(struct Qdisc *sch);
+ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 			struct sk_buff **to_free)
+ {
++	u32 idx, tin, prev_qlen, prev_backlog, drop_id;
+ 	struct cake_sched_data *q = qdisc_priv(sch);
+-	int len = qdisc_pkt_len(skb);
+-	int ret;
++	int len = qdisc_pkt_len(skb), ret;
+ 	struct sk_buff *ack = NULL;
+ 	ktime_t now = ktime_get();
+ 	struct cake_tin_data *b;
+ 	struct cake_flow *flow;
+-	u32 idx, tin;
++	bool same_flow = false;
+ 
+ 	/* choose flow to insert into */
+ 	idx = cake_classify(sch, &b, skb, q->flow_mode, &ret);
+@@ -1834,6 +1833,8 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		consume_skb(skb);
+ 	} else {
+ 		/* not splitting */
++		int ack_pkt_len = 0;
 +
-+		res = hfsplus_cat_write_inode(old_dir);
-+		if (!res)
-+			res = hfsplus_cat_write_inode(new_dir);
+ 		cobalt_set_enqueue_time(skb, now);
+ 		get_cobalt_cb(skb)->adjusted_len = cake_overhead(q, skb);
+ 		flow_queue_add(flow, skb);
+@@ -1844,13 +1845,13 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 		if (ack) {
+ 			b->ack_drops++;
+ 			sch->qstats.drops++;
+-			b->bytes += qdisc_pkt_len(ack);
+-			len -= qdisc_pkt_len(ack);
++			ack_pkt_len = qdisc_pkt_len(ack);
++			b->bytes += ack_pkt_len;
+ 			q->buffer_used += skb->truesize - ack->truesize;
+ 			if (q->rate_flags & CAKE_FLAG_INGRESS)
+ 				cake_advance_shaper(q, b, ack, now, true);
+ 
+-			qdisc_tree_reduce_backlog(sch, 1, qdisc_pkt_len(ack));
++			qdisc_tree_reduce_backlog(sch, 1, ack_pkt_len);
+ 			consume_skb(ack);
+ 		} else {
+ 			sch->q.qlen++;
+@@ -1859,11 +1860,11 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 
+ 		/* stats */
+ 		b->packets++;
+-		b->bytes	    += len;
+-		b->backlogs[idx]    += len;
+-		b->tin_backlog      += len;
+-		sch->qstats.backlog += len;
+-		q->avg_window_bytes += len;
++		b->bytes	    += len - ack_pkt_len;
++		b->backlogs[idx]    += len - ack_pkt_len;
++		b->tin_backlog      += len - ack_pkt_len;
++		sch->qstats.backlog += len - ack_pkt_len;
++		q->avg_window_bytes += len - ack_pkt_len;
+ 	}
+ 
+ 	if (q->overflow_timeout)
+@@ -1938,24 +1939,29 @@ static s32 cake_enqueue(struct sk_buff *skb, struct Qdisc *sch,
+ 	if (q->buffer_used > q->buffer_max_used)
+ 		q->buffer_max_used = q->buffer_used;
+ 
+-	if (q->buffer_used > q->buffer_limit) {
+-		bool same_flow = false;
+-		u32 dropped = 0;
+-		u32 drop_id;
++	if (q->buffer_used <= q->buffer_limit)
++		return NET_XMIT_SUCCESS;
+ 
+-		while (q->buffer_used > q->buffer_limit) {
+-			dropped++;
+-			drop_id = cake_drop(sch, to_free);
++	prev_qlen = sch->q.qlen;
++	prev_backlog = sch->qstats.backlog;
+ 
+-			if ((drop_id >> 16) == tin &&
+-			    (drop_id & 0xFFFF) == idx)
+-				same_flow = true;
+-		}
+-		b->drop_overlimit += dropped;
++	while (q->buffer_used > q->buffer_limit) {
++		drop_id = cake_drop(sch, to_free);
++		if ((drop_id >> 16) == tin &&
++		    (drop_id & 0xFFFF) == idx)
++			same_flow = true;
 +	}
- 	return res;
++
++	prev_qlen -= sch->q.qlen;
++	prev_backlog -= sch->qstats.backlog;
++	b->drop_overlimit += prev_qlen;
+ 
+-		if (same_flow)
+-			return NET_XMIT_CN;
++	if (same_flow) {
++		qdisc_tree_reduce_backlog(sch, prev_qlen - 1,
++					  prev_backlog - len);
++		return NET_XMIT_CN;
+ 	}
++	qdisc_tree_reduce_backlog(sch, prev_qlen, prev_backlog);
+ 	return NET_XMIT_SUCCESS;
  }
  
 -- 
