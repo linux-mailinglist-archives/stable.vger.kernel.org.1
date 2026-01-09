@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-207314-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206706-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52CABD09CF4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:11 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 23A12D0924B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:59:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25B56300929A
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:28:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3ED783009D58
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:59:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D7CE2737EE;
-	Fri,  9 Jan 2026 12:28:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFC7133A712;
+	Fri,  9 Jan 2026 11:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="icH19JLo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TrLSr1Qg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D57B638FA3;
-	Fri,  9 Jan 2026 12:28:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72F0D2DEA6F;
+	Fri,  9 Jan 2026 11:59:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961702; cv=none; b=Srw6V5CXmXSAvFCBa3/GlT6tRAtOa3eoqmEVSfcJqmK7ElBzkAyzNLXFRtPrVfetBIYlcSSKLPFiaJJu7JgvHVOfV3hm7Rzhg0dA7tUV4to10P7RTF+VaEN9K3K8WnYr++6FpHOSBMdpEnpXXuPLcGlQk63rCzWEjhbv1UYgzq0=
+	t=1767959967; cv=none; b=TxqtV2LgFoBkcQSDgr3xHgdKw5iMTIWKafvbpggkMl/yv80ctGiP/0ZgFi2HDrViN45TczipUgTrc8XvDg2lu0GkZhqheoCpl/ryNK/5IPUmkswDyI13py42qUrqr+Mp58muq9BcEek0Tz+nbwzQrSgcVGLCuz0ZdG8v/gyNU/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961702; c=relaxed/simple;
-	bh=oWJNXvYuOnClr5g/f7muN9CHRmXojRHezqZEMpRPOpk=;
+	s=arc-20240116; t=1767959967; c=relaxed/simple;
+	bh=lefDbjO632IEzbVcLyqHgDPjOUuHXOQrPpEUVFeQzJQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDPb+uOAXJPHWihYP+qURXVJusKliDsN86niW/Fo6zO33JmdOAn+DhtuKYRpwNtGlMtUIQ/sPfFExNvyZ7m4spElBYp/7vY4AOv4laUcpmO5v91YmZJelO+wA2A58Et6MKsm/7h5gGUtV3aaKGk3y5I15iWk5ZSr+KxrgYxn5ns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=icH19JLo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B7EBC4CEF1;
-	Fri,  9 Jan 2026 12:28:22 +0000 (UTC)
+	 MIME-Version; b=XSr/m+WR0oX5n3aCoifk2TcttEG1/6ggN1W62iL9UocQD3G5uy3e+SLScX/ztfI6wnJOn917J4f2YHpbM/tCweQUYYlIzAf6+rDNppIqlMYbGPHbiE2ldx77rjSimOLPoHJC3rHn5/DDk0cgNTZocjSbP3YQYAOLDrOgJJ0JBNo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TrLSr1Qg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02623C4CEF1;
+	Fri,  9 Jan 2026 11:59:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961702;
-	bh=oWJNXvYuOnClr5g/f7muN9CHRmXojRHezqZEMpRPOpk=;
+	s=korg; t=1767959967;
+	bh=lefDbjO632IEzbVcLyqHgDPjOUuHXOQrPpEUVFeQzJQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=icH19JLoLLf0em0MZUKau6Y5rDVqtvHsbm9s9qNBmdqpHoPuNOTipynqLhEAFzG5m
-	 JJU6gka+L2Jg8B9B9wqtgsUH4tkK/2Q/8d5OcEiZQrkqQJwkUyQE5Ncdp/BSXR5sG1
-	 dXWplSGC9968YvoYxAlRbFSufd3qAwV7Ko/CMPZo=
+	b=TrLSr1Qgilq7mAu5pF6QlooXAPdcDkDX07dmB+wpPeGK2MPVGkY357Sua5O4Vp+eP
+	 7dC7eMHADjeIMm0DlFBFq0X84UWB/HyhAhoRdnD/V0a8zfNiK+n4gQnJ7kCMyqczwy
+	 G6B3T/1SYmqtGOGwHRDQR75Xe4gMwX85nm3lds1I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Avri Altman <avri.altman@sandisk.com>,
-	Bart Van Assche <bvanassche@acm.org>,
-	Bean Huo <beanhuo@micron.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Rasmus Villemoes <linux@rasmusvillemoes.dk>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 099/634] scsi: ufs: core: fix incorrect buffer duplication in ufshcd_read_string_desc()
+Subject: [PATCH 6.6 238/737] resource: introduce is_type_match() helper and use it
 Date: Fri,  9 Jan 2026 12:36:17 +0100
-Message-ID: <20260109112121.159515408@linuxfoundation.org>
+Message-ID: <20260109112142.951153270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,47 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bean Huo <beanhuo@micron.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit d794b499f948801f54d67ddbc34a6eac5a6d150a ]
+[ Upstream commit ba1eccc114ffc62c4495a5e15659190fa2c42308 ]
 
-The function ufshcd_read_string_desc() was duplicating memory starting
-from the beginning of struct uc_string_id, which included the length and
-type fields. As a result, the allocated buffer contained unwanted
-metadata in addition to the string itself.
+There are already a couple of places where we may replace a few lines of
+code by calling a helper, which increases readability while deduplicating
+the code.
 
-The correct behavior is to duplicate only the Unicode character array in
-the structure. Update the code so that only the actual string content is
-copied into the new buffer.
+Introduce is_type_match() helper and use it.
 
-Fixes: 5f57704dbcfe ("scsi: ufs: Use kmemdup in ufshcd_read_string_desc()")
-Reviewed-by: Avri Altman <avri.altman@sandisk.com>
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Bean Huo <beanhuo@micron.com>
-Link: https://patch.msgid.link/20251107230518.4060231-3-beanhuo@iokpp.de
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Link: https://lkml.kernel.org/r/20240925154355.1170859-3-andriy.shevchenko@linux.intel.com
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Cc: Rasmus Villemoes <linux@rasmusvillemoes.dk>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Stable-dep-of: 6fb3acdebf65 ("Reinstate "resource: avoid unnecessary lookups in find_next_iomem_res()"")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/resource.c | 23 ++++++++++-------------
+ 1 file changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 1120e83f781eb..7f24563159c1f 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -3586,7 +3586,7 @@ int ufshcd_read_string_desc(struct ufs_hba *hba, u8 desc_index,
- 		str[ret++] = '\0';
+diff --git a/kernel/resource.c b/kernel/resource.c
+index dcc3b564c0537..67410132b40e1 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -310,6 +310,11 @@ int release_resource(struct resource *old)
  
- 	} else {
--		str = kmemdup(uc_str, uc_str->len, GFP_KERNEL);
-+		str = kmemdup(uc_str->uc, uc_str->len, GFP_KERNEL);
- 		if (!str) {
- 			ret = -ENOMEM;
- 			goto out;
+ EXPORT_SYMBOL(release_resource);
+ 
++static bool is_type_match(struct resource *p, unsigned long flags, unsigned long desc)
++{
++	return (p->flags & flags) == flags && (desc == IORES_DESC_NONE || desc == p->desc);
++}
++
+ /**
+  * find_next_iomem_res - Finds the lowest iomem resource that covers part of
+  *			 [@start..@end].
+@@ -352,13 +357,9 @@ static int find_next_iomem_res(resource_size_t start, resource_size_t end,
+ 		if (p->end < start)
+ 			continue;
+ 
+-		if ((p->flags & flags) != flags)
+-			continue;
+-		if ((desc != IORES_DESC_NONE) && (desc != p->desc))
+-			continue;
+-
+ 		/* Found a match, break */
+-		break;
++		if (is_type_match(p, flags, desc))
++			break;
+ 	}
+ 
+ 	if (p) {
+@@ -501,7 +502,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 	int type = 0; int other = 0;
+ 	struct resource *p, *dp;
+ 	struct resource res, o;
+-	bool is_type, covered;
++	bool covered;
+ 
+ 	res.start = start;
+ 	res.end = start + size - 1;
+@@ -509,9 +510,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 	for (p = parent->child; p ; p = p->sibling) {
+ 		if (!resource_intersection(p, &res, &o))
+ 			continue;
+-		is_type = (p->flags & flags) == flags &&
+-			(desc == IORES_DESC_NONE || desc == p->desc);
+-		if (is_type) {
++		if (is_type_match(p, flags, desc)) {
+ 			type++;
+ 			continue;
+ 		}
+@@ -531,9 +530,7 @@ static int __region_intersects(struct resource *parent, resource_size_t start,
+ 		for_each_resource(p, dp, false) {
+ 			if (!resource_overlaps(dp, &res))
+ 				continue;
+-			is_type = (dp->flags & flags) == flags &&
+-				(desc == IORES_DESC_NONE || desc == dp->desc);
+-			if (is_type) {
++			if (is_type_match(dp, flags, desc)) {
+ 				type++;
+ 				/*
+ 				 * Range from 'o.start' to 'dp->start'
 -- 
 2.51.0
 
