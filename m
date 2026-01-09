@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-206685-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207252-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B31F0D09371
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:03:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E772D09CCC
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:38:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2256530D4E86
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:58:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 16550302A7E7
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:25:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C6133B97F;
-	Fri,  9 Jan 2026 11:58:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B6B48359FA0;
+	Fri,  9 Jan 2026 12:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H2/YnsCM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YeZ3F5Oc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F25CE32BF21;
-	Fri,  9 Jan 2026 11:58:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F5C359F9C;
+	Fri,  9 Jan 2026 12:25:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959908; cv=none; b=fvGJiyUifG3+cITDwi3nb3POA3DDY/s005rZ2Gdlq046EP1vwRjJW7edP4tOo7GYPQiFZs3NbQ9wNUOdc/06X08Fug6qSgfMFWRH7DVoDbWt8zCilVhUcQzwlzlB4fZcjyq08478ZB5c0QUiG5Wr4PTVEG7lblnHkwfyz8RmPzQ=
+	t=1767961527; cv=none; b=KuoBKzPgkKgOh1pyAjwiC0HOAGXAsu+DA/87fHeNq9BZpX7rCwoBSeXDGM6KxJ8KAGPgZ8/B/J6pN+NCMfbkY9dTjM6FxExLSDTXHOodIAdUIToQ/ludxrI03DJoP5agbj5L95HG6Wb6YxfB/ASgzlcGixE/l++RVE0Ai7+qMfs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959908; c=relaxed/simple;
-	bh=BKNe0ib/rb4oqfCNskh6ZnnkpMy0KrI3A3iJwk3DT2I=;
+	s=arc-20240116; t=1767961527; c=relaxed/simple;
+	bh=Saa0KlKahDKpeAIpEKleulfhEHssdqKWAPS6+LFEBwo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LTBOiVXP2yM9HTlE6OlDxETUcT/UJx6Ly7VqZ3TwPCTKK7YchWXAfMZcVVCmlE8hI9o/aRqJ2dLYlLQ3AwcNiBnIGNoTOY/gF6B4bBjsC/UCRgWQOMwL7BBCbCgbAkYhIkWKR5n+czwPdLeAveRwG/fAM8SRdfnu1fjuQqewnfI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H2/YnsCM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80553C4CEF1;
-	Fri,  9 Jan 2026 11:58:27 +0000 (UTC)
+	 MIME-Version; b=UGq9i8KQYKdN1bvpzYBMuZqCI9FZgFk6alvN95H+3kMRhfwbxV/qZ9yrZrbZn5eQU7lsh2IadcPLZ4FXJ/7BbgcUtB6XiCtcH3//BS0snWDKS7yXW4zvTnSGd+joGHOVMVPxy70w0FYUx8v32wOb128wlvo1cLYSVSh0bbtpWLY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YeZ3F5Oc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8945CC4CEF1;
+	Fri,  9 Jan 2026 12:25:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959907;
-	bh=BKNe0ib/rb4oqfCNskh6ZnnkpMy0KrI3A3iJwk3DT2I=;
+	s=korg; t=1767961526;
+	bh=Saa0KlKahDKpeAIpEKleulfhEHssdqKWAPS6+LFEBwo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H2/YnsCMeIAdLEJAlcnIXVY6GylLBckaZcg7IMqov7oKCcIVR3YpO2gTo3CR8G1yr
-	 QUI4cIsC8QwMfZjZpKhezjNBiCjUxfDFaLngKkFYEDMiAUezxmjolgrcJer/7+D6Bb
-	 Wj11XNQ5mEB5pciKKpAcCeZJ1w+S6XOEKqOrYrVs=
+	b=YeZ3F5OcKW77eiJ4g5F5R8bNXTLOS6CxKmGqRgrkPKLJs2COPzISLmzAMCwzCR2Gs
+	 60pF1JqCv49eQdLk0GvkvWCtLoztJbRg+nHXNYBljCY40jDerT27i9E5wlZ928eEAH
+	 wp2JRnNhPLGxkh55Ql8DovhZ0B9xoeBIZVvlqE8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Dahl <ada@thorsis.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	=?UTF-8?q?Nuno=20S=C3=A1?= <nuno.sa@analog.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Marek Vasut <marek.vasut+renesas@mailbox.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 185/737] net: phy: adin1100: Fix software power-down ready condition
+Subject: [PATCH 6.1 046/634] clk: renesas: cpg-mssr: Add missing 1ms delay into reset toggle callback
 Date: Fri,  9 Jan 2026 12:35:24 +0100
-Message-ID: <20260109112140.954686404@linuxfoundation.org>
+Message-ID: <20260109112119.178974077@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +58,61 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Dahl <ada@thorsis.com>
+From: Marek Vasut <marek.vasut+renesas@mailbox.org>
 
-[ Upstream commit bccaf1fe08f2c9f96f6bc38391d41e67f6bf38e3 ]
+[ Upstream commit 62abfd7bedc2b3d86d4209a4146f9d2b5ae21fab ]
 
-Value CRSM_SFT_PD written to Software Power-Down Control Register
-(CRSM_SFT_PD_CNTRL) is 0x01 and therefor different to value
-CRSM_SFT_PD_RDY (0x02) read from System Status Register (CRSM_STAT) for
-confirmation powerdown has been reached.
+R-Car V4H Reference Manual R19UH0186EJ0130 Rev.1.30 Apr. 21, 2025 page
+583 Figure 9.3.1(a) Software Reset flow (A) as well as flow (B) / (C)
+indicate after reset has been asserted by writing a matching reset bit
+into register SRCR, it is mandatory to wait 1ms.
 
-The condition could have only worked when disabling powerdown
-(both 0x00), but never when enabling it (0x01 != 0x02).
+This 1ms delay is documented on R-Car V4H and V4M, it is currently
+unclear whether S4 is affected as well.  This patch does apply the extra
+delay on R-Car S4 as well.
 
-Result is a timeout, like so:
+Fix the reset driver to respect the additional delay when toggling
+resets.  Drivers which use separate reset_control_(de)assert() must
+assure matching delay in their driver code.
 
-    $ ifdown eth0
-    macb f802c000.ethernet eth0: Link is Down
-    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
-    ADIN1100 f802c000.ethernet-ffffffff:01: adin_set_powerdown_mode failed: -110
-
-Fixes: 7eaf9132996a ("net: phy: adin1100: Add initial support for ADIN1100 industrial PHY")
-Signed-off-by: Alexander Dahl <ada@thorsis.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Acked-by: Nuno Sá <nuno.sa@analog.com>
-Link: https://patch.msgid.link/20251119124737.280939-2-ada@thorsis.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 0ab55cf18341 ("clk: renesas: cpg-mssr: Add support for R-Car V4H")
+Signed-off-by: Marek Vasut <marek.vasut+renesas@mailbox.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://patch.msgid.link/20250918030552.331389-1-marek.vasut+renesas@mailbox.org
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/adin1100.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/renesas/renesas-cpg-mssr.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/phy/adin1100.c b/drivers/net/phy/adin1100.c
-index 7619d6185801c..2f47b7020e12b 100644
---- a/drivers/net/phy/adin1100.c
-+++ b/drivers/net/phy/adin1100.c
-@@ -148,7 +148,7 @@ static int adin_set_powerdown_mode(struct phy_device *phydev, bool en)
- 		return ret;
+diff --git a/drivers/clk/renesas/renesas-cpg-mssr.c b/drivers/clk/renesas/renesas-cpg-mssr.c
+index 523fd45231571..d6137379510c1 100644
+--- a/drivers/clk/renesas/renesas-cpg-mssr.c
++++ b/drivers/clk/renesas/renesas-cpg-mssr.c
+@@ -618,8 +618,15 @@ static int cpg_mssr_reset(struct reset_controller_dev *rcdev,
+ 	/* Reset module */
+ 	writel(bitmask, priv->base + priv->reset_regs[reg]);
  
- 	return phy_read_mmd_poll_timeout(phydev, MDIO_MMD_VEND1, ADIN_CRSM_STAT, ret,
--					 (ret & ADIN_CRSM_SFT_PD_RDY) == val,
-+					 !!(ret & ADIN_CRSM_SFT_PD_RDY) == en,
- 					 1000, 30000, true);
- }
+-	/* Wait for at least one cycle of the RCLK clock (@ ca. 32 kHz) */
+-	udelay(35);
++	/*
++	 * On R-Car Gen4, delay after SRCR has been written is 1ms.
++	 * On older SoCs, delay after SRCR has been written is 35us
++	 * (one cycle of the RCLK clock @ ca. 32 kHz).
++	 */
++	if (priv->reg_layout == CLK_REG_LAYOUT_RCAR_GEN4)
++		usleep_range(1000, 2000);
++	else
++		usleep_range(35, 1000);
  
+ 	/* Release module from reset state */
+ 	writel(bitmask, priv->base + priv->reset_clear_regs[reg]);
 -- 
 2.51.0
 
