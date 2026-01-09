@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 05B6FD09937
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:25:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50693D0A036
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:51:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFB163095D33
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6DFF03032733
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:43:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 406B832F748;
-	Fri,  9 Jan 2026 12:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5997033D511;
+	Fri,  9 Jan 2026 12:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mDFJx/dI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEuHqcxo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 038EF1946C8;
-	Fri,  9 Jan 2026 12:12:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1DB551DF72C;
+	Fri,  9 Jan 2026 12:43:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960777; cv=none; b=p8kugizaLAn1iFl/as7Y7pAHM8PxUxCrxNXBlNg7zKMxayINkdcd8pcS1I0inq/Qha8QYNuLoJ3VCTeKrzPIlh5r+5+HnaLM7FxwndYhVad3pfdOV9NbfwU5fidNhAvOV5+NqQ672RkGx2TS21R7KBifr9TXVMutQcX0BcDj7pQ=
+	t=1767962606; cv=none; b=Gc2Sgu2NdjJ2V71bNCBnHLi6GN2sjvFo/Jy9Mq0R3XT/pYpF20XF8cEghZgmuwvLaxvbRglG7VDqpWIhIsc2NV+pSSw6ekxWjqlZ+7+1ZBbATILiNJ/YgmduAS/z1JmcaW4sufYyvSUPrxiUIfoIwAEBzMfasrvO/O6Tfk5jUtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960777; c=relaxed/simple;
-	bh=L85XqhRnJ7U1d2xZzDxSAT0WPGAOdEmDlyJl+kbvYfw=;
+	s=arc-20240116; t=1767962606; c=relaxed/simple;
+	bh=R+nrXeZGazwZJ/v/n05etRYNE7dYVMAcwFUBdPrqfps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rHmHz1uomziiJFIicsJko+D73BcSv1M5oNO+DDZBKG0UYdIUYoAIARHxq4cCJCtz6CBVtJCvyIT4yhMLspvrC+gw61lSQaMKgFydBotYGPnfi46ay+ipuQj172bgByp/MsIxK3W59yxrS+/w1zKxXdGAQewL/JVplNqTWijfI5M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mDFJx/dI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88C29C4CEF1;
-	Fri,  9 Jan 2026 12:12:56 +0000 (UTC)
+	 MIME-Version; b=Kwqx27arur9THD4H+f2MadEfDLIxGywn3uYqaE3Ji3Pvql+d1mxJiLFzi1+Z05aceT/CNktXw7UcObCmQ2JAU2nbTfD7p6ssv8Ddt/s8ZdxUdWvCy/LoI6fS25Vc6eyW8U0NNZMgXl1oHDNpXIVIoW99TRlrGUxKDu41KWhaurE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEuHqcxo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCB9C19421;
+	Fri,  9 Jan 2026 12:43:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960776;
-	bh=L85XqhRnJ7U1d2xZzDxSAT0WPGAOdEmDlyJl+kbvYfw=;
+	s=korg; t=1767962606;
+	bh=R+nrXeZGazwZJ/v/n05etRYNE7dYVMAcwFUBdPrqfps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mDFJx/dInBEGOrdnR59X7yuFJn5g26oPU59qA+t8c22zqWym7WjOq6l5ipXTipcki
-	 diCyNfLbtntoNpu7pmSJ0JBLdr1S+jzsOs/9KTOKVz+NIX3VVbXNBWUr7NA4mDCkC8
-	 OneDHuj9oQRHR3hCCQT+0Jb3rDCssDANnkVOkVh8=
+	b=GEuHqcxoZoI6ov4WTGTiGUeT0S6xm8Z6cuF5AElCujA4BvL8E3pan1v+w6MjTMg4E
+	 31P5W1LLuSa+EDspgDRWgXzMU8u/xCV419DyUcuJvcQDdsiBqH2MwQdd0aIcvKxm1y
+	 UppSc+3OaCIFSCHJrU4dhTo8Dgt4bUAqF04ngnkg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 521/737] net: usb: asix: validate PHY address before use
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 6.1 382/634] rpmsg: glink: fix rpmsg device leak
 Date: Fri,  9 Jan 2026 12:41:00 +0100
-Message-ID: <20260109112153.600044850@linuxfoundation.org>
+Message-ID: <20260109112131.905882049@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,58 +61,88 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-[ Upstream commit a1e077a3f76eea0dc671ed6792e7d543946227e8 ]
+commit a53e356df548f6b0e82529ef3cc6070f42622189 upstream.
 
-The ASIX driver reads the PHY address from the USB device via
-asix_read_phy_addr(). A malicious or faulty device can return an
-invalid address (>= PHY_MAX_ADDR), which causes a warning in
-mdiobus_get_phy():
+While testing rpmsg-char interface it was noticed that duplicate sysfs
+entries are getting created and below warning is noticed.
 
-  addr 207 out of range
-  WARNING: drivers/net/phy/mdio_bus.c:76
+Reason for this is that we are leaking rpmsg device pointer, setting it
+null without actually unregistering device.
+Any further attempts to unregister fail because rpdev is NULL,
+resulting in a leak.
 
-Validate the PHY address in asix_read_phy_addr() and remove the
-now-redundant check in ax88172a.c.
+Fix this by unregistering rpmsg device before removing its reference
+from rpmsg channel.
 
-Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
-Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
-Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
-Link: https://lore.kernel.org/all/20251217085057.270704-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251218011156.276824-1-kartikey406@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+sysfs: cannot create duplicate filename '/devices/platform/soc@0/3700000.remot
+eproc/remoteproc/remoteproc1/3700000.remoteproc:glink-edge/3700000.remoteproc:
+glink-edge.adsp_apps.-1.-1'
+[  114.115347] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not
+ tainted 6.16.0-rc4 #7 PREEMPT
+[  114.115355] Hardware name: Qualcomm Technologies, Inc. Robotics RB3gen2 (DT)
+[  114.115358] Workqueue: events qcom_glink_work
+[  114.115371] Call trace:8
+[  114.115374]  show_stack+0x18/0x24 (C)
+[  114.115382]  dump_stack_lvl+0x60/0x80
+[  114.115388]  dump_stack+0x18/0x24
+[  114.115393]  sysfs_warn_dup+0x64/0x80
+[  114.115402]  sysfs_create_dir_ns+0xf4/0x120
+[  114.115409]  kobject_add_internal+0x98/0x260
+[  114.115416]  kobject_add+0x9c/0x108
+[  114.115421]  device_add+0xc4/0x7a0
+[  114.115429]  rpmsg_register_device+0x5c/0xb0
+[  114.115434]  qcom_glink_work+0x4bc/0x820
+[  114.115438]  process_one_work+0x148/0x284
+[  114.115446]  worker_thread+0x2c4/0x3e0
+[  114.115452]  kthread+0x12c/0x204
+[  114.115457]  ret_from_fork+0x10/0x20
+[  114.115464] kobject: kobject_add_internal failed for 3700000.remoteproc:
+glink-edge.adsp_apps.-1.-1 with -EEXIST, don't try to register things with
+the same name in the same directory.
+[  114.250045] rpmsg 3700000.remoteproc:glink-edge.adsp_apps.-1.-1:
+device_add failed: -17
+
+Fixes: 835764ddd9af ("rpmsg: glink: Move the common glink protocol implementation to glink_native.c")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Link: https://lore.kernel.org/r/20250822100043.2604794-2-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/asix_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/rpmsg/qcom_glink_native.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
-index 7fd763917ae2..6ab3486072cb 100644
---- a/drivers/net/usb/asix_common.c
-+++ b/drivers/net/usb/asix_common.c
-@@ -335,6 +335,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
- 	offset = (internal ? 1 : 0);
- 	ret = buf[offset];
+--- a/drivers/rpmsg/qcom_glink_native.c
++++ b/drivers/rpmsg/qcom_glink_native.c
+@@ -1242,6 +1242,7 @@ static void qcom_glink_destroy_ept(struc
+ {
+ 	struct glink_channel *channel = to_glink_channel(ept);
+ 	struct qcom_glink *glink = channel->glink;
++	struct rpmsg_channel_info chinfo;
+ 	unsigned long flags;
  
-+	if (ret >= PHY_MAX_ADDR) {
-+		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
-+		return -ENODEV;
-+	}
+ 	spin_lock_irqsave(&channel->recv_lock, flags);
+@@ -1249,6 +1250,13 @@ static void qcom_glink_destroy_ept(struc
+ 	spin_unlock_irqrestore(&channel->recv_lock, flags);
+ 
+ 	/* Decouple the potential rpdev from the channel */
++	if (channel->rpdev) {
++		strscpy_pad(chinfo.name, channel->name, sizeof(chinfo.name));
++		chinfo.src = RPMSG_ADDR_ANY;
++		chinfo.dst = RPMSG_ADDR_ANY;
 +
- 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
- 		   internal ? "internal" : "external", ret);
++		rpmsg_unregister_device(glink->dev, &chinfo);
++	}
+ 	channel->rpdev = NULL;
  
--- 
-2.51.0
-
+ 	qcom_glink_send_close_req(glink, channel);
 
 
 
