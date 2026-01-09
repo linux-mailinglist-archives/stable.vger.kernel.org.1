@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-207469-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206867-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21BC8D09F0E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:47:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0873DD094F4
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:10:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AEDFD312CFB9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:35:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4E39130142C8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3613135971B;
-	Fri,  9 Jan 2026 12:35:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3244535A925;
+	Fri,  9 Jan 2026 12:07:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a4byWu8m"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dE9/E2LD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3009358D38;
-	Fri,  9 Jan 2026 12:35:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA16E359FBB;
+	Fri,  9 Jan 2026 12:07:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962144; cv=none; b=g7Y/NvYcjFeguiv6bRCK9t6UZY4mwyq0LJSWeE3e/f1syQp3rtTgpYuM8q3T63Tz422Crmfib5ZY5MdPmCacffkIw45eLDLG1hmHp524+/04TAjyRVwt39ydnC6FspUZJBu8N0X8CLo8t/8Oxb2Wjp+y3pgPQ3A9hs1umwAL4DE=
+	t=1767960426; cv=none; b=ki7BelI3Sp0KFioTNSgmUzQRLExsGGmQJgwSE61A4jxL9cStcj1ClBt2h3rqWeMOjccf5RB4WLhru/v4JH7hok21tj6ZUZtxb9kVN88rwpdJ29QyEsu3MSOPxlr+UjNZGtLCLe4mQLsmfvbRK5IOP48vYd7l26W5URmGUmK/HFI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962144; c=relaxed/simple;
-	bh=6HCcKbTu9U38f+eO1UQr7kJnHfGHV+vDWZ2KnNIBqpc=;
+	s=arc-20240116; t=1767960426; c=relaxed/simple;
+	bh=5hRsiVzau/2KBgPNsXkZovHTVRI7t5gnxSomNRr0QsI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MVxttIdULrQTG1M+SXksPo/PawKZvoDlgMTUH/4MM+Ni0rCqLfPWc4BlYKeW7YMu31DyUTKz8nFQwR1GwVBSGMm53OdD6sgC2v+DS9MPgYlHkdETSK+GVswWJ2IvFRJPhS9HdiH2bh6Xa9xv0CERTHo++ke+2R8rcP8f5c2Q49k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a4byWu8m; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42BF2C4CEF1;
-	Fri,  9 Jan 2026 12:35:43 +0000 (UTC)
+	 MIME-Version; b=YqGVLs9sIZNaJeQf4qOTn7XARco3y5n6vAAQ3QejFoKGIEildNzeuiFhYuGbFiqxCjFoCVFjkcNhsMKuUEn4UO4tsoEcY4djDpktt5h3+NJtwuJRQb6H9I1H++wW/UYRJWi6473E4DQz22cDv5m01v/7H8CviO3YkAMmhSTdTLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dE9/E2LD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 755D9C4CEF1;
+	Fri,  9 Jan 2026 12:07:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962143;
-	bh=6HCcKbTu9U38f+eO1UQr7kJnHfGHV+vDWZ2KnNIBqpc=;
+	s=korg; t=1767960425;
+	bh=5hRsiVzau/2KBgPNsXkZovHTVRI7t5gnxSomNRr0QsI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a4byWu8mKqRAX+hAkiVZO6rTzol/JfPYcyW5G5eROuInWoR0q/8k24JaTwaDRU/NS
-	 LUa5YcuV3UDi2VPhqtT+KWf1mVF29pVOc72Ml00t7bMMbJHpuLESnSTpcbQstnJTi6
-	 u5VCqyQFHBflkC8Rx6EX/K7eqUv0Y/vRt4A1xFnU=
+	b=dE9/E2LD8waZwhCJipG/UmJJgI8pgDvYOM16DuRKh+tn3CVAz6zg16z9p6MF240Zd
+	 D9a9VoQZAINXn5g08+TXm/5dYoyxhwAHOnooEaYqL/dITpluUNso3zig0k9uEWVFha
+	 foOHcQCEA/3d3Rshs1Z6XpU6iViZNcnlKHB5u3JA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 261/634] net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers
+Subject: [PATCH 6.6 400/737] usb: typec: ucsi: Handle incorrect num_connectors capability
 Date: Fri,  9 Jan 2026 12:38:59 +0100
-Message-ID: <20260109112127.358450667@linuxfoundation.org>
+Message-ID: <20260109112149.048907616@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 201ed315f9676809cd5b20a39206e964106d4f27 ]
+[ Upstream commit 30cd2cb1abf4c4acdb1ddb468c946f68939819fb ]
 
-So that it's easier to follow and make sense of the branching and
-various conditions.
+The UCSI spec states that the num_connectors field is 7 bits, and the
+8th bit is reserved and should be set to zero.
+Some buggy FW has been known to set this bit, and it can lead to a
+system not booting.
+Flag that the FW is not behaving correctly, and auto-fix the value
+so that the system boots correctly.
 
-Stats retrieval has been split into two separate functions
-ethtool_get_phy_stats_phydev & ethtool_get_phy_stats_ethtool.
-The former attempts to retrieve the stats using phydev & phy_ops, while
-the latter uses ethtool_ops.
+Found on Lenovo P1 G8 during Linux enablement program. The FW will
+be fixed, but seemed worth addressing in case it hit platforms that
+aren't officially Linux supported.
 
-Actual n_stats validation & array allocation has been moved into a new
-ethtool_vzalloc_stats_array helper.
-
-This also fixes a potential NULL dereference of
-ops->get_ethtool_phy_stats where it was getting called in an else branch
-unconditionally without making sure it was actually present.
-
-Found by Linux Verification Center (linuxtesting.org) with the SVACE
-static analysis tool.
-
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7b07be1ff1cb ("ethtool: Avoid overflowing userspace buffer on stats query")
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250821185319.2585023-1-mpearson-lenovo@squebb.ca
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/ioctl.c | 102 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 69 insertions(+), 33 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index b85f055767035..208a40ae4ccbb 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -2077,23 +2077,8 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	return ret;
- }
- 
--static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
-+static int ethtool_vzalloc_stats_array(int n_stats, u64 **data)
- {
--	const struct ethtool_phy_ops *phy_ops = ethtool_phy_ops;
--	const struct ethtool_ops *ops = dev->ethtool_ops;
--	struct phy_device *phydev = dev->phydev;
--	struct ethtool_stats stats;
--	u64 *data;
--	int ret, n_stats;
--
--	if (!phydev && (!ops->get_ethtool_phy_stats || !ops->get_sset_count))
--		return -EOPNOTSUPP;
--
--	if (phydev && !ops->get_ethtool_phy_stats &&
--	    phy_ops && phy_ops->get_sset_count)
--		n_stats = phy_ops->get_sset_count(phydev);
--	else
--		n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
- 	if (n_stats < 0)
- 		return n_stats;
- 	if (n_stats > S32_MAX / sizeof(u64))
-@@ -2101,31 +2086,82 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
- 	if (WARN_ON_ONCE(!n_stats))
- 		return -EOPNOTSUPP;
- 
-+	*data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (!*data)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
-+					 struct ethtool_stats *stats,
-+					 u64 **data)
-+ {
-+	const struct ethtool_phy_ops *phy_ops = ethtool_phy_ops;
-+	int n_stats, ret;
-+
-+	if (!phy_ops || !phy_ops->get_sset_count || !phy_ops->get_stats)
-+		return -EOPNOTSUPP;
-+
-+	n_stats = phy_ops->get_sset_count(phydev);
-+
-+	ret = ethtool_vzalloc_stats_array(n_stats, data);
-+	if (ret)
-+		return ret;
-+
-+	stats->n_stats = n_stats;
-+	return phy_ops->get_stats(phydev, stats, *data);
-+}
-+
-+static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
-+					  struct ethtool_stats *stats,
-+					  u64 **data)
-+{
-+	const struct ethtool_ops *ops = dev->ethtool_ops;
-+	int n_stats, ret;
-+
-+	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
-+		return -EOPNOTSUPP;
-+
-+	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
-+
-+	ret = ethtool_vzalloc_stats_array(n_stats, data);
-+	if (ret)
-+		return ret;
-+
-+	stats->n_stats = n_stats;
-+	ops->get_ethtool_phy_stats(dev, stats, *data);
-+
-+	return 0;
-+}
-+
-+static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
-+{
-+	struct phy_device *phydev = dev->phydev;
-+	struct ethtool_stats stats;
-+	u64 *data = NULL;
-+	int ret = -EOPNOTSUPP;
-+
- 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
- 		return -EFAULT;
- 
--	stats.n_stats = n_stats;
-+	if (phydev)
-+		ret = ethtool_get_phy_stats_phydev(phydev, &stats, &data);
- 
--	data = vzalloc(array_size(n_stats, sizeof(u64)));
--	if (!data)
--		return -ENOMEM;
-+	if (ret == -EOPNOTSUPP)
-+		ret = ethtool_get_phy_stats_ethtool(dev, &stats, &data);
- 
--	if (phydev && !ops->get_ethtool_phy_stats &&
--		phy_ops && phy_ops->get_stats) {
--		ret = phy_ops->get_stats(phydev, &stats, data);
--		if (ret < 0)
--			goto out;
--	} else {
--		ops->get_ethtool_phy_stats(dev, &stats, data);
--	}
-+	if (ret)
-+		goto out;
- 
--	ret = -EFAULT;
--	if (copy_to_user(useraddr, &stats, sizeof(stats)))
-+	if (copy_to_user(useraddr, &stats, sizeof(stats))) {
-+		ret = -EFAULT;
- 		goto out;
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index e5c001ee0cd7..b88f4e179a7a 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1428,6 +1428,12 @@ static int ucsi_init(struct ucsi *ucsi)
+ 		ret = -ENODEV;
+ 		goto err_reset;
+ 	}
++	/* Check if reserved bit set. This is out of spec but happens in buggy FW */
++	if (ucsi->cap.num_connectors & 0x80) {
++		dev_warn(ucsi->dev, "UCSI: Invalid num_connectors %d. Likely buggy FW\n",
++			 ucsi->cap.num_connectors);
++		ucsi->cap.num_connectors &= 0x7f; // clear bit and carry on
 +	}
-+
- 	useraddr += sizeof(stats);
--	if (copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
--		goto out;
--	ret = 0;
-+	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
-+		ret = -EFAULT;
  
-  out:
- 	vfree(data);
+ 	/* Allocate the connectors. Released in ucsi_unregister() */
+ 	connector = kcalloc(ucsi->cap.num_connectors + 1, sizeof(*connector), GFP_KERNEL);
 -- 
 2.51.0
 
