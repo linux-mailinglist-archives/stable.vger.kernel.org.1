@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5B89D097A4
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:20:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1A5ED0A05D
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 828D3307FAA9
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:10:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 105E430A9CA3
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:40:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ED87935B129;
-	Fri,  9 Jan 2026 12:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4EDB35BDD8;
+	Fri,  9 Jan 2026 12:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPQSrnTW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HrKQCXEo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B09B833BBBD;
-	Fri,  9 Jan 2026 12:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7749735BDCC;
+	Fri,  9 Jan 2026 12:39:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960584; cv=none; b=nNq7c2rX0AiB/QeUfSbeHc/O1tKMUZU/qIrC+aTa1zQkwiGHv5fZusJgemPjQsqd/t257bamtNwWV7DXXJy2J5Y0CrF6LEMi7S7GEliB+T8ZhaS8jy7kr3UePKdGsQcco9x8Ws1ar3YkMRWaK75Ev3NC3Ur6ogYK1XcBkobheEs=
+	t=1767962388; cv=none; b=j0x9kG2v271flyy/HoAFqh8d3CSZI7HSQhYq/Z8BVMXOccWVRQg1ezdzzrhrsHVKaUN8bnhJ8OE2MEZ7kIM/04z61o48oIpSWkjTFg2LIPXuSwZAJRJpFb7KBmgmW0+UPh3sMKeFuNVK8egOkrBxLBaqmPlg23gxUFpN2Y/N7CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960584; c=relaxed/simple;
-	bh=r4m39U1N476ta3jujkdLsdNvLQOLi/oYQRCM4U+yKHg=;
+	s=arc-20240116; t=1767962388; c=relaxed/simple;
+	bh=jG96MmRpl/4GiRI+Puw+YTsweOMvYXDoUGgDO0jEjY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tHL3gF0NVf1oMh4tE0nngV8zl6glHUISBePPGU19qZ9utt2tOlnK0cCMxpR3cHlcA1XQpM1SCCUDn5sJhAjpQ/4ShOFvobi2sjUF6J8f4H7bMzVfO5zFMbep0hB3oLpSwRb2XR9tcvWHaXN0fKjNRvm5M1fEl5oWwuRsW6RN03c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPQSrnTW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3736C4CEF1;
-	Fri,  9 Jan 2026 12:09:43 +0000 (UTC)
+	 MIME-Version:Content-Type; b=joOXW+WqfGG2g68scjN6x/j/IH2o3mnHOsp3oRrD3Pl2qMgsv2QyT8QQAzgYNrXUc6rYhfpXzyAgza1kDbEW2I6KIzaOeLnhoCLhRkCTLsydmeAaJr5CNscM+7e9afhyRgj5VOJfREzF9HFlk9DK5PI2WEZlJr9rDkmpK8Va67w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HrKQCXEo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06069C4CEF1;
+	Fri,  9 Jan 2026 12:39:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960584;
-	bh=r4m39U1N476ta3jujkdLsdNvLQOLi/oYQRCM4U+yKHg=;
+	s=korg; t=1767962388;
+	bh=jG96MmRpl/4GiRI+Puw+YTsweOMvYXDoUGgDO0jEjY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mPQSrnTWZZlVQjcAq2d3yMIcEyOx89KwQ86unZWxHN+gA8CeDRH6ePUVnFPlAOaXV
-	 okYEM2yF91+nUpy5+DbfuDchdUlc4txBPXxfgAv9uzLvtI8NTQ4ZVyOBRK+BmTqu//
-	 6xzxFJwsFmDq/Ijkt/COUNsoDRFZQrY2taFOp7IY=
+	b=HrKQCXEohO4spMG74Z96cuekFbpfG2aYIqusVcNcfdrTnQ4EVLOJxmpbI4O6ayEZj
+	 RvSJGOR0bBwjfQWkpJnPKKpuqa/oMK4AmkEL1qFq3kPkJ0qHRJogTtx00O4ChSAty7
+	 rkPhnBu1Dp2hmYzPetwO1U/teTNTwC3xPd9gq6dI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.6 454/737] tools/testing/nvdimm: Use per-DIMM device handle
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 315/634] platform/x86/intel/hid: Add Dell Pro Rugged 10/12 tablet to VGBS DMI quirks
 Date: Fri,  9 Jan 2026 12:39:53 +0100
-Message-ID: <20260109112151.072121889@linuxfoundation.org>
+Message-ID: <20260109112129.384949221@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,68 +59,60 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-commit f59b701b4674f7955170b54c4167c5590f4714eb upstream.
+[ Upstream commit b169e1733cadb614e87f69d7a5ae1b186c50d313 ]
 
-KASAN reports a global-out-of-bounds access when running these nfit
-tests: clear.sh, pmem-errors.sh, pfn-meta-errors.sh, btt-errors.sh,
-daxdev-errors.sh, and inject-error.sh.
+Dell Pro Rugged 10/12 tablets has a reliable VGBS method.
+If VGBS is not called on boot, the on-screen keyboard won't appear if the
+device is booted without a keyboard.
 
-[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
-[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
-[] The buggy address belongs to the variable:
-[] handle+0x1c/0x1df4 [nfit_test]
+Call VGBS on boot on thess devices to get the initial state of
+SW_TABLET_MODE in a reliable way.
 
-nfit_test_search_spa() uses handle[nvdimm->id] to retrieve a device
-handle and triggers a KASAN error when it reads past the end of the
-handle array. It should not be indexing the handle array at all.
-
-The correct device handle is stored in per-DIMM test data. Each DIMM
-has a struct nfit_mem that embeds a struct acpi_nfit_memdev that
-describes the NFIT device handle. Use that device handle here.
-
-Fixes: 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
-Link: https://patch.msgid.link/20251031234227.1303113-1-alison.schofield@intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251127070407.656463-1-acelan.kao@canonical.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/nvdimm/test/nfit.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
---- a/tools/testing/nvdimm/test/nfit.c
-+++ b/tools/testing/nvdimm/test/nfit.c
-@@ -670,6 +670,7 @@ static int nfit_test_search_spa(struct n
- 		.addr = spa->spa,
- 		.region = NULL,
- 	};
-+	struct nfit_mem *nfit_mem;
- 	u64 dpa;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index c13837401c26..051f2bb786e9 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -144,6 +144,18 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite Dragonfly G2 Notebook PC"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 10 Tablet RA00260"),
++		},
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
++		},
++	},
+ 	{ }
+ };
  
- 	ret = device_for_each_child(&bus->dev, &ctx,
-@@ -687,8 +688,12 @@ static int nfit_test_search_spa(struct n
- 	 */
- 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
- 	nvdimm = nd_mapping->nvdimm;
-+	nfit_mem = nvdimm_provider_data(nvdimm);
-+	if (!nfit_mem)
-+		return -EINVAL;
- 
--	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
-+	spa->devices[0].nfit_device_handle =
-+		__to_nfit_memdev(nfit_mem)->device_handle;
- 	spa->num_nvdimms = 1;
- 	spa->devices[0].dpa = dpa;
- 
+-- 
+2.51.0
+
 
 
 
