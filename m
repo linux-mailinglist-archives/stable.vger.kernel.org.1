@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-206643-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B5A2D09275
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:00:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 84864D09CFD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 85A00301339B
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C9EB030EE622
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC48B32FA3D;
-	Fri,  9 Jan 2026 11:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E329735B15A;
+	Fri,  9 Jan 2026 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sNlzsOBq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TPbyMdSJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A00622F12D4;
-	Fri,  9 Jan 2026 11:56:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A3A9635BDC2;
+	Fri,  9 Jan 2026 12:26:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959788; cv=none; b=IX8+Wt47Wk8zLyIyzRyIWmXcaqlXyCnZpVs4EVdWHSdWwwP4x8ugsjNxIkq4quPCmtsZPm5wq78CjQPTdNoa/4oiHHsvNBSkL5FX6RZ2ly4NtsDC6UYiy7T8R2gem7kq0ynMr3dzQWg7fkCcPl16vulZDgs4K++m3SjOzmRMGvo=
+	t=1767961592; cv=none; b=TI4uQxWxbkZqQY0rhsp5dhQkY18eNwhXKC9O4HuhE6mRyDJ0DfnCdOFmGZeNl+eEyTb7lhhlPFifPvQ0swzTwNpJIZTfO3XSTX4aSY5PyXSpptpoXXwva35eLie22DZVts/a5AHu1LBtyCqxGXSXiOZ8mHyNDUE2wkOpBtN/AR0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959788; c=relaxed/simple;
-	bh=mJGzLX1LSQ7kUlNH/TRDIfo+/BKU9Nxg/jfEV1a/Jg8=;
+	s=arc-20240116; t=1767961592; c=relaxed/simple;
+	bh=NY7wVtRSjwO11FlU4136VXkw1vqJtHSkj0mtrAgFJs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e7v+H8jao+zhYXoIFIKcy5BSCx8z9yJ65dlf8BH8P20Z83ebVK29dM+ghu8hr3oYM+Nu0v5ZYLqa/na+Vk2R1JGAFTJAqqa/Tj5A8wxQBNW2CBzlZAhW0atrkX+z406QeF+uWqyZ+K/EJs+5C3Vh7xeW/BqpQXrBMA3hCgDIFiM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sNlzsOBq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA03FC4CEF1;
-	Fri,  9 Jan 2026 11:56:27 +0000 (UTC)
+	 MIME-Version; b=YNqsXp7zN8C36rd2L9xxqKKy+CMZGAZuLlIhRlxlh12UDN+uzT8E4xMsO64D62RG6alVDu42gLRUERHVtXKKAnzFUEDUCQT7kJhJ1xiep7fj+1l2iga9D9pVoZDIY/kY/+iL6z3C4fnz1HfUQWrUfaeZ85j0Nkb80SMD5gyrD80=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TPbyMdSJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31D2CC4CEF1;
+	Fri,  9 Jan 2026 12:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959788;
-	bh=mJGzLX1LSQ7kUlNH/TRDIfo+/BKU9Nxg/jfEV1a/Jg8=;
+	s=korg; t=1767961592;
+	bh=NY7wVtRSjwO11FlU4136VXkw1vqJtHSkj0mtrAgFJs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sNlzsOBqG7Z6pxbFn1lp6WoSzNnIfXBnPjkBodDjqtUg3bRV3747z3yKfCLcbXF4B
-	 UDSr6BrQ4aocQKFILxRN3FqfdW31BTQjG/sRErb6N4qhr+SxwCLdVYjmEUZFOwDl/o
-	 UPivvQGRR5CDBcjGAMXTdp1e377ziXfPXlpTsz4Y=
+	b=TPbyMdSJO3HFVj3RCDgv5nlcsnWinqbsiwqZx8aYWo5u2zMdOENxyKgMDiY+uPKDG
+	 9TIYvRorKFqeCfM00xTdaZAXYx3zu7AIus6f5JmK1PGk2p+dLYVrjVJetv5eKs6OQK
+	 39aLdLN08rfp1hZBOPe/OU3TXn9cRKP6M0b8akec=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Ahern <dsahern@kernel.org>,
-	Kui-Feng Lee <thinker.li@gmail.com>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 174/737] net/ipv6: Remove expired routes with a separated list of routes.
+	syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com,
+	stable <stable@kernel.org>,
+	Ian Abbott <abbotti@mev.co.uk>
+Subject: [PATCH 6.1 035/634] comedi: c6xdigio: Fix invalid PNP driver unregistration
 Date: Fri,  9 Jan 2026 12:35:13 +0100
-Message-ID: <20260109112140.537988876@linuxfoundation.org>
+Message-ID: <20260109112118.768581951@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,417 +60,171 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kui-Feng Lee <thinker.li@gmail.com>
+From: Ian Abbott <abbotti@mev.co.uk>
 
-[ Upstream commit 5eb902b8e7193cdcb33242af0a56502e6b5206e9 ]
+commit 72262330f7b3ad2130e800cecf02adcce3c32c77 upstream.
 
-FIB6 GC walks trees of fib6_tables to remove expired routes. Walking a tree
-can be expensive if the number of routes in a table is big, even if most of
-them are permanent. Checking routes in a separated list of routes having
-expiration will avoid this potential issue.
+The Comedi low-level driver "c6xdigio" seems to be for a parallel port
+connected device.  When the Comedi core calls the driver's Comedi
+"attach" handler `c6xdigio_attach()` to configure a Comedi to use this
+driver, it tries to enable the parallel port PNP resources by
+registering a PNP driver with `pnp_register_driver()`, but ignores the
+return value.  (The `struct pnp_driver` it uses has only the `name` and
+`id_table` members filled in.)  The driver's Comedi "detach" handler
+`c6xdigio_detach()` unconditionally unregisters the PNP driver with
+`pnp_unregister_driver()`.
 
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: Kui-Feng Lee <thinker.li@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: f72514b3c569 ("ipv6: clear RA flags when adding a static route")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is possible for `c6xdigio_attach()` to return an error before it
+calls `pnp_register_driver()` and it is possible for the call to
+`pnp_register_driver()` to return an error (that is ignored).  In both
+cases, the driver should not be calling `pnp_unregister_driver()` as it
+does in `c6xdigio_detach()`.  (Note that `c6xdigio_detach()` will be
+called by the Comedi core if `c6xdigio_attach()` returns an error, or if
+the Comedi core decides to detach the Comedi device from the driver for
+some other reason.)
+
+The unconditional call to `pnp_unregister_driver()` without a previous
+successful call to `pnp_register_driver()` will cause
+`driver_unregister()` to issue a warning "Unexpected driver
+unregister!".  This was detected by Syzbot [1].
+
+Also, the PNP driver registration and unregistration should be done at
+module init and exit time, respectively, not when attaching or detaching
+Comedi devices to the driver.  (There might be more than one Comedi
+device being attached to the driver, although that is unlikely.)
+
+Change the driver to do the PNP driver registration at module init time,
+and the unregistration at module exit time.  Since `c6xdigio_detach()`
+now only calls `comedi_legacy_detach()`, remove the function and change
+the Comedi driver "detach" handler to `comedi_legacy_detach`.
+
+-------------------------------------------
+[1] Syzbot sample crash report:
+Unexpected driver unregister!
+WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister drivers/base/driver.c:273 [inline]
+WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister+0x90/0xb0 drivers/base/driver.c:270
+Modules linked in:
+CPU: 0 UID: 0 PID: 5970 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
+RIP: 0010:driver_unregister drivers/base/driver.c:273 [inline]
+RIP: 0010:driver_unregister+0x90/0xb0 drivers/base/driver.c:270
+Code: 48 89 ef e8 c2 e6 82 fc 48 89 df e8 3a 93 ff ff 5b 5d e9 c3 6d d9 fb e8 be 6d d9 fb 90 48 c7 c7 e0 f8 1f 8c e8 51 a2 97 fb 90 <0f> 0b 90 90 5b 5d e9 a5 6d d9 fb e8 e0 f4 41 fc eb 94 e8 d9 f4 41
+RSP: 0018:ffffc9000373f9a0 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffffffff8ff24720 RCX: ffffffff817b6ee8
+RDX: ffff88807c932480 RSI: ffffffff817b6ef5 RDI: 0000000000000001
+RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
+R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8ff24660
+R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88814cca0000
+FS:  000055556dab1500(0000) GS:ffff8881249d9000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 000055f77f285cd0 CR3: 000000007d871000 CR4: 00000000003526f0
+Call Trace:
+ <TASK>
+ comedi_device_detach_locked+0x12f/0xa50 drivers/comedi/drivers.c:207
+ comedi_device_detach+0x67/0xb0 drivers/comedi/drivers.c:215
+ comedi_device_attach+0x43d/0x900 drivers/comedi/drivers.c:1011
+ do_devconfig_ioctl+0x1b1/0x710 drivers/comedi/comedi_fops.c:872
+ comedi_unlocked_ioctl+0x165d/0x2f00 drivers/comedi/comedi_fops.c:2178
+ vfs_ioctl fs/ioctl.c:51 [inline]
+ __do_sys_ioctl fs/ioctl.c:597 [inline]
+ __se_sys_ioctl fs/ioctl.c:583 [inline]
+ __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7fc05798eec9
+Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffcf8184238 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
+RAX: ffffffffffffffda RBX: 00007fc057be5fa0 RCX: 00007fc05798eec9
+RDX: 0000200000000080 RSI: 0000000040946400 RDI: 0000000000000003
+RBP: 00007fc057a11f91 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007fc057be5fa0 R14: 00007fc057be5fa0 R15: 0000000000000003
+ </TASK>
+-------------------------------------------
+
+Reported-by: syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6616bba359cec7a1def1
+Fixes: 2c89e159cd2f ("Staging: comedi: add c6xdigio driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+Link: https://patch.msgid.link/20251023123141.6537-1-abbotti@mev.co.uk
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/ip6_fib.h | 46 ++++++++++++++++++++++++++++++++-
- net/ipv6/addrconf.c   | 41 ++++++++++++++++++++++++-----
- net/ipv6/ip6_fib.c    | 60 +++++++++++++++++++++++++++++++++++++++----
- net/ipv6/ndisc.c      | 10 +++++++-
- net/ipv6/route.c      | 13 ++++++++--
- 5 files changed, 154 insertions(+), 16 deletions(-)
+ drivers/comedi/drivers/c6xdigio.c |   46 ++++++++++++++++++++++++++++----------
+ 1 file changed, 35 insertions(+), 11 deletions(-)
 
-diff --git a/include/net/ip6_fib.h b/include/net/ip6_fib.h
-index 1121d614942c8..f4c5b705418c0 100644
---- a/include/net/ip6_fib.h
-+++ b/include/net/ip6_fib.h
-@@ -179,6 +179,9 @@ struct fib6_info {
+--- a/drivers/comedi/drivers/c6xdigio.c
++++ b/drivers/comedi/drivers/c6xdigio.c
+@@ -249,9 +249,6 @@ static int c6xdigio_attach(struct comedi
+ 	if (ret)
+ 		return ret;
  
- 	refcount_t			fib6_ref;
- 	unsigned long			expires;
-+
-+	struct hlist_node		gc_link;
-+
- 	struct dst_metrics		*fib6_metrics;
- #define fib6_pmtu		fib6_metrics->metrics[RTAX_MTU-1]
- 
-@@ -249,12 +252,18 @@ static inline bool fib6_requires_src(const struct fib6_info *rt)
- 	return rt->fib6_src.plen > 0;
- }
- 
-+/* The callers should hold f6i->fib6_table->tb6_lock if a route has ever
-+ * been added to a table before.
-+ */
- static inline void fib6_clean_expires(struct fib6_info *f6i)
- {
- 	f6i->fib6_flags &= ~RTF_EXPIRES;
- 	f6i->expires = 0;
- }
- 
-+/* The callers should hold f6i->fib6_table->tb6_lock if a route has ever
-+ * been added to a table before.
-+ */
- static inline void fib6_set_expires(struct fib6_info *f6i,
- 				    unsigned long expires)
- {
-@@ -335,8 +344,10 @@ static inline bool fib6_info_hold_safe(struct fib6_info *f6i)
- 
- static inline void fib6_info_release(struct fib6_info *f6i)
- {
--	if (f6i && refcount_dec_and_test(&f6i->fib6_ref))
-+	if (f6i && refcount_dec_and_test(&f6i->fib6_ref)) {
-+		DEBUG_NET_WARN_ON_ONCE(!hlist_unhashed(&f6i->gc_link));
- 		call_rcu(&f6i->rcu, fib6_info_destroy_rcu);
-+	}
- }
- 
- enum fib6_walk_state {
-@@ -390,6 +401,7 @@ struct fib6_table {
- 	struct inet_peer_base	tb6_peers;
- 	unsigned int		flags;
- 	unsigned int		fib_seq;
-+	struct hlist_head       tb6_gc_hlist;	/* GC candidates */
- #define RT6_TABLE_HAS_DFLT_ROUTER	BIT(0)
- };
- 
-@@ -506,6 +518,38 @@ void fib6_gc_cleanup(void);
- 
- int fib6_init(void);
- 
-+/* Add the route to the gc list if it is not already there
-+ *
-+ * The callers should hold f6i->fib6_table->tb6_lock.
-+ */
-+static inline void fib6_add_gc_list(struct fib6_info *f6i)
-+{
-+	/* If fib6_node is null, the f6i is not in (or removed from) the
-+	 * table.
-+	 *
-+	 * There is a gap between finding the f6i from the table and
-+	 * calling this function without the protection of the tb6_lock.
-+	 * This check makes sure the f6i is not added to the gc list when
-+	 * it is not on the table.
-+	 */
-+	if (!rcu_dereference_protected(f6i->fib6_node,
-+				       lockdep_is_held(&f6i->fib6_table->tb6_lock)))
-+		return;
-+
-+	if (hlist_unhashed(&f6i->gc_link))
-+		hlist_add_head(&f6i->gc_link, &f6i->fib6_table->tb6_gc_hlist);
-+}
-+
-+/* Remove the route from the gc list if it is on the list.
-+ *
-+ * The callers should hold f6i->fib6_table->tb6_lock.
-+ */
-+static inline void fib6_remove_gc_list(struct fib6_info *f6i)
-+{
-+	if (!hlist_unhashed(&f6i->gc_link))
-+		hlist_del_init(&f6i->gc_link);
-+}
-+
- struct ipv6_route_iter {
- 	struct seq_net_private p;
- 	struct fib6_walker w;
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 0e49ee83533b5..b606d77fe7fce 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -1268,6 +1268,7 @@ static void
- cleanup_prefix_route(struct inet6_ifaddr *ifp, unsigned long expires,
- 		     bool del_rt, bool del_peer)
- {
-+	struct fib6_table *table;
- 	struct fib6_info *f6i;
- 
- 	f6i = addrconf_get_prefix_route(del_peer ? &ifp->peer_addr : &ifp->addr,
-@@ -1277,8 +1278,15 @@ cleanup_prefix_route(struct inet6_ifaddr *ifp, unsigned long expires,
- 		if (del_rt)
- 			ip6_del_rt(dev_net(ifp->idev->dev), f6i, false);
- 		else {
--			if (!(f6i->fib6_flags & RTF_EXPIRES))
-+			if (!(f6i->fib6_flags & RTF_EXPIRES)) {
-+				table = f6i->fib6_table;
-+				spin_lock_bh(&table->tb6_lock);
-+
- 				fib6_set_expires(f6i, expires);
-+				fib6_add_gc_list(f6i);
-+
-+				spin_unlock_bh(&table->tb6_lock);
-+			}
- 			fib6_info_release(f6i);
- 		}
- 	}
-@@ -2736,6 +2744,7 @@ EXPORT_SYMBOL_GPL(addrconf_prefix_rcv_add_addr);
- void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
- {
- 	struct prefix_info *pinfo;
-+	struct fib6_table *table;
- 	__u32 valid_lft;
- 	__u32 prefered_lft;
- 	int addr_type, err;
-@@ -2812,11 +2821,20 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *opt, int len, bool sllao)
- 			if (valid_lft == 0) {
- 				ip6_del_rt(net, rt, false);
- 				rt = NULL;
--			} else if (addrconf_finite_timeout(rt_expires)) {
--				/* not infinity */
--				fib6_set_expires(rt, jiffies + rt_expires);
- 			} else {
--				fib6_clean_expires(rt);
-+				table = rt->fib6_table;
-+				spin_lock_bh(&table->tb6_lock);
-+
-+				if (addrconf_finite_timeout(rt_expires)) {
-+					/* not infinity */
-+					fib6_set_expires(rt, jiffies + rt_expires);
-+					fib6_add_gc_list(rt);
-+				} else {
-+					fib6_clean_expires(rt);
-+					fib6_remove_gc_list(rt);
-+				}
-+
-+				spin_unlock_bh(&table->tb6_lock);
- 			}
- 		} else if (valid_lft) {
- 			clock_t expires = 0;
-@@ -4770,6 +4788,7 @@ static int modify_prefix_route(struct inet6_ifaddr *ifp,
- 			       unsigned long expires, u32 flags,
- 			       bool modify_peer)
- {
-+	struct fib6_table *table;
- 	struct fib6_info *f6i;
- 	u32 prio;
- 
-@@ -4790,10 +4809,18 @@ static int modify_prefix_route(struct inet6_ifaddr *ifp,
- 				      ifp->rt_priority, ifp->idev->dev,
- 				      expires, flags, GFP_KERNEL);
- 	} else {
--		if (!expires)
-+		table = f6i->fib6_table;
-+		spin_lock_bh(&table->tb6_lock);
-+
-+		if (!expires) {
- 			fib6_clean_expires(f6i);
--		else
-+			fib6_remove_gc_list(f6i);
-+		} else {
- 			fib6_set_expires(f6i, expires);
-+			fib6_add_gc_list(f6i);
-+		}
-+
-+		spin_unlock_bh(&table->tb6_lock);
- 
- 		fib6_info_release(f6i);
- 	}
-diff --git a/net/ipv6/ip6_fib.c b/net/ipv6/ip6_fib.c
-index c44136cbbaa1f..ab84e2dd682f8 100644
---- a/net/ipv6/ip6_fib.c
-+++ b/net/ipv6/ip6_fib.c
-@@ -160,6 +160,8 @@ struct fib6_info *fib6_info_alloc(gfp_t gfp_flags, bool with_fib6_nh)
- 	INIT_LIST_HEAD(&f6i->fib6_siblings);
- 	refcount_set(&f6i->fib6_ref, 1);
- 
-+	INIT_HLIST_NODE(&f6i->gc_link);
-+
- 	return f6i;
- }
- 
-@@ -246,6 +248,7 @@ static struct fib6_table *fib6_alloc_table(struct net *net, u32 id)
- 				   net->ipv6.fib6_null_entry);
- 		table->tb6_root.fn_flags = RTN_ROOT | RTN_TL_ROOT | RTN_RTINFO;
- 		inet_peer_base_init(&table->tb6_peers);
-+		INIT_HLIST_HEAD(&table->tb6_gc_hlist);
- 	}
- 
- 	return table;
-@@ -1063,6 +1066,9 @@ static void fib6_purge_rt(struct fib6_info *rt, struct fib6_node *fn,
- 				    lockdep_is_held(&table->tb6_lock));
- 		}
- 	}
-+
-+	fib6_clean_expires(rt);
-+	fib6_remove_gc_list(rt);
- }
- 
- /*
-@@ -1123,10 +1129,13 @@ static int fib6_add_rt2node(struct fib6_node *fn, struct fib6_info *rt,
- 					WRITE_ONCE(rt->fib6_nsiblings, 0);
- 				if (!(iter->fib6_flags & RTF_EXPIRES))
- 					return -EEXIST;
--				if (!(rt->fib6_flags & RTF_EXPIRES))
-+				if (!(rt->fib6_flags & RTF_EXPIRES)) {
- 					fib6_clean_expires(iter);
--				else
-+					fib6_remove_gc_list(iter);
-+				} else {
- 					fib6_set_expires(iter, rt->expires);
-+					fib6_add_gc_list(iter);
-+				}
- 
- 				if (rt->fib6_pmtu)
- 					fib6_metric_set(iter, RTAX_MTU,
-@@ -1491,6 +1500,10 @@ int fib6_add(struct fib6_node *root, struct fib6_info *rt,
- 		if (rt->nh)
- 			list_add(&rt->nh_list, &rt->nh->f6i_list);
- 		__fib6_update_sernum_upto_root(rt, fib6_new_sernum(info->nl_net));
-+
-+		if (rt->fib6_flags & RTF_EXPIRES)
-+			fib6_add_gc_list(rt);
-+
- 		fib6_start_gc(info->nl_net, rt);
- 	}
- 
-@@ -2294,9 +2307,8 @@ static void fib6_flush_trees(struct net *net)
-  *	Garbage collection
-  */
- 
--static int fib6_age(struct fib6_info *rt, void *arg)
-+static int fib6_age(struct fib6_info *rt, struct fib6_gc_args *gc_args)
- {
--	struct fib6_gc_args *gc_args = arg;
- 	unsigned long now = jiffies;
- 
- 	/*
-@@ -2321,6 +2333,42 @@ static int fib6_age(struct fib6_info *rt, void *arg)
+-	/*  Make sure that PnP ports get activated */
+-	pnp_register_driver(&c6xdigio_pnp_driver);
+-
+ 	s = &dev->subdevices[0];
+ 	/* pwm output subdevice */
+ 	s->type		= COMEDI_SUBD_PWM;
+@@ -278,19 +275,46 @@ static int c6xdigio_attach(struct comedi
  	return 0;
  }
  
-+static void fib6_gc_table(struct net *net,
-+			  struct fib6_table *tb6,
-+			  struct fib6_gc_args *gc_args)
+-static void c6xdigio_detach(struct comedi_device *dev)
+-{
+-	comedi_legacy_detach(dev);
+-	pnp_unregister_driver(&c6xdigio_pnp_driver);
+-}
+-
+ static struct comedi_driver c6xdigio_driver = {
+ 	.driver_name	= "c6xdigio",
+ 	.module		= THIS_MODULE,
+ 	.attach		= c6xdigio_attach,
+-	.detach		= c6xdigio_detach,
++	.detach		= comedi_legacy_detach,
+ };
+-module_comedi_driver(c6xdigio_driver);
++
++static bool c6xdigio_pnp_registered = false;
++
++static int __init c6xdigio_module_init(void)
 +{
-+	struct fib6_info *rt;
-+	struct hlist_node *n;
-+	struct nl_info info = {
-+		.nl_net = net,
-+		.skip_notify = false,
-+	};
++	int ret;
 +
-+	hlist_for_each_entry_safe(rt, n, &tb6->tb6_gc_hlist, gc_link)
-+		if (fib6_age(rt, gc_args) == -1)
-+			fib6_del(rt, &info);
-+}
++	ret = comedi_driver_register(&c6xdigio_driver);
++	if (ret)
++		return ret;
 +
-+static void fib6_gc_all(struct net *net, struct fib6_gc_args *gc_args)
-+{
-+	struct fib6_table *table;
-+	struct hlist_head *head;
-+	unsigned int h;
-+
-+	rcu_read_lock();
-+	for (h = 0; h < FIB6_TABLE_HASHSZ; h++) {
-+		head = &net->ipv6.fib_table_hash[h];
-+		hlist_for_each_entry_rcu(table, head, tb6_hlist) {
-+			spin_lock_bh(&table->tb6_lock);
-+
-+			fib6_gc_table(net, table, gc_args);
-+
-+			spin_unlock_bh(&table->tb6_lock);
-+		}
-+	}
-+	rcu_read_unlock();
-+}
-+
- void fib6_run_gc(unsigned long expires, struct net *net, bool force)
- {
- 	struct fib6_gc_args gc_args;
-@@ -2336,7 +2384,7 @@ void fib6_run_gc(unsigned long expires, struct net *net, bool force)
- 			  net->ipv6.sysctl.ip6_rt_gc_interval;
- 	gc_args.more = 0;
- 
--	fib6_clean_all(net, fib6_age, &gc_args);
-+	fib6_gc_all(net, &gc_args);
- 	now = jiffies;
- 	net->ipv6.ip6_rt_last_gc = now;
- 
-@@ -2396,6 +2444,7 @@ static int __net_init fib6_net_init(struct net *net)
- 	net->ipv6.fib6_main_tbl->tb6_root.fn_flags =
- 		RTN_ROOT | RTN_TL_ROOT | RTN_RTINFO;
- 	inet_peer_base_init(&net->ipv6.fib6_main_tbl->tb6_peers);
-+	INIT_HLIST_HEAD(&net->ipv6.fib6_main_tbl->tb6_gc_hlist);
- 
- #ifdef CONFIG_IPV6_MULTIPLE_TABLES
- 	net->ipv6.fib6_local_tbl = kzalloc(sizeof(*net->ipv6.fib6_local_tbl),
-@@ -2408,6 +2457,7 @@ static int __net_init fib6_net_init(struct net *net)
- 	net->ipv6.fib6_local_tbl->tb6_root.fn_flags =
- 		RTN_ROOT | RTN_TL_ROOT | RTN_RTINFO;
- 	inet_peer_base_init(&net->ipv6.fib6_local_tbl->tb6_peers);
-+	INIT_HLIST_HEAD(&net->ipv6.fib6_local_tbl->tb6_gc_hlist);
- #endif
- 	fib6_tables_init(net);
- 
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index 8d853971f2f68..d8e5e2833eded 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1241,6 +1241,7 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 	struct ndisc_options ndopts;
- 	struct fib6_info *rt = NULL;
- 	struct inet6_dev *in6_dev;
-+	struct fib6_table *table;
- 	u32 defrtr_usr_metric;
- 	unsigned int pref = 0;
- 	__u32 old_if_flags;
-@@ -1413,8 +1414,15 @@ static enum skb_drop_reason ndisc_router_discovery(struct sk_buff *skb)
- 		inet6_rt_notify(RTM_NEWROUTE, rt, &nlinfo, NLM_F_REPLACE);
- 	}
- 
--	if (rt)
-+	if (rt) {
-+		table = rt->fib6_table;
-+		spin_lock_bh(&table->tb6_lock);
-+
- 		fib6_set_expires(rt, jiffies + (HZ * lifetime));
-+		fib6_add_gc_list(rt);
-+
-+		spin_unlock_bh(&table->tb6_lock);
-+	}
- 	if (in6_dev->cnf.accept_ra_min_hop_limit < 256 &&
- 	    ra_msg->icmph.icmp6_hop_limit) {
- 		if (in6_dev->cnf.accept_ra_min_hop_limit <= ra_msg->icmph.icmp6_hop_limit) {
-diff --git a/net/ipv6/route.c b/net/ipv6/route.c
-index eb9e505f71f97..929f92b555113 100644
---- a/net/ipv6/route.c
-+++ b/net/ipv6/route.c
-@@ -971,6 +971,7 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
- 	struct net *net = dev_net(dev);
- 	struct route_info *rinfo = (struct route_info *) opt;
- 	struct in6_addr prefix_buf, *prefix;
-+	struct fib6_table *table;
- 	unsigned int pref;
- 	unsigned long lifetime;
- 	struct fib6_info *rt;
-@@ -1029,10 +1030,18 @@ int rt6_route_rcv(struct net_device *dev, u8 *opt, int len,
- 				 (rt->fib6_flags & ~RTF_PREF_MASK) | RTF_PREF(pref);
- 
- 	if (rt) {
--		if (!addrconf_finite_timeout(lifetime))
-+		table = rt->fib6_table;
-+		spin_lock_bh(&table->tb6_lock);
-+
-+		if (!addrconf_finite_timeout(lifetime)) {
- 			fib6_clean_expires(rt);
--		else
-+			fib6_remove_gc_list(rt);
++	if (IS_ENABLED(CONFIG_PNP)) {
++		/*  Try to activate the PnP ports */
++		ret = pnp_register_driver(&c6xdigio_pnp_driver);
++		if (ret) {
++			pr_warn("failed to register pnp driver - err %d\n",
++				ret);
++			ret = 0;	/* ignore the error. */
 +		} else {
- 			fib6_set_expires(rt, jiffies + HZ * lifetime);
-+			fib6_add_gc_list(rt);
++			c6xdigio_pnp_registered = true;
 +		}
++	}
 +
-+		spin_unlock_bh(&table->tb6_lock);
++	return 0;
++}
++module_init(c6xdigio_module_init);
++
++static void __exit c6xdigio_module_exit(void)
++{
++	if (c6xdigio_pnp_registered)
++		pnp_unregister_driver(&c6xdigio_pnp_driver);
++	comedi_driver_unregister(&c6xdigio_driver);
++}
++module_exit(c6xdigio_module_exit);
  
- 		fib6_info_release(rt);
- 	}
--- 
-2.51.0
-
+ MODULE_AUTHOR("Comedi https://www.comedi.org");
+ MODULE_DESCRIPTION("Comedi driver for the C6x_DIGIO DSP daughter card");
 
 
 
