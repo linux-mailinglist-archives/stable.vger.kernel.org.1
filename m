@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-206774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207376-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1B0BD09326
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:02:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFEAD09ED1
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:46:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F9D53012E85
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:02:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F1232311D685
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:31:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5007F359FB0;
-	Fri,  9 Jan 2026 12:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0111535A95B;
+	Fri,  9 Jan 2026 12:31:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szJ1HtoQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HUwHudcd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 137D733CE9A;
-	Fri,  9 Jan 2026 12:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B624433C53C;
+	Fri,  9 Jan 2026 12:31:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960161; cv=none; b=cjAf7Fq5PymstlJyL9owGBsXgNH0VrFhlmOngBTP7bfOGFL/glT1uKxt2KI7kbH9BqoV4rnOF5kuosFp2zovjv2q9BAcdPuxcNmouonWufoUFzcp5PoZXZVaxO+KWcdx7xEN7bMn6wtg345VgmqTQ8tuwKW3hkKNil5TGM+QmHI=
+	t=1767961879; cv=none; b=One4yyb6NYqyMaYc7+GYsZKKJSltVpVyLLP711oNI+HShelPBMn3dKP3Q63zWmHsku84LNBT/l4rRZjIAAludj2Ok3+hoTxUQqnqQvfI4C75tvKlQ3tTN69+nwhoqlFbQtQAbpgvYg13FHcAqbQ/eRz6MrX2+ggL+aS5x4wbI2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960161; c=relaxed/simple;
-	bh=qD+2RIvRp5l1a7KT0p9uTM2mPHwJyfDR4cAJaMTQIYs=;
+	s=arc-20240116; t=1767961879; c=relaxed/simple;
+	bh=0DDIUwFawcqgmKOyalBvMWmKDJ+W/lzRuyDZAUbylY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=N2JICx8yeNp8laakP6YUyEY5sW2vSj+NQWrDNkZ8qgd9j+lkCBPJd1iD7ghKj84L0I9jhgPLPbjmckjsmMJPN1U2U/jyM8OuJ6/7fKYHh8SLPd95rZRrgq6ZKXie2oUinSVG9braWGB3/5xBKlk/pvp6gG2LPivvv8olr3qLChI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szJ1HtoQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91A50C4CEF1;
-	Fri,  9 Jan 2026 12:02:40 +0000 (UTC)
+	 MIME-Version; b=JMCE+vdbuq2bZryIfBQI4P2drN25PRZm5kcBTCM/G2UwjTVHzxjl541eHFGK2ZytqY1vTjkZg300YMquv2rvO9Wb9R4wNfykcWtZhe/ohLrSuvwS3v6nieJJqJc8OrTz/A2tmfW4kBL7I0TIIBTZTfG/bN4CH+vnrHV81lRpfsE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HUwHudcd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4142FC4CEF1;
+	Fri,  9 Jan 2026 12:31:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960161;
-	bh=qD+2RIvRp5l1a7KT0p9uTM2mPHwJyfDR4cAJaMTQIYs=;
+	s=korg; t=1767961879;
+	bh=0DDIUwFawcqgmKOyalBvMWmKDJ+W/lzRuyDZAUbylY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szJ1HtoQkZavNtPp/WvJJ0iLiEnwR5kvoYnzmSCT28XHjrmjTgbHfNsBA5pNkas9r
-	 /xX0yeRdChmBofPyA3Df5ks41fVntWYxKwK71mCSQk5oK89smJFfXJKp8VDNFI8mEg
-	 zPmEuWFKGaaGaHE+riL/n0YzUd/86GvbnJsUUJTE=
+	b=HUwHudcdiYwjJJ8h3A9ZirJa/hZUtbKqBWEU/6McWnljG38K1LSxnPJakkUQqe5aa
+	 3QENW99kJhrLRW8dE5wZhgpx60VP8V3ADP9CGfcFs3UXnZFH1ZR3uJmTIHridTTWes
+	 F32ue+Fyxss8vu5horR34ZWyFUYg6fXYpsP/SFDU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	sparkhuang <huangshaobo3@xiaomi.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 306/737] sched/deadline: only set free_cpus for online runqueues
+Subject: [PATCH 6.1 167/634] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
 Date: Fri,  9 Jan 2026 12:37:25 +0100
-Message-ID: <20260109112145.517005990@linuxfoundation.org>
+Message-ID: <20260109112123.731667993@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,191 +61,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: sparkhuang <huangshaobo3@xiaomi.com>
 
-[ Upstream commit 382748c05e58a9f1935f5a653c352422375566ea ]
+[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
 
-Commit 16b269436b72 ("sched/deadline: Modify cpudl::free_cpus
-to reflect rd->online") introduced the cpudl_set/clear_freecpu
-functions to allow the cpu_dl::free_cpus mask to be manipulated
-by the deadline scheduler class rq_on/offline callbacks so the
-mask would also reflect this state.
+regulator_supply_alias_list was accessed without any locking in
+regulator_supply_alias(), regulator_register_supply_alias(), and
+regulator_unregister_supply_alias(). Concurrent registration,
+unregistration and lookups can race, leading to:
 
-Commit 9659e1eeee28 ("sched/deadline: Remove cpu_active_mask
-from cpudl_find()") removed the check of the cpu_active_mask to
-save some processing on the premise that the cpudl::free_cpus
-mask already reflected the runqueue online state.
+1 use-after-free if an alias entry is removed while being read,
+2 duplicate entries when two threads register the same alias,
+3 inconsistent alias mappings observed by consumers.
 
-Unfortunately, there are cases where it is possible for the
-cpudl_clear function to set the free_cpus bit for a CPU when the
-deadline runqueue is offline. When this occurs while a CPU is
-connected to the default root domain the flag may retain the bad
-state after the CPU has been unplugged. Later, a different CPU
-that is transitioning through the default root domain may push a
-deadline task to the powered down CPU when cpudl_find sees its
-free_cpus bit is set. If this happens the task will not have the
-opportunity to run.
+Protect all traversals, insertions and deletions on
+regulator_supply_alias_list with the existing regulator_list_mutex.
 
-One example is outlined here:
-https://lore.kernel.org/lkml/20250110233010.2339521-1-opendmb@gmail.com
-
-Another occurs when the last deadline task is migrated from a
-CPU that has an offlined runqueue. The dequeue_task member of
-the deadline scheduler class will eventually call cpudl_clear
-and set the free_cpus bit for the CPU.
-
-This commit modifies the cpudl_clear function to be aware of the
-online state of the deadline runqueue so that the free_cpus mask
-can be updated appropriately.
-
-It is no longer necessary to manage the mask outside of the
-cpudl_set/clear functions so the cpudl_set/clear_freecpu
-functions are removed. In addition, since the free_cpus mask is
-now only updated under the cpudl lock the code was changed to
-use the non-atomic __cpumask functions.
-
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
+Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpudeadline.c | 34 +++++++++-------------------------
- kernel/sched/cpudeadline.h |  4 +---
- kernel/sched/deadline.c    |  8 ++++----
- 3 files changed, 14 insertions(+), 32 deletions(-)
+ drivers/regulator/core.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/kernel/sched/cpudeadline.c b/kernel/sched/cpudeadline.c
-index 95baa12a10293..59d7b4f48c086 100644
---- a/kernel/sched/cpudeadline.c
-+++ b/kernel/sched/cpudeadline.c
-@@ -165,12 +165,13 @@ int cpudl_find(struct cpudl *cp, struct task_struct *p,
-  * cpudl_clear - remove a CPU from the cpudl max-heap
-  * @cp: the cpudl max-heap context
-  * @cpu: the target CPU
-+ * @online: the online state of the deadline runqueue
-  *
-  * Notes: assumes cpu_rq(cpu)->lock is locked
-  *
-  * Returns: (void)
-  */
--void cpudl_clear(struct cpudl *cp, int cpu)
-+void cpudl_clear(struct cpudl *cp, int cpu, bool online)
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 436764329f63b..7b1d60628a001 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1977,6 +1977,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
  {
- 	int old_idx, new_cpu;
- 	unsigned long flags;
-@@ -183,7 +184,7 @@ void cpudl_clear(struct cpudl *cp, int cpu)
- 	if (old_idx == IDX_INVALID) {
- 		/*
- 		 * Nothing to remove if old_idx was invalid.
--		 * This could happen if a rq_offline_dl is
-+		 * This could happen if rq_online_dl or rq_offline_dl is
- 		 * called for a CPU without -dl tasks running.
- 		 */
- 	} else {
-@@ -194,9 +195,12 @@ void cpudl_clear(struct cpudl *cp, int cpu)
- 		cp->elements[new_cpu].idx = old_idx;
- 		cp->elements[cpu].idx = IDX_INVALID;
- 		cpudl_heapify(cp, old_idx);
--
--		cpumask_set_cpu(cpu, cp->free_cpus);
+ 	struct regulator_supply_alias *map;
+ 
++	mutex_lock(&regulator_list_mutex);
+ 	map = regulator_find_supply_alias(*dev, *supply);
+ 	if (map) {
+ 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
+@@ -1985,6 +1986,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
+ 		*dev = map->alias_dev;
+ 		*supply = map->alias_supply;
  	}
-+	if (likely(online))
-+		__cpumask_set_cpu(cpu, cp->free_cpus);
-+	else
-+		__cpumask_clear_cpu(cpu, cp->free_cpus);
-+
- 	raw_spin_unlock_irqrestore(&cp->lock, flags);
++	mutex_unlock(&regulator_list_mutex);
  }
  
-@@ -227,7 +231,7 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
- 		cp->elements[new_idx].cpu = cpu;
- 		cp->elements[cpu].idx = new_idx;
- 		cpudl_heapify_up(cp, new_idx);
--		cpumask_clear_cpu(cpu, cp->free_cpus);
-+		__cpumask_clear_cpu(cpu, cp->free_cpus);
- 	} else {
- 		cp->elements[old_idx].dl = dl;
- 		cpudl_heapify(cp, old_idx);
-@@ -236,26 +240,6 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
- 	raw_spin_unlock_irqrestore(&cp->lock, flags);
- }
+ static int regulator_match(struct device *dev, const void *data)
+@@ -2463,22 +2465,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
+ 				    const char *alias_id)
+ {
+ 	struct regulator_supply_alias *map;
++	struct regulator_supply_alias *new_map;
  
--/*
-- * cpudl_set_freecpu - Set the cpudl.free_cpus
-- * @cp: the cpudl max-heap context
-- * @cpu: rd attached CPU
-- */
--void cpudl_set_freecpu(struct cpudl *cp, int cpu)
--{
--	cpumask_set_cpu(cpu, cp->free_cpus);
--}
+-	map = regulator_find_supply_alias(dev, id);
+-	if (map)
+-		return -EEXIST;
 -
--/*
-- * cpudl_clear_freecpu - Clear the cpudl.free_cpus
-- * @cp: the cpudl max-heap context
-- * @cpu: rd attached CPU
-- */
--void cpudl_clear_freecpu(struct cpudl *cp, int cpu)
--{
--	cpumask_clear_cpu(cpu, cp->free_cpus);
--}
+-	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
+-	if (!map)
++	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
++	if (!new_map)
+ 		return -ENOMEM;
+ 
+-	map->src_dev = dev;
+-	map->src_supply = id;
+-	map->alias_dev = alias_dev;
+-	map->alias_supply = alias_id;
 -
- /*
-  * cpudl_init - initialize the cpudl structure
-  * @cp: the cpudl max-heap context
-diff --git a/kernel/sched/cpudeadline.h b/kernel/sched/cpudeadline.h
-index 0adeda93b5fb5..ecff718d94aea 100644
---- a/kernel/sched/cpudeadline.h
-+++ b/kernel/sched/cpudeadline.h
-@@ -18,9 +18,7 @@ struct cpudl {
- #ifdef CONFIG_SMP
- int  cpudl_find(struct cpudl *cp, struct task_struct *p, struct cpumask *later_mask);
- void cpudl_set(struct cpudl *cp, int cpu, u64 dl);
--void cpudl_clear(struct cpudl *cp, int cpu);
-+void cpudl_clear(struct cpudl *cp, int cpu, bool online);
- int  cpudl_init(struct cpudl *cp);
--void cpudl_set_freecpu(struct cpudl *cp, int cpu);
--void cpudl_clear_freecpu(struct cpudl *cp, int cpu);
- void cpudl_cleanup(struct cpudl *cp);
- #endif /* CONFIG_SMP */
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 5bb9735e19d2f..91459b664014d 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1469,7 +1469,7 @@ static void dec_dl_deadline(struct dl_rq *dl_rq, u64 deadline)
- 	if (!dl_rq->dl_nr_running) {
- 		dl_rq->earliest_dl.curr = 0;
- 		dl_rq->earliest_dl.next = 0;
--		cpudl_clear(&rq->rd->cpudl, rq->cpu);
-+		cpudl_clear(&rq->rd->cpudl, rq->cpu, rq->online);
- 		cpupri_set(&rq->rd->cpupri, rq->cpu, rq->rt.highest_prio.curr);
- 	} else {
- 		struct rb_node *leftmost = rb_first_cached(&dl_rq->root);
-@@ -2550,9 +2550,10 @@ static void rq_online_dl(struct rq *rq)
- 	if (rq->dl.overloaded)
- 		dl_set_overload(rq);
+-	list_add(&map->list, &regulator_supply_alias_list);
++	mutex_lock(&regulator_list_mutex);
++	map = regulator_find_supply_alias(dev, id);
++	if (map) {
++		mutex_unlock(&regulator_list_mutex);
++		kfree(new_map);
++		return -EEXIST;
++	}
  
--	cpudl_set_freecpu(&rq->rd->cpudl, rq->cpu);
- 	if (rq->dl.dl_nr_running > 0)
- 		cpudl_set(&rq->rd->cpudl, rq->cpu, rq->dl.earliest_dl.curr);
-+	else
-+		cpudl_clear(&rq->rd->cpudl, rq->cpu, true);
++	new_map->src_dev = dev;
++	new_map->src_supply = id;
++	new_map->alias_dev = alias_dev;
++	new_map->alias_supply = alias_id;
++	list_add(&new_map->list, &regulator_supply_alias_list);
++	mutex_unlock(&regulator_list_mutex);
+ 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
+ 		id, dev_name(dev), alias_id, dev_name(alias_dev));
+ 
+@@ -2498,11 +2504,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
+ {
+ 	struct regulator_supply_alias *map;
+ 
++	mutex_lock(&regulator_list_mutex);
+ 	map = regulator_find_supply_alias(dev, id);
+ 	if (map) {
+ 		list_del(&map->list);
+ 		kfree(map);
+ 	}
++	mutex_unlock(&regulator_list_mutex);
  }
+ EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
  
- /* Assumes rq->lock is held */
-@@ -2561,8 +2562,7 @@ static void rq_offline_dl(struct rq *rq)
- 	if (rq->dl.overloaded)
- 		dl_clear_overload(rq);
- 
--	cpudl_clear(&rq->rd->cpudl, rq->cpu);
--	cpudl_clear_freecpu(&rq->rd->cpudl, rq->cpu);
-+	cpudl_clear(&rq->rd->cpudl, rq->cpu, false);
- }
- 
- void __init init_sched_dl_class(void)
 -- 
 2.51.0
 
