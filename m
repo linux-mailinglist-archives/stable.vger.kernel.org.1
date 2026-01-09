@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-207572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206971-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8946D0A075
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:52:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6B73AD096AD
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:16:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B8EF2305E14F
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:41:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 32BBE302D6B8
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:12:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01E535C199;
-	Fri,  9 Jan 2026 12:40:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ACEC2359F8C;
+	Fri,  9 Jan 2026 12:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JMcvHWqk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvcZ34M1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE99333C53A;
-	Fri,  9 Jan 2026 12:40:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 70B88328B58;
+	Fri,  9 Jan 2026 12:12:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962436; cv=none; b=BwuDG9Xc6ov9gpizPPubI4irxHkRPWpqfxCEEI7ug4hobLq/E2gu25o1Gg5W1fGzrNssFmOTpINKO//DjWE3f3Hni/DWwLsTy5vXqykrGvj5B+h4eTv+TeeXn/anpXJ5KLsq/JLpFX/JQoI5dXZuMqtLRZ8zqx/i8yBuenKJuZw=
+	t=1767960726; cv=none; b=XZleyGKU0psz8WlvtUsq/aN05ayXnQGimFNgn6c6KI4v8Kas/9LhKe7YKNz/i2wdsdD+LA+cuOW+A1cRmN+CPbv0HVYPCj+Jr3terfafFYD8HWvNsJ8Mta92oTVX3h9WgBNvT/lffVtrRkJw5jzfL3N0tSjRgCAsDtVL3GHus48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962436; c=relaxed/simple;
-	bh=YPn+kSfBXV130mBZgM5IVRVQzlIw0nA0mA9wmGt2irk=;
+	s=arc-20240116; t=1767960726; c=relaxed/simple;
+	bh=tYOWv/FSLH+RD5NAGxxeagDijh810/67xNIDSMMLsSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ujhrnW7i3M6QxVTXUSVJTh6y1cGcmZCyBj4voOqWyzvYpqEj8vZGfX71g14xlvlPry60KB8agNAQ5LNC8xcAVvWLlRC+7ZjNW9t33SrlVE2NYbRHLnxf/IULKYwM978kfuNzQNYEl7B3ENTTQP3nCi/dAv74nNBeg/rTPniscE0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JMcvHWqk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08725C19421;
-	Fri,  9 Jan 2026 12:40:35 +0000 (UTC)
+	 MIME-Version; b=LDkmkknsbe5ukUccpO6b2diPvhZNyReM9r/Sh17LxQljqEwOIBRtYymIT5GlLJbaNT7A/8JABLMQ/4tF0kFMiHEY27AtgtDIUjBeTC/KA/tyDbDzqKYFpjcO9ytF23rEkp2/qAtspiRG9fBA5zZFM7ihb4P2bTocdbCFvZF+v3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvcZ34M1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AEEC4CEF1;
+	Fri,  9 Jan 2026 12:12:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962436;
-	bh=YPn+kSfBXV130mBZgM5IVRVQzlIw0nA0mA9wmGt2irk=;
+	s=korg; t=1767960726;
+	bh=tYOWv/FSLH+RD5NAGxxeagDijh810/67xNIDSMMLsSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JMcvHWqkVkW0OztFbIlIZvhzZtKgozR5fo9BcueBwJq35sGWY/plQCbQEllFm3Ezs
-	 XKf/I/AesX9t8dihM74dJ5Ubf5uzvyInKU+tCD1P//1ukG6sW5Km+fAKAspsGFl59d
-	 1NIP9Pa6rjTdoAIeNeecMUSa6lWn0R06b/uFHtJk=
+	b=PvcZ34M1S1CmrTxA/fBGdILLA6l5OwzNhNxkBSE088VwRDd8wgMeeXpgZCcg9HKMP
+	 vro6M5Tf0zHDXbeuUYGehOJEuGoPc6AGlwqeq5eLZzqIsglTc5e7H2BdH05enBvLZm
+	 U8WGw3WXx+K6mY2LYC2aCQHOPBAhtKd9gl7IuuBA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matteo Rizzo <matteorizzo@google.com>,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 6.1 365/634] KVM: SVM: Mark VMCB_PERM_MAP as dirty on nested VMRUN
+	Grzegorz Nitka <grzegorz.nitka@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemyslaw Korba <przemyslaw.korba@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Rinitha S <sx.rinitha@intel.com>
+Subject: [PATCH 6.6 504/737] i40e: fix scheduling in set_rx_mode
 Date: Fri,  9 Jan 2026 12:40:43 +0100
-Message-ID: <20260109112131.257886031@linuxfoundation.org>
+Message-ID: <20260109112152.953075486@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +64,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Przemyslaw Korba <przemyslaw.korba@intel.com>
 
-commit 93c9e107386dbe1243287a5b14ceca894de372b9 upstream.
+[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
 
-Mark the VMCB_PERM_MAP bit as dirty in nested_vmcb02_prepare_control()
-on every nested VMRUN.
+Add service task schedule to set_rx_mode.
+In some cases there are error messages printed out in PTP application
+(ptp4l):
 
-If L1 changes MSR interception (INTERCEPT_MSR_PROT) between two VMRUN
-instructions on the same L1 vCPU, the msrpm_base_pa in the associated
-vmcb02 will change, and the VMCB_PERM_MAP clean bit should be cleared.
+ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
+ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
+ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
 
-Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
-Reported-by: Matteo Rizzo <matteorizzo@google.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250922162935.621409-2-jmattson@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This happens when service task would not run immediately after
+set_rx_mode, and we need it for setup tasks. This service task checks, if
+PTP RX packets are hung in firmware, and propagate correct settings such
+as multicast address for IEEE 1588 Precision Time Protocol.
+RX timestamping depends on some of these filters set. Bug happens only
+with high PTP packets frequency incoming, and not every run since
+sometimes service task is being ran from a different place immediately
+after starting ptp4l.
+
+Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
+Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
+Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
+ drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
  1 file changed, 1 insertion(+)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -639,6 +639,7 @@ static void nested_vmcb02_prepare_contro
- 	vmcb02->control.nested_ctl = vmcb01->control.nested_ctl;
- 	vmcb02->control.iopm_base_pa = vmcb01->control.iopm_base_pa;
- 	vmcb02->control.msrpm_base_pa = vmcb01->control.msrpm_base_pa;
-+	vmcb_mark_dirty(vmcb02, VMCB_PERM_MAP);
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
+index affdbd3ee76c..8a0eb51fe974 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_main.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
+@@ -2260,6 +2260,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
+ 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
+ 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
+ 	}
++	i40e_service_event_schedule(vsi->back);
+ }
  
- 	/* Done at vmrun: asid.  */
- 
+ /**
+-- 
+2.51.0
+
 
 
 
