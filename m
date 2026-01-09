@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-206639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207271-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AA3CD091BB
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 12:57:23 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCF9BD09AC3
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:31:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 51159301AAB4
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 11:56:18 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 630F6305F408
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:26:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D398335561;
-	Fri,  9 Jan 2026 11:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8C25835B12F;
+	Fri,  9 Jan 2026 12:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BSicxI7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nx5MxiAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40C71318EFA;
-	Fri,  9 Jan 2026 11:56:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DC4333C530;
+	Fri,  9 Jan 2026 12:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767959777; cv=none; b=H/2tjKkpHaji5n1hh2gXuY1GxTPp0E66jkP3viZD4AKnt1Kk0+ZGw2XRK+aL7qfaSH/U98fxCq4r39SYa3w09Z+jrbNYZGe4C9ODVZvbz1rJYRlW47CUg0XsQdvvfHbKYvmGc65ux6uoOQy2QoQ0e5/NjfIJ6bNjgDHyIQIxygQ=
+	t=1767961581; cv=none; b=mgpOMrcLRPPdDs1IcCXHNmTs6rf8VXmVrWp+EKnqWNhRNkcOusFRtBgvB318VTKZErPBBZ1KLV46jhqYVhs8y4zrVAw1ANnvFH8/yEe5y4FaWa60Q8MqnWQrLFv1VLSLczvbBqoDGWbhOAHrZLFMm/BzEfotIWpjbBa+AOvg7ig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767959777; c=relaxed/simple;
-	bh=yaaK/ObV6itFaWhQuJOXHxgb5r2wpAjUu5dmikw9fdE=;
+	s=arc-20240116; t=1767961581; c=relaxed/simple;
+	bh=Dra3HMnWQVBi8pImP08BoHvEQBWB4m9RP8losg1chWE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GpsZs6hpweV2Xn8yTKrYtVfPIEZH4M0K51yEgkSUNxjwo0ficDts+fhKyM4WLo6qNB4jXcXMpTENYCvpUOPIN0Q8qfLd7Q/8uiV5e0W43wONeLFKCV5PIEK18jrNPI+VWLJvYMWuYzlSe3TUg/rITH2+syUntXhzFuiXW5uZs98=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BSicxI7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C066BC4CEF1;
-	Fri,  9 Jan 2026 11:56:16 +0000 (UTC)
+	 MIME-Version:Content-Type; b=u3/YKd9KW5lrUBVexEmATK17uHbK7M1HxyJAlzgHDcB7TODjOmbC7V8Q5ZvXkpU5coLrLTjaw/zP6TeIfBqtPchbydWII8sA1lrBubY7pGFR1NsKmKXpCg5KmI5XoBJzYBWMonpAPGMxDPeCCYoZyyOl2mG9BxpomEanFb6QcqA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nx5MxiAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5749C4CEF1;
+	Fri,  9 Jan 2026 12:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767959777;
-	bh=yaaK/ObV6itFaWhQuJOXHxgb5r2wpAjUu5dmikw9fdE=;
+	s=korg; t=1767961581;
+	bh=Dra3HMnWQVBi8pImP08BoHvEQBWB4m9RP8losg1chWE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1BSicxI7YJ2HDvSsh71AfYABOkmuLeXMkbRQQXU3bmztKetM+qSOyd07x5mUj7zgk
-	 Dttd0X8YQBQRrUOMhCMTQ79Sqbg6sap+5kuVY6707HhBB3qBxyOuT81g3kFQxA5hGs
-	 anhxAghxmfBa1uOCWF5x4gmG8ALnYW/hXncc72gE=
+	b=nx5MxiApKJwKiymuC55KASvVtiJGuJdqf+yl8njcEz7rNJITIH4mYkWJW52Ni4GjO
+	 +QjkhFty8kc7vaA4lQJfNBFf04sQ2WOzEESTiDzeX4qRvR7u8UC+LXn4xpjHOP6VzK
+	 kVq+2XP5/3UipRdExuawov5BWVtB1rgf7qAiDUGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Ston Jia <ston.jia@outlook.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 170/737] powerpc/64s/ptdump: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
+Subject: [PATCH 6.1 031/634] platform/x86: huawei-wmi: add keys for HONOR models
 Date: Fri,  9 Jan 2026 12:35:09 +0100
-Message-ID: <20260109112140.388747901@linuxfoundation.org>
+Message-ID: <20260109112118.618621586@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,56 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+From: Jia Ston <ston.jia@outlook.com>
 
-[ Upstream commit eae40a6da63faa9fb63ff61f8fa2b3b57da78a84 ]
+[ Upstream commit 5c72329716d0858621021193330594d5d26bf44d ]
 
-HPTE format was changed since Power9 (ISA 3.0) onwards. While dumping
-kernel hash page tables, nothing gets printed on powernv P9+. This patch
-utilizes the helpers added in the patch tagged as fixes, to convert new
-format to old format and dump the hptes. This fix is only needed for
-native_find() (powernv), since pseries continues to work fine with the
-old format.
+HONOR MagicBook X16/X14 models produced in 2025 cannot use the Print
+Screen and YOYO keys properly, with the system reporting them as
+unknown key presses (codes: 0x028b and 0x028e).
 
-Fixes: 6b243fcfb5f1e ("powerpc/64: Simplify adaptation to new ISA v3.00 HPTE format")
-Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/4c2bb9e5b3cfbc0dd80b61b67cdd3ccfc632684c.1761834163.git.ritesh.list@gmail.com
+To resolve this, a key_entry is added for both the HONOR Print Screen
+key and the HONOR YOYO key, ensuring they function correctly on these
+models.
+
+Signed-off-by: Ston Jia <ston.jia@outlook.com>
+Link: https://patch.msgid.link/20251029051804.220111-1-ston.jia@outlook.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/ptdump/hashpagetable.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/platform/x86/huawei-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
-index 9a601587836b2..ee5e1dfe7932a 100644
---- a/arch/powerpc/mm/ptdump/hashpagetable.c
-+++ b/arch/powerpc/mm/ptdump/hashpagetable.c
-@@ -216,6 +216,8 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
- 	vpn  = hpt_vpn(ea, vsid, ssize);
- 	hash = hpt_hash(vpn, shift, ssize);
- 	want_v = hpte_encode_avpn(vpn, psize, ssize);
-+	if (cpu_has_feature(CPU_FTR_ARCH_300))
-+		want_v = hpte_old_to_new_v(want_v);
- 
- 	/* to check in the secondary hash table, we invert the hash */
- 	if (!primary)
-@@ -229,6 +231,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
- 			/* HPTE matches */
- 			*v = be64_to_cpu(hptep->v);
- 			*r = be64_to_cpu(hptep->r);
-+			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
-+				*v = hpte_new_to_old_v(*v, *r);
-+				*r = hpte_new_to_old_r(*r);
-+			}
- 			return 0;
- 		}
- 		++hpte_group;
+diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
+index ae5daecff1771..201e1f2e2c2f0 100644
+--- a/drivers/platform/x86/huawei-wmi.c
++++ b/drivers/platform/x86/huawei-wmi.c
+@@ -82,6 +82,10 @@ static const struct key_entry huawei_wmi_keymap[] = {
+ 	{ KE_KEY,    0x289, { KEY_WLAN } },
+ 	// Huawei |M| key
+ 	{ KE_KEY,    0x28a, { KEY_CONFIG } },
++	// HONOR YOYO key
++	{ KE_KEY,    0x28b, { KEY_NOTIFICATION_CENTER } },
++	// HONOR print screen
++	{ KE_KEY,    0x28e, { KEY_PRINT } },
+ 	// Keyboard backlit
+ 	{ KE_IGNORE, 0x293, { KEY_KBDILLUMTOGGLE } },
+ 	{ KE_IGNORE, 0x294, { KEY_KBDILLUMUP } },
 -- 
 2.51.0
 
