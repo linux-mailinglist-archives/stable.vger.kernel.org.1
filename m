@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-207653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207050-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7EB2D0A1BC
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:59:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8F82DD09995
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:27:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F9233034D58
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:44:24 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 617C530347C2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:15:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1703335A955;
-	Fri,  9 Jan 2026 12:44:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9AF030E0DF;
+	Fri,  9 Jan 2026 12:15:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gaSV3wCI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H7PIS7iZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CD10C35971B;
-	Fri,  9 Jan 2026 12:44:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F95B35A94E;
+	Fri,  9 Jan 2026 12:15:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962662; cv=none; b=tqRxpYxMd5oJNkopby2ngNDSjwUk980MUbXSxH22XV3G9W0De6WShzyBsuMcThpzTZiUzHSjvmFAGn8dpglyJ9h+hZAVRs7gTduaXuTjJJhh4El1tmQtINAQRNtdtn3NX7OGlzP0uxXzQhucWTMGwR/IhRrddcLi8XcvRVKcVkE=
+	t=1767960951; cv=none; b=hDEmJgwH2GmBbLwwnPdl74U7OpHe8bQA4w8jp1C+3can1qRuQH3YSNl1F8YPH8c0xmu30k4U68nI1N/Q76qgjpHirDTk/HMTPRsprHCEsUe8r1pS9oKW/OwIrx9RkU0ivKDBhCNYZV6bi/4RCyUaGUzJ6obH49qThyjoLCc4Aws=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962662; c=relaxed/simple;
-	bh=oJSAUgrJOMI+HNYSYlX9rK+pc4vkmOSMgvVgqoJIB/c=;
+	s=arc-20240116; t=1767960951; c=relaxed/simple;
+	bh=G0YH6oaRNKFvq84xWme+GXJqy9nK2P34X2UXh8fqP2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TjlFx9WS+C1EA1WoYBfdQfTa+rKW5xKdyDaaELwsHDe6YRWmRKDnK7o276mdTcb41s1sZSqjMJRPimbwtQUTfCSq9t6Hd3+Ey+73luczC6WQ30jItOc1qDpgLdFN3Thj78VQ01JfyHgLgdE6A8MsgVRRBOBiK8NQY5KfWyFyJSE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gaSV3wCI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5810EC4CEF1;
-	Fri,  9 Jan 2026 12:44:22 +0000 (UTC)
+	 MIME-Version; b=hkpssE3f/4u26pf6Uk6v53alZS7+E7t+wwWlT/pif4ZNPqf/cBPBJYKlE2tFooBcmX7wUTvVG9hpDip3o3OgmluGsePYVbrMsW+oAkobj4kjghdBdubJm0N4zFQBMPUvgDuo0kAPXD41h1Y45qt0mIMNtFX+UpXy772i4QROQIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H7PIS7iZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C34D6C4CEF1;
+	Fri,  9 Jan 2026 12:15:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962662;
-	bh=oJSAUgrJOMI+HNYSYlX9rK+pc4vkmOSMgvVgqoJIB/c=;
+	s=korg; t=1767960951;
+	bh=G0YH6oaRNKFvq84xWme+GXJqy9nK2P34X2UXh8fqP2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gaSV3wCIW2XhgsVtYM+oGvfpcn5ZV6LH5N3yK4u67u4sumEJYbeeFYIuHTmQstPq2
-	 YQ+DJar5gmCD5hjTF//9Z+FTLNwATrRRVrVo+AXcrhzToQi8ygAx0weyO5622OjF9H
-	 E2Iqr6MHxyEEDgdv4XibI1PTaOpgwWWXX6FpCEwk=
+	b=H7PIS7iZKY1tZvxK+hRijXP4wJj4M4Pr/TbOUbBuZbJPAP6BtbaTPDK3BC/g1Fpn0
+	 L2V4DI12PwosiMmCS4QPlHY5fTcOjKAf3J3hprN4kDjmR+podt31rgOIdWuDqpUYbd
+	 UzpG8xXZy8+k6lRVAuHCNPnVTKDv4z7JUfXupfE0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	olivier moysan <olivier.moysan@st.com>,
-	Wen Yang <yellowriver2010@hotmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.1 444/634] ASoC: stm32: sai: fix device leak on probe
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 6.6 583/737] media: cec: Fix debugfs leak on bus_register() failure
 Date: Fri,  9 Jan 2026 12:42:02 +0100
-Message-ID: <20260109112134.245036325@linuxfoundation.org>
+Message-ID: <20260109112155.932024941@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,53 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
+commit c43bcd2b2aa3c2ca9d2433c3990ecbc2c47d10eb upstream.
 
-Make sure to drop the reference taken when looking up the sync provider
-device and its driver data during DAI probe on probe failures and on
-unbind.
+In cec_devnode_init(), the debugfs directory created with
+debugfs_create_dir() is not removed if bus_register() fails.
+This leaves a stale "cec" entry in debugfs and prevents
+proper module reloading.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+Fix this by removing the debugfs directory in the error path.
 
-Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
-Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
-Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
-Cc: olivier moysan <olivier.moysan@st.com>
-Cc: Wen Yang <yellowriver2010@hotmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: a56960e8b406 ("[media] cec: add HDMI CEC framework (core)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_sai.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/cec/core/cec-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/sound/soc/stm/stm32_sai.c
-+++ b/sound/soc/stm/stm32_sai.c
-@@ -127,6 +127,7 @@ static int stm32_sai_set_sync(struct stm
- 	}
+--- a/drivers/media/cec/core/cec-core.c
++++ b/drivers/media/cec/core/cec-core.c
+@@ -449,6 +449,7 @@ static int __init cec_devnode_init(void)
  
- 	sai_provider = platform_get_drvdata(pdev);
-+	put_device(&pdev->dev);
- 	if (!sai_provider) {
- 		dev_err(&sai_client->pdev->dev,
- 			"SAI sync provider data not found\n");
-@@ -143,7 +144,6 @@ static int stm32_sai_set_sync(struct stm
- 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
- 
- error:
--	put_device(&pdev->dev);
- 	of_node_put(np_provider);
- 	return ret;
- }
+ 	ret = bus_register(&cec_bus_type);
+ 	if (ret < 0) {
++		debugfs_remove_recursive(top_cec_dir);
+ 		unregister_chrdev_region(cec_dev_t, CEC_NUM_DEVICES);
+ 		pr_warn("cec: bus_register failed\n");
+ 		return -EIO;
 
 
 
