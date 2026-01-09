@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-207489-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206898-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77974D09F8E
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:48:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2F5AD09738
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:18:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B04733165F19
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:36:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA7DD30C67D9
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:08:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4DC9535B135;
-	Fri,  9 Jan 2026 12:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5350735A953;
+	Fri,  9 Jan 2026 12:08:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BHd2VQfA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E5feeev0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 10AB4358D30;
-	Fri,  9 Jan 2026 12:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16C0435A94B;
+	Fri,  9 Jan 2026 12:08:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962200; cv=none; b=BB72ehaEEh8Uvac7enhqw40N04spuOOu5hYG/gYov8IyqbjCP1yIKDYTopKxD+/9alySc6ZRlINQbuMEjKwGsa4RZbOP9Ps9/yF6473ruF2BcUoaHC2WIzDorUQdDpyZhKyuGnLaNqzYqD8m7LEAWYFT0XEiB6hWb5iL2ubnZ8s=
+	t=1767960514; cv=none; b=GiYg4XeBzaufeaEjiTTrk7OgBxxoDuSh5rjhRxLRW7JC3Dpl+e+2HmtWOaFxugU+gptEKHLg4uBX4zSZcw8eTCv9D6+8qQynaMVgEZQeq7gqWszTAPRQjiwgKWsOZ6wlggwLBNevX206eOozz3+29y1kZn3C7vtPJar3Aibh80A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962200; c=relaxed/simple;
-	bh=HOlQIoePZYNN8iHcmh5gEc9ioS9Fb/4YtlZHPohx7Xg=;
+	s=arc-20240116; t=1767960514; c=relaxed/simple;
+	bh=S+MCB7Yoek14F9AIfcXf7NPm4yzX9GJB5ehMvNy5G+Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TT0WlOVW+7WITcxW2oo3dNayTdGo14sJ+tI0yqWxKeAUJ1e00ASzNss7atenuvdfmAAmXHUBhcEvUdPrdO54l86XAMnftlxl8yhz1hUEUQESnZrDN15l3KLYQ+63TJEX6XyPPNY7Y06fLQS86RbUnIQViD9Qe7m9aavmMGdxbP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BHd2VQfA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93529C4CEF1;
-	Fri,  9 Jan 2026 12:36:39 +0000 (UTC)
+	 MIME-Version; b=PN8SB5xkBC25p1wE8HXit4Jvw1VZcTrS5ygSvnwAvzv3hDuqgxqrwGmQoIjPfTZX2nql7Dfc5/ilP5Vu0m1bmhnA354oHB9qGA9iMCAoWmw160uChifeA2pbmcWFlbLm3PI5ShGnnAfhI+4srroOnm57lhsXQl7SYmE/xNNGOOI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E5feeev0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63F7FC4AF09;
+	Fri,  9 Jan 2026 12:08:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962199;
-	bh=HOlQIoePZYNN8iHcmh5gEc9ioS9Fb/4YtlZHPohx7Xg=;
+	s=korg; t=1767960513;
+	bh=S+MCB7Yoek14F9AIfcXf7NPm4yzX9GJB5ehMvNy5G+Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BHd2VQfAJvW3o67sYym5VNahueOQyR4KqKqz4fALwpts/N/4VzDMG2W5vsgTM/n3e
-	 ow4KTTAcTbquFtYMwMRQ2SYIMB1p2JN/F5i2uySy/+ZWaUlesCj+XrT9UofxYE96kH
-	 Z7XR04V1bxcuSLR5GFDEAI5vkx7h3mu/b11kHfUw=
+	b=E5feeev02qS6dOpax46jPJ0TxJ/mNhq7PDpy8dy//kBZprkxGSaU4IQOonq0AcNdJ
+	 iUbi5vS3AB/tehVexyiAjd1LCVidHD7oYl9c36uff4e23w3EfgN9FzVigO9XuQmuqC
+	 mACkOZkVXVp4b0YzoRj+jeEBZFBSSczO8vmFtkUA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	zdi-disclosures@trendmicro.com,
-	Victor Nogueira <victor@mojatatu.com>,
-	Jamal Hadi Salim <jhs@mojatatu.com>,
-	Davide Caratti <dcaratti@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Matthias Schiffer <matthias.schiffer@tq-group.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Kevin Hilman <khilman@baylibre.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 249/634] net/sched: ets: Always remove class from active list before deleting in ets_qdisc_change
+Subject: [PATCH 6.6 388/737] ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx
 Date: Fri,  9 Jan 2026 12:38:47 +0100
-Message-ID: <20260109112126.909131172@linuxfoundation.org>
+Message-ID: <20260109112148.595233491@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,233 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Matthias Schiffer <matthias.schiffer@tq-group.com>
 
-[ Upstream commit ce052b9402e461a9aded599f5b47e76bc727f7de ]
+[ Upstream commit 3f61783920504b2cf99330b372d82914bb004d8e ]
 
-zdi-disclosures@trendmicro.com says:
+am33xx.dtsi has the same clock setup as am35xx.dtsi, setting
+ti,no-reset-on-init and ti,no-idle on timer1_target and timer2_target,
+so AM33 needs the same workaround as AM35 to avoid ti-sysc probe
+failing on certain target modules.
 
-The vulnerability is a race condition between `ets_qdisc_dequeue` and
-`ets_qdisc_change`.  It leads to UAF on `struct Qdisc` object.
-Attacker requires the capability to create new user and network namespace
-in order to trigger the bug.
-See my additional commentary at the end of the analysis.
-
-Analysis:
-
-static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
-                          struct netlink_ext_ack *extack)
-{
-...
-
-      // (1) this lock is preventing .change handler (`ets_qdisc_change`)
-      //to race with .dequeue handler (`ets_qdisc_dequeue`)
-      sch_tree_lock(sch);
-
-      for (i = nbands; i < oldbands; i++) {
-              if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-                      list_del_init(&q->classes[i].alist);
-              qdisc_purge_queue(q->classes[i].qdisc);
-      }
-
-      WRITE_ONCE(q->nbands, nbands);
-      for (i = nstrict; i < q->nstrict; i++) {
-              if (q->classes[i].qdisc->q.qlen) {
-		      // (2) the class is added to the q->active
-                      list_add_tail(&q->classes[i].alist, &q->active);
-                      q->classes[i].deficit = quanta[i];
-              }
-      }
-      WRITE_ONCE(q->nstrict, nstrict);
-      memcpy(q->prio2band, priomap, sizeof(priomap));
-
-      for (i = 0; i < q->nbands; i++)
-              WRITE_ONCE(q->classes[i].quantum, quanta[i]);
-
-      for (i = oldbands; i < q->nbands; i++) {
-              q->classes[i].qdisc = queues[i];
-              if (q->classes[i].qdisc != &noop_qdisc)
-                      qdisc_hash_add(q->classes[i].qdisc, true);
-      }
-
-      // (3) the qdisc is unlocked, now dequeue can be called in parallel
-      // to the rest of .change handler
-      sch_tree_unlock(sch);
-
-      ets_offload_change(sch);
-      for (i = q->nbands; i < oldbands; i++) {
-	      // (4) we're reducing the refcount for our class's qdisc and
-	      //  freeing it
-              qdisc_put(q->classes[i].qdisc);
-	      // (5) If we call .dequeue between (4) and (5), we will have
-	      // a strong UAF and we can control RIP
-              q->classes[i].qdisc = NULL;
-              WRITE_ONCE(q->classes[i].quantum, 0);
-              q->classes[i].deficit = 0;
-              gnet_stats_basic_sync_init(&q->classes[i].bstats);
-              memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
-      }
-      return 0;
-}
-
-Comment:
-This happens because some of the classes have their qdiscs assigned to
-NULL, but remain in the active list. This commit fixes this issue by always
-removing the class from the active list before deleting and freeing its
-associated qdisc
-
-Reproducer Steps
-(trimmed version of what was sent by zdi-disclosures@trendmicro.com)
-
-```
-DEV="${DEV:-lo}"
-ROOT_HANDLE="${ROOT_HANDLE:-1:}"
-BAND2_HANDLE="${BAND2_HANDLE:-20:}"   # child under 1:2
-PING_BYTES="${PING_BYTES:-48}"
-PING_COUNT="${PING_COUNT:-200000}"
-PING_DST="${PING_DST:-127.0.0.1}"
-
-SLOW_TBF_RATE="${SLOW_TBF_RATE:-8bit}"
-SLOW_TBF_BURST="${SLOW_TBF_BURST:-100b}"
-SLOW_TBF_LAT="${SLOW_TBF_LAT:-1s}"
-
-cleanup() {
-  tc qdisc del dev "$DEV" root 2>/dev/null
-}
-trap cleanup EXIT
-
-ip link set "$DEV" up
-
-tc qdisc del dev "$DEV" root 2>/dev/null || true
-
-tc qdisc add dev "$DEV" root handle "$ROOT_HANDLE" ets bands 2 strict 2
-
-tc qdisc add dev "$DEV" parent 1:2 handle "$BAND2_HANDLE" \
-  tbf rate "$SLOW_TBF_RATE" burst "$SLOW_TBF_BURST" latency "$SLOW_TBF_LAT"
-
-tc filter add dev "$DEV" parent 1: protocol all prio 1 u32 match u32 0 0 flowid 1:2
-tc -s qdisc ls dev $DEV
-
-ping -I "$DEV" -f -c "$PING_COUNT" -s "$PING_BYTES" -W 0.001 "$PING_DST" \
-  >/dev/null 2>&1 &
-tc qdisc change dev "$DEV" root handle "$ROOT_HANDLE" ets bands 2 strict 0
-tc qdisc change dev "$DEV" root handle "$ROOT_HANDLE" ets bands 2 strict 2
-tc -s qdisc ls dev $DEV
-tc qdisc del dev "$DEV" parent 1:2 || true
-tc -s qdisc ls dev $DEV
-tc qdisc change dev "$DEV" root handle "$ROOT_HANDLE" ets bands 1 strict 1
-```
-
-KASAN report
-```
-==================================================================
-BUG: KASAN: slab-use-after-free in ets_qdisc_dequeue+0x1071/0x11b0 kernel/net/sched/sch_ets.c:481
-Read of size 8 at addr ffff8880502fc018 by task ping/12308
->
-CPU: 0 UID: 0 PID: 12308 Comm: ping Not tainted 6.18.0-rc4-dirty #1 PREEMPT(full)
-Hardware name: QEMU Ubuntu 25.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
-Call Trace:
- <IRQ>
- __dump_stack kernel/lib/dump_stack.c:94
- dump_stack_lvl+0x100/0x190 kernel/lib/dump_stack.c:120
- print_address_description kernel/mm/kasan/report.c:378
- print_report+0x156/0x4c9 kernel/mm/kasan/report.c:482
- kasan_report+0xdf/0x110 kernel/mm/kasan/report.c:595
- ets_qdisc_dequeue+0x1071/0x11b0 kernel/net/sched/sch_ets.c:481
- dequeue_skb kernel/net/sched/sch_generic.c:294
- qdisc_restart kernel/net/sched/sch_generic.c:399
- __qdisc_run+0x1c9/0x1b00 kernel/net/sched/sch_generic.c:417
- __dev_xmit_skb kernel/net/core/dev.c:4221
- __dev_queue_xmit+0x2848/0x4410 kernel/net/core/dev.c:4729
- dev_queue_xmit kernel/./include/linux/netdevice.h:3365
-[...]
-
-Allocated by task 17115:
- kasan_save_stack+0x30/0x50 kernel/mm/kasan/common.c:56
- kasan_save_track+0x14/0x30 kernel/mm/kasan/common.c:77
- poison_kmalloc_redzone kernel/mm/kasan/common.c:400
- __kasan_kmalloc+0xaa/0xb0 kernel/mm/kasan/common.c:417
- kasan_kmalloc kernel/./include/linux/kasan.h:262
- __do_kmalloc_node kernel/mm/slub.c:5642
- __kmalloc_node_noprof+0x34e/0x990 kernel/mm/slub.c:5648
- kmalloc_node_noprof kernel/./include/linux/slab.h:987
- qdisc_alloc+0xb8/0xc30 kernel/net/sched/sch_generic.c:950
- qdisc_create_dflt+0x93/0x490 kernel/net/sched/sch_generic.c:1012
- ets_class_graft+0x4fd/0x800 kernel/net/sched/sch_ets.c:261
- qdisc_graft+0x3e4/0x1780 kernel/net/sched/sch_api.c:1196
-[...]
-
-Freed by task 9905:
- kasan_save_stack+0x30/0x50 kernel/mm/kasan/common.c:56
- kasan_save_track+0x14/0x30 kernel/mm/kasan/common.c:77
- __kasan_save_free_info+0x3b/0x70 kernel/mm/kasan/generic.c:587
- kasan_save_free_info kernel/mm/kasan/kasan.h:406
- poison_slab_object kernel/mm/kasan/common.c:252
- __kasan_slab_free+0x5f/0x80 kernel/mm/kasan/common.c:284
- kasan_slab_free kernel/./include/linux/kasan.h:234
- slab_free_hook kernel/mm/slub.c:2539
- slab_free kernel/mm/slub.c:6630
- kfree+0x144/0x700 kernel/mm/slub.c:6837
- rcu_do_batch kernel/kernel/rcu/tree.c:2605
- rcu_core+0x7c0/0x1500 kernel/kernel/rcu/tree.c:2861
- handle_softirqs+0x1ea/0x8a0 kernel/kernel/softirq.c:622
- __do_softirq kernel/kernel/softirq.c:656
-[...]
-
-Commentary:
-
-1. Maher Azzouzi working with Trend Micro Zero Day Initiative was reported as
-the person who found the issue. I requested to get a proper email to add to the
-reported-by tag but got no response. For this reason i will credit the person
-i exchanged emails with i.e zdi-disclosures@trendmicro.com
-
-2. Neither i nor Victor who did a much more thorough testing was able to
-reproduce a UAF with the PoC or other approaches we tried. We were both able to
-reproduce a null ptr deref. After exchange with zdi-disclosures@trendmicro.com
-they sent a small change to be made to the code to add an extra delay which
-was able to simulate the UAF. i.e, this:
-   qdisc_put(q->classes[i].qdisc);
-   mdelay(90);
-   q->classes[i].qdisc = NULL;
-
-I was informed by Thomas Gleixner(tglx@linutronix.de) that adding delays was
-acceptable approach for demonstrating the bug, quote:
-"Adding such delays is common exploit validation practice"
-The equivalent delay could happen "by virt scheduling the vCPU out, SMIs,
-NMIs, PREEMPT_RT enabled kernel"
-
-3. I asked the OP to test and report back but got no response and after a
-few days gave up and proceeded to submit this fix.
-
-Fixes: de6d25924c2a ("net/sched: sch_ets: don't peek at classes beyond 'nbands'")
-Reported-by: zdi-disclosures@trendmicro.com
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Reviewed-by: Davide Caratti <dcaratti@redhat.com>
-Link: https://patch.msgid.link/20251128151919.576920-1-jhs@mojatatu.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://lore.kernel.org/r/20250825131114.2206804-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Kevin Hilman <khilman@baylibre.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/sch_ets.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c | 11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
-index 9873f4ae90c3a..b732d09ede99a 100644
---- a/net/sched/sch_ets.c
-+++ b/net/sched/sch_ets.c
-@@ -652,7 +652,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
- 	sch_tree_lock(sch);
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 46d7410f6f0f..b6a7d0d3f153 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -37,6 +37,7 @@ enum sysc_soc {
+ 	SOC_UNKNOWN,
+ 	SOC_2420,
+ 	SOC_2430,
++	SOC_AM33,
+ 	SOC_3430,
+ 	SOC_AM35,
+ 	SOC_3630,
+@@ -2996,6 +2997,7 @@ static void ti_sysc_idle(struct work_struct *work)
+ static const struct soc_device_attribute sysc_soc_match[] = {
+ 	SOC_FLAG("OMAP242*", SOC_2420),
+ 	SOC_FLAG("OMAP243*", SOC_2430),
++	SOC_FLAG("AM33*", SOC_AM33),
+ 	SOC_FLAG("AM35*", SOC_AM35),
+ 	SOC_FLAG("OMAP3[45]*", SOC_3430),
+ 	SOC_FLAG("OMAP3[67]*", SOC_3630),
+@@ -3201,10 +3203,15 @@ static int sysc_check_active_timer(struct sysc *ddata)
+ 	 * can be dropped if we stop supporting old beagleboard revisions
+ 	 * A to B4 at some point.
+ 	 */
+-	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
++	switch (sysc_soc->soc) {
++	case SOC_AM33:
++	case SOC_3430:
++	case SOC_AM35:
+ 		error = -ENXIO;
+-	else
++		break;
++	default:
+ 		error = -EBUSY;
++	}
  
- 	for (i = nbands; i < oldbands; i++) {
--		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
-+		if (cl_is_active(&q->classes[i]))
- 			list_del_init(&q->classes[i].alist);
- 		qdisc_purge_queue(q->classes[i].qdisc);
- 	}
+ 	if ((ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT) &&
+ 	    (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE))
 -- 
 2.51.0
 
