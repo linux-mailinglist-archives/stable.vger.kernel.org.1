@@ -1,62 +1,57 @@
-Return-Path: <stable+bounces-207425-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44D89D09D36
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:40:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 65703D0943B
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:07:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0C99B30AE106
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:33:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EC1EA301D1DD
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB19D35A95B;
-	Fri,  9 Jan 2026 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9597E359FBB;
+	Fri,  9 Jan 2026 12:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LVIi0O3v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zflqiDh3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E1FD33C53A;
-	Fri,  9 Jan 2026 12:33:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59690359F99;
+	Fri,  9 Jan 2026 12:06:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767962018; cv=none; b=pAXUU6wpI7zuyTLP9+cv8mxSwUpuoy8EjBzIfsmfk55a9823A15pf0de70FrvGOf9UBzo0nNUlJliKwd9I7/MarCEYPBi+cvNALMVQfevkawHaSYfQdqgr6vqtVuXENmfb05n9DYLC16W+NdWyzRoFu2IfhmM+Y90xWSEjQT/wg=
+	t=1767960400; cv=none; b=rOHoAbf7uiN+g6I3FFg7rXmzfjNxUTKBC3XBP/YhOZyHZAq+2XPBlxSU+3w/PFU+RRwDoGEOSsFzhZU+YscNp36WoEwfcZ/G9g0FTsY7TCFRarB8SdOi8sY30HOxPl9LCAO71QKUx28Wnz072+kQSqUHuyv+nXGVMahDdbtCUZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767962018; c=relaxed/simple;
-	bh=KqHxpSAkBQOkagFroSa9Hf5wwR2C9XyYLwZJBRhxlT8=;
+	s=arc-20240116; t=1767960400; c=relaxed/simple;
+	bh=obkef75NRodlE4i3ScSRpVG+u/eSEegHMnddeUXQ+Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X6gb+282DfdNtpYVmuFmBFKN6xaupw8NT8ipNMUlKrXsY1xjMWzs27gA2sqtjYh9e2yYBp13WNonylVrK933XTmDG8tbPJIAe3dTYnZIJSYfYRTkIYGNxPWr0yIVKDuInM0Ku0AUDALjnnPb0Wxqbfuif78TvevBjvLFlCWtAb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LVIi0O3v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74EE8C4CEF1;
-	Fri,  9 Jan 2026 12:33:37 +0000 (UTC)
+	 MIME-Version; b=EFkvkmNKMFY+qiKgpE738SeBYbufwBTc3PJyqmhQVqgw2eTl4rk8Cg0qaGMzucYevq0IqhDq7UV4b6ojYbV3nEsHDHeUMxq/e/5e0Xg7E+QQg2lSojWHJMzISbUS7sqh3FDszLwHnY022l/BRGxx7KOdmR/YkFH1F2PPUnNTlIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zflqiDh3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A763FC4CEF1;
+	Fri,  9 Jan 2026 12:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767962018;
-	bh=KqHxpSAkBQOkagFroSa9Hf5wwR2C9XyYLwZJBRhxlT8=;
+	s=korg; t=1767960400;
+	bh=obkef75NRodlE4i3ScSRpVG+u/eSEegHMnddeUXQ+Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LVIi0O3vZeKZujLKVHY6u6iUfUILRJmE7Mc0TKffrPYWKecISaQOHCzXYbuOJkZJ6
-	 4ibXCqMrM+401FbRf49rROx8Eex0px7ATHdZYGlSDa/+DPFw5vIDxjr25Di/sgd8U8
-	 SKqPGlLjFcztwqHwIt2eG4//l0ToQ3nHFjFwngWQ=
+	b=zflqiDh35jLHQM1w8F291oDlh6owEXLfAHRFo60MQZTMuTVVGGX+qiT/wbn8zTW3O
+	 FxZa2VUT2wGeU5p8uApEBamil1zftwKQcW/iWLq/xB+mhoOxiYBYpEeK2ZJZVy2AzZ
+	 k9ySHoV73m3IvIOcDt5vzAcqmSikFunqGPwxv6Rw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 218/634] ocfs2: fix memory leak in ocfs2_merge_rec_left()
+Subject: [PATCH 6.6 357/737] net: enetc: do not transmit redirected XDP frames when the link is down
 Date: Fri,  9 Jan 2026 12:38:16 +0100
-Message-ID: <20260109112125.636343448@linuxfoundation.org>
+Message-ID: <20260109112147.425574267@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,47 +63,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Wei Fang <wei.fang@nxp.com>
 
-[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
+[ Upstream commit 2939203ffee818f1e5ebd60bbb85a174d63aab9c ]
 
-In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
-move, thus allowing 'ocfs2_free_path()' to free it before return.
+In the current implementation, the enetc_xdp_xmit() always transmits
+redirected XDP frames even if the link is down, but the frames cannot
+be transmitted from TX BD rings when the link is down, so the frames
+are still kept in the TX BD rings. If the XDP program is uninstalled,
+users will see the following warning logs.
 
-Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
-Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+fsl_enetc 0000:00:00.0 eno0: timeout for tx ring #6 clear
+
+More worse, the TX BD ring cannot work properly anymore, because the
+HW PIR and CIR are not equal after the re-initialization of the TX
+BD ring. At this point, the BDs between CIR and PIR are invalid,
+which will cause a hardware malfunction.
+
+Another reason is that there is internal context in the ring prefetch
+logic that will retain the state from the first incarnation of the ring
+and continue prefetching from the stale location when we re-initialize
+the ring. The internal context is only reset by an FLR. That is to say,
+for LS1028A ENETC, software cannot set the HW CIR and PIR when
+initializing the TX BD ring.
+
+It does not make sense to transmit redirected XDP frames when the link is
+down. Add a link status check to prevent transmission in this condition.
+This fixes part of the issue, but more complex cases remain. For example,
+the TX BD ring may still contain unsent frames when the link goes down.
+Those situations require additional patches, which will build on this
+one.
+
+Fixes: 9d2b68cc108d ("net: enetc: add support for XDP_REDIRECT")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/20251211020919.121113-1-wei.fang@nxp.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/alloc.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/ethernet/freescale/enetc/enetc.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
-index 7f11ffacc9150..fa5223b05fad7 100644
---- a/fs/ocfs2/alloc.c
-+++ b/fs/ocfs2/alloc.c
-@@ -3647,7 +3647,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
- 			 * So we use the new rightmost path.
- 			 */
- 			ocfs2_mv_path(right_path, left_path);
--			left_path = NULL;
- 		} else
- 			ocfs2_complete_edge_insert(handle, left_path,
- 						   right_path, subtree_index);
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.c b/drivers/net/ethernet/freescale/enetc/enetc.c
+index 7accf3a3e9f0d..e3ab6f4f8dbba 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc.c
+@@ -1429,7 +1429,8 @@ int enetc_xdp_xmit(struct net_device *ndev, int num_frames,
+ 	int xdp_tx_bd_cnt, i, k;
+ 	int xdp_tx_frm_cnt = 0;
+ 
+-	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags)))
++	if (unlikely(test_bit(ENETC_TX_DOWN, &priv->flags) ||
++		     !netif_carrier_ok(ndev)))
+ 		return -ENETDOWN;
+ 
+ 	enetc_lock_mdio();
 -- 
 2.51.0
 
