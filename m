@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-206739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207341-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B80F2D094E8
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:09:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6421D09D1E
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:39:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 60363307B804
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:01:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C0E1C302D6E2
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3387535A930;
-	Fri,  9 Jan 2026 12:01:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22DD735A933;
+	Fri,  9 Jan 2026 12:29:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="INeW/mJg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GUDs5eRh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E873835A92E;
-	Fri,  9 Jan 2026 12:01:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9FAB31ED69;
+	Fri,  9 Jan 2026 12:29:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767960062; cv=none; b=fhXYJE5pyunRq0zuCU0XBLQGTVYZwzJgIcmAaZkm5noYx4EyiC6CpRd0v2GIIXcmlCQTueas55TST8nr21gmHNn+E96A0VvWaeTpfeUBY0YG2nue9pnms+ONEEuyDLCq6pIukREMFCJWYRXEbF+vRoWR0l8J+1J6/8ho0OSFY9k=
+	t=1767961779; cv=none; b=Uw5IUbbAUQ5VG2fSyTYxtmyoTgnEMmVbXQbUP2vDJdGypJL8BJLyVnednr2se2seFeLKA2m/fsI64gC6AnEQllXQv4+vi6LduKtPaMPPmkk+L5omyq6n6kQ3Dru2y8R4ErluExGBqxeAZjh7Xer9ISj9UWdJ7PWbZeGsIZVAdsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767960062; c=relaxed/simple;
-	bh=c2xtxgH6noESJqXYTo+rZIcTI9JwWQNPuEwPstNEqGc=;
+	s=arc-20240116; t=1767961779; c=relaxed/simple;
+	bh=5q0eSII5nVKbb7N3hAab72LFLjljgSfupZkaUrXNips=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=uJK0HCqz1wqMlteNpYiS9GuBzrdv/mFWwhhU6lBUMEtX3kIHvHc9rJhBfuVf5ze2W2F21Rqq3LMHXOAYNIjazy2z1Z7hSsNa94sk0LKM8TIuKm61l/2bsKvS9uM/u5ZncAIUXH3EEfgYXkT3nBgRwh3JW5G+VzHgim1wlqDodXA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=INeW/mJg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 213E1C16AAE;
-	Fri,  9 Jan 2026 12:01:00 +0000 (UTC)
+	 MIME-Version; b=Y+506aKbGg7dK4LqkzvCc3nVgPyFKfxSavtJ+Wuh+kNlYBwYFvb3Cqmv/fE8vaQkGxkhT8wOghK/BI0nOZ/essZ+D92H2d3tpzgCrbMlPSYMZQZyH2uUcUpUFCT9QPQ6qYIaXfQNUvAyZrQvSqUy7tQrUnbMaIvmtx7nZoLKUwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GUDs5eRh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663DFC4CEF1;
+	Fri,  9 Jan 2026 12:29:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767960061;
-	bh=c2xtxgH6noESJqXYTo+rZIcTI9JwWQNPuEwPstNEqGc=;
+	s=korg; t=1767961779;
+	bh=5q0eSII5nVKbb7N3hAab72LFLjljgSfupZkaUrXNips=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=INeW/mJg2VUl/8/zHHvhOwvZB1taMcWcWk1J2e6PxFAyiNQcMl2t1vg+tnnrVjJdj
-	 D7lvUN1KNPzsixkDRYkqK3uyfWwqmYWffSWheKs5x6uC2q2BU3L0hc12BoZ04cDgl6
-	 G4KWisPETF0teIcCYJQg5LHuwVIvqPXWgKvXJkig=
+	b=GUDs5eRh7K/aij/iMB4CiMlTyJsy5/XcbHd0KY+TeteUdNvUR2Ie1zg91YHsxUhS/
+	 Sd994RxYQD24Req/P03tAM3Oo2dUbro9d8O/WksFqOd7kWts3tl0dIUnPaRQUsDbpu
+	 x+1Q4cUkk9NNQpT5zyIUDrGa3fORxaJXGgUaAdq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Khirnov <anton@khirnov.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Chen Ridong <chenridong@huawei.com>,
+	Waiman Long <longman@redhat.com>,
+	Tejun Heo <tj@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 271/737] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
+Subject: [PATCH 6.1 132/634] cpuset: Treat cpusets in attaching as populated
 Date: Fri,  9 Jan 2026 12:36:50 +0100
-Message-ID: <20260109112144.193856586@linuxfoundation.org>
+Message-ID: <20260109112122.418069832@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
-References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
+References: <20260109112117.407257400@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +59,119 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Khirnov <anton@khirnov.net>
+From: Chen Ridong <chenridong@huawei.com>
 
-[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
+[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
 
-kbd_led_set() can sleep, and so may not be used as the brightness_set()
-callback.
+Currently, the check for whether a partition is populated does not
+account for tasks in the cpuset of attaching. This is a corner case
+that can leave a task stuck in a partition with no effective CPUs.
 
-Otherwise using this led with a trigger leads to system hangs
-accompanied by:
-BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
-CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
-Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
-Call Trace:
- <TASK>
- [...]
- schedule_timeout+0xbd/0x100
- __down_common+0x175/0x290
- down_timeout+0x67/0x70
- acpi_os_wait_semaphore+0x57/0x90
- [...]
- asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
- led_trigger_event+0x3f/0x60
- [...]
+The race condition occurs as follows:
 
-Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
-Signed-off-by: Anton Khirnov <anton@khirnov.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Denis Benato <benato.denis96@gmail.com>
-Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+cpu0				cpu1
+				//cpuset A  with cpu N
+migrate task p to A
+cpuset_can_attach
+// with effective cpus
+// check ok
+
+// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
+				// making effective cpus empty
+				update_exclusive_cpumask
+				// tasks_nocpu_error check ok
+				// empty effective cpus, partition valid
+cpuset_attach
+...
+// task p stays in A, with non-effective cpus.
+
+To fix this issue, this patch introduces cs_is_populated, which considers
+tasks in the attaching cpuset. This new helper is used in validate_change
+and partition_is_populated.
+
+Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ kernel/cgroup/cpuset.c | 35 +++++++++++++++++++++++++++--------
+ 1 file changed, 27 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 2c894ea8aa817..b56be64fcc631 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -1405,14 +1405,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
- 	kbd_led_update(asus);
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index 216bdebd94264..d56433c8e970b 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -476,6 +476,15 @@ static inline bool is_in_v2_mode(void)
+ 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
  }
  
--static void kbd_led_set(struct led_classdev *led_cdev,
--			enum led_brightness value)
-+static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
++static inline bool cpuset_is_populated(struct cpuset *cs)
++{
++	lockdep_assert_held(&cpuset_mutex);
++
++	/* Cpusets in the process of attaching should be considered as populated */
++	return cgroup_is_populated(cs->css.cgroup) ||
++		cs->attach_in_progress;
++}
++
+ /**
+  * partition_is_populated - check if partition has tasks
+  * @cs: partition root to be checked
+@@ -488,21 +497,31 @@ static inline bool is_in_v2_mode(void)
+ static inline bool partition_is_populated(struct cpuset *cs,
+ 					  struct cpuset *excluded_child)
  {
- 	/* Prevent disabling keyboard backlight on module unregister */
- 	if (led_cdev->flags & LED_UNREGISTERING)
--		return;
-+		return 0;
+-	struct cgroup_subsys_state *css;
+-	struct cpuset *child;
++	struct cpuset *cp;
++	struct cgroup_subsys_state *pos_css;
  
- 	do_kbd_led_set(led_cdev, value);
-+	return 0;
- }
+-	if (cs->css.cgroup->nr_populated_csets)
++	/*
++	 * We cannot call cs_is_populated(cs) directly, as
++	 * nr_populated_domain_children may include populated
++	 * csets from descendants that are partitions.
++	 */
++	if (cs->css.cgroup->nr_populated_csets ||
++	    cs->attach_in_progress)
+ 		return true;
+ 	if (!excluded_child && !cs->nr_subparts_cpus)
+ 		return cgroup_is_populated(cs->css.cgroup);
  
- static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
-@@ -1565,7 +1565,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
- 		asus->kbd_led_wk = led_val;
- 		asus->kbd_led.name = "asus::kbd_backlight";
- 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
--		asus->kbd_led.brightness_set = kbd_led_set;
-+		asus->kbd_led.brightness_set_blocking = kbd_led_set;
- 		asus->kbd_led.brightness_get = kbd_led_get;
- 		asus->kbd_led.max_brightness = 3;
- 
+ 	rcu_read_lock();
+-	cpuset_for_each_child(child, css, cs) {
+-		if (child == excluded_child)
++	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
++		if (cp == cs || cp == excluded_child)
+ 			continue;
+-		if (is_partition_valid(child))
++
++		if (is_partition_valid(cp)) {
++			pos_css = css_rightmost_descendant(pos_css);
+ 			continue;
+-		if (cgroup_is_populated(child->css.cgroup)) {
++		}
++
++		if (cpuset_is_populated(cp)) {
+ 			rcu_read_unlock();
+ 			return true;
+ 		}
+@@ -774,7 +793,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
+ 	 * be changed to have empty cpus_allowed or mems_allowed.
+ 	 */
+ 	ret = -ENOSPC;
+-	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
++	if (cpuset_is_populated(cur)) {
+ 		if (!cpumask_empty(cur->cpus_allowed) &&
+ 		    cpumask_empty(trial->cpus_allowed))
+ 			goto out;
 -- 
 2.51.0
 
