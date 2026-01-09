@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-207329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-206728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3396ED09C85
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:37:29 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 100D7D09423
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 13:06:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9FC22313D68D
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:29:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ED459310FE1C
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 12:00:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D46435B12D;
-	Fri,  9 Jan 2026 12:29:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76FA359FB4;
+	Fri,  9 Jan 2026 12:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VBsHzzdS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="17P5pIXG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F30F035A955;
-	Fri,  9 Jan 2026 12:29:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DE56359FB0;
+	Fri,  9 Jan 2026 12:00:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767961746; cv=none; b=tjHMBoMEoqMwV9CxB3lTZF+r/yDz0fodhy7H4yCMua9Up1OXaY22f3L1IIDpUlSru5GwvL+9BxIMvHzUQ1BhaRgMrz2E401Y7sgGUf3fgP+EFdlM6LA12mo4szQTpnX2JQZEyyJuPP6VrYbxbVlHrEvsGzgEKBb1Yl9zz/tFh30=
+	t=1767960030; cv=none; b=NshhyVH9QUTBGzXhV9GIUeD3uc+MDCJ9VuR1CYnNyCsrbMNfGxbcPHykWjFeotzPdyawl0k332b+kWkICp2bY030tv0ZpuaAOSERedNeFl4xCITChwd6Ai3NgMWALaoOW5ANF/rAlOXJc+uqkMze57oeKgmbG3RRCnpk7LWevU0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767961746; c=relaxed/simple;
-	bh=PmODZQ8hT90rFmR58rkIKeAduM3t9lGxwcI8jzo4NOg=;
+	s=arc-20240116; t=1767960030; c=relaxed/simple;
+	bh=MjOysWjLDU90px2RXgaWmOa6t4UXvpbna87BpWlIOXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ef49MR/pfA0EJ8d6Oqt7LElMNjWXCa0Yl42uAkS6NJ6F3Gs8JvmfDag1wXdPk5wMNWNFrM0cYDiCmiAg6OT9LDZib3R6iV+itfGyTtroC87KaOcTA+d8YvVZx4G8G/8M2uxvlSfgrD1RmNmOGOB+tnM4c8+4V9iNBd7E2kS2qbo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VBsHzzdS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12445C4CEF1;
-	Fri,  9 Jan 2026 12:29:04 +0000 (UTC)
+	 MIME-Version; b=Qiq4B7QsPlkBqfOFpdL6kghIdtffB2XsBa/QXvaFDJFVhyIkci0UFj6FmTXQo4nHmBEKfUhabwqI6HF49nfqwxII8jEwcPH9dpEoGQKMYDRNUOOxPZyf9aUbzUjJssCcVh1g26H7clnp5wWnKOg9tXlTBDWv8ecokLigiLKdMAs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=17P5pIXG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEBFEC4CEF1;
+	Fri,  9 Jan 2026 12:00:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1767961745;
-	bh=PmODZQ8hT90rFmR58rkIKeAduM3t9lGxwcI8jzo4NOg=;
+	s=korg; t=1767960030;
+	bh=MjOysWjLDU90px2RXgaWmOa6t4UXvpbna87BpWlIOXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VBsHzzdSOuf4B+057j4MlNyA2MM46qopRknHW57QWMsGJclI3qciUp6T1XL77VgMC
-	 uKV6EBjUKLwQNQ7aOrO+8+pSdxJoRom2YBYFDpG/8DNNxx5b0VCpd48Hg1i4zEwQ29
-	 u1R6C1F7q+Y6A/xugZxiXp+cvq9491BZg7V1Rc3E=
+	b=17P5pIXGXFSeVf0Wq0cN6+poO43NCJj/1wAo1n+utDGtJrObA1s7+cbo9A7lnyFy5
+	 uZLwFq1pb1U81+sdgr/rKyybr5mu9hUFCzv21UeqodvsTo/z7CQSaLYZ2ixPv5xqV/
+	 cJ32MO0mK1Pgei1U9pNsDYgxg7GwBmTGvuG2zMiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jose Fernandez <josef@netflix.com>,
-	Daniel Borkmann <daniel@iogearbox.net>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/634] bpf: Improve program stats run-time calculation
-Date: Fri,  9 Jan 2026 12:36:39 +0100
-Message-ID: <20260109112121.997234913@linuxfoundation.org>
+Subject: [PATCH 6.6 261/737] NFS: Initialise verifiers for visible dentries in readdir and lookup
+Date: Fri,  9 Jan 2026 12:36:40 +0100
+Message-ID: <20260109112143.810056808@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-References: <20260109112117.407257400@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+References: <20260109112133.973195406@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jose Fernandez <josef@netflix.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit ce09cbdd988887662546a1175bcfdfc6c8fdd150 ]
+[ Upstream commit 9bd545539b233725a3416801f7c374bff0327d6e ]
 
-This patch improves the run-time calculation for program stats by
-capturing the duration as soon as possible after the program returns.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in both nfs_prime_dcache() and nfs_lookup().
 
-Previously, the duration included u64_stats_t operations. While the
-instrumentation overhead is part of the total time spent when stats are
-enabled, distinguishing between the program's native execution time and
-the time spent due to instrumentation is crucial for accurate
-performance analysis.
-
-By making this change, the patch facilitates more precise optimization
-of BPF programs, enabling users to understand their performance in
-environments without stats enabled.
-
-I used a virtualized environment to measure the run-time over one minute
-for a basic raw_tracepoint/sys_enter program, which just increments a
-local counter. Although the virtualization introduced some performance
-degradation that could affect the results, I observed approximately a
-16% decrease in average run-time reported by stats with this change
-(310 -> 260 nsec).
-
-Signed-off-by: Jose Fernandez <josef@netflix.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/20240402034010.25060-1-josef@netflix.com
-Stable-dep-of: 7dc211c1159d ("bpf: Fix invalid prog->stats access when update_effective_progs fails")
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: a1147b8281bd ("NFS: Fix up directory verifier races")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/filter.h  | 6 ++++--
- kernel/bpf/trampoline.c | 3 ++-
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ fs/nfs/dir.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/filter.h b/include/linux/filter.h
-index 502cab01e9e97..b7de1cbda5dc5 100644
---- a/include/linux/filter.h
-+++ b/include/linux/filter.h
-@@ -590,14 +590,16 @@ static __always_inline u32 __bpf_prog_run(const struct bpf_prog *prog,
- 	cant_migrate();
- 	if (static_branch_unlikely(&bpf_stats_enabled_key)) {
- 		struct bpf_prog_stats *stats;
--		u64 start = sched_clock();
-+		u64 duration, start = sched_clock();
- 		unsigned long flags;
- 
- 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
-+
-+		duration = sched_clock() - start;
- 		stats = this_cpu_ptr(prog->stats);
- 		flags = u64_stats_update_begin_irqsave(&stats->syncp);
- 		u64_stats_inc(&stats->cnt);
--		u64_stats_add(&stats->nsecs, sched_clock() - start);
-+		u64_stats_add(&stats->nsecs, duration);
- 		u64_stats_update_end_irqrestore(&stats->syncp, flags);
- 	} else {
- 		ret = dfunc(ctx, prog->insnsi, prog->bpf_func);
-diff --git a/kernel/bpf/trampoline.c b/kernel/bpf/trampoline.c
-index 748ac86169941..4c7c6129db90e 100644
---- a/kernel/bpf/trampoline.c
-+++ b/kernel/bpf/trampoline.c
-@@ -901,12 +901,13 @@ static void notrace update_prog_stats(struct bpf_prog *prog,
- 	     * Hence check that 'start' is valid.
- 	     */
- 	    start > NO_START_TIME) {
-+		u64 duration = sched_clock() - start;
- 		unsigned long flags;
- 
- 		stats = this_cpu_ptr(prog->stats);
- 		flags = u64_stats_update_begin_irqsave(&stats->syncp);
- 		u64_stats_inc(&stats->cnt);
--		u64_stats_add(&stats->nsecs, sched_clock() - start);
-+		u64_stats_add(&stats->nsecs, duration);
- 		u64_stats_update_end_irqrestore(&stats->syncp, flags);
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 70f55df9e4f95..d47e908ef411c 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -785,16 +785,17 @@ void nfs_prime_dcache(struct dentry *parent, struct nfs_entry *entry,
+ 		goto out;
  	}
- }
+ 
++	nfs_set_verifier(dentry, dir_verifier);
+ 	inode = nfs_fhget(dentry->d_sb, entry->fh, entry->fattr);
+ 	alias = d_splice_alias(inode, dentry);
+ 	d_lookup_done(dentry);
+ 	if (alias) {
+ 		if (IS_ERR(alias))
+ 			goto out;
++		nfs_set_verifier(alias, dir_verifier);
+ 		dput(dentry);
+ 		dentry = alias;
+ 	}
+-	nfs_set_verifier(dentry, dir_verifier);
+ 	trace_nfs_readdir_lookup(d_inode(parent), dentry, 0);
+ out:
+ 	dput(dentry);
+@@ -2000,13 +2001,14 @@ struct dentry *nfs_lookup(struct inode *dir, struct dentry * dentry, unsigned in
+ 	nfs_lookup_advise_force_readdirplus(dir, flags);
+ 
+ no_entry:
++	nfs_set_verifier(dentry, dir_verifier);
+ 	res = d_splice_alias(inode, dentry);
+ 	if (res != NULL) {
+ 		if (IS_ERR(res))
+ 			goto out;
++		nfs_set_verifier(res, dir_verifier);
+ 		dentry = res;
+ 	}
+-	nfs_set_verifier(dentry, dir_verifier);
+ out:
+ 	trace_nfs_lookup_exit(dir, dentry, flags, PTR_ERR_OR_ZERO(res));
+ 	nfs_free_fattr(fattr);
 -- 
 2.51.0
 
