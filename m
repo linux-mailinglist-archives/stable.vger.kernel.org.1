@@ -1,159 +1,99 @@
-Return-Path: <stable+bounces-207857-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF9D8D0A585
-	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:18:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A431ED0A69F
+	for <lists+stable@lfdr.de>; Fri, 09 Jan 2026 14:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 29F42301BB16
-	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:18:19 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id DA972301881E
+	for <lists+stable@lfdr.de>; Fri,  9 Jan 2026 13:28:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BEF2857FA;
-	Fri,  9 Jan 2026 13:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3353535C19C;
+	Fri,  9 Jan 2026 13:28:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b="BfhCXra8"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jhYzqEDY"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.20])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECD5835B153;
-	Fri,  9 Jan 2026 13:18:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.20
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7EE035A938
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 13:28:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1767964696; cv=none; b=EdhsjWy7rCJme57TrmhvcW1uJJkQiKqa6r0POrCrHaVz1oGswruxVve18F2i90YW5NLk9d1RWBCjKOjZcjAhKvpDZuf5zHeZtRAoVD3Mwe/tjP86appwTO5C1O4ZeYS7FTlC/jAce+kANcdsk2NPDI+6Dlwvcx5f3rQ0T7HLnns=
+	t=1767965314; cv=none; b=CwlzlQjQKcIv9Fof4/bYE7MhOEJ+f63CZmKLh/AQxNCD6vGiEwTp9omYiU5KWy1ifx7z2l/uagwdyjRQjZ7dBEuydZ9/yrS+/TArjZbLBXvbfIKQR1Va5OWVEc39gDLFdQ9s2FfPyX7I9KadnnP5J4G7LKzWW5gAzrcxAhs6wYo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1767964696; c=relaxed/simple;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=F3ntp+VAKIsA7HgZk95BBFKuss65BxBpx2Mfs2OcNpZBNopNAx8U79BX82WjNimENPLXLyQsfVWI9Vat0nfANO0r2uI5VEr4jtigYd97cq8O3ECpAWcjDogoashpKGJ1iIDR1toT7ZkovOWi157jDqHt0wHVgCvFtUxbP/nar7Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de; spf=pass smtp.mailfrom=gmx.de; dkim=pass (2048-bit key) header.d=gmx.de header.i=rwarsow@gmx.de header.b=BfhCXra8; arc=none smtp.client-ip=212.227.17.20
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=gmx.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmx.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=gmx.de;
-	s=s31663417; t=1767964666; x=1768569466; i=rwarsow@gmx.de;
-	bh=W5ID3OY7yfWGGgbtnZevjVWj3uINdDq2sxdewYF9kdo=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:Subject:To:Cc:
-	 References:From:In-Reply-To:Content-Type:
-	 Content-Transfer-Encoding:cc:content-transfer-encoding:
-	 content-type:date:from:message-id:mime-version:reply-to:subject:
-	 to;
-	b=BfhCXra8es73FJJ2hfFLvB0E2dOVXqJR9WfMFhjrPXRTKAT3HPt589Qtm+FCOHNL
-	 OX124xyECHuM4wt1NbZ+ZqL0iTBJtgf32LKeYxo2T+9a7oj2++qwx/h+DPEVNtf5B
-	 VXYbxXoWYCBQdNHhhnAHnEXfsQnLyWj3tFZMpyW/KmCprYNW2eSdEsFPVHBJIsw8e
-	 Aq1ZkMBrmv7hbSVRaeX8ZGAQoLTYF1RThKAvQuFY+efJNtEvWunu7+wren/5mgxiz
-	 hUGt99d6svU4Wd4YTeb2YVeVvu/7t9RUBZo1kjQsFx3/zJZxz6UZ5CO9o0JlQvyLw
-	 FAXLup0Oz6BfLu1FMQ==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.200.20] ([46.142.33.225]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1MybKf-1w3X9D0xvZ-00wBG3; Fri, 09
- Jan 2026 14:17:46 +0100
-Message-ID: <7959eb36-a916-4232-af5a-cdeb71fe1106@gmx.de>
-Date: Fri, 9 Jan 2026 14:17:43 +0100
+	s=arc-20240116; t=1767965314; c=relaxed/simple;
+	bh=XCPKuTzmFT+XjAECCMFeFIIXfTK4iZ5AJMLWp+f6w4M=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Aal9FapauWTjyPDWhjlTYZuL9PfbjJkjdYqkBjuNklfeAO6KX0j5bRQGNPh93ADHw4AY0dmZGFPDe/ygKfheex8IiFYwq8Wp8AWhp7WA3dwBhURUnEFw+pDxW9MIFlWKok4tJWYZHV2DqLIt4hlKBP7g+9oCOqJ3v6qyK+dHcFY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jhYzqEDY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3027C19423
+	for <stable@vger.kernel.org>; Fri,  9 Jan 2026 13:28:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1767965313;
+	bh=XCPKuTzmFT+XjAECCMFeFIIXfTK4iZ5AJMLWp+f6w4M=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=jhYzqEDY00gWjprFJyeEwZA3f/1P7hrbT5RfJdQi8ePIOIwZNwmUVpIYA8MIwKBl/
+	 g1156Fb3pI0BE/7Mm3UQcuDmN82/7Zyy3mpEd8CIZMms7A8nBWoy+XOWscyVVgBsk8
+	 5yWBpCVcSlLoM4WFueY9Wg87QRGO2kUxQ0Z96aANYmZvqvuVNTOh5kOy+EKoYazo7a
+	 5cHA+E7zvsZFuZqsnnLkHezjLstAxhB74BQmKG0KXQJhZXb8acvavx5D86Cat4ze13
+	 wK1B9U3JeMLL0hagSZlYIYlhSz3j2ppq2n9cN61BU2rMZejy0Nv/4O+NabX1iuILSu
+	 OWw61Ar+TQG8g==
+Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-64472ea7d18so3131614d50.2
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 05:28:33 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCWgjsQATRdMZlm0Jo8OONqAFRwds+A5y+Y1tWxWILZv/sc7UIFhJpaYnSpSeEvSxK8TOem+r2U=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwKV8GLiJBgL1sCbrbzVIsF2hYRoDctWj8DQacqMuMdhsTMw+2E
+	+7A9vrqA+wAjFXGNldo7bsh6xq7Vbw6yT1gS4ZQMKQWOZFAI9EB9PNi303bZBq2ecfXufShutX6
+	hN9Kan0pgUGkSuXQwtW0dSf+5DSHVvmQ=
+X-Google-Smtp-Source: AGHT+IGuHzPZpKBfVFzUwKfCmtMtelryj+AyVV3OWGw/GQqYNZ/cAUokVmYHIKQSLxWynktwZPBNkBrSrWQjsIeKiYo=
+X-Received: by 2002:a05:690e:383:b0:646:518b:b180 with SMTP id
+ 956f58d0204a3-64716bd2f01mr5826709d50.51.1767965313064; Fri, 09 Jan 2026
+ 05:28:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.18 0/5] 6.18.5-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260109111950.344681501@linuxfoundation.org>
-From: Ronald Warsow <rwarsow@gmx.de>
-Content-Language: de-DE, en-US
-In-Reply-To: <20260109111950.344681501@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:gGdareBbHE3OG36YmgQt8r5gALyZIrPtwJ702nA/U6RKY5h08Cq
- kxVkhraN5ldiiH8jed737QJ8Ocax77Vq8h/gYmrzu4a+o+sPLBZa5xj9oZPd2ay5n7R3cVd
- DoqEPBElEdpC5QkCioH/V5v/rvwLB6PgLo6b1RYpZ6L76gfCf2kUIcJdQ+PmfgaNflKt9EY
- gRcYj3SUeyWIcKprxsztA==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:Uib/vOEdVWs=;NjWZ5kiFWbSYIoZZTfbCfo2nB79
- +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
- z2F/7I2WJ16RzGFEKl7fUg98vk=
+References: <20260108100721.43777-2-krzysztof.kozlowski@oss.qualcomm.com>
+In-Reply-To: <20260108100721.43777-2-krzysztof.kozlowski@oss.qualcomm.com>
+From: Linus Walleij <linusw@kernel.org>
+Date: Fri, 9 Jan 2026 14:28:21 +0100
+X-Gmail-Original-Message-ID: <CAD++jLnp3xxSYet_H2VbCCLpQ93oXXNd86+RBno=oC_NbhtRzg@mail.gmail.com>
+X-Gm-Features: AZwV_QhS1zB_x9JPN09oQL3AyD_5WXyXemZZmXFqF0iSW9BNaPbSwpa5v_8TNpY
+Message-ID: <CAD++jLnp3xxSYet_H2VbCCLpQ93oXXNd86+RBno=oC_NbhtRzg@mail.gmail.com>
+Subject: Re: [PATCH] pinctrl: qcom: sm8350-lpass-lpi: Merge with SC7280 to fix
+ I2S2 and SWR TX pins
+To: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Cc: Bjorn Andersson <andersson@kernel.org>, Krzysztof Kozlowski <krzk@kernel.org>, linux-kernel@vger.kernel.org, 
+	linux-arm-msm@vger.kernel.org, linux-gpio@vger.kernel.org, 
+	stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Hi
+On Thu, Jan 8, 2026 at 11:07=E2=80=AFAM Krzysztof Kozlowski
+<krzysztof.kozlowski@oss.qualcomm.com> wrote:
 
-no regressions here on x86_64 (RKL, Intel 11th Gen. CPU)
+> Qualcomm SC7280 and SM8350 SoCs have slightly different LPASS audio
+> blocks (v9.4.5 and v9.2), however the LPASS LPI pin controllers are
+> exactly the same.  The driver for SM8350 has two issues, which can be
+> fixed by simply moving over to SC7280 driver which has them correct:
+>
+> 1. "i2s2_data_groups" listed twice GPIO12, but should have both GPIO12
+>    and GPIO13,
+>
+> 2. "swr_tx_data_groups" contained GPIO5 for "swr_tx_data2" function, but
+>    that function is also available on GPIO14, thus listing it twice is
+>    not necessary.  OTOH, GPIO5 has also "swr_rx_data1", so selecting
+>    swr_rx_data function should not block  the TX one.
+>
+> Fixes: be9f6d56381d ("pinctrl: qcom: sm8350-lpass-lpi: add SM8350 LPASS T=
+LMM")
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-Thanks
+Patch applied for fixes!
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+Yours,
+Linus Walleij
 
