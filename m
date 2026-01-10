@@ -1,29 +1,29 @@
-Return-Path: <stable+bounces-207978-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 097D9D0DA00
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 18:31:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCEDFD0D9F4
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 18:30:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 62CEF30141E8
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:30:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 80C0E3006E08
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:30:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DEC872BF00A;
-	Sat, 10 Jan 2026 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 469C92BD58A;
+	Sat, 10 Jan 2026 17:29:57 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
 Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D6E529ACC5
-	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9708296BBB
+	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 17:29:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768066198; cv=none; b=erusBzzPHJQhFUb9eiI/ixJ7ABvSBAzwrkHEazFb0y8c1cf7rtrZUaSr5Ca5jPPvfZtuHd+NJhn6MFqcisJ0Fa88ztvzN8bQ5oEqR/Aq3EpK0tY7BnPdZi435SqjjvN9LBOSGRMNfQ95j9rPmpRtNOZoG0wxsDmFrfBLmTIVWA8=
+	t=1768066197; cv=none; b=DR3iUUTe/ZdZEF9PLhRnvd0xyPQgYy4TWtvGlcV/A74eghrn2bWAxgnz59VM7Zjys0x7YyfDGwGsvqGwGuMTrtlRMyXSyAvMi6ROJWd5Efk5ooxNawCD8+GOeujNgHNdXCyxV6VhWlhZDo14+iAcH/sYQnDWTlLNvNUvfWUtTiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768066198; c=relaxed/simple;
-	bh=JaAlURbUJSKd/Fkv3OFvdiRlVouO9eQ1P0C1SWPD8+o=;
+	s=arc-20240116; t=1768066197; c=relaxed/simple;
+	bh=KbzRlV+NZsQXG10eptueM6fP9/Gf2kPzyb3mAiMVPeY=;
 	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:References:
-	 In-Reply-To:To:Cc; b=IlYMpmzxwzEf75kYuqeGpRWN/hrtvE11qiLe2VjOJQDOoUv5WyNryT7htdcHAQYD64Qh3ys5e4Ujf3FlH987QT1zXy/ALzWnmNzlJtWBLdy8az7JsmvU4Xpdv9lceGOT3QiIo1JKatmjQmc9OwiI/5aXdLDiRPLKKqT2kE2efpI=
+	 In-Reply-To:To:Cc; b=WvOd+blk81oPhw0nMIJ+rlFL55HWrSwYHQ29So/4UYihtd16WRmTpAzUpdBZ29IG4ovzudOZ+Jaf2PL8VYyMtbYM6+UoyfEfbC7hIuaezUXMm7YllNz+3KOlz8EOd9soBg51QRydnacx7CJsiEZODPG0Bcs8Kc73d7ssBm8Fua0=
 ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
 Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
@@ -31,24 +31,24 @@ Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
 	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
 	(Exim 4.92)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vecm5-0004J7-Pu; Sat, 10 Jan 2026 18:29:17 +0100
+	id 1vecm6-0004JW-9L; Sat, 10 Jan 2026 18:29:18 +0100
 Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
 	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
 	(Exim 4.96)
 	(envelope-from <mkl@pengutronix.de>)
-	id 1vecm5-00AEGL-0Z;
+	id 1vecm5-00AEGO-31;
 	Sat, 10 Jan 2026 18:29:17 +0100
 Received: from hardanger.blackshift.org (unknown [IPv6:2a03:2260:2009::])
 	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
 	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
 	(Client did not present a certificate)
 	(Authenticated sender: mkl-all@blackshift.org)
-	by smtp.blackshift.org (Postfix) with ESMTPSA id 4D4AF4CA205;
-	Sat, 10 Jan 2026 17:29:16 +0000 (UTC)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id 128764CA206;
+	Sat, 10 Jan 2026 17:29:17 +0000 (UTC)
 From: Marc Kleine-Budde <mkl@pengutronix.de>
-Date: Sat, 10 Jan 2026 18:28:53 +0100
-Subject: [PATCH can 2/5] can: esd_usb: esd_usb_read_bulk_callback(): fix
- URB memory leak
+Date: Sat, 10 Jan 2026 18:28:54 +0100
+Subject: [PATCH can 3/5] can: kvaser_usb: kvaser_usb_read_bulk_callback():
+ fix URB memory leak
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,7 +57,7 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260110-can_usb-fix-memory-leak-v1-2-4a7c082a7081@pengutronix.de>
+Message-Id: <20260110-can_usb-fix-memory-leak-v1-3-4a7c082a7081@pengutronix.de>
 References: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
 In-Reply-To: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
 To: Vincent Mailhol <mailhol@kernel.org>, 
@@ -73,15 +73,15 @@ Cc: kernel@pengutronix.de, linux-can@vger.kernel.org,
  linux-kernel@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>, 
  stable@vger.kernel.org
 X-Mailer: b4 0.15-dev-47773
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1571; i=mkl@pengutronix.de;
- h=from:subject:message-id; bh=JaAlURbUJSKd/Fkv3OFvdiRlVouO9eQ1P0C1SWPD8+o=;
- b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpYoxjZC9YTOX5h7saCu++eGEpXST6SveIJV7AH
- BwvqVC6LSKJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaWKMYwAKCRAMdGXf+ZCR
- nOlRB/0aGtkHBDmSTeWq9TkRrU7VATYfPF5fzvtS4KcgFBIjwDunIMb4C/Wk8YFJ0W9kDZjrSea
- ntFEBC4jorKhD+B4RHI34VBAc5RrVB+mCCcVkSys1rXXQEVNcO55RUnkgNh103SpizED73DOTmS
- CaVyhBhOB93h52uFN1hz6a5ya1ORRJXAp1mbqgiyUdaOSNhjnycCOzYl+TUIxXoicCM0t1j0hR9
- QgTfJUlPJn/K4WV5pkEXLYPMxDM9KONhnRBOnfNXGuHyd0ER7IoWeA69mtaG+ztzLfrfXlEGAfh
- udjVCrAAm426bs7yj+IB0oO44rJA6//ya5i4fZgQOQcMWwrx
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1771; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=KbzRlV+NZsQXG10eptueM6fP9/Gf2kPzyb3mAiMVPeY=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpYoxkPmj2p7xDEcKLIXSFNo3NoTqD7t4Ka1fkV
+ kj1HNwxVPKJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaWKMZAAKCRAMdGXf+ZCR
+ nFspB/4jOevCIMsXPvoc7mWdriuMVjx3ZoMLSU47FFRxiDDrVPLMygIqtjYh/xCU7l6CJjibEfT
+ RL7AN42Yh1P2qHIIPf5hpqEQnqw0err5PA3UCKb5QkhlEyQum3ocSoNxfQ/fe69qPq7X3cqQpK4
+ sofPm5P9f3kZpg+JRn4/AiVcziLv8OSL4Q74n0iWIi0gcHQIhlFSDvosm/Y66YMEjeSyA824LuU
+ WISNbclJx6uwEmFUBlNLTsK1WJ0Gyh592YWGzeekshUowAcnUPo8dtMR/i1n3ERmN0I5/0Nivb8
+ BZMYrqMwX1AISz1AhFccKnYffX8h8oPsqHqOQyemnA7zas2m
 X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
  fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
 X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
@@ -92,40 +92,41 @@ X-PTX-Original-Recipient: stable@vger.kernel.org
 Fix similar memory leak as in commit 7352e1d5932a ("can: gs_usb:
 gs_usb_receive_bulk_callback(): fix URB memory leak").
 
-In esd_usb_open(), the URBs for USB-in transfers are allocated, added to
-the dev->rx_submitted anchor and submitted. In the complete callback
-esd_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
-esd_usb_close() the URBs are freed by calling
+In kvaser_usb_set_{,data_}bittiming() -> kvaser_usb_setup_rx_urbs(), the
+URBs for USB-in transfers are allocated, added to the dev->rx_submitted
+anchor and submitted. In the complete callback
+kvaser_usb_read_bulk_callback(), the URBs are processed and resubmitted. In
+kvaser_usb_remove_interfaces() the URBs are freed by calling
 usb_kill_anchored_urbs(&dev->rx_submitted).
 
 However, this does not take into account that the USB framework unanchors
 the URB before the complete function is called. This means that once an
 in-URB has been completed, it is no longer anchored and is ultimately not
-released in esd_usb_close().
+released in usb_kill_anchored_urbs().
 
 Fix the memory leak by anchoring the URB in the
-esd_usb_read_bulk_callback() to the dev->rx_submitted anchor.
+kvaser_usb_read_bulk_callback() to the dev->rx_submitted anchor.
 
-Fixes: 96d8e90382dc ("can: Add driver for esd CAN-USB/2 device")
+Fixes: 080f40a6fa28 ("can: kvaser_usb: Add support for Kvaser CAN/USB devices")
 Cc: stable@vger.kernel.org
 Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
- drivers/net/can/usb/esd_usb.c | 2 ++
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/can/usb/esd_usb.c b/drivers/net/can/usb/esd_usb.c
-index 08da507faef4..dc656b9ab15f 100644
---- a/drivers/net/can/usb/esd_usb.c
-+++ b/drivers/net/can/usb/esd_usb.c
-@@ -541,6 +541,8 @@ static void esd_usb_read_bulk_callback(struct urb *urb)
- 			  urb->transfer_buffer, ESD_USB_RX_BUFFER_SIZE,
- 			  esd_usb_read_bulk_callback, dev);
+diff --git a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+index 62701ec34272..0da0abb0bebe 100644
+--- a/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
++++ b/drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c
+@@ -361,6 +361,8 @@ static void kvaser_usb_read_bulk_callback(struct urb *urb)
+ 			  urb->transfer_buffer, KVASER_USB_RX_BUFFER_SIZE,
+ 			  kvaser_usb_read_bulk_callback, dev);
  
 +	usb_anchor_urb(urb, &dev->rx_submitted);
 +
  	err = usb_submit_urb(urb, GFP_ATOMIC);
  	if (err == -ENODEV) {
- 		for (i = 0; i < dev->net_count; i++) {
+ 		for (i = 0; i < dev->nchannels; i++) {
 
 -- 
 2.51.0
