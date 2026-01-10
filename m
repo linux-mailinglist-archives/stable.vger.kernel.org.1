@@ -1,100 +1,98 @@
-Return-Path: <stable+bounces-207979-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207983-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id AD729D0DABC
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 20:11:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F06D0DD3C
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 21:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B9F1E300D298
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 19:10:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A28A3037CF4
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 20:08:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78D5F2BE629;
-	Sat, 10 Jan 2026 19:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF77E2BD5BD;
+	Sat, 10 Jan 2026 20:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="n+DwUM4f"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="ZfqwuXqu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 398611487F6;
-	Sat, 10 Jan 2026 19:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F5718AE3;
+	Sat, 10 Jan 2026 20:08:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768072255; cv=none; b=Rilk1YZtOvjkzVqCv0KBZ+Gd0P2fd8O59ZQUBGJJD9rvuk+3k29NLOniQCKGNdPTcc5mwL9t7CC7NqyksI57Htub3hGRNJtYPxvDIWoMloXxJvr/YyNnm4VFsW918t1W0z3smUBK08IVvne7+VfnJCRzIfstQVZfs2GXp8Rnm5Q=
+	t=1768075683; cv=none; b=hioksmvKgsa/CDtJ78kHmXLt+kCzYFK1NvcKn+t23zABB7NmPWssdoG4yESVqOlJCZTa96qLOQDK7aSFxALPEf7bmIpzvSXoCpSGNGc4xGEjJG5XQN+ghs7xI3XuyGxFBv9jHXTrV5OVNzdfzGh7cIa0+gTLRqwFbebdh32xwvY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768072255; c=relaxed/simple;
-	bh=jvMLd2+xDvBad73V5ovapoHgJnezT8Gg6P+92jsxlSQ=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=o33kN2yKbGpeeJsmDZPxvoWZvm+NKAm9tm71Mb5/Q472cla/kehSmGHKdXgMp95ZBq2s6C5woFQfUKhfsAHsTcGQQLMGK3BCJ+O6Wqsxf0UxLPFID7FQ1AVgzRb4KyFupU+XNNtIMYzi76Ef2SaWpmH2vGl76bFLTSALe+cV/aA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=n+DwUM4f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02699C4CEF1;
-	Sat, 10 Jan 2026 19:10:53 +0000 (UTC)
+	s=arc-20240116; t=1768075683; c=relaxed/simple;
+	bh=Umgxx41Bcigz1Jl/IOixNSyAqJKMBL+5/uZGoWkJdVI=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=So+rCRcQkYeI3X7PpUgYtpFZ4iwKtD/JMtTW3Gtgu06FbaXCAZ8exo6ymcxLRCe9OgIpd/4NHs06jgWTjVaH8oadevAsYMu1oK+woaN5HdJNSB4PQVHpYd6GTB+FQ/taiJI9r3T00HmtOZbN/Q5iKvtjwGIqUHqonPRZZJ5Zs3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=ZfqwuXqu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E85CFC4CEF1;
+	Sat, 10 Jan 2026 20:08:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768072254;
-	bh=jvMLd2+xDvBad73V5ovapoHgJnezT8Gg6P+92jsxlSQ=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=n+DwUM4f1AITcQurzF1cqOXPVv2NjjeVAX0Cw8QyFUWKb8JtZ7OVaBx3H59dpthk/
-	 sas4D1Yf0MNTQx76TWwfV2/e0sdufWOVJsvVycXF7vqQAv4KCaANmwma2gg0qaxik+
-	 NjUKodNrWgaPCC5MdMH8jS1ehkOjU0fiD3w6InIsRw0l2gKTbxTc4jMemDKN6PmKui
-	 YxUkUmsz+oaHwStBIdBCBOj7GTlJjyGEB4DdT/kYHIyH7b9/+0aihrsW2g9E+lEkPu
-	 u6iFdZZA8v0udq2FgOyO0CHewWmpWWyNC3XtA7TZeZUzk1CVviCO6tfTRJ8jLP1Hk2
-	 8/7jP96bX90uA==
-Date: Sat, 10 Jan 2026 11:10:53 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, Jason
- Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/3] virtio-net: don't schedule delayed refill
- worker
-Message-ID: <20260110111053.08107da2@kernel.org>
-In-Reply-To: <2542db74-0e72-421d-932a-b1667fb16e56@gmail.com>
-References: <20260106150438.7425-1-minhquangbui99@gmail.com>
-	<20260106150438.7425-2-minhquangbui99@gmail.com>
-	<20260109181239.1c272f88@kernel.org>
-	<2542db74-0e72-421d-932a-b1667fb16e56@gmail.com>
+	s=k20201202; t=1768075683;
+	bh=Umgxx41Bcigz1Jl/IOixNSyAqJKMBL+5/uZGoWkJdVI=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=ZfqwuXquxA7eV09G1+6Vg3Q7VIBmNK7TK/iZfmDzEcVScf764EelORyCQTuRuQSFe
+	 n26yy6rp0l9v0jEystZl1CtPW3Tfo89nWudC7EJ73NTkvg+swVCBMFQI0GpVvwE1xj
+	 8xsxe9AoqV9oZbuNB7QS8mDIv/zi3di1DzU+Yrn/KKvyKjHHeamkJOn0G0q6dc71IB
+	 NidrB4VECsGyEJKgGF/i+dHOeUf5K0/3lHBEhCNog0GcoUJeDFpGu3iR8TW5KmszeH
+	 ajGWMo1DRi9WvemHJBHgnHFL80o+CRs1fotcPLqKCgJXfLs2+ZT10xjj2EhxOWbKjl
+	 E6x38tNSLg1uA==
+Received: by finisterre.sirena.org.uk (Postfix, from userid 1000)
+	id 38A611AC5681; Sun, 11 Jan 2026 05:07:53 +0900 (JST)
+Date: Sat, 10 Jan 2026 20:07:53 +0000
+From: Mark Brown <broonie@kernel.org>
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+	jonathanh@nvidia.com, f.fainelli@gmail.com,
+	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
+	hargar@microsoft.com, achill@achill.org, sr@sladewatkins.com
+Subject: Re: [PATCH 6.6 000/737] 6.6.120-rc1 review
+Message-ID: <aWKxmZ0GjD07P4UF@sirena.co.uk>
+References: <20260109112133.973195406@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="hujgU3CmPK/39lX1"
+Content-Disposition: inline
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+X-Cookie: Think big.  Pollute the Mississippi.
 
-On Sat, 10 Jan 2026 15:23:36 +0700 Bui Quang Minh wrote:
-> >> @@ -3230,9 +3230,10 @@ static int virtnet_open(struct net_device *dev)
-> >>  =20
-> >>   	for (i =3D 0; i < vi->max_queue_pairs; i++) {
-> >>   		if (i < vi->curr_queue_pairs)
-> >> -			/* Make sure we have some buffers: if oom use wq. */
-> >> -			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
-> >> -				schedule_delayed_work(&vi->refill, 0);
-> >> +			/* Pre-fill rq agressively, to make sure we are ready to
-> >> +			 * get packets immediately.
-> >> +			 */
-> >> +			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL); =20
-> > We should enforce _some_ minimal fill level at the time of open().
-> > If the ring is completely empty no traffic will ever flow, right?
-> > Perhaps I missed scheduling the NAPI somewhere.. =20
->=20
-> The NAPI is enabled and scheduled in virtnet_napi_enable(). The code=20
-> path is like this
->=20
-> virtnet_enable_queue_pair
-> -> virtnet_napi_enable =20
->  =C2=A0 -> virtnet_napi_do_enable
->  =C2=A0 =C2=A0 -> virtqueue_napi_schedule
->=20
-> The same happens in __virtnet_rx_resume().
 
-I see. Alright, let me fix the nits while applying, no need to respin.
-Kinda want this in the tree for a few days before shipping off to Linus.
+--hujgU3CmPK/39lX1
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+
+On Fri, Jan 09, 2026 at 12:32:19PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.6.120 release.
+> There are 737 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+
+Tested-by: Mark Brown <broonie@kernel.org>
+
+--hujgU3CmPK/39lX1
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmlisZUACgkQJNaLcl1U
+h9AtmQf9FFYquYx5i0qhSBtYd57Hdic0QSvnl1d/6flEg0Ss+Xv3JetCO+CAsGRR
+kvnYnqQQqI+/aB4Z1+odOWpWNKMuNWkomrpx0NHER5+VgU6s4EbUotERaFZZfK26
+Qtc7++nH6NLv4R2VuLOy3MXHUw8yz3FDRIlGqf/eboVPxJ5RQlW/rKCdLJKzoNnz
+yjJZmp4HxmaNbwt0amncm3cnHYFswdLB3G1HHdkn+7tWdzp0NhKiN3kxgUaKfdmM
+p+f78w2CAcU4d7fhtIi+WEwE7AvUI/IOAdHCAiPyzeL3VBUVs++7XHHgzjNp3KVO
+hj3gZ0ZW5RIVMw+FByq/1FsCPcVSRQ==
+=JgcI
+-----END PGP SIGNATURE-----
+
+--hujgU3CmPK/39lX1--
 
