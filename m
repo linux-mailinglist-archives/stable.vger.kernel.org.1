@@ -1,114 +1,95 @@
-Return-Path: <stable+bounces-207955-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207956-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 590CFD0D4BA
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 11:23:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11F91D0D4DB
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 11:40:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BD3A7300FA0D
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 10:23:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB3683025A58
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 10:39:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 098DE30BB93;
-	Sat, 10 Jan 2026 10:23:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F16E313271;
+	Sat, 10 Jan 2026 10:39:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="Iqb+2aDe"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHlLmRX4"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f47.google.com (mail-ed1-f47.google.com [209.85.208.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57613288C3D
-	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 10:23:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3856C312805;
+	Sat, 10 Jan 2026 10:39:56 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768040600; cv=none; b=MUJyUXpUYi/U2cM3/3OZX9SFRHu6MecLzx03RZrU5iiEZM1AqPSGQ8g6ecxOUhy+QzJPHYeBssAabhgmkfgz4v8M6o8pb4wFXS6SsuMfnwZZ/hUhwvd9q3eUsiLi4Jk+lpvGPdIB3H8oH/1FcQzMw8y2OUNRInfI90rYGAybeKM=
+	t=1768041596; cv=none; b=EhRXmIJEGpvhzLFlRteE+25UO/NOuWaNoouMvscuW52d7872FNtlChUceG9+hVLztYabq8hX3XqfAA9uNK1/xlR/mEa/oNsKiSo+uuIvCVnQV1fK9+4UPridmRgpxikpGRd9wQiSuWaBEy3rGhof6jRkxWndqriYsRTs9PB0tJQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768040600; c=relaxed/simple;
-	bh=zht4NG8w5qQh6r7obvBvD8FNvTaT7jrro5YA+cdHMNA=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vr5q90nyUUbUdAV+MirrsnTSVUWmzIwWbxKviW5DpNT5S3goJeqz8bx3P5PAY9rXXHL+MBsBdJSmnthETNSGk21KBDPM+e0rr9uguK3NjXCmZcAbz5jeRnErridwt3QyU2fR/r1N8VFweI0WLTsgkXkqZzrurIpeSkhTBxIHSxs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=Iqb+2aDe; arc=none smtp.client-ip=209.85.208.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ed1-f47.google.com with SMTP id 4fb4d7f45d1cf-64b9230f564so7164052a12.1
-        for <stable@vger.kernel.org>; Sat, 10 Jan 2026 02:23:19 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1768040598; x=1768645398; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=G4BxAxZnLKOTrhzC396UdOA96f2/ytbFCPOHJqjLm6c=;
-        b=Iqb+2aDeHxtt5e6+uoITOdFFQ1brhFmQ+fKOdhS3WHkrGGBIMhDVLVz9inSdqBpEX7
-         DunJeV6JGr9sEKqp6Xsw3tg/0bNvQlv6IEHAe3ueJt4pZAyRx/v62JRtk+rao4cFr6Wh
-         pr2Q4dubDy8tUq2ijD1Nmt6ad427CJwoYfNwPgtkhGrAjeGHQj2UwPHQ9vBDk0btzFQJ
-         9FEi//qyW6BCmstQyxVh8VFR0jg4IVnRhIz1/+u2nNiMW1aO3kYYOE5v0PVMkSwrIZa+
-         UPPejh+CxKDdlvZAA2bcYPVx9AeT9ZLaJSIuqFor8THP015shFdyh0/0hGqD/Y/cFIXr
-         hfwg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768040598; x=1768645398;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=G4BxAxZnLKOTrhzC396UdOA96f2/ytbFCPOHJqjLm6c=;
-        b=uWdRJFH4Ol59SkcjeAppQ7GhE4ipXMtho3DFI+Ov+KDkya/0yc0gCAUX1SzhOw7myi
-         Zm9ah7ba9YiUHnLW+dAR38qNwHv0Fjc6JrBb42u3zaQTOKM1P2uXT4VfZxdTYNW0Gn9V
-         me2Yge++kshA+Ao0soTSoqeUFZjKVPfbLzfngP1XWXRdJvxAt7Kltl7NxR+2pWqtkDQE
-         l72NTxQzA3PGE0UFmmjs4RX2EAM2tWr4esZBPxNc9d3LrWZ4dutew6JJ8ezl7zS88LKd
-         OaK4At35kWlHSz9DLhl/g7PY0qUgPjHfW+sjsmw3HqnGi8pMuFUSC/1R4JU05bxUFr3/
-         S4zQ==
-X-Gm-Message-State: AOJu0Ywke1kStHPdwVrnfhLYgyxtR0bkSdRhrchCbuOQF8QMX07NnHbB
-	GclkBIHCeM9c/M5V3vgRQCcD7xvn/Yv8MhX+7Iw62YBjMF4T6QcpQ3csmUf0Ar2CQReIwUnrMSs
-	o4+6XFRXLVvrh83Hf6cQvM12Ho3/P2SCvgipkKk5oeA==
-X-Gm-Gg: AY/fxX7FiOwLv3/JG5YI6QXCCv7x1YDVS27yEfqdSOE3avvnTYO5jZ85N31y6sU4QpD
-	yxsJC4l1PtDCPP2Td+sa6JVL3/3VsiF8FmnDq7B0cer/USD0nH0g21jktAaofHk9zB3LRM3XF6p
-	/eMnmoKW8cL8tjFu1yxyMl2qZOK/FTCu3pM/kQBc+j6Lch+bYdJ2QlyDdjw/EFoiTXfUbix7LL0
-	zeYP8VE0gZwz+UFPzK0/au7raqyhs0NGmklGp4nQU72fh7NCAG51dvqicj5UtnKfYXQWxjT72Gy
-	qF+S7to=
-X-Google-Smtp-Source: AGHT+IHbSaD6+oPWJhQ6l9ENonTlbaI+R2La0ezC3QuQxixNeyO6lwscirrXz/C1ER15otFMLkzwn09DwL0wwb697/Q=
-X-Received: by 2002:a17:907:6d1a:b0:b73:99f7:8134 with SMTP id
- a640c23a62f3a-b8444fabdc4mr1140449966b.45.1768040597694; Sat, 10 Jan 2026
- 02:23:17 -0800 (PST)
+	s=arc-20240116; t=1768041596; c=relaxed/simple;
+	bh=dp45UAvDX3D+LDpNdQ7rxwJJ7Dat2HjMmkqIdx1vX/0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=TiqIYk37Epdd32v1he7JOXHO9iLjJ8iszUkPRRYntu2Slk1WgagBo2bnzvzVIzeweR/4b/er0KKKeq2JIgI0RLFQ4J5aJC91uLah1EGaClz+VKm7/OVYRAanAnCQj74Nfb8ddg59Xy+WJTpEP5K4G8ELonWD+Ki3y+qxQh2uSQs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHlLmRX4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EBBC4CEF1;
+	Sat, 10 Jan 2026 10:39:53 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768041595;
+	bh=dp45UAvDX3D+LDpNdQ7rxwJJ7Dat2HjMmkqIdx1vX/0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OHlLmRX4hLNZ3b0RgWa2z/hDviakBqbwIpUCxsoeWH+LbhiKvekoYBvExUtGcP4kP
+	 0cgqeuTs2SUdaO1wPL6Sn3vnCTMraE1ycTZXF8IEi86nzZbDYtp/Q9iSR5wobFYYya
+	 /eAnMJQpdeJyu6ugVvtzNpGzEBYpDYefdGZTwMYbxmuKlyUNuH+s2iizZjv98U6L/q
+	 mYWUApHO5qIdyL7rfySj7u2z/0soNGLBH6h/eM4RnjH6OZ4g/IKxY8wVkWL7IT/4Vs
+	 Dopxr1Da8O8ZmRtJQLLY0ZxQDdqF2Dq7Xdr+hf9C+BwppCmMuST3dMIqxyKJkmzdDY
+	 c8/qJHjD2Mt5A==
+From: Sven Peter <sven@kernel.org>
+To: Neal Gompa <neal@gompa.dev>,
+	Rob Herring <robh@kernel.org>,
+	Krzysztof Kozlowski <krzk+dt@kernel.org>,
+	Conor Dooley <conor+dt@kernel.org>,
+	Janne Grunau <j@jannau.net>
+Cc: Sven Peter <sven@kernel.org>,
+	asahi@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	devicetree@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org,
+	Hector Martin <marcan@marcan.st>
+Subject: Re: [PATCH 0/3] arm64: dts: apple: Small pmgr fixes
+Date: Sat, 10 Jan 2026 11:39:36 +0100
+Message-ID: <176804152717.3568.6544517123602866395.b4-ty@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260108-apple-dt-pmgr-fixes-v1-0-cfdce629c0a8@jannau.net>
+References: <20260108-apple-dt-pmgr-fixes-v1-0-cfdce629c0a8@jannau.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260109112117.407257400@linuxfoundation.org>
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Sat, 10 Jan 2026 15:52:40 +0530
-X-Gm-Features: AZwV_QjvqJG3bwNPbW5uK9ag62y-VideFHjRLoaVWOWugaO-tbrv36PmNctx73E
-Message-ID: <CAG=yYwnEy9aX8B_rzhoPRb7FtrkAbpLqsUn187gArfRwsxkD-Q@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/634] 6.1.160-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 8bit
 
-hello
+On Thu, 08 Jan 2026 22:04:00 +0100, Janne Grunau wrote:
+> This series contains 3 small pmgr related fixes for Apple silicon
+> devices with M1 and M2.
+> 
+> 1. Prevent the display controller and DPTX phy from powered down after
+>    initial boot on the M2 Mac mini. This is the only fix worthwhile for
+>    stable kernels. Given how long it has been broken and that it's not a
+>    regression I think it can wait to the next merge window and get
+>    backported from there into stable kernels.
+> 
+> [...]
 
-Compiled and booted  6.1.160-rc1+
+Applied to AsahiLinux/linux (apple-soc/dt-6.20), thanks!
 
-No  typical new regressions   from dmesg.
+[1/3] arm64: dts: apple: t8112-j473: Keep the HDMI port powered on
+      https://github.com/AsahiLinux/linux/commit/162a29b58c5b
+[2/3] arm64: dts: apple: t8103: Mark ATC USB AON domains as always-on
+      https://github.com/AsahiLinux/linux/commit/f15cea4e84ae
+[3/3] arm64: dts: apple: t8103: Add ps_pmp dependency to ps_gfx
+      https://github.com/AsahiLinux/linux/commit/35e794fefd47
 
-As per dmidecode command.
-Version: AMD Ryzen 3 3250U with Radeon Graphics
+Best regards,
+-- 
+Sven Peter <sven@kernel.org>
 
-Processor Information
-        Socket Designation: FP5
-        Type: Central Processor
-        Family: Zen
-        Manufacturer: Advanced Micro Devices, Inc.
-        ID: 81 0F 81 00 FF FB 8B 17
-        Signature: Family 23, Model 24, Stepping 1
-
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
-
---
-software engineer
-rajagiri school of engineering and technology
 
