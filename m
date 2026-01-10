@@ -1,95 +1,113 @@
-Return-Path: <stable+bounces-207956-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207957-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11F91D0D4DB
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 11:40:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CCF3D0D4E1
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 11:45:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EB3683025A58
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 10:39:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B96130222EC
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 10:45:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F16E313271;
-	Sat, 10 Jan 2026 10:39:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB66B24EF8C;
+	Sat, 10 Jan 2026 10:45:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OHlLmRX4"
+	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="TP+PCo6o"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-ej1-f51.google.com (mail-ej1-f51.google.com [209.85.218.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3856C312805;
-	Sat, 10 Jan 2026 10:39:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AD252FD694
+	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 10:45:32 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768041596; cv=none; b=EhRXmIJEGpvhzLFlRteE+25UO/NOuWaNoouMvscuW52d7872FNtlChUceG9+hVLztYabq8hX3XqfAA9uNK1/xlR/mEa/oNsKiSo+uuIvCVnQV1fK9+4UPridmRgpxikpGRd9wQiSuWaBEy3rGhof6jRkxWndqriYsRTs9PB0tJQ=
+	t=1768041933; cv=none; b=lyvqOFMJmsHzVimofRTIOTaOclpNzE3Ermp77uFdqadtIrQ1bpISR9R6XsHXrnZk3pUOefprMyTDenmk1/eR3r27HCW3IeRZGVP7926W9IAJbaqZIFBrhZCnxNW8HDXDAB458jY87gsW573huUTm+FR71ZsWSAW0ETdSkEPGMIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768041596; c=relaxed/simple;
-	bh=dp45UAvDX3D+LDpNdQ7rxwJJ7Dat2HjMmkqIdx1vX/0=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=TiqIYk37Epdd32v1he7JOXHO9iLjJ8iszUkPRRYntu2Slk1WgagBo2bnzvzVIzeweR/4b/er0KKKeq2JIgI0RLFQ4J5aJC91uLah1EGaClz+VKm7/OVYRAanAnCQj74Nfb8ddg59Xy+WJTpEP5K4G8ELonWD+Ki3y+qxQh2uSQs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OHlLmRX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31EBBC4CEF1;
-	Sat, 10 Jan 2026 10:39:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768041595;
-	bh=dp45UAvDX3D+LDpNdQ7rxwJJ7Dat2HjMmkqIdx1vX/0=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OHlLmRX4hLNZ3b0RgWa2z/hDviakBqbwIpUCxsoeWH+LbhiKvekoYBvExUtGcP4kP
-	 0cgqeuTs2SUdaO1wPL6Sn3vnCTMraE1ycTZXF8IEi86nzZbDYtp/Q9iSR5wobFYYya
-	 /eAnMJQpdeJyu6ugVvtzNpGzEBYpDYefdGZTwMYbxmuKlyUNuH+s2iizZjv98U6L/q
-	 mYWUApHO5qIdyL7rfySj7u2z/0soNGLBH6h/eM4RnjH6OZ4g/IKxY8wVkWL7IT/4Vs
-	 Dopxr1Da8O8ZmRtJQLLY0ZxQDdqF2Dq7Xdr+hf9C+BwppCmMuST3dMIqxyKJkmzdDY
-	 c8/qJHjD2Mt5A==
-From: Sven Peter <sven@kernel.org>
-To: Neal Gompa <neal@gompa.dev>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>,
-	Janne Grunau <j@jannau.net>
-Cc: Sven Peter <sven@kernel.org>,
-	asahi@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org,
-	Hector Martin <marcan@marcan.st>
-Subject: Re: [PATCH 0/3] arm64: dts: apple: Small pmgr fixes
-Date: Sat, 10 Jan 2026 11:39:36 +0100
-Message-ID: <176804152717.3568.6544517123602866395.b4-ty@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260108-apple-dt-pmgr-fixes-v1-0-cfdce629c0a8@jannau.net>
-References: <20260108-apple-dt-pmgr-fixes-v1-0-cfdce629c0a8@jannau.net>
+	s=arc-20240116; t=1768041933; c=relaxed/simple;
+	bh=RFZldikQMkCTqEZH8vKg7TSQIx5FlJQ4I/ZwY9mN/Os=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=N+jX2r5Y2g3gjuDhNwp5GW24tfMl/AWo3s0jry5YVITdeLOwCeo7yOwQsrJGpzT24VydwuVcrJcN5SsCpiepGa0FKXQz0n69zMaHWe9tkojzSomTkn+2P2R/0zLfh315eFHVnuNOFWEvr4BpmpL7yWxDPpPPdfl73Hl6OiffsRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=TP+PCo6o; arc=none smtp.client-ip=209.85.218.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-b7cee045187so676291166b.0
+        for <stable@vger.kernel.org>; Sat, 10 Jan 2026 02:45:31 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1768041930; x=1768646730; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=mDD4gInLjVnOwXV5aynlTcIEFIM8N7gEUkgZcKzfgZY=;
+        b=TP+PCo6ojExCD+IdECKBXjruan+Bu6+SpFPa2otBIuTj6/n91oRcuihoVU0bovzlZW
+         H6GcVi1KVKBLG0Z2ceBjxDHCHvzZT5VsbQ2wqJmBMCnyVFCBntDuE3WUyRaokGYpFX0t
+         9SR9EtPmR+WNprcIRmJOdG7aH87SEapwoc9yU31kOax0Ebdb0PYvJ2x7oArloa+FhDzZ
+         OC1J4YSeS6WT1K3i1KvwHuPu0+0GGOXHPfB9sHuXYLHmlSg3YG5TxqaebWSrjcPS8+Ws
+         XR83HjvxVDG9a6PRkH5AZBYocoqvld+xj+Hj6NzO14aMsNQ00vi2JZGQ6wSnVcHLWfQP
+         V6BQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768041930; x=1768646730;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mDD4gInLjVnOwXV5aynlTcIEFIM8N7gEUkgZcKzfgZY=;
+        b=EsqZ+OaUwxKeQ5IsIA8ridp4pwzz5CRZm2oNde63xEh8rLpXw8CF1Nyp43RFxNAE94
+         g440ZHxXXAqRsuHBKUP5LTdx0rawZjq5aRS1BdlaCFcPvUcLUOegfxgct0tIVh2rolLj
+         njdbU1Bl5OytQI4zotz5fKoI7DT7PZCaJkWy5HZw+0WBfe1yas9LboG9AmJa7Y1zsnGu
+         /AEXeFDOiwLXHLDwByu09DdNaOuWZf1US+3KWo3GgEIRm4z9PlA6HDH1OTV+Vvgb6Jxb
+         saosEJGBFAJBL/S6kHkHu+/0Usyz4Fw3I11NboUTaMR2yy35QfNMrxD05p1+inPXYTz6
+         RJdA==
+X-Gm-Message-State: AOJu0YxiL6BSBGPZmGGPafbXAdNFEA4O6fXO1nCjjCu73GY6BjgsEj1f
+	dyamki5i1LelQRlnnMCbLJwtNzxeToCTT+pWGNl4TMvTViS68KXnE+O9xvOXvz8danRBmGWNxxe
+	AkgoCAOHC1opoXYh85CMcgiQ9z0WJiQEISqROgUjcvg==
+X-Gm-Gg: AY/fxX40MJhf5yETbgo2PfggnGBVV0B0LbAmMfRukEu7qTqr81bn8VhealVUKAQMOzG
+	3wDMNkN5EDNqX6QiwoxKItk9z/mix7eYxcfnjEf5TcmvZivTiR7tm2ml9zyb23LqmtltL6MQRua
+	jTmjuxnshNuT8/JWS5btE9QZ1WNyd3OvsOZmpx2W296yGAm3+UfkZHlokdmAD9XRNKiGFZBowL9
+	mhLz0GzpTFnKT0cz6AkeazqEjDIcahqe6/kxLmcXBEMvfSFr0MMmC+rEsb2zMEHOWgJh87W
+X-Google-Smtp-Source: AGHT+IGgoZhDVkixtpshz7HlFqMh1nze3xpKd/rBpJcn+L28SpykEQ1pjsm1fGxrjnpSL/PpcoFuRMP3p1Aw/CRQAA0=
+X-Received: by 2002:a17:906:aa43:b0:b73:6695:cae6 with SMTP id
+ a640c23a62f3a-b84298aad06mr1171129066b.10.1768041930516; Sat, 10 Jan 2026
+ 02:45:30 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 8bit
+References: <20260109112133.973195406@linuxfoundation.org>
+In-Reply-To: <20260109112133.973195406@linuxfoundation.org>
+From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
+Date: Sat, 10 Jan 2026 16:14:53 +0530
+X-Gm-Features: AZwV_QhPeLVHL3GJoCDdXgIj-NTxjYMequNQwxjnr36FlDT43eApc9fXJptXTiM
+Message-ID: <CAG=yYwm0bXD7pCnNTuKJvBvWN88CqrftHykWD_-0_XY+sT+GUw@mail.gmail.com>
+Subject: Re: [PATCH 6.6 000/737] 6.6.120-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
 
-On Thu, 08 Jan 2026 22:04:00 +0100, Janne Grunau wrote:
-> This series contains 3 small pmgr related fixes for Apple silicon
-> devices with M1 and M2.
-> 
-> 1. Prevent the display controller and DPTX phy from powered down after
->    initial boot on the M2 Mac mini. This is the only fix worthwhile for
->    stable kernels. Given how long it has been broken and that it's not a
->    regression I think it can wait to the next merge window and get
->    backported from there into stable kernels.
-> 
-> [...]
+hello
 
-Applied to AsahiLinux/linux (apple-soc/dt-6.20), thanks!
+Compiled and booted  6.6.120-rc1+
 
-[1/3] arm64: dts: apple: t8112-j473: Keep the HDMI port powered on
-      https://github.com/AsahiLinux/linux/commit/162a29b58c5b
-[2/3] arm64: dts: apple: t8103: Mark ATC USB AON domains as always-on
-      https://github.com/AsahiLinux/linux/commit/f15cea4e84ae
-[3/3] arm64: dts: apple: t8103: Add ps_pmp dependency to ps_gfx
-      https://github.com/AsahiLinux/linux/commit/35e794fefd47
+No  typical new regressions   from dmesg.
 
-Best regards,
--- 
-Sven Peter <sven@kernel.org>
+As per dmidecode command.
+Version: AMD Ryzen 3 3250U with Radeon Graphics
 
+Processor Information
+        Socket Designation: FP5
+        Type: Central Processor
+        Family: Zen
+        Manufacturer: Advanced Micro Devices, Inc.
+        ID: 81 0F 81 00 FF FB 8B 17
+        Signature: Family 23, Model 24, Stepping 1
+
+Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
+
+--
+software engineer
+rajagiri school of engineering and technology
 
