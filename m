@@ -1,156 +1,133 @@
-Return-Path: <stable+bounces-207971-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207972-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 70508D0D944
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:54:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 150B4D0D977
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 18:15:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6CA8830248B3
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 16:54:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D8C5D30185F6
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:15:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B532284B25;
-	Sat, 10 Jan 2026 16:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCF0268C42;
+	Sat, 10 Jan 2026 17:15:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tomeuvizoso-net.20230601.gappssmtp.com header.i=@tomeuvizoso-net.20230601.gappssmtp.com header.b="q9YiOe6h"
+	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Yr6K9PYn"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f176.google.com (mail-yw1-f176.google.com [209.85.128.176])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B53925DB1A
-	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 16:54:28 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.176
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73835277C86;
+	Sat, 10 Jan 2026 17:15:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768064070; cv=none; b=Y9Zh5OwxPA8VXuqP37FqKfxZt/cju8wtIe8g3r1kpoOk2/dRRReh7/zd7MNlyuyvuezf+urFoSGQSfZyfup+yLVV3OFIwEhuWvgG1IOXvyQ05FLO6NFTOvmL/BrYw/GebrslI5BTB9iPZRBc8fO29qyhAxuBXcUE4wIFEjsv5iw=
+	t=1768065321; cv=none; b=b0jB4Wom9WEVmT6mfgcOjFAB8rbyqgSahyrkBXUP+xuCJm6DflHp5UV/U6/w6gtsHlKcqxrOQv7/bYzZSjkAxu5ZxOI7PFxLcrFJk3Hi/ywT7FzoPApRGcy9xpdSqlwJ14CHPQZmPg81tK0ZGN1IAjUDJBw/bwfiqm/cS6HaNKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768064070; c=relaxed/simple;
-	bh=euKp8D5SGRuBRwnBID71nrQ+qke7wreDwmWtH1i3GY4=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=HGYN7Yr8e0lohwHK48VEgdV4AYB6AAAwUgxMCYv0FIeMGzrLDb8Sd1HuLog5t4WKEAB038hrD/w9qktkzoxOB2HEN6A1/R/wTWI4ifayE4FmcoF50C0yMzPYMU5+xowUijS5+luWVbp5AuSObLDMLrxGDaaPyfsxJf30wfBUIoo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tomeuvizoso.net; spf=pass smtp.mailfrom=tomeuvizoso.net; dkim=pass (2048-bit key) header.d=tomeuvizoso-net.20230601.gappssmtp.com header.i=@tomeuvizoso-net.20230601.gappssmtp.com header.b=q9YiOe6h; arc=none smtp.client-ip=209.85.128.176
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tomeuvizoso.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tomeuvizoso.net
-Received: by mail-yw1-f176.google.com with SMTP id 00721157ae682-79045634f45so57902047b3.1
-        for <stable@vger.kernel.org>; Sat, 10 Jan 2026 08:54:28 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=tomeuvizoso-net.20230601.gappssmtp.com; s=20230601; t=1768064067; x=1768668867; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=zgFtFK+acLpuQAz2BzGRmGrNRWb9jmojhInoAcIgzv8=;
-        b=q9YiOe6hkRFSvjZK3OPS32yG6YC71C8/obEz+/43sc8hU4lHy6sRUC4JHnZNxuO9o1
-         iSmOK4jUpYGuiCFmKWUYjsF3hFfCGK+iLVNWzPBh5pcp4bXg9UcAAJ7MsrGCBiGIlfIl
-         1naaM43SwEEMeRJMiPhDwOYoe91d3BdAKMvfXnEyOgIiu6ugcVj49YAr2/uO1EV6uNPf
-         ejBq49lgo79OcVEGLWmIBE3tS3MItj3r64wapLW7oIR6EPlQPs5d0ptR0WjqGFqTP099
-         kVShppMxErzW8eAEta9kdUvxkhTSMEqyaubhzadwWv/MBg/4evOK8UDgVXJhBRIg9kxb
-         NO2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768064067; x=1768668867;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=zgFtFK+acLpuQAz2BzGRmGrNRWb9jmojhInoAcIgzv8=;
-        b=CDfW3n4wciIwPOdguy/mjjgj4VoSLZIgryDbHv0HG0frnoiDAMYLz/a+ViKTEQm80w
-         2rYTPDM/I46uEzV5FCFQgLh6JjcqAKW1O16O3O5ArYPQsuAnjlHUtFOvV5gZK32zHbah
-         syVYziw0UTMl1bDCLvZ5pD6iuMA2bYL3WsMFd2eRL1yxG9wLyaD8+VZeNZg7Jz1iWlZq
-         qbklIYrP7tVLB0Uxx5CiG8Bj7YgXYb5KVTN0hqhaQ/IDpbd1aikHnXoP8gKe9XyAfLeM
-         +zb+5/rV58K7a/XZRqBcMZVGb1Sc9XkfLVZkPXjdCyw+RGS4RVVrml9Gzeb6P/gab2C6
-         NThQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW+fKG/x433PtY+nwXhtVYio7zZDN0R7WeC/t0Ylrl1Dxektt3CdKouUmOYHbqzF2/R2LaTqYg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwXBTBf4mUeSa5soMncUZiTuW0XPHjEyUAoc+fuKDL881NvF42q
-	T3VR5RmXgueD+svbEqlNgWpx3xNw65sYk2JWRrTNT/0pk5sAL+p9NbsoUi9FPxblFzUD2c8UJed
-	foxPHB4E=
-X-Gm-Gg: AY/fxX6pJugG4vwIS8Td/aw50oAq6yiF0+OIEC6X6/aYXijfwlf7G3VvotAILSuQ/21
-	2zCYPQ8yzVgEar2rdmgNmpOttN4WHqdjTrg/1Iesr5D2idzUS1l241S9kGAPyGmjQ0lM5UwBdL0
-	7Yjlmww0KYYt0G1uI1PXVLJjSaDqO9FuFXm0ZeIlp58phygrdJBss2K7W/eFPO318Gpp6vW4Y9Q
-	ysDEnRspEQrUvVwvEteTXE40n3wyh7to5VIMV4JCSXfWp3gnykDES4cPe3/fsrNTG47u9CGE8v9
-	/8L1n2exTg9KA0T7WamBa33jQe/Ou5t82Q9w8zKHBkHiNXIRXrNgH/p7/7/D/aD7R/MeFj0Ny6m
-	bTAKfyE7upFhls28QS5F/sZ0FVYY9LO+7B/pKQQorZbCwEUi3MGNr1Me55ut+osPEhCSg89vCbG
-	6obMXIzbtmKYsgDgpxVOSIioEuuKnnl66aIN/fcTJjJVdQ0eijhA==
-X-Google-Smtp-Source: AGHT+IGEYkcqcSAnvNWM5yQnC0SfeCPcDTfvNrq6PCTbSFWnAAn+JdXvjizKT9bWBcHO+peW9bUYaA==
-X-Received: by 2002:a05:690c:670a:b0:792:7463:c980 with SMTP id 00721157ae682-7927463d5d4mr18854397b3.43.1768064067348;
-        Sat, 10 Jan 2026 08:54:27 -0800 (PST)
-Received: from mail-yx1-f54.google.com (mail-yx1-f54.google.com. [74.125.224.54])
-        by smtp.gmail.com with ESMTPSA id 00721157ae682-790aa55328fsm53080547b3.6.2026.01.10.08.54.26
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 10 Jan 2026 08:54:26 -0800 (PST)
-Received: by mail-yx1-f54.google.com with SMTP id 956f58d0204a3-6467bed0d2fso5145925d50.0
-        for <stable@vger.kernel.org>; Sat, 10 Jan 2026 08:54:26 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXngJ+TI753Gb4zram6pVJyGIXluEtpFQrbYfCdA6enBi9Foe0U4J/KOfRI6chWWv6qHP3wfHc=@vger.kernel.org
-X-Received: by 2002:a53:bdcc:0:b0:63f:b1d4:f9e3 with SMTP id
- 956f58d0204a3-64716b3a7d4mr8056846d50.9.1768064066164; Sat, 10 Jan 2026
- 08:54:26 -0800 (PST)
+	s=arc-20240116; t=1768065321; c=relaxed/simple;
+	bh=O02xKoL83aPggV9KKs39NRhLhuG30e9T9mx6B7I92V0=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PKtODgESQSyx+2fzWssdANptcdxJlUvYEAZVAephrzqu3RMwv4AfxE9fU9/xGxwHGx2J7iokBaB5oNviDxzettDptWTvqyoahMnd+SNysMPV7XBZyoA4nOD5RNv74l80Jtj+4FcWACxcUkO6ZTXlqOMpuApCCXIHP9UZQjJ/mg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Yr6K9PYn; arc=none smtp.client-ip=178.251.229.89
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
+Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 22211103463;
+	Sat, 10 Jan 2026 18:15:12 +0100 (CET)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
+	s=dkim; t=1768065316; h=from:subject:date:message-id:to:cc:mime-version:
+	 content-transfer-encoding; bh=/pWu63fv2X4piZLVw/R8K7A4ZYtCKrF3gKuywcnCCi8=;
+	b=Yr6K9PYnDF/mEE6bWMrY80V6pFaQJ0SQ6YrofMdeF8PCmrBfH3rcEVqrpMaxH8Twd8M78U
+	yTmPH9VnpCwe/xGB9ZKajxGf28ZF+IcozRLWchF7ZduT9zLA5XIziXUun30n20RZzdRNIQ
+	dBIGMqy9PGhmlRz/vB143x+SXjAtUIPnLLiauFUIiQq9PSZHoXY233sqcpgjZuRrMIpyQq
+	KoFAkr0SWlirPQ18xHIkjDQQVDKpgfSL+0F/74murXa2NeTExpBBvlJYlTtV2szq65wOa8
+	9rTRVCVVpOi9ghCDweD1zfLkikmPBE7vrSuee5HKdeN8aETQIxU8Q0CjmFkCHw==
+From: Marek Vasut <marex@nabladev.com>
+To: dri-devel@lists.freedesktop.org
+Cc: Marek Vasut <marex@nabladev.com>,
+	stable@vger.kernel.org,
+	David Airlie <airlied@gmail.com>,
+	Fabio Estevam <festevam@gmail.com>,
+	Pengutronix Kernel Team <kernel@pengutronix.de>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Simona Vetter <simona@ffwll.ch>,
+	Thomas Zimmermann <tzimmermann@suse.de>,
+	imx@lists.linux.dev,
+	linux-arm-kernel@lists.infradead.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] drm/imx: parallel-display: Prefer bus format set via legacy "interface-pix-fmt" DT property
+Date: Sat, 10 Jan 2026 18:14:10 +0100
+Message-ID: <20260110171510.692666-1-marex@nabladev.com>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215-rocket-error-path-v1-0-eec3bf29dc3b@cherry.de>
-In-Reply-To: <20251215-rocket-error-path-v1-0-eec3bf29dc3b@cherry.de>
-From: Tomeu Vizoso <tomeu@tomeuvizoso.net>
-Date: Sat, 10 Jan 2026 17:54:15 +0100
-X-Gmail-Original-Message-ID: <CAAObsKBmJDbDfegLP-yrO+ys5m1zyoDUe9KMQ8tHeRXxQGAdow@mail.gmail.com>
-X-Gm-Features: AQt7F2rSDY8AwFu9wKOfOPB3fQ0feqjbIImAsj0T1FY9RvNW3OrnzYnknqJKAuw
-Message-ID: <CAAObsKBmJDbDfegLP-yrO+ys5m1zyoDUe9KMQ8tHeRXxQGAdow@mail.gmail.com>
-Subject: Re: [PATCH 0/2] accel/rocket: fix unwinding in error paths of two functions
-To: Quentin Schulz <foss+kernel@0leil.net>
-Cc: Oded Gabbay <ogabbay@kernel.org>, Jeff Hugo <jeff.hugo@oss.qualcomm.com>, 
-	dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	linux-rockchip@lists.infradead.org, Quentin Schulz <quentin.schulz@cherry.de>, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Last-TLS-Session-Version: TLSv1.3
 
-On Mon, Dec 15, 2025 at 5:36=E2=80=AFPM Quentin Schulz <foss+kernel@0leil.n=
-et> wrote:
->
-> As reported[1], in the current state of master (that is, *without*
-> that[2] patch, yet unmerged), it is possible to trigger
-> Oops/out-of-bounds errors/unbalanced runtime PM by simply compiling
-> DRM_ACCEL_ROCKET built-in (=3Dy) instead of as a module (=3Dm).
->
-> This fixes points 1 and 2 reported here[1] by fixing the unwinding in
-> two functions to properly undo everything done in the same function
-> prior to the error.
->
-> Note that this doesn't mean the Rocket device is usable if one core is
-> missing. In fact, it seems it doesn't as I'm hit with many
-> rocket fdac0000.npu: NPU job timed out
-> followed by one
-> rocket fdad0000.npu: NPU job timed out
-> (and that, five times) whenever core0 (fdab0000.npu) fails to probe and
-> I'm running the example from
-> https://docs.mesa3d.org/teflon.html#do-some-inference-with-mobilenetv1
-> so something else probably needs some additional love.
->
-> [1] https://lore.kernel.org/linux-rockchip/0b20d760-ad4f-41c0-b733-39db10=
-d6cc41@cherry.de/
-> [2] https://lore.kernel.org/linux-rockchip/20251205064739.20270-1-rmxpzlb=
-@gmail.com/
->
-> Signed-off-by: Quentin Schulz <quentin.schulz@cherry.de>
+Prefer bus format set via legacy "interface-pix-fmt" DT property
+over panel bus format. This is necessary to retain support for
+DTs which configure the IPUv3 parallel output as 24bit DPI, but
+connect 18bit DPI panels to it with hardware swizzling.
 
-Thank you, pushed it to drm-misc-next.
+This used to work up to Linux 6.12, but stopped working in 6.13,
+reinstate the behavior to support old DTs.
 
-Best regards,
+Cc: stable@vger.kernel.org
+Fixes: 5f6e56d3319d ("drm/imx: parallel-display: switch to drm_panel_bridge")
+Signed-off-by: Marek Vasut <marex@nabladev.com>
+---
+Cc: David Airlie <airlied@gmail.com>
+Cc: Fabio Estevam <festevam@gmail.com>
+Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
+Cc: Philipp Zabel <p.zabel@pengutronix.de>
+Cc: Sascha Hauer <s.hauer@pengutronix.de>
+Cc: Shawn Guo <shawnguo@kernel.org>
+Cc: Simona Vetter <simona@ffwll.ch>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: dri-devel@lists.freedesktop.org
+Cc: imx@lists.linux.dev
+Cc: linux-arm-kernel@lists.infradead.org
+Cc: linux-kernel@vger.kernel.org
+---
+ drivers/gpu/drm/imx/ipuv3/parallel-display.c | 15 ++++++++++++---
+ 1 file changed, 12 insertions(+), 3 deletions(-)
 
-Tomeu Vizoso
+diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+index 6fbf505d2801d..02bb38a1ee4eb 100644
+--- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
++++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
+@@ -110,8 +110,7 @@ imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
+ 		output_fmt = imxpd->bus_format ? : MEDIA_BUS_FMT_RGB888_1X24;
+ 
+ 	/* Now make sure the requested output format is supported. */
+-	if ((imxpd->bus_format && imxpd->bus_format != output_fmt) ||
+-	    !imx_pd_format_supported(output_fmt)) {
++	if (!imx_pd_format_supported(output_fmt)) {
+ 		*num_input_fmts = 0;
+ 		return NULL;
+ 	}
+@@ -121,7 +120,17 @@ imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
+ 	if (!input_fmts)
+ 		return NULL;
+ 
+-	input_fmts[0] = output_fmt;
++	/*
++	 * Prefer bus format set via legacy "interface-pix-fmt" DT property
++	 * over panel bus format. This is necessary to retain support for
++	 * DTs which configure the IPUv3 parallel output as 24bit, but
++	 * connect 18bit DPI panels to it with hardware swizzling.
++	 */
++	if (imxpd->bus_format && imxpd->bus_format != output_fmt)
++		input_fmts[0] = imxpd->bus_format;
++	else
++		input_fmts[0] = output_fmt;
++
+ 	return input_fmts;
+ }
+ 
+-- 
+2.51.0
 
-> ---
-> Quentin Schulz (2):
->       accel/rocket: fix unwinding in error path in rocket_core_init
->       accel/rocket: fix unwinding in error path in rocket_probe
->
->  drivers/accel/rocket/rocket_core.c |  7 +++++--
->  drivers/accel/rocket/rocket_drv.c  | 15 ++++++++++++++-
->  2 files changed, 19 insertions(+), 3 deletions(-)
-> ---
-> base-commit: a619746d25c8adafe294777cc98c47a09759b3ed
-> change-id: 20251212-rocket-error-path-f9784c46a503
->
-> Best regards,
-> --
-> Quentin Schulz <quentin.schulz@cherry.de>
->
 
