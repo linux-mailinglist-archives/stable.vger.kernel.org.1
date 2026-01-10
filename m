@@ -1,133 +1,125 @@
-Return-Path: <stable+bounces-207972-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207973-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 150B4D0D977
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 18:15:35 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3EC19D0D9E2
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 18:30:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D8C5D30185F6
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:15:23 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5DF7A300FEFE
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 17:30:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CBCF0268C42;
-	Sat, 10 Jan 2026 17:15:21 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Yr6K9PYn"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95D329D28A;
+	Sat, 10 Jan 2026 17:29:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73835277C86;
-	Sat, 10 Jan 2026 17:15:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD8D3292B54
+	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 17:29:52 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768065321; cv=none; b=b0jB4Wom9WEVmT6mfgcOjFAB8rbyqgSahyrkBXUP+xuCJm6DflHp5UV/U6/w6gtsHlKcqxrOQv7/bYzZSjkAxu5ZxOI7PFxLcrFJk3Hi/ywT7FzoPApRGcy9xpdSqlwJ14CHPQZmPg81tK0ZGN1IAjUDJBw/bwfiqm/cS6HaNKk=
+	t=1768066195; cv=none; b=VfidUzLCREw2JdRP9MCf1ng/5eccKv0niuKyElvqUpLB1KwzK0kNi5gg9OCGRtGIgt3PK8vQ4qDzpTBVEKKDiX6vUM35WULoH3gUZLF6sM2i3UuY5pt4MZzuA/VYRlMZBGtNhmVXszu8sY2Nls6BgyMIwkwCCHpxAv1jcsqWCbs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768065321; c=relaxed/simple;
-	bh=O02xKoL83aPggV9KKs39NRhLhuG30e9T9mx6B7I92V0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PKtODgESQSyx+2fzWssdANptcdxJlUvYEAZVAephrzqu3RMwv4AfxE9fU9/xGxwHGx2J7iokBaB5oNviDxzettDptWTvqyoahMnd+SNysMPV7XBZyoA4nOD5RNv74l80Jtj+4FcWACxcUkO6ZTXlqOMpuApCCXIHP9UZQjJ/mg0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Yr6K9PYn; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 22211103463;
-	Sat, 10 Jan 2026 18:15:12 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1768065316; h=from:subject:date:message-id:to:cc:mime-version:
-	 content-transfer-encoding; bh=/pWu63fv2X4piZLVw/R8K7A4ZYtCKrF3gKuywcnCCi8=;
-	b=Yr6K9PYnDF/mEE6bWMrY80V6pFaQJ0SQ6YrofMdeF8PCmrBfH3rcEVqrpMaxH8Twd8M78U
-	yTmPH9VnpCwe/xGB9ZKajxGf28ZF+IcozRLWchF7ZduT9zLA5XIziXUun30n20RZzdRNIQ
-	dBIGMqy9PGhmlRz/vB143x+SXjAtUIPnLLiauFUIiQq9PSZHoXY233sqcpgjZuRrMIpyQq
-	KoFAkr0SWlirPQ18xHIkjDQQVDKpgfSL+0F/74murXa2NeTExpBBvlJYlTtV2szq65wOa8
-	9rTRVCVVpOi9ghCDweD1zfLkikmPBE7vrSuee5HKdeN8aETQIxU8Q0CjmFkCHw==
-From: Marek Vasut <marex@nabladev.com>
-To: dri-devel@lists.freedesktop.org
-Cc: Marek Vasut <marex@nabladev.com>,
-	stable@vger.kernel.org,
-	David Airlie <airlied@gmail.com>,
-	Fabio Estevam <festevam@gmail.com>,
-	Pengutronix Kernel Team <kernel@pengutronix.de>,
-	Philipp Zabel <p.zabel@pengutronix.de>,
-	Sascha Hauer <s.hauer@pengutronix.de>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Simona Vetter <simona@ffwll.ch>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	imx@lists.linux.dev,
-	linux-arm-kernel@lists.infradead.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] drm/imx: parallel-display: Prefer bus format set via legacy "interface-pix-fmt" DT property
-Date: Sat, 10 Jan 2026 18:14:10 +0100
-Message-ID: <20260110171510.692666-1-marex@nabladev.com>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1768066195; c=relaxed/simple;
+	bh=K7V50hRA1g/lopdgH1d8QMKGLZksfgzmzSywgK6VZV4=;
+	h=From:Subject:Date:Message-Id:MIME-Version:Content-Type:To:Cc; b=JOpFKNVp+S627ZaoURfjAnVbQVNz2Ifi9yBGos7O32ZTr84FC7QuDzQTXk1uraPrCjrPjqv0VKHCoWvjFOouxbKyLgj5OuSV6ydcbh2hI7T+GCe0Wwjx0ADcB3LAWj+r9PL8Zh6cWzTHPgpnct02xkjY0qAUhJUsiB0Lk8zda6M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vecm5-0004Im-Pt; Sat, 10 Jan 2026 18:29:17 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vecm3-00AEGF-2K;
+	Sat, 10 Jan 2026 18:29:15 +0100
+Received: from hardanger.blackshift.org (unknown [IPv6:2a03:2260:2009::])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id BDA734CA203;
+	Sat, 10 Jan 2026 17:29:14 +0000 (UTC)
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+Subject: [PATCH can 0/5] can: usb: fix URB memory leaks
+Date: Sat, 10 Jan 2026 18:28:51 +0100
+Message-Id: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-B4-Tracking: v=1; b=H4sIAFOMYmkC/yWM0QqCQBBFf0XmuYFxBWP9lYhY10nHco0djUL89
+ 6Z6PJd7zgbKWVihKTbI/BSVORmUhwLiEFLPKJ0xOHI1leQxhnRZtcWrvHDiac5vvHO4IXXH2jO
+ Rq3wFZj8y2+VXPoFJcP6PurYjx+XbhH3/AI+IVeuAAAAA
+X-Change-ID: 20260109-can_usb-fix-memory-leak-0d769e002393
+To: Vincent Mailhol <mailhol@kernel.org>, 
+ Wolfgang Grandegger <wg@grandegger.com>, 
+ Sebastian Haas <haas@ems-wuensche.com>, 
+ "David S. Miller" <davem@davemloft.net>, 
+ Frank Jungclaus <frank.jungclaus@esd.eu>, socketcan@esd.eu, 
+ Yasushi SHOJI <yashi@spacecubics.com>, Daniel Berglund <db@kvaser.com>, 
+ Olivier Sobrie <olivier@sobrie.be>, 
+ =?utf-8?q?Remigiusz_Ko=C5=82=C5=82=C4=85taj?= <remigiusz.kollataj@mobica.com>, 
+ Bernd Krumboeck <b.krumboeck@gmail.com>
+Cc: kernel@pengutronix.de, linux-can@vger.kernel.org, 
+ linux-kernel@vger.kernel.org, Marc Kleine-Budde <mkl@pengutronix.de>, 
+ stable@vger.kernel.org
+X-Mailer: b4 0.15-dev-47773
+X-Developer-Signature: v=1; a=openpgp-sha256; l=1392; i=mkl@pengutronix.de;
+ h=from:subject:message-id; bh=K7V50hRA1g/lopdgH1d8QMKGLZksfgzmzSywgK6VZV4=;
+ b=owEBbQGS/pANAwAKAQx0Zd/5kJGcAcsmYgBpYoxf8pN5MKQCaEpOqZBvnhB3FAkuFKcaAu7G4
+ 0iWwWp0yFyJATMEAAEKAB0WIQSf+wzYr2eoX/wVbPMMdGXf+ZCRnAUCaWKMXwAKCRAMdGXf+ZCR
+ nE7KCACcSA1lTeheeit/7L5j++09fS56urXucRffEMrPuq0OKcBwB4D7roQewnBLlAdBLqM7EHR
+ 9MvsYAcIzpveb2fuhJBz62AzBMO2XFUlvMeuF46FYSglFj6m60wg11PRrV33CY3C/PNBizQDZak
+ QmM9fwfDcoANgBXCqT0lgVlK9sRAXtnMgVoK7ysDv6EkNbUI3KoBBWuFCqbRmvQy6tbRjFGGK2A
+ IcabM0Lcbm6c9IBNXc3Ti+FyMMDHcdLHpQvLoY+Lr/IUBNtKrgLXJdSTpI2BdFsnfHrBMIiRh8I
+ wqgO19Db5SDlokpNBajzVUAu9lOQMckbFFtd8L2b2xiphK9q
+X-Developer-Key: i=mkl@pengutronix.de; a=openpgp;
+ fpr=C1400BA0B3989E6FBC7D5B5C2B5EE211C58AEA54
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
 
-Prefer bus format set via legacy "interface-pix-fmt" DT property
-over panel bus format. This is necessary to retain support for
-DTs which configure the IPUv3 parallel output as 24bit DPI, but
-connect 18bit DPI panels to it with hardware swizzling.
+An URB memory leak [1] was recently fixed in the gs_usb driver. The driver
+did not take into account that completed URBs are no longer anchored,
+causing them to be lost during ifdown. The memory leak was fixed by
+re-anchoring the URBs in the URB completion callback.
 
-This used to work up to Linux 6.12, but stopped working in 6.13,
-reinstate the behavior to support old DTs.
+Several USB CAN drivers are affected by the same error. Fix them
+accordingly.
 
-Cc: stable@vger.kernel.org
-Fixes: 5f6e56d3319d ("drm/imx: parallel-display: switch to drm_panel_bridge")
-Signed-off-by: Marek Vasut <marex@nabladev.com>
+[1] https://lore.kernel.org/all/20260109135311.576033-3-mkl@pengutronix.de/
+
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 ---
-Cc: David Airlie <airlied@gmail.com>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Pengutronix Kernel Team <kernel@pengutronix.de>
-Cc: Philipp Zabel <p.zabel@pengutronix.de>
-Cc: Sascha Hauer <s.hauer@pengutronix.de>
-Cc: Shawn Guo <shawnguo@kernel.org>
-Cc: Simona Vetter <simona@ffwll.ch>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: dri-devel@lists.freedesktop.org
-Cc: imx@lists.linux.dev
-Cc: linux-arm-kernel@lists.infradead.org
-Cc: linux-kernel@vger.kernel.org
----
- drivers/gpu/drm/imx/ipuv3/parallel-display.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+Marc Kleine-Budde (5):
+      can: ems_usb: ems_usb_read_bulk_callback(): fix URB memory leak
+      can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
+      can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
+      can: mcba_usb: mcba_usb_read_bulk_callback(): fix URB memory leak
+      can: usb_8dev: usb_8dev_read_bulk_callback(): fix URB memory leak
 
-diff --git a/drivers/gpu/drm/imx/ipuv3/parallel-display.c b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-index 6fbf505d2801d..02bb38a1ee4eb 100644
---- a/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-+++ b/drivers/gpu/drm/imx/ipuv3/parallel-display.c
-@@ -110,8 +110,7 @@ imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 		output_fmt = imxpd->bus_format ? : MEDIA_BUS_FMT_RGB888_1X24;
- 
- 	/* Now make sure the requested output format is supported. */
--	if ((imxpd->bus_format && imxpd->bus_format != output_fmt) ||
--	    !imx_pd_format_supported(output_fmt)) {
-+	if (!imx_pd_format_supported(output_fmt)) {
- 		*num_input_fmts = 0;
- 		return NULL;
- 	}
-@@ -121,7 +120,17 @@ imx_pd_bridge_atomic_get_input_bus_fmts(struct drm_bridge *bridge,
- 	if (!input_fmts)
- 		return NULL;
- 
--	input_fmts[0] = output_fmt;
-+	/*
-+	 * Prefer bus format set via legacy "interface-pix-fmt" DT property
-+	 * over panel bus format. This is necessary to retain support for
-+	 * DTs which configure the IPUv3 parallel output as 24bit, but
-+	 * connect 18bit DPI panels to it with hardware swizzling.
-+	 */
-+	if (imxpd->bus_format && imxpd->bus_format != output_fmt)
-+		input_fmts[0] = imxpd->bus_format;
-+	else
-+		input_fmts[0] = output_fmt;
-+
- 	return input_fmts;
- }
- 
--- 
-2.51.0
+ drivers/net/can/usb/ems_usb.c                    | 2 ++
+ drivers/net/can/usb/esd_usb.c                    | 2 ++
+ drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 ++
+ drivers/net/can/usb/mcba_usb.c                   | 2 ++
+ drivers/net/can/usb/usb_8dev.c                   | 2 ++
+ 5 files changed, 10 insertions(+)
+---
+base-commit: 7470a7a63dc162f07c26dbf960e41ee1e248d80e
+change-id: 20260109-can_usb-fix-memory-leak-0d769e002393
+
+Best regards,
+--  
+Marc Kleine-Budde <mkl@pengutronix.de>
 
 
