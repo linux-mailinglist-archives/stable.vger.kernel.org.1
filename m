@@ -1,137 +1,123 @@
-Return-Path: <stable+bounces-207928-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207929-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5695AD0CA93
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 01:53:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9CA30D0CC72
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 02:53:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B2675300B350
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 00:53:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3F43C3034A09
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 01:53:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 555AD2E40E;
-	Sat, 10 Jan 2026 00:53:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA9F323C39A;
+	Sat, 10 Jan 2026 01:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="cNK6buvt"
+	dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b="FxLmoi/M"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.11])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qt1-f181.google.com (mail-qt1-f181.google.com [209.85.160.181])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4A1419F40B
-	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 00:53:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.11
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0AF1A3164
+	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 01:53:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.160.181
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768006399; cv=none; b=jw6ibzHfmvG0/YG6xS01M3B3DNfv8MoMA2QSjKTDny+grpvPUnhrhlC6GVdK+PXx6xmLhdxxDGYP6GwgaYZ3jXBw8SOMMF5o0EexTRjca334aqT+PqzryMG9kVQW/EceK9w5szjD0EPnYQ5RF9iSp4pR/h5NzVSxoIsAo5gwSUw=
+	t=1768010001; cv=none; b=VUTVoPv+5o22EHJtwZuhbvC04klK3fCCKWXcRkVYOn90pPZ8/QnDHEmTenhG6GrTA9kWOI4Z1WzO3gD30NCPQFs9Z8If6PRZI/W1bucRMLu/byCFs01kAVChwBBbTiZB84GXJYoTjMrXAQLUOcbBgdIV37SXt2nVsntjONx17G0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768006399; c=relaxed/simple;
-	bh=nyAuNPvhGRpmtICy+jxKyQ7niVo4KbREpwwKNoxXQsk=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g/eSgqg66B3cRFjN/9d2UEBkYmTDqmi/vB6cd66EKNRG+OCbMOgL1f0EQO5U+2zGnmNXXuu12ejpTAyh7tHScMPXTI53Np7W9SsfB+VTbXeeqXZKqvR72bQ2+GzIDackY4pFfrSJntLw+EI4WHUmpOKKlQZgF2U9aQBbSRL+SJE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=cNK6buvt; arc=none smtp.client-ip=198.175.65.11
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768006398; x=1799542398;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=nyAuNPvhGRpmtICy+jxKyQ7niVo4KbREpwwKNoxXQsk=;
-  b=cNK6buvtr03s4EptUHO5RUc5DDUUnAaepPjAE0mIySwalE4/CNsGYszl
-   b/Whyo5LIbKYcxbAIY4auFL9SBrX2mI0ufDHDamsoZMKmQ7dpKT9WHcbd
-   VAJdHyuLmekPd20XPKCPBRvr6G1BK0fY2ltXy8/oe0gNZckvPptUOuRUG
-   8SXDQd+XkPx10Wlw97Qq01V5POVfM4G7icmfXIXK6Wf/WujbGUUx95nZE
-   5o+Y+E8KWFFtAC222N0XdCnPJMLIt0CnzAk3CCunPz9kRdZz/BlvYKyx9
-   KeEI/gw2mZzoFkLMsIgp8daOeH7ZcDzuIP3x4XoppV1yHA666xaK6OJIS
-   Q==;
-X-CSE-ConnectionGUID: vyJ6E2hRQ0yi3dKjfDVz2g==
-X-CSE-MsgGUID: M3mqJ0RMSyGWHBEYhmQhbA==
-X-IronPort-AV: E=McAfee;i="6800,10657,11666"; a="79683568"
-X-IronPort-AV: E=Sophos;i="6.21,215,1763452800"; 
-   d="scan'208";a="79683568"
-Received: from orviesa002.jf.intel.com ([10.64.159.142])
-  by orvoesa103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 09 Jan 2026 16:53:16 -0800
-X-CSE-ConnectionGUID: FF0sD9RwSmOZhfozbRVrdA==
-X-CSE-MsgGUID: aJurax8ERwWLBUw2JMwplw==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,215,1763452800"; 
-   d="scan'208";a="234300472"
-Received: from dut6304bmgfrd.fm.intel.com ([10.36.21.42])
-  by orviesa002.jf.intel.com with ESMTP; 09 Jan 2026 16:53:15 -0800
-From: Xin Wang <x.wang@intel.com>
-To: stable@vger.kernel.org
-Cc: matthew.brost@intel.com,
-	thomas.hellstrom@linux.intel.com,
-	rodrigo.vivi@intel.com,
-	Xin Wang <x.wang@intel.com>
-Subject: [PATCH 6.12 2/2] drm/xe: Ensure GT is in C0 during resumes
-Date: Sat, 10 Jan 2026 00:52:46 +0000
-Message-ID: <20260110005246.608138-2-x.wang@intel.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260110005246.608138-1-x.wang@intel.com>
-References: <20260110005246.608138-1-x.wang@intel.com>
+	s=arc-20240116; t=1768010001; c=relaxed/simple;
+	bh=GeehpRlx6KNWuZCNeqbopn2o0BjHDRk4zMUWKQlXJY0=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=uACs14muy50JsWvywEQhm45xV3da45NWDBcvX3NncNp73OF52mWUgV9j1ImsssZlUELj8QwlyxZSohfQ/9Ek/g94LmIFaV7/cZ86wCNx7IZFoaN/DOFxSUhgo1tH9ASHOXKbAyGa+lUK49juMyywXBmmdzUYmywFkL0J4V9g1Hg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com; spf=pass smtp.mailfrom=ciq.com; dkim=pass (2048-bit key) header.d=ciq.com header.i=@ciq.com header.b=FxLmoi/M; arc=none smtp.client-ip=209.85.160.181
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=ciq.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=ciq.com
+Received: by mail-qt1-f181.google.com with SMTP id d75a77b69052e-4ed82ee9e57so61218241cf.0
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 17:53:19 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=ciq.com; s=s1; t=1768009999; x=1768614799; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=RVDboeC9+82CKe53ZqC6Zq113CFhLTjqB4RptfAb4yA=;
+        b=FxLmoi/MN6bse5C1QmPHkPMdkyKYInV1OfjhY2Mb3UMS0ZR9OWL7j7bnRv3kr93R/Y
+         wMmP7a7hgGoPYY+Bnbw18HhcT8mr9X3c3GKgCe6v7qsd0TcUmbhmeGibf57iLuQSj8bs
+         tx/53YLGwONIoxlqzJOOYNTFOhlqKg2LRBlNCMW7KnTEstXyORcF5aWO6DJoPFW/3Iko
+         baY3q/wueiyZsyCA/W68brlPE90FMfBpynuhoQYsOPlHa/l4+pEKf0rBsDfK41hC4Z53
+         lZtPjxo28/zG0w88uyQGThFlSwuRnbY6t08NXcY8RTRIfJN0FiH8rjHmqAOK6JJ2sFD1
+         q4LQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768009999; x=1768614799;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=RVDboeC9+82CKe53ZqC6Zq113CFhLTjqB4RptfAb4yA=;
+        b=VsUPoYmTweGl8X2M2fFHdzWjThEZOHDY6gFOJpRvlB8NcRB9rfauA+HWCiGey1O1j/
+         5aPFojFkCWdEDW4ZyikdlvX70TUntK/eKoN23oYF84RG/vbSpCa+W5lS6RvmECei6AwJ
+         GNv7hVc3n3vW5YbW1hBL9Etrcc+jL3TBCJlmpjr93U0wHDdnjDOPLYnPSqYPLrLuKRDG
+         85qVdrVWX0ft+liGcl+ZwsyD4hWhWxmXOtidfOB2zSHPr6Gd7tBKT2Tm2lEDO/kUc04+
+         zZckEa3IJ6pRNMzP+/9BMqwU+f8fAE2M/816Tlwy88xnsPFEvUfW1hTB8JTXGvTykDds
+         lthQ==
+X-Gm-Message-State: AOJu0YzXHCH9pQGAvYV51M1lfN647MVYhT0z7H3RNx8n013y6VCi15VF
+	33wcu52oLhvWbTz3Ckgfo7MH/hMyw+0RBGV7UuX2bRpMMzqRYje85EQhQQTTnrglR3xmSaemRWM
+	pxWPM6jCkj+J79/PKY95lN3vDdBWtkplxGGFgHZYEAg==
+X-Gm-Gg: AY/fxX7ygIIAId8X9Cssfn+UuNk3rsEk7eNU+M+Zu3xbmqsTkMgvc32r+mOSQP1n0wd
+	RTdwu9vhz7V8xXSF0TPEZ+xj16YFZFCfbQJVGgK/v3yO8YvxVsmd51dBFEmbfiY41qGIT0FZ+oW
+	fyKwm91uyeIoHWtB7Y02mG6fU9pH7H7AUsgppLDjsZZg3XVSxdjgUFZZZt/l6cMjQfKOfX/dKz1
+	Nmm5qEozmqHIYmxS3GxeQlojLlm6ShVJFPuCszgllB2yhRTht2ys9XWWc5h1mf6bN1hQ8iv
+X-Google-Smtp-Source: AGHT+IFBAvFm4UTkYW3hoIHb8o+LqhFifTSyjsVt4C8ZzMK5qTHZEbWE9qWlkGMgHnWeQSvYr+zMFFVuDEaZ+IRPHzw=
+X-Received: by 2002:a05:622a:15d0:b0:4ee:2200:40a0 with SMTP id
+ d75a77b69052e-4ffb47f06bamr151788801cf.3.1768009998710; Fri, 09 Jan 2026
+ 17:53:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260109111951.415522519@linuxfoundation.org>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+From: Brett Mastbergen <bmastbergen@ciq.com>
+Date: Fri, 9 Jan 2026 20:53:07 -0500
+X-Gm-Features: AQt7F2ol3Wz8pAuxNDUeXf21XUvQxGAViCMTfXtKvQoQUxq6iWzBitQnhluJjgE
+Message-ID: <CAOBMUvjM8DAJ36H0twWoVUk2BkO8yevZtYvgCESF4w2Jg-5Gjg@mail.gmail.com>
+Subject: Re: [PATCH 6.12 00/16] 6.12.65-rc1 review
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
+	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
+	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
+	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
+	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
+	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
+	achill@achill.org, sr@sladewatkins.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-[ Upstream commit 95d0883ac8105717f59c2dcdc0d8b9150f13aa12 ]
+On Fri, Jan 9, 2026 at 6:47=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.12.65 release.
+> There are 16 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sun, 11 Jan 2026 11:19:41 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.12.65-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.12.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-This patch ensures the gt will be awake for the entire duration
-of the resume sequences until GuCRC takes over and GT-C6 gets
-re-enabled.
+Builds successfully.  Boots and works on qemu and Intel Core i7-10810U
 
-Before suspending GT-C6 is kept enabled, but upon resume, GuCRC
-is not yet alive to properly control the exits and some cases of
-instability and corruption related to GT-C6 can be observed.
+Tested-by: Brett Mastbergen <bmastbergen@ciq.com>
 
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4037
-
-Suggested-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Xin Wang <x.wang@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/4037
-Link: https://lore.kernel.org/r/20250827000633.1369890-3-x.wang@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
----
- drivers/gpu/drm/xe/xe_pm.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/gpu/drm/xe/xe_pm.c b/drivers/gpu/drm/xe/xe_pm.c
-index 46c73ff10c74..f8fad9e56805 100644
---- a/drivers/gpu/drm/xe/xe_pm.c
-+++ b/drivers/gpu/drm/xe/xe_pm.c
-@@ -17,7 +17,7 @@
- #include "xe_device_sysfs.h"
- #include "xe_ggtt.h"
- #include "xe_gt.h"
--#include "xe_guc.h"
-+#include "xe_gt_idle.h"
- #include "xe_irq.h"
- #include "xe_pcode.h"
- #include "xe_trace.h"
-@@ -165,6 +165,9 @@ int xe_pm_resume(struct xe_device *xe)
- 	drm_dbg(&xe->drm, "Resuming device\n");
- 	trace_xe_pm_resume(xe, __builtin_return_address(0));
- 
-+	for_each_gt(gt, xe, id)
-+		xe_gt_idle_disable_c6(gt);
-+
- 	for_each_tile(tile, xe, id)
- 		xe_wa_apply_tile_workarounds(tile);
- 
-@@ -451,6 +454,9 @@ int xe_pm_runtime_resume(struct xe_device *xe)
- 
- 	xe_rpm_lockmap_acquire(xe);
- 
-+	for_each_gt(gt, xe, id)
-+		xe_gt_idle_disable_c6(gt);
-+
- 	if (xe->d3cold.allowed) {
- 		err = xe_pcode_ready(xe, true);
- 		if (err)
--- 
-2.43.0
-
+Thanks,
+Brett
 
