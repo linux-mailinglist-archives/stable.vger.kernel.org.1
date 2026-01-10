@@ -1,161 +1,124 @@
-Return-Path: <stable+bounces-207931-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 962CAD0CCBB
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 03:13:02 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44486D0CDFC
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 04:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66B0D3037517
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 02:12:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 638F93006A75
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 03:40:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 59811242D66;
-	Sat, 10 Jan 2026 02:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6B724729A;
+	Sat, 10 Jan 2026 03:40:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Mo/OnHH9"
+	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="CUyogiOe"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14D432A1CF;
-	Sat, 10 Jan 2026 02:12:40 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F4B211290
+	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 03:40:01 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768011161; cv=none; b=dRaprGrqSeDztAqSGRZcJMNVYuREX8sQvGgNC1FhkeEYMGdHMXaRfvwMh2qIxuZ9w+cf9fq0u3/Mtu6bWfSNKZ1iimt0D45TnICFSrVvJ5UZ1fCpv7KWN3jPLivzADATQPKR051Sbnq0diqX7Eg4YpH0DyRyEdB3HmxBYbpxha0=
+	t=1768016403; cv=none; b=pb57/6TjiLttGXYKYfIKFQival+hzasXqMw26P0iI2i2wmSTZs4C587k22B8v4WRHrFI1Gn+JjoCio7BPUNiCIE3BZAILhkfWnzNpqteIuz+GuwvQuiF/TC4wMgVmfh1GoiCsGXNaOpBczOOor+WbcsFYfrva/kM2k8X9ON6Tz8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768011161; c=relaxed/simple;
-	bh=D5bkcgNL5G1VYcSawL2KHr0EISsJ30WpEfjpKWoSQE0=;
-	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fK4BzQXVU/+dCwjwlubmh6SQ5NW/uCUE+qbCVyJZTtOqs6uhp5xK3EwjwC03eqHcwBuEO97TFRT3Eh3z/WIg5pTqMMoWq7MpnG+VXnI0CrlzFofnKmhPu/VKtB0T1nJK3mCyavqU8vdhicaB819FxxIMKVfZAecVgANL88Jgh2A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Mo/OnHH9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BABC4CEF1;
-	Sat, 10 Jan 2026 02:12:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768011160;
-	bh=D5bkcgNL5G1VYcSawL2KHr0EISsJ30WpEfjpKWoSQE0=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=Mo/OnHH9evnQn6WCMUPGVnFmo3gC1O+BzB8N0PdXAcjjprjXUBamM9FVphhGRm6J7
-	 FgefALw29cEzdsOkt0nwoJxeyemxWvHSyRynpSZCD0F7tSD2EOsJyMVqIuFr7g/WlB
-	 GMVtmh01VcKx86t8p9Cf8xDGBFrnHkVfGMErTycOxI8x1TBlLf8gGy3rD5d+481Zhh
-	 G/4bbVz+cRuXLoKeAbv43uNPXkIjhFtvH0FAodBMY+b1R6ftMQ8muuvUK6Q5TUrhmm
-	 Ll5X/6nBIq4z+5LSySDj7JyyGDDngrdyPJrIQp335UQjGPigEWlhDRwXL9skF8xNRc
-	 qTqCq6izikjxw==
-Date: Fri, 9 Jan 2026 18:12:39 -0800
-From: Jakub Kicinski <kuba@kernel.org>
-To: Bui Quang Minh <minhquangbui99@gmail.com>
-Cc: netdev@vger.kernel.org, "Michael S. Tsirkin" <mst@redhat.com>, Jason
- Wang <jasowang@redhat.com>, Xuan Zhuo <xuanzhuo@linux.alibaba.com>, Eugenio
- =?UTF-8?B?UMOpcmV6?= <eperezma@redhat.com>, Andrew Lunn
- <andrew+netdev@lunn.ch>, "David S. Miller" <davem@davemloft.net>, Eric
- Dumazet <edumazet@google.com>, Paolo Abeni <pabeni@redhat.com>, Alexei
- Starovoitov <ast@kernel.org>, Daniel Borkmann <daniel@iogearbox.net>,
- Jesper Dangaard Brouer <hawk@kernel.org>, John Fastabend
- <john.fastabend@gmail.com>, Stanislav Fomichev <sdf@fomichev.me>,
- virtualization@lists.linux.dev, linux-kernel@vger.kernel.org,
- bpf@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH net v3 1/3] virtio-net: don't schedule delayed refill
- worker
-Message-ID: <20260109181239.1c272f88@kernel.org>
-In-Reply-To: <20260106150438.7425-2-minhquangbui99@gmail.com>
-References: <20260106150438.7425-1-minhquangbui99@gmail.com>
-	<20260106150438.7425-2-minhquangbui99@gmail.com>
+	s=arc-20240116; t=1768016403; c=relaxed/simple;
+	bh=ZNxmpy3s/NjQP2qO3L6gN/abYNU9nDdA/hZbIOXec2o=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=q+NPc1jpEp0WUJHyEmhLmqB76k3ZmCYDLUBDkpql0+/li44rFD8aXNFxfA4NeJzZv0M+lkZgj6FjJ+voEvTdQBGYCJrQSg4jNurwzY0FrUp9MISXeLkiHIV6NFjGeCyCd1iOx/ZZeiJaE1KgRPvzISmgvil9jYp0rz47iJu4vOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=CUyogiOe; arc=none smtp.client-ip=209.85.128.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
+Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-477563e28a3so25083355e9.1
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 19:40:01 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=googlemail.com; s=20230601; t=1768016400; x=1768621200; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=dz4wL0bES5zyIQrDJWjuC/U3KHdx+E5RhZrK+5E53sI=;
+        b=CUyogiOeCzFR0MFFDV4M4btciQX7mG9bfEp52jITfbYVKC3PriRRdbUeVkTGKdKWvk
+         I9d0iLfIk2OMaeTEsekuIk+2SMXW5zOw6vZURnpx2lC2Yv38eKln3HdQNCYmgfnuYo+a
+         pD3V8IpNDLYGp/DS3pvnvDieJBBJuzijopg9tZyJ2IMNNiFH4zDk8dxtEjUPt4S/Uq+3
+         nBFN8VWeXWLqA+eMPEbuUIbkmSwgf1wW3Jjy6PtBgP2Xsghmr4ukmBT1wRom6eJer72i
+         iXzn35Qn/DDsh9H20J+dqiqe+ULxh1fVeH1eq+eN07PnhAWbudqwsoPq84IkS2Ui7A8C
+         /s4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768016400; x=1768621200;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=dz4wL0bES5zyIQrDJWjuC/U3KHdx+E5RhZrK+5E53sI=;
+        b=kbxnzq2SAsGfZ4fEaoqid2q8H7w1EgfwATnP3q5CRywqRcTYOX7ccSKGFpza00CIGV
+         FFMREzKtjrAtakA2ogZab5O7C2vOV2X+HBMjRXz3Rr+vcyl0yV8BoSRWklvcbaL7abUh
+         8aEbDyRTfe923JbccKjPxXAd9gdnhRI2Ap+lJ9igh/hrq8dn0iMZSCjVehbPeLNdy1GY
+         SoRCBkhwD2j3prrq1ABSQFEbaHF2Y2P/kzaDiLtOQEQE1EGrSMDfMBzMq07ip70Ntm/k
+         ABG5hLsfdwwZLlNchiiXZQbXureQDaYqXP630w5J/Q+j3oN8L9LSA5WnQn6Gmj9uqhdo
+         g8Iw==
+X-Forwarded-Encrypted: i=1; AJvYcCXiagFgepnsmcPa8iEXE+sup4Hr0rNzV0sug6ttipS1MLRBlpAyn9YZxIs0czSlrXDcBI/kUJY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yx4M8NTxrYdetiUWHXHOEwIpVmC/zweonYIEFjLXdgFFFInFRZw
+	lQxqfvvXyFdoVpMziPJ7cZ+ucFWUI3qJsuhTMlAChwC6doqSn7r3L60=
+X-Gm-Gg: AY/fxX6Sp6jz4xkGixd0d1j22K7j2VaATfPdJ1tROZfn387GcNNJk2hghgxE4Rucrii
+	4Al/THmfWY7eEVlg/j9HcexdEWcOJHywfZeRkNuBxZsZv0CMDze/yvye2uuF80zjx2bxP86IVlL
+	ds7V2rzqG1w24GSX+/enAJ+6y3VGTVpuNbXIiKQV7rDkzEQHI+XIb/BJC9Mpj9P5oHxewZGV6j3
+	WYOV0qSnAT/eg/42hunIY3jRNbBp4NGojdqYdhxn3NmVCwAwZ72R3Sf7EiFVHms5nbQjx25mdhr
+	RS/+qvyLqfsPPoAeVn8qy8/Gz/l0WZAJpblEP0/8YS+2x+Q2CDQtAPwQFSfIzAcozIzuUqJQLme
+	RlzxyOs/tiGJj0bON+Aey5L2UavDsbSnKQwwfc3i7dBYA6jLnk8YNGbcHHovjqMRd7x9faJkFoy
+	H4EdAwzJQR3c2oh0tzqOR0nnFPtu6yNzSMb0n1FVaOHb2I6Mdg9IoZPdgUT4yw2Sk=
+X-Google-Smtp-Source: AGHT+IG+rDevQNAgrZqcIZYHg5z2I6P1jkhCEo3BFirDd5CnreOq6tif91Z5O3HvJZf6UGuI+SHczA==
+X-Received: by 2002:a05:600c:348c:b0:47b:deb9:163d with SMTP id 5b1f17b1804b1-47d8484a329mr127583585e9.7.1768016399759;
+        Fri, 09 Jan 2026 19:39:59 -0800 (PST)
+Received: from [192.168.1.3] (p5b057af3.dip0.t-ipconnect.de. [91.5.122.243])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f65d9f0sm246426565e9.12.2026.01.09.19.39.59
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 09 Jan 2026 19:39:59 -0800 (PST)
+Message-ID: <2713dcdf-d459-4e94-8ae6-a5cd1af45246@googlemail.com>
+Date: Sat, 10 Jan 2026 04:39:59 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+User-Agent: Betterbird (Windows)
+Subject: Re: [PATCH 6.12 00/16] 6.12.65-rc1 review
+Content-Language: de-DE
+To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
+Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+ torvalds@linux-foundation.org, akpm@linux-foundation.org,
+ linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+ lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+ f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
+ conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
+ achill@achill.org, sr@sladewatkins.com
+References: <20260109111951.415522519@linuxfoundation.org>
+From: Peter Schneider <pschneider1968@googlemail.com>
+In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue,  6 Jan 2026 22:04:36 +0700 Bui Quang Minh wrote:
-> When we fail to refill the receive buffers, we schedule a delayed worker
-> to retry later. However, this worker creates some concurrency issues.
-> For example, when the worker runs concurrently with virtnet_xdp_set,
-> both need to temporarily disable queue's NAPI before enabling again.
-> Without proper synchronization, a deadlock can happen when
-> napi_disable() is called on an already disabled NAPI. That
-> napi_disable() call will be stuck and so will the subsequent
-> napi_enable() call.
-> 
-> To simplify the logic and avoid further problems, we will instead retry
-> refilling in the next NAPI poll.
+Am 09.01.2026 um 12:43 schrieb Greg Kroah-Hartman:
+> This is the start of the stable review cycle for the 6.12.65 release.
+> There are 16 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Happy to see this go FWIW. If it causes issues we should consider
-adding some retry logic in the core (NAPI) rather than locally in
-the driver..
+Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
 
-> Fixes: 4bc12818b363 ("virtio-net: disable delayed refill when pausing rx")
-> Reported-by: Paolo Abeni <pabeni@redhat.com>
-> Closes: https://netdev-ctrl.bots.linux.dev/logs/vmksft/drv-hw-dbg/results/400961/3-xdp-py/stderr
+Tested-by: Peter Schneider <pschneider1968@googlemail.com>
 
-The Closes should probably point to Paolo's report. We'll wipe these CI
-logs sooner or later but the lore archive will stick around.
 
-> @@ -3230,9 +3230,10 @@ static int virtnet_open(struct net_device *dev)
->  
->  	for (i = 0; i < vi->max_queue_pairs; i++) {
->  		if (i < vi->curr_queue_pairs)
-> -			/* Make sure we have some buffers: if oom use wq. */
-> -			if (!try_fill_recv(vi, &vi->rq[i], GFP_KERNEL))
-> -				schedule_delayed_work(&vi->refill, 0);
-> +			/* Pre-fill rq agressively, to make sure we are ready to
-> +			 * get packets immediately.
-> +			 */
-> +			try_fill_recv(vi, &vi->rq[i], GFP_KERNEL);
+Beste Grüße,
+Peter Schneider
 
-We should enforce _some_ minimal fill level at the time of open().
-If the ring is completely empty no traffic will ever flow, right?
-Perhaps I missed scheduling the NAPI somewhere..
+-- 
+Climb the mountain not to plant your flag, but to embrace the challenge,
+enjoy the air and behold the view. Climb it so you can see the world,
+not so the world can see you.                    -- David McCullough Jr.
 
->  		err = virtnet_enable_queue_pair(vi, i);
->  		if (err < 0)
-> @@ -3472,16 +3473,15 @@ static void __virtnet_rx_resume(struct virtnet_info *vi,
->  				struct receive_queue *rq,
->  				bool refill)
->  {
-> -	bool running = netif_running(vi->dev);
-> -	bool schedule_refill = false;
-> +	if (netif_running(vi->dev)) {
-> +		/* Pre-fill rq agressively, to make sure we are ready to get
-> +		 * packets immediately.
-> +		 */
-> +		if (refill)
-> +			try_fill_recv(vi, rq, GFP_KERNEL);
-
-Similar thing here? Tho not sure we can fail here..
-
-> -	if (refill && !try_fill_recv(vi, rq, GFP_KERNEL))
-> -		schedule_refill = true;
-> -	if (running)
->  		virtnet_napi_enable(rq);
-> -
-> -	if (schedule_refill)
-> -		schedule_delayed_work(&vi->refill, 0);
-> +	}
->  }
->  
->  static void virtnet_rx_resume_all(struct virtnet_info *vi)
-> @@ -3829,11 +3829,13 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
->  	}
->  succ:
->  	vi->curr_queue_pairs = queue_pairs;
-> -	/* virtnet_open() will refill when device is going to up. */
-> -	spin_lock_bh(&vi->refill_lock);
-> -	if (dev->flags & IFF_UP && vi->refill_enabled)
-> -		schedule_delayed_work(&vi->refill, 0);
-> -	spin_unlock_bh(&vi->refill_lock);
-> +	if (dev->flags & IFF_UP) {
-> +		local_bh_disable();
-> +		for (int i = 0; i < vi->curr_queue_pairs; ++i)
-> +			virtqueue_napi_schedule(&vi->rq[i].napi, vi->rq[i].vq);
-> +
-
-nit: spurious new line
-
-> +		local_bh_enable();
-> +	}
->  
->  	return 0;
->  }
-
+OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
+Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
+https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
 
