@@ -1,124 +1,194 @@
-Return-Path: <stable+bounces-207932-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207933-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44486D0CDFC
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 04:40:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EB815D0CE14
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 04:46:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 638F93006A75
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 03:40:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE894300D33F
+	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 03:46:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B6B724729A;
-	Sat, 10 Jan 2026 03:40:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 801EA25A645;
+	Sat, 10 Jan 2026 03:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b="CUyogiOe"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="huYNZhm9"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f42.google.com (mail-wm1-f42.google.com [209.85.128.42])
+Received: from mail-pj1-f42.google.com (mail-pj1-f42.google.com [209.85.216.42])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8F4B211290
-	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 03:40:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.42
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602552AEE1
+	for <stable@vger.kernel.org>; Sat, 10 Jan 2026 03:46:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.42
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768016403; cv=none; b=pb57/6TjiLttGXYKYfIKFQival+hzasXqMw26P0iI2i2wmSTZs4C587k22B8v4WRHrFI1Gn+JjoCio7BPUNiCIE3BZAILhkfWnzNpqteIuz+GuwvQuiF/TC4wMgVmfh1GoiCsGXNaOpBczOOor+WbcsFYfrva/kM2k8X9ON6Tz8=
+	t=1768016781; cv=none; b=VwsJH617MkmueBZZVS4m7eZ9o7VIo2Nngv4S9iXGdl2cVmor0dUT08rmA5yVqyzF9+a2fzsO2LyqkiaSYVMk8DZy5aUohlg9mUJy00LfFTdZ8RGQKeAuTEdQWHKL7Eb4Bn7ZsleCQKU+Zm0Cf93o1ibrP7fzXYDX34LDRxs8UnQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768016403; c=relaxed/simple;
-	bh=ZNxmpy3s/NjQP2qO3L6gN/abYNU9nDdA/hZbIOXec2o=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=q+NPc1jpEp0WUJHyEmhLmqB76k3ZmCYDLUBDkpql0+/li44rFD8aXNFxfA4NeJzZv0M+lkZgj6FjJ+voEvTdQBGYCJrQSg4jNurwzY0FrUp9MISXeLkiHIV6NFjGeCyCd1iOx/ZZeiJaE1KgRPvzISmgvil9jYp0rz47iJu4vOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com; spf=pass smtp.mailfrom=googlemail.com; dkim=pass (2048-bit key) header.d=googlemail.com header.i=@googlemail.com header.b=CUyogiOe; arc=none smtp.client-ip=209.85.128.42
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=googlemail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=googlemail.com
-Received: by mail-wm1-f42.google.com with SMTP id 5b1f17b1804b1-477563e28a3so25083355e9.1
-        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 19:40:01 -0800 (PST)
+	s=arc-20240116; t=1768016781; c=relaxed/simple;
+	bh=Il2boBEAwxmBb6scch+XX0oqCWE3N+NmO1rnljMDW74=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=ilUog5kmZo0X2x/jJDs1Pesl0sd1YHAXWqSJmNIcDfabWyZk9TPzsjMMQsU3i96H8U5+9TO7tmv34WFoNgkTo76NPXejjqLS79ao91z6aqFt8nP5dBwsY/Dypj3SfZpDGQqg58S+oMgc9YTgP7FZ1MVfBMgF5GCENWxezEQkIXs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=huYNZhm9; arc=none smtp.client-ip=209.85.216.42
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pj1-f42.google.com with SMTP id 98e67ed59e1d1-34c21417781so3356191a91.3
+        for <stable@vger.kernel.org>; Fri, 09 Jan 2026 19:46:19 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=googlemail.com; s=20230601; t=1768016400; x=1768621200; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=dz4wL0bES5zyIQrDJWjuC/U3KHdx+E5RhZrK+5E53sI=;
-        b=CUyogiOeCzFR0MFFDV4M4btciQX7mG9bfEp52jITfbYVKC3PriRRdbUeVkTGKdKWvk
-         I9d0iLfIk2OMaeTEsekuIk+2SMXW5zOw6vZURnpx2lC2Yv38eKln3HdQNCYmgfnuYo+a
-         pD3V8IpNDLYGp/DS3pvnvDieJBBJuzijopg9tZyJ2IMNNiFH4zDk8dxtEjUPt4S/Uq+3
-         nBFN8VWeXWLqA+eMPEbuUIbkmSwgf1wW3Jjy6PtBgP2Xsghmr4ukmBT1wRom6eJer72i
-         iXzn35Qn/DDsh9H20J+dqiqe+ULxh1fVeH1eq+eN07PnhAWbudqwsoPq84IkS2Ui7A8C
-         /s4g==
+        d=gmail.com; s=20230601; t=1768016779; x=1768621579; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=JV5XPQSlkP0KT1539S/zXsLMM0QQpO+Ub+Lr7dpN/aM=;
+        b=huYNZhm9hi9wVWVuv3Wevsov90wln2lXitgcyrSc6WSk1Vboo3dNFVXfffnXJFrB7Q
+         hjXp9yKflK+H5hs2WuHaE1yEWo9k7gyM6uvvyEovVQ9nMTnh9YMwarTZoD62FEmzi5ce
+         U8+5/Pt7qIWay2BwqhINnolG87tKZ2Rn/M41K3EslujDZqCps0A0ARZC/KVmv/E6oW+M
+         pwjZ9+MNlWKNuxwquQ3bGZz5XolnPAmIiKnvQUc7AHuGzug7XwKm7ZSM500SJfgHpOwn
+         Me9PPetewzsAmokil+vybL43Pk9lqc/98do31n89dFF9ko6ZVwszqLe01SifcUhMgL5T
+         P8bw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768016400; x=1768621200;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=dz4wL0bES5zyIQrDJWjuC/U3KHdx+E5RhZrK+5E53sI=;
-        b=kbxnzq2SAsGfZ4fEaoqid2q8H7w1EgfwATnP3q5CRywqRcTYOX7ccSKGFpza00CIGV
-         FFMREzKtjrAtakA2ogZab5O7C2vOV2X+HBMjRXz3Rr+vcyl0yV8BoSRWklvcbaL7abUh
-         8aEbDyRTfe923JbccKjPxXAd9gdnhRI2Ap+lJ9igh/hrq8dn0iMZSCjVehbPeLNdy1GY
-         SoRCBkhwD2j3prrq1ABSQFEbaHF2Y2P/kzaDiLtOQEQE1EGrSMDfMBzMq07ip70Ntm/k
-         ABG5hLsfdwwZLlNchiiXZQbXureQDaYqXP630w5J/Q+j3oN8L9LSA5WnQn6Gmj9uqhdo
-         g8Iw==
-X-Forwarded-Encrypted: i=1; AJvYcCXiagFgepnsmcPa8iEXE+sup4Hr0rNzV0sug6ttipS1MLRBlpAyn9YZxIs0czSlrXDcBI/kUJY=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yx4M8NTxrYdetiUWHXHOEwIpVmC/zweonYIEFjLXdgFFFInFRZw
-	lQxqfvvXyFdoVpMziPJ7cZ+ucFWUI3qJsuhTMlAChwC6doqSn7r3L60=
-X-Gm-Gg: AY/fxX6Sp6jz4xkGixd0d1j22K7j2VaATfPdJ1tROZfn387GcNNJk2hghgxE4Rucrii
-	4Al/THmfWY7eEVlg/j9HcexdEWcOJHywfZeRkNuBxZsZv0CMDze/yvye2uuF80zjx2bxP86IVlL
-	ds7V2rzqG1w24GSX+/enAJ+6y3VGTVpuNbXIiKQV7rDkzEQHI+XIb/BJC9Mpj9P5oHxewZGV6j3
-	WYOV0qSnAT/eg/42hunIY3jRNbBp4NGojdqYdhxn3NmVCwAwZ72R3Sf7EiFVHms5nbQjx25mdhr
-	RS/+qvyLqfsPPoAeVn8qy8/Gz/l0WZAJpblEP0/8YS+2x+Q2CDQtAPwQFSfIzAcozIzuUqJQLme
-	RlzxyOs/tiGJj0bON+Aey5L2UavDsbSnKQwwfc3i7dBYA6jLnk8YNGbcHHovjqMRd7x9faJkFoy
-	H4EdAwzJQR3c2oh0tzqOR0nnFPtu6yNzSMb0n1FVaOHb2I6Mdg9IoZPdgUT4yw2Sk=
-X-Google-Smtp-Source: AGHT+IG+rDevQNAgrZqcIZYHg5z2I6P1jkhCEo3BFirDd5CnreOq6tif91Z5O3HvJZf6UGuI+SHczA==
-X-Received: by 2002:a05:600c:348c:b0:47b:deb9:163d with SMTP id 5b1f17b1804b1-47d8484a329mr127583585e9.7.1768016399759;
-        Fri, 09 Jan 2026 19:39:59 -0800 (PST)
-Received: from [192.168.1.3] (p5b057af3.dip0.t-ipconnect.de. [91.5.122.243])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f65d9f0sm246426565e9.12.2026.01.09.19.39.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 09 Jan 2026 19:39:59 -0800 (PST)
-Message-ID: <2713dcdf-d459-4e94-8ae6-a5cd1af45246@googlemail.com>
-Date: Sat, 10 Jan 2026 04:39:59 +0100
+        d=1e100.net; s=20230601; t=1768016779; x=1768621579;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=JV5XPQSlkP0KT1539S/zXsLMM0QQpO+Ub+Lr7dpN/aM=;
+        b=RxF2vtZaIR2tQguXMBVcf/OBNy6qjrsa8ii0LHcvvxz8fcMWXDkZvIfUJiQt5DsQ0G
+         pkAazhddxdDblxuzDH8JP2zbPlhP49MEPu+0uOrrJ2BwFFttfa0iZ9Ez1/QCphq1tTio
+         jmgI1cGyK7aizOUb55NY3bUnyX/klTxiuE4KaL/TVuUHd+KySS0ilAqLoeEh1PwTpNNp
+         StAve/Jox7fvo+lPZIcXIrq6N6Ll/JPP+7XTJLpWzilreLn5qvz/5UGki8XW4qXD8EwJ
+         H/prbXnGYY57hiztiu6uVWVlr25pmI5kyH4WLsMnAhr6wQ5qZba5Tjjwco5v0YTV+Zdv
+         efZw==
+X-Forwarded-Encrypted: i=1; AJvYcCXs5OW7YjhOsthHX8PLBanh3o6q37RLUSaeGVAdbvUTarAJCrNzQhYd4Hv5jj2d7C86VYwIVFY=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz1ErsYpjIt2LDLBf2QLRHdimLlz4rinckHoPTo7x8YYeCfpXou
+	u/ZVTC8swoRcJuSg+KiU9M5DezzcbYaZgnia0w9V2k58GaWS9q0o9/ONg+xg2m8DdLyB71jqKIy
+	U17fZnjjbeDBPM/hGDVaWaM2xza5BOSs=
+X-Gm-Gg: AY/fxX4nx6lwHAE1QLO6m/iUkx7XnVZsUTR7STvUC8++6fg5+YV5xDw4e5iEC4fkhJt
+	GgqDikIKC2nkE4Tue7iyK3AmYUWe5LiqD0rWypOoBmd5+JSn5MjHAr3xr1Ud/MJkLpA3NZHFKM+
+	SNOnLWsQsKQW5sHd36f/7Pgzqsch2Oa8rtS0htn2cCLAZUqZABHXX3J2GNLqWZbD6dMWaY/FI2P
+	slL2LSozAyLlUXSd/aN18I8+7lb8BK1y5WS81lU6VbXuX1QHrkhCvoGuv3tb677EvtSXMPjbpPI
+	ezk7UerbPT3QLI3abfXqZSHX5ymAKWzT1d8p3Q==
+X-Google-Smtp-Source: AGHT+IE4uECXxtDUReK7t4LLPjwqWqeyFbXYeIs/0hXGW+lG9xyxoex3kbCSBDFzmQ/oo56xKozqf2rYrgpaViDleWw=
+X-Received: by 2002:a17:90b:5848:b0:34c:27ad:71e7 with SMTP id
+ 98e67ed59e1d1-34f68cccd55mr11259029a91.35.1768016778708; Fri, 09 Jan 2026
+ 19:46:18 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Betterbird (Windows)
-Subject: Re: [PATCH 6.12 00/16] 6.12.65-rc1 review
-Content-Language: de-DE
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, rwarsow@gmx.de,
- conor@kernel.org, hargar@microsoft.com, broonie@kernel.org,
- achill@achill.org, sr@sladewatkins.com
-References: <20260109111951.415522519@linuxfoundation.org>
-From: Peter Schneider <pschneider1968@googlemail.com>
-In-Reply-To: <20260109111951.415522519@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+References: <20250904054232.3848637-1-aha310510@gmail.com> <aa78a288-0a1e-4851-a2a5-4378e96da305@kernel.org>
+In-Reply-To: <aa78a288-0a1e-4851-a2a5-4378e96da305@kernel.org>
+From: Jeongjun Park <aha310510@gmail.com>
+Date: Sat, 10 Jan 2026 12:46:07 +0900
+X-Gm-Features: AQt7F2rCEhIfpIUArvj5ymsknplv85t0YI7wshsnxjoWUB6KQQyyPkQ5DRbZUGY
+Message-ID: <CAO9qdTEgnft880Hm2V2jF8Li0m3d96iu2Zwi_jHN9ErHH7TOTQ@mail.gmail.com>
+Subject: Re: [PATCH v2 RESEND] media: hackrf: fix to not free memory after the
+ device is registered in hackrf_probe()
+To: Hans Verkuil <hverkuil+cisco@kernel.org>
+Cc: mchehab@kernel.org, hverkuil@kernel.org, 
+	laurent.pinchart+renesas@ideasonboard.com, crope@iki.fi, 
+	linux-media@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org, syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com, 
+	syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+Content-Type: text/plain; charset="UTF-8"
 
-Am 09.01.2026 um 12:43 schrieb Greg Kroah-Hartman:
-> This is the start of the stable review cycle for the 6.12.65 release.
-> There are 16 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Hans,
 
-Builds, boots and works on my 2-socket Ivy Bridge Xeon E5-2697 v2 server. No dmesg oddities or regressions found.
+Hans Verkuil <hverkuil+cisco@kernel.org> wrote:
+>
+> Hi Jeongjun Park,
+>
+> On 04/09/2025 07:42, Jeongjun Park wrote:
+> > In hackrf driver, the following race condition occurs:
+> > ```
+> >               CPU0                                            CPU1
+> > hackrf_probe()
+> >   kzalloc(); // alloc hackrf_dev
+> >   ....
+> >   v4l2_device_register();
+> >   ....
+> >                                               open("/path/to/dev"); // open hackrf dev
+> >                                               ....
+> >   v4l2_device_unregister();
+> >   ....
+> >   kfree(); // free hackrf_dev
+> >   ....
+> >                                               ioctl(fd, ...);
+> >                                                 v4l2_ioctl();
+> >                                                   video_is_registered() // UAF!!
+> >                                               ....
+> >                                               close(fd);
+> >                                                 v4l2_release() // UAF!!
+> >                                                   hackrf_video_release()
+> >                                                     kfree(); // DFB!!
+> > ```
+> >
+> > When a V4L2 or video device is unregistered, the device node is removed so
+> > new open() calls are blocked.
+> >
+> > However, file descriptors that are already open-and any in-flight I/O-do
+> > not terminate immediately; they remain valid until the last reference is
+> > dropped and the driver's release() is invoked.
+> >
+> > Therefore, freeing device memory on the error path after hackrf_probe()
+> > has registered dev it will lead to a race to use-after-free vuln, since
+> > those already-open handles haven't been released yet.
+> >
+> > And since release() free memory too, race to use-after-free and
+> > double-free vuln occur.
+> >
+> > To prevent this, if device is registered from probe(), it should be
+> > modified to free memory only through release() rather than calling
+> > kfree() directly.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Reported-by: syzbot+6ffd76b5405c006a46b7@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=6ffd76b5405c006a46b7
+> > Reported-by: syzbot+f1b20958f93d2d250727@syzkaller.appspotmail.com
+> > Closes: https://syzkaller.appspot.com/bug?extid=f1b20958f93d2d250727
+> > Fixes: 8bc4a9ed8504 ("[media] hackrf: add support for transmitter")
+> > Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+> > ---
+> > v2: Fix incorrect patch description style and CC stable mailing list
+> > - Link to v1: https://lore.kernel.org/all/20250822142729.1156816-1-aha310510@gmail.com/
+> > ---
+> >  drivers/media/usb/hackrf/hackrf.c | 2 ++
+> >  1 file changed, 2 insertions(+)
+> >
+> > diff --git a/drivers/media/usb/hackrf/hackrf.c b/drivers/media/usb/hackrf/hackrf.c
+> > index 0b50de8775a3..d7a84422193d 100644
+> > --- a/drivers/media/usb/hackrf/hackrf.c
+> > +++ b/drivers/media/usb/hackrf/hackrf.c
+> > @@ -1515,6 +1515,8 @@ static int hackrf_probe(struct usb_interface *intf,
+> >       video_unregister_device(&dev->rx_vdev);
+> >  err_v4l2_device_unregister:
+> >       v4l2_device_unregister(&dev->v4l2_dev);
+>
+> Instead of v4l2_device_unregister() this should call v4l2_device_put().
+> Otherwise the memory will never be freed since the v4l2_device refcount
+> will never reach 0.
 
-Tested-by: Peter Schneider <pschneider1968@googlemail.com>
+Oh, you're right.
 
+Calling v4l2_device_unregister() instead of v4l2_device_put() causes a
+memory leak here.
 
-Beste Grüße,
-Peter Schneider
+I'll write a v3 patch for hackrf and as102 and send it to you right away.
 
--- 
-Climb the mountain not to plant your flag, but to embrace the challenge,
-enjoy the air and behold the view. Climb it so you can see the world,
-not so the world can see you.                    -- David McCullough Jr.
+>
+> > +     dev_dbg(&intf->dev, "failed=%d\n", ret);
+>
+> Drop this line, it doesn't add anything.
+>
+> Regards,
+>
+>         Hans
+>
+> > +     return ret;
+> >  err_v4l2_ctrl_handler_free_tx:
+> >       v4l2_ctrl_handler_free(&dev->tx_ctrl_handler);
+> >  err_v4l2_ctrl_handler_free_rx:
+> > --
+> >
+>
 
-OpenPGP:  0xA3828BD796CCE11A8CADE8866E3A92C92C3FF244
-Download: https://www.peters-netzplatz.de/download/pschneider1968_pub.asc
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@googlemail.com
-https://keys.mailvelope.com/pks/lookup?op=get&search=pschneider1968@gmail.com
+Regards,
+Jeongjun Park
 
