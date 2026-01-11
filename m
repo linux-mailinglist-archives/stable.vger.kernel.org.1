@@ -1,79 +1,92 @@
-Return-Path: <stable+bounces-208001-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208002-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 84A76D0ED7A
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 13:24:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A33FFD0EDC3
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 13:30:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 409603007FC7
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 12:24:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7A1313009FB1
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 12:29:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8EEA3314A4;
-	Sun, 11 Jan 2026 12:24:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DF203382C8;
+	Sun, 11 Jan 2026 12:29:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FKM57ZCN"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="rf0AYcWJ"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-182.mta0.migadu.com (out-182.mta0.migadu.com [91.218.175.182])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD771EEE6;
-	Sun, 11 Jan 2026 12:24:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D54A6331A5C
+	for <stable@vger.kernel.org>; Sun, 11 Jan 2026 12:29:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.182
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768134278; cv=none; b=Zrf7NKswgfQY/SZxoLwaIZ5H5jsDgergUCc75KqMbs6bAKgXvcvtSB5hUIxTS7JzX6HRaaSqWJXJarTzEe3NQrZMWOVjnG2SYK/mAOuFeisSkn7nmwSxt4KnPvRUEpaIKbBhFMUqclgs+NxzMzKfHlSoQiebdW5eTG4FRuj80oA=
+	t=1768134545; cv=none; b=pjjrVnKCaLvvC4hxZYUmkxKkkZgODEpGF8Ma9Riox0QULva3xWxUQTx6J6QluH5ZlSzUDygdA55nnjOAlh5buBde0Hl/w78SDAeQ7zUfmBLhiR6rLAmzwxlDQZOTN0kYzDntNiOlyt8gr1Nv11aK0VvLLUBuA6Xnhfx3H2p31xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768134278; c=relaxed/simple;
-	bh=PcQZEqEKFa4VHxbvEoplIjPp7Qgs4VNTM9pTCnRw7U4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=j5Xz4nG0PktwhHnhDkN0IGWQF2Mmbo6XFADPUGwIisRFlpXFB91HkJtcAD6u5zqshXMj/zcFVw59L750soml7HrBS5JURp5MXKqVMmgPPuFxZiMdMNOYhXT/jzGUwkhRtr1FS7GFiCjOQbQBsw8WIXXdDoZAcNKdNqmE5hYdPZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FKM57ZCN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBDADC4CEF7;
-	Sun, 11 Jan 2026 12:24:37 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768134278;
-	bh=PcQZEqEKFa4VHxbvEoplIjPp7Qgs4VNTM9pTCnRw7U4=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=FKM57ZCNR2ax/pLoBnahumU1q9ZIWAw0TLLfOnBBnk+DsQKv6nEb+oXsLORIaSOfq
-	 NVnpWPk9HygdFZshBNTxMpwt+3BbVTfdmV20k39qWyjMIr1meo2qOJ26AcQrmgGbF5
-	 cuDEqhSpDIS5hXovom7aPcZDImgGq8M4pyrv0C2o=
-Date: Sun, 11 Jan 2026 13:24:35 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Askar Safin <safinaskar@gmail.com>
-Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
-	stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
-	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
-	kai.vehmanen@linux.intel.com, cezary.rojewski@intel.com,
-	ranjani.sridharan@linux.intel.com, rf@opensource.cirrus.com,
-	bradynorander@gmail.com
-Subject: Re: [PATCH AUTOSEL 6.18-6.17] ALSA: hda: intel-dsp-config: Prefer
- legacy driver as fallback
-Message-ID: <2026011119-stadium-trilogy-22ac@gregkh>
-References: <20251215004145.2760442-1-sashal@kernel.org>
- <20251215004145.2760442-3-sashal@kernel.org>
- <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
- <aV5Ap8TgMEDLucWR@laps>
- <CAPnZJGCJ1LZRzfzO=958EfcrLm4Z3pYdtHZEpp812fstsUcOAQ@mail.gmail.com>
+	s=arc-20240116; t=1768134545; c=relaxed/simple;
+	bh=D6NG7HziDMBwQ9hnyhBXX0xFAzsLidFiOiFDJJPoRCs=;
+	h=Content-Type:Mime-Version:Subject:From:In-Reply-To:Date:Cc:
+	 Message-Id:References:To; b=ts79pGVSzfuu57XgBN1CUwyFiFLk2sGZ6ABjn+wNBbbZzVgTjil/462xG/inJbhzFDJOGM+SHpBd91KBs6zAsjNvILUo8MYyflgXn76eiz3QPD+C5hC9fkLnaKlUMww3ARaqVOEE8bxb6ktsyRW3bmMb5prEQIn9HTPEWSncbg4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=rf0AYcWJ; arc=none smtp.client-ip=91.218.175.182
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Content-Type: text/plain;
+	charset=us-ascii
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768134530;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=T73nhPSL+7IX4USb9ZOqSnkArnfPW921Nem7jWIaTls=;
+	b=rf0AYcWJi3vWUM7ZnH0ADw4+CmMxC+BOibyvVoQA42+Wb92X0mUh3GaBMNCoAE8rdcfnkm
+	/AosYdVxJH0H4eRnn33YrNamQVRXOD2H+ieDkay7AObBQ7ekiN5QPOuceQexOy1Ol7JKAg
+	VURGmXDwPzivCqBQMwSP32CdhM6mkNA=
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAPnZJGCJ1LZRzfzO=958EfcrLm4Z3pYdtHZEpp812fstsUcOAQ@mail.gmail.com>
+Mime-Version: 1.0 (Mac OS X Mail 16.0 \(3826.700.81.1.4\))
+Subject: Re: [PATCH] ecryptfs: Add missing gotos in ecryptfs_read_metadata
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Thorsten Blum <thorsten.blum@linux.dev>
+In-Reply-To: <20260111010825.GG3634291@ZenIV>
+Date: Sun, 11 Jan 2026 13:28:17 +0100
+Cc: Tyler Hicks <code@tyhicks.com>,
+ Ard Biesheuvel <ardb@kernel.org>,
+ Zipeng Zhang <zhangzipeng0@foxmail.com>,
+ Christian Brauner <brauner@kernel.org>,
+ Eric Biggers <ebiggers@kernel.org>,
+ Michael Halcrow <mhalcrow@us.ibm.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ stable@vger.kernel.org,
+ ecryptfs@vger.kernel.org,
+ linux-kernel@vger.kernel.org
+Content-Transfer-Encoding: 7bit
+Message-Id: <5DD6E30E-4974-42D9-86CF-A6A78CF0492E@linux.dev>
+References: <20260111003655.491722-1-thorsten.blum@linux.dev>
+ <20260111010825.GG3634291@ZenIV>
+To: Al Viro <viro@zeniv.linux.org.uk>
+X-Migadu-Flow: FLOW_OUT
 
-On Sun, Jan 11, 2026 at 03:04:47PM +0300, Askar Safin wrote:
-> On Wed, Jan 7, 2026 at 2:16 PM Sasha Levin <sashal@kernel.org> wrote:
-> > >Please, backport this to 82d9d54a6c0e .
-> > >82d9d54a6c0e is commit, which introduced "intel-dsp-config.c".
-> >
-> > Looks like that commit is already in all trees.
+On 11. Jan 2026, at 02:08, Al Viro wrote:
+> On Sun, Jan 11, 2026 at 01:36:52AM +0100, Thorsten Blum wrote:
+>> Add two missing goto statements to exit ecryptfs_read_metadata() when an
+>> error occurs.
+>> 
+>> The first goto is required; otherwise ECRYPTFS_METADATA_IN_XATTR may be
+>> set when xattr metadata is enabled even though parsing the metadata
+>> failed. The second goto is not strictly necessary, but it makes the
+>> error path explicit instead of relying on falling through to 'out'.
 > 
-> You mean that 82d9d54a6c0e is in all trees? Okay, then,
-> please, backport 161a0c617ab172bbcda7ce61803addeb2124dbff
-> to all trees.
+> Ugh...  IMO the whole thing from the point we'd successfully allocated
+> the page to the point where we start to clear it ought to be in a separate
+> helper.  Something like this, perhaps?
 
-Why?  I see no context here :(
+I wanted to keep the fix simple, but I'm happy to refactor the function
+if that's preferred. Any preferences, Tyler?
+
+Thanks,
+Thorsten
+
 
