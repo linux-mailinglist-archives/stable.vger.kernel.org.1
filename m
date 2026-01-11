@@ -1,113 +1,100 @@
-Return-Path: <stable+bounces-208005-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208006-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0378D0EFBF
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 14:34:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAD7CD0F03B
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 14:57:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 317F3300983F
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 13:33:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 46CF6300A856
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 13:57:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C22933AD9E;
-	Sun, 11 Jan 2026 13:33:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B61A233CEAA;
+	Sun, 11 Jan 2026 13:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b="os/NcsRK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dXrASIDG"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ej1-f46.google.com (mail-ej1-f46.google.com [209.85.218.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4CFF19C542
-	for <stable@vger.kernel.org>; Sun, 11 Jan 2026 13:33:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.218.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E911D63D1;
+	Sun, 11 Jan 2026 13:57:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768138436; cv=none; b=ZFPeNFVhFV8SqKAfzOhwrA9XjGRzmT/4LhYAqjR9TAiIUjy+MdcSl9npISLZvlXRjismtDjBG8+Wz57dHCzLE7UfUcBoh2h/Cr0Y5O3KIK/AAm/5WsgLxAKo7Rz+D0hMVAhUNjYhxgJS04B0zv3A4OXR/aAv85RdgkXWfPVtxXQ=
+	t=1768139845; cv=none; b=SQW8SuTy1uqIHmYfr3bQoWfkxHpcoSF+/iGU3nMqFcfezsRIrnASA/JQb5Jqw7Hacy3AhUIxHRt4PSxFQh97KhNdFaF7XRM65uCUC/NNvfxi1iL21niyNq/5uRHmBAdMCrwK3Zt0GduDTIcQ7zDwIpGC+nsJHwywFw39vRnaL4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768138436; c=relaxed/simple;
-	bh=Wzvtf1QIRWhfF9BNnhKptdI8gkJPgnhFK0K96o9KUig=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=GK5zbqe3PhcSC7AwUagDqSWVYfMytb900/ZXPIBbUqDBOxe/GMTt4rS+7eFjNOaPL53CUN36Eou7j98P7a8QDuAnsiuSzV/UJsDhHfdm5338o15Y+qEOS2IDYPFBaAnC9nqRv6ZHCJ12Mz3dwiksp161058AmldqKCwCx0jQJ8w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in; spf=none smtp.mailfrom=rajagiritech.edu.in; dkim=pass (2048-bit key) header.d=rajagiritech-edu-in.20230601.gappssmtp.com header.i=@rajagiritech-edu-in.20230601.gappssmtp.com header.b=os/NcsRK; arc=none smtp.client-ip=209.85.218.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=rajagiritech.edu.in
-Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=rajagiritech.edu.in
-Received: by mail-ej1-f46.google.com with SMTP id a640c23a62f3a-b7cf4a975d2so917518366b.2
-        for <stable@vger.kernel.org>; Sun, 11 Jan 2026 05:33:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rajagiritech-edu-in.20230601.gappssmtp.com; s=20230601; t=1768138433; x=1768743233; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=f2J4zv6B0sWCplg3AhmRAoRaHMt7uMnutkNab3hdAsU=;
-        b=os/NcsRKHezwo6rJgNDGM/FygWr/mRwCqeXlA5rFa0GEUn55DD+yKYxfnLxQj1qnSS
-         BWTHDReiCEvgfzxsQA7yIcdTHIn6S+gVw3vHm1fOZX4a9vzJNgXwVCjaT01iRz6nu++I
-         fpOTfxCEly4h1qlD7IJREKojsPZ5uN8dVonxNQgmAWfF8lfq0wC/dezu9Gh7YDxqQv0x
-         6ZUNXJjIKakeQsV26eNEhHcU1fnxC0lE0h2rTHNk9bJC2rQWC6Zzd473rknCkMjX3XQa
-         veJxyH2qT/wmrMzJ826tJpiCPoaDYyj3m7PdeO4CnK2mkSAZ41w5Pkxqv1LuCRaZyBi+
-         kQTw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768138433; x=1768743233;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f2J4zv6B0sWCplg3AhmRAoRaHMt7uMnutkNab3hdAsU=;
-        b=UBNWyux2rmt+crQlopen8360aoWwUWnBUEkQraR3JM/IHs0Oz5MdDOtuAZ26wpOLE8
-         aOucvBOV3hPqwvhR+TZRJky32pO0zzxL1d8XOYEA3AqWybCGWEbTA4nDxvmFrPEQIOJA
-         TvGpuw017urVHW96RComTgkQ86bghSp1im3ccZ8TQjyrX8Dvs/I/YDtURxnMRbVd9CHT
-         edOu1Z7tiHdKOjj9uFLInJ5T0eW/b+LMMEml9zXgzBM4yLmJXm33FQKhjdysKcLJ5vxY
-         UVk7mB4alK4SuuMFSbIEKJDAqG9qwA/JY8rV3A0G50oLtzR4jkuP/HF/qD0VdduQoiBd
-         TA7w==
-X-Gm-Message-State: AOJu0YzEY29+Iqy7aLJ1/mC1oE7Eu3TDtsUpyfXz+2i681T0dp9TZ/Ry
-	ZQ3YxLDU0+eVCP4dado87bf7jnC4ql3BV0Vl7G5A0dlC1801YhyIulHqYtM5omBmQv0kGaZP6Gx
-	GG8uQDAq0j12NSyykoHCN0gDf3Cjny9s+5KWOMQnNsw==
-X-Gm-Gg: AY/fxX4YJqkF1F0LQVkXU4onkfcUWnPEQiQLswylUyDxc46mLOp6S+wFpYqDxcSSJA+
-	+6tDz3ORnHopm5fvbnWJmayLd/4v8rfljCDkWlXHsGmQb86Wmt4fhknWBuC/1G1iQ4GNT9PNUPC
-	O+gWu/OrNjIvEj4ZqDt/Ss8WktLrO5F8+KLu/ikGbQYFWdGNM9ekYzb5es1HbtA54tO8WusW0EA
-	a/T2Y13pXY1s9O3GYyRuvz3p+lfmqQdKgHi+K6K0Q1IU923zITNBCVQ/Za0x02chTpiLQvA
-X-Google-Smtp-Source: AGHT+IFIyEV5GZ9LvzKs1Fn8qJm8k3Yl/9+E34x7MwrIBE/uxpqJdywpg2jp+1UpsvVTwV95NwxPwTrXn0S17pRWm3E=
-X-Received: by 2002:a17:907:6d1a:b0:b7a:6c39:8e73 with SMTP id
- a640c23a62f3a-b8444cced16mr1443786466b.23.1768138432293; Sun, 11 Jan 2026
- 05:33:52 -0800 (PST)
+	s=arc-20240116; t=1768139845; c=relaxed/simple;
+	bh=47/pTHouZ+vMmyjz9AyyEU/G9yvYRgyMg1/L66YJnY0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bsdiWK91NCjDdhFNlSNbDLg9QyLhmLW5u9Wbdb+NQ4Ct4s/nC/gI8TdSyKcxIvueGhH/b/4ERJitFmpQbJUO38P2yYhq2Xm3occfrNeNv3LkFrOeIXx32inPH5BYAwUEQUy/ATL0dQKV0m73thMZYBBKIyF9gmShDVRnMlPn33M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dXrASIDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E02FCC4CEF7;
+	Sun, 11 Jan 2026 13:57:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768139845;
+	bh=47/pTHouZ+vMmyjz9AyyEU/G9yvYRgyMg1/L66YJnY0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=dXrASIDGsJPr2BiECswmLyBd9EjZSwyOvhwqRpQgnPzGhyWoBtDu83/BW3kvV+2Jx
+	 LGMIp+9KZrUvgEnJ10v6/zY9bKfLtu+Zqo83plov5JYSmI++8kMjXTsHoykkg1w4r5
+	 IiWQnRZDbsrYop1jaj6/7doMqh2JwJsWc5hG3ca0=
+Date: Sun, 11 Jan 2026 14:57:22 +0100
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Cc: stable@vger.kernel.org, patches@lists.linux.dev,
+	syzbot+340581ba9dceb7e06fb3@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>, Theodore Tso <tytso@mit.edu>
+Subject: Re: [PATCH 6.6 731/737] ext4: filesystems without casefold feature
+ cannot be mounted with siphash
+Message-ID: <2026011114-contact-vocalize-37b2@gregkh>
+References: <20260109112133.973195406@linuxfoundation.org>
+ <20260109112201.603806562@linuxfoundation.org>
+ <aWEFUlM6PsTMMXxr@quatroqueijos.cascardo.eti.br>
+ <2026010942-overdue-repayment-b202@gregkh>
+ <aWN74hQARUawYete@quatroqueijos.cascardo.eti.br>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260110135319.581406700@linuxfoundation.org>
-In-Reply-To: <20260110135319.581406700@linuxfoundation.org>
-From: Jeffrin Thalakkottoor <jeffrin@rajagiritech.edu.in>
-Date: Sun, 11 Jan 2026 19:03:16 +0530
-X-Gm-Features: AZwV_QhkGV9F_PPBfvZcVv0UkUfx6ZL5ME9FEBCMlS1TdDX6na1L-wwPkJH4TYs
-Message-ID: <CAG=yYwn3BNTMt68xEocXDGDW+LRiSHDAD6XNPKfVN2xKN+t3Cw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/633] 6.1.160-rc2 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org, sr@sladewatkins.com
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWN74hQARUawYete@quatroqueijos.cascardo.eti.br>
 
-hello
+On Sun, Jan 11, 2026 at 07:30:58AM -0300, Thadeu Lima de Souza Cascardo wrote:
+> On Fri, Jan 09, 2026 at 03:13:55PM +0100, Greg Kroah-Hartman wrote:
+> > On Fri, Jan 09, 2026 at 10:40:34AM -0300, Thadeu Lima de Souza Cascardo wrote:
+> > > Hi, Greg.
+> > > 
+> > > The followup to 985b67cd86392310d9e9326de941c22fc9340eec, that I submitted
+> > > in the same thread, has not been picked up.
+> > > 
+> > > 20260108150350.3354622-2-cascardo@igalia.com
+> > > https://lore.kernel.org/stable/20260108150350.3354622-2-cascardo@igalia.com/
+> > > a2187431c395 ("ext4: fix error message when rejecting the default hash")
+> > > 
+> > > You picked it up for 6.1 and 5.15 though.
+> > 
+> > It's in the queue, odd you didn't get an email.
+> > 
+> > thanks,
+> > 
+> > greg k-h
+> 
+> Ah, I see it now, when looking for the upstream hash and not my sign-off.
+> It was a different backport that ommitted the original fix and only applied
+> the fixup/followup.
+> 
+> The original fix adds a hunk that is then removed by the followup. So when
+> applying the followup that ignores that hunk and then the original fix with
+> that hunk, 6.6 queue now is carrying an undesired hunk message.
+> 
+> If you drop a032fc761cc3f1112c42732d9a2482f23acad5fc and apply
+> https://lore.kernel.org/stable/20260108150350.3354622-2-cascardo@igalia.com/
+> instead, it should be in the expected final state. I would rather do that,
+> as then 6.6.y would be carrying the original fix, avoiding it to be
+> backported again.
 
-Compiled and booted  6.1.160-rc2+
+Ok, thanks, now done!
 
-No  typical new regressions   from dmesg.
-
-As per the dmidecode command.
-Version: AMD Ryzen 3 3250U with Radeon Graphics
-
-Processor Information
-        Socket Designation: FP5
-        Type: Central Processor
-        Family: Zen
-        Manufacturer: Advanced Micro Devices, Inc.
-        ID: 81 0F 81 00 FF FB 8B 17
-        Signature: Family 23, Model 24, Stepping 1
-
-Tested-by: Jeffrin Jose T <jeffrin@rajagiritech.edu.in>
-
---
-software engineer
-rajagiri school of engineering and technology
+greg k-h
 
