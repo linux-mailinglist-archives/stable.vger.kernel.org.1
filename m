@@ -1,40 +1,41 @@
-Return-Path: <stable+bounces-208018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208019-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC99D0F208
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 15:34:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98B1BD0F1ED
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 15:33:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A37ED30478EA
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 14:33:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C34CA3018311
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 14:33:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 58C453491D3;
-	Sun, 11 Jan 2026 14:33:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73DA03491D3;
+	Sun, 11 Jan 2026 14:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXu1OOAz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="B0WW3e0h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1465834889C;
-	Sun, 11 Jan 2026 14:33:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 324083491C2;
+	Sun, 11 Jan 2026 14:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768141981; cv=none; b=IQ4Ui8cOJa6aydqgz04hn1YpNyEZVGmU6dOO3O81jPl3y0dbA97DZIGq/R8QHS51JYzieC778mfF3dEXY+nkrXAfeZpbEuKmO8WuR+GslDg/qvsguYhwPmGkXjiUjcZp66WL+qmj9rYG0rwQ8YZks69Zalmji+lp4CNLNrLVa2c=
+	t=1768141986; cv=none; b=if12os91rZutT3U3pqP0m5MTaoo7HVOyNydaj4uKTTbwaY+lHV0K6vJBXhoxkKNTD79wfsiIzznoH1HqU2ZCYPf0NJIt0Xuvb1iSnkj81oeG4kgpAjIr08spiIPaaC9fvOiwiCWZaFaOaAUDbjM5P9KPMaVrrqaE3jDcfKK1kyI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768141981; c=relaxed/simple;
-	bh=/2X9bjhXAP33HdGKkvA7jsK+5LOftddiJFI5ATQeuls=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=hlFuN74Cb8/5e4ZULSivjcc7EwFt0b5ro0xixmoK8xD+aqE0qdMK0/WywBChqkMCD7vrOiUrtHeKb3KvW6uuMuDpc5+pvp1tncsQDzrptjE8RLoDecG+AMlEllI8vBfVmE3PpFurBCwY6C3L3o75Kt4r6TcTvjNCgOymZ3xaBq8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXu1OOAz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D90FC4CEF7;
-	Sun, 11 Jan 2026 14:33:00 +0000 (UTC)
+	s=arc-20240116; t=1768141986; c=relaxed/simple;
+	bh=hhARJHUMusUXnb91subrSvPiE29x6zUW6ngrOfKRv5s=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=jv1iDr4XNisF3YbyaNAmdirpE6BYNeh6qBOPEDg6mIYlnDQKv1v10TzeS2vtZsuATQyxQJ5JRVSEctdQ8f24R+sLqVcVAi9JM85CxgIL6CeHFHNOxdxk2KlTN00fXy5QltouiCt6jCBEmZN9j/KVv6jqYw8G3zQGVcGXF/Mj9SU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=B0WW3e0h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1006C19423;
+	Sun, 11 Jan 2026 14:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768141980;
-	bh=/2X9bjhXAP33HdGKkvA7jsK+5LOftddiJFI5ATQeuls=;
-	h=From:To:Cc:Subject:Date:From;
-	b=qXu1OOAz7vZoMET0wxHizaHdT35dM9AtjTV/UCtx6QcDvX+dsw+N8nwIpHc6qIMUF
-	 5VEa+damiXAc5+F5+hKCqhhCM2Y3pa/0XDjRVDj8IkvgPUDwAW4RBtiq4valiqbycr
-	 FebQDh/iL0BjniuzGpGC9/zxESjYCzItEZZSnkmE=
+	s=korg; t=1768141986;
+	bh=hhARJHUMusUXnb91subrSvPiE29x6zUW6ngrOfKRv5s=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=B0WW3e0hnKatwgm+y/KG6m7dEvYWMbb7TVBmEbMb8k7YkwLuH0fGsepPelpMYUBbe
+	 1mbm9sTajGMYwaqUr0ZcMtEGTRpWbRff6/6GBlET51qMaQbsrCkOYLmGjlCoy9VCGQ
+	 qkOeEPa9IbtyXLz+RstJiLqFyPBNZuZje8xhSMZ4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: linux-kernel@vger.kernel.org,
 	akpm@linux-foundation.org,
@@ -43,10 +44,12 @@ To: linux-kernel@vger.kernel.org,
 Cc: lwn@lwn.net,
 	jslaby@suse.cz,
 	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Linux 6.18.5
-Date: Sun, 11 Jan 2026 15:32:52 +0100
-Message-ID: <2026011153--8151@gregkh>
+Subject: Re: Linux 6.18.5
+Date: Sun, 11 Jan 2026 15:32:53 +0100
+Message-ID: <2026011153--3a3b@gregkh>
 X-Mailer: git-send-email 2.52.0
+In-Reply-To: <2026011153--8151@gregkh>
+References: <2026011153--8151@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -55,45 +58,346 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-I'm announcing the release of the 6.18.5 kernel.
-
-All users of the 6.18 kernel series must upgrade.
-
-The updated 6.18.y git tree can be found at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.18.y
-and can be browsed at the normal kernel.org git web browser:
-	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
-
-thanks,
-
-greg k-h
-
-------------
-
- Makefile                       |    2 -
- fs/nfs/localio.c               |   12 +++----
- include/linux/sched/topology.h |    3 +
- kernel/sched/core.c            |    3 +
- kernel/sched/fair.c            |   65 +++++++++++++++++++++++++++++++++--------
- kernel/sched/features.h        |    5 +++
- kernel/sched/sched.h           |    7 ++++
- kernel/sched/topology.c        |    6 +++
- net/mptcp/protocol.c           |    8 +++--
- net/mptcp/protocol.h           |    3 +
- 10 files changed, 91 insertions(+), 23 deletions(-)
-
-Greg Kroah-Hartman (1):
-      Linux 6.18.5
-
-Mike Snitzer (1):
-      nfs/localio: fix regression due to out-of-order __put_cred
-
-Paolo Abeni (1):
-      mptcp: ensure context reset on disconnect()
-
-Peter Zijlstra (3):
-      sched/fair: Small cleanup to sched_balance_newidle()
-      sched/fair: Small cleanup to update_newidle_cost()
-      sched/fair: Proportional newidle balance
-
+diff --git a/Makefile b/Makefile
+index 7b431af09b32..30c332829b0f 100644
+--- a/Makefile
++++ b/Makefile
+@@ -1,7 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ VERSION = 6
+ PATCHLEVEL = 18
+-SUBLEVEL = 4
++SUBLEVEL = 5
+ EXTRAVERSION =
+ NAME = Baby Opossum Posse
+ 
+diff --git a/fs/nfs/localio.c b/fs/nfs/localio.c
+index b98bb292fef0..ed2a7efaf8f2 100644
+--- a/fs/nfs/localio.c
++++ b/fs/nfs/localio.c
+@@ -623,8 +623,6 @@ static void nfs_local_call_read(struct work_struct *work)
+ 	ssize_t status;
+ 	int n_iters;
+ 
+-	save_cred = override_creds(filp->f_cred);
+-
+ 	n_iters = atomic_read(&iocb->n_iters);
+ 	for (int i = 0; i < n_iters ; i++) {
+ 		if (iocb->iter_is_dio_aligned[i]) {
+@@ -637,7 +635,10 @@ static void nfs_local_call_read(struct work_struct *work)
+ 		} else
+ 			iocb->kiocb.ki_flags &= ~IOCB_DIRECT;
+ 
++		save_cred = override_creds(filp->f_cred);
+ 		status = filp->f_op->read_iter(&iocb->kiocb, &iocb->iters[i]);
++		revert_creds(save_cred);
++
+ 		if (status != -EIOCBQUEUED) {
+ 			if (unlikely(status >= 0 && status < iocb->iters[i].count))
+ 				force_done = true; /* Partial read */
+@@ -647,8 +648,6 @@ static void nfs_local_call_read(struct work_struct *work)
+ 			}
+ 		}
+ 	}
+-
+-	revert_creds(save_cred);
+ }
+ 
+ static int
+@@ -830,7 +829,6 @@ static void nfs_local_call_write(struct work_struct *work)
+ 	int n_iters;
+ 
+ 	current->flags |= PF_LOCAL_THROTTLE | PF_MEMALLOC_NOIO;
+-	save_cred = override_creds(filp->f_cred);
+ 
+ 	file_start_write(filp);
+ 	n_iters = atomic_read(&iocb->n_iters);
+@@ -845,7 +843,10 @@ static void nfs_local_call_write(struct work_struct *work)
+ 		} else
+ 			iocb->kiocb.ki_flags &= ~IOCB_DIRECT;
+ 
++		save_cred = override_creds(filp->f_cred);
+ 		status = filp->f_op->write_iter(&iocb->kiocb, &iocb->iters[i]);
++		revert_creds(save_cred);
++
+ 		if (status != -EIOCBQUEUED) {
+ 			if (unlikely(status >= 0 && status < iocb->iters[i].count))
+ 				force_done = true; /* Partial write */
+@@ -857,7 +858,6 @@ static void nfs_local_call_write(struct work_struct *work)
+ 	}
+ 	file_end_write(filp);
+ 
+-	revert_creds(save_cred);
+ 	current->flags = old_flags;
+ }
+ 
+diff --git a/include/linux/sched/topology.h b/include/linux/sched/topology.h
+index bbcfdf12aa6e..45c0022b91ce 100644
+--- a/include/linux/sched/topology.h
++++ b/include/linux/sched/topology.h
+@@ -92,6 +92,9 @@ struct sched_domain {
+ 	unsigned int nr_balance_failed; /* initialise to 0 */
+ 
+ 	/* idle_balance() stats */
++	unsigned int newidle_call;
++	unsigned int newidle_success;
++	unsigned int newidle_ratio;
+ 	u64 max_newidle_lb_cost;
+ 	unsigned long last_decay_max_lb_cost;
+ 
+diff --git a/kernel/sched/core.c b/kernel/sched/core.c
+index f754a60de848..eb47d294e2c5 100644
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -121,6 +121,7 @@ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_update_nr_running_tp);
+ EXPORT_TRACEPOINT_SYMBOL_GPL(sched_compute_energy_tp);
+ 
+ DEFINE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DEFINE_PER_CPU(struct rnd_state, sched_rnd_state);
+ 
+ #ifdef CONFIG_SCHED_PROXY_EXEC
+ DEFINE_STATIC_KEY_TRUE(__sched_proxy_exec);
+@@ -8591,6 +8592,8 @@ void __init sched_init_smp(void)
+ {
+ 	sched_init_numa(NUMA_NO_NODE);
+ 
++	prandom_init_once(&sched_rnd_state);
++
+ 	/*
+ 	 * There's no userspace yet to cause hotplug operations; hence all the
+ 	 * CPU masks are stable and all blatant races in the below code cannot
+diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
+index bfce451f1210..d1206f81f8b2 100644
+--- a/kernel/sched/fair.c
++++ b/kernel/sched/fair.c
+@@ -12122,24 +12122,43 @@ void update_max_interval(void)
+ 	max_load_balance_interval = HZ*num_online_cpus()/10;
+ }
+ 
+-static inline bool update_newidle_cost(struct sched_domain *sd, u64 cost)
++static inline void update_newidle_stats(struct sched_domain *sd, unsigned int success)
+ {
++	sd->newidle_call++;
++	sd->newidle_success += success;
++
++	if (sd->newidle_call >= 1024) {
++		sd->newidle_ratio = sd->newidle_success;
++		sd->newidle_call /= 2;
++		sd->newidle_success /= 2;
++	}
++}
++
++static inline bool
++update_newidle_cost(struct sched_domain *sd, u64 cost, unsigned int success)
++{
++	unsigned long next_decay = sd->last_decay_max_lb_cost + HZ;
++	unsigned long now = jiffies;
++
++	if (cost)
++		update_newidle_stats(sd, success);
++
+ 	if (cost > sd->max_newidle_lb_cost) {
+ 		/*
+ 		 * Track max cost of a domain to make sure to not delay the
+ 		 * next wakeup on the CPU.
+ 		 */
+ 		sd->max_newidle_lb_cost = cost;
+-		sd->last_decay_max_lb_cost = jiffies;
+-	} else if (time_after(jiffies, sd->last_decay_max_lb_cost + HZ)) {
++		sd->last_decay_max_lb_cost = now;
++
++	} else if (time_after(now, next_decay)) {
+ 		/*
+ 		 * Decay the newidle max times by ~1% per second to ensure that
+ 		 * it is not outdated and the current max cost is actually
+ 		 * shorter.
+ 		 */
+ 		sd->max_newidle_lb_cost = (sd->max_newidle_lb_cost * 253) / 256;
+-		sd->last_decay_max_lb_cost = jiffies;
+-
++		sd->last_decay_max_lb_cost = now;
+ 		return true;
+ 	}
+ 
+@@ -12171,7 +12190,7 @@ static void sched_balance_domains(struct rq *rq, enum cpu_idle_type idle)
+ 		 * Decay the newidle max times here because this is a regular
+ 		 * visit to all the domains.
+ 		 */
+-		need_decay = update_newidle_cost(sd, 0);
++		need_decay = update_newidle_cost(sd, 0, 0);
+ 		max_cost += sd->max_newidle_lb_cost;
+ 
+ 		/*
+@@ -12787,14 +12806,16 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
+ 
+ 	rcu_read_lock();
+ 	sd = rcu_dereference_check_sched_domain(this_rq->sd);
++	if (!sd) {
++		rcu_read_unlock();
++		goto out;
++	}
+ 
+ 	if (!get_rd_overloaded(this_rq->rd) ||
+-	    (sd && this_rq->avg_idle < sd->max_newidle_lb_cost)) {
++	    this_rq->avg_idle < sd->max_newidle_lb_cost) {
+ 
+-		if (sd)
+-			update_next_balance(sd, &next_balance);
++		update_next_balance(sd, &next_balance);
+ 		rcu_read_unlock();
+-
+ 		goto out;
+ 	}
+ 	rcu_read_unlock();
+@@ -12814,6 +12835,22 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
+ 			break;
+ 
+ 		if (sd->flags & SD_BALANCE_NEWIDLE) {
++			unsigned int weight = 1;
++
++			if (sched_feat(NI_RANDOM)) {
++				/*
++				 * Throw a 1k sided dice; and only run
++				 * newidle_balance according to the success
++				 * rate.
++				 */
++				u32 d1k = sched_rng() % 1024;
++				weight = 1 + sd->newidle_ratio;
++				if (d1k > weight) {
++					update_newidle_stats(sd, 0);
++					continue;
++				}
++				weight = (1024 + weight/2) / weight;
++			}
+ 
+ 			pulled_task = sched_balance_rq(this_cpu, this_rq,
+ 						   sd, CPU_NEWLY_IDLE,
+@@ -12821,10 +12858,14 @@ static int sched_balance_newidle(struct rq *this_rq, struct rq_flags *rf)
+ 
+ 			t1 = sched_clock_cpu(this_cpu);
+ 			domain_cost = t1 - t0;
+-			update_newidle_cost(sd, domain_cost);
+-
+ 			curr_cost += domain_cost;
+ 			t0 = t1;
++
++			/*
++			 * Track max cost of a domain to make sure to not delay the
++			 * next wakeup on the CPU.
++			 */
++			update_newidle_cost(sd, domain_cost, weight * !!pulled_task);
+ 		}
+ 
+ 		/*
+diff --git a/kernel/sched/features.h b/kernel/sched/features.h
+index 3c12d9f93331..136a6584be79 100644
+--- a/kernel/sched/features.h
++++ b/kernel/sched/features.h
+@@ -121,3 +121,8 @@ SCHED_FEAT(WA_BIAS, true)
+ SCHED_FEAT(UTIL_EST, true)
+ 
+ SCHED_FEAT(LATENCY_WARN, false)
++
++/*
++ * Do newidle balancing proportional to its success rate using randomization.
++ */
++SCHED_FEAT(NI_RANDOM, true)
+diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
+index 92ec751799f5..2f8b06b12a98 100644
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -5,6 +5,7 @@
+ #ifndef _KERNEL_SCHED_SCHED_H
+ #define _KERNEL_SCHED_SCHED_H
+ 
++#include <linux/prandom.h>
+ #include <linux/sched/affinity.h>
+ #include <linux/sched/autogroup.h>
+ #include <linux/sched/cpufreq.h>
+@@ -1349,6 +1350,12 @@ static inline bool is_migration_disabled(struct task_struct *p)
+ }
+ 
+ DECLARE_PER_CPU_SHARED_ALIGNED(struct rq, runqueues);
++DECLARE_PER_CPU(struct rnd_state, sched_rnd_state);
++
++static inline u32 sched_rng(void)
++{
++	return prandom_u32_state(this_cpu_ptr(&sched_rnd_state));
++}
+ 
+ #define cpu_rq(cpu)		(&per_cpu(runqueues, (cpu)))
+ #define this_rq()		this_cpu_ptr(&runqueues)
+diff --git a/kernel/sched/topology.c b/kernel/sched/topology.c
+index 444bdfdab731..c7a4d2fff571 100644
+--- a/kernel/sched/topology.c
++++ b/kernel/sched/topology.c
+@@ -1662,6 +1662,12 @@ sd_init(struct sched_domain_topology_level *tl,
+ 
+ 		.last_balance		= jiffies,
+ 		.balance_interval	= sd_weight,
++
++		/* 50% success rate */
++		.newidle_call		= 512,
++		.newidle_success	= 256,
++		.newidle_ratio		= 512,
++
+ 		.max_newidle_lb_cost	= 0,
+ 		.last_decay_max_lb_cost	= jiffies,
+ 		.child			= child,
+diff --git a/net/mptcp/protocol.c b/net/mptcp/protocol.c
+index 221a5ea019e6..d4e3111ba643 100644
+--- a/net/mptcp/protocol.c
++++ b/net/mptcp/protocol.c
+@@ -2421,10 +2421,10 @@ bool __mptcp_retransmit_pending_data(struct sock *sk)
+  */
+ static void __mptcp_subflow_disconnect(struct sock *ssk,
+ 				       struct mptcp_subflow_context *subflow,
+-				       unsigned int flags)
++				       bool fastclosing)
+ {
+ 	if (((1 << ssk->sk_state) & (TCPF_CLOSE | TCPF_LISTEN)) ||
+-	    subflow->send_fastclose) {
++	    fastclosing) {
+ 		/* The MPTCP code never wait on the subflow sockets, TCP-level
+ 		 * disconnect should never fail
+ 		 */
+@@ -2476,7 +2476,7 @@ static void __mptcp_close_ssk(struct sock *sk, struct sock *ssk,
+ 
+ 	need_push = (flags & MPTCP_CF_PUSH) && __mptcp_retransmit_pending_data(sk);
+ 	if (!dispose_it) {
+-		__mptcp_subflow_disconnect(ssk, subflow, flags);
++		__mptcp_subflow_disconnect(ssk, subflow, msk->fastclosing);
+ 		release_sock(ssk);
+ 
+ 		goto out;
+@@ -2789,6 +2789,7 @@ static void mptcp_do_fastclose(struct sock *sk)
+ 	struct mptcp_sock *msk = mptcp_sk(sk);
+ 
+ 	mptcp_set_state(sk, TCP_CLOSE);
++	msk->fastclosing = 1;
+ 
+ 	/* Explicitly send the fastclose reset as need */
+ 	if (__mptcp_check_fallback(msk))
+@@ -3299,6 +3300,7 @@ static int mptcp_disconnect(struct sock *sk, int flags)
+ 	msk->bytes_sent = 0;
+ 	msk->bytes_retrans = 0;
+ 	msk->rcvspace_init = 0;
++	msk->fastclosing = 0;
+ 
+ 	WRITE_ONCE(sk->sk_shutdown, 0);
+ 	sk_error_report(sk);
+diff --git a/net/mptcp/protocol.h b/net/mptcp/protocol.h
+index 0e8b0a650108..30d5e5719793 100644
+--- a/net/mptcp/protocol.h
++++ b/net/mptcp/protocol.h
+@@ -321,7 +321,8 @@ struct mptcp_sock {
+ 			fastopening:1,
+ 			in_accept_queue:1,
+ 			free_first:1,
+-			rcvspace_init:1;
++			rcvspace_init:1,
++			fastclosing:1;
+ 	u32		notsent_lowat;
+ 	int		keepalive_cnt;
+ 	int		keepalive_idle;
 
