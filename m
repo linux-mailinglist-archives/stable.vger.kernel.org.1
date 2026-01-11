@@ -1,63 +1,58 @@
-Return-Path: <stable+bounces-207989-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-207990-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 56B76D0DE95
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 23:39:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B409CD0E02B
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 01:38:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 088A9303658F
-	for <lists+stable@lfdr.de>; Sat, 10 Jan 2026 22:38:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4B67F301C3ED
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 00:37:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC2C2C08D0;
-	Sat, 10 Jan 2026 22:38:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BFB1713635E;
+	Sun, 11 Jan 2026 00:37:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JWGyJctg"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="a4+50NZ3"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out-188.mta1.migadu.com (out-188.mta1.migadu.com [95.215.58.188])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC1FA2139C9;
-	Sat, 10 Jan 2026 22:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C6C2611E
+	for <stable@vger.kernel.org>; Sun, 11 Jan 2026 00:37:54 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=95.215.58.188
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768084733; cv=none; b=QS4sxIEWnrmZZlLvtGdBtBWBzs7eGpKSAkJTTJ7ojRbNpgJaSjpfqjcmyRv5LDL0WjQ9NsEyj//+ZZsXCbgOZ6K6/xFlQx6YpPRltl/RU4SgKHkBTXfjrEaamCTLKSeaBiMTzXnFJOZdFjHLzrJzCag5JBCN5PQT6C0+ZdaiuZw=
+	t=1768091877; cv=none; b=uzynAFVVNj3m7FMwrT4q5IOI3SFNvEJS+EGFCUAnUJXEaObRnSDuaHOlzcffhinaA7ptnvwFDZ3LpHTD9qgTQUZahQ3v7kDoWv+mmhhl5EhomqTYXWzp9NZ98Z0QjX7tdr1CYbJ3fSA9HBL6skY39JwpRMSYwkgsP4wkJZTjV34=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768084733; c=relaxed/simple;
-	bh=cFy/T8mSd2Wo1IgsveCGgRX5Nc2k/3aNLJOImE3w8ps=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hM7FavA2lsfRegZZyvN8QJHI5IzlT/cHE6g69R33PaFBc1XCj94rNpbnf3eFVCzgsWeA5fnsUpv+sbDIX1wdh4agXqoQV5XEMnhdnBSa5I75t7KG7gKdM57y0cXR4w9s6RpJzMSWO+brJ/mKO5nMKwIJKR7pR51jD3KHCTb8pj4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JWGyJctg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A49B5C4CEF1;
-	Sat, 10 Jan 2026 22:38:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768084733;
-	bh=cFy/T8mSd2Wo1IgsveCGgRX5Nc2k/3aNLJOImE3w8ps=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JWGyJctgiaOTE5J/oaNd6UyEsH3ebSC9qVWBv42kFEYPYZzJ4pSPGcwPHdsOR6mPa
-	 8WT/huszHE3h0a7OlG2vs2+sqGgptCoH2roltntnoX2sPcWYAw6NoT163nMPDlOKKj
-	 6vA8NVU7DBaarPVuQh557RfcRAXU7GNej1I5rqnW5ASqgCOdFxWiMrn0X9ovDhJfUS
-	 Lln/bIjpTCx13vdJwvDTfAxXC38kjr/V8ad0mpLoQluUrwq95VL1lmXQhyUFwtR8Xn
-	 xtoU+O+PzCJWb2GxLFRwTdAqP7MYxQDgCNsZWNQyQ/d3n4nt33nNV48vIA/n45zyD2
-	 zXgLJZnMMd3uw==
-From: Jakub Kicinski <kuba@kernel.org>
-To: mkl@pengutronix.de
-Cc: Jakub Kicinski <kuba@kernel.org>,
-	netdev@vger.kernel.org,
-	mailhol@kernel.org,
-	ondrej.ille@gmail.com,
-	linux-can@vger.kernel.org,
-	davem@davemloft.net,
-	kernel@pengutronix.de,
-	swilczek.lx@gmail.com,
-	pisa@fel.cvut.cz,
-	syzbot+e8cb6691a7cf68256cb8@syzkaller.appspotmail.com,
-	stable@vger.kernel.org
-Subject: Re: [net,2/3] can: gs_usb: gs_usb_receive_bulk_callback(): fix URB memory leak
-Date: Sat, 10 Jan 2026 14:38:36 -0800
-Message-ID: <20260110223836.3890248-1-kuba@kernel.org>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260109135311.576033-3-mkl@pengutronix.de>
-References: <20260109135311.576033-3-mkl@pengutronix.de>
+	s=arc-20240116; t=1768091877; c=relaxed/simple;
+	bh=KDJYQlHRr9lMKGs53yBP/+oTu5HcUz2nH326y2u4wkI=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Yiekzu7tuw1DOpZQQlaks2sUdgtNqRwsAZPcdFHcJPtYgXJkrqGIX88YxNTSf9xDfM6e7zAJka/Lk1V0CEVitKqOhYL2oTDBVsjT953JLOc97gw/S7+BiFG64U4e1fGZ2bwR+DYgFrRfUigdpDvQQZcgZOFrRy4C+iV855VrPr8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=a4+50NZ3; arc=none smtp.client-ip=95.215.58.188
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768091873;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=+olqRexjNuwgq+miMhde6thSUMt2UPrlXVYzPacxdTc=;
+	b=a4+50NZ3tj7TAIoV03ZMEpF/glj6Uml5sUvEZPgurEFOQGmePFt3Jbib61G6pzgmYh6Hqo
+	3E1qxDlkl3vUpm18zk3zLeftn+F5eFXmS2uxERU3BcHiWdoqNoWUhOAqjOepzmlLt6pMoh
+	KMoD5oEAz7pbVB7PtpZxQG9bow0I+6M=
+From: Thorsten Blum <thorsten.blum@linux.dev>
+To: Tyler Hicks <code@tyhicks.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Zipeng Zhang <zhangzipeng0@foxmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Michael Halcrow <mhalcrow@us.ibm.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org,
+	ecryptfs@vger.kernel.org,
+	linux-kernel@vger.kernel.org
+Subject: [PATCH] ecryptfs: Add missing gotos in ecryptfs_read_metadata
+Date: Sun, 11 Jan 2026 01:36:52 +0100
+Message-ID: <20260111003655.491722-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -65,55 +60,45 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-This is an AI-generated review of your patch.
+Add two missing goto statements to exit ecryptfs_read_metadata() when an
+error occurs.
 
-For local reproduction steps see https://netdev-ai.bots.linux.dev/ai-local.html
+The first goto is required; otherwise ECRYPTFS_METADATA_IN_XATTR may be
+set when xattr metadata is enabled even though parsing the metadata
+failed. The second goto is not strictly necessary, but it makes the
+error path explicit instead of relying on falling through to 'out'.
+
+Cc: stable@vger.kernel.org
+Fixes: dd2a3b7ad98f ("[PATCH] eCryptfs: Generalize metadata read/write")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
 ---
-can: gs_usb: gs_usb_receive_bulk_callback(): fix URB memory leak
+ fs/ecryptfs/crypto.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-This patch fixes a memory leak by re-anchoring the URB in
-gs_usb_receive_bulk_callback() before resubmission. The USB framework
-unanchors URBs before calling the completion callback, so the URB needs to
-be re-anchored to be tracked by usb_kill_anchored_urbs() in gs_can_close().
+diff --git a/fs/ecryptfs/crypto.c b/fs/ecryptfs/crypto.c
+index 260f8a4938b0..d49cdf7292ab 100644
+--- a/fs/ecryptfs/crypto.c
++++ b/fs/ecryptfs/crypto.c
+@@ -1328,6 +1328,7 @@ int ecryptfs_read_metadata(struct dentry *ecryptfs_dentry)
+ 			       "file xattr region either, inode %lu\n",
+ 				ecryptfs_inode->i_ino);
+ 			rc = -EINVAL;
++			goto out;
+ 		}
+ 		if (crypt_stat->mount_crypt_stat->flags
+ 		    & ECRYPTFS_XATTR_METADATA_ENABLED) {
+@@ -1340,6 +1341,7 @@ int ecryptfs_read_metadata(struct dentry *ecryptfs_dentry)
+ 			       "this like an encrypted file, inode %lu\n",
+ 				ecryptfs_inode->i_ino);
+ 			rc = -EINVAL;
++			goto out;
+ 		}
+ 	}
+ out:
+-- 
+Thorsten Blum <thorsten.blum@linux.dev>
+GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
 
-Link: https://patch.msgid.link/20260105-gs_usb-fix-memory-leak-v2-1-cc6ed6438034@pengutronix.de
-
-> diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
-> index a0233e550a5a..d093babbc320 100644
-> --- a/drivers/net/can/usb/gs_usb.c
-> +++ b/drivers/net/can/usb/gs_usb.c
-> @@ -751,6 +751,8 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
->  			  hf, parent->hf_size_rx,
->  			  gs_usb_receive_bulk_callback, parent);
->
-> +	usb_anchor_urb(urb, &parent->rx_submitted);
-> +
->  	rc = usb_submit_urb(urb, GFP_ATOMIC);
-
-If usb_submit_urb() fails here, the URB remains anchored but is never
-submitted. When gs_can_close() later calls usb_kill_anchored_urbs(), it
-iterates over anchored URBs and calls usb_kill_urb() on each one. For URBs
-that were never successfully submitted, use_count is 0, so usb_kill_urb()
-returns without unanchoring them. This causes usb_kill_anchored_urbs() to
-loop infinitely on the same URB since the anchor list never becomes empty.
-
-Other CAN USB drivers handle this by calling usb_unanchor_urb() when
-submission fails. For example, peak_usb_read_bulk_callback() does:
-
-    usb_anchor_urb(urb, &dev->rx_submitted);
-    err = usb_submit_urb(urb, GFP_ATOMIC);
-    if (!err)
-        return;
-
-    usb_unanchor_urb(urb);
-
-Should similar error handling be added here to avoid potential hangs when
-closing the device after a URB submission failure?
-
->
->  	/* USB failure take down all interfaces */
->  	if (rc == -ENODEV) {
-
-[ ... ]
 
