@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-208003-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208004-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55F25D0EF2E
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 14:04:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 39F37D0EF99
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 14:27:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D5523300BBAC
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 13:03:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1E3F83002A59
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 13:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1349233984D;
-	Sun, 11 Jan 2026 13:03:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D4733BBDF;
+	Sun, 11 Jan 2026 13:27:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aieQc8MD"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="qP0S6EvZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C42707262A;
-	Sun, 11 Jan 2026 13:03:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F54450F2;
+	Sun, 11 Jan 2026 13:27:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768136634; cv=none; b=EdnRCaPaT7a45llc05mxdmyo4LOpjGtlSKROKubLdTWCidiEneCzhkcCZKEs9qqK2fMXpjG0ewghsVZhxA5vt0T4DsVSpzJKvvXXyPL0g95Tc3mWhOEImM4zRO4BpXGOsJaXt7jhxL1QnaEc9G1BuBIAETR5NZBL+dLo7m7w6aQ=
+	t=1768138070; cv=none; b=FNhEa7OKZGSa+YYKlBBrIXrYTMi3XPukZoUoGXwuuxIRn7oksWtQ8HIc+viZG69Q2DeAgcgOZhmzhPGwvKZIUHprmLoKNIbZiNIX3GqYHWV5DiO0JOU3NkPT41J09TcuFrGt0G9yNvbGQ5bepIcZBCCZ1oyOyY+vN2KlSZYlGCc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768136634; c=relaxed/simple;
-	bh=xnFecsZcJrziBt1AmL7g4IRZf5OWO89RyKWJNmcj2eE=;
+	s=arc-20240116; t=1768138070; c=relaxed/simple;
+	bh=6BoqbWf0ldTPnl6aKGqjg1vW7/77pwGC4a2jL13ON3U=;
 	h=Date:From:To:Cc:Subject:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ffdGD/4pTaKKwwSEoir2fcwsaFmPQ6zS5pYSkRy9kuKrPHvQm1VYxzMvw+JDbY+WBpcOgF4Kt49JK7rKq0pfm1r7+gn5FGkjsjp0Yc8l8qRCGdotKJNM2JWmPOi4aOMuLZr8V85LvpQkZgxSXb75ZavoZTSuL6cQsUJ2KCM7Gs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aieQc8MD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9FA7C4CEF7;
-	Sun, 11 Jan 2026 13:03:51 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NUpicPTSW0+cH1tM7oeWilASR3TY/qz0XZHozgdRGEUCmStKZXfBjM/9md9QtYmdlXULPQ1LrcxOQqZ4XU1UwKco4yxjx592QASEF6YYTI9vCmTnpqRRpLiGG16fgw3taX3zdFalwxe+lDDdN7MPCTIYLrYLWjM/v/S71AJyu3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=qP0S6EvZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2E1FC4CEF7;
+	Sun, 11 Jan 2026 13:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768136634;
-	bh=xnFecsZcJrziBt1AmL7g4IRZf5OWO89RyKWJNmcj2eE=;
+	s=k20201202; t=1768138070;
+	bh=6BoqbWf0ldTPnl6aKGqjg1vW7/77pwGC4a2jL13ON3U=;
 	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=aieQc8MDjIdKcTG5cglBl5evJvsk7O0Rr7CJyRHGlPTyg833HKyAj+lrvo7zaR3cz
-	 bNQWE9Zi0cuRUpp8wtItPPlUDGdH/2iTpSE5c3DmuUIgDP2wAVhkCDhFqvNJhcQh8M
-	 /wdPgqc6l0lA/fT+YJJwX0i/6CtXuvpe7MRXElDzlgEowEWACow69K6HkxpdnY4l7l
-	 ExsW3adXctVjVyIZhkp2Ta62ewdVzJ3dAhnDRHuZJYlgpQnzp/r6FBkwGewZksGhld
-	 gtv5AweNEQapNT1D2qWkDcZ1BxWWVYa04uHwqFOCrSFcHwkAbj40juoqgK2hMOEOfj
-	 BYbjv7szjHR+w==
-Date: Sun, 11 Jan 2026 13:03:46 +0000
+	b=qP0S6EvZMBgENt+yqoBY2BIivWpgiyI5kKH1HDM0WhbeUjCOBTAWlyS0zBbItJ3VR
+	 XN88+L7+XdpSvP6c0HovPwt7Q29KOLpU6SgLOojUsDvxdcXJncpY8O+/NNa6Gp0CTt
+	 LxhDazsEKVvbmitU3gwCe3oSUBSDUckxzBC8efe1U/GMaNRxC6OBPuTb5HLkywZwCb
+	 H+HVTlIit5mvZAgatNqEzCpZ13ptGcITWB4wP0pIxJcS2GDOj9AXlmYTYLFy+2gphO
+	 CC4tIPq1dskobYn+SwKtyDwzLJW86EvewJH4SvdmealV7rBtgUmIcmdDlt/XBFLkvG
+	 /j4d1OyMz00rg==
+Date: Sun, 11 Jan 2026 13:27:41 +0000
 From: Jonathan Cameron <jic23@kernel.org>
-To: Andy Shevchenko <andriy.shevchenko@intel.com>
-Cc: "Derek J. Clark" <derekjohn.clark@gmail.com>, David Lechner
- <dlechner@baylibre.com>, Andy Shevchenko <andy@kernel.org>, Alex Lanzano
- <lanzano.alex@gmail.com>, linux-iio@vger.kernel.org,
+To: Miaoqian Lin <linmq006@gmail.com>
+Cc: Lars-Peter Clausen <lars@metafoo.de>, Michael Hennerich
+ <Michael.Hennerich@analog.com>, David Lechner <dlechner@baylibre.com>, Nuno
+ =?UTF-8?B?U8Oh?= <nuno.sa@analog.com>, Andy Shevchenko <andy@kernel.org>,
+ Angelo Dureghello <adureghello@baylibre.com>, linux-iio@vger.kernel.org,
  linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: bmi270_i2c: Add MODULE_DEVICE_TABLE for BMI260/270
-Message-ID: <20260111130346.73ecb12d@jic23-huawei>
-In-Reply-To: <aV7KdXkQkI5XsoF3@smile.fi.intel.com>
-References: <20260106054519.566796-1-derekjohn.clark@gmail.com>
-	<aV7KdXkQkI5XsoF3@smile.fi.intel.com>
+Subject: Re: [PATCH v2] iio: dac: ad3552r-hs: fix out-of-bound write in
+ ad3552r_hs_write_data_source
+Message-ID: <20260111132741.4e8608af@jic23-huawei>
+In-Reply-To: <20260107143550.34324-1-linmq006@gmail.com>
+References: <20260107143550.34324-1-linmq006@gmail.com>
 X-Mailer: Claws Mail 4.3.1 (GTK 3.24.51; x86_64-pc-linux-gnu)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
@@ -61,30 +62,74 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=US-ASCII
 Content-Transfer-Encoding: 7bit
 
-On Wed, 7 Jan 2026 23:04:53 +0200
-Andy Shevchenko <andriy.shevchenko@intel.com> wrote:
+On Wed,  7 Jan 2026 22:35:50 +0800
+Miaoqian Lin <linmq006@gmail.com> wrote:
 
-> On Tue, Jan 06, 2026 at 05:45:19AM +0000, Derek J. Clark wrote:
-> > Currently BMI260 & BMI270 devices do not automatically load this
-> > driver. To fix this, add missing MODULE_DEVICE_TABLE for the i2c,
-> > acpi, and of device tables so the driver will load when the hardware
-> > is detected.
-> > 
-> > Tested on my OneXPlayer F1 Pro.  
+> When simple_write_to_buffer() succeeds, it returns the number of bytes
+> actually copied to the buffer. The code incorrectly uses 'count'
+> as the index for null termination instead of the actual bytes copied.
+> If count exceeds the buffer size, this leads to out-of-bounds write.
+> Add a check for the count and use the return value as the index.
 > 
-> No objections,
-> Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+> The bug was validated using a demo module that mirrors the original
+> code and was tested under QEMU.
 > 
-Applied to the togreg branch of iio.git and pushed out as testing.
+> Pattern of the bug:
+> - A fixed 64-byte stack buffer is filled using count.
+> - If count > 64, the code still does buf[count] = '\0', causing an
+> - out-of-bounds write on the stack.
+> 
+> Steps for reproduce:
+> - Opens the device node.
+> - Writes 128 bytes of A to it.
+> - This overflows the 64-byte stack buffer and KASAN reports the OOB.
+> 
+> Found via static analysis. This is similar to the
+> commit da9374819eb3 ("iio: backend: fix out-of-bound write")
+> 
+> Fixes: b1c5d68ea66e ("iio: dac: ad3552r-hs: add support for internal ramp")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Hi Miaoquian,
 
-These are always a bit of a corner case wrt to whether we should treat
-them as a fix.  It never worked though so I'm not going to rush them in.
-If you want it applied to stable kernels, I'm fine with a request for
-that after the next merge window.
+You haven't listed why you didn't add David's Reviewed-by tag from v1.
+b4 found it though so all is fine, but none the less please make sure you either
+pick up tags, or in the change log say that you didn't deliberately.
+
+Applied to the fixes-togreg branch of iio.git
 
 Thanks,
 
 Jonathan
 
+> ---
+> changes in v2:
+> - update commit message
+> - v1 link: https://lore.kernel.org/all/20251027150713.59067-1-linmq006@gmail.com/
+> ---
+>  drivers/iio/dac/ad3552r-hs.c | 5 ++++-
+>  1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/iio/dac/ad3552r-hs.c b/drivers/iio/dac/ad3552r-hs.c
+> index 41b96b48ba98..a9578afa7015 100644
+> --- a/drivers/iio/dac/ad3552r-hs.c
+> +++ b/drivers/iio/dac/ad3552r-hs.c
+> @@ -549,12 +549,15 @@ static ssize_t ad3552r_hs_write_data_source(struct file *f,
+>  
+>  	guard(mutex)(&st->lock);
+>  
+> +	if (count >= sizeof(buf))
+> +		return -ENOSPC;
+> +
+>  	ret = simple_write_to_buffer(buf, sizeof(buf) - 1, ppos, userbuf,
+>  				     count);
+>  	if (ret < 0)
+>  		return ret;
+>  
+> -	buf[count] = '\0';
+> +	buf[ret] = '\0';
+>  
+>  	ret = match_string(dbgfs_attr_source, ARRAY_SIZE(dbgfs_attr_source),
+>  			   buf);
 
 
