@@ -1,175 +1,127 @@
-Return-Path: <stable+bounces-208020-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208021-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448A5D0F417
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 16:09:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 41F2ED0F641
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 17:02:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 297113028471
-	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 15:09:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 94FD93038F41
+	for <lists+stable@lfdr.de>; Sun, 11 Jan 2026 16:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4ED7C33F361;
-	Sun, 11 Jan 2026 15:08:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D51DB33CEAA;
+	Sun, 11 Jan 2026 16:02:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="KU52g+ZQ"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="c1HCISd/"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.7])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-yx1-f45.google.com (mail-yx1-f45.google.com [74.125.224.45])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 43F733242D2;
-	Sun, 11 Jan 2026 15:08:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.7
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5170A3242D2
+	for <stable@vger.kernel.org>; Sun, 11 Jan 2026 16:02:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.45
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768144139; cv=none; b=R7O+VJIud7qBf6InOdXVVlSSNLxhtw7+iRmZjBWtEqhLXMB6krnNGvNAxk5SM8bc0LiWPDTEgRB8tSzFnCdE7ai/Zd1GyJog5qpT1c6ljczBiNSmG/3utUtD3tMlHoP3ed1jQja0V0mz0o/NCxtXwyOE50OgOm3yMxKtZ+G2wkE=
+	t=1768147351; cv=none; b=jNb12zrpZr+J1f08DHnL+F7m53xOOF7Urb1CUSYJdXOTwkurFl1t6IrGX8AA5comEMi0YHqGpNQIPKEe7HjwWha4MyVtUkEaaXlTG55h5AKczlKujGyKAcoYp8HCNekkIbbTiW329BSUHLm8IIvVERbRV6zSRAdb3jB01WdtDbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768144139; c=relaxed/simple;
-	bh=1IvWH/Mj9ciASTXZ0msJfLzixE5NQiJWfQmENHb3U7s=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=pLG9k/gflsQmy3ukR3v3Vc06ELKVclVMT5HG2EfbumwrNTRWG23BD/y0jeMCg3cOPSjeBWrw/ScvikJ51A91Qhir6sOrN8tXk1K9HpAo9BC0RWynv20hNIbQIqd3VYdQKvit0Hcn2MNq78uaCcTgbB/ZTNCNq67/vt3zMT4HFQ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=KU52g+ZQ; arc=none smtp.client-ip=192.198.163.7
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768144136; x=1799680136;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=1IvWH/Mj9ciASTXZ0msJfLzixE5NQiJWfQmENHb3U7s=;
-  b=KU52g+ZQzrb3NEn9UkF1MANK3raciniaWz40tQRjh/N1DmNq3SpsJfSE
-   NChcwflPEWSqAFv6Ket2KKstKRx13WgblMVmqsuf+uBypmsvaHzR3fwKp
-   2poDnDsJtsMLKJZvgIGSVNaw4lfCS5aQpRCy4kgyh9JSnYPBW03tMKnwU
-   yyQmpEt3zF31JreD3YjTw/cl4LqtQ6ApBETAQoIlbnVDyK122l6AgjQ/S
-   nGpE1sfeXLCOxs8vScna/+cQb9e0QJ9jKMYTGohqJsTq2FlPn85xa9IOR
-   z/bvDzxnAB0EvwS/J3HUxiQYP3Vpy1mnnMpkcPZYg5obze0S5hjMqpZD8
-   g==;
-X-CSE-ConnectionGUID: Dz8jcOm6RLGQqjH54mZ92Q==
-X-CSE-MsgGUID: rNpv3dr0QbGFy3GmdTyapw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11668"; a="94915098"
-X-IronPort-AV: E=Sophos;i="6.21,218,1763452800"; 
-   d="scan'208";a="94915098"
-Received: from orviesa009.jf.intel.com ([10.64.159.149])
-  by fmvoesa101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 07:08:56 -0800
-X-CSE-ConnectionGUID: gLthFed6TY6QMKWjERKRdA==
-X-CSE-MsgGUID: pYYDOS/JS8mi4xijA0YbJQ==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,218,1763452800"; 
-   d="scan'208";a="203691152"
-Received: from sannilnx-dsk.jer.intel.com ([10.12.231.107])
-  by orviesa009-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Jan 2026 07:08:54 -0800
-From: Alexander Usyskin <alexander.usyskin@intel.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Reuven Abliyev <reuven.abliyev@intel.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [char-misc v3] mei: trace: treat reg parameter as string
-Date: Sun, 11 Jan 2026 16:51:25 +0200
-Message-ID: <20260111145125.1754912-1-alexander.usyskin@intel.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768147351; c=relaxed/simple;
+	bh=eSaYeVb9xp7hiZVnt79Dppo3RCzVphfcMVldS9mlf6g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=jlNHi8US86f7d0QUFM/zxyLRrQOUCBO7ADyHnFUYHMU/mwmzgPJPVfnh7Cl+gmtvaTYR3nvhKRo0hz0RLW90iiQobl5H/NHWjiUcyixXFyKTrxi90l8n1nlBIHqvsUzbnvUCjwOBkH6+iJh6xYSHF69tUPksGe6lLGyUMlev+Hs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=c1HCISd/; arc=none smtp.client-ip=74.125.224.45
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-yx1-f45.google.com with SMTP id 956f58d0204a3-6455a60c11fso4676677d50.2
+        for <stable@vger.kernel.org>; Sun, 11 Jan 2026 08:02:30 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768147349; x=1768752149; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Mrycd130M4sr6y5csevbsCsisFex4vtcFdUC5UAakBY=;
+        b=c1HCISd/OPAyhADacCEPawukDV3JS/3ZJHm1TcIOtd5wbIo4zYUw3sM3878L+ME1n7
+         qhSyfhY8BR6egRWRFSZGns+Bw2zKCldgFY4UGywyfKZN7KaU/bCE9RGtrBBxhRN0ysrm
+         jiU4dt3fCVDxdfroGu7BIoz+rNAEV82I0tdANztz8n62BEtH6lHHGzSUQtbg174ddEmw
+         Njzzyg9MRcjJCF2j6+/1Ely0Sj1O5dREzLZPSIOdHC9tidyEzWfXw+n7QHRpOmHe6eUS
+         wUMfz0Cs3OeUGw09i9sLWzBOqdxm0WVA+sCBRHp0mv8HEB4ZPExYZ7XM+mQlLQh9Lcx8
+         6vhA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768147349; x=1768752149;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=Mrycd130M4sr6y5csevbsCsisFex4vtcFdUC5UAakBY=;
+        b=NY6rZ3bWgoqK8KpTrv6XxhiWbGuI+W2SbZoN1R8V2Op6Y5NgBLn6rNJQKjpS7BOZ9v
+         IDJuijNUqk6QLGW3vrx/5p6K0De8K2q/UBLF5+bPPSmYAqw4DNflhtJH4peijFMk2eLO
+         15RqcaE6kTNK2hf7Bcp4V0sbMEilITWcaT9XizQTEUnBlKSnEmIyrd44Nz4t+NJdKywJ
+         rGBcd5L1zgicJEpGxbfks0RWOGWEFUhE+htbuI+JLOpkBT1jx8+qjvvAmZZb7jliJImJ
+         QURO9488tR4FvCwZWZ8I2P0PteIf1oYDb3fRSdSclHkqo4IfZAF2DJ5TCMUwyjoo1f8P
+         q9hA==
+X-Forwarded-Encrypted: i=1; AJvYcCVR6QtJTWDaz32WHRB0511q6Boo28suD4m1DnCcJum1kiEjX+LVBVlypWBmnM07GVy8W+h9UQU=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwDh/wg94WT1ccSZK9XsIcvHOS+kRtFdxW5i89GoHRDGTKAosLm
+	IZPmOxi14EU2GUqLjwkXQxVKV7T9Gez2vaiLmlhEnATxDngtS2oV9uWEurnm5pC/cdPkEVeEDqY
+	hCnDo9doL8u06Idnn7yd1KMtEuJpddVtJA3Tl
+X-Gm-Gg: AY/fxX75MdTmnkmnx9QfU6aqWlUV/txIgRsXcU0ukOGdcTbA7FNRxWdV438f3Qvkl3d
+	j0f18/IrKR+XVndMD0KBKwUFlJHI3xA8qYosoc/ROGmXYEZFbr7W1jXuh6iEK66vAhjnxi7bEHN
+	f/koJjvJvE8kbC5sjB0lfl6o8jwwqLqbgk/OCvx9UjCAAhAgESavjVOfzql7iKj8WHLuAjvyxfc
+	y+t78Fbg2NiSmF2PpcEj1DTScRFGH2Np3Hjp0CchouqjW9R/U2cn0ORZ5dn1M19+E2FpIc=
+X-Google-Smtp-Source: AGHT+IF8KwHX9n4cdLJcJVB+1Qbgj7xp3EnY3eddzftroQhS3lOBRejGEzTuxx79W8cJXIm8mv4flYclON7riLXunQ4=
+X-Received: by 2002:a53:be4f:0:b0:644:7612:6298 with SMTP id
+ 956f58d0204a3-64716c94ef8mr9426151d50.79.1768147349222; Sun, 11 Jan 2026
+ 08:02:29 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20251215004145.2760442-1-sashal@kernel.org> <20251215004145.2760442-3-sashal@kernel.org>
+ <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
+ <aV5Ap8TgMEDLucWR@laps> <CAPnZJGCJ1LZRzfzO=958EfcrLm4Z3pYdtHZEpp812fstsUcOAQ@mail.gmail.com>
+ <2026011119-stadium-trilogy-22ac@gregkh>
+In-Reply-To: <2026011119-stadium-trilogy-22ac@gregkh>
+From: Askar Safin <safinaskar@gmail.com>
+Date: Sun, 11 Jan 2026 19:01:53 +0300
+X-Gm-Features: AZwV_Qj8Iaiq8jyFrAWd7h_o61n6oQGSG9QPqA4Rx4PSntORpllo3Vv3IL8l3rU
+Message-ID: <CAPnZJGAXLEgqKx+XA3RugES1kcawtqMEYPTzFERcf2kgRjNbFQ@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 6.18-6.17] ALSA: hda: intel-dsp-config: Prefer
+ legacy driver as fallback
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, stable@vger.kernel.org, 
+	Takashi Iwai <tiwai@suse.de>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
+	kai.vehmanen@linux.intel.com, cezary.rojewski@intel.com, 
+	ranjani.sridharan@linux.intel.com, rf@opensource.cirrus.com, 
+	bradynorander@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-The commit
-afd2627f727b ("tracing: Check "%s" dereference via the field and not the TP_printk format")
-forbids to emit event with a plain char* without a wrapper.
+On Sun, Jan 11, 2026 at 3:24=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
+> wrote:
+> > You mean that 82d9d54a6c0e is in all trees? Okay, then,
+> > please, backport 161a0c617ab172bbcda7ce61803addeb2124dbff
+> > to all trees.
+>
+> Why?  I see no context here :(
 
-The reg parameter always passed as static string and wrapper
-is not strictly required, contrary to dev parameter.
-Use the string wrapper anyway to check sanity of the reg parameters,
-store it value independently and prevent internal kernel data leaks.
+Please, backport 161a0c617ab1 to all stable kernels, which have 82d9d54a6c0=
+e.
 
-Since some code refactoring has taken place, explicit backporting may
-be needed for kernels older than 6.10.
+161a0c617ab1 fixes bug, reported by me here:
+https://lore.kernel.org/all/20251014034156.4480-1-safinaskar@gmail.com/ .
 
-Cc: <stable@vger.kernel.org>  # v6.11+
-Fixes: a0a927d06d79 ("mei: me: add io register tracing")
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
----
+I did bisect and found that 2d9223d2d64c is the culprit. But then Takashi I=
+wai
+explained that the bug appeared earlier:
+https://lore.kernel.org/all/87345iebky.wl-tiwai@suse.de/ .
+Iwai said: "the bug itself was introduced
+from the very beginning, and it could hit earlier".
 
-V3: reword commit message
-    limit Fixes to 6.11+
+I assume "the very beginning" here should be interpreted as
+"commit, where intel-dsp-config.c appeared", because the fix
+modifies "intel-dsp-config.c".
 
-V2: reword commit message
-    add Fixes and stable
+"intel-dsp-config.c" introduced in 82d9d54a6c0e, so
+161a0c617ab1 should be backported to all kernels, which
+have 82d9d54a6c0e.
 
- drivers/misc/mei/mei-trace.h | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
-
-diff --git a/drivers/misc/mei/mei-trace.h b/drivers/misc/mei/mei-trace.h
-index 5312edbf5190..24fa321d88bd 100644
---- a/drivers/misc/mei/mei-trace.h
-+++ b/drivers/misc/mei/mei-trace.h
-@@ -21,18 +21,18 @@ TRACE_EVENT(mei_reg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev);
--		__entry->reg  = reg;
-+		__assign_str(reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
- 
- TRACE_EVENT(mei_reg_write,
-@@ -40,18 +40,18 @@ TRACE_EVENT(mei_reg_write,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev);
--		__entry->reg = reg;
-+		__assign_str(reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] write %s[%#x] = %#x",
--		  __get_str(dev), __entry->reg,  __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg),  __entry->offs, __entry->val)
- );
- 
- TRACE_EVENT(mei_pci_cfg_read,
-@@ -59,18 +59,18 @@ TRACE_EVENT(mei_pci_cfg_read,
- 	TP_ARGS(dev, reg, offs, val),
- 	TP_STRUCT__entry(
- 		__string(dev, dev_name(dev))
--		__field(const char *, reg)
-+		__string(reg, reg)
- 		__field(u32, offs)
- 		__field(u32, val)
- 	),
- 	TP_fast_assign(
- 		__assign_str(dev);
--		__entry->reg  = reg;
-+		__assign_str(reg);
- 		__entry->offs = offs;
- 		__entry->val = val;
- 	),
- 	TP_printk("[%s] pci cfg read %s:[%#x] = %#x",
--		  __get_str(dev), __entry->reg, __entry->offs, __entry->val)
-+		  __get_str(dev), __get_str(reg), __entry->offs, __entry->val)
- );
- 
- #endif /* _MEI_TRACE_H_ */
--- 
-2.43.0
-
+--=20
+Askar Safin
 
