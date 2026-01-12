@@ -1,135 +1,267 @@
-Return-Path: <stable+bounces-208188-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208189-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 692C6D1467D
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:37:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C9B81D1474C
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:45:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7BC973011ECA
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:35:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 845BD300FF9D
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8A1F24397A;
-	Mon, 12 Jan 2026 17:35:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E49524397A;
+	Mon, 12 Jan 2026 17:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="WiW5fFlH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V92VlNUr"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F06FD378D60
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:35:02 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F6F3570AE
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:44:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768239304; cv=none; b=pQslBDs1Us82W1RvW7FgL0DuX+E1lrBCPtr04bRFaVueUjSRRUNQ6+hWY5R3QU0ZoSDRHBj8yimX5uqahFLMybgMH053qA102Q+MCyfJgvtYKGquGH+WFCKNgv9kOMiUv2sQ/yFhtYm6DRrWlaBzeBvO/99BFAIfEILl+KoZsFY=
+	t=1768239884; cv=none; b=M6AgkdRjzk5kpeY+1RxjYigBsc6EGPfUWi8M8olfoZkfMDu0uBESQ9/O/jZD7xZILpwKc4zvFOd4vlyQE1dP/vVhAInS/jUNJkPXl1/KOgKUYY1EN7u+LMz+Odcti01zQM17avSgBR/PvS62k3HV1vrp36iSHVbxC+CZNaF+rw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768239304; c=relaxed/simple;
-	bh=kieQNTGpsJIGpbXGFnRt8FFgOJRfO9iKcjSuaUbUQW4=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=W/+jHnueVz23LouVhZ+x7/Q1KwoEo+hJn6r8n9Jcy3Xz8nlH2vlcVZtCkiJajCx6YB6j0PGnZEy6mkd2+m0vIhDv4SeojuMnRp2XwtXUlze6l+NCZDcJhFqsbyMjEni1bNwtgRjw3oV5S+7Q2aytxzV1PdlFMHni9HVo9m6z0p0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=WiW5fFlH; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-Date: Mon, 12 Jan 2026 12:34:40 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768239301;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 in-reply-to:in-reply-to:references:references;
-	bh=n2i8ZuoT4+BIeR2Q6d+MAix0iVMCT8oNedw/2XY3ri8=;
-	b=WiW5fFlH7XDUhVL/pFsLC84hwMwFGsjtdNTEegcpqYErP2bWHRwFWyKBI51gp/nd1bBpOY
-	eRsqWun4KnJb07OYSrBJe3BpZfQlq70dQf+PCpFLnLUSM2wDMpriO5LD8uzUl55wlUW2QY
-	dLqg/7at7kJNv2So7vBHRNjZGvNl67c=
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-From: Kent Overstreet <kent.overstreet@linux.dev>
+	s=arc-20240116; t=1768239884; c=relaxed/simple;
+	bh=P0a4zuo1Ht4Is4v94qaQkNFdH71HMZDoI4AUWWNkka8=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=ONowR3YrPzUU7k4Ad7gGNaUe9OxJLfjIX6ngHRmiZDkMje1IcodTbS+ld8dUcWEzdYWCPDmn2sKSImWiva3RFjZpQYbUs+ABHRbQM55w2OgVyJ9/BfjpWzaaGhgs3rLWPPIBO0MtrfjKLkr02dxuXNRat/m+MmcT366hOSSNBJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V92VlNUr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01391C116D0;
+	Mon, 12 Jan 2026 17:44:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768239883;
+	bh=P0a4zuo1Ht4Is4v94qaQkNFdH71HMZDoI4AUWWNkka8=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=V92VlNUrUgzl9gSwEsjQusuFWEmxsDxa4PVk2ZNr7FX12HAvuAN1b7dM1eN4OUIgI
+	 gE6mAQeG0C5xvss4wS/TfArcfzq6ETa72zRcrvykId+rHZFc8kXLat0YYqpn/mUb2Z
+	 gtsg4y2dwo6zu+f9HRIcqmaLp1vv2VzIwPUlmRDp0hAFDzspIGxHRL1AoVELBc56hI
+	 IFOTw/wvZOorb9S2qYwPjHfFksI2VsUVRBDYlRBDvNVtHJz37fcEmiyKRUuX67IbjP
+	 DqRWE1L7gjCwYIGTPoO06VTStQwZvd12Ih4/0gu3unnuv9vs80/ngLcEz3sXTs5ryc
+	 OUrLTPGB4Drcw==
+From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: stable-commits@vger.kernel.org, zhangshida@kylinos.cn, 
-	Coly Li <colyli@fnnas.com>
-Subject: Re: Patch "bcache: fix improper use of bi_end_io" has been added to
- the 6.6-stable tree
-Message-ID: <aWUwUJm3snKKvLhy@moria.home.lan>
-References: <20260112172345.800703-1-sashal@kernel.org>
+Cc: Mary Strodl <mstrodl@csh.rit.edu>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18.y 1/3] gpio: mpsse: ensure worker is torn down
+Date: Mon, 12 Jan 2026 12:44:39 -0500
+Message-ID: <20260112174441.830780-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026011202-scheming-operating-3cbb@gregkh>
+References: <2026011202-scheming-operating-3cbb@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260112172345.800703-1-sashal@kernel.org>
-X-Migadu-Flow: FLOW_OUT
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 12, 2026 at 12:23:45PM -0500, Sasha Levin wrote:
-> This is a note to let you know that I've just added the patch titled
-> 
->     bcache: fix improper use of bi_end_io
-> 
-> to the 6.6-stable tree which can be found at:
->     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
-> 
-> The filename of the patch is:
->      bcache-fix-improper-use-of-bi_end_io.patch
-> and it can be found in the queue-6.6 subdirectory.
-> 
-> If you, or anyone else, feels it should not be added to the stable tree,
-> please let <stable@vger.kernel.org> know about it.
+From: Mary Strodl <mstrodl@csh.rit.edu>
 
-Has this code been tested?
+[ Upstream commit 179ef1127d7a4f09f0e741fa9f30b8a8e7886271 ]
 
-bio_endio() is not equivalent to calling bi_end_io; if the code is
-swapping out bi_end_io to pass it down the stack, then you have two
-completions on the same bio - you cannot call bio_endio() twice on the
-same bio.
+When an IRQ worker is running, unplugging the device would cause a
+crash. The sealevel hardware this driver was written for was not
+hotpluggable, so I never realized it.
 
-> 
-> 
-> 
-> commit 81e7e43a810e8f40e163928d441de02d2816b073
-> Author: Shida Zhang <zhangshida@kylinos.cn>
-> Date:   Tue Dec 9 17:01:56 2025 +0800
-> 
->     bcache: fix improper use of bi_end_io
->     
->     [ Upstream commit 53280e398471f0bddbb17b798a63d41264651325 ]
->     
->     Don't call bio->bi_end_io() directly. Use the bio_endio() helper
->     function instead, which handles completion more safely and uniformly.
->     
->     Suggested-by: Christoph Hellwig <hch@infradead.org>
->     Reviewed-by: Christoph Hellwig <hch@lst.de>
->     Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
->     Signed-off-by: Jens Axboe <axboe@kernel.dk>
->     Signed-off-by: Sasha Levin <sashal@kernel.org>
-> 
-> diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
-> index a9b1f3896249b..b4059d2daa326 100644
-> --- a/drivers/md/bcache/request.c
-> +++ b/drivers/md/bcache/request.c
-> @@ -1090,7 +1090,7 @@ static void detached_dev_end_io(struct bio *bio)
->  	}
->  
->  	kfree(ddip);
-> -	bio->bi_end_io(bio);
-> +	bio_endio(bio);
->  }
->  
->  static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
-> @@ -1107,7 +1107,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
->  	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
->  	if (!ddip) {
->  		bio->bi_status = BLK_STS_RESOURCE;
-> -		bio->bi_end_io(bio);
-> +		bio_endio(bio);
->  		return;
->  	}
->  
-> @@ -1122,7 +1122,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
->  
->  	if ((bio_op(bio) == REQ_OP_DISCARD) &&
->  	    !bdev_max_discard_sectors(dc->bdev))
-> -		bio->bi_end_io(bio);
-> +		detached_dev_end_io(bio);
->  	else
->  		submit_bio_noacct(bio);
->  }
+This change uses a spinlock to protect a list of workers, which
+it tears down on disconnect.
+
+Signed-off-by: Mary Strodl <mstrodl@csh.rit.edu>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/20251014133530.3592716-3-mstrodl@csh.rit.edu
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 1e876e5a0875 ("gpio: mpsse: fix reference leak in gpio_mpsse_probe() error paths")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpio/gpio-mpsse.c | 106 +++++++++++++++++++++++++++++++++++---
+ 1 file changed, 99 insertions(+), 7 deletions(-)
+
+diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
+index 9f42bb30b4ec7..8147b3ddb4a27 100644
+--- a/drivers/gpio/gpio-mpsse.c
++++ b/drivers/gpio/gpio-mpsse.c
+@@ -10,6 +10,7 @@
+ #include <linux/cleanup.h>
+ #include <linux/gpio/driver.h>
+ #include <linux/mutex.h>
++#include <linux/spinlock.h>
+ #include <linux/usb.h>
+ 
+ struct mpsse_priv {
+@@ -17,8 +18,10 @@ struct mpsse_priv {
+ 	struct usb_device *udev;     /* USB device encompassing all MPSSEs */
+ 	struct usb_interface *intf;  /* USB interface for this MPSSE */
+ 	u8 intf_id;                  /* USB interface number for this MPSSE */
+-	struct work_struct irq_work; /* polling work thread */
++	struct list_head workers;    /* polling work threads */
+ 	struct mutex irq_mutex;	     /* lock over irq_data */
++	struct mutex irq_race;	     /* race for polling worker teardown */
++	raw_spinlock_t irq_spin;     /* protects worker list */
+ 	atomic_t irq_type[16];	     /* pin -> edge detection type */
+ 	atomic_t irq_enabled;
+ 	int id;
+@@ -34,6 +37,14 @@ struct mpsse_priv {
+ 	struct mutex io_mutex;	    /* sync I/O with disconnect */
+ };
+ 
++struct mpsse_worker {
++	struct mpsse_priv  *priv;
++	struct work_struct  work;
++	atomic_t       cancelled;
++	struct list_head    list;   /* linked list */
++	struct list_head destroy;   /* teardown linked list */
++};
++
+ struct bulk_desc {
+ 	bool tx;	            /* direction of bulk transfer */
+ 	u8 *data;                   /* input (tx) or output (rx) */
+@@ -284,18 +295,62 @@ static int gpio_mpsse_get_direction(struct gpio_chip *chip,
+ 	return ret;
+ }
+ 
+-static void gpio_mpsse_poll(struct work_struct *work)
++/*
++ * Stops all workers except `my_worker`.
++ * Safe to call only when `irq_race` is held.
++ */
++static void gpio_mpsse_stop_all_except(struct mpsse_priv *priv,
++				       struct mpsse_worker *my_worker)
++{
++	struct mpsse_worker *worker, *worker_tmp;
++	struct list_head destructors = LIST_HEAD_INIT(destructors);
++
++	scoped_guard(raw_spinlock_irqsave, &priv->irq_spin) {
++		list_for_each_entry_safe(worker, worker_tmp,
++					 &priv->workers, list) {
++			/* Don't stop ourselves */
++			if (worker == my_worker)
++				continue;
++
++			list_del(&worker->list);
++
++			/* Give worker a chance to terminate itself */
++			atomic_set(&worker->cancelled, 1);
++			/* Keep track of stuff to cancel */
++			INIT_LIST_HEAD(&worker->destroy);
++			list_add(&worker->destroy, &destructors);
++		}
++	}
++
++	list_for_each_entry_safe(worker, worker_tmp,
++				 &destructors, destroy) {
++		list_del(&worker->destroy);
++		cancel_work_sync(&worker->work);
++		kfree(worker);
++	}
++}
++
++static void gpio_mpsse_poll(struct work_struct *my_work)
+ {
+ 	unsigned long pin_mask, pin_states, flags;
+ 	int irq_enabled, offset, err, value, fire_irq,
+ 		irq, old_value[16], irq_type[16];
+-	struct mpsse_priv *priv = container_of(work, struct mpsse_priv,
+-					       irq_work);
++	struct mpsse_worker *my_worker = container_of(my_work, struct mpsse_worker, work);
++	struct mpsse_priv *priv = my_worker->priv;
+ 
+ 	for (offset = 0; offset < priv->gpio.ngpio; ++offset)
+ 		old_value[offset] = -1;
+ 
+-	while ((irq_enabled = atomic_read(&priv->irq_enabled))) {
++	/*
++	 * We only want one worker. Workers race to acquire irq_race and tear
++	 * down all other workers. This is a cond guard so that we don't deadlock
++	 * trying to cancel a worker.
++	 */
++	scoped_cond_guard(mutex_try, return, &priv->irq_race)
++		gpio_mpsse_stop_all_except(priv, my_worker);
++
++	while ((irq_enabled = atomic_read(&priv->irq_enabled)) &&
++	       !atomic_read(&my_worker->cancelled)) {
+ 		usleep_range(MPSSE_POLL_INTERVAL, MPSSE_POLL_INTERVAL + 1000);
+ 		/* Cleanup will trigger at the end of the loop */
+ 		guard(mutex)(&priv->irq_mutex);
+@@ -370,21 +425,45 @@ static int gpio_mpsse_set_irq_type(struct irq_data *irqd, unsigned int type)
+ 
+ static void gpio_mpsse_irq_disable(struct irq_data *irqd)
+ {
++	struct mpsse_worker *worker;
+ 	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
+ 
+ 	atomic_and(~BIT(irqd->hwirq), &priv->irq_enabled);
+ 	gpiochip_disable_irq(&priv->gpio, irqd->hwirq);
++
++	/*
++	 * Can't actually do teardown in IRQ context (it blocks).
++	 * As a result, these workers will stick around until irq is reenabled
++	 * or device gets disconnected
++	 */
++	scoped_guard(raw_spinlock_irqsave, &priv->irq_spin)
++		list_for_each_entry(worker, &priv->workers, list)
++			atomic_set(&worker->cancelled, 1);
+ }
+ 
+ static void gpio_mpsse_irq_enable(struct irq_data *irqd)
+ {
++	struct mpsse_worker *worker;
+ 	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
+ 
+ 	gpiochip_enable_irq(&priv->gpio, irqd->hwirq);
+ 	/* If no-one else was using the IRQ, enable it */
+ 	if (!atomic_fetch_or(BIT(irqd->hwirq), &priv->irq_enabled)) {
+-		INIT_WORK(&priv->irq_work, gpio_mpsse_poll);
+-		schedule_work(&priv->irq_work);
++		/*
++		 * Can't be devm because it uses a non-raw spinlock (illegal in
++		 * this context, where a raw spinlock is held by our caller)
++		 */
++		worker = kzalloc(sizeof(*worker), GFP_NOWAIT);
++		if (!worker)
++			return;
++
++		worker->priv = priv;
++		INIT_LIST_HEAD(&worker->list);
++		INIT_WORK(&worker->work, gpio_mpsse_poll);
++		schedule_work(&worker->work);
++
++		scoped_guard(raw_spinlock_irqsave, &priv->irq_spin)
++			list_add(&worker->list, &priv->workers);
+ 	}
+ }
+ 
+@@ -436,6 +515,12 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 	if (err)
+ 		return err;
+ 
++	err = devm_mutex_init(dev, &priv->irq_race);
++	if (err)
++		return err;
++
++	raw_spin_lock_init(&priv->irq_spin);
++
+ 	priv->gpio.label = devm_kasprintf(dev, GFP_KERNEL,
+ 					  "gpio-mpsse.%d.%d",
+ 					  priv->id, priv->intf_id);
+@@ -506,6 +591,13 @@ static void gpio_mpsse_disconnect(struct usb_interface *intf)
+ {
+ 	struct mpsse_priv *priv = usb_get_intfdata(intf);
+ 
++	/*
++	 * Lock prevents double-free of worker from here and the teardown
++	 * step at the beginning of gpio_mpsse_poll
++	 */
++	scoped_guard(mutex, &priv->irq_race)
++		gpio_mpsse_stop_all_except(priv, NULL);
++
+ 	priv->intf = NULL;
+ 	usb_set_intfdata(intf, NULL);
+ 	usb_put_dev(priv->udev);
+-- 
+2.51.0
+
 
