@@ -1,44 +1,44 @@
-Return-Path: <stable+bounces-208171-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208172-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DD04D13B2D
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:34:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11C90D13CBF
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:50:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B64F8300CCDD
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:33:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A120530111AE
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:46:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6539535FF5B;
-	Mon, 12 Jan 2026 15:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21FB72F5A10;
+	Mon, 12 Jan 2026 15:46:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBZnCJWN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="mo5Dyzy6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B39035FF4B
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 15:33:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 525EA322B7F
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 15:46:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768232034; cv=none; b=K902LOylwOZxHRjomzGW48bWnQQNUWkaGGTEhtgEAE/J3pWTvfhiq1Zo45D3hT9kEt9sL5U3Ci50Y8XqgtvIt105TQD7ADUqgw2Eedy+kBRwqeHY4K9+zj8oMn1K71mx9RXKq/6DEA8TShqgmy+KCIOPDJ5yxQYqF/kkn4PTfEI=
+	t=1768232807; cv=none; b=MPgJPqPQQ6tf8uUFiwTVDq7msCfa5zO2wKBqMzdtHLJxgThM0UsO0ODN2dpYPuS497O4w3SMY0ktc6fjEZzkD1dqkvQpzkegdVUdnBVz8nMOU2AKLnVrcbKXa8VTNFIwqLO3zsL5ox7DpbXan15utbNr+TVcDXYDBZEIzlUP+OA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768232034; c=relaxed/simple;
-	bh=wXC4fZKYLfaKWzkEi5/4CkdURM0b2KpWVQ+/HSir0S0=;
+	s=arc-20240116; t=1768232807; c=relaxed/simple;
+	bh=QPEN8JR+5SzjG6zk5LlcDiB88UO9ZaMtWBH8lYnEdZw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MjbbFdWapzTX7PEVFVW3QODUV6FFv+b5O+62yqIJcq5zUK8l1nibzNfWmkqj0sfJjzIRghCAfxAZ3T2JOuL/PNEvq8wGUuv+4xRLurT2s6qmdmo5OvHRwPudiKek9EXloeZlnLsj1jlUBGtw0w5Bp2TY5ekd1orqohR4mAvjVJ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBZnCJWN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DCDC16AAE;
-	Mon, 12 Jan 2026 15:33:52 +0000 (UTC)
+	 MIME-Version; b=LNndqSjKta79X0fZdeE1RKbOPm9RL1COw8U6o8p2jHmk9cnLfVKx+3NB544GpUzbvoiwge9JoYzNIourFBKM3Eyd/24WHrBb83yWyMj+K0GI+ti764ERQYjstredMniUEJw8eXKTMyKKY1UNupjTLGSTLd1mOkIcrSJZLoBzEXg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=mo5Dyzy6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7149BC16AAE;
+	Mon, 12 Jan 2026 15:46:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768232033;
-	bh=wXC4fZKYLfaKWzkEi5/4CkdURM0b2KpWVQ+/HSir0S0=;
+	s=k20201202; t=1768232806;
+	bh=QPEN8JR+5SzjG6zk5LlcDiB88UO9ZaMtWBH8lYnEdZw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QBZnCJWNQuG7xpMLerIy1Js8qbEBMG5MZtPSH94x/Q3gCtNqcaFPwM3s54PO09d4I
-	 eRyfAmAWpQwZGX/SALQuCCqeeuhOk3YVbMSV2JyvmwwDeSP3u4MUt8VFvVVCZlDRa8
-	 8WjvW/2042GCRMDqoQI8LqpzpwxYtQes9QgXadfqknfCJw8uJcSsvDO6pjowUvTs+2
-	 qZXMi4iL86WYD/iUGy7SvGkYv5iMO6kInMgezQNDOLrBPMpMAen9Qcw5IpR5omg3zM
-	 8medh2XNJJSYuYF84isC9gSQGK++GAWQTakYtB4nN84icJkLZzjcXvXk+LafUVFpuA
-	 bZg8tQcAetdwg==
+	b=mo5Dyzy6tJvLlX9hOVMDBRcMFsJKRFi+HYKnL7rNvNLeZUQqiHWI40Hq7PjaQwR4o
+	 VRqls34J7JsH0urEn3WWQWTmB6q+TC9JVxdzYfE17QFaw/NJ+UE7OQ5BLqa0V1mhJv
+	 JVcNCoUA63QkyFiCBtrHCQsE6ZVf9qZABPsDkEup9FsjmOxQyDgYxCkOGZq3sblwcI
+	 sLNb13thiM1ahxQYKBcVW5vEu/QWRatcqt6Uh2OZ6N5ZcRzOI1KgDddXzj3pUqVyRo
+	 AiQw8Y+ifDRv1wNdoR6B0kE13CYedxkROT21qRZQzmyF++zKpERawdS2oh/oTfiRpu
+	 AGPwAt8Jr2Nvw==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: NeilBrown <neil@brown.name>,
@@ -46,12 +46,12 @@ Cc: NeilBrown <neil@brown.name>,
 	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1.y] nfsd: provide locking for v4_end_grace
-Date: Mon, 12 Jan 2026 10:33:51 -0500
-Message-ID: <20260112153351.742670-1-sashal@kernel.org>
+Subject: [PATCH 5.15.y] nfsd: provide locking for v4_end_grace
+Date: Mon, 12 Jan 2026 10:46:42 -0500
+Message-ID: <20260112154642.746166-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026011222-abdomen-balsamic-f41c@gregkh>
-References: <2026011222-abdomen-balsamic-f41c@gregkh>
+In-Reply-To: <2026011223-account-preteen-f696@gregkh>
+References: <2026011223-account-preteen-f696@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -123,7 +123,7 @@ index 41c750f344737..be0c8f1ce4e3e 100644
  
  	struct dentry *nfsd_client_dir;
 diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index 2ba7ce076e73b..ed5cc5b2330ae 100644
+index 64a3077594d0f..b7a9020afd29a 100644
 --- a/fs/nfsd/nfs4state.c
 +++ b/fs/nfsd/nfs4state.c
 @@ -84,7 +84,7 @@ static u64 current_sessionid = 1;
@@ -135,7 +135,7 @@ index 2ba7ce076e73b..ed5cc5b2330ae 100644
  static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
  static void nfsd4_file_hash_remove(struct nfs4_file *fi);
  
-@@ -5882,7 +5882,7 @@ nfsd4_renew(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+@@ -5881,7 +5881,7 @@ nfsd4_renew(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
  	return nfs_ok;
  }
  
@@ -144,7 +144,7 @@ index 2ba7ce076e73b..ed5cc5b2330ae 100644
  nfsd4_end_grace(struct nfsd_net *nn)
  {
  	/* do nothing if grace period already ended */
-@@ -5915,6 +5915,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
+@@ -5914,6 +5914,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
  	 */
  }
  
@@ -178,7 +178,7 @@ index 2ba7ce076e73b..ed5cc5b2330ae 100644
  /*
   * If we've waited a lease period but there are still clients trying to
   * reclaim, wait a little longer to give them a chance to finish.
-@@ -5924,6 +5951,8 @@ static bool clients_still_reclaiming(struct nfsd_net *nn)
+@@ -5923,6 +5950,8 @@ static bool clients_still_reclaiming(struct nfsd_net *nn)
  	time64_t double_grace_period_end = nn->boot_time +
  					   2 * nn->nfsd4_lease;
  
@@ -187,7 +187,7 @@ index 2ba7ce076e73b..ed5cc5b2330ae 100644
  	if (nn->track_reclaim_completes &&
  			atomic_read(&nn->nr_reclaim_complete) ==
  			nn->reclaim_str_hashtbl_size)
-@@ -8131,6 +8160,8 @@ static int nfs4_state_create_net(struct net *net)
+@@ -8130,6 +8159,8 @@ static int nfs4_state_create_net(struct net *net)
  	nn->unconf_name_tree = RB_ROOT;
  	nn->boot_time = ktime_get_real_seconds();
  	nn->grace_ended = false;
@@ -196,7 +196,7 @@ index 2ba7ce076e73b..ed5cc5b2330ae 100644
  	nn->nfsd4_manager.block_opens = true;
  	INIT_LIST_HEAD(&nn->nfsd4_manager.list);
  	INIT_LIST_HEAD(&nn->client_lru);
-@@ -8207,6 +8238,10 @@ nfs4_state_start_net(struct net *net)
+@@ -8206,6 +8237,10 @@ nfs4_state_start_net(struct net *net)
  		return ret;
  	locks_start_grace(net, &nn->nfsd4_manager);
  	nfsd4_client_tracking_init(net);
@@ -207,7 +207,7 @@ index 2ba7ce076e73b..ed5cc5b2330ae 100644
  	if (nn->track_reclaim_completes && nn->reclaim_str_hashtbl_size == 0)
  		goto skip_grace;
  	printk(KERN_INFO "NFSD: starting %lld-second grace period (net %x)\n",
-@@ -8253,6 +8288,9 @@ nfs4_state_shutdown_net(struct net *net)
+@@ -8252,6 +8287,9 @@ nfs4_state_shutdown_net(struct net *net)
  
  	unregister_shrinker(&nn->nfsd_client_shrinker);
  	cancel_work_sync(&nn->nfsd_shrinker_work);
