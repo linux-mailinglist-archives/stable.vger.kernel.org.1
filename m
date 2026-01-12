@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208183-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208184-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6AE7D14554
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:26:03 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 08A37D1455A
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:26:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2A1D9300532F
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:26:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0599330076A6
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:26:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D74602FD685;
-	Mon, 12 Jan 2026 17:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B378037B409;
+	Mon, 12 Jan 2026 17:26:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="hmlS8Jsa"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmV8g5U7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 931B937BE7B
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:26:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8195B2FB998
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768238761; cv=none; b=j2de31AAEhtPW7O2CESd/t/Tpm3FhnirQdpY7IzhpGxcZlhPLr67l29dm5uqYgfb9KnC5kUGGjyQGNoTfrM50kMaBXL+AuoEYW5QbBsQ1VH8564meUvwtD8ImsQv9bLYOedndx+GBux0HbnosdvCVigPtDj1pUffZKke0hnXPSY=
+	t=1768238762; cv=none; b=N5oVY/FWV6eGtwq9y+ZvBmRD+Z6AXKfA2PxvGQcxuBTjQ86lanqi0QkOk+T83cnNzcH7LcIgU7nM0yB4z7JH5PUBySaGz20lnB9t65sAq6qNJOo6QjzQ3D9IFAq8j8zHweW4Y+RVzdvtAtGU+FahSBwY084AXsIC1MUblkiHajc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768238761; c=relaxed/simple;
-	bh=8W1vW5K0kd/FCB9pFQnQZmQeH9GQxl5guJYx3iKBXPU=;
+	s=arc-20240116; t=1768238762; c=relaxed/simple;
+	bh=jvepry4mvW5EGfyuIqcGZAM7CZsvyAULQVBCfO38+08=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ANXfTodmmMlz3IfhrI9+DlTCcyiMozKt2THVZ8dcKh6DotvWcFJ2TIF5ThIx8MD8fHzaDJgUNTqQgV7yK+ChZteH6nbthDDIaCNb9T8BTyzj/Kz8Q4bIbTtQTH25iRNz1U/LJ+Yz8mdWtTwWmMCV9iREep7gFcF8317kFZpN54M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=hmlS8Jsa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6517C116D0;
-	Mon, 12 Jan 2026 17:26:00 +0000 (UTC)
+	 MIME-Version; b=iyMdt7kyUyZXvjqdpWG57nNLb+7Jfp8FaH7+riodXtehUFzzyr+X/ODnETppVT1rrokLqFI0lwx+RYvkXsBo54IqZAIyqKSd4IKCc21COygfctKwAv7SQdeW5DG/8Ua1qC/6knazfSSxqrTSwah3G/MrX3gZ0YhVXjBxF4ea630=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmV8g5U7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CEFC19424;
+	Mon, 12 Jan 2026 17:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
 	s=k20201202; t=1768238761;
-	bh=8W1vW5K0kd/FCB9pFQnQZmQeH9GQxl5guJYx3iKBXPU=;
+	bh=jvepry4mvW5EGfyuIqcGZAM7CZsvyAULQVBCfO38+08=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hmlS8JsanygvrG09VmtbCXYBwJsHDGSYhA0AV11Uz9Q5yJn/JqTT+Eb2kKlVrUBUD
-	 xdpzPb+qnJ8wY8wC9aGwR/r+bwfw79yJ3PKPkf2XpUvS90E7Kg78CHmY+v11Fdtis8
-	 DlGmN2enmz55cWYx+xG4n66ntOUcxm5Mja2Z4QV6D8ttevhCwflV5dclmYZPPmxTNa
-	 259sZEHA5WNPkNwVYIv/8wZyAANbki0UnN0Zhd2/6tdnSfeLXN7Edl8PcuPustig1N
-	 Q1axEf3TCHnnT4d8dEN79y0zeClPKMD5qVhZzOViGJLZIMZfXidqMHki2oiyy+OGjv
-	 lYFgLW3VTQhMA==
+	b=VmV8g5U7Y80xFNxJsP7hvidVUsgIjeVpkRU1LWmLuoH9+9QcSWjyLPoF4QbUYoxb/
+	 pBRq9uArIR+XmV0nQWebd9fFbTGtc8QOd4EmcZku/p430/E0Cf/zICFk/2O+RzjvCI
+	 VABlyvOKI/Z5vBlteS4aC5nM5WQUlZYtoRzRtGKZPV0XxsetNbSiw3RBXrqpoFVPXl
+	 +VJ2SNGbFg7FmzvUhH0Szwittnna8FAkyusS1BC7mqbNZoSyTlZ5AMH6ff+ESWYuOD
+	 M2EGme0EopILgYeW3/DWDX9AO8GqJ6VXMxcOz2+6pSFi2eDFobefynk9DEIHMAXxdM
+	 uw6rO+ID5TuEQ==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Takashi Iwai <tiwai@suse.de>,
+Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 1/2] ALSA: ac97bus: Use guard() for mutex locks
-Date: Mon, 12 Jan 2026 12:25:57 -0500
-Message-ID: <20260112172558.815821-1-sashal@kernel.org>
+Subject: [PATCH 6.6.y 2/2] ALSA: ac97: fix a double free in snd_ac97_controller_register()
+Date: Mon, 12 Jan 2026 12:25:58 -0500
+Message-ID: <20260112172558.815821-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026011239-sustained-underpass-b703@gregkh>
+In-Reply-To: <20260112172558.815821-1-sashal@kernel.org>
 References: <2026011239-sustained-underpass-b703@gregkh>
+ <20260112172558.815821-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -57,90 +59,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit c07824a14d99c10edd4ec4c389d219af336ecf20 ]
+[ Upstream commit 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f ]
 
-Replace the manual mutex lock/unlock pairs with guard() for code
-simplification.
+If ac97_add_adapter() fails, put_device() is the correct way to drop
+the device reference. kfree() is not required.
+Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
+the cleanup.
 
-Only code refactoring, and no behavior change.
+Found by code review.
 
+Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250829151335.7342-18-tiwai@suse.de
-Stable-dep-of: 830988b6cf19 ("ALSA: ac97: fix a double free in snd_ac97_controller_register()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/ac97/bus.c | 22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ sound/ac97/bus.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
 diff --git a/sound/ac97/bus.c b/sound/ac97/bus.c
-index 3173e9d98927e..1a966d74e8af6 100644
+index 1a966d74e8af6..b33a45560b8af 100644
 --- a/sound/ac97/bus.c
 +++ b/sound/ac97/bus.c
-@@ -242,10 +242,9 @@ static ssize_t cold_reset_store(struct device *dev,
- {
- 	struct ac97_controller *ac97_ctrl;
- 
--	mutex_lock(&ac97_controllers_mutex);
-+	guard(mutex)(&ac97_controllers_mutex);
- 	ac97_ctrl = to_ac97_controller(dev);
- 	ac97_ctrl->ops->reset(ac97_ctrl);
--	mutex_unlock(&ac97_controllers_mutex);
- 	return len;
+@@ -299,6 +299,7 @@ static void ac97_adapter_release(struct device *dev)
+ 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
+ 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
+ 		dev_name(ac97_ctrl->parent));
++	kfree(ac97_ctrl);
  }
- static DEVICE_ATTR_WO(cold_reset);
-@@ -259,10 +258,9 @@ static ssize_t warm_reset_store(struct device *dev,
- 	if (!dev)
- 		return -ENODEV;
  
--	mutex_lock(&ac97_controllers_mutex);
-+	guard(mutex)(&ac97_controllers_mutex);
- 	ac97_ctrl = to_ac97_controller(dev);
- 	ac97_ctrl->ops->warm_reset(ac97_ctrl);
--	mutex_unlock(&ac97_controllers_mutex);
- 	return len;
- }
- static DEVICE_ATTR_WO(warm_reset);
-@@ -285,10 +283,10 @@ static const struct attribute_group *ac97_adapter_groups[] = {
- 
- static void ac97_del_adapter(struct ac97_controller *ac97_ctrl)
- {
--	mutex_lock(&ac97_controllers_mutex);
--	ac97_ctrl_codecs_unregister(ac97_ctrl);
--	list_del(&ac97_ctrl->controllers);
--	mutex_unlock(&ac97_controllers_mutex);
-+	scoped_guard(mutex, &ac97_controllers_mutex) {
-+		ac97_ctrl_codecs_unregister(ac97_ctrl);
-+		list_del(&ac97_ctrl->controllers);
-+	}
- 
- 	device_unregister(&ac97_ctrl->adap);
- }
-@@ -312,7 +310,7 @@ static int ac97_add_adapter(struct ac97_controller *ac97_ctrl)
- {
- 	int ret;
- 
--	mutex_lock(&ac97_controllers_mutex);
-+	guard(mutex)(&ac97_controllers_mutex);
- 	ret = idr_alloc(&ac97_adapter_idr, ac97_ctrl, 0, 0, GFP_KERNEL);
- 	ac97_ctrl->nr = ret;
- 	if (ret >= 0) {
-@@ -323,13 +321,11 @@ static int ac97_add_adapter(struct ac97_controller *ac97_ctrl)
+ static const struct device_type ac97_adapter_type = {
+@@ -320,7 +321,9 @@ static int ac97_add_adapter(struct ac97_controller *ac97_ctrl)
+ 		ret = device_register(&ac97_ctrl->adap);
  		if (ret)
  			put_device(&ac97_ctrl->adap);
- 	}
--	if (!ret)
-+	if (!ret) {
+-	}
++	} else
++		kfree(ac97_ctrl);
++
+ 	if (!ret) {
  		list_add(&ac97_ctrl->controllers, &ac97_controllers);
--	mutex_unlock(&ac97_controllers_mutex);
--
--	if (!ret)
  		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
- 			dev_name(ac97_ctrl->parent));
-+	}
- 	return ret;
+@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_controller_register(
+ 	ret = ac97_add_adapter(ac97_ctrl);
+ 
+ 	if (ret)
+-		goto err;
++		return ERR_PTR(ret);
+ 	ac97_bus_reset(ac97_ctrl);
+ 	ac97_bus_scan(ac97_ctrl);
+ 
+ 	return ac97_ctrl;
+-err:
+-	kfree(ac97_ctrl);
+-	return ERR_PTR(ret);
  }
+ EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
  
 -- 
 2.51.0
