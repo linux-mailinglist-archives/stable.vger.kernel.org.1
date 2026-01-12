@@ -1,88 +1,64 @@
-Return-Path: <stable+bounces-208026-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208027-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52926D102B7
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 01:11:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3116CD10494
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 02:53:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2BC33301581E
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 00:11:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D1043042FFD
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 01:53:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27A23286A7;
-	Mon, 12 Jan 2026 00:10:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8F3238C03;
+	Mon, 12 Jan 2026 01:53:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=iwell-eu.20230601.gappssmtp.com header.i=@iwell-eu.20230601.gappssmtp.com header.b="gt7928dy"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="cXgIGr/Z"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f44.google.com (mail-ed1-f44.google.com [209.85.208.44])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B62CA52
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 00:10:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.44
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF7B672;
+	Mon, 12 Jan 2026 01:53:00 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768176655; cv=none; b=pvelhWL900lT/Ou4kM61pT7qmiOy9Dv99Uf41Sbdq2bhxPc8IAFqIUc5p6UK/uvcgUW3oYaVh9X+lYe6J6p/MfWS37SvdQMwASGwEelWzZo1EJvkA1hI+wbYI2LlvdRrVdkyZ4Ehdd9kg95/3AEvwMbeqROIFWiqraVxZvccr3s=
+	t=1768182784; cv=none; b=QyE7f8WlnNkETZmMczKcRuVo9eKKWyjQF5zCOn+YQpGf5fECBtmfcPfnWEmdbUbms+F/6gEZrdeYmGwboN39Y69R2wTTbgz+LXVIfj4XHzDgoIQJvxdOIend1lm13s23tFcXZiCRMrNx9FmJ/v/AHAwKcXSIiHeBfRBIuaLySfQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768176655; c=relaxed/simple;
-	bh=kvCyYtiY0v4R29B6n0ipmfjn2WIRYvvpJMM9B74Hal0=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TY8XzTHapHvjvPelsQZsmo6v5fh42pb8Yqy/uCDiRGVpn3eZLu/6yMQvNPjYNH0gMob+C4jJNFKLEqLKQzgXDQZoc4K8hvY6RP1NvJ1+fEg5CFTmqpvc8aSPt2dWS6uRIY6geUL0pxaIt/Vc/EBzXfP+3gBkTFgKZ5fhC9Rxdcw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iwell.eu; spf=pass smtp.mailfrom=iwell.eu; dkim=pass (2048-bit key) header.d=iwell-eu.20230601.gappssmtp.com header.i=@iwell-eu.20230601.gappssmtp.com header.b=gt7928dy; arc=none smtp.client-ip=209.85.208.44
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=iwell.eu
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iwell.eu
-Received: by mail-ed1-f44.google.com with SMTP id 4fb4d7f45d1cf-64b7318f1b0so8240946a12.2
-        for <stable@vger.kernel.org>; Sun, 11 Jan 2026 16:10:52 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=iwell-eu.20230601.gappssmtp.com; s=20230601; t=1768176651; x=1768781451; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FkBh8hOVItHXrECToFozYAl6O6uqbPqcIj68J5rzzDM=;
-        b=gt7928dyB8dGaJbyaC+uWldfVARj/qgBeJ40DbQFfwLIbZxss4avrY3c3BHqledAKb
-         E6s1w6QVdxQzd8BQWJCP02yAsEEVuMScZfXBCBrjLBQ+Ok97yvkgpX/IMvbvKmP2VDi8
-         0IM5EEktQAbCOv98EfTz+NA4eE+hg/3wPyUWYsCzVaG7jADFy3nU4c/qaM9xuk/4viYe
-         z7gwZaF46Avd1waWnepXuAA5md2MVmuavL0IVCV1QAtxor24N8+jOvNm+5HOUPG7dY6W
-         2pxXQOB3H95ckuqUpiMpm8nHF1+CWgfmAAgDqeq/AnFl/N4G0os8kE4hmuZkzRTtFccj
-         +Low==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768176651; x=1768781451;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=FkBh8hOVItHXrECToFozYAl6O6uqbPqcIj68J5rzzDM=;
-        b=MEkYl4uMk3ve4jcIgPAmL7m0d80Rr6j+X8i7Gnou3gTjRSfahHt+PXrNvYjSlQKC15
-         BysWMU4GaGLxFNYSqVZvRD65svwie5/V4rN6qKv87wfY7EmVWxkSwZo2PSFAP/OJXGla
-         czZ4a63afRwTYKECk34yTmHenwiUxXpfe/nFmvib0Boq2syJY6Rp4NQXIEhJjMxWoN8g
-         oVQgpwSlsAy/Uzj5jYFngHvKxZVbWFJWSZ7LKkLZST4YomCAnj42Ahh/iREEApK3uaXd
-         dBSGZTiZUJ3mkL6BmkdcIdsxBNq92jnS5AWZsjTd7qvD09EbQ1k1mnnJWhbYJYhrzBkO
-         KU5g==
-X-Forwarded-Encrypted: i=1; AJvYcCVepKU/9/kwiMNgkywkGBZzapAKBh7Vn4hXrfDTNEaXOIrF7QHuwEDBFuh53lY9/7T1DS9AgA0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxERpPnui9i1dtw/SXIpntNcGvwcF6Nnq/rDx9GexjGHL4c4UNd
-	Kf62woKKUiMCDdMUQIL9GOfy41UQLQ5h8V2ZGxe088w61+M0NW4zYJglt9ds64ufuOTQZzEq2zt
-	LuyWRlJI=
-X-Gm-Gg: AY/fxX5HQ5+Xulb/imVVlZMBvrW9Pl1x9oUbIqHS4CjAhCkclG9PJIBxQnwkbrKv+gR
-	u94q+nEEIKtLg060KtK0WslGP5Gf252avTTpJFnwX/FPWbJZ4VEUJX1/JcYrrjs5auJqXuEwpUZ
-	U9GkYtOek8w1g8FJSA3TsOVPOTi+zTMiCFhqNMMRiPLi4ayzNts8+/GxDL7kXJpLEhe169aDU0d
-	ei0YZ8kvOCTnzSA/sRyA59K8rJXb8KZuMKPWugJQNF3uLXOZVchMWhMbLIEy7dOAZCd/MIf3nnH
-	AQcFv6EaCXhVeAC2vdSYBAm45ovgXoX90TWfo5jDSzL/xMtyBfAtrajlL2caOnQRW/4Fd0iQviT
-	UB+2RwykGArHMd4DsA0MULqjyRkaedpAOusHgrJIIetptvgfI2QnAfqYFXOOPk/mx1NFxqVIdiG
-	v87AtoT2jJd8NHTI1q9MXZgDf3wLNb9oLDqheLi0f+L91pdw==
-X-Google-Smtp-Source: AGHT+IGUGs/1ia/yH5M8iEeDtiuWEQc2pvZNjndbCLfMd1tYAUWcPTkr5LhD3ULnD/zcl7ZQwjXZgw==
-X-Received: by 2002:a05:6402:1453:b0:650:2820:38bd with SMTP id 4fb4d7f45d1cf-65097de5b35mr16955783a12.11.1768176650936;
-        Sun, 11 Jan 2026 16:10:50 -0800 (PST)
-Received: from localhost.localdomain ([178.224.217.169])
-        by smtp.gmail.com with ESMTPSA id 4fb4d7f45d1cf-6507be641e0sm16003130a12.22.2026.01.11.16.10.49
-        (version=TLS1_3 cipher=TLS_CHACHA20_POLY1305_SHA256 bits=256/256);
-        Sun, 11 Jan 2026 16:10:50 -0800 (PST)
-From: Marnix Rijnart <marnix.rijnart@iwell.eu>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	Jiri Slaby <jirislaby@kernel.org>
-Cc: linux-kernel@vger.kernel.org,
-	linux-serial@vger.kernel.org,
-	regressions@lists.linux.dev,
-	Marnix Rijnart <marnix.rijnart@iwell.eu>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] serial: 8250_pci: Fix broken RS485 for F81504/508/512
-Date: Mon, 12 Jan 2026 01:08:23 +0100
-Message-ID: <20260112000931.61703-1-marnix.rijnart@iwell.eu>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768182784; c=relaxed/simple;
+	bh=EzrQ79+hl45J3CfoE6xzSAkyRDxtujliatJMO9Bviso=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mBLJYi+ktUI8OCPsK1fbpI7F251/+ZExzQEm3IawWfKwAgNrZWCK09zV33XMWERLBbab+X3Zhpqqs7DSs7u0qd0+vBA1gbsqO8aSjntdIfLGh/+rnUzFpBC3eQbFo3rZuuiM/Y+aL+k9wGpwvT8XQi6/mkU5T+ezzspDfpAbR5s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=cXgIGr/Z; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1768182778;
+	bh=Cefewr4mvT2AuPprSC1fIG+Kyvw5hu4x1RrqRxfTXbA=; l=1807;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=cXgIGr/ZN4XKfgagB448oNFAGvNxoNTywxtzA9Uo3VnwjvIaEqeQF2YxcQqewEN2b
+	 nhh6B5oyIy+oWw6vlMwq0+1z9H2jBzX7vFQ8IisVJmXhQrZQMruvDKOrfVbI7bGp/I
+	 m03rh9vMS0WYrHReOPZqZNZY84Jreamh51J9qGhbPZUpxgXysRE/jV1Z0q7U9MtFB9
+	 r6HCJJNW/ZSOaDb/o0I7xZdr6AHc/3uOPjS4Axa8dwhXyScnLYuCwWTxEmFt8TkAqu
+	 s873jKHb1MpiCxKGnMb/IR03R0uaPlzs22cMmicI+yTu/+30rcCZf2YJYRhqpeDVAV
+	 4HjlHsVVF0lPQ==
+Received: from 192.168.10.47
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(2572447:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Mon, 12 Jan 2026 09:52:52 +0800 (CST)
+Received: from ex3.rt.l (192.168.10.46) by ex4.rt.l (192.168.10.47) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Mon, 12 Jan
+ 2026 09:52:51 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex3.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
+ Transport; Mon, 12 Jan 2026 09:52:51 +0800
+From: <cy_huang@richtek.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+CC: ChiYuan Huang <cy_huang@richtek.com>, Roger Wang
+	<roger-hy.wang@mediatek.com>, <linux-media@vger.kernel.org>,
+	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH v2] media: v4l2-flash: Enter LED off state after file handle closed
+Date: Mon, 12 Jan 2026 09:52:48 +0800
+Message-ID: <6f834257e1e16fb7d212412605c0f0fdd16cf717.1768182390.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -90,51 +66,55 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-Fintek F81504/508/512 can support both RTS_ON_SEND and RTS_AFTER_SEND, 
-but pci_fintek_rs485_supported only announces the former.
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-This makes it impossible to unset SER_RS485_RTS_ON_SEND from 
-userspace because of uart_sanitize_serial_rs485(). Some devices 
-with these chips need RTS low on TX, so they are effectively broken.
+To make sure LED enter off state after file handle is closed, initiatively
+configure LED_MODE to NONE. This can guarantee whatever the previous state
+is torch or strobe mode, the final state will be off.
 
-Fix this by announcing the support for SER_RS485_RTS_AFTER_SEND,
-similar to commit 068d35a7be65 ("serial: sc16is7xx: announce support 
-for SER_RS485_RTS_ON_SEND").
-
-Fixes: 4afeced55baa ("serial: core: fix sanitizing check for RTS settings")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marnix Rijnart <marnix.rijnart@iwell.eu>
+Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
+Reported-by: Roger Wang <roger-hy.wang@mediatek.com>
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
 ---
+v2
+- Fix commit message redudant space cause patch robot parsing error
 
-Changes in v3:
-- Rewrite commit message to clarify problem
-- Use longer commit hashes
-- v2: https://patch.msgid.link/20260111135933.31316-1-marnix.rijnart@iwell.eu
+Hi,
+  We encounter an issue. When the upper layer camera process is crashed,
+if the new process did not reinit the LED,  it will keeps the previous
+state whatever it's in torch or strobe mode
 
-Changes in v2:
- - Added fixes tags
- - Cc stable
- - v1: https://patch.msgid.link/20250923221756.26770-1-marnix.rijnart@iwell.eu
-
+OS will handle the resource management. So when the process is crashed
+or terminated, the 'close' API will be called to release resources.
+That's why we add the initiative action to trigger LED off in file
+handle close is called.
 ---
- drivers/tty/serial/8250/8250_pci.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/tty/serial/8250/8250_pci.c b/drivers/tty/serial/8250/8250_pci.c
-index 152f914c599d..a9da222bd174 100644
---- a/drivers/tty/serial/8250/8250_pci.c
-+++ b/drivers/tty/serial/8250/8250_pci.c
-@@ -1645,7 +1645,7 @@ static int pci_fintek_rs485_config(struct uart_port *port, struct ktermios *term
- }
+diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+index 355595a0fefa..347b37f3ef69 100644
+--- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
++++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+@@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 		return 0;
  
- static const struct serial_rs485 pci_fintek_rs485_supported = {
--	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND,
-+	.flags = SER_RS485_ENABLED | SER_RS485_RTS_ON_SEND | SER_RS485_RTS_AFTER_SEND,
- 	/* F81504/508/512 does not support RTS delay before or after send */
- };
+ 	if (led_cdev) {
++		/* If file handle is released, make sure LED enter off state */
++		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
++			V4L2_FLASH_LED_MODE_NONE);
++		if (ret)
++			return ret;
++
+ 		mutex_lock(&led_cdev->led_access);
  
+ 		if (v4l2_flash->ctrls[STROBE_SOURCE])
+
+base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
 -- 
-2.52.0
+2.34.1
 
 
