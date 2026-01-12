@@ -1,133 +1,137 @@
-Return-Path: <stable+bounces-208090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208091-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80310D11F5A
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:40:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E640AD11F75
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:41:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 112EC301F01D
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:40:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F0883031799
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:41:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6A6F131AA9B;
-	Mon, 12 Jan 2026 10:40:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EEF9131B123;
+	Mon, 12 Jan 2026 10:41:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=fail reason="signature verification failed" (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b="TPG+AbAh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lw7GBWnT"
 X-Original-To: stable@vger.kernel.org
-Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4ED3B264609
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:40:20 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=213.97.179.56
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B322630F815
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:41:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214424; cv=none; b=AnriCJZWBZk0V3c4rudne/iEmzb+A2vYmnegLRxO2S5R3NAwv3TcLXvV7m7aDv6N1pOba+N3VEbbzFLfFBuyjB5dbu9Wsw6yEt5YAdi+3JfrDzqXsHgim83U1d3E9A7BoWSpikxq8wbFzFSLquWMzv5AcaPWwcIRzM96VBhNcU8=
+	t=1768214503; cv=none; b=gJ9k/XVJCwK1ShzDpyXayQ7f4C81w8H+JOa7MCNfXgtU9PBxR9/t19hrpwiDn6fzWz4kRn5tf9ktONod82wsFnPo+lqQCZSy5NkhwVL+w59yrkUTkGfBktMrZEfWO/8ocY8CCcro4EBJr7IiFem7uX6kjy8oDYbpiX4YBSoFWrs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214424; c=relaxed/simple;
-	bh=DePi4Q6bHXl3MW17puoh4QbeT80ReZrEYpnLzLjJal8=;
-	h=Message-ID:Date:MIME-Version:Subject:From:To:Cc:References:
-	 In-Reply-To:Content-Type; b=RJvbDxsvYajH/liA1LM7XN1Ob/7z7b/CN5yghr876KzzFlLJuFNvRK4pZEngAYAFls5N7ShvET9FBJQN4jDvwyBIVDb3dS6zzzoyua0aI4I2UO5CY/dpXnCpPol1+oCPxfYmdNKTbxrUlFHe6INGeQ8ydsDAWXXSDraiHyQhajE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com; spf=pass smtp.mailfrom=igalia.com; dkim=pass (2048-bit key) header.d=igalia.com header.i=@igalia.com header.b=TPG+AbAh; arc=none smtp.client-ip=213.97.179.56
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=igalia.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=igalia.com
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
-	s=20170329; h=Content-Transfer-Encoding:Content-Type:In-Reply-To:References:
-	Cc:To:From:Subject:MIME-Version:Date:Message-ID:Sender:Reply-To:Content-ID:
-	Content-Description:Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc
-	:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
-	List-Post:List-Owner:List-Archive;
-	bh=j7G8Ykw+xVXU/Y+bwKknohLYeS2hofhESkp1Cg8jQHM=; b=TPG+AbAh8JWq62RhEXTVN1wYqx
-	d5bylRs9PmeycNB+b15qdwkzwcwax5EOeA4rrG2A8ax9B+Ndm3nqFUmdBs3U7V/SkajBYRwYVmfoP
-	LW+jmTol3HzP1QteUH02pQnAPusOEnAhzV+TW8Nur1I/Ayf4rpHVgrH50DKKbwOeTbQgorVlKdEVC
-	XDQtzb05MzePqu2DqgkkF4H4pjcaGTvS2aMZIfNoMt/hbxoT2tZTne1Di06Hz0SaSNhnRxPYHqUD8
-	6ISXw+R/mtJA/yZwPOwo63gd0hL4YxPbPwQ19N/Ce7oysjb+JuhOO2wyHbr8lY35pl1Mb7HiySCej
-	OPVNjBbQ==;
-Received: from [90.240.106.137] (helo=[192.168.0.101])
-	by fanzine2.igalia.com with esmtpsa 
-	(Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_128_GCM:128) (Exim)
-	id 1vfFLE-004MDe-3Y; Mon, 12 Jan 2026 11:40:08 +0100
-Message-ID: <6e89511e-3056-49ca-8de6-433e9e635921@igalia.com>
-Date: Mon, 12 Jan 2026 10:40:07 +0000
+	s=arc-20240116; t=1768214503; c=relaxed/simple;
+	bh=2XrW99f7iKHLcVTbMpXZ9T5Fp4fIagILsYsZyibh3Gs=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=teFDYOCHdYPk15LYH7lP6sHJR4pwzglk6rUD+qEcyt0shCpw6Tp/aTVTo9j702VD0MPce+wVqQLtlrTUJrgpgWqttJRoNBWpCULf0gIc3Rm65FwCJj9+xHdajkSrDV9xorgyNaTd8Yqzv5J4Z+57elW93m9UlGKaqeQETkeQRAg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lw7GBWnT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D57FDC16AAE;
+	Mon, 12 Jan 2026 10:41:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768214501;
+	bh=2XrW99f7iKHLcVTbMpXZ9T5Fp4fIagILsYsZyibh3Gs=;
+	h=Subject:To:Cc:From:Date:From;
+	b=Lw7GBWnTRrgK7cI1RTcJlDU6PzhbDH8qhMHyDUVffiVQdLn0XyxHmcdKmUWVPjgo/
+	 07JTcQxhOdPedtuMrNSsRYzMritU9PLtUsbIyRsQrUjymC56XJc1INh/s+XRtsxbVM
+	 pUJquZU7OmqaUrYmjBiwdbtD7RrnHjzs3Ta8UVGw=
+Subject: FAILED: patch "[PATCH] ALSA: ac97: fix a double free in" failed to apply to 6.12-stable tree
+To: lihaoxiang@isrc.iscas.ac.cn,tiwai@suse.de
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 12 Jan 2026 11:41:38 +0100
+Message-ID: <2026011238-subduing-rural-1bbc@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 01/12] drm/amdgpu/userq: Fix reference leak in
- amdgpu_userq_wait_ioctl
-From: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
-To: =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
- amd-gfx@lists.freedesktop.org
-Cc: kernel-dev@igalia.com,
- Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>,
- Alex Deucher <alexander.deucher@amd.com>, stable@vger.kernel.org
-References: <20251205134035.91551-1-tvrtko.ursulin@igalia.com>
- <20251205134035.91551-2-tvrtko.ursulin@igalia.com>
- <562c2fcd-d99f-4072-b005-31a26f85448e@amd.com>
- <25e5c8bd-7c8e-4170-8912-45f616163013@igalia.com>
-Content-Language: en-GB
-In-Reply-To: <25e5c8bd-7c8e-4170-8912-45f616163013@igalia.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-On 05/12/2025 14:59, Tvrtko Ursulin wrote:
-> 
-> On 05/12/2025 14:46, Christian König wrote:
->> On 12/5/25 14:40, Tvrtko Ursulin wrote:
->>> Drop reference to syncobj and timeline fence when aborting the ioctl due
->>> output array being too small.
->>>
->>> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@igalia.com>
->>> Fixes: a292fdecd728 ("drm/amdgpu: Implement userqueue signal/wait 
->>> IOCTL")
->>> Cc: Arunpravin Paneer Selvam <Arunpravin.PaneerSelvam@amd.com>
->>> Cc: Christian König <christian.koenig@amd.com>
->>> Cc: Alex Deucher <alexander.deucher@amd.com>
->>> Cc: <stable@vger.kernel.org> # v6.16+
->>
->> I need to double check the code when I have time, but of hand looks 
->> legitimate to me.
+The patch below does not apply to the 6.12-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Gentle reminder that there is this memory leak fix pending.
+To reproduce the conflict and resubmit, you may use the following commands:
 
->> Where are patches #3-#12 from this series?
-> 
-> On amd-gfx only, since 3-12 only contains cleanups I thought not pollute 
-> the inboxes too much.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.12.y
+git checkout FETCH_HEAD
+git cherry-pick -x 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011238-subduing-rural-1bbc@gregkh' --subject-prefix 'PATCH 6.12.y' HEAD^..
 
-Should I re-send the series and copy you on all patches explicitly?
+Possible dependencies:
 
-Regards,
 
-Tvrtko
->>> ---
->>>   drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c | 2 ++
->>>   1 file changed, 2 insertions(+)
->>>
->>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c b/ 
->>> drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
->>> index eba9fb359047..13c5d4462be6 100644
->>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
->>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_userq_fence.c
->>> @@ -865,6 +865,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device 
->>> *dev, void *data,
->>>                   dma_fence_unwrap_for_each(f, &iter, fence) {
->>>                       if (WARN_ON_ONCE(num_fences >= wait_info- 
->>> >num_fences)) {
->>>                           r = -EINVAL;
->>> +                        dma_fence_put(fence);
->>>                           goto free_fences;
->>>                       }
->>> @@ -889,6 +890,7 @@ int amdgpu_userq_wait_ioctl(struct drm_device 
->>> *dev, void *data,
->>>               if (WARN_ON_ONCE(num_fences >= wait_info->num_fences)) {
->>>                   r = -EINVAL;
->>> +                dma_fence_put(fence);
->>>                   goto free_fences;
->>>               }
->>
-> 
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f Mon Sep 17 00:00:00 2001
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Date: Sat, 20 Dec 2025 00:28:45 +0800
+Subject: [PATCH] ALSA: ac97: fix a double free in
+ snd_ac97_controller_register()
+
+If ac97_add_adapter() fails, put_device() is the correct way to drop
+the device reference. kfree() is not required.
+Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
+the cleanup.
+
+Found by code review.
+
+Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+
+diff --git a/sound/ac97/bus.c b/sound/ac97/bus.c
+index f4254703d29f..bb9b795e0226 100644
+--- a/sound/ac97/bus.c
++++ b/sound/ac97/bus.c
+@@ -298,6 +298,7 @@ static void ac97_adapter_release(struct device *dev)
+ 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
+ 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
+ 		dev_name(ac97_ctrl->parent));
++	kfree(ac97_ctrl);
+ }
+ 
+ static const struct device_type ac97_adapter_type = {
+@@ -319,7 +320,9 @@ static int ac97_add_adapter(struct ac97_controller *ac97_ctrl)
+ 		ret = device_register(&ac97_ctrl->adap);
+ 		if (ret)
+ 			put_device(&ac97_ctrl->adap);
+-	}
++	} else
++		kfree(ac97_ctrl);
++
+ 	if (!ret) {
+ 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
+ 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
+@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_controller_register(
+ 	ret = ac97_add_adapter(ac97_ctrl);
+ 
+ 	if (ret)
+-		goto err;
++		return ERR_PTR(ret);
+ 	ac97_bus_reset(ac97_ctrl);
+ 	ac97_bus_scan(ac97_ctrl);
+ 
+ 	return ac97_ctrl;
+-err:
+-	kfree(ac97_ctrl);
+-	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
+ 
 
 
