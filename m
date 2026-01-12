@@ -1,181 +1,117 @@
-Return-Path: <stable+bounces-208048-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208049-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CA88CD10C2F
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 07:52:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DB60AD10C4D
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 07:56:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5246F3001625
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 06:52:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 08A1F303F780
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 06:56:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A7CC31A56B;
-	Mon, 12 Jan 2026 06:52:52 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="PTEjG4FG"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD060321434;
+	Mon, 12 Jan 2026 06:56:03 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f225.google.com (mail-pl1-f225.google.com [209.85.214.225])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA733319873
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 06:52:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.225
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09DC5320A3E;
+	Mon, 12 Jan 2026 06:55:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768200771; cv=none; b=O8LudgEIH3uJMZv2lKp2xI9Q+F5JZMIB4fwIVgZNPfg3Qq3+iKA9vSWKPHGe4OmoVwGrTS+Dw8g+4jZZuvLc10d8oqeEC52brXatZiVINhEBiyBOBdo1dnDKkCVksNHKIto5LGtjn7m0ErUfms4fYFVdA+ARIMlbc5Rzi2lZmVA=
+	t=1768200963; cv=none; b=QAnTds9dIqD8b3iVey7KsOIFmiPD3UOlntsLaBw6dei5PmkYbolMq1J7NYgb7vsCpHB9L01bg7SrWBXiHdkuiEXGCC3aJ9zFwzn4beC8ft9Kk1PDuuOA91E9ooNp2jfu7wejdekjd4KUtGgnS6puz1OPrZhLopohMLC8FSayrqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768200771; c=relaxed/simple;
-	bh=pvMCEzJj4SGW1oTw7LLKdutJEZeqLk/uCFRUpyapQq8=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=oSZ8ck3BPENaeMK68b42l88tL82PU4Pjy1x3XextQURbxdgjzF1yMZ1SzRxrCjpB0gcKtVF60dYGqOIRzmaJyOnx4hwVffasm/UivTHsIlK8zhvTbF17HUrWvBIjhm64NgfAJWoZq5GlH9FAgSz/p/PO7E8j0/EETnvcEmVOPBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=PTEjG4FG; arc=none smtp.client-ip=209.85.214.225
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
-Received: by mail-pl1-f225.google.com with SMTP id d9443c01a7336-2a2bff5f774so18859315ad.2
-        for <stable@vger.kernel.org>; Sun, 11 Jan 2026 22:52:50 -0800 (PST)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768200770; x=1768805570;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=FLfXk/1BlceWtah76vfkztbqcGBEs/TIQ6b4f9GZ4FY=;
-        b=OAlblLzvnjNoojs8GEvnnMD17hy3433bcAzAJ2q/Uxkjpd8XmKvyrYTB+s7+/EFRAa
-         d9v36zmmEpQy1I0j0S56G0u+dCxBEXNz6O+uYeNSNs1Dg9bPz0DwDTBBMFvghxzb0iBE
-         Zynp9P9Mscz4X/4vX66BMclp4+p+TZy5hB9psPnzbgcLd5kN/GSaR5sw9+/MIX3V1QlD
-         zyAa9nyG4itaTwRrFW+3YnKWXKKkPC205vbJdT/7B8ilr5VLcwVF6F+xYrfcxXMrObyK
-         7Gu10EfhILx/826sJZSHlRpVtCD7xuS8h8kdty2fb1Mt6n8P83plnJyWEk08YIutSC1K
-         g29g==
-X-Gm-Message-State: AOJu0YwPLCkai5MTgsjoaU+UEjL0W2ih+CG6N5FAZDN+7KKeeRS4yuj9
-	SCrFiOsZJpkzo1N4Hb3n/2CQcf/0elXh/0OBQZ0pFkXqDIR25d8QvnnwPVtY+S0DOx3YOdN+r06
-	v2K/ZlZX7TS1dxPQEk31yphfAB0K4TTOWY6J1CI8eeIovQl6amxI4B0Bn7YRlij7eqHA2aBQxnl
-	UTf9ie8yNAqUnvH68PhYpHpB2J2XxP9ARqUSTgJCFDbtQ7hdyXAfFAPRE9MEqn3hVSjd1rcXhCw
-	79TL+UXTGvftZmREJ3B8LJ8sRijAAU=
-X-Gm-Gg: AY/fxX6dvbpT451aYMMAt4S5H+RFynAiSvY9GQa7b/0GIdw6MwFlKFqlxZzNF4LLqw0
-	68sw8mZiChVZ8a/1xbQ7hb0Tni6iAESw8CZnurTM5GQwOnzf9rDHOfYXM9JHbYEu5utyybY8w/f
-	H8Kr2P4H6HdGZCpGSn1jlAvhQP1FhcumPBOggJIvzHV6ptwyJGAQUMsBpSCBB2EYxHruarXTVd8
-	BXCDQV9W1b7NxabYxoJfDEvsicHmu0U7o1/8ygQot1bECd0R9d3gghtiCsh/qUBwDjVgvBJvbBd
-	j0jNTR9dKqXJ+7AuyGFOtSWKxfmqjz+ofskbPtMfvtl7zN3bRMcTv9jZJJ83N5HgRZdp458MfDD
-	qxLRBVVo8EDM8cQ1MTRfyRt3j/vgApe25DdmyAqjbgKs6NwoO2ba94EkAHAUDojAGbsnVuZ2rZ2
-	SxP1OeNxKnhZqUDkJ7imuW4q8tteo7b7NOyoaSs1U+LIuuS7y+8vvJW/VLlSo=
-X-Google-Smtp-Source: AGHT+IHvG6Oiab2bb9b4i05KnGXH5IP6yWt00NYqGqx6c1Mx/xPTrk7Z9erfSHtFdDmYBQI+R3cABCSW41kv
-X-Received: by 2002:a17:903:90d:b0:29f:6ca:a35b with SMTP id d9443c01a7336-2a3ee425ac0mr131236495ad.1.1768200770102;
-        Sun, 11 Jan 2026 22:52:50 -0800 (PST)
-Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-2.dlp.protect.broadcom.com. [144.49.247.2])
-        by smtp-relay.gmail.com with ESMTPS id d9443c01a7336-2a3e3c49d39sm20416685ad.16.2026.01.11.22.52.49
-        for <stable@vger.kernel.org>
-        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
-        Sun, 11 Jan 2026 22:52:50 -0800 (PST)
-X-Relaying-Domain: broadcom.com
-X-CFilter-Loop: Reflected
-Received: by mail-qk1-f197.google.com with SMTP id af79cd13be357-8bbb6031cfdso203701385a.1
-        for <stable@vger.kernel.org>; Sun, 11 Jan 2026 22:52:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=broadcom.com; s=google; t=1768200768; x=1768805568; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=FLfXk/1BlceWtah76vfkztbqcGBEs/TIQ6b4f9GZ4FY=;
-        b=PTEjG4FGTFl9K/FTiSEh+uQk/LOyR7P3c2UCg09bzWy50kHT26bMkYHqupAWbRTY2s
-         Q9sERmZl+3vO5RmtBnfT/Kxv7mVWzftvlDKuvRTFQHBuA1jJW/euaQr9U5xHFbG6HPho
-         e6R3k2nXZhMEw5VxHOdxYy8cc2YP2Vf4uNLto=
-X-Received: by 2002:a05:620a:2804:b0:8b2:f090:b165 with SMTP id af79cd13be357-8c389388a4emr1707614385a.4.1768200768245;
-        Sun, 11 Jan 2026 22:52:48 -0800 (PST)
-X-Received: by 2002:a05:620a:2804:b0:8b2:f090:b165 with SMTP id af79cd13be357-8c389388a4emr1707611785a.4.1768200767714;
-        Sun, 11 Jan 2026 22:52:47 -0800 (PST)
-Received: from keerthanak-ph5-dev.. ([192.19.161.250])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a6b4fsm1442738085a.2.2026.01.11.22.52.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 11 Jan 2026 22:52:47 -0800 (PST)
-From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-To: stable@vger.kernel.org,
-	gregkh@linuxfoundation.org
-Cc: borisp@nvidia.com,
-	john.fastabend@gmail.com,
-	kuba@kernel.org,
-	davem@davemloft.net,
-	edumazet@google.com,
-	pabeni@redhat.com,
-	horms@kernel.org,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ajay.kaher@broadcom.com,
-	alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com,
-	yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Sasha Levin <sashal@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH v6.12.y] tls: Use __sk_dst_get() and dst_dev_rcu() in get_netdev_for_sock().
-Date: Mon, 12 Jan 2026 06:49:44 +0000
-Message-ID: <20260112064944.2969750-1-keerthana.kalyanasundaram@broadcom.com>
-X-Mailer: git-send-email 2.43.7
+	s=arc-20240116; t=1768200963; c=relaxed/simple;
+	bh=k3oWapIKJd6lxtrBmIgi8rh73j//0OA0pIvB5kE0/Yo=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=F7NQsJXvhlKzKoay1J1yyOFk/DVVUNr9CQ0K5xdLgZQq4VsbN3/j3R5ELcuJ9rNvSdcegg+RP+oR7fyn9VMvZcxj9Rk6w2RX7flCOItlZxA81Hfb/RTWDiHc4oTBWmblgaI2y/lVPfeeWlz80fK6BRSXAg9aV/aVpP5IdB5CcJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout11.his.huawei.com (SkyGuard) with ESMTPS id 4dqNSK5h5gzYQtvX;
+	Mon, 12 Jan 2026 14:55:45 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id B556740539;
+	Mon, 12 Jan 2026 14:55:55 +0800 (CST)
+Received: from [10.67.111.176] (unknown [10.67.111.176])
+	by APP4 (Coremail) with SMTP id gCh0CgA3l_f6mmRpqfQNDg--.29252S2;
+	Mon, 12 Jan 2026 14:55:55 +0800 (CST)
+Message-ID: <9d2cdae1-178f-454c-b45a-681d782c483c@huaweicloud.com>
+Date: Mon, 12 Jan 2026 14:55:53 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] cpuset: Treat cpusets in attaching as populated
+To: Greg KH <gregkh@linuxfoundation.org>
+Cc: longman@redhat.com, lizefan.x@bytedance.com, tj@kernel.org,
+ hannes@cmpxchg.org, cgroups@vger.kernel.org, stable@vger.kernel.org,
+ lujialin4@huawei.com
+References: <20260109112140.992393920@linuxfoundation.org>
+ <20260112024257.1073959-1-chenridong@huaweicloud.com>
+ <2026011230-immovable-overripe-abfb@gregkh>
+Content-Language: en-US
+From: Chen Ridong <chenridong@huaweicloud.com>
+In-Reply-To: <2026011230-immovable-overripe-abfb@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-CM-TRANSID:gCh0CgA3l_f6mmRpqfQNDg--.29252S2
+X-Coremail-Antispam: 1UD129KBjvdXoWrKF4DGw43GF13Ww4kZF18Zrb_yoW3Krg_ua
+	17tFyDCr18J3ZFkws8AFZ8WrZFka1Fvry5JrWDX3y2qF4rJFWDGFWFy395XFyrKF4xZFs0
+	g3Z0yayFyasrCjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
+	9fnUUIcSsGvfJTRUUUbzxYFVCjjxCrM7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E6xAIw20E
+	Y4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28CjxkF64kEwV
+	A0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8IcVCY1x02
+	67AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87Iv6xkF7I
+	0E14v26rxl6s0DM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40E
+	x7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I8E87Iv67AKxVW8JVWxJwAm72CE4IkC6x
+	0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lc7CjxVAaw2AFwI0_JF0_Jw1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVW8JVWxJwCI42IY6I8E87Iv6xkF7I0E
+	14v26r4UJVWxJrUvcSsGvfC2KfnxnUUI43ZEXa7IU8YYLPUUUUU==
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
-From: Kuniyuki Iwashima <kuniyu@google.com>
 
-[ Upstream commit c65f27b9c3be2269918e1cbad6d8884741f835c5 ]
 
-get_netdev_for_sock() is called during setsockopt(),
-so not under RCU.
+On 2026/1/12 14:42, Greg KH wrote:
+> On Mon, Jan 12, 2026 at 02:42:57AM +0000, Chen Ridong wrote:
+>> From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> 
+> I did not send this :(
+> 
+>> 6.6-stable review patch.  If anyone has any objections, please let me know.
+> 
+> This is already in the 6.6.120 release.
+> 
+> thanks,
+> 
+> greg k-h
 
-Using sk_dst_get(sk)->dev could trigger UAF.
+I am sorry for the confusion.
 
-Let's use __sk_dst_get() and dst_dev_rcu().
+I downloaded and modified the patch, and replied.
 
-Note that the only ->ndo_sk_get_lower_dev() user is
-bond_sk_get_lower_dev(), which uses RCU.
+My point is that the patch intended for the 6.6.120 release should include an adaptation.
+Specifically, the following block:
 
-Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Keerthana: Backport to v6.12.y ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
----
- net/tls/tls_device.c | 17 ++++++++++-------
- 1 file changed, 10 insertions(+), 7 deletions(-)
+[...]
+ 	if (!excluded_child && !cs->nr_subparts_cpus)
+ 		return cgroup_is_populated(cs->css.cgroup);
+[...]
 
-diff --git a/net/tls/tls_device.c b/net/tls/tls_device.c
-index 0af7b3c52..99d503e03 100644
---- a/net/tls/tls_device.c
-+++ b/net/tls/tls_device.c
-@@ -123,17 +123,19 @@ static void tls_device_queue_ctx_destruction(struct tls_context *ctx)
- /* We assume that the socket is already connected */
- static struct net_device *get_netdev_for_sock(struct sock *sk)
- {
--	struct dst_entry *dst = sk_dst_get(sk);
--	struct net_device *netdev = NULL;
-+	struct net_device *dev, *lowest_dev = NULL;
-+	struct dst_entry *dst;
- 
--	if (likely(dst)) {
--		netdev = netdev_sk_get_lowest_dev(dst->dev, sk);
--		dev_hold(netdev);
-+	rcu_read_lock();
-+	dst = __sk_dst_get(sk);
-+	dev = dst ? dst_dev_rcu(dst) : NULL;
-+	if (likely(dev)) {
-+		lowest_dev = netdev_sk_get_lowest_dev(dev, sk);
-+		dev_hold(lowest_dev);
- 	}
-+	rcu_read_unlock();
- 
--	dst_release(dst);
--
--	return netdev;
-+	return lowest_dev;
- }
- 
- static void destroy_record(struct tls_record_info *record)
+Should be corrected to:
+
+ 	if (!excluded_child && !cs->nr_subparts_cpus)
+-		return cgroup_is_populated(cs->css.cgroup);
++		return cpuset_is_populated(cs);
+
 -- 
-2.43.7
+Best regards,
+Ridong
 
 
