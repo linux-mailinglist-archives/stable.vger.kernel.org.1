@@ -1,140 +1,172 @@
-Return-Path: <stable+bounces-208199-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208200-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 22BB4D150D2
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 20:33:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 85279D150D8
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 20:33:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CF9D7306875D
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 19:27:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E4D93303EB8A
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 19:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDCB438E10E;
-	Mon, 12 Jan 2026 19:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B18A318EEC;
+	Mon, 12 Jan 2026 19:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=tyhicks.com header.i=@tyhicks.com header.b="ivz5Uvc0";
-	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="iTTE5Tjx"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="cUOvzy8D"
 X-Original-To: stable@vger.kernel.org
-Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B183242D9;
-	Mon, 12 Jan 2026 19:23:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F092C2FF65B;
+	Mon, 12 Jan 2026 19:28:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768245818; cv=none; b=QW6oRz4DAo9pAtqDja8rPl4hj4DlQE7Hjh2Dk7Nkqvi9ETxeVSKNa17qAem0k+Jw7GJSXwkw78UtvSxd5J8uBs/Mpab2io7O74SHvA1FsfMNSvxJoCgvhJVnKabvB2PYnEdupM3ExbadMbJ3zrNpbMPGdzuuWL128j1cvVAilkM=
+	t=1768246098; cv=none; b=gWwjMb4IOY/ROds6/lvar+l/qEcibrfoRLPU+iShMQbh6BXw8EC0j3MhFQDkYCLqn3pGLKqHTtO3oCApPPG3ZOo3sDK0Tb26EMNeGIVk0Nlp6Abdxb0E+qGvA4qsGvgwomKtrqOOhN006Fk6KZbmIac6kaei8zH+Wzfihy57jeU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768245818; c=relaxed/simple;
-	bh=VrQ+HuNDrrBvHmxfxFB3ppJO0NCjlmdu3wF4xgRXfVI=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=GV+7FOJ/gBEVqX6ppYb//vh4RmhoL8EmtjgxXAVLSYicbZ74xf/3E2sngvmjH2NkyNmBVrpXFqj52KP/w60WJDMlZYpEprMAGqkdMnEvwPNOsY9PrAJPBGJaaH0EjMSywHYS8PbISBZpo96gZ05dqvLtjggrk2sKRSBV8AEjt+U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tyhicks.com; spf=pass smtp.mailfrom=tyhicks.com; dkim=pass (2048-bit key) header.d=tyhicks.com header.i=@tyhicks.com header.b=ivz5Uvc0; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=iTTE5Tjx; arc=none smtp.client-ip=103.168.172.157
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tyhicks.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tyhicks.com
-Received: from phl-compute-09.internal (phl-compute-09.internal [10.202.2.49])
-	by mailfhigh.phl.internal (Postfix) with ESMTP id ED97414000D5;
-	Mon, 12 Jan 2026 14:23:35 -0500 (EST)
-Received: from phl-frontend-03 ([10.202.2.162])
-  by phl-compute-09.internal (MEProxy); Mon, 12 Jan 2026 14:23:35 -0500
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tyhicks.com; h=
-	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
-	:in-reply-to:message-id:mime-version:references:reply-to:subject
-	:subject:to:to; s=fm1; t=1768245815; x=1768332215; bh=WsK+GQRd8+
-	amlKYl2ufesV7Qu4UKibxO52zq09OpqnM=; b=ivz5Uvc0kQT2sZqdiyEDI6y/hP
-	qFT3Cr+qkxd4N2exh3+nPVIZsh6TcULTVi6SfXYEmz4EMj72y7cVg8ncLBKcTNoM
-	Yjopn+Xd2Zgm/dO4iGfn63Mtm/oivTH7vbYHKgao++bSxlC1MBU+Oq2Dx0GuQwRB
-	Xv/UhKqn/5IQ5lR1CbpSeNLVbBEYUiSZxz5HS/qT72Je/bbdRP97MKaWe7buxjXx
-	DK4VOSIHwKlaVtnnuQFIMxeeR8/yCeEfwFbraoZ1Z4oWLNJtpCJP+3x8GW8YjXh7
-	eer5erwaon9RUz0PkllnkwbHCF6/Pt/JNtt0qJm5fmJTmd8hRcEQY3BmZ6MQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-	messagingengine.com; h=cc:cc:content-type:content-type:date:date
-	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-	:message-id:mime-version:references:reply-to:subject:subject:to
-	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
-	1768245815; x=1768332215; bh=WsK+GQRd8+amlKYl2ufesV7Qu4UKibxO52z
-	q09OpqnM=; b=iTTE5TjxrySxroUSioP1GJiHGGPLg+0LCdb4jLURf31hahKzaiw
-	xbeV/icKFUYy4TZMwJADaGXZ44p9YTPzieLyQrK3xtZQ03f9P3lXcRvxh5RwyyVw
-	Np1JAZ3OgrHmJw3apRU6Ub7ZZrR7rptytZxqK5Sk6BiRlona+BJ3MYSDt7VSWINk
-	oVqyVC9Kl1YTVM6uks/iDlKIctEc0Z2VrQC1Q5OV4mlIAWAjnwONsBCvo2+19cDV
-	TWpUyUO1iOEYBQAQZmhcQKN7vHRLleLkAC5pJD5FOpvawpCPWwjXq6icRjT7gqgd
-	Cn3C4Eu3JptqvNXUHG2Gl+MwOUkcyf063ew==
-X-ME-Sender: <xms:N0plaU4W31GyVQiA_KgH0IinhgR4Jf0BOO6Ppey3h5I1ScBg61bZ2w>
-    <xme:N0plaUIZZ-DGZv1CJ17uCOskbn5OZ2SHN0wlqgXxEPjNpR83phtDc0L51cQv81Ev0
-    kiz6n19r6jVrmskpi1Q65ly2Uk72rY9j2S5PejhzEOiq-v4ahGw>
-X-ME-Received: <xmr:N0placxQvai2PhEhGLM42cbCrKPjK48hD4svwsFVN16EK9Xtojvmsfo>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudekvdekucetufdoteggodetrf
-    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
-    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
-    gurhepfffhvfevuffkfhggtggujgesthdtrodttddtvdenucfhrhhomhepvfihlhgvrhcu
-    jfhitghkshcuoegtohguvgesthihhhhitghkshdrtghomheqnecuggftrfgrthhtvghrnh
-    epffduhfduvdehueffuefffedtudekueekfeegveffvdegvdetfffhieegieehfedvnecu
-    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghouggvse
-    hthihhihgtkhhsrdgtohhmpdhnsggprhgtphhtthhopedutddpmhhouggvpehsmhhtphho
-    uhhtpdhrtghpthhtohepthhhohhrshhtvghnrdgslhhumheslhhinhhugidruggvvhdprh
-    gtphhtthhopehvihhrohesiigvnhhivhdrlhhinhhugidrohhrghdruhhkpdhrtghpthht
-    oheprghruggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopeiihhgrnhhgiihiphgvnh
-    hgtdesfhhogihmrghilhdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvghrnhgv
-    lhdrohhrghdprhgtphhtthhopegvsghighhgvghrsheskhgvrhhnvghlrdhorhhgpdhrtg
-    hpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprhgtphht
-    thhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopegvtg
-    hrhihpthhfshesvhhgvghrrdhkvghrnhgvlhdrohhrgh
-X-ME-Proxy: <xmx:N0placKBJ0pH_7Pr19dEBDOz6yToets4ix9ANGG45vCUsaIE6VDi9A>
-    <xmx:N0plabWmCbwJsEHJIm_TKD-uXTb-IxNxkfcO2h6exw7pJ4hg9u6TVA>
-    <xmx:N0plafYD8B17U9DmeoJlqoLe6jwtbpL1W8zQnL0vhCyLI8HoAiOTzg>
-    <xmx:N0plaSzt2SWVxWMFaCnDUaTQDF_aWA8swFhH5V5v1UeoCF4jCJ67pg>
-    <xmx:N0plaZyhu659jpzm98vPwCeZUhFbrLVnVdMTLXW7aPdoRgfw7t6O3gC2>
-Feedback-ID: i78e14604:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 12 Jan 2026 14:23:33 -0500 (EST)
-Date: Mon, 12 Jan 2026 13:23:30 -0600
-From: Tyler Hicks <code@tyhicks.com>
-To: Thorsten Blum <thorsten.blum@linux.dev>
-Cc: Al Viro <viro@zeniv.linux.org.uk>, Ard Biesheuvel <ardb@kernel.org>,
-	Zipeng Zhang <zhangzipeng0@foxmail.com>,
-	Christian Brauner <brauner@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
-	ecryptfs@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH] ecryptfs: Add missing gotos in ecryptfs_read_metadata
-Message-ID: <aWVKMoUMBwnYWCPw@yaupon>
-References: <20260111003655.491722-1-thorsten.blum@linux.dev>
- <20260111010825.GG3634291@ZenIV>
- <5DD6E30E-4974-42D9-86CF-A6A78CF0492E@linux.dev>
+	s=arc-20240116; t=1768246098; c=relaxed/simple;
+	bh=RX0Sv+nwwGP5jlmTmIvwmhFwdFZM6lqTlF9ZMSWDv0w=;
+	h=Date:To:From:Subject:Message-Id; b=rhrDAIHkUNGIv09sD590dtszNwHBltnwRT0BKK5k7zs7PNtumDyVmgdCiytdSJPu5+RAG9USxOaVCG1RQ34izHE4FyaoCOhUBXZ08OaN3w7Cz19VE3dCnnI2R7NR2xEzQbdXOHzrYNe90nt6RdKlMDHhAyfKkNoRNqG9GcCicI8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=cUOvzy8D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 845DBC116D0;
+	Mon, 12 Jan 2026 19:28:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768246097;
+	bh=RX0Sv+nwwGP5jlmTmIvwmhFwdFZM6lqTlF9ZMSWDv0w=;
+	h=Date:To:From:Subject:From;
+	b=cUOvzy8DS7jBfB6sfhSsACJ8m44bbOuhy3t2BfrVQvyLhWYSQZMwU5ybuoiOl1SZC
+	 ZnlIP+sfn65KMAaxNMgwzjiVH1h3oWG3yMvXX7fnX4oKFDQI/2tlgI/3su9+Dmrs6G
+	 lo0FT57N9Tv6ajMxyYXuXPu67TvAl6tbYatMQ3cM=
+Date: Mon, 12 Jan 2026 11:28:16 -0800
+To: mm-commits@vger.kernel.org,urezki@gmail.com,stable@vger.kernel.org,hdanton@sina.com,kartikey406@gmail.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch added to mm-new branch
+Message-Id: <20260112192817.845DBC116D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <5DD6E30E-4974-42D9-86CF-A6A78CF0492E@linux.dev>
 
-On 2026-01-11 13:28:17, Thorsten Blum wrote:
-> On 11. Jan 2026, at 02:08, Al Viro wrote:
-> > On Sun, Jan 11, 2026 at 01:36:52AM +0100, Thorsten Blum wrote:
-> >> Add two missing goto statements to exit ecryptfs_read_metadata() when an
-> >> error occurs.
-> >> 
-> >> The first goto is required; otherwise ECRYPTFS_METADATA_IN_XATTR may be
-> >> set when xattr metadata is enabled even though parsing the metadata
-> >> failed. The second goto is not strictly necessary, but it makes the
-> >> error path explicit instead of relying on falling through to 'out'.
-> > 
-> > Ugh...  IMO the whole thing from the point we'd successfully allocated
-> > the page to the point where we start to clear it ought to be in a separate
-> > helper.  Something like this, perhaps?
-> 
-> I wanted to keep the fix simple, but I'm happy to refactor the function
-> if that's preferred. Any preferences, Tyler?
 
-I typically like the multi-patch approach of a minimal, easy-to-backport
-fix first and then a more complete cleanup/improvement in the followup
-patch(es).
+The patch titled
+     Subject: mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+has been added to the -mm mm-new branch.  Its filename is
+     mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch
 
-Tyler
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch
 
-> 
-> Thanks,
-> Thorsten
-> 
+This patch will later appear in the mm-new branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+Note, mm-new is a provisional staging ground for work-in-progress
+patches, and acceptance into mm-new is a notification for others take
+notice and to finish up reviews.  Please do not hesitate to respond to
+review feedback and post updated versions to replace or incrementally
+fixup patches in mm-new.
+
+The mm-new branch of mm.git is not included in linux-next
+
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
+
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: Deepanshu Kartikey <kartikey406@gmail.com>
+Subject: mm/vmalloc: prevent RCU stalls in kasan_release_vmalloc_node
+Date: Mon, 12 Jan 2026 16:06:12 +0530
+
+When CONFIG_PAGE_OWNER is enabled, freeing KASAN shadow pages during
+vmalloc cleanup triggers expensive stack unwinding that acquires RCU read
+locks.  Processing a large purge_list without rescheduling can cause the
+task to hold CPU for extended periods (10+ seconds), leading to RCU stalls
+and potential OOM conditions.
+
+The issue manifests in purge_vmap_node() -> kasan_release_vmalloc_node()
+where iterating through hundreds or thousands of vmap_area entries and
+freeing their associated shadow pages causes:
+
+  rcu: INFO: rcu_preempt detected stalls on CPUs/tasks:
+  rcu: Tasks blocked on level-0 rcu_node (CPUs 0-1): P6229/1:b..l
+  ...
+  task:kworker/0:17 state:R running task stack:28840 pid:6229
+  ...
+  kasan_release_vmalloc_node+0x1ba/0xad0 mm/vmalloc.c:2299
+  purge_vmap_node+0x1ba/0xad0 mm/vmalloc.c:2299
+
+Each call to kasan_release_vmalloc() can free many pages, and with
+page_owner tracking, each free triggers save_stack() which performs stack
+unwinding under RCU read lock.  Without yielding, this creates an
+unbounded RCU critical section.
+
+Add periodic cond_resched() calls within the loop to allow:
+- RCU grace periods to complete
+- Other tasks to run
+- Scheduler to preempt when needed
+
+The fix uses need_resched() for immediate response under load, with a
+batch count of 32 as a guaranteed upper bound to prevent worst-case stalls
+even under light load.
+
+Link: https://lkml.kernel.org/r/20260112103612.627247-1-kartikey406@gmail.com
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reported-by: syzbot+d8d4c31d40f868eaea30@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d8d4c31d40f868eaea30
+Link: https://lore.kernel.org/all/20260112084723.622910-1-kartikey406@gmail.com/T/ [v1]
+Suggested-by: Uladzislau Rezki <urezki@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Cc: Hillf Danton <hdanton@sina.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmalloc.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+--- a/mm/vmalloc.c~mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node
++++ a/mm/vmalloc.c
+@@ -2273,11 +2273,14 @@ decay_va_pool_node(struct vmap_node *vn,
+ 	reclaim_list_global(&decay_list);
+ }
+ 
++#define KASAN_RELEASE_BATCH_SIZE 32
++
+ static void
+ kasan_release_vmalloc_node(struct vmap_node *vn)
+ {
+ 	struct vmap_area *va;
+ 	unsigned long start, end;
++	unsigned int batch_count = 0;
+ 
+ 	start = list_first_entry(&vn->purge_list, struct vmap_area, list)->va_start;
+ 	end = list_last_entry(&vn->purge_list, struct vmap_area, list)->va_end;
+@@ -2287,6 +2290,11 @@ kasan_release_vmalloc_node(struct vmap_n
+ 			kasan_release_vmalloc(va->va_start, va->va_end,
+ 				va->va_start, va->va_end,
+ 				KASAN_VMALLOC_PAGE_RANGE);
++
++		if (need_resched() || (++batch_count >= KASAN_RELEASE_BATCH_SIZE)) {
++			cond_resched();
++			batch_count = 0;
++		}
+ 	}
+ 
+ 	kasan_release_vmalloc(start, end, start, end, KASAN_VMALLOC_TLB_FLUSH);
+_
+
+Patches currently in -mm which might be from kartikey406@gmail.com are
+
+mm-swap_cgroup-fix-kernel-bug-in-swap_cgroup_record.patch
+mm-vmalloc-prevent-rcu-stalls-in-kasan_release_vmalloc_node.patch
+ocfs2-validate-i_refcount_loc-when-refcount-flag-is-set.patch
+ocfs2-validate-inline-data-i_size-during-inode-read.patch
+ocfs2-add-check-for-free-bits-before-allocation-in-ocfs2_move_extent.patch
+
 
