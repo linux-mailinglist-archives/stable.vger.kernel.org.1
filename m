@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208093-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208095-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FCC6D11F96
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:43:39 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 521B9D11F9C
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:43:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E24BE30D1BD4
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:41:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F089330D4724
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:41:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADE231AA9B;
-	Mon, 12 Jan 2026 10:41:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C1698320A33;
+	Mon, 12 Jan 2026 10:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+nbMjJT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kHIZBZtN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387527A123
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:41:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8596127A123
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:41:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214513; cv=none; b=CnDXEYADB49NeoI6bFwuwbJUGD96bN6FCCj0Kuq4m/yVg44Cu48j9gIQvwlheOVMtcDT1y5pC6lQkddNIRm/rFcMy4AUW1SPTdAwqVI3VdhyDh5TNuyRsdirFUqIkuWb9TqejtMmWs/fjDG6lQrgWrxy7xLSqhLKBYy8z/9fE+c=
+	t=1768214518; cv=none; b=fysrWh++JNG92i06vE4tzVPl3A0Bi+BGRWEV6UsZ+kTdBnKp/DTrEX7AAkz2m44VSAkHl/mGn2vixZJbABvXf+/qysLCps3rx+R2VFZidSos2ZtQq3d8P/y1qsly7ULlZUAAmjhdHToA+e6+U4ol0QuDVRfb7BuvQyqXluayCyw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214513; c=relaxed/simple;
-	bh=P+iil04i8li4TRA36yB/DoHAr8Jr6Xm/9L4drTYKxxY=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mUrC6Bq0Eg2FejB2G31FN03aI+osqPIZy6utXHpADuNwhH/k22yqPnQbk3VIWt+7m6dDJ+n60RbAiMnMJXJTUOJtHgy6KqpoNNP4LnIN8Q5swVy8i6C47ZL+J0X2uJacwzJ0CIvl1Up4EbAPeDdZsQAqBYEv/sL40uU7yKE28fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+nbMjJT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380E1C19421;
-	Mon, 12 Jan 2026 10:41:52 +0000 (UTC)
+	s=arc-20240116; t=1768214518; c=relaxed/simple;
+	bh=rXJh4P8HZn0Al5QqMRHej9radpQUJVea5l9pZHnkm2s=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ovNaIOF1eaFkpIn2GslSYwUrVow56HljO2MM4YqfJYlxw+bBYZQ29uxRdHZUGQWOqRpL6MiN/UbSCShSzM0nkgnhXhrCUknvEdSMYEQJuMUbHIwlttKq5lDmgoSkrVuz8aEK6zIE1l0Vb06IAROk8eStYBNC1QLt+k/y6qAXjqw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kHIZBZtN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA860C16AAE;
+	Mon, 12 Jan 2026 10:41:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768214512;
-	bh=P+iil04i8li4TRA36yB/DoHAr8Jr6Xm/9L4drTYKxxY=;
+	s=korg; t=1768214518;
+	bh=rXJh4P8HZn0Al5QqMRHej9radpQUJVea5l9pZHnkm2s=;
 	h=Subject:To:Cc:From:Date:From;
-	b=O+nbMjJTxKamriXV0nF+m/KRfk9qpDYORmjMORjsCkgW2x+pAvRFpOMqYJBb8Q1V0
-	 MBN+ldhlMmfULofjIO4zrGKJGGOkM9e5gkVw6qw+wnDjR1+corTnbQ0KU483UJWB6N
-	 2sIuMxWQLmW2GLDNm8dQF0m0MsIg9YJJIHRTtMng=
-Subject: FAILED: patch "[PATCH] ALSA: ac97: fix a double free in" failed to apply to 6.6-stable tree
+	b=kHIZBZtNHZsG26Fd39xDWXzSypgIYHhNKY1BgB3VNpXKrELiSzwX+E5HZBfzC6wpU
+	 sgnGqEQuckEYqOpro5aXRAFxvtWj+vD2YmCPrNKHRAypk0kealjBWe8MMj8BoeG5ny
+	 sYnSjLQkfV94GJ0gk0Dpu5XGcJYJonf57Q4nHTCQ=
+Subject: FAILED: patch "[PATCH] ALSA: ac97: fix a double free in" failed to apply to 5.15-stable tree
 To: lihaoxiang@isrc.iscas.ac.cn,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Jan 2026 11:41:39 +0100
-Message-ID: <2026011239-sustained-underpass-b703@gregkh>
+Date: Mon, 12 Jan 2026 11:41:40 +0100
+Message-ID: <2026011239-handled-worried-ca90@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.6-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011239-sustained-underpass-b703@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011239-handled-worried-ca90@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
