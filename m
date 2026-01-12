@@ -1,290 +1,251 @@
-Return-Path: <stable+bounces-208170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C450D13BAE
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:38:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DD04D13B2D
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B8CE30F033B
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:21:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B64F8300CCDD
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:33:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7AE12EC084;
-	Mon, 12 Jan 2026 15:20:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6539535FF5B;
+	Mon, 12 Jan 2026 15:33:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="ANFGIGqM";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="WQN8EU13";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="mlOykGbL";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="4HzFOFmH"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QBZnCJWN"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A34652E92BA
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 15:20:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B39035FF4B
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 15:33:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768231252; cv=none; b=U9nJWgCMP0IwEp3H1GSGdxTviwvQoEIX8mF+o7rV/NJIK2jcwCLYkrLYd/N5EQjCvD6Pds+JiiirLzH1bzY3G9qSzv9tAcBRq3oNUfCbUXkYbSGF8j8FoRpqE6MsrlXG4KRDyKcezOt5EPUBiBySWeAQQDwMUstTThu0PwGBbPo=
+	t=1768232034; cv=none; b=K902LOylwOZxHRjomzGW48bWnQQNUWkaGGTEhtgEAE/J3pWTvfhiq1Zo45D3hT9kEt9sL5U3Ci50Y8XqgtvIt105TQD7ADUqgw2Eedy+kBRwqeHY4K9+zj8oMn1K71mx9RXKq/6DEA8TShqgmy+KCIOPDJ5yxQYqF/kkn4PTfEI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768231252; c=relaxed/simple;
-	bh=RQg2ZysWxNtg7hmAk0Mow2OGDeT9HAqXrVbzERRIGxk=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=bwoNrC/9KMqvZAN9WMGhRTZbVMnxOJ6YwnHHx1pf5xROVVTft++7OVwlG3TTPG97PCTjuiegycpMs14Z+BJ0pNCR4LK6HTbpk5ntpz1NUF8vD3JVa8eTPSfebMmG8q4PhQMZ6m7FrDapoOZndtptWKyrfQt1e/WtP92iMXlQvOU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=ANFGIGqM; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=WQN8EU13; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=mlOykGbL; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=4HzFOFmH; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 7348A33686;
-	Mon, 12 Jan 2026 15:20:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768231249; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=ANFGIGqMKZHz5kcqpolbvUF7Uj2hKmxsUUpw/Dx3aiP1QO83Tvv/KI3RH8vFceGbJEQHbj
-	3oBusBBln2wG1K58URF1bQ2aLAXBRbd8AjxT3JH5TI8dywo7IVuNpVI6v/YtRjYCoIqSWw
-	PiERMCiq4uSnwIooQSrIOGfTLuOqHYw=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768231249;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=WQN8EU13EPJiH8sYNXhbLjMgtCmsCzH8BadbmBcTcRqgYjuAxnumnEiLvrO6M3wa6twr7R
-	BNAf+hKtBJWqqhBw==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=mlOykGbL;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=4HzFOFmH
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768231248; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=mlOykGbLkkFp4qZz+orIWxysK2hjs8nJ4BdcSZ8ECTeeWx9T1DkPfCCBDfgY/DOAcRbpv9
-	AGvEhFfX4XrK2Prqi/JzdI3zsQrNnU3qiHfdQzMYBdsd5hPcqegc5//CqoTbgTdFsq0zzH
-	bwbey85NZ8+LUOrXoIXyHU85NBgpf/Y=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768231248;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=n25xYend9nOvPHOgzYEdjuhjORh5tzR0W8gWZOljgv4=;
-	b=4HzFOFmH458/lrEJj19sfZJeTI+qne5clMJcEXBH4iN6lL8kzQVHozSMyFmYQkPCpMTlcx
-	Ip7FbFCpR2WrhxAQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 50A303EA63;
-	Mon, 12 Jan 2026 15:20:48 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id ueREE1ARZWndGgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Mon, 12 Jan 2026 15:20:48 +0000
-Message-ID: <7a0be5a1-17f5-4bba-9d42-a53fbb84abe8@suse.cz>
-Date: Mon, 12 Jan 2026 16:20:48 +0100
+	s=arc-20240116; t=1768232034; c=relaxed/simple;
+	bh=wXC4fZKYLfaKWzkEi5/4CkdURM0b2KpWVQ+/HSir0S0=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=MjbbFdWapzTX7PEVFVW3QODUV6FFv+b5O+62yqIJcq5zUK8l1nibzNfWmkqj0sfJjzIRghCAfxAZ3T2JOuL/PNEvq8wGUuv+4xRLurT2s6qmdmo5OvHRwPudiKek9EXloeZlnLsj1jlUBGtw0w5Bp2TY5ekd1orqohR4mAvjVJ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QBZnCJWN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08DCDC16AAE;
+	Mon, 12 Jan 2026 15:33:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768232033;
+	bh=wXC4fZKYLfaKWzkEi5/4CkdURM0b2KpWVQ+/HSir0S0=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=QBZnCJWNQuG7xpMLerIy1Js8qbEBMG5MZtPSH94x/Q3gCtNqcaFPwM3s54PO09d4I
+	 eRyfAmAWpQwZGX/SALQuCCqeeuhOk3YVbMSV2JyvmwwDeSP3u4MUt8VFvVVCZlDRa8
+	 8WjvW/2042GCRMDqoQI8LqpzpwxYtQes9QgXadfqknfCJw8uJcSsvDO6pjowUvTs+2
+	 qZXMi4iL86WYD/iUGy7SvGkYv5iMO6kInMgezQNDOLrBPMpMAen9Qcw5IpR5omg3zM
+	 8medh2XNJJSYuYF84isC9gSQGK++GAWQTakYtB4nN84icJkLZzjcXvXk+LafUVFpuA
+	 bZg8tQcAetdwg==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: NeilBrown <neil@brown.name>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1.y] nfsd: provide locking for v4_end_grace
+Date: Mon, 12 Jan 2026 10:33:51 -0500
+Message-ID: <20260112153351.742670-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <2026011222-abdomen-balsamic-f41c@gregkh>
+References: <2026011222-abdomen-balsamic-f41c@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 00/20] slab: replace cpu (partial) slabs with sheaves
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
- Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.51
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,gmail.com,oracle.com,google.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid,suse.cz:email,msgid.link:url,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 7348A33686
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 8bit
 
-On 1/12/26 16:16, Vlastimil Babka wrote:
-> Percpu sheaves caching was introduced as opt-in but the goal was to
-> eventually move all caches to them. This is the next step, enabling
-> sheaves for all caches (except the two bootstrap ones) and then removing
-> the per cpu (partial) slabs and lots of associated code.
-> 
-> Besides (hopefully) improved performance, this removes the rather
-> complicated code related to the lockless fastpaths (using
-> this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
-> kmalloc_nolock().
-> 
-> The lockless slab freelist+counters update operation using
-> try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
-> without repeating the "alien" array flushing of SLUB, and to allow
-> flushing objects from sheaves to slabs mostly without the node
-> list_lock.
-> 
-> This v2 is the first non-RFC. I would consider exposing the series to
-> linux-next at this point.
+From: NeilBrown <neil@brown.name>
 
-Well if only I didn't forget to remove the RFC prefix before sending...
+[ Upstream commit 2857bd59feb63fcf40fe4baf55401baea6b4feb4 ]
 
-> Git branch for the v2:
->   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=sheaves-for-all-v2
-> 
-> Based on:
->   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/log/?h=slab/for-7.0/sheaves
->   - includes a sheaves optimization that seemed minor but there was lkp
->     test robot result with significant improvements:
->     https://lore.kernel.org/all/202512291555.56ce2e53-lkp@intel.com/
->     (could be an uncommon corner case workload though)
-> 
-> Significant (but not critical) remaining TODOs:
-> - Integration of rcu sheaves handling with kfree_rcu batching.
->   - Currently the kfree_rcu batching is almost completely bypassed. I'm
->     thinking it could be adjusted to handle rcu sheaves in addition to
->     individual objects, to get the best of both.
-> - Performance evaluation. Petr Tesarik has been doing that on the RFC
->   with some promising results (thanks!) and also found a memory leak.
-> 
-> Note that as many things, this caching scheme change is a tradeoff, as
-> summarized by Christoph:
-> 
->   https://lore.kernel.org/all/f7c33974-e520-387e-9e2f-1e523bfe1545@gentwo.org/
-> 
-> - Objects allocated from sheaves should have better temporal locality
->   (likely recently freed, thus cache hot) but worse spatial locality
->   (likely from many different slabs, increasing memory usage and
->   possibly TLB pressure on kernel's direct map).
-> 
-> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
-> ---
-> Changes in v2:
-> - Rebased to v6.19-rc1+slab.git slab/for-7.0/sheaves
->   - Some of the preliminary patches from the RFC went in there.
-> - Incorporate feedback/reports from many people (thanks!), including:
->   - Make caches with sheaves mergeable.
->   - Fix a major memory leak.
-> - Cleanup of stat items.
-> - Link to v1: https://patch.msgid.link/20251023-sheaves-for-all-v1-0-6ffa2c9941c0@suse.cz
-> 
-> ---
-> Vlastimil Babka (20):
->       mm/slab: add rcu_barrier() to kvfree_rcu_barrier_on_cache()
->       mm/slab: move and refactor __kmem_cache_alias()
->       mm/slab: make caches with sheaves mergeable
->       slab: add sheaves to most caches
->       slab: introduce percpu sheaves bootstrap
->       slab: make percpu sheaves compatible with kmalloc_nolock()/kfree_nolock()
->       slab: handle kmalloc sheaves bootstrap
->       slab: add optimized sheaf refill from partial list
->       slab: remove cpu (partial) slabs usage from allocation paths
->       slab: remove SLUB_CPU_PARTIAL
->       slab: remove the do_slab_free() fastpath
->       slab: remove defer_deactivate_slab()
->       slab: simplify kmalloc_nolock()
->       slab: remove struct kmem_cache_cpu
->       slab: remove unused PREEMPT_RT specific macros
->       slab: refill sheaves from all nodes
->       slab: update overview comments
->       slab: remove frozen slab checks from __slab_free()
->       mm/slub: remove DEACTIVATE_TO_* stat items
->       mm/slub: cleanup and repurpose some stat items
-> 
->  include/linux/slab.h |    6 -
->  mm/Kconfig           |   11 -
->  mm/internal.h        |    1 +
->  mm/page_alloc.c      |    5 +
->  mm/slab.h            |   53 +-
->  mm/slab_common.c     |   56 +-
->  mm/slub.c            | 2591 +++++++++++++++++---------------------------------
->  7 files changed, 950 insertions(+), 1773 deletions(-)
-> ---
-> base-commit: aff9fb2fffa1175bd5ae3b4630f3d4ae53af450b
-> change-id: 20251002-sheaves-for-all-86ac13dc47a5
-> 
-> Best regards,
+Writing to v4_end_grace can race with server shutdown and result in
+memory being accessed after it was freed - reclaim_str_hashtbl in
+particularly.
+
+We cannot hold nfsd_mutex across the nfsd4_end_grace() call as that is
+held while client_tracking_op->init() is called and that can wait for
+an upcall to nfsdcltrack which can write to v4_end_grace, resulting in a
+deadlock.
+
+nfsd4_end_grace() is also called by the landromat work queue and this
+doesn't require locking as server shutdown will stop the work and wait
+for it before freeing anything that nfsd4_end_grace() might access.
+
+However, we must be sure that writing to v4_end_grace doesn't restart
+the work item after shutdown has already waited for it.  For this we
+add a new flag protected with nn->client_lock.  It is set only while it
+is safe to make client tracking calls, and v4_end_grace only schedules
+work while the flag is set with the spinlock held.
+
+So this patch adds a nfsd_net field "client_tracking_active" which is
+set as described.  Another field "grace_end_forced", is set when
+v4_end_grace is written.  After this is set, and providing
+client_tracking_active is set, the laundromat is scheduled.
+This "grace_end_forced" field bypasses other checks for whether the
+grace period has finished.
+
+This resolves a race which can result in use-after-free.
+
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Closes: https://lore.kernel.org/linux-nfs/20250623030015.2353515-1-neil@brown.name/T/#t
+Fixes: 7f5ef2e900d9 ("nfsd: add a v4_end_grace file to /proc/fs/nfsd")
+Cc: stable@vger.kernel.org
+Signed-off-by: NeilBrown <neil@brown.name>
+Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ Adjust context ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfsd/netns.h     |  2 ++
+ fs/nfsd/nfs4state.c | 42 ++++++++++++++++++++++++++++++++++++++++--
+ fs/nfsd/nfsctl.c    |  3 +--
+ fs/nfsd/state.h     |  2 +-
+ 4 files changed, 44 insertions(+), 5 deletions(-)
+
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index 41c750f344737..be0c8f1ce4e3e 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -64,6 +64,8 @@ struct nfsd_net {
+ 
+ 	struct lock_manager nfsd4_manager;
+ 	bool grace_ended;
++	bool grace_end_forced;
++	bool client_tracking_active;
+ 	time64_t boot_time;
+ 
+ 	struct dentry *nfsd_client_dir;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 2ba7ce076e73b..ed5cc5b2330ae 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,7 +84,7 @@ static u64 current_sessionid = 1;
+ /* forward declarations */
+ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner);
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+-void nfsd4_end_grace(struct nfsd_net *nn);
++static void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
+ static void nfsd4_file_hash_remove(struct nfs4_file *fi);
+ 
+@@ -5882,7 +5882,7 @@ nfsd4_renew(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	return nfs_ok;
+ }
+ 
+-void
++static void
+ nfsd4_end_grace(struct nfsd_net *nn)
+ {
+ 	/* do nothing if grace period already ended */
+@@ -5915,6 +5915,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
+ 	 */
+ }
+ 
++/**
++ * nfsd4_force_end_grace - forcibly end the NFSv4 grace period
++ * @nn: network namespace for the server instance to be updated
++ *
++ * Forces bypass of normal grace period completion, then schedules
++ * the laundromat to end the grace period immediately. Does not wait
++ * for the grace period to fully terminate before returning.
++ *
++ * Return values:
++ *   %true: Grace termination schedule
++ *   %false: No action was taken
++ */
++bool nfsd4_force_end_grace(struct nfsd_net *nn)
++{
++	if (!nn->client_tracking_ops)
++		return false;
++	spin_lock(&nn->client_lock);
++	if (nn->grace_ended || !nn->client_tracking_active) {
++		spin_unlock(&nn->client_lock);
++		return false;
++	}
++	WRITE_ONCE(nn->grace_end_forced, true);
++	mod_delayed_work(laundry_wq, &nn->laundromat_work, 0);
++	spin_unlock(&nn->client_lock);
++	return true;
++}
++
+ /*
+  * If we've waited a lease period but there are still clients trying to
+  * reclaim, wait a little longer to give them a chance to finish.
+@@ -5924,6 +5951,8 @@ static bool clients_still_reclaiming(struct nfsd_net *nn)
+ 	time64_t double_grace_period_end = nn->boot_time +
+ 					   2 * nn->nfsd4_lease;
+ 
++	if (READ_ONCE(nn->grace_end_forced))
++		return false;
+ 	if (nn->track_reclaim_completes &&
+ 			atomic_read(&nn->nr_reclaim_complete) ==
+ 			nn->reclaim_str_hashtbl_size)
+@@ -8131,6 +8160,8 @@ static int nfs4_state_create_net(struct net *net)
+ 	nn->unconf_name_tree = RB_ROOT;
+ 	nn->boot_time = ktime_get_real_seconds();
+ 	nn->grace_ended = false;
++	nn->grace_end_forced = false;
++	nn->client_tracking_active = false;
+ 	nn->nfsd4_manager.block_opens = true;
+ 	INIT_LIST_HEAD(&nn->nfsd4_manager.list);
+ 	INIT_LIST_HEAD(&nn->client_lru);
+@@ -8207,6 +8238,10 @@ nfs4_state_start_net(struct net *net)
+ 		return ret;
+ 	locks_start_grace(net, &nn->nfsd4_manager);
+ 	nfsd4_client_tracking_init(net);
++	/* safe for laundromat to run now */
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = true;
++	spin_unlock(&nn->client_lock);
+ 	if (nn->track_reclaim_completes && nn->reclaim_str_hashtbl_size == 0)
+ 		goto skip_grace;
+ 	printk(KERN_INFO "NFSD: starting %lld-second grace period (net %x)\n",
+@@ -8253,6 +8288,9 @@ nfs4_state_shutdown_net(struct net *net)
+ 
+ 	unregister_shrinker(&nn->nfsd_client_shrinker);
+ 	cancel_work_sync(&nn->nfsd_shrinker_work);
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = false;
++	spin_unlock(&nn->client_lock);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
+ 
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 2feaa49fb9fe2..07e5b1b23c91f 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1117,9 +1117,8 @@ static ssize_t write_v4_end_grace(struct file *file, char *buf, size_t size)
+ 		case 'Y':
+ 		case 'y':
+ 		case '1':
+-			if (!nn->nfsd_serv)
++			if (!nfsd4_force_end_grace(nn))
+ 				return -EBUSY;
+-			nfsd4_end_grace(nn);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index e94634d305912..477828dbfc665 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -719,7 +719,7 @@ static inline void get_nfs4_file(struct nfs4_file *fi)
+ struct nfsd_file *find_any_file(struct nfs4_file *f);
+ 
+ /* grace period management */
+-void nfsd4_end_grace(struct nfsd_net *nn);
++bool nfsd4_force_end_grace(struct nfsd_net *nn);
+ 
+ /* nfs4recover operations */
+ extern int nfsd4_client_tracking_init(struct net *net);
+-- 
+2.51.0
 
 
