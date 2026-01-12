@@ -1,168 +1,123 @@
-Return-Path: <stable+bounces-208125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208126-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D54D134B2
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:50:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0571D1365C
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:01:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A306F309F8DA
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:33:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7FF1C3036812
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:39:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 443AC2E62D9;
-	Mon, 12 Jan 2026 14:27:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2000F255248;
+	Mon, 12 Jan 2026 14:38:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="f4Ib++9r"
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="nh3+4xm9"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f180.google.com (mail-qk1-f180.google.com [209.85.222.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 064A92E5D17
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 14:27:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8388A259CAF
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 14:38:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768228026; cv=none; b=YGDYzmzgwo91nfdlIbmL/d9mHihq4dUdUoJ0ZRJBQCHKndL3s75kOY52OJGlb25YcgPdUK+xmKa5CQzIIXfhgUnqgW+AgWCAoXPjZbWnZrZdkcSvRiwYpcRMRo5/yBQszp5MEVHi1tPAfYM8p33MmiqliQLVJCydLCWqVcxhEi8=
+	t=1768228728; cv=none; b=EVySRXlGhwKkG3PsUv6nYGTpYMDrojsLdyLveYxFci/SPm7HNYzNqglN92UxLyQrdfFA+KNucR9YShfH2OCJUHjKAr82NUnY2+AZmOpNBgHNkHfqYwWfHDfbV1ue+iYmB7l4lADvohBvWyDQXzJ4VbjAGOBqKhh1tEs59aWBvFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768228026; c=relaxed/simple;
-	bh=TrmtWPw7GJViBixH8wj95EdL83oRb8RQByFnqkLL5WU=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cu3x5hPtkeUyTHQG5II1oPivYzP99IQhQvrfM+uOXBsiy/MxorAqaztnuVeRTRhsqKhugxiwgYHB48kA6F8N8ZoI8qyxVeJgVEPdPF40T1iMxuXjYCK0Hp6ALC3hFqlTCXdQq7S4gR9mFUyUZydqoNHtZIySK6Bez/c1YR5/yGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=f4Ib++9r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B970C16AAE;
-	Mon, 12 Jan 2026 14:27:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768228025;
-	bh=TrmtWPw7GJViBixH8wj95EdL83oRb8RQByFnqkLL5WU=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f4Ib++9rRmr2InD94PFL+HWqMzURN/djSOek/VXf3Kx4t0yE+2izWNg1ZD5X8xrWf
-	 z9jsHetv2RSKp5YU/KvsdUNKJe4NoMnrYVtjXL9ceaBhujyNs2iTPIIDeUoeWtH8Y1
-	 4sl0MR8H0MACxKXqUly3mjxNfVR7S+G+bLPrr1KRw+zpOAZAWNBkzIYlu985ZbsajT
-	 2xgJVCXP5VBuzulj0rVfr8h8H9WE/v0EYqbEdj4TC9MwrP82/H+M6WMPka0Uy699ZT
-	 UkERRH9QewpNVd+FVe03xZoBheFt0bBOMP8IJU3KLBaShzCpagHsFyAjwvlwdyXlsP
-	 wKT393LxuZNBQ==
-From: Sasha Levin <sashal@kernel.org>
-To: stable@vger.kernel.org
-Cc: Chuck Lever <chuck.lever@oracle.com>,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 3/3] NFSD: Remove NFSERR_EAGAIN
-Date: Mon, 12 Jan 2026 09:27:01 -0500
-Message-ID: <20260112142701.711948-3-sashal@kernel.org>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260112142701.711948-1-sashal@kernel.org>
-References: <2026011222-giggle-goofiness-bbd1@gregkh>
- <20260112142701.711948-1-sashal@kernel.org>
+	s=arc-20240116; t=1768228728; c=relaxed/simple;
+	bh=7dvIXtxi8yuXwxGZINg5dwQkKeeA+lDXIu4d/vfMpJ4=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=VYCU6/S4eOwFLJoB3SOnsMb66SkuM6xp/PYCsF1wHPXu2xA+LgZlWBzYbB5s2kqnYLc+CW1akDpx12rQ/S2JE/Z8EnxaJNWqdA3H75FL4/iLEzUsxAvRrvP3CGboTA3QvpZV7sIAmviBbl5sOsZnu+qH/QkXkKmYpTJ8k7HNcG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=nh3+4xm9; arc=none smtp.client-ip=209.85.222.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=google.com
+Received: by mail-qk1-f180.google.com with SMTP id af79cd13be357-8b23b6d9f11so698432585a.3
+        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 06:38:47 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768228726; x=1768833526; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=3OVHLwGSVY3ROBM8cymA1lSVZ22bXnEcQvZKsbH0Omk=;
+        b=nh3+4xm9ZHklUxcQcguxmpP89FQxIrXpfKtDBLhxNF+m0s/wlgJzAIFSolXGSvtCLy
+         Ld3H+eHkseugeJZpCgt6Egw6NnY+duCo9cA9sy5u48ah4K31VnBS5SN2awKrV/evJkic
+         cXtdQ1GnOuaNOPno0vHkL6ZxLryuAuTWy4Cjtdx3Op5PEDN6YntUIU9VaYjQuMT6roRy
+         qTwf+t35YAEe50dZ3R4vNl20M46q5ZQ1Uoo25f/XhuHPAQ7mq5aaowN0vx4Pg2HYTFGI
+         Mbhassa9xcQejNVlVOv5rVp6igqiov5ZV0Y1yLKnld5QP1nDYGvCva9p0tMWzigfZ6uw
+         XFHQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768228726; x=1768833526;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=3OVHLwGSVY3ROBM8cymA1lSVZ22bXnEcQvZKsbH0Omk=;
+        b=MhIYyiDFCVpU/ZCtDzF5F/EOKIgnCRdbHQCh5KREHo7hIWso/gpjywwTrcwr3++oW9
+         auvZQ47AsnPCCdIHRolFE65i9rSCcCguqihKz3P66NcmzP6/D+DzO0eNGC6YKk6rGq+u
+         XwIVgkrErntQjyjuDJGk8M28cuBrT09qSs3l6sghmm9tmqjWRoUs3OEawT5ZwSR4K4h5
+         idsyDyPdq7C4cUQS+ZbsEtHs1uzKyeeewE1Y2iLBaTnD+haIYxM6nVj1sZ9KiDIHBcSF
+         RgWEWJ26zMpy6ojmp91kWmO260urbkmVi7Qr/zcb5dL78RFtOjTGvAJXtVOXmZJ0oDRp
+         2MBg==
+X-Forwarded-Encrypted: i=1; AJvYcCU5/XmEt+VZ+yhd6xTcJ8NnHp53OUfjHsGUfCXJzs0R1RoRT8Tj2mAMA7cU6gzrwYCZH9GrYYY=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzJd7WKz8MBrl526vJwfrS0ClZ1SS+Q6qHnJFIPgBAPxfZGMV+2
+	Gy3tPGPiqT7+XeZPvtIGGr+LlYFrSZAq/vRx0HCBS2d0BIBq1zIXJlPGWo93J1PLOIgQGPCYt9E
+	RYKPbYOV1iVjYmBV1IK1k5RIV3zKv/gMqPhEF/v9g
+X-Gm-Gg: AY/fxX5sm0jtqRYjhePl3l1S04+OQiU1QNJ+2IKIbf7mQG3kjyhvochZDfhKNDqhMRL
+	gFrNJm9WR7kjBEqBT+lVdzqJvKloNuVVcBgtCJAzkoauknxIH20QVt9Mk46RruqF4fam38JyW1F
+	lEr36ew8w0XArQQA/bR/Was+rg7JUVa5vC20h0QYsUZgDKtUVYGxm9uaq+TxotwCk5C9NHMD8s5
+	zFIFfh2BkpdlkEiCRG639HWDJTPWFWFcMo5Jw/tPtBaESRHGrEVe1B8Uy3vFGOtZ2Rmheu06qvZ
+	HOasn1nHbb2iKHw2PdjlNM5dqA==
+X-Google-Smtp-Source: AGHT+IGhrNYAx5nJsuxOp5EIbKgtYvgqICeyAKUqFhsc50IvEZWhS8EmoDJnYDpLRXA0O1DJ7MEwbYmYdwbQDJwI+uc=
+X-Received: by 2002:a05:620a:40d4:b0:8c0:f13e:42ee with SMTP id
+ af79cd13be357-8c389420351mr2515603785a.88.1768228726114; Mon, 12 Jan 2026
+ 06:38:46 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260104134348.3544298-1-ryan.roberts@arm.com> <20260104100230.09abd1beaca2123d174022b2@linux-foundation.org>
+In-Reply-To: <20260104100230.09abd1beaca2123d174022b2@linux-foundation.org>
+From: Alexander Potapenko <glider@google.com>
+Date: Mon, 12 Jan 2026 15:38:09 +0100
+X-Gm-Features: AZwV_QiYkGu98o69ZXegThGdFPJzrbQ3TdfnesIl4fIhpP9VWTIXvd7AfjMrgqQ
+Message-ID: <CAG_fn=XtONeeJzBFFyxqWa1=Zo8bCGcUPO11Kaa4093vJOPgrA@mail.gmail.com>
+Subject: Re: [PATCH v1] mm: kmsan: Fix poisoning of high-order non-compound pages
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: Ryan Roberts <ryan.roberts@arm.com>, Marco Elver <elver@google.com>, 
+	Dmitry Vyukov <dvyukov@google.com>, kasan-dev@googlegroups.com, linux-mm@kvack.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-From: Chuck Lever <chuck.lever@oracle.com>
+On Sun, Jan 4, 2026 at 7:02=E2=80=AFPM Andrew Morton <akpm@linux-foundation=
+.org> wrote:
+>
+> On Sun,  4 Jan 2026 13:43:47 +0000 Ryan Roberts <ryan.roberts@arm.com> wr=
+ote:
+>
+> > kmsan_free_page() is called by the page allocator's free_pages_prepare(=
+)
+> > during page freeing. It's job is to poison all the memory covered by th=
+e
+> > page. It can be called with an order-0 page, a compound high-order page
+> > or a non-compound high-order page. But page_size() only works for
+> > order-0 and compound pages. For a non-compound high-order page it will
+> > incorrectly return PAGE_SIZE.
+> >
+> > The implication is that the tail pages of a high-order non-compound pag=
+e
+> > do not get poisoned at free, so any invalid access while they are free
+> > could go unnoticed. It looks like the pages will be poisoned again at
+> > allocaiton time, so that would bookend the window.
+> >
+> > Fix this by using the order parameter to calculate the size.
+> >
+> > Fixes: b073d7f8aee4 ("mm: kmsan: maintain KMSAN metadata for page opera=
+tions")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Alexander Potapenko <glider@google.com>
+Tested-by: Alexander Potapenko <glider@google.com>
 
-[ Upstream commit c6c209ceb87f64a6ceebe61761951dcbbf4a0baa ]
-
-I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
-None of these RFCs have an NFS status code that match the numeric
-value "11".
-
-Based on the meaning of the EAGAIN errno, I presume the use of this
-status in NFSD means NFS4ERR_DELAY. So replace the one usage of
-nfserr_eagain, and remove it from NFSD's NFS status conversion
-tables.
-
-As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
-era, but was not actually used by any code until commit f4e44b393389
-("NFSD: delay unmount source's export after inter-server copy
-completed."), at which time it become possible for NFSD to return
-a status code of 11 (which is not valid NFS protocol).
-
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/nfs_common/common.c   | 1 -
- fs/nfsd/nfs4proc.c       | 2 +-
- fs/nfsd/nfsd.h           | 1 -
- include/trace/misc/nfs.h | 2 --
- include/uapi/linux/nfs.h | 1 -
- 5 files changed, 1 insertion(+), 6 deletions(-)
-
-diff --git a/fs/nfs_common/common.c b/fs/nfs_common/common.c
-index a4ee95da2174e..5cb0781e918f7 100644
---- a/fs/nfs_common/common.c
-+++ b/fs/nfs_common/common.c
-@@ -16,7 +16,6 @@ static const struct {
- 	{ NFSERR_NOENT,		-ENOENT		},
- 	{ NFSERR_IO,		-errno_NFSERR_IO},
- 	{ NFSERR_NXIO,		-ENXIO		},
--/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
- 	{ NFSERR_ACCES,		-EACCES		},
- 	{ NFSERR_EXIST,		-EEXIST		},
- 	{ NFSERR_XDEV,		-EXDEV		},
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 886c092675442..3436b07dbefd3 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1355,7 +1355,7 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
- 					(schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
--				return nfserr_eagain;
-+				return nfserr_jukebox;
- 			}
- 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 			goto try_again;
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index d05bd2b811f37..bb24ecbf2109f 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -201,7 +201,6 @@ void		nfsd_lockd_shutdown(void);
- #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
- #define	nfserr_io		cpu_to_be32(NFSERR_IO)
- #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
--#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
- #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
- #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
- #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
-diff --git a/include/trace/misc/nfs.h b/include/trace/misc/nfs.h
-index 5b6c36fe9cdfe..7d336ba1c34f7 100644
---- a/include/trace/misc/nfs.h
-+++ b/include/trace/misc/nfs.h
-@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
- TRACE_DEFINE_ENUM(NFSERR_NOENT);
- TRACE_DEFINE_ENUM(NFSERR_IO);
- TRACE_DEFINE_ENUM(NFSERR_NXIO);
--TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
- TRACE_DEFINE_ENUM(NFSERR_ACCES);
- TRACE_DEFINE_ENUM(NFSERR_EXIST);
- TRACE_DEFINE_ENUM(NFSERR_XDEV);
-@@ -53,7 +52,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
- 		{ NFSERR_NXIO,			"NXIO" }, \
- 		{ ECHILD,			"CHILD" }, \
- 		{ ETIMEDOUT,			"TIMEDOUT" }, \
--		{ NFSERR_EAGAIN,		"AGAIN" }, \
- 		{ NFSERR_ACCES,			"ACCES" }, \
- 		{ NFSERR_EXIST,			"EXIST" }, \
- 		{ NFSERR_XDEV,			"XDEV" }, \
-diff --git a/include/uapi/linux/nfs.h b/include/uapi/linux/nfs.h
-index 946cb62d64b0b..5dc726070b511 100644
---- a/include/uapi/linux/nfs.h
-+++ b/include/uapi/linux/nfs.h
-@@ -49,7 +49,6 @@
- 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
- 	NFSERR_IO = 5,			/* v2 v3 v4 */
- 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
--	NFSERR_EAGAIN = 11,		/* v2 v3 */
- 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
- 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
- 	NFSERR_XDEV = 18,		/*    v3 v4 */
--- 
-2.51.0
-
+Thanks!
+I'll send out a follow-up patch with a test for this behavior.
 
