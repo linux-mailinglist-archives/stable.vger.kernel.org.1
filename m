@@ -1,52 +1,109 @@
-Return-Path: <stable+bounces-208112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0928D124A6
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 12:27:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E26AD1259D
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 12:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5D7ED30133C9
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:27:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2973E304EBEC
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:42:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C67352C2A;
-	Mon, 12 Jan 2026 11:27:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B044A356A36;
+	Mon, 12 Jan 2026 11:42:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEmnpYJ+"
+	dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b="hr7s7myz"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f225.google.com (mail-qk1-f225.google.com [209.85.222.225])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4019B28C2DD;
-	Mon, 12 Jan 2026 11:27:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D838A356A27
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 11:42:53 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.225
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768217273; cv=none; b=p7kaZ3eEdqCoCGXiDsGm0LcphRR3imDDs7pORwXC9N7aXcWf4qIwj9hBA4K4EtJ/aWJhlY4kWm7rUOumEN7keCzFJnFahGG+1j5vPq2LPHF+sFm2p534sC+5Sfigi7VSXnMgESSKkQV4I1e8cGvI/pXZB8vmCqlI5vGeW9gkf0E=
+	t=1768218175; cv=none; b=ENpxCkHRdg8lqv/YxNHt3hMGM/ZwfGN0DqifyyKQuq/oo38kpJaUBIhJNuXpR44ifX5zUvx325/1JgJXojebfxbS6a+O1PeUhhHzj9944OCTMJuxFkc/EdOnqwzXyMkXFMDJtLpYRJgp8J6YC6gR/R5iSTefKwfrJAtUrfPj2to=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768217273; c=relaxed/simple;
-	bh=gRbhjNEmhMVcVyl2fBw9k36dw1dLgbexfJzPdgj6kGc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=izcRwogSmVrqFQmfSbnne8EUiKZQnWJLfjpmNGIH+rzDY0JoaJTyElSxe1Xd/Elf9QqkiWfP0oynFAkURc265YxNyX7tGKRWm70Fe8aTSYqtK6ZXYGoaDHNIL+1XqEoJzkQ0RU905AtTyFp6UAuChzEubF+377UaDUJYbwU2E4Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEmnpYJ+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EC3C16AAE;
-	Mon, 12 Jan 2026 11:27:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768217272;
-	bh=gRbhjNEmhMVcVyl2fBw9k36dw1dLgbexfJzPdgj6kGc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=TEmnpYJ+KkebKTO9Xb07ho5QUE4JmruT+lZa+Ye0OVrgEKPcxMUivYNKGXOYVwowN
-	 b84PTd0RkSCAoXJra1HoZd9YinSd5VYuMSU9xUeuxV+cZFipZj9fWtXQ34qI1bZqkZ
-	 NhYqmvaXyAODh9ExhP+VXA+wFsgAWHeGabzWx086nqqFzm7S4SOA/K8A0dKhLyi78y
-	 U1IYI02vctQpkSfLg8YQl8BLuRRXNDW/EYYb4ofBJepYo1emlAjDdRlGhW71wnX0iW
-	 BQyJebNxIGx8KNVjqBoDDuo01GEyeVmpkrrrVvF/aVSlV0L1kLDq6vQ4I3fKcWeoBP
-	 76bzP/pZmoPMA==
-From: Borislav Petkov <bp@kernel.org>
-To: <stable@vger.kernel.org>
-Cc: LKML <linux-kernel@vger.kernel.org>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Waiman Long <longman@redhat.com>
-Subject: [PATCH 6.6-stable] x86/microcode/AMD: Select which microcode patch to load
-Date: Mon, 12 Jan 2026 12:27:48 +0100
-Message-ID: <20260112112748.20677-1-bp@kernel.org>
-X-Mailer: git-send-email 2.51.0
+	s=arc-20240116; t=1768218175; c=relaxed/simple;
+	bh=c95WO/l5Yh3ODJc5THKGAjEQryf6UWGtacSfjwHl9EA=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=TFst8Np8WwS9sEIwb8FI1bIL6euwSIyH89t1SJrNuXZu/JZ3ImiktA6j/56ABa1Tr5VzitBHASmKpT8haab0ajXQR2QG+P4bA8HuDK5TDDn7EnwSvYYSCiNBEmXumMdwvE2Xn0+dui8KShorQU7rAS0DUzoQa2qF2n7xSiV0CHw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com; spf=fail smtp.mailfrom=broadcom.com; dkim=pass (1024-bit key) header.d=broadcom.com header.i=@broadcom.com header.b=hr7s7myz; arc=none smtp.client-ip=209.85.222.225
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=broadcom.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=broadcom.com
+Received: by mail-qk1-f225.google.com with SMTP id af79cd13be357-8be184d2fe8so120971285a.1
+        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 03:42:53 -0800 (PST)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768218173; x=1768822973;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:dkim-signature:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=fzFvHeJhDdP4ilFE2+bLWYgTIbgx2yUf1NNqPTKhjnU=;
+        b=NV3GK2Nk0rKksnvFswvwvFlyWKePwc1V/iv+qMAjhnG7TNWZIegDDjf8d51gm7GZBu
+         ZjDn2Vo+c/xMnMv+zfC8kJ4Ss/1GZG4eKfFjnRVu9D07AivmyE+fADV6YFqdJorcLkYS
+         yZ5hPXSvIkknpprvXYNU+D1fagZtQmJCLyMCrFUY2xCVnMgISc2XXPFgwk0nX5p13pMt
+         8XGJTOgIJ3/CQPN+7J1ZH8+h7vyeLvdguDoyK8LGxVZwdeDn9GUJdBXKBnPckSnaFtgi
+         Wu1Pk2UbCCh/KsAUapQ9hU28QLYPqsEgD2WquZyIKRKIcKLpnEp5/Hrwmmk649QFMalW
+         NQgQ==
+X-Gm-Message-State: AOJu0YysKDVLsbxKRKmGiLh4xPLfqaj2khlPSFfPEUQ2uIcLrxR71iY4
+	aKv+DBUgq6Rf59IKfPKfwetz3eZ+uffJXveVtzyNDdjSC9y3vhNrqfanGfurHYJIdXzjjJYQI9h
+	8OOJzt/snn12893gUvvDT/yfzPTRRfLUrFfbuv4es5SGmdKbkH4VN0xVXRanqS1jPchKBo8xDXi
+	VqQl2nvWnzxQn4JdC13vM7r4qjbVzJkKtQkMz50cftUDDlvg2qnEJfOcq/FBdBYJMs8lb8v5sNs
+	nPwh3T58bGjYkEpVGakK4Wl27yD8sw=
+X-Gm-Gg: AY/fxX5FE1oGrIQxVLwQP1fLVceAQ22PGdQhGp1HjFfyWz+E2hoMAmEQ6U1xTOsMq2w
+	aCSyALZCLFK+FWqw1Jgs8rDiXZ/Kyb5oCQRDmdpqjXAS2pAvwmkof5cXfQGLhxZFZaY1ymc2qEn
+	e7U4f5VNd751FILNevYu42sZj0Mf26DZb6EK6P/xLTOB1QRfUDad/PJLGpI20bEcNyLGqHcpVTQ
+	W7H9ds99sCMfol1i2pGQWYMBWMhZlU9E7ZFw5ODuzKYQ9OO39Swo1l0+bbKZmBh5mdfbs3Nesk3
+	Q+y8c1p24/Vt004Nv3/cZRZlAjXg2ytHvAb9Fw5bL7UDd2QmAX2JBL9Ia28AG02mRkgDpi8X10A
+	mhMBMStChzrgc9fTLb8Q3/jxj9ibibKsMOSLBBpd7OEFJM6pr0/CaERmFzdEHUYYcDZBP32RDBP
+	6ZA82d1IBF/eLsmLxG3gbQDIXCo9EBfER81ma6nfSSvTcAM7QEuCnjyLadjK8kBlIX
+X-Google-Smtp-Source: AGHT+IG006quVcdxEg+Y62xJSirv1XnfiIxFJM+r6wWm4mb1BW5V8D7KLVjjnZrbUK9c1S5wuY9N9gEjXRxd
+X-Received: by 2002:a05:620a:258e:b0:8b2:dbf7:5193 with SMTP id af79cd13be357-8c3893fbdbemr1606643185a.8.1768218172566;
+        Mon, 12 Jan 2026 03:42:52 -0800 (PST)
+Received: from smtp-us-east1-p01-i01-si01.dlp.protect.broadcom.com (address-144-49-247-118.dlp.protect.broadcom.com. [144.49.247.118])
+        by smtp-relay.gmail.com with ESMTPS id af79cd13be357-8c37f4d3918sm198314485a.6.2026.01.12.03.42.52
+        for <stable@vger.kernel.org>
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Mon, 12 Jan 2026 03:42:52 -0800 (PST)
+X-Relaying-Domain: broadcom.com
+X-CFilter-Loop: Reflected
+Received: by mail-pl1-f200.google.com with SMTP id d9443c01a7336-2a0891f819aso22119555ad.3
+        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 03:42:52 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=broadcom.com; s=google; t=1768218169; x=1768822969; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=fzFvHeJhDdP4ilFE2+bLWYgTIbgx2yUf1NNqPTKhjnU=;
+        b=hr7s7myzXDppYeBDqEA5fUIGcoPByswxXfPxIojG06oZOGZ2UbehVKRzSLtnZiOxTh
+         mNCQ82cn3Mi3UV+OXLwXEp2FEvaW23kPz2daPd7Z/A45s10k/chs9WzoX5xwpNhwOmk1
+         jS4IC+P4pIuLBS3orwsEbQbRRsobQTC5q6z00=
+X-Received: by 2002:a17:902:ea01:b0:2a0:9424:7dc7 with SMTP id d9443c01a7336-2a3ee4917d2mr129653795ad.4.1768218169419;
+        Mon, 12 Jan 2026 03:42:49 -0800 (PST)
+X-Received: by 2002:a17:902:ea01:b0:2a0:9424:7dc7 with SMTP id d9443c01a7336-2a3ee4917d2mr129653635ad.4.1768218168930;
+        Mon, 12 Jan 2026 03:42:48 -0800 (PST)
+Received: from keerthanak-ph5-dev.. ([192.19.161.250])
+        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c48c0asm175905495ad.31.2026.01.12.03.42.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 03:42:47 -0800 (PST)
+From: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+To: stable@vger.kernel.org,
+	gregkh@linuxfoundation.org
+Cc: tj@kernel.org,
+	axboe@kernel.dk,
+	cgroups@vger.kernel.org,
+	linux-block@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	ajay.kaher@broadcom.com,
+	alexey.makhalov@broadcom.com,
+	vamsi-krishna.brahmajosyula@broadcom.com,
+	yin.ding@broadcom.com,
+	tapas.kundu@broadcom.com,
+	Laibin Qiu <qiulaibin@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH v5.10-v5.15] blk-throttle: Set BIO_THROTTLED when bio has been throttled
+Date: Mon, 12 Jan 2026 11:39:36 +0000
+Message-ID: <20260112113936.3291786-1-keerthana.kalyanasundaram@broadcom.com>
+X-Mailer: git-send-email 2.43.7
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -54,168 +111,157 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-DetectorID-Processed: b00c1d49-9d2e-4205-b15f-d015386d3d5e
 
-From: "Borislav Petkov (AMD)" <bp@alien8.de>
+From: Laibin Qiu <qiulaibin@huawei.com>
 
-Commit 8d171045069c804e5ffaa18be590c42c6af0cf3f upstream.
+[ Upstream commit 5a011f889b4832aa80c2a872a5aade5c48d2756f ]
 
-All microcode patches up to the proper BIOS Entrysign fix are loaded
-only after the sha256 signature carried in the driver has been verified.
+1.In current process, all bio will set the BIO_THROTTLED flag
+after __blk_throtl_bio().
 
-Microcode patches after the Entrysign fix has been applied, do not need
-that signature verification anymore.
+2.If bio needs to be throttled, it will start the timer and
+stop submit bio directly. Bio will submit in
+blk_throtl_dispatch_work_fn() when the timer expires.But in
+the current process, if bio is throttled. The BIO_THROTTLED
+will be set to bio after timer start. If the bio has been
+completed, it may cause use-after-free blow.
 
-In order to not abandon machines which haven't received the BIOS update
-yet, add the capability to select which microcode patch to load.
+BUG: KASAN: use-after-free in blk_throtl_bio+0x12f0/0x2c70
+Read of size 2 at addr ffff88801b8902d4 by task fio/26380
 
-The corresponding microcode container supplied through firmware-linux
-has been modified to carry two patches per CPU type
-(family/model/stepping) so that the proper one gets selected.
+ dump_stack+0x9b/0xce
+ print_address_description.constprop.6+0x3e/0x60
+ kasan_report.cold.9+0x22/0x3a
+ blk_throtl_bio+0x12f0/0x2c70
+ submit_bio_checks+0x701/0x1550
+ submit_bio_noacct+0x83/0xc80
+ submit_bio+0xa7/0x330
+ mpage_readahead+0x380/0x500
+ read_pages+0x1c1/0xbf0
+ page_cache_ra_unbounded+0x471/0x6f0
+ do_page_cache_ra+0xda/0x110
+ ondemand_readahead+0x442/0xae0
+ page_cache_async_ra+0x210/0x300
+ generic_file_buffered_read+0x4d9/0x2130
+ generic_file_read_iter+0x315/0x490
+ blkdev_read_iter+0x113/0x1b0
+ aio_read+0x2ad/0x450
+ io_submit_one+0xc8e/0x1d60
+ __se_sys_io_submit+0x125/0x350
+ do_syscall_64+0x2d/0x40
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
 
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Tested-by: Waiman Long <longman@redhat.com>
-Link: https://patch.msgid.link/20251027133818.4363-1-bp@kernel.org
+Allocated by task 26380:
+ kasan_save_stack+0x19/0x40
+ __kasan_kmalloc.constprop.2+0xc1/0xd0
+ kmem_cache_alloc+0x146/0x440
+ mempool_alloc+0x125/0x2f0
+ bio_alloc_bioset+0x353/0x590
+ mpage_alloc+0x3b/0x240
+ do_mpage_readpage+0xddf/0x1ef0
+ mpage_readahead+0x264/0x500
+ read_pages+0x1c1/0xbf0
+ page_cache_ra_unbounded+0x471/0x6f0
+ do_page_cache_ra+0xda/0x110
+ ondemand_readahead+0x442/0xae0
+ page_cache_async_ra+0x210/0x300
+ generic_file_buffered_read+0x4d9/0x2130
+ generic_file_read_iter+0x315/0x490
+ blkdev_read_iter+0x113/0x1b0
+ aio_read+0x2ad/0x450
+ io_submit_one+0xc8e/0x1d60
+ __se_sys_io_submit+0x125/0x350
+ do_syscall_64+0x2d/0x40
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Freed by task 0:
+ kasan_save_stack+0x19/0x40
+ kasan_set_track+0x1c/0x30
+ kasan_set_free_info+0x1b/0x30
+ __kasan_slab_free+0x111/0x160
+ kmem_cache_free+0x94/0x460
+ mempool_free+0xd6/0x320
+ bio_free+0xe0/0x130
+ bio_put+0xab/0xe0
+ bio_endio+0x3a6/0x5d0
+ blk_update_request+0x590/0x1370
+ scsi_end_request+0x7d/0x400
+ scsi_io_completion+0x1aa/0xe50
+ scsi_softirq_done+0x11b/0x240
+ blk_mq_complete_request+0xd4/0x120
+ scsi_mq_done+0xf0/0x200
+ virtscsi_vq_done+0xbc/0x150
+ vring_interrupt+0x179/0x390
+ __handle_irq_event_percpu+0xf7/0x490
+ handle_irq_event_percpu+0x7b/0x160
+ handle_irq_event+0xcc/0x170
+ handle_edge_irq+0x215/0xb20
+ common_interrupt+0x60/0x120
+ asm_common_interrupt+0x1e/0x40
+
+Fix this by move BIO_THROTTLED set into the queue_lock.
+
+Signed-off-by: Laibin Qiu <qiulaibin@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20220301123919.2381579-1-qiulaibin@huawei.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Keerthana: Remove 'out' and handle return with reference to commit 81c7a63 ]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 ---
- arch/x86/kernel/cpu/microcode/amd.c | 104 ++++++++++++++++++----------
- 1 file changed, 67 insertions(+), 37 deletions(-)
+ block/blk-throttle.c | 16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
-index 9952c774eaa6..82ca8278219e 100644
---- a/arch/x86/kernel/cpu/microcode/amd.c
-+++ b/arch/x86/kernel/cpu/microcode/amd.c
-@@ -176,50 +176,61 @@ static u32 cpuid_to_ucode_rev(unsigned int val)
- 	return p.ucode_rev;
- }
+diff --git a/block/blk-throttle.c b/block/blk-throttle.c
+index 4bf514a7b..4d3436cd6 100644
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -2216,8 +2216,10 @@ bool blk_throtl_bio(struct bio *bio)
+ 	rcu_read_lock();
  
-+static u32 get_cutoff_revision(u32 rev)
-+{
-+	switch (rev >> 8) {
-+	case 0x80012: return 0x8001277; break;
-+	case 0x80082: return 0x800820f; break;
-+	case 0x83010: return 0x830107c; break;
-+	case 0x86001: return 0x860010e; break;
-+	case 0x86081: return 0x8608108; break;
-+	case 0x87010: return 0x8701034; break;
-+	case 0x8a000: return 0x8a0000a; break;
-+	case 0xa0010: return 0xa00107a; break;
-+	case 0xa0011: return 0xa0011da; break;
-+	case 0xa0012: return 0xa001243; break;
-+	case 0xa0082: return 0xa00820e; break;
-+	case 0xa1011: return 0xa101153; break;
-+	case 0xa1012: return 0xa10124e; break;
-+	case 0xa1081: return 0xa108109; break;
-+	case 0xa2010: return 0xa20102f; break;
-+	case 0xa2012: return 0xa201212; break;
-+	case 0xa4041: return 0xa404109; break;
-+	case 0xa5000: return 0xa500013; break;
-+	case 0xa6012: return 0xa60120a; break;
-+	case 0xa7041: return 0xa704109; break;
-+	case 0xa7052: return 0xa705208; break;
-+	case 0xa7080: return 0xa708009; break;
-+	case 0xa70c0: return 0xa70C009; break;
-+	case 0xaa001: return 0xaa00116; break;
-+	case 0xaa002: return 0xaa00218; break;
-+	case 0xb0021: return 0xb002146; break;
-+	case 0xb0081: return 0xb008111; break;
-+	case 0xb1010: return 0xb101046; break;
-+	case 0xb2040: return 0xb204031; break;
-+	case 0xb4040: return 0xb404031; break;
-+	case 0xb4041: return 0xb404101; break;
-+	case 0xb6000: return 0xb600031; break;
-+	case 0xb6080: return 0xb608031; break;
-+	case 0xb7000: return 0xb700031; break;
-+	default: break;
-+
+ 	/* see throtl_charge_bio() */
+-	if (bio_flagged(bio, BIO_THROTTLED))
+-		goto out;
++	if (bio_flagged(bio, BIO_THROTTLED)) {
++		rcu_read_unlock();
++		return false;
 +	}
-+	return 0;
-+}
-+
- static bool need_sha_check(u32 cur_rev)
- {
-+	u32 cutoff;
-+
- 	if (!cur_rev) {
- 		cur_rev = cpuid_to_ucode_rev(bsp_cpuid_1_eax);
- 		pr_info_once("No current revision, generating the lowest one: 0x%x\n", cur_rev);
+ 
+ 	if (!cgroup_subsys_on_dfl(io_cgrp_subsys)) {
+ 		blkg_rwstat_add(&tg->stat_bytes, bio->bi_opf,
+@@ -2225,8 +2227,10 @@ bool blk_throtl_bio(struct bio *bio)
+ 		blkg_rwstat_add(&tg->stat_ios, bio->bi_opf, 1);
  	}
  
--	switch (cur_rev >> 8) {
--	case 0x80012: return cur_rev <= 0x8001277; break;
--	case 0x80082: return cur_rev <= 0x800820f; break;
--	case 0x83010: return cur_rev <= 0x830107c; break;
--	case 0x86001: return cur_rev <= 0x860010e; break;
--	case 0x86081: return cur_rev <= 0x8608108; break;
--	case 0x87010: return cur_rev <= 0x8701034; break;
--	case 0x8a000: return cur_rev <= 0x8a0000a; break;
--	case 0xa0010: return cur_rev <= 0xa00107a; break;
--	case 0xa0011: return cur_rev <= 0xa0011da; break;
--	case 0xa0012: return cur_rev <= 0xa001243; break;
--	case 0xa0082: return cur_rev <= 0xa00820e; break;
--	case 0xa1011: return cur_rev <= 0xa101153; break;
--	case 0xa1012: return cur_rev <= 0xa10124e; break;
--	case 0xa1081: return cur_rev <= 0xa108109; break;
--	case 0xa2010: return cur_rev <= 0xa20102f; break;
--	case 0xa2012: return cur_rev <= 0xa201212; break;
--	case 0xa4041: return cur_rev <= 0xa404109; break;
--	case 0xa5000: return cur_rev <= 0xa500013; break;
--	case 0xa6012: return cur_rev <= 0xa60120a; break;
--	case 0xa7041: return cur_rev <= 0xa704109; break;
--	case 0xa7052: return cur_rev <= 0xa705208; break;
--	case 0xa7080: return cur_rev <= 0xa708009; break;
--	case 0xa70c0: return cur_rev <= 0xa70C009; break;
--	case 0xaa001: return cur_rev <= 0xaa00116; break;
--	case 0xaa002: return cur_rev <= 0xaa00218; break;
--	case 0xb0021: return cur_rev <= 0xb002146; break;
--	case 0xb0081: return cur_rev <= 0xb008111; break;
--	case 0xb1010: return cur_rev <= 0xb101046; break;
--	case 0xb2040: return cur_rev <= 0xb204031; break;
--	case 0xb4040: return cur_rev <= 0xb404031; break;
--	case 0xb4041: return cur_rev <= 0xb404101; break;
--	case 0xb6000: return cur_rev <= 0xb600031; break;
--	case 0xb6080: return cur_rev <= 0xb608031; break;
--	case 0xb7000: return cur_rev <= 0xb700031; break;
--	default: break;
--	}
-+	cutoff = get_cutoff_revision(cur_rev);
-+	if (cutoff)
-+		return cur_rev <= cutoff;
+-	if (!tg->has_rules[rw])
+-		goto out;
++	if (!tg->has_rules[rw]) {
++		rcu_read_unlock();
++		return false;
++	}
  
- 	pr_info("You should not be seeing this. Please send the following couple of lines to x86-<at>-kernel.org\n");
- 	pr_info("CPUID(1).EAX: 0x%x, current revision: 0x%x\n", bsp_cpuid_1_eax, cur_rev);
-@@ -473,6 +484,7 @@ static int verify_patch(const u8 *buf, size_t buf_size, u32 *patch_size)
- {
- 	u8 family = x86_family(bsp_cpuid_1_eax);
- 	struct microcode_header_amd *mc_hdr;
-+	u32 cur_rev, cutoff, patch_rev;
- 	u32 sh_psize;
- 	u16 proc_id;
- 	u8 patch_fam;
-@@ -514,6 +526,24 @@ static int verify_patch(const u8 *buf, size_t buf_size, u32 *patch_size)
- 	if (patch_fam != family)
- 		return 1;
+ 	spin_lock_irq(&q->queue_lock);
  
-+	cur_rev = get_patch_level();
+@@ -2310,14 +2314,14 @@ bool blk_throtl_bio(struct bio *bio)
+ 	}
+ 
+ out_unlock:
+-	spin_unlock_irq(&q->queue_lock);
+-out:
+ 	bio_set_flag(bio, BIO_THROTTLED);
+ 
+ #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+ 	if (throttled || !td->track_bio_latency)
+ 		bio->bi_issue.value |= BIO_ISSUE_THROTL_SKIP_LATENCY;
+ #endif
++	spin_unlock_irq(&q->queue_lock);
 +
-+	/* No cutoff revision means old/unaffected by signing algorithm weakness => matches */
-+	cutoff = get_cutoff_revision(cur_rev);
-+	if (!cutoff)
-+		goto ok;
-+
-+	patch_rev = mc_hdr->patch_id;
-+
-+	if (cur_rev <= cutoff && patch_rev <= cutoff)
-+		goto ok;
-+
-+	if (cur_rev > cutoff && patch_rev > cutoff)
-+		goto ok;
-+
-+	return 1;
-+ok:
-+
- 	return 0;
+ 	rcu_read_unlock();
+ 	return throttled;
  }
- 
 -- 
-2.51.0
+2.40.4
 
 
