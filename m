@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208094-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208096-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2476D11F99
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:43:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 596FED11FA2
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:44:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47ADC30D3AF5
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:41:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17E073033670
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:43:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0259E31AA9B;
-	Mon, 12 Jan 2026 10:41:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9B5332A3CA;
+	Mon, 12 Jan 2026 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VTYKqo53"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TKOeOy0d"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B827A27A123
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:41:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D56D320A33
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:43:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214515; cv=none; b=JU1dyKUJShWdc63YaZtzHrklu6WpVKYAr5+ws8iq7QRIDfLl6WlfIAXqHRxQz90HmdJwL2YZX0HZYHnAE9Xjwy2Lg1vfASZn+UsFJ8vemBLQpXO9HztBSZ9crOvcwEVVH5RbrfavaVAuwRYPAZ55yUYqI24OKR2MEtmELQx2PmE=
+	t=1768214636; cv=none; b=PjHhyMxc5j7zor+3QvPtmZ5j3J0N7mGfQYjYxr/mWOClXBohrWimSpyM4fI34omaVicMRj/IcYbhOqX74N/xrN1Y7o2etnKIN+oFf6yxIdfSWdzswPVYF9dI+3s2g7ZIMpFCJQO849UUvX8drd6pdbHSTc+bSqzEdia5zvqgUmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214515; c=relaxed/simple;
-	bh=uzdz3dxitLGYIir8G/09NbKsBhB4jBNT0/oSozVF0TQ=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=gLkIMR114x+6AJ9pb2CnsbI4Tiv5w4o1E1fLfxiA+I+1lS8N2SeOThenoJ3uzlDqaXOtIUdf5KIRL2IKLi/tffg5uymOo4HvpVztk3Vh6pLa29TKncN6FP5QlGd7T0OQ9CQgG8MCKo9wzu95kISY8sB+7l+q3dflpP3nce+7Yp8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VTYKqo53; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F02ACC16AAE;
-	Mon, 12 Jan 2026 10:41:54 +0000 (UTC)
+	s=arc-20240116; t=1768214636; c=relaxed/simple;
+	bh=sjsu2cBl7OnW6OeqgYcWZ4mSrqoucMmA11+T3ZOMaMY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NtG5B/oovuZcAgd2iBHLo7CBa6gCCUzPpZ+tqAPkaeDKXENG9cpkRfHqKUHnJhg0jdbJcxnlggINLDNehK+OM3go1FNUHsrSoPxj4FzKezxuzlt3b+8Iguvo3AZJ2Yzzw5Bs/MZ5vCJURbeYRMFEJ2uXIBbq/FSEKcjcTNyme3g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TKOeOy0d; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEF6AC19421;
+	Mon, 12 Jan 2026 10:43:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768214515;
-	bh=uzdz3dxitLGYIir8G/09NbKsBhB4jBNT0/oSozVF0TQ=;
+	s=korg; t=1768214636;
+	bh=sjsu2cBl7OnW6OeqgYcWZ4mSrqoucMmA11+T3ZOMaMY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=VTYKqo53r6AcVCwjxHHcShsl8oeMyJv+QF6bZohinXMseg+AUxLDGgcuAaZshHKdR
-	 lt8UFjhoON6bxqKNLY3SUZh1er2daOXNnMMfXQBkKeDRBFWfTMsaCqjXnSCh8MsAUJ
-	 FLfucA5NLC6gOagCSnj8gC21oCMqbh+REYDbpmBs=
-Subject: FAILED: patch "[PATCH] ALSA: ac97: fix a double free in" failed to apply to 5.10-stable tree
-To: lihaoxiang@isrc.iscas.ac.cn,tiwai@suse.de
+	b=TKOeOy0dRUp5KkEDGjBkEECsw6tg6Oqbpq248rKRwx1DaHCZExzbxVUUQDLAM3Bqe
+	 BNo6oP1BrMx/Z1i5J8FLVfbG1OuUOteTRyn3+AAmqNWuZpiTkb+eNpWiLHkWuHHCMn
+	 8ezg0c5Zvtvj1DfoTF7AB/rYVhMDklJpqjZM9AJM=
+Subject: FAILED: patch "[PATCH] gpio: rockchip: mark the GPIO controller as sleeping" failed to apply to 5.15-stable tree
+To: bartosz.golaszewski@oss.qualcomm.com,heiko@sntech.de,m.szyprowski@samsung.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Jan 2026 11:41:40 +0100
-Message-ID: <2026011240-gaming-kiln-4da4@gregkh>
+Date: Mon, 12 Jan 2026 11:43:53 +0100
+Message-ID: <2026011253-undone-entwine-9232@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f
+git cherry-pick -x 20cf2aed89ac6d78a0122e31c875228e15247194
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011240-gaming-kiln-4da4@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011253-undone-entwine-9232@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,63 +75,97 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f Mon Sep 17 00:00:00 2001
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Date: Sat, 20 Dec 2025 00:28:45 +0800
-Subject: [PATCH] ALSA: ac97: fix a double free in
- snd_ac97_controller_register()
+From 20cf2aed89ac6d78a0122e31c875228e15247194 Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Date: Tue, 6 Jan 2026 10:00:11 +0100
+Subject: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
 
-If ac97_add_adapter() fails, put_device() is the correct way to drop
-the device reference. kfree() is not required.
-Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
-the cleanup.
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization.
 
-Found by code review.
+This can cause the following lockdep splat with shared GPIOs enabled on
+boards which have multiple devices using the same GPIO:
 
-Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+BUG: sleeping function called from invalid context at
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name:
+kworker/u16:0
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+6 locks held by kworker/u16:0/12:
+  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0},
+at: process_one_work+0x18c/0x604
+  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at:
+process_one_work+0x1b4/0x604
+  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at:
+__device_attach+0x38/0x1b0
+  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at:
+gpiod_direction_output_raw_commit+0x0/0x360
+  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at:
+gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
+  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at:
+gpiod_direction_output_raw_commit+0x0/0x360
+irq event stamp: 81450
+hardirqs last  enabled at (81449): [<ffff8000813acba4>]
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (81450): [<ffff8000813abfb8>]
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (79616): [<ffff8000811455fc>]
+__alloc_skb+0x17c/0x1e8
+softirqs last disabled at (79614): [<ffff8000811455fc>]
+__alloc_skb+0x17c/0x1e8
+CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted
+6.19.0-rc4-next-20260105+ #11975 PREEMPT
+Hardware name: Hardkernel ODROID-M1 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_direction+0x3c/0xe0
+  pinctrl_gpio_direction_output+0x14/0x20
+  rockchip_gpio_direction_output+0xb8/0x19c
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_direction_output+0x34/0xf8
+  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_configure_flags+0xbc/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get_optional+0x18/0x30
+  rockchip_pcie_probe+0x98/0x380
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
+
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com/
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-diff --git a/sound/ac97/bus.c b/sound/ac97/bus.c
-index f4254703d29f..bb9b795e0226 100644
---- a/sound/ac97/bus.c
-+++ b/sound/ac97/bus.c
-@@ -298,6 +298,7 @@ static void ac97_adapter_release(struct device *dev)
- 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
- 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
- 		dev_name(ac97_ctrl->parent));
-+	kfree(ac97_ctrl);
- }
+diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.c
+index 47174eb3ba76..bae2061f15fc 100644
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -593,6 +593,7 @@ static int rockchip_gpiolib_register(struct rockchip_pin_bank *bank)
+ 	gc->ngpio = bank->nr_pins;
+ 	gc->label = bank->name;
+ 	gc->parent = bank->dev;
++	gc->can_sleep = true;
  
- static const struct device_type ac97_adapter_type = {
-@@ -319,7 +320,9 @@ static int ac97_add_adapter(struct ac97_controller *ac97_ctrl)
- 		ret = device_register(&ac97_ctrl->adap);
- 		if (ret)
- 			put_device(&ac97_ctrl->adap);
--	}
-+	} else
-+		kfree(ac97_ctrl);
-+
- 	if (!ret) {
- 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
- 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
-@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_controller_register(
- 	ret = ac97_add_adapter(ac97_ctrl);
- 
- 	if (ret)
--		goto err;
-+		return ERR_PTR(ret);
- 	ac97_bus_reset(ac97_ctrl);
- 	ac97_bus_scan(ac97_ctrl);
- 
- 	return ac97_ctrl;
--err:
--	kfree(ac97_ctrl);
--	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
- 
+ 	ret = gpiochip_add_data(gc, bank);
+ 	if (ret) {
 
 
