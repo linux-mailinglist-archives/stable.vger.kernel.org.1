@@ -1,166 +1,171 @@
-Return-Path: <stable+bounces-208197-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333A0D14D48
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 19:58:35 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 68FADD14E56
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 20:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D81F302D2B8
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:58:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9B41302CB8C
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 19:22:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C7743876CB;
-	Mon, 12 Jan 2026 18:58:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F91319615;
+	Mon, 12 Jan 2026 19:22:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b="MOoobwQ2"
+	dkim=pass (2048-bit key) header.d=tyhicks.com header.i=@tyhicks.com header.b="Kq+sPy2H";
+	dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b="pE16u0vH"
 X-Original-To: stable@vger.kernel.org
-Received: from pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com (pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com [52.26.1.71])
+Received: from fhigh-a6-smtp.messagingengine.com (fhigh-a6-smtp.messagingengine.com [103.168.172.157])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AA843876B6;
-	Mon, 12 Jan 2026 18:58:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=52.26.1.71
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 753D9311C31;
+	Mon, 12 Jan 2026 19:22:07 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=103.168.172.157
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768244301; cv=none; b=jg7mDC8vJJcZUxR0RLAdn2uMIuKq+o1O50wgUMyAOuIIiB0E1E5a44GrU8nytoTjpkgpaM9cUqVct2YfG5NdpbChg+02hBaXQqxgIzgGjkpMEmjf657tAB5JNFwCCjzW9clTbhB3q0Z6a37laoT7Dk/DZQtmNNI1vIvi/WqIxvM=
+	t=1768245729; cv=none; b=DVIjTiaWN9ufbOFdUYGSzR5EQitQW6qamdM0JtaNMSVk0O2oN/1zWCxDfVEapnQpaprIH1Aplv4aNDWrvxWqRdVCsSob4oNCVUnI/AehaCd87EyUOubx+ATwyZoQqcPPNmTfT+xhq247glcDtPpjWeI7EZe7NhnhPB+VmBLLuMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768244301; c=relaxed/simple;
-	bh=5+VsJG0Rg8JB/mewq1GlPwh9A0FPUV1k2l2NZ+ucIFM=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=gL6bBD/tzzS/qBRvV3RpMjLObW96CD8ed1g7lW2LdhRzvxddmCotkXcf2kk/blFLwVqBby9ou+3aI1oT8zoknmF6VmoP2oQACuUGWosYuEww3clIEQJ8b7MABQ83vaH/BJvBonxtZcOQS2relEZcGrdSBd07aGueHMzbbGcwRH0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com; spf=pass smtp.mailfrom=amazon.com; dkim=pass (2048-bit key) header.d=amazon.com header.i=@amazon.com header.b=MOoobwQ2; arc=none smtp.client-ip=52.26.1.71
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amazon.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=amazon.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazoncorp2;
-  t=1768244298; x=1799780298;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QEE+RJAR5yb6rex3x+wM1xsedMUosH6xoJuNNn7yMjQ=;
-  b=MOoobwQ2rYbAk2JNeh+YL6yVg2XFfAPiOah2ckmQWvAEaHQrGOEBORMk
-   OYYeFyLPaUCzSqwnFl4I1IX+RwIydJTebXEE3AUXcKHp7sZ7EaCm2AN4E
-   PHUwU6Fu3PJ01o4fzv/IUpsHjwXgIsTmT05nMOyeFKI5Zcdo7ZuRsfJZ5
-   GPrrCb9O2bmGbof2j8ahpVsmnhypXSChoSPd4ZfntrjNXP9ar8QgOV1Py
-   3ufq+YgjtI4WDO/0zze/5PPqggM2GBkT59BonUpz5B68OSIIbek0QMX7H
-   9ocURHFoo6ZbuH/TQEZxtuawR+aNB+FPfPrTThbvg6mJhdC5hJKmkgG7U
-   w==;
-X-CSE-ConnectionGUID: G/mHgRa8QoOZ9Yo4YJF0cQ==
-X-CSE-MsgGUID: pzUpUtKfSkiv4iCsilpt+A==
-X-IronPort-AV: E=Sophos;i="6.21,221,1763424000"; 
-   d="scan'208";a="10701428"
-Received: from ip-10-5-0-115.us-west-2.compute.internal (HELO smtpout.naws.us-west-2.prod.farcaster.email.amazon.dev) ([10.5.0.115])
-  by internal-pdx-out-006.esa.us-west-2.outbound.mail-perimeter.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 12 Jan 2026 18:58:17 +0000
-Received: from EX19MTAUWA002.ant.amazon.com [205.251.233.234:21252]
- by smtpin.naws.us-west-2.prod.farcaster.email.amazon.dev [10.0.59.55:2525] with esmtp (Farcaster)
- id d1bdffcc-cae7-4df2-86f9-c3afe15a6a01; Mon, 12 Jan 2026 18:58:17 +0000 (UTC)
-X-Farcaster-Flow-ID: d1bdffcc-cae7-4df2-86f9-c3afe15a6a01
-Received: from EX19D001UWA001.ant.amazon.com (10.13.138.214) by
- EX19MTAUWA002.ant.amazon.com (10.250.64.202) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Mon, 12 Jan 2026 18:58:16 +0000
-Received: from dev-dsk-wanjay-2c-d25651b4.us-west-2.amazon.com (172.19.198.4)
- by EX19D001UWA001.ant.amazon.com (10.13.138.214) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_CBC_SHA) id 15.2.2562.35;
- Mon, 12 Jan 2026 18:58:16 +0000
-From: Jay Wang <wanjay@amazon.com>
-To: <chuck.lever@oracle.com>, <jlayton@kernel.org>
-CC: <eadavis@qq.com>, <neilb@suse.de>, <okorniev@redhat.com>,
-	<Dai.Ngo@oracle.com>, <tom@talpey.com>, <snitzer@kernel.org>,
-	<anna.schumaker@oracle.com>, <linux-nfs@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>,
-	<syzbot+6ee3b889bdeada0a6226@syzkaller.appspotmail.com>,
-	<stable@vger.kernel.org>
-Subject: [PATCH 6.12] NFSD: net ref data still needs to be freed even if net hasn't startup
-Date: Mon, 12 Jan 2026 18:58:13 +0000
-Message-ID: <20260112185813.34595-1-wanjay@amazon.com>
-X-Mailer: git-send-email 2.47.3
+	s=arc-20240116; t=1768245729; c=relaxed/simple;
+	bh=5aHSUaWvuAA12ZziPYYRXct1+AGzBqhGXB8nHi93WfY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=PvgDpl3ceCmFUlLBM5wgbmjmHKUBAs47HlXlsQsGuW3L0Z0ka7qdG/aNgcWGnzyDtohEaROHk1EGygmotnIQbaA/bXer+x0Eoi6TI/e7k7WFLwrjJScKIrq4GpWqrwN8efIHbBrXQK5nvpYySFakri0JuBydIOGspHApj2ZUgOM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tyhicks.com; spf=pass smtp.mailfrom=tyhicks.com; dkim=pass (2048-bit key) header.d=tyhicks.com header.i=@tyhicks.com header.b=Kq+sPy2H; dkim=pass (2048-bit key) header.d=messagingengine.com header.i=@messagingengine.com header.b=pE16u0vH; arc=none smtp.client-ip=103.168.172.157
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=tyhicks.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=tyhicks.com
+Received: from phl-compute-06.internal (phl-compute-06.internal [10.202.2.46])
+	by mailfhigh.phl.internal (Postfix) with ESMTP id A99B314000D0;
+	Mon, 12 Jan 2026 14:22:06 -0500 (EST)
+Received: from phl-frontend-04 ([10.202.2.163])
+  by phl-compute-06.internal (MEProxy); Mon, 12 Jan 2026 14:22:06 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=tyhicks.com; h=
+	cc:cc:content-type:content-type:date:date:from:from:in-reply-to
+	:in-reply-to:message-id:mime-version:references:reply-to:subject
+	:subject:to:to; s=fm1; t=1768245726; x=1768332126; bh=1USmkfqEoV
+	DKAaDeCDvD/SgrMPZzbQ1SV/gBjGQD2jE=; b=Kq+sPy2HtnJm7Udwy5hNidEqzG
+	WDA5X3K5v93K7RyBpphhtDkCSkQc9+okoYXZr8TRkobzckQ3bVqQqwfczI3cAP+c
+	jlaZ7EW01KV0fYh0e8KCjF8Aa3+0e5+Zow2V72KdCNPqlbqgKmpUGmqn2KYzM9N9
+	Qd74jesIkdWBdgpXOb9jBPLeE/Jr6UVZTNP+4ALznR36G5rzN+fsMksm3yxmk8DQ
+	5jLl48W2qt6RbIwHUx4FCls4O95JFLwTxH5/6e718uNTuHsNJFXglcyfiArpwXNE
+	RduVw7YscwohjBaFgHjkMolBJdPpSj4ChrbP8MwUxoZX6b+UWvXuAbK0KbXg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	messagingengine.com; h=cc:cc:content-type:content-type:date:date
+	:feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+	:message-id:mime-version:references:reply-to:subject:subject:to
+	:to:x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm2; t=
+	1768245726; x=1768332126; bh=1USmkfqEoVDKAaDeCDvD/SgrMPZzbQ1SV/g
+	BjGQD2jE=; b=pE16u0vHGM1Sz5jJO1aeiULvKovqRPycEw2udIWoVxdqNhCVGyi
+	tuYDg7m9u1UU0eWDaGGu4UVSjNeTDpvbL9nrr/g2swtBWoXoAnJ03HrBODhgguYD
+	jFpOmH4zbqY6O6c0y++BeX2bXQ1D7KM5JrBwOVsvAS/gLYuMtZfawjY+ZM7PNUci
+	U0ze/Foc4VjKPjIaScaLxX8QQIgfNbygKM6e6wLRGCGHPMBdVdGB06Ep2DBXJSRG
+	uu81je8LvsN47g9SMSBMDNZmGvzeuSNVhKz5uNLD9jRuAV3P2U5RYmA2m94/4v1k
+	Dj9T2yFrfAEVrorb8MViSuqG2xc5VBSOr2A==
+X-ME-Sender: <xms:3kllaRXrEfgrjyBE3KaJaZjcOrhv5LREkWnprsTUp5w2_RdTas69NQ>
+    <xme:3kllaSCs07dmXOvkwErpG9rHXV4g_cLedc0srSz_JS3wvMpbvxjThQZ1-zNIDOPij
+    xsaJhFw_sa255oG82Z5M_S5FgnRWg2WGHJiYE8IKK0hW3gcrU6uHEw>
+X-ME-Received: <xmr:3kllaeEFTKh7M994Dm52hftOLOk6QYFF2zNAQcWiVPwmJ1Zi0hfOVcs>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgeefgedrtddtgdduudekvdekucetufdoteggodetrf
+    dotffvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfurfetoffkrfgpnffqhgenuceu
+    rghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmnecujf
+    gurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepvfihlhgvrhcu
+    jfhitghkshcuoegtohguvgesthihhhhitghkshdrtghomheqnecuggftrfgrthhtvghrnh
+    epvdehvddttdfhfefhtdfgleehfeeggfdujeeuveekudevkedvgeejtddtfefgleeinecu
+    vehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomheptghouggvse
+    hthihhihgtkhhsrdgtohhmpdhnsggprhgtphhtthhopeelpdhmohguvgepshhmthhpohhu
+    thdprhgtphhtthhopehthhhorhhsthgvnhdrsghluhhmsehlihhnuhigrdguvghvpdhrtg
+    hpthhtoheprghruggssehkvghrnhgvlhdrohhrghdprhgtphhtthhopeiihhgrnhhgiihi
+    phgvnhhgtdesfhhogihmrghilhdrtghomhdprhgtphhtthhopegsrhgruhhnvghrsehkvg
+    hrnhgvlhdrohhrghdprhgtphhtthhopegvsghighhgvghrsheskhgvrhhnvghlrdhorhhg
+    pdhrtghpthhtoheprghkphhmsehlihhnuhigqdhfohhunhgurghtihhonhdrohhrghdprh
+    gtphhtthhopehsthgrsghlvgesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthho
+    pegvtghrhihpthhfshesvhhgvghrrdhkvghrnhgvlhdrohhrghdprhgtphhtthhopehlih
+    hnuhigqdhkvghrnhgvlhesvhhgvghrrdhkvghrnhgvlhdrohhrgh
+X-ME-Proxy: <xmx:3kllab6N3vaGnbDWencLSkaQ73U6sr-GG7Osez-kBfarwiZKnKeQPg>
+    <xmx:3kllaclG6fJ2VL4xDGlb2VW3xWfEUW52z8zOB3P1PRv5Tc036SNonA>
+    <xmx:3kllae66rMIZFhJdh341OL59uOY0LgzctwXQ2KiOHeOp5FrLSe3elQ>
+    <xmx:3kllaVRDAycS8Ha_ie3cXuaxrDLr1Gdfnx9vPq0xFrlCK_zUg18sHg>
+    <xmx:3kllafnV7LxhAM41N-Zv0ozuwRI88jP2wQi92Y99AUittfz8sLWYutjC>
+Feedback-ID: i78e14604:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
+ 12 Jan 2026 14:22:04 -0500 (EST)
+Date: Mon, 12 Jan 2026 13:21:45 -0600
+From: Tyler Hicks <code@tyhicks.com>
+To: Thorsten Blum <thorsten.blum@linux.dev>
+Cc: Ard Biesheuvel <ardb@kernel.org>,
+	Zipeng Zhang <zhangzipeng0@foxmail.com>,
+	Christian Brauner <brauner@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>,
+	Andrew Morton <akpm@linux-foundation.org>, stable@vger.kernel.org,
+	ecryptfs@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH] ecryptfs: Add missing gotos in ecryptfs_read_metadata
+Message-ID: <aWVJyRtk-7Wijd8J@yaupon>
+References: <20260111003655.491722-1-thorsten.blum@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-ClientProxiedBy: EX19D036UWB002.ant.amazon.com (10.13.139.139) To
- EX19D001UWA001.ant.amazon.com (10.13.138.214)
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260111003655.491722-1-thorsten.blum@linux.dev>
 
-From: Edward Adam Davis <eadavis@qq.com>
+On 2026-01-11 01:36:52, Thorsten Blum wrote:
+> Add two missing goto statements to exit ecryptfs_read_metadata() when an
+> error occurs.
+> 
+> The first goto is required; otherwise ECRYPTFS_METADATA_IN_XATTR may be
+> set when xattr metadata is enabled even though parsing the metadata
+> failed. The second goto is not strictly necessary, but it makes the
+> error path explicit instead of relying on falling through to 'out'.
 
-When the NFSD instance doesn't to startup, the net ref data memory is
-not properly reclaimed, which triggers the memory leak issue reported
-by syzbot [1].
+Hey Thorsten - It seems like there's a bug here but I don't think this
+is the actual bug. At the top of ecryptfs_read_metadata(), we call
+ecryptfs_copy_mount_wide_flags_to_inode_flags() to copy the mount-wide
+crypt_stat flags to the inode's crypt_stat flags. Therefore, the current
+code is already redundant in setting ECRYPTFS_METADATA_IN_XATTR after
+ecryptfs_read_headers_virt(). No matter if it succeeds or fails.
 
-To avoid the problem reported in [1], the net ref data memory reclamation
-action is moved outside of nfsd_net_up when the net is shutdown.
+This logic is confusing but, IIRC, the goal is to handle files with
+header metadata and files with xattr metadata within the same mount. I
+think the real bug may be that we're not clearing the inode's
+ECRYPTFS_METADATA_IN_XATTR flag when the mount crypt stat has the
+ECRYPTFS_XATTR_METADATA_ENABLED flag set and
+ecryptfs_read_headers_virt() returns success. I haven't looked at what
+impact that has elsewhere in the code.
 
-[1]
-unreferenced object 0xffff88812a39dfc0 (size 64):
-  backtrace (crc a2262fc6):
-    percpu_ref_init+0x94/0x1e0 lib/percpu-refcount.c:76
-    nfsd_create_serv+0xbe/0x260 fs/nfsd/nfssvc.c:605
-    nfsd_nl_listener_set_doit+0x62/0xb00 fs/nfsd/nfsctl.c:1882
-    genl_family_rcv_msg_doit+0x11e/0x190 net/netlink/genetlink.c:1115
-    genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-    genl_rcv_msg+0x2fd/0x440 net/netlink/genetlink.c:1210
+However, it has been a long time since I've looked at this code. I'd
+like your thoughts. Thanks!
 
-BUG: memory leak
+Tyler
 
-Reported-by: syzbot+6ee3b889bdeada0a6226@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6ee3b889bdeada0a6226
-Fixes: 39972494e318 ("nfsd: update percpu_ref to manage references on nfsd_net")
-Cc: stable@vger.kernel.org
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Jay Wang <wanjay@amazon.com>
----
- fs/nfsd/nfssvc.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
-
-diff --git a/fs/nfsd/nfssvc.c b/fs/nfsd/nfssvc.c
-index cc185c00e309..88c15b49e4bd 100644
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -434,26 +434,26 @@ static void nfsd_shutdown_net(struct net *net)
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 
--	if (!nn->nfsd_net_up)
--		return;
--
--	percpu_ref_kill_and_confirm(&nn->nfsd_net_ref, nfsd_net_done);
--	wait_for_completion(&nn->nfsd_net_confirm_done);
--
--	nfsd_export_flush(net);
--	nfs4_state_shutdown_net(net);
--	nfsd_reply_cache_shutdown(nn);
--	nfsd_file_cache_shutdown_net(net);
--	if (nn->lockd_up) {
--		lockd_down(net);
--		nn->lockd_up = false;
-+	if (nn->nfsd_net_up) {
-+		percpu_ref_kill_and_confirm(&nn->nfsd_net_ref, nfsd_net_done);
-+		wait_for_completion(&nn->nfsd_net_confirm_done);
-+
-+		nfsd_export_flush(net);
-+		nfs4_state_shutdown_net(net);
-+		nfsd_reply_cache_shutdown(nn);
-+		nfsd_file_cache_shutdown_net(net);
-+		if (nn->lockd_up) {
-+			lockd_down(net);
-+			nn->lockd_up = false;
-+		}
-+		wait_for_completion(&nn->nfsd_net_free_done);
- 	}
- 
--	wait_for_completion(&nn->nfsd_net_free_done);
- 	percpu_ref_exit(&nn->nfsd_net_ref);
- 
-+	if (nn->nfsd_net_up)
-+		nfsd_shutdown_generic();
- 	nn->nfsd_net_up = false;
--	nfsd_shutdown_generic();
- }
- 
- static DEFINE_SPINLOCK(nfsd_notifier_lock);
--- 
-2.47.3
-
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: dd2a3b7ad98f ("[PATCH] eCryptfs: Generalize metadata read/write")
+> Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+> ---
+>  fs/ecryptfs/crypto.c | 2 ++
+>  1 file changed, 2 insertions(+)
+> 
+> diff --git a/fs/ecryptfs/crypto.c b/fs/ecryptfs/crypto.c
+> index 260f8a4938b0..d49cdf7292ab 100644
+> --- a/fs/ecryptfs/crypto.c
+> +++ b/fs/ecryptfs/crypto.c
+> @@ -1328,6 +1328,7 @@ int ecryptfs_read_metadata(struct dentry *ecryptfs_dentry)
+>  			       "file xattr region either, inode %lu\n",
+>  				ecryptfs_inode->i_ino);
+>  			rc = -EINVAL;
+> +			goto out;
+>  		}
+>  		if (crypt_stat->mount_crypt_stat->flags
+>  		    & ECRYPTFS_XATTR_METADATA_ENABLED) {
+> @@ -1340,6 +1341,7 @@ int ecryptfs_read_metadata(struct dentry *ecryptfs_dentry)
+>  			       "this like an encrypted file, inode %lu\n",
+>  				ecryptfs_inode->i_ino);
+>  			rc = -EINVAL;
+> +			goto out;
+>  		}
+>  	}
+>  out:
+> -- 
+> Thorsten Blum <thorsten.blum@linux.dev>
+> GPG: 1D60 735E 8AEF 3BE4 73B6  9D84 7336 78FD 8DFE EAD4
+> 
 
