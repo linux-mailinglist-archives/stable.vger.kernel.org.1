@@ -1,102 +1,221 @@
-Return-Path: <stable+bounces-208111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208112-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F33DED1233F
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 12:14:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0928D124A6
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 12:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4AD7B3030FDC
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:10:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D7ED30133C9
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:27:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B28C3559C3;
-	Mon, 12 Jan 2026 11:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C67352C2A;
+	Mon, 12 Jan 2026 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mQP07lSq"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="TEmnpYJ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3A66521D00A;
-	Mon, 12 Jan 2026 11:10:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4019B28C2DD;
+	Mon, 12 Jan 2026 11:27:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768216258; cv=none; b=DiPqIn3e0W7aOmeVLKQX9twO3GcsuagcA7I+5cipJY4lbvVmZqZF8kwD1QZOps6u65LylT2FMBI/L3IyDv+70iTpK4ttNar3bYxswMgx7+Mumkmhh73DsJnxVkHZ9lVeW6yfuEq1mHqEpjsWow12OfrmuUZjFU2Vz5zu16gphOk=
+	t=1768217273; cv=none; b=p7kaZ3eEdqCoCGXiDsGm0LcphRR3imDDs7pORwXC9N7aXcWf4qIwj9hBA4K4EtJ/aWJhlY4kWm7rUOumEN7keCzFJnFahGG+1j5vPq2LPHF+sFm2p534sC+5Sfigi7VSXnMgESSKkQV4I1e8cGvI/pXZB8vmCqlI5vGeW9gkf0E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768216258; c=relaxed/simple;
-	bh=Ck8Nal1RWPaSjUvtBJEQhi5pV2c6uQJ61aNGrgs0VLg=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=KvQtfuQoygp3/SKCrv61PghxJJVsFfO2OpVIxHfu/EhdokqE5iI52G5F/wxf2EMflUJHkvmwiYblk7o1cOUs0OPpxFu1xhN4Bwv1wwdwZpzAKdaegkVCx1m+AphmIlab+mDdBkUfkgntyJxmyuWGiA/FKPsnxtrhVTlPRVl6qZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mQP07lSq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84BFEC16AAE;
-	Mon, 12 Jan 2026 11:10:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768216258;
-	bh=Ck8Nal1RWPaSjUvtBJEQhi5pV2c6uQJ61aNGrgs0VLg=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=mQP07lSqAd1ZZY4UAQuvVf8xNA3RT2NmgAi8Q1uhpfxv2/+Sm2XMGYLt3lloxL0OU
-	 fObie+GMT73KmhuLlPOnZK6MiYXiei13PDO84xV8tj5b39It1RhljL7zs4Id0bChyT
-	 1d65NchCCXABIDC6qEvKsRZL5coR2oiEb4KZcZDk=
-Date: Mon, 12 Jan 2026 12:10:55 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Cc: stable@vger.kernel.org, davem@davemloft.net, edumazet@google.com,
-	kuba@kernel.org, pabeni@redhat.com, dsahern@kernel.org,
-	borisp@nvidia.com, john.fastabend@gmail.com, netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org, bpf@vger.kernel.org,
-	ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com,
-	vamsi-krishna.brahmajosyula@broadcom.com, yin.ding@broadcom.com,
-	tapas.kundu@broadcom.com, Kuniyuki Iwashima <kuniyu@google.com>,
-	Sabrina Dubroca <sd@queasysnail.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH v6.6.y 2/2] tls: Use __sk_dst_get() and dst_dev_rcu() in
- get_netdev_for_sock().
-Message-ID: <2026011246-monoxide-conjuror-9eac@gregkh>
-References: <20260112064554.2969656-1-keerthana.kalyanasundaram@broadcom.com>
- <20260112064554.2969656-3-keerthana.kalyanasundaram@broadcom.com>
- <2026011223-tarnish-mustiness-a6bf@gregkh>
+	s=arc-20240116; t=1768217273; c=relaxed/simple;
+	bh=gRbhjNEmhMVcVyl2fBw9k36dw1dLgbexfJzPdgj6kGc=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=izcRwogSmVrqFQmfSbnne8EUiKZQnWJLfjpmNGIH+rzDY0JoaJTyElSxe1Xd/Elf9QqkiWfP0oynFAkURc265YxNyX7tGKRWm70Fe8aTSYqtK6ZXYGoaDHNIL+1XqEoJzkQ0RU905AtTyFp6UAuChzEubF+377UaDUJYbwU2E4Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=TEmnpYJ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7EC3C16AAE;
+	Mon, 12 Jan 2026 11:27:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768217272;
+	bh=gRbhjNEmhMVcVyl2fBw9k36dw1dLgbexfJzPdgj6kGc=;
+	h=From:To:Cc:Subject:Date:From;
+	b=TEmnpYJ+KkebKTO9Xb07ho5QUE4JmruT+lZa+Ye0OVrgEKPcxMUivYNKGXOYVwowN
+	 b84PTd0RkSCAoXJra1HoZd9YinSd5VYuMSU9xUeuxV+cZFipZj9fWtXQ34qI1bZqkZ
+	 NhYqmvaXyAODh9ExhP+VXA+wFsgAWHeGabzWx086nqqFzm7S4SOA/K8A0dKhLyi78y
+	 U1IYI02vctQpkSfLg8YQl8BLuRRXNDW/EYYb4ofBJepYo1emlAjDdRlGhW71wnX0iW
+	 BQyJebNxIGx8KNVjqBoDDuo01GEyeVmpkrrrVvF/aVSlV0L1kLDq6vQ4I3fKcWeoBP
+	 76bzP/pZmoPMA==
+From: Borislav Petkov <bp@kernel.org>
+To: <stable@vger.kernel.org>
+Cc: LKML <linux-kernel@vger.kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Waiman Long <longman@redhat.com>
+Subject: [PATCH 6.6-stable] x86/microcode/AMD: Select which microcode patch to load
+Date: Mon, 12 Jan 2026 12:27:48 +0100
+Message-ID: <20260112112748.20677-1-bp@kernel.org>
+X-Mailer: git-send-email 2.51.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2026011223-tarnish-mustiness-a6bf@gregkh>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 12, 2026 at 12:05:50PM +0100, Greg KH wrote:
-> On Mon, Jan 12, 2026 at 06:45:54AM +0000, Keerthana K wrote:
-> > From: Kuniyuki Iwashima <kuniyu@google.com>
-> > 
-> > [ Upstream commit c65f27b9c3be2269918e1cbad6d8884741f835c5 ]
-> > 
-> > get_netdev_for_sock() is called during setsockopt(),
-> > so not under RCU.
-> > 
-> > Using sk_dst_get(sk)->dev could trigger UAF.
-> > 
-> > Let's use __sk_dst_get() and dst_dev_rcu().
-> > 
-> > Note that the only ->ndo_sk_get_lower_dev() user is
-> > bond_sk_get_lower_dev(), which uses RCU.
-> > 
-> > Fixes: e8f69799810c ("net/tls: Add generic NIC offload infrastructure")
-> > Signed-off-by: Kuniyuki Iwashima <kuniyu@google.com>
-> > Reviewed-by: Eric Dumazet <edumazet@google.com>
-> > Reviewed-by: Sabrina Dubroca <sd@queasysnail.net>
-> > Link: https://patch.msgid.link/20250916214758.650211-6-kuniyu@google.com
-> > Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > [ Keerthana: Backport to v6.6.y ]
-> > Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-> > ---
-> >  net/tls/tls_device.c | 17 ++++++++++-------
-> >  1 file changed, 10 insertions(+), 7 deletions(-)
-> 
-> This is not in 6.12.y, so we can't take it for 6.6.y yet.  Can you
-> please send a 6.12.y version and then a new 6.6.y version?
+From: "Borislav Petkov (AMD)" <bp@alien8.de>
 
-OH nevermind, you sent this already, my fault, sorry.
+Commit 8d171045069c804e5ffaa18be590c42c6af0cf3f upstream.
 
-greg k-h
+All microcode patches up to the proper BIOS Entrysign fix are loaded
+only after the sha256 signature carried in the driver has been verified.
+
+Microcode patches after the Entrysign fix has been applied, do not need
+that signature verification anymore.
+
+In order to not abandon machines which haven't received the BIOS update
+yet, add the capability to select which microcode patch to load.
+
+The corresponding microcode container supplied through firmware-linux
+has been modified to carry two patches per CPU type
+(family/model/stepping) so that the proper one gets selected.
+
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Waiman Long <longman@redhat.com>
+Link: https://patch.msgid.link/20251027133818.4363-1-bp@kernel.org
+---
+ arch/x86/kernel/cpu/microcode/amd.c | 104 ++++++++++++++++++----------
+ 1 file changed, 67 insertions(+), 37 deletions(-)
+
+diff --git a/arch/x86/kernel/cpu/microcode/amd.c b/arch/x86/kernel/cpu/microcode/amd.c
+index 9952c774eaa6..82ca8278219e 100644
+--- a/arch/x86/kernel/cpu/microcode/amd.c
++++ b/arch/x86/kernel/cpu/microcode/amd.c
+@@ -176,50 +176,61 @@ static u32 cpuid_to_ucode_rev(unsigned int val)
+ 	return p.ucode_rev;
+ }
+ 
++static u32 get_cutoff_revision(u32 rev)
++{
++	switch (rev >> 8) {
++	case 0x80012: return 0x8001277; break;
++	case 0x80082: return 0x800820f; break;
++	case 0x83010: return 0x830107c; break;
++	case 0x86001: return 0x860010e; break;
++	case 0x86081: return 0x8608108; break;
++	case 0x87010: return 0x8701034; break;
++	case 0x8a000: return 0x8a0000a; break;
++	case 0xa0010: return 0xa00107a; break;
++	case 0xa0011: return 0xa0011da; break;
++	case 0xa0012: return 0xa001243; break;
++	case 0xa0082: return 0xa00820e; break;
++	case 0xa1011: return 0xa101153; break;
++	case 0xa1012: return 0xa10124e; break;
++	case 0xa1081: return 0xa108109; break;
++	case 0xa2010: return 0xa20102f; break;
++	case 0xa2012: return 0xa201212; break;
++	case 0xa4041: return 0xa404109; break;
++	case 0xa5000: return 0xa500013; break;
++	case 0xa6012: return 0xa60120a; break;
++	case 0xa7041: return 0xa704109; break;
++	case 0xa7052: return 0xa705208; break;
++	case 0xa7080: return 0xa708009; break;
++	case 0xa70c0: return 0xa70C009; break;
++	case 0xaa001: return 0xaa00116; break;
++	case 0xaa002: return 0xaa00218; break;
++	case 0xb0021: return 0xb002146; break;
++	case 0xb0081: return 0xb008111; break;
++	case 0xb1010: return 0xb101046; break;
++	case 0xb2040: return 0xb204031; break;
++	case 0xb4040: return 0xb404031; break;
++	case 0xb4041: return 0xb404101; break;
++	case 0xb6000: return 0xb600031; break;
++	case 0xb6080: return 0xb608031; break;
++	case 0xb7000: return 0xb700031; break;
++	default: break;
++
++	}
++	return 0;
++}
++
+ static bool need_sha_check(u32 cur_rev)
+ {
++	u32 cutoff;
++
+ 	if (!cur_rev) {
+ 		cur_rev = cpuid_to_ucode_rev(bsp_cpuid_1_eax);
+ 		pr_info_once("No current revision, generating the lowest one: 0x%x\n", cur_rev);
+ 	}
+ 
+-	switch (cur_rev >> 8) {
+-	case 0x80012: return cur_rev <= 0x8001277; break;
+-	case 0x80082: return cur_rev <= 0x800820f; break;
+-	case 0x83010: return cur_rev <= 0x830107c; break;
+-	case 0x86001: return cur_rev <= 0x860010e; break;
+-	case 0x86081: return cur_rev <= 0x8608108; break;
+-	case 0x87010: return cur_rev <= 0x8701034; break;
+-	case 0x8a000: return cur_rev <= 0x8a0000a; break;
+-	case 0xa0010: return cur_rev <= 0xa00107a; break;
+-	case 0xa0011: return cur_rev <= 0xa0011da; break;
+-	case 0xa0012: return cur_rev <= 0xa001243; break;
+-	case 0xa0082: return cur_rev <= 0xa00820e; break;
+-	case 0xa1011: return cur_rev <= 0xa101153; break;
+-	case 0xa1012: return cur_rev <= 0xa10124e; break;
+-	case 0xa1081: return cur_rev <= 0xa108109; break;
+-	case 0xa2010: return cur_rev <= 0xa20102f; break;
+-	case 0xa2012: return cur_rev <= 0xa201212; break;
+-	case 0xa4041: return cur_rev <= 0xa404109; break;
+-	case 0xa5000: return cur_rev <= 0xa500013; break;
+-	case 0xa6012: return cur_rev <= 0xa60120a; break;
+-	case 0xa7041: return cur_rev <= 0xa704109; break;
+-	case 0xa7052: return cur_rev <= 0xa705208; break;
+-	case 0xa7080: return cur_rev <= 0xa708009; break;
+-	case 0xa70c0: return cur_rev <= 0xa70C009; break;
+-	case 0xaa001: return cur_rev <= 0xaa00116; break;
+-	case 0xaa002: return cur_rev <= 0xaa00218; break;
+-	case 0xb0021: return cur_rev <= 0xb002146; break;
+-	case 0xb0081: return cur_rev <= 0xb008111; break;
+-	case 0xb1010: return cur_rev <= 0xb101046; break;
+-	case 0xb2040: return cur_rev <= 0xb204031; break;
+-	case 0xb4040: return cur_rev <= 0xb404031; break;
+-	case 0xb4041: return cur_rev <= 0xb404101; break;
+-	case 0xb6000: return cur_rev <= 0xb600031; break;
+-	case 0xb6080: return cur_rev <= 0xb608031; break;
+-	case 0xb7000: return cur_rev <= 0xb700031; break;
+-	default: break;
+-	}
++	cutoff = get_cutoff_revision(cur_rev);
++	if (cutoff)
++		return cur_rev <= cutoff;
+ 
+ 	pr_info("You should not be seeing this. Please send the following couple of lines to x86-<at>-kernel.org\n");
+ 	pr_info("CPUID(1).EAX: 0x%x, current revision: 0x%x\n", bsp_cpuid_1_eax, cur_rev);
+@@ -473,6 +484,7 @@ static int verify_patch(const u8 *buf, size_t buf_size, u32 *patch_size)
+ {
+ 	u8 family = x86_family(bsp_cpuid_1_eax);
+ 	struct microcode_header_amd *mc_hdr;
++	u32 cur_rev, cutoff, patch_rev;
+ 	u32 sh_psize;
+ 	u16 proc_id;
+ 	u8 patch_fam;
+@@ -514,6 +526,24 @@ static int verify_patch(const u8 *buf, size_t buf_size, u32 *patch_size)
+ 	if (patch_fam != family)
+ 		return 1;
+ 
++	cur_rev = get_patch_level();
++
++	/* No cutoff revision means old/unaffected by signing algorithm weakness => matches */
++	cutoff = get_cutoff_revision(cur_rev);
++	if (!cutoff)
++		goto ok;
++
++	patch_rev = mc_hdr->patch_id;
++
++	if (cur_rev <= cutoff && patch_rev <= cutoff)
++		goto ok;
++
++	if (cur_rev > cutoff && patch_rev > cutoff)
++		goto ok;
++
++	return 1;
++ok:
++
+ 	return 0;
+ }
+ 
+-- 
+2.51.0
+
 
