@@ -1,58 +1,56 @@
-Return-Path: <stable+bounces-208155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208158-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B8CBD13801
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:11:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B2FD138E3
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0FD923158120
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7CF3E306821A
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832F02E1EF4;
-	Mon, 12 Jan 2026 14:59:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DB232E11C5;
+	Mon, 12 Jan 2026 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edKPUyP/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Y1P+nz6s"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823692DEA75;
-	Mon, 12 Jan 2026 14:59:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A6782E6CDE;
+	Mon, 12 Jan 2026 14:59:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229945; cv=none; b=JmjcoijLXbbRT/weEZBw/8R8FLBOBs3et2AUgMSbOraOkJ43iS6fXN5RiUKBtpLYsZcFNwvyQB0IlTp2oOTu9U2SlciFclsZt1PymUsI9SfirLMQaJA8GweE3APLf27ix5ewlRWFfaO/p0pdZQuNS26AFctCDnT/hAL2ufxs+nA=
+	t=1768229951; cv=none; b=lLcvpRcKP1fIeQen+b+INuW1L9RdNEYSaM30M3xNLaZs9uNcnofZ1IQjByTd6QsKBaJNfKTELhN27z2DRxbWCAYd5jXShYwTPlCH1HAlYpUpEcEnepsPePpzc0ZftSaeY9+77me3uk1tHaT4PyaGUWKQXTtD2LwJkB0U47vHx6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229945; c=relaxed/simple;
-	bh=SA/M8GWVAADSFvD6UBoCN3tcb14Prw7mwfbgA1gGdbQ=;
+	s=arc-20240116; t=1768229951; c=relaxed/simple;
+	bh=5QtlWCR9AbeCte7rpd1mqjCMSw93C1M4t0Mz2hsyKfo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BiFAvhcSZXod2r0DL3kPTabkNHGT6KJojd6We5sCEpv+9YzHb2+8g9rHlYBkyRjl9GqLRcA7J++QriuCaEpNBF/CRjwAo4hgJfhDZIWowEkbLEFWkRWWivPI6JvVcp4UPF4JCSVX+Tbo+b9ienvEKu5D4aR0esA2t8YKJQz6LNE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edKPUyP/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA31C16AAE;
-	Mon, 12 Jan 2026 14:59:03 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FOqkNxTumm3WsSm+tZ47aGeFahdq1X+IQozYsFR0cUHLWDVA2/+krv0BciPPY0PVL0UdEOQ008J1kkYsDr6sIQZE3DYbgRdP2Y1PklUWDP9jhECJ/BuGY7x1M1G6Jlwem/ZtS5Pjq2mu/+m8cU+ebxTR1owhHeo2zNILRDjgxkU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Y1P+nz6s; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 066C4C19422;
+	Mon, 12 Jan 2026 14:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229944;
-	bh=SA/M8GWVAADSFvD6UBoCN3tcb14Prw7mwfbgA1gGdbQ=;
+	s=k20201202; t=1768229950;
+	bh=5QtlWCR9AbeCte7rpd1mqjCMSw93C1M4t0Mz2hsyKfo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=edKPUyP/00h/W8PxH6ojlxeEhIZPlh7Qoh6G9P5TtoNbOx39uvJYjKntnLXQiIsSu
-	 bUT38baC4KgUQc82bzwU+MOdIOdc7yfxToISle1QDHzVR9rQLkEdqxlz+nnYLX1fqg
-	 hJ7M6knzvfAYjVioYhqDhGBWDgVgo6PBTS7y6RAXRn/EemmnNIVIz0SeHdOUT/+mPo
-	 1UzbUP5KkfrrZBrVx5zuyl27BOn8MuDPAtAwn1FmFG8Ywi/TGIdVaxcjnDTSHbg8Ij
-	 ogphNTunmYQisT1KfZvSM3y+wqVRirnlqOZvvK04iaAtqIKHQg2B24byn8tW47hgBg
-	 RqAyugmx7qa8A==
+	b=Y1P+nz6sU7CnjzDJuL0NdWmMpC/MVzO0S/YLYl+zruF6j/esRCLCI3qYllzC9oWF/
+	 +V8oHSOixryefNmm7taycc6dml6vdPER8Cgfk9+jHbW1OIIsIwuGlrrWqqSA6Gtfbi
+	 S7OuWxW2GCiNUWPefT0mt8pt6dpNSE53MKWQRAGrI8NDIhOxNJtA+CtS0NtL0Klss5
+	 A8zrzf5S0Is43hcfLhBgRbgggYOnIf3zgfGcJLl2yocgdHOt6IehxxgXu9CR0GD55X
+	 4OyFxrsFwqXLxcFrInFNGNMi19QkjehsM49KNm5RM2bLj5cG6G8qLmUaNRG2kwc6R5
+	 ULPmZ09KyJDMQ==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+Cc: Siarhei Vishniakou <svv@google.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	linux-pci@vger.kernel.org,
-	linux-arm-msm@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-6.12] PCI: qcom: Remove ASPM L0s support for MSM8996 SoC
-Date: Mon, 12 Jan 2026 09:58:15 -0500
-Message-ID: <20260112145840.724774-14-sashal@kernel.org>
+	roderick.colenbrander@sony.com,
+	jikos@kernel.org,
+	linux-input@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-5.15] HID: playstation: Center initial joystick axes to prevent spurious events
+Date: Mon, 12 Jan 2026 09:58:18 -0500
+Message-ID: <20260112145840.724774-17-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
 References: <20260112145840.724774-1-sashal@kernel.org>
@@ -65,155 +63,202 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.5
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+From: Siarhei Vishniakou <svv@google.com>
 
-[ Upstream commit 0cc13256b60510936c34098ee7b929098eed823b ]
+[ Upstream commit e9143268d259d98e111a649affa061acb8e13c5b ]
 
-Though I couldn't confirm ASPM L0s support with the Qcom hardware team, a
-bug report from Dmitry suggests that L0s is broken on this legacy SoC.
-Hence, remove L0s support from the Root Port Link Capabilities in this SoC.
+When a new PlayStation gamepad (DualShock 4 or DualSense) is initialized,
+the input subsystem sets the default value for its absolute axes (e.g.,
+ABS_X, ABS_Y) to 0.
 
-Since qcom_pcie_clear_aspm_l0s() is now used by more than one SoC config,
-call it from qcom_pcie_host_init() instead.
+However, the hardware's actual neutral/resting state for these joysticks
+is 128 (0x80). This creates a mismatch.
 
-Reported-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Closes: https://lore.kernel.org/linux-pci/4cp5pzmlkkht2ni7us6p3edidnk25l45xrp6w3fxguqcvhq2id@wjqqrdpkypkf
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251126081718.8239-1-mani@kernel.org
+When the first HID report arrives from the device, the driver sees the
+resting value of 128. The kernel compares this to its initial state of 0
+and incorrectly interprets this as a delta (0 -> 128). Consequently, it
+generates EV_ABS events for this initial, non-existent movement.
+
+This behavior can fail userspace 'sanity check' tests (e.g., in
+Android CTS) that correctly assert no motion events should be generated
+from a device that is already at rest.
+
+This patch fixes the issue by explicitly setting the initial value of the
+main joystick axes (e.g., ABS_X, ABS_Y, ABS_RX, ABS_RY) to 128 (0x80)
+in the common ps_gamepad_create() function.
+
+This aligns the kernel's initial state with the hardware's expected
+neutral state, ensuring that the first report (at 128) produces no
+delta and thus, no spurious event.
+
+Signed-off-by: Siarhei Vishniakou <svv@google.com>
+Reviewed-by: Benjamin Tissoires <bentiss@kernel.org>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-Looking at this commit, I need to analyze whether it's appropriate for
-stable backporting.
+## Analysis of Commit: "HID: playstation: Center initial joystick axes
+to prevent spurious events"
 
-## Commit Analysis
+### 1. COMMIT MESSAGE ANALYSIS
 
-### What the Commit Does
-This commit fixes broken ASPM L0s (Active State Power Management L0s)
-support on the MSM8996 SoC. The key changes are:
+The commit describes a clear, specific bug:
+- PlayStation gamepads (DualShock 4, DualSense) have joysticks that rest
+  at value 128 (0x80)
+- The kernel initializes the axis value to 0 by default
+- When the first HID report arrives with the resting value of 128, the
+  kernel interprets this as actual movement
+- This generates spurious EV_ABS events for non-existent movement
+- The problem causes Android CTS test failures and potentially confuses
+  userspace applications
 
-1. **Adds `.no_l0s = true`** to the `cfg_2_3_2` configuration struct
-   (MSM8996's config)
-2. **Moves `qcom_pcie_clear_aspm_l0s()` call** from
-   `qcom_pcie_post_init_2_7_0()` to `qcom_pcie_host_init()` so it
-   applies to all SoCs that need it (based on their config flags)
-3. **Removes the L0s clearing** from the 2_7_0 post_init since it's now
-   centralized
+The bug has user-visible impact ("Reported-by" pattern implied through
+CTS test context).
 
-### Bug Being Fixed
-According to the commit message and linked bug report, ASPM L0s is
-broken on the MSM8996 SoC. When L0s is enabled on broken hardware, users
-can experience:
-- PCIe link instability
-- Power management failures
-- Potential system hangs or communication failures
+### 2. CODE CHANGE ANALYSIS
 
-### Classification: Hardware Quirk/Workaround
-This is clearly a **hardware quirk** - disabling a broken power
-management feature on specific hardware. This falls under the explicit
-exception category for stable backporting, similar to USB quirks or PCI
-quirks for broken devices.
-
-### Code Change Assessment
+**The fix is minimal and surgical:**
 ```c
-// Addition to MSM8996 config - trivial one-liner:
-static const struct qcom_pcie_cfg cfg_2_3_2 = {
-        .ops = &ops_2_3_2,
-+       .no_l0s = true,
-};
-
-// Centralized call in host_init for all SoCs needing it:
-+       qcom_pcie_clear_aspm_l0s(pcie->pci);
+gamepad->absinfo[ABS_X].value = 128;
+gamepad->absinfo[ABS_Y].value = 128;
+gamepad->absinfo[ABS_RX].value = 128;
+gamepad->absinfo[ABS_RY].value = 128;
 ```
 
-The actual fix is small and surgical. The refactoring (moving the
-function call) is minimal and just enables the fix to work for multiple
-SoCs that need it.
+- 5 lines added (1 comment + 4 value assignments)
+- Single file: `drivers/hid/hid-playstation.c`
+- Single function: `ps_gamepad_create()`
+- Only affects joystick axes (ABS_X, ABS_Y, ABS_RX, ABS_RY), correctly
+  leaves triggers (ABS_Z, ABS_RZ) at 0
 
-### Stability Indicators
-- **Tested-by: Dmitry Baryshkov** - The reporter confirmed the fix works
-- **Reviewed-by: Konrad Dybcio** - Proper review by another Qualcomm
-  developer
-- **Signed-off by Bjorn Helgaas** - PCI subsystem maintainer approved
+**Technical correctness:** The fix is obviously correct. After
+`input_set_abs_params()` sets up the axis with range 0-255, manually
+setting `.value = 128` aligns the kernel's initial state with the
+hardware's physical resting position at center (128).
 
-### Risk Assessment
-- **Low risk**: Disabling a broken feature is safer than leaving it
-  enabled
-- **Targeted scope**: Only affects MSM8996 SoC (legacy Qualcomm
-  platform)
-- **Well-tested**: Has explicit test confirmation from the bug reporter
+### 3. CLASSIFICATION
 
-### Dependency Concerns
-This commit assumes:
-1. The `no_l0s` field exists in `struct qcom_pcie_cfg`
-2. The `qcom_pcie_clear_aspm_l0s()` function exists
+- **Type:** Bug fix (not a feature)
+- **Category:** Input device initialization fix
+- **No new API or behavior change:** Just corrects initial state values
+- **No new features:** Purely corrects existing incorrect behavior
 
-Looking at the diff, the commit adds to an existing `no_l0s` field (it
-wouldn't compile otherwise). The function was already being called in
-the 2_7_0 init path, so it exists. The infrastructure appears to already
-be in place.
+### 4. SCOPE AND RISK ASSESSMENT
 
-### User Impact
-Users with MSM8996 devices (mobile/embedded Qualcomm platform)
-experiencing PCIe stability issues due to broken L0s will benefit from
-this fix. This is a real-world hardware problem affecting actual users.
+| Factor | Assessment |
+|--------|------------|
+| Lines changed | 5 (very small) |
+| Files changed | 1 |
+| Complexity | Trivial |
+| Subsystem | HID - PlayStation driver (mature) |
+| Risk of regression | Very low |
 
-## Conclusion
+The change is confined to initialization code and cannot affect any
+existing logic paths. Setting an initial value cannot break anything
+because:
+1. The value 128 is within the valid range (0-255)
+2. The hardware reports 128 at rest anyway
+3. This aligns kernel state with reality
 
-This commit is a **hardware quirk/workaround** which is explicitly
-allowed in stable trees. It:
-- Fixes a real bug (broken ASPM L0s causing hardware issues)
-- Is small and contained
-- Has been properly tested and reviewed
-- Affects only the specific broken hardware (MSM8996)
-- Falls under the device quirk exception category
+### 5. USER IMPACT
 
-The refactoring aspect (moving the function call) is minimal and merely
-enables the fix to work cleanly. The actual fix is just adding `no_l0s =
-true` to the MSM8996 configuration.
+**Who is affected:**
+- All users of DualShock 4 and DualSense controllers
+- Android users (CTS compliance)
+- Applications that validate initial input state
+
+**Severity:** Medium - Not a crash or data corruption, but:
+- Causes spurious input events at device connect
+- Breaks CTS conformance tests
+- May confuse input-sensitive applications
+
+### 6. STABILITY INDICATORS
+
+- **Reviewed-by:** Benjamin Tissoires (HID maintainer) ✓
+- **Signed-off-by:** Maintainer sign-off ✓
+- The fix is simple enough to verify correctness by inspection
+
+### 7. DEPENDENCY CHECK
+
+- No dependencies on other commits
+- `ps_gamepad_create()` has existed since the driver was introduced
+- Uses standard input subsystem patterns (`absinfo[].value`)
+- Should apply cleanly to any stable tree containing this driver
+
+### STABLE KERNEL CRITERIA EVALUATION
+
+| Criterion | Status |
+|-----------|--------|
+| Obviously correct and tested | ✓ Reviewed by maintainer |
+| Fixes a real bug | ✓ Spurious input events |
+| Important issue | ✓ Breaks CTS, affects popular hardware |
+| Small and contained | ✓ 5 lines, 1 file |
+| No new features | ✓ Pure correctness fix |
+| No new APIs | ✓ |
+
+### RISK VS BENEFIT
+
+**Benefits:**
+- Fixes spurious input events on popular consumer hardware
+- Fixes Android CTS test failures
+- Aligns kernel state with hardware reality
+- Affects millions of PlayStation controller users
+
+**Risks:**
+- Essentially zero - the change is trivially correct
+- No logic changes, just initialization values
+
+### CONCLUSION
+
+This commit is an excellent candidate for stable backporting:
+
+1. **Fixes a real bug** that causes spurious input events and test
+   failures
+2. **Small and surgical** - only 5 lines in one function
+3. **Obviously correct** - aligns initial value with hardware's physical
+   state
+4. **Low risk** - cannot introduce regressions
+5. **Well-reviewed** - HID maintainer reviewed and signed off
+6. **Widely applicable** - affects popular consumer hardware
+   (PlayStation controllers)
+7. **No dependencies** - self-contained fix
+
+The fix meets all stable kernel criteria: it's obviously correct, fixes
+a real bug, is small in scope, and introduces no new features. The fact
+that it fixes CTS compliance issues makes it particularly valuable for
+Android device manufacturers using stable kernels.
 
 **YES**
 
- drivers/pci/controller/dwc/pcie-qcom.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/hid/hid-playstation.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
-index c48a20602d7fa..6e820595ba32a 100644
---- a/drivers/pci/controller/dwc/pcie-qcom.c
-+++ b/drivers/pci/controller/dwc/pcie-qcom.c
-@@ -1033,7 +1033,6 @@ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
- 		writel(WR_NO_SNOOP_OVERRIDE_EN | RD_NO_SNOOP_OVERRIDE_EN,
- 				pcie->parf + PARF_NO_SNOOP_OVERRIDE);
+diff --git a/drivers/hid/hid-playstation.c b/drivers/hid/hid-playstation.c
+index 128aa6abd10be..e4dfcf26b04e7 100644
+--- a/drivers/hid/hid-playstation.c
++++ b/drivers/hid/hid-playstation.c
+@@ -753,11 +753,16 @@ ps_gamepad_create(struct hid_device *hdev,
+ 	if (IS_ERR(gamepad))
+ 		return ERR_CAST(gamepad);
  
--	qcom_pcie_clear_aspm_l0s(pcie->pci);
- 	qcom_pcie_clear_hpc(pcie->pci);
++	/* Set initial resting state for joysticks to 128 (center) */
+ 	input_set_abs_params(gamepad, ABS_X, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_X].value = 128;
+ 	input_set_abs_params(gamepad, ABS_Y, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_Y].value = 128;
+ 	input_set_abs_params(gamepad, ABS_Z, 0, 255, 0, 0);
+ 	input_set_abs_params(gamepad, ABS_RX, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_RX].value = 128;
+ 	input_set_abs_params(gamepad, ABS_RY, 0, 255, 0, 0);
++	gamepad->absinfo[ABS_RY].value = 128;
+ 	input_set_abs_params(gamepad, ABS_RZ, 0, 255, 0, 0);
  
- 	return 0;
-@@ -1302,6 +1301,8 @@ static int qcom_pcie_host_init(struct dw_pcie_rp *pp)
- 			goto err_disable_phy;
- 	}
- 
-+	qcom_pcie_clear_aspm_l0s(pcie->pci);
-+
- 	qcom_ep_reset_deassert(pcie);
- 
- 	if (pcie->cfg->ops->config_sid) {
-@@ -1450,6 +1451,7 @@ static const struct qcom_pcie_cfg cfg_2_1_0 = {
- 
- static const struct qcom_pcie_cfg cfg_2_3_2 = {
- 	.ops = &ops_2_3_2,
-+	.no_l0s = true,
- };
- 
- static const struct qcom_pcie_cfg cfg_2_3_3 = {
+ 	input_set_abs_params(gamepad, ABS_HAT0X, -1, 1, 0, 0);
 -- 
 2.51.0
 
