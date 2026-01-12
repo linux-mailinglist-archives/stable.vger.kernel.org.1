@@ -1,148 +1,127 @@
-Return-Path: <stable+bounces-208058-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB992D11693
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:08:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DDB1D1178D
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D427B3008C9A
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:08:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id ABCEB305B596
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:20:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9131934677D;
-	Mon, 12 Jan 2026 09:08:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABAB8346FD1;
+	Mon, 12 Jan 2026 09:20:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdBWZ5Kp"
+	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="0MCcXtZj"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54676322B66
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:08:39 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC1BF310762;
+	Mon, 12 Jan 2026 09:20:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768208919; cv=none; b=IZ5RIoOVBUMHF4haCVCoDEjoPfHIjF+xaKaADs6TV2I75oKaqSdPnle4lut4+GgRsqTSMrokMxRreahEgGt5RTnVtPrJ/KiiasTgIl1y7FOrd8YyPik8kf8hq/3ccMHwJ+h0SoRT2cGwL4tEE0ziprCpKd7MZoM9gi9Fq/hcgHE=
+	t=1768209634; cv=none; b=EsebYHxZmll7IgSjTa0aTc7RZx+sDNPwsWBrUFEBoF0XkDLia3Gisi+aL12IXGGokonhfFRn2szZvhsjdVl/pdx7WG327SIcvWxk9LEte1ilQljYEhNN2OiZ7ypuvTrPHTTfIs/V2NzOEXFDt0E9wXVhglAXLE+QAZLFgxcCX4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768208919; c=relaxed/simple;
-	bh=aNusfbvcvvIrZ1GK6+N/BWnHjCznHNoKX1GEoskKxrw=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=g+jMHYZvUxkpHJreXXTXKsaCFZwZa7FPmy87Y70Vz9ROWz5fsZTy362YlsomBnWaE0ywuXbKUJ/FO+rGGAY7BvFGfXJ7nSdhIEXD2tvza4FL5X6oAUFK0fmq0RBY7/69qB0tG1HIkewMiPZfZOXGf8MMEVYLMU0oFHLCMi2y+fc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdBWZ5Kp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E261C19424
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:08:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768208919;
-	bh=aNusfbvcvvIrZ1GK6+N/BWnHjCznHNoKX1GEoskKxrw=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=rdBWZ5KpxcbS00ewOLmz6VAc+OOKmUqd4MYWGLtm00Io/3Yei+jlv+kNP9Q0vdsOb
-	 edfSASkvbc/gWY8nmaY2Jj0OjaSNAlRYniK/ApsqCWGIoSm1rSwQNomse/Y8kK9PwY
-	 9fK1LpyqJng2uyWvtJoHtzXpxMoPWdWryEAxO+Drt6FRu+LeNlD4omI+l+jga+Y98t
-	 gSNiUppaEZd8ROLEV1T8mUS3jQ2JcldlKpm941SCK3wzEcc+AiTU+s4dybHV9IxsSb
-	 av8ri27WpDQhLEcGNkVC6sL707k1MmpdjObys2j7sl7neUqYOKqqqs4wn637/vDV15
-	 tBfj/lw8836yw==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-598f8136a24so6621632e87.3
-        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 01:08:38 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCUqEjmjPVAIlr2BLGGWs4PXbZC0L9Te05NriH3mZqE6sU9Dc8TAoOjEAK+rfGvgxgH9Rml0ntw=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yy0TCCBckMYTqj/dTtwNANNtTek6d1hdosrazstyRqX5hTHo11L
-	GUybXfy6xCL7cRjiwVo8d+jWvhFfKg8R53li7sm3vwCsp1h/BjnKWF+mEMhvugEl/sQF4TOiYmc
-	M8uTsG1TJ2k3pwJso1ohKG0Kga3tIJdk9d5I9XvJHUQ==
-X-Google-Smtp-Source: AGHT+IGTR9k5RSHNIpBJL834Ww0X8J1ZdzRZ6Hp2uk9hnACvGJbrlxz/VASX4yp2KTPlt556o88PPVY7jr7CQVZ9CaA=
-X-Received: by 2002:a2e:a590:0:b0:383:213c:fc61 with SMTP id
- 38308e7fff4ca-383213cff5cmr24069241fa.31.1768208917628; Mon, 12 Jan 2026
- 01:08:37 -0800 (PST)
+	s=arc-20240116; t=1768209634; c=relaxed/simple;
+	bh=YcoDp1xRfU2RgOGualudavWqplWNYj+vqh7bdVcfYNY=;
+	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=NlsXgY3q8bc9YnDAIV3J6A8OVyYaPie/mclmfS1iOtcbWBBG6bMZszfXu5tsPhsVxSMO5P4josgMdUhMqIvhdpIWyDEHwhXT3VDaThJKnci3JleL5yv0RT2YDPBppB11qrRCS8q+iW/0oYL3VvunvOQcc25ZU69tsHycCTSVEJQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=0MCcXtZj; arc=none smtp.client-ip=220.130.44.152
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
+X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
+	s=richtek; t=1768209629;
+	bh=9YVDhrBinYzjrRTisNlGCOPvmAc8V6H7vwl9pQeQ6Jo=; l=1905;
+	h=From:To:Subject:Date:Message-ID:MIME-Version;
+	b=0MCcXtZjRsPdlLanQPVbNuv1aFfftI3cdnXM6NSneYdmwFjJNWBBHyB1wnPNy7Yj6
+	 sQ4r8n+UU9Q5EtYiN3q5xTQ0tIYzJpI+M2hZck7OWyv6mbiuDgurGoy2MbVw6neY9h
+	 S9bM+3ECCzkj+D1CnbHrPQ7arGc/d/IzdEu/L1hYnG9mWpm9iGF7bGnCgNeXCZWEsm
+	 blvtvN+eMbc4GZLGWNl1J6APf1dHWpZj0MckF1/1UCFZxiFwapb1MmgvA9zxCVSHsP
+	 fDUDixx9WhU/YBvgWp0zGmhPdUdEroiNmMQLqpGDWYVVRryUs6TRP0c18epsW959jQ
+	 dGcahCLqlXPdA==
+Received: from 192.168.10.46
+	by mg.richtek.com with MailGates ESMTPS Server V6.0(2572445:0:AUTH_RELAY)
+	(envelope-from <cy_huang@richtek.com>)
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Mon, 12 Jan 2026 17:20:08 +0800 (CST)
+Received: from ex4.rt.l (192.168.10.47) by ex3.rt.l (192.168.10.46) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Mon, 12 Jan
+ 2026 17:20:07 +0800
+Received: from git-send.richtek.com (192.168.10.154) by ex4.rt.l
+ (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
+ Transport; Mon, 12 Jan 2026 17:20:07 +0800
+From: <cy_huang@richtek.com>
+To: Mauro Carvalho Chehab <mchehab@kernel.org>
+CC: Bryan Wu <cooloney@gmail.com>, Kyungmin Park <kyungmin.park@samsung.com>,
+	Jacek Anaszewski <j.anaszewski@samsung.com>, ChiYuan Huang
+	<cy_huang@richtek.com>, <roger-hy.wang@mediatek.com>,
+	<linux-media@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
+	<stable@vger.kernel.org>
+Subject: [PATCH v3] media: v4l2-flash: Enter LED off state after file handle closed
+Date: Mon, 12 Jan 2026 17:20:04 +0800
+Message-ID: <1106c60cb96786ade1f60c692e566c408d7d8174.1768209230.git.cy_huang@richtek.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com> <aWGSQYCXP4R08koQ@venus>
-In-Reply-To: <aWGSQYCXP4R08koQ@venus>
-From: Bartosz Golaszewski <brgl@kernel.org>
-Date: Mon, 12 Jan 2026 10:08:25 +0100
-X-Gmail-Original-Message-ID: <CAMRc=Mf0tRxRrh7tn5OaDn3a47N_qvUcjO=zqbTi-GhY-Y9hOg@mail.gmail.com>
-X-Gm-Features: AZwV_QhDDYd3G5smy1ZRDQbejdmCu0WGBNa60Ja3hID1ca2J3AnWia5Ug7Yy3bU
-Message-ID: <CAMRc=Mf0tRxRrh7tn5OaDn3a47N_qvUcjO=zqbTi-GhY-Y9hOg@mail.gmail.com>
-Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
-To: Sebastian Reichel <sebastian.reichel@collabora.com>
-Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Linus Walleij <linusw@kernel.org>, 
-	Heiko Stuebner <heiko@sntech.de>, linux-gpio@vger.kernel.org, 
-	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
-	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
-	Marek Szyprowski <m.szyprowski@samsung.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
 
-On Sat, Jan 10, 2026 at 12:55=E2=80=AFAM Sebastian Reichel
-<sebastian.reichel@collabora.com> wrote:
->
-> Hi,
->
-> On Tue, Jan 06, 2026 at 10:00:11AM +0100, Bartosz Golaszewski wrote:
-> > The GPIO controller is configured as non-sleeping but it uses generic
-> > pinctrl helpers which use a mutex for synchronization.
-> >
-> > This can cause the following lockdep splat with shared GPIOs enabled on
-> > boards which have multiple devices using the same GPIO:
-> >
+From: ChiYuan Huang <cy_huang@richtek.com>
 
-[snip]
+To make sure LED enter off state after file handle is closed, initiatively
+configure LED_MODE to NONE. This can guarantee whatever the previous state
+is torch or strobe mode, the final state will be off.
 
-> >
-> > Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-> > Cc: stable@vger.kernel.org
-> > Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-> > Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc=
-6@samsung.com/
-> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
-m>
-> > ---
-> >  drivers/gpio/gpio-rockchip.c | 1 +
-> >  1 file changed, 1 insertion(+)
-> >
-> > diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.=
-c
-> > index 47174eb3ba76..bae2061f15fc 100644
-> > --- a/drivers/gpio/gpio-rockchip.c
-> > +++ b/drivers/gpio/gpio-rockchip.c
-> > @@ -593,6 +593,7 @@ static int rockchip_gpiolib_register(struct rockchi=
-p_pin_bank *bank)
-> >       gc->ngpio =3D bank->nr_pins;
-> >       gc->label =3D bank->name;
-> >       gc->parent =3D bank->dev;
-> > +     gc->can_sleep =3D true;
->
-> This means all operations are marked as can_sleep, even though
-> pinctrl operations are only used for the direction setting.
-> I.e. the common get/set operations always worked in atomic mode,
-> but now complain. See for example:
->
-> https://lore.kernel.org/all/20260108-media-synopsys-hdmirx-fix-gpio-cansl=
-eep-v1-1-3570518d8bab@kernel.org/
->
-> It's not a big issue for the hdmirx driver specifically, but I wonder
-> how many more (less often tested) rockchip drivers use GPIOs from their
-> IRQ handler.
->
-> Considering setting or getting the GPIO from atomic context is much
-> more common than changing the direction - is there some way to
-> describe the sleep behavior in a more specific way in the GPIO
-> controller?
->
+Cc: stable@vger.kernel.org
+Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
+Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+---
+Still cannot pass patch integration check, send v3 patch to fix all.
 
-No, there's no such switch at the moment. This is because there are
-paths that we can take, where we *do* end up setting direction from
-gpiod_set_value(). For instance:
+v3
+- Remove 'Reported-by' tag
+- Fix identation check for patch integration
 
-gpiod_set_value()
-  gpiod_set_value_nocheck()
-    gpio_set_open_drain_value_commit()
-      gpiochip_direction_output()
+v2
+- Fix commit message redudant space cause patch robot parsing error
 
-I'm afraid, for correctness, it has to be either sleeping, or not. I
-would love - at some point - to make pinctrl mostly lockless with
-SRCU, like we did with GPIO. That would solve this issue correctly.
-But until then, I'm afraid we need to keep a chip-global switch for
-sleeping.
+Hi,
+  We encounter an issue. When the upper layer camera process is crashed,
+if the new process did not reinit the LED,  it will keeps the previous
+state whatever it's in torch or strobe mode
 
-Bartosz
+OS will handle the resource management. So when the process is crashed
+or terminated, the 'close' API will be called to release resources.
+That's why we add the initiative action to trigger LED off in file
+handle close is called.
+---
+ drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
+
+diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+index 355595a0fefa..46606f5cc192 100644
+--- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
++++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
+@@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
+ 		return 0;
+ 
+ 	if (led_cdev) {
++		/* If file handle is released, make sure LED enter off state */
++		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
++				       V4L2_FLASH_LED_MODE_NONE);
++		if (ret)
++			return ret;
++
+ 		mutex_lock(&led_cdev->led_access);
+ 
+ 		if (v4l2_flash->ctrls[STROBE_SOURCE])
+
+base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
+-- 
+2.34.1
+
 
