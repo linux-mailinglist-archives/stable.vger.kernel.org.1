@@ -1,211 +1,148 @@
-Return-Path: <stable+bounces-208057-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208058-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B14CD11606
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:02:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB992D11693
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04FCD3044224
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:02:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D427B3008C9A
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:08:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5329B346E6B;
-	Mon, 12 Jan 2026 09:02:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9131934677D;
+	Mon, 12 Jan 2026 09:08:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b="Yf0pnwDr";
-	dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b="gcsRJUBY"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="rdBWZ5Kp"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-0031df01.pphosted.com (mx0b-0031df01.pphosted.com [205.220.180.131])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B6E346A1E
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:02:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.180.131
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54676322B66
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:08:39 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768208523; cv=none; b=PraXnDH7NYi81km8qMCW/a7vIAuraORtfBVGKcBPBA9qEuUheSLsHP1RGk1C1j2sp1vkRzybgCaZoI+EedlCrskZX50t4suEXzy5v/KnKzt4UEDqNczXdpxiKYEb3bLcMAarxfRBo6WHTqZmPOBIUgBMJ4hnrh4esDXT7eNwCxc=
+	t=1768208919; cv=none; b=IZ5RIoOVBUMHF4haCVCoDEjoPfHIjF+xaKaADs6TV2I75oKaqSdPnle4lut4+GgRsqTSMrokMxRreahEgGt5RTnVtPrJ/KiiasTgIl1y7FOrd8YyPik8kf8hq/3ccMHwJ+h0SoRT2cGwL4tEE0ziprCpKd7MZoM9gi9Fq/hcgHE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768208523; c=relaxed/simple;
-	bh=IfMTHWeSro6nfybMYt/k6VzicXJpbK9tibQn3pvSKLw=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OR8lnTItML//GxUOzqxc2ViNTN2qQ+T0VeT4pLCmxAGdrygO2COT4XSTkTCd+SkUx7kS79urwbJXFB7GUJkrFfrpus9e/U9bGVaPgJJhDGGv88DLhpKVIU3qo1NVfWMXR5wcbFtAMR6VL/Na82Yb+VCAM3+6F8SD/6xMLEvtErE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com; spf=pass smtp.mailfrom=oss.qualcomm.com; dkim=pass (2048-bit key) header.d=qualcomm.com header.i=@qualcomm.com header.b=Yf0pnwDr; dkim=pass (2048-bit key) header.d=oss.qualcomm.com header.i=@oss.qualcomm.com header.b=gcsRJUBY; arc=none smtp.client-ip=205.220.180.131
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oss.qualcomm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oss.qualcomm.com
-Received: from pps.filterd (m0279869.ppops.net [127.0.0.1])
-	by mx0a-0031df01.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60C8FpFK263654
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:02:01 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=qualcomm.com; h=
-	cc:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=qcppdkim1; bh=gxYe8bPZc5O
-	mrCJIO3gg3XeKjkXn1uCm2zaZeYGQq9k=; b=Yf0pnwDrIc6lMuyc9sMDxTnQoI9
-	E58e7QmNE3pKtlZlWukPMqhXI0DRDx5RY6qirpArQh4zypI+rLA8V6zj2+PJLtpx
-	mTqG1oSxx49bjW2soq1e1Eo1QvpJHmgl+8ibPOM1d6irg87xde6itf5WbGukauyN
-	njgQuIHwo48u/Wpj/bnzVCpUeKBTaARwthR/qyn0GGsmoQfTl9vt3x4um9te0pwG
-	R8ef72CB0LVYX/KncX97PTmQPc5bsNi6l/FpITI1d3m8VkF2KRzjG+rVw7OjEBgt
-	z+A7GgUaUhGsCa+Y6R9ZIr6Xik81Fpke94i/Rj/Z+FgMYc8dh2XumRyqEcA==
-Received: from mail-qk1-f200.google.com (mail-qk1-f200.google.com [209.85.222.200])
-	by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 4bm8kytbnb-1
-	(version=TLSv1.3 cipher=TLS_AES_128_GCM_SHA256 bits=128 verify=NOT)
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:02:00 +0000 (GMT)
-Received: by mail-qk1-f200.google.com with SMTP id af79cd13be357-8b234bae2a7so1769700085a.3
-        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 01:02:00 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=oss.qualcomm.com; s=google; t=1768208520; x=1768813320; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=gxYe8bPZc5OmrCJIO3gg3XeKjkXn1uCm2zaZeYGQq9k=;
-        b=gcsRJUBYgveD8YKyzkrGGrdq0sxO6QnHYQ9imlaUQNuet93WdwemNb3//J/FaoxSsz
-         8pjhlnz3nUw6cWJYALVJrUI7NF7PFI8LS5SGnoHSG1Wy0DANaIKseGEpi212DxTRLH3u
-         ai7GhwVyPQYp0LaCbem20i4fV1JokosPjpZgDOUh1AIJ91hgj2e2R82ki6xers+ffxMM
-         yAirBuTjkskimgHxaBCAQIEdbfrANjxcO6grfSHTn9FRJAIUG725CmkB0Naf1/fr1BP2
-         yLBqRZTg81ZZinOt+9HnA7nPDk95z41xK0N23G/sO0vrkVRgWKe2uv1Q5OfeWUuWN5XT
-         Aa4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768208520; x=1768813320;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=gxYe8bPZc5OmrCJIO3gg3XeKjkXn1uCm2zaZeYGQq9k=;
-        b=t3flhOSFyb2IrAKjGSR+xEo0PcGLZqa/VEhGhVHdEqD8tDQREc5HQvCOjeMru7sjuZ
-         8Lj/bTadPPBJ9KzdhJoQTPWDweAHLikMCCV5rLqOu8KkRB6+9X+gsYw0mJY++fHnVzGL
-         XStasptKn1gyC9dW2WW10Kp6HeZNJNdcrQN5lo8FynA3V0TGzegh1aic/4IFQNO0KcKN
-         42XfbV58q1J09yqpBeUz6nsCHIeDlH3haeNTSHkspgKQVYyHZeiUdY+LbZq2+Vwb8QR+
-         q5PIZJbU5uznTkX2cPfuilM5A1zbOn1rjxNzQFPXlpiMeey7jGSwMZkW3j5Nvnh5cUXh
-         wt/g==
-X-Forwarded-Encrypted: i=1; AJvYcCUAbXVk2dr5UyRdIdbl3w73mdq7QzRfxIzGYRUdU+QYhxPfi8ldUYqrwu4yJsKGB5j7SU3P+/c=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxmcw+AzCFDGXjdUKJozIa3/plShPgL9ITkniuLDolCaGmbbldV
-	CAdGw/UceBSZDjuosvtClEmCx8FsdOft29nrU9MI8I565X9zoNmeaMA79fw1g1FTB0nT/KgPHLn
-	0xJXw2DbnuOqKCWchlQKnMBUxwIzhmPAppqEVsjl0Jy0KzdZcPoTeHNf5PbE=
-X-Gm-Gg: AY/fxX5PrBG29GRBjFKZwEJGLuBko3vgp8UJoa7DbBpBhRwz3eNcnrTbH6VaWXavM7+
-	kDIOFo3ukXaBFLpqm28I9GLIfg1Pk5zN2KdvbNIzYmZor5OAt9VmppavtWO88gbFQyN052hjXZf
-	WbomZ3Dl0Al3JAggqQfm62YYiaqp1yhcOy2HPTF9VvitgdoEmE4NxtOhr9lkQK0wCuFFauESksd
-	Y6j8xYbF4SIVgtGh4SxNrZToA9smWfAAk35y4dH1q/iD34fQsuXR13VW2VDrIC+h6ZXyMrsnPXb
-	dWwPkmHX3XHn/VjucdLJlxEiRjhftbgZkA8lMlK9t398+mDmDZPqCQo8NRCT5ibbXacMbfqyWQU
-	OvNJmjPYsTOw6b1WRFxkVHd0mCw==
-X-Received: by 2002:a05:620a:1a11:b0:8be:e02f:92cb with SMTP id af79cd13be357-8c389375858mr2497946885a.6.1768208520084;
-        Mon, 12 Jan 2026 01:02:00 -0800 (PST)
-X-Google-Smtp-Source: AGHT+IEXSEeJS775UBms4zYG59E6HPBx9N2t8Z8LqIceulkET1O4SU7Lt3cwHfldrGNZ9p/IE9oWHw==
-X-Received: by 2002:a05:620a:1a11:b0:8be:e02f:92cb with SMTP id af79cd13be357-8c389375858mr2497943585a.6.1768208519653;
-        Mon, 12 Jan 2026 01:01:59 -0800 (PST)
-Received: from quoll ([178.197.218.229])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f6ef885sm337980525e9.9.2026.01.12.01.01.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 01:01:58 -0800 (PST)
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzk+dt@kernel.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Pin-yen Lin <treapking@chromium.org>,
-        Matthias Kaehlcke <mka@chromium.org>, linux-usb@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org
-Cc: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-        stable@vger.kernel.org
-Subject: [PATCH 2/2] dt-bindings: usb: realtek,rts5411: Disallow unevaluated properties
-Date: Mon, 12 Jan 2026 10:01:51 +0100
-Message-ID: <20260112090149.69100-4-krzysztof.kozlowski@oss.qualcomm.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260112090149.69100-3-krzysztof.kozlowski@oss.qualcomm.com>
-References: <20260112090149.69100-3-krzysztof.kozlowski@oss.qualcomm.com>
+	s=arc-20240116; t=1768208919; c=relaxed/simple;
+	bh=aNusfbvcvvIrZ1GK6+N/BWnHjCznHNoKX1GEoskKxrw=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=g+jMHYZvUxkpHJreXXTXKsaCFZwZa7FPmy87Y70Vz9ROWz5fsZTy362YlsomBnWaE0ywuXbKUJ/FO+rGGAY7BvFGfXJ7nSdhIEXD2tvza4FL5X6oAUFK0fmq0RBY7/69qB0tG1HIkewMiPZfZOXGf8MMEVYLMU0oFHLCMi2y+fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=rdBWZ5Kp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E261C19424
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:08:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768208919;
+	bh=aNusfbvcvvIrZ1GK6+N/BWnHjCznHNoKX1GEoskKxrw=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=rdBWZ5KpxcbS00ewOLmz6VAc+OOKmUqd4MYWGLtm00Io/3Yei+jlv+kNP9Q0vdsOb
+	 edfSASkvbc/gWY8nmaY2Jj0OjaSNAlRYniK/ApsqCWGIoSm1rSwQNomse/Y8kK9PwY
+	 9fK1LpyqJng2uyWvtJoHtzXpxMoPWdWryEAxO+Drt6FRu+LeNlD4omI+l+jga+Y98t
+	 gSNiUppaEZd8ROLEV1T8mUS3jQ2JcldlKpm941SCK3wzEcc+AiTU+s4dybHV9IxsSb
+	 av8ri27WpDQhLEcGNkVC6sL707k1MmpdjObys2j7sl7neUqYOKqqqs4wn637/vDV15
+	 tBfj/lw8836yw==
+Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-598f8136a24so6621632e87.3
+        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 01:08:38 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUqEjmjPVAIlr2BLGGWs4PXbZC0L9Te05NriH3mZqE6sU9Dc8TAoOjEAK+rfGvgxgH9Rml0ntw=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yy0TCCBckMYTqj/dTtwNANNtTek6d1hdosrazstyRqX5hTHo11L
+	GUybXfy6xCL7cRjiwVo8d+jWvhFfKg8R53li7sm3vwCsp1h/BjnKWF+mEMhvugEl/sQF4TOiYmc
+	M8uTsG1TJ2k3pwJso1ohKG0Kga3tIJdk9d5I9XvJHUQ==
+X-Google-Smtp-Source: AGHT+IGTR9k5RSHNIpBJL834Ww0X8J1ZdzRZ6Hp2uk9hnACvGJbrlxz/VASX4yp2KTPlt556o88PPVY7jr7CQVZ9CaA=
+X-Received: by 2002:a2e:a590:0:b0:383:213c:fc61 with SMTP id
+ 38308e7fff4ca-383213cff5cmr24069241fa.31.1768208917628; Mon, 12 Jan 2026
+ 01:08:37 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Developer-Signature: v=1; a=openpgp-sha256; l=1758; i=krzysztof.kozlowski@oss.qualcomm.com;
- h=from:subject; bh=IfMTHWeSro6nfybMYt/k6VzicXJpbK9tibQn3pvSKLw=;
- b=owEBbQKS/ZANAwAKAcE3ZuaGi4PXAcsmYgBpZLiBINN8rNb+D4NxSuBR+mSgW9+VVU1z85uA4
- KMbzIH6cdOJAjMEAAEKAB0WIQTd0mIoPREbIztuuKjBN2bmhouD1wUCaWS4gQAKCRDBN2bmhouD
- 18bDD/9A2IAOUVX0r3Jfo7d6lDfcRXk8nW/3s/mn62tIxcPcDD03Uvqf+fksuL8JIyFc2gCc1Kk
- WB12KfIBBpnJQ+tEavDZvIKLULfVWKhdo0SyZ/V0EDRpTw7ElzykQOA4j+2qtFH/XEJzdAfNVcQ
- 97kO20wOeqVNM5Z7XcHs7x+xSppf7k7jmfpcvxSw96IsrRBIPRDqzrvi0YKgiTe51Nm/2T7roZz
- DVUbNsYw6ljsjRGJYN1chJ1CY+/El7JNYpbdIvtRkPm0d0ozh9PJHhjcTnSC50/qKY2fhFukj+t
- lLv897TZI3wC0A6I/tudgu2mHCl92lLyqzRoP1T30zAJjBBgRCVLR5Gah/nRXv85fF59+8tIogY
- DiIl8+42UK6PMSI/BjyqUVrzyW9lx06WPz2moue1MYK/pjsYxfhAM8K6mRGf9Xx+kHuo715ofI3
- xqrk/dRS39svgxvMG7kne/8FRvjiiTvxIXEC8OMCbFrGG1iA5KK4lIPgbGFfmJaxLoPTSlAoSUx
- NvMsc6SbesK5v85S1Cfb2wFHBAJrro3mU0mav08KvMOZtfT6kMVIpqdia5efExYD908/mBO4lcr
- nM2fkRrYgm4VBW9CsthUppW0vSIqKKcepCD7ueH+XYGQUt0mVGZdN95islSKjYPqKD5lKb9r0qI f3YC2+Atzn/ViLg==
-X-Developer-Key: i=krzysztof.kozlowski@oss.qualcomm.com; a=openpgp; fpr=9BD07E0E0C51F8D59677B7541B93437D3B41629B
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-GUID: Tj0ty_t05wkQVhpjZztzh4FisxqzaN96
-X-Authority-Analysis: v=2.4 cv=ZuDg6t7G c=1 sm=1 tr=0 ts=6964b888 cx=c_pps
- a=hnmNkyzTK/kJ09Xio7VxxA==:117 a=Eb9f15NH/cHKzfGOmZSO4Q==:17
- a=vUbySO9Y5rIA:10 a=s4-Qcg_JpJYA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=EUspDBNiAAAA:8 a=lvJHC8f6i3d4RnviQSwA:9
- a=PEH46H7Ffwr30OY-TuGO:22
-X-Proofpoint-ORIG-GUID: Tj0ty_t05wkQVhpjZztzh4FisxqzaN96
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEyMDA3MCBTYWx0ZWRfX83smpBYArj7V
- aKjzi4MIUJVq64+ghER9Mw6mksXr8jxnF5fQVUSezqWC3g5F5iers5+g8XrjZvgrvpgcF3YRMFv
- EMnODNxf0ZuOiNnShqrE/lPZ7GTiiueCIQ3WIE2zInQfDalkpwr1Kwg9BZRwIFXWKdZ1tFhuaxV
- P9xJDcZP8RYEwuAAVANfGiJ3HjlZU6ZJOl6Q020RMaUD8p10Q5xSVWWYqkhKFSgNIOdGynf/B+P
- eK/eYW955Xs5rYExA/zil6wF5ngtYboNiWETcumYH3U9rU/F89Cu+MwlJgh/3AvZmKrEP1v64mV
- PuApp1Kn9s1GjFZgBXDEjf+JhSU5HTt6rjMX8lFyVqanFpJim7QEz5MTQRaXTsNNVq2kySRiHK2
- rpBj3KpW2waEzNmXAIoqeBzL0S1zs+RHE4dC5y0a8VdqKnWo8su6l1av8qXCIfEF33Gbcyw8jAe
- 9IcJcWJ+KabRzsXJo4w==
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-12_02,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- phishscore=0 lowpriorityscore=0 malwarescore=0 impostorscore=0 bulkscore=0
- spamscore=0 clxscore=1015 priorityscore=1501 suspectscore=0 adultscore=0
- classifier=typeunknown authscore=0 authtc= authcc= route=outbound adjust=0
- reason=mlx scancount=1 engine=8.22.0-2512120000 definitions=main-2601120070
+References: <20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com> <aWGSQYCXP4R08koQ@venus>
+In-Reply-To: <aWGSQYCXP4R08koQ@venus>
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Mon, 12 Jan 2026 10:08:25 +0100
+X-Gmail-Original-Message-ID: <CAMRc=Mf0tRxRrh7tn5OaDn3a47N_qvUcjO=zqbTi-GhY-Y9hOg@mail.gmail.com>
+X-Gm-Features: AZwV_QhDDYd3G5smy1ZRDQbejdmCu0WGBNa60Ja3hID1ca2J3AnWia5Ug7Yy3bU
+Message-ID: <CAMRc=Mf0tRxRrh7tn5OaDn3a47N_qvUcjO=zqbTi-GhY-Y9hOg@mail.gmail.com>
+Subject: Re: [PATCH] gpio: rockchip: mark the GPIO controller as sleeping
+To: Sebastian Reichel <sebastian.reichel@collabora.com>
+Cc: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>, Linus Walleij <linusw@kernel.org>, 
+	Heiko Stuebner <heiko@sntech.de>, linux-gpio@vger.kernel.org, 
+	linux-arm-kernel@lists.infradead.org, linux-rockchip@lists.infradead.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org, 
+	Marek Szyprowski <m.szyprowski@samsung.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-Review given to v2 [1] of commit 76cbb3eabf0b ("dt-bindings: usb:
-realtek,rts5411: Adapt usb-hub.yaml") asked to use
-unevaluatedProperties, but this was ignored by the author probably
-because current dtschema does not allow to use both additionalProperties
-and unevaluatedProperties.  As an effect, this binding does not end with
-unevaluatedProperties and allows any properties to be added.
+On Sat, Jan 10, 2026 at 12:55=E2=80=AFAM Sebastian Reichel
+<sebastian.reichel@collabora.com> wrote:
+>
+> Hi,
+>
+> On Tue, Jan 06, 2026 at 10:00:11AM +0100, Bartosz Golaszewski wrote:
+> > The GPIO controller is configured as non-sleeping but it uses generic
+> > pinctrl helpers which use a mutex for synchronization.
+> >
+> > This can cause the following lockdep splat with shared GPIOs enabled on
+> > boards which have multiple devices using the same GPIO:
+> >
 
-Fix this by reverting the approach suggested at v2 review and using
-simpler definition of "reg" constraints.
+[snip]
 
-Link: https://lore.kernel.org/r/20250416180023.GB3327258-robh@kernel.org/ [1]
-Fixes: 76cbb3eabf0b ("dt-bindings: usb: realtek,rts5411: Adapt usb-hub.yaml")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
----
- .../devicetree/bindings/usb/realtek,rts5411.yaml     | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+> >
+> > Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+> > Cc: stable@vger.kernel.org
+> > Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+> > Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc=
+6@samsung.com/
+> > Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.co=
+m>
+> > ---
+> >  drivers/gpio/gpio-rockchip.c | 1 +
+> >  1 file changed, 1 insertion(+)
+> >
+> > diff --git a/drivers/gpio/gpio-rockchip.c b/drivers/gpio/gpio-rockchip.=
+c
+> > index 47174eb3ba76..bae2061f15fc 100644
+> > --- a/drivers/gpio/gpio-rockchip.c
+> > +++ b/drivers/gpio/gpio-rockchip.c
+> > @@ -593,6 +593,7 @@ static int rockchip_gpiolib_register(struct rockchi=
+p_pin_bank *bank)
+> >       gc->ngpio =3D bank->nr_pins;
+> >       gc->label =3D bank->name;
+> >       gc->parent =3D bank->dev;
+> > +     gc->can_sleep =3D true;
+>
+> This means all operations are marked as can_sleep, even though
+> pinctrl operations are only used for the direction setting.
+> I.e. the common get/set operations always worked in atomic mode,
+> but now complain. See for example:
+>
+> https://lore.kernel.org/all/20260108-media-synopsys-hdmirx-fix-gpio-cansl=
+eep-v1-1-3570518d8bab@kernel.org/
+>
+> It's not a big issue for the hdmirx driver specifically, but I wonder
+> how many more (less often tested) rockchip drivers use GPIOs from their
+> IRQ handler.
+>
+> Considering setting or getting the GPIO from atomic context is much
+> more common than changing the direction - is there some way to
+> describe the sleep behavior in a more specific way in the GPIO
+> controller?
+>
 
-diff --git a/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml b/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml
-index a020afaf2d6e..a86afa8fdc91 100644
---- a/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml
-+++ b/Documentation/devicetree/bindings/usb/realtek,rts5411.yaml
-@@ -19,6 +19,10 @@ properties:
-           - usbbda,5411
-           - usbbda,411
- 
-+  reg:
-+    minimum: 1
-+    maximum: 4
-+
-   vdd-supply:
-     description:
-       phandle to the regulator that provides power to the hub.
-@@ -37,17 +41,13 @@ properties:
-             minimum: 1
-             maximum: 4
- 
--additionalProperties:
--  properties:
--    reg:
--      minimum: 1
--      maximum: 4
--
- required:
-   - peer-hub
-   - compatible
-   - reg
- 
-+unevaluatedProperties: false
-+
- examples:
-   - |
-     usb {
--- 
-2.51.0
+No, there's no such switch at the moment. This is because there are
+paths that we can take, where we *do* end up setting direction from
+gpiod_set_value(). For instance:
 
+gpiod_set_value()
+  gpiod_set_value_nocheck()
+    gpio_set_open_drain_value_commit()
+      gpiochip_direction_output()
+
+I'm afraid, for correctness, it has to be either sleeping, or not. I
+would love - at some point - to make pinctrl mostly lockless with
+SRCU, like we did with GPIO. That would solve this issue correctly.
+But until then, I'm afraid we need to keep a chip-global switch for
+sleeping.
+
+Bartosz
 
