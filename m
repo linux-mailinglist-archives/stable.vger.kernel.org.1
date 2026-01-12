@@ -1,190 +1,157 @@
-Return-Path: <stable+bounces-208053-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E964D112FA
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:23:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id F4176D11536
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D424A301F008
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 08:22:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 325E5304890F
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 08:48:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F3B31A556;
-	Mon, 12 Jan 2026 08:22:33 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lxUnsoz8"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F02F82D47EF;
+	Mon, 12 Jan 2026 08:48:40 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B9D31A576;
-	Mon, 12 Jan 2026 08:22:29 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
+Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1A353451D5;
+	Mon, 12 Jan 2026 08:48:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768206152; cv=none; b=K3MFBMZaprQSAq98nNBcxGnPgDrNRI6R4VOaVvn9cnysg4NWHQ2XbTrmsK7trjF52sEs9hXL1icRX2AE87enjQYo12H7vk7Tw9UBT7NaYL/jdRZbMOvMtb0Ak5amL+Dq6/0sG6OhXq/7zMEj/BhMfPXkzQ2Z+r2lp5uI989p5sE=
+	t=1768207718; cv=none; b=S1k79lGSNZy89sTVHHE/BtGTKh8TsnzcgSmfSb4ron8EbMzAQee4TIfYQWGirK/To1Xne23SpBmcYpYP2S1Eubsc4SZOsf7Xz2As+M9M4KcPIfBGU++7J9g7ltLrROhXRrcjs1JsutgKWxRNLK+kObIbpMJ4gWaFgh2L5WWAmYQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768206152; c=relaxed/simple;
-	bh=KUqF/1fFS2rFaJlGWXLeNlav0oxVLDqNH89BpnAW724=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=ArY76LZJkE3yZZFlelop9knYNsAmmWjtzxQSbLfKuOlZ6oRQjMcEH0lzgR1TDmBlfjzrTsXDGSprKh4+AmWx4RCf/7YiJp8sCM3Y+VFN2/mim9ipGdd6o6FWbd34oWKRUl5kZFoGAkG/jCI8M2fQ6FB7P/v5JsYtn+bv9OWmHxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lxUnsoz8; arc=none smtp.client-ip=115.124.30.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768206147; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=ad7R/+eI3g9Xu6IbHx4VEjDEO9JdlcbHLzN6J0fDGaI=;
-	b=lxUnsoz857wQ/W1AiHtdaafeK7+wlghNrhHnqm0Qhql5+QoVXtihy0zzre/vlV9myeOoESLp1Q1y2ZFwMzJxXwXhyLirUcdfH9dTnMQEchcD9Sl8WIR5i5Txsrv0xK68oWlZOkp4SyNihgV2fyfjBGrER37s3ooVt+NZABrXQ+Q=
-Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wwr3iRU_1768206145 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Mon, 12 Jan 2026 16:22:26 +0800
-Message-ID: <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
-Date: Mon, 12 Jan 2026 16:22:24 +0800
+	s=arc-20240116; t=1768207718; c=relaxed/simple;
+	bh=28tHlwGVJpeLdVGvuinWnZgpn9dScW8S3NEu2YcuCK8=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=mYDd0p8Jr9btVvukNoIIx5x8Z7YCeii/htjc8ofl9QZmXOxgcxGlBIMNcwvPWgIER/SxMTqXwWqx5wZoGYNUfgBO9MUo+MQzhgL2LdQgh2bPbAbDEOlgI1/RBu5QWRwFQN6QlN/0dS8MZYTXxeGj9T72vX/bOygNxQZh1nZ/v+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
+Received: from loongson.cn (unknown [223.64.69.1])
+	by gateway (Coremail) with SMTP id _____8BxnsNStWRpLM8HAA--.25409S3;
+	Mon, 12 Jan 2026 16:48:18 +0800 (CST)
+Received: from localhost.localdomain (unknown [223.64.69.1])
+	by front1 (Coremail) with SMTP id qMiowJCxmuBLtWRpEtEaAA--.8616S2;
+	Mon, 12 Jan 2026 16:48:14 +0800 (CST)
+From: Huacai Chen <chenhuacai@loongson.cn>
+To: Huacai Chen <chenhuacai@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Alan Stern <stern@rowland.harvard.edu>,
+	linux-usb@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Huacai Chen <chenhuacai@loongson.cn>,
+	stable@vger.kernel.org,
+	Shengwen Xiao <atzlinux@sina.com>
+Subject: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_platform
+Date: Mon, 12 Jan 2026 16:48:02 +0800
+Message-ID: <20260112084802.1995923-1-chenhuacai@loongson.cn>
+X-Mailer: git-send-email 2.47.3
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
- <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
- <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:qMiowJCxmuBLtWRpEtEaAA--.8616S2
+X-CM-SenderInfo: hfkh0x5xdftxo6or00hjvr0hdfq/
+X-Coremail-Antispam: 1Uk129KBj93XoWxZryrJr45tF17tFWfWryrXwc_yoWrWw43pF
+	45Jr4Syr4kGr12q390k3WUJF42krnIvryDG3WfWa1j939xXw1DXw4UZF1Fy3Z7Xw15Jws8
+	tF1qvrW7CFs8uagCm3ZEXasCq-sJn29KB7ZKAUJUUUU7529EdanIXcx71UUUUU7KY7ZEXa
+	sCq-sGcSsGvfJ3Ic02F40EFcxC0VAKzVAqx4xG6I80ebIjqfuFe4nvWSU5nxnvy29KBjDU
+	0xBIdaVrnRJUUU90b4IE77IF4wAFF20E14v26r1j6r4UM7CY07I20VC2zVCF04k26cxKx2
+	IYs7xG6rWj6s0DM7CIcVAFz4kK6r1Y6r17M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48v
+	e4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_Gr0_Xr1l84ACjcxK6xIIjxv20xvEc7CjxVAFwI
+	0_Gr0_Cr1l84ACjcxK6I8E87Iv67AKxVWxJVW8Jr1l84ACjcxK6I8E87Iv6xkF7I0E14v2
+	6r4UJVWxJr1ln4kS14v26r1Y6r17M2AIxVAIcxkEcVAq07x20xvEncxIr21l57IF6xkI12
+	xvs2x26I8E6xACxx1l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r12
+	6r1DMcIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IYc2Ij64
+	vIr41l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1l4IxYO2xFxVAFwI0_
+	Jrv_JF1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1V
+	AY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAI
+	cVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42
+	IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVj
+	vjDU0xZFpf9x07j5xhLUUUUU=
 
+Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+loaded first") said that ehci-hcd should be loaded before ohci-hcd and
+uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
+dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
+pci, which is not enough and we may still see the warnings in boot log.
 
+To eliminate the warnings we should make ohci-hcd/uhci-hcd depend on
+ehci-hcd. But Alan said that the warning introduced by 9beeee6584b9aa4f
+is bogus, we only need the soft dependencies in the PCI level rather
+than the HCD level.
 
-On 1/12/26 1:56 PM, Kairui Song wrote:
-> On Mon, Jan 12, 2026 at 12:00 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->> On 1/12/26 1:53 AM, Kairui Song wrote:
->>> From: Kairui Song <kasong@tencent.com>
->>>
->>> The helper for shmem swap freeing is not handling the order of swap
->>> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry,
->>> but it gets the entry order before that using xa_get_order
->>> without lock protection. As a result the order could be a stalled value
->>> if the entry is split after the xa_get_order and before the
->>> xa_cmpxchg_irq. In fact that are more way for other races to occur
->>> during the time window.
->>>
->>> To fix that, open code the Xarray cmpxchg and put the order retrivial and
->>> value checking in the same critical section. Also ensure the order won't
->>> exceed the truncate border.
->>>
->>> I observed random swapoff hangs and swap entry leaks when stress
->>> testing ZSWAP with shmem. After applying this patch, the problem is resolved.
->>>
->>> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
->>> Cc: stable@vger.kernel.org
->>> Signed-off-by: Kairui Song <kasong@tencent.com>
->>> ---
->>>    mm/shmem.c | 35 +++++++++++++++++++++++------------
->>>    1 file changed, 23 insertions(+), 12 deletions(-)
->>>
->>> diff --git a/mm/shmem.c b/mm/shmem.c
->>> index 0b4c8c70d017..e160da0cd30f 100644
->>> --- a/mm/shmem.c
->>> +++ b/mm/shmem.c
->>> @@ -961,18 +961,28 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
->>>     * the number of pages being freed. 0 means entry not found in XArray (0 pages
->>>     * being freed).
->>>     */
->>> -static long shmem_free_swap(struct address_space *mapping,
->>> -                         pgoff_t index, void *radswap)
->>> +static long shmem_free_swap(struct address_space *mapping, pgoff_t index,
->>> +                         unsigned int max_nr, void *radswap)
->>>    {
->>> -     int order = xa_get_order(&mapping->i_pages, index);
->>> -     void *old;
->>> +     XA_STATE(xas, &mapping->i_pages, index);
->>> +     unsigned int nr_pages = 0;
->>> +     void *entry;
->>>
->>> -     old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
->>> -     if (old != radswap)
->>> -             return 0;
->>> -     swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
->>> +     xas_lock_irq(&xas);
->>> +     entry = xas_load(&xas);
->>> +     if (entry == radswap) {
->>> +             nr_pages = 1 << xas_get_order(&xas);
->>> +             if (index == round_down(xas.xa_index, nr_pages) && nr_pages < max_nr)
->>> +                     xas_store(&xas, NULL);
->>> +             else
->>> +                     nr_pages = 0;
->>> +     }
->>> +     xas_unlock_irq(&xas);
->>> +
->>> +     if (nr_pages)
->>> +             swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
->>>
->>> -     return 1 << order;
->>> +     return nr_pages;
->>>    }
->>
->> Thanks for the analysis, and it makes sense to me. Would the following
->> implementation be simpler and also address your issue (we will not
->> release the lock in __xa_cmpxchg() since gfp = 0)?
-> 
-> Hi Baolin,
-> 
->>
->> static long shmem_free_swap(struct address_space *mapping,
->>                               pgoff_t index, void *radswap)
->> {
->>           XA_STATE(xas, &mapping->i_pages, index);
->>           int order;
->>           void *old;
->>
->>           xas_lock_irq(&xas);
->>           order = xas_get_order(&xas);
-> 
-> Thanks for the suggestion. I did consider implementing it this way,
-> but I was worried that the order could grow upwards. For example
-> shmem_undo_range is trying to free 0-95 and there is an entry at 64
-> with order 5 (64 - 95). Before shmem_free_swap is called, the entry
-> was swapped in, then the folio was freed, then an order 6 folio was
-> allocated there and swapped out again using the same entry.
-> 
-> Then here it will free the whole order 6 entry (64 - 127), while
-> shmem_undo_range is only supposed to erase (0-96).
+However, there is really another neccessary soft dependencies between
+ohci-platform/uhci-platform and ehci-platform, which is added by this
+patch. The boot logs are below.
 
-Good point. However, this cannot happen during swapoff, because the 
-'end' is set to -1 in shmem_evict_inode().
+1. ohci-platform loaded before ehci-platform:
 
-Actually, the real question is how to handle the case where a large swap 
-entry happens to cross the 'end' when calling shmem_truncate_range(). If 
-the shmem mapping stores a folio, we would split that large folio by 
-truncate_inode_partial_folio(). If the shmem mapping stores a large swap 
-entry, then as you noted, the truncation range can indeed exceed the 'end'.
+ ohci-platform 1f058000.usb: Generic Platform OHCI controller
+ ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 1
+ ohci-platform 1f058000.usb: irq 28, io mem 0x1f058000
+ hub 1-0:1.0: USB hub found
+ hub 1-0:1.0: 4 ports detected
+ Warning! ehci_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
+ usb 1-4: new low-speed USB device number 2 using ohci-platform
+ ehci-platform 1f050000.usb: EHCI Host Controller
+ ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 2
+ ehci-platform 1f050000.usb: irq 29, io mem 0x1f050000
+ ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+ usb 1-4: device descriptor read/all, error -62
+ hub 2-0:1.0: USB hub found
+ hub 2-0:1.0: 4 ports detected
+ usb 1-4: new low-speed USB device number 3 using ohci-platform
+ input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb1/1-4/1-4:1.0/0003:10C4:8105.0001/input/input0
+ hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
 
-But with your change, that large swap entry would not be truncated, and 
-I’m not sure whether that might cause other issues. Perhaps the best 
-approach is to first split the large swap entry and only truncate the 
-swap entries within the 'end' boundary like the 
-truncate_inode_partial_folio() does.
+2. ehci-platform loaded before ohci-platform:
 
-Alternatively, this patch could only focus on the race on the order, 
-which seems uncontested. As for handling large swap entries that go 
-beyond the 'end', should we address that in a follow-up, for example by 
-splitting? What do you think?
+ ehci-platform 1f050000.usb: EHCI Host Controller
+ ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 1
+ ehci-platform 1f050000.usb: irq 28, io mem 0x1f050000
+ ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+ hub 1-0:1.0: USB hub found
+ hub 1-0:1.0: 4 ports detected
+ ohci-platform 1f058000.usb: Generic Platform OHCI controller
+ ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 2
+ ohci-platform 1f058000.usb: irq 29, io mem 0x1f058000
+ hub 2-0:1.0: USB hub found
+ hub 2-0:1.0: 4 ports detected
+ usb 2-4: new low-speed USB device number 2 using ohci-platform
+ input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb2/2-4/2-4:1.0/0003:10C4:8105.0001/input/input0
+ hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
 
-> That's why I added a max_nr argument to the helper. The GFP == 0 below
-> looks not very clean either, that's trivial though.
-> 
->>           old = __xa_cmpxchg(xas.xa, index, radswap, NULL, 0);
-> 
-> Am I overthinking it?
+In the later case, there is no re-connection for USB-1.0/1.1 devices,
+which is expected.
+
+Cc: stable@vger.kernel.org
+Reported-by: Shengwen Xiao <atzlinux@sina.com>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+ drivers/usb/host/ohci-platform.c | 1 +
+ drivers/usb/host/uhci-platform.c | 1 +
+ 2 files changed, 2 insertions(+)
+
+diff --git a/drivers/usb/host/ohci-platform.c b/drivers/usb/host/ohci-platform.c
+index 2e4bb5cc2165..c801527d5bd2 100644
+--- a/drivers/usb/host/ohci-platform.c
++++ b/drivers/usb/host/ohci-platform.c
+@@ -392,3 +392,4 @@ MODULE_DESCRIPTION(DRIVER_DESC);
+ MODULE_AUTHOR("Hauke Mehrtens");
+ MODULE_AUTHOR("Alan Stern");
+ MODULE_LICENSE("GPL");
++MODULE_SOFTDEP("pre: ehci_platform");
+diff --git a/drivers/usb/host/uhci-platform.c b/drivers/usb/host/uhci-platform.c
+index 5e02f2ceafb6..f4419d4526c4 100644
+--- a/drivers/usb/host/uhci-platform.c
++++ b/drivers/usb/host/uhci-platform.c
+@@ -211,3 +211,4 @@ static struct platform_driver uhci_platform_driver = {
+ 		.of_match_table = platform_uhci_ids,
+ 	},
+ };
++MODULE_SOFTDEP("pre: ehci_platform");
+-- 
+2.47.3
 
 
