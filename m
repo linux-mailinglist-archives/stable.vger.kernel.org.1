@@ -1,64 +1,56 @@
-Return-Path: <stable+bounces-208027-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208028-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3116CD10494
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 02:53:08 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D39D6D10658
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 03:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4D1043042FFD
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 01:53:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6737A30082F9
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 02:57:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8F3238C03;
-	Mon, 12 Jan 2026 01:53:04 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b="cXgIGr/Z"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C49D0306480;
+	Mon, 12 Jan 2026 02:57:51 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mg.richtek.com (mg.richtek.com [220.130.44.152])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73EF7B672;
-	Mon, 12 Jan 2026 01:53:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.130.44.152
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C0302F1FFC;
+	Mon, 12 Jan 2026 02:57:47 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768182784; cv=none; b=QyE7f8WlnNkETZmMczKcRuVo9eKKWyjQF5zCOn+YQpGf5fECBtmfcPfnWEmdbUbms+F/6gEZrdeYmGwboN39Y69R2wTTbgz+LXVIfj4XHzDgoIQJvxdOIend1lm13s23tFcXZiCRMrNx9FmJ/v/AHAwKcXSIiHeBfRBIuaLySfQ=
+	t=1768186671; cv=none; b=cXU08eSEDuuvioQcxS3zmFcRWq2NKkVzSCjBiCSuIDUzFOHma8YneqE0SDGkuQ6q0mIWZzovytYAUoC+PDiyzoszcMjQzy/mEVdFybZVFz8fysbkx2wLGB16gXPsMHgryI/tmXxmGCXApAwVQi2n+njOQt8NjFNmNwYA7hDenRU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768182784; c=relaxed/simple;
-	bh=EzrQ79+hl45J3CfoE6xzSAkyRDxtujliatJMO9Bviso=;
-	h=From:To:CC:Subject:Date:Message-ID:MIME-Version:Content-Type; b=mBLJYi+ktUI8OCPsK1fbpI7F251/+ZExzQEm3IawWfKwAgNrZWCK09zV33XMWERLBbab+X3Zhpqqs7DSs7u0qd0+vBA1gbsqO8aSjntdIfLGh/+rnUzFpBC3eQbFo3rZuuiM/Y+aL+k9wGpwvT8XQi6/mkU5T+ezzspDfpAbR5s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com; spf=pass smtp.mailfrom=richtek.com; dkim=pass (2048-bit key) header.d=richtek.com header.i=@richtek.com header.b=cXgIGr/Z; arc=none smtp.client-ip=220.130.44.152
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=richtek.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=richtek.com
-X-MailGates: (SIP:2,PASS,NONE)(compute_score:DELIVER,40,3)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=richtek.com;
-	s=richtek; t=1768182778;
-	bh=Cefewr4mvT2AuPprSC1fIG+Kyvw5hu4x1RrqRxfTXbA=; l=1807;
-	h=From:To:Subject:Date:Message-ID:MIME-Version;
-	b=cXgIGr/ZN4XKfgagB448oNFAGvNxoNTywxtzA9Uo3VnwjvIaEqeQF2YxcQqewEN2b
-	 nhh6B5oyIy+oWw6vlMwq0+1z9H2jBzX7vFQ8IisVJmXhQrZQMruvDKOrfVbI7bGp/I
-	 m03rh9vMS0WYrHReOPZqZNZY84Jreamh51J9qGhbPZUpxgXysRE/jV1Z0q7U9MtFB9
-	 r6HCJJNW/ZSOaDb/o0I7xZdr6AHc/3uOPjS4Axa8dwhXyScnLYuCwWTxEmFt8TkAqu
-	 s873jKHb1MpiCxKGnMb/IR03R0uaPlzs22cMmicI+yTu/+30rcCZf2YJYRhqpeDVAV
-	 4HjlHsVVF0lPQ==
-Received: from 192.168.10.47
-	by mg.richtek.com with MailGates ESMTPS Server V6.0(2572447:0:AUTH_RELAY)
-	(envelope-from <cy_huang@richtek.com>)
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256/256); Mon, 12 Jan 2026 09:52:52 +0800 (CST)
-Received: from ex3.rt.l (192.168.10.46) by ex4.rt.l (192.168.10.47) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.1748.26; Mon, 12 Jan
- 2026 09:52:51 +0800
-Received: from git-send.richtek.com (192.168.10.154) by ex3.rt.l
- (192.168.10.45) with Microsoft SMTP Server id 15.2.1748.26 via Frontend
- Transport; Mon, 12 Jan 2026 09:52:51 +0800
-From: <cy_huang@richtek.com>
-To: Mauro Carvalho Chehab <mchehab@kernel.org>
-CC: ChiYuan Huang <cy_huang@richtek.com>, Roger Wang
-	<roger-hy.wang@mediatek.com>, <linux-media@vger.kernel.org>,
-	<linux-kernel@vger.kernel.org>, <stable@vger.kernel.org>
-Subject: [PATCH v2] media: v4l2-flash: Enter LED off state after file handle closed
-Date: Mon, 12 Jan 2026 09:52:48 +0800
-Message-ID: <6f834257e1e16fb7d212412605c0f0fdd16cf717.1768182390.git.cy_huang@richtek.com>
-X-Mailer: git-send-email 2.43.5
+	s=arc-20240116; t=1768186671; c=relaxed/simple;
+	bh=0IlPd5a8IfYRl1FL2HoJFgTlPQNlNEORJ4Gj8Te0E/c=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version; b=KPG/fXFGzcVQGUcvsCPO+j6R/7qFo/Vv7ybHk2yWhHBK2ebJFu/OIttBYvhQKCn093N2A5JqHnliMW0VOLruw5qTkkxurWmPWIey1a6ba5T10+dr40h4o3jxnODl7f2YtxJpFU4gbc6lZxi7ZDc1LzYdWvhcs/H2LRRhSZqCVtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=pass smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.198])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4dqH8m44HtzKHMSf;
+	Mon, 12 Jan 2026 10:56:56 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id E21B740539;
+	Mon, 12 Jan 2026 10:57:44 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP4 (Coremail) with SMTP id gCh0CgAniPgiY2RpYgX6DQ--.4124S2;
+	Mon, 12 Jan 2026 10:57:44 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: longman@redhat.com,
+	lizefan.x@bytedance.com,
+	tj@kernel.org,
+	hannes@cmpxchg.org
+Cc: cgroups@vger.kernel.org,
+	stable@vger.kernel.org,
+	lujialin4@huawei.com,
+	chenridong@huaweicloud.com
+Subject: [PATCH] cpuset: Treat cpusets in attaching as populated
+Date: Mon, 12 Jan 2026 02:42:57 +0000
+Message-Id: <20260112024257.1073959-1-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20260109112140.992393920@linuxfoundation.org>
+References: <20260109112140.992393920@linuxfoundation.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -66,54 +58,139 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
+X-CM-TRANSID:gCh0CgAniPgiY2RpYgX6DQ--.4124S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw4DJw1xXF48Kw1UXrW8Zwb_yoWrGryxpF
+	WDua47Jw4UG3W7C393G3WIv34Fga1ktF1UJr1fKw1rJFy7JF1jkrn0v3Z0qFy3JF97C34f
+	ZFsIvr4vg3ZFyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUkC14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67
+	AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIY
+	rxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14
+	v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8
+	JwCI42IY6I8E87Iv6xkF7I0E14v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUr2-eDU
+	UUU
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
-From: ChiYuan Huang <cy_huang@richtek.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-To make sure LED enter off state after file handle is closed, initiatively
-configure LED_MODE to NONE. This can guarantee whatever the previous state
-is torch or strobe mode, the final state will be off.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
-Cc: stable@vger.kernel.org
-Fixes: 42bd6f59ae90 ("media: Add registration helpers for V4L2 flash sub-devices")
-Reported-by: Roger Wang <roger-hy.wang@mediatek.com>
-Signed-off-by: ChiYuan Huang <cy_huang@richtek.com>
+------------------
+
+From: Chen Ridong <chenridong@huawei.com>
+
+[ Upstream commit b1bcaed1e39a9e0dfbe324a15d2ca4253deda316 ]
+
+Currently, the check for whether a partition is populated does not
+account for tasks in the cpuset of attaching. This is a corner case
+that can leave a task stuck in a partition with no effective CPUs.
+
+The race condition occurs as follows:
+
+cpu0				cpu1
+				//cpuset A  with cpu N
+migrate task p to A
+cpuset_can_attach
+// with effective cpus
+// check ok
+
+// cpuset_mutex is not held	// clear cpuset.cpus.exclusive
+				// making effective cpus empty
+				update_exclusive_cpumask
+				// tasks_nocpu_error check ok
+				// empty effective cpus, partition valid
+cpuset_attach
+...
+// task p stays in A, with non-effective cpus.
+
+To fix this issue, this patch introduces cs_is_populated, which considers
+tasks in the attaching cpuset. This new helper is used in validate_change
+and partition_is_populated.
+
+Fixes: e2d59900d936 ("cgroup/cpuset: Allow no-task partition to have empty cpuset.cpus.effective")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
-v2
-- Fix commit message redudant space cause patch robot parsing error
+ kernel/cgroup/cpuset.c | 37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-Hi,
-  We encounter an issue. When the upper layer camera process is crashed,
-if the new process did not reinit the LED,  it will keeps the previous
-state whatever it's in torch or strobe mode
-
-OS will handle the resource management. So when the process is crashed
-or terminated, the 'close' API will be called to release resources.
-That's why we add the initiative action to trigger LED off in file
-handle close is called.
----
- drivers/media/v4l2-core/v4l2-flash-led-class.c | 6 ++++++
- 1 file changed, 6 insertions(+)
-
-diff --git a/drivers/media/v4l2-core/v4l2-flash-led-class.c b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-index 355595a0fefa..347b37f3ef69 100644
---- a/drivers/media/v4l2-core/v4l2-flash-led-class.c
-+++ b/drivers/media/v4l2-core/v4l2-flash-led-class.c
-@@ -623,6 +623,12 @@ static int v4l2_flash_close(struct v4l2_subdev *sd, struct v4l2_subdev_fh *fh)
- 		return 0;
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index eadb028916c8..3c466e742751 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -453,6 +453,15 @@ static inline bool is_in_v2_mode(void)
+ 	      (cpuset_cgrp_subsys.root->flags & CGRP_ROOT_CPUSET_V2_MODE);
+ }
  
- 	if (led_cdev) {
-+		/* If file handle is released, make sure LED enter off state */
-+		ret = v4l2_ctrl_s_ctrl(v4l2_flash->ctrls[LED_MODE],
-+			V4L2_FLASH_LED_MODE_NONE);
-+		if (ret)
-+			return ret;
++static inline bool cpuset_is_populated(struct cpuset *cs)
++{
++	lockdep_assert_held(&cpuset_mutex);
 +
- 		mutex_lock(&led_cdev->led_access);
++	/* Cpusets in the process of attaching should be considered as populated */
++	return cgroup_is_populated(cs->css.cgroup) ||
++		cs->attach_in_progress;
++}
++
+ /**
+  * partition_is_populated - check if partition has tasks
+  * @cs: partition root to be checked
+@@ -465,21 +474,31 @@ static inline bool is_in_v2_mode(void)
+ static inline bool partition_is_populated(struct cpuset *cs,
+ 					  struct cpuset *excluded_child)
+ {
+-	struct cgroup_subsys_state *css;
+-	struct cpuset *child;
++	struct cpuset *cp;
++	struct cgroup_subsys_state *pos_css;
  
- 		if (v4l2_flash->ctrls[STROBE_SOURCE])
-
-base-commit: 8ac28a6642d1cc8bac0632222e66add800b027fa
+-	if (cs->css.cgroup->nr_populated_csets)
++	/*
++	 * We cannot call cs_is_populated(cs) directly, as
++	 * nr_populated_domain_children may include populated
++	 * csets from descendants that are partitions.
++	 */
++	if (cs->css.cgroup->nr_populated_csets ||
++	    cs->attach_in_progress)
+ 		return true;
+ 	if (!excluded_child && !cs->nr_subparts_cpus)
+-		return cgroup_is_populated(cs->css.cgroup);
++		return cpuset_is_populated(cs);
+ 
+ 	rcu_read_lock();
+-	cpuset_for_each_child(child, css, cs) {
+-		if (child == excluded_child)
++	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
++		if (cp == cs || cp == excluded_child)
+ 			continue;
+-		if (is_partition_valid(child))
++
++		if (is_partition_valid(cp)) {
++			pos_css = css_rightmost_descendant(pos_css);
+ 			continue;
+-		if (cgroup_is_populated(child->css.cgroup)) {
++		}
++
++		if (cpuset_is_populated(cp)) {
+ 			rcu_read_unlock();
+ 			return true;
+ 		}
+@@ -751,7 +770,7 @@ static int validate_change(struct cpuset *cur, struct cpuset *trial)
+ 	 * be changed to have empty cpus_allowed or mems_allowed.
+ 	 */
+ 	ret = -ENOSPC;
+-	if ((cgroup_is_populated(cur->css.cgroup) || cur->attach_in_progress)) {
++	if (cpuset_is_populated(cur)) {
+ 		if (!cpumask_empty(cur->cpus_allowed) &&
+ 		    cpumask_empty(trial->cpus_allowed))
+ 			goto out;
 -- 
 2.34.1
 
