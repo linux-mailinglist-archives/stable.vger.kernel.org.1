@@ -1,69 +1,102 @@
-Return-Path: <stable+bounces-208106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3C3DD12142
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:56:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92753D12151
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:57:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 495643069A7E
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:54:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 456CA30380C2
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:55:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E80DB34F257;
-	Mon, 12 Jan 2026 10:54:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBC0C34F25C;
+	Mon, 12 Jan 2026 10:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wx9jFbXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Zn2QbWy0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F79334F476;
-	Mon, 12 Jan 2026 10:54:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DB602EFDA2;
+	Mon, 12 Jan 2026 10:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768215245; cv=none; b=kppgOfSdSYoZMAeY6yVlf67irS8xRx64auezJYS4lVI5FuBZi1CmzsgjOkr0mNg7ys00kc9qCBH3v7FxqwTdOGg9dZ7PB+3gngqxIuuYH1qELexfDRGziFjsnl5QNhuAD2aYJlApRkaOrB2wdOBLYpHHuBKnn+HGQjAcDnVhG54=
+	t=1768215298; cv=none; b=cpcGK5lM21LcymZlIjvXKbqoOqfA6zHH7IuDwpv89Ubgx2+5zC7sawAYnKf4Du9VFJnAAWoBtXUdYvZLIUPufQ9r1YiUJR9SLV2zUdvUj5TsjZTwJlXDFggNGW/XuC7OT/LFIY6jrsxd8sqL4sVgqA1rywFXKIjdJbmp+qCyCTs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768215245; c=relaxed/simple;
-	bh=sRevZ+3iQD7XJxY4cvxc5Xq5k3GUWTihPCQW7TVAZj8=;
+	s=arc-20240116; t=1768215298; c=relaxed/simple;
+	bh=hhWJFA+5gdnhWFuBhiWppXhxrKk0LhnJg8KFP+xKb/o=;
 	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=bzAD6+05olcHYi3gLvNGME+8KoK3bTU1HLTFFRKd1eqPITj3TIucT4JJF6Egq/9L6xMYzVpbmLqnw1SMLC4JcyHq5saKB1XwQaSSFO9isQyJgWU+YmKGd8DUPFJXfb5leWB8l3DjqnXl4AkAAEG/g2u0dRRZWE6PLtUVj15VFjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wx9jFbXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D443EC19421;
-	Mon, 12 Jan 2026 10:54:04 +0000 (UTC)
+	 Content-Type:Content-Disposition:In-Reply-To; b=cKmuLgf8pPoXIjHmo1QiIB/fmuiGLCfxlFlvPLfEqC0i3PE5h28Gf3oEHqqVEMMf0v+ilrh8xe9+5Wl/ZI8ciELCpEaM65LeNP9j5Ll19VweJF+10nRWVzWOn/DgLDehpbFBhd2oagQfEaCUReGsw0XOThVYyKhGUTz2AKGFC3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Zn2QbWy0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05048C19422;
+	Mon, 12 Jan 2026 10:54:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768215245;
-	bh=sRevZ+3iQD7XJxY4cvxc5Xq5k3GUWTihPCQW7TVAZj8=;
+	s=korg; t=1768215297;
+	bh=hhWJFA+5gdnhWFuBhiWppXhxrKk0LhnJg8KFP+xKb/o=;
 	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Wx9jFbXZR9xXr4y1VYRteDOpetxxqjJXAMTqJisPAjigi9KqNImOpd6lca9O8fp6z
-	 kkJCqhTZjII6smauU39KwF/qGMH2GfQo14x9cMq61Xq+DO1n4yvtpnhqwYMBLSdsDK
-	 Aw4hCdvpDg/ncfAy2qDZk3Tz+RiCH6XQYTEgf7LA=
-Date: Mon, 12 Jan 2026 11:51:44 +0100
+	b=Zn2QbWy07QNYBYo4rV2F6B3MVBWkQBGPHdCZ8/m2o4w4neivvcIt2NswrXeJcHufx
+	 RwL4Cd2qoCOf2/5j0z/7+Fro5BrYF2Xv8Ym5ARSVQ209YKA9JEY2fdhJD3TlNotD8h
+	 URsUjKONteo4dgy4n54cgE+gcVZvCnrjSP1Vn3As=
+Date: Mon, 12 Jan 2026 11:54:54 +0100
 From: Greg KH <gregkh@linuxfoundation.org>
-To: Rahul Sharma <black.hawk@163.com>
-Cc: stable@vger.kernel.org, linux-kernel@vger.kernel.org,
-	Zqiang <qiang.zhang@linux.dev>, Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: Re: [PATCH v2 v6.12] usbnet: Fix using smp_processor_id() in
- preemptible code warnings
-Message-ID: <2026011236-chill-unpleased-9f58@gregkh>
-References: <20260112030008.2439120-1-black.hawk@163.com>
+To: Askar Safin <safinaskar@gmail.com>
+Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev,
+	stable@vger.kernel.org, Takashi Iwai <tiwai@suse.de>,
+	Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+	kai.vehmanen@linux.intel.com, cezary.rojewski@intel.com,
+	ranjani.sridharan@linux.intel.com, rf@opensource.cirrus.com,
+	bradynorander@gmail.com
+Subject: Re: [PATCH AUTOSEL 6.18-6.17] ALSA: hda: intel-dsp-config: Prefer
+ legacy driver as fallback
+Message-ID: <2026011237-stage-cognitive-53c0@gregkh>
+References: <20251215004145.2760442-1-sashal@kernel.org>
+ <20251215004145.2760442-3-sashal@kernel.org>
+ <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
+ <aV5Ap8TgMEDLucWR@laps>
+ <CAPnZJGCJ1LZRzfzO=958EfcrLm4Z3pYdtHZEpp812fstsUcOAQ@mail.gmail.com>
+ <2026011119-stadium-trilogy-22ac@gregkh>
+ <CAPnZJGAXLEgqKx+XA3RugES1kcawtqMEYPTzFERcf2kgRjNbFQ@mail.gmail.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20260112030008.2439120-1-black.hawk@163.com>
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAPnZJGAXLEgqKx+XA3RugES1kcawtqMEYPTzFERcf2kgRjNbFQ@mail.gmail.com>
 
-On Mon, Jan 12, 2026 at 11:00:08AM +0800, Rahul Sharma wrote:
-> From: Zqiang <qiang.zhang@linux.dev>
+On Sun, Jan 11, 2026 at 07:01:53PM +0300, Askar Safin wrote:
+> On Sun, Jan 11, 2026 at 3:24 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > You mean that 82d9d54a6c0e is in all trees? Okay, then,
+> > > please, backport 161a0c617ab172bbcda7ce61803addeb2124dbff
+> > > to all trees.
+> >
+> > Why?  I see no context here :(
 > 
-> [ Upstream commit 327cd4b68b4398b6c24f10eb2b2533ffbfc10185 ]
+> Please, backport 161a0c617ab1 to all stable kernels, which have 82d9d54a6c0e.
 > 
-> Syzbot reported the following warning:
+> 161a0c617ab1 fixes bug, reported by me here:
+> https://lore.kernel.org/all/20251014034156.4480-1-safinaskar@gmail.com/ .
+> 
+> I did bisect and found that 2d9223d2d64c is the culprit. But then Takashi Iwai
+> explained that the bug appeared earlier:
+> https://lore.kernel.org/all/87345iebky.wl-tiwai@suse.de/ .
+> Iwai said: "the bug itself was introduced
+> from the very beginning, and it could hit earlier".
+> 
+> I assume "the very beginning" here should be interpreted as
+> "commit, where intel-dsp-config.c appeared", because the fix
+> modifies "intel-dsp-config.c".
+> 
+> "intel-dsp-config.c" introduced in 82d9d54a6c0e, so
+> 161a0c617ab1 should be backported to all kernels, which
+> have 82d9d54a6c0e.
 
-Already in the 6.12.64 release, thanks!
+This only applies to one tree (6.18.y), can you provide working
+backports for all of the other stable trees?
+
+thanks,
 
 greg k-h
 
