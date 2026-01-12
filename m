@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208076-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208077-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6434BD11E7B
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:33:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35299D11EBD
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:35:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 43E7E303834B
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:33:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EB7E03044BB3
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:34:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5A0B25A34F;
-	Mon, 12 Jan 2026 10:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9496C2C0F81;
+	Mon, 12 Jan 2026 10:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KKMV9lHr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="petVYCdM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57DBF30F815
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:33:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52F532C032E
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:34:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214020; cv=none; b=DU5SQV1zGwg7TKGRmW4t3zmU/HPk55GLBpd7FnTPk6qqVcDHVsz/GSRaHp+FnxmQx4f9sg8RwQ7qLw89n7Srr6O+Y2u6pDswe+8NXcNLOMqjxrvF2dB0jIZOjSZzMLw1TU3XDGzCeOEGtTeKte1igBR5lqqugyz4gkXCZT3Oxrs=
+	t=1768214083; cv=none; b=tgHLrcG+Ex/N8cxmKJ+XJTxDL7funpxQf5ncuhcFh9WxyA6eJ6F7Xbvj9bkHvz47Vj8N7tZc/IBEopBTGnMeMtCSZZbIFCgPeo3i+QF/bWVm40iHeoXmjeBr549ON0Zo+eB84OtfLuVH43phIUrK19urBXzOMoApNOc1wuhV6IY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214020; c=relaxed/simple;
-	bh=yhYQ0p+ReZgknmLQzKSRzvIDFPdpEXIMxuacUIg8wRI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=cYtY8QV9RoKz5oMDm/wG7MZSOvmUdEQNgNsa4ikZEGavO0POdu1pzdMG/U5rohF0jgHhhiwSpK1B/ALkhWeIVX5WtVVBMlPO67X3b0PcbY0zGybUifVWT3oyCroO+OKT/2ZM7RhxugHIMT5rUpe5T68O95LguBCcv2EBYSsPPbg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KKMV9lHr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6D22C19421;
-	Mon, 12 Jan 2026 10:33:39 +0000 (UTC)
+	s=arc-20240116; t=1768214083; c=relaxed/simple;
+	bh=hZx2/rMGRvRUrC86GIH9B8RVMSw0meJ4CZdxDwjP2AE=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=omI3Hosx2ah1PbEJv3VhT5bacWwVIK7BXbnhiReAloxE8WL2474RTVABQoOPdNWQab/9isZZz92Mhj19geIBX6tYCNc5krXun25cHAmTI2UZmYy0KLZiuQUYeneTSPXlAcCO5VDiL55foVwwHw+c/JAWoYO3nWNhct0gAJELDd0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=petVYCdM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF93BC16AAE;
+	Mon, 12 Jan 2026 10:34:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768214020;
-	bh=yhYQ0p+ReZgknmLQzKSRzvIDFPdpEXIMxuacUIg8wRI=;
+	s=korg; t=1768214083;
+	bh=hZx2/rMGRvRUrC86GIH9B8RVMSw0meJ4CZdxDwjP2AE=;
 	h=Subject:To:Cc:From:Date:From;
-	b=KKMV9lHrilMpZIpcu2ahPCr3CiyR/2LLmt2pLB+pVgZQU2r4Fv72VPaA8pn4lXzdp
-	 QcE8S42aGLOTvSY4Ma9aqOdSf81l9Y0FGWTCqHi01quT8q4X37U/nlgzHwbcJ6KCH9
-	 unkThm4Dq+bAmo3/i7880RjJ8GhKOo1noDzA5Q58=
-Subject: FAILED: patch "[PATCH] NFSD: Remove NFSERR_EAGAIN" failed to apply to 5.10-stable tree
-To: chuck.lever@oracle.com,jlayton@kernel.org,neil@brown.name
+	b=petVYCdMLoT0KUeXBC0aLBoOG7cgJcq7Pfdz1kzPlynoEx/amgjobdLaU3aru3q41
+	 643wMOszdLMH3/J70Orql1p+qbMD8d4n7mjIcdpIMcD48sLmGkBSfGW23sLsqNZy3s
+	 cqlESkchCEg59k+LJ/DQlOun845EAQvbQ3OdnhxI=
+Subject: FAILED: patch "[PATCH] btrfs: fix beyond-EOF write handling" failed to apply to 6.18-stable tree
+To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Jan 2026 11:33:24 +0100
-Message-ID: <2026011224-freezing-captive-52e7@gregkh>
+Date: Mon, 12 Jan 2026 11:34:40 +0100
+Message-ID: <2026011240-unreal-knee-7bf4@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.18-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.18.y
 git checkout FETCH_HEAD
-git cherry-pick -x c6c209ceb87f64a6ceebe61761951dcbbf4a0baa
+git cherry-pick -x e9e3b22ddfa760762b696ac6417c8d6edd182e49
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011224-freezing-captive-52e7@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011240-unreal-knee-7bf4@gregkh' --subject-prefix 'PATCH 6.18.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,100 +75,150 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From c6c209ceb87f64a6ceebe61761951dcbbf4a0baa Mon Sep 17 00:00:00 2001
-From: Chuck Lever <chuck.lever@oracle.com>
-Date: Tue, 9 Dec 2025 19:28:49 -0500
-Subject: [PATCH] NFSD: Remove NFSERR_EAGAIN
+From e9e3b22ddfa760762b696ac6417c8d6edd182e49 Mon Sep 17 00:00:00 2001
+From: Qu Wenruo <wqu@suse.com>
+Date: Thu, 11 Dec 2025 12:45:17 +1030
+Subject: [PATCH] btrfs: fix beyond-EOF write handling
 
-I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
-None of these RFCs have an NFS status code that match the numeric
-value "11".
+[BUG]
+For the following write sequence with 64K page size and 4K fs block size,
+it will lead to file extent items to be inserted without any data
+checksum:
 
-Based on the meaning of the EAGAIN errno, I presume the use of this
-status in NFSD means NFS4ERR_DELAY. So replace the one usage of
-nfserr_eagain, and remove it from NFSD's NFS status conversion
-tables.
+  mkfs.btrfs -s 4k -f $dev > /dev/null
+  mount $dev $mnt
+  xfs_io -f -c "pwrite 0 16k" -c "pwrite 32k 4k" -c pwrite "60k 64K" \
+            -c "truncate 16k" $mnt/foobar
+  umount $mnt
 
-As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
-era, but was not actually used by any code until commit f4e44b393389
-("NFSD: delay unmount source's export after inter-server copy
-completed."), at which time it become possible for NFSD to return
-a status code of 11 (which is not valid NFS protocol).
+This will result the following 2 file extent items to be inserted (extra
+trace point added to insert_ordered_extent_file_extent()):
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+  btrfs_finish_one_ordered: root=5 ino=257 file_off=61440 num_bytes=4096 csum_bytes=0
+  btrfs_finish_one_ordered: root=5 ino=257 file_off=0 num_bytes=16384 csum_bytes=16384
 
-diff --git a/fs/nfs_common/common.c b/fs/nfs_common/common.c
-index af09aed09fd2..0778743ae2c2 100644
---- a/fs/nfs_common/common.c
-+++ b/fs/nfs_common/common.c
-@@ -17,7 +17,6 @@ static const struct {
- 	{ NFSERR_NOENT,		-ENOENT		},
- 	{ NFSERR_IO,		-EIO		},
- 	{ NFSERR_NXIO,		-ENXIO		},
--/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
- 	{ NFSERR_ACCES,		-EACCES		},
- 	{ NFSERR_EXIST,		-EEXIST		},
- 	{ NFSERR_XDEV,		-EXDEV		},
-diff --git a/fs/nfsd/nfs4proc.c b/fs/nfsd/nfs4proc.c
-index 7f7e6bb23a90..42a6b914c0fe 100644
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1506,7 +1506,7 @@ static __be32 nfsd4_ssc_setup_dul(struct nfsd_net *nn, char *ipaddr,
- 					(schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
--				return nfserr_eagain;
-+				return nfserr_jukebox;
- 			}
- 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 			goto try_again;
-diff --git a/fs/nfsd/nfsd.h b/fs/nfsd/nfsd.h
-index 50be785f1d2c..b0283213a8f5 100644
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -233,7 +233,6 @@ void		nfsd_lockd_shutdown(void);
- #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
- #define	nfserr_io		cpu_to_be32(NFSERR_IO)
- #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
--#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
- #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
- #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
- #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
-diff --git a/include/trace/misc/nfs.h b/include/trace/misc/nfs.h
-index c82233e950ac..a394b4d38e18 100644
---- a/include/trace/misc/nfs.h
-+++ b/include/trace/misc/nfs.h
-@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
- TRACE_DEFINE_ENUM(NFSERR_NOENT);
- TRACE_DEFINE_ENUM(NFSERR_IO);
- TRACE_DEFINE_ENUM(NFSERR_NXIO);
--TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
- TRACE_DEFINE_ENUM(NFSERR_ACCES);
- TRACE_DEFINE_ENUM(NFSERR_EXIST);
- TRACE_DEFINE_ENUM(NFSERR_XDEV);
-@@ -52,7 +51,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
- 		{ NFSERR_NXIO,			"NXIO" }, \
- 		{ ECHILD,			"CHILD" }, \
- 		{ ETIMEDOUT,			"TIMEDOUT" }, \
--		{ NFSERR_EAGAIN,		"AGAIN" }, \
- 		{ NFSERR_ACCES,			"ACCES" }, \
- 		{ NFSERR_EXIST,			"EXIST" }, \
- 		{ NFSERR_XDEV,			"XDEV" }, \
-diff --git a/include/uapi/linux/nfs.h b/include/uapi/linux/nfs.h
-index f356f2ba3814..71c7196d3281 100644
---- a/include/uapi/linux/nfs.h
-+++ b/include/uapi/linux/nfs.h
-@@ -49,7 +49,6 @@
- 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
- 	NFSERR_IO = 5,			/* v2 v3 v4 */
- 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
--	NFSERR_EAGAIN = 11,		/* v2 v3 */
- 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
- 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
- 	NFSERR_XDEV = 18,		/*    v3 v4 */
+Note for file offset 60K, we're inserting a file extent without any
+data checksum.
+
+Also note that range [32K, 36K) didn't reach
+insert_ordered_extent_file_extent(), which is the correct behavior as
+that OE is fully truncated, should not result any file extent.
+
+Although file extent at 60K will be later dropped by btrfs_truncate(),
+if the transaction got committed after file extent inserted but before
+the file extent dropping, we will have a small window where we have a
+file extent beyond EOF and without any data checksum.
+
+That will cause "btrfs check" to report error.
+
+[CAUSE]
+The sequence happens like this:
+
+- Buffered write dirtied the page cache and updated isize
+
+  Now the inode size is 64K, with the following page cache layout:
+
+  0             16K             32K              48K           64K
+  |/////////////|               |//|                        |//|
+
+- Truncate the inode to 16K
+  Which will trigger writeback through:
+
+  btrfs_setsize()
+  |- truncate_setsize()
+  |  Now the inode size is set to 16K
+  |
+  |- btrfs_truncate()
+     |- btrfs_wait_ordered_range() for [16K, u64(-1)]
+        |- btrfs_fdatawrite_range() for [16K, u64(-1)}
+	   |- extent_writepage() for folio 0
+	      |- writepage_delalloc()
+	      |  Generated OE for [0, 16K), [32K, 36K] and [60K, 64K)
+	      |
+	      |- extent_writepage_io()
+
+  Then inside extent_writepage_io(), the dirty fs blocks are handled
+  differently:
+
+  - Submit write for range [0, 16K)
+    As they are still inside the inode size (16K).
+
+  - Mark OE [32K, 36K) as truncated
+    Since we only call btrfs_lookup_first_ordered_range() once, which
+    returned the first OE after file offset 16K.
+
+  - Mark all OEs inside range [16K, 64K) as finished
+    Which will mark OE ranges [32K, 36K) and [60K, 64K) as finished.
+
+    For OE [32K, 36K) since it's already marked as truncated, and its
+    truncated length is 0, no file extent will be inserted.
+
+    For OE [60K, 64K) it has never been submitted thus has no data
+    checksum, and we insert the file extent as usual.
+    This is the root cause of file extent at 60K to be inserted without
+    any data checksum.
+
+  - Clear dirty flags for range [16K, 64K)
+    It is the function btrfs_folio_clear_dirty() which searches and clears
+    any dirty blocks inside that range.
+
+[FIX]
+The bug itself was introduced a long time ago, way before subpage and
+large folio support.
+
+At that time, fs block size must match page size, thus the range
+[cur, end) is just one fs block.
+
+But later with subpage and large folios, the same range [cur, end)
+can have multiple blocks and ordered extents.
+
+Later commit 18de34daa7c6 ("btrfs: truncate ordered extent when skipping
+writeback past i_size") was fixing a bug related to subpage/large
+folios, but it's still utilizing the old range [cur, end), meaning only
+the first OE will be marked as truncated.
+
+The proper fix here is to make EOF handling block-by-block, not trying
+to handle the whole range to @end.
+
+By this we always locate and truncate the OE for every dirty block.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+
+diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
+index 2d32dfc34ae3..97748d0d54d9 100644
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1728,7 +1728,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 			struct btrfs_ordered_extent *ordered;
+ 
+ 			ordered = btrfs_lookup_first_ordered_range(inode, cur,
+-								   folio_end - cur);
++								   fs_info->sectorsize);
+ 			/*
+ 			 * We have just run delalloc before getting here, so
+ 			 * there must be an ordered extent.
+@@ -1742,7 +1742,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 			btrfs_put_ordered_extent(ordered);
+ 
+ 			btrfs_mark_ordered_io_finished(inode, folio, cur,
+-						       end - cur, true);
++						       fs_info->sectorsize, true);
+ 			/*
+ 			 * This range is beyond i_size, thus we don't need to
+ 			 * bother writing back.
+@@ -1751,8 +1751,8 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
+ 			 * writeback the sectors with subpage dirty bits,
+ 			 * causing writeback without ordered extent.
+ 			 */
+-			btrfs_folio_clear_dirty(fs_info, folio, cur, end - cur);
+-			break;
++			btrfs_folio_clear_dirty(fs_info, folio, cur, fs_info->sectorsize);
++			continue;
+ 		}
+ 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
+ 		if (unlikely(ret < 0)) {
 
 
