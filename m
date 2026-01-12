@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-208161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208165-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AF2D13813
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:11:25 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D1B53D13919
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:17:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B91123065B76
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:00:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A18F73055E20
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:00:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 707DD2DECB2;
-	Mon, 12 Jan 2026 14:59:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DFC012D8375;
+	Mon, 12 Jan 2026 14:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="BJA4UV8b"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="dDis71s8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FD0C2E7F21;
-	Mon, 12 Jan 2026 14:59:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9FCF42EB840;
+	Mon, 12 Jan 2026 14:59:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229956; cv=none; b=mXNRk5Qc59ir4sVz/eI1EqXYD2Cp00MOsIpyRZs5hspoLXr2OBXlRzjN4Qu2gfThN7MSKifF4xcmFqqpN2F2klidhsL99Vd/GaI7ZKZyT1VWgKldyEUS0W+w00CDWfpaX2FjuTnCP9dXHdlc1v+3grDl3GkAIF8A/ZQ2SmztiGs=
+	t=1768229963; cv=none; b=WuAYLOLOVvYJxi7l+5Lviqlgan5PwEXx6ylKEl/pGCDLffnY1Yla4wPFgza2gGKzn664CcgsOWkERSsyVI8cYfamriXzkpyzmnX90jEtsPAgi4g6nUb+X194MlX7Y0hRkrAav+V43QSzhwici8ktY91USEUnECL+t7SJyEDRJfo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229956; c=relaxed/simple;
-	bh=5ufUitVWNFfrfch+BR7/BeFVooBFCM2j9ey14uZ+3cw=;
+	s=arc-20240116; t=1768229963; c=relaxed/simple;
+	bh=aoNZSkoUZ0CeTuQbzC1WKUULM3GlF9x8csRxu63dhi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=rSQE0RiZ2myDMuAdUfMsLtcGv9NBzTZ0nsiPiqNRr6pMEF9kQRVVhn+KTMLSEVzl1Rn1fxkIUwGgcz/XQ1XlleyvCxlxXbpYbAhIB0qmSx7FeCQmcmEIrQTPKFSNu3h05/W4NemgkE/zMatPhVivCVqNL7nwiZoMeWDOwis3oBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=BJA4UV8b; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B52BC2BC9E;
-	Mon, 12 Jan 2026 14:59:14 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fsKgoq43QdkKPqk5LYe/i1n3eRBzFBA80lGG/yyD+TlasbgPCHB0q3oqDJKV0qn4mV2Hl9qDYD8pse0FZFuk24/wyQ4pv6IDL7hAIsTwzc7+2YiXWe6IiqVzXf6oAF6wDNnO1CQNuQ5BSHoKUNmNMgUo5EhFGeFtf+c4wZBezvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=dDis71s8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50ABAC19424;
+	Mon, 12 Jan 2026 14:59:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229955;
-	bh=5ufUitVWNFfrfch+BR7/BeFVooBFCM2j9ey14uZ+3cw=;
+	s=k20201202; t=1768229963;
+	bh=aoNZSkoUZ0CeTuQbzC1WKUULM3GlF9x8csRxu63dhi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BJA4UV8bcYbzijqb/RX3DMB7sIgqbu+An6OSBDqd5qKSWnTYIMBszGEOZY/loyvQP
-	 XC0T45d37VYsjkrk7ximvLFjiWKOI8roDNNqIJrDSpIvvlnHrfBV3ownDMLNLl6vkT
-	 sfSrvBB5HKZyAFPWwH4k+3M0gm/BMXaFBKVNluZj2aB43QMyQw3JTZMhQVJTGv0sem
-	 5Pd3DWK9ApUT3IvEdjEDlV79JaF1+X46LNUb8BhKb02HETtBL2gOsADzoNHgI/0rM4
-	 yQyPOTf7NdDXEDNzF9+WL9j0+2BuEXCDm94Op2Fas/LHMct5PMti+MGKWaryszUghh
-	 YK52IxNSFueyA==
+	b=dDis71s8BXeVbL3X3GsZVnhTSg5KEpD4Z1zAu2eniD4vJdcNpQMi8oYSnUtkAEukX
+	 Z2a/Hl+EBkEPf6I+IJZ+wRaPPRVGuvvrtTSJxdJdaXRbTF85doFrfrJg1vtpzs2HJQ
+	 3YnPPi3ED5iiTHGs1TqEQ5G5jjEZea9Vy4zjKXeDumKjPUE7/p4kes5K14GOulR8E5
+	 cKnGQwSPBmioSMMXpBuFxDKqGZNE4lG1Vk8dLbNis0/e7KUmaNGyrIusueVDqK5zO3
+	 I4fdN95aYz/hcfLxcTSS9+MubqFdekXdoPl0hPIIRzhFfSkXm/Oi7+m86MitN7m1RO
+	 Zq2ttC6xptnHw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: =?UTF-8?q?Rodrigo=20Lugathe=20da=20Concei=C3=A7=C3=A3o=20Alves?= <lugathe2@gmail.com>,
-	Terry Junge <linuxhid@cosmicgizmosystems.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Even Xu <even.xu@intel.com>,
+	Rui Zhang <rui1.zhang@intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
 	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier QR30 (2d99:a101)
-Date: Mon, 12 Jan 2026 09:58:21 -0500
-Message-ID: <20260112145840.724774-20-sashal@kernel.org>
+	andriy.shevchenko@linux.intel.com,
+	fourier.thomas@gmail.com
+Subject: [PATCH AUTOSEL 6.18] HID: Intel-thc-hid: Intel-thc: Add safety check for reading DMA buffer
+Date: Mon, 12 Jan 2026 09:58:25 -0500
+Message-ID: <20260112145840.724774-24-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
 References: <20260112145840.724774-1-sashal@kernel.org>
@@ -61,146 +61,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.5
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
+From: Even Xu <even.xu@intel.com>
 
-[ Upstream commit 85a866809333cd2bf8ddac93d9a3e3ba8e4f807d ]
+[ Upstream commit a9a917998d172ec117f9e9de1919174153c0ace4 ]
 
-The USB speaker has a bug that causes it to reboot when changing the
-brightness using the physical knob.
+Add DMA buffer readiness check before reading DMA buffer to avoid
+unexpected NULL pointer accessing.
 
-Add a new vendor and product ID entry in hid-ids.h, and register
-the corresponding device in hid-quirks.c with the required quirk.
-
-Signed-off-by: Rodrigo Lugathe da Conceição Alves <lugathe2@gmail.com>
-Reviewed-by: Terry Junge <linuxhid@cosmicgizmosystems.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Even Xu <even.xu@intel.com>
+Tested-by: Rui Zhang <rui1.zhang@intel.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of Commit: HID: Apply quirk HID_QUIRK_ALWAYS_POLL to Edifier
-QR30
-
-### 1. COMMIT MESSAGE ANALYSIS
-
-The commit message clearly states:
-- **Problem:** USB speaker has a bug causing it to reboot when changing
-  brightness using the physical knob
-- **Solution:** Apply `HID_QUIRK_ALWAYS_POLL` quirk to this device
-- Has "Reviewed-by:" and "Signed-off-by:" from the HID maintainer (Jiri
-  Kosina)
-
-### 2. CODE CHANGE ANALYSIS
-
-The changes are minimal and straightforward:
-
-**hid-ids.h:** Adds 2 new defines
-```c
-#define USB_VENDOR_ID_EDIFIER      0x2d99
-#define USB_DEVICE_ID_EDIFIER_QR30 0xa101
-```
-
-**hid-quirks.c:** Adds 1 entry to the quirks table
-```c
-{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30),
-HID_QUIRK_ALWAYS_POLL },
-```
-
-The `HID_QUIRK_ALWAYS_POLL` quirk is well-established and used by dozens
-of other devices in this same file (Corsair, Dell, Elan, HP, etc.). It
-forces continuous polling which prevents certain hardware misbehaviors.
-
-### 3. CLASSIFICATION
-
-This falls into the **"QUIRKS and WORKAROUNDS" exception category** that
-is explicitly allowed in stable:
-- Hardware-specific quirk for a buggy/non-compliant device
-- Uses existing, well-tested quirk infrastructure
-- Pattern matches many other similar entries already in stable trees
-
-### 4. SCOPE AND RISK ASSESSMENT
-
-- **Lines changed:** 3 lines added (2 defines + 1 quirk entry)
-- **Files touched:** 2 (hid-ids.h, hid-quirks.c)
-- **Risk level:** Extremely low
-- **Blast radius:** Only affects users with this specific Edifier QR30
-  device
-- **Regression potential:** Zero for other devices - the quirk entry is
-  device-specific by USB vendor/product ID
-
-### 5. USER IMPACT
-
-- **Severity:** Device rebooting is a significant user-visible bug
-- **Affected users:** Anyone with an Edifier QR30 USB speaker
-- **Fix quality:** Complete fix for the reported issue
-
-### 6. STABILITY INDICATORS
-
-- Reviewed by Terry Junge (HID reviewer)
-- Signed off by Jiri Kosina (HID subsystem maintainer)
-- The `HID_QUIRK_ALWAYS_POLL` mechanism is mature and stable
-
-### 7. DEPENDENCY CHECK
-
-- No dependencies on other commits
-- The quirk infrastructure exists in all stable trees
-- The change is self-contained
-
 ### Summary
 
-This is a textbook example of a stable-worthy commit:
-1. **Fixes a real bug:** Device rebooting when using physical controls
-2. **Small and surgical:** Only 3 lines, no logic changes
-3. **Uses existing infrastructure:** `HID_QUIRK_ALWAYS_POLL` is well-
-   established
-4. **Device-specific:** Only affects this one USB speaker model
-5. **Zero regression risk:** Cannot affect other devices
-6. **Falls into explicit exception:** Device ID + quirk additions are
-   explicitly allowed in stable
+| Aspect | Assessment |
+|--------|------------|
+| **Bug Type** | NULL pointer dereference (kernel crash/oops) |
+| **Fix Size** | 4 lines added |
+| **Risk** | Very low - adds defensive check before pointer access |
+| **Driver Availability** | Added in v6.14, exists in 6.14.x stable tree
+|
+| **Testing** | Has Tested-by tag from Intel |
 
-This matches the pattern of hundreds of similar HID quirk entries that
-have been backported to stable kernels. The fix is trivial, low-risk,
-and solves a real user-facing problem.
+### Technical Analysis
+
+The bug is straightforward: in `read_dma_buffer()`, after checking
+bounds on the PRD table index, the code directly accesses:
+```c
+prd_tbl = &read_config->prd_tbls[prd_table_index];  // Could be NULL
+sg = read_config->sgls[prd_table_index];             // Could be NULL
+```
+
+If DMA buffers haven't been properly initialized (race condition during
+device init/probe or error path), this causes a NULL pointer dereference
+leading to a kernel crash.
+
+The fix adds a simple and obviously correct NULL check:
+```c
+if (!read_config->prd_tbls || !read_config->sgls[prd_table_index]) {
+    dev_err_once(dev->dev, "PRD tables are not ready yet\n");
+    return -EINVAL;
+}
+```
+
+### Stable Kernel Criteria Check
+
+| Criterion | Met? |
+|-----------|------|
+| Obviously correct and tested | ✅ Yes - Simple NULL check, has Tested-
+by |
+| Fixes a real bug | ✅ Yes - NULL pointer dereference crash |
+| Fixes important issue | ✅ Yes - Kernel crash/oops |
+| Small and contained | ✅ Yes - 4 lines, 1 file |
+| No new features | ✅ Yes - Pure bug fix |
+
+### Risk vs Benefit
+
+- **Benefit:** Prevents kernel crashes on Intel THC devices when DMA
+  buffers are accessed before ready
+- **Risk:** Minimal - the check can only trigger an early return with
+  error on an already-buggy condition
+- **Scope:** Limited to Intel THC driver (touchscreens/touchpads on
+  Intel platforms)
+
+### Conclusion
+
+This is an excellent stable backport candidate. It fixes a NULL pointer
+dereference that causes kernel crashes, using a minimal and obviously
+correct defensive check. The driver exists in 6.14.x stable tree, and
+users with Intel THC touch devices would benefit from this fix. The
+change has been tested and is trivially reviewable.
 
 **YES**
 
- drivers/hid/hid-ids.h    | 3 +++
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 4 insertions(+)
+ drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 3a22129fb7075..bec913a005a5d 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -439,6 +439,9 @@
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_A001	0xa001
- #define USB_DEVICE_ID_DWAV_EGALAX_MULTITOUCH_C002	0xc002
+diff --git a/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c b/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c
+index 82b8854843e05..e1aadae4eb244 100644
+--- a/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c
++++ b/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c
+@@ -573,6 +573,11 @@ static int read_dma_buffer(struct thc_device *dev,
+ 		return -EINVAL;
+ 	}
  
-+#define USB_VENDOR_ID_EDIFIER		0x2d99
-+#define USB_DEVICE_ID_EDIFIER_QR30	0xa101	/* EDIFIER Hal0 2.0 SE */
++	if (!read_config->prd_tbls || !read_config->sgls[prd_table_index]) {
++		dev_err_once(dev->dev, "PRD tables are not ready yet\n");
++		return -EINVAL;
++	}
 +
- #define USB_VENDOR_ID_ELAN		0x04f3
- #define USB_DEVICE_ID_TOSHIBA_CLICK_L9W	0x0401
- #define USB_DEVICE_ID_HP_X2		0x074d
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 3cf7971d49743..d6e42125d9189 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -81,6 +81,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_PS3), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DRAGONRISE, USB_DEVICE_ID_DRAGONRISE_WIIU), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_DWAV, USB_DEVICE_ID_EGALAX_TOUCHCONTROLLER), HID_QUIRK_MULTI_INPUT | HID_QUIRK_NOGET },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_EDIFIER, USB_DEVICE_ID_EDIFIER_QR30), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELAN, HID_ANY_ID), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELO, USB_DEVICE_ID_ELO_TS2700), HID_QUIRK_NOGET },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_EMS, USB_DEVICE_ID_EMS_TRIO_LINKER_PLUS_II), HID_QUIRK_MULTI_INPUT },
+ 	prd_tbl = &read_config->prd_tbls[prd_table_index];
+ 	mes_len = calc_message_len(prd_tbl, &nent);
+ 	if (mes_len > read_config->max_packet_size) {
 -- 
 2.51.0
 
