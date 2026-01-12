@@ -1,131 +1,132 @@
-Return-Path: <stable+bounces-208193-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 02F67D149A1
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:56:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CC0ED14A41
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 19:02:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B9923034439
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:54:37 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C115F30060EB
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:02:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4AC8C37F722;
-	Mon, 12 Jan 2026 17:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F3A93803D3;
+	Mon, 12 Jan 2026 18:02:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BXrw1BLN"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="o7qmAVzO"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f43.google.com (mail-wm1-f43.google.com [209.85.128.43])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-173.mta0.migadu.com (out-173.mta0.migadu.com [91.218.175.173])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C55837BE6D
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:54:24 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.43
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 810BD37FF5D
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 18:02:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.173
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768240466; cv=none; b=cZFtukJp/PHhDQGymzqNhTeY9eUcK+t50ao8oC9jy17kK2clecqNQTKjMN3VWVLNtWOFUsxtJUG0HaxGFOvGEWqIlyldKPPfdNxEH4b9cSwL1H7tti/IPBl8WEszjVP5W3ul4CrRGJJLGSTlHdE3NS829S5Euk4UOxtILYG+GCI=
+	t=1768240927; cv=none; b=kc9RmxvGQ1rWjxs1XVoyAulBGnlBpyKLfF0xoTzajwu9qZBH5k13mL2VLQnJMZ0O9hHJZ1sRvgZ+5MYSmg8a9UVbPdXuGW6D9FyvNfWMV7uk+d9lnnruNqy3oxUv8Y1sfdHJq0Gpsv9ObmFi4u39zju4+cvM9+0cuPut03v8gm4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768240466; c=relaxed/simple;
-	bh=7RRinxojQrTMI4b9pZDLLzquZeo32XzsK/RNdDcG0aI=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aHSg9Zzbg/qHDEMz28Wa0uHnxqsiZFcDDcnkN1kVUK7lLO9woRvFWQgEBFD2/DrcsC4TD8dzTtzc8G4h9WTuPX4pv5FoqX4a7Sup8eWHZGl4VfGPZEFl5R9uO0MF7HmOUk2VRin+p5XWPiZ/2mBcZN3T9PofVQDyGyJvpAMNiV4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BXrw1BLN; arc=none smtp.client-ip=209.85.128.43
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f43.google.com with SMTP id 5b1f17b1804b1-477a2ab455fso61382245e9.3
-        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 09:54:24 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768240463; x=1768845263; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=iQ6/E1tgqYIjow3S6Hfpj3KTp0Kx78pCSAMldDRrYrY=;
-        b=BXrw1BLNWpcc++sVgZJ+/XZ82XB7E/MTBrBKzYT75H7QHnRNM3hadhaEFU6/j8/cRg
-         crdFloOzm5hazXX+xRSsNxPDLcZiNx+PIhHWd/cGnt2xNX1VoAbWvIaUAjzAnbMCgqnF
-         1HwWjIkYO3IgheCUwfyvQDngG7fPo05Du+AAswGyHzibD+rKoWkJF6TmjYB/08hAUjC8
-         GOO8PduX2MpQF/k6Edi6hV+eaLTe+wn1JEh0XGRP6p9S0JOovjSI3g/JIkhv3/vDBmbs
-         vWjaLcQIgOg+Qx90h3XL7Lxy0fNnHTEpRTD2/qqL7+bgD1tkcvekTNMgSqfrhytaXuF9
-         mELw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768240463; x=1768845263;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=iQ6/E1tgqYIjow3S6Hfpj3KTp0Kx78pCSAMldDRrYrY=;
-        b=PEiJlgb7bzWZtFcxzViSgmYlr0drAjwiqxtmS8tvRSHKJfkQsx+1sm1HphHpxlE+SZ
-         3i6VyG9m5Tc7a+4UDCzTqAL/XPcYROpaeqm3P3NMoH346BBb1jaVxPNqP5rOVHjL83pm
-         YhayyWN1+Z0qE1FscTVi31dymEtOTCrzWamXPmZ+K4+5O2yNmC6UtuHC/GAKquoyW1+o
-         QNjfKPVmDcacpXccwuuA7RJ2rcRwL60f6jUxz2ULldNpd4U7L2NlziteYgylAROuNHAs
-         n0kSkjJcCWC5weOanKYEGUbtKhIBv8RkfpUU0FOnZJZo0YapSkrPLZVHSGtD1c55j1jL
-         IWqA==
-X-Forwarded-Encrypted: i=1; AJvYcCUaLqRn0YoJEfuNTccmvi0xdXkX9SCUcUdYt2DXLQr4dPcy85RRcZ27xyFBUK+qsbRKJMbg1T0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxYN2zI/98wvHdwBPaflgk7qgv17Up7bsVDgjlm8dzkf6ajnZFZ
-	+YJSZe4WupUZdUAAJYAn36xnkxp7Dh9DUS8DM0Z8hDaktLSxvUT+KmC0z1Nkeg==
-X-Gm-Gg: AY/fxX5EAjsNeYDoaFmVAopyFyMcYvcSRQSmQ4TR4GlSY0SAMJLLjgJZSbZTa+1g3wU
-	hZn8IouMSQy/cB6MvmqEj2Z0WAlmscqcpLmljFxzwonYu1tTZtW2Y2Wmji8rqRsvVAT8s6OlrEO
-	z/Xc0s9GlSCUAch2N4eSTJ/raLfeBLKWJhIGhIgD90M+VD51jUGjWrTYZyf7ObAm4Js52yROnH1
-	IZewZsEFY728q2qXDOhZ4Ubk5jwEkEgsVVNPLKE5Kzs6VyzeFzSkksPUOhMjHIpqWm5wskI73mQ
-	e4BKC84V+8G7IjGGkMHkLZ+XX36cToK7F1msuhlfsgHEm5G1YY6ytdDpJOLS5nEbhJYdk4WMBy3
-	vRBcovX/ySK46kItrn/QI5C+Z8b93j02k5fb0OIGXiJMAMaaX/KMJYZ/7V8uGZ1mofH3S/tkxl/
-	uxPmJYaTgcQCRTvqmKPbXCO3hsRe4=
-X-Google-Smtp-Source: AGHT+IHGhWNkDca/+FCzmz49RYaZy2H/+LLzjBgLUetoD+8ejUSWqAtQI6jGW5uDZGAQmISWirqefA==
-X-Received: by 2002:a05:600c:1394:b0:47d:3ffa:5f03 with SMTP id 5b1f17b1804b1-47d84b3467emr225515145e9.21.1768240462813;
-        Mon, 12 Jan 2026 09:54:22 -0800 (PST)
-Received: from vitor-nb (bl19-170-125.dsl.telepac.pt. [2.80.170.125])
-        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d8719d057sm134047305e9.16.2026.01.12.09.54.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 09:54:22 -0800 (PST)
-From: Vitor Soares <ivitro@gmail.com>
-To: Nishanth Menon <nm@ti.com>,
-	Vignesh Raghavendra <vigneshr@ti.com>,
-	Tero Kristo <kristo@kernel.org>,
-	Rob Herring <robh@kernel.org>,
-	Krzysztof Kozlowski <krzk+dt@kernel.org>,
-	Conor Dooley <conor+dt@kernel.org>
-Cc: Vitor Soares <vitor.soares@toradex.com>,
-	linux-arm-kernel@lists.infradead.org,
-	devicetree@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	ivitro@gmail.com,
-	stable@vger.kernel.org
-Subject: [PATCH v1 2/2] arm64: dts: ti: k3-am69-aquila-clover: change main_spi2 CS0 to GPIO mode
-Date: Mon, 12 Jan 2026 17:53:47 +0000
-Message-ID: <20260112175350.79270-3-ivitro@gmail.com>
-X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260112175350.79270-1-ivitro@gmail.com>
-References: <20260112175350.79270-1-ivitro@gmail.com>
+	s=arc-20240116; t=1768240927; c=relaxed/simple;
+	bh=fbbkJ1HcNO/xEglsohwdOWAHOIjhNXmIV5BVhDqfmPc=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=SnNhImNFutwI/A5JOpqpwVAc9YZHYWHM81o1WaQQaCRfXAPIXB+o6ULVOED71yLa8U0Mxyo8zGORA0Wb4/jczOxRanQMXIOry6+ySqXe/mEiYlVPsKcTNJ1Tfc5x8nIXnLQu+Kdq6zdd+PvZASwzxNXd/JdWxIdiB0eHHTfGDcs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=o7qmAVzO; arc=none smtp.client-ip=91.218.175.173
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Mon, 12 Jan 2026 13:01:52 -0500
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768240920;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=DTa4582jbf+Ut9Vr/4Uoi61aR4qHz7EPGR2TFmJo+rg=;
+	b=o7qmAVzO3IkrYVGwJceCBPbVxo9tzsjOTY1FvHWbmmSKDeM6xwMpl5YDZ+MI8GuO9XWrwX
+	EvXZo3tHwwfSccVuw/QvH6ni8HWsrSwkE1/Rq4Q24SPr7PlB+avglt620HB/GujBhO4Ne5
+	mSem1c1K3tz6Gdq1Dt2qLMa3bkjkc6k=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Kent Overstreet <kent.overstreet@linux.dev>
+To: stable@vger.kernel.org
+Cc: stable-commits@vger.kernel.org, zhangshida@kylinos.cn, 
+	Coly Li <colyli@fnnas.com>
+Subject: Re: Patch "bcache: fix improper use of bi_end_io" has been added to
+ the 6.6-stable tree
+Message-ID: <aWU2mO5v6RezmIpZ@moria.home.lan>
+References: <20260112172345.800703-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260112172345.800703-1-sashal@kernel.org>
+X-Migadu-Flow: FLOW_OUT
 
-From: Vitor Soares <vitor.soares@toradex.com>
+On Mon, Jan 12, 2026 at 12:23:45PM -0500, Sasha Levin wrote:
+> This is a note to let you know that I've just added the patch titled
+> 
+>     bcache: fix improper use of bi_end_io
+> 
+> to the 6.6-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+> 
+> The filename of the patch is:
+>      bcache-fix-improper-use-of-bi_end_io.patch
+> and it can be found in the queue-6.6 subdirectory.
+> 
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
 
-Change CS0 from hardware chip select to GPIO-based chip select to
-align with the base aquila device tree configuration.
+Yeah, this is broken.
 
-Fixes: 9f748a6177e1 ("arm64: dts: ti: am69-aquila: Add Clover")
-Cc: stable@vger.kernel.org
-Signed-off-by: Vitor Soares <vitor.soares@toradex.com>
----
- arch/arm64/boot/dts/ti/k3-am69-aquila-clover.dts | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+Coly, please revert this.
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am69-aquila-clover.dts b/arch/arm64/boot/dts/ti/k3-am69-aquila-clover.dts
-index 55fd214a82e4..927d0877d7f8 100644
---- a/arch/arm64/boot/dts/ti/k3-am69-aquila-clover.dts
-+++ b/arch/arm64/boot/dts/ti/k3-am69-aquila-clover.dts
-@@ -208,7 +208,8 @@ &main_spi2 {
- 	pinctrl-0 = <&pinctrl_main_spi2>,
- 		    <&pinctrl_main_spi2_cs0>,
- 		    <&pinctrl_gpio_05>;
--	cs-gpios = <0>, <&wkup_gpio0 29 GPIO_ACTIVE_LOW>;
-+	cs-gpios = <&main_gpio0 39 GPIO_ACTIVE_LOW>,
-+		   <&wkup_gpio0 29 GPIO_ACTIVE_LOW>;
- 	status = "okay";
- 
- 	tpm@1 {
--- 
-2.52.0
-
+> 
+> 
+> 
+> commit 81e7e43a810e8f40e163928d441de02d2816b073
+> Author: Shida Zhang <zhangshida@kylinos.cn>
+> Date:   Tue Dec 9 17:01:56 2025 +0800
+> 
+>     bcache: fix improper use of bi_end_io
+>     
+>     [ Upstream commit 53280e398471f0bddbb17b798a63d41264651325 ]
+>     
+>     Don't call bio->bi_end_io() directly. Use the bio_endio() helper
+>     function instead, which handles completion more safely and uniformly.
+>     
+>     Suggested-by: Christoph Hellwig <hch@infradead.org>
+>     Reviewed-by: Christoph Hellwig <hch@lst.de>
+>     Signed-off-by: Shida Zhang <zhangshida@kylinos.cn>
+>     Signed-off-by: Jens Axboe <axboe@kernel.dk>
+>     Signed-off-by: Sasha Levin <sashal@kernel.org>
+> 
+> diff --git a/drivers/md/bcache/request.c b/drivers/md/bcache/request.c
+> index a9b1f3896249b..b4059d2daa326 100644
+> --- a/drivers/md/bcache/request.c
+> +++ b/drivers/md/bcache/request.c
+> @@ -1090,7 +1090,7 @@ static void detached_dev_end_io(struct bio *bio)
+>  	}
+>  
+>  	kfree(ddip);
+> -	bio->bi_end_io(bio);
+> +	bio_endio(bio);
+>  }
+>  
+>  static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+> @@ -1107,7 +1107,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+>  	ddip = kzalloc(sizeof(struct detached_dev_io_private), GFP_NOIO);
+>  	if (!ddip) {
+>  		bio->bi_status = BLK_STS_RESOURCE;
+> -		bio->bi_end_io(bio);
+> +		bio_endio(bio);
+>  		return;
+>  	}
+>  
+> @@ -1122,7 +1122,7 @@ static void detached_dev_do_request(struct bcache_device *d, struct bio *bio,
+>  
+>  	if ((bio_op(bio) == REQ_OP_DISCARD) &&
+>  	    !bdev_max_discard_sectors(dc->bdev))
+> -		bio->bi_end_io(bio);
+> +		detached_dev_end_io(bio);
+>  	else
+>  		submit_bio_noacct(bio);
+>  }
 
