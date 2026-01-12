@@ -1,55 +1,67 @@
-Return-Path: <stable+bounces-208147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208152-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3B8B8D13605
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:59:48 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E993D13621
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:00:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5D777301052D
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2DA8B3016451
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7477A2DF142;
-	Mon, 12 Jan 2026 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0374B2DEA61;
+	Mon, 12 Jan 2026 14:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="r2W3EY9l"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxobM8hO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3347C2DE718;
-	Mon, 12 Jan 2026 14:58:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998492DB79C;
+	Mon, 12 Jan 2026 14:59:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229929; cv=none; b=imlasuLHLL3IMubRTYL56Qp4pEF1LVS711qhMSqBvJqyjKIsV84QrHyErhja98I/vN4uJkId7UCFDK+ikvQBZiyGxa4QyLrLRryfZY1sM3pU1e2uv979wSZDRyuq3ABGYxf+Wxb4CSVmYi+CiXPzScLgFPT57XhtUe7I/Oeti7M=
+	t=1768229940; cv=none; b=bdBCoU4pihZOVXLNIIfjfTXClp9nPnCpKhPf6Y/3lulgZQQ4lNHk/SWzqUzZT+o92OuxkUviRAenosOGGsTWBY+jLOSAzV/5XRazypZ8Lsyu6wUtXgJqRlnkhGa5z7T8rXs8fa/tYauIVjECcdi+0T+WX8JfP3IRLSdoazgm6fs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229929; c=relaxed/simple;
-	bh=7qap7nbNmEHsF9VY8Qu2q9YvJE/9zREfCYKeItIGQqc=;
+	s=arc-20240116; t=1768229940; c=relaxed/simple;
+	bh=yDuxJLWzF6kgfc2MCgc5E0fSNJNKC2uW57/u00KiBKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cv6Te/Jy6anVfGeLT5X6Z9lWfEgnpowQopbAbds6oUPJ5u6ageJ2b4zQudrRnaUELjRC6sSxKDco9Nh3xXfrtHrOFHbDvUXT/q2KU6UbckIX7mD1SltEmFhhafup6Fy4JmKVYtkVcLUfKliJpqYafTMfnHctTTsivtNRExNW87k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=r2W3EY9l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D2C4C19423;
-	Mon, 12 Jan 2026 14:58:48 +0000 (UTC)
+	 MIME-Version; b=ZhdrlBiNAePhdrtnS7W+NDQQKxuvykm3u8qo+SGEnX54I0g4nV9NtIL5LEgee5J++rKf4cEA0FyScZp8S7axeO67gKolUV2CLmeQoH4nMgwd7QydLsgvBZpmgMox0iaT9W9X8hGdXCJG0Tg/7OoMMT8sKQjbq9dLQG83B0nw9OY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxobM8hO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804B3C16AAE;
+	Mon, 12 Jan 2026 14:58:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229929;
-	bh=7qap7nbNmEHsF9VY8Qu2q9YvJE/9zREfCYKeItIGQqc=;
+	s=k20201202; t=1768229940;
+	bh=yDuxJLWzF6kgfc2MCgc5E0fSNJNKC2uW57/u00KiBKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r2W3EY9l//h1IjZOGsgdOyr5WrIFih4E9BMETGnG0qaVbYnON8xsNT6sgeMkneunC
-	 2aCt8V8eBc5x9w4DNJPOsGOyNrI3aK26AI1kH2GFjZL+ApkuDlbXTSBJaH+yMHdkxq
-	 sStHk1OR8rvDFZifa6SU0nKUd0pPEVDjZFYeADc8add8QtrPznq6FhtgafuytZk0lc
-	 g4Du+grLJS6RS3aM00hy3U1XnoFzrKmNVcMeDLh55TFuQmbpc79775qc+WN2E9eNPx
-	 T6umUzquAHUMfl6Witb/yL7keuy3Ges64U9BKlEZzikOsiHtqSPNkMC2E1OV8Fylz8
-	 WsqywTgk7PhWw==
+	b=SxobM8hOus9COszhWDayy0ubPfKikSUKL0DN6khSE6AixrAIRagIxCGxg6LuJ9zyU
+	 WUGoKee/EmgAKj/yvhP7/+/k2yYQcCzacwa+WSEYwWDEh7EuSyY/XqMvk5GZOJLpsJ
+	 hz4HncunV09itW37g7Nv+AWnEwH54z6OXk+7Dz+ALXIdTL8qgN/qORrgu5G9P35KQD
+	 +4FfKWGg9Y4dsWk1bLdcQGd7Ov1rjvWxKcl+n7TLUbwIm1qaxH3tcANCwgmwNrUqaF
+	 tA45OOZyYbk9AbuBEhB4DBFJdmTlHEieYXAHntS/FhJ3w+INOxZrjlB7KuzbmUrjSf
+	 H0FjDXfaM5z5Q==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Chris Chiu <chris.chiu@canonical.com>,
-	Benjamin Tissoires <bentiss@kernel.org>,
+Cc: Perry Yuan <perry.yuan@amd.com>,
+	Yifan Zhang <yifan1.zhang@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] HID: quirks: Add another Chicony HP 5MP Cameras to hid_ignore_list
-Date: Mon, 12 Jan 2026 09:58:07 -0500
-Message-ID: <20260112145840.724774-6-sashal@kernel.org>
+	lijo.lazar@amd.com,
+	christian.koenig@amd.com,
+	Hawking.Zhang@amd.com,
+	mario.limonciello@amd.com,
+	cesun102@amd.com,
+	superm1@kernel.org,
+	kenneth.feng@amd.com,
+	kevinyang.wang@amd.com,
+	Yifan.Zha@amd.com,
+	siqueira@igalia.com,
+	ilya.zlobintsev@gmail.com,
+	tomasz.pakula.oficjalny@gmail.com,
+	Jesse.Zhang@amd.com
+Subject: [PATCH AUTOSEL 6.18-6.12] drm/amd/pm: Disable MMIO access during SMU Mode 1 reset
+Date: Mon, 12 Jan 2026 09:58:12 -0500
+Message-ID: <20260112145840.724774-11-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
 References: <20260112145840.724774-1-sashal@kernel.org>
@@ -62,155 +74,207 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.5
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Chris Chiu <chris.chiu@canonical.com>
+From: Perry Yuan <perry.yuan@amd.com>
 
-[ Upstream commit c06bc3557542307b9658fbd43cc946a14250347b ]
+[ Upstream commit 0de604d0357d0d22cbf03af1077d174b641707b6 ]
 
-Another Chicony Electronics HP 5MP Camera with USB ID 04F2:B882
-reports a HID sensor interface that is not actually implemented.
+During Mode 1 reset, the ASIC undergoes a reset cycle and becomes
+temporarily inaccessible via PCIe. Any attempt to access MMIO registers
+during this window (e.g., from interrupt handlers or other driver threads)
+can result in uncompleted PCIe transactions, leading to NMI panics or
+system hangs.
 
-Add the device to the HID ignore list so the bogus sensor is never
-exposed to userspace. Then the system won't hang when runtime PM
-tries to wake the unresponsive device.
+To prevent this, set the `no_hw_access` flag to true immediately after
+triggering the reset. This signals other driver components to skip
+register accesses while the device is offline.
 
-Signed-off-by: Chris Chiu <chris.chiu@canonical.com>
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+A memory barrier `smp_mb()` is added to ensure the flag update is
+globally visible to all cores before the driver enters the sleep/wait
+state.
+
+Signed-off-by: Perry Yuan <perry.yuan@amd.com>
+Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 7edb503fe4b6d67f47d8bb0dfafb8e699bb0f8a4)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Commit Analysis: HID Quirks for Chicony HP 5MP Camera
+## Analysis of Commit: drm/amd/pm: Disable MMIO access during SMU Mode 1
+reset
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message is clear and explains:
-- A specific Chicony HP 5MP Camera (USB ID 04F2:B882) reports a HID
-  sensor interface that **is not actually implemented**
-- Without this fix, **the system hangs** when runtime PM tries to wake
-  the unresponsive device
-- Solution: Add to `hid_ignore_list` so the bogus sensor is never
-  exposed to userspace
+The commit message clearly describes a **serious stability problem**:
+- During Mode 1 reset, the ASIC becomes temporarily inaccessible via
+  PCIe
+- Any MMIO access during this window (from interrupt handlers or other
+  driver threads) results in **NMI panics or system hangs**
+- Keywords: "NMI panics", "system hangs" - these are critical stability
+  issues
 
-Key phrase: "the system won't hang" - this is a **system hang fix**.
+The commit has proper attribution:
+- Reviewed-by tag from Yifan Zhang
+- Signed-off by AMD maintainer Alex Deucher
+- Already cherry-picked, suggesting it's considered stable material
 
 ### 2. CODE CHANGE ANALYSIS
 
-The change is minimal and surgical:
+The fix is straightforward and surgical:
 
-**hid-ids.h:** Adds one new device ID define
+**smu_v13_0_0_ppt.c and smu_v14_0_2_ppt.c:**
 ```c
-#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3    0xb882
+/* disable mmio access while doing mode 1 reset*/
+smu->adev->no_hw_access = true;
+/* ensure no_hw_access is globally visible before any MMIO */
+smp_mb();
+msleep(...);
 ```
+Sets the existing `no_hw_access` flag to block MMIO from other driver
+components during the reset sleep window. The `smp_mb()` ensures proper
+cross-CPU memory ordering.
 
-**hid-quirks.c:** Adds device to the ignore list
+**amdgpu_device.c:**
 ```c
-{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY,
-USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3) },
+/* enable mmio access after mode 1 reset completed */
+adev->no_hw_access = false;
 ```
-
-This follows an **already-established pattern** - there are already two
-similar entries:
-- `USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA` (0xb824)
-- `USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2` (0xb82c)
+Re-enables MMIO access after the reset completes successfully.
 
 ### 3. CLASSIFICATION
 
-This falls into **two explicit exception categories** that are allowed
-in stable:
-
-1. **Device ID addition:** Adding a USB ID to an existing driver's quirk
-   list
-2. **Hardware quirk/workaround:** Fixing a broken device that falsely
-   advertises a non-functional HID sensor interface
+This is a **bug fix** - not a new feature. It uses an existing mechanism
+(`no_hw_access` flag) that other driver components already check. The
+fix simply sets this flag at the correct time during Mode 1 reset.
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-| Metric | Assessment |
-|--------|------------|
-| Lines changed | 2 |
-| Files touched | 2 |
-| Complexity | Trivial - just adding ID to a list |
-| Risk level | **Extremely low** |
+- **Lines changed**: ~15 lines of actual code across 3 files
+- **Complexity**: Very low - just boolean flag setting and memory
+  barriers
+- **Risk**: LOW - uses existing infrastructure, pattern is well-
+  understood
+- **Subsystem**: AMD GPU power management (SMU v13.0.0 and v14.0.2)
 
-The change only affects this specific USB device (04F2:B882). No logic
-changes, no control flow modifications. The `hid_ignore_list` mechanism
-is mature and proven.
+The changes are minimal and isolated to the Mode 1 reset path.
 
 ### 5. USER IMPACT
 
-- **Severity:** HIGH - Prevents **system hangs** on affected HP laptops
-- **Affected users:** Anyone with an HP laptop containing this specific
-  Chicony 5MP camera
-- **Real-world evidence:** The author is from Canonical (Ubuntu),
-  suggesting this was discovered through real user bug reports
+- **Severity**: CRITICAL - NMI panics and system hangs affect system
+  stability
+- **Affected users**: AMD GPU users (Radeon RX 7000 series and newer)
+  when GPU undergoes error recovery
+- **Trigger likelihood**: Mode 1 resets happen during GPU error recovery
+  - interrupt handlers racing with reset is a realistic scenario
 
 ### 6. STABILITY INDICATORS
 
-- Accepted by Benjamin Tissoires (HID maintainer)
-- Uses identical mechanism to existing, proven entries
-- Canonical developer submission suggests tested on real hardware
+- Has `Reviewed-by` tag
+- Cherry-picked from mainline commit
+  7edb503fe4b6d67f47d8bb0dfafb8e699bb0f8a4
+- Comes from AMD engineers with domain expertise
 
 ### 7. DEPENDENCY CHECK
 
-**No dependencies.** The `hid_ignore_list` infrastructure exists in all
-stable kernel versions. This is a completely standalone device ID
-addition.
+The `no_hw_access` field in `amdgpu_device` structure is existing
+infrastructure used throughout the AMDGPU driver. This commit doesn't
+introduce new fields or dependencies - it only sets an existing flag at
+appropriate times.
 
----
+**Potential concern**: SMU v14 code is relatively new (2024+), so very
+old stable trees may not have this code path. However, if the code
+exists in the stable tree, the fix applies cleanly.
 
-## Conclusion
+### RISK VS BENEFIT ASSESSMENT
 
-This commit is a **textbook example** of what should be backported to
-stable:
+**Benefits:**
+- Prevents NMI panics and system hangs - critical stability fix
+- Protects against realistic race conditions during GPU reset
 
-✅ **Fixes a real bug:** System hang during runtime PM suspend/resume
-✅ **Fixes an important issue:** System hangs are severe user-facing bugs
-✅ **Small and contained:** Only 2 lines, no logic changes
-✅ **Obviously correct:** Follows exact pattern of existing similar
-entries
-✅ **Hardware quirk exception:** Explicitly allowed by stable kernel
-rules
-✅ **No dependencies:** Standalone addition
-✅ **Zero risk:** Only affects one specific USB device ID
+**Risks:**
+- Minimal - uses existing flag mechanism
+- Small, contained changes with proper memory barriers
+- No architectural changes or new features
 
-The bug is severe (system hang), the fix is trivial (add device to
-ignore list), and the mechanism is well-proven with existing similar
-entries. This is exactly what stable backports are for.
+### CONCLUSION
+
+This commit fixes a critical stability bug (NMI panics, system hangs)
+that can occur during normal GPU error recovery scenarios. The fix is:
+- Small and surgical (just flag setting + memory barrier)
+- Uses existing infrastructure
+- Properly reviewed
+- Low regression risk
+- Already cherry-picked indicating stable intent
+
+The commit meets all stable kernel criteria: it's obviously correct,
+fixes a real and serious bug, is small and contained, and introduces no
+new features.
 
 **YES**
 
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_device.c           | 3 +++
+ drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 7 ++++++-
+ drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 9 +++++++--
+ 3 files changed, 16 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index c4589075a5ed6..3a22129fb7075 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -317,6 +317,7 @@
- #define USB_DEVICE_ID_CHICONY_ACER_SWITCH12	0x1421
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA	0xb824
- #define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2	0xb82c
-+#define USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3	0xb882
+diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+index 0cba31ec025c0..e9a14a62e73fc 100644
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
+@@ -5731,6 +5731,9 @@ int amdgpu_device_mode1_reset(struct amdgpu_device *adev)
+ 	if (ret)
+ 		goto mode1_reset_failed;
  
- #define USB_VENDOR_ID_CHUNGHWAT		0x2247
- #define USB_DEVICE_ID_CHUNGHWAT_MULTITOUCH	0x0001
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index c89a015686c07..3cf7971d49743 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -769,6 +769,7 @@ static const struct hid_device_id hid_ignore_list[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_BERKSHIRE, USB_DEVICE_ID_BERKSHIRE_PCWD) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA2) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_CHICONY, USB_DEVICE_ID_CHICONY_HP_5MP_CAMERA3) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CIDC, 0x0103) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI470X) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_CYGNAL, USB_DEVICE_ID_CYGNAL_RADIO_SI4713) },
++	/* enable mmio access after mode 1 reset completed */
++	adev->no_hw_access = false;
++
+ 	amdgpu_device_load_pci_state(adev->pdev);
+ 	ret = amdgpu_psp_wait_for_bootloader(adev);
+ 	if (ret)
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+index c1062e5f03936..8d070a9ea2c10 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
+@@ -2922,8 +2922,13 @@ static int smu_v13_0_0_mode1_reset(struct smu_context *smu)
+ 		break;
+ 	}
+ 
+-	if (!ret)
++	if (!ret) {
++		/* disable mmio access while doing mode 1 reset*/
++		smu->adev->no_hw_access = true;
++		/* ensure no_hw_access is globally visible before any MMIO */
++		smp_mb();
+ 		msleep(SMU13_MODE1_RESET_WAIT_TIME_IN_MS);
++	}
+ 
+ 	return ret;
+ }
+diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+index 086501cc5213b..2cb2d93f9989a 100644
+--- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
++++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
+@@ -2142,10 +2142,15 @@ static int smu_v14_0_2_mode1_reset(struct smu_context *smu)
+ 
+ 	ret = smu_cmn_send_debug_smc_msg(smu, DEBUGSMC_MSG_Mode1Reset);
+ 	if (!ret) {
+-		if (amdgpu_emu_mode == 1)
++		if (amdgpu_emu_mode == 1) {
+ 			msleep(50000);
+-		else
++		} else {
++			/* disable mmio access while doing mode 1 reset*/
++			smu->adev->no_hw_access = true;
++			/* ensure no_hw_access is globally visible before any MMIO */
++			smp_mb();
+ 			msleep(1000);
++		}
+ 	}
+ 
+ 	return ret;
 -- 
 2.51.0
 
