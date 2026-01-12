@@ -1,91 +1,190 @@
-Return-Path: <stable+bounces-208052-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EA9CD11303
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:23:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E964D112FA
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 09:23:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2AC7730194BB
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 08:20:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D424A301F008
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 08:22:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5551D340A63;
-	Mon, 12 Jan 2026 08:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08F3B31A556;
+	Mon, 12 Jan 2026 08:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Q1SSQl16"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="lxUnsoz8"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-130.freemail.mail.aliyun.com (out30-130.freemail.mail.aliyun.com [115.124.30.130])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 115DF33F8CF;
-	Mon, 12 Jan 2026 08:20:09 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B9D31A576;
+	Mon, 12 Jan 2026 08:22:29 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768206010; cv=none; b=JNNQYmIYg98mXNCXd0kD3VajdT+JMyDPqf57IfMsNnFwWsSpLr5X8KxGHFqg9wsDESQDLU3sC+rfhmMWiohjl7kP/c8dVrAY8emLUbK2y9LII8E8nD+gZDiJW3nKjfozZ9E+JPvweiELtbFI/2tdgmv4QXQw2l5lsOpTg99q9lE=
+	t=1768206152; cv=none; b=K3MFBMZaprQSAq98nNBcxGnPgDrNRI6R4VOaVvn9cnysg4NWHQ2XbTrmsK7trjF52sEs9hXL1icRX2AE87enjQYo12H7vk7Tw9UBT7NaYL/jdRZbMOvMtb0Ak5amL+Dq6/0sG6OhXq/7zMEj/BhMfPXkzQ2Z+r2lp5uI989p5sE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768206010; c=relaxed/simple;
-	bh=OJIX75obaMOz/Rw970G0TtUx5AEZXgro07NB88e8eTc=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=r9oyjLZ6z/MJ1JXj67NyL2NLqIuNmaA9t+1V5XBgpHhdZC5lhPlqbpJTTSJVl6+4rKVebnRLcQTHB2zMelfsQnCk+uIyTMca7Qc1m0RvYcr5qakbjpSBQA1l3nov2t948pW9E2gUjN1/m2qKxyhx1bkScHj/6lFHCxjpt9bl+0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Q1SSQl16; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688E0C4AF0F;
-	Mon, 12 Jan 2026 08:20:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768206009;
-	bh=OJIX75obaMOz/Rw970G0TtUx5AEZXgro07NB88e8eTc=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=Q1SSQl16ggvR8LImiJHhEXcNxEIbgYeaISUse2VIeH9oncmpdDZW/N+TDTi7IsahG
-	 +pFPG6BVfSiVZVg2PsFDkBYtvXzxjnHMNK4Hyvgpc7uAQx49K/bbA5BXuYJ3J36WOT
-	 bPbFfX2MovL9rNkitUm7srVuEXKmUEGOLhVupSAg=
-Date: Mon, 12 Jan 2026 09:20:07 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Xingjing Deng <micro6947@gmail.com>
-Cc: stable@vger.kernel.org, srini@kernel.org, amahesh@gti.qualcomm.com,
-	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org
-Subject: Re: [BUG] misc: fastrpc: possible double-free of cctx->remote_heap
-Message-ID: <2026011208-anger-jurist-a101@gregkh>
-References: <CAK+ZN9rJypDknnR0b5UVme6x9ABx_hCVtveTyJQT-x0ROpU1vw@mail.gmail.com>
+	s=arc-20240116; t=1768206152; c=relaxed/simple;
+	bh=KUqF/1fFS2rFaJlGWXLeNlav0oxVLDqNH89BpnAW724=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=ArY76LZJkE3yZZFlelop9knYNsAmmWjtzxQSbLfKuOlZ6oRQjMcEH0lzgR1TDmBlfjzrTsXDGSprKh4+AmWx4RCf/7YiJp8sCM3Y+VFN2/mim9ipGdd6o6FWbd34oWKRUl5kZFoGAkG/jCI8M2fQ6FB7P/v5JsYtn+bv9OWmHxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=lxUnsoz8; arc=none smtp.client-ip=115.124.30.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768206147; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=ad7R/+eI3g9Xu6IbHx4VEjDEO9JdlcbHLzN6J0fDGaI=;
+	b=lxUnsoz857wQ/W1AiHtdaafeK7+wlghNrhHnqm0Qhql5+QoVXtihy0zzre/vlV9myeOoESLp1Q1y2ZFwMzJxXwXhyLirUcdfH9dTnMQEchcD9Sl8WIR5i5Txsrv0xK68oWlZOkp4SyNihgV2fyfjBGrER37s3ooVt+NZABrXQ+Q=
+Received: from 30.74.144.125(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wwr3iRU_1768206145 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Mon, 12 Jan 2026 16:22:26 +0800
+Message-ID: <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
+Date: Mon, 12 Jan 2026 16:22:24 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
+ <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
+ <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAK+ZN9rJypDknnR0b5UVme6x9ABx_hCVtveTyJQT-x0ROpU1vw@mail.gmail.com>
 
-On Mon, Jan 12, 2026 at 04:15:01PM +0800, Xingjing Deng wrote:
-> While reviewing drivers/misc/fastrpc.c, I noticed a potential lifetime
-> issue around struct fastrpc_buf *remote_heap;
-> In fastrpc_init_create_static_process(), the error path err_map: frees
-> fl->cctx->remote_heap but does not clear the pointer(set to NULL).
-> Later, in fastrpc_rpmsg_remove(), the code frees cctx->remote_heap
-> again if it is non-NULL.
-> 
-> Call paths (as I understand them)
-> 
-> 1) First free (ioctl error path):
-> 
-> fastrpc_fops.unlocked_ioctl → fastrpc_device_ioctl()
-> FASTRPC_IOCTL_INIT_CREATE_STATIC → fastrpc_init_create_static_process()
-> err_map: → fastrpc_buf_free(fl->cctx->remote_heap) (pointer not cleared)
-> 
-> 2) Second free (rpmsg remove path):
-> 
-> rpmsg driver .remove → fastrpc_rpmsg_remove()
-> if (cctx->remote_heap) fastrpc_buf_free(cctx->remote_heap);
-> 
 
-Hi,
 
-Please note, stable@vger is not the email address to be asking about
-this, it is only for stable kernel release stuff.
+On 1/12/26 1:56 PM, Kairui Song wrote:
+> On Mon, Jan 12, 2026 at 12:00 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+>> On 1/12/26 1:53 AM, Kairui Song wrote:
+>>> From: Kairui Song <kasong@tencent.com>
+>>>
+>>> The helper for shmem swap freeing is not handling the order of swap
+>>> entries correctly. It uses xa_cmpxchg_irq to erase the swap entry,
+>>> but it gets the entry order before that using xa_get_order
+>>> without lock protection. As a result the order could be a stalled value
+>>> if the entry is split after the xa_get_order and before the
+>>> xa_cmpxchg_irq. In fact that are more way for other races to occur
+>>> during the time window.
+>>>
+>>> To fix that, open code the Xarray cmpxchg and put the order retrivial and
+>>> value checking in the same critical section. Also ensure the order won't
+>>> exceed the truncate border.
+>>>
+>>> I observed random swapoff hangs and swap entry leaks when stress
+>>> testing ZSWAP with shmem. After applying this patch, the problem is resolved.
+>>>
+>>> Fixes: 809bc86517cc ("mm: shmem: support large folio swap out")
+>>> Cc: stable@vger.kernel.org
+>>> Signed-off-by: Kairui Song <kasong@tencent.com>
+>>> ---
+>>>    mm/shmem.c | 35 +++++++++++++++++++++++------------
+>>>    1 file changed, 23 insertions(+), 12 deletions(-)
+>>>
+>>> diff --git a/mm/shmem.c b/mm/shmem.c
+>>> index 0b4c8c70d017..e160da0cd30f 100644
+>>> --- a/mm/shmem.c
+>>> +++ b/mm/shmem.c
+>>> @@ -961,18 +961,28 @@ static void shmem_delete_from_page_cache(struct folio *folio, void *radswap)
+>>>     * the number of pages being freed. 0 means entry not found in XArray (0 pages
+>>>     * being freed).
+>>>     */
+>>> -static long shmem_free_swap(struct address_space *mapping,
+>>> -                         pgoff_t index, void *radswap)
+>>> +static long shmem_free_swap(struct address_space *mapping, pgoff_t index,
+>>> +                         unsigned int max_nr, void *radswap)
+>>>    {
+>>> -     int order = xa_get_order(&mapping->i_pages, index);
+>>> -     void *old;
+>>> +     XA_STATE(xas, &mapping->i_pages, index);
+>>> +     unsigned int nr_pages = 0;
+>>> +     void *entry;
+>>>
+>>> -     old = xa_cmpxchg_irq(&mapping->i_pages, index, radswap, NULL, 0);
+>>> -     if (old != radswap)
+>>> -             return 0;
+>>> -     swap_put_entries_direct(radix_to_swp_entry(radswap), 1 << order);
+>>> +     xas_lock_irq(&xas);
+>>> +     entry = xas_load(&xas);
+>>> +     if (entry == radswap) {
+>>> +             nr_pages = 1 << xas_get_order(&xas);
+>>> +             if (index == round_down(xas.xa_index, nr_pages) && nr_pages < max_nr)
+>>> +                     xas_store(&xas, NULL);
+>>> +             else
+>>> +                     nr_pages = 0;
+>>> +     }
+>>> +     xas_unlock_irq(&xas);
+>>> +
+>>> +     if (nr_pages)
+>>> +             swap_put_entries_direct(radix_to_swp_entry(radswap), nr_pages);
+>>>
+>>> -     return 1 << order;
+>>> +     return nr_pages;
+>>>    }
+>>
+>> Thanks for the analysis, and it makes sense to me. Would the following
+>> implementation be simpler and also address your issue (we will not
+>> release the lock in __xa_cmpxchg() since gfp = 0)?
+> 
+> Hi Baolin,
+> 
+>>
+>> static long shmem_free_swap(struct address_space *mapping,
+>>                               pgoff_t index, void *radswap)
+>> {
+>>           XA_STATE(xas, &mapping->i_pages, index);
+>>           int order;
+>>           void *old;
+>>
+>>           xas_lock_irq(&xas);
+>>           order = xas_get_order(&xas);
+> 
+> Thanks for the suggestion. I did consider implementing it this way,
+> but I was worried that the order could grow upwards. For example
+> shmem_undo_range is trying to free 0-95 and there is an entry at 64
+> with order 5 (64 - 95). Before shmem_free_swap is called, the entry
+> was swapped in, then the folio was freed, then an order 6 folio was
+> allocated there and swapped out again using the same entry.
+> 
+> Then here it will free the whole order 6 entry (64 - 127), while
+> shmem_undo_range is only supposed to erase (0-96).
 
-Andn do you have a potential patch to resolve this issue?  That's the
-simplest way to get it fixed up and to show what you are discussing.
+Good point. However, this cannot happen during swapoff, because the 
+'end' is set to -1 in shmem_evict_inode().
 
-thanks,
+Actually, the real question is how to handle the case where a large swap 
+entry happens to cross the 'end' when calling shmem_truncate_range(). If 
+the shmem mapping stores a folio, we would split that large folio by 
+truncate_inode_partial_folio(). If the shmem mapping stores a large swap 
+entry, then as you noted, the truncation range can indeed exceed the 'end'.
 
-greg k-h
+But with your change, that large swap entry would not be truncated, and 
+I’m not sure whether that might cause other issues. Perhaps the best 
+approach is to first split the large swap entry and only truncate the 
+swap entries within the 'end' boundary like the 
+truncate_inode_partial_folio() does.
+
+Alternatively, this patch could only focus on the race on the order, 
+which seems uncontested. As for handling large swap entries that go 
+beyond the 'end', should we address that in a follow-up, for example by 
+splitting? What do you think?
+
+> That's why I added a max_nr argument to the helper. The GFP == 0 below
+> looks not very clean either, that's trivial though.
+> 
+>>           old = __xa_cmpxchg(xas.xa, index, radswap, NULL, 0);
+> 
+> Am I overthinking it?
+
 
