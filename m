@@ -1,105 +1,258 @@
-Return-Path: <stable+bounces-208069-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2974CD11DD3
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:28:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 71705D11E93
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:33:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9137730239EE
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:26:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 21DFC30754FF
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:32:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 927A129D294;
-	Mon, 12 Jan 2026 10:26:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE9F9248F57;
+	Mon, 12 Jan 2026 10:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b="Sk61vgTg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VIxIDxFN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx.nabladev.com (mx.nabladev.com [178.251.229.89])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 027CB27B50C;
-	Mon, 12 Jan 2026 10:26:37 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=178.251.229.89
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2BAA27A122
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768213599; cv=none; b=MUtfdDLdYuYwW24yfZ9j20U2Kpz7eu6T2upyeo3DmWrhkw3lvwVIDC915zfcTktkQZyBt2CtrudrsOY+VnKWl/ceUHQmF+XdP9V+9ugrXPv/nEx29TC5RwD4Hi+gUpzK3XIgJgYy+L5xC0naOTQeBugFBByZQuFgm9nBxYhyqZ4=
+	t=1768213954; cv=none; b=U34+OSh9S1WiNThbocQq79kxsRuHuk+Cd9EYQUiQw3zdoChXnMhGlsG/OPf8vDVr5D/PC4bV0rAgWFkJExwwQ43KBZoXx0Sy2B+1aZssd0rE2FvNGd8Q3q3wN+geVolaW3xLZJFzMfN7kmE6U034XuOgtAh9Y6PW2CzmIKRV2WQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768213599; c=relaxed/simple;
-	bh=qRYXZ1C2+SEbjnErAPumGf+Mkf6g7iq9IP47NeEPv2E=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qDtJUdYqwXmW5va/KZum75I8ssCgkmByEPNLr21iDgyn7Z8g6tNQy/YDaHIz3lmVJQNk3bwE+048TTlprgJK+R7T8eBZmgPdJN+IZKo0gxnBdY74pXVkU1ptE4TewCDGO3N/6fMe/rn2PFNKd1US4OuuLfcDX2qsdC42OCst/c4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com; spf=pass smtp.mailfrom=nabladev.com; dkim=pass (2048-bit key) header.d=nabladev.com header.i=@nabladev.com header.b=Sk61vgTg; arc=none smtp.client-ip=178.251.229.89
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=nabladev.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=nabladev.com
-Received: from [127.0.0.1] (localhost [127.0.0.1]) by localhost (Mailerdaemon) with ESMTPSA id 619AC10840E;
-	Mon, 12 Jan 2026 11:26:34 +0100 (CET)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=nabladev.com;
-	s=dkim; t=1768213595;
-	h=from:subject:date:message-id:to:cc:mime-version:content-type:
-	 in-reply-to:references; bh=t0TOx+9co0EzSsTl2yfiMPWqtWmhNs5B61d93rWuRsM=;
-	b=Sk61vgTgQrXd2y8s6qhnqM/TaIedryYgM80jMmbu9iNmM/+D5eOjr/AC3AHz2/z0DX6qxE
-	yL8pKGBjOFKN6IfefWfbuCIJ3M+PnUyC/FvwVT93w5QuJq3xELvW2nkjwxGc0MRLCOjv9T
-	v/ah5EeQPV4l/NuofhBl0VGLQhjAvDpGB8MjnDE7xmHqifEoNVFVyHiAKE0H2by8G6T4JI
-	KhE16E42JoezMK5li6EMBN1o16n/a79DCG8sKlJ3FqhOL9WJts7dVaDlxLdDR1FKsJJ7HN
-	N385FW79Pu0JoVzI0kYduJo/j0mhVAjg5YDSaGQV/xYogpmNE/a6k6p+7inPGw==
-Date: Mon, 12 Jan 2026 11:26:32 +0100
-From: Pavel Machek <pavel@nabladev.com>
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev,
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-	patches@kernelci.org, lkft-triage@lists.linaro.org,
-	jonathanh@nvidia.com, f.fainelli@gmail.com,
-	sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
-	hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
-	sr@sladewatkins.com
-Subject: Re: [PATCH 6.1 000/634] 6.1.160-rc1 review
-Message-ID: <aWTMWGfVS7YrJEwu@duo.ucw.cz>
-References: <20260109112117.407257400@linuxfoundation.org>
+	s=arc-20240116; t=1768213954; c=relaxed/simple;
+	bh=4Y7fQY9u+PC7cBKTPfKx6trJhOVCSv5l2D2SCwyYzc4=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NBwM9t3QTsVI9mlK7UwcneL7HG/u3XPUFXNWa1rhNoldcl5YMZhkMXla9MbHfryHLh9a7K/gyQ0af2ouML9pRnWwcRr/W+uRkOrr2zYcCi9iTxFgogihQDomYcNhB8UZu2KzUzTWiB/nC3I6I15KXJs1R7Z0kVYyGi0V4dlAE10=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VIxIDxFN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 123DDC19421;
+	Mon, 12 Jan 2026 10:32:33 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768213954;
+	bh=4Y7fQY9u+PC7cBKTPfKx6trJhOVCSv5l2D2SCwyYzc4=;
+	h=Subject:To:Cc:From:Date:From;
+	b=VIxIDxFNsbFM2cXTBJJvq0GQ5qJPdZd+wnRRGvi9DSEO4ZfR7naSjrFPxg/9Ki/yg
+	 2iFHwwk8mzxS0NgjdSbcklrNjzqTXw929miBVdXa/QFZgj9dnPran3DHm7XYVZgIK0
+	 rF60tlJyOzxsTH5Fu6sDaU1Dy49WViRnTjXWg1GA=
+Subject: FAILED: patch "[PATCH] nfsd: provide locking for v4_end_grace" failed to apply to 5.15-stable tree
+To: neil@brown.name,chuck.lever@oracle.com,jlayton@kernel.org,lilingfeng3@huawei.com
+Cc: <stable@vger.kernel.org>
+From: <gregkh@linuxfoundation.org>
+Date: Mon, 12 Jan 2026 11:32:23 +0100
+Message-ID: <2026011223-account-preteen-f696@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-	protocol="application/pgp-signature"; boundary="KrA8+BEfZSBfjWZk"
-Content-Disposition: inline
-In-Reply-To: <20260109112117.407257400@linuxfoundation.org>
-X-Last-TLS-Session-Version: TLSv1.3
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 
 
---KrA8+BEfZSBfjWZk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Hi!
+To reproduce the conflict and resubmit, you may use the following commands:
 
-> This is the start of the stable review cycle for the 6.1.160 release.
-> There are 634 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x 2857bd59feb63fcf40fe4baf55401baea6b4feb4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011223-account-preteen-f696@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-CIP testing did not find any problems here:
+Possible dependencies:
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-6.1.y
 
-Tested-by: Pavel Machek (CIP) <pavel@nabladev.com>
 
-Best regards,
-                                                                Pavel
---=20
-In cooperation with Nabla.
+thanks,
 
---KrA8+BEfZSBfjWZk
-Content-Type: application/pgp-signature; name="signature.asc"
+greg k-h
 
------BEGIN PGP SIGNATURE-----
+------------------ original commit in Linus's tree ------------------
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCaWTMWAAKCRAw5/Bqldv6
-8pFXAJ9j4Epe1l7SfVWjWX4QSBQtvx8VhQCffRIvUGNiV9UuPHyatW34Jo5u2gU=
-=QFsy
------END PGP SIGNATURE-----
+From 2857bd59feb63fcf40fe4baf55401baea6b4feb4 Mon Sep 17 00:00:00 2001
+From: NeilBrown <neil@brown.name>
+Date: Sat, 13 Dec 2025 13:41:59 -0500
+Subject: [PATCH] nfsd: provide locking for v4_end_grace
 
---KrA8+BEfZSBfjWZk--
+Writing to v4_end_grace can race with server shutdown and result in
+memory being accessed after it was freed - reclaim_str_hashtbl in
+particularly.
+
+We cannot hold nfsd_mutex across the nfsd4_end_grace() call as that is
+held while client_tracking_op->init() is called and that can wait for
+an upcall to nfsdcltrack which can write to v4_end_grace, resulting in a
+deadlock.
+
+nfsd4_end_grace() is also called by the landromat work queue and this
+doesn't require locking as server shutdown will stop the work and wait
+for it before freeing anything that nfsd4_end_grace() might access.
+
+However, we must be sure that writing to v4_end_grace doesn't restart
+the work item after shutdown has already waited for it.  For this we
+add a new flag protected with nn->client_lock.  It is set only while it
+is safe to make client tracking calls, and v4_end_grace only schedules
+work while the flag is set with the spinlock held.
+
+So this patch adds a nfsd_net field "client_tracking_active" which is
+set as described.  Another field "grace_end_forced", is set when
+v4_end_grace is written.  After this is set, and providing
+client_tracking_active is set, the laundromat is scheduled.
+This "grace_end_forced" field bypasses other checks for whether the
+grace period has finished.
+
+This resolves a race which can result in use-after-free.
+
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Closes: https://lore.kernel.org/linux-nfs/20250623030015.2353515-1-neil@brown.name/T/#t
+Fixes: 7f5ef2e900d9 ("nfsd: add a v4_end_grace file to /proc/fs/nfsd")
+Cc: stable@vger.kernel.org
+Signed-off-by: NeilBrown <neil@brown.name>
+Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+
+diff --git a/fs/nfsd/netns.h b/fs/nfsd/netns.h
+index 3e2d0fde80a7..fe8338735e7c 100644
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -66,6 +66,8 @@ struct nfsd_net {
+ 
+ 	struct lock_manager nfsd4_manager;
+ 	bool grace_ended;
++	bool grace_end_forced;
++	bool client_tracking_active;
+ 	time64_t boot_time;
+ 
+ 	struct dentry *nfsd_client_dir;
+diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
+index 5b83cb33bf83..a1dccce8b99c 100644
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,7 +84,7 @@ static u64 current_sessionid = 1;
+ /* forward declarations */
+ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner);
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+-void nfsd4_end_grace(struct nfsd_net *nn);
++static void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
+ static void nfsd4_file_hash_remove(struct nfs4_file *fi);
+ static void deleg_reaper(struct nfsd_net *nn);
+@@ -6570,7 +6570,7 @@ nfsd4_renew(struct svc_rqst *rqstp, struct nfsd4_compound_state *cstate,
+ 	return nfs_ok;
+ }
+ 
+-void
++static void
+ nfsd4_end_grace(struct nfsd_net *nn)
+ {
+ 	/* do nothing if grace period already ended */
+@@ -6603,6 +6603,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
+ 	 */
+ }
+ 
++/**
++ * nfsd4_force_end_grace - forcibly end the NFSv4 grace period
++ * @nn: network namespace for the server instance to be updated
++ *
++ * Forces bypass of normal grace period completion, then schedules
++ * the laundromat to end the grace period immediately. Does not wait
++ * for the grace period to fully terminate before returning.
++ *
++ * Return values:
++ *   %true: Grace termination schedule
++ *   %false: No action was taken
++ */
++bool nfsd4_force_end_grace(struct nfsd_net *nn)
++{
++	if (!nn->client_tracking_ops)
++		return false;
++	spin_lock(&nn->client_lock);
++	if (nn->grace_ended || !nn->client_tracking_active) {
++		spin_unlock(&nn->client_lock);
++		return false;
++	}
++	WRITE_ONCE(nn->grace_end_forced, true);
++	mod_delayed_work(laundry_wq, &nn->laundromat_work, 0);
++	spin_unlock(&nn->client_lock);
++	return true;
++}
++
+ /*
+  * If we've waited a lease period but there are still clients trying to
+  * reclaim, wait a little longer to give them a chance to finish.
+@@ -6612,6 +6639,8 @@ static bool clients_still_reclaiming(struct nfsd_net *nn)
+ 	time64_t double_grace_period_end = nn->boot_time +
+ 					   2 * nn->nfsd4_lease;
+ 
++	if (READ_ONCE(nn->grace_end_forced))
++		return false;
+ 	if (nn->track_reclaim_completes &&
+ 			atomic_read(&nn->nr_reclaim_complete) ==
+ 			nn->reclaim_str_hashtbl_size)
+@@ -8931,6 +8960,8 @@ static int nfs4_state_create_net(struct net *net)
+ 	nn->unconf_name_tree = RB_ROOT;
+ 	nn->boot_time = ktime_get_real_seconds();
+ 	nn->grace_ended = false;
++	nn->grace_end_forced = false;
++	nn->client_tracking_active = false;
+ 	nn->nfsd4_manager.block_opens = true;
+ 	INIT_LIST_HEAD(&nn->nfsd4_manager.list);
+ 	INIT_LIST_HEAD(&nn->client_lru);
+@@ -9011,6 +9042,10 @@ nfs4_state_start_net(struct net *net)
+ 		return ret;
+ 	locks_start_grace(net, &nn->nfsd4_manager);
+ 	nfsd4_client_tracking_init(net);
++	/* safe for laundromat to run now */
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = true;
++	spin_unlock(&nn->client_lock);
+ 	if (nn->track_reclaim_completes && nn->reclaim_str_hashtbl_size == 0)
+ 		goto skip_grace;
+ 	printk(KERN_INFO "NFSD: starting %lld-second grace period (net %x)\n",
+@@ -9059,6 +9094,9 @@ nfs4_state_shutdown_net(struct net *net)
+ 
+ 	shrinker_free(nn->nfsd_client_shrinker);
+ 	cancel_work_sync(&nn->nfsd_shrinker_work);
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = false;
++	spin_unlock(&nn->client_lock);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
+ 
+diff --git a/fs/nfsd/nfsctl.c b/fs/nfsd/nfsctl.c
+index 2b79129703d5..36ce3ca97d97 100644
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1082,10 +1082,9 @@ static ssize_t write_v4_end_grace(struct file *file, char *buf, size_t size)
+ 		case 'Y':
+ 		case 'y':
+ 		case '1':
+-			if (!nn->nfsd_serv)
++			if (!nfsd4_force_end_grace(nn))
+ 				return -EBUSY;
+ 			trace_nfsd_end_grace(netns(file));
+-			nfsd4_end_grace(nn);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+diff --git a/fs/nfsd/state.h b/fs/nfsd/state.h
+index 1e736f402426..50d2b2963390 100644
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -849,7 +849,7 @@ static inline void nfsd4_revoke_states(struct net *net, struct super_block *sb)
+ #endif
+ 
+ /* grace period management */
+-void nfsd4_end_grace(struct nfsd_net *nn);
++bool nfsd4_force_end_grace(struct nfsd_net *nn);
+ 
+ /* nfs4recover operations */
+ extern int nfsd4_client_tracking_init(struct net *net);
+
 
