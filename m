@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A158BD13849
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:13:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 509B2D13867
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:14:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 96BFA3136DE4
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:58:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A2935310EADF
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF7382DC350;
-	Mon, 12 Jan 2026 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50242274FC2;
+	Mon, 12 Jan 2026 14:58:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="sTlkbxiN"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="aEGs5VTc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B02B62DB797;
-	Mon, 12 Jan 2026 14:58:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB67D2DC350;
+	Mon, 12 Jan 2026 14:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229925; cv=none; b=VpTVxelSBqz6qSxz8t0GfEtFk2cC+rdLbe9P+2R9JJJciClBtjDxwvMDwbiEYkAA5yDMWrblsY7RzB56UgWXShI3IUaDzdsOUBlnzBdnIs2SaMBl3uk+XKb71mC/GhWEYeGuf3TgOuJoa+KJXAz6ElT7STwI2BNp9AtEBcKda78=
+	t=1768229931; cv=none; b=NhtlSTYGtLfHuX5J6nQxjgk6AozzLHo56B8rxfSfQPkgj/8CR1tp3tPewrwndFT4FuEYRPVj0QhyF6YBe7MSYC84Irp18y/vJpMjA4CEokfsMI6c8PAdBBjXZN5eBDrJJ4+L3Nh37x4276CnARgZ32uL2ySxHNtmmoQQsdqXukQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229925; c=relaxed/simple;
-	bh=EvHDptncN54Nkvz1HybzgdOjR8fnhTbNY70OKrG0yYk=;
+	s=arc-20240116; t=1768229931; c=relaxed/simple;
+	bh=bx4wf6AN3E67U2DceUgAupNZMhxJl5I2M+lQOV1EcYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=efLuVKzCVCKD9EQVRSgrEoKClX+J7hrp99grgM7zc2Tga9f5h5sn/qDVF4dGHbC6bxbXqOk6/rkDUkO+LyUjq98fSvUlVwmNHjds9l1OzIe18Db86agDm6WoeaPkL5PGd3PPtOcHBUH2UDIyCQYbQjX83d91MpXa6xbg6JN3kjA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=sTlkbxiN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7039C2BC86;
-	Mon, 12 Jan 2026 14:58:44 +0000 (UTC)
+	 MIME-Version; b=o3AV8111FwZJXRer2YiMSwhf1Xt3lwyg6DuKAILHQAoCp7DkwICqPL5JsvyvhrNtDAMKGtEJyxoFj6YPp/TyiwXKsDavlrih5x9wfiX76dNrOT1S5TsSHup6O94QpLQit5J+vfIUOJ62x9RTqKNV9tW3FkDq9Mba8H84QSrPUqo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=aEGs5VTc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAC53C19422;
+	Mon, 12 Jan 2026 14:58:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229925;
-	bh=EvHDptncN54Nkvz1HybzgdOjR8fnhTbNY70OKrG0yYk=;
+	s=k20201202; t=1768229930;
+	bh=bx4wf6AN3E67U2DceUgAupNZMhxJl5I2M+lQOV1EcYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sTlkbxiNg/dI2ErhQHVzd82Z9f2pW8u8qfcCCDtjO2212rYUD95RcGWnt4qP6pzKr
-	 BKS2E9P7XdYY8gQzV4ZUmjaDfNIP5XWeGnC5bhcl9wvNjyjzq27TpK2ieXx/3H8g9U
-	 UkSVND/oRTZbdendTQxK/BFZooicPrE6KgcnMMBEs2jTUXWIAuGyeayHwatniXremM
-	 PNhNPsDZ2qjCkyMnkXWCa9vfHxalSGyow1INZxRYpoCjcbQkAgtv5HoK5s/cMHux3b
-	 HEmgy6abNbWeFQu0JwP8mrAujNmt6SmD0LuARIMOKbxFnUsims2q7Fo4ln7TsAm/5k
-	 rqJEhJV011c0Q==
+	b=aEGs5VTcjvoKMV4Og9DAK75hlV3WtdcMNewcllUDK9UBr9U0x47Ent49pp4OVJDBE
+	 ViVVrXWExXqhblVmz1sirB9/6GGetnWcFtUocgF2w3OFbMAMdGt9P66eMBvxEPLIUw
+	 XU05l78QVrYEGPPLWeJ+hI3E9WxTgDxLr/jgC6Iwu3OKuCYI5uGDO2hBATwkEVKBJK
+	 iTaoPSD1oF11rYZYi7S3m1JAWm4nh+MN47toqP4kZ4g/Y/TuNavZ4p4OZDW/e8ZOyF
+	 WyKy4gmTOKFCJ6JVjjScsZofbjnqARltUn06Gh+FyBNl9UVCY+LQ/mhD0mP2rqZZGw
+	 Gbft9iyKgYKGA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Baochen Qiang <baochen.qiang@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+Cc: Zhang Lixu <lixu.zhang@intel.com>,
+	Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>,
-	johannes@sipsolutions.net,
-	linux-wireless@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18-5.10] wifi: mac80211: collect station statistics earlier when disconnect
-Date: Mon, 12 Jan 2026 09:58:04 -0500
-Message-ID: <20260112145840.724774-3-sashal@kernel.org>
+	jikos@kernel.org,
+	andriy.shevchenko@intel.com
+Subject: [PATCH AUTOSEL 6.18-6.1] HID: intel-ish-hid: Update ishtp bus match to support device ID table
+Date: Mon, 12 Jan 2026 09:58:08 -0500
+Message-ID: <20260112145840.724774-7-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
 References: <20260112145840.724774-1-sashal@kernel.org>
@@ -62,178 +63,173 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.5
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
+From: Zhang Lixu <lixu.zhang@intel.com>
 
-[ Upstream commit a203dbeeca15a9b924f0d51f510921f4bae96801 ]
+[ Upstream commit daeed86b686855adda79f13729e0c9b0530990be ]
 
-In __sta_info_destroy_part2(), station statistics are requested after the
-IEEE80211_STA_NONE -> IEEE80211_STA_NOTEXIST transition. This is
-problematic because the driver may be unable to handle the request due to
-the STA being in the NOTEXIST state (i.e. if the driver destroys the
-underlying data when transitioning to NOTEXIST).
+The ishtp_cl_bus_match() function previously only checked the first entry
+in the driver's device ID table. Update it to iterate over the entire
+table, allowing proper matching for drivers with multiple supported
+protocol GUIDs.
 
-Move the statistics collection to before the state transition to avoid
-this issue.
-
-Signed-off-by: Baochen Qiang <baochen.qiang@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251222-mac80211-move-station-stats-collection-earlier-v1-1-12cd4e42c633@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Zhang Lixu <lixu.zhang@intel.com>
+Acked-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of wifi: mac80211: collect station statistics earlier when
-disconnect
+## Analysis of Commit: HID: intel-ish-hid: Update ishtp bus match to
+support device ID table
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message clearly identifies a **bug fix** for an ordering
-problem:
-- In `__sta_info_destroy_part2()`, station statistics are collected
-  **after** the STA transitions to `IEEE80211_STA_NOTEXIST`
-- This is problematic because drivers may have already destroyed the
-  underlying data structures when entering NOTEXIST state
-- The fix moves statistics collection to **before** the NOTEXIST
-  transition
+The commit message clearly describes:
+- **The problem**: The `ishtp_cl_bus_match()` function only checked the
+  first entry (`id[0]`) in the driver's device ID table
+- **The fix**: Iterate over the entire ID table
+- **The purpose**: Allow proper matching for drivers with multiple
+  supported protocol GUIDs
 
-Key indicators:
-- "problematic" - acknowledges a real issue
-- Clear explanation of the root cause (ordering)
-- Author is from Qualcomm (driver vendor likely experiencing this issue)
-- Signed off by Johannes Berg (mac80211 maintainer) - strong positive
-  signal
+No "Fixes:" tag or "Reported-by:" tag is present (expected for commits
+under manual review).
 
 ### 2. CODE CHANGE ANALYSIS
 
-**The actual change is minimal - just moving 3 lines of code:**
-
+**Before (buggy code):**
 ```c
-// MOVED FROM AFTER drv_sta_state() TO BEFORE IT:
-sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-if (sinfo)
-    sta_set_sinfo(sta, sinfo, true);
+return(device->fw_client ? guid_equal(&driver->id[0].guid,
+       &device->fw_client->props.protocol_name) : 0);
 ```
+Only checks the **first entry** (`driver->id[0]`) in the device ID
+table.
 
-**Before the fix (buggy order):**
-1. Transition STA to NONE state
-2. Call `drv_sta_state()` to transition NONE→NOTEXIST (driver may
-   destroy internal STA data here)
-3. Try to collect statistics via `sta_set_sinfo()` → **FAILS if driver
-   destroyed data**
-4. Report statistics to cfg80211
+**After (fixed code):**
+```c
+if (client) {
+    for (id = driver->id; !guid_is_null(&id->guid); id++) {
+        if (guid_equal(&id->guid, &client->props.protocol_name))
+            return 1;
+    }
+}
+return 0;
+```
+Properly iterates through **all entries** until finding a match or
+hitting the null GUID terminator.
 
-**After the fix (correct order):**
-1. Transition STA to NONE state
-2. Collect statistics via `sta_set_sinfo()` → **STA data still valid**
-3. Call `drv_sta_state()` to transition NONE→NOTEXIST
-4. Report statistics to cfg80211
+**Root cause**: Logic error - incomplete iteration through device ID
+table. This is objectively incorrect behavior for a bus match function.
+Standard Linux bus matching iterates through all device IDs in a
+driver's table.
 
-The `cfg80211_del_sta_sinfo()` call remains in the same relative
-position (after statistics collection and after transition), so the
-interface to cfg80211 is preserved.
+**Technical mechanism**: When a device with a protocol GUID that matches
+the 2nd, 3rd, or later entry in a driver's ID table is enumerated, the
+old code would fail to match, leaving the device without a driver.
 
 ### 3. CLASSIFICATION
 
-- **Type:** Bug fix (ordering/race condition fix)
-- **Subsystem:** WiFi mac80211 (core wireless stack)
-- **Not a feature addition:** No new functionality, just correcting
-  execution order
+- **Bug fix**: Yes - this fixes fundamentally broken device matching
+  logic
+- **New feature**: No - it corrects existing functionality to work as
+  designed
+- **Exception category**: Not needed - it's a straightforward bug fix
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-**Scope:**
-- 1 file changed
-- Net 0 lines added (pure code movement)
-- Single function affected: `__sta_info_destroy_part2()`
+- **Lines changed**: ~10 lines of actual code
+- **Files touched**: 1 (drivers/hid/intel-ish-hid/ishtp/bus.c)
+- **Complexity**: Low - simple loop structure following standard
+  patterns
+- **Subsystem**: Intel ISH (Integrated Sensor Hub) HID driver
+- **Risk**: Very low - if wrong, devices wouldn't match (no
+  crashes/corruption)
 
-**Risk: VERY LOW**
-- The same operations are performed, just in different order
-- `sta_set_sinfo()` reads statistics - no side effects that would affect
-  the subsequent NOTEXIST transition
-- The `sinfo` pointer is still passed to `cfg80211_del_sta_sinfo()`
-  correctly
-- No logic changes, no new error paths
+The change follows the standard Linux bus matching pattern used across
+the kernel (iterate until null terminator).
 
 ### 5. USER IMPACT
 
-**Who is affected:**
-- All WiFi users during disconnection events
-- Disconnection is a common operation (switching networks, leaving WiFi
-  range, suspending laptop, etc.)
-
-**Severity:**
-- Without fix: Statistics may be missing, incorrect, or in worst case
-  cause driver errors/crashes depending on how drivers handle requests
-  when STA data is already destroyed
-- Qualcomm drivers (ath11k/ath12k) are likely affected based on author
-  affiliation
+- **Affected users**: Intel ISH users with drivers supporting multiple
+  protocol GUIDs
+- **Severity**: Medium - affected devices simply wouldn't work (wouldn't
+  bind to their driver)
+- **Real bug**: Yes - the code was objectively wrong
 
 ### 6. STABILITY INDICATORS
 
-- **Reviewed/signed by mac80211 maintainer** (Johannes Berg) - major
-  positive signal
-- Simple, self-contained fix with clear rationale
-- The fix addresses a specific defect in existing code
+- **Acked-by**: Srinivas Pandruvada (Intel ISH maintainer)
+- **Signed-off-by**: Benjamin Tissoires (HID subsystem maintainer)
+- Pattern follows well-established Linux driver matching conventions
 
 ### 7. DEPENDENCY CHECK
 
-- **No dependencies:** This is a standalone fix
-- The affected function `__sta_info_destroy_part2()` exists in all
-  recent stable kernels
-- No prerequisite commits needed
+- Self-contained, no dependencies on other commits
+- The `ishtp_cl_bus_match()` function exists in stable trees
+- No new APIs or infrastructure required
 
-### Summary
+### RISK VS BENEFIT TRADE-OFF
 
-| Criterion | Assessment |
-|-----------|------------|
-| Fixes real bug | ✅ Yes - ordering causes driver failures |
-| Obviously correct | ✅ Yes - simple code movement |
-| Small and contained | ✅ Yes - 3 lines moved, 1 function |
-| No new features | ✅ Yes - just reordering |
-| Risk level | ✅ Very low |
-| Maintainer review | ✅ Johannes Berg (mac80211 maintainer) |
+**Benefits:**
+- Fixes obviously incorrect code in bus matching
+- Enables proper device/driver matching for drivers with multiple IDs
+- Small, surgical, low-risk change
+- Follows standard kernel patterns
 
-This commit fixes a real bug affecting WiFi station disconnection. The
-fix is surgical (moving 3 lines of code earlier), has zero risk of
-introducing regressions since it's pure code reordering with no
-functional changes, and has been reviewed by the mac80211 maintainer.
-The bug affects all WiFi users during disconnection events, which is a
-very common operation.
+**Risks:**
+- Minimal - only affects ISH device matching
+- Failure mode is "device doesn't match" not crash/corruption
+
+**Concerns:**
+- No explicit bug report showing users hitting this
+- Could be seen as enabling new functionality if no drivers currently
+  use multiple IDs
+
+### CONCLUSION
+
+This commit fixes objectively incorrect behavior in the ISHTP bus
+matching function. The old code only checking `id[0]` is clearly wrong
+for a device ID table that's designed to hold multiple entries. The fix
+is small, surgical, follows standard kernel patterns, and has low risk.
+Even without an explicit user report, fixing fundamentally broken
+matching logic is appropriate for stable trees. The change is acked by
+the Intel maintainer and the HID subsystem maintainer.
+
+The fix is self-contained, doesn't introduce new APIs, and corrects a
+logic error that would prevent devices from working if their GUID wasn't
+first in the table.
 
 **YES**
 
- net/mac80211/sta_info.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hid/intel-ish-hid/ishtp/bus.c | 12 ++++++++++--
+ 1 file changed, 10 insertions(+), 2 deletions(-)
 
-diff --git a/net/mac80211/sta_info.c b/net/mac80211/sta_info.c
-index f4d3b67fda062..1a995bc301b19 100644
---- a/net/mac80211/sta_info.c
-+++ b/net/mac80211/sta_info.c
-@@ -1533,6 +1533,10 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
- 		}
- 	}
+diff --git a/drivers/hid/intel-ish-hid/ishtp/bus.c b/drivers/hid/intel-ish-hid/ishtp/bus.c
+index 93a0432e70581..8e9f5a28e62ec 100644
+--- a/drivers/hid/intel-ish-hid/ishtp/bus.c
++++ b/drivers/hid/intel-ish-hid/ishtp/bus.c
+@@ -240,9 +240,17 @@ static int ishtp_cl_bus_match(struct device *dev, const struct device_driver *dr
+ {
+ 	struct ishtp_cl_device *device = to_ishtp_cl_device(dev);
+ 	struct ishtp_cl_driver *driver = to_ishtp_cl_driver(drv);
++	struct ishtp_fw_client *client = device->fw_client;
++	const struct ishtp_device_id *id;
  
-+	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
-+	if (sinfo)
-+		sta_set_sinfo(sta, sinfo, true);
+-	return(device->fw_client ? guid_equal(&driver->id[0].guid,
+-	       &device->fw_client->props.protocol_name) : 0);
++	if (client) {
++		for (id = driver->id; !guid_is_null(&id->guid); id++) {
++			if (guid_equal(&id->guid, &client->props.protocol_name))
++				return 1;
++		}
++	}
 +
- 	if (sta->uploaded) {
- 		ret = drv_sta_state(local, sdata, sta, IEEE80211_STA_NONE,
- 				    IEEE80211_STA_NOTEXIST);
-@@ -1541,9 +1545,6 @@ static void __sta_info_destroy_part2(struct sta_info *sta, bool recalc)
++	return 0;
+ }
  
- 	sta_dbg(sdata, "Removed STA %pM\n", sta->sta.addr);
- 
--	sinfo = kzalloc(sizeof(*sinfo), GFP_KERNEL);
--	if (sinfo)
--		sta_set_sinfo(sta, sinfo, true);
- 	cfg80211_del_sta_sinfo(sdata->dev, sta->sta.addr, sinfo, GFP_KERNEL);
- 	kfree(sinfo);
- 
+ /**
 -- 
 2.51.0
 
