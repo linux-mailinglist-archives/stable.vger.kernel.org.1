@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208081-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEB8CD11ED2
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:35:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BE54AD11EDE
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:35:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 34C14301FD43
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:34:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BBF79301595C
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:35:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4C0630F801;
-	Mon, 12 Jan 2026 10:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF50830F801;
+	Mon, 12 Jan 2026 10:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xT2s3nhB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Lwk6gGTO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7125C30C602
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80D2E2BEC34
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:35:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214096; cv=none; b=uEUVPNW4BO8X+IDjykyqO6fByqj7hJ43UXoenzIkFpX71fhUwe/85snEtDDE2awBSN7MJw5JXmeQW7OK/NdWBTzfAJuEuUpZhbBX4TKNo4DPLd+0KQlM2ERZwTU1e9RYlAHfSAFa1RfnHnZUaUoFtTx4RdwHNh6OsaJc9+Nop8E=
+	t=1768214147; cv=none; b=Y6Z3u8HL0OoJ5bImXz1EWZrd9pZvsASP22LB+R2tn3z5m4yRINeyPw6fiZnk2ooaPdmL32wGH9/0mBlYgGn8DoBzb7OB8WlONnIt9Ml8BwRbb47Ck1APNE6xF7HjatyPozf8jagNC8T/HK7cduk2YPek8Nv9ZGMdo4vZRI/NAQM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214096; c=relaxed/simple;
-	bh=5pvJaDZlsJTja5x89jcJbqcdePa8MelKtDBgCkNswHI=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=OxYXKTs/ZpLD8prYVdW5Y1ZBGCwT4EcDDd8AqBlbkdq8GaAy5x5GsXx+qvz2b9oQ1lfOnm4lluZxNtsaZprd3VQsVRBKlKJHBvX9xHpKYKukgkw6PxApj1vK/MbS0o3NWb2KlHI/yRQI36rMOIPCPVYEuW+pqFt4cX3LFFAVmak=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xT2s3nhB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE873C16AAE;
-	Mon, 12 Jan 2026 10:34:55 +0000 (UTC)
+	s=arc-20240116; t=1768214147; c=relaxed/simple;
+	bh=7Lrh1AjnERzTbFjE00ygtkj2sFVSWuuHlc5qsouQs98=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=c62IEtXxYp/zYw9pihWXB/6ry8mUBrs5l10YxijmgOxEBOTEPveTD8iOWnA5l3aTPeHwaN4dTQDFmqbFR2wXHy8PX/09sf7vkhoxB0zbx/oX29X6CirSEKoq3FEOe0OZ4/NECw4XcGjrElbt8v3sZ1uvgfFfnu+xvg9WyVK+PnE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Lwk6gGTO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7D25C16AAE;
+	Mon, 12 Jan 2026 10:35:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768214096;
-	bh=5pvJaDZlsJTja5x89jcJbqcdePa8MelKtDBgCkNswHI=;
+	s=korg; t=1768214147;
+	bh=7Lrh1AjnERzTbFjE00ygtkj2sFVSWuuHlc5qsouQs98=;
 	h=Subject:To:Cc:From:Date:From;
-	b=xT2s3nhBWpnLBxu2RrdnCiHDEzb9VNPhz1VznGVFBmzjIh/3u5L8Dlc6lT7mN60nf
-	 SQPmIXOgXprLJWmKJcyBqGaNAjkpZ+4nbOGfejy3NFxVKyHZ3TWkPO/y1jS5zJkYOZ
-	 IXAXm2Y+erJtBBgGc/51tmP4kcky7SHDx0AswsIY=
-Subject: FAILED: patch "[PATCH] btrfs: fix beyond-EOF write handling" failed to apply to 5.15-stable tree
-To: wqu@suse.com,dsterba@suse.com,fdmanana@suse.com
+	b=Lwk6gGTOdr48xljgaFpgeR4H9wiXE3vrKz+mUcXLh55Pvpaw4SMIbwYB1VMyEeNVF
+	 GpfyrjIn5tAwnonISwi5+jwvg8obt1klLcyNY8su2Bjet01UktGx0a+dpQYvQabyjd
+	 mDHsiwCEbF0dSs0giMCjpf4SnHQVD1kqIjLvUx6A=
+Subject: FAILED: patch "[PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag" failed to apply to 5.15-stable tree
+To: alexander.sverdlin@gmail.com,alexander.sverdlin@siemens.com,bigeasy@linutronix.de,o.rempel@pengutronix.de,wbg@kernel.org
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Jan 2026 11:34:47 +0100
-Message-ID: <2026011247-sharper-eel-d578@gregkh>
+Date: Mon, 12 Jan 2026 11:35:44 +0100
+Message-ID: <2026011244-unbaked-pajamas-9c74@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -60,10 +60,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x e9e3b22ddfa760762b696ac6417c8d6edd182e49
+git cherry-pick -x 23f9485510c338476b9735d516c1d4aacb810d46
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011247-sharper-eel-d578@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011244-unbaked-pajamas-9c74@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,150 +75,76 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From e9e3b22ddfa760762b696ac6417c8d6edd182e49 Mon Sep 17 00:00:00 2001
-From: Qu Wenruo <wqu@suse.com>
-Date: Thu, 11 Dec 2025 12:45:17 +1030
-Subject: [PATCH] btrfs: fix beyond-EOF write handling
+From 23f9485510c338476b9735d516c1d4aacb810d46 Mon Sep 17 00:00:00 2001
+From: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Date: Tue, 18 Nov 2025 09:35:48 +0100
+Subject: [PATCH] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
 
-[BUG]
-For the following write sequence with 64K page size and 4K fs block size,
-it will lead to file extent items to be inserted without any data
-checksum:
+An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+CONFIG_PROVE_RAW_LOCK_NESTING warns:
+=============================
+[ BUG: Invalid wait context ]
+6.18.0-rc1+git... #1
+-----------------------------
+some-user-space-process/1251 is trying to lock:
+(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+other info that might help us debug this:
+context-{2:2}
+no locks held by some-user-space-process/....
+stack backtrace:
+CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+Call trace:
+ show_stack (C)
+ dump_stack_lvl
+ dump_stack
+ __lock_acquire
+ lock_acquire
+ _raw_spin_lock_irqsave
+ counter_push_event [counter]
+ interrupt_cnt_isr [interrupt_cnt]
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_simple_irq
+ handle_irq_desc
+ generic_handle_domain_irq
+ gpio_irq_handler
+ handle_irq_desc
+ generic_handle_domain_irq
+ gic_handle_irq
+ call_on_irq_stack
+ do_interrupt_handler
+ el0_interrupt
+ __el0_irq_handler_common
+ el0t_64_irq_handler
+ el0t_64_irq
 
-  mkfs.btrfs -s 4k -f $dev > /dev/null
-  mount $dev $mnt
-  xfs_io -f -c "pwrite 0 16k" -c "pwrite 32k 4k" -c pwrite "60k 64K" \
-            -c "truncate 16k" $mnt/foobar
-  umount $mnt
+... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+alternative to switching to raw_spinlock_t, because the latter would limit
+all potential nested locks to raw_spinlock_t only.
 
-This will result the following 2 file extent items to be inserted (extra
-trace point added to insert_ordered_extent_file_extent()):
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20251118083603.778626-1-alexander.sverdlin@siemens.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 
-  btrfs_finish_one_ordered: root=5 ino=257 file_off=61440 num_bytes=4096 csum_bytes=0
-  btrfs_finish_one_ordered: root=5 ino=257 file_off=0 num_bytes=16384 csum_bytes=16384
-
-Note for file offset 60K, we're inserting a file extent without any
-data checksum.
-
-Also note that range [32K, 36K) didn't reach
-insert_ordered_extent_file_extent(), which is the correct behavior as
-that OE is fully truncated, should not result any file extent.
-
-Although file extent at 60K will be later dropped by btrfs_truncate(),
-if the transaction got committed after file extent inserted but before
-the file extent dropping, we will have a small window where we have a
-file extent beyond EOF and without any data checksum.
-
-That will cause "btrfs check" to report error.
-
-[CAUSE]
-The sequence happens like this:
-
-- Buffered write dirtied the page cache and updated isize
-
-  Now the inode size is 64K, with the following page cache layout:
-
-  0             16K             32K              48K           64K
-  |/////////////|               |//|                        |//|
-
-- Truncate the inode to 16K
-  Which will trigger writeback through:
-
-  btrfs_setsize()
-  |- truncate_setsize()
-  |  Now the inode size is set to 16K
-  |
-  |- btrfs_truncate()
-     |- btrfs_wait_ordered_range() for [16K, u64(-1)]
-        |- btrfs_fdatawrite_range() for [16K, u64(-1)}
-	   |- extent_writepage() for folio 0
-	      |- writepage_delalloc()
-	      |  Generated OE for [0, 16K), [32K, 36K] and [60K, 64K)
-	      |
-	      |- extent_writepage_io()
-
-  Then inside extent_writepage_io(), the dirty fs blocks are handled
-  differently:
-
-  - Submit write for range [0, 16K)
-    As they are still inside the inode size (16K).
-
-  - Mark OE [32K, 36K) as truncated
-    Since we only call btrfs_lookup_first_ordered_range() once, which
-    returned the first OE after file offset 16K.
-
-  - Mark all OEs inside range [16K, 64K) as finished
-    Which will mark OE ranges [32K, 36K) and [60K, 64K) as finished.
-
-    For OE [32K, 36K) since it's already marked as truncated, and its
-    truncated length is 0, no file extent will be inserted.
-
-    For OE [60K, 64K) it has never been submitted thus has no data
-    checksum, and we insert the file extent as usual.
-    This is the root cause of file extent at 60K to be inserted without
-    any data checksum.
-
-  - Clear dirty flags for range [16K, 64K)
-    It is the function btrfs_folio_clear_dirty() which searches and clears
-    any dirty blocks inside that range.
-
-[FIX]
-The bug itself was introduced a long time ago, way before subpage and
-large folio support.
-
-At that time, fs block size must match page size, thus the range
-[cur, end) is just one fs block.
-
-But later with subpage and large folios, the same range [cur, end)
-can have multiple blocks and ordered extents.
-
-Later commit 18de34daa7c6 ("btrfs: truncate ordered extent when skipping
-writeback past i_size") was fixing a bug related to subpage/large
-folios, but it's still utilizing the old range [cur, end), meaning only
-the first OE will be marked as truncated.
-
-The proper fix here is to make EOF handling block-by-block, not trying
-to handle the whole range to @end.
-
-By this we always locate and truncate the OE for every dirty block.
-
-CC: stable@vger.kernel.org # 5.15+
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-
-diff --git a/fs/btrfs/extent_io.c b/fs/btrfs/extent_io.c
-index 2d32dfc34ae3..97748d0d54d9 100644
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -1728,7 +1728,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			struct btrfs_ordered_extent *ordered;
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 6c0c1d2d7027..e6100b5fb082 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
  
- 			ordered = btrfs_lookup_first_ordered_range(inode, cur,
--								   folio_end - cur);
-+								   fs_info->sectorsize);
- 			/*
- 			 * We have just run delalloc before getting here, so
- 			 * there must be an ordered extent.
-@@ -1742,7 +1742,7 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			btrfs_put_ordered_extent(ordered);
+ 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+-			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+-			       dev_name(dev), counter);
++			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
+ 	if (ret)
+ 		return ret;
  
- 			btrfs_mark_ordered_io_finished(inode, folio, cur,
--						       end - cur, true);
-+						       fs_info->sectorsize, true);
- 			/*
- 			 * This range is beyond i_size, thus we don't need to
- 			 * bother writing back.
-@@ -1751,8 +1751,8 @@ static noinline_for_stack int extent_writepage_io(struct btrfs_inode *inode,
- 			 * writeback the sectors with subpage dirty bits,
- 			 * causing writeback without ordered extent.
- 			 */
--			btrfs_folio_clear_dirty(fs_info, folio, cur, end - cur);
--			break;
-+			btrfs_folio_clear_dirty(fs_info, folio, cur, fs_info->sectorsize);
-+			continue;
- 		}
- 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
- 		if (unlikely(ret < 0)) {
 
 
