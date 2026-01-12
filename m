@@ -1,56 +1,59 @@
-Return-Path: <stable+bounces-208142-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACFFBD135DE
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:59:04 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B90ED135EA
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:59:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D47EF3003865
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:58:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C25A7300DDA2
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:58:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 149542DB79C;
-	Mon, 12 Jan 2026 14:58:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6797D2D8DD4;
+	Mon, 12 Jan 2026 14:58:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="JyBRhuIK"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="J7t397wz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C587D6F2F2;
-	Mon, 12 Jan 2026 14:58:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243722DCF69;
+	Mon, 12 Jan 2026 14:58:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229922; cv=none; b=UJrbHQF01cYzElGNbrFkQVeFuQc0OGTF53XT/qdx4vQPGNEJDabUT2lGYWd6pkKp930JME8v/r+J+gF0+HFzy5WXa/4JQaOP5TD6RYCT6RkGF53veqvTxCwjKDoDFlZdBwsFJkcpr4FS/UQ1bkn94Qwa6UpegKRM/B1Lj0/xmVw=
+	t=1768229927; cv=none; b=uqxG+UcnHG2Ll0XX6iHHaDdWvQyex11s/PNdu3Oc1/7LhdwL9ECVWehPCrUXfqhMsZyuPEMvD0O6rTpo2cLIRhCWCf6la29mObX/npX1fJA+2J1JalxdiV9RKfq6ZGmJ7HguDttH48acKyNA7cZR5g3l5nOQ60a1qKxp4GuIsgc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229922; c=relaxed/simple;
-	bh=pSeTVI/h7m3SYpWOadekmI1HoTQT0Tg8wxS5Psnc4rc=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=WAg/BognY9SqziZ3rjJM76MmOn8edSu1XcsI5+MFHK+eer6tNTbCwivTPXiBPb9E6ZmoHIFb6x5HQMwyalzte92Hsw/O8/Fra8BmUNf1ZPljOmTz5IueP5eTN3qf0OOkaKYprXw8FNzpMadkdmVuSzvJpEGZL2N8BEW5i5d3plw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=JyBRhuIK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4C4C19423;
-	Mon, 12 Jan 2026 14:58:41 +0000 (UTC)
+	s=arc-20240116; t=1768229927; c=relaxed/simple;
+	bh=9IeoDBOvgld8a5i7Zf6FcVWBPUkXgXfr5TsWmwcnHWk=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=uoAumDyTRojap07eUJ7zijJ/OReCI91tY6fuZ2yYKylDt7fbyPxmUXi7ZZ6VxSmb25U9LT/UvtAZUoC9LLzO0m17xVroucMU/d0oeFS2ntP9OWiRL1ELag5liyAQ6mdgYV92n3AXxzyXQgSG+dcsu1GtLNZPc6YcT6VTPQ9VAFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=J7t397wz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF9DFC2BCAF;
+	Mon, 12 Jan 2026 14:58:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229922;
-	bh=pSeTVI/h7m3SYpWOadekmI1HoTQT0Tg8wxS5Psnc4rc=;
-	h=From:To:Cc:Subject:Date:From;
-	b=JyBRhuIK3M4FiG0WmMMMFEBPBf54O22tw/s2SagfoyHq2Xv4f+Yt0KzLt+oh1y5UE
-	 zYaobFvQnd1HaXVsgju9hPj57Qb1RCl7AFHg+2RDWiMtTRHzr7XyY9GA9w7G8GOxZr
-	 cHAGx6WAS9+Tb3nqkQvndMG8mD98s5xM727FYJuz6pIsJvpusSc65aucK20BrLM0yc
-	 h254007B5DJaM34c1iq7BpAIYsF5D5E221HkJRFVuk3BHXeQkEh63e67dYkDDXl3dH
-	 PBQ+5iQZ/wgNdbHjsQi5GgSCsH7Z/SSNSBKw+k3bomZnHKZVJiTnCdweuqduzT1qoV
-	 DoGlyhdol18yA==
+	s=k20201202; t=1768229926;
+	bh=9IeoDBOvgld8a5i7Zf6FcVWBPUkXgXfr5TsWmwcnHWk=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=J7t397wzmf78ckdpFjOszgc5OVJCDYYktzkMIgTx72jYhUtge67o1W77yu6qkewtM
+	 aTMGKMtQoW5RPYqpCHLloAq5h6my6cjwtSfhwM0gyXVIlKvZ9NVajXMEjhvzePzHti
+	 VgLEC8TmBT7NxkFHFzDDXUZgMGVxe5l9lVnQB1jJuM78T70bTPcypjLpEKfwbHtXa+
+	 5M1M7KpPs4NCcImjgG9q+8ebXXRjm3j2GIR4qsWAo+PGBKq1lr+hgmZ57QuRwca/nG
+	 DMqwe3tVdeffYWacQGZoRP/8GlHIlx6Oa0TtLB98PEHAu/WBP9lhD0nT3fkWjPFi62
+	 siEX9i7niV7kw==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Arnoud Willemsen <mail@lynthium.com>,
-	Jiri Kosina <jkosina@suse.com>,
+Cc: Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>,
-	jikos@kernel.org,
-	bentiss@kernel.org,
-	linux-input@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.18] HID: Elecom: Add support for ELECOM M-XT3DRBK (018C)
-Date: Mon, 12 Jan 2026 09:58:02 -0500
-Message-ID: <20260112145840.724774-1-sashal@kernel.org>
+	clm@fb.com,
+	linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18] btrfs: do not free data reservation in fallback from inline due to -ENOSPC
+Date: Mon, 12 Jan 2026 09:58:05 -0500
+Message-ID: <20260112145840.724774-4-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
+References: <20260112145840.724774-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -63,207 +66,168 @@ X-stable-base: Linux 6.18.5
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Arnoud Willemsen <mail@lynthium.com>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 12adb969658ec39265eb8c7ea9e1856867fb9ceb ]
+[ Upstream commit f8da41de0bff9eb1d774a7253da0c9f637c4470a ]
 
-Wireless/new version of the Elecom trackball mouse M-XT3DRBK has a
-product id that differs from the existing M-XT3DRBK.
-The report descriptor format also seems to have changed and matches
-other (newer?) models instead (except for six buttons instead of eight).
-This patch follows the same format as the patch for the M-XT3URBK (018F)
-by Naoki Ueki (Nov 3rd 2025) to enable the sixth mouse button.
+If we fail to create an inline extent due to -ENOSPC, we will attempt to
+go through the normal COW path, reserve an extent, create an ordered
+extent, etc. However we were always freeing the reserved qgroup data,
+which is wrong since we will use data. Fix this by freeing the reserved
+qgroup data in __cow_file_range_inline() only if we are not doing the
+fallback (ret is <= 0).
 
-dmesg output:
-[  292.074664] usb 1-2: new full-speed USB device number 7 using xhci_hcd
-[  292.218667] usb 1-2: New USB device found, idVendor=056e, idProduct=018c, bcdDevice= 1.00
-[  292.218676] usb 1-2: New USB device strings: Mfr=1, Product=2, SerialNumber=0
-[  292.218679] usb 1-2: Product: ELECOM TrackBall Mouse
-[  292.218681] usb 1-2: Manufacturer: ELECOM
-
-usbhid-dump output:
-001:006:000:DESCRIPTOR         1765072638.050578
- 05 01 09 02 A1 01 09 01 A1 00 85 01 05 09 19 01
- 29 05 15 00 25 01 95 08 75 01 81 02 95 01 75 00
- 81 01 05 01 09 30 09 31 16 00 80 26 FF 7F 75 10
- 95 02 81 06 C0 A1 00 05 01 09 38 15 81 25 7F 75
- 08 95 01 81 06 C0 A1 00 05 0C 0A 38 02 95 01 75
- 08 15 81 25 7F 81 06 C0 C0 06 01 FF 09 00 A1 01
- 85 02 09 00 15 00 26 FF 00 75 08 95 07 81 02 C0
- 05 0C 09 01 A1 01 85 05 15 00 26 3C 02 19 00 2A
- 3C 02 75 10 95 01 81 00 C0 05 01 09 80 A1 01 85
- 03 19 81 29 83 15 00 25 01 95 03 75 01 81 02 95
- 01 75 05 81 01 C0 06 BC FF 09 88 A1 01 85 04 95
- 01 75 08 15 00 26 FF 00 19 00 2A FF 00 81 00 C0
- 06 02 FF 09 02 A1 01 85 06 09 02 15 00 26 FF 00
- 75 08 95 07 B1 02 C0
-
-Signed-off-by: Arnoud Willemsen <mail@lynthium.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of HID: Elecom: Add support for ELECOM M-XT3DRBK (018C)
+## Commit Analysis: btrfs qgroup data reservation fix
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit adds support for a new USB product ID (0x018c) for a wireless
-variant of the ELECOM M-XT3DRBK trackball mouse. The message indicates:
-- It's a wireless/new version of an existing supported device
-- The report descriptor format differs from the older variant
-- The patch enables the sixth mouse button
-- dmesg output confirms the device identification
+The commit message clearly describes a **bug fix** for btrfs qgroup
+handling:
+- When inline extent creation fails due to -ENOSPC, btrfs falls back to
+  the normal COW (copy-on-write) path
+- The bug: qgroup data reservation was being freed unconditionally
+  before return
+- This is incorrect because in the fallback case (ret == 1), the data
+  will still be used through the COW path
+- Fix: only free the reservation when NOT doing fallback (`ret <= 0`)
+
+The commit has strong review credentials:
+- Reviewed-by: Qu Wenruo (btrfs developer)
+- Reviewed-by: David Sterba (btrfs maintainer)
+- Author: Filipe Manana (prolific btrfs developer)
 
 ### 2. CODE CHANGE ANALYSIS
 
-**hid-ids.h:**
-- Renames `USB_DEVICE_ID_ELECOM_M_XT3DRBK` →
-  `USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC` (clarifying the existing ID)
-- Adds new `USB_DEVICE_ID_ELECOM_M_XT3DRBK_018C` = 0x018c
+The change is extremely minimal:
 
-**hid-elecom.c:**
-- Updates references to use the renamed constant `_00FC`
-- Adds a new case in the switch statement for `_018C` calling
-  `mouse_button_fixup()` with parameters specific to this device's HID
-  report descriptor: `(22, 30, 24, 16, 6)`
-- Adds the new device ID to `elecom_devices[]` table
+```c
+- btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
++       if (ret <= 0)
++               btrfs_qgroup_free_data(inode, NULL, 0,
+fs_info->sectorsize, NULL);
+```
 
-**hid-quirks.c:**
-- Updates reference to use renamed constant
-- Adds new device ID to `hid_have_special_driver[]`
+**Technical mechanism of the bug:**
+1. `__cow_file_range_inline()` attempts to create an inline extent
+2. If this fails with -ENOSPC, `ret` is set to 1 (signaling fallback to
+   normal COW)
+3. Before the fix, `btrfs_qgroup_free_data()` was called unconditionally
+   at the `out:` label
+4. The COW path then executes expecting to use the reserved qgroup data
+5. **Problem:** The reservation was prematurely freed, causing incorrect
+   qgroup accounting
+
+**The fix logic:**
+- `ret == 0`: Success → free the reservation (inline extent doesn't
+  count as data extent)
+- `ret < 0`: Real error → free the reservation (operation failed)
+- `ret == 1`: Fallback to COW → **preserve** the reservation (data will
+  be written)
 
 ### 3. CLASSIFICATION
 
-This is a **NEW DEVICE ID** addition to an existing driver - one of the
-explicitly allowed categories for stable backports:
-- The driver (hid-elecom) already exists in stable trees
-- Only adding a USB product ID to enable new hardware
-- Uses existing `mouse_button_fixup()` infrastructure
+- **Bug fix:** YES - fixes incorrect resource accounting
+- **Feature addition:** NO
+- **Security:** Not directly, but could affect quota enforcement
+  integrity
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-- **Size:** ~15 lines added across 3 files
-- **Complexity:** Very low - follows identical patterns to existing
-  devices
-- **Risk:** Minimal - change is isolated to this specific USB device ID
-- **Subsystem:** HID drivers are mature and this pattern is well-
-  established
+- **Lines changed:** ~3 lines effective change
+- **Files touched:** 1 (fs/btrfs/inode.c)
+- **Complexity:** Very low - simple conditional addition
+- **Risk:** LOW - surgical fix, doesn't change any logic paths, just
+  prevents premature resource freeing
 
 ### 5. USER IMPACT
 
-- **Affected users:** Owners of wireless ELECOM M-XT3DRBK (018C)
-  trackball mouse
-- **Without fix:** The sixth mouse button doesn't work
-- **With fix:** Full hardware functionality enabled
-- **Severity:** Functional hardware issue - extra button is non-
-  functional without this fix
+**Affected users:**
+- Anyone using btrfs with qgroups enabled
+- Qgroups are widely used for container quota management (e.g., Docker,
+  LXC) and enterprise storage
+
+**Consequences of the bug:**
+- Incorrect qgroup space accounting
+- Potential quota enforcement failures
+- Possible qgroup-related warnings or errors
+
+**Trigger condition:**
+- Inline extent creation fails with ENOSPC and falls back to COW
+- Not uncommon when filesystems are near capacity
 
 ### 6. STABILITY INDICATORS
 
-- Signed off by Jiri Kosina (HID subsystem maintainer)
-- Follows exact same pattern as other Elecom devices
-- Includes device testing evidence (dmesg/usbhid-dump output)
+- Reviewed by two btrfs developers including the maintainer
+- Author (Filipe Manana) is highly experienced in btrfs
+- The fix is logically straightforward and obviously correct
 
 ### 7. DEPENDENCY CHECK
 
-- No dependencies on other patches
-- All required infrastructure (`mouse_button_fixup()`,
-  `elecom_report_fixup()`) exists in stable trees
-- Self-contained change
+The fix is self-contained. Looking at the context:
+```c
+} else if (ret == -ENOSPC) {
+    ret = 1;
+    goto out;
+}
+```
 
-### VERDICT
+The return value semantics (`ret == 1` for ENOSPC fallback) already
+exist in the code. This fix should apply cleanly to any stable tree
+containing this function.
 
-This commit is a textbook example of what **IS** appropriate for stable
-backporting. It adds a new USB device ID to an existing driver to enable
-hardware support - explicitly allowed under stable rules. The change is:
-- Small and surgical
-- Low risk (isolated to specific hardware)
-- Uses existing patterns and infrastructure
-- Enables real hardware to work correctly
-- Has no behavioral changes to existing code paths
+## STABLE KERNEL CRITERIA EVALUATION
 
-The only modification beyond adding the new ID is renaming the existing
-`USB_DEVICE_ID_ELECOM_M_XT3DRBK` to
-`USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC` for clarity, which is a harmless
-naming change that doesn't affect functionality.
+| Criterion | Assessment |
+|-----------|------------|
+| Obviously correct | ✅ Logic is clear and well-documented in comment |
+| Fixes real bug | ✅ Incorrect qgroup accounting |
+| Important issue | ✅ Affects quota management, data integrity |
+| Small and contained | ✅ 3-line change, single file |
+| No new features | ✅ Just a conditional guard |
+| Applies cleanly | ✅ Self-contained, no dependencies |
+
+## CONCLUSION
+
+This commit is an excellent candidate for stable backporting. It fixes a
+real bug in btrfs qgroup data reservation handling with a minimal,
+surgical change. The bug causes incorrect resource accounting when
+inline extent creation fails and falls back to COW - a scenario that can
+happen in normal operation when filesystems approach capacity. The fix
+is obviously correct, well-reviewed by btrfs maintainers, and has zero
+risk of regression.
 
 **YES**
 
- drivers/hid/hid-elecom.c | 15 +++++++++++++--
- drivers/hid/hid-ids.h    |  3 ++-
- drivers/hid/hid-quirks.c |  3 ++-
- 3 files changed, 17 insertions(+), 4 deletions(-)
+ fs/btrfs/inode.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-elecom.c b/drivers/hid/hid-elecom.c
-index 981d1b6e96589..2003d2dcda7cc 100644
---- a/drivers/hid/hid-elecom.c
-+++ b/drivers/hid/hid-elecom.c
-@@ -77,7 +77,7 @@ static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		break;
- 	case USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB:
- 	case USB_DEVICE_ID_ELECOM_M_XT3URBK_018F:
--	case USB_DEVICE_ID_ELECOM_M_XT3DRBK:
-+	case USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC:
- 	case USB_DEVICE_ID_ELECOM_M_XT4DRBK:
- 		/*
- 		 * Report descriptor format:
-@@ -102,6 +102,16 @@ static const __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
- 		 */
- 		mouse_button_fixup(hdev, rdesc, *rsize, 12, 30, 14, 20, 8);
- 		break;
-+	case USB_DEVICE_ID_ELECOM_M_XT3DRBK_018C:
-+		/*
-+		 * Report descriptor format:
-+		 * 22: button bit count
-+		 * 30: padding bit count
-+		 * 24: button report size
-+		 * 16: button usage maximum
-+		 */
-+		mouse_button_fixup(hdev, rdesc, *rsize, 22, 30, 24, 16, 6);
-+		break;
- 	case USB_DEVICE_ID_ELECOM_M_DT2DRBK:
- 	case USB_DEVICE_ID_ELECOM_M_HT1DRBK_011C:
- 		/*
-@@ -122,7 +132,8 @@ static const struct hid_device_id elecom_devices[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK_018C) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1DRBK) },
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index bec913a005a5d..b75d9d2f4dc73 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -455,7 +455,8 @@
- #define USB_DEVICE_ID_ELECOM_M_XGL20DLBK	0x00e6
- #define USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB	0x00fb
- #define USB_DEVICE_ID_ELECOM_M_XT3URBK_018F	0x018f
--#define USB_DEVICE_ID_ELECOM_M_XT3DRBK	0x00fc
-+#define USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC	0x00fc
-+#define USB_DEVICE_ID_ELECOM_M_XT3DRBK_018C	0x018c
- #define USB_DEVICE_ID_ELECOM_M_XT4DRBK	0x00fd
- #define USB_DEVICE_ID_ELECOM_M_DT1URBK	0x00fe
- #define USB_DEVICE_ID_ELECOM_M_DT1DRBK	0x00ff
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index d6e42125d9189..e823661389016 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -413,7 +413,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
- 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
--	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK_00FC) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK_018C) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1DRBK) },
+diff --git a/fs/btrfs/inode.c b/fs/btrfs/inode.c
+index 51401d586a7b6..9e8be59ea3deb 100644
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -670,8 +670,12 @@ static noinline int __cow_file_range_inline(struct btrfs_inode *inode,
+ 	 * it won't count as data extent, free them directly here.
+ 	 * And at reserve time, it's always aligned to page size, so
+ 	 * just free one page here.
++	 *
++	 * If we fallback to non-inline (ret == 1) due to -ENOSPC, then we need
++	 * to keep the data reservation.
+ 	 */
+-	btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
++	if (ret <= 0)
++		btrfs_qgroup_free_data(inode, NULL, 0, fs_info->sectorsize, NULL);
+ 	btrfs_free_path(path);
+ 	btrfs_end_transaction(trans);
+ 	return ret;
 -- 
 2.51.0
 
