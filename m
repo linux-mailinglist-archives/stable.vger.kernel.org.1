@@ -1,182 +1,607 @@
-Return-Path: <stable+bounces-208131-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B410BD1351B
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:52:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EA204D13645
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:01:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1CD53063F6C
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:47:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E4801303E698
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:49:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB92E2BDC32;
-	Mon, 12 Jan 2026 14:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C8D62BEFFB;
+	Mon, 12 Jan 2026 14:49:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="mKEUVPHR"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SwTafK5j"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19512BE035
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 14:47:46 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E2B42BEC31
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 14:49:43 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229268; cv=none; b=NIy3OsaaceuK0g2Z02dHMmfc1Fn7Nwn4xrV8nW2ZXhJNMHkHE+1MZsoE4u50NGW9Zsi77j3TkgNL2GQfmeyZjTzmOr41lQhpXmOfcRMxtALeYBHY8KZP6MLubNicXAECW7rGWvrbd5nF+NW1eWPrPvhjvckJqzXC3WcfHRgq1FQ=
+	t=1768229383; cv=none; b=jbah1t0RvXlYfO2cl0pb6dH/MiaorRqkm4rRrk1ao6JKwVzfdI9+Fxi/7Cc5JYZhQkm6I+ao6cAdzyMzbcFj5cKJJcdVGrg/Yfvkxf8E6E+Z3l6NUIGrWLAgJHmu6d8GKK2+oDv5djI7kByKPwjMnYoXDj1y124iRFPDwFADEus=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229268; c=relaxed/simple;
-	bh=Q7uNIoVs6EvhTLNsF+A8tnPvlJqfykDARYEptFQK0rk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=qjUE2br8IFfQ2Zk8Y2PNCE+vEhTNrtFUNeQMjOk2tdyBytWsU8OUJn+Dg44pmk1nb+u7XT2Lo16k1jaeI5jXlX7yg4hy5nYDKbWNocoB0tnlZ7+YibsC/1zotnsvXjm0loJFWwEX1BeQw8egicYTNB0xwOeLhXjxyKGa3zRGlWQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=mKEUVPHR; arc=none smtp.client-ip=209.85.222.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
-Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
-Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2ea2b9631so744624485a.3
-        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 06:47:46 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rowland.harvard.edu; s=google; t=1768229266; x=1768834066; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=66Wy9X7ugeW5bewzeljPlJ6DqPEghHzvFsNM3r+AfsU=;
-        b=mKEUVPHRt16xBTNGK2ZwJqMIwuok/3omAuXfn6jpwelRs9DntTUtH5V14+PEC1E50C
-         ztZ5xafbhSJyHYkLmYez1e/+Xz7RZyf35pkO8LbzwRnisON6S2lySgs+ri5nVERxeRjT
-         Mdt5SHbBHtqt3fbKKUy2ONrE+050PC81/X53xNI/nCj7LjO70EBm9tYoGwX0EptALuTM
-         IkuTdUa3pOCb+vOKOLMJeqLIZ7+L9KZtQBS94wRuJB2cKhmkU0SFaZ3WrPOTT/CAt+kz
-         6K9hGQ2GZsemj2EPLDDmP8k5rmA+TreQFsDk+WaCiF50PMQ+mV5B6UaMnUTiKI3VZLg4
-         +/vg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768229266; x=1768834066;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=66Wy9X7ugeW5bewzeljPlJ6DqPEghHzvFsNM3r+AfsU=;
-        b=DIJf0Ml4nA0Y/+2xO/8+cO7ysB7lR3dBk7zxNE9deWDCZGjUxG7sJfTV+cM3SfcbEY
-         CfTPoG8cODWe/PohRHI5vbX8vpz9JVSBNb2aEoq0eMXRyszU6MphxM1o44RcTTcY8KZg
-         +xYS4yHgAogTFxcqHEa0WZwNu4wKZM9SFeEqjA1sA8GSYY7YH3+YZaAFqzA+uIGmri0O
-         dr4B4zqd6DnvvcrNlJxSf0f3gg/FdK6KytJX/PjBZeFoaWkdFgEd0PsOqbAvxof1DuYP
-         wfsLxO6tXEMU7ODj1ezQ8Q4JqaS11vYyALPlgHQpQ/4478WjePHH1uZsz5pYUTClyPqa
-         NLrw==
-X-Forwarded-Encrypted: i=1; AJvYcCVLh+TCmutdq/N6Zhgo9/nOPdaMLCmas2hn51xF5qwreZ3N4aVJ/6MTUTC1q89UqU89HsgncB4=@vger.kernel.org
-X-Gm-Message-State: AOJu0Yxfyx71PaQxutJ8IBkIx+vq4SnhtVMCa4VcxWLk8sPcBst00U5F
-	ur445lPqtZs+Oz7zdsplyipZDI+opwbf6Q+Xi51LNW3vdUFt3gDLLRdfETlutaqcIw==
-X-Gm-Gg: AY/fxX7kr69zmuDQoF3Vi1TpbXPnj0gGGTDwCOMqMy+SnAqm8S9PW4ECpmYrt7+ZBgG
-	Q6mQKI6DSjJWvwVNtarXK/FcOoy3s5K3t8jwWXuNvmB/odYA8kyxauE6pvbajss9NVakVS/8ju2
-	XYIMz1NVIDxGwT6XDppjmN8Zxnjg4PgCkzzWe1wy2RUrGNA737ly2WCi0C0lRMphJNl0996hBan
-	W4agwb1fFdsjr404+2QzQMEk7zUBr2AS/jc/rSzwFNGTpELkWRbsDJovehzkqq4Bi1tYwkRsUp3
-	b0ybIefcKFO5UC+tiQVPhXTYrLpBzgtQVjVHJhnZjRJ/1lvl+ppfatzEM5KlMEnOBkLJhCvejrL
-	qE/f2rQfC4gCqMe9CstIUtapWiPV0okFH7uMtSiglunQ/sJTSu/AoYCMnS1ZuUiRG9gtDnnt6s/
-	JGApzsCrFBjs5S4sT0k+evFxx/e5XIDA==
-X-Google-Smtp-Source: AGHT+IHNPfK5E/6kxAdWbW5EOVjXjBOCl0/onefYJWefU+oa4TlgqTn3RHl/5dDKkgIMPHHkE2sRPQ==
-X-Received: by 2002:a05:620a:46ab:b0:85c:bb2:ad8c with SMTP id af79cd13be357-8c389406276mr2499235885a.74.1768229265555;
-        Mon, 12 Jan 2026 06:47:45 -0800 (PST)
-Received: from rowland.harvard.edu ([140.247.181.15])
-        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a63acsm1516812785a.6.2026.01.12.06.47.44
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 06:47:45 -0800 (PST)
-Date: Mon, 12 Jan 2026 09:47:42 -0500
-From: Alan Stern <stern@rowland.harvard.edu>
-To: Huacai Chen <chenhuacai@loongson.cn>
-Cc: Huacai Chen <chenhuacai@kernel.org>,
-	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org, Shengwen Xiao <atzlinux@sina.com>
-Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_platform
-Message-ID: <f43a2ce7-7ffa-4b53-8610-52455ac9d16a@rowland.harvard.edu>
-References: <20260112084802.1995923-1-chenhuacai@loongson.cn>
+	s=arc-20240116; t=1768229383; c=relaxed/simple;
+	bh=EmeRKPMGKg0nhJkTh39AtKrp9VBbCPJe6N2CSZgHDEo=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=arv5lp51t+ymSXm6+Kx6SyOMmu8QiObubgObPMMk4M1J4dlKFz2TZMyy2DKaonqW0tpfw8Xm/0t/klRo11Jzraba65Zt0QRc1EtPD1Et9ZjY1tzE6MjglUapmHh+pxeY9Me5i5rxfvyX+T2T3CjCwQqAuTB/+u7ydHQkrfa0FtE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SwTafK5j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4192CC19424;
+	Mon, 12 Jan 2026 14:49:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768229382;
+	bh=EmeRKPMGKg0nhJkTh39AtKrp9VBbCPJe6N2CSZgHDEo=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=SwTafK5jGuKSjDkwf5NCgUzqrBU6WmX500/vDyFOTYOAUdYgc/ADS6+b1B0jU3+Re
+	 kvBvvcMPzu5UWlByddLkZVQB7ZB/P2465yggowt/vdETfwPvge+XBZH+0u+Og2UF49
+	 lYoBROrMskjS/UkGEqQooeGriGxhKM2PK0IRGitcSDXohUnA/8VF/wPvpMzbGvQLzl
+	 BSbO1Vh/Eo6zPYUnO9wRfFlO2BdGK8JxJLpO+8kpJ4Jl+OWldAapz0q0wO47EAkdMg
+	 /HmHsm+PkSq5/xjydgTm9nwJPSA8UnQbDGmLrctLu86uTYFxq8WRTVBhDVqFalmJYa
+	 yT6r7fESkeaIQ==
+From: Sasha Levin <sashal@kernel.org>
+To: stable@vger.kernel.org
+Cc: Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15.y 2/3] nfs_common: factor out nfs_errtbl and nfs_stat_to_errno
+Date: Mon, 12 Jan 2026 09:49:38 -0500
+Message-ID: <20260112144939.718289-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.51.0
+In-Reply-To: <20260112144939.718289-1-sashal@kernel.org>
+References: <2026011223-capitol-diploma-75b9@gregkh>
+ <20260112144939.718289-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20260112084802.1995923-1-chenhuacai@loongson.cn>
+Content-Transfer-Encoding: 8bit
 
-On Mon, Jan 12, 2026 at 04:48:02PM +0800, Huacai Chen wrote:
-> Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
-> loaded first") said that ehci-hcd should be loaded before ohci-hcd and
-> uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
-> dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
-> pci, which is not enough and we may still see the warnings in boot log.
-> 
-> To eliminate the warnings we should make ohci-hcd/uhci-hcd depend on
-> ehci-hcd. But Alan said that the warning introduced by 9beeee6584b9aa4f
-> is bogus, we only need the soft dependencies in the PCI level rather
-> than the HCD level.
-> 
-> However, there is really another neccessary soft dependencies between
-> ohci-platform/uhci-platform and ehci-platform, which is added by this
-> patch. The boot logs are below.
-> 
-> 1. ohci-platform loaded before ehci-platform:
-> 
->  ohci-platform 1f058000.usb: Generic Platform OHCI controller
->  ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 1
->  ohci-platform 1f058000.usb: irq 28, io mem 0x1f058000
->  hub 1-0:1.0: USB hub found
->  hub 1-0:1.0: 4 ports detected
->  Warning! ehci_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
->  usb 1-4: new low-speed USB device number 2 using ohci-platform
->  ehci-platform 1f050000.usb: EHCI Host Controller
->  ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 2
->  ehci-platform 1f050000.usb: irq 29, io mem 0x1f050000
->  ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
->  usb 1-4: device descriptor read/all, error -62
->  hub 2-0:1.0: USB hub found
->  hub 2-0:1.0: 4 ports detected
->  usb 1-4: new low-speed USB device number 3 using ohci-platform
->  input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb1/1-4/1-4:1.0/0003:10C4:8105.0001/input/input0
->  hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
-> 
-> 2. ehci-platform loaded before ohci-platform:
-> 
->  ehci-platform 1f050000.usb: EHCI Host Controller
->  ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 1
->  ehci-platform 1f050000.usb: irq 28, io mem 0x1f050000
->  ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
->  hub 1-0:1.0: USB hub found
->  hub 1-0:1.0: 4 ports detected
->  ohci-platform 1f058000.usb: Generic Platform OHCI controller
->  ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 2
->  ohci-platform 1f058000.usb: irq 29, io mem 0x1f058000
->  hub 2-0:1.0: USB hub found
->  hub 2-0:1.0: 4 ports detected
->  usb 2-4: new low-speed USB device number 2 using ohci-platform
->  input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb2/2-4/2-4:1.0/0003:10C4:8105.0001/input/input0
->  hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
-> 
-> In the later case, there is no re-connection for USB-1.0/1.1 devices,
-> which is expected.
-> 
-> Cc: stable@vger.kernel.org
-> Reported-by: Shengwen Xiao <atzlinux@sina.com>
-> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-> ---
+From: Mike Snitzer <snitzer@kernel.org>
 
-Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
+[ Upstream commit 4806ded4c14c5e8fdc6ce885d83221a78c06a428 ]
 
->  drivers/usb/host/ohci-platform.c | 1 +
->  drivers/usb/host/uhci-platform.c | 1 +
->  2 files changed, 2 insertions(+)
-> 
-> diff --git a/drivers/usb/host/ohci-platform.c b/drivers/usb/host/ohci-platform.c
-> index 2e4bb5cc2165..c801527d5bd2 100644
-> --- a/drivers/usb/host/ohci-platform.c
-> +++ b/drivers/usb/host/ohci-platform.c
-> @@ -392,3 +392,4 @@ MODULE_DESCRIPTION(DRIVER_DESC);
->  MODULE_AUTHOR("Hauke Mehrtens");
->  MODULE_AUTHOR("Alan Stern");
->  MODULE_LICENSE("GPL");
-> +MODULE_SOFTDEP("pre: ehci_platform");
-> diff --git a/drivers/usb/host/uhci-platform.c b/drivers/usb/host/uhci-platform.c
-> index 5e02f2ceafb6..f4419d4526c4 100644
-> --- a/drivers/usb/host/uhci-platform.c
-> +++ b/drivers/usb/host/uhci-platform.c
-> @@ -211,3 +211,4 @@ static struct platform_driver uhci_platform_driver = {
->  		.of_match_table = platform_uhci_ids,
->  	},
->  };
-> +MODULE_SOFTDEP("pre: ehci_platform");
-> -- 
-> 2.47.3
-> 
+Common nfs_stat_to_errno() is used by both fs/nfs/nfs2xdr.c and
+fs/nfs/nfs3xdr.c
+
+Will also be used by fs/nfsd/localio.c
+
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: c6c209ceb87f ("NFSD: Remove NFSERR_EAGAIN")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/nfs/Kconfig             |   1 +
+ fs/nfs/nfs2xdr.c           |  70 +-----------------------
+ fs/nfs/nfs3xdr.c           | 108 +++++++------------------------------
+ fs/nfs/nfs4xdr.c           |   4 +-
+ fs/nfs_common/Makefile     |   2 +
+ fs/nfs_common/common.c     |  67 +++++++++++++++++++++++
+ fs/nfsd/Kconfig            |   1 +
+ include/linux/nfs_common.h |  16 ++++++
+ 8 files changed, 109 insertions(+), 160 deletions(-)
+ create mode 100644 fs/nfs_common/common.c
+ create mode 100644 include/linux/nfs_common.h
+
+diff --git a/fs/nfs/Kconfig b/fs/nfs/Kconfig
+index 899e25e9b4eb5..9c1d1aff61ee8 100644
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -5,6 +5,7 @@ config NFS_FS
+ 	select CRC32
+ 	select LOCKD
+ 	select SUNRPC
++	select NFS_COMMON
+ 	select NFS_ACL_SUPPORT if NFS_V3_ACL
+ 	help
+ 	  Choose Y here if you want to access files residing on other
+diff --git a/fs/nfs/nfs2xdr.c b/fs/nfs/nfs2xdr.c
+index 266a4badf1dfc..63fe502dd15da 100644
+--- a/fs/nfs/nfs2xdr.c
++++ b/fs/nfs/nfs2xdr.c
+@@ -22,14 +22,12 @@
+ #include <linux/nfs.h>
+ #include <linux/nfs2.h>
+ #include <linux/nfs_fs.h>
++#include <linux/nfs_common.h>
+ #include "nfstrace.h"
+ #include "internal.h"
+ 
+ #define NFSDBG_FACILITY		NFSDBG_XDR
+ 
+-/* Mapping from NFS error code to "errno" error code. */
+-#define errno_NFSERR_IO		EIO
+-
+ /*
+  * Declare the space requirements for NFS arguments and replies as
+  * number of 32bit-words
+@@ -64,8 +62,6 @@
+ #define NFS_readdirres_sz	(1+NFS_pagepad_sz)
+ #define NFS_statfsres_sz	(1+NFS_info_sz)
+ 
+-static int nfs_stat_to_errno(enum nfs_stat);
+-
+ /*
+  * Encode/decode NFSv2 basic data types
+  *
+@@ -1055,70 +1051,6 @@ static int nfs2_xdr_dec_statfsres(struct rpc_rqst *req, struct xdr_stream *xdr,
+ 	return nfs_stat_to_errno(status);
+ }
+ 
+-
+-/*
+- * We need to translate between nfs status return values and
+- * the local errno values which may not be the same.
+- */
+-static const struct {
+-	int stat;
+-	int errno;
+-} nfs_errtbl[] = {
+-	{ NFS_OK,		0		},
+-	{ NFSERR_PERM,		-EPERM		},
+-	{ NFSERR_NOENT,		-ENOENT		},
+-	{ NFSERR_IO,		-errno_NFSERR_IO},
+-	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+-	{ NFSERR_ACCES,		-EACCES		},
+-	{ NFSERR_EXIST,		-EEXIST		},
+-	{ NFSERR_XDEV,		-EXDEV		},
+-	{ NFSERR_NODEV,		-ENODEV		},
+-	{ NFSERR_NOTDIR,	-ENOTDIR	},
+-	{ NFSERR_ISDIR,		-EISDIR		},
+-	{ NFSERR_INVAL,		-EINVAL		},
+-	{ NFSERR_FBIG,		-EFBIG		},
+-	{ NFSERR_NOSPC,		-ENOSPC		},
+-	{ NFSERR_ROFS,		-EROFS		},
+-	{ NFSERR_MLINK,		-EMLINK		},
+-	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
+-	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
+-	{ NFSERR_DQUOT,		-EDQUOT		},
+-	{ NFSERR_STALE,		-ESTALE		},
+-	{ NFSERR_REMOTE,	-EREMOTE	},
+-#ifdef EWFLUSH
+-	{ NFSERR_WFLUSH,	-EWFLUSH	},
+-#endif
+-	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
+-	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
+-	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
+-	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
+-	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
+-	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
+-	{ NFSERR_BADTYPE,	-EBADTYPE	},
+-	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
+-	{ -1,			-EIO		}
+-};
+-
+-/**
+- * nfs_stat_to_errno - convert an NFS status code to a local errno
+- * @status: NFS status code to convert
+- *
+- * Returns a local errno value, or -EIO if the NFS status code is
+- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
+- */
+-static int nfs_stat_to_errno(enum nfs_stat status)
+-{
+-	int i;
+-
+-	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
+-		if (nfs_errtbl[i].stat == (int)status)
+-			return nfs_errtbl[i].errno;
+-	}
+-	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
+-	return nfs_errtbl[i].errno;
+-}
+-
+ #define PROC(proc, argtype, restype, timer)				\
+ [NFSPROC_##proc] = {							\
+ 	.p_proc	    =  NFSPROC_##proc,					\
+diff --git a/fs/nfs/nfs3xdr.c b/fs/nfs/nfs3xdr.c
+index d48db2f6f4f02..6299837f39086 100644
+--- a/fs/nfs/nfs3xdr.c
++++ b/fs/nfs/nfs3xdr.c
+@@ -21,14 +21,13 @@
+ #include <linux/nfs3.h>
+ #include <linux/nfs_fs.h>
+ #include <linux/nfsacl.h>
++#include <linux/nfs_common.h>
++
+ #include "nfstrace.h"
+ #include "internal.h"
+ 
+ #define NFSDBG_FACILITY		NFSDBG_XDR
+ 
+-/* Mapping from NFS error code to "errno" error code. */
+-#define errno_NFSERR_IO		EIO
+-
+ /*
+  * Declare the space requirements for NFS arguments and replies as
+  * number of 32bit-words
+@@ -91,8 +90,6 @@
+ 				NFS3_pagepad_sz)
+ #define ACL3_setaclres_sz	(1+NFS3_post_op_attr_sz)
+ 
+-static int nfs3_stat_to_errno(enum nfs_stat);
+-
+ /*
+  * Map file type to S_IFMT bits
+  */
+@@ -1405,7 +1402,7 @@ static int nfs3_xdr_dec_getattr3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1444,7 +1441,7 @@ static int nfs3_xdr_dec_setattr3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1494,7 +1491,7 @@ static int nfs3_xdr_dec_lookup3res(struct rpc_rqst *req,
+ 	error = decode_post_op_attr(xdr, result->dir_attr, userns);
+ 	if (unlikely(error))
+ 		goto out;
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1536,7 +1533,7 @@ static int nfs3_xdr_dec_access3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1577,7 +1574,7 @@ static int nfs3_xdr_dec_readlink3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1657,7 +1654,7 @@ static int nfs3_xdr_dec_read3res(struct rpc_rqst *req, struct xdr_stream *xdr,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1727,7 +1724,7 @@ static int nfs3_xdr_dec_write3res(struct rpc_rqst *req, struct xdr_stream *xdr,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1794,7 +1791,7 @@ static int nfs3_xdr_dec_create3res(struct rpc_rqst *req,
+ 	error = decode_wcc_data(xdr, result->dir_attr, userns);
+ 	if (unlikely(error))
+ 		goto out;
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1834,7 +1831,7 @@ static int nfs3_xdr_dec_remove3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1880,7 +1877,7 @@ static int nfs3_xdr_dec_rename3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1925,7 +1922,7 @@ static int nfs3_xdr_dec_link3res(struct rpc_rqst *req, struct xdr_stream *xdr,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /**
+@@ -2101,7 +2098,7 @@ static int nfs3_xdr_dec_readdir3res(struct rpc_rqst *req,
+ 	error = decode_post_op_attr(xdr, result->dir_attr, rpc_rqst_userns(req));
+ 	if (unlikely(error))
+ 		goto out;
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2167,7 +2164,7 @@ static int nfs3_xdr_dec_fsstat3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2243,7 +2240,7 @@ static int nfs3_xdr_dec_fsinfo3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2304,7 +2301,7 @@ static int nfs3_xdr_dec_pathconf3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2350,7 +2347,7 @@ static int nfs3_xdr_dec_commit3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ #ifdef CONFIG_NFS_V3_ACL
+@@ -2416,7 +2413,7 @@ static int nfs3_xdr_dec_getacl3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ static int nfs3_xdr_dec_setacl3res(struct rpc_rqst *req,
+@@ -2435,76 +2432,11 @@ static int nfs3_xdr_dec_setacl3res(struct rpc_rqst *req,
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ #endif  /* CONFIG_NFS_V3_ACL */
+ 
+-
+-/*
+- * We need to translate between nfs status return values and
+- * the local errno values which may not be the same.
+- */
+-static const struct {
+-	int stat;
+-	int errno;
+-} nfs_errtbl[] = {
+-	{ NFS_OK,		0		},
+-	{ NFSERR_PERM,		-EPERM		},
+-	{ NFSERR_NOENT,		-ENOENT		},
+-	{ NFSERR_IO,		-errno_NFSERR_IO},
+-	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+-	{ NFSERR_ACCES,		-EACCES		},
+-	{ NFSERR_EXIST,		-EEXIST		},
+-	{ NFSERR_XDEV,		-EXDEV		},
+-	{ NFSERR_NODEV,		-ENODEV		},
+-	{ NFSERR_NOTDIR,	-ENOTDIR	},
+-	{ NFSERR_ISDIR,		-EISDIR		},
+-	{ NFSERR_INVAL,		-EINVAL		},
+-	{ NFSERR_FBIG,		-EFBIG		},
+-	{ NFSERR_NOSPC,		-ENOSPC		},
+-	{ NFSERR_ROFS,		-EROFS		},
+-	{ NFSERR_MLINK,		-EMLINK		},
+-	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
+-	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
+-	{ NFSERR_DQUOT,		-EDQUOT		},
+-	{ NFSERR_STALE,		-ESTALE		},
+-	{ NFSERR_REMOTE,	-EREMOTE	},
+-#ifdef EWFLUSH
+-	{ NFSERR_WFLUSH,	-EWFLUSH	},
+-#endif
+-	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
+-	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
+-	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
+-	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
+-	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
+-	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
+-	{ NFSERR_BADTYPE,	-EBADTYPE	},
+-	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
+-	{ -1,			-EIO		}
+-};
+-
+-/**
+- * nfs3_stat_to_errno - convert an NFS status code to a local errno
+- * @status: NFS status code to convert
+- *
+- * Returns a local errno value, or -EIO if the NFS status code is
+- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
+- */
+-static int nfs3_stat_to_errno(enum nfs_stat status)
+-{
+-	int i;
+-
+-	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
+-		if (nfs_errtbl[i].stat == (int)status)
+-			return nfs_errtbl[i].errno;
+-	}
+-	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
+-	return nfs_errtbl[i].errno;
+-}
+-
+-
+ #define PROC(proc, argtype, restype, timer)				\
+ [NFS3PROC_##proc] = {							\
+ 	.p_proc      = NFS3PROC_##proc,					\
+diff --git a/fs/nfs/nfs4xdr.c b/fs/nfs/nfs4xdr.c
+index 0ae9e06a0bba2..94391193cb8f8 100644
+--- a/fs/nfs/nfs4xdr.c
++++ b/fs/nfs/nfs4xdr.c
+@@ -52,6 +52,7 @@
+ #include <linux/nfs.h>
+ #include <linux/nfs4.h>
+ #include <linux/nfs_fs.h>
++#include <linux/nfs_common.h>
+ 
+ #include "nfs4_fs.h"
+ #include "nfs4trace.h"
+@@ -63,9 +64,6 @@
+ 
+ #define NFSDBG_FACILITY		NFSDBG_XDR
+ 
+-/* Mapping from NFS error code to "errno" error code. */
+-#define errno_NFSERR_IO		EIO
+-
+ struct compound_hdr;
+ static int nfs4_stat_to_errno(int);
+ static void encode_layoutget(struct xdr_stream *xdr,
+diff --git a/fs/nfs_common/Makefile b/fs/nfs_common/Makefile
+index 119c75ab9fd08..e58b01bb8dda6 100644
+--- a/fs/nfs_common/Makefile
++++ b/fs/nfs_common/Makefile
+@@ -8,3 +8,5 @@ nfs_acl-objs := nfsacl.o
+ 
+ obj-$(CONFIG_GRACE_PERIOD) += grace.o
+ obj-$(CONFIG_NFS_V4_2_SSC_HELPER) += nfs_ssc.o
++
++obj-$(CONFIG_NFS_COMMON) += common.o
+diff --git a/fs/nfs_common/common.c b/fs/nfs_common/common.c
+new file mode 100644
+index 0000000000000..a4ee95da2174e
+--- /dev/null
++++ b/fs/nfs_common/common.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/module.h>
++#include <linux/nfs_common.h>
++
++/*
++ * We need to translate between nfs status return values and
++ * the local errno values which may not be the same.
++ */
++static const struct {
++	int stat;
++	int errno;
++} nfs_errtbl[] = {
++	{ NFS_OK,		0		},
++	{ NFSERR_PERM,		-EPERM		},
++	{ NFSERR_NOENT,		-ENOENT		},
++	{ NFSERR_IO,		-errno_NFSERR_IO},
++	{ NFSERR_NXIO,		-ENXIO		},
++/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
++	{ NFSERR_ACCES,		-EACCES		},
++	{ NFSERR_EXIST,		-EEXIST		},
++	{ NFSERR_XDEV,		-EXDEV		},
++	{ NFSERR_NODEV,		-ENODEV		},
++	{ NFSERR_NOTDIR,	-ENOTDIR	},
++	{ NFSERR_ISDIR,		-EISDIR		},
++	{ NFSERR_INVAL,		-EINVAL		},
++	{ NFSERR_FBIG,		-EFBIG		},
++	{ NFSERR_NOSPC,		-ENOSPC		},
++	{ NFSERR_ROFS,		-EROFS		},
++	{ NFSERR_MLINK,		-EMLINK		},
++	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
++	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
++	{ NFSERR_DQUOT,		-EDQUOT		},
++	{ NFSERR_STALE,		-ESTALE		},
++	{ NFSERR_REMOTE,	-EREMOTE	},
++#ifdef EWFLUSH
++	{ NFSERR_WFLUSH,	-EWFLUSH	},
++#endif
++	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
++	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
++	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
++	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
++	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
++	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
++	{ NFSERR_BADTYPE,	-EBADTYPE	},
++	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
++	{ -1,			-EIO		}
++};
++
++/**
++ * nfs_stat_to_errno - convert an NFS status code to a local errno
++ * @status: NFS status code to convert
++ *
++ * Returns a local errno value, or -EIO if the NFS status code is
++ * not recognized.  This function is used jointly by NFSv2 and NFSv3.
++ */
++int nfs_stat_to_errno(enum nfs_stat status)
++{
++	int i;
++
++	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
++		if (nfs_errtbl[i].stat == (int)status)
++			return nfs_errtbl[i].errno;
++	}
++	return nfs_errtbl[i].errno;
++}
++EXPORT_SYMBOL_GPL(nfs_stat_to_errno);
+diff --git a/fs/nfsd/Kconfig b/fs/nfsd/Kconfig
+index 73367b41e4fae..4e7d8d926b908 100644
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -8,6 +8,7 @@ config NFSD
+ 	select LOCKD
+ 	select SUNRPC
+ 	select EXPORTFS
++	select NFS_COMMON
+ 	select NFS_ACL_SUPPORT if NFSD_V2_ACL
+ 	select NFS_ACL_SUPPORT if NFSD_V3_ACL
+ 	depends on MULTIUSER
+diff --git a/include/linux/nfs_common.h b/include/linux/nfs_common.h
+new file mode 100644
+index 0000000000000..3395c4a4d3720
+--- /dev/null
++++ b/include/linux/nfs_common.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * This file contains constants and methods used by both NFS client and server.
++ */
++#ifndef _LINUX_NFS_COMMON_H
++#define _LINUX_NFS_COMMON_H
++
++#include <linux/errno.h>
++#include <uapi/linux/nfs.h>
++
++/* Mapping from NFS error code to "errno" error code. */
++#define errno_NFSERR_IO EIO
++
++int nfs_stat_to_errno(enum nfs_stat status);
++
++#endif /* _LINUX_NFS_COMMON_H */
+-- 
+2.51.0
+
 
