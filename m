@@ -1,67 +1,57 @@
-Return-Path: <stable+bounces-208152-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208156-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E993D13621
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:00:28 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D1BCCD1363A
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:01:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2DA8B3016451
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B645300F6A0
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0374B2DEA61;
-	Mon, 12 Jan 2026 14:59:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2BEA42DCBEC;
+	Mon, 12 Jan 2026 14:59:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="SxobM8hO"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Eu7OYfZo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 998492DB79C;
-	Mon, 12 Jan 2026 14:59:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C84AB2E265A;
+	Mon, 12 Jan 2026 14:59:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229940; cv=none; b=bdBCoU4pihZOVXLNIIfjfTXClp9nPnCpKhPf6Y/3lulgZQQ4lNHk/SWzqUzZT+o92OuxkUviRAenosOGGsTWBY+jLOSAzV/5XRazypZ8Lsyu6wUtXgJqRlnkhGa5z7T8rXs8fa/tYauIVjECcdi+0T+WX8JfP3IRLSdoazgm6fs=
+	t=1768229948; cv=none; b=olaXPu05BPRYWFp1d78IaHwY1plWlgQFEqBsSxgMQwA+8vAbWHoIoj+8ky3Z/Fg2w40BPFDsL2Hy5xbNcCBB0CWNGiwJ5dtSYXvlMg9menNlqDlE7GMOqMGKZe5TYoHrs7tT5WPupTtFTWFfcSUNC4kc2DNRjDubr1pIsAUSJq8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229940; c=relaxed/simple;
-	bh=yDuxJLWzF6kgfc2MCgc5E0fSNJNKC2uW57/u00KiBKw=;
+	s=arc-20240116; t=1768229948; c=relaxed/simple;
+	bh=MvHTFuIbV3v7ViyPwDHswrpEdtUaZRkcU1bdSu0XMdQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZhdrlBiNAePhdrtnS7W+NDQQKxuvykm3u8qo+SGEnX54I0g4nV9NtIL5LEgee5J++rKf4cEA0FyScZp8S7axeO67gKolUV2CLmeQoH4nMgwd7QydLsgvBZpmgMox0iaT9W9X8hGdXCJG0Tg/7OoMMT8sKQjbq9dLQG83B0nw9OY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=SxobM8hO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804B3C16AAE;
-	Mon, 12 Jan 2026 14:58:58 +0000 (UTC)
+	 MIME-Version; b=SAkT67hBq+GsNnIhkBgDMhXsfArla1Y+tE9i2iOm7M/xNbJVXH9YyThWiGNWy1RHGR+ozNIO3pAXp2r1U+tWM7JTIecGtN5h2LwAo+lk89fwo5p+dmALne2Sbm8iBPmDC4lUiNmURyH/WzXjoXV47tOQAB6ojoO3cZljlZTbSdY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Eu7OYfZo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D792C19422;
+	Mon, 12 Jan 2026 14:59:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229940;
-	bh=yDuxJLWzF6kgfc2MCgc5E0fSNJNKC2uW57/u00KiBKw=;
+	s=k20201202; t=1768229948;
+	bh=MvHTFuIbV3v7ViyPwDHswrpEdtUaZRkcU1bdSu0XMdQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxobM8hOus9COszhWDayy0ubPfKikSUKL0DN6khSE6AixrAIRagIxCGxg6LuJ9zyU
-	 WUGoKee/EmgAKj/yvhP7/+/k2yYQcCzacwa+WSEYwWDEh7EuSyY/XqMvk5GZOJLpsJ
-	 hz4HncunV09itW37g7Nv+AWnEwH54z6OXk+7Dz+ALXIdTL8qgN/qORrgu5G9P35KQD
-	 +4FfKWGg9Y4dsWk1bLdcQGd7Ov1rjvWxKcl+n7TLUbwIm1qaxH3tcANCwgmwNrUqaF
-	 tA45OOZyYbk9AbuBEhB4DBFJdmTlHEieYXAHntS/FhJ3w+INOxZrjlB7KuzbmUrjSf
-	 H0FjDXfaM5z5Q==
+	b=Eu7OYfZoCUauno5bJvvaLV/lESboE1sJhHpFz9eFIE8q05NG0h2mf/DL4TH8TKFQh
+	 3sGjGBz/JniWHctTKiPLk4OtcAp2iVs5GTLGEcQ/f7pZLqGYwMCuQeen8fMplS27QG
+	 BNrjHejSpibU61bVr3ttXvlaJus32+ynd8a5tZQI5WL03wMQBMmEFPuqAn4544sxj6
+	 gH1eqH0pB2fPENUrdiDiLgZSWHJ0O4JvCo5NidQuDf1LaovQcxsMZ2YbmWHG8YJ+zC
+	 dlWjym/Vlv1YoYo6AAVj+QwfCfBsN1MBEzQYZCtoSgHAsoQIiLf6AAoMPBLf90id+Z
+	 O+vFpp9S+wnSA==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Perry Yuan <perry.yuan@amd.com>,
-	Yifan Zhang <yifan1.zhang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+Cc: Ruslan Krupitsa <krupitsarus@outlook.com>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>,
-	lijo.lazar@amd.com,
-	christian.koenig@amd.com,
-	Hawking.Zhang@amd.com,
-	mario.limonciello@amd.com,
-	cesun102@amd.com,
-	superm1@kernel.org,
-	kenneth.feng@amd.com,
-	kevinyang.wang@amd.com,
-	Yifan.Zha@amd.com,
-	siqueira@igalia.com,
-	ilya.zlobintsev@gmail.com,
-	tomasz.pakula.oficjalny@gmail.com,
-	Jesse.Zhang@amd.com
-Subject: [PATCH AUTOSEL 6.18-6.12] drm/amd/pm: Disable MMIO access during SMU Mode 1 reset
-Date: Mon, 12 Jan 2026 09:58:12 -0500
-Message-ID: <20260112145840.724774-11-sashal@kernel.org>
+	sbinding@opensource.cirrus.com,
+	kailang@realtek.com,
+	chris.chiu@canonical.com,
+	edip@medip.dev
+Subject: [PATCH AUTOSEL 6.18-5.10] ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED quirk
+Date: Mon, 12 Jan 2026 09:58:16 -0500
+Message-ID: <20260112145840.724774-15-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
 References: <20260112145840.724774-1-sashal@kernel.org>
@@ -76,205 +66,145 @@ X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.5
 Content-Transfer-Encoding: 8bit
 
-From: Perry Yuan <perry.yuan@amd.com>
+From: Ruslan Krupitsa <krupitsarus@outlook.com>
 
-[ Upstream commit 0de604d0357d0d22cbf03af1077d174b641707b6 ]
+[ Upstream commit 9ed7a28225af02b74f61e7880d460db49db83758 ]
 
-During Mode 1 reset, the ASIC undergoes a reset cycle and becomes
-temporarily inaccessible via PCIe. Any attempt to access MMIO registers
-during this window (e.g., from interrupt handlers or other driver threads)
-can result in uncompleted PCIe transactions, leading to NMI panics or
-system hangs.
+HP Laptop 15s-eq1xxx with ALC236 codec does not enable the
+mute LED automatically. This patch adds a quirk entry for
+subsystem ID 0x8706 using the ALC236_FIXUP_HP_MUTE_LED_COEFBIT2
+fixup, enabling correct mute LED behavior.
 
-To prevent this, set the `no_hw_access` flag to true immediately after
-triggering the reset. This signals other driver components to skip
-register accesses while the device is offline.
-
-A memory barrier `smp_mb()` is added to ensure the flag update is
-globally visible to all cores before the driver enters the sleep/wait
-state.
-
-Signed-off-by: Perry Yuan <perry.yuan@amd.com>
-Reviewed-by: Yifan Zhang <yifan1.zhang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 7edb503fe4b6d67f47d8bb0dfafb8e699bb0f8a4)
+Signed-off-by: Ruslan Krupitsa <krupitsarus@outlook.com>
+Link: https://patch.msgid.link/AS8P194MB112895B8EC2D87D53A876085BBBAA@AS8P194MB1128.EURP194.PROD.OUTLOOK.COM
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Analysis of Commit: drm/amd/pm: Disable MMIO access during SMU Mode 1
-reset
+## Commit Analysis: ALSA: hda/realtek: add HP Laptop 15s-eq1xxx mute LED
+quirk
 
 ### 1. COMMIT MESSAGE ANALYSIS
 
-The commit message clearly describes a **serious stability problem**:
-- During Mode 1 reset, the ASIC becomes temporarily inaccessible via
-  PCIe
-- Any MMIO access during this window (from interrupt handlers or other
-  driver threads) results in **NMI panics or system hangs**
-- Keywords: "NMI panics", "system hangs" - these are critical stability
-  issues
+The commit adds a hardware quirk for the HP Laptop 15s-eq1xxx with
+ALC236 codec. The mute LED does not function correctly without this
+quirk entry. The fix uses an existing fixup
+(`ALC236_FIXUP_HP_MUTE_LED_COEFBIT2`) that is already applied to several
+other HP laptops.
 
-The commit has proper attribution:
-- Reviewed-by tag from Yifan Zhang
-- Signed-off by AMD maintainer Alex Deucher
-- Already cherry-picked, suggesting it's considered stable material
+Keywords: "quirk" - indicates hardware-specific workaround.
 
 ### 2. CODE CHANGE ANALYSIS
 
-The fix is straightforward and surgical:
+The change is a **single line addition** to the quirk table:
 
-**smu_v13_0_0_ppt.c and smu_v14_0_2_ppt.c:**
 ```c
-/* disable mmio access while doing mode 1 reset*/
-smu->adev->no_hw_access = true;
-/* ensure no_hw_access is globally visible before any MMIO */
-smp_mb();
-msleep(...);
+SND_PCI_QUIRK(0x103c, 0x8706, "HP Laptop 15s-eq1xxx",
+ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
 ```
-Sets the existing `no_hw_access` flag to block MMIO from other driver
-components during the reset sleep window. The `smp_mb()` ensures proper
-cross-CPU memory ordering.
 
-**amdgpu_device.c:**
-```c
-/* enable mmio access after mode 1 reset completed */
-adev->no_hw_access = false;
-```
-Re-enables MMIO access after the reset completes successfully.
+This adds:
+- **Vendor ID**: 0x103c (HP)
+- **Subsystem ID**: 0x8706 (specific to this laptop model)
+- **Fixup**: `ALC236_FIXUP_HP_MUTE_LED_COEFBIT2` - an existing, well-
+  tested fixup
+
+Looking at the surrounding code, the same fixup is already used by
+multiple other HP laptops:
+- HP 15-db0403ng (0x84ae)
+- HP Laptop 15-da3001TU (0x86c1)
+- HP Laptop 14-fq0xxx (0x87b7)
 
 ### 3. CLASSIFICATION
 
-This is a **bug fix** - not a new feature. It uses an existing mechanism
-(`no_hw_access` flag) that other driver components already check. The
-fix simply sets this flag at the correct time during Mode 1 reset.
+This is a **hardware quirk/workaround** - one of the explicit exception
+categories that ARE allowed in stable trees:
+- It's a hardware-specific quirk for a device that doesn't work
+  correctly without it
+- The fixup mechanism already exists and is proven on other devices
+- This is NOT a new feature - it's enabling existing functionality for a
+  specific PCI subsystem ID
 
 ### 4. SCOPE AND RISK ASSESSMENT
 
-- **Lines changed**: ~15 lines of actual code across 3 files
-- **Complexity**: Very low - just boolean flag setting and memory
-  barriers
-- **Risk**: LOW - uses existing infrastructure, pattern is well-
-  understood
-- **Subsystem**: AMD GPU power management (SMU v13.0.0 and v14.0.2)
+| Factor | Assessment |
+|--------|------------|
+| Lines changed | 1 |
+| Files touched | 1 |
+| Complexity | Trivial - table entry only |
+| Risk | **Extremely low** |
 
-The changes are minimal and isolated to the Mode 1 reset path.
+The change:
+- Only affects systems with the exact subsystem ID 0x8706
+- Uses a pre-existing, battle-tested fixup
+- Cannot break any other systems
+- Follows an established, well-understood pattern
 
 ### 5. USER IMPACT
 
-- **Severity**: CRITICAL - NMI panics and system hangs affect system
-  stability
-- **Affected users**: AMD GPU users (Radeon RX 7000 series and newer)
-  when GPU undergoes error recovery
-- **Trigger likelihood**: Mode 1 resets happen during GPU error recovery
-  - interrupt handlers racing with reset is a realistic scenario
+**Affected users**: Owners of HP Laptop 15s-eq1xxx
+**Bug severity**: User-visible functionality issue (mute LED doesn't
+work)
+**Impact without fix**: The mute LED doesn't indicate mute state, which
+is a usability problem
+
+While not a crash or data corruption issue, non-working hardware
+indicators are legitimate bugs that affect real users.
 
 ### 6. STABILITY INDICATORS
 
-- Has `Reviewed-by` tag
-- Cherry-picked from mainline commit
-  7edb503fe4b6d67f47d8bb0dfafb8e699bb0f8a4
-- Comes from AMD engineers with domain expertise
+- Signed off by Takashi Iwai (ALSA subsystem maintainer)
+- Uses an identical pattern to dozens of existing quirk entries
+- The `ALC236_FIXUP_HP_MUTE_LED_COEFBIT2` fixup has been in the kernel
+  and used by other devices for years
 
 ### 7. DEPENDENCY CHECK
 
-The `no_hw_access` field in `amdgpu_device` structure is existing
-infrastructure used throughout the AMDGPU driver. This commit doesn't
-introduce new fields or dependencies - it only sets an existing flag at
-appropriate times.
-
-**Potential concern**: SMU v14 code is relatively new (2024+), so very
-old stable trees may not have this code path. However, if the code
-exists in the stable tree, the fix applies cleanly.
-
-### RISK VS BENEFIT ASSESSMENT
-
-**Benefits:**
-- Prevents NMI panics and system hangs - critical stability fix
-- Protects against realistic race conditions during GPU reset
-
-**Risks:**
-- Minimal - uses existing flag mechanism
-- Small, contained changes with proper memory barriers
-- No architectural changes or new features
+- **No dependencies** on other commits
+- The quirk table (`alc269_fixup_tbl[]`) exists in all stable kernels
+- The `ALC236_FIXUP_HP_MUTE_LED_COEFBIT2` fixup enum value exists in
+  stable kernels
+- This patch will apply cleanly to any stable tree that has this file
 
 ### CONCLUSION
 
-This commit fixes a critical stability bug (NMI panics, system hangs)
-that can occur during normal GPU error recovery scenarios. The fix is:
-- Small and surgical (just flag setting + memory barrier)
-- Uses existing infrastructure
-- Properly reviewed
-- Low regression risk
-- Already cherry-picked indicating stable intent
+This commit is a textbook example of what should be backported to
+stable:
 
-The commit meets all stable kernel criteria: it's obviously correct,
-fixes a real and serious bug, is small and contained, and introduces no
-new features.
+1. **Hardware quirk addition** - explicitly allowed under stable rules
+2. **Single line change** - minimal code, minimal risk
+3. **Uses existing infrastructure** - no new code paths, just a table
+   entry
+4. **Precisely scoped** - only affects one specific hardware model
+   (subsystem ID match)
+5. **Cannot cause regressions** - doesn't touch any code paths for other
+   devices
+6. **Fixes real user-visible issue** - mute LED not working
+7. **Well-established pattern** - this exact type of change is routinely
+   backported
+
+The fix is small, surgical, and meets all stable kernel criteria for
+hardware quirk additions.
 
 **YES**
 
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c           | 3 +++
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 7 ++++++-
- drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c | 9 +++++++--
- 3 files changed, 16 insertions(+), 3 deletions(-)
+ sound/hda/codecs/realtek/alc269.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 0cba31ec025c0..e9a14a62e73fc 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -5731,6 +5731,9 @@ int amdgpu_device_mode1_reset(struct amdgpu_device *adev)
- 	if (ret)
- 		goto mode1_reset_failed;
- 
-+	/* enable mmio access after mode 1 reset completed */
-+	adev->no_hw_access = false;
-+
- 	amdgpu_device_load_pci_state(adev->pdev);
- 	ret = amdgpu_psp_wait_for_bootloader(adev);
- 	if (ret)
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index c1062e5f03936..8d070a9ea2c10 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -2922,8 +2922,13 @@ static int smu_v13_0_0_mode1_reset(struct smu_context *smu)
- 		break;
- 	}
- 
--	if (!ret)
-+	if (!ret) {
-+		/* disable mmio access while doing mode 1 reset*/
-+		smu->adev->no_hw_access = true;
-+		/* ensure no_hw_access is globally visible before any MMIO */
-+		smp_mb();
- 		msleep(SMU13_MODE1_RESET_WAIT_TIME_IN_MS);
-+	}
- 
- 	return ret;
- }
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-index 086501cc5213b..2cb2d93f9989a 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu14/smu_v14_0_2_ppt.c
-@@ -2142,10 +2142,15 @@ static int smu_v14_0_2_mode1_reset(struct smu_context *smu)
- 
- 	ret = smu_cmn_send_debug_smc_msg(smu, DEBUGSMC_MSG_Mode1Reset);
- 	if (!ret) {
--		if (amdgpu_emu_mode == 1)
-+		if (amdgpu_emu_mode == 1) {
- 			msleep(50000);
--		else
-+		} else {
-+			/* disable mmio access while doing mode 1 reset*/
-+			smu->adev->no_hw_access = true;
-+			/* ensure no_hw_access is globally visible before any MMIO */
-+			smp_mb();
- 			msleep(1000);
-+		}
- 	}
- 
- 	return ret;
+diff --git a/sound/hda/codecs/realtek/alc269.c b/sound/hda/codecs/realtek/alc269.c
+index 705d6acc204cf..16c2314839c38 100644
+--- a/sound/hda/codecs/realtek/alc269.c
++++ b/sound/hda/codecs/realtek/alc269.c
+@@ -6427,6 +6427,7 @@ static const struct hda_quirk alc269_fixup_tbl[] = {
+ 	SND_PCI_QUIRK(0x103c, 0x863e, "HP Spectre x360 15-df1xxx", ALC285_FIXUP_HP_SPECTRE_X360_DF1),
+ 	SND_PCI_QUIRK(0x103c, 0x86e8, "HP Spectre x360 15-eb0xxx", ALC285_FIXUP_HP_SPECTRE_X360_EB1),
+ 	SND_PCI_QUIRK(0x103c, 0x86f9, "HP Spectre x360 13-aw0xxx", ALC285_FIXUP_HP_SPECTRE_X360_MUTE_LED),
++	SND_PCI_QUIRK(0x103c, 0x8706, "HP Laptop 15s-eq1xxx", ALC236_FIXUP_HP_MUTE_LED_COEFBIT2),
+ 	SND_PCI_QUIRK(0x103c, 0x8716, "HP Elite Dragonfly G2 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8720, "HP EliteBook x360 1040 G8 Notebook PC", ALC285_FIXUP_HP_GPIO_AMP_INIT),
+ 	SND_PCI_QUIRK(0x103c, 0x8724, "HP EliteBook 850 G7", ALC285_FIXUP_HP_GPIO_LED),
 -- 
 2.51.0
 
