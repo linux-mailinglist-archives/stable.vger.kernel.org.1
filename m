@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208103-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27C63D11FCC
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:45:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C77A3D11FB7
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:44:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1212A305FFC0
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:44:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3F04303020D
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:44:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1A5D320A04;
-	Mon, 12 Jan 2026 10:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE42530F815;
+	Mon, 12 Jan 2026 10:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yDpmvSIJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LILH8yz3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A549030F815
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:44:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A285026056E
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:44:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214675; cv=none; b=L+HsHG0ORvgyIKYXFdaIyObRkvPiu8aU89mDAQ4VyUoZ8cnrTXE7TlnFCSVE9TTErWCoU+ac0HqU4tS7edlSr17L37F9RW0FVDrc9/p4viezWvN1ipAnSMInYRUxIV2B/OXqQpoAOw5vKRQNBamxzgvXL9gH3yTR3zu6UmTk9cY=
+	t=1768214679; cv=none; b=LdxvLmUqRF3HqpT25gbCN1HTc3J8wtH7/BfDuH08aIWNKLykg/fxkilrNoH3Po5mVxJcyEAmphZlyQyWAa5b4B3k8pB/Q8TkJiotG/Ks2a89seVjXhDBFmWS11f/0N/4QaMFn4vywE+BxMuFjPdIVQR6pHYqWTAXLHGXxmotTwg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214675; c=relaxed/simple;
-	bh=Rh4ANghNwfqfshe4yetXE8GtcoYNsT5nX6L3YvGZJ3c=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=K3TT7/t+wk9hzTz//VdI5F1XXnbrBQkfJ3xhfTt8hRnDkDvyodoPqBu1v4BKhEeVIKdq0K4M3eNytlpt2yRZprxt083pz2fvJciD8DPxpWT4xZb7c7A2sgVvg5ZVJlwfcuck/cJUIy2YVFZgSxoRipyaCfTCrbuUUMBa3fAWdoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yDpmvSIJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06F33C16AAE;
-	Mon, 12 Jan 2026 10:44:34 +0000 (UTC)
+	s=arc-20240116; t=1768214679; c=relaxed/simple;
+	bh=vz0eOsHuTl1oUgmL7Np3t3670UuRL3dtB++vfLcJ0fI=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NMhsH/0uhHdyRDR4AgveoCZE8mSSZo4N1dqRNjSe0kwSsLq9zuFZIDWqVv5sJuWBr0q3WKwK/ge0fAr9w7ylbZ6aob3ZjCjxBCjIPpfJm1eYqLHn01+BTUCohuHYW8CwD/+1kHtfdjQ/wntu5nm9ma5vxKQ1lwAIQgYprBxKOh0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LILH8yz3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14479C16AAE;
+	Mon, 12 Jan 2026 10:44:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768214675;
-	bh=Rh4ANghNwfqfshe4yetXE8GtcoYNsT5nX6L3YvGZJ3c=;
+	s=korg; t=1768214679;
+	bh=vz0eOsHuTl1oUgmL7Np3t3670UuRL3dtB++vfLcJ0fI=;
 	h=Subject:To:Cc:From:Date:From;
-	b=yDpmvSIJz2eRcsNaHbT6jAFSzoI3Lhz5k7c2pU0kUgC+lLIiJA1qxGR6dE1ssl38y
-	 ojJEJNe5jUUFY8aEgYdDuLVogc7yhtD1KDaWT0hakDdS+eozBcN+2raXw6yQwduKPS
-	 XvemBo8zLDv/mZ6hmJSEREFqjDkKVVScEBr/IqE0=
-Subject: FAILED: patch "[PATCH] PCI: meson: Report that link is up while in ASPM L0s and L1" failed to apply to 5.10-stable tree
-To: bhelgaas@google.com,linnaea-von-lavia@live.com,martin.blumenstingl@googlemail.com,neil.armstrong@linaro.org
+	b=LILH8yz3QvWlLeC5sApQy60rVLDSnRtZyV01k7z/jmJTDGv5O6SVfqatONZROb3mS
+	 lc8hAusKkV9gUGHDOcrCVoBZy/jQt7L6T9q6dKNEZvv8uPJZRMKswNGN/15CLKyHO0
+	 Lm6F90/RZZZZYc+iea5qwoYhuZNeLh0WQS6eRnN4=
+Subject: FAILED: patch "[PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as" failed to apply to 6.1-stable tree
+To: brgl@kernel.org,andersson@kernel.org,bartosz.golaszewski@linaro.org,dmitry.baryshkov@oss.qualcomm.com,linusw@kernel.org,val@packett.cool
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Jan 2026 11:44:24 +0100
-Message-ID: <2026011224-stopper-facing-f62e@gregkh>
+Date: Mon, 12 Jan 2026 11:44:36 +0100
+Message-ID: <2026011236-imaginary-sweep-d796@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x df27c03b9e3ef2baa9e9c9f56a771d463a84489d
+git cherry-pick -x ebc18e9854e5a2b62a041fb57b216a903af45b85
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011224-stopper-facing-f62e@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011236-imaginary-sweep-d796@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
@@ -75,98 +75,87 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From df27c03b9e3ef2baa9e9c9f56a771d463a84489d Mon Sep 17 00:00:00 2001
-From: Bjorn Helgaas <bhelgaas@google.com>
-Date: Mon, 3 Nov 2025 16:19:26 -0600
-Subject: [PATCH] PCI: meson: Report that link is up while in ASPM L0s and L1
- states
+From ebc18e9854e5a2b62a041fb57b216a903af45b85 Mon Sep 17 00:00:00 2001
+From: Bartosz Golaszewski <brgl@kernel.org>
+Date: Wed, 26 Nov 2025 13:22:19 +0100
+Subject: [PATCH] pinctrl: qcom: lpass-lpi: mark the GPIO controller as
+ sleeping
 
-Previously meson_pcie_link_up() only returned true if the link was in the
-L0 state.  This was incorrect because hardware autonomously manages
-transitions between L0, L0s, and L1 while both components on the link stay
-in D0.  Those states should all be treated as "link is active".
+The gpio_chip settings in this driver say the controller can't sleep
+but it actually uses a mutex for synchronization. This triggers the
+following BUG():
 
-Returning false when the device was in L0s or L1 broke config accesses
-because dw_pcie_other_conf_map_bus() fails if the link is down, which
-caused errors like this:
+[    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
+[    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
+[    9.233669] preempt_count: 1, expected: 0
+[    9.233673] RCU nest depth: 0, expected: 0
+[    9.233688] Tainted: [W]=WARN
+[    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
+[    9.233694] Call trace:
+[    9.233696]  show_stack+0x24/0x38 (C)
+[    9.233709]  dump_stack_lvl+0x40/0x88
+[    9.233716]  dump_stack+0x18/0x24
+[    9.233722]  __might_resched+0x148/0x160
+[    9.233731]  __might_sleep+0x38/0x98
+[    9.233736]  mutex_lock+0x30/0xd8
+[    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
+[    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
+[    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233779]  gpiod_direction_output+0x38/0xd0
+[    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
+[    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233806]  gpiod_configure_flags+0x2c0/0x580
+[    9.233812]  gpiod_find_and_request+0x358/0x4f8
+[    9.233819]  gpiod_get_index+0x7c/0x98
+[    9.233826]  devm_gpiod_get+0x34/0xb0
+[    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
+[    9.233836]  auxiliary_bus_probe+0xb0/0xf0
+[    9.233845]  really_probe+0x14c/0x450
+[    9.233853]  __driver_probe_device+0xb0/0x188
+[    9.233858]  driver_probe_device+0x4c/0x250
+[    9.233863]  __driver_attach+0xf8/0x2a0
+[    9.233868]  bus_for_each_dev+0xf8/0x158
+[    9.233872]  driver_attach+0x30/0x48
+[    9.233876]  bus_add_driver+0x158/0x2b8
+[    9.233880]  driver_register+0x74/0x118
+[    9.233886]  __auxiliary_driver_register+0x94/0xe8
+[    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
+[    9.233898]  do_one_initcall+0xec/0x300
+[    9.233903]  do_init_module+0x64/0x260
+[    9.233910]  load_module+0x16c4/0x1900
+[    9.233915]  __arm64_sys_finit_module+0x24c/0x378
+[    9.233919]  invoke_syscall+0x4c/0xe8
+[    9.233925]  el0_svc_common+0x8c/0xf0
+[    9.233929]  do_el0_svc+0x28/0x40
+[    9.233934]  el0_svc+0x38/0x100
+[    9.233938]  el0t_64_sync_handler+0x84/0x130
+[    9.233943]  el0t_64_sync+0x17c/0x180
 
-  meson-pcie fc000000.pcie: error: wait linkup timeout
-  pci 0000:01:00.0: BAR 0: error updating (0xfc700004 != 0xffffffff)
+Mark the controller as sleeping.
 
-Remove the LTSSM state check, timeout, speed check, and error message from
-meson_pcie_link_up(), the dw_pcie_ops.link_up() method, so it is a simple
-boolean check of whether the link is active.  Timeouts and error messages
-are handled at a higher level, e.g., dw_pcie_wait_for_link().
-
-Fixes: 9c0ef6d34fdb ("PCI: amlogic: Add the Amlogic Meson PCIe controller driver")
-Reported-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-Closes: https://lore.kernel.org/r/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com
-[bhelgaas: squash removal of unused WAIT_LINKUP_TIMEOUT by
-Martin Blumenstingl <martin.blumenstingl@googlemail.com>:
-https://patch.msgid.link/20260105125625.239497-1-martin.blumenstingl@googlemail.com]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on BananaPi M2S
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251103221930.1831376-1-helgaas@kernel.org
-Link: https://patch.msgid.link/20260105125625.239497-1-martin.blumenstingl@googlemail.com
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 
-diff --git a/drivers/pci/controller/dwc/pci-meson.c b/drivers/pci/controller/dwc/pci-meson.c
-index 54b6a4196f17..0694084f612b 100644
---- a/drivers/pci/controller/dwc/pci-meson.c
-+++ b/drivers/pci/controller/dwc/pci-meson.c
-@@ -37,7 +37,6 @@
- #define PCIE_CFG_STATUS17		0x44
- #define PM_CURRENT_STATE(x)		(((x) >> 7) & 0x1)
+diff --git a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+index 1c97ec44aa5f..78212f992843 100644
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -498,7 +498,7 @@ int lpi_pinctrl_probe(struct platform_device *pdev)
+ 	pctrl->chip.base = -1;
+ 	pctrl->chip.ngpio = data->npins;
+ 	pctrl->chip.label = dev_name(dev);
+-	pctrl->chip.can_sleep = false;
++	pctrl->chip.can_sleep = true;
  
--#define WAIT_LINKUP_TIMEOUT		4000
- #define PORT_CLK_RATE			100000000UL
- #define MAX_PAYLOAD_SIZE		256
- #define MAX_READ_REQ_SIZE		256
-@@ -350,40 +349,10 @@ static struct pci_ops meson_pci_ops = {
- static bool meson_pcie_link_up(struct dw_pcie *pci)
- {
- 	struct meson_pcie *mp = to_meson_pcie(pci);
--	struct device *dev = pci->dev;
--	u32 speed_okay = 0;
--	u32 cnt = 0;
--	u32 state12, state17, smlh_up, ltssm_up, rdlh_up;
-+	u32 state12;
+ 	mutex_init(&pctrl->lock);
  
--	do {
--		state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
--		state17 = meson_cfg_readl(mp, PCIE_CFG_STATUS17);
--		smlh_up = IS_SMLH_LINK_UP(state12);
--		rdlh_up = IS_RDLH_LINK_UP(state12);
--		ltssm_up = IS_LTSSM_UP(state12);
--
--		if (PM_CURRENT_STATE(state17) < PCIE_GEN3)
--			speed_okay = 1;
--
--		if (smlh_up)
--			dev_dbg(dev, "smlh_link_up is on\n");
--		if (rdlh_up)
--			dev_dbg(dev, "rdlh_link_up is on\n");
--		if (ltssm_up)
--			dev_dbg(dev, "ltssm_up is on\n");
--		if (speed_okay)
--			dev_dbg(dev, "speed_okay\n");
--
--		if (smlh_up && rdlh_up && ltssm_up && speed_okay)
--			return true;
--
--		cnt++;
--
--		udelay(10);
--	} while (cnt < WAIT_LINKUP_TIMEOUT);
--
--	dev_err(dev, "error: wait linkup timeout\n");
--	return false;
-+	state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
-+	return IS_SMLH_LINK_UP(state12) && IS_RDLH_LINK_UP(state12);
- }
- 
- static int meson_pcie_host_init(struct dw_pcie_rp *pp)
 
 
