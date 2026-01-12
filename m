@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-208184-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208185-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 08A37D1455A
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:26:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C31DD145ED
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:31:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0599330076A6
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:26:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BDD8A30341CE
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:26:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B378037B409;
-	Mon, 12 Jan 2026 17:26:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D4C502FD689;
+	Mon, 12 Jan 2026 17:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="VmV8g5U7"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="izfanSSx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8195B2FB998
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:26:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06B0E37BE84
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:26:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768238762; cv=none; b=N5oVY/FWV6eGtwq9y+ZvBmRD+Z6AXKfA2PxvGQcxuBTjQ86lanqi0QkOk+T83cnNzcH7LcIgU7nM0yB4z7JH5PUBySaGz20lnB9t65sAq6qNJOo6QjzQ3D9IFAq8j8zHweW4Y+RVzdvtAtGU+FahSBwY084AXsIC1MUblkiHajc=
+	t=1768238787; cv=none; b=fQ/BbLm5gC3xljwdIyOIK15XZD9MWESEe7/KnAfXqm/bcyBy0a64vuQkc54JND4GzFCc4LxG8ZAVFuxNrB5eCpYE8maRarVgapXjjdd5B3Vx118Vkjti9vYslkn/IDXRpuzK0qyfQ33W4mK6IszEqT/Ls5EDdCM3ZY0Ci5/GEtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768238762; c=relaxed/simple;
-	bh=jvepry4mvW5EGfyuIqcGZAM7CZsvyAULQVBCfO38+08=;
+	s=arc-20240116; t=1768238787; c=relaxed/simple;
+	bh=ddONS9IoHJJtKlcNp2vMisZsMh5tzNM0h0tOQUdNNsc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iyMdt7kyUyZXvjqdpWG57nNLb+7Jfp8FaH7+riodXtehUFzzyr+X/ODnETppVT1rrokLqFI0lwx+RYvkXsBo54IqZAIyqKSd4IKCc21COygfctKwAv7SQdeW5DG/8Ua1qC/6knazfSSxqrTSwah3G/MrX3gZ0YhVXjBxF4ea630=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=VmV8g5U7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CEFC19424;
-	Mon, 12 Jan 2026 17:26:01 +0000 (UTC)
+	 MIME-Version; b=nAwuy1ekJo0WACqlne141bpBpJ80nWZxfBSasToB3SkwkN2EBp/tHwLM90DOAvoEEawOu3qJ8ybxw47ckmmeoja9fgVx+2+6ILH3bkFepLV9P7DT7JLZPpFNbvHBl4dEMSFFA4TibISixrZODD9hMW9K6ULljhNEruJ2AQds/mo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=izfanSSx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 104DEC16AAE;
+	Mon, 12 Jan 2026 17:26:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768238761;
-	bh=jvepry4mvW5EGfyuIqcGZAM7CZsvyAULQVBCfO38+08=;
+	s=k20201202; t=1768238786;
+	bh=ddONS9IoHJJtKlcNp2vMisZsMh5tzNM0h0tOQUdNNsc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VmV8g5U7Y80xFNxJsP7hvidVUsgIjeVpkRU1LWmLuoH9+9QcSWjyLPoF4QbUYoxb/
-	 pBRq9uArIR+XmV0nQWebd9fFbTGtc8QOd4EmcZku/p430/E0Cf/zICFk/2O+RzjvCI
-	 VABlyvOKI/Z5vBlteS4aC5nM5WQUlZYtoRzRtGKZPV0XxsetNbSiw3RBXrqpoFVPXl
-	 +VJ2SNGbFg7FmzvUhH0Szwittnna8FAkyusS1BC7mqbNZoSyTlZ5AMH6ff+ESWYuOD
-	 M2EGme0EopILgYeW3/DWDX9AO8GqJ6VXMxcOz2+6pSFi2eDFobefynk9DEIHMAXxdM
-	 uw6rO+ID5TuEQ==
+	b=izfanSSxL1aEYpowV4FDX8RVtQGxu4ZvxEdqszKuRIzauOrUWslqalQIf2PM72LSV
+	 c3lx1fYlJUtNP64WIdCLGYC28XgDzbSz8p3JNWNLbmUEJ9DxCR3u0SjxnvQT/gjILZ
+	 OuKzt4SC/wOa5gzi66GiNYQGU1MujI3c7Tuj+zoG/uWj6OFhQiovpKgZPZ7N8LykDS
+	 3CVESjxPGQXCc30eknOz72yLcL/MzRwBSdx1lH2qwHwtrbNqw55wuGAyTseFRdm/xP
+	 1+a25cpite2vPJyJvBbQRiKhnesGYMs/guWpVLvF29cFMXOeXFPNB9ilpZB1yRu5++
+	 xHaRxrdhmqNsA==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
-Cc: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>,
+Cc: Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	William Breathitt Gray <wbg@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6.y 2/2] ALSA: ac97: fix a double free in snd_ac97_controller_register()
-Date: Mon, 12 Jan 2026 12:25:58 -0500
-Message-ID: <20260112172558.815821-2-sashal@kernel.org>
+Subject: [PATCH 5.15.y] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Mon, 12 Jan 2026 12:26:24 -0500
+Message-ID: <20260112172624.816367-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260112172558.815821-1-sashal@kernel.org>
-References: <2026011239-sustained-underpass-b703@gregkh>
- <20260112172558.815821-1-sashal@kernel.org>
+In-Reply-To: <2026011244-unbaked-pajamas-9c74@gregkh>
+References: <2026011244-unbaked-pajamas-9c74@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -59,65 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f ]
+[ Upstream commit 23f9485510c338476b9735d516c1d4aacb810d46 ]
 
-If ac97_add_adapter() fails, put_device() is the correct way to drop
-the device reference. kfree() is not required.
-Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
-the cleanup.
+An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+CONFIG_PROVE_RAW_LOCK_NESTING warns:
+=============================
+[ BUG: Invalid wait context ]
+6.18.0-rc1+git... #1
+-----------------------------
+some-user-space-process/1251 is trying to lock:
+(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+other info that might help us debug this:
+context-{2:2}
+no locks held by some-user-space-process/....
+stack backtrace:
+CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+Call trace:
+ show_stack (C)
+ dump_stack_lvl
+ dump_stack
+ __lock_acquire
+ lock_acquire
+ _raw_spin_lock_irqsave
+ counter_push_event [counter]
+ interrupt_cnt_isr [interrupt_cnt]
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_simple_irq
+ handle_irq_desc
+ generic_handle_domain_irq
+ gpio_irq_handler
+ handle_irq_desc
+ generic_handle_domain_irq
+ gic_handle_irq
+ call_on_irq_stack
+ do_interrupt_handler
+ el0_interrupt
+ __el0_irq_handler_common
+ el0t_64_irq_handler
+ el0t_64_irq
 
-Found by code review.
+... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+alternative to switching to raw_spinlock_t, because the latter would limit
+all potential nested locks to raw_spinlock_t only.
 
-Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20251118083603.778626-1-alexander.sverdlin@siemens.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/ac97/bus.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/counter/interrupt-cnt.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/sound/ac97/bus.c b/sound/ac97/bus.c
-index 1a966d74e8af6..b33a45560b8af 100644
---- a/sound/ac97/bus.c
-+++ b/sound/ac97/bus.c
-@@ -299,6 +299,7 @@ static void ac97_adapter_release(struct device *dev)
- 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
- 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
- 		dev_name(ac97_ctrl->parent));
-+	kfree(ac97_ctrl);
- }
+diff --git a/drivers/counter/interrupt-cnt.c b/drivers/counter/interrupt-cnt.c
+index 8514a87fcbee0..0492fce974e1b 100644
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -208,8 +208,7 @@ static int interrupt_cnt_probe(struct platform_device *pdev)
  
- static const struct device_type ac97_adapter_type = {
-@@ -320,7 +321,9 @@ static int ac97_add_adapter(struct ac97_controller *ac97_ctrl)
- 		ret = device_register(&ac97_ctrl->adap);
- 		if (ret)
- 			put_device(&ac97_ctrl->adap);
--	}
-+	} else
-+		kfree(ac97_ctrl);
-+
- 	if (!ret) {
- 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
- 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
-@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_controller_register(
- 	ret = ac97_add_adapter(ac97_ctrl);
- 
+ 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+-			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+-			       dev_name(dev), priv);
++			       IRQF_TRIGGER_RISING, dev_name(dev), priv);
  	if (ret)
--		goto err;
-+		return ERR_PTR(ret);
- 	ac97_bus_reset(ac97_ctrl);
- 	ac97_bus_scan(ac97_ctrl);
- 
- 	return ac97_ctrl;
--err:
--	kfree(ac97_ctrl);
--	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
+ 		return ret;
  
 -- 
 2.51.0
