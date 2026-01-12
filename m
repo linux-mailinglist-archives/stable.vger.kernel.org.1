@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-208189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208190-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9B81D1474C
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:45:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18812D14752
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 18:45:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 845BD300FF9D
+	by sea.lore.kernel.org (Postfix) with ESMTP id D60FE30173A7
 	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 17:44:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E49524397A;
-	Mon, 12 Jan 2026 17:44:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10F0C37BE8B;
+	Mon, 12 Jan 2026 17:44:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="V92VlNUr"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="i4uDe3IN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9F6F3570AE
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:44:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7FA83570AE
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 17:44:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768239884; cv=none; b=M6AgkdRjzk5kpeY+1RxjYigBsc6EGPfUWi8M8olfoZkfMDu0uBESQ9/O/jZD7xZILpwKc4zvFOd4vlyQE1dP/vVhAInS/jUNJkPXl1/KOgKUYY1EN7u+LMz+Odcti01zQM17avSgBR/PvS62k3HV1vrp36iSHVbxC+CZNaF+rw0=
+	t=1768239884; cv=none; b=vCvwussoa6A0BiiwYyXXWS2ToxCpQ+TjyXYI8dn52cnexk5LOmHMxtI8cUHcp63k80f7z2lvkrLlEl/bns823kejAFp2cvVQiTQqeWppUhgRwLou8Ely0YVMct9L4R1Yg51a14zAr2jJ3YYKNODv6u64tykGvg799MV+cc84IfM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
 	s=arc-20240116; t=1768239884; c=relaxed/simple;
-	bh=P0a4zuo1Ht4Is4v94qaQkNFdH71HMZDoI4AUWWNkka8=;
+	bh=UB08BAQAV0zDtBW98LMYKOhvxi76Ci948hPN45dY5u0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ONowR3YrPzUU7k4Ad7gGNaUe9OxJLfjIX6ngHRmiZDkMje1IcodTbS+ld8dUcWEzdYWCPDmn2sKSImWiva3RFjZpQYbUs+ABHRbQM55w2OgVyJ9/BfjpWzaaGhgs3rLWPPIBO0MtrfjKLkr02dxuXNRat/m+MmcT366hOSSNBJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=V92VlNUr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01391C116D0;
-	Mon, 12 Jan 2026 17:44:42 +0000 (UTC)
+	 MIME-Version; b=kxbUXjZ3UAfs3pHMYuQV3EQvQb0wcm2O9X+yJP0lumoNS0iMBLBnSZNH++SXI6P4FmYCdzXoNjGxtXevN9BjHsAzXy8KAGl1l1jQviAXvhoPRq33M4U0ubUZjm+0rXNqGyN5AEkx39z2Ayiyif4NsKw+2FupmcpH16aFV9fMHMk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=i4uDe3IN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9D11C19424;
+	Mon, 12 Jan 2026 17:44:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768239883;
-	bh=P0a4zuo1Ht4Is4v94qaQkNFdH71HMZDoI4AUWWNkka8=;
+	s=k20201202; t=1768239884;
+	bh=UB08BAQAV0zDtBW98LMYKOhvxi76Ci948hPN45dY5u0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V92VlNUrUgzl9gSwEsjQusuFWEmxsDxa4PVk2ZNr7FX12HAvuAN1b7dM1eN4OUIgI
-	 gE6mAQeG0C5xvss4wS/TfArcfzq6ETa72zRcrvykId+rHZFc8kXLat0YYqpn/mUb2Z
-	 gtsg4y2dwo6zu+f9HRIcqmaLp1vv2VzIwPUlmRDp0hAFDzspIGxHRL1AoVELBc56hI
-	 IFOTw/wvZOorb9S2qYwPjHfFksI2VsUVRBDYlRBDvNVtHJz37fcEmiyKRUuX67IbjP
-	 DqRWE1L7gjCwYIGTPoO06VTStQwZvd12Ih4/0gu3unnuv9vs80/ngLcEz3sXTs5ryc
-	 OUrLTPGB4Drcw==
+	b=i4uDe3IN4kCyEaDzWS2YMnJG+WPgkzsfbjJvtSCxbLothvRsJIKti6Sk+MuU1OM0d
+	 fO/7oGfZ3VRa1JWjDRFEcoGI9ix3LfK4MGfPywATeGCH0xOU+oJ9sbfm9zcf6f94ne
+	 4j+8k+y9SkcpuPvPrnE4Ip9SScDGAWjcu5Sfa9Dg/O1a8EO+SbARz6xnPSaeu3q8wz
+	 yCVFkQVPjF0hMwAE2dtO3DaA9Z64AVlyEOs8+BFkktRBD+0aClgvKHZHokgqIN++NI
+	 xWUi6yoFFF1odGtp3gUYNiWESywzum06ZZ5jBZeAavinJ7j/0SpKBttF6wMPPxcMd9
+	 v1HbFy6ZMtZPg==
 From: Sasha Levin <sashal@kernel.org>
 To: stable@vger.kernel.org
 Cc: Mary Strodl <mstrodl@csh.rit.edu>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
 	Linus Walleij <linus.walleij@linaro.org>,
 	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18.y 1/3] gpio: mpsse: ensure worker is torn down
-Date: Mon, 12 Jan 2026 12:44:39 -0500
-Message-ID: <20260112174441.830780-1-sashal@kernel.org>
+Subject: [PATCH 6.18.y 2/3] gpio: mpsse: add quirk support
+Date: Mon, 12 Jan 2026 12:44:40 -0500
+Message-ID: <20260112174441.830780-2-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
-In-Reply-To: <2026011202-scheming-operating-3cbb@gregkh>
+In-Reply-To: <20260112174441.830780-1-sashal@kernel.org>
 References: <2026011202-scheming-operating-3cbb@gregkh>
+ <20260112174441.830780-1-sashal@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -61,206 +63,243 @@ Content-Transfer-Encoding: 8bit
 
 From: Mary Strodl <mstrodl@csh.rit.edu>
 
-[ Upstream commit 179ef1127d7a4f09f0e741fa9f30b8a8e7886271 ]
+[ Upstream commit f13b0f72af238d63bb9a2e417657da8b45d72544 ]
 
-When an IRQ worker is running, unplugging the device would cause a
-crash. The sealevel hardware this driver was written for was not
-hotpluggable, so I never realized it.
+Builds out a facility for specifying compatible lines directions and
+labels for MPSSE-based devices.
 
-This change uses a spinlock to protect a list of workers, which
-it tears down on disconnect.
+* dir_in/out are bitmask of lines that can go in/out. 1 means
+  compatible, 0 means incompatible.
+* names is an array of line names which will be exposed to userspace.
+
+Also changes the chip label format to include some more useful
+information about the device to help identify it from userspace.
 
 Signed-off-by: Mary Strodl <mstrodl@csh.rit.edu>
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
 Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20251014133530.3592716-3-mstrodl@csh.rit.edu
+Link: https://lore.kernel.org/r/20251014133530.3592716-4-mstrodl@csh.rit.edu
 Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Stable-dep-of: 1e876e5a0875 ("gpio: mpsse: fix reference leak in gpio_mpsse_probe() error paths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-mpsse.c | 106 +++++++++++++++++++++++++++++++++++---
- 1 file changed, 99 insertions(+), 7 deletions(-)
+ drivers/gpio/gpio-mpsse.c | 109 ++++++++++++++++++++++++++++++++++++--
+ 1 file changed, 106 insertions(+), 3 deletions(-)
 
 diff --git a/drivers/gpio/gpio-mpsse.c b/drivers/gpio/gpio-mpsse.c
-index 9f42bb30b4ec7..8147b3ddb4a27 100644
+index 8147b3ddb4a27..e68179caafa62 100644
 --- a/drivers/gpio/gpio-mpsse.c
 +++ b/drivers/gpio/gpio-mpsse.c
-@@ -10,6 +10,7 @@
- #include <linux/cleanup.h>
- #include <linux/gpio/driver.h>
- #include <linux/mutex.h>
-+#include <linux/spinlock.h>
- #include <linux/usb.h>
+@@ -29,6 +29,9 @@ struct mpsse_priv {
+ 	u8 gpio_outputs[2];	     /* Output states for GPIOs [L, H] */
+ 	u8 gpio_dir[2];		     /* Directions for GPIOs [L, H] */
  
- struct mpsse_priv {
-@@ -17,8 +18,10 @@ struct mpsse_priv {
- 	struct usb_device *udev;     /* USB device encompassing all MPSSEs */
- 	struct usb_interface *intf;  /* USB interface for this MPSSE */
- 	u8 intf_id;                  /* USB interface number for this MPSSE */
--	struct work_struct irq_work; /* polling work thread */
-+	struct list_head workers;    /* polling work threads */
- 	struct mutex irq_mutex;	     /* lock over irq_data */
-+	struct mutex irq_race;	     /* race for polling worker teardown */
-+	raw_spinlock_t irq_spin;     /* protects worker list */
- 	atomic_t irq_type[16];	     /* pin -> edge detection type */
- 	atomic_t irq_enabled;
- 	int id;
-@@ -34,6 +37,14 @@ struct mpsse_priv {
- 	struct mutex io_mutex;	    /* sync I/O with disconnect */
++	unsigned long dir_in;        /* Bitmask of valid input pins  */
++	unsigned long dir_out;       /* Bitmask of valid output pins */
++
+ 	u8 *bulk_in_buf;	     /* Extra recv buffer to grab status bytes */
+ 
+ 	struct usb_endpoint_descriptor *bulk_in;
+@@ -54,6 +57,14 @@ struct bulk_desc {
+ 	int timeout;
  };
  
-+struct mpsse_worker {
-+	struct mpsse_priv  *priv;
-+	struct work_struct  work;
-+	atomic_t       cancelled;
-+	struct list_head    list;   /* linked list */
-+	struct list_head destroy;   /* teardown linked list */
++#define MPSSE_NGPIO 16
++
++struct mpsse_quirk {
++	const char   *names[MPSSE_NGPIO]; /* Pin names, if applicable     */
++	unsigned long dir_in;             /* Bitmask of valid input pins  */
++	unsigned long dir_out;            /* Bitmask of valid output pins */
 +};
 +
- struct bulk_desc {
- 	bool tx;	            /* direction of bulk transfer */
- 	u8 *data;                   /* input (tx) or output (rx) */
-@@ -284,18 +295,62 @@ static int gpio_mpsse_get_direction(struct gpio_chip *chip,
- 	return ret;
+ static const struct usb_device_id gpio_mpsse_table[] = {
+ 	{ USB_DEVICE(0x0c52, 0xa064) },   /* SeaLevel Systems, Inc. */
+ 	{ }                               /* Terminating entry */
+@@ -171,6 +182,32 @@ static int gpio_mpsse_get_bank(struct mpsse_priv *priv, u8 bank)
+ 	return buf;
  }
  
--static void gpio_mpsse_poll(struct work_struct *work)
-+/*
-+ * Stops all workers except `my_worker`.
-+ * Safe to call only when `irq_race` is held.
-+ */
-+static void gpio_mpsse_stop_all_except(struct mpsse_priv *priv,
-+				       struct mpsse_worker *my_worker)
++static int mpsse_ensure_supported(struct gpio_chip *chip,
++				  unsigned long mask, int direction)
 +{
-+	struct mpsse_worker *worker, *worker_tmp;
-+	struct list_head destructors = LIST_HEAD_INIT(destructors);
++	unsigned long supported, unsupported;
++	char *type = "input";
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
 +
-+	scoped_guard(raw_spinlock_irqsave, &priv->irq_spin) {
-+		list_for_each_entry_safe(worker, worker_tmp,
-+					 &priv->workers, list) {
-+			/* Don't stop ourselves */
-+			if (worker == my_worker)
-+				continue;
-+
-+			list_del(&worker->list);
-+
-+			/* Give worker a chance to terminate itself */
-+			atomic_set(&worker->cancelled, 1);
-+			/* Keep track of stuff to cancel */
-+			INIT_LIST_HEAD(&worker->destroy);
-+			list_add(&worker->destroy, &destructors);
-+		}
++	supported = priv->dir_in;
++	if (direction == GPIO_LINE_DIRECTION_OUT) {
++		supported = priv->dir_out;
++		type = "output";
 +	}
 +
-+	list_for_each_entry_safe(worker, worker_tmp,
-+				 &destructors, destroy) {
-+		list_del(&worker->destroy);
-+		cancel_work_sync(&worker->work);
-+		kfree(worker);
++	/* An invalid bit was in the provided mask */
++	unsupported = mask & ~supported;
++	if (unsupported) {
++		dev_err(&priv->udev->dev,
++			"mpsse: GPIO %lu doesn't support %s\n",
++			find_first_bit(&unsupported, sizeof(unsupported) * 8),
++			type);
++		return -EOPNOTSUPP;
 +	}
++
++	return 0;
 +}
 +
-+static void gpio_mpsse_poll(struct work_struct *my_work)
+ static int gpio_mpsse_set_multiple(struct gpio_chip *chip, unsigned long *mask,
+ 				   unsigned long *bits)
  {
- 	unsigned long pin_mask, pin_states, flags;
- 	int irq_enabled, offset, err, value, fire_irq,
- 		irq, old_value[16], irq_type[16];
--	struct mpsse_priv *priv = container_of(work, struct mpsse_priv,
--					       irq_work);
-+	struct mpsse_worker *my_worker = container_of(my_work, struct mpsse_worker, work);
-+	struct mpsse_priv *priv = my_worker->priv;
+@@ -178,6 +215,10 @@ static int gpio_mpsse_set_multiple(struct gpio_chip *chip, unsigned long *mask,
+ 	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
  
- 	for (offset = 0; offset < priv->gpio.ngpio; ++offset)
- 		old_value[offset] = -1;
- 
--	while ((irq_enabled = atomic_read(&priv->irq_enabled))) {
-+	/*
-+	 * We only want one worker. Workers race to acquire irq_race and tear
-+	 * down all other workers. This is a cond guard so that we don't deadlock
-+	 * trying to cancel a worker.
-+	 */
-+	scoped_cond_guard(mutex_try, return, &priv->irq_race)
-+		gpio_mpsse_stop_all_except(priv, my_worker);
++	ret = mpsse_ensure_supported(chip, *mask, GPIO_LINE_DIRECTION_OUT);
++	if (ret)
++		return ret;
 +
-+	while ((irq_enabled = atomic_read(&priv->irq_enabled)) &&
-+	       !atomic_read(&my_worker->cancelled)) {
- 		usleep_range(MPSSE_POLL_INTERVAL, MPSSE_POLL_INTERVAL + 1000);
- 		/* Cleanup will trigger at the end of the loop */
- 		guard(mutex)(&priv->irq_mutex);
-@@ -370,21 +425,45 @@ static int gpio_mpsse_set_irq_type(struct irq_data *irqd, unsigned int type)
+ 	guard(mutex)(&priv->io_mutex);
+ 	for_each_set_clump8(i, bank_mask, mask, chip->ngpio) {
+ 		bank = i / 8;
+@@ -205,6 +246,10 @@ static int gpio_mpsse_get_multiple(struct gpio_chip *chip, unsigned long *mask,
+ 	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
  
- static void gpio_mpsse_irq_disable(struct irq_data *irqd)
++	ret = mpsse_ensure_supported(chip, *mask, GPIO_LINE_DIRECTION_IN);
++	if (ret)
++		return ret;
++
+ 	guard(mutex)(&priv->io_mutex);
+ 	for_each_set_clump8(i, bank_mask, mask, chip->ngpio) {
+ 		bank = i / 8;
+@@ -253,10 +298,15 @@ static int gpio_mpsse_gpio_set(struct gpio_chip *chip, unsigned int offset,
+ static int gpio_mpsse_direction_output(struct gpio_chip *chip,
+ 				       unsigned int offset, int value)
  {
-+	struct mpsse_worker *worker;
- 	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
++	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
+ 	int bank = (offset & 8) >> 3;
+ 	int bank_offset = offset & 7;
  
- 	atomic_and(~BIT(irqd->hwirq), &priv->irq_enabled);
- 	gpiochip_disable_irq(&priv->gpio, irqd->hwirq);
++	ret = mpsse_ensure_supported(chip, BIT(offset), GPIO_LINE_DIRECTION_OUT);
++	if (ret)
++		return ret;
 +
-+	/*
-+	 * Can't actually do teardown in IRQ context (it blocks).
-+	 * As a result, these workers will stick around until irq is reenabled
-+	 * or device gets disconnected
-+	 */
-+	scoped_guard(raw_spinlock_irqsave, &priv->irq_spin)
-+		list_for_each_entry(worker, &priv->workers, list)
-+			atomic_set(&worker->cancelled, 1);
+ 	scoped_guard(mutex, &priv->io_mutex)
+ 		priv->gpio_dir[bank] |= BIT(bank_offset);
+ 
+@@ -266,10 +316,15 @@ static int gpio_mpsse_direction_output(struct gpio_chip *chip,
+ static int gpio_mpsse_direction_input(struct gpio_chip *chip,
+ 				      unsigned int offset)
+ {
++	int ret;
+ 	struct mpsse_priv *priv = gpiochip_get_data(chip);
+ 	int bank = (offset & 8) >> 3;
+ 	int bank_offset = offset & 7;
+ 
++	ret = mpsse_ensure_supported(chip, BIT(offset), GPIO_LINE_DIRECTION_IN);
++	if (ret)
++		return ret;
++
+ 	guard(mutex)(&priv->io_mutex);
+ 	priv->gpio_dir[bank] &= ~BIT(bank_offset);
+ 	gpio_mpsse_set_bank(priv, bank);
+@@ -483,18 +538,49 @@ static void gpio_mpsse_ida_remove(void *data)
+ 	ida_free(&gpio_mpsse_ida, priv->id);
  }
  
- static void gpio_mpsse_irq_enable(struct irq_data *irqd)
++static int mpsse_init_valid_mask(struct gpio_chip *chip,
++				 unsigned long *valid_mask,
++				 unsigned int ngpios)
++{
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	if (WARN_ON(priv == NULL))
++		return -ENODEV;
++
++	*valid_mask = priv->dir_in | priv->dir_out;
++
++	return 0;
++}
++
++static void mpsse_irq_init_valid_mask(struct gpio_chip *chip,
++				      unsigned long *valid_mask,
++				      unsigned int ngpios)
++{
++	struct mpsse_priv *priv = gpiochip_get_data(chip);
++
++	if (WARN_ON(priv == NULL))
++		return;
++
++	/* Can only use IRQ on input capable pins */
++	*valid_mask = priv->dir_in;
++}
++
+ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 			    const struct usb_device_id *id)
  {
-+	struct mpsse_worker *worker;
- 	struct mpsse_priv *priv = irq_data_get_irq_chip_data(irqd);
+ 	struct mpsse_priv *priv;
+ 	struct device *dev;
++	char *serial;
+ 	int err;
++	struct mpsse_quirk *quirk = (void *)id->driver_info;
  
- 	gpiochip_enable_irq(&priv->gpio, irqd->hwirq);
- 	/* If no-one else was using the IRQ, enable it */
- 	if (!atomic_fetch_or(BIT(irqd->hwirq), &priv->irq_enabled)) {
--		INIT_WORK(&priv->irq_work, gpio_mpsse_poll);
--		schedule_work(&priv->irq_work);
-+		/*
-+		 * Can't be devm because it uses a non-raw spinlock (illegal in
-+		 * this context, where a raw spinlock is held by our caller)
-+		 */
-+		worker = kzalloc(sizeof(*worker), GFP_NOWAIT);
-+		if (!worker)
-+			return;
-+
-+		worker->priv = priv;
-+		INIT_LIST_HEAD(&worker->list);
-+		INIT_WORK(&worker->work, gpio_mpsse_poll);
-+		schedule_work(&worker->work);
-+
-+		scoped_guard(raw_spinlock_irqsave, &priv->irq_spin)
-+			list_add(&worker->list, &priv->workers);
- 	}
- }
+ 	dev = &interface->dev;
+ 	priv = devm_kzalloc(dev, sizeof(*priv), GFP_KERNEL);
+ 	if (!priv)
+ 		return -ENOMEM;
  
-@@ -436,6 +515,12 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
- 	if (err)
- 		return err;
- 
-+	err = devm_mutex_init(dev, &priv->irq_race);
-+	if (err)
-+		return err;
++	INIT_LIST_HEAD(&priv->workers);
 +
-+	raw_spin_lock_init(&priv->irq_spin);
+ 	priv->udev = usb_get_dev(interface_to_usbdev(interface));
+ 	priv->intf = interface;
+ 	priv->intf_id = interface->cur_altsetting->desc.bInterfaceNumber;
+@@ -521,9 +607,15 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 
+ 	raw_spin_lock_init(&priv->irq_spin);
+ 
++	serial = priv->udev->serial;
++	if (!serial)
++		serial = "NONE";
 +
  	priv->gpio.label = devm_kasprintf(dev, GFP_KERNEL,
- 					  "gpio-mpsse.%d.%d",
- 					  priv->id, priv->intf_id);
-@@ -506,6 +591,13 @@ static void gpio_mpsse_disconnect(struct usb_interface *intf)
- {
- 	struct mpsse_priv *priv = usb_get_intfdata(intf);
+-					  "gpio-mpsse.%d.%d",
+-					  priv->id, priv->intf_id);
++					  "MPSSE%04x:%04x.%d.%d.%s",
++					  id->idVendor, id->idProduct,
++					  priv->intf_id, priv->id,
++					  serial);
+ 	if (!priv->gpio.label)
+ 		return -ENOMEM;
  
-+	/*
-+	 * Lock prevents double-free of worker from here and the teardown
-+	 * step at the beginning of gpio_mpsse_poll
-+	 */
-+	scoped_guard(mutex, &priv->irq_race)
-+		gpio_mpsse_stop_all_except(priv, NULL);
+@@ -537,10 +629,20 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 	priv->gpio.get_multiple = gpio_mpsse_get_multiple;
+ 	priv->gpio.set_multiple = gpio_mpsse_set_multiple;
+ 	priv->gpio.base = -1;
+-	priv->gpio.ngpio = 16;
++	priv->gpio.ngpio = MPSSE_NGPIO;
+ 	priv->gpio.offset = priv->intf_id * priv->gpio.ngpio;
+ 	priv->gpio.can_sleep = 1;
+ 
++	if (quirk) {
++		priv->dir_out = quirk->dir_out;
++		priv->dir_in = quirk->dir_in;
++		priv->gpio.names = quirk->names;
++		priv->gpio.init_valid_mask = mpsse_init_valid_mask;
++	} else {
++		priv->dir_in = U16_MAX;
++		priv->dir_out = U16_MAX;
++	}
 +
- 	priv->intf = NULL;
- 	usb_set_intfdata(intf, NULL);
- 	usb_put_dev(priv->udev);
+ 	err = usb_find_common_endpoints(interface->cur_altsetting,
+ 					&priv->bulk_in, &priv->bulk_out,
+ 					NULL, NULL);
+@@ -579,6 +681,7 @@ static int gpio_mpsse_probe(struct usb_interface *interface,
+ 	priv->gpio.irq.parents = NULL;
+ 	priv->gpio.irq.default_type = IRQ_TYPE_NONE;
+ 	priv->gpio.irq.handler = handle_simple_irq;
++	priv->gpio.irq.init_valid_mask = mpsse_irq_init_valid_mask;
+ 
+ 	err = devm_gpiochip_add_data(dev, &priv->gpio, priv);
+ 	if (err)
 -- 
 2.51.0
 
