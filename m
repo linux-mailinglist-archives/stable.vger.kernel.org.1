@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208092-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208093-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15981D11F78
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:41:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FCC6D11F96
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:43:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AA6043006E06
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:41:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E24BE30D1BD4
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:41:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 52D1127A123;
-	Mon, 12 Jan 2026 10:41:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ADE231AA9B;
+	Mon, 12 Jan 2026 10:41:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPS3hmcK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O+nbMjJT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0DC2630F815
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:41:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E387527A123
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:41:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768214510; cv=none; b=A0xEUqt8PNProXLUk+X7ufg7fzxB8HaM9Ofqlo4YjL/VpunBqkSTUI+BcGDj374O6eeLKavbYkhBiqlteHNnV6QjrdE6w2BoRhrF/RFCa41cvC1+W0p2Ps8pcEqmubOv81GUIJVGFuNCxZiMnXdW8nSCkCh+zkjceEjNY+T1PWQ=
+	t=1768214513; cv=none; b=CnDXEYADB49NeoI6bFwuwbJUGD96bN6FCCj0Kuq4m/yVg44Cu48j9gIQvwlheOVMtcDT1y5pC6lQkddNIRm/rFcMy4AUW1SPTdAwqVI3VdhyDh5TNuyRsdirFUqIkuWb9TqejtMmWs/fjDG6lQrgWrxy7xLSqhLKBYy8z/9fE+c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768214510; c=relaxed/simple;
-	bh=KyWix8r85dy8LRvu/2OxfXUK+uccKCgiy7+bAmKcnMc=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=iastEQYX67/xUIzPQ5a5yNQVW8TsHoquhFjd0WFfSvhiyw8uANrhFq5anQaCjzk1wgGvXs8iiszbYNymXygWpz20VGmuTLm3wEwbx1HUDH2mKOPYmFwYh+TwD79CvF9OIu2aUvphsxzYLqPf4+J24+umQ+FV+qS0gyrEVyZ4htE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPS3hmcK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C809C16AAE;
-	Mon, 12 Jan 2026 10:41:49 +0000 (UTC)
+	s=arc-20240116; t=1768214513; c=relaxed/simple;
+	bh=P+iil04i8li4TRA36yB/DoHAr8Jr6Xm/9L4drTYKxxY=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=mUrC6Bq0Eg2FejB2G31FN03aI+osqPIZy6utXHpADuNwhH/k22yqPnQbk3VIWt+7m6dDJ+n60RbAiMnMJXJTUOJtHgy6KqpoNNP4LnIN8Q5swVy8i6C47ZL+J0X2uJacwzJ0CIvl1Up4EbAPeDdZsQAqBYEv/sL40uU7yKE28fc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O+nbMjJT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380E1C19421;
+	Mon, 12 Jan 2026 10:41:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768214509;
-	bh=KyWix8r85dy8LRvu/2OxfXUK+uccKCgiy7+bAmKcnMc=;
+	s=korg; t=1768214512;
+	bh=P+iil04i8li4TRA36yB/DoHAr8Jr6Xm/9L4drTYKxxY=;
 	h=Subject:To:Cc:From:Date:From;
-	b=UPS3hmcKzITxoymAQBCF2HRK7UCvuYzlxas0sC0g61heP4y9mcHInDH+79U+zk9Tc
-	 lhYm3G0Ro8/pzkBIaohNiTs0e3sWc0Zg6xiY8p7i+hpsu85WYQtilNVxJnitTXH09R
-	 t/NLdaT5VXUI2nJ4INb/wGeX+mv5mHqZMvo5R0b4=
-Subject: FAILED: patch "[PATCH] ALSA: ac97: fix a double free in" failed to apply to 6.1-stable tree
+	b=O+nbMjJTxKamriXV0nF+m/KRfk9qpDYORmjMORjsCkgW2x+pAvRFpOMqYJBb8Q1V0
+	 MBN+ldhlMmfULofjIO4zrGKJGGOkM9e5gkVw6qw+wnDjR1+corTnbQ0KU483UJWB6N
+	 2sIuMxWQLmW2GLDNm8dQF0m0MsIg9YJJIHRTtMng=
+Subject: FAILED: patch "[PATCH] ALSA: ac97: fix a double free in" failed to apply to 6.6-stable tree
 To: lihaoxiang@isrc.iscas.ac.cn,tiwai@suse.de
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
 Date: Mon, 12 Jan 2026 11:41:39 +0100
-Message-ID: <2026011239-rockband-chewable-857b@gregkh>
+Message-ID: <2026011239-sustained-underpass-b703@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 6.6-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.6.y
 git checkout FETCH_HEAD
 git cherry-pick -x 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011239-rockband-chewable-857b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011239-sustained-underpass-b703@gregkh' --subject-prefix 'PATCH 6.6.y' HEAD^..
 
 Possible dependencies:
 
