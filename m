@@ -1,46 +1,46 @@
-Return-Path: <stable+bounces-208070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208072-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A44D5D11E7F
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:33:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 89409D11E4E
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 11:32:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17F0F30517EC
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:32:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09F3930087B2
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 10:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DB88248F57;
-	Mon, 12 Jan 2026 10:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 295BA2D0C9A;
+	Mon, 12 Jan 2026 10:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLY7XJyC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j0sBe9am"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 522B827A122
-	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E154B248F57
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 10:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768213946; cv=none; b=bjEmZrY0a2Q7zbZxQRaNWcs4fhtq0fDCZ54P61RAWPNE/gmLIme/MKL3/VOcK8giEvO78ZcspUJc8mNRSsDYk5eV5w7sBq8TNkR66Z0fvbwzFqYGm5cMktyzyuawU5YeLmrpTqvSGQY1RzIGEhUhQ+YiXpnuZkjw80Kl2XlRozM=
+	t=1768213958; cv=none; b=RR7IvbES1hit74kqsANTF0pVyX5McXDaVc+1IRoK8xDI8TRsrjDPt5I6xtvXj5UE6+h79nwWLPZxVC4hP5Y7Y93WVAU5i3bwVHaS9jGRumG7ozSocIP8g1ZpmSeqLQfIKodc7/VYwZ0b+krvN7n//2QPuUv44xfJlZrK1IW6eo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768213946; c=relaxed/simple;
-	bh=NmpXUWcO4XCvFXw03PRY+zFtwdOOG6TOaFn42NSADAA=;
-	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=ba+cGAwUTh8buvluiTQ2PgAke4ZwP/ZuBe7Ud+bR1VC2S8LE00LPLaBfvBkNhpD50C8p3yx87hhkRv6YKU6JBXTDWpKU1K0o7gbp3YJJUl2v024oEht7ACTpLgk7R3TSZGI73ScCs2NXbTAsyB974DIWqTB4YAJhk4NRHoJh3DU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLY7XJyC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C1CC19422;
-	Mon, 12 Jan 2026 10:32:25 +0000 (UTC)
+	s=arc-20240116; t=1768213958; c=relaxed/simple;
+	bh=dLK6Hxk9XBF0PovXiJUjXEMrlF1+vjeOc4OHwXiRDb8=;
+	h=Subject:To:Cc:From:Date:Message-ID:MIME-Version:Content-Type; b=NyLKX9m3BrGt+35/653FnjurYKwVbrWKilc457ezmTjGB0VUrEQ5A72rcQHnKeATQmoydemwQvwX5oxMeaS1HM4IyYJX9MIOB2GmTY6036diUQX8kVqLpLaAFvq/nlMZxNAEiwuf0SR/CxSGMiZZbqUhiNK2N3U/FG8t9eHcXjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j0sBe9am; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2AAECC19421;
+	Mon, 12 Jan 2026 10:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768213946;
-	bh=NmpXUWcO4XCvFXw03PRY+zFtwdOOG6TOaFn42NSADAA=;
+	s=korg; t=1768213957;
+	bh=dLK6Hxk9XBF0PovXiJUjXEMrlF1+vjeOc4OHwXiRDb8=;
 	h=Subject:To:Cc:From:Date:From;
-	b=ZLY7XJyCZashv+Ich00FMfZY7H9/DXFa4gr/vFZNlD9aej9ohhi5q+gHr0TU7q4Rs
-	 DYQmqXk/Nfkp3kv8AsdB8YYbB786sVIvONAaANfHsE7ES6RAeCC25Ehp7F8/xhilIk
-	 pMYlxqRG5Xfx4Kr54Lp/IZ2ZTyGVavRhSl3vcpps=
-Subject: FAILED: patch "[PATCH] nfsd: provide locking for v4_end_grace" failed to apply to 6.1-stable tree
+	b=j0sBe9amwVHtX72Hgely+vKJ3E1UlncGMQKAS5YtgEJpopNnlslFl1yut+YgKldYx
+	 euPNfxrlEdoNjComkLiV76YBHhTLQe2BehxOueE2nzlzCR9xcmwjYPUP7g+hx6pwE4
+	 LLS8xIwG0WoB7j0aEOeIPFR5ahWkPrI38K6+F8jw=
+Subject: FAILED: patch "[PATCH] nfsd: provide locking for v4_end_grace" failed to apply to 5.10-stable tree
 To: neil@brown.name,chuck.lever@oracle.com,jlayton@kernel.org,lilingfeng3@huawei.com
 Cc: <stable@vger.kernel.org>
 From: <gregkh@linuxfoundation.org>
-Date: Mon, 12 Jan 2026 11:32:23 +0100
-Message-ID: <2026011222-abdomen-balsamic-f41c@gregkh>
+Date: Mon, 12 Jan 2026 11:32:24 +0100
+Message-ID: <2026011224-thesaurus-unmixed-7797@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -51,19 +51,19 @@ Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2857bd59feb63fcf40fe4baf55401baea6b4feb4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011222-abdomen-balsamic-f41c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2026011224-thesaurus-unmixed-7797@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
