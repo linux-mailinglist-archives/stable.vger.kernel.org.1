@@ -1,172 +1,182 @@
-Return-Path: <stable+bounces-208130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208131-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80093D134CD
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:50:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B410BD1351B
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 15:52:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D5AB303B7F8
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:46:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1CD53063F6C
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:47:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E5C7B2C0F84;
-	Mon, 12 Jan 2026 14:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB92E2BDC32;
+	Mon, 12 Jan 2026 14:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b="DFNd2RQe"
+	dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b="mKEUVPHR"
 X-Original-To: stable@vger.kernel.org
-Received: from mout.web.de (mout.web.de [212.227.17.12])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-qk1-f175.google.com (mail-qk1-f175.google.com [209.85.222.175])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 916752BE035;
-	Mon, 12 Jan 2026 14:46:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=212.227.17.12
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C19512BE035
+	for <stable@vger.kernel.org>; Mon, 12 Jan 2026 14:47:46 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.222.175
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229169; cv=none; b=ObnKmbWRjIEGbkVAu94DEADj46R2D/TDgalyeOm8EWhZNnyPohjYKepHwpgQ4BWuXJjzuAd7fBH1m+uAyavFYDEWVgU7fAiKlhUChCvkZyPfOOIdAwzqbLPTn5srXZjlFVuEyJladDFVQhLVujdi9NzZiXa0/FWMdBpdyxArrWk=
+	t=1768229268; cv=none; b=NIy3OsaaceuK0g2Z02dHMmfc1Fn7Nwn4xrV8nW2ZXhJNMHkHE+1MZsoE4u50NGW9Zsi77j3TkgNL2GQfmeyZjTzmOr41lQhpXmOfcRMxtALeYBHY8KZP6MLubNicXAECW7rGWvrbd5nF+NW1eWPrPvhjvckJqzXC3WcfHRgq1FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229169; c=relaxed/simple;
-	bh=5ur1Gzj7guYiRJZW24c7QKcGu2iWe342xXnusclpnts=;
-	h=Message-ID:Date:MIME-Version:To:Cc:References:Subject:From:
-	 In-Reply-To:Content-Type; b=FrmpdDnQC1Z6pSVvb5BFLTn0pQ43zzQJP6fn75amgdkqKKD+1HUh88K/uCUOH9pPNhUoAAkOtlbQUK1V7MsLbStpiM6owaWVHpnKswQPk+z+0s0TlTH6VzCjJAEjgw238XivG8Pjo9gVRDTPjQza8QqFd8I4V3elwXOG/vEc2Rc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de; spf=pass smtp.mailfrom=web.de; dkim=pass (2048-bit key) header.d=web.de header.i=markus.elfring@web.de header.b=DFNd2RQe; arc=none smtp.client-ip=212.227.17.12
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=web.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=web.de
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=web.de;
-	s=s29768273; t=1768229162; x=1768833962; i=markus.elfring@web.de;
-	bh=JB3LMZssOC1R7HPEWMIahRL/6h3qVOlsb2QWOfHvkSs=;
-	h=X-UI-Sender-Class:Message-ID:Date:MIME-Version:To:Cc:References:
-	 Subject:From:In-Reply-To:Content-Type:Content-Transfer-Encoding:
-	 cc:content-transfer-encoding:content-type:date:from:message-id:
-	 mime-version:reply-to:subject:to;
-	b=DFNd2RQeTcl7cOt+nep42ABUF8OuRRwFf/GWhkLWIzZJlOvzTtVBWnqvWtTd3N2S
-	 qoctqabKCA8ENsEucYI4Zd6vFuC+xym5q/bAAuMPNmMJcfq3/KzczN1jIKEdC1UT6
-	 Kx6J8SHJqavA1g3HGB51jIkRN2uzzYJjkEYyDXqPyZ9rZMtLW3K9IcfSCet2RaL8K
-	 wQ5dzvaYCqD0I/+GiLpXXIjqaHqYthcF86U3he47bKnKw7k8ucw67+plxQ79KVZbx
-	 i3O+7mMhIzjpmrqhZxjcHippWm9gYIKgtGhee1hvtFEEp0GhKHRmkwYzpjn2F1tLs
-	 dz0UhigjLBtYC1HnLw==
-X-UI-Sender-Class: 814a7b36-bfc1-4dae-8640-3722d8ec6cd6
-Received: from [192.168.178.29] ([94.31.92.241]) by smtp.web.de (mrweb106
- [213.165.67.124]) with ESMTPSA (Nemesis) id 1MtyA2-1vyD4g0wn6-012qGd; Mon, 12
- Jan 2026 15:46:02 +0100
-Message-ID: <32d0d8bb-0bf2-47ed-abfb-d84b475ab16a@web.de>
-Date: Mon, 12 Jan 2026 15:46:01 +0100
+	s=arc-20240116; t=1768229268; c=relaxed/simple;
+	bh=Q7uNIoVs6EvhTLNsF+A8tnPvlJqfykDARYEptFQK0rk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=qjUE2br8IFfQ2Zk8Y2PNCE+vEhTNrtFUNeQMjOk2tdyBytWsU8OUJn+Dg44pmk1nb+u7XT2Lo16k1jaeI5jXlX7yg4hy5nYDKbWNocoB0tnlZ7+YibsC/1zotnsvXjm0loJFWwEX1BeQw8egicYTNB0xwOeLhXjxyKGa3zRGlWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu; spf=fail smtp.mailfrom=g.harvard.edu; dkim=pass (2048-bit key) header.d=rowland.harvard.edu header.i=@rowland.harvard.edu header.b=mKEUVPHR; arc=none smtp.client-ip=209.85.222.175
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=rowland.harvard.edu
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=g.harvard.edu
+Received: by mail-qk1-f175.google.com with SMTP id af79cd13be357-8b2ea2b9631so744624485a.3
+        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 06:47:46 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rowland.harvard.edu; s=google; t=1768229266; x=1768834066; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=66Wy9X7ugeW5bewzeljPlJ6DqPEghHzvFsNM3r+AfsU=;
+        b=mKEUVPHRt16xBTNGK2ZwJqMIwuok/3omAuXfn6jpwelRs9DntTUtH5V14+PEC1E50C
+         ztZ5xafbhSJyHYkLmYez1e/+Xz7RZyf35pkO8LbzwRnisON6S2lySgs+ri5nVERxeRjT
+         Mdt5SHbBHtqt3fbKKUy2ONrE+050PC81/X53xNI/nCj7LjO70EBm9tYoGwX0EptALuTM
+         IkuTdUa3pOCb+vOKOLMJeqLIZ7+L9KZtQBS94wRuJB2cKhmkU0SFaZ3WrPOTT/CAt+kz
+         6K9hGQ2GZsemj2EPLDDmP8k5rmA+TreQFsDk+WaCiF50PMQ+mV5B6UaMnUTiKI3VZLg4
+         +/vg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768229266; x=1768834066;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=66Wy9X7ugeW5bewzeljPlJ6DqPEghHzvFsNM3r+AfsU=;
+        b=DIJf0Ml4nA0Y/+2xO/8+cO7ysB7lR3dBk7zxNE9deWDCZGjUxG7sJfTV+cM3SfcbEY
+         CfTPoG8cODWe/PohRHI5vbX8vpz9JVSBNb2aEoq0eMXRyszU6MphxM1o44RcTTcY8KZg
+         +xYS4yHgAogTFxcqHEa0WZwNu4wKZM9SFeEqjA1sA8GSYY7YH3+YZaAFqzA+uIGmri0O
+         dr4B4zqd6DnvvcrNlJxSf0f3gg/FdK6KytJX/PjBZeFoaWkdFgEd0PsOqbAvxof1DuYP
+         wfsLxO6tXEMU7ODj1ezQ8Q4JqaS11vYyALPlgHQpQ/4478WjePHH1uZsz5pYUTClyPqa
+         NLrw==
+X-Forwarded-Encrypted: i=1; AJvYcCVLh+TCmutdq/N6Zhgo9/nOPdaMLCmas2hn51xF5qwreZ3N4aVJ/6MTUTC1q89UqU89HsgncB4=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yxfyx71PaQxutJ8IBkIx+vq4SnhtVMCa4VcxWLk8sPcBst00U5F
+	ur445lPqtZs+Oz7zdsplyipZDI+opwbf6Q+Xi51LNW3vdUFt3gDLLRdfETlutaqcIw==
+X-Gm-Gg: AY/fxX7kr69zmuDQoF3Vi1TpbXPnj0gGGTDwCOMqMy+SnAqm8S9PW4ECpmYrt7+ZBgG
+	Q6mQKI6DSjJWvwVNtarXK/FcOoy3s5K3t8jwWXuNvmB/odYA8kyxauE6pvbajss9NVakVS/8ju2
+	XYIMz1NVIDxGwT6XDppjmN8Zxnjg4PgCkzzWe1wy2RUrGNA737ly2WCi0C0lRMphJNl0996hBan
+	W4agwb1fFdsjr404+2QzQMEk7zUBr2AS/jc/rSzwFNGTpELkWRbsDJovehzkqq4Bi1tYwkRsUp3
+	b0ybIefcKFO5UC+tiQVPhXTYrLpBzgtQVjVHJhnZjRJ/1lvl+ppfatzEM5KlMEnOBkLJhCvejrL
+	qE/f2rQfC4gCqMe9CstIUtapWiPV0okFH7uMtSiglunQ/sJTSu/AoYCMnS1ZuUiRG9gtDnnt6s/
+	JGApzsCrFBjs5S4sT0k+evFxx/e5XIDA==
+X-Google-Smtp-Source: AGHT+IHNPfK5E/6kxAdWbW5EOVjXjBOCl0/onefYJWefU+oa4TlgqTn3RHl/5dDKkgIMPHHkE2sRPQ==
+X-Received: by 2002:a05:620a:46ab:b0:85c:bb2:ad8c with SMTP id af79cd13be357-8c389406276mr2499235885a.74.1768229265555;
+        Mon, 12 Jan 2026 06:47:45 -0800 (PST)
+Received: from rowland.harvard.edu ([140.247.181.15])
+        by smtp.gmail.com with ESMTPSA id af79cd13be357-8c37f4a63acsm1516812785a.6.2026.01.12.06.47.44
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 12 Jan 2026 06:47:45 -0800 (PST)
+Date: Mon, 12 Jan 2026 09:47:42 -0500
+From: Alan Stern <stern@rowland.harvard.edu>
+To: Huacai Chen <chenhuacai@loongson.cn>
+Cc: Huacai Chen <chenhuacai@kernel.org>,
+	Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+	linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org, Shengwen Xiao <atzlinux@sina.com>
+Subject: Re: [PATCH] USB: OHCI/UHCI: Add soft dependencies on ehci_platform
+Message-ID: <f43a2ce7-7ffa-4b53-8610-52455ac9d16a@rowland.harvard.edu>
+References: <20260112084802.1995923-1-chenhuacai@loongson.cn>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-To: Thomas Fourier <fourier.thomas@gmail.com>, linux-fbdev@vger.kernel.org,
- dri-devel@lists.freedesktop.org, linux-arm-kernel@lists.infradead.org,
- Alexey Charkov <alchark@gmail.com>, Helge Deller <deller@gmx.de>,
- Krzysztof Kozlowski <krzk@kernel.org>
-Cc: stable@vger.kernel.org, LKML <linux-kernel@vger.kernel.org>
-References: <20260112140031.63594-2-fourier.thomas@gmail.com>
-Subject: Re: [PATCH] fbdev: vt8500lcdfb: fix missing dma_free_coherent()
-Content-Language: en-GB, de-DE
-From: Markus Elfring <Markus.Elfring@web.de>
-In-Reply-To: <20260112140031.63594-2-fourier.thomas@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:Shb2M78DrD2g1TfnTywKZORPLW09S1hkc4jdIdfzicgt50u2r6R
- z9qbaRHP2ci7avAl8Di2N3QsKCaSAVGoz3cirybCMvFMIPJHKYrn7fLgFUdmmYxYcg/lDZN
- M9cnaSbL4+VMkqMJpqGB6BvJsbQet0xTV/dILP1mNRdlj/FuFWNlx7sl1IR4dYO5Hn7MmFQ
- I8K6fC/6D8xXvsATAxe2A==
-X-Spam-Flag: NO
-UI-OutboundReport: notjunk:1;M01:P0:sAjdl+rkN2s=;nB+ui51iYZXP6FmQEUJFgnSQH2U
- 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
- thJ0ElIfQDqA4IUFo=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260112084802.1995923-1-chenhuacai@loongson.cn>
 
-> fbi->fb.screen_buffer is alloced with dma_free_coherent() but is not
+On Mon, Jan 12, 2026 at 04:48:02PM +0800, Huacai Chen wrote:
+> Commit 9beeee6584b9aa4f ("USB: EHCI: log a warning if ehci-hcd is not
+> loaded first") said that ehci-hcd should be loaded before ohci-hcd and
+> uhci-hcd. However, commit 05c92da0c52494ca ("usb: ohci/uhci - add soft
+> dependencies on ehci_pci") only makes ohci-pci/uhci-pci depend on ehci-
+> pci, which is not enough and we may still see the warnings in boot log.
+> 
+> To eliminate the warnings we should make ohci-hcd/uhci-hcd depend on
+> ehci-hcd. But Alan said that the warning introduced by 9beeee6584b9aa4f
+> is bogus, we only need the soft dependencies in the PCI level rather
+> than the HCD level.
+> 
+> However, there is really another neccessary soft dependencies between
+> ohci-platform/uhci-platform and ehci-platform, which is added by this
+> patch. The boot logs are below.
+> 
+> 1. ohci-platform loaded before ehci-platform:
+> 
+>  ohci-platform 1f058000.usb: Generic Platform OHCI controller
+>  ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 1
+>  ohci-platform 1f058000.usb: irq 28, io mem 0x1f058000
+>  hub 1-0:1.0: USB hub found
+>  hub 1-0:1.0: 4 ports detected
+>  Warning! ehci_hcd should always be loaded before uhci_hcd and ohci_hcd, not after
+>  usb 1-4: new low-speed USB device number 2 using ohci-platform
+>  ehci-platform 1f050000.usb: EHCI Host Controller
+>  ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 2
+>  ehci-platform 1f050000.usb: irq 29, io mem 0x1f050000
+>  ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+>  usb 1-4: device descriptor read/all, error -62
+>  hub 2-0:1.0: USB hub found
+>  hub 2-0:1.0: 4 ports detected
+>  usb 1-4: new low-speed USB device number 3 using ohci-platform
+>  input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb1/1-4/1-4:1.0/0003:10C4:8105.0001/input/input0
+>  hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
+> 
+> 2. ehci-platform loaded before ohci-platform:
+> 
+>  ehci-platform 1f050000.usb: EHCI Host Controller
+>  ehci-platform 1f050000.usb: new USB bus registered, assigned bus number 1
+>  ehci-platform 1f050000.usb: irq 28, io mem 0x1f050000
+>  ehci-platform 1f050000.usb: USB 2.0 started, EHCI 1.00
+>  hub 1-0:1.0: USB hub found
+>  hub 1-0:1.0: 4 ports detected
+>  ohci-platform 1f058000.usb: Generic Platform OHCI controller
+>  ohci-platform 1f058000.usb: new USB bus registered, assigned bus number 2
+>  ohci-platform 1f058000.usb: irq 29, io mem 0x1f058000
+>  hub 2-0:1.0: USB hub found
+>  hub 2-0:1.0: 4 ports detected
+>  usb 2-4: new low-speed USB device number 2 using ohci-platform
+>  input: YSPRINGTECH USB OPTICAL MOUSE as /devices/platform/bus@10000000/1f058000.usb/usb2/2-4/2-4:1.0/0003:10C4:8105.0001/input/input0
+>  hid-generic 0003:10C4:8105.0001: input,hidraw0: USB HID v1.11 Mouse [YSPRINGTECH USB OPTICAL MOUSE] on usb-1f058000.usb-4/input0
+> 
+> In the later case, there is no re-connection for USB-1.0/1.1 devices,
+> which is expected.
+> 
+> Cc: stable@vger.kernel.org
+> Reported-by: Shengwen Xiao <atzlinux@sina.com>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
 
-                           allocated with a dma_alloc_coherent() call?
+Reviewed-by: Alan Stern <stern@rowland.harvard.edu>
 
-https://elixir.bootlin.com/linux/v6.19-rc4/source/drivers/video/fbdev/vt85=
-00lcdfb.c#L352-L362
-
-
-> freed if the error path is reached.
-
-See also once more:
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/tree/Do=
-cumentation/process/submitting-patches.rst?h=3Dv6.19-rc4#n94
-
-
-You should probably not only specify message recipients in the header fiel=
-d =E2=80=9CCc=E2=80=9D.
-
-Regards,
-Markus
-
-
-
+>  drivers/usb/host/ohci-platform.c | 1 +
+>  drivers/usb/host/uhci-platform.c | 1 +
+>  2 files changed, 2 insertions(+)
+> 
+> diff --git a/drivers/usb/host/ohci-platform.c b/drivers/usb/host/ohci-platform.c
+> index 2e4bb5cc2165..c801527d5bd2 100644
+> --- a/drivers/usb/host/ohci-platform.c
+> +++ b/drivers/usb/host/ohci-platform.c
+> @@ -392,3 +392,4 @@ MODULE_DESCRIPTION(DRIVER_DESC);
+>  MODULE_AUTHOR("Hauke Mehrtens");
+>  MODULE_AUTHOR("Alan Stern");
+>  MODULE_LICENSE("GPL");
+> +MODULE_SOFTDEP("pre: ehci_platform");
+> diff --git a/drivers/usb/host/uhci-platform.c b/drivers/usb/host/uhci-platform.c
+> index 5e02f2ceafb6..f4419d4526c4 100644
+> --- a/drivers/usb/host/uhci-platform.c
+> +++ b/drivers/usb/host/uhci-platform.c
+> @@ -211,3 +211,4 @@ static struct platform_driver uhci_platform_driver = {
+>  		.of_match_table = platform_uhci_ids,
+>  	},
+>  };
+> +MODULE_SOFTDEP("pre: ehci_platform");
+> -- 
+> 2.47.3
+> 
 
