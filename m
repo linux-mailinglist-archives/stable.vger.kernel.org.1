@@ -1,56 +1,58 @@
-Return-Path: <stable+bounces-208154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208155-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4821D13870
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:14:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8CBD13801
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 16:11:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C153314FB1D
-	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0FD923158120
+	for <lists+stable@lfdr.de>; Mon, 12 Jan 2026 14:59:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A6432DF131;
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 832F02E1EF4;
 	Mon, 12 Jan 2026 14:59:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="smWTvNFc"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="edKPUyP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BBA12E0916;
-	Mon, 12 Jan 2026 14:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 823692DEA75;
+	Mon, 12 Jan 2026 14:59:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768229943; cv=none; b=aI6JeiqsmiIGGoVsC4qFQwkAZfGWcs8jXXFym35NqlsTbGbhtubm9LY9tbHN2j2V152x74eCPGLXYF++1CJUrj+d3CU4iim0Wq6Gf3rBELkxO2yvL6cUTjy/2PrbOqbYctZZX+vy+/GSKuc8CviYWsUnWoyPk15ueuExGCFNGFQ=
+	t=1768229945; cv=none; b=JmjcoijLXbbRT/weEZBw/8R8FLBOBs3et2AUgMSbOraOkJ43iS6fXN5RiUKBtpLYsZcFNwvyQB0IlTp2oOTu9U2SlciFclsZt1PymUsI9SfirLMQaJA8GweE3APLf27ix5ewlRWFfaO/p0pdZQuNS26AFctCDnT/hAL2ufxs+nA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768229943; c=relaxed/simple;
-	bh=opg4tncLaI6otjgqlDIEK5fsztRbZKQsPuoibXoWSsM=;
+	s=arc-20240116; t=1768229945; c=relaxed/simple;
+	bh=SA/M8GWVAADSFvD6UBoCN3tcb14Prw7mwfbgA1gGdbQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=dVG+pejZwmm0JiJ7J3QvQ+Y6PNapVUWxWWfwngUkGrdFkD1KvEtZKhdrTIBcpYStmPQb0ABKrGeP/SJUAYdETGi9uE1ajYp0hjiXPtOspqXr0mK+o+B2+FS2nAK+HfHw6QbVqqz1WqNfpSmsWtYnd/jzu2ryN/AmC59RgUBbkQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=smWTvNFc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B139C2BC86;
-	Mon, 12 Jan 2026 14:59:02 +0000 (UTC)
+	 MIME-Version; b=BiFAvhcSZXod2r0DL3kPTabkNHGT6KJojd6We5sCEpv+9YzHb2+8g9rHlYBkyRjl9GqLRcA7J++QriuCaEpNBF/CRjwAo4hgJfhDZIWowEkbLEFWkRWWivPI6JvVcp4UPF4JCSVX+Tbo+b9ienvEKu5D4aR0esA2t8YKJQz6LNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=edKPUyP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA31C16AAE;
+	Mon, 12 Jan 2026 14:59:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768229943;
-	bh=opg4tncLaI6otjgqlDIEK5fsztRbZKQsPuoibXoWSsM=;
+	s=k20201202; t=1768229944;
+	bh=SA/M8GWVAADSFvD6UBoCN3tcb14Prw7mwfbgA1gGdbQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=smWTvNFcuBYIv/R5nX8oy4ig5e0vHxiu+qhkeb2N8iD2XbBfh/lqXmNWqn6De9sBK
-	 YFj8KRiyf6XCEqZp4hj18O8b/juoqPQDmylBMoT9No2jzRngCei7BaxT1/Z/AHeQHc
-	 wQid2g25IoZt0EbD1ZbtKJPO2xPhSkbsm4fsWYiBXcdkx4lhWyFlkTI0i8QYBq0ABl
-	 r6NNhaZn56XE7rbpo4XA9FfQlApdanvk+1P/NrJMug8y79zgSAfw+YYfI+WyJabR49
-	 vKXGA3n1AXyCXP+9Rz7yPta5bYPcojF7C5Gr+rY6TrlCoBO3moUpD1ytiHjbXz86st
-	 yd763xFWNq3NA==
+	b=edKPUyP/00h/W8PxH6ojlxeEhIZPlh7Qoh6G9P5TtoNbOx39uvJYjKntnLXQiIsSu
+	 bUT38baC4KgUQc82bzwU+MOdIOdc7yfxToISle1QDHzVR9rQLkEdqxlz+nnYLX1fqg
+	 hJ7M6knzvfAYjVioYhqDhGBWDgVgo6PBTS7y6RAXRn/EemmnNIVIz0SeHdOUT/+mPo
+	 1UzbUP5KkfrrZBrVx5zuyl27BOn8MuDPAtAwn1FmFG8Ywi/TGIdVaxcjnDTSHbg8Ij
+	 ogphNTunmYQisT1KfZvSM3y+wqVRirnlqOZvvK04iaAtqIKHQg2B24byn8tW47hgBg
+	 RqAyugmx7qa8A==
 From: Sasha Levin <sashal@kernel.org>
 To: patches@lists.linux.dev,
 	stable@vger.kernel.org
-Cc: Daniel Gomez <da.gomez@samsung.com>,
-	Florian Westphal <fw@strlen.de>,
+Cc: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
 	Sasha Levin <sashal@kernel.org>,
-	pablo@netfilter.org,
-	netfilter-devel@vger.kernel.org,
-	coreteam@netfilter.org
-Subject: [PATCH AUTOSEL 6.18-5.15] netfilter: replace -EEXIST with -EBUSY
-Date: Mon, 12 Jan 2026 09:58:14 -0500
-Message-ID: <20260112145840.724774-13-sashal@kernel.org>
+	linux-pci@vger.kernel.org,
+	linux-arm-msm@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.18-6.12] PCI: qcom: Remove ASPM L0s support for MSM8996 SoC
+Date: Mon, 12 Jan 2026 09:58:15 -0500
+Message-ID: <20260112145840.724774-14-sashal@kernel.org>
 X-Mailer: git-send-email 2.51.0
 In-Reply-To: <20260112145840.724774-1-sashal@kernel.org>
 References: <20260112145840.724774-1-sashal@kernel.org>
@@ -63,200 +65,155 @@ MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
 X-stable-base: Linux 6.18.5
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-From: Daniel Gomez <da.gomez@samsung.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
 
-[ Upstream commit 2bafeb8d2f380c3a81d98bd7b78b854b564f9cd4 ]
+[ Upstream commit 0cc13256b60510936c34098ee7b929098eed823b ]
 
-The -EEXIST error code is reserved by the module loading infrastructure
-to indicate that a module is already loaded. When a module's init
-function returns -EEXIST, userspace tools like kmod interpret this as
-"module already loaded" and treat the operation as successful, returning
-0 to the user even though the module initialization actually failed.
+Though I couldn't confirm ASPM L0s support with the Qcom hardware team, a
+bug report from Dmitry suggests that L0s is broken on this legacy SoC.
+Hence, remove L0s support from the Root Port Link Capabilities in this SoC.
 
-Replace -EEXIST with -EBUSY to ensure correct error reporting in the module
-initialization path.
+Since qcom_pcie_clear_aspm_l0s() is now used by more than one SoC config,
+call it from qcom_pcie_host_init() instead.
 
-Affected modules:
-  * ebtable_broute ebtable_filter ebtable_nat arptable_filter
-  * ip6table_filter ip6table_mangle ip6table_nat ip6table_raw
-  * ip6table_security iptable_filter iptable_mangle iptable_nat
-  * iptable_raw iptable_security
-
-Signed-off-by: Daniel Gomez <da.gomez@samsung.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Closes: https://lore.kernel.org/linux-pci/4cp5pzmlkkht2ni7us6p3edidnk25l45xrp6w3fxguqcvhq2id@wjqqrdpkypkf
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@oss.qualcomm.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Tested-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251126081718.8239-1-mani@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
 
 LLM Generated explanations, may be completely bogus:
 
-## Commit Analysis: netfilter: replace -EEXIST with -EBUSY
+Looking at this commit, I need to analyze whether it's appropriate for
+stable backporting.
 
-### 1. COMMIT MESSAGE ANALYSIS
+## Commit Analysis
 
-The commit explains a subtle but important bug in error reporting:
-- When module initialization returns `-EEXIST`, the kernel module
-  loading infrastructure (kmod) interprets this as "module already
-  loaded"
-- kmod then returns **success (0)** to userspace, even though the module
-  initialization actually **failed**
-- This creates a silent failure condition where users believe operations
-  succeeded when they didn't
+### What the Commit Does
+This commit fixes broken ASPM L0s (Active State Power Management L0s)
+support on the MSM8996 SoC. The key changes are:
 
-Keywords: "error reporting", "failed" - this is a bug fix, not a
-feature.
+1. **Adds `.no_l0s = true`** to the `cfg_2_3_2` configuration struct
+   (MSM8996's config)
+2. **Moves `qcom_pcie_clear_aspm_l0s()` call** from
+   `qcom_pcie_post_init_2_7_0()` to `qcom_pcie_host_init()` so it
+   applies to all SoCs that need it (based on their config flags)
+3. **Removes the L0s clearing** from the 2_7_0 post_init since it's now
+   centralized
 
-### 2. CODE CHANGE ANALYSIS
+### Bug Being Fixed
+According to the commit message and linked bug report, ASPM L0s is
+broken on the MSM8996 SoC. When L0s is enabled on broken hardware, users
+can experience:
+- PCIe link instability
+- Power management failures
+- Potential system hangs or communication failures
 
-The changes are trivial and identical across three files:
+### Classification: Hardware Quirk/Workaround
+This is clearly a **hardware quirk** - disabling a broken power
+management feature on specific hardware. This falls under the explicit
+exception category for stable backporting, similar to USB quirks or PCI
+quirks for broken devices.
 
-**net/bridge/netfilter/ebtables.c** (`ebt_register_template()`):
+### Code Change Assessment
 ```c
-- return -EEXIST;
-+                       return -EBUSY;
+// Addition to MSM8996 config - trivial one-liner:
+static const struct qcom_pcie_cfg cfg_2_3_2 = {
+        .ops = &ops_2_3_2,
++       .no_l0s = true,
+};
+
+// Centralized call in host_init for all SoCs needing it:
++       qcom_pcie_clear_aspm_l0s(pcie->pci);
 ```
 
-**net/netfilter/nf_log.c** (`nf_log_register()`):
-```c
-- ret = -EEXIST;
-+                       ret = -EBUSY;
-```
+The actual fix is small and surgical. The refactoring (moving the
+function call) is minimal and just enables the fix to work for multiple
+SoCs that need it.
 
-**net/netfilter/x_tables.c** (`xt_register_template()`):
-```c
-- int ret = -EEXIST, af = table->af;
-+       int ret = -EBUSY, af = table->af;
-```
+### Stability Indicators
+- **Tested-by: Dmitry Baryshkov** - The reporter confirmed the fix works
+- **Reviewed-by: Konrad Dybcio** - Proper review by another Qualcomm
+  developer
+- **Signed-off by Bjorn Helgaas** - PCI subsystem maintainer approved
 
-All three functions are registration routines called during module
-initialization for netfilter tables. When a duplicate name/type is
-detected, they were returning `-EEXIST`, which gets misinterpreted by
-kmod.
+### Risk Assessment
+- **Low risk**: Disabling a broken feature is safer than leaving it
+  enabled
+- **Targeted scope**: Only affects MSM8996 SoC (legacy Qualcomm
+  platform)
+- **Well-tested**: Has explicit test confirmation from the bug reporter
 
-### 3. CLASSIFICATION
+### Dependency Concerns
+This commit assumes:
+1. The `no_l0s` field exists in `struct qcom_pcie_cfg`
+2. The `qcom_pcie_clear_aspm_l0s()` function exists
 
-**Bug fix**: Corrects error code semantics. No new functionality, no
-behavior change beyond proper error reporting.
+Looking at the diff, the commit adds to an existing `no_l0s` field (it
+wouldn't compile otherwise). The function was already being called in
+the 2_7_0 init path, so it exists. The infrastructure appears to already
+be in place.
 
-The `-EBUSY` error code is semantically appropriate ("resource is
-busy/in use") and is not intercepted specially by the module loading
-infrastructure.
+### User Impact
+Users with MSM8996 devices (mobile/embedded Qualcomm platform)
+experiencing PCIe stability issues due to broken L0s will benefit from
+this fix. This is a real-world hardware problem affecting actual users.
 
-### 4. SCOPE AND RISK ASSESSMENT
+## Conclusion
 
-- **Lines changed**: ~6 actual code changes
-- **Files affected**: 3 files in netfilter subsystem
-- **Complexity**: Trivial - only changing error code constants
-- **Risk**: Extremely low - no logic changes at all
+This commit is a **hardware quirk/workaround** which is explicitly
+allowed in stable trees. It:
+- Fixes a real bug (broken ASPM L0s causing hardware issues)
+- Is small and contained
+- Has been properly tested and reviewed
+- Affects only the specific broken hardware (MSM8996)
+- Falls under the device quirk exception category
 
-The only conceivable concern would be if userspace depended on
-`-EEXIST`, but:
-1. These are internal kernel registration functions
-2. The duplicate condition should never occur in normal operation (note
-   the `WARN_ON_ONCE`)
-3. The current behavior is **wrong** - it reports success on failure
-
-### 5. USER IMPACT
-
-**High impact bug**:
-- Affects all netfilter/iptables users when module initialization fails
-- Security implications: Users may believe their firewall tables loaded
-  successfully when they didn't
-- Affected modules include: `iptable_filter`, `iptable_nat`,
-  `ip6table_filter`, `ebtable_filter`, etc. - core firewall components
-
-This is exactly the kind of silent failure that can cause security
-issues in production.
-
-### 6. STABILITY INDICATORS
-
-- Signed-off-by: Florian Westphal (netfilter maintainer) - indicates
-  proper review
-- The fix is self-evidently correct
-- Clear problem description in commit message
-
-### 7. DEPENDENCY CHECK
-
-- No dependencies on other commits
-- The affected code (netfilter table registration) exists in all stable
-  kernel trees
-- These are long-standing, mature functions
-
-### Summary
-
-| Criterion | Assessment |
-|-----------|------------|
-| Fixes real bug? | ✅ Yes - silent failure condition |
-| Obviously correct? | ✅ Yes - trivial error code change |
-| Small and contained? | ✅ Yes - 6 lines across 3 files |
-| Security relevant? | ✅ Yes - firewall may silently fail to load |
-| Risk of regression? | ✅ Minimal - no logic changes |
-| Dependencies? | ✅ None - self-contained |
-
-This commit fixes incorrect error semantics that cause userspace tools
-to report success when module initialization fails. The fix is trivial
-(changing error codes), affects widely-used firewall code, has potential
-security implications (users may not know their firewall failed), and
-carries virtually zero regression risk. It meets all stable kernel
-criteria.
+The refactoring aspect (moving the function call) is minimal and merely
+enables the fix to work cleanly. The actual fix is just adding `no_l0s =
+true` to the MSM8996 configuration.
 
 **YES**
 
- net/bridge/netfilter/ebtables.c | 2 +-
- net/netfilter/nf_log.c          | 4 ++--
- net/netfilter/x_tables.c        | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ drivers/pci/controller/dwc/pcie-qcom.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/netfilter/ebtables.c b/net/bridge/netfilter/ebtables.c
-index 5697e3949a365..a04fc17575289 100644
---- a/net/bridge/netfilter/ebtables.c
-+++ b/net/bridge/netfilter/ebtables.c
-@@ -1299,7 +1299,7 @@ int ebt_register_template(const struct ebt_table *t, int (*table_init)(struct ne
- 	list_for_each_entry(tmpl, &template_tables, list) {
- 		if (WARN_ON_ONCE(strcmp(t->name, tmpl->name) == 0)) {
- 			mutex_unlock(&ebt_mutex);
--			return -EEXIST;
-+			return -EBUSY;
- 		}
+diff --git a/drivers/pci/controller/dwc/pcie-qcom.c b/drivers/pci/controller/dwc/pcie-qcom.c
+index c48a20602d7fa..6e820595ba32a 100644
+--- a/drivers/pci/controller/dwc/pcie-qcom.c
++++ b/drivers/pci/controller/dwc/pcie-qcom.c
+@@ -1033,7 +1033,6 @@ static int qcom_pcie_post_init_2_7_0(struct qcom_pcie *pcie)
+ 		writel(WR_NO_SNOOP_OVERRIDE_EN | RD_NO_SNOOP_OVERRIDE_EN,
+ 				pcie->parf + PARF_NO_SNOOP_OVERRIDE);
+ 
+-	qcom_pcie_clear_aspm_l0s(pcie->pci);
+ 	qcom_pcie_clear_hpc(pcie->pci);
+ 
+ 	return 0;
+@@ -1302,6 +1301,8 @@ static int qcom_pcie_host_init(struct dw_pcie_rp *pp)
+ 			goto err_disable_phy;
  	}
  
-diff --git a/net/netfilter/nf_log.c b/net/netfilter/nf_log.c
-index 74cef8bf554c5..62cf6a30875e3 100644
---- a/net/netfilter/nf_log.c
-+++ b/net/netfilter/nf_log.c
-@@ -89,7 +89,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 	if (pf == NFPROTO_UNSPEC) {
- 		for (i = NFPROTO_UNSPEC; i < NFPROTO_NUMPROTO; i++) {
- 			if (rcu_access_pointer(loggers[i][logger->type])) {
--				ret = -EEXIST;
-+				ret = -EBUSY;
- 				goto unlock;
- 			}
- 		}
-@@ -97,7 +97,7 @@ int nf_log_register(u_int8_t pf, struct nf_logger *logger)
- 			rcu_assign_pointer(loggers[i][logger->type], logger);
- 	} else {
- 		if (rcu_access_pointer(loggers[pf][logger->type])) {
--			ret = -EEXIST;
-+			ret = -EBUSY;
- 			goto unlock;
- 		}
- 		rcu_assign_pointer(loggers[pf][logger->type], logger);
-diff --git a/net/netfilter/x_tables.c b/net/netfilter/x_tables.c
-index 90b7630421c44..48105ea3df152 100644
---- a/net/netfilter/x_tables.c
-+++ b/net/netfilter/x_tables.c
-@@ -1764,7 +1764,7 @@ EXPORT_SYMBOL_GPL(xt_hook_ops_alloc);
- int xt_register_template(const struct xt_table *table,
- 			 int (*table_init)(struct net *net))
- {
--	int ret = -EEXIST, af = table->af;
-+	int ret = -EBUSY, af = table->af;
- 	struct xt_template *t;
++	qcom_pcie_clear_aspm_l0s(pcie->pci);
++
+ 	qcom_ep_reset_deassert(pcie);
  
- 	mutex_lock(&xt[af].mutex);
+ 	if (pcie->cfg->ops->config_sid) {
+@@ -1450,6 +1451,7 @@ static const struct qcom_pcie_cfg cfg_2_1_0 = {
+ 
+ static const struct qcom_pcie_cfg cfg_2_3_2 = {
+ 	.ops = &ops_2_3_2,
++	.no_l0s = true,
+ };
+ 
+ static const struct qcom_pcie_cfg cfg_2_3_3 = {
 -- 
 2.51.0
 
