@@ -1,147 +1,185 @@
-Return-Path: <stable+bounces-208274-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208275-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4CB3CD19875
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:38:22 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id D7C1BD1988E
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A17833017EDC
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:34:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C026730390F1
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:35:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1FA532BEC5E;
-	Tue, 13 Jan 2026 14:34:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C19412C0278;
+	Tue, 13 Jan 2026 14:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="BtuKhTeR"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="UXkmz2s/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f68.google.com (mail-dl1-f68.google.com [74.125.82.68])
+Received: from mail-pj1-f54.google.com (mail-pj1-f54.google.com [209.85.216.54])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EB9127F759
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:34:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.68
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09D3328CF77
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:35:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768314897; cv=none; b=dzRXlhEcZJF8v59W3llaBuv4uxGlykvlXx5SVvhDngbVvo4l27OlDtkJGTMnBM3TB8dIeTY1FG5Gjhl90/oLRclzzxZA8Iy4oouJyWIlJiMCKpwgkNo9mMzvNXwksaA8tH/eeEqB96KdIz7dZnqvlTfokZwM53vsj9g9du5d/bo=
+	t=1768314953; cv=none; b=JPsHMtzjEPk2Uq9kGuxqMpquqBq32lWXV6Y6ujgQy/TNpVjaHIWdUwv6U7pMZ/Afgvr8jGgbHkRiJ1WCXF85Tvb+tcUKffAVEnv2yW8MbRtJTRx9TKYj1KERDfgGVERYckBYTIPucsFtX0h7xMmF62+H99PCAl8MSui+mLV+CZM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768314897; c=relaxed/simple;
-	bh=w9SRfKMgXMYlGiDMWRvrXKKEWnKXVzUlYqo8KAefPQ4=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=qeAMZvYcM66nzV10Wl+nTYJBWvRCRZS7lYJyO+NVlw6AxSQAVI0yXrxDRqkeraic0iZB3vzM7avx5MGZ0TT8VU4f+7apK/0jpfMB+e9dyqU4+jUOqn13CaKfKfjfI4v6VxCWvJg/sO4bi4v6oocRuccSs/dEc++VGVWZFO8LPEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=BtuKhTeR; arc=none smtp.client-ip=74.125.82.68
+	s=arc-20240116; t=1768314953; c=relaxed/simple;
+	bh=C35Q9gEplkEHxqvrleJh01VreoZX5QZKIn5nqUYUGKM=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=SHbrn3M0fx50x94e6s8IlMDz3ItsYgwW2yGqbNmNidkbYARJdTl8aUizQwzD6yYTKYTmI34CBei2KUp0SAziEsPUrJTe0KB2PDkuBCnY2DZIZa9VaGaT2U71KV+7VjqmjsVqZSH9+/WwwrtxM6+mYrnqKcbXrtBeHPIK1ybxUH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=UXkmz2s/; arc=none smtp.client-ip=209.85.216.54
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f68.google.com with SMTP id a92af1059eb24-121b14d0089so8422891c88.0
-        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:34:55 -0800 (PST)
+Received: by mail-pj1-f54.google.com with SMTP id 98e67ed59e1d1-34c213f7690so5077541a91.2
+        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:35:50 -0800 (PST)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768314894; x=1768919694; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Zco7EFUTNtZlgUYwabK6K3z7XvpUMikF8ohw5sUN8wk=;
-        b=BtuKhTeRzKfnBSpBQEbotrHOhgD0fk/dPBT3W1oa9MliwmukA2wdOqtHlP22vkKQ7U
-         XlhDUYICGjWxtgO++Enf7tDtbjalP2zlYUBiE3wQOh76G0DGlWrtBLjdWpRDk2Vk+PYL
-         pIY+C7lRrVjVP8Gj0WoU2uAbxH6kgbM9WbjRRjSqjA/sej5i7tU8+CwYBGMRZbBGpePq
-         LphD6RAP7fQRQKMeqrkzKvP2Hg5qCOr+qtY9ABs/gqdFgAEyXDr/AibBEROcaGB//bUk
-         +1fo5GfcmYUuYOeCCp84I3g4sofpogzlBpoKdMb+2ZyjVLMDUBJotrpf8ODrrza7A2It
-         XMXw==
+        d=gmail.com; s=20230601; t=1768314950; x=1768919750; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=oSG1flMMfh36IrNc9ewR5ZYBFxhDPNDnEZLwNTNKxSw=;
+        b=UXkmz2s/tO0oF3w5iJ5Y28xei1BTRHijWobfXaACzsF7glNc7UMa+J1MYKUfmDsGbD
+         BxpaDhyL7dmdwisCAP7m0UEHMHTp0KcRUzWJhxWRPmbpnx2/pOBJTLRBifSI7uDK3sRK
+         Y1YsACAJ1jbccOoyfyHLqtERiM2uZL0lm9kVl8OKhj+PlVz6BB1QQeeqbsF2rgrSeOyR
+         X2z/3mymY3HkasdUBwE5sgUkBi3Jfni70KfasDVKOViNjv0Nv6+aRNr5kXWqDE6Ca+ka
+         H/UQIyh455l+pFs3+sNUNTXAKcCMo6Ird4x0GJ5xH+pEb+fYiIOOdpTwhgIfA2D4190C
+         MTYA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768314894; x=1768919694;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Zco7EFUTNtZlgUYwabK6K3z7XvpUMikF8ohw5sUN8wk=;
-        b=j3vLyyFSrAvyi4JTh8XNKKioZnwk0viFQ3h1a7mHjDbuWQffouNlA+rvzJmhL22rd9
-         KkuR2z2banOhWcBRAh8ngKvaZFGNWDas9MydV5YgwGxCBY9rQabV3MW98CZ4UodYR44h
-         O3ouTyM/oSlPJTUxHDX6aaLe8sYJfyqIx0QZumgDD7p5LfEc1XNxyklHEsx1GsSCRnLx
-         15b3nz6RzU+lmXhAQAXayO8RKrgpFvRgYnsVS0wet8MdeCN8HzJU1Il2MJ7WGMsymWJN
-         NJS2GEU3vsqFW8LtTIbTkbK8Xob6ZIgNzD/t5fGYkg0FeL7pnDTrxvDL/oxKqOTQTuAG
-         WXoQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUh7e1BIzYTv98MBp3PtcotOECqQpjRnr5Q9wCPUB7MmyBLCxkXDyYr8YOyeR8Nnq7Vxf1237Y=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyekjOQrPUNm6uKuMd1qSy4gDOhDl5WOXR/Kw5h1K3eSacrXIXq
-	ztTwLZjBXgU8MnYLSBJlelAseYyGbAfthBqDQo9D2YWWF+MFRFKn1jLt
-X-Gm-Gg: AY/fxX7ywIQmVNNdVCbPIBlCZBhW7c1ryP9cBjX8A0kGilRcAMMSJkyItltWSW5Cwve
-	mbtQEa90TcM8gx/Y0sXY5lH4Rl2FFVBRWXWzAghnWKYBQq5exHLWYXkL8NTfXKVIGg2NYGEuriW
-	4iHDuhG4A3WhTlrAtPrzFyXqqI0BAWp1MP4G+6m4AFQG/Y8oK4m7eaXJ3ssLNz7ZFHfJYXAhqnB
-	Txxyj/MgYIxEClqkcteM4/izoQmoKEYEWPUnY4dClPEkuiKrT29wOYgkVe3D+2xd3cNLofUPATS
-	pW/zCcc3fMRIU4FX7sXOAeyHKtR2cQ4hDwpvtJjmrmtnrA736DDGrC1ieAh3Mc381tR1OLSAXB1
-	9Bg2nZSTv6zuS01h6Yz58XSLgAUAelQFS7pTapSCu4rL+gmXbqjOTnjwxaPOUIjqKp4pT3l25tJ
-	pBFr10q42/mUmcmTc2mQ4a
-X-Google-Smtp-Source: AGHT+IE6eqficxeF/oTartYDjBh3+Z6jmQslJHwouLzBiZA7Qxp1OVpE8sFLB0l1i1KCqcJgNMf5pg==
-X-Received: by 2002:a05:7022:4390:b0:119:e56b:98ab with SMTP id a92af1059eb24-121f8b0e125mr22306128c88.18.1768314893939;
-        Tue, 13 Jan 2026 06:34:53 -0800 (PST)
-Received: from localhost.localdomain ([1.203.169.108])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1707b21dasm19672434eec.27.2026.01.13.06.34.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 06:34:53 -0800 (PST)
-From: Xingjing Deng <micro6947@gmail.com>
-X-Google-Original-From: Xingjing Deng <xjdeng@buaa.edu.cn>
-To: srini@kernel.org,
-	amahesh@qti.qualcomm.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xingjing Deng <xjdeng@buaa.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v4] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
-Date: Tue, 13 Jan 2026 22:34:45 +0800
-Message-Id: <20260113143445.889031-1-xjdeng@buaa.edu.cn>
-X-Mailer: git-send-email 2.25.1
+        d=1e100.net; s=20230601; t=1768314950; x=1768919750;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=oSG1flMMfh36IrNc9ewR5ZYBFxhDPNDnEZLwNTNKxSw=;
+        b=c4TN/aQBrHLt1uJUCgZ+kLdTMzS+GDPR67bvGy83P+1ITt1tRhzJxDteaLUAV/87yG
+         tQO7uEaXFCDyfMIw3nYMZhTuwSg5HljfZs24opwgdOyTqZD1By/E2SHFNKhOaR0GH2xh
+         KOm7M0oVbUa8Z1ma+3u4Gwu2KU0cx9SCkicOh1YWsnBW64TCrhTPcFaQ43FWzkv56yRX
+         cQod9ezPDeBk8A4arv+gfuTMNDSM1dhEKqkDwB7e5/zLYGE20SabgIe0/AWWcl6g7adn
+         WPBGRvdf1UKmEhF3qkdaMhpkLr01NoylZxZtNHNZBRz0zjHqHtGawxjN+r+v5KVKgsZK
+         OHuA==
+X-Forwarded-Encrypted: i=1; AJvYcCXuTJcTAZIFnqSOicF4gRPLkyF/A1xH5uvBFeUMCbEPV5g/aYnvSf+5dmzyXsLnCJkAVw6d3xk=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yz/62A1tNquvKPB4lrtoAlacZuzyuapCzmQodMu70DbfGiLF95m
+	noxp0eRig8XjtYX+sncWcjLZyzMffLN21ECRDmD0YvpYuEIb8s2N1sYHa0iAegGBjrGCZAxn6MV
+	KHGr2pnZ7/Xs3YMlda4vix34/Y46lSpE=
+X-Gm-Gg: AY/fxX5Vfj8MdeSRvRKrEEsOH+H3d7i/D55prKD19WxZksOafeoGVFClxbuEazmiRk6
+	bHNBlwKhguM5WjwkWz0fdtqnZYIYSVDNXbOJEEwGNWR7R+vUJ++j3tjQAl/0+zhfN7QCDuKMxXA
+	5j+J4HInz5aRL86VMcZbUpx9dKYjMbIjammeW5WBQulGAZQcXUScWhjnTLLTdEhtG0gnwbqAQe8
+	qI+bsLvrq9CiF52n1XrgcoNrZVS536ekc7Rgdvgg7uIwKJSdcnexgN9l3b+nt+VS+wX
+X-Google-Smtp-Source: AGHT+IHT+/65AwG7pbeaD+hwDIeJFQVVT8OcPnsbknIVCNlEW+jBEIRg6vXSDBwDn6VbTK0XAMZHrcwQrDSLxvGIXR4=
+X-Received: by 2002:a17:90b:264a:b0:341:3ea2:b625 with SMTP id
+ 98e67ed59e1d1-34f68b661eamr23258771a91.12.1768314949735; Tue, 13 Jan 2026
+ 06:35:49 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+References: <20260113065409.32171-1-xjdeng@buaa.edu.cn> <20260113084352.72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com>
+In-Reply-To: <20260113084352.72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com>
+Reply-To: micro6947@gmail.com
+From: Xingjing Deng <micro6947@gmail.com>
+Date: Tue, 13 Jan 2026 22:35:38 +0800
+X-Gm-Features: AZwV_QilNtsaInykWQuPTQNCtpY0ZlBqP2RfpYd9nDByrVVow35WCZNPQxZXsrw
+Message-ID: <CAK+ZN9oMpc9nh08vK1j1XDfhs8w=sQngmJ6rPOqa9QZwjTioUQ@mail.gmail.com>
+Subject: Re: [PATCH v3] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: srini@kernel.org, amahesh@qti.qualcomm.com, arnd@arndb.de, 
+	gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org, 
+	linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org, 
+	Xingjing Deng <xjdeng@buaa.edu.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
-reserved memory to the configured VMIDs, but its return value was not
-checked.
+OK, I will do that.
+PATCH v4 is released now.
 
-Fail the probe if the SCM call fails to avoid continuing with an
-unexpected/incorrect memory permission configuration
-
-Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to the DSP")
-Cc: stable@vger.kernel.org # 6.11-rc1
-Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
-
----
-
-v4:
-- Format the indentation
-- Link to v3: https://lore.kernel.org/linux-arm-msm/20260113084352.72itrloj5w7qb5o3@hu-mojha-hyd.qualcomm.com/T/#t
-
-v3:
-- Add missing linux-kernel@vger.kernel.org to cc list.
-- Standarlize changelog placement/format.
-- Link to v2: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
-
-v2:
-- Add Fixes: and Cc: stable tags.
-- Link to v1: https://lore.kernel.org/linux-arm-msm/20260113022550.4029635-1-xjdeng@buaa.edu.cn/T/#u
-
-Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
----
- drivers/misc/fastrpc.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index cbb12db110b3..9c41b51d80ee 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2339,10 +2339,10 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
- 			src_perms = BIT(QCOM_SCM_VMID_HLOS);
- 
- 			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
--				    data->vmperms, data->vmcount);
-+				    				data->vmperms, data->vmcount);
- 			if (err) {
- 				dev_err(rdev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
--					res.start, resource_size(&res), err);
-+						res.start, resource_size(&res), err);
- 				goto err_free_data;
- 			}
- 		}
--- 
-2.25.1
-
+Mukesh Ojha <mukesh.ojha@oss.qualcomm.com> =E4=BA=8E2026=E5=B9=B41=E6=9C=88=
+13=E6=97=A5=E5=91=A8=E4=BA=8C 16:44=E5=86=99=E9=81=93=EF=BC=9A
+>
+> On Tue, Jan 13, 2026 at 02:54:09PM +0800, Xingjing Deng wrote:
+> > In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
+> > reserved memory to the configured VMIDs, but its return value was not
+> > checked.
+> >
+> > Fail the probe if the SCM call fails to avoid continuing with an
+> > unexpected/incorrect memory permission configuration
+> >
+> > Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access =
+to the DSP")
+> > Cc: stable@vger.kernel.org # 6.11-rc1
+> > Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
+> >
+> > ---
+> >
+> > v3:
+> > - Add missing linux-kernel@vger.kernel.org to cc list.
+> > - Standarlize changelog placement/format.
+> >
+> > v2:
+> > - Add Fixes: and Cc: stable tags.
+> >
+> > Link: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke47gy3hnf=
+i67e@hu-mojha-hyd.qualcomm.com/T/#t
+> > Link: https://lore.kernel.org/linux-arm-msm/20260113022550.4029635-1-xj=
+deng@buaa.edu.cn/T/#u
+>
+> v3:
+>  - ...
+>  - ..
+>  - Links to v2 : https://lore.kernel.org/linux-arm-msm/20260113063618.e2k=
+e47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#m84a16b6d0f58e93c1f786ea04550681=
+b23e79df4
+>
+>
+> v2:
+>  - ..
+>  - ..
+>  - Link to v1: ...
+>
+> You could even use b4..
+>
+>
+> >  drivers/misc/fastrpc.c | 7 ++++++-
+> >  1 file changed, 6 insertions(+), 1 deletion(-)
+> >
+> > diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> > index fb3b54e05928..cbb12db110b3 100644
+> > --- a/drivers/misc/fastrpc.c
+> > +++ b/drivers/misc/fastrpc.c
+> > @@ -2338,8 +2338,13 @@ static int fastrpc_rpmsg_probe(struct rpmsg_devi=
+ce *rpdev)
+> >               if (!err) {
+> >                       src_perms =3D BIT(QCOM_SCM_VMID_HLOS);
+> >
+> > -                     qcom_scm_assign_mem(res.start, resource_size(&res=
+), &src_perms,
+> > +                     err =3D qcom_scm_assign_mem(res.start, resource_s=
+ize(&res), &src_perms,
+> >                                   data->vmperms, data->vmcount);
+>
+> Fix the alignment to previous line '(' like you did for dev_err(), I know=
+ this file lacks it,
+> but that does not mean we should repeat it.
+>
+>
+> > +                     if (err) {
+> > +                             dev_err(rdev, "Failed to assign memory ph=
+ys 0x%llx size 0x%llx err %d",
+> > +                                     res.start, resource_size(&res), e=
+rr);
+> > +                             goto err_free_data;
+> > +                     }
+> >               }
+>
+> With the above change.
+>
+> Reviewed-by: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+>
+> >
+> >       }
+> > --
+> > 2.25.1
+> >
+>
+> --
+> -Mukesh Ojha
 
