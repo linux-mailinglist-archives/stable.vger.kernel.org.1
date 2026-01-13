@@ -1,67 +1,70 @@
-Return-Path: <stable+bounces-208268-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 44B79D193A4
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:59:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B97A9D194B5
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:07:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4347030351EF
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 13:51:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0BF53306435D
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:03:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD83921E8;
-	Tue, 13 Jan 2026 13:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D06F392B64;
+	Tue, 13 Jan 2026 14:03:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hqGcJw2Z"
+	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="I0duCVe7"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE07C3921C0
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 13:51:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695FD349B19;
+	Tue, 13 Jan 2026 14:03:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768312293; cv=none; b=lgB3bCh7Gg1RTiuTTwzjyH3ogT/tbnQKLukQIF6NqC8IkS1s4vqvpPXKtXEILI4DP7m5soIZAvzegC0ktvlKGdYa3kgjVI5k+GKNG3W2PBG9qFL16PqXAHU6o9HKjomkSbnVXVjkC+axwSQ5TrMVJr0ABdHV9G6YGt/WLZiyUjQ=
+	t=1768312996; cv=none; b=ae/BAG4ewXaSjk0wNpqXa9cNHTjRNnJQXEz8WUWQuh8c0swrW3JWGcgPjEJcGgFrcdWCZodW94n6pdGfl9wR6OmPrUKQjl+qwE24JEVN3CZdnJgSfwt73sDYiYycVnawv5vXe3c7JAs3/zDSWeiM1FIzHevq6VbdJ6O5h8ctLEo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768312293; c=relaxed/simple;
-	bh=DF2PlcSwUbdqr4rEzvqYDSjDo2WlCVqQlaLK4Ivdm9w=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PJPSPXfuMDFgNJNgxEdHadx1BzWfJOuR5QjpWu80Ph33DrdeCZPKvAxCryR+UZgWlbX0hD60DofgpNEBw0OAyBzR4wRCG6NrjaOtdzelHmQknk5hRTrYAqo6wVoSrS4mTsgIJp+D29N+jCftpDvH87dow0538m6UG0mWDsOmdeY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hqGcJw2Z; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768312290;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=u20qw0X+uwjkj6nu8N7LO9JrXSGlXKViHZoJcloq74E=;
-	b=hqGcJw2ZHgY0AUZwrjq/5Ux8oSeq3aqrZof5ihsrk4XCjIGKDpoZqe+WOEr2nqrdnm+Uzu
-	dR58VJaiGZLoSad2tjKus0VxAe+2rlrFjE8ZIJLAZ/PHuHSHNIaSunIwhsSGcSQAbDAUm7
-	B9pSoZwTvrnvNR4R92gAKEEy59o93nE=
-Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-286-0Dei3ylZNEiouwsTyh9biw-1; Tue,
- 13 Jan 2026 08:51:28 -0500
-X-MC-Unique: 0Dei3ylZNEiouwsTyh9biw-1
-X-Mimecast-MFC-AGG-ID: 0Dei3ylZNEiouwsTyh9biw_1768312286
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 30FE2195609F;
-	Tue, 13 Jan 2026 13:51:26 +0000 (UTC)
-Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.227])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 741BD180049F;
-	Tue, 13 Jan 2026 13:51:24 +0000 (UTC)
-From: Andreas Gruenbacher <agruenba@redhat.com>
-To: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Andreas Gruenbacher <agruenba@redhat.com>,
-	gfs2@lists.linux.dev,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [GIT PULL] gfs2 revert for 6.19-rc6
-Date: Tue, 13 Jan 2026 14:51:22 +0100
-Message-ID: <20260113135123.282418-1-agruenba@redhat.com>
+	s=arc-20240116; t=1768312996; c=relaxed/simple;
+	bh=Mlv8Q3oR7V/OLiVqdmnQP9ckhLwj7sgcxdD2uTXOCiI=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ekr37ScD1uig5XqPlMCERZCdTSC0yMoU4yPkuCtkFqhpRjmG4Dd8JC74SshoT8XPECh3SqekXFKlpOBb3mEV01+lzN5A4sek9IuY6K0e3gKz5WLkrTNUmf0yTJtxes5yDiDRBWFix7UzeeIW3W5EoboDJe+kBR5Y7a0q/8OpYEo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=I0duCVe7; arc=none smtp.client-ip=67.231.153.30
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
+Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
+	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60DC4dtS1330592;
+	Tue, 13 Jan 2026 06:02:54 -0800
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
+	:content-transfer-encoding:content-type:date:from:in-reply-to
+	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
+	 bh=fQ7j1PpGTasQAblfO8V1KwLqMUsTQm5W+M3/6xbpbQs=; b=I0duCVe7seY9
+	Edk/KTttYI7pSWoYZeM0jlkHIh1rNXqTqRlrmWA5DDtmw+cyr+js5kd+YW+lAEi+
+	wyWRsOgyVP7cZXyJ521koGYuvcfbOlqxcIKZ/mtPc1La+qU1EzA1tQDAqWqzY1fy
+	WXCVvVWbyhyD6yC5Onr8rK50uhcSnEM3U83BWw94xMqoHGUVKqZkDa2Ls/4vxdnQ
+	EcO3t9e3x/msw1qWNheVYhMSk2QU6IHI+SwzmJuYGC6UgBOudhskL9S7uolAqZ5u
+	S/3xQ5eaAE1alCHjyZaDTLYG9Kpa+I+venuH2H0GgLg27XuEwq24P8K5o9mZhEwO
+	pn4EceYpjw==
+Received: from mail.thefacebook.com ([163.114.134.16])
+	by m0001303.ppops.net (PPS) with ESMTPS id 4bnnr4rsm8-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+	Tue, 13 Jan 2026 06:02:54 -0800 (PST)
+Received: from devbig003.atn7.facebook.com (2620:10d:c085:108::150d) by
+ mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.2.2562.29; Tue, 13 Jan 2026 14:02:51 +0000
+From: Chris Mason <clm@meta.com>
+To: Breno Leitao <leitao@debian.org>
+CC: Chris Mason <clm@meta.com>, Alexander Potapenko <glider@google.com>,
+        "Marco Elver" <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
+        Andrew
+ Morton <akpm@linux-foundation.org>,
+        <kasan-dev@googlegroups.com>, <linux-mm@kvack.org>,
+        <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>,
+        <stable@vger.kernel.org>
+Subject: Re: [PATCH v2] mm/kfence: add reboot notifier to disable KFENCE on shutdown
+Date: Tue, 13 Jan 2026 06:02:27 -0800
+Message-ID: <20260113140234.677117-1-clm@meta.com>
+X-Mailer: git-send-email 2.47.3
+In-Reply-To: <20251127-kfence-v2-1-daeccb5ef9aa@debian.org>
+References:
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -69,50 +72,83 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain
+X-Proofpoint-GUID: -zdoFufYx-ri54AmF2W0YNzuIqDQSvvM
+X-Authority-Analysis: v=2.4 cv=Zs/g6t7G c=1 sm=1 tr=0 ts=6966508e cx=c_pps
+ a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=xNf9USuDAAAA:8
+ a=7sR78lRsTtdWeVkM5_EA:9
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDExNyBTYWx0ZWRfX/SH2AzbaA7MB
+ fQ7SM27TcoFfggUzHtqIj9YhlO1KEvX/6zhNr8J15aiISa2bEPfqhMxaGMCXMRk7HSSy2FeKxgG
+ ibIbIpNHOjRb942E+A/vtvrrW00uQh/2JJikK5QORViYber7Xv8570VWucIgV+Md40nWkQ69a/h
+ ceE9JyquvWsfNEG0ymemR3nJfJdFJBhdrqkXF+G4N4dEF3wCYQe9ChjlA5DEOg/VBgeqsjnHq9+
+ fDMjeZ5zQVSoy9peZ/++qafLhPPJoHlPHTq/hJ0FOwRdkNTQolGhAI5ikEhdq/6EtAbq6PscK5v
+ U8+EjxbMMiTCIYMGLNF4UFv19e8DLo/fL3Mi2lZ+aEcSiIj70a/thIH9S26H8vTe2EGUs5jZ5uX
+ tgvHiHwvc/8cojlBjhfmCefn7NaWbU4n/GkF4BpbvDEnVF+bsNROvOPUAnaRQjlW+R9I+QaCBm/
+ M6FkDwYwMQY3kxIZ3GA==
+X-Proofpoint-ORIG-GUID: -zdoFufYx-ri54AmF2W0YNzuIqDQSvvM
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-13_03,2026-01-09_02,2025-10-01_01
 
-Dear Linus,
+On Thu, 27 Nov 2025 06:51:54 -0800 Breno Leitao <leitao@debian.org> wrote:
 
-please consider pulling the following gfs2 revert for 6.19-rc6.
+> During system shutdown, KFENCE can cause IPI synchronization issues if
+> it remains active through the reboot process. To prevent this, register
+> a reboot notifier that disables KFENCE and cancels any pending timer
+> work early in the shutdown sequence.
+>
 
-I was originally assuming that there must be a bug in gfs2 because gfs2 chains
-bios in the opposite direction of what bio_chain_and_submit() expects.  It
-turns out that the bio chains are set up in "reverse direction" intentionally
-so that the first bio's bi_end_io callback is invoked rather than the last
-bio's callback.
+Hi Breno,
 
-We want the first bio's callback invoked for the following reason: The initial
-bio starts page aligned and covers one or more pages.  When it terminates at a
-non-page-aligned offset, subsequent bios are added to handle the remaining
-portion of the final page.  Upon completion of the bio chain, all affected
-pages need to be be marked as read, and only the first bio references all of
-these pages.
+I'm running v6.19 MM commits through the patch review automation and this
+one was flagged.  Is this deadlock possible?
 
-Thanks,
-Andreas
+Automated review output:
 
-The following changes since commit 8f0b4cce4481fb22653697cced8d0d04027cb1e8:
+> @@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
+>  static struct delayed_work kfence_timer;
+>
+>  #ifdef CONFIG_KFENCE_STATIC_KEYS
+> +static int kfence_reboot_callback(struct notifier_block *nb,
+> +				  unsigned long action, void *data)
+> +{
+> +	/*
+> +	 * Disable kfence to avoid static keys IPI synchronization during
+> +	 * late shutdown/kexec
+> +	 */
+> +	WRITE_ONCE(kfence_enabled, false);
+> +	/* Cancel any pending timer work */
+> +	cancel_delayed_work_sync(&kfence_timer);
+                   ^^^^^^^^^^^^^^^
 
-  Linux 6.19-rc1 (2025-12-14 16:05:07 +1200)
+Can cancel_delayed_work_sync() deadlock here?
 
-are available in the Git repository at:
+If toggle_allocation_gate() is currently executing and blocked inside
+wait_event_idle() (waiting for kfence_allocation_gate > 0), then
+cancel_delayed_work_sync() will block forever waiting for the work to
+complete.
 
-  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.19-rc6
+The wait_event_idle() condition depends only on allocations occurring
+to increment kfence_allocation_gate - setting kfence_enabled to false
+does not wake up this wait. During shutdown when allocations may have
+stopped, the work item could remain blocked indefinitely, causing the
+reboot notifier to hang.
 
-for you to fetch changes up to 469d71512d135907bf5ea0972dfab8c420f57848:
+The call chain is:
+  kfence_reboot_callback()
+    -> cancel_delayed_work_sync(&kfence_timer)
+       -> __flush_work()
+          -> wait_for_completion(&barr.done)
+             // waits forever because...
 
-  Revert "gfs2: Fix use of bio_chain" (2026-01-12 14:58:32 +0100)
+  toggle_allocation_gate() [currently running]
+    -> wait_event_idle(allocation_wait, kfence_allocation_gate > 0)
+       // never wakes up if no allocations happen
 
-----------------------------------------------------------------
-gfs2 revert
+Would it be safer to use cancel_delayed_work() (non-sync) here, or add
+a mechanism to wake up the wait_event_idle() when kfence_enabled becomes
+false?
 
-- Revert bad commit "gfs2: Fix use of bio_chain"
-
-----------------------------------------------------------------
-Andreas Gruenbacher (1):
-      Revert "gfs2: Fix use of bio_chain"
-
- fs/gfs2/lops.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
 
 
