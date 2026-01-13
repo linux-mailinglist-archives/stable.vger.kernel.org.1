@@ -1,105 +1,112 @@
-Return-Path: <stable+bounces-208207-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208208-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E92B9D162E3
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 02:38:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ACB7FD1634F
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 02:48:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A50DA30275C0
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 01:38:54 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8F5A9302AF86
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 01:47:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E32F274B2B;
-	Tue, 13 Jan 2026 01:38:53 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="QDMGvkhi"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18F4B267B89;
+	Tue, 13 Jan 2026 01:47:38 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
+	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 04B8D1DF73C
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 01:38:51 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DCD8163;
+	Tue, 13 Jan 2026 01:47:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768268333; cv=none; b=GSUf6kFUKCeQ91gMBJeNbr46kNy724joHflnaBQO0aWtdZG2/mWOMteHfPiQueHu5bNmpZiAj6ouudm781mZAHczPKqhUyFmUTm5rwv6/YvFidKsI+5MH71Wf+8oMs2dYeREndR2hTPu9p7uz+FXb0tXLD7pJ/Pvu2oAk9ZTENM=
+	t=1768268857; cv=none; b=Vr6eVnIU98ErtVtY6GzUWkbiOlTjhPnk3e+U1rrC0J5BW9nGVzVwOJifo/xCX2tExtHCb0vcDv8aoGSzC1N/Rjf7xGBzvPQTNP0algrBcVWg4mq8SImugZoiA2PPoCnuiSrDQPYp+/oCYZBSbTEYPs4bHlb9wpLnyKqnjpVwov4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768268333; c=relaxed/simple;
-	bh=NXHSkHe3iVnS1olUHMQJaogvyV6AraEA1+KZFiOZ6k0=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=O10V7PfzrVTIf0EJk9+8gvTixIS+MlhrafZMlUrZxF6lZk+ufQGf34UZ60+OpgmKqw7C8wnpoKC3H27msFA7KwK9WbX5vUFCMAbv8y15aPi2mjRcp/y4H2sFkF73PwxJBVZdUn4PTPoSLWWHDh3/MQVpRrBQCJii9cOFF4eFgEY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=QDMGvkhi; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768268331;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=L/Kyr6yrU4xkVhHnYfPvLyJuv/p1CdyA50g9jKnO2dw=;
-	b=QDMGvkhiICgBK49hjqjd8YyxHSkLNa2cbxJxXsqI3K8jIcKReRZEPBv4hYgN/RuVkW4/Uf
-	TC/NNqgZZbGVxYvtuKkmZAarpWIZyUEzXtYIzhsH5KzS0GRVIhaYGQuU5J7p7XCjo8sEZh
-	AdONcFeny7p6AMeVuRQQb3apKEez37I=
-Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-632-35b7fl9SPCWAeTqoEOc-nQ-1; Mon,
- 12 Jan 2026 20:38:47 -0500
-X-MC-Unique: 35b7fl9SPCWAeTqoEOc-nQ-1
-X-Mimecast-MFC-AGG-ID: 35b7fl9SPCWAeTqoEOc-nQ_1768268326
-Received: from mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.4])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 9578B1800378;
-	Tue, 13 Jan 2026 01:38:46 +0000 (UTC)
-Received: from fedora (unknown [10.72.116.42])
-	by mx-prod-int-01.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id C48B430001A2;
-	Tue, 13 Jan 2026 01:38:42 +0000 (UTC)
-Date: Tue, 13 Jan 2026 09:38:37 +0800
-From: Ming Lei <ming.lei@redhat.com>
-To: Caleb Sander Mateos <csander@purestorage.com>
-Cc: Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-	Uday Shankar <ushankar@purestorage.com>,
-	Seamus Connor <sconnor@purestorage.com>, stable@vger.kernel.org
-Subject: Re: [PATCH 1/2] ublk: cancel device on START_DEV failure
-Message-ID: <aWWiHe3f2FgsjYDC@fedora>
-References: <20260112041209.79445-1-ming.lei@redhat.com>
- <20260112041209.79445-2-ming.lei@redhat.com>
- <CADUfDZp_4pOSAuPE52OWGU1q46bQHZL_9LLp8ANP3umZ1upmYA@mail.gmail.com>
+	s=arc-20240116; t=1768268857; c=relaxed/simple;
+	bh=6eyCo2mFt6iN1iC84h2K7GeOcI28F3Mm7aZY9xlt+HA=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=Uini3CeTQfYrN40qrtFL6hpLQk/aPNWKhp6W5z3Tn1t894MLN9hSuFfC0yaUNFc0XLiHa96MiiAtUpfPG2SDN4s4JbtO08C1oUxQlgXGiqYmc37PzUPJWtWoQNUHlYmKQlY32XowRPyQ/EaVugkUCZAT05+0maevTEXUjoobuRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn; spf=pass smtp.mailfrom=iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=iscas.ac.cn
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=iscas.ac.cn
+Received: from dfae2b116770.home.arpa (unknown [124.16.138.129])
+	by APP-01 (Coremail) with SMTP id qwCowAAXvmkmpGVpOViMBA--.15566S2;
+	Tue, 13 Jan 2026 09:47:18 +0800 (CST)
+From: Wentao Liang <vulab@iscas.ac.cn>
+To: nm@ti.com,
+	ssantosh@kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	linux-arm-kernel@lists.infradead.org,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	stable@vger.kernel.org
+Subject: [PATCH v3] soc: ti: pruss: fix double free in pruss_clk_mux_setup()
+Date: Tue, 13 Jan 2026 01:47:16 +0000
+Message-Id: <20260113014716.2464741-1-vulab@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <CADUfDZp_4pOSAuPE52OWGU1q46bQHZL_9LLp8ANP3umZ1upmYA@mail.gmail.com>
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.4
+X-CM-TRANSID:qwCowAAXvmkmpGVpOViMBA--.15566S2
+X-Coremail-Antispam: 1UD129KBjvJXoWrZw4DtryrJF48CrWfGFW5Awb_yoW8JF1kp3
+	y8CrWSv348JF4xAF45Ar4kGFyYva9Iyay7uayq9w13ZF13tryjq3W2vFyavFsxtFyrGwsI
+	yF4DKF9rC3W5AF7anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUvq14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26ryj6F1UM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+	6F4UM28EF7xvwVC2z280aVAFwI0_Cr1j6rxdM28EF7xvwVC2z280aVCY1x0267AKxVWxJr
+	0_GcWle2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_Wrv_ZF1lYx0Ex4A2jsIE14v26rxl6rkdMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1lc7CjxVAaw2AFwI0_
+	JF0_Jw1lc2xSY4AK67AK6w4l42xK82IYc2Ij64vIr41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr
+	1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AKxVWUGVWUWwC2zVAF1VAY17CE
+	14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7
+	IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8IcIk0rVWUJVWUCwCI42IY6I8E
+	87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14v26r1j6r4UYxBIdaVFxhVjvjDU0x
+	ZFpf9x0pRNyCXUUUUU=
+X-CM-SenderInfo: pyxotu46lvutnvoduhdfq/1tbiBwkGA2lllVk4lwAAsk
 
-On Mon, Jan 12, 2026 at 08:52:31AM -0800, Caleb Sander Mateos wrote:
-> On Sun, Jan 11, 2026 at 8:12 PM Ming Lei <ming.lei@redhat.com> wrote:
-> >
-> > When ublk_ctrl_start_dev() fails after waiting for completion, the
-> > device needs to be properly cancelled to prevent leaving it in an
-> > inconsistent state. Without this, pending I/O commands may remain
-> > uncompleted and the device cannot be cleanly removed.
-> >
-> > Add ublk_cancel_dev() call in the error path to ensure proper cleanup
-> > when START_DEV fails.
-> 
-> It's not clear to me why the UBLK_IO_FETCH_REQ commands must be
-> cancelled if UBLK_CMD_START_DEV fails. Wouldn't they get cancelled
-> whenever the ublk device is deleted or the ublk server exits?
+In the pruss_clk_mux_setup(), the devm_add_action_or_reset() indirectly
+calls pruss_of_free_clk_provider(), which calls of_node_put(clk_mux_np)
+on the error path. However, after the devm_add_action_or_reset()
+returns, the of_node_put(clk_mux_np) is called again, causing a double
+free.
 
-Good catch, DEL_DEV/STOP_DEV supposes to be capable of handling irrecoverable
-START_DEV failure.
+Fix by returning directly, to avoid the duplicate of_node_put().
 
-So this patch isn't needed.
+Fixes: ba59c9b43c86 ("soc: ti: pruss: support CORECLK_MUX and IEPCLK_MUX")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
 
+---
+Changes in v2:
+- Drop error jumping label.
+Changes in v3:
+- Omit curly brackets.
+---
+ drivers/soc/ti/pruss.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-Thanks, 
-Ming
+diff --git a/drivers/soc/ti/pruss.c b/drivers/soc/ti/pruss.c
+index d7634bf5413a..0bc5122ee22b 100644
+--- a/drivers/soc/ti/pruss.c
++++ b/drivers/soc/ti/pruss.c
+@@ -366,12 +366,10 @@ static int pruss_clk_mux_setup(struct pruss *pruss, struct clk *clk_mux,
+ 
+ 	ret = devm_add_action_or_reset(dev, pruss_of_free_clk_provider,
+ 				       clk_mux_np);
+-	if (ret) {
++	if (ret)
+ 		dev_err(dev, "failed to add clkmux free action %d", ret);
+-		goto put_clk_mux_np;
+-	}
+ 
+-	return 0;
++	return ret;
+ 
+ put_clk_mux_np:
+ 	of_node_put(clk_mux_np);
+-- 
+2.34.1
 
 
