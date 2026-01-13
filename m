@@ -1,87 +1,118 @@
-Return-Path: <stable+bounces-208265-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208268-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58853D190E6
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:14:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44B79D193A4
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:59:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AB72F308E4F8
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 13:10:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4347030351EF
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 13:51:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E88AA38FF10;
-	Tue, 13 Jan 2026 13:10:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BECD83921E8;
+	Tue, 13 Jan 2026 13:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Z9LbziVm"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hqGcJw2Z"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABF8E38FF04;
-	Tue, 13 Jan 2026 13:10:43 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE07C3921C0
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 13:51:31 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768309843; cv=none; b=AVrJHJXz8ZmE2jTHgiYUAqjAWDJnvhNtEuatERkADeE9oPvQBQ+5gZ9FidH5+rsQHitcJvv9uWnG0iCF659AnSAW3wpeR0jsHE7hNb0IIhO18xzXFbk5O5yLA2WD465Ul5XgVTs4DNJ/+zCn8h2EL+WdlMms6mpZCiFl44s/rPw=
+	t=1768312293; cv=none; b=lgB3bCh7Gg1RTiuTTwzjyH3ogT/tbnQKLukQIF6NqC8IkS1s4vqvpPXKtXEILI4DP7m5soIZAvzegC0ktvlKGdYa3kgjVI5k+GKNG3W2PBG9qFL16PqXAHU6o9HKjomkSbnVXVjkC+axwSQ5TrMVJr0ABdHV9G6YGt/WLZiyUjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768309843; c=relaxed/simple;
-	bh=SAkRW3R4HH1/+qn76DfyQKdUBBdSRD5KY0q/RfLTWoM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=Akwu98X8VfOujc4OmBQbj1VGoFtTgAV0i6C5qNYsqgFsd9iXd9WVe1EPUokjCd7bTPvQRweGcLb2EmcU97kIR474hMEtqPibcmNuPSYqQ4rpRpjK5vLQsJOacL+czKrIKxNhyTTSwh/7aMINP8wA9R2lgyiTZ4n5wiJXjTsK4Kw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Z9LbziVm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4E9C116C6;
-	Tue, 13 Jan 2026 13:10:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768309843;
-	bh=SAkRW3R4HH1/+qn76DfyQKdUBBdSRD5KY0q/RfLTWoM=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Date:From;
-	b=Z9LbziVmoGZsMZ4kMlb0RHoplfC38I4R5qhEJyRagyDQW+74slBZmIr7movRcxev3
-	 lAtp4jJy+xpnWN1j34uQpufmbWMFJz5e+0MuE1m7kIDdGWN57sJs9NCUv3u2BXKwQj
-	 zPVar+ByyhMggwM9nzoXnZtA0H/eGOSA7XK4G2TqNF+LNIjQUNsDntmYIVB3soYSAQ
-	 1tXcYBEyGF8tbjyegAU1oeku845FzUtv/e6JbVBGNyg8meb57hvKr7zt9fukpGDXGZ
-	 04yXpIZ1zaFjMVrmLDy3ACxw6rFJBN95S6YDj4tl6jPaHNM+vdiwpLrg83UwBVsWZR
-	 HneQOggHiWxxQ==
-From: Carlos Maiolino <cem@kernel.org>
-To: linux-xfs@vger.kernel.org, Brian Foster <bfoster@redhat.com>
-Cc: stable@vger.kernel.org, "Darrick J. Wong" <djwong@kernel.org>
-In-Reply-To: <20260109174905.26372-1-bfoster@redhat.com>
-References: <20260109174905.26372-1-bfoster@redhat.com>
-Subject: Re: [PATCH v2] xfs: set max_agbno to allow sparse alloc of last
- full inode chunk
-Message-Id: <176830984207.127908.986837300693754685.b4-ty@kernel.org>
-Date: Tue, 13 Jan 2026 14:10:42 +0100
+	s=arc-20240116; t=1768312293; c=relaxed/simple;
+	bh=DF2PlcSwUbdqr4rEzvqYDSjDo2WlCVqQlaLK4Ivdm9w=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=PJPSPXfuMDFgNJNgxEdHadx1BzWfJOuR5QjpWu80Ph33DrdeCZPKvAxCryR+UZgWlbX0hD60DofgpNEBw0OAyBzR4wRCG6NrjaOtdzelHmQknk5hRTrYAqo6wVoSrS4mTsgIJp+D29N+jCftpDvH87dow0538m6UG0mWDsOmdeY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hqGcJw2Z; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768312290;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding;
+	bh=u20qw0X+uwjkj6nu8N7LO9JrXSGlXKViHZoJcloq74E=;
+	b=hqGcJw2ZHgY0AUZwrjq/5Ux8oSeq3aqrZof5ihsrk4XCjIGKDpoZqe+WOEr2nqrdnm+Uzu
+	dR58VJaiGZLoSad2tjKus0VxAe+2rlrFjE8ZIJLAZ/PHuHSHNIaSunIwhsSGcSQAbDAUm7
+	B9pSoZwTvrnvNR4R92gAKEEy59o93nE=
+Received: from mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-286-0Dei3ylZNEiouwsTyh9biw-1; Tue,
+ 13 Jan 2026 08:51:28 -0500
+X-MC-Unique: 0Dei3ylZNEiouwsTyh9biw-1
+X-Mimecast-MFC-AGG-ID: 0Dei3ylZNEiouwsTyh9biw_1768312286
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-05.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 30FE2195609F;
+	Tue, 13 Jan 2026 13:51:26 +0000 (UTC)
+Received: from pasta.fast.eng.rdu2.dc.redhat.com (unknown [10.44.32.227])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id 741BD180049F;
+	Tue, 13 Jan 2026 13:51:24 +0000 (UTC)
+From: Andreas Gruenbacher <agruenba@redhat.com>
+To: Linus Torvalds <torvalds@linux-foundation.org>
+Cc: Andreas Gruenbacher <agruenba@redhat.com>,
+	gfs2@lists.linux.dev,
+	linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: [GIT PULL] gfs2 revert for 6.19-rc6
+Date: Tue, 13 Jan 2026 14:51:22 +0100
+Message-ID: <20260113135123.282418-1-agruenba@redhat.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.14.2
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Fri, 09 Jan 2026 12:49:05 -0500, Brian Foster wrote:
-> Sparse inode cluster allocation sets min/max agbno values to avoid
-> allocating an inode cluster that might map to an invalid inode
-> chunk. For example, we can't have an inode record mapped to agbno 0
-> or that extends past the end of a runt AG of misaligned size.
-> 
-> The initial calculation of max_agbno is unnecessarily conservative,
-> however. This has triggered a corner case allocation failure where a
-> small runt AG (i.e. 2063 blocks) is mostly full save for an extent
-> to the EOFS boundary: [2050,13]. max_agbno is set to 2048 in this
-> case, which happens to be the offset of the last possible valid
-> inode chunk in the AG. In practice, we should be able to allocate
-> the 4-block cluster at agbno 2052 to map to the parent inode record
-> at agbno 2048, but the max_agbno value precludes it.
-> 
-> [...]
+Dear Linus,
 
-Applied to for-next, thanks!
+please consider pulling the following gfs2 revert for 6.19-rc6.
 
-[1/1] xfs: set max_agbno to allow sparse alloc of last full inode chunk
-      commit: c360004c0160dbe345870f59f24595519008926f
+I was originally assuming that there must be a bug in gfs2 because gfs2 chains
+bios in the opposite direction of what bio_chain_and_submit() expects.  It
+turns out that the bio chains are set up in "reverse direction" intentionally
+so that the first bio's bi_end_io callback is invoked rather than the last
+bio's callback.
 
-Best regards,
--- 
-Carlos Maiolino <cem@kernel.org>
+We want the first bio's callback invoked for the following reason: The initial
+bio starts page aligned and covers one or more pages.  When it terminates at a
+non-page-aligned offset, subsequent bios are added to handle the remaining
+portion of the final page.  Upon completion of the bio chain, all affected
+pages need to be be marked as read, and only the first bio references all of
+these pages.
+
+Thanks,
+Andreas
+
+The following changes since commit 8f0b4cce4481fb22653697cced8d0d04027cb1e8:
+
+  Linux 6.19-rc1 (2025-12-14 16:05:07 +1200)
+
+are available in the Git repository at:
+
+  git://git.kernel.org/pub/scm/linux/kernel/git/gfs2/linux-gfs2.git tags/gfs2-for-6.19-rc6
+
+for you to fetch changes up to 469d71512d135907bf5ea0972dfab8c420f57848:
+
+  Revert "gfs2: Fix use of bio_chain" (2026-01-12 14:58:32 +0100)
+
+----------------------------------------------------------------
+gfs2 revert
+
+- Revert bad commit "gfs2: Fix use of bio_chain"
+
+----------------------------------------------------------------
+Andreas Gruenbacher (1):
+      Revert "gfs2: Fix use of bio_chain"
+
+ fs/gfs2/lops.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
 
