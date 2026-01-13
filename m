@@ -1,45 +1,45 @@
-Return-Path: <stable+bounces-208228-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208229-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2F551D16A93
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:10:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 487B3D16ABD
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:12:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A7962300AAEF
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 05:09:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A5C58305E3F6
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 05:09:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E735130E0CB;
-	Tue, 13 Jan 2026 05:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6074730CD87;
+	Tue, 13 Jan 2026 05:09:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="sjDmuMIY"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="y79S8Vhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A9BEA30AD0A;
-	Tue, 13 Jan 2026 05:09:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 24270171C9;
+	Tue, 13 Jan 2026 05:09:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768280996; cv=none; b=blhdmShGwgeyqFLDgA3YlHneasC3ijUTkzBSwFaniO5xRPbhGQLTPsMRAkE1c/lasNz/KirS+0KKpLxr/YcXHAxt80YrZFg0WcOYunOBCsFipyfNEkXGoBF1qjvefXXfpSs8aB7DWcUxNrSVHHT2mSkUugzyDy7+ukVaO4UCt9k=
+	t=1768280999; cv=none; b=jyVNhgvGvl+cfifuwfXvkFFuuces6WeUUHuhz4YlBdY94PnEOVXMNeBz/23e6FZgpfCHbnFXOcud7654EZu7eHbudGPltqzdDqWy26rtHaxn5Ynzhuv8bIalK6mTVm0xHSHdjHWHS4S2cD8DOgA1BkVeFIkjS/pYs4jwuRzsd4o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768280996; c=relaxed/simple;
-	bh=K7c1+ZuLcM1wU5Vlzk2CrNF2Qzgfa8dbHn4Cq+BIWF8=;
-	h=Date:To:From:Subject:Message-Id; b=sq9RRH39IY0hDNM/4B1ek9/udB+FqiVluIVV97nBfFq7lrWFZDWN/p1FW6KD6tTpKWMVimzkEH7BPeMoRU9AqmGQ4sqScC4+Dih/xZZZiWh0ri4kqOe7eT2ROsGKn0w05xzIgTS/kqEX3ncpvWYpyWuFhuqjRpqAfvnlXSsn8OA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=sjDmuMIY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82699C116C6;
-	Tue, 13 Jan 2026 05:09:56 +0000 (UTC)
+	s=arc-20240116; t=1768280999; c=relaxed/simple;
+	bh=5J1IXvCxwoop91oWHNO57Xq9KPceUE5wxAxnV/aYir0=;
+	h=Date:To:From:Subject:Message-Id; b=KcDszz1KWH6kjL31KttSn/Dt4Vb5fbp5wgX8Te4KouxI+2fh9hWvv2sytm7naIxppCYIh/JVrGm8DRsXJiw99dFkQ4SiBIdmkNsnLzV2/yKLxT2XBsM+gnkLeZ+xW5NdCW/KGqmhe8SvaGJiHkj6zgyXYvnWuePhBrxuZ4WPO/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=y79S8Vhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB76CC116C6;
+	Tue, 13 Jan 2026 05:09:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768280996;
-	bh=K7c1+ZuLcM1wU5Vlzk2CrNF2Qzgfa8dbHn4Cq+BIWF8=;
+	s=korg; t=1768280998;
+	bh=5J1IXvCxwoop91oWHNO57Xq9KPceUE5wxAxnV/aYir0=;
 	h=Date:To:From:Subject:From;
-	b=sjDmuMIYp/yRUg+fIa3CuvrOFD4gsNbVpBhJncmPP+tHEuld/RyOnlUSg/NLrarTn
-	 7zENC934kGMlMqrDoJUIxEMybeXXFO2fZSnQExIFJlKttHfnwSllJR7nH24Ehfyn10
-	 VbgmbJB7+RTI0dwN4fUtxlIopEMSKdEDuXyXw0r0=
-Date: Mon, 12 Jan 2026 21:09:55 -0800
-To: mm-commits@vger.kernel.org,vbabka@suse.cz,surenb@google.com,stable@vger.kernel.org,shuah@kernel.org,rppt@kernel.org,peterx@redhat.com,mhocko@suse.com,Liam.Howlett@oracle.com,liam.howlett@oracle.com,jhubbard@nvidia.com,jgg@ziepe.ca,david@kernel.org,broonie@kernel.org,lorenzo.stoakes@oracle.com,akpm@linux-foundation.org
+	b=y79S8VhutJ7UvkL2txDxzzm9YPo5gJPheO3+lxkFPRYsajk5L1od1uAfXaKQSIMCe
+	 nr/HaFs2Le5FZJwUM6xzE0EtvNIvSo5F1tTO06zssaFfygpTSlk+yoAsKCOQenNlZ5
+	 IMOk5iyuJqDm/jG7vl5TIWvzDXbD1xg7ZEKKNbDA=
+Date: Mon, 12 Jan 2026 21:09:58 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,rppt@kernel.org,ben.dooks@codethink.co.uk,akpm@linux-foundation.org
 From: Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] tools-testing-selftests-fix-gup_longterm-for-unknown-fs.patch removed from -mm tree
-Message-Id: <20260113050956.82699C116C6@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] mm-numamemblock-include-asm-numah-for-numa_nodes_parsed.patch removed from -mm tree
+Message-Id: <20260113050958.BB76CC116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -48,81 +48,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 
 
 The quilt patch titled
-     Subject: tools/testing/selftests: fix gup_longterm for unknown fs
+     Subject: mm: numa,memblock: include <asm/numa.h> for 'numa_nodes_parsed'
 has been removed from the -mm tree.  Its filename was
-     tools-testing-selftests-fix-gup_longterm-for-unknown-fs.patch
+     mm-numamemblock-include-asm-numah-for-numa_nodes_parsed.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Subject: tools/testing/selftests: fix gup_longterm for unknown fs
-Date: Tue, 6 Jan 2026 15:45:47 +0000
+From: Ben Dooks <ben.dooks@codethink.co.uk>
+Subject: mm: numa,memblock: include <asm/numa.h> for 'numa_nodes_parsed'
+Date: Thu, 8 Jan 2026 10:15:39 +0000
 
-Commit 66bce7afbaca ("selftests/mm: fix test result reporting in
-gup_longterm") introduced a small bug causing unknown filesystems to
-always result in a test failure.
+The 'numa_nodes_parsed' is defined in <asm/numa.h> but this file
+is not included in mm/numa_memblks.c (build x86_64) so add this
+to the incldues to fix the following sparse warning:
 
-This is because do_test() was updated to use a common reporting path, but
-this case appears to have been missed.
+mm/numa_memblks.c:13:12: warning: symbol 'numa_nodes_parsed' was not declared. Should it be static?
 
-This is problematic for e.g.  virtme-ng which uses an overlayfs file
-system, causing gup_longterm to appear to fail each time due to a test
-count mismatch:
-
-	# Planned tests != run tests (50 != 46)
-	# Totals: pass:24 fail:0 xfail:0 xpass:0 skip:22 error:0
-
-The fix is to simply change the return into a break.
-
-Link: https://lkml.kernel.org/r/20260106154547.214907-1-lorenzo.stoakes@oracle.com
-Fixes: 66bce7afbaca ("selftests/mm: fix test result reporting in gup_longterm")
-Signed-off-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Reviewed-by: David Hildenbrand (Red Hat) <david@kernel.org>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc: Mark Brown <broonie@kernel.org>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
+Link: https://lkml.kernel.org/r/20260108101539.229192-1-ben.dooks@codethink.co.uk
+Fixes: 87482708210f ("mm: introduce numa_memblks")
+Signed-off-by: Ben Dooks <ben.dooks@codethink.co.uk>
+Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
+Cc: Ben Dooks <ben.dooks@codethink.co.uk>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- tools/testing/selftests/mm/gup_longterm.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/numa_memblks.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/mm/gup_longterm.c~tools-testing-selftests-fix-gup_longterm-for-unknown-fs
-+++ a/tools/testing/selftests/mm/gup_longterm.c
-@@ -179,7 +179,7 @@ static void do_test(int fd, size_t size,
- 		if (rw && shared && fs_is_unknown(fs_type)) {
- 			ksft_print_msg("Unknown filesystem\n");
- 			result = KSFT_SKIP;
--			return;
-+			break;
- 		}
- 		/*
- 		 * R/O pinning or pinning in a private mapping is always
+--- a/mm/numa_memblks.c~mm-numamemblock-include-asm-numah-for-numa_nodes_parsed
++++ a/mm/numa_memblks.c
+@@ -7,6 +7,8 @@
+ #include <linux/numa.h>
+ #include <linux/numa_memblks.h>
+ 
++#include <asm/numa.h>
++
+ int numa_distance_cnt;
+ static u8 *numa_distance;
+ 
 _
 
-Patches currently in -mm which might be from lorenzo.stoakes@oracle.com are
+Patches currently in -mm which might be from ben.dooks@codethink.co.uk are
 
-mm-vma-do-not-leak-memory-when-mmap_prepare-swaps-the-file.patch
-mm-rmap-improve-anon_vma_clone-unlink_anon_vmas-comments-add-asserts.patch
-mm-rmap-skip-unfaulted-vmas-on-anon_vma-clone-unlink.patch
-mm-rmap-remove-unnecessary-root-lock-dance-in-anon_vma-clone-unmap.patch
-mm-rmap-remove-anon_vma_merge-function.patch
-mm-rmap-make-anon_vma-functions-internal.patch
-mm-mmap_lock-add-vma_is_attached-helper.patch
-mm-rmap-allocate-anon_vma_chain-objects-unlocked-when-possible.patch
-mm-rmap-allocate-anon_vma_chain-objects-unlocked-when-possible-fix.patch
-mm-rmap-separate-out-fork-only-logic-on-anon_vma_clone.patch
-mm-rmap-separate-out-fork-only-logic-on-anon_vma_clone-fix.patch
 
 
