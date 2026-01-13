@@ -1,194 +1,322 @@
-Return-Path: <stable+bounces-208276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208270-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EE83DD1983D
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:36:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 26360D19640
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8E69E302E3D0
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:36:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0D33330A4394
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:13:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9910290DBB;
-	Tue, 13 Jan 2026 14:36:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F4101392B93;
+	Tue, 13 Jan 2026 14:13:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="hJEE2XZJ"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="pIekYW+t"
 X-Original-To: stable@vger.kernel.org
-Received: from sonic314-19.consmr.mail.gq1.yahoo.com (sonic314-19.consmr.mail.gq1.yahoo.com [98.137.69.82])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7EF29CB3A
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:36:06 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.69.82
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B1057392B83
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:13:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768314967; cv=none; b=eUMJV7vZGwdOmxuBX6AQg6wHiOsoBEJI/PWaWELmVPVrXnb299TRyccSu/ULSYN474l4U5NRKLbegRRg6B/JJ8mh3GXQfQAZjel9aNadd4Sugok8phVAKhBXvzd9DgastMAdI1BajeJgBNUEGhQCPTyT+dhVh9DTAM6yYRQMpvQ=
+	t=1768313614; cv=none; b=t8GYYD10g6aefQfvpbxBTP+MNObltJ79PS0niMLjuJqO+mbJuvh+jEWCu+OZ61boUFTZoBgEydM21+cJEU7RVivYFNPwPpboXYQkSvtUb5qnp4FFYJRdW6bB29bwRIaT/CRgvQBHPK+R3dpeohks5I3Mih3BCFJWDTefWS1kLHA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768314967; c=relaxed/simple;
-	bh=UXqT3OxvL4fWZ5v0F/aacWjVx/cPbj2b1GcMebuJ8wE=;
-	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
-	 Content-Type:MIME-Version; b=M9m3vTHofjmEI+zcTxQHl6yyQvFdqK5OmxTV/5OKMDOzZc28nvbDbv3QgsJ02oQym5U2DK0MoHdy0I4wfTbet2rgfRcE6iU1we9Dc0GV57IGbN6ktnI99n+hYrdRk2lFnQBuCJd6bpno+WyO/H1Dvca3YqbAWYM1PnbUmMVr4DE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=hJEE2XZJ; arc=none smtp.client-ip=98.137.69.82
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1768314960; bh=UXqT3OxvL4fWZ5v0F/aacWjVx/cPbj2b1GcMebuJ8wE=; h=Subject:From:To:Cc:Date:In-Reply-To:References:From:Subject:Reply-To; b=hJEE2XZJAOPpOGTsD3xdrdadJqQV83BnKDiz8+Aqu969n9xqws2XzZeTT5FjcnnKD5aWF9PnDnZk6RIQyyMuH0gt8I6OmABvQDvzMx+EOyLTCZyPoXWkqZo2BZ/HQUBFwinAl3bnc42dwkfVg97wJYgfKguFkxtS+dCtWAzJ5QzvqGFEgMgsrG3SZ46gNalbqGu+JyKT1CRqOTfBpWRZF9cV3Vrhl8vwiyglHHxUGqMWPWLsocwuAS/syol8y/8Hs9GybIGHjdqOCjp5H5/MWrTBpuC4muD6/0dQvmFLMKX8hOCHstqGyn1gPNcD8/4xUSpW5dlBNXWrPG+bOni14g==
-X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768314960; bh=PAW65xoDV6tL+WnTuvPdW7VAyPcEWoAfllcInWauuVU=; h=X-Sonic-MF:Subject:From:To:Date:From:Subject; b=LKa6Q+Z0br4mlznWmmCAZ94gFhj3oNXGqnsWOl6iH5hGEWHLwQdFIbAchonp3I1MNokC3DXluoJxybJbxDufdOwteSfC6jt2f5oxZyQXONlGDHS8hJe93/tzN5Xx2qoO3W2sxDJjoyKNS8gjq6IqqNCaumWRJCkjCE4D7qMa0X1/TtWRIjoGEJki1yOs6WHeMA+PHw5SP2FEL4+qrkfoKVGj8BH/zMEO58IBquH1o9aCgzHig9v8oeviNdkp0zbWYP9Do9rTvhVj969nReZhr3SwaUhqElCaMEnvniEMZ6lBI9wV6piKvp/TbrnLwtEsF8kVuvLD6OSx3OqV0iQKZw==
-X-YMail-OSG: rxZL8cQVM1mKaBXGS2.SHA92D1KBUhJUkejW6wCtp.YpsAf1GgyfF4V3UsRQASh
- AccHnyHKAWCj24mWJ5pbEDHciTDjODcjctOdOInluMgq2IuJ2ZJGiAPJLIKgrNMDF4b6.PE57rAU
- PJrv52oRr4WTRyXxrYphVmEGUtYYlcbKa5t63PEYq4r7zRlLOYjg97QJSt0L6E1EtVJ7gBshQFAk
- SdmtGxk6rKG8QUsCXl_umvnA975lqkezGKfnaQxj0BEW6yNa1gCBNENN6ERO_RdEuU7B1O58uzwT
- JEEoe3Qkb6XGfWTaID5k2vfUUNAWpYvGW4G2L4CRxN4Z7YGYRX.s8t8tQo9MDCKe4f3M4s1EvKjQ
- Ux88Sf2Rmp6yRoCrtYOXmIRfPjPXdmpBqyqAJD1tCXb6ffZeJiqu6.S_kO9cMemd0LJK0HlHJCst
- fDIZ0aMGQ8tlRnyC7WeBLhijawoUrirq5RNv682dzwLHyvLL0WdYWpznCRzLRInXxi9raqBHg.zz
- O_1rgUBjBhehcPmiEvQlGeHc2zuG8dXjGwLqr0De9OjRpIvkrYvY.EolYCuT0rECOSvDUJBHcp0.
- yrNEJhb7A64Oj60xMdo.aHK1oL5PNhSrhGm4R0z1aD3kyZhpnsnrNhX.KrryDrp4a3zXKcfNfAcC
- ojWoVqalnHww7lzg7MEiL_pjNOFqnOCebaIIbP.HHOxW05x9kHDEUh34fwqYrLRh3J_V5OZuSXvX
- skxTwHIDjuGmRaiFlrW0RBDB7l7VzvKZgD3d9ct9hFRczB.p9xFXT.VHQjQ.ZT00oZfIYkCSXibF
- CmH3RW2hy9zZmlzh3QLiNLaSVvGnKsmZ_PmFMXTpzucAyUi6Fq5vRx5sxSblgPa1cQcAtbLclcNO
- K5X7aZqreIiKOIKstn7XoTZCRyUBtH3nQYpaBtqWG3d_NRopSnmYRp3zJnmO6Fwy7MXhb5UvBA84
- 4MohFRg2h0TSuobYmmVj3HMBOK54ULoj2_BCxxCxR9cgv.01tC9gGCPwvOPwrQf5_3cETZ5OuIzX
- .C1faUh2hetYwgVRQw8T9Lu5U75vqQBu_pFuf1kT04zQ.viWg8b9oPiXq4fzq045b4bMe1aJsZPA
- 1Epc_w8VVdXff6ClM.Pgyf77x0kNoKRNwGzngriJDu5BVWRmt8U8tJSxxDwphtQGYPKcOiaI1shS
- XozhboEhMCnua7yzdtnxJ6wzmANRF3VPCTJXHE3o9unC4STe48bDvY34O.JinzogfaD1KVT9awcs
- C6cngFq29gmfsHpVmpk0flJLGLYAOyJtzU5EcnhPd3HN8pfwHKrO7ulcw7UkKnFx_eI5JXQjmpVr
- SF41RWodYnBH9iYRxVVwE39ns3hfOizYdN3Lo08bOu8rotaIar0iIATo1OfMoBcZC_3V_mTyYdDA
- jOesmQX7HxvgmTMvD5qr8yP8w._wouBK5sfSR3YK6_huftpmpX0af0zFp8D0PQbH3JVYtUgQt60C
- 3N02A9QdH_NUDbCA8pEFiDEdmta3zSTD8ZXte9xSAEHX6aKdlNcBpGvCvr1TclTsdAUm1eFlCaJI
- kgUs7f50TooEprx9wyPhBY8hNsNYJa5Um.maSDKOR5.Iwev.Qv5_eaPuY6btVCxnrBdiVwXV9WX_
- 4wTeekAMSYBl.w0BvBYyA63FFNcRRk6HjzJyOHCipxB9FVbktEtaR3bA9SXZiWaBYOzjYpqSyPl5
- fCllfN4fWSLK87XGMTInUSrXF9E0E5sihVQPoBMKaZ9m1Ki2dL1XoE0iiUfsl.vTGDO57iuk6qPs
- BQJ2tXrbhpMVnXEx9XyKW5YeOt.COWHrjRpZdRBd0BcjUDCByxJqA.nilEcx4n8qoG_lz36KvL_L
- oN4I2bDbAqvrfQcLj1obpbng8nXkmTtGOcIQiY_fMDT0pfIJTRZPX6weA6WUQxWc0DIkZL6oaEKr
- ozOIXKo4vVkGZ6RK4Zi0.d9gk54suxJInfClbER8JJ91YVPMVRKYXx8Ui9V1meunRPMj7Uv.sFoq
- pjQuMiDsQBzduVfvlcRPguktgdFMhCTkQ39vx6s2hTHkj6ugT5IDLZK3gdVqI9ifxppWyS7exKs7
- wEoX5kbbU.MY8v3YXW3qCU6yOv4s82EYfd_KXabYIXvJZcBVzTengXwSjCdVfDDKxVw.wmsEHzMS
- dhvFMM6vTVmEqSAbF9c7M99MFQONcSEfsMCLOMbKJJ_x5SMPHuCCar9gAmj1eDbP3zeEkg0tIf9y
- 5nrq505SmBCW39jrPJUVmTgXLeaILIRFZc_3BmOPey8E9VIzziiAYStCJNDL7R56Owc_3vZV1rVr
- cwA--
-X-Sonic-MF: <rubenru09@aol.com>
-X-Sonic-ID: 813af666-4f25-4c68-8622-4131645669d7
-Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.gq1.yahoo.com with HTTP; Tue, 13 Jan 2026 14:36:00 +0000
-Received: by hermes--production-ir2-6fcf857f6f-7nlzs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9b43bdbb810054b7366e75cd1eadd578;
-          Tue, 13 Jan 2026 14:05:38 +0000 (UTC)
-Message-ID: <69a714228f562d399e78cd0e54a23769490336f9.camel@aol.com>
-Subject: Re: [PATCH] drm/gud: fix NULL fb and crtc dereferences on USB
- disconnect
-From: Ruben Wauters <rubenru09@aol.com>
-To: Shenghao Yang <me@shenghaoyang.info>, Thomas Zimmermann	
- <tzimmermann@suse.de>, Maarten Lankhorst
- <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
- David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
-Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Date: Tue, 13 Jan 2026 14:05:35 +0000
-In-Reply-To: <65110c51-1f47-4382-ac92-518c7f157a06@shenghaoyang.info>
-References: <20251231055039.44266-1-me@shenghaoyang.info>
-	 <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
-	 <938b5e8e-b849-4d12-8ee2-98312094fc1e@shenghaoyang.info>
-	 <571d40f4d3150e61dfb5d2beccdf5c40f3b5be2c.camel@aol.com>
-	 <c6324a66-5886-4fbb-ba7b-fc7782c0f790@suse.de>
-	 <229b5608222595bc69e7ca86509086a14501b2f7.camel@aol.com>
-	 <8929ff0f-c2e0-49e6-a0ce-c4b0dcebae99@suse.de>
-	 <65110c51-1f47-4382-ac92-518c7f157a06@shenghaoyang.info>
-Autocrypt: addr=rubenru09@aol.com; prefer-encrypt=mutual;
- keydata=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
- eIvzsqg==
-Content-Type: multipart/signed; micalg="pgp-sha256";
-	protocol="application/pgp-signature"; boundary="=-WK1prZNvwrKcwvmDYqit"
-User-Agent: Evolution 3.56.2 
+	s=arc-20240116; t=1768313614; c=relaxed/simple;
+	bh=K6xXdyPD0k2uSlzS8b3S1DiFGu9r812Ekl65VhiInrI=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=Oq4mGPyF48UHMHyo3zHHGfRU7YWK+WR/cwvk2BQ0jlu+SYSfJqhU3dfaGPfdqHVnPC/1cYkfsuNdTGK6UlmKIC3HUaKtvf+1SE5C3zMW6vJwTb1z1QPND3hWKZg8cp7oOKhY/yxkQbBSNFZZftFOstFXTNLY1u+54bc8jgs/gEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=pIekYW+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD4DC19424
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:13:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768313614;
+	bh=K6xXdyPD0k2uSlzS8b3S1DiFGu9r812Ekl65VhiInrI=;
+	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+	b=pIekYW+t+lXvM4fy4xM3VospCFQtGtUDc/SQAzyxu02BiqT/c+GbDy3ahZzOkCUEY
+	 9DbVpZ1CmrB8UFLZFQ+5MkSD+EkmtGV60/zVmT+oq9+txaBP6Aeyyjbh+uSD8uWTy6
+	 Un3l7o45EqqGPkYE82I2VpvndqMUlJ9ZJ+dT90MxMLUYiJvCBlZnVTFJwkU7PEq8pj
+	 d+oAtTYx7A0XsQe41VUhq7EqJkf9QEfHoGwPEsrgn5FeQhxhRPkvvBslgffTwpTEW/
+	 C/+55AwHonAq5Y2czBNc7caYDJPg0xF9D94qJF9eR71G6qAPyL/H0DnpsXpgp9ogCl
+	 9S6dxn6qdO9ag==
+Received: by mail-oa1-f42.google.com with SMTP id 586e51a60fabf-3f4f9ea26aaso5722941fac.0
+        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:13:34 -0800 (PST)
+X-Forwarded-Encrypted: i=1; AJvYcCUinDUPQMU2XnNbimjBYEcMXt+JIWrNEXXGtCjyzQDUrIgHQFR8J+2h6oS0J8ZGr0oqVN5N6T0=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzBfsidf+EgTbNby6RhJtmOF/HvyMLju1Th3bRkW0npNi/m1zyh
+	NHbGsoHSPLviYxsfrJzK5KYmbIZwIUlKcbKWdiA+mljctoTYWtkObtJfStDwC+0X6r0FjrcUMht
+	Rg1GLHAlrm9yZKaA0fqt+S0fejNaHjs4=
+X-Google-Smtp-Source: AGHT+IGgD9L3EqUbZWAGNLT4fdYshzCEhiKm3VPi7rb8tzu6XD0u2gIlhNChFdKDEA14nxrPSX7jFJ65dnwGse+OKb4=
+X-Received: by 2002:a05:6870:8712:b0:329:7f93:2b6 with SMTP id
+ 586e51a60fabf-3ffc0af69a5mr10228828fac.29.1768313613311; Tue, 13 Jan 2026
+ 06:13:33 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-X-Mailer: WebService/1.1.24866 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
-
-
---=-WK1prZNvwrKcwvmDYqit
+References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
+ <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com> <005401dc64a4$75f1d770$61d58650$@telus.net>
+ <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com> <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
+ <e1572bc2-08e7-4669-a943-005da4d59775@oracle.com>
+In-Reply-To: <e1572bc2-08e7-4669-a943-005da4d59775@oracle.com>
+From: "Rafael J. Wysocki" <rafael@kernel.org>
+Date: Tue, 13 Jan 2026 15:13:22 +0100
+X-Gmail-Original-Message-ID: <CAJZ5v0ja21yONr-F8sfzzV-E4CQ=0NqLPmOeaSiepjS4mKEhog@mail.gmail.com>
+X-Gm-Features: AZwV_Qi9Lbcti3AnSSg1FnoO_BMjyWihUjFVY9DIF0tl_JhcNJ2kVdqoN7FOAJU
+Message-ID: <CAJZ5v0ja21yONr-F8sfzzV-E4CQ=0NqLPmOeaSiepjS4mKEhog@mail.gmail.com>
+Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
+ Avoid discarding useful information" on 5.15 LTS
+To: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>
+Cc: Christian Loehle <christian.loehle@arm.com>, Doug Smythies <dsmythies@telus.net>, 
+	Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org, 
+	stable@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
+	Daniel Lezcano <daniel.lezcano@linaro.org>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
 
-On Thu, 2026-01-08 at 21:39 +0800, Shenghao Yang wrote
-Hi
-> Hi Ruben, Thomas,
->=20
-> On 7/1/26 23:56, Thomas Zimmermann wrote:
->=20
-> >=20
-> > No worries, DRM semantics can be murky. This is one of the cases that i=
-s impossible to know unless you came across a patch like this one.
-> >=20
-> > Best regards
-> > Thomas
-> >=20
-> > > > I think the patch is fine and IIRC we have similar logic in other d=
-rivers.
-> > > Reviewed-by: Ruben Wauters <rubenru09@aol.com>
+On Tue, Jan 13, 2026 at 8:06=E2=80=AFAM Harshvardhan Jha
+<harshvardhan.j.jha@oracle.com> wrote:
+>
+> Hi Crhistian,
+>
+> On 08/12/25 6:17 PM, Christian Loehle wrote:
+> > On 12/8/25 11:33, Harshvardhan Jha wrote:
+> >> Hi Doug,
+> >>
+> >> On 04/12/25 4:00 AM, Doug Smythies wrote:
+> >>> On 2025.12.03 08:45 Christian Loehle wrote:
+> >>>> On 12/3/25 16:18, Harshvardhan Jha wrote:
+> >>>>> Hi there,
+> >>>>>
+> >>>>> While running performance benchmarks for the 5.15.196 LTS tags , it=
+ was
+> >>>>> observed that several regressions across different benchmarks is be=
+ing
+> >>>>> introduced when compared to the previous 5.15.193 kernel tag. Runni=
+ng an
+> >>>>> automated bisect on both of them narrowed down the culprit commit t=
+o:
+> >>>>> - 5666bcc3c00f7 Revert "cpuidle: menu: Avoid discarding useful
+> >>>>> information" for 5.15
+> >>>>>
+> >>>>> Regressions on 5.15.196 include:
+> >>>>> -9.3% : Phoronix pts/sqlite using 2 processes on OnPrem X6-2
+> >>>>> -6.3% : Phoronix system/sqlite on OnPrem X6-2
+> >>>>> -18%  : rds-stress -M 1 (readonly rdma-mode) metrics with 1 depth &=
+ 1
+> >>>>> thread & 1M buffer size on OnPrem X6-2
+> >>>>> -4 -> -8% : rds-stress -M 2 (writeonly rdma-mode) metrics with 1 de=
+pth &
+> >>>>> 1 thread & 1M buffer size on OnPrem X6-2
+> >>>>> Up to -30% : Some Netpipe metrics on OnPrem X5-2
+> >>>>>
+> >>>>> The culprit commits' messages mention that these reverts were done =
+due
+> >>>>> to performance regressions introduced in Intel Jasper Lake systems =
+but
+> >>>>> this revert is causing issues in other systems unfortunately. I wan=
+ted
+> >>>>> to know the maintainers' opinion on how we should proceed in order =
+to
+> >>>>> fix this. If we reapply it'll bring back the previous regressions o=
+n
+> >>>>> Jasper Lake systems and if we don't revert it then it's stuck with
+> >>>>> current regressions. If this problem has been reported before and a=
+ fix
+> >>>>> is in the works then please let me know I shall follow developments=
+ to
+> >>>>> that mail thread.
+> >>>> The discussion regarding this can be found here:
+> >>>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/36iykr223vm=
+cfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/__;!!ACWV5N9M2RV99hQ!M=
+WXEz_wRbaLyJxDign2EXci2qNzAPpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb=
+_e6UQA-b9PW7hw$
+> >>>> we explored an alternative to the full revert here:
+> >>>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/4687373.LvF=
+x2qVVIh@rafael.j.wysocki/__;!!ACWV5N9M2RV99hQ!MWXEz_wRbaLyJxDign2EXci2qNzAP=
+pCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb_e6UQA9PSf_uMQ$
+> >>>> unfortunately that didn't lead anywhere useful, so Rafael went with =
+the
+> >>>> full revert you're seeing now.
+> >>>>
+> >>>> Ultimately it seems to me that this "aggressiveness" on deep idle tr=
+adeoffs
+> >>>> will highly depend on your platform, but also your workload, Jasper =
+Lake
+> >>>> in particular seems to favor deep idle states even when they don't s=
+eem
+> >>>> to be a 'good' choice from a purely cpuidle (governor) perspective, =
+so
+> >>>> we're kind of stuck with that.
+> >>>>
+> >>>> For teo we've discussed a tunable knob in the past, which comes natu=
+rally with
+> >>>> the logic, for menu there's nothing obvious that would be comparable=
+.
+> >>>> But for teo such a knob didn't generate any further interest (so far=
+).
+> >>>>
+> >>>> That's the status, unless I missed anything?
+> >>> By reading everything in the links Chrsitian provided, you can see
+> >>> that we had difficulties repeating test results on other platforms.
+> >>>
+> >>> Of the tests listed herein, the only one that was easy to repeat on m=
+y
+> >>> test server, was the " Phoronix pts/sqlite" one. I got (summary: no d=
+ifference):
+> >>>
+> >>> Kernel 6.18                                                          =
+       Reverted
+> >>> pts/sqlite-2.3.0                    menu rc4                menu rc1 =
+               menu rc1                menu rc3
+> >>>                             performance             performance      =
+       performance             performance
+> >>> test        what                    ave                     ave      =
+               ave                     ave
+> >>> 1   T/C 1                   2.147   -0.2%           2.143   0.0%     =
+       2.16    -0.8%           2.156   -0.6%
+> >>> 2   T/C 2                   3.468   0.1%            3.473   0.0%     =
+       3.486   -0.4%           3.478   -0.1%
+> >>> 3   T/C 4                   4.336   0.3%            4.35    0.0%     =
+       4.355   -0.1%           4.354   -0.1%
+> >>> 4   T/C 8                   5.438   -0.1%           5.434   0.0%     =
+       5.456   -0.4%           5.45    -0.3%
+> >>> 5   T/C 12                  6.314   -0.2%           6.299   0.0%     =
+       6.307   -0.1%           6.29    0.1%
+> >>>
+> >>> Where:
+> >>> T/C means: Threads / Copies
+> >>> performance means: intel_pstate CPU frequency scaling driver and the =
+performance CPU frequencay scaling governor.
+> >>> Data points are in Seconds.
+> >>> Ave means the average test result. The number of runs per test was in=
+creased from the default of 3 to 10.
+> >>> The reversion was manually applied to kernel 6.18-rc1 for that test.
+> >>> The reversion was included in kernel 6.18-rc3.
+> >>> Kernel 6.18-rc4 had another code change to menu.c
+> >>>
+> >>> In case the formatting gets messed up, the table is also attached.
+> >>>
+> >>> Processor: Intel(R) Core(TM) i5-10600K CPU @ 4.10GHz, 6 cores 12 CPUs=
+.
+> >>> HWP: Enabled.
+> >> I was able to recover performance on 5.15 and 5.4 LTS based kernels
+> >> after reapplying the revert on X6-2 systems.
+> >>
+> >> Architecture:                x86_64
+> >>   CPU op-mode(s):            32-bit, 64-bit
+> >>   Address sizes:             46 bits physical, 48 bits virtual
+> >>   Byte Order:                Little Endian
+> >> CPU(s):                      56
+> >>   On-line CPU(s) list:       0-55
+> >> Vendor ID:                   GenuineIntel
+> >>   Model name:                Intel(R) Xeon(R) CPU E5-2690 v4 @ 2.60GHz
+> >>     CPU family:              6
+> >>     Model:                   79
+> >>     Thread(s) per core:      2
+> >>     Core(s) per socket:      14
+> >>     Socket(s):               2
+> >>     Stepping:                1
+> >>     CPU(s) scaling MHz:      98%
+> >>     CPU max MHz:             2600.0000
+> >>     CPU min MHz:             1200.0000
+> >>     BogoMIPS:                5188.26
+> >>     Flags:                   fpu vme de pse tsc msr pae mce cx8 apic s=
+ep
+> >> mtrr pg
+> >>                              e mca cmov pat pse36 clflush dts acpi mmx
+> >> fxsr sse
+> >>                              sse2 ss ht tm pbe syscall nx pdpe1gb rdts=
+cp
+> >> lm cons
+> >>                              tant_tsc arch_perfmon pebs bts rep_good
+> >> nopl xtopol
+> >>                              ogy nonstop_tsc cpuid aperfmperf pni
+> >> pclmulqdq dtes
+> >>                              64 monitor ds_cpl vmx smx est tm2 ssse3
+> >> sdbg fma cx
+> >>                              16 xtpr pdcm pcid dca sse4_1 sse4_2 x2api=
+c
+> >> movbe po
+> >>                              pcnt tsc_deadline_timer aes xsave avx f16=
+c
+> >> rdrand l
+> >>                              ahf_lm abm 3dnowprefetch cpuid_fault epb
+> >> cat_l3 cdp
+> >>                              _l3 pti intel_ppin ssbd ibrs ibpb stibp
+> >> tpr_shadow
+> >>                              flexpriority ept vpid ept_ad fsgsbase
+> >> tsc_adjust bm
+> >>                              i1 hle avx2 smep bmi2 erms invpcid rtm cq=
+m
+> >> rdt_a rd
+> >>                              seed adx smap intel_pt xsaveopt cqm_llc
+> >> cqm_occup_l
+> >>                              lc cqm_mbm_total cqm_mbm_local dtherm ara=
+t
+> >> pln pts
+> >>                              vnmi md_clear flush_l1d
+> >> Virtualization features:
+> >>   Virtualization:            VT-x
+> >> Caches (sum of all):
+> >>   L1d:                       896 KiB (28 instances)
+> >>   L1i:                       896 KiB (28 instances)
+> >>   L2:                        7 MiB (28 instances)
+> >>   L3:                        70 MiB (2 instances)
+> >> NUMA:
+> >>   NUMA node(s):              2
+> >>   NUMA node0 CPU(s):         0-13,28-41
+> >>   NUMA node1 CPU(s):         14-27,42-55
+> >> Vulnerabilities:
+> >>   Gather data sampling:      Not affected
+> >>   Indirect target selection: Not affected
+> >>   Itlb multihit:             KVM: Mitigation: Split huge pages
+> >>   L1tf:                      Mitigation; PTE Inversion; VMX conditiona=
+l
+> >> cache fl
+> >>                              ushes, SMT vulnerable
+> >>   Mds:                       Mitigation; Clear CPU buffers; SMT vulner=
+able
+> >>   Meltdown:                  Mitigation; PTI
+> >>   Mmio stale data:           Mitigation; Clear CPU buffers; SMT vulner=
+able
+> >>   Reg file data sampling:    Not affected
+> >>   Retbleed:                  Not affected
+> >>   Spec rstack overflow:      Not affected
+> >>   Spec store bypass:         Mitigation; Speculative Store Bypass
+> >> disabled via p
+> >>                              rctl
+> >>   Spectre v1:                Mitigation; usercopy/swapgs barriers and
+> >> __user poi
+> >>                              nter sanitization
+> >>   Spectre v2:                Mitigation; Retpolines; IBPB conditional;
+> >> IBRS_FW;
+> >>                              STIBP conditional; RSB filling; PBRSB-eIB=
+RS
+> >> Not aff
+> >>                              ected; BHI Not affected
+> >>   Srbds:                     Not affected
+> >>   Tsa:                       Not affected
+> >>   Tsx async abort:           Mitigation; Clear CPU buffers; SMT vulner=
+able
+> >>   Vmscape:                   Mitigation; IBPB before exit to userspace
+> >>
+> > It would be nice to get the idle states here, ideally how the states' u=
+sage changed
+> > from base to revert.
+> > The mentioned thread did this and should show how it can be done, but a=
+ dump of
+> > cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
+> > before and after the workload is usually fine to work with:
+> > https://urldefense.com/v3/__https://lore.kernel.org/linux-pm/8da42386-2=
+82e-4f97-af93-4715ae206361@arm.com/__;!!ACWV5N9M2RV99hQ!PEhkFcO7emFLMaNxWEo=
+E2Gtnw3zSkpghP17iuEvZM3W6KUpmkbgKw_tr91FwGfpzm4oA5f7c5sz8PkYvKiEVwI_iLIPpMt=
+53$
+>
+> Bumping this as I discovered this issue on 6.12 stable branch also. The
+> reapplication seems inevitable. I shall get back to you with these
+> details also.
 
-Patch applied to drm-misc-fixes, thanks
-> > >=20
-> > > I believe Shenghao mentioned another oops that is present? if so it m=
-ay
-> > > be best to submit that in a separate patch rather than a v2 of this
-> > > one.
-> > >=20
-> > > Ruben
->=20
->=20
-> Thanks both! I'll split the patch for the second oops.
->=20
-> Shenghao
-
---=-WK1prZNvwrKcwvmDYqit
-Content-Type: application/pgp-signature; name="signature.asc"
-Content-Description: This is a digitally signed message part
-
------BEGIN PGP SIGNATURE-----
-
-iQJPBAABCAA5FiEE3obNNdPQ9V5CQi2Y0n5QwFCuDOEFAmlmUS8bFIAAAAAABAAO
-bWFudTIsMi41KzEuMTEsMiwyAAoJENJ+UMBQrgzhuogP/1FYmM6VabykYtv2eR2L
-jVMsjHXGBVF3zpEZHxXsxCDf+csh27ZOdbfgE9Imbr1Z/0VEm8+He02X+fYNo/70
-OkeCh3WKEWwiOhlYnuc+yoLvQUCFujXqy9AySMfDHpErGlVG0iksLCLzDKgDTYiW
-cu4Jz7iXrVIwoLVtfG0Tzawe1JOmDDdHxFHxl8SbpPy2fy3W8496nMy1v/t5QvVX
-lpsyUfh+qtwfn1JyzkzXcNYlwojUIqhTa000gDs2S+yltobOPosxrqA09icFovGK
-IEqGO9kUU0HVM8c2uCJit3JME59z8gEL/3La46nFtoWuh620AtvvpcU0xk65wX9c
-hN393S5s6ey2v5je+Ypk2//Oj9t1lZbQzclsqmbn1RpGL9KLdPTmsirbtMLRgRBM
-ppYiC8Mo3YRyxPO4ra2gVl908JrtfjQhrIZ1MrhtxCqAgZgVtMzCOCjmusFT1cDl
-kXdxFyjZKT8o6NATkNj5+NN5h2nhrkQiQh9B2I/vd5yZomgkvMkGHocw6xR8Lzi1
-wP0HQ6UYy5zgi3nRTRZQz7bU0mG9caomrBC3zXcth5plqeqlLlAw4Q52hgu9a1J6
-ovorUrc1YYeZbNJ+0xrBmLPwRcDaGeXKTCmr2GVuPhsp6TAGM5Nwrc22eBt2iytC
-BvT2qdA2bVnEJI2uUhH7XjTj
-=Exhg
------END PGP SIGNATURE-----
-
---=-WK1prZNvwrKcwvmDYqit--
+Yes, please, because I have another reason to restore the reverted commit.
 
