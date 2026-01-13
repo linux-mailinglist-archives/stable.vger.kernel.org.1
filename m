@@ -1,181 +1,156 @@
-Return-Path: <stable+bounces-208291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208292-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78088D1B14E
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 20:39:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id D3D3ED1B1B1
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 20:49:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E63E3028186
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 19:39:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 066AD3026AD2
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 19:48:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2902236C595;
-	Tue, 13 Jan 2026 19:39:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3B89230DEDD;
+	Tue, 13 Jan 2026 19:48:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="J0Vy1xbO"
+	dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b="Y7Irkn5S"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.10])
+Received: from smtpout.efficios.com (smtpout.efficios.com [158.69.130.18])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8508736AB65;
-	Tue, 13 Jan 2026 19:39:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.10
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78D8831327D;
+	Tue, 13 Jan 2026 19:48:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=158.69.130.18
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768333141; cv=none; b=JBFu4RWoeRAaWMgf2rqoJnVu8iLg945gMXLx4RNh6aEKxid3229icKGsMYZB9s32gcej1WfzAv6RteRiby1GhxvfQMo6vioM+2kMsFEqAIXepK0pP6zfIo2m0KSkhsOYAQirjCJslRW/s551DneUt62mTLueEmz2mJPRNBRj5Kk=
+	t=1768333722; cv=none; b=sD4jY7aTV/uHEfbugQZ/3naZWFGvVb5/ecHzLwz/ukdpov9+/xQHHnj0kmy8lP4SJyqyOv0L0kdIR+QzzNTIXHXnn64qq5sQ2dpq7BMxvUj75Ggdlag5usrcLqbbXgbPNXl+O80sNwFa1Vee7Hn3x49eZ+xhWv/vwttWvzR2nkQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768333141; c=relaxed/simple;
-	bh=cQBJ2VxWuFTxQUDOTo6qtyEYlivydYoNMrH+/6fqZRo=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=o/92oHemBQKARPGywudauypWppvvF4ERarA1eXPKEUE8wrB9Zb1Py5DfwA4ymJiL42njaE3fVTD2puQEBpP57I0E/4eVt+4QXH12jVSHn3RSbzIcSG6O4QyMkSH2LDYiP/KeBv5Gn6ntxEyBbfnPjp2oxcWSxnaffucjvAQM4+A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=J0Vy1xbO; arc=none smtp.client-ip=192.198.163.10
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768333140; x=1799869140;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=cQBJ2VxWuFTxQUDOTo6qtyEYlivydYoNMrH+/6fqZRo=;
-  b=J0Vy1xbO0Mw7OSJ9f7VU+PF3C4aBt/66TSUh+UIyb5hOTWh75IltLM46
-   Euk9SLzr3VnlA0OyN0CKpK4bQ+zsHgJcKIirHYs23sCxrBEtuAG0g8lpW
-   2SmkAxn1dgBCkYI6uSBfzujRJ2BDjZ6lqbXB1jMKWVThHfxX7sgayc1v0
-   NIAIepiIChLn4/GYHbNgLsZ6NrXM+4ac3m8RjTpAA5A13X+ZMHk7245aJ
-   WHDO6qVmTquVFccBZ4UmLaTUxuYKW3pkxvGkcOQRRwe/TLMnFishlGVUs
-   7t3JQHhofxKTVAgzYq0aDCgis0U2aA4nKfd1OHBPbIrJTUXwmEAHDROwN
-   w==;
-X-CSE-ConnectionGUID: eN5uY+DaTGin4ScuteoUPQ==
-X-CSE-MsgGUID: KDH6pDTOSJW2SjEIiIMF2A==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="80993531"
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="80993531"
-Received: from orviesa003.jf.intel.com ([10.64.159.143])
-  by fmvoesa104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 11:39:00 -0800
-X-CSE-ConnectionGUID: fuUb7S8FSd+1isAwjaWYGQ==
-X-CSE-MsgGUID: XmFmkVOGTBSszu2DWXYeFg==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,222,1763452800"; 
-   d="scan'208";a="208629085"
-Received: from kasadzad-mobl.ger.corp.intel.com (HELO soc-5CG4396XFB.clients.intel.com) ([10.94.252.226])
-  by ORVIESA003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 13 Jan 2026 11:38:58 -0800
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-To: intel-wired-lan@lists.osuosl.org
-Cc: netdev@vger.kernel.org,
-	Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
+	s=arc-20240116; t=1768333722; c=relaxed/simple;
+	bh=bTp2Vjo4mw/wCtFQXi3331QEgeDTFtRFmfRf0623Zr4=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=lvkulqr6iTZ5cBmKHB/xwfJxhl4H7a/UlrXhCh/cW6VQGs9CMpbQPsyn8FZR/dB17m+UILa0LKE+WhN2RWBNAa60yH+bVL6IECgW9pgMG0LNepJOKW9yfYezOLBb8pHzCmWP6TaAXc8Zi6iIbSpv0sctkII3hPsXArd2X72efYU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com; spf=pass smtp.mailfrom=efficios.com; dkim=pass (2048-bit key) header.d=efficios.com header.i=@efficios.com header.b=Y7Irkn5S; arc=none smtp.client-ip=158.69.130.18
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=efficios.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=efficios.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=efficios.com;
+	s=smtpout1; t=1768333719;
+	bh=FnQ6Xj9eoyZHqA1dE1GyFR6lhfMRam/O2mY67l2o+yY=;
+	h=From:To:Cc:Subject:Date:From;
+	b=Y7Irkn5SAfMbS6XllRAOy38YzIKPePFRJxrmK5s/LlwoBiKjexTQsXLqkDvG4V/H9
+	 XlrU7L6s6UHwIbnKcoEST9xs24ZMEBbAksgKDYxi6O+hcFqU1Gdzlj5y31k28IQHbX
+	 LSTeK5oD4u4tz180kv1jIN6Nh7BtJKTqyx4GNmd6aYsvBQ9I42SFWhZCF3VuNgHKuo
+	 eQCrVk3Yh3G0omKKLElaM87Jf/Kh9jNEXWiZG2vhooOzVy6tD5jYEWxhAQrNQDaJGd
+	 C5qtL6gUYat8Id5+6CNaBnkKszN5bR+71dNi7CBQBa8h0rhL6/ImQHZc5m4VNK0LcF
+	 hNSfuGwcinaKA==
+Received: from thinkos.internal.efficios.com (mtl.efficios.com [216.120.195.104])
+	by smtpout.efficios.com (Postfix) with ESMTPSA id 4drKYg2L7PzlTP;
+	Tue, 13 Jan 2026 14:48:39 -0500 (EST)
+From: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+To: Andrew Morton <akpm@linux-foundation.org>
+Cc: linux-kernel@vger.kernel.org,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>,
+	Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>,
+	Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>,
+	christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>,
+	Michal Hocko <mhocko@suse.com>,
+	Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>,
+	linux-mm@kvack.org,
 	stable@vger.kernel.org,
-	Dawid Osuchowski <dawid.osuchowski@linux.intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Subject: [PATCH iwl-net 2/2] ice: fix retry for AQ command 0x06EE
-Date: Tue, 13 Jan 2026 20:38:17 +0100
-Message-ID: <20260113193817.582-3-dawid.osuchowski@linux.intel.com>
-X-Mailer: git-send-email 2.51.0
-In-Reply-To: <20260113193817.582-1-dawid.osuchowski@linux.intel.com>
-References: <20260113193817.582-1-dawid.osuchowski@linux.intel.com>
+	linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: [PATCH v1 0/1] mm: Fix OOM killer and proc stats inaccuracy on large many-core systems
+Date: Tue, 13 Jan 2026 14:47:33 -0500
+Message-Id: <20260113194734.28983-1-mathieu.desnoyers@efficios.com>
+X-Mailer: git-send-email 2.39.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298 Gdansk - KRS 101882 - NIP 957-07-52-316
 Content-Transfer-Encoding: 8bit
 
-From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+Hi Andrew,
 
-Executing ethtool -m can fail reporting a netlink I/O error while firmware
-link management holds the i2c bus used to communicate with the module.
+This patch modifies the OOM killer and all proc RSS stats to use the
+precise for-each-possible-cpu sum to fix the inaccuracy issues. This
+approach was suggested by Michal Hocko as a straightforward fix for the
+inaccuracy issue by using more precise (but slower) RSS stats sum.
 
-According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
-Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
-request should to be retried upon receiving EBUSY from firmware.
+With this, the hierarchical per-cpu counters become a simple
+optimization rather than a bug fix. I will post a new version
+of the HPCC soon which will be based on this patch.
 
-Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-implemented it only for part of ice_get_module_eeprom(), leaving all other
-calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
-EBUSY without retrying.
+Feedback is welcome!
 
-Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
-(AQ) command with opcode 0x06EE to the list of commands that should be
-retried on receiving EBUSY from firmware.
+Thanks,
 
+Mathieu
+
+Cc: Andrew Morton <akpm@linux-foundation.org>
+Cc: "Paul E. McKenney" <paulmck@kernel.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Dennis Zhou <dennis@kernel.org>
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Christoph Lameter <cl@linux.com>
+Cc: Martin Liu <liumartin@google.com>
+Cc: David Rientjes <rientjes@google.com>
+Cc: christian.koenig@amd.com
+Cc: Shakeel Butt <shakeel.butt@linux.dev>
+Cc: SeongJae Park <sj@kernel.org>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Johannes Weiner <hannes@cmpxchg.org>
+Cc: Sweet Tea Dorminy <sweettea-kernel@dorminy.me>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: "Liam R . Howlett" <liam.howlett@oracle.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Wei Yang <richard.weiyang@gmail.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Al Viro <viro@zeniv.linux.org.uk>
+Cc: linux-mm@kvack.org
 Cc: stable@vger.kernel.org
-Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
-Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
-Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
----
- drivers/net/ethernet/intel/ice/ice_common.c  |  1 +
- drivers/net/ethernet/intel/ice/ice_ethtool.c | 35 ++++++++------------
- 2 files changed, 15 insertions(+), 21 deletions(-)
+Cc: linux-trace-kernel@vger.kernel.org
+Cc: Yu Zhao <yuzhao@google.com>
+Cc: Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Mateusz Guzik <mjguzik@gmail.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Baolin Wang <baolin.wang@linux.alibaba.com>
+Cc: Aboorva Devarajan <aboorvad@linux.ibm.com>
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
-index aab00c44e9b2..26eb8e05498b 100644
---- a/drivers/net/ethernet/intel/ice/ice_common.c
-+++ b/drivers/net/ethernet/intel/ice/ice_common.c
-@@ -1854,6 +1854,7 @@ static bool ice_should_retry_sq_send_cmd(u16 opcode)
- 	case ice_aqc_opc_lldp_stop:
- 	case ice_aqc_opc_lldp_start:
- 	case ice_aqc_opc_lldp_filter_ctrl:
-+	case ice_aqc_opc_sff_eeprom:
- 		return true;
- 	}
- 
-diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-index 3565a5d96c6d..478876908db1 100644
---- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
-+++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
-@@ -4496,7 +4496,7 @@ ice_get_module_eeprom(struct net_device *netdev,
- 	u8 addr = ICE_I2C_EEPROM_DEV_ADDR;
- 	struct ice_hw *hw = &pf->hw;
- 	bool is_sfp = false;
--	unsigned int i, j;
-+	unsigned int i;
- 	u16 offset = 0;
- 	u8 page = 0;
- 	int status;
-@@ -4538,26 +4538,19 @@ ice_get_module_eeprom(struct net_device *netdev,
- 		if (page == 0 || !(data[0x2] & 0x4)) {
- 			u32 copy_len;
- 
--			/* If i2c bus is busy due to slow page change or
--			 * link management access, call can fail. This is normal.
--			 * So we retry this a few times.
--			 */
--			for (j = 0; j < 4; j++) {
--				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
--							   !is_sfp, value,
--							   SFF_READ_BLOCK_SIZE,
--							   0, NULL);
--				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
--					   addr, offset, page, is_sfp,
--					   value[0], value[1], value[2], value[3],
--					   value[4], value[5], value[6], value[7],
--					   status);
--				if (status) {
--					usleep_range(1500, 2500);
--					memset(value, 0, SFF_READ_BLOCK_SIZE);
--					continue;
--				}
--				break;
-+			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
-+						   !is_sfp, value,
-+						   SFF_READ_BLOCK_SIZE,
-+						   0, NULL);
-+			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
-+				   addr, offset, page, is_sfp,
-+				   value[0], value[1], value[2], value[3],
-+				   value[4], value[5], value[6], value[7],
-+				   ERR_PTR(status));
-+			if (status) {
-+				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
-+					   __func__, ERR_PTR(status));
-+				return status;
- 			}
- 
- 			/* Make sure we have enough room for the new block */
+Mathieu Desnoyers (1):
+  mm: Fix OOM killer and proc stats inaccuracy on large many-core
+    systems
+
+ fs/proc/task_mmu.c | 14 +++++++-------
+ include/linux/mm.h |  5 -----
+ 2 files changed, 7 insertions(+), 12 deletions(-)
+
 -- 
-2.51.0
-
+2.39.5
 
