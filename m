@@ -1,96 +1,176 @@
-Return-Path: <stable+bounces-208212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17C34D1666A
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 04:07:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4ECCD16A84
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:09:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC725304D849
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 03:06:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B20D13027597
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 05:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7409730E0E0;
-	Tue, 13 Jan 2026 03:06:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2480B30C632;
+	Tue, 13 Jan 2026 05:09:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="IzWOFpn0"
 X-Original-To: stable@vger.kernel.org
-Received: from mail.loongson.cn (mail.loongson.cn [114.242.206.163])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17CE62DAFDD;
-	Tue, 13 Jan 2026 03:06:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.242.206.163
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+	(No client certificate requested)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D71152DBF78;
+	Tue, 13 Jan 2026 05:09:25 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768273564; cv=none; b=MPz6hYVBR1zR8uSNYVJs2XJnnCEIMke4Rkjk3eiA9O4aOyMAuvjaXZiVNbKfDYDzqzaiF1TkR8Havc0C4etsTvDsWK8vIySnBMwHKmOnY6qBSrCs2Pxo56vUNdYAes6SX2PS/ZO4jjA4CpxzisJL1VhlGmx65p2ocJxaZ7pFzM4=
+	t=1768280965; cv=none; b=QaaYJMfpivg2cfnznw00N/F620U7hPdJBBZgxKhyd4qef1fCNymHkEMXblHBCyNv7YA7tSOPvuekxOzpxgTGy7JM3Ell++JfEb8DYWu+5su7qvRUb/M4FFJHIzwdH5rzKtuX6dlj9CExbogKbJnaS7bHdjJ4WWZaZx5ugIHgcgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768273564; c=relaxed/simple;
-	bh=DkYNqOwEL8ZE6+15nMNFJBEfWAXkLJCqb6yhtK/qe74=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=dHDOC4DlFHRKkfMI+c1PyPr5d1tcav4WrGNPXWJCd9YWtMb/C1I+CSChFhdVXF6nMmOUY8yd5U0MjfuVlBpUjiXhyGAWFS5/94nXKxyBaFYLqPQUInsE9vzyvN3/gqPySrXVVr9q9PQXaxwl7dP/M0f2b8bnCLeERleRDXgsGzo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn; spf=pass smtp.mailfrom=loongson.cn; arc=none smtp.client-ip=114.242.206.163
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=loongson.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=loongson.cn
-Received: from loongson.cn (unknown [10.2.5.213])
-	by gateway (Coremail) with SMTP id _____8Cx58GYtmVpSTAIAA--.14084S3;
-	Tue, 13 Jan 2026 11:06:00 +0800 (CST)
-Received: from localhost.localdomain (unknown [10.2.5.213])
-	by front1 (Coremail) with SMTP id qMiowJBxLMKVtmVp734cAA--.56671S4;
-	Tue, 13 Jan 2026 11:05:59 +0800 (CST)
-From: Bibo Mao <maobibo@loongson.cn>
-To: Gonglei <arei.gonglei@huawei.com>,
-	"Michael S . Tsirkin" <mst@redhat.com>,
-	Jason Wang <jasowang@redhat.com>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	=?UTF-8?q?Eugenio=20P=C3=A9rez?= <eperezma@redhat.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	"David S . Miller" <davem@davemloft.net>,
-	wangyangxin <wangyangxin1@huawei.com>
-Cc: virtualization@lists.linux.dev,
-	linux-crypto@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	stable@vger.kernel.org
-Subject: [PATCH v5 2/3] crypto: virtio: Remove duplicated virtqueue_kick in virtio_crypto_skcipher_crypt_req
-Date: Tue, 13 Jan 2026 11:05:55 +0800
-Message-Id: <20260113030556.3522533-3-maobibo@loongson.cn>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20260113030556.3522533-1-maobibo@loongson.cn>
-References: <20260113030556.3522533-1-maobibo@loongson.cn>
+	s=arc-20240116; t=1768280965; c=relaxed/simple;
+	bh=V4KBSY8WlyaDQVCUg34Xc30tOxyP/Y0VwUwYRVh/cWA=;
+	h=Date:To:From:Subject:Message-Id; b=Z+FA/uLGMyw1f0sZScAixce1RP+zOLq1TRaSo4lgKV9OIL7U3v8Y9LqTPuA31DIYKzPSXwZaZUOfPZ3q2gy7LOdLuJn9MPC+CC2imeqM17UoZaJ4+U3AgsTY8GFPP+EeDuKW2DMJf/u7g0TtAbNmJay31PhB6QHSUcoQvAAD66I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=IzWOFpn0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66F22C116C6;
+	Tue, 13 Jan 2026 05:09:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768280965;
+	bh=V4KBSY8WlyaDQVCUg34Xc30tOxyP/Y0VwUwYRVh/cWA=;
+	h=Date:To:From:Subject:From;
+	b=IzWOFpn0bZWzKQn0RAYU4nir8ZEBb7ObT69uwFwfzDdmKHXH+JSL03sDcfoY1OUcr
+	 6Xxv3WD8lGJMDyh8HTCgo7FKESRryXzTijgga/7McK6uhlRtLevidJMxtdzYrhE0wM
+	 Bgugq0x2nCQrj2lRYeiXtrYHdz6CJEUXV9xiqPhA=
+Date: Mon, 12 Jan 2026 21:09:24 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,wangjinchao600@gmail.com,stable@vger.kernel.org,hch@lst.de,djwong@kernel.org,daniel@iogearbox.net,brauner@kernel.org,ast@kernel.org,andrii@kernel.org,shakeel.butt@linux.dev,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] lib-buildid-use-__kernel_read-for-sleepable-context.patch removed from -mm tree
+Message-Id: <20260113050925.66F22C116C6@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qMiowJBxLMKVtmVp734cAA--.56671S4
-X-CM-SenderInfo: xpdruxter6z05rqj20fqof0/
-X-Coremail-Antispam: 1Uk129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7KY7
-	ZEXasCq-sGcSsGvfJ3UbIjqfuFe4nvWSU5nxnvy29KBjDU0xBIdaVrnUUvcSsGvfC2Kfnx
-	nUUI43ZEXa7xR_UUUUUUUUU==
 
-With function virtio_crypto_skcipher_crypt_req(), there is already
-virtqueue_kick() call with spinlock held in function
-__virtio_crypto_skcipher_do_req(). Remove duplicated virtqueue_kick()
-function call here.
 
-Fixes: d79b5d0bbf2e ("crypto: virtio - support crypto engine framework")
-Cc: stable@vger.kernel.org
-Signed-off-by: Bibo Mao <maobibo@loongson.cn>
-Acked-by: Jason Wang <jasowang@redhat.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
+The quilt patch titled
+     Subject: lib/buildid: use __kernel_read() for sleepable context
+has been removed from the -mm tree.  Its filename was
+     lib-buildid-use-__kernel_read-for-sleepable-context.patch
+
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: Shakeel Butt <shakeel.butt@linux.dev>
+Subject: lib/buildid: use __kernel_read() for sleepable context
+Date: Mon, 22 Dec 2025 12:58:59 -0800
+
+Prevent a "BUG: unable to handle kernel NULL pointer dereference in
+filemap_read_folio".
+
+For the sleepable context, convert freader to use __kernel_read() instead
+of direct page cache access via read_cache_folio().  This simplifies the
+faultable code path by using the standard kernel file reading interface
+which handles all the complexity of reading file data.
+
+At the moment we are not changing the code for non-sleepable context which
+uses filemap_get_folio() and only succeeds if the target folios are
+already in memory and up-to-date.  The reason is to keep the patch simple
+and easier to backport to stable kernels.
+
+Syzbot repro does not crash the kernel anymore and the selftests run
+successfully.
+
+In the follow up we will make __kernel_read() with IOCB_NOWAIT work for
+non-sleepable contexts.  In addition, I would like to replace the
+secretmem check with a more generic approach and will add fstest for the
+buildid code.
+
+Link: https://lkml.kernel.org/r/20251222205859.3968077-1-shakeel.butt@linux.dev
+Fixes: ad41251c290d ("lib/buildid: implement sleepable build_id_parse() API")
+Reported-by: syzbot+09b7d050e4806540153d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=09b7d050e4806540153d
+Signed-off-by: Shakeel Butt <shakeel.butt@linux.dev>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Tested-by: Jinchao Wang <wangjinchao600@gmail.com>
+  Link: https://lkml.kernel.org/r/aUteBPWPYzVWIZFH@ndev
+Reviewed-by: Christian Brauner <brauner@kernel.org>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Daniel Borkman <daniel@iogearbox.net>
+Cc: "Darrick J. Wong" <djwong@kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/crypto/virtio/virtio_crypto_skcipher_algs.c | 2 --
- 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-index 1b3fb21a2a7d..11053d1786d4 100644
---- a/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-+++ b/drivers/crypto/virtio/virtio_crypto_skcipher_algs.c
-@@ -541,8 +541,6 @@ int virtio_crypto_skcipher_crypt_req(
- 	if (ret < 0)
- 		return ret;
+ lib/buildid.c |   32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
+
+--- a/lib/buildid.c~lib-buildid-use-__kernel_read-for-sleepable-context
++++ a/lib/buildid.c
+@@ -5,6 +5,7 @@
+ #include <linux/elf.h>
+ #include <linux/kernel.h>
+ #include <linux/pagemap.h>
++#include <linux/fs.h>
+ #include <linux/secretmem.h>
  
--	virtqueue_kick(data_vq->vq);
+ #define BUILD_ID 3
+@@ -46,20 +47,9 @@ static int freader_get_folio(struct frea
+ 
+ 	freader_put_folio(r);
+ 
+-	/* reject secretmem folios created with memfd_secret() */
+-	if (secretmem_mapping(r->file->f_mapping))
+-		return -EFAULT;
 -
- 	return 0;
- }
++	/* only use page cache lookup - fail if not already cached */
+ 	r->folio = filemap_get_folio(r->file->f_mapping, file_off >> PAGE_SHIFT);
  
--- 
-2.39.3
+-	/* if sleeping is allowed, wait for the page, if necessary */
+-	if (r->may_fault && (IS_ERR(r->folio) || !folio_test_uptodate(r->folio))) {
+-		filemap_invalidate_lock_shared(r->file->f_mapping);
+-		r->folio = read_cache_folio(r->file->f_mapping, file_off >> PAGE_SHIFT,
+-					    NULL, r->file);
+-		filemap_invalidate_unlock_shared(r->file->f_mapping);
+-	}
+-
+ 	if (IS_ERR(r->folio) || !folio_test_uptodate(r->folio)) {
+ 		if (!IS_ERR(r->folio))
+ 			folio_put(r->folio);
+@@ -97,6 +87,24 @@ const void *freader_fetch(struct freader
+ 		return r->data + file_off;
+ 	}
+ 
++	/* reject secretmem folios created with memfd_secret() */
++	if (secretmem_mapping(r->file->f_mapping)) {
++		r->err = -EFAULT;
++		return NULL;
++	}
++
++	/* use __kernel_read() for sleepable context */
++	if (r->may_fault) {
++		ssize_t ret;
++
++		ret = __kernel_read(r->file, r->buf, sz, &file_off);
++		if (ret != sz) {
++			r->err = (ret < 0) ? ret : -EIO;
++			return NULL;
++		}
++		return r->buf;
++	}
++
+ 	/* fetch or reuse folio for given file offset */
+ 	r->err = freader_get_folio(r, file_off);
+ 	if (r->err)
+_
+
+Patches currently in -mm which might be from shakeel.butt@linux.dev are
+
+memcg-introduce-private-id-api-for-in-kernel-users.patch
+memcg-expose-mem_cgroup_ino-and-mem_cgroup_get_from_ino-unconditionally.patch
+memcg-mem_cgroup_get_from_ino-returns-null-on-error.patch
+memcg-use-cgroup_id-instead-of-cgroup_ino-for-memcg-id.patch
+mm-damon-use-cgroup-id-instead-of-private-memcg-id.patch
+mm-vmscan-use-cgroup-id-instead-of-private-memcg-id-in-lru_gen-interface.patch
+memcg-remove-unused-mem_cgroup_id-and-mem_cgroup_from_id.patch
+memcg-rename-mem_cgroup_ino-to-mem_cgroup_id.patch
+memcg-rename-mem_cgroup_ino-to-mem_cgroup_id-fix.patch
 
 
