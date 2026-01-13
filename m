@@ -1,90 +1,77 @@
-Return-Path: <stable+bounces-208235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 333FCD16E8F
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:54:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 135EAD16ED3
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:57:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E7005301E1B3
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:54:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D9BDE302FCE0
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:57:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90E65368293;
-	Tue, 13 Jan 2026 06:54:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37FA350D62;
+	Tue, 13 Jan 2026 06:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="H1V/+C4c"
+	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FRLQU1Nv"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pl1-f194.google.com (mail-pl1-f194.google.com [209.85.214.194])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BDA436921B
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:54:16 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.194
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667C43491C7;
+	Tue, 13 Jan 2026 06:57:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768287257; cv=none; b=NH6+orvzwdXzc3gjJLUqDDzrcCb3a54NyjEXJBfGqfbgi4eqHubsw3p575KoZaxee8xBCiaSgOnRvonOFjkhQj5P2HLWf5TFu5/7xk6OqpZFd2wdmuk9yY0ODTXMKZ8BGheqfKsH9ENSgON2HHCjKI72Kno7Y188hY5pSyuz14w=
+	t=1768287466; cv=none; b=nvV5tZElnah+t7iTuj50IF+vCmvQXGUKrkCL6eUngZVZNRPqdAOzLezFzDYsTtp0s/WGgmMmN1yR8N1TyjCPNZ0ntUeo25MtJE/3EGMrlQB54kBW2H4S0hoQGP1VOU8CR4EYvh4fhCEjsIeBRXtM2gTBa7/WsJZsm5AedQOKvS0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768287257; c=relaxed/simple;
-	bh=nHYszDD+ywPWPZrhip3EHFiPWxNpC5GNQJadfn2y+hA=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=LIT0AkKtsGVcb0IwXYoCCKLqdT5EFKLgEpsRj6gDtuBlg2y6PWJn0GL8ONBjN2Qf/U5t+ldNGpSyweFNtkTyRGFyi5BboavNpDru9QNalsoIkGpEPULD9O8oVdYg3QQipzgMo4f0FoxZlY2iRbXL42SRt1yK8okcwtwLth9zsGg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=H1V/+C4c; arc=none smtp.client-ip=209.85.214.194
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-pl1-f194.google.com with SMTP id d9443c01a7336-2a0d6f647e2so72107945ad.1
-        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 22:54:16 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768287255; x=1768892055; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=VRJ6lsAItfikKn1MBzTEmRqrNF0cYsS87q/1cN7JBMU=;
-        b=H1V/+C4cRvtLfV8Vjoin0JR1WZi0JHxMPZClE++FCqs5wR5qJfsBPrb2RDaNNhYDRA
-         o9EXcqWgV5+3+CZBmKy+Ri5VxaB0/m/Hy6mGhMZ0tayXRZQDCsxJWLTZ2yp7UjQzx8AK
-         afyyzJWMJA9Z667PtsndXFLI3EQSK/mUCBqq/gnrItBm7XnYiDDSp137MWnfwDeTIBC2
-         C1S+h/HfH0onBhW6rR3cFYf4Cc7nBw3K/1tdvlvB2yay5GmR2tBe90Sl34lpYYb/cGW0
-         4Sq+7PWOYpt7YBvhD5lod/2X/uXmtMpbrMFygf6N29RvLE9kkR8kBFh0/lRz5lpGEUAw
-         2nyQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768287255; x=1768892055;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VRJ6lsAItfikKn1MBzTEmRqrNF0cYsS87q/1cN7JBMU=;
-        b=NlH9OmbGOUz7279DzWOWglNYb7OjyPQNPQJL4vrpuJccSnVMRjFHbcM4A3XByM7ivi
-         t4UVfMXyb+i0vcAqDsMAP/NCBbigwWMHiFa23sWm1XIWdU/D5IsHbqlr9viqfQ2HH5T6
-         w5qPWAtp3ypPUoK8awGl0Vr2hXrTLedoEykYuSpG2wgBxBpPLM6kgyF3BPWa6vo9d7wr
-         tnBokcDIOE4FVNMDCM4xHjdcSEm5+ctmVLQ+IrF+RuUF91+qf5fU3p/Lju4wZ5qnHqlK
-         gDyb6HPVpCMJtg+4tKzEeeVuNXEfSlPsGfRcgeVBkM7ldJBivuWqJGr18DACrlV/Lk/y
-         QPHQ==
-X-Forwarded-Encrypted: i=1; AJvYcCX7wP+NMhbkjZrDMMWvN20TZtxn6De2ueetBGUiII11T4HvXXULkttrR6LnrF/c8yFrkZ3AuK0=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwT548+Q5xxOMKlJkSzmSQ3EwOgtLGbEuaGLEp3voLljTx/Yjyj
-	xOVvNWCQpTDkSpuBvwwJkHquDakVubxr/RSuPnHbVdaNTHV1mRO/pjuo
-X-Gm-Gg: AY/fxX6R6dtbF9zOxGuOl/veV4RnbfdVj/cVMrKXJsPhwgjyfkc9lx9NaxURsI5ik1U
-	JqR5Hu/ao7mJtw6+t26RROjaLiYGgIeKagPqUIsoqeWLpcRAxv9wBuJfC0ooZoYU7EVLgDKkOQW
-	TUc5Lh0g4Lhiqyh8gIn6bIyGy4DW/N3hM+6aH7ywv7IJb7t3MpNJFXGccL3dgDRqpGco2LkTPcp
-	XFC+wcenK1e00fb/I2SrSsjqFkDnJJAUFqAR8aDPVJkHsZFhFXVNlt59+CoHtQvBgU6mGzvnv1Q
-	fGnEU3krE7GrK87DIHUE0xfIok8EkYVAwyX4cRrQq/kWKQTV97WsXkHqrfiLUUpdnMIk0bHnsb/
-	4D4DMiT7G+QjZ2c1E5S0/e9MOHfwqLmoWcBbmL2SCld0fQO31MVr+53YscvmOVj08x3Wwz3+L27
-	hdbnEzOlQ4Za59V32+ggx62LQ=
-X-Google-Smtp-Source: AGHT+IEl8mWcf14R+R1N1r18r3ZYNbSVCi3ZGQ2zfLCdVzn4cVwqUz9XkTjq8OOXiVwcvCsPgML89A==
-X-Received: by 2002:a17:903:1acc:b0:295:592f:94a3 with SMTP id d9443c01a7336-2a3ee49b5camr221652125ad.48.1768287255527;
-        Mon, 12 Jan 2026 22:54:15 -0800 (PST)
-Received: from localhost.localdomain ([111.202.170.108])
-        by smtp.gmail.com with ESMTPSA id d9443c01a7336-2a3e3c3a311sm195102635ad.19.2026.01.12.22.54.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 12 Jan 2026 22:54:15 -0800 (PST)
-From: Xingjing Deng <micro6947@gmail.com>
-X-Google-Original-From: Xingjing Deng <xjdeng@buaa.edu.cn>
-To: srini@kernel.org,
-	amahesh@qti.qualcomm.com,
-	arnd@arndb.de,
-	gregkh@linuxfoundation.org
-Cc: dri-devel@lists.freedesktop.org,
-	linux-arm-msm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Xingjing Deng <xjdeng@buaa.edu.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH v3] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
-Date: Tue, 13 Jan 2026 14:54:09 +0800
-Message-Id: <20260113065409.32171-1-xjdeng@buaa.edu.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1768287466; c=relaxed/simple;
+	bh=BWfscaNYPwnW7IjZIi/MyG5lEbBm/1oE2cO2BGYbPtM=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OtD+L8zJB8hYY9EczMf6F1u6zhcf5NznTkA1pXsUhze5PbX3ZxA7YsAR6qMi9rOEJzyO3kMPvYbRQIRl3bstGd/X8oEA/XvLyJp/b02RGXX4iCGdlnoq2iJ7Qeie1I/+sCkgAEr4jKpoGk1CYFyseaSshOnAWpSklMM0fuyv4vI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FRLQU1Nv; arc=none smtp.client-ip=148.163.158.5
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
+Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
+	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60D3Lnvr032261;
+	Tue, 13 Jan 2026 06:57:43 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=pp1; bh=BUZxUqZZ1GUQn1N6fTFnOeUubYElWI/wI75Wmh8aM
+	Qw=; b=FRLQU1Nvu6JAwN+eBx0tes0fttvIalh+Xxs/yOnGDLd9tlKaEFt+nIsn8
+	707tKAX6kiEg6olrIikHXB+Mlf5Vkrw9ITVrYGRVuwwuS7i3dhb0fL+r01dwtB5e
+	WFKJXASVsCb3EtimAlhC6eY3K5H1SC/GAVk158O8VpOl59FgD90KGs3VZkXLYdUz
+	ZbH3xYfalTEm9h1g6/HrtwuIMldwXBctCu3xyesg4nR7TU05Fl9wwrFbq1D/N9ie
+	TBagu+Nv3uUM4Jzmk8iBgdHhZFJDPcz1Tt56XoyHVvCxJiV/t9Wu+rOcwGWRJc6n
+	OEskQBlMRIw5NLLA7rw64RFbri3Fg==
+Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
+	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkedstr9h-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Jan 2026 06:57:42 +0000 (GMT)
+Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
+	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60D5YMNW014278;
+	Tue, 13 Jan 2026 06:57:42 GMT
+Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
+	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fy2rqe-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
+	Tue, 13 Jan 2026 06:57:42 +0000
+Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
+	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60D6veph51577128
+	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 06:57:40 GMT
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id 2356D20043;
+	Tue, 13 Jan 2026 06:57:40 +0000 (GMT)
+Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
+	by IMSVA (Postfix) with ESMTP id ADA4F20040;
+	Tue, 13 Jan 2026 06:57:38 +0000 (GMT)
+Received: from li-c9696b4c-3419-11b2-a85c-f9edc3bf8a84.in.ibm.com (unknown [9.109.198.193])
+	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
+	Tue, 13 Jan 2026 06:57:38 +0000 (GMT)
+From: Nilay Shroff <nilay@linux.ibm.com>
+To: linux-block@vger.kernel.org
+Cc: axboe@kernel.dk, gjoyce@ibm.com, Nilay Shroff <nilay@linux.ibm.com>,
+        stable@vger.kernel.org, Chaitanya Kulkarni <kch@nvidia.com>
+Subject: [PATCHv2] null_blk: fix kmemleak by releasing references to fault configfs items
+Date: Tue, 13 Jan 2026 12:27:22 +0530
+Message-ID: <20260113065729.1764122-1-nilay@linux.ibm.com>
+X-Mailer: git-send-email 2.52.0
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -92,52 +79,111 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
+X-TM-AS-GCONF: 00
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA1NCBTYWx0ZWRfX2uzhD8WkxaJA
+ j1FhD+UvsrGICIMToLNQHlj2jPvu0ez2rymzWtQVI9CqjVgc5PYbXthoGAsw20WtSJm+FSAR/u6
+ vX8XSxxukWa8My5n3gZE2D5BUrF9NYRd7cv5t7xN22GbF0352BkwBWQflndVGZXOYcUUWsIPfSc
+ f2b93CtNBzsnNL/hMbL1dzBdZSpGwpuCSPzunKvnvrmuBmUL70Fz3G2yjGxAPxEwplCGfp7D8J6
+ 3dVARoLfOyQEAxuz/JMJoLYpdxG6WDn3eNy3YC/053o3LHm4fS+Q4VYhJfYe846lyWOXOoRaa5D
+ vXhAqrjc8c8gK48ywBdODTRW1niiTGOqg+GLuCRkrpHVer85OkuFsVVDCx06JwxIJ2WCkZkD9wD
+ 8TWozsWXLFJBRfz+Cy1i3ZnSKFJJ0cVwZLSvVHoa1+X3FDf+GyoM6zDzEzfQAK8uuM7y3DXx5iP
+ Cm9ZWS5DRn4n0y1h5uQ==
+X-Proofpoint-GUID: HhylLc8gok_Rxcl78v6mTGVH404T4haF
+X-Authority-Analysis: v=2.4 cv=WLJyn3sR c=1 sm=1 tr=0 ts=6965ece6 cx=c_pps
+ a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8
+ a=VnNF1IyMAAAA:8 a=w_JtO988ZX80fDk7qXcA:9
+X-Proofpoint-ORIG-GUID: HhylLc8gok_Rxcl78v6mTGVH404T4haF
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-13_01,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
+ spamscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
+ priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0
+ lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
+ route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
+ definitions=main-2601130054
 
-In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
-reserved memory to the configured VMIDs, but its return value was not
-checked.
+When CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION is enabled, the null-blk
+driver sets up fault injection support by creating the timeout_inject,
+requeue_inject, and init_hctx_fault_inject configfs items as children
+of the top-level nullbX configfs group.
 
-Fail the probe if the SCM call fails to avoid continuing with an
-unexpected/incorrect memory permission configuration
+However, when the nullbX device is removed, the references taken to
+these fault-config configfs items are not released. As a result,
+kmemleak reports a memory leak, for example:
 
-Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to the DSP")
-Cc: stable@vger.kernel.org # 6.11-rc1
-Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
+unreferenced object 0xc00000021ff25c40 (size 32):
+  comm "mkdir", pid 10665, jiffies 4322121578
+  hex dump (first 32 bytes):
+    69 6e 69 74 5f 68 63 74 78 5f 66 61 75 6c 74 5f  init_hctx_fault_
+    69 6e 6a 65 63 74 00 88 00 00 00 00 00 00 00 00  inject..........
+  backtrace (crc 1a018c86):
+    __kmalloc_node_track_caller_noprof+0x494/0xbd8
+    kvasprintf+0x74/0xf4
+    config_item_set_name+0xf0/0x104
+    config_group_init_type_name+0x48/0xfc
+    fault_config_init+0x48/0xf0
+    0xc0080000180559e4
+    configfs_mkdir+0x304/0x814
+    vfs_mkdir+0x49c/0x604
+    do_mkdirat+0x314/0x3d0
+    sys_mkdir+0xa0/0xd8
+    system_call_exception+0x1b0/0x4f0
+    system_call_vectored_common+0x15c/0x2ec
 
+Fix this by explicitly releasing the references to the fault-config
+configfs items when dropping the reference to the top-level nullbX
+configfs group.
+
+Cc: stable@vger.kernel.org
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Fixes: bb4c19e030f4 ("block: null_blk: make fault-injection dynamically configurable per device")
+Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
 ---
+v1->v2:
+    - Added fixes, stable abd reviewed-by tags
+---
+ drivers/block/null_blk/main.c | 12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-v3:
-- Add missing linux-kernel@vger.kernel.org to cc list.
-- Standarlize changelog placement/format.
-
-v2:
-- Add Fixes: and Cc: stable tags.
-
-Link: https://lore.kernel.org/linux-arm-msm/20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com/T/#t
-Link: https://lore.kernel.org/linux-arm-msm/20260113022550.4029635-1-xjdeng@buaa.edu.cn/T/#u
- drivers/misc/fastrpc.c | 7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
-
-diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
-index fb3b54e05928..cbb12db110b3 100644
---- a/drivers/misc/fastrpc.c
-+++ b/drivers/misc/fastrpc.c
-@@ -2338,8 +2338,13 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device *rpdev)
- 		if (!err) {
- 			src_perms = BIT(QCOM_SCM_VMID_HLOS);
+diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
+index c7c0fb79a6bf..4c0632ab4e1b 100644
+--- a/drivers/block/null_blk/main.c
++++ b/drivers/block/null_blk/main.c
+@@ -665,12 +665,22 @@ static void nullb_add_fault_config(struct nullb_device *dev)
+ 	configfs_add_default_group(&dev->init_hctx_fault_config.group, &dev->group);
+ }
  
--			qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
-+			err = qcom_scm_assign_mem(res.start, resource_size(&res), &src_perms,
- 				    data->vmperms, data->vmcount);
-+			if (err) {
-+				dev_err(rdev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
-+					res.start, resource_size(&res), err);
-+				goto err_free_data;
-+			}
- 		}
++static void nullb_del_fault_config(struct nullb_device *dev)
++{
++	config_item_put(&dev->init_hctx_fault_config.group.cg_item);
++	config_item_put(&dev->requeue_config.group.cg_item);
++	config_item_put(&dev->timeout_config.group.cg_item);
++}
++
+ #else
  
+ static void nullb_add_fault_config(struct nullb_device *dev)
+ {
+ }
+ 
++static void nullb_del_fault_config(struct nullb_device *dev)
++{
++}
+ #endif
+ 
+ static struct
+@@ -702,7 +712,7 @@ nullb_group_drop_item(struct config_group *group, struct config_item *item)
+ 		null_del_dev(dev->nullb);
+ 		mutex_unlock(&lock);
  	}
+-
++	nullb_del_fault_config(dev);
+ 	config_item_put(item);
+ }
+ 
 -- 
-2.25.1
+2.52.0
 
 
