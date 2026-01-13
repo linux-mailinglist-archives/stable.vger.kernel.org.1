@@ -1,204 +1,166 @@
-Return-Path: <stable+bounces-208244-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208245-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2833D17238
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:59:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99964D1731F
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B04CD301987D
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:58:53 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1F55730049EF
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:07:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6006E31353B;
-	Tue, 13 Jan 2026 07:58:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D96378D8E;
+	Tue, 13 Jan 2026 08:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oi3q0Skc"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Udou5s5d"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2018326F2B9;
-	Tue, 13 Jan 2026 07:58:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEB02F6925
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 08:07:17 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768291130; cv=none; b=qQD8xF+cze5rcO/FjgR2AxF5T7vKpQYif1CDK5P6P0DG7M6Eib0PovW8wvs9HAwJjt4HHTZ9R9nRzk9739pQ7N4AZETFPL2PKTUuWmOfrmczSxgwR97CD5rD6xHN+3y7J7FdV2W1GU3OEVMfJk0VO5d6jq37RJ7i1HoqOt8FvjY=
+	t=1768291638; cv=none; b=ICrqIt/dxx0nRC8jcUH6tJGEWICf5okSgJBcsMD7t71qcEvyvrw0oAlI7IdnCTCGSAfBam1qEtExTsm+yFx8GO5YS+76l6ukdExx2g4zHMsfrWT8m6uFJw+bRHQgloBOnUxIBxJDLPgAzoPr0SGgFsZlJONMnst5b4MsAsQrq5I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768291130; c=relaxed/simple;
-	bh=n7al2zJlu/imxnIL4dUi9H5BMNfDDPOy1fzae83W3jM=;
-	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p/zKUTfFDVPEX3qD7vzPjcZx0wP0uorl4oczA9ouV6sykf2KMnDsIRyx2sBEWXT5C3d8OttU/DRqvJIRt/zIXrfyPpoYQoXbQ6D4pwC1tmZ7qyICpNxUZkXOc3cnTTLen18CAwJbzN+sGurjUQbGyT1aAQBILiIDpZKHmGTIeRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oi3q0Skc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPS id B13CAC19421;
-	Tue, 13 Jan 2026 07:58:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768291129;
-	bh=n7al2zJlu/imxnIL4dUi9H5BMNfDDPOy1fzae83W3jM=;
-	h=From:Date:Subject:To:Cc:Reply-To:From;
-	b=Oi3q0SkcvYxKdtGE6sy3da76Je4g3Zue9BIFQ/o//ARQpMn8ZeN49i9Xu2UxtJbAP
-	 JtJFFD4laKNPliFwPvG5ya0HInYbFbe+BSCpCO5n/i1Se15faAUdn016qZILr9TitF
-	 Y4QTm2c2y9w+DR8bMfRHkP6QzUyRDkks2f3ZobmdBtNSEeDL5Rb1tADYzKU2qAjEoJ
-	 ed/rblaCA0auxRRXYQX7pSjEbMJAs0yGBvcd16wZrQ66syoSgO1HDHaHgUKESk/t30
-	 I00DN70uSamIIav+8vW0NHOYKNZkoGj/z7cLzESMsHUuupzV9bjQmG4Kqmavo5EDvN
-	 yh5B6urRX8Ifg==
-Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
-	by smtp.lore.kernel.org (Postfix) with ESMTP id A1111D29DE2;
-	Tue, 13 Jan 2026 07:58:49 +0000 (UTC)
-From: Ziyao Li via B4 Relay <devnull+liziyao.uniontech.com@kernel.org>
-Date: Tue, 13 Jan 2026 15:58:48 +0800
-Subject: [PATCH v5] PCI: loongson: Override PCIe bridge supported speeds
- for Loongson-3C6000 series
+	s=arc-20240116; t=1768291638; c=relaxed/simple;
+	bh=75wHd6EOZMPUyl7JqABEH1fCiXhV9j0pIqZjrNZ6yec=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=TzT4EsT8De5H8MrJ2DlU7Hbeknu2li6HW4LUc5HF3F4HhH2wjCsGQinjHloXxFkvd6cxyqNZwS1nwfuLdC+IlcWXJwqReI1U0f7/hDVAEukr9hCeHZUCR0k3lyfS3WKwEGi1JYeQMl7LqvxWLcFGFV8kKy0TbiRJkvkpY8OuMVQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Udou5s5d; arc=none smtp.client-ip=209.85.221.51
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-432da746749so1927649f8f.0
+        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 00:07:17 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768291636; x=1768896436; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=0kBiGdnwoKI9eDWcWQTGe4djU3SzpP0pSq/NoI+kjks=;
+        b=Udou5s5duBa0+UxlyjxCMJq45t+mhx7vFxFSQ0ReBg22fCs8jswSO5cdn6tWxRFfkW
+         jO9CYukcQzEPHUq16LW88r2z1c03bELxN7OJ8cUi5rZyuS0VAjL3DMkTa8lVVlwjsLir
+         EOZQgPj0NSTE9OpmYM6RM+KvfYiKOKa2jXtyL1p1l3XMfp5JZSmZjgpvrlciXWC99V0I
+         aFraajXAcfuEtqfhjBu32krXjagoASFSd3aEiZ6MyWdXY/Y7YHgvopWn9H8NC9H4yZhg
+         0nPfPuF4ttAbZ5VGc6xhilabCcKCkaVRsrCcozv8eoQcjWb2vmyxsf7xc+tbK3LP0GC6
+         fDWg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768291636; x=1768896436;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:from:references:cc:to:subject:reply-to:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=0kBiGdnwoKI9eDWcWQTGe4djU3SzpP0pSq/NoI+kjks=;
+        b=m2BFVPqywu6iuD0ldJf2JL9inRXotl6vIEK+Ff2lVUbwLlxNo2HyES2QPBmryGYfb1
+         JuIhV/ZLDtD0k2G31Ewpfa+twfZjKo3HAI+ZsBuHcuXEERTP9vgIzHTuWvxp6Rm0BS1Y
+         Hc4uzY0c6v8FXTO67WS38aPP/Ul0ZrjiRVa8nMuWI+B0HzB66IRN0rDmHHHXdNEhh6RY
+         S5z0s3TVjQ0LtENH+PSgoUEehjSOrSJz9vG8KY0m+HYt+5H8rzKpkQ+6ZSfp3kRlV1Ve
+         oAl/2E14Rs4IFQskbxY269eZ2TS2+JEspybgIgTB13Psc5k89w6xRl8zgEN8rlpYPXgL
+         mrYA==
+X-Forwarded-Encrypted: i=1; AJvYcCV1TJj+OOV0dUSVPcd57d99cws2C7mVQdqupj/ty1GfPdQeAKqb/cbO44U1vwszx4PNbB5vXrg=@vger.kernel.org
+X-Gm-Message-State: AOJu0YyJarnpJwX/mET2it+VldlCWZmqbVyPbzTyYqK9AxbUXR5DWtaE
+	VAXKdWwTo8fSlK/WYvdRRovcndMk5Twu8fd0W5mjTqjCixKKqfSFQJVoWV7sPRvIdRk=
+X-Gm-Gg: AY/fxX6WscNTD3jVGbQbm5g9N1NJa94uHb/ZXmiJtIbbdXBgTHBui4VGAnqdfNk8E5s
+	ygyUtUQea3eFWII8gsEiUmJaJonuFP2gGjunJFE/36RsUFNNF4NrxjdSsrGhnc3KNr2OInPAEDr
+	WG9O3CsRGiF+xY9moLYGxV+bw0bWGlSbxHIj3Warfpgj6Yy9iq7oz5dQ/5n7yXHIHqaN0xX03aC
+	3Gdg+rvhg4rO9rNXLxY9IHHx+hv4EeTANmtbtglnqnFCu96acJWZQAzHVCl/AI5avH9xmH0EVbe
+	Y9OIK4LgcSags4ydsYHxaVq9We4/MO5/R8YQSONmRAGEFX5y1PCANQFpmNgHaI23VKTb7WvY9Is
+	VEj/uJ1DhWsZZRzbh+NM2p+FtRUudipPnZrjcAOYOeKGkkunJlnugwE3//0jUSHf1C0tMm5Fbhy
+	pKugtaaCCqFh94L4L3TOaqiWCNLi6XjWo1SbjewF1O4rvOat4YsA==
+X-Google-Smtp-Source: AGHT+IG6fAtmI1EQMhuKQOIVw+wGIFjBkyZewLv2jXMLbnUnN9fabCWnKyTIrO9pUyyRVG2gO/7/VA==
+X-Received: by 2002:a05:6000:178d:b0:432:8537:8592 with SMTP id ffacd0b85a97d-432c3628106mr24027748f8f.4.1768291635424;
+        Tue, 13 Jan 2026 00:07:15 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:3d9:2080::fa42:7768? ([2a01:e0a:3d9:2080::fa42:7768])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e180csm41710261f8f.10.2026.01.13.00.07.14
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jan 2026 00:07:14 -0800 (PST)
+Message-ID: <2f18dda9-7163-44bf-a075-bdd46ac5cef8@linaro.org>
+Date: Tue, 13 Jan 2026 09:07:14 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH v2] phy: rockchip: inno-usb2: Fix a double free bug in
+ rockchip_usb2phy_probe()
+To: Wentao Liang <vulab@iscas.ac.cn>, vkoul@kernel.org, kishon@kernel.org,
+ heiko@sntech.de
+Cc: linux-phy@lists.infradead.org, linux-rockchip@lists.infradead.org,
+ linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+ stable@vger.kernel.org
+References: <20260109154626.2452034-1-vulab@iscas.ac.cn>
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260109154626.2452034-1-vulab@iscas.ac.cn>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-Message-Id: <20260113-loongson-pci1-v5-1-264c9b4a90ab@uniontech.com>
-X-B4-Tracking: v=1; b=H4sIADf7ZWkC/3XOTWrDMBCG4asEraOi0Y9tddV7lCwkzSgWNJKxU
- pMQfPcogUIw6fL9YB7mxirNiSr73N3YTEuqqeQWZr9jYXT5SDxhayaFNGKQkv+Uko+1ZD6FBFw
- jocB+iOA9azfTTDFdnt73ofWY6rnM1ye/wGP9T1qAA1fWOe8RIHr8+s3tlzOF8SOUE3toi/wTO
- gFCbwXZBAQDZHrfURzeCepVsFtBNcEgBuNIeWfVO0G/CKC2gm4CWAnY6d5G0lthXdc70bg3cXQ
- BAAA=
-X-Change-ID: 20250822-loongson-pci1-4ded0d78f1bb
-To: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
- =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
- Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
- Bjorn Helgaas <bhelgaas@google.com>
-Cc: niecheng1@uniontech.com, zhanjun@uniontech.com, 
- guanwentao@uniontech.com, Kexy Biscuit <kexybiscuit@aosc.io>, 
- linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
- loongarch@lists.linux.dev, 
- =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
- stable@vger.kernel.org, Lain Fearyncess Yang <fsf@live.com>, 
- Ayden Meng <aydenmeng@yeah.net>, Mingcong Bai <jeffbai@aosc.io>, 
- Xi Ruoyao <xry111@xry111.site>, Ziyao Li <liziyao@uniontech.com>, 
- Huacai Chen <chenhuacai@kernel.org>
-X-Mailer: b4 0.14.3
-X-Developer-Signature: v=1; a=ed25519-sha256; t=1768291128; l=4487;
- i=liziyao@uniontech.com; s=20250730; h=from:subject:message-id;
- bh=Hl7/CSJcQmXMBHxIa1mIHhAus0jXJU5lALHCfw50FBg=;
- b=OejsaQ8AveoPLToGMsvyxDDYWhDIGbSTlb11V1OBXdRNcJ/dYe80rqBBi1aCjwfoobQ7+fuPg
- q4Mrb/vYChKBs+XTo7FjhEV29YgLnSBmeUODzkm/eicP7fH5l/tKW/q
-X-Developer-Key: i=liziyao@uniontech.com; a=ed25519;
- pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
-X-Endpoint-Received: by B4 Relay for liziyao@uniontech.com/20250730 with
- auth_id=471
-X-Original-From: Ziyao Li <liziyao@uniontech.com>
-Reply-To: liziyao@uniontech.com
 
-From: Ziyao Li <liziyao@uniontech.com>
+On 1/9/26 16:46, Wentao Liang wrote:
+> The for_each_available_child_of_node() calls of_node_put() to
+> release child_np in each success loop. After breaking from the
+> loop with the child_np has been released, the code will jump to
+> the put_child label and will call the of_node_put() again if the
+> devm_request_threaded_irq() fails. These cause a double free bug.
+> 
+> Fix by returning directly to avoid the duplicate of_node_put().
+> 
+> Fixes: ed2b5a8e6b98 ("phy: phy-rockchip-inno-usb2: support muxed interrupts")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+> 
+> ---
+> Changes in v2:
+> - Drop error jumping label.
+> ---
+>   drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+> index b0f23690ec30..fe97a26297af 100644
+> --- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+> +++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
+> @@ -1491,7 +1491,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
+>   						rphy);
+>   		if (ret) {
+>   			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
+> -			goto put_child;
+> +			return ret;
+>   		}
+>   	}
+>   
 
-Older steppings of the Loongson-3C6000 series incorrectly report the
-supported link speeds on their PCIe bridges (device IDs 0x3c19, 0x3c29)
-as only 2.5 GT/s, despite the upstream bus supporting speeds from
-2.5 GT/s up to 16 GT/s.
+Good catch !
 
-As a result, since commit 774c71c52aa4 ("PCI/bwctrl: Enable only if more
-than one speed is supported"), bwctrl will be disabled if there's only
-one 2.5 GT/s value in vector `supported_speeds`.
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-Also, amdgpu reads the value by pcie_get_speed_cap() in amdgpu_device_
-partner_bandwidth(), for its dynamic adjustment of PCIe clocks and
-lanes in power management. We hope this can prevent similar problems
-in future driver changes (similar checks may be implemented in other
-GPU, storage controller, NIC, etc. drivers).
-
-Manually override the `supported_speeds` field for affected PCIe bridges
-with those found on the upstream bus to correctly reflect the supported
-link speeds.
-
-This patch was originally found from AOSC OS[1].
-
-Link: https://github.com/AOSC-Tracking/linux/pull/2 #1
-Tested-by: Lain Fearyncess Yang <fsf@live.com>
-Tested-by: Ayden Meng <aydenmeng@yeah.net>
-Signed-off-by: Ayden Meng <aydenmeng@yeah.net>
-Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
-[Xi Ruoyao: Fix falling through logic and add kernel log output.]
-Signed-off-by: Xi Ruoyao <xry111@xry111.site>
-Link: https://github.com/AOSC-Tracking/linux/commit/4392f441363abdf6fa0a0433d73175a17f493454
-[Ziyao Li: move from drivers/pci/quirks.c to drivers/pci/controller/pci-loongson.c]
-Signed-off-by: Ziyao Li <liziyao@uniontech.com>
-Tested-by: Mingcong Bai <jeffbai@aosc.io>
-Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
----
-Changes in v5:
-- style adjust
-- Link to v4: https://lore.kernel.org/r/20260113-loongson-pci1-v4-1-1921d6479fe4@uniontech.com
-
-Changes in v4:
-- rename subject
-- use 0x3c19/0x3c29 instead of 3c19/3c29
-- Link to v3: https://lore.kernel.org/r/20260109-loongson-pci1-v3-1-5ddc5ae3ba93@uniontech.com
-
-Changes in v3:
-- Adjust commit message
-- Make the program flow more intuitive
-- Link to v2: https://lore.kernel.org/r/20260104-loongson-pci1-v2-1-d151e57b6ef8@uniontech.com
-
-Changes in v2:
-- Link to v1: https://lore.kernel.org/r/20250822-loongson-pci1-v1-1-39aabbd11fbd@uniontech.com
-- Move from arch/loongarch/pci/pci.c to drivers/pci/controller/pci-loongson.c
-- Fix falling through logic and add kernel log output by Xi Ruoyao
----
- drivers/pci/controller/pci-loongson.c | 36 +++++++++++++++++++++++++++++++++++
- 1 file changed, 36 insertions(+)
-
-diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
-index bc630ab8a283..a4250d7af1bf 100644
---- a/drivers/pci/controller/pci-loongson.c
-+++ b/drivers/pci/controller/pci-loongson.c
-@@ -176,6 +176,42 @@ static void loongson_pci_msi_quirk(struct pci_dev *dev)
- }
- DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
- 
-+/*
-+ * Older steppings of the Loongson-3C6000 series incorrectly report the
-+ * supported link speeds on their PCIe bridges (device IDs 0x3c19,
-+ * 0x3c29) as only 2.5 GT/s, despite the upstream bus supporting speeds
-+ * from 2.5 GT/s up to 16 GT/s.
-+ */
-+static void loongson_pci_bridge_speed_quirk(struct pci_dev *pdev)
-+{
-+	u8 old_supported_speeds = pdev->supported_speeds;
-+
-+	switch (pdev->bus->max_bus_speed) {
-+	case PCIE_SPEED_16_0GT:
-+		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_16_0GB;
-+		fallthrough;
-+	case PCIE_SPEED_8_0GT:
-+		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_8_0GB;
-+		fallthrough;
-+	case PCIE_SPEED_5_0GT:
-+		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_5_0GB;
-+		fallthrough;
-+	case PCIE_SPEED_2_5GT:
-+		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_2_5GB;
-+		break;
-+	default:
-+		pci_warn(pdev, "unexpected max bus speed");
-+
-+		return;
-+	}
-+
-+	if (pdev->supported_speeds != old_supported_speeds)
-+		pci_info(pdev, "fixing up supported link speeds: 0x%x => 0x%x",
-+			 old_supported_speeds, pdev->supported_speeds);
-+}
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c19, loongson_pci_bridge_speed_quirk);
-+DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c29, loongson_pci_bridge_speed_quirk);
-+
- static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
- {
- 	struct pci_config_window *cfg;
-
----
-base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
-change-id: 20250822-loongson-pci1-4ded0d78f1bb
-
-Best regards,
--- 
-Ziyao Li <liziyao@uniontech.com>
-
-
+Thanks,
+Neil
 
