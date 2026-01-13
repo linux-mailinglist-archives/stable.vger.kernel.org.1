@@ -1,88 +1,76 @@
-Return-Path: <stable+bounces-208283-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208282-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3E0B0D1A21C
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 17:14:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5345ED1A211
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 17:14:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D53E4300DB19
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 16:14:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 45D8B300C14F
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 16:14:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62F762F12CE;
-	Tue, 13 Jan 2026 16:14:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69CAC3033F3;
+	Tue, 13 Jan 2026 16:14:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b="XedH2MOI"
+	dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b="h8jm1zC5"
 X-Original-To: stable@vger.kernel.org
-Received: from bali.collaboradmins.com (bali.collaboradmins.com [148.251.105.195])
+Received: from mail.zeus03.de (zeus03.de [194.117.254.33])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C792A3446A7;
-	Tue, 13 Jan 2026 16:14:38 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.251.105.195
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 022213446A7
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 16:14:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=194.117.254.33
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768320882; cv=none; b=uaKtblZBA1kg4+1yFdDimsmPdyWdpWLwNFQ7kzQadham0AKYCAM41ph6R1zRRT5vLxtFBiOJbYYS/FSQ+WQ1cxT2ItuQRQJtUkWxMAE0saCcWKzYoB6RjXY1vwj9feeUQheYjkr5BP+vEcO9RiUcVIDVp8sjlak5+paxhK3SGGs=
+	t=1768320877; cv=none; b=X8V/HYy7A58nE9xVOwkk15788N8YnSWl3GQqJ1FAIuOdjbzFdcoAo+Yh+xFAS2jv0524OjbCKD22VZiX4cJ7FJjNVtGzbj4IZOr7JB+xMb4392tYaQNds6IGb37OLn+cCQVlGKIi+HMJ9EFS964IBIlX21k2i6GPjsrTLzU7aZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768320882; c=relaxed/simple;
-	bh=2YW3/cPoutnCooMdmymtn+e337rPX1kRy4+1I4m7VUA=;
-	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
-	 MIME-Version; b=uDnC7maWYt3tjHeChReuZccx2L+1DTbr2HtMhQMZ2eWepJpJGFzZ1lFfCqNyR60g7EW8IDMrBwuwiQ49kbOt+ZwGhFTTPwBuatY9U3eqFFmXJpEdSRErjNWIq/3qh2s38Cpv6KuMGCrC82o3O4c5mg6LWpGt6zKhZiQS+Gp6VKw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com; spf=pass smtp.mailfrom=collabora.com; dkim=pass (2048-bit key) header.d=collabora.com header.i=@collabora.com header.b=XedH2MOI; arc=none smtp.client-ip=148.251.105.195
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=collabora.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=collabora.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-	s=mail; t=1768320877;
-	bh=2YW3/cPoutnCooMdmymtn+e337rPX1kRy4+1I4m7VUA=;
-	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XedH2MOIpcd6couG9mkaZ4Fl8l1e6a/voT52yGUm+RbFki8MzaViyLD2P3g7qPjDD
-	 tDvsMWRGJ8dC+8k5JUSGj3OPlznZYkNQ3xieiywt0vRgMsp4ei+lgwiAW2SdQfrRr8
-	 dzkMuZMni1oKf4vUbwrk5jJREv6nK4NC19VAo9e4yw4x/dpOOpTMKhO40f+dqiWHNK
-	 W4u3azu/3vUxT00CHgMUi3zqKNjx3qNxdk25MNXpN79BzBWPmDL881sBX99IPAEksG
-	 QU9HJ+mlKHkW73qzZYnVvnvFtt283W4CIgVXw6mXepsTETn9vAt/XryQk6zh8RznWh
-	 SJuXhhC/JE1wQ==
-Received: from laura.lan (unknown [IPv6:2001:b07:646b:e2:366f:770f:eaa8:d3d])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	(Authenticated sender: laura.nao)
-	by bali.collaboradmins.com (Postfix) with ESMTPSA id 388A017E0B8E;
-	Tue, 13 Jan 2026 17:14:36 +0100 (CET)
-From: Laura Nao <laura.nao@collabora.com>
-To: sjoerd@collabora.com
-Cc: angelogioacchino.delregno@collabora.com,
-	kernel@collabora.com,
-	laura.nao@collabora.com,
-	linux-arm-kernel@lists.infradead.org,
-	linux-clk@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	linux-mediatek@lists.infradead.org,
-	matthias.bgg@gmail.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	stable@vger.kernel.org,
-	wenst@chromium.org
-Subject: Re: [PATCH] clk: mediatek: Drop __initconst from gates
-Date: Tue, 13 Jan 2026 17:14:16 +0100
-Message-Id: <20260113161416.1256164-1-laura.nao@collabora.com>
-X-Mailer: git-send-email 2.39.5
-In-Reply-To: <20251223-mtk-gate-v1-1-e4a489ab33de@collabora.com>
-References: <20251223-mtk-gate-v1-1-e4a489ab33de@collabora.com>
+	s=arc-20240116; t=1768320877; c=relaxed/simple;
+	bh=8DNhfEXVdDCjEeE1QnbDWBIe6Kul+k1kIhVeC3QfrIY=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Yph5qOkxFi9EHFz/iwjaSKAgp07RY9iSlj7SVfxPqTFjifg5V4W8ia5oTAbVK8dR9mkQUcEWYUBeikooM29H8egA6EDsK2K2D1EpAihEF6sdmzVtcCpLQHZJ+7bXkuge9AjC+MOG6GKMkRlFzSLH2o2B7Owi8Tgn1JLfc8DVd+Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com; spf=pass smtp.mailfrom=sang-engineering.com; dkim=pass (2048-bit key) header.d=sang-engineering.com header.i=@sang-engineering.com header.b=h8jm1zC5; arc=none smtp.client-ip=194.117.254.33
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=sang-engineering.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sang-engineering.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+	sang-engineering.com; h=date:from:to:cc:subject:message-id
+	:references:mime-version:content-type:in-reply-to; s=k1; bh=KcEY
+	mv/jkGMRk96ueI/s8b4rGq5FhWuEKIEs+twFyQk=; b=h8jm1zC5bZ9aGv9S412W
+	aEst41eD9C+7j40pTikgQJ5kCD2sqTGteCL1nOLM71jWiTVLT7pPy1pwUUmAPSGy
+	cpm6af2LCf2M52JZoP594ox89uzdZYMJxL19UNPYCaT+kuEYlckFSqqK2bUu5937
+	M+V+b2QwtYsAkYcfly9Q+JAAujGzTiQd4s6DLUcmznBGydQmvqnzk9vzIk6WYQvd
+	rZRtB2xnqt4/joOyDyx7yAVu+xUSfOwzevKt2brIxlMQSrMqWvaD54ETE41Sg/Xb
+	e4aB3Tm46PS3OkfZu2t0MzQkekL5N4whe7XN1yyhtnS4TAdoYE762gX+fDDhefxM
+	Pw==
+Received: (qmail 1773305 invoked from network); 13 Jan 2026 17:14:33 +0100
+Received: by mail.zeus03.de with UTF8SMTPSA (TLS_AES_256_GCM_SHA384 encrypted, authenticated); 13 Jan 2026 17:14:33 +0100
+X-UD-Smtp-Session: l3s3148p1@EsZ5SUdIyJ0ujnvx
+Date: Tue, 13 Jan 2026 17:14:32 +0100
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
+To: Tommaso Merciai <tommaso.merciai.xr@bp.renesas.com>
+Cc: tomm.merciai@gmail.com, linux-renesas-soc@vger.kernel.org,
+	biju.das.jz@bp.renesas.com, Chris Brandt <chris.brandt@renesas.com>,
+	Andi Shyti <andi.shyti@kernel.org>,
+	Claudiu Beznea <claudiu.beznea.uj@bp.renesas.com>,
+	linux-i2c@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH v2] i2c: riic: Move suspend handling to NOIRQ phase
+Message-ID: <aWZvaEpxQVTIMKYQ@ninjato>
+References: <20251218151022.728661-1-tommaso.merciai.xr@bp.renesas.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251218151022.728661-1-tommaso.merciai.xr@bp.renesas.com>
 
-On 12/23/25 12:05, Sjoerd Simons wrote:
-> Since commit 8ceff24a754a ("clk: mediatek: clk-gate: Refactor
-> mtk_clk_register_gate to use mtk_gate struct") the mtk_gate structs
-> are no longer just used for initialization/registration, but also at
-> runtime. So drop __initconst annotations.
->
-> Fixes: 8ceff24a754a ("clk: mediatek: clk-gate: Refactor mtk_clk_register_gate to use mtk_gate struct")
-> Signed-off-by: Sjoerd Simons <sjoerd@collabora.com>
+On Thu, Dec 18, 2025 at 04:10:21PM +0100, Tommaso Merciai wrote:
+> Commit 53326135d0e0 ("i2c: riic: Add suspend/resume support") added
+> suspend support for the Renesas I2C driver and following this change
+> on RZ/G3E the following WARNING is seen on entering suspend ...
+> 
+> [  134.275704] Freezing remaining freezable tasks completed (elapsed 0.001 seconds)
 
-Reviewed-by: Laura Nao <laura.nao@collabora.com>
+Applied to for-current, thanks!
 
 
