@@ -1,154 +1,194 @@
-Return-Path: <stable+bounces-208269-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208276-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B97A9D194B5
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:07:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EE83DD1983D
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:36:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0BF53306435D
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:03:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8E69E302E3D0
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:36:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D06F392B64;
-	Tue, 13 Jan 2026 14:03:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9910290DBB;
+	Tue, 13 Jan 2026 14:36:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b="I0duCVe7"
+	dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b="hJEE2XZJ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0a-00082601.pphosted.com (mx0b-00082601.pphosted.com [67.231.153.30])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from sonic314-19.consmr.mail.gq1.yahoo.com (sonic314-19.consmr.mail.gq1.yahoo.com [98.137.69.82])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 695FD349B19;
-	Tue, 13 Jan 2026 14:03:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=67.231.153.30
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B7EF29CB3A
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:36:06 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=98.137.69.82
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768312996; cv=none; b=ae/BAG4ewXaSjk0wNpqXa9cNHTjRNnJQXEz8WUWQuh8c0swrW3JWGcgPjEJcGgFrcdWCZodW94n6pdGfl9wR6OmPrUKQjl+qwE24JEVN3CZdnJgSfwt73sDYiYycVnawv5vXe3c7JAs3/zDSWeiM1FIzHevq6VbdJ6O5h8ctLEo=
+	t=1768314967; cv=none; b=eUMJV7vZGwdOmxuBX6AQg6wHiOsoBEJI/PWaWELmVPVrXnb299TRyccSu/ULSYN474l4U5NRKLbegRRg6B/JJ8mh3GXQfQAZjel9aNadd4Sugok8phVAKhBXvzd9DgastMAdI1BajeJgBNUEGhQCPTyT+dhVh9DTAM6yYRQMpvQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768312996; c=relaxed/simple;
-	bh=Mlv8Q3oR7V/OLiVqdmnQP9ckhLwj7sgcxdD2uTXOCiI=;
-	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ekr37ScD1uig5XqPlMCERZCdTSC0yMoU4yPkuCtkFqhpRjmG4Dd8JC74SshoT8XPECh3SqekXFKlpOBb3mEV01+lzN5A4sek9IuY6K0e3gKz5WLkrTNUmf0yTJtxes5yDiDRBWFix7UzeeIW3W5EoboDJe+kBR5Y7a0q/8OpYEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com; spf=pass smtp.mailfrom=meta.com; dkim=pass (2048-bit key) header.d=meta.com header.i=@meta.com header.b=I0duCVe7; arc=none smtp.client-ip=67.231.153.30
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=meta.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=meta.com
-Received: from pps.filterd (m0001303.ppops.net [127.0.0.1])
-	by m0001303.ppops.net (8.18.1.11/8.18.1.11) with ESMTP id 60DC4dtS1330592;
-	Tue, 13 Jan 2026 06:02:54 -0800
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=meta.com; h=cc
-	:content-transfer-encoding:content-type:date:from:in-reply-to
-	:message-id:mime-version:references:subject:to; s=s2048-2025-q2;
-	 bh=fQ7j1PpGTasQAblfO8V1KwLqMUsTQm5W+M3/6xbpbQs=; b=I0duCVe7seY9
-	Edk/KTttYI7pSWoYZeM0jlkHIh1rNXqTqRlrmWA5DDtmw+cyr+js5kd+YW+lAEi+
-	wyWRsOgyVP7cZXyJ521koGYuvcfbOlqxcIKZ/mtPc1La+qU1EzA1tQDAqWqzY1fy
-	WXCVvVWbyhyD6yC5Onr8rK50uhcSnEM3U83BWw94xMqoHGUVKqZkDa2Ls/4vxdnQ
-	EcO3t9e3x/msw1qWNheVYhMSk2QU6IHI+SwzmJuYGC6UgBOudhskL9S7uolAqZ5u
-	S/3xQ5eaAE1alCHjyZaDTLYG9Kpa+I+venuH2H0GgLg27XuEwq24P8K5o9mZhEwO
-	pn4EceYpjw==
-Received: from mail.thefacebook.com ([163.114.134.16])
-	by m0001303.ppops.net (PPS) with ESMTPS id 4bnnr4rsm8-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
-	Tue, 13 Jan 2026 06:02:54 -0800 (PST)
-Received: from devbig003.atn7.facebook.com (2620:10d:c085:108::150d) by
- mail.thefacebook.com (2620:10d:c08b:78::2ac9) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.2.2562.29; Tue, 13 Jan 2026 14:02:51 +0000
-From: Chris Mason <clm@meta.com>
-To: Breno Leitao <leitao@debian.org>
-CC: Chris Mason <clm@meta.com>, Alexander Potapenko <glider@google.com>,
-        "Marco Elver" <elver@google.com>, Dmitry Vyukov <dvyukov@google.com>,
-        Andrew
- Morton <akpm@linux-foundation.org>,
-        <kasan-dev@googlegroups.com>, <linux-mm@kvack.org>,
-        <linux-kernel@vger.kernel.org>, <kernel-team@meta.com>,
-        <stable@vger.kernel.org>
-Subject: Re: [PATCH v2] mm/kfence: add reboot notifier to disable KFENCE on shutdown
-Date: Tue, 13 Jan 2026 06:02:27 -0800
-Message-ID: <20260113140234.677117-1-clm@meta.com>
-X-Mailer: git-send-email 2.47.3
-In-Reply-To: <20251127-kfence-v2-1-daeccb5ef9aa@debian.org>
-References:
+	s=arc-20240116; t=1768314967; c=relaxed/simple;
+	bh=UXqT3OxvL4fWZ5v0F/aacWjVx/cPbj2b1GcMebuJ8wE=;
+	h=Message-ID:Subject:From:To:Cc:Date:In-Reply-To:References:
+	 Content-Type:MIME-Version; b=M9m3vTHofjmEI+zcTxQHl6yyQvFdqK5OmxTV/5OKMDOzZc28nvbDbv3QgsJ02oQym5U2DK0MoHdy0I4wfTbet2rgfRcE6iU1we9Dc0GV57IGbN6ktnI99n+hYrdRk2lFnQBuCJd6bpno+WyO/H1Dvca3YqbAWYM1PnbUmMVr4DE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com; spf=pass smtp.mailfrom=aol.com; dkim=pass (2048-bit key) header.d=aol.com header.i=@aol.com header.b=hJEE2XZJ; arc=none smtp.client-ip=98.137.69.82
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=aol.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=aol.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=aol.com; s=a2048; t=1768314960; bh=UXqT3OxvL4fWZ5v0F/aacWjVx/cPbj2b1GcMebuJ8wE=; h=Subject:From:To:Cc:Date:In-Reply-To:References:From:Subject:Reply-To; b=hJEE2XZJAOPpOGTsD3xdrdadJqQV83BnKDiz8+Aqu969n9xqws2XzZeTT5FjcnnKD5aWF9PnDnZk6RIQyyMuH0gt8I6OmABvQDvzMx+EOyLTCZyPoXWkqZo2BZ/HQUBFwinAl3bnc42dwkfVg97wJYgfKguFkxtS+dCtWAzJ5QzvqGFEgMgsrG3SZ46gNalbqGu+JyKT1CRqOTfBpWRZF9cV3Vrhl8vwiyglHHxUGqMWPWLsocwuAS/syol8y/8Hs9GybIGHjdqOCjp5H5/MWrTBpuC4muD6/0dQvmFLMKX8hOCHstqGyn1gPNcD8/4xUSpW5dlBNXWrPG+bOni14g==
+X-SONIC-DKIM-SIGN: v=1; a=rsa-sha256; c=relaxed/relaxed; d=yahoo.com; s=s2048; t=1768314960; bh=PAW65xoDV6tL+WnTuvPdW7VAyPcEWoAfllcInWauuVU=; h=X-Sonic-MF:Subject:From:To:Date:From:Subject; b=LKa6Q+Z0br4mlznWmmCAZ94gFhj3oNXGqnsWOl6iH5hGEWHLwQdFIbAchonp3I1MNokC3DXluoJxybJbxDufdOwteSfC6jt2f5oxZyQXONlGDHS8hJe93/tzN5Xx2qoO3W2sxDJjoyKNS8gjq6IqqNCaumWRJCkjCE4D7qMa0X1/TtWRIjoGEJki1yOs6WHeMA+PHw5SP2FEL4+qrkfoKVGj8BH/zMEO58IBquH1o9aCgzHig9v8oeviNdkp0zbWYP9Do9rTvhVj969nReZhr3SwaUhqElCaMEnvniEMZ6lBI9wV6piKvp/TbrnLwtEsF8kVuvLD6OSx3OqV0iQKZw==
+X-YMail-OSG: rxZL8cQVM1mKaBXGS2.SHA92D1KBUhJUkejW6wCtp.YpsAf1GgyfF4V3UsRQASh
+ AccHnyHKAWCj24mWJ5pbEDHciTDjODcjctOdOInluMgq2IuJ2ZJGiAPJLIKgrNMDF4b6.PE57rAU
+ PJrv52oRr4WTRyXxrYphVmEGUtYYlcbKa5t63PEYq4r7zRlLOYjg97QJSt0L6E1EtVJ7gBshQFAk
+ SdmtGxk6rKG8QUsCXl_umvnA975lqkezGKfnaQxj0BEW6yNa1gCBNENN6ERO_RdEuU7B1O58uzwT
+ JEEoe3Qkb6XGfWTaID5k2vfUUNAWpYvGW4G2L4CRxN4Z7YGYRX.s8t8tQo9MDCKe4f3M4s1EvKjQ
+ Ux88Sf2Rmp6yRoCrtYOXmIRfPjPXdmpBqyqAJD1tCXb6ffZeJiqu6.S_kO9cMemd0LJK0HlHJCst
+ fDIZ0aMGQ8tlRnyC7WeBLhijawoUrirq5RNv682dzwLHyvLL0WdYWpznCRzLRInXxi9raqBHg.zz
+ O_1rgUBjBhehcPmiEvQlGeHc2zuG8dXjGwLqr0De9OjRpIvkrYvY.EolYCuT0rECOSvDUJBHcp0.
+ yrNEJhb7A64Oj60xMdo.aHK1oL5PNhSrhGm4R0z1aD3kyZhpnsnrNhX.KrryDrp4a3zXKcfNfAcC
+ ojWoVqalnHww7lzg7MEiL_pjNOFqnOCebaIIbP.HHOxW05x9kHDEUh34fwqYrLRh3J_V5OZuSXvX
+ skxTwHIDjuGmRaiFlrW0RBDB7l7VzvKZgD3d9ct9hFRczB.p9xFXT.VHQjQ.ZT00oZfIYkCSXibF
+ CmH3RW2hy9zZmlzh3QLiNLaSVvGnKsmZ_PmFMXTpzucAyUi6Fq5vRx5sxSblgPa1cQcAtbLclcNO
+ K5X7aZqreIiKOIKstn7XoTZCRyUBtH3nQYpaBtqWG3d_NRopSnmYRp3zJnmO6Fwy7MXhb5UvBA84
+ 4MohFRg2h0TSuobYmmVj3HMBOK54ULoj2_BCxxCxR9cgv.01tC9gGCPwvOPwrQf5_3cETZ5OuIzX
+ .C1faUh2hetYwgVRQw8T9Lu5U75vqQBu_pFuf1kT04zQ.viWg8b9oPiXq4fzq045b4bMe1aJsZPA
+ 1Epc_w8VVdXff6ClM.Pgyf77x0kNoKRNwGzngriJDu5BVWRmt8U8tJSxxDwphtQGYPKcOiaI1shS
+ XozhboEhMCnua7yzdtnxJ6wzmANRF3VPCTJXHE3o9unC4STe48bDvY34O.JinzogfaD1KVT9awcs
+ C6cngFq29gmfsHpVmpk0flJLGLYAOyJtzU5EcnhPd3HN8pfwHKrO7ulcw7UkKnFx_eI5JXQjmpVr
+ SF41RWodYnBH9iYRxVVwE39ns3hfOizYdN3Lo08bOu8rotaIar0iIATo1OfMoBcZC_3V_mTyYdDA
+ jOesmQX7HxvgmTMvD5qr8yP8w._wouBK5sfSR3YK6_huftpmpX0af0zFp8D0PQbH3JVYtUgQt60C
+ 3N02A9QdH_NUDbCA8pEFiDEdmta3zSTD8ZXte9xSAEHX6aKdlNcBpGvCvr1TclTsdAUm1eFlCaJI
+ kgUs7f50TooEprx9wyPhBY8hNsNYJa5Um.maSDKOR5.Iwev.Qv5_eaPuY6btVCxnrBdiVwXV9WX_
+ 4wTeekAMSYBl.w0BvBYyA63FFNcRRk6HjzJyOHCipxB9FVbktEtaR3bA9SXZiWaBYOzjYpqSyPl5
+ fCllfN4fWSLK87XGMTInUSrXF9E0E5sihVQPoBMKaZ9m1Ki2dL1XoE0iiUfsl.vTGDO57iuk6qPs
+ BQJ2tXrbhpMVnXEx9XyKW5YeOt.COWHrjRpZdRBd0BcjUDCByxJqA.nilEcx4n8qoG_lz36KvL_L
+ oN4I2bDbAqvrfQcLj1obpbng8nXkmTtGOcIQiY_fMDT0pfIJTRZPX6weA6WUQxWc0DIkZL6oaEKr
+ ozOIXKo4vVkGZ6RK4Zi0.d9gk54suxJInfClbER8JJ91YVPMVRKYXx8Ui9V1meunRPMj7Uv.sFoq
+ pjQuMiDsQBzduVfvlcRPguktgdFMhCTkQ39vx6s2hTHkj6ugT5IDLZK3gdVqI9ifxppWyS7exKs7
+ wEoX5kbbU.MY8v3YXW3qCU6yOv4s82EYfd_KXabYIXvJZcBVzTengXwSjCdVfDDKxVw.wmsEHzMS
+ dhvFMM6vTVmEqSAbF9c7M99MFQONcSEfsMCLOMbKJJ_x5SMPHuCCar9gAmj1eDbP3zeEkg0tIf9y
+ 5nrq505SmBCW39jrPJUVmTgXLeaILIRFZc_3BmOPey8E9VIzziiAYStCJNDL7R56Owc_3vZV1rVr
+ cwA--
+X-Sonic-MF: <rubenru09@aol.com>
+X-Sonic-ID: 813af666-4f25-4c68-8622-4131645669d7
+Received: from sonic.gate.mail.ne1.yahoo.com by sonic314.consmr.mail.gq1.yahoo.com with HTTP; Tue, 13 Jan 2026 14:36:00 +0000
+Received: by hermes--production-ir2-6fcf857f6f-7nlzs (Yahoo Inc. Hermes SMTP Server) with ESMTPA ID 9b43bdbb810054b7366e75cd1eadd578;
+          Tue, 13 Jan 2026 14:05:38 +0000 (UTC)
+Message-ID: <69a714228f562d399e78cd0e54a23769490336f9.camel@aol.com>
+Subject: Re: [PATCH] drm/gud: fix NULL fb and crtc dereferences on USB
+ disconnect
+From: Ruben Wauters <rubenru09@aol.com>
+To: Shenghao Yang <me@shenghaoyang.info>, Thomas Zimmermann	
+ <tzimmermann@suse.de>, Maarten Lankhorst
+ <maarten.lankhorst@linux.intel.com>,  Maxime Ripard <mripard@kernel.org>,
+ David Airlie <airlied@gmail.com>, Simona Vetter <simona@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org, 
+	stable@vger.kernel.org
+Date: Tue, 13 Jan 2026 14:05:35 +0000
+In-Reply-To: <65110c51-1f47-4382-ac92-518c7f157a06@shenghaoyang.info>
+References: <20251231055039.44266-1-me@shenghaoyang.info>
+	 <28c39f1979452b24ddde4de97e60ca721334eb49.camel@aol.com>
+	 <938b5e8e-b849-4d12-8ee2-98312094fc1e@shenghaoyang.info>
+	 <571d40f4d3150e61dfb5d2beccdf5c40f3b5be2c.camel@aol.com>
+	 <c6324a66-5886-4fbb-ba7b-fc7782c0f790@suse.de>
+	 <229b5608222595bc69e7ca86509086a14501b2f7.camel@aol.com>
+	 <8929ff0f-c2e0-49e6-a0ce-c4b0dcebae99@suse.de>
+	 <65110c51-1f47-4382-ac92-518c7f157a06@shenghaoyang.info>
+Autocrypt: addr=rubenru09@aol.com; prefer-encrypt=mutual;
+ keydata=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
+ eIvzsqg==
+Content-Type: multipart/signed; micalg="pgp-sha256";
+	protocol="application/pgp-signature"; boundary="=-WK1prZNvwrKcwvmDYqit"
+User-Agent: Evolution 3.56.2 
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Proofpoint-GUID: -zdoFufYx-ri54AmF2W0YNzuIqDQSvvM
-X-Authority-Analysis: v=2.4 cv=Zs/g6t7G c=1 sm=1 tr=0 ts=6966508e cx=c_pps
- a=CB4LiSf2rd0gKozIdrpkBw==:117 a=CB4LiSf2rd0gKozIdrpkBw==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=xNf9USuDAAAA:8
- a=7sR78lRsTtdWeVkM5_EA:9
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDExNyBTYWx0ZWRfX/SH2AzbaA7MB
- fQ7SM27TcoFfggUzHtqIj9YhlO1KEvX/6zhNr8J15aiISa2bEPfqhMxaGMCXMRk7HSSy2FeKxgG
- ibIbIpNHOjRb942E+A/vtvrrW00uQh/2JJikK5QORViYber7Xv8570VWucIgV+Md40nWkQ69a/h
- ceE9JyquvWsfNEG0ymemR3nJfJdFJBhdrqkXF+G4N4dEF3wCYQe9ChjlA5DEOg/VBgeqsjnHq9+
- fDMjeZ5zQVSoy9peZ/++qafLhPPJoHlPHTq/hJ0FOwRdkNTQolGhAI5ikEhdq/6EtAbq6PscK5v
- U8+EjxbMMiTCIYMGLNF4UFv19e8DLo/fL3Mi2lZ+aEcSiIj70a/thIH9S26H8vTe2EGUs5jZ5uX
- tgvHiHwvc/8cojlBjhfmCefn7NaWbU4n/GkF4BpbvDEnVF+bsNROvOPUAnaRQjlW+R9I+QaCBm/
- M6FkDwYwMQY3kxIZ3GA==
-X-Proofpoint-ORIG-GUID: -zdoFufYx-ri54AmF2W0YNzuIqDQSvvM
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-13_03,2026-01-09_02,2025-10-01_01
-
-On Thu, 27 Nov 2025 06:51:54 -0800 Breno Leitao <leitao@debian.org> wrote:
-
-> During system shutdown, KFENCE can cause IPI synchronization issues if
-> it remains active through the reboot process. To prevent this, register
-> a reboot notifier that disables KFENCE and cancels any pending timer
-> work early in the shutdown sequence.
->
-
-Hi Breno,
-
-I'm running v6.19 MM commits through the patch review automation and this
-one was flagged.  Is this deadlock possible?
-
-Automated review output:
-
-> @@ -820,6 +821,25 @@ static struct notifier_block kfence_check_canary_notifier = {
->  static struct delayed_work kfence_timer;
->
->  #ifdef CONFIG_KFENCE_STATIC_KEYS
-> +static int kfence_reboot_callback(struct notifier_block *nb,
-> +				  unsigned long action, void *data)
-> +{
-> +	/*
-> +	 * Disable kfence to avoid static keys IPI synchronization during
-> +	 * late shutdown/kexec
-> +	 */
-> +	WRITE_ONCE(kfence_enabled, false);
-> +	/* Cancel any pending timer work */
-> +	cancel_delayed_work_sync(&kfence_timer);
-                   ^^^^^^^^^^^^^^^
-
-Can cancel_delayed_work_sync() deadlock here?
-
-If toggle_allocation_gate() is currently executing and blocked inside
-wait_event_idle() (waiting for kfence_allocation_gate > 0), then
-cancel_delayed_work_sync() will block forever waiting for the work to
-complete.
-
-The wait_event_idle() condition depends only on allocations occurring
-to increment kfence_allocation_gate - setting kfence_enabled to false
-does not wake up this wait. During shutdown when allocations may have
-stopped, the work item could remain blocked indefinitely, causing the
-reboot notifier to hang.
-
-The call chain is:
-  kfence_reboot_callback()
-    -> cancel_delayed_work_sync(&kfence_timer)
-       -> __flush_work()
-          -> wait_for_completion(&barr.done)
-             // waits forever because...
-
-  toggle_allocation_gate() [currently running]
-    -> wait_event_idle(allocation_wait, kfence_allocation_gate > 0)
-       // never wakes up if no allocations happen
-
-Would it be safer to use cancel_delayed_work() (non-sync) here, or add
-a mechanism to wake up the wait_event_idle() when kfence_enabled becomes
-false?
+X-Mailer: WebService/1.1.24866 mail.backend.jedi.jws.acl:role.jedi.acl.token.atz.jws.hermes.aol
 
 
+--=-WK1prZNvwrKcwvmDYqit
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+
+On Thu, 2026-01-08 at 21:39 +0800, Shenghao Yang wrote
+Hi
+> Hi Ruben, Thomas,
+>=20
+> On 7/1/26 23:56, Thomas Zimmermann wrote:
+>=20
+> >=20
+> > No worries, DRM semantics can be murky. This is one of the cases that i=
+s impossible to know unless you came across a patch like this one.
+> >=20
+> > Best regards
+> > Thomas
+> >=20
+> > > > I think the patch is fine and IIRC we have similar logic in other d=
+rivers.
+> > > Reviewed-by: Ruben Wauters <rubenru09@aol.com>
+
+Patch applied to drm-misc-fixes, thanks
+> > >=20
+> > > I believe Shenghao mentioned another oops that is present? if so it m=
+ay
+> > > be best to submit that in a separate patch rather than a v2 of this
+> > > one.
+> > >=20
+> > > Ruben
+>=20
+>=20
+> Thanks both! I'll split the patch for the second oops.
+>=20
+> Shenghao
+
+--=-WK1prZNvwrKcwvmDYqit
+Content-Type: application/pgp-signature; name="signature.asc"
+Content-Description: This is a digitally signed message part
+
+-----BEGIN PGP SIGNATURE-----
+
+iQJPBAABCAA5FiEE3obNNdPQ9V5CQi2Y0n5QwFCuDOEFAmlmUS8bFIAAAAAABAAO
+bWFudTIsMi41KzEuMTEsMiwyAAoJENJ+UMBQrgzhuogP/1FYmM6VabykYtv2eR2L
+jVMsjHXGBVF3zpEZHxXsxCDf+csh27ZOdbfgE9Imbr1Z/0VEm8+He02X+fYNo/70
+OkeCh3WKEWwiOhlYnuc+yoLvQUCFujXqy9AySMfDHpErGlVG0iksLCLzDKgDTYiW
+cu4Jz7iXrVIwoLVtfG0Tzawe1JOmDDdHxFHxl8SbpPy2fy3W8496nMy1v/t5QvVX
+lpsyUfh+qtwfn1JyzkzXcNYlwojUIqhTa000gDs2S+yltobOPosxrqA09icFovGK
+IEqGO9kUU0HVM8c2uCJit3JME59z8gEL/3La46nFtoWuh620AtvvpcU0xk65wX9c
+hN393S5s6ey2v5je+Ypk2//Oj9t1lZbQzclsqmbn1RpGL9KLdPTmsirbtMLRgRBM
+ppYiC8Mo3YRyxPO4ra2gVl908JrtfjQhrIZ1MrhtxCqAgZgVtMzCOCjmusFT1cDl
+kXdxFyjZKT8o6NATkNj5+NN5h2nhrkQiQh9B2I/vd5yZomgkvMkGHocw6xR8Lzi1
+wP0HQ6UYy5zgi3nRTRZQz7bU0mG9caomrBC3zXcth5plqeqlLlAw4Q52hgu9a1J6
+ovorUrc1YYeZbNJ+0xrBmLPwRcDaGeXKTCmr2GVuPhsp6TAGM5Nwrc22eBt2iytC
+BvT2qdA2bVnEJI2uUhH7XjTj
+=Exhg
+-----END PGP SIGNATURE-----
+
+--=-WK1prZNvwrKcwvmDYqit--
 
