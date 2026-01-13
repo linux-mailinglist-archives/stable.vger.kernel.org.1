@@ -1,117 +1,204 @@
-Return-Path: <stable+bounces-208243-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BE3BBD17076
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:33:53 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2833D17238
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:59:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 503EE304322F
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:33:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B04CD301987D
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:58:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B311730DD2F;
-	Tue, 13 Jan 2026 07:33:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6006E31353B;
+	Tue, 13 Jan 2026 07:58:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b="M86i4z4u"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="Oi3q0Skc"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f175.google.com (mail-pf1-f175.google.com [209.85.210.175])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AAC82F6925
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 07:33:49 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.175
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2018326F2B9;
+	Tue, 13 Jan 2026 07:58:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768289630; cv=none; b=BbdbdqLbze6Pg4uMYYApTVXO2haCFoR78gjiJW2Ygwel03j+xIy6SZoAgvVFx73JIHPaVbD7705Y2q4sKDOsTM+O7dv5dRR1zQ74+wZz4xfIZV1QvaRnB3yyo8YnJFm93hqCfrFNbdZkQOBevdXIwJh1HohvOZPj6WY+NYAyBhc=
+	t=1768291130; cv=none; b=qQD8xF+cze5rcO/FjgR2AxF5T7vKpQYif1CDK5P6P0DG7M6Eib0PovW8wvs9HAwJjt4HHTZ9R9nRzk9739pQ7N4AZETFPL2PKTUuWmOfrmczSxgwR97CD5rD6xHN+3y7J7FdV2W1GU3OEVMfJk0VO5d6jq37RJ7i1HoqOt8FvjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768289630; c=relaxed/simple;
-	bh=qaJtFIMANtsn3MUecYOomZtvOyG2AOWvRXicCsH/JVA=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=fbSuefu2OVzWAB9xJQ7Iy1ziL6SMFFwMiacfcZ39uLBVHSXcONg/u7P9ewRqyNes+8BVUo3/2hHnUFlacxVF08IY+b7cbaMKHKjGGa8ecMW9+ihr5acuAEQKzchIlgPZuFZPgj6/KqlPg68XfniJb56TVJZlZEPJ1xmVDvwelBE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com; spf=pass smtp.mailfrom=mvista.com; dkim=pass (1024-bit key) header.d=mvista.com header.i=@mvista.com header.b=M86i4z4u; arc=none smtp.client-ip=209.85.210.175
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=mvista.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=mvista.com
-Received: by mail-pf1-f175.google.com with SMTP id d2e1a72fcca58-81ea900c5dfso138113b3a.3
-        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 23:33:49 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=mvista.com; s=google; t=1768289628; x=1768894428; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=66kiY6DeNMafpIZAono+DmVHNPdj7umQZUCdDEMZe1c=;
-        b=M86i4z4ut2s59OAyJapsGn8wY6LC3tspNDO+F6HTyL2qHIlGINd4qROnbkRhsSKvw1
-         6LVBKJwRh3gQLwUADr/w2vbQ2ZpMqTzDkW+HnIFQSj6gZKHRuH/88BSURE3XGI87fO/u
-         SwnfvGe/0J8XPOahUKXMuHEHOdwwDXJ37RtSs=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768289628; x=1768894428;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=66kiY6DeNMafpIZAono+DmVHNPdj7umQZUCdDEMZe1c=;
-        b=rBl/qLEnVyDdaw4r6cXCpe+KPj2YamzpO1+kUSsXwIuLQxnHTAB3wcLNEYgWSfiZT7
-         6Nsq01vmNJELe8q7EtNm4qMG45bLkMhC8JMg7BKGg+cghyA/DMszf295tE1zKLfso15P
-         VpbsqLJxl5cmnKyB96FkM3wDcGIPVv3DTpf/xfkG6X3zJX8QIQg+sJkECnpEOcF0UgGW
-         PvTgd2h/xraOxQB/w86k8oSIcOpp+LiQkzC8l3+yzVrMLWtcjVWR59fjdjbevOofcqSv
-         lHlFpkNfzXRGlEmPE7bQNoJmaWYgOvh7FvbCpenyKADDT7XMnTqHK1mDDiGJElay8akF
-         v4uA==
-X-Forwarded-Encrypted: i=1; AJvYcCWffEwioQV+54mmmFuhXh5m99tAasrSClTo2L3ywxT/a1gwqAF91UffyPVoQDaIK9BLj0/J8iU=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyVbreaUzb9TEHRDY9KJV0omUmhKZWWogjJOZ5ikuovSCxckVIo
-	EEyfMPM2h0KwSlm66NwFxngicekPpkOPOrQ9VVs0YCW8IR23v9qJXoh0eReDTKCB66A=
-X-Gm-Gg: AY/fxX5aJQLV+2Skw9+88TdbJTKp/faez4WxvQj8C95V5WGajVu1vtUQSvPfZLTh/LV
-	6SbK71BagErkawYKU33Xqn+NDv6FBTnmKndm1uh/zBcdIEAJmT116VuuAYehABib/RnMXvrGhIN
-	/9j9sOGHiwHH00Fq0cp3WBwf3WZrPokTVMvEy0Kb14ojFTxDtlerxqc0aoaR76/Jx2fPAupZrRB
-	3uSJrFU808/TzRZL1pgejqiLFJ4teJ4t4gsDiQ+Faq/XAlDNn+EVwO6r4Uw8FnLCfr+RoQ3QdER
-	j9Vvj5Q7l6asZmCu6q7I7D5ygtV/v2FPFs+wfflyBaFjraDGpj1uDaokxhmb+UitVqkbX1NCHbr
-	Lg8sqWpvVRThL7Ew5+E3zcUPcVaeQuWHs90EvEWxWBXL3axM1qRmgj50qrT59QhCn+TiLPaeMvn
-	iW79mXcWg5TENi+w==
-X-Google-Smtp-Source: AGHT+IFEiJ+3Ihbowbp5xXpfvrwVzWmXXoeZjE+F2ognJ75zqEhRjx3kh34VtKELtO4RjJI2WyNdfQ==
-X-Received: by 2002:a05:6a21:610e:b0:356:3b05:2955 with SMTP id adf61e73a8af0-3898fa11537mr12931741637.6.1768289628574;
-        Mon, 12 Jan 2026 23:33:48 -0800 (PST)
-Received: from [192.168.0.14] ([202.179.69.91])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81efe4a95c7sm9327369b3a.37.2026.01.12.23.33.45
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 12 Jan 2026 23:33:48 -0800 (PST)
-Message-ID: <a4462624-fa23-4df5-bb4d-0bd7ff848b62@mvista.com>
-Date: Tue, 13 Jan 2026 13:03:43 +0530
+	s=arc-20240116; t=1768291130; c=relaxed/simple;
+	bh=n7al2zJlu/imxnIL4dUi9H5BMNfDDPOy1fzae83W3jM=;
+	h=From:Date:Subject:MIME-Version:Content-Type:Message-Id:To:Cc; b=p/zKUTfFDVPEX3qD7vzPjcZx0wP0uorl4oczA9ouV6sykf2KMnDsIRyx2sBEWXT5C3d8OttU/DRqvJIRt/zIXrfyPpoYQoXbQ6D4pwC1tmZ7qyICpNxUZkXOc3cnTTLen18CAwJbzN+sGurjUQbGyT1aAQBILiIDpZKHmGTIeRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=Oi3q0Skc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPS id B13CAC19421;
+	Tue, 13 Jan 2026 07:58:49 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768291129;
+	bh=n7al2zJlu/imxnIL4dUi9H5BMNfDDPOy1fzae83W3jM=;
+	h=From:Date:Subject:To:Cc:Reply-To:From;
+	b=Oi3q0SkcvYxKdtGE6sy3da76Je4g3Zue9BIFQ/o//ARQpMn8ZeN49i9Xu2UxtJbAP
+	 JtJFFD4laKNPliFwPvG5ya0HInYbFbe+BSCpCO5n/i1Se15faAUdn016qZILr9TitF
+	 Y4QTm2c2y9w+DR8bMfRHkP6QzUyRDkks2f3ZobmdBtNSEeDL5Rb1tADYzKU2qAjEoJ
+	 ed/rblaCA0auxRRXYQX7pSjEbMJAs0yGBvcd16wZrQ66syoSgO1HDHaHgUKESk/t30
+	 I00DN70uSamIIav+8vW0NHOYKNZkoGj/z7cLzESMsHUuupzV9bjQmG4Kqmavo5EDvN
+	 yh5B6urRX8Ifg==
+Received: from aws-us-west-2-korg-lkml-1.web.codeaurora.org (localhost.localdomain [127.0.0.1])
+	by smtp.lore.kernel.org (Postfix) with ESMTP id A1111D29DE2;
+	Tue, 13 Jan 2026 07:58:49 +0000 (UTC)
+From: Ziyao Li via B4 Relay <devnull+liziyao.uniontech.com@kernel.org>
+Date: Tue, 13 Jan 2026 15:58:48 +0800
+Subject: [PATCH v5] PCI: loongson: Override PCIe bridge supported speeds
+ for Loongson-3C6000 series
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Patch "ipv6: Fix potential uninit-value access in
- __ip6_make_skb()" has been added to the 5.15-stable tree
-To: gregkh@linuxfoundation.org
-Cc: stable-commits@vger.kernel.org, stable@vger.kernel.org
-References: <2026010815-buffed-cake-ce56@gregkh>
-Content-Language: en-US
-From: Shubham Kulkarni <skulkarni@mvista.com>
-In-Reply-To: <2026010815-buffed-cake-ce56@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 7bit
+Message-Id: <20260113-loongson-pci1-v5-1-264c9b4a90ab@uniontech.com>
+X-B4-Tracking: v=1; b=H4sIADf7ZWkC/3XOTWrDMBCG4asEraOi0Y9tddV7lCwkzSgWNJKxU
+ pMQfPcogUIw6fL9YB7mxirNiSr73N3YTEuqqeQWZr9jYXT5SDxhayaFNGKQkv+Uko+1ZD6FBFw
+ jocB+iOA9azfTTDFdnt73ofWY6rnM1ye/wGP9T1qAA1fWOe8RIHr8+s3tlzOF8SOUE3toi/wTO
+ gFCbwXZBAQDZHrfURzeCepVsFtBNcEgBuNIeWfVO0G/CKC2gm4CWAnY6d5G0lthXdc70bg3cXQ
+ BAAA=
+X-Change-ID: 20250822-loongson-pci1-4ded0d78f1bb
+To: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+ =?utf-8?q?Krzysztof_Wilczy=C5=84ski?= <kwilczynski@kernel.org>, 
+ Manivannan Sadhasivam <mani@kernel.org>, Rob Herring <robh@kernel.org>, 
+ Bjorn Helgaas <bhelgaas@google.com>
+Cc: niecheng1@uniontech.com, zhanjun@uniontech.com, 
+ guanwentao@uniontech.com, Kexy Biscuit <kexybiscuit@aosc.io>, 
+ linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org, 
+ loongarch@lists.linux.dev, 
+ =?utf-8?q?Ilpo_J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>, 
+ stable@vger.kernel.org, Lain Fearyncess Yang <fsf@live.com>, 
+ Ayden Meng <aydenmeng@yeah.net>, Mingcong Bai <jeffbai@aosc.io>, 
+ Xi Ruoyao <xry111@xry111.site>, Ziyao Li <liziyao@uniontech.com>, 
+ Huacai Chen <chenhuacai@kernel.org>
+X-Mailer: b4 0.14.3
+X-Developer-Signature: v=1; a=ed25519-sha256; t=1768291128; l=4487;
+ i=liziyao@uniontech.com; s=20250730; h=from:subject:message-id;
+ bh=Hl7/CSJcQmXMBHxIa1mIHhAus0jXJU5lALHCfw50FBg=;
+ b=OejsaQ8AveoPLToGMsvyxDDYWhDIGbSTlb11V1OBXdRNcJ/dYe80rqBBi1aCjwfoobQ7+fuPg
+ q4Mrb/vYChKBs+XTo7FjhEV29YgLnSBmeUODzkm/eicP7fH5l/tKW/q
+X-Developer-Key: i=liziyao@uniontech.com; a=ed25519;
+ pk=tZ+U+kQkT45GRGewbMSB4VPmvpD+KkHC/Wv3rMOn/PU=
+X-Endpoint-Received: by B4 Relay for liziyao@uniontech.com/20250730 with
+ auth_id=471
+X-Original-From: Ziyao Li <liziyao@uniontech.com>
+Reply-To: liziyao@uniontech.com
 
-Hi Greg,
+From: Ziyao Li <liziyao@uniontech.com>
 
-Thank you for accepting this patch in the 5.15-stable tree. I Just
-wanted to bring to your attention that the patch merged in the
-stable-queue contains the lines which I added for reference only (saying
-"Referred stable v6.1.y version" & the link). Also I thought this could
-be an explanation, if Sasha's bot points out the difference in the
-mainline patch & this submitted patch.
-My apologies if I have not followed the correct format here. But can you
-please recheck if this extra info is really needed in the actual merged
-patch in the stable kernel.
+Older steppings of the Loongson-3C6000 series incorrectly report the
+supported link speeds on their PCIe bridges (device IDs 0x3c19, 0x3c29)
+as only 2.5 GT/s, despite the upstream bus supporting speeds from
+2.5 GT/s up to 16 GT/s.
 
-On 08/01/26 9:28 pm, gregkh@linuxfoundation.org wrote:
-> Signed-off-by: Shubham Kulkarni<skulkarni@mvista.com>
-> Signed-off-by: Greg Kroah-Hartman<gregkh@linuxfoundation.org>
-> ---
-> Referred stable v6.1.y version of the patch to generate this one
->   [ v6.1 link:https://github.com/gregkh/linux/commit/ 
-> a05c1ede50e9656f0752e523c7b54f3a3489e9a8 ]
-> Signed-off-by: Greg Kroah-Hartman<gregkh@linuxfoundation.org>
-> ---
+As a result, since commit 774c71c52aa4 ("PCI/bwctrl: Enable only if more
+than one speed is supported"), bwctrl will be disabled if there's only
+one 2.5 GT/s value in vector `supported_speeds`.
 
-Thanks,
-Shubham
+Also, amdgpu reads the value by pcie_get_speed_cap() in amdgpu_device_
+partner_bandwidth(), for its dynamic adjustment of PCIe clocks and
+lanes in power management. We hope this can prevent similar problems
+in future driver changes (similar checks may be implemented in other
+GPU, storage controller, NIC, etc. drivers).
+
+Manually override the `supported_speeds` field for affected PCIe bridges
+with those found on the upstream bus to correctly reflect the supported
+link speeds.
+
+This patch was originally found from AOSC OS[1].
+
+Link: https://github.com/AOSC-Tracking/linux/pull/2 #1
+Tested-by: Lain Fearyncess Yang <fsf@live.com>
+Tested-by: Ayden Meng <aydenmeng@yeah.net>
+Signed-off-by: Ayden Meng <aydenmeng@yeah.net>
+Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+[Xi Ruoyao: Fix falling through logic and add kernel log output.]
+Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+Link: https://github.com/AOSC-Tracking/linux/commit/4392f441363abdf6fa0a0433d73175a17f493454
+[Ziyao Li: move from drivers/pci/quirks.c to drivers/pci/controller/pci-loongson.c]
+Signed-off-by: Ziyao Li <liziyao@uniontech.com>
+Tested-by: Mingcong Bai <jeffbai@aosc.io>
+Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+---
+Changes in v5:
+- style adjust
+- Link to v4: https://lore.kernel.org/r/20260113-loongson-pci1-v4-1-1921d6479fe4@uniontech.com
+
+Changes in v4:
+- rename subject
+- use 0x3c19/0x3c29 instead of 3c19/3c29
+- Link to v3: https://lore.kernel.org/r/20260109-loongson-pci1-v3-1-5ddc5ae3ba93@uniontech.com
+
+Changes in v3:
+- Adjust commit message
+- Make the program flow more intuitive
+- Link to v2: https://lore.kernel.org/r/20260104-loongson-pci1-v2-1-d151e57b6ef8@uniontech.com
+
+Changes in v2:
+- Link to v1: https://lore.kernel.org/r/20250822-loongson-pci1-v1-1-39aabbd11fbd@uniontech.com
+- Move from arch/loongarch/pci/pci.c to drivers/pci/controller/pci-loongson.c
+- Fix falling through logic and add kernel log output by Xi Ruoyao
+---
+ drivers/pci/controller/pci-loongson.c | 36 +++++++++++++++++++++++++++++++++++
+ 1 file changed, 36 insertions(+)
+
+diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
+index bc630ab8a283..a4250d7af1bf 100644
+--- a/drivers/pci/controller/pci-loongson.c
++++ b/drivers/pci/controller/pci-loongson.c
+@@ -176,6 +176,42 @@ static void loongson_pci_msi_quirk(struct pci_dev *dev)
+ }
+ DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
+ 
++/*
++ * Older steppings of the Loongson-3C6000 series incorrectly report the
++ * supported link speeds on their PCIe bridges (device IDs 0x3c19,
++ * 0x3c29) as only 2.5 GT/s, despite the upstream bus supporting speeds
++ * from 2.5 GT/s up to 16 GT/s.
++ */
++static void loongson_pci_bridge_speed_quirk(struct pci_dev *pdev)
++{
++	u8 old_supported_speeds = pdev->supported_speeds;
++
++	switch (pdev->bus->max_bus_speed) {
++	case PCIE_SPEED_16_0GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_16_0GB;
++		fallthrough;
++	case PCIE_SPEED_8_0GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_8_0GB;
++		fallthrough;
++	case PCIE_SPEED_5_0GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_5_0GB;
++		fallthrough;
++	case PCIE_SPEED_2_5GT:
++		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_2_5GB;
++		break;
++	default:
++		pci_warn(pdev, "unexpected max bus speed");
++
++		return;
++	}
++
++	if (pdev->supported_speeds != old_supported_speeds)
++		pci_info(pdev, "fixing up supported link speeds: 0x%x => 0x%x",
++			 old_supported_speeds, pdev->supported_speeds);
++}
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c19, loongson_pci_bridge_speed_quirk);
++DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c29, loongson_pci_bridge_speed_quirk);
++
+ static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
+ {
+ 	struct pci_config_window *cfg;
+
+---
+base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
+change-id: 20250822-loongson-pci1-4ded0d78f1bb
+
+Best regards,
+-- 
+Ziyao Li <liziyao@uniontech.com>
+
+
 
