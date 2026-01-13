@@ -1,166 +1,286 @@
-Return-Path: <stable+bounces-208245-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208247-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99964D1731F
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:07:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8BFB1D17379
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:11:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1F55730049EF
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:07:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1D03A306B695
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:08:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17D96378D8E;
-	Tue, 13 Jan 2026 08:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51E9F3793A9;
+	Tue, 13 Jan 2026 08:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="Udou5s5d"
+	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="rfOQTQJx"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wr1-f51.google.com (mail-wr1-f51.google.com [209.85.221.51])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7AEB02F6925
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 08:07:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.51
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 77F9830FC03;
+	Tue, 13 Jan 2026 08:08:45 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768291638; cv=none; b=ICrqIt/dxx0nRC8jcUH6tJGEWICf5okSgJBcsMD7t71qcEvyvrw0oAlI7IdnCTCGSAfBam1qEtExTsm+yFx8GO5YS+76l6ukdExx2g4zHMsfrWT8m6uFJw+bRHQgloBOnUxIBxJDLPgAzoPr0SGgFsZlJONMnst5b4MsAsQrq5I=
+	t=1768291727; cv=none; b=kOszskLAMHGGqk1NJfzsKak7yWoCZ3NDbN8WeYQjku/OoBjgpCX3MFsR1cYnDklmGPwFvGNi4j+CEkzbmlptKI+BhsMUL3sNnq6+bQyGensJek+V0gIXXRycqH29b+Ju91ods4NqcfV5LsgwdsVNb3Sj5tWiBpabTwa2/j2jiH8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768291638; c=relaxed/simple;
-	bh=75wHd6EOZMPUyl7JqABEH1fCiXhV9j0pIqZjrNZ6yec=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=TzT4EsT8De5H8MrJ2DlU7Hbeknu2li6HW4LUc5HF3F4HhH2wjCsGQinjHloXxFkvd6cxyqNZwS1nwfuLdC+IlcWXJwqReI1U0f7/hDVAEukr9hCeHZUCR0k3lyfS3WKwEGi1JYeQMl7LqvxWLcFGFV8kKy0TbiRJkvkpY8OuMVQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=Udou5s5d; arc=none smtp.client-ip=209.85.221.51
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
-Received: by mail-wr1-f51.google.com with SMTP id ffacd0b85a97d-432da746749so1927649f8f.0
-        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 00:07:17 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1768291636; x=1768896436; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=0kBiGdnwoKI9eDWcWQTGe4djU3SzpP0pSq/NoI+kjks=;
-        b=Udou5s5duBa0+UxlyjxCMJq45t+mhx7vFxFSQ0ReBg22fCs8jswSO5cdn6tWxRFfkW
-         jO9CYukcQzEPHUq16LW88r2z1c03bELxN7OJ8cUi5rZyuS0VAjL3DMkTa8lVVlwjsLir
-         EOZQgPj0NSTE9OpmYM6RM+KvfYiKOKa2jXtyL1p1l3XMfp5JZSmZjgpvrlciXWC99V0I
-         aFraajXAcfuEtqfhjBu32krXjagoASFSd3aEiZ6MyWdXY/Y7YHgvopWn9H8NC9H4yZhg
-         0nPfPuF4ttAbZ5VGc6xhilabCcKCkaVRsrCcozv8eoQcjWb2vmyxsf7xc+tbK3LP0GC6
-         fDWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768291636; x=1768896436;
-        h=content-transfer-encoding:in-reply-to:organization:autocrypt
-         :content-language:from:references:cc:to:subject:reply-to:user-agent
-         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0kBiGdnwoKI9eDWcWQTGe4djU3SzpP0pSq/NoI+kjks=;
-        b=m2BFVPqywu6iuD0ldJf2JL9inRXotl6vIEK+Ff2lVUbwLlxNo2HyES2QPBmryGYfb1
-         JuIhV/ZLDtD0k2G31Ewpfa+twfZjKo3HAI+ZsBuHcuXEERTP9vgIzHTuWvxp6Rm0BS1Y
-         Hc4uzY0c6v8FXTO67WS38aPP/Ul0ZrjiRVa8nMuWI+B0HzB66IRN0rDmHHHXdNEhh6RY
-         S5z0s3TVjQ0LtENH+PSgoUEehjSOrSJz9vG8KY0m+HYt+5H8rzKpkQ+6ZSfp3kRlV1Ve
-         oAl/2E14Rs4IFQskbxY269eZ2TS2+JEspybgIgTB13Psc5k89w6xRl8zgEN8rlpYPXgL
-         mrYA==
-X-Forwarded-Encrypted: i=1; AJvYcCV1TJj+OOV0dUSVPcd57d99cws2C7mVQdqupj/ty1GfPdQeAKqb/cbO44U1vwszx4PNbB5vXrg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyJarnpJwX/mET2it+VldlCWZmqbVyPbzTyYqK9AxbUXR5DWtaE
-	VAXKdWwTo8fSlK/WYvdRRovcndMk5Twu8fd0W5mjTqjCixKKqfSFQJVoWV7sPRvIdRk=
-X-Gm-Gg: AY/fxX6WscNTD3jVGbQbm5g9N1NJa94uHb/ZXmiJtIbbdXBgTHBui4VGAnqdfNk8E5s
-	ygyUtUQea3eFWII8gsEiUmJaJonuFP2gGjunJFE/36RsUFNNF4NrxjdSsrGhnc3KNr2OInPAEDr
-	WG9O3CsRGiF+xY9moLYGxV+bw0bWGlSbxHIj3Warfpgj6Yy9iq7oz5dQ/5n7yXHIHqaN0xX03aC
-	3Gdg+rvhg4rO9rNXLxY9IHHx+hv4EeTANmtbtglnqnFCu96acJWZQAzHVCl/AI5avH9xmH0EVbe
-	Y9OIK4LgcSags4ydsYHxaVq9We4/MO5/R8YQSONmRAGEFX5y1PCANQFpmNgHaI23VKTb7WvY9Is
-	VEj/uJ1DhWsZZRzbh+NM2p+FtRUudipPnZrjcAOYOeKGkkunJlnugwE3//0jUSHf1C0tMm5Fbhy
-	pKugtaaCCqFh94L4L3TOaqiWCNLi6XjWo1SbjewF1O4rvOat4YsA==
-X-Google-Smtp-Source: AGHT+IG6fAtmI1EQMhuKQOIVw+wGIFjBkyZewLv2jXMLbnUnN9fabCWnKyTIrO9pUyyRVG2gO/7/VA==
-X-Received: by 2002:a05:6000:178d:b0:432:8537:8592 with SMTP id ffacd0b85a97d-432c3628106mr24027748f8f.4.1768291635424;
-        Tue, 13 Jan 2026 00:07:15 -0800 (PST)
-Received: from ?IPV6:2a01:e0a:3d9:2080::fa42:7768? ([2a01:e0a:3d9:2080::fa42:7768])
-        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e180csm41710261f8f.10.2026.01.13.00.07.14
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 00:07:14 -0800 (PST)
-Message-ID: <2f18dda9-7163-44bf-a075-bdd46ac5cef8@linaro.org>
-Date: Tue, 13 Jan 2026 09:07:14 +0100
+	s=arc-20240116; t=1768291727; c=relaxed/simple;
+	bh=KR8VAdXnqb1E0mDYNJ4vmRgWXwNIwB7DZgabYsG5KNU=;
+	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=cY/8XTGZFObVyEm/w7RMe++W8KfJycUbEVjykGBXaj8rr3v46jL4nY7Ew2k0KgSnlz6gzumim92iAK/ftomKXLRnhKYN55iOkZSgaEVzA2iscnYdiNp6/dNk9kxM5rSJom6E8hppzL9D6r36s345ff0iG9iBboxbShYH6Ioja9k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=rfOQTQJx; arc=none smtp.client-ip=205.220.177.32
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
+Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
+	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60D1gjdO2735854;
+	Tue, 13 Jan 2026 08:08:12 GMT
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
+	:content-transfer-encoding:date:from:message-id:mime-version
+	:subject:to; s=corp-2025-04-25; bh=M2pHnaFbYyc3u5HyeOUk4EYddLfH6
+	c49c5EKg1ravXQ=; b=rfOQTQJxinXZ7v3YkpL/Ie1RD0j8nxMnvxNH1kQJs6nCu
+	hahdK8CnqSAwyP4381E+9C/KkdfM5NhJLNlfj61Fe8xztDRQQbRFtk7o4/4iR65q
+	z2FVjaW26GXmEnE1TxNuTcNtYIQ0eyht4xXquxaWboAKRk0HFpljmod+GG/EVGfm
+	hg1vdhydlG3znQOJVbh+c211yAv6FQWF98TEmIISBZKH50yRYBnKtszU5bQmkK/s
+	cGB4NiWBTbYoDyP+7D3ppcZX/PHPrSk5xi9a5LdZvNud/vyldfJOZOivJbJ69Olb
+	7A7TbLRf0GZ1E+ow32zxeavaKqCszxj95s7sWziDA==
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
+	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkrr8ayc7-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 08:08:12 +0000 (GMT)
+Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60D659Zg034682;
+	Tue, 13 Jan 2026 08:08:11 GMT
+Received: from pps.reinject (localhost [127.0.0.1])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd78ewwr-1
+	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
+	Tue, 13 Jan 2026 08:08:11 +0000
+Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
+	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60D88Ahg038767;
+	Tue, 13 Jan 2026 08:08:10 GMT
+Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
+	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4bkd78ewra-1;
+	Tue, 13 Jan 2026 08:08:10 +0000
+From: Jane Chu <jane.chu@oracle.com>
+To: linux-kernel@vger.kernel.org
+Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
+        osalvador@suse.de, david@kernel.org, linmiaohe@huawei.com,
+        jiaqiyan@google.com, william.roche@oracle.com, rientjes@google.com,
+        akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
+        Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
+        mhocko@suse.com, willy@infradead.org
+Subject: [PATCH v4 1/2] mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+Date: Tue, 13 Jan 2026 01:07:50 -0700
+Message-ID: <20260113080751.2173497-1-jane.chu@oracle.com>
+X-Mailer: git-send-email 2.43.5
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
-Subject: Re: [PATCH v2] phy: rockchip: inno-usb2: Fix a double free bug in
- rockchip_usb2phy_probe()
-To: Wentao Liang <vulab@iscas.ac.cn>, vkoul@kernel.org, kishon@kernel.org,
- heiko@sntech.de
-Cc: linux-phy@lists.infradead.org, linux-rockchip@lists.infradead.org,
- linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
- stable@vger.kernel.org
-References: <20260109154626.2452034-1-vulab@iscas.ac.cn>
-From: Neil Armstrong <neil.armstrong@linaro.org>
-Content-Language: en-US, fr
-Autocrypt: addr=neil.armstrong@linaro.org; keydata=
- xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
- GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
- BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
- qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
- 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
- AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
- OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
- Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
- YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
- GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
- UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
- GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
- yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
- QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
- SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
- 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
- Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
- oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
- M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
- 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
- KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
- 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
- QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
-Organization: Linaro
-In-Reply-To: <20260109154626.2452034-1-vulab@iscas.ac.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
+X-Proofpoint-Virus-Version: vendor=baseguard
+ engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
+ definitions=2026-01-13_01,2026-01-09_02,2025-10-01_01
+X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
+ mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
+ classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
+ definitions=main-2601130067
+X-Proofpoint-ORIG-GUID: CWxXQq-dC-d3SGg0oam9JGVd2TezwAtx
+X-Proofpoint-GUID: CWxXQq-dC-d3SGg0oam9JGVd2TezwAtx
+X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA2NyBTYWx0ZWRfX0EUAjrIo+1eU
+ d0eVnAFk3frK9PKjzaNLcBTAz4Sg0Nl8Q5LMNo7xIPk5SjdhqdfKnHR0bgop+Iz4JWVMWp+5xay
+ Y3z+flZ6B5zUJe5LbYnK60noK0SIHJVOJTdBYiSkQKjj5TfOOipnzaSRVPaD7CjSi14Ac/tYa8R
+ LwTMrwZlcpMh9NCnsQ8IgJ4uPB0j++Ueqxy+yNclFKLzULERWv1H3x7gbLSNiNG/gKqE4xlQOvq
+ Ah/iJvMStKgASj9PKBvxFY4Omc8znOE687QOW+HD1WcCqQnRXDvY6Ow//9VDInapYWMbIWkySu2
+ zbRKErKzTTrwXBIN/Q1xq3J+mugPEtp34poSFjXbscZR2CrRtvPtoihHhHXYeYpPh8Jrkuy5CQX
+ kcLkxQVooZ5xxeV82Wk6xro8QKYSMvTpcIibbfOW00IqreiihxVoJmwUWpukhf63W7WgiwsGmeu
+ oyZVdg9YeOvmA0Gss8g==
+X-Authority-Analysis: v=2.4 cv=QIllhwLL c=1 sm=1 tr=0 ts=6965fd6c b=1 cx=c_pps
+ a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
+ a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=yPCof4ZbAAAA:8
+ a=8moRJLxLMB3yPiChBVEA:9
 
-On 1/9/26 16:46, Wentao Liang wrote:
-> The for_each_available_child_of_node() calls of_node_put() to
-> release child_np in each success loop. After breaking from the
-> loop with the child_np has been released, the code will jump to
-> the put_child label and will call the of_node_put() again if the
-> devm_request_threaded_irq() fails. These cause a double free bug.
-> 
-> Fix by returning directly to avoid the duplicate of_node_put().
-> 
-> Fixes: ed2b5a8e6b98 ("phy: phy-rockchip-inno-usb2: support muxed interrupts")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
-> 
-> ---
-> Changes in v2:
-> - Drop error jumping label.
-> ---
->   drivers/phy/rockchip/phy-rockchip-inno-usb2.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-> index b0f23690ec30..fe97a26297af 100644
-> --- a/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-> +++ b/drivers/phy/rockchip/phy-rockchip-inno-usb2.c
-> @@ -1491,7 +1491,7 @@ static int rockchip_usb2phy_probe(struct platform_device *pdev)
->   						rphy);
->   		if (ret) {
->   			dev_err_probe(rphy->dev, ret, "failed to request usb2phy irq handle\n");
-> -			goto put_child;
-> +			return ret;
->   		}
->   	}
->   
+When a newly poisoned subpage ends up in an already poisoned hugetlb
+folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats
+is not. Fix the inconsistency by designating action_result() to update
+them both.
 
-Good catch !
+While at it, define __get_huge_page_for_hwpoison() return values in terms
+of symbol names for better readibility. Also rename
+folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+function does more than the conventional bit setting and the fact
+three possible return values are expected.
 
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 18f41fa616ee4 ("mm: memory-failure: bump memory failure stats to pglist_data")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+---
+v3 -> v4:
+  incorporate/adapt David's suggestions.
+v2 -> v3:
+  No change.
+v1 -> v2:
+  adapted David and Liam's comment, define __get_huge_page_for_hwpoison()
+return values in terms of symbol names instead of naked integers for better
+readibility.  #define instead of enum is used since the function has footprint
+outside MF, just try to limit the MF specifics local.
+  also renamed folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison()
+since the function does more than the conventional bit setting and the
+fact three possible return values are expected.
+---
+ mm/memory-failure.c | 75 +++++++++++++++++++++++++++------------------
+ 1 file changed, 45 insertions(+), 30 deletions(-)
 
-Thanks,
-Neil
+diff --git a/mm/memory-failure.c b/mm/memory-failure.c
+index fbc5a01260c8..b3e27451d618 100644
+--- a/mm/memory-failure.c
++++ b/mm/memory-failure.c
+@@ -1883,12 +1883,24 @@ static unsigned long __folio_free_raw_hwp(struct folio *folio, bool move_flag)
+ 	return count;
+ }
+ 
+-static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
++#define	MF_HUGETLB_FOLIO_PRE_POISONED	3  /* folio already poisoned */
++#define	MF_HUGETLB_PAGE_PRE_POISON	4  /* exact page already poisoned */
++/*
++ * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
++ * to keep track of the poisoned pages.
++ * Return:
++ *	0: folio was not already poisoned;
++ *	MF_HUGETLB_FOLIO_PRE_POISONED: folio was already poisoned: either
++ *		multiple pages being poisoned, or per page information unclear,
++ *	MF_HUGETLB_PAGE_PRE_POISON: folio was already poisoned, an exact
++ *		poisoned page is being consumed again.
++ */
++static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+ {
+ 	struct llist_head *head;
+ 	struct raw_hwp_page *raw_hwp;
+ 	struct raw_hwp_page *p;
+-	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
++	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
+ 
+ 	/*
+ 	 * Once the hwpoison hugepage has lost reliable raw error info,
+@@ -1896,20 +1908,17 @@ static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
+ 	 * so skip to add additional raw error info.
+ 	 */
+ 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+-		return -EHWPOISON;
++		return MF_HUGETLB_FOLIO_PRE_POISONED;
+ 	head = raw_hwp_list_head(folio);
+ 	llist_for_each_entry(p, head->first, node) {
+ 		if (p->page == page)
+-			return -EHWPOISON;
++			return MF_HUGETLB_PAGE_PRE_POISON;
+ 	}
+ 
+ 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+ 	if (raw_hwp) {
+ 		raw_hwp->page = page;
+ 		llist_add(&raw_hwp->node, head);
+-		/* the first error event will be counted in action_result(). */
+-		if (ret)
+-			num_poisoned_pages_inc(page_to_pfn(page));
+ 	} else {
+ 		/*
+ 		 * Failed to save raw error info.  We no longer trace all
+@@ -1955,44 +1964,43 @@ void folio_clear_hugetlb_hwpoison(struct folio *folio)
+ 	folio_free_raw_hwp(folio, true);
+ }
+ 
++#define	MF_HUGETLB_FREED		0	/* freed hugepage */
++#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
+ /*
+  * Called from hugetlb code with hugetlb_lock held.
+- *
+- * Return values:
+- *   0             - free hugepage
+- *   1             - in-use hugepage
+- *   2             - not a hugepage
+- *   -EBUSY        - the hugepage is busy (try to retry)
+- *   -EHWPOISON    - the hugepage is already hwpoisoned
+  */
+ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 				 bool *migratable_cleared)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+ 	struct folio *folio = page_folio(page);
+-	int ret = 2;	/* fallback to normal page handling */
++	int ret = -EINVAL;
+ 	bool count_increased = false;
++	int rc;
+ 
+ 	if (!folio_test_hugetlb(folio))
+ 		goto out;
+ 
+ 	if (flags & MF_COUNT_INCREASED) {
+-		ret = 1;
++		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+ 	} else if (folio_test_hugetlb_freed(folio)) {
+-		ret = 0;
++		ret = MF_HUGETLB_FREED;
+ 	} else if (folio_test_hugetlb_migratable(folio)) {
+-		ret = folio_try_get(folio);
+-		if (ret)
++		if (folio_try_get(folio)) {
++			ret = MF_HUGETLB_IN_USED;
+ 			count_increased = true;
++		} else
++			ret = MF_HUGETLB_FREED;
+ 	} else {
+ 		ret = -EBUSY;
+ 		if (!(flags & MF_NO_RETRY))
+ 			goto out;
+ 	}
+ 
+-	if (folio_set_hugetlb_hwpoison(folio, page)) {
+-		ret = -EHWPOISON;
++	rc = hugetlb_update_hwpoison(folio, page);
++	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
++		ret = rc;
+ 		goto out;
+ 	}
+ 
+@@ -2029,22 +2037,29 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
+ 	*hugetlb = 1;
+ retry:
+ 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+-	if (res == 2) { /* fallback to normal page handling */
++	switch (res) {
++	case -EINVAL:	/* fallback to normal page handling */
+ 		*hugetlb = 0;
+ 		return 0;
+-	} else if (res == -EHWPOISON) {
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
+-		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+-		return res;
+-	} else if (res == -EBUSY) {
++	case -EBUSY:
+ 		if (!(flags & MF_NO_RETRY)) {
+ 			flags |= MF_NO_RETRY;
+ 			goto retry;
+ 		}
+ 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
++	case MF_HUGETLB_FOLIO_PRE_POISONED:
++	case MF_HUGETLB_PAGE_PRE_POISON:
++		if (flags & MF_ACTION_REQUIRED) {
++			folio = page_folio(p);
++			res = kill_accessing_process(current, folio_pfn(folio), flags);
++		}
++		if (res == MF_HUGETLB_FOLIO_PRE_POISONED)
++			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		else
++			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
++		return res;
++	default:
++		break;
+ 	}
+ 
+ 	folio = page_folio(p);
+-- 
+2.43.5
+
 
