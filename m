@@ -1,204 +1,105 @@
-Return-Path: <stable+bounces-208254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208255-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BBF6D17BEC
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 10:45:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4B6ED17C01
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 10:46:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E27630517D6
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:32:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D259B309564F
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:37:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC26F341674;
-	Tue, 13 Jan 2026 09:32:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 508C2322B93;
+	Tue, 13 Jan 2026 09:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dtSqIOQ1";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="GQDk8z3I";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="dtSqIOQ1";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="GQDk8z3I"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uBkZISuq"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45658322B93
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 09:32:36 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0F534192B75;
+	Tue, 13 Jan 2026 09:37:21 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768296757; cv=none; b=BMpS704tyfeZ/WUQtTWo8AlNB77gKRaeuIoruQ38y+QqZkMFX8jHMm4XVoWj7xBYXzA58LiRESS0RHj3EWEBAqGCZ1Nsj9JaKsJgeBrrC04nDLYQp0fylAjoPnP+ocS2I5/ceZfb2TOOdI39GPf/VAnqT2e2lKuFbOIuLZon4Ac=
+	t=1768297042; cv=none; b=WI2y8DJLBWUNonzZpQJedl97s7IXVIUaAGAg7eYuUysqjzw+yC7yaQVANrxd3gjsf3yxcWcd5MeFmK9Wr8/uvotLaUf4ySVXtgtlxF2L4xZiZ3hbLPB2CJPkJuF/EPAkrBc7z3tZySx4TKeVy8ksm8KZ9O3O3IasEsgQCY1tL4c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768296757; c=relaxed/simple;
-	bh=wGnKQNo7Kd1KJYajajOdOMbpeDZoEUeNqQHYV983hdY=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KBaCVqLppb3qcZUK4GlJDYrXX89ITMCWYPvgu/bCDwGP1P7d7+aP33GLKRPgBCF78YqmOZb0VS2mJJrDcDvPlRgzshHRONydzAjh4K97qXXnYgrs67IlLM2YOnjRd4Fh/s89t9xPQMnTvAfWH81RG11v6FRayh/xi4RyIGiq0Cs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dtSqIOQ1; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=GQDk8z3I; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=dtSqIOQ1; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=GQDk8z3I; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 6731E33681;
-	Tue, 13 Jan 2026 09:32:34 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768296754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ni5ivzvbOKwDsRa7XDDenum4lALdFzhgJFrmTN2UCmk=;
-	b=dtSqIOQ12BXFfKLtxgnjE/IaYiF4HHlDVb+m/teg9el5HNuos1q1kN2uceNn4zyG+ZM9zH
-	jVfITQTPzpixoGFHmI6PsmzrJG8c8eLzLkT5qkK7dsZxILJfyaCpSxs/JVgfoyamK38VQp
-	CzEiIi9YoYsf2S/mzQyR9zRqEabUzL0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768296754;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ni5ivzvbOKwDsRa7XDDenum4lALdFzhgJFrmTN2UCmk=;
-	b=GQDk8z3IRzKEh01tOAKI4OZ8y3unBKOZ7Nul5hsedpFDFPgTb0fro1bEnhvJjhe4nC+2At
-	+/x5zsDoxHIiuMDg==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768296754; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ni5ivzvbOKwDsRa7XDDenum4lALdFzhgJFrmTN2UCmk=;
-	b=dtSqIOQ12BXFfKLtxgnjE/IaYiF4HHlDVb+m/teg9el5HNuos1q1kN2uceNn4zyG+ZM9zH
-	jVfITQTPzpixoGFHmI6PsmzrJG8c8eLzLkT5qkK7dsZxILJfyaCpSxs/JVgfoyamK38VQp
-	CzEiIi9YoYsf2S/mzQyR9zRqEabUzL0=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768296754;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=Ni5ivzvbOKwDsRa7XDDenum4lALdFzhgJFrmTN2UCmk=;
-	b=GQDk8z3IRzKEh01tOAKI4OZ8y3unBKOZ7Nul5hsedpFDFPgTb0fro1bEnhvJjhe4nC+2At
-	+/x5zsDoxHIiuMDg==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 4E3843EA63;
-	Tue, 13 Jan 2026 09:32:34 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id Eh3mEjIRZmnYNgAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Tue, 13 Jan 2026 09:32:34 +0000
-Message-ID: <6e1f4acd-23f3-4a92-9212-65e11c9a7d1a@suse.cz>
-Date: Tue, 13 Jan 2026 10:32:33 +0100
+	s=arc-20240116; t=1768297042; c=relaxed/simple;
+	bh=cIOwD58Ak3CSKnQkYorESYs4Kr9I5bL41mQonQmvir0=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=O5qAoR546KtI6hPeS1z6LyvANz40dOO2KO+G2JWv4+9APmk5ctUvH+rsyMTQ1PWRBS7OdV3ChrbiKZElqNyWiUUN4s4s5+qkcXcdZvceigVDE6P9qE7M0693aAmxAXixDWW2ikarKQPv3iAFlH72QT2pMrXfv1hsyV64zaaPgQM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uBkZISuq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFD3C19423;
+	Tue, 13 Jan 2026 09:37:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768297041;
+	bh=cIOwD58Ak3CSKnQkYorESYs4Kr9I5bL41mQonQmvir0=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=uBkZISuq3zLz7rwGsDG/uxDJP89ZjWYZC8pGI9aBdbIQis/rWdcoim/+eWjOeUmte
+	 5FL84gG/S8J58j0z9OPaRtgYpx5kbFhpEHU9M9bb4WM0iSme3Vc5gO3dIvX4Unys+0
+	 ALfaktbCVUcPQxEEvSlrmHJ3iBIFP0H3SX2ygcyDd2n8eW0I7ExQf7jPhcze7xdVat
+	 1yKFpUEmEEFCubyoSwmQvbZUL8l/KpGJe4BHah0sHtPnwN12Ivd8SvYZWTGtUy/gvd
+	 otpRhvksxjykieG1c84JR1CVj19hRZnfuZT9a8DaQvoMGqpQszPuOcqnSwtGSC9Xeb
+	 IYUBRfE5tTqCA==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vfapt-000000005qF-2o82;
+	Tue, 13 Jan 2026 10:37:14 +0100
+Date: Tue, 13 Jan 2026 10:37:13 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Lee Jones <lee@kernel.org>
+Cc: Aaro Koskinen <aaro.koskinen@iki.fi>,
+	Andreas Kemnade <andreas@kemnade.info>,
+	Kevin Hilman <khilman@baylibre.com>,
+	Roger Quadros <rogerq@kernel.org>, Tony Lindgren <tony@atomide.com>,
+	linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org,
+	stable@vger.kernel.org
+Subject: Re: [PATCH] mfd: omap-usb-host: fix OF populate on driver rebind
+Message-ID: <aWYSSa0w4eNdRyEC@hovoldconsulting.com>
+References: <20251219110714.23919-1-johan@kernel.org>
+ <20260109163725.GB1808297@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 01/20] mm/slab: add rcu_barrier() to
- kvfree_rcu_barrier_on_cache()
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-1-98225cfb50cf@suse.cz>
- <aWWpE-7R1eBF458i@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Content-Language: en-US
-In-Reply-To: <aWWpE-7R1eBF458i@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	ARC_NA(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	RCVD_TLS_ALL(0.00)[];
-	TO_DN_SOME(0.00)[];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	FREEMAIL_CC(0.00)[suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,gmail.com,oracle.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
-	RCVD_COUNT_TWO(0.00)[2];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20260109163725.GB1808297@google.com>
 
-On 1/13/26 3:08 AM, Harry Yoo wrote:
-> On Mon, Jan 12, 2026 at 04:16:55PM +0100, Vlastimil Babka wrote:
->> After we submit the rcu_free sheaves to call_rcu() we need to make sure
->> the rcu callbacks complete. kvfree_rcu_barrier() does that via
->> flush_all_rcu_sheaves() but kvfree_rcu_barrier_on_cache() doesn't. Fix
->> that.
+On Fri, Jan 09, 2026 at 04:37:25PM +0000, Lee Jones wrote:
+> On Fri, 19 Dec 2025, Johan Hovold wrote:
 > 
-> Oops, my bad.
+> > Since commit c6e126de43e7 ("of: Keep track of populated platform
+> > devices") child devices will not be created by of_platform_populate()
+> > if the devices had previously been deregistered individually so that the
+> > OF_POPULATED flag is still set in the corresponding OF nodes.
+> > 
+> > Switch to using of_platform_depopulate() instead of open coding so that
+> > the child devices are created if the driver is rebound.
+> > 
+> > Fixes: c6e126de43e7 ("of: Keep track of populated platform devices")
+> > Cc: stable@vger.kernel.org	# 3.16
+> > Signed-off-by: Johan Hovold <johan@kernel.org>
+
+> > @@ -819,8 +819,10 @@ static void usbhs_omap_remove(struct platform_device *pdev)
+> >  {
+> >  	pm_runtime_disable(&pdev->dev);
+> >  
+> > -	/* remove children */
+> > -	device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
+> > +	if (pdev->dev.of_node)
+> > +		of_platform_depopulate(&pdev->dev);
 > 
->> Reported-by: kernel test robot <oliver.sang@intel.com>
->> Closes: https://lore.kernel.org/oe-lkp/202601121442.c530bed3-lkp@intel.com
->> Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
->> ---
-> 
-> The fix looks good to me, but I wonder why
-> `if (s->sheaf_capacity) rcu_barrier();` in __kmem_cache_shutdown()
-> didn't prevent the bug from happening?
+> devm_of_platform_populate()?
 
-Hmm good point, didn't notice it's there.
+Looks like that would work here, but I prefer using explicit removal for
+both the OF and non-OF for symmetry and readability reasons.
 
-I think it doesn't help because it happens only after
-flush_all_cpus_locked(). And the callback from rcu_free_sheaf_nobarn()
-will do sheaf_flush_unused() and end up installing the cpu slab again.
+If you think that the non-OF support can be removed then a devres
+conversion can be done as part of that change.
 
-Because the bot flagged commit "slab: add sheaves to most caches" where
-cpu slabs still exist. It's thus possible that with the full series, the
-bug is gone. But we should prevent it upfront anyway. The rcu_barrier()
-in __kmem_cache_shutdown() however is probably unnecessary then and we
-can remove it, right?
+> > +	else
+> > +		device_for_each_child(&pdev->dev, NULL, usbhs_omap_remove_child);
 
->>  mm/slab_common.c | 5 ++++-
->>  1 file changed, 4 insertions(+), 1 deletion(-)
->>
->> diff --git a/mm/slab_common.c b/mm/slab_common.c
->> index eed7ea556cb1..ee994ec7f251 100644
->> --- a/mm/slab_common.c
->> +++ b/mm/slab_common.c
->> @@ -2133,8 +2133,11 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
->>   */
->>  void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
->>  {
->> -	if (s->cpu_sheaves)
->> +	if (s->cpu_sheaves) {
->>  		flush_rcu_sheaves_on_cache(s);
->> +		rcu_barrier();
->> +	}
->> +
->>  	/*
->>  	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
->>  	 * on a specific slab cache.
->>
->> -- 
->> 2.52.0
->>
-> 
-
+Johan
 
