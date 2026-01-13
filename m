@@ -1,335 +1,267 @@
-Return-Path: <stable+bounces-208267-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208264-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 39281D1916B
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:23:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63128D19077
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:09:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 22BDB3040A4A
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 13:21:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0B9CE3003B1C
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 13:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F1B4538B9BD;
-	Tue, 13 Jan 2026 13:21:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F8F38FF09;
+	Tue, 13 Jan 2026 13:09:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="lctqbV+U"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="he4nxkmu";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="9INIt8ZC";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="L3MVY4Fs";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="CU/L/Y80"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f50.google.com (mail-dl1-f50.google.com [74.125.82.50])
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.223.131])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A391E30DEB7
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 13:21:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.50
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F0D738FF04
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 13:09:37 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.131
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768310517; cv=none; b=E0ky28vCIKIeEzcW5lcO0ZGNIl5jq0rVGIeidlZkz6331xGnAZJ0kGzbVhgceSHgKA6G5t2akdsCwNRzEoJ6UqRg+zIsAyObyglbLDr5PASYHX2sIVaZR0qNk8U12MKT9Uss6G3y3MI3Q9IOHigs4HWc9f2tGpWlfC06I1HQsQM=
+	t=1768309778; cv=none; b=oaF323Q7LoJcKteuvTDa9ZkYcrx2petDEgoY9MDZujyvnLWgMCr68OJ3OHgRtwznQuQdf1I6rsSEMN61shYmwlbEdGKjWK1yzmh5AFgbjSw0tbYQ74mReH0AY69UrpQ/hI6pAlS8ikDOHFa5c7vVtyi5YF3aVvTLcoe7QrvOXmg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768310517; c=relaxed/simple;
-	bh=2HuKym16ziymxJl/nU4mnjckDF0IpSm0a2wd6+UY424=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VY3+Eo1CxWmY/uGg2K2We5SsqnkhY6s3aiYqPfc1frvfOxGBhkRP9Udhm7/PshNMNLj+wK/ws0YMIukt+NA8IYDPYsgd8B4Hn73qM08nbyKvSpOLG9HfimMcU6on1BFeVnxsij3BaLgmfdbKpEvVGScztmPCl6iRUh84nKlVeF8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=lctqbV+U; arc=none smtp.client-ip=74.125.82.50
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f50.google.com with SMTP id a92af1059eb24-11f36012fb2so9888175c88.1
-        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 05:21:54 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768310514; x=1768915314; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=k4uNdbx58ikZvknyOpt8Hs3LwzUS22ffRXDQExCzRK0=;
-        b=lctqbV+UGKvnbdxzXdMj2e4TqGLh4mHIoyyQcVoYiFVqbLe4MVwENpRIsU0D1iXEk1
-         mFpjVCWee57ZSkoMh9squAwX0qQoQZQzv/K1OJlIPoMNqsZgmokSlhcUMEO8xQ5JGvg1
-         +Iiv4Jn4qq2Ef19CzBLqw1IEoHQId0Bg9JIZOhgr5X0uMPYrJMiDAnju1Iqh4o8Vfgyo
-         lrR2hmwhyhvqO83YWPAxLcrpbDVnwrpPGok7Fb36ZPcgRpWIkxYrWnv9fkzLAu5bOH+E
-         svH41xvnNxXXSMPH7p2Q4b3RkAQItSlSW8yup0d7TfubyQ+YQCBew6JsbfYrMhC1dtQp
-         C33g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768310514; x=1768915314;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=k4uNdbx58ikZvknyOpt8Hs3LwzUS22ffRXDQExCzRK0=;
-        b=qiEzdbu+Gu/XkxC1VyDQAW6jvNPKYrjSXsvhmhMOcMAQS7vV2fmFPD2EVTHojJy51/
-         /D7tb5OF6sApNLnewzo+3T13q29cUn6Ad4IhiJcTszljFyOOHpdmdL13AjommD61r3hw
-         M2Vjx0WYXJzQ3A1tIHa5Z5Tm5q8Jn6jYItGBc+2wzg7lz9QLO6J0foyScOYK9F/R+16E
-         1iRt9pW//MTN96nvAk4bpL5YVmJ6rQVMZfi/5NfyqGNlWK6W5w0mKGP/FzF/sXw3nNRB
-         aHCTUYO9MTMKTnfT8tBicwwyIH1TtOM8n1e5uIsKl0XkEp8EcJwacz1fUg2bSHJcZqN5
-         Cg5Q==
-X-Gm-Message-State: AOJu0YxnGaswvU1Vtz3nY4zAhLshtTQdNaE46HYvAVVqXwzFnR4936cb
-	a3b3dDvObeDXTdH9M6bywdW8JPypTyOo0iyLr7u5xNGepJQwSw0XpvotMDN4Yg==
-X-Gm-Gg: AY/fxX5hzr4LooB7bLpXOVh5gJC2lEvgFxGkThLCvyneVkalzoWmK12BoIjo6yWGDc2
-	3HYsdm4bOMVm5zQdEFcf4jxSAZfusWjEcvuZtu23UIDvh9MmxldAcr9kKoU0qfO8Ha5OUyVY0eo
-	RoKZvlg99TRFN4HOONqaVFEQN96krJNbHhQkiCz74iEeoTJGCIsKOS5seU1t1uDejaZXDkv8mgO
-	QLsm3IYMiLLMbAtGnZvrIJ/a/r6qiY53C7bj15zFzeNk88xsU12WpvFODRJeq67SyOTxMyUBgGp
-	hOYLl17v2aQ2s7z6aQRkBXiweOl3RkE06MP/GJ9PNEnnALRNKdwVJM6X2raOcPk7eUXp3y90kGS
-	wJD/e8s/mFm0kcTMNIDiHrN9uIqr44jbEOve6vwr1IeFFuERSibS2+S/zPXtSTJnUxqMxhv/gU9
-	5eLpeajg7LmyRMLPrzLk01tc0kfkJEns8lEhvShzTA1Yh2anmp1WwM93t45P7wGgH9uSNYbcs=
-X-Google-Smtp-Source: AGHT+IHxw+fRPU4W7P7OBoPrHxoKffSp8aCUMcH1c4gMhKM2NpWsJsDFmLa0YjtRmx24kk+py+xEXg==
-X-Received: by 2002:a05:7022:985:b0:11b:99a2:9082 with SMTP id a92af1059eb24-121f8adcfe2mr15425584c88.15.1768310513333;
-        Tue, 13 Jan 2026 05:21:53 -0800 (PST)
-Received: from weg-ThinkPad-P16v-Gen-2.. ([2804:30c:274c:de00:6a34:91bb:fdd0:8bea])
-        by smtp.gmail.com with ESMTPSA id 5a478bee46e88-2b1707b0b2bsm17368853eec.23.2026.01.13.05.21.50
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 13 Jan 2026 05:21:52 -0800 (PST)
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-To: stable@vger.kernel.org
-Cc: Zhi.Yang@windriver.com,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	craftfever <craftfever@airmail.cc>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1.y 2/2] ksm: use range-walk function to jump over holes in scan_get_next_rmap_item
-Date: Tue, 13 Jan 2026 10:01:56 -0300
-Message-ID: <20260113130156.220078-2-pedrodemargomes@gmail.com>
-X-Mailer: git-send-email 2.43.0
-In-Reply-To: <20260113130156.220078-1-pedrodemargomes@gmail.com>
-References: <2025112001-kitten-trickily-a02d@gregkh>
- <20260113130156.220078-1-pedrodemargomes@gmail.com>
+	s=arc-20240116; t=1768309778; c=relaxed/simple;
+	bh=94B8HF31RDRqM7tsDLCR4LF97xjNHTyMaCD+pdLqxaM=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=j1FruNuXhTddChuQFZUIDWztkRcv9MuEqmHU2RgoWB+/uTZbAQclQQWBJt4NGTok1vqZoBFBmsxWhfACyWYYUVYNz4yPHivNDbTn/qEXmk7fbiFepyrLuTmsMfUxlCCOGL14hHdBlOIBQEzdFa44dRUMlOTv2G+UJ9NY//CsTtY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=he4nxkmu; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=9INIt8ZC; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=L3MVY4Fs; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=CU/L/Y80; arc=none smtp.client-ip=195.135.223.131
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out2.suse.de (Postfix) with ESMTPS id 996545BCCA;
+	Tue, 13 Jan 2026 13:09:34 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768309775; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zIiny1vZ64O9oq3h+HMX+5IRUmdaD2DDrx5wZTHdXc0=;
+	b=he4nxkmuWzN3/gfcDTtA+t3171gX7bx0foMZ8v6sFWmZixWVb542bQR/KZBnnLuyWBAIoj
+	jE4vl7WFHp68g/VnDLVE/nacid69kbxFE1zb3V8RiA0RLSEA5y+FFojh23GAJhLX3kScl3
+	/91qUVCiRqP4PNXe4yNjPmID429nq+c=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768309775;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zIiny1vZ64O9oq3h+HMX+5IRUmdaD2DDrx5wZTHdXc0=;
+	b=9INIt8ZC3kSlnuKdcRwKXXOeBbxYJ7TiVqdo7RD4yLmvmHdrEJQy2+StaVxMJ8SzHrXnxn
+	fTf3kY8poQ6VGRAA==
+Authentication-Results: smtp-out2.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=L3MVY4Fs;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b="CU/L/Y80"
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768309774; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zIiny1vZ64O9oq3h+HMX+5IRUmdaD2DDrx5wZTHdXc0=;
+	b=L3MVY4FsJrsDayEdRdXo/FC3Sc4zfufICzKTedm6Iml0u2C7jyuY9oQ0WfMwrIRJgl834+
+	dhdgMrwskzQlNc5CneYWf34trey6UZqhgALCwvZPV7n9I/leLQH19yNz/55UwdVJXoDB5R
+	eYkkzQId5poZaDgPvzJi7UTer5SEJQA=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768309774;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=zIiny1vZ64O9oq3h+HMX+5IRUmdaD2DDrx5wZTHdXc0=;
+	b=CU/L/Y80jO8HWUI1QyzcAd6MMuC7un332e7lvk8MquLzhV5MRFzu4l0yah7Yv8c15MbIw0
+	lYwGyulI8XablpCQ==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 854E33EA63;
+	Tue, 13 Jan 2026 13:09:34 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id 5ldRIA5EZmklfQAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Tue, 13 Jan 2026 13:09:34 +0000
+Message-ID: <342a2a8f-43ee-4eff-a062-6d325faa8899@suse.cz>
+Date: Tue, 13 Jan 2026 14:09:33 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 01/20] mm/slab: add rcu_barrier() to
+ kvfree_rcu_barrier_on_cache()
+To: Harry Yoo <harry.yoo@oracle.com>
+Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
+ David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+ <20260112-sheaves-for-all-v2-1-98225cfb50cf@suse.cz>
+ <aWWpE-7R1eBF458i@hyeyoo> <6e1f4acd-23f3-4a92-9212-65e11c9a7d1a@suse.cz>
+ <aWY7K0SmNsW1O3mv@hyeyoo>
+From: Vlastimil Babka <vbabka@suse.cz>
+Content-Language: en-US
+In-Reply-To: <aWY7K0SmNsW1O3mv@hyeyoo>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Score: -4.51
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	RCVD_TLS_ALL(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DNSWL_BLOCKED(0.00)[2a07:de40:b281:104:10:150:64:97:from,2a07:de40:b281:106:10:150:64:167:received];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	FREEMAIL_CC(0.00)[suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,gmail.com,oracle.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DWL_DNSWL_BLOCKED(0.00)[suse.cz:dkim];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[intel.com:email,imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo,suse.cz:dkim,suse.cz:mid,suse.cz:email]
+X-Spam-Level: 
+X-Rspamd-Action: no action
+X-Rspamd-Queue-Id: 996545BCCA
+X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
+X-Spam-Flag: NO
 
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+On 1/13/26 1:31 PM, Harry Yoo wrote:
+> On Tue, Jan 13, 2026 at 10:32:33AM +0100, Vlastimil Babka wrote:
+>> On 1/13/26 3:08 AM, Harry Yoo wrote:
+>>> On Mon, Jan 12, 2026 at 04:16:55PM +0100, Vlastimil Babka wrote:
+>>>> After we submit the rcu_free sheaves to call_rcu() we need to make sure
+>>>> the rcu callbacks complete. kvfree_rcu_barrier() does that via
+>>>> flush_all_rcu_sheaves() but kvfree_rcu_barrier_on_cache() doesn't. Fix
+>>>> that.
+>>>
+>>> Oops, my bad.
+>>>
+>>>> Reported-by: kernel test robot <oliver.sang@intel.com>
+>>>> Closes: https://lore.kernel.org/oe-lkp/202601121442.c530bed3-lkp@intel.com
+>>>> Fixes: 0f35040de593 ("mm/slab: introduce kvfree_rcu_barrier_on_cache() for cache destruction")
+>>>> Cc: stable@vger.kernel.org
+>>>> Signed-off-by: Vlastimil Babka <vbabka@suse.cz>
+>>>> ---
+>>>
+>>> The fix looks good to me, but I wonder why
+>>> `if (s->sheaf_capacity) rcu_barrier();` in __kmem_cache_shutdown()
+>>> didn't prevent the bug from happening?
+>>
+>> Hmm good point, didn't notice it's there.
+>>
+>> I think it doesn't help because it happens only after
+>> flush_all_cpus_locked(). And the callback from rcu_free_sheaf_nobarn()
+>> will do sheaf_flush_unused() and end up installing the cpu slab again.
+> 
+> I thought about it a little bit more...
+> 
+> It's not because a cpu slab was installed again (for list_slab_objects()
+> to be called on a slab, it must be on n->partial list), but because
 
-[ Upstream commit f5548c318d6520d4fa3c5ed6003eeb710763cbc5 ]
+Hmm that's true.
 
-Currently, scan_get_next_rmap_item() walks every page address in a VMA to
-locate mergeable pages.  This becomes highly inefficient when scanning
-large virtual memory areas that contain mostly unmapped regions, causing
-ksmd to use large amount of cpu without deduplicating much pages.
+> flush_slab() cannot handle concurrent frees to the cpu slab.
+> 
+> CPU X                                CPU Y
+> 
+> - flush_slab() reads
+>   c->freelist
+>                                      rcu_free_sheaf_nobarn()
+> 				     ->sheaf_flush_unused()
+> 				     ->__kmem_cache_free_bulk()
+> 				     ->do_slab_free()
+> 				       -> sees slab == c->slab
+> 				       -> frees to c->freelist
+> - c->slab = NULL,
+>   c->freelist = NULL
+> - call deactivate_slab()
+>   ^ the object freed by sheaf_flush_unused() is leaked,
+>     thus slab->inuse != 0
 
-This patch replaces the per-address lookup with a range walk using
-walk_page_range().  The range walker allows KSM to skip over entire
-unmapped holes in a VMA, avoiding unnecessary lookups.  This problem was
-previously discussed in [1].
+But for this to be the same "c" it has to be the same cpu, not different
+X and Y, no?
+And that case is protected I think, the action by X with
+local_lock_irqsave() prevents an irq handler to execute Y. Action Y is
+using __update_cpu_freelist_fast to find out it was interrupted by X
+messing with c-> fields.
 
-Consider the following test program which creates a 32 TiB mapping in the
-virtual address space but only populates a single page:
 
-/* 32 TiB */
-const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
-
-int main() {
-        char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                          MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
-
-        if (area == MAP_FAILED) {
-                perror("mmap() failed\n");
-                return -1;
-        }
-
-        /* Populate a single page such that we get an anon_vma. */
-        *area = 0;
-
-        /* Enable KSM. */
-        madvise(area, size, MADV_MERGEABLE);
-        pause();
-        return 0;
-}
-
-$ ./ksm-sparse  &
-$ echo 1 > /sys/kernel/mm/ksm/run
-
-Without this patch ksmd uses 100% of the cpu for a long time (more then 1
-hour in my test machine) scanning all the 32 TiB virtual address space
-that contain only one mapped page.  This makes ksmd essentially deadlocked
-not able to deduplicate anything of value.  With this patch ksmd walks
-only the one mapped page and skips the rest of the 32 TiB virtual address
-space, making the scan fast using little cpu.
-
-Link: https://lkml.kernel.org/r/20251023035841.41406-1-pedrodemargomes@gmail.com
-Link: https://lkml.kernel.org/r/20251022153059.22763-1-pedrodemargomes@gmail.com
-Link: https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/ [1]
-Fixes: 31dbd01f3143 ("ksm: Kernel SamePage Merging")
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: craftfever <craftfever@airmail.cc>
-Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ replace pmdp_get_lockless with pmd_read_atomic and pmdp_get with
- READ_ONCE(*pmdp) ]
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
----
- mm/ksm.c | 126 +++++++++++++++++++++++++++++++++++++++++++++++++------
- 1 file changed, 113 insertions(+), 13 deletions(-)
-
-diff --git a/mm/ksm.c b/mm/ksm.c
-index cb272b6fde59..616a8f7c5c60 100644
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -39,6 +39,7 @@
- #include <linux/freezer.h>
- #include <linux/oom.h>
- #include <linux/numa.h>
-+#include <linux/pagewalk.h>
- 
- #include <asm/tlbflush.h>
- #include "internal.h"
-@@ -2223,6 +2224,94 @@ static struct ksm_rmap_item *get_next_rmap_item(struct ksm_mm_slot *mm_slot,
- 	return rmap_item;
- }
- 
-+struct ksm_next_page_arg {
-+	struct folio *folio;
-+	struct page *page;
-+	unsigned long addr;
-+};
-+
-+static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
-+		struct mm_walk *walk)
-+{
-+	struct ksm_next_page_arg *private = walk->private;
-+	struct vm_area_struct *vma = walk->vma;
-+	pte_t *start_ptep = NULL, *ptep, pte;
-+	struct mm_struct *mm = walk->mm;
-+	struct folio *folio;
-+	struct page *page;
-+	spinlock_t *ptl;
-+	pmd_t pmd;
-+
-+	if (ksm_test_exit(mm))
-+		return 0;
-+
-+	cond_resched();
-+
-+	pmd = pmd_read_atomic(pmdp);
-+	if (!pmd_present(pmd))
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pmd_leaf(pmd)) {
-+		ptl = pmd_lock(mm, pmdp);
-+		pmd = READ_ONCE(*pmdp);
-+
-+		if (!pmd_present(pmd)) {
-+			goto not_found_unlock;
-+		} else if (pmd_leaf(pmd)) {
-+			page = vm_normal_page_pmd(vma, addr, pmd);
-+			if (!page)
-+				goto not_found_unlock;
-+			folio = page_folio(page);
-+
-+			if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-+				goto not_found_unlock;
-+
-+			page += ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
-+			goto found_unlock;
-+		}
-+		spin_unlock(ptl);
-+	}
-+
-+	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-+	if (!start_ptep)
-+		return 0;
-+
-+	for (ptep = start_ptep; addr < end; ptep++, addr += PAGE_SIZE) {
-+		pte = ptep_get(ptep);
-+
-+		if (!pte_present(pte))
-+			continue;
-+
-+		page = vm_normal_page(vma, addr, pte);
-+		if (!page)
-+			continue;
-+		folio = page_folio(page);
-+
-+		if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-+			continue;
-+		goto found_unlock;
-+	}
-+
-+not_found_unlock:
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	return 0;
-+found_unlock:
-+	folio_get(folio);
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	private->page = page;
-+	private->folio = folio;
-+	private->addr = addr;
-+	return 1;
-+}
-+
-+static struct mm_walk_ops ksm_next_page_ops = {
-+	.pmd_entry = ksm_next_page_pmd_entry,
-+};
-+
- static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- {
- 	struct mm_struct *mm;
-@@ -2307,32 +2396,43 @@ static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- 			ksm_scan.address = vma->vm_end;
- 
- 		while (ksm_scan.address < vma->vm_end) {
-+			struct ksm_next_page_arg ksm_next_page_arg;
-+			struct page *tmp_page = NULL;
-+			struct folio *folio;
-+
- 			if (ksm_test_exit(mm))
- 				break;
--			*page = follow_page(vma, ksm_scan.address, FOLL_GET);
--			if (IS_ERR_OR_NULL(*page)) {
--				ksm_scan.address += PAGE_SIZE;
--				cond_resched();
--				continue;
-+
-+			int found;
-+
-+			found = walk_page_range_vma(vma, ksm_scan.address,
-+						    vma->vm_end,
-+						    &ksm_next_page_ops,
-+						    &ksm_next_page_arg);
-+
-+			if (found > 0) {
-+				folio = ksm_next_page_arg.folio;
-+				tmp_page = ksm_next_page_arg.page;
-+				ksm_scan.address = ksm_next_page_arg.addr;
-+			} else {
-+				VM_WARN_ON_ONCE(found < 0);
-+				ksm_scan.address = vma->vm_end - PAGE_SIZE;
- 			}
--			if (is_zone_device_page(*page))
--				goto next_page;
--			if (PageAnon(*page)) {
--				flush_anon_page(vma, *page, ksm_scan.address);
--				flush_dcache_page(*page);
-+			if (tmp_page) {
-+				flush_anon_page(vma, tmp_page, ksm_scan.address);
-+				flush_dcache_page(tmp_page);
- 				rmap_item = get_next_rmap_item(mm_slot,
- 					ksm_scan.rmap_list, ksm_scan.address);
- 				if (rmap_item) {
- 					ksm_scan.rmap_list =
- 							&rmap_item->rmap_list;
- 					ksm_scan.address += PAGE_SIZE;
-+					*page = tmp_page;
- 				} else
--					put_page(*page);
-+					folio_put(folio);
- 				mmap_read_unlock(mm);
- 				return rmap_item;
- 			}
--next_page:
--			put_page(*page);
- 			ksm_scan.address += PAGE_SIZE;
- 			cond_resched();
- 		}
--- 
-2.43.0
+> That said, flush_slab() works fine only when it is guaranteed that
+> there will be no concurrent frees to the cpu slab (acquiring local_lock
+> in flush_slab() doesn't help because free fastpath doesn't take it)
+> 
+> calling rcu_barrier() before flush_all_cpus_locked() ensures
+> there will be no concurrent frees.
+> 
+> A side question; I'm not sure how __kmem_cache_shrink(),
+> validate_slab_cache(), cpu_partial_store() are supposed to work
+> correctly? They call flush_all() without guaranteeing there will be
+> no concurrent frees to the cpu slab.
+> 
+> ...probably doesn't matter after sheaves-for-all :)
+> 
+>> Because the bot flagged commit "slab: add sheaves to most caches" where
+>> cpu slabs still exist. It's thus possible that with the full series, the
+>> bug is gone. But we should prevent it upfront anyway.
+> 
+>> The rcu_barrier() in __kmem_cache_shutdown() however is probably
+>> unnecessary then and we can remove it, right?
+> 
+> Agreed. As it's called (after flushing rcu sheaves) in
+> kvfree_rcu_barrier_on_cache(), it's not necessary in
+> __kmem_cache_shutdown().
+> 
+>>>>  mm/slab_common.c | 5 ++++-
+>>>>  1 file changed, 4 insertions(+), 1 deletion(-)
+>>>>
+>>>> diff --git a/mm/slab_common.c b/mm/slab_common.c
+>>>> index eed7ea556cb1..ee994ec7f251 100644
+>>>> --- a/mm/slab_common.c
+>>>> +++ b/mm/slab_common.c
+>>>> @@ -2133,8 +2133,11 @@ EXPORT_SYMBOL_GPL(kvfree_rcu_barrier);
+>>>>   */
+>>>>  void kvfree_rcu_barrier_on_cache(struct kmem_cache *s)
+>>>>  {
+>>>> -	if (s->cpu_sheaves)
+>>>> +	if (s->cpu_sheaves) {
+>>>>  		flush_rcu_sheaves_on_cache(s);
+>>>> +		rcu_barrier();
+>>>> +	}
+>>>> +
+>>>>  	/*
+>>>>  	 * TODO: Introduce a version of __kvfree_rcu_barrier() that works
+>>>>  	 * on a specific slab cache.
+> 
 
 
