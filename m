@@ -1,177 +1,175 @@
-Return-Path: <stable+bounces-208246-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A323D17376
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:11:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 39E9CD173E6
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 09:19:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0775C304C903
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:08:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99FC5301A701
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 08:17:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 519783793A8;
-	Tue, 13 Jan 2026 08:08:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95E937FF4C;
+	Tue, 13 Jan 2026 08:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b="Y6Xn65lq"
+	dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b="XY215ngP"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-00069f02.pphosted.com (mx0b-00069f02.pphosted.com [205.220.177.32])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wm1-f54.google.com (mail-wm1-f54.google.com [209.85.128.54])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7801E35C1BA;
-	Tue, 13 Jan 2026 08:08:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=205.220.177.32
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B16937FF51
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 08:17:11 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.54
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768291727; cv=none; b=n2Ary7y/NjU8txrKY82rlSox8hzziWLoeFtBvj6Zp9P8PBq14X6oj08Nh4x5ejjblqsogJ2e/CmjvrCV3pg+DqAWu/qkWzwT1hgNQ03NmLDj5VTnvNOALbqH1Y1l81qEZnpAhgt9+6oI2GRn3gPsGNSFjneOT1bGrV8r3hQS49E=
+	t=1768292233; cv=none; b=YkGJavQXWCJsGRZwkXOQJCZqjyvwVRZjAeKzDXt5KKKkMUkpkm6vYwIndAHvS1NvjksgamwqlvI/BApVY2KuQULfF38/glUgcku1WhPnRiSqiuzgcUcIW8SWzh+AgDCFyzcDwoB8UygS0QX4pdtxqdlsCml3TSzcFaKay4MJ3L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768291727; c=relaxed/simple;
-	bh=/EGTVnbeBxc/LBiBSNT7OnA8DIrYdKBg8efXMUJaG4Y=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O8zuvia/UHYMOI1h+Dbt+OjXXzZfHNLM6Rxi6obuM5sB1kydCdnfa7NAm29c+L3MeNAPBvBp/MPR1TeMhjaPmcWh0GmJd08toqutmsZ7ahK10FLQ4dAQbGBqsmx/kTABN0TSojt+V03D44o1ZWelHgsBEBUd8FXL1TD+NOIHovg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com; spf=pass smtp.mailfrom=oracle.com; dkim=pass (2048-bit key) header.d=oracle.com header.i=@oracle.com header.b=Y6Xn65lq; arc=none smtp.client-ip=205.220.177.32
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=oracle.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=oracle.com
-Received: from pps.filterd (m0246630.ppops.net [127.0.0.1])
-	by mx0b-00069f02.pphosted.com (8.18.1.11/8.18.1.11) with ESMTP id 60D1gc9m2735700;
-	Tue, 13 Jan 2026 08:08:17 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=oracle.com; h=cc
-	:content-transfer-encoding:date:from:in-reply-to:message-id
-	:mime-version:references:subject:to; s=corp-2025-04-25; bh=texge
-	5LwbT7wQEHYVdtPM4RdyChOR+/v4clnE+Ul5cw=; b=Y6Xn65lq13OjtF//AHdIt
-	jeEpMuuU7f4iCROaMst2ctjTex2rWr9nyvxNEFcI7Lx0jKFLER1VTNaG6/PpHk9L
-	0RvjwuG6Q6ppt6nLmVV+PKaM3uYCrjp/EQQh6qZH1Vxsd2UzXixVaavY7rL1Q43W
-	QtLwTsv6ji+UZdTBDgwdbnzksEBsDhaH1JlBsN8jvkL5bHMoQrOyGsNX7KQigoZr
-	LYGcRuMFcD22v8XbWsgOVAdkqYh+uI6U7ZXbZQkwLwervJVbFFH0W0+ggP+XuGtJ
-	3mc4eoNK6GvgdDJDjo16cB2uKUl/9MB5md2KxMRuYMw0mYt4SR43z0JMLpSRkU1k
-	A==
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.appoci.oracle.com [138.1.37.129])
-	by mx0b-00069f02.pphosted.com (PPS) with ESMTPS id 4bkrr8ayca-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Jan 2026 08:08:17 +0000 (GMT)
-Received: from pps.filterd (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (8.18.1.2/8.18.1.2) with ESMTP id 60D696cG035299;
-	Tue, 13 Jan 2026 08:08:16 GMT
-Received: from pps.reinject (localhost [127.0.0.1])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTPS id 4bkd78ewyx-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Jan 2026 08:08:16 +0000
-Received: from phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com [127.0.0.1])
-	by pps.reinject (8.17.1.5/8.17.1.5) with ESMTP id 60D88Ahi038767;
-	Tue, 13 Jan 2026 08:08:15 GMT
-Received: from brm-x62-16.us.oracle.com (brm-x62-16.us.oracle.com [10.80.150.37])
-	by phxpaimrmta03.imrmtpd1.prodappphxaev1.oraclevcn.com (PPS) with ESMTP id 4bkd78ewra-2;
-	Tue, 13 Jan 2026 08:08:15 +0000
-From: Jane Chu <jane.chu@oracle.com>
-To: linux-kernel@vger.kernel.org
-Cc: linux-mm@kvack.org, stable@vger.kernel.org, muchun.song@linux.dev,
-        osalvador@suse.de, david@kernel.org, linmiaohe@huawei.com,
-        jiaqiyan@google.com, william.roche@oracle.com, rientjes@google.com,
-        akpm@linux-foundation.org, lorenzo.stoakes@oracle.com,
-        Liam.Howlett@Oracle.com, rppt@kernel.org, surenb@google.com,
-        mhocko@suse.com, willy@infradead.org
-Subject: [PATCH v4 2/2] mm/memory-failure: teach kill_accessing_process to accept hugetlb tail page pfn
-Date: Tue, 13 Jan 2026 01:07:51 -0700
-Message-ID: <20260113080751.2173497-2-jane.chu@oracle.com>
-X-Mailer: git-send-email 2.43.5
-In-Reply-To: <20260113080751.2173497-1-jane.chu@oracle.com>
-References: <20260113080751.2173497-1-jane.chu@oracle.com>
+	s=arc-20240116; t=1768292233; c=relaxed/simple;
+	bh=apLACy5LRvAOPJ7IZmjerYfRaNl4zV1qNhBbrk1hzOg=;
+	h=Message-ID:Date:MIME-Version:From:Subject:To:Cc:References:
+	 In-Reply-To:Content-Type; b=D4NOZF5OO+hzMkJzFVfT+vkT06dr/r0iwOh8PNe5RfoLXFMQnsmWDCGfuQ+9aLuMsqV4bxM2ROilDaTy3JN/MkciZbwAk03M9Xd6yIawJDzoLKckpqtWoKV1TNioiUYDG6V+gDIZ8kIS9RxSVjeSPF4YDVT27hTeF/2JbnqmazA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org; spf=pass smtp.mailfrom=linaro.org; dkim=pass (2048-bit key) header.d=linaro.org header.i=@linaro.org header.b=XY215ngP; arc=none smtp.client-ip=209.85.128.54
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linaro.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linaro.org
+Received: by mail-wm1-f54.google.com with SMTP id 5b1f17b1804b1-477619f8ae5so53570655e9.3
+        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 00:17:11 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1768292230; x=1768897030; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=UqrSisus0MAErIVOLJfrHVeAQH6IHBP3UWfckXEzYn8=;
+        b=XY215ngPSO3xDdIQgxHL38fmfrQNpfe77I8iD1fLixm1iYKgGn6ttFtdDUPXENXAcU
+         A1LSQyfThLrQDwLguzSA0eA87UeQ3hu5QeMgOQNoJAx5ZBe84O5Z6FFfK3upXbsx8Y44
+         l40Y/eOZ3oiMRYbAWxkM3Xr+WOmviD8k37I4/6XpO/Ie97zppka8s/Xd5NUDm1y1gTvt
+         FvwYp9Rpr5utlALrFzTKrvOYeWvfZf/L0Q6VLKYg9WwJS+Sz6pvYKf6DlisX+YLA/jJJ
+         dASWqRaPSz7Ys/80gr1CTAWGPg56LrPG2zYpnhJiI2U0Z9iKTfoak7KoBx+E9JKlMPpU
+         FXPA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768292230; x=1768897030;
+        h=content-transfer-encoding:in-reply-to:organization:autocrypt
+         :content-language:references:cc:to:subject:reply-to:from:user-agent
+         :mime-version:date:message-id:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=UqrSisus0MAErIVOLJfrHVeAQH6IHBP3UWfckXEzYn8=;
+        b=gUmqjXvV4swdrfvaUokk2TVBBCmz4aQnw39K1m4ksgzlxmkKuEfSFHODby7ZXsuMZg
+         uMULDVyGNSdtetIb0qEqQcuqiaRfw42YCtLpZapcNcBMdHK6VYtIi3EfhVwvGf9BU9lH
+         fuZfVLwjSTH8tJStRFxpOqWFi1vU44ThyjCeW8IpqC9jQoFX2m2QGovt5fb2sth/f++O
+         yp+WWvbPlX+M4LNW/oswFCY5aDywULjlAhPbb0MwXFtgIn/7ITZVIX6s46cZQQsrI2TR
+         Qsk8Ah6IXG+ZW5Q23HpDa+gd9O4MioTh1DnFIQ//9bBA51p8EUDGfsst+jYZ4uoutlW/
+         b2Gw==
+X-Gm-Message-State: AOJu0YymTV7vXZbdnXNpnbg5zyqPvtdyd3SZPt1MYi1/ZXKYtqve0gWo
+	Qzz8cGhvVqVnSTGfEc6WTh1SxYp9VFADkV9NUkc0+elGDRi1MN7WifKLGGOuX1vbkgo=
+X-Gm-Gg: AY/fxX44fEgHgF3/jfqWpessbESqrgzkrbYsSfy3t/Y7dwn8RApuIrAVJNPXfswDatR
+	JoQFj8y8HXhALIYEr5X2bq8TQEu9xYhHTdvqy8yyZMr9boWTmy5j6BEejL0ue3hrDycmejU1MUU
+	bzHhFkvEC17apW0PJbWVrQTkPFBRUIoaT5iWxSQsFdroUSIFk7sftnVu7eAMNvt8lLJibP9HLAp
+	lUzaCnBW6lZPZBjZX0gJ55pCoLSuaIxl3qxr31B/xQNTieTBuf11leZNI4ahPFs++ERRTup4xGB
+	oeC/O39WLUzKam7ULdKTNSGlK6+z8XqixZZSTqI615vGTZ9h3DUXtgj0+KnHhS/wF0k9j6qBDXJ
+	QqRqEEfnRVtc/ixrFIEmkSO23cycA2xR0+EAisvfUMiv7V+yLHRYGrRdb+uDbFI40cpJYUJN30/
+	dfhnoHuZfq5VyXEWZbFYnuojsEGqc74oFJUSiZYt8=
+X-Google-Smtp-Source: AGHT+IE/Af0e7am5EHJhqwtMQJAYtHfmFKUaSLvohxfAuYyi6lM6S9u92zWhoF35Ue3usR4XnrHH3g==
+X-Received: by 2002:a05:600c:3114:b0:456:1a69:94fa with SMTP id 5b1f17b1804b1-47d84b2d27amr229627095e9.13.1768292230246;
+        Tue, 13 Jan 2026 00:17:10 -0800 (PST)
+Received: from ?IPV6:2a01:e0a:3d9:2080::fa42:7768? ([2a01:e0a:3d9:2080::fa42:7768])
+        by smtp.gmail.com with ESMTPSA id 5b1f17b1804b1-47d7f668e03sm407284565e9.14.2026.01.13.00.17.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 13 Jan 2026 00:17:09 -0800 (PST)
+Message-ID: <bf36363c-9e28-402e-932d-7844a947c73f@linaro.org>
+Date: Tue, 13 Jan 2026 09:17:08 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-13_01,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=notspam policy=default score=0 spamscore=0 mlxscore=0 suspectscore=0
- mlxlogscore=999 bulkscore=0 malwarescore=0 phishscore=0 adultscore=0
- classifier=spam adjust=0 reason=mlx scancount=1 engine=8.12.0-2512120000
- definitions=main-2601130067
-X-Proofpoint-ORIG-GUID: Xqyk_lGVSiW9PUEfVr1-L7_4BEe1nbSX
-X-Proofpoint-GUID: Xqyk_lGVSiW9PUEfVr1-L7_4BEe1nbSX
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA2NyBTYWx0ZWRfX/uVFYipRxRcq
- tbQeeZm9Dufx0wHeEy+sBKwvjWQYpDyj1REYaWQguXLvP/J07RHX0VEBjTIyt4pa/FITGHODl8m
- PK0GFG5y1/bLF9HcwD0BRWl83ttjmNKn25dHMl+LTnZkxLW0URXkQf+HdtuvQ8Sk/6QLhTudnYd
- vZSUvXcEWgKbFfnS02yymB5YJXPzw5aAR4P4NuA1SJ2+jN2TICd/hbt0NRPk6lt8SKPQm4BKMOJ
- snrzl0k4Ncbqyn6Ld+FMhKLS+8kQ2MxlLKBdetm5cmyXY9Equr8rnSt3hWOeTBHCXWrBrMSixHL
- VdW3yO6TUDDbbFSKcSyakmpRzEUC9Ri+i1idpWz1QcHgN0L5eUP1qVH9yDefT/Q1ViWWhWR2WS2
- ZMSJ1fqhU3YBynh14OfqvXlRMQQhN9CdYmQ21XS89oCKt7upMXMp1aC9JPFexAgdo+z6KZxb6QZ
- AHzosOoXyHaZ6Q6lZEw==
-X-Authority-Analysis: v=2.4 cv=QIllhwLL c=1 sm=1 tr=0 ts=6965fd71 b=1 cx=c_pps
- a=WeWmnZmh0fydH62SvGsd2A==:117 a=WeWmnZmh0fydH62SvGsd2A==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=JfrnYn6hAAAA:8
- a=yPCof4ZbAAAA:8 a=1XWaLZrsAAAA:8 a=DOqXzVRdv2y7BJT1fF0A:9
- a=1CNFftbPRP8L7MoqJWF3:22
+User-Agent: Mozilla Thunderbird
+From: Neil Armstrong <neil.armstrong@linaro.org>
+Reply-To: Neil Armstrong <neil.armstrong@linaro.org>
+Subject: Re: [PATCH] drm/panel-simple: fix connector type for DataImage
+ SCF0700C48GGU18 panel
+To: Marek Vasut <marex@nabladev.com>, dri-devel@lists.freedesktop.org
+Cc: stable@vger.kernel.org, David Airlie <airlied@gmail.com>,
+ Jessica Zhang <jesszhan0024@gmail.com>,
+ Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+ Maxime Ripard <mripard@kernel.org>, Simona Vetter <simona@ffwll.ch>,
+ Thomas Zimmermann <tzimmermann@suse.de>, kernel@dh-electronics.com,
+ linux-kernel@vger.kernel.org
+References: <20260110152750.73848-1-marex@nabladev.com>
+Content-Language: en-US, fr
+Autocrypt: addr=neil.armstrong@linaro.org; keydata=
+ xsBNBE1ZBs8BCAD78xVLsXPwV/2qQx2FaO/7mhWL0Qodw8UcQJnkrWmgTFRobtTWxuRx8WWP
+ GTjuhvbleoQ5Cxjr+v+1ARGCH46MxFP5DwauzPekwJUD5QKZlaw/bURTLmS2id5wWi3lqVH4
+ BVF2WzvGyyeV1o4RTCYDnZ9VLLylJ9bneEaIs/7cjCEbipGGFlfIML3sfqnIvMAxIMZrvcl9
+ qPV2k+KQ7q+aXavU5W+yLNn7QtXUB530Zlk/d2ETgzQ5FLYYnUDAaRl+8JUTjc0CNOTpCeik
+ 80TZcE6f8M76Xa6yU8VcNko94Ck7iB4vj70q76P/J7kt98hklrr85/3NU3oti3nrIHmHABEB
+ AAHNKk5laWwgQXJtc3Ryb25nIDxuZWlsLmFybXN0cm9uZ0BsaW5hcm8ub3JnPsLAkQQTAQoA
+ OwIbIwULCQgHAwUVCgkICwUWAgMBAAIeAQIXgBYhBInsPQWERiF0UPIoSBaat7Gkz/iuBQJk
+ Q5wSAhkBAAoJEBaat7Gkz/iuyhMIANiD94qDtUTJRfEW6GwXmtKWwl/mvqQtaTtZID2dos04
+ YqBbshiJbejgVJjy+HODcNUIKBB3PSLaln4ltdsV73SBcwUNdzebfKspAQunCM22Mn6FBIxQ
+ GizsMLcP/0FX4en9NaKGfK6ZdKK6kN1GR9YffMJd2P08EO8mHowmSRe/ExAODhAs9W7XXExw
+ UNCY4pVJyRPpEhv373vvff60bHxc1k/FF9WaPscMt7hlkbFLUs85kHtQAmr8pV5Hy9ezsSRa
+ GzJmiVclkPc2BY592IGBXRDQ38urXeM4nfhhvqA50b/nAEXc6FzqgXqDkEIwR66/Gbp0t3+r
+ yQzpKRyQif3OwE0ETVkGzwEIALyKDN/OGURaHBVzwjgYq+ZtifvekdrSNl8TIDH8g1xicBYp
+ QTbPn6bbSZbdvfeQPNCcD4/EhXZuhQXMcoJsQQQnO4vwVULmPGgtGf8PVc7dxKOeta+qUh6+
+ SRh3vIcAUFHDT3f/Zdspz+e2E0hPV2hiSvICLk11qO6cyJE13zeNFoeY3ggrKY+IzbFomIZY
+ 4yG6xI99NIPEVE9lNBXBKIlewIyVlkOaYvJWSV+p5gdJXOvScNN1epm5YHmf9aE2ZjnqZGoM
+ Mtsyw18YoX9BqMFInxqYQQ3j/HpVgTSvmo5ea5qQDDUaCsaTf8UeDcwYOtgI8iL4oHcsGtUX
+ oUk33HEAEQEAAcLAXwQYAQIACQUCTVkGzwIbDAAKCRAWmrexpM/4rrXiB/sGbkQ6itMrAIfn
+ M7IbRuiSZS1unlySUVYu3SD6YBYnNi3G5EpbwfBNuT3H8//rVvtOFK4OD8cRYkxXRQmTvqa3
+ 3eDIHu/zr1HMKErm+2SD6PO9umRef8V82o2oaCLvf4WeIssFjwB0b6a12opuRP7yo3E3gTCS
+ KmbUuLv1CtxKQF+fUV1cVaTPMyT25Od+RC1K+iOR0F54oUJvJeq7fUzbn/KdlhA8XPGzwGRy
+ 4zcsPWvwnXgfe5tk680fEKZVwOZKIEuJC3v+/yZpQzDvGYJvbyix0lHnrCzq43WefRHI5XTT
+ QbM0WUIBIcGmq38+OgUsMYu4NzLu7uZFAcmp6h8g
+Organization: Linaro
+In-Reply-To: <20260110152750.73848-1-marex@nabladev.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 
-When a hugetlb folio is being poisoned again, try_memory_failure_hugetlb()
-passed head pfn to kill_accessing_process(), that is not right.
-The precise pfn of the poisoned page should be used in order to
-determine the precise vaddr as the SIGBUS payload.
+On 1/10/26 16:27, Marek Vasut wrote:
+> The connector type for the DataImage SCF0700C48GGU18 panel is missing and
+> devm_drm_panel_bridge_add() requires connector type to be set. This leads
+> to a warning and a backtrace in the kernel log and panel does not work:
+> "
+> WARNING: CPU: 3 PID: 38 at drivers/gpu/drm/bridge/panel.c:379 devm_drm_of_get_bridge+0xac/0xb8
+> "
+> The warning is triggered by a check for valid connector type in
+> devm_drm_panel_bridge_add(). If there is no valid connector type
+> set for a panel, the warning is printed and panel is not added.
+> Fill in the missing connector type to fix the warning and make
+> the panel operational once again.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 97ceb1fb08b6 ("drm/panel: simple: Add support for DataImage SCF0700C48GGU18")
+> Signed-off-by: Marek Vasut <marex@nabladev.com>
+> ---
+> Cc: David Airlie <airlied@gmail.com>
+> Cc: Jessica Zhang <jesszhan0024@gmail.com>
+> Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+> Cc: Maxime Ripard <mripard@kernel.org>
+> Cc: Neil Armstrong <neil.armstrong@linaro.org>
+> Cc: Simona Vetter <simona@ffwll.ch>
+> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+> Cc: dri-devel@lists.freedesktop.org
+> Cc: kernel@dh-electronics.com
+> Cc: linux-kernel@vger.kernel.org
+> ---
+>   drivers/gpu/drm/panel/panel-simple.c | 1 +
+>   1 file changed, 1 insertion(+)
+> 
+> diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+> index 3acc9f3dac16a..e33ee2308e715 100644
+> --- a/drivers/gpu/drm/panel/panel-simple.c
+> +++ b/drivers/gpu/drm/panel/panel-simple.c
+> @@ -1900,6 +1900,7 @@ static const struct panel_desc dataimage_scf0700c48ggu18 = {
+>   	},
+>   	.bus_format = MEDIA_BUS_FMT_RGB888_1X24,
+>   	.bus_flags = DRM_BUS_FLAG_DE_HIGH | DRM_BUS_FLAG_PIXDATA_DRIVE_POSEDGE,
+> +	.connector_type = DRM_MODE_CONNECTOR_DPI,
+>   };
+>   
+>   static const struct display_timing dlc_dlc0700yzg_1_timing = {
 
-This issue has already been taken care of in the normal path, that is,
-hwpoison_user_mappings(), see [1][2].  Further more, for [3] to work
-correctly in the hugetlb repoisoning case, it's essential to inform
-VM the precise poisoned page, not the head page.
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 
-[1] https://lkml.kernel.org/r/20231218135837.3310403-1-willy@infradead.org
-[2] https://lkml.kernel.org/r/20250224211445.2663312-1-jane.chu@oracle.com
-[3] https://lore.kernel.org/lkml/20251116013223.1557158-1-jiaqiyan@google.com/
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Jane Chu <jane.chu@oracle.com>
-Reviewed-by: Liam R. Howlett <Liam.Howlett@oracle.com>
----
-v4 -> v3: No change.
-v2 -> v3:
-  incorporated suggestions from Miaohe and Matthew.
-v1 -> v2:
-  pickup R-B, add stable to cc list.
----
- mm/memory-failure.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
-
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index b3e27451d618..885dc1d4f212 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -692,6 +692,8 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
- 				unsigned long poisoned_pfn, struct to_kill *tk)
- {
- 	unsigned long pfn = 0;
-+	unsigned long hwpoison_vaddr;
-+	unsigned long mask;
- 
- 	if (pte_present(pte)) {
- 		pfn = pte_pfn(pte);
-@@ -702,10 +704,12 @@ static int check_hwpoisoned_entry(pte_t pte, unsigned long addr, short shift,
- 			pfn = softleaf_to_pfn(entry);
- 	}
- 
--	if (!pfn || pfn != poisoned_pfn)
-+	mask = ~((1UL << (shift - PAGE_SHIFT)) - 1);
-+	if (!pfn || ((pfn & mask) != (poisoned_pfn & mask)))
- 		return 0;
- 
--	set_to_kill(tk, addr, shift);
-+	hwpoison_vaddr = addr + ((poisoned_pfn - pfn) << PAGE_SHIFT);
-+	set_to_kill(tk, hwpoison_vaddr, shift);
- 	return 1;
- }
- 
-@@ -2049,10 +2053,8 @@ static int try_memory_failure_hugetlb(unsigned long pfn, int flags, int *hugetlb
- 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
- 	case MF_HUGETLB_FOLIO_PRE_POISONED:
- 	case MF_HUGETLB_PAGE_PRE_POISON:
--		if (flags & MF_ACTION_REQUIRED) {
--			folio = page_folio(p);
--			res = kill_accessing_process(current, folio_pfn(folio), flags);
--		}
-+		if (flags & MF_ACTION_REQUIRED)
-+			res = kill_accessing_process(current, pfn, flags);
- 		if (res == MF_HUGETLB_FOLIO_PRE_POISONED)
- 			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
- 		else
--- 
-2.43.5
-
+Thanks,
+Neil
 
