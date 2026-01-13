@@ -1,339 +1,119 @@
-Return-Path: <stable+bounces-208272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81D8BD19682
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:23:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D66AD196EE
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 15:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id AC97B3047B7D
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:19:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 99DF73026530
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 14:27:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C52F2857EE;
-	Tue, 13 Jan 2026 14:18:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 909B0292936;
+	Tue, 13 Jan 2026 14:27:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="uYg9WzGH"
+	dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b="0QbWSe50"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-oi1-f174.google.com (mail-oi1-f174.google.com [209.85.167.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF2DC284896
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:18:56 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10F0287508
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:27:12 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.167.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768313936; cv=none; b=g3jlzHRl2Ua8gC1uoObBFDIqP9RSmSVurOff6cOFS9tjYxsdQ7sEboQYp3CViStxlTvKicLzAb9CgvjPYDUSW+ahvniwTCmBmrJAeHGu8sv+YjXNfGOqRo/VX8l9izahTn7HYvHyoHOrtl52A+bazkNS6usfIA2+bUWnFokPxQk=
+	t=1768314434; cv=none; b=VxVC3Fos6WcXy9WHehCNz8J1qvzXbVzTEbUyEJngL0u2HNNktQu6ZJWuADht6RzQR4+M/Si3VcKZ/RKnNRyIfymTRTaZsExNa1eF9qJhwvN89o32q+jVAIfQVtNgurt4IAVaFmuujm3WuBd36khfHT4jlHzYt5HJWMMIFnJCh+I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768313936; c=relaxed/simple;
-	bh=C/NQEYKuOx57Dar5CvKiUKFPmORWHpOSvEL2EultHPI=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=UzlTBPzVlBbDHRf5AWHsCRw+wPYdVUhaJSc4bBclQLWpV6PFzCBHJyjLJf9IyKt7kK9xlpUhiRkkFkSmLtHLUMQAe78u6q5WK44lVVA6mYZNNqUvYY2PUKjApsJmdk4nQteVV54zCL48gFL5yI31ITMhjpSR2Y04QFfmTlrWGy8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=uYg9WzGH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FCFFC16AAE
-	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 14:18:56 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768313936;
-	bh=C/NQEYKuOx57Dar5CvKiUKFPmORWHpOSvEL2EultHPI=;
-	h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-	b=uYg9WzGHFVUNzyhu1+3YKVvZ85RIuDfEsrYmQlsmamN3y/GgQY19SH2BQmiWdaDG4
-	 80A6uN0VXmIRrk2S5bEyrs7hEEJoO8jAJDQ1pu2fI0XKxYnzTfDvaBHZJ7/VvSw6pW
-	 sfCJWPRJzf5WzKG8+qUNK77GhEtExM2rZdOc7Z3cDV4tHvQo3elw7yr9wrN96bAbOP
-	 LZIW3B9ZK5gnv6/WB8oJg6C000RGcAywk2X5oIkV/W5KxiR3urS5ZsGITTon4EXyXn
-	 71rtoTrB64ftKi34TWhtOw6SJclYZzl2P7gTS02M6Iv0bNuuBFOfjiCUHqt59ivv0k
-	 ltJuu0xpOIadw==
-Received: by mail-oo1-f42.google.com with SMTP id 006d021491bc7-65d1a094185so3261301eaf.1
-        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:18:56 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCXvCRayo9A5jP+4klfZlXRJE625qNBAdL0FV3jjtEGo4eJTuTIiLc/BoaFjd9mspxmQ6b1/ATw=@vger.kernel.org
-X-Gm-Message-State: AOJu0YxMzD18HzMknJ8pMAo4cCUL1m3pA8eN7KNzzglwdc93bOfKH4MA
-	RyN9qHvXy8sq+G+ugS2XJUXeUqvUw2reFizAKoa3m97C8ihb1MWXVhPz/9oEAEMHrr1jd4Kx/Ps
-	pvFgQTHQMB70GLfs65X3fBMvjH7tFs4A=
-X-Google-Smtp-Source: AGHT+IHoU8lWRvG8XnZuaoo5qWSo7ecD1RbHwG7v7RTMFEOBj+NGlE1HHIVlHnro7xgtRS4Z1OEXnLz/hP1VooKtmDQ=
-X-Received: by 2002:a05:6820:16a9:b0:659:81f1:fec4 with SMTP id
- 006d021491bc7-65f54ed5ff3mr10856533eaf.6.1768313935480; Tue, 13 Jan 2026
- 06:18:55 -0800 (PST)
+	s=arc-20240116; t=1768314434; c=relaxed/simple;
+	bh=hf6s52dLGZ0lpKJRZoRViqWJQptNB5oe1T70COAuRSM=;
+	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
+	 MIME-Version:Content-Type; b=kpThyjbJS5Xy7q9bYzcxjeOKOoVx0LD2OGfQauPQhjWRQ62iyNlcZyvCRsYu+jKh6n48gi5wd4jQG/H4eE23lW5LVIAexg72meHMEmQoBgLpICfpnVmEuzOPw6opeeUOm/prwYGrgnCawciW8nk/8ExpBTIguZ0qHczrhd63VGg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk; spf=pass smtp.mailfrom=kernel.dk; dkim=pass (2048-bit key) header.d=kernel-dk.20230601.gappssmtp.com header.i=@kernel-dk.20230601.gappssmtp.com header.b=0QbWSe50; arc=none smtp.client-ip=209.85.167.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=kernel.dk
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=kernel.dk
+Received: by mail-oi1-f174.google.com with SMTP id 5614622812f47-450be85b7d9so4934221b6e.0
+        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:27:12 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20230601.gappssmtp.com; s=20230601; t=1768314432; x=1768919232; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=QzKL7ZSdDLz29zbAC5Cajq0TXX02OSfm0cUmfKHWr1Y=;
+        b=0QbWSe50NxRPuIG+fTy3V0YFvPKPEqtN4cKYY+A438s3Mg+iF9SRa3FCa8vlQskhRZ
+         jdALXYq/pv8nT8i1VhNWuTpj90eB3UyghEjlcB3hz6HaEuka8cqQk7gd6z3P9QemuwNo
+         9mCfiBvB6k1R9SAdMMMo5uFmA6yQuQwocXfpbOq4+VK3b+tZ/Ijm4EWbavDcrucuOVwT
+         ahvKqXzfQtIp3oaWKHj5xXmsiZxvFkv1FIFHVf1FxRl6C8rBhK415xX2ZerA2v8V//2k
+         pV5tYcFTxHf4/pjdH8iYAyqEKNnUc+rkVp/1x+FJvuYoTHAplTjEMAlgj4+FkjqinWr9
+         m6bg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768314432; x=1768919232;
+        h=content-transfer-encoding:mime-version:date:message-id:subject
+         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
+         :to:cc:subject:date:message-id:reply-to;
+        bh=QzKL7ZSdDLz29zbAC5Cajq0TXX02OSfm0cUmfKHWr1Y=;
+        b=glGt8fXb7GXEyx9Zi6gu4eu2l6R/C9jiHZk+KQEZSjYR0TR2s51q2BRVDr9T+eHJTe
+         FBHi7dBvDP3+DhZQQOHKjjR1TT/Opc/I5mDpbuTw5/SiODjVmpbO9al4QnFWI0hK2eIS
+         MuFvCTRqGYFkvYd+AqMjL0gnwzyK95DBEp/EMO72JxjBIsRFgM1cRlEwCpPKn1RxTUoF
+         DSFGNTDRtaS506hgWnnK2HTXeJt0L/d+oCD3VnUwt61aJQ6c6bWXBqf0N3n6VHeYDu+O
+         CWmKTBLp2QjwJjf4/HExDnurFoifXZqOiidfsQ8rKr7ggVR53TUu/tfbCbXsnyavM0C9
+         UQPg==
+X-Forwarded-Encrypted: i=1; AJvYcCVU417qdkgQHOnpOISTe6CBVx2SFa7IfnOwkmn8rVcOma3oF6F5xfeu6USuB7IVHoJhMTKY+vw=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzMnCvK2jiywoQ344elJmBmkJRCT6UJKNLA2xEX3YcsyeuWxXvE
+	kBlQgzKJqrQoeqnCR9lXT+/Pynk6aqd86X5xXQgJKwXHgI198yeQ78UUe211KIDlsfM=
+X-Gm-Gg: AY/fxX5T6mX7cpKFLsYIaNNi5I4LdtYt48pKkyO3BeNZzQrTd9lY0lz/N7rRUJj7qiP
+	WQbf+aAwc0QzYRDLxd5GZ89CSOQt6wCt872qTaa8+MIv4njKGJMbd5kf/7AR+fKqrEwACWggxhe
+	2cU7ghkQKzYTZiSXClZdExNN4084se1MCAS9xmEupkRAOQSVcnq5LaV/jg1G1L/4cHY5aWij39b
+	smY220VN8ApI+dwxQ5tK2mUUTo3hI+nw90j6WUokSEqT/AFIsSSt4K7f7KafBPAFcBrKE5Igflw
+	IxkcPLQwgzLqk7sKEIfkx6QvIeKynF+io0rVg89UhKTts4Ox2PzfYP6eBkNsB9Q92IWrl8NVHC7
+	qcfvJ6JFEuMtM47d80rPqEtaghcxJxf7w4xF00sT+uLEvOsOE0T+I5YZ+5PYm+tfOQ4Sopj1Jjq
+	ovwDGgXXiYnIv50A==
+X-Google-Smtp-Source: AGHT+IGgoAVfUvQ5XNClJU9TQFXgAAOmUpO76vAflCfN019fvAQZ4m4UDxdQ4D8xBrgjsyvEsyTshA==
+X-Received: by 2002:a05:6808:6508:b0:453:746a:c61c with SMTP id 5614622812f47-45a6bf00314mr11597395b6e.66.1768314431880;
+        Tue, 13 Jan 2026 06:27:11 -0800 (PST)
+Received: from [127.0.0.1] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id 586e51a60fabf-403fa2058f5sm456126fac.13.2026.01.13.06.27.10
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 13 Jan 2026 06:27:10 -0800 (PST)
+From: Jens Axboe <axboe@kernel.dk>
+To: linux-block@vger.kernel.org, Nilay Shroff <nilay@linux.ibm.com>
+Cc: gjoyce@ibm.com, stable@vger.kernel.org, 
+ Chaitanya Kulkarni <kch@nvidia.com>
+In-Reply-To: <20260113065729.1764122-1-nilay@linux.ibm.com>
+References: <20260113065729.1764122-1-nilay@linux.ibm.com>
+Subject: Re: [PATCHv2] null_blk: fix kmemleak by releasing references to
+ fault configfs items
+Message-Id: <176831443053.313337.11697399001631923709.b4-ty@kernel.dk>
+Date: Tue, 13 Jan 2026 07:27:10 -0700
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
- <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com> <005401dc64a4$75f1d770$61d58650$@telus.net>
- <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com> <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
- <e1572bc2-08e7-4669-a943-005da4d59775@oracle.com> <CAJZ5v0ja21yONr-F8sfzzV-E4CQ=0NqLPmOeaSiepjS4mKEhog@mail.gmail.com>
-In-Reply-To: <CAJZ5v0ja21yONr-F8sfzzV-E4CQ=0NqLPmOeaSiepjS4mKEhog@mail.gmail.com>
-From: "Rafael J. Wysocki" <rafael@kernel.org>
-Date: Tue, 13 Jan 2026 15:18:44 +0100
-X-Gmail-Original-Message-ID: <CAJZ5v0hgFeeXw6UM67Ty9w9HHQYTydFxqEr-j+wHz4B7w-aB1Q@mail.gmail.com>
-X-Gm-Features: AZwV_QjZzJTAM9PLWOmHb2zYHNih3BusBrJti614c5y2yUDChEmLSb-CdvJ0U4o
-Message-ID: <CAJZ5v0hgFeeXw6UM67Ty9w9HHQYTydFxqEr-j+wHz4B7w-aB1Q@mail.gmail.com>
-Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
- Avoid discarding useful information" on 5.15 LTS
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Harshvardhan Jha <harshvardhan.j.jha@oracle.com>, 
-	Christian Loehle <christian.loehle@arm.com>, Doug Smythies <dsmythies@telus.net>, 
-	Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org, 
-	stable@vger.kernel.org, "Rafael J. Wysocki" <rafael@kernel.org>, 
-	Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Mailer: b4 0.14.3
 
-On Tue, Jan 13, 2026 at 3:13=E2=80=AFPM Rafael J. Wysocki <rafael@kernel.or=
-g> wrote:
->
-> On Tue, Jan 13, 2026 at 8:06=E2=80=AFAM Harshvardhan Jha
-> <harshvardhan.j.jha@oracle.com> wrote:
-> >
-> > Hi Crhistian,
-> >
-> > On 08/12/25 6:17 PM, Christian Loehle wrote:
-> > > On 12/8/25 11:33, Harshvardhan Jha wrote:
-> > >> Hi Doug,
-> > >>
-> > >> On 04/12/25 4:00 AM, Doug Smythies wrote:
-> > >>> On 2025.12.03 08:45 Christian Loehle wrote:
-> > >>>> On 12/3/25 16:18, Harshvardhan Jha wrote:
-> > >>>>> Hi there,
-> > >>>>>
-> > >>>>> While running performance benchmarks for the 5.15.196 LTS tags , =
-it was
-> > >>>>> observed that several regressions across different benchmarks is =
-being
-> > >>>>> introduced when compared to the previous 5.15.193 kernel tag. Run=
-ning an
-> > >>>>> automated bisect on both of them narrowed down the culprit commit=
- to:
-> > >>>>> - 5666bcc3c00f7 Revert "cpuidle: menu: Avoid discarding useful
-> > >>>>> information" for 5.15
-> > >>>>>
-> > >>>>> Regressions on 5.15.196 include:
-> > >>>>> -9.3% : Phoronix pts/sqlite using 2 processes on OnPrem X6-2
-> > >>>>> -6.3% : Phoronix system/sqlite on OnPrem X6-2
-> > >>>>> -18%  : rds-stress -M 1 (readonly rdma-mode) metrics with 1 depth=
- & 1
-> > >>>>> thread & 1M buffer size on OnPrem X6-2
-> > >>>>> -4 -> -8% : rds-stress -M 2 (writeonly rdma-mode) metrics with 1 =
-depth &
-> > >>>>> 1 thread & 1M buffer size on OnPrem X6-2
-> > >>>>> Up to -30% : Some Netpipe metrics on OnPrem X5-2
-> > >>>>>
-> > >>>>> The culprit commits' messages mention that these reverts were don=
-e due
-> > >>>>> to performance regressions introduced in Intel Jasper Lake system=
-s but
-> > >>>>> this revert is causing issues in other systems unfortunately. I w=
-anted
-> > >>>>> to know the maintainers' opinion on how we should proceed in orde=
-r to
-> > >>>>> fix this. If we reapply it'll bring back the previous regressions=
- on
-> > >>>>> Jasper Lake systems and if we don't revert it then it's stuck wit=
-h
-> > >>>>> current regressions. If this problem has been reported before and=
- a fix
-> > >>>>> is in the works then please let me know I shall follow developmen=
-ts to
-> > >>>>> that mail thread.
-> > >>>> The discussion regarding this can be found here:
-> > >>>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/36iykr223=
-vmcfsoysexug6s274nq2oimcu55ybn6ww4il3g3cv@cohflgdbpnq7/__;!!ACWV5N9M2RV99hQ=
-!MWXEz_wRbaLyJxDign2EXci2qNzAPpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4b=
-Hb_e6UQA-b9PW7hw$
-> > >>>> we explored an alternative to the full revert here:
-> > >>>> https://urldefense.com/v3/__https://lore.kernel.org/lkml/4687373.L=
-vFx2qVVIh@rafael.j.wysocki/__;!!ACWV5N9M2RV99hQ!MWXEz_wRbaLyJxDign2EXci2qNz=
-APpCyhi8qIORMdReh0g_yIVIt-Oqov23KT23A_rGBRRxJ4bHb_e6UQA9PSf_uMQ$
-> > >>>> unfortunately that didn't lead anywhere useful, so Rafael went wit=
-h the
-> > >>>> full revert you're seeing now.
-> > >>>>
-> > >>>> Ultimately it seems to me that this "aggressiveness" on deep idle =
-tradeoffs
-> > >>>> will highly depend on your platform, but also your workload, Jaspe=
-r Lake
-> > >>>> in particular seems to favor deep idle states even when they don't=
- seem
-> > >>>> to be a 'good' choice from a purely cpuidle (governor) perspective=
-, so
-> > >>>> we're kind of stuck with that.
-> > >>>>
-> > >>>> For teo we've discussed a tunable knob in the past, which comes na=
-turally with
-> > >>>> the logic, for menu there's nothing obvious that would be comparab=
-le.
-> > >>>> But for teo such a knob didn't generate any further interest (so f=
-ar).
-> > >>>>
-> > >>>> That's the status, unless I missed anything?
-> > >>> By reading everything in the links Chrsitian provided, you can see
-> > >>> that we had difficulties repeating test results on other platforms.
-> > >>>
-> > >>> Of the tests listed herein, the only one that was easy to repeat on=
- my
-> > >>> test server, was the " Phoronix pts/sqlite" one. I got (summary: no=
- difference):
-> > >>>
-> > >>> Kernel 6.18                                                        =
-         Reverted
-> > >>> pts/sqlite-2.3.0                    menu rc4                menu rc=
-1                menu rc1                menu rc3
-> > >>>                             performance             performance    =
-         performance             performance
-> > >>> test        what                    ave                     ave    =
-                 ave                     ave
-> > >>> 1   T/C 1                   2.147   -0.2%           2.143   0.0%   =
-         2.16    -0.8%           2.156   -0.6%
-> > >>> 2   T/C 2                   3.468   0.1%            3.473   0.0%   =
-         3.486   -0.4%           3.478   -0.1%
-> > >>> 3   T/C 4                   4.336   0.3%            4.35    0.0%   =
-         4.355   -0.1%           4.354   -0.1%
-> > >>> 4   T/C 8                   5.438   -0.1%           5.434   0.0%   =
-         5.456   -0.4%           5.45    -0.3%
-> > >>> 5   T/C 12                  6.314   -0.2%           6.299   0.0%   =
-         6.307   -0.1%           6.29    0.1%
-> > >>>
-> > >>> Where:
-> > >>> T/C means: Threads / Copies
-> > >>> performance means: intel_pstate CPU frequency scaling driver and th=
-e performance CPU frequencay scaling governor.
-> > >>> Data points are in Seconds.
-> > >>> Ave means the average test result. The number of runs per test was =
-increased from the default of 3 to 10.
-> > >>> The reversion was manually applied to kernel 6.18-rc1 for that test=
-.
-> > >>> The reversion was included in kernel 6.18-rc3.
-> > >>> Kernel 6.18-rc4 had another code change to menu.c
-> > >>>
-> > >>> In case the formatting gets messed up, the table is also attached.
-> > >>>
-> > >>> Processor: Intel(R) Core(TM) i5-10600K CPU @ 4.10GHz, 6 cores 12 CP=
-Us.
-> > >>> HWP: Enabled.
-> > >> I was able to recover performance on 5.15 and 5.4 LTS based kernels
-> > >> after reapplying the revert on X6-2 systems.
-> > >>
-> > >> Architecture:                x86_64
-> > >>   CPU op-mode(s):            32-bit, 64-bit
-> > >>   Address sizes:             46 bits physical, 48 bits virtual
-> > >>   Byte Order:                Little Endian
-> > >> CPU(s):                      56
-> > >>   On-line CPU(s) list:       0-55
-> > >> Vendor ID:                   GenuineIntel
-> > >>   Model name:                Intel(R) Xeon(R) CPU E5-2690 v4 @ 2.60G=
-Hz
-> > >>     CPU family:              6
-> > >>     Model:                   79
-> > >>     Thread(s) per core:      2
-> > >>     Core(s) per socket:      14
-> > >>     Socket(s):               2
-> > >>     Stepping:                1
-> > >>     CPU(s) scaling MHz:      98%
-> > >>     CPU max MHz:             2600.0000
-> > >>     CPU min MHz:             1200.0000
-> > >>     BogoMIPS:                5188.26
-> > >>     Flags:                   fpu vme de pse tsc msr pae mce cx8 apic=
- sep
-> > >> mtrr pg
-> > >>                              e mca cmov pat pse36 clflush dts acpi m=
-mx
-> > >> fxsr sse
-> > >>                              sse2 ss ht tm pbe syscall nx pdpe1gb rd=
-tscp
-> > >> lm cons
-> > >>                              tant_tsc arch_perfmon pebs bts rep_good
-> > >> nopl xtopol
-> > >>                              ogy nonstop_tsc cpuid aperfmperf pni
-> > >> pclmulqdq dtes
-> > >>                              64 monitor ds_cpl vmx smx est tm2 ssse3
-> > >> sdbg fma cx
-> > >>                              16 xtpr pdcm pcid dca sse4_1 sse4_2 x2a=
-pic
-> > >> movbe po
-> > >>                              pcnt tsc_deadline_timer aes xsave avx f=
-16c
-> > >> rdrand l
-> > >>                              ahf_lm abm 3dnowprefetch cpuid_fault ep=
-b
-> > >> cat_l3 cdp
-> > >>                              _l3 pti intel_ppin ssbd ibrs ibpb stibp
-> > >> tpr_shadow
-> > >>                              flexpriority ept vpid ept_ad fsgsbase
-> > >> tsc_adjust bm
-> > >>                              i1 hle avx2 smep bmi2 erms invpcid rtm =
-cqm
-> > >> rdt_a rd
-> > >>                              seed adx smap intel_pt xsaveopt cqm_llc
-> > >> cqm_occup_l
-> > >>                              lc cqm_mbm_total cqm_mbm_local dtherm a=
-rat
-> > >> pln pts
-> > >>                              vnmi md_clear flush_l1d
-> > >> Virtualization features:
-> > >>   Virtualization:            VT-x
-> > >> Caches (sum of all):
-> > >>   L1d:                       896 KiB (28 instances)
-> > >>   L1i:                       896 KiB (28 instances)
-> > >>   L2:                        7 MiB (28 instances)
-> > >>   L3:                        70 MiB (2 instances)
-> > >> NUMA:
-> > >>   NUMA node(s):              2
-> > >>   NUMA node0 CPU(s):         0-13,28-41
-> > >>   NUMA node1 CPU(s):         14-27,42-55
-> > >> Vulnerabilities:
-> > >>   Gather data sampling:      Not affected
-> > >>   Indirect target selection: Not affected
-> > >>   Itlb multihit:             KVM: Mitigation: Split huge pages
-> > >>   L1tf:                      Mitigation; PTE Inversion; VMX conditio=
-nal
-> > >> cache fl
-> > >>                              ushes, SMT vulnerable
-> > >>   Mds:                       Mitigation; Clear CPU buffers; SMT vuln=
-erable
-> > >>   Meltdown:                  Mitigation; PTI
-> > >>   Mmio stale data:           Mitigation; Clear CPU buffers; SMT vuln=
-erable
-> > >>   Reg file data sampling:    Not affected
-> > >>   Retbleed:                  Not affected
-> > >>   Spec rstack overflow:      Not affected
-> > >>   Spec store bypass:         Mitigation; Speculative Store Bypass
-> > >> disabled via p
-> > >>                              rctl
-> > >>   Spectre v1:                Mitigation; usercopy/swapgs barriers an=
-d
-> > >> __user poi
-> > >>                              nter sanitization
-> > >>   Spectre v2:                Mitigation; Retpolines; IBPB conditiona=
-l;
-> > >> IBRS_FW;
-> > >>                              STIBP conditional; RSB filling; PBRSB-e=
-IBRS
-> > >> Not aff
-> > >>                              ected; BHI Not affected
-> > >>   Srbds:                     Not affected
-> > >>   Tsa:                       Not affected
-> > >>   Tsx async abort:           Mitigation; Clear CPU buffers; SMT vuln=
-erable
-> > >>   Vmscape:                   Mitigation; IBPB before exit to userspa=
-ce
-> > >>
-> > > It would be nice to get the idle states here, ideally how the states'=
- usage changed
-> > > from base to revert.
-> > > The mentioned thread did this and should show how it can be done, but=
- a dump of
-> > > cat /sys/devices/system/cpu/cpu*/cpuidle/state*/*
-> > > before and after the workload is usually fine to work with:
-> > > https://urldefense.com/v3/__https://lore.kernel.org/linux-pm/8da42386=
--282e-4f97-af93-4715ae206361@arm.com/__;!!ACWV5N9M2RV99hQ!PEhkFcO7emFLMaNxW=
-EoE2Gtnw3zSkpghP17iuEvZM3W6KUpmkbgKw_tr91FwGfpzm4oA5f7c5sz8PkYvKiEVwI_iLIPp=
-Mt53$
-> >
-> > Bumping this as I discovered this issue on 6.12 stable branch also. The
-> > reapplication seems inevitable. I shall get back to you with these
-> > details also.
->
-> Yes, please, because I have another reason to restore the reverted commit=
-.
 
-Sergey, did you see a performance regression from 85975daeaa4d
-("cpuidle: menu: Avoid discarding useful information") on any
-platforms other than the Jasper Lake it was reported for?
+On Tue, 13 Jan 2026 12:27:22 +0530, Nilay Shroff wrote:
+> When CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION is enabled, the null-blk
+> driver sets up fault injection support by creating the timeout_inject,
+> requeue_inject, and init_hctx_fault_inject configfs items as children
+> of the top-level nullbX configfs group.
+> 
+> However, when the nullbX device is removed, the references taken to
+> these fault-config configfs items are not released. As a result,
+> kmemleak reports a memory leak, for example:
+> 
+> [...]
+
+Applied, thanks!
+
+[1/1] null_blk: fix kmemleak by releasing references to fault configfs items
+      commit: 40b94ec7edbbb867c4e26a1a43d2b898f04b93c5
+
+Best regards,
+-- 
+Jens Axboe
+
+
+
 
