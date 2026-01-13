@@ -1,189 +1,165 @@
-Return-Path: <stable+bounces-208236-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 135EAD16ED3
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:57:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B1C9D16EE2
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 07:58:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D9BDE302FCE0
-	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:57:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 439C1303491D
+	for <lists+stable@lfdr.de>; Tue, 13 Jan 2026 06:58:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F37FA350D62;
-	Tue, 13 Jan 2026 06:57:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5E9736923C;
+	Tue, 13 Jan 2026 06:58:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="FRLQU1Nv"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="MdDnggCN"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-pl1-f180.google.com (mail-pl1-f180.google.com [209.85.214.180])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 667C43491C7;
-	Tue, 13 Jan 2026 06:57:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79EDD369225
+	for <stable@vger.kernel.org>; Tue, 13 Jan 2026 06:58:42 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.214.180
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768287466; cv=none; b=nvV5tZElnah+t7iTuj50IF+vCmvQXGUKrkCL6eUngZVZNRPqdAOzLezFzDYsTtp0s/WGgmMmN1yR8N1TyjCPNZ0ntUeo25MtJE/3EGMrlQB54kBW2H4S0hoQGP1VOU8CR4EYvh4fhCEjsIeBRXtM2gTBa7/WsJZsm5AedQOKvS0=
+	t=1768287523; cv=none; b=FiPMKsb8A8PMARL7r5HD0MmuJLYJzRGlZYNRiik8fSOhxwAplTIm5i8RLFoDjEG5JXuJjTdxNC1DSFdrXrZnL4avjyT5xGEJDsFATWs+Qcssu3Qb90k+2VYSmacvw01ZyKtaIW54e088Y5VNgRLy41dpJbG6ITawhyPXvABrFNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768287466; c=relaxed/simple;
-	bh=BWfscaNYPwnW7IjZIi/MyG5lEbBm/1oE2cO2BGYbPtM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=OtD+L8zJB8hYY9EczMf6F1u6zhcf5NznTkA1pXsUhze5PbX3ZxA7YsAR6qMi9rOEJzyO3kMPvYbRQIRl3bstGd/X8oEA/XvLyJp/b02RGXX4iCGdlnoq2iJ7Qeie1I/+sCkgAEr4jKpoGk1CYFyseaSshOnAWpSklMM0fuyv4vI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=FRLQU1Nv; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60D3Lnvr032261;
-	Tue, 13 Jan 2026 06:57:43 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:date:from:message-id:mime-version
-	:subject:to; s=pp1; bh=BUZxUqZZ1GUQn1N6fTFnOeUubYElWI/wI75Wmh8aM
-	Qw=; b=FRLQU1Nvu6JAwN+eBx0tes0fttvIalh+Xxs/yOnGDLd9tlKaEFt+nIsn8
-	707tKAX6kiEg6olrIikHXB+Mlf5Vkrw9ITVrYGRVuwwuS7i3dhb0fL+r01dwtB5e
-	WFKJXASVsCb3EtimAlhC6eY3K5H1SC/GAVk158O8VpOl59FgD90KGs3VZkXLYdUz
-	ZbH3xYfalTEm9h1g6/HrtwuIMldwXBctCu3xyesg4nR7TU05Fl9wwrFbq1D/N9ie
-	TBagu+Nv3uUM4Jzmk8iBgdHhZFJDPcz1Tt56XoyHVvCxJiV/t9Wu+rOcwGWRJc6n
-	OEskQBlMRIw5NLLA7rw64RFbri3Fg==
-Received: from ppma22.wdc07v.mail.ibm.com (5c.69.3da9.ip4.static.sl-reverse.com [169.61.105.92])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkedstr9h-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Jan 2026 06:57:42 +0000 (GMT)
-Received: from pps.filterd (ppma22.wdc07v.mail.ibm.com [127.0.0.1])
-	by ppma22.wdc07v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60D5YMNW014278;
-	Tue, 13 Jan 2026 06:57:42 GMT
-Received: from smtprelay01.fra02v.mail.ibm.com ([9.218.2.227])
-	by ppma22.wdc07v.mail.ibm.com (PPS) with ESMTPS id 4bm1fy2rqe-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Tue, 13 Jan 2026 06:57:42 +0000
-Received: from smtpav07.fra02v.mail.ibm.com (smtpav07.fra02v.mail.ibm.com [10.20.54.106])
-	by smtprelay01.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60D6veph51577128
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Tue, 13 Jan 2026 06:57:40 GMT
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 2356D20043;
-	Tue, 13 Jan 2026 06:57:40 +0000 (GMT)
-Received: from smtpav07.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id ADA4F20040;
-	Tue, 13 Jan 2026 06:57:38 +0000 (GMT)
-Received: from li-c9696b4c-3419-11b2-a85c-f9edc3bf8a84.in.ibm.com (unknown [9.109.198.193])
-	by smtpav07.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Tue, 13 Jan 2026 06:57:38 +0000 (GMT)
-From: Nilay Shroff <nilay@linux.ibm.com>
-To: linux-block@vger.kernel.org
-Cc: axboe@kernel.dk, gjoyce@ibm.com, Nilay Shroff <nilay@linux.ibm.com>,
-        stable@vger.kernel.org, Chaitanya Kulkarni <kch@nvidia.com>
-Subject: [PATCHv2] null_blk: fix kmemleak by releasing references to fault configfs items
-Date: Tue, 13 Jan 2026 12:27:22 +0530
-Message-ID: <20260113065729.1764122-1-nilay@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768287523; c=relaxed/simple;
+	bh=zP71oK+dk9NVP1xGIDbhCHq4iUEujGo+izh0qw8II4g=;
+	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
+	 To:Cc:Content-Type; b=WPR00rYKi3i534z7nPUhWwZIf5YjJhqjwGbUSkcGkxQVc88QyTDxmuaQ1c72IgPirqN83BAlUWu0JlH6wC9poVoIHahb9RUqQASiMxk04o77u6j6UD2B5jgZKzgw5kIGHNHzfCbdOBw9qlByoLpmCQ2LDXbMIJIYbU9CmcJbVRc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=MdDnggCN; arc=none smtp.client-ip=209.85.214.180
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-pl1-f180.google.com with SMTP id d9443c01a7336-2a0d0788adaso48176005ad.3
+        for <stable@vger.kernel.org>; Mon, 12 Jan 2026 22:58:42 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768287522; x=1768892322; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=v0wtDg3/NAN9kt8oWyIWMeqCacGDPCLQ5PqTweWycMo=;
+        b=MdDnggCNOuuBlwakvKc/U1Nxq2ZhE/HU8QHQ6HSFN2pTEU3bYsKiaAbf74MxEgYcOf
+         56avekTzCkkGjMltsYoRf4S45fkOZ18SmCdeJkfB4ba5yYwYbrBYtm2mzMcAABRaDZTi
+         NmHYoy+JyJ6EDOGK9lSb3m3P1KU2cpCAkQt8dEwR5hFYkqpVQtQvSzCXyQRyd+9S4JBk
+         pHzsiczNT9iYfZbvQGPeDMBB5x7qJHoL2hHvRHbWxwUc46jTgSqlGnLuzHmgrOGtpPpb
+         Vatm9QiU335PSFNXfeZVUMajThaxXLsZoEvIVu2eK72xoPb3rxm0cSbU3ylo0SWaUWzG
+         8eRA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768287522; x=1768892322;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :reply-to:in-reply-to:references:mime-version:x-gm-gg
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=v0wtDg3/NAN9kt8oWyIWMeqCacGDPCLQ5PqTweWycMo=;
+        b=amG9wJjnLa6BsEVqHyScuo5PSLnMPbMtKW5eQFupt6wJ3Xn/J3aKJu4R/1nzjAC+C0
+         KS0OLXIfLJqkBETg1h/sslLbJKRyWzMTkoJR3oFjdga3ywmx06dLQsCN5DDQNbaFIt6g
+         TtJtvporUcXARrbKf2y1rf9hiG8zMmvhrhl5Yb/75hTe72TMykUaaySCytESLyTZFefu
+         s0br56vnYSi4FLrUnPYSaYjUkdjvxA9ej4uoue9h+7n1J7LBdl7pLufc4OGEwS/iUhQR
+         PrNxo3tMjEQXlH7L8Fytal8mFCN1KIg80eLBgnBTYls3JJESyPnD6yer17CcjSCAkaZh
+         AVOg==
+X-Forwarded-Encrypted: i=1; AJvYcCV6ZoKStwg9pgrFOFnlSqZchKbtUGVuE3J/F6+4PRU2ur/VDqSeVGRZ0iutpWkrlsW/or8TESE=@vger.kernel.org
+X-Gm-Message-State: AOJu0YwPLwBIERonHLxadRQF+QOYEZ8vZCrCaKHVgt1HJgWwpF2fItV1
+	Jm9RzUbi77uLhPz7WuUgbv4NX+D3ysK7jWyX84GCgxcae38TS/I3BEjN4+jnyMBr9ney6nn3TOY
+	p1Cf6Y+1OKEt3z62ajYYZFLy3GS6LhGY=
+X-Gm-Gg: AY/fxX5myfjHrFiGSon6QbPH1WbrDaQGq6LMn9D+jc5LWoV6zvKvGV39NR1Nt5XxwTk
+	eGNXZCvyDyxvZ1rFNG4eGN0d3r4Zm+89SbJTDF9VJXem9/kWe1l+UrvxYvalwxxebN6j9KPmVDL
+	3WyxWbPVfAvzt4xUcGOPNapLYwPUHJFoclkBLIrH1VTuF87BRJXW6moEd+c5AJxZM8wdIN2z7lA
+	HOogNPPVb2DS6nPniw5ebnxehxtMUaZz73VwBSPrCnMwAQyB3jAPzCHA135IiHtEsL8
+X-Google-Smtp-Source: AGHT+IEDVedBQs5GfreScTfX4yE9cE9dmVGG5ks4O89dQrxXlzHfxJKIw2ZOnH5F/6u5XdQzjdfyn7tUBJ5AnhLzyoM=
+X-Received: by 2002:a17:903:1b6b:b0:2a3:c667:e0a0 with SMTP id
+ d9443c01a7336-2a3ee47dee7mr224342905ad.29.1768287521679; Mon, 12 Jan 2026
+ 22:58:41 -0800 (PST)
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTEzMDA1NCBTYWx0ZWRfX2uzhD8WkxaJA
- j1FhD+UvsrGICIMToLNQHlj2jPvu0ez2rymzWtQVI9CqjVgc5PYbXthoGAsw20WtSJm+FSAR/u6
- vX8XSxxukWa8My5n3gZE2D5BUrF9NYRd7cv5t7xN22GbF0352BkwBWQflndVGZXOYcUUWsIPfSc
- f2b93CtNBzsnNL/hMbL1dzBdZSpGwpuCSPzunKvnvrmuBmUL70Fz3G2yjGxAPxEwplCGfp7D8J6
- 3dVARoLfOyQEAxuz/JMJoLYpdxG6WDn3eNy3YC/053o3LHm4fS+Q4VYhJfYe846lyWOXOoRaa5D
- vXhAqrjc8c8gK48ywBdODTRW1niiTGOqg+GLuCRkrpHVer85OkuFsVVDCx06JwxIJ2WCkZkD9wD
- 8TWozsWXLFJBRfz+Cy1i3ZnSKFJJ0cVwZLSvVHoa1+X3FDf+GyoM6zDzEzfQAK8uuM7y3DXx5iP
- Cm9ZWS5DRn4n0y1h5uQ==
-X-Proofpoint-GUID: HhylLc8gok_Rxcl78v6mTGVH404T4haF
-X-Authority-Analysis: v=2.4 cv=WLJyn3sR c=1 sm=1 tr=0 ts=6965ece6 cx=c_pps
- a=5BHTudwdYE3Te8bg5FgnPg==:117 a=5BHTudwdYE3Te8bg5FgnPg==:17
- a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22 a=VwQbUJbxAAAA:8 a=Ikd4Dj_1AAAA:8
- a=VnNF1IyMAAAA:8 a=w_JtO988ZX80fDk7qXcA:9
-X-Proofpoint-ORIG-GUID: HhylLc8gok_Rxcl78v6mTGVH404T4haF
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-13_01,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601130054
+References: <20260113023839.4037104-1-xjdeng@buaa.edu.cn> <20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com>
+In-Reply-To: <20260113063618.e2ke47gy3hnfi67e@hu-mojha-hyd.qualcomm.com>
+Reply-To: micro6947@gmail.com
+From: Xingjing Deng <micro6947@gmail.com>
+Date: Tue, 13 Jan 2026 14:58:30 +0800
+X-Gm-Features: AZwV_QgAW4BzVTUyGjflZNCkvP8Jwnfwfe8NpKmaCwTyZdbmheLOF9_bQe0CWoM
+Message-ID: <CAK+ZN9pFiC5tj_-cEdp_B-BOwBZRat-JxococWd_mWRtEVLDVA@mail.gmail.com>
+Subject: Re: [PATCH v2] misc: fastrpc: check qcom_scm_assign_mem() return in rpmsg_probe
+To: Mukesh Ojha <mukesh.ojha@oss.qualcomm.com>
+Cc: srini@kernel.org, amahesh@qti.qualcomm.com, arnd@arndb.de, 
+	gregkh@linuxfoundation.org, dri-devel@lists.freedesktop.org, 
+	linux-arm-msm@vger.kernel.org, Xingjing Deng <xjdeng@buaa.edu.cn>, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 
-When CONFIG_BLK_DEV_NULL_BLK_FAULT_INJECTION is enabled, the null-blk
-driver sets up fault injection support by creating the timeout_inject,
-requeue_inject, and init_hctx_fault_inject configfs items as children
-of the top-level nullbX configfs group.
+Thanks for the feedback. I have regenerated and resent the patch as
+v3: https://lore.kernel.org/linux-arm-msm/20260113065409.32171-1-xjdeng@bua=
+a.edu.cn/T/#u
 
-However, when the nullbX device is removed, the references taken to
-these fault-config configfs items are not released. As a result,
-kmemleak reports a memory leak, for example:
+---------- Forwarded message ---------
+=E5=8F=91=E4=BB=B6=E4=BA=BA=EF=BC=9A Mukesh Ojha <mukesh.ojha@oss.qualcomm.=
+com>
+Date: 2026=E5=B9=B41=E6=9C=8813=E6=97=A5=E5=91=A8=E4=BA=8C 14:36
+Subject: Re: [PATCH v2] misc: fastrpc: check qcom_scm_assign_mem()
+return in rpmsg_probe
+To: Xingjing Deng <micro6947@gmail.com>
+Cc: <srini@kernel.org>, <amahesh@qti.qualcomm.com>, <arnd@arndb.de>,
+<gregkh@linuxfoundation.org>, <dri-devel@lists.freedesktop.org>,
+<linux-arm-msm@vger.kernel.org>, Xingjing Deng <xjdeng@buaa.edu.cn>,
+<stable@vger.kernel.org>
 
-unreferenced object 0xc00000021ff25c40 (size 32):
-  comm "mkdir", pid 10665, jiffies 4322121578
-  hex dump (first 32 bytes):
-    69 6e 69 74 5f 68 63 74 78 5f 66 61 75 6c 74 5f  init_hctx_fault_
-    69 6e 6a 65 63 74 00 88 00 00 00 00 00 00 00 00  inject..........
-  backtrace (crc 1a018c86):
-    __kmalloc_node_track_caller_noprof+0x494/0xbd8
-    kvasprintf+0x74/0xf4
-    config_item_set_name+0xf0/0x104
-    config_group_init_type_name+0x48/0xfc
-    fault_config_init+0x48/0xf0
-    0xc0080000180559e4
-    configfs_mkdir+0x304/0x814
-    vfs_mkdir+0x49c/0x604
-    do_mkdirat+0x314/0x3d0
-    sys_mkdir+0xa0/0xd8
-    system_call_exception+0x1b0/0x4f0
-    system_call_vectored_common+0x15c/0x2ec
 
-Fix this by explicitly releasing the references to the fault-config
-configfs items when dropping the reference to the top-level nullbX
-configfs group.
+On Tue, Jan 13, 2026 at 10:38:39AM +0800, Xingjing Deng wrote:
+> In the SDSP probe path, qcom_scm_assign_mem() is used to assign the
+> reserved memory to the configured VMIDs, but its return value was not
+> checked.
+>
+> Fail the probe if the SCM call fails to avoid continuing with an
+> unexpected/incorrect memory permission configuration
+>
+> Fixes: c3c0363bc72d4 ("misc: fastrpc: support complete DMA pool access to=
+ the DSP")
+> Cc: stable@vger.kernel.org # 6.11-rc1
+> Signed-off-by: Xingjing Deng <xjdeng@buaa.edu.cn>
 
-Cc: stable@vger.kernel.org
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Fixes: bb4c19e030f4 ("block: null_blk: make fault-injection dynamically configurable per device")
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
----
-v1->v2:
-    - Added fixes, stable abd reviewed-by tags
----
- drivers/block/null_blk/main.c | 12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+I don't see the lkml mailing list as part of this patch.. please use
+./scripts/get_maintainer.pl to collect all the necessary mailing list
+and maintainers to be cc'd.
 
-diff --git a/drivers/block/null_blk/main.c b/drivers/block/null_blk/main.c
-index c7c0fb79a6bf..4c0632ab4e1b 100644
---- a/drivers/block/null_blk/main.c
-+++ b/drivers/block/null_blk/main.c
-@@ -665,12 +665,22 @@ static void nullb_add_fault_config(struct nullb_device *dev)
- 	configfs_add_default_group(&dev->init_hctx_fault_config.group, &dev->group);
- }
- 
-+static void nullb_del_fault_config(struct nullb_device *dev)
-+{
-+	config_item_put(&dev->init_hctx_fault_config.group.cg_item);
-+	config_item_put(&dev->requeue_config.group.cg_item);
-+	config_item_put(&dev->timeout_config.group.cg_item);
-+}
-+
- #else
- 
- static void nullb_add_fault_config(struct nullb_device *dev)
- {
- }
- 
-+static void nullb_del_fault_config(struct nullb_device *dev)
-+{
-+}
- #endif
- 
- static struct
-@@ -702,7 +712,7 @@ nullb_group_drop_item(struct config_group *group, struct config_item *item)
- 		null_del_dev(dev->nullb);
- 		mutex_unlock(&lock);
- 	}
--
-+	nullb_del_fault_config(dev);
- 	config_item_put(item);
- }
- 
--- 
-2.52.0
+>
+> v2 changes:
+> Add Fixes: and Cc: stable@vger.kernel.org.
 
+Changelog should go below ---. Also include the link to the v1 in it.
+
+> ---
+>  drivers/misc/fastrpc.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/misc/fastrpc.c b/drivers/misc/fastrpc.c
+> index fb3b54e05928..cbb12db110b3 100644
+> --- a/drivers/misc/fastrpc.c
+> +++ b/drivers/misc/fastrpc.c
+> @@ -2338,8 +2338,13 @@ static int fastrpc_rpmsg_probe(struct rpmsg_device=
+ *rpdev)
+>               if (!err) {
+>                       src_perms =3D BIT(QCOM_SCM_VMID_HLOS);
+>
+> -                     qcom_scm_assign_mem(res.start, resource_size(&res),=
+ &src_perms,
+> +                     err =3D qcom_scm_assign_mem(res.start, resource_siz=
+e(&res), &src_perms,
+>                                   data->vmperms, data->vmcount);
+> +                     if (err) {
+> +                             dev_err(rdev, "Failed to assign memory phys=
+ 0x%llx size 0x%llx err %d",
+> +                                     res.start, resource_size(&res), err=
+);
+> +                             goto err_free_data;
+> +                     }
+>               }
+>
+>       }
+> --
+> 2.25.1
+>
+
+--
+-Mukesh Ojha
 
