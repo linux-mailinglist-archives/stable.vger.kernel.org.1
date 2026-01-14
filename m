@@ -1,150 +1,197 @@
-Return-Path: <stable+bounces-208336-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208337-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D93F6D1D63D
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:10:54 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5FD5D1D5FB
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07FFF3079040
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:59:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 53A4D30848F2
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:02:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5879C37F8DD;
-	Wed, 14 Jan 2026 08:59:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F553815D0;
+	Wed, 14 Jan 2026 09:02:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="cRQuPXhp"
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BAqFnNCw";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hi65Xvj9";
+	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ALfiIRyz";
+	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5NAzUi/u"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9ACE37F8AE;
-	Wed, 14 Jan 2026 08:59:01 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FCB37F74D
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 09:02:50 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381141; cv=none; b=sZGM3KQOmt+rhtEtroyaJvFxSxZqGgglNvJzGAOwvJUnwA8yl9esNHUUV6RNGe2L6o120a3E542BYbBkTpIx6oO7pECENkDPEpfcUiYALpJWn9IBA5RLhBQknMvZjivNL9ZRML9JLjsniritcU3R0sxwPMtWbRRT4taVOWaSAMU=
+	t=1768381374; cv=none; b=ruYSxUJVbas8RLxRHXmhCahrpFmLp4SOk2eYTGSLAMpyWjjCPeY0bpEwgKQvaNLypFOFDF+ax7iZuA2hR0jniJgUGTLYFpDCbNiy0p92moMWMuSabS1BQ8dbivonzRjaupBSjXjKqmOnN1C3LMG3Bhm5UwVbmBMRBctYTD3KIgU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381141; c=relaxed/simple;
-	bh=R29hzgrrDYrnsVQRMzK2tEszjuUszFSknF9FRSHs+BU=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=WzD91/koLNtkP/QbH+NjnvSpiCx79GwQvl6IZ0wjjwfXaPb5z5xjxdmVghsjXYOannQF8/lac/H7+zZq7zDyQXUPehh+YBo2klInTXJQWjQOI6YaqfzKq+YBbtQWVPJWs8/GLgwzNjHcgXR9yt/sfkp5MrENeGZVGHvtN6iyhZs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=cRQuPXhp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F14C4CEF7;
-	Wed, 14 Jan 2026 08:58:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768381141;
-	bh=R29hzgrrDYrnsVQRMzK2tEszjuUszFSknF9FRSHs+BU=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=cRQuPXhppRQDiFeU3JtrcADQnfVtqI8MCO3YnjuEk7yUFsO/qXn0cuPjnBPnNvyfb
-	 sRVeydG/+xR1zgKOX0lpXiPIoAF3Szkf6A+vPNhrtms/YMaBA0Z4yQu/hXFfEFh+yn
-	 jWRt26eizPYiABSDxsbAYNChkkvfLpCb6rNfbf0ThuqCZcrc6aa3Z2yECxGMDe3F0N
-	 FWLblLuScgwANBo2z8F+GLXIuqPuF+FAVr5OOTmMLaRMD1jl9GI3yiqI/O442Qg4N8
-	 spIvvYbAHRhn9BGIJIUXQQWwC4v5pEEMvXK4EXTXj+1+7ateRiLBGpbgQTlJiBYQm7
-	 ndDLaZmaPPZ8Q==
-Date: Wed, 14 Jan 2026 09:58:56 +0100
-From: Christian Brauner <brauner@kernel.org>
-To: Jeff Layton <jlayton@kernel.org>
-Cc: linux-fsdevel@vger.kernel.org, 
-	Alexander Viro <viro@zeniv.linux.org.uk>, Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>, 
-	Lennart Poettering <lennart@poettering.net>, Zbigniew =?utf-8?Q?J=C4=99drzejewski-Szmek?= <zbyszek@in.waw.pl>, 
-	Josef Bacik <josef@toxicpanda.com>, stable@vger.kernel.org
-Subject: Re: [PATCH v2 0/4] fs: add immutable rootfs
-Message-ID: <20260114-zarte-zerrbild-0e20b46eb1a6@brauner>
-References: <20260112-work-immutable-rootfs-v2-0-88dd1c34a204@kernel.org>
- <3e81b65a391a9704aeace7719337fbf9444303ac.camel@kernel.org>
+	s=arc-20240116; t=1768381374; c=relaxed/simple;
+	bh=nN8dNb+ULWRciX6HSxokmAu9GLKXvbrVenA5Lm8vQQE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=gDFIqVrymhnLMHR2l9QdgVcf8Ul2UKONm9ZXoEp+c3uww4nY4MYKYWLbd9sc1yXI8b/lOfPiRBXg3T+0iRHcVI5EQm7XL0wdamTgroW78HTeUWqevUdmTngpsF06tby8WqMNbX9LO2ACraqUOb3MxYcsDFOItiIP+W9ENRbViV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BAqFnNCw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hi65Xvj9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ALfiIRyz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5NAzUi/u; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
+Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 3B48F33838;
+	Wed, 14 Jan 2026 09:02:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768381361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
+	b=BAqFnNCwhO6/KOVVWQdbSZ8ZHVYH7bQcfQlBZSITjeIhz+rl0Vp93hO0Ry9KZX3ZLcqXvL
+	vz1tkfoXsb8bBJEdWUwn4+wtucJPshCrZ3hoxr1N7NL//FJni94sh2P6iB4nH2oJC1WYYT
+	1H/lsZG/vnAzY3ySONLhXx6NLtpjGX4=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768381361;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
+	b=hi65Xvj913HM3KJEx7scztgGv3euZmblPpX9YncaMY6m0DkvVndSmiI4/FOoXsYJObI30i
+	eri5SizUCiT6AiAQ==
+Authentication-Results: smtp-out1.suse.de;
+	none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
+	t=1768381360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
+	b=ALfiIRyzFWfPIQ3nI6innhppkGsJpk5Wlg4uz2FEsRTujQ82JP+OaHRGHVKIfGddzE3Hee
+	BS0fFqFV2QcI/d3zCXiVvZCFoG2stwtHOJ11IfvWawCKyrqx847DK1AmdJADdXhI12Pwq/
+	1gYsed5ADAmtK7FOb6FtSwJlZy6R7xo=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
+	s=susede2_ed25519; t=1768381360;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
+	b=5NAzUi/uYwSG+e4IfOqN7vaM8mH7wevO/BV0t7Sa3bH+BLnNmWdCX8Xk4W+4+hx9kmKRU5
+	fFwsp7ORZswnjlDA==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DD0A93EA63;
+	Wed, 14 Jan 2026 09:02:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id VW2GNK9bZ2nbcgAAD6G6ig
+	(envelope-from <tzimmermann@suse.de>); Wed, 14 Jan 2026 09:02:39 +0000
+Message-ID: <4cb4d554-4874-4216-b7ae-6265dc4d595f@suse.de>
+Date: Wed, 14 Jan 2026 10:02:39 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <3e81b65a391a9704aeace7719337fbf9444303ac.camel@kernel.org>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 6/8] drm/sysfb: Remove duplicate declarations
+To: Javier Martinez Canillas <javierm@redhat.com>, tzungbi@kernel.org,
+ briannorris@chromium.org, jwerner@chromium.org,
+ maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
+ simona@ffwll.ch
+Cc: chrome-platform@lists.linux.dev, dri-devel@lists.freedesktop.org,
+ stable@vger.kernel.org
+References: <20260108145058.56943-1-tzimmermann@suse.de>
+ <20260108145058.56943-7-tzimmermann@suse.de>
+ <87ecnzf57f.fsf@ocarina.mail-host-address-is-not-set>
+Content-Language: en-US
+From: Thomas Zimmermann <tzimmermann@suse.de>
+Autocrypt: addr=tzimmermann@suse.de; keydata=
+ xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
+ XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
+ BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
+ hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
+ 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
+ AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
+ AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
+ AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
+ lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
+ U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
+ vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
+ 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
+ j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
+ T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
+ 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
+ GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
+ hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
+ EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
+ C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
+ yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
+ SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
+ Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
+ 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
+In-Reply-To: <87ecnzf57f.fsf@ocarina.mail-host-address-is-not-set>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Score: -4.30
+X-Spamd-Result: default: False [-4.30 / 50.00];
+	BAYES_HAM(-3.00)[100.00%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	FREEMAIL_TO(0.00)[redhat.com,kernel.org,chromium.org,linux.intel.com,gmail.com,ffwll.ch];
+	ARC_NA(0.00)[];
+	MIME_TRACE(0.00)[0:+];
+	RCPT_COUNT_SEVEN(0.00)[11];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	MID_RHS_MATCH_FROM(0.00)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	RCVD_TLS_ALL(0.00)[];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,lists.freedesktop.org:email,suse.com:url]
+X-Spam-Level: 
+X-Spam-Flag: NO
 
-On Tue, Jan 13, 2026 at 09:17:05AM -0500, Jeff Layton wrote:
-> On Mon, 2026-01-12 at 16:47 +0100, Christian Brauner wrote:
-> > Currently pivot_root() doesn't work on the real rootfs because it
-> > cannot be unmounted. Userspace has to do a recursive removal of the
-> > initramfs contents manually before continuing the boot.
-> > 
-> > Really all we want from the real rootfs is to serve as the parent mount
-> > for anything that is actually useful such as the tmpfs or ramfs for
-> > initramfs unpacking or the rootfs itself. There's no need for the real
-> > rootfs to actually be anything meaningful or useful. Add a immutable
-> > rootfs called "nullfs" that can be selected via the "nullfs_rootfs"
-> > kernel command line option.
-> > 
-> > The kernel will mount a tmpfs/ramfs on top of it, unpack the initramfs
-> > and fire up userspace which mounts the rootfs and can then just do:
-> > 
-> >   chdir(rootfs);
-> >   pivot_root(".", ".");
-> >   umount2(".", MNT_DETACH);
-> > 
-> > and be done with it. (Ofc, userspace can also choose to retain the
-> > initramfs contents by using something like pivot_root(".", "/initramfs")
-> > without unmounting it.)
-> > 
-> > Technically this also means that the rootfs mount in unprivileged
-> > namespaces doesn't need to become MNT_LOCKED anymore as it's guaranteed
-> > that the immutable rootfs remains permanently empty so there cannot be
-> > anything revealed by unmounting the covering mount.
-> > 
-> > In the future this will also allow us to create completely empty mount
-> > namespaces without risking to leak anything.
-> > 
-> > systemd already handles this all correctly as it tries to pivot_root()
-> > first and falls back to MS_MOVE only when that fails.
-> > 
-> > This goes back to various discussion in previous years and a LPC 2024
-> > presentation about this very topic.
-> > 
-> > Now in vfs-7.0.nullfs.
-> > 
-> > Signed-off-by: Christian Brauner <brauner@kernel.org>
-> > ---
-> > Changes in v2:
-> > - Rename to "nullfs".
-> > - Update documentation.
-> > - Link to v1: https://patch.msgid.link/20260102-work-immutable-rootfs-v1-0-f2073b2d1602@kernel.org
-> > 
-> > ---
-> > Christian Brauner (4):
-> >       fs: ensure that internal tmpfs mount gets mount id zero
-> >       fs: add init_pivot_root()
-> >       fs: add immutable rootfs
-> >       docs: mention nullfs
-> > 
-> >  .../filesystems/ramfs-rootfs-initramfs.rst         |  32 +++-
-> >  fs/Makefile                                        |   2 +-
-> >  fs/init.c                                          |  17 ++
-> >  fs/internal.h                                      |   1 +
-> >  fs/mount.h                                         |   1 +
-> >  fs/namespace.c                                     | 181 ++++++++++++++-------
-> >  fs/nullfs.c                                        |  70 ++++++++
-> >  include/linux/init_syscalls.h                      |   1 +
-> >  include/uapi/linux/magic.h                         |   1 +
-> >  init/do_mounts.c                                   |  14 ++
-> >  init/do_mounts.h                                   |   1 +
-> >  11 files changed, 254 insertions(+), 67 deletions(-)
-> > ---
-> > base-commit: 8f0b4cce4481fb22653697cced8d0d04027cb1e8
-> > change-id: 20260102-work-immutable-rootfs-b5f23e0f5a27
-> 
-> I like the set overall. My only real gripe is the new command-line
-> option. Won't that make distro adoption hard?
-> 
-> IIUC, with this new method, you're just adding a new nullfs at the
-> bottom of the stack and then mounting the traditional ramfs as the
-> mutable rootfs on top of it.
-> 
-> Would there be any harm in just always doing this (and dropping the
-> command-line option)?
-> 
-> You would end up "leaking" both the nullfs and ramfs in the case of
-> traditional userspace that was unaware of the extra mount, but that
-> seems like it should be something we could live with.
 
-I would be open to trying to make it unconditional. IOW, a patch on top
-of the current set that removes the "nullfs_rootfs" command line so that
-we can simply revert if it turns out that is an issue.
+
+Am 09.01.26 um 11:31 schrieb Javier Martinez Canillas:
+> Thomas Zimmermann <tzimmermann@suse.de> writes:
+>
+>> Commit 6046b49bafff ("drm/sysfb: Share helpers for integer validation")
+>> and commit e8c086880b2b ("drm/sysfb: Share helpers for screen_info
+>> validation") added duplicate function declarations. Remove the latter
+>> ones.
+>>
+>> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+>> Fixes: e8c086880b2b ("drm/sysfb: Share helpers for screen_info validation")
+>> Cc: Thomas Zimmermann <tzimmermann@suse.de>
+>> Cc: Javier Martinez Canillas <javierm@redhat.com>
+>> Cc: dri-devel@lists.freedesktop.org
+>> Cc: <stable@vger.kernel.org> # v6.16+
+>> ---
+>>   drivers/gpu/drm/sysfb/drm_sysfb_helper.h | 9 ---------
+>>   1 file changed, 9 deletions(-)
+>>
+> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+
+Thanks. I'm going to put this into drm-misc-fixes in any case.
+
+>
+
+-- 
+--
+Thomas Zimmermann
+Graphics Driver Developer
+SUSE Software Solutions Germany GmbH
+Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
+GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+
+
 
