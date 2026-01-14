@@ -1,176 +1,138 @@
-Return-Path: <stable+bounces-208321-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AD9BD1C8FA
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 06:16:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15DD8D1CA55
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 07:14:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D785D30388A9
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 05:16:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 848A73043937
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 06:14:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8AC8E34EEF4;
-	Wed, 14 Jan 2026 05:16:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCCA836215D;
+	Wed, 14 Jan 2026 06:14:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b="TX5Yluit"
+	dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b="B9MET0O/"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-qv1-f45.google.com (mail-qv1-f45.google.com [209.85.219.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from bg1.exmail.qq.com (bg1.exmail.qq.com [114.132.67.179])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4F5832ED21
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 05:16:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.219.45
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2AB6F3557E2
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 06:14:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=114.132.67.179
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768367792; cv=none; b=aGtcHlPYiAkgDXCe7m3EX1PQYxNlKcyVrEiqy8lQNWBRC8VSte0Kdojj/Yg3KK4UgZETCh1EIKk10VTqJ34qv9mpndUZGe/4OlXQYypHYI4pUfg3P6UBDace+t7wWpin7G/drlIZn/a9oS1cFeTLqrXGoMg6mK4bV0JyekNkV8I=
+	t=1768371280; cv=none; b=thLUyu1Qi1YzCEkPFB2LSt9huaWXjp0CXa1/VJRkEJkCkthOK2D1Krr7Zlz0RSVSbO8wspoDn6LbHcFu9aMl3l1tCD0yK4GBRHfCb2H5wZZh9VTAP1SeqYYbJlR1j6IqwFuSu/fVfft0PGwDyJd0k++wkjLt9k3nAd22O01I2Ns=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768367792; c=relaxed/simple;
-	bh=iP3S/72fuu/L/exhomw5MypN4Y5Gkqbqe4ilsP/Xh9c=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=VpUibeWseG6UYWYDNU2aKmJQ8FHfjHpmyNiHYXthe+QBta5aH+p+vhoLW53VC2NQosZdv8swTCRuwjIBvfW/HYWRLyAcZzyEryxe7taddFpA9VSjft4z7k8bvzvcL6pI0s2By1P/tpBY5DE4Bbq/6bjIin9HipLwJh9WqSkLDbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org; spf=pass smtp.mailfrom=chromium.org; dkim=pass (1024-bit key) header.d=chromium.org header.i=@chromium.org header.b=TX5Yluit; arc=none smtp.client-ip=209.85.219.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=chromium.org
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=chromium.org
-Received: by mail-qv1-f45.google.com with SMTP id 6a1803df08f44-8887f43b224so133296786d6.1
-        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 21:16:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1768367778; x=1768972578; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ezdkIkld7c/oSBzC35T3zK1WNNmb2BZY9Vgt94zhRnA=;
-        b=TX5YluitevghmW0OHjqC6VOV7NYfDVLG18JvQ7C6Vn+vpssFT9q3N/n3kt/F2RZ2R9
-         Vg7Dy//icNJGcbuz3WDQhv8ugasQVTExvncNoTgOoNAVHVGYjD95Ah4ZjXa6KlOEW1p+
-         Vzrt5JSWrRIJzeMAfyrT832c/e25CurqzzA44=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768367778; x=1768972578;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=ezdkIkld7c/oSBzC35T3zK1WNNmb2BZY9Vgt94zhRnA=;
-        b=M6qT0a6z2siHjHJXeAuh93CnFGLwPby/AZEd1qAZfHORf+KEgWqo8lvx2MKdQO5P5q
-         ryuiaIJO+hmtmvR2qdjc/MURLfwMUgxpKQGLDB7g3+XeCnjjDxI9LS2n8Gac/yUHjxcf
-         pXKu2JLFDQQjHVaUwTHxlo3+AAP6KvluHVfPMtUdccFaHQ69GTEn9L0JT+ICHdQDHewW
-         7vbRRCIBTeMMEIsYKTE0B5FMVfYvKjV/Kcl3gvVa12OmoRu8FyqaURd69g3NLO/1IgoN
-         +cM43yOsWk3nn0s/nbqYxUPu/0LN9HPE0GV5bw0zxlEbufdhhgie+FwokL+LNB4zF4F1
-         mRSA==
-X-Forwarded-Encrypted: i=1; AJvYcCWR3oNIZ2GLjJ3TvH6YtkcYOlXQfwlwb7k3yEHFIZSUoAa+9xR43xFPmUsPO6AD/Ft8mxahV+s=@vger.kernel.org
-X-Gm-Message-State: AOJu0YyQtR3DLVv1na0e1alz/gDNlKRD0pxkhTs7LQqNEqlJOfQ0GOQ/
-	7qX5aKGObk+/bX10gmGrIq8ffwIPhYwDBL0pJ4WqjBKXYGwGdBpa4d/9DicVHfKOdr3/EEkLJnW
-	Sytw2pA==
-X-Gm-Gg: AY/fxX5gLAI39xPKpZ3syKNaISVI5F6AIzZGzva0E15PzL3bB0fg0ZwqlGBIWSmRUo7
-	ixqbTjld4i+UxrDOEfn0bTtrcqjyLZReiVlMqkQnD8KP8v32pXW+ExP9TEOyKri8ABqVTP0sZYK
-	PmfKeUdHzsiI/IPTn+VULB7xkJO5BUyF5G8OR2tqzfXZCxdy3Ilge68Ip5G8JMzJdMkUxP/zHcR
-	DPte76GXJ+rjGU8QzaqCWfVCzFgwtnkV0uorls1CyQ/1jG0Srxrz9TtN2zoXi7grmuJk7pkKIkT
-	Ab2zaw19mvxRNe/2aP/WoD1b8YLaC5W+J/aNInh6g/fGkUTxcCUA6ba2C3zd1PtzLs1E39o6ZPR
-	VnCGrrCPvt9CLv/R0RdY53OW4Dj9XJTD/QSW46f/J3W8TTw4tFlLqJBuI2gKaUHpBi0wpsKzeQg
-	y7IpT2t/Tage1tKi5fHs0yVexAe/CR0bkPs8l+o4yF3L/hgqK9y/Y31g641Zoj
-X-Received: by 2002:a05:6214:258c:b0:88f:e334:8d5 with SMTP id 6a1803df08f44-8927431de8emr17519456d6.22.1768367777955;
-        Tue, 13 Jan 2026 21:16:17 -0800 (PST)
-Received: from mail-qt1-f175.google.com (mail-qt1-f175.google.com. [209.85.160.175])
-        by smtp.gmail.com with ESMTPSA id 6a1803df08f44-89076fa0718sm167156526d6.0.2026.01.13.21.16.15
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 13 Jan 2026 21:16:16 -0800 (PST)
-Received: by mail-qt1-f175.google.com with SMTP id d75a77b69052e-5014acad6f2so126271cf.1
-        for <stable@vger.kernel.org>; Tue, 13 Jan 2026 21:16:15 -0800 (PST)
-X-Forwarded-Encrypted: i=1; AJvYcCVjKVNk1xfD3w44inxReElNeJZRj/Fkk0Y2KdSrO5BfRjZifxUYTYL9Mb7QLVb68Abd2bqtSyA=@vger.kernel.org
-X-Received: by 2002:ac8:5e48:0:b0:4f1:a61a:1e8 with SMTP id
- d75a77b69052e-5014825a304mr6273611cf.10.1768367775388; Tue, 13 Jan 2026
- 21:16:15 -0800 (PST)
+	s=arc-20240116; t=1768371280; c=relaxed/simple;
+	bh=xKLJrf/GNkosw5wmJrAoX0PxZ2IE7x8F/PzIkUJjsxU=;
+	h=From:To:Cc:Subject:Mime-Version:Content-Type:Date:Message-ID; b=F1Zw5aibMP+NqskJpRYH+dtQLtxyOXxMNzDPKzmHBsfV6QanaSAvbzs/NoU3DKAYrLIQAne/FF0WIresiw4bR8e0uDg+E5RqBb9BmCbUj7FCGLhK+wzeR+C1czaGbrSW95gFCwkexukYohBh/Z0hQ34X5ulWFCbfpp1dw3Z6bi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com; spf=pass smtp.mailfrom=uniontech.com; dkim=pass (1024-bit key) header.d=uniontech.com header.i=@uniontech.com header.b=B9MET0O/; arc=none smtp.client-ip=114.132.67.179
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=uniontech.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=uniontech.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=uniontech.com;
+	s=onoh2408; t=1768371208;
+	bh=xKLJrf/GNkosw5wmJrAoX0PxZ2IE7x8F/PzIkUJjsxU=;
+	h=From:To:Subject:Mime-Version:Date:Message-ID;
+	b=B9MET0O/N7Fn5SbwabmB7Ym8/R2KlGCwq+oVTjm+qImxFLS0gJGu0B6FzFttDmLgt
+	 +Z6RY3sE4U22dxjnREivm2ZzfoS+wps7zWESZifPtTX+o1WbYNQnKjobhzXFt+f8C9
+	 SxWT/ygkzOezdKk35vKl91hXy+srRdpVQ20NUfpw=
+EX-QQ-RecipientCnt: 4
+X-QQ-GoodBg: 1
+X-QQ-SSF: 00400000000000F0
+X-QQ-FEAT: D4aqtcRDiqTq+JF+mJBOLfBuvx6V38wzSLJqdP2igoo=
+X-QQ-BUSINESS-ORIGIN: 2
+X-QQ-Originating-IP: Z6PlN7wpumV3qR7xL+Mf0KW9erTXujux5YDvL8rFUUM=
+X-QQ-STYLE: 
+X-QQ-mid: lv3gz7b-6t1768371206t6222a041
+From: "=?utf-8?B?V2VudGFvIEd1YW4=?=" <guanwentao@uniontech.com>
+To: "=?utf-8?B?c3RhYmxl?=" <stable@vger.kernel.org>
+Cc: "=?utf-8?B?Z3JlZ2to?=" <gregkh@linuxfoundation.org>, "=?utf-8?B?Y2hlbmh1YWNhaQ==?=" <chenhuacai@kernel.org>, "=?utf-8?B?bG9vbmdhcmNo?=" <loongarch@lists.linux.dev>
+Subject:  [PATCH 6.6] Revert "LoongArch: BPF: Sign extend kfunc call arguments"
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-References: <d4690be7-9b81-498e-868b-fb4f1d558e08@oracle.com>
- <39c7d882-6711-4178-bce6-c1e4fc909b84@arm.com> <005401dc64a4$75f1d770$61d58650$@telus.net>
- <b36a7037-ca96-49ec-9b39-6e9808d6718c@oracle.com> <6347bf83-545b-4e85-a5af-1d0c7ea24844@arm.com>
- <e1572bc2-08e7-4669-a943-005da4d59775@oracle.com> <CAJZ5v0ja21yONr-F8sfzzV-E4CQ=0NqLPmOeaSiepjS4mKEhog@mail.gmail.com>
- <CAJZ5v0hgFeeXw6UM67Ty9w9HHQYTydFxqEr-j+wHz4B7w-aB1Q@mail.gmail.com>
- <rsqh4kpcyodnmcxcdd3yvysdmnfj34fgjtr4pmfhlg2cqtvlhh@iakffruxcnac> <ndqg2mysdc4bsvokmrqubx6rw3oj3lrflxw3naqiohbg7yablf@ccm3rl36dnai>
-In-Reply-To: <ndqg2mysdc4bsvokmrqubx6rw3oj3lrflxw3naqiohbg7yablf@ccm3rl36dnai>
-From: Tomasz Figa <tfiga@chromium.org>
-Date: Wed, 14 Jan 2026 14:15:58 +0900
-X-Gmail-Original-Message-ID: <CAAFQd5DBsd4tMcRuVwD3=csJ=4=DMcJhzah+-CTq31qOZHyJEg@mail.gmail.com>
-X-Gm-Features: AZwV_QgaEM5U0dghv7arOEC9sAg-1oiklciKgVxEPDm8-o619IU-2A6jT2MKyE8
-Message-ID: <CAAFQd5DBsd4tMcRuVwD3=csJ=4=DMcJhzah+-CTq31qOZHyJEg@mail.gmail.com>
-Subject: Re: Performance regressions introduced via Revert "cpuidle: menu:
- Avoid discarding useful information" on 5.15 LTS
-To: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>, Harshvardhan Jha <harshvardhan.j.jha@oracle.com>, 
-	Christian Loehle <christian.loehle@arm.com>, Doug Smythies <dsmythies@telus.net>, 
-	Sasha Levin <sashal@kernel.org>, Greg Kroah-Hartman <gregkh@linuxfoundation.org>, linux-pm@vger.kernel.org, 
-	stable@vger.kernel.org, Daniel Lezcano <daniel.lezcano@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Mime-Version: 1.0
+Content-Type: text/plain;
+	charset="utf-8"
+Content-Transfer-Encoding: base64
+Date: Wed, 14 Jan 2026 14:13:25 +0800
+X-Priority: 3
+Message-ID: <tencent_09063379481F265B19AC7AC7@qq.com>
+X-QQ-MIME: TCMime 1.0 by Tencent
+X-Mailer: QQMail 2.x
+X-QQ-Mailer: QQMail 2.x
+X-BIZMAIL-ID: 17782895801708904327
+X-Address-Ticket:version=;type=;ticket_id=;id_list=;display_name=;session_id=;
+X-QQ-SENDSIZE: 520
+Received: from qq.com (unknown [127.0.0.1])
+	by smtp.qq.com (ESMTP) with SMTP
+	id ; Wed, 14 Jan 2026 14:13:27 +0800 (CST)
+Feedback-ID: lv:uniontech.com:qybglogicsvrsz:qybglogicsvrsz4b-0
+X-QQ-XMAILINFO: NOIkHYnr7Vzd4oQmhdMzoTCa02++NYVyWMjGqgPPIqpmyV6HVuk15qy5
+	x2u52QOT7Vaa5ix4rJob5IkhY/Q+OT3uYE8TwKBtyOaXL12TfdQIXAPFXEYlu2qaTAnx/58
+	Bxbxuvg1vfsq7VbB2jCCBgQQg1WKN2Iy4i+QodvQbqRXE8WrNDufWAY0kysTPDZhQhsr3H/
+	T0qIy37cHdpQzZZtAUkBvnvYbMp0UTbAqLn4fLz5fS4nRa+62XbX9N/dBVpVufQcNasctay
+	qalkiY+PvYA7hKatcHfItRQfa6BmgDy3uVdO4UHiVz7GsuoIWOkW69w5OHLkwUIa/fdhBCE
+	FmEtb5ZdJmuJKfoCQ3YhmHUzmO0L7CD9wCc8uXDVy2QbNXubjcQi1/mGry8gIT+QyMKeeXj
+	5w+oiZatMDf1k9BlU9HfUb/O6fgkJz5r0ifLvlkWoSgx2quC0+AfIcJkgw41Ok66gW71jPE
+	hqbC0mNrzzVz0u/gKnu3j/uR8O+PwoqjZiicPSOIDClQmLz9jx6vx+j2TOv710lqq5Cgmqv
+	JWtHJFzS9xTdpuOMFVEZMUO3usbzDmP52oDXo6wfF/PRHJppaJhaXAMLeOcfwmEg5S4CJxn
+	ZjY0eccfNrXvW+BX3HI0PfLpFDBo2DocW7I9t4Q+aD+MEZWPc5s28oEXoftF5P+PXD8iK47
+	BSoq3JJgkzeXN0lIseOjjfoAMpZE7NA7Na0x9IJKxKsXfxPuzKceGGJEcz2gvvccfx5yz+A
+	96nXCAL7RGhGdi98u1yA/YWsVuE16KhlzIM5JOfGFF0P10c6ZVyHD0Mk3ziRNEHPmuYLFUh
+	5PK972R0ifEnqqYQtpmj1MwPox4X/uueE9nyY1izEN9YyNrS+ATw98/w//jJF4OIdR4SG4c
+	tv0AHJ27JWLhz5lEX27PIFylcytoEw+sRp6dt5J5trSITrYu8LdljDxu0vyLdjjEJUNt+lr
+	6o/97LXdY+opCeoLHzrzdtGPimXuhn2VZO+mRg3f3SdFAzTzOrKCEFWfuYnNa3gw/aNQJlq
+	CsxylIHcfCy3h2vs1IBd/BtzlW9BuwuFaggRmm2SSYqGFQIGgb
+X-QQ-XMRINFO: NS+P29fieYNwqS3WCnRCOn9D1NpZuCnCRA==
+X-QQ-RECHKSPAM: 0
 
-Hi all,
+SXQgY2F1c2UgbG9vbmdhcmNoIGJ1aWxkIGZhaWxlZC4gaXQgbmVlZCBtZXJnZSBtb3JlIGRl
+cGVuZHMsDQpzdWNoIGFzICJMb29uZ0FyY2g6IEFkZCBtb3JlIGluc3RydWN0aW9uIG9wY29k
+ZXMgYW5kIGVtaXRfKiBoZWxwZXJzIg0KVGhpcyByZXZlcnRzIGNvbW1pdCBmZDQzZWRmMzU3
+YTNhMWY1ZWQxYzRiZjQ1MGI2MDAwMWM5MDkxYzM5Lg0KDQpjb25maWc6IGh0dHBzOi8vZ2lz
+dC5naXRodWIuY29tL29wc2lmZi9iNmM5YzMyYWRlNWY2ZDRhYmI1NDU0YTQ3NmY0YzRlMQ0K
+U2lnbmVkLW9mZi1ieTogV2VudGFvIEd1YW4gPGd1YW53ZW50YW9AdW5pb250ZWNoLmNvbT4N
+Ci0tLQ0KIGFyY2gvbG9vbmdhcmNoL25ldC9icGZfaml0LmMgfCAxNiAtLS0tLS0tLS0tLS0t
+LS0tDQogYXJjaC9sb29uZ2FyY2gvbmV0L2JwZl9qaXQuaCB8IDI2IC0tLS0tLS0tLS0tLS0t
+LS0tLS0tLS0tLS0tDQogMiBmaWxlcyBjaGFuZ2VkLCA0MiBkZWxldGlvbnMoLSkNCg0KZGlm
+ZiAtLWdpdCBhL2FyY2gvbG9vbmdhcmNoL25ldC9icGZfaml0LmMgYi9hcmNoL2xvb25nYXJj
+aC9uZXQvYnBmX2ppdC5jDQppbmRleCA1NDY2MWNmZmQ2NTRmLi5jNjQwMGQ3Yjk1ZWU4IDEw
+MDY0NA0KLS0tIGEvYXJjaC9sb29uZ2FyY2gvbmV0L2JwZl9qaXQuYw0KKysrIGIvYXJjaC9s
+b29uZ2FyY2gvbmV0L2JwZl9qaXQuYw0KQEAgLTgzNCwyMiArODM0LDYgQEAgc3RhdGljIGlu
+dCBidWlsZF9pbnNuKGNvbnN0IHN0cnVjdCBicGZfaW5zbiAqaW5zbiwgc3RydWN0IGppdF9j
+dHggKmN0eCwgYm9vbCBleHQNCiAJCWlmIChyZXQgPCAwKQ0KIAkJCXJldHVybiByZXQ7DQog
+DQotCQlpZiAoaW5zbi0+c3JjX3JlZyA9PSBCUEZfUFNFVURPX0tGVU5DX0NBTEwpIHsNCi0J
+CQljb25zdCBzdHJ1Y3QgYnRmX2Z1bmNfbW9kZWwgKm07DQotCQkJaW50IGk7DQotDQotCQkJ
+bSA9IGJwZl9qaXRfZmluZF9rZnVuY19tb2RlbChjdHgtPnByb2csIGluc24pOw0KLQkJCWlm
+ICghbSkNCi0JCQkJcmV0dXJuIC1FSU5WQUw7DQotDQotCQkJZm9yIChpID0gMDsgaSA8IG0t
+Pm5yX2FyZ3M7IGkrKykgew0KLQkJCQl1OCByZWcgPSByZWdtYXBbQlBGX1JFR18xICsgaV07
+DQotCQkJCWJvb2wgc2lnbiA9IG0tPmFyZ19mbGFnc1tpXSAmIEJURl9GTU9ERUxfU0lHTkVE
+X0FSRzsNCi0NCi0JCQkJZW1pdF9hYmlfZXh0KGN0eCwgcmVnLCBtLT5hcmdfc2l6ZVtpXSwg
+c2lnbik7DQotCQkJfQ0KLQkJfQ0KLQ0KIAkJbW92ZV9hZGRyKGN0eCwgdDEsIGZ1bmNfYWRk
+cik7DQogCQllbWl0X2luc24oY3R4LCBqaXJsLCBMT09OR0FSQ0hfR1BSX1JBLCB0MSwgMCk7
+DQogDQpkaWZmIC0tZ2l0IGEvYXJjaC9sb29uZ2FyY2gvbmV0L2JwZl9qaXQuaCBiL2FyY2gv
+bG9vbmdhcmNoL25ldC9icGZfaml0LmgNCmluZGV4IDkzNTJlYTU1NDUzMDguLmY5YzU2OWY1
+Mzk0OTEgMTAwNjQ0DQotLS0gYS9hcmNoL2xvb25nYXJjaC9uZXQvYnBmX2ppdC5oDQorKysg
+Yi9hcmNoL2xvb25nYXJjaC9uZXQvYnBmX2ppdC5oDQpAQCAtODcsMzIgKzg3LDYgQEAgc3Rh
+dGljIGlubGluZSB2b2lkIGVtaXRfc2V4dF8zMihzdHJ1Y3Qgaml0X2N0eCAqY3R4LCBlbnVt
+IGxvb25nYXJjaF9ncHIgcmVnLCBib28NCiAJZW1pdF9pbnNuKGN0eCwgYWRkaXcsIHJlZywg
+cmVnLCAwKTsNCiB9DQogDQotLyogRW1pdCBwcm9wZXIgZXh0ZW5zaW9uIGFjY29yZGluZyB0
+byBBQkkgcmVxdWlyZW1lbnRzLg0KLSAqIE5vdGUgdGhhdCBpdCByZXF1aXJlcyBhIHZhbHVl
+IG9mIHNpemUgYHNpemVgIGFscmVhZHkgcmVzaWRlcyBpbiByZWdpc3RlciBgcmVnYC4NCi0g
+Ki8NCi1zdGF0aWMgaW5saW5lIHZvaWQgZW1pdF9hYmlfZXh0KHN0cnVjdCBqaXRfY3R4ICpj
+dHgsIGludCByZWcsIHU4IHNpemUsIGJvb2wgc2lnbikNCi17DQotCS8qIEFCSSByZXF1aXJl
+cyB1bnNpZ25lZCBjaGFyL3Nob3J0IHRvIGJlIHplcm8tZXh0ZW5kZWQgKi8NCi0JaWYgKCFz
+aWduICYmIChzaXplID09IDEgfHwgc2l6ZSA9PSAyKSkNCi0JCXJldHVybjsNCi0NCi0Jc3dp
+dGNoIChzaXplKSB7DQotCWNhc2UgMToNCi0JCWVtaXRfaW5zbihjdHgsIGV4dHdiLCByZWcs
+IHJlZyk7DQotCQlicmVhazsNCi0JY2FzZSAyOg0KLQkJZW1pdF9pbnNuKGN0eCwgZXh0d2gs
+IHJlZywgcmVnKTsNCi0JCWJyZWFrOw0KLQljYXNlIDQ6DQotCQllbWl0X2luc24oY3R4LCBh
+ZGRpdywgcmVnLCByZWcsIDApOw0KLQkJYnJlYWs7DQotCWNhc2UgODoNCi0JCWJyZWFrOw0K
+LQlkZWZhdWx0Og0KLQkJcHJfd2FybigiYnBmX2ppdDogaW52YWxpZCBzaXplICVkIGZvciBl
+eHRlbnNpb25cbiIsIHNpemUpOw0KLQl9DQotfQ0KLQ0KIHN0YXRpYyBpbmxpbmUgdm9pZCBt
+b3ZlX2FkZHIoc3RydWN0IGppdF9jdHggKmN0eCwgZW51bSBsb29uZ2FyY2hfZ3ByIHJkLCB1
+NjQgYWRkcikNCiB7DQogCXU2NCBpbW1fMTFfMCwgaW1tXzMxXzEyLCBpbW1fNTFfMzIsIGlt
+bV82M181Mjs=
 
-On Wed, Jan 14, 2026 at 1:49=E2=80=AFPM Sergey Senozhatsky
-<senozhatsky@chromium.org> wrote:
->
-> Cc-ing Tomasz
->
-> On (26/01/14 13:28), Sergey Senozhatsky wrote:
-> > Hi,
-> >
-> > On (26/01/13 15:18), Rafael J. Wysocki wrote:
-> > [..]
-> > > > > Bumping this as I discovered this issue on 6.12 stable branch als=
-o. The
-> > > > > reapplication seems inevitable. I shall get back to you with thes=
-e
-> > > > > details also.
-> > > >
-> > > > Yes, please, because I have another reason to restore the reverted =
-commit.
-
-Is the performance difference the reporter observed an actual
-regression, or is it just a return to the level before the
-optimization was merged into stable branches? If the latter, shouldn't
-avoiding regressions be a priority over further optimizing for other
-users?
-
-If there is a really strong desire to reland this optimization, could
-it at least be applied selectively to the CPUs that it's known to
-help, or alternatively, made configurable?
-
-Best,
-Tomasz
-
-> > >
-> > > Sergey, did you see a performance regression from 85975daeaa4d
-> > > ("cpuidle: menu: Avoid discarding useful information") on any
-> > > platforms other than the Jasper Lake it was reported for?
-> >
-> > Let me try to dig it up.  I think I saw regressions on a number of
-> > devices:
-> >
-> > ---
-> > cpu family      : 6
-> > model           : 122
-> > model name      : Intel(R) Pentium(R) Silver N5000 CPU @ 1.10GHz
-> > ---
-> > cpu family      : 6
-> > model           : 122
-> > model name      : Intel(R) Celeron(R) N4100 CPU @ 1.10GHz
-> > ---
-> > cpu family      : 6
-> > model           : 156
-> > model name      : Intel(R) Celeron(R) N4500 @ 1.10GHz
-> > ---
-> > cpu family      : 6
-> > model           : 156
-> > model name      : Intel(R) Celeron(R) N4500 @ 1.10GHz
-> > ---
-> > cpu family      : 6
-> > model           : 156
-> > model name      : Intel(R) Pentium(R) Silver N6000 @ 1.10GHz
-> >
-> >
-> > I guess family 6/model 122 is not Jasper Lake?
-> >
-> > I also saw some where the patch in question seemed to improve the
-> > metrics, but regressions are more important, so the revert simply
-> > put all of the boards back to the previous state.
 
