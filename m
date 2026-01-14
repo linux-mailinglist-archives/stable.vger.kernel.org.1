@@ -1,159 +1,125 @@
-Return-Path: <stable+bounces-208342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208343-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28761D1DCAC
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 11:04:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BF378D1E000
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 11:24:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 958813006991
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:04:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16C3F30856A9
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:19:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 70D5A38A2A4;
-	Wed, 14 Jan 2026 10:04:31 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="HP0kkJxH";
-	dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b="6uv8YWW1"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 71BE638A72E;
+	Wed, 14 Jan 2026 10:19:32 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from mo4-p01-ob.smtp.rzone.de (mo4-p01-ob.smtp.rzone.de [85.215.255.54])
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [185.203.201.7])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E0234389E03;
-	Wed, 14 Jan 2026 10:04:26 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=85.215.255.54
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768385069; cv=pass; b=AYdIGAX8c5aDxSf/0t6P6zBuYYLfie8QQkxDVXDrN7Ddj1q89q4/6Dm4fTMcS+O/RV1PoHGQYBUyK3sJx7elMJBAPiHj1X4hNGBbKNMRU5lFWOY41AvrvGHO4uu16anmMzonjBeiy4EPcFuwsEQr0NKxeTdIPLKQZYQJaJ3WOwQ=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768385069; c=relaxed/simple;
-	bh=XjRWVkOzNJL5uonb34PEOwV7IuFGkr9Rktxf7cdtdnM=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=lmw9NzX/5KmfDggufJz2F51vlOWHkPJILyyn5JYVYMy/yVZIssdkF/Dd9taZZ+hXd9cqfFK8NRQkTZudc5pinPLFA3ZQ8TTGURIrSyMdSnZJB3Ez4M26Ux1UXw5MFfIvk9xbiRwKl8ypPPzbcXZHD4y8T0/JiuGTilWW9ZDPjeI=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net; spf=pass smtp.mailfrom=hartkopp.net; dkim=pass (2048-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=HP0kkJxH; dkim=permerror (0-bit key) header.d=hartkopp.net header.i=@hartkopp.net header.b=6uv8YWW1; arc=pass smtp.client-ip=85.215.255.54
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=hartkopp.net
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=hartkopp.net
-ARC-Seal: i=1; a=rsa-sha256; t=1768385058; cv=none;
-    d=strato.com; s=strato-dkim-0002;
-    b=nwzNrfAfFwQIUTmd4YqbcIfQHk5ib3Ub5kVPFfubcgoGRaqIOqPgMLPl1ik991ft6e
-    7fo0xAPxkTke7eTeAUvl1O/jV08+W/agq07H3fGmKS9R9yySU3BnRaoxalqIWJtG8KF8
-    z0/CDIByOXruxYvCJ5iEL2d9mAI5VH+N0kv3GSynwo7sxbl60oR7wdWtkGbUgJ/FBihB
-    0jgFe0nreoEanhC6Dx3BhriYG9sLYFFKZuwyg95DGYiKxXU1LhVlo67RAppT+GQnHvJG
-    TGZXsaIL0b+8D1SPJTtOoumxznsCIpUqgIAehFCpj59F4NUNby+C2XJg/ue0ANfxiUdf
-    nG5w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; t=1768385058;
-    s=strato-dkim-0002; d=strato.com;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=LOIdvuV0kMrXLVF7E4zZUrOYsDIA5tm3HtfBQDctlw4=;
-    b=jjurJPTjDsFtT5ZSIReZEk1l6/uQ3xSxRmTxU3JlrlNM7XyebvESTSEtHtYpehlmmj
-    G7monMFmQTMzv6j5nq0oDPI7JfjG5Fe9BcorkBV8uduAR7Fv0bLS5GlfZ+9kpVZ8TjYX
-    mestHI0/pfTNgZMkxG4lnbwq4YGaJbMdbRDYK8H/ctRU76+/vTerOtf/8I+S2ygR/349
-    7eGUEDee25iki1Of+t1ErTtNEbWkuPGqZjzvXm74YDSpWgGrc4Xsa51VqhhW4ZJ1Pg4J
-    KMTn2vFmBFjwouvOC1R2o/ufKku1145AOYQe7qwfZEwh29MSRCAduIkWqsje500kIdhM
-    l8vg==
-ARC-Authentication-Results: i=1; strato.com;
-    arc=none;
-    dkim=none
-X-RZG-CLASS-ID: mo01
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; t=1768385058;
-    s=strato-dkim-0002; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=LOIdvuV0kMrXLVF7E4zZUrOYsDIA5tm3HtfBQDctlw4=;
-    b=HP0kkJxHvFkJs8TvCbZBNX1mSWs4uhSk9Hrt4GDQ/P8m1rsRC4DI9A+CL7Fl74YzUs
-    JzuJfXdJ3mE47KIPb3pB1/IRfRuO3KIgXhbnMeIdOzaDuaNNsDa1DFh/ZPta/vHx8Cp6
-    OOl1DrAewf1k/isABHi4gfj5u1Cfh8uPDo1DMxPRibrFcx59b9mhCWbHQJZJXy7NshEK
-    +friZAYPN1Z81eMrFlGGxVktOoz9Ac5D1BD6CQQHDlKuFwPOQ87o0Ao7VhfMOJ6D0Ufr
-    49JwwdiHGwRUc18ZR2Id+FgtctJqgtggXwuTKKJ3dwsPFuESbT4FhzEZ2ozwHPbTrEb0
-    7rXw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; t=1768385058;
-    s=strato-dkim-0003; d=hartkopp.net;
-    h=In-Reply-To:From:References:Cc:To:Subject:Date:Message-ID:Cc:Date:
-    From:Subject:Sender;
-    bh=LOIdvuV0kMrXLVF7E4zZUrOYsDIA5tm3HtfBQDctlw4=;
-    b=6uv8YWW1sSJsEHI3SAzelaj4zrYwbTDz/zzpRY3hbd72ijf8VIFeOz56J0HiwedyFE
-    4YA39gNcgS0oMK28JADA==
-X-RZG-AUTH: ":P2MHfkW8eP4Mre39l357AZT/I7AY/7nT2yrDxb8mjH4JKvMdQv2tTUsMrZpkO3Mw3lZ/t54cFxeFQ7s8bGWj0Q=="
-Received: from [IPV6:2a00:6020:4a38:6800::9f3]
-    by smtp.strato.de (RZmta 54.1.0 AUTH)
-    with ESMTPSA id K0e68b20EA4Hrgt
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256 bits))
-	(Client did not present a certificate);
-    Wed, 14 Jan 2026 11:04:17 +0100 (CET)
-Message-ID: <5b5c8a8b-5832-4566-af45-dee6818fa44c@hartkopp.net>
-Date: Wed, 14 Jan 2026 11:04:11 +0100
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD74D38A703
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 10:19:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=185.203.201.7
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768385972; cv=none; b=dCoqYjgB2VEqDwj80ztaDV2DcQODo/GsZ4gZnQGEUm52efwhmnjBYlHxouRqH15Lw012EdzjtdHGfe0iGRb8CRZiqCpzr1RaGdoafnNmXLjZ8JPCkH71ZH7WsgDI3Ita8mKwsgPp4+XKljg8efR1zUpvVfJly3K5cDw28rSUSOI=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768385972; c=relaxed/simple;
+	bh=4BhCs5J2jbu4VR1A6Nvxx1fO692S37WLopKDmb8HGI8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=bqoajz8g0kP4E0aP/g99sgcgM8r/xGcTqA0+ulS/t/qGKiUkFa/saaikxF3/ZgzxVWRTEyiMNTMEPFpRGinBuQ0P1wt4w8T3fMCE6ePYJ6Q8Oa9935VGxYCGJK8lffIzGmfQly7UBFQCuLrPhVhZskIxXzRcv6cyldHI8/haoSM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de; spf=pass smtp.mailfrom=pengutronix.de; arc=none smtp.client-ip=185.203.201.7
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=pengutronix.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=pengutronix.de
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+	by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+	(Exim 4.92)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vfxy6-0001qA-4s; Wed, 14 Jan 2026 11:19:14 +0100
+Received: from moin.white.stw.pengutronix.de ([2a0a:edc0:0:b01:1d::7b] helo=bjornoya.blackshift.org)
+	by drehscheibe.grey.stw.pengutronix.de with esmtps  (TLS1.3) tls TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384
+	(Exim 4.96)
+	(envelope-from <mkl@pengutronix.de>)
+	id 1vfxy4-000ZXa-2M;
+	Wed, 14 Jan 2026 11:19:12 +0100
+Received: from pengutronix.de (p54b152ce.dip0.t-ipconnect.de [84.177.82.206])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange x25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(Client did not present a certificate)
+	(Authenticated sender: mkl-all@blackshift.org)
+	by smtp.blackshift.org (Postfix) with ESMTPSA id B09E54CCB03;
+	Wed, 14 Jan 2026 10:19:11 +0000 (UTC)
+Date: Wed, 14 Jan 2026 11:19:11 +0100
+From: Marc Kleine-Budde <mkl@pengutronix.de>
+To: Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>, 
+	Vincent Mailhol <mailhol@kernel.org>, Wolfgang Grandegger <wg@grandegger.com>, 
+	Sebastian Haas <haas@ems-wuensche.com>, "David S. Miller" <davem@davemloft.net>, 
+	Frank Jungclaus <frank.jungclaus@esd.eu>, socketcan@esd.eu, Yasushi SHOJI <yashi@spacecubics.com>, 
+	Daniel Berglund <db@kvaser.com>, Olivier Sobrie <olivier@sobrie.be>, 
+	Remigiusz =?utf-8?B?S2/FgsWCxIV0YWo=?= <remigiusz.kollataj@mobica.com>, Bernd Krumboeck <b.krumboeck@gmail.com>, kernel@pengutronix.de, 
+	linux-can@vger.kernel.org, linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH can 0/5] can: usb: fix URB memory leaks
+Message-ID: <20260114-offbeat-impala-of-finesse-df5c4c-mkl@pengutronix.de>
+References: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
+ <5b5c8a8b-5832-4566-af45-dee6818fa44c@hartkopp.net>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
+Content-Type: multipart/signed; micalg=pgp-sha512;
+	protocol="application/pgp-signature"; boundary="2neutif7tdvctb6b"
+Content-Disposition: inline
+In-Reply-To: <5b5c8a8b-5832-4566-af45-dee6818fa44c@hartkopp.net>
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: mkl@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+
+
+--2neutif7tdvctb6b
+Content-Type: text/plain; protected-headers=v1; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 Subject: Re: [PATCH can 0/5] can: usb: fix URB memory leaks
-To: Marc Kleine-Budde <mkl@pengutronix.de>,
- Vincent Mailhol <mailhol@kernel.org>, Wolfgang Grandegger
- <wg@grandegger.com>, Sebastian Haas <haas@ems-wuensche.com>,
- "David S. Miller" <davem@davemloft.net>,
- Frank Jungclaus <frank.jungclaus@esd.eu>, socketcan@esd.eu,
- Yasushi SHOJI <yashi@spacecubics.com>, Daniel Berglund <db@kvaser.com>,
- Olivier Sobrie <olivier@sobrie.be>,
- =?UTF-8?B?UmVtaWdpdXN6IEtvxYLFgsSFdGFq?= <remigiusz.kollataj@mobica.com>,
- Bernd Krumboeck <b.krumboeck@gmail.com>
-Cc: kernel@pengutronix.de, linux-can@vger.kernel.org,
- linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
-Content-Language: en-US
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-In-Reply-To: <20260110-can_usb-fix-memory-leak-v1-0-4a7c082a7081@pengutronix.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
 
-Hello Marc,
+On 14.01.2026 11:04:11, Oliver Hartkopp wrote:
+> does this patch set need to be reworked due to this (AI) feedback from
+> Jakub?
 
-does this patch set need to be reworked due to this (AI) feedback from 
-Jakub?
+yes
 
-https://lore.kernel.org/linux-can/20260110223836.3890248-1-kuba@kernel.org/
+> https://lore.kernel.org/linux-can/20260110223836.3890248-1-kuba@kernel.or=
+g/
+>
+> The former/referenced PR has been pulled - so that specific patch might to
+> be fixed again, so that usb_unanchor_urb(urb) is called after
+> usb_submit_urb() ??
 
-The former/referenced PR has been pulled - so that specific patch might 
-to be fixed again, so that usb_unanchor_urb(urb) is called after 
-usb_submit_urb() ??
+yes, probably. I'll look into that later this week (hopefully).
 
-Best regards,
-Oliver
+regards,
+Marc
 
-On 10.01.26 18:28, Marc Kleine-Budde wrote:
-> An URB memory leak [1] was recently fixed in the gs_usb driver. The driver
-> did not take into account that completed URBs are no longer anchored,
-> causing them to be lost during ifdown. The memory leak was fixed by
-> re-anchoring the URBs in the URB completion callback.
-> 
-> Several USB CAN drivers are affected by the same error. Fix them
-> accordingly.
-> 
-> [1] https://lore.kernel.org/all/20260109135311.576033-3-mkl@pengutronix.de/
-> 
-> Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
-> ---
-> Marc Kleine-Budde (5):
->        can: ems_usb: ems_usb_read_bulk_callback(): fix URB memory leak
->        can: esd_usb: esd_usb_read_bulk_callback(): fix URB memory leak
->        can: kvaser_usb: kvaser_usb_read_bulk_callback(): fix URB memory leak
->        can: mcba_usb: mcba_usb_read_bulk_callback(): fix URB memory leak
->        can: usb_8dev: usb_8dev_read_bulk_callback(): fix URB memory leak
-> 
->   drivers/net/can/usb/ems_usb.c                    | 2 ++
->   drivers/net/can/usb/esd_usb.c                    | 2 ++
->   drivers/net/can/usb/kvaser_usb/kvaser_usb_core.c | 2 ++
->   drivers/net/can/usb/mcba_usb.c                   | 2 ++
->   drivers/net/can/usb/usb_8dev.c                   | 2 ++
->   5 files changed, 10 insertions(+)
-> ---
-> base-commit: 7470a7a63dc162f07c26dbf960e41ee1e248d80e
-> change-id: 20260109-can_usb-fix-memory-leak-0d769e002393
-> 
-> Best regards,
-> --
-> Marc Kleine-Budde <mkl@pengutronix.de>
-> 
-> 
+--=20
+Pengutronix e.K.                 | Marc Kleine-Budde          |
+Embedded Linux                   | https://www.pengutronix.de |
+Vertretung N=C3=BCrnberg              | Phone: +49-5121-206917-129 |
+Amtsgericht Hildesheim, HRA 2686 | Fax:   +49-5121-206917-9   |
 
+--2neutif7tdvctb6b
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEn/sM2K9nqF/8FWzzDHRl3/mQkZwFAmlnbZsACgkQDHRl3/mQ
+kZzSoAgAnuu1NlbPPcjncns8aO8Ey55nxNwqpYg5KjPyuSY3fIe5P9zMUzqiQK26
+iFo3l6vfMQclxj0mef1nXNWjFA/0W3ET6zic6I/i6iq28GhuU75NAyX4b+Iqyo1U
+uXD+y/4hiN5bNSHxtF2xMk8kMyJji7Hh02p4eKQjKRxBTtSygNWcW+dl08b9qp1J
+kj9JsCJhPKvFIS9BwOL820ku+QSMb2XwrFbvs2qyKOAC/zI6dJubMGU+3qlQT3qW
+mvH5Zy4UcQ02AOmC2SE85Mt5U4oEZBsANw1etqM+vjIXXaEGiru4bn4Yac+McKFE
+LdcvgkXo2sTB+FqIbeGQN5yuUYFM0A==
+=acqp
+-----END PGP SIGNATURE-----
+
+--2neutif7tdvctb6b--
 
