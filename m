@@ -1,93 +1,41 @@
-Return-Path: <stable+bounces-208337-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5FD5D1D5FB
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:08:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31779D1D7A3
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:21:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 53A4D30848F2
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:02:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 101C2302DCAB
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:17:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9F553815D0;
-	Wed, 14 Jan 2026 09:02:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="BAqFnNCw";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="hi65Xvj9";
-	dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b="ALfiIRyz";
-	dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b="5NAzUi/u"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B563803E9;
+	Wed, 14 Jan 2026 09:17:17 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73FCB37F74D
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 09:02:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4329A37F8B0;
+	Wed, 14 Jan 2026 09:17:13 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=141.14.17.11
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768381374; cv=none; b=ruYSxUJVbas8RLxRHXmhCahrpFmLp4SOk2eYTGSLAMpyWjjCPeY0bpEwgKQvaNLypFOFDF+ax7iZuA2hR0jniJgUGTLYFpDCbNiy0p92moMWMuSabS1BQ8dbivonzRjaupBSjXjKqmOnN1C3LMG3Bhm5UwVbmBMRBctYTD3KIgU=
+	t=1768382237; cv=none; b=D3yF4B9v3cJv2THh67xhHTrOLQhgtrUT1F8Ipv2kn3qqqfP+o4yePEaAYOYbEZgIngau39muBkC1FebuCSkJjCCARLwsnPAvA1OyunvzKeM2YVdkiTHsUtgtV11oWP4NUh2xC6q4CKAhJufrm2/E5TesGBXzUNZoXx8p1T6cUpA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768381374; c=relaxed/simple;
-	bh=nN8dNb+ULWRciX6HSxokmAu9GLKXvbrVenA5Lm8vQQE=;
+	s=arc-20240116; t=1768382237; c=relaxed/simple;
+	bh=f6mizSXYfiX4UrL28TthCwr5Nr9HvVn4bJL9YsfTPm8=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=gDFIqVrymhnLMHR2l9QdgVcf8Ul2UKONm9ZXoEp+c3uww4nY4MYKYWLbd9sc1yXI8b/lOfPiRBXg3T+0iRHcVI5EQm7XL0wdamTgroW78HTeUWqevUdmTngpsF06tby8WqMNbX9LO2ACraqUOb3MxYcsDFOItiIP+W9ENRbViV8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de; spf=pass smtp.mailfrom=suse.de; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=BAqFnNCw; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=hi65Xvj9; dkim=pass (1024-bit key) header.d=suse.de header.i=@suse.de header.b=ALfiIRyz; dkim=permerror (0-bit key) header.d=suse.de header.i=@suse.de header.b=5NAzUi/u; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=suse.de
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.de
-Received: from imap1.dmz-prg2.suse.org (unknown [10.150.64.97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	 In-Reply-To:Content-Type; b=QKYsg5ZMxXAyhqv7oX/VEJkrVZV2Dtwqm2yoCkJhvhNCe/tkRBkvVCFBtG2QDtZ7LYW8BKuI2Qot9b4mPAfuaQ7FVV3jIZs06pZ7xQsMigslv733Li9D5XyZ6lkP65Ktl0uN4Nmc1tM4znoOe6B/sF7PfGS4PZZB9og40xrtbjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de; spf=pass smtp.mailfrom=molgen.mpg.de; arc=none smtp.client-ip=141.14.17.11
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=molgen.mpg.de
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=molgen.mpg.de
+Received: from [192.168.44.133] (unknown [185.238.219.25])
+	(using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
 	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 3B48F33838;
-	Wed, 14 Jan 2026 09:02:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768381361; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
-	b=BAqFnNCwhO6/KOVVWQdbSZ8ZHVYH7bQcfQlBZSITjeIhz+rl0Vp93hO0Ry9KZX3ZLcqXvL
-	vz1tkfoXsb8bBJEdWUwn4+wtucJPshCrZ3hoxr1N7NL//FJni94sh2P6iB4nH2oJC1WYYT
-	1H/lsZG/vnAzY3ySONLhXx6NLtpjGX4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768381361;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
-	b=hi65Xvj913HM3KJEx7scztgGv3euZmblPpX9YncaMY6m0DkvVndSmiI4/FOoXsYJObI30i
-	eri5SizUCiT6AiAQ==
-Authentication-Results: smtp-out1.suse.de;
-	none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-	t=1768381360; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
-	b=ALfiIRyzFWfPIQ3nI6innhppkGsJpk5Wlg4uz2FEsRTujQ82JP+OaHRGHVKIfGddzE3Hee
-	BS0fFqFV2QcI/d3zCXiVvZCFoG2stwtHOJ11IfvWawCKyrqx847DK1AmdJADdXhI12Pwq/
-	1gYsed5ADAmtK7FOb6FtSwJlZy6R7xo=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-	s=susede2_ed25519; t=1768381360;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=dvw73lmZsHnj67N36Sj/+aclU6XFvMasgmnvVJhshrk=;
-	b=5NAzUi/uYwSG+e4IfOqN7vaM8mH7wevO/BV0t7Sa3bH+BLnNmWdCX8Xk4W+4+hx9kmKRU5
-	fFwsp7ORZswnjlDA==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id DD0A93EA63;
-	Wed, 14 Jan 2026 09:02:39 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id VW2GNK9bZ2nbcgAAD6G6ig
-	(envelope-from <tzimmermann@suse.de>); Wed, 14 Jan 2026 09:02:39 +0000
-Message-ID: <4cb4d554-4874-4216-b7ae-6265dc4d595f@suse.de>
-Date: Wed, 14 Jan 2026 10:02:39 +0100
+	(Authenticated sender: pmenzel)
+	by mx.molgen.mpg.de (Postfix) with ESMTPSA id E14B02394ABD9;
+	Wed, 14 Jan 2026 10:16:31 +0100 (CET)
+Message-ID: <ff44a005-6ebf-45ed-9b84-804d44e2158c@molgen.mpg.de>
+Date: Wed, 14 Jan 2026 10:16:29 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -95,103 +43,128 @@ List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6/8] drm/sysfb: Remove duplicate declarations
-To: Javier Martinez Canillas <javierm@redhat.com>, tzungbi@kernel.org,
- briannorris@chromium.org, jwerner@chromium.org,
- maarten.lankhorst@linux.intel.com, mripard@kernel.org, airlied@gmail.com,
- simona@ffwll.ch
-Cc: chrome-platform@lists.linux.dev, dri-devel@lists.freedesktop.org,
- stable@vger.kernel.org
-References: <20260108145058.56943-1-tzimmermann@suse.de>
- <20260108145058.56943-7-tzimmermann@suse.de>
- <87ecnzf57f.fsf@ocarina.mail-host-address-is-not-set>
+Subject: Re: [Intel-wired-lan] [PATCH iwl-net 2/2] ice: fix retry for AQ
+ command 0x06EE
+To: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
+ Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
+ stable@vger.kernel.org, Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+ Przemek Kitszel <przemyslaw.kitszel@intel.com>
+References: <20260113193817.582-1-dawid.osuchowski@linux.intel.com>
+ <20260113193817.582-3-dawid.osuchowski@linux.intel.com>
 Content-Language: en-US
-From: Thomas Zimmermann <tzimmermann@suse.de>
-Autocrypt: addr=tzimmermann@suse.de; keydata=
- xsBNBFs50uABCADEHPidWt974CaxBVbrIBwqcq/WURinJ3+2WlIrKWspiP83vfZKaXhFYsdg
- XH47fDVbPPj+d6tQrw5lPQCyqjwrCPYnq3WlIBnGPJ4/jreTL6V+qfKRDlGLWFjZcsrPJGE0
- BeB5BbqP5erN1qylK9i3gPoQjXGhpBpQYwRrEyQyjuvk+Ev0K1Jc5tVDeJAuau3TGNgah4Yc
- hdHm3bkPjz9EErV85RwvImQ1dptvx6s7xzwXTgGAsaYZsL8WCwDaTuqFa1d1jjlaxg6+tZsB
- 9GluwvIhSezPgnEmimZDkGnZRRSFiGP8yjqTjjWuf0bSj5rUnTGiyLyRZRNGcXmu6hjlABEB
- AAHNJ1Rob21hcyBaaW1tZXJtYW5uIDx0emltbWVybWFubkBzdXNlLmRlPsLAjgQTAQgAOAIb
- AwULCQgHAgYVCgkICwIEFgIDAQIeAQIXgBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftODH
- AAoJEGgNwR1TC3ojx1wH/0hKGWugiqDgLNXLRD/4TfHBEKmxIrmfu9Z5t7vwUKfwhFL6hqvo
- lXPJJKQpQ2z8+X2vZm/slsLn7J1yjrOsoJhKABDi+3QWWSGkaGwRJAdPVVyJMfJRNNNIKwVb
- U6B1BkX2XDKDGffF4TxlOpSQzdtNI/9gleOoUA8+jy8knnDYzjBNOZqLG2FuTdicBXblz0Mf
- vg41gd9kCwYXDnD91rJU8tzylXv03E75NCaTxTM+FBXPmsAVYQ4GYhhgFt8S2UWMoaaABLDe
- 7l5FdnLdDEcbmd8uLU2CaG4W2cLrUaI4jz2XbkcPQkqTQ3EB67hYkjiEE6Zy3ggOitiQGcqp
- j//OwE0EWznS4AEIAMYmP4M/V+T5RY5at/g7rUdNsLhWv1APYrh9RQefODYHrNRHUE9eosYb
- T6XMryR9hT8XlGOYRwKWwiQBoWSDiTMo/Xi29jUnn4BXfI2px2DTXwc22LKtLAgTRjP+qbU6
- 3Y0xnQN29UGDbYgyyK51DW3H0If2a3JNsheAAK+Xc9baj0LGIc8T9uiEWHBnCH+RdhgATnWW
- GKdDegUR5BkDfDg5O/FISymJBHx2Dyoklv5g4BzkgqTqwmaYzsl8UxZKvbaxq0zbehDda8lv
- hFXodNFMAgTLJlLuDYOGLK2AwbrS3Sp0AEbkpdJBb44qVlGm5bApZouHeJ/+n+7r12+lqdsA
- EQEAAcLAdgQYAQgAIAIbDBYhBHIX+6yM6c9jRKFo5WgNwR1TC3ojBQJftOH6AAoJEGgNwR1T
- C3ojVSkIALpAPkIJPQoURPb1VWjh34l0HlglmYHvZszJWTXYwavHR8+k6Baa6H7ufXNQtThR
- yIxJrQLW6rV5lm7TjhffEhxVCn37+cg0zZ3j7zIsSS0rx/aMwi6VhFJA5hfn3T0TtrijKP4A
- SAQO9xD1Zk9/61JWk8OysuIh7MXkl0fxbRKWE93XeQBhIJHQfnc+YBLprdnxR446Sh8Wn/2D
- Ya8cavuWf2zrB6cZurs048xe0UbSW5AOSo4V9M0jzYI4nZqTmPxYyXbm30Kvmz0rYVRaitYJ
- 4kyYYMhuULvrJDMjZRvaNe52tkKAvMevcGdt38H4KSVXAylqyQOW5zvPc4/sq9c=
-In-Reply-To: <87ecnzf57f.fsf@ocarina.mail-host-address-is-not-set>
+From: Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20260113193817.582-3-dawid.osuchowski@linux.intel.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Score: -4.30
-X-Spamd-Result: default: False [-4.30 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	FREEMAIL_TO(0.00)[redhat.com,kernel.org,chromium.org,linux.intel.com,gmail.com,ffwll.ch];
-	ARC_NA(0.00)[];
-	MIME_TRACE(0.00)[0:+];
-	RCPT_COUNT_SEVEN(0.00)[11];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	MID_RHS_MATCH_FROM(0.00)[];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	DKIM_SIGNED(0.00)[suse.de:s=susede2_rsa,suse.de:s=susede2_ed25519];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	RCVD_TLS_ALL(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.de:mid,suse.de:email,imap1.dmz-prg2.suse.org:helo,lists.freedesktop.org:email,suse.com:url]
-X-Spam-Level: 
-X-Spam-Flag: NO
+Content-Transfer-Encoding: 7bit
+
+Dear Dawid, dear Jakub,
 
 
+Thank you for your patch.
 
-Am 09.01.26 um 11:31 schrieb Javier Martinez Canillas:
-> Thomas Zimmermann <tzimmermann@suse.de> writes:
->
->> Commit 6046b49bafff ("drm/sysfb: Share helpers for integer validation")
->> and commit e8c086880b2b ("drm/sysfb: Share helpers for screen_info
->> validation") added duplicate function declarations. Remove the latter
->> ones.
->>
->> Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
->> Fixes: e8c086880b2b ("drm/sysfb: Share helpers for screen_info validation")
->> Cc: Thomas Zimmermann <tzimmermann@suse.de>
->> Cc: Javier Martinez Canillas <javierm@redhat.com>
->> Cc: dri-devel@lists.freedesktop.org
->> Cc: <stable@vger.kernel.org> # v6.16+
->> ---
->>   drivers/gpu/drm/sysfb/drm_sysfb_helper.h | 9 ---------
->>   1 file changed, 9 deletions(-)
->>
-> Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Am 13.01.26 um 20:38 schrieb Dawid Osuchowski:
+> From: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+> 
+> Executing ethtool -m can fail reporting a netlink I/O error while firmware
+> link management holds the i2c bus used to communicate with the module.
+> 
+> According to Intel(R) Ethernet Controller E810 Datasheet Rev 2.8 [1]
+> Section 3.3.10.4 Read/Write SFF EEPROM (0x06EE)
+> request should to be retried upon receiving EBUSY from firmware.
+> 
+> Commit e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+> implemented it only for part of ice_get_module_eeprom(), leaving all other
+> calls to ice_aq_sff_eeprom() vulnerable to returning early on getting
+> EBUSY without retrying.
+> 
+> Remove the retry loop from ice_get_module_eeprom() and add Admin Queue
+> (AQ) command with opcode 0x06EE to the list of commands that should be
+> retried on receiving EBUSY from firmware.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: e9c9692c8a81 ("ice: Reimplement module reads used by ethtool")
+> Signed-off-by: Jakub Staniszewski <jakub.staniszewski@linux.intel.com>
+> Co-developed-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Signed-off-by: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
+> Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+> Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+> Link: https://www.intel.com/content/www/us/en/content-details/613875/intel-ethernet-controller-e810-datasheet.html [1]
+> ---
+>   drivers/net/ethernet/intel/ice/ice_common.c  |  1 +
+>   drivers/net/ethernet/intel/ice/ice_ethtool.c | 35 ++++++++------------
+>   2 files changed, 15 insertions(+), 21 deletions(-)
+> 
+> diff --git a/drivers/net/ethernet/intel/ice/ice_common.c b/drivers/net/ethernet/intel/ice/ice_common.c
+> index aab00c44e9b2..26eb8e05498b 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_common.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_common.c
+> @@ -1854,6 +1854,7 @@ static bool ice_should_retry_sq_send_cmd(u16 opcode)
+>   	case ice_aqc_opc_lldp_stop:
+>   	case ice_aqc_opc_lldp_start:
+>   	case ice_aqc_opc_lldp_filter_ctrl:
+> +	case ice_aqc_opc_sff_eeprom:
+>   		return true;
+>   	}
+>   
+> diff --git a/drivers/net/ethernet/intel/ice/ice_ethtool.c b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> index 3565a5d96c6d..478876908db1 100644
+> --- a/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> +++ b/drivers/net/ethernet/intel/ice/ice_ethtool.c
+> @@ -4496,7 +4496,7 @@ ice_get_module_eeprom(struct net_device *netdev,
+>   	u8 addr = ICE_I2C_EEPROM_DEV_ADDR;
+>   	struct ice_hw *hw = &pf->hw;
+>   	bool is_sfp = false;
+> -	unsigned int i, j;
+> +	unsigned int i;
+>   	u16 offset = 0;
+>   	u8 page = 0;
+>   	int status;
+> @@ -4538,26 +4538,19 @@ ice_get_module_eeprom(struct net_device *netdev,
+>   		if (page == 0 || !(data[0x2] & 0x4)) {
+>   			u32 copy_len;
+>   
+> -			/* If i2c bus is busy due to slow page change or
+> -			 * link management access, call can fail. This is normal.
+> -			 * So we retry this a few times.
+> -			 */
+> -			for (j = 0; j < 4; j++) {
+> -				status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
+> -							   !is_sfp, value,
+> -							   SFF_READ_BLOCK_SIZE,
+> -							   0, NULL);
+> -				netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%X)\n",
+> -					   addr, offset, page, is_sfp,
+> -					   value[0], value[1], value[2], value[3],
+> -					   value[4], value[5], value[6], value[7],
+> -					   status);
+> -				if (status) {
+> -					usleep_range(1500, 2500);
+> -					memset(value, 0, SFF_READ_BLOCK_SIZE);
+> -					continue;
+> -				}
+> -				break;
+> +			status = ice_aq_sff_eeprom(hw, 0, addr, offset, page,
+> +						   !is_sfp, value,
+> +						   SFF_READ_BLOCK_SIZE,
+> +						   0, NULL);
+> +			netdev_dbg(netdev, "SFF %02X %02X %02X %X = %02X%02X%02X%02X.%02X%02X%02X%02X (%pe)\n",
+> +				   addr, offset, page, is_sfp,
+> +				   value[0], value[1], value[2], value[3],
+> +				   value[4], value[5], value[6], value[7],
+> +				   ERR_PTR(status));
+> +			if (status) {
+> +				netdev_err(netdev, "%s: error reading module EEPROM: status %pe\n",
+> +					   __func__, ERR_PTR(status));
+> +				return status;
+>   			}
+>   
+>   			/* Make sure we have enough room for the new block */
 
-Thanks. I'm going to put this into drm-misc-fixes in any case.
-
->
-
--- 
---
-Thomas Zimmermann
-Graphics Driver Developer
-SUSE Software Solutions Germany GmbH
-Frankenstr. 146, 90461 Nürnberg, Germany, www.suse.com
-GF: Jochen Jaser, Andrew McDonald, Werner Knoblich, (HRB 36809, AG Nürnberg)
+Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
 
 
+Kind regards,
+
+Paul
 
