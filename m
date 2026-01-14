@@ -1,76 +1,78 @@
-Return-Path: <stable+bounces-208381-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208382-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F36CED210D6
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 20:37:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E59C1D211F9
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 21:00:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 82D77302AAFB
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 19:37:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F2503027CCA
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 20:00:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D82BC347FC0;
-	Wed, 14 Jan 2026 19:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADA1134EF08;
+	Wed, 14 Jan 2026 20:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="N/pPVVnx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="QadWT2e0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92A0A2FBDF0;
-	Wed, 14 Jan 2026 19:37:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DFBB25228C;
+	Wed, 14 Jan 2026 20:00:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768419446; cv=none; b=AMK6RhaBb2PZVPz7SE/tykvMpSHBQReC4kxepbbop5PlxhfHlQHUDZ2p29mJ0qvvN/wYTRHHzVg92Mzcp41QdT6hojSzfwrqkI1Ykg3EIg0njG8LWVQ1wgpzEs8dT5UJEfEJRZW0ScwOdsn9uqllp32XMKGBcI0M0O8MCME1PFc=
+	t=1768420843; cv=none; b=Jo2oymoDn6afpxrBfBxI6xpzVMjsnfM1dQrwXPFwSpMMxJiox6AQF6CywZ/i3PVjSDrJ5HW0/LnyyKY6jRXNmJlOofl0ogxaUCml7NacbuNUbjT1H4OZCKJvRV6YY8HphXS1lINv0ih2zvbIle99Bu+4/GYRZLxlRujUKKf28/c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768419446; c=relaxed/simple;
-	bh=gpjWR6mV8zEfx/lFoa1psD5J8e/g5WdQMimKlhrES2c=;
-	h=Mime-Version:Content-Type:Date:Message-Id:Subject:Cc:To:From:
-	 References:In-Reply-To; b=tLqaPpu8NAcfwcyqY4GL6r8R3/1YObkOlRSt86RUwO85GkJ56uHsSF792qgd+62ro8bHbmFq74PHgJ4tGGgX0M6LpAdnKS4Us6wBEkxFmGG1c5IyJri9BCLzvcJrdpXHNt1jFzXstpYACapTUruSzO80Qbv+hE9QwWoJGuWKhuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=N/pPVVnx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E27C4CEF7;
-	Wed, 14 Jan 2026 19:37:22 +0000 (UTC)
+	s=arc-20240116; t=1768420843; c=relaxed/simple;
+	bh=jQL2DGJIUuoKsRj/apvhOGnSH97GSGbmLb6wMNSpcro=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=lGZSNCVuO5bIi1K66RegnbJPJMdMUVrgs/8KuKQGLagzLTQzFBUGtFYUIdPi+Wn7KCwvmL1fmjIyEu8x+Psi8mgVqkp+BUYRA69yXrlGjOwosSDIfWhQIdXRzGGVxNOIhIvXeVgPjyX6w2OjGupZ2tvF9F4Ep5NhIus6dwdkoMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=QadWT2e0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 185E1C4CEF7;
+	Wed, 14 Jan 2026 20:00:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-	s=k20201202; t=1768419446;
-	bh=gpjWR6mV8zEfx/lFoa1psD5J8e/g5WdQMimKlhrES2c=;
-	h=Date:Subject:Cc:To:From:References:In-Reply-To:From;
-	b=N/pPVVnxxhiavK9yo7XCGYVKuSRIbmnu2mc94frq4KMY0S6bXoI/BO54jW9KQCAPb
-	 ffBNzlyKuZTYTwzw8DWZsbCd62Oo7oXPMNxSaK4DETDSkTH1vkCrp7OPBNMKcKMzmu
-	 +rnqXDMmYs6QjT1wUKAZPmuStvFLCmZ4vx1/5D3c/oKFtxEZlvnzTpIc/UHW+2wz42
-	 B6v1YC8VKf3GgJvq8TvD/HUhKvFaK+OMnp0o/CeDSF1txB/DFSS0090IdkUto+lls3
-	 u0wuxXntUk4NsoWVcbB0z6U/4a9NsjFLVi0M/cKHM/EZm5MqYaupCZNfl07pAPpa5p
-	 3cGG2QjOEKT6g==
+	s=k20201202; t=1768420843;
+	bh=jQL2DGJIUuoKsRj/apvhOGnSH97GSGbmLb6wMNSpcro=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=QadWT2e0PDyMcL9h7VjXXD1zuDeJ7jZmCpJdTcv2vLDdW7NlZYekOW+elzS9vb+QU
+	 Cz0dzydVe29gAdQYoLHDRaTHBOhDVNWIYdi8rw0v+NxQv+obPGZWrfmj2D1aRJ2zpj
+	 9ecaEhedTDKI0rgkLpYbCVS3uAT5z5qJ6gmNWDsKh1ncmDDBy7i3+36PSv4vCLsW6d
+	 XJzhjifLMcSO7ZAsNOJYBv7hn9/6l+BOMtblR2vgOAm50PMQ2G2UhvlrMR/MNbmect
+	 fYrcmLWVS+BGdZe6safAhfa4kS2zWiVsnEKkZctA3TBjtYZpzwnECq9Vb635jeLtAv
+	 X+P1KGn32oXMQ==
+Date: Wed, 14 Jan 2026 15:00:40 -0500
+From: Sasha Levin <sashal@kernel.org>
+To: Florian Westphal <fw@strlen.de>
+Cc: patches@lists.linux.dev, stable@vger.kernel.org,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	pablo@netfilter.org, netfilter-devel@vger.kernel.org,
+	coreteam@netfilter.org
+Subject: Re: [PATCH AUTOSEL 6.18-6.6] netfilter: nf_tables: avoid chain
+ re-validation if possible
+Message-ID: <aWf16HxPQNNg8XIU@laps>
+References: <20251223100518.2383364-1-sashal@kernel.org>
+ <20251223100518.2383364-2-sashal@kernel.org>
+ <aUprB84-pTouDuac@strlen.de>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date: Wed, 14 Jan 2026 20:37:20 +0100
-Message-Id: <DFOKDFM2UW4X.YA1TI202V73F@kernel.org>
-Subject: Re: [PATCH v3 0/7] rust: build_assert: document and fix use with
- function arguments
-Cc: "Alice Ryhl" <aliceryhl@google.com>, "Daniel Almeida"
- <daniel.almeida@collabora.com>, "Miguel Ojeda" <ojeda@kernel.org>, "Alex
- Gaynor" <alex.gaynor@gmail.com>, "Boqun Feng" <boqun.feng@gmail.com>, "Gary
- Guo" <gary@garyguo.net>, =?utf-8?q?Bj=C3=B6rn_Roy_Baron?=
- <bjorn3_gh@protonmail.com>, "Benno Lossin" <lossin@kernel.org>, "Andreas
- Hindborg" <a.hindborg@kernel.org>, "Trevor Gross" <tmgross@umich.edu>,
- "Rafael J. Wysocki" <rafael@kernel.org>, "Viresh Kumar"
- <viresh.kumar@linaro.org>, "Will Deacon" <will@kernel.org>, "Peter
- Zijlstra" <peterz@infradead.org>, "Mark Rutland" <mark.rutland@arm.com>,
- <rust-for-linux@vger.kernel.org>, <linux-kernel@vger.kernel.org>,
- <linux-pm@vger.kernel.org>, <stable@vger.kernel.org>
-To: "Alexandre Courbot" <acourbot@nvidia.com>
-From: "Danilo Krummrich" <dakr@kernel.org>
-References: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
-In-Reply-To: <20251208-io-build-assert-v3-0-98aded02c1ea@nvidia.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii; format=flowed
+Content-Disposition: inline
+In-Reply-To: <aUprB84-pTouDuac@strlen.de>
 
-On Mon Dec 8, 2025 at 3:46 AM CET, Alexandre Courbot wrote:
->       rust: io: always inline functions using build_assert with arguments
->       rust: irq: always inline functions using build_assert with argument=
-s
+On Tue, Dec 23, 2025 at 11:12:23AM +0100, Florian Westphal wrote:
+>Sasha Levin <sashal@kernel.org> wrote:
+>> +	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain)))
+>> +		return false;
+>
+>This WARN will fire unless you also pick up
+>a67fd55f6a09 ("netfilter: nf_tables: remove redundant chain validation on register store")
 
-Applied to driver-core-linus, thanks!
+Looks like it's already in the trees, thanks!
+
+-- 
+Thanks,
+Sasha
 
