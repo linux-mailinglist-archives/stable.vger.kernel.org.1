@@ -1,154 +1,110 @@
-Return-Path: <stable+bounces-208312-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7E0DD1BFBE
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 02:46:21 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18A2DD1C17A
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 03:09:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7186B300FA29
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 01:46:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 57C993029C1E
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 02:06:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304991FBC8E;
-	Wed, 14 Jan 2026 01:46:17 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="F06ZJOvl"
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C58D82F25FB;
+	Wed, 14 Jan 2026 02:06:55 +0000 (UTC)
 X-Original-To: stable@vger.kernel.org
-Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
+Received: from dggsgout12.his.huawei.com (dggsgout12.his.huawei.com [45.249.212.56])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B503D3B3;
-	Wed, 14 Jan 2026 01:46:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C9E8A2F260E
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 02:06:41 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=45.249.212.56
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768355177; cv=none; b=Fi8MDhZ9FKdxZt8wfKoWj0f3i9hj5KCbC44rwLkDmVdFegq2nO7ubivP6wm0QlfDkbQ6jNvl3oDyLWJL+J2VF9a+0+q3xFYTKlkE+zv18ht3uhy3/Va7l7MOffZG49dpYw3pL3ci+nBDhPPXTuS48LDBENJBEFFWghr+iNV3KDY=
+	t=1768356415; cv=none; b=gH8AIm8bpL5cIFdgcKsT3grSQXT+QXFHI8mLfzsdrdfNKYccJcfUjyKbK7yMDMZOs++VrR3J2YLSulaLrlbJVA28zlF2+KynXf85sFdKadgCbibl6kW/UnVLneRkaDF9KPdqNG7Yb4U6PytvbPasmtQi6MM+IqZlzNJ9L897Ieg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768355177; c=relaxed/simple;
-	bh=aTA7pgDeFf3ROJ5IibL5iUMv1HiFvcV3APXLCfaXE0A=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=RE+xVsYXlT5p9IXv5YRQd6vCxrpEGr3RQRy4KJhLsILtG2xfSbIvUjSJEDpOEH9U0F8rACct0ADAva/oWYkKEnWakhRo43qQrpeG8g8rcve2K5FCWymS6qEyurg2NUJa2BKeH97YaUzwhRJ3fY159B2Yzo85AauhB/VkwD8cd3U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=F06ZJOvl; arc=none smtp.client-ip=115.124.30.132
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
-DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
-	d=linux.alibaba.com; s=default;
-	t=1768355166; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
-	bh=IydMD8wuNWInSOgTJupkde9o7rJXQ38wPrSFh8AMmlM=;
-	b=F06ZJOvl2AxXfzzfceaVrU/5G9sTyZHHV/8N64vgvgEN05C5L8f7SudR3aDlTjwpExLUGKxghMQKRdX4If0YfYNYXQKynQIftekKkU7u6eUTPPs8K+RP7WbR4UndgMfAXG0HlGrvmfrHXbVUqYZFlqThgrVNZOkGhghxxZ9uoE8=
-Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wx0Sq4r_1768355164 cluster:ay36)
-          by smtp.aliyun-inc.com;
-          Wed, 14 Jan 2026 09:46:05 +0800
-Message-ID: <2b87338f-d68d-4742-8b5d-c807b206830b@linux.alibaba.com>
-Date: Wed, 14 Jan 2026 09:46:04 +0800
+	s=arc-20240116; t=1768356415; c=relaxed/simple;
+	bh=NT5+oYctoZ4cueKggMKW1Uemo7m6uKkXoMSLZ/u5tF8=;
+	h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=k1cUN3rqUeKsCa+X6Ba60WQbInRqDxfXj8I/0Kpu6zQWDmskDPSDDRto9i7SNJQRDNt9cjfuG4TiBDYsE+7iCbYlpDUSI5yPWrNXaoM+Z6j3MUFDk2FB4iGyz0kgP1rlDP8W12sciwXBqqxvHh+Tn0F9pmV1fwLkWzMLT3zMVJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com; spf=none smtp.mailfrom=huaweicloud.com; arc=none smtp.client-ip=45.249.212.56
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=huaweicloud.com
+Authentication-Results: smtp.subspace.kernel.org; spf=none smtp.mailfrom=huaweicloud.com
+Received: from mail.maildlp.com (unknown [172.19.163.177])
+	by dggsgout12.his.huawei.com (SkyGuard) with ESMTPS id 4drTwq2rtHzKHMSs
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 10:05:47 +0800 (CST)
+Received: from mail02.huawei.com (unknown [10.116.40.128])
+	by mail.maildlp.com (Postfix) with ESMTP id BC5A940593
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 10:06:38 +0800 (CST)
+Received: from hulk-vt.huawei.com (unknown [10.67.174.121])
+	by APP4 (Coremail) with SMTP id gCh0CgDHKPkS+mZp6CDoDg--.60102S2;
+	Wed, 14 Jan 2026 10:06:38 +0800 (CST)
+From: Chen Ridong <chenridong@huaweicloud.com>
+To: gregkh@linuxfoundation.org
+Cc: stable@vger.kernel.org,
+	chenridong@huaweicloud.com,
+	lujialin4@huawei.com
+Subject: [PATCH stable] cpuset: Fix missing adaptation for cpuset_is_populated
+Date: Wed, 14 Jan 2026 01:51:29 +0000
+Message-Id: <20260114015129.1156361-1-chenridong@huaweicloud.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <2026011258-raving-unlovable-5059@gregkh>
+References: <2026011258-raving-unlovable-5059@gregkh>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
-To: Kairui Song <ryncsn@gmail.com>
-Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
- Andrew Morton <akpm@linux-foundation.org>,
- Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
- Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
- Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
- stable@vger.kernel.org
-References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
- <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
- <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
- <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
- <CAMgjq7Biq9nB_waZeWW+iJUa9Pj+paSSrke-tmnB=-3uY8k2VA@mail.gmail.com>
- <d95f9ea4-aa47-4d85-9b76-11afd0fb3ee7@linux.alibaba.com>
- <CAMgjq7DrrCx78K3uccsfpGeQfC-_+LuONSefJ+Vd+aCjyncwKw@mail.gmail.com>
-From: Baolin Wang <baolin.wang@linux.alibaba.com>
-In-Reply-To: <CAMgjq7DrrCx78K3uccsfpGeQfC-_+LuONSefJ+Vd+aCjyncwKw@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:gCh0CgDHKPkS+mZp6CDoDg--.60102S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7CFW3JF4xCw48AF1DCF1xXwb_yoW8JFyfpF
+	WDW3W3A345WF17C3yDWaySga4Fy3WkGF1UtFn5K3s5X3W7JF1jkr1j93Z0qryrZFW7C345
+	XFnIvr4FganFyFJanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDU0xBIdaVrnRJUUUym14x267AKxVWUJVW8JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+	rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+	1l84ACjcxK6xIIjxv20xvE14v26w1j6s0DM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4U
+	JVWxJr1l84ACjcxK6I8E87Iv67AKxVW0oVCq3wA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gc
+	CE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xvF2IEw4CE5I8CrVC2j2WlYx0E
+	2Ix0cI8IcVAFwI0_JrI_JrylYx0Ex4A2jsIE14v26r1j6r4UMcvjeVCFs4IE7xkEbVWUJV
+	W8JwACjcxG0xvY0x0EwIxGrwACjI8F5VA0II8E6IAqYI8I648v4I1l42xK82IYc2Ij64vI
+	r41l4I8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8Gjc
+	xK67AKxVWUGVWUWwC2zVAF1VAY17CE14v26r126r1DMIIYrxkI7VAKI48JMIIF0xvE2Ix0
+	cI8IcVAFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8V
+	AvwI8IcIk0rVWUJVWUCwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E
+	14v26r1j6r4UYxBIdaVFxhVjvjDU0xZFpf9x0JUdEfOUUUUU=
+X-CM-SenderInfo: hfkh02xlgr0w46kxt4xhlfz01xgou0bp/
 
+From: Chen Ridong <chenridong@huawei.com>
 
+Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
+was backported to the long‑term support (LTS) branches. However, because
+commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
+partitions") was not backported, a corresponding adaptation to the
+backported code is still required.
 
-On 1/13/26 6:10 PM, Kairui Song wrote:
-> On Tue, Jan 13, 2026 at 3:16 PM Baolin Wang
-> <baolin.wang@linux.alibaba.com> wrote:
->>
->> Hi Kairui,
->>
->> Sorry for late reply.
-> 
-> No problem, I was also quite busy with other works :)
-> 
->>
->> Yes, so I just mentioned your swapoff case.
->>
->>>> Actually, the real question is how to handle the case where a large swap
->>>> entry happens to cross the 'end' when calling shmem_truncate_range(). If
->>>> the shmem mapping stores a folio, we would split that large folio by
->>>> truncate_inode_partial_folio(). If the shmem mapping stores a large swap
->>>> entry, then as you noted, the truncation range can indeed exceed the 'end'.
->>>>
->>>> But with your change, that large swap entry would not be truncated, and
->>>> I’m not sure whether that might cause other issues. Perhaps the best
->>>> approach is to first split the large swap entry and only truncate the
->>>> swap entries within the 'end' boundary like the
->>>> truncate_inode_partial_folio() does.
->>>
->>> Right... I was thinking that the shmem_undo_range iterates the undo
->>> range twice IIUC, in the second try it will retry if shmem_free_swap
->>> returns 0:
->>>
->>> swaps_freed = shmem_free_swap(mapping, indices[i], end - indices[i], folio);
->>> if (!swaps_freed) {
->>>       /* Swap was replaced by page: retry */
->>>       index = indices[i];
->>>       break;
->>> }
->>>
->>> So I thought shmem_free_swap returning 0 is good enough. Which is not,
->>> it may cause the second loop to retry forever.
->>
->> After further investigation, I think your original fix seems to be the
->> right direction, as the second loop’s find_lock_entries() will filter
->> out large swap entries crossing the 'end' boundary. Sorry for noise.
->>
->> See the code in find_lock_entries() (Thanks to Hugh:))
->>
->>          } else {
->>                  nr = 1 << xas_get_order(&xas);
->>                  base = xas.xa_index & ~(nr - 1);
->>                  /* Omit order>0 value which begins before the start */
->>                  if (base < *start)
->>                          continue;
->>                  /* Omit order>0 value which extends beyond the end */
->>                  if (base + nr - 1 > end)
->>                          break;
->>          }
->>
->> Then the shmem_get_partial_folio() will swap-in the large swap entry and
->> split the large folio which crosses the 'end' boundary.
-> 
-> Right, thanks for the info.
-> 
-> But what about find_get_entries under whole_folios? Even though a
-> large entry is splitted before that, a new large entry that crosses
-> `end` could appear after that and before find_get_entries, and return
-> by find_get_entries.
+To ensure correct behavior, replace cgroup_is_populated with
+cpuset_is_populated in the partition_is_populated function.
 
-Yes, another corner case:(
+Cc: stable@vger.kernel.org	# 6.1+
+Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
+Signed-off-by: Chen Ridong <chenridong@huawei.com>
+---
+ kernel/cgroup/cpuset.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-> I think we could just skip large entries that cross `end` in the
-> second loop, since if the entry exists before truncate, it must have
-> been split. We can ignore newly appeared entries.
+diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+index f61dde0497f3..3c466e742751 100644
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -486,7 +486,7 @@ static inline bool partition_is_populated(struct cpuset *cs,
+ 	    cs->attach_in_progress)
+ 		return true;
+ 	if (!excluded_child && !cs->nr_subparts_cpus)
+-		return cgroup_is_populated(cs->css.cgroup);
++		return cpuset_is_populated(cs);
+ 
+ 	rcu_read_lock();
+ 	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
+-- 
+2.34.1
 
-Sounds reasonable to me. Just as we don’t discard the entire folio when 
-a large folio split fails by updating the 'end':
-
-if (!truncate_inode_partial_folio(folio, lstart, lend))
-	end = folio->index;
-
-> If that's OK I can send two patches, one to ignore the large entries
-> in the second loop, one to fix shmem_free_swap following your
-> suggestion in this reply.
-
-Please do. Thanks.
 
