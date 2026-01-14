@@ -1,129 +1,120 @@
-Return-Path: <stable+bounces-208308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208309-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8705D1BC91
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 01:15:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A9D6D1BE5C
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 02:19:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E4EF830248BD
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 00:15:14 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 476DE3039ADC
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 01:19:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 353F942049;
-	Wed, 14 Jan 2026 00:15:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EF924466D;
+	Wed, 14 Jan 2026 01:19:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="h6WIfwr3"
+	dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b="WdjNfmC7"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from m16.mail.163.com (m16.mail.163.com [220.197.31.4])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC6F213A86C;
-	Wed, 14 Jan 2026 00:15:13 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BF8223E320;
+	Wed, 14 Jan 2026 01:19:18 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=220.197.31.4
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768349714; cv=none; b=FDwrxT1zHMc00lFtJXamD0ab+91A5Oh9S7f4wU1lq5zJBg7O+9vtBWcdFRUqCa+8+gqz/7yA0VPUktu3NQhviW8RUjBlyl+QAP00PzcGx5ME/C4H1cgPvI6FoRu7F0E7GobnWUYkZILCMVfpie8PLYEMawl2JZW4CE6PzK9XYgs=
+	t=1768353562; cv=none; b=kjkCpKTy2GuOGAi+1mkfmlwJlbLrjPI5gwlEwwMVvgXJ1wKtWDvYQRd3jAtKEFQ7I3iF2b0MyanvlZ+Bip+D1rUNDlifZ6IbawHJviYaX8HVYCIyPxHOOHUV6xLW5csto2maH4ZUABy/iFzvO2/BjdTifUBFOA4zS9r3/erBjuo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768349714; c=relaxed/simple;
-	bh=3EvefWsLoxPlogKPQ2X10cKF3OlYgoQwf3eHHgy7cF0=;
-	h=Date:To:From:Subject:Message-Id; b=oZI+twu8HkL7hS5DuH09tPj4V58HL+85jGtoOH3j/Mwkia86Asti8mpQXFz8TydpgofvaTtcOtaCk8/3McLaeKsJQRXe8gJlJqj9xJ1sKxtEgtKuPV08MdBFCgeTzryPcIVbIKt1SHXwphyhxjkI5J4Q40k6pejGS2R1J9RWkG8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=h6WIfwr3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D563C116C6;
-	Wed, 14 Jan 2026 00:15:13 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768349713;
-	bh=3EvefWsLoxPlogKPQ2X10cKF3OlYgoQwf3eHHgy7cF0=;
-	h=Date:To:From:Subject:From;
-	b=h6WIfwr3+ShW5Q6YZRn1iPWqhn75TsMD7VxLcN69+WKzdG0emI4TBBCTq7U0A14Iz
-	 JOlZV+nL035lLOVYNO1J4VXzWWBInHudeBjMw2No4GSDDWDqN2nWiSS9MmFYosWY+4
-	 pzfWU648kbSs0IU0Ktg553DojZ5e/pPnCMSrDCpQ=
-Date: Tue, 13 Jan 2026 16:15:12 -0800
-To: mm-commits@vger.kernel.org,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,pratyush@kernel.org,pasha.tatashin@soleen.com,graf@amazon.com,ran.xiaokai@zte.com.cn,akpm@linux-foundation.org
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: + kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch added to mm-hotfixes-unstable branch
-Message-Id: <20260114001513.7D563C116C6@smtp.kernel.org>
+	s=arc-20240116; t=1768353562; c=relaxed/simple;
+	bh=a6ZsLShSQVWoAv02UvhXHeaWA6BCLaMaR1drAdYEGbs=;
+	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version:Content-Type; b=Jkq/K12jn6aOHhp787cdIyCkETs7MnOVR8PzuCuEmQnNxcrUtcT1sdvd/6ZLjXhVMdEB3/+LlLPqyewo45GKcc3llur3XbJppMCqdYmUQWdnAPQY2JGLGL/zcSOuocjqf0IyC81ARwxdUtOJpt8wvpAOaVZe5BQPf3YJN16erj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com; spf=pass smtp.mailfrom=163.com; dkim=pass (1024-bit key) header.d=163.com header.i=@163.com header.b=WdjNfmC7; arc=none smtp.client-ip=220.197.31.4
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=163.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=163.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=163.com;
+	s=s110527; h=From:To:Subject:Date:Message-Id:MIME-Version:
+	Content-Type; bh=JWETGwEcfHV8y65+VA3wq2t462nUh5xKvgddbS69HlI=;
+	b=WdjNfmC7nIK0l8eOWhGDbJjON9+NLFvOnVGRMlQWze7iAFg+F2V34EdrxoH31P
+	lipwQMj94vzjgH0WJfPPTuNd+m8N+yZ5dFp4/ejAynccRzgA5AnMxP8V40GKdSuK
+	YqzxST/IA3TwJBg/jljEWUlXhxHF03BD1tuWETNXftdhE=
+Received: from pek-lpg-core6.wrs.com (unknown [])
+	by gzga-smtp-mtada-g0-2 (Coremail) with SMTP id _____wDn71ns7mZpiuzOGg--.18817S2;
+	Wed, 14 Jan 2026 09:18:37 +0800 (CST)
+From: Rahul Sharma <black.hawk@163.com>
+To: gregkh@linuxfoundation.org,
+	stable@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org,
+	=?UTF-8?q?Bj=C3=B6rn=20T=C3=B6pel?= <bjorn@rivosinc.com>,
+	Guo Ren <guoren@kernel.org>,
+	Palmer Dabbelt <palmer@rivosinc.com>,
+	Rahul Sharma <black.hawk@163.com>
+Subject: [PATCH v6.6] riscv: uprobes: Add missing fence.i after building the XOL buffer
+Date: Wed, 14 Jan 2026 09:18:30 +0800
+Message-Id: <20260114011830.2045424-1-black.hawk@163.com>
+X-Mailer: git-send-email 2.34.1
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID:_____wDn71ns7mZpiuzOGg--.18817S2
+X-Coremail-Antispam: 1Uf129KBjvJXoW7urWfCrW3KrW5CrWxKryxuFg_yoW8ZF1kpF
+	4Fkw4ftr4rXa45G347JrZ5uw1Sv34vqr42v3y3J3yrZwsFqr47uwsagw48Xr1YyrZ09rWY
+	v3WqkryDKayDA37anT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+	9KBjDUYxBIdaVFxhVjvjDU0xZFpf9x0zM1vV9UUUUU=
+X-CM-SenderInfo: 5eoduy4okd4yi6rwjhhfrp/xtbC3Q7qhGlm7u4vfgAA3j
 
+From: Björn Töpel <bjorn@rivosinc.com>
 
-The patch titled
-     Subject: kho: init alloc tags when restoring pages from reserved memory
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+[ Upstream commit 7d1d19a11cfbfd8bae1d89cc010b2cc397cd0c48 ]
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+The XOL (execute out-of-line) buffer is used to single-step the
+replaced instruction(s) for uprobes. The RISC-V port was missing a
+proper fence.i (i$ flushing) after constructing the XOL buffer, which
+can result in incorrect execution of stale/broken instructions.
 
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+This was found running the BPF selftests "test_progs:
+uprobe_autoattach, attach_probe" on the Spacemit K1/X60, where the
+uprobes tests randomly blew up.
 
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via various
-branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there most days
-
-------------------------------------------------------
-From: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Subject: kho: init alloc tags when restoring pages from reserved memory
-Date: Fri, 9 Jan 2026 10:42:51 +0000
-
-Memblock pages (including reserved memory) should have their allocation
-tags initialized to CODETAG_EMPTY via clear_page_tag_ref() before being
-released to the page allocator.  When kho restores pages through
-kho_restore_page(), missing this call causes mismatched
-allocation/deallocation tracking and below warning message:
-
-alloc_tag was not set
-WARNING: include/linux/alloc_tag.h:164 at ___free_pages+0xb8/0x260, CPU#1: swapper/0/1
-RIP: 0010:___free_pages+0xb8/0x260
- kho_restore_vmalloc+0x187/0x2e0
- kho_test_init+0x3c4/0xa30
- do_one_initcall+0x62/0x2b0
- kernel_init_freeable+0x25b/0x480
- kernel_init+0x1a/0x1c0
- ret_from_fork+0x2d1/0x360
-
-Add missing clear_page_tag_ref() annotation in kho_restore_page() to
-fix this.
-
-Link: https://lkml.kernel.org/r/20260113033403.161869-1-ranxiaokai627@163.com
-Link: https://lkml.kernel.org/r/20260109104251.157767-1-ranxiaokai627@163.com
-Fixes: fc33e4b44b27 ("kexec: enable KHO support for memory preservation")
-Signed-off-by: Ran Xiaokai <ran.xiaokai@zte.com.cn>
-Reviewed-by: Mike Rapoport (Microsoft) <rppt@kernel.org>
-Reviewed-by: Suren Baghdasaryan <surenb@google.com>
-Reviewed-by: Pasha Tatashin <pasha.tatashin@soleen.com>
-Cc: Alexander Graf <graf@amazon.com>
-Cc: Pratyush Yadav <pratyush@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reviewed-by: Guo Ren <guoren@kernel.org>
+Fixes: 74784081aac8 ("riscv: Add uprobes supported")
+Signed-off-by: Björn Töpel <bjorn@rivosinc.com>
+Link: https://lore.kernel.org/r/20250419111402.1660267-2-bjorn@kernel.org
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Rahul Sharma <black.hawk@163.com>
 ---
+ arch/riscv/kernel/probes/uprobes.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
- kernel/liveupdate/kexec_handover.c |    1 +
- 1 file changed, 1 insertion(+)
-
---- a/kernel/liveupdate/kexec_handover.c~kho-init-alloc-tags-when-restoring-pages-from-reserved-memory
-+++ a/kernel/liveupdate/kexec_handover.c
-@@ -255,6 +255,7 @@ static struct page *kho_restore_page(phy
- 	if (is_folio && info.order)
- 		prep_compound_page(page, info.order);
+diff --git a/arch/riscv/kernel/probes/uprobes.c b/arch/riscv/kernel/probes/uprobes.c
+index 4b3dc8beaf77..cc15f7ca6cc1 100644
+--- a/arch/riscv/kernel/probes/uprobes.c
++++ b/arch/riscv/kernel/probes/uprobes.c
+@@ -167,6 +167,7 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 	/* Initialize the slot */
+ 	void *kaddr = kmap_atomic(page);
+ 	void *dst = kaddr + (vaddr & ~PAGE_MASK);
++	unsigned long start = (unsigned long)dst;
  
-+	clear_page_tag_ref(page);
- 	adjust_managed_page_count(page, nr_pages);
- 	return page;
+ 	memcpy(dst, src, len);
+ 
+@@ -176,13 +177,6 @@ void arch_uprobe_copy_ixol(struct page *page, unsigned long vaddr,
+ 		*(uprobe_opcode_t *)dst = __BUG_INSN_32;
+ 	}
+ 
++	flush_icache_range(start, start + len);
+ 	kunmap_atomic(kaddr);
+-
+-	/*
+-	 * We probably need flush_icache_user_page() but it needs vma.
+-	 * This should work on most of architectures by default. If
+-	 * architecture needs to do something different it can define
+-	 * its own version of the function.
+-	 */
+-	flush_dcache_page(page);
  }
-_
-
-Patches currently in -mm which might be from ran.xiaokai@zte.com.cn are
-
-kho-init-alloc-tags-when-restoring-pages-from-reserved-memory.patch
+-- 
+2.34.1
 
 
