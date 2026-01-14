@@ -1,130 +1,104 @@
-Return-Path: <stable+bounces-208333-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208334-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E9802D1D55B
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 10:03:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA1F1D1D488
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 222E93017663
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:56:03 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2F0243008C71
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:56:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E54F3803C8;
-	Wed, 14 Jan 2026 08:54:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3856637F8A4;
+	Wed, 14 Jan 2026 08:56:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="YuJ6e+fx"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="WysZdHt5"
 X-Original-To: stable@vger.kernel.org
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A2FC025A640
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 08:54:18 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D9BF35EDA3;
+	Wed, 14 Jan 2026 08:56:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768380863; cv=none; b=XKrPUUjuqCOyxpiNsG1BnXWzHQbtAdHcPYADkINDfSmcr1SUyuUFbVVbcq+Yq7WaeurjuBRNX0Mh9SA3EThB5h87Xhvh9f5AH4iumS3CSa1mHyeLXfRlL4+88MKFWhiyA6l/CbQrsy8JD+WyYfhV4Avk93ByqCcwqzcFASsBLPU=
+	t=1768380980; cv=none; b=KDLvVqakciOwESGnxlC/+N5aufjgEu71bHNHEBsxCkvVBzN6GLzk/PD32DtuQmuYWksg+nKLPCaaDwP4ocVxF6lKB3c1qkkdfVl9jLL8xsRs4Lh0ihE6iK0fwdkkjFJYCU2Q+DTRh0u5rC4/dqUPV7GeWMal4ooB9WXC47OwvwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768380863; c=relaxed/simple;
-	bh=XyuABFG6/YRo1l0ISb8LvMu84znUkQz9OKE907BxwBM=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=EGin7YmC3kWhTgrDNKChbxbUAAtiwewiNSFLju/NrheXzOev3CQZHUf8HWFL0cv5aGEPO0LgsEqTIYtjy1wvG8YycFet8jhaEStzoZ9QM27J8OhYSs118SQYhgziuxBA4tDIKZ/YU7WOuttzVRCr5FhX7ZFv9Fw6CpnP1g6VRls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=YuJ6e+fx; arc=none smtp.client-ip=170.10.133.124
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-	s=mimecast20190719; t=1768380856;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:
-	 content-transfer-encoding:content-transfer-encoding;
-	bh=WwwD3IP8UdTkiyx/FhIRaihaea2NW0EMXNQqPAeK3Qo=;
-	b=YuJ6e+fxo16W89+L2NQRo19FLaWhzD1fxkkdIM+v5xrwxDC1YkHJv9ThS053dcyb0N0BGY
-	BrRxewBfByd1FSJ4x+5r/GFnRJcBhzBZpoeLdcf1MiWoxk63omTyMqWDOMX9iKHdkq2kGg
-	TL2etM91CNDEvU2JVlyuznZcxacZhLA=
-Received: from mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com
- (ec2-54-186-198-63.us-west-2.compute.amazonaws.com [54.186.198.63]) by
- relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
- cipher=TLS_AES_256_GCM_SHA384) id us-mta-628-Rj5V06gIPuC449-JydYMEg-1; Wed,
- 14 Jan 2026 03:54:15 -0500
-X-MC-Unique: Rj5V06gIPuC449-JydYMEg-1
-X-Mimecast-MFC-AGG-ID: Rj5V06gIPuC449-JydYMEg_1768380854
-Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-	(No client certificate requested)
-	by mx-prod-mc-03.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id EA2DD195605A;
-	Wed, 14 Jan 2026 08:54:13 +0000 (UTC)
-Received: from localhost (unknown [10.72.116.198])
-	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id DAB74180066A;
-	Wed, 14 Jan 2026 08:54:12 +0000 (UTC)
-From: Ming Lei <ming.lei@redhat.com>
-To: Jens Axboe <axboe@kernel.dk>
-Cc: io-uring@vger.kernel.org,
-	Caleb Sander Mateos <csander@purestorage.com>,
-	Ming Lei <ming.lei@redhat.com>,
+	s=arc-20240116; t=1768380980; c=relaxed/simple;
+	bh=za4xTPWPWUHIXHkvsKZBi5B8uKsVvVpFvxtO49NYT50=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=uEAi2MIyxtxKrvXy/h5qvswvcLWJd+LxDa5e8O1LHxi766JHaO9Pe+J/576TiRUakd+BXM5UO/i/Q68mmvekJ5CNP3OblIp7WLQ1HvblR7Gj6O5lhCBqaEfJqj8dXtOsac+2JTQ6/Tempom4PJtFqpoxyId0nLU4ZuFEGO4eo1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=WysZdHt5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A930C4CEF7;
+	Wed, 14 Jan 2026 08:56:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768380979;
+	bh=za4xTPWPWUHIXHkvsKZBi5B8uKsVvVpFvxtO49NYT50=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=WysZdHt5vhuNsDQwGfAAf6lFLKcLvjYpEiZibWBXcfRmpKxMy/MISzgPiklw6n2a9
+	 EYN8iCMUsYFuVSIeALm4nsQ9lpl8hQR1irii0HCVFuHgg69M9QiLozEqoVkjF4Y+AU
+	 aldxqkX3makv0a84TIohE7NRzOnPq2/IUrnYApitZ2KhtqQ7rXvjIcAvzpsUJ1vFiI
+	 Uwtf7rRYDsAaTdOmTZB2CJ4fkQ8BWhH3EXvwOce1m//83ngrge59uS7uV0h/FzOsmw
+	 GG320eEWEiRG2Q3GFRRFSs2mjLU+h3lT1eyNReOCD3AFLadRDyxvzKuiSZZPOFBRGH
+	 8mWqZ7CXWENwQ==
+Received: from johan by xi.lan with local (Exim 4.98.2)
+	(envelope-from <johan@kernel.org>)
+	id 1vfwfk-000000006r2-25Dm;
+	Wed, 14 Jan 2026 09:56:12 +0100
+Date: Wed, 14 Jan 2026 09:56:12 +0100
+From: Johan Hovold <johan@kernel.org>
+To: Rob Clark <robin.clark@oss.qualcomm.com>, Sean Paul <sean@poorly.run>
+Cc: Konrad Dybcio <konradybcio@kernel.org>,
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Dmitry Baryshkov <lumag@kernel.org>,
+	Abhinav Kumar <abhinav.kumar@linux.dev>,
+	Jessica Zhang <jesszhan0024@gmail.com>,
+	Marijn Suijten <marijn.suijten@somainline.org>,
+	Bjorn Andersson <andersson@kernel.org>,
+	linux-arm-msm@vger.kernel.org, dri-devel@lists.freedesktop.org,
+	freedreno@lists.freedesktop.org, linux-kernel@vger.kernel.org,
 	stable@vger.kernel.org
-Subject: [PATCH] io_uring: move local task_work in exit cancel loop
-Date: Wed, 14 Jan 2026 16:54:05 +0800
-Message-ID: <20260114085405.346872-1-ming.lei@redhat.com>
+Subject: Re: [PATCH] drm/msm/a6xx: fix bogus hwcg register updates
+Message-ID: <aWdaLF_A5fghNZhN@hovoldconsulting.com>
+References: <20251221164552.19990-1-johan@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20251221164552.19990-1-johan@kernel.org>
 
-With IORING_SETUP_DEFER_TASKRUN, task work is queued to ctx->work_llist
-(local work) rather than the fallback list. During io_ring_exit_work(),
-io_move_task_work_from_local() was called once before the cancel loop,
-moving work from work_llist to fallback_llist.
+On Sun, Dec 21, 2025 at 05:45:52PM +0100, Johan Hovold wrote:
+> The hw clock gating register sequence consists of register value pairs
+> that are written to the GPU during initialisation.
+> 
+> The a690 hwcg sequence has two GMU registers in it that used to amount
+> to random writes in the GPU mapping, but since commit 188db3d7fe66
+> ("drm/msm/a6xx: Rebase GMU register offsets") they trigger a fault as
+> the updated offsets now lie outside the mapping. This in turn breaks
+> boot of machines like the Lenovo ThinkPad X13s.
+> 
+> Note that the updates of these GMU registers is already taken care of
+> properly since commit 40c297eb245b ("drm/msm/a6xx: Set GMU CGC
+> properties on a6xx too"), but for some reason these two entries were
+> left in the table.
+> 
+> Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+> Cc: stable@vger.kernel.org	# 6.5
+> Cc: Bjorn Andersson <andersson@kernel.org>
+> Cc: Konrad Dybcio <konradybcio@kernel.org>
+> Signed-off-by: Johan Hovold <johan@kernel.org>
+> ---
 
-However, task work can be added to work_llist during the cancel loop
-itself. There are two cases:
+This one does not seem to have been applied yet despite fixing a
+critical regression in 6.19-rc1. I guess I could have highlighted that
+further by also including:
 
-1) io_kill_timeouts() is called from io_uring_try_cancel_requests() to
-cancel pending timeouts, and it adds task work via io_req_queue_tw_complete()
-for each cancelled timeout:
+Fixes: 188db3d7fe66 ("drm/msm/a6xx: Rebase GMU register offsets")
 
-2) URING_CMD requests like ublk can be completed via
-io_uring_cmd_complete_in_task() from ublk_queue_rq() during canceling,
-given ublk request queue is only quiesced when canceling the 1st uring_cmd.
+I realise some delays are expected around Christmas, but can you please
+try to get this fix to Linus now that everyone should be back again?
 
-Since io_allowed_defer_tw_run() returns false in io_ring_exit_work()
-(kworker != submitter_task), io_run_local_work() is never invoked,
-and the work_llist entries are never processed. This causes
-io_uring_try_cancel_requests() to loop indefinitely, resulting in
-100% CPU usage in kworker threads.
-
-Fix this by moving io_move_task_work_from_local() inside the cancel
-loop, ensuring any work on work_llist is moved to fallback before
-each cancel attempt.
-
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
----
- io_uring/io_uring.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
-
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 87a87396e940..b7a077c11c21 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -3003,12 +3003,12 @@ static __cold void io_ring_exit_work(struct work_struct *work)
- 			mutex_unlock(&ctx->uring_lock);
- 		}
- 
--		if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
--			io_move_task_work_from_local(ctx);
--
- 		/* The SQPOLL thread never reaches this path */
--		while (io_uring_try_cancel_requests(ctx, NULL, true, false))
-+		do {
-+			if (ctx->flags & IORING_SETUP_DEFER_TASKRUN)
-+				io_move_task_work_from_local(ctx);
- 			cond_resched();
-+		} while (io_uring_try_cancel_requests(ctx, NULL, true, false));
- 
- 		if (ctx->sq_data) {
- 			struct io_sq_data *sqd = ctx->sq_data;
--- 
-2.47.1
-
+Johan
 
