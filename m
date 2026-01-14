@@ -1,140 +1,161 @@
-Return-Path: <stable+bounces-208356-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40521D1ECC0
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 13:35:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1849AD1EED6
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 13:57:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7027D3008198
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 12:35:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 88D46304657D
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 12:57:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE460399013;
-	Wed, 14 Jan 2026 12:35:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B71BF399A67;
+	Wed, 14 Jan 2026 12:57:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="nBYs7tW/"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="OinJku6Y"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-wm1-f41.google.com (mail-wm1-f41.google.com [209.85.128.41])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D77DB395DB6
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 12:35:35 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.41
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7196E318EE4;
+	Wed, 14 Jan 2026 12:57:36 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768394139; cv=none; b=eojs9SD527/LD+1S9PVALmP7oDaYMqqYUXbs2p8KAk45UVir/RS2da5hojJyJNJV5L8q48YKl3p23hCKTrTef14v4FKv0Cr03pPCHL1ljZjzoOrFjJa63evo09WFvOtcqJ6Ltdx5SlZvqEAN5v9XS7jz5d+MFy0THpQejj0b7ic=
+	t=1768395456; cv=none; b=COq2Mht+LGX0ZKkiAq4/h7GgUVuBzxEwHUTkNKyrGj6pKui5aD1H4oDMsyL2KWPH3QbFs8dZIECzWNPA6sPwrpOOfpytRnnSw7VBsxWg27NnHv6eUBn8YxbfiZf0Mvnm88LLZY8OB6c2qxmaQvL588ciKECBMaGUKW3xBFa/yN0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768394139; c=relaxed/simple;
-	bh=KmF+mxZXBd5usLx31jYbFUdpVv319xRsw1z4NwmBaGQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version; b=Bs+4LuLXsKOy2bh+rsXeKsgf9UHUrYUD8vluMJ1Ynv98zEgQzJHezyD9P/u2qzz+WliaMVHTJbQ6Mmj/WrUWkZy+6czGymdEKbE/kYko9lKv24LuL/GpFDzsbNN+eSOdDeJmSt6xLvZGc45IM3PkTZnALlfkk+azgQ92mF7KvBc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=nBYs7tW/; arc=none smtp.client-ip=209.85.128.41
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-wm1-f41.google.com with SMTP id 5b1f17b1804b1-47ee47ff24aso732555e9.1
-        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 04:35:35 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768394133; x=1768998933; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=Q5TjDcxLgtKvSQq5PqYHcBcWFoLtkmVts7uy/aHfmR4=;
-        b=nBYs7tW/3x7wwMyV/lFnZERQJItyCnKQ5to8w5AZmiRmO90Kcin8Y0brIt7szpX39I
-         BI60JrLyXSuoVA5KooU9McRuS4qCKGutHAIe4hiccudblpMQFmIJQFDEXGdeqpVuiu9v
-         dsbNbBj9pV6KuO2X2SAy9pzYEups4x+1Zgg6tWsDHN2jLRaj2HcyactOyah/piwFt3ma
-         zi7meHwS0BOSOoxvyobOv7YIxHuk0qpvOT4Sql05l+umlbihuFaUqQ2sa7MimFbVygBo
-         E7uROKwuw1nPWkbUL5+ir/zd3bBFhDXrMKR5dN7OPbAsrgdVsWYQDPoPJNVOKUpVSvmp
-         zT9A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768394133; x=1768998933;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Q5TjDcxLgtKvSQq5PqYHcBcWFoLtkmVts7uy/aHfmR4=;
-        b=MpmUa/F8uLJXcAIWLCrw8hJOmW5vAOfPq8XnLnzKSUUCusPnJhRiHJlS15s/OpUERM
-         2ZpLttoFV/hvgqBfna6GnUxt5ej9mAmw5wmo5eyfovqnh/es+gAWUna6pXhH3kp3JOzY
-         SLo7KA6ZXMT5LtqOc2UXlqVKZudl8eH5gyHW4i5z86UO5TtQrKIzrAjhQTB6TlRp9UaN
-         4q/hTrb4FY0kHOcizCVs+T1iW+LJrpJLusJ7cuSlMpIaJLs0uJSnIdXljm/BvLlQfVKT
-         v4RpaBB7owcuP+Jp3IefN+HCx9RmCLzC0mpJLwrtOR4ukbGMVjfEAYy7Mb1pCt0fM7Pl
-         fSdw==
-X-Forwarded-Encrypted: i=1; AJvYcCXAw9ORVi7jnTZR/VeZSCFrNrGQ0h1qi7yfZobkJrQjdr542r23nOI6O3vds8hv7afGckuNqjg=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzacfSr/lu9FalmlxQrvRQ0xZ2+TA6g+TYIHSG7d3ltrlfrZ9Ve
-	QOdKlJ3d/C3NpDlNFlfEjxzjGl9dvCRsKHFXFWp3tQwxu5CX/UvkkCv/
-X-Gm-Gg: AY/fxX7XUuX8T8FxqwyTNPYeGvGrNnivL+HMLvz3X2Bxe0vcYNsRARhDutcQJLQjt1J
-	Rs0BUTV26Qgu7RfFd8D2eB2jycoCRxtSNDXfttoG128D9Q50kSKOxxiNdv33euz/dypnmy94shB
-	WzKf/aIpK/SJwl2L7wtJEZtfRUt4Xowjq76l+y7nnoi7EbqcRB8KTJCJsNWYXMYtSHpOCY4Gxpt
-	XCRparVGkJkQrx2bX25kJFuKz88s7fgsMQcuTp2v85pjq3AU7UsnNAnizoEE9TbBryatLmXfOZt
-	ktKs6sEMLfUwkFZM6UkLAwqePHoYcxOarVHGAxEoJTunj1vnOmvFeNpTI4b/MuFbm7fIiRBqkOg
-	3Vt0rQ2iXeOTMeaDuyjxCbYUgrs6E60RweayaMfXuMcyxa6BYmZyjMsjc3t95eYZ6NUHvn+jNaH
-	oKiC+50/oKHsBaJueQPSvZ/c+pQmqiBbEhMJclIWUBD1GcthIIst1AnRz4M9G0I78WZxLWUO9kv
-	asFgYENLFu2
-X-Received: by 2002:a05:600c:8816:b0:477:5ca6:4d51 with SMTP id 5b1f17b1804b1-47ee33918a4mr10348685e9.3.1768394132893;
-        Wed, 14 Jan 2026 04:35:32 -0800 (PST)
-Received: from thomas-precision3591.paris.inria.fr (wifi-eduroam-85-139.paris.inria.fr. [128.93.85.139])
-        by smtp.googlemail.com with ESMTPSA id ffacd0b85a97d-432bd5ede7esm51037635f8f.32.2026.01.14.04.35.32
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 04:35:32 -0800 (PST)
-From: Thomas Fourier <fourier.thomas@gmail.com>
-To: 
-Cc: Thomas Fourier <fourier.thomas@gmail.com>,
-	stable@vger.kernel.org,
-	Sunil Goutham <sgoutham@marvell.com>,
-	Geetha sowjanya <gakula@marvell.com>,
-	Subbaraya Sundeep <sbhatta@marvell.com>,
-	hariprasad <hkelam@marvell.com>,
-	Bharat Bhushan <bbhushan2@marvell.com>,
-	Andrew Lunn <andrew+netdev@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	netdev@vger.kernel.org,
-	linux-kernel@vger.kernel.org
-Subject: [PATCH] octeontx2: Fix otx2_dma_map_page() error return code
-Date: Wed, 14 Jan 2026 13:31:06 +0100
-Message-ID: <20260114123107.42387-2-fourier.thomas@gmail.com>
-X-Mailer: git-send-email 2.43.0
+	s=arc-20240116; t=1768395456; c=relaxed/simple;
+	bh=6oCaEi76Hg/UqsSDo++T7ZkfHrGDy79mODSERj/qBrE=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=tjguLDlE8Pa2dxvhXqsZy8x5hE4afCJnrAA2Jsix2vGp/kG8TtSO6UyMd4dc1s6WmMm8T86ayrFzEW8wg3PxSWPKbI5d3XPdsLrKqwaIZ/Ri7G0nQiMCRmzjeL8VRMW4oxe/WcEJq77Dj0t0JuRca9iAKrpgEPau7v6ejJHbiLk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=OinJku6Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24721C4CEF7;
+	Wed, 14 Jan 2026 12:57:36 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768395456;
+	bh=6oCaEi76Hg/UqsSDo++T7ZkfHrGDy79mODSERj/qBrE=;
+	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+	b=OinJku6YFRMUf76QCUhJTt49Z+G64a376QNu68lUXZdQPpv+kmtuGKkaPs9hAasFu
+	 HijO/ffFjC+Q/hjHUnKWL/nTAdMzcSEbP8GJ1AlbygDCFSxaCk4Ph7dYcPaEYw7tDt
+	 XSSRESBJ8j3nbjiHs+5/IXJTssqB0MLQRBLIFPi7qTl+qg3aSg7qwml36IS4enW5gZ
+	 WhAtjmk1v03Zb7PolEITdyegwa4a4NdoVKsFIvZS7Z3Ue/A48CydClXcP29zSvItj8
+	 1sPnioDMH2I8zk63/9U2Z1XChOqE8lS39u+Yh61JUsi0krEjF6s529pI0jaaX/QTpn
+	 TWNbPu44iBIEA==
+Received: from mchehab by mail.kernel.org with local (Exim 4.99)
+	(envelope-from <mchehab+huawei@kernel.org>)
+	id 1vg0RK-00000002ly0-16YQ;
+	Wed, 14 Jan 2026 13:57:34 +0100
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+To: Linux Doc Mailing List <linux-doc@vger.kernel.org>
+Cc: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	linux-kernel@vger.kernel.org,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Jani Nikula <jani.nikula@intel.com>,
+	Jonathan Corbet <corbet@lwn.net>,
+	Mauro Carvalho Chehab <mchehab@kernel.org>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 1/4] scripts/kernel-doc: fix logic to handle unissued warnings
+Date: Wed, 14 Jan 2026 13:57:22 +0100
+Message-ID: <9a3d93bbde9cd3cf5e4dd20ba4f65ef860af6792.1768395332.git.mchehab+huawei@kernel.org>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <cover.1768395332.git.mchehab+huawei@kernel.org>
+References: <cover.1768395332.git.mchehab+huawei@kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
+Sender: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-0 is a valid DMA address [1] so using it as the error value can lead to
-errors.  The error value of dma_map_XXX() functions is DMA_MAPPING_ERROR
-which is ~0.  The callers of otx2_dma_map_page() use dma_mapping_error()
-to test the return value of otx2_dma_map_page(). This means that they
-would not detect an error in otx2_dma_map_page().
+Changeset 469c1c9eb6c9 ("kernel-doc: Issue warnings that were silently discarded")
+didn't properly addressed the missing messages behavior, as
+it was calling directly python logger low-level function,
+instead of using the expected method to emit warnings.
 
-Make otx2_dma_map_page() return the raw value of dma_map_page_attrs().
+Basically, there are two methods to log messages:
 
-[1] https://lore.kernel.org/all/f977f68b-cec5-4ab7-b4bd-2cf6aca46267@intel.com
+- self.config.log.warning() - This is the raw level to emit a
+  warning. It just writes the a message at stderr, via python
+  logging, as it is initialized as:
 
-Fixes: caa2da34fd25 ("octeontx2-pf: Initialize and config queues")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+    self.config.log = logging.getLogger("kernel-doc")
+
+- self.config.warning() - This is where we actually consider a
+  message as a warning, properly incrementing error count.
+
+Due to that, several parsing error messages are internally considered
+as success, causing -Werror to not work on such messages.
+
+While here, ensure that the last ignored entry will also be handled
+by adding an extra check at the end of the parse handler.
+
+Fixes: 469c1c9eb6c9 ("kernel-doc: Issue warnings that were silently discarded")
+Closes: https://lore.kernel.org/linux-doc/20260112091053.00cee29a@foz.lan/
+Cc: stable@vger.kernel.org
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Acked-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 ---
- drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ tools/lib/python/kdoc/kdoc_parser.py | 31 ++++++++++++++++++++++------
+ 1 file changed, 25 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-index e616a727a3a9..8cdfc36d79d2 100644
---- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-+++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.h
-@@ -940,13 +940,8 @@ static inline dma_addr_t otx2_dma_map_page(struct otx2_nic *pfvf,
- 					   size_t offset, size_t size,
- 					   enum dma_data_direction dir)
- {
--	dma_addr_t iova;
--
--	iova = dma_map_page_attrs(pfvf->dev, page,
-+	return dma_map_page_attrs(pfvf->dev, page,
- 				  offset, size, dir, DMA_ATTR_SKIP_CPU_SYNC);
--	if (unlikely(dma_mapping_error(pfvf->dev, iova)))
--		return (dma_addr_t)NULL;
--	return iova;
- }
+diff --git a/tools/lib/python/kdoc/kdoc_parser.py b/tools/lib/python/kdoc/kdoc_parser.py
+index a9a37519145d..4ad7ce0b243e 100644
+--- a/tools/lib/python/kdoc/kdoc_parser.py
++++ b/tools/lib/python/kdoc/kdoc_parser.py
+@@ -448,18 +448,35 @@ class KernelDoc:
  
- static inline void otx2_dma_unmap_page(struct otx2_nic *pfvf,
+         self.config.log.debug("Output: %s:%s = %s", dtype, name, pformat(args))
+ 
++    def emit_unused_warnings(self):
++        """
++        When the parser fails to produce a valid entry, it places some
++        warnings under `entry.warnings` that will be discarded when resetting
++        the state.
++
++        Ensure that those warnings are not lost.
++
++        NOTE: Because we are calling `config.warning()` here, those
++              warnings are not filtered by the `-W` parameters: they will all
++              be produced even when `-Wreturn`, `-Wshort-desc`, and/or
++              `-Wcontents-before-sections` are used.
++
++              Allowing those warnings to be filtered is complex, because it
++              would require storing them in a buffer and then filtering them
++              during the output step of the code, depending on the
++              selected symbols.
++        """
++        if self.entry and self.entry not in self.entries:
++            for log_msg in self.entry.warnings:
++                self.config.warning(log_msg)
++
+     def reset_state(self, ln):
+         """
+         Ancillary routine to create a new entry. It initializes all
+         variables used by the state machine.
+         """
+ 
+-        #
+-        # Flush the warnings out before we proceed further
+-        #
+-        if self.entry and self.entry not in self.entries:
+-            for log_msg in self.entry.warnings:
+-                self.config.log.warning(log_msg)
++        self.emit_unused_warnings()
+ 
+         self.entry = KernelEntry(self.config, self.fname, ln)
+ 
+@@ -1741,6 +1758,8 @@ class KernelDoc:
+                         # Hand this line to the appropriate state handler
+                         self.state_actions[self.state](self, ln, line)
+ 
++            self.emit_unused_warnings()
++
+         except OSError:
+             self.config.log.error(f"Error: Cannot open file {self.fname}")
+ 
 -- 
-2.43.0
+2.52.0
 
 
