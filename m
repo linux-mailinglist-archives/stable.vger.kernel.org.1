@@ -1,110 +1,154 @@
-Return-Path: <stable+bounces-208311-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208312-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D360BD1BF3A
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 02:36:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B7E0DD1BFBE
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 02:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 71A5A3024104
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 01:35:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7186B300FA29
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 01:46:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99C7F2E54A3;
-	Wed, 14 Jan 2026 01:35:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 304991FBC8E;
+	Wed, 14 Jan 2026 01:46:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="WFWinnB3"
+	dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b="F06ZJOvl"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+Received: from out30-132.freemail.mail.aliyun.com (out30-132.freemail.mail.aliyun.com [115.124.30.132])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 478D22BEFFE;
-	Wed, 14 Jan 2026 01:35:34 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69B503D3B3;
+	Wed, 14 Jan 2026 01:46:14 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=115.124.30.132
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768354535; cv=none; b=IEITUacLJeaepfywqaOo9JYXCSMXcY6fgUmtnnUiK1qQVXjVj/8gE3TlqAavscUHV+l/ywt8eTOdsoGo+kqCqpANj7wPxQk0G1CPwKZ8bqC7MPERsyS2d8/tHxUCy+nMz13o2KCJt7X2UhYZvWAJb7rUUP80g+H8j76El1ffOcU=
+	t=1768355177; cv=none; b=Fi8MDhZ9FKdxZt8wfKoWj0f3i9hj5KCbC44rwLkDmVdFegq2nO7ubivP6wm0QlfDkbQ6jNvl3oDyLWJL+J2VF9a+0+q3xFYTKlkE+zv18ht3uhy3/Va7l7MOffZG49dpYw3pL3ci+nBDhPPXTuS48LDBENJBEFFWghr+iNV3KDY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768354535; c=relaxed/simple;
-	bh=6qALRjnUz1ToVYlX9uZ6rJccj/CbX4YXQwA1PWOPaaw=;
-	h=Date:From:To:Cc:Subject:Message-Id:In-Reply-To:References:
-	 Mime-Version:Content-Type; b=fUfS/YIxjzYbYofzG5vbTLPc0OvtsgTUlIHaptVZRIJRZqoHoS5AtHqgzREJ6TJ7Vog2KF+Nz/QRWjDZp3fmsGUt3Etq8KlknOFFKGCxn0qfcEQC5Y84PxRZaB1miONr/fkiPS411c5GNCIc/c6JFz6kIf8iDBoGJjub2WomfGs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=WFWinnB3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B68ADC116C6;
-	Wed, 14 Jan 2026 01:35:33 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-	s=korg; t=1768354534;
-	bh=6qALRjnUz1ToVYlX9uZ6rJccj/CbX4YXQwA1PWOPaaw=;
-	h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-	b=WFWinnB350Gh+ZI0sjON+AkppzMI0aB6KQLZA9feNZIiAHT/+LubVU1LrZA37J23X
-	 cQZuJtW+NS4T/g7a4HJCKBxYSPJsaPzGO7XmOwtVTchOf0Dn/7ztycXSE+cMdw+Q81
-	 wyfkoQ0v7Zk0vRCzU3NQ3xqTqxAq+7jBXMDO4Lts=
-Date: Tue, 13 Jan 2026 17:35:33 -0800
-From: Andrew Morton <akpm@linux-foundation.org>
-To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc: linux-kernel@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
- Steven Rostedt <rostedt@goodmis.org>, Masami Hiramatsu
- <mhiramat@kernel.org>, Dennis Zhou <dennis@kernel.org>, Tejun Heo
- <tj@kernel.org>, Christoph Lameter <cl@linux.com>, Martin Liu
- <liumartin@google.com>, David Rientjes <rientjes@google.com>,
- christian.koenig@amd.com, Shakeel Butt <shakeel.butt@linux.dev>, SeongJae
- Park <sj@kernel.org>, Michal Hocko <mhocko@suse.com>, Johannes Weiner
- <hannes@cmpxchg.org>, Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
- Lorenzo Stoakes <lorenzo.stoakes@oracle.com>, "Liam R . Howlett"
- <liam.howlett@oracle.com>, Mike Rapoport <rppt@kernel.org>, Suren
- Baghdasaryan <surenb@google.com>, Vlastimil Babka <vbabka@suse.cz>,
- Christian Brauner <brauner@kernel.org>, Wei Yang
- <richard.weiyang@gmail.com>, David Hildenbrand <david@redhat.com>, Miaohe
- Lin <linmiaohe@huawei.com>, Al Viro <viro@zeniv.linux.org.uk>,
- linux-mm@kvack.org, stable@vger.kernel.org,
- linux-trace-kernel@vger.kernel.org, Yu Zhao <yuzhao@google.com>, Roman
- Gushchin <roman.gushchin@linux.dev>, Mateusz Guzik <mjguzik@gmail.com>,
- Matthew Wilcox <willy@infradead.org>, Baolin Wang
- <baolin.wang@linux.alibaba.com>, Aboorva Devarajan <aboorvad@linux.ibm.com>
-Subject: Re: [PATCH v1 1/1] mm: Fix OOM killer and proc stats inaccuracy on
- large many-core systems
-Message-Id: <20260113173533.171248b2f6c11c536e4fc65a@linux-foundation.org>
-In-Reply-To: <162c241c-8dd9-4700-a538-0a308de2de8d@efficios.com>
-References: <20260113194734.28983-1-mathieu.desnoyers@efficios.com>
-	<20260113194734.28983-2-mathieu.desnoyers@efficios.com>
-	<20260113134644.9030ba1504b8ea41ec91a3be@linux-foundation.org>
-	<c5d48b86-6b8e-4695-bbfa-a308d59eba52@efficios.com>
-	<20260113155541.1da4b93e2acbb2b4f2cda758@linux-foundation.org>
-	<162c241c-8dd9-4700-a538-0a308de2de8d@efficios.com>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+	s=arc-20240116; t=1768355177; c=relaxed/simple;
+	bh=aTA7pgDeFf3ROJ5IibL5iUMv1HiFvcV3APXLCfaXE0A=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=RE+xVsYXlT5p9IXv5YRQd6vCxrpEGr3RQRy4KJhLsILtG2xfSbIvUjSJEDpOEH9U0F8rACct0ADAva/oWYkKEnWakhRo43qQrpeG8g8rcve2K5FCWymS6qEyurg2NUJa2BKeH97YaUzwhRJ3fY159B2Yzo85AauhB/VkwD8cd3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com; spf=pass smtp.mailfrom=linux.alibaba.com; dkim=pass (1024-bit key) header.d=linux.alibaba.com header.i=@linux.alibaba.com header.b=F06ZJOvl; arc=none smtp.client-ip=115.124.30.132
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.alibaba.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.alibaba.com
+DKIM-Signature:v=1; a=rsa-sha256; c=relaxed/relaxed;
+	d=linux.alibaba.com; s=default;
+	t=1768355166; h=Message-ID:Date:MIME-Version:Subject:To:From:Content-Type;
+	bh=IydMD8wuNWInSOgTJupkde9o7rJXQ38wPrSFh8AMmlM=;
+	b=F06ZJOvl2AxXfzzfceaVrU/5G9sTyZHHV/8N64vgvgEN05C5L8f7SudR3aDlTjwpExLUGKxghMQKRdX4If0YfYNYXQKynQIftekKkU7u6eUTPPs8K+RP7WbR4UndgMfAXG0HlGrvmfrHXbVUqYZFlqThgrVNZOkGhghxxZ9uoE8=
+Received: from 30.74.144.121(mailfrom:baolin.wang@linux.alibaba.com fp:SMTPD_---0Wx0Sq4r_1768355164 cluster:ay36)
+          by smtp.aliyun-inc.com;
+          Wed, 14 Jan 2026 09:46:05 +0800
+Message-ID: <2b87338f-d68d-4742-8b5d-c807b206830b@linux.alibaba.com>
+Date: Wed, 14 Jan 2026 09:46:04 +0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] mm/shmem, swap: fix race of truncate and swap entry split
+To: Kairui Song <ryncsn@gmail.com>
+Cc: linux-mm@kvack.org, Hugh Dickins <hughd@google.com>,
+ Andrew Morton <akpm@linux-foundation.org>,
+ Kemeng Shi <shikemeng@huaweicloud.com>, Nhat Pham <nphamcs@gmail.com>,
+ Chris Li <chrisl@kernel.org>, Baoquan He <bhe@redhat.com>,
+ Barry Song <baohua@kernel.org>, linux-kernel@vger.kernel.org,
+ stable@vger.kernel.org
+References: <20260112-shmem-swap-fix-v1-1-0f347f4f6952@tencent.com>
+ <d20f536c-edc1-42a0-9978-13918d39ecba@linux.alibaba.com>
+ <CAMgjq7ASxBdAakd_3J3O-nPysArLruGO-j4rCHg6OFvvNq7f0g@mail.gmail.com>
+ <1dffe6b1-7a89-4468-8101-35922231f3a6@linux.alibaba.com>
+ <CAMgjq7Biq9nB_waZeWW+iJUa9Pj+paSSrke-tmnB=-3uY8k2VA@mail.gmail.com>
+ <d95f9ea4-aa47-4d85-9b76-11afd0fb3ee7@linux.alibaba.com>
+ <CAMgjq7DrrCx78K3uccsfpGeQfC-_+LuONSefJ+Vd+aCjyncwKw@mail.gmail.com>
+From: Baolin Wang <baolin.wang@linux.alibaba.com>
+In-Reply-To: <CAMgjq7DrrCx78K3uccsfpGeQfC-_+LuONSefJ+Vd+aCjyncwKw@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
 
-On Tue, 13 Jan 2026 20:22:16 -0500 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
 
-> On 2026-01-13 18:55, Andrew Morton wrote:
-> > On Tue, 13 Jan 2026 17:16:16 -0500 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
-> > 
-> >> The hpcc series introduces an approximation which provides accuracy
-> >> limits on the approximation that make the result is still somewhat
-> >> meaninful on large many core systems.
-> > 
-> > Can we leave the non-oom related parts of procfs as-is for now, then
-> > migrate them over to hpcc when that is available?  Safer that way.
-> 
-> Of course.
-> 
-> So AFAIU the plan is:
-> 
-> 1) update the oom accuracy fix to only use the precise sum for
->     the oom killer, no changes to procfs ABIs. This targets mm-new.
-> 
-> 2) update the hpcc series to base them on top of the new fix from (1).
->     Update their commit messages to indicate that they bring accuracy
->     improvements to the procfs ABI on large many-core systems, as well as
->     latency improvements to the oom killer. This will target upstreaming
->     after the next merge window, but I will still post it soon to gather
->     feedback.
-> 
-> Does that plan look OK ?
 
-Perfect, thanks.  Except there is no "(1)".  We shall survive ;)
+On 1/13/26 6:10 PM, Kairui Song wrote:
+> On Tue, Jan 13, 2026 at 3:16 PM Baolin Wang
+> <baolin.wang@linux.alibaba.com> wrote:
+>>
+>> Hi Kairui,
+>>
+>> Sorry for late reply.
+> 
+> No problem, I was also quite busy with other works :)
+> 
+>>
+>> Yes, so I just mentioned your swapoff case.
+>>
+>>>> Actually, the real question is how to handle the case where a large swap
+>>>> entry happens to cross the 'end' when calling shmem_truncate_range(). If
+>>>> the shmem mapping stores a folio, we would split that large folio by
+>>>> truncate_inode_partial_folio(). If the shmem mapping stores a large swap
+>>>> entry, then as you noted, the truncation range can indeed exceed the 'end'.
+>>>>
+>>>> But with your change, that large swap entry would not be truncated, and
+>>>> I’m not sure whether that might cause other issues. Perhaps the best
+>>>> approach is to first split the large swap entry and only truncate the
+>>>> swap entries within the 'end' boundary like the
+>>>> truncate_inode_partial_folio() does.
+>>>
+>>> Right... I was thinking that the shmem_undo_range iterates the undo
+>>> range twice IIUC, in the second try it will retry if shmem_free_swap
+>>> returns 0:
+>>>
+>>> swaps_freed = shmem_free_swap(mapping, indices[i], end - indices[i], folio);
+>>> if (!swaps_freed) {
+>>>       /* Swap was replaced by page: retry */
+>>>       index = indices[i];
+>>>       break;
+>>> }
+>>>
+>>> So I thought shmem_free_swap returning 0 is good enough. Which is not,
+>>> it may cause the second loop to retry forever.
+>>
+>> After further investigation, I think your original fix seems to be the
+>> right direction, as the second loop’s find_lock_entries() will filter
+>> out large swap entries crossing the 'end' boundary. Sorry for noise.
+>>
+>> See the code in find_lock_entries() (Thanks to Hugh:))
+>>
+>>          } else {
+>>                  nr = 1 << xas_get_order(&xas);
+>>                  base = xas.xa_index & ~(nr - 1);
+>>                  /* Omit order>0 value which begins before the start */
+>>                  if (base < *start)
+>>                          continue;
+>>                  /* Omit order>0 value which extends beyond the end */
+>>                  if (base + nr - 1 > end)
+>>                          break;
+>>          }
+>>
+>> Then the shmem_get_partial_folio() will swap-in the large swap entry and
+>> split the large folio which crosses the 'end' boundary.
+> 
+> Right, thanks for the info.
+> 
+> But what about find_get_entries under whole_folios? Even though a
+> large entry is splitted before that, a new large entry that crosses
+> `end` could appear after that and before find_get_entries, and return
+> by find_get_entries.
+
+Yes, another corner case:(
+
+> I think we could just skip large entries that cross `end` in the
+> second loop, since if the entry exists before truncate, it must have
+> been split. We can ignore newly appeared entries.
+
+Sounds reasonable to me. Just as we don’t discard the entire folio when 
+a large folio split fails by updating the 'end':
+
+if (!truncate_inode_partial_folio(folio, lstart, lend))
+	end = folio->index;
+
+> If that's OK I can send two patches, one to ignore the large entries
+> in the second loop, one to fix shmem_free_swap following your
+> suggestion in this reply.
+
+Please do. Thanks.
 
