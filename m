@@ -1,146 +1,161 @@
-Return-Path: <stable+bounces-208329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA204D1D0B5
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:16:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56814D1D0E6
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:19:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CDE68300A3C2
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:16:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD64830086F0
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:18:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C750734D90C;
-	Wed, 14 Jan 2026 08:16:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D16236A021;
+	Wed, 14 Jan 2026 08:18:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="a/ZhogS/"
+	dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b="F4BjAfHV"
 X-Original-To: stable@vger.kernel.org
-Received: from mgamail.intel.com (mgamail.intel.com [192.198.163.16])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from mail-wr1-f43.google.com (mail-wr1-f43.google.com [209.85.221.43])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5D892F693D;
-	Wed, 14 Jan 2026 08:16:05 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=192.198.163.16
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22CE226ED35
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 08:18:33 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.221.43
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768378571; cv=none; b=LKX5Ut3DMeGXIeT/00U3MCmBhfXr+gMPBM8H5wrkmR8uTyBQpdg/feBIHXDlL11NpSor1HreC7LwJQ6gQAqCG6feJH/2lCCORNQ5y0zQmgZBOet2MccZt6z5XQbXIkCRvg4N7XnF7nNrNoS3yYXrV5dl2wLMtQlz3e8glxcj2Jk=
+	t=1768378717; cv=none; b=CLViJuBLQW6Hkrqj1FsriTMUClBgsveLcUuTpRL0ONsxFIx1kNAobw5sW/r2AMaNNOlrwtgveJvvnToi/jaAtAvU3JpYQCBlpIjLlAe2+1jr3b4B5F56wPOhiC36fsh5wuAfrbFmrkgySujMrl/qc+K8Cz6uZp0l86xJbZtpXWM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768378571; c=relaxed/simple;
-	bh=Tk40Z3bVifct2EirVXFgyYO4QzE6BJo2N8YtpP43AC0=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=rYjuSULoduP1ggjBmSns1qM3wuNJ3Ae1TmxtneavO6+lq54i+MUhpFmMzZsGTcozslIGyKA3p0Qmu6HcpBhuXLivRm2IKrxFj1y/xVwHm8gAY5PXXtDpXwWhZZp5sU/hus2OYjOzUOQL6sEdJ1jElfDcNzE+AtXPDYFKZrLxjKQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com; spf=pass smtp.mailfrom=linux.intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=a/ZhogS/; arc=none smtp.client-ip=192.198.163.16
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.intel.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.intel.com
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768378567; x=1799914567;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=Tk40Z3bVifct2EirVXFgyYO4QzE6BJo2N8YtpP43AC0=;
-  b=a/ZhogS/Xw03OPjQm0HDdHHez9uqrI+Nfn2S0Sgh30vF2iCUsh/bTjJo
-   wLEA8542vZXisjzafep8MjmxlprdS2XvBn+tqhP9QewE/meLWtANTKQZf
-   7VteSDHGcRVG4iS4a0xm0hn4salZ59bZzpwrWEWLkVAkmxIW1Zl2IOgvQ
-   U0IabhGRiUpOcfVmhoRaknIr1mET60z4aLC6O0aAJlNygoV5Ch2IdUSZe
-   QIhNo/7SmYpP6IkNSMl79ox3nIRIzvbG/iLu9hGAM+aII5gQCzvIRPc9g
-   LpHcr8Qo7HAdnAefoWjgkMB6H5EinObz/AI1S0SJAUKgWeLcPQvaJrCWR
-   g==;
-X-CSE-ConnectionGUID: 6OowTB87TSeS7/wP83IfQg==
-X-CSE-MsgGUID: QLXcZpYVSDqiraR/d9XJCQ==
-X-IronPort-AV: E=McAfee;i="6800,10657,11670"; a="57228006"
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="57228006"
-Received: from fmviesa006.fm.intel.com ([10.60.135.146])
-  by fmvoesa110.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:16:04 -0800
-X-CSE-ConnectionGUID: HdljNTGlSnmU4yQpS8iDuw==
-X-CSE-MsgGUID: aQ92HTXqTE2w3EbiZCrUwA==
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.21,225,1763452800"; 
-   d="scan'208";a="204506952"
-Received: from soc-5cg4396xfb.clients.intel.com (HELO [172.28.180.91]) ([172.28.180.91])
-  by fmviesa006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 14 Jan 2026 00:16:02 -0800
-Message-ID: <954dc352-2ad2-4950-9c8b-55ebafc5841c@linux.intel.com>
-Date: Wed, 14 Jan 2026 09:15:59 +0100
+	s=arc-20240116; t=1768378717; c=relaxed/simple;
+	bh=2rIhPbY6ae6VI8ZyQYMQitssWKnS1Vd903IkWFk6G2k=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=Ob+KzP6BHXv6JRFywqMhOizxmxXVRZXeEDgeycQ8scRMQzAcCdgISO5LFITJknYbbQWcVRN54gWoor2pYXdNGAGbkgRUZ8XKlwi+zAU21Gfs1B4yhYSPY5MHqwfFOIeYd+BILTD4BSEZu9DJxr/uYO72vX4NmTs8VX3H/m+M/zA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com; spf=pass smtp.mailfrom=suse.com; dkim=pass (2048-bit key) header.d=suse.com header.i=@suse.com header.b=F4BjAfHV; arc=none smtp.client-ip=209.85.221.43
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=suse.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.com
+Received: by mail-wr1-f43.google.com with SMTP id ffacd0b85a97d-432d2c7a8b9so4606967f8f.2
+        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 00:18:33 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=suse.com; s=google; t=1768378712; x=1768983512; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=X8y3eBpdpZ4jiLb2IpPbzYhjPFac6qto4kOtboVZXAA=;
+        b=F4BjAfHVOTbK7cj4O4iZiH6hCLmrvT4Ll85x5Dz6S181097YQzaaxbgP9HLTsUcuJ2
+         qejf6vtPbIfYJft3cbwhKpiEekG+gvXKj/YhABoZm/66yEY1j1qhkMD2nvp1giR1ZDvF
+         zunpkz2XURefF/mKvsO6G/IO4rmxSnk98dSWz3bu1iY1yyEcC+rgVdYhIBNIpoKwg059
+         KXhJad3CRVlJU08HtUl9MugxEE73SmKH74uqOjerQgLYhXNHh3hgiYOezgEGZMhAAarA
+         XARBM4r/C6NouBuQ84VP8ZQdqn0iVgsZJelHp0gQADRth5EI0jbbPrscR6Rl+SU3J5fT
+         nmxg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768378712; x=1768983512;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-gg:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=X8y3eBpdpZ4jiLb2IpPbzYhjPFac6qto4kOtboVZXAA=;
+        b=kDSMxaLprRnT9mFbg7ls+IKiReDMrC4SJLVi8VXRSHdSxo/KwEtQnSfxRZHDvahFBM
+         5VXZ49X8SlNisN5e7BdG1sWhY9wUXlGF62pFJ6WDkqmFpdp9XCHzd2I8Z0D4IKr6pD+w
+         XFypokCGYHufJfyIFoypZF2jk+b1F/wgK7yau5YrucX4fG1OlHxzxc5LRtqkqz8VKC6y
+         BnFdlXuO1ugG//fU1Np4IplsonbuMyK++DdrnwDlUOqcBwvztQS+7NnYrmXStiqO1TVF
+         FM6uwghEwd/eSqppzFMUENvvWq91gZHFTmcADiSvKnA5pHTkGUxbI1ngpOusHg8bBz1i
+         +ivQ==
+X-Forwarded-Encrypted: i=1; AJvYcCUaX/qElG+hbau1UsgJF/8TsYGXvZNhmydWD7/j4iSOV+IvS+uANN6I9kQUgdDTY+vgF+4FAm4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YzwGgnOabg0+z5uh+eO8Kz8BtLoJbVa9J84TGA65gOLLyC3y5xp
+	kOPXuNjohHyaP7kEA3mqB+jb2DTFhdOPW3DfuSEB33hCRpkscQGbg6186G5fVCR4HZQ=
+X-Gm-Gg: AY/fxX42v/Rb0UzP28lnKCT4GuoKHmvKBcAY71DOsGQSfwjwb2LuU6uskG3GyiL7wWp
+	pV+BKpkiJTt5v2G4eFvnhXK6N0RovPMz5uTmb25NV04R29BslWBKqE4y+7CVQ+qFDO47G8i2wgb
+	BazpqfMS+nOU+gWjC/bhnHY2dO6mZw4YakfBJCX6NWhkuZU9gLFu+6xrnF4MwimZ6KHrguycR+y
+	7T9CYZ37Gj2cfMn4Y6RmdKTESDNub6tgpEBELNG9lqOp9nuPlOaARC9rndsZGNWiC23iUApzo+G
+	JMJAltvPZIfQ5QUYvlEFukh2lxeEav3+xmWz0dpVMo+9gFuTHGZ23mjOZI0d1MN9LiF+4i9OMw2
+	ykIvcc7OTFoatrv5VyHZTLNSKJxaGtciQVJcsZYibNYEu2Bvy4iM0g4dU2SqgWs+fYWf951kfYa
+	QEv7TgCKRPEPUgdDuy96CWdJyNnJUD+c2cbBo=
+X-Received: by 2002:a05:6000:1a88:b0:431:327:5dd4 with SMTP id ffacd0b85a97d-4342c557825mr1897922f8f.46.1768378711829;
+        Wed, 14 Jan 2026 00:18:31 -0800 (PST)
+Received: from localhost (109-81-19-111.rct.o2.cz. [109.81.19.111])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0dacc5sm48487321f8f.5.2026.01.14.00.18.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 00:18:31 -0800 (PST)
+Date: Wed, 14 Jan 2026 09:18:29 +0100
+From: Michal Hocko <mhocko@suse.com>
+To: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Andrew Morton <akpm@linux-foundation.org>, linux-kernel@vger.kernel.org,
+	"Paul E. McKenney" <paulmck@kernel.org>,
+	Steven Rostedt <rostedt@goodmis.org>,
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Dennis Zhou <dennis@kernel.org>, Tejun Heo <tj@kernel.org>,
+	Christoph Lameter <cl@linux.com>, Martin Liu <liumartin@google.com>,
+	David Rientjes <rientjes@google.com>, christian.koenig@amd.com,
+	Shakeel Butt <shakeel.butt@linux.dev>,
+	SeongJae Park <sj@kernel.org>, Johannes Weiner <hannes@cmpxchg.org>,
+	Sweet Tea Dorminy <sweettea-kernel@dorminy.me>,
+	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
+	"Liam R . Howlett" <liam.howlett@oracle.com>,
+	Mike Rapoport <rppt@kernel.org>,
+	Suren Baghdasaryan <surenb@google.com>,
+	Vlastimil Babka <vbabka@suse.cz>,
+	Christian Brauner <brauner@kernel.org>,
+	Wei Yang <richard.weiyang@gmail.com>,
+	David Hildenbrand <david@redhat.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	Al Viro <viro@zeniv.linux.org.uk>, linux-mm@kvack.org,
+	stable@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
+	Yu Zhao <yuzhao@google.com>,
+	Roman Gushchin <roman.gushchin@linux.dev>,
+	Mateusz Guzik <mjguzik@gmail.com>,
+	Matthew Wilcox <willy@infradead.org>,
+	Baolin Wang <baolin.wang@linux.alibaba.com>,
+	Aboorva Devarajan <aboorvad@linux.ibm.com>
+Subject: Re: [PATCH v1 1/1] mm: Fix OOM killer and proc stats inaccuracy on
+ large many-core systems
+Message-ID: <aWdRVY6Bzw2kjedk@tiehlicka>
+References: <20260113194734.28983-1-mathieu.desnoyers@efficios.com>
+ <20260113194734.28983-2-mathieu.desnoyers@efficios.com>
+ <20260113134644.9030ba1504b8ea41ec91a3be@linux-foundation.org>
+ <c5d48b86-6b8e-4695-bbfa-a308d59eba52@efficios.com>
+ <20260113155541.1da4b93e2acbb2b4f2cda758@linux-foundation.org>
+ <162c241c-8dd9-4700-a538-0a308de2de8d@efficios.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [Intel-wired-lan] [PATCH iwl-net 1/2] ice: reintroduce retry
- mechanism for indirect AQ
-To: Paul Menzel <pmenzel@molgen.mpg.de>
-Cc: intel-wired-lan@lists.osuosl.org, netdev@vger.kernel.org,
- stable@vger.kernel.org, Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
- Jakub Staniszewski <jakub.staniszewski@linux.intel.com>,
- Przemek Kitszel <przemyslaw.kitszel@intel.com>,
- Michal Schmidt <mschmidt@redhat.com>
-References: <20260113193817.582-1-dawid.osuchowski@linux.intel.com>
- <20260113193817.582-2-dawid.osuchowski@linux.intel.com>
- <f0fee9dd-7236-464d-9e06-6adbeece81a8@molgen.mpg.de>
-Content-Language: pl, en-US
-From: Dawid Osuchowski <dawid.osuchowski@linux.intel.com>
-Organization: Intel Technology Poland sp. z o.o. - ul. Slowackiego 173, 80-298
- Gdansk - KRS 101882 - NIP 957-07-52-316
-In-Reply-To: <f0fee9dd-7236-464d-9e06-6adbeece81a8@molgen.mpg.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <162c241c-8dd9-4700-a538-0a308de2de8d@efficios.com>
 
-Hey Paul,
-
-On 2026-01-13 11:31 PM, Paul Menzel wrote:
-> [Cc: +Michal]
+On Tue 13-01-26 20:22:16, Mathieu Desnoyers wrote:
+> On 2026-01-13 18:55, Andrew Morton wrote:
+> > On Tue, 13 Jan 2026 17:16:16 -0500 Mathieu Desnoyers <mathieu.desnoyers@efficios.com> wrote:
+> > 
+> > > The hpcc series introduces an approximation which provides accuracy
+> > > limits on the approximation that make the result is still somewhat
+> > > meaninful on large many core systems.
+> > 
+> > Can we leave the non-oom related parts of procfs as-is for now, then
+> > migrate them over to hpcc when that is available?  Safer that way.
 > 
-> Dear Dawid, dear Jakub,
+> Of course.
 > 
-
-...
-
-> Am 13.01.26 um 20:38 schrieb Dawid Osuchowski:
->> Ccing Michal, given they are the author of the "reverted" commit.
+> So AFAIU the plan is:
 > 
-> At least Michal was not in the (visible) Cc: list
-
-Interesting. I was using 'git send-email' without any suppression of Cc 
-or similar options. In the direct email sent from me Michal is in Cc, 
-seems the mailing list for some reason stripped him...
-
->>   drivers/net/ethernet/intel/ice/ice_common.c | 12 +++++++++---
->>   1 file changed, 9 insertions(+), 3 deletions(-)
->>
-
-...
-
->>       do {
->>           status = ice_sq_send_cmd(hw, cq, desc, buf, buf_size, cd);
->>           if (!is_cmd_for_retry || !status ||
->>               hw->adminq.sq_last_status != LIBIE_AQ_RC_EBUSY)
->>               break;
->> +        if (buf_cpy)
->> +            memcpy(buf, buf_cpy, buf_size);
->>           memcpy(desc, &desc_cpy, sizeof(desc_cpy));
->> -
+> 1) update the oom accuracy fix to only use the precise sum for
+>    the oom killer, no changes to procfs ABIs. This targets mm-new.
 > 
-> Unrelated change?
+> 2) update the hpcc series to base them on top of the new fix from (1).
+>    Update their commit messages to indicate that they bring accuracy
+>    improvements to the procfs ABI on large many-core systems, as well as
+>    latency improvements to the oom killer. This will target upstreaming
+>    after the next merge window, but I will still post it soon to gather
+>    feedback.
 > 
+> Does that plan look OK ?
 
-During internal review it was pointed out that this function contains a 
-lot of empty lines, this was my feeble attempt to at least partially 
-reduce their count.
+I was about to propose the same. 1) is a regression fix and should be
+merged first and go to stable trees (it is a low priority fix but still
+worth having addressed).
 
->>           msleep(ICE_SQ_SEND_DELAY_TIME_MS);
->>       } while (++idx < ICE_SQ_SEND_MAX_EXECUTE);
->> +    kfree(buf_cpy);
->>       return status;
->>   }
-> 
-> The diff looks good otherwise.
-> 
-> Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-> 
-> 
-> Kind regards,
-> 
-> Paul
+Also a minor nit. You do not have to send cover letter for a single
+patch series.
 
-Thanks,
-Dawid
+Thanks for working on this Mathieu!
+
+-- 
+Michal Hocko
+SUSE Labs
 
