@@ -1,160 +1,200 @@
-Return-Path: <stable+bounces-208327-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE9BDD1CCEC
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:25:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 32F04D1D09F
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 09:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 17B0E300DDA5
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 07:25:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8518F3019BC8
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 08:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BD5035F8DC;
-	Wed, 14 Jan 2026 07:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA28237C0F6;
+	Wed, 14 Jan 2026 08:12:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b="lQhFQJgL"
+	dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b="jSmb6aZZ"
 X-Original-To: stable@vger.kernel.org
-Received: from mx0b-001b2d01.pphosted.com (mx0b-001b2d01.pphosted.com [148.163.158.5])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D41B635F8B9
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 07:24:57 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=148.163.158.5
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1575635F8C9;
+	Wed, 14 Jan 2026 08:12:15 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768375500; cv=none; b=j6MeT7inR3RnaWxlFoYjH8vXvStOpOxXS3Ufx2vDMGZy4eUysvBQgatptoQqqhLyHAX6mxA1juswcGLZodZoqWo4AVG4UbhcHOXFKJTzU+rHJplBE7CuGLeWkATcdZ3n8hd9FEeFUUGqRA8rRAbhMb/ne+tdMZjf7JOinM7ZHLs=
+	t=1768378336; cv=none; b=GvN+MjB9bpnkUqVgXtHF2ECtFha4g53Zud3QjPQLg5k7883RIi5xm9zVdon+lwkzpoqG4gIiHVBXVJ/V+3+5Q9k9SAL20rknjBw5+7OYg4ha7i2W+iZhtPN6nV3ZOlEmU+0Xa85HrzVBdNtNCogsbGQq6CZsaO5krgidJ45Nqv8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768375500; c=relaxed/simple;
-	bh=52p8I4JwBKGU2vmHCPgvcTMi0FAqudS+dxf7AArUnKQ=;
-	h=From:To:Cc:Subject:Date:Message-ID:MIME-Version:Content-Type; b=tVAYWOWiZaEdLHpkeDApRCvajC/I4UUwj0Cgjhfq63JzaqCIklYhwWPavEKp1SuIkKLgpHVLDkyMmRviTxteWhhzdFHt8s15waejWdFfHpbcBd+sOL1le8KUyKjwnr9s67NrfWgjxdbmv5QIBVA/wKF4WeAg6H38jkTbNNp6M3k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com; spf=pass smtp.mailfrom=linux.ibm.com; dkim=pass (2048-bit key) header.d=ibm.com header.i=@ibm.com header.b=lQhFQJgL; arc=none smtp.client-ip=148.163.158.5
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.ibm.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.ibm.com
-Received: from pps.filterd (m0360072.ppops.net [127.0.0.1])
-	by mx0a-001b2d01.pphosted.com (8.18.1.2/8.18.1.2) with ESMTP id 60E7NUgj032261;
-	Wed, 14 Jan 2026 07:24:34 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ibm.com; h=cc
-	:content-transfer-encoding:content-type:date:from:message-id
-	:mime-version:subject:to; s=pp1; bh=3EsM6fsCuyZR7jfkZK39hL3LKS0W
-	d+eeqbJN8ThtLnE=; b=lQhFQJgLkeVQ70kUeoMB/3Q18qzKhrLnflCty7Gr0RlC
-	tKj08ctOSSMcRwPwwXcBVW346NbnOT+Ng7JO7kHHPOIgFLolpKaH793lyjSILBiY
-	3CbP+Ky2GUPij6A0TJ7vFITuRZYcns10BLxH0Vqkz9rPxO4QAK77oCgi07PWtXvh
-	Q8dpu+1tZKvGPXF6LIgCOUtHkuVqIKiIbQCl57a8VJkrNffAHtwsB2J3s+eTU3JB
-	Pm9yzLmNdxfcFM5rpz1SUE7+1DWnugQJDnFOcwnkEMZTBpkI9YhdXtvow5BB7L+W
-	U6gFMEptkqS0XiFiWMCyhfRroQNXefd4S8CNa7GEMg==
-Received: from ppma12.dal12v.mail.ibm.com (dc.9e.1632.ip4.static.sl-reverse.com [50.22.158.220])
-	by mx0a-001b2d01.pphosted.com (PPS) with ESMTPS id 4bkedsyt3r-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jan 2026 07:24:33 +0000 (GMT)
-Received: from pps.filterd (ppma12.dal12v.mail.ibm.com [127.0.0.1])
-	by ppma12.dal12v.mail.ibm.com (8.18.1.2/8.18.1.2) with ESMTP id 60E6QtWZ002511;
-	Wed, 14 Jan 2026 07:24:33 GMT
-Received: from smtprelay03.fra02v.mail.ibm.com ([9.218.2.224])
-	by ppma12.dal12v.mail.ibm.com (PPS) with ESMTPS id 4bm13srxqy-1
-	(version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-	Wed, 14 Jan 2026 07:24:32 +0000
-Received: from smtpav05.fra02v.mail.ibm.com (smtpav05.fra02v.mail.ibm.com [10.20.54.104])
-	by smtprelay03.fra02v.mail.ibm.com (8.14.9/8.14.9/NCO v10.0) with ESMTP id 60E7OTto56492436
-	(version=TLSv1/SSLv3 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=OK);
-	Wed, 14 Jan 2026 07:24:29 GMT
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 262B720043;
-	Wed, 14 Jan 2026 07:24:29 +0000 (GMT)
-Received: from smtpav05.fra02v.mail.ibm.com (unknown [127.0.0.1])
-	by IMSVA (Postfix) with ESMTP id 543F920040;
-	Wed, 14 Jan 2026 07:24:23 +0000 (GMT)
-Received: from li-c9696b4c-3419-11b2-a85c-f9edc3bf8a84.ibm.com.com (unknown [9.87.133.154])
-	by smtpav05.fra02v.mail.ibm.com (Postfix) with ESMTP;
-	Wed, 14 Jan 2026 07:24:23 +0000 (GMT)
-From: Nilay Shroff <nilay@linux.ibm.com>
-To: linux-nvme@lists.infradead.org
-Cc: jmeneghi@redhat.com, wagi@kernel.org, kbusch@kernel.org, axboe@kernel.dk,
-        hch@lst.de, sagi@grimberg.me, james.smart@broadcom.com, hare@suse.de,
-        shinichiro.kawasaki@wdc.com, wenxiong@linux.ibm.com,
-        nnmlinux@linux.ibm.com, emilne@redhat.com, mlombard@redhat.com,
-        gjoyce@ibm.com, Nilay Shroff <nilay@linux.ibm.com>,
-        stable@vger.kernel.org
-Subject: [PATCH] nvme: fix PCIe subsystem reset controller state transition
-Date: Wed, 14 Jan 2026 12:54:13 +0530
-Message-ID: <20260114072416.1901394-1-nilay@linux.ibm.com>
-X-Mailer: git-send-email 2.52.0
+	s=arc-20240116; t=1768378336; c=relaxed/simple;
+	bh=+Wx5DvCtyXRheBdpFCLlGYUgXdHnSl8iM5hk+jx6avg=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=ANO+u+F9k3AEp3gTngCWdTVRSvfJT/n49/EFgTGeOI3hrMHb1IAXPjxyPx8/P3GcgMRsv5ekWELPrM3tm7xO9Ae55MyBqknlHXfkcx5JtPw5zWTGQ4H3R2LaDnYbbeZN5sMeGd9qDFVMTLM/uQ8EKELWCduigsHEMZsglNZesWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (2048-bit key) header.d=kernel.org header.i=@kernel.org header.b=jSmb6aZZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B04A3C4CEF7;
+	Wed, 14 Jan 2026 08:12:09 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+	s=k20201202; t=1768378335;
+	bh=+Wx5DvCtyXRheBdpFCLlGYUgXdHnSl8iM5hk+jx6avg=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=jSmb6aZZdQ+beaYwBhNQG+OCHaPBfAznvdRrhjxyF7bYOYh3s1BRC0a2S0Y4DR0CO
+	 DZ1mxs/7jwZfH4b0M2jey4tn7nGCnHt+B0494yD4vkikPUBgpxCx7vyS8VYhSU0ZCA
+	 fb8ga76CaBnNIIpG7HI2Uo9kiggsQ/DruPi4IzF2Lffd8mMmkf0Q8HuJ67QB66d8SJ
+	 yj1eg5Tgynnz28bOcbSuNSiGTTe5RfJUN8MdNH7oqobDQo3RR/9t7R5X4y2sHK3WNZ
+	 G/z4VDaTMfkFsdL9dhdEiLOEavrwecdFVIU7Tf19TLA0mFclcnfsoU1Eu6RqnTrOIn
+	 EhV1WUWdtuYqg==
+Date: Wed, 14 Jan 2026 13:42:04 +0530
+From: Manivannan Sadhasivam <mani@kernel.org>
+To: liziyao@uniontech.com
+Cc: Lorenzo Pieralisi <lpieralisi@kernel.org>, 
+	Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kwilczynski@kernel.org>, Rob Herring <robh@kernel.org>, 
+	Bjorn Helgaas <bhelgaas@google.com>, niecheng1@uniontech.com, zhanjun@uniontech.com, 
+	guanwentao@uniontech.com, Kexy Biscuit <kexybiscuit@aosc.io>, linux-pci@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, loongarch@lists.linux.dev, kernel@uniontech.com, 
+	Ilpo =?utf-8?B?SsOkcnZpbmVu?= <ilpo.jarvinen@linux.intel.com>, Lain Fearyncess Yang <fsf@live.com>, 
+	Ayden Meng <aydenmeng@yeah.net>, Mingcong Bai <jeffbai@aosc.io>, Xi Ruoyao <xry111@xry111.site>, 
+	stable@vger.kernel.org, Huacai Chen <chenhuacai@kernel.org>
+Subject: Re: [PATCH v6] PCI: loongson: Override PCIe bridge supported speeds
+ for Loongson-3C6000 series
+Message-ID: <vebnovol2s7cqigr3vq5kvapjsy7qiiusbtxqlq6qduxs4xxhk@afsqi4v3ur55>
+References: <20260114-loongson-pci1-v6-1-ee8a18f5d242@uniontech.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-TM-AS-GCONF: 00
-X-Proofpoint-Spam-Details-Enc: AW1haW4tMjYwMTE0MDA1NiBTYWx0ZWRfXwLfjDh4qtMp9
- NdImLvS9dI4wYvjFiRrQ64PcDDRdwIbI2gkr16j+u9cyiyKXT6RXGJqTE7y8I/WXM4ztxte7Xp1
- vy3/2wzybq4u89FxImnQfvQRspaUIjy87A3tb4l/m1bWeR2I5hxNPzW7HVwZoWw+nCsSN/6wC90
- W3iRgbQzC3WT5LReiXUKUxR8ufGvGD9s1geSjIQX0v+HfkC3NZ+be/LhTFu6pkUdWhxyPa2j8tx
- +2YEMrRElzEXPKl7yjmX+H9ONy30PA1BSozahhtwD7AHnQzUEXRQ+MwsRSpoLKHqGK8yktca1qb
- ivcm3FP/Sbr3L21VS018ZvZkKVCzj8ha/w/RCTYoUDxKYwNZNO8yi7yMt4G7kkX/CfjjTii4fL/
- swmPc2NAAX1QGEjMSsDIQooLX9g29bXeV0IhHOWQdQLcxdzgE3r7s2tahp4tL2JIqOulbbyZOPd
- DCXJIQaDXkhS4jc1G/A==
-X-Proofpoint-GUID: gW0OW5-_sg8mLAJKpRtZuVXmQOrGgZHC
-X-Authority-Analysis: v=2.4 cv=WLJyn3sR c=1 sm=1 tr=0 ts=696744b2 cx=c_pps
- a=bLidbwmWQ0KltjZqbj+ezA==:117 a=bLidbwmWQ0KltjZqbj+ezA==:17
- a=IkcTkHD0fZMA:10 a=vUbySO9Y5rIA:10 a=VkNPw1HP01LnGYTKEx00:22
- a=VwQbUJbxAAAA:8 a=VnNF1IyMAAAA:8 a=bihmBxQwaCVq7hZI4EMA:9 a=3ZKOabzyN94A:10
- a=QEXdDO2ut3YA:10
-X-Proofpoint-ORIG-GUID: gW0OW5-_sg8mLAJKpRtZuVXmQOrGgZHC
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.293,Aquarius:18.0.1121,Hydra:6.1.9,FMLib:17.12.100.49
- definitions=2026-01-14_02,2026-01-09_02,2025-10-01_01
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0
- spamscore=0 adultscore=0 malwarescore=0 phishscore=0 suspectscore=0
- priorityscore=1501 bulkscore=0 clxscore=1015 impostorscore=0
- lowpriorityscore=0 classifier=typeunknown authscore=0 authtc= authcc=
- route=outbound adjust=0 reason=mlx scancount=1 engine=8.19.0-2512120000
- definitions=main-2601140056
+In-Reply-To: <20260114-loongson-pci1-v6-1-ee8a18f5d242@uniontech.com>
 
-The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
-state”) disallows controller state transitions directly from RESETTING
-to LIVE. However, the NVMe PCIe subsystem reset path relies on this
-transition to recover the controller on PowerPC (PPC) systems.
+On Wed, Jan 14, 2026 at 10:05:45AM +0800, Ziyao Li via B4 Relay wrote:
+> From: Ziyao Li <liziyao@uniontech.com>
+> 
+> Older steppings of the Loongson-3C6000 series incorrectly report the
+> supported link speeds on their PCIe bridges (device IDs 0x3c19, 0x3c29)
+> as only 2.5 GT/s, despite the upstream bus supporting speeds from
+> 2.5 GT/s up to 16 GT/s.
+> 
+> As a result, since commit 774c71c52aa4 ("PCI/bwctrl: Enable only if more
+> than one speed is supported"), bwctrl will be disabled if there's only
+> one 2.5 GT/s value in vector `supported_speeds`.
+> 
+> Also, the amdgpu driver reads the value by pcie_get_speed_cap() in
+> amdgpu_device_partner_bandwidth(), for its dynamic adjustment of PCIe
+> clocks and lanes in power management. We hope this can prevent similar
+> problems in future driver changes (similar checks may be implemented
+> in other GPU, storage controller, NIC, etc. drivers).
+> 
+> Manually override the `supported_speeds` field for affected PCIe bridges
+> with those found on the upstream bus to correctly reflect the supported
+> link speeds.
+> 
+> This patch was originally found from AOSC OS[1].
+> 
+> Link: https://github.com/AOSC-Tracking/linux/pull/2 #1
+> Tested-by: Lain Fearyncess Yang <fsf@live.com>
+> Tested-by: Ayden Meng <aydenmeng@yeah.net>
+> Signed-off-by: Ayden Meng <aydenmeng@yeah.net>
+> Signed-off-by: Mingcong Bai <jeffbai@aosc.io>
+> [Xi Ruoyao: Fix falling through logic and add kernel log output.]
+> Signed-off-by: Xi Ruoyao <xry111@xry111.site>
+> Link: https://github.com/AOSC-Tracking/linux/commit/4392f441363abdf6fa0a0433d73175a17f493454
+> [Ziyao Li: move from drivers/pci/quirks.c to drivers/pci/controller/pci-loongson.c]
+> Signed-off-by: Ziyao Li <liziyao@uniontech.com>
+> Tested-by: Mingcong Bai <jeffbai@aosc.io>
+> Cc: stable@vger.kernel.org
+> Reviewed-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+> Changes in v6:
+> - adjust commit message
+> - Link to v5: https://lore.kernel.org/r/20260113-loongson-pci1-v5-1-264c9b4a90ab@uniontech.com
+> 
+> Changes in v5:
+> - style adjust
+> - Link to v4: https://lore.kernel.org/r/20260113-loongson-pci1-v4-1-1921d6479fe4@uniontech.com
+> 
+> Changes in v4:
+> - rename subject
+> - use 0x3c19/0x3c29 instead of 3c19/3c29
+> - Link to v3: https://lore.kernel.org/r/20260109-loongson-pci1-v3-1-5ddc5ae3ba93@uniontech.com
+> 
+> Changes in v3:
+> - Adjust commit message
+> - Make the program flow more intuitive
+> - Link to v2: https://lore.kernel.org/r/20260104-loongson-pci1-v2-1-d151e57b6ef8@uniontech.com
+> 
+> Changes in v2:
+> - Link to v1: https://lore.kernel.org/r/20250822-loongson-pci1-v1-1-39aabbd11fbd@uniontech.com
+> - Move from arch/loongarch/pci/pci.c to drivers/pci/controller/pci-loongson.c
+> - Fix falling through logic and add kernel log output by Xi Ruoyao
+> ---
+>  drivers/pci/controller/pci-loongson.c | 36 +++++++++++++++++++++++++++++++++++
+>  1 file changed, 36 insertions(+)
+> 
+> diff --git a/drivers/pci/controller/pci-loongson.c b/drivers/pci/controller/pci-loongson.c
+> index bc630ab8a283..a4250d7af1bf 100644
+> --- a/drivers/pci/controller/pci-loongson.c
+> +++ b/drivers/pci/controller/pci-loongson.c
+> @@ -176,6 +176,42 @@ static void loongson_pci_msi_quirk(struct pci_dev *dev)
+>  }
+>  DECLARE_PCI_FIXUP_FINAL(PCI_VENDOR_ID_LOONGSON, DEV_LS7A_PCIE_PORT5, loongson_pci_msi_quirk);
+>  
+> +/*
+> + * Older steppings of the Loongson-3C6000 series incorrectly report the
+> + * supported link speeds on their PCIe bridges (device IDs 0x3c19,
+> + * 0x3c29) as only 2.5 GT/s, despite the upstream bus supporting speeds
+> + * from 2.5 GT/s up to 16 GT/s.
+> + */
+> +static void loongson_pci_bridge_speed_quirk(struct pci_dev *pdev)
+> +{
+> +	u8 old_supported_speeds = pdev->supported_speeds;
+> +
+> +	switch (pdev->bus->max_bus_speed) {
+> +	case PCIE_SPEED_16_0GT:
+> +		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_16_0GB;
+> +		fallthrough;
+> +	case PCIE_SPEED_8_0GT:
+> +		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_8_0GB;
+> +		fallthrough;
+> +	case PCIE_SPEED_5_0GT:
+> +		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_5_0GB;
+> +		fallthrough;
+> +	case PCIE_SPEED_2_5GT:
+> +		pdev->supported_speeds |= PCI_EXP_LNKCAP2_SLS_2_5GB;
+> +		break;
+> +	default:
+> +		pci_warn(pdev, "unexpected max bus speed");
 
-On PPC systems, issuing a subsystem reset causes a temporary loss of
-communication with the NVMe adapter. A subsequent PCIe MMIO read then
-triggers EEH recovery, which restores the PCIe link and brings the
-controller back online. For EEH recovery to proceed correctly, the
-controller must transition back to the LIVE state.
+Dumb question: Why can't you just copy the Root Port's 'supported_speeds'
+directly:
 
-Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
-entering LIVE from CONNECTING state”), the controller can no longer
-transition directly from RESETTING to LIVE. As a result, EEH recovery
-exits prematurely, leaving the controller stuck in the RESETTING state.
+	pdev->supported_speeds = pdev->bus->self->supported_speeds;
 
-Fix this by explicitly transitioning the controller state from RESETTING
-to CONNECTING and then to LIVE. This satisfies the updated state
-transition rules and allows the controller to be successfully recovered
-on PPC systems following a PCIe subsystem reset.
+- Mani
 
-Cc: stable@vger.kernel.org
-Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
-Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
----
- drivers/nvme/host/pci.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+> +
+> +		return;
+> +	}
+> +
+> +	if (pdev->supported_speeds != old_supported_speeds)
+> +		pci_info(pdev, "fixing up supported link speeds: 0x%x => 0x%x",
+> +			 old_supported_speeds, pdev->supported_speeds);
+> +}
+> +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c19, loongson_pci_bridge_speed_quirk);
+> +DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_LOONGSON, 0x3c29, loongson_pci_bridge_speed_quirk);
+> +
+>  static struct loongson_pci *pci_bus_to_loongson_pci(struct pci_bus *bus)
+>  {
+>  	struct pci_config_window *cfg;
+> 
+> ---
+> base-commit: ea1013c1539270e372fc99854bc6e4d94eaeff66
+> change-id: 20250822-loongson-pci1-4ded0d78f1bb
+> 
+> Best regards,
+> -- 
+> Ziyao Li <liziyao@uniontech.com>
+> 
+> 
 
-diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
-index 0e4caeab739c..3027bba232de 100644
---- a/drivers/nvme/host/pci.c
-+++ b/drivers/nvme/host/pci.c
-@@ -1532,7 +1532,10 @@ static int nvme_pci_subsystem_reset(struct nvme_ctrl *ctrl)
- 	}
- 
- 	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
--	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
-+
-+	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
-+	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
-+		goto unlock;
- 
- 	/*
- 	 * Read controller status to flush the previous write and trigger a
 -- 
-2.52.0
-
+மணிவண்ணன் சதாசிவம்
 
