@@ -1,217 +1,288 @@
-Return-Path: <stable+bounces-208359-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208360-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DF1BD1EF43
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 14:04:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 49D87D1F14A
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 14:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0E69430204B6
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 13:02:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5EAEC3015857
+	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 13:35:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51FC039447C;
-	Wed, 14 Jan 2026 13:02:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C59B239C624;
+	Wed, 14 Jan 2026 13:35:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pjublQkv";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="AY93PE7k";
-	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="pjublQkv";
-	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="AY93PE7k"
+	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="awJ9sA5/"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+Received: from mail-ed1-f49.google.com (mail-ed1-f49.google.com [209.85.208.49])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8FE37C0FA
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 13:02:45 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7E71F396B8D
+	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 13:35:40 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.208.49
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768395767; cv=none; b=MjeCpvbuYPt7w3y8JjC4GTFc/UkTJDGxIWbZhjYprBh2EQA81Ryoukcv7ieA6/KIXOoS4DLMLgnD9VfV9WguAbgPSBgH1pgwkGfwGD+vbEK0QxxA1w7Q+YRTN3DeQeTVHY0hbJ7MRr3z7BqmXZi+Wub2LN7Kw4vHj7t6YGceZ5M=
+	t=1768397742; cv=none; b=pMrlXpltG5oksUs30tuPX82ncbVsDz7exzVRkeusVjcSbgxSw+a1MvtVYawFEIyCaIwqaUtBKDUx7oYRgjPbXHJQpjVJbYW8GJNcXLJ6FwSAeTrgGyQNDu7Y6L5PoSb2NdBLOK4Y1Cm58Ydfv8fJnZI+awsbaW6GcsWICvegsno=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768395767; c=relaxed/simple;
-	bh=pgzfBVQAn8BYW8dmGNPwfhoZaGbTFH/unMSPT1s/MiQ=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=KmFlWTbFHMFehB4JqHUM3eWQTqE8cF0liQxf9IZ29t4WnmBoXAojFkhS12G3yYtBC2eqqx+bhuKjgpMJKGoFFAYEmZiKLZff0dWP8huPpM8433tuqsAneUXUc6IJTbK9LliNQwf3DILLqV1RG228aDMvYmk8yhu58dJCykqmOkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pjublQkv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=AY93PE7k; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=pjublQkv; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=AY93PE7k; arc=none smtp.client-ip=195.135.223.130
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
-Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by smtp-out1.suse.de (Postfix) with ESMTPS id 92FCA33A8B;
-	Wed, 14 Jan 2026 13:02:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768395763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=p6bMmRw2R7L6Dddrqe3bLvaJdceLum7kKPXQ4mHzLIM=;
-	b=pjublQkvvHd56C+po15LjZKz3tSPWaIG6u6FAuJn2Uw7HJDGC6kzSbri5uuk0Ewb6k9yRY
-	0OYf0AQYAU1pxRUL1VPvC6+7jlIxghz+rQ3e3VDXnqml+aV7BtNKLnxNFQtbDyC6XmbJan
-	bpOUL6BawVTR/kYt55faffuAELJNMmM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768395763;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=p6bMmRw2R7L6Dddrqe3bLvaJdceLum7kKPXQ4mHzLIM=;
-	b=AY93PE7kaHfF0U+caDjA65/GPvvbUa5EQ4DPQkAV5vrkbmuHSzOPjRkqH0dEOHh/e8Ep5T
-	fiBjP2KgpBO9YeCQ==
-Authentication-Results: smtp-out1.suse.de;
-	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=pjublQkv;
-	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=AY93PE7k
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-	t=1768395763; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=p6bMmRw2R7L6Dddrqe3bLvaJdceLum7kKPXQ4mHzLIM=;
-	b=pjublQkvvHd56C+po15LjZKz3tSPWaIG6u6FAuJn2Uw7HJDGC6kzSbri5uuk0Ewb6k9yRY
-	0OYf0AQYAU1pxRUL1VPvC6+7jlIxghz+rQ3e3VDXnqml+aV7BtNKLnxNFQtbDyC6XmbJan
-	bpOUL6BawVTR/kYt55faffuAELJNMmM=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-	s=susede2_ed25519; t=1768395763;
-	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-	 mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
-	bh=p6bMmRw2R7L6Dddrqe3bLvaJdceLum7kKPXQ4mHzLIM=;
-	b=AY93PE7kaHfF0U+caDjA65/GPvvbUa5EQ4DPQkAV5vrkbmuHSzOPjRkqH0dEOHh/e8Ep5T
-	fiBjP2KgpBO9YeCQ==
-Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
-	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-	(No client certificate requested)
-	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id 618563EA63;
-	Wed, 14 Jan 2026 13:02:43 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
-	by imap1.dmz-prg2.suse.org with ESMTPSA
-	id gRh7F/OTZ2l5cQAAD6G6ig
-	(envelope-from <vbabka@suse.cz>); Wed, 14 Jan 2026 13:02:43 +0000
-Message-ID: <3d05c227-5a3b-44c7-8b1b-e7ac4a003b55@suse.cz>
-Date: Wed, 14 Jan 2026 14:02:43 +0100
+	s=arc-20240116; t=1768397742; c=relaxed/simple;
+	bh=FVAFxCkrY1hqsXCRQh6iZOM5/9mEdba4kTmLBXhSTkY=;
+	h=Date:From:To:Cc:Subject:Message-ID:MIME-Version:Content-Type:
+	 Content-Disposition; b=vCe3Rfsn5aqMW1Zg6M/3E3pbWSSLlXLCyO05Y6O4rymdqV8jhQyu0PF2PKS0l2IJGf+YrcSzQh5cJYamn7D98Gl83TSIXz8WdQOTKSLZjSSPLNHnDX2gXeX3v5twpln4NMIwg12N4l81MskQNgzH63uNZypxDgjU8+9pUcT7bOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=awJ9sA5/; arc=none smtp.client-ip=209.85.208.49
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=debian.org
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
+Received: by mail-ed1-f49.google.com with SMTP id 4fb4d7f45d1cf-64b9b0b4d5dso18395857a12.1
+        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 05:35:40 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20230601; t=1768397739; x=1769002539; darn=vger.kernel.org;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:from:to:cc:subject:date:message-id:reply-to;
+        bh=k0CyQGmKP3Ppw+v/hzxqpF6zshGAi4PN54YlP/hI/iM=;
+        b=awJ9sA5/QlyLbmZKvXxAvpJ4BU9i6Ancz6y8+qEtWpGfkwpgGz4Ng+xAj1zkna7HDO
+         Xj4eiedF39jnX4/8xmW8HGclOJEU/gN5RSbdI3BDllEOFsiUcxP3k/pa3qeV5vZ/GWfN
+         O3nfpV8FmKuFp5Q3sC0hPg6DW1FhRFQWvJOYwr6YtYBNioCdpV/kib6Mb5wwFmb8bYp5
+         0kDoQPqe0Wh/DUA7Vsl/sc0lKdeIakxDsdGKxzCVU7CTOwC10oEqT9qN3y52VzH1FZTz
+         kvHZwLj4MnJZl9aiJ3LhvTG+eHx/humpPeRYx8BzlisWnXHcbOy6Z0aIoytGY4zMUmkG
+         POsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768397739; x=1769002539;
+        h=content-disposition:mime-version:message-id:subject:cc:to:from:date
+         :sender:x-gm-gg:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=k0CyQGmKP3Ppw+v/hzxqpF6zshGAi4PN54YlP/hI/iM=;
+        b=SkIsjIJPIBYr+FuTWDwIUsUVTOjSkAHTtFDx6rh8sqe33oJNYdTZboHs9bI9pry/Gb
+         okWFlORxxdVrftOIydIcC5pawjJCsDPz2itJt4kOm9LI7qIXUkzw/noEXBRboVjXl5jP
+         lXgfMCxzXaBGJadlCCRWqi/pGy6kBaMnr91vHgIp7U6Yk71zxquYIWwLgMQyPD43htwX
+         xZ8dakONZjGwFrzBv5tXvPL+E79c57lq5NfdS6SIKFzjVGlP4cN7z1z4Sbxnq1JE4/GD
+         tiE5jbkePbLkjhVOTuFzwFiddOdtzmZ39oBShsTSur607osp9dm5pJUvTzfF590yW+wl
+         IZ+A==
+X-Forwarded-Encrypted: i=1; AJvYcCVuP8KkO4A5Hn4YghQvglaEeUCWKKjBd5FZrLISfsyvpzbD3pGgh0JoW5grHscQw8LYmRM+QE4=@vger.kernel.org
+X-Gm-Message-State: AOJu0YytxkviaArZSS4yDh4hUjL4HZ4k9d/jA8VCYpmhimDJE607lWjB
+	mjW75HZq0pfCc5gNIjSMjEmXAzsShkyv2Zv7U8BPrcRHp5fQosKNfzQunuj/hzK2b14=
+X-Gm-Gg: AY/fxX6ZcwR+vIR3J/XUztXvCHWMhrPAF9r+VCI1w1z3xYAZt8xJZ61Cp7EjdGIPAky
+	gbdWqxNOiKxq5yORvY0Co275KLR5ldaJTtbON4cp61pd4RMIVUz9rKVht3QMS5zN1yr49EyC86T
+	dNHDO9rdk8jCeZphSKor3qloOazJV7vyeFBB6xL0Dy1ArgG+UiH281vQmNxKJREW5eL/c31MmGZ
+	loCweqdEJzkEbmZxWCBYYiCxs7prjCH9rlnbpywjTuA9RSxdoAO18ltum0TrajOnQTl3MED1GLE
+	l2WNyuZ9KGW44QQxP4Lu+qG+9BfyJzQLoT3N+7qvciOx81D0u2l6uerow2YlY5PtMyLjfXjfcna
+	I9jDa/pPl0wT2VJDW0xRn+N23I3gpVGxDx3l9OO1Q3Rv6/yXFfr2v1yKJE8dBOfF/1NgtBi9k46
+	xuPLHdScTcdYTRp4cGWIAhRwD6XcQSf5okZxI5jM12lYNVngRPhdWUeXk=
+X-Received: by 2002:a05:6000:2511:b0:431:5ca:c1b0 with SMTP id ffacd0b85a97d-4342c4f2b7amr2408511f8f.4.1768391267620;
+        Wed, 14 Jan 2026 03:47:47 -0800 (PST)
+Received: from eldamar.lan (c-82-192-244-13.customer.ggaweb.ch. [82.192.244.13])
+        by smtp.gmail.com with ESMTPSA id ffacd0b85a97d-432bd0e175csm49090275f8f.14.2026.01.14.03.47.46
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 14 Jan 2026 03:47:46 -0800 (PST)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+	id 03EC7BE2EE7; Wed, 14 Jan 2026 12:47:45 +0100 (CET)
+Date: Wed, 14 Jan 2026 12:47:45 +0100
+From: Salvatore Bonaccorso <carnil@debian.org>
+To: Damien Le Moal <dlemoal@kernel.org>,
+	"Martin K . Petersen" <martin.petersen@oracle.com>,
+	Christoph Hellwig <hch@lst.de>,
+	John Garry <john.g.garry@oracle.com>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Hannes Reinecke <hare@suse.de>, Jens Axboe <axboe@kernel.dk>,
+	Niklas Cassel <cassel@kernel.org>
+Cc: linux-ide@vger.kernel.org, linux-kernel@vger.kernel.org,
+	1120831@bugs.debian.org, snow.wolf.29@proton.me,
+	stable@vger.kernel.org, regressions@lists.linux.dev
+Subject: [regression] failed command: READ FPDMA QUEUED after boot for INTEL
+ SSDSC2KG480G8, XCV10120 after 9b8b84879d4a ("block: Increase
+ BLK_DEF_MAX_SECTORS_CAP")
+Message-ID: <176839089913.2398366.61500945766820256@eldamar.lan>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH RFC v2 01/20] mm/slab: add rcu_barrier() to
- kvfree_rcu_barrier_on_cache()
-Content-Language: en-US
-To: Harry Yoo <harry.yoo@oracle.com>
-Cc: Petr Tesarik <ptesarik@suse.com>, Christoph Lameter <cl@gentwo.org>,
- David Rientjes <rientjes@google.com>,
- Roman Gushchin <roman.gushchin@linux.dev>, Hao Li <hao.li@linux.dev>,
- Andrew Morton <akpm@linux-foundation.org>,
- Uladzislau Rezki <urezki@gmail.com>,
- "Liam R. Howlett" <Liam.Howlett@oracle.com>,
- Suren Baghdasaryan <surenb@google.com>,
- Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
- Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
- linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
- bpf@vger.kernel.org, kasan-dev@googlegroups.com,
- kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
-References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
- <20260112-sheaves-for-all-v2-1-98225cfb50cf@suse.cz>
- <aWWpE-7R1eBF458i@hyeyoo> <6e1f4acd-23f3-4a92-9212-65e11c9a7d1a@suse.cz>
- <aWY7K0SmNsW1O3mv@hyeyoo> <342a2a8f-43ee-4eff-a062-6d325faa8899@suse.cz>
- <aWd6f3jERlrB5yeF@hyeyoo>
-From: Vlastimil Babka <vbabka@suse.cz>
-Autocrypt: addr=vbabka@suse.cz; keydata=
- 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
- m6M14QORSWTLRg==
-In-Reply-To: <aWd6f3jERlrB5yeF@hyeyoo>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Score: -4.51
-X-Spamd-Result: default: False [-4.51 / 50.00];
-	BAYES_HAM(-3.00)[100.00%];
-	NEURAL_HAM_LONG(-1.00)[-1.000];
-	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	NEURAL_HAM_SHORT(-0.20)[-1.000];
-	MIME_GOOD(-0.10)[text/plain];
-	MX_GOOD(-0.01)[];
-	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
-	FUZZY_RATELIMITED(0.00)[rspamd.com];
-	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
-	ARC_NA(0.00)[];
-	TO_MATCH_ENVRCPT_ALL(0.00)[];
-	RCPT_COUNT_TWELVE(0.00)[19];
-	MIME_TRACE(0.00)[0:+];
-	FREEMAIL_ENVRCPT(0.00)[gmail.com];
-	FREEMAIL_CC(0.00)[suse.com,gentwo.org,google.com,linux.dev,linux-foundation.org,gmail.com,oracle.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
-	RCVD_TLS_ALL(0.00)[];
-	RCVD_COUNT_TWO(0.00)[2];
-	FROM_EQ_ENVFROM(0.00)[];
-	FROM_HAS_DN(0.00)[];
-	TO_DN_SOME(0.00)[];
-	MID_RHS_MATCH_FROM(0.00)[];
-	RCVD_VIA_SMTP_AUTH(0.00)[];
-	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
-	DKIM_TRACE(0.00)[suse.cz:+];
-	DBL_BLOCKED_OPENRESOLVER(0.00)[imap1.dmz-prg2.suse.org:rdns,imap1.dmz-prg2.suse.org:helo]
-X-Spam-Level: 
-X-Rspamd-Action: no action
-X-Rspamd-Queue-Id: 92FCA33A8B
-X-Rspamd-Server: rspamd1.dmz-prg2.suse.org
-X-Spam-Flag: NO
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-On 1/14/26 12:14, Harry Yoo wrote:
-> For the record, an accurate analysis of the problem (as discussed
-> off-list):
-> 
-> It turns out the object freed by sheaf_flush_unused() was in KASAN
-> percpu quarantine list (confirmed by dumping the list) by the time
-> __kmem_cache_shutdown() returns an error.
-> 
-> Quarantined objects are supposed to be flushed by kasan_cache_shutdown(),
-> but things go wrong if the rcu callback (rcu_free_sheaf_nobarn()) is
-> processed after kasan_cache_shutdown() finishes.
-> 
-> That's why rcu_barrier() in __kmem_cache_shutdown() didn't help,
-> because it's called after kasan_cache_shutdown().
-> 
-> Calling rcu_barrier() in kvfree_rcu_barrier_on_cache() guarantees
-> that it'll be added to the quarantine list before kasan_cache_shutdown()
-> is called. So it's a valid fix!
+Control: forwarded -1 https://lore.kernel.org/regressions/176839089913.2398366.61500945766820256@eldamar.lan 
+Hi
 
-Thanks a lot! Will incorporate to commit log.
-This being KASAN-only means further reducing the urgency.
+A user reported a regression affecting his devices after 9b8b84879d4a
+("block: Increase BLK_DEF_MAX_SECTORS_CAP") which maybe needs a
+similar quirk like 2e9832713631 ("ata: libata-core: Quirk DELLBOSS VD
+max_sectors").
+
+The full report is at https://bugs.debian.org/1120831
+
+One full boot log (without tainted kernel) is provided in
+https://bugs.debian.org/1120831#55 , where:
+
+Dec 10 18:56:03 kernel: ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+Dec 10 18:56:03 kernel: ata1.00: Model 'INTEL SSDSC2KG480G8', rev 'XCV10120', applying quirks: zeroaftertrim
+Dec 10 18:56:03 kernel: ata1.00: ATA-10: INTEL SSDSC2KG480G8, XCV10120, max UDMA/133
+Dec 10 18:56:03 kernel: ata1.00: 937703088 sectors, multi 1: LBA48 NCQ (depth 32)
+Dec 10 18:56:03 kernel: ata1.00: configured for UDMA/133
+Dec 10 18:56:03 kernel: scsi 0:0:0:0: Direct-Access ATA INTEL SSDSC2KG48 0120 PQ: 0 ANSI: 5
+Dec 10 18:56:03 kernel: iTCO_vendor_support: vendor-support=0
+Dec 10 18:56:03 kernel: ata1.00: Enabling discard_zeroes_data
+Dec 10 18:56:03 kernel: sd 0:0:0:0: [sda] 937703088 512-byte logical blocks: (480 GB/447 GiB)
+Dec 10 18:56:03 kernel: sd 0:0:0:0: [sda] 4096-byte physical blocks
+Dec 10 18:56:03 kernel: sd 0:0:0:0: [sda] Write Protect is off
+Dec 10 18:56:03 kernel: sd 0:0:0:0: [sda] Mode Sense: 00 3a 00 00
+Dec 10 18:56:03 kernel: sd 0:0:0:0: [sda] Write cache: enabled, read cache: enabled, doesn't support DPO or FUA
+Dec 10 18:56:03 kernel: sd 0:0:0:0: [sda] Preferred minimum I/O size 4096 bytes
+Dec 10 18:56:03 kernel: ata1.00: Enabling discard_zeroes_data
+[...]
+Dec 10 18:58:49 kernel: ata1.00: exception Emask 0x0 SAct 0x81fff8 SErr 0x0 action 0x6 frozen
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/00:18:50:4a:4c/20:00:0c:00:00/40 tag 3 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/00:20:50:6a:4c/20:00:0c:00:00/40 tag 4 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/00:28:50:8a:4c/20:00:0c:00:00/40 tag 5 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/80:30:88:28:00/00:00:00:00:00/40 tag 6 ncq dma 65536 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/28:38:00:08:40/00:00:00:00:00/40 tag 7 ncq dma 20480 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/48:40:38:08:40/00:00:00:00:00/40 tag 8 ncq dma 36864 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/28:48:00:08:80/00:00:00:00:00/40 tag 9 ncq dma 20480 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/48:50:38:08:80/00:00:00:00:00/40 tag 10 ncq dma 36864 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/80:58:00:08:c0/00:00:00:00:00/40 tag 11 ncq dma 65536 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/10:60:00:08:00/00:00:01:00:00/40 tag 12 ncq dma 8192 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/60:68:20:08:00/00:00:01:00:00/40 tag 13 ncq dma 49152 in res 40/00:ff:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/80:70:00:08:40/00:00:01:00:00/40 tag 14 ncq dma 65536 in res 40/00:01:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/80:78:00:08:80/00:00:01:00:00/40 tag 15 ncq dma 65536 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 60/80:80:00:08:c0/00:00:01:00:00/40 tag 16 ncq dma 65536 in res 40/00:00:00:4f:c2/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1.00: failed command: WRITE FPDMA QUEUED
+Dec 10 18:58:49 kernel: ata1.00: cmd 61/20:b8:68:28:b2/00:00:1e:00:00/40 tag 23 ncq dma 16384 out res 40/00:00:00:4f:c2/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:58:49 kernel: ata1.00: status: { DRDY }
+Dec 10 18:58:49 kernel: ata1: hard resetting link
+Dec 10 18:58:49 kernel: ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+Dec 10 18:58:49 kernel: ata1.00: configured for UDMA/133
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#6 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#6 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#6 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#6 CDB: Read(10) 28 00 00 00 28 88 00 00 80 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 10376 op 0x0:(READ) flags 0x83700 phys_seg 16 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#7 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#7 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#7 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#7 CDB: Read(10) 28 00 00 40 08 00 00 00 28 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 4196352 op 0x0:(READ) flags 0x83700 phys_seg 5 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#8 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#8 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#8 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#8 CDB: Read(10) 28 00 00 40 08 38 00 00 48 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 4196408 op 0x0:(READ) flags 0x83700 phys_seg 9 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#9 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#9 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#9 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#9 CDB: Read(10) 28 00 00 80 08 00 00 00 28 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 8390656 op 0x0:(READ) flags 0x83700 phys_seg 5 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#10 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#10 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#10 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#10 CDB: Read(10) 28 00 00 80 08 38 00 00 48 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 8390712 op 0x0:(READ) flags 0x83700 phys_seg 9 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#11 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#11 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#11 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#11 CDB: Read(10) 28 00 00 c0 08 00 00 00 80 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 12584960 op 0x0:(READ) flags 0x83700 phys_seg 16 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#12 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#12 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#12 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#12 CDB: Read(10) 28 00 01 00 08 00 00 00 10 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 16779264 op 0x0:(READ) flags 0x83700 phys_seg 2 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#13 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#13 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#13 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#13 CDB: Read(10) 28 00 01 00 08 20 00 00 60 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 16779296 op 0x0:(READ) flags 0x83700 phys_seg 12 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#14 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#14 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#14 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#14 CDB: Read(10) 28 00 01 40 08 00 00 00 80 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 20973568 op 0x0:(READ) flags 0x83700 phys_seg 16 prio class 2
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#15 FAILED Result: hostbyte=DID_OK driverbyte=DRIVER_OK cmd_age=35s
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#15 Sense Key : Aborted Command [current]
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#15 Add. Sense: No additional sense information
+Dec 10 18:58:49 kernel: sd 0:0:0:0: [sda] tag#15 CDB: Read(10) 28 00 01 80 08 00 00 00 80 00
+Dec 10 18:58:49 kernel: I/O error, dev sda, sector 25167872 op 0x0:(READ) flags 0x83700 phys_seg 16 prio class 2
+Dec 10 18:58:49 kernel: ata1: EH complete
+Dec 10 18:58:49 kernel: ata1.00: Enabling discard_zeroes_data
+Dec 10 18:59:21 kernel: ata1.00: exception Emask 0x0 SAct 0x600 SErr 0x0 action 0x6 frozen
+Dec 10 18:59:21 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:59:21 kernel: ata1.00: cmd 60/00:48:50:6a:4c/20:00:0c:00:00/40 tag 9 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:59:21 kernel: ata1.00: status: { DRDY }
+Dec 10 18:59:21 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:59:21 kernel: ata1.00: cmd 60/00:50:50:8a:4c/20:00:0c:00:00/40 tag 10 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:59:21 kernel: ata1.00: status: { DRDY }
+Dec 10 18:59:21 kernel: ata1: hard resetting link
+Dec 10 18:59:21 kernel: ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+Dec 10 18:59:21 kernel: ata1.00: configured for UDMA/133
+Dec 10 18:59:21 kernel: ata1: EH complete
+Dec 10 18:59:51 kernel: ata1.00: exception Emask 0x0 SAct 0x20 SErr 0x0 action 0x6 frozen
+Dec 10 18:59:51 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 18:59:51 kernel: ata1.00: cmd 60/00:28:50:8a:4c/20:00:0c:00:00/40 tag 5 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 18:59:51 kernel: ata1.00: status: { DRDY }
+Dec 10 18:59:51 kernel: ata1: hard resetting link
+Dec 10 18:59:52 kernel: ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+Dec 10 18:59:52 kernel: ata1.00: configured for UDMA/133
+Dec 10 18:59:52 kernel: ata1: EH complete
+Dec 10 18:59:52 kernel: ata1.00: Enabling discard_zeroes_data
+Dec 10 19:00:22 kernel: ata1.00: NCQ disabled due to excessive errors
+Dec 10 19:00:22 kernel: ata1.00: exception Emask 0x0 SAct 0x20003400 SErr 0x0 action 0x6 frozen
+Dec 10 19:00:22 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 19:00:22 kernel: ata1.00: cmd 60/00:50:50:2a:4c/20:00:0c:00:00/40 tag 10 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 19:00:22 kernel: ata1.00: status: { DRDY }
+Dec 10 19:00:22 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 19:00:22 kernel: ata1.00: cmd 60/00:60:50:6a:4c/20:00:0c:00:00/40 tag 12 ncq dma 4194304 in res 40/00:00:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 19:00:22 kernel: ata1.00: status: { DRDY }
+Dec 10 19:00:22 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 19:00:22 kernel: ata1.00: cmd 60/00:68:50:8a:4c/20:00:0c:00:00/40 tag 13 ncq dma 4194304 in res 40/00:ff:00:00:00/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 19:00:22 kernel: ata1.00: status: { DRDY }
+Dec 10 19:00:22 kernel: ata1.00: failed command: READ FPDMA QUEUED
+Dec 10 19:00:22 kernel: ata1.00: cmd 60/08:e8:68:08:c0/00:00:01:00:00/40 tag 29 ncq dma 4096 in res 40/00:01:00:4f:c2/00:00:00:00:00/00 Emask 0x4 (timeout)
+Dec 10 19:00:22 kernel: ata1.00: status: { DRDY }
+Dec 10 19:00:22 kernel: ata1: hard resetting link
+Dec 10 19:00:22 kernel: ata1: SATA link up 6.0 Gbps (SStatus 133 SControl 300)
+Dec 10 19:00:22 kernel: ata1.00: configured for UDMA/133
+Dec 10 19:00:22 kernel: ata1: EH complete
+Dec 10 19:00:22 kernel: ata1.00: Enabling discard_zeroes_data
+
+The user bisected the issue down to the mentioned 9b8b84879d4a
+("block: Increase BLK_DEF_MAX_SECTORS_CAP").
+
+#regzbot introduced: 9b8b84879d4adc506b0d3944e20b28d9f3f6994b
+#regzbot link: https://bugs.debian.org/1120831
+
+What helps as a workaround was to apply a udev rule 
+
+ACTION=="add|change", SUBSYSTEM=="block", KERNEL=="sda", ATTR{queue/max_sectors_kb}="1280"
+
+and decreasing again max_sectors_kb to 1280 KiB.
+
+So maybe this device would need a similar quirk and limit the maximum
+size for these device I/O's to 2560 sectors?
+
+Regards,
+Salvatore
 
