@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-209764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208709-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4FB8D274E1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E69A9D262DE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 17A1530FF251
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F27A53141388
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF003D523B;
-	Thu, 15 Jan 2026 17:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA21345758;
+	Thu, 15 Jan 2026 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUbmnh2Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyiZKvtV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1113D1CAA;
-	Thu, 15 Jan 2026 17:53:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C162C028F;
+	Thu, 15 Jan 2026 17:03:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499625; cv=none; b=hLJAEB5uB7WHAR1lxsBZ3+zt3SCq+JOfm8pyc8tGpkyfEz00nbh3wP6ENV0OnWdAAiin/vGZfVDbFyZ/cW/Uyscq9K0uYx4XB9bcOx2Y0n5/IAr1BKMwidDXy2nA9K0aDdbVN2t957zbt5xvCOpvm/pgauopu9jKZ7Fma+XxOmM=
+	t=1768496623; cv=none; b=QpD7U2ZramVPrAGlTYaMVk8QVEPOveTheTlc3Tdpt1C2cnH5v4JCugSeG96mDFkFxwOAQ/2bI9PFqe/zU6FLusgcK7bMvAxBuZ/rzAuU9uDfNg3IpA6aM6ufh652zTrRkvfuxI5IgyU9vAK8RJwtpEtzdQ0mUbIuJay1rAc0/bs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499625; c=relaxed/simple;
-	bh=vV0TSHGiG5WVdUt+WqIYPWwjpFefm6oIHmlG9s5/HXE=;
+	s=arc-20240116; t=1768496623; c=relaxed/simple;
+	bh=ncroNg3cxGDY2JtcOv/nvgEK415YzPrZz0AhjRWv34k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aICIJGOdSgzd2ibSbxmz8jrDg8a/0nv6eNUmf88SolbiPZIk/KlEXHWbJLfXel3AlpLXvrz9eG5iztGV0adqpz/cjmLL2FhPhO5lwHy3L/6CDMFgO0w/jLwwm27EfmCJtlS69qw7Zy/+z6s04q24M3TGAudBwrWeEn+TvtEDfS0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUbmnh2Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7AAC116D0;
-	Thu, 15 Jan 2026 17:53:44 +0000 (UTC)
+	 MIME-Version; b=ED6C4HrPb7tZ5KKwFHm3ES4T3fwGMmBUxayGQ5PDhWw2L8TVvZtJ0wmIR/aLSxVelDwHCiagOhyQPzUskRw64cUOYr4lzaLBHY7by1mQoclIxpScS73ukbuHPtCnV2TyTa7tsLLRHfVQTf/DL9c46Mx6t504Rrx4tvay1fEYUFc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyiZKvtV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E026AC116D0;
+	Thu, 15 Jan 2026 17:03:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499625;
-	bh=vV0TSHGiG5WVdUt+WqIYPWwjpFefm6oIHmlG9s5/HXE=;
+	s=korg; t=1768496623;
+	bh=ncroNg3cxGDY2JtcOv/nvgEK415YzPrZz0AhjRWv34k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JUbmnh2Qauc0vA3cZJEDQJdcasEXjRXFmH6mQAlOvPPujDO6gKn76vnMpmIHfEWS+
-	 /pGKOE6P3HqJwEjxsEVPBrcd7r734L3AtlL4oqnFsIAFSeytcdAmOvCdBOy6OIBlui
-	 gouHra/Gqpq1HlJSez/8JQtDsJB+LwcC+iEyzurw=
+	b=EyiZKvtVE4gbVNNrDXeYtyW9OJ3+o0BDmtbPr9aEycV3hrK2L5w/gd4avRLQLS/8k
+	 mrnSUVmkuQ22DTaKWjdrVG5VuFXerEaMretxkWQMr3XuVN9Vd5uojFRmY0SmBfa3Bk
+	 xAu/UjPODeog3WiMcgY+An8gPfaykju3OynbpaTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jang Ingyu <ingyujang25@korea.ac.kr>,
-	Leon Romanovsky <leon@kernel.org>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Madhu Chittim <madhu.chittim@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 292/451] RDMA/core: Fix logic error in ib_get_gids_from_rdma_hdr()
+Subject: [PATCH 6.12 078/119] idpf: fix memory leak in idpf_vport_rel()
 Date: Thu, 15 Jan 2026 17:48:13 +0100
-Message-ID: <20260115164241.444579258@linuxfoundation.org>
+Message-ID: <20260115164154.767371937@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +63,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jang Ingyu <ingyujang25@korea.ac.kr>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 8aaa848eaddd9ef8680fc6aafbd3a0646da5df40 ]
+[ Upstream commit f6242b354605faff263ca45882b148200915a3f6 ]
 
-Fix missing comparison operator for RDMA_NETWORK_ROCE_V1 in the
-conditional statement. The constant was used directly instead of
-being compared with net_type, causing the condition to always
-evaluate to true.
+Free vport->rx_ptype_lkup in idpf_vport_rel() to avoid leaking memory
+during a reset. Reported by kmemleak:
 
-Fixes: 1c15b4f2a42f ("RDMA/core: Modify enum ib_gid_type and enum rdma_network_type")
-Signed-off-by: Jang Ingyu <ingyujang25@korea.ac.kr>
-Link: https://patch.msgid.link/20251219041508.1725947-1-ingyujang25@korea.ac.kr
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+unreferenced object 0xff450acac838a000 (size 4096):
+  comm "kworker/u258:5", pid 7732, jiffies 4296830044
+  hex dump (first 32 bytes):
+    00 00 00 00 00 10 00 00 00 10 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 10 00 00 00 00 00 00  ................
+  backtrace (crc 3da81902):
+    __kmalloc_cache_noprof+0x469/0x7a0
+    idpf_send_get_rx_ptype_msg+0x90/0x570 [idpf]
+    idpf_init_task+0x1ec/0x8d0 [idpf]
+    process_one_work+0x226/0x6d0
+    worker_thread+0x19e/0x340
+    kthread+0x10f/0x250
+    ret_from_fork+0x251/0x2b0
+    ret_from_fork_asm+0x1a/0x30
+
+Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/verbs.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index 4fcabe5a84be..4a28f30c39f1 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -735,7 +735,7 @@ int ib_get_gids_from_rdma_hdr(const union rdma_network_hdr *hdr,
- 				       (struct in6_addr *)dgid);
- 		return 0;
- 	} else if (net_type == RDMA_NETWORK_IPV6 ||
--		   net_type == RDMA_NETWORK_IB || RDMA_NETWORK_ROCE_V1) {
-+		   net_type == RDMA_NETWORK_IB || net_type == RDMA_NETWORK_ROCE_V1) {
- 		*dgid = hdr->ibgrh.dgid;
- 		*sgid = hdr->ibgrh.sgid;
- 		return 0;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index 568b57cb2298e..a0677b3277839 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -968,6 +968,8 @@ static void idpf_vport_rel(struct idpf_vport *vport)
+ 		kfree(adapter->vport_config[idx]->req_qs_chunks);
+ 		adapter->vport_config[idx]->req_qs_chunks = NULL;
+ 	}
++	kfree(vport->rx_ptype_lkup);
++	vport->rx_ptype_lkup = NULL;
+ 	kfree(vport);
+ 	adapter->num_alloc_vports--;
+ }
 -- 
 2.51.0
 
