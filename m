@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208845-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209392-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 443E5D26220
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DEF82D26AA3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CB6DC30042BC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7D9F7305FDD2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A49513BF2E8;
-	Thu, 15 Jan 2026 17:10:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 346643C00BB;
+	Thu, 15 Jan 2026 17:36:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HvhC2xLt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVgdJ5Fp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A97B3BC4D7;
-	Thu, 15 Jan 2026 17:10:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EB6F13C00A1;
+	Thu, 15 Jan 2026 17:36:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497007; cv=none; b=b1SCkn9Q6uDv6NoTFHklDKwPEamhQqjKC8xxHn+jYLFsSt28lfGDDgdNSaqOYJNfxSk4x5UEzyFlhqXcbuGwO/HT58nOERNWZxiSy40tkSjGcBuWvCgqhVEMXW6wVvH+kzqRtPR58iH+LKkKx4XH/X9Fxm93beoj7wRjT9+/3sA=
+	t=1768498566; cv=none; b=s69Lvuioze4/IK5NRDjuYaBZJAwH+5IHtCfNp+3QzHQQHPtqlFNsqoRNf5POuzTz5DQtWbnbL9CNaR+MKGxTviRyEUH6TiPgnQqW+q9j5Jt+cq5dBQ/jgARuWmwFiprUxz69j58GhArFw36tGlr3lYljsDkNsOhhI293Li5+tH4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497007; c=relaxed/simple;
-	bh=28rqhXGbb7an3ve7Ya/V50K3VjoL3kqXKOMz8M2k1N8=;
+	s=arc-20240116; t=1768498566; c=relaxed/simple;
+	bh=6wl6VsM1pBmOmvriFgGewkxCo5GTVymeQ8ADvmRIQqg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NH90z8F7Y/idmOkgwsTIExrsqI4AyRFBH1XnW7UoRcHrEmLdIs5hK8nZ7di/C4oYUKHI5qsk+B3X3GfUbTnDiNdSHIB512PM4ih0SXWSQt1F+iHAA0BaSBoh3m7t8Z0ziYnW3h0HvGuzRRxOlbqJmAaV7zg06K3PjYME8WwObHk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HvhC2xLt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DF94C116D0;
-	Thu, 15 Jan 2026 17:10:06 +0000 (UTC)
+	 MIME-Version; b=mYOUTe1WBmq8tzTi9iC+VIvZDu2UhnkJdSKFferoU55x1EAxUm5JtzCBCy2aCNNcWSR1+BPpKhvxrGGx+G/OK+7OXPvZZ/Kp7MOIKHk5ynTsJOSXbu006O4A8rg+VdmrQs/k8qqTwzdYpxKjXrKvMlNS4Q+LpSWH7s51Mz4/ha0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVgdJ5Fp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6F4C116D0;
+	Thu, 15 Jan 2026 17:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497006;
-	bh=28rqhXGbb7an3ve7Ya/V50K3VjoL3kqXKOMz8M2k1N8=;
+	s=korg; t=1768498565;
+	bh=6wl6VsM1pBmOmvriFgGewkxCo5GTVymeQ8ADvmRIQqg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HvhC2xLtvFCQQwPCWqmgBP5vLnAY3NSyekjQkSEw819tccXs2h86Mupk5NYjBQ4bs
-	 SEmPiG5hZiN2VgorRLGt2yb8aZMod1+l69t0pWTWvahg+EYQ0YbX735c5DMxwrveCY
-	 tef+7vyf16M8IPeh7H7pjt7Md30Ki62kuMST9bZY=
+	b=fVgdJ5FpTw1Fr+55C1mEha+aM/msbdTILOi9+dOjqE4YmHmrCpVhom1IuVSW+fl0E
+	 D5o/pcRZCCKLW/bolYwDYDG1LM0N0tZtNME8uEmcwI/n3v6wIZk0A2HaRZGI2cxr1f
+	 OT5weStpK/Kj/pq6UndlkwNFFElQ4y2CME4Xw4w0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumeet Pawnikar <sumeet4linux@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Olga Kornievskaia <okorniev@redhat.com>,
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 79/88] powercap: fix sscanf() error return value handling
+Subject: [PATCH 5.15 476/554] lockd: fix vfs_test_lock() calls
 Date: Thu, 15 Jan 2026 17:49:02 +0100
-Message-ID: <20260115164149.175839787@linuxfoundation.org>
+Message-ID: <20260115164303.531692415@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +62,184 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit efc4c35b741af973de90f6826bf35d3b3ac36bf1 ]
+[ Upstream commit a49a2a1baa0c553c3548a1c414b6a3c005a8deba ]
 
-Fix inconsistent error handling for sscanf() return value check.
+Usage of vfs_test_lock() is somewhat confused.  Documentation suggests
+it is given a "lock" but this is not the case.  It is given a struct
+file_lock which contains some details of the sort of lock it should be
+looking for.
 
-Implicit boolean conversion is used instead of explicit return
-value checks. The code checks if (!sscanf(...)) which is incorrect
-because:
- 1. sscanf returns the number of successfully parsed items
- 2. On success, it returns 1 (one item passed)
- 3. On failure, it returns 0 or EOF
- 4. The check 'if (!sscanf(...))' is wrong because it treats
-    success (1) as failure
+In particular passing a "file_lock" containing fl_lmops or fl_ops is
+meaningless and possibly confusing.
 
-All occurrences of sscanf() now uses explicit return value check.
-With this behavior it returns '-EINVAL' when parsing fails (returns
-0 or EOF), and continues when parsing succeeds (returns 1).
+This is particularly problematic in lockd.  nlmsvc_testlock() receives
+an initialised "file_lock" from xdr-decode, including manager ops and an
+owner.  It then mistakenly passes this to vfs_test_lock() which might
+replace the owner and the ops.  This can lead to confusion when freeing
+the lock.
 
-Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251207151549.202452-1-sumeet4linux@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+The primary role of the 'struct file_lock' passed to vfs_test_lock() is
+to report a conflicting lock that was found, so it makes more sense for
+nlmsvc_testlock() to pass "conflock", which it uses for returning the
+conflicting lock.
+
+With this change, freeing of the lock is not confused and code in
+__nlm4svc_proc_test() and __nlmsvc_proc_test() can be simplified.
+
+Documentation for vfs_test_lock() is improved to reflect its real
+purpose, and a WARN_ON_ONCE() is added to avoid a similar problem in the
+future.
+
+Reported-by: Olga Kornievskaia <okorniev@redhat.com>
+Closes: https://lore.kernel.org/all/20251021130506.45065-1-okorniev@redhat.com
+Signed-off-by: NeilBrown <neil@brown.name>
+Fixes: 20fa19027286 ("nfs: add export operations")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[ adapted c.flc_* field accesses to direct fl_* fields ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/powercap_sys.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/lockd/svc4proc.c |    4 +---
+ fs/lockd/svclock.c  |   21 ++++++++++++---------
+ fs/lockd/svcproc.c  |    5 +----
+ fs/locks.c          |   13 +++++++++++--
+ 4 files changed, 25 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index d14b36b75189d..1ff369880beb2 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -68,7 +68,7 @@ static ssize_t show_constraint_##_attr(struct device *dev, \
- 	int id; \
- 	struct powercap_zone_constraint *pconst;\
- 	\
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
- 		return -EINVAL; \
- 	if (id >= power_zone->const_id_cnt)	\
- 		return -EINVAL; \
-@@ -93,7 +93,7 @@ static ssize_t store_constraint_##_attr(struct device *dev,\
- 	int id; \
- 	struct powercap_zone_constraint *pconst;\
- 	\
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
- 		return -EINVAL; \
- 	if (id >= power_zone->const_id_cnt)	\
- 		return -EINVAL; \
-@@ -162,7 +162,7 @@ static ssize_t show_constraint_name(struct device *dev,
- 	ssize_t len = -ENODATA;
- 	struct powercap_zone_constraint *pconst;
+--- a/fs/lockd/svc4proc.c
++++ b/fs/lockd/svc4proc.c
+@@ -96,7 +96,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
  
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id))
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1)
- 		return -EINVAL;
- 	if (id >= power_zone->const_id_cnt)
- 		return -EINVAL;
--- 
-2.51.0
-
+ 	dprintk("lockd: TEST4        called\n");
+@@ -106,7 +105,6 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	if ((resp->status = nlm4svc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+ 	/* Now check for conflicting locks */
+ 	resp->status = nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie);
+ 	if (resp->status == nlm_drop_reply)
+@@ -114,7 +112,7 @@ __nlm4svc_proc_test(struct svc_rqst *rqs
+ 	else
+ 		dprintk("lockd: TEST4        status %d\n", ntohl(resp->status));
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+--- a/fs/lockd/svclock.c
++++ b/fs/lockd/svclock.c
+@@ -604,7 +604,13 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
+ 	}
+ 
+ 	mode = lock_to_openmode(&lock->fl);
+-	error = vfs_test_lock(file->f_file[mode], &lock->fl);
++	locks_init_lock(&conflock->fl);
++	/* vfs_test_lock only uses start, end, and owner, but tests fl_file */
++	conflock->fl.fl_file = lock->fl.fl_file;
++	conflock->fl.fl_start = lock->fl.fl_start;
++	conflock->fl.fl_end = lock->fl.fl_end;
++	conflock->fl.fl_owner = lock->fl.fl_owner;
++	error = vfs_test_lock(file->f_file[mode], &conflock->fl);
+ 	if (error) {
+ 		/* We can't currently deal with deferred test requests */
+ 		if (error == FILE_LOCK_DEFERRED)
+@@ -614,22 +620,19 @@ nlmsvc_testlock(struct svc_rqst *rqstp,
+ 		goto out;
+ 	}
+ 
+-	if (lock->fl.fl_type == F_UNLCK) {
++	if (conflock->fl.fl_type == F_UNLCK) {
+ 		ret = nlm_granted;
+ 		goto out;
+ 	}
+ 
+ 	dprintk("lockd: conflicting lock(ty=%d, %Ld-%Ld)\n",
+-		lock->fl.fl_type, (long long)lock->fl.fl_start,
+-		(long long)lock->fl.fl_end);
++		conflock->fl.fl_type, (long long)conflock->fl.fl_start,
++		(long long)conflock->fl.fl_end);
+ 	conflock->caller = "somehost";	/* FIXME */
+ 	conflock->len = strlen(conflock->caller);
+ 	conflock->oh.len = 0;		/* don't return OH info */
+-	conflock->svid = lock->fl.fl_pid;
+-	conflock->fl.fl_type = lock->fl.fl_type;
+-	conflock->fl.fl_start = lock->fl.fl_start;
+-	conflock->fl.fl_end = lock->fl.fl_end;
+-	locks_release_private(&lock->fl);
++	conflock->svid = conflock->fl.fl_pid;
++	locks_release_private(&conflock->fl);
+ 
+ 	ret = nlm_lck_denied;
+ out:
+--- a/fs/lockd/svcproc.c
++++ b/fs/lockd/svcproc.c
+@@ -117,7 +117,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 	struct nlm_args *argp = rqstp->rq_argp;
+ 	struct nlm_host	*host;
+ 	struct nlm_file	*file;
+-	struct nlm_lockowner *test_owner;
+ 	__be32 rc = rpc_success;
+ 
+ 	dprintk("lockd: TEST          called\n");
+@@ -127,8 +126,6 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 	if ((resp->status = nlmsvc_retrieve_args(rqstp, argp, &host, &file)))
+ 		return resp->status == nlm_drop_reply ? rpc_drop_reply :rpc_success;
+ 
+-	test_owner = argp->lock.fl.fl_owner;
+-
+ 	/* Now check for conflicting locks */
+ 	resp->status = cast_status(nlmsvc_testlock(rqstp, file, host, &argp->lock, &resp->lock, &resp->cookie));
+ 	if (resp->status == nlm_drop_reply)
+@@ -137,7 +134,7 @@ __nlmsvc_proc_test(struct svc_rqst *rqst
+ 		dprintk("lockd: TEST          status %d vers %d\n",
+ 			ntohl(resp->status), rqstp->rq_vers);
+ 
+-	nlmsvc_put_lockowner(test_owner);
++	nlmsvc_release_lockowner(&argp->lock);
+ 	nlmsvc_release_host(host);
+ 	nlm_release_file(file);
+ 	return rc;
+--- a/fs/locks.c
++++ b/fs/locks.c
+@@ -2229,13 +2229,22 @@ SYSCALL_DEFINE2(flock, unsigned int, fd,
+ /**
+  * vfs_test_lock - test file byte range lock
+  * @filp: The file to test lock for
+- * @fl: The lock to test; also used to hold result
++ * @fl: The byte-range in the file to test; also used to hold result
+  *
++ * On entry, @fl does not contain a lock, but identifies a range (fl_start, fl_end)
++ * in the file (c.flc_file), and an owner (c.flc_owner) for whom existing locks
++ * should be ignored.  c.flc_type and c.flc_flags are ignored.
++ * Both fl_lmops and fl_ops in @fl must be NULL.
+  * Returns -ERRNO on failure.  Indicates presence of conflicting lock by
+- * setting conf->fl_type to something other than F_UNLCK.
++ * setting fl->fl_type to something other than F_UNLCK.
++ *
++ * If vfs_test_lock() does find a lock and return it, the caller must
++ * use locks_free_lock() or locks_release_private() on the returned lock.
+  */
+ int vfs_test_lock(struct file *filp, struct file_lock *fl)
+ {
++	WARN_ON_ONCE(fl->fl_ops || fl->fl_lmops);
++	WARN_ON_ONCE(filp != fl->fl_file);
+ 	if (filp->f_op->lock)
+ 		return filp->f_op->lock(filp, F_GETLK, fl);
+ 	posix_test_lock(filp, fl);
 
 
 
