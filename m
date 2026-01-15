@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209293-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208651-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2562D268DA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2FDB4D26194
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9477D30B97E3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DE063100E9E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 073083BFE28;
-	Thu, 15 Jan 2026 17:31:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B56F829ACDD;
+	Thu, 15 Jan 2026 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eYHW+gJ7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WwmiDmD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE50386334;
-	Thu, 15 Jan 2026 17:31:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 782182C028F;
+	Thu, 15 Jan 2026 17:00:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498283; cv=none; b=ZAql8Jaz0375m/lkPZzALczA3Hvc3pTRKE3DT+9QP2lkxSydquUu5EnktP56lt4zQPHgEO7YegVWxm4L0udmsquxemurfANOMYPLpDsbi0GWA6zmnyCe2JQY8W6uYu041VwUkJUshknKrDFzmysyIVxo+ilEU+130oJkB5Bx0T0=
+	t=1768496457; cv=none; b=t+cNBe+NdxbeAWm270pn8Rfub2kQ4owXzs8ARIdw2VlQmbMqKDnKz8pC91NIQ1t0JWWCiegB92xM/v/NDTL6iGSlPi+IYV2uuRDQ6WOI5gi5TWWQDm6gcbUFtyQVpzD4RUe3KO+R2aeC8a2lpvnlA2W4kwl70FZEslcVRxIdy6c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498283; c=relaxed/simple;
-	bh=2M92dzv2+YvWzaNubJSJ4yz4Qzrirao0ugkXa8BtQXc=;
+	s=arc-20240116; t=1768496457; c=relaxed/simple;
+	bh=gvAM6CMrLKa6ztUkzaMprbadM4IIy1533Nd5uLCKiIE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iCfjd/vfz73hJ6vYmuzO4Z8fa1PyOMHX+x4Zfgr2+Om2NPChgj8lvj5lfrNpUPKM3J4BkHgaKhx6X/S3FnNMeZhVpOU1Q7p5i37Wuyf7ErXcbBxujhvTa9KpWbyTmcMzgraMVksqgOHmXru43iUdS1nin48AisXcNHzByy6mOrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eYHW+gJ7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49759C116D0;
-	Thu, 15 Jan 2026 17:31:23 +0000 (UTC)
+	 MIME-Version; b=PV3rj88E524M7gF9ZwgF2DkR0zUQKtTWOJ19qZ8hPssp/cI6IYkYXC2Mv1O7Qh1Eg2tu7KBQCr62etNGBQ0Dm4dS5NGecvKA5d4Qtau4JZQL4ta1sRjZTEXk+2V4MIMmOr6V8Ocpvef9AwENe9IMC3oSafnkZGRf0qnVdSg7zO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WwmiDmD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05CD2C116D0;
+	Thu, 15 Jan 2026 17:00:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498283;
-	bh=2M92dzv2+YvWzaNubJSJ4yz4Qzrirao0ugkXa8BtQXc=;
+	s=korg; t=1768496457;
+	bh=gvAM6CMrLKa6ztUkzaMprbadM4IIy1533Nd5uLCKiIE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eYHW+gJ7e15F3bXkTUTl9FJztJNFSBh8BsRfuNMO83Vq+iOpooHPUgl6HKQFoC6TO
-	 mIY7xtYBxcqQR7NaITNKVSIptjREyWRKHq46Fpk4QbHyTlRueQVTJU9hIK0HNnt/2T
-	 mFyacAd52aCjV5YsZUw3XL5sEuA+RY/ZQXcVWnCc=
+	b=WwmiDmD2ngUZgPSsyF9IyN5QmOvKFrdOHO2eaIeeHANgjtGLzOEeLQSefTX3N8nN1
+	 01+Z7GRjDohwqxyJIZyk4yE2owQe3NYLvJDkVKPNmeNEUGNiM8emY9U6Xy/QvqewlD
+	 zAkdu2cTIYZbdMSf5j4oBDaIlk3rkbJvUlvLuFhU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 350/554] smc91x: fix broken irq-context in PREEMPT_RT
-Date: Thu, 15 Jan 2026 17:46:56 +0100
-Message-ID: <20260115164258.896176262@linuxfoundation.org>
+	Li Lingfeng <lilingfeng3@huawei.com>,
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 002/119] nfsd: provide locking for v4_end_grace
+Date: Thu, 15 Jan 2026 17:46:57 +0100
+Message-ID: <20260115164152.044757840@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,77 +61,187 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 6402078bd9d1ed46e79465e1faaa42e3458f8a33 ]
+commit 2857bd59feb63fcf40fe4baf55401baea6b4feb4 upstream.
 
-When smc91x.c is built with PREEMPT_RT, the following splat occurs
-in FVP_RevC:
+Writing to v4_end_grace can race with server shutdown and result in
+memory being accessed after it was freed - reclaim_str_hashtbl in
+particularly.
 
-[   13.055000] smc91x LNRO0003:00 eth0: link up, 10Mbps, half-duplex, lpa 0x0000
-[   13.062137] BUG: workqueue leaked atomic, lock or RCU: kworker/2:1[106]
-[   13.062137]      preempt=0x00000000 lock=0->0 RCU=0->1 workfn=mld_ifc_work
-[   13.062266] C
-** replaying previous printk message **
-[   13.062266] CPU: 2 UID: 0 PID: 106 Comm: kworker/2:1 Not tainted 6.18.0-dirty #179 PREEMPT_{RT,(full)}
-[   13.062353] Hardware name:  , BIOS
-[   13.062382] Workqueue: mld mld_ifc_work
-[   13.062469] Call trace:
-[   13.062494]  show_stack+0x24/0x40 (C)
-[   13.062602]  __dump_stack+0x28/0x48
-[   13.062710]  dump_stack_lvl+0x7c/0xb0
-[   13.062818]  dump_stack+0x18/0x34
-[   13.062926]  process_scheduled_works+0x294/0x450
-[   13.063043]  worker_thread+0x260/0x3d8
-[   13.063124]  kthread+0x1c4/0x228
-[   13.063235]  ret_from_fork+0x10/0x20
+We cannot hold nfsd_mutex across the nfsd4_end_grace() call as that is
+held while client_tracking_op->init() is called and that can wait for
+an upcall to nfsdcltrack which can write to v4_end_grace, resulting in a
+deadlock.
 
-This happens because smc_special_trylock() disables IRQs even on PREEMPT_RT,
-but smc_special_unlock() does not restore IRQs on PREEMPT_RT.
-The reason is that smc_special_unlock() calls spin_unlock_irqrestore(),
-and rcu_read_unlock_bh() in __dev_queue_xmit() cannot invoke
-rcu_read_unlock() through __local_bh_enable_ip() when current->softirq_disable_cnt becomes zero.
+nfsd4_end_grace() is also called by the landromat work queue and this
+doesn't require locking as server shutdown will stop the work and wait
+for it before freeing anything that nfsd4_end_grace() might access.
 
-To address this issue, replace smc_special_trylock() with spin_trylock_irqsave().
+However, we must be sure that writing to v4_end_grace doesn't restart
+the work item after shutdown has already waited for it.  For this we
+add a new flag protected with nn->client_lock.  It is set only while it
+is safe to make client tracking calls, and v4_end_grace only schedules
+work while the flag is set with the spinlock held.
 
-Fixes: 342a93247e08 ("locking/spinlock: Provide RT variant header: <linux/spinlock_rt.h>")
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251217085115.1730036-1-yeoreum.yun@arm.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+So this patch adds a nfsd_net field "client_tracking_active" which is
+set as described.  Another field "grace_end_forced", is set when
+v4_end_grace is written.  After this is set, and providing
+client_tracking_active is set, the laundromat is scheduled.
+This "grace_end_forced" field bypasses other checks for whether the
+grace period has finished.
+
+This resolves a race which can result in use-after-free.
+
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Closes: https://lore.kernel.org/linux-nfs/20250623030015.2353515-1-neil@brown.name/T/#t
+Fixes: 7f5ef2e900d9 ("nfsd: add a v4_end_grace file to /proc/fs/nfsd")
+Cc: stable@vger.kernel.org
+Signed-off-by: NeilBrown <neil@brown.name>
+Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/smsc/smc91x.c | 10 +---------
- 1 file changed, 1 insertion(+), 9 deletions(-)
+ fs/nfsd/netns.h     |    2 ++
+ fs/nfsd/nfs4state.c |   42 ++++++++++++++++++++++++++++++++++++++++--
+ fs/nfsd/nfsctl.c    |    3 +--
+ fs/nfsd/state.h     |    2 +-
+ 4 files changed, 44 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/smsc/smc91x.c b/drivers/net/ethernet/smsc/smc91x.c
-index 813ea941b91a..c63783516202 100644
---- a/drivers/net/ethernet/smsc/smc91x.c
-+++ b/drivers/net/ethernet/smsc/smc91x.c
-@@ -515,15 +515,7 @@ static inline void  smc_rcv(struct net_device *dev)
-  * any other concurrent access and C would always interrupt B. But life
-  * isn't that easy in a SMP world...
-  */
--#define smc_special_trylock(lock, flags)				\
--({									\
--	int __ret;							\
--	local_irq_save(flags);						\
--	__ret = spin_trylock(lock);					\
--	if (!__ret)							\
--		local_irq_restore(flags);				\
--	__ret;								\
--})
-+#define smc_special_trylock(lock, flags)	spin_trylock_irqsave(lock, flags)
- #define smc_special_lock(lock, flags)		spin_lock_irqsave(lock, flags)
- #define smc_special_unlock(lock, flags) 	spin_unlock_irqrestore(lock, flags)
- #else
--- 
-2.51.0
-
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -66,6 +66,8 @@ struct nfsd_net {
+ 
+ 	struct lock_manager nfsd4_manager;
+ 	bool grace_ended;
++	bool grace_end_forced;
++	bool client_tracking_active;
+ 	time64_t boot_time;
+ 
+ 	struct dentry *nfsd_client_dir;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,7 +84,7 @@ static u64 current_sessionid = 1;
+ /* forward declarations */
+ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner);
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+-void nfsd4_end_grace(struct nfsd_net *nn);
++static void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
+ static void nfsd4_file_hash_remove(struct nfs4_file *fi);
+ static void deleg_reaper(struct nfsd_net *nn);
+@@ -6294,7 +6294,7 @@ nfsd4_renew(struct svc_rqst *rqstp, stru
+ 	return nfs_ok;
+ }
+ 
+-void
++static void
+ nfsd4_end_grace(struct nfsd_net *nn)
+ {
+ 	/* do nothing if grace period already ended */
+@@ -6327,6 +6327,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
+ 	 */
+ }
+ 
++/**
++ * nfsd4_force_end_grace - forcibly end the NFSv4 grace period
++ * @nn: network namespace for the server instance to be updated
++ *
++ * Forces bypass of normal grace period completion, then schedules
++ * the laundromat to end the grace period immediately. Does not wait
++ * for the grace period to fully terminate before returning.
++ *
++ * Return values:
++ *   %true: Grace termination schedule
++ *   %false: No action was taken
++ */
++bool nfsd4_force_end_grace(struct nfsd_net *nn)
++{
++	if (!nn->client_tracking_ops)
++		return false;
++	spin_lock(&nn->client_lock);
++	if (nn->grace_ended || !nn->client_tracking_active) {
++		spin_unlock(&nn->client_lock);
++		return false;
++	}
++	WRITE_ONCE(nn->grace_end_forced, true);
++	mod_delayed_work(laundry_wq, &nn->laundromat_work, 0);
++	spin_unlock(&nn->client_lock);
++	return true;
++}
++
+ /*
+  * If we've waited a lease period but there are still clients trying to
+  * reclaim, wait a little longer to give them a chance to finish.
+@@ -6336,6 +6363,8 @@ static bool clients_still_reclaiming(str
+ 	time64_t double_grace_period_end = nn->boot_time +
+ 					   2 * nn->nfsd4_lease;
+ 
++	if (READ_ONCE(nn->grace_end_forced))
++		return false;
+ 	if (nn->track_reclaim_completes &&
+ 			atomic_read(&nn->nr_reclaim_complete) ==
+ 			nn->reclaim_str_hashtbl_size)
+@@ -8655,6 +8684,8 @@ static int nfs4_state_create_net(struct
+ 	nn->unconf_name_tree = RB_ROOT;
+ 	nn->boot_time = ktime_get_real_seconds();
+ 	nn->grace_ended = false;
++	nn->grace_end_forced = false;
++	nn->client_tracking_active = false;
+ 	nn->nfsd4_manager.block_opens = true;
+ 	INIT_LIST_HEAD(&nn->nfsd4_manager.list);
+ 	INIT_LIST_HEAD(&nn->client_lru);
+@@ -8735,6 +8766,10 @@ nfs4_state_start_net(struct net *net)
+ 		return ret;
+ 	locks_start_grace(net, &nn->nfsd4_manager);
+ 	nfsd4_client_tracking_init(net);
++	/* safe for laundromat to run now */
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = true;
++	spin_unlock(&nn->client_lock);
+ 	if (nn->track_reclaim_completes && nn->reclaim_str_hashtbl_size == 0)
+ 		goto skip_grace;
+ 	printk(KERN_INFO "NFSD: starting %lld-second grace period (net %x)\n",
+@@ -8775,6 +8810,9 @@ nfs4_state_shutdown_net(struct net *net)
+ 
+ 	shrinker_free(nn->nfsd_client_shrinker);
+ 	cancel_work_sync(&nn->nfsd_shrinker_work);
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = false;
++	spin_unlock(&nn->client_lock);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
+ 
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1123,10 +1123,9 @@ static ssize_t write_v4_end_grace(struct
+ 		case 'Y':
+ 		case 'y':
+ 		case '1':
+-			if (!nn->nfsd_serv)
++			if (!nfsd4_force_end_grace(nn))
+ 				return -EBUSY;
+ 			trace_nfsd_end_grace(netns(file));
+-			nfsd4_end_grace(nn);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -767,7 +767,7 @@ static inline void nfsd4_revoke_states(s
+ #endif
+ 
+ /* grace period management */
+-void nfsd4_end_grace(struct nfsd_net *nn);
++bool nfsd4_force_end_grace(struct nfsd_net *nn);
+ 
+ /* nfs4recover operations */
+ extern int nfsd4_client_tracking_init(struct net *net);
 
 
 
