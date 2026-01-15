@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209148-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209568-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C975BD26E67
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:58 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9E0AD27818
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D815A3092252
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1B65F325EF53
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651BE3BFE2A;
-	Thu, 15 Jan 2026 17:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C294D399011;
+	Thu, 15 Jan 2026 17:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb6WDLQ2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HPwRaCz0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275F42D6E72;
-	Thu, 15 Jan 2026 17:24:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FD1A2D541B;
+	Thu, 15 Jan 2026 17:44:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497870; cv=none; b=RnvW82wkctWb93Av7Zp+w3Usgz3oA0lLye/x91/A0gkX2xg5yPnmxPvCYkPpato1R0i+fq6pdfDzkrNpvmthWyHnfqlqDSM7Le/yPtFkL+5VVPzf6jsRiqrPGQ0t12/TH3rz+aKl6CfKXygoBvKWd1A/P4LigkjvwXIcp+5zFgA=
+	t=1768499067; cv=none; b=t9y9qalXHhWK3wnEmcsxiM8j8tVGXLEynFzJy+4NURzT1Ahxjlu8u6ZgI9w3aNSenrg4oU0vLQTRj6cfIUXPTcHAe8nOMoW0iee3g4rgukTnGtdowOHOyrTWKrArRkc65kv8PcYWbdF587bUsYX9gahIuYs4ewUMXSLq5hZS8cw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497870; c=relaxed/simple;
-	bh=VTnxQDHs77UlUVh6jO39zylT+SZJTwg/HVFa3a87Ac4=;
+	s=arc-20240116; t=1768499067; c=relaxed/simple;
+	bh=xvinPzltdDLUMhZ54IhFZU3gsLI+h2gWl0rkRNIlajQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JJqm+GWsYhu3sXuRo9C58kuidDg9SQC3zQe5ysAsdjmymuFQBxgE+DmQgv+LEJPd93O2w0sa0DHhqaOHRQMsouJYCMWk65SyZTQBx9319TmpV7oEIOffjTUj2bJ45yv4rsAnkDJT0YSrxYaA/i0lZxArBTbfHo0LxO+AggrEclk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb6WDLQ2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1E2C116D0;
-	Thu, 15 Jan 2026 17:24:29 +0000 (UTC)
+	 MIME-Version; b=Fsls4/7KGFQKJrrSYGu/mFOumiDpr5Ea8JOSNCA7jjmfl/a2paVaBWQ+Hc29Ml+hfnVg0DQ31OswOcS9ZbYlvV2/zIi9gnabelSjKYaThAtgRoe94js9/fXKndGr1qf65EY5lgKb8Syg8wF3iK07MC+id8W554vP5Np3xRFSVwY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HPwRaCz0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B75C116D0;
+	Thu, 15 Jan 2026 17:44:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497870;
-	bh=VTnxQDHs77UlUVh6jO39zylT+SZJTwg/HVFa3a87Ac4=;
+	s=korg; t=1768499067;
+	bh=xvinPzltdDLUMhZ54IhFZU3gsLI+h2gWl0rkRNIlajQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bb6WDLQ24YKMyd98dUniYCh5uCAPVY2xKTqBYkZqVZJOEoq/RXXxTIK5VbtadDD4t
-	 m9dCkkHHiYSjjfit9+yNRqx7p15yK9DzfDPlaD0JaBnQZRk4h48TyUs8V3qX92JJvM
-	 NZ2p30f8kWQgHUjh0JixBop3hwbKUFMuLK5KVAqU=
+	b=HPwRaCz0bUaKsU4SQunkMix/jxdXsXgofT9G0I98DwFxtDF2IAoX7lFJPBHMIgZe1
+	 R18n1nJgBiGi2yYii46GVOe41gVuUfLjCx47h+LnLo768huvwqmbvrxjXSusNNPNGt
+	 55+CgPr00M3f7mbP4QizhiTXTlbncfbVFQS9A6IQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Simon Horman <horms@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jianglei Nie <niejianglei2021@163.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Abdun Nihaal <abdun.nihaal@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 232/554] caif: fix integer underflow in cffrml_receive()
+Subject: [PATCH 5.10 097/451] staging: fbtft: core: fix potential memory leak in fbtft_probe_common()
 Date: Thu, 15 Jan 2026 17:44:58 +0100
-Message-ID: <20260115164254.643093653@linuxfoundation.org>
+Message-ID: <20260115164234.426843782@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Jianglei Nie <niejianglei2021@163.com>
 
-[ Upstream commit 8a11ff0948b5ad09b71896b7ccc850625f9878d1 ]
+[ Upstream commit 47d3949a9b04cbcb0e10abae30c2b53e98706e11 ]
 
-The cffrml_receive() function extracts a length field from the packet
-header and, when FCS is disabled, subtracts 2 from this length without
-validating that len >= 2.
+fbtft_probe_common() allocates a memory chunk for "info" with
+fbtft_framebuffer_alloc(). When "display->buswidth == 0" is true, the
+function returns without releasing the "info", which will lead to a
+memory leak.
 
-If an attacker sends a malicious packet with a length field of 0 or 1
-to an interface with FCS disabled, the subtraction causes an integer
-underflow.
+Fix it by calling fbtft_framebuffer_release() when "display->buswidth
+== 0" is true.
 
-This can lead to memory exhaustion and kernel instability, potential
-information disclosure if padding contains uninitialized kernel memory.
-
-Fix this by validating that len >= 2 before performing the subtraction.
-
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/SYBPR01MB7881511122BAFEA8212A1608AFA6A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c296d5f9957c ("staging: fbtft: core support")
+Signed-off-by: Jianglei Nie <niejianglei2021@163.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Abdun Nihaal <abdun.nihaal@gmail.com>
+Link: https://patch.msgid.link/20251112192235.2088654-1-andriy.shevchenko@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/caif/cffrml.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/staging/fbtft/fbtft-core.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/caif/cffrml.c b/net/caif/cffrml.c
-index 6651a8dc62e04..d4d63586053ad 100644
---- a/net/caif/cffrml.c
-+++ b/net/caif/cffrml.c
-@@ -92,8 +92,15 @@ static int cffrml_receive(struct cflayer *layr, struct cfpkt *pkt)
- 	len = le16_to_cpu(tmp);
+diff --git a/drivers/staging/fbtft/fbtft-core.c b/drivers/staging/fbtft/fbtft-core.c
+index 2c04fcff0e1c5..723ca72d1bd39 100644
+--- a/drivers/staging/fbtft/fbtft-core.c
++++ b/drivers/staging/fbtft/fbtft-core.c
+@@ -1229,8 +1229,8 @@ int fbtft_probe_common(struct fbtft_display *display,
+ 	par->pdev = pdev;
  
- 	/* Subtract for FCS on length if FCS is not used. */
--	if (!this->dofcs)
-+	if (!this->dofcs) {
-+		if (len < 2) {
-+			++cffrml_rcv_error;
-+			pr_err("Invalid frame length (%d)\n", len);
-+			cfpkt_destroy(pkt);
-+			return -EPROTO;
-+		}
- 		len -= 2;
-+	}
+ 	if (display->buswidth == 0) {
+-		dev_err(dev, "buswidth is not set\n");
+-		return -EINVAL;
++		ret = dev_err_probe(dev, -EINVAL, "buswidth is not set\n");
++		goto out_release;
+ 	}
  
- 	if (cfpkt_setlen(pkt, len) < 0) {
- 		++cffrml_rcv_error;
+ 	/* write register functions */
 -- 
 2.51.0
 
