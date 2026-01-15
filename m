@@ -1,52 +1,50 @@
-Return-Path: <stable+bounces-209039-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209041-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35AB1D2670C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 407AFD265F1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:26:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75CAD3033AF1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:19:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E502E3030533
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:19:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30B832C08AC;
-	Thu, 15 Jan 2026 17:19:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F942D239B;
+	Thu, 15 Jan 2026 17:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NBqyCdtm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k4kC6bfl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8BF615530C;
-	Thu, 15 Jan 2026 17:19:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A74A7280327;
+	Thu, 15 Jan 2026 17:19:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497561; cv=none; b=HpU/KK3bSRFvPgwu5zKw0+nJhV1VubXTj7ZoI3k2MuRgdfBLFSpWCDO4H+iqj//AZ135Y04izhASsTP3UNn5iCIEbaPdKu7KXuxp/YmuWIYu7WOyPw7o4xCXSgNUa3KKzQpd9/CyKsGn2hDlrhVOOiRgvcuSw8C78SbX+y+YHcE=
+	t=1768497566; cv=none; b=GGJnFk/KWcgYl7gCkEyXAdNsx5TY7dSIng6eaCGoBwC84ohUVZzPyiyeU7g7Od5tLiYjnXv93I83PCGxJAkQbkl9TIRKzbJkpAWcoS8uxIpXw81sYspUjotfGvNOvQNsTwL8I2QYcvHPdWO9yF/iaxy4S8oL2/Xxw+4ovZefJzk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497561; c=relaxed/simple;
-	bh=VQRgjZ95q2/HID8N3Cr5J+kVz+cuUD+ZpZMvpq+WPKM=;
+	s=arc-20240116; t=1768497566; c=relaxed/simple;
+	bh=8wieetV6u1EQw5hVVwJMbqfiuFqYhNulOwMdExBP7CQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JQtFHFpk4fgVv+m27PorLB0mm0xjeuxVT4ph1YXGYpuRwqFBcO26v7bw572h28uyuiRTQSKJLp6ZEkahWCB3Mh5Wd1jJ1igOGUAh3Y07RiWIJsDZhpi6GxIH/VK+dre2Y1Lyt8a4Xh0UfKBCkXbUrc/gJvSRbb/D3Bmcpkn3Wlw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NBqyCdtm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E5DC116D0;
-	Thu, 15 Jan 2026 17:19:20 +0000 (UTC)
+	 MIME-Version; b=nQtahS8I1GGNyVzFeTrGy6QlZdsm1N7ALrlvL6BK1ZSy1cn8/8lpv5T96SJB7m6gHR7qeER82ZnZHovdHs2484ZslNz4ucdxYzddUk7ZQjIVCW30asyIa563O6oa2wFwB46WnpeiO1ID7+G1v7VKTFc4M9JK6eZ+MeGKWAZN7O0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k4kC6bfl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3211DC116D0;
+	Thu, 15 Jan 2026 17:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497560;
-	bh=VQRgjZ95q2/HID8N3Cr5J+kVz+cuUD+ZpZMvpq+WPKM=;
+	s=korg; t=1768497566;
+	bh=8wieetV6u1EQw5hVVwJMbqfiuFqYhNulOwMdExBP7CQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NBqyCdtmcS3wUquBbgPqsg5rp8Pl7prp1V8dgmlwOqUy8UcRyhS77raXn6qBivCbJ
-	 tN4ENBbFqtgTBXkpFnczF7z9VZRBbDHVww1qoDOcts84HVHpfa8WHi8xX5f4KRoMEW
-	 xv2Dsc3DqSburpHUjXrlfUW2QiSfERCtEE41CyaQ=
+	b=k4kC6bflIpXv4x9KGZZ0Y+e+cm04GiJoW525y6tmZ1PwFM3Ij96G0ThjlYF1RLyH+
+	 V2rDgD5IUgmK643OqGdWCQOD5V46BkA8fnz3i2PRvXppV4B8Cb9/EXVQRPSH9fak7j
+	 fOwDYvEWehhI1F+Bar+R+PyORIFJ544Eu7pHg0Qs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhao Yipeng <zhaoyipeng5@huawei.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Oliver Neukum <oneukum@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 124/554] ima: Handle error code returned by ima_filter_rule_match()
-Date: Thu, 15 Jan 2026 17:43:10 +0100
-Message-ID: <20260115164250.736336299@linuxfoundation.org>
+Subject: [PATCH 5.15 125/554] usb: chaoskey: fix locking for O_NONBLOCK
+Date: Thu, 15 Jan 2026 17:43:11 +0100
+Message-ID: <20260115164250.771832878@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -65,72 +63,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zhao Yipeng <zhaoyipeng5@huawei.com>
+From: Oliver Neukum <oneukum@suse.com>
 
-[ Upstream commit 738c9738e690f5cea24a3ad6fd2d9a323cf614f6 ]
+[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
 
-In ima_match_rules(), if ima_filter_rule_match() returns -ENOENT due to
-the rule being NULL, the function incorrectly skips the 'if (!rc)' check
-and sets 'result = true'. The LSM rule is considered a match, causing
-extra files to be measured by IMA.
+A failure to take a lock with O_NONBLOCK needs to result
+in -EAGAIN. Change it.
 
-This issue can be reproduced in the following scenario:
-After unloading the SELinux policy module via 'semodule -d', if an IMA
-measurement is triggered before ima_lsm_rules is updated,
-in ima_match_rules(), the first call to ima_filter_rule_match() returns
--ESTALE. This causes the code to enter the 'if (rc == -ESTALE &&
-!rule_reinitialized)' block, perform ima_lsm_copy_rule() and retry. In
-ima_lsm_copy_rule(), since the SELinux module has been removed, the rule
-becomes NULL, and the second call to ima_filter_rule_match() returns
--ENOENT. This bypasses the 'if (!rc)' check and results in a false match.
-
-Call trace:
-  selinux_audit_rule_match+0x310/0x3b8
-  security_audit_rule_match+0x60/0xa0
-  ima_match_rules+0x2e4/0x4a0
-  ima_match_policy+0x9c/0x1e8
-  ima_get_action+0x48/0x60
-  process_measurement+0xf8/0xa98
-  ima_bprm_check+0x98/0xd8
-  security_bprm_check+0x5c/0x78
-  search_binary_handler+0x6c/0x318
-  exec_binprm+0x58/0x1b8
-  bprm_execve+0xb8/0x130
-  do_execveat_common.isra.0+0x1a8/0x258
-  __arm64_sys_execve+0x48/0x68
-  invoke_syscall+0x50/0x128
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x44/0x200
-  el0t_64_sync_handler+0x100/0x130
-  el0t_64_sync+0x3c8/0x3d0
-
-Fix this by changing 'if (!rc)' to 'if (rc <= 0)' to ensure that error
-codes like -ENOENT do not bypass the check and accidentally result in a
-successful match.
-
-Fixes: 4af4662fa4a9d ("integrity: IMA policy")
-Signed-off-by: Zhao Yipeng <zhaoyipeng5@huawei.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
+Signed-off-by: Oliver Neukum <oneukum@suse.com>
+Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
+ 1 file changed, 13 insertions(+), 3 deletions(-)
 
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index 6beef8ce311e0..8936e08711c25 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -626,7 +626,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule,
- 				goto retry;
- 			}
- 		}
--		if (!rc) {
-+		if (rc <= 0) {
- 			result = false;
- 			goto out;
- 		}
+diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
+index d99d424c05a7a..50909cc9a0bb2 100644
+--- a/drivers/usb/misc/chaoskey.c
++++ b/drivers/usb/misc/chaoskey.c
+@@ -445,9 +445,19 @@ static ssize_t chaoskey_read(struct file *file,
+ 			goto bail;
+ 		mutex_unlock(&dev->rng_lock);
+ 
+-		result = mutex_lock_interruptible(&dev->lock);
+-		if (result)
+-			goto bail;
++		if (file->f_flags & O_NONBLOCK) {
++			result = mutex_trylock(&dev->lock);
++			if (result == 0) {
++				result = -EAGAIN;
++				goto bail;
++			} else {
++				result = 0;
++			}
++		} else {
++			result = mutex_lock_interruptible(&dev->lock);
++			if (result)
++				goto bail;
++		}
+ 		if (dev->valid == dev->used) {
+ 			result = _chaoskey_fill(dev);
+ 			if (result < 0) {
 -- 
 2.51.0
 
