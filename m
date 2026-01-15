@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208883-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF949D26275
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72FFBD263FE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D0AE83002A40
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB9423115200
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D5553ACA65;
-	Thu, 15 Jan 2026 17:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7733BF2F1;
+	Thu, 15 Jan 2026 17:09:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQmndAVZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK6JKTLd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 00A602750ED;
-	Thu, 15 Jan 2026 17:11:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAD03BC4DB;
+	Thu, 15 Jan 2026 17:09:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497115; cv=none; b=Qp67R38SapnpUTCgAtNObcLoEOwtAl2nQO0RskPa5FhWBv7NH4IZAL2ZAahX9MVXJBb3uo7FnnVt4t7QIMDtXiND/DXc5s8j6aqjtuhxZ5sSTNd/lN6QAMdydrGsb98kdOOkhHDEZVVUAqh5IFDGampWimv0/RDWvIM578cGwss=
+	t=1768496941; cv=none; b=r4h78EwxSupx3H35RLHCcERFTpwZYaxbIb7rRsL12I37XLE0/h0x1+yULg0wEOiTQxGjIihaYEfB1o2C9//yOEVdgnGQUGrV/cRVm1JyQ9Xdjg4ESuW88ZShauOP31hbMybY3ZTBOYO0vU4ERnYiQ0+1WVOu6U7ZktUsQ/V3DOo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497115; c=relaxed/simple;
-	bh=N2DG/pKMnKSTXvsmToKz9j/NCc9vsKkagNGh97nuceI=;
+	s=arc-20240116; t=1768496941; c=relaxed/simple;
+	bh=JOfbakIgZj5lvq4eapbCKbdZwrkPCC/kKkXH2Q5YRuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tCjZboNlwwdOYmZ2MwUPkOZfpqylwTxPE40b3lMKR7OMKpfT0w1OjluuG5DKfJLxh9pnAf6UTcjHN7DhCnaQNClQyA6lMnJDWsAFhaV/4CP+wykEV0YQa9r4fnZThh/3Ldodg89GvUUo84SFsEec0cP2yEbIP1ZQl4GYcGGQFBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQmndAVZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A84C116D0;
-	Thu, 15 Jan 2026 17:11:54 +0000 (UTC)
+	 MIME-Version; b=pD7niw+5aZh5S3q1oGRGhOTI/wrmjMEUesjAvPkEGdKQ1inNQsA7C6M3MbOYpmI+FPGVjLYFFZoBzbFIGfzm66Zucc2G4VihMmfIo9d6Xy2nECyNrqBrvnxgKLidRPM1VfTUjAqwE4HO7yMR42YPj0m97ujYJVEtPzwDpQecWRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK6JKTLd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09DDC19422;
+	Thu, 15 Jan 2026 17:09:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497114;
-	bh=N2DG/pKMnKSTXvsmToKz9j/NCc9vsKkagNGh97nuceI=;
+	s=korg; t=1768496941;
+	bh=JOfbakIgZj5lvq4eapbCKbdZwrkPCC/kKkXH2Q5YRuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HQmndAVZrxXlud6v6WD1EcJpb9WhpDPCzdSSrthy4xvzsucT1QwX4fXOeker2xBq+
-	 o+wGGqLkMjP/0m3aGo+VnuM1qfCalhaNftTiyT8SRtaEBjtvD+Vueg0lRKy5LS1iNq
-	 yYO6fjBiCQ3G/dSNMdxnG25/qquPYw4cSZPviizE=
+	b=VK6JKTLdvwEsrTfhO01nvMT5/0a84cANmtIcg4zqx4ICd65GZVx7hUcLwglTnIe9Q
+	 q1kfQECq5IvnLvB/ANZQnECCwIcWEy91OmJLTZlnLU63pln/hyiQ5IO8K1nYXLZuuI
+	 IrhyOV9iP6aniV91Omz3LK/55O4JIVuQyN08m80U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Di Zhu <zhud@hygon.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 41/72] netdev: preserve NETIF_F_ALL_FOR_ALL across TSO updates
+Subject: [PATCH 6.6 68/88] NFS: trace: show TIMEDOUT instead of 0x6e
 Date: Thu, 15 Jan 2026 17:48:51 +0100
-Message-ID: <20260115164144.984360616@linuxfoundation.org>
+Message-ID: <20260115164148.772722786@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Di Zhu <zhud@hygon.cn>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-[ Upstream commit 02d1e1a3f9239cdb3ecf2c6d365fb959d1bf39df ]
+[ Upstream commit cef48236dfe55fa266d505e8a497963a7bc5ef2a ]
 
-Directly increment the TSO features incurs a side effect: it will also
-directly clear the flags in NETIF_F_ALL_FOR_ALL on the master device,
-which can cause issues such as the inability to enable the nocache copy
-feature on the bonding driver.
+__nfs_revalidate_inode may return ETIMEDOUT.
 
-The fix is to include NETIF_F_ALL_FOR_ALL in the update mask, thereby
-preventing it from being cleared.
+print symbol of ETIMEDOUT in nfs trace:
 
-Fixes: b0ce3508b25e ("bonding: allow TSO being set on bonding master")
-Signed-off-by: Di Zhu <zhud@hygon.cn>
-Link: https://patch.msgid.link/20251224012224.56185-1-zhud@hygon.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+before:
+cat-5191 [005] 119.331127: nfs_revalidate_inode_exit: error=-110 (0x6e)
+
+after:
+cat-1738 [004] 44.365509: nfs_revalidate_inode_exit: error=-110 (TIMEDOUT)
+
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: c6c209ceb87f ("NFSD: Remove NFSERR_EAGAIN")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/netdevice.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/trace/misc/nfs.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index f44701b82ea80..1c47ab59a2c7f 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -4951,7 +4951,8 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
- static inline netdev_features_t netdev_add_tso_features(netdev_features_t features,
- 							netdev_features_t mask)
- {
--	return netdev_increment_features(features, NETIF_F_ALL_TSO, mask);
-+	return netdev_increment_features(features, NETIF_F_ALL_TSO |
-+					 NETIF_F_ALL_FOR_ALL, mask);
- }
- 
- int __netdev_update_features(struct net_device *dev);
--- 
-2.51.0
-
+--- a/include/trace/misc/nfs.h
++++ b/include/trace/misc/nfs.h
+@@ -52,6 +52,7 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
+ 		{ NFSERR_IO,			"IO" }, \
+ 		{ NFSERR_NXIO,			"NXIO" }, \
+ 		{ ECHILD,			"CHILD" }, \
++		{ ETIMEDOUT,			"TIMEDOUT" }, \
+ 		{ NFSERR_EAGAIN,		"AGAIN" }, \
+ 		{ NFSERR_ACCES,			"ACCES" }, \
+ 		{ NFSERR_EXIST,			"EXIST" }, \
 
 
 
