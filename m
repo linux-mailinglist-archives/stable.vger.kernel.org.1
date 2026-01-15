@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-208994-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209005-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AC9DD26936
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:07 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B367D26956
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A3D5930BBDEC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB9593157737
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFBA1A9F96;
-	Thu, 15 Jan 2026 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A55E62C027B;
+	Thu, 15 Jan 2026 17:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ml/ammv7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZWa/uY7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB8C29B200;
-	Thu, 15 Jan 2026 17:17:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69171280327;
+	Thu, 15 Jan 2026 17:17:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497433; cv=none; b=oNTmkOHsBFx6NZf456nLtzfnMGySbbVj+SurtoOX0A28YDa1qpmwp+xy78vQhOkbeNqatuLMC26bIxsADhxLMrcuHg5EyTA2b5yGJpOWXJfrJItCtpQqStV9FAP6v3EfGF8jMF/TUU5PQWQhTJge8b4RCRs9vDBjN2W265YyE4s=
+	t=1768497464; cv=none; b=hnD1nDEAXCyLGwaeccogyyjwWVNO0AkNaj0mW9mfNrYuatT9H4oaaP3tC8KFJ6z4ZQc1EyE6XCLoslATILEC8Rmz1KaeSXw397gHEIUvP1gLI95vFKhIxobvAKCPpv7Qhgv7jFnp6YCKHFJ74i3zaDB83hHALjBirnKVDYP4PZ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497433; c=relaxed/simple;
-	bh=0+V2ukhW2vluKJSgLEpsIxssPUone6zUz30UhaBRJAE=;
+	s=arc-20240116; t=1768497464; c=relaxed/simple;
+	bh=Ew34uqBjtipa/sAzcqoyh0J76FIkbR+f0p9fc4U/DrI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pVuH1Hru7CURwTbtxd1/WoL0BZtlinqaRKRKI/mSVWwyWNbOUqZ5sKLr1epJfRZ+wlZwmtjqoGPxyiLqrkubVz1APxKAXdKoQvcCD8NAkBlmn8rLVA60bVG5ESOP8gD593AiSDo4Kjeq9CU32aSa2iDiufYamJ3e8+E8vNGPKzI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ml/ammv7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B5AC116D0;
-	Thu, 15 Jan 2026 17:17:12 +0000 (UTC)
+	 MIME-Version; b=HA5iMJoNEBwVoqLCM+sABQ+N1KHWfkaBT9FejZInxnFraFXLi1Ded9SC3/JW+tPf6RqohXUp4TGnbYNSnpEQWNbJceGP8Zo4DKCMsYLOJrXvL+suvE7iiS5EqTckImktOnQWdCdxtmWjrSX/hCWdScmr7280upSzBUZp7m3v584=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZWa/uY7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5C12C116D0;
+	Thu, 15 Jan 2026 17:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497433;
-	bh=0+V2ukhW2vluKJSgLEpsIxssPUone6zUz30UhaBRJAE=;
+	s=korg; t=1768497464;
+	bh=Ew34uqBjtipa/sAzcqoyh0J76FIkbR+f0p9fc4U/DrI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ml/ammv72yB9u9s0RkWBhRuQPBOjZdWx0mT2mtH8MyN0eTuQ1+WXNTB/vkxPDghLu
-	 Pf6TPqwSnYl7tm6wJZLHeka2rbKjhnBqJCZcNppQo/6ZxCQO7ppmkEc99bmUp84c7t
-	 C+GxmrphVM3gbqfJMLNSUfXL7xH0pNNNsYtSvaRg=
+	b=UZWa/uY7mOFVyE6GlCTAUQBpi3SIeLB1Nx94BkZEH+PXb9/sCCGeXcoS+8IEBVfIx
+	 wyy/xr6b0Zp7U0nK1qO683CMIOgXg3pKtZwn2v6c3fr0o5Knv5uYFSjEBmxxxdeYST
+	 HhisSo7Nr+4TuySbSdIgrwp6c4PIP+/pjvDqE1yI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Alexandre Belloni <alexandre.belloni@bootlin.com>,
 	Jamie Iles <quic_jiles@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 062/554] i3c: remove i2c board info from i2c_dev_desc
-Date: Thu, 15 Jan 2026 17:42:08 +0100
-Message-ID: <20260115164248.489724222@linuxfoundation.org>
+Subject: [PATCH 5.15 063/554] i3c: support dynamically added i2c devices
+Date: Thu, 15 Jan 2026 17:42:09 +0100
+Message-ID: <20260115164248.525124331@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -66,100 +66,183 @@ Content-Transfer-Encoding: 8bit
 
 From: Jamie Iles <quic_jiles@quicinc.com>
 
-[ Upstream commit 31b9887c7258ca47d9c665a80f19f006c86756b1 ]
+[ Upstream commit 72a4501b5d089772671360a6ec74d5350acf8c2e ]
 
-I2C board info is only required during adapter setup so there is no
-requirement to keeping a pointer to it once running.  To support dynamic
-device addition we can't rely on board info - user-space creation
-through sysfs won't have a boardinfo.
+I2C devices can be added to the system dynamically through several
+sources other than static board info including device tree overlays and
+sysfs i2c new_device.
+
+Add an I2C bus notifier to attach the clients at runtime if they were
+not defined in the board info.  For DT devices find the LVR in the reg
+property, for user-space new_device additions we synthesize a
+conservative setting of no spike filters and fast mode only.
 
 Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
 Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20220117174816.1963463-2-quic_jiles@quicinc.com
+Link: https://lore.kernel.org/r/20220117174816.1963463-3-quic_jiles@quicinc.com
 Stable-dep-of: 9d4f219807d5 ("i3c: fix refcount inconsistency in i3c_master_register")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c       | 18 ++++++++++--------
- include/linux/i3c/master.h |  1 -
- 2 files changed, 10 insertions(+), 9 deletions(-)
+ drivers/i3c/master.c | 128 ++++++++++++++++++++++++++++++++++++++++++-
+ 1 file changed, 127 insertions(+), 1 deletion(-)
 
 diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 717b337f9e22d..d4e9299472679 100644
+index d4e9299472679..ae60eb7b27601 100644
 --- a/drivers/i3c/master.c
 +++ b/drivers/i3c/master.c
-@@ -610,7 +610,7 @@ static void i3c_master_free_i2c_dev(struct i2c_dev_desc *dev)
- 
- static struct i2c_dev_desc *
- i3c_master_alloc_i2c_dev(struct i3c_master_controller *master,
--			 const struct i2c_dev_boardinfo *boardinfo)
-+			 u16 addr, u8 lvr)
- {
- 	struct i2c_dev_desc *dev;
- 
-@@ -619,9 +619,8 @@ i3c_master_alloc_i2c_dev(struct i3c_master_controller *master,
- 		return ERR_PTR(-ENOMEM);
- 
- 	dev->common.master = master;
--	dev->boardinfo = boardinfo;
--	dev->addr = boardinfo->base.addr;
--	dev->lvr = boardinfo->lvr;
-+	dev->addr = addr;
-+	dev->lvr = lvr;
- 
- 	return dev;
+@@ -2170,11 +2170,122 @@ static u32 i3c_master_i2c_funcs(struct i2c_adapter *adapter)
+ 	return I2C_FUNC_SMBUS_EMUL | I2C_FUNC_I2C;
  }
-@@ -695,7 +694,7 @@ i3c_master_find_i2c_dev_by_addr(const struct i3c_master_controller *master,
- 	struct i2c_dev_desc *dev;
  
- 	i3c_bus_for_each_i2cdev(&master->bus, dev) {
--		if (dev->boardinfo->base.addr == addr)
-+		if (dev->addr == addr)
- 			return dev;
- 	}
++static u8 i3c_master_i2c_get_lvr(struct i2c_client *client)
++{
++	/* Fall back to no spike filters and FM bus mode. */
++	u8 lvr = I3C_LVR_I2C_INDEX(2) | I3C_LVR_I2C_FM_MODE;
++
++	if (client->dev.of_node) {
++		u32 reg[3];
++
++		if (!of_property_read_u32_array(client->dev.of_node, "reg",
++						reg, ARRAY_SIZE(reg)))
++			lvr = reg[2];
++	}
++
++	return lvr;
++}
++
++static int i3c_master_i2c_attach(struct i2c_adapter *adap, struct i2c_client *client)
++{
++	struct i3c_master_controller *master = i2c_adapter_to_i3c_master(adap);
++	enum i3c_addr_slot_status status;
++	struct i2c_dev_desc *i2cdev;
++	int ret;
++
++	/* Already added by board info? */
++	if (i3c_master_find_i2c_dev_by_addr(master, client->addr))
++		return 0;
++
++	status = i3c_bus_get_addr_slot_status(&master->bus, client->addr);
++	if (status != I3C_ADDR_SLOT_FREE)
++		return -EBUSY;
++
++	i3c_bus_set_addr_slot_status(&master->bus, client->addr,
++				     I3C_ADDR_SLOT_I2C_DEV);
++
++	i2cdev = i3c_master_alloc_i2c_dev(master, client->addr,
++					  i3c_master_i2c_get_lvr(client));
++	if (IS_ERR(i2cdev)) {
++		ret = PTR_ERR(i2cdev);
++		goto out_clear_status;
++	}
++
++	ret = i3c_master_attach_i2c_dev(master, i2cdev);
++	if (ret)
++		goto out_free_dev;
++
++	return 0;
++
++out_free_dev:
++	i3c_master_free_i2c_dev(i2cdev);
++out_clear_status:
++	i3c_bus_set_addr_slot_status(&master->bus, client->addr,
++				     I3C_ADDR_SLOT_FREE);
++
++	return ret;
++}
++
++static int i3c_master_i2c_detach(struct i2c_adapter *adap, struct i2c_client *client)
++{
++	struct i3c_master_controller *master = i2c_adapter_to_i3c_master(adap);
++	struct i2c_dev_desc *dev;
++
++	dev = i3c_master_find_i2c_dev_by_addr(master, client->addr);
++	if (!dev)
++		return -ENODEV;
++
++	i3c_master_detach_i2c_dev(dev);
++	i3c_bus_set_addr_slot_status(&master->bus, dev->addr,
++				     I3C_ADDR_SLOT_FREE);
++	i3c_master_free_i2c_dev(dev);
++
++	return 0;
++}
++
+ static const struct i2c_algorithm i3c_master_i2c_algo = {
+ 	.master_xfer = i3c_master_i2c_adapter_xfer,
+ 	.functionality = i3c_master_i2c_funcs,
+ };
  
-@@ -1692,7 +1691,9 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
- 					     i2cboardinfo->base.addr,
- 					     I3C_ADDR_SLOT_I2C_DEV);
- 
--		i2cdev = i3c_master_alloc_i2c_dev(master, i2cboardinfo);
-+		i2cdev = i3c_master_alloc_i2c_dev(master,
-+						  i2cboardinfo->base.addr,
-+						  i2cboardinfo->lvr);
- 		if (IS_ERR(i2cdev)) {
- 			ret = PTR_ERR(i2cdev);
- 			goto err_detach_devs;
-@@ -2178,6 +2179,7 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
++static int i3c_i2c_notifier_call(struct notifier_block *nb, unsigned long action,
++				 void *data)
++{
++	struct i2c_adapter *adap;
++	struct i2c_client *client;
++	struct device *dev = data;
++	struct i3c_master_controller *master;
++	int ret;
++
++	if (dev->type != &i2c_client_type)
++		return 0;
++
++	client = to_i2c_client(dev);
++	adap = client->adapter;
++
++	if (adap->algo != &i3c_master_i2c_algo)
++		return 0;
++
++	master = i2c_adapter_to_i3c_master(adap);
++
++	i3c_bus_maintenance_lock(&master->bus);
++	switch (action) {
++	case BUS_NOTIFY_ADD_DEVICE:
++		ret = i3c_master_i2c_attach(adap, client);
++		break;
++	case BUS_NOTIFY_DEL_DEVICE:
++		ret = i3c_master_i2c_detach(adap, client);
++		break;
++	}
++	i3c_bus_maintenance_unlock(&master->bus);
++
++	return ret;
++}
++
++static struct notifier_block i2cdev_notifier = {
++	.notifier_call = i3c_i2c_notifier_call,
++};
++
+ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
  {
  	struct i2c_adapter *adap = i3c_master_to_i2c_adapter(master);
- 	struct i2c_dev_desc *i2cdev;
-+	struct i2c_dev_boardinfo *i2cboardinfo;
- 	int ret;
+@@ -2705,12 +2816,27 @@ void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev)
  
- 	adap->dev.parent = master->dev.parent;
-@@ -2197,8 +2199,8 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
- 	 * We silently ignore failures here. The bus should keep working
- 	 * correctly even if one or more i2c devices are not registered.
- 	 */
--	i3c_bus_for_each_i2cdev(&master->bus, i2cdev)
--		i2cdev->dev = i2c_new_client_device(adap, &i2cdev->boardinfo->base);
-+	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node)
-+		i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
- 
- 	return 0;
+ static int __init i3c_init(void)
+ {
+-	return bus_register(&i3c_bus_type);
++	int res = bus_register_notifier(&i2c_bus_type, &i2cdev_notifier);
++
++	if (res)
++		return res;
++
++	res = bus_register(&i3c_bus_type);
++	if (res)
++		goto out_unreg_notifier;
++
++	return 0;
++
++out_unreg_notifier:
++	bus_unregister_notifier(&i2c_bus_type, &i2cdev_notifier);
++
++	return res;
  }
-diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
-index 9cb39d901cd5f..604a126b78c83 100644
---- a/include/linux/i3c/master.h
-+++ b/include/linux/i3c/master.h
-@@ -85,7 +85,6 @@ struct i2c_dev_boardinfo {
-  */
- struct i2c_dev_desc {
- 	struct i3c_i2c_dev_desc common;
--	const struct i2c_dev_boardinfo *boardinfo;
- 	struct i2c_client *dev;
- 	u16 addr;
- 	u8 lvr;
+ subsys_initcall(i3c_init);
+ 
+ static void __exit i3c_exit(void)
+ {
++	bus_unregister_notifier(&i2c_bus_type, &i2cdev_notifier);
+ 	idr_destroy(&i3c_bus_idr);
+ 	bus_unregister(&i3c_bus_type);
+ }
 -- 
 2.51.0
 
