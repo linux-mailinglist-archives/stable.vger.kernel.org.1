@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209192-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209580-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D25BDD2686E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BB74BD2788F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 749D6305E550
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F036032404BB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39F983C196A;
-	Thu, 15 Jan 2026 17:26:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2C052D541B;
+	Thu, 15 Jan 2026 17:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YVqbLXpE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2E+kva4g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F19DB3BFE38;
-	Thu, 15 Jan 2026 17:26:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8677230214B;
+	Thu, 15 Jan 2026 17:45:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497996; cv=none; b=EnlWh2ztJpY3KhKcCywEx12sdOECO2wgCn+bNPAiP3FBJOER50KQ1baoD+aVKdblAfZmCfjF/SYQcGWU0im+r9jU6rXIkr1QLrnrZuZvUon53Bd2AR0hXbOqxejjQQUaEmGN1ii5C3PSw5aDC3hqiUUBNVXHiT2nbZUZWjMY/S8=
+	t=1768499101; cv=none; b=Uk4vtrzUfOB81k4LCL5JVRv/PuwQwPy1X2iFmCh1IkJN+gmueEl8O9T5MIlz+U+ZmroBLxG9gQPvj0zpmZ5U+lFthhxhnliyEDWKrn2WgpsrDwtxcbdzCbiS61n06VCqe2TmVSh4y3E29vdnTdtEG3pnnT9jR2sov8mn9ocKh00=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497996; c=relaxed/simple;
-	bh=ZZHa229FKdjRNJyMnf6Fb/cvfQSMpcOg8jWgRvDPgJk=;
+	s=arc-20240116; t=1768499101; c=relaxed/simple;
+	bh=YMXCaZ4KKRfEfVjXWc3MtBN52jwFcdyIrIHIIRg4eC8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gsOwYwyT1KJz9UScAvbPaf+fgHqflR8maZeEkSsmPHNa9/5e6xSd/3Kj+aq3W0t7IXMLrIs9ze9lExjJrmd4tTmbtgp1XdVCjlqL15hfoGOh0dsWL3AGssFRsd0wVb3iW4faOQm0aFWGCK6vI0Axqgbh7iHpr3QynNqgyHpyh8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YVqbLXpE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A4A6C116D0;
-	Thu, 15 Jan 2026 17:26:35 +0000 (UTC)
+	 MIME-Version; b=rKbZIoNUSS1cl7IFRpwBmS3VAgXe1nU1KgTJOpS8E8j+8a3FUytg6qyCJvu1BqAmRn2A4gRu1AwFtbEHONaXGHxRjLoHA6ARFPJ9ZAJjKxuKK8geuurdWsQ5t3T5KBr8vXt2hz2XUE+NMcn0BpBZIzL4t95Br7OoH83q4knkLdI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2E+kva4g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16401C116D0;
+	Thu, 15 Jan 2026 17:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497995;
-	bh=ZZHa229FKdjRNJyMnf6Fb/cvfQSMpcOg8jWgRvDPgJk=;
+	s=korg; t=1768499101;
+	bh=YMXCaZ4KKRfEfVjXWc3MtBN52jwFcdyIrIHIIRg4eC8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YVqbLXpE2V/VVRONs+5YYKKuvRnTg3y6dpXLgXLbRBIvHJvIroYJeiPjXWOt8qXWx
-	 yUK0R7xPoBUJsvY3ydklLqTigvIsssDgoRHFG3Cbfxvj6A0+lPqPa46iputzY6j1PT
-	 fQ8OXTrrDBxHeW5Q3OxWy0n6cAiY7NtymDOINwaE=
+	b=2E+kva4gAiQZkSGuHybkJsDhIgvGwNd6CQSZoADVlq9I2R7zfXx+h5Y6XgK1A1u7M
+	 oBod7ceqcpxUEZc+G34Bgys9uMeMda6GZ/QAx+LBgG44MfRviwaEq6wSRlAZFg5kQb
+	 qLJIMz/xowlw2iboto3iQiYZkIgAy7VFh7Hp5+Hg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hao Chen <chenhao288@hisilicon.com>,
-	Guangbin Huang <huangguangbin2@huawei.com>,
-	"David S. Miller" <davem@davemloft.net>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 243/554] net: hns3: Align type of some variables with their print type
+Subject: [PATCH 5.10 108/451] virtio: fix virtqueue_set_affinity() docs
 Date: Thu, 15 Jan 2026 17:45:09 +0100
-Message-ID: <20260115164255.038322205@linuxfoundation.org>
+Message-ID: <20260115164234.825914704@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,80 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hao Chen <chenhao288@hisilicon.com>
+From: Michael S. Tsirkin <mst@redhat.com>
 
-[ Upstream commit 0cc25c6a14efd709f2cfcde345e3d5c6aa20f80e ]
+[ Upstream commit 43236d8bbafff94b423afecc4a692dd90602d426 ]
 
-The c language has a set of implicit type conversions, when
-two variables perform bitwise or arithmetic operations.
+Rewrite the comment for better grammar and clarity.
 
-For example, variable A (type u16/u8) -1, its output is int type variable.
-u16/u8 will convert to int type implicitly before it does arithmetic
-operations. So, change 1 to unsigned type.
-
-Signed-off-by: Hao Chen <chenhao288@hisilicon.com>
-Signed-off-by: Guangbin Huang <huangguangbin2@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: d180c11aa8a6 ("net: hns3: using the num_tqps to check whether tqp_index is out of range when vf get ring info from mbx")
+Fixes: 75a0a52be3c2 ("virtio: introduce an API to set affinity for a virtqueue")
+Message-Id: <e317e91bd43b070e5eaec0ebbe60c5749d02e2dd.1763026134.git.mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c    | 4 ++--
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c     | 2 +-
- 3 files changed, 4 insertions(+), 4 deletions(-)
+ include/linux/virtio_config.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-index 63665e8a7c718..016cd7cf11931 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_debugfs.c
-@@ -99,7 +99,7 @@ static void hclge_dbg_fill_content(char *content, u16 len,
- static char *hclge_dbg_get_func_id_str(char *buf, u8 id)
- {
- 	if (id)
--		sprintf(buf, "vf%u", id - 1);
-+		sprintf(buf, "vf%u", id - 1U);
- 	else
- 		sprintf(buf, "pf");
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index 492a754f84a94..1dffd1532bd76 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -6692,7 +6692,7 @@ static int hclge_fd_parse_ring_cookie(struct hclge_dev *hdev, u64 ring_cookie,
- 		if (vf > hdev->num_req_vfs) {
- 			dev_err(&hdev->pdev->dev,
- 				"Error: vf id (%u) should be less than %u\n",
--				vf - 1, hdev->num_req_vfs);
-+				vf - 1U, hdev->num_req_vfs);
- 			return -EINVAL;
- 		}
- 
-@@ -6702,7 +6702,7 @@ static int hclge_fd_parse_ring_cookie(struct hclge_dev *hdev, u64 ring_cookie,
- 		if (ring >= tqps) {
- 			dev_err(&hdev->pdev->dev,
- 				"Error: queue id (%u) > max tqp num (%u)\n",
--				ring, tqps - 1);
-+				ring, tqps - 1U);
- 			return -EINVAL;
- 		}
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-index e2fe41d3972fb..e2cd0eb124bac 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_mbx.c
-@@ -190,7 +190,7 @@ static int hclge_get_ring_chain_from_mbx(
- 		if (req->msg.param[i].tqp_index >= vport->nic.kinfo.rss_size) {
- 			dev_err(&hdev->pdev->dev, "tqp index(%u) is out of range(0-%u)\n",
- 				req->msg.param[i].tqp_index,
--				vport->nic.kinfo.rss_size - 1);
-+				vport->nic.kinfo.rss_size - 1U);
- 			return -EINVAL;
- 		}
- 	}
+diff --git a/include/linux/virtio_config.h b/include/linux/virtio_config.h
+index b341dd62aa4da..f971986fa0e9a 100644
+--- a/include/linux/virtio_config.h
++++ b/include/linux/virtio_config.h
+@@ -247,7 +247,7 @@ const char *virtio_bus_name(struct virtio_device *vdev)
+  * @vq: the virtqueue
+  * @cpu: the cpu no.
+  *
+- * Pay attention the function are best-effort: the affinity hint may not be set
++ * Note that this function is best-effort: the affinity hint may not be set
+  * due to config support, irq type and sharing.
+  *
+  */
 -- 
 2.51.0
 
