@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208809-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208853-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF627D261E9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 77F5ED26440
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D1B3830286CB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A10FB3028D85
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C34F33993;
-	Thu, 15 Jan 2026 17:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 966DF3BC4F3;
+	Thu, 15 Jan 2026 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hVd88MVi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LHPig3R/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BE502820C6;
-	Thu, 15 Jan 2026 17:08:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 589363A1CE4;
+	Thu, 15 Jan 2026 17:10:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496904; cv=none; b=SMWZAvlr8kX5mxwMdxtVtUytfmyuk2uHq8kELsKe0wUhIJpDkNVuDsqVy1aiPR/aVHBtZP+xE3zNyRb8Cv9oJLEhdE0gu+LtYwp+YgXrgBt16yKfYlRMwK192J3TmMaRxy4sOGAQclj9k1KogbKgWm+jkaji+hLKXe8Nc6sCsnk=
+	t=1768497029; cv=none; b=s7b1EAXdDE5BiQkbuQ9kDeA+Bidrs4uZoAfArMlsw2falZ0vtrhg56boe0ipyEupmGYoyHDhO8BaUZnU9/JThmlqhDdBCawOprhWgm4dhzIn1wpGG7kVe3sYATWEZpdGmugjr8LIwiZqo/82VYadEAZkbUnq1dH3e49qolRGcG4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496904; c=relaxed/simple;
-	bh=vEHe7qyGdCcdFbOvk6vZ3uS6KmO0A+YKn+DNesbTqNM=;
+	s=arc-20240116; t=1768497029; c=relaxed/simple;
+	bh=x62ru25d5RcWtU4x51PQtlmCCVy4J8MqoPgZlitBga8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgzzo9ErbAkozXw0ayZISbF7203GcdQmk+xnE12irjb+bUPhSuOmXP4FzFJf3Gm87DvjYN1zfTqMu6M5uybIOlioHpCCpLGmc0cQWebMI/dklPrEM7vY+oQSg196gx1RncJeZw5b2/LJ7NJQ6LmYzdFsfF/H2BNqVLRa0yT5DIk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hVd88MVi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0C3BC116D0;
-	Thu, 15 Jan 2026 17:08:23 +0000 (UTC)
+	 MIME-Version; b=ApO3HlV8vh/ZFFa1BE52rWondi/TeRVNsRpEYldlqau7SO5W1P4IesKlyuntqteLyyyPMx8PJByMmewlVKes0mHqpxbUMWYEKoYwrL4qWTj7ohmxtYNv8644X8loqb8JSBbPTDozGvdCRo+j0uCRARchj/E+1cbVJVzWgitbH7Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LHPig3R/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E98C116D0;
+	Thu, 15 Jan 2026 17:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496904;
-	bh=vEHe7qyGdCcdFbOvk6vZ3uS6KmO0A+YKn+DNesbTqNM=;
+	s=korg; t=1768497029;
+	bh=x62ru25d5RcWtU4x51PQtlmCCVy4J8MqoPgZlitBga8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hVd88MViCJkOvtq0hwT7iPIcLlkmzzO5KR1YPzPKBMQgWY2twKHjBVwOBsMq3lEFl
-	 J6FVx0jE8xeljr62XqdzqQfioAlT93t9MthQzw7pDnv/LllaIpNLh4nBJ4TW8Je3UJ
-	 FA7RFII/4hNe4MRLUOGr8lO/AdCk0NOk1dBYN25E=
+	b=LHPig3R/b7ZCuaaTfN563i5vxxBfT1QYZBqH5iZZEsqaJocbUuwakJfD4fqC5ZKxl
+	 mHpb6yalQ5zgdyp7QRW4mkNCTeoPku9zBfGdrmAmAxH6C0stZ01w0FQgb2296JtBuT
+	 35awec1Tu1aBjTY0I8T1vvqFeeymK7WTa/375ydU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 39/88] scsi: Revert "scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed"
+	Tuo Li <islituo@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.1 12/72] libceph: make free_choose_arg_map() resilient to partial allocation
 Date: Thu, 15 Jan 2026 17:48:22 +0100
-Message-ID: <20260115164147.726454239@linuxfoundation.org>
+Message-ID: <20260115164143.936776113@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit 278712d20bc8ec29d1ad6ef9bdae9000ef2c220c ]
+commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
 
-This reverts commit ab2068a6fb84751836a84c26ca72b3beb349619d.
+free_choose_arg_map() may dereference a NULL pointer if its caller fails
+after a partial allocation.
 
-When probing the exp-attached sata device, libsas/libata will issue a
-hard reset in sas_probe_sata() -> ata_sas_async_probe(), then a
-broadcast event will be received after the disk probe fails, and this
-commit causes the probe will be re-executed on the disk, and a faulty
-disk may get into an indefinite loop of probe.
+For example, in decode_choose_args(), if allocation of arg_map->args
+fails, execution jumps to the fail label and free_choose_arg_map() is
+called. Since arg_map->size is updated to a non-zero value before memory
+allocation, free_choose_arg_map() will iterate over arg_map->args and
+dereference a NULL pointer.
 
-Therefore, revert this commit, although it can fix some temporary issues
-with disk probe failure.
+To prevent this potential NULL pointer dereference and make
+free_choose_arg_map() more resilient, add checks for pointers before
+iterating.
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20251202065627.140361-1-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ net/ceph/osdmap.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index 277e45fed85d6..a6dc7dc07fce3 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -133,20 +133,6 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -241,22 +241,26 @@ static struct crush_choose_arg_map *allo
+ 
+ static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
+ {
+-	if (arg_map) {
+-		int i, j;
++	int i, j;
+ 
+-		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++	if (!arg_map)
++		return;
+ 
++	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++
++	if (arg_map->args) {
+ 		for (i = 0; i < arg_map->size; i++) {
+ 			struct crush_choose_arg *arg = &arg_map->args[i];
 -
--	/*
--	 * If the device probe failed, the expander phy attached address
--	 * needs to be reset so that the phy will not be treated as flutter
--	 * in the next revalidation
--	 */
--	if (dev->parent && !dev_is_expander(dev->dev_type)) {
--		struct sas_phy *phy = dev->phy;
--		struct domain_device *parent = dev->parent;
--		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
--
--		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
--	}
--
- 	sas_unregister_dev(dev->port, dev);
+-			for (j = 0; j < arg->weight_set_size; j++)
+-				kfree(arg->weight_set[j].weights);
+-			kfree(arg->weight_set);
++			if (arg->weight_set) {
++				for (j = 0; j < arg->weight_set_size; j++)
++					kfree(arg->weight_set[j].weights);
++				kfree(arg->weight_set);
++			}
+ 			kfree(arg->ids);
+ 		}
+ 		kfree(arg_map->args);
+-		kfree(arg_map);
+ 	}
++	kfree(arg_map);
  }
  
--- 
-2.51.0
-
+ DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
 
 
 
