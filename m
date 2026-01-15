@@ -1,169 +1,156 @@
-Return-Path: <stable+bounces-208408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C0B6D21FD5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 02:18:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A02D3D2206E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 02:28:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 36D3E301F23E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:15:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id CD68C30196A9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:28:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A619C26D4C3;
-	Thu, 15 Jan 2026 01:14:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA46A23E32B;
+	Thu, 15 Jan 2026 01:28:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="FPxphtO3"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="Zye1B6sY"
 X-Original-To: stable@vger.kernel.org
-Received: from out-186.mta0.migadu.com (out-186.mta0.migadu.com [91.218.175.186])
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CD7A264602
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 01:14:03 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.186
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 653D32629D;
+	Thu, 15 Jan 2026 01:28:26 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439650; cv=none; b=Q+3n/0SbaygIF5ZVktNjtiNpIDCftZtEKt3ZcnkuMvftL0fKeCM1MYrOT3pe9/A8WAGrp3eKYfV5uVftH6hbtzA/tk15CyZKUMMJnVTkHytNc94Xj5SZZPlFACG8TbfLjjBrhzOoSk13zaC+32xsXjWAbjbSYgkj9/xuoRUg0yM=
+	t=1768440506; cv=none; b=n1/OkHEOX2MXe8YwvpM0PW37pyvKFoI4Bqjf9PTmvFhtJ2wndoq0+XUjKLiobVfNhJlWfCHc2Fw9cON3HCJoFDCWHBliKf1V+DnMwdccAhhB3TpQz58jX83cFvDm1VBDx66QcQKe4CwUdZXPAwiV/hHjIgVzM19VBOy9RWHUT5Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768439650; c=relaxed/simple;
-	bh=lCwWYrC+i/WlW0FzLo8Y3vpJnW3WvFax7tAQm04Kw6E=;
-	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Fd8vuyX9py1OWwwHym06EXI7SZcmLD4wBTkX/ceeKHLQFS507vMqoB0cSwiXU47fnAlALkLgKAM7LEd/Y61V6LN3Z4JAHHaJ4FEA01u0NL0J9/6fuLffeeBQwTZRIKzlgjYPMyArrJLzNWFM6KmODZNyB50TLb8w42uA2ByenWE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=FPxphtO3; arc=none smtp.client-ip=91.218.175.186
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
-X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
-	t=1768439641;
-	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-	 content-transfer-encoding:content-transfer-encoding:
-	 in-reply-to:in-reply-to:references:references;
-	bh=STHpibAtHQzZNIIE51mSVp+HkDDjwfWOOM+rEzu4sw8=;
-	b=FPxphtO3yej0lCJwlU+g+l42a2h+GLF27VJXEpUFDUH8qTSDZ8hUCTyiq5PfWBZ0ArOKiu
-	hcL+maaH3xQjTJR7aBfXH69E5UxIRwM6sZqfPa1ByqZHlaVhag5NBG5Iw/FFlJFAXErt8+
-	JnjlY+/4LQj9lxJiBiSoQFQkH8z6sFk=
-From: Yosry Ahmed <yosry.ahmed@linux.dev>
-To: Sean Christopherson <seanjc@google.com>
-Cc: Paolo Bonzini <pbonzini@redhat.com>,
-	kvm@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Yosry Ahmed <yosry.ahmed@linux.dev>,
-	stable@vger.kernel.org
-Subject: [PATCH v4 19/26] KVM: nSVM: Add missing consistency check for event_inj
-Date: Thu, 15 Jan 2026 01:13:05 +0000
-Message-ID: <20260115011312.3675857-20-yosry.ahmed@linux.dev>
-In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
-References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
+	s=arc-20240116; t=1768440506; c=relaxed/simple;
+	bh=ba7mVTMZ+EY7lEEW5AM+qRtHnEa41sYHr9T8L4Vb3P0=;
+	h=Date:To:From:Subject:Message-Id; b=T6Z0NuBujeJ2y6PgVjBBaRWE8MXl8atsh5iJ3Mfy85+JMTLjHtQWlUtyqhBTfz+qhNSmEy/Ohtcg4k2xIRyRl7YS50aQH2dvfZY/78pabl74Riou4YOsZLZF2aJR2RcEohJVHIz68uJ9kNsERAR9T+8vrUxvyhB8OnDcon6zCug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=Zye1B6sY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A3B8C4CEF7;
+	Thu, 15 Jan 2026 01:28:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768440506;
+	bh=ba7mVTMZ+EY7lEEW5AM+qRtHnEa41sYHr9T8L4Vb3P0=;
+	h=Date:To:From:Subject:From;
+	b=Zye1B6sYCsjwcCU4M5QzXkQxI6Ih04J4qe8gLCvZPJcybv8Nv+34V5jXxyLzH0yKO
+	 jwX6t8dIXY9IrNRHPZrCAEe3h5pRqMDiohnxWKOk4NnZ0/cakECVZprOZZnb+TXDTR
+	 uZ/pCdgbxwp5dzC03PVeyys5y9VCZzimOHqgen10=
+Date: Wed, 14 Jan 2026 17:28:25 -0800
+To: mm-commits@vger.kernel.org,stable@vger.kernel.org,shikemeng@huaweicloud.com,nphamcs@gmail.com,kasong@tencent.com,chrisl@kernel.org,bhe@redhat.com,baohua@kernel.org,robin.kuo@mediatek.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: + restore-swap_space-attr-aviod-krn-panic.patch added to mm-hotfixes-unstable branch
+Message-Id: <20260115012826.1A3B8C4CEF7@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Migadu-Flow: FLOW_OUT
 
-According to the APM Volume #2, 15.20 (24593—Rev. 3.42—March 2024):
 
-  VMRUN exits with VMEXIT_INVALID error code if either:
-  • Reserved values of TYPE have been specified, or
-  • TYPE = 3 (exception) has been specified with a vector that does not
-    correspond to an exception (this includes vector 2, which is an NMI,
-    not an exception).
+The patch titled
+     Subject: mm/swap: restore swap_space attr aviod kernel panic
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     restore-swap_space-attr-aviod-krn-panic.patch
 
-Add the missing consistency checks to KVM. For the second point, inject
-VMEXIT_INVALID if the vector is anything but the vectors defined by the
-APM for exceptions. Reserved vectors are also considered invalid, which
-matches the HW behavior. Vector 9 (i.e. #CSO) is considered invalid
-because it is reserved on modern CPUs, and according to LLMs no CPUs
-exist supporting SVM and producing #CSOs.
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/restore-swap_space-attr-aviod-krn-panic.patch
 
-Defined exceptions could be different between virtual CPUs as new CPUs
-define new vectors. In a best effort to dynamically define the valid
-vectors, make all currently defined vectors as valid except those
-obviously tied to a CPU feature: SHSTK -> #CP and SEV-ES -> #VC. As new
-vectors are defined, they can similarly be tied to corresponding CPU
-features.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Invalid vectors on specific (e.g. old) CPUs that are missed by KVM
-should be rejected by HW anyway.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-Fixes: 3d6368ef580a ("KVM: SVM: Add VMRUN handler")
-CC: stable@vger.kernel.org
-Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
+
+The -mm tree is included into linux-next via various
+branches at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there most days
+
+------------------------------------------------------
+From: "robin.kuo" <robin.kuo@mediatek.com>
+Subject: mm/swap: restore swap_space attr aviod kernel panic
+Date: Thu, 15 Jan 2026 08:13:43 +0800
+
+Restore swap_space attr to avoid kernel panic.
+
+Commit 8b47299a411a ('mm, swap: mark swap address space ro and add context
+debug check') made the swap address space __ro_after_init.  It may lead to
+a kernel panic if arch_prepare_to_swap() returns a failure under heavy
+memory pressure as follows:
+
+el1_abort+0x40/0x64
+el1h_64_sync_handler+0x48/0xcc
+el1h_64_sync+0x84/0x88
+errseq_set+0x4c/0xb8 (P)
+__filemap_set_wb_err+0x20/0xd0
+shrink_folio_list+0xc20/0x11cc
+evict_folios+0x1520/0x1be4
+try_to_shrink_lruvec+0x27c/0x3dc
+shrink_one+0x9c/0x228
+shrink_node+0xb3c/0xeac
+do_try_to_free_pages+0x170/0x4f0
+try_to_free_pages+0x334/0x534
+__alloc_pages_direct_reclaim+0x90/0x158
+__alloc_pages_slowpath+0x334/0x588
+__alloc_frozen_pages_noprof+0x224/0x2fc
+__folio_alloc_noprof+0x14/0x64
+vma_alloc_zeroed_movable_folio+0x34/0x44
+do_pte_missing+0xad4/0x1040
+handle_mm_fault+0x4a4/0x790
+do_page_fault+0x288/0x5f8
+do_translation_fault+0x38/0x54
+do_mem_abort+0x54/0xa8
+
+Restore the swap address space to  __read_mostly to avoid the panic.
+
+Link: https://lkml.kernel.org/r/20260115001405.3513440-1-robin.kuo@mediatek.com
+Fixes: 8b47299a411a ("mm, swap: mark swap address space ro and add context debug check")
+Signed-off-by: robin.kuo <robin.kuo@mediatek.com>
+Cc: Baoquan He <bhe@redhat.com>
+Cc: Barry Song <baohua@kernel.org>
+Cc: Chris Li <chrisl@kernel.org>
+Cc: Kairui Song <kasong@tencent.com>
+Cc: Kemeng Shi <shikemeng@huaweicloud.com>
+Cc: Nhat Pham <nphamcs@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- arch/x86/kvm/svm/nested.c | 51 +++++++++++++++++++++++++++++++++++++++
- 1 file changed, 51 insertions(+)
 
-diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
-index d8c79b3ea55e..79db1e1c8b2a 100644
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -342,6 +342,54 @@ static bool nested_svm_check_bitmap_pa(struct kvm_vcpu *vcpu, u64 pa, u32 size)
- 	    kvm_vcpu_is_legal_gpa(vcpu, addr + size - 1);
- }
+ mm/swap.h       |    2 +-
+ mm/swap_state.c |    3 +--
+ 2 files changed, 2 insertions(+), 3 deletions(-)
+
+--- a/mm/swap.h~restore-swap_space-attr-aviod-krn-panic
++++ a/mm/swap.h
+@@ -198,7 +198,7 @@ int swap_writeout(struct folio *folio, s
+ void __swap_writepage(struct folio *folio, struct swap_iocb **swap_plug);
  
-+static bool nested_svm_event_inj_valid_exept(struct kvm_vcpu *vcpu, u8 vector)
-+{
-+	/*
-+	 * Vectors that do not correspond to a defined exception are invalid
-+	 * (including #NMI and reserved vectors). In a best effort to define
-+	 * valid exceptions based on the virtual CPU, make all exceptions always
-+	 * valid except those obviously tied to a CPU feature.
-+	 */
-+	switch (vector) {
-+	case DE_VECTOR: case DB_VECTOR: case BP_VECTOR: case OF_VECTOR:
-+	case BR_VECTOR: case UD_VECTOR: case NM_VECTOR: case DF_VECTOR:
-+	case TS_VECTOR: case NP_VECTOR: case SS_VECTOR: case GP_VECTOR:
-+	case PF_VECTOR: case MF_VECTOR: case AC_VECTOR: case MC_VECTOR:
-+	case XM_VECTOR: case HV_VECTOR: case SX_VECTOR:
-+		return true;
-+	case CP_VECTOR:
-+		return guest_cpu_cap_has(vcpu, X86_FEATURE_SHSTK);
-+	case VC_VECTOR:
-+		return guest_cpu_cap_has(vcpu, X86_FEATURE_SEV_ES);
-+	}
-+	return false;
-+}
-+
-+/*
-+ * According to the APM, VMRUN exits with SVM_EXIT_ERR if SVM_EVTINJ_VALID is
-+ * set and:
-+ * - The type of event_inj is not one of the defined values.
-+ * - The type is SVM_EVTINJ_TYPE_EXEPT, but the vector is not a valid exception.
-+ */
-+static bool nested_svm_check_event_inj(struct kvm_vcpu *vcpu, u32 event_inj)
-+{
-+	u32 type = event_inj & SVM_EVTINJ_TYPE_MASK;
-+	u8 vector = event_inj & SVM_EVTINJ_VEC_MASK;
-+
-+	if (!(event_inj & SVM_EVTINJ_VALID))
-+		return true;
-+
-+	if (type != SVM_EVTINJ_TYPE_INTR && type != SVM_EVTINJ_TYPE_NMI &&
-+	    type != SVM_EVTINJ_TYPE_EXEPT && type != SVM_EVTINJ_TYPE_SOFT)
-+		return false;
-+
-+	if (type == SVM_EVTINJ_TYPE_EXEPT &&
-+	    !nested_svm_event_inj_valid_exept(vcpu, vector))
-+		return false;
-+
-+	return true;
-+}
-+
- static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 				       struct vmcb_ctrl_area_cached *control,
- 				       unsigned long l1_cr0)
-@@ -371,6 +419,9 @@ static bool nested_vmcb_check_controls(struct kvm_vcpu *vcpu,
- 		return false;
- 	}
+ /* linux/mm/swap_state.c */
+-extern struct address_space swap_space __ro_after_init;
++extern struct address_space swap_space __read_mostly;
+ static inline struct address_space *swap_address_space(swp_entry_t entry)
+ {
+ 	return &swap_space;
+--- a/mm/swap_state.c~restore-swap_space-attr-aviod-krn-panic
++++ a/mm/swap_state.c
+@@ -37,8 +37,7 @@ static const struct address_space_operat
+ #endif
+ };
  
-+	if (CC(!nested_svm_check_event_inj(vcpu, control->event_inj)))
-+		return false;
-+
- 	return true;
- }
+-/* Set swap_space as read only as swap cache is handled by swap table */
+-struct address_space swap_space __ro_after_init = {
++struct address_space swap_space __read_mostly = {
+ 	.a_ops = &swap_aops,
+ };
  
--- 
-2.52.0.457.g6b5491de43-goog
+_
+
+Patches currently in -mm which might be from robin.kuo@mediatek.com are
+
+restore-swap_space-attr-aviod-krn-panic.patch
 
 
