@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209071-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209525-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8972D2660D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:27:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECFED26D0B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82CDB3034062
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0CDD53086209
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25073B530F;
-	Thu, 15 Jan 2026 17:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A57663BBA0F;
+	Thu, 15 Jan 2026 17:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1krri+OR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDJE8ENX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E4A3AA1A8;
-	Thu, 15 Jan 2026 17:20:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 66ED02D73B4;
+	Thu, 15 Jan 2026 17:42:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497653; cv=none; b=Hduui+qN1Lbf+KWTgMCInw1USsVrTTpTWV/1yzETZl0G/c1MOA+8n5GBkp7NIf1QgOXp9nmBYicq/GOSVBgFd+9ISvxQg9viaOnFU2lo3K977DwCDmtU9AzDXSEczFhPddr39Tu7JH7H7GXsZFFELNodOHF+IbslUUOUF75v/7c=
+	t=1768498944; cv=none; b=R9YmWIadsYDXqJjyuk0P9Tr0i7FpRbfB7LRNYXnkxg00cLFbjse3or0wIPI3hYb0aGuzDAvZTfTx1GjbmZbdnH/fIhm879cw7OVHyEEkxByvZQGT2e7TDhfUYl+rmu+gpk4cSG8/dOXpyv5K/jYA5QiCoj9NamvggVuNDdIdwOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497653; c=relaxed/simple;
-	bh=sPYxnR+zoecQ+qQaherDm4vGV7MoX1DxfBdbP3XcWas=;
+	s=arc-20240116; t=1768498944; c=relaxed/simple;
+	bh=2zl+N7UkyPAEmt1JHZDjGR5jYu0Ld5afuF4JOR+e9U0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ezDUVsNXYvwzROgQfhgQUQ+WPw71fcK9HZA0bwM1OnG8siD4fTWNg+VA+sKE2dZEVc2gqQcqpJpjRGleyfZSoY5XcK7R7ajuT5Apj8ZTnKHTHFvOnJR38AsLvBsMBrgomB4fp3rATpY8OwXr6b/2p18kItKQmqTXMyheJoGWDZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1krri+OR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D2FC116D0;
-	Thu, 15 Jan 2026 17:20:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=lYWe7NU5qWd02ogNBrDlVaJxrp9UtWvRvwhOFXukfVmYvpT8u7GAqEeCqggR41gGj5HDR8RxGoVD0nC6iB+oLOa37GJkZPIE6hHg8ND8sIucCcrT9O5cO9/btVlt7hXY9RYkpXAG80U7AplRurBh5/mNquy/dJT9CeReK+Vp5dQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDJE8ENX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDDEC116D0;
+	Thu, 15 Jan 2026 17:42:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497653;
-	bh=sPYxnR+zoecQ+qQaherDm4vGV7MoX1DxfBdbP3XcWas=;
+	s=korg; t=1768498944;
+	bh=2zl+N7UkyPAEmt1JHZDjGR5jYu0Ld5afuF4JOR+e9U0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1krri+OR8+PRJsqthoULjgBJCTc61VKdTqVknQgdbf2r0xybgIK6JyFaWP/xdFZnS
-	 69w09Y/fz+BCxcYKzitV94AhWqnaKeqAV/z3HwsrqVwmxCQWu7wWnwNTfy6V7tAYLW
-	 AAg80OeYVafQ+hQNbf8R9NOyjHqFnE1jWW6VXNcU=
+	b=GDJE8ENXhz0ubEQOpyWpLbtltaWj7AF8KDpwE+xl1sFci0L4CckEeezbKOk8Sqf+d
+	 AaSnyFnQcU4Ho278ApOZ9jOAzteDZXwcQUJ/RH7klBHlIiOPa9+p78xOiIlqTApdif
+	 XbOK0zfQ9dSfDPOenluRk6yzMRcM5qjK9b9zWvE4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	sparkhuang <huangshaobo3@xiaomi.com>,
-	Charles Keepax <ckeepax@opensource.cirrus.com>,
-	Mark Brown <broonie@kernel.org>,
+	Bugaddr <Bugaddr@protonmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 156/554] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
+Subject: [PATCH 5.10 021/451] platform/x86: acer-wmi: Ignore backlight event
 Date: Thu, 15 Jan 2026 17:43:42 +0100
-Message-ID: <20260115164251.911972296@linuxfoundation.org>
+Message-ID: <20260115164231.656424278@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,111 +59,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: sparkhuang <huangshaobo3@xiaomi.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
+[ Upstream commit 444a9256f8d106e08a6bc2dc8ef28a8699e4b3ba ]
 
-regulator_supply_alias_list was accessed without any locking in
-regulator_supply_alias(), regulator_register_supply_alias(), and
-regulator_unregister_supply_alias(). Concurrent registration,
-unregistration and lookups can race, leading to:
+On the Acer Nitro AN515-58, the event 4 - 0 is send by the ACPI
+firmware when the backlight up/down keys are pressed. Ignore this
+event to avoid spamming the kernel log with error messages, as the
+acpi-video driver already handles brightness up/down events.
 
-1 use-after-free if an alias entry is removed while being read,
-2 duplicate entries when two threads register the same alias,
-3 inconsistent alias mappings observed by consumers.
-
-Protect all traversals, insertions and deletions on
-regulator_supply_alias_list with the existing regulator_list_mutex.
-
-Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
-Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
-Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
-Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Reported-by: Bugaddr <Bugaddr@protonmail.com>
+Closes: https://bugaddr.tech/posts/2025-11-16-debugging-the-acer-nitro-5-an515-58-fn-f10-keyboard-backlight-bug-on-linux/#wmi-interface-issues
+Tested-by: Bugaddr <Bugaddr@protonmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251117155938.3030-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/regulator/core.c | 32 ++++++++++++++++++++------------
- 1 file changed, 20 insertions(+), 12 deletions(-)
+ drivers/platform/x86/acer-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
-index 6c5913a1a6821..af0218227a8c7 100644
---- a/drivers/regulator/core.c
-+++ b/drivers/regulator/core.c
-@@ -1933,6 +1933,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- {
- 	struct regulator_supply_alias *map;
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index ebec49957ed09..b35a0539a99c6 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -81,6 +81,7 @@ MODULE_ALIAS("wmi:676AA15E-6A47-4D9F-A2CC-1E6D18D14026");
  
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(*dev, *supply);
- 	if (map) {
- 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
-@@ -1941,6 +1942,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
- 		*dev = map->alias_dev;
- 		*supply = map->alias_supply;
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
+ enum acer_wmi_event_ids {
+ 	WMID_HOTKEY_EVENT = 0x1,
++	WMID_BACKLIGHT_EVENT = 0x4,
+ 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
+ };
  
- static int regulator_match(struct device *dev, const void *data)
-@@ -2419,22 +2421,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
- 				    const char *alias_id)
- {
- 	struct regulator_supply_alias *map;
-+	struct regulator_supply_alias *new_map;
- 
--	map = regulator_find_supply_alias(dev, id);
--	if (map)
--		return -EEXIST;
--
--	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
--	if (!map)
-+	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
-+	if (!new_map)
- 		return -ENOMEM;
- 
--	map->src_dev = dev;
--	map->src_supply = id;
--	map->alias_dev = alias_dev;
--	map->alias_supply = alias_id;
--
--	list_add(&map->list, &regulator_supply_alias_list);
-+	mutex_lock(&regulator_list_mutex);
-+	map = regulator_find_supply_alias(dev, id);
-+	if (map) {
-+		mutex_unlock(&regulator_list_mutex);
-+		kfree(new_map);
-+		return -EEXIST;
-+	}
- 
-+	new_map->src_dev = dev;
-+	new_map->src_supply = id;
-+	new_map->alias_dev = alias_dev;
-+	new_map->alias_supply = alias_id;
-+	list_add(&new_map->list, &regulator_supply_alias_list);
-+	mutex_unlock(&regulator_list_mutex);
- 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
- 		id, dev_name(dev), alias_id, dev_name(alias_dev));
- 
-@@ -2454,11 +2460,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
- {
- 	struct regulator_supply_alias *map;
- 
-+	mutex_lock(&regulator_list_mutex);
- 	map = regulator_find_supply_alias(dev, id);
- 	if (map) {
- 		list_del(&map->list);
- 		kfree(map);
- 	}
-+	mutex_unlock(&regulator_list_mutex);
- }
- EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
- 
+@@ -1890,6 +1891,9 @@ static void acer_wmi_notify(u32 value, void *context)
+ 			sparse_keymap_report_event(acer_wmi_input_dev, scancode, 1, true);
+ 		}
+ 		break;
++	case WMID_BACKLIGHT_EVENT:
++		/* Already handled by acpi-video */
++		break;
+ 	case WMID_ACCEL_OR_KBD_DOCK_EVENT:
+ 		acer_gsensor_event();
+ 		acer_kbd_dock_event(&return_value);
 -- 
 2.51.0
 
