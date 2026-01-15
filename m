@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-208827-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209793-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C5235D26719
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2B38FD27729
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4ACCA311DADC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:18 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9082A30B24C0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8FD13BC4E8;
-	Thu, 15 Jan 2026 17:09:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1EB573D1CD2;
+	Thu, 15 Jan 2026 17:55:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XnjSUSus"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cs9scfX3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC593BF2E6;
-	Thu, 15 Jan 2026 17:09:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D5D123D1CD7;
+	Thu, 15 Jan 2026 17:55:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496956; cv=none; b=ll/WWCAu9OdA3AZMeqGBPGrgpflPY/6P+W+A0FdPVtcfOeL3yv5mvK7OiOWT6mBUi3Jlg+0IylnPoFXVVxvE/xZZOpMgjA3I0nsOkkzJz9N57JyS/JeqbzCtGET9e6fzr2jvWIEWEkg2V5JV1Fmnrdu0HcYcFxDnGjW0Gq5/Y5Q=
+	t=1768499706; cv=none; b=YWU/LMafRHcJP1jyisnbD49LvWRHQOZuYanA70maK1uMNyaWSPdvpipMgrwMzsG8A+mKzvOIPAvxK0+9ei3TYX7YsIk8b4WeOQChZ45lF5+N7+M+4T3p1Kqwgy3U7Qkr0Opuwm5IvpjaijwV5KtDhJGTaYXhOl5Iie2GGfwl0jU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496956; c=relaxed/simple;
-	bh=dhQssuoaF0w7ohMdGPwH4bWvxbZr3/a1+6JNbvbQTNs=;
+	s=arc-20240116; t=1768499706; c=relaxed/simple;
+	bh=GCaapQmXWZ4vHyV+fkfcfB+LsezbXzkDkvArVXkAOzk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YPHO1FJ+pQwgxqq5DXr3K/CQd3/t0kZ1pExbPQ/YtxLXkBYcM/5ZF+b6GhlV3tAGn/skhwee8lmlT4SFiTcjQygSjgNsFLUcoISBpe4jamoPxd948UKiZsC2CabzqvyCD4NDDoHYHvBZ9EHwSyMkZJ5dzKtpFMKmu9i5crpMGcA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XnjSUSus; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAD0C116D0;
-	Thu, 15 Jan 2026 17:09:14 +0000 (UTC)
+	 MIME-Version; b=mqmick7DP3F2G8sQps+nNmWhTV2df8iqT/rcgFh8utMMITvdmFhCiBdsEO6d1hnS31/llH6J/tGHRN4HrLJz9IwkyuCDx8iyT16ZqBoR6/h0UKU+AMhNzOUMJPBRVa3Q9f+rOArR5998x6r5vj2IDIpFIB88W4jcVcRKmBPjnqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cs9scfX3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63689C116D0;
+	Thu, 15 Jan 2026 17:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496955;
-	bh=dhQssuoaF0w7ohMdGPwH4bWvxbZr3/a1+6JNbvbQTNs=;
+	s=korg; t=1768499706;
+	bh=GCaapQmXWZ4vHyV+fkfcfB+LsezbXzkDkvArVXkAOzk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XnjSUSus2N16nYpIesRrnm1E8mOgw6gWhS9KVO2ZGaN7BCPIEsmSzUDl1xSQuzp4y
-	 k2kO2vfqm1TOCESnTcNeQH2IoUsLvcHvC0yWtoEfEzi2cLtFoItx2N60vuqC6skVDP
-	 whE5PzOQoniCLpUB8eC2P+blHn6ghQzx/2k0YTBQ=
+	b=Cs9scfX3fqtyh+0ycxNT1W9PSkrEz7CgHUsBgdT3wfPhF/TAwZGDJ482MZNQVW3J6
+	 Cg4eSjw/A66AprZ4KKQHFFRFNX0anpOMf+gZbPWwhgXJpTnXOYaeoI6DL3xCgFSICa
+	 GEET1SIN8roSKl7JsnII170RWmlYGj0A8Rev9rpg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Ray <ian.ray@gehealthcare.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 41/88] ARM: dts: imx6q-ba16: fix RTC interrupt level
-Date: Thu, 15 Jan 2026 17:48:24 +0100
-Message-ID: <20260115164147.797416126@linuxfoundation.org>
+	Honghui Zhang <honghui.zhang@mediatek.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Yong Wu <yong.wu@mediatek.com>,
+	Johan Hovold <johan@kernel.org>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.10 304/451] iommu/mediatek-v1: fix device leak on probe_device()
+Date: Thu, 15 Jan 2026 17:48:25 +0100
+Message-ID: <20260115164241.892591415@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +63,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Ray <ian.ray@gehealthcare.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit e6a4eedd49ce27c16a80506c66a04707e0ee0116 ]
+commit c77ad28bfee0df9cbc719eb5adc9864462cfb65b upstream.
 
-RTC interrupt level should be set to "LOW". This was revealed by the
-introduction of commit:
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during probe_device().
 
-  f181987ef477 ("rtc: m41t80: use IRQ flags obtained from fwnode")
-
-which changed the way IRQ type is obtained.
-
-Fixes: 56c27310c1b4 ("ARM: dts: imx: Add Advantech BA-16 Qseven module")
-Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
+Cc: stable@vger.kernel.org	# 4.8
+Cc: Honghui Zhang <honghui.zhang@mediatek.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Reviewed-by: Yong Wu <yong.wu@mediatek.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/mtk_iommu_v1.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi b/arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi
-index f266f1b7e0cfc..0c033e69ecc04 100644
---- a/arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi
-+++ b/arch/arm/boot/dts/nxp/imx/imx6q-ba16.dtsi
-@@ -335,7 +335,7 @@ rtc@32 {
- 		pinctrl-0 = <&pinctrl_rtc>;
- 		reg = <0x32>;
- 		interrupt-parent = <&gpio4>;
--		interrupts = <10 IRQ_TYPE_LEVEL_HIGH>;
-+		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
- 	};
- };
+--- a/drivers/iommu/mtk_iommu_v1.c
++++ b/drivers/iommu/mtk_iommu_v1.c
+@@ -393,6 +393,8 @@ static int mtk_iommu_create_mapping(stru
+ 			return -EINVAL;
  
--- 
-2.51.0
-
+ 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
++
++		put_device(&m4updev->dev);
+ 	}
+ 
+ 	ret = iommu_fwspec_add_ids(dev, args->args, 1);
 
 
 
