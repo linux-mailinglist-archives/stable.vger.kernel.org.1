@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208690-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209298-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72802D26219
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29420D2691C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F067730C6861
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CCCF030C146E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BE5345758;
-	Thu, 15 Jan 2026 17:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 441D23D1CA2;
+	Thu, 15 Jan 2026 17:31:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACXZYgXQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HnTKlwl+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490A42C028F;
-	Thu, 15 Jan 2026 17:02:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F0C86334;
+	Thu, 15 Jan 2026 17:31:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496569; cv=none; b=UUomTNhYBxh6NodsbTJI+J63z815PipIF1qYD5T/WSrCUHQgA3bn40XDHfAbBIZUPLCGwbaCN9O0sV2cTr95+PlrbmCUw3SnhOJA/LdOlcq1RDNY+nSbkdfPogwkY+OiasQH57URU0ECMsg4Dy+0hqoWGUCXcHQAOsAmywUi2Q4=
+	t=1768498298; cv=none; b=W1Xu/vgMrzfWnn1F47w+CJIj0mlyHWYPgFsm0hggcgOO6g05iabtUugKPE6PkY7WAN6lBFFQkw4dd478E7B5VZ2XFuLM8K808P8AnAaIn8piJEbe7Hf7vSR2pupw9QBfWAAMHw78tJg2mAi0fRsgdEQmD6S5aA6PFKfMmzd4zA0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496569; c=relaxed/simple;
-	bh=74hBhalu1RK9MSRMGeiuxIHp+TcqW9d+yQ/ShBSSwIo=;
+	s=arc-20240116; t=1768498298; c=relaxed/simple;
+	bh=r1uLr4GVlwuCuH2FIJmpP5XqlqEhnP4l10NeqD8fhs8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YmX3pwOhwGGSdlZXYRQ1Iie14TFufQBT9KVNYk4S5d5V5z8je6mHPCjN4sPk/qCLSyumcS30UOCXa6hdpC/h/V/JGqyztt1GmeN6GFfZVuYn0GTXIkSWku5qtxLLo2e8HDFNCmmiAUJbkD1ssr6FmcRaCrdGqTI5RqFKbwz2r5A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACXZYgXQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA813C116D0;
-	Thu, 15 Jan 2026 17:02:48 +0000 (UTC)
+	 MIME-Version; b=gspsFJWOCe4ZndthnepdnQvOHLJ3Y5h51h8ByJDfOmimIMj6ED3LC9SB/HdYUEs/icCMEqxx1UNdh4CNe5KAsWq+gOogT7hMrg0Hm2a9h/34OLxvu7g6XsVMor3xUa3vC7AoYHMGt/r7pe/NSQfHyS5CDUSD8Rn1LUIduSgmkzo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HnTKlwl+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E4BC116D0;
+	Thu, 15 Jan 2026 17:31:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496569;
-	bh=74hBhalu1RK9MSRMGeiuxIHp+TcqW9d+yQ/ShBSSwIo=;
+	s=korg; t=1768498297;
+	bh=r1uLr4GVlwuCuH2FIJmpP5XqlqEhnP4l10NeqD8fhs8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ACXZYgXQ/JyX/Zt50DoHkO0BAgMI3dwU2xSQ7n6GoG3STOx/Q17KmEKJNRCpu2m6C
-	 lsK0E6ji8PzeZHWJIXzsGSJoXp+BfZWLX5s+IqKxNUX4Jy/f9VNGeYXnW8g31ltdH6
-	 7EMRaM4IBi1HI6P1vwkzo9kfW8glKCkkiH0dd9qc=
+	b=HnTKlwl+6fTqACVkBfOI5uMMrr5Az7E/hSpCZqab41I9dof4fy0oR5oniBa6JTymj
+	 IqwCWwUcefdE2bA4dk949Si6NvIOpf+urS9QPs2xBKHSwEiM7otAW5ncYAMoCjUu4g
+	 x/FGFwpNfDCm2wK6C/ET1k1RutQJxL6Tqf8OmdK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.li85200@gmail.com>,
-	Guo Ren <guoren@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 031/119] csky: fix csky_cmpxchg_fixup not working
-Date: Thu, 15 Jan 2026 17:47:26 +0100
-Message-ID: <20260115164153.085385266@linuxfoundation.org>
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	Jiri Kosina <jkosina@suse.com>
+Subject: [PATCH 5.15 381/554] HID: logitech-dj: Remove duplicate error logging
+Date: Thu, 15 Jan 2026 17:47:27 +0100
+Message-ID: <20260115164300.028126340@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +59,168 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.li85200@gmail.com>
+From: Hans de Goede <johannes.goede@oss.qualcomm.com>
 
-[ Upstream commit 809ef03d6d21d5fea016bbf6babeec462e37e68c ]
+commit ca389a55d8b2d86a817433bf82e0602b68c4d541 upstream.
 
-In the csky_cmpxchg_fixup function, it is incorrect to use the global
-variable csky_cmpxchg_stw to determine the address where the exception
-occurred.The global variable csky_cmpxchg_stw stores the opcode at the
-time of the exception, while &csky_cmpxchg_stw shows the address where
-the exception occurred.
+logi_dj_recv_query_paired_devices() and logi_dj_recv_switch_to_dj_mode()
+both have 2 callers which all log an error if the function fails. Move
+the error logging to inside these 2 functions to remove the duplicated
+error logging in the callers.
 
-Signed-off-by: Yang Li <yang.li85200@gmail.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+While at it also move the logi_dj_recv_send_report() call error handling
+in logi_dj_recv_switch_to_dj_mode() to directly after the call. That call
+only fails if the report cannot be found and in that case it does nothing,
+so the msleep() is not necessary on failures.
+
+Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/csky/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-logitech-dj.c |   56 +++++++++++++++++-------------------------
+ 1 file changed, 23 insertions(+), 33 deletions(-)
 
-diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
-index a885518ce1dd2..5226bc08c3360 100644
---- a/arch/csky/mm/fault.c
-+++ b/arch/csky/mm/fault.c
-@@ -45,8 +45,8 @@ static inline void csky_cmpxchg_fixup(struct pt_regs *regs)
- 	if (trap_no(regs) != VEC_TLBMODIFIED)
- 		return;
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -805,7 +805,6 @@ static void delayedwork_callback(struct
+ 	struct dj_workitem workitem;
+ 	unsigned long flags;
+ 	int count;
+-	int retval;
  
--	if (instruction_pointer(regs) == csky_cmpxchg_stw)
--		instruction_pointer_set(regs, csky_cmpxchg_ldw);
-+	if (instruction_pointer(regs) == (unsigned long)&csky_cmpxchg_stw)
-+		instruction_pointer_set(regs, (unsigned long)&csky_cmpxchg_ldw);
- 	return;
+ 	dbg_hid("%s\n", __func__);
+ 
+@@ -842,11 +841,7 @@ static void delayedwork_callback(struct
+ 		logi_dj_recv_destroy_djhid_device(djrcv_dev, &workitem);
+ 		break;
+ 	case WORKITEM_TYPE_UNKNOWN:
+-		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
+-		if (retval) {
+-			hid_err(djrcv_dev->hidpp, "%s: logi_dj_recv_query_paired_devices error: %d\n",
+-				__func__, retval);
+-		}
++		logi_dj_recv_query_paired_devices(djrcv_dev);
+ 		break;
+ 	case WORKITEM_TYPE_EMPTY:
+ 		dbg_hid("%s: device list is empty\n", __func__);
+@@ -1239,8 +1234,10 @@ static int logi_dj_recv_query_paired_dev
+ 
+ 	djrcv_dev->last_query = jiffies;
+ 
+-	if (djrcv_dev->type != recvr_type_dj)
+-		return logi_dj_recv_query_hidpp_devices(djrcv_dev);
++	if (djrcv_dev->type != recvr_type_dj) {
++		retval = logi_dj_recv_query_hidpp_devices(djrcv_dev);
++		goto out;
++	}
+ 
+ 	dj_report = kzalloc(sizeof(struct dj_report), GFP_KERNEL);
+ 	if (!dj_report)
+@@ -1250,6 +1247,10 @@ static int logi_dj_recv_query_paired_dev
+ 	dj_report->report_type = REPORT_TYPE_CMD_GET_PAIRED_DEVICES;
+ 	retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
+ 	kfree(dj_report);
++out:
++	if (retval < 0)
++		hid_err(djrcv_dev->hidpp, "%s error:%d\n", __func__, retval);
++
+ 	return retval;
+ }
+ 
+@@ -1275,6 +1276,8 @@ static int logi_dj_recv_switch_to_dj_mod
+ 								(u8)timeout;
+ 
+ 		retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
++		if (retval)
++			goto out;
+ 
+ 		/*
+ 		 * Ugly sleep to work around a USB 3.0 bug when the receiver is
+@@ -1283,11 +1286,6 @@ static int logi_dj_recv_switch_to_dj_mod
+ 		 * 50 msec should gives enough time to the receiver to be ready.
+ 		 */
+ 		msleep(50);
+-
+-		if (retval) {
+-			kfree(dj_report);
+-			return retval;
+-		}
+ 	}
+ 
+ 	/*
+@@ -1313,7 +1311,12 @@ static int logi_dj_recv_switch_to_dj_mod
+ 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
+ 			HID_REQ_SET_REPORT);
+ 
++out:
+ 	kfree(dj_report);
++
++	if (retval < 0)
++		hid_err(hdev, "%s error:%d\n", __func__, retval);
++
+ 	return retval;
+ }
+ 
+@@ -1835,11 +1838,8 @@ static int logi_dj_probe(struct hid_devi
+ 
+ 	if (has_hidpp) {
+ 		retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
+-		if (retval < 0) {
+-			hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
+-				__func__, retval);
++		if (retval < 0)
+ 			goto switch_to_dj_mode_fail;
+-		}
+ 	}
+ 
+ 	/* This is enabling the polling urb on the IN endpoint */
+@@ -1857,15 +1857,11 @@ static int logi_dj_probe(struct hid_devi
+ 		spin_lock_irqsave(&djrcv_dev->lock, flags);
+ 		djrcv_dev->ready = true;
+ 		spin_unlock_irqrestore(&djrcv_dev->lock, flags);
+-		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
+-		if (retval < 0) {
+-			hid_err(hdev, "%s: logi_dj_recv_query_paired_devices error:%d\n",
+-				__func__, retval);
+-			/*
+-			 * This can happen with a KVM, let the probe succeed,
+-			 * logi_dj_recv_queue_unknown_work will retry later.
+-			 */
+-		}
++		/*
++		 * This can fail with a KVM. Ignore errors to let the probe
++		 * succeed, logi_dj_recv_queue_unknown_work will retry later.
++		 */
++		logi_dj_recv_query_paired_devices(djrcv_dev);
+ 	}
+ 
+ 	return 0;
+@@ -1882,18 +1878,12 @@ hid_hw_start_fail:
+ #ifdef CONFIG_PM
+ static int logi_dj_reset_resume(struct hid_device *hdev)
+ {
+-	int retval;
+ 	struct dj_receiver_dev *djrcv_dev = hid_get_drvdata(hdev);
+ 
+ 	if (!djrcv_dev || djrcv_dev->hidpp != hdev)
+ 		return 0;
+ 
+-	retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
+-	if (retval < 0) {
+-		hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
+-			__func__, retval);
+-	}
+-
++	logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
+ 	return 0;
  }
  #endif
--- 
-2.51.0
-
 
 
 
