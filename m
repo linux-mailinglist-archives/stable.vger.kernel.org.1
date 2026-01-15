@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208884-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C2C25D27E01
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:58:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D8D1D267C7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9C41031EF8C1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8FF3F31185E9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 48AA73D2FFC;
-	Thu, 15 Jan 2026 17:55:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAFB13ACA65;
+	Thu, 15 Jan 2026 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M9tuXDa8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LCUcwQer"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1F153C00AE;
-	Thu, 15 Jan 2026 17:55:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADBF92750ED;
+	Thu, 15 Jan 2026 17:11:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499735; cv=none; b=CVeaX0+87+5KmxjUvYv1bthg3oKk0GNrz2gxK5lsjh5uNsN0KmLwQOf/U/jQ7FRosknbN6/Vto1+t/gIm+OXkmv4HWM6fnmbvZrTyEhbislxxxyO5nxlBY5y38kfG6tSZaRN8i2XJIaMQrE6NaBtDIJcZMjXnTK2sG8goN/Rz+M=
+	t=1768497117; cv=none; b=haPxN6aEUO57QZHZjZR7861rRWPwsYK6p4I+ewfh+lisF5w51t+F8AWOsGKiTR460OzW9sn+KrgXXZ+GYDRfO5GvIso4lgKFgUAzxL2pwF53jxrXy6jDb71MSnplbNVecdniq2o5J0ucVoZ1O/1wej1NCuRrSffjKY2xeQXJXE8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499735; c=relaxed/simple;
-	bh=LdrmKX+K4EdigftvanCNw6DRysLBfYhUhBphOfjrqEM=;
+	s=arc-20240116; t=1768497117; c=relaxed/simple;
+	bh=AEokJD5DdiEijNKj+FIpYBiqliYvSc+ONKnbrUC6Rb8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=blvUDNAWwSMGVquEr0TXSQHGHqISRb6t+AYSISeVVWX1WVu15HhCgnh0fGMbraUiBTDH8u5RiMiN23GtBFJ366tN0Umrk9YYKWi/W4bkL4OEnZNu2CDpRPYT3ip8gaDttz+DMFQHmZ1al74bWP0bLaPne1jHkYePArXCcIPLhSc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M9tuXDa8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F20AC116D0;
-	Thu, 15 Jan 2026 17:55:34 +0000 (UTC)
+	 MIME-Version; b=Rjmfi+E6eAlosyZZPegt6XZiGiqvORldRUXuvj4Gb223aRNHfAR9DKe4V1JrF7Be+0g/fpLGmMbDNhsQBVFsx2fV3BJ5qe1MPbFugJ/InQUz/+ZWCap0PoG4S5yIzKOeEaJ3SgQhzZKkr5g2AsGrS6pRsG8feXJ41NaT2q5yK/Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LCUcwQer; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB85C116D0;
+	Thu, 15 Jan 2026 17:11:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499734;
-	bh=LdrmKX+K4EdigftvanCNw6DRysLBfYhUhBphOfjrqEM=;
+	s=korg; t=1768497117;
+	bh=AEokJD5DdiEijNKj+FIpYBiqliYvSc+ONKnbrUC6Rb8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M9tuXDa80mCxOKgTg7cDF9I6gDqxy60i9CK1/wNgDJ9+u1QNRbLgNCcMGCyRH2FT4
-	 GXHlBMvWnsVUU2vsuKD+aNnRetXmwmK+2HoDU/uUJiVgRn/vVupnpL6NHE5DYoyfi+
-	 tvjVYco26aKkHILOSp1yLCT+CtxzKxVEQq1lQsvg=
+	b=LCUcwQerS/pU2Gqi+L7x4PvBib+FWkc2jMaSBbK+6DvRKFuzh+HTgweRETZ36mwLP
+	 nG/Gx5Dy3mD7FnU5L9faJKN+keeAM67+YtFQsA4kqsnlJGcxAiFxMI93K1jEQHsL9w
+	 uLR7e8JgjFPHfYKnkGJv4b7CigwQ0pKPw/IOsqwE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 331/451] fjes: Add missing iounmap in fjes_hw_init()
+	Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 42/72] net/mlx5e: Dont print error message due to invalid module
 Date: Thu, 15 Jan 2026 17:48:52 +0100
-Message-ID: <20260115164242.870397214@linuxfoundation.org>
+Message-ID: <20260115164145.020204163@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Gal Pressman <gal@nvidia.com>
 
-commit 15ef641a0c6728d25a400df73922e80ab2cf029c upstream.
+[ Upstream commit 144297e2a24e3e54aee1180ec21120ea38822b97 ]
 
-In error paths, add fjes_hw_iounmap() to release the
-resource acquired by fjes_hw_iomap(). Add a goto label
-to do so.
+Dumping module EEPROM on newer modules is supported through the netlink
+interface only.
 
-Fixes: 8cdc3f6c5d22 ("fjes: Hardware initialization routine")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Signed-off-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251211073756.101824-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Querying with old userspace ethtool (or other tools, such as 'lshw')
+which still uses the ioctl interface results in an error message that
+could flood dmesg (in addition to the expected error return value).
+The original message was added under the assumption that the driver
+should be able to handle all module types, but now that such flows are
+easily triggered from userspace, it doesn't serve its purpose.
+
+Change the log level of the print in mlx5_query_module_eeprom() to
+debug.
+
+Fixes: bb64143eee8c ("net/mlx5e: Add ethtool support for dump module EEPROM")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20251225132717.358820-5-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/fjes/fjes_hw.c |   12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/port.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/net/fjes/fjes_hw.c
-+++ b/drivers/net/fjes/fjes_hw.c
-@@ -333,7 +333,7 @@ int fjes_hw_init(struct fjes_hw *hw)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+index a1548e6bfb35d..28ec31722ec2f 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+@@ -432,7 +432,8 @@ int mlx5_query_module_eeprom(struct mlx5_core_dev *dev,
+ 		mlx5_qsfp_eeprom_params_set(&query.i2c_address, &query.page, &offset);
+ 		break;
+ 	default:
+-		mlx5_core_err(dev, "Module ID not recognized: 0x%x\n", module_id);
++		mlx5_core_dbg(dev, "Module ID not recognized: 0x%x\n",
++			      module_id);
+ 		return -EINVAL;
+ 	}
  
- 	ret = fjes_hw_reset(hw);
- 	if (ret)
--		return ret;
-+		goto err_iounmap;
- 
- 	fjes_hw_set_irqmask(hw, REG_ICTL_MASK_ALL, true);
- 
-@@ -346,8 +346,10 @@ int fjes_hw_init(struct fjes_hw *hw)
- 	hw->max_epid = fjes_hw_get_max_epid(hw);
- 	hw->my_epid = fjes_hw_get_my_epid(hw);
- 
--	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid))
--		return -ENXIO;
-+	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid)) {
-+		ret = -ENXIO;
-+		goto err_iounmap;
-+	}
- 
- 	ret = fjes_hw_setup(hw);
- 
-@@ -355,6 +357,10 @@ int fjes_hw_init(struct fjes_hw *hw)
- 	hw->hw_info.trace_size = FJES_DEBUG_BUFFER_SIZE;
- 
- 	return ret;
-+
-+err_iounmap:
-+	fjes_hw_iounmap(hw);
-+	return ret;
- }
- 
- void fjes_hw_exit(struct fjes_hw *hw)
+-- 
+2.51.0
+
 
 
 
