@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209358-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD0DBD27453
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5B265D26E27
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 57166300F6BD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 12F3931F8807
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F5583D6661;
-	Thu, 15 Jan 2026 17:56:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE803B8BA7;
+	Thu, 15 Jan 2026 17:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BD8sT9Gz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQLgfPJ9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31B782C08AC;
-	Thu, 15 Jan 2026 17:56:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607963A7F5D;
+	Thu, 15 Jan 2026 17:34:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499761; cv=none; b=eU5hIgCqzmECGfF6qkINo4SunlxlINRSe4AH+8tqWGQEyWnxekRf95cCj94iKP0rgZ4gotQrMba641o9jab7IxnfNypaXQtJnw96GJGgIT3d+be8xNe47Y6uI5fjLlYzRThAigH80uxN1t7parQ5AckxmeDnFFRHne4HC5Il/kg=
+	t=1768498468; cv=none; b=LuDfRghh2gHh9EbUKrFLz5zrD3uy73iF4h1MlflrsFlznckQZh2ZHs9ipGI2894xDHVMtSROT3ixyKEgsZZw3Y17+K5PUPaLJ8CQnEZ73af4nBirGGhdXWdsqJ+wWRbYrTc2UiHd9lH4+DV9qi094nBhUfFFaXqfwpu5nrJS5bg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499761; c=relaxed/simple;
-	bh=ohHpblvu/51f5mMKgs777BLjDivQpakemmrORkUicYw=;
+	s=arc-20240116; t=1768498468; c=relaxed/simple;
+	bh=kec0/pxSptzfIoeJq0FDv/mJRL3Zpj2HPLwgay8ly6Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y5YAr1Cjg0UdW2+bJTpfUDA+78gBgFNicdDOTxNR0QqYH0A4Jo6LqJ1A9Dsz50syezoXrLHn8dlHuEKIHD5nr7K3/Aa1/6QOWI7whZanl5zpvCRDzb65870VMbeWdsAwAKGJsLqzWGaDTAei3/MBbCgHgar72H/5rX1WNamRLYM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BD8sT9Gz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77182C16AAE;
-	Thu, 15 Jan 2026 17:56:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BFqCJn71ljO9242C4i7YPKWWXQuwrL6AeMGJwtfNjJx6/WKBaBAC6F/cZNRLoa+xojNtKMNAxTFO0NJTs6zb8hMt5AeOrgTVb+HH15iEIPWCwLvsU1KQbgwFraXyRBQSnSQERvUP6Jmsd/ziKDZebcIPsx8wbjCSfzNQqo0I230=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQLgfPJ9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A825CC16AAE;
+	Thu, 15 Jan 2026 17:34:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499760;
-	bh=ohHpblvu/51f5mMKgs777BLjDivQpakemmrORkUicYw=;
+	s=korg; t=1768498468;
+	bh=kec0/pxSptzfIoeJq0FDv/mJRL3Zpj2HPLwgay8ly6Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BD8sT9GzmRPLVXeCRra0DB6OK9/a69HQk8EZMVbffC3n0ErGcQ8MnpwWmg2tPEfhO
-	 HKPyNHKd0Fep4SpYOHpX9ho6OmgHflEdrsHFRcCtohCHf7NvbBnr8Jq+TzpX2T9PCC
-	 r9ssk/ZrSay4531Yj/AsII8gxsVCQj/B/DMBjUqg=
+	b=fQLgfPJ9JIE1P/OlaooHREhA7mV/5ihDuSlx+D+TXKWUm/Ie6OA2cR8e4oqGqVEhJ
+	 PWFeQ3DR/TmpNEDQfZM4N3uNCWrKSPKhuaK3w7dCjE1jEupa066V04jqtfzMRsjn+J
+	 rJ+zBwrt7rjTHQf1QoOXfaKoSSsei9URsJjiPS6Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Maxime Ripard <mripard@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.10 307/451] iommu/sun50i: fix device leak on of_xlate()
+	stable@kernel.org,
+	Hong Yun <yhong@link.cuhk.edu.hk>,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 442/554] f2fs: use global inline_xattr_slab instead of per-sb slab cache
 Date: Thu, 15 Jan 2026 17:48:28 +0100
-Message-ID: <20260115164242.003864203@linuxfoundation.org>
+Message-ID: <20260115164302.265750906@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,41 +60,242 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Chao Yu <chao@kernel.org>
 
-commit f916109bf53864605d10bf6f4215afa023a80406 upstream.
+[ Upstream commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+As Hong Yun reported in mailing list:
 
-Fixes: 4100b8c229b3 ("iommu: Add Allwinner H6 IOMMU driver")
-Cc: stable@vger.kernel.org	# 5.8
-Cc: Maxime Ripard <mripard@kernel.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+loop7: detected capacity change from 0 to 131072
+------------[ cut here ]------------
+kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
+RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
+RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
+Call Trace:
+ __kmem_cache_create include/linux/slab.h:353 [inline]
+ f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
+ f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
+ f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
+ get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
+ vfs_get_tree+0x43/0x140 fs/super.c:1815
+ do_new_mount+0x201/0x550 fs/namespace.c:3808
+ do_mount fs/namespace.c:4136 [inline]
+ __do_sys_mount fs/namespace.c:4347 [inline]
+ __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+The bug can be reproduced w/ below scripts:
+- mount /dev/vdb /mnt1
+- mount /dev/vdc /mnt2
+- umount /mnt1
+- mounnt /dev/vdb /mnt1
+
+The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
+and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
+slab system will only create one slab cache core structure which has
+slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
+structure and cache address.
+
+So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
+decrease reference count of slab cache, rather than release slab cache
+entirely, since there is one more user has referenced the cache.
+
+Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
+slab system will find that there is existed cache which has the same name
+and trigger the warning.
+
+Let's changes to use global inline_xattr_slab instead of per-sb slab cache
+for fixing.
+
+Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
+Cc: stable@kernel.org
+Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page + different module init/exit ordering ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/sun50i-iommu.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/f2fs/f2fs.h  |    3 ---
+ fs/f2fs/super.c |   15 +++++++--------
+ fs/f2fs/xattr.c |   32 +++++++++++---------------------
+ fs/f2fs/xattr.h |   10 ++++++----
+ 4 files changed, 24 insertions(+), 36 deletions(-)
 
---- a/drivers/iommu/sun50i-iommu.c
-+++ b/drivers/iommu/sun50i-iommu.c
-@@ -767,6 +767,8 @@ static int sun50i_iommu_of_xlate(struct
+--- a/fs/f2fs/f2fs.h
++++ b/fs/f2fs/f2fs.h
+@@ -1763,9 +1763,6 @@ struct f2fs_sb_info {
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(iommu_pdev));
+ 	struct workqueue_struct *post_read_wq;	/* post read workqueue */
  
-+	put_device(&iommu_pdev->dev);
-+
- 	return iommu_fwspec_add_ids(dev, &id, 1);
+-	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
+-	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
+-
+ 	/* For reclaimed segs statistics per each GC mode */
+ 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
+ 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1655,7 +1655,6 @@ static void f2fs_put_super(struct super_
+ 
+ 	destroy_device_list(sbi);
+ 	f2fs_destroy_page_array_cache(sbi);
+-	f2fs_destroy_xattr_caches(sbi);
+ 	mempool_destroy(sbi->write_io_dummy);
+ #ifdef CONFIG_QUOTA
+ 	for (i = 0; i < MAXQUOTAS; i++)
+@@ -4166,13 +4165,9 @@ try_onemore:
+ 		}
+ 	}
+ 
+-	/* init per sbi slab cache */
+-	err = f2fs_init_xattr_caches(sbi);
+-	if (err)
+-		goto free_io_dummy;
+ 	err = f2fs_init_page_array_cache(sbi);
+ 	if (err)
+-		goto free_xattr_cache;
++		goto free_io_dummy;
+ 
+ 	/* get an inode for meta space */
+ 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
+@@ -4492,8 +4487,6 @@ free_meta_inode:
+ 	sbi->meta_inode = NULL;
+ free_page_array_cache:
+ 	f2fs_destroy_page_array_cache(sbi);
+-free_xattr_cache:
+-	f2fs_destroy_xattr_caches(sbi);
+ free_io_dummy:
+ 	mempool_destroy(sbi->write_io_dummy);
+ free_percpu:
+@@ -4660,7 +4653,12 @@ static int __init init_f2fs_fs(void)
+ 	err = f2fs_create_casefold_cache();
+ 	if (err)
+ 		goto free_compress_cache;
++	err = f2fs_init_xattr_cache();
++	if (err)
++		goto free_casefold_cache;
+ 	return 0;
++free_casefold_cache:
++	f2fs_destroy_casefold_cache();
+ free_compress_cache:
+ 	f2fs_destroy_compress_cache();
+ free_compress_mempool:
+@@ -4700,6 +4698,7 @@ fail:
+ 
+ static void __exit exit_f2fs_fs(void)
+ {
++	f2fs_destroy_xattr_cache();
+ 	f2fs_destroy_casefold_cache();
+ 	f2fs_destroy_compress_cache();
+ 	f2fs_destroy_compress_mempool();
+--- a/fs/f2fs/xattr.c
++++ b/fs/f2fs/xattr.c
+@@ -23,11 +23,12 @@
+ #include "xattr.h"
+ #include "segment.h"
+ 
++static struct kmem_cache *inline_xattr_slab;
+ static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
+ {
+-	if (likely(size == sbi->inline_xattr_slab_size)) {
++	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
+ 		*is_inline = true;
+-		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
++		return f2fs_kmem_cache_alloc(inline_xattr_slab,
+ 					GFP_F2FS_ZERO, false, sbi);
+ 	}
+ 	*is_inline = false;
+@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_in
+ 							bool is_inline)
+ {
+ 	if (is_inline)
+-		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
++		kmem_cache_free(inline_xattr_slab, xattr_addr);
+ 	else
+ 		kfree(xattr_addr);
+ }
+@@ -818,25 +819,14 @@ int f2fs_setxattr(struct inode *inode, i
+ 	return err;
  }
  
+-int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
++int __init f2fs_init_xattr_cache(void)
+ {
+-	dev_t dev = sbi->sb->s_bdev->bd_dev;
+-	char slab_name[32];
+-
+-	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
+-
+-	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
+-					sizeof(__le32) + XATTR_PADDING_SIZE;
+-
+-	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
+-					sbi->inline_xattr_slab_size);
+-	if (!sbi->inline_xattr_slab)
+-		return -ENOMEM;
+-
+-	return 0;
++	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
++					DEFAULT_XATTR_SLAB_SIZE);
++	return inline_xattr_slab ? 0 : -ENOMEM;
+ }
+ 
+-void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
++void f2fs_destroy_xattr_cache(void)
+ {
+-	kmem_cache_destroy(sbi->inline_xattr_slab);
+-}
++	kmem_cache_destroy(inline_xattr_slab);
++}
+\ No newline at end of file
+--- a/fs/f2fs/xattr.h
++++ b/fs/f2fs/xattr.h
+@@ -88,6 +88,8 @@ struct f2fs_xattr_entry {
+ 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
+ 			DEF_INLINE_RESERVED_SIZE -			\
+ 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
++#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
++				sizeof(__le32) + XATTR_PADDING_SIZE)
+ 
+ /*
+  * On-disk structure of f2fs_xattr
+@@ -131,8 +133,8 @@ extern int f2fs_setxattr(struct inode *,
+ extern int f2fs_getxattr(struct inode *, int, const char *, void *,
+ 						size_t, struct page *);
+ extern ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
+-extern int f2fs_init_xattr_caches(struct f2fs_sb_info *);
+-extern void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
++int __init f2fs_init_xattr_cache(void);
++void f2fs_destroy_xattr_cache(void);
+ #else
+ 
+ #define f2fs_xattr_handlers	NULL
+@@ -149,8 +151,8 @@ static inline int f2fs_getxattr(struct i
+ {
+ 	return -EOPNOTSUPP;
+ }
+-static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
+-static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
++static inline int __init f2fs_init_xattr_cache(void) { return 0; }
++static inline void f2fs_destroy_xattr_cache(void) { }
+ #endif
+ 
+ #ifdef CONFIG_F2FS_FS_SECURITY
 
 
 
