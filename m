@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-208934-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208939-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9290D264FB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:21:46 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C55BD2650B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C8C36303C5E7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D8DE9303FCD1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 716253BFE3C;
-	Thu, 15 Jan 2026 17:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CB293C1980;
+	Thu, 15 Jan 2026 17:14:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ESa0u/qq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYLlgSXD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3447B3BF303;
-	Thu, 15 Jan 2026 17:14:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81BA63B8BAE;
+	Thu, 15 Jan 2026 17:14:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497261; cv=none; b=YzGUCDgGy09gFHaTI1tislQ1qvcXdthcM84AHRB3E8mNE3nI9R5b3cfF7W29FNL3okyT0Cos0N6tyPP1NjXkTrDFdF4URlqIMwJCnXTn+P2hG3tqSUx8bKST5DAJsjIo7FpiMlTkPRsPkjQcWwgm+/f7K3gdbxiQHIm+fb/2Sgc=
+	t=1768497275; cv=none; b=hGWvrWRiL9up0hlOQ7/QOEmhSAyF8li+tS2dtmhE9taRkUwC55BZZ3isx2RTfMocdwA3tDHkQo9Tp9YbExEubt4FE2tVwrXor8mutc0eG8EPtJtHQTJTzR9ejGxzIBwE8yusdI1sG9lrWLpBP95ZUlrnbK+tktN3ThDCyDIRTNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497261; c=relaxed/simple;
-	bh=dFEyZSFlmHyQPSe59wW+e196/cdz4XWqeAfXX8OBr5g=;
+	s=arc-20240116; t=1768497275; c=relaxed/simple;
+	bh=aHqrOLUpm/ikbH96BmFcFIkgHlDpoQpKudoYRUzaEh4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NPcMafwQZ/b7vLBVy8LnEdCKmzRiD+vq4bSndUNqKVfKGmr8NZr7kgU/mCGkTS+yM3OB3V+4guX/i0ANy0h7eR0Dei9FjQF1v00/hnGOMHqZIBwjrXO9yLAibK2UGdnKtptlQIWD1D9jL+1Ct4puSYCUYLelL63a/5onXOGBaJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ESa0u/qq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B539CC116D0;
-	Thu, 15 Jan 2026 17:14:20 +0000 (UTC)
+	 MIME-Version; b=p5Y6DRS6fRKlnaz8sRG/MSjfPIB9OiydI0kYAJuKcJB7XxoKlElW47FQ9dYsXXhV1zf6tfHtHM/+V8JVze2q8H73aMP9UExjEGf+0lQGV/E/hTNiFxwSkPQGZrMPy+Ky3Bn1bGq4ZmyU9BtUYbbV/o5AKWl8/H3SeM4xmLF5BcU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYLlgSXD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1AA3C116D0;
+	Thu, 15 Jan 2026 17:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497261;
-	bh=dFEyZSFlmHyQPSe59wW+e196/cdz4XWqeAfXX8OBr5g=;
+	s=korg; t=1768497275;
+	bh=aHqrOLUpm/ikbH96BmFcFIkgHlDpoQpKudoYRUzaEh4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ESa0u/qqgXkrVKjt02UaU3lIBposx/Hm2GZhk5GBOxlR0dbd1X7JuM2u85bCVRAfR
-	 4+294toSKC7TpesHmTa6B2RADD0ORDBkucKU24ajCeLHUmCGljlQ0C8UgdwekURQZ0
-	 PLH/WyPl1BLZLOCIHVe6xe6J4Y5Pe4WADwvCcUYg=
+	b=rYLlgSXDmg2ftsFGTFhiL2aoZ2Ed7N3ZZn5gk9tHz5p12H81HbhMul7Az2T+iji2C
+	 vEwD6Wb7fy6XFCtEMzStzWMJ7VQOXQb1wc/ilCl7M6rTNOqFm68yp7C3fR0JzIOWB6
+	 Ul/QqwPWCJ0oxcJhz3wGGLC8ldR4W571xsF7YYGo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com,
 	Sabrina Dubroca <sd@queasysnail.net>,
 	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 002/554] Revert "xfrm: destroy xfrm_state synchronously on net exit path"
-Date: Thu, 15 Jan 2026 17:41:08 +0100
-Message-ID: <20260115164246.322710391@linuxfoundation.org>
+Subject: [PATCH 5.15 003/554] xfrm: also call xfrm_state_delete_tunnel at destroy time for states that were never added
+Date: Thu, 15 Jan 2026 17:41:09 +0100
+Message-ID: <20260115164246.359026455@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -66,172 +67,71 @@ Content-Transfer-Encoding: 8bit
 
 From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 2a198bbec6913ae1c90ec963750003c6213668c7 ]
+[ Upstream commit 10deb69864840ccf96b00ac2ab3a2055c0c04721 ]
 
-This reverts commit f75a2804da391571563c4b6b29e7797787332673.
+In commit b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x"), I
+missed the case where state creation fails between full
+initialization (->init_state has been called) and being inserted on
+the lists.
 
-With all states (whether user or kern) removed from the hashtables
-during deletion, there's no need for synchronous destruction of
-states. xfrm6_tunnel states still need to have been destroyed (which
-will be the case when its last user is deleted (not destroyed)) so
-that xfrm6_tunnel_free_spi removes it from the per-netns hashtable
-before the netns is destroyed.
+In this situation, ->init_state has been called, so for IPcomp
+tunnels, the fallback tunnel has been created and added onto the
+lists, but the user state never gets added, because we fail before
+that. The user state doesn't go through __xfrm_state_delete, so we
+don't call xfrm_state_delete_tunnel for those states, and we end up
+leaking the FB tunnel.
 
-This has the benefit of skipping one synchronize_rcu per state (in
-__xfrm_state_destroy(sync=true)) when we exit a netns.
+There are several codepaths affected by this: the add/update paths, in
+both net/key and xfrm, and the migrate code (xfrm_migrate,
+xfrm_state_migrate). A "proper" rollback of the init_state work would
+probably be doable in the add/update code, but for migrate it gets
+more complicated as multiple states may be involved.
 
+At some point, the new (not-inserted) state will be destroyed, so call
+xfrm_state_delete_tunnel during xfrm_state_gc_destroy. Most states
+will have their fallback tunnel cleaned up during __xfrm_state_delete,
+which solves the issue that b441cf3f8c4b (and other patches before it)
+aimed at. All states (including FB tunnels) will be removed from the
+lists once xfrm_state_fini has called flush_work(&xfrm_state_gc_work).
+
+Reported-by: syzbot+999eb23467f83f9bf9bf@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=999eb23467f83f9bf9bf
+Fixes: b441cf3f8c4b ("xfrm: delete x->tunnel as we delete x")
 Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
 Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/xfrm.h      | 12 +++---------
- net/ipv6/xfrm6_tunnel.c |  2 +-
- net/key/af_key.c        |  2 +-
- net/xfrm/xfrm_state.c   | 23 +++++++++--------------
- net/xfrm/xfrm_user.c    |  2 +-
- 5 files changed, 15 insertions(+), 26 deletions(-)
+ net/xfrm/xfrm_state.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/xfrm.h b/include/net/xfrm.h
-index 3e1690e0a38de..875f7dc4706ef 100644
---- a/include/net/xfrm.h
-+++ b/include/net/xfrm.h
-@@ -785,7 +785,7 @@ static inline void xfrm_pols_put(struct xfrm_policy **pols, int npols)
- 		xfrm_pol_put(pols[i]);
- }
- 
--void __xfrm_state_destroy(struct xfrm_state *, bool);
-+void __xfrm_state_destroy(struct xfrm_state *);
- 
- static inline void __xfrm_state_put(struct xfrm_state *x)
- {
-@@ -795,13 +795,7 @@ static inline void __xfrm_state_put(struct xfrm_state *x)
- static inline void xfrm_state_put(struct xfrm_state *x)
- {
- 	if (refcount_dec_and_test(&x->refcnt))
--		__xfrm_state_destroy(x, false);
--}
--
--static inline void xfrm_state_put_sync(struct xfrm_state *x)
--{
--	if (refcount_dec_and_test(&x->refcnt))
--		__xfrm_state_destroy(x, true);
-+		__xfrm_state_destroy(x);
- }
- 
- static inline void xfrm_state_hold(struct xfrm_state *x)
-@@ -1577,7 +1571,7 @@ struct xfrmk_spdinfo {
- 
- struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq);
- int xfrm_state_delete(struct xfrm_state *x);
--int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync);
-+int xfrm_state_flush(struct net *net, u8 proto, bool task_valid);
- int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_valid);
- void xfrm_sad_getinfo(struct net *net, struct xfrmk_sadinfo *si);
- void xfrm_spd_getinfo(struct net *net, struct xfrmk_spdinfo *si);
-diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
-index 34f500a417fa6..3d811248f3129 100644
---- a/net/ipv6/xfrm6_tunnel.c
-+++ b/net/ipv6/xfrm6_tunnel.c
-@@ -330,7 +330,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
- 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
- 	unsigned int i;
- 
--	xfrm_state_flush(net, 0, false, true);
-+	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
- 	xfrm_flush_gc();
- 
- 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
-diff --git a/net/key/af_key.c b/net/key/af_key.c
-index 258fa046f440d..925fe4f89966b 100644
---- a/net/key/af_key.c
-+++ b/net/key/af_key.c
-@@ -1766,7 +1766,7 @@ static int pfkey_flush(struct sock *sk, struct sk_buff *skb, const struct sadb_m
- 	if (proto == 0)
- 		return -EINVAL;
- 
--	err = xfrm_state_flush(net, proto, true, false);
-+	err = xfrm_state_flush(net, proto, true);
- 	err2 = unicast_flush_resp(sk, hdr);
- 	if (err || err2) {
- 		if (err == -ESRCH) /* empty table - go quietly */
 diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
-index 6e410f30feba7..0e2e13c62e6b7 100644
+index 0e2e13c62e6b7..8287dc73e839d 100644
 --- a/net/xfrm/xfrm_state.c
 +++ b/net/xfrm/xfrm_state.c
-@@ -497,7 +497,7 @@ void xfrm_state_free(struct xfrm_state *x)
+@@ -497,6 +497,7 @@ void xfrm_state_free(struct xfrm_state *x)
  }
  EXPORT_SYMBOL(xfrm_state_free);
  
--static void ___xfrm_state_destroy(struct xfrm_state *x)
-+static void xfrm_state_gc_destroy(struct xfrm_state *x)
++static void xfrm_state_delete_tunnel(struct xfrm_state *x);
+ static void xfrm_state_gc_destroy(struct xfrm_state *x)
  {
  	hrtimer_cancel(&x->mtimer);
- 	del_timer_sync(&x->rtimer);
-@@ -535,7 +535,7 @@ static void xfrm_state_gc_task(struct work_struct *work)
- 	synchronize_rcu();
- 
- 	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
--		___xfrm_state_destroy(x);
-+		xfrm_state_gc_destroy(x);
- }
- 
- static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
-@@ -659,19 +659,14 @@ struct xfrm_state *xfrm_state_alloc(struct net *net)
- }
- EXPORT_SYMBOL(xfrm_state_alloc);
- 
--void __xfrm_state_destroy(struct xfrm_state *x, bool sync)
-+void __xfrm_state_destroy(struct xfrm_state *x)
- {
- 	WARN_ON(x->km.state != XFRM_STATE_DEAD);
- 
--	if (sync) {
--		synchronize_rcu();
--		___xfrm_state_destroy(x);
--	} else {
--		spin_lock_bh(&xfrm_state_gc_lock);
--		hlist_add_head(&x->gclist, &xfrm_state_gc_list);
--		spin_unlock_bh(&xfrm_state_gc_lock);
--		schedule_work(&xfrm_state_gc_work);
--	}
-+	spin_lock_bh(&xfrm_state_gc_lock);
-+	hlist_add_head(&x->gclist, &xfrm_state_gc_list);
-+	spin_unlock_bh(&xfrm_state_gc_lock);
-+	schedule_work(&xfrm_state_gc_work);
+@@ -511,6 +512,7 @@ static void xfrm_state_gc_destroy(struct xfrm_state *x)
+ 	kfree(x->preplay_esn);
+ 	if (x->type_offload)
+ 		xfrm_put_type_offload(x->type_offload);
++	xfrm_state_delete_tunnel(x);
+ 	if (x->type) {
+ 		x->type->destructor(x);
+ 		xfrm_put_type(x->type);
+@@ -670,7 +672,6 @@ void __xfrm_state_destroy(struct xfrm_state *x)
  }
  EXPORT_SYMBOL(__xfrm_state_destroy);
  
-@@ -782,7 +777,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
- }
- #endif
- 
--int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync)
-+int xfrm_state_flush(struct net *net, u8 proto, bool task_valid)
+-static void xfrm_state_delete_tunnel(struct xfrm_state *x);
+ int __xfrm_state_delete(struct xfrm_state *x)
  {
- 	int i, err = 0, cnt = 0;
- 
-@@ -2745,7 +2740,7 @@ void xfrm_state_fini(struct net *net)
- 	unsigned int sz;
- 
- 	flush_work(&net->xfrm.state_hash_work);
--	xfrm_state_flush(net, 0, false, true);
-+	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
- 	flush_work(&xfrm_state_gc_work);
- 
- 	WARN_ON(!list_empty(&net->xfrm.state_all));
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 1aa05b608ccf0..d9238e17ab427 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2210,7 +2210,7 @@ static int xfrm_flush_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	struct xfrm_usersa_flush *p = nlmsg_data(nlh);
- 	int err;
- 
--	err = xfrm_state_flush(net, p->proto, true, false);
-+	err = xfrm_state_flush(net, p->proto, true);
- 	if (err) {
- 		if (err == -ESRCH) /* empty table */
- 			return 0;
+ 	struct net *net = xs_net(x);
 -- 
 2.51.0
 
