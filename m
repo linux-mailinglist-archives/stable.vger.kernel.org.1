@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209390-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3815D27DF6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:57:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 219C5D26B33
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 93FE530267E6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3E496306BD29
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6585A3D6024;
-	Thu, 15 Jan 2026 17:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AA23C00B1;
+	Thu, 15 Jan 2026 17:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="141UVbry"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi93e65p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2895B26CE04;
-	Thu, 15 Jan 2026 17:55:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F5E3C00A5;
+	Thu, 15 Jan 2026 17:36:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499704; cv=none; b=fgr31R0caHltI53KAWaO7zmn769nwDwdm51hWxZZtMBRDT3ZtZofBtHSZJhtp5FO+tCHgYihYHQo8q2fw0Xy55tdRMXAQJsm16xIQZp6PiTEnY6WHlMb/Q9f+cWcyzaGgGz+uHQ8fGQ5LRi0bBcC1QNIKQJ27wWAK0GznE0swCg=
+	t=1768498560; cv=none; b=g408SIqeoi9ZDDT+KUJOCEo+cRS1wR6Su/UwXVJDCqUEznt6EET6VUZiqyvQfEb3srKRKQPuBSBeSZ/NB5taGA1LvZiZ4LcmMJDLkoF+GiFAgmlSdsOzKN5Z7Np8yTmrNQ9U/6C9KDB/OCA28lk+i12UA+JaS4QSfPC2HUw9TQg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499704; c=relaxed/simple;
-	bh=Mc1QKfOYQIknN87nDp3zqv12RiF+EEANfA+6B46KVXs=;
+	s=arc-20240116; t=1768498560; c=relaxed/simple;
+	bh=JIVlCRng450I/8LeGCFXaMFenfMqzO7vMCMOzZ7xuFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=Xw2RZqEiz2WESfBwpwIH/Qo/DBMnVIviP1GfJZu3kKcfvGY8qZPSE8pyQ/O+neRvSl4qqiGFX+fDZYW6dpi1mC0iJ2y3H61i8jiSa6LJHJay50PJDpIXamZK6TlnTC19yE/UGvAFEzVHI0irtsr+BhxXsKzFz2oVfFnzFP/mopc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=141UVbry; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABDC5C116D0;
-	Thu, 15 Jan 2026 17:55:03 +0000 (UTC)
+	 MIME-Version; b=SJF99b4eS2Nmv4V9UmB4D2hbroaMFb9ej7vaKM29cr5TYgyhW0QDy7IgM85LS9t5Jt2lmL1tpImsxLuTaiCd+vpKgE6MZI8iQHC44mTgxrEx+V+cKhJvy7Mf1Z5KPxhDx7hb0ba3/JVsxs9h8lTeP89uozq7MhC2ud21wDiiVvM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi93e65p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D52C16AAE;
+	Thu, 15 Jan 2026 17:35:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499704;
-	bh=Mc1QKfOYQIknN87nDp3zqv12RiF+EEANfA+6B46KVXs=;
+	s=korg; t=1768498560;
+	bh=JIVlCRng450I/8LeGCFXaMFenfMqzO7vMCMOzZ7xuFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=141UVbryavtr+4B+QESv9yI1/wjCMinQvKoZ/M6LGONDlF/Ay9boLGcxzUrLxlJnw
-	 GYgZMiWv1Q5qSmTwo+ZgKv4KvKWmEwRcDuCfYpRouQzFoHOpYjlibUSYmiVrrLk6ll
-	 1bNdGRNBlYKR+t5rZ8l/q8GTbXd1/IEp+ug2oSR4=
+	b=gi93e65pystN+GsZC9QZwrZRb8bCovgchDGGYQrIyFqDwk1Ee0wA8xl0CvSNoNBhe
+	 UyHqZ0fhvm7NySE3hS55JQYieiI2ymRYcDUFKHb/CTmjF+rLXQcIIBUtw2ATXcZriZ
+	 wk0PARzZORgSmQ8Ykuzs9UEOFgJDZ+i3Rx8TAf+w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 321/451] fbdev: tcx.c fix mem_map to correct smem_start offset
-Date: Thu, 15 Jan 2026 17:48:42 +0100
-Message-ID: <20260115164242.512280132@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 457/554] media: vpif_capture: fix section mismatch
+Date: Thu, 15 Jan 2026 17:48:43 +0100
+Message-ID: <20260115164302.820793218@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,44 +58,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Johan Hovold <johan@kernel.org>
 
-commit 35fa2b4bf96415b88d7edaa5cf8af5185d9ce76e upstream.
+[ Upstream commit 0ef841113724166c3c484d0e9ae6db1eb5634fde ]
 
-403ae52ac047 ("sparc: fix drivers/video/tcx.c warning") changed the
-physbase initializing breaking the user-space mmap, e.g. for Xorg
-entirely.
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function must not live in init.
 
-Fix fbdev mmap table so the sbus mmap helper work correctly, and
-not try to map vastly (physbase) offset memory.
+Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
+mismatch warning") incorrectly suppressed the modpost warning.
 
-Fixes: 403ae52ac047 ("sparc: fix drivers/video/tcx.c warning")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
+Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
+Cc: stable@vger.kernel.org	# 2.6.32
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/tcx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/davinci/vpif_capture.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/video/fbdev/tcx.c
-+++ b/drivers/video/fbdev/tcx.c
-@@ -436,7 +436,7 @@ static int tcx_probe(struct platform_dev
- 			j = i;
- 			break;
- 		}
--		par->mmap_map[i].poff = op->resource[j].start;
-+		par->mmap_map[i].poff = op->resource[j].start - info->fix.smem_start;
- 	}
+--- a/drivers/media/platform/davinci/vpif_capture.c
++++ b/drivers/media/platform/davinci/vpif_capture.c
+@@ -1614,7 +1614,7 @@ err_cleanup:
+  * This creates device entries by register itself to the V4L2 driver and
+  * initializes fields of each channel objects
+  */
+-static __init int vpif_probe(struct platform_device *pdev)
++static int vpif_probe(struct platform_device *pdev)
+ {
+ 	struct vpif_subdev_info *subdevdata;
+ 	struct i2c_adapter *i2c_adap;
+@@ -1817,7 +1817,7 @@ static int vpif_resume(struct device *de
  
- 	info->flags = FBINFO_DEFAULT;
+ static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
+ 
+-static __refdata struct platform_driver vpif_driver = {
++static struct platform_driver vpif_driver = {
+ 	.driver	= {
+ 		.name	= VPIF_DRIVER_NAME,
+ 		.pm	= &vpif_pm_ops,
 
 
 
