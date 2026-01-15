@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209534-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209115-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7B9E4D26DDF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3D4B3D27273
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B6C3230652ED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48DD73216490
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7164C3BC4C9;
-	Thu, 15 Jan 2026 17:42:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 261953AA1A8;
+	Thu, 15 Jan 2026 17:22:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YMSaf2Xi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1IKU5xO8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 33A3B3BC4F2;
-	Thu, 15 Jan 2026 17:42:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCBA13BF2E7;
+	Thu, 15 Jan 2026 17:22:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498970; cv=none; b=jfwAlO+0oNALibyXrF7iDg5a7kPMmNge+SpD2jZcc3utCYisJ2KBWxUVQmSWyds7SWuLzBTiQ0qiS2AH4F5rL5CpT35UkpWoVlqCRY5933HLHkNdG46zcMla6bS7ddPR5udymxXWrKN0m3X0jy5OkrAjOiGLO3f2wX+7duhx1mU=
+	t=1768497775; cv=none; b=R1q8a7RdXZJdPbEQHqpRjrSRWhUeKZvgJa+EUthVEgiA51b3Q9lsVpAzzAO3hXgp/P7uvg74HsBEZM+EqcalF+J+Dtu05j1pHv66boeGNuVVRq8RNi6VlWyopRU4j6mFLaYbWHEEo4zu0vxBbVHyLwKYGGKyzAyIgtrRboArwcc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498970; c=relaxed/simple;
-	bh=2Zv2M6NiVF1IoPak4a9N4zsR+gMKYZ2y6r8FD8usGvw=;
+	s=arc-20240116; t=1768497775; c=relaxed/simple;
+	bh=EQo+azW+sWfFB3cQ/MkhD7I1yfbN77ipxXzwWE2yvCs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4pqS9eDqPARL+Vh6KQXJVijSU51gCeY6ggNl/FgtddHkxenpUbUZCDP+UF/R1oON1UqHQ/gVltBxJgOVDnXwMAVHRkPSkNiE725mMcrOgkrFG7ikYtkMy8r2tajabhXmOpME7v7W2gbyeln6rANXGfpbvLfNblHcCK/SbIgEtg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YMSaf2Xi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 698D4C19423;
-	Thu, 15 Jan 2026 17:42:49 +0000 (UTC)
+	 MIME-Version; b=Zpy48sDGzPHfeQPZqC7PMDsTBiEnCd+DV017OXqMjwt6ivWE784nq33LJjuZkOOMvNXaDw8MWZ5oqqvr4LRaIF6Nk/Raq3OoCmkSz/c9nTyRIu5xlHQ3gY/htxkdDk/vmtz1bJBy8qnQwmB97lWW2kfzXBM5qHFz4SYx93Aw4OE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1IKU5xO8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C2CBC19423;
+	Thu, 15 Jan 2026 17:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498969;
-	bh=2Zv2M6NiVF1IoPak4a9N4zsR+gMKYZ2y6r8FD8usGvw=;
+	s=korg; t=1768497775;
+	bh=EQo+azW+sWfFB3cQ/MkhD7I1yfbN77ipxXzwWE2yvCs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YMSaf2XiTDW8kr8jteYWkwz48mNFo4+TghVWItFGBsLHis1Y1qcZFKaHq0TjDjrbm
-	 nC1iYLzrB4pYQ1s6ptqRzm2lvglLgQgov7cJb6bwUYHUKzhKYXKjCHCKSxGC7rVkn5
-	 HGM9y4qEcdkQQa4A8grvt4YwM+wOACVbnGPBDZAs=
+	b=1IKU5xO8oHsN/74CCCls/vqvNxGVMsLqA4F4/241zonUhuokWFdSYKNDyPO/cJHVR
+	 0qRA1N3fy92bbgGQmVAvVB6acrW50CbpxCeTYCIg/NTZig2klgQauuYTDN2RwlXdHj
+	 93JmhVzIgpskAh4xKgoXirAzXx3OIE1isMErKtPk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com,
-	Zheng Qixing <zhengqixing@huawei.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 063/451] nbd: defer config put in recv_work
+	stable <stable@kernel.org>,
+	Haotien Hsu <haotienh@nvidia.com>,
+	Wayne Chang <waynec@nvidia.com>
+Subject: [PATCH 5.15 198/554] usb: gadget: tegra-xudc: Always reinitialize data toggle when clear halt
 Date: Thu, 15 Jan 2026 17:44:24 +0100
-Message-ID: <20260115164233.178771790@linuxfoundation.org>
+Message-ID: <20260115164253.423672745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,107 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Qixing <zhengqixing@huawei.com>
+From: Haotien Hsu <haotienh@nvidia.com>
 
-[ Upstream commit 9517b82d8d422d426a988b213fdd45c6b417b86d ]
+commit 2585973c7f9ee31d21e5848c996fab2521fd383d upstream.
 
-There is one uaf issue in recv_work when running NBD_CLEAR_SOCK and
-NBD_CMD_RECONFIGURE:
-  nbd_genl_connect     // conf_ref=2 (connect and recv_work A)
-  nbd_open	       // conf_ref=3
-  recv_work A done     // conf_ref=2
-  NBD_CLEAR_SOCK       // conf_ref=1
-  nbd_genl_reconfigure // conf_ref=2 (trigger recv_work B)
-  close nbd	       // conf_ref=1
-  recv_work B
-    config_put         // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+The driver previously skipped handling ClearFeature(ENDPOINT_HALT)
+when the endpoint was already not halted. This prevented the
+controller from resetting the data sequence number and reinitializing
+the endpoint state.
 
-Or only running NBD_CLEAR_SOCK:
-  nbd_genl_connect   // conf_ref=2
-  nbd_open 	     // conf_ref=3
-  NBD_CLEAR_SOCK     // conf_ref=2
-  close nbd
-    nbd_release
-      config_put     // conf_ref=1
-  recv_work
-    config_put 	     // conf_ref=0
-    atomic_dec(&config->recv_threads); -> UAF
+According to USB 3.2 specification Rev. 1.1, section 9.4.5,
+ClearFeature(ENDPOINT_HALT) must always reset the data sequence and
+set the stream state machine to Disabled, regardless of whether the
+endpoint was halted.
 
-Commit 87aac3a80af5 ("nbd: call nbd_config_put() before notifying the
-waiter") moved nbd_config_put() to run before waking up the waiter in
-recv_work, in order to ensure that nbd_start_device_ioctl() would not
-be woken up while nbd->task_recv was still uncleared.
+Remove the early return so that ClearFeature(ENDPOINT_HALT) always
+resets the endpoint sequence state as required by the specification.
 
-However, in nbd_start_device_ioctl(), after being woken up it explicitly
-calls flush_workqueue() to make sure all current works are finished.
-Therefore, there is no need to move the config put ahead of the wakeup.
-
-Move nbd_config_put() to the end of recv_work, so that the reference is
-held for the whole lifetime of the worker thread. This makes sure the
-config cannot be freed while recv_work is still running, even if clear
-+ reconfigure interleave.
-
-In addition, we don't need to worry about recv_work dropping the last
-nbd_put (which causes deadlock):
-
-path A (netlink with NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=1 (trigger recv_work)
-  open nbd // nbd_refs=2
-  NBD_CLEAR_SOCK
-  close nbd
-    nbd_release
-      nbd_disconnect_and_put
-        flush_workqueue // recv_work done
-      nbd_config_put
-        nbd_put // nbd_refs=1
-      nbd_put // nbd_refs=0
-        queue_work
-
-path B (netlink without NBD_CFLAG_DESTROY_ON_DISCONNECT):
-  connect  // nbd_refs=2 (trigger recv_work)
-  open nbd // nbd_refs=3
-  NBD_CLEAR_SOCK // conf_refs=2
-  close nbd
-    nbd_release
-      nbd_config_put // conf_refs=1
-      nbd_put // nbd_refs=2
-  recv_work done // conf_refs=0, nbd_refs=1
-  rmmod // nbd_refs=0
-
-Reported-by: syzbot+56fbf4c7ddf65e95c7cc@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/6907edce.a70a0220.37351b.0014.GAE@google.com/T/
-Fixes: 87aac3a80af5 ("nbd: make the config put is called before the notifying the waiter")
-Depends-on: e2daec488c57 ("nbd: Fix hungtask when nbd_config_put")
-Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 49db427232fe ("usb: gadget: Add UDC driver for tegra XUSB device mode controller")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Haotien Hsu <haotienh@nvidia.com>
+Signed-off-by: Wayne Chang <waynec@nvidia.com>
+Link: https://patch.msgid.link/20251127033540.2287517-1-waynec@nvidia.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/nbd.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/tegra-xudc.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 92a94fa568a05..faa3f6c52f5f9 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -817,9 +817,9 @@ static void recv_work(struct work_struct *work)
- 	nbd_mark_nsock_dead(nbd, nsock, 1);
- 	mutex_unlock(&nsock->tx_lock);
+--- a/drivers/usb/gadget/udc/tegra-xudc.c
++++ b/drivers/usb/gadget/udc/tegra-xudc.c
+@@ -1542,12 +1542,6 @@ static int __tegra_xudc_ep_set_halt(stru
+ 		return -ENOTSUPP;
+ 	}
  
--	nbd_config_put(nbd);
- 	atomic_dec(&config->recv_threads);
- 	wake_up(&config->recv_wq);
-+	nbd_config_put(nbd);
- 	kfree(args);
- }
- 
--- 
-2.51.0
-
+-	if (!!(xudc_readl(xudc, EP_HALT) & BIT(ep->index)) == halt) {
+-		dev_dbg(xudc->dev, "EP %u already %s\n", ep->index,
+-			halt ? "halted" : "not halted");
+-		return 0;
+-	}
+-
+ 	if (halt) {
+ 		ep_halt(xudc, ep->index);
+ 	} else {
 
 
 
