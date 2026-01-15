@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209288-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209742-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E8700D268CD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:40 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E5FA3D2748C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BCC0430B5AB6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6543830E280F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CABE13BF2EA;
-	Thu, 15 Jan 2026 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D077B3C1FD4;
+	Thu, 15 Jan 2026 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zI5nw7TJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Glo5jcr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B3793BF31C;
-	Thu, 15 Jan 2026 17:31:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9405E3C199E;
+	Thu, 15 Jan 2026 17:52:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498269; cv=none; b=mbwVeoaRfGTvSz87kW+4RSeoj7MUo6l6QHZfJZTT50N/qbakIamjx3NdjB0QOeBS0uNcKw5xB2TvbM34OTgKazK4UKrZ5eIlV727pDJ/gw/YINzGZ3KjgC3g2VZr/VxC3LsxYBNBqrW6kKyJ4mVdfPcUFheM9n38YJau+Z5U4cg=
+	t=1768499562; cv=none; b=sNV8SjE1DTg84WHlMcmGSSimRx7EsGym7oNhP4f4Xt4l0iBquwDuB84eR7T4GJlFX6GaaJsZYggULQDLGmMX4onCNm7SjcZeRmjYjRmwmgtncYg4iwRtHoaz16VrdWhFkr3Co39EOt4W73BcjbngIY8U3qGZnDx7ZnFS+8zC5vg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498269; c=relaxed/simple;
-	bh=s8e3+/z1jESlawvG0hDZf5LtO1tMAwa2UCFLjFUx7UI=;
+	s=arc-20240116; t=1768499562; c=relaxed/simple;
+	bh=N4x2L/aZ/yqfUVZzcu1Lca0vKA+wtyoOfhOCidXtlZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jYYEgSXS5O9PP257Qj0leawd0IFjH3ofa5yyjeV4ztRypqwT5OZ8RhuiPASudfeHlAINf79TatiDVYlLNQj/YDlVitPJZsLzNcrt9pyzbpPUKmdmhkx/xu1IP7ctPfe6YA5FPpbvPFWI1Ahz3uFjLtq5SC4nrM4pUNKfTEwfl4M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zI5nw7TJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170AAC116D0;
-	Thu, 15 Jan 2026 17:31:08 +0000 (UTC)
+	 MIME-Version; b=cFaqJ3jXQLh3mktTrU2QsbTkXG90y8dc6OMhGjMoC5TcZb3/KMplh/wKOiRpSTwLPsdsTHOB4IMqr3UgbvM6ObpjFJLxmL8rOUholu7ugnV16Dwv3V7LL5td68ZgDZMueIVJX534XhTy7c9XcaCO+lPRN4nHC77NkD+L9H32Has=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Glo5jcr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216DAC116D0;
+	Thu, 15 Jan 2026 17:52:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498269;
-	bh=s8e3+/z1jESlawvG0hDZf5LtO1tMAwa2UCFLjFUx7UI=;
+	s=korg; t=1768499562;
+	bh=N4x2L/aZ/yqfUVZzcu1Lca0vKA+wtyoOfhOCidXtlZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zI5nw7TJHYOk1c7aTrvSpeFTuMmA83ivmtKnm85KmT7jH7XDE/hHXwOt1vrycgZvC
-	 K3SkNkSSEVBLm4+oogoamOw5N1zGdDTKjF9zgkwgtZjuRnjNUr5mPJpPsDjMd5Dlgz
-	 AX/+rpsIW/Z/ronooLCUd7r+HDEs7x8nhfsn3noU=
+	b=2Glo5jcrl6nCgLguMLsE26YtxVvNU1xSJijlMzuIsVfxuuPDPuCad+5HzlexZb3ps
+	 uorzLCvHnl0np74ch+1nCdLDwmjlyc72qCObeTceyrsnQTp1O+In7Rn4MAGi4XD4xN
+	 UnXlyI7VeViIHIjtbZY37aX8oWImZi6FHuU7NWLc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 5.15 372/554] ASoC: qcom: qdsp6: q6asm-dai: set 10 ms period and buffer alignment.
+	Tianchu Chen <flynnnchen@tencent.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 237/451] char: applicom: fix NULL pointer dereference in ac_ioctl
 Date: Thu, 15 Jan 2026 17:47:18 +0100
-Message-ID: <20260115164259.695206966@linuxfoundation.org>
+Message-ID: <20260115164239.467084956@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-commit 81c53b52de21b8d5a3de55ebd06b6bf188bf7efd upstream.
+commit 82d12088c297fa1cef670e1718b3d24f414c23f7 upstream.
 
-DSP expects the periods to be aligned to fragment sizes, currently
-setting up to hw constriants on periods bytes is not going to work
-correctly as we can endup with periods sizes aligned to 32 bytes however
-not aligned to fragment size.
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-Update the constriants to use fragment size, and also set at step of
-10ms for period size to accommodate DSP requirements of 10ms latency.
+In ac_ioctl, the validation of IndexCard and the check for a valid
+RamIO pointer are skipped when cmd is 6. However, the function
+unconditionally executes readb(apbs[IndexCard].RamIO + VERS) at the
+end.
 
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-4-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+If cmd is 6, IndexCard may reference a board that does not exist
+(where RamIO is NULL), leading to a NULL pointer dereference.
+
+Fix this by skipping the readb access when cmd is 6, as this
+command is a global information query and does not target a specific
+board context.
+
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20251128155323.a786fde92ebb926cbe96fcb1@linux.dev
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/applicom.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -413,13 +413,13 @@ static int q6asm_dai_open(struct snd_soc
+--- a/drivers/char/applicom.c
++++ b/drivers/char/applicom.c
+@@ -836,7 +836,10 @@ static long ac_ioctl(struct file *file,
+ 		ret = -ENOTTY;
+ 		break;
  	}
- 
- 	ret = snd_pcm_hw_constraint_step(runtime, 0,
--		SNDRV_PCM_HW_PARAM_PERIOD_BYTES, 32);
-+		SNDRV_PCM_HW_PARAM_PERIOD_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for period bytes step ret = %d\n",
- 								ret);
- 	}
- 	ret = snd_pcm_hw_constraint_step(runtime, 0,
--		SNDRV_PCM_HW_PARAM_BUFFER_BYTES, 32);
-+		SNDRV_PCM_HW_PARAM_BUFFER_SIZE, 480);
- 	if (ret < 0) {
- 		dev_err(dev, "constraint for buffer bytes step ret = %d\n",
- 								ret);
+-	Dummy = readb(apbs[IndexCard].RamIO + VERS);
++
++	if (cmd != 6)
++		Dummy = readb(apbs[IndexCard].RamIO + VERS);
++
+ 	kfree(adgl);
+ 	mutex_unlock(&ac_mutex);
+ 	return 0;
 
 
 
