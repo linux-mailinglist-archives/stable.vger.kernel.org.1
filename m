@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-208756-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209791-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C7F1D26236
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1562DD2753D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 09149302D9B8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:20 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 16D5131BBED5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B3D3BF30F;
-	Thu, 15 Jan 2026 17:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96DE2C029F;
+	Thu, 15 Jan 2026 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfkgODP8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFwJcXDG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2073BF30A;
-	Thu, 15 Jan 2026 17:05:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8EA26CE04;
+	Thu, 15 Jan 2026 17:55:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496754; cv=none; b=JFHTZVJrluvkhK0yvMMMHRArRFe9H461FpGUl6L+xfJbFU7bn7phE61ELUZ+SUwTNzcJZA+N2nDMSTAYFk86Z8Vq7EBEUs8K3+LirQB2rtWMjyqhQNs6Fh6yKHhpiD1jA8jbnz/V6CAY9ls8/rObE45t5YpeLqev1wZh/Iexj8A=
+	t=1768499701; cv=none; b=T/HYDJuZhbqBWdEmGQpvY7XzQT6DfX9JHvJ09hqnqvDScnExRqX45VKzvQNhT+V7+oFKovtXCEbb3gAkkZz5TLdQGpYDebxeh2aTYAKoCPWElbM8RESNzdJTIwShqsRNCmr8/jZZhri892lEkrh5taW9FbSbE2l68+RVwrZmiIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496754; c=relaxed/simple;
-	bh=zll4jvel5PKNAMJUvOf+3etQmqmHYCW4S++MBucOTpo=;
+	s=arc-20240116; t=1768499701; c=relaxed/simple;
+	bh=tFuGs4Q0XxOtoPoVRqsBQp2myFnAAgFiEp2/f44J+Sw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=YlpvBV4Cx31SGwmlTaTu/gVD9k1PQYRi6nTRfeLXdRd/DdYVrALmAWRJW3Q6Uw98S9z6SPZvvKOUAoAhyNzmWcH6notOFmMdWbTA6TzPnjFoRZrs5qYVkDw0pKwzpbuqY0ZdnQ7SmI5S5h95mTgGrOn+CDBPeX2tMqai3uTQJYk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfkgODP8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3E6C116D0;
-	Thu, 15 Jan 2026 17:05:53 +0000 (UTC)
+	 MIME-Version; b=IqjzNn5a0gjB3S1jB4Y7xgofByLNoaaJorn1EnEBCpgfxTXNqS/ou6j52k61oYxGvhsDKyOt9y3YXyCdTy6RVksdGUi8wBhIA2N74w+eGZsZL+aGjDKpZCQVYUPNKaI+Jxq7Ym2v6T/CGk/hPg4dO9+dLKQLoZ5DpG6xszCRhnw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFwJcXDG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED65C116D0;
+	Thu, 15 Jan 2026 17:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496754;
-	bh=zll4jvel5PKNAMJUvOf+3etQmqmHYCW4S++MBucOTpo=;
+	s=korg; t=1768499701;
+	bh=tFuGs4Q0XxOtoPoVRqsBQp2myFnAAgFiEp2/f44J+Sw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OfkgODP8qhjt203a4kqfOoCvLEWmC/3pA9gZXnV8nUWrbL4SFg1YJy3dJWuRoUcQk
-	 lMINdEVfq6uENuULIYCiWN2UQVW1ndMCBVnF5MmDHOFZE/fJG+PNHc3hmzMLxKO9q2
-	 ugRku2phf7YS21wxQrV1py3qXApwXvrG0WE1sZp0=
+	b=OFwJcXDGXMM05hC9O8+jY/mHHR4kVkGyDKEEnY/i0SIGNafrt0+0sA+BOGX33kRJm
+	 BSoF5/FMejIXs/qaVPAB/79keSbBRjwxkRPVUqqbrlBUcr8A986NzfSw4QB8t6X0Hm
+	 VOhxctwjGU59eMiysegTjuEknRjcZu1q6ccKWi1g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emerson Pinter <e@pinter.dev>,
-	Niklas Cassel <cassel@kernel.org>,
-	Damien Le Moal <dlemoal@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 106/119] ata: libata-core: Disable LPM on ST2000DM008-2FR102
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 320/451] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
 Date: Thu, 15 Jan 2026 17:48:41 +0100
-Message-ID: <20260115164155.777881584@linuxfoundation.org>
+Message-ID: <20260115164242.476538105@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Cassel <cassel@kernel.org>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit ba624ba88d9f5c3e2ace9bb6697dbeb05b2dbc44 ]
+commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
 
-According to a user report, the ST2000DM008-2FR102 has problems with LPM.
+The variables were never clamped because the return value of clamp_val()
+was not used. Fix this by assigning the clamped values, and use clamp()
+instead of clamp_val().
 
-Reported-by: Emerson Pinter <e@pinter.dev>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220693
-Signed-off-by: Niklas Cassel <cassel@kernel.org>
-Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/ata/libata-core.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/video/fbdev/pxafb.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
-index 0cb97181d10a9..802967eabc344 100644
---- a/drivers/ata/libata-core.c
-+++ b/drivers/ata/libata-core.c
-@@ -4064,6 +4064,9 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
- 	{ "ST3320[68]13AS",	"SD1[5-9]",	ATA_QUIRK_NONCQ |
- 						ATA_QUIRK_FIRMWARE_WARN },
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
+ 	var->yres = max_t(int, var->yres, MIN_YRES);
  
-+	/* Seagate disks with LPM issues */
-+	{ "ST2000DM008-2FR102",	NULL,		ATA_QUIRK_NOLPM },
-+
- 	/* drives which fail FPDMA_AA activation (some may freeze afterwards)
- 	   the ST disks also have LPM issues */
- 	{ "ST1000LM024 HN-M101MBB", NULL,	ATA_QUIRK_BROKEN_FPDMA_AA |
--- 
-2.51.0
-
+ 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
+-		clamp_val(var->hsync_len, 1, 64);
+-		clamp_val(var->vsync_len, 1, 64);
+-		clamp_val(var->left_margin,  1, 255);
+-		clamp_val(var->right_margin, 1, 255);
+-		clamp_val(var->upper_margin, 1, 255);
+-		clamp_val(var->lower_margin, 1, 255);
++		var->hsync_len = clamp(var->hsync_len, 1, 64);
++		var->vsync_len = clamp(var->vsync_len, 1, 64);
++		var->left_margin  = clamp(var->left_margin,  1, 255);
++		var->right_margin = clamp(var->right_margin, 1, 255);
++		var->upper_margin = clamp(var->upper_margin, 1, 255);
++		var->lower_margin = clamp(var->lower_margin, 1, 255);
+ 	}
+ 
+ 	/* make sure each line is aligned on word boundary */
 
 
 
