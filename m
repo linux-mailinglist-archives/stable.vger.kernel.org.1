@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208867-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40C50D263CE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6F38D26628
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 039B0304191E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:26 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A773D3157011
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B928B3BFE35;
-	Thu, 15 Jan 2026 17:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 51A733BC4DA;
+	Thu, 15 Jan 2026 17:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKHuMLnv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cIWddl0b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5AA373BF2FD;
-	Thu, 15 Jan 2026 17:11:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13BAD3BB9F4;
+	Thu, 15 Jan 2026 17:05:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497069; cv=none; b=gYIRRhwyT81bt73hGdHAJixXGaKcaL5nyAa9zvSKgq+kC6SsmvSU/Tp6pYr3k1DKrQryhO2DqNWV4kkfrIF3OEjfi/pdrH2ijtc9r/4l2d0GDDT6H9udISdrmsZQkkwgPLfUQS0aJlzs8CJT1vJwbyBg8RcgnskEzI3TXoTTaF4=
+	t=1768496711; cv=none; b=ZSUhSb9pyR6wmRQSoiIqZIOt5nDCaejxgGC0qeaLa6NgwtDi/vnXBFZvZi6dlpAuJ5WiN9Byv40a1iiqBijYZ153aek2ug3tkcAT2zN+oALs6TpFpHPRfEuQWxBZmiQ0fjc49eb+E/0rZpcTXEUXtcVQv05IGa2M4bvXjEkGISM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497069; c=relaxed/simple;
-	bh=xaF5IBVsEwVOH3ffT+X4dKxQdRuC1g6VrXz3uIDBmMQ=;
+	s=arc-20240116; t=1768496711; c=relaxed/simple;
+	bh=UQGironoa64IgdCnNHncUxVw/6NmqBVd8zPDHOQ+X48=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C03l0DY0Yat8N/1gFRp6ZdpC7UK0wZlZIJpYq0n6A1NFCQsiMoGaUCmFBqZKSocKYiS/6pbW6wcUP9OUXJFqc9uo8B2QxSj7e5aoajegheZUdNV7SHmhmpt/3UNVkiCAy9Ojyvj1E6qX0tymSWEOj3/2lyN6cKBH+r1HC+wXzM4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKHuMLnv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9DE3C116D0;
-	Thu, 15 Jan 2026 17:11:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NSfJww2i4JmNeQ6ExC5kuj8vWGawBaLv1hYtgwY+b03FU+tYo+e4Pw6MOn5ZbAzkd6T3mnBhN7luAoJSa95KuXR8Ui5p7RYyzBFeMY2FGbWeVIJTM+ugiAF3K0AMipsclE2WOdNHR67Piwc0jxYBOTeH2rh2tmTSKormMUHzSO0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cIWddl0b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 877C0C116D0;
+	Thu, 15 Jan 2026 17:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497069;
-	bh=xaF5IBVsEwVOH3ffT+X4dKxQdRuC1g6VrXz3uIDBmMQ=;
+	s=korg; t=1768496710;
+	bh=UQGironoa64IgdCnNHncUxVw/6NmqBVd8zPDHOQ+X48=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKHuMLnv96jPy7uLVzrje7VTNiwRy7XwVAObH2ftQ2PrbZQhplVQKExBLvsxsFtqa
-	 y/xxoiSu6griXuPJJ+TqoOVtWFbKmid0gUvm9EAk/ICbBeWRqCcJy6I1Wj2FHug03e
-	 1xsQ/gFuHvlA8BxIXbkIKAPTjRHakHUUrBVyU4Bw=
+	b=cIWddl0bQlg7Sb5m9gv6nqM8ISFg0LSbbAbdTpZl6zeS3SBb2qeXy3zRKZwh2v6DF
+	 kb/7ANjFI3J6lUIEUUqTurJgSxAFS73602SfjPX4r6yF8eA9Ttr1DGd6DI/YOpaA9Y
+	 g5NDT3jkYEGbZv/gZkm7EaZFtuFwbeykYYVqJhTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 26/72] smb/client: fix NT_STATUS_NO_DATA_DETECTED value
+Subject: [PATCH 6.12 101/119] bpf: Fix reference count leak in bpf_prog_test_run_xdp()
 Date: Thu, 15 Jan 2026 17:48:36 +0100
-Message-ID: <20260115164144.444331922@linuxfoundation.org>
+Message-ID: <20260115164155.599237976@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,81 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit a1237c203f1757480dc2f3b930608ee00072d3cc ]
+[ Upstream commit ec69daabe45256f98ac86c651b8ad1b2574489a7 ]
 
-This was reported by the KUnit tests in the later patches.
+syzbot is reporting
 
-See MS-ERREF 2.3.1 STATUS_NO_DATA_DETECTED. Keep it consistent with the
-value in the documentation.
+  unregister_netdevice: waiting for sit0 to become free. Usage count = 2
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+problem. A debug printk() patch found that a refcount is obtained at
+xdp_convert_md_to_buff() from bpf_prog_test_run_xdp().
+
+According to commit ec94670fcb3b ("bpf: Support specifying ingress via
+xdp_md context in BPF_PROG_TEST_RUN"), the refcount obtained by
+xdp_convert_md_to_buff() will be released by xdp_convert_buff_to_md().
+
+Therefore, we can consider that the error handling path introduced by
+commit 1c1949982524 ("bpf: introduce frags support to
+bpf_prog_test_run_xdp()") forgot to call xdp_convert_buff_to_md().
+
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Fixes: 1c1949982524 ("bpf: introduce frags support to bpf_prog_test_run_xdp()")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/r/af090e53-9d9b-4412-8acb-957733b3975c@I-love.SAKURA.ne.jp
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/nterr.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bpf/test_run.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
-index d46d42559eea2..e3a341316a711 100644
---- a/fs/smb/client/nterr.h
-+++ b/fs/smb/client/nterr.h
-@@ -41,7 +41,7 @@ extern const struct nt_err_code_struct nt_errs[];
- #define NT_STATUS_MEDIA_CHANGED    0x8000001c
- #define NT_STATUS_END_OF_MEDIA     0x8000001e
- #define NT_STATUS_MEDIA_CHECK      0x80000020
--#define NT_STATUS_NO_DATA_DETECTED 0x8000001c
-+#define NT_STATUS_NO_DATA_DETECTED 0x80000022
- #define NT_STATUS_STOPPED_ON_SYMLINK 0x8000002d
- #define NT_STATUS_DEVICE_REQUIRES_CLEANING 0x80000288
- #define NT_STATUS_DEVICE_DOOR_OPEN 0x80000289
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 84ed67a15dee0..5b732c380c223 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1299,13 +1299,13 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 
+ 			if (sinfo->nr_frags == MAX_SKB_FRAGS) {
+ 				ret = -ENOMEM;
+-				goto out;
++				goto out_put_dev;
+ 			}
+ 
+ 			page = alloc_page(GFP_KERNEL);
+ 			if (!page) {
+ 				ret = -ENOMEM;
+-				goto out;
++				goto out_put_dev;
+ 			}
+ 
+ 			frag = &sinfo->frags[sinfo->nr_frags++];
+@@ -1317,7 +1317,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 			if (copy_from_user(page_address(page), data_in + size,
+ 					   data_len)) {
+ 				ret = -EFAULT;
+-				goto out;
++				goto out_put_dev;
+ 			}
+ 			sinfo->xdp_frags_size += data_len;
+ 			size += data_len;
+@@ -1332,6 +1332,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 		ret = bpf_test_run_xdp_live(prog, &xdp, repeat, batch_size, &duration);
+ 	else
+ 		ret = bpf_test_run(prog, &xdp, repeat, &retval, &duration, true);
++out_put_dev:
+ 	/* We convert the xdp_buff back to an xdp_md before checking the return
+ 	 * code so the reference count of any held netdevice will be decremented
+ 	 * even if the test run failed.
 -- 
 2.51.0
 
