@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-209235-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209648-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A0CDD26C9B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 95B6BD26ED1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3E31232E3385
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B66E9311FD89
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:48:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ECCCB3C1994;
-	Thu, 15 Jan 2026 17:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A69EC3BFE4C;
+	Thu, 15 Jan 2026 17:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RiGCPAxM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/raIDXo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A99FE3C1975;
-	Thu, 15 Jan 2026 17:28:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 678C53BFE43;
+	Thu, 15 Jan 2026 17:48:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498118; cv=none; b=TJkfYjztkXV9n+vOzClzYqR02zYwktBi0tnmjC34QuKmjjM8+E6Il/QxnEsDMGqb7RtnhLTor5Yeg+fG5t4/GdNsVaQYKGJeOp5MeHc6/hyIlj4NgSWct/D++fFFKthVUu7oXXp9lWECewP7UDDpX/0er3uhNj+hCTbzxSQOzH0=
+	t=1768499294; cv=none; b=aBBGc0Ht4QVwc0m+Tdofx6zwmOUZ59ORK7p65oiP0eEFiCd4eSFw5XWCwmANKneRJZPA+7ErxvzO0sG11vtJDHszOM8wsf2XMRb2FAJHCa9aI9CT9wo4Eh+H5ZMoG6ARFAdB5qt7T1jLJ8O2qDtzGBEGHOK7Xo514p2RI2FUE+o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498118; c=relaxed/simple;
-	bh=HAli5doopXajCi6B5vKHZNW1QmTIJPso2NzgWrnC+G8=;
+	s=arc-20240116; t=1768499294; c=relaxed/simple;
+	bh=jThK3rzlyIuJ2OcmHomIYtfH+nEQpejBKlrXZ/M23lM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gWQWRz3IRKOHh2wquegxVjGK4qbGifuK+SdWXCCGBREmnE3Zdc2UaLrJzC8N7BqAyrXOzUsTUULb10ix9BUohLom3ysQkPDjChBLN0miC95U/h9G2ztByghrZhbLwAzc3zP3Udi0LVg2A1UywpaaWPGKgscW4ZnZ5NoPFz9cnw4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RiGCPAxM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27AF8C16AAE;
-	Thu, 15 Jan 2026 17:28:37 +0000 (UTC)
+	 MIME-Version; b=AH0hrMgqYiximGhM3qPFSxMZsiJfWRjQn8fU/NDOgI2z/fT2sgoIXPytCTvXB7Vyev1U7EN2kIBmGFCdlo17SzrhOZUCi1QrBZ/yL4YgEscOulZQ12pyUvKn0/kXXTYG0CSu1WUFhj7lSUwIennZMf4+NB6Hh+gFLCAwjkwZ0ss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/raIDXo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E076BC116D0;
+	Thu, 15 Jan 2026 17:48:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498118;
-	bh=HAli5doopXajCi6B5vKHZNW1QmTIJPso2NzgWrnC+G8=;
+	s=korg; t=1768499294;
+	bh=jThK3rzlyIuJ2OcmHomIYtfH+nEQpejBKlrXZ/M23lM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RiGCPAxMKDyx3sYoLsEPAd0WvmH2Gq1lQkR3/c4+eJRJ4xeXkqhONtS7vd9sz/ir3
-	 /NnKT+8Nm4JAfZUtKCHSB/cHPzOZwynJHtqC3E3vXdvhKeRCRItT0UVcI11ryoxcr4
-	 jkMpRFALLDZJ/PzoddI2L0QdaK2rXM54AFPGhAhs=
+	b=y/raIDXoVSLjk/+7UMTof77eH44e+rHjqIvi5CXIuPQy1lHoVBaKgCAmqlJ7PU3wn
+	 9ftl72W2EpGZnLsxVFTBt8JPWdsTbKku0JKS6qmW+iOgN2U+kNv4q9mOE2qEFWUMfy
+	 z9jED97oNpW1T/OpWqV1H7YGJ9HlwpdWUN59Kh6g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 312/554] parisc: Do not reprogram affinitiy on ASP chip
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 177/451] caif: fix integer underflow in cffrml_receive()
 Date: Thu, 15 Jan 2026 17:46:18 +0100
-Message-ID: <20260115164257.524296930@linuxfoundation.org>
+Message-ID: <20260115164237.307959733@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit dca7da244349eef4d78527cafc0bf80816b261f5 upstream.
+[ Upstream commit 8a11ff0948b5ad09b71896b7ccc850625f9878d1 ]
 
-The ASP chip is a very old variant of the GSP chip and is used e.g. in
-HP 730 workstations. When trying to reprogram the affinity it will crash
-with a HPMC as the relevant registers don't seem to be at the usual
-location.  Let's avoid the crash by checking the sversion. Also note,
-that reprogramming isn't necessary either, as the HP730 is a just a
-single-CPU machine.
+The cffrml_receive() function extracts a length field from the packet
+header and, when FCS is disabled, subtracts 2 from this length without
+validating that len >= 2.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+If an attacker sends a malicious packet with a length field of 0 or 1
+to an interface with FCS disabled, the subtraction causes an integer
+underflow.
+
+This can lead to memory exhaustion and kernel instability, potential
+information disclosure if padding contains uninitialized kernel memory.
+
+Fix this by validating that len >= 2 before performing the subtraction.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/SYBPR01MB7881511122BAFEA8212A1608AFA6A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/parisc/gsc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ net/caif/cffrml.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
---- a/drivers/parisc/gsc.c
-+++ b/drivers/parisc/gsc.c
-@@ -154,7 +154,9 @@ static int gsc_set_affinity_irq(struct i
- 	gsc_dev->eim = ((u32) gsc_dev->gsc_irq.txn_addr) | gsc_dev->gsc_irq.txn_data;
+diff --git a/net/caif/cffrml.c b/net/caif/cffrml.c
+index 6651a8dc62e04..d4d63586053ad 100644
+--- a/net/caif/cffrml.c
++++ b/net/caif/cffrml.c
+@@ -92,8 +92,15 @@ static int cffrml_receive(struct cflayer *layr, struct cfpkt *pkt)
+ 	len = le16_to_cpu(tmp);
  
- 	/* switch IRQ's for devices below LASI/WAX to other CPU */
--	gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
-+	/* ASP chip (svers 0x70) does not support reprogramming */
-+	if (gsc_dev->gsc->id.sversion != 0x70)
-+		gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
+ 	/* Subtract for FCS on length if FCS is not used. */
+-	if (!this->dofcs)
++	if (!this->dofcs) {
++		if (len < 2) {
++			++cffrml_rcv_error;
++			pr_err("Invalid frame length (%d)\n", len);
++			cfpkt_destroy(pkt);
++			return -EPROTO;
++		}
+ 		len -= 2;
++	}
  
- 	irq_data_update_effective_affinity(d, &tmask);
- 
+ 	if (cfpkt_setlen(pkt, len) < 0) {
+ 		++cffrml_rcv_error;
+-- 
+2.51.0
+
 
 
 
