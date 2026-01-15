@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-209824-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208905-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A053ED27476
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C8BD2687B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4EE2730438F0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A48E431EDDF7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E143D668F;
-	Thu, 15 Jan 2026 17:56:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 953F03C0087;
+	Thu, 15 Jan 2026 17:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bM6mq+FX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZISGNMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFE93D3016;
-	Thu, 15 Jan 2026 17:56:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 585EA3BFE5F;
+	Thu, 15 Jan 2026 17:12:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499794; cv=none; b=O6BRuKB29c26cx5LNZDZddGZP1tztr29RWbBI+By6NEmstrGp4Q1pUqnKk2VS5yMgB6M0iDdF3b0HOwIO9c5u2/JuTuWGP6hHnGs1UuN5SEruS3X803qFRF9viPemgXYAsjjBlnK0AGOQReJA9n7wGAMc8p2notzgMsIo7of48c=
+	t=1768497178; cv=none; b=to141n4bA9lF+YjeSMZFzQIRXq3nIjaAqdJY7TlJmWb8aZAggkNV722Q+YsqY5Cs1B8/8c6vvK5SJazBm33PRnpzNCwS5okTl/vi3HELaFJVgikQEhbvgfLoGdqUnv5jHLmrqy4o76fSi1eMOwi9yX+v766R4n7McfX7bUT8SGU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499794; c=relaxed/simple;
-	bh=jwEVhWNMFXKdx4nDxcDSIUiujNbxg+O/42nw9+TF12A=;
+	s=arc-20240116; t=1768497178; c=relaxed/simple;
+	bh=3Hj+0cvG/B6DfnJMAQsAnJ3Vy4lY+MIGNcRJ06qKOlU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KlCx5p4Y9h5VLxJr41+51jrkw0PESJ75JyQVnh8jN0SjSgg1P8oWRA8CxF3ZSY1i+6d1HBonNQ7E1vb34ybAa+2tgChHaVJHaZyAujsbIqRf8L5JF+JzEDXjt/vZ4sQ5m3SkcJCqvfeKDnETXiGXvMUo+cCbD79Tf1W2oIIfhbs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bM6mq+FX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C37C116D0;
-	Thu, 15 Jan 2026 17:56:34 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Y/Dmb9NP4QbIkPgSLUQ/zOPrnO6hzfVlL0EvxZRFhLbFVmveigdr5dEOIhukTf2ClEM3u2o/DXRzms9UC+LCS1pF3NB4GWr8cyPHNTiwKDWAZcyOy3QqNSuKHk6R6CdNyBCemrEG+6M1o6UZv8Ib9xN/FdKxIAD9MTlng2JBe0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZISGNMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DABCBC19422;
+	Thu, 15 Jan 2026 17:12:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499794;
-	bh=jwEVhWNMFXKdx4nDxcDSIUiujNbxg+O/42nw9+TF12A=;
+	s=korg; t=1768497178;
+	bh=3Hj+0cvG/B6DfnJMAQsAnJ3Vy4lY+MIGNcRJ06qKOlU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bM6mq+FXcl9ZYZqf9PtoKVYPgiyMFHrovbwYNK9cKYR8WbjKBBTxfpyzvJHmxud8L
-	 s2Uo7bHLJnKUX3/CtDnel0KZFaulnJqSVlLU5rIObxXYpO+E6oucQCtLw1XiKo8wc8
-	 pLa3Exj/OcKyIscYvMjw5v+3QV6nMUYDziPsrwHQ=
+	b=LZISGNMjqZO9f1/Ejaqyy79LMkCrHN0A+dBE9SrAFXA92fS69Khhj1F5hhyr3VrRJ
+	 0PGnGQBAIVmMA2bp6e9mx5p7wSwFPvBlr6rxFIub3qNKcgWusBnHXZQJYv3Zfi5COo
+	 VH9wotgPmoBI6fI7b7Je7KaJrnORuMzVKuSy2r1w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kees Cook <keescook@chromium.org>,
-	Saeed Mahameed <saeedm@nvidia.com>,
-	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Subject: [PATCH 5.10 353/451] net/mlx5e: Avoid field-overflowing memcpy()
+	Yinhao Hu <dddddd@hust.edu.cn>,
+	Kaiyan Mei <M202472210@hust.edu.cn>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Amery Hung <ameryhung@gmail.com>,
+	Alexei Starovoitov <ast@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 64/72] bpf, test_run: Subtract size of xdp_frame from allowed metadata size
 Date: Thu, 15 Jan 2026 17:49:14 +0100
-Message-ID: <20260115164243.670664354@linuxfoundation.org>
+Message-ID: <20260115164145.824600065@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,141 +61,92 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-commit ad5185735f7dab342fdd0dd41044da4c9ccfef67 upstream.
+[ Upstream commit e558cca217790286e799a8baacd1610bda31b261 ]
 
-In preparation for FORTIFY_SOURCE performing compile-time and run-time
-field bounds checking for memcpy(), memmove(), and memset(), avoid
-intentionally writing across neighboring fields.
+The xdp_frame structure takes up part of the XDP frame headroom,
+limiting the size of the metadata. However, in bpf_test_run, we don't
+take this into account, which makes it possible for userspace to supply
+a metadata size that is too large (taking up the entire headroom).
 
-Use flexible arrays instead of zero-element arrays (which look like they
-are always overflowing) and split the cross-field memcpy() into two halves
-that can be appropriately bounds-checked by the compiler.
+If userspace supplies such a large metadata size in live packet mode,
+the xdp_update_frame_from_buff() call in xdp_test_run_init_page() call
+will fail, after which packet transmission proceeds with an
+uninitialised frame structure, leading to the usual Bad Stuff.
 
-We were doing:
+The commit in the Fixes tag fixed a related bug where the second check
+in xdp_update_frame_from_buff() could fail, but did not add any
+additional constraints on the metadata size. Complete the fix by adding
+an additional check on the metadata size. Reorder the checks slightly to
+make the logic clearer and add a comment.
 
-	#define ETH_HLEN  14
-	#define VLAN_HLEN  4
-	...
-	#define MLX5E_XDP_MIN_INLINE (ETH_HLEN + VLAN_HLEN)
-	...
-        struct mlx5e_tx_wqe      *wqe  = mlx5_wq_cyc_get_wqe(wq, pi);
-	...
-        struct mlx5_wqe_eth_seg  *eseg = &wqe->eth;
-        struct mlx5_wqe_data_seg *dseg = wqe->data;
-	...
-	memcpy(eseg->inline_hdr.start, xdptxd->data, MLX5E_XDP_MIN_INLINE);
-
-target is wqe->eth.inline_hdr.start (which the compiler sees as being
-2 bytes in size), but copying 18, intending to write across start
-(really vlan_tci, 2 bytes). The remaining 16 bytes get written into
-wqe->data[0], covering byte_count (4 bytes), lkey (4 bytes), and addr
-(8 bytes).
-
-struct mlx5e_tx_wqe {
-        struct mlx5_wqe_ctrl_seg   ctrl;                 /*     0    16 */
-        struct mlx5_wqe_eth_seg    eth;                  /*    16    16 */
-        struct mlx5_wqe_data_seg   data[];               /*    32     0 */
-
-        /* size: 32, cachelines: 1, members: 3 */
-        /* last cacheline: 32 bytes */
-};
-
-struct mlx5_wqe_eth_seg {
-        u8                         swp_outer_l4_offset;  /*     0     1 */
-        u8                         swp_outer_l3_offset;  /*     1     1 */
-        u8                         swp_inner_l4_offset;  /*     2     1 */
-        u8                         swp_inner_l3_offset;  /*     3     1 */
-        u8                         cs_flags;             /*     4     1 */
-        u8                         swp_flags;            /*     5     1 */
-        __be16                     mss;                  /*     6     2 */
-        __be32                     flow_table_metadata;  /*     8     4 */
-        union {
-                struct {
-                        __be16     sz;                   /*    12     2 */
-                        u8         start[2];             /*    14     2 */
-                } inline_hdr;                            /*    12     4 */
-                struct {
-                        __be16     type;                 /*    12     2 */
-                        __be16     vlan_tci;             /*    14     2 */
-                } insert;                                /*    12     4 */
-                __be32             trailer;              /*    12     4 */
-        };                                               /*    12     4 */
-
-        /* size: 16, cachelines: 1, members: 9 */
-        /* last cacheline: 16 bytes */
-};
-
-struct mlx5_wqe_data_seg {
-        __be32                     byte_count;           /*     0     4 */
-        __be32                     lkey;                 /*     4     4 */
-        __be64                     addr;                 /*     8     8 */
-
-        /* size: 16, cachelines: 1, members: 3 */
-        /* last cacheline: 16 bytes */
-};
-
-So, split the memcpy() so the compiler can reason about the buffer
-sizes.
-
-"pahole" shows no size nor member offset changes to struct mlx5e_tx_wqe
-nor struct mlx5e_umr_wqe. "objdump -d" shows no meaningful object
-code changes (i.e. only source line number induced differences and
-optimizations).
-
-Fixes: b5503b994ed5 ("net/mlx5e: XDP TX forwarding support")
-Signed-off-by: Kees Cook <keescook@chromium.org>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Brennan : Applied to v5.10, convert inline_mtts to flex array (not in union) ]
-Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/fa2be179-bad7-4ee3-8668-4903d1853461@hust.edu.cn
+Fixes: b6f1f780b393 ("bpf, test_run: Fix packet size check for live packet mode")
+Reported-by: Yinhao Hu <dddddd@hust.edu.cn>
+Reported-by: Kaiyan Mei <M202472210@hust.edu.cn>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Amery Hung <ameryhung@gmail.com>
+Link: https://lore.kernel.org/r/20260105114747.1358750-1-toke@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/en.h     |    4 ++--
- drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |    4 +++-
- 2 files changed, 5 insertions(+), 3 deletions(-)
+ net/bpf/test_run.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
---- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
-@@ -199,7 +199,7 @@ static inline int mlx5e_get_max_num_chan
- struct mlx5e_tx_wqe {
- 	struct mlx5_wqe_ctrl_seg ctrl;
- 	struct mlx5_wqe_eth_seg  eth;
--	struct mlx5_wqe_data_seg data[0];
-+	struct mlx5_wqe_data_seg data[];
- };
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 2bc83525986f3..88fdcfb2fdd30 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1304,8 +1304,6 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 			batch_size = NAPI_POLL_WEIGHT;
+ 		else if (batch_size > TEST_XDP_MAX_BATCH)
+ 			return -E2BIG;
+-
+-		headroom += sizeof(struct xdp_page_head);
+ 	} else if (batch_size) {
+ 		return -EINVAL;
+ 	}
+@@ -1318,16 +1316,26 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 		/* There can't be user provided data before the meta data */
+ 		if (ctx->data_meta || ctx->data_end > kattr->test.data_size_in ||
+ 		    ctx->data > ctx->data_end ||
+-		    unlikely(xdp_metalen_invalid(ctx->data)) ||
+ 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
+ 			goto free_ctx;
+-		/* Meta data is allocated from the headroom */
+-		headroom -= ctx->data;
  
- struct mlx5e_rx_wqe_ll {
-@@ -215,7 +215,7 @@ struct mlx5e_umr_wqe {
- 	struct mlx5_wqe_ctrl_seg       ctrl;
- 	struct mlx5_wqe_umr_ctrl_seg   uctrl;
- 	struct mlx5_mkey_seg           mkc;
--	struct mlx5_mtt                inline_mtts[0];
-+	struct mlx5_mtt                inline_mtts[];
- };
+ 		meta_sz = ctx->data;
++		if (xdp_metalen_invalid(meta_sz) || meta_sz > headroom - sizeof(struct xdp_frame))
++			goto free_ctx;
++
++		/* Meta data is allocated from the headroom */
++		headroom -= meta_sz;
+ 		linear_sz = ctx->data_end;
+ 	}
  
- extern const char mlx5e_self_tests[][ETH_GSTRING_LEN];
---- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
-@@ -341,8 +341,10 @@ mlx5e_xmit_xdp_frame(struct mlx5e_xdpsq
++	/* The xdp_page_head structure takes up space in each page, limiting the
++         * size of the packet data; add the extra size to headroom here to make
++         * sure it's accounted in the length checks below, but not in the
++         * metadata size check above.
++         */
++        if (do_live)
++		headroom += sizeof(struct xdp_page_head);
++
+ 	max_linear_sz = PAGE_SIZE - headroom - tailroom;
+ 	linear_sz = min_t(u32, linear_sz, max_linear_sz);
  
- 	/* copy the inline part if required */
- 	if (sq->min_inline_mode != MLX5_INLINE_MODE_NONE) {
--		memcpy(eseg->inline_hdr.start, xdptxd->data, MLX5E_XDP_MIN_INLINE);
-+		memcpy(eseg->inline_hdr.start, xdptxd->data, sizeof(eseg->inline_hdr.start));
- 		eseg->inline_hdr.sz = cpu_to_be16(MLX5E_XDP_MIN_INLINE);
-+		memcpy(dseg, xdptxd->data + sizeof(eseg->inline_hdr.start),
-+		       MLX5E_XDP_MIN_INLINE - sizeof(eseg->inline_hdr.start));
- 		dma_len  -= MLX5E_XDP_MIN_INLINE;
- 		dma_addr += MLX5E_XDP_MIN_INLINE;
- 		dseg++;
+-- 
+2.51.0
+
 
 
 
