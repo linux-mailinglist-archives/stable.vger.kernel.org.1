@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209780-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209327-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B093FD27530
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1EBED26A94
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB53E30A13D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ECFF030A5233
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571DE3D524C;
-	Thu, 15 Jan 2026 17:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EE35E22D9F7;
+	Thu, 15 Jan 2026 17:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODCn4z7l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lYGZH02A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4EA3AA1B2;
-	Thu, 15 Jan 2026 17:54:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF17D3BF31F;
+	Thu, 15 Jan 2026 17:33:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499670; cv=none; b=XSXDWl9D8EMXLEiLS8uwqOMhQGSbahn9xPc4lIldAoB0FZtcpYwG60sFLMj8aF/kt5glPmUVlGgW9Pxd8rlE7XBZbzCxrUq3TjMF3KiySXu9BYIyERjj8wPzrjo9NW2Wx9hgvpAs9HSwT4kZNuCaB8YLtHkoSiHXWZyKlYFkoY8=
+	t=1768498380; cv=none; b=WivWXLE97CfU71jRX+ozN66EbdoOOp0lt5bSJBZGMT3/MApoq85B1nrenaBqnuwpH8bS8CPYX/a+c8kfC2K086zrQQ63KET4TugsZO30ykEhScHZhbFnnSGrnt6Khsvzq7dQt+SZqW3KDEiPG7EYQh9PSstcWBHxRuOrS3u5ILs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499670; c=relaxed/simple;
-	bh=POrHtl3x8f8nBbA63Od0Y78Xb3flaCv5tbqjuPsxE7M=;
+	s=arc-20240116; t=1768498380; c=relaxed/simple;
+	bh=+/UIItA0ftOjDgAC93EBRljNofbHN3O56MQc55wn8hM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JEazGe5KRVP10bl39ChLxELN5U6EZrlKwp8nT8Ud7l+D3q2TqPQhxIA267OMvr/8cnH4Re18Z1ZQ6Ott0tod+btjDNH6/FJ0UTOgrLIwmmLuLG7/4BTYYDoGbsPR8Z3tEZpOtKa6VjWnSNozJeVpCKqjFLk0BWijtmrSiRkwh6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODCn4z7l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97624C116D0;
-	Thu, 15 Jan 2026 17:54:29 +0000 (UTC)
+	 MIME-Version; b=dTWIeDwudX7e4BX+AZMCYrGG+YJlWy7xQ1CCQoeWLTPM2zcCxUcKDjYMwlrwDxFxfDg8xpm2jVamXqtg/bhW6isuNyH/13K6K8w8hcAX7lYUMLMk93s2Xq7Bb5Ql0ygT15jU4jsSC6s9U9OhIsiRkfPzz6QQgaKTIU0GKGQXzGo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lYGZH02A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E47ABC16AAE;
+	Thu, 15 Jan 2026 17:32:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499670;
-	bh=POrHtl3x8f8nBbA63Od0Y78Xb3flaCv5tbqjuPsxE7M=;
+	s=korg; t=1768498380;
+	bh=+/UIItA0ftOjDgAC93EBRljNofbHN3O56MQc55wn8hM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ODCn4z7l0ErmVsR4wCgJu0vt9EXOUhfwj42NzhMPwpId9JRu20zVqFTf7P+nk5n5b
-	 InarvO4h5j+JSo4kaVnj3WFIHI09sESsMr1koJhCQ8K05BI9HC23nDt+83bpGRHe+l
-	 GjCj8THLXtcqZDC4Fla08ONDh3CoJsd8tV2n5JAQ=
+	b=lYGZH02AWQCa56r6SlN8M5N264aR2+jciro+HcIwqIGdIMmlvlel0ROQNb+a5Yr2N
+	 /h76XjSz6mc4tty7PRLcKLOW8ZAHFyrai7nvHGRXs3W8ajRQyO6BT5t4p2qMFbLMNe
+	 evSNrhGu4uPQHFKUYdFqCJFrXZzJf80DcSVVr2wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Adrian Moreno <amorenoz@redhat.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Eelco Chaudron <echaudro@redhat.com>,
-	Aaron Conole <aconole@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 276/451] net: openvswitch: Avoid needlessly taking the RTNL on vport destroy
+	Lyude Paul <lyude@redhat.com>,
+	Dave Airlie <airlied@redhat.com>
+Subject: [PATCH 5.15 411/554] drm/nouveau/dispnv50: Dont call drm_atomic_get_crtc_state() in prepare_fb
 Date: Thu, 15 Jan 2026 17:47:57 +0100
-Message-ID: <20260115164240.869129821@linuxfoundation.org>
+Message-ID: <20260115164301.111153303@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,73 +57,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Toke Høiland-Jørgensen <toke@redhat.com>
+From: Lyude Paul <lyude@redhat.com>
 
-[ Upstream commit 5498227676303e3ffa9a3a46214af96bc3e81314 ]
+commit 560271e10b2c86e95ea35afa9e79822e4847f07a upstream.
 
-The openvswitch teardown code will immediately call
-ovs_netdev_detach_dev() in response to a NETDEV_UNREGISTER notification.
-It will then start the dp_notify_work workqueue, which will later end up
-calling the vport destroy() callback. This callback takes the RTNL to do
-another ovs_netdev_detach_port(), which in this case is unnecessary.
-This causes extra pressure on the RTNL, in some cases leading to
-"unregister_netdevice: waiting for XX to become free" warnings on
-teardown.
+Since we recently started warning about uses of this function after the
+atomic check phase completes, we've started getting warnings about this in
+nouveau. It appears a misplaced drm_atomic_get_crtc_state() call has been
+hiding in our .prepare_fb callback for a while.
 
-We can straight-forwardly avoid the extra RTNL lock acquisition by
-checking the device flags before taking the lock, and skip the locking
-altogether if the IFF_OVS_DATAPATH flag has already been unset.
+So, fix this by adding a new nv50_head_atom_get_new() function and use that
+in our .prepare_fb callback instead.
 
-Fixes: b07c26511e94 ("openvswitch: fix vport-netdev unregister")
-Tested-by: Adrian Moreno <amorenoz@redhat.com>
-Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Acked-by: Eelco Chaudron <echaudro@redhat.com>
-Acked-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251211115006.228876-1-toke@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Lyude Paul <lyude@redhat.com>
+Reviewed-by: Dave Airlie <airlied@redhat.com>
+Fixes: 1590700d94ac ("drm/nouveau/kms/nv50-: split each resource type into their own source files")
+Cc: <stable@vger.kernel.org> # v4.18+
+Link: https://patch.msgid.link/20251211190256.396742-1-lyude@redhat.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/openvswitch/vport-netdev.c | 17 +++++++++++++----
- 1 file changed, 13 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/nouveau/dispnv50/atom.h |   13 +++++++++++++
+ drivers/gpu/drm/nouveau/dispnv50/wndw.c |    2 +-
+ 2 files changed, 14 insertions(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
-index 57d6436e6f6a..72cf13bbf3dd 100644
---- a/net/openvswitch/vport-netdev.c
-+++ b/net/openvswitch/vport-netdev.c
-@@ -155,10 +155,19 @@ void ovs_netdev_detach_dev(struct vport *vport)
- 
- static void netdev_destroy(struct vport *vport)
+--- a/drivers/gpu/drm/nouveau/dispnv50/atom.h
++++ b/drivers/gpu/drm/nouveau/dispnv50/atom.h
+@@ -152,8 +152,21 @@ static inline struct nv50_head_atom *
+ nv50_head_atom_get(struct drm_atomic_state *state, struct drm_crtc *crtc)
  {
--	rtnl_lock();
--	if (netif_is_ovs_port(vport->dev))
--		ovs_netdev_detach_dev(vport);
--	rtnl_unlock();
-+	/* When called from ovs_db_notify_wq() after a dp_device_event(), the
-+	 * port has already been detached, so we can avoid taking the RTNL by
-+	 * checking this first.
-+	 */
-+	if (netif_is_ovs_port(vport->dev)) {
-+		rtnl_lock();
-+		/* Check again while holding the lock to ensure we don't race
-+		 * with the netdev notifier and detach twice.
-+		 */
-+		if (netif_is_ovs_port(vport->dev))
-+			ovs_netdev_detach_dev(vport);
-+		rtnl_unlock();
-+	}
- 
- 	call_rcu(&vport->rcu, vport_netdev_free);
+ 	struct drm_crtc_state *statec = drm_atomic_get_crtc_state(state, crtc);
++
+ 	if (IS_ERR(statec))
+ 		return (void *)statec;
++
++	return nv50_head_atom(statec);
++}
++
++static inline struct nv50_head_atom *
++nv50_head_atom_get_new(struct drm_atomic_state *state, struct drm_crtc *crtc)
++{
++	struct drm_crtc_state *statec = drm_atomic_get_new_crtc_state(state, crtc);
++
++	if (!statec)
++		return NULL;
++
+ 	return nv50_head_atom(statec);
  }
--- 
-2.51.0
-
+ 
+--- a/drivers/gpu/drm/nouveau/dispnv50/wndw.c
++++ b/drivers/gpu/drm/nouveau/dispnv50/wndw.c
+@@ -565,7 +565,7 @@ nv50_wndw_prepare_fb(struct drm_plane *p
+ 	asyw->image.offset[0] = nvbo->offset;
+ 
+ 	if (wndw->func->prepare) {
+-		asyh = nv50_head_atom_get(asyw->state.state, asyw->state.crtc);
++		asyh = nv50_head_atom_get_new(asyw->state.state, asyw->state.crtc);
+ 		if (IS_ERR(asyh))
+ 			return PTR_ERR(asyh);
+ 
 
 
 
