@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-208562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208668-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E770D25F35
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58A7FD26099
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8B3B23015DFD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D74853060315
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25C23396B75;
-	Thu, 15 Jan 2026 16:56:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9C429C338;
+	Thu, 15 Jan 2026 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuVB5qej"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1qVVXGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3FA0274B43;
-	Thu, 15 Jan 2026 16:56:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA123BC4DA;
+	Thu, 15 Jan 2026 17:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496201; cv=none; b=S8jLNGlx7D07iMg8ooT5eW7zSrsYhhl8cbU0tFvj9jJerlvf4ZjrEMjxXBSVPkk6N1z6/2UQDl/CCZVfntDxTeiN+9o8YVuybZ7aOxaT0r7o0xqCNWYU0f9fGTBZ48ftswP/uUqWpbYnpn1QIwhy3QEK+giY63wduMY1VBKSQWU=
+	t=1768496506; cv=none; b=XiClCJTkM1J7Nqj3/jP0N9Tp2HJYHmbpIxG6lDI0Z3HyoWBsEfK/kFWj7ZUeQ2uDNWDAgT+tN/nfo7bkWdAviyUgsPTB7QyP5N5TNNUYz4tlrOMw4Jx4GQpq0e4ckgsKCt9fppfjdJoUtmcEIy3Zyoy8t6RqfogWT/40Tcau0u4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496201; c=relaxed/simple;
-	bh=JlQ5G4nAuSX/AFYA4fX6yE/qMWSi6uDA3BByNnBKHuA=;
+	s=arc-20240116; t=1768496506; c=relaxed/simple;
+	bh=skkte8LD5koAr5YkBOz2UyYgnRv5lv6VaBzpcfnYLVs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIAzTrMtw0priKTuAUPp60rsBzpwf+qoSqsGTNCKk2VLjW1a5EWz03n9Zzz1Nysz/2DiIhZmtu5RFYyn2demOQmr9owE0YeQHWmSeIrSjkDyFWWRgGDpzmj7E9O7YqxZATARwqpXUAQINYS+DF5EMI+ewc8oqLSfM4m90SYO2O0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuVB5qej; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 521A3C16AAE;
-	Thu, 15 Jan 2026 16:56:41 +0000 (UTC)
+	 MIME-Version; b=LOFK48bR8dGHHbbVSZu/nCkvnRy0SyruvsY4cx53dMBf6rEmencu735qeFaaKIL/O0E3DSSjy5pk14shsUcDq2lTTMYqTVsA2CB5oBOWlWcSk5cfOLcxw3cTMNgFf1oFpyNiS5X9b9ajwXcqtVJrsrohUJW7fy6VXiRMTxnE8b8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1qVVXGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AACC116D0;
+	Thu, 15 Jan 2026 17:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496201;
-	bh=JlQ5G4nAuSX/AFYA4fX6yE/qMWSi6uDA3BByNnBKHuA=;
+	s=korg; t=1768496506;
+	bh=skkte8LD5koAr5YkBOz2UyYgnRv5lv6VaBzpcfnYLVs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vuVB5qejO8cpPD1U3Ib0VJN3hvKlcIFxLbWLeoNEvHtXY4PFt5wcHPrvYAJmOXxqV
-	 OrjMMMnKlJ56KrUp6hsd3+puPUHDEq9B4rXqqgFuD05fbVZubcsnSiZhb/SgU+1l4d
-	 tL1Bs8JpANBP0cmz+kvH+DYolHOSbtJi7jlEcpcM=
+	b=S1qVVXGmTxezTXGxR9ZzDuLY18z4P7VmGW2ZlfFZqxfMhoFt4Qq11WAXb1A4+BCrs
+	 LV7NudwpsDA8I92hHrJ9UN5N0Zym4SQuXhMf180iowf9zuXWHaWOBaC9i5dtOmymOM
+	 HYNRYOAz4tRfzLZqdflkm9q0U6ZAuRLcZzJFE74E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Liang <xiliang@redhat.com>,
-	David Arinzon <darinzon@amazon.com>,
-	Jiri Pirko <jiri@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 106/181] net/ena: fix missing lock when update devlink params
-Date: Thu, 15 Jan 2026 17:47:23 +0100
-Message-ID: <20260115164206.145865545@linuxfoundation.org>
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Xin Wang <x.wang@intel.com>
+Subject: [PATCH 6.12 029/119] drm/xe: make xe_gt_idle_disable_c6() handle the forcewake internally
+Date: Thu, 15 Jan 2026 17:47:24 +0100
+Message-ID: <20260115164153.013741232@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +59,101 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Liang <xiliang@redhat.com>
+From: Xin Wang <x.wang@intel.com>
 
-[ Upstream commit 8da901ffe497a53fa4ecc3ceed0e6d771586f88e ]
+commit 1313351e71181a4818afeb8dfe202e4162091ef6 upstream.
 
-Fix assert lock warning while calling devl_param_driverinit_value_set()
-in ena.
+Move forcewake_get() into xe_gt_idle_enable_c6() to streamline the
+code and make it easier to use.
 
-WARNING: net/devlink/core.c:261 at devl_assert_locked+0x62/0x90, CPU#0: kworker/0:0/9
-CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not tainted 6.19.0-rc2+ #1 PREEMPT(lazy)
-Hardware name: Amazon EC2 m8i-flex.4xlarge/, BIOS 1.0 10/16/2017
-Workqueue: events work_for_cpu_fn
-RIP: 0010:devl_assert_locked+0x62/0x90
-
-Call Trace:
- <TASK>
- devl_param_driverinit_value_set+0x15/0x1c0
- ena_devlink_alloc+0x18c/0x220 [ena]
- ? __pfx_ena_devlink_alloc+0x10/0x10 [ena]
- ? trace_hardirqs_on+0x18/0x140
- ? lockdep_hardirqs_on+0x8c/0x130
- ? __raw_spin_unlock_irqrestore+0x5d/0x80
- ? __raw_spin_unlock_irqrestore+0x46/0x80
- ? devm_ioremap_wc+0x9a/0xd0
- ena_probe+0x4d2/0x1b20 [ena]
- ? __lock_acquire+0x56a/0xbd0
- ? __pfx_ena_probe+0x10/0x10 [ena]
- ? local_clock+0x15/0x30
- ? __lock_release.isra.0+0x1c9/0x340
- ? mark_held_locks+0x40/0x70
- ? lockdep_hardirqs_on_prepare.part.0+0x92/0x170
- ? trace_hardirqs_on+0x18/0x140
- ? lockdep_hardirqs_on+0x8c/0x130
- ? __raw_spin_unlock_irqrestore+0x5d/0x80
- ? __raw_spin_unlock_irqrestore+0x46/0x80
- ? __pfx_ena_probe+0x10/0x10 [ena]
- ......
- </TASK>
-
-Fixes: 816b52624cf6 ("net: ena: Control PHC enable through devlink")
-Signed-off-by: Frank Liang <xiliang@redhat.com>
-Reviewed-by: David Arinzon <darinzon@amazon.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Link: https://patch.msgid.link/20251231145808.6103-1-xiliang@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Xin Wang <x.wang@intel.com>
+Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Link: https://lore.kernel.org/r/20250827000633.1369890-2-x.wang@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amazon/ena/ena_devlink.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/xe/xe_gt_idle.c |   20 +++++++++++++-------
+ drivers/gpu/drm/xe/xe_gt_idle.h |    2 +-
+ drivers/gpu/drm/xe/xe_guc_pc.c  |   10 +---------
+ 3 files changed, 15 insertions(+), 17 deletions(-)
 
-diff --git a/drivers/net/ethernet/amazon/ena/ena_devlink.c b/drivers/net/ethernet/amazon/ena/ena_devlink.c
-index ac81c24016dd4..4772185e669d2 100644
---- a/drivers/net/ethernet/amazon/ena/ena_devlink.c
-+++ b/drivers/net/ethernet/amazon/ena/ena_devlink.c
-@@ -53,10 +53,12 @@ void ena_devlink_disable_phc_param(struct devlink *devlink)
+--- a/drivers/gpu/drm/xe/xe_gt_idle.c
++++ b/drivers/gpu/drm/xe/xe_gt_idle.c
+@@ -204,11 +204,8 @@ static void gt_idle_fini(void *arg)
+ 
+ 	xe_gt_idle_disable_pg(gt);
+ 
+-	if (gt_to_xe(gt)->info.skip_guc_pc) {
+-		XE_WARN_ON(xe_force_wake_get(gt_to_fw(gt), XE_FW_GT));
++	if (gt_to_xe(gt)->info.skip_guc_pc)
+ 		xe_gt_idle_disable_c6(gt);
+-		xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
+-	}
+ 
+ 	sysfs_remove_files(kobj, gt_idle_attrs);
+ 	kobject_put(kobj);
+@@ -266,14 +263,23 @@ void xe_gt_idle_enable_c6(struct xe_gt *
+ 			RC_CTL_HW_ENABLE | RC_CTL_TO_MODE | RC_CTL_RC6_ENABLE);
+ }
+ 
+-void xe_gt_idle_disable_c6(struct xe_gt *gt)
++int xe_gt_idle_disable_c6(struct xe_gt *gt)
  {
- 	union devlink_param_value value;
++	unsigned int fw_ref;
++
+ 	xe_device_assert_mem_access(gt_to_xe(gt));
+-	xe_force_wake_assert_held(gt_to_fw(gt), XE_FW_GT);
  
-+	devl_lock(devlink);
- 	value.vbool = false;
- 	devl_param_driverinit_value_set(devlink,
- 					DEVLINK_PARAM_GENERIC_ID_ENABLE_PHC,
- 					value);
-+	devl_unlock(devlink);
+ 	if (IS_SRIOV_VF(gt_to_xe(gt)))
+-		return;
++		return 0;
++
++	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
++	if (!fw_ref)
++		return -ETIMEDOUT;
+ 
+ 	xe_mmio_write32(gt, RC_CONTROL, 0);
+ 	xe_mmio_write32(gt, RC_STATE, 0);
++
++	xe_force_wake_put(gt_to_fw(gt), fw_ref);
++
++	return 0;
+ }
+--- a/drivers/gpu/drm/xe/xe_gt_idle.h
++++ b/drivers/gpu/drm/xe/xe_gt_idle.h
+@@ -12,7 +12,7 @@ struct xe_gt;
+ 
+ int xe_gt_idle_init(struct xe_gt_idle *gtidle);
+ void xe_gt_idle_enable_c6(struct xe_gt *gt);
+-void xe_gt_idle_disable_c6(struct xe_gt *gt);
++int xe_gt_idle_disable_c6(struct xe_gt *gt);
+ void xe_gt_idle_enable_pg(struct xe_gt *gt);
+ void xe_gt_idle_disable_pg(struct xe_gt *gt);
+ 
+--- a/drivers/gpu/drm/xe/xe_guc_pc.c
++++ b/drivers/gpu/drm/xe/xe_guc_pc.c
+@@ -1008,15 +1008,7 @@ int xe_guc_pc_gucrc_disable(struct xe_gu
+ 	if (ret)
+ 		return ret;
+ 
+-	ret = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
+-	if (ret)
+-		return ret;
+-
+-	xe_gt_idle_disable_c6(gt);
+-
+-	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
+-
+-	return 0;
++	return xe_gt_idle_disable_c6(gt);
  }
  
- static void ena_devlink_port_register(struct devlink *devlink)
-@@ -145,10 +147,12 @@ static int ena_devlink_configure_params(struct devlink *devlink)
- 		return rc;
- 	}
- 
-+	devl_lock(devlink);
- 	value.vbool = ena_phc_is_enabled(adapter);
- 	devl_param_driverinit_value_set(devlink,
- 					DEVLINK_PARAM_GENERIC_ID_ENABLE_PHC,
- 					value);
-+	devl_unlock(devlink);
- 
- 	return 0;
- }
--- 
-2.51.0
-
+ /**
 
 
 
