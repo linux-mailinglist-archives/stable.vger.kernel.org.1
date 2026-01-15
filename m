@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209355-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208722-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACB73D2759C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:20:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23453D2617E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C29FC31F497F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D45203029807
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EDFE43BC4D7;
-	Thu, 15 Jan 2026 17:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FA7E3BC4DA;
+	Thu, 15 Jan 2026 17:04:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yU9OhOFe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VKFqJNIc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B16EE34216C;
-	Thu, 15 Jan 2026 17:34:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 232843ACEFE;
+	Thu, 15 Jan 2026 17:04:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498459; cv=none; b=XGe35LvJNvJDGswvak8y6HjiC25ylxW+GSWuAsrdEEQIMn3FiKWQ/rQqwqXRrZTOsVSXl9XJ3F8fy6h065pTJr/4HylqA8bMPPXBCufNTzWoesF53yRFzEmQrN8BZtTsTwKzXHhwVGTe0/fyYaYxd5nOxd6C+RQWS62VNOgmx2o=
+	t=1768496660; cv=none; b=XAbFMn0x1z5oLrVINRZRu6kW6NTAYK+T9VjwU3cwbYGguYg0t8MErXXNc6kXY2nnponm606RncjIOD9AyvaDk5hS92lcD1KWG7iHZJWYGsnX1juJPQSsqseBOY/OOjqDS3n5XqWbzFAnqFgNPWofIoGEARsTVG9hJFoFlEysZxM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498459; c=relaxed/simple;
-	bh=6EGmBIUOZ7j8/1aAi7kLBi7RUXM2ITN2o7AUATFJ2wE=;
+	s=arc-20240116; t=1768496660; c=relaxed/simple;
+	bh=aUOC/sZX061TmKfycLbFd6H73bA4N1wRQG83gec4ZxM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ose10vO5EZ3wF03o4oNg0K6ACPADVs3/mT1+ihuKbxxk7Qm1uUeRgSySx8wdFeJBgUOTuAk6M7LtJpwj0TetkaO9tpI6WZGIj2iAF5C4fW3+dCXCnD3KL4aiQ+9lKsD4Pudg7n3cwKuTQs7fsOBTSo7QJ8HpxGWmzJoIdVSfvV0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yU9OhOFe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C40DC16AAE;
-	Thu, 15 Jan 2026 17:34:19 +0000 (UTC)
+	 MIME-Version; b=lGPtVU7/O2G4Ad9SdO9X7v+N+OqMRlnaLi7+5IYchYrr2uC+Zq+4tAAwMS+cvvnLGKx4BCm+XeZpq8T/AGCwUs/RXFcRDxXl/VkUbXst+MtXFygRF08h0tXJmVv/Whcyqs1V8mi3BEwNlfsDGje4Zes/wdenhRHAMTf1+U3lHZ4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VKFqJNIc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64039C116D0;
+	Thu, 15 Jan 2026 17:04:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498459;
-	bh=6EGmBIUOZ7j8/1aAi7kLBi7RUXM2ITN2o7AUATFJ2wE=;
+	s=korg; t=1768496659;
+	bh=aUOC/sZX061TmKfycLbFd6H73bA4N1wRQG83gec4ZxM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yU9OhOFeswFa51J3PUdK/WX7E0mT1HHH7g9P6KOB5cGRYhqX4iioIedlOtLcIKEVH
-	 g7Iy95P4QAFsVyiOP9mPYQk87pwWKYdiqIg9y42BKvrge+UFJk3Jd3mh44Rx11KwOH
-	 77f/47snLIW2pCbxay0iPtHxPKZLx5BUG/EWlIvY=
+	b=VKFqJNIcfacQYpdmOWCE1ebgqCAXab+27NAgZ+MuWn9tCO/HAsTm6mpeuYIaZxsXP
+	 hFhnO8JtOUOZ5iEifD7SVyoVgGpron771fbyf509gepwrEiBrPt6tLNlMl2fwmCiMi
+	 DLzEKSxXnAml2uFDZZ/qNINpqDn1ZNV5YKLih03g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chao Gao <chao.gao@intel.com>,
-	Dongli Zhang <dongli.zhang@oracle.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 439/554] KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
+Subject: [PATCH 6.12 090/119] btrfs: fix error handling of submit_uncompressed_range()
 Date: Thu, 15 Jan 2026 17:48:25 +0100
-Message-ID: <20260115164302.154897538@linuxfoundation.org>
+Message-ID: <20260115164155.198626604@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dongli Zhang <dongli.zhang@oracle.com>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 29763138830916f46daaa50e83e7f4f907a3236b ]
+[ Upstream commit a7858d5c36cae52eaf3048490b05c0b19086073b ]
 
-If an APICv status updated was pended while L2 was active, immediately
-refresh vmcs01's controls instead of pending KVM_REQ_APICV_UPDATE as
-kvm_vcpu_update_apicv() only calls into vendor code if a change is
-necessary.
+[BUG]
+If we failed to compress the range, or cannot reserve a large enough
+data extent (e.g. too fragmented free space), we will fall back to
+submit_uncompressed_range().
 
-E.g. if APICv is inhibited, and then activated while L2 is running:
+But inside submit_uncompressed_range(), run_delalloc_cow() can also fail
+due to -ENOSPC or any other error.
 
-  kvm_vcpu_update_apicv()
+In that case there are 3 bugs in the error handling:
+
+1) Double freeing for the same ordered extent
+   This can lead to crash due to ordered extent double accounting
+
+2) Start/end writeback without updating the subpage writeback bitmap
+
+3) Unlock the folio without clear the subpage lock bitmap
+
+Both bugs 2) and 3) will crash the kernel if the btrfs block size is
+smaller than folio size, as the next time the folio gets writeback/lock
+updates, subpage will find the bitmap already have the range set,
+triggering an ASSERT().
+
+[CAUSE]
+Bug 1) happens in the following call chain:
+
+  submit_uncompressed_range()
+  |- run_delalloc_cow()
+  |  |- cow_file_range()
+  |     |- btrfs_reserve_extent()
+  |        Failed with -ENOSPC or whatever error
   |
-  -> __kvm_vcpu_update_apicv()
-     |
-     -> apic->apicv_active = true
-      |
-      -> vmx_refresh_apicv_exec_ctrl()
-         |
-         -> vmx->nested.update_vmcs01_apicv_status = true
-          |
-          -> return
-
-Then L2 exits to L1:
-
-  __nested_vmx_vmexit()
+  |- btrfs_clean_up_ordered_extents()
+  |  |- btrfs_mark_ordered_io_finished()
+  |     Which cleans all the ordered extents in the async_extent range.
   |
-  -> kvm_make_request(KVM_REQ_APICV_UPDATE)
+  |- btrfs_mark_ordered_io_finished()
+     Which cleans the folio range.
 
-  vcpu_enter_guest(): KVM_REQ_APICV_UPDATE
-  -> kvm_vcpu_update_apicv()
-     |
-     -> __kvm_vcpu_update_apicv()
-        |
-        -> return // because if (apic->apicv_active == activate)
+The finished ordered extents may not be immediately removed from the
+ordered io tree, as they are removed inside a work queue.
 
-Reported-by: Chao Gao <chao.gao@intel.com>
-Closes: https://lore.kernel.org/all/aQ2jmnN8wUYVEawF@intel.com
-Fixes: 7c69661e225c ("KVM: nVMX: Defer APICv updates while L2 is active until L1 is active")
-Cc: stable@vger.kernel.org
-Signed-off-by: Dongli Zhang <dongli.zhang@oracle.com>
-[sean: write changelog]
-Link: https://patch.msgid.link/20251205231913.441872-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ exported vmx_refresh_apicv_exec_ctrl() and added declaration in vmx.h ]
+So the second btrfs_mark_ordered_io_finished() may find the finished but
+not-yet-removed ordered extents, and double free them.
+
+Furthermore, the second btrfs_mark_ordered_io_finished() is not subpage
+compatible, as it uses fixed folio_pos() with PAGE_SIZE, which can cover
+other ordered extents.
+
+Bugs 2) and 3) are more straightforward, btrfs just calls folio_unlock(),
+folio_start_writeback() and folio_end_writeback(), other than the helpers
+which handle subpage cases.
+
+[FIX]
+For bug 1) since the first btrfs_cleanup_ordered_extents() call is
+handling the whole range, we should not do the second
+btrfs_mark_ordered_io_finished() call.
+
+And for the first btrfs_cleanup_ordered_extents(), we no longer need to
+pass the @locked_page parameter, as we are already in the async extent
+context, thus will never rely on the error handling inside
+btrfs_run_delalloc_range().
+
+So just let the btrfs_clean_up_ordered_extents() handle every folio
+equally.
+
+For bug 2) we should not even call
+folio_start_writeback()/folio_end_writeback() anymore.
+As the error handling protocol, cow_file_range() should clear
+dirty flag and start/finish the writeback for the whole range passed in.
+
+For bug 3) just change the folio_unlock() to btrfs_folio_end_lock()
+helper.
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: e9e3b22ddfa7 ("btrfs: fix beyond-EOF write handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/vmx/nested.c |    2 +-
- arch/x86/kvm/vmx/vmx.c    |    2 +-
- arch/x86/kvm/vmx/vmx.h    |    1 +
- 3 files changed, 3 insertions(+), 2 deletions(-)
+ fs/btrfs/inode.c |   17 ++++-------------
+ 1 file changed, 4 insertions(+), 13 deletions(-)
 
---- a/arch/x86/kvm/vmx/nested.c
-+++ b/arch/x86/kvm/vmx/nested.c
-@@ -4684,7 +4684,7 @@ void nested_vmx_vmexit(struct kvm_vcpu *
- 
- 	if (vmx->nested.update_vmcs01_apicv_status) {
- 		vmx->nested.update_vmcs01_apicv_status = false;
--		kvm_make_request(KVM_REQ_APICV_UPDATE, vcpu);
-+		vmx_refresh_apicv_exec_ctrl(vcpu);
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1159,19 +1159,10 @@ static void submit_uncompressed_range(st
+ 			       &wbc, false);
+ 	wbc_detach_inode(&wbc);
+ 	if (ret < 0) {
+-		btrfs_cleanup_ordered_extents(inode, locked_folio,
+-					      start, end - start + 1);
+-		if (locked_folio) {
+-			const u64 page_start = folio_pos(locked_folio);
+-
+-			folio_start_writeback(locked_folio);
+-			folio_end_writeback(locked_folio);
+-			btrfs_mark_ordered_io_finished(inode, locked_folio,
+-						       page_start, PAGE_SIZE,
+-						       !ret);
+-			mapping_set_error(locked_folio->mapping, ret);
+-			folio_unlock(locked_folio);
+-		}
++		btrfs_cleanup_ordered_extents(inode, NULL, start, end - start + 1);
++		if (locked_folio)
++			btrfs_folio_end_lock(inode->root->fs_info, locked_folio,
++					     start, async_extent->ram_size);
  	}
- 
- 	if ((vm_exit_reason != -1) &&
---- a/arch/x86/kvm/vmx/vmx.c
-+++ b/arch/x86/kvm/vmx/vmx.c
-@@ -4217,7 +4217,7 @@ static u32 vmx_vmexit_ctrl(void)
- 		~(VM_EXIT_LOAD_IA32_PERF_GLOBAL_CTRL | VM_EXIT_LOAD_IA32_EFER);
  }
  
--static void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
-+void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu)
- {
- 	struct vcpu_vmx *vmx = to_vmx(vcpu);
- 
---- a/arch/x86/kvm/vmx/vmx.h
-+++ b/arch/x86/kvm/vmx/vmx.h
-@@ -386,6 +386,7 @@ void __vmx_set_segment(struct kvm_vcpu *
- u64 construct_eptp(struct kvm_vcpu *vcpu, hpa_t root_hpa, int root_level);
- 
- bool vmx_guest_inject_ac(struct kvm_vcpu *vcpu);
-+void vmx_refresh_apicv_exec_ctrl(struct kvm_vcpu *vcpu);
- void vmx_update_exception_bitmap(struct kvm_vcpu *vcpu);
- bool vmx_nmi_blocked(struct kvm_vcpu *vcpu);
- bool __vmx_interrupt_blocked(struct kvm_vcpu *vcpu);
 
 
 
