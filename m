@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209852-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0A69D26316
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:14:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2DD36D2760F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id A35BC3017008
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E9A173109256
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E54C2F619D;
-	Thu, 15 Jan 2026 17:09:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C48213D7D0F;
+	Thu, 15 Jan 2026 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2SrKGevK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zuAmIgLs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E61891A08AF;
-	Thu, 15 Jan 2026 17:09:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 873D73D3315;
+	Thu, 15 Jan 2026 17:57:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496981; cv=none; b=pFOWLhhoGiiVhv92xcvaCmJ6xGxwXJEf2r/ETDClTD5KurIQvkpaX9b3qpg+gQzHFpzcwGC0T1u46ubyB68LUjWtrxbSjaYlrYMELifGnzSEjQWr8LT0tacEZnwevl2mOGaCni8enR8GdAovs1TpcpPqRs8KTK3avfKXq62hwro=
+	t=1768499874; cv=none; b=Pyzlb80hJjRmBBQ927yWaS5BcahcQFy2s8WXDRYx/3PXFWpN2aavvl0II57yPTNlnHcMoMe5ypJQ3jOpDupe3S6684K6K5OGzJRMQlEsl/ZvIUwMbz9VQthVN+BibqJ1sv3ET3EsSjraTcJF8pp/+smx6vzBpVlQjU5on8japC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496981; c=relaxed/simple;
-	bh=cxN7eSLPb8EYAEB8wL4BjPhJJQhxYvCMw/EKRF7zNqE=;
+	s=arc-20240116; t=1768499874; c=relaxed/simple;
+	bh=DfecdWbEGGD3s3ruAWvQt71l+mFSEpTyIkjdWZ2KBlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WKOjFBiszmXX76FtyGMMcqqEz9rcQ6VuYZWf8OSgYUbai/vXxxVrPjYKWtbs9c/OVtYgpnr85bhITpOOoLStS3fIhQUWZCrJjj9x2GTf9/z8ua/GqxeOTCYZ4gJnxJjTTA7DDydWBpvdiLi3pTgFNoEQcJzNf/WbI3LfYoRSTJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2SrKGevK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70A5BC116D0;
-	Thu, 15 Jan 2026 17:09:40 +0000 (UTC)
+	 MIME-Version; b=cBOqI/NI840BHzi/ZLJ6yjtDD3CnUn2uekQqn1QcgnahhdPAhVnd+2mcfKSQKH/DWKgoJg/kgEfDooz96/OMQLL44f20ICZng3ZeNaaijbaUkf0/6ls62Ld2jG+uyptxiZH0vYKCSumDGYQBf/SCVcabOb8MLS7kO08AoBR3sY8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zuAmIgLs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 148ECC116D0;
+	Thu, 15 Jan 2026 17:57:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496980;
-	bh=cxN7eSLPb8EYAEB8wL4BjPhJJQhxYvCMw/EKRF7zNqE=;
+	s=korg; t=1768499874;
+	bh=DfecdWbEGGD3s3ruAWvQt71l+mFSEpTyIkjdWZ2KBlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2SrKGevKRv7joo/6QXZNiB9t4WsaQ1N4NtWXe5AibvCkVtuq6HC2Sc078UtakHPlp
-	 YDBeW8kM40+Ho7vVeDabNS7u8BBNV3KZS7W0gGfo35zZSOCUEcSUAVG3y8aEBGuJd6
-	 RK2uulW6dUls+iItkNMchMue5VX8OgHYUm6vDKLg=
+	b=zuAmIgLsnROqciPdF6/w8CN1RN0gCs718wg49HCEu7WW68qYKhh4lt6ZpuN5dA2QL
+	 DeHUTMIqPSyBMcViTuDdlsF9vwfhMtK/fUxbtuYAQZuTCLrkHkbrc5rlnI4zcD97lb
+	 62Dw6UU91gxH0qFwgWFtEgr833zPGof0gvuJXqAA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Elantsev <elantsew.andrew@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 84/88] ASoC: amd: yc: Add quirk for Honor MagicBook X16 2025
+	Niklas Neronin <niklas.neronin@linux.intel.com>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 346/451] usb: xhci: move link chain bit quirk checks into one helper function.
 Date: Thu, 15 Jan 2026 17:49:07 +0100
-Message-ID: <20260115164149.356104656@linuxfoundation.org>
+Message-ID: <20260115164243.412573100@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Elantsev <elantsew.andrew@gmail.com>
+From: Niklas Neronin <niklas.neronin@linux.intel.com>
 
-[ Upstream commit e2cb8ef0372665854fca6fa7b30b20dd35acffeb ]
+commit 7476a2215c07703db5e95efaa3fc5b9f957b9417 upstream.
 
-Add a DMI quirk for the Honor MagicBook X16 2025 laptop
-fixing the issue where the internal microphone was
-not detected.
+Older 0.95 xHCI hosts and some other specific newer hosts require the
+chain bit to be set for Link TRBs even if the link TRB is not in the
+middle of a transfer descriptor (TD).
 
-Signed-off-by: Andrew Elantsev <elantsew.andrew@gmail.com>
-Link: https://patch.msgid.link/20251210203800.142822-1-elantsew.andrew@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+move the checks for all those cases  into one xhci_link_chain_quirk()
+function to clean up and avoid code duplication.
+
+No functional changes.
+
+[skip renaming chain_links flag, reword commit message -Mathias]
+
+Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://lore.kernel.org/r/20240626124835.1023046-10-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[Shivani: Modified to apply on v5.10.y-v6.1.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/usb/host/xhci-mem.c  |   10 ++--------
+ drivers/usb/host/xhci-ring.c |    8 ++------
+ drivers/usb/host/xhci.h      |    7 +++++--
+ 3 files changed, 9 insertions(+), 16 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index 24919e68b3468..54dac6bfc9d18 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -654,6 +654,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HONOR"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "GOH-X"),
-+		}
-+	},
- 	{}
- };
+--- a/drivers/usb/host/xhci-mem.c
++++ b/drivers/usb/host/xhci-mem.c
+@@ -133,10 +133,7 @@ static void xhci_link_rings(struct xhci_
+ 	if (!ring || !first || !last)
+ 		return;
  
--- 
-2.51.0
-
+-	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
+-	chain_links = !!(xhci_link_trb_quirk(xhci) ||
+-			 (ring->type == TYPE_ISOC &&
+-			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
++	chain_links = xhci_link_chain_quirk(xhci, ring->type);
+ 
+ 	next = ring->enq_seg->next;
+ 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
+@@ -326,10 +323,7 @@ static int xhci_alloc_segments_for_ring(
+ 	struct xhci_segment *prev;
+ 	bool chain_links;
+ 
+-	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
+-	chain_links = !!(xhci_link_trb_quirk(xhci) ||
+-			 (type == TYPE_ISOC &&
+-			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
++	chain_links = xhci_link_chain_quirk(xhci, type);
+ 
+ 	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, flags);
+ 	if (!prev)
+--- a/drivers/usb/host/xhci-ring.c
++++ b/drivers/usb/host/xhci-ring.c
+@@ -230,9 +230,7 @@ static void inc_enq(struct xhci_hcd *xhc
+ 		 * AMD 0.96 host, carry over the chain bit of the previous TRB
+ 		 * (which may mean the chain bit is cleared).
+ 		 */
+-		if (!(ring->type == TYPE_ISOC &&
+-		      (xhci->quirks & XHCI_AMD_0x96_HOST)) &&
+-		    !xhci_link_trb_quirk(xhci)) {
++		if (!xhci_link_chain_quirk(xhci, ring->type)) {
+ 			next->link.control &= cpu_to_le32(~TRB_CHAIN);
+ 			next->link.control |= cpu_to_le32(chain);
+ 		}
+@@ -3138,9 +3136,7 @@ static int prepare_ring(struct xhci_hcd
+ 		/* If we're not dealing with 0.95 hardware or isoc rings
+ 		 * on AMD 0.96 host, clear the chain bit.
+ 		 */
+-		if (!xhci_link_trb_quirk(xhci) &&
+-		    !(ep_ring->type == TYPE_ISOC &&
+-		      (xhci->quirks & XHCI_AMD_0x96_HOST)))
++		if (!xhci_link_chain_quirk(xhci, ep_ring->type))
+ 			ep_ring->enqueue->link.control &=
+ 				cpu_to_le32(~TRB_CHAIN);
+ 		else
+--- a/drivers/usb/host/xhci.h
++++ b/drivers/usb/host/xhci.h
+@@ -1998,9 +1998,12 @@ static inline void xhci_write_64(struct
+ 	lo_hi_writeq(val, regs);
+ }
+ 
+-static inline int xhci_link_trb_quirk(struct xhci_hcd *xhci)
++
++/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
++static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
+ {
+-	return xhci->quirks & XHCI_LINK_TRB_QUIRK;
++	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
++	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
+ }
+ 
+ /* xHCI debugging */
 
 
 
