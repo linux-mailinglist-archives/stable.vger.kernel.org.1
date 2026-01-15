@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209306-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209683-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80191D270CA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:02:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 192D3D272F0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 016EA3051DD6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C306B30F6E33
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032B53C1967;
-	Thu, 15 Jan 2026 17:32:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6078F3D2FEC;
+	Thu, 15 Jan 2026 17:49:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pylJejsc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y6Jzgd4W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FF73AA1A8;
-	Thu, 15 Jan 2026 17:32:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F33DA3BFE34;
+	Thu, 15 Jan 2026 17:49:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498320; cv=none; b=sT7RsLf2x4LBbKPJC6Qxyq/F1Q1Ow85XRdJ5BRKgEJXLVwFmltYPgIOaB4avWe2In5xbLx904WDgOZk0UqI7sC/SWBMi8ntt6vgL3R/tT16nlPNFQmG+aXqwhX0xwTUrWZV5CNW9370EP+q+a3DEwi9xy/kg5JgtOVKBx2jU/4U=
+	t=1768499394; cv=none; b=XfSjU9DICSCjOLg3FFmq3CWHUnr4T1ROKeXIaInNSb/aokkvXvre/bJJoEtovxIQNWmBXj1dRIAKKVmXGaNXNIwivXNZTf2wQOzp4c7wBXFLRNiH6dajF23t/SUyvY/BH/ooFry5cd3RhYqA9vIs0v1k3kkmgTax/JchKhBjRw0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498320; c=relaxed/simple;
-	bh=YTD+/xT2ku3rOzj6BOKtWUqM3pXfzMzR+5yLequa/eQ=;
+	s=arc-20240116; t=1768499394; c=relaxed/simple;
+	bh=TSquhKlAcBp7MADidqjemx+6zILKs4M0NDWWCgP+PBU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=NDTmhXRw49PYho/UOXl208SOPPceI/vM/OFMVImbotZs2jX97g4CVX+3qC4in6i/8rqJsyL6Qyoy98tXA3WbE7D9AbnOFImGwKNGXpyGbwCDCXpaMZJwJW0zH7Nb2+vR5eiD5fbWHsvkdQdyY75j3RlLI/y4Cg/GHkXw2IiPeZc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pylJejsc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372A3C116D0;
-	Thu, 15 Jan 2026 17:32:00 +0000 (UTC)
+	 MIME-Version; b=Cod/ztwhgslNF/AkDtD9eTrKnqoIrkzXn2/xI4KMgZ64J0GFs7624pyUtv/JNh4NYToVaunsD85kC3J3uK8e4MByrz4lMGQ5jhSBIND9PBCSRMz8kl9zKKkHrNcM8DgnR3CguJKB3xN2a5e3hPhuOwIeMOP77FnBjxh60TxNZ+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y6Jzgd4W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81156C116D0;
+	Thu, 15 Jan 2026 17:49:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498320;
-	bh=YTD+/xT2ku3rOzj6BOKtWUqM3pXfzMzR+5yLequa/eQ=;
+	s=korg; t=1768499393;
+	bh=TSquhKlAcBp7MADidqjemx+6zILKs4M0NDWWCgP+PBU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pylJejsc7C4FS+0ZoGXPE0HYIZ81At7jPZvAl0qQQj/nsBg6g3BFrVAhOJbNzS5WZ
-	 NEnQ16d7xwQCctzUSvIRcPqT04arcOWYJCh03uK7Ytsk1t4K/AyqsGUCTxH2bGl5Yi
-	 KVgMicKIDITa6Qg8HNM07T1Jbpiqmz4Oo8OhoZqU=
+	b=Y6Jzgd4W1DfV0UyeiAmHMX011RAIpII+lipK/y74xNhHxhI3evOUZmPLc1hJ5sruz
+	 f+EiJu0PFakql4mBAgCZp+Vjo7Z20DNOeEti4rHRZldueLgEy20zdXbIGEKZkvaTzA
+	 uiSEv5hIk0+EeMxH+sLPhUDhPQu6zRj3pKRNRIMw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Encrow Thorne <jyc0019@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 347/554] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
+Subject: [PATCH 5.10 212/451] reset: fix BIT macro reference
 Date: Thu, 15 Jan 2026 17:46:53 +0100
-Message-ID: <20260115164258.788623160@linuxfoundation.org>
+Message-ID: <20260115164238.569421501@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +59,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Encrow Thorne <jyc0019@gmail.com>
 
-[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
+[ Upstream commit f3d8b64ee46c9b4b0b82b1a4642027728bac95b8 ]
 
-The ibm_rtl_init() function searches for the signature but has a pointer
-arithmetic error. The loop counter suggests searching at 4-byte intervals
-but the implementation only advances by 1 byte per iteration.
+RESET_CONTROL_FLAGS_BIT_* macros use BIT(), but reset.h does not
+include bits.h. This causes compilation errors when including
+reset.h standalone.
 
-Fix by properly advancing the pointer by sizeof(unsigned int) bytes
-each iteration.
+Include bits.h to make reset.h self-contained.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Suggested-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Encrow Thorne <jyc0019@gmail.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ibm_rtl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/reset.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
-index 5fc665f7d9b3..10cab7bdfe15 100644
---- a/drivers/platform/x86/ibm_rtl.c
-+++ b/drivers/platform/x86/ibm_rtl.c
-@@ -262,7 +262,7 @@ static int __init ibm_rtl_init(void) {
- 	/* search for the _RTL_ signature at the start of the table */
- 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
- 		struct ibm_rtl_table __iomem * tmp;
--		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
-+		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
- 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
- 			phys_addr_t addr;
- 			unsigned int plen;
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 05aa9f440f48..f27026f52104 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_RESET_H_
+ #define _LINUX_RESET_H_
+ 
++#include <linux/bits.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/types.h>
 -- 
 2.51.0
 
