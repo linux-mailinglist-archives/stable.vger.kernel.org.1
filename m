@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209309-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0D399D27562
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A9B08D27473
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4DC6B32F4985
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D2CF5315D87C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 60A143BFE4B;
-	Thu, 15 Jan 2026 17:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 926773D4109;
+	Thu, 15 Jan 2026 17:52:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w+6jB/R6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SNlzwm2b"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 243F63AA1A8;
-	Thu, 15 Jan 2026 17:32:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 351B63D3D0F;
+	Thu, 15 Jan 2026 17:52:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498329; cv=none; b=VXlV/Jz8BVfrwk+wexwOxPSuveiY0s7djjLB9+hkmoQ1rUgXPLSaanmTOh6OEYkPxAepA7wIGdYoFQSh3IWpZRIKKuDfKpXuG/ZsAcsALMjs1hOaP/STXwsWyuHZ0z36VF5nuNA0EsLQHTpfQS3DelQkzGNVVMrYGtWtSZ+hyEE=
+	t=1768499531; cv=none; b=p54z/zgGnlg2+Obzq9kHejzVpJR8F0x51BdOchXc0RLP4nZOvbIt+hLZq8Ih+jFtuMv7MCs6Np9YT23HSVUqshTGOfenihyZ0NdxuFwkRcfoFQk36sL4RuIeUmG+yjt+6cqwiy3swBeKLnY6zjedanJRUnra2xgQ3TXTpJlE2To=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498329; c=relaxed/simple;
-	bh=QmIg3geB0T9QNr27x5iTPzHthGePoSXM8TWshG1iqQI=;
+	s=arc-20240116; t=1768499531; c=relaxed/simple;
+	bh=M3jtCnV2zXpxkdo4PLXbX1hm/L+n3UricRcILvEb3XI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=LRI1+mOYucN2dVQkV3enHF0XIYTT0QSTsE4A7kSmp5lhTOC8n9uHRV97Ey8MybXTZtvDHiXTbnv7pM3Irvd1MCpx2IFbbGdnP58tNFydAeh1eQznZLcT545vv0sftyRjsYi15OZX4Ff4NwwmyaVuZubOuSzx8K9BRo5ic1bf7nQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w+6jB/R6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3B8AC116D0;
-	Thu, 15 Jan 2026 17:32:08 +0000 (UTC)
+	 MIME-Version; b=Gsf8GUr/PJJ/9I2ENGNXSJAt6RzQ5lHkF2wfSqujs3d8Ce5Js4e+t0mGZP2dGLxC++Vtm+cdiea/VVsvuAOmk414wm+Kpq/JvWU+AJVQ8ef6HIDIePMA+mcN8cJjwL89uDH1De7EXHc1fR8MfL+9pP8dVHazvfgCHQ2zbonWjqU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SNlzwm2b; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51A06C116D0;
+	Thu, 15 Jan 2026 17:52:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498329;
-	bh=QmIg3geB0T9QNr27x5iTPzHthGePoSXM8TWshG1iqQI=;
+	s=korg; t=1768499530;
+	bh=M3jtCnV2zXpxkdo4PLXbX1hm/L+n3UricRcILvEb3XI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w+6jB/R69rTkDgRyWv/P/9SlwY/oW5B+lmK+Fq7uDR4BT3tael7iaaN2lIeKo7GN9
-	 tU5OxRxi+JzhEE18fJEyJHqUfLlZGjF0pI2c/FOTq3ulHsC6+aR6Sj0VNuP1IknZ0g
-	 2JG4t94tEDel2uYo92G6DIHZRwmUiiwPeM2sw3ug=
+	b=SNlzwm2biVzPRi/kprgPa7AGvzd5e/H2yys1JVfZd6hasNy4rPrz0h3PBaiAhCl1s
+	 HoL9AHmVU9di3CWFd3LJ5YgLCDoILcYTUgCs17LnVj7Z5q1UjAVdIp+PRkDrmcjbuZ
+	 vvDh6qv23GSy8Frq0YYMq/BXxpFhXscSzG4kjKBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 394/554] fbdev: tcx.c fix mem_map to correct smem_start offset
+	Ed Tsai <ed.tsai@mediatek.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 259/451] PM: runtime: Do not clear needs_force_resume with enabled runtime PM
 Date: Thu, 15 Jan 2026 17:47:40 +0100
-Message-ID: <20260115164300.496629984@linuxfoundation.org>
+Message-ID: <20260115164240.256447985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,44 +58,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-commit 35fa2b4bf96415b88d7edaa5cf8af5185d9ce76e upstream.
+commit 359afc8eb02a518fbdd0cbd462c8c2827c6cbec2 upstream.
 
-403ae52ac047 ("sparc: fix drivers/video/tcx.c warning") changed the
-physbase initializing breaking the user-space mmap, e.g. for Xorg
-entirely.
+Commit 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in
+pm_runtime_reinit()") added provisional clearing of power.needs_force_resume
+to pm_runtime_reinit(), but it is done unconditionally which is a
+mistake because pm_runtime_reinit() may race with driver probing
+and removal [1].
 
-Fix fbdev mmap table so the sbus mmap helper work correctly, and
-not try to map vastly (physbase) offset memory.
+To address this, notice that power.needs_force_resume should never
+be set when runtime PM is enabled and so it only needs to be cleared
+when runtime PM is disabled, and update pm_runtime_init() to only
+clear that flag when runtime PM is disabled.
 
-Fixes: 403ae52ac047 ("sparc: fix drivers/video/tcx.c warning")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()")
+Reported-by: Ed Tsai <ed.tsai@mediatek.com>
+Closes: https://lore.kernel.org/linux-pm/20251215122154.3180001-1-ed.tsai@mediatek.com/ [1]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 6.17+ <stable@vger.kernel.org> # 6.17+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/12807571.O9o76ZdvQC@rafael.j.wysocki
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/tcx.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/base/power/runtime.c |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
---- a/drivers/video/fbdev/tcx.c
-+++ b/drivers/video/fbdev/tcx.c
-@@ -436,7 +436,7 @@ static int tcx_probe(struct platform_dev
- 			j = i;
- 			break;
- 		}
--		par->mmap_map[i].poff = op->resource[j].start;
-+		par->mmap_map[i].poff = op->resource[j].start - info->fix.smem_start;
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1749,16 +1749,18 @@ void pm_runtime_init(struct device *dev)
+  */
+ void pm_runtime_reinit(struct device *dev)
+ {
+-	if (!pm_runtime_enabled(dev)) {
+-		if (dev->power.runtime_status == RPM_ACTIVE)
+-			pm_runtime_set_suspended(dev);
+-		if (dev->power.irq_safe) {
+-			spin_lock_irq(&dev->power.lock);
+-			dev->power.irq_safe = 0;
+-			spin_unlock_irq(&dev->power.lock);
+-			if (dev->parent)
+-				pm_runtime_put(dev->parent);
+-		}
++	if (pm_runtime_enabled(dev))
++		return;
++
++	if (dev->power.runtime_status == RPM_ACTIVE)
++		pm_runtime_set_suspended(dev);
++
++	if (dev->power.irq_safe) {
++		spin_lock_irq(&dev->power.lock);
++		dev->power.irq_safe = 0;
++		spin_unlock_irq(&dev->power.lock);
++		if (dev->parent)
++			pm_runtime_put(dev->parent);
  	}
- 
- 	info->flags = FBINFO_DEFAULT;
+ 	/*
+ 	 * Clear power.needs_force_resume in case it has been set by
 
 
 
