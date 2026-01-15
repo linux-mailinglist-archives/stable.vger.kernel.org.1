@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209605-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209187-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC461D26F2A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:57:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45BF4D2683E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:35:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 17BE83170CD0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:29 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B94B303B701
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 95FAD3BF305;
-	Thu, 15 Jan 2026 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222403BF31D;
+	Thu, 15 Jan 2026 17:26:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BtDm9dgj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qbJHUrFZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 596D23BFE3B;
-	Thu, 15 Jan 2026 17:46:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE9F92D0C79;
+	Thu, 15 Jan 2026 17:26:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499172; cv=none; b=Cj48uylveqXia9ubuYKFBAA5DGExenpbcrAITa9UOlt44SxOdogC3IzzMZ1MDoJoB/GY49Hc5pX9wU3VmM8W/Ec4ZY0AJrf+vMYtjUJvv1xkCMVN0vHxzMx1xrAWc3SAreMiQFcK8wjadMDCmb5foP0Pt4eQxsqaI5LYzLWuBLE=
+	t=1768497981; cv=none; b=tDGJroUOCwuIpV5hNSZp51NN+eDZ75hdfB2n9ahCpb+fDaGBcx2DkLhfFHWD5yi6NEGepqyqHKSO2i9rGjkMZuqtkgMwbWbJz/MWb4LBF+UO989U64IY3pOdk8NXWwsQ2iJj1gfpGEpObIzain4jaz9Y99bx8p7p24ZJukSkndY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499172; c=relaxed/simple;
-	bh=C7nkajF9pijbeVhFzO/DxUjPOVULOYruMOR3X1d+O4g=;
+	s=arc-20240116; t=1768497981; c=relaxed/simple;
+	bh=ybki0tg4fJo8hKU6vxDHmG2i3HMI61acizIlZsmnXSI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n126E9DUncjkevYCXS08DEj56F0D3tlrk0gNsqr/ZSGjtIhAkteID0mFINcaDpQASFuv0TG9CtEragaDXcqzgDtvAAxqwNCWIgc7TmHj/o3kpnnXdBFFp25WVl18T0OavBfFvSE9B97eb1NY5sStPeDSmxb+xrVnFwzJQY1sSio=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BtDm9dgj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBBBCC116D0;
-	Thu, 15 Jan 2026 17:46:11 +0000 (UTC)
+	 MIME-Version; b=aA+1GubnqS6Q253mdpNFSOlDd0HEytB4csXD+ZLcYnBCMMf4Aiix5dyhB1O49Mcdd5tmY15eZRw7lHcuSpdc2q43DkntnVheTvNGFU6xpvQNgYJjVLyFrGxKxCN8xj90p3erE/5+yJx5L5OKVGNDa3A1XaP/AmCJszRP0MufR0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qbJHUrFZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F0DBC116D0;
+	Thu, 15 Jan 2026 17:26:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499172;
-	bh=C7nkajF9pijbeVhFzO/DxUjPOVULOYruMOR3X1d+O4g=;
+	s=korg; t=1768497981;
+	bh=ybki0tg4fJo8hKU6vxDHmG2i3HMI61acizIlZsmnXSI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BtDm9dgjwC8gyZHA4WKq33q9y5GtbV52fgpB1pmSDimGQpayx4W4Dwr8usxC1oMzY
-	 ETVKNKpMONXY1vRdu+Gn63fl13zDkiWCoYe5RcysMIjM1/uV29fGgc9em4FBMgCYi7
-	 ZaCxhlm6Rjs+mEc/llNNGtF2I92rAbEPLHv5Ao/g=
+	b=qbJHUrFZnX0dRhMLSTlHoaJgTDN/0vYHOcNKQ/OGhHx8cvqbmzNZGsskoPs3JHnH3
+	 /T/ZbMg4GS7M4bN8ulC+BAtShVuaKFTU8TTS1MBSlK16W/cq56bY1Npk2X4Uo+fJlY
+	 Gav29krtPUiaTbHPvz99WwAiLpnfLST7vszb3Zxo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Mark Brown <broonie@kernel.org>,
+	Hongyu Xie <xiehongyu1@kylinos.cn>,
+	Mathias Nyman <mathias.nyman@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 134/451] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
-Date: Thu, 15 Jan 2026 17:45:35 +0100
-Message-ID: <20260115164235.768061861@linuxfoundation.org>
+Subject: [PATCH 5.15 270/554] usb: xhci: limit run_graceperiod for only usb 3.0 devices
+Date: Thu, 15 Jan 2026 17:45:36 +0100
+Message-ID: <20260115164256.003496507@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Hongyu Xie <xiehongyu1@kylinos.cn>
 
-[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
+[ Upstream commit 8d34983720155b8f05de765f0183d9b0e1345cc0 ]
 
-bcm63xx_soc_pcm_new() does not check the return value of
-of_dma_configure(), which may fail with -EPROBE_DEFER or
-other errors, allowing PCM setup to continue with incomplete
-DMA configuration.
+run_graceperiod blocks usb 2.0 devices from auto suspending after
+xhci_start for 500ms.
 
-Add error checking for of_dma_configure() and return on failure.
+Log shows:
+[   13.387170] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.387177] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.387182] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.387188] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.387191] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.387193] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.387296] hub_event:5779: hub 3-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.393343] handle_port_status:2034: xhci-hcd PNP0D10:02: handle_port_status: starting usb5 port polling.
+[   13.393353] xhci_hub_control:1271: xhci-hcd PNP0D10:02: Get port status 5-1 read: 0x206e1, return 0x10101
+[   13.400047] hub_suspend:3903: hub 3-0:1.0: hub_suspend
+[   13.403077] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.403080] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.403085] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.403087] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.403090] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.403093] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.403095] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.405002] handle_port_status:1913: xhci-hcd PNP0D10:04: Port change event, 9-1, id 1, portsc: 0x6e1
+[   13.405016] hub_activate:1169: usb usb5-port1: status 0101 change 0001
+[   13.405026] xhci_clear_port_change_bit:658: xhci-hcd PNP0D10:02: clear port1 connect change, portsc: 0x6e1
+[   13.413275] hcd_bus_suspend:2250: usb usb3: bus auto-suspend, wakeup 1
+[   13.419081] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.419086] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.419095] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.419100] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.419106] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.419110] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
+[   13.419112] hcd_bus_resume:2303: usb usb7: usb auto-resume
+[   13.420455] handle_port_status:2034: xhci-hcd PNP0D10:04: handle_port_status: starting usb9 port polling.
+[   13.420493] handle_port_status:1913: xhci-hcd PNP0D10:05: Port change event, 10-1, id 1, portsc: 0x6e1
+[   13.425332] hcd_bus_suspend:2279: usb usb3: suspend raced with wakeup event
+[   13.431931] handle_port_status:2034: xhci-hcd PNP0D10:05: handle_port_status: starting usb10 port polling.
+[   13.435080] hub_resume:3948: hub 7-0:1.0: hub_resume
+[   13.435084] xhci_hub_control:1271: xhci-hcd PNP0D10:03: Get port status 7-1 read: 0x2a0, return 0x100
+[   13.435092] hub_event:5779: hub 7-0:1.0: state 7 ports 1 chg 0000 evt 0000
+[   13.435096] hub_suspend:3903: hub 7-0:1.0: hub_suspend
+[   13.435102] hcd_bus_suspend:2250: usb usb7: bus auto-suspend, wakeup 1
+[   13.435106] hcd_bus_suspend:2279: usb usb7: suspend raced with wakeup event
 
-Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
-Signed-off-by: Mark Brown <broonie@kernel.org>
+usb7 and other usb 2.0 root hub were rapidly toggling between suspend
+and resume states. More, "suspend raced with wakeup event" confuses people.
+
+So, limit run_graceperiod for only usb 3.0 devices
+
+Signed-off-by: Hongyu Xie <xiehongyu1@kylinos.cn>
+Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
+Link: https://patch.msgid.link/20251119142417.2820519-2-mathias.nyman@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/usb/host/xhci-hub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-index 7ec8559d53a2f..9bca508cd844b 100644
---- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
-+++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
-@@ -390,7 +390,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
- 
- 	i2s_priv = dev_get_drvdata(asoc_rtd_to_cpu(rtd, 0)->dev);
- 
--	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
-+	if (ret)
-+		return ret;
- 
- 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
- 	if (ret)
+diff --git a/drivers/usb/host/xhci-hub.c b/drivers/usb/host/xhci-hub.c
+index b226b5487694..f10ab11616ac 100644
+--- a/drivers/usb/host/xhci-hub.c
++++ b/drivers/usb/host/xhci-hub.c
+@@ -1650,7 +1650,7 @@ int xhci_hub_status_data(struct usb_hcd *hcd, char *buf)
+ 	 * SS devices are only visible to roothub after link training completes.
+ 	 * Keep polling roothubs for a grace period after xHC start
+ 	 */
+-	if (xhci->run_graceperiod) {
++	if (hcd->speed >= HCD_USB3 && xhci->run_graceperiod) {
+ 		if (time_before(jiffies, xhci->run_graceperiod))
+ 			status = 1;
+ 		else
 -- 
 2.51.0
 
