@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208732-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D213FD27DF0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:57:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id EA9B1D26191
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D1CE53053F88
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:36 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1F1273015DF7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B613C00A8;
-	Thu, 15 Jan 2026 17:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E613439B4BF;
+	Thu, 15 Jan 2026 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0ypfK0D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGCF2JFS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B87C2D73B4;
-	Thu, 15 Jan 2026 17:54:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA8092C0285;
+	Thu, 15 Jan 2026 17:04:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499681; cv=none; b=X3jhQ+HmjMsrc/NQnknNJgN2ci+zrQ60rgiw/APQ9If3aMvJ9hiEqrbxsHhab+ZWdkJ3K6GUmJglSb9CrGvTxG1cop+sxvfoqznwmKDYM9el/chvGyLwQ5FRARMv62N4ojh+bGD6XX1HP4mdw0slBNjYhu2DzaGAwEmph6cM4k0=
+	t=1768496688; cv=none; b=CEmWzXHmw8JwAfQF91uU+74N6EVd47TU9zI6QZlw8Zd2bajOBmSqjptJvqQmrBEYUAHNEv+8IfdTDBFiURkQ5icoW/bmTi0T5LUNFEso/wrFfcc9txpzXWM/+wmD3L9sQZA3Zda+ppcrnDxfW10eRxuKfiX/97UKKw6xGboBAnA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499681; c=relaxed/simple;
-	bh=R/tsguOcpPstynjxTW4Zscp1Vle0lXXxtjp2998QN3g=;
+	s=arc-20240116; t=1768496688; c=relaxed/simple;
+	bh=T0K+lEraQJSHZFNKerw4xjHr3oVqgrNMppsTcJNnjLM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uGYtXIJCvnnhgwiNGgY4kdIR4G8q28WUFWWDgQzNQyCxG5h7KkDdS5/+WRplzEgqXm03GkGCsMtZre4CBeKwpqOr4K4OLdlR2WbVfUUIHY6PQRrhAkJiTXsBNgadekKCdY2T2HwdQsWMKIokJUxeXY5IpB4W2+Jj55E8km2FWUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0ypfK0D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F72C116D0;
-	Thu, 15 Jan 2026 17:54:40 +0000 (UTC)
+	 MIME-Version; b=ltFTBRs7uaJz/Xa8QuBXLMnSK5+rlAsBHUFto27jMUiXDe4NQRirBSZwXTv0Ofimd5jY2YqWsOaSsE+hHoM5nwXRiM3YZVjMSLBqRkceQMSj38F2TIsDTtLCavi92qLLvIW698pG4LLJkabIbQHDtxY0Moq2nOp/O4S3QCcRlQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGCF2JFS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00EFC116D0;
+	Thu, 15 Jan 2026 17:04:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499681;
-	bh=R/tsguOcpPstynjxTW4Zscp1Vle0lXXxtjp2998QN3g=;
+	s=korg; t=1768496688;
+	bh=T0K+lEraQJSHZFNKerw4xjHr3oVqgrNMppsTcJNnjLM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c0ypfK0DFYTidDtpWp2WPYP8tqyn3eE/dEtuxSg5wG12V+Q824aVaOnbi63N2uJjw
-	 vjiza58neqGakoMIXZyYiDYZxCuy7kN30VMnSDK8KMpcZIQqCgxvvCjE9Vh6NuxEXT
-	 XWrv90OGhVpuAEPrs68IDByFmgVfW/qqgocV6qlU=
+	b=lGCF2JFSuzwIcEAgUBx91BBd2HPp3K+5dRbYf5l6IP68vr828Dd8w+SSr79I6eLXB
+	 4RhBJz7LvC8YqB50SgotC9gV4ZPof7+K4dXIELxCdzjcJaAcTSOWxohH1+3FSN76Mh
+	 g3/18S4bTpmaO5BTdPDdnWgdx/7qb1HVhjzjA1PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.10 313/451] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
+	Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 099/119] bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN
 Date: Thu, 15 Jan 2026 17:48:34 +0100
-Message-ID: <20260115164242.223641333@linuxfoundation.org>
+Message-ID: <20260115164155.526773667@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +60,134 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Amery Hung <ameryhung@gmail.com>
 
-commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
+[ Upstream commit fe9544ed1a2e9217b2c5285c3a4ac0dc5a38bd7b ]
 
-MAX77620 is most likely always a single device on the board, however
-nothing stops board designers to have two of them, thus same device
-driver could probe twice. Or user could manually try to probing second
-time.
+To test bpf_xdp_pull_data(), an xdp packet containing fragments as well
+as free linear data area after xdp->data_end needs to be created.
+However, bpf_prog_test_run_xdp() always fills the linear area with
+data_in before creating fragments, leaving no space to pull data. This
+patch will allow users to specify the linear data size through
+ctx->data_end.
 
-Device driver is not ready for that case, because it allocates
-statically 'struct regmap_irq_chip' as non-const and stores during
-probe in 'irq_drv_data' member a pointer to per-probe state
-container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
-make a copy of 'struct regmap_irq_chip' but store the pointer.
+Currently, ctx_in->data_end must match data_size_in and will not be the
+final ctx->data_end seen by xdp programs. This is because ctx->data_end
+is populated according to the xdp_buff passed to test_run. The linear
+data area available in an xdp_buff, max_linear_sz, is alawys filled up
+before copying data_in into fragments.
 
-Second probe - either successful or failure - would overwrite the
-'irq_drv_data' from previous device probe, so interrupts would be
-executed in a wrong context.
+This patch will allow users to specify the size of data that goes into
+the linear area. When ctx_in->data_end is different from data_size_in,
+only ctx_in->data_end bytes of data will be put into the linear area when
+creating the xdp_buff.
 
-Cc: stable@vger.kernel.org
-Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+While ctx_in->data_end will be allowed to be different from data_size_in,
+it cannot be larger than the data_size_in as there will be no data to
+copy from user space. If it is larger than the maximum linear data area
+size, the layout suggested by the user will not be honored. Data beyond
+max_linear_sz bytes will still be copied into fragments.
+
+Finally, since it is possible for a NIC to produce a xdp_buff with empty
+linear data area, allow it when calling bpf_test_init() from
+bpf_prog_test_run_xdp() so that we can test XDP kfuncs with such
+xdp_buff. This is done by moving lower-bound check to callers as most of
+them already do except bpf_prog_test_run_skb(). The change also fixes a
+bug that allows passing an xdp_buff with data < ETH_HLEN. This can
+happen when ctx is used and metadata is at least ETH_HLEN.
+
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250922233356.3356453-7-ameryhung@gmail.com
+Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/max77620.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/bpf/test_run.c                                | 15 ++++++++++++---
+ .../bpf/prog_tests/xdp_context_test_run.c         |  4 +---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/mfd/max77620.c
-+++ b/drivers/mfd/max77620.c
-@@ -254,7 +254,7 @@ static int max77620_irq_global_unmask(vo
- 	return ret;
- }
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index c8b8ac6ecbc20..318ffd55cf608 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -660,7 +660,7 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
+ 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
+ 	void *data;
  
--static struct regmap_irq_chip max77620_top_irq_chip = {
-+static const struct regmap_irq_chip max77620_top_irq_chip = {
- 	.name = "max77620-top",
- 	.irqs = max77620_top_irqs,
- 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
-@@ -499,6 +499,7 @@ static int max77620_probe(struct i2c_cli
+-	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
++	if (user_size > PAGE_SIZE - headroom - tailroom)
+ 		return ERR_PTR(-EINVAL);
+ 
+ 	size = SKB_DATA_ALIGN(size);
+@@ -995,6 +995,9 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 	    kattr->test.cpu || kattr->test.batch_size)
+ 		return -EINVAL;
+ 
++	if (size < ETH_HLEN)
++		return -EINVAL;
++
+ 	data = bpf_test_init(kattr, kattr->test.data_size_in,
+ 			     size, NET_SKB_PAD + NET_IP_ALIGN,
+ 			     SKB_DATA_ALIGN(sizeof(struct skb_shared_info)));
+@@ -1200,7 +1203,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
  {
- 	const struct regmap_config *rmap_config;
- 	struct max77620_chip *chip;
-+	struct regmap_irq_chip *chip_desc;
- 	const struct mfd_cell *mfd_cells;
- 	int n_mfd_cells;
- 	bool pm_off;
-@@ -509,6 +510,14 @@ static int max77620_probe(struct i2c_cli
- 		return -ENOMEM;
+ 	bool do_live = (kattr->test.flags & BPF_F_TEST_XDP_LIVE_FRAMES);
+ 	u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-	u32 retval = 0, duration, max_linear_sz, size;
++	u32 retval = 0, meta_sz = 0, duration, max_linear_sz, size;
+ 	u32 linear_sz = kattr->test.data_size_in;
+ 	u32 batch_size = kattr->test.batch_size;
+ 	u32 headroom = XDP_PACKET_HEADROOM;
+@@ -1239,13 +1242,16 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
  
- 	i2c_set_clientdata(client, chip);
+ 	if (ctx) {
+ 		/* There can't be user provided data before the meta data */
+-		if (ctx->data_meta || ctx->data_end != kattr->test.data_size_in ||
++		if (ctx->data_meta || ctx->data_end > kattr->test.data_size_in ||
+ 		    ctx->data > ctx->data_end ||
+ 		    unlikely(xdp_metalen_invalid(ctx->data)) ||
+ 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
+ 			goto free_ctx;
+ 		/* Meta data is allocated from the headroom */
+ 		headroom -= ctx->data;
 +
-+	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
-+				 sizeof(max77620_top_irq_chip),
-+				 GFP_KERNEL);
-+	if (!chip_desc)
-+		return -ENOMEM;
-+	chip_desc->irq_drv_data = chip;
-+
- 	chip->dev = &client->dev;
- 	chip->chip_irq = client->irq;
- 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
-@@ -545,11 +554,9 @@ static int max77620_probe(struct i2c_cli
- 	if (ret < 0)
- 		return ret;
++		meta_sz = ctx->data;
++		linear_sz = ctx->data_end;
+ 	}
  
--	max77620_top_irq_chip.irq_drv_data = chip;
- 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
- 				       IRQF_ONESHOT | IRQF_SHARED, 0,
--				       &max77620_top_irq_chip,
--				       &chip->top_irq_data);
-+				       chip_desc, &chip->top_irq_data);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
- 		return ret;
+ 	max_linear_sz = PAGE_SIZE - headroom - tailroom;
+@@ -1255,6 +1261,9 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 	if (do_live && kattr->test.data_size_in > linear_sz)
+ 		goto free_ctx;
+ 
++	if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
++		return -EINVAL;
++
+ 	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
+ 	if (IS_ERR(data)) {
+ 		ret = PTR_ERR(data);
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+index e6a783c7f5db9..cd43d6616dd2d 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+@@ -80,9 +80,7 @@ void test_xdp_context_test_run(void)
+ 	/* Meta data must be 255 bytes or smaller */
+ 	test_xdp_context_error(prog_fd, opts, 0, 256, sizeof(data), 0, 0, 0);
+ 
+-	/* Total size of data must match data_end - data_meta */
+-	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
+-			       sizeof(data) - 1, 0, 0, 0);
++	/* Total size of data must be data_end - data_meta or larger */
+ 	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
+ 			       sizeof(data) + 1, 0, 0, 0);
+ 
+-- 
+2.51.0
+
 
 
 
