@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209836-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209448-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3885D274DE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:32 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id CCA67D26BA8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C72A930923AA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 72DD6303CAAE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F3D03D3306;
-	Thu, 15 Jan 2026 17:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2F8C283FEF;
+	Thu, 15 Jan 2026 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Mk+Nm/QD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x0jIetYI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5207C3D330B;
-	Thu, 15 Jan 2026 17:57:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6A3E27A462;
+	Thu, 15 Jan 2026 17:38:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499828; cv=none; b=amgg/njbkg3Al/AeUaTKkKv9G2KZTfJC3c4FKZyiRbF3YQBWML/dgTdR2ZSQQT5ffbPuX+KNGGLMKGEHc2Tj9e2kkiBpjXd4rp2tY3Gh92CtDfUmzWAq8yLtTNH6K/vspyW9SuztOqANoMgTc9qZFLdAXkEMDFD+31SfOZueKTo=
+	t=1768498726; cv=none; b=mR5mM9/bi+o27U2wKMwU+UQgU7M4Ump+ojFjlF20aPkNgmL1v3lRoOc2kpV07/ZLoRN8WU3IGLFXr9Dd74fgAuc+Ith6q3/pbgTrB80pPaZ3i5XzmDgR4s7wdwmDIydfDvPkVWyS2nK1vdU12hg9XjkZ3cUinm7acf3fiO/mPw8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499828; c=relaxed/simple;
-	bh=zm6hdNDM9wcZMqu17HCetTbQ5LIT6Q+fMdx/q2cxviE=;
+	s=arc-20240116; t=1768498726; c=relaxed/simple;
+	bh=7GsEc1/t0pZg8TaqcLGU2X+776VkF+U9ZfO60iWItMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pdM2VZc/YmpgFAquH9M3FU6hRqJ5m9dfeHLmdfHfNUxTynf/prLRNZF+D6I6Ymn/XFjQDXBIjZJOWoDeGbyn/wcD8iH8Weiai/c4ismfCmwYaBLYkoiaxCHC0gxeMh/3g8ITwwsCsRyCejz0F6tUOXjKwLhwKD8m1ihecyr8NC4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Mk+Nm/QD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D43D2C116D0;
-	Thu, 15 Jan 2026 17:57:07 +0000 (UTC)
+	 MIME-Version; b=oYNNCE5vITNXhDbdMk3EWYeyo+9SpPajvKCIyE4mtyChmLNLpkfc2oYG/zK0tYgN3nYtLBb4wJhiHG5KOyFHPPJB3wgQ6t55qwrvMSdNeWurbZ4hY754ISxy3aDHAvB3/ZMGfhsiIl2cCTip5IYRE7I44g9O3cOcIyFp3oG0JjQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x0jIetYI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9E1EC19422;
+	Thu, 15 Jan 2026 17:38:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499828;
-	bh=zm6hdNDM9wcZMqu17HCetTbQ5LIT6Q+fMdx/q2cxviE=;
+	s=korg; t=1768498726;
+	bh=7GsEc1/t0pZg8TaqcLGU2X+776VkF+U9ZfO60iWItMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Mk+Nm/QDJELHiOdv2p7lDviCduhMQfKVeJQyQnNu2eHBWNZyfnsIhliY6uFXwVGJE
-	 uBvbAdIjAbih3mKUgXtHCMTqdYQaEKrD8YZoFsFo39xyNsdnGUv1GVO2AdIyIZA35W
-	 YQjkKcoQJH+/2cRM036vNrHWhx/zDK6d2iokvT9E=
+	b=x0jIetYIDBDqjiN54n8Tzv+Q5/AW91K1aiOyomDJq1Mt00U6Q7IP1l9a55NT8X1QZ
+	 xyHlsv2MPu8ST9HDdvEfodSU6xp58oRY6/MkIHw3DW9y/Yj9xQhCtUoxI3Q+JZM0+x
+	 p0JTAGp5P06CBKIih7JGhDPKk135YiLSkDV/o7tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Udipto Goswami <udipto.goswami@oss.qualcomm.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 363/451] usb: dwc3: keep susphy enabled during exit to avoid controller faults
-Date: Thu, 15 Jan 2026 17:49:24 +0100
-Message-ID: <20260115164244.039423788@linuxfoundation.org>
+	Su Hui <suhui@nfschina.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Hariprasad Kelam <hkelam@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 499/554] net: ethtool: fix the error condition in ethtool_get_phy_stats_ethtool()
+Date: Thu, 15 Jan 2026 17:49:25 +0100
+Message-ID: <20260115164304.381519802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit e1003aa7ec9eccdde4c926bd64ef42816ad55f25 ]
+commit 0dcc53abf58d572d34c5313de85f607cd33fc691 upstream.
 
-On some platforms, switching USB roles from host to device can trigger
-controller faults due to premature PHY power-down. This occurs when the
-PHY is disabled too early during teardown, causing synchronization
-issues between the PHY and controller.
+Clang static checker (scan-build) warning:
+net/ethtool/ioctl.c:line 2233, column 2
+Called function pointer is null (null dereference).
 
-Keep susphy enabled during dwc3_host_exit() and dwc3_gadget_exit()
-ensures the PHY remains in a low-power state capable of handling
-required commands during role switch.
+Return '-EOPNOTSUPP' when 'ops->get_ethtool_phy_stats' is NULL to fix
+this typo error.
 
-Cc: stable <stable@kernel.org>
-Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251126054221.120638-1-udipto.goswami@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 201ed315f967 ("net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
+Link: https://lore.kernel.org/r/20240605034742.921751-1-suhui@nfschina.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    2 +-
- drivers/usb/dwc3/host.c   |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ net/ethtool/ioctl.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4109,7 +4109,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
- 	if (!dwc->gadget)
- 		return;
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -2111,7 +2111,7 @@ static int ethtool_get_phy_stats_ethtool
+ 	const struct ethtool_ops *ops = dev->ethtool_ops;
+ 	int n_stats, ret;
  
--	dwc3_enable_susphy(dwc, false);
-+	dwc3_enable_susphy(dwc, true);
- 	usb_del_gadget(dwc->gadget);
- 	dwc3_gadget_free_endpoints(dwc);
- 	usb_put_gadget(dwc->gadget);
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -155,7 +155,7 @@ err:
+-	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
++	if (!ops || !ops->get_sset_count || !ops->get_ethtool_phy_stats)
+ 		return -EOPNOTSUPP;
  
- void dwc3_host_exit(struct dwc3 *dwc)
- {
--	dwc3_enable_susphy(dwc, false);
-+	dwc3_enable_susphy(dwc, true);
- 	platform_device_unregister(dwc->xhci);
- 	dwc->xhci = NULL;
- }
+ 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
 
 
 
