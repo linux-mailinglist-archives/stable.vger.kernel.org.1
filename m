@@ -1,55 +1,51 @@
-Return-Path: <stable+bounces-209010-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209053-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D341FD26964
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90942D269FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB3BE31675B4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 281DD315CEA9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B68C12C027B;
-	Thu, 15 Jan 2026 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B237715530C;
+	Thu, 15 Jan 2026 17:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tC6QAvSI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FUm9rUwT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 79DA586334;
-	Thu, 15 Jan 2026 17:17:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758DE258EC2;
+	Thu, 15 Jan 2026 17:20:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497478; cv=none; b=f5FkDbI6vmnfcrweqp9NPkwbb3cEG1w28ANBcUwPNClUMPDJOA3NfZGkAaEI5gIGfJUngHkzSjRbJut+Dmgir4IZIiaNo3lBF+RyqVFQciBNy7/vOkYfiUZv7SxiT/ecTtvC2F6IqLHJ8uHIvCBDqMJJQcr2LlToZTGLiHvq1sk=
+	t=1768497601; cv=none; b=TO6Jh62Eh/fhiGBis1EWisXIxJmVnPhAlqe6UITrfOiTP7VLfYLzdTt/J7MoJrsKzTDK98ovFqy8VqA0LXGkovdncxJ7FgxYnfGE9vXHU091Mb2z3HEQFjlitRMU/tjNR0OhhgHGtW2sWsF5loxb8IjHUEQLdeke/fenrgeKQ1M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497478; c=relaxed/simple;
-	bh=KJFM3h58tMjINFfrKNqTY8F9KOPnu2d0C8XkUsqK3u0=;
+	s=arc-20240116; t=1768497601; c=relaxed/simple;
+	bh=GP9gwVmPb3XwC9Nk5tzzCmK4ZtDTJKSKO9eNKAQxJKE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tsesVc5YEBD6g+YW1dfH2RrAWH6kZT5svPqfDocHbjNHw9dFUMK8+uL4JTLstw/FZ5Vlf8VlqhvOqYQZw197SlkxjOLlnKswup0cjAoTK2rvKvCWNvU7O59C+BwVxJ7yRsG0wRyw72np4S59t71J7CodKEHE/u+3SPsdaqMJRW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tC6QAvSI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ABF9C116D0;
-	Thu, 15 Jan 2026 17:17:57 +0000 (UTC)
+	 MIME-Version; b=bkYx0u4vJCcdK1PvSXCAP/M5Orz4A9nn2o/f12ejpg5mTLq79/Ejc4UZv9QXCjZadxhuuKO/vd32qI7M9epUTNQHBgudcxGfP2aWrZ4QHtYS8DCAGT5Ycrd9E4ybpSH3bNSebO5bGSIsvYmEvIMLTDRv3TqQfehhJodZydCJpOA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FUm9rUwT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB532C116D0;
+	Thu, 15 Jan 2026 17:20:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497478;
-	bh=KJFM3h58tMjINFfrKNqTY8F9KOPnu2d0C8XkUsqK3u0=;
+	s=korg; t=1768497601;
+	bh=GP9gwVmPb3XwC9Nk5tzzCmK4ZtDTJKSKO9eNKAQxJKE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tC6QAvSI/BYXMBl2fbZwQD1ElKG/RnemsvC/xYgjTJAoGfrZPst0lVZuz9Ho1FC8L
-	 7DIZYX8RdGmXt0GucAN3NwQ69s3cXfnaOe0U12roF3h9v3iNZ86GIDZn4cmfW+BUgG
-	 bjVTCNIvsxyxEj7vq6JsV61KBYBMW3FhuvO4auRM=
+	b=FUm9rUwTRr3bDp7c4pApMQXbeyWyuBdc5rYC7l7tteozn323W16J9ovmW1cxQkCb5
+	 I9umv0W4xY6lHgW0sb9Q46FP1qBtitsHI3zsDC4h1o5aJfS3TgfFcRAIJuvFpYhbLd
+	 kM5+LbBm8l8ox26Gln+1FyTcUBKzhuuthY/Zseho=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mathieu Poirier <mathieu.poirier@linaro.org>,
-	Al Grant <al.grant@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	Leo Yan <leo.yan@linaro.org>,
+	Yuanfang Zhang <quic_yuanfang@quicinc.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 094/554] coresight: etm4x: Use Trace Filtering controls dynamically
-Date: Thu, 15 Jan 2026 17:42:40 +0100
-Message-ID: <20260115164249.647725313@linuxfoundation.org>
+Subject: [PATCH 5.15 095/554] coresight-etm4x: add isb() before reading the TRCSTATR
+Date: Thu, 15 Jan 2026 17:42:41 +0100
+Message-ID: <20260115164249.683318481@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -68,227 +64,195 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Suzuki K Poulose <suzuki.poulose@arm.com>
+From: Yuanfang Zhang <quic_yuanfang@quicinc.com>
 
-[ Upstream commit 5f6fd1aa8cc147b111af1a833574487a87237dc0 ]
+[ Upstream commit 4ff6039ffb79a4a8a44b63810a8a2f2b43264856 ]
 
-The Trace Filtering support (FEAT_TRF) ensures that the ETM
-can be prohibited from generating any trace for a given EL.
-This is much stricter knob, than the TRCVICTLR exception level
-masks, which doesn't prevent the ETM from generating Context
-packets for an "excluded" EL. At the moment, we do a onetime
-enable trace at user and kernel and leave it untouched for the
-kernel life time. This implies that the ETM could potentially
-generate trace packets containing the kernel addresses, and
-thus leaking the kernel virtual address in the trace.
+As recommended by section 4.3.7 ("Synchronization when using system
+instructions to progrom the trace unit") of ARM IHI 0064H.b, the
+self-hosted trace analyzer must perform a Context synchronization
+event between writing to the TRCPRGCTLR and reading the TRCSTATR.
+Additionally, add an ISB between the each read of TRCSTATR on
+coresight_timeout() when using system instructions to program the
+trace unit.
 
-This patch makes the switch dynamic, by honoring the filters
-set by the user and enforcing them in the TRFCR controls.
-We also rename the cpu_enable_tracing() appropriately to
-cpu_detect_trace_filtering() and the drvdata member
-trfc => trfcr to indicate the "value" of the TRFCR_EL1.
-
-Cc: Mathieu Poirier <mathieu.poirier@linaro.org>
-Cc: Al Grant <al.grant@arm.com>
-Cc: Mike Leach <mike.leach@linaro.org>
-Cc: Leo Yan <leo.yan@linaro.org>
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
+Signed-off-by: Yuanfang Zhang <quic_yuanfang@quicinc.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/20210914102641.1852544-3-suzuki.poulose@arm.com
-Signed-off-by: Mathieu Poirier <mathieu.poirier@linaro.org>
+Link: https://lore.kernel.org/r/20250116-etm_sync-v4-1-39f2b05e9514@quicinc.com
 Stable-dep-of: 64eb04ae5452 ("coresight: etm4x: Add context synchronization before enabling trace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 63 ++++++++++++++-----
- drivers/hwtracing/coresight/coresight-etm4x.h |  7 ++-
- .../coresight/coresight-self-hosted-trace.h   |  7 +++
- 3 files changed, 59 insertions(+), 18 deletions(-)
+ drivers/hwtracing/coresight/coresight-core.c  | 20 ++++++--
+ .../coresight/coresight-etm4x-core.c          | 48 +++++++++++++++++--
+ include/linux/coresight.h                     |  4 ++
+ 3 files changed, 62 insertions(+), 10 deletions(-)
 
+diff --git a/drivers/hwtracing/coresight/coresight-core.c b/drivers/hwtracing/coresight/coresight-core.c
+index f6989a74fec94..1d8bad32c5ad5 100644
+--- a/drivers/hwtracing/coresight/coresight-core.c
++++ b/drivers/hwtracing/coresight/coresight-core.c
+@@ -1454,18 +1454,20 @@ static void coresight_remove_conns(struct coresight_device *csdev)
+ }
+ 
+ /**
+- * coresight_timeout - loop until a bit has changed to a specific register
+- *			state.
++ * coresight_timeout_action - loop until a bit has changed to a specific register
++ *                  state, with a callback after every trial.
+  * @csa: coresight device access for the device
+  * @offset: Offset of the register from the base of the device.
+  * @position: the position of the bit of interest.
+  * @value: the value the bit should have.
++ * @cb: Call back after each trial.
+  *
+  * Return: 0 as soon as the bit has taken the desired state or -EAGAIN if
+  * TIMEOUT_US has elapsed, which ever happens first.
+  */
+-int coresight_timeout(struct csdev_access *csa, u32 offset,
+-		      int position, int value)
++int coresight_timeout_action(struct csdev_access *csa, u32 offset,
++		      int position, int value,
++			  coresight_timeout_cb_t cb)
+ {
+ 	int i;
+ 	u32 val;
+@@ -1481,7 +1483,8 @@ int coresight_timeout(struct csdev_access *csa, u32 offset,
+ 			if (!(val & BIT(position)))
+ 				return 0;
+ 		}
+-
++		if (cb)
++			cb(csa, offset, position, value);
+ 		/*
+ 		 * Delay is arbitrary - the specification doesn't say how long
+ 		 * we are expected to wait.  Extra check required to make sure
+@@ -1493,6 +1496,13 @@ int coresight_timeout(struct csdev_access *csa, u32 offset,
+ 
+ 	return -EAGAIN;
+ }
++EXPORT_SYMBOL_GPL(coresight_timeout_action);
++
++int coresight_timeout(struct csdev_access *csa, u32 offset,
++		      int position, int value)
++{
++	return coresight_timeout_action(csa, offset, position, value, NULL);
++}
+ EXPORT_SYMBOL_GPL(coresight_timeout);
+ 
+ u32 coresight_relaxed_read32(struct coresight_device *csdev, u32 offset)
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index d124931ee2be5..54e5be46973a3 100644
+index 54e5be46973a3..0b7aceb96d753 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
 +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -239,6 +239,45 @@ struct etm4_enable_arg {
- 	int rc;
- };
+@@ -369,6 +369,29 @@ static void etm4_check_arch_features(struct etmv4_drvdata *drvdata,
+ }
+ #endif /* CONFIG_ETM4X_IMPDEF_FEATURE */
  
-+/*
-+ * etm4x_prohibit_trace - Prohibit the CPU from tracing at all ELs.
-+ * When the CPU supports FEAT_TRF, we could move the ETM to a trace
-+ * prohibited state by filtering the Exception levels via TRFCR_EL1.
-+ */
-+static void etm4x_prohibit_trace(struct etmv4_drvdata *drvdata)
++static void etm4x_sys_ins_barrier(struct csdev_access *csa, u32 offset, int pos, int val)
 +{
-+	/* If the CPU doesn't support FEAT_TRF, nothing to do */
-+	if (!drvdata->trfcr)
-+		return;
-+	cpu_prohibit_trace();
++	if (!csa->io_mem)
++		isb();
 +}
 +
 +/*
-+ * etm4x_allow_trace - Allow CPU tracing in the respective ELs,
-+ * as configured by the drvdata->config.mode for the current
-+ * session. Even though we have TRCVICTLR bits to filter the
-+ * trace in the ELs, it doesn't prevent the ETM from generating
-+ * a packet (e.g, TraceInfo) that might contain the addresses from
-+ * the excluded levels. Thus we use the additional controls provided
-+ * via the Trace Filtering controls (FEAT_TRF) to make sure no trace
-+ * is generated for the excluded ELs.
++ * etm4x_wait_status: Poll for TRCSTATR.<pos> == <val>. While using system
++ * instruction to access the trace unit, each access must be separated by a
++ * synchronization barrier. See ARM IHI0064H.b section "4.3.7 Synchronization of
++ * register updates", for system instructions section, in "Notes":
++ *
++ *   "In particular, whenever disabling or enabling the trace unit, a poll of
++ *    TRCSTATR needs explicit synchronization between each read of TRCSTATR"
 + */
-+static void etm4x_allow_trace(struct etmv4_drvdata *drvdata)
++static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
 +{
-+	u64 trfcr = drvdata->trfcr;
-+
-+	/* If the CPU doesn't support FEAT_TRF, nothing to do */
-+	if (!trfcr)
-+		return;
-+
-+	if (drvdata->config.mode & ETM_MODE_EXCL_KERN)
-+		trfcr &= ~TRFCR_ELx_ExTRE;
-+	if (drvdata->config.mode & ETM_MODE_EXCL_USER)
-+		trfcr &= ~TRFCR_ELx_E0TRE;
-+
-+	write_trfcr(trfcr);
++	if (!csa->io_mem)
++		return coresight_timeout_action(csa, TRCSTATR, pos, val,
++						etm4x_sys_ins_barrier);
++	return coresight_timeout(csa, TRCSTATR, pos, val);
 +}
 +
- #ifdef CONFIG_ETM4X_IMPDEF_FEATURE
- 
- #define HISI_HIP08_AMBA_ID		0x000b6d01
-@@ -445,6 +484,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- 	if (etm4x_is_ete(drvdata))
- 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
- 
-+	etm4x_allow_trace(drvdata);
- 	/* Enable the trace unit */
- 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
- 
-@@ -740,7 +780,6 @@ static int etm4_enable(struct coresight_device *csdev,
- static void etm4_disable_hw(void *info)
+ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
  {
- 	u32 control;
--	u64 trfcr;
- 	struct etmv4_drvdata *drvdata = info;
- 	struct etmv4_config *config = &drvdata->config;
- 	struct coresight_device *csdev = drvdata->csdev;
-@@ -767,12 +806,7 @@ static void etm4_disable_hw(void *info)
- 	 * If the CPU supports v8.4 Trace filter Control,
- 	 * set the ETM to trace prohibited region.
- 	 */
--	if (drvdata->trfc) {
--		trfcr = read_sysreg_s(SYS_TRFCR_EL1);
--		write_sysreg_s(trfcr & ~(TRFCR_ELx_ExTRE | TRFCR_ELx_E0TRE),
--			       SYS_TRFCR_EL1);
--		isb();
--	}
-+	etm4x_prohibit_trace(drvdata);
- 	/*
- 	 * Make sure everything completes before disabling, as recommended
- 	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
-@@ -788,9 +822,6 @@ static void etm4_disable_hw(void *info)
- 	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1))
+ 	int i, rc;
+@@ -400,7 +423,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		isb();
+ 
+ 	/* wait for TRCSTATR.IDLE to go up */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 1))
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1))
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 	if (drvdata->nr_pe)
+@@ -493,7 +516,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
+ 		isb();
+ 
+ 	/* wait for TRCSTATR.IDLE to go back down to '0' */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 0))
++	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 
+@@ -818,10 +841,25 @@ static void etm4_disable_hw(void *info)
+ 	tsb_csync();
+ 	etm4x_relaxed_write32(csa, control, TRCPRGCTLR);
+ 
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
++	if (!csa->io_mem)
++		isb();
++
+ 	/* wait for TRCSTATR.PMSTABLE to go to '1' */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1))
++	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1))
  		dev_err(etm_dev,
  			"timeout while waiting for PM stable Trace Status\n");
--	if (drvdata->trfc)
--		write_sysreg_s(trfcr, SYS_TRFCR_EL1);
--
++	/*
++	 * As recommended by section 4.3.7 (Synchronization of register updates)
++	 * of ARM IHI 0064H.b.
++	 */
++	isb();
++
  	/* read the status of the single shot comparators */
  	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
  		config->ss_status[i] =
-@@ -988,15 +1019,15 @@ static bool etm4_init_csdev_access(struct etmv4_drvdata *drvdata,
- 	return false;
- }
+@@ -1592,7 +1630,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 	etm4_os_lock(drvdata);
  
--static void cpu_enable_tracing(struct etmv4_drvdata *drvdata)
-+static void cpu_detect_trace_filtering(struct etmv4_drvdata *drvdata)
- {
- 	u64 dfr0 = read_sysreg(id_aa64dfr0_el1);
- 	u64 trfcr;
+ 	/* wait for TRCSTATR.PMSTABLE to go up */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_PMSTABLE_BIT, 1)) {
++	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for PM Stable Status\n");
+ 		etm4_os_unlock(drvdata);
+@@ -1683,7 +1721,7 @@ static int __etm4_cpu_save(struct etmv4_drvdata *drvdata)
+ 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
  
-+	drvdata->trfcr = 0;
- 	if (!cpuid_feature_extract_unsigned_field(dfr0, ID_AA64DFR0_TRACE_FILT_SHIFT))
- 		return;
+ 	/* wait for TRCSTATR.IDLE to go up */
+-	if (coresight_timeout(csa, TRCSTATR, TRCSTATR_IDLE_BIT, 1)) {
++	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
+ 		dev_err(etm_dev,
+ 			"timeout while waiting for Idle Trace Status\n");
+ 		etm4_os_unlock(drvdata);
+diff --git a/include/linux/coresight.h b/include/linux/coresight.h
+index 93a2922b76534..c0a0db99a6896 100644
+--- a/include/linux/coresight.h
++++ b/include/linux/coresight.h
+@@ -484,6 +484,10 @@ extern int coresight_enable(struct coresight_device *csdev);
+ extern void coresight_disable(struct coresight_device *csdev);
+ extern int coresight_timeout(struct csdev_access *csa, u32 offset,
+ 			     int position, int value);
++typedef void (*coresight_timeout_cb_t) (struct csdev_access *, u32, int, int);
++extern int coresight_timeout_action(struct csdev_access *csa, u32 offset,
++					int position, int value,
++					coresight_timeout_cb_t cb);
  
--	drvdata->trfc = true;
- 	/*
- 	 * If the CPU supports v8.4 SelfHosted Tracing, enable
- 	 * tracing at the kernel EL and EL0, forcing to use the
-@@ -1010,7 +1041,7 @@ static void cpu_enable_tracing(struct etmv4_drvdata *drvdata)
- 	if (is_kernel_in_hyp_mode())
- 		trfcr |= TRFCR_EL2_CX;
- 
--	write_trfcr(trfcr);
-+	drvdata->trfcr = trfcr;
- }
- 
- static void etm4_init_arch_data(void *info)
-@@ -1183,7 +1214,7 @@ static void etm4_init_arch_data(void *info)
- 	/* NUMCNTR, bits[30:28] number of counters available for tracing */
- 	drvdata->nr_cntr = BMVAL(etmidr5, 28, 30);
- 	etm4_cs_lock(drvdata, csa);
--	cpu_enable_tracing(drvdata);
-+	cpu_detect_trace_filtering(drvdata);
- }
- 
- static inline u32 etm4_get_victlr_access_type(struct etmv4_config *config)
-@@ -1680,7 +1711,7 @@ static int etm4_cpu_save(struct etmv4_drvdata *drvdata)
- 	int ret = 0;
- 
- 	/* Save the TRFCR irrespective of whether the ETM is ON */
--	if (drvdata->trfc)
-+	if (drvdata->trfcr)
- 		drvdata->save_trfcr = read_trfcr();
- 	/*
- 	 * Save and restore the ETM Trace registers only if
-@@ -1792,7 +1823,7 @@ static void __etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- 
- static void etm4_cpu_restore(struct etmv4_drvdata *drvdata)
- {
--	if (drvdata->trfc)
-+	if (drvdata->trfcr)
- 		write_trfcr(drvdata->save_trfcr);
- 	if (drvdata->state_needs_restore)
- 		__etm4_cpu_restore(drvdata);
-diff --git a/drivers/hwtracing/coresight/coresight-etm4x.h b/drivers/hwtracing/coresight/coresight-etm4x.h
-index 74f1ba8ed148d..85bf733a21bab 100644
---- a/drivers/hwtracing/coresight/coresight-etm4x.h
-+++ b/drivers/hwtracing/coresight/coresight-etm4x.h
-@@ -899,7 +899,10 @@ struct etmv4_save_state {
-  * @nooverflow:	Indicate if overflow prevention is supported.
-  * @atbtrig:	If the implementation can support ATB triggers
-  * @lpoverride:	If the implementation can support low-power state over.
-- * @trfc:	If the implementation supports Arm v8.4 trace filter controls.
-+ * @trfcr:	If the CPU supports FEAT_TRF, value of the TRFCR_ELx that
-+ *		allows tracing at all ELs. We don't want to compute this
-+ *		at runtime, due to the additional setting of TRFCR_CX when
-+ *		in EL2. Otherwise, 0.
-  * @config:	structure holding configuration parameters.
-  * @save_trfcr:	Saved TRFCR_EL1 register during a CPU PM event.
-  * @save_state:	State to be preserved across power loss
-@@ -953,7 +956,7 @@ struct etmv4_drvdata {
- 	bool				nooverflow;
- 	bool				atbtrig;
- 	bool				lpoverride;
--	bool				trfc;
-+	u64				trfcr;
- 	struct etmv4_config		config;
- 	u64				save_trfcr;
- 	struct etmv4_save_state		*save_state;
-diff --git a/drivers/hwtracing/coresight/coresight-self-hosted-trace.h b/drivers/hwtracing/coresight/coresight-self-hosted-trace.h
-index 303d71911870f..23f05df3f1730 100644
---- a/drivers/hwtracing/coresight/coresight-self-hosted-trace.h
-+++ b/drivers/hwtracing/coresight/coresight-self-hosted-trace.h
-@@ -21,4 +21,11 @@ static inline void write_trfcr(u64 val)
- 	isb();
- }
- 
-+static inline void cpu_prohibit_trace(void)
-+{
-+	u64 trfcr = read_trfcr();
-+
-+	/* Prohibit tracing at EL0 & the kernel EL */
-+	write_trfcr(trfcr & ~(TRFCR_ELx_ExTRE | TRFCR_ELx_E0TRE));
-+}
- #endif /*  __CORESIGHT_SELF_HOSTED_TRACE_H */
+ extern int coresight_claim_device(struct coresight_device *csdev);
+ extern int coresight_claim_device_unlocked(struct coresight_device *csdev);
 -- 
 2.51.0
 
