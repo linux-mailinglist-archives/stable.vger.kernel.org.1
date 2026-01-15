@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209825-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209406-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E40E6D27776
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCE1D27192
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:06:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 76D8B31BA156
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 081A1309555C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FEEB3D6694;
-	Thu, 15 Jan 2026 17:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30AAC86334;
+	Thu, 15 Jan 2026 17:36:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vSCNcVyX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DoyW/l5S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 033813D6691;
-	Thu, 15 Jan 2026 17:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E85354C81;
+	Thu, 15 Jan 2026 17:36:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499798; cv=none; b=OKs9vs+m6e7dBSxMmOypi3NV6fjhy/jr0ZcoWAwV0YyErpLoD64/sevm6aEhvfedrEMac0GEfoRwEnrNuuVwGynlX19CgiZICkUdqY2M4IZDRiA/w21MKf/lXEhrgecEH1rOXKoSqKYPOz+yQJmM4BUUUOlTiR0/Ipx3esm0nXE=
+	t=1768498606; cv=none; b=LrPqd7UDrKl1yE/xgV3NtWCuufhNMEk7X7cIY4V1b1M9D/EBIEZyKZo0v/Jf/feyVKnw4mdFNGZlu/t6lE23/lZXxFuK9iPxl50gldLDHhhsFgYJm4RfAnfP7snaVkNwP5cy1LTMn5XkpvdtnVfSIn17DqCUyV0Gsl/4d2C45zU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499798; c=relaxed/simple;
-	bh=eIFkHo/nYSJ1GJHb2L5pwv4t3dWrGLiy81mlYrGAlBQ=;
+	s=arc-20240116; t=1768498606; c=relaxed/simple;
+	bh=pJDAoSh6eXW+XtBHpPS4c25L+oI0rw/bw7IkkBSwU1o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hxAUh9ZQ4+0QZshco4ZHOO1Uuz68d3G67Y4tGhz9JrA3hVMCe+kl3fORGPfMo4ChxPMtVrXbA2c4RHwkNAxMM01gvRwI9js+nEXuXe4QKd1bHj/RW2KoApirkA90qUBfDtx1sCbj7udVeC98MoFp/ImiH/7limlCbFhPxZKw6NI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vSCNcVyX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 804A0C116D0;
-	Thu, 15 Jan 2026 17:56:37 +0000 (UTC)
+	 MIME-Version; b=hxaYbnk7FIUAsN9lfDMhpch9dEep0avRDWpMt/zowsXD3gmjhceo2bwoDgA6e7qMly9QaRXFm3beMsUHJjKd+unhhcJLWg8JelD33mv5nvFzlfImUjZTdZzQHZKrkxgwco+fkNudd3gqZAE0SdYfvdAas3WI3S79JA7mypyiB0o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DoyW/l5S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7695CC116D0;
+	Thu, 15 Jan 2026 17:36:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499797;
-	bh=eIFkHo/nYSJ1GJHb2L5pwv4t3dWrGLiy81mlYrGAlBQ=;
+	s=korg; t=1768498605;
+	bh=pJDAoSh6eXW+XtBHpPS4c25L+oI0rw/bw7IkkBSwU1o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vSCNcVyX8F3FzEfF2aae8nBC6hhe34FTBdcd921FkfVUwytaEkNPRi3W9VC+ff20b
-	 GUPWNdaePCDLxl9bnYUCsZ3ZwegWT6er29+0UcJ4RyQLUZARMRmaUzwXXiZHEWm2fT
-	 kytdvbfte85tsL+f7a0skCa3rKyWGuJMLiyBuHYM=
+	b=DoyW/l5SJa2G26Kke4vwU3YP30lQXnpEMJm8Yrr/JZP0qG7TDocV8OK2E+4FQ6Ldg
+	 BupSUzh/mm0sNR8FMoyCG/h+u392WoQDjEOMDDcjq4G1n1nOeSNfM66HLOe8U/ujfa
+	 PkJND4juNVT+eAoKOXqAUhnEwf4uNFZnrC8fffC4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 354/451] ALSA: wavefront: Clear substream pointers on close
+	Shigeru Yoshida <syoshida@redhat.com>,
+	"David S. Miller" <davem@davemloft.net>,
+	Shubham Kulkarni <skulkarni@mvista.com>
+Subject: [PATCH 5.15 489/554] ipv6: Fix potential uninit-value access in __ip6_make_skb()
 Date: Thu, 15 Jan 2026 17:49:15 +0100
-Message-ID: <20260115164243.706272321@linuxfoundation.org>
+Message-ID: <20260115164304.016474492@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Shigeru Yoshida <syoshida@redhat.com>
 
-[ Upstream commit e11c5c13ce0ab2325d38fe63500be1dd88b81e38 ]
+commit 4e13d3a9c25b7080f8a619f961e943fe08c2672c upstream.
 
-Clear substream pointers in close functions to avoid leaving dangling
-pointers, helping to improve code safety and
-prevents potential issues.
+As it was done in commit fc1092f51567 ("ipv4: Fix uninit-value access in
+__ip_make_skb()") for IPv4, check FLOWI_FLAG_KNOWN_NH on fl6->flowi6_flags
+instead of testing HDRINCL on the socket to avoid a race condition which
+causes uninit-value access.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ No guard() in older trees ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: ea30388baebc ("ipv6: Fix an uninit variable access bug in __ip6_make_skb()")
+Signed-off-by: Shigeru Yoshida <syoshida@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+[ Referred stable v6.1.y version of the patch to generate this one
+ v6.1 link: https://github.com/gregkh/linux/commit/a05c1ede50e9656f0752e523c7b54f3a3489e9a8 ]
+Signed-off-by: Shubham Kulkarni <skulkarni@mvista.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/isa/wavefront/wavefront_midi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ipv6/ip6_output.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/isa/wavefront/wavefront_midi.c
-+++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -291,6 +291,7 @@ static int snd_wavefront_midi_input_clos
- 	        return -EIO;
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -1928,7 +1928,8 @@ struct sk_buff *__ip6_make_skb(struct so
+ 		struct inet6_dev *idev = ip6_dst_idev(skb_dst(skb));
+ 		u8 icmp6_type;
  
- 	spin_lock_irqsave (&midi->open, flags);
-+	midi->substream_input[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
- 	spin_unlock_irqrestore (&midi->open, flags);
- 
-@@ -314,6 +315,7 @@ static int snd_wavefront_midi_output_clo
- 	        return -EIO;
- 
- 	spin_lock_irqsave (&midi->open, flags);
-+	midi->substream_output[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
- 	spin_unlock_irqrestore (&midi->open, flags);
- 	return 0;
+-		if (sk->sk_socket->type == SOCK_RAW && !inet_sk(sk)->hdrincl)
++		if (sk->sk_socket->type == SOCK_RAW &&
++		    !(fl6->flowi6_flags & FLOWI_FLAG_KNOWN_NH))
+ 			icmp6_type = fl6->fl6_icmp_type;
+ 		else
+ 			icmp6_type = icmp6_hdr(skb)->icmp6_type;
 
 
 
