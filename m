@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209209-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EC9AD27429
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B10F7D26FA6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B772832B606F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3089A32B6BD6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:48:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 684ED3D3311;
-	Thu, 15 Jan 2026 17:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9843BF30C;
+	Thu, 15 Jan 2026 17:47:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ndfpexeb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfUbL6mL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5123C1FD7;
-	Thu, 15 Jan 2026 17:27:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BB23BC4D8;
+	Thu, 15 Jan 2026 17:47:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498044; cv=none; b=quVM5SQKQwPpkPa1XiomDcH4R5ZtJsfRXyc6XbXUO8byaqW1N1QBOpjSkDjSP+LlqsrxA9a6ERi5FMzJl1N8AOQ24VAQ5nOLLJs5TxT2zypeWlPI9t3KkUPkDq+YHxtYNNJHZoQ25scHtq+ZuqleT/wc5klINttbw4jvsrZvacU=
+	t=1768499268; cv=none; b=nT/I8zh/0aVmJcykZRBURbtZ1FL2sGDodsmb3qvZWzGgUP94eJ94sOtVr11Om3q4D8LZW8FpNdpPX0ff/UcdgE5f1oR+czLUM2lmXa3zmLdbrEATmE79HwIFgc58E4AoQQ9+x14u49e3EimlvowH26J4fFBtWGn4pqNCKbMtRLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498044; c=relaxed/simple;
-	bh=jbaWy38s+zqQFDumk5gFP8ymIKKVw2SyVdzigAgpNWk=;
+	s=arc-20240116; t=1768499268; c=relaxed/simple;
+	bh=FBZMR+GVAILah3JNNegM1kA+jz0hv7WtG5VikFnjiMs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ws1Y4qiEhCykQq6gQg8+46mH/r6uE519eupbR6r0Gp+eXHbLiEcHVeU/15oztu2mvXJreBRr6M4pNP+nan9RXUvi+c4HnC0Yis+yQ39BOYziNuITbMTMc1kjs0M2UdvakM/GcyEJdYyN6Jha0m27v1nR7GfbDcx5RINdoNSHf8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ndfpexeb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA7DEC116D0;
-	Thu, 15 Jan 2026 17:27:23 +0000 (UTC)
+	 MIME-Version; b=MCIwXf+y/OD4AZ/FDeWz5Hn2qpVkcq57oqYlW7nfk9pp4YyxrnjDWdu+iyUkLTM0KJ/+rkKYPX0GFPL4coXh/SdoVFGIQwnF/us/+qVcAqfujUJ8a+wmcN33R/UdMII2osXEtBKZJAy7+/TZLlmIXrrLh9axVEubXW6vfzKyeSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfUbL6mL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C9DC116D0;
+	Thu, 15 Jan 2026 17:47:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498044;
-	bh=jbaWy38s+zqQFDumk5gFP8ymIKKVw2SyVdzigAgpNWk=;
+	s=korg; t=1768499268;
+	bh=FBZMR+GVAILah3JNNegM1kA+jz0hv7WtG5VikFnjiMs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ndfpexeb/oFykBwWAVbTWGoBg0kVb6LRy/os+vJ3Ns7mOz5NI1ml2ZuS4sefB+7oT
-	 UzwamfSoZaKifAoZT4/MU4waXmlHpguSrjq3XR7aGaLr0MphWOZ7FAoYGgmezrG6VE
-	 H9X2QTBr0v/C6GvrhkA5/eRjdCzaXy7TRQkqkJGI=
+	b=pfUbL6mLpcwPyl3ED+AEtigPTzCsICt6Hgt83pJS+K/g1S8BDi1q9tMCWRWAmUKfy
+	 +db2LCGa4ryg4tP8OkdcItAigxH1Nai/378BaFoza51WFoS5d9csksdvhGzCCE0DSK
+	 wMK2I8jsT+VE5HLPc3C6vGCHq1U7tj57Me4zphNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 5.15 294/554] usb: phy: fsl-usb: Fix use-after-free in delayed work during device removal
-Date: Thu, 15 Jan 2026 17:46:00 +0100
-Message-ID: <20260115164256.869605605@linuxfoundation.org>
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 160/451] cpufreq: s5pv210: fix refcount leak
+Date: Thu, 15 Jan 2026 17:46:01 +0100
+Message-ID: <20260115164236.699687452@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,57 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f upstream.
+[ Upstream commit 2de5cb96060a1664880d65b120e59485a73588a8 ]
 
-The delayed work item otg_event is initialized in fsl_otg_conf() and
-scheduled under two conditions:
-1. When a host controller binds to the OTG controller.
-2. When the USB ID pin state changes (cable insertion/removal).
+In function `s5pv210_cpu_init`, a possible refcount inconsistency has
+been identified, causing a resource leak.
 
-A race condition occurs when the device is removed via fsl_otg_remove():
-the fsl_otg instance may be freed while the delayed work is still pending
-or executing. This leads to use-after-free when the work function
-fsl_otg_event() accesses the already freed memory.
+Why it is a bug:
+1. For every clk_get, there should be a matching clk_put on every
+successive error handling path.
+2. After calling `clk_get(dmc1_clk)`, variable `dmc1_clk` will not be
+freed even if any error happens.
 
-The problematic scenario:
+How it is fixed: For every failed path, an extra goto label is added to
+ensure `dmc1_clk` will be freed regardlessly.
 
-(detach thread)            | (delayed work)
-fsl_otg_remove()           |
-  kfree(fsl_otg_dev) //FREE| fsl_otg_event()
-                           |   og = container_of(...) //USE
-                           |   og-> //USE
-
-Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
-before deallocating the fsl_otg structure. This ensures the delayed work
-is properly canceled and completes execution prior to memory deallocation.
-
-This bug was identified through static analysis.
-
-Fixes: 0807c500a1a6 ("USB: add Freescale USB OTG Transceiver driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20251205034831.12846-1-duoming@zju.edu.cn
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-fsl-usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/cpufreq/s5pv210-cpufreq.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/phy/phy-fsl-usb.c
-+++ b/drivers/usb/phy/phy-fsl-usb.c
-@@ -987,6 +987,7 @@ static int fsl_otg_remove(struct platfor
- {
- 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
+diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
+index bed496cf8d247..f95b4658097a6 100644
+--- a/drivers/cpufreq/s5pv210-cpufreq.c
++++ b/drivers/cpufreq/s5pv210-cpufreq.c
+@@ -518,7 +518,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
  
-+	disable_delayed_work_sync(&fsl_otg_dev->otg_event);
- 	usb_remove_phy(&fsl_otg_dev->phy);
- 	free_irq(fsl_otg_dev->irq, fsl_otg_dev);
+ 	if (policy->cpu != 0) {
+ 		ret = -EINVAL;
+-		goto out_dmc1;
++		goto out;
+ 	}
  
+ 	/*
+@@ -530,7 +530,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
+ 		pr_err("CPUFreq doesn't support this memory type\n");
+ 		ret = -EINVAL;
+-		goto out_dmc1;
++		goto out;
+ 	}
+ 
+ 	/* Find current refresh counter and frequency each DMC */
+@@ -544,6 +544,8 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 	cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
+ 	return 0;
+ 
++out:
++	clk_put(dmc1_clk);
+ out_dmc1:
+ 	clk_put(dmc0_clk);
+ out_dmc0:
+-- 
+2.51.0
+
 
 
 
