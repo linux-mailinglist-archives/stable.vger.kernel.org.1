@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209105-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209553-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D0CD267F0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:47 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6FB5DD27AB1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:39:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5E77D3055344
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EB47A3083D27
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0558439E199;
-	Thu, 15 Jan 2026 17:22:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A342D94A7;
+	Thu, 15 Jan 2026 17:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZF4GXPYa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j6pmbPQc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC2EA2D9494;
-	Thu, 15 Jan 2026 17:22:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7502D2C0F83;
+	Thu, 15 Jan 2026 17:43:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497747; cv=none; b=XT+OufhEMoisIkmjMEFJrT43B3t1qVKvx+YEDzTCsSXwPOCvwG9sRPjdtf7YRsDTsFvQ8yRKSwPlm9df9EPKirfJlUrRLjEluUof9H6a6HjrQMtljjozExZGRBKzQOpxZHeiVhMZndp/zEwTZ2kDytU88Zik0JEYqWmP1Qhimmc=
+	t=1768499024; cv=none; b=NhbAwS7BM7kEG1zFDtMSC3HSEZ0p4R8EifgKAA5efGLYCQmCAwAP4EzV2Gd4CovfVNKyGo3GVgoNOTZE1tHSdmTJ7B67eEWzMHypLGCrPIx1w0PVJfdzFtfCe1UcDDSKvvQjE/bgVLg/7MIWNwWOhfpN+U/Nw+yvTbSxOW2ZTSo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497747; c=relaxed/simple;
-	bh=8fEcr555e31aUU5sxZk2D6HvG/uzZzdXKnOCO0IKAF8=;
+	s=arc-20240116; t=1768499024; c=relaxed/simple;
+	bh=NvnSMGXtlSqjRaiPDjNU7RxrrJCyqfIwV07HxsiABw4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IOsnHtFpEnM1HftNXXymPzvxxfdIw1z+y1jRFjdkQSzgJej7vji+Z7NkZ1SS6lt04RZBrOm+9eb/wMNqrVhjQV90Kco0hX7jA6xYckR2zuaF2HErbZeBd2071YD2DOwfuQJeOzhG7AYQhW8bem3KenFYT26IVOp8bNqH9gt2EJU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZF4GXPYa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4912EC116D0;
-	Thu, 15 Jan 2026 17:22:27 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cmIf3UuZVlC9t8+4+VfBm6UksestZ8d0yzywYEjzCBlP9Hx+Im7HVkQX3nkfgEp5ITk/pDH/e6LEEEqCdvYekY/0TwLSfi6spEDuHMP3QaXoZ14U2dEt/t1hOwwt8osPugs/T17XUqmmnCYNVEfhOzAPV4KKOcmfIYky8bcnF48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j6pmbPQc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF3CAC116D0;
+	Thu, 15 Jan 2026 17:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497747;
-	bh=8fEcr555e31aUU5sxZk2D6HvG/uzZzdXKnOCO0IKAF8=;
+	s=korg; t=1768499024;
+	bh=NvnSMGXtlSqjRaiPDjNU7RxrrJCyqfIwV07HxsiABw4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZF4GXPYaA2RQpd9d1UETvRKBYdtjLiVegwgQgYa4IKjhhZZ+S4WkT9itwCKR8sLSD
-	 NEp5MOEV429CLqCc8PeXAFfhUd2pajujiyQ92FjyoOsM9dYdOOA3Qs/GxGB4ndyJIy
-	 kh/2y6QXQgEU2+N9aPYCJPLvLWjfGLbv+7xwp3j4=
+	b=j6pmbPQcUGwZ0jawC5yctZQgqfeOztqgerZRb9SDf67DdNE/LC6KpfP2Aj3wnCwam
+	 16NnT/zRPWiJwT0DBvz0THfunCLPS9fvgoCpUeH58IV8r2RTN0C0FxL1UdvaH0QMc9
+	 o03Nt41YmivhnIQBS+9elK+m1B+AgRPX+4kdvmqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	=?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 189/554] dma/pool: eliminate alloc_pages warning in atomic_pool_expand
+Subject: [PATCH 5.10 054/451] power: supply: apm_power: only unset own apm_get_power_status
 Date: Thu, 15 Jan 2026 17:44:15 +0100
-Message-ID: <20260115164253.102194169@linuxfoundation.org>
+Message-ID: <20260115164232.854094965@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
 
-[ Upstream commit 463d439becb81383f3a5a5d840800131f265a09c ]
+[ Upstream commit bd44ea12919ac4e83c9f3997240fe58266aa8799 ]
 
-atomic_pool_expand iteratively tries the allocation while decrementing
-the page order. There is no need to issue a warning if an attempted
-allocation fails.
+Mirroring drivers/macintosh/apm_emu.c, this means that
+  modprobe apm_power && modprobe $anotherdriver && modprobe -r apm_power
+leaves $anotherdriver's apm_get_power_status instead of deleting it.
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
-[mszyprow: fixed typo]
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251202152810.142370-1-dave.kleikamp@oracle.com
+Fixes: 3788ec932bfd ("[BATTERY] APM emulation driver for class batteries")
+Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+Link: https://patch.msgid.link/xczpgox57hxbunkcbdl5fxhc4gnsajsipldfidi7355afezk64@tarta.nabijaczleweli.xyz
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/apm_power.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 37d3ddd36ae5b..1e9d4cb018693 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -93,7 +93,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
- 			page = dma_alloc_from_contiguous(NULL, 1 << order,
- 							 order, false);
- 		if (!page)
--			page = alloc_pages(gfp, order);
-+			page = alloc_pages(gfp | __GFP_NOWARN, order);
- 	} while (!page && order-- > 0);
- 	if (!page)
- 		goto out;
+diff --git a/drivers/power/supply/apm_power.c b/drivers/power/supply/apm_power.c
+index 9d1a7fbcaed42..50b9636945599 100644
+--- a/drivers/power/supply/apm_power.c
++++ b/drivers/power/supply/apm_power.c
+@@ -365,7 +365,8 @@ static int __init apm_battery_init(void)
+ 
+ static void __exit apm_battery_exit(void)
+ {
+-	apm_get_power_status = NULL;
++	if (apm_get_power_status == apm_battery_apm_get_power_status)
++		apm_get_power_status = NULL;
+ }
+ 
+ module_init(apm_battery_init);
 -- 
 2.51.0
 
