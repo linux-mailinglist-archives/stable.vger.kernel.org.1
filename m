@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209361-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208896-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1303D26A55
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C356D2680C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:35:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 893A030A1603
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4636631EA624
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 29B103C198F;
-	Thu, 15 Jan 2026 17:34:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76153C0089;
+	Thu, 15 Jan 2026 17:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nrKQBcZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEbLW68k"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4B73C1997;
-	Thu, 15 Jan 2026 17:34:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B24B3BF2F7;
+	Thu, 15 Jan 2026 17:12:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498476; cv=none; b=KoDDQ6P5SZxIb4MTpd/5BlIGSvmM6jKyZpR6Q8BeYplG9JbW7XWEBnknkxa4udeFJRx/OCvbuDAL3VyZxKh91yH0UI7CipQg2qFCXRJoHaqFuCeqbzZw0e5IAEiOuH8vMU5X9AI3noNOtnOKMM3UROXFJhve2bYdqiJafsSPxkA=
+	t=1768497152; cv=none; b=qypBmZhiC/2VYWhmu9TuvX26oZdDEPgxGZVHWTpkhjqGsbjhBnLho8Q+zP/H21GpxRA165Oh4DZgJ0qKJ23P2GSXHjTwD5fdD6h3ctxDjq8Zm2gk4Q5YW61Vjwn0S3se+L/2A2xzKl5y14Bjb1lxMykJk3wILck7W/1p+8aJfxY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498476; c=relaxed/simple;
-	bh=wPki+DrT/P380REOJ5zKwGmNjCooDDGVXnp/atL2cVM=;
+	s=arc-20240116; t=1768497152; c=relaxed/simple;
+	bh=dTw27T6oUu9M9bxw31FJhyuH0my+b81Ip/u6IlTsvHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ebZ54SGhjJnnEavVWUiYUq0lw6JqdR7n9fnL+CyEt/cXE1lPznzix96UPdE3ti2KfKw3ks2V2ZdkbmEvSumHqk4YHV8aCbI0kGhr1ns3IxrABjZFK7uBWBBJHSqW45NSa144IHkL5UUtIlcxXtz1MrNo6IyAAtiBOoTjURAkkQE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nrKQBcZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68B9EC19422;
-	Thu, 15 Jan 2026 17:34:36 +0000 (UTC)
+	 MIME-Version; b=suYN985s2bKps97PBhQuwYQb43c1fNh//UXxPx2JCWc69XBrvGIWH6cW0lYXhzNy0Fc1a/7H2Jpehs3ZCRxvPuSx0kOr/XPVaSCm25zYrjZNdAqkMNS+NKFop54ixFF9atbYGHQBUBGCXCk1YT6mcUQKH98W9tFqQ7c1rpVWtgY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEbLW68k; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0E6C19422;
+	Thu, 15 Jan 2026 17:12:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498476;
-	bh=wPki+DrT/P380REOJ5zKwGmNjCooDDGVXnp/atL2cVM=;
+	s=korg; t=1768497152;
+	bh=dTw27T6oUu9M9bxw31FJhyuH0my+b81Ip/u6IlTsvHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nrKQBcZdb9WVVA8vEifbc6LDc7ljlS/XfzELIquUrk336EhdNyiwQp6E8wz4FQNPu
-	 onkUTY0uZZj2dpzf23pXtjGzoP0KPCNYfyZxUMevLx7eNZUmbI6n4bkFv+XuOkmNGG
-	 f9H9t4GoY784WP/rUYiDGSkTQDqWAz1fp4ujQXB0=
+	b=GEbLW68kpW0Slxd3N3AdY8nEyFCbd91up6xysiER49goBWBpAFaxyntSE/DQPUHVN
+	 K8pzlrvYyExkZFpeEBrQNQ5XpsgIUEJ3WaC9bHkgUW+wmKDKqWtNyFn24jwyOJ4t9S
+	 AAcENx961knJa8nuytxTCyTn9dkoKZG6/e/ohCn0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-	Udipto Goswami <udipto.goswami@oss.qualcomm.com>,
+	Sam James <sam@gentoo.org>,
+	Magnus Lindholm <linmag7@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 445/554] usb: dwc3: keep susphy enabled during exit to avoid controller faults
+Subject: [PATCH 6.1 21/72] alpha: dont reference obsolete termio struct for TC* constants
 Date: Thu, 15 Jan 2026 17:48:31 +0100
-Message-ID: <20260115164302.376819251@linuxfoundation.org>
+Message-ID: <20260115164144.264853978@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
+From: Sam James <sam@gentoo.org>
 
-[ Upstream commit e1003aa7ec9eccdde4c926bd64ef42816ad55f25 ]
+[ Upstream commit 9aeed9041929812a10a6d693af050846942a1d16 ]
 
-On some platforms, switching USB roles from host to device can trigger
-controller faults due to premature PHY power-down. This occurs when the
-PHY is disabled too early during teardown, causing synchronization
-issues between the PHY and controller.
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-Keep susphy enabled during dwc3_host_exit() and dwc3_gadget_exit()
-ensures the PHY remains in a low-power state capable of handling
-required commands during role switch.
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Cc: stable <stable@kernel.org>
-Fixes: 6d735722063a ("usb: dwc3: core: Prevent phy suspend during init")
-Suggested-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Signed-off-by: Udipto Goswami <udipto.goswami@oss.qualcomm.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251126054221.120638-1-udipto.goswami@oss.qualcomm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Adjust context ]
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Signed-off-by: Sam James <sam@gentoo.org>
+Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/6ebd3451908785cad53b50ca6bc46cfe9d6bc03c.1764922497.git.sam@gentoo.org
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/gadget.c |    2 +-
- drivers/usb/dwc3/host.c   |    2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ arch/alpha/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/usb/dwc3/gadget.c
-+++ b/drivers/usb/dwc3/gadget.c
-@@ -4585,7 +4585,7 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
- 	if (!dwc->gadget)
- 		return;
+diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
+index 971311605288f..a09d04b49cc65 100644
+--- a/arch/alpha/include/uapi/asm/ioctls.h
++++ b/arch/alpha/include/uapi/asm/ioctls.h
+@@ -23,10 +23,10 @@
+ #define TCSETSW		_IOW('t', 21, struct termios)
+ #define TCSETSF		_IOW('t', 22, struct termios)
  
--	dwc3_enable_susphy(dwc, false);
-+	dwc3_enable_susphy(dwc, true);
- 	usb_del_gadget(dwc->gadget);
- 	dwc3_gadget_free_endpoints(dwc);
- 	usb_put_gadget(dwc->gadget);
---- a/drivers/usb/dwc3/host.c
-+++ b/drivers/usb/dwc3/host.c
-@@ -157,7 +157,7 @@ err:
+-#define TCGETA		_IOR('t', 23, struct termio)
+-#define TCSETA		_IOW('t', 24, struct termio)
+-#define TCSETAW		_IOW('t', 25, struct termio)
+-#define TCSETAF		_IOW('t', 28, struct termio)
++#define TCGETA          0x40127417
++#define TCSETA          0x80127418
++#define TCSETAW         0x80127419
++#define TCSETAF         0x8012741c
  
- void dwc3_host_exit(struct dwc3 *dwc)
- {
--	dwc3_enable_susphy(dwc, false);
-+	dwc3_enable_susphy(dwc, true);
- 	platform_device_unregister(dwc->xhci);
- 	dwc->xhci = NULL;
- }
+ #define TCSBRK		_IO('t', 29)
+ #define TCXONC		_IO('t', 30)
+-- 
+2.51.0
+
 
 
 
