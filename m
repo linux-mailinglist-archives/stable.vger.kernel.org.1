@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209180-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11C75D26F9F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6926BD26A97
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 970EB3163078
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BDC013083D38
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA31D3BF2FC;
-	Thu, 15 Jan 2026 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 66A533C00A7;
+	Thu, 15 Jan 2026 17:26:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fA2zAe1C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QRaHXe0W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8E16B2BDC13;
-	Thu, 15 Jan 2026 17:47:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2261139B48E;
+	Thu, 15 Jan 2026 17:26:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499254; cv=none; b=rSiMXNHXMoBSc3zOUEeMO2mKPwHJMwEbXNxjhEpLBW5uCSgLK1aFbLLdS0Vxej2Cb7v/RRj3m4ZExM9x2lXTjSTfJgcSdSYHeAJZdUK7l/84+g1/JRyJvgWa+msznlamiX4k1VwLim5hUnoPcGbkjszTJb8XXvNAB6P2sdkdt6c=
+	t=1768497962; cv=none; b=H6Kgks3TTmyyBl9udboJ3aC0KR8AB/NaPWL4hqy0Qiok+kvZLDZau8W8klWjlUznAniaL8zCX8KwWd/WmvM1fkg+K8OBbkGjXK3YXhYLY6GMCnDAfQeWfs4FKZFVhjqkUOwHoCsQNOIo+TGm4P764cFJtEQhhXNDkXIieFWqmKk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499254; c=relaxed/simple;
-	bh=9/ub4R7db/trcoShj9psoB6dN2Cm0IPS0q8K33YFDV0=;
+	s=arc-20240116; t=1768497962; c=relaxed/simple;
+	bh=JnAslVT1a4dy1vksvC3hSS0k13A33q8x5+twjV81m+A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PTrB2CWDMUeyHgNJFkGyV0z/G0iKbFgU1cgHYjY4boU0+KKhDjCZV6RzEwVCKbnfoj/7/DIrE8Zs6ScgneIz7b1+N/GaiXx7uLyfwyqgM7n0OZrsd8OTlVuy+Esr39+WmFpsVOva1IMUlfNNmXQPgmAkIV7kXV4FjgAwUmIEOKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fA2zAe1C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A0B8C116D0;
-	Thu, 15 Jan 2026 17:47:33 +0000 (UTC)
+	 MIME-Version; b=CWxLbgRoYyk9iQ6igGavqReavOjYvRLXxGieHKY5yIeNT++4iF9JZ+cto9aITCYdNFNYyl6FR9EGZVc4JLzGdo45aNJHloZdeDJzqjZVlXx4hOJOR1Cyb+c8vZhSYvlgMKDl38t4OSJNYIZPO6z0cpxIehUKCfi+XV8BXp76TRA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QRaHXe0W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E573C116D0;
+	Thu, 15 Jan 2026 17:26:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499254;
-	bh=9/ub4R7db/trcoShj9psoB6dN2Cm0IPS0q8K33YFDV0=;
+	s=korg; t=1768497961;
+	bh=JnAslVT1a4dy1vksvC3hSS0k13A33q8x5+twjV81m+A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fA2zAe1C51rf7owRxxcSGmKoNjuWchX+8pjBUHXFPtFnjWPoBofABmD5gvGi9bo9+
-	 CkLLPPQUTzYres1HEVHY0A0y/40yIz+VZ0Q4Ww6rrOdRSV83aB12DIf16ufqdzor1B
-	 imv82jh2BP3UKsm4+zjad5I//1TnTDH/KfWPRazA=
+	b=QRaHXe0WDP1Qbl8GTkmk3wJubI5P0398m4W+vSDLfkcI3mFuXKFw8yha7seg3Z4uo
+	 t40+vkMMtyLBzMKYcsSJyy9lG0okQ6p/ho6zGrhtEW/jlx7nh9jwCM0+clG1vk+NzF
+	 edUrJw1RsiuZcPVnio7ovHy8R9O57gGheLfg3/e0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alkis Georgopoulos <alkisg@gmail.com>,
-	Li Lingfeng <lilingfeng3@huawei.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 129/451] Revert "nfs: ignore SB_RDONLY when mounting nfs"
+Subject: [PATCH 5.15 264/554] scsi: qla2xxx: Use reinit_completion on mbx_intr_comp
 Date: Thu, 15 Jan 2026 17:45:30 +0100
-Message-ID: <20260115164235.589199188@linuxfoundation.org>
+Message-ID: <20260115164255.787434018@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,41 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit d4a26d34f1946142f9d32e540490e4926ae9a46b ]
+[ Upstream commit 957aa5974989fba4ae4f807ebcb27f12796edd4d ]
 
-This reverts commit 52cb7f8f177878b4f22397b9c4d2c8f743766be3.
+If a mailbox command completes immediately after
+wait_for_completion_timeout() times out, ha->mbx_intr_comp could be left
+in an inconsistent state, causing the next mailbox command not to wait
+for the hardware.  Fix by reinitializing the completion before use.
 
-Silently ignoring the "ro" and "rw" mount options causes user confusion,
-and regressions.
-
-Reported-by: Alkis Georgopoulos<alkisg@gmail.com>
-Cc: Li Lingfeng <lilingfeng3@huawei.com>
-Fixes: 52cb7f8f1778 ("nfs: ignore SB_RDONLY when mounting nfs")
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/11b6485e-0bfd-4784-8f99-c06a196dad94@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_mbx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 10759e1b89fb2..fd15280e827a0 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -11,7 +11,7 @@
- #include <linux/nfs_page.h>
- #include <linux/wait_bit.h>
+diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
+index 7a28582b1f73..771b323a5194 100644
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -253,6 +253,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
+ 	/* Issue set host interrupt command to send cmd out. */
+ 	ha->flags.mbox_int = 0;
+ 	clear_bit(MBX_INTERRUPT, &ha->mbx_cmd_flags);
++	reinit_completion(&ha->mbx_intr_comp);
  
--#define NFS_SB_MASK (SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
-+#define NFS_SB_MASK (SB_RDONLY|SB_NOSUID|SB_NODEV|SB_NOEXEC|SB_SYNCHRONOUS)
+ 	/* Unlock mbx registers and wait for interrupt */
+ 	ql_dbg(ql_dbg_mbx, vha, 0x100f,
+@@ -279,6 +280,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
+ 			    "cmd=%x Timeout.\n", command);
+ 			spin_lock_irqsave(&ha->hardware_lock, flags);
+ 			clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
++			reinit_completion(&ha->mbx_intr_comp);
+ 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
  
- extern const struct export_operations nfs_export_ops;
- 
+ 			if (chip_reset != ha->chip_reset) {
 -- 
 2.51.0
 
