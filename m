@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209750-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208769-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E871D274BB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDAB5D26374
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 96BDC317E46B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3C7283160D8B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8A23C1FF6;
-	Thu, 15 Jan 2026 17:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E353A35A4;
+	Thu, 15 Jan 2026 17:06:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0b7Xwa7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjgdDxtX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E303D4123;
-	Thu, 15 Jan 2026 17:53:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64813BC4E8;
+	Thu, 15 Jan 2026 17:06:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499585; cv=none; b=scJ0U+9cWlbO6qMX2qIFPv3E5vAGq6w9Xb0MggjtEks9ExLw2rNyiwybt6913K9wnzsotegWKh0fQW8xbUbryF7+tGiXXZqtT1u7cArwaNDA+Z0PPyVGi0hG1lwvYJswTyc7kU2odrX7CZ9kqIaBfF/yk4B2mQ7ZYaj7O1gpgoQ=
+	t=1768496790; cv=none; b=JtEApnuuTt8gtbhttBzAdC7IO2gnFkjn367nfgBFbcSyJs63WePeBIsfRpjfdHn3Xkd5SgilDuUEf1PhcK7RDPgosh35ys6jXpHgRscyT0ERtLyf6XRyhadPuTcrqGysQAh5DIBq7wHR4DhJcO3/YviJOhhMIKgTtrrIIv4Xy1s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499585; c=relaxed/simple;
-	bh=cPCjDMwIG+2Jaz7R5bBTmcQkqX9SfjfstTs9URvFaiA=;
+	s=arc-20240116; t=1768496790; c=relaxed/simple;
+	bh=p4J3+7vKN6ct16YCHdxnVFbty/nYgeetTWznw3nSDm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejLQh+8RPEaW0Nu9cXHR0xEaUFvV+z/ua4K9VMrM/Ctd+/77Do/9Rm1gxafXaa8rxoBHBl9JfvsGhSL2xYe39fypHzfNipLgvTPrBFCeC0hoRsfoMu8J7gU6nkwS/Jb8GA75IasxXLsO6qUwpnQYNT2ULWdrpHrHTGNwEyW2WIM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0b7Xwa7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8378C116D0;
-	Thu, 15 Jan 2026 17:53:04 +0000 (UTC)
+	 MIME-Version; b=HjgUpgp/0qN+ruRtW3fOwMjf7ZFOUqg03fndhZ3DDA5G9p/pGwxJf9ZCfTAI3gcD+m88+2VzsfZohhDf02hAhWknMCOEOJ6GAlbhfeefNhYtZEoSg+t5gvnaqtgtdO68kYzHXcWPXmIGC7sBKEoUl7mphnUjY+kmjy3Zk0MVWZ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjgdDxtX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440FEC116D0;
+	Thu, 15 Jan 2026 17:06:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499585;
-	bh=cPCjDMwIG+2Jaz7R5bBTmcQkqX9SfjfstTs9URvFaiA=;
+	s=korg; t=1768496790;
+	bh=p4J3+7vKN6ct16YCHdxnVFbty/nYgeetTWznw3nSDm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0b7Xwa7bn/XR3ZjwTWfAHgcTCfYlc1OlzA0trLEcubCUk3muRec852sAwvse8o1r
-	 HkEGKQxofhh5UT12I6D6JPW+DW1VHey6YOi1mNZKOcguDG9rzXWZa6CgjNkzk+R+6t
-	 5ouz4CchnTV3jx2rxNfkpzatgSIWzC4gp00Vo3y8=
+	b=kjgdDxtXHVEedczYtL+umcB7NQFyZjeOlhEO8agyruRcDobB0OMnJb/Ed9FVbE0GD
+	 PgXMEv56nFNhQdCPdLie/kFFUI/vB2fRFCOjFmu0ANo0rEpscBKI/K+M/nOlX1RY7m
+	 oKII35u8JlP99ctrgTqaYZQNRSUWNopRYxvLa4Eo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 279/451] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
+	Tuo Li <islituo@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.6 17/88] libceph: make free_choose_arg_map() resilient to partial allocation
 Date: Thu, 15 Jan 2026 17:48:00 +0100
-Message-ID: <20260115164240.975831194@linuxfoundation.org>
+Message-ID: <20260115164146.941255245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,52 +58,76 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
+commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
 
-The ibm_rtl_init() function searches for the signature but has a pointer
-arithmetic error. The loop counter suggests searching at 4-byte intervals
-but the implementation only advances by 1 byte per iteration.
+free_choose_arg_map() may dereference a NULL pointer if its caller fails
+after a partial allocation.
 
-Fix by properly advancing the pointer by sizeof(unsigned int) bytes
-each iteration.
+For example, in decode_choose_args(), if allocation of arg_map->args
+fails, execution jumps to the fail label and free_choose_arg_map() is
+called. Since arg_map->size is updated to a non-zero value before memory
+allocation, free_choose_arg_map() will iterate over arg_map->args and
+dereference a NULL pointer.
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To prevent this potential NULL pointer dereference and make
+free_choose_arg_map() more resilient, add checks for pointers before
+iterating.
+
+Cc: stable@vger.kernel.org
+Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/ibm_rtl.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ceph/osdmap.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
-index 5fc665f7d9b3..10cab7bdfe15 100644
---- a/drivers/platform/x86/ibm_rtl.c
-+++ b/drivers/platform/x86/ibm_rtl.c
-@@ -262,7 +262,7 @@ static int __init ibm_rtl_init(void) {
- 	/* search for the _RTL_ signature at the start of the table */
- 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
- 		struct ibm_rtl_table __iomem * tmp;
--		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
-+		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
- 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
- 			phys_addr_t addr;
- 			unsigned int plen;
--- 
-2.51.0
-
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -241,22 +241,26 @@ static struct crush_choose_arg_map *allo
+ 
+ static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
+ {
+-	if (arg_map) {
+-		int i, j;
++	int i, j;
+ 
+-		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++	if (!arg_map)
++		return;
+ 
++	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++
++	if (arg_map->args) {
+ 		for (i = 0; i < arg_map->size; i++) {
+ 			struct crush_choose_arg *arg = &arg_map->args[i];
+-
+-			for (j = 0; j < arg->weight_set_size; j++)
+-				kfree(arg->weight_set[j].weights);
+-			kfree(arg->weight_set);
++			if (arg->weight_set) {
++				for (j = 0; j < arg->weight_set_size; j++)
++					kfree(arg->weight_set[j].weights);
++				kfree(arg->weight_set);
++			}
+ 			kfree(arg->ids);
+ 		}
+ 		kfree(arg_map->args);
+-		kfree(arg_map);
+ 	}
++	kfree(arg_map);
+ }
+ 
+ DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
 
 
 
