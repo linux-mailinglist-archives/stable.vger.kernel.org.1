@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209212-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209650-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A936D268DE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 29F7AD26EEA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 36AF63088697
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:25 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CB93D30CA436
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:49:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47BE53D349D;
-	Thu, 15 Jan 2026 17:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C323F3C0095;
+	Thu, 15 Jan 2026 17:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Nwe/xCfv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MJgbQB+G"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B48F3D3497;
-	Thu, 15 Jan 2026 17:27:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 858B23C008E;
+	Thu, 15 Jan 2026 17:48:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498053; cv=none; b=mMsGAExIBiDN3J7tErsMCQJfQd2jtK+pBeo27t2IoHYWY4KjsELh7o2cnhcrZe5Eki9Ib4nV1yx+0YKFkrG+qq92iAWaV03PFJBRO8GpniI0pvNq0KCA0bgaDCKn/iJQUIB5/8QPFy9yDvBI8K7eBijsiBeXTqghzT9Srab1fPg=
+	t=1768499300; cv=none; b=h9k4VRccFXFe/wQCDZcshQwVGyadSR6tEWTeOZ2h2yG4C5EjF6HJIKJLYkwzjM4hEwU3/WA1ZtONCwFnpuyWoi/XI7voTxjhkBTBsmeHZqONe5DRKTo/8pJIzWD9rbrXedv9ct+diYgwm1ThDEPgQkbBSPH3nJ/n7eDbULj1tDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498053; c=relaxed/simple;
-	bh=I4wTh8k3MQlY2SFLMWI2/00h6vo+Ww7b1BtuAf1A78U=;
+	s=arc-20240116; t=1768499300; c=relaxed/simple;
+	bh=HB+t+2DFusKdSYSLwVJFrT/ELV2dSDfUpkDRBBFk2vk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=O37SNWTOW97RYMWJrTLL67acM4Gx/j58B0K6FZFUFqbcCiw2nzXnEL6JGOjC1zwxIG/9fdYqNOaB02TssQRTaDsp8S2bd3XSJg0cbjDltsLwOXW7bV5gIHL7hoKJwcI/vc2rTIBWtGpJ+VeoQ/6NwIbQD/LmlrfjcB62DYcuqlc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Nwe/xCfv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 899D0C19423;
-	Thu, 15 Jan 2026 17:27:32 +0000 (UTC)
+	 MIME-Version; b=kqDIaa/AOp6uITSHFSw3RVWKx6mlVX2rAXDedea3Tg/kkwgcamJoi0ykpl5F12ujAbEkqXzNS6jztXF5iY0Dh8EZ/rGOKA7U7hAUTPojXfJb7Ta5VFHFZZGyJwI6eI+2lY87Nk0QbV4H5EyidDxRMyR7ygNpjI2gKmTt2sYEtYw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MJgbQB+G; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A637EC19422;
+	Thu, 15 Jan 2026 17:48:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498052;
-	bh=I4wTh8k3MQlY2SFLMWI2/00h6vo+Ww7b1BtuAf1A78U=;
+	s=korg; t=1768499300;
+	bh=HB+t+2DFusKdSYSLwVJFrT/ELV2dSDfUpkDRBBFk2vk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Nwe/xCfv/JgisRXF34LewD/mZzHXNAS8oxImekkCrm14K4ddjJ55c8vhAXoKR6IPj
-	 vn2iMjwYouL87IqeqwThoKfpNQBdbtFyYfrhhwBHnrl2hj1E8cAC7Cpnjt8ttxmkQS
-	 kswI2E0MYo+S2N9qOZki0dwrHLLRo7eWaCdzffyo=
+	b=MJgbQB+GK7LsvGfllKkNMH7wh4MUOCM73IKnKAzKuBJFWD8VuytwRDyEct2T2Q9jw
+	 gYADYa7FrMgeApd2HptU92P1o9zxXZ5Nz/bvfH8et35IEZGM5xx9guRj1bw4rKsCaJ
+	 rfavlYhqbU6stHVDPVzI4wZgb89aBct/fsyr7/SI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.15 296/554] usb: dwc3: of-simple: fix clock resource leak in dwc3_of_simple_probe
+	Song Liu <song@kernel.org>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Petr Mladek <pmladek@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 161/451] livepatch: Match old_sympos 0 and 1 in klp_find_func()
 Date: Thu, 15 Jan 2026 17:46:02 +0100
-Message-ID: <20260115164256.947677700@linuxfoundation.org>
+Message-ID: <20260115164236.735196500@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Song Liu <song@kernel.org>
 
-commit 3b4961313d31e200c9e974bb1536cdea217f78b5 upstream.
+[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
 
-When clk_bulk_prepare_enable() fails, the error path jumps to
-err_resetc_assert, skipping clk_bulk_put_all() and leaking the
-clock references acquired by clk_bulk_get_all().
+When there is only one function of the same name, old_sympos of 0 and 1
+are logically identical. Match them in klp_find_func().
 
-Add err_clk_put_all label to properly release clock resources
-in all error paths.
+This is to avoid a corner case with different toolchain behavior.
 
-Found via static analysis and code review.
+In this specific issue, two versions of kpatch-build were used to
+build livepatch for the same kernel. One assigns old_sympos == 0 for
+unique local functions, the other assigns old_sympos == 1 for unique
+local functions. Both versions work fine by themselves. (PS: This
+behavior change was introduced in a downstream version of kpatch-build.
+This change does not exist in upstream kpatch-build.)
 
-Fixes: c0c61471ef86 ("usb: dwc3: of-simple: Convert to bulk clk API")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251211064937.2360510-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+However, during livepatch upgrade (with the replace flag set) from a
+patch built with one version of kpatch-build to the same fix built with
+the other version of kpatch-build, livepatching fails with errors like:
+
+[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
+...
+[   14.219466] Call Trace:
+[   14.219468]  <TASK>
+[   14.219469]  dump_stack_lvl+0x47/0x60
+[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
+[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
+[   14.219479]  kobject_add_internal+0x9e/0x260
+[   14.219483]  kobject_add+0x68/0x80
+[   14.219485]  ? kstrdup+0x3c/0xa0
+[   14.219486]  klp_enable_patch+0x320/0x830
+[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
+[   14.219491]  ? 0xffffffffa05eb000
+[   14.219492]  do_one_initcall+0x2e/0x190
+[   14.219494]  do_init_module+0x67/0x270
+[   14.219496]  init_module_from_file+0x75/0xa0
+[   14.219499]  idempotent_init_module+0x15a/0x240
+[   14.219501]  __x64_sys_finit_module+0x61/0xc0
+[   14.219503]  do_syscall_64+0x5b/0x160
+[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
+[   14.219507] RIP: 0033:0x7f545a4bd96d
+...
+[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
+    -EEXIST, don't try to register things with the same name ...
+
+This happens because klp_find_func() thinks somefunc with old_sympos==0
+is not the same as somefunc with old_sympos==1, and klp_add_object_nops
+adds another xxx/func,1 to the list of functions to patch.
+
+Signed-off-by: Song Liu <song@kernel.org>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+[pmladek@suse.com: Fixed some typos.]
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Tested-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc3/dwc3-of-simple.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ kernel/livepatch/core.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-of-simple.c
-+++ b/drivers/usb/dwc3/dwc3-of-simple.c
-@@ -71,11 +71,11 @@ static int dwc3_of_simple_probe(struct p
- 	simple->num_clocks = ret;
- 	ret = clk_bulk_prepare_enable(simple->num_clocks, simple->clks);
- 	if (ret)
--		goto err_resetc_assert;
-+		goto err_clk_put_all;
+diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
+index 147ed154ebc77..c49042f5e71ec 100644
+--- a/kernel/livepatch/core.c
++++ b/kernel/livepatch/core.c
+@@ -89,8 +89,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
+ 	struct klp_func *func;
  
- 	ret = of_platform_populate(np, NULL, NULL, dev);
- 	if (ret)
--		goto err_clk_put;
-+		goto err_clk_disable;
- 
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
-@@ -83,8 +83,9 @@ static int dwc3_of_simple_probe(struct p
- 
- 	return 0;
- 
--err_clk_put:
-+err_clk_disable:
- 	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
-+err_clk_put_all:
- 	clk_bulk_put_all(simple->num_clocks, simple->clks);
- 
- err_resetc_assert:
+ 	klp_for_each_func(obj, func) {
++		/*
++		 * Besides identical old_sympos, also consider old_sympos
++		 * of 0 and 1 are identical.
++		 */
+ 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
+-		    (old_func->old_sympos == func->old_sympos)) {
++		    ((old_func->old_sympos == func->old_sympos) ||
++		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
++		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
+ 			return func;
+ 		}
+ 	}
+-- 
+2.51.0
+
 
 
 
