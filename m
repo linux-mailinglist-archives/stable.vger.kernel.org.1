@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-208483-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208526-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D1ABD25E13
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:53:27 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id EDC62D25E6E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id ABA463042495
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:52:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DC9993011446
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5840F3A35BE;
-	Thu, 15 Jan 2026 16:52:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D663BF2EA;
+	Thu, 15 Jan 2026 16:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ToIaDu7x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzFS+yqW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C01E3ACEFF;
-	Thu, 15 Jan 2026 16:52:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B043ACA63;
+	Thu, 15 Jan 2026 16:55:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768495978; cv=none; b=di+pTiFPRjUu84y7yYSioWMff3kFtXi/0irZWUv2bxNPU1zd7NWn8FWEv8kCHwee8Iv0URYiJh4DaAApl5BrMiFtyn7cX1wWGEp/h6BCnPJx6k8fmh5eMkxFuTp2d16AZb9VrCXxsOIBn8v03/XGEjsomVFu/fwRWaQezkZxcdg=
+	t=1768496100; cv=none; b=JlZu5aGJpgrxzZc9U332Ylsm/Y3Nvyr2iP8N/jlbbI6mGimJr4IHgRrgMD/H/MZK0hIsrf1SKlCrTILuPWfE2xvp51hcE6fUx3hIkok5RzAVF+/ivddt7RZOQt3CGYWK5sFUpUg8noEklZ+s9l23QRoyHX5RxlT/k9hvCZkNblw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768495978; c=relaxed/simple;
-	bh=lKJdHJWprXdjN5LcJ6gWscNT75n1h6oGTw/T+3dukY8=;
+	s=arc-20240116; t=1768496100; c=relaxed/simple;
+	bh=5UCpXALC43CbGgyLA/at5YjGJ2kKrv6PyfyIWYk+GUY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jBm/U4I2G1uX4Yxg3BWUImgadRGABSzVrI0jCSQTg2LJvvmfcF3qK6C+wLWw/ZTguM0Szr5pyCRyNcqC8i12gXh11Agce6DVdiWPlrL13XvDG+9sbPtJKu+5aR8FgxJaYp0mR1OAG4I/qWetgX+WPPnq8fn9WyDe41gbrMVhA1U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ToIaDu7x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53D67C116D0;
-	Thu, 15 Jan 2026 16:52:57 +0000 (UTC)
+	 MIME-Version; b=unjy2zxHRn/QoRKei+uAtwyFgps8hwQPaNL3dgJ7fDmi9Pm8ApwNKCD6a/f2E+XQ6ahQ0vTLpV99eg+VwZNt80d8p1ryFwP5vhDt4PA/kswcR+d1Kq4BP+20WIqteMSFRGkTKhlGopfxC+8/VxLJ+RM+BzMk1z2xIDsF6HLw68k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzFS+yqW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1056C16AAE;
+	Thu, 15 Jan 2026 16:54:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768495977;
-	bh=lKJdHJWprXdjN5LcJ6gWscNT75n1h6oGTw/T+3dukY8=;
+	s=korg; t=1768496100;
+	bh=5UCpXALC43CbGgyLA/at5YjGJ2kKrv6PyfyIWYk+GUY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ToIaDu7xNQniEGtUnx4f7NiJDX8qWF3pZ1YzZAZf5M9vifmEcqFIkmG4yIVIcuFk4
-	 YGUO/EX/+P3tAiKYWP5nICsifQZpI5lrgGIyJjjDA1vS9Bpjsx+sfsA+bqKD91PfO4
-	 WglZam8mieKscM+Ez6k8UduHYJ0oWUqD2OGOcLWY=
+	b=nzFS+yqWS6Dju0wxEoehEmc+1kBIcuAWAp/LJLc67azfJlFi7mEtQn1KWnVOkMmvi
+	 0Naa4+rfILa7rEIBP2QHhh/AxtTg3jNEoLXFQHWzMiFoxPkCZ+v9ILCCm1u0nTxh6l
+	 E4WoJt2iISKOKrrgVdepQ/vbxVaAfPzJcxjxDpUs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linnaea Lavia <linnaea-von-lavia@live.com>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.18 033/181] PCI: meson: Report that link is up while in ASPM L0s and L1 states
-Date: Thu, 15 Jan 2026 17:46:10 +0100
-Message-ID: <20260115164203.523540754@linuxfoundation.org>
+	Val Packett <val@packett.cool>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.18 034/181] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
+Date: Thu, 15 Jan 2026 17:46:11 +0100
+Message-ID: <20260115164203.560301055@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -64,99 +66,88 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit df27c03b9e3ef2baa9e9c9f56a771d463a84489d upstream.
+commit ebc18e9854e5a2b62a041fb57b216a903af45b85 upstream.
 
-Previously meson_pcie_link_up() only returned true if the link was in the
-L0 state.  This was incorrect because hardware autonomously manages
-transitions between L0, L0s, and L1 while both components on the link stay
-in D0.  Those states should all be treated as "link is active".
+The gpio_chip settings in this driver say the controller can't sleep
+but it actually uses a mutex for synchronization. This triggers the
+following BUG():
 
-Returning false when the device was in L0s or L1 broke config accesses
-because dw_pcie_other_conf_map_bus() fails if the link is down, which
-caused errors like this:
+[    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
+[    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
+[    9.233669] preempt_count: 1, expected: 0
+[    9.233673] RCU nest depth: 0, expected: 0
+[    9.233688] Tainted: [W]=WARN
+[    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
+[    9.233694] Call trace:
+[    9.233696]  show_stack+0x24/0x38 (C)
+[    9.233709]  dump_stack_lvl+0x40/0x88
+[    9.233716]  dump_stack+0x18/0x24
+[    9.233722]  __might_resched+0x148/0x160
+[    9.233731]  __might_sleep+0x38/0x98
+[    9.233736]  mutex_lock+0x30/0xd8
+[    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
+[    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
+[    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233779]  gpiod_direction_output+0x38/0xd0
+[    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
+[    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233806]  gpiod_configure_flags+0x2c0/0x580
+[    9.233812]  gpiod_find_and_request+0x358/0x4f8
+[    9.233819]  gpiod_get_index+0x7c/0x98
+[    9.233826]  devm_gpiod_get+0x34/0xb0
+[    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
+[    9.233836]  auxiliary_bus_probe+0xb0/0xf0
+[    9.233845]  really_probe+0x14c/0x450
+[    9.233853]  __driver_probe_device+0xb0/0x188
+[    9.233858]  driver_probe_device+0x4c/0x250
+[    9.233863]  __driver_attach+0xf8/0x2a0
+[    9.233868]  bus_for_each_dev+0xf8/0x158
+[    9.233872]  driver_attach+0x30/0x48
+[    9.233876]  bus_add_driver+0x158/0x2b8
+[    9.233880]  driver_register+0x74/0x118
+[    9.233886]  __auxiliary_driver_register+0x94/0xe8
+[    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
+[    9.233898]  do_one_initcall+0xec/0x300
+[    9.233903]  do_init_module+0x64/0x260
+[    9.233910]  load_module+0x16c4/0x1900
+[    9.233915]  __arm64_sys_finit_module+0x24c/0x378
+[    9.233919]  invoke_syscall+0x4c/0xe8
+[    9.233925]  el0_svc_common+0x8c/0xf0
+[    9.233929]  do_el0_svc+0x28/0x40
+[    9.233934]  el0_svc+0x38/0x100
+[    9.233938]  el0t_64_sync_handler+0x84/0x130
+[    9.233943]  el0t_64_sync+0x17c/0x180
 
-  meson-pcie fc000000.pcie: error: wait linkup timeout
-  pci 0000:01:00.0: BAR 0: error updating (0xfc700004 != 0xffffffff)
+Mark the controller as sleeping.
 
-Remove the LTSSM state check, timeout, speed check, and error message from
-meson_pcie_link_up(), the dw_pcie_ops.link_up() method, so it is a simple
-boolean check of whether the link is active.  Timeouts and error messages
-are handled at a higher level, e.g., dw_pcie_wait_for_link().
-
-Fixes: 9c0ef6d34fdb ("PCI: amlogic: Add the Amlogic Meson PCIe controller driver")
-Reported-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-Closes: https://lore.kernel.org/r/DM4PR05MB102707B8CDF84D776C39F22F2C7F0A@DM4PR05MB10270.namprd05.prod.outlook.com
-[bhelgaas: squash removal of unused WAIT_LINKUP_TIMEOUT by
-Martin Blumenstingl <martin.blumenstingl@googlemail.com>:
-https://patch.msgid.link/20260105125625.239497-1-martin.blumenstingl@googlemail.com]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Tested-by: Linnaea Lavia <linnaea-von-lavia@live.com>
-Tested-by: Neil Armstrong <neil.armstrong@linaro.org> # on BananaPi M2S
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251103221930.1831376-1-helgaas@kernel.org
-Link: https://patch.msgid.link/20260105125625.239497-1-martin.blumenstingl@googlemail.com
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/dwc/pci-meson.c |   37 ++-------------------------------
- 1 file changed, 3 insertions(+), 34 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/pci/controller/dwc/pci-meson.c
-+++ b/drivers/pci/controller/dwc/pci-meson.c
-@@ -37,7 +37,6 @@
- #define PCIE_CFG_STATUS17		0x44
- #define PM_CURRENT_STATE(x)		(((x) >> 7) & 0x1)
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -498,7 +498,7 @@ int lpi_pinctrl_probe(struct platform_de
+ 	pctrl->chip.base = -1;
+ 	pctrl->chip.ngpio = data->npins;
+ 	pctrl->chip.label = dev_name(dev);
+-	pctrl->chip.can_sleep = false;
++	pctrl->chip.can_sleep = true;
  
--#define WAIT_LINKUP_TIMEOUT		4000
- #define PORT_CLK_RATE			100000000UL
- #define MAX_PAYLOAD_SIZE		256
- #define MAX_READ_REQ_SIZE		256
-@@ -350,40 +349,10 @@ static struct pci_ops meson_pci_ops = {
- static bool meson_pcie_link_up(struct dw_pcie *pci)
- {
- 	struct meson_pcie *mp = to_meson_pcie(pci);
--	struct device *dev = pci->dev;
--	u32 speed_okay = 0;
--	u32 cnt = 0;
--	u32 state12, state17, smlh_up, ltssm_up, rdlh_up;
--
--	do {
--		state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
--		state17 = meson_cfg_readl(mp, PCIE_CFG_STATUS17);
--		smlh_up = IS_SMLH_LINK_UP(state12);
--		rdlh_up = IS_RDLH_LINK_UP(state12);
--		ltssm_up = IS_LTSSM_UP(state12);
--
--		if (PM_CURRENT_STATE(state17) < PCIE_GEN3)
--			speed_okay = 1;
--
--		if (smlh_up)
--			dev_dbg(dev, "smlh_link_up is on\n");
--		if (rdlh_up)
--			dev_dbg(dev, "rdlh_link_up is on\n");
--		if (ltssm_up)
--			dev_dbg(dev, "ltssm_up is on\n");
--		if (speed_okay)
--			dev_dbg(dev, "speed_okay\n");
--
--		if (smlh_up && rdlh_up && ltssm_up && speed_okay)
--			return true;
-+	u32 state12;
+ 	mutex_init(&pctrl->lock);
  
--		cnt++;
--
--		udelay(10);
--	} while (cnt < WAIT_LINKUP_TIMEOUT);
--
--	dev_err(dev, "error: wait linkup timeout\n");
--	return false;
-+	state12 = meson_cfg_readl(mp, PCIE_CFG_STATUS12);
-+	return IS_SMLH_LINK_UP(state12) && IS_RDLH_LINK_UP(state12);
- }
- 
- static int meson_pcie_host_init(struct dw_pcie_rp *pp)
 
 
 
