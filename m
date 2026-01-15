@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209077-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209498-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 03DE3D264C3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:21:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21C65D26CA2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 040ED30080D0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BA44306205D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F4D2D948D;
-	Thu, 15 Jan 2026 17:21:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F13613624C4;
+	Thu, 15 Jan 2026 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZbLj9Yiq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r7icK8O3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B70113ACA65;
-	Thu, 15 Jan 2026 17:21:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B2CE43271F2;
+	Thu, 15 Jan 2026 17:41:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497670; cv=none; b=mQltq5RW+FaXpOR6NAwcLI8CzsyUtWX96RE5w61z2weRbhzi/4N5EX88SpcmmkjR5ImWhCqtVAEjuif0FuGnkG07VfVKnz7lNlaRpw27tw648e1y7zUpJran5WRsp46ZeUo2YAWJUKbyLj3+cg/iEL8CWqyk5r+gAVr5f8ROvw4=
+	t=1768498867; cv=none; b=cbSe63BMONi1pt/XP/7auUFcxG3qQFxj4ukddZl0QU7d6KTmUS9sgNZIJHl5TzqglBpTmjyEp222U5M4mlnLaSyK3pN5i8uKf30pUSonZ+iwZqLmMVP6HPHwavqJ/f0cECjITucxUA+sVpmjujSXNbUY5t2A4yFjkJP9s66euS8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497670; c=relaxed/simple;
-	bh=xhmtJSPw2hDrZbsLOTt6dkOS268yeMxog4JZ0MoqsR0=;
+	s=arc-20240116; t=1768498867; c=relaxed/simple;
+	bh=QWuVjbbJWXbZ4AfqrC9/yu5E6CeaDGLbPeYVQUHjfl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OtyDCE9eHEvUtpPOIqXHaC7HQv4zovDyc8NjVAhwJRQwpd0DqopR5rm/5fclEKcsXxkANTUdYMjX+Tt5tnX7CVlSboKz+yxTPny2kTUy+BM49+zMDxkPJeAkjRewgyXVqzdd6IfKbUT0r7I854WuL7pwxU45PFovqWmwTQ2ID/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZbLj9Yiq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32451C116D0;
-	Thu, 15 Jan 2026 17:21:10 +0000 (UTC)
+	 MIME-Version; b=ms5iD7UewTg//e1h7woTG9WpO5nmlzID0Z3mvl7Lsk469qlu/JbYwovNg+2GH6kMzJBs/cnKFFS84aj3d/2z/M1SwdxYeyUsONZbGohMqSbdYeumbOmxDIrDaQUMV62Uy2aJv+xyUa1bvYhE6fR0VY6BbaFNp2lPj7zQkSYJJ8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r7icK8O3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33D03C19422;
+	Thu, 15 Jan 2026 17:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497670;
-	bh=xhmtJSPw2hDrZbsLOTt6dkOS268yeMxog4JZ0MoqsR0=;
+	s=korg; t=1768498867;
+	bh=QWuVjbbJWXbZ4AfqrC9/yu5E6CeaDGLbPeYVQUHjfl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZbLj9Yiq4vQsbKSLrctu4Y+EWfzX1Qiz/Qd+gF22Lr83SE0T+UgOXuNyqXVralEGn
-	 0NWdd6NkMQzW01bWih+0TuxNfz1f2kcrBhnp9NrykABwywrNEr6gHoQusbd2Qs5Ffo
-	 xosbq8ejZkqHkhn42th3lHbHReQzsF/uNy42vQ1I=
+	b=r7icK8O3by6lbohCSN61JiomTMBDuZmk90QNbscwXLM415Amx5IbEaZ2NavLAk8kc
+	 4ZOvPJaIbeqR6OOo2fXUwfIO3/l0Em9CF961ZIypFWCjM4lPihptulDV3AQhIBG1NY
+	 etxlUSu53TY+HHQU7zAqyIpfVrQIBCh+c25+ekwk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Kodanev <aleksei.kodanev@bell-sw.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 161/554] net: stmmac: fix rx limit check in stmmac_rx_zc()
-Date: Thu, 15 Jan 2026 17:43:47 +0100
-Message-ID: <20260115164252.095648166@linuxfoundation.org>
+	Navaneeth K <knavaneeth786@gmail.com>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.10 027/451] staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
+Date: Thu, 15 Jan 2026 17:43:48 +0100
+Message-ID: <20260115164231.874871687@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +59,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
+From: Navaneeth K <knavaneeth786@gmail.com>
 
-[ Upstream commit 8048168df56e225c94e50b04cb7b0514135d7a1c ]
+commit 6ef0e1c10455927867cac8f0ed6b49f328f8cf95 upstream.
 
-The extra "count >= limit" check in stmmac_rx_zc() is redundant and
-has no effect because the value of "count" doesn't change after the
-while condition at this point.
+The Supported Rates IE length from an incoming Association Request frame
+was used directly as the memcpy() length when copying into a fixed-size
+16-byte stack buffer (supportRate). A malicious station can advertise an
+IE length larger than 16 bytes, causing a stack buffer overflow.
 
-However, it can change after "read_again:" label:
+Clamp ie_len to the buffer size before copying the Supported Rates IE,
+and correct the bounds check when merging Extended Supported Rates to
+prevent a second potential overflow.
 
-        while (count < limit) {
-            ...
+This prevents kernel stack corruption triggered by malformed association
+requests.
 
-            if (count >= limit)
-                break;
-    read_again:
-            ...
-            /* XSK pool expects RX frame 1:1 mapped to XSK buffer */
-            if (likely(status & rx_not_ls)) {
-                xsk_buff_free(buf->xdp);
-                buf->xdp = NULL;
-                dirty++;
-                count++;
-                goto read_again;
-            }
-            ...
-
-This patch addresses the same issue previously resolved in stmmac_rx()
-by commit fa02de9e7588 ("net: stmmac: fix rx budget limit check").
-The fix is the same: move the check after the label to ensure that it
-bounds the goto loop.
-
-Fixes: bba2556efad6 ("net: stmmac: Enable RX via AF_XDP zero-copy")
-Signed-off-by: Alexey Kodanev <aleksei.kodanev@bell-sw.com>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Link: https://patch.msgid.link/20251126104327.175590-1-aleksei.kodanev@bell-sw.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
+Cc: stable <stable@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/stmicro/stmmac/stmmac_main.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 973c60e013344..e056b512c1277 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -4983,10 +4983,10 @@ static int stmmac_rx_zc(struct stmmac_priv *priv, int limit, u32 queue)
- 			len = 0;
- 		}
+--- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
++++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
+@@ -1281,6 +1281,9 @@ unsigned int OnAssocReq(struct adapter *
+ 		status = _STATS_FAILURE_;
+ 		goto OnAssocReqFail;
+ 	} else {
++		if (ie_len > sizeof(supportRate))
++			ie_len = sizeof(supportRate);
++
+ 		memcpy(supportRate, p+2, ie_len);
+ 		supportRateNum = ie_len;
  
-+read_again:
- 		if (count >= limit)
- 			break;
+@@ -1288,7 +1291,7 @@ unsigned int OnAssocReq(struct adapter *
+ 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
+ 		if (p !=  NULL) {
  
--read_again:
- 		buf1_len = 0;
- 		entry = next_entry;
- 		buf = &rx_q->buf_pool[entry];
--- 
-2.51.0
-
+-			if (supportRateNum <= sizeof(supportRate)) {
++			if (supportRateNum + ie_len <= sizeof(supportRate)) {
+ 				memcpy(supportRate+supportRateNum, p+2, ie_len);
+ 				supportRateNum += ie_len;
+ 			}
 
 
 
