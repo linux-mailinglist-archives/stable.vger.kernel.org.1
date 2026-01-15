@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208758-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAB87D266FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73E22D2625A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7360A3181AC4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 28C4130322D4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963213BF2EF;
-	Thu, 15 Jan 2026 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5873BF31F;
+	Thu, 15 Jan 2026 17:06:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6Tb5JEl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0AM2VxJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EE93BF2E8;
-	Thu, 15 Jan 2026 17:08:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DB3BF31C;
+	Thu, 15 Jan 2026 17:05:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496915; cv=none; b=BRmPIdErk621XILbqkPpwo7psgj580MQAjFSuLD8StCp0HZ6p5y7KLQErWXjXg8e4gy+xk8TCk/R+TSCR3tU/JXHfyOsr7mwUfooXgGEzNAnGNGRb04BDJ9lr5KMgKOjIGKqQ7KaxDo0fk+0z+S5eOJn3mfr0A7lHs8krpjrveA=
+	t=1768496759; cv=none; b=piOaMGIACEc483nzvp6vcLtsUqLKG521BXidGk8++CeLwbn1TskwHKV4akYZoXLGjF93jn1Hw1g4cJeBxX4JHStCSEKwEHK9pINTV3Nw4ABovgeCeU8kNVGeatiFqU3bndGaFHCxRT0+3ezB22mEeMwhTc8G6HlzV5eJF4rTo9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496915; c=relaxed/simple;
-	bh=hq+bYEq0Lup/xFCawF4+2SDhjCDFmsKqniGJ6vSyFRk=;
+	s=arc-20240116; t=1768496759; c=relaxed/simple;
+	bh=JtArep7jUM58TiSOVXof8PVKhCUKPEOjmOVjh35jmdI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gChcwQSFlDhNVtiAFLwDv9v0KJ+CxIAwYnbFHo1MwChXLqW2k5S8CKFbmuW2h3Ml3by/ub5VkMH3xuPg5wEqFgeaSj6VriNVg1zTSfruJmKun1suaZlCjhWj1cfpsxgnAZt9XOnQMKH+jBc+B1qrrkGfYQWDfdOrd9921LiOwpY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6Tb5JEl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9A4C19423;
-	Thu, 15 Jan 2026 17:08:34 +0000 (UTC)
+	 MIME-Version; b=d/cU5h7aSCvL/NEJkeBMtrMci+mcyeJHK1ph9koBkkuYigekSZbsmcggytAeoo90oSYt0E4Xc8qKUt0toxpbaV9m3HYWJLnH9BLQERWHFdie6H0LzWVB72IODuBUbx2oLcrPYIylUB1XoNyE1ej0Br+36R0dg05JtKG26dHtnNk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0AM2VxJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52333C16AAE;
+	Thu, 15 Jan 2026 17:05:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496915;
-	bh=hq+bYEq0Lup/xFCawF4+2SDhjCDFmsKqniGJ6vSyFRk=;
+	s=korg; t=1768496759;
+	bh=JtArep7jUM58TiSOVXof8PVKhCUKPEOjmOVjh35jmdI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z6Tb5JElAcX2e/K3UTuoSP3GeKx/bE63RlmnY30vmj4D7ierPAKEpHrYy5ImgzLN7
-	 AoZVvgQezpHkzBWFiSaaO+6Ef0TmgBxBXkVqQaW4c+WJe5L5NGIPvIhGxwtticNfKx
-	 WPo08bm2Q+t8VfIVTKwosJlL0VP1+kqc6Ktyt45c=
+	b=F0AM2VxJbXBRVhEMIfsWuW6OTXy49EBFRFFZfLxEDgKSaNtwB+Aqueww+ndRLJXM1
+	 6USH+3i60sukjne/sk9NOnNW/5ZFH6mEZHhUjp6INvJx55wHDw8PoQijLZQgew3Iij
+	 mhCrXzJwli0t13Celo63eY7aCx1gREnkhofqTEEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Fei Shao <fshao@chromium.org>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 60/88] HID: quirks: work around VID/PID conflict for appledisplay
+Subject: [PATCH 6.12 108/119] spi: mt65xx: Use IRQF_ONESHOT with threaded IRQ
 Date: Thu, 15 Jan 2026 17:48:43 +0100
-Message-ID: <20260115164148.485667842@linuxfoundation.org>
+Message-ID: <20260115164155.849566108@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +58,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Fei Shao <fshao@chromium.org>
 
-[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
+[ Upstream commit 8c04b77f87e6e321ae6acd28ce1de5553916153f ]
 
-For years I wondered why the Apple Cinema Display driver would not
-just work for me. Turns out the hidraw driver instantly takes it
-over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
+This driver is migrated to use threaded IRQ since commit 5972eb05ca32
+("spi: spi-mt65xx: Use threaded interrupt for non-SPIMEM transfer"), and
+we almost always want to disable the interrupt line to avoid excess
+interrupts while the threaded handler is processing SPI transfer.
+Use IRQF_ONESHOT for that purpose.
 
-Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+In practice, we see MediaTek devices show SPI transfer timeout errors
+when communicating with ChromeOS EC in certain scenarios, and with
+IRQF_ONESHOT, the issue goes away.
+
+Signed-off-by: Fei Shao <fshao@chromium.org>
+Link: https://patch.msgid.link/20251217101131.1975131-1-fshao@chromium.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/spi/spi-mt65xx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 2da21415e676c..192b8f63baaab 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -232,6 +232,15 @@ static const struct hid_device_id hid_quirks[] = {
-  * used as a driver. See hid_scan_report().
-  */
- static const struct hid_device_id hid_have_special_driver[] = {
-+#if IS_ENABLED(CONFIG_APPLEDISPLAY)
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
-+#endif
- #if IS_ENABLED(CONFIG_HID_A4TECH)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
+diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
+index dfee244fc3173..5532ace0b1334 100644
+--- a/drivers/spi/spi-mt65xx.c
++++ b/drivers/spi/spi-mt65xx.c
+@@ -1266,7 +1266,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_request_threaded_irq(dev, irq, mtk_spi_interrupt,
+ 					mtk_spi_interrupt_thread,
+-					IRQF_TRIGGER_NONE, dev_name(dev), host);
++					IRQF_ONESHOT, dev_name(dev), host);
+ 	if (ret)
+ 		return dev_err_probe(dev, ret, "failed to register irq\n");
+ 
 -- 
 2.51.0
 
