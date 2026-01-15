@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209923-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209468-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A28F5D278B5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:30:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1E14D276F1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFDC93207C28
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF5CD3245006
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA1703D3CEF;
-	Thu, 15 Jan 2026 18:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F9DE2D0C79;
+	Thu, 15 Jan 2026 17:39:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tMKVsTTh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jzuRVd/1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D6823BFE4C;
-	Thu, 15 Jan 2026 18:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12D0F1A2389;
+	Thu, 15 Jan 2026 17:39:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768500077; cv=none; b=ki9CfcDbV3uXvBrldNuX28Xej5lhZC3KwFp5CqXAeaKjCnVAioZTvV2JdNaW5SdNXudtSC0JS7IVygOpyn7a7/dZQJ5kfh3bnN61p5cWqi0I+jp0qOblRHPUk8C0Za1UAsISFisiAkzcgeeK+LGL9quU2nK8kAb3SKN7+465BNg=
+	t=1768498784; cv=none; b=UMQc76icpeIsXG7sdXdAW3HRmx4wWbYFvJbEbPphCFrcJruomoXJpOo+7xXGzOPSVdLctlEB67E1dMUz5kQCGR6Qx4TzuCSe7yU34wVAM0g3wAQ9Eu+gCOxAspDS0dGMlJUj1Xx5ilBp+B3kcE9g3kQjSr6ejmd7ZLJVaTyEqC4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768500077; c=relaxed/simple;
-	bh=czIL0AtQvcuowK+lTNoS8i04d7IyhX3Os+ALZLB+wDI=;
+	s=arc-20240116; t=1768498784; c=relaxed/simple;
+	bh=Avx/NaUz4y6i5EBxgC8/CrVhAx5sQRSolcDx90vuVpA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mc5ojT51+CiIBbHXGq7NVwcmEPfP7nCpardARsfgBoLh0bh5gVFi9KLe8Ee0aeOndCgZMDhXLVbqkIc4EL/zBjlzL3+zbZBcqXvmucZJGHHsE1p0iW50mPiJOnLe4vZVxys4HKFyJx4VwjKm/+gjQVR0J2zaN1hAcMvHwvcQouA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tMKVsTTh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1904CC116D0;
-	Thu, 15 Jan 2026 18:01:16 +0000 (UTC)
+	 MIME-Version; b=kh4Y/XVV0a7qGVIG8KWCawlRBfdvEJXhRd3AZEBtbyEs5yhB5oHqyCRRdZRBxcnlb9KQ4aAXUMXzEa7qs2Ur7H+XaXEuUmNpDN/OEeBoYMrLwG1NRzwLkWXtDj9+tNbjF2UhsnI2pAa/8X9nrbU7hbHXj7g1JBrYEcChQ4TLzMw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jzuRVd/1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 540D3C116D0;
+	Thu, 15 Jan 2026 17:39:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768500077;
-	bh=czIL0AtQvcuowK+lTNoS8i04d7IyhX3Os+ALZLB+wDI=;
+	s=korg; t=1768498783;
+	bh=Avx/NaUz4y6i5EBxgC8/CrVhAx5sQRSolcDx90vuVpA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tMKVsTThm3tFrjy/F+XgORSt03qedJkcFDzixQ/KTL3jipZEhV2p4sKXxdMAxOhc7
-	 nJ5DDaKZg51WMwwce5KxpMsk94Emu+//BUKYa8KvL77U6pIE477qjqLuxq1X8j1zos
-	 RgBzOMHAo4pxrEQvSML0ANXHQyLCRPTFSGfaS1c8=
+	b=jzuRVd/1GxV9qKQw6XLsnVElapABkFAbWgPLjv/RV7bm62gvHGg8Jd7MZfII56qRc
+	 ztbpQkSLkehKxPaVvqrfAvjP+055AM3pQPyFYx16SfqR+rs9wCRPv2DtUY2EJc7tie
+	 6mGEWxi8IkVeTuCjm5LoW522PO1p2j+niH6czbdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.10 417/451] libceph: make free_choose_arg_map() resilient to partial allocation
+	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 552/554] can: j1939: make j1939_session_activate() fail if device is no longer registered
 Date: Thu, 15 Jan 2026 17:50:18 +0100
-Message-ID: <20260115164246.023378932@linuxfoundation.org>
+Message-ID: <20260115164306.309540401@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
+[ Upstream commit 5d5602236f5db19e8b337a2cd87a90ace5ea776d ]
 
-free_choose_arg_map() may dereference a NULL pointer if its caller fails
-after a partial allocation.
+syzbot is still reporting
 
-For example, in decode_choose_args(), if allocation of arg_map->args
-fails, execution jumps to the fail label and free_choose_arg_map() is
-called. Since arg_map->size is updated to a non-zero value before memory
-allocation, free_choose_arg_map() will iterate over arg_map->args and
-dereference a NULL pointer.
+  unregister_netdevice: waiting for vcan0 to become free. Usage count = 2
 
-To prevent this potential NULL pointer dereference and make
-free_choose_arg_map() more resilient, add checks for pointers before
-iterating.
+even after commit 93a27b5891b8 ("can: j1939: add missing calls in
+NETDEV_UNREGISTER notification handler") was added. A debug printk() patch
+found that j1939_session_activate() can succeed even after
+j1939_cancel_active_session() from j1939_netdev_notify(NETDEV_UNREGISTER)
+has completed.
 
-Cc: stable@vger.kernel.org
-Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Since j1939_cancel_active_session() is processed with the session list lock
+held, checking ndev->reg_state in j1939_session_activate() with the session
+list lock held can reliably close the race window.
+
+Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/b9653191-d479-4c8b-8536-1326d028db5c@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ net/can/j1939/transport.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -225,22 +225,26 @@ static struct crush_choose_arg_map *allo
- 
- static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
- {
--	if (arg_map) {
--		int i, j;
-+	int i, j;
- 
--		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+	if (!arg_map)
-+		return;
- 
-+	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+
-+	if (arg_map->args) {
- 		for (i = 0; i < arg_map->size; i++) {
- 			struct crush_choose_arg *arg = &arg_map->args[i];
--
--			for (j = 0; j < arg->weight_set_size; j++)
--				kfree(arg->weight_set[j].weights);
--			kfree(arg->weight_set);
-+			if (arg->weight_set) {
-+				for (j = 0; j < arg->weight_set_size; j++)
-+					kfree(arg->weight_set[j].weights);
-+				kfree(arg->weight_set);
-+			}
- 			kfree(arg->ids);
- 		}
- 		kfree(arg_map->args);
--		kfree(arg_map);
- 	}
-+	kfree(arg_map);
- }
- 
- DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 76d625c668e05..0522c223570c7 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1571,6 +1571,8 @@ int j1939_session_activate(struct j1939_session *session)
+ 	if (active) {
+ 		j1939_session_put(active);
+ 		ret = -EAGAIN;
++	} else if (priv->ndev->reg_state != NETREG_REGISTERED) {
++		ret = -ENODEV;
+ 	} else {
+ 		WARN_ON_ONCE(session->state != J1939_SESSION_NEW);
+ 		list_add_tail(&session->active_session_list_entry,
+-- 
+2.51.0
+
 
 
 
