@@ -1,53 +1,50 @@
-Return-Path: <stable+bounces-208526-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208491-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id EDC62D25E6E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C82D25E60
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id DC9993011446
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 595D4309539C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:53:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1D663BF2EA;
-	Thu, 15 Jan 2026 16:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CBD3B8BAB;
+	Thu, 15 Jan 2026 16:53:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nzFS+yqW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+stWOij"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 47B043ACA63;
-	Thu, 15 Jan 2026 16:55:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE23F396B75;
+	Thu, 15 Jan 2026 16:53:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496100; cv=none; b=JlZu5aGJpgrxzZc9U332Ylsm/Y3Nvyr2iP8N/jlbbI6mGimJr4IHgRrgMD/H/MZK0hIsrf1SKlCrTILuPWfE2xvp51hcE6fUx3hIkok5RzAVF+/ivddt7RZOQt3CGYWK5sFUpUg8noEklZ+s9l23QRoyHX5RxlT/k9hvCZkNblw=
+	t=1768496000; cv=none; b=b1Pd0VRYoIZo/0ZkdX2LS2kLKfJMbLCPyqGVoJSz7NdbKTzpAq060WsHqqnvZbD1uZ4wcK/tzrc3YPM6ezs45AEv9nFibkl8nGh0GwTE5AJkssz9w3r17ZRe2Vx77NVvR9+9BkRfcAJwQKCLPt76nCQ0ugW4BO6YIgNJooWUH2o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496100; c=relaxed/simple;
-	bh=5UCpXALC43CbGgyLA/at5YjGJ2kKrv6PyfyIWYk+GUY=;
+	s=arc-20240116; t=1768496000; c=relaxed/simple;
+	bh=2Xl7rEhFSQGPW4ZzWVXxsEkhvIIuOpJOB0mWdGML64M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=unjy2zxHRn/QoRKei+uAtwyFgps8hwQPaNL3dgJ7fDmi9Pm8ApwNKCD6a/f2E+XQ6ahQ0vTLpV99eg+VwZNt80d8p1ryFwP5vhDt4PA/kswcR+d1Kq4BP+20WIqteMSFRGkTKhlGopfxC+8/VxLJ+RM+BzMk1z2xIDsF6HLw68k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nzFS+yqW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1056C16AAE;
-	Thu, 15 Jan 2026 16:54:59 +0000 (UTC)
+	 MIME-Version; b=n/3R0Zc5M8qxzcpzOMfI9jZyf7Lt9+/T0IwHHoX75T7RJvQ1EckCT67pIrUIxaUsfaW8Q6qrJe2WGBA8klpneERThTq0Bu3PIBZr/1niPgg8ePEywZt/N4/gisS7GBVbypbL2juaqV1F/Bnkud6y3G9cgSWNCnWPn8jaCdHIUN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+stWOij; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A08AC116D0;
+	Thu, 15 Jan 2026 16:53:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496100;
-	bh=5UCpXALC43CbGgyLA/at5YjGJ2kKrv6PyfyIWYk+GUY=;
+	s=korg; t=1768496000;
+	bh=2Xl7rEhFSQGPW4ZzWVXxsEkhvIIuOpJOB0mWdGML64M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nzFS+yqWS6Dju0wxEoehEmc+1kBIcuAWAp/LJLc67azfJlFi7mEtQn1KWnVOkMmvi
-	 0Naa4+rfILa7rEIBP2QHhh/AxtTg3jNEoLXFQHWzMiFoxPkCZ+v9ILCCm1u0nTxh6l
-	 E4WoJt2iISKOKrrgVdepQ/vbxVaAfPzJcxjxDpUs=
+	b=V+stWOijlUD65UD4F8/U3/Rv2Fgci2hI0jQRHwMLEJ/7NGDl+BdZ/fH944dIdlrhD
+	 f2e40TxdfIhvmNoxVOTV+3BsWs9Vkqx8/P1kD8BYgeW8VT68w03TZ9tRR1IzMGM+VY
+	 Vi3zc0oqAVP6hvm7/ArrB6KuRr8HobNEl07x2O08=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.18 034/181] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
-Date: Thu, 15 Jan 2026 17:46:11 +0100
-Message-ID: <20260115164203.560301055@linuxfoundation.org>
+	Malaya Kumar Rout <mrout@redhat.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 6.18 035/181] PM: hibernate: Fix crash when freeing invalid crypto compressor
+Date: Thu, 15 Jan 2026 17:46:12 +0100
+Message-ID: <20260115164203.595145257@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -66,88 +63,64 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Malaya Kumar Rout <mrout@redhat.com>
 
-commit ebc18e9854e5a2b62a041fb57b216a903af45b85 upstream.
+commit 7966cf0ebe32c981bfa3db252cb5fc3bb1bf2e77 upstream.
 
-The gpio_chip settings in this driver say the controller can't sleep
-but it actually uses a mutex for synchronization. This triggers the
-following BUG():
+When crypto_alloc_acomp() fails, it returns an ERR_PTR value, not NULL.
 
-[    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
-[    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
-[    9.233669] preempt_count: 1, expected: 0
-[    9.233673] RCU nest depth: 0, expected: 0
-[    9.233688] Tainted: [W]=WARN
-[    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
-[    9.233694] Call trace:
-[    9.233696]  show_stack+0x24/0x38 (C)
-[    9.233709]  dump_stack_lvl+0x40/0x88
-[    9.233716]  dump_stack+0x18/0x24
-[    9.233722]  __might_resched+0x148/0x160
-[    9.233731]  __might_sleep+0x38/0x98
-[    9.233736]  mutex_lock+0x30/0xd8
-[    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
-[    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
-[    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
-[    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
-[    9.233779]  gpiod_direction_output+0x38/0xd0
-[    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
-[    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
-[    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
-[    9.233806]  gpiod_configure_flags+0x2c0/0x580
-[    9.233812]  gpiod_find_and_request+0x358/0x4f8
-[    9.233819]  gpiod_get_index+0x7c/0x98
-[    9.233826]  devm_gpiod_get+0x34/0xb0
-[    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
-[    9.233836]  auxiliary_bus_probe+0xb0/0xf0
-[    9.233845]  really_probe+0x14c/0x450
-[    9.233853]  __driver_probe_device+0xb0/0x188
-[    9.233858]  driver_probe_device+0x4c/0x250
-[    9.233863]  __driver_attach+0xf8/0x2a0
-[    9.233868]  bus_for_each_dev+0xf8/0x158
-[    9.233872]  driver_attach+0x30/0x48
-[    9.233876]  bus_add_driver+0x158/0x2b8
-[    9.233880]  driver_register+0x74/0x118
-[    9.233886]  __auxiliary_driver_register+0x94/0xe8
-[    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
-[    9.233898]  do_one_initcall+0xec/0x300
-[    9.233903]  do_init_module+0x64/0x260
-[    9.233910]  load_module+0x16c4/0x1900
-[    9.233915]  __arm64_sys_finit_module+0x24c/0x378
-[    9.233919]  invoke_syscall+0x4c/0xe8
-[    9.233925]  el0_svc_common+0x8c/0xf0
-[    9.233929]  do_el0_svc+0x28/0x40
-[    9.233934]  el0_svc+0x38/0x100
-[    9.233938]  el0t_64_sync_handler+0x84/0x130
-[    9.233943]  el0t_64_sync+0x17c/0x180
+The cleanup code in save_compressed_image() and load_compressed_image()
+unconditionally calls crypto_free_acomp() without checking for ERR_PTR,
+which causes crypto_acomp_tfm() to dereference an invalid pointer and
+crash the kernel.
 
-Mark the controller as sleeping.
+This can be triggered when the compression algorithm is unavailable
+(e.g., CONFIG_CRYPTO_LZO not enabled).
 
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Cc: stable@vger.kernel.org
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
+Fix by adding IS_ERR_OR_NULL() checks before calling crypto_free_acomp()
+and acomp_request_free(), similar to the existing kthread_stop() check.
+
+Fixes: b03d542c3c95 ("PM: hibernate: Use crypto_acomp interface")
+Signed-off-by: Malaya Kumar Rout <mrout@redhat.com>
+Cc: 6.15+ <stable@vger.kernel.org> # 6.15+
+[ rjw: Added 2 empty code lines ]
+Link: https://patch.msgid.link/20251230115613.64080-1-mrout@redhat.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/power/swap.c |   14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -498,7 +498,7 @@ int lpi_pinctrl_probe(struct platform_de
- 	pctrl->chip.base = -1;
- 	pctrl->chip.ngpio = data->npins;
- 	pctrl->chip.label = dev_name(dev);
--	pctrl->chip.can_sleep = false;
-+	pctrl->chip.can_sleep = true;
- 
- 	mutex_init(&pctrl->lock);
- 
+--- a/kernel/power/swap.c
++++ b/kernel/power/swap.c
+@@ -897,8 +897,11 @@ out_clean:
+ 		for (thr = 0; thr < nr_threads; thr++) {
+ 			if (data[thr].thr)
+ 				kthread_stop(data[thr].thr);
+-			acomp_request_free(data[thr].cr);
+-			crypto_free_acomp(data[thr].cc);
++			if (data[thr].cr)
++				acomp_request_free(data[thr].cr);
++
++			if (!IS_ERR_OR_NULL(data[thr].cc))
++				crypto_free_acomp(data[thr].cc);
+ 		}
+ 		vfree(data);
+ 	}
+@@ -1519,8 +1522,11 @@ out_clean:
+ 		for (thr = 0; thr < nr_threads; thr++) {
+ 			if (data[thr].thr)
+ 				kthread_stop(data[thr].thr);
+-			acomp_request_free(data[thr].cr);
+-			crypto_free_acomp(data[thr].cc);
++			if (data[thr].cr)
++				acomp_request_free(data[thr].cr);
++
++			if (!IS_ERR_OR_NULL(data[thr].cc))
++				crypto_free_acomp(data[thr].cc);
+ 		}
+ 		vfree(data);
+ 	}
 
 
 
