@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-209723-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209329-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F058AD2723E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8BD26DE2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A9AD1316A4CC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A08A031D5530
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65E33BFE4C;
-	Thu, 15 Jan 2026 17:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C2F3C0093;
+	Thu, 15 Jan 2026 17:33:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvBoau5U"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBClWYMj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B8C3D3D04;
-	Thu, 15 Jan 2026 17:51:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDE726CE04;
+	Thu, 15 Jan 2026 17:33:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499507; cv=none; b=grasJ8GPYtTtjSQtlcZWttENE486nlNAaeyq0PB7ZxJTYJ6z5+YuYr00zN8NQYQAZnLHW1fKCyOhKTY3weGCgCvirt/amB6SRu029aBfW/KCS24pD3u0Vlpe/HvGe9Ck+UrTckxmTg/Sont3GrCIwvJzhRuFyjW3E9pc2SLegLc=
+	t=1768498386; cv=none; b=gq4cnqiYG8hvpAJaycLOkeA4qBc8gHEswRKYNfygkNz4DuKrM0DgI43yVBHxjdB6VRcXRWL3j+Q3OBtoV0tlxOwzuLfs+TvdrfHO0tuenar4YifEwtz25wgi9hfel37pEoK6RdcHz8CotHoe6DqxEWFEvH5kPGhtWY94VLww7Bc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499507; c=relaxed/simple;
-	bh=dMz84Q2iKghKK3CXSLsS6U/2PpXdLdF8f2NJ7D2sR20=;
+	s=arc-20240116; t=1768498386; c=relaxed/simple;
+	bh=iUGgGcup5sSXrVzcVvyb+q+CyjfRFvYK7+bg3H2rIPg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Go/LkBTAX95aucu4GXoALuslsY7KFNK0sJ1jc4pseAhyHD8+1UZONT0FAf0Z/eoMdAOIAH5XOPy09Bo3q6pdTRbIA8OuBzakgea7kHYTADIRPl1pF9x4vL4dha8trhaGgAQSS7CNj24YZ/73jh/CtxSN2pDPBLxhhZHQHV9TgtQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvBoau5U; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD25C116D0;
-	Thu, 15 Jan 2026 17:51:46 +0000 (UTC)
+	 MIME-Version; b=KIGxJ/bqCP10GoAp8ucxVGvt81dGivDnj7GycLsWLDUzAjsYN03q08B1daKz0PZgfrLgSxOUVQyQx4R8h4XLeIvlwSa5DYIwFlvXg0AH0wN6JNBikYbOC3geWuJceWJYDYtBWFiDxIVbJH8amHxIKBRMxWbDHGceRC7KwbEYAyo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBClWYMj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790CAC116D0;
+	Thu, 15 Jan 2026 17:33:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499507;
-	bh=dMz84Q2iKghKK3CXSLsS6U/2PpXdLdF8f2NJ7D2sR20=;
+	s=korg; t=1768498385;
+	bh=iUGgGcup5sSXrVzcVvyb+q+CyjfRFvYK7+bg3H2rIPg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BvBoau5U1w/X+XLGYgKMh3DGT8J7pP+KFOlVEJEC7TGmNhfvyHWywvHg1eT0Ulkfx
-	 IgNXdsBtXdczESXb3jEuJByCC3CDKY1OV5vL5ktE4NFZMLmpSMUDz/rYom+YbLZSC3
-	 rsZ8Y14sy1xWJpF6zOK6KRwnAAoNq9KnKiv8LJKQ=
+	b=qBClWYMjA00IYOXFSKj5aGfTJTsksBSTzlrFG25K8hjMN0BXamGfDnLHMvAxfEvlw
+	 6CiKkvNnBPVunPJupI50XrHqDuDAVFYMe++mmwC36d5n7hqjsKN/0Ryrsov3FFt0jX
+	 fyPxWfOKKdNTUcGLsJ8s23tOSBaSXeYa/OlBD9KA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 251/451] parisc: Do not reprogram affinitiy on ASP chip
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 386/554] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
 Date: Thu, 15 Jan 2026 17:47:32 +0100
-Message-ID: <20260115164239.971192549@linuxfoundation.org>
+Message-ID: <20260115164300.210585084@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,41 +59,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-commit dca7da244349eef4d78527cafc0bf80816b261f5 upstream.
+commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
 
-The ASP chip is a very old variant of the GSP chip and is used e.g. in
-HP 730 workstations. When trying to reprogram the affinity it will crash
-with a HPMC as the relevant registers don't seem to be at the usual
-location.  Let's avoid the crash by checking the sversion. Also note,
-that reprogramming isn't necessary either, as the HP730 is a just a
-single-CPU machine.
+MAX77620 is most likely always a single device on the board, however
+nothing stops board designers to have two of them, thus same device
+driver could probe twice. Or user could manually try to probing second
+time.
 
-Signed-off-by: Helge Deller <deller@gmx.de>
+Device driver is not ready for that case, because it allocates
+statically 'struct regmap_irq_chip' as non-const and stores during
+probe in 'irq_drv_data' member a pointer to per-probe state
+container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
+make a copy of 'struct regmap_irq_chip' but store the pointer.
+
+Second probe - either successful or failure - would overwrite the
+'irq_drv_data' from previous device probe, so interrupts would be
+executed in a wrong context.
+
 Cc: stable@vger.kernel.org
+Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/parisc/gsc.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mfd/max77620.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
---- a/drivers/parisc/gsc.c
-+++ b/drivers/parisc/gsc.c
-@@ -154,7 +154,9 @@ static int gsc_set_affinity_irq(struct i
- 	gsc_dev->eim = ((u32) gsc_dev->gsc_irq.txn_addr) | gsc_dev->gsc_irq.txn_data;
+--- a/drivers/mfd/max77620.c
++++ b/drivers/mfd/max77620.c
+@@ -254,7 +254,7 @@ static int max77620_irq_global_unmask(vo
+ 	return ret;
+ }
  
- 	/* switch IRQ's for devices below LASI/WAX to other CPU */
--	gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
-+	/* ASP chip (svers 0x70) does not support reprogramming */
-+	if (gsc_dev->gsc->id.sversion != 0x70)
-+		gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
+-static struct regmap_irq_chip max77620_top_irq_chip = {
++static const struct regmap_irq_chip max77620_top_irq_chip = {
+ 	.name = "max77620-top",
+ 	.irqs = max77620_top_irqs,
+ 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
+@@ -499,6 +499,7 @@ static int max77620_probe(struct i2c_cli
+ {
+ 	const struct regmap_config *rmap_config;
+ 	struct max77620_chip *chip;
++	struct regmap_irq_chip *chip_desc;
+ 	const struct mfd_cell *mfd_cells;
+ 	int n_mfd_cells;
+ 	bool pm_off;
+@@ -509,6 +510,14 @@ static int max77620_probe(struct i2c_cli
+ 		return -ENOMEM;
  
- 	irq_data_update_effective_affinity(d, &tmask);
+ 	i2c_set_clientdata(client, chip);
++
++	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
++				 sizeof(max77620_top_irq_chip),
++				 GFP_KERNEL);
++	if (!chip_desc)
++		return -ENOMEM;
++	chip_desc->irq_drv_data = chip;
++
+ 	chip->dev = &client->dev;
+ 	chip->chip_irq = client->irq;
+ 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
+@@ -545,11 +554,9 @@ static int max77620_probe(struct i2c_cli
+ 	if (ret < 0)
+ 		return ret;
  
+-	max77620_top_irq_chip.irq_drv_data = chip;
+ 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
+ 				       IRQF_ONESHOT | IRQF_SHARED, 0,
+-				       &max77620_top_irq_chip,
+-				       &chip->top_irq_data);
++				       chip_desc, &chip->top_irq_data);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
+ 		return ret;
 
 
 
