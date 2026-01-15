@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-208657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209744-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97AE3D2625E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80C6DD27489
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B06AB30900EA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EE082317A27A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E906B2D73BE;
-	Thu, 15 Jan 2026 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B73E34216C;
+	Thu, 15 Jan 2026 17:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RCjVSuA5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIc6Nk/R"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB7502C028F;
-	Thu, 15 Jan 2026 17:01:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2A3C1FD9;
+	Thu, 15 Jan 2026 17:52:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496474; cv=none; b=Q6NkjMqZF2uLQKCfkaLFjPecVBlx+mdL/9bKPuaqYwS6/uC5uSD4shaqqg4hfXLdxnJ8zSlTsOYffY1BNoTtl3mCgRcU26MppCoWOPR7UKddtssQVdD/athkqqSC3wWeO62YrDH5hSupl2OzgWNJks7yZbwva11SIBUWyHyAiJw=
+	t=1768499568; cv=none; b=fHbd9sLilx15KIi5jgt5dAsjoo5o8dBm4vr6nenuKpRjLPgPt3GxUO7KJ4RRxToCmkrxgIB2IC8ZopZgedR7OXMdAAblh2tPmq5ahQnTxP/SwijGxzIWstBwytezzehXvTltxgUTxG1yXkEAsGhOsQldXnl2O4XOxm7baH197NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496474; c=relaxed/simple;
-	bh=WZNI9CXr5ZSZ/msh1g5THZKMzuLLIOhT+SrSWDcDLSQ=;
+	s=arc-20240116; t=1768499568; c=relaxed/simple;
+	bh=33q5sfb/X5NAvH1e1mKaMR3uouOwZ6qmn63uwQrAOyg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PUEgqtbqAocxu/X0ku+W0VqElUn73PZU+EF6MsSlwhNLFLAmxmRpSDlJBVtEPCOGPI4jkvfbrcR2+etof+/89iWuoGLFfXwlxdpQGK7ere8S/LTXSNrtCSD1/Oj1TRH1ajIw9EzgiCJ3TKXyiXmxJINJL+q08gEe5mrlWNUU3OU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RCjVSuA5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32059C116D0;
-	Thu, 15 Jan 2026 17:01:14 +0000 (UTC)
+	 MIME-Version; b=JHoaSnsLTm3zmLSYpHEa2XhtR8gJQEicycwkvsYzjEfKii3QrHcGKEAxN02NpycdGF46biXF9oKz3+ZLL/zd7ZHMnl6nhmkgSnfgWSWpl7mg1bHKpZTxL4ofEWfz4TzvIF4ldiP7zwNjUT1diuVhWdZxmWpEuaRb7iws3IBB93M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIc6Nk/R; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D6AC116D0;
+	Thu, 15 Jan 2026 17:52:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496474;
-	bh=WZNI9CXr5ZSZ/msh1g5THZKMzuLLIOhT+SrSWDcDLSQ=;
+	s=korg; t=1768499568;
+	bh=33q5sfb/X5NAvH1e1mKaMR3uouOwZ6qmn63uwQrAOyg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RCjVSuA5RJiv1wZ4Bg3N7DgKsfIC8gih0hU8pMnDIcE7pNIzmmDFM93G/BeTQ9EKg
-	 dWA6H/h+eKXbqHapuJ7OGQ0q4iry8q1FLPBWILJcWpH7MeMxw3erI907DI66d6DSmG
-	 KJNPyQWsnpxwOZ5olJ+ugG8AJetP5cdSOBMlXQU8=
+	b=GIc6Nk/R4MY/swGaSdgfr9xVZWRwNn+wWsxfZO5of5q5DjEL3/I4I3i2iYrhSPfGW
+	 LXltPBOUtATZpl9GfsbZOTgT+OJlseSjSQJoMlZk6h9//hDBtmBCYzODz994r01h1e
+	 xpl0t4PeSLPA1xJw2vnwatbHjX62Vm/xtFxa+L+k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH 6.12 025/119] libceph: return the handler error from mon_handle_auth_done()
+	Miaoqian Lin <linmq006@gmail.com>,
+	Viresh Kumar <viresh.kumar@linaro.org>
+Subject: [PATCH 5.10 239/451] cpufreq: nforce2: fix reference count leak in nforce2
 Date: Thu, 15 Jan 2026 17:47:20 +0100
-Message-ID: <20260115164152.870282835@linuxfoundation.org>
+Message-ID: <20260115164239.539285015@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +59,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit e84b48d31b5008932c0a0902982809fbaa1d3b70 upstream.
+commit 9600156bb99852c216a2128cdf9f114eb67c350f upstream.
 
-Currently any error from ceph_auth_handle_reply_done() is propagated
-via finish_auth() but isn't returned from mon_handle_auth_done().  This
-results in higher layers learning that (despite the monitor considering
-us to be successfully authenticated) something went wrong in the
-authentication phase and reacting accordingly, but msgr2 still trying
-to proceed with establishing the session in the background.  In the
-case of secure mode this can trigger a WARN in setup_crypto() and later
-lead to a NULL pointer dereference inside of prepare_auth_signature().
+There are two reference count leaks in this driver:
 
+1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
+   of the PCI device, but pci_dev_put() is never called to release it,
+   thus leaking the reference.
+
+2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
+   nforce2_dev which is stored in a global variable, but the reference
+   is never released when the module is unloaded.
+
+Fix both by:
+- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
+  the configuration.
+- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
+  global device reference.
+
+Found via static analysis.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: stable@vger.kernel.org
-Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/mon_client.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/cpufreq-nforce2.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -1417,7 +1417,7 @@ static int mon_handle_auth_done(struct c
- 	if (!ret)
- 		finish_hunting(monc);
- 	mutex_unlock(&monc->mutex);
--	return 0;
-+	return ret;
+--- a/drivers/cpufreq/cpufreq-nforce2.c
++++ b/drivers/cpufreq/cpufreq-nforce2.c
+@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int
+ 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
+ 	fsb /= 1000000;
+ 
++	pci_dev_put(nforce2_sub5);
++
+ 	/* Check if PLL register is already set */
+ 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
+ 
+@@ -432,6 +434,7 @@ static int __init nforce2_init(void)
+ static void __exit nforce2_exit(void)
+ {
+ 	cpufreq_unregister_driver(&nforce2_driver);
++	pci_dev_put(nforce2_dev);
  }
  
- static int mon_handle_auth_bad_method(struct ceph_connection *con,
+ module_init(nforce2_init);
 
 
 
