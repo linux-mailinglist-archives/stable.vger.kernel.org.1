@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9059DD26437
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:16 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FEB4D26B36
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5958E30C38DE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E6C08306696D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765563BF2FD;
-	Thu, 15 Jan 2026 17:10:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35A3F3C00B7;
+	Thu, 15 Jan 2026 17:36:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y858YchH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g86Izy94"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3665B3BC4E8;
-	Thu, 15 Jan 2026 17:10:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ED2C33C00A1;
+	Thu, 15 Jan 2026 17:36:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497001; cv=none; b=AhcXRCWBI7cdLMxRvc4V0gm7d8tH0TojtwIqrBxiblh1bzbWoaZRsNuWN+EiX45pfEI95s33z210SUx+ZRMgZ5qOim5/nNSj0ynbD/hQlzS7FcM2ieZHwiPtYT+ZGruWq96E2yg7cY3uAU/8PiVNi+4FkTalPyRxkHUgAJba73I=
+	t=1768498563; cv=none; b=jGSwMCb07Nu7CEW9hxBCuZzyp1wf8g1JWOmHxLpH4yR1PbKip5AiKNadrlub1bDswJVRVVGYUk/gZuMXSwYQIFHcYQEiGjYwHftAf/Xg9RqMBrRiTairsDfrN7wMwStz9UQTUfbsaSnQDK4cXKT6V6gWjRJfP5mqekdq8kKOXR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497001; c=relaxed/simple;
-	bh=1isOONgbOKA3tSCIDlfYPiD/wlcA5Mc0cnuGhph+0Yc=;
+	s=arc-20240116; t=1768498563; c=relaxed/simple;
+	bh=noGglZ+36gQWGoCDQadFAMgjApsqqjxoswZJ7e34dkM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=pjtmXSMUGGef+IlcW4JrB52SOi27jCqPg5/SMlX7Ipxn0Cf3NNdv2n6tKeh31ghiYBZZ8m42c7hanIoSSp/dYXR7CtE1XKmiG2rnV4d47qmpBiBGQ624Aprp+Retj4QoPerfe3p9sGPYDui4LCO0Mm2ctIYoKjBBOvdLOhIF8w0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y858YchH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B60DC19423;
-	Thu, 15 Jan 2026 17:10:00 +0000 (UTC)
+	 MIME-Version; b=sjt/ehbGAdkuiobEmo5ALhb0ZJvfjkyHWpiAphWldRrgndh0/iEjqz+AdaCJAW56LNxHp7ISjClKS0qDuo/POHChUNvjWRUyGu5FofoeV4oO2D8PrgaXD8XxGDAZLbU6m7POF9wesRC0lpTpiBrARR5+mkMbMqoZEjUo4t/NYIo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g86Izy94; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D1C2C116D0;
+	Thu, 15 Jan 2026 17:36:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497000;
-	bh=1isOONgbOKA3tSCIDlfYPiD/wlcA5Mc0cnuGhph+0Yc=;
+	s=korg; t=1768498562;
+	bh=noGglZ+36gQWGoCDQadFAMgjApsqqjxoswZJ7e34dkM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Y858YchHWH27JY0z37eW+t2AOpkLjuyTAQtDFK1kCI5OXg9dLlu4KIBe/4nMmccvK
-	 VhNg7Toklxqs7jCzEN1/W0xA790zTQGjfNa84vBCVbgL6H4QKzHaSmUU+N9FWlr8rK
-	 Dty6zYjLBGJcLl5y2TdFAbBy8apKndPycuTlalJE=
+	b=g86Izy94yk4x+c9XDp1hHWc4cjkZAAv+u2RVbk1iSHpWUl5GyIUXvOYkzr6tek3tm
+	 MAX6wh4StkP72jSjqlz032I8vSc/lr+wlK9imiT07W13MBX/4JFBxlHZR3ku01NalR
+	 egjtoWAbk17bSSSOQLWiKjBGq3XoVzj4gucKZEPc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Wentao Liang <vulab@iscas.ac.cn>,
+	Frank Li <Frank.Li@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 77/88] bpf: Fix reference count leak in bpf_prog_test_run_xdp()
-Date: Thu, 15 Jan 2026 17:49:00 +0100
-Message-ID: <20260115164149.104962248@linuxfoundation.org>
+Subject: [PATCH 5.15 475/554] pmdomain: imx: Fix reference count leak in imx_gpc_probe()
+Date: Thu, 15 Jan 2026 17:49:01 +0100
+Message-ID: <20260115164303.494416876@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,84 +59,52 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Wentao Liang <vulab@iscas.ac.cn>
 
-[ Upstream commit ec69daabe45256f98ac86c651b8ad1b2574489a7 ]
+[ Upstream commit 73cb5f6eafb0ac7aea8cdeb8ff12981aa741d8fb ]
 
-syzbot is reporting
+of_get_child_by_name() returns a node pointer with refcount incremented.
+Use the __free() attribute to manage the pgc_node reference, ensuring
+automatic of_node_put() cleanup when pgc_node goes out of scope.
 
-  unregister_netdevice: waiting for sit0 to become free. Usage count = 2
+This eliminates the need for explicit error handling paths and avoids
+reference count leaks.
 
-problem. A debug printk() patch found that a refcount is obtained at
-xdp_convert_md_to_buff() from bpf_prog_test_run_xdp().
-
-According to commit ec94670fcb3b ("bpf: Support specifying ingress via
-xdp_md context in BPF_PROG_TEST_RUN"), the refcount obtained by
-xdp_convert_md_to_buff() will be released by xdp_convert_buff_to_md().
-
-Therefore, we can consider that the error handling path introduced by
-commit 1c1949982524 ("bpf: introduce frags support to
-bpf_prog_test_run_xdp()") forgot to call xdp_convert_buff_to_md().
-
-Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Fixes: 1c1949982524 ("bpf: introduce frags support to bpf_prog_test_run_xdp()")
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Link: https://lore.kernel.org/r/af090e53-9d9b-4412-8acb-957733b3975c@I-love.SAKURA.ne.jp
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 721cabf6c660 ("soc: imx: move PGC handling to a new GPC driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Wentao Liang <vulab@iscas.ac.cn>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bpf/test_run.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/soc/imx/gpc.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 1989d239939b1..7e11ec31d40e4 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1243,13 +1243,13 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+--- a/drivers/soc/imx/gpc.c
++++ b/drivers/soc/imx/gpc.c
+@@ -405,13 +405,12 @@ clk_err:
+ static int imx_gpc_probe(struct platform_device *pdev)
+ {
+ 	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
+-	struct device_node *pgc_node;
++	struct device_node *pgc_node __free(device_node)
++		= of_get_child_by_name(pdev->dev.of_node, "pgc");
+ 	struct regmap *regmap;
+ 	void __iomem *base;
+ 	int ret;
  
- 			if (sinfo->nr_frags == MAX_SKB_FRAGS) {
- 				ret = -ENOMEM;
--				goto out;
-+				goto out_put_dev;
- 			}
- 
- 			page = alloc_page(GFP_KERNEL);
- 			if (!page) {
- 				ret = -ENOMEM;
--				goto out;
-+				goto out_put_dev;
- 			}
- 
- 			frag = &sinfo->frags[sinfo->nr_frags++];
-@@ -1261,7 +1261,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 			if (copy_from_user(page_address(page), data_in + size,
- 					   data_len)) {
- 				ret = -EFAULT;
--				goto out;
-+				goto out_put_dev;
- 			}
- 			sinfo->xdp_frags_size += data_len;
- 			size += data_len;
-@@ -1276,6 +1276,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 		ret = bpf_test_run_xdp_live(prog, &xdp, repeat, batch_size, &duration);
- 	else
- 		ret = bpf_test_run(prog, &xdp, repeat, &retval, &duration, true);
-+out_put_dev:
- 	/* We convert the xdp_buff back to an xdp_md before checking the return
- 	 * code so the reference count of any held netdevice will be decremented
- 	 * even if the test run failed.
--- 
-2.51.0
-
+-	pgc_node = of_get_child_by_name(pdev->dev.of_node, "pgc");
+-
+ 	/* bail out if DT too old and doesn't provide the necessary info */
+ 	if (!of_property_read_bool(pdev->dev.of_node, "#power-domain-cells") &&
+ 	    !pgc_node)
 
 
 
