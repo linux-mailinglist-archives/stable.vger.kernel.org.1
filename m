@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-209331-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208715-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AF6ED269BC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26EA2D262F4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7B86C307E6D1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EA74C30E092D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAC703C1FCE;
-	Thu, 15 Jan 2026 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA2D39B4BF;
+	Thu, 15 Jan 2026 17:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YbmjiPAx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sx5jTgaQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D7F53B8D5F;
-	Thu, 15 Jan 2026 17:33:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D45E2D73A0;
+	Thu, 15 Jan 2026 17:04:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498391; cv=none; b=TGM1oUcHYzj3nldP6rcNvOdZBfDF6mt6A5XSOM+4mBUlewShrAgFKVfFvZHAwxJHKohD2T56BcmK4XQCe2U/TD6CJ1NRNQwrZuaDvfHclxUQbgNgjNM4lPkNxYmnxTIfTbmc9v39zUJ/5BHqgUDzKvCQdL242Jn15lsliKb+grA=
+	t=1768496640; cv=none; b=IK1LL1nPJplNGp11Fvfz8JKj/PhFH6G6PXbS5+rCfbKTINX5VJ4T9w5aQC2ua4R5Ss3h4XjA9ptwJq+BEbaxWcSA17ztcv57Sxt7so9tCeIurL87s6gKjKcYw0D3iuUYCQ+9OuJ3UiwHgSkGu44x36NnLmoO14ewyg8MLjjpWII=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498391; c=relaxed/simple;
-	bh=vBM2o9QMH4Q1nHJz8R9kwImUy3arxPOPagfbCLkKH50=;
+	s=arc-20240116; t=1768496640; c=relaxed/simple;
+	bh=62p7FhhztHRNK8rDL1VY3JXsvWLo4B7cZEs9yuoOtO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Mg6xN+Oh5ICKeD+UU1sG3QrcN7yolxr6mkcRqFP6JzR30CAq+tt6w05ktHHLu19QBP00AoLjCjcFYd8EJBd2RgB4lR0NEu4yNzkJyMv+xPgEmGTG4jatX4sHmmskyylH0OAQQ0euMfYZaIqJkPHAFU1XlO3MPNL/pkv2VBKvCBY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YbmjiPAx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25358C116D0;
-	Thu, 15 Jan 2026 17:33:10 +0000 (UTC)
+	 MIME-Version; b=kW3wKX/MdUR7UPKrm8/9/5FB6IgnOckhWBhmTRGgublcABvPr4IJwxC+LP6W/nhLVL0ioSJdbj1W7CZ+fwsFZGJ4kCXR8Lzc+Q8Fsiy2SFB4m6YpS7z90/LnN8s+LXaZ5g3myAA+8GAeRDgD+bnurWBdVPqGHuWsvrMCvk2CsZo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sx5jTgaQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3621C116D0;
+	Thu, 15 Jan 2026 17:03:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498391;
-	bh=vBM2o9QMH4Q1nHJz8R9kwImUy3arxPOPagfbCLkKH50=;
+	s=korg; t=1768496640;
+	bh=62p7FhhztHRNK8rDL1VY3JXsvWLo4B7cZEs9yuoOtO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YbmjiPAxcFXcXq/s8Ch6A7BwUcfJ6zG42r90axqo2E8a+eBXk0AO28SiF5+4u9luy
-	 +RQpJ/ODXf1wmXcBd7f7T/Si/6Uq1Xq0rF3nEPHMn4f/ko9yS3VZprzTPmDX+qFJv8
-	 u6jBqLyoyzwOz7TE0YzTv+XqplGHWqnoJY9KqjSc=
+	b=sx5jTgaQBSP0XxfKmVFhhh4fmBaLzo5fRaKK0dB01k9nb9eZ7lMSgBi8b9Og5gNxq
+	 0+VPy+1qydVT+coHp1Fv90qmLs+bIECQtkgEWfQ0k+NzwV2g8TmXzBF1vZU0KTB+Y+
+	 Va2oq8IytKeO9Ak9z7WACCrCUW/Hay4UekMid53s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.15 414/554] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
-Date: Thu, 15 Jan 2026 17:48:00 +0100
-Message-ID: <20260115164301.224484471@linuxfoundation.org>
+	Jerry Wu <w.7erry@foxmail.com>,
+	Vladimir Oltean <vladimir.oltean@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 066/119] net: mscc: ocelot: Fix crash when adding interface under a lag
+Date: Thu, 15 Jan 2026 17:48:01 +0100
+Message-ID: <20260115164154.336941276@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: Jerry Wu <w.7erry@foxmail.com>
 
-commit d0706bfd3ee40923c001c6827b786a309e2a8713 upstream.
+[ Upstream commit 34f3ff52cb9fa7dbf04f5c734fcc4cb6ed5d1a95 ]
 
-Call Trace:
+Commit 15faa1f67ab4 ("lan966x: Fix crash when adding interface under a lag")
+fixed a similar issue in the lan966x driver caused by a NULL pointer dereference.
+The ocelot_set_aggr_pgids() function in the ocelot driver has similar logic
+and is susceptible to the same crash.
 
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- strlen+0x93/0xa0 lib/string.c:420
- __fortify_strlen include/linux/fortify-string.h:268 [inline]
- get_kobj_path_length lib/kobject.c:118 [inline]
- kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
- kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
- ib_register_device drivers/infiniband/core/device.c:1472 [inline]
- ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
- rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
- rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
- rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
- nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
- rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
- rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+This issue specifically affects the ocelot_vsc7514.c frontend, which leaves
+unused ports as NULL pointers. The felix_vsc9959.c frontend is unaffected as
+it uses the DSA framework which registers all ports.
 
-This problem is similar to the problem that the
-commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
-fixes.
+Fix this by checking if the port pointer is valid before accessing it.
 
-The root cause is: the function ib_device_rename() renames the name with
-lock. But in the function kobject_uevent(), this name is accessed without
-lock protection at the same time.
-
-The solution is to add the lock protection when this name is accessed in
-the function kobject_uevent().
-
-Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
-Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
-Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 528d3f190c98 ("net: mscc: ocelot: drop the use of the "lags" array")
+Signed-off-by: Jerry Wu <w.7erry@foxmail.com>
+Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Link: https://patch.msgid.link/tencent_75EF812B305E26B0869C673DD1160866C90A@qq.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Ajay: Modified to apply on v5.10.y-v6.6.y
-        ib_device_notify_register() not present in v5.10.y-v6.6.y,
-        so directly added lock for kobject_uevent() ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/mscc/ocelot.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -1449,8 +1449,13 @@ int ib_register_device(struct ib_device
- 		return ret;
- 	}
- 	dev_set_uevent_suppress(&device->dev, false);
-+
-+	down_read(&devices_rwsem);
-+
- 	/* Mark for userspace that device is ready */
- 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-+
-+	up_read(&devices_rwsem);
- 	ib_device_put(device);
+diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
+index 08bee56aea35f..c345d9b17c892 100644
+--- a/drivers/net/ethernet/mscc/ocelot.c
++++ b/drivers/net/ethernet/mscc/ocelot.c
+@@ -2307,14 +2307,16 @@ static void ocelot_set_aggr_pgids(struct ocelot *ocelot)
  
- 	return 0;
+ 	/* Now, set PGIDs for each active LAG */
+ 	for (lag = 0; lag < ocelot->num_phys_ports; lag++) {
+-		struct net_device *bond = ocelot->ports[lag]->bond;
++		struct ocelot_port *ocelot_port = ocelot->ports[lag];
+ 		int num_active_ports = 0;
++		struct net_device *bond;
+ 		unsigned long bond_mask;
+ 		u8 aggr_idx[16];
+ 
+-		if (!bond || (visited & BIT(lag)))
++		if (!ocelot_port || !ocelot_port->bond || (visited & BIT(lag)))
+ 			continue;
+ 
++		bond = ocelot_port->bond;
+ 		bond_mask = ocelot_get_bond_mask(ocelot, bond);
+ 
+ 		for_each_set_bit(port, &bond_mask, ocelot->num_phys_ports) {
+-- 
+2.51.0
+
 
 
 
