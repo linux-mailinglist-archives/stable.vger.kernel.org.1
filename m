@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209250-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C17AD269EF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:37 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BCFACD27595
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2D65130804BA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A95530C68C0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3E9F3BC4C9;
-	Thu, 15 Jan 2026 17:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 340C93D3493;
+	Thu, 15 Jan 2026 17:50:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yfk6V5h6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CY9hixoR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886111A5B9E;
-	Thu, 15 Jan 2026 17:29:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E793A3BFE29;
+	Thu, 15 Jan 2026 17:50:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498161; cv=none; b=fo0BBuM26mLmEx+dQ2uSP6btJG8R7OflQ+uFMDIldZEiCUUzuUlHO8YbdTrfsfMnuAfRvkx7/PGguxKK895x7Jyg8O3gBo/CKXm1g0UKhbFx4O0zq/2HCxA7VHwG92qbdMeDBKgqw6aOUI10WFQDSIu0ZNQIjDOVYtrw80AC4vk=
+	t=1768499454; cv=none; b=gB9bmKydtEsuSs2iaTlq4VfdMTKEF/8dHS0rT7TFRm/7ADQCZlCaBj40Z6q3M0C8m4VYI/wQO3/9NRC45DvhniXwMJ0nRb73FCfe/6fWRWW/JQ/VCruqpJbeE2Z9ZKqCK09D2vFfVzvcvaqJ3a/bkJAgHs0edhcd3JF1q+CdpIM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498161; c=relaxed/simple;
-	bh=S4vV9HIpCGqd3338yif3mzLJxDUoXKMby8bKXRm3EB4=;
+	s=arc-20240116; t=1768499454; c=relaxed/simple;
+	bh=oFlVOK4NoqB70FLie9kycd9jzD1mVb3DAyMmSKnPO7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cqCPgFvhW5olzvbhFYW4rKsVQK3ls2dFGpuecCqGKuL2WCal64DzbA9srnSGGlKBicIHYOj8mCNCjGe9FSs4GafGV0hyzRSeV6NYdnWe/Zac4IXttW5UeSPr+kX9/kRnEDSyKA98Vl/WBot+tDXtRCHWFlzcKBa/penN9MaGU2s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yfk6V5h6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D437AC116D0;
-	Thu, 15 Jan 2026 17:29:20 +0000 (UTC)
+	 MIME-Version; b=C/3NVI10+6V0bXfkxIuTsCnutBGjqEWcko1zs3udU3uKudiL4zRBBitl8/LWRxXqQ9QN04mtPnDwpzjjMAYBx3Y7G29D38Ot2aF5ameQCcbS3tyxbVJg3GVEehc1Y+V+GHr28bQKln8ZgnacMMjwb+Tpl3M48Ku7EE4bSIsr8rA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CY9hixoR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E410C116D0;
+	Thu, 15 Jan 2026 17:50:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498161;
-	bh=S4vV9HIpCGqd3338yif3mzLJxDUoXKMby8bKXRm3EB4=;
+	s=korg; t=1768499453;
+	bh=oFlVOK4NoqB70FLie9kycd9jzD1mVb3DAyMmSKnPO7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yfk6V5h6Jo0WbqCwlyFh4iXSvAaxBblDVOJ9cb9O/54yVaJjth2EhEfQC1UKZbcBM
-	 CKO19NS34Vk60Y2+qy3wBdvp+KbwM5R5Dqo46imDN4yE3C3xMJijBv4Hhvf8fPUGHe
-	 CZ2A7acYaWn0dnW8m25Qvo8hnQW/p3CqSd+LHjK4=
+	b=CY9hixoRnR6SgzJIs1Knhs0fEmg6egF0KB1acLOGJl9qsDZOIGfTXBjFy1X5UBitE
+	 orEIrSai0mmAJ3h0k/gikcvC7zG2zfiGnZLopaG2nzS1/qRVRsZhokLVgd0gINTS/W
+	 Rm37lPWwMlRqjUqPOMUrQ979EmSsdrS/tN/G/5+U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 334/554] hwmon: (w83l786ng) Convert macros to functions to avoid TOCTOU
+	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
+	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
+	Felix Maurer <fmaurer@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.10 199/451] net/hsr: fix NULL pointer dereference in prp_get_untagged_frame()
 Date: Thu, 15 Jan 2026 17:46:40 +0100
-Message-ID: <20260115164258.321040969@linuxfoundation.org>
+Message-ID: <20260115164238.100142938@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,98 +61,90 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
 
-commit 07272e883fc61574b8367d44de48917f622cdd83 upstream.
+commit 188e0fa5a679570ea35474575e724d8211423d17 upstream.
 
-The macros FAN_FROM_REG and TEMP_FROM_REG evaluate their arguments
-multiple times. When used in lockless contexts involving shared driver
-data, this causes Time-of-Check to Time-of-Use (TOCTOU) race
-conditions.
+prp_get_untagged_frame() calls __pskb_copy() to create frame->skb_std
+but doesn't check if the allocation failed. If __pskb_copy() returns
+NULL, skb_clone() is called with a NULL pointer, causing a crash:
 
-Convert the macros to static functions. This guarantees that arguments
-are evaluated only once (pass-by-value), preventing the race
-conditions.
+Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
+KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
+CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
+Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
+RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
+RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
+RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
+RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
+R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
+R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
+FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
+Call Trace:
+ <TASK>
+ hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
+ hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
+ hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
+ __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
+ __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
+ __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
+ netif_receive_skb_internal net/core/dev.c:6278 [inline]
+ netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
+ tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
+ tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
+ tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
+ new_sync_write fs/read_write.c:593 [inline]
+ vfs_write+0x5c9/0xb30 fs/read_write.c:686
+ ksys_write+0x145/0x250 fs/read_write.c:738
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f0449f8e1ff
+Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
+RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
+RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
+RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
+R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
+R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
+ </TASK>
 
-Adhere to the principle of minimal changes by only converting macros
-that evaluate arguments multiple times and are used in lockless
-contexts.
+Add a NULL check immediately after __pskb_copy() to handle allocation
+failures gracefully.
 
-Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-Fixes: 85f03bccd6e0 ("hwmon: Add support for Winbond W83L786NG/NR")
+Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
+Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20251128123816.3670-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+Reviewed-by: Felix Maurer <fmaurer@redhat.com>
+Tested-by: Felix Maurer <fmaurer@redhat.com>
+Link: https://patch.msgid.link/20251129093718.25320-1-ssrane_b23@ee.vjti.ac.in
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/w83l786ng.c |   26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ net/hsr/hsr_forward.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/hwmon/w83l786ng.c
-+++ b/drivers/hwmon/w83l786ng.c
-@@ -77,15 +77,25 @@ FAN_TO_REG(long rpm, int div)
- 	return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 254);
- }
- 
--#define FAN_FROM_REG(val, div)	((val) == 0   ? -1 : \
--				((val) == 255 ? 0 : \
--				1350000 / ((val) * (div))))
-+static int fan_from_reg(int val, int div)
-+{
-+	if (val == 0)
-+		return -1;
-+	if (val == 255)
-+		return 0;
-+	return 1350000 / (val * div);
-+}
- 
- /* for temp */
- #define TEMP_TO_REG(val)	(clamp_val(((val) < 0 ? (val) + 0x100 * 1000 \
- 						      : (val)) / 1000, 0, 0xff))
--#define TEMP_FROM_REG(val)	(((val) & 0x80 ? \
--				  (val) - 0x100 : (val)) * 1000)
-+
-+static int temp_from_reg(int val)
-+{
-+	if (val & 0x80)
-+		return (val - 0x100) * 1000;
-+	return val * 1000;
-+}
- 
- /*
-  * The analog voltage inputs have 8mV LSB. Since the sysfs output is
-@@ -281,7 +291,7 @@ static ssize_t show_##reg(struct device
- 	int nr = to_sensor_dev_attr(attr)->index; \
- 	struct w83l786ng_data *data = w83l786ng_update_device(dev); \
- 	return sprintf(buf, "%d\n", \
--		FAN_FROM_REG(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
-+		fan_from_reg(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
- }
- 
- show_fan_reg(fan);
-@@ -348,7 +358,7 @@ store_fan_div(struct device *dev, struct
- 
- 	/* Save fan_min */
- 	mutex_lock(&data->update_lock);
--	min = FAN_FROM_REG(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
-+	min = fan_from_reg(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
- 
- 	data->fan_div[nr] = DIV_TO_REG(val);
- 
-@@ -410,7 +420,7 @@ show_temp(struct device *dev, struct dev
- 	int nr = sensor_attr->nr;
- 	int index = sensor_attr->index;
- 	struct w83l786ng_data *data = w83l786ng_update_device(dev);
--	return sprintf(buf, "%d\n", TEMP_FROM_REG(data->temp[nr][index]));
-+	return sprintf(buf, "%d\n", temp_from_reg(data->temp[nr][index]));
- }
- 
- static ssize_t
+--- a/net/hsr/hsr_forward.c
++++ b/net/hsr/hsr_forward.c
+@@ -134,6 +134,8 @@ struct sk_buff *prp_get_untagged_frame(s
+ 				__pskb_copy(frame->skb_prp,
+ 					    skb_headroom(frame->skb_prp),
+ 					    GFP_ATOMIC);
++			if (!frame->skb_std)
++				return NULL;
+ 		} else {
+ 			/* Unexpected */
+ 			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
 
 
 
