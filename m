@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-208665-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209273-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AFAC6D261CD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:57 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96540D26874
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 72D7D3098464
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id EC39930A18CF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029512D7DD7;
-	Thu, 15 Jan 2026 17:01:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7253D3337;
+	Thu, 15 Jan 2026 17:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOqbe77f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOLzo/OV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D852C028F;
-	Thu, 15 Jan 2026 17:01:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020FD3D3315;
+	Thu, 15 Jan 2026 17:30:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496497; cv=none; b=XN/7Zf6WlPPACpIC3Qw6k7YPQRtmdV3W3a4ThYe1FfXMqbuTLSL+m7hzrZG+L7UGjAHE5PzjAuhaoa/p+aqH2QatvU+SYkNkN52vnFLULxgaXe/pRRalqpjemQL7+abjmCMAOneM8AP7/T8C5h9EC4ltbaMSqdCCjUG8H+oN7hM=
+	t=1768498227; cv=none; b=m1dqdx//wjdqjS6ady7YF4exJtLeM1JBYJ5S7rsgcder37TthruJFOieGG1StAsDo6fccu0r42yYmxyNUtHePkx7jqv9vCiDePwTpAO19F2u/RS9/hUeHprG8985R+5kY1jXXUpFD8xM8glkBmJywEondU8mgWrDCQMlzZzhfGE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496497; c=relaxed/simple;
-	bh=5K+L2CnkXqUldObtuZz6EJKM0WICZ9CUAfGrNwNXbrs=;
+	s=arc-20240116; t=1768498227; c=relaxed/simple;
+	bh=Ac34wxv8VVF8G0vlNBaNcslp8jtjWyW/Ww3HQ2CjLps=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QkUVsC/h0ivhpNsXH/smLdoFWulVxiDRlebVQQHZxjXnTKV54v72XSFOL0sGxGkUBeW/kj6pNHcTCbeYHVCqu6h32TQ1ETfvRf4r/n+L8UUg2bOgtXGGvnPlwLjkgsIyoZzNuNQWhcJ9luvV+xYyqVodFg/126IeyxGmfflLhpo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOqbe77f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3935FC19422;
-	Thu, 15 Jan 2026 17:01:37 +0000 (UTC)
+	 MIME-Version; b=TIW4Zp7odtwMZSQtGj17uCrSEi8X0yTr1SmMkSMnFr7aoDYQrfe3lnpTMH6YSTfpm0xDntpbXamcA5afZ7fa6I0nsWdGZZjv0QpXXGXVEPEOOgIHm/hmqccQLIyrHyzmZ15cRGnD1f9SWBi9mAaOdVRMonjEQH00Uv/XiOq0+Qk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOLzo/OV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831CAC116D0;
+	Thu, 15 Jan 2026 17:30:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496497;
-	bh=5K+L2CnkXqUldObtuZz6EJKM0WICZ9CUAfGrNwNXbrs=;
+	s=korg; t=1768498226;
+	bh=Ac34wxv8VVF8G0vlNBaNcslp8jtjWyW/Ww3HQ2CjLps=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xOqbe77fqdYdZ0tbwPOWjrQan/3pTLpQdkMlGc/1e9FQSgc/oLiXrQrYWYvFjQ/w5
-	 dzRBEHjRnWCUOauHjK4at1UmlvApad5ONcXdI0ci+CmDGXxDGdsN2ND4unNstfQx5U
-	 kNDAqnn9EHvKNzE3TS7fOYA9Kt4PHSIrzV8pmwrc=
+	b=mOLzo/OV84iXKrekDhmV+kaA7DCnJ3siP3E/AXYaas7ykoIuQzzUrbOi5JhDXAVrY
+	 yo03o3K8ePnYuKiFKl1DNYP6FPK5UplibF34R5GsHsdP4H5Sovnj8jB8W27BwJAedD
+	 /87dy+OWLp+C9Zv4WB4wxdXuaOdIHzbLQFab5gNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.12 008/119] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
-Date: Thu, 15 Jan 2026 17:47:03 +0100
-Message-ID: <20260115164152.258972547@linuxfoundation.org>
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Ido Schimmel <idosch@nvidia.com>,
+	David Ahern <dsahern@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 358/554] ipv4: Fix reference count leak when using error routes with nexthop objects
+Date: Thu, 15 Jan 2026 17:47:04 +0100
+Message-ID: <20260115164259.185051202@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +63,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit a4e305ed60f7c41bbf9aabc16dd75267194e0de3 upstream.
+[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
 
-pdev can be null and free_ring: can be called in 1297 with a null
-pdev.
+When a nexthop object is deleted, it is marked as dead and then
+fib_table_flush() is called to flush all the routes that are using the
+dead nexthop.
 
-Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260106094731.25819-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The current logic in fib_table_flush() is to only flush error routes
+(e.g., blackhole) when it is called as part of network namespace
+dismantle (i.e., with flush_all=true). Therefore, error routes are not
+flushed when their nexthop object is deleted:
+
+ # ip link add name dummy1 up type dummy
+ # ip nexthop add id 1 dev dummy1
+ # ip route add 198.51.100.1/32 nhid 1
+ # ip route add blackhole 198.51.100.2/32 nhid 1
+ # ip nexthop del id 1
+ # ip route show
+ blackhole 198.51.100.2 nhid 1 dev dummy1
+
+As such, they keep holding a reference on the nexthop object which in
+turn holds a reference on the nexthop device, resulting in a reference
+count leak:
+
+ # ip link del dev dummy1
+ [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
+
+Fix by flushing error routes when their nexthop is marked as dead.
+
+IPv6 does not suffer from this problem.
+
+Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
+Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/3com/3c59x.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv4/fib_trie.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/3com/3c59x.c
-+++ b/drivers/net/ethernet/3com/3c59x.c
-@@ -1473,7 +1473,7 @@ static int vortex_probe1(struct device *
- 		return 0;
+diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
+index 8ab6ad65d0b8..2cec18cb5c48 100644
+--- a/net/ipv4/fib_trie.c
++++ b/net/ipv4/fib_trie.c
+@@ -2049,10 +2049,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
+ 				continue;
+ 			}
  
- free_ring:
--	dma_free_coherent(&pdev->dev,
-+	dma_free_coherent(gendev,
- 		sizeof(struct boom_rx_desc) * RX_RING_SIZE +
- 		sizeof(struct boom_tx_desc) * TX_RING_SIZE,
- 		vp->rx_ring, vp->rx_ring_dma);
+-			/* Do not flush error routes if network namespace is
+-			 * not being dismantled
++			/* When not flushing the entire table, skip error
++			 * routes that are not marked for deletion.
+ 			 */
+-			if (!flush_all && fib_props[fa->fa_type].error) {
++			if (!flush_all && fib_props[fa->fa_type].error &&
++			    !(fi->fib_flags & RTNH_F_DEAD)) {
+ 				slen = fa->fa_slen;
+ 				continue;
+ 			}
+-- 
+2.51.0
+
 
 
 
