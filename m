@@ -1,54 +1,61 @@
-Return-Path: <stable+bounces-209342-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209719-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71CD8D26AB8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:00 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 995A9D2721F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 23AD930363EC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 025EE30524DD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22D1B3BFE43;
-	Thu, 15 Jan 2026 17:33:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DBD553C1987;
+	Thu, 15 Jan 2026 17:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ajyqgDo3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4F4pY1x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D4AB03BF2F7;
-	Thu, 15 Jan 2026 17:33:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C5573BFE37;
+	Thu, 15 Jan 2026 17:51:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498422; cv=none; b=GiGzNa2z9YsgkZN/bnUU1P8tuHA0/ANIrqagIiQHvEcQQALTSWNZXbU3DxxV3pIZZqVkAH9+xzHNtIEIId8CqtddSYjZIWJss/3twz6UpL44pDsoY7Xq7xgpu1SAgV/OIi8thRyJnCXDBbl/PhQjVUeYFxLNGp692suiSlOpZE8=
+	t=1768499496; cv=none; b=jzmBQbaFTFZKN/ctCDD89mDwtwEcsGUgCsEdIa5ftKlsSbbspwZcUJpEBhjigEzxO3LrgyGjgNmxVEiK85dVNPv7ExxPmjd9uZ261ySSjGL9vYGMifAhDWQK120RyNTWEvRUvVf8WEIy0DmmmyIx3fN3yBzCxlbF09p1tcF9GeE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498422; c=relaxed/simple;
-	bh=GjN8NkFfEZJfvfE1TZXkLP4jdaS7xB5Kg7Fa4ijgzAo=;
+	s=arc-20240116; t=1768499496; c=relaxed/simple;
+	bh=vhum/qL8HSqNXYPfin7ENfAWpvHyJa1Ycvr7KswHtXI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gBAnOc2FRIUxnDgwf9SkyYU1ciAD/42Y4YQGzaNjN5c5i1L1xczW7nbafQXMp6HSJ2kcra2WkOkURxkhdmoqrLoKjMWn0z6xgndFTKBravsGLss3NjzME6gsnUJeBaSXDkOwgmkj5eMZSnIVkBy9ngXQLr1l2P5eGOYuAde/yIU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ajyqgDo3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D01AC116D0;
-	Thu, 15 Jan 2026 17:33:42 +0000 (UTC)
+	 MIME-Version; b=GwCAHuTNjkd7UnTtrtpDqv8BVzF7Ku0PUQY9YJfh/SrBUnIcMQHMKPgqGk+0uFYiPOaABh0Ca9lGR47u2ggfpvZuLDdlT1wwwxfBDyQb5mKM2CwFCpc6GHUnqJMOaOVt3Rxc0/MGeA/CkhGXle/BeJl/23lLNeeQ99Tzig79w/o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4F4pY1x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6AFC116D0;
+	Thu, 15 Jan 2026 17:51:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498422;
-	bh=GjN8NkFfEZJfvfE1TZXkLP4jdaS7xB5Kg7Fa4ijgzAo=;
+	s=korg; t=1768499496;
+	bh=vhum/qL8HSqNXYPfin7ENfAWpvHyJa1Ycvr7KswHtXI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ajyqgDo3+OKv859cLeYUwusvWXel74rGCld8508CRKEyRh6f6PlFB/du9ZPCgTwJf
-	 YCVnZ2bByf6SZ8g88BHS/ojaLiKiZvgeVRtYca1HtUsYKN6roOb8mQ49WJ4Lqqckrv
-	 6LEPtdfOSHg/v5kcN7QKcYTA2UtrvhDokI0Ixjdc=
+	b=j4F4pY1xN+5+w2OBMINHWWLJw5IhKaE09BMwUlxy8uH+7XPxJ6Ri5RHdZIR1brHdo
+	 yl6/wjdNzepGf20ImUnaPzLYXsm1Un5JePWz7mbvc7LW+jaLFe6XQVv1rExeETocbj
+	 jrahEqI78cQaNQQ6yaOIuYP7UgY1596rXIhlLWqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christian Hitz <christian.hitz@bbv.ch>,
-	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 383/554] leds: leds-lp50xx: Allow LED 0 to be added to module bank
+	Prithvi Tambewagh <activprithvi@gmail.com>,
+	syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Heming Zhao <heming.zhao@suse.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.10 248/451] ocfs2: fix kernel BUG in ocfs2_find_victim_chain
 Date: Thu, 15 Jan 2026 17:47:29 +0100
-Message-ID: <20260115164300.101348664@linuxfoundation.org>
+Message-ID: <20260115164239.863699640@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +67,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Hitz <christian.hitz@bbv.ch>
+From: Prithvi Tambewagh <activprithvi@gmail.com>
 
-commit 26fe74d598c32e7bc6f150edfc4aa43e1bee55db upstream.
+commit 039bef30e320827bac8990c9f29d2a68cd8adb5f upstream.
 
-led_banks contains LED module number(s) that should be grouped into the
-module bank. led_banks is 0-initialized.
-By checking the led_banks entries for 0, un-set entries are detected.
-But a 0-entry also indicates that LED module 0 should be grouped into the
-module bank.
+syzbot reported a kernel BUG in ocfs2_find_victim_chain() because the
+`cl_next_free_rec` field of the allocation chain list (next free slot in
+the chain list) is 0, triggring the BUG_ON(!cl->cl_next_free_rec)
+condition in ocfs2_find_victim_chain() and panicking the kernel.
 
-By only iterating over the available entries no check for unused entries
-is required and LED module 0 can be added to bank.
+To fix this, an if condition is introduced in ocfs2_claim_suballoc_bits(),
+just before calling ocfs2_find_victim_chain(), the code block in it being
+executed when either of the following conditions is true:
 
-Cc: stable@vger.kernel.org
-Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
-Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
-Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
-Link: https://patch.msgid.link/20251008123222.1117331-1-christian@klarinett.li
-Signed-off-by: Lee Jones <lee@kernel.org>
+1. `cl_next_free_rec` is equal to 0, indicating that there are no free
+chains in the allocation chain list
+2. `cl_next_free_rec` is greater than `cl_count` (the total number of
+chains in the allocation chain list)
+
+Either of them being true is indicative of the fact that there are no
+chains left for usage.
+
+This is addressed using ocfs2_error(), which prints
+the error log for debugging purposes, rather than panicking the kernel.
+
+Link: https://lkml.kernel.org/r/20251201130711.143900-1-activprithvi@gmail.com
+Signed-off-by: Prithvi Tambewagh <activprithvi@gmail.com>
+Reported-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=96d38c6e1655c1420a72
+Tested-by: syzbot+96d38c6e1655c1420a72@syzkaller.appspotmail.com
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Cc: Heming Zhao <heming.zhao@suse.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/leds/leds-lp50xx.c |   10 ++++------
- 1 file changed, 4 insertions(+), 6 deletions(-)
+ fs/ocfs2/suballoc.c |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/drivers/leds/leds-lp50xx.c
-+++ b/drivers/leds/leds-lp50xx.c
-@@ -347,17 +347,15 @@ out:
- 	return ret;
- }
+--- a/fs/ocfs2/suballoc.c
++++ b/fs/ocfs2/suballoc.c
+@@ -1925,6 +1925,16 @@ static int ocfs2_claim_suballoc_bits(str
+ 	}
  
--static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[])
-+static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[], int num_leds)
- {
- 	u8 led_config_lo, led_config_hi;
- 	u32 bank_enable_mask = 0;
- 	int ret;
- 	int i;
+ 	cl = (struct ocfs2_chain_list *) &fe->id2.i_chain;
++	if (!le16_to_cpu(cl->cl_next_free_rec) ||
++	    le16_to_cpu(cl->cl_next_free_rec) > le16_to_cpu(cl->cl_count)) {
++		status = ocfs2_error(ac->ac_inode->i_sb,
++				     "Chain allocator dinode %llu has invalid next "
++				     "free chain record %u, but only %u total\n",
++				     (unsigned long long)le64_to_cpu(fe->i_blkno),
++				     le16_to_cpu(cl->cl_next_free_rec),
++				     le16_to_cpu(cl->cl_count));
++		goto bail;
++	}
  
--	for (i = 0; i < priv->chip_info->max_modules; i++) {
--		if (led_banks[i])
--			bank_enable_mask |= (1 << led_banks[i]);
--	}
-+	for (i = 0; i < num_leds; i++)
-+		bank_enable_mask |= (1 << led_banks[i]);
- 
- 	led_config_lo = bank_enable_mask;
- 	led_config_hi = bank_enable_mask >> 8;
-@@ -413,7 +411,7 @@ static int lp50xx_probe_leds(struct fwno
- 			return ret;
- 		}
- 
--		ret = lp50xx_set_banks(priv, led_banks);
-+		ret = lp50xx_set_banks(priv, led_banks, num_leds);
- 		if (ret) {
- 			dev_err(priv->dev, "Cannot setup banked LEDs\n");
- 			return ret;
+ 	victim = ocfs2_find_victim_chain(cl);
+ 	ac->ac_chain = victim;
 
 
 
