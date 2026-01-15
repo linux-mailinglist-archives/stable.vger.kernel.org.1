@@ -1,61 +1,54 @@
-Return-Path: <stable+bounces-209545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209157-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 009D4D26EED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4106AD27366
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:12:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E343431D5D84
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4A0F8327B459
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8D5032F619D;
-	Thu, 15 Jan 2026 17:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 551903C0084;
+	Thu, 15 Jan 2026 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uX9qtnyD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="psoNnceZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 508FF2D73B4;
-	Thu, 15 Jan 2026 17:43:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1880C3AE701;
+	Thu, 15 Jan 2026 17:24:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499001; cv=none; b=Ge8Y1zzOQghwtpFOTKF2jpZg4mGbbM0ET7ynFJOvb6TPZvuk8mK6FkpiPHySrJSlXVF/bADASlpkr+9QvN37YAl2Xo73wLskAnG8G0DiykFrLTEjNTYuEYSDJwT8kmjCUYu55f/dsGtuegRN0exgB+sy5LsN0U4O8xA3UaklgSM=
+	t=1768497896; cv=none; b=lCg2L0K2Mv55IaqoqMEjiPrQTjol7CWZAMqVuZBr30V8JnvbjwNkLRkKYQwN/w+Q0aRmdMyBkl1sCev6KWYIb/uMTyoJxgk4YZ5LQ3ILTJPqOrDb2xJT/YOaZhvBlAHeRMs6hClZP67Muhbghx6lesJdSNg43+aqT+dYn/EXUv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499001; c=relaxed/simple;
-	bh=/nzvTn1E1QVt8C/W+nEkozwbxdRYUqm5sPi1UhtucpM=;
+	s=arc-20240116; t=1768497896; c=relaxed/simple;
+	bh=crNi+4DI9poXXVGWgiWBnEcM773+IO2Pf++6CkvDAH4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sBDYFWGksqeP9ZXHJOP1GMb4C26NQBxAEf7yrd3yCGNNbmgriOBqdaxmIWu0s9KLwNTc2J+ZxIqgMSENI1FRC11yFZCPeEQU0TlL3f46w3JBem8gX5t9VEnPiqGkqMQdDK+ihFneQc6kfq/Masogn5y1Bq6s/Jnq9WM8a0m4/8s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uX9qtnyD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6701C116D0;
-	Thu, 15 Jan 2026 17:43:20 +0000 (UTC)
+	 MIME-Version; b=BAdgGzHmJuBtVxMgQNDSw5RFoN5r2kXGvpAuQ03K2aLmhQcaUaHfc+KVjKXsN8mehjeKdIx/dSJvXkWg9vxnclSahQvBO6WcxlHHy3aC9OSKx9HS6eGP4OgnRu8SbjqPapiKtUEfs3K9WJ6G+GYq0wDrjGBZIpDJeZl2xCgpbwk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=psoNnceZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99754C116D0;
+	Thu, 15 Jan 2026 17:24:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499001;
-	bh=/nzvTn1E1QVt8C/W+nEkozwbxdRYUqm5sPi1UhtucpM=;
+	s=korg; t=1768497896;
+	bh=crNi+4DI9poXXVGWgiWBnEcM773+IO2Pf++6CkvDAH4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uX9qtnyDQ5Zzu7wLaasL8vlgI29hv+rFuI5Je7Y2WpI1k6ubn6RAFxLW4pDdSHSuL
-	 nbfx50VZdS7SlD6BoGXvaBhsQNATdkFJIckngBekX9UdhDE7AdfdzCj3eODBx7P8m2
-	 ID/CvZTnbUUbG4CoQnR1Cod4crGcSa0uv33W35ok=
+	b=psoNnceZKPc0Q6EW7gyv8TJawKySnc+LKihDzugsNSiGkm5AMQl1VWlTxzNo1w8qn
+	 eBUf3itRvm/nJBjNVZuxSfRqaSmTV3dfKJ806uyi0r5SxhwNyUopk5sOaKBeV2acW9
+	 WPc7PDtKkYAnaLaYZwX+U6Xev0/ui8HV+Y8FF6oU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+727d161855d11d81e411@syzkaller.appspotmail.com,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 073/451] ocfs2: relax BUG() to ocfs2_error() in __ocfs2_move_extent()
+Subject: [PATCH 5.15 208/554] bpf, arm64: Do not audit capability check in do_jit()
 Date: Thu, 15 Jan 2026 17:44:34 +0100
-Message-ID: <20260115164233.541295539@linuxfoundation.org>
+Message-ID: <20260115164253.782235507@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -67,53 +60,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 8a7d58845fae061c62b50bc5eeb9bae4a1dedc3d ]
+[ Upstream commit 189e5deb944a6f9c7992355d60bffd8ec2e54a9c ]
 
-In '__ocfs2_move_extent()', relax 'BUG()' to 'ocfs2_error()' just
-to avoid crashing the whole kernel due to a filesystem corruption.
+Analogically to the x86 commit 881a9c9cb785 ("bpf: Do not audit
+capability check in do_jit()"), change the capable() call to
+ns_capable_noaudit() in order to avoid spurious SELinux denials in audit
+log.
 
-Fixes: 8f603e567aa7 ("Ocfs2/move_extents: move a range of extent.")
-Link: https://lkml.kernel.org/r/20251009102349.181126-2-dmantipov@yandex.ru
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Closes: https://syzkaller.appspot.com/bug?extid=727d161855d11d81e411
-Reported-by: syzbot+727d161855d11d81e411@syzkaller.appspotmail.com
-Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+The commit log from that commit applies here as well:
+"""
+The failure of this check only results in a security mitigation being
+applied, slightly affecting performance of the compiled BPF program. It
+doesn't result in a failed syscall, an thus auditing a failed LSM
+permission check for it is unwanted. For example with SELinux, it causes
+a denial to be reported for confined processes running as root, which
+tends to be flagged as a problem to be fixed in the policy. Yet
+dontauditing or allowing CAP_SYS_ADMIN to the domain may not be
+desirable, as it would allow/silence also other checks - either going
+against the principle of least privilege or making debugging potentially
+harder.
+
+Fix it by changing it from capable() to ns_capable_noaudit(), which
+instructs the LSMs to not audit the resulting denials.
+"""
+
+Fixes: f300769ead03 ("arm64: bpf: Only mitigate cBPF programs loaded by unprivileged users")
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Link: https://lore.kernel.org/r/20251204125916.441021-1-omosnace@redhat.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ocfs2/move_extents.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ arch/arm64/net/bpf_jit_comp.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/move_extents.c b/fs/ocfs2/move_extents.c
-index 3cc28afe9815e..6df8b5513bab0 100644
---- a/fs/ocfs2/move_extents.c
-+++ b/fs/ocfs2/move_extents.c
-@@ -100,7 +100,13 @@ static int __ocfs2_move_extent(handle_t *handle,
+diff --git a/arch/arm64/net/bpf_jit_comp.c b/arch/arm64/net/bpf_jit_comp.c
+index 654e7ed2d1a64..e934ad5837d08 100644
+--- a/arch/arm64/net/bpf_jit_comp.c
++++ b/arch/arm64/net/bpf_jit_comp.c
+@@ -341,7 +341,7 @@ static void __maybe_unused build_bhb_mitigation(struct jit_ctx *ctx)
+ 	    arm64_get_spectre_v2_state() == SPECTRE_VULNERABLE)
+ 		return;
  
- 	rec = &el->l_recs[index];
+-	if (capable(CAP_SYS_ADMIN))
++	if (ns_capable_noaudit(&init_user_ns, CAP_SYS_ADMIN))
+ 		return;
  
--	BUG_ON(ext_flags != rec->e_flags);
-+	if (ext_flags != rec->e_flags) {
-+		ret = ocfs2_error(inode->i_sb,
-+				  "Inode %llu has corrupted extent %d with flags 0x%x at cpos %u\n",
-+				  (unsigned long long)ino, index, rec->e_flags, cpos);
-+		goto out;
-+	}
-+
- 	/*
- 	 * after moving/defraging to new location, the extent is not going
- 	 * to be refcounted anymore.
+ 	if (supports_clearbhb(SCOPE_SYSTEM)) {
 -- 
 2.51.0
 
