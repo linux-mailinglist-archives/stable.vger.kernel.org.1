@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209476-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4E6B4D2764E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:35 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7836BD26CC8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0DD5E30259D1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 67AAB30428BA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 53BCC3D7D80;
-	Thu, 15 Jan 2026 17:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA6712D94A7;
+	Thu, 15 Jan 2026 17:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WkUEjvi9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YuqxZQH+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 16D9F3D348D;
-	Thu, 15 Jan 2026 17:58:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DF8727B340;
+	Thu, 15 Jan 2026 17:40:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499927; cv=none; b=fN54560siBPjx1AN9tQn9gePakWs3q9M5ZmwpcwUFk0BQ6GuxRn50iWobqskAClCirWK3Ne3qgMwHzlEoCjwtl7BojQGFHzzrPVWQX8pPqBkjLgpcfF+HFqU5+hRDSb1GUa0q9leClxoYy0WMgVv5lmp//ItJxl/gQVxy2BHJcg=
+	t=1768498804; cv=none; b=UCK+8L+SY4/Gmfb86UQV1qRIk/k/ih5sGOr0uuWv9Ndo31JiLDVvFkeFjoRHhIuyibhO760ljLgrs72oa8+lB9Nu8C6jqKi1HJLIHhBR8ULUf0DdAQZt+FfUxc8ZSJTKGTrlQDY+XAILms2p4NFK7HKr1rh3eAnX4EhYJWxB5b4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499927; c=relaxed/simple;
-	bh=IIGAQPZxNo6JhDR/Y0x9jXaR30VFHnXcpeCBUGyWMMs=;
+	s=arc-20240116; t=1768498804; c=relaxed/simple;
+	bh=d4wmV2YU49XZh5KfZdu/1JrosPD8htxGkRFwOtsCzVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iF8f0BJTsIs4A9TsCgZHUTXoARZc5ru73IQ5av8O/t92i54rMQzxW46G2W4Cjm4p3hYthhoSgkMsDhv+XAv1DV0QwBvVBaEGc/IQ3SIwRfDqmeKaO15NszyVlYI/l2N82ugA/Olr2ygMpuhUWOB7jHimepbjwOB82j71fR+I3lk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WkUEjvi9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70B53C19423;
-	Thu, 15 Jan 2026 17:58:46 +0000 (UTC)
+	 MIME-Version; b=npv3tMKZCQHIW+pgVb/SpnDOVkaMjOd3MwUJL5H3urjM1JVo1oD5ABEWKYCRVbPsGw01pelEK9q9fjJUfID1HG9+qlOAU5XCZjEjpntsDe4s7hJ/7h3hLo6tAX7JaaWUYH99ILUnOypZeB8OqFiGG15hKjR92Pw0z7aMuUmNQU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YuqxZQH+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABD0DC116D0;
+	Thu, 15 Jan 2026 17:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499927;
-	bh=IIGAQPZxNo6JhDR/Y0x9jXaR30VFHnXcpeCBUGyWMMs=;
+	s=korg; t=1768498804;
+	bh=d4wmV2YU49XZh5KfZdu/1JrosPD8htxGkRFwOtsCzVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WkUEjvi9sfXjPjsC9mnCArWHHHEf7VKPz7TbHYx4tkEE4/7vj65NiwjOlSCFJhNpQ
-	 3LO+4cbtcjgyiuukXDtDuEflLuvcD4wc8qaQhX9MTjmr+P2QuuFHeuKNZ/HxLHFT3T
-	 ZZHniDDyWwcn0OnniS3ZIg8QUd4lD87dQGWwPzck=
+	b=YuqxZQH+5vUvzrQUr6tVTWjXsZPgKl/CjK4nIGlLk1EjTJvQRGMnp+V5KvxB0ooeu
+	 pi1nDWOGT8uxMRjToYj1AWsDyPcCDVo3Gw3mq/MmpV2jUiGoqit0DZq8hVmC56Fxj9
+	 cQtxLl2sVqwvf73i8kmS5f8DwzxUpPoejR4KOHt4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Henry Martin <bsdhenrymartin@gmail.com>,
-	Sudeep Holla <sudeep.holla@arm.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.10 397/451] cpufreq: scmi: Fix null-ptr-deref in scmi_cpufreq_get_rate()
-Date: Thu, 15 Jan 2026 17:49:58 +0100
-Message-ID: <20260115164245.297473080@linuxfoundation.org>
+	Di Zhu <zhud@hygon.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 533/554] netdev: preserve NETIF_F_ALL_FOR_ALL across TSO updates
+Date: Thu, 15 Jan 2026 17:49:59 +0100
+Message-ID: <20260115164305.620072783@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Henry Martin <bsdhenrymartin@gmail.com>
+From: Di Zhu <zhud@hygon.cn>
 
-[ Upstream commit 484d3f15cc6cbaa52541d6259778e715b2c83c54 ]
+[ Upstream commit 02d1e1a3f9239cdb3ecf2c6d365fb959d1bf39df ]
 
-cpufreq_cpu_get_raw() can return NULL when the target CPU is not present
-in the policy->cpus mask. scmi_cpufreq_get_rate() does not check for
-this case, which results in a NULL pointer dereference.
+Directly increment the TSO features incurs a side effect: it will also
+directly clear the flags in NETIF_F_ALL_FOR_ALL on the master device,
+which can cause issues such as the inability to enable the nocache copy
+feature on the bonding driver.
 
-Add NULL check after cpufreq_cpu_get_raw() to prevent this issue.
+The fix is to include NETIF_F_ALL_FOR_ALL in the update mask, thereby
+preventing it from being cleared.
 
-Fixes: 99d6bdf33877 ("cpufreq: add support for CPU DVFS based on SCMI message protocol")
-Signed-off-by: Henry Martin <bsdhenrymartin@gmail.com>
-Acked-by: Sudeep Holla <sudeep.holla@arm.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: b0ce3508b25e ("bonding: allow TSO being set on bonding master")
+Signed-off-by: Di Zhu <zhud@hygon.cn>
+Link: https://patch.msgid.link/20251224012224.56185-1-zhud@hygon.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: Modified to apply on 5.10.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/scmi-cpufreq.c |   10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/netdevice.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/scmi-cpufreq.c
-+++ b/drivers/cpufreq/scmi-cpufreq.c
-@@ -29,12 +29,18 @@ static const struct scmi_handle *handle;
- 
- static unsigned int scmi_cpufreq_get_rate(unsigned int cpu)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 83bb0f21b1b02..dddb866d88075 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5093,7 +5093,8 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
+ static inline netdev_features_t netdev_add_tso_features(netdev_features_t features,
+ 							netdev_features_t mask)
  {
--	struct cpufreq_policy *policy = cpufreq_cpu_get_raw(cpu);
-+	struct cpufreq_policy *policy;
-+	struct scmi_data *priv;
- 	const struct scmi_perf_ops *perf_ops = handle->perf_ops;
--	struct scmi_data *priv = policy->driver_data;
- 	unsigned long rate;
- 	int ret;
+-	return netdev_increment_features(features, NETIF_F_ALL_TSO, mask);
++	return netdev_increment_features(features, NETIF_F_ALL_TSO |
++					 NETIF_F_ALL_FOR_ALL, mask);
+ }
  
-+	policy = cpufreq_cpu_get_raw(cpu);
-+	if (unlikely(!policy))
-+		return 0;
-+
-+	priv = policy->driver_data;
-+
- 	ret = perf_ops->freq_get(handle, priv->domain_id, &rate, false);
- 	if (ret)
- 		return 0;
+ int __netdev_update_features(struct net_device *dev);
+-- 
+2.51.0
+
 
 
 
