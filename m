@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209079-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209499-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B7E1D264C9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:21:19 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8AED7D272C7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0B9D1300A293
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE13A30C9E6C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EEDE2F619D;
-	Thu, 15 Jan 2026 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B713B8BA5;
+	Thu, 15 Jan 2026 17:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rNxeWbOV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="prnL6tCb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6271039B48E;
-	Thu, 15 Jan 2026 17:21:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B472D94A7;
+	Thu, 15 Jan 2026 17:41:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497676; cv=none; b=uIsqEVDe9dfnNEd3Fp6VyOYxvohmK7z4Lti4GKrezY5t5aFje6p3hpWWY1vq6Z4DS3mjIcmLOlLmBQjurErtimKTO0GDVdwURSbanaRTGQ/00609cb2qY5vIme1x8adFxZjlxOjM0jfhyWc7JSHCN38vHD1V8/7RMvk8TB3fM+8=
+	t=1768498870; cv=none; b=hRN+xOj+UpetuxrY40Qr0mo7Meh0SFz0uMib2p3PZ+yFmSrioB5Morp92xIldydou9Zwjj9ouexsopGHIPHSs7mf+7DrXRea/3AYF3yCF7uwmdb+obRpr3a49kUQZimeS2yEW7aVe2gamDKGWtKY0vFeESp1jVqtLCnQYSu668A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497676; c=relaxed/simple;
-	bh=3JK/igJJkk9zatdIw0kLohzosTwuPJLD9fG+nAkCQP0=;
+	s=arc-20240116; t=1768498870; c=relaxed/simple;
+	bh=CF4/MEtkjZXlLnf/nRer8O4DSyrHv8Ct12qq+AzzD/c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHyTYiO+R/g2RDkALIJADZxUXQ6WOq9d0U/cBntLCGvP0dhAKclPatVfjavg94KCfdBflE+iDXnPMb31poFeMR0rPdOo8gvS11sq60Avp+XkuJQiDGcb41pyW1a6LqbrHnAmtsd8/kGiyyyGsaT/uSy/XAM+LPtOi5Sb7VKnQkI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rNxeWbOV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F5CC116D0;
-	Thu, 15 Jan 2026 17:21:15 +0000 (UTC)
+	 MIME-Version; b=W2pZAitCbEBWFaZuxc2oD1ihWxWLBTIutk3ST/WuOhKJBBPNnfiFecb/latBJ+jdk+FbDGBCLGTAmserHi32EZ5v1ztEA1gsbVvJMrz1tMzEDZWcKDljNgdx+jOW/VAmatNVOHT1YLmjVbEnO9o5JObrPaYku+iNhNqYOUlB5xQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=prnL6tCb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A68FC116D0;
+	Thu, 15 Jan 2026 17:41:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497676;
-	bh=3JK/igJJkk9zatdIw0kLohzosTwuPJLD9fG+nAkCQP0=;
+	s=korg; t=1768498870;
+	bh=CF4/MEtkjZXlLnf/nRer8O4DSyrHv8Ct12qq+AzzD/c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rNxeWbOVhrkUkfuoNqsijk+uHzH0vA+boMVW0BCYTOUn0X7vRa8eHWU3OShqs3mBY
-	 iFmWYPGta6UBxYnWXQaVRGXkIqzxSG1olqsguqKbTDGQS1cJh2DRfDMdvkmY4Ssqma
-	 UzYPPbITeCsBf+zJtDx/x4IMoaM65RIWUSYftr6w=
+	b=prnL6tCbQA5K62mENf2dpe7n8VnaaZUR5ZnzYJYOl9Gx76N0dqZ4Bo/g19BrfS4Ki
+	 67jRE0gUg5+JNgRdzcLnJPM3EdVdGja+wNI3MZkicQ+Xpoc0IAU0fvC1MeMkjSUKIq
+	 i+wkHC0pf5fIJI4KGY3CEgMW/ALn8p9oLvUO7Zt8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandru Gagniuc <mr.nuke.me@gmail.com>,
-	Bjorn Andersson <andersson@kernel.org>,
+	Konstantin Andreev <andreev@swemel.ru>,
+	Casey Schaufler <casey@schaufler-ca.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 163/554] remoteproc: qcom_q6v5_wcss: fix parsing of qcom,halt-regs
+Subject: [PATCH 5.10 028/451] smack: fix bug: unprivileged task can create labels
 Date: Thu, 15 Jan 2026 17:43:49 +0100
-Message-ID: <20260115164252.168415477@linuxfoundation.org>
+Message-ID: <20260115164231.911808578@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandru Gagniuc <mr.nuke.me@gmail.com>
+From: Konstantin Andreev <andreev@swemel.ru>
 
-[ Upstream commit 7e81fa8d809ed1e67ae9ecd52d20a20c2c65d877 ]
+[ Upstream commit c147e13ea7fe9f118f8c9ba5e96cbd644b00d6b3 ]
 
-The "qcom,halt-regs" consists of a phandle reference followed by the
-three offsets within syscon for halt registers. Thus, we need to
-request 4 integers from of_property_read_variable_u32_array(), with
-the halt_reg ofsets at indexes 1, 2, and 3. Offset 0 is the phandle.
+If an unprivileged task is allowed to relabel itself
+(/smack/relabel-self is not empty),
+it can freely create new labels by writing their
+names into own /proc/PID/attr/smack/current
 
-With MAX_HALT_REG at 3, of_property_read_variable_u32_array() returns
--EOVERFLOW, causing .probe() to fail.
+This occurs because do_setattr() imports
+the provided label in advance,
+before checking "relabel-self" list.
 
-Increase MAX_HALT_REG to 4, and update the indexes accordingly.
+This change ensures that the "relabel-self" list
+is checked before importing the label.
 
-Fixes: 0af65b9b915e ("remoteproc: qcom: wcss: Add non pas wcss Q6 support for QCS404")
-Signed-off-by: Alexandru Gagniuc <mr.nuke.me@gmail.com>
-Link: https://lore.kernel.org/r/20251129013207.3981517-1-mr.nuke.me@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 38416e53936e ("Smack: limited capability for changing process label")
+Signed-off-by: Konstantin Andreev <andreev@swemel.ru>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/remoteproc/qcom_q6v5_wcss.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ security/smack/smack_lsm.c | 41 +++++++++++++++++++++++++-------------
+ 1 file changed, 27 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/remoteproc/qcom_q6v5_wcss.c b/drivers/remoteproc/qcom_q6v5_wcss.c
-index cfd34ffcbb121..d900ef12ada43 100644
---- a/drivers/remoteproc/qcom_q6v5_wcss.c
-+++ b/drivers/remoteproc/qcom_q6v5_wcss.c
-@@ -85,7 +85,7 @@
- #define TCSR_WCSS_CLK_MASK	0x1F
- #define TCSR_WCSS_CLK_ENABLE	0x14
+diff --git a/security/smack/smack_lsm.c b/security/smack/smack_lsm.c
+index cb4801fcf9a8c..b88bd37a6b3da 100644
+--- a/security/smack/smack_lsm.c
++++ b/security/smack/smack_lsm.c
+@@ -3552,8 +3552,8 @@ static int smack_setprocattr(const char *name, void *value, size_t size)
+ 	struct task_smack *tsp = smack_cred(current_cred());
+ 	struct cred *new;
+ 	struct smack_known *skp;
+-	struct smack_known_list_elem *sklep;
+-	int rc;
++	char *labelstr;
++	int rc = 0;
  
--#define MAX_HALT_REG		3
-+#define MAX_HALT_REG		4
- enum {
- 	WCSS_IPQ8074,
- 	WCSS_QCS404,
-@@ -864,9 +864,9 @@ static int q6v5_wcss_init_mmio(struct q6v5_wcss *wcss,
+ 	if (!smack_privileged(CAP_MAC_ADMIN) && list_empty(&tsp->smk_relabel))
+ 		return -EPERM;
+@@ -3564,28 +3564,41 @@ static int smack_setprocattr(const char *name, void *value, size_t size)
+ 	if (strcmp(name, "current") != 0)
  		return -EINVAL;
+ 
+-	skp = smk_import_entry(value, size);
+-	if (IS_ERR(skp))
+-		return PTR_ERR(skp);
++	labelstr = smk_parse_smack(value, size);
++	if (IS_ERR(labelstr))
++		return PTR_ERR(labelstr);
+ 
+ 	/*
+ 	 * No process is ever allowed the web ("@") label
+ 	 * and the star ("*") label.
+ 	 */
+-	if (skp == &smack_known_web || skp == &smack_known_star)
+-		return -EINVAL;
++	if (labelstr[1] == '\0' /* '@', '*' */) {
++		const char c = labelstr[0];
++
++		if (c == *smack_known_web.smk_known ||
++		    c == *smack_known_star.smk_known) {
++			rc = -EPERM;
++			goto free_labelstr;
++		}
++	}
+ 
+ 	if (!smack_privileged(CAP_MAC_ADMIN)) {
+-		rc = -EPERM;
++		const struct smack_known_list_elem *sklep;
+ 		list_for_each_entry(sklep, &tsp->smk_relabel, list)
+-			if (sklep->smk_label == skp) {
+-				rc = 0;
+-				break;
+-			}
+-		if (rc)
+-			return rc;
++			if (strcmp(sklep->smk_label->smk_known, labelstr) == 0)
++				goto free_labelstr;
++		rc = -EPERM;
  	}
  
--	wcss->halt_q6 = halt_reg[0];
--	wcss->halt_wcss = halt_reg[1];
--	wcss->halt_nc = halt_reg[2];
-+	wcss->halt_q6 = halt_reg[1];
-+	wcss->halt_wcss = halt_reg[2];
-+	wcss->halt_nc = halt_reg[3];
- 
- 	return 0;
- }
++free_labelstr:
++	kfree(labelstr);
++	if (rc)
++		return -EPERM;
++
++	skp = smk_import_entry(value, size);
++	if (IS_ERR(skp))
++		return PTR_ERR(skp);
++
+ 	new = prepare_creds();
+ 	if (new == NULL)
+ 		return -ENOMEM;
 -- 
 2.51.0
 
