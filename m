@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209400-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208840-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B7059D2761E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:57 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 746B4D2641E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B3BEF3231D54
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DB601312594C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2EF27A462;
-	Thu, 15 Jan 2026 17:36:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B8EA33BC4E8;
+	Thu, 15 Jan 2026 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kt10sUov"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzutn010"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF42F2D060B;
-	Thu, 15 Jan 2026 17:36:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F52B2FDC4D;
+	Thu, 15 Jan 2026 17:09:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498588; cv=none; b=gGRFlYBGHU7tRJnCgxtlaqwK32HSVdUWtKiY5b9EUhLKCbTVbGsq2eOECwmNvcxRoQUI9UuvNiZ+tG5zQHChxV/QGsXai8FpR6kER1Q52Z0mD+knhUN1oO8PWvlbDmJH8a1j8ORgb8PeEzghEtdLnX3PTk5eYtke6cjlhccuWpI=
+	t=1768496992; cv=none; b=TJH3ujCxAsuLPlEMs9+jr9bcPTmp7tYTnyzEluMmvGX7bUsjTtigyGoNHPZtz7k/eDoS/LaiF9+XGV3dLEHbszqFhOyaaOdFFPrarg7iK44CzGIs30xVcVxQ07VBN6OLGJvrmjRAKcCb2L4WDLs1cDymcB5XAaXHeGVV3jdC6Hg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498588; c=relaxed/simple;
-	bh=mmtDX58XG2fwXtivbUFlEEwcSIhvK34y8GvNaW8oVlw=;
+	s=arc-20240116; t=1768496992; c=relaxed/simple;
+	bh=HJzcbuw1H9TBtZOimglvbFEi2Dr20Hm16PQyNukZ2is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=cI6o7LUWywxYwXLEvtuJFzC+BSto8wD2BC5OFjl5kEO9hEOMvphIFzU3phca8QXJ3NvknuFLe4Qg9RhQb3n43O27E2w9FoBK0yG/DY3WEUTl0vsv2mBM+jhXANf2NMJhSP1YqJVuKNEwCWcYKYX4z4ZJfmL5x6zaGzItBunfjoc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kt10sUov; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69990C116D0;
-	Thu, 15 Jan 2026 17:36:28 +0000 (UTC)
+	 MIME-Version; b=n5I8gTPpNDm8IH2AUkewaX/UO6a5HBPKPzSFBVwQiprJAmZa9au8CL39MZz9cDWwAgYLUi/u7aV91OOKr2cA+Oj4plZ8RofyucBY1pi0MU4MfgPMhjm19OjOGwv5vGLOEv8VCaqU/3pAWCGjkZGUf6Lhuwucc6MsaF3kYjhk3gI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzutn010; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B412AC116D0;
+	Thu, 15 Jan 2026 17:09:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498588;
-	bh=mmtDX58XG2fwXtivbUFlEEwcSIhvK34y8GvNaW8oVlw=;
+	s=korg; t=1768496992;
+	bh=HJzcbuw1H9TBtZOimglvbFEi2Dr20Hm16PQyNukZ2is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kt10sUovHqxuVTFBTdfq0mi/1DV2IEhjsqXQyR/8mv0b6Mdii/ERktqtgoSZY670+
-	 bjNiVc/3ugB+FLSFupYwcubj6RKsydteqs7fMq+jDLW4wquJkotLbiE8dDA5DCj//v
-	 eSRB6dK7CaFw+HpZs05SSki2SUjSf+0I4j4HxVpk=
+	b=fzutn010SeZ6mKOYU/iwDhjo0Zr6SPMDngD3GqelBzlvfOpE+GsxxN8EymAzCFREf
+	 Zq+EDaW4ZirGYmPidEanwZXiFtUL+34tORZf5Zh1+yBoZm6wyA1mvTjpxWNqyMHdC6
+	 JfSBdwDXtVd2qCNfGKX4r5ZzL/Vyet9gz4fPUzXg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jakub Kicinski <kuba@kernel.org>,
-	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,
-	Dong Chenchen <dongchenchen2@huawei.com>,
-	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
-	Mina Almasry <almasrymina@google.com>,
-	Ruohan Lan <ruohanlan@aliyun.com>
-Subject: [PATCH 5.15 484/554] page_pool: Fix use-after-free in page_pool_recycle_in_ring
-Date: Thu, 15 Jan 2026 17:49:10 +0100
-Message-ID: <20260115164303.831711125@linuxfoundation.org>
+	Sascha Hauer <s.hauer@pengutronix.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Subject: [PATCH 6.6 88/88] gpio: pca953x: fix wrong error probe return value
+Date: Thu, 15 Jan 2026 17:49:11 +0100
+Message-ID: <20260115164149.500602298@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,134 +57,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dong Chenchen <dongchenchen2@huawei.com>
+From: Sascha Hauer <s.hauer@pengutronix.de>
 
-[ Upstream commit 271683bb2cf32e5126c592b5d5e6a756fa374fd9 ]
+commit 0a1db19f66c0960eb00e1f2ccd40708b6747f5b1 upstream.
 
-syzbot reported a uaf in page_pool_recycle_in_ring:
+The second argument to dev_err_probe() is the error value. Pass the
+return value of devm_request_threaded_irq() there instead of the irq
+number.
 
-BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
-Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
-
-CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
-Call Trace:
- <TASK>
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:378 [inline]
- print_report+0x169/0x550 mm/kasan/report.c:489
- kasan_report+0x143/0x180 mm/kasan/report.c:602
- lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
- __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
- _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
- spin_unlock_bh include/linux/spinlock.h:396 [inline]
- ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
- page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
- page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
- page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
- page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
- napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
- skb_pp_recycle net/core/skbuff.c:1047 [inline]
- skb_free_head net/core/skbuff.c:1094 [inline]
- skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
- skb_release_all net/core/skbuff.c:1190 [inline]
- __kfree_skb net/core/skbuff.c:1204 [inline]
- sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
- kfree_skb_reason include/linux/skbuff.h:1263 [inline]
- __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
-
-root cause is:
-
-page_pool_recycle_in_ring
-  ptr_ring_produce
-    spin_lock(&r->producer_lock);
-    WRITE_ONCE(r->queue[r->producer++], ptr)
-      //recycle last page to pool
-				page_pool_release
-				  page_pool_scrub
-				    page_pool_empty_ring
-				      ptr_ring_consume
-				      page_pool_return_page  //release all page
-				  __page_pool_destroy
-				     free_percpu(pool->recycle_stats);
-				     free(pool) //free
-
-     spin_unlock(&r->producer_lock); //pool->ring uaf read
-  recycle_stat_inc(pool, ring);
-
-page_pool can be free while page pool recycle the last page in ring.
-Add producer-lock barrier to page_pool_release to prevent the page
-pool from being free before all pages have been recycled.
-
-recycle_stat_inc() is empty when CONFIG_PAGE_POOL_STATS is not
-enabled, which will trigger Wempty-body build warning. Add definition
-for pool stat macro to fix warning.
-
-Suggested-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
-Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
-Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
-Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
-Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
-Reviewed-by: Mina Almasry <almasrymina@google.com>
-Link: https://patch.msgid.link/20250527114152.3119109-1-dongchenchen2@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Linux 5.15.y does not support page pool statistics
-  (CONFIG_PAGE_POOL_STATS), so remove the related source code
-  changes from the patch. ]
-Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Fixes: c47f7ff0fe61 ("gpio: pca953x: Utilise dev_err_probe() where it makes sense")
+Link: https://lore.kernel.org/r/20250616134503.1201138-1-s.hauer@pengutronix.de
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/page_pool.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ drivers/gpio/gpio-pca953x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/core/page_pool.c
-+++ b/net/core/page_pool.c
-@@ -414,14 +414,14 @@ static void page_pool_return_page(struct
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -989,7 +989,7 @@ static int pca953x_irq_setup(struct pca9
+ 					IRQF_ONESHOT | IRQF_SHARED, dev_name(dev),
+ 					chip);
+ 	if (ret)
+-		return dev_err_probe(dev, client->irq, "failed to request irq\n");
++		return dev_err_probe(dev, ret, "failed to request irq\n");
  
- static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
- {
--	int ret;
-+	bool in_softirq, ret;
-+
- 	/* BH protection not needed if current is softirq */
--	if (in_softirq())
--		ret = ptr_ring_produce(&pool->ring, page);
--	else
--		ret = ptr_ring_produce_bh(&pool->ring, page);
-+	in_softirq = page_pool_producer_lock(pool);
-+	ret = !__ptr_ring_produce(&pool->ring, page);
-+	page_pool_producer_unlock(pool, in_softirq);
- 
--	return (ret == 0) ? true : false;
-+	return ret;
+ 	return 0;
  }
- 
- /* Only allow direct recycling in special circumstances, into the
-@@ -684,10 +684,14 @@ static void page_pool_scrub(struct page_
- 
- static int page_pool_release(struct page_pool *pool)
- {
-+	bool in_softirq;
- 	int inflight;
- 
- 	page_pool_scrub(pool);
- 	inflight = page_pool_inflight(pool);
-+	/* Acquire producer lock to make sure producers have exited. */
-+	in_softirq = page_pool_producer_lock(pool);
-+	page_pool_producer_unlock(pool, in_softirq);
- 	if (!inflight)
- 		page_pool_free(pool);
- 
 
 
 
