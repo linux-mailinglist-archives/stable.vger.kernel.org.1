@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209378-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208631-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DAA71D26A82
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58B59D26117
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B4F27310D3BD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB9D630B0EF5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F383A0E98;
-	Thu, 15 Jan 2026 17:35:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494533BC4E2;
+	Thu, 15 Jan 2026 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkWwyA5y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/OvmthA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D080330214B;
-	Thu, 15 Jan 2026 17:35:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF0B3A7F43;
+	Thu, 15 Jan 2026 16:59:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498524; cv=none; b=oFOWjl6/RiaU5aj9+/yEmelgMinbWOw8e0RxAwpkscxRMaADAZpSk4J+iF2BpIripjBPcfW9XgNZSLO3CtdbdTzgkG3LjUWit6+0eZmIuOf8EreTaku7M8VDXfAcJWaTtETrTAmPN7YT9j/rVMtyeLn1XKpNWCJtqBBXi5XFPrI=
+	t=1768496398; cv=none; b=TfG/E1hqgpJ6LnyIFJS8yWonfG1zY5SpWOAVwsRYHFFpp8wMieqo6qRnqM5Co9ov0p4T1eRX+8qT+eZf1v2on4edHEarZRUGNq56/zaUBmoa8yXuZAhsmwGs+hUZZ0E9hNljVx9GI48othh+AmTJdN1cGHBRrROwfoEoo7/5dGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498524; c=relaxed/simple;
-	bh=N+2l2BioWCKVXkuJelmU+PH1NTF0fNJDBoAJBv8azeE=;
+	s=arc-20240116; t=1768496398; c=relaxed/simple;
+	bh=+3Sn9ja5GE7NWTap0cqbWhs8/CM1Rk8UW2IDbGI7O44=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qXCczrgsFqvteMPRBpMTbRPXTsu4lvJmVOPr7rDjyBYPaBGqxwS9jYh2PjhWlqSSq2qp9lt+604GUWmOwUpTmIrcLvemtzPZkElLeVsOnA71Kq6NU72SXZrEeObOZ/mY9h7B3zLLW7VsQgb7DSlqvW8XpuQPAL22ujaoTscMAIA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkWwyA5y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D936C116D0;
-	Thu, 15 Jan 2026 17:35:24 +0000 (UTC)
+	 MIME-Version; b=atBZj6KLd64HJnbmi27suA2lheasT+zrVcRtvsYshB0KQGWNYAI6uoO7TI5+D+H3F/nmMNvOznaHW3Yg/RfThwz+wHj/1XFKnfsmmXaJYfYWKqWc/U3rA87ChJh5T++4fehnuG+FWoMMllZc8qqRTQSCCsHtese+TkrMQYGX128=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/OvmthA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B996C116D0;
+	Thu, 15 Jan 2026 16:59:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498524;
-	bh=N+2l2BioWCKVXkuJelmU+PH1NTF0fNJDBoAJBv8azeE=;
+	s=korg; t=1768496397;
+	bh=+3Sn9ja5GE7NWTap0cqbWhs8/CM1Rk8UW2IDbGI7O44=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkWwyA5y6/EBdDLS5yoTBAPpFYCJTIFTrCwlF05k9ZzxIQa9y7rz/MY9UIFIAoZpW
-	 YDLtI3S2xA5dzuCqLmHRKhDYE5iScbfuvhDRQ4B5KDkKVx2NJ0Utm20gDvf//xWYBG
-	 XZqaelPFN+gkZuwQDwYy2n+W85ii1ESYv3VqGpV4=
+	b=y/OvmthAyEe6AtVTmOJLfNOaocRLn78dGA0UKL/UoFUXA/GOnQmdMAZRFXPj4mikI
+	 4FUmZwcvZhGUcMjvYA0uHPfXjKK20dTwj67TzgNmrtAJtuLl/4PsJTDRaWAQoiTWyI
+	 +Uw7hpWNh6oBGqzA6Jc/aCNVoEze4Pe07aUrlZMo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 419/554] mm/damon/tests/core-kunit: handle alloc failures on damon_test_merge_two()
+	Benjamin Berg <benjamin.berg@intel.com>,
+	Ilan Peer <ilan.peer@intel.com>,
+	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
+	Johannes Berg <johannes.berg@intel.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 148/181] wifi: mac80211_hwsim: fix typo in frequency notification
 Date: Thu, 15 Jan 2026 17:48:05 +0100
-Message-ID: <20260115164301.410445464@linuxfoundation.org>
+Message-ID: <20260115164207.657457443@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +62,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Benjamin Berg <benjamin.berg@intel.com>
 
-commit 3d443dd29a1db7efa587a4bb0c06a497e13ca9e4 upstream.
+[ Upstream commit 333418872bfecf4843f1ded7a4151685dfcf07d5 ]
 
-damon_test_merge_two() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+The NAN notification is for 5745 MHz which corresponds to channel 149
+and not 5475 which is not actually a valid channel. This could result in
+a NULL pointer dereference in cfg80211_next_nan_dw_notif.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-7-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a37a6f54439b ("wifi: mac80211_hwsim: Add simulation support for NAN device")
+Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
+Reviewed-by: Ilan Peer <ilan.peer@intel.com>
+Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
+Link: https://patch.msgid.link/20260107143652.7dab2035836f.Iacbaf7bb94ed5c14a0928a625827e4137d8bfede@changeid
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core-test.h |   10 ++++++++++
- 1 file changed, 10 insertions(+)
+ drivers/net/wireless/virtual/mac80211_hwsim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -161,10 +161,20 @@ static void damon_test_merge_two(struct
- 	int i;
+diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
+index 5903d82e1ab1e..2f263d89d2d69 100644
+--- a/drivers/net/wireless/virtual/mac80211_hwsim.c
++++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
+@@ -4040,7 +4040,7 @@ mac80211_hwsim_nan_dw_start(struct hrtimer *timer)
+ 			ieee80211_vif_to_wdev(data->nan_device_vif);
  
- 	t = damon_new_target(42);
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	r = damon_new_region(0, 100);
-+	if (!r) {
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	r->nr_accesses = 10;
- 	damon_add_region(r, t);
- 	r2 = damon_new_region(100, 300);
-+	if (!r2) {
-+		damon_free_target(t);
-+		kunit_skip(test, "second region alloc fail");
-+	}
- 	r2->nr_accesses = 20;
- 	damon_add_region(r2, t);
+ 		if (data->nan_curr_dw_band == NL80211_BAND_5GHZ)
+-			ch = ieee80211_get_channel(hw->wiphy, 5475);
++			ch = ieee80211_get_channel(hw->wiphy, 5745);
+ 		else
+ 			ch = ieee80211_get_channel(hw->wiphy, 2437);
  
+-- 
+2.51.0
+
 
 
 
