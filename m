@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209267-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43662D273D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:13:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 803D8D26D70
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 72C1C315A11F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:50:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1864C314B6C9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D1AF13C00B7;
-	Thu, 15 Jan 2026 17:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BDC83D3339;
+	Thu, 15 Jan 2026 17:30:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rYQt4lcX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2kRgIZdy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 948913BF309;
-	Thu, 15 Jan 2026 17:48:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F41C2D6E7E;
+	Thu, 15 Jan 2026 17:30:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499314; cv=none; b=uuzKaSr/TJZam08cp5+2IgSo2RajDOFkzbZih2umEQiMOZGAJAjZ+779ktJfpt8tF0uV8bOhddmYDHpkqbtLr+NXKuK60E/SlNPXWfZwXlTH5zJc1qYhLpS/wytCaXPBQbRaZxxIP2s9Xk7ZsjupIYhhi/yb/MbSTeq/xAen5tQ=
+	t=1768498210; cv=none; b=F87+FlcOy3tFYbWyZf6RfGpQx/dS4+3c86xWB96COFKb7zj71/Ddyhw+Hjp5lLilAWqgIEddlZ5JXvmu6Ik3c9xwUZiMzayJhmiwaQkPKMDfJSlslI8n4P+d9HGwca+ihdyZqAIFyH3cUBUTqu6BY5Z6Mfr8wXGX68W4L6v18nU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499314; c=relaxed/simple;
-	bh=mI1N2GDqs7u04NYuUKnZhc2+Qu+FMoGsqbzym4mixeI=;
+	s=arc-20240116; t=1768498210; c=relaxed/simple;
+	bh=7WChpAs+Djb36GwHulTi5i4niqG9Io/yMi3hzJH3svU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kaNt8GOs+24lVekXCl5ZxzO+K46Hbd3iHPYvi7PDOJTeBQX+79lOC2g5iRw2VJDw2mlbh9KvsSX3S1zBWfa0YefevV5K3Tee9snWtOBitYh2kuH0JTI216DC+1F2EaakWvMtz7Wn/UU9G7326BQTcjYxCOG/PBTkYiSz3YzcG18=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rYQt4lcX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F8B9C19423;
-	Thu, 15 Jan 2026 17:48:33 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EH+bqC2y8kGnUHV+u9MZtUod8BuixFdm0+0hzilpvnxUz3wLOhkQjcSj933itfLMoZlTFbRwU1DRvwJwaADz7aV4iZsWiDEQU3ZaGBeDPHmswSAJd19fFtriF7WL6+0G3UApjRkFPhgWASt8TS28Vc3h2T/syQBD1W8zZ+2p7Cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2kRgIZdy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D807C19422;
+	Thu, 15 Jan 2026 17:30:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499314;
-	bh=mI1N2GDqs7u04NYuUKnZhc2+Qu+FMoGsqbzym4mixeI=;
+	s=korg; t=1768498209;
+	bh=7WChpAs+Djb36GwHulTi5i4niqG9Io/yMi3hzJH3svU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rYQt4lcX3LA3ZN655lQVUHuoynYUZWlnw02ZWh++BFW+2OtIvwgSXfP6eh8XeiNrC
-	 7TT0qdaecLpkYctQkHMXPzxhGFqeAZ2FrSaHxPiVwcZLSHUbmUukZxLrfNHK0OPRGp
-	 uw/GjzbsoDGo9e8J4CadDH5Y/9oJZAo2QwCEjqqU=
+	b=2kRgIZdytYaS1j9TqVrMkdYHzvB50819WlyXAoNwJ3NT60bevfhqY4hmFAD/31LWF
+	 yEjxF4XkLFH/wzg1ENFnG1SCuf4aWW2cUEv2dbybnOZW1ImWmzUtBB6tmay9IpTjbL
+	 6DyQ+ejAzpvLcaMeubqYgA6DnSPdDe6gsyO65vWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 183/451] ethtool: Avoid overflowing userspace buffer on stats query
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 318/554] KVM: nSVM: Set exit_code_hi to -1 when synthesizing SVM_EXIT_ERR (failed VMRUN)
 Date: Thu, 15 Jan 2026 17:46:24 +0100
-Message-ID: <20260115164237.523595757@linuxfoundation.org>
+Message-ID: <20260115164257.739605756@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,166 +58,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Sean Christopherson <seanjc@google.com>
 
-[ Upstream commit 7b07be1ff1cb6c49869910518650e8d0abc7d25f ]
+commit f402ecd7a8b6446547076f4bd24bd5d4dcc94481 upstream.
 
-The ethtool -S command operates across three ioctl calls:
-ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
-ETHTOOL_GSTATS for the values.
+Set exit_code_hi to -1u as a temporary band-aid to fix a long-standing
+(effectively since KVM's inception) bug where KVM treats the exit code as
+a 32-bit value, when in reality it's a 64-bit value.  Per the APM, offset
+0x70 is a single 64-bit value:
 
-If the number of stats changes between these calls (e.g., due to device
-reconfiguration), userspace's buffer allocation will be incorrect,
-potentially leading to buffer overflow.
+  070h 63:0 EXITCODE
 
-Drivers are generally expected to maintain stable stat counts, but some
-drivers (e.g., mlx5, bnx2x, bna, ksz884x) use dynamic counters, making
-this scenario possible.
+And a sane reading of the error values defined in "Table C-1. SVM Intercept
+Codes" is that negative values use the full 64 bits:
 
-Some drivers try to handle this internally:
-- bnad_get_ethtool_stats() returns early in case stats.n_stats is not
-  equal to the driver's stats count.
-- micrel/ksz884x also makes sure not to write anything beyond
-  stats.n_stats and overflow the buffer.
+  –1 VMEXIT_INVALID Invalid guest state in VMCB.
+  –2 VMEXIT_BUSYBUSY bit was set in the VMSA
+  –3 VMEXIT_IDLE_REQUIREDThe sibling thread is not in an idle state
+  -4 VMEXIT_INVALID_PMC Invalid PMC state
 
-However, both use stats.n_stats which is already assigned with the value
-returned from get_sset_count(), hence won't solve the issue described
-here.
+And that interpretation is confirmed by testing on Milan and Turin (by
+setting bits in CR0[63:32] to generate VMEXIT_INVALID on VMRUN).
 
-Change ethtool_get_strings(), ethtool_get_stats(),
-ethtool_get_phy_stats() to not return anything in case of a mismatch
-between userspace's size and get_sset_size(), to prevent buffer
-overflow.
-The returned n_stats value will be equal to zero, to reflect that
-nothing has been returned.
+Furthermore, Xen has treated exitcode as a 64-bit value since HVM support
+was adding in 2006 (see Xen commit d1bd157fbc ("Big merge the HVM
+full-virtualisation abstractions.")).
 
-This could result in one of two cases when using upstream ethtool,
-depending on when the size change is detected:
-1. When detected in ethtool_get_strings():
-    # ethtool -S eth2
-    no stats available
-
-2. When detected in get stats, all stats will be reported as zero.
-
-Both cases are presumably transient, and a subsequent ethtool call
-should succeed.
-
-Other than the overflow avoidance, these two cases are very evident (no
-output/cleared stats), which is arguably better than presenting
-incorrect/shifted stats.
-I also considered returning an error instead of a "silent" response, but
-that seems more destructive towards userspace apps.
-
-Notes:
-- This patch does not claim to fix the inherent race, it only makes sure
-  that we do not overflow the userspace buffer, and makes for a more
-  predictable behavior.
-
-- RTNL lock is held during each ioctl, the race window exists between
-  the separate ioctl calls when the lock is released.
-
-- Userspace ethtool always fills stats.n_stats, but it is likely that
-  these stats ioctls are implemented in other userspace applications
-  which might not fill it. The added code checks that it's not zero,
-  to prevent any regressions.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251208121901.3203692-1-gal@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Jim Mattson <jmattson@google.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
+Cc: stable@vger.kernel.org
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251113225621.1688428-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/ioctl.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ arch/x86/kvm/svm/nested.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 2ac9cf1c36ba6..7fef4bbfb210a 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -1909,7 +1909,10 @@ static int ethtool_get_strings(struct net_device *dev, void __user *useraddr)
- 		return -ENOMEM;
- 	WARN_ON_ONCE(!ret);
- 
--	gstrings.len = ret;
-+	if (gstrings.len && gstrings.len != ret)
-+		gstrings.len = 0;
-+	else
-+		gstrings.len = ret;
- 
- 	if (gstrings.len) {
- 		data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
-@@ -2010,10 +2013,13 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
- 		return -EFAULT;
- 
--	stats.n_stats = n_stats;
-+	if (stats.n_stats && stats.n_stats != n_stats)
-+		stats.n_stats = 0;
-+	else
-+		stats.n_stats = n_stats;
- 
--	if (n_stats) {
--		data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (stats.n_stats) {
-+		data = vzalloc(array_size(stats.n_stats, sizeof(u64)));
- 		if (!data)
- 			return -ENOMEM;
- 		ops->get_ethtool_stats(dev, &stats, data);
-@@ -2025,7 +2031,9 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_to_user(useraddr, &stats, sizeof(stats)))
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -667,7 +667,7 @@ int nested_svm_vmrun(struct kvm_vcpu *vc
+ 	if (!nested_vmcb_valid_sregs(vcpu, &vmcb12->save) ||
+ 	    !nested_vmcb_check_controls(vcpu, &svm->nested.ctl)) {
+ 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+-		vmcb12->control.exit_code_hi = 0;
++		vmcb12->control.exit_code_hi = -1u;
+ 		vmcb12->control.exit_info_1  = 0;
+ 		vmcb12->control.exit_info_2  = 0;
  		goto out;
- 	useraddr += sizeof(stats);
--	if (n_stats && copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		goto out;
- 	ret = 0;
+@@ -698,7 +698,7 @@ out_exit_err:
+ 	svm->nested.nested_run_pending = 0;
  
-@@ -2061,6 +2069,10 @@ static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
- 		return -EOPNOTSUPP;
+ 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+-	svm->vmcb->control.exit_code_hi = 0;
++	svm->vmcb->control.exit_code_hi = -1u;
+ 	svm->vmcb->control.exit_info_1  = 0;
+ 	svm->vmcb->control.exit_info_2  = 0;
  
- 	n_stats = phy_ops->get_sset_count(phydev);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2081,6 +2093,10 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2117,7 +2133,9 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
- 	}
- 
- 	useraddr += sizeof(stats);
--	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		ret = -EFAULT;
- 
-  out:
--- 
-2.51.0
-
 
 
 
