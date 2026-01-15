@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209610-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209191-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73155D27B46
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:42:39 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED59FD26869
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 55EF5308FD14
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 3C8F9305DCF2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46EAC3C00A1;
-	Thu, 15 Jan 2026 17:46:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B1B23D1CBB;
+	Thu, 15 Jan 2026 17:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BNCGPPde"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vIlzbYRi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F2B4E3BFE5F;
-	Thu, 15 Jan 2026 17:46:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EFA93C1FEF;
+	Thu, 15 Jan 2026 17:26:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499187; cv=none; b=i89W0gDOh13TXgho0izfgF7me7upEP3eQorZpxELe2itFeZ1ct2VXfbrBTrT0s8bkPiuZAjTuT2bZzjh2VwQNFESK8kL/4+nvuHJgpP2rDRKE9Avp8jUsjPn+j//KmJatP3GYHGYRGZKbQMumgtNR2GlyE/haD3mjO74Kqrvw+k=
+	t=1768497993; cv=none; b=no3g3sa5fO8WtH9tJzq5D1hMZxUNTCdP+iwI3Eip6n33pWxkxSsrPVnLYONQWpsKvPy6oS47o/95EJusNtSBhFSwk3I1aDCiOyUAor6pTVmPjltKlcr/KUBu972N+nf6noEN2hftzzyLsZxV0vdNn/5EJfmqNX1WUtI82Dwj70E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499187; c=relaxed/simple;
-	bh=NlbeCjbWejR/LWEvw8z8ucC2K0eGs59CISV2iB0XTaE=;
+	s=arc-20240116; t=1768497993; c=relaxed/simple;
+	bh=ZQ3s3p0XnX02lbU6yN5NSSAmoJut7eBZAOLGPVhr8b4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cynO1CREuX3Fu2HIjbMR/KkzBys0iXs+JPKmekTFL/l3o1O7Ok/UfEuzy3Sx/hdqv0GcKZd76I8nA3XxLFL9nvhCOQ1xXBds7XRyFohy8BKHbMUZmR4f+gPlQ++r5Y5T3u35miwX8QTlrZghTXI9CLmtCAO2bYHrML7cREhA5S8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BNCGPPde; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3529DC116D0;
-	Thu, 15 Jan 2026 17:46:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=EXQ+4qKBYm8xFy9Lf/TZrS7+GWiI3Dfrbjr7KvF48mgcBIl/HxDAnspr82qzUqrTmBnDRy5allG4C2Yjn22XoQcIEOAYqSdV7yyNmGKcbqZTiEtkw7T/Wl2S9WStMooeyhWk8htQE+ymspAfFvazKREScui5AjEQNKgg9YsetuE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vIlzbYRi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D821C19422;
+	Thu, 15 Jan 2026 17:26:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499186;
-	bh=NlbeCjbWejR/LWEvw8z8ucC2K0eGs59CISV2iB0XTaE=;
+	s=korg; t=1768497992;
+	bh=ZQ3s3p0XnX02lbU6yN5NSSAmoJut7eBZAOLGPVhr8b4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BNCGPPdeIYzZTRhvtB9MO8/a3mHCPP7e/Gf5hzXr7lMe5ama1mGqrW7n0TPHZH5IH
-	 OYIesB6ZkOYoOMCFzLmiF+t7Hkoa3n+innm8Rwi4QQ43PQ9xtzcaztIaI3s/jvrjZJ
-	 9cUotl3Iq1DeRkwcChq+QFpJQI3Yo173eBFCuuHY=
+	b=vIlzbYRivxxIHNvHIonTnBnV+lND9uf5oaIOnGUWAjSmDJefSFdHnMoBsaVffCCpV
+	 tjNLV2IrgTUxCbYYrxHyh6qdA7870K5SIKPHrk5VKu3QdwoeFM0zXYsMRNrx8DNnEn
+	 7rdhI0laOk3YqP+nyEDRULIQFMNQzyl0tPMMxsow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dave Kleikamp <dave.kleikamp@oracle.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
+	"Chia-Lin Kao (AceLan)" <acelan.kao@canonical.com>,
+	Hans de Goede <johannes.goede@oss.qualcomm.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 139/451] dma/pool: eliminate alloc_pages warning in atomic_pool_expand
+Subject: [PATCH 5.15 274/554] platform/x86/intel/hid: Add Dell Pro Rugged 10/12 tablet to VGBS DMI quirks
 Date: Thu, 15 Jan 2026 17:45:40 +0100
-Message-ID: <20260115164235.946564655@linuxfoundation.org>
+Message-ID: <20260115164256.146932431@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +59,57 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Kleikamp <dave.kleikamp@oracle.com>
+From: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
 
-[ Upstream commit 463d439becb81383f3a5a5d840800131f265a09c ]
+[ Upstream commit b169e1733cadb614e87f69d7a5ae1b186c50d313 ]
 
-atomic_pool_expand iteratively tries the allocation while decrementing
-the page order. There is no need to issue a warning if an attempted
-allocation fails.
+Dell Pro Rugged 10/12 tablets has a reliable VGBS method.
+If VGBS is not called on boot, the on-screen keyboard won't appear if the
+device is booted without a keyboard.
 
-Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Fixes: d7e673ec2c8e ("dma-pool: Only allocate from CMA when in same memory zone")
-[mszyprow: fixed typo]
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Link: https://lore.kernel.org/r/20251202152810.142370-1-dave.kleikamp@oracle.com
+Call VGBS on boot on thess devices to get the initial state of
+SW_TABLET_MODE in a reliable way.
+
+Signed-off-by: Chia-Lin Kao (AceLan) <acelan.kao@canonical.com>
+Reviewed-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251127070407.656463-1-acelan.kao@canonical.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/dma/pool.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/intel/hid.c | 12 ++++++++++++
+ 1 file changed, 12 insertions(+)
 
-diff --git a/kernel/dma/pool.c b/kernel/dma/pool.c
-index 8396a2c5fb9a5..32efef1660096 100644
---- a/kernel/dma/pool.c
-+++ b/kernel/dma/pool.c
-@@ -96,7 +96,7 @@ static int atomic_pool_expand(struct gen_pool *pool, size_t pool_size,
- 			page = dma_alloc_from_contiguous(NULL, 1 << order,
- 							 order, false);
- 		if (!page)
--			page = alloc_pages(gfp, order);
-+			page = alloc_pages(gfp | __GFP_NOWARN, order);
- 	} while (!page && order-- > 0);
- 	if (!page)
- 		goto out;
+diff --git a/drivers/platform/x86/intel/hid.c b/drivers/platform/x86/intel/hid.c
+index f59a3cc9767b..4d488e985dc5 100644
+--- a/drivers/platform/x86/intel/hid.c
++++ b/drivers/platform/x86/intel/hid.c
+@@ -144,6 +144,18 @@ static const struct dmi_system_id dmi_vgbs_allow_list[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "HP Elite Dragonfly G2 Notebook PC"),
+ 		},
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 10 Tablet RA00260"),
++		},
++	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Dell Inc."),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Dell Pro Rugged 12 Tablet RA02260"),
++		},
++	},
+ 	{ }
+ };
+ 
 -- 
 2.51.0
 
