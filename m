@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209749-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209330-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9635AD274B5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E572CD269EC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4C5C13193AB4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6EA93307C9DA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD99E3D4131;
-	Thu, 15 Jan 2026 17:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C603C1973;
+	Thu, 15 Jan 2026 17:33:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MQJUxlEA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN9WHFM0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 703C73C1FCA;
-	Thu, 15 Jan 2026 17:53:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5FA3B8D5F;
+	Thu, 15 Jan 2026 17:33:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499582; cv=none; b=mh+R2ZqSypNBzPDyqWlpapF0tbECCDZFE8QefDK2Gzj7LDjMiZDwWbMzAD3Ru8KSd0PHQJlIOQ447N+N2lkjxqiQaGxz1PpnURM7Xbbrvfex3Ok6ngN38PmCU2I/x3uqe5y1AyrzS+xYTc/3zaSNaDRd+/bIbY488HDhQvGiXnA=
+	t=1768498388; cv=none; b=nBGS1lOYxncdFvaZ7n45Izmu4nJF9yAhfqQ5cgjWQn+u+MDfgupc7mVzuV/v0K9ofV5/0McVjz/eX/W2swhrT7xHu9OU+zGdPkLUvJ2CgduTpso/KGaIqHrJOVNQRcriKsI8YLeJTC0J7B44o9pIGy/Artq39RPe3fsgOmGfUY4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499582; c=relaxed/simple;
-	bh=MqarYFSHpJrXz5IF7R2Ccgu26Pzebmzk/aCgHn/8IOI=;
+	s=arc-20240116; t=1768498388; c=relaxed/simple;
+	bh=ctPlRb8VNegU8YBJczQ4OedyiLzmrl3VFKSc56fKA7k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=gxA2L8VmSwhkeNW5tS7L0gicIiORy8PdESaU/SHCnI4DYbAJX4AtdRguUEokZjNZGQVHq09gRSrW3XMJ9WPReT6uP32ViQhIewnnDulbNJQuMtswmsGxD/RgyK7OCAhRif2FOM1FS2GKcdsO3p/UEa9Bal4e6Z+cxyhetzGHvu0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MQJUxlEA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E52BBC116D0;
-	Thu, 15 Jan 2026 17:53:01 +0000 (UTC)
+	 MIME-Version; b=uj24wwYYK5JHFFq/YJt2IUFs9CdFbQVLs5oJuYkA8W5pLuipX+OiQPIaNUaVwi2kaMyWkyqby2vSXPQTea2qMJyYyuuESdiXSO++6f09QhbPjPwWw3Pjk0f6C9XqOb/R4fVwv060e0FpgRmIvsymfyv7+OyKH5JwKwNbsW70d+M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN9WHFM0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BA7C116D0;
+	Thu, 15 Jan 2026 17:33:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499582;
-	bh=MqarYFSHpJrXz5IF7R2Ccgu26Pzebmzk/aCgHn/8IOI=;
+	s=korg; t=1768498388;
+	bh=ctPlRb8VNegU8YBJczQ4OedyiLzmrl3VFKSc56fKA7k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MQJUxlEAJBr04TsgcO+pBq14NYq/2XjNtK1NVhYTONb6wexWvYcPvw2SBbSpDwWGw
-	 +Rllj7M1UJFRQ4RDISFROTjJb33hljz3oA1m2srVTiYfnHnV3ghT9hNYrf9koFdhLA
-	 CZsSwQbO6mmVRIiQYU76XpVQdPffWhcvG1vDxDS0=
+	b=dN9WHFM0Vk/FTj5AJkoDuk5bGYN4uhvDJN3DesIuGrhPDx0kKueupk7O7jqSBRbfS
+	 tCQj8XjXm38LZ79JU/Z2YFlems5tvMZyBWFWTIVvCBYzjRQTMuA5+SDkV1Vd7XnoEX
+	 yR6JL/OUr9nuCfsi/7JEG8DctXgQoOcXCKsDx7Jk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 278/451] platform/x86: msi-laptop: add missing sysfs_remove_group()
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 413/554] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
 Date: Thu, 15 Jan 2026 17:47:59 +0100
-Message-ID: <20260115164240.940244296@linuxfoundation.org>
+Message-ID: <20260115164301.186626633@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,47 +60,54 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 1461209cf813b6ee6d40f29b96b544587df6d2b1 ]
+commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 upstream.
 
-A sysfs group is created in msi_init() when old_ec_model is enabled, but
-never removed. Remove the msipf_old_attribute_group in that case.
+damon_do_test_apply_three_regions() is assuming all dynamic memory
+allocation in it will succeed.  Those are indeed likely in the real use
+cases since those allocations are too small to fail, but theoretically
+those could fail.  In the case, inappropriate memory access can happen.
+Fix it by appropriately cleanup pre-allocated memory and skip the
+execution of the remaining tests in the failure cases.
 
-Fixes: 03696e51d75a ("msi-laptop: Disable brightness control for new EC")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20251217103617.27668-2-fourier.thomas@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/platform/x86/msi-laptop.c | 3 +++
- 1 file changed, 3 insertions(+)
+ mm/damon/vaddr-test.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/platform/x86/msi-laptop.c b/drivers/platform/x86/msi-laptop.c
-index dfb4af759aa7..fd6b3383ac4f 100644
---- a/drivers/platform/x86/msi-laptop.c
-+++ b/drivers/platform/x86/msi-laptop.c
-@@ -1146,6 +1146,9 @@ static void __exit msi_cleanup(void)
- 	sysfs_remove_group(&msipf_device->dev.kobj, &msipf_attribute_group);
- 	if (!quirks->old_ec_model && threeg_exists)
- 		device_remove_file(&msipf_device->dev, &dev_attr_threeg);
-+	if (quirks->old_ec_model)
-+		sysfs_remove_group(&msipf_device->dev.kobj,
-+				   &msipf_old_attribute_group);
- 	platform_device_unregister(msipf_device);
- 	platform_driver_unregister(&msipf_driver);
- 	backlight_device_unregister(msibl_device);
--- 
-2.51.0
-
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -141,8 +141,14 @@ static void damon_do_test_apply_three_re
+ 	int i;
+ 
+ 	t = damon_new_target(42);
++	if (!t)
++		kunit_skip(test, "target alloc fail");
+ 	for (i = 0; i < nr_regions / 2; i++) {
+ 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
++		if (!r) {
++			damon_destroy_target(t);
++			kunit_skip(test, "region alloc fail");
++		}
+ 		damon_add_region(r, t);
+ 	}
+ 	damon_add_target(ctx, t);
 
 
 
