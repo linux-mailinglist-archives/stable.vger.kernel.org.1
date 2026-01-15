@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208584-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208586-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCE21D25F84
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF32ED25F8E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3CA58302A442
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8749E3067925
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A8B23BC4E4;
-	Thu, 15 Jan 2026 16:57:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50153396B75;
+	Thu, 15 Jan 2026 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nacSHApA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uGOsnhed"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0787349B0A;
-	Thu, 15 Jan 2026 16:57:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1353F396B7D;
+	Thu, 15 Jan 2026 16:57:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496262; cv=none; b=EtnWylPfSS6SFeLNDVm7yHpfUnwifj4VoZ45tU05ao3IWLMdics68AMiVm4GE02W4E9TKCAa4ZIGGJNGn0qIYfUOet/exgVbPA3JI72FGooOKf1uX6tqterPWHKf8ZZocVFs5feCFG0Cm7AVTci6A/NgOeCICw11OemWJ6Z5HU8=
+	t=1768496268; cv=none; b=XiTcWCqzKi5HXG9CSQfJPfp+RNto9K77HHLAFjAeC/XqzmhVYQp76QEBdWSldsdrS1P5Hw+a3vUNyGymViaZP5rxDpVRRFHwFf5e4UgM+Bp79LoXBQT6nNGIWfnS1y3Nk8y6+feGbUSI6WxFL9vSUks/4bURwOGSXGgoJ9ESwZA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496262; c=relaxed/simple;
-	bh=SGN7uERA7k8Wz0LUWmGxhKhxwRar5fn3/bO1GLwosWA=;
+	s=arc-20240116; t=1768496268; c=relaxed/simple;
+	bh=ki+MCNqEe/k7Bikj/puT/LOCqstK5nyQcceH9VSg/x8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+JFYf+keUCwWEelNMXN1RDbmKppkMPSVTs4xTT6QzE01ra0oaPRdwPEcUFIQvK70szELdoDlct/xXpkeaq/qb47kPnafJokP8izkXpQVDhQJbpORn3m9X9Z48YyXxlVIpoZgAviBBTumMBbaeLeKAtz4USMnfdxEQVQ0Iz+BFw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nacSHApA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12DF1C116D0;
-	Thu, 15 Jan 2026 16:57:41 +0000 (UTC)
+	 MIME-Version; b=M2EzSwmtiOemAgk9oFUKFbwjnags736W485RbeV/pwDtEwxZbMaqoIxTko04RSfX3ckYRI8BZmQuZfyijxE3KPhvoF12qfuoX7iZXjh/1oG3zpKITy1EMo7N1o5dKg4s2j1Jdu++V0MVsEvP1tvZ0djTx1QqDgZMjNrYJJutBRM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uGOsnhed; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983BCC19421;
+	Thu, 15 Jan 2026 16:57:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496262;
-	bh=SGN7uERA7k8Wz0LUWmGxhKhxwRar5fn3/bO1GLwosWA=;
+	s=korg; t=1768496268;
+	bh=ki+MCNqEe/k7Bikj/puT/LOCqstK5nyQcceH9VSg/x8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nacSHApAKHF8RpJFkP2XSvN7C72KR9EhkJWCGghkLc9sDXMgdyWxTOJ7hC35b71ML
-	 1KwzSFzZDgeFy9/cSIm6bSz1bewaKQ2CrxDNm1Dnfi75XEGOF0gMGZR/B2BRXd18Bg
-	 QivuQyuvsaGCEpUrH1fnqiaBP7bgfrCu542rfkpA=
+	b=uGOsnhedsCOqr7vEw5v8xdexqfpc8vWEEgUk9qgPCRn0V4R5Hj+HxoTouEeeDcu/A
+	 pPZ7BoCHcOcJ/4i4+u9ztBWmadMqx11tfUUaXr98fWoEqKzSeqOcIfQBmvGwga8m8p
+	 6+tH98drnqSlOEMy61ofxKd1cqSCBCSGEvJifrwI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sreedevi Joshi <sreedevi.joshi@intel.com>,
+	Joshua Hay <joshua.a.hay@intel.com>,
+	Alexander Lobakin <aleksander.lobakin@intel.com>,
 	Madhu Chittim <madhu.chittim@intel.com>,
+	Jacob Keller <jacob.e.keller@intel.com>,
 	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Simon Horman <horms@kernel.org>,
-	Samuel Salin <Samuel.salin@intel.com>,
+	David Decotigny <ddecotig@google.com>,
 	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 134/181] idpf: Fix error handling in idpf_vport_open()
-Date: Thu, 15 Jan 2026 17:47:51 +0100
-Message-ID: <20260115164207.158285195@linuxfoundation.org>
+Subject: [PATCH 6.18 135/181] idpf: cap maximum Rx buffer size
+Date: Thu, 15 Jan 2026 17:47:52 +0100
+Message-ID: <20260115164207.194627110@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -68,48 +69,73 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Sreedevi Joshi <sreedevi.joshi@intel.com>
+From: Joshua Hay <joshua.a.hay@intel.com>
 
-[ Upstream commit 87b8ee64685bc096a087af833d4594b2332bfdb1 ]
+[ Upstream commit 086efe0a1ecc36cffe46640ce12649a4cd3ff171 ]
 
-Fix error handling to properly cleanup interrupts when
-idpf_vport_queue_ids_init() or idpf_rx_bufs_init_all() fail. Jump to
-'intr_deinit' instead of 'queues_rel' to ensure interrupts are cleaned up
-before releasing other resources.
+The HW only supports a maximum Rx buffer size of 16K-128. On systems
+using large pages, the libeth logic can configure the buffer size to be
+larger than this. The upper bound is PAGE_SIZE while the lower bound is
+MTU rounded up to the nearest power of 2. For example, ARM systems with
+a 64K page size and an mtu of 9000 will set the Rx buffer size to 16K,
+which will cause the config Rx queues message to fail.
 
-Fixes: d4d558718266 ("idpf: initialize interrupts and enable vport")
-Signed-off-by: Sreedevi Joshi <sreedevi.joshi@intel.com>
+Initialize the bufq/fill queue buf_len field to the maximum supported
+size. This will trigger the libeth logic to cap the maximum Rx buffer
+size by reducing the upper bound.
+
+Fixes: 74d1412ac8f37 ("idpf: use libeth Rx buffer management for payload buffer")
+Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
+Acked-by: Alexander Lobakin <aleksander.lobakin@intel.com>
 Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
 Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Reviewed-by: David Decotigny <ddecotig@google.com>
 Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/idpf/idpf_txrx.c | 8 +++++---
+ drivers/net/ethernet/intel/idpf/idpf_txrx.h | 1 +
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 003bab3ce5ae6..131a8121839bd 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1524,14 +1524,14 @@ static int idpf_vport_open(struct idpf_vport *vport, bool rtnl)
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to initialize queue registers for vport %u: %d\n",
- 			vport->vport_id, err);
--		goto queues_rel;
-+		goto intr_deinit;
- 	}
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+index 3698979b4c9ee..f66948f5de78b 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
+@@ -695,9 +695,10 @@ static int idpf_rx_buf_alloc_singleq(struct idpf_rx_queue *rxq)
+ static int idpf_rx_bufs_init_singleq(struct idpf_rx_queue *rxq)
+ {
+ 	struct libeth_fq fq = {
+-		.count	= rxq->desc_count,
+-		.type	= LIBETH_FQE_MTU,
+-		.nid	= idpf_q_vector_to_mem(rxq->q_vector),
++		.count		= rxq->desc_count,
++		.type		= LIBETH_FQE_MTU,
++		.buf_len	= IDPF_RX_MAX_BUF_SZ,
++		.nid		= idpf_q_vector_to_mem(rxq->q_vector),
+ 	};
+ 	int ret;
  
- 	err = idpf_rx_bufs_init_all(vport);
- 	if (err) {
- 		dev_err(&adapter->pdev->dev, "Failed to initialize RX buffers for vport %u: %d\n",
- 			vport->vport_id, err);
--		goto queues_rel;
-+		goto intr_deinit;
- 	}
+@@ -754,6 +755,7 @@ static int idpf_rx_bufs_init(struct idpf_buf_queue *bufq,
+ 		.truesize	= bufq->truesize,
+ 		.count		= bufq->desc_count,
+ 		.type		= type,
++		.buf_len	= IDPF_RX_MAX_BUF_SZ,
+ 		.hsplit		= idpf_queue_has(HSPLIT_EN, bufq),
+ 		.xdp		= idpf_xdp_enabled(bufq->q_vector->vport),
+ 		.nid		= idpf_q_vector_to_mem(bufq->q_vector),
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+index 0472698ca1927..423cc9486dce7 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
++++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
+@@ -101,6 +101,7 @@ do {								\
+ 		idx = 0;					\
+ } while (0)
  
- 	idpf_rx_init_buf_tail(vport);
++#define IDPF_RX_MAX_BUF_SZ			(16384 - 128)
+ #define IDPF_RX_BUF_STRIDE			32
+ #define IDPF_RX_BUF_POST_STRIDE			16
+ #define IDPF_LOW_WATERMARK			64
 -- 
 2.51.0
 
