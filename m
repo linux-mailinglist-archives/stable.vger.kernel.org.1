@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-209611-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209199-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F447D26E8A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:30 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 674A5D26B87
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3917630B937B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8900E300E16A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 060CE3BFE4F;
-	Thu, 15 Jan 2026 17:46:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03F613C1972;
+	Thu, 15 Jan 2026 17:26:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wYa19H/q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WZAWUMyO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCD9C3BF2F6;
-	Thu, 15 Jan 2026 17:46:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB1A63BC4C9;
+	Thu, 15 Jan 2026 17:26:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499189; cv=none; b=Bm195nbYO0FHDgBbJF5eMpwt5lC0T/pa/9w8hHHlFsVVGov2tHvJQels02xRsHl3jbj8pZvqfSUHeVjgY/flEESOLEySxHidBkoHABxntFufC+0eJmIEslFU2BSaax55AY9Z4+2taaOPAp/ulPyn1Gm+dtUKvnCMhO3/1osyMj8=
+	t=1768498015; cv=none; b=R+V95V4j6cqlzVYa0HAuYxO1EjySF0aLozVMDM9LaF+JGf/14LZEMJqebRm9sDbVqhNzjTnqKk58bT/n1i8DkF+AAziIcl8NG0gbKV9JhkrmCtXzlFsmhVdGPknAjfucMhsBG6/jJ6KpV6em30WBN5syl+q6Dt3BcZGGTuPWPpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499189; c=relaxed/simple;
-	bh=qUjg97SMDnLXKwaHzCYNiDv1kvtXUwR0ya08bQYrFhE=;
+	s=arc-20240116; t=1768498015; c=relaxed/simple;
+	bh=iYwawdWP3+K9UgRyYvF+AgDyU/IBSDKEwAriTemrCfA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uk0Bg616mdMtAb+FiW1JYKPMvrb9hmaFN/LxiGZ6EapM+EKJjVxp61M7PFTnXZSRzpBI1T17bRgXa6s187s9yZcxhq97Syo98YILMiJM13GXmQpYfuJ2WyXd9KWeTyILx8J7590nBy2HskWaqmXyIQOIEef7gmgLGDAkL87q6sI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wYa19H/q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 152B7C19422;
-	Thu, 15 Jan 2026 17:46:28 +0000 (UTC)
+	 MIME-Version; b=ASCzzSCDUTrb3pXOiVt/uZf7OABcXX0nMLZK3cve3FyviJkpuueGEQHyg+C7cakFJZtuYOk/2j5IjlBNtIyq6QLlyPCGWOluG5E59N3uDL/8I8lfpDa+lf2GfEs8UM0stwedINcUQGtvdhZvrAglkG5/1f+uPmI1eNxzMkSAqq8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WZAWUMyO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47E05C116D0;
+	Thu, 15 Jan 2026 17:26:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499189;
-	bh=qUjg97SMDnLXKwaHzCYNiDv1kvtXUwR0ya08bQYrFhE=;
+	s=korg; t=1768498015;
+	bh=iYwawdWP3+K9UgRyYvF+AgDyU/IBSDKEwAriTemrCfA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wYa19H/qXiUpGnmKtZ478SoPHbXG3/U64HuzpbtLPq35Mwlr01oyA+9JousqVCGfU
-	 r6fBeOVBaacFL5R8WkDrcL+VfiPOsSa6tyvQIadhVHUKP7SMrrulHnEk4ayWg2OgVQ
-	 T6MtRfPgi8qheP4aTGKbE3GTSz2nUNX1+u52EzAs=
+	b=WZAWUMyOAS7mqHNtNRTYJhaxpgVB7sIdWXxpi8WqUUnZjniAIve7OuFlfFF8L8r+l
+	 u3HjjQkNevfp+hdaE7VFog50gQvl1avfssLkGfj/kEfhEaKtwB4DFReYBQLIx+n409
+	 JU3ycljKkFVnNrNk4BxeE/oUGyZD4vAmsqbdGKZo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andres J Rosa <andyrosa@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 140/451] ALSA: uapi: Fix typo in asound.h comment
-Date: Thu, 15 Jan 2026 17:45:41 +0100
-Message-ID: <20260115164235.982377271@linuxfoundation.org>
+	Jarkko Sakkinen <jarkko@kernel.org>
+Subject: [PATCH 5.15 276/554] KEYS: trusted: Fix a memory leak in tpm2_load_cmd
+Date: Thu, 15 Jan 2026 17:45:42 +0100
+Message-ID: <20260115164256.218267749@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +58,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andres J Rosa <andyrosa@gmail.com>
+From: Jarkko Sakkinen <jarkko@kernel.org>
 
-[ Upstream commit 9a97857db0c5655b8932f86b5d18bb959079b0ee ]
+commit 62cd5d480b9762ce70d720a81fa5b373052ae05f upstream.
 
-Fix 'level-shit' to 'level-shift' in struct snd_cea_861_aud_if comment.
+'tpm2_load_cmd' allocates a tempoary blob indirectly via 'tpm2_key_decode'
+but it is not freed in the failure paths. Address this by wrapping the blob
+into with a cleanup helper.
 
-Fixes: 7ba1c40b536e ("ALSA: Add definitions for CEA-861 Audio InfoFrames")
-Signed-off-by: Andres J Rosa <andyrosa@gmail.com>
-Link: https://patch.msgid.link/20251203162509.1822-1-andyrosa@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # v5.13+
+Fixes: f2219745250f ("security: keys: trusted: use ASN.1 TPM2 key format for the blobs")
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/sound/asound.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ security/keys/trusted-keys/trusted_tpm2.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/include/uapi/sound/asound.h b/include/uapi/sound/asound.h
-index 535a7229e1d94..eef23c761ae82 100644
---- a/include/uapi/sound/asound.h
-+++ b/include/uapi/sound/asound.h
-@@ -74,7 +74,7 @@ struct snd_cea_861_aud_if {
- 	unsigned char db2_sf_ss; /* sample frequency and size */
- 	unsigned char db3; /* not used, all zeros */
- 	unsigned char db4_ca; /* channel allocation code */
--	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shit values */
-+	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shift values */
- };
+--- a/security/keys/trusted-keys/trusted_tpm2.c
++++ b/security/keys/trusted-keys/trusted_tpm2.c
+@@ -375,6 +375,7 @@ static int tpm2_load_cmd(struct tpm_chip
+ 			 struct trusted_key_options *options,
+ 			 u32 *blob_handle)
+ {
++	u8 *blob_ref __free(kfree) = NULL;
+ 	struct tpm_buf buf;
+ 	unsigned int private_len;
+ 	unsigned int public_len;
+@@ -388,6 +389,9 @@ static int tpm2_load_cmd(struct tpm_chip
+ 		/* old form */
+ 		blob = payload->blob;
+ 		payload->old_format = 1;
++	} else {
++		/* Bind for cleanup: */
++		blob_ref = blob;
+ 	}
  
- /****************************************************************************
--- 
-2.51.0
-
+ 	/* new format carries keyhandle but old format doesn't */
+@@ -446,8 +450,6 @@ static int tpm2_load_cmd(struct tpm_chip
+ 			(__be32 *) &buf.data[TPM_HEADER_SIZE]);
+ 
+ out:
+-	if (blob != payload->blob)
+-		kfree(blob);
+ 	tpm_buf_destroy(&buf);
+ 
+ 	if (rc > 0)
 
 
 
