@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209639-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209211-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B10F7D26FA6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06776D26919
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3089A32B6BD6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:48:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 029263027254
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B9843BF30C;
-	Thu, 15 Jan 2026 17:47:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61D283D333E;
+	Thu, 15 Jan 2026 17:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pfUbL6mL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IoPv/+3e"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1BB23BC4D8;
-	Thu, 15 Jan 2026 17:47:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2580F3D3338;
+	Thu, 15 Jan 2026 17:27:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499268; cv=none; b=nT/I8zh/0aVmJcykZRBURbtZ1FL2sGDodsmb3qvZWzGgUP94eJ94sOtVr11Om3q4D8LZW8FpNdpPX0ff/UcdgE5f1oR+czLUM2lmXa3zmLdbrEATmE79HwIFgc58E4AoQQ9+x14u49e3EimlvowH26J4fFBtWGn4pqNCKbMtRLg=
+	t=1768498050; cv=none; b=DDcqcEq7WYFfiI1kBuMdoyhTlO5tJKlQDDeqQRwNOPgI/nUiVDz4q4DxDpFr6z9oEGEVZgeCCS9XZ5SIgxRG3CyGahSfpQH5/XpMU3ltIjdbWqgk+NIk7tVjR1yoQrhtkOucbMCRmCzsjjkstWMmEtdPJ+jTlUzZbN2UKdLNqnE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499268; c=relaxed/simple;
-	bh=FBZMR+GVAILah3JNNegM1kA+jz0hv7WtG5VikFnjiMs=;
+	s=arc-20240116; t=1768498050; c=relaxed/simple;
+	bh=2T6OWqYsjBbxyx7A/XCfKAOibj47JGiQskGJ8LP0MR4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MCIwXf+y/OD4AZ/FDeWz5Hn2qpVkcq57oqYlW7nfk9pp4YyxrnjDWdu+iyUkLTM0KJ/+rkKYPX0GFPL4coXh/SdoVFGIQwnF/us/+qVcAqfujUJ8a+wmcN33R/UdMII2osXEtBKZJAy7+/TZLlmIXrrLh9axVEubXW6vfzKyeSQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pfUbL6mL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42C9DC116D0;
-	Thu, 15 Jan 2026 17:47:48 +0000 (UTC)
+	 MIME-Version; b=JF2WWeJbexiMqMeXSOtK3P11th8arSrnc+jzEUvj1dv0L6bzy1opCh8eWVsRO2ytOukImOcmw+0oKtQ5zWFPU7BYNDfH9J3pUd5Hflz2I6LYPbGzOcBa/4aJ1FtuHkV6FHDJuNtrxY22RxV+5hsannymqnyVE3wNlAsZ++Ztmy4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IoPv/+3e; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ED1DC116D0;
+	Thu, 15 Jan 2026 17:27:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499268;
-	bh=FBZMR+GVAILah3JNNegM1kA+jz0hv7WtG5VikFnjiMs=;
+	s=korg; t=1768498050;
+	bh=2T6OWqYsjBbxyx7A/XCfKAOibj47JGiQskGJ8LP0MR4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pfUbL6mLpcwPyl3ED+AEtigPTzCsICt6Hgt83pJS+K/g1S8BDi1q9tMCWRWAmUKfy
-	 +db2LCGa4ryg4tP8OkdcItAigxH1Nai/378BaFoza51WFoS5d9csksdvhGzCCE0DSK
-	 wMK2I8jsT+VE5HLPc3C6vGCHq1U7tj57Me4zphNg=
+	b=IoPv/+3eE2uLbhhve4yytJh9TDaHiuh0uNDpMIxeGkkxC5SEHLMhjNAiTh99NeDOu
+	 1glFGh3z1JAGLAz0bLWe/tfygfvj8CYIe0WSOP+owDRD8p2OMDzfv2eqw5B0oRpiXk
+	 G04z+zKwLsOLNZxlA95tkQRVmwaiXUw8PpGkiWEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 160/451] cpufreq: s5pv210: fix refcount leak
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH 5.15 295/554] usb: phy: isp1301: fix non-OF device reference imbalance
 Date: Thu, 15 Jan 2026 17:46:01 +0100
-Message-ID: <20260115164236.699687452@linuxfoundation.org>
+Message-ID: <20260115164256.912078509@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 2de5cb96060a1664880d65b120e59485a73588a8 ]
+commit b4b64fda4d30a83a7f00e92a0c8a1d47699609f3 upstream.
 
-In function `s5pv210_cpu_init`, a possible refcount inconsistency has
-been identified, causing a resource leak.
+A recent change fixing a device reference leak in a UDC driver
+introduced a potential use-after-free in the non-OF case as the
+isp1301_get_client() helper only increases the reference count for the
+returned I2C device in the OF case.
 
-Why it is a bug:
-1. For every clk_get, there should be a matching clk_put on every
-successive error handling path.
-2. After calling `clk_get(dmc1_clk)`, variable `dmc1_clk` will not be
-freed even if any error happens.
+Increment the reference count also for non-OF so that the caller can
+decrement it unconditionally.
 
-How it is fixed: For every failed path, an extra goto label is added to
-ensure `dmc1_clk` will be freed regardlessly.
+Note that this is inherently racy just as using the returned I2C device
+is since nothing is preventing the PHY driver from being unbound while
+in use.
 
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
+Cc: stable@vger.kernel.org
+Cc: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251218153519.19453-3-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/s5pv210-cpufreq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/usb/phy/phy-isp1301.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
-index bed496cf8d247..f95b4658097a6 100644
---- a/drivers/cpufreq/s5pv210-cpufreq.c
-+++ b/drivers/cpufreq/s5pv210-cpufreq.c
-@@ -518,7 +518,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+--- a/drivers/usb/phy/phy-isp1301.c
++++ b/drivers/usb/phy/phy-isp1301.c
+@@ -152,7 +152,12 @@ struct i2c_client *isp1301_get_client(st
+ 		return client;
  
- 	if (policy->cpu != 0) {
- 		ret = -EINVAL;
--		goto out_dmc1;
-+		goto out;
- 	}
+ 	/* non-DT: only one ISP1301 chip supported */
+-	return isp1301_i2c_client;
++	if (isp1301_i2c_client) {
++		get_device(&isp1301_i2c_client->dev);
++		return isp1301_i2c_client;
++	}
++
++	return NULL;
+ }
+ EXPORT_SYMBOL_GPL(isp1301_get_client);
  
- 	/*
-@@ -530,7 +530,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
- 		pr_err("CPUFreq doesn't support this memory type\n");
- 		ret = -EINVAL;
--		goto out_dmc1;
-+		goto out;
- 	}
- 
- 	/* Find current refresh counter and frequency each DMC */
-@@ -544,6 +544,8 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 	cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
- 	return 0;
- 
-+out:
-+	clk_put(dmc1_clk);
- out_dmc1:
- 	clk_put(dmc0_clk);
- out_dmc0:
--- 
-2.51.0
-
 
 
 
