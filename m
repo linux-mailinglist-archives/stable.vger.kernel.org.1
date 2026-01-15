@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209113-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209506-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CB39D27263
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 99162D2775A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A9D1A320307E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AAD303097D4F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C063A1E86;
-	Thu, 15 Jan 2026 17:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6E0F2D9ECB;
+	Thu, 15 Jan 2026 17:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y238TWHT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dIIXsoI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FF27B340;
-	Thu, 15 Jan 2026 17:22:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 89F302D7DED;
+	Thu, 15 Jan 2026 17:41:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497770; cv=none; b=h99GWDRy25gclB8q4pL8eaWXrqqG2zmWYHLhY34n+lrx7+LRL4HCDcmMUrtAYbiHeFFV1tedlmJoJJqrfLee6k0+dkaHpESyNXF/Fxt+EQQ483pVPpzHIDiRuPdUYHrb7G/lMhUDhdIiV2iPgXCzhfjMib0zY7I4+p9uMvg82kw=
+	t=1768498890; cv=none; b=N3MpA8rrR5CpJVrMY4h92JIg5UU8e9MFDKaqcYaNW+yAWAvouY9MefOUxvELvS9rQP5iUg1BZ7wnaudUumPfdVfV3J3dVEVT+Tf6270v0srGFKI+Nrw9sSY8Vb85MJCFIIDr0605VKGnbC1F+G3dPMRu9B265LuBCsPxvxeX5IM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497770; c=relaxed/simple;
-	bh=SFn3Tqn/k/u61skIhjiEVLO/qxo9RTzkja+sgtu5pds=;
+	s=arc-20240116; t=1768498890; c=relaxed/simple;
+	bh=eKxp0ptVtyrUh3qlhZBcf4lkjDr2d+A3Uxh1SC270NE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPfCKXYP/x5x1Ma++WVvJGUR6HBYdiVoHaR9RAqf/bvhD/FAbyapgp/KXD36zwKHJTeduXHGuF+rphV9j70+8FgbMoOXAi3s58kg0dOo9jJtpWGcsQMH623SQbvanJjoMQmg2T542lQoa+l5QB8ZkzpoARzz8DajQzW2pMuRdRQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y238TWHT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DFC116D0;
-	Thu, 15 Jan 2026 17:22:49 +0000 (UTC)
+	 MIME-Version; b=QJ8H4q+Zurgln8JxBsgnHBdxcwcUnE2keePI7KNxjj2/6TEhp2pUjTwMpNV9jczazMrZc0YG2HaU/aSS2QT97eMPdIbdoVgxe58hDojaRQ/dsdX1XGKgDQcT4Yi+UcURJ25xXov+FAzgbezfIgnG5L+5r6c4Tg4sqFpuhjMyqqI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dIIXsoI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19F8DC116D0;
+	Thu, 15 Jan 2026 17:41:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497770;
-	bh=SFn3Tqn/k/u61skIhjiEVLO/qxo9RTzkja+sgtu5pds=;
+	s=korg; t=1768498890;
+	bh=eKxp0ptVtyrUh3qlhZBcf4lkjDr2d+A3Uxh1SC270NE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y238TWHTRawxgJFa2pJ0WUZFFsiLKzZ0Mr0y0r5uOIFuLuiSYZRH83iIMFVWOdHRW
-	 fKmoK/OWjD28BrYhGVdYn9/2kuHgFlxAZqEAOZ2E+XyMhaVwF/dDDkybrF+oa1wLit
-	 G6JNQoDH/YlOGrJi+2dGHiar3oUBbnjrkAppsEic=
+	b=dIIXsoI+7CRZ4kEZa7CYEV8G1SkSqT76piTBc3FsyZfq3oljBCDqSGB8lRawYDyNq
+	 yHB2U/f4XRptbWCO5M3aQjAj5tSqCiVkQQ2DZkDhw+DlYPvUvM0DtT/5U4mxlYxMHE
+	 wMl5APRn/PwiDyqDEz7x6yegGcplgb32yxsHPJ1E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 170/554] NFS: dont unhash dentry during unlink/rename
+Subject: [PATCH 5.10 035/451] iio: imu: st_lsm6dsx: introduce st_lsm6dsx_device_set_enable routine
 Date: Thu, 15 Jan 2026 17:43:56 +0100
-Message-ID: <20260115164252.420735882@linuxfoundation.org>
+Message-ID: <20260115164232.162691052@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,238 +60,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 3c59366c207e4c6c6569524af606baf017a55c61 ]
+[ Upstream commit cd83c5c10036a2a156d725725daf3409832c8a24 ]
 
-NFS unlink() (and rename over existing target) must determine if the
-file is open, and must perform a "silly rename" instead of an unlink (or
-before rename) if it is.  Otherwise the client might hold a file open
-which has been removed on the server.
+Introduce st_lsm6dsx_device_set_enable utility routine and remove
+duplicated code used to enable/disable sensors
 
-Consequently if it determines that the file isn't open, it must block
-any subsequent opens until the unlink/rename has been completed on the
-server.
-
-This is currently achieved by unhashing the dentry.  This forces any
-open attempt to the slow-path for lookup which will block on i_rwsem on
-the directory until the unlink/rename completes.  A future patch will
-change the VFS to only get a shared lock on i_rwsem for unlink, so this
-will no longer work.
-
-Instead we introduce an explicit interlock.  A special value is stored
-in dentry->d_fsdata while the unlink/rename is running and
-->d_revalidate blocks while that value is present.  When ->d_revalidate
-unblocks, the dentry will be invalid.  This closes the race
-without requiring exclusion on i_rwsem.
-
-d_fsdata is already used in two different ways.
-1/ an IS_ROOT directory dentry might have a "devname" stored in
-   d_fsdata.  Such a dentry doesn't have a name and so cannot be the
-   target of unlink or rename.  For safety we check if an old devname
-   is still stored, and remove it if it is.
-2/ a dentry with DCACHE_NFSFS_RENAMED set will have a 'struct
-   nfs_unlinkdata' stored in d_fsdata.  While this is set maydelete()
-   will fail, so an unlink or rename will never proceed on such
-   a dentry.
-
-Neither of these can be in effect when a dentry is the target of unlink
-or rename.  So we can expect d_fsdata to be NULL, and store a special
-value ((void*)1) which is given the name NFS_FSDATA_BLOCKED to indicate
-that any lookup will be blocked.
-
-The d_count() is incremented under d_lock() when a lookup finds the
-dentry, so we check d_count() is low, and set NFS_FSDATA_BLOCKED under
-the same lock to avoid any races.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: bd4928ec799b ("NFS: Avoid changing nlink when file removes and attribute updates race")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://lore.kernel.org/r/e3fbe5d4a3bed41130908669f745f78c8505cf47.1665399959.git.lorenzo@kernel.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: c6d702f2b771 ("iio: imu: st_lsm6dsx: Fix measurement unit for odr struct member")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c           | 72 +++++++++++++++++++++++++++++++-----------
- include/linux/nfs_fs.h |  9 ++++++
- 2 files changed, 63 insertions(+), 18 deletions(-)
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h        | 11 +++++++++++
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c | 14 +++-----------
+ drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c   | 14 ++------------
+ 3 files changed, 16 insertions(+), 23 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 9dceb6cb10417..671b427b7b97a 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1626,6 +1626,8 @@ __nfs_lookup_revalidate(struct dentry *dentry, unsigned int flags,
- 	int ret;
- 
- 	if (flags & LOOKUP_RCU) {
-+		if (dentry->d_fsdata == NFS_FSDATA_BLOCKED)
-+			return -ECHILD;
- 		parent = READ_ONCE(dentry->d_parent);
- 		dir = d_inode_rcu(parent);
- 		if (!dir)
-@@ -1634,6 +1636,9 @@ __nfs_lookup_revalidate(struct dentry *dentry, unsigned int flags,
- 		if (parent != READ_ONCE(dentry->d_parent))
- 			return -ECHILD;
- 	} else {
-+		/* Wait for unlink to complete */
-+		wait_var_event(&dentry->d_fsdata,
-+			       dentry->d_fsdata != NFS_FSDATA_BLOCKED);
- 		parent = dget_parent(dentry);
- 		ret = reval(d_inode(parent), dentry, flags);
- 		dput(parent);
-@@ -2296,7 +2301,6 @@ static int nfs_safe_remove(struct dentry *dentry)
- int nfs_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	int error;
--	int need_rehash = 0;
- 
- 	dfprintk(VFS, "NFS: unlink(%s/%lu, %pd)\n", dir->i_sb->s_id,
- 		dir->i_ino, dentry);
-@@ -2310,15 +2314,25 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
- 		error = nfs_sillyrename(dir, dentry);
- 		goto out;
- 	}
--	if (!d_unhashed(dentry)) {
--		__d_drop(dentry);
--		need_rehash = 1;
--	}
-+	/* We must prevent any concurrent open until the unlink
-+	 * completes.  ->d_revalidate will wait for ->d_fsdata
-+	 * to clear.  We set it here to ensure no lookup succeeds until
-+	 * the unlink is complete on the server.
-+	 */
-+	error = -ETXTBSY;
-+	if (WARN_ON(dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
-+	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED))
-+		goto out;
-+	if (dentry->d_fsdata)
-+		/* old devname */
-+		kfree(dentry->d_fsdata);
-+	dentry->d_fsdata = NFS_FSDATA_BLOCKED;
-+
- 	spin_unlock(&dentry->d_lock);
- 	error = nfs_safe_remove(dentry);
- 	nfs_dentry_remove_handle_error(dir, dentry, error);
--	if (need_rehash)
--		d_rehash(dentry);
-+	dentry->d_fsdata = NULL;
-+	wake_up_var(&dentry->d_fsdata);
- out:
- 	trace_nfs_unlink_exit(dir, dentry, error);
- 	return error;
-@@ -2422,6 +2436,15 @@ nfs_link(struct dentry *old_dentry, struct inode *dir, struct dentry *dentry)
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+index 6cf8c3321d6a8..b2202c5ad51e3 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
+@@ -499,6 +499,17 @@ st_lsm6dsx_get_mount_matrix(const struct iio_dev *iio_dev,
+ 	return &hw->orientation;
  }
- EXPORT_SYMBOL_GPL(nfs_link);
  
-+static void
-+nfs_unblock_rename(struct rpc_task *task, struct nfs_renamedata *data)
++static inline int
++st_lsm6dsx_device_set_enable(struct st_lsm6dsx_sensor *sensor, bool enable)
 +{
-+	struct dentry *new_dentry = data->new_dentry;
++	if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
++	    sensor->id == ST_LSM6DSX_ID_EXT1 ||
++	    sensor->id == ST_LSM6DSX_ID_EXT2)
++		return st_lsm6dsx_shub_set_enable(sensor, enable);
 +
-+	new_dentry->d_fsdata = NULL;
-+	wake_up_var(&new_dentry->d_fsdata);
++	return st_lsm6dsx_sensor_set_enable(sensor, enable);
 +}
 +
- /*
-  * RENAME
-  * FIXME: Some nfsds, like the Linux user space nfsd, may generate a
-@@ -2452,8 +2475,9 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
- {
- 	struct inode *old_inode = d_inode(old_dentry);
- 	struct inode *new_inode = d_inode(new_dentry);
--	struct dentry *dentry = NULL, *rehash = NULL;
-+	struct dentry *dentry = NULL;
- 	struct rpc_task *task;
-+	bool must_unblock = false;
- 	int error = -EBUSY;
- 
- 	if (flags)
-@@ -2471,18 +2495,27 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
- 	 * the new target.
- 	 */
- 	if (new_inode && !S_ISDIR(new_inode->i_mode)) {
--		/*
--		 * To prevent any new references to the target during the
--		 * rename, we unhash the dentry in advance.
-+		/* We must prevent any concurrent open until the unlink
-+		 * completes.  ->d_revalidate will wait for ->d_fsdata
-+		 * to clear.  We set it here to ensure no lookup succeeds until
-+		 * the unlink is complete on the server.
- 		 */
--		if (!d_unhashed(new_dentry)) {
--			d_drop(new_dentry);
--			rehash = new_dentry;
-+		error = -ETXTBSY;
-+		if (WARN_ON(new_dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
-+		    WARN_ON(new_dentry->d_fsdata == NFS_FSDATA_BLOCKED))
-+			goto out;
-+		if (new_dentry->d_fsdata) {
-+			/* old devname */
-+			kfree(new_dentry->d_fsdata);
-+			new_dentry->d_fsdata = NULL;
- 		}
- 
-+		spin_lock(&new_dentry->d_lock);
- 		if (d_count(new_dentry) > 2) {
- 			int err;
- 
-+			spin_unlock(&new_dentry->d_lock);
-+
- 			/* copy the target dentry's name */
- 			dentry = d_alloc(new_dentry->d_parent,
- 					 &new_dentry->d_name);
-@@ -2495,14 +2528,19 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
- 				goto out;
- 
- 			new_dentry = dentry;
--			rehash = NULL;
- 			new_inode = NULL;
-+		} else {
-+			new_dentry->d_fsdata = NFS_FSDATA_BLOCKED;
-+			must_unblock = true;
-+			spin_unlock(&new_dentry->d_lock);
- 		}
-+
+ static const
+ struct iio_chan_spec_ext_info __maybe_unused st_lsm6dsx_accel_ext_info[] = {
+ 	IIO_MOUNT_MATRIX(IIO_SHARED_BY_ALL, st_lsm6dsx_get_mount_matrix),
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+index 2e6c634c56c7e..2ac08b8478968 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
+@@ -678,17 +678,9 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+ 			goto out;
  	}
  
- 	if (S_ISREG(old_inode->i_mode))
- 		nfs_sync_inode(old_inode);
--	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry, NULL);
-+	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry,
-+				must_unblock ? nfs_unblock_rename : NULL);
- 	if (IS_ERR(task)) {
- 		error = PTR_ERR(task);
- 		goto out;
-@@ -2526,8 +2564,6 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
- 		spin_unlock(&old_inode->i_lock);
- 	}
- out:
--	if (rehash)
--		d_rehash(rehash);
- 	trace_nfs_rename_exit(old_dir, old_dentry,
- 			new_dir, new_dentry, error);
- 	if (!error) {
-diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
-index 218e79ba263b2..d7c23708f7da4 100644
---- a/include/linux/nfs_fs.h
-+++ b/include/linux/nfs_fs.h
-@@ -673,6 +673,15 @@ static inline bool nfs_ooo_test(struct nfs_inode *nfsi)
+-	if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
+-	    sensor->id == ST_LSM6DSX_ID_EXT1 ||
+-	    sensor->id == ST_LSM6DSX_ID_EXT2) {
+-		err = st_lsm6dsx_shub_set_enable(sensor, enable);
+-		if (err < 0)
+-			goto out;
+-	} else {
+-		err = st_lsm6dsx_sensor_set_enable(sensor, enable);
+-		if (err < 0)
+-			goto out;
+-	}
++	err = st_lsm6dsx_device_set_enable(sensor, enable);
++	if (err < 0)
++		goto out;
  
- #define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
+ 	err = st_lsm6dsx_set_fifo_odr(sensor, enable);
+ 	if (err < 0)
+diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+index 2c528425b03b4..ce06ef7d80ee1 100644
+--- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
++++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
+@@ -2450,12 +2450,7 @@ static int __maybe_unused st_lsm6dsx_suspend(struct device *dev)
+ 			continue;
+ 		}
  
-+/* We need to block new opens while a file is being unlinked.
-+ * If it is opened *before* we decide to unlink, we will silly-rename
-+ * instead. If it is opened *after*, then we need to create or will fail.
-+ * If we allow the two to race, we could end up with a file that is open
-+ * but deleted on the server resulting in ESTALE.
-+ * So use ->d_fsdata to record when the unlink is happening
-+ * and block dentry revalidation while it is set.
-+ */
-+#define NFS_FSDATA_BLOCKED ((void*)1)
+-		if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
+-		    sensor->id == ST_LSM6DSX_ID_EXT1 ||
+-		    sensor->id == ST_LSM6DSX_ID_EXT2)
+-			err = st_lsm6dsx_shub_set_enable(sensor, false);
+-		else
+-			err = st_lsm6dsx_sensor_set_enable(sensor, false);
++		err = st_lsm6dsx_device_set_enable(sensor, false);
+ 		if (err < 0)
+ 			return err;
  
- # undef ifdebug
- # ifdef NFS_DEBUG
+@@ -2486,12 +2481,7 @@ static int __maybe_unused st_lsm6dsx_resume(struct device *dev)
+ 		if (!(hw->suspend_mask & BIT(sensor->id)))
+ 			continue;
+ 
+-		if (sensor->id == ST_LSM6DSX_ID_EXT0 ||
+-		    sensor->id == ST_LSM6DSX_ID_EXT1 ||
+-		    sensor->id == ST_LSM6DSX_ID_EXT2)
+-			err = st_lsm6dsx_shub_set_enable(sensor, true);
+-		else
+-			err = st_lsm6dsx_sensor_set_enable(sensor, true);
++		err = st_lsm6dsx_device_set_enable(sensor, true);
+ 		if (err < 0)
+ 			return err;
+ 
 -- 
 2.51.0
 
