@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209281-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5A8DCD268B1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7540ED275D9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D241D30B11A5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:40 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AC9E031329FA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C18BA3D34AB;
-	Thu, 15 Jan 2026 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146903D3CE0;
+	Thu, 15 Jan 2026 17:51:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lxBWP6Ma"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WN/WhQ+t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 84EB23BFE43;
-	Thu, 15 Jan 2026 17:30:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81AC3D34B4;
+	Thu, 15 Jan 2026 17:51:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498249; cv=none; b=nbPDMw4pn7m/xBSgTMIRWaKCeBtLDRPjOqtP1+jLnv3HKEBmXYrgat6yo7wULrjiviVKiIimYB0YIvBYbDB+AizVTKUkv4jDHNicKqdALHXHCAUsb/urmlXlNnbzRsuUxD5fPqhan8x64Bhbwtc4+EoG/6DBbaYFyCJmYwZqN+Q=
+	t=1768499473; cv=none; b=udIJq4HzzehPfiJ35h8Ot0UTajow4YXIS6qV0OznlrkNDfGE/VzgYdwSXuNWZd3L4D/gKg2OzS59HRcKhWVORL5pzCljsQN+3nAJzrqqD873btDGcHliW45tGPFbZlolj1MfJUR724VabFEe5fxKk8HdMryUYon+ekImJmeBAkk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498249; c=relaxed/simple;
-	bh=kFYh4SE7VRIwiNxf9NKDxPKm9vSHKd8PYmhCdgk7wZc=;
+	s=arc-20240116; t=1768499473; c=relaxed/simple;
+	bh=XGEKz28KAEsYVCsSX6dvpu+RdtJzYD8CzWaA7kPf2hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XEtWgY8Mus5UiXXkyoYqmITSJlQC09fOOb2R7Dp84hklXoKvDL9LzDgCJ0BPP4zbrs97EFSNFc0gP8WHNlfmOJjrbGcYSfgwat26IzsYi+cjlw8R3W+VB2AqjNPEWbspYHBi9Zo2i1kNfndNn44JxaE0huYIsCzMtcqYijlTIYQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lxBWP6Ma; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1403FC116D0;
-	Thu, 15 Jan 2026 17:30:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ejNG8Gdlr8GZ1VPW6CcOG4ePcMTd/iK6NJcaUTxn6VktojvTf2K3oeNE3sqmDDIBwvS0gYXaQiTslRyj4fzGfk2t/XA67aAUOWQ+Glhcy3niWpfv9e1L9efwwI2LibcUpdygiSnweX8kzdJsRbX0DuaD4vEj9XdNuS6+JaBD4qs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WN/WhQ+t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15651C19425;
+	Thu, 15 Jan 2026 17:51:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498249;
-	bh=kFYh4SE7VRIwiNxf9NKDxPKm9vSHKd8PYmhCdgk7wZc=;
+	s=korg; t=1768499473;
+	bh=XGEKz28KAEsYVCsSX6dvpu+RdtJzYD8CzWaA7kPf2hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lxBWP6MaHm9UPO+XETJ6P+iKByJSpUdgy7jIDSnI7TYMQLb0nuPpMMcLXIr8iv3Us
-	 y3pMEU+PfJ8mtKiwLbzPZ3LITx0Tv60QFI3qTonBhrC7dRF6W0eUAbnzcly2UTSdyS
-	 H1uJ0QleQ3pjmNMXVbpbXcLDeTWL4uCxhOH1Qxk4=
+	b=WN/WhQ+tViy0VACDq2VFUnYwBKrCzdRDh3iMy6udjqyVQLtlyra55hkAEHwkgEX0h
+	 It2m2dlcZ9EdJvHQZFLgA6+8yUwdhwEpbzYaptv1k6TLjyb8j9zy8zS2rjW7VSMBp+
+	 ud4z+cExUV4u0PVVu1PC6QOorX9Hfn6zqBTKeV+s=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honggang LI <honggangli@163.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 366/554] RDMA/rtrs: Fix clt_path::max_pages_per_mr calculation
-Date: Thu, 15 Jan 2026 17:47:12 +0100
-Message-ID: <20260115164259.473531990@linuxfoundation.org>
+	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Neil Armstrong <neil.armstrong@linaro.org>,
+	Vinod Koul <vkoul@kernel.org>
+Subject: [PATCH 5.10 232/451] phy: broadcom: bcm63xx-usbh: fix section mismatches
+Date: Thu, 15 Jan 2026 17:47:13 +0100
+Message-ID: <20260115164239.286953250@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,47 +59,62 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Honggang LI <honggangli@163.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 43bd09d5b750f700499ae8ec45fd41a4c48673e6 ]
+commit 356d1924b9a6bc2164ce2bf1fad147b0c37ae085 upstream.
 
-If device max_mr_size bits in the range [mr_page_shift+31:mr_page_shift]
-are zero, the `min3` function will set clt_path::max_pages_per_mr to
-zero.
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function and match table must not live in init.
 
-`alloc_path_reqs` will pass zero, which is invalid, as the third parameter
-to `ib_alloc_mr`.
-
-Fixes: 6a98d71daea1 ("RDMA/rtrs: client: main functionality")
-Signed-off-by: Honggang LI <honggangli@163.com>
-Link: https://patch.msgid.link/20251229025617.13241-1-honggangli@163.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 783f6d3dcf35 ("phy: bcm63xx-usbh: Add BCM63xx USBH driver")
+Cc: stable@vger.kernel.org	# 5.9
+Cc: Álvaro Fernández Rojas <noltari@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patch.msgid.link/20251017054537.6884-1-johan@kernel.org
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/ulp/rtrs/rtrs-clt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/broadcom/phy-bcm63xx-usbh.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/infiniband/ulp/rtrs/rtrs-clt.c b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-index e8f5a1f104cf..cda7849e2133 100644
---- a/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-+++ b/drivers/infiniband/ulp/rtrs/rtrs-clt.c
-@@ -1469,6 +1469,7 @@ static void query_fast_reg_mode(struct rtrs_clt_path *clt_path)
- 	mr_page_shift      = max(12, ffs(ib_dev->attrs.page_size_cap) - 1);
- 	max_pages_per_mr   = ib_dev->attrs.max_mr_size;
- 	do_div(max_pages_per_mr, (1ull << mr_page_shift));
-+	max_pages_per_mr = min_not_zero((u32)max_pages_per_mr, U32_MAX);
- 	clt_path->max_pages_per_mr =
- 		min3(clt_path->max_pages_per_mr, (u32)max_pages_per_mr,
- 		     ib_dev->attrs.max_fast_reg_page_list_len);
--- 
-2.51.0
-
+--- a/drivers/phy/broadcom/phy-bcm63xx-usbh.c
++++ b/drivers/phy/broadcom/phy-bcm63xx-usbh.c
+@@ -374,7 +374,7 @@ static struct phy *bcm63xx_usbh_phy_xlat
+ 	return of_phy_simple_xlate(dev, args);
+ }
+ 
+-static int __init bcm63xx_usbh_phy_probe(struct platform_device *pdev)
++static int bcm63xx_usbh_phy_probe(struct platform_device *pdev)
+ {
+ 	struct device *dev = &pdev->dev;
+ 	struct bcm63xx_usbh_phy	*usbh;
+@@ -431,7 +431,7 @@ static int __init bcm63xx_usbh_phy_probe
+ 	return 0;
+ }
+ 
+-static const struct of_device_id bcm63xx_usbh_phy_ids[] __initconst = {
++static const struct of_device_id bcm63xx_usbh_phy_ids[] = {
+ 	{ .compatible = "brcm,bcm6318-usbh-phy", .data = &usbh_bcm6318 },
+ 	{ .compatible = "brcm,bcm6328-usbh-phy", .data = &usbh_bcm6328 },
+ 	{ .compatible = "brcm,bcm6358-usbh-phy", .data = &usbh_bcm6358 },
+@@ -442,7 +442,7 @@ static const struct of_device_id bcm63xx
+ };
+ MODULE_DEVICE_TABLE(of, bcm63xx_usbh_phy_ids);
+ 
+-static struct platform_driver bcm63xx_usbh_phy_driver __refdata = {
++static struct platform_driver bcm63xx_usbh_phy_driver = {
+ 	.driver	= {
+ 		.name = "bcm63xx-usbh-phy",
+ 		.of_match_table = bcm63xx_usbh_phy_ids,
 
 
 
