@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-208519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208561-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 259EAD25EF9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E2333D25FC1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73AA030869A3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:54:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2F729306D2B7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2F9E1C5D59;
-	Thu, 15 Jan 2026 16:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9B8396B7D;
+	Thu, 15 Jan 2026 16:56:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dmg0bo42"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8N9gQ+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83BDB3A7E0B;
-	Thu, 15 Jan 2026 16:54:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77E4274B43;
+	Thu, 15 Jan 2026 16:56:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496080; cv=none; b=g6V8oNrfeUA3BhjL+iciSOTGcNnsO+L/F51zx99B47DYIfdbFt725gXgEGQnUGU/LNhZ+/pK4wB6sKXrWHGfOnwuoU+JhJbhNEOJDP4DKVd3famY0t2ayb+dQ5K7c057rYwFFF7GTSjSbO/yEJ6frHmBKLOaSFmbZXLE4PY70O8=
+	t=1768496199; cv=none; b=ddLz8logad1YgMGs5itZ3Bjd/YEUOEx4OAG6NZOkhq0+8sbrsWzsJSwExEc+PTp5UwcmcUz2NQCiX59f8LNZVFvE45u7VgRQglpT2Z/2viZAhRb7Rfx8vR4YK+RvbaAbA1ihg3FSjNSMtyXtM2/Cv555qFpU6ozKKEUf44N6DCw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496080; c=relaxed/simple;
-	bh=1uzZUrA7ixcq/5Gmw/xa4G/EL8y3ubtQvAReWzG0lIQ=;
+	s=arc-20240116; t=1768496199; c=relaxed/simple;
+	bh=yjO07nObxFmrrgswHfLENexGrVtPN0pDLKwsA3WWny0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eHatRn2rlU3HkPyMTD0FNr5Vr3eXrFQoJp9o6iqL+BqeIe0QFFVyLZdy8xJBg6aQFsR7blV37mtGZy9f8RiBINeCJplYAPwOaTAfk5JN2SFToIbj7p/OiZlyVun/pntxhSfKgAue5fXai4oRo3x0N7SXF7Tk8TYPhgz/AuWkw00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dmg0bo42; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BA68C116D0;
-	Thu, 15 Jan 2026 16:54:39 +0000 (UTC)
+	 MIME-Version; b=AjlLs83KXrT5feaOyVbUUQLfQd3gs6ign+YAGtBQagQZNTyVwXc58UW4/wEKQX6FKFA1HjUQjw6qbdBkaKnK0yhUejXmb7aTaP8lHWQlhTgBwPnvE2e9JFahTp1vlFvzk8KipWY+oqBaAaDRAIaaAAQ4bt2GMIUrf6MIONHTWNA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8N9gQ+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CC3C116D0;
+	Thu, 15 Jan 2026 16:56:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496080;
-	bh=1uzZUrA7ixcq/5Gmw/xa4G/EL8y3ubtQvAReWzG0lIQ=;
+	s=korg; t=1768496198;
+	bh=yjO07nObxFmrrgswHfLENexGrVtPN0pDLKwsA3WWny0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dmg0bo42aYeczHT6sw5M5gRWHL626uqRQymjogX06/552VoPZxfe5iICavO6nH4oQ
-	 7l80sbmTGjnfnzwVN+Rmm9Jh9spfpQT8IjbIQ0ZQtddz0R7Gv2s3dqytXTnSkr881O
-	 gbkiO8d8ffU3kYWiOBpfX6OPMkIEau0t2CHN2Uis=
+	b=N8N9gQ+fGHrbBbs5w8aMDTV4X4XvB0Qcx/e6GoGDnh0YyhHJyOJ5wGJrCh/o9G5wt
+	 UJ85ko2kUjSEqdcIcMfk3d4IiMODpcMg4S71wzEuj4lBaL3ugxSWCOm9ZVEOtB9j1S
+	 iYLf0kJe3dtK4xOlOvBAm8UDCTiqJxgIksHhE2ss=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wadim Egorov <w.egorov@phytec.de>,
 	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 069/181] arm64: dts: ti: k3-am642-phyboard-electra-peb-c-010: Fix icssg-prueth schema warning
-Date: Thu, 15 Jan 2026 17:46:46 +0100
-Message-ID: <20260115164204.816810921@linuxfoundation.org>
+Subject: [PATCH 6.18 070/181] arm64: dts: ti: k3-am642-phyboard-electra-x27-gpio1-spi1-uart3: Fix schema warnings
+Date: Thu, 15 Jan 2026 17:46:47 +0100
+Message-ID: <20260115164204.851443974@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -66,42 +66,59 @@ Content-Transfer-Encoding: 8bit
 
 From: Wadim Egorov <w.egorov@phytec.de>
 
-[ Upstream commit 05bbe52d0be5637dcd3c880348e3688f7ec64eb7 ]
+[ Upstream commit d876bb9353d87dee0ae620300106e8def189c785 ]
 
-Reduce length of dma-names and dmas properties for icssg1-ethernet
-node to comply with ti,icssg-prueth schema constraints. The previous
-entries exceeded the allowed count and triggered dtschema warnings
-during validation.
+Rename pinctrl nodes to comply with naming conventions required by
+pinctrl-single schema. Also, replace invalid integer assignment in
+SPI node with a boolean to align with omap-spi schema.
 
-Fixes: e53fbf955ea7 ("arm64: dts: ti: k3-am642-phyboard-electra: Add PEB-C-010 Overlay")
+Fixes: 638ab30ce4c6 ("arm64: dts: ti: am64-phyboard-electra: Add DT overlay for X27 connector")
 Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Link: https://patch.msgid.link/20251127122733.2523367-1-w.egorov@phytec.de
+Link: https://patch.msgid.link/20251127122733.2523367-2-w.egorov@phytec.de
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/ti/k3-am642-phyboard-electra-peb-c-010.dtso   | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ .../k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso   | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-peb-c-010.dtso b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-peb-c-010.dtso
-index 7fc73cfacadb8..1176a52d560b7 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-peb-c-010.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-peb-c-010.dtso
-@@ -30,13 +30,10 @@
- 				<&main_pktdma 0xc206 15>, /* egress slice 1 */
- 				<&main_pktdma 0xc207 15>, /* egress slice 1 */
- 				<&main_pktdma 0x4200 15>, /* ingress slice 0 */
--				<&main_pktdma 0x4201 15>, /* ingress slice 1 */
--				<&main_pktdma 0x4202 0>, /* mgmnt rsp slice 0 */
--				<&main_pktdma 0x4203 0>; /* mgmnt rsp slice 1 */
-+				<&main_pktdma 0x4201 15>; /* ingress slice 1 */
- 		dma-names = "tx0-0", "tx0-1", "tx0-2", "tx0-3",
- 					"tx1-0", "tx1-1", "tx1-2", "tx1-3",
--					"rx0", "rx1",
--					"rxmgm0", "rxmgm1";
-+					"rx0", "rx1";
+diff --git a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso
+index 996c42ec4253e..bea8efa3e9094 100644
+--- a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso
++++ b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso
+@@ -20,13 +20,13 @@
+ };
  
- 		firmware-name = "ti-pruss/am65x-sr2-pru0-prueth-fw.elf",
- 				"ti-pruss/am65x-sr2-rtu0-prueth-fw.elf",
+ &main_pmx0 {
+-	main_gpio1_exp_header_gpio_pins_default: main-gpio1-exp-header-gpio-pins-default {
++	main_gpio1_exp_header_gpio_pins_default: main-gpio1-exp-header-gpio-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM64X_IOPAD(0x0220, PIN_INPUT, 7)	/* (D14) SPI1_CS1.GPIO1_48 */
+ 		>;
+ 	};
+ 
+-	main_spi1_pins_default: main-spi1-pins-default {
++	main_spi1_pins_default: main-spi1-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM64X_IOPAD(0x0224, PIN_INPUT, 0)	/* (C14) SPI1_CLK */
+ 			AM64X_IOPAD(0x021C, PIN_OUTPUT, 0)	/* (B14) SPI1_CS0 */
+@@ -35,7 +35,7 @@
+ 		>;
+ 	};
+ 
+-	main_uart3_pins_default: main-uart3-pins-default {
++	main_uart3_pins_default: main-uart3-default-pins {
+ 		pinctrl-single,pins = <
+ 			AM64X_IOPAD(0x0048, PIN_INPUT, 2)       /* (U20) GPMC0_AD3.UART3_RXD */
+ 			AM64X_IOPAD(0x004c, PIN_OUTPUT, 2)      /* (U18) GPMC0_AD4.UART3_TXD */
+@@ -52,7 +52,7 @@
+ &main_spi1 {
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&main_spi1_pins_default>;
+-	ti,pindir-d0-out-d1-in = <1>;
++	ti,pindir-d0-out-d1-in;
+ 	status = "okay";
+ };
+ 
 -- 
 2.51.0
 
