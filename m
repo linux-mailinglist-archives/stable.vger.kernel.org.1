@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209289-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209743-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1E01D26D9A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 886F2D27490
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 528CB31BA541
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id ABC1030E4EFE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9893C3BF307;
-	Thu, 15 Jan 2026 17:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C93E3C1FE9;
+	Thu, 15 Jan 2026 17:52:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9bL0g/B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eeQs9oWX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A12A3A0E98;
-	Thu, 15 Jan 2026 17:31:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C30D234216C;
+	Thu, 15 Jan 2026 17:52:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498272; cv=none; b=V3jMz7yR1FgCrkd9zLEam9Ej81boyLn2WWz3dNnHsrl/tGyWZaVfFOh3eYVbQ2ksmr1dgMJBQ9DTKMja7IozS/F11BBYTJ+AMZX6hGVp0CNcMRIyu8HbkQr8aXgdvru+LSg+OjGgcigeaVSuFbglmeWS6VtXwGcRGZsabi9Cau0=
+	t=1768499565; cv=none; b=gaccC+euT/5RTxAPZaT0qJZTJ0O6wlM38ZVLFVoU6uvvoF0MTO5T78kV+b07ivbxAlcCKrXUa4ncUWwkYiK0EVOx7LD+F6kKWAoKMEC/s2jFkjA9X7KRWISbm23H0vNR2P/0Au4xC1ERqZIznYPIGfn785Crq9c8VDxqx0O9itQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498272; c=relaxed/simple;
-	bh=IwjY0JnqA+WkD74y2Ow+DZPsrdinf+76nIxuGUEJJuo=;
+	s=arc-20240116; t=1768499565; c=relaxed/simple;
+	bh=iuhIp+QCeHrIkwxmuy6kJSrNDM8oX5t815fKMzR3Fkk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KOGYNYNj2Mu6KF4bZrswjh9DPFlejE6ACgeM2KytFdqja+L3cQ8DiUv9AJDBBbnIpKCu9+wNRN81JbMGpVUDjq/vlEhfTVxGZ7aZcYO4jQ24taRhrv/7+wWy8sZpndxBi639ykHBdKG9GmSSc2NybX+wbO1Q0MnTerb/f+Et2X0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9bL0g/B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB06FC116D0;
-	Thu, 15 Jan 2026 17:31:11 +0000 (UTC)
+	 MIME-Version; b=ZeMOyzprkhIuPs71PjS3X7rkc4qzoO9Z9k/reIeAU6eKY6jCysFoxVNqst9eXBq01GhftQ+RGb9ZZpfx6UInXHSnY5NikGFU8/0k7E/gh3bI1Kr5Jo7SAMDH6XGsZoUW+sDAQvmyHloG6S+oT8hqRYZ3DgPUl9La2B3bxJr1bgg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eeQs9oWX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 079DBC116D0;
+	Thu, 15 Jan 2026 17:52:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498272;
-	bh=IwjY0JnqA+WkD74y2Ow+DZPsrdinf+76nIxuGUEJJuo=;
+	s=korg; t=1768499565;
+	bh=iuhIp+QCeHrIkwxmuy6kJSrNDM8oX5t815fKMzR3Fkk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y9bL0g/Bff1HjL2Uocc3CLz1GbnjYb+dw9X8Kjy1Dv1Cyot691IIg7inLSSk8TzKE
-	 0QqdkXmVFsjohVoJ/1cgjmLCfGo15Vdo1gxJcYIL8n6NS5K0tIr7NdfiOAG2TlZxyX
-	 3VghdIvLEmW4oqdZzUa06blqSJpOq4ooSlHFJwO0=
+	b=eeQs9oWXmPL3NUxmZl4/mVT1CMAt4Ng32C+J0LcoInhwF8w0IL8ZGJqYQ8w4XbYnW
+	 XDA2Yb6weCAhhn97F01XXt6oywqyarNF6FEZUHD+H2i6AGRxH5I6WPw7Grn2l53Xzz
+	 fNQCtYKTGhD9Mye97VZs94XOQ68MFf0SwZqborOc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Peter <sven@kernel.org>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.15 373/554] iommu/apple-dart: fix device leak on of_xlate()
+	stable <stable@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>
+Subject: [PATCH 5.10 238/451] intel_th: Fix error handling in intel_th_output_open
 Date: Thu, 15 Jan 2026 17:47:19 +0100
-Message-ID: <20260115164259.732157797@linuxfoundation.org>
+Message-ID: <20260115164239.503412459@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ma Ke <make24@iscas.ac.cn>
 
-commit a6eaa872c52a181ae9a290fd4e40c9df91166d7a upstream.
+commit 6d5925b667e4ed9e77c8278cc215191d29454a3f upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+intel_th_output_open() calls bus_find_device_by_devt() which
+internally increments the device reference count via get_device(), but
+this reference is not properly released in several error paths. When
+device driver is unavailable, file operations cannot be obtained, or
+the driver's open method fails, the function returns without calling
+put_device(), leading to a permanent device reference count leak. This
+prevents the device from being properly released and could cause
+resource exhaustion over time.
 
-Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
-Cc: stable@vger.kernel.org	# 5.15
-Cc: Sven Peter <sven@kernel.org>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+Found by code review.
+
+Cc: stable <stable@kernel.org>
+Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20251112091723.35963-1-make24@iscas.ac.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/apple-dart.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hwtracing/intel_th/core.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/drivers/iommu/apple-dart.c
-+++ b/drivers/iommu/apple-dart.c
-@@ -611,6 +611,8 @@ static int apple_dart_of_xlate(struct de
- 	struct apple_dart *cfg_dart;
- 	int i, sid;
+--- a/drivers/hwtracing/intel_th/core.c
++++ b/drivers/hwtracing/intel_th/core.c
+@@ -810,13 +810,17 @@ static int intel_th_output_open(struct i
+ 	int err;
  
-+	put_device(&iommu_pdev->dev);
+ 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
+-	if (!dev || !dev->driver)
+-		return -ENODEV;
++	if (!dev || !dev->driver) {
++		err = -ENODEV;
++		goto out_no_device;
++	}
+ 
+ 	thdrv = to_intel_th_driver(dev->driver);
+ 	fops = fops_get(thdrv->fops);
+-	if (!fops)
+-		return -ENODEV;
++	if (!fops) {
++		err = -ENODEV;
++		goto out_put_device;
++	}
+ 
+ 	replace_fops(file, fops);
+ 
+@@ -824,10 +828,16 @@ static int intel_th_output_open(struct i
+ 
+ 	if (file->f_op->open) {
+ 		err = file->f_op->open(inode, file);
+-		return err;
++		if (err)
++			goto out_put_device;
+ 	}
+ 
+ 	return 0;
 +
- 	if (args->args_count != 1)
- 		return -EINVAL;
- 	sid = args->args[0];
++out_put_device:
++	put_device(dev);
++out_no_device:
++	return err;
+ }
+ 
+ static const struct file_operations intel_th_output_fops = {
 
 
 
