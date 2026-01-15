@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209752-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209333-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 911D7D27270
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC589D26A49
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DD7FE30877A6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:07 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D813D30118FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC6D3BFE27;
-	Thu, 15 Jan 2026 17:53:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 72BA93BF2F3;
+	Thu, 15 Jan 2026 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlg91r3/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LFfvNF1M"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DF93C0095;
-	Thu, 15 Jan 2026 17:53:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 36BD43C1FC7;
+	Thu, 15 Jan 2026 17:33:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499590; cv=none; b=tiRRO5g1PshBOtBHKrb8EhBx5MiJi/ldOHJdUYlpAEpZwNv+GbZ8NxNGhelCrwzyIZ6+q7Nyq/EEdh/DCbrI5bKu4hN6vo60qsidB8G4oCq8p0oE92uce+P50qBut9AKW6Z5KCNH9r9YfaM3veDGCahwvGFF5QPRmi9pJkUXwtY=
+	t=1768498397; cv=none; b=ZGUemgP1oXdieTdE9Szlx+bEp1j03HA04aTBaEBnq7dNbTkvxNeGjngSoSAxRGzW87XEafP2Ku3ZJx287gtQrbHNuU1XO/MMi7SruyWWlhoLVFG1wXHJNOSCF8UiEmhMjJqdxcKKGcLGgDiKyuwDENvDc3lpnS3c29hGhjusG1Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499590; c=relaxed/simple;
-	bh=QUH3NacILdynOyMyEjtScfl18/EmTdqnEYBfltl86D0=;
+	s=arc-20240116; t=1768498397; c=relaxed/simple;
+	bh=BDbt7dMBguZYMjcPOtjL5CVidwja6bRyNBPHrCxd5no=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ecU8Xyc/ja1D0xQWGxyUyvc6baaCKHARWqowkZ9tjRca215+JuZQhcoJeeDh2XG9mKXK9VwCobEPzsg/R9bV6NjlO9+OIhMWoRSaDEoc73YUMGGweTvQvzC/QU5cjmMRSULvuuLY8jZ9HXDLizDhZKxT+KUFLuwRnOXeT8FipbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlg91r3/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607D9C116D0;
-	Thu, 15 Jan 2026 17:53:10 +0000 (UTC)
+	 MIME-Version; b=ViDjYP0a1NNoyCceBHBpFLqWw7o4HOlcrFGpFHtn1LJtHuGU5UbDEbVNjefKYx71Yv/5InuxUNyxBEzmMvuoIOGOCKjQUkCXuZu5f7rV8JF7q2y5+ghI4TUSXWNbnASPtPe7VCHHgMS2JHgZkNWekoCCeAckVFgr6gvcRmxy9SA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LFfvNF1M; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8F93C116D0;
+	Thu, 15 Jan 2026 17:33:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499590;
-	bh=QUH3NacILdynOyMyEjtScfl18/EmTdqnEYBfltl86D0=;
+	s=korg; t=1768498397;
+	bh=BDbt7dMBguZYMjcPOtjL5CVidwja6bRyNBPHrCxd5no=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xlg91r3/IfejfKIbaaQEFsoYtWWiBhyqZRFy5lM7Ex50NHnjEKwGBr36CTF0GZ+YW
-	 ER2raovWfe799qWHW6iurUPc51QQ5V2fRSnR3/SL9wEr2JI6IOSKFTldXwWFzhp/zJ
-	 +8BsfRGJ5SOdRUMdfJC2eqEr9sgoip5PKKrXYXRk=
+	b=LFfvNF1MoWQu6QY9NuiM9BIUf7jc0QBCKE9mUCM6Sq9hmLeowXfICGOdzzVqZixRE
+	 iPIfPiOjtcSkNdeuB7icyv1Znjg9zpyv08BS4Futt5WyFevTjQ1AIZTDYP9B9q8lra
+	 rgISIIQP3+OffsKZvGNiOMmXeGhQ1PU8AXfPbVc8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com,
-	Deepakkumar Karn <dkarn@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 281/451] net: usb: rtl8150: fix memory leak on usb_submit_urb() failure
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 416/554] mm/damon/tests/core-kunit: handle allocation failures in damon_test_regions()
 Date: Thu, 15 Jan 2026 17:48:02 +0100
-Message-ID: <20260115164241.047721315@linuxfoundation.org>
+Message-ID: <20260115164301.297368302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepakkumar Karn <dkarn@redhat.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 12cab1191d9890097171156d06bfa8d31f1e39c8 ]
+commit e16fdd4f754048d6e23c56bd8d920b71e41e3777 upstream.
 
-In async_set_registers(), when usb_submit_urb() fails, the allocated
-  async_req structure and URB are not freed, causing a memory leak.
+damon_test_regions() is assuming all dynamic memory allocation in it will
+succeed.  Those are indeed likely in the real use cases since those
+allocations are too small to fail, but theoretically those could fail.  In
+the case, inappropriate memory access can happen.  Fix it by appropriately
+cleanup pre-allocated memory and skip the execution of the remaining tests
+in the failure cases.
 
-  The completion callback async_set_reg_cb() is responsible for freeing
-  these allocations, but it is only called after the URB is successfully
-  submitted and completes (successfully or with error). If submission
-  fails, the callback never runs and the memory is leaked.
-
-  Fix this by freeing both the URB and the request structure in the error
-  path when usb_submit_urb() fails.
-
-Reported-by: syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8dd915c7cb0490fc8c52
-Fixes: 4d12997a9bb3 ("drivers: net: usb: rtl8150: concurrent URB bugfix")
-Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
-Link: https://patch.msgid.link/20251216151304.59865-2-dkarn@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-3-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/rtl8150.c | 2 ++
- 1 file changed, 2 insertions(+)
+ mm/damon/core-test.h |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index eb4f3f8a1906..185b8c8b19ba 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -211,6 +211,8 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
- 		if (res == -ENODEV)
- 			netif_device_detach(dev->netdev);
- 		dev_err(&dev->udev->dev, "%s failed with %d\n", __func__, res);
-+		kfree(req);
-+		usb_free_urb(async_urb);
- 	}
- 	return res;
- }
--- 
-2.51.0
-
+--- a/mm/damon/core-test.h
++++ b/mm/damon/core-test.h
+@@ -20,11 +20,17 @@ static void damon_test_regions(struct ku
+ 	struct damon_target *t;
+ 
+ 	r = damon_new_region(1, 2);
++	if (!r)
++		kunit_skip(test, "region alloc fail");
+ 	KUNIT_EXPECT_EQ(test, 1ul, r->ar.start);
+ 	KUNIT_EXPECT_EQ(test, 2ul, r->ar.end);
+ 	KUNIT_EXPECT_EQ(test, 0u, r->nr_accesses);
+ 
+ 	t = damon_new_target(42);
++	if (!t) {
++		damon_free_region(r);
++		kunit_skip(test, "target alloc fail");
++	}
+ 	KUNIT_EXPECT_EQ(test, 0u, damon_nr_regions(t));
+ 
+ 	damon_add_region(r, t);
 
 
 
