@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209604-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209186-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E147AD27B34
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:42:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 12F9FD26B5A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4C33530A8789
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 466213065E0C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB8CA3BFE45;
-	Thu, 15 Jan 2026 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F12BB3B530F;
+	Thu, 15 Jan 2026 17:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GrAPjRY4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xzue2EfC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D48B3BFE3B;
-	Thu, 15 Jan 2026 17:46:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B49F43BF307;
+	Thu, 15 Jan 2026 17:26:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499169; cv=none; b=h33GdOEsDzSdEPlyppRzrq5wXuOUxaXumYHBvHB0XzeizElMz+jyVGHXBrAiWWYi0OZABM4TKfgnMW0+Gr74iSkM++3Oq+tO9Ae2ulXn5FG42/MrDf7bBCLNW9wmCA6rFhbzZRQsFCAfgB2/CxRLz9+SNdLxR+5PKSFrQsuhLX0=
+	t=1768497978; cv=none; b=DhnUO+S7+bk9/THeB/Zc/f5cIU+ZocWpCbPGryR7wD6qSNl1SdkI/x0qoHQCCvOQHRv37lkyWUyfvI1SSt2kuZ2XrMdU8CHRjXdWqhs7xjYM5CmV5S6UKh3I3lOQTWTmA31kGDk/6u4VEpuLpyFL+atc/2Xipst2pknbAmzflVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499169; c=relaxed/simple;
-	bh=lr9GkwBoFGdAUbSYRG1ejdREk4i04Asj++eHRnD1exs=;
+	s=arc-20240116; t=1768497978; c=relaxed/simple;
+	bh=nLsrjFqepDHgo9rBcGY7DcYSqZLqkK+sSBLzZZHEpMg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GuANvi4H1MvLBXHvFhOGnoQ+P+Hi0Bp5GKz0i6enEq8a6IInKEYj/Q5JPW9cFZbwgpYq0WGV1tT3fCzOHTQgDsXXcBGbOGrKaBGf2qb2/SS2pMC54DVKToDWOnCyypfNOmllJ/AxtdMEcOKGH/BWFXU28DYpyovD+JrCvrymG6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GrAPjRY4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 19316C116D0;
-	Thu, 15 Jan 2026 17:46:08 +0000 (UTC)
+	 MIME-Version; b=clfKVTQzLfdBVik3ZEDDSHaH0zs1mX9HsLdJ6i/OjIfHyNOZn57zxquQhi0KNLFuaXe/N7tLy/ZIg74Pp/1kO3X6vOZ4j4yarcaloKRC/sTFcFyziVkOi/Jp6cYrp06EmWywB7SE0oE94uSqPmmJXxVoU92SiK9/RHesmXVHROE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xzue2EfC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 449BEC19422;
+	Thu, 15 Jan 2026 17:26:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499169;
-	bh=lr9GkwBoFGdAUbSYRG1ejdREk4i04Asj++eHRnD1exs=;
+	s=korg; t=1768497978;
+	bh=nLsrjFqepDHgo9rBcGY7DcYSqZLqkK+sSBLzZZHEpMg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GrAPjRY4z3pFi/GCLQYB8uJFKUtJNlEIHunIFSGpBuyCGo2B2kSDFslN220qYoPwn
-	 qUrGtkZI9J39+VWCdBxx/CS5EnLsWeTgAipkEo8ldBLrTqjC+SLMdZ9rOhMwJOijjn
-	 6zHc5SHmbY7sTmMf+FbhwozbMXfgBN06zk/bKuhE=
+	b=xzue2EfCDCW9O8NFUdztJqSC5pJX2Jo51+Ke94AJLerMCal34neatsSOzhrOOZyfP
+	 dnyufqDhj/FXCiTChhTvtqbOoDD3tzQrKzgJtQseeMy4npfiv/a29UPdqLlILuoVdO
+	 cXuzRSiQRnys1maJ6fZ1WNQKs2igwVzWrIqZZr1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Khirnov <anton@khirnov.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 133/451] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
-Date: Thu, 15 Jan 2026 17:45:34 +0100
-Message-ID: <20260115164235.732053025@linuxfoundation.org>
+Subject: [PATCH 5.15 269/554] usb: typec: ucsi: Handle incorrect num_connectors capability
+Date: Thu, 15 Jan 2026 17:45:35 +0100
+Message-ID: <20260115164255.967966107@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Khirnov <anton@khirnov.net>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
+[ Upstream commit 30cd2cb1abf4c4acdb1ddb468c946f68939819fb ]
 
-kbd_led_set() can sleep, and so may not be used as the brightness_set()
-callback.
+The UCSI spec states that the num_connectors field is 7 bits, and the
+8th bit is reserved and should be set to zero.
+Some buggy FW has been known to set this bit, and it can lead to a
+system not booting.
+Flag that the FW is not behaving correctly, and auto-fix the value
+so that the system boots correctly.
 
-Otherwise using this led with a trigger leads to system hangs
-accompanied by:
-BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
-CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
-Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
-Call Trace:
- <TASK>
- [...]
- schedule_timeout+0xbd/0x100
- __down_common+0x175/0x290
- down_timeout+0x67/0x70
- acpi_os_wait_semaphore+0x57/0x90
- [...]
- asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
- led_trigger_event+0x3f/0x60
- [...]
+Found on Lenovo P1 G8 during Linux enablement program. The FW will
+be fixed, but seemed worth addressing in case it hit platforms that
+aren't officially Linux supported.
 
-Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
-Signed-off-by: Anton Khirnov <anton@khirnov.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Denis Benato <benato.denis96@gmail.com>
-Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250821185319.2585023-1-mpearson-lenovo@squebb.ca
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/usb/typec/ucsi/ucsi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index 265232d1b9a86..4f56f853b756b 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -721,14 +721,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
- 	kbd_led_update(asus);
- }
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 62124882b21a..05a2909e84fd 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1270,6 +1270,12 @@ static int ucsi_init(struct ucsi *ucsi)
+ 		ret = -ENODEV;
+ 		goto err_reset;
+ 	}
++	/* Check if reserved bit set. This is out of spec but happens in buggy FW */
++	if (ucsi->cap.num_connectors & 0x80) {
++		dev_warn(ucsi->dev, "UCSI: Invalid num_connectors %d. Likely buggy FW\n",
++			 ucsi->cap.num_connectors);
++		ucsi->cap.num_connectors &= 0x7f; // clear bit and carry on
++	}
  
--static void kbd_led_set(struct led_classdev *led_cdev,
--			enum led_brightness value)
-+static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
- {
- 	/* Prevent disabling keyboard backlight on module unregister */
- 	if (led_cdev->flags & LED_UNREGISTERING)
--		return;
-+		return 0;
- 
- 	do_kbd_led_set(led_cdev, value);
-+	return 0;
- }
- 
- static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
-@@ -865,7 +865,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
- 		asus->kbd_led_wk = led_val;
- 		asus->kbd_led.name = "asus::kbd_backlight";
- 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
--		asus->kbd_led.brightness_set = kbd_led_set;
-+		asus->kbd_led.brightness_set_blocking = kbd_led_set;
- 		asus->kbd_led.brightness_get = kbd_led_get;
- 		asus->kbd_led.max_brightness = 3;
- 
+ 	/* Allocate the connectors. Released in ucsi_unregister() */
+ 	ucsi->connector = kcalloc(ucsi->cap.num_connectors + 1,
 -- 
 2.51.0
 
