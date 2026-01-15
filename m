@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209395-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208848-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30311D26E8D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 389A9D2643A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47B8A313CFD6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D6108313AEDD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3CC27AC5C;
-	Thu, 15 Jan 2026 17:36:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B1C433993;
+	Thu, 15 Jan 2026 17:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYkKf2Rw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdNxh6LY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59C13BF2FA;
-	Thu, 15 Jan 2026 17:36:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EC9029ACDD;
+	Thu, 15 Jan 2026 17:10:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498575; cv=none; b=URNF5NGT5EEUV3BAY4TqNcK1dcVDrbObhX+9EBheonR7bcnsbGBa2LHoX8ANZGJio67w1GyJ75pQS13FbfC5BZXJiV66zsM+ltGIlsVPSebstNYSNXxZE6g0m/sq7kIzKnJavJZXQjkHfOiuW1CQ2xvmKawOR6aSjCNt5kISyag=
+	t=1768497015; cv=none; b=UMFzpEmlldzsvpzFqiIMwm2b/da7OV08GpvB8gM8SSBvCTMYP7EjLNMga/OT+w+iHZB6HgTtuuidjMf8r5Wr1/5ziut5t8QEAMHIrUx5D4AQQ5eJ6+edq+VRprZClA4jMMz1/EMtzxoKDXseTwpaos34xD/NivG9u9YaaeLLjKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498575; c=relaxed/simple;
-	bh=sr1gSCrKQUMMyQqGGhJJr/BoumKLrKi6nz2tUlE1AB8=;
+	s=arc-20240116; t=1768497015; c=relaxed/simple;
+	bh=MdbJXqv74RzCMNGllJQQHyivdcRxujQzcfiaXFkD8gY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QaMk0C4+cAEsrKQIQknGS2BQESuaCm2dnLkWxswnqH2Zpa8q3y+95zBYaiQSRCKOwOlI3tKoCA7SN536t3MEXKW68OC7z7JyhMgb6WMK1vy8+QOBsqEroi/J/LbXAPN+i8SLmvcG4z+JCwMaeyl9qDq4jEXGFcSYSegbqnqe27c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYkKf2Rw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10096C116D0;
-	Thu, 15 Jan 2026 17:36:13 +0000 (UTC)
+	 MIME-Version; b=Rtu0fxJDrbCWDo0yfrjG3YEH1GYjc1r86cRhn1Tn3uliJ5Sqr6qvvwJuY+IEXcV1JP6K1w+aKHqTd15QJJb1Hb8U1XQzGunE2dxahkh4ZQ/gUmbE5lN7I3+TiPPVXGQp9/EAoAQiL9fJF9OewJ0MdM40eVb9G5hE4cfCYvvRRbg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdNxh6LY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 855A9C116D0;
+	Thu, 15 Jan 2026 17:10:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498574;
-	bh=sr1gSCrKQUMMyQqGGhJJr/BoumKLrKi6nz2tUlE1AB8=;
+	s=korg; t=1768497014;
+	bh=MdbJXqv74RzCMNGllJQQHyivdcRxujQzcfiaXFkD8gY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zYkKf2RwE2FwxsTk5WG26DE2neJjwgyyS86NWeau7U+PR1lQ2hUOWUxS8algKKb+y
-	 K+JO/IfNTMcVoX2EXNgqtWS9BnNiOvFZRN1wOON0RJgjHUZ/y3LRgIhxl3L2gqEZqM
-	 Px1X+WbOxbsRZzw8mvqeYnnuN3kDJpo1h0N08gbE=
+	b=AdNxh6LYxIS6Ynyms8rumWAKC/5qe0ioZHAKvVUpP+1bfrtS1ftt5qqsd+jm1FH7P
+	 0aBGivhBQyMf0909OwAOwRkxe35nvOu2dNJTOjARiw+8F9GVi5g8zVNgDGxW/ZRlfs
+	 gBkJtWM7WFJZ08rJ2MBf9VvxNi8zD3jkp5UUgP3U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	Marc Kleine-Budde <mkl@pengutronix.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 479/554] wifi: mac80211: Discard Beacon frames to non-broadcast address
+Subject: [PATCH 6.6 82/88] can: j1939: make j1939_session_activate() fail if device is no longer registered
 Date: Thu, 15 Jan 2026 17:49:05 +0100
-Message-ID: <20260115164303.644961838@linuxfoundation.org>
+Message-ID: <20260115164149.284151484@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
+[ Upstream commit 5d5602236f5db19e8b337a2cd87a90ace5ea776d ]
 
-Beacon frames are required to be sent to the broadcast address, see IEEE
-Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
-shall be set to the broadcast address"). A unicast Beacon frame might be
-used as a targeted attack to get one of the associated STAs to do
-something (e.g., using CSA to move it to another channel). As such, it
-is better have strict filtering for this on the received side and
-discard all Beacon frames that are sent to an unexpected address.
+syzbot is still reporting
 
-This is even more important for cases where beacon protection is used.
-The current implementation in mac80211 is correctly discarding unicast
-Beacon frames if the Protected Frame bit in the Frame Control field is
-set to 0. However, if that bit is set to 1, the logic used for checking
-for configured BIGTK(s) does not actually work. If the driver does not
-have logic for dropping unicast Beacon frames with Protected Frame bit
-1, these frames would be accepted in mac80211 processing as valid Beacon
-frames even though they are not protected. This would allow beacon
-protection to be bypassed. While the logic for checking beacon
-protection could be extended to cover this corner case, a more generic
-check for discard all Beacon frames based on A1=unicast address covers
-this without needing additional changes.
+  unregister_netdevice: waiting for vcan0 to become free. Usage count = 2
 
-Address all these issues by dropping received Beacon frames if they are
-sent to a non-broadcast address.
+even after commit 93a27b5891b8 ("can: j1939: add missing calls in
+NETDEV_UNREGISTER notification handler") was added. A debug printk() patch
+found that j1939_session_activate() can succeed even after
+j1939_cancel_active_session() from j1939_netdev_notify(NETDEV_UNREGISTER)
+has completed.
 
-Cc: stable@vger.kernel.org
-Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
-Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
-[ adapted RX_DROP return value to RX_DROP_MONITOR ]
+Since j1939_cancel_active_session() is processed with the session list lock
+held, checking ndev->reg_state in j1939_session_activate() with the session
+list lock held can reliably close the race window.
+
+Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://patch.msgid.link/b9653191-d479-4c8b-8536-1326d028db5c@I-love.SAKURA.ne.jp
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/mac80211/rx.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ net/can/j1939/transport.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -3193,6 +3193,11 @@ ieee80211_rx_h_mgmt_check(struct ieee802
- 	if (!ieee80211_is_mgmt(mgmt->frame_control))
- 		return RX_DROP_MONITOR;
- 
-+	/* Drop non-broadcast Beacon frames */
-+	if (ieee80211_is_beacon(mgmt->frame_control) &&
-+	    !is_broadcast_ether_addr(mgmt->da))
-+		return RX_DROP_MONITOR;
-+
- 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
- 	    ieee80211_is_beacon(mgmt->frame_control) &&
- 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
+diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
+index 9b72d118d756d..1186326b0f2e9 100644
+--- a/net/can/j1939/transport.c
++++ b/net/can/j1939/transport.c
+@@ -1571,6 +1571,8 @@ int j1939_session_activate(struct j1939_session *session)
+ 	if (active) {
+ 		j1939_session_put(active);
+ 		ret = -EAGAIN;
++	} else if (priv->ndev->reg_state != NETREG_REGISTERED) {
++		ret = -ENODEV;
+ 	} else {
+ 		WARN_ON_ONCE(session->state != J1939_SESSION_NEW);
+ 		list_add_tail(&session->active_session_list_entry,
+-- 
+2.51.0
+
 
 
 
