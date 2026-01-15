@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209740-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209286-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2E4FFD27D6E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:56:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 10B38D268C4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1CE9030397BA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9047030B45FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F233C1FD5;
-	Thu, 15 Jan 2026 17:52:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F33A3C00BB;
+	Thu, 15 Jan 2026 17:31:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnA5HJjU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LD65Ox2A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB693BC4D8;
-	Thu, 15 Jan 2026 17:52:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D233BFE5D;
+	Thu, 15 Jan 2026 17:31:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499556; cv=none; b=H/irwZWQP9A5v4ucHuEN8b3OwHw7mu0W/UWlSM/FfU7UN9WGv06XNmXPePhJVeeXUA56PfU3hVSVDlVU31W0VGtjuJOVV11+J+JXg0csnz78OPhd/WYHtYTvnX/hY7yrKp5pxYryxGy8gsED+nONLzC/6534e8NqnmYaCzHDiRw=
+	t=1768498263; cv=none; b=RU42lqYaENeez0CbGLgMX1KjQopmYGzoF8vq+j3BnMxT7L9loScbX8mwn6RVHBuHnjMO7RWM8/VHb65yk/z4KA72nfK/nbHv5inrQymAWP2CvUZ8AwseM2nlePmPxdx2S9/6hoYwUQjK9h7JM0rTUbYnn4EspvDwNFyvhHFtvVE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499556; c=relaxed/simple;
-	bh=KzK91GU4c0TaLKduIY5jYHysScQCfseEXaKZU54idPA=;
+	s=arc-20240116; t=1768498263; c=relaxed/simple;
+	bh=VL7Z1ON77dSqivqeRgY/ft544iDgkCxCErOPuYBFbj4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDMMsYCIMf8WsYYnA9tp2nkgdkLsVelfYlsgOaprL7AJUAWRXXTkvVT6HaQO6Ul87THTz3RNjjvuXr8XHhnjUrGlcGYjzReKO4kM/20w/cFrt4KV1VjF3WQZ0z620w4FKtnTdMDUwcovrvKZGKw7Xlrc5IVUbPwE25957QgqIiU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnA5HJjU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BC6C116D0;
-	Thu, 15 Jan 2026 17:52:36 +0000 (UTC)
+	 MIME-Version; b=L0UENl66gYx7E9dnz9pMh51uxVyvak5kOwLp7lNxG4Sr5RKx1jK57NC0RcDsArpZmV6jH9Yv+71S/Pd/6p66LLHBO1gIqo62Ail6RENR/NN+VgtPH4G/Fh+7N2BuunPautTuRnRHTMAYxzcCR6cQv1Q4qQONEExtCblsjzKHnRg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LD65Ox2A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E2AC116D0;
+	Thu, 15 Jan 2026 17:31:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499556;
-	bh=KzK91GU4c0TaLKduIY5jYHysScQCfseEXaKZU54idPA=;
+	s=korg; t=1768498263;
+	bh=VL7Z1ON77dSqivqeRgY/ft544iDgkCxCErOPuYBFbj4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YnA5HJjUFM4SeM2WfQADCa7aiSfVkLVdQlTMQM10SGlFeHZBfrRNDQCO3l+a0uCME
-	 8VlM9yAyZDQeL6ER4MnJMMEWY8bQxjsKT8/UnIWb8lfLblFKRu/XGnAhmf6ZEe2n8v
-	 89IzQ7Edb0vtHcwDMnBVmHdlHnBj1jWc2I5CzRHA=
+	b=LD65Ox2A+g6ah3iY+o99wzOsxzd2Ns5uhWf3TNHV19T+EnBPmO8bb/QfrgkUD1kt5
+	 eeEuQbw691SFwVkd086nV9QLkzKf2RnOxSImAn32p1DoXljHTgJg5opxFxWaZCINAu
+	 KeVuZf2f7UJdxg6f6BAhHo9q+Ox37arvkB16X1Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Subject: [PATCH 5.10 235/451] usb: dwc3: of-simple: fix clock resource leak in dwc3_of_simple_probe
+	Stable@vger.kernel.org,
+	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Alexey Klimov <alexey.klimov@linaro.org>
+Subject: [PATCH 5.15 370/554] ASoC: qcom: q6asm-dai: perform correct state check before closing
 Date: Thu, 15 Jan 2026 17:47:16 +0100
-Message-ID: <20260115164239.395592412@linuxfoundation.org>
+Message-ID: <20260115164259.618787813@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
 
-commit 3b4961313d31e200c9e974bb1536cdea217f78b5 upstream.
+commit bfbb12dfa144d45575bcfe139a71360b3ce80237 upstream.
 
-When clk_bulk_prepare_enable() fails, the error path jumps to
-err_resetc_assert, skipping clk_bulk_put_all() and leaking the
-clock references acquired by clk_bulk_get_all().
+Do not stop a q6asm stream if its not started, this can result in
+unnecessary dsp command which will timeout anyway something like below:
 
-Add err_clk_put_all label to properly release clock resources
-in all error paths.
+q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
 
-Found via static analysis and code review.
+Fix this by correctly checking the state.
 
-Fixes: c0c61471ef86 ("usb: dwc3: of-simple: Convert to bulk clk API")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-Link: https://patch.msgid.link/20251211064937.2360510-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
+Cc: Stable@vger.kernel.org
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
+Link: https://patch.msgid.link/20251023102444.88158-5-srinivas.kandagatla@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-of-simple.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ sound/soc/qcom/qdsp6/q6asm-dai.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-of-simple.c
-+++ b/drivers/usb/dwc3/dwc3-of-simple.c
-@@ -71,11 +71,11 @@ static int dwc3_of_simple_probe(struct p
- 	simple->num_clocks = ret;
- 	ret = clk_bulk_prepare_enable(simple->num_clocks, simple->clks);
- 	if (ret)
--		goto err_resetc_assert;
-+		goto err_clk_put_all;
+--- a/sound/soc/qcom/qdsp6/q6asm-dai.c
++++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
+@@ -237,13 +237,14 @@ static int q6asm_dai_prepare(struct snd_
+ 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
+ 	prtd->pcm_irq_pos = 0;
+ 	/* rate and channels are sent to audio driver */
+-	if (prtd->state) {
++	if (prtd->state == Q6ASM_STREAM_RUNNING) {
+ 		/* clear the previous setup if any  */
+ 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
+ 		q6asm_unmap_memory_regions(substream->stream,
+ 					   prtd->audio_client);
+ 		q6routing_stream_close(soc_prtd->dai_link->id,
+ 					 substream->stream);
++		prtd->state = Q6ASM_STREAM_STOPPED;
+ 	}
  
- 	ret = of_platform_populate(np, NULL, NULL, dev);
- 	if (ret)
--		goto err_clk_put;
-+		goto err_clk_disable;
- 
- 	pm_runtime_set_active(dev);
- 	pm_runtime_enable(dev);
-@@ -83,8 +83,9 @@ static int dwc3_of_simple_probe(struct p
- 
- 	return 0;
- 
--err_clk_put:
-+err_clk_disable:
- 	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
-+err_clk_put_all:
- 	clk_bulk_put_all(simple->num_clocks, simple->clks);
- 
- err_resetc_assert:
+ 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
 
 
 
