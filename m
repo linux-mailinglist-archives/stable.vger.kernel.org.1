@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-208671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209338-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26A40D261E0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C4FFD26E07
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D47231183B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2588032FC304
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BE345758;
-	Thu, 15 Jan 2026 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E4713BFE52;
+	Thu, 15 Jan 2026 17:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6P3sQmq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nSK2Z09+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6F029C338;
-	Thu, 15 Jan 2026 17:01:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E8232C0270;
+	Thu, 15 Jan 2026 17:33:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496515; cv=none; b=ixMwNUL5rf6/qqZNCj9nsM1ECL6GFuPWYopTImX7WQQnQhbt9HLXMiXwwA9xwgji7KZUgksiTr6fsBz1YNizFKWkzg7RScP7a/fGKzD7IE4VJnw2PLx8PMl8LvgMO5gBGYcHvVO/sT66JT5vKVBYHh8jYWeF5R6GItqJ9RQY68o=
+	t=1768498411; cv=none; b=TKUEL8mYVKkQkyZGBZqwre0FJZ0d6rTMbK8LE7Kel/5p3KNfDBRlD1TuL2lLJFuTst7j5spz6Yh71wjiHenBdb7hQtK3bd2RC/m6nhVIF/i3ZmpFQ1EICraqlMwXGG45WfK6JNF5B8GF8ZjyGHovVGJgItPlx4vJVfRuDgSS8LY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496515; c=relaxed/simple;
-	bh=Uyq0JePWOByD7GeTpCzMdcnUe9yVs0RLv6/Ye5zb8Gw=;
+	s=arc-20240116; t=1768498411; c=relaxed/simple;
+	bh=rnDdDxrNiD0EdkOEpDZHD4JIZT4v1jqMamisH94hGag=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/oOMBToT/0BIie9YL2r7ppQQ9qOIFUt5HK4YcYiuHcjQO0tvUfu5sqCpo35uby+RSWpWGkqHtreVOcbXNpVJkJOvgCsAB9YHrTrTWQfNS9+pOqNdLLxfSQu/Ry8Y9HperiO4Rb/KKtlQdhQDxB/usFl5VHYGfI6+WxvD/QHf6w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6P3sQmq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99C0C116D0;
-	Thu, 15 Jan 2026 17:01:54 +0000 (UTC)
+	 MIME-Version; b=ARNblq4Y4lycbhbzGQSsliLYnYlWo8ien9azNJeYBuehcXy3slkiPUEXjB4mQAvLIi05eym6oImTA/48Dj/TnIKWI3Xz9EIP0C7hEqHfzKZN2rEtpjgIRTpr5/QlELDzHiW3V4mwKctl/YWhuDp0n9vo2c5VAbHfIQb9sygKYg0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nSK2Z09+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF666C19422;
+	Thu, 15 Jan 2026 17:33:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496515;
-	bh=Uyq0JePWOByD7GeTpCzMdcnUe9yVs0RLv6/Ye5zb8Gw=;
+	s=korg; t=1768498411;
+	bh=rnDdDxrNiD0EdkOEpDZHD4JIZT4v1jqMamisH94hGag=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=k6P3sQmqyhM+faKFyud2RlC+TPAZCdAdrCsx2GCgjx3wPb29IdXAQpUBsimgkOepY
-	 4Jr9Cfmku7Di0vvTxV6cwEMsDmYnOWZM2+shlqaTYsKA3rWxuzd+yu5EfIkvGB0Tox
-	 f09C7a5nM1QQBs5DqrL0Qv7hZjrMyWqyeJU8gVjE=
+	b=nSK2Z09+QFOQd4fsXEf9WcPbDA+ZjkMLslwT2X3oirgF2a6xuvWdazs1aSpGxon5G
+	 a5owVWVIx9fEogH1WkJHI6MW9gj5wHnb9awsVqOVpDp0U2pikMwneJ3eyVAbWmri68
+	 3rwfUGN9bLXB4oNuva4uoD9QXq2Dg1odIJXE5D7M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 040/119] smb/client: fix NT_STATUS_DEVICE_DOOR_OPEN value
+	Sven Schnelle <svens@stackframe.org>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 389/554] parisc: entry: set W bit for !compat tasks in syscall_restore_rfi()
 Date: Thu, 15 Jan 2026 17:47:35 +0100
-Message-ID: <20260115164153.406686476@linuxfoundation.org>
+Message-ID: <20260115164300.318376735@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +59,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Sven Schnelle <svens@stackframe.org>
 
-[ Upstream commit b2b50fca34da5ec231008edba798ddf92986bd7f ]
+commit 5fb1d3ce3e74a4530042795e1e065422295f1371 upstream.
 
-This was reported by the KUnit tests in the later patches.
+When the kernel leaves to userspace via syscall_restore_rfi(), the
+W bit is not set in the new PSW. This doesn't cause any problems
+because there's no 64 bit userspace for parisc. Simple static binaries
+are usually loaded at addresses way below the 32 bit limit so the W bit
+doesn't matter.
 
-See MS-ERREF 2.3.1 STATUS_DEVICE_DOOR_OPEN. Keep it consistent with the
-value in the documentation.
+Fix this by setting the W bit when TIF_32BIT is not set.
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Sven Schnelle <svens@stackframe.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/nterr.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/parisc/kernel/asm-offsets.c |    2 ++
+ arch/parisc/kernel/entry.S       |    5 ++++-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
-index 7ce063a1dc3f6..d46d42559eea2 100644
---- a/fs/smb/client/nterr.h
-+++ b/fs/smb/client/nterr.h
-@@ -44,7 +44,7 @@ extern const struct nt_err_code_struct nt_errs[];
- #define NT_STATUS_NO_DATA_DETECTED 0x8000001c
- #define NT_STATUS_STOPPED_ON_SYMLINK 0x8000002d
- #define NT_STATUS_DEVICE_REQUIRES_CLEANING 0x80000288
--#define NT_STATUS_DEVICE_DOOR_OPEN 0x80000288
-+#define NT_STATUS_DEVICE_DOOR_OPEN 0x80000289
- #define NT_STATUS_UNSUCCESSFUL 0xC0000000 | 0x0001
- #define NT_STATUS_NOT_IMPLEMENTED 0xC0000000 | 0x0002
- #define NT_STATUS_INVALID_INFO_CLASS 0xC0000000 | 0x0003
--- 
-2.51.0
-
+--- a/arch/parisc/kernel/asm-offsets.c
++++ b/arch/parisc/kernel/asm-offsets.c
+@@ -260,6 +260,8 @@ int main(void)
+ 	BLANK();
+ 	DEFINE(TIF_BLOCKSTEP_PA_BIT, 31-TIF_BLOCKSTEP);
+ 	DEFINE(TIF_SINGLESTEP_PA_BIT, 31-TIF_SINGLESTEP);
++	DEFINE(TIF_32BIT_PA_BIT, 31-TIF_32BIT);
++
+ 	BLANK();
+ 	DEFINE(ASM_PMD_SHIFT, PMD_SHIFT);
+ 	DEFINE(ASM_PGDIR_SHIFT, PGDIR_SHIFT);
+--- a/arch/parisc/kernel/entry.S
++++ b/arch/parisc/kernel/entry.S
+@@ -1913,6 +1913,10 @@ syscall_restore_rfi:
+ 	extru,= %r19,TIF_BLOCKSTEP_PA_BIT,1,%r0
+ 	depi	-1,7,1,%r20			   /* T bit */
+ 
++#ifdef CONFIG_64BIT
++	extru,<> %r19,TIF_32BIT_PA_BIT,1,%r0
++	depi	-1,4,1,%r20			   /* W bit */
++#endif
+ 	STREG	%r20,TASK_PT_PSW(%r1)
+ 
+ 	/* Always store space registers, since sr3 can be changed (e.g. fork) */
+@@ -1926,7 +1930,6 @@ syscall_restore_rfi:
+ 	STREG   %r25,TASK_PT_IASQ0(%r1)
+ 	STREG   %r25,TASK_PT_IASQ1(%r1)
+ 
+-	/* XXX W bit??? */
+ 	/* Now if old D bit is clear, it means we didn't save all registers
+ 	 * on syscall entry, so do that now.  This only happens on TRACEME
+ 	 * calls, or if someone attached to us while we were on a syscall.
 
 
 
