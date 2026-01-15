@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209583-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209196-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85570D2789C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:44 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFD6D26B7E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D1CF32490C8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E298232AE676
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 776D2274FE3;
-	Thu, 15 Jan 2026 17:45:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D216234216C;
+	Thu, 15 Jan 2026 17:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i+kDcpTB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GhI1T70D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AB913B8D5F;
-	Thu, 15 Jan 2026 17:45:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9492B3C0082;
+	Thu, 15 Jan 2026 17:26:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499110; cv=none; b=lMxRitzvA+6K/4N70XbxNqpPhOHKxlElQ/9KlEuMhJeyKmVQHQNO2PsxP21w1A4oe8HVbS7CayQriOuuQz1+WPqPYdYmyiSLEF1VpjSUUizEAeLIJKOs7L0LgJP32KAK1Bf9YN0s5J9OjNIO6qW5/zKDi1Cc1iWfbRq5ma6Mc/g=
+	t=1768498007; cv=none; b=nBp5cdyCgWGpSDBwM3KmW+WTrLsnWzi8nD4RxF4avkxhNzvXwg3Yalb4gWnk0yzuZBNCmY6Npedh29ouAOWRdyUdOtylohfHOhVoWCHtVxEOJq0xfnT9Hx/hoY7m90nOEK2xK6uevA+NWk2bVHMSzH6Vx1Nki09tErZ7S5HFwck=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499110; c=relaxed/simple;
-	bh=xysC+Wm+NL1pVEe0nEuHS0MyC373vVBxFy6y653s1+0=;
+	s=arc-20240116; t=1768498007; c=relaxed/simple;
+	bh=f/4WC6LY0yCTb2AbtO785l6PLs4ERoWsoWRyWfsS9H4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SRgJQpyznRS0N5dcBUWB9POmrpMKmoZ0fqDGua42c2xo8vkPu1hByuM7XvvOltKA3M576kmAg0uvQcdwrt3G7nxbvZWO8Z/KVAleSsSmMvshBYo7C+jnSnN65pbFy2feDGq9yNUNNgbI+OUCdY8PHET+h8M53/aEswYnz9OQVH8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i+kDcpTB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E114C116D0;
-	Thu, 15 Jan 2026 17:45:09 +0000 (UTC)
+	 MIME-Version; b=mZVi9HRtyNSFYkWKSj5uWofMhGi+odrKvrIorvPST9FYu5/Uj+xwEpz7myYKviH68/LGIxBMNb+pjStb7i1de+zWKF3lVHhe0bkqI2GG2kESZpYsOUZag20rHb6ISTiX3dhfRD6wkjFx89F+RIBeedGXvHWIJZx2l9P84mrMhF4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GhI1T70D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE7BC116D0;
+	Thu, 15 Jan 2026 17:26:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499109;
-	bh=xysC+Wm+NL1pVEe0nEuHS0MyC373vVBxFy6y653s1+0=;
+	s=korg; t=1768498007;
+	bh=f/4WC6LY0yCTb2AbtO785l6PLs4ERoWsoWRyWfsS9H4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=i+kDcpTBhoOcm66uNsvZEVDy/QRQPFPSkTAGdn8usdS4pck4ImNN3tq20FtBtOebk
-	 ZpdrVG2XVkLgqZMA66hcpnDQkG7V+yxa03xXNz9iLG0HtE9nNY35CR+IwbBLBretHI
-	 cjXIVFS9e4kbPIhVOkBBjTO2uPDBJDJ9Zt7gfph8=
+	b=GhI1T70DrBDBG0txNHck/60ExxWL8MaAkIukpA4YkqKGQZH47pBTvW3JDjjvs7DR0
+	 /F1F5L4IVtkNNweAC2CtF0XXo1ucNbYDkz/l4QqxmwgrMz/WgGX9sPCrtMs5ABdGM5
+	 gVBeC5/SMCDKS0kFJfDkERHehL/99lv7l4xo4DI0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	William Tu <u9012063@gmail.com>,
-	Greg Rose <gvrose8192@gmail.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
-	Sasha Levin <sashal@kernel.org>,
-	Yifeng Sun <pkusunyifeng@gmail.com>
-Subject: [PATCH 5.10 111/451] netfilter: nf_conncount: reduce unnecessary GC
-Date: Thu, 15 Jan 2026 17:45:12 +0100
-Message-ID: <20260115164234.936545805@linuxfoundation.org>
+	Junjie Cao <junjie.cao@intel.com>,
+	Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Subject: [PATCH 5.15 247/554] Input: ti_am335x_tsc - fix off-by-one error in wire_order validation
+Date: Thu, 15 Jan 2026 17:45:13 +0100
+Message-ID: <20260115164255.180310008@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,123 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Tu <u9012063@gmail.com>
+From: Junjie Cao <junjie.cao@intel.com>
 
-[ Upstream commit d265929930e2ffafc744c0ae05fb70acd53be1ee ]
+commit 248d3a73a0167dce15ba100477c3e778c4787178 upstream.
 
-Currently nf_conncount can trigger garbage collection (GC)
-at multiple places. Each GC process takes a spin_lock_bh
-to traverse the nf_conncount_list. We found that when testing
-port scanning use two parallel nmap, because the number of
-connection increase fast, the nf_conncount_count and its
-subsequent call to __nf_conncount_add take too much time,
-causing several CPU lockup. This happens when user set the
-conntrack limit to +20,000, because the larger the limit,
-the longer the list that GC has to traverse.
+The current validation 'wire_order[i] > ARRAY_SIZE(config_pins)' allows
+wire_order[i] to equal ARRAY_SIZE(config_pins), which causes out-of-bounds
+access when used as index in 'config_pins[wire_order[i]]'.
 
-The patch mitigate the performance issue by avoiding unnecessary
-GC with a timestamp. Whenever nf_conncount has done a GC,
-a timestamp is updated, and beforce the next time GC is
-triggered, we make sure it's more than a jiffies.
-By doin this we can greatly reduce the CPU cycles and
-avoid the softirq lockup.
+Since config_pins has 4 elements (indices 0-3), the valid range for
+wire_order should be 0-3. Fix the off-by-one error by using >= instead
+of > in the validation check.
 
-To reproduce it in OVS,
-$ ovs-appctl dpctl/ct-set-limits zone=1,limit=20000
-$ ovs-appctl dpctl/ct-get-limits
-
-At another machine, runs two nmap
-$ nmap -p1- <IP>
-$ nmap -p1- <IP>
-
-Signed-off-by: William Tu <u9012063@gmail.com>
-Co-authored-by: Yifeng Sun <pkusunyifeng@gmail.com>
-Reported-by: Greg Rose <gvrose8192@gmail.com>
-Suggested-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was skipped")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Junjie Cao <junjie.cao@intel.com>
+Link: https://patch.msgid.link/20251114062817.852698-1-junjie.cao@intel.com
+Fixes: bb76dc09ddfc ("input: ti_am33x_tsc: Order of TSC wires, made configurable")
+Cc: stable@vger.kernel.org
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_conntrack_count.h |  1 +
- net/netfilter/nf_conncount.c               | 11 +++++++++++
- 2 files changed, 12 insertions(+)
+ drivers/input/touchscreen/ti_am335x_tsc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/netfilter/nf_conntrack_count.h b/include/net/netfilter/nf_conntrack_count.h
-index 9645b47fa7e41..e227d997fc716 100644
---- a/include/net/netfilter/nf_conntrack_count.h
-+++ b/include/net/netfilter/nf_conntrack_count.h
-@@ -10,6 +10,7 @@ struct nf_conncount_data;
- 
- struct nf_conncount_list {
- 	spinlock_t list_lock;
-+	u32 last_gc;		/* jiffies at most recent gc */
- 	struct list_head head;	/* connections with the same filtering key */
- 	unsigned int count;	/* length of list */
- };
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index a66a27fe7f458..ee808b018e4e1 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -132,6 +132,9 @@ static int __nf_conncount_add(struct net *net,
- 	struct nf_conn *found_ct;
- 	unsigned int collect = 0;
- 
-+	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
-+		goto add_new_node;
-+
- 	/* check the saved connections */
- 	list_for_each_entry_safe(conn, conn_n, &list->head, node) {
- 		if (collect > CONNCOUNT_GC_MAX_NODES)
-@@ -177,6 +180,7 @@ static int __nf_conncount_add(struct net *net,
- 		nf_ct_put(found_ct);
+--- a/drivers/input/touchscreen/ti_am335x_tsc.c
++++ b/drivers/input/touchscreen/ti_am335x_tsc.c
+@@ -86,7 +86,7 @@ static int titsc_config_wires(struct tit
+ 		wire_order[i] = ts_dev->config_inp[i] & 0x0F;
+ 		if (WARN_ON(analog_line[i] > 7))
+ 			return -EINVAL;
+-		if (WARN_ON(wire_order[i] > ARRAY_SIZE(config_pins)))
++		if (WARN_ON(wire_order[i] >= ARRAY_SIZE(config_pins)))
+ 			return -EINVAL;
  	}
  
-+add_new_node:
- 	if (WARN_ON_ONCE(list->count > INT_MAX))
- 		return -EOVERFLOW;
- 
-@@ -190,6 +194,7 @@ static int __nf_conncount_add(struct net *net,
- 	conn->jiffies32 = (u32)jiffies;
- 	list_add_tail(&conn->node, &list->head);
- 	list->count++;
-+	list->last_gc = (u32)jiffies;
- 	return 0;
- }
- 
-@@ -214,6 +219,7 @@ void nf_conncount_list_init(struct nf_conncount_list *list)
- 	spin_lock_init(&list->list_lock);
- 	INIT_LIST_HEAD(&list->head);
- 	list->count = 0;
-+	list->last_gc = (u32)jiffies;
- }
- EXPORT_SYMBOL_GPL(nf_conncount_list_init);
- 
-@@ -227,6 +233,10 @@ bool nf_conncount_gc_list(struct net *net,
- 	unsigned int collected = 0;
- 	bool ret = false;
- 
-+	/* don't bother if we just did GC */
-+	if (time_is_after_eq_jiffies((unsigned long)READ_ONCE(list->last_gc)))
-+		return false;
-+
- 	/* don't bother if other cpu is already doing GC */
- 	if (!spin_trylock(&list->list_lock))
- 		return false;
-@@ -258,6 +268,7 @@ bool nf_conncount_gc_list(struct net *net,
- 
- 	if (!list->count)
- 		ret = true;
-+	list->last_gc = (u32)jiffies;
- 	spin_unlock(&list->list_lock);
- 
- 	return ret;
--- 
-2.51.0
-
 
 
 
