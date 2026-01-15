@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209315-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D15B2D269AA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A992D26162
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AFBEF3075C27
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:21 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 812EB30259E5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A458F3D1CAD;
-	Thu, 15 Jan 2026 17:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336CF3BFE37;
+	Thu, 15 Jan 2026 17:06:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pVaWzBoI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZjqm2yT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 652CF3AE701;
-	Thu, 15 Jan 2026 17:32:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91DE3BF2F8;
+	Thu, 15 Jan 2026 17:06:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498346; cv=none; b=mZId6K9p+/ZfPy/Yb393llpqc8XuK0ds59neL6eWXLHuybJQCWgQgyr4vs2dFnt19LeDVgF6czw+uPy+2OH46Vjf9ZCg+G23afk/sSPOT2AV1p8AlQQtUKfxFe7IwDMKOutdxrpei2u627VlmMGWoQPfpNZANL6jnMbr63knMxI=
+	t=1768496774; cv=none; b=PkPrHMviBsgGjpXQObEWfmwu3KoBpHdtjwmN05BPOv66FTXlis+HoY6mfwjEdQuKo4EpXr1w54xyU0XoaPyRu05LHoXHdU3p6uO343luxJMeAze7TvzH67afz2DzRgd9mSwxiKdfSO2x4Bg20OwTG3cDjVrNIb8VASViKc4qkeM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498346; c=relaxed/simple;
-	bh=E3YrMA/K0L9PWHWIs3q7YAo/Od2mjte7BYqidaClNFk=;
+	s=arc-20240116; t=1768496774; c=relaxed/simple;
+	bh=lzTxtNJCnZyfmqEH+mLtJEzTn//i83QTkcyCMOCBxNk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=JfLnPoy0XQUcK0uOGR1/qwX5F7V9LwCIr7VpBQGXnj3TqRPC27rPdrI/5Wq+lGx2eH5JOAsBHtx6YpmkwExRQn1Mi4/mLg+3pfFCKxQGrawgPglrshcqOzw8v/TX9Nt+naasGUDZWmeticVHHoPpg6WuJS1ICBYomu/DbHM/IVo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pVaWzBoI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFFC6C116D0;
-	Thu, 15 Jan 2026 17:32:25 +0000 (UTC)
+	 MIME-Version; b=ZkukLNRyxC0Q/LKvWwhmmlQkEFkqX2q2VhWoKbwAp1sQfP2N9aq3MdNMbLdLjegcvP4SFuk0/4Wmgv4RvPPLI8Y+7dmdmbvgxfsueeuJN6uVlaw3w/ROd2zcOrsW+qZNZDxV/ICJAR0YLKYmDS/Z2ybZm7/WVTFcBSOf/jQPGBA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZjqm2yT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EB3C16AAE;
+	Thu, 15 Jan 2026 17:06:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498346;
-	bh=E3YrMA/K0L9PWHWIs3q7YAo/Od2mjte7BYqidaClNFk=;
+	s=korg; t=1768496773;
+	bh=lzTxtNJCnZyfmqEH+mLtJEzTn//i83QTkcyCMOCBxNk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pVaWzBoI6dnUbSZfeuW3CdploZYK7vf5SYaqnH9DHoCQpghXshU+VMkEYeMo6il3D
-	 4d0oWO9oiV001zbFLT2TquVGRXCJCPK94HGXBxjV7yLCIWlZadfAwaWVoJdv6U+QEL
-	 /yUaBGd6u9jPkMWOpUS553X+wHT7Fuoi1SARoXps=
+	b=UZjqm2yTxI3qKYAdk/yWOU4Qy3x3ETiGZk8motoeI3fd3yaghC0aBFba6cXnvoenu
+	 +HfZCtFJBzdCYQIUu02hZJSPctqTCVGCvlXZidYavpzE8ODv8QDcTwtCcbSRyjUbqS
+	 IA7L7N+Ddo9t3Yn+64k+8VtfKWxTalhPN5UlQ7wM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Jan Sokolowski <jan.sokolowski@intel.com>,
-	Koen Koning <koen.koning@intel.com>,
-	Peter Senna Tschudin <peter.senna@linux.intel.com>,
-	=?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 400/554] idr: fix idr_alloc() returning an ID out of range
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.6 03/88] atm: Fix dma_free_coherent() size
 Date: Thu, 15 Jan 2026 17:47:46 +0100
-Message-ID: <20260115164300.713421499@linuxfoundation.org>
+Message-ID: <20260115164146.441707174@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +57,41 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit c6e8e595a0798ad67da0f7bebaf69c31ef70dfff upstream.
+commit 4d984b0574ff708e66152763fbfdef24ea40933f upstream.
 
-If you use an IDR with a non-zero base, and specify a range that lies
-entirely below the base, 'max - base' becomes very large and
-idr_get_free() can return an ID that lies outside of the requested range.
+The size of the buffer is not the same when alloc'd with
+dma_alloc_coherent() in he_init_tpdrq() and freed.
 
-Link: https://lkml.kernel.org/r/20251128161853.3200058-1-willy@infradead.org
-Fixes: 6ce711f27500 ("idr: Make 1-based IDRs more efficient")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reported-by: Jan Sokolowski <jan.sokolowski@intel.com>
-Reported-by: Koen Koning <koen.koning@intel.com>
-Reported-by: Peter Senna Tschudin <peter.senna@linux.intel.com>
-Closes: https://gitlab.freedesktop.org/drm/xe/kernel/-/issues/6449
-Reviewed-by: Christian König <christian.koenig@amd.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
 Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260107090141.80900-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/idr.c                           |    2 ++
- tools/testing/radix-tree/idr-test.c |   21 +++++++++++++++++++++
- 2 files changed, 23 insertions(+)
+ drivers/atm/he.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/lib/idr.c
-+++ b/lib/idr.c
-@@ -40,6 +40,8 @@ int idr_alloc_u32(struct idr *idr, void
+--- a/drivers/atm/he.c
++++ b/drivers/atm/he.c
+@@ -1587,7 +1587,8 @@ he_stop(struct he_dev *he_dev)
+ 				  he_dev->tbrq_base, he_dev->tbrq_phys);
  
- 	if (WARN_ON_ONCE(!(idr->idr_rt.xa_flags & ROOT_IS_IDR)))
- 		idr->idr_rt.xa_flags |= IDR_RT_MARKER;
-+	if (max < base)
-+		return -ENOSPC;
+ 	if (he_dev->tpdrq_base)
+-		dma_free_coherent(&he_dev->pci_dev->dev, CONFIG_TBRQ_SIZE * sizeof(struct he_tbrq),
++		dma_free_coherent(&he_dev->pci_dev->dev,
++				  CONFIG_TPDRQ_SIZE * sizeof(struct he_tpdrq),
+ 				  he_dev->tpdrq_base, he_dev->tpdrq_phys);
  
- 	id = (id < base) ? 0 : id - base;
- 	radix_tree_iter_init(&iter, id);
---- a/tools/testing/radix-tree/idr-test.c
-+++ b/tools/testing/radix-tree/idr-test.c
-@@ -57,6 +57,26 @@ void idr_alloc_test(void)
- 	idr_destroy(&idr);
- }
- 
-+void idr_alloc2_test(void)
-+{
-+	int id;
-+	struct idr idr = IDR_INIT_BASE(idr, 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 1, 2, GFP_KERNEL);
-+	assert(id == 1);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 1, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	id = idr_alloc(&idr, idr_alloc2_test, 0, 2, GFP_KERNEL);
-+	assert(id == -ENOSPC);
-+
-+	idr_destroy(&idr);
-+}
-+
- void idr_replace_test(void)
- {
- 	DEFINE_IDR(idr);
-@@ -409,6 +429,7 @@ void idr_checks(void)
- 
- 	idr_replace_test();
- 	idr_alloc_test();
-+	idr_alloc2_test();
- 	idr_null_test();
- 	idr_nowait_test();
- 	idr_get_next_test(0);
+ 	dma_pool_destroy(he_dev->tpd_pool);
 
 
 
