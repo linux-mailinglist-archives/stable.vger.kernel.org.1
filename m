@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209272-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0DFF1D26A1F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AFAC6D261CD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7470B302B7C7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 72D7D3098464
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF263C009B;
-	Thu, 15 Jan 2026 17:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 029512D7DD7;
+	Thu, 15 Jan 2026 17:01:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGKl09MJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xOqbe77f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F58828725F;
-	Thu, 15 Jan 2026 17:30:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9D852C028F;
+	Thu, 15 Jan 2026 17:01:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498224; cv=none; b=RRAlyzXKOM+uHB/LG2REpQaSETH8eUMkZRaoVTbJICz0LHOSh6Gr1+jMLSDxmZRXPgtJe27bcNDjpghwZnm0ttAlJnMw2BcX0Bm0iG67l/L/sxpqYlIOUyxnvroRx7Cg8Ttu/l3n5iHe0p15nq8pcXS1Ce1VPvkPqxI6mIUCdZQ=
+	t=1768496497; cv=none; b=XN/7Zf6WlPPACpIC3Qw6k7YPQRtmdV3W3a4ThYe1FfXMqbuTLSL+m7hzrZG+L7UGjAHE5PzjAuhaoa/p+aqH2QatvU+SYkNkN52vnFLULxgaXe/pRRalqpjemQL7+abjmCMAOneM8AP7/T8C5h9EC4ltbaMSqdCCjUG8H+oN7hM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498224; c=relaxed/simple;
-	bh=t2egqOv15JrAnAkjHQx5+EnLyP/53PW6HbFbvfiSSHY=;
+	s=arc-20240116; t=1768496497; c=relaxed/simple;
+	bh=5K+L2CnkXqUldObtuZz6EJKM0WICZ9CUAfGrNwNXbrs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QhjROkx4x7E9IgELSeK4zt7CTV31ujM+IcWih8Qdi3eQsVMCQlya1zPqzUIQYdd1fwT+0UxRJj2uZ0t173uYDSsbCzYP7LE1eBo8Kg6n3FHFPybGQHYs++gCVYqk7SwYF7WIB6fD8I1qL3rztbomCdGWPS3cZ3okqW6BVaUSbCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGKl09MJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEF4C116D0;
-	Thu, 15 Jan 2026 17:30:23 +0000 (UTC)
+	 MIME-Version; b=QkUVsC/h0ivhpNsXH/smLdoFWulVxiDRlebVQQHZxjXnTKV54v72XSFOL0sGxGkUBeW/kj6pNHcTCbeYHVCqu6h32TQ1ETfvRf4r/n+L8UUg2bOgtXGGvnPlwLjkgsIyoZzNuNQWhcJ9luvV+xYyqVodFg/126IeyxGmfflLhpo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xOqbe77f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3935FC19422;
+	Thu, 15 Jan 2026 17:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498224;
-	bh=t2egqOv15JrAnAkjHQx5+EnLyP/53PW6HbFbvfiSSHY=;
+	s=korg; t=1768496497;
+	bh=5K+L2CnkXqUldObtuZz6EJKM0WICZ9CUAfGrNwNXbrs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eGKl09MJfi88Q+1gkNgfgUlAx5YbMlHWx3cc8YU6coZ3RTlVVCdCbm5E4MhpQ5xR7
-	 WHpiVXvgunFAOs7EhQr3uRXP6RsS/Uk2Xsq1M33YtPeSfR9qz0SZdqUZ5WRJSXlVbj
-	 NqK1yXay75T4JeDspq/XjmiYb72FEYuuUe8sOmVA=
+	b=xOqbe77fqdYdZ0tbwPOWjrQan/3pTLpQdkMlGc/1e9FQSgc/oLiXrQrYWYvFjQ/w5
+	 dzRBEHjRnWCUOauHjK4at1UmlvApad5ONcXdI0ci+CmDGXxDGdsN2ND4unNstfQx5U
+	 kNDAqnn9EHvKNzE3TS7fOYA9Kt4PHSIrzV8pmwrc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Paul Moore <paul@paul-moore.com>,
-	Will Rosenberg <whrosenb@asu.edu>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 357/554] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.12 008/119] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
 Date: Thu, 15 Jan 2026 17:47:03 +0100
-Message-ID: <20260115164259.149459030@linuxfoundation.org>
+Message-ID: <20260115164152.258972547@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,102 +59,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Rosenberg <whrosenb@asu.edu>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
+commit a4e305ed60f7c41bbf9aabc16dd75267194e0de3 upstream.
 
-There exists a kernel oops caused by a BUG_ON(nhead < 0) at
-net/core/skbuff.c:2232 in pskb_expand_head().
-This bug is triggered as part of the calipso_skbuff_setattr()
-routine when skb_cow() is passed headroom > INT_MAX
-(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
+pdev can be null and free_ring: can be called in 1297 with a null
+pdev.
 
-The root cause of the bug is due to an implicit integer cast in
-__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
-that delta = headroom - skb_headroom(skb) is never negative, otherwise
-we will trigger a BUG_ON in pskb_expand_head(). However, if
-headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
-becomes negative, and pskb_expand_head() is passed a negative value for
-nhead.
-
-Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
-"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
-by only using skb_cow() to grow headroom.
-
-PoC:
-	Using `netlabelctl` tool:
-
-        netlabelctl map del default
-        netlabelctl calipso add pass doi:7
-        netlabelctl map add default address:0::1/128 protocol:calipso,7
-
-        Then run the following PoC:
-
-        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
-
-        // setup msghdr
-        int cmsg_size = 2;
-        int cmsg_len = 0x60;
-        struct msghdr msg;
-        struct sockaddr_in6 dest_addr;
-        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
-                        sizeof(struct cmsghdr) + cmsg_len);
-        msg.msg_name = &dest_addr;
-        msg.msg_namelen = sizeof(dest_addr);
-        msg.msg_iov = NULL;
-        msg.msg_iovlen = 0;
-        msg.msg_control = cmsg;
-        msg.msg_controllen = cmsg_len;
-        msg.msg_flags = 0;
-
-        // setup sockaddr
-        dest_addr.sin6_family = AF_INET6;
-        dest_addr.sin6_port = htons(31337);
-        dest_addr.sin6_flowinfo = htonl(31337);
-        dest_addr.sin6_addr = in6addr_loopback;
-        dest_addr.sin6_scope_id = 31337;
-
-        // setup cmsghdr
-        cmsg->cmsg_len = cmsg_len;
-        cmsg->cmsg_level = IPPROTO_IPV6;
-        cmsg->cmsg_type = IPV6_HOPOPTS;
-        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
-        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
-
-        sendmsg(fd, &msg, 0);
-
-Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
-Suggested-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
-Acked-by: Paul Moore <paul@paul-moore.com>
-Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20260106094731.25819-2-fourier.thomas@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv6/calipso.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/3com/3c59x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
-index 24666291c54a..72079ef2959b 100644
---- a/net/ipv6/calipso.c
-+++ b/net/ipv6/calipso.c
-@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
- 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
- 	pad = ((new_end & 4) + (end & 7)) & 7;
- 	len_delta = new_end - (int)end + pad;
--	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
-+	ret_val = skb_cow(skb,
-+			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
- 	if (ret_val < 0)
- 		return ret_val;
+--- a/drivers/net/ethernet/3com/3c59x.c
++++ b/drivers/net/ethernet/3com/3c59x.c
+@@ -1473,7 +1473,7 @@ static int vortex_probe1(struct device *
+ 		return 0;
  
--- 
-2.51.0
-
+ free_ring:
+-	dma_free_coherent(&pdev->dev,
++	dma_free_coherent(gendev,
+ 		sizeof(struct boom_rx_desc) * RX_RING_SIZE +
+ 		sizeof(struct boom_tx_desc) * TX_RING_SIZE,
+ 		vp->rx_ring, vp->rx_ring_dma);
 
 
 
