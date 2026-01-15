@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209283-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7540ED275D9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:01 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C251D268B7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AC9E031329FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:17 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 080B130B2756
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 146903D3CE0;
-	Thu, 15 Jan 2026 17:51:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC15B3C00B7;
+	Thu, 15 Jan 2026 17:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WN/WhQ+t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGgmzYbd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C81AC3D34B4;
-	Thu, 15 Jan 2026 17:51:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FBB33C00AC;
+	Thu, 15 Jan 2026 17:30:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499473; cv=none; b=udIJq4HzzehPfiJ35h8Ot0UTajow4YXIS6qV0OznlrkNDfGE/VzgYdwSXuNWZd3L4D/gKg2OzS59HRcKhWVORL5pzCljsQN+3nAJzrqqD873btDGcHliW45tGPFbZlolj1MfJUR724VabFEe5fxKk8HdMryUYon+ekImJmeBAkk=
+	t=1768498255; cv=none; b=IaPrqzjT4Z1M3/vIPKUKgDHJxHVBjA17yq7KePZxi1W0wSk+O+uX4geB9M9nRtFIqk8kCTGQtv6AnFfaoFARBPfleJEDlIwqh/v0fdqn+CLkmG2t44HbSociVhzvxexE46OnPWFJXrErW6KhYPkzfHGckT5A4ue8EIIkn52PheQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499473; c=relaxed/simple;
-	bh=XGEKz28KAEsYVCsSX6dvpu+RdtJzYD8CzWaA7kPf2hk=;
+	s=arc-20240116; t=1768498255; c=relaxed/simple;
+	bh=fXjIEwNFt495WvzauHeW1JJf3JFKiyZSG1tF5SHRllA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ejNG8Gdlr8GZ1VPW6CcOG4ePcMTd/iK6NJcaUTxn6VktojvTf2K3oeNE3sqmDDIBwvS0gYXaQiTslRyj4fzGfk2t/XA67aAUOWQ+Glhcy3niWpfv9e1L9efwwI2LibcUpdygiSnweX8kzdJsRbX0DuaD4vEj9XdNuS6+JaBD4qs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WN/WhQ+t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15651C19425;
-	Thu, 15 Jan 2026 17:51:12 +0000 (UTC)
+	 MIME-Version; b=CjaOMoeURMpCQcqJEhsBtER6ety+TdZI4B3dg2V7JD3qcfL1+69PdTxHmie6TGi698zlgg2dC3RqMzU058lMZ6TkVS9snOcjKgi9TKWhOFxfE8yi+dRurqfLuiihxRHhMUzrQCv2WrbWq4c7ifp01m9NdK5nq33J77HOFgovM3Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGgmzYbd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B105AC116D0;
+	Thu, 15 Jan 2026 17:30:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499473;
-	bh=XGEKz28KAEsYVCsSX6dvpu+RdtJzYD8CzWaA7kPf2hk=;
+	s=korg; t=1768498255;
+	bh=fXjIEwNFt495WvzauHeW1JJf3JFKiyZSG1tF5SHRllA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WN/WhQ+tViy0VACDq2VFUnYwBKrCzdRDh3iMy6udjqyVQLtlyra55hkAEHwkgEX0h
-	 It2m2dlcZ9EdJvHQZFLgA6+8yUwdhwEpbzYaptv1k6TLjyb8j9zy8zS2rjW7VSMBp+
-	 ud4z+cExUV4u0PVVu1PC6QOorX9Hfn6zqBTKeV+s=
+	b=MGgmzYbdzcoWN7clFcck13xNcXkpgbvRW3zCWbYj9ZdOpwkT/ELzppE75NugEnwx4
+	 L8n2fp1cSFZv3CnI0KYuCLmNdk6QLZty0/cLUDKLGl5Gs9gK9mTBZ4sJU7BUwlJF9R
+	 KG53tRrULiUxZLnJcXcGikJkM7WcPP1i9iJiWmtU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?=C3=81lvaro=20Fern=C3=A1ndez=20Rojas?= <noltari@gmail.com>,
-	Johan Hovold <johan@kernel.org>,
-	Neil Armstrong <neil.armstrong@linaro.org>,
-	Vinod Koul <vkoul@kernel.org>
-Subject: [PATCH 5.10 232/451] phy: broadcom: bcm63xx-usbh: fix section mismatches
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 367/554] RDMA/bnxt_re: fix dma_free_coherent() pointer
 Date: Thu, 15 Jan 2026 17:47:13 +0100
-Message-ID: <20260115164239.286953250@linuxfoundation.org>
+Message-ID: <20260115164259.509076112@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +58,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 356d1924b9a6bc2164ce2bf1fad147b0c37ae085 upstream.
+[ Upstream commit fcd431a9627f272b4c0bec445eba365fe2232a94 ]
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function and match table must not live in init.
+The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
+The dma_free_coherent() should pass the same buffer to
+dma_free_coherent() and not page-aligned.
 
-Fixes: 783f6d3dcf35 ("phy: bcm63xx-usbh: Add BCM63xx USBH driver")
-Cc: stable@vger.kernel.org	# 5.9
-Cc: Álvaro Fernández Rojas <noltari@gmail.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patch.msgid.link/20251017054537.6884-1-johan@kernel.org
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20251230085121.8023-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/broadcom/phy-bcm63xx-usbh.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-+++ b/drivers/phy/broadcom/phy-bcm63xx-usbh.c
-@@ -374,7 +374,7 @@ static struct phy *bcm63xx_usbh_phy_xlat
- 	return of_phy_simple_xlate(dev, args);
- }
- 
--static int __init bcm63xx_usbh_phy_probe(struct platform_device *pdev)
-+static int bcm63xx_usbh_phy_probe(struct platform_device *pdev)
- {
- 	struct device *dev = &pdev->dev;
- 	struct bcm63xx_usbh_phy	*usbh;
-@@ -431,7 +431,7 @@ static int __init bcm63xx_usbh_phy_probe
- 	return 0;
- }
- 
--static const struct of_device_id bcm63xx_usbh_phy_ids[] __initconst = {
-+static const struct of_device_id bcm63xx_usbh_phy_ids[] = {
- 	{ .compatible = "brcm,bcm6318-usbh-phy", .data = &usbh_bcm6318 },
- 	{ .compatible = "brcm,bcm6328-usbh-phy", .data = &usbh_bcm6328 },
- 	{ .compatible = "brcm,bcm6358-usbh-phy", .data = &usbh_bcm6358 },
-@@ -442,7 +442,7 @@ static const struct of_device_id bcm63xx
- };
- MODULE_DEVICE_TABLE(of, bcm63xx_usbh_phy_ids);
- 
--static struct platform_driver bcm63xx_usbh_phy_driver __refdata = {
-+static struct platform_driver bcm63xx_usbh_phy_driver = {
- 	.driver	= {
- 		.name = "bcm63xx-usbh-phy",
- 		.of_match_table = bcm63xx_usbh_phy_ids,
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index 76fbe52a957c..2bdb428fd273 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -70,9 +70,7 @@ static void __free_pbl(struct bnxt_qplib_res *res, struct bnxt_qplib_pbl *pbl,
+ 		for (i = 0; i < pbl->pg_count; i++) {
+ 			if (pbl->pg_arr[i])
+ 				dma_free_coherent(&pdev->dev, pbl->pg_size,
+-						  (void *)((unsigned long)
+-						   pbl->pg_arr[i] &
+-						  PAGE_MASK),
++						  pbl->pg_arr[i],
+ 						  pbl->pg_map_arr[i]);
+ 			else
+ 				dev_warn(&pdev->dev,
+-- 
+2.51.0
+
 
 
 
