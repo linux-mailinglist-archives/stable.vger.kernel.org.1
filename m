@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209689-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58560D26F40
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:57:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 34A7CD26261
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4AA273031C9B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 48AEB30935C4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3ABF83DA7D5;
-	Thu, 15 Jan 2026 17:50:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C82E333F390;
+	Thu, 15 Jan 2026 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XgetPDB2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kb2deSng"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1BED3DA7CB;
-	Thu, 15 Jan 2026 17:50:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B44729ACDD;
+	Thu, 15 Jan 2026 17:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499411; cv=none; b=POADjZh5BXW7uGZdgdW8xR9+5qejpbhqjeIZe2W78Kyf11SNiL7U+Mdt+8d87aenlxPbye5TUzckLUTrOjeYL+hdQkMnODFaTq4YTWA2HzlxNvD5iZLeRo+enokdj08evA+5I72ApCUZwWH701hk5NDJL7k74RbzZu/9D6rwip0=
+	t=1768496483; cv=none; b=MOVfIgIaSmi+HcatRoOhULEeR5/LaTmD2oGaaAVhLVU7s8z1nuAUV1NHlM5zu55sk/kdIFSBm6ZnR04w9P6jftmBaLtuCvA+PQZ+petpoEPwr8wAWLESIQdc0I/VTxrA33ugCXBrSL74B1VcLkoN7zri+CP+wCc3tG19NeToSK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499411; c=relaxed/simple;
-	bh=JKw6HIQ7vhNfp4oxtzxsdfHJGeuCqauurcpL4jp5D1I=;
+	s=arc-20240116; t=1768496483; c=relaxed/simple;
+	bh=sV8X1fOOl6IOzUChg+BDGHVkXfzVQv/4pdKF/WYT+Ro=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=niAQ48m5Zl1F1+tbbGF7oVS1aMHAscZ0oJsSFSfXV9j++L5ZX12vWM1pcAeAIZzuPoewXdmVc9bvDH8b/fbnvM0t3voSpGFwr4RdzH6W6UMACJX1IeGDT1J3ZMcN9janQAwObsFqncjm26sUKFjOrQ9gEY5abNvTQaMI2dm46GE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XgetPDB2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A168C16AAE;
-	Thu, 15 Jan 2026 17:50:10 +0000 (UTC)
+	 MIME-Version; b=SLeAVg7uCmgf6Dpo9Mt/Qq0/f/bIEORHFJUmld2Dh+ytWUVgH1IcxroWUrBvWMLdtZd+wjaLwWjFJRJ3HcQZ8n4f6NjEk5fl/8LX0F/JkzJTGJwHKpemFXUqndCXHfqxpzKl8obyBKGgc8xPzi+culov7RSetBEZPiD0fhRsb48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kb2deSng; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44B3C116D0;
+	Thu, 15 Jan 2026 17:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499410;
-	bh=JKw6HIQ7vhNfp4oxtzxsdfHJGeuCqauurcpL4jp5D1I=;
+	s=korg; t=1768496483;
+	bh=sV8X1fOOl6IOzUChg+BDGHVkXfzVQv/4pdKF/WYT+Ro=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XgetPDB2Tq43GkUuojeaSkzZt8NaQVygB27SEL4tARreRr/qXzn/oMSC4a5RSH42+
-	 6/g4/D/oo8u1L6uOOmVoTzLSRJjOifcYXFdaXkQ6Rv6FMXj0RL3Fh6rXfbpxOvwnlP
-	 j6nbmZBtFQGnCBLZNYf/aoBz4WR+at6G3WdsDiF8=
+	b=kb2deSngxTP3g6ZIDnAWy5qvyR1eGhlFlv3Y2ZScSdA8/7Qh5+9cfkCa3g1FIygTv
+	 6yDPY/vVIwXxo5wGLeadYxxPMjI4B0Ecp8aFxmjVIQpvZWIvD1CwuGIgFOF6Q9WGg0
+	 4R4j2AivYZYTci2x8QV8kFVJC73YYx0ko8CICgNM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Changcheng <chenchangcheng@kylinos.cn>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 217/451] usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 003/119] nfsd: use correct loop termination in nfsd4_revoke_states()
 Date: Thu, 15 Jan 2026 17:46:58 +0100
-Message-ID: <20260115164238.749718096@linuxfoundation.org>
+Message-ID: <20260115164152.080393358@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,69 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Changcheng <chenchangcheng@kylinos.cn>
+From: NeilBrown <neil@brown.name>
 
-[ Upstream commit 955a48a5353f4fe009704a9a4272a3adf627cd35 ]
+commit fb321998de7639f1954430674475e469fb529d9c upstream.
 
-The optical drive of EL-R12 has the same vid and pid as INIC-3069,
-as follows:
-T:  Bus=02 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
-D:  Ver= 3.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
-P:  Vendor=13fd ProdID=3940 Rev= 3.10
-S:  Manufacturer=HL-DT-ST
-S:  Product= DVD+-RW GT80N
-S:  SerialNumber=423349524E4E38303338323439202020
-C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=144mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=02 Prot=50 Driver=usb-storage
-E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
-E:  Ad=0a(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+The loop in nfsd4_revoke_states() stops one too early because
+the end value given is CLIENT_HASH_MASK where it should be
+CLIENT_HASH_SIZE.
 
-This will result in the optical drive device also adding
-the quirks of US_FL_NO_ATA_1X. When performing an erase operation,
-it will fail, and the reason for the failure is as follows:
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 Send: scmd 0x00000000d20c33a7
-[  388.967742] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 Done: SUCCESS Result: hostbyte=DID_TARGET_FAILURE driverbyte=DRIVER_OK cmd_age=0s
-[  388.967773] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 Add. Sense: Invalid field in cdb
-[  388.967803] sr 5:0:0:0: [sr0] tag#0 scsi host busy 1 failed 0
-[  388.967803] sr 5:0:0:0: Notifying upper driver of completion (result 8100002)
-[  388.967834] sr 5:0:0:0: [sr0] tag#0 0 sectors total, 0 bytes done.
+This means that an admin request to drop all locks for a filesystem will
+miss locks held by clients which hash to the maximum possible hash value.
 
-For the EL-R12 standard optical drive, all operational commands
-and usage scenarios were tested without adding the IGNORE_RESIDUE quirks,
-and no issues were encountered. It can be reasonably concluded
-that removing the IGNORE_RESIDUE quirks has no impact.
-
-Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
-Link: https://patch.msgid.link/20251121064020.29332-1-chenchangcheng@kylinos.cn
+Fixes: 1ac3629bf012 ("nfsd: prepare for supporting admin-revocation of state")
+Cc: stable@vger.kernel.org
+Signed-off-by: NeilBrown <neil@brown.name>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/storage/unusual_uas.h | 2 +-
+ fs/nfsd/nfs4state.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
-index 1477e31d7763..b695f5ba9a40 100644
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
- 		US_FL_NO_ATA_1X),
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -1764,7 +1764,7 @@ void nfsd4_revoke_states(struct net *net
+ 	sc_types = SC_TYPE_OPEN | SC_TYPE_LOCK | SC_TYPE_DELEG | SC_TYPE_LAYOUT;
  
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
--UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
-+UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
- 		"Initio Corporation",
- 		"INIC-3069",
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
--- 
-2.51.0
-
+ 	spin_lock(&nn->client_lock);
+-	for (idhashval = 0; idhashval < CLIENT_HASH_MASK; idhashval++) {
++	for (idhashval = 0; idhashval < CLIENT_HASH_SIZE; idhashval++) {
+ 		struct list_head *head = &nn->conf_id_hashtbl[idhashval];
+ 		struct nfs4_client *clp;
+ 	retry:
 
 
 
