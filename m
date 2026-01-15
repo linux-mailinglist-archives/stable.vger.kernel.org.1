@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209592-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209169-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1217FD26DEE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E9936D2679B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 29A5C308FEF0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9805B3056517
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CB0283BC4EB;
-	Thu, 15 Jan 2026 17:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 94D853BF315;
+	Thu, 15 Jan 2026 17:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4HcEeTd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0rs+NAoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C3A927B340;
-	Thu, 15 Jan 2026 17:45:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C4CD3BF309;
+	Thu, 15 Jan 2026 17:25:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499135; cv=none; b=ix4G5/mY07KyIOGjsPaCkgJT1unuLtfgf8pxfJbqIoUBXOj+XJ5yP5vCuGR9XzwnYUkYtGI6wDu5vkrpggVr3zsTPPFbS31xSWC+O5GXik6Mko8YBT5jO63dYD5TJwJEz4xmh3aNr1wiHW1y83N/rep4bVOLcPWxCOHLIuVj2sk=
+	t=1768497930; cv=none; b=oCd2ZQSjTMmZEv3DrTYem/RuI2iHN4AxU7jBG8+npvL08dJs9KuwpiXgyNN1RrL+sK+eZvRRrCuw+5E7ak6BXzRgk+zBN/jSuhmZfmyXdb7wnvlbgPCzp09uXoPbITnM3tzmA57fpef7GeJ5ut6qUuM/+ocpa5mNEf89995j7so=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499135; c=relaxed/simple;
-	bh=CpvYQ6JiB86W3G9kbECVp9Fm1HvJGolhNDeCGB/X5eQ=;
+	s=arc-20240116; t=1768497930; c=relaxed/simple;
+	bh=fHGvNNpsP3cYFQmxwXKzYcjUkI6wvE0H3Ii8czu/ia4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k7xJvwqzt7JK9irVes2FZooGfIyHlqKuAOpghZUD0bnvN5bbUR1OPSIIixY0jTQ/R8KqAryHfmeNFZxUYO1yu1nNGSRL8J6vpZZL2EGA0G6tvTAzKoW0MhDPgdC7abNM3pL8ZNFdsH0bHdlDEJNk59WZBfNwCff4JM8D5JSkGWg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4HcEeTd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08708C116D0;
-	Thu, 15 Jan 2026 17:45:34 +0000 (UTC)
+	 MIME-Version; b=ME6z9y0t16Oqy17ndb7jtvWqbEQtrXdA/h7R1kRHp+QnX84FJJVzPNHsiL5XSwZBppFdcYaGJjtiowzQj7d/gckszzxHDle8dZ4URXh8wgVEBVqEQRDUNxorwWwY48xSpASGENqc8Mma9JkxLV0DxOlMK3ixlwE6oPQ+DYJMpOQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0rs+NAoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAB0C116D0;
+	Thu, 15 Jan 2026 17:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499135;
-	bh=CpvYQ6JiB86W3G9kbECVp9Fm1HvJGolhNDeCGB/X5eQ=;
+	s=korg; t=1768497930;
+	bh=fHGvNNpsP3cYFQmxwXKzYcjUkI6wvE0H3Ii8czu/ia4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M4HcEeTdTrhm6iLIikijaQhSVwNpyALXG0ACsCpPgJcF0mAiHPsBHbLti4q7NIgop
-	 Cq08lQc2pYktIBH4y/8QsOIjzZHXffB1LxZvdAggnSm3WCxq31Pw756x4lZ0MxDcaP
-	 QTC3gukosr1tnuzy7qYK3lbkD1oMPX5yrt/+wINQ=
+	b=0rs+NAoLeWyCqZkrf42wVyHPHyQb++vMAbXY5gGv2YqX5oTKvBNU0W3+hssVZdcpc
+	 vFFHqjaFJkjrz2ztzX3FI2GlzsNzmDp8P3yRfHpRQ40cga3v8ieIdaIFgWTFEu9Czb
+	 K5TTowDUFt1OMimSbthVhhpetEuqU4uDbXJ3zHyw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Helge Deller <deller@gmx.de>,
+	Takashi Iwai <tiwai@suse.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 119/451] fbdev: ssd1307fb: fix potential page leak in ssd1307fb_probe()
+Subject: [PATCH 5.15 254/554] ALSA: pcmcia: Fix resource leak in snd_pdacf_probe error path
 Date: Thu, 15 Jan 2026 17:45:20 +0100
-Message-ID: <20260115164235.228752137@linuxfoundation.org>
+Message-ID: <20260115164255.429899529@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 164312662ae9764b83b84d97afb25c42eb2be473 ]
+[ Upstream commit 5032347c04ba7ff9ba878f262e075d745c06a2a8 ]
 
-The page allocated for vmem using __get_free_pages() is not freed on the
-error paths after it. Fix that by adding a corresponding __free_pages()
-call to the error path.
+When pdacf_config() fails, snd_pdacf_probe() returns the error code
+directly without freeing the sound card resources allocated by
+snd_card_new(), which leads to a memory leak.
 
-Fixes: facd94bc458a ("fbdev: ssd1307fb: Allocate page aligned video memory.")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Add proper error handling to free the sound card and clear the card
+list entry when pdacf_config() fails.
+
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Suggested-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251215090433.211-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/ssd1307fb.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ sound/pcmcia/pdaudiocf/pdaudiocf.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/video/fbdev/ssd1307fb.c b/drivers/video/fbdev/ssd1307fb.c
-index eda448b7a0c9d..fd26d368fdf5c 100644
---- a/drivers/video/fbdev/ssd1307fb.c
-+++ b/drivers/video/fbdev/ssd1307fb.c
-@@ -676,7 +676,7 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 	if (!ssd1307fb_defio) {
- 		dev_err(dev, "Couldn't allocate deferred io.\n");
- 		ret = -ENOMEM;
--		goto fb_alloc_error;
-+		goto fb_defio_error;
- 	}
+diff --git a/sound/pcmcia/pdaudiocf/pdaudiocf.c b/sound/pcmcia/pdaudiocf/pdaudiocf.c
+index 8363ec08df5d..4468d81683ec 100644
+--- a/sound/pcmcia/pdaudiocf/pdaudiocf.c
++++ b/sound/pcmcia/pdaudiocf/pdaudiocf.c
+@@ -132,7 +132,13 @@ static int snd_pdacf_probe(struct pcmcia_device *link)
+ 	link->config_index = 1;
+ 	link->config_regs = PRESENT_OPTION;
  
- 	ssd1307fb_defio->delay = HZ / refreshrate;
-@@ -756,6 +756,8 @@ static int ssd1307fb_probe(struct i2c_client *client)
- 		regulator_disable(par->vbat_reg);
- reset_oled_error:
- 	fb_deferred_io_cleanup(info);
-+fb_defio_error:
-+	__free_pages(vmem, get_order(vmem_size));
- fb_alloc_error:
- 	framebuffer_release(info);
- 	return ret;
+-	return pdacf_config(link);
++	err = pdacf_config(link);
++	if (err < 0) {
++		card_list[i] = NULL;
++		snd_card_free(card);
++		return err;
++	}
++	return 0;
+ }
+ 
+ 
 -- 
 2.51.0
 
