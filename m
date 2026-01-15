@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209070-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209524-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52D69D26A61
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:59 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id E0F85D27A74
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B6E331BE277
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3D7F306F911
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD1E6399011;
-	Thu, 15 Jan 2026 17:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89333B8BA7;
+	Thu, 15 Jan 2026 17:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TNiT7MqF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksLogmbD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8FDD039B48E;
-	Thu, 15 Jan 2026 17:20:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA9B2D73B4;
+	Thu, 15 Jan 2026 17:42:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497650; cv=none; b=WgpiMRNS6AFpBu2vdhA70ZiGb4wAyEe7EE56UTkI3H5f8zEjcSF2UEDAfOwsHEKZ911xGqHiiSqCLgvPtxorMiPJrDgHPkCSjjpdjsaZPG+et8oMZyi8xlW6nb2zwGS5vD6YC42FeyEiEz/kyzgpJajpu9CmQ92QeLL7ceBQl7U=
+	t=1768498941; cv=none; b=H78g5/qTOwpy+DHLnvVpUYb+4oZs3eiVi+4j7qhfkBp1pG7cMTUGK2n6GhH6EjtKb9Kl62TjC2BnB6t20b94gnkcASUhYM0vu1bo8ttPGMeCFnhS/ul2x+QALjz9sa6U6rHJ+CWjDh3TO7KYlIpBJVh+NMm5UX7Fq6G/DSeHDpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497650; c=relaxed/simple;
-	bh=jn5k7Rm0h+wEMonkGd32FvAEaahMXY8HH3ssS3KC0E8=;
+	s=arc-20240116; t=1768498941; c=relaxed/simple;
+	bh=xwDhYAkfSdLQuPyKQQqUbnuw0Qx/hk7p+kEaJvT4w0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G508ZrShcKr3MTx6xIhkszb2nFIE7PXieMuau639zrRM/VlncyFaDfVV6ZfoUyHux0jBlqTyqw9syKlfc21OsZnsLP2n47DVvR/rv5FPb36Sslsd4AvJlqu0ZkC6OoDjUe9vuSDtiSo51/k3IFY/K9/idmEDfHnFjQAvwRrBcUg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TNiT7MqF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18C80C116D0;
-	Thu, 15 Jan 2026 17:20:49 +0000 (UTC)
+	 MIME-Version; b=sWYx/9LCTozk+Lv/DJkJweyRPI+vP8xIcFlVRnj1n+Yy1deJXO4DqfmUNI5VoeAwNZWRQm5eOK0GiGwSCloIoW6n1Nrc8ORC+9VURkU09gUTdRaOpt+gbLz0TLFNNGmW+KkE/x9JQfESEP1v7RPHlUPZ6WPBBdfCkTOLMGoH+Dg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksLogmbD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFEAC116D0;
+	Thu, 15 Jan 2026 17:42:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497650;
-	bh=jn5k7Rm0h+wEMonkGd32FvAEaahMXY8HH3ssS3KC0E8=;
+	s=korg; t=1768498941;
+	bh=xwDhYAkfSdLQuPyKQQqUbnuw0Qx/hk7p+kEaJvT4w0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TNiT7MqFDuGs3PBYVN//+AwwNOogr9mlQZkAHUlmuSmNRQZFxZBiLASiydfLaM5bm
-	 JcElxA3PJNtvpifE7yaksPWN0LRxlPrgevS0ROIN3i6gnZmDir48PVpqEYlYY6EnGT
-	 Lmycs7JEpnxuqm5+GMz0YNsb7JTJljRe4U58T4EQ=
+	b=ksLogmbDjsdGGa/nLmHOjEI2Mj9O7Cj8u4C6Peu3mYAdoNAaWHzSaQQxyLPG/lzjM
+	 YzM3CDq17R6oyIL/MRJPWLfsSSmSOxnN8hpoZZmAtmwf1hXhYHcm23K03vHBZG/vI4
+	 v4qopjJHBEt5Iz+nf2Wl8l+MmMcRArnav0PvIP74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cezary Rojewski <cezary.rojewski@intel.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Mark Brown <broonie@kernel.org>,
+	Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 155/554] ASoC: Intel: catpt: Fix error path in hw_params()
+Subject: [PATCH 5.10 020/451] pinctrl: qcom: msm: Fix deadlock in pinmux configuration
 Date: Thu, 15 Jan 2026 17:43:41 +0100
-Message-ID: <20260115164251.875987911@linuxfoundation.org>
+Message-ID: <20260115164231.620122745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cezary Rojewski <cezary.rojewski@intel.com>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 86a5b621be658fc8fe594ca6db317d64de30cce1 ]
+[ Upstream commit 1c2e70397b4125022dba80f6111271a37fb36bae ]
 
-Do not leave any resources hanging on the DSP side if
-applying user settings fails.
+Replace disable_irq() with disable_irq_nosync() in msm_pinmux_set_mux()
+to prevent deadlock when wakeup IRQ is triggered on the same
+GPIO being reconfigured.
 
-Fixes: 768a3a3b327d ("ASoC: Intel: catpt: Optimize applying user settings")
-Signed-off-by: Cezary Rojewski <cezary.rojewski@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://patch.msgid.link/20251126095523.3925364-4-cezary.rojewski@intel.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The issue occurs when a wakeup IRQ is triggered on a GPIO and the IRQ
+handler attempts to reconfigure the same GPIO's pinmux. In this scenario,
+msm_pinmux_set_mux() calls disable_irq() which waits for the currently
+running IRQ handler to complete, creating a circular dependency that
+results in deadlock.
+
+Using disable_irq_nosync() avoids waiting for the IRQ handler to
+complete, preventing the deadlock condition while still properly
+disabling the interrupt during pinmux reconfiguration.
+
+Suggested-by: Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/intel/catpt/pcm.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-msm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/intel/catpt/pcm.c b/sound/soc/intel/catpt/pcm.c
-index ebb27daeb1c77..1e737df264d99 100644
---- a/sound/soc/intel/catpt/pcm.c
-+++ b/sound/soc/intel/catpt/pcm.c
-@@ -417,8 +417,10 @@ static int catpt_dai_hw_params(struct snd_pcm_substream *substream,
- 		return CATPT_IPC_ERROR(ret);
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
+index 049a34f0e13f7..f72a1598de28a 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -213,7 +213,7 @@ static int msm_pinmux_set_mux(struct pinctrl_dev *pctldev,
+ 	 */
+ 	if (d && i != gpio_func &&
+ 	    !test_and_set_bit(d->hwirq, pctrl->disabled_for_mux))
+-		disable_irq(irq);
++		disable_irq_nosync(irq);
  
- 	ret = catpt_dai_apply_usettings(dai, stream);
--	if (ret)
-+	if (ret) {
-+		catpt_ipc_free_stream(cdev, stream->info.stream_hw_id);
- 		return ret;
-+	}
+ 	raw_spin_lock_irqsave(&pctrl->lock, flags);
  
- 	stream->allocated = true;
- 	return 0;
 -- 
 2.51.0
 
