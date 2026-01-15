@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209088-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209489-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A5AFBD26634
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E3BCFD26BC3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id E3F9A305C62C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 01E53314F6A8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7136B3BC4D8;
-	Thu, 15 Jan 2026 17:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE45C34216C;
+	Thu, 15 Jan 2026 17:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V9fE5qGg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Tkc05zBa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3332139E199;
-	Thu, 15 Jan 2026 17:21:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1684274FE3;
+	Thu, 15 Jan 2026 17:40:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497699; cv=none; b=MzlcdkfL8zQXmKRfPDqIAlW1Hqt9NVhIC5YjoTj7EKyuK/YjF7gx2vZN2Kykwam08qGX6L19yCNIlvszDdxLsBiXGmdtHXG+zUIHZhLihUXlz44YCrHmIIeNxDF475z8vglqEcuOUu48wCphJEIkBLnjqJRRxOsWB7Nq75Bwsis=
+	t=1768498841; cv=none; b=dxUNoliWeR+vYPZuOrf35gae4BO7u+WPBWo4WeoW9QkHfUQperfOF3bUw9fOg6IC1bgoRqA5ZUlL8tZKWCq3KL5LJhvBB1KQEPBUNDMUF4AYZGy75TxGlXOGUWj8sY1MSpQAOpuMIbtgnNIKU8wuef7nsF4W2T1nTSzmfkH96yY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497699; c=relaxed/simple;
-	bh=FPG8zGzni/mL8mSYAlEzBvK5v9w9lAtDqaZoLbscZw4=;
+	s=arc-20240116; t=1768498841; c=relaxed/simple;
+	bh=hTOP879t9hHdWmapUcPlampw7hHwjmSWQoL4kyaHgPc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OM8sVRWBOGfMzul1LlDLtErDrKgeKnQ2bbFQbkeK40qL8i5gJyQ0C+aOKmwPOnOEWvwp+dgpqOjSCj4WBiTzqUM+uDnWt67IUCPLoTvNuzgpMM1KZV/AXOSEoQ+JkbnfGx2CcvEV69ZazgWAYLlhM1zyURASXFhcAOQvWH4nhZ4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V9fE5qGg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB53CC116D0;
-	Thu, 15 Jan 2026 17:21:38 +0000 (UTC)
+	 MIME-Version; b=pOS0bSBUalraFaFEHZ7SxFfqtoxja9CuE9cVSt7Fs/6Cb85rywd07uAKJm7It9yreckkX42Q4rncCEmMEgxN8c//L4ga2cxpMZDbycbbNcoWKRFW79PudPWGeMfSZ3tBtEhfHe4FyA/L4aPkaNQ6LO54pbwIV6EGJ9WmeHPhs1Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Tkc05zBa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE141C116D0;
+	Thu, 15 Jan 2026 17:40:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497699;
-	bh=FPG8zGzni/mL8mSYAlEzBvK5v9w9lAtDqaZoLbscZw4=;
+	s=korg; t=1768498841;
+	bh=hTOP879t9hHdWmapUcPlampw7hHwjmSWQoL4kyaHgPc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V9fE5qGgkuOfZmT80iKmar0U+Y9KpaqOxOPFdevYgPybtgR3XUnTsqhoinCfh9ndF
-	 /QXzdA68njSqbEo+Sn15lAilmXt9MvC0HadUbdEZcpm7WI1g2peuz6US9XmtceI8CD
-	 1Y3OZpL5Tus2TuHB1LcW3pxPpyXRLX9HMW2Zy51k=
+	b=Tkc05zBakN9HBtZsfinDKiu8GbXLDYPxvLuU5BEQkfN73XtaEbA91T9wTmmpXNxPS
+	 L6isVAfEKH3pBST2ijSBynL50rHWhlZcNR6f6kfT6Qpm6aKIjYUgLI52MRkF8vyQ7t
+	 msSZHrSPxc/XPoApHMq4sjZKWjGqPXySor+F/D/g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Randy Dunlap <rdunlap@infradead.org>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Lee Jones <lee@kernel.org>,
+	syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Simon Horman <horms@kernel.org>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 139/554] backlight: lp855x: Fix lp855x.h kernel-doc warnings
+Subject: [PATCH 5.10 004/451] xfrm: flush all states in xfrm_state_fini
 Date: Thu, 15 Jan 2026 17:43:25 +0100
-Message-ID: <20260115164251.282065234@linuxfoundation.org>
+Message-ID: <20260115164231.038627818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
+[ Upstream commit 42e42562c9cfcdacf000f1b42284a4fad24f8546 ]
 
-Add a missing struct short description and a missing leading " *" to
-lp855x.h to avoid kernel-doc warnings:
+While reverting commit f75a2804da39 ("xfrm: destroy xfrm_state
+synchronously on net exit path"), I incorrectly changed
+xfrm_state_flush's "proto" argument back to IPSEC_PROTO_ANY. This
+reverts some of the changes in commit dbb2483b2a46 ("xfrm: clean up
+xfrm protocol checks"), and leads to some states not being removed
+when we exit the netns.
 
-Warning: include/linux/platform_data/lp855x.h:126 missing initial short
- description on line:
- * struct lp855x_platform_data
-Warning: include/linux/platform_data/lp855x.h:131 bad line:
-   Only valid when mode is PWM_BASED.
+Pass 0 instead of IPSEC_PROTO_ANY from both xfrm_state_fini
+xfrm6_tunnel_net_exit, so that xfrm_state_flush deletes all states.
 
-Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: 2a198bbec691 ("Revert "xfrm: destroy xfrm_state synchronously on net exit path"")
+Reported-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=6641a61fe0e2e89ae8c5
+Tested-by: syzbot+6641a61fe0e2e89ae8c5@syzkaller.appspotmail.com
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/platform_data/lp855x.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/xfrm6_tunnel.c | 2 +-
+ net/xfrm/xfrm_state.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
-index ab222dd05bbc2..3b4a891acefe9 100644
---- a/include/linux/platform_data/lp855x.h
-+++ b/include/linux/platform_data/lp855x.h
-@@ -124,12 +124,12 @@ struct lp855x_rom_data {
- };
+diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
+index 70f9540937489..6de3cc3ba25d2 100644
+--- a/net/ipv6/xfrm6_tunnel.c
++++ b/net/ipv6/xfrm6_tunnel.c
+@@ -331,7 +331,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
+ 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
+ 	unsigned int i;
  
- /**
-- * struct lp855x_platform_data
-+ * struct lp855x_platform_data - lp855 platform-specific data
-  * @name : Backlight driver name. If it is not defined, default name is set.
-  * @device_control : value of DEVICE CONTROL register
-  * @initial_brightness : initial value of backlight brightness
-  * @period_ns : platform specific pwm period value. unit is nano.
--		Only valid when mode is PWM_BASED.
-+ *		Only valid when mode is PWM_BASED.
-  * @size_program : total size of lp855x_rom_data
-  * @rom_data : list of new eeprom/eprom registers
-  */
+-	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
++	xfrm_state_flush(net, 0, false);
+ 	xfrm_flush_gc();
+ 
+ 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index e13823d728127..b1243edf7f3a0 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -2703,7 +2703,7 @@ void xfrm_state_fini(struct net *net)
+ 	unsigned int sz;
+ 
+ 	flush_work(&net->xfrm.state_hash_work);
+-	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
++	xfrm_state_flush(net, 0, false);
+ 	flush_work(&xfrm_state_gc_work);
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.state_all));
 -- 
 2.51.0
 
