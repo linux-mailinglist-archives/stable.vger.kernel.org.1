@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208647-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5411AD25EA7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:00 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 11A05D26082
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DE0273015138
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E54B130262A8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2AC3BF2F1;
-	Thu, 15 Jan 2026 16:55:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D1A39B4BF;
+	Thu, 15 Jan 2026 17:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfa+xnkX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idsQB0zL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E9F2FDC4D;
-	Thu, 15 Jan 2026 16:55:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145173BC4D7;
+	Thu, 15 Jan 2026 17:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496145; cv=none; b=rIfw5DrLkTmiN/KyG7Je0HbfcYA6jNQ8kAExyDf69UNG0tYpTUda6rTPKyMoG2Y6ffKUoePs4slOc5wqhC7lqLcX8dUsW7w22RZD+yTDgDfrUHLA6XZNCYNlTcRBA3ReT8LA5ViCIekiNOrXYsh782Z/AYPKXH6WEMQEvYTn9L8=
+	t=1768496446; cv=none; b=u5WiSlVFP7JuSApNDJEazUc5Kbzd4GQbtfXoELa5L6N3HkakPteGlI0DB0RHtkpWxqZhjHZGTCmPScB/6fLzJxfF9//OKzyzeNAebUMnU1F1UI7jDPHUbDbgLhUcBNFPUWVtfH0Tvi3tINkCP8oLYf5MDxeKy1Ce82lfKGSK2PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496145; c=relaxed/simple;
-	bh=d8HadI0ymNo+mU558JfyWQfIJsGsqcTBkZQ7n6JGgaM=;
+	s=arc-20240116; t=1768496446; c=relaxed/simple;
+	bh=iKMwoiKhIU8kLzpV4FJfOw+oyHBRbBbQKij3XlRfOOc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Jn1A9YN3gtDKaHtvEoKlBkbSJMP1og4GiwPyeH+N4AHIXlnmCe2HMG2cYtLyPTRXn5t9gNg4Z1jU9D1YueBuvX4e9GrC7fQze8EwhcMLxOKcq0eLNcEIrVt0+C0vqr6lUNKI8HVdhK+llNUtfEpD2btsHYEtNVY2VJgLXgfGNTs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfa+xnkX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD20C116D0;
-	Thu, 15 Jan 2026 16:55:45 +0000 (UTC)
+	 MIME-Version; b=iKBP6mp+XqZOWLqMzWw9BonJGVruZdUHN0/aDPy0MzNSAtnMti6Vw06TcTeCOKcAGDvHJ53fITP5f9p1d4FtKXUiGkH9OYdIhkNgtW9XHDsbYYACv8iGOZdxdVDv0HGOt8bXJGS4jelaF0dWgMKYsD5uJDqVdyYC8x07/8J0x2M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idsQB0zL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932BBC116D0;
+	Thu, 15 Jan 2026 17:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496145;
-	bh=d8HadI0ymNo+mU558JfyWQfIJsGsqcTBkZQ7n6JGgaM=;
+	s=korg; t=1768496446;
+	bh=iKMwoiKhIU8kLzpV4FJfOw+oyHBRbBbQKij3XlRfOOc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfa+xnkXHDORjSc0ljcT5rFlNRUb3xsJKUSoPF9AjdZq9GqLpZHTdiS2aF1Kpc3II
-	 Wu4oc79fIiCeOxPE2GMIl8mCilAJnAPCLOsVXdk79OlyS+IJVNyNH0FaPXZC0wb/YP
-	 AFSIiWnWArtUnEKORXfBcjn/ZEYBh+wAQoZtktKU=
+	b=idsQB0zLGaMpejAT6Yb7oboWinPS/1so4KYl2sQim75ifz6Fhiv3crcSxu0AsIKSa
+	 s3ZAHwRX3uYR8GxWgigPE4gcj01WYUUQMcv8kVgodI+a1atpKbxnyWuey1WqwdCU4g
+	 MnI9VcREQ+WzEEB3NgZCbzdUp7QTs0sSJK6pWn64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 093/181] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
-Date: Thu, 15 Jan 2026 17:47:10 +0100
-Message-ID: <20260115164205.680395794@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.12 016/119] drm/pl111: Fix error handling in pl111_amba_probe
+Date: Thu, 15 Jan 2026 17:47:11 +0100
+Message-ID: <20260115164152.548889935@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
+commit 0ddd3bb4b14c9102c0267b3fd916c81fe5ab89c1 upstream.
 
-In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
-the err_release_rule label without freeing the allocated flow, leading
-to a memory leak.
+Jump to the existing dev_put label when devm_request_irq() fails
+so drm_dev_put() and of_reserved_mem_device_release() run
+instead of returning early and leaking resources.
 
-Fix this by adding a new label err_destroy_flow and jumping to it when
-nft_use_inc() fails. This ensures that the flow is properly released
-in this error case.
+Found via static analysis and code review.
 
-Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20251211123345.2392065-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/pl111/pl111_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 1a204f6371ad1..a3669acd68a32 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4378,7 +4378,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 
- 	if (!nft_use_inc(&chain->use)) {
- 		err = -EMFILE;
--		goto err_release_rule;
-+		goto err_destroy_flow;
+--- a/drivers/gpu/drm/pl111/pl111_drv.c
++++ b/drivers/gpu/drm/pl111/pl111_drv.c
+@@ -294,7 +294,7 @@ static int pl111_amba_probe(struct amba_
+ 			       variant->name, priv);
+ 	if (ret != 0) {
+ 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
+-		return ret;
++		goto dev_put;
  	}
  
- 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
-@@ -4428,6 +4428,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 
- err_destroy_flow_rule:
- 	nft_use_dec_restore(&chain->use);
-+err_destroy_flow:
- 	if (flow)
- 		nft_flow_rule_destroy(flow);
- err_release_rule:
--- 
-2.51.0
-
+ 	ret = pl111_modeset_init(drm);
 
 
 
