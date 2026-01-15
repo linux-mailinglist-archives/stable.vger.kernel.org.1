@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209303-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209691-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5AC3DD26959
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5CA8ED27514
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1193330CE859
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EF22630FB4BA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579163D1CBA;
-	Thu, 15 Jan 2026 17:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C313E8C59;
+	Thu, 15 Jan 2026 17:50:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykbbc4PL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJYzdTZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B5C3C1967;
-	Thu, 15 Jan 2026 17:31:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60463E8C51;
+	Thu, 15 Jan 2026 17:50:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498312; cv=none; b=RBZWroliKY1c7+VnQDqIr14CDfDuHE6IewvEju3p6PgEjPPwEPvbbCgufmBup4OP/JPc1/qcCAHD3p9nHVavel4gg0XEGVv9XOx8PSfGU197sdYuErmHmV8doMlytksr5vwyt8qf1/WhLNF7QWOfNZ1Gw72xCScvdC3jXPnYbBA=
+	t=1768499416; cv=none; b=f0/vduQHVGivQUNSfJZcTUXAb86va3UstRiSbzfM359i7D6res82UYck3dvlkOaSp1De0r5hKeJk8FNJZZPUccbhAz2lfn3/Oz8zeafGVG5gLVTA6Bc7/ma+oR3xvx/iSNirHYXkaNBxKSUp9Rk1jnYbKtPOX/VPxA54Ouimtm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498312; c=relaxed/simple;
-	bh=EvyTCg+WQDfLlGBSwabf6YrKaTXaQPZVOW9rwpWzCOY=;
+	s=arc-20240116; t=1768499416; c=relaxed/simple;
+	bh=EdhMw2RMnDFA1/DC98RMY+vi6E0eP+LuWpZhexbPxlY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5VZ3Jwx7SZ4GK5biJyGC2dRbP1fp8uPRLf+opTRELHjcPSGFC3WYmNf10HbR1uBwOIcq4OQY7nYzhD+lM76ArHNV8uAPKhemKa4AKyWC6anOHfZSYpEoP82lKCxrPERPZdg0c4AeJZNxCc292l7IjkpL3HeKfLegDa8o3c/ngE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykbbc4PL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FF5C16AAE;
-	Thu, 15 Jan 2026 17:31:51 +0000 (UTC)
+	 MIME-Version; b=r7vIqUTwggkLcC1peNXYfvPlGvXeYVey103wtZWCzmP1VExwLtdNg0Jv5kUvvYRmX5WgysViTA3WNZOWbktFoKJvVNU1pgI6fXRHsCqcW49AljnpOaQCdSmI+n2M8dOAGL/Md3G8Yb7CJYPz1ouMi+MfvK5sNa7qM0VJ/ocGLRo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJYzdTZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367AEC19425;
+	Thu, 15 Jan 2026 17:50:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498312;
-	bh=EvyTCg+WQDfLlGBSwabf6YrKaTXaQPZVOW9rwpWzCOY=;
+	s=korg; t=1768499416;
+	bh=EdhMw2RMnDFA1/DC98RMY+vi6E0eP+LuWpZhexbPxlY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ykbbc4PLHF3nVU8Nj4P9HF2bZFQkNm6RKeOvAR498z6vagK31uHN0m6k1U3ApBtm4
-	 awfNsYoi/6cGMPFsGOPKnTK/hNCMp8BhaAYZB8AcnbikxX/QiX5WMfh0bAF6QTatnK
-	 iZoIsJXRK4GvuJwnsFRJnBPZz4Atnc3wafnr3HlM=
+	b=xJYzdTZ6i/4kvhpZI83Le1hphQhKPLfEfs82k981kAKLWyg2bW2YCc5UnvKGDSOuI
+	 XGsjkQPYLQoXADweRh1Z8cMm1+sRJRZyU14akUcNccaCajfAbjiSY0TRM27fM8g0ec
+	 Iv4REPravxoDMcSE6s2A1NLwe2mPMm+Q1mBUrkEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Justin Tee <justin.tee@broadcom.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Daniel Wagner <wagi@kernel.org>,
+	Keith Busch <kbusch@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 354/554] net: usb: asix: validate PHY address before use
+Subject: [PATCH 5.10 219/451] nvme-fc: dont hold rport lock when putting ctrl
 Date: Thu, 15 Jan 2026 17:47:00 +0100
-Message-ID: <20260115164259.042330680@linuxfoundation.org>
+Message-ID: <20260115164238.821426188@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +62,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Daniel Wagner <wagi@kernel.org>
 
-[ Upstream commit a1e077a3f76eea0dc671ed6792e7d543946227e8 ]
+[ Upstream commit b71cbcf7d170e51148d5467820ae8a72febcb651 ]
 
-The ASIX driver reads the PHY address from the USB device via
-asix_read_phy_addr(). A malicious or faulty device can return an
-invalid address (>= PHY_MAX_ADDR), which causes a warning in
-mdiobus_get_phy():
+nvme_fc_ctrl_put can acquire the rport lock when freeing the
+ctrl object:
 
-  addr 207 out of range
-  WARNING: drivers/net/phy/mdio_bus.c:76
+nvme_fc_ctrl_put
+  nvme_fc_ctrl_free
+    spin_lock_irqsave(rport->lock)
 
-Validate the PHY address in asix_read_phy_addr() and remove the
-now-redundant check in ax88172a.c.
+Thus we can't hold the rport lock when calling nvme_fc_ctrl_put.
 
-Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
-Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
-Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
-Link: https://lore.kernel.org/all/20251217085057.270704-1-kartikey406@gmail.com/T/ [v1]
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251218011156.276824-1-kartikey406@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Justin suggested use the safe list iterator variant because
+nvme_fc_ctrl_put will also modify the rport->list.
+
+Cc: Justin Tee <justin.tee@broadcom.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Daniel Wagner <wagi@kernel.org>
+Signed-off-by: Keith Busch <kbusch@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/asix_common.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/nvme/host/fc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
-index 00c23f1d1c94..8c613e3ea05a 100644
---- a/drivers/net/usb/asix_common.c
-+++ b/drivers/net/usb/asix_common.c
-@@ -333,6 +333,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
- 	offset = (internal ? 1 : 0);
- 	ret = buf[offset];
+diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
+index e37e7207c60c..dbc9173ec0f8 100644
+--- a/drivers/nvme/host/fc.c
++++ b/drivers/nvme/host/fc.c
+@@ -1500,14 +1500,14 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
+ {
+ 	struct fcnvme_ls_disconnect_assoc_rqst *rqst =
+ 					&lsop->rqstbuf->rq_dis_assoc;
+-	struct nvme_fc_ctrl *ctrl, *ret = NULL;
++	struct nvme_fc_ctrl *ctrl, *tmp, *ret = NULL;
+ 	struct nvmefc_ls_rcv_op *oldls = NULL;
+ 	u64 association_id = be64_to_cpu(rqst->associd.association_id);
+ 	unsigned long flags;
  
-+	if (ret >= PHY_MAX_ADDR) {
-+		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
-+		return -ENODEV;
-+	}
-+
- 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
- 		   internal ? "internal" : "external", ret);
+ 	spin_lock_irqsave(&rport->lock, flags);
  
+-	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
++	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
+ 		if (!nvme_fc_ctrl_get(ctrl))
+ 			continue;
+ 		spin_lock(&ctrl->lock);
+@@ -1520,7 +1520,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
+ 		if (ret)
+ 			/* leave the ctrl get reference */
+ 			break;
++		spin_unlock_irqrestore(&rport->lock, flags);
+ 		nvme_fc_ctrl_put(ctrl);
++		spin_lock_irqsave(&rport->lock, flags);
+ 	}
+ 
+ 	spin_unlock_irqrestore(&rport->lock, flags);
 -- 
 2.51.0
 
