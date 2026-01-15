@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209160-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209549-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82C63D26AF7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E77E6D277EF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 298E73281D19
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B08C131D7B5F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6CA73BC4C9;
-	Thu, 15 Jan 2026 17:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5332D73B4;
+	Thu, 15 Jan 2026 17:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fwnSBolN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcyXGEZ6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AB0A239B48E;
-	Thu, 15 Jan 2026 17:25:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226662C0F83;
+	Thu, 15 Jan 2026 17:43:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497904; cv=none; b=nfSa72wTL0IGMJTdxTdmjYwkhKN1GSvdeccIaNKsVoUyxb3CzwHF3IJ65ZGP+f+F23OQ9bDZAeCeMFviMoC6s2BuxvQOwwu6Ye/xwmI7qU8b9kzkhxFwmWuFrYuvZwoRakKZmTjh/ezGyORwV1xAr8t2B5gKkVTLpqX6DlOFSkw=
+	t=1768499013; cv=none; b=lHIviWiHGepB7GYG4GQkLSyiVgbq40zUAoCfbwvIZ+fR5VjuQv95PaVSUgl4IHRPb9URy3Uhq4aIn1hGtRYR33hEnVVK5798G/cYw4P5/FfDsSrtQ9XUao6uqPcK6usYmdbOReCmDoSF1gbkdKIWXqlc9fqZuhmjWBhhYu2uO7M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497904; c=relaxed/simple;
-	bh=bUWPjT8FXhyDs19/lCj5W7V5ovSwd3BTPHG6vEO95ks=;
+	s=arc-20240116; t=1768499013; c=relaxed/simple;
+	bh=5chU0IIhOjVS7zeGlAFJfJAN5u8X6tUlLMvQca7VuyY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qTL9OU/VapQPLmzFrs8e5CHHdOecH3OVn0UwroB3uIuO/Zsnr3bMK4BBNwrhyrGfYNuf5QZMuA6jChq2K1E4yV9MXzH5cFvR8m1W2nP4/zopHkz18A/xg4WhtdADEfgwtYGzgo/XTIgk5t0aHmnt/AseeaektRV47plzj8pbTjs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fwnSBolN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39C45C116D0;
-	Thu, 15 Jan 2026 17:25:04 +0000 (UTC)
+	 MIME-Version; b=D2FjV7I84IqINSJyNOqFTl4mJW0XY0Ay8/UGj2xaWT0k8go2l9H3/1NZMTgMWfsmb6UY2NPAeM/PoZTgpLj9UXSrBDckI0aV6TgJcobTAnxQISYkIongpS0H+V105NveWwqmvOjHWGg/03WMprVV8tI8A7D0Gm9/X93bHFpUFcI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcyXGEZ6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23E7C116D0;
+	Thu, 15 Jan 2026 17:43:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497904;
-	bh=bUWPjT8FXhyDs19/lCj5W7V5ovSwd3BTPHG6vEO95ks=;
+	s=korg; t=1768499013;
+	bh=5chU0IIhOjVS7zeGlAFJfJAN5u8X6tUlLMvQca7VuyY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fwnSBolNXiyzHgG7ivArjPR77Ost4wya9+8g2xRn9BD8YGyDp/WisADIalaRYFNHq
-	 ZpIVd/VnG0SxxXfJc+uED7uH6O3GB6Z5DniTW6vtS4ac8/s6BARk2XTBzoq3TwsXH4
-	 uxR5Q1Mo/9vXOETYINHx0qOAig0CugzT4Mya5FL4=
+	b=KcyXGEZ64xOuDhZDP2W7gXJmQ6Y/Ckxo0ehhO4y89Gea64znTRHkWymx1qZVX/VtZ
+	 nDlSexuFr43489GqeX3onYhizD21zdnJ9oLUhS7T4oEn4p1znsBIhL+SsPbxfsbxvl
+	 brLMSJev+VEStV/1xp+XRIKgdXBwfHho+XS4wsjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
-	Ingo Molnar <mingo@kernel.org>,
+	Siddharth Vadapalli <s-vadapalli@ti.com>,
+	Manivannan Sadhasivam <mani@kernel.org>,
+	Bjorn Helgaas <bhelgaas@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 211/554] x86/ptrace: Always inline trivial accessors
-Date: Thu, 15 Jan 2026 17:44:37 +0100
-Message-ID: <20260115164253.889216149@linuxfoundation.org>
+Subject: [PATCH 5.10 077/451] PCI: keystone: Exit ks_pcie_probe() for invalid mode
+Date: Thu, 15 Jan 2026 17:44:38 +0100
+Message-ID: <20260115164233.699696014@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Siddharth Vadapalli <s-vadapalli@ti.com>
 
-[ Upstream commit 1fe4002cf7f23d70c79bda429ca2a9423ebcfdfa ]
+[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
 
-A KASAN build bloats these single load/store helpers such that
-it fails to inline them:
+Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
+When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
+the PCIe Controller is configured accordingly. However, when the mode is
+neither of them, an error message is displayed, but the driver probe
+succeeds. Since this "invalid" mode is not associated with a functional
+PCIe Controller, the probe should fail.
 
-  vmlinux.o: error: objtool: irqentry_exit+0x5e8: call to instruction_pointer_set() with UACCESS enabled
+Fix the behavior by exiting "ks_pcie_probe()" with the return value of
+"-EINVAL" in addition to displaying the existing error message when the
+mode is invalid.
 
-Make sure the compiler isn't allowed to do stupid.
-
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Link: https://patch.msgid.link/20251031105435.GU4068168@noisy.programming.kicks-ass.net
+Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
+Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
+Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/ptrace.h | 20 ++++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ drivers/pci/controller/dwc/pci-keystone.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/x86/include/asm/ptrace.h b/arch/x86/include/asm/ptrace.h
-index b94f615600d57..d5186653311da 100644
---- a/arch/x86/include/asm/ptrace.h
-+++ b/arch/x86/include/asm/ptrace.h
-@@ -109,12 +109,12 @@ convert_ip_to_linear(struct task_struct *child, struct pt_regs *regs);
- extern void send_sigtrap(struct pt_regs *regs, int error_code, int si_code);
+diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
+index 6245c179ce49f..6844c4652e702 100644
+--- a/drivers/pci/controller/dwc/pci-keystone.c
++++ b/drivers/pci/controller/dwc/pci-keystone.c
+@@ -1382,6 +1382,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
+ 		break;
+ 	default:
+ 		dev_err(dev, "INVALID device type %d\n", mode);
++		ret = -EINVAL;
++		goto err_get_sync;
+ 	}
  
- 
--static inline unsigned long regs_return_value(struct pt_regs *regs)
-+static __always_inline unsigned long regs_return_value(struct pt_regs *regs)
- {
- 	return regs->ax;
- }
- 
--static inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
-+static __always_inline void regs_set_return_value(struct pt_regs *regs, unsigned long rc)
- {
- 	regs->ax = rc;
- }
-@@ -195,34 +195,34 @@ static inline bool ip_within_syscall_gap(struct pt_regs *regs)
- }
- #endif
- 
--static inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long kernel_stack_pointer(struct pt_regs *regs)
- {
- 	return regs->sp;
- }
- 
--static inline unsigned long instruction_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long instruction_pointer(struct pt_regs *regs)
- {
- 	return regs->ip;
- }
- 
--static inline void instruction_pointer_set(struct pt_regs *regs,
--		unsigned long val)
-+static __always_inline
-+void instruction_pointer_set(struct pt_regs *regs, unsigned long val)
- {
- 	regs->ip = val;
- }
- 
--static inline unsigned long frame_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long frame_pointer(struct pt_regs *regs)
- {
- 	return regs->bp;
- }
- 
--static inline unsigned long user_stack_pointer(struct pt_regs *regs)
-+static __always_inline unsigned long user_stack_pointer(struct pt_regs *regs)
- {
- 	return regs->sp;
- }
- 
--static inline void user_stack_pointer_set(struct pt_regs *regs,
--		unsigned long val)
-+static __always_inline
-+void user_stack_pointer_set(struct pt_regs *regs, unsigned long val)
- {
- 	regs->sp = val;
- }
+ 	ks_pcie_enable_error_irq(ks_pcie);
 -- 
 2.51.0
 
