@@ -1,51 +1,54 @@
-Return-Path: <stable+bounces-208620-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208622-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DA899D26016
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B44AD260D3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6F6CF302052F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1BC793013553
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5650139C624;
-	Thu, 15 Jan 2026 16:59:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DC25D3BC4F9;
+	Thu, 15 Jan 2026 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UIjw4fW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oVRoPmET"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 102AE3BB9F3;
-	Thu, 15 Jan 2026 16:59:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F7EB3B530C;
+	Thu, 15 Jan 2026 16:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496367; cv=none; b=suy6yeLV7Jq7lR3PdCZ+lDz/xXYhJKN8tB/cbRVIImwIKY+TYKqvSqo7jRST4CVMopedk6LD59L3IjiULe50On672c95GQKMwBJ7itOhP8WfZmH5ch+8k/jo6jYremYx8VBIYYHc1M4Ux6xRQ8451Y7QQSMRLhK8dCSjANEwUfI=
+	t=1768496372; cv=none; b=M15C6ibz+XfWkZ18Q0EEEdoJJmPlS5yCRKi+7pOFMqjGt7gU0oFyTGxZchg+7NB8MDNqCdjOkaJYUzJgGBcHQl3VBvr6TUHwzNpHnlx8Yq6bdc+wP7/ulKK5N4NPW6m3IFvcPxZ50NeLuQtaOyFwb36TDuzvdlwl86gDjDYCtZI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496367; c=relaxed/simple;
-	bh=qiUyqTqo2goJNbiMetRDVL41ONMyPVlZDMMOF8CEiX8=;
+	s=arc-20240116; t=1768496372; c=relaxed/simple;
+	bh=bIsRjZKxwN0cx96xj5wL2NRYJzoZTkYOzOX5Sisau7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h7V45aqXVPcDJ59ahTGMrE05KNhBSLCF9a42WhZHfosKf6BHo3bpv6Dy3CfP34ncyWURXeQoLy7NoLAOIUNUzZ5ImKiOfgy235GTIYsDbn2D0lpWQihAFzHPIgQrzvLCcuSBmt0gS/71ML+3lef4XEClxC1Z2PwrgNSOdJERV00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UIjw4fW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9DFC116D0;
-	Thu, 15 Jan 2026 16:59:26 +0000 (UTC)
+	 MIME-Version; b=qPOFG2nm+TAC0u/QQ44/fztflv9NcVjrfy1DPf6hsUNrBJ0Yrqj6QwU+OJ9n1Sj2l5ZeRWDczX6QcoEO58rRj5Xcka7S9tAMU97mLuvIUbzT2UZB0AF7LCX+vFekgzBv65jcFwPAZFxwy3HB8yRwTTWkTArXFJvCJtkeO//v5qg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oVRoPmET; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15B6FC116D0;
+	Thu, 15 Jan 2026 16:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496366;
-	bh=qiUyqTqo2goJNbiMetRDVL41ONMyPVlZDMMOF8CEiX8=;
+	s=korg; t=1768496372;
+	bh=bIsRjZKxwN0cx96xj5wL2NRYJzoZTkYOzOX5Sisau7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UIjw4fW/sbki0UTgtLuVGWeyspM61+Fej80g4iRTTRVhUiDmQcs58rsO93QpZfvab
-	 gPb/OgZmdNHAJMhKeVEx5+bqT2037i1qFM4Kvp+t0ly1Vfhf5WZ4r6rEmDz/Lo1eak
-	 kvsjs1Os4v4VSdKu3wsSy+/E7qcbbGoA5IJtbxYo=
+	b=oVRoPmETBFejyUWN4CIji2ZajBsstEQhbVf4ezJOGkCZLA8kSyewAKITwJrt3VrZu
+	 varOEd5TuFz9KbhSg6W87T+7g1x2/pzhFH8ETYMlb6EYR9OP6Sjq4vwt9v6Q8T0/1I
+	 CHDXl0fsB90ucqMt4E+uwUpfiIUJgf3xqZuk7RMQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lizhi Hou <lizhi.hou@amd.com>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Swapnil Patel <swapnil.patel@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Chenyu Chen <chen-yu.chen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 170/181] accel/amdxdna: Block running under a hypervisor
-Date: Thu, 15 Jan 2026 17:48:27 +0100
-Message-ID: <20260115164208.450796134@linuxfoundation.org>
+Subject: [PATCH 6.18 171/181] drm/amd/display: Fix DP no audio issue
+Date: Thu, 15 Jan 2026 17:48:28 +0100
+Message-ID: <20260115164208.486441383@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -64,47 +67,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit 7bbf6d15e935abbb3d604c1fa157350e84a26f98 ]
+[ Upstream commit 3886b198bd6e49c801fe9552fcfbfc387a49fbbc ]
 
-SVA support is required, which isn't configured by hypervisor
-solutions.
+[why]
+need to enable APG_CLOCK_ENABLE enable first
+also need to wake up az from D3 before access az block
 
-Closes: https://github.com/QubesOS/qubes-issues/issues/10275
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4656
-Reviewed-by: Lizhi Hou <lizhi.hou@amd.com>
-Link: https://patch.msgid.link/20251213054513.87925-1-superm1@kernel.org
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
+Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Chenyu Chen <chen-yu.chen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit bf5e396957acafd46003318965500914d5f4edfa)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/accel/amdxdna/aie2_pci.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/accel/amdxdna/aie2_pci.c b/drivers/accel/amdxdna/aie2_pci.c
-index 43f725e1a2d76..6e07793bbeacf 100644
---- a/drivers/accel/amdxdna/aie2_pci.c
-+++ b/drivers/accel/amdxdna/aie2_pci.c
-@@ -17,6 +17,7 @@
- #include <linux/iopoll.h>
- #include <linux/pci.h>
- #include <linux/xarray.h>
-+#include <asm/hypervisor.h>
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index b94fec8347400..39be5a58f837a 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1098,13 +1098,13 @@ void dce110_enable_audio_stream(struct pipe_ctx *pipe_ctx)
+ 			if (dc->current_state->res_ctx.pipe_ctx[i].stream_res.audio != NULL)
+ 				num_audio++;
+ 		}
++		if (num_audio >= 1 && clk_mgr->funcs->enable_pme_wa) {
++			/*wake AZ from D3 first before access az endpoint*/
++			clk_mgr->funcs->enable_pme_wa(clk_mgr);
++		}
  
- #include "aie2_msg_priv.h"
- #include "aie2_pci.h"
-@@ -486,6 +487,11 @@ static int aie2_init(struct amdxdna_dev *xdna)
- 	unsigned long bars = 0;
- 	int i, nvec, ret;
+ 		pipe_ctx->stream_res.audio->funcs->az_enable(pipe_ctx->stream_res.audio);
  
-+	if (!hypervisor_is_type(X86_HYPER_NATIVE)) {
-+		XDNA_ERR(xdna, "Running under hypervisor not supported");
-+		return -EINVAL;
-+	}
-+
- 	ndev = drmm_kzalloc(&xdna->ddev, sizeof(*ndev), GFP_KERNEL);
- 	if (!ndev)
- 		return -ENOMEM;
+-		if (num_audio >= 1 && clk_mgr->funcs->enable_pme_wa)
+-			/*this is the first audio. apply the PME w/a in order to wake AZ from D3*/
+-			clk_mgr->funcs->enable_pme_wa(clk_mgr);
+-
+ 		link_hwss->enable_audio_packet(pipe_ctx);
+ 
+ 		if (pipe_ctx->stream_res.audio)
 -- 
 2.51.0
 
