@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209575-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209198-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74D60D27879
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:18 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 834D6D26881
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 14EA4327BDA4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C56E5304121F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13AA43AA4;
-	Thu, 15 Jan 2026 17:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33DFD3C198A;
+	Thu, 15 Jan 2026 17:26:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnEHx71V"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEAyhDsU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8327A2F619D;
-	Thu, 15 Jan 2026 17:44:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EBC6F2C027B;
+	Thu, 15 Jan 2026 17:26:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499087; cv=none; b=eUOclEFZtXRNX6TYDGDDpsLp28ClgW7cZ1BAFjVZT5AGyKZJz/oYDw6KtRSzxUXNgh5M07AAkbBBjGngVZpGDAKe9TbPMrAh/53eW7vjVi0wtvvrJvGVnfcG50wIwYBqcwIeCDNnXe93bEiAhsNT0X/6BLsZBM6WXFIM9pU9b6g=
+	t=1768498013; cv=none; b=sRzxZj83JwK3Y6Ds9fxg8XmKaV3rdCKg4hB5ykaXphokLhHP6wsnlS4Qev7ZlUH3IaDb8akoXm/QyM5I1C1f4qJI/PLbqyBwMS/VVFIxsUlcUzkkrJ8p6dj3zN7B2M4GIuuip5Lwannr20r9esLmhIA3XqdWcqbtIMMYZj04HB8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499087; c=relaxed/simple;
-	bh=/MdwmH3OiAEeolBRsVUwQMZTLFrEG8TESGZvNxa0pjA=;
+	s=arc-20240116; t=1768498013; c=relaxed/simple;
+	bh=cO2VZFaHtlUhEuuOtAY5KtXxFaNVIvDiHp6kznvIuqw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uwbQnMeF8iI5cgRidv22ecEcT2tQa8U13QAe9jZYMZsIu/K1XdZtYY6K/Ga0eH3EP0f3Uzo1AgGO6FPxaZYpcaVW6QmfBAOxV6febe1mDPzXaOvh50qhJfPfB7NPKLK3QKsmZB3LkX6YBtCD1aaa+ukThQns3cnjIPobiqbXWvw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnEHx71V; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0C1C116D0;
-	Thu, 15 Jan 2026 17:44:46 +0000 (UTC)
+	 MIME-Version; b=s3+jOIzRl58rPWAJeKOlObKme9W9DxjJZd8pVNznUmBPjmGhnT71xpC/grc9PZMfX3MtnfZjqH2z7D9Qaklp5mDS5fGgXJSDW+UM7vb2UcFeF6BXhHsCmP2tN/FbKQaXSaF/TWX56rHdnxKboPoSKNtHFV6+6UIKWtbkDmZhiJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEAyhDsU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76C9AC16AAE;
+	Thu, 15 Jan 2026 17:26:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499087;
-	bh=/MdwmH3OiAEeolBRsVUwQMZTLFrEG8TESGZvNxa0pjA=;
+	s=korg; t=1768498012;
+	bh=cO2VZFaHtlUhEuuOtAY5KtXxFaNVIvDiHp6kznvIuqw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SnEHx71V6Eny9mg8nRKQe+FIj/6l8VTAWvu4g9pfjwcDoq/dSbpL7Zwmty2MEj+0S
-	 +NwRg/CyexaRLKYO5p8tBCMTeMPAnabNLFkjj+ySCT+JUp/wz/5EUWxdwd29uMo9UD
-	 3gKmellKW2zevxwmVqKtgSBJE28/UJRf+TNMbrC8=
+	b=iEAyhDsUQ0XUmCDf4fYuZNxlc2JcCJEKwfrw1HxRxpQvxJizKASvSdAUakatPB0/+
+	 fVlFzwmRybs6luVyZkvgO6NLqG5iFLuRtDQtGV9IjesR+u/vlW5mjAbfda9ZlenXWK
+	 4tNy+JL6AY79x7d9lSue3vLUCCRujyA5YqeIyuBY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Saeed Mahameed <saeedm@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/451] drm/amd/display: Fix logical vs bitwise bug in get_embedded_panel_info_v2_1()
+Subject: [PATCH 5.15 239/554] net/mlx5: fw_tracer, Add support for unrecognized string
 Date: Thu, 15 Jan 2026 17:45:05 +0100
-Message-ID: <20260115164234.680041933@linuxfoundation.org>
+Message-ID: <20260115164254.895139531@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 1a79482699b4d1e43948d14f0c7193dc1dcad858 ]
+[ Upstream commit f7133135235dbd11e7cb5fe62fe5d05ce5e82eeb ]
 
-The .H_SYNC_POLARITY and .V_SYNC_POLARITY variables are 1 bit bitfields
-of a u32.  The ATOM_HSYNC_POLARITY define is 0x2 and the
-ATOM_VSYNC_POLARITY is 0x4.  When we do a bitwise negate of 0, 2, or 4
-then the last bit is always 1 so this code always sets .H_SYNC_POLARITY
-and .V_SYNC_POLARITY to true.
+In case FW is publishing a string which isn't found in the driver's
+string DBs, keep the string as raw data.
 
-This code is instead intended to check if the ATOM_HSYNC_POLARITY or
-ATOM_VSYNC_POLARITY flags are set and reverse the result.  In other
-words, it's supposed to be a logical negate instead of a bitwise negate.
-
-Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Stable-dep-of: b35966042d20 ("net/mlx5: fw_tracer, Validate format string parameters")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 25 +++++++++++++++++--
+ .../mellanox/mlx5/core/diag/fw_tracer.h       |  1 +
+ 2 files changed, 24 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-index 9dd41eaf32cb5..3cc61bb6f8967 100644
---- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-+++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
-@@ -961,10 +961,10 @@ static enum bp_result get_embedded_panel_info_v2_1(
- 	/* not provided by VBIOS */
- 	info->lcd_timing.misc_info.HORIZONTAL_CUT_OFF = 0;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index efa2e0a8fa1d1..d982b468dcc1d 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -460,6 +460,7 @@ static void poll_trace(struct mlx5_fw_tracer *tracer,
  
--	info->lcd_timing.misc_info.H_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
--			& ATOM_HSYNC_POLARITY);
--	info->lcd_timing.misc_info.V_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
--			& ATOM_VSYNC_POLARITY);
-+	info->lcd_timing.misc_info.H_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
-+						       ATOM_HSYNC_POLARITY);
-+	info->lcd_timing.misc_info.V_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
-+						       ATOM_VSYNC_POLARITY);
+ 	tracer_event->event_id = MLX5_GET(tracer_event, trace, event_id);
+ 	tracer_event->lost_event = MLX5_GET(tracer_event, trace, lost);
++	tracer_event->out = trace;
  
- 	/* not provided by VBIOS */
- 	info->lcd_timing.misc_info.VERTICAL_CUT_OFF = 0;
+ 	switch (tracer_event->event_id) {
+ 	case TRACER_EVENT_TYPE_TIMESTAMP:
+@@ -582,6 +583,26 @@ void mlx5_tracer_print_trace(struct tracer_string_format *str_frmt,
+ 	mlx5_tracer_clean_message(str_frmt);
+ }
+ 
++static int mlx5_tracer_handle_raw_string(struct mlx5_fw_tracer *tracer,
++					 struct tracer_event *tracer_event)
++{
++	struct tracer_string_format *cur_string;
++
++	cur_string = mlx5_tracer_message_insert(tracer, tracer_event);
++	if (!cur_string)
++		return -1;
++
++	cur_string->event_id = tracer_event->event_id;
++	cur_string->timestamp = tracer_event->string_event.timestamp;
++	cur_string->lost = tracer_event->lost_event;
++	cur_string->string = "0x%08x%08x";
++	cur_string->num_of_params = 2;
++	cur_string->params[0] = upper_32_bits(*tracer_event->out);
++	cur_string->params[1] = lower_32_bits(*tracer_event->out);
++	list_add_tail(&cur_string->list, &tracer->ready_strings_list);
++	return 0;
++}
++
+ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 					   struct tracer_event *tracer_event)
+ {
+@@ -590,7 +611,7 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 	if (tracer_event->string_event.tdsn == 0) {
+ 		cur_string = mlx5_tracer_get_string(tracer, tracer_event);
+ 		if (!cur_string)
+-			return -1;
++			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 
+ 		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
+ 		cur_string->last_param_num = 0;
+@@ -605,7 +626,7 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 		if (!cur_string) {
+ 			pr_debug("%s Got string event for unknown string tmsn: %d\n",
+ 				 __func__, tracer_event->string_event.tmsn);
+-			return -1;
++			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 		}
+ 		cur_string->last_param_num += 1;
+ 		if (cur_string->last_param_num > TRACER_MAX_PARAMS) {
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+index 97252a85d65e6..568efb1e2bd24 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+@@ -158,6 +158,7 @@ struct tracer_event {
+ 		struct tracer_string_event string_event;
+ 		struct tracer_timestamp_event timestamp_event;
+ 	};
++	u64 *out;
+ };
+ 
+ struct mlx5_ifc_tracer_event_bits {
 -- 
 2.51.0
 
