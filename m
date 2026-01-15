@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209597-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209143-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 27194D27B2B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:41:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1B7FBD26ACA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 4FD7E30BFE02
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 56D82323CDFC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C5023BFE38;
-	Thu, 15 Jan 2026 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E65D83A7E07;
+	Thu, 15 Jan 2026 17:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0bY1+Oc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JhsJTZg+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 047873BFE49;
-	Thu, 15 Jan 2026 17:45:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A8411E56A;
+	Thu, 15 Jan 2026 17:24:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499150; cv=none; b=rUIJ8wDDjGrlQcEw9nkLdMAeNFzVJYSdJJaW0WPhwJJEd7mVlIVMxwBPeFHuHmU7/hwdfoBHfNt1Y5RJeaxfMDcl5jjuQWGtMlxgvMhe2nkDGQQVsFTrsdtRuUb+Rk666n9ofU5CHnavLCUepdMiOTU9fUO+pzP7uO6E0TtPyms=
+	t=1768497855; cv=none; b=TUEBxwBLPoS8xQkZvFnqTfTHLBtYaZyBOa2XuTWNXtBWcJca1yKWo8o+AdKxYH1tHZqjJiAdVxF+8ry9k6aaNf9s2FDH+L25iucLfgI/hFLaUrSabZuViAEJA5rGZa64t2NgbpVStHjH0kgp8u7SHlRcukHKMRr5OQpFvJ0JPiI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499150; c=relaxed/simple;
-	bh=isos9XJ27cRKNnFNdoVZYhbxs8F+4/cOr5kWYnE4c1U=;
+	s=arc-20240116; t=1768497855; c=relaxed/simple;
+	bh=SewFgkgc8c3VqmK8JTBW5pOzFfbh8/p5BD8W4S6JhAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBDFcgP995MI49jR4KtRLbzWFHAGN/nOQpn3JikxaEm+pz2u6urqPr28sL08gDqh4Zt6hCActa2YIt8emQNEjHHv+i7p6V0K997wWJxCRP7pu2htU3YCEsL4O16CR84+txz5J6uyvDGbO79Zr9jeXQAluijZY+kAPI5yV1P857c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0bY1+Oc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AECBC2BC87;
-	Thu, 15 Jan 2026 17:45:49 +0000 (UTC)
+	 MIME-Version; b=kMCiav4NM4iWWTz/Zyg9AVJdTmvZDflIBsIrMG/guYL1+8oSlNQdscqEXAoIVAwX59sao7M2m3/D8HOv72pCQYTZP9HDDgyW0QYNaqdD5eTLTMtRI4o/r9LjjRYgrFZW5+DmH8PX84Mz/o4YoSQzoLVqKXRR77vEb2TepzOci/g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JhsJTZg+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35C1EC116D0;
+	Thu, 15 Jan 2026 17:24:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499149;
-	bh=isos9XJ27cRKNnFNdoVZYhbxs8F+4/cOr5kWYnE4c1U=;
+	s=korg; t=1768497855;
+	bh=SewFgkgc8c3VqmK8JTBW5pOzFfbh8/p5BD8W4S6JhAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0bY1+OcStKq+oYZAuqp8DgXUVY4P6TbaNLBIefPnQuqtB3Tesaqmkahf9RTkjIv9
-	 iTTtl7YHGEMEUVXF9movHWTpa1Yb8yCfpcAVhyvaa4W2uF7TPx++2cMBen36Dr7TCd
-	 6dfBC9W7SgNW6GMMmjOpzBcTxpWNr+a3UPxSjH9M=
+	b=JhsJTZg+AzfIF0OgpR/l1q97Mp1mcIsdzLty8m4TPW3lIT4TXN8GeIUkNsMGfsNL8
+	 gtqEmw/G8qhANrw57qQxVHfZ11SyKsYJCfrSa7srlVCscvrIGjCpgNRWpExX9TZv2J
+	 aGF4bC/J/6Vnbdv83AAAd7gOgDZxNQTtoLERzk7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jisheng Zhang <jszhang@kernel.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/451] usb: dwc2: fix hang during shutdown if set as peripheral
+Subject: [PATCH 5.15 227/554] mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats
 Date: Thu, 15 Jan 2026 17:44:53 +0100
-Message-ID: <20260115164234.246311048@linuxfoundation.org>
+Message-ID: <20260115164254.462893764@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,58 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit b6ebcfdcac40a27953f052e4269ce75a18825ffc ]
+[ Upstream commit 8ac1dacec458f55f871f7153242ed6ab60373b90 ]
 
-dwc2 on most platforms needs phy controller, clock and power supply.
-All of them must be enabled/activated to properly operate. If dwc2
-is configured as peripheral mode, then all the above three hardware
-resources are disabled at the end of the probe:
+Cited commit added a dedicated mutex (instead of RTNL) to protect the
+multicast route list, so that it will not change while the driver
+periodically traverses it in order to update the kernel about multicast
+route stats that were queried from the device.
 
-	/* Gadget code manages lowlevel hw on its own */
-	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
-		dwc2_lowlevel_hw_disable(hsotg);
+One instance of list entry deletion (during route replace) was missed
+and it can result in a use-after-free [1].
 
-But dwc2_driver_shutdown() tries to disable the interrupts on HW IP
-level. This would result in hang during shutdown if dwc2 is configured
-as peripheral mode.
+Fix by acquiring the mutex before deleting the entry from the list and
+releasing it afterwards.
 
-Fix this hang by only disable and sync irq when lowlevel hw is enabled.
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
+Read of size 8 at addr ffff8881523c2fa8 by task kworker/2:5/22043
 
-Fixes: 4fdf228cdf69 ("usb: dwc2: Fix shutdown callback in platform")
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Link: https://patch.msgid.link/20251104002503.17158-2-jszhang@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 2 UID: 0 PID: 22043 Comm: kworker/2:5 Not tainted 6.18.0-rc1-custom-g1a3d6d7cd014 #1 PREEMPT(full)
+Hardware name: Mellanox Technologies Ltd. MSN2010/SA002610, BIOS 5.6.5 08/24/2017
+Workqueue: mlxsw_core mlxsw_sp_mr_stats_update [mlxsw_spectrum]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ print_report+0x174/0x4f5
+ kasan_report+0xdf/0x110
+ mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 29933:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ mlxsw_sp_mr_route_add+0xd8/0x4770 [mlxsw_spectrum]
+ mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+
+Freed by task 29933:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_save_free_info+0x3b/0x70
+ __kasan_slab_free+0x43/0x70
+ kfree+0x14e/0x700
+ mlxsw_sp_mr_route_add+0x2dea/0x4770 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:444 [mlxsw_spectrum]
+ mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+
+Fixes: f38656d06725 ("mlxsw: spectrum_mr: Protect multicast route list with a lock")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/f996feecfd59fde297964bfc85040b6d83ec6089.1764695650.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/dwc2/platform.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
-index 57ef6dcb489b8..175b4c0886284 100644
---- a/drivers/usb/dwc2/platform.c
-+++ b/drivers/usb/dwc2/platform.c
-@@ -341,11 +341,11 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
- {
- 	struct dwc2_hsotg *hsotg = platform_get_drvdata(dev);
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
+index 1f6bc0c7e91dd..c39aca54a0d6b 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
+@@ -440,7 +440,9 @@ int mlxsw_sp_mr_route_add(struct mlxsw_sp_mr_table *mr_table,
+ 		rhashtable_remove_fast(&mr_table->route_ht,
+ 				       &mr_orig_route->ht_node,
+ 				       mlxsw_sp_mr_route_ht_params);
++		mutex_lock(&mr_table->route_list_lock);
+ 		list_del(&mr_orig_route->node);
++		mutex_unlock(&mr_table->route_list_lock);
+ 		mlxsw_sp_mr_route_destroy(mr_table, mr_orig_route);
+ 	}
  
--	dwc2_disable_global_interrupts(hsotg);
--	synchronize_irq(hsotg->irq);
--
--	if (hsotg->ll_hw_enabled)
-+	if (hsotg->ll_hw_enabled) {
-+		dwc2_disable_global_interrupts(hsotg);
-+		synchronize_irq(hsotg->irq);
- 		dwc2_lowlevel_hw_disable(hsotg);
-+	}
- }
- 
- /**
 -- 
 2.51.0
 
