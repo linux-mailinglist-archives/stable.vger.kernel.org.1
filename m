@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208846-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209393-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D35FD2633C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:15:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D58AD26AA0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2AF3D3021563
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8EDCD3119A42
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01DC3A1CE4;
-	Thu, 15 Jan 2026 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74E183C00BE;
+	Thu, 15 Jan 2026 17:36:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tXQ/km87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Wtd4+dI+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8125829ACDD;
-	Thu, 15 Jan 2026 17:10:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 35DCB3B8D5F;
+	Thu, 15 Jan 2026 17:36:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497009; cv=none; b=DcpWpeKsKUUd24g4kZDMWZSMvrQsOCrtweGaMUfdDPouDd7SgasY6yP+fXivWBYzIwQbwKAC3mpYGodbRGxuACtrZcFUShhOyjaVxfF1YmKXmNgvQII7/4WUdCfLrbQi1T8Kc6IyBu/WvRE4L1lrmP7jZyd/HExHUZ50On3vFYk=
+	t=1768498569; cv=none; b=HQIIO36CiwZAusBD3VCihfyuK4NFKAbSl3iJWrdeX7qmeUcqn6vcvEQgTGFI/BFIx34TqK4djGXUzGiw+7d5lBghmrQVTD1p1FDp0zo6yDDyuoYyp5Ccp3x6XiEXtIHG8Dh6KNTb6H3m5pNLdmakV3aeI9l9VPM6SLuzJWc8Cyk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497009; c=relaxed/simple;
-	bh=XTn2msaf0yg90mdNZAoul/RdbGyU8qbquvMU7vlR7Gg=;
+	s=arc-20240116; t=1768498569; c=relaxed/simple;
+	bh=7Jizwr6EYJEZyISnnN2ihaINrXS3GUtx0oS96yf/Km0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u34DRrLRScy00t41HssKl/tybLE4woMFcCkgoYK/YF0fKxZd9b9KlacwhZ8fTGgAm9dnzdaw7onLMNvE9c5yS1wYr4XhVKeEEQOehdDr9ZsHVvx2B5oYDP/fJv40e0suntmRzOvFREVhQUnJd3aeLWAK85ioGlaX5tS/kXGBsKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tXQ/km87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F014FC116D0;
-	Thu, 15 Jan 2026 17:10:08 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pBPEk1jZRrxWVYJv72GD9IN5p2WYgUmawrU342KCBxT4mG39PwKF/fhoHaK61rgoBbGHjdYoP5WaP1evwYLmup1U+1u3zAjnXu5MGhrp2zBf5u+V+CIJ6EWYKnYIThI8M7WRjdDA2QYc0R/v0JJm+jjsKGqpiZQfyYtmyEdQUCI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Wtd4+dI+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B94AC19425;
+	Thu, 15 Jan 2026 17:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497009;
-	bh=XTn2msaf0yg90mdNZAoul/RdbGyU8qbquvMU7vlR7Gg=;
+	s=korg; t=1768498568;
+	bh=7Jizwr6EYJEZyISnnN2ihaINrXS3GUtx0oS96yf/Km0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tXQ/km87rb4DkjpcHRQDZzGjpNbliqTtZteMyG3Klgrdof0KMeRob/JfJMbUmJkdI
-	 c4okyDUufap+FZsLozyqEB5qjKZfstm6bYlLVorf9K8GJ9ED8cCOPGZjXAVmOF2Ivy
-	 HbT53oFUJXh4JWx5sSRo9WEiKgtlIuW41I3mrmaw=
+	b=Wtd4+dI+1l5Mu0UCjJ2Co2R1ormQmG4+8MVFcTn3++tnQXYDO0GzpxdT7tOW60j0Q
+	 mCQW2BaSFHdcGCgQE7FFMkVVtREfSq+sBdWwUy68eUxYL/qS/n2qshwbyKSig8uyHv
+	 bXZAbPaNuEw09Xg2DuI0cjBU/MAStnvM3wnw3cTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
-	Florian Westphal <fw@strlen.de>,
+	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
+	Takashi Iwai <tiwai@suse.de>,
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 80/88] netfilter: nf_tables: avoid chain re-validation if possible
+Subject: [PATCH 5.15 477/554] ASoC: stm: stm32_sai_sub: Convert to platform remove callback returning void
 Date: Thu, 15 Jan 2026 17:49:03 +0100
-Message-ID: <20260115164149.212743608@linuxfoundation.org>
+Message-ID: <20260115164303.569810160@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,275 +60,69 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
 
-[ Upstream commit 8e1a1bc4f5a42747c08130b8242ebebd1210b32f ]
+[ Upstream commit a3bd37e2e2bce4fb1757a940fa985d556662ba80 ]
 
-Hamza Mahfooz reports cpu soft lock-ups in
-nft_chain_validate():
+The .remove() callback for a platform driver returns an int which makes
+many driver authors wrongly assume it's possible to do error handling by
+returning an error code. However the value returned is (mostly) ignored
+and this typically results in resource leaks. To improve here there is a
+quest to make the remove callback return void. In the first step of this
+quest all drivers are converted to .remove_new() which already returns
+void.
 
- watchdog: BUG: soft lockup - CPU#1 stuck for 27s! [iptables-nft-re:37547]
-[..]
- RIP: 0010:nft_chain_validate+0xcb/0x110 [nf_tables]
-[..]
-  nft_immediate_validate+0x36/0x50 [nf_tables]
-  nft_chain_validate+0xc9/0x110 [nf_tables]
-  nft_immediate_validate+0x36/0x50 [nf_tables]
-  nft_chain_validate+0xc9/0x110 [nf_tables]
-  nft_immediate_validate+0x36/0x50 [nf_tables]
-  nft_chain_validate+0xc9/0x110 [nf_tables]
-  nft_immediate_validate+0x36/0x50 [nf_tables]
-  nft_chain_validate+0xc9/0x110 [nf_tables]
-  nft_immediate_validate+0x36/0x50 [nf_tables]
-  nft_chain_validate+0xc9/0x110 [nf_tables]
-  nft_immediate_validate+0x36/0x50 [nf_tables]
-  nft_chain_validate+0xc9/0x110 [nf_tables]
-  nft_table_validate+0x6b/0xb0 [nf_tables]
-  nf_tables_validate+0x8b/0xa0 [nf_tables]
-  nf_tables_commit+0x1df/0x1eb0 [nf_tables]
-[..]
+Trivially convert this driver from always returning zero in the remove
+callback to the void returning variant.
 
-Currently nf_tables will traverse the entire table (chain graph), starting
-from the entry points (base chains), exploring all possible paths
-(chain jumps).  But there are cases where we could avoid revalidation.
-
-Consider:
-1  input -> j2 -> j3
-2  input -> j2 -> j3
-3  input -> j1 -> j2 -> j3
-
-Then the second rule does not need to revalidate j2, and, by extension j3,
-because this was already checked during validation of the first rule.
-We need to validate it only for rule 3.
-
-This is needed because chain loop detection also ensures we do not exceed
-the jump stack: Just because we know that j2 is cycle free, its last jump
-might now exceed the allowed stack size.  We also need to update all
-reachable chains with the new largest observed call depth.
-
-Care has to be taken to revalidate even if the chain depth won't be an
-issue: chain validation also ensures that expressions are not called from
-invalid base chains.  For example, the masquerade expression can only be
-called from NAT postrouting base chains.
-
-Therefore we also need to keep record of the base chain context (type,
-hooknum) and revalidate if the chain becomes reachable from a different
-hook location.
-
-Reported-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Closes: https://lore.kernel.org/netfilter-devel/20251118221735.GA5477@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/
-Tested-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Takashi Iwai <tiwai@suse.de>
+Acked-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20230315150745.67084-139-u.kleine-koenig@pengutronix.de
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 23261f0de094 ("ASoC: stm32: sai: fix OF node leak on probe")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/netfilter/nf_tables.h | 34 +++++++++++----
- net/netfilter/nf_tables_api.c     | 69 +++++++++++++++++++++++++++++--
- 2 files changed, 91 insertions(+), 12 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
-index a8fcbdb37a7f9..02a73037fae01 100644
---- a/include/net/netfilter/nf_tables.h
-+++ b/include/net/netfilter/nf_tables.h
-@@ -1079,6 +1079,29 @@ struct nft_rule_blob {
- 		__attribute__((aligned(__alignof__(struct nft_rule_dp))));
- };
- 
-+enum nft_chain_types {
-+	NFT_CHAIN_T_DEFAULT = 0,
-+	NFT_CHAIN_T_ROUTE,
-+	NFT_CHAIN_T_NAT,
-+	NFT_CHAIN_T_MAX
-+};
-+
-+/**
-+ *	struct nft_chain_validate_state - validation state
-+ *
-+ *	If a chain is encountered again during table validation it is
-+ *	possible to avoid revalidation provided the calling context is
-+ *	compatible.  This structure stores relevant calling context of
-+ *	previous validations.
-+ *
-+ *	@hook_mask: the hook numbers and locations the chain is linked to
-+ *	@depth: the deepest call chain level the chain is linked to
-+ */
-+struct nft_chain_validate_state {
-+	u8			hook_mask[NFT_CHAIN_T_MAX];
-+	u8			depth;
-+};
-+
- /**
-  *	struct nft_chain - nf_tables chain
-  *
-@@ -1097,6 +1120,7 @@ struct nft_rule_blob {
-  *	@udlen: user data length
-  *	@udata: user data in the chain
-  *	@blob_next: rule blob pointer to the next in the chain
-+ *	@vstate: validation state
-  */
- struct nft_chain {
- 	struct nft_rule_blob		__rcu *blob_gen_0;
-@@ -1116,9 +1140,10 @@ struct nft_chain {
- 
- 	/* Only used during control plane commit phase: */
- 	struct nft_rule_blob		*blob_next;
-+	struct nft_chain_validate_state vstate;
- };
- 
--int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain);
-+int nft_chain_validate(const struct nft_ctx *ctx, struct nft_chain *chain);
- int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
- 			 const struct nft_set_iter *iter,
- 			 struct nft_set_elem *elem);
-@@ -1126,13 +1151,6 @@ int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set);
- int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
- void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
- 
--enum nft_chain_types {
--	NFT_CHAIN_T_DEFAULT = 0,
--	NFT_CHAIN_T_ROUTE,
--	NFT_CHAIN_T_NAT,
--	NFT_CHAIN_T_MAX
--};
--
- /**
-  * 	struct nft_chain_type - nf_tables chain type info
-  *
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 43ebe3b4f886a..c00dd7dae5cb9 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -121,6 +121,29 @@ static void nft_validate_state_update(struct nft_table *table, u8 new_validate_s
- 
- 	table->validate_state = new_validate_state;
- }
-+
-+static bool nft_chain_vstate_valid(const struct nft_ctx *ctx,
-+				   const struct nft_chain *chain)
-+{
-+	const struct nft_base_chain *base_chain;
-+	enum nft_chain_types type;
-+	u8 hooknum;
-+
-+	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain)))
-+		return false;
-+
-+	base_chain = nft_base_chain(ctx->chain);
-+	hooknum = base_chain->ops.hooknum;
-+	type = base_chain->type->type;
-+
-+	/* chain is already validated for this call depth */
-+	if (chain->vstate.depth >= ctx->level &&
-+	    chain->vstate.hook_mask[type] & BIT(hooknum))
-+		return true;
-+
-+	return false;
-+}
-+
- static void nf_tables_trans_destroy_work(struct work_struct *w);
- static DECLARE_WORK(trans_destroy_work, nf_tables_trans_destroy_work);
- 
-@@ -3798,6 +3821,29 @@ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *r
- 	nf_tables_rule_destroy(ctx, rule);
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1571,7 +1571,7 @@ err_unprepare_pclk:
+ 	return ret;
  }
  
-+static void nft_chain_vstate_update(const struct nft_ctx *ctx, struct nft_chain *chain)
-+{
-+	const struct nft_base_chain *base_chain;
-+	enum nft_chain_types type;
-+	u8 hooknum;
-+
-+	/* ctx->chain must hold the calling base chain. */
-+	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain))) {
-+		memset(&chain->vstate, 0, sizeof(chain->vstate));
-+		return;
-+	}
-+
-+	base_chain = nft_base_chain(ctx->chain);
-+	hooknum = base_chain->ops.hooknum;
-+	type = base_chain->type->type;
-+
-+	BUILD_BUG_ON(BIT(NF_INET_NUMHOOKS) > U8_MAX);
-+
-+	chain->vstate.hook_mask[type] |= BIT(hooknum);
-+	if (chain->vstate.depth < ctx->level)
-+		chain->vstate.depth = ctx->level;
-+}
-+
- /** nft_chain_validate - loop detection and hook validation
-  *
-  * @ctx: context containing call depth and base chain
-@@ -3807,15 +3853,25 @@ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *r
-  * and set lookups until either the jump limit is hit or all reachable
-  * chains have been validated.
-  */
--int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
-+int nft_chain_validate(const struct nft_ctx *ctx, struct nft_chain *chain)
+-static int stm32_sai_sub_remove(struct platform_device *pdev)
++static void stm32_sai_sub_remove(struct platform_device *pdev)
  {
- 	struct nft_expr *expr, *last;
- 	struct nft_rule *rule;
- 	int err;
+ 	struct stm32_sai_sub_data *sai = dev_get_drvdata(&pdev->dev);
  
-+	BUILD_BUG_ON(NFT_JUMP_STACK_SIZE > 255);
- 	if (ctx->level == NFT_JUMP_STACK_SIZE)
- 		return -EMLINK;
- 
-+	if (ctx->level > 0) {
-+		/* jumps to base chains are not allowed. */
-+		if (nft_is_base_chain(chain))
-+			return -ELOOP;
-+
-+		if (nft_chain_vstate_valid(ctx, chain))
-+			return 0;
-+	}
-+
- 	list_for_each_entry(rule, &chain->rules, list) {
- 		if (fatal_signal_pending(current))
- 			return -EINTR;
-@@ -3836,6 +3892,7 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
- 		}
- 	}
- 
-+	nft_chain_vstate_update(ctx, chain);
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(nft_chain_validate);
-@@ -3847,7 +3904,7 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
- 		.net	= net,
- 		.family	= table->family,
- 	};
--	int err;
-+	int err = 0;
- 
- 	list_for_each_entry(chain, &table->chains, list) {
- 		if (!nft_is_base_chain(chain))
-@@ -3856,12 +3913,16 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
- 		ctx.chain = chain;
- 		err = nft_chain_validate(&ctx, chain);
- 		if (err < 0)
--			return err;
-+			goto err;
- 
- 		cond_resched();
- 	}
- 
+@@ -1579,8 +1579,6 @@ static int stm32_sai_sub_remove(struct p
+ 	snd_dmaengine_pcm_unregister(&pdev->dev);
+ 	snd_soc_unregister_component(&pdev->dev);
+ 	pm_runtime_disable(&pdev->dev);
+-
 -	return 0;
-+err:
-+	list_for_each_entry(chain, &table->chains, list)
-+		memset(&chain->vstate, 0, sizeof(chain->vstate));
-+
-+	return err;
  }
  
- int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
--- 
-2.51.0
-
+ #ifdef CONFIG_PM_SLEEP
+@@ -1630,7 +1628,7 @@ static struct platform_driver stm32_sai_
+ 		.pm = &stm32_sai_sub_pm_ops,
+ 	},
+ 	.probe = stm32_sai_sub_probe,
+-	.remove = stm32_sai_sub_remove,
++	.remove_new = stm32_sai_sub_remove,
+ };
+ 
+ module_platform_driver(stm32_sai_sub_driver);
 
 
 
