@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209273-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209695-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 96540D26874
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7A9F9D27018
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:00:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EC39930A18CF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A2C6F304E43F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F7253D3337;
-	Thu, 15 Jan 2026 17:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 865073E95BF;
+	Thu, 15 Jan 2026 17:50:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOLzo/OV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NYyV9HHV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 020FD3D3315;
-	Thu, 15 Jan 2026 17:30:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3E0CF3E95A6;
+	Thu, 15 Jan 2026 17:50:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498227; cv=none; b=m1dqdx//wjdqjS6ady7YF4exJtLeM1JBYJ5S7rsgcder37TthruJFOieGG1StAsDo6fccu0r42yYmxyNUtHePkx7jqv9vCiDePwTpAO19F2u/RS9/hUeHprG8985R+5kY1jXXUpFD8xM8glkBmJywEondU8mgWrDCQMlzZzhfGE=
+	t=1768499428; cv=none; b=o/dEhUunrYL+1EZdKPFTH394V24UV1IhtN5gif4DT57p/S1l39uRHluwGIdYYbvjXwyRBtGivLPTa5IMQiAT7T76qD/JQ7yZhppvAjfKlMfCM/Vwg33GZUHraMKNVu1AogdggmHFSGtA8vwzrgJ+D6yDOsmA9r15hlVm9QYi/NU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498227; c=relaxed/simple;
-	bh=Ac34wxv8VVF8G0vlNBaNcslp8jtjWyW/Ww3HQ2CjLps=;
+	s=arc-20240116; t=1768499428; c=relaxed/simple;
+	bh=y4cL95q2u1jkNJCUNNpM2uq86TyJukbXt1LiK6AXfjE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TIW4Zp7odtwMZSQtGj17uCrSEi8X0yTr1SmMkSMnFr7aoDYQrfe3lnpTMH6YSTfpm0xDntpbXamcA5afZ7fa6I0nsWdGZZjv0QpXXGXVEPEOOgIHm/hmqccQLIyrHyzmZ15cRGnD1f9SWBi9mAaOdVRMonjEQH00Uv/XiOq0+Qk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOLzo/OV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 831CAC116D0;
-	Thu, 15 Jan 2026 17:30:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=Trtl/oliunQaL/d3lzsEWxG9FBkWcW23DO8ZJq9Xdt2uB8Xzsf1TE/l6uvc3Xz4Zxczt/O/TbrBK4W9lUofz0umyBpI1PpXqA0w0SdFILtDwxFsAnaTOYkNcJf1maOjSOX3zOrd1v12jagoNU8LG3MSOLZUl6oC2QzX7YvXMVa4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NYyV9HHV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C22FC19425;
+	Thu, 15 Jan 2026 17:50:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498226;
-	bh=Ac34wxv8VVF8G0vlNBaNcslp8jtjWyW/Ww3HQ2CjLps=;
+	s=korg; t=1768499427;
+	bh=y4cL95q2u1jkNJCUNNpM2uq86TyJukbXt1LiK6AXfjE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mOLzo/OV84iXKrekDhmV+kaA7DCnJ3siP3E/AXYaas7ykoIuQzzUrbOi5JhDXAVrY
-	 yo03o3K8ePnYuKiFKl1DNYP6FPK5UplibF34R5GsHsdP4H5Sovnj8jB8W27BwJAedD
-	 /87dy+OWLp+C9Zv4WB4wxdXuaOdIHzbLQFab5gNM=
+	b=NYyV9HHVTGIjX+5lXN7HfofR4cAtMrZh+CTLqLTwo2WrdHI/XphdB2rV+THmtJNcp
+	 9TQWrRMyPVX2G8AcJqwmKJnkYvdo2t7j2GwrLoo8uDVfnpu36KaFQmCdwE2IUt2RGP
+	 vRrvy7sxgt89i8BSBSK0gIRA9QjKtgKrcFQUV3PQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
-	Ido Schimmel <idosch@nvidia.com>,
-	David Ahern <dsahern@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 358/554] ipv4: Fix reference count leak when using error routes with nexthop objects
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.10 223/451] floppy: fix for PAGE_SIZE != 4KB
 Date: Thu, 15 Jan 2026 17:47:04 +0100
-Message-ID: <20260115164259.185051202@linuxfoundation.org>
+Message-ID: <20260115164238.965068210@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +57,51 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Rene Rebe <rene@exactco.de>
 
-[ Upstream commit ac782f4e3bfcde145b8a7f8af31d9422d94d172a ]
+commit 82d20481024cbae2ea87fe8b86d12961bfda7169 upstream.
 
-When a nexthop object is deleted, it is marked as dead and then
-fib_table_flush() is called to flush all the routes that are using the
-dead nexthop.
+For years I wondered why the floppy driver does not just work on
+sparc64, e.g:
 
-The current logic in fib_table_flush() is to only flush error routes
-(e.g., blackhole) when it is called as part of network namespace
-dismantle (i.e., with flush_all=true). Therefore, error routes are not
-flushed when their nexthop object is deleted:
+root@SUNW_375_0066:# disktype /dev/fd0
+disktype: Can't open /dev/fd0: No such device or address
 
- # ip link add name dummy1 up type dummy
- # ip nexthop add id 1 dev dummy1
- # ip route add 198.51.100.1/32 nhid 1
- # ip route add blackhole 198.51.100.2/32 nhid 1
- # ip nexthop del id 1
- # ip route show
- blackhole 198.51.100.2 nhid 1 dev dummy1
+[  525.341906] disktype: attempt to access beyond end of device
+fd0: rw=0, sector=0, nr_sectors = 16 limit=8
+[  525.341991] floppy: error 10 while reading block 0
 
-As such, they keep holding a reference on the nexthop object which in
-turn holds a reference on the nexthop device, resulting in a reference
-count leak:
+Turns out floppy.c __floppy_read_block_0 tries to read one page for
+the first test read to determine the disk size and thus fails if that
+is greater than 4k. Adjust minimum MAX_DISK_SIZE to PAGE_SIZE to fix
+floppy on sparc64 and likely all other PAGE_SIZE != 4KB configs.
 
- # ip link del dev dummy1
- [   70.516258] unregister_netdevice: waiting for dummy1 to become free. Usage count = 2
-
-Fix by flushing error routes when their nexthop is marked as dead.
-
-IPv6 does not suffer from this problem.
-
-Fixes: 493ced1ac47c ("ipv4: Allow routes to use nexthop objects")
-Reported-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Closes: https://lore.kernel.org/netdev/d943f806-4da6-4970-ac28-b9373b0e63ac@I-love.SAKURA.ne.jp/
-Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Link: https://patch.msgid.link/20251221144829.197694-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/fib_trie.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/block/floppy.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/ipv4/fib_trie.c b/net/ipv4/fib_trie.c
-index 8ab6ad65d0b8..2cec18cb5c48 100644
---- a/net/ipv4/fib_trie.c
-+++ b/net/ipv4/fib_trie.c
-@@ -2049,10 +2049,11 @@ int fib_table_flush(struct net *net, struct fib_table *tb, bool flush_all)
- 				continue;
- 			}
+--- a/drivers/block/floppy.c
++++ b/drivers/block/floppy.c
+@@ -332,7 +332,7 @@ static bool initialized;
+  * This default is used whenever the current disk size is unknown.
+  * [Now it is rather a minimum]
+  */
+-#define MAX_DISK_SIZE 4		/* 3984 */
++#define MAX_DISK_SIZE (PAGE_SIZE / 1024)
  
--			/* Do not flush error routes if network namespace is
--			 * not being dismantled
-+			/* When not flushing the entire table, skip error
-+			 * routes that are not marked for deletion.
- 			 */
--			if (!flush_all && fib_props[fa->fa_type].error) {
-+			if (!flush_all && fib_props[fa->fa_type].error &&
-+			    !(fi->fib_flags & RTNH_F_DEAD)) {
- 				slen = fa->fa_slen;
- 				continue;
- 			}
--- 
-2.51.0
-
+ /*
+  * globals used by 'result()'
 
 
 
