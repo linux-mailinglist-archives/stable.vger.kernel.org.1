@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208672-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 913F0D26278
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31ACCD27254
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9CA3A31185F8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:58 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 11ACC317FE93
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 783DA37C117;
-	Thu, 15 Jan 2026 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 222183D4107;
+	Thu, 15 Jan 2026 17:52:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xW3eg0kU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FU502mpG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C36929C338;
-	Thu, 15 Jan 2026 17:01:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C62183C199C;
+	Thu, 15 Jan 2026 17:52:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496518; cv=none; b=WatfK4f3BveeoRp0phh65PddYxhHkFu+UQJr/2rggGATPSscO2FNpIIq1fFqvVQhXLDUyzwR5JSq0bNR9xYv4Uv9Nlm8RiwVpYMLZ1EA6mbBK94Xr/tZRbAZ5LPqXs+JaAuC6NEipNtPPDPUcnQcSFojcv/XdslX3ucmNcyNc5Q=
+	t=1768499521; cv=none; b=lcItiA3giCKJzppaOfbXKzL1UjpbuX3tI49PFm9n6XvQap4vPiawfUcDz+GYYtK/oIoXQIy88ZF3c9HhsP2IY3n4T4J7ey12xVZLT52kT0HK5M7aCo2Eh5dKMrvPxqjkH+EXZgylHQ0SQFE1szhml3UTucXxPukQ+GeQmVFOuaY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496518; c=relaxed/simple;
-	bh=v+pluQGsk5dzG5dkoovIZfWOXdOfzInoUfd/bphRNVY=;
+	s=arc-20240116; t=1768499521; c=relaxed/simple;
+	bh=eAdxM1hr51nUhYZ/iiKhe7uqzVi+NwhaO3FpFbUidAo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iQ1s9qrzuDmIVaUW96hBg3X1YqaSar9IYum6H/KFE88XcQB1UM9nHsO3FVHhre2uxDpUTEuzgf2ipP1rA20kelvDDN6oR9tx/jJwplpD0y7KCSwt90LEwjnJuu75dFVPqm5J+nqLBx0u3WONRQ99x2A20gyv2rkDyrxzula6Nd8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xW3eg0kU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A27EC16AAE;
-	Thu, 15 Jan 2026 17:01:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=LBqO+lFL8/9rxN0kMorVy25dRvgjuK4DzfIQE0zaMo5Lk5giEmO/qrl9zUyR0otpmnVM1pN+v27qNbM7mDIUoWxSb1q+wjyJX9OtOy7Lc+3gDzZYVLSWMwyM6/HpB+2SwEoomxMTxiJ6XcD4ZIzEVcH6ZrrXoK4UOuqZEmWk4hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FU502mpG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FC4DC116D0;
+	Thu, 15 Jan 2026 17:52:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496518;
-	bh=v+pluQGsk5dzG5dkoovIZfWOXdOfzInoUfd/bphRNVY=;
+	s=korg; t=1768499521;
+	bh=eAdxM1hr51nUhYZ/iiKhe7uqzVi+NwhaO3FpFbUidAo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xW3eg0kUbvcgOKI5kAxcOb9lQjlVCvglm+4wA+CI4sI1zfi444GCy3TVOdpz0JWzX
-	 c0QwHx4QLMh+zZRHpvj9blCI2kf/NCd2//9hMTIU6hbtqgimlMhvho7FKEs+0PQcvk
-	 ytU03WLlXIxRnRv2mIhk/J2HS9GoH76zhZeOqiIk=
+	b=FU502mpGc1CJZn9ZILt8HXDn5nyg9BxD2pnwSfifKLT5nH30srUoszeBb/CgoOZj2
+	 llvo20/qAwRq4c1KlIN1lYXPCmyqLfAW8ZVDWLjyCBqwmU0tXQwCiryRJ0oeGfj3tF
+	 Hzr44nxZj9CrQeHkq6Y9rYVKcLGzlSB1mDZonaNk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 041/119] smb/client: fix NT_STATUS_NO_DATA_DETECTED value
-Date: Thu, 15 Jan 2026 17:47:36 +0100
-Message-ID: <20260115164153.442888611@linuxfoundation.org>
+	Matteo Rizzo <matteorizzo@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 256/451] KVM: nSVM: Propagate SVM_EXIT_CR0_SEL_WRITE correctly for LMSW emulation
+Date: Thu, 15 Jan 2026 17:47:37 +0100
+Message-ID: <20260115164240.149150186@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +58,73 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
 
-[ Upstream commit a1237c203f1757480dc2f3b930608ee00072d3cc ]
+commit 5674a76db0213f9db1e4d08e847ff649b46889c0 upstream.
 
-This was reported by the KUnit tests in the later patches.
+When emulating L2 instructions, svm_check_intercept() checks whether a
+write to CR0 should trigger a synthesized #VMEXIT with
+SVM_EXIT_CR0_SEL_WRITE. For MOV-to-CR0, SVM_EXIT_CR0_SEL_WRITE is only
+triggered if any bit other than CR0.MP and CR0.TS is updated. However,
+according to the APM (24593—Rev.  3.42—March 2024, Table 15-7):
 
-See MS-ERREF 2.3.1 STATUS_NO_DATA_DETECTED. Keep it consistent with the
-value in the documentation.
+  The LMSW instruction treats the selective CR0-write
+  intercept as a non-selective intercept (i.e., it intercepts
+  regardless of the value being written).
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Skip checking the changed bits for x86_intercept_lmsw and always inject
+SVM_EXIT_CR0_SEL_WRITE.
+
+Fixes: cfec82cb7d31 ("KVM: SVM: Add intercept check for emulated cr accesses")
+Cc: stable@vger.kernel.org
+Reported-by: Matteo Rizzo <matteorizzo@google.com>
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251024192918.3191141-3-yosry.ahmed@linux.dev
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/nterr.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/svm.c |   18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
-index d46d42559eea2..e3a341316a711 100644
---- a/fs/smb/client/nterr.h
-+++ b/fs/smb/client/nterr.h
-@@ -41,7 +41,7 @@ extern const struct nt_err_code_struct nt_errs[];
- #define NT_STATUS_MEDIA_CHANGED    0x8000001c
- #define NT_STATUS_END_OF_MEDIA     0x8000001e
- #define NT_STATUS_MEDIA_CHECK      0x80000020
--#define NT_STATUS_NO_DATA_DETECTED 0x8000001c
-+#define NT_STATUS_NO_DATA_DETECTED 0x80000022
- #define NT_STATUS_STOPPED_ON_SYMLINK 0x8000002d
- #define NT_STATUS_DEVICE_REQUIRES_CLEANING 0x80000288
- #define NT_STATUS_DEVICE_DOOR_OPEN 0x80000289
--- 
-2.51.0
-
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -3900,20 +3900,20 @@ static int svm_check_intercept(struct kv
+ 					INTERCEPT_SELECTIVE_CR0)))
+ 			break;
+ 
+-		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
+-		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
+-
++		/* LMSW always triggers INTERCEPT_SELECTIVE_CR0 */
+ 		if (info->intercept == x86_intercept_lmsw) {
+-			cr0 &= 0xfUL;
+-			val &= 0xfUL;
+-			/* lmsw can't clear PE - catch this here */
+-			if (cr0 & X86_CR0_PE)
+-				val |= X86_CR0_PE;
++			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
++			break;
+ 		}
+ 
++		/*
++		 * MOV-to-CR0 only triggers INTERCEPT_SELECTIVE_CR0 if any bit
++		 * other than SVM_CR0_SELECTIVE_MASK is changed.
++		 */
++		cr0 = vcpu->arch.cr0 & ~SVM_CR0_SELECTIVE_MASK;
++		val = info->src_val  & ~SVM_CR0_SELECTIVE_MASK;
+ 		if (cr0 ^ val)
+ 			icpt_info.exit_code = SVM_EXIT_CR0_SEL_WRITE;
+-
+ 		break;
+ 	}
+ 	case SVM_EXIT_READ_DR0:
 
 
 
