@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209254-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209708-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1F2CD26DBB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 43D9ED271D2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9EBA6304193F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D0F8E3019BDA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F40F73D3010;
-	Thu, 15 Jan 2026 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D103ED62C;
+	Thu, 15 Jan 2026 17:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FLh2yuZ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u2lrvJJe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B705C3D2FEB;
-	Thu, 15 Jan 2026 17:29:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 656033ED628;
+	Thu, 15 Jan 2026 17:51:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498172; cv=none; b=ZeR3TA7FzVnQvAM/n+5pHg/PQC3nIvXIgXgehR5ZX9msch9OQchZlu1qBgNcJv/dR0kIeNZA4a49Y5qWYqnnp00refEqYgE4uYHxjCnXUJkw5FJoCzkMK7u30rksjCq42604nID2yJCUltJq4UMW5ycLKOUM9E8PhaIVx7HC4DY=
+	t=1768499465; cv=none; b=UzcRq6YhwBNeVIyjdmfP0yAPUZHPowoRiyog4EgruxHODI6u12k3mEYHJp5hTFl7P0UPlUhcPh4YoT4ck2zerxz+mXzltq9zqonJk+E2wmPlmoPBSNGVbmtpwsCng/sTjmCWMgUwumocgY6nOXUjpvWkHrFWbw0hBmbmVeKyPug=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498172; c=relaxed/simple;
-	bh=gHC3pOEu51I9x3Sfrz7oR7+MXY7JIrXF4UQUxf7wI88=;
+	s=arc-20240116; t=1768499465; c=relaxed/simple;
+	bh=6ON8cbCbwwI9x3dItki4FY25l7lF42RANpgts/fu4FQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aKwYxjneGEw+yQmQnS+5wFjM2OxCpUp6BqyprIKLFHEJkfEij+0pCe7Sa1EoyiUFCkxHC4xk4S+Z+C3DFp+4cBw9cGHrdBT2fP6xssG1bL06umBwIJUwWndHzh71BIodEGmEIBlrtzMAQ+9pQ9EqJjE6UXKOrbC5o6lDlHk1XTM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FLh2yuZ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 443BBC116D0;
-	Thu, 15 Jan 2026 17:29:32 +0000 (UTC)
+	 MIME-Version; b=eok7DjayHjKV6/nIZNHq9wN1K2LFEGXWvmth/MLRg7NsIjjZ43ONUufH/0wtR0jtsnHPK5e+D8Jw6ECmBPq7l0flDeq9jka64yKJGKe7YhtW2IUVsXLUkJNnxbb4A3lbHyie2ni+Jm9XYtzd70XhZ+zDHnkM4UfZ+D+P5ta27ME=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u2lrvJJe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95920C16AAE;
+	Thu, 15 Jan 2026 17:51:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498172;
-	bh=gHC3pOEu51I9x3Sfrz7oR7+MXY7JIrXF4UQUxf7wI88=;
+	s=korg; t=1768499464;
+	bh=6ON8cbCbwwI9x3dItki4FY25l7lF42RANpgts/fu4FQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FLh2yuZ9RyxB350JI6xmcJu2s0PWEFGjopXfLXsGYJqM58shKJhQApnWb5HwO/N1s
-	 VkHMlJp6nzHlI6vmrtjImoRfOhGzNgSwjHaq7iwzN8uVoPs1YD2bNss3aGzqm+JXBS
-	 JW8PCrgbjITbEEa7oAGpel4BvTItSDZjDdHRA21o=
+	b=u2lrvJJet/aIiMQx54lkVvj2GNhGUkwh4RQNSdEGAEnR37myl/nlpF77r/hoJSvEZ
+	 StcoIj97W8nPOvRAb5/uf8zSyotMfJfABa75eST7IDg9HWt7Vb+3Kn/GmLZj2JYLwl
+	 CvKWTYWnlSL5XS2RJdVnhQkHc4+ImeGaP16VrOE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gregory Herrero <gregory.herrero@oracle.com>,
-	Rafal Romanowski <rafal.romanowski@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 338/554] i40e: validate ring_len parameter against hardware-specific values
+Subject: [PATCH 5.10 203/451] ipmi: Fix the race between __scan_channels() and deliver_response()
 Date: Thu, 15 Jan 2026 17:46:44 +0100
-Message-ID: <20260115164258.466750493@linuxfoundation.org>
+Message-ID: <20260115164238.244659497@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gregory Herrero <gregory.herrero@oracle.com>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit 69942834215323cd9131db557091b4dec43f19c5 ]
+[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
 
-The maximum number of descriptors supported by the hardware is
-hardware-dependent and can be retrieved using
-i40e_get_max_num_descriptors(). Move this function to a shared header
-and use it when checking for valid ring_len parameter rather than using
-hardcoded value.
+The race window between __scan_channels() and deliver_response() causes
+the parameters of some channels to be set to 0.
 
-By fixing an over-acceptance issue, behavior change could be seen where
-ring_len could now be rejected while configuring rx and tx queues if its
-size is larger than the hardware-dependent maximum number of
-descriptors.
+1.[CPUA] __scan_channels() issues an IPMI request and waits with
+         wait_event() until all channels have been scanned.
+         wait_event() internally calls might_sleep(), which might
+         yield the CPU. (Moreover, an interrupt can preempt
+         wait_event() and force the task to yield the CPU.)
+2.[CPUB] deliver_response() is invoked when the CPU receives the
+         IPMI response. After processing a IPMI response,
+         deliver_response() directly assigns intf->wchannels to
+         intf->channel_list and sets intf->channels_ready to true.
+         However, not all channels are actually ready for use.
+3.[CPUA] Since intf->channels_ready is already true, wait_event()
+         never enters __wait_event(). __scan_channels() immediately
+         clears intf->null_user_handler and exits.
+4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
+         ignores further IPMI responses, leaving the remaining
+	 channels zero-initialized and unusable.
 
-Fixes: 55d225670def ("i40e: add validation for ring_len param")
-Signed-off-by: Gregory Herrero <gregory.herrero@oracle.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+CPUA                             CPUB
+-------------------------------  -----------------------------
+__scan_channels()
+ intf->null_user_handler
+       = channel_handler;
+ send_channel_info_cmd(intf,
+       0);
+ wait_event(intf->waitq,
+       intf->channels_ready);
+  do {
+   might_sleep();
+                                 deliver_response()
+                                  channel_handler()
+                                   intf->channel_list =
+				         intf->wchannels + set;
+                                   intf->channels_ready = true;
+                                   send_channel_info_cmd(intf,
+                                         intf->curr_channel);
+   if (condition)
+    break;
+   __wait_event(wq_head,
+          condition);
+  } while(0)
+ intf->null_user_handler
+       = NULL;
+                                 deliver_response()
+                                  if (!msg->user)
+                                   if (intf->null_user_handler)
+                                    rv = -EINVAL;
+                                  return rv;
+-------------------------------  -----------------------------
+
+Fix the race between __scan_channels() and deliver_response() by
+deferring both the assignment intf->channel_list = intf->wchannels
+and the flag intf->channels_ready = true until all channels have
+been successfully scanned or until the IPMI request has failed.
+
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e.h             | 11 +++++++++++
- drivers/net/ethernet/intel/i40e/i40e_ethtool.c     | 12 ------------
- drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c |  4 ++--
- 3 files changed, 13 insertions(+), 14 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e.h b/drivers/net/ethernet/intel/i40e/i40e.h
-index bbd95b3d7326..022bf6e86164 100644
---- a/drivers/net/ethernet/intel/i40e/i40e.h
-+++ b/drivers/net/ethernet/intel/i40e/i40e.h
-@@ -1305,4 +1305,15 @@ static inline u32 i40e_is_tc_mqprio_enabled(struct i40e_pf *pf)
- 	return pf->flags & I40E_FLAG_TC_MQPRIO;
- }
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index 5b01985aed22..117454a5603b 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -3305,8 +3305,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ 			intf->channels_ready = true;
+ 			wake_up(&intf->waitq);
+ 		} else {
+-			intf->channel_list = intf->wchannels + set;
+-			intf->channels_ready = true;
+ 			rv = send_channel_info_cmd(intf, intf->curr_channel);
+ 		}
  
-+static inline u32 i40e_get_max_num_descriptors(const struct i40e_pf *pf)
-+{
-+	const struct i40e_hw *hw = &pf->hw;
-+
-+	switch (hw->mac.type) {
-+	case I40E_MAC_XL710:
-+		return I40E_MAX_NUM_DESCRIPTORS_XL710;
-+	default:
-+		return I40E_MAX_NUM_DESCRIPTORS;
-+	}
-+}
- #endif /* _I40E_H_ */
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-index 74a18b8df11f..04d304eef379 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_ethtool.c
-@@ -1918,18 +1918,6 @@ static void i40e_get_drvinfo(struct net_device *netdev,
- 		drvinfo->n_priv_flags += I40E_GL_PRIV_FLAGS_STR_LEN;
- }
- 
--static u32 i40e_get_max_num_descriptors(struct i40e_pf *pf)
--{
--	struct i40e_hw *hw = &pf->hw;
--
--	switch (hw->mac.type) {
--	case I40E_MAC_XL710:
--		return I40E_MAX_NUM_DESCRIPTORS_XL710;
--	default:
--		return I40E_MAX_NUM_DESCRIPTORS;
--	}
--}
--
- static void i40e_get_ringparam(struct net_device *netdev,
- 			       struct ethtool_ringparam *ring)
- {
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-index 5cd7a2bc40fd..907727604c70 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_virtchnl_pf.c
-@@ -656,7 +656,7 @@ static int i40e_config_vsi_tx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 8 */
- 	if (!IS_ALIGNED(info->ring_len, 8) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_context;
- 	}
-@@ -728,7 +728,7 @@ static int i40e_config_vsi_rx_queue(struct i40e_vf *vf, u16 vsi_id,
- 
- 	/* ring_len has to be multiple of 32 */
- 	if (!IS_ALIGNED(info->ring_len, 32) ||
--	    info->ring_len > I40E_MAX_NUM_DESCRIPTORS_XL710) {
-+	    info->ring_len > i40e_get_max_num_descriptors(pf)) {
- 		ret = -EINVAL;
- 		goto error_param;
- 	}
 -- 
 2.51.0
 
