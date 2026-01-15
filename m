@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209925-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209459-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F097D2756F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4474D276CB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 5177430D1C8D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D00FD314C523
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1E13C0085;
-	Thu, 15 Jan 2026 18:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7524927B340;
+	Thu, 15 Jan 2026 17:39:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHe4+1ip"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sh6cEfxY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828B03B8BC0;
-	Thu, 15 Jan 2026 18:01:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D43B18AFD;
+	Thu, 15 Jan 2026 17:39:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768500083; cv=none; b=sho/LEjqsq8FQZgsUa2j6tC9SO3RhL2e4/W2xoQragNKruNbaWnym9mDBx4gfBdozTCVDBrZEy6UExVn59acAHn55d+MqvMGD4ShT/OCTwZwc+tBEEwKqdWAOMxNYtm7wy70MupAUrnI1uI9GvTJw1OmdMvOlTXSvNhKY2tmsDM=
+	t=1768498758; cv=none; b=uy+NFRYJgLyfL5Q07vmkASxhXK6pMelWfmtgMIQbAnK7L/CS0cwZDVVPOkPOfeSqsIVjvWM76TeI8tHnAFItD9XPVFeCqLTL9hwDNnc3a3Yxas5ZahLKSlTuypELp9PrrajoPOeNKafY/v7PMFynHfxPfseh2R5ylRl6FJKyPp4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768500083; c=relaxed/simple;
-	bh=4vmLit6E7ZQ2S+03y6XVYEzAq3HwxTk3F/Oz6SawP1c=;
+	s=arc-20240116; t=1768498758; c=relaxed/simple;
+	bh=t0WpbAyBvDwmjP0JWfnqMtYcIMyQcubjwMO9YVaJ3Is=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oNR3Q8k+1Na3S9B/5jOpU7drJDVE4FDJJ48+WqazhHSYubvFl7rkU/TBiDRQXi2RmeWoxWbDIcX1SOkPYJbPmFACRycrwsgXhNSPq1zpdQd2v/bICEk+koNsb0iMG2Vlywvn48gXCwXQGiMqzfy58ylFV8/1JoBKsB01JHHRV40=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHe4+1ip; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3750C116D0;
-	Thu, 15 Jan 2026 18:01:22 +0000 (UTC)
+	 MIME-Version; b=Gt4RAj5CPNqu6jHWfzFrRuVB2TQCyOlIEIHcat67yEEG3FvUBeGYroUWxTBGRPTlSnEDuNS1SGUqLmHIRL6nx5VBSPWF0PnSfOHTKp7RjKP5x/Ber0aygtSFzWZ+hwGHxB0up95tphmsWVqM5yYuEaEdH8ht9MD7uAw0IfBxtRU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sh6cEfxY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C8CAC116D0;
+	Thu, 15 Jan 2026 17:39:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768500083;
-	bh=4vmLit6E7ZQ2S+03y6XVYEzAq3HwxTk3F/Oz6SawP1c=;
+	s=korg; t=1768498757;
+	bh=t0WpbAyBvDwmjP0JWfnqMtYcIMyQcubjwMO9YVaJ3Is=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qHe4+1ip8sqrDE2r0Jbm1wghwuQKLtAkwdneAPLJJWE8ovzQe8aBZ6L2EPiLMmHJ3
-	 CVpFVUXCITrt/t9f4a6IxvQ5IW2w/cSzzbwCye512Mjl2k8H72JqOREvV0BqVD2jlK
-	 5UtGHrnWNDTawwErxamWu8o707n7hjCZg4bV36ng=
+	b=sh6cEfxY8My6CgEJBQDyHLNxMP5NaBZb/t3tUX3XzvSl1PBuMC9PB6Tcd6h731gQD
+	 hDDbYLx/OE/4AyX8hh5p6CSaUJuZwhKv7ViRh1/p9rTgQB6BwxtFh/ncYFhFS+yL3+
+	 YW0FfMDqq1fOSlu1GMWhAZxwCdbmGgRLYfT89PoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>,
-	Vladimir Zapolskiy <vz@mleia.com>
-Subject: [PATCH 5.10 409/451] usb: gadget: lpc32xx_udc: fix clock imbalance in error path
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 544/554] NFSD: Remove NFSERR_EAGAIN
 Date: Thu, 15 Jan 2026 17:50:10 +0100
-Message-ID: <20260115164245.736754713@linuxfoundation.org>
+Message-ID: <20260115164306.017770760@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,107 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 782be79e4551550d7a82b1957fc0f7347e6d461f upstream.
+[ Upstream commit c6c209ceb87f64a6ceebe61761951dcbbf4a0baa ]
 
-A recent change fixing a device reference leak introduced a clock
-imbalance by reusing an error path so that the clock may be disabled
-before having been enabled.
+I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
+None of these RFCs have an NFS status code that match the numeric
+value "11".
 
-Note that the clock framework allows for passing in NULL clocks so there
-is no risk for a NULL pointer dereference.
+Based on the meaning of the EAGAIN errno, I presume the use of this
+status in NFSD means NFS4ERR_DELAY. So replace the one usage of
+nfserr_eagain, and remove it from NFSD's NFS status conversion
+tables.
 
-Also drop the bogus I2C client NULL check added by the offending commit
-as the pointer has already been verified to be non-NULL.
+As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
+era, but was not actually used by any code until commit f4e44b393389
+("NFSD: delay unmount source's export after inter-server copy
+completed."), at which time it become possible for NFSD to return
+a status code of 11 (which is not valid NFS protocol).
 
-Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
 Cc: stable@vger.kernel.org
-Cc: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251218153519.19453-2-johan@kernel.org
+Reviewed-by: NeilBrown <neil@brown.name>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/lpc32xx_udc.c |   19 +++++++++----------
- 1 file changed, 9 insertions(+), 10 deletions(-)
+ fs/nfs_common/common.c   |    1 -
+ fs/nfsd/nfs4proc.c       |    2 +-
+ fs/nfsd/nfsd.h           |    1 -
+ include/trace/misc/nfs.h |    2 --
+ include/uapi/linux/nfs.h |    1 -
+ 5 files changed, 1 insertion(+), 6 deletions(-)
 
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3026,7 +3026,7 @@ static int lpc32xx_udc_probe(struct plat
- 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
- 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (retval)
--		goto i2c_fail;
-+		goto err_put_client;
- 
- 	udc->board = &lpc32xx_usbddata;
- 
-@@ -3046,7 +3046,7 @@ static int lpc32xx_udc_probe(struct plat
- 		udc->udp_irq[i] = platform_get_irq(pdev, i);
- 		if (udc->udp_irq[i] < 0) {
- 			retval = udc->udp_irq[i];
--			goto i2c_fail;
-+			goto err_put_client;
- 		}
- 	}
- 
-@@ -3054,7 +3054,7 @@ static int lpc32xx_udc_probe(struct plat
- 	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
- 		retval = PTR_ERR(udc->udp_baseaddr);
--		goto i2c_fail;
-+		goto err_put_client;
- 	}
- 
- 	/* Get USB device clock */
-@@ -3062,14 +3062,14 @@ static int lpc32xx_udc_probe(struct plat
- 	if (IS_ERR(udc->usb_slv_clk)) {
- 		dev_err(udc->dev, "failed to acquire USB device clock\n");
- 		retval = PTR_ERR(udc->usb_slv_clk);
--		goto i2c_fail;
-+		goto err_put_client;
- 	}
- 
- 	/* Enable USB device clock */
- 	retval = clk_prepare_enable(udc->usb_slv_clk);
- 	if (retval < 0) {
- 		dev_err(udc->dev, "failed to start USB device clock\n");
--		goto i2c_fail;
-+		goto err_put_client;
- 	}
- 
- 	/* Setup deferred workqueue data */
-@@ -3171,9 +3171,10 @@ dma_alloc_fail:
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- i2c_fail:
--	if (udc->isp1301_i2c_client)
--		put_device(&udc->isp1301_i2c_client->dev);
- 	clk_disable_unprepare(udc->usb_slv_clk);
-+err_put_client:
-+	put_device(&udc->isp1301_i2c_client->dev);
-+
- 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
- 
- 	return retval;
-@@ -3198,11 +3199,9 @@ static int lpc32xx_udc_remove(struct pla
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- 
--	if (udc->isp1301_i2c_client)
--		put_device(&udc->isp1301_i2c_client->dev);
--
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 
-+	put_device(&udc->isp1301_i2c_client->dev);
- 	return 0;
- }
- 
+--- a/fs/nfs_common/common.c
++++ b/fs/nfs_common/common.c
+@@ -16,7 +16,6 @@ static const struct {
+ 	{ NFSERR_NOENT,		-ENOENT		},
+ 	{ NFSERR_IO,		-errno_NFSERR_IO},
+ 	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+ 	{ NFSERR_ACCES,		-EACCES		},
+ 	{ NFSERR_EXIST,		-EEXIST		},
+ 	{ NFSERR_XDEV,		-EXDEV		},
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1322,7 +1322,7 @@ try_again:
+ 					(freezable_schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+-				return nfserr_eagain;
++				return nfserr_jukebox;
+ 			}
+ 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 			goto try_again;
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -201,7 +201,6 @@ void		nfsd_lockd_shutdown(void);
+ #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
+ #define	nfserr_io		cpu_to_be32(NFSERR_IO)
+ #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
+-#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
+ #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
+ #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
+ #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
+--- a/include/trace/misc/nfs.h
++++ b/include/trace/misc/nfs.h
+@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
+ TRACE_DEFINE_ENUM(NFSERR_NOENT);
+ TRACE_DEFINE_ENUM(NFSERR_IO);
+ TRACE_DEFINE_ENUM(NFSERR_NXIO);
+-TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
+ TRACE_DEFINE_ENUM(NFSERR_ACCES);
+ TRACE_DEFINE_ENUM(NFSERR_EXIST);
+ TRACE_DEFINE_ENUM(NFSERR_XDEV);
+@@ -53,7 +52,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
+ 		{ NFSERR_NXIO,			"NXIO" }, \
+ 		{ ECHILD,			"CHILD" }, \
+ 		{ ETIMEDOUT,			"TIMEDOUT" }, \
+-		{ NFSERR_EAGAIN,		"AGAIN" }, \
+ 		{ NFSERR_ACCES,			"ACCES" }, \
+ 		{ NFSERR_EXIST,			"EXIST" }, \
+ 		{ NFSERR_XDEV,			"XDEV" }, \
+--- a/include/uapi/linux/nfs.h
++++ b/include/uapi/linux/nfs.h
+@@ -49,7 +49,6 @@
+ 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
+ 	NFSERR_IO = 5,			/* v2 v3 v4 */
+ 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
+-	NFSERR_EAGAIN = 11,		/* v2 v3 */
+ 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
+ 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
+ 	NFSERR_XDEV = 18,		/*    v3 v4 */
 
 
 
