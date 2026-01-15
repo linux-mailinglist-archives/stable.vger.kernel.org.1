@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-208675-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209308-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id F0121D26281
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:07 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 16306D2697F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 78CA5311BA18
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8500D30D4A3B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2B192345758;
-	Thu, 15 Jan 2026 17:02:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BEB3C1972;
+	Thu, 15 Jan 2026 17:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ugXbE272"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKS6ED6B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E2A2A2C028F;
-	Thu, 15 Jan 2026 17:02:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F2B3AA1A8;
+	Thu, 15 Jan 2026 17:32:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496527; cv=none; b=aTrjs87zMD0JjVJnzN+vkGJADoKV2MI4uwzJH0Jzx5P5UY4HtsqqZ9xWT3oZ9Q5HR+YmFmVe5r1kmLyVdIPBjxsUI223Nd0qs/uGEGqw1u7+JXvzsJq1ieDjoQWDLDi54gl7+9pm+u8cnw0gzZbr2Nn7hfH68zUvqW5qCQEdNDE=
+	t=1768498326; cv=none; b=vGN7FsF8ujLbUqOLlT4YNKJy1/bj7dlHh8V4+1K80og0FBX5e+AMRzkLpXQT6k3e4cAOBA3OMbo2CejgfHmF1d0oKmxfxq/MTZvX4u8uu1VhJYjib6sV3AzT3br3yXkmI7IgDNaGaA3SItDh0KFDCpqe2ClNFSWVI+baCxTKUFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496527; c=relaxed/simple;
-	bh=V9uIGD4ABcMLdIaNUt1Ht7hu+CGCjZnO3Q8SAcqa+bI=;
+	s=arc-20240116; t=1768498326; c=relaxed/simple;
+	bh=BZaiOfHPUSwWG8SQ7mYOuNpgJPnJDPfFsvQcKSr3byk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D+pXObocJiS1sPAmdCG93E+JdypQyMwam3E8EQpOjLnSSk9qHNnHp1Ug7ASxcabs3bwrYOwDu87ylLjuqvl9RnrbJLXDtnAggxxW3dVZ1TdS54ctEbMHlTRFSbGC2lKsdSCgV9mBY+VqEE730ygajVK43SHijOa9E4h/X20m+Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ugXbE272; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F3DDC116D0;
-	Thu, 15 Jan 2026 17:02:06 +0000 (UTC)
+	 MIME-Version; b=Xpp/IXt2mJCZ4SHx8Zz4ejQHcw9WtLhJuGBoRmTvngLM60UZkZdN2FV+C4LCTt5hlpwUrz9K5OuYAp51yu47MgRXu4s0xCfjiIBdCvqENDr9uJx7Wo88cyWE60on8X6TJHY7bXNZufJ9Cv+lTHpISV9FkJ+gVVqzu0b5b60PjWo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKS6ED6B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C471FC116D0;
+	Thu, 15 Jan 2026 17:32:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496526;
-	bh=V9uIGD4ABcMLdIaNUt1Ht7hu+CGCjZnO3Q8SAcqa+bI=;
+	s=korg; t=1768498326;
+	bh=BZaiOfHPUSwWG8SQ7mYOuNpgJPnJDPfFsvQcKSr3byk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ugXbE272Oz5a11EraPqoRiryPcKDi0M2Ky8YmDCaZ+kSM4LvQOfomN8R7R5jglV2i
-	 R6DEWrGsweS2MUYa5MxgKk4UBSblnzsn+KQestrMeJ6Waa9kbHB3jTLgESEqB5f4cP
-	 d0jnl0wHm58313d22IRQ5nYUSbQZ5XD0wPtYOy6U=
+	b=OKS6ED6BOVOe+cb4vDJ2/gtwtNdgYDMLFvEuiUafXK6V/QO3vmuey1NcsUcZDIfRy
+	 UEMMey9jy/8AJN7bLDE08IUbZ+IxpK242uSvVYX+Zga1nn4j1HHDsgZYcMgIA1Uwwn
+	 B1ZbnReqcn/Vn6vHvwlq/+xDV65SN2OTKT6NJOrY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 044/119] scsi: Revert "scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed"
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.15 393/554] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
 Date: Thu, 15 Jan 2026 17:47:39 +0100
-Message-ID: <20260115164153.550365622@linuxfoundation.org>
+Message-ID: <20260115164300.461029071@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 278712d20bc8ec29d1ad6ef9bdae9000ef2c220c ]
+commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
 
-This reverts commit ab2068a6fb84751836a84c26ca72b3beb349619d.
+The variables were never clamped because the return value of clamp_val()
+was not used. Fix this by assigning the clamped values, and use clamp()
+instead of clamp_val().
 
-When probing the exp-attached sata device, libsas/libata will issue a
-hard reset in sas_probe_sata() -> ata_sas_async_probe(), then a
-broadcast event will be received after the disk probe fails, and this
-commit causes the probe will be re-executed on the disk, and a faulty
-disk may get into an indefinite loop of probe.
-
-Therefore, revert this commit, although it can fix some temporary issues
-with disk probe failure.
-
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20251202065627.140361-1-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/video/fbdev/pxafb.c |   12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index 03d6ec1eb970b..85948963fb97a 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -145,20 +145,6 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
--
--	/*
--	 * If the device probe failed, the expander phy attached address
--	 * needs to be reset so that the phy will not be treated as flutter
--	 * in the next revalidation
--	 */
--	if (dev->parent && !dev_is_expander(dev->dev_type)) {
--		struct sas_phy *phy = dev->phy;
--		struct domain_device *parent = dev->parent;
--		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
--
--		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
--	}
--
- 	sas_unregister_dev(dev->port, dev);
- }
+--- a/drivers/video/fbdev/pxafb.c
++++ b/drivers/video/fbdev/pxafb.c
+@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
+ 	var->yres = max_t(int, var->yres, MIN_YRES);
  
--- 
-2.51.0
-
+ 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
+-		clamp_val(var->hsync_len, 1, 64);
+-		clamp_val(var->vsync_len, 1, 64);
+-		clamp_val(var->left_margin,  1, 255);
+-		clamp_val(var->right_margin, 1, 255);
+-		clamp_val(var->upper_margin, 1, 255);
+-		clamp_val(var->lower_margin, 1, 255);
++		var->hsync_len = clamp(var->hsync_len, 1, 64);
++		var->vsync_len = clamp(var->vsync_len, 1, 64);
++		var->left_margin  = clamp(var->left_margin,  1, 255);
++		var->right_margin = clamp(var->right_margin, 1, 255);
++		var->upper_margin = clamp(var->upper_margin, 1, 255);
++		var->lower_margin = clamp(var->lower_margin, 1, 255);
+ 	}
+ 
+ 	/* make sure each line is aligned on word boundary */
 
 
 
