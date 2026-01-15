@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208911-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209833-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2FABD2648A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C651D274DB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id ADF56303DB70
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6699C3090E32
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBF503C0097;
-	Thu, 15 Jan 2026 17:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 264ED3D7256;
+	Thu, 15 Jan 2026 17:57:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNZwcP/H"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f0tVtA6C"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F5033BFE3A;
-	Thu, 15 Jan 2026 17:13:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DC6943C00BF;
+	Thu, 15 Jan 2026 17:56:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497195; cv=none; b=DROsxwY5U0lY94kwhuheMxnBeiZYFeZbcj2t6nKjkdroA8A68trCwdVGjhVYmzIBue2QCNf9I2Jwms2IWDtu05U1cSu4Sq/HBv5K2lXmRFMibVJQFTqvHM2pR0f3WpVHKJPZW471a0SqfsCpJNuznQ5RYWpzZmQDSJI2zCpjcvs=
+	t=1768499819; cv=none; b=daEFruytlBW3QY5wZlZg/htQMHgAbx1OAklUOX2N0Y7N+quxA5euEGyhC32sKlVuD9Hoz2g68ganKjLxFXDztZY2tpoucAKa9ag9Nnm/NIVmlmt64EzoDr52gAr9MW8cBfm2QV95WFOk3l2f+8zOpFMTKLm3M+5ER+bkLHobwHo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497195; c=relaxed/simple;
-	bh=c+k+Xu9caJ0L1TTzKglZ6W4wTUykHL7kpeYawDZeqAs=;
+	s=arc-20240116; t=1768499819; c=relaxed/simple;
+	bh=406/Y7kub0NSF8x4ngCR9Tlxk6xwMbdlCXoF2Pp0758=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bu+BwrH5bSl7w58Yux+uMgsWUGgZGVMlTm0U3k3duEYp78Fyy8rzNH4NiebYIOyLHXeE3ob2nE45sjGZ8w1Hi6cRJmTtAIeWF/4O5+bHJjJIKrqGUo58D9F2URoODC2UJW4NTygNmb/tMRRUxqvwLSZvvSMvsACNCuO1xbQZDWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNZwcP/H; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5EC6C116D0;
-	Thu, 15 Jan 2026 17:13:14 +0000 (UTC)
+	 MIME-Version; b=pnvLLEyzRqstM1dUP0D4j/V9XTmZp6zEYb5OtzfJ8ft8bc+wfZAJTppaTsaHKURGGstKzLhTXS6RUX0ajynximAxeDWSBoSMDCe8LDQ62ARuub2Ej8f965qENGQYhshwO3oP1iKF7Fjotj0md3au8uwBgp1yNWQouvhxjeWMDxo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f0tVtA6C; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EAD9C116D0;
+	Thu, 15 Jan 2026 17:56:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497195;
-	bh=c+k+Xu9caJ0L1TTzKglZ6W4wTUykHL7kpeYawDZeqAs=;
+	s=korg; t=1768499819;
+	bh=406/Y7kub0NSF8x4ngCR9Tlxk6xwMbdlCXoF2Pp0758=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNZwcP/HVsLzIJsqndqIuuDo3pYSWXLv+yr7vWSE5f1F8bmbsq2TD5CrBuPy16dYJ
-	 2G/SpRUU8i6R+7Bf7oj5SbeUNPUgUvTqRfurkCyq7PWXFqeIrCvz0Hea8U6tmL6Gq8
-	 0/luFBCeXgS46ZNjf5lIBmo6n/AZkd3s9FUO87Gw=
+	b=f0tVtA6CoICOVYIb+TH+FUYKd/8En+7+Rf6xmJ2PYTwqn2us7LMU+e/usHtybT86B
+	 PIFE4ofnJCi3aCvH08E68YIWEBYfahTehuMyJiZqIpVkqQOw2REs0aTNTOtJI94cA5
+	 YB21VNJ4BOyh1CKEWiVPhLHUZbMqr+dQonNCXUcI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mark Brown <broonie@kernel.org>,
+	stable@kernel.org,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 70/72] ASoC: fsl_sai: Add missing registers to cache default
-Date: Thu, 15 Jan 2026 17:49:20 +0100
-Message-ID: <20260115164146.042394873@linuxfoundation.org>
+Subject: [PATCH 5.10 360/451] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
+Date: Thu, 15 Jan 2026 17:49:21 +0100
+Message-ID: <20260115164243.928210270@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +61,95 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
+[ Upstream commit 68d05693f8c031257a0822464366e1c2a239a512 ]
 
-Drivers does cache sync during runtime resume, setting all writable
-registers. Not all writable registers are set in cache default, resulting
-in the erorr message:
-  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
-  unexpected behavior
+mkfs.f2fs -f /dev/vdd
+mount /dev/vdd /mnt/f2fs
+touch /mnt/f2fs/foo
+sync		# avoid CP_UMOUNT_FLAG in last f2fs_checkpoint.ckpt_flags
+touch /mnt/f2fs/bar
+f2fs_io fsync /mnt/f2fs/bar
+f2fs_io shutdown 2 /mnt/f2fs
+umount /mnt/f2fs
+blockdev --setro /dev/vdd
+mount /dev/vdd /mnt/f2fs
+mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
 
-Fix this by adding missing writable register defaults.
+For the case if we create and fsync a new inode before sudden power-cut,
+without norecovery or disable_roll_forward mount option, the following
+mount will succeed w/o recovering last fsynced inode.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The problem here is that we only check inode_list list after
+find_fsync_dnodes() in f2fs_recover_fsync_data() to find out whether
+there is recoverable data in the iamge, but there is a missed case, if
+last fsynced inode is not existing in last checkpoint, then, we will
+fail to get its inode due to nat of inode node is not existing in last
+checkpoint, so the inode won't be linked in inode_list.
+
+Let's detect such case in dyrun mode to fix this issue.
+
+After this change, mount will fail as expected below:
+mount: /mnt/f2fs: cannot mount /dev/vdd read-only.
+       dmesg(1) may have more information after failed mount system call.
+demsg:
+F2FS-fs (vdd): Need to recover fsync data, but write access unavailable, please try mount w/ disable_roll_forward or norecovery
+
+Cc: stable@kernel.org
+Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+[ folio => page ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/f2fs/recovery.c |    9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index f5266be2bbc22..9a5be1d72a907 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -979,6 +979,7 @@ static struct reg_default fsl_sai_reg_defaults_ofs0[] = {
- 	{FSL_SAI_TDR6, 0},
- 	{FSL_SAI_TDR7, 0},
- 	{FSL_SAI_TMR, 0},
-+	{FSL_SAI_TTCTL, 0},
- 	{FSL_SAI_RCR1(0), 0},
- 	{FSL_SAI_RCR2(0), 0},
- 	{FSL_SAI_RCR3(0), 0},
-@@ -1002,12 +1003,14 @@ static struct reg_default fsl_sai_reg_defaults_ofs8[] = {
- 	{FSL_SAI_TDR6, 0},
- 	{FSL_SAI_TDR7, 0},
- 	{FSL_SAI_TMR, 0},
-+	{FSL_SAI_TTCTL, 0},
- 	{FSL_SAI_RCR1(8), 0},
- 	{FSL_SAI_RCR2(8), 0},
- 	{FSL_SAI_RCR3(8), 0},
- 	{FSL_SAI_RCR4(8), 0},
- 	{FSL_SAI_RCR5(8), 0},
- 	{FSL_SAI_RMR, 0},
-+	{FSL_SAI_RTCTL, 0},
- 	{FSL_SAI_MCTL, 0},
- 	{FSL_SAI_MDIV, 0},
- };
--- 
-2.51.0
-
+--- a/fs/f2fs/recovery.c
++++ b/fs/f2fs/recovery.c
+@@ -328,7 +328,7 @@ static int recover_inode(struct inode *i
+ }
+ 
+ static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
+-				bool check_only)
++				bool check_only, bool *new_inode)
+ {
+ 	struct curseg_info *curseg;
+ 	struct page *page = NULL;
+@@ -385,6 +385,8 @@ static int find_fsync_dnodes(struct f2fs
+ 			if (IS_ERR(entry)) {
+ 				err = PTR_ERR(entry);
+ 				if (err == -ENOENT) {
++					if (check_only)
++						*new_inode = true;
+ 					err = 0;
+ 					goto next;
+ 				}
+@@ -789,6 +791,7 @@ int f2fs_recover_fsync_data(struct f2fs_
+ 	unsigned long s_flags = sbi->sb->s_flags;
+ 	bool need_writecp = false;
+ 	bool fix_curseg_write_pointer = false;
++	bool new_inode = false;
+ #ifdef CONFIG_QUOTA
+ 	int quota_enabled;
+ #endif
+@@ -813,8 +816,8 @@ int f2fs_recover_fsync_data(struct f2fs_
+ 	mutex_lock(&sbi->cp_mutex);
+ 
+ 	/* step #1: find fsynced inode numbers */
+-	err = find_fsync_dnodes(sbi, &inode_list, check_only);
+-	if (err || list_empty(&inode_list))
++	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
++	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
+ 		goto skip;
+ 
+ 	if (check_only) {
 
 
 
