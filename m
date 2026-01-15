@@ -1,104 +1,137 @@
-Return-Path: <stable+bounces-208417-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5402ED22689
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 06:06:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 96300D22748
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 06:46:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 2C03830196AD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 05:06:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1A15F3008F88
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 05:46:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F7562D7D27;
-	Thu, 15 Jan 2026 05:05:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A598126ED25;
+	Thu, 15 Jan 2026 05:46:05 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org;
+	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="x2VWUdH6"
 X-Original-To: stable@vger.kernel.org
-Received: from cstnet.cn (smtp21.cstnet.cn [159.226.251.21])
-	(using TLSv1.2 with cipher DHE-RSA-AES256-SHA (256/256 bits))
+Received: from mail-dy1-f202.google.com (mail-dy1-f202.google.com [74.125.82.202])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 708B82BDC0F;
-	Thu, 15 Jan 2026 05:05:55 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=159.226.251.21
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80FA71494C3
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 05:46:03 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.202
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768453558; cv=none; b=GHMOO16878uUvD4jNdR+J0HlxFijBlziZ5TVf4dO+bE2xNwH6b94lLprjZiRCvBy1Ld8OI9YQoImbUAGQUaUhNM0Ib+V8NeMsJRdn3zR5EfxRakJxBRrm5ciR+Y7J8ZdRalKsHaKnyZZUQSVVwD01Ayy/l7Qi0Lo3GVgqNfDPMQ=
+	t=1768455965; cv=none; b=BYENXI1eLyvPnKFb1+NLvqbE9kYdHvKOoZWZvO/geOeqy90XY07/ZLdPpQzhLiN6opabD69FVk/tu/ntMlttcfFMDAC7QDoK4Mzh6tGC52sH9LIijEOFAWlzPjPjM1MacQG7xxblAw2mKBazMR3eIUHBRxggwMwR7dW0Gl4upxk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768453558; c=relaxed/simple;
-	bh=d77tHTc3fk0qGUyz0068F1TL8hjdnu+aT1wttK3C+4M=;
-	h=From:To:Cc:Subject:Date:Message-Id:MIME-Version; b=NNqz/+N5RFLYozESaKmbO1QeNRtIBzrpLMcwsZAlcN+OuVi4h7nMiwX9RuqiDzbCzF/C86/GWRNyYyVI+G3/WhBYoB8yHhZuDqoxUkseqx5cIBBWA/5PtzukUO399WvGmPs+hfdTjD1Yedak8WV4V15WVFqjhQQQZR1ORploLb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn; spf=pass smtp.mailfrom=isrc.iscas.ac.cn; arc=none smtp.client-ip=159.226.251.21
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=isrc.iscas.ac.cn
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=isrc.iscas.ac.cn
-Received: from localhost.localdomain (unknown [36.112.3.223])
-	by APP-01 (Coremail) with SMTP id qwCowABXAGyndWhpAOfBBA--.359S2;
-	Thu, 15 Jan 2026 13:05:43 +0800 (CST)
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-To: pdeschrijver@nvidia.com,
-	pgaikwad@nvidia.com,
-	mturquette@baylibre.com,
-	sboyd@kernel.org,
-	thierry.reding@gmail.com,
-	jonathanh@nvidia.com,
-	mperttunen@nvidia.com,
-	tomeu@tomeuvizoso.net
-Cc: linux-clk@vger.kernel.org,
-	linux-tegra@vger.kernel.org,
-	linux-kernel@vger.kernel.org,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	stable@vger.kernel.org
-Subject: [PATCH] clk: tegra: tegra124-emc: Fix potential memory leak in tegra124_clk_register_emc()
-Date: Thu, 15 Jan 2026 13:05:42 +0800
-Message-Id: <20260115050542.647890-1-lihaoxiang@isrc.iscas.ac.cn>
-X-Mailer: git-send-email 2.25.1
+	s=arc-20240116; t=1768455965; c=relaxed/simple;
+	bh=oCpw7jog4Ls/Y7/A/Xl/Q7Wuv3MmMbEyOn73zYZS5ww=;
+	h=Date:Mime-Version:Message-ID:Subject:From:To:Cc:Content-Type; b=jQsV9B0GzvjFvrvm/2g+tkmbOKJfvs2LfcrTGaLd+YGpaKopCPBYFnS+09AqaP7OqdympLvHQ3Tub7klcxUYlG7BtgtjPvIBD2vZ+to63axbS7uE6UjVD46Kq5vYRB+aGKu5d4od0bNiRTNX2/LROpC4iahw2vJhg3Qo+Wnmj0I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=x2VWUdH6; arc=none smtp.client-ip=74.125.82.202
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--surenb.bounces.google.com
+Received: by mail-dy1-f202.google.com with SMTP id 5a478bee46e88-2b050acf07dso2619439eec.0
+        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 21:46:02 -0800 (PST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20230601; t=1768455961; x=1769060761; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=aDAvyad0Gd6nn9PvkirLJfs5+fzAbzM3y3l25Mdn4/I=;
+        b=x2VWUdH68EMWb+8hqX/HurpzBUHWkXUCUhwh6WP+ddTv/BUs7v+btDC/lQpy4UybUF
+         aUKMKq2ewm3Z8TmQJr0iiLBXYr4g1u+AA1TmIaOw4z3UYT7U86ZzmZwL6Az9JxoE+hIO
+         eR7fZQp7aE2RB8aIpMV6ojsMbk/HS4wszGehIgI9/PC7F2tpEq95bLuZHm+799fFss6P
+         b2Fs3m1pspDk4sjUDTEUzQ9Ze8t/Z9i7cGxgkzZPyfR8/ZjLTdHphk2mAQmeA1B3pPFJ
+         Hj+C9LEi/pjmIZAGf76+FUawcSmmBu5qNy+QMwkcg7/c2xZeet8b62PpAf2yK5M0FJho
+         TM3w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1768455961; x=1769060761;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=aDAvyad0Gd6nn9PvkirLJfs5+fzAbzM3y3l25Mdn4/I=;
+        b=wgLZEsCoeZQTtkq3IPbkRCI+Z3hnPofa0hqUD3G3gGQYk2N6TIEvy1DDmKrfuIiXWB
+         GfJGr7zAXQaEssNk0Gr1mAZzolaM+V8EokaGdZxzbso8lJgvmcWGE3mf69BZ9Z9C6447
+         +Ipxgh7JvX0qYmmyzb4iO0se3Ztes8s0VmBn/srYTWQ3tLWQyJIn9ZuvQaT0jWM1q6k9
+         pASz0c/9tlGHokGKc4+rplw3E2HtteNIu0jxRIAmrciMSJFWZdO3tFHjCRbXd9mkX4AH
+         Lk+UQc1inm8GGnoX0pN/T5RX/hOzPMFj5WIpMvLwbwAsWtX2/hTYFXptUrKNz4EiGd7Y
+         WzdQ==
+X-Forwarded-Encrypted: i=1; AJvYcCVx8Bc67Zcmn+Gc7oCGSHeUlzPzBYhRzoF2CWwVUnf6JLEPzfwHFzlODvQdIOd25WzlPeDLBok=@vger.kernel.org
+X-Gm-Message-State: AOJu0Yw8MEZL8qpG8M6D6xowrZFxKhkIHpwJDzuxoBgsn2QIIeLtRZ8Q
+	tVQ3afqSJsWxUAYA2hBrtZU60xZbEJq27ysJmFWd5XwGFcfBgiN1v8v3CdbcUvsz9XotPYrpfnf
+	m2Rn1NQ==
+X-Received: from dybb6.prod.google.com ([2002:a05:693c:6086:b0:2a2:4eb1:3771])
+ (user=surenb job=prod-delivery.src-stubby-dispatcher) by 2002:a05:7301:688:b0:2ac:2480:f0ac
+ with SMTP id 5a478bee46e88-2b48f5bac9emr4987449eec.23.1768455961332; Wed, 14
+ Jan 2026 21:46:01 -0800 (PST)
+Date: Wed, 14 Jan 2026 21:45:57 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-CM-TRANSID:qwCowABXAGyndWhpAOfBBA--.359S2
-X-Coremail-Antispam: 1UD129KBjvdXoW7JF45Zr1Dury8Cw4kJw1DZFb_yoWfZFgEvr
-	4Y9rn7Xa4rGr1akF15Jr1fZryFvFn8urs2vFWFkF43K348Zr48JryrZrZYkw17WayDuryU
-	W3Wvq398G3sIvjkaLaAFLSUrUUUUjb8apTn2vfkv8UJUUUU8Yxn0WfASr-VFAUDa7-sFnT
-	9fnUUIcSsGvfJTRUUUb3xFF20E14v26r4j6ryUM7CY07I20VC2zVCF04k26cxKx2IYs7xG
-	6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rwA2F7IY1VAKz4vEj48ve4kI8w
-	A2z4x0Y4vE2Ix0cI8IcVAFwI0_Jr0_JF4l84ACjcxK6xIIjxv20xvEc7CjxVAFwI0_Gr0_
-	Cr1l84ACjcxK6I8E87Iv67AKxVWUJVW8JwA2z4x0Y4vEx4A2jsIEc7CjxVAFwI0_Gr0_Gr
-	1UM2AIxVAIcxkEcVAq07x20xvEncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xII
-	jxv20xvE14v26r106r15McIj6I8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr
-	1lF7xvr2IYc2Ij64vIr41lF7I21c0EjII2zVCS5cI20VAGYxC7M4IIrI8v6xkF7I0E8cxa
-	n2IY04v7MxkF7I0En4kS14v26r1q6r43MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4
-	AY6r1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE
-	17CEb7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMI
-	IF0xvE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4l
-	IxAIcVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvf
-	C2KfnxnUUI43ZEXa7VU13ku3UUUUU==
-X-CM-SenderInfo: 5olkt0x0ld0ww6lv2u4olvutnvoduhdfq/1tbiDAUIE2loPMWt1wACsS
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.52.0.457.g6b5491de43-goog
+Message-ID: <20260115054557.2127777-1-surenb@google.com>
+Subject: [PATCH 1/1] Docs/mm/allocation-profiling: describe sysctrl
+ limitations in debug mode
+From: Suren Baghdasaryan <surenb@google.com>
+To: akpm@linux-foundation.org
+Cc: kent.overstreet@linux.dev, corbet@lwn.net, ranxiaokai627@163.com, 
+	ran.xiaokai@zte.com.cn, surenb@google.com, linux-doc@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, linux-mm@kvack.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
 
-If clk_register() fails, call kfree to release "tegra".
+When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, /proc/sys/vm/mem_profiling is
+read-only to avoid debug warnings in a scenario when an allocation is
+made while profiling is disabled (allocation does not get an allocation
+tag), then profiling gets enabled and allocation gets freed (warning due
+to the allocation missing allocation tag).
 
-Fixes: 2db04f16b589 ("clk: tegra: Add EMC clock driver")
+Fixes: ebdf9ad4ca98 ("memprofiling: documentation")
+Reported-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Suren Baghdasaryan <surenb@google.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 ---
- drivers/clk/tegra/clk-tegra124-emc.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/vm.rst   |  4 ++++
+ Documentation/mm/allocation-profiling.rst | 10 ++++++++++
+ 2 files changed, 14 insertions(+)
 
-diff --git a/drivers/clk/tegra/clk-tegra124-emc.c b/drivers/clk/tegra/clk-tegra124-emc.c
-index 2a6db0434281..0f6fb776b229 100644
---- a/drivers/clk/tegra/clk-tegra124-emc.c
-+++ b/drivers/clk/tegra/clk-tegra124-emc.c
-@@ -538,8 +538,10 @@ struct clk *tegra124_clk_register_emc(void __iomem *base, struct device_node *np
- 	tegra->hw.init = &init;
+diff --git a/Documentation/admin-guide/sysctl/vm.rst b/Documentation/admin-guide/sysctl/vm.rst
+index 9096e2d77c2a..8577ea91e226 100644
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -487,6 +487,10 @@ memory allocations.
  
- 	clk = clk_register(NULL, &tegra->hw);
--	if (IS_ERR(clk))
-+	if (IS_ERR(clk)) {
-+		kfree(tegra);
- 		return clk;
-+	}
+ The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
  
- 	tegra->prev_parent = clk_hw_get_parent_by_index(
- 		&tegra->hw, emc_get_parent(&tegra->hw))->clk;
++When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, this control is read-only to avoid
++warnings produces by allocations made while profiling is disabled and freed
++when it's enabled.
++
+ 
+ memory_failure_early_kill
+ =========================
+diff --git a/Documentation/mm/allocation-profiling.rst b/Documentation/mm/allocation-profiling.rst
+index 316311240e6a..058d2faffb75 100644
+--- a/Documentation/mm/allocation-profiling.rst
++++ b/Documentation/mm/allocation-profiling.rst
+@@ -33,6 +33,16 @@ Boot parameter:
+ sysctl:
+   /proc/sys/vm/mem_profiling
+ 
++  1: Enable memory profiling.
++
++  0: Disable memory profiling.
++
++  The default value depends on CONFIG_MEM_ALLOC_PROFILING_ENABLED_BY_DEFAULT.
++
++  When CONFIG_MEM_ALLOC_PROFILING_DEBUG=y, this control is read-only to avoid
++  warnings produces by allocations made while profiling is disabled and freed
++  when it's enabled.
++
+ Runtime info:
+   /proc/allocinfo
+ 
+
+base-commit: 560d6a4c4951ae76b5c6d5b5b8650276706f68ac
 -- 
-2.25.1
+2.52.0.457.g6b5491de43-goog
 
 
