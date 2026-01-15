@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208908-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209425-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5BCDD26478
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:21 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E5C0D26ADC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A637F3036152
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:57 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7753430BB80C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E6B623BF314;
-	Thu, 15 Jan 2026 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B15F02C21F4;
+	Thu, 15 Jan 2026 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a57vvd92"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="C5alk2h8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A940E3BFE55;
-	Thu, 15 Jan 2026 17:13:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 752AA86334;
+	Thu, 15 Jan 2026 17:37:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497186; cv=none; b=JWeGgmo68nHRC2HUxCYh19us62vFbyVjJgv2AS9ELSAsQNqOaQfOA4b41oBX91fInsDs6hTGG7WZ1eslOk2CRvckMP5MCb4j4lPfSEqNcTo2dGWNyK1AMvLcQlkPep9xwG/JK+XMGecx1rKAba4kbOSpk8v5a/5xwo3j3JehRzs=
+	t=1768498659; cv=none; b=jdq8BMim7iBG0TooWI+PuiCcH4vbwhDAlR4rKZGwfvQ3jLPF3HJ6zoC0BIYRZYmL556Wd6sNsNnGOBER18Pc6njonuSMV8fiFmwkraa2dikFtmmv9LoPD/WT2MwWUcwsOPclJTDeiFsUw7vS4mqIrnwseuzlhC5zf6bdvlh8Vwk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497186; c=relaxed/simple;
-	bh=weYvz//yoJoA5hF6VeXWx5KGNN2FDqTgx1kk6qxb0BE=;
+	s=arc-20240116; t=1768498659; c=relaxed/simple;
+	bh=jrRX4xtwaCelAvKieE7lker8VVnfxK+Lotlh/HLZTK8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pn3ygjeGSGpuXJNg11Dk7aWdsSIU0m05mq3t4ycsnvpGj89lnKnkWFJhm7l7doLS0X4lw3/6x/l9Yk8uG8jn/eP0BLK+PAZDsXqIbllIqgwMu0hF0IDrDcXSQfB7g5Wknp6mtbih0/Yyf8xMYJqUmMILqMdvxlXj3VFFrc0LmNY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a57vvd92; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37537C116D0;
-	Thu, 15 Jan 2026 17:13:06 +0000 (UTC)
+	 MIME-Version; b=Ej5sBswsHjSeiCDQv6HV8iICQJdf6PoOkqkli2CCxMbFCQfEDge3dEF6MrVp0OlhV7OBgp2FwwzkEP55zVS8nzT6NzUcEOJRzNsYrZOPES76MPSq9zyMKt6okQpWRmE7LTSRriX7nGI8a4mFYvKA7s8/UMMZVbuy1ZPfCvKmuSQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=C5alk2h8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3322C116D0;
+	Thu, 15 Jan 2026 17:37:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497186;
-	bh=weYvz//yoJoA5hF6VeXWx5KGNN2FDqTgx1kk6qxb0BE=;
+	s=korg; t=1768498659;
+	bh=jrRX4xtwaCelAvKieE7lker8VVnfxK+Lotlh/HLZTK8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a57vvd92GJ55cvjDp2bdEeA5hcLXLg+/38c5Odhpmy5prPhQxSO2/iueAF6RJoL79
-	 02seGwmLRdISfr2DC+7n8FqWhNh+yqJkEuQbzRgdFhitVCcX8ieM2ne/RAEte2QLr3
-	 KTyx1s4YozKPo+KKFHC/2403QmatkdJXF2dYJ8UA=
+	b=C5alk2h8+nbhiD6AFZ+t9TGpThYN+bx/e6JKGScu0Ho+7QDQdQOon3chGcvhoE+53
+	 W8zbwSAnVN0gIcgXVa5/k0sLIENFzEY3Bxo+hXFIMER8H2WbF8VFu9QA2f48O7sMCj
+	 TZhtOZnuoKiVZt+g7bMwJwCckDmVWVsQCm71ybiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumeet Pawnikar <sumeet4linux@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 67/72] powercap: fix sscanf() error return value handling
-Date: Thu, 15 Jan 2026 17:49:17 +0100
-Message-ID: <20260115164145.932851162@linuxfoundation.org>
+	Al Viro <viro@zeniv.linux.org.uk>,
+	Christoph Hellwig <hch@infradead.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Subject: [PATCH 5.15 492/554] x86: remove __range_not_ok()
+Date: Thu, 15 Jan 2026 17:49:18 +0100
+Message-ID: <20260115164304.125289275@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +61,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit efc4c35b741af973de90f6826bf35d3b3ac36bf1 ]
+commit 36903abedfe8d419e90ce349b2b4ce6dc2883e17 upstream.
 
-Fix inconsistent error handling for sscanf() return value check.
+The __range_not_ok() helper is an x86 (and sparc64) specific interface
+that does roughly the same thing as __access_ok(), but with different
+calling conventions.
 
-Implicit boolean conversion is used instead of explicit return
-value checks. The code checks if (!sscanf(...)) which is incorrect
-because:
- 1. sscanf returns the number of successfully parsed items
- 2. On success, it returns 1 (one item passed)
- 3. On failure, it returns 0 or EOF
- 4. The check 'if (!sscanf(...))' is wrong because it treats
-    success (1) as failure
+Change this to use the normal interface in order for consistency as we
+clean up all access_ok() implementations.
 
-All occurrences of sscanf() now uses explicit return value check.
-With this behavior it returns '-EINVAL' when parsing fails (returns
-0 or EOF), and continues when parsing succeeds (returns 1).
+This changes the limit from TASK_SIZE to TASK_SIZE_MAX, which Al points
+out is the right thing do do here anyway.
 
-Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251207151549.202452-1-sumeet4linux@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The callers have to use __access_ok() instead of the normal access_ok()
+though, because on x86 that contains a WARN_ON_IN_IRQ() check that cannot
+be used inside of NMI context while tracing.
+
+The check in copy_code() is not needed any more, because this one is
+already done by copy_from_user_nmi().
+
+Suggested-by: Al Viro <viro@zeniv.linux.org.uk>
+Suggested-by: Christoph Hellwig <hch@infradead.org>
+Link: https://lore.kernel.org/lkml/YgsUKcXGR7r4nINj@zeniv-ca.linux.org.uk/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Stable-dep-of: d319f344561d ("mm: Fix copy_from_user_nofault().")
+Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/powercap_sys.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ arch/x86/events/core.c         |    2 +-
+ arch/x86/include/asm/uaccess.h |   10 ++++++----
+ arch/x86/kernel/dumpstack.c    |    6 ------
+ arch/x86/kernel/stacktrace.c   |    2 +-
+ arch/x86/lib/usercopy.c        |    2 +-
+ 5 files changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index d7dadcaa3736b..72fa1f5affcea 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -67,7 +67,7 @@ static ssize_t show_constraint_##_attr(struct device *dev, \
- 	int id; \
- 	struct powercap_zone_constraint *pconst;\
- 	\
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
- 		return -EINVAL; \
- 	if (id >= power_zone->const_id_cnt)	\
- 		return -EINVAL; \
-@@ -92,7 +92,7 @@ static ssize_t store_constraint_##_attr(struct device *dev,\
- 	int id; \
- 	struct powercap_zone_constraint *pconst;\
- 	\
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
- 		return -EINVAL; \
- 	if (id >= power_zone->const_id_cnt)	\
- 		return -EINVAL; \
-@@ -161,7 +161,7 @@ static ssize_t show_constraint_name(struct device *dev,
- 	ssize_t len = -ENODATA;
- 	struct powercap_zone_constraint *pconst;
+--- a/arch/x86/events/core.c
++++ b/arch/x86/events/core.c
+@@ -2790,7 +2790,7 @@ perf_callchain_kernel(struct perf_callch
+ static inline int
+ valid_user_frame(const void __user *fp, unsigned long size)
+ {
+-	return (__range_not_ok(fp, size, TASK_SIZE) == 0);
++	return __access_ok(fp, size);
+ }
  
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id))
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1)
- 		return -EINVAL;
- 	if (id >= power_zone->const_id_cnt)
- 		return -EINVAL;
--- 
-2.51.0
-
+ static unsigned long get_segment_base(unsigned int segment)
+--- a/arch/x86/include/asm/uaccess.h
++++ b/arch/x86/include/asm/uaccess.h
+@@ -16,8 +16,10 @@
+  * Test whether a block of memory is a valid user space address.
+  * Returns 0 if the range is valid, nonzero otherwise.
+  */
+-static inline bool __chk_range_not_ok(unsigned long addr, unsigned long size, unsigned long limit)
++static inline bool __chk_range_not_ok(unsigned long addr, unsigned long size)
+ {
++	unsigned long limit = TASK_SIZE_MAX;
++
+ 	/*
+ 	 * If we have used "sizeof()" for the size,
+ 	 * we know it won't overflow the limit (but
+@@ -35,10 +37,10 @@ static inline bool __chk_range_not_ok(un
+ 	return unlikely(addr > limit);
+ }
+ 
+-#define __range_not_ok(addr, size, limit)				\
++#define __access_ok(addr, size)						\
+ ({									\
+ 	__chk_user_ptr(addr);						\
+-	__chk_range_not_ok((unsigned long __force)(addr), size, limit); \
++	!__chk_range_not_ok((unsigned long __force)(addr), size);	\
+ })
+ 
+ #ifdef CONFIG_DEBUG_ATOMIC_SLEEP
+@@ -69,7 +71,7 @@ static inline bool pagefault_disabled(vo
+ #define access_ok(addr, size)					\
+ ({									\
+ 	WARN_ON_IN_IRQ();						\
+-	likely(!__range_not_ok(addr, size, TASK_SIZE_MAX));		\
++	likely(__access_ok(addr, size));				\
+ })
+ 
+ extern int __get_user_1(void);
+--- a/arch/x86/kernel/dumpstack.c
++++ b/arch/x86/kernel/dumpstack.c
+@@ -81,12 +81,6 @@ static int copy_code(struct pt_regs *reg
+ 	/* The user space code from other tasks cannot be accessed. */
+ 	if (regs != task_pt_regs(current))
+ 		return -EPERM;
+-	/*
+-	 * Make sure userspace isn't trying to trick us into dumping kernel
+-	 * memory by pointing the userspace instruction pointer at it.
+-	 */
+-	if (__chk_range_not_ok(src, nbytes, TASK_SIZE_MAX))
+-		return -EINVAL;
+ 
+ 	/*
+ 	 * Even if named copy_from_user_nmi() this can be invoked from
+--- a/arch/x86/kernel/stacktrace.c
++++ b/arch/x86/kernel/stacktrace.c
+@@ -90,7 +90,7 @@ copy_stack_frame(const struct stack_fram
+ {
+ 	int ret;
+ 
+-	if (__range_not_ok(fp, sizeof(*frame), TASK_SIZE))
++	if (!__access_ok(fp, sizeof(*frame)))
+ 		return 0;
+ 
+ 	ret = 1;
+--- a/arch/x86/lib/usercopy.c
++++ b/arch/x86/lib/usercopy.c
+@@ -32,7 +32,7 @@ copy_from_user_nmi(void *to, const void
+ {
+ 	unsigned long ret;
+ 
+-	if (__range_not_ok(from, n, TASK_SIZE))
++	if (!__access_ok(from, n))
+ 		return n;
+ 
+ 	if (!nmi_uaccess_okay())
 
 
 
