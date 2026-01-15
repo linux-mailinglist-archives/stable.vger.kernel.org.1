@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-209276-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209699-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0A7A1D2688E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8868DD27CC0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:52:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B137B30AA9B1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:35 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 908CC310C4CE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB9833C00A6;
-	Thu, 15 Jan 2026 17:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD74E3EC548;
+	Thu, 15 Jan 2026 17:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lZkhvJ33"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="klIiHV53"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EE523C00A1;
-	Thu, 15 Jan 2026 17:30:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FCF13C1974;
+	Thu, 15 Jan 2026 17:50:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498235; cv=none; b=ttxx3kR3B6/HT5HS57y/vreC32XupZ+2OmG023Q+SWgfBh0eqmUQhisGdm5ilPCYIJgS+BXdXDbubKRZaoqPctaRCS2EzPeaQvyfNkGDdg+Z7Goo6DnS6Xo6TvzZFRgxIr0mSdKxfIGzu9uj2klgOrxvoFypyZfqsXoApEG+ujI=
+	t=1768499439; cv=none; b=lHiD6jJSrqoY1m8b6+fUp1v7pM1m+qhP4bLMbQ05d2m7Gx3J4rIwSkXKUkn/3hGV7ltOBrfzzwMocwzUcUQ+AjA8ExeQa5662jSqVY+4C9E2PV8B/f4MzaKvn5an2PSLjrcvbKpbVeVPivoFBMpPbur3q24YXWKV16VgXQukpgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498235; c=relaxed/simple;
-	bh=ZevYQyelBt/73qyByPL/SFDanvH72q6o52iuZpAosX4=;
+	s=arc-20240116; t=1768499439; c=relaxed/simple;
+	bh=5ZhdE8FlHk55a6i5XgaU1tLMXNL8hAG8PoMT3cn5ZHE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=J38KftDfIvktdSLDv4wJrTw/8z1p8gP/rmgAbsFjCzyKXziI3SXVsuRHCoiYc4k+bkwYqRLcjHBGKsAZgY3Xpmey/PZjKWa+j6/Pt45B5bKFt/WKkrJ7x2rdAMryexQ2W3SWTL5BcZmpf0s6wYoE14XVSqw3Pb/JvN2mCdXzdoY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lZkhvJ33; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1432C116D0;
-	Thu, 15 Jan 2026 17:30:34 +0000 (UTC)
+	 MIME-Version; b=YoxMmP4+a4hhYFTyW/Fb//A898DOENtlJruB0+r2LXaZEazE7sBJdAuyk1FcTqdnMnL+jSYODtZdQMOLU+hFO03ma/2fOmiDSQP9VRyUZcdZqBQMvaR9/xLn7+O1TgQmINv1t3oUvyqH5GV+IsMo+vbfaZwl9HqFMiSn4p6Gks4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=klIiHV53; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E27EFC116D0;
+	Thu, 15 Jan 2026 17:50:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498235;
-	bh=ZevYQyelBt/73qyByPL/SFDanvH72q6o52iuZpAosX4=;
+	s=korg; t=1768499439;
+	bh=5ZhdE8FlHk55a6i5XgaU1tLMXNL8hAG8PoMT3cn5ZHE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lZkhvJ339bPwF87UMy9P5PO3YgWeiN+8Hb2bAlhhSffY6FqqcNhPAW27C0lDBIjL6
-	 pom7ob9Q1XUCjnZRsZrpmXphbpOCQh50V7u3SIsY+VLcLWHaBnhvo4TRrX4SCuekIB
-	 CIcRkCcarXgkObkBQg3Mz7/LB0lXddsxL61qufts=
+	b=klIiHV53B48Eqt2hx3EQUkAyKpjWhmPyLDWGMfgczokHqe8tiMxb6BYf8UrIS8XJQ
+	 aNNAizjYO4P+u1qDyDZOKtqo6ulR+DRoaVoB4kh+V2oFYDpOVwcHHqK2re08zJMYbR
+	 a4FOy14kUjqfCS8YiOfBHZUfVL0g+Gru0NZ3ECJw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tom Sela <tomsela@amazon.com>,
-	Yonatan Nachum <ynachum@amazon.com>,
-	Michael Margolin <mrgolin@amazon.com>,
-	Gal Pressman <gal.pressman@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 361/554] RDMA/efa: Remove possible negative shift
+	Yongjian Sun <sunyongjian1@huawei.com>,
+	Baokun Li <libaokun1@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	stable@kernel.org
+Subject: [PATCH 5.10 226/451] ext4: fix incorrect group number assertion in mb_check_buddy
 Date: Thu, 15 Jan 2026 17:47:07 +0100
-Message-ID: <20260115164259.295136677@linuxfoundation.org>
+Message-ID: <20260115164239.071693574@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,52 +62,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Margolin <mrgolin@amazon.com>
+From: Yongjian Sun <sunyongjian1@huawei.com>
 
-[ Upstream commit 85463eb6a46caf2f1e0e1a6d0731f2f3bab17780 ]
+commit 3f7a79d05c692c7cfec70bf104b1b3c3d0ce6247 upstream.
 
-The page size used for device might in some cases be smaller than
-PAGE_SIZE what results in a negative shift when calculating the number of
-host pages in PAGE_SIZE for a debug log. Remove the debug line together
-with the calculation.
+When the MB_CHECK_ASSERT macro is enabled, an assertion failure can
+occur in __mb_check_buddy when checking preallocated blocks (pa) in
+a block group:
 
-Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
-Link: https://patch.msgid.link/r/20251210173656.8180-1-mrgolin@amazon.com
-Reviewed-by: Tom Sela <tomsela@amazon.com>
-Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
-Signed-off-by: Michael Margolin <mrgolin@amazon.com>
-Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Assertion failure in mb_free_blocks() : "groupnr == e4b->bd_group"
+
+This happens when a pa at the very end of a block group (e.g.,
+pa_pstart=32765, pa_len=3 in a group of 32768 blocks) becomes
+exhausted - its pa_pstart is advanced by pa_len to 32768, which
+lies in the next block group. If this exhausted pa (with pa_len == 0)
+is still in the bb_prealloc_list during the buddy check, the assertion
+incorrectly flags it as belonging to the wrong group. A possible
+sequence is as follows:
+
+ext4_mb_new_blocks
+  ext4_mb_release_context
+    pa->pa_pstart += EXT4_C2B(sbi, ac->ac_b_ex.fe_len)
+    pa->pa_len -= ac->ac_b_ex.fe_len
+
+	                 __mb_check_buddy
+                           for each pa in group
+                             ext4_get_group_no_and_offset
+                             MB_CHECK_ASSERT(groupnr == e4b->bd_group)
+
+To fix this, we modify the check to skip block group validation for
+exhausted preallocations (where pa_len == 0). Such entries are in a
+transitional state and will be removed from the list soon, so they
+should not trigger an assertion. This change prevents the false
+positive while maintaining the integrity of the checks for active
+allocations.
+
+Fixes: c9de560ded61f ("ext4: Add multi block allocator for ext4")
+Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251106060614.631382-2-sunyongjian@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Cc: stable@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/efa/efa_verbs.c | 4 ----
- 1 file changed, 4 deletions(-)
+ fs/ext4/mballoc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
-index 1aab6c3e9f53..6fca145f1e8a 100644
---- a/drivers/infiniband/hw/efa/efa_verbs.c
-+++ b/drivers/infiniband/hw/efa/efa_verbs.c
-@@ -1151,13 +1151,9 @@ static int umem_to_page_list(struct efa_dev *dev,
- 			     u32 hp_cnt,
- 			     u8 hp_shift)
- {
--	u32 pages_in_hp = BIT(hp_shift - PAGE_SHIFT);
- 	struct ib_block_iter biter;
- 	unsigned int hp_idx = 0;
- 
--	ibdev_dbg(&dev->ibdev, "hp_cnt[%u], pages_in_hp[%u]\n",
--		  hp_cnt, pages_in_hp);
--
- 	rdma_umem_for_each_dma_block(umem, &biter, BIT(hp_shift))
- 		page_list[hp_idx++] = rdma_block_iter_dma_address(&biter);
- 
--- 
-2.51.0
-
+--- a/fs/ext4/mballoc.c
++++ b/fs/ext4/mballoc.c
+@@ -706,6 +706,8 @@ static void __mb_check_buddy(struct ext4
+ 		ext4_group_t groupnr;
+ 		struct ext4_prealloc_space *pa;
+ 		pa = list_entry(cur, struct ext4_prealloc_space, pa_group_list);
++		if (!pa->pa_len)
++			continue;
+ 		ext4_get_group_no_and_offset(sb, pa->pa_pstart, &groupnr, &k);
+ 		MB_CHECK_ASSERT(groupnr == e4b->bd_group);
+ 		for (i = 0; i < pa->pa_len; i++)
 
 
 
