@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209330-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E572CD269EC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B0396D26641
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6EA93307C9DA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F396F301869B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13C603C1973;
-	Thu, 15 Jan 2026 17:33:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828D63BF2E0;
+	Thu, 15 Jan 2026 17:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dN9WHFM0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onm+Cw5r"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB5FA3B8D5F;
-	Thu, 15 Jan 2026 17:33:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0FF3BC4D7;
+	Thu, 15 Jan 2026 17:05:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498388; cv=none; b=nBGS1lOYxncdFvaZ7n45Izmu4nJF9yAhfqQ5cgjWQn+u+MDfgupc7mVzuV/v0K9ofV5/0McVjz/eX/W2swhrT7xHu9OU+zGdPkLUvJ2CgduTpso/KGaIqHrJOVNQRcriKsI8YLeJTC0J7B44o9pIGy/Artq39RPe3fsgOmGfUY4=
+	t=1768496708; cv=none; b=igP7ExK8eHhd6mNjJrULd25oBbUS7sJA3MSLBD37eCYnpyI+oyZ3dqJhpm2M8XpbqcMp0efWfG70aXY8XRmmhCY9wR4t4shAZGOMgnnUno5OY4QSHjCij2bdOrMou8S0R81l0KBL+R6xZH8Qu7Q+qgQR//sd3kSeCoZLX05cB5E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498388; c=relaxed/simple;
-	bh=ctPlRb8VNegU8YBJczQ4OedyiLzmrl3VFKSc56fKA7k=;
+	s=arc-20240116; t=1768496708; c=relaxed/simple;
+	bh=kcHu9XGAbzoFuXHb+eiQzxUXC7SR0PDNqI23KhfLYP8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uj24wwYYK5JHFFq/YJt2IUFs9CdFbQVLs5oJuYkA8W5pLuipX+OiQPIaNUaVwi2kaMyWkyqby2vSXPQTea2qMJyYyuuESdiXSO++6f09QhbPjPwWw3Pjk0f6C9XqOb/R4fVwv060e0FpgRmIvsymfyv7+OyKH5JwKwNbsW70d+M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dN9WHFM0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56BA7C116D0;
-	Thu, 15 Jan 2026 17:33:08 +0000 (UTC)
+	 MIME-Version; b=E36g3f8QYWuXqZSs3LWuxCyDeItW8CVGQiD4d8Qq5XMpsTBywdVi8awvqxAmASgUZh4n/t/8/B3f2C0cyzxNpC5Hvp5hoPtkXrX5wFNMZ9+Zqz65crjrfrZeF1DLBTEhrr2CsO2d4VnIaID9WQ1WbBAghzS2n53jgUQAWr0G2ho=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onm+Cw5r; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50F8C116D0;
+	Thu, 15 Jan 2026 17:05:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498388;
-	bh=ctPlRb8VNegU8YBJczQ4OedyiLzmrl3VFKSc56fKA7k=;
+	s=korg; t=1768496708;
+	bh=kcHu9XGAbzoFuXHb+eiQzxUXC7SR0PDNqI23KhfLYP8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dN9WHFM0Vk/FTj5AJkoDuk5bGYN4uhvDJN3DesIuGrhPDx0kKueupk7O7jqSBRbfS
-	 tCQj8XjXm38LZ79JU/Z2YFlems5tvMZyBWFWTIVvCBYzjRQTMuA5+SDkV1Vd7XnoEX
-	 yR6JL/OUr9nuCfsi/7JEG8DctXgQoOcXCKsDx7Jk=
+	b=onm+Cw5rJk5IUD5HiIcJdd/Vk/oUbXCB99hwMfqmIK0xU7UWy5nnBgFLf+vJ4hOGS
+	 pLEzl4l4yerkhPR/zNYBiIYeco9db74DO26DYcK0RC6Jb6IH0sp0Xtg7JT8GbHwL2E
+	 U211aeqg4JkRPGIjczv25hOQvyvpCgYL2vrGXTUc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 413/554] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_do_test_apply_three_regions()
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Elad Nachman <enachman@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 064/119] net: marvell: prestera: fix NULL dereference on devlink_alloc() failure
 Date: Thu, 15 Jan 2026 17:47:59 +0100
-Message-ID: <20260115164301.186626633@linuxfoundation.org>
+Message-ID: <20260115164154.265594190@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 2b22d0fcc6320ba29b2122434c1d2f0785fb0a25 upstream.
+[ Upstream commit a428e0da1248c353557970848994f35fd3f005e2 ]
 
-damon_do_test_apply_three_regions() is assuming all dynamic memory
-allocation in it will succeed.  Those are indeed likely in the real use
-cases since those allocations are too small to fail, but theoretically
-those could fail.  In the case, inappropriate memory access can happen.
-Fix it by appropriately cleanup pre-allocated memory and skip the
-execution of the remaining tests in the failure cases.
+devlink_alloc() may return NULL on allocation failure, but
+prestera_devlink_alloc() unconditionally calls devlink_priv() on
+the returned pointer.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-18-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This leads to a NULL pointer dereference if devlink allocation fails.
+Add a check for a NULL devlink pointer and return NULL early to avoid
+the crash.
+
+Fixes: 34dd1710f5a3 ("net: marvell: prestera: Add basic devlink support")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: Elad Nachman <enachman@marvell.com>
+Link: https://patch.msgid.link/20251230052124.897012-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/vaddr-test.h |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/marvell/prestera/prestera_devlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/damon/vaddr-test.h
-+++ b/mm/damon/vaddr-test.h
-@@ -141,8 +141,14 @@ static void damon_do_test_apply_three_re
- 	int i;
+diff --git a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
+index 2a4c9df4eb797..e63d95c1842f3 100644
+--- a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
++++ b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
+@@ -387,6 +387,8 @@ struct prestera_switch *prestera_devlink_alloc(struct prestera_device *dev)
  
- 	t = damon_new_target(42);
-+	if (!t)
-+		kunit_skip(test, "target alloc fail");
- 	for (i = 0; i < nr_regions / 2; i++) {
- 		r = damon_new_region(regions[i * 2], regions[i * 2 + 1]);
-+		if (!r) {
-+			damon_destroy_target(t);
-+			kunit_skip(test, "region alloc fail");
-+		}
- 		damon_add_region(r, t);
- 	}
- 	damon_add_target(ctx, t);
+ 	dl = devlink_alloc(&prestera_dl_ops, sizeof(struct prestera_switch),
+ 			   dev->dev);
++	if (!dl)
++		return NULL;
+ 
+ 	return devlink_priv(dl);
+ }
+-- 
+2.51.0
+
 
 
 
