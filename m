@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209117-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209537-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64D5BD2669F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A3D3ED26EE1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 68FCB30834C5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D9A9C31C446D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B276E3BC4D7;
-	Thu, 15 Jan 2026 17:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 248AD2D9ECB;
+	Thu, 15 Jan 2026 17:42:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CeLXTchm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cEOYXxD2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76060E56A;
-	Thu, 15 Jan 2026 17:23:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7CF42D94A7;
+	Thu, 15 Jan 2026 17:42:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497781; cv=none; b=QsaeiObGPXsDAXAaUJ26NnM7fQcRh1YEUU/J3KLYpCvGygC469kE82SG+u0zAjP9paajAodVIZuaKq3o8n+5jKki5exskRjJHkk+0LtIUXceh3uJOV4u+HLO0CwAOecqpxrTtzQ3vcyaGtaTuGMRb1h0dd4M/9S47Sck9JdSFcI=
+	t=1768498978; cv=none; b=YiNwHc0/FrZ5iw5PVfUPfsnP/24J8oVFzsId5NlcaDKiYsTFXJ/gcT83pP1uqPdTG1OsgltouuhtV93GUlvpSWl4BoPioQMCecth/boG5qxy0tEIEbRp6ypFZLu3gv6DoIlihde0wS3eJxc4U/EcMX3TXIGeB8Udsak1EgzXq3U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497781; c=relaxed/simple;
-	bh=03h2MOct8p3o3i56P2ZtDda29+cUVjSmQBeOIg4vtJY=;
+	s=arc-20240116; t=1768498978; c=relaxed/simple;
+	bh=lj7e+SJuRr1Td8/VnnHkE+1YCUf6QaBOIQsyGJR7G6M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iAYvwY+cOR4FktxuJ4+bTmdqOq7Vg3SmLTQqK2V+s++xC6m8UxtjSzddB5+sWOchwkX0+Eu8En/noW/bwWd5Zbir7L5xDOt3iOTGWCE8AZRVCeDLAWAKiJ8btCe2TUgAOVtAZy1DB9hq+UrHbR+7JQqAbZmsriwpzhAQz6gdPPc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CeLXTchm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02302C116D0;
-	Thu, 15 Jan 2026 17:23:00 +0000 (UTC)
+	 MIME-Version; b=iAHgE0UpLx65rLGkUkdjRCd+BZCguWfAF51Z+8ALg1L7ZVtiyE2lW4Mub9+hn7MWxSGFbFk+X4npPi0dXuM/LtnQXECRGON02MRgwUX7hEhR0ro0/T79Nai13uaVknZaIt3XuVoaj48KVn/KswWLqKczGNw42gsJ6hwyL9jCIXw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cEOYXxD2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17D12C116D0;
+	Thu, 15 Jan 2026 17:42:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497781;
-	bh=03h2MOct8p3o3i56P2ZtDda29+cUVjSmQBeOIg4vtJY=;
+	s=korg; t=1768498978;
+	bh=lj7e+SJuRr1Td8/VnnHkE+1YCUf6QaBOIQsyGJR7G6M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CeLXTchmzK/qDrjQLtwRnbtDu5rFi32FwqJwhO2mhrmGxOCa/CIRT5d+4odwb+KW6
-	 F4YQiwjcvcmzafCWuubKzW8K626t0kbLWMoX54WdGUUDVfeMBFs7nvLjMchIiFNtRa
-	 FuMpryT7i3XPXgurL85o23CD3dF31PjqOfLrlLS8=
+	b=cEOYXxD23QaMVTYZrhk+4/1blBsTJ+1GJeKBs4+cAIENMnh361IYzJa8jur6dVtrD
+	 1P8wCXR65u8G2jwjw2x4BLWG6jZXtr+E2ajVIhYFfpVGdrqTe57+kKozr6yGn+VLW6
+	 BEJcrFozzpfXv3SW62sjUHZLOl2C3YvSJdtHb3uo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
-	Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.15 200/554] ALSA: dice: fix buffer overflow in detect_stream_formats()
-Date: Thu, 15 Jan 2026 17:44:26 +0100
-Message-ID: <20260115164253.496149131@linuxfoundation.org>
+	Long Li <leo.lilong@huawei.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 066/451] macintosh/mac_hid: fix race condition in mac_hid_toggle_emumouse
+Date: Thu, 15 Jan 2026 17:44:27 +0100
+Message-ID: <20260115164233.286769266@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,55 +60,105 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Long Li <leo.lilong@huawei.com>
 
-commit 324f3e03e8a85931ce0880654e3c3eb38b0f0bba upstream.
+[ Upstream commit 1e4b207ffe54cf33a4b7a2912c4110f89c73bf3f ]
 
-The function detect_stream_formats() reads the stream_count value directly
-from a FireWire device without validating it. This can lead to
-out-of-bounds writes when a malicious device provides a stream_count value
-greater than MAX_STREAMS.
+The following warning appears when running syzkaller, and this issue also
+exists in the mainline code.
 
-Fix by applying the same validation to both TX and RX stream counts in
-detect_stream_formats().
+ ------------[ cut here ]------------
+ list_add double add: new=ffffffffa57eee28, prev=ffffffffa57eee28, next=ffffffffa5e63100.
+ WARNING: CPU: 0 PID: 1491 at lib/list_debug.c:35 __list_add_valid_or_report+0xf7/0x130
+ Modules linked in:
+ CPU: 0 PID: 1491 Comm: syz.1.28 Not tainted 6.6.0+ #3
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
+ RIP: 0010:__list_add_valid_or_report+0xf7/0x130
+ RSP: 0018:ff1100010dfb7b78 EFLAGS: 00010282
+ RAX: 0000000000000000 RBX: ffffffffa57eee18 RCX: ffffffff97fc9817
+ RDX: 0000000000040000 RSI: ffa0000002383000 RDI: 0000000000000001
+ RBP: ffffffffa57eee28 R08: 0000000000000001 R09: ffe21c0021bf6f2c
+ R10: 0000000000000001 R11: 6464615f7473696c R12: ffffffffa5e63100
+ R13: ffffffffa57eee28 R14: ffffffffa57eee28 R15: ff1100010dfb7d48
+ FS:  00007fb14398b640(0000) GS:ff11000119600000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 0000000000000000 CR3: 000000010d096005 CR4: 0000000000773ef0
+ DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+ DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+ PKRU: 80000000
+ Call Trace:
+  <TASK>
+  input_register_handler+0xb3/0x210
+  mac_hid_start_emulation+0x1c5/0x290
+  mac_hid_toggle_emumouse+0x20a/0x240
+  proc_sys_call_handler+0x4c2/0x6e0
+  new_sync_write+0x1b1/0x2d0
+  vfs_write+0x709/0x950
+  ksys_write+0x12a/0x250
+  do_syscall_64+0x5a/0x110
+  entry_SYSCALL_64_after_hwframe+0x78/0xe2
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 58579c056c1c ("ALSA: dice: use extended protocol to detect available stream formats")
-Cc: stable@vger.kernel.org
-Reviewed-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881B043FC68B4C0DA40B73DAFDCA@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The WARNING occurs when two processes concurrently write to the mac-hid
+emulation sysctl, causing a race condition in mac_hid_toggle_emumouse().
+Both processes read old_val=0, then both try to register the input handler,
+leading to a double list_add of the same handler.
+
+  CPU0                             CPU1
+  -------------------------        -------------------------
+  vfs_write() //write 1            vfs_write()  //write 1
+    proc_sys_write()                 proc_sys_write()
+      mac_hid_toggle_emumouse()          mac_hid_toggle_emumouse()
+        old_val = *valp // old_val=0
+                                           old_val = *valp // old_val=0
+                                           mutex_lock_killable()
+                                           proc_dointvec() // *valp=1
+                                           mac_hid_start_emulation()
+                                             input_register_handler()
+                                           mutex_unlock()
+        mutex_lock_killable()
+        proc_dointvec()
+        mac_hid_start_emulation()
+          input_register_handler() //Trigger Warning
+        mutex_unlock()
+
+Fix this by moving the old_val read inside the mutex lock region.
+
+Fixes: 99b089c3c38a ("Input: Mac button emulation - implement as an input filter")
+Signed-off-by: Long Li <leo.lilong@huawei.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/20250819091035.2263329-1-leo.lilong@huaweicloud.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/firewire/dice/dice-extension.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/macintosh/mac_hid.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/sound/firewire/dice/dice-extension.c
-+++ b/sound/firewire/dice/dice-extension.c
-@@ -116,7 +116,7 @@ static int detect_stream_formats(struct
- 			break;
+diff --git a/drivers/macintosh/mac_hid.c b/drivers/macintosh/mac_hid.c
+index 28b8581b44dda..b622df9f4b231 100644
+--- a/drivers/macintosh/mac_hid.c
++++ b/drivers/macintosh/mac_hid.c
+@@ -186,13 +186,14 @@ static int mac_hid_toggle_emumouse(struct ctl_table *table, int write,
+ 				   void *buffer, size_t *lenp, loff_t *ppos)
+ {
+ 	int *valp = table->data;
+-	int old_val = *valp;
++	int old_val;
+ 	int rc;
  
- 		base_offset += EXT_APP_STREAM_ENTRIES;
--		stream_count = be32_to_cpu(reg[0]);
-+		stream_count = min_t(unsigned int, be32_to_cpu(reg[0]), MAX_STREAMS);
- 		err = read_stream_entries(dice, section_addr, base_offset,
- 					  stream_count, mode,
- 					  dice->tx_pcm_chs,
-@@ -125,7 +125,7 @@ static int detect_stream_formats(struct
- 			break;
+ 	rc = mutex_lock_killable(&mac_hid_emumouse_mutex);
+ 	if (rc)
+ 		return rc;
  
- 		base_offset += stream_count * EXT_APP_STREAM_ENTRY_SIZE;
--		stream_count = be32_to_cpu(reg[1]);
-+		stream_count = min_t(unsigned int, be32_to_cpu(reg[1]), MAX_STREAMS);
- 		err = read_stream_entries(dice, section_addr, base_offset,
- 					  stream_count,
- 					  mode, dice->rx_pcm_chs,
++	old_val = *valp;
+ 	rc = proc_dointvec(table, write, buffer, lenp, ppos);
+ 
+ 	if (rc == 0 && write && *valp != old_val) {
+-- 
+2.51.0
+
 
 
 
