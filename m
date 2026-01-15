@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209542-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209104-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0CD20D26EE7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1D28D267ED
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A487531CF253
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C3CDF30551D9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372244A3C;
-	Thu, 15 Jan 2026 17:43:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3952F29B200;
+	Thu, 15 Jan 2026 17:22:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfBvmOb4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pW7690jA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4672C3268;
-	Thu, 15 Jan 2026 17:43:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F062D21CC5A;
+	Thu, 15 Jan 2026 17:22:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498992; cv=none; b=ED30lCsqNdjU19p48eLJS9e2yBfwtyXWUwlWz+PL3AXp5gzKb0WqSlR6yWh5+lcVyOZq04CKvydJj2+JlITz9iWe/GW6cZmIsqlwbIZeQOtNtsqIxOlpiZGGLB5vVkRblmbIJq7Cd379VSmqiuk/B6Jb3BPZLyXmOiIkXVJJaMQ=
+	t=1768497745; cv=none; b=C0IJo6T/JukloJx/ROLW4dqc1tIj2derkI/7gdVemUJSU2jLLxhX1cJFoMXOfxbmA3Ttq98bLEBa+Cg/7hf2opfZ2M7RYtG69z7XsCgES6J2USaIn0bcQUCWEWJ4myLWcsuBCMsu7hkjUo0EZtjVphc77TFdQ4vapY4qP6rOVv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498992; c=relaxed/simple;
-	bh=Xd5WSdC5GDGnX7eV0vrLVhOAKzVXjm19HQWsRE+9Uvo=;
+	s=arc-20240116; t=1768497745; c=relaxed/simple;
+	bh=mag79QyMBlcp/Nbm0snQvDBjHnusVAV/+4grBQ3Ni3M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=t+CfQJKgCBg3Czpu9BByaHivDkIk7YyD8yPXKV1ZIJHkrNo0Z8uB7GvUtjukwbLRt40bDIUNvJkD4wnfrfOZdZCYtRPwbcpRf7cvewcoXoS5j+HdMTRFCeOCQiCzQLDUO01MEG72W1YXFiQ2OfM5Dz8+4KVgv4yUTH1KqjlRd/c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfBvmOb4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228FAC116D0;
-	Thu, 15 Jan 2026 17:43:11 +0000 (UTC)
+	 MIME-Version; b=RROBzHb9yPScK6oS+SObMFJLx1LYLH8ZhnFKIXUlikGRSRMuKJb/4ZVSmVuPAaGlHT8//hHsd1QilQ80pRhvjL6XjniDkww+ju7cEfarAh6sbUUiTBW5TmYg9B56NZ59Pib0CpCwtxlR0ARomiS7CPp2tMOL30kZz0HoNqQNEwE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pW7690jA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AE2AC116D0;
+	Thu, 15 Jan 2026 17:22:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498992;
-	bh=Xd5WSdC5GDGnX7eV0vrLVhOAKzVXjm19HQWsRE+9Uvo=;
+	s=korg; t=1768497744;
+	bh=mag79QyMBlcp/Nbm0snQvDBjHnusVAV/+4grBQ3Ni3M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qfBvmOb4II9hszw5+qB0oCeqZbuzfwY84k9vm6EJrLw7iRAQdaBUM5NGDpSJIcXKe
-	 13JXp1T4+r4mbVB6HglFOoPRej/oVYL0HmZOr2C+1+Yj5EXkeUtl++WpORPK4jGmpv
-	 IDu2kQkztaOLLuVPN6C1Ed28j5GMrMlBqf4NGsfw=
+	b=pW7690jA2AHuLs9N0YJ5xtTqpV2UqWpQMJ9sp9dIW2/CeqtgHN7WRyiVaG9uRn+Jj
+	 DSEMUoI6Jf3yy3KEom2lMwHsdk6uEHiMMvILV9E3/dxOCiwnRHfkizRidcO1jGVDCj
+	 gaM5zQe1Tw04ECfdyHgQ61n0+Efn8FNEFO2BzCwA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ivan Abramov <i.abramov@mt-integration.ru>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	shechenglong <shechenglong@xfusion.com>,
+	Damien Le Moal <dlemoal@kernel.org>,
+	Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 053/451] power: supply: wm831x: Check wm831x_set_bits() return value
+Subject: [PATCH 5.15 188/554] block: fix comment for op_is_zone_mgmt() to include RESET_ALL
 Date: Thu, 15 Jan 2026 17:44:14 +0100
-Message-ID: <20260115164232.818600997@linuxfoundation.org>
+Message-ID: <20260115164253.065915451@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,56 +62,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Abramov <i.abramov@mt-integration.ru>
+From: shechenglong <shechenglong@xfusion.com>
 
-[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
+[ Upstream commit 8a32282175c964eb15638e8dfe199fc13c060f67 ]
 
-Since wm831x_set_bits() may return error, log failure and exit from
-wm831x_usb_limit_change() in such case.
+REQ_OP_ZONE_RESET_ALL is a zone management request, and op_is_zone_mgmt()
+has returned true for it.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Update the comment to remove the misleading exception note so
+the documentation matches the implementation.
 
-Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
-Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
-Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: 12a1c9353c47 ("block: fix op_is_zone_mgmt() to handle REQ_OP_ZONE_RESET_ALL")
+Signed-off-by: shechenglong <shechenglong@xfusion.com>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/wm831x_power.c | 10 ++++++++--
- 1 file changed, 8 insertions(+), 2 deletions(-)
+ include/linux/blk_types.h | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
-index 18b33f14dfeef..aae655109862c 100644
---- a/drivers/power/supply/wm831x_power.c
-+++ b/drivers/power/supply/wm831x_power.c
-@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 							 struct wm831x_power,
- 							 usb_notify);
- 	unsigned int i, best;
-+	int ret;
- 
- 	/* Find the highest supported limit */
- 	best = 0;
-@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
- 	dev_dbg(wm831x_power->wm831x->dev,
- 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
- 
--	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
--		        WM831X_USB_ILIM_MASK, best);
-+	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
-+			      WM831X_USB_ILIM_MASK, best);
-+	if (ret < 0) {
-+		dev_err(wm831x_power->wm831x->dev,
-+			"Failed to set USB current limit: %d\n", ret);
-+		return ret;
-+	}
- 
- 	return 0;
+diff --git a/include/linux/blk_types.h b/include/linux/blk_types.h
+index 2d21af10a9df9..a9e554ef3c4a8 100644
+--- a/include/linux/blk_types.h
++++ b/include/linux/blk_types.h
+@@ -472,10 +472,7 @@ static inline bool op_is_discard(unsigned int op)
  }
+ 
+ /*
+- * Check if a bio or request operation is a zone management operation, with
+- * the exception of REQ_OP_ZONE_RESET_ALL which is treated as a special case
+- * due to its different handling in the block layer and device response in
+- * case of command failure.
++ * Check if a bio or request operation is a zone management operation.
+  */
+ static inline bool op_is_zone_mgmt(enum req_opf op)
+ {
 -- 
 2.51.0
 
