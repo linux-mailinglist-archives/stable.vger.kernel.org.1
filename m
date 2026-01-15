@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208565-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 28F15D25FE6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:34 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 64FCDD260A6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9E1030DB582
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8AA24301C0BC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18AB6396B75;
-	Thu, 15 Jan 2026 16:56:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9B9C29C338;
+	Thu, 15 Jan 2026 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf7ShjCV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V2ATbDvK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C991E3BF2E4;
-	Thu, 15 Jan 2026 16:56:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D2B525228D;
+	Thu, 15 Jan 2026 17:01:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496210; cv=none; b=nOIEnCdPm7QVzLma7nfhVghiE2K5jLzG4RDlUXzKy21PBLeDl03s0SwNbbw/0SH+p2bzHkIpfjB6kOpdmvkcWjsSqySb21Mfjag45uJgcIzbOMw8Szqagaa3csBaxexjMf0ssQNO/hqh2jZaYPvi9uVChgJPtHciEaqre1LKk7w=
+	t=1768496512; cv=none; b=ChGM/fnYWbwwVc6I5rR1RWb1zCzfqNhygkJc+gwLeJHDIP1jdQMo+ziG0/HEXWga4A90A2QNiS9qip/60Oc87A4kSKtyaFXsUBCG8C+FNjQ7wSMc0RwH2nKZsawrZxqrgrPyrAYnaIaqEzIuH4wFffmTSiD+s4phh420Kb+nzfA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496210; c=relaxed/simple;
-	bh=XzLph8tJMR0g1XhS5dgTlypJw6LCXDjw15DyQy5g+nk=;
+	s=arc-20240116; t=1768496512; c=relaxed/simple;
+	bh=yAGJechHoIJmlW4nVGFGsT39Ofp+yv2CNuV+Asl2Fu4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZI0sXO73LLtnxG0QKnsfNBOMjXbeAcgGvrkCDm9Ll1P35gatVt+q2CV61nLoRa17xeXw9kQQcazWhrgz++fMI1ZuAnfjIZzLbRR7RVSBLq0qhx/e9bA2vYyFabt7ylSgT386qVjqpRa2307g6TtVviLWmTVq8XAM6tU5gjrn4pY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf7ShjCV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D798C19422;
-	Thu, 15 Jan 2026 16:56:50 +0000 (UTC)
+	 MIME-Version; b=q9Ke4UdgV/JWgXtTxHBUi6LdYBAJibt4TA2qCwl0lSx8sawqUfyf5nr39rIx8VSbBQejxOV5amz/xyMsI9aTG7+LTRPvNQcQqbC7bVEFrj7WtbLrBmKv2Ew35l7Ru0ARzB2cOcEjDI5M6XaW2MOosgegcWfe58RCFtJZ5YrGBWw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V2ATbDvK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3C0C19422;
+	Thu, 15 Jan 2026 17:01:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496210;
-	bh=XzLph8tJMR0g1XhS5dgTlypJw6LCXDjw15DyQy5g+nk=;
+	s=korg; t=1768496512;
+	bh=yAGJechHoIJmlW4nVGFGsT39Ofp+yv2CNuV+Asl2Fu4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Vf7ShjCV6tXT6hPoSFVJ7H3tFF62a7mmJjYwZOaegibFYvzPuWE1yU3L2C4IW+gfZ
-	 Dyb6kuSOhmsvj5bbvWrZ/Vmoziij5AdHgPm1k7jPog9oekPvaEbDZYuTd2aXPvMkIH
-	 YKfTVzC4N9TCJ9tvuJ0MZwt4MtQCrx/kFtgkusVk=
+	b=V2ATbDvKivM6hCY8hVxSWFMTpuzJVUwe8Y0g+FZs/tuFWABaRY3LE3ARsi9bInUNF
+	 ijx1l1fYnqb9wBPvyOuOLzCg+vfaSJrE6tauTBhZiRpMKMhkmqExoJh3CAzYMfe/Uw
+	 c2evcv6nDZKzn2yhbqSe5sQATvN0BXajiPXFFlK4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Filipe Manana <fdmanana@suse.com>,
-	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 117/181] btrfs: fix NULL pointer dereference in do_abort_log_replay()
+Subject: [PATCH 6.12 039/119] smb/client: fix NT_STATUS_UNABLE_TO_FREE_VM value
 Date: Thu, 15 Jan 2026 17:47:34 +0100
-Message-ID: <20260115164206.539159264@linuxfoundation.org>
+Message-ID: <20260115164153.371274226@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-[ Upstream commit 530e3d4af566ca44807d79359b90794dea24c4f3 ]
+[ Upstream commit 9f99caa8950a76f560a90074e3a4b93cfa8b3d84 ]
 
-Coverity reported a NULL pointer dereference issue (CID 1666756) in
-do_abort_log_replay(). When btrfs_alloc_path() fails in
-replay_one_buffer(), wc->subvol_path is NULL, but btrfs_abort_log_replay()
-calls do_abort_log_replay() which unconditionally dereferences
-wc->subvol_path when attempting to print debug information. Fix this by
-adding a NULL check before dereferencing wc->subvol_path in
-do_abort_log_replay().
+This was reported by the KUnit tests in the later patches.
 
-Fixes: 2753e4917624 ("btrfs: dump detailed info and specific messages on log replay failures")
-Reviewed-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
-Signed-off-by: Filipe Manana <fdmanana@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+See MS-ERREF 2.3.1 STATUS_UNABLE_TO_FREE_VM. Keep it consistent with the
+value in the documentation.
+
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/tree-log.c | 2 +-
+ fs/smb/client/nterr.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
-index de9ea9d52482f..1444857de9fe8 100644
---- a/fs/btrfs/tree-log.c
-+++ b/fs/btrfs/tree-log.c
-@@ -189,7 +189,7 @@ static void do_abort_log_replay(struct walk_control *wc, const char *function,
- 
- 	btrfs_abort_transaction(wc->trans, error);
- 
--	if (wc->subvol_path->nodes[0]) {
-+	if (wc->subvol_path && wc->subvol_path->nodes[0]) {
- 		btrfs_crit(fs_info,
- 			   "subvolume (root %llu) leaf currently being processed:",
- 			   btrfs_root_id(wc->root));
+diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
+index edd4741cab0a1..7ce063a1dc3f6 100644
+--- a/fs/smb/client/nterr.h
++++ b/fs/smb/client/nterr.h
+@@ -70,7 +70,7 @@ extern const struct nt_err_code_struct nt_errs[];
+ #define NT_STATUS_NO_MEMORY 0xC0000000 | 0x0017
+ #define NT_STATUS_CONFLICTING_ADDRESSES 0xC0000000 | 0x0018
+ #define NT_STATUS_NOT_MAPPED_VIEW 0xC0000000 | 0x0019
+-#define NT_STATUS_UNABLE_TO_FREE_VM 0x80000000 | 0x001a
++#define NT_STATUS_UNABLE_TO_FREE_VM 0xC0000000 | 0x001a
+ #define NT_STATUS_UNABLE_TO_DELETE_SECTION 0xC0000000 | 0x001b
+ #define NT_STATUS_INVALID_SYSTEM_SERVICE 0xC0000000 | 0x001c
+ #define NT_STATUS_ILLEGAL_INSTRUCTION 0xC0000000 | 0x001d
 -- 
 2.51.0
 
