@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208712-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208787-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A60C6D26131
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7F5E5D262C4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF924302D8BB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5E531303B2A5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1740B345758;
-	Thu, 15 Jan 2026 17:03:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E19ED260569;
+	Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZIWHh3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0GKrf71"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7C32D73A0;
-	Thu, 15 Jan 2026 17:03:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A41B32D238A;
+	Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496631; cv=none; b=BlHbJ0C3EpKXwsW5pBdjNH+0+X8wI2SkI5rOpefIEslsQ8XnbsDbT/EwvFK1D96enArNw8Mk9FiYJKuqs2IUKuaIZZ/O+I41OBTh3bb+g5FCUgRtIbygg5V2m2LIP71MBnZ5XtUQYzmBBqP9udVM9CGCXePW4HdJXRg08PfnSF0=
+	t=1768496841; cv=none; b=NT8vWT25EirFPxBULglr8vjbReI/17pw0Ot7MLgEwn9JxzYvEP8zHvKrCNGeFQbqB+uUCE6cdQ2kBEffp2b9+fiSEE0wmnmeX1V+AYPTaRiYI77E0AWxUPzDr6mLMs6Vz2Mwd46ULb/+erMXPpY7Np6lL+nBBYm6K3J5IfuX1yU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496631; c=relaxed/simple;
-	bh=vLu8X1PAwoaHoe7Ysu153t7VwCk76nrWND2vl3n7Yl0=;
+	s=arc-20240116; t=1768496841; c=relaxed/simple;
+	bh=gJ4vDONHW44ykY/zdv+vUyA3i2C68NQfvOghd7ubZHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sylOZpt417EFTuzL9uUACrmwDqabRj1E6g/mOm1tCXD17LgfJTqXbfjdd32M2Nt1Zg1nkAFmTsjJ76dwNFjesCVOk7PQE0Vy4YkPoNFrjFHVvgWzFQoGwp+spjXnx3vTmHSzRj+ZWqIO39WEvZvHdXVffeA7UX3nXvX4VLmEC5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZIWHh3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE3CC116D0;
-	Thu, 15 Jan 2026 17:03:51 +0000 (UTC)
+	 MIME-Version; b=X+uiPo2RokTkcgPSr/kXBIWmiZtGq1GFSfgqJsivKY/MtFYzQWheQ0JDV2GF7fy5kxSAsvHGfpCqqt7lRGvPL41FQesJSyh4kvj/LvHMVgA96Wzh9JRK11eGgfPBdNzAWu6DY1WvIEZxQinswAXUj+VbxZSS8HQrwM/0lLtdnDo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0GKrf71; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3738AC116D0;
+	Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496631;
-	bh=vLu8X1PAwoaHoe7Ysu153t7VwCk76nrWND2vl3n7Yl0=;
+	s=korg; t=1768496841;
+	bh=gJ4vDONHW44ykY/zdv+vUyA3i2C68NQfvOghd7ubZHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KZIWHh3SDsz0gx8fcck/Az4ESVDorLRz0goXNuQlJcmhkp0ELMgZxeUQ6R/IB8Wn8
-	 hiELVoTDCQsiqv72QepZoxGYrGnZ8u3YM4q7PxS2b5zW6SA8y84L4wgslBUhXQrChE
-	 ryZvT3qzyUPq3VX4fp4lKDU7qf039tgGMcBWsazU=
+	b=W0GKrf71EEObfRQEKDkaZCBYb6lpX/wzi6r9GIcdv0pwgRpJ5QwGXxa1exGengn3M
+	 bvaW6fyEeQg7NFq337QPglBqoRnUwObGAgyNiztQ6nJp+rPcixx5iCwhTgd1lkXaj4
+	 FZHJYXIP6b0pQ1dcW9ZOhQCbeLSl/O/Rm3hVQpFA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 081/119] HID: quirks: work around VID/PID conflict for appledisplay
+Subject: [PATCH 6.6 33/88] NFS: Fix up the automount fs_context to use the correct cred
 Date: Thu, 15 Jan 2026 17:48:16 +0100
-Message-ID: <20260115164154.874920857@linuxfoundation.org>
+Message-ID: <20260115164147.510908758@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,49 +57,43 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
+[ Upstream commit a2a8fc27dd668e7562b5326b5ed2f1604cb1e2e9 ]
 
-For years I wondered why the Apple Cinema Display driver would not
-just work for me. Turns out the hidraw driver instantly takes it
-over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
+When automounting, the fs_context should be fixed up to use the cred
+from the parent filesystem, since the operation is just extending the
+namespace. Authorisation to enter that namespace will already have been
+provided by the preceding lookup.
 
-Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ fs/nfs/namespace.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 2da21415e676c..192b8f63baaab 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -232,6 +232,15 @@ static const struct hid_device_id hid_quirks[] = {
-  * used as a driver. See hid_scan_report().
-  */
- static const struct hid_device_id hid_have_special_driver[] = {
-+#if IS_ENABLED(CONFIG_APPLEDISPLAY)
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
-+#endif
- #if IS_ENABLED(CONFIG_HID_A4TECH)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
+diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
+index 923b5c1eb47e9..99ef1146096fe 100644
+--- a/fs/nfs/namespace.c
++++ b/fs/nfs/namespace.c
+@@ -170,6 +170,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
+ 	if (!ctx->clone_data.fattr)
+ 		goto out_fc;
+ 
++	if (fc->cred != server->cred) {
++		put_cred(fc->cred);
++		fc->cred = get_cred(server->cred);
++	}
++
+ 	if (fc->net_ns != client->cl_net) {
+ 		put_net(fc->net_ns);
+ 		fc->net_ns = get_net(client->cl_net);
 -- 
 2.51.0
 
