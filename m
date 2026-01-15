@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209817-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 64E1CD27E2E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:59:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3F9CD26359
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:15:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EFFE631F3AB6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 918153029F8E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27F853D300A;
-	Thu, 15 Jan 2026 17:56:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 49D193ACA65;
+	Thu, 15 Jan 2026 17:10:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JbfcZzYf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aTycfnBv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E03952D9488;
-	Thu, 15 Jan 2026 17:56:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E202B3BF2EA;
+	Thu, 15 Jan 2026 17:10:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499774; cv=none; b=FC9BtXZHy0cd7Sn4GAwxdL3VeiW6A/i+D1TOHW4qs+Iyvew5DaYqz0Yy2qM4+CuShGRY8DnHBU9YHZP2WoGVOVku1uiykaCIKq0DJArglofeSoHQ37N9zzwGUSHkZbLDE3xgGKUjd8IDuFfHRnQvV14sqTRwNgLZwkmy4QJXv+I=
+	t=1768497035; cv=none; b=L3xq2jcr270LzGDptnycuRtUqhRqEdIO+CHlNqpaRb7vRT2/KNqqNuY3eJlhA3bsRvy2C+JAT+yeSQdQFaaWYbSS3WO1cYLpubzZj6Ycw535XK/29t0dV+zCUy3w+OT7IQtCRkVqugWRIMupgs2zbb95XehKJ3uFZruA4Z8McYE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499774; c=relaxed/simple;
-	bh=0Dn5nCnBWVyN0OVMqYtujY49ndK5jR/KK5UXDwqjHyE=;
+	s=arc-20240116; t=1768497035; c=relaxed/simple;
+	bh=9pGft+KvU2jqwD80DUxbb+8nRyzlY5dqAV/Q4chIuWg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iDijqTyMg52hFABJt9cWmYpa4T3evpwA9EijRKEAxRco+AL/77z5kn3R1tweiZnncyLotgvKmGIJaT0rSfjmHaaF+jfnJj9bJvB93m0mwVeyCIM9IPDF/Cbs01OTW+bUKHx10CLhbdkkShWr4ZmuNkCcB8omhlMZ/4r/cYARaNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JbfcZzYf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70282C116D0;
-	Thu, 15 Jan 2026 17:56:14 +0000 (UTC)
+	 MIME-Version; b=qvar8RqyZMXFwELbNaqgDLI2RKGWvmgQHSP1elawuuHbaQuvZGGbAuYvMLC7bw784O6vhAa/dVBxHfNoTkPIDl3kTR9ovnbs6kZ86TtrHeY0m2F08DrtPINVRSRR9LQgG3XiiZYeQILpzVQOMxKoh4BOVCRexX/8xaeHII/OWZI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aTycfnBv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55C5DC116D0;
+	Thu, 15 Jan 2026 17:10:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499774;
-	bh=0Dn5nCnBWVyN0OVMqYtujY49ndK5jR/KK5UXDwqjHyE=;
+	s=korg; t=1768497034;
+	bh=9pGft+KvU2jqwD80DUxbb+8nRyzlY5dqAV/Q4chIuWg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JbfcZzYfwgSfnUF1Ek0VyzkS0PhTkEjUNFPdAs/k80neYqgPhk+Rn7TNkIsumqHRd
-	 jLosStrXQCjj0fWEXzWYDf/Fizkkl0kCwoRrBX4l7aTznhNmKCdVWv7JGpfGipLWuu
-	 vvzrizGTc9nXbmklSIvYhv/evmR3LlSzKc58gHWI=
+	b=aTycfnBv06muqLwFyP2q1Oh8y4ptXDqaG3FSiVkMpTzxUiph0VQCUXLxiBssqkpbd
+	 6vV+rdxr82z80feNnYblsUuJgTdqzcbU9lr9Xtz9RNWXg1zW4kfKEPE27I7MuDaWHw
+	 hLtRRE1PZcIowi+8TXhqJ8zw16IFXMyaAAiG+RSg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.10 302/451] iommu/exynos: fix device leak on of_xlate()
-Date: Thu, 15 Jan 2026 17:48:23 +0100
-Message-ID: <20260115164241.818316816@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.1 14/72] libceph: make calc_target() set t->paused, not just clear it
+Date: Thu, 15 Jan 2026 17:48:24 +0100
+Message-ID: <20260115164144.008365617@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 05913cc43cb122f9afecdbe775115c058b906e1b upstream.
+commit c0fe2994f9a9d0a2ec9e42441ea5ba74b6a16176 upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+Currently calc_target() clears t->paused if the request shouldn't be
+paused anymore, but doesn't ever set t->paused even though it's able to
+determine when the request should be paused.  Setting t->paused is left
+to __submit_request() which is fine for regular requests but doesn't
+work for linger requests -- since __submit_request() doesn't operate
+on linger requests, there is nowhere for lreq->t.paused to be set.
+One consequence of this is that watches don't get reestablished on
+paused -> unpaused transitions in cases where requests have been paused
+long enough for the (paused) unwatch request to time out and for the
+subsequent (re)watch request to enter the paused state.  On top of the
+watch not getting reestablished, rbd_reregister_watch() gets stuck with
+rbd_dev->watch_mutex held:
 
-Note that commit 1a26044954a6 ("iommu/exynos: add missing put_device()
-call in exynos_iommu_of_xlate()") fixed the leak in a couple of error
-paths, but the reference is still leaking on success.
+  rbd_register_watch
+    __rbd_register_watch
+      ceph_osdc_watch
+        linger_reg_commit_wait
 
-Fixes: aa759fd376fb ("iommu/exynos: Add callback for initializing devices from device tree")
-Cc: stable@vger.kernel.org	# 4.2: 1a26044954a6
-Cc: Yu Kuai <yukuai3@huawei.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+It's waiting for lreq->reg_commit_wait to be completed, but for that to
+happen the respective request needs to end up on need_resend_linger list
+and be kicked when requests are unpaused.  There is no chance for that
+if the request in question is never marked paused in the first place.
+
+The fact that rbd_dev->watch_mutex remains taken out forever then
+prevents the image from getting unmapped -- "rbd unmap" would inevitably
+hang in D state on an attempt to grab the mutex.
+
+Cc: stable@vger.kernel.org
+Reported-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/exynos-iommu.c |    9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
+ net/ceph/osd_client.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/exynos-iommu.c
-+++ b/drivers/iommu/exynos-iommu.c
-@@ -1299,17 +1299,14 @@ static int exynos_iommu_of_xlate(struct
- 		return -ENODEV;
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -1529,6 +1529,7 @@ static enum calc_target_result calc_targ
+ 	struct ceph_pg_pool_info *pi;
+ 	struct ceph_pg pgid, last_pgid;
+ 	struct ceph_osds up, acting;
++	bool should_be_paused;
+ 	bool is_read = t->flags & CEPH_OSD_FLAG_READ;
+ 	bool is_write = t->flags & CEPH_OSD_FLAG_WRITE;
+ 	bool force_resend = false;
+@@ -1597,10 +1598,16 @@ static enum calc_target_result calc_targ
+ 				 &last_pgid))
+ 		force_resend = true;
  
- 	data = platform_get_drvdata(sysmmu);
--	if (!data) {
--		put_device(&sysmmu->dev);
-+	put_device(&sysmmu->dev);
-+	if (!data)
- 		return -ENODEV;
--	}
- 
- 	if (!owner) {
- 		owner = kzalloc(sizeof(*owner), GFP_KERNEL);
--		if (!owner) {
--			put_device(&sysmmu->dev);
-+		if (!owner)
- 			return -ENOMEM;
--		}
- 
- 		INIT_LIST_HEAD(&owner->controllers);
- 		mutex_init(&owner->rpm_lock);
+-	if (t->paused && !target_should_be_paused(osdc, t, pi)) {
+-		t->paused = false;
++	should_be_paused = target_should_be_paused(osdc, t, pi);
++	if (t->paused && !should_be_paused) {
+ 		unpaused = true;
+ 	}
++	if (t->paused != should_be_paused) {
++		dout("%s t %p paused %d -> %d\n", __func__, t, t->paused,
++		     should_be_paused);
++		t->paused = should_be_paused;
++	}
++
+ 	legacy_change = ceph_pg_compare(&t->pgid, &pgid) ||
+ 			ceph_osds_changed(&t->acting, &acting,
+ 					  t->used_replica || any_change);
 
 
 
