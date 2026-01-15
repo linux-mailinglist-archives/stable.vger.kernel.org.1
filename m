@@ -1,55 +1,58 @@
-Return-Path: <stable+bounces-209739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208684-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E0D27D69
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:56:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BD68ED260E4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 1AF753041929
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2D9FB3096038
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4A83C1FD6;
-	Thu, 15 Jan 2026 17:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B76DA3BF2F6;
+	Thu, 15 Jan 2026 17:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwX9tHWw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="THUo7Cdk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402C93BC4D8;
-	Thu, 15 Jan 2026 17:52:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7971F3BB9F4;
+	Thu, 15 Jan 2026 17:02:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499554; cv=none; b=hLKq1p4O6SInXmzVN3jVgl9+yYdTHxuL11gzFQ2dGLLWu4eKPFE5aKA3uRe2bJId1O7zNt+G1CDCaU/8Zw5ngEXIMT7BgXD5w1MEsKPOrbej3C/EzM5D5U4ilNQX1++LRSr05a2ZL/JFoykm7jivE+F94v1jV0CM9CQeo3z6zWw=
+	t=1768496552; cv=none; b=Nbf4gB4mfM1R/MAQ237f/8XJOL8JIkRmv9TDVVonKflvE8Fy3y/zjRfmYUCRSX/AIloUysqlPKhWPxcGZhrwmlNmdiltYGx9BjOVDXT2f5TxxqE6/ArvlTFOsqwhzYRxX754cdXjJ/bqtvcu/M/zY4qGut5osv/LrysrlEjOoEU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499554; c=relaxed/simple;
-	bh=VsAuiMGR0cw4hngnJ6xTq/0XsIATkRdOdMpOCVDAkbM=;
+	s=arc-20240116; t=1768496552; c=relaxed/simple;
+	bh=gVueE7pMa4gNlDUTQZ7bBg6MkQQaHIhjuNClJ9jGIlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g4qxOkkFrhcaSzNW/CbXpHHnfrOlvYhVakUPI42agJmgal6ghrMPmIDRj9YxkbOx+XM9GZbJ5oIyVW8YpItS9E9hSI8Z5ykfxxMz3AdckUEhYb3i0f767XAxeBNzXmpjOCQHPxbG+OKq9sYk1pG1W14MOtFjiKhHNrzFAKdEbR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwX9tHWw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7A5C116D0;
-	Thu, 15 Jan 2026 17:52:33 +0000 (UTC)
+	 MIME-Version; b=jE9kw0jY4SQriDykbsfHxd54kc6pbrDpkUUTu9a6ZY9+2iy5yU/XlvvTb7ro+SLbHeNpHUVDj82DuJjtXLzTlZygFEK9p7SzAoeNiTowaaf8ZK8zP3t6O5KUJSZnPuoqOigJN2b9+LwYvymf6k4oOKDbEX72gtrablo3gXnqEjg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=THUo7Cdk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06657C116D0;
+	Thu, 15 Jan 2026 17:02:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499553;
-	bh=VsAuiMGR0cw4hngnJ6xTq/0XsIATkRdOdMpOCVDAkbM=;
+	s=korg; t=1768496552;
+	bh=gVueE7pMa4gNlDUTQZ7bBg6MkQQaHIhjuNClJ9jGIlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JwX9tHWwxGaLDVwvO5f7FGPqlEyO86FKbtzJ2lM8i7uCHzoWvzf9vmGpGU5Fj5a+8
-	 8qVtdn+ACT3ctq1VNQ3myXA/caBmB3bpU24VHm3tOmsjJJQsOhxELCD20uQgvRm54K
-	 8dZq/CBQDS6zfTxHPfEmRt5Z/t6762nmWYWaFUnk=
+	b=THUo7CdkOYI3NUocAsdGmXMfcw4k/+UoEGt026226Gn3/hoxidq5qqd/GS6HK8TQY
+	 1hePqBfdbMv06n2YcOv6HHhpQAIUoMexzDCv94UoDQCQWQer34HjTvQrg0pz+GiDN5
+	 rGXcjO8aAZ1gqCjkFZ/OzFcjcrxbUtW07sSzeLlw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Johan Hovold <johan@kernel.org>,
-	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
-	Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 5.10 266/451] soc: amlogic: canvas: fix device leak on lookup
+	Harshita Bhilwaria <harshita.bhilwaria@intel.com>,
+	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+	Ahsan Atta <ahsan.atta@intel.com>,
+	Ravikumar PM <ravikumar.pm@intel.com>,
+	Srikanth Thokala <srikanth.thokala@intel.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 052/119] crypto: qat - fix duplicate restarting msg during AER error
 Date: Thu, 15 Jan 2026 17:47:47 +0100
-Message-ID: <20260115164240.509032989@linuxfoundation.org>
+Message-ID: <20260115164153.837226897@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,51 +64,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Harshita Bhilwaria <harshita.bhilwaria@intel.com>
 
-commit 32200f4828de9d7e6db379909898e718747f4e18 upstream.
+[ Upstream commit 961ac9d97be72267255f1ed841aabf6694b17454 ]
 
-Make sure to drop the reference taken to the canvas platform device when
-looking up its driver data.
+The restarting message from PF to VF is sent twice during AER error
+handling: once from adf_error_detected() and again from
+adf_disable_sriov().
+This causes userspace subservices to shutdown unexpectedly when they
+receive a duplicate restarting message after already being restarted.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away so there is no point in keeping the reference.
+Avoid calling adf_pf2vf_notify_restarting() and
+adf_pf2vf_wait_for_restarting_complete() from adf_error_detected() so
+that the restarting msg is sent only once from PF to VF.
 
-Also note that commit 28f851e6afa8 ("soc: amlogic: canvas: add missing
-put_device() call in meson_canvas_get()") fixed the leak in a lookup
-error path, but the reference is still leaking on success.
-
-Fixes: d4983983d987 ("soc: amlogic: add meson-canvas driver")
-Cc: stable@vger.kernel.org	# 4.20: 28f851e6afa8
-Cc: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
-Link: https://patch.msgid.link/20250926142454.5929-2-johan@kernel.org
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9567d3dc760931 ("crypto: qat - improve aer error reset handling")
+Signed-off-by: Harshita Bhilwaria <harshita.bhilwaria@intel.com>
+Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
+Reviewed-by: Ravikumar PM <ravikumar.pm@intel.com>
+Reviewed-by: Srikanth Thokala <srikanth.thokala@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/amlogic/meson-canvas.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_aer.c | 2 --
+ 1 file changed, 2 deletions(-)
 
---- a/drivers/soc/amlogic/meson-canvas.c
-+++ b/drivers/soc/amlogic/meson-canvas.c
-@@ -72,10 +72,9 @@ struct meson_canvas *meson_canvas_get(st
- 	 * current state, this driver probe cannot return -EPROBE_DEFER
- 	 */
- 	canvas = dev_get_drvdata(&canvas_pdev->dev);
--	if (!canvas) {
--		put_device(&canvas_pdev->dev);
-+	put_device(&canvas_pdev->dev);
-+	if (!canvas)
- 		return ERR_PTR(-EINVAL);
--	}
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_aer.c b/drivers/crypto/intel/qat/qat_common/adf_aer.c
+index 4cb8bd83f5707..bd19d3a14422a 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_aer.c
++++ b/drivers/crypto/intel/qat/qat_common/adf_aer.c
+@@ -41,8 +41,6 @@ static pci_ers_result_t adf_error_detected(struct pci_dev *pdev,
+ 	adf_error_notifier(accel_dev);
+ 	adf_pf2vf_notify_fatal_error(accel_dev);
+ 	adf_dev_restarting_notify(accel_dev);
+-	adf_pf2vf_notify_restarting(accel_dev);
+-	adf_pf2vf_wait_for_restarting_complete(accel_dev);
+ 	pci_clear_master(pdev);
+ 	adf_dev_down(accel_dev);
  
- 	return canvas;
- }
+-- 
+2.51.0
+
 
 
 
