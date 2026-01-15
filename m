@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209215-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7A67FD27A2A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:37:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9965AD26BF9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CF60533B2E31
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:52:38 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6E8433145018
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 952273C1FEE;
-	Thu, 15 Jan 2026 17:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D34683D34BD;
+	Thu, 15 Jan 2026 17:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eprCYDNV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KhSrS2eY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 493433C0091;
-	Thu, 15 Jan 2026 17:49:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9705A3C00AD;
+	Thu, 15 Jan 2026 17:27:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499354; cv=none; b=bEemMHsgZ65ZL4WDIf2QWFtUDleGk4E1xuDiLZC/xroB+attjWE/ZgckCJa90r5k1x3KTfBdmQ2REmZf6VuMqWGhF+n7T245NLdW3NaNgknRC6KZ2m8RDHGY7IYvnlxfM5FxUCI/jLiR0GTHps39elux5A5QX6i9q64zBFiwyyk=
+	t=1768498061; cv=none; b=hx321pZ/JNriv35MmRQRJqmn9jIX7XmAJaBRjakue7PoZikFgroUxdHwq7rZv/crB6u6LTzC9EgXRMFqO8UsObQpMOZ5BicCdO4nel5TneS3B0ESC2oBWMH9YiQhuerV2rR6MCoXKg+HHow3YctCVdqzhJ3izBOPcuBpb4rz6qo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499354; c=relaxed/simple;
-	bh=iF1iNor81klozqIxnmAo7xwx2Jz18hiLh6UZmLmUu/8=;
+	s=arc-20240116; t=1768498061; c=relaxed/simple;
+	bh=H0nXpuQVuS0baVX58h3fpH23xMpa3WC5noqErIavefE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SMBXwiPJbsoR2zU5/ggIc6jKRUy8EZe0PaIZD3Zxep1nhWzQqt92IqLPWs8WZlgdJMnfwCCJ8T4H3hpGMH4YUP7pTSQby2vYVt0QQlO5d5vVYI6I2FugCDlzX7LJw9ZtRDj2h6K5uc+yzzJb0c52EWkSsFyEkcaXlgnrZLuALSk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eprCYDNV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C26C116D0;
-	Thu, 15 Jan 2026 17:49:13 +0000 (UTC)
+	 MIME-Version; b=pU/Ltq3UfzXGtcKABK4yotoPQwFVjfo0ivnEdI+lFxFEkO0SRQSMiGMQJ7kMw4tuPOmjq/AL8Ay0hLzCou/z/Q/q4ZvmkfuqyNBB0XXEHER0iUnxaOgRHnPbvp2yFIFmH9Amksok+ybDwOkLg4TCKb+biMoui2wlWylw4syLQfg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KhSrS2eY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E4D4C116D0;
+	Thu, 15 Jan 2026 17:27:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499354;
-	bh=iF1iNor81klozqIxnmAo7xwx2Jz18hiLh6UZmLmUu/8=;
+	s=korg; t=1768498061;
+	bh=H0nXpuQVuS0baVX58h3fpH23xMpa3WC5noqErIavefE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eprCYDNVwE454EXVclapgyYy15EjfZJp2O/zl5eL9U7p4Ve8/dMBVsGEIdh2KUrgv
-	 uSLo1Fp5D2iJB3SslifCpt0t3aFExwMKh/q0qjM9VfdO8H+X6iPKOc/G0amqxQYq1H
-	 5xTQKyKxMKlWuYnd9AZNYOCVGGRLDKI07F1mjnAc=
+	b=KhSrS2eYxH35LaMI1gDCvJH5fQGjfAOOTRlRycVb4UU1fg2lLgQsQaPTqfPpFPr4q
+	 18M6AJRk8NIv1l6N8ayFKemj0HvAObfSvr89yAjvk0GuD3njvLbTTxv59QHs6DKvSu
+	 2b7q4VxuPkG+8kddKg4NzoRLG1GwgGpjQ4LFaNWI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 164/451] hfsplus: Verify inode mode when loading from disk
+	stable <stable@kernel.org>,
+	Ma Ke <make24@iscas.ac.cn>
+Subject: [PATCH 5.15 299/554] intel_th: Fix error handling in intel_th_output_open
 Date: Thu, 15 Jan 2026 17:46:05 +0100
-Message-ID: <20260115164236.842271051@linuxfoundation.org>
+Message-ID: <20260115164257.055006251@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +59,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Ma Ke <make24@iscas.ac.cn>
 
-[ Upstream commit 005d4b0d33f6b4a23d382b7930f7a96b95b01f39 ]
+commit 6d5925b667e4ed9e77c8278cc215191d29454a3f upstream.
 
-syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
-the S_IFMT bits of the 16bits "mode" field loaded from disk are corrupted.
+intel_th_output_open() calls bus_find_device_by_devt() which
+internally increments the device reference count via get_device(), but
+this reference is not properly released in several error paths. When
+device driver is unavailable, file operations cannot be obtained, or
+the driver's open method fails, the function returns without calling
+put_device(), leading to a permanent device reference count leak. This
+prevents the device from being properly released and could cause
+resource exhaustion over time.
 
-According to [1], the permissions field was treated as reserved in Mac OS
-8 and 9. According to [2], the reserved field was explicitly initialized
-with 0, and that field must remain 0 as long as reserved. Therefore, when
-the "mode" field is not 0 (i.e. no longer reserved), the file must be
-S_IFDIR if dir == 1, and the file must be one of S_IFREG/S_IFLNK/S_IFCHR/
-S_IFBLK/S_IFIFO/S_IFSOCK if dir == 0.
+Found by code review.
 
-Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Link: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#HFSPlusPermissions [1]
-Link: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#ReservedAndPadFields [2]
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/04ded9f9-73fb-496c-bfa5-89c4f5d1d7bb@I-love.SAKURA.ne.jp
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Fixes: 39f4034693b7 ("intel_th: Add driver infrastructure for Intel(R) Trace Hub devices")
+Signed-off-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://patch.msgid.link/20251112091723.35963-1-make24@iscas.ac.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/inode.c | 32 ++++++++++++++++++++++++++++----
- 1 file changed, 28 insertions(+), 4 deletions(-)
+ drivers/hwtracing/intel_th/core.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
-diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
-index 7e1d889dcc07a..0ba324ee7dffb 100644
---- a/fs/hfsplus/inode.c
-+++ b/fs/hfsplus/inode.c
-@@ -178,13 +178,29 @@ const struct dentry_operations hfsplus_dentry_operations = {
- 	.d_compare    = hfsplus_compare_dentry,
- };
+--- a/drivers/hwtracing/intel_th/core.c
++++ b/drivers/hwtracing/intel_th/core.c
+@@ -810,13 +810,17 @@ static int intel_th_output_open(struct i
+ 	int err;
  
--static void hfsplus_get_perms(struct inode *inode,
--		struct hfsplus_perm *perms, int dir)
-+static int hfsplus_get_perms(struct inode *inode,
-+			     struct hfsplus_perm *perms, int dir)
- {
- 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(inode->i_sb);
- 	u16 mode;
- 
- 	mode = be16_to_cpu(perms->mode);
-+	if (dir) {
-+		if (mode && !S_ISDIR(mode))
-+			goto bad_type;
-+	} else if (mode) {
-+		switch (mode & S_IFMT) {
-+		case S_IFREG:
-+		case S_IFLNK:
-+		case S_IFCHR:
-+		case S_IFBLK:
-+		case S_IFIFO:
-+		case S_IFSOCK:
-+			break;
-+		default:
-+			goto bad_type;
-+		}
+ 	dev = bus_find_device_by_devt(&intel_th_bus, inode->i_rdev);
+-	if (!dev || !dev->driver)
+-		return -ENODEV;
++	if (!dev || !dev->driver) {
++		err = -ENODEV;
++		goto out_no_device;
 +	}
  
- 	i_uid_write(inode, be32_to_cpu(perms->owner));
- 	if ((test_bit(HFSPLUS_SB_UID, &sbi->flags)) || (!i_uid_read(inode) && !mode))
-@@ -210,6 +226,10 @@ static void hfsplus_get_perms(struct inode *inode,
- 		inode->i_flags |= S_APPEND;
- 	else
- 		inode->i_flags &= ~S_APPEND;
-+	return 0;
-+bad_type:
-+	pr_err("invalid file type 0%04o for inode %lu\n", mode, inode->i_ino);
-+	return -EIO;
+ 	thdrv = to_intel_th_driver(dev->driver);
+ 	fops = fops_get(thdrv->fops);
+-	if (!fops)
+-		return -ENODEV;
++	if (!fops) {
++		err = -ENODEV;
++		goto out_put_device;
++	}
+ 
+ 	replace_fops(file, fops);
+ 
+@@ -824,10 +828,16 @@ static int intel_th_output_open(struct i
+ 
+ 	if (file->f_op->open) {
+ 		err = file->f_op->open(inode, file);
+-		return err;
++		if (err)
++			goto out_put_device;
+ 	}
+ 
+ 	return 0;
++
++out_put_device:
++	put_device(dev);
++out_no_device:
++	return err;
  }
  
- static int hfsplus_file_open(struct inode *inode, struct file *file)
-@@ -504,7 +524,9 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 		}
- 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
- 					sizeof(struct hfsplus_cat_folder));
--		hfsplus_get_perms(inode, &folder->permissions, 1);
-+		res = hfsplus_get_perms(inode, &folder->permissions, 1);
-+		if (res)
-+			goto out;
- 		set_nlink(inode, 1);
- 		inode->i_size = 2 + be32_to_cpu(folder->valence);
- 		inode->i_atime = hfsp_mt2ut(folder->access_date);
-@@ -531,7 +553,9 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
- 
- 		hfsplus_inode_read_fork(inode, HFSPLUS_IS_RSRC(inode) ?
- 					&file->rsrc_fork : &file->data_fork);
--		hfsplus_get_perms(inode, &file->permissions, 0);
-+		res = hfsplus_get_perms(inode, &file->permissions, 0);
-+		if (res)
-+			goto out;
- 		set_nlink(inode, 1);
- 		if (S_ISREG(inode->i_mode)) {
- 			if (file->permissions.dev)
--- 
-2.51.0
-
+ static const struct file_operations intel_th_output_fops = {
 
 
 
