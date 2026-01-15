@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-209465-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDBA0D26C7A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E64F9D276FE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7730B30C99FB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:38 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A56B330D0642
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10DE39E6EA;
-	Thu, 15 Jan 2026 17:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 936983D3CE4;
+	Thu, 15 Jan 2026 18:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D27GwgWb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uXCTrZvQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6555D3624C4;
-	Thu, 15 Jan 2026 17:39:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D9E13C0084;
+	Thu, 15 Jan 2026 18:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498775; cv=none; b=KqD9IBmFl/owjaH3z78Ko33r9Yq1glFFwrnEZ5NAORw77QokLEQFdukQB1FwaNuAs3gtdOoJXqdLvFf8zTrT3dwHVc7dJGx4YZTA9dtmviy23hyh8dSvVrEcOBxslXwuO7TxnB98q1RIoHoQH+ykHbdYLWcwBtc7VAZBtpR9KVo=
+	t=1768500072; cv=none; b=iE+oYrKzpAKxKeGM7cpgHw34tD6QDPBomr/PGtPWNRFht6NzvdEdRv+6NMumgkVxBdhcZimbjrpQ4tsiIDRt8u8IxZSsZIOFB5PP3De9BJ7Vv+IVfofPhNb42/MfBFyXwAw8bz8F2mgOsnl/5ErydFH03EEQz0pMpu+g/KiqAd4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498775; c=relaxed/simple;
-	bh=4ZD2pfzhrX49eguK2Jhkfx1ePbQHf67YJqc0o12TvCY=;
+	s=arc-20240116; t=1768500072; c=relaxed/simple;
+	bh=yva1bHlD2erN1Yv3LO9lVT7DyzercqDQLWPDZdkLGvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Nvt0gaMEPRBItuOswTup7vtB3rVALGqVGWQcc7/yGe0GqlCPhrWwNrayW2sQbqZNB7WUE81hnUxLxPg/ku+3C38WyZvMM6A2roycQlw/eWYVtZy9rbegmh4HJyHysyY4gUJfkH3iOdb8Lfgfys0yNFthjjlRRY2K/uvr1aqVxnk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D27GwgWb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2212C16AAE;
-	Thu, 15 Jan 2026 17:39:34 +0000 (UTC)
+	 MIME-Version; b=ZRqXAANVdN4VkOOnq2rtF0TdhJWXLAsrDQS+fx/9+1iLNQqu4L+ebN/rWcHOP7E331NZOwG06yOXv92qkPjRrY7sfeaggRmcQmOzThi75/DXDW9DKKpmVkyA5m1JJtCP+5UTqpktXLir1U32nijIAkJ/+XAkRC+UbNC514MoK5U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uXCTrZvQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84903C116D0;
+	Thu, 15 Jan 2026 18:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498775;
-	bh=4ZD2pfzhrX49eguK2Jhkfx1ePbQHf67YJqc0o12TvCY=;
+	s=korg; t=1768500071;
+	bh=yva1bHlD2erN1Yv3LO9lVT7DyzercqDQLWPDZdkLGvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=D27GwgWbAseboMgknaku9I8Ycuu1HbHT7NFQxP4AMbNLBQMZGeulDXkHrfxu1q6PK
-	 yhDWW5ql2N0e4S4FC9ko86eGXjMdHqIxU8Uj+2zQdBZZtNLBBpmaFkv6iIdpXXc2zc
-	 fQWPhwDuVWpq3LMml+EqLQ3rAqex4UsxLV/XjBG0=
+	b=uXCTrZvQUD7AtfAAH1HnkPM8MT9FeiHqc+7Z2OCVwpjHJNixey9qETxHgMaQQuuAM
+	 kiKvLHQjiLxxftAhhdQRJ9pcYXhj9drSU2E/bBwtx3/QeMYMlC96fOlPq6sw7275uS
+	 2Q+SG61B16m6HM8TzEan6aqF0VMSO7EmB/qDM1Wo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laibin Qiu <qiulaibin@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.15 549/554] blk-throttle: Set BIO_THROTTLED when bio has been throttled
-Date: Thu, 15 Jan 2026 17:50:15 +0100
-Message-ID: <20260115164306.200991490@linuxfoundation.org>
+	syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 5.10 415/451] wifi: avoid kernel-infoleak from struct iw_point
+Date: Thu, 15 Jan 2026 17:50:16 +0100
+Message-ID: <20260115164245.951186822@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,157 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laibin Qiu <qiulaibin@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 5a011f889b4832aa80c2a872a5aade5c48d2756f ]
+commit 21cbf883d073abbfe09e3924466aa5e0449e7261 upstream.
 
-1.In current process, all bio will set the BIO_THROTTLED flag
-after __blk_throtl_bio().
+struct iw_point has a 32bit hole on 64bit arches.
 
-2.If bio needs to be throttled, it will start the timer and
-stop submit bio directly. Bio will submit in
-blk_throtl_dispatch_work_fn() when the timer expires.But in
-the current process, if bio is throttled. The BIO_THROTTLED
-will be set to bio after timer start. If the bio has been
-completed, it may cause use-after-free blow.
+struct iw_point {
+  void __user   *pointer;       /* Pointer to the data  (in user space) */
+  __u16         length;         /* number of fields or size in bytes */
+  __u16         flags;          /* Optional params */
+};
 
-BUG: KASAN: use-after-free in blk_throtl_bio+0x12f0/0x2c70
-Read of size 2 at addr ffff88801b8902d4 by task fio/26380
+Make sure to zero the structure to avoid disclosing 32bits of kernel data
+to user space.
 
- dump_stack+0x9b/0xce
- print_address_description.constprop.6+0x3e/0x60
- kasan_report.cold.9+0x22/0x3a
- blk_throtl_bio+0x12f0/0x2c70
- submit_bio_checks+0x701/0x1550
- submit_bio_noacct+0x83/0xc80
- submit_bio+0xa7/0x330
- mpage_readahead+0x380/0x500
- read_pages+0x1c1/0xbf0
- page_cache_ra_unbounded+0x471/0x6f0
- do_page_cache_ra+0xda/0x110
- ondemand_readahead+0x442/0xae0
- page_cache_async_ra+0x210/0x300
- generic_file_buffered_read+0x4d9/0x2130
- generic_file_read_iter+0x315/0x490
- blkdev_read_iter+0x113/0x1b0
- aio_read+0x2ad/0x450
- io_submit_one+0xc8e/0x1d60
- __se_sys_io_submit+0x125/0x350
- do_syscall_64+0x2d/0x40
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-Allocated by task 26380:
- kasan_save_stack+0x19/0x40
- __kasan_kmalloc.constprop.2+0xc1/0xd0
- kmem_cache_alloc+0x146/0x440
- mempool_alloc+0x125/0x2f0
- bio_alloc_bioset+0x353/0x590
- mpage_alloc+0x3b/0x240
- do_mpage_readpage+0xddf/0x1ef0
- mpage_readahead+0x264/0x500
- read_pages+0x1c1/0xbf0
- page_cache_ra_unbounded+0x471/0x6f0
- do_page_cache_ra+0xda/0x110
- ondemand_readahead+0x442/0xae0
- page_cache_async_ra+0x210/0x300
- generic_file_buffered_read+0x4d9/0x2130
- generic_file_read_iter+0x315/0x490
- blkdev_read_iter+0x113/0x1b0
- aio_read+0x2ad/0x450
- io_submit_one+0xc8e/0x1d60
- __se_sys_io_submit+0x125/0x350
- do_syscall_64+0x2d/0x40
- entry_SYSCALL_64_after_hwframe+0x44/0xa9
-
-Freed by task 0:
- kasan_save_stack+0x19/0x40
- kasan_set_track+0x1c/0x30
- kasan_set_free_info+0x1b/0x30
- __kasan_slab_free+0x111/0x160
- kmem_cache_free+0x94/0x460
- mempool_free+0xd6/0x320
- bio_free+0xe0/0x130
- bio_put+0xab/0xe0
- bio_endio+0x3a6/0x5d0
- blk_update_request+0x590/0x1370
- scsi_end_request+0x7d/0x400
- scsi_io_completion+0x1aa/0xe50
- scsi_softirq_done+0x11b/0x240
- blk_mq_complete_request+0xd4/0x120
- scsi_mq_done+0xf0/0x200
- virtscsi_vq_done+0xbc/0x150
- vring_interrupt+0x179/0x390
- __handle_irq_event_percpu+0xf7/0x490
- handle_irq_event_percpu+0x7b/0x160
- handle_irq_event+0xcc/0x170
- handle_edge_irq+0x215/0xb20
- common_interrupt+0x60/0x120
- asm_common_interrupt+0x1e/0x40
-
-Fix this by move BIO_THROTTLED set into the queue_lock.
-
-Signed-off-by: Laibin Qiu <qiulaibin@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20220301123919.2381579-1-qiulaibin@huawei.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Keerthana: Remove 'out' and handle return with reference to commit 81c7a63 ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Fixes: 87de87d5e47f ("wext: Dispatch and handle compat ioctls entirely in net/wireless/wext.c")
+Reported-by: syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/695f83f3.050a0220.1c677c.0392.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260108101927.857582-1-edumazet@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- block/blk-throttle.c |   16 ++++++++++------
- 1 file changed, 10 insertions(+), 6 deletions(-)
+ net/wireless/wext-core.c |    4 ++++
+ net/wireless/wext-priv.c |    4 ++++
+ 2 files changed, 8 insertions(+)
 
---- a/block/blk-throttle.c
-+++ b/block/blk-throttle.c
-@@ -2222,8 +2222,10 @@ bool blk_throtl_bio(struct bio *bio)
- 	rcu_read_lock();
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -1081,6 +1081,10 @@ static int compat_standard_call(struct n
+ 		return ioctl_standard_call(dev, iwr, cmd, info, handler);
  
- 	/* see throtl_charge_bio() */
--	if (bio_flagged(bio, BIO_THROTTLED))
--		goto out;
-+	if (bio_flagged(bio, BIO_THROTTLED)) {
-+		rcu_read_unlock();
-+		return false;
-+	}
- 
- 	if (!cgroup_subsys_on_dfl(io_cgrp_subsys)) {
- 		blkg_rwstat_add(&tg->stat_bytes, bio->bi_opf,
-@@ -2231,8 +2233,10 @@ bool blk_throtl_bio(struct bio *bio)
- 		blkg_rwstat_add(&tg->stat_ios, bio->bi_opf, 1);
- 	}
- 
--	if (!tg->has_rules[rw])
--		goto out;
-+	if (!tg->has_rules[rw]) {
-+		rcu_read_unlock();
-+		return false;
-+	}
- 
- 	spin_lock_irq(&q->queue_lock);
- 
-@@ -2316,14 +2320,14 @@ again:
- 	}
- 
- out_unlock:
--	spin_unlock_irq(&q->queue_lock);
--out:
- 	bio_set_flag(bio, BIO_THROTTLED);
- 
- #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
- 	if (throttled || !td->track_bio_latency)
- 		bio->bi_issue.value |= BIO_ISSUE_THROTL_SKIP_LATENCY;
- #endif
-+	spin_unlock_irq(&q->queue_lock);
+ 	iwp_compat = (struct compat_iw_point *) &iwr->u.data;
 +
- 	rcu_read_unlock();
- 	return throttled;
- }
++	/* struct iw_point has a 32bit hole on 64bit arches. */
++	memset(&iwp, 0, sizeof(iwp));
++
+ 	iwp.pointer = compat_ptr(iwp_compat->pointer);
+ 	iwp.length = iwp_compat->length;
+ 	iwp.flags = iwp_compat->flags;
+--- a/net/wireless/wext-priv.c
++++ b/net/wireless/wext-priv.c
+@@ -228,6 +228,10 @@ int compat_private_call(struct net_devic
+ 		struct iw_point iwp;
+ 
+ 		iwp_compat = (struct compat_iw_point *) &iwr->u.data;
++
++		/* struct iw_point has a 32bit hole on 64bit arches. */
++		memset(&iwp, 0, sizeof(iwp));
++
+ 		iwp.pointer = compat_ptr(iwp_compat->pointer);
+ 		iwp.length = iwp_compat->length;
+ 		iwp.flags = iwp_compat->flags;
 
 
 
