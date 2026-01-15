@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-209657-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209269-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D3E4D26F17
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED875D26D73
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 546A931638DC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:50:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9A4CF32EF17C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 923583C1972;
-	Thu, 15 Jan 2026 17:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C37C43D333D;
+	Thu, 15 Jan 2026 17:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hhntBAEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rSD/j40W"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 52DC43C196E;
-	Thu, 15 Jan 2026 17:48:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 86E523D3337;
+	Thu, 15 Jan 2026 17:30:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499320; cv=none; b=qR0AAuqnjJYEhwT8l/ah9elqg0Dj3V6CecXNdqCryQeqCIcSJdWQ29xgoMzcuVjKfC++4WWcyYZDGq8OQ/yz/a/lP7T6On58AFbGHk2dF6r8pl2jMnkE5CVs8U953lt8NwW5L2f+CzJSwJIQ6WcHUYIn2xAD4dflEKN3GLEbXII=
+	t=1768498215; cv=none; b=KNj8CDIn9tngt+D4Ssh5E2mccLRmC8NDDfzeVwMTFIZ2pQFWq5hq65b6Qdpz4j2T5lz6EqkdPP0uI8ptwA1ILUfWKWdF6Lva9W0LDUElSuYIl2/8JbZNCSduXT7cC6Ftagu6xLg7S5Lu4ir4VDOyFIYa5+mjVILEsA6CxWKvRk4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499320; c=relaxed/simple;
-	bh=wnmvv538AGcxyiT/8YR/jOYUs4/zow0lSPoYMWzL+lY=;
+	s=arc-20240116; t=1768498215; c=relaxed/simple;
+	bh=ZojYPoLH39h8NEgQftiw96iMeIDXIn+P7KPjqV1xncQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=X8/uivGZMA8f9sgkAVj4OHSmUZ5R+I/8mhgcxgQdbIkHE9xDsS1svjhjaMEXYMqrCuaGWZ/SAgxsWTLf4ngapKcrgPonCL+wS8PuQt5n2wra2G/iF/M1WmSnOAraLZhSiOrHOt+I5A8qBiEpfhKYskHJa+/NhAZCl2B1BaHmX7c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hhntBAEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE7C8C2BCAF;
-	Thu, 15 Jan 2026 17:48:39 +0000 (UTC)
+	 MIME-Version; b=sy2ynG9CgvGLBqRGTzR6Up2t0d0tVI6r9T3W936MNom1oNP9TnCFxvK1atcNmwP+c902XVpaDgeG/7kapJJkzqKl+hKt5XYW5mricAb7JYVVT/rKuQqeOsbRr69KBcnnQLmc/Szyx8YcltsjufS+VCrKbyv4skZWhSnZuR25qIs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rSD/j40W; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17682C116D0;
+	Thu, 15 Jan 2026 17:30:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499320;
-	bh=wnmvv538AGcxyiT/8YR/jOYUs4/zow0lSPoYMWzL+lY=;
+	s=korg; t=1768498215;
+	bh=ZojYPoLH39h8NEgQftiw96iMeIDXIn+P7KPjqV1xncQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hhntBAEkyvheAqAqfDHrolx+Hv1sPF5ek8Q4mCFEveTYqYZQ8uZGokVyFwxggwzua
-	 90HCUGOKQrz5hD37r/XLw0td3dl3oiMbb9dazOABUrv9Cl8kvgXi/uSrCX4jMcfLmC
-	 XSbjSE6nbqjjAGnlYP4YUmCSzq1WR0H1ouK7WQ4U=
+	b=rSD/j40WBbI+Iwn7oRr3aJMoObuP6vNBO0d+DHppFJYhwkF3L6ZHmWhoFUYfuu5SW
+	 P6TveoqFz2nLFpbmTaLKaORu4M6j+Bz8QN3EI2lVNS0yQeApRiOLe13k52ODbOtc1L
+	 zGPif2vVSsDFooAMWfRxIDj+hva/64pMLkp02zw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 185/451] net/mlx5: fw_tracer, Validate format string parameters
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.15 320/554] tracing: Do not register unsupported perf events
 Date: Thu, 15 Jan 2026 17:46:26 +0100
-Message-ID: <20260115164237.595388979@linuxfoundation.org>
+Message-ID: <20260115164257.811295950@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,200 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit b35966042d20b14e2d83330049f77deec5229749 ]
+commit ef7f38df890f5dcd2ae62f8dbde191d72f3bebae upstream.
 
-Add validation for format string parameters in the firmware tracer to
-prevent potential security vulnerabilities and crashes from malformed
-format strings received from firmware.
+Synthetic events currently do not have a function to register perf events.
+This leads to calling the tracepoint register functions with a NULL
+function pointer which triggers:
 
-The firmware tracer receives format strings from the device firmware and
-uses them to format trace messages. Without proper validation, bad
-firmware could provide format strings with invalid format specifiers
-(e.g., %s, %p, %n) that could lead to crashes, or other undefined
-behavior.
+ ------------[ cut here ]------------
+ WARNING: kernel/tracepoint.c:175 at tracepoint_add_func+0x357/0x370, CPU#2: perf/2272
+ Modules linked in: kvm_intel kvm irqbypass
+ CPU: 2 UID: 0 PID: 2272 Comm: perf Not tainted 6.18.0-ftest-11964-ge022764176fc-dirty #323 PREEMPTLAZY
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:tracepoint_add_func+0x357/0x370
+ Code: 28 9c e8 4c 0b f5 ff eb 0f 4c 89 f7 48 c7 c6 80 4d 28 9c e8 ab 89 f4 ff 31 c0 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc <0f> 0b 49 c7 c6 ea ff ff ff e9 ee fe ff ff 0f 0b e9 f9 fe ff ff 0f
+ RSP: 0018:ffffabc0c44d3c40 EFLAGS: 00010246
+ RAX: 0000000000000001 RBX: ffff9380aa9e4060 RCX: 0000000000000000
+ RDX: 000000000000000a RSI: ffffffff9e1d4a98 RDI: ffff937fcf5fd6c8
+ RBP: 0000000000000001 R08: 0000000000000007 R09: ffff937fcf5fc780
+ R10: 0000000000000003 R11: ffffffff9c193910 R12: 000000000000000a
+ R13: ffffffff9e1e5888 R14: 0000000000000000 R15: ffffabc0c44d3c78
+ FS:  00007f6202f5f340(0000) GS:ffff93819f00f000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055d3162281a8 CR3: 0000000106a56003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  tracepoint_probe_register+0x5d/0x90
+  synth_event_reg+0x3c/0x60
+  perf_trace_event_init+0x204/0x340
+  perf_trace_init+0x85/0xd0
+  perf_tp_event_init+0x2e/0x50
+  perf_try_init_event+0x6f/0x230
+  ? perf_event_alloc+0x4bb/0xdc0
+  perf_event_alloc+0x65a/0xdc0
+  __se_sys_perf_event_open+0x290/0x9f0
+  do_syscall_64+0x93/0x7b0
+  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ? trace_hardirqs_off+0x53/0xc0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
 
-Add mlx5_tracer_validate_params() to validate that all format specifiers
-in trace strings are limited to safe integer/hex formats (%x, %d, %i,
-%u, %llx, %lx, etc.). Reject strings containing other format types that
-could be used to access arbitrary memory or cause crashes.
-Invalid format strings are added to the trace output for visibility with
-"BAD_FORMAT: " prefix.
+Instead, have the code return -ENODEV, which doesn't warn and has perf
+error out with:
 
-Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-4-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ # perf record -e synthetic:futex_wait
+Error:
+The sys_perf_event_open() syscall returned with 19 (No such device) for event (synthetic:futex_wait).
+"dmesg | grep -i perf" may provide additional information.
+
+Ideally perf should support synthetic events, but for now just fix the
+warning. The support can come later.
+
+Cc: stable@vger.kernel.org
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://patch.msgid.link/20251216182440.147e4453@gandalf.local.home
+Fixes: 4b147936fa509 ("tracing: Add support for 'synthetic' events")
+Reported-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/diag/fw_tracer.c       | 83 ++++++++++++++++---
- .../mellanox/mlx5/core/diag/fw_tracer.h       |  1 +
- 2 files changed, 74 insertions(+), 10 deletions(-)
+ kernel/trace/trace_events.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 1002bf0078659..2645e941ef1ce 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -33,6 +33,7 @@
- #include "lib/eq.h"
- #include "fw_tracer.h"
- #include "fw_tracer_tracepoint.h"
-+#include <linux/ctype.h>
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -655,6 +655,8 @@ int trace_event_reg(struct trace_event_c
  
- static int mlx5_query_mtrc_caps(struct mlx5_fw_tracer *tracer)
- {
-@@ -354,6 +355,43 @@ static const char *VAL_PARM		= "%llx";
- static const char *REPLACE_64_VAL_PARM	= "%x%x";
- static const char *PARAM_CHAR		= "%";
- 
-+static bool mlx5_is_valid_spec(const char *str)
-+{
-+	/* Parse format specifiers to find the actual type.
-+	 * Structure: %[flags][width][.precision][length]type
-+	 * Skip flags, width, precision & length.
-+	 */
-+	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
-+		str++;
-+
-+	/* Check if it's a valid integer/hex specifier:
-+	 * Valid formats: %x, %d, %i, %u, etc.
-+	 */
-+	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
-+	    *str != 'u' && *str != 'c')
-+		return false;
-+
-+	return true;
-+}
-+
-+static bool mlx5_tracer_validate_params(const char *str)
-+{
-+	const char *substr = str;
-+
-+	if (!str)
-+		return false;
-+
-+	substr = strstr(substr, PARAM_CHAR);
-+	while (substr) {
-+		if (!mlx5_is_valid_spec(substr + 1))
-+			return false;
-+
-+		substr = strstr(substr + 1, PARAM_CHAR);
-+	}
-+
-+	return true;
-+}
-+
- static int mlx5_tracer_message_hash(u32 message_id)
- {
- 	return jhash_1word(message_id, 0) & (MESSAGE_HASH_SIZE - 1);
-@@ -413,6 +451,10 @@ static int mlx5_tracer_get_num_of_params(char *str)
- 	char *substr, *pstr = str;
- 	int num_of_params = 0;
- 
-+	/* Validate that all parameters are valid before processing */
-+	if (!mlx5_tracer_validate_params(str))
-+		return -EINVAL;
-+
- 	/* replace %llx with %x%x */
- 	substr = strstr(pstr, VAL_PARM);
- 	while (substr) {
-@@ -564,14 +606,17 @@ void mlx5_tracer_print_trace(struct tracer_string_format *str_frmt,
- {
- 	char	tmp[512];
- 
--	snprintf(tmp, sizeof(tmp), str_frmt->string,
--		 str_frmt->params[0],
--		 str_frmt->params[1],
--		 str_frmt->params[2],
--		 str_frmt->params[3],
--		 str_frmt->params[4],
--		 str_frmt->params[5],
--		 str_frmt->params[6]);
-+	if (str_frmt->invalid_string)
-+		snprintf(tmp, sizeof(tmp), "BAD_FORMAT: %s", str_frmt->string);
-+	else
-+		snprintf(tmp, sizeof(tmp), str_frmt->string,
-+			 str_frmt->params[0],
-+			 str_frmt->params[1],
-+			 str_frmt->params[2],
-+			 str_frmt->params[3],
-+			 str_frmt->params[4],
-+			 str_frmt->params[5],
-+			 str_frmt->params[6]);
- 
- 	trace_mlx5_fw(dev->tracer, trace_timestamp, str_frmt->lost,
- 		      str_frmt->event_id, tmp);
-@@ -603,6 +648,13 @@ static int mlx5_tracer_handle_raw_string(struct mlx5_fw_tracer *tracer,
- 	return 0;
- }
- 
-+static void mlx5_tracer_handle_bad_format_string(struct mlx5_fw_tracer *tracer,
-+						 struct tracer_string_format *cur_string)
-+{
-+	cur_string->invalid_string = true;
-+	list_add_tail(&cur_string->list, &tracer->ready_strings_list);
-+}
-+
- static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
- 					   struct tracer_event *tracer_event)
- {
-@@ -613,12 +665,18 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
- 		if (!cur_string)
- 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
- 
--		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
--		cur_string->last_param_num = 0;
- 		cur_string->event_id = tracer_event->event_id;
- 		cur_string->tmsn = tracer_event->string_event.tmsn;
- 		cur_string->timestamp = tracer_event->string_event.timestamp;
- 		cur_string->lost = tracer_event->lost_event;
-+		cur_string->last_param_num = 0;
-+		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
-+		if (cur_string->num_of_params < 0) {
-+			pr_debug("%s Invalid format string parameters\n",
-+				 __func__);
-+			mlx5_tracer_handle_bad_format_string(tracer, cur_string);
-+			return 0;
-+		}
- 		if (cur_string->num_of_params == 0) /* trace with no params */
- 			list_add_tail(&cur_string->list, &tracer->ready_strings_list);
- 	} else {
-@@ -628,6 +686,11 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
- 				 __func__, tracer_event->string_event.tmsn);
- 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
- 		}
-+		if (cur_string->num_of_params < 0) {
-+			pr_debug("%s string parameter of invalid string, dumping\n",
-+				 __func__);
-+			return 0;
-+		}
- 		cur_string->last_param_num += 1;
- 		if (cur_string->last_param_num > TRACER_MAX_PARAMS) {
- 			pr_debug("%s Number of params exceeds the max (%d)\n",
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
-index 568efb1e2bd24..603ef441f1b21 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
-@@ -117,6 +117,7 @@ struct tracer_string_format {
- 	struct list_head list;
- 	u32 timestamp;
- 	bool lost;
-+	bool invalid_string;
- };
- 
- enum mlx5_fw_tracer_ownership_state {
--- 
-2.51.0
-
+ #ifdef CONFIG_PERF_EVENTS
+ 	case TRACE_REG_PERF_REGISTER:
++		if (!call->class->perf_probe)
++			return -ENODEV;
+ 		return tracepoint_probe_register(call->tp,
+ 						 call->class->perf_probe,
+ 						 call);
 
 
 
