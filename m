@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209136-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209602-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19E3AD266F2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 03286D278EC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:31:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7E4DB304702E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 50BEA3002D22
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 592B53BF314;
-	Thu, 15 Jan 2026 17:23:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 545B43C009E;
+	Thu, 15 Jan 2026 17:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hu5VW+9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J4mkDEYe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C8F14C81;
-	Thu, 15 Jan 2026 17:23:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A5A03BFE5F;
+	Thu, 15 Jan 2026 17:46:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497836; cv=none; b=mkD3se16gZmDhqzHnj96rgEyVm80bXBqBOtJWUDoarmLDzOpkUJIJvdUnrj/Apb5XNv+kkD0TgIwtz05Kd20ZP7dU+iz6+SDaaGXXB+gklqx4v5pm8sAFbhCXV86lrL1N1RPBXyvZFg4QYQZZpqP9Z4MzNm4RdwvXi6gBDrD31E=
+	t=1768499164; cv=none; b=TXzsKOE0LjdDu4UZEfT81ZOQf9cPBRQ9OjFWkgShqtBDmwiLKNZPMEpSJ5IpRxyoXzGjahmK58390Mf4oyoPEmXZMECwEPA0bZkR9KV5pKdbzRDg7aopR8ZEcVUvpfeZEX3AaM1fWLDmrGW26Fvfrb8UtDSvxrNqBVI2lxjwA04=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497836; c=relaxed/simple;
-	bh=hgvxBlpTSTMDBvIm8gAEtSJsW3PMZEaHKrX7HIozog4=;
+	s=arc-20240116; t=1768499164; c=relaxed/simple;
+	bh=Qp7NBGPs6IsJPeEAISnh2LK9QXV2BhX7e+ub5IFyUGA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=snIPDv8FknFvhd876zCAUTIxHVBfIjxFTp05lBI1Ow1ucKsZw3D8P3bhvk24rgvD3PiAou07XEWYFQP2b8s5WSaozjr449bhWtQwHkSX/SIXxYcLVcTPC05xLzGZH9AJUj5VGnmr4CdkWkBtYmzwT+Kk2m65wiF9mj8R+It7pSI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hu5VW+9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68D50C116D0;
-	Thu, 15 Jan 2026 17:23:55 +0000 (UTC)
+	 MIME-Version; b=N1FBPRXRM5V2mo0lcnH5sMSX//X+vnzK0AoljBq4Es3YJgsUeVziznwFoDHh9nvdieEWYMMI4w6I7mt+vfKVftFUJnh1xRP/R5dNdMagU2GFh2LhyoyOk5VRq0BqaNLVeIbzJh4AoFKbk8+hX9DoA240s6IAnhRX3+FBQFypnV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J4mkDEYe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89C09C16AAE;
+	Thu, 15 Jan 2026 17:46:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497835;
-	bh=hgvxBlpTSTMDBvIm8gAEtSJsW3PMZEaHKrX7HIozog4=;
+	s=korg; t=1768499163;
+	bh=Qp7NBGPs6IsJPeEAISnh2LK9QXV2BhX7e+ub5IFyUGA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hu5VW+9pt7YuQUulLj0oi6aD8bzJfOgHhJzsfTUl5BMg4Bp34CTRqDzaxLoLWEuv
-	 a3ZFdruJXV0jer3T2DR7k91pxYvE/mHFhRG7lR5uCWMRXt6rYGA22JveQ68crZQMFg
-	 j+eY36js+GRPH+I7WHCS7dkPcWcd52ELkBCTuyHQ=
+	b=J4mkDEYeOSy8IiKXvZdKjJNd5N8J0ipP8feUVgWV1bj3GTrZOgJ+AOfXlr3ye9bnl
+	 QjeWQWvy+6ShlCczoV7MDoE8nByBDK5MlOlwrayEaF94SGSv/RkXY76IgJmKQIZMi+
+	 wMj/Ev4u3T71MaFiVoyGHIEXx6qidBRl3Ux2/9BQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 221/554] btrfs: scrub: always update btrfs_scrub_progress::last_physical
-Date: Thu, 15 Jan 2026 17:44:47 +0100
-Message-ID: <20260115164254.246669092@linuxfoundation.org>
+Subject: [PATCH 5.10 087/451] mfd: mt6358-irq: Fix missing irq_domain_remove() in error path
+Date: Thu, 15 Jan 2026 17:44:48 +0100
+Message-ID: <20260115164234.064237062@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,92 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 54df8b80cc63aa0f22c4590cad11542731ed43ff ]
+[ Upstream commit 384bd58bf7095e4c4c8fcdbcede316ef342c630c ]
 
-[BUG]
-When a scrub failed immediately without any byte scrubbed, the returned
-btrfs_scrub_progress::last_physical will always be 0, even if there is a
-non-zero @start passed into btrfs_scrub_dev() for resume cases.
+If devm_request_threaded_irq() fails after irq_domain_add_linear()
+succeeds in mt6358_irq_init(), the function returns without removing
+the created IRQ domain, leading to a resource leak.
 
-This will reset the progress and make later scrub resume start from the
-beginning.
+Call irq_domain_remove() in the error path after a successful
+irq_domain_add_linear() to properly release the IRQ domain.
 
-[CAUSE]
-The function btrfs_scrub_dev() accepts a @progress parameter to copy its
-updated progress to the caller, there are cases where we either don't
-touch progress::last_physical at all or copy 0 into last_physical:
-
-- last_physical not updated at all
-  If some error happened before scrubbing any super block or chunk, we
-  will not copy the progress, leaving the @last_physical untouched.
-
-  E.g. failed to allocate @sctx, scrubbing a missing device or even
-  there is already a running scrub and so on.
-
-  All those cases won't touch @progress at all, resulting the
-  last_physical untouched and will be left as 0 for most cases.
-
-- Error out before scrubbing any bytes
-  In those case we allocated @sctx, and sctx->stat.last_physical is all
-  zero (initialized by kvzalloc()).
-  Unfortunately some critical errors happened during
-  scrub_enumerate_chunks() or scrub_supers() before any stripe is really
-  scrubbed.
-
-  In that case although we will copy sctx->stat back to @progress, since
-  no byte is really scrubbed, last_physical will be overwritten to 0.
-
-[FIX]
-Make sure the parameter @progress always has its @last_physical member
-updated to @start parameter inside btrfs_scrub_dev().
-
-At the very beginning of the function, set @progress->last_physical to
-@start, so that even if we error out without doing progress copying,
-last_physical is still at @start.
-
-Then after we got @sctx allocated, set sctx->stat.last_physical to
-@start, this will make sure even if we didn't get any byte scrubbed, at
-the progress copying stage the @last_physical is not left as zero.
-
-This should resolve the resume progress reset problem.
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 2b91c28f2abd ("mfd: Add support for the MediaTek MT6358 PMIC")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251118121427.583-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/scrub.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mfd/mt6358-irq.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index aac4ee5880952..3d5cb6e6b3bbe 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -4090,6 +4090,10 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	unsigned int nofs_flag;
- 	bool need_commit = false;
+diff --git a/drivers/mfd/mt6358-irq.c b/drivers/mfd/mt6358-irq.c
+index db734f2831ff0..db89da7b98f1d 100644
+--- a/drivers/mfd/mt6358-irq.c
++++ b/drivers/mfd/mt6358-irq.c
+@@ -227,6 +227,7 @@ int mt6358_irq_init(struct mt6397_chip *chip)
+ 	if (ret) {
+ 		dev_err(chip->dev, "Failed to register IRQ=%d, ret=%d\n",
+ 			chip->irq, ret);
++		irq_domain_remove(chip->irq_domain);
+ 		return ret;
+ 	}
  
-+	/* Set the basic fallback @last_physical before we got a sctx. */
-+	if (progress)
-+		progress->last_physical = start;
-+
- 	if (btrfs_fs_closing(fs_info))
- 		return -EAGAIN;
- 
-@@ -4126,6 +4130,7 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	sctx = scrub_setup_ctx(fs_info, is_dev_replace);
- 	if (IS_ERR(sctx))
- 		return PTR_ERR(sctx);
-+	sctx->stat.last_physical = start;
- 
- 	ret = scrub_workers_get(fs_info, is_dev_replace);
- 	if (ret)
 -- 
 2.51.0
 
