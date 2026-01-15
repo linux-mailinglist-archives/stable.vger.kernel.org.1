@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-209710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209675-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26FE1D27206
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31B98D27A81
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 97CE730AD62F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 74DB533CE3D9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:53:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CAC3EDAA7;
-	Thu, 15 Jan 2026 17:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BBCFA3D649D;
+	Thu, 15 Jan 2026 17:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wiPfB3wf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="u1XfJ1hR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9CB823EDAA0;
-	Thu, 15 Jan 2026 17:51:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EBEA3D6493;
+	Thu, 15 Jan 2026 17:49:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499470; cv=none; b=AW3kYFSabf5fW/wb2VMowLNbDCBO/9JuD2/G+XaGEOiNbu7QUEKU1rZS8I2BxbZ2OcUhJ2u3NsOKt6FmWAy7k41MG4EWku51tpjmT7RLNUKDLYpAUnKcbzowXZIsLqi7WGleMYktfqhFRsd1JyB+Tx5gLB6X7isaylOm63c4MvY=
+	t=1768499371; cv=none; b=axAl4WDfRuDZJG0nTJmhLg8zS72pOF6JNL+R+59ABsah2Ys65H+KgKx9cC3ImRHdss1HAr9D0yra2qvGx6u0ovtWOFoiGaoyg5SriYEKw+EMRnvsbX4xzMfwc5ERvgsAwbDbSeF1gbI/65TSDgtfFWn//15ciBAEhmCz9yBtJ9c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499470; c=relaxed/simple;
-	bh=A00Bl6qZaKvmkANKp2ymBjBnNmx39I3nrqCP3yp7wig=;
+	s=arc-20240116; t=1768499371; c=relaxed/simple;
+	bh=/4OLCc4VHOifrS6i6ZwcmK0xxW1jaUbX2ySBuiABqXs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lfboSSOy7v+JhJHsSUKGwleKGLb5DkNc26XmsdelYE5THagebA08+tAT9Tjg6qMXWf4jlbN3C51Kd7Ylv6FiEsVCFkR2Z8CBtTHHiI1s2dYP0CalAS7CExZZmQwEZtOY1Eo/ThUQRjpOTOGFhOgzv8ytHlc2oih2l8FG4vaYXCs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wiPfB3wf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25792C19425;
-	Thu, 15 Jan 2026 17:51:09 +0000 (UTC)
+	 MIME-Version; b=SBtkWYERQy4urK6RDa91dGchJrwf3PObjJ2idzOtyuNonJJvMNfGxjkcOkPCuGFS1xPkbEcGmuXzjyXe8qIwSnDmx5j8mAl8fxr97JHqGvZQMNpOKuEHCNfxklLP1H2ol0yIDPQpevHYl2VhOY5LbY9VnSSSNNou2pin9+9EMYE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=u1XfJ1hR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 095A2C116D0;
+	Thu, 15 Jan 2026 17:49:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499470;
-	bh=A00Bl6qZaKvmkANKp2ymBjBnNmx39I3nrqCP3yp7wig=;
+	s=korg; t=1768499371;
+	bh=/4OLCc4VHOifrS6i6ZwcmK0xxW1jaUbX2ySBuiABqXs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wiPfB3wfvZ28E94KakvlATUTpi1fujuKiUfJM0NY0jGhGsTwX9QggaQIkGYS9/hvY
-	 vYULv3Kk0pHuDqNID+0uKiep93da4JqQv9CrjqlNUS40mGGODHSLOLgx+x2+kiZDKQ
-	 CaVZwPO6u6DUkjllaGzfFDawxZaHF+GIfthwMFIc=
+	b=u1XfJ1hR9kTugKimq/qyG7gQRHlqgiQhWbznbHvwE8OvAwruInWOvRk09WuCca9mY
+	 pBG43hs6qPFHaSLi4hFuwCNvTvnaIzZIfWZPj1W46DLFLMQt7m277O3hAhP0doYnup
+	 Y9rjjZ2lDuG1JtoX5P/MFx85ZdkFYd+STjI9cf8Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junjie Cao <junjie.cao@intel.com>,
+	Christoffer Sandberg <cs@tuxedo.de>,
+	Werner Sembach <wse@tuxedocomputers.com>,
 	Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 5.10 195/451] Input: ti_am335x_tsc - fix off-by-one error in wire_order validation
-Date: Thu, 15 Jan 2026 17:46:36 +0100
-Message-ID: <20260115164237.955524860@linuxfoundation.org>
+Subject: [PATCH 5.10 196/451] Input: i8042 - add TUXEDO InfinityBook Max Gen10 AMD to i8042 quirk table
+Date: Thu, 15 Jan 2026 17:46:37 +0100
+Message-ID: <20260115164237.991764534@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -63,39 +64,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Junjie Cao <junjie.cao@intel.com>
+From: Christoffer Sandberg <cs@tuxedo.de>
 
-commit 248d3a73a0167dce15ba100477c3e778c4787178 upstream.
+commit aed3716db7fff74919cc5775ca3a80c8bb246489 upstream.
 
-The current validation 'wire_order[i] > ARRAY_SIZE(config_pins)' allows
-wire_order[i] to equal ARRAY_SIZE(config_pins), which causes out-of-bounds
-access when used as index in 'config_pins[wire_order[i]]'.
+The device occasionally wakes up from suspend with missing input on the
+internal keyboard and the following suspend attempt results in an instant
+wake-up. The quirks fix both issues for this device.
 
-Since config_pins has 4 elements (indices 0-3), the valid range for
-wire_order should be 0-3. Fix the off-by-one error by using >= instead
-of > in the validation check.
-
-Signed-off-by: Junjie Cao <junjie.cao@intel.com>
-Link: https://patch.msgid.link/20251114062817.852698-1-junjie.cao@intel.com
-Fixes: bb76dc09ddfc ("input: ti_am33x_tsc: Order of TSC wires, made configurable")
+Signed-off-by: Christoffer Sandberg <cs@tuxedo.de>
+Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
 Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20251124203336.64072-1-wse@tuxedocomputers.com
 Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/input/touchscreen/ti_am335x_tsc.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/input/touchscreen/ti_am335x_tsc.c
-+++ b/drivers/input/touchscreen/ti_am335x_tsc.c
-@@ -86,7 +86,7 @@ static int titsc_config_wires(struct tit
- 		wire_order[i] = ts_dev->config_inp[i] & 0x0F;
- 		if (WARN_ON(analog_line[i] > 7))
- 			return -EINVAL;
--		if (WARN_ON(wire_order[i] > ARRAY_SIZE(config_pins)))
-+		if (WARN_ON(wire_order[i] >= ARRAY_SIZE(config_pins)))
- 			return -EINVAL;
- 	}
- 
+--- a/drivers/input/serio/i8042-acpipnpio.h
++++ b/drivers/input/serio/i8042-acpipnpio.h
+@@ -1169,6 +1169,13 @@ static const struct dmi_system_id i8042_
+ 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
+ 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
+ 	},
++	{
++		.matches = {
++			DMI_MATCH(DMI_BOARD_NAME, "X5KK45xS_X5SP45xS"),
++		},
++		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
++					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
++	},
+ 	/*
+ 	 * A lot of modern Clevo barebones have touchpad and/or keyboard issues
+ 	 * after suspend fixable with nomux + reset + noloop + nopnp. Luckily,
 
 
 
