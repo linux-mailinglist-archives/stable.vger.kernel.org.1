@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85A2BD2751D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:22 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D361CD26243
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1B4A131B42FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C76AD314D355
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 943F23D6035;
-	Thu, 15 Jan 2026 17:54:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F2B63A35A4;
+	Thu, 15 Jan 2026 17:04:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s4JYvRws"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ptFPPkHP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0ED33D5D8E;
-	Thu, 15 Jan 2026 17:54:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 32F7537C117;
+	Thu, 15 Jan 2026 17:04:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499648; cv=none; b=PgXHDdSlbpZgiaBzqTTW79D3/6Asqgle0mIfK899DK2vXJMXUJGir14ekLBEw6Rk5+GbFPaKy6hRF6FU4Jq/rBUTX1W+AarHDJ/bn+qh8gwa6i4oQI/f+CK2UU4PztZlznUzAzn0yd4LWSKA/RIuBNcsClDr+NR1M3N37cWcjvg=
+	t=1768496646; cv=none; b=XgJIDX7749Qt5kQ837TcYH5gTCbmkyQITLut0NIbED9OZh2+SwFIPrMMVUkcWtzXGYJy2gu/sF56nBVofjy8QF1BAZIXV2SSJdbqQrydNcXTX2nMGSi3uTDhJHv6GcINnOMo/NVTVnQP7clwQBJjqspgHwnIfjQhOwO1U0RLvfY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499648; c=relaxed/simple;
-	bh=JQ1rN/n/gYMswNDMp5SrLyKnI0Ygx29jSQOwfKhInuM=;
+	s=arc-20240116; t=1768496646; c=relaxed/simple;
+	bh=ul6nZNbJ6E3YjNrxzqlv4h3/WqjrNap+4ej9jHcVZ7Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nxBDipT7EsLfohJIkxcoBIa8RZFZOlHTZ+nNSsJDRLKJW7Ae9rXWXZ0+QJgKZGz82lI/rpfCFaw//uPGYhls4IWxaGer80I/kETk5wbksIQLb+M/Usekja7nX/EdditndpzMl1DwhxOmjz6Cc+O4CJAuFq4a1XCdbaD0qFc3HDY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s4JYvRws; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3DE49C116D0;
-	Thu, 15 Jan 2026 17:54:07 +0000 (UTC)
+	 MIME-Version; b=rAWXtkwerDChcwN9JVkbINxTjkhyyOlHOhjmiI3menhora2jNG2Wuyv5oeeqZDzLh3IHa3oGo9+w/AEjs8UxIU2p/pkoEKQxWYwbuuPGVjUJa3YPsT4hq+bdt3xgRiZMFdA0SkikZ0I82TQBylVbhPra0DcAwgq5KmvcL8FKHi4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ptFPPkHP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 763B6C116D0;
+	Thu, 15 Jan 2026 17:04:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499647;
-	bh=JQ1rN/n/gYMswNDMp5SrLyKnI0Ygx29jSQOwfKhInuM=;
+	s=korg; t=1768496645;
+	bh=ul6nZNbJ6E3YjNrxzqlv4h3/WqjrNap+4ej9jHcVZ7Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s4JYvRwsWNfPfjZl0oYEb/IvPNBkkexxQOtf4aSEYz3szBbG8TtEs2vIWBrpZkJpR
-	 elSo/Vc0gdNnfOhMEkTQwC67nj+JorqoKjMyJYBlO4KfECmdmnW5iPIpQuTDaFojsP
-	 m9SUD9ymN0mV4OxRLQt0yko1LBpGzrusYXGWgp1U=
+	b=ptFPPkHPCOfYA/rGANZwF3lxYXygYHC5ubUg4Fgra3SLOQ9LEuBEZbqn9TY9JP6IW
+	 2VFFhkZsjEvBBch7E3+8A7OQLbEHPpm204iksAnsfoUOZDraVZa7OwJhcyiwWi6kLE
+	 brYJV4t4WNVwa5F2jEW39ZupzUcfbjLKSDzPXb2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 5.10 299/451] ASoC: qcom: q6asm-dai: perform correct state check before closing
+	syzbot+58b44a770a1585795351@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 085/119] arp: do not assume dev_hard_header() does not change skb->head
 Date: Thu, 15 Jan 2026 17:48:20 +0100
-Message-ID: <20260115164241.706947879@linuxfoundation.org>
+Message-ID: <20260115164155.017612509@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit bfbb12dfa144d45575bcfe139a71360b3ce80237 upstream.
+[ Upstream commit c92510f5e3f82ba11c95991824a41e59a9c5ed81 ]
 
-Do not stop a q6asm stream if its not started, this can result in
-unnecessary dsp command which will timeout anyway something like below:
+arp_create() is the only dev_hard_header() caller
+making assumption about skb->head being unchanged.
 
-q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
+A recent commit broke this assumption.
 
-Fix this by correctly checking the state.
+Initialize @arp pointer after dev_hard_header() call.
 
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-5-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+Reported-by: syzbot+58b44a770a1585795351@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260107212250.384552-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ipv4/arp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -237,13 +237,14 @@ static int q6asm_dai_prepare(struct snd_
- 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
- 	prtd->pcm_irq_pos = 0;
- 	/* rate and channels are sent to audio driver */
--	if (prtd->state) {
-+	if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 		/* clear the previous setup if any  */
- 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
- 		q6asm_unmap_memory_regions(substream->stream,
- 					   prtd->audio_client);
- 		q6routing_stream_close(soc_prtd->dai_link->id,
- 					 substream->stream);
-+		prtd->state = Q6ASM_STREAM_STOPPED;
- 	}
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 8fb48f42581ce..7822b21445148 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -564,7 +564,7 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
  
- 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
+ 	skb_reserve(skb, hlen);
+ 	skb_reset_network_header(skb);
+-	arp = skb_put(skb, arp_hdr_len(dev));
++	skb_put(skb, arp_hdr_len(dev));
+ 	skb->dev = dev;
+ 	skb->protocol = htons(ETH_P_ARP);
+ 	if (!src_hw)
+@@ -572,12 +572,13 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
+ 	if (!dest_hw)
+ 		dest_hw = dev->broadcast;
+ 
+-	/*
+-	 *	Fill the device header for the ARP frame
++	/* Fill the device header for the ARP frame.
++	 * Note: skb->head can be changed.
+ 	 */
+ 	if (dev_hard_header(skb, dev, ptype, dest_hw, src_hw, skb->len) < 0)
+ 		goto out;
+ 
++	arp = arp_hdr(skb);
+ 	/*
+ 	 * Fill out the arp protocol part.
+ 	 *
+-- 
+2.51.0
+
 
 
 
