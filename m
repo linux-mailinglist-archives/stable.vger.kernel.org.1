@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209340-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0281ED26E0A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DE680D27D59
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4363731E7362
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:59 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4594A31D8A58
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5724E4AEE2;
-	Thu, 15 Jan 2026 17:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 514383D410E;
+	Thu, 15 Jan 2026 17:52:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qV4qYfGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qXvjJkHN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A6BE3BC4E8;
-	Thu, 15 Jan 2026 17:33:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11FA53C1997;
+	Thu, 15 Jan 2026 17:52:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498417; cv=none; b=OxSwIrphgLIK0xoJEGutSswCE4X4Pt4v/PHF/S6QdkHEO1JqXzzv5TKNdJgeMllnGzTzKfIFlv0ri2fZc6RZxZMoahDewOMk2Cky47sSFdyOEn0XGu6GhovxzZrmqljh+xRXyXUHYakmJWi3hHOE7ePq7M9PTQLGDjiwqST97+4=
+	t=1768499525; cv=none; b=oedJlKIDMwF0oTt5XRm0X4bAnO4xsoh1f5tHbbB6LAvO20vGscJo7xytLK2A+bn1Sc/TjJggxGKH3ZTk3sDSPkv8S5QpruFM7D5e2VlD8OPevUt3PHOyM0zb5yMqDbOCW61Naeui5kH8tay8XvTkTxcqetTGZXIV5nL6C7+nT1g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498417; c=relaxed/simple;
-	bh=LQHWZkA8aacHKoBCY6twu6DX5ugi352pqtD8uDUWhao=;
+	s=arc-20240116; t=1768499525; c=relaxed/simple;
+	bh=JRqKV84frnULDlOTsc7ps3KtKzW/UUzPABsQI9R/zng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uELBAGQnIvGpM96hbsW+3aUPdBe6iDKGeFZwrQPTcKSImhel3CZ3mjt6qRMujTfDGsypVmlDHfvul20lcujrt2jUsus/uA7oDCrEhPq1l0HP+Q8yZ/1NdCNVU8iP4JALT9cm8K0snCDAc+Aqi3mTGII1sTmOSyiS4w4D4anP1WM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qV4qYfGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91C62C116D0;
-	Thu, 15 Jan 2026 17:33:36 +0000 (UTC)
+	 MIME-Version:Content-Type; b=YdXc9UID25cKxa9HV8Dsc2ji/7oPp8WB5lwlLEMYZgEP5gCw6MM7KHawn68RpDXmGxf2M7PhY/H4/rxJqWGbWf55Cu/Nz1ll9y/H020YXT1VTo9ebm9xPkunThJP+avuzuwxFLtHivtOUB7evTA0BBR6wJMLBAZZAk2Ay6PNxcQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qXvjJkHN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AF5EC16AAE;
+	Thu, 15 Jan 2026 17:52:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498417;
-	bh=LQHWZkA8aacHKoBCY6twu6DX5ugi352pqtD8uDUWhao=;
+	s=korg; t=1768499524;
+	bh=JRqKV84frnULDlOTsc7ps3KtKzW/UUzPABsQI9R/zng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qV4qYfGmyK4Y1ugKG5QGBpptxyuwkj1FisvHTAE2ZgWHiSsJamAG+BK368oPTdvlC
-	 eNAMrmpY2eBWa+nJoa/pSk3Xv61KvCWhNHo8F/t3BKlaePCxc+Vt/anJvbJVFnJXb1
-	 a0u4eQRc2uMIdD3xE5Z/VRHbBJeFIpOGQ2QbP8cg=
+	b=qXvjJkHN0DOreiYDC+rWYjIPwxgiM4xknJfaaL8Xh2ubE9YmCe/uJbty8WfdtSUOv
+	 8dOjZxRekKyqxaVPSPnql3ntsI9peRQ16s4Kr7bGyyxGLlf2RyrihBMOpQinhj8bxT
+	 3pSqDYJsKs1j2kD/L+313+2pG4M7jpSZSgY1Wm/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.15 391/554] dm-ebs: Mark full buffer dirty even on partial write
-Date: Thu, 15 Jan 2026 17:47:37 +0100
-Message-ID: <20260115164300.389613109@linuxfoundation.org>
+	Jim Mattson <jmattson@google.com>,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.10 257/451] KVM: nSVM: Set exit_code_hi to -1 when synthesizing SVM_EXIT_ERR (failed VMRUN)
+Date: Thu, 15 Jan 2026 17:47:38 +0100
+Message-ID: <20260115164240.185652119@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,125 +58,70 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 7fa3e7d114abc9cc71cc35d768e116641074ddb4 upstream.
+commit f402ecd7a8b6446547076f4bd24bd5d4dcc94481 upstream.
 
-When performing a read-modify-write(RMW) operation, any modification
-to a buffered block must cause the entire buffer to be marked dirty.
+Set exit_code_hi to -1u as a temporary band-aid to fix a long-standing
+(effectively since KVM's inception) bug where KVM treats the exit code as
+a 32-bit value, when in reality it's a 64-bit value.  Per the APM, offset
+0x70 is a single 64-bit value:
 
-Marking only a subrange as dirty is incorrect because the underlying
-device block size(ubs) defines the minimum read/write granularity. A
-lower device can perform I/O only on regions which are fully aligned
-and sized to ubs.
+  070h 63:0 EXITCODE
 
-This change ensures that write-back operations always occur in full
-ubs-sized chunks, matching the intended emulation semantics of the
-EBS target.
+And a sane reading of the error values defined in "Table C-1. SVM Intercept
+Codes" is that negative values use the full 64 bits:
 
-As for user space visible impact, submitting sub-ubs and misaligned
-I/O for devices which are tuned to ubs sizes only, will reject such
-requests, therefore it can lead to losing data. Example:
+  –1 VMEXIT_INVALID Invalid guest state in VMCB.
+  –2 VMEXIT_BUSYBUSY bit was set in the VMSA
+  –3 VMEXIT_IDLE_REQUIREDThe sibling thread is not in an idle state
+  -4 VMEXIT_INVALID_PMC Invalid PMC state
 
-1) Create a 8K nvme device in qemu by adding
+And that interpretation is confirmed by testing on Milan and Turin (by
+setting bits in CR0[63:32] to generate VMEXIT_INVALID on VMRUN).
 
--device nvme,drive=drv0,serial=foo,logical_block_size=8192,physical_block_size=8192
+Furthermore, Xen has treated exitcode as a 64-bit value since HVM support
+was adding in 2006 (see Xen commit d1bd157fbc ("Big merge the HVM
+full-virtualisation abstractions.")).
 
-2) Setup dm-ebs to emulate 512B to 8K mapping
-
-urezki@pc638:~/bin$ cat dmsetup.sh
-
-lower=/dev/nvme0n1
-len=$(blockdev --getsz "$lower")
-
-echo "0 $len ebs $lower 0 1 16" | dmsetup create nvme-8k
-urezki@pc638:~/bin$
-
-offset 0, ebs=1 and ubs=16(in sectors).
-
-3) Create an ext4 filesystem(default 4K block size)
-
-urezki@pc638:~/bin$ sudo mkfs.ext4 -F /dev/dm-0
-mke2fs 1.47.0 (5-Feb-2023)
-Discarding device blocks: done
-Creating filesystem with 2072576 4k blocks and 518144 inodes
-Filesystem UUID: bd0b6ca6-0506-4e31-86da-8d22c9d50b63
-Superblock backups stored on blocks:
-        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
-
-Allocating group tables: done
-Writing inode tables: done
-Creating journal (16384 blocks): done
-Writing superblocks and filesystem accounting information: mkfs.ext4: Input/output error while writing out and closing file system
-urezki@pc638:~/bin$ dmesg
-
-<snip>
-[ 1618.875449] buffer_io_error: 1028 callbacks suppressed
-[ 1618.875456] Buffer I/O error on dev dm-0, logical block 0, lost async page write
-[ 1618.875527] Buffer I/O error on dev dm-0, logical block 1, lost async page write
-[ 1618.875602] Buffer I/O error on dev dm-0, logical block 2, lost async page write
-[ 1618.875620] Buffer I/O error on dev dm-0, logical block 3, lost async page write
-[ 1618.875639] Buffer I/O error on dev dm-0, logical block 4, lost async page write
-[ 1618.894316] Buffer I/O error on dev dm-0, logical block 5, lost async page write
-[ 1618.894358] Buffer I/O error on dev dm-0, logical block 6, lost async page write
-[ 1618.894380] Buffer I/O error on dev dm-0, logical block 7, lost async page write
-[ 1618.894405] Buffer I/O error on dev dm-0, logical block 8, lost async page write
-[ 1618.894427] Buffer I/O error on dev dm-0, logical block 9, lost async page write
-<snip>
-
-Many I/O errors because the lower 8K device rejects sub-ubs/misaligned
-requests.
-
-with a patch:
-
-urezki@pc638:~/bin$ sudo mkfs.ext4 -F /dev/dm-0
-mke2fs 1.47.0 (5-Feb-2023)
-Discarding device blocks: done
-Creating filesystem with 2072576 4k blocks and 518144 inodes
-Filesystem UUID: 9b54f44f-ef55-4bd4-9e40-c8b775a616ac
-Superblock backups stored on blocks:
-        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
-
-Allocating group tables: done
-Writing inode tables: done
-Creating journal (16384 blocks): done
-Writing superblocks and filesystem accounting information: done
-
-urezki@pc638:~/bin$ sudo mount /dev/dm-0 /mnt/
-urezki@pc638:~/bin$ ls -al /mnt/
-total 24
-drwxr-xr-x  3 root root  4096 Oct 17 15:13 .
-drwxr-xr-x 19 root root  4096 Jul 10 19:42 ..
-drwx------  2 root root 16384 Oct 17 15:13 lost+found
-urezki@pc638:~/bin$
-
-After this change: mkfs completes; mount succeeds.
-
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: Jim Mattson <jmattson@google.com>
+Cc: Yosry Ahmed <yosry.ahmed@linux.dev>
 Cc: stable@vger.kernel.org
+Reviewed-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+Link: https://patch.msgid.link/20251113225621.1688428-3-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-ebs-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/kvm/svm/nested.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/md/dm-ebs-target.c
-+++ b/drivers/md/dm-ebs-target.c
-@@ -101,7 +101,7 @@ static int __ebs_rw_bvec(struct ebs_c *e
- 			} else {
- 				flush_dcache_page(bv->bv_page);
- 				memcpy(ba, pa, cur_len);
--				dm_bufio_mark_partial_buffer_dirty(b, buf_off, buf_off + cur_len);
-+				dm_bufio_mark_buffer_dirty(b);
- 			}
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -528,7 +528,7 @@ int nested_svm_vmrun(struct vcpu_svm *sv
+ 	if (!nested_vmcb_check_save(svm, vmcb12) ||
+ 	    !nested_vmcb_check_controls(&svm->nested.ctl)) {
+ 		vmcb12->control.exit_code    = SVM_EXIT_ERR;
+-		vmcb12->control.exit_code_hi = 0;
++		vmcb12->control.exit_code_hi = -1u;
+ 		vmcb12->control.exit_info_1  = 0;
+ 		vmcb12->control.exit_info_2  = 0;
+ 		goto out;
+@@ -587,7 +587,7 @@ out_exit_err:
+ 	svm->nested.nested_run_pending = 0;
  
- 			dm_bufio_release(b);
+ 	svm->vmcb->control.exit_code    = SVM_EXIT_ERR;
+-	svm->vmcb->control.exit_code_hi = 0;
++	svm->vmcb->control.exit_code_hi = -1u;
+ 	svm->vmcb->control.exit_info_1  = 0;
+ 	svm->vmcb->control.exit_info_2  = 0;
+ 
 
 
 
