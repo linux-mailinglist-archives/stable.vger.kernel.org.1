@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208793-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208688-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 323F7D263BF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:47 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2767FD26213
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2E8C830F73B2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 173F9312B7F2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CD843BC4E8;
-	Thu, 15 Jan 2026 17:07:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B8A345758;
+	Thu, 15 Jan 2026 17:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zLnUhuvf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHFnuPQJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E40E61A08AF;
-	Thu, 15 Jan 2026 17:07:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A895E2C028F;
+	Thu, 15 Jan 2026 17:02:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496859; cv=none; b=NamBJ20/zJDDM0/Q8nm+zsxG8AQwddi9x2+Maa7NujlWYxOqA0sa+1l8CHoScUip5UVcgOji5LEdKdNTLfvWFmWY94r02O+dmy4+8lcAkyMry/DjU/PJGddSt2LUJr6Nw9WfPaue0UO9BpxGMlIhmEix/ScYcSSK4OVcwjmXr14=
+	t=1768496563; cv=none; b=kl4IYZWUmqTAsenjm1xBxTdBFk/c4uUZSZicFJpJbz0+NzXnhxV12fVdSQnN118VbSBVwc6Bq1KkFArMcdMia/454jFHMOVAipzi5uC+nkw4iOwz2yI+Z0Y88Spi+IsbpOoYG26B7iyNn2wwi+cvHV2XoNEj5wOB2EBbWAWGwtw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496859; c=relaxed/simple;
-	bh=BEMettzTAWqU/WFWBR8bmzXIiwjB9HmFISeLJtCNf0I=;
+	s=arc-20240116; t=1768496563; c=relaxed/simple;
+	bh=PFVfqIGrwVzk6//ZzBPeCGnuRAHBaa8Dvt19BdsD1sM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WB6h47rwn8hLO5gu3VniaNfBMDM9+nBMGd/0L0QQC09WQ73KM/LKtVcu1O7PHTpliEQHiZzRP/eOrnfbBfKuVGWfGdMXucfZbu2kCZxuB6chdSreXMq1HrxoYf/MOExQZ6mfUjXxHuM6RSTFPUPpGAJhd/mwHPM0kZOedJcKUb8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zLnUhuvf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EC7AC16AAE;
-	Thu, 15 Jan 2026 17:07:38 +0000 (UTC)
+	 MIME-Version; b=EmJ6vg/K227bGIHJhFQPBnckRPGuvMT//YE3F0TcCuPs8Ik8AoSPirbQjXu14sFHRH7pvKJrX814swwrH1ydOpWz5hSXkDfoclcA36CkGhKMnQi/27TB2f+8rPa0KnFxzLpcN37XzoBS4tUZ/U2c15xvTR4OO0ieEjUPJcvO8yE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHFnuPQJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3643CC116D0;
+	Thu, 15 Jan 2026 17:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496858;
-	bh=BEMettzTAWqU/WFWBR8bmzXIiwjB9HmFISeLJtCNf0I=;
+	s=korg; t=1768496563;
+	bh=PFVfqIGrwVzk6//ZzBPeCGnuRAHBaa8Dvt19BdsD1sM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zLnUhuvfEg1CgvsS4otBZODrHaIWStLKi8hQjynGx7PLk9HEJHjU7lTy7HuFuo5Hr
-	 5kzoNInNrx+iVA8XZ+nppVdiACk8Wy/xeyIad8Ll3L4x7594/iqBPAIWiz6OqctVP8
-	 7YZkAfBuYCqHH1KlYNtGTLy7PLoRty2Ez4ZpFMOw=
+	b=RHFnuPQJTy186KiFEUkbZpFMAhBcr1KhICy3g7akaNGzMlt6XMgUpiUpBVCJ+9ix2
+	 vc8i2Fm1zDRPb53vyR8c3g74TcjVUZAU/kJjKV2M9k0cKHqZysjnPqM+kY7QgvPV4q
+	 LNUvSH7oHzaVDkKE8T1pFFvJFX34M/EkrRlLfF2o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.6 08/88] counter: 104-quad-8: Fix incorrect return value in IRQ handler
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 056/119] arm64: dts: imx8qm-ss-dma: correct the dma channels of lpuart
 Date: Thu, 15 Jan 2026 17:47:51 +0100
-Message-ID: <20260115164146.619748725@linuxfoundation.org>
+Message-ID: <20260115164153.980451626@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,83 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit 9517d76dd160208b7a432301ce7bec8fc1ddc305 upstream.
+[ Upstream commit a988caeed9d918452aa0a68de2c6e94d86aa43ba ]
 
-quad8_irq_handler() should return irqreturn_t enum values, but it
-directly returns negative errno codes from regmap operations on error.
+The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
+order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
+update imx8qm-ss-dma.dtsi.
 
-Return IRQ_NONE if the interrupt status cannot be read. If clearing the
-interrupt fails, return IRQ_HANDLED to prevent the kernel from disabling
-the IRQ line due to a spurious interrupt storm. Also, log these regmap
-failures with dev_WARN_ONCE.
+The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
+dma-names") just simple add dma-names as binding doc requirement.
 
-Fixes: 98ffe0252911 ("counter: 104-quad-8: Migrate to the regmap API")
-Suggested-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20251215020114.1913-1-vulab@iscas.ac.cn
-Cc: stable@vger.kernel.org
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
+the FSL_EDMA_RX flag.
+
+Fixes: 5a8e9b022e56 ("arm64: dts: imx8qm-ss-dma: Pass lpuart dma-names")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/104-quad-8.c |   20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/counter/104-quad-8.c
-+++ b/drivers/counter/104-quad-8.c
-@@ -1192,6 +1192,7 @@ static irqreturn_t quad8_irq_handler(int
- {
- 	struct counter_device *counter = private;
- 	struct quad8 *const priv = counter_priv(counter);
-+	struct device *dev = counter->parent;
- 	unsigned int status;
- 	unsigned long irq_status;
- 	unsigned long channel;
-@@ -1200,8 +1201,11 @@ static irqreturn_t quad8_irq_handler(int
- 	int ret;
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+index aa9f28c4431d0..f381e2636c3ad 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+@@ -168,25 +168,25 @@ &flexcan3 {
  
- 	ret = regmap_read(priv->map, QUAD8_INTERRUPT_STATUS, &status);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		dev_WARN_ONCE(dev, true,
-+			"Attempt to read Interrupt Status Register failed: %d\n", ret);
-+		return IRQ_NONE;
-+	}
- 	if (!status)
- 		return IRQ_NONE;
+ &lpuart0 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 13 0 0>, <&edma2 12 0 1>;
++	dmas = <&edma2 12 0 FSL_EDMA_RX>, <&edma2 13 0 0>;
+ 	dma-names = "rx","tx";
+ };
  
-@@ -1223,8 +1227,9 @@ static irqreturn_t quad8_irq_handler(int
- 				break;
- 		default:
- 			/* should never reach this path */
--			WARN_ONCE(true, "invalid interrupt trigger function %u configured for channel %lu\n",
--				  flg_pins, channel);
-+			dev_WARN_ONCE(dev, true,
-+				"invalid interrupt trigger function %u configured for channel %lu\n",
-+				flg_pins, channel);
- 			continue;
- 		}
+ &lpuart1 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 15 0 0>, <&edma2 14 0 1>;
++	dmas = <&edma2 14 0 FSL_EDMA_RX>, <&edma2 15 0 0>;
+ 	dma-names = "rx","tx";
+ };
  
-@@ -1232,8 +1237,11 @@ static irqreturn_t quad8_irq_handler(int
- 	}
+ &lpuart2 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 17 0 0>, <&edma2 16 0 1>;
++	dmas = <&edma2 16 0 FSL_EDMA_RX>, <&edma2 17 0 0>;
+ 	dma-names = "rx","tx";
+ };
  
- 	ret = regmap_write(priv->map, QUAD8_CHANNEL_OPERATION, CLEAR_PENDING_INTERRUPTS);
--	if (ret)
--		return ret;
-+	if (ret) {
-+		dev_WARN_ONCE(dev, true,
-+			"Attempt to clear pending interrupts by writing to Channel Operation Register failed: %d\n", ret);
-+		return IRQ_HANDLED;
-+	}
+ &lpuart3 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 19 0 0>, <&edma2 18 0 1>;
++	dmas = <&edma2 18 0 FSL_EDMA_RX>, <&edma2 19 0 0>;
+ 	dma-names = "rx","tx";
+ };
  
- 	return IRQ_HANDLED;
- }
+-- 
+2.51.0
+
 
 
 
