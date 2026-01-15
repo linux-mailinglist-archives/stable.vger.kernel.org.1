@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209368-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 245A6D26A6D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:16 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7ECF0D26210
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id F26F13105E77
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:25 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 35EF23008C7E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D00D61A2389;
-	Thu, 15 Jan 2026 17:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E52E3BFE3A;
+	Thu, 15 Jan 2026 17:05:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QOkGIcZ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YW2IyLjY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 924C43D1CB7;
-	Thu, 15 Jan 2026 17:34:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C29A83195F9;
+	Thu, 15 Jan 2026 17:05:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498496; cv=none; b=E3YNnNcCKwYJ/HOxbh3XWFT5T3pUyQ+zRuiJyenrAiH6a82XX1rOSX/M78q5ayPlHNnpsAnvTepMvD859QWmXeSaOAkQuuQZm8V6MwNN2SZCQ77z5SI3LXew++HwBEArGTUxWUMMfH0Pa8LAERW3GE5LC5GbYWjrSfOoLxWHJsg=
+	t=1768496742; cv=none; b=UzuYWYWvZ5WpG5Je8mAYG+xJzRE37riHfnCjlKW6Y3ENV025pMWSBRUkDwJwPdLoU44CMzaUH9STcWaSRw77IWY3OeF5ou+FM3nRHfgBRP6i/t69fNEXJmxItnvYcg6LBTVKVlkfyk3kNK93Vs5+W3WYpiY/ptS+ZOcf8h2HleI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498496; c=relaxed/simple;
-	bh=ysOhnYgZchjQaDnAmcGIT+Jo6btsaJUKJqba6AMbfyk=;
+	s=arc-20240116; t=1768496742; c=relaxed/simple;
+	bh=JgmpXDJhKzgtF6IgReCGuYHwm18rBAHHk/1QOhGvCiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c6Sh6Bdfl0FONz9c4PeaMcKQuGI3Pkwu/vtV1u/gpE2UUyf8/KTUmlWFPN3e1mQxdM4lHyUAvrMyLCaVkgj4swK18ONXMv7MMHj9iJ1r9s+FOTDDcvN0v8ZmUjMjLb73JGUh5P3Ka8HJb38nO8DDxeD2aDjl59uWt6bKdjYCzpI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QOkGIcZ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFDFC116D0;
-	Thu, 15 Jan 2026 17:34:55 +0000 (UTC)
+	 MIME-Version; b=V30liKeN4E/GJqpX8Gv+IQZO2ga9y7QQmLo9xIk5xj75dEuwkTbsjOOyTWXf44CXebXQlNkKLuG1U5nvgE/iziJS0OQdmiq9Lb+97213SmxRQ0/L50cbo2O1p9TB0uQ6gY+bRmOG0b4Ktzxhh8oQjl4bUX4hA14LetR5B4nxCL8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YW2IyLjY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 204F8C19423;
+	Thu, 15 Jan 2026 17:05:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498496;
-	bh=ysOhnYgZchjQaDnAmcGIT+Jo6btsaJUKJqba6AMbfyk=;
+	s=korg; t=1768496742;
+	bh=JgmpXDJhKzgtF6IgReCGuYHwm18rBAHHk/1QOhGvCiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QOkGIcZ9YcFotkDHNC900TqF3h7S89J8Jc8hnJfuWCeq64Yvpn6u28Bd6c2v5+VmO
-	 ZaDiY6yhp7t7qCEv3pffnI/w9vZYIsY/NNReO1lKHfO2xpMdOs1lFIkyKgXJRZ4n2s
-	 NCWLVYk0srM5kCbU8RUiP8dFJFe8/zSLC6Dbiajc=
+	b=YW2IyLjYnU2T93n6wYkl+gc0d/CSV1zdaBfv00heffPD50R3ALeauFEwf/m3yvYcb
+	 BtNbvq1a0+3MlDkfiRR+X3SG7+vEmfx6AQe+ItCMGYRlEM4/ij5WhkWiAneM0VGRhg
+	 xtBV69r/O0dOVPsg7RKAnSXyhkljw/5DKHoUCnb0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Rogers <linux@joshua.hu>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Marcus Hughes <marcus.hughes@betterinternet.ltd>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 451/554] svcrdma: bound check rq_pages index in inline path
+Subject: [PATCH 6.12 102/119] net: sfp: extend Potron XGSPON quirk to cover additional EEPROM variant
 Date: Thu, 15 Jan 2026 17:48:37 +0100
-Message-ID: <20260115164302.595433406@linuxfoundation.org>
+Message-ID: <20260115164155.634677965@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,41 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Rogers <linux@joshua.hu>
+From: Marcus Hughes <marcus.hughes@betterinternet.ltd>
 
-[ Upstream commit d1bea0ce35b6095544ee82bb54156fc62c067e58 ]
+[ Upstream commit 71cfa7c893a05d09e7dc14713b27a8309fd4a2db ]
 
-svc_rdma_copy_inline_range indexed rqstp->rq_pages[rc_curpage] without
-verifying rc_curpage stays within the allocated page array. Add guards
-before the first use and after advancing to a new page.
+Some Potron SFP+ XGSPON ONU sticks are shipped with different EEPROM
+vendor ID and vendor name strings, but are otherwise functionally
+identical to the existing "Potron SFP+ XGSPON ONU Stick" handled by
+sfp_quirk_potron().
 
-Fixes: d7cc73972661 ("svcrdma: support multiple Read chunks per RPC")
-Cc: stable@vger.kernel.org
-Signed-off-by: Joshua Rogers <linux@joshua.hu>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ adapted rc_curpage and rq_maxpages fields to ri_pageno and RPCSVC_MAXPAGES constant ]
+These modules, including units distributed under the "Better Internet"
+branding, use the same UART pin assignment and require the same
+TX_FAULT/LOS behaviour and boot delay. Re-use the existing Potron
+quirk for this EEPROM variant.
+
+Signed-off-by: Marcus Hughes <marcus.hughes@betterinternet.ltd>
+Link: https://patch.msgid.link/20251207210355.333451-1-marcus.hughes@betterinternet.ltd
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sunrpc/xprtrdma/svc_rdma_rw.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/phy/sfp.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/sunrpc/xprtrdma/svc_rdma_rw.c
-+++ b/net/sunrpc/xprtrdma/svc_rdma_rw.c
-@@ -789,6 +789,9 @@ static int svc_rdma_copy_inline_range(st
- 	for (page_no = 0; page_no < numpages; page_no++) {
- 		unsigned int page_len;
+diff --git a/drivers/net/phy/sfp.c b/drivers/net/phy/sfp.c
+index f1827a1bd7a59..964aad00dc87c 100644
+--- a/drivers/net/phy/sfp.c
++++ b/drivers/net/phy/sfp.c
+@@ -491,6 +491,8 @@ static const struct sfp_quirk sfp_quirks[] = {
+ 	SFP_QUIRK("ALCATELLUCENT", "3FE46541AA", sfp_quirk_2500basex,
+ 		  sfp_fixup_nokia),
  
-+		if (info->ri_pageno >= RPCSVC_MAXPAGES)
-+			return -EINVAL;
++	SFP_QUIRK_F("BIDB", "X-ONU-SFPP", sfp_fixup_potron),
 +
- 		page_len = min_t(unsigned int, remaining,
- 				 PAGE_SIZE - info->ri_pageoff);
+ 	// FLYPRO SFP-10GT-CS-30M uses Rollball protocol to talk to the PHY.
+ 	SFP_QUIRK_F("FLYPRO", "SFP-10GT-CS-30M", sfp_fixup_rollball),
  
+-- 
+2.51.0
+
 
 
 
