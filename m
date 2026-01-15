@@ -1,114 +1,220 @@
-Return-Path: <stable+bounces-208446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208447-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF98AD25221
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:01:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A44C3D25334
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:12:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2203530C4557
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 14:54:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A770A3010BFA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 15:12:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843F93A1D0B;
-	Thu, 15 Jan 2026 14:54:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8DCC03AE6F2;
+	Thu, 15 Jan 2026 15:12:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9LTaB+6"
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Oe+Td0k4";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Mx9dEdlM";
+	dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b="Oe+Td0k4";
+	dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b="Mx9dEdlM"
 X-Original-To: stable@vger.kernel.org
-Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [195.135.223.130])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C773A1A5B
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 14:54:19 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0C72F3ACEEA
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 15:12:10 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=195.135.223.130
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768488859; cv=none; b=NSbUEgdTGJFziwimrVX3oN7reAHPrbOwlvDolxD/YI9tvtb8Z0DRxbmozUVi5B41YguiuFSSOjCa1NTf9BEVwU5+ku3OYQWnwlTn/XKK5RAiNJWFnJDbLHIz9NPzd6P5l2uVYzYNyUmE6j3Q8lUtRsJ4cdq3XpejuW+LmuszFnI=
+	t=1768489940; cv=none; b=las6+4atf8LB/6nsdyKbPkrtvmeD141q6aa3MlrhOXBhCo93HAtFAQnQxvw2376ec2udvr19Lk4Cyxd+TjnICUqIy/pXy8Rvt1zOxVZEpv/NCgQPkgjbo1Wkl6i0VfgntG3T7tTi42oUaQE6gyE6J6sVJy/0rFIcNoJ0tCNYYZE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768488859; c=relaxed/simple;
-	bh=eGX1uIRNiVRKNpnEQWr8+h6ChiHJM3AhnFKihXO9glk=;
-	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
-	 Content-Type:Content-Disposition:In-Reply-To; b=n1IQsXZG/+JYmelhKR5JkflO1UQ2rYuBMLEs8yxf8VPo71gVT7+k4uA5KRWzpeAKelyum4gG1PFpt/04mpNqzFzMh0X5ThmqfmJu0yctjwRAoZo4gkwpaEPJ2pYxswMdsLQ6Qt6AwpDHdsX3EWxZB/t4W98waPq0C/x8B//mGXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9LTaB+6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7E1C116D0;
-	Thu, 15 Jan 2026 14:54:18 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768488858;
-	bh=eGX1uIRNiVRKNpnEQWr8+h6ChiHJM3AhnFKihXO9glk=;
-	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-	b=b9LTaB+6r/7k8EKDOi1pwgm0veGkJiuWN8LB/wZXURid5/s/OOhZUk+GWmvxMSxce
-	 A+fopu9qWO0EGrCmQldwhkXS/9g7clJXTFjY1GYdszDUZgVlP3eVn1xJIjjVLx87Pu
-	 3OLGCVLmirlgqlxsDlHseui2Y5fedl4g8eqFOdHE=
-Date: Thu, 15 Jan 2026 15:54:16 +0100
-From: Greg KH <gregkh@linuxfoundation.org>
-To: Chen Ridong <chenridong@huaweicloud.com>
-Cc: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
-	stable@vger.kernel.org, lujialin4@huawei.com
-Subject: Re: [PATCH stable] cpuset: Fix missing adaptation for
- cpuset_is_populated
-Message-ID: <2026011510-untouched-widen-8f33@gregkh>
-References: <2026011258-raving-unlovable-5059@gregkh>
- <20260114015129.1156361-1-chenridong@huaweicloud.com>
- <bb71a754-ed2e-4535-aa20-c8d0a9ec4be1@huaweicloud.com>
+	s=arc-20240116; t=1768489940; c=relaxed/simple;
+	bh=CNeU917nlB58UtOovdYWcHGFU/GNl44gPLUP1VFeK4Y=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=XZ4uqvEBMcGTSFQ3H/T4zRexe2V716Az/ah43XbTtbUqUQfeQtSSM5/eCCs2yuFNCQwCdFQwYAjeA8GZnE4W+GI09UXx6/+jrMhktsLEmXPG+luJwrTX+gHKIVZS3Z+BwRtbtKJoUIjvQ/sZsUPj3fZ7pVp5sT42gERMTnEt58s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz; spf=pass smtp.mailfrom=suse.cz; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Oe+Td0k4; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Mx9dEdlM; dkim=pass (1024-bit key) header.d=suse.cz header.i=@suse.cz header.b=Oe+Td0k4; dkim=permerror (0-bit key) header.d=suse.cz header.i=@suse.cz header.b=Mx9dEdlM; arc=none smtp.client-ip=195.135.223.130
+Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=suse.cz
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=suse.cz
+Received: from imap1.dmz-prg2.suse.org (imap1.dmz-prg2.suse.org [IPv6:2a07:de40:b281:104:10:150:64:97])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by smtp-out1.suse.de (Postfix) with ESMTPS id 180513378D;
+	Thu, 15 Jan 2026 15:12:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768489928; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=elMJW99Aqg4ZRWyy1Tm+k4UtFI51uPd4F2wPebrnoJE=;
+	b=Oe+Td0k4siueCAsRxJcSWG13AYEwgZmBt4MjPLn/ErgQduOdNQaNeDReMgziQyt9VPjEBQ
+	/e/rmeGCyEW+3bRMbDEKEWZqWgu549BUF3/Dxrj/sgu6iNi0ccSK/ehNgwnx/IhVI2AkMV
+	taFoo144FRRkvT5LEj852ZaeOToQ9WY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768489928;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=elMJW99Aqg4ZRWyy1Tm+k4UtFI51uPd4F2wPebrnoJE=;
+	b=Mx9dEdlMxlDTajoEmQddG6KEWY6qemdZVY7P0pu/xijFOWgmODVF1WXJnAb8iqS0NMCjyM
+	kPh59yqkbDtbNoCg==
+Authentication-Results: smtp-out1.suse.de;
+	dkim=pass header.d=suse.cz header.s=susede2_rsa header.b=Oe+Td0k4;
+	dkim=pass header.d=suse.cz header.s=susede2_ed25519 header.b=Mx9dEdlM
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+	t=1768489928; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=elMJW99Aqg4ZRWyy1Tm+k4UtFI51uPd4F2wPebrnoJE=;
+	b=Oe+Td0k4siueCAsRxJcSWG13AYEwgZmBt4MjPLn/ErgQduOdNQaNeDReMgziQyt9VPjEBQ
+	/e/rmeGCyEW+3bRMbDEKEWZqWgu549BUF3/Dxrj/sgu6iNi0ccSK/ehNgwnx/IhVI2AkMV
+	taFoo144FRRkvT5LEj852ZaeOToQ9WY=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+	s=susede2_ed25519; t=1768489928;
+	h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+	 mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references:autocrypt:autocrypt;
+	bh=elMJW99Aqg4ZRWyy1Tm+k4UtFI51uPd4F2wPebrnoJE=;
+	b=Mx9dEdlMxlDTajoEmQddG6KEWY6qemdZVY7P0pu/xijFOWgmODVF1WXJnAb8iqS0NMCjyM
+	kPh59yqkbDtbNoCg==
+Received: from imap1.dmz-prg2.suse.org (localhost [127.0.0.1])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+	(No client certificate requested)
+	by imap1.dmz-prg2.suse.org (Postfix) with ESMTPS id E790C3EA63;
+	Thu, 15 Jan 2026 15:12:07 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([2a07:de40:b281:106:10:150:64:167])
+	by imap1.dmz-prg2.suse.org with ESMTPSA
+	id vcoBOMcDaWlcEgAAD6G6ig
+	(envelope-from <vbabka@suse.cz>); Thu, 15 Jan 2026 15:12:07 +0000
+Message-ID: <8c508b65-3b80-4b91-afa0-145b44686b6a@suse.cz>
+Date: Thu, 15 Jan 2026 16:12:07 +0100
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <bb71a754-ed2e-4535-aa20-c8d0a9ec4be1@huaweicloud.com>
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH RFC v2 00/20] slab: replace cpu (partial) slabs with
+ sheaves
+Content-Language: en-US
+To: Harry Yoo <harry.yoo@oracle.com>, Petr Tesarik <ptesarik@suse.com>,
+ Christoph Lameter <cl@gentwo.org>, David Rientjes <rientjes@google.com>,
+ Roman Gushchin <roman.gushchin@linux.dev>
+Cc: Hao Li <hao.li@linux.dev>, Andrew Morton <akpm@linux-foundation.org>,
+ Uladzislau Rezki <urezki@gmail.com>,
+ "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+ Suren Baghdasaryan <surenb@google.com>,
+ Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+ Alexei Starovoitov <ast@kernel.org>, linux-mm@kvack.org,
+ linux-kernel@vger.kernel.org, linux-rt-devel@lists.linux.dev,
+ bpf@vger.kernel.org, kasan-dev@googlegroups.com,
+ kernel test robot <oliver.sang@intel.com>, stable@vger.kernel.org
+References: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+From: Vlastimil Babka <vbabka@suse.cz>
+Autocrypt: addr=vbabka@suse.cz; keydata=
+ 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
+ m6M14QORSWTLRg==
+In-Reply-To: <20260112-sheaves-for-all-v2-0-98225cfb50cf@suse.cz>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spamd-Result: default: False [-4.51 / 50.00];
+	BAYES_HAM(-3.00)[99.99%];
+	NEURAL_HAM_LONG(-1.00)[-1.000];
+	R_DKIM_ALLOW(-0.20)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	NEURAL_HAM_SHORT(-0.20)[-1.000];
+	MIME_GOOD(-0.10)[text/plain];
+	MX_GOOD(-0.01)[];
+	FREEMAIL_ENVRCPT(0.00)[gmail.com];
+	DKIM_SIGNED(0.00)[suse.cz:s=susede2_rsa,suse.cz:s=susede2_ed25519];
+	FUZZY_RATELIMITED(0.00)[rspamd.com];
+	RBL_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	SPAMHAUS_XBL(0.00)[2a07:de40:b281:104:10:150:64:97:from];
+	ARC_NA(0.00)[];
+	RCPT_COUNT_TWELVE(0.00)[19];
+	MIME_TRACE(0.00)[0:+];
+	TO_MATCH_ENVRCPT_ALL(0.00)[];
+	FREEMAIL_CC(0.00)[linux.dev,linux-foundation.org,gmail.com,oracle.com,google.com,linutronix.de,kernel.org,kvack.org,vger.kernel.org,lists.linux.dev,googlegroups.com,intel.com];
+	RCVD_TLS_ALL(0.00)[];
+	RCVD_COUNT_TWO(0.00)[2];
+	FROM_EQ_ENVFROM(0.00)[];
+	FROM_HAS_DN(0.00)[];
+	TO_DN_SOME(0.00)[];
+	MID_RHS_MATCH_FROM(0.00)[];
+	RCVD_VIA_SMTP_AUTH(0.00)[];
+	RECEIVED_SPAMHAUS_BLOCKED_OPENRESOLVER(0.00)[2a07:de40:b281:106:10:150:64:167:received];
+	DKIM_TRACE(0.00)[suse.cz:+];
+	DBL_BLOCKED_OPENRESOLVER(0.00)[suse.cz:dkim,suse.cz:mid,imap1.dmz-prg2.suse.org:helo,imap1.dmz-prg2.suse.org:rdns]
+X-Spam-Flag: NO
+X-Spam-Score: -4.51
+X-Rspamd-Queue-Id: 180513378D
+X-Rspamd-Action: no action
+X-Rspamd-Server: rspamd2.dmz-prg2.suse.org
+X-Spam-Level: 
 
-On Wed, Jan 14, 2026 at 10:13:16AM +0800, Chen Ridong wrote:
+On 1/12/26 16:16, Vlastimil Babka wrote:
+> Percpu sheaves caching was introduced as opt-in but the goal was to
+> eventually move all caches to them. This is the next step, enabling
+> sheaves for all caches (except the two bootstrap ones) and then removing
+> the per cpu (partial) slabs and lots of associated code.
 > 
+> Besides (hopefully) improved performance, this removes the rather
+> complicated code related to the lockless fastpaths (using
+> this_cpu_try_cmpxchg128/64) and its complications with PREEMPT_RT or
+> kmalloc_nolock().
 > 
-> On 2026/1/14 9:51, Chen Ridong wrote:
-> > From: Chen Ridong <chenridong@huawei.com>
-> > 
-> > Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
-> > was backported to the long‑term support (LTS) branches. However, because
-> > commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
-> > partitions") was not backported, a corresponding adaptation to the
-> > backported code is still required.
-> > 
-> > To ensure correct behavior, replace cgroup_is_populated with
-> > cpuset_is_populated in the partition_is_populated function.
-> > 
-> > Cc: stable@vger.kernel.org	# 6.1+
-> > Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
-> > Signed-off-by: Chen Ridong <chenridong@huawei.com>
-> > ---
-> >  kernel/cgroup/cpuset.c | 2 +-
-> >  1 file changed, 1 insertion(+), 1 deletion(-)
-> > 
-> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-> > index f61dde0497f3..3c466e742751 100644
-> > --- a/kernel/cgroup/cpuset.c
-> > +++ b/kernel/cgroup/cpuset.c
-> > @@ -486,7 +486,7 @@ static inline bool partition_is_populated(struct cpuset *cs,
-> >  	    cs->attach_in_progress)
-> >  		return true;
-> >  	if (!excluded_child && !cs->nr_subparts_cpus)
-> > -		return cgroup_is_populated(cs->css.cgroup);
-> > +		return cpuset_is_populated(cs);
-> >  
-> >  	rcu_read_lock();
-> >  	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
+> The lockless slab freelist+counters update operation using
+> try_cmpxchg128/64 remains and is crucial for freeing remote NUMA objects
+> without repeating the "alien" array flushing of SLUB, and to allow
+> flushing objects from sheaves to slabs mostly without the node
+> list_lock.
 > 
-> Hi Greg,
+> This v2 is the first non-RFC. I would consider exposing the series to
+> linux-next at this point.
 > 
-> Is this patch suitable for applying?
+> Git branch for the v2:
+>   https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=sheaves-for-all-v2
 
-It needs approval from the maintainers of this file.
+The current state with collected fixes:
 
-> Note:  Because the corresponding commit varies between LTS branches,, the Fixes tag points to a
-> mainline commit.
+https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/linux.git/log/?h=b4/sheaves-for-all
 
-As this is only for 6.1.y, why not point it at the commit there?
 
-Or is this for other branches?  If so, which ones?  It might be best to
-provide a backport for all of the relevant ones so that we get it right.
-
-thanks,
-
-greg k-h
 
