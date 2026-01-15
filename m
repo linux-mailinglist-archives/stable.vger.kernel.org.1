@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-208803-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209784-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 82548D266D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:58 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D213FD27DF0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:57:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B618630FA355
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D1CE53053F88
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C4F41C5D72;
-	Thu, 15 Jan 2026 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B613C00A8;
+	Thu, 15 Jan 2026 17:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehBIR1M+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c0ypfK0D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 283DC2C11EF;
-	Thu, 15 Jan 2026 17:08:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B87C2D73B4;
+	Thu, 15 Jan 2026 17:54:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496887; cv=none; b=ly/e0e2eFCX4fz/bGMpdto+Bqx4CuxHLNMFAsvY/PiE7fMN+gtKhRU5kQuaj0qiIRqscyO4ZEWvmaHxSXNhoek9jHbS33Z0o0Z5mmFiIu5AKZbiHZ5vg7/Q/qNRy1eG+DqD4xBOlw/Rb8NkWlcutmqIZiVjLDyKXCB836U8s9RY=
+	t=1768499681; cv=none; b=X3jhQ+HmjMsrc/NQnknNJgN2ci+zrQ60rgiw/APQ9If3aMvJ9hiEqrbxsHhab+ZWdkJ3K6GUmJglSb9CrGvTxG1cop+sxvfoqznwmKDYM9el/chvGyLwQ5FRARMv62N4ojh+bGD6XX1HP4mdw0slBNjYhu2DzaGAwEmph6cM4k0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496887; c=relaxed/simple;
-	bh=0k1qOhWYbf2J12qbYoc/AqYHXPj3r1Nx6YCMYeq86fI=;
+	s=arc-20240116; t=1768499681; c=relaxed/simple;
+	bh=R/tsguOcpPstynjxTW4Zscp1Vle0lXXxtjp2998QN3g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OmXqj0MEMdeBEB2gaFG4VqPFA8FObA+3vfLUrs6jKoaW/HxTC8fhittVsEPXUk0Nlm0/mUN/l4HWOoU2Id1L+NLlY//N9LXxSh99hY2pfo/QFJgb+tx2I65Z4wD7kVcP0zZio96yNpxkTyYahJdjM++WT1pDVKH27DZkgV0FN2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehBIR1M+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA761C116D0;
-	Thu, 15 Jan 2026 17:08:06 +0000 (UTC)
+	 MIME-Version; b=uGYtXIJCvnnhgwiNGgY4kdIR4G8q28WUFWWDgQzNQyCxG5h7KkDdS5/+WRplzEgqXm03GkGCsMtZre4CBeKwpqOr4K4OLdlR2WbVfUUIHY6PQRrhAkJiTXsBNgadekKCdY2T2HwdQsWMKIokJUxeXY5IpB4W2+Jj55E8km2FWUg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c0ypfK0D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3F72C116D0;
+	Thu, 15 Jan 2026 17:54:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496887;
-	bh=0k1qOhWYbf2J12qbYoc/AqYHXPj3r1Nx6YCMYeq86fI=;
+	s=korg; t=1768499681;
+	bh=R/tsguOcpPstynjxTW4Zscp1Vle0lXXxtjp2998QN3g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ehBIR1M+n4yZYZrysux63WesRPFzDChy8BbWwikzq49auaq0J/8BAprNdHe3gnTDF
-	 SQ5/sLmKVAUh3yg1HHJccbTWfeM9RlMXD5gFsEa00LsNvPX5iXh8vhee25rNyOV+Dh
-	 5rOCXLln9LWItrHOoo/yqyFjnQtn8Ap5qynNO2b4=
+	b=c0ypfK0DFYTidDtpWp2WPYP8tqyn3eE/dEtuxSg5wG12V+Q824aVaOnbi63N2uJjw
+	 vjiza58neqGakoMIXZyYiDYZxCuy7kN30VMnSDK8KMpcZIQqCgxvvCjE9Vh6NuxEXT
+	 XWrv90OGhVpuAEPrs68IDByFmgVfW/qqgocV6qlU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Knecht <knecht.alexandre@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 51/88] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
+	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 313/451] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
 Date: Thu, 15 Jan 2026 17:48:34 +0100
-Message-ID: <20260115164148.160308313@linuxfoundation.org>
+Message-ID: <20260115164242.223641333@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +59,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Knecht <knecht.alexandre@gmail.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 3128df6be147768fe536986fbb85db1d37806a9f ]
+commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
 
-When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
-incorrectly stripped from frames during egress processing.
+MAX77620 is most likely always a single device on the board, however
+nothing stops board designers to have two of them, thus same device
+driver could probe twice. Or user could manually try to probing second
+time.
 
-br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
-from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
-moves any "next" VLAN from the payload into hwaccel:
+Device driver is not ready for that case, because it allocates
+statically 'struct regmap_irq_chip' as non-const and stores during
+probe in 'irq_drv_data' member a pointer to per-probe state
+container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
+make a copy of 'struct regmap_irq_chip' but store the pointer.
 
-    /* move next vlan tag to hw accel tag */
-    __skb_vlan_pop(skb, &vlan_tci);
-    __vlan_hwaccel_put_tag(skb, vlan_proto, vlan_tci);
+Second probe - either successful or failure - would overwrite the
+'irq_drv_data' from previous device probe, so interrupts would be
+executed in a wrong context.
 
-For QinQ frames where the C-VLAN sits in the payload, this moves it to
-hwaccel where it gets lost during VXLAN encapsulation.
-
-Fix by calling __vlan_hwaccel_clear_tag() directly, which clears only
-the hwaccel S-VLAN and leaves the payload untouched.
-
-This path is only taken when vlan_tunnel is enabled and tunnel_info
-is configured, so 802.1Q bridges are unaffected.
-
-Tested with 802.1ad bridge + VXLAN vlan_tunnel, verified C-VLAN
-preserved in VXLAN payload via tcpdump.
-
-Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
-Signed-off-by: Alexandre Knecht <knecht.alexandre@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251228020057.2788865-1-knecht.alexandre@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_vlan_tunnel.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/mfd/max77620.c |   15 +++++++++++----
+ 1 file changed, 11 insertions(+), 4 deletions(-)
 
-diff --git a/net/bridge/br_vlan_tunnel.c b/net/bridge/br_vlan_tunnel.c
-index 81833ca7a2c77..b41494ce59438 100644
---- a/net/bridge/br_vlan_tunnel.c
-+++ b/net/bridge/br_vlan_tunnel.c
-@@ -187,7 +187,6 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+--- a/drivers/mfd/max77620.c
++++ b/drivers/mfd/max77620.c
+@@ -254,7 +254,7 @@ static int max77620_irq_global_unmask(vo
+ 	return ret;
+ }
+ 
+-static struct regmap_irq_chip max77620_top_irq_chip = {
++static const struct regmap_irq_chip max77620_top_irq_chip = {
+ 	.name = "max77620-top",
+ 	.irqs = max77620_top_irqs,
+ 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
+@@ -499,6 +499,7 @@ static int max77620_probe(struct i2c_cli
  {
- 	struct metadata_dst *tunnel_dst;
- 	__be64 tunnel_id;
--	int err;
+ 	const struct regmap_config *rmap_config;
+ 	struct max77620_chip *chip;
++	struct regmap_irq_chip *chip_desc;
+ 	const struct mfd_cell *mfd_cells;
+ 	int n_mfd_cells;
+ 	bool pm_off;
+@@ -509,6 +510,14 @@ static int max77620_probe(struct i2c_cli
+ 		return -ENOMEM;
  
- 	if (!vlan)
- 		return 0;
-@@ -197,9 +196,13 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 		return 0;
+ 	i2c_set_clientdata(client, chip);
++
++	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
++				 sizeof(max77620_top_irq_chip),
++				 GFP_KERNEL);
++	if (!chip_desc)
++		return -ENOMEM;
++	chip_desc->irq_drv_data = chip;
++
+ 	chip->dev = &client->dev;
+ 	chip->chip_irq = client->irq;
+ 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
+@@ -545,11 +554,9 @@ static int max77620_probe(struct i2c_cli
+ 	if (ret < 0)
+ 		return ret;
  
- 	skb_dst_drop(skb);
--	err = skb_vlan_pop(skb);
--	if (err)
--		return err;
-+	/* For 802.1ad (QinQ), skb_vlan_pop() incorrectly moves the C-VLAN
-+	 * from payload to hwaccel after clearing S-VLAN. We only need to
-+	 * clear the hwaccel S-VLAN; the C-VLAN must stay in payload for
-+	 * correct VXLAN encapsulation. This is also correct for 802.1Q
-+	 * where no C-VLAN exists in payload.
-+	 */
-+	__vlan_hwaccel_clear_tag(skb);
- 
- 	if (BR_INPUT_SKB_CB(skb)->backup_nhid) {
- 		tunnel_dst = __ip_tun_set_dst(0, 0, 0, 0, 0, TUNNEL_KEY,
--- 
-2.51.0
-
+-	max77620_top_irq_chip.irq_drv_data = chip;
+ 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
+ 				       IRQF_ONESHOT | IRQF_SHARED, 0,
+-				       &max77620_top_irq_chip,
+-				       &chip->top_irq_data);
++				       chip_desc, &chip->top_irq_data);
+ 	if (ret < 0) {
+ 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
+ 		return ret;
 
 
 
