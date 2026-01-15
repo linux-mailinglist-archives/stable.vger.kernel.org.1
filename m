@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209107-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 77C90D27846
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:36 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8A67D267FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CAC2D32224B6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EAB0F3056D61
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9292B2C0F83;
-	Thu, 15 Jan 2026 17:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DBA39B48E;
+	Thu, 15 Jan 2026 17:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1VYQTmZ5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKuL9tNt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D042D541B;
-	Thu, 15 Jan 2026 17:44:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573732D6E72;
+	Thu, 15 Jan 2026 17:22:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499047; cv=none; b=duMOwRk+sELnkBOyRKlAWifU+hvoTTD1bCQdNHvyaBFA9IR3l2ihGbPfsjxTfsT4V0oblPuHRjMlZFk3Rw2PaHYCLaJBzJs3rfzR3IJnz3GcpAK/OUxunK2MQRrK55xXsucfD2yUeMyIK86rViVQ/H1cLkLBEx6ss16naDowu2c=
+	t=1768497753; cv=none; b=f6y32b6nsb4+ICeFUytNtnhLW49UkOOJY+11UJvKhQSYWXXa7d43yWf4CyUU5w32+Nlc2bcQJs+OeUS9N8eDDNtSVyQKG4FtJ1kc6CUgaaFwlXWq0AMvxZKxWJL9GVaLrHhQC18M7bpavJpl+hbm7Im4uZx5L4Dm/b9bTYS0H4g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499047; c=relaxed/simple;
-	bh=LmOevlg9aZ+c4xXUnJv0DTpum6gNNYzYfHWdytnxmT0=;
+	s=arc-20240116; t=1768497753; c=relaxed/simple;
+	bh=98CVSM4ItNvCDY8ocAuPPYj/iUoSFJkP6g6cG738FJo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vqy+QtgHDL3NV6htOcJ0+iPmr1JMI6SkdM/8vPSUezxZuWaYU97LHE5Oa9fYi/1OX+10ebakGzFQ0sYjO8Ra6772dVcgxJ77rQjJ+xMejoZAV+Gx5vGGk0ZEf0Zj+eDX780limGmsSz0s9VlUYqWaDt7RIdtJIJK+BWVQbhBGfA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1VYQTmZ5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0582C116D0;
-	Thu, 15 Jan 2026 17:44:06 +0000 (UTC)
+	 MIME-Version; b=DDGz+wxtFWhV5AWhmBnI4OxeU2XpirSr64XUB6G3yQXI6Kqvco2kieNlbtJaqC/sLmb6viIlFH2rj9ota2UmzT09ipPHwvj7Me5CkMBrA6jf7315qM344zq8QefqEOviTURGeE7aKxMt2obNYLrogDI4nSyDF4v3W/2THMkgvq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKuL9tNt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D8BC116D0;
+	Thu, 15 Jan 2026 17:22:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499047;
-	bh=LmOevlg9aZ+c4xXUnJv0DTpum6gNNYzYfHWdytnxmT0=;
+	s=korg; t=1768497753;
+	bh=98CVSM4ItNvCDY8ocAuPPYj/iUoSFJkP6g6cG738FJo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1VYQTmZ5GzUq7IF9Q+VzG+7t/PregDDXXp/gp2lhpnw3NHeden3z2htP0K9DST2KN
-	 18pG9HmrSDjVpGnliYQX/xns0i7j8zRpqXv3hiLSOGWpsOZv+3U5yMeIQ8gNhF0SO9
-	 UBwVAxZKx0hdEhfA3rmdN8A9o/Aci8Sw7Xw/61tQ=
+	b=CKuL9tNtgp+dnZjzGFC98uoaKfDGhVlWBOndRgaXDQGnSSbEtAczyWE4UlH2cflVu
+	 kseKRuJS0zFVHF5ZEfkpELD/qou10bRTSlrxTg7PPjg4hqNODKPvd9Mw08hPuo9EeU
+	 bwZQyVWQDJtlmgzNMNuFilcY0wn/GwMKL1i0x+rA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Lee Jones <lee@kernel.org>,
+	Xie Yuanbin <xieyuanbin1@huawei.com>,
+	Liyuan Pang <pangliyuan1@huawei.com>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 056/451] mfd: da9055: Fix missing regmap_del_irq_chip() in error path
+Subject: [PATCH 5.15 191/554] ARM: 9464/1: fix input-only operand modification in load_unaligned_zeropad()
 Date: Thu, 15 Jan 2026 17:44:17 +0100
-Message-ID: <20260115164232.925348180@linuxfoundation.org>
+Message-ID: <20260115164253.172895652@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Liyuan Pang <pangliyuan1@huawei.com>
 
-[ Upstream commit 1b58acfd067ca16116b9234cd6b2d30cc8ab7502 ]
+[ Upstream commit edb924a7211c9aa7a4a415e03caee4d875e46b8e ]
 
-When da9055_device_init() fails after regmap_add_irq_chip()
-succeeds but mfd_add_devices() fails, the error handling path
-only calls mfd_remove_devices() but forgets to call
-regmap_del_irq_chip(). This results in a resource leak.
+In the inline assembly inside load_unaligned_zeropad(), the "addr" is
+constrained as input-only operand. The compiler assumes that on exit
+from the asm statement these operands contain the same values as they
+had before executing the statement, but when kernel page fault happened, the assembly fixup code "bic %2 %2, #0x3" modify the value of "addr", which may lead to an unexpected behavior.
 
-Fix this by adding regmap_del_irq_chip() to the error path so
-that resources are released properly.
+Use a temporary variable "tmp" to handle it, instead of modifying the
+input-only operand, just like what arm64's load_unaligned_zeropad()
+does.
 
-Fixes: 2896434cf272 ("mfd: DA9055 core driver")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251010011737.1078-1-vulab@iscas.ac.cn
-Signed-off-by: Lee Jones <lee@kernel.org>
+Fixes: b9a50f74905a ("ARM: 7450/1: dcache: select DCACHE_WORD_ACCESS for little-endian ARMv6+ CPUs")
+Co-developed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
+Signed-off-by: Liyuan Pang <pangliyuan1@huawei.com>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mfd/da9055-core.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/include/asm/word-at-a-time.h | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/mfd/da9055-core.c b/drivers/mfd/da9055-core.c
-index 6d0af8486269a..4f57766b42496 100644
---- a/drivers/mfd/da9055-core.c
-+++ b/drivers/mfd/da9055-core.c
-@@ -410,6 +410,7 @@ int da9055_device_init(struct da9055 *da9055)
+diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
+index 352ab213520d2..2e6d0b4349f47 100644
+--- a/arch/arm/include/asm/word-at-a-time.h
++++ b/arch/arm/include/asm/word-at-a-time.h
+@@ -66,7 +66,7 @@ static inline unsigned long find_zero(unsigned long mask)
+  */
+ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ {
+-	unsigned long ret, offset;
++	unsigned long ret, tmp;
  
- err:
- 	mfd_remove_devices(da9055->dev);
-+	regmap_del_irq_chip(da9055->chip_irq, da9055->irq_data);
+ 	/* Load word from unaligned pointer addr */
+ 	asm(
+@@ -74,9 +74,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ 	"2:\n"
+ 	"	.pushsection .text.fixup,\"ax\"\n"
+ 	"	.align 2\n"
+-	"3:	and	%1, %2, #0x3\n"
+-	"	bic	%2, %2, #0x3\n"
+-	"	ldr	%0, [%2]\n"
++	"3:	bic	%1, %2, #0x3\n"
++	"	ldr	%0, [%1]\n"
++	"	and	%1, %2, #0x3\n"
+ 	"	lsl	%1, %1, #0x3\n"
+ #ifndef __ARMEB__
+ 	"	lsr	%0, %0, %1\n"
+@@ -89,7 +89,7 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
+ 	"	.align	3\n"
+ 	"	.long	1b, 3b\n"
+ 	"	.popsection"
+-	: "=&r" (ret), "=&r" (offset)
++	: "=&r" (ret), "=&r" (tmp)
+ 	: "r" (addr), "Qo" (*(unsigned long *)addr));
+ 
  	return ret;
- }
- 
 -- 
 2.51.0
 
