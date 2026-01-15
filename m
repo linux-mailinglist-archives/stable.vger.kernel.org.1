@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-209671-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209217-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9DECCD27A41
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:37:29 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 79B00D2745A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CC6E231FED9C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:53:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E641232DBF16
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D293C0093;
-	Thu, 15 Jan 2026 17:49:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E1ACB3D3319;
+	Thu, 15 Jan 2026 17:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dnuv5WoK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ao6c1IsQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D80573C1FE8;
-	Thu, 15 Jan 2026 17:49:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D413C00B3;
+	Thu, 15 Jan 2026 17:27:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499359; cv=none; b=u2btCND1hCML9lGNjqbK71whQdGdIxasgysENtR4Nj6QUFbL4b4T6iiIy8UGfJfsaiZqHoa2Q9XtjLQm3tEx2nQ5zHDEgKy69ldriBqcrjxs38JdwqfiF7dUL18vQmcIE+akoADoIVT+D7PyutX9CsXXv0gEsCg1GucJvo9+pR0=
+	t=1768498067; cv=none; b=sIIFtVpGXNCQjZRmULx3cWlrCBB69mwJMJth9I1a9O21LSihhZKere9PUTwgpj67KhMQSK/gde0Ni/zimTeKAQYPFN1xWKRPJ5a89q5MG78eCDF+OusQAAxaPfF0ntVDtN2zlPqtbOtXgzbJgqlTG0O314tNGyiz00B2oshady8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499359; c=relaxed/simple;
-	bh=2As9QX3BZv/w3+Hl5h0csh0O3axw8AsXMaNX9rHP/YU=;
+	s=arc-20240116; t=1768498067; c=relaxed/simple;
+	bh=CizIX7xhsqs3ZrVLzgEkKyEgI1ZadJEYWq6TPZVCOfY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYQV0ymaW/Oy/A6A3jNZe9DkJOqtDMkn8JBhao/tw1F0u/trycRxzIBO9Z84uOfUR4D8OFB2vHNvFPMmTdhJm5R6IGb+9VTq9pQ3OtOFjOoXNNkFM14HOZNGfAR6YdrhBtRBw3q9Cn5kLxek+VuMPBdGlBuEkEawu2gzBm5nAwU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dnuv5WoK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65DCFC19422;
-	Thu, 15 Jan 2026 17:49:19 +0000 (UTC)
+	 MIME-Version; b=qC1xrPwQi9AGxQ3/ZhAT9xrQVRmpljT4oDodH9pQn9T8cXMluxHc1HMrwttm9f49Zpd1Pc0Z/yxuSCw4m9zVJh1qKFURZakDCGwKtdbiBDqzR5T1peiMTVypbYJ2pKqpLKy670TR52BucyeQvetvW3h7vBalqTtTKkLx9hNukC8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ao6c1IsQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D44B1C19423;
+	Thu, 15 Jan 2026 17:27:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499359;
-	bh=2As9QX3BZv/w3+Hl5h0csh0O3axw8AsXMaNX9rHP/YU=;
+	s=korg; t=1768498067;
+	bh=CizIX7xhsqs3ZrVLzgEkKyEgI1ZadJEYWq6TPZVCOfY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dnuv5WoK1h9uy0p/fwHFvcPaRU6xbwNpRiL2CKhEJ3Gl5LnfWbVsz12m84DVzfInt
-	 iQ0Q8IfRWqlJ0dvqlbLrXbx3Rdvwi4GJA5xODBiRSwJfVuDpZZcBPbqSG9WJrN+zpR
-	 ulMYiAwEFpg1xCgwjoCcgKvZX0mgc2ukRupZI2rg=
+	b=Ao6c1IsQLTFC+it3Rrzv8LfHmGLwgktKdISO/QatSZv3Q1R0syFzRXq2iXyJBTDED
+	 NLnQ16UB9ugYBCGKNGVya80CKLGlhJf5/Xs6L+7+2D4zyqinmpx/D4d4Wz0i8HZZSJ
+	 tww/PQPPokSv3w/fPHx4MTyIFtJxCXMFXYtEZ7DE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 166/451] btrfs: scrub: always update btrfs_scrub_progress::last_physical
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.15 301/554] scsi: Revert "scsi: qla2xxx: Perform lockless command completion in abort path"
 Date: Thu, 15 Jan 2026 17:46:07 +0100
-Message-ID: <20260115164236.913501226@linuxfoundation.org>
+Message-ID: <20260115164257.126160503@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +59,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit 54df8b80cc63aa0f22c4590cad11542731ed43ff ]
+commit b57fbc88715b6d18f379463f48a15b560b087ffe upstream.
 
-[BUG]
-When a scrub failed immediately without any byte scrubbed, the returned
-btrfs_scrub_progress::last_physical will always be 0, even if there is a
-non-zero @start passed into btrfs_scrub_dev() for resume cases.
+This reverts commit 0367076b0817d5c75dfb83001ce7ce5c64d803a9.
 
-This will reset the progress and make later scrub resume start from the
-beginning.
+The commit being reverted added code to __qla2x00_abort_all_cmds() to
+call sp->done() without holding a spinlock.  But unlike the older code
+below it, this new code failed to check sp->cmd_type and just assumed
+TYPE_SRB, which results in a jump to an invalid pointer in target-mode
+with TYPE_TGT_CMD:
 
-[CAUSE]
-The function btrfs_scrub_dev() accepts a @progress parameter to copy its
-updated progress to the caller, there are cases where we either don't
-touch progress::last_physical at all or copy 0 into last_physical:
+qla2xxx [0000:65:00.0]-d034:8: qla24xx_do_nack_work create sess success
+  0000000009f7a79b
+qla2xxx [0000:65:00.0]-5003:8: ISP System Error - mbx1=1ff5h mbx2=10h
+  mbx3=0h mbx4=0h mbx5=191h mbx6=0h mbx7=0h.
+qla2xxx [0000:65:00.0]-d01e:8: -> fwdump no buffer
+qla2xxx [0000:65:00.0]-f03a:8: qla_target(0): System error async event
+  0x8002 occurred
+qla2xxx [0000:65:00.0]-00af:8: Performing ISP error recovery -
+  ha=0000000058183fda.
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PF: supervisor instruction fetch in kernel mode
+PF: error_code(0x0010) - not-present page
+PGD 0 P4D 0
+Oops: 0010 [#1] SMP
+CPU: 2 PID: 9446 Comm: qla2xxx_8_dpc Tainted: G           O       6.1.133 #1
+Hardware name: Supermicro Super Server/X11SPL-F, BIOS 4.2 12/15/2023
+RIP: 0010:0x0
+Code: Unable to access opcode bytes at 0xffffffffffffffd6.
+RSP: 0018:ffffc90001f93dc8 EFLAGS: 00010206
+RAX: 0000000000000282 RBX: 0000000000000355 RCX: ffff88810d16a000
+RDX: ffff88810dbadaa8 RSI: 0000000000080000 RDI: ffff888169dc38c0
+RBP: ffff888169dc38c0 R08: 0000000000000001 R09: 0000000000000045
+R10: ffffffffa034bdf0 R11: 0000000000000000 R12: ffff88810800bb40
+R13: 0000000000001aa8 R14: ffff888100136610 R15: ffff8881070f7400
+FS:  0000000000000000(0000) GS:ffff88bf80080000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: ffffffffffffffd6 CR3: 000000010c8ff006 CR4: 00000000003706e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die+0x4d/0x8b
+ ? page_fault_oops+0x91/0x180
+ ? trace_buffer_unlock_commit_regs+0x38/0x1a0
+ ? exc_page_fault+0x391/0x5e0
+ ? asm_exc_page_fault+0x22/0x30
+ __qla2x00_abort_all_cmds+0xcb/0x3e0 [qla2xxx_scst]
+ qla2x00_abort_all_cmds+0x50/0x70 [qla2xxx_scst]
+ qla2x00_abort_isp_cleanup+0x3b7/0x4b0 [qla2xxx_scst]
+ qla2x00_abort_isp+0xfd/0x860 [qla2xxx_scst]
+ qla2x00_do_dpc+0x581/0xa40 [qla2xxx_scst]
+ kthread+0xa8/0xd0
+ </TASK>
 
-- last_physical not updated at all
-  If some error happened before scrubbing any super block or chunk, we
-  will not copy the progress, leaving the @last_physical untouched.
+Then commit 4475afa2646d ("scsi: qla2xxx: Complete command early within
+lock") added the spinlock back, because not having the lock caused a
+race and a crash.  But qla2x00_abort_srb() in the switch below already
+checks for qla2x00_chip_is_down() and handles it the same way, so the
+code above the switch is now redundant and still buggy in target-mode.
+Remove it.
 
-  E.g. failed to allocate @sctx, scrubbing a missing device or even
-  there is already a running scrub and so on.
-
-  All those cases won't touch @progress at all, resulting the
-  last_physical untouched and will be left as 0 for most cases.
-
-- Error out before scrubbing any bytes
-  In those case we allocated @sctx, and sctx->stat.last_physical is all
-  zero (initialized by kvzalloc()).
-  Unfortunately some critical errors happened during
-  scrub_enumerate_chunks() or scrub_supers() before any stripe is really
-  scrubbed.
-
-  In that case although we will copy sctx->stat back to @progress, since
-  no byte is really scrubbed, last_physical will be overwritten to 0.
-
-[FIX]
-Make sure the parameter @progress always has its @last_physical member
-updated to @start parameter inside btrfs_scrub_dev().
-
-At the very beginning of the function, set @progress->last_physical to
-@start, so that even if we error out without doing progress copying,
-last_physical is still at @start.
-
-Then after we got @sctx allocated, set sctx->stat.last_physical to
-@start, this will make sure even if we didn't get any byte scrubbed, at
-the progress copying stage the @last_physical is not left as zero.
-
-This should resolve the resume progress reset problem.
-
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/3a8022dc-bcfd-4b01-9f9b-7a9ec61fa2a3@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/scrub.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
-diff --git a/fs/btrfs/scrub.c b/fs/btrfs/scrub.c
-index 715a0329ba277..c8d033deb8ab8 100644
---- a/fs/btrfs/scrub.c
-+++ b/fs/btrfs/scrub.c
-@@ -3820,6 +3820,10 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	unsigned int nofs_flag;
- 	bool need_commit = false;
- 
-+	/* Set the basic fallback @last_physical before we got a sctx. */
-+	if (progress)
-+		progress->last_physical = start;
-+
- 	if (btrfs_fs_closing(fs_info))
- 		return -EAGAIN;
- 
-@@ -3864,6 +3868,7 @@ int btrfs_scrub_dev(struct btrfs_fs_info *fs_info, u64 devid, u64 start,
- 	sctx = scrub_setup_ctx(fs_info, is_dev_replace);
- 	if (IS_ERR(sctx))
- 		return PTR_ERR(sctx);
-+	sctx->stat.last_physical = start;
- 
- 	ret = scrub_workers_get(fs_info, is_dev_replace);
- 	if (ret)
--- 
-2.51.0
-
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -1861,12 +1861,6 @@ __qla2x00_abort_all_cmds(struct qla_qpai
+ 	for (cnt = 1; cnt < req->num_outstanding_cmds; cnt++) {
+ 		sp = req->outstanding_cmds[cnt];
+ 		if (sp) {
+-			if (qla2x00_chip_is_down(vha)) {
+-				req->outstanding_cmds[cnt] = NULL;
+-				sp->done(sp, res);
+-				continue;
+-			}
+-
+ 			switch (sp->cmd_type) {
+ 			case TYPE_SRB:
+ 				qla2x00_abort_srb(qp, sp, res, &flags);
 
 
 
