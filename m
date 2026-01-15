@@ -1,57 +1,59 @@
-Return-Path: <stable+bounces-209854-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3191D275B5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:20:14 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B8BCD275FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 19F433148693
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB17D3320014
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 84F253D3325;
-	Thu, 15 Jan 2026 17:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0594D3C008E;
+	Thu, 15 Jan 2026 17:35:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A2nrDPsy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IMZoJDx9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FF53BFE3B;
-	Thu, 15 Jan 2026 17:58:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD3DD3C0081;
+	Thu, 15 Jan 2026 17:35:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499880; cv=none; b=WmdsYzrR9+FPQF51/GC841NuT6zlDnHpAiauDfgOIAhT86/skXPUtINScMGUjTklxTbSc0F3x5DIG5qVrKog85qTboX2ZZ7Gr9ZFkeUxo2k4adFXYFdQZflSbsEV+tPLdGKh0HEE2NXN21XGbWsvSSzsTBLCR6ICS/1WZPOWYfo=
+	t=1768498554; cv=none; b=neKNgECqUAvqV0jbC8q6aRox9TrgqvAt+NRF+1H4J1cp5twY3deA9JbX2C9wnQxo+mXkbPcR/KxTDdnfC4jlnr9jTFWnZr6nCuKB35dRaYIZW+kiobw9K7be2PDbQlDLXlUtXmK+6U4ota82UAaG/rgAQpBFh/812vVyWn59u0U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499880; c=relaxed/simple;
-	bh=SczT44jpRwRnjmBQob2T/Q5ucqYysIMMiFTVB4o2Njg=;
+	s=arc-20240116; t=1768498554; c=relaxed/simple;
+	bh=PEkeuY4UXTXErZLVTaFaAfzxQmfZXGJVvVXD9t3un4Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VS9pZbLaKj6SWbJX9D8f5uBGx5dIIPuEYsJG6r68lQo7Dc9le7HJapLb3CYNM3jgUW0+NsN1liqYgF2tsI/IxoQk2TxUUFUuRLt9Y+HxF0SfmfDZJI2RcHBkRVVPMfJ2V3xnkXyXN+laTxzDqH2iZMYntC7+0sDfOkvgb+w2POk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A2nrDPsy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBFFEC116D0;
-	Thu, 15 Jan 2026 17:57:59 +0000 (UTC)
+	 MIME-Version; b=ax68TR7h3r2aQAuiRReZ1Zaj/JNqZXNSp98vVoVGEfZELUXfFJPQhOuTv7od78gbmtxzXxZQEU+Lr5JOb9ubZaNu7fUCJfyQK2aPMRj3sKgrYAI1DE2IjA3VmTQji2D2lI4oybj+ShvVMCuvJamwVYpzXn1JVDsNk5Nm3359YpA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IMZoJDx9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15DDFC116D0;
+	Thu, 15 Jan 2026 17:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499880;
-	bh=SczT44jpRwRnjmBQob2T/Q5ucqYysIMMiFTVB4o2Njg=;
+	s=korg; t=1768498554;
+	bh=PEkeuY4UXTXErZLVTaFaAfzxQmfZXGJVvVXD9t3un4Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A2nrDPsyOFk2n2FZ0Op2CwSV/iCZM7oLkBqun4gDPpmr6uN2MmSbNdPJPOCJ5wioI
-	 6O+HrXdWws+F+/lJE/1P/syN1Q4tuZN2rOhXOI9f+VP/9o9VMP6iCM4vYcFAnPJbPE
-	 N7Opi0qYRJ0c6txEPqrKOk1a2yP/5Gsq+9EyuAzY=
+	b=IMZoJDx98KpSNdLeubPBw96jAhFiuXf4H2RAU+W5944pN3MZtBrCWkmEV7byCd7nB
+	 EpMnq8YwUPW8O08xEXCdk3XLPrnoJfIWdONZeyxVRo7qASxUmRnpKk24OmgGm+TBGj
+	 8awcFyDpODQVQlyZZtFxiJGdn08z8MlD2evAEeSE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com,
-	Zhu Yanjun <yanjun.zhu@linux.dev>,
-	Jason Gunthorpe <jgg@nvidia.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Ajay Kaher <ajay.kaher@broadcom.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.10 338/451] RDMA/core: Fix "KASAN: slab-use-after-free Read in ib_register_device" problem
+	David Hildenbrand <david@redhat.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 473/554] powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
 Date: Thu, 15 Jan 2026 17:48:59 +0100
-Message-ID: <20260115164243.122839438@linuxfoundation.org>
+Message-ID: <20260115164303.420492419@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Yanjun <yanjun.zhu@linux.dev>
+From: David Hildenbrand <david@redhat.com>
 
-commit d0706bfd3ee40923c001c6827b786a309e2a8713 upstream.
+[ Upstream commit 0da2ba35c0d532ca0fe7af698b17d74c4d084b9a ]
 
-Call Trace:
+Let's properly adjust BALLOON_MIGRATE like the other drivers.
 
- __dump_stack lib/dump_stack.c:94 [inline]
- dump_stack_lvl+0x116/0x1f0 lib/dump_stack.c:120
- print_address_description mm/kasan/report.c:408 [inline]
- print_report+0xc3/0x670 mm/kasan/report.c:521
- kasan_report+0xe0/0x110 mm/kasan/report.c:634
- strlen+0x93/0xa0 lib/string.c:420
- __fortify_strlen include/linux/fortify-string.h:268 [inline]
- get_kobj_path_length lib/kobject.c:118 [inline]
- kobject_get_path+0x3f/0x2a0 lib/kobject.c:158
- kobject_uevent_env+0x289/0x1870 lib/kobject_uevent.c:545
- ib_register_device drivers/infiniband/core/device.c:1472 [inline]
- ib_register_device+0x8cf/0xe00 drivers/infiniband/core/device.c:1393
- rxe_register_device+0x275/0x320 drivers/infiniband/sw/rxe/rxe_verbs.c:1552
- rxe_net_add+0x8e/0xe0 drivers/infiniband/sw/rxe/rxe_net.c:550
- rxe_newlink+0x70/0x190 drivers/infiniband/sw/rxe/rxe.c:225
- nldev_newlink+0x3a3/0x680 drivers/infiniband/core/nldev.c:1796
- rdma_nl_rcv_msg+0x387/0x6e0 drivers/infiniband/core/netlink.c:195
- rdma_nl_rcv_skb.constprop.0.isra.0+0x2e5/0x450
- netlink_unicast_kernel net/netlink/af_netlink.c:1313 [inline]
- netlink_unicast+0x53a/0x7f0 net/netlink/af_netlink.c:1339
- netlink_sendmsg+0x8d1/0xdd0 net/netlink/af_netlink.c:1883
- sock_sendmsg_nosec net/socket.c:712 [inline]
- __sock_sendmsg net/socket.c:727 [inline]
- ____sys_sendmsg+0xa95/0xc70 net/socket.c:2566
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2620
- __sys_sendmsg+0x16d/0x220 net/socket.c:2652
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0x260 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Note that the INFLATE/DEFLATE events are triggered from the core when
+enqueueing/dequeueing pages.
 
-This problem is similar to the problem that the
-commit 1d6a9e7449e2 ("RDMA/core: Fix use-after-free when rename device name")
-fixes.
+This was found by code inspection.
 
-The root cause is: the function ib_device_rename() renames the name with
-lock. But in the function kobject_uevent(), this name is accessed without
-lock protection at the same time.
-
-The solution is to add the lock protection when this name is accessed in
-the function kobject_uevent().
-
-Fixes: 779e0bf47632 ("RDMA/core: Do not indicate device ready when device enablement fails")
-Link: https://patch.msgid.link/r/20250506151008.75701-1-yanjun.zhu@linux.dev
-Reported-by: syzbot+e2ce9e275ecc70a30b72@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=e2ce9e275ecc70a30b72
-Signed-off-by: Zhu Yanjun <yanjun.zhu@linux.dev>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Link: https://lkml.kernel.org/r/20251021100606.148294-3-david@redhat.com
+Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[ Ajay: Modified to apply on v5.10.y-v6.6.y
-        ib_device_notify_register() not present in v5.10.y-v6.6.y,
-        so directly added lock for kobject_uevent() ]
-Signed-off-by: Ajay Kaher <ajay.kaher@broadcom.com>
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/device.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/platforms/pseries/cmm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/infiniband/core/device.c
-+++ b/drivers/infiniband/core/device.c
-@@ -1396,8 +1396,13 @@ int ib_register_device(struct ib_device
- 		return ret;
- 	}
- 	dev_set_uevent_suppress(&device->dev, false);
-+
-+	down_read(&devices_rwsem);
-+
- 	/* Mark for userspace that device is ready */
- 	kobject_uevent(&device->dev.kobj, KOBJ_ADD);
-+
-+	up_read(&devices_rwsem);
- 	ib_device_put(device);
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -550,6 +550,7 @@ static int cmm_migratepage(struct balloo
  
- 	return 0;
+ 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+ 	balloon_page_insert(b_dev_info, newpage);
++	__count_vm_event(BALLOON_MIGRATE);
+ 	b_dev_info->isolated_pages--;
+ 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+ 
 
 
 
