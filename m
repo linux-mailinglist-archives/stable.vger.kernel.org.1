@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209130-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209552-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB5ABD26AA4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD35ED26DE9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8F92131AA197
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:03 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C5FF530101D0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F5AC3BFE2F;
-	Thu, 15 Jan 2026 17:23:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 022782C0F83;
+	Thu, 15 Jan 2026 17:43:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGYV93m0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KqCIBV2h"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9F824C81;
-	Thu, 15 Jan 2026 17:23:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B84E62D948D;
+	Thu, 15 Jan 2026 17:43:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497818; cv=none; b=PZfHjxRTTbM3nIaSScM/nXY4aiMHhUT06JJ/Rb+Ixkus7lZEcZwIlI996gcnVpyOd5zrbLj4s8meyrFP1vsDQqmEk1tvrqGC+GGrI8l6Mqn6SN/h5E8hiohFTqRduSAPevrs59hv2U3jERaKZdRJFxPNShQlhM1fa+bjT+5UzZw=
+	t=1768499021; cv=none; b=cCIu02F6Aa04zPrmDOu73vkSs2kHEhQEe5xkUV5Kmivqz3AlJKnPLqyD3x+wwKBW0Pvf3r/ClcEFSFQjpR+DVg9A869NykA9R3FJOtSM2xYZbJ0ZbH02IdyBllTY6Tv+xNJS6mpSfh9HDWYKF7VWk58YHkMZuDsc6uh5ITKbN3A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497818; c=relaxed/simple;
-	bh=cTFYYXKPF5VGWVQS9O4Lgc+cFfSg/rXZDTdcI5gFM/A=;
+	s=arc-20240116; t=1768499021; c=relaxed/simple;
+	bh=rPnUOQ4wrX8J7M7olKQWnjG4yPbDgFr9Y15cYKTOmZI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMfHnpRnyGfVKz0fPdQ9/SdwAlOe5tUJA9M0u+umWmu8ZkNr8Nh8myre41NMkseBMC7KxepzFyNRWRishH+0zbn5wv7rQd+huzsVHUMrUX3EhVTas92R/dKGKyfXSXR0omVxZ6xOyOFDECOgqK/EhV6f9IRqQoEZjGX4QiiG/Tk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGYV93m0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E875C16AAE;
-	Thu, 15 Jan 2026 17:23:38 +0000 (UTC)
+	 MIME-Version; b=Wglj/wHMB+cqpV1j5xc8Kt9vX02/GgCcxtTF6+ALw/EEJRBlY0CHccZIvpJsof64ui+jsutOGsYSh3fJGAGq6N7SnGPqRLtzVhme+rgYFyUfYGFIYGSmfVuBtbKg1kIPkFEfGq/0270/1ULnugj/nw5G1uA+N+TXxZNX3J4Qijk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KqCIBV2h; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14CA6C116D0;
+	Thu, 15 Jan 2026 17:43:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497818;
-	bh=cTFYYXKPF5VGWVQS9O4Lgc+cFfSg/rXZDTdcI5gFM/A=;
+	s=korg; t=1768499021;
+	bh=rPnUOQ4wrX8J7M7olKQWnjG4yPbDgFr9Y15cYKTOmZI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGYV93m06oXJ0BvhmIWpZil65aeZI0MZ2/241zZIEUuz9wiBHgYGaxxn2BHKoiBAA
-	 dk29luDDPOzd+9zeD8hjLhUFVGVSlzEPjQH5UtTlT1BtWajzE4A/5cBzu5B4DIOXEt
-	 /qNQL6djotumSH9dm/eNg6b3YX9I2ipxrVJDOu74=
+	b=KqCIBV2hZDV2wDG8tu2st8lY1RmuER9gddJgRdnqm07xgocgL6NVMmztJF2qR4ZrE
+	 02ieXe6sS+YIIspDwjtGooXWB/mqGDCwF5fehyoCVuSgw+9BMmVJUDaq3tcXGr0VCm
+	 fEtDoMBF6iN+A4o6iWuZO8ZG9oRpiAsMISA54lrM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Song Liu <song@kernel.org>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
-	Petr Mladek <pmladek@suse.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 215/554] livepatch: Match old_sympos 0 and 1 in klp_find_func()
+Subject: [PATCH 5.10 080/451] watchdog: wdat_wdt: Fix ACPI table leak in probe function
 Date: Thu, 15 Jan 2026 17:44:41 +0100
-Message-ID: <20260115164254.032589467@linuxfoundation.org>
+Message-ID: <20260115164233.809676599@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +61,162 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Song Liu <song@kernel.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 139560e8b973402140cafeb68c656c1374bd4c20 ]
+[ Upstream commit 25c0b472eab8379683d4eef681185c104bed8ffd ]
 
-When there is only one function of the same name, old_sympos of 0 and 1
-are logically identical. Match them in klp_find_func().
+wdat_wdt_probe() calls acpi_get_table() to obtain the WDAT ACPI table but
+never calls acpi_put_table() on any paths. This causes a permanent ACPI
+table memory leak.
 
-This is to avoid a corner case with different toolchain behavior.
+Add a single cleanup path which calls acpi_put_table() to ensure
+the ACPI table is always released.
 
-In this specific issue, two versions of kpatch-build were used to
-build livepatch for the same kernel. One assigns old_sympos == 0 for
-unique local functions, the other assigns old_sympos == 1 for unique
-local functions. Both versions work fine by themselves. (PS: This
-behavior change was introduced in a downstream version of kpatch-build.
-This change does not exist in upstream kpatch-build.)
-
-However, during livepatch upgrade (with the replace flag set) from a
-patch built with one version of kpatch-build to the same fix built with
-the other version of kpatch-build, livepatching fails with errors like:
-
-[   14.218706] sysfs: cannot create duplicate filename 'xxx/somefunc,1'
-...
-[   14.219466] Call Trace:
-[   14.219468]  <TASK>
-[   14.219469]  dump_stack_lvl+0x47/0x60
-[   14.219474]  sysfs_warn_dup.cold+0x17/0x27
-[   14.219476]  sysfs_create_dir_ns+0x95/0xb0
-[   14.219479]  kobject_add_internal+0x9e/0x260
-[   14.219483]  kobject_add+0x68/0x80
-[   14.219485]  ? kstrdup+0x3c/0xa0
-[   14.219486]  klp_enable_patch+0x320/0x830
-[   14.219488]  patch_init+0x443/0x1000 [ccc_0_6]
-[   14.219491]  ? 0xffffffffa05eb000
-[   14.219492]  do_one_initcall+0x2e/0x190
-[   14.219494]  do_init_module+0x67/0x270
-[   14.219496]  init_module_from_file+0x75/0xa0
-[   14.219499]  idempotent_init_module+0x15a/0x240
-[   14.219501]  __x64_sys_finit_module+0x61/0xc0
-[   14.219503]  do_syscall_64+0x5b/0x160
-[   14.219505]  entry_SYSCALL_64_after_hwframe+0x4b/0x53
-[   14.219507] RIP: 0033:0x7f545a4bd96d
-...
-[   14.219516] kobject: kobject_add_internal failed for somefunc,1 with
-    -EEXIST, don't try to register things with the same name ...
-
-This happens because klp_find_func() thinks somefunc with old_sympos==0
-is not the same as somefunc with old_sympos==1, and klp_add_object_nops
-adds another xxx/func,1 to the list of functions to patch.
-
-Signed-off-by: Song Liu <song@kernel.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-[pmladek@suse.com: Fixed some typos.]
-Reviewed-by: Petr Mladek <pmladek@suse.com>
-Tested-by: Petr Mladek <pmladek@suse.com>
-Signed-off-by: Petr Mladek <pmladek@suse.com>
+Fixes: 058dfc767008 ("ACPI / watchdog: Add support for WDAT hardware watchdog")
+Suggested-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/livepatch/core.c | 8 +++++++-
- 1 file changed, 7 insertions(+), 1 deletion(-)
+ drivers/watchdog/wdat_wdt.c | 64 +++++++++++++++++++++++++------------
+ 1 file changed, 43 insertions(+), 21 deletions(-)
 
-diff --git a/kernel/livepatch/core.c b/kernel/livepatch/core.c
-index 147ed154ebc77..c49042f5e71ec 100644
---- a/kernel/livepatch/core.c
-+++ b/kernel/livepatch/core.c
-@@ -89,8 +89,14 @@ static struct klp_func *klp_find_func(struct klp_object *obj,
- 	struct klp_func *func;
+diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
+index ec308836aad9c..cabeec210f166 100644
+--- a/drivers/watchdog/wdat_wdt.c
++++ b/drivers/watchdog/wdat_wdt.c
+@@ -327,19 +327,27 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		return -ENODEV;
  
- 	klp_for_each_func(obj, func) {
-+		/*
-+		 * Besides identical old_sympos, also consider old_sympos
-+		 * of 0 and 1 are identical.
-+		 */
- 		if ((strcmp(old_func->old_name, func->old_name) == 0) &&
--		    (old_func->old_sympos == func->old_sympos)) {
-+		    ((old_func->old_sympos == func->old_sympos) ||
-+		     (old_func->old_sympos == 0 && func->old_sympos == 1) ||
-+		     (old_func->old_sympos == 1 && func->old_sympos == 0))) {
- 			return func;
+ 	wdat = devm_kzalloc(dev, sizeof(*wdat), GFP_KERNEL);
+-	if (!wdat)
+-		return -ENOMEM;
++	if (!wdat) {
++		ret = -ENOMEM;
++		goto out_put_table;
++	}
+ 
+ 	regs = devm_kcalloc(dev, pdev->num_resources, sizeof(*regs),
+ 			    GFP_KERNEL);
+-	if (!regs)
+-		return -ENOMEM;
++	if (!regs) {
++		ret = -ENOMEM;
++		goto out_put_table;
++	}
+ 
+ 	/* WDAT specification wants to have >= 1ms period */
+-	if (tbl->timer_period < 1)
+-		return -EINVAL;
+-	if (tbl->min_count > tbl->max_count)
+-		return -EINVAL;
++	if (tbl->timer_period < 1) {
++		ret = -EINVAL;
++		goto out_put_table;
++	}
++	if (tbl->min_count > tbl->max_count) {
++		ret = -EINVAL;
++		goto out_put_table;
++	}
+ 
+ 	wdat->period = tbl->timer_period;
+ 	wdat->wdd.min_hw_heartbeat_ms = wdat->period * tbl->min_count;
+@@ -356,15 +364,20 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		res = &pdev->resource[i];
+ 		if (resource_type(res) == IORESOURCE_MEM) {
+ 			reg = devm_ioremap_resource(dev, res);
+-			if (IS_ERR(reg))
+-				return PTR_ERR(reg);
++			if (IS_ERR(reg)) {
++				ret = PTR_ERR(reg);
++				goto out_put_table;
++			}
+ 		} else if (resource_type(res) == IORESOURCE_IO) {
+ 			reg = devm_ioport_map(dev, res->start, 1);
+-			if (!reg)
+-				return -ENOMEM;
++			if (!reg) {
++				ret = -ENOMEM;
++				goto out_put_table;
++			}
+ 		} else {
+ 			dev_err(dev, "Unsupported resource\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out_put_table;
  		}
- 	}
+ 
+ 		regs[i] = reg;
+@@ -386,8 +399,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 		}
+ 
+ 		instr = devm_kzalloc(dev, sizeof(*instr), GFP_KERNEL);
+-		if (!instr)
+-			return -ENOMEM;
++		if (!instr) {
++			ret = -ENOMEM;
++			goto out_put_table;
++		}
+ 
+ 		INIT_LIST_HEAD(&instr->node);
+ 		instr->entry = entries[i];
+@@ -418,7 +433,8 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 		if (!instr->reg) {
+ 			dev_err(dev, "I/O resource not found\n");
+-			return -EINVAL;
++			ret = -EINVAL;
++			goto out_put_table;
+ 		}
+ 
+ 		instructions = wdat->instructions[action];
+@@ -426,8 +442,10 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 			instructions = devm_kzalloc(dev,
+ 						    sizeof(*instructions),
+ 						    GFP_KERNEL);
+-			if (!instructions)
+-				return -ENOMEM;
++			if (!instructions) {
++				ret = -ENOMEM;
++				goto out_put_table;
++			}
+ 
+ 			INIT_LIST_HEAD(instructions);
+ 			wdat->instructions[action] = instructions;
+@@ -441,7 +459,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = wdat_wdt_enable_reboot(wdat);
+ 	if (ret)
+-		return ret;
++		goto out_put_table;
+ 
+ 	platform_set_drvdata(pdev, wdat);
+ 
+@@ -459,12 +477,16 @@ static int wdat_wdt_probe(struct platform_device *pdev)
+ 
+ 	ret = wdat_wdt_set_timeout(&wdat->wdd, timeout);
+ 	if (ret)
+-		return ret;
++		goto out_put_table;
+ 
+ 	watchdog_set_nowayout(&wdat->wdd, nowayout);
+ 	watchdog_stop_on_reboot(&wdat->wdd);
+ 	watchdog_stop_on_unregister(&wdat->wdd);
+-	return devm_watchdog_register_device(dev, &wdat->wdd);
++	ret = devm_watchdog_register_device(dev, &wdat->wdd);
++
++out_put_table:
++	acpi_put_table((struct acpi_table_header *)tbl);
++	return ret;
+ }
+ 
+ #ifdef CONFIG_PM_SLEEP
 -- 
 2.51.0
 
