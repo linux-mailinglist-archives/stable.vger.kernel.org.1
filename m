@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-209137-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209139-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C013DD26E49
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48BD1D26702
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B187A303FA95
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 13E013049F59
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57D1F3BF30A;
-	Thu, 15 Jan 2026 17:23:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136843B8BAB;
+	Thu, 15 Jan 2026 17:24:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uok5g5bg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yp/GMFxN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B1A52D0C79;
-	Thu, 15 Jan 2026 17:23:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD97A3BFE31;
+	Thu, 15 Jan 2026 17:24:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497839; cv=none; b=kM1Qfw8d8DxL1RrhaVq3ohtdzMdoekLlMdXyiFdPT8Di2N2Rs++J3cwHXMnbXVuuIKGkWakbWoDU//RIRjeliGJ3coBOWRrXzZfqroHCTPZaLqOM/bfu19Xe2unMSW2mG5PMmXJWmRbe8TTbCv7RSyJsrd6KHCK0QgzfTSKGOHw=
+	t=1768497844; cv=none; b=cyLJ64EP9i1mJXi7sy2wqNT0/oJUs5ohR2CqrErxzjB5tv8EELpSVtQfDxyiCQbH8zb9OptIe1yT3Jju2yC97YUMT0noY30KuESKnyRytSTn1pa6zuN37sep1kXi7Cxpe0YBWLoZjcQHUILawh8jO9og62t0J1jFeRhGvPz5kdU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497839; c=relaxed/simple;
-	bh=Sc7I73lu4/zyFFbkUc/0dhkNWOSFT83noC8mhU2l+vA=;
+	s=arc-20240116; t=1768497844; c=relaxed/simple;
+	bh=irPqPGckg/6OdK5bluDk0nvbGRwP2ZArvRGis36Ni2M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gujB2s5Hi7sd4kevvPWJh9jizFuZB0MDD2DVkgFHz0+1Vmsg1kZlXz3ZxfZ93YIihoayQOWHWi/fRx+lCk3JY32n6qJtFnGLBWH0/GDplugYhMMT4SiO63SJRguU0WaRWz7bVGx5ZfY8PrRssEgkzrup3Vi+9wcr0eSUMUCYBjc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uok5g5bg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44690C116D0;
-	Thu, 15 Jan 2026 17:23:58 +0000 (UTC)
+	 MIME-Version; b=VnS99oiM6eQXZUskSS47BdWqIUMTHNAYK/8Yi9wTE088Cc8LQo7p36goDoLhMcw2+K60g1SkOxDLIVJoImpYDsaYxIWTxj1YeVZVhs9yPlmTixU5vmdUNhZ0L8AV8fzUlv5NaueaEJQAkCOJ1zGGdCOWJJ/e3MK/Fc0aEBauB8I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yp/GMFxN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A07C16AAE;
+	Thu, 15 Jan 2026 17:24:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497838;
-	bh=Sc7I73lu4/zyFFbkUc/0dhkNWOSFT83noC8mhU2l+vA=;
+	s=korg; t=1768497844;
+	bh=irPqPGckg/6OdK5bluDk0nvbGRwP2ZArvRGis36Ni2M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uok5g5bggaRzdPwleXm6S9QoGc1dYw4HFmwmVQ+Z/8ksLjLbPShhXc55Y9FL2/jtm
-	 7o6yikcI8nsO93zRZ2z/hTooWko4jgqiE0SypJbhuXMdxfeIHFdTkV/f4HyAJLYYsg
-	 yzsFzb9c0BdhgknsfVQH+J5dz4jh6oHOArQqHaSQ=
+	b=Yp/GMFxNKR2hwYpkylqnvkFVkJPK7pROIrIXMB5F0hMJqq7MXR45VYOn0PSunZLLM
+	 aeAie+fLF1IhM4cjd8bW0IBhhCQfN6sKmzVKfZYcwL0De9kJXUtBWH2yg67hfpqPyZ
+	 EJAVxHiKrEd9zTj84i84tc04S1qu4HXbOHx5+LcQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gongwei Li <ligongwei@kylinos.cn>,
-	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+	syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com,
+	Wang Liang <wangliang74@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 222/554] Bluetooth: btusb: Add new VID/PID 13d3/3533 for RTL8821CE
-Date: Thu, 15 Jan 2026 17:44:48 +0100
-Message-ID: <20260115164254.282769214@linuxfoundation.org>
+Subject: [PATCH 5.15 223/554] netrom: Fix memory leak in nr_sendmsg()
+Date: Thu, 15 Jan 2026 17:44:49 +0100
+Message-ID: <20260115164254.318364372@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -64,65 +65,72 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Gongwei Li <ligongwei@kylinos.cn>
+From: Wang Liang <wangliang74@huawei.com>
 
-[ Upstream commit 525459da4bd62a81142fea3f3d52188ceb4d8907 ]
+[ Upstream commit 613d12dd794e078be8ff3cf6b62a6b9acf7f4619 ]
 
-Add VID 13d3 & PID 3533 for Realtek RTL8821CE USB Bluetooth chip.
+syzbot reported a memory leak [1].
 
-The information in /sys/kernel/debug/usb/devices about the Bluetooth
-device is listed as the below.
+When function sock_alloc_send_skb() return NULL in nr_output(), the
+original skb is not freed, which was allocated in nr_sendmsg(). Fix this
+by freeing it before return.
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=12   MxCh= 0
-D:  Ver= 1.10 Cls=e0(wlcon) Sub=01 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=13d3 ProdID=3533 Rev= 1.10
-S:  Manufacturer=Realtek
-S:  Product=Bluetooth Radio
-S:  SerialNumber=00e04c000001
-C:* #Ifs= 2 Cfg#= 1 Atr=e0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 3 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=81(I) Atr=03(Int.) MxPS=  16 Ivl=1ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS=  64 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   0 Ivl=1ms
-I:  If#= 1 Alt= 1 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=   9 Ivl=1ms
-I:  If#= 1 Alt= 2 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  17 Ivl=1ms
-I:  If#= 1 Alt= 3 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  25 Ivl=1ms
-I:  If#= 1 Alt= 4 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  33 Ivl=1ms
-I:  If#= 1 Alt= 5 #EPs= 2 Cls=e0(wlcon) Sub=01 Prot=01 Driver=btusb
-E:  Ad=03(O) Atr=01(Isoc) MxPS=  49 Ivl=1ms
-E:  Ad=83(I) Atr=01(Isoc) MxPS=  49 Ivl=1ms
+[1]
+BUG: memory leak
+unreferenced object 0xffff888129f35500 (size 240):
+  comm "syz.0.17", pid 6119, jiffies 4294944652
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
+    00 00 00 00 00 00 00 00 00 10 52 28 81 88 ff ff  ..........R(....
+  backtrace (crc 1456a3e4):
+    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
+    slab_post_alloc_hook mm/slub.c:4983 [inline]
+    slab_alloc_node mm/slub.c:5288 [inline]
+    kmem_cache_alloc_node_noprof+0x36f/0x5e0 mm/slub.c:5340
+    __alloc_skb+0x203/0x240 net/core/skbuff.c:660
+    alloc_skb include/linux/skbuff.h:1383 [inline]
+    alloc_skb_with_frags+0x69/0x3f0 net/core/skbuff.c:6671
+    sock_alloc_send_pskb+0x379/0x3e0 net/core/sock.c:2965
+    sock_alloc_send_skb include/net/sock.h:1859 [inline]
+    nr_sendmsg+0x287/0x450 net/netrom/af_netrom.c:1105
+    sock_sendmsg_nosec net/socket.c:727 [inline]
+    __sock_sendmsg net/socket.c:742 [inline]
+    sock_write_iter+0x293/0x2a0 net/socket.c:1195
+    new_sync_write fs/read_write.c:593 [inline]
+    vfs_write+0x45d/0x710 fs/read_write.c:686
+    ksys_write+0x143/0x170 fs/read_write.c:738
+    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
+    entry_SYSCALL_64_after_hwframe+0x77/0x7f
 
-Signed-off-by: Gongwei Li <ligongwei@kylinos.cn>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reported-by: syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=d7abc36bbbb6d7d40b58
+Tested-by: syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Signed-off-by: Wang Liang <wangliang74@huawei.com>
+Link: https://patch.msgid.link/20251129041315.1550766-1-wangliang74@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/netrom/nr_out.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index c8c638aa47262..95483a8d7b1e9 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -403,6 +403,8 @@ static const struct usb_device_id blacklist_table[] = {
- 	/* Realtek 8821CE Bluetooth devices */
- 	{ USB_DEVICE(0x13d3, 0x3529), .driver_info = BTUSB_REALTEK |
- 						     BTUSB_WIDEBAND_SPEECH },
-+	{ USB_DEVICE(0x13d3, 0x3533), .driver_info = BTUSB_REALTEK |
-+						     BTUSB_WIDEBAND_SPEECH },
+diff --git a/net/netrom/nr_out.c b/net/netrom/nr_out.c
+index 5e531394a724b..2b3cbceb0b52d 100644
+--- a/net/netrom/nr_out.c
++++ b/net/netrom/nr_out.c
+@@ -43,8 +43,10 @@ void nr_output(struct sock *sk, struct sk_buff *skb)
+ 		frontlen = skb_headroom(skb);
  
- 	/* Realtek 8822CE Bluetooth devices */
- 	{ USB_DEVICE(0x0bda, 0xb00c), .driver_info = BTUSB_REALTEK |
+ 		while (skb->len > 0) {
+-			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL)
++			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL) {
++				kfree_skb(skb);
+ 				return;
++			}
+ 
+ 			skb_reserve(skbn, frontlen);
+ 
 -- 
 2.51.0
 
