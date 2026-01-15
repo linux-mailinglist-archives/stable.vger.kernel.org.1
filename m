@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209411-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 65792D26AC7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA15FD263FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 92B1D30B4EEB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C8E7D309B93C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 625A03B8BB3;
-	Thu, 15 Jan 2026 17:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DD72C11EF;
+	Thu, 15 Jan 2026 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HiZ4Ih4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5DAf0Bi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2354B26CE04;
-	Thu, 15 Jan 2026 17:37:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7669F2820C6;
+	Thu, 15 Jan 2026 17:08:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498620; cv=none; b=teafGP0e2nXsUPUxG96ztt86fXrYUl7dmIPR5yX93cOyk5Zh0LfvC2PQt55WOqo/Xrxw70I9E3G9xx0WcE5Az8Azs1NtmksesfhYSbHfQZIb+KZgVHTTHdIaWZ9JyOjp0Cb/iZaTWQ2Z17LGAUejNLuMBqW2s4sONZUImR2vMko=
+	t=1768496938; cv=none; b=tCYWMEXet5F4l8LcFNhYjCjEAeX7FAdmTHdyFIAXdSeYwh6m0Q1sc4/fk4LnNqW/Vbg9SLrKVnWAXUb2l/c3mhIDbKbXycMmOopaZ6SToDt1Rr6dipWHLf07bIuQzSgmMincAsb6kNYAbeQKOUtEk8WzcUgywdRie3Mq2VVmbqs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498620; c=relaxed/simple;
-	bh=T3miKeCfnkG9He/JUCmpGDgF3AYmToHCrg+dWN5e1Xs=;
+	s=arc-20240116; t=1768496938; c=relaxed/simple;
+	bh=wtkH650UyjzEzY/+IG0IXhyBGzrbgKB1GTg6GlzFxxs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ScqtxJJTx3XKyQZkWUrnPhXaYxgqXenTulURy9ohDAx64H+MmrHcLWJypZRiXqZSnyBvxkL7vijrA5oDpfh3wNC48ALr8nm+XRVCRlcxTmKGRzcXiJF8SEUQpFkGBQUzQj2ejyLOSs6cVIPlGZK1WIZmEVmxa4bd5pfkP/wpmSA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HiZ4Ih4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1EB7C16AAE;
-	Thu, 15 Jan 2026 17:36:59 +0000 (UTC)
+	 MIME-Version; b=rq3+2Za23q4YSjD/PkHaHEZbCo/zYJS62MD1s7YKKfVFMVy/lIhn+GqOaQYA4ocRlVhwucFrA2FKipsztYgL/pYzzHCNph8U6yO2PmIgaFTAYXzQr81IcsiNc7Esz6HKvR7ce6d02yCu8dmBVbJFtl+mlZuBWfCBWQoRrUa2LEs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5DAf0Bi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E41C116D0;
+	Thu, 15 Jan 2026 17:08:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498620;
-	bh=T3miKeCfnkG9He/JUCmpGDgF3AYmToHCrg+dWN5e1Xs=;
+	s=korg; t=1768496938;
+	bh=wtkH650UyjzEzY/+IG0IXhyBGzrbgKB1GTg6GlzFxxs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HiZ4Ih4z7UlRdfJMYY6c0WxFNdcExvnjczQ90tPN0Cp9Iyx5257sUFjLC2gZ4S7Pw
-	 C9O3tBvfpEhDdmfhxa3zujgcL7TJrdQvkQSXo54X+qxXuocmcJ3MgvOv4AasiWajDb
-	 IFlFgmX6LZwD79hqCWZpXtxOE60vyx2oHe8wkqug=
+	b=H5DAf0Bi7cZncKStunIKSB2ixgIz2Yq69s8AjcjP4tF/4jRDuDKvYhAtvFafvxLjL
+	 eWrYdUMlsTh6ZtTlLGGz9A11TDT92iKOdzlMCtjYigZj5qlEplonRi3msmAyX9T1jZ
+	 diJ/EvbIK/bIVrU+TUMxYzgJYrqPN9ja05jUqIxE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	Jim Quinlan <james.quinlan@broadcom.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 463/554] PCI: brcmstb: Fix disabling L0s capability
-Date: Thu, 15 Jan 2026 17:48:49 +0100
-Message-ID: <20260115164303.043389051@linuxfoundation.org>
+Subject: [PATCH 6.6 67/88] ALSA: ac97: fix a double free in snd_ac97_controller_register()
+Date: Thu, 15 Jan 2026 17:48:50 +0100
+Message-ID: <20260115164148.736099734@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,81 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Quinlan <james.quinlan@broadcom.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 9583f9d22991d2cfb5cc59a2552040c4ae98d998 ]
+[ Upstream commit 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f ]
 
-caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
-set PCI_EXP_LNKCAP_ASPM_L1 and (optionally) PCI_EXP_LNKCAP_ASPM_L0S in
-PCI_EXP_LNKCAP (aka PCIE_RC_CFG_PRIV1_LINK_CAPABILITY in brcmstb).
+If ac97_add_adapter() fails, put_device() is the correct way to drop
+the device reference. kfree() is not required.
+Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
+the cleanup.
 
-But instead of using PCI_EXP_LNKCAP_ASPM_L1 and PCI_EXP_LNKCAP_ASPM_L0S
-directly, it used PCIE_LINK_STATE_L1 and PCIE_LINK_STATE_L0S, which are
-Linux-created values that only coincidentally matched the PCIe spec.
-b478e162f227 ("PCI/ASPM: Consolidate link state defines") later changed
-them so they no longer matched the PCIe spec, so the bits ended up in the
-wrong place in PCI_EXP_LNKCAP.
+Found by code review.
 
-Use PCI_EXP_LNKCAP_ASPM_L0S to clear L0s support when there's an
-'aspm-no-l0s' property.  Rely on brcmstb hardware to advertise L0s and/or
-L1 support otherwise.
-
-Fixes: caab002d5069 ("PCI: brcmstb: Disable L0s component of ASPM if requested")
-Reported-by: Bjorn Helgaas <bhelgaas@google.com>
-Closes: https://lore.kernel.org/linux-pci/20250925194424.GA2197200@bhelgaas
-Signed-off-by: Jim Quinlan <james.quinlan@broadcom.com>
-[mani: reworded subject and description, added closes tag and CCed stable]
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-[bhelgaas: commit log]
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
 Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20251003170436.1446030-1-james.quinlan@broadcom.com
-[ Adjust context in variable declaration ]
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/controller/pcie-brcmstb.c |   10 +++-------
- 1 file changed, 3 insertions(+), 7 deletions(-)
+ sound/ac97/bus.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/controller/pcie-brcmstb.c
-+++ b/drivers/pci/controller/pcie-brcmstb.c
-@@ -44,7 +44,6 @@
- #define  PCIE_RC_CFG_PRIV1_ID_VAL3_CLASS_CODE_MASK	0xffffff
+--- a/sound/ac97/bus.c
++++ b/sound/ac97/bus.c
+@@ -299,6 +299,7 @@ static void ac97_adapter_release(struct
+ 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
+ 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
+ 		dev_name(ac97_ctrl->parent));
++	kfree(ac97_ctrl);
+ }
  
- #define PCIE_RC_CFG_PRIV1_LINK_CAPABILITY			0x04dc
--#define  PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK	0xc00
+ static const struct device_type ac97_adapter_type = {
+@@ -320,7 +321,9 @@ static int ac97_add_adapter(struct ac97_
+ 		ret = device_register(&ac97_ctrl->adap);
+ 		if (ret)
+ 			put_device(&ac97_ctrl->adap);
+-	}
++	} else
++		kfree(ac97_ctrl);
++
+ 	if (!ret) {
+ 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
+ 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
+@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_control
+ 	ret = ac97_add_adapter(ac97_ctrl);
  
- #define PCIE_RC_DL_MDIO_ADDR				0x1100
- #define PCIE_RC_DL_MDIO_WR_DATA				0x1104
-@@ -873,7 +872,7 @@ static int brcm_pcie_setup(struct brcm_p
- 	int num_out_wins = 0;
- 	u16 nlw, cls, lnksta;
- 	int i, ret, memc;
--	u32 tmp, burst, aspm_support;
-+	u32 tmp, burst;
+ 	if (ret)
+-		goto err;
++		return ERR_PTR(ret);
+ 	ac97_bus_reset(ac97_ctrl);
+ 	ac97_bus_scan(ac97_ctrl);
  
- 	/* Reset the bridge */
- 	pcie->bridge_sw_init_set(pcie, 1);
-@@ -995,12 +994,9 @@ static int brcm_pcie_setup(struct brcm_p
- 	}
+ 	return ac97_ctrl;
+-err:
+-	kfree(ac97_ctrl);
+-	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
  
- 	/* Don't advertise L0s capability if 'aspm-no-l0s' */
--	aspm_support = PCIE_LINK_STATE_L1;
--	if (!of_property_read_bool(pcie->np, "aspm-no-l0s"))
--		aspm_support |= PCIE_LINK_STATE_L0S;
- 	tmp = readl(base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
--	u32p_replace_bits(&tmp, aspm_support,
--		PCIE_RC_CFG_PRIV1_LINK_CAPABILITY_ASPM_SUPPORT_MASK);
-+	if (of_property_read_bool(pcie->np, "aspm-no-l0s"))
-+		tmp &= ~PCI_EXP_LNKCAP_ASPM_L0S;
- 	writel(tmp, base + PCIE_RC_CFG_PRIV1_LINK_CAPABILITY);
- 
- 	/*
 
 
 
