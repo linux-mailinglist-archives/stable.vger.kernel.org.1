@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-208691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209776-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 246DBD262AE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7DE69D27DE8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:57:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D2D9D312DCCC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6B6EA3054811
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8083F29C338;
-	Thu, 15 Jan 2026 17:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7C13BFE5F;
+	Thu, 15 Jan 2026 17:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFXfK8Jx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GczMo9tP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 444462C028F;
-	Thu, 15 Jan 2026 17:02:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460553C009B;
+	Thu, 15 Jan 2026 17:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496572; cv=none; b=ownCISmVxBFIEsg7fqfNSr+RXLuEKys7mBfhfWxSpMfsu9N6vQdDsS0psvvEB7lSxFde64sXLbK2HqTwBsiPKan2rMhtrb1UfwcpbM64pv69ymRDOGH0WIEziDidBaPvX1Ot9tojxkNJTF6FcOACIxP4pkBrgN4Vq8lGjXYmNOk=
+	t=1768499659; cv=none; b=kKGbmZMwdCDq03W/En2+2Hio/yo/L46hshEZ473XYAx7EOSmm3ORUZ9jwZRYvw+AeQH45IAg+BH9hLwfOB9xVhil9Z8aWfSAjNWlfQ/6BWRmIaP4aaVbql2lQMIm9ebCv0lxlcM57V9kfvoqtifXqpBF3A4xb8WzJeuAu7ZkQ8w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496572; c=relaxed/simple;
-	bh=O0hSPjNHsmCKczcY7y4Bq+XXQBNtQB00HPMphld2A9k=;
+	s=arc-20240116; t=1768499659; c=relaxed/simple;
+	bh=dVcKaO5FLquctu4LDCejOL8ypOwrgs/Fxcgd50gmaQQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DhYEWE1yE+aBHq1beyR5BSh5KxzqL92Ni5tHWTwyvUBySWYNHA6MlVrgXUqA0nVWa2xCgHgRzNF2aEQwkpgLw4d6mf/ZH1R24ioMsIGZMvF9MGZh9hjbQup7KAT/CVA1+f5LDsrpZZ62yfbzD64HeYJKWmuDvLankFLOkUoL9+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFXfK8Jx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C252BC19422;
-	Thu, 15 Jan 2026 17:02:51 +0000 (UTC)
+	 MIME-Version; b=VWMaO4PT/ThDWzmp8xi72LyqUaCr8FjknoTFbLP4fXtCToa0RwSijU0eCwjX+mlcNYcCtZ1ZIFUpEUPdc62a9XJ5XgwMpiLHSPiOcXx89tBXBOiut0mwXftz+QkPNXIdB6E4ixWzINBb2RVk/QEyRWQG4b+VwJmFgQ3uu9lWu3k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GczMo9tP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EEE8C116D0;
+	Thu, 15 Jan 2026 17:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496572;
-	bh=O0hSPjNHsmCKczcY7y4Bq+XXQBNtQB00HPMphld2A9k=;
+	s=korg; t=1768499658;
+	bh=dVcKaO5FLquctu4LDCejOL8ypOwrgs/Fxcgd50gmaQQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFXfK8JxcuPApVcOXq0T9kTonMpsWzAh0xvDxAcpJMguQe6dWy0kDg8j8LgWupl/E
-	 V8rlc+rgz8RcSeZ0wesy3nxqIOrcUt+hPR3DGpf0xwemXw6i8dOXCJpmO0rr+EZFzj
-	 DqhQ0OAUwv/z6DazgVam3GpFHJtzhl17ihMPaH8Y=
+	b=GczMo9tPmJsSFIfty2BqiOQ7R4gOBHvLEgF1or2+T2VDu4b2EjlsFiX9NtnQ1QNOM
+	 /N+GsyNI7TOdtF8nQv6nVPVKSyYc/bN2MAjkFu8W7vrf1Uzw6WOiy2Pm4WAoTsfIUj
+	 xJuc8+imXIrKxW4iLj37bibROFm318v49o2qhWlo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
+	Kohei Enju <enjuk@amazon.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+	Rafal Romanowski <rafal.romanowski@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 058/119] netfilter: nft_set_pipapo: fix range overlap detection
+Subject: [PATCH 5.10 272/451] iavf: fix off-by-one issues in iavf_config_rss_reg()
 Date: Thu, 15 Jan 2026 17:47:53 +0100
-Message-ID: <20260115164154.052396498@linuxfoundation.org>
+Message-ID: <20260115164240.726272354@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +63,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Kohei Enju <enjuk@amazon.com>
 
-[ Upstream commit 7711f4bb4b360d9c0ff84db1c0ec91e385625047 ]
+[ Upstream commit 6daa2893f323981c7894c68440823326e93a7d61 ]
 
-set->klen has to be used, not sizeof().  The latter only compares a
-single register but a full check of the entire key is needed.
+There are off-by-one bugs when configuring RSS hash key and lookup
+table, causing out-of-bounds reads to memory [1] and out-of-bounds
+writes to device registers.
 
-Example:
-table ip t {
-        map s {
-                typeof iifname . ip saddr : verdict
-                flags interval
-        }
-}
+Before commit 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS"),
+the loop upper bounds were:
+    i <= I40E_VFQF_{HKEY,HLUT}_MAX_INDEX
+which is safe since the value is the last valid index.
 
-nft add element t s '{ "lo" . 10.0.0.0/24 : drop }' # no error, expected
-nft add element t s '{ "lo" . 10.0.0.0/24 : drop }' # no error, expected
-nft add element t s '{ "lo" . 10.0.0.0/8 : drop }' # bug: no error
+That commit changed the bounds to:
+    i <= adapter->rss_{key,lut}_size / 4
+where `rss_{key,lut}_size / 4` is the number of dwords, so the last
+valid index is `(rss_{key,lut}_size / 4) - 1`. Therefore, using `<=`
+accesses one element past the end.
 
-The 3rd 'add element' should be rejected via -ENOTEMPTY, not -EEXIST,
-so userspace / nft can report an error to the user.
+Fix the issues by using `<` instead of `<=`, ensuring we do not exceed
+the bounds.
 
-The latter is only correct for the 2nd case (re-add of existing element).
+[1] KASAN splat about rss_key_size off-by-one
+  BUG: KASAN: slab-out-of-bounds in iavf_config_rss+0x619/0x800
+  Read of size 4 at addr ffff888102c50134 by task kworker/u8:6/63
 
-As-is, userspace is told that the command was successful, but no elements were
-added.
+  CPU: 0 UID: 0 PID: 63 Comm: kworker/u8:6 Not tainted 6.18.0-rc2-enjuk-tnguy-00378-g3005f5b77652-dirty #156 PREEMPT(voluntary)
+  Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+  Workqueue: iavf iavf_watchdog_task
+  Call Trace:
+   <TASK>
+   dump_stack_lvl+0x6f/0xb0
+   print_report+0x170/0x4f3
+   kasan_report+0xe1/0x1a0
+   iavf_config_rss+0x619/0x800
+   iavf_watchdog_task+0x2be7/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
+   </TASK>
 
-After this patch, 3rd command gives:
-Error: Could not process rule: File exists
-add element t s { "lo" . 127.0.0.0/8 . "lo"  : drop }
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^
+  Allocated by task 63:
+   kasan_save_stack+0x30/0x50
+   kasan_save_track+0x14/0x30
+   __kasan_kmalloc+0x7f/0x90
+   __kmalloc_noprof+0x246/0x6f0
+   iavf_watchdog_task+0x28fc/0x3230
+   process_one_work+0x7fd/0x1420
+   worker_thread+0x4d1/0xd40
+   kthread+0x344/0x660
+   ret_from_fork+0x249/0x320
+   ret_from_fork_asm+0x1a/0x30
 
-Fixes: 0eb4b5ee33f2 ("netfilter: nft_set_pipapo: Separate partial and complete overlap cases on insertion")
-Signed-off-by: Florian Westphal <fw@strlen.de>
+  The buggy address belongs to the object at ffff888102c50100
+   which belongs to the cache kmalloc-64 of size 64
+  The buggy address is located 0 bytes to the right of
+   allocated 52-byte region [ffff888102c50100, ffff888102c50134)
+
+  The buggy address belongs to the physical page:
+  page: refcount:0 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x102c50
+  flags: 0x200000000000000(node=0|zone=2)
+  page_type: f5(slab)
+  raw: 0200000000000000 ffff8881000418c0 dead000000000122 0000000000000000
+  raw: 0000000000000000 0000000080200020 00000000f5000000 0000000000000000
+  page dumped because: kasan: bad access detected
+
+  Memory state around the buggy address:
+   ffff888102c50000: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+   ffff888102c50080: 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc fc
+  >ffff888102c50100: 00 00 00 00 00 00 04 fc fc fc fc fc fc fc fc fc
+                                       ^
+   ffff888102c50180: 00 00 00 00 00 00 00 00 fc fc fc fc fc fc fc fc
+   ffff888102c50200: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+
+Fixes: 43a3d9ba34c9 ("i40evf: Allow PF driver to configure RSS")
+Signed-off-by: Kohei Enju <enjuk@amazon.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_set_pipapo.c | 4 ++--
+ drivers/net/ethernet/intel/iavf/iavf_main.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 793790d79d138..642152e9c3227 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1303,8 +1303,8 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 		else
- 			dup_end = dup_key;
+diff --git a/drivers/net/ethernet/intel/iavf/iavf_main.c b/drivers/net/ethernet/intel/iavf/iavf_main.c
+index 65259722a572..4ed93c7f81d2 100644
+--- a/drivers/net/ethernet/intel/iavf/iavf_main.c
++++ b/drivers/net/ethernet/intel/iavf/iavf_main.c
+@@ -1262,11 +1262,11 @@ static int iavf_config_rss_reg(struct iavf_adapter *adapter)
+ 	u16 i;
  
--		if (!memcmp(start, dup_key->data, sizeof(*dup_key->data)) &&
--		    !memcmp(end, dup_end->data, sizeof(*dup_end->data))) {
-+		if (!memcmp(start, dup_key->data, set->klen) &&
-+		    !memcmp(end, dup_end->data, set->klen)) {
- 			*elem_priv = &dup->priv;
- 			return -EEXIST;
- 		}
+ 	dw = (u32 *)adapter->rss_key;
+-	for (i = 0; i <= adapter->rss_key_size / 4; i++)
++	for (i = 0; i < adapter->rss_key_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HKEY(i), dw[i]);
+ 
+ 	dw = (u32 *)adapter->rss_lut;
+-	for (i = 0; i <= adapter->rss_lut_size / 4; i++)
++	for (i = 0; i < adapter->rss_lut_size / 4; i++)
+ 		wr32(hw, IAVF_VFQF_HLUT(i), dw[i]);
+ 
+ 	iavf_flush(hw);
 -- 
 2.51.0
 
