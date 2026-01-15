@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209564-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209110-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6AE17D27ADE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:39:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01DDCD2725E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C9B9C302B993
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:16 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3EA7B31FEAB6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D77912D94A7;
-	Thu, 15 Jan 2026 17:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E336C3A7E07;
+	Thu, 15 Jan 2026 17:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="co0AbqmZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hWuXyC54"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7AD2C0F83;
-	Thu, 15 Jan 2026 17:44:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6C2F3BC4ED;
+	Thu, 15 Jan 2026 17:22:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499055; cv=none; b=OEzUYPXswgi+r2GKcePGrQIHmYkkzxw1XaWs1ouyECCgIJ8WgPksDAurNqnivHYp9o5RzkFI4bCcTCVEL7TCBWu1k2gbLPBq1b8PdGrIqfIyVhZp6iRbDiKg4/HP6YRPh/8t7nteliMRfybdPq4j4VpDVEB+935PfNbr+pzetXM=
+	t=1768497761; cv=none; b=bouSfAdcRl8M379I/nIdNjivcvE4rHHB60aLdl/AjrV2NliG7qXUuVBlo7XhaFTD+BxAn1jr3Bp1pTb4pWkMT91EazWUP/aHbQKBzqHJGomh/hGezJ/t4Y7qPiiQuxLzp7egMe6VWZij1ZjYG2yDe7lehK9tULC1SxHhb9BkDC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499055; c=relaxed/simple;
-	bh=dl3ujNY212/BcKKmCh0HHgs1lthFCiWJeomsrqTuC9Q=;
+	s=arc-20240116; t=1768497761; c=relaxed/simple;
+	bh=vhDD2qxh7hXIShv0jTGtzbQaT4QNUAv6p0Ql0MeDO4c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lCT1CiR/uQJZNLh67ML0ycCg4A7+KdO1AdgnbJfsV/mue6o1DE8IkdACaN0LmVqQeKxSM6VOQuewCmnSQWt1oEAnHUT23gly7wMSY92na6Ojb5RVTeoSnKZRJlHyEQLcSGQCa8MRQVBRyg+YQJaUVv1pvxNVigzTPPsIl62njgE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=co0AbqmZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27338C116D0;
-	Thu, 15 Jan 2026 17:44:14 +0000 (UTC)
+	 MIME-Version; b=E4vuQsQNoCaTWUxEkjNWPOwmih9e23mIjqVGtbrnePZn7huM4KtxgSd9XwAC565EMsQQkhq20OUKHcMrgp6b9+y6vJ/cjOOK1+orv5pojdE9a7EQpMEN9ZxqQ0MEp/f098L03Po4bu0qCp17tQwVkb6w7zYFVv8t+/akqYNLCjk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hWuXyC54; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33F51C116D0;
+	Thu, 15 Jan 2026 17:22:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499055;
-	bh=dl3ujNY212/BcKKmCh0HHgs1lthFCiWJeomsrqTuC9Q=;
+	s=korg; t=1768497761;
+	bh=vhDD2qxh7hXIShv0jTGtzbQaT4QNUAv6p0Ql0MeDO4c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=co0AbqmZT3ZAHYZIPrGHAeD3d5JiFTfXaHyFdhK6LueWizJ6txxodXPOO0/CNhOZh
-	 DuynRTntY9FA9rh5A6bskWZJvY0VtUdEiUa9EVeAXUROwCd869PLY0iMt34RjAwpAB
-	 pAxhKBv9srs6z5yj7caSmmcRloWtdcxOo26lCSE0=
+	b=hWuXyC543hU6ae0Ps769P1LFrCR/NJSFZ/Z61tO6f/jT9Q0J3CvYK4Y28vo5HjBZ4
+	 WrR3/+h5P8uE3IVif5uLOt8QIxzYe6KACHAQqvDRCV/MrfwNq6JOoCRz4B0v9k+1/h
+	 CxXVx+tQo+JbWEvNDXnJh8gOYnkpSZBgYEKsn04w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dapeng Mi <dapeng1.mi@linux.intel.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Ard Biesheuvel <ardb@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 059/451] perf/x86/intel: Correct large PEBS flag check
+Subject: [PATCH 5.15 194/554] efi/cper: Add a new helper function to print bitmasks
 Date: Thu, 15 Jan 2026 17:44:20 +0100
-Message-ID: <20260115164233.034163841@linuxfoundation.org>
+Message-ID: <20260115164253.281249443@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +62,135 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dapeng Mi <dapeng1.mi@linux.intel.com>
+From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
 
-[ Upstream commit 5e4e355ae7cdeb0fef5dbe908866e1f895abfacc ]
+[ Upstream commit a976d790f49499ccaa0f991788ad8ebf92e7fd5c ]
 
-current large PEBS flag check only checks if sample_regs_user contains
-unsupported GPRs but doesn't check if sample_regs_intr contains
-unsupported GPRs.
+Add a helper function to print a string with names associated
+to each bit field.
 
-Of course, currently PEBS HW supports to sample all perf supported GPRs,
-the missed check doesn't cause real issue. But it won't be true any more
-after the subsequent patches support to sample SSP register. SSP
-sampling is not supported by adaptive PEBS HW and it would be supported
-until arch-PEBS HW. So correct this issue.
+A typical example is:
 
-Fixes: a47ba4d77e12 ("perf/x86: Enable free running PEBS for REGS_USER/INTR")
-Signed-off-by: Dapeng Mi <dapeng1.mi@linux.intel.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Link: https://patch.msgid.link/20251029102136.61364-5-dapeng1.mi@linux.intel.com
+	const char * const bits[] = {
+		"bit 3 name",
+		"bit 4 name",
+		"bit 5 name",
+	};
+	char str[120];
+        unsigned int bitmask = BIT(3) | BIT(5);
+
+	#define MASK  GENMASK(5,3)
+
+	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
+			 bits, ARRAY_SIZE(bits));
+
+The above code fills string "str" with "bit 3 name|bit 5 name".
+
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/events/intel/core.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/firmware/efi/cper.c | 60 +++++++++++++++++++++++++++++++++++++
+ include/linux/cper.h        |  2 ++
+ 2 files changed, 62 insertions(+)
 
-diff --git a/arch/x86/events/intel/core.c b/arch/x86/events/intel/core.c
-index fb2e81fa62c45..73d1cebddee70 100644
---- a/arch/x86/events/intel/core.c
-+++ b/arch/x86/events/intel/core.c
-@@ -3515,7 +3515,9 @@ static unsigned long intel_pmu_large_pebs_flags(struct perf_event *event)
- 	if (!event->attr.exclude_kernel)
- 		flags &= ~PERF_SAMPLE_REGS_USER;
- 	if (event->attr.sample_regs_user & ~PEBS_GP_REGS)
--		flags &= ~(PERF_SAMPLE_REGS_USER | PERF_SAMPLE_REGS_INTR);
-+		flags &= ~PERF_SAMPLE_REGS_USER;
-+	if (event->attr.sample_regs_intr & ~PEBS_GP_REGS)
-+		flags &= ~PERF_SAMPLE_REGS_INTR;
- 	return flags;
+diff --git a/drivers/firmware/efi/cper.c b/drivers/firmware/efi/cper.c
+index 6ec8edec63296..d0668452dca9e 100644
+--- a/drivers/firmware/efi/cper.c
++++ b/drivers/firmware/efi/cper.c
+@@ -12,6 +12,7 @@
+  * Specification version 2.4.
+  */
+ 
++#include <linux/bitmap.h>
+ #include <linux/kernel.h>
+ #include <linux/module.h>
+ #include <linux/time.h>
+@@ -105,6 +106,65 @@ void cper_print_bits(const char *pfx, unsigned int bits,
+ 		printk("%s\n", buf);
  }
  
++/**
++ * cper_bits_to_str - return a string for set bits
++ * @buf: buffer to store the output string
++ * @buf_size: size of the output string buffer
++ * @bits: bit mask
++ * @strs: string array, indexed by bit position
++ * @strs_size: size of the string array: @strs
++ *
++ * Add to @buf the bitmask in hexadecimal. Then, for each set bit in @bits,
++ * add the corresponding string describing the bit in @strs to @buf.
++ *
++ * A typical example is::
++ *
++ *	const char * const bits[] = {
++ *		"bit 3 name",
++ *		"bit 4 name",
++ *		"bit 5 name",
++ *	};
++ *	char str[120];
++ *	unsigned int bitmask = BIT(3) | BIT(5);
++ *	#define MASK GENMASK(5,3)
++ *
++ *	cper_bits_to_str(str, sizeof(str), FIELD_GET(MASK, bitmask),
++ *			 bits, ARRAY_SIZE(bits));
++ *
++ * The above code fills the string ``str`` with ``bit 3 name|bit 5 name``.
++ *
++ * Return: number of bytes stored or an error code if lower than zero.
++ */
++int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
++		     const char * const strs[], unsigned int strs_size)
++{
++	int len = buf_size;
++	char *str = buf;
++	int i, size;
++
++	*buf = '\0';
++
++	for_each_set_bit(i, &bits, strs_size) {
++		if (!(bits & BIT_ULL(i)))
++			continue;
++
++		if (*buf && len > 0) {
++			*str = '|';
++			len--;
++			str++;
++		}
++
++		size = strscpy(str, strs[i], len);
++		if (size < 0)
++			return size;
++
++		len -= size;
++		str += size;
++	}
++	return len - buf_size;
++}
++EXPORT_SYMBOL_GPL(cper_bits_to_str);
++
+ static const char * const proc_type_strs[] = {
+ 	"IA32/X64",
+ 	"IA64",
+diff --git a/include/linux/cper.h b/include/linux/cper.h
+index 6a511a1078ca0..724a5e3c122d6 100644
+--- a/include/linux/cper.h
++++ b/include/linux/cper.h
+@@ -560,6 +560,8 @@ const char *cper_severity_str(unsigned int);
+ const char *cper_mem_err_type_str(unsigned int);
+ void cper_print_bits(const char *prefix, unsigned int bits,
+ 		     const char * const strs[], unsigned int strs_size);
++int cper_bits_to_str(char *buf, int buf_size, unsigned long bits,
++		     const char * const strs[], unsigned int strs_size);
+ void cper_mem_err_pack(const struct cper_sec_mem_err *,
+ 		       struct cper_mem_err_compact *);
+ const char *cper_mem_err_unpack(struct trace_seq *,
 -- 
 2.51.0
 
