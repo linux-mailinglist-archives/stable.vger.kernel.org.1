@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-209577-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209174-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 76D73D26D97
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F4B1D26B1C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0C289308B7FD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A28330FFF24
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5288D39E199;
-	Thu, 15 Jan 2026 17:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 215143C1980;
+	Thu, 15 Jan 2026 17:25:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CrT6CZoV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQTejKcV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 14FCB274FE3;
-	Thu, 15 Jan 2026 17:44:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6C903AEF27;
+	Thu, 15 Jan 2026 17:25:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499093; cv=none; b=HYoTbNw166Ox2gheTIgOG2xowchyCbtuqDRt0pn4OpwdLCTqlvy7mAEELJozJ2hTcCZqVvdqEvEOlsld3jDVc1W9Y3t1eQcs7FFfpkYBCh9hsHut68mR3QCFKycN1iblDl4iajVxEhFklGa+8LPGBA2RMF9eFLB0iU/k15IVJoQ=
+	t=1768497944; cv=none; b=h+kGvs8V/bujyddjXFsLvFxgPAbb/sf/ks3Z6LVsN/+VuttjnpsnqsbJUXDajl12TcGORHlUdinPXGaRkeCsPGUinFFjdIruLQcpvLEfS9Ymz1UvitiaqcYq9Q4aKoz9GTW1hE2UuI2RhRnA74iDxVKmIrupz08q/G7ZzJ1S5+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499093; c=relaxed/simple;
-	bh=KGbemRA6nLzVvhLJSEwsa1rT3IK6cwDP82FkUMa2c3c=;
+	s=arc-20240116; t=1768497944; c=relaxed/simple;
+	bh=+3nInaUOSRqRBNbVBYi8m5vdWmx9GCQPUXhfIk8mao0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U27QDuVYuwTz/rfjwUD2V/yqRqQjqv3r3AUs4wEAbJd0O/w1XyRRNgoXi8qlQDzeEC8sjObv6UY/guQnd2HV3fs2KUPXLJiUZClWVoRikxoSo3jUGl/rftyaPA54WOv+y07BCI3UwvROTES4MBubHi9G5+7moKs2DVp0uYHLleA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CrT6CZoV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95FFAC116D0;
-	Thu, 15 Jan 2026 17:44:52 +0000 (UTC)
+	 MIME-Version; b=eouZptFXwQuHghKE9JAnjHpb+BSqy+vaWWrWlMU+oZDMvtVeHaVQEdmKVNpHQjub4Z/D/r4/KzGLzNAOl8C0v+2JhtodcO7Jm9TtBQRBBBGXwv51CW6dzYSrU05QELM/4Is7F3DZ+11ouj61CgDQVfz4Mv95KzcQE0H6qmPXr2o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQTejKcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD38C16AAE;
+	Thu, 15 Jan 2026 17:25:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499093;
-	bh=KGbemRA6nLzVvhLJSEwsa1rT3IK6cwDP82FkUMa2c3c=;
+	s=korg; t=1768497944;
+	bh=+3nInaUOSRqRBNbVBYi8m5vdWmx9GCQPUXhfIk8mao0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CrT6CZoVKrKt+p3xAY72NMzRczrVNA0BMT4XiQ8/+IljLySYNS73e2rj+AQfs2i3s
-	 v+A51SIg+4/tEU8WFmB6Gn92p2UAFIpyy/wpfSwEmn78KtfcR8nTDat3VmHgv3npsu
-	 UHIWCisSDLnhbCu7SKUGyQZji/KG9P5uq9sonxv0=
+	b=EQTejKcVqro5et/1Ja+9l72hxFzxmO8pf3RApBj3a+IMCAsjD1jVxnt5dvWdr1eDU
+	 c4tf+4NbVHx/Mlp9vhb/y3tnHlbc4dx33U9bvc8WEWVS70ReCbZoDGUhh52URalr0z
+	 btwg+/8jgo48ySXrFWO/vTrQomm/QMbuedjLBP48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kemeng Shi <shikemeng@huaweicloud.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
+	Shay Drory <shayd@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/451] ext4: remove unused return value of __mb_check_buddy
+Subject: [PATCH 5.15 241/554] net/mlx5: fw_tracer, Handle escaped percent properly
 Date: Thu, 15 Jan 2026 17:45:07 +0100
-Message-ID: <20260115164234.751059359@linuxfoundation.org>
+Message-ID: <20260115164254.967270394@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,65 +63,86 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 133de5a0d8f8e32b34feaa8beae7a189482f1856 ]
+[ Upstream commit c0289f67f7d6a0dfba0e92cfe661a5c70c8c6e92 ]
 
-Remove unused return value of __mb_check_buddy.
+The firmware tracer's format string validation and parameter counting
+did not properly handle escaped percent signs (%%). This caused
+fw_tracer to count more parameters when trace format strings contained
+literal percent characters.
 
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20240105092102.496631-2-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: d9ee3ff810f1 ("ext4: improve integrity checking in __mb_check_buddy by enhancing order-0 validation")
+To fix it, allow %% to pass string validation and skip %% sequences when
+counting parameters since they represent literal percent signs rather
+than format specifiers.
+
+Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-5-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 20 +++++++++++++------
+ 1 file changed, 14 insertions(+), 6 deletions(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 60c56a39798cc..65042bef41e4e 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -602,7 +602,7 @@ do {									\
- 	}								\
- } while (0)
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index 6b49bda8bea2a..1779ff98b5892 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -364,11 +364,11 @@ static bool mlx5_is_valid_spec(const char *str)
+ 	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
+ 		str++;
  
--static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
-+static void __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 				const char *function, int line)
- {
- 	struct super_block *sb = e4b->bd_sb;
-@@ -621,7 +621,7 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 	void *buddy2;
+-	/* Check if it's a valid integer/hex specifier:
++	/* Check if it's a valid integer/hex specifier or %%:
+ 	 * Valid formats: %x, %d, %i, %u, etc.
+ 	 */
+ 	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
+-	    *str != 'u' && *str != 'c')
++	    *str != 'u' && *str != 'c' && *str != '%')
+ 		return false;
  
- 	if (e4b->bd_info->bb_check_counter++ % 10)
--		return 0;
-+		return;
+ 	return true;
+@@ -386,7 +386,11 @@ static bool mlx5_tracer_validate_params(const char *str)
+ 		if (!mlx5_is_valid_spec(substr + 1))
+ 			return false;
  
- 	while (order > 1) {
- 		buddy = mb_find_buddy(e4b, order, &max);
-@@ -686,7 +686,7 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 
- 	grp = ext4_get_group_info(sb, e4b->bd_group);
- 	if (!grp)
--		return NULL;
-+		return;
- 	list_for_each(cur, &grp->bb_prealloc_list) {
- 		ext4_group_t groupnr;
- 		struct ext4_prealloc_space *pa;
-@@ -696,7 +696,6 @@ static int __mb_check_buddy(struct ext4_buddy *e4b, char *file,
- 		for (i = 0; i < pa->pa_len; i++)
- 			MB_CHECK_ASSERT(mb_test_bit(k + i, buddy));
+-		substr = strstr(substr + 1, PARAM_CHAR);
++		if (*(substr + 1) == '%')
++			substr = strstr(substr + 2, PARAM_CHAR);
++		else
++			substr = strstr(substr + 1, PARAM_CHAR);
++
  	}
--	return 0;
- }
- #undef MB_CHECK_ASSERT
- #define mb_check_buddy(e4b) __mb_check_buddy(e4b,	\
+ 
+ 	return true;
+@@ -463,11 +467,15 @@ static int mlx5_tracer_get_num_of_params(char *str)
+ 		substr = strstr(pstr, VAL_PARM);
+ 	}
+ 
+-	/* count all the % characters */
++	/* count all the % characters, but skip %% (escaped percent) */
+ 	substr = strstr(str, PARAM_CHAR);
+ 	while (substr) {
+-		num_of_params += 1;
+-		str = substr + 1;
++		if (*(substr + 1) != '%') {
++			num_of_params += 1;
++			str = substr + 1;
++		} else {
++			str = substr + 2;
++		}
+ 		substr = strstr(str, PARAM_CHAR);
+ 	}
+ 
 -- 
 2.51.0
 
