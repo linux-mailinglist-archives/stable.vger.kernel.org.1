@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209456-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209880-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 20263D26C26
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69A15D27686
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0004430C5983
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 28B9F30C7D62
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6612D0C79;
-	Thu, 15 Jan 2026 17:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785DA3DA7D9;
+	Thu, 15 Jan 2026 17:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rZDlI8kR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sS4ZeBBi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA49327AC5C;
-	Thu, 15 Jan 2026 17:39:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6713DA7D4;
+	Thu, 15 Jan 2026 17:59:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498749; cv=none; b=HBaCiswpijouj68kn8KQTnRvJRq78jYhM8TPB3aC6zxEwCDIL7DuM6P1uMGQT/51jkfmZEFt6PXAR7yaEFn3C37NdNR/OiLvcg0BdIroxde6CrZNd1UUh/Ar41rt7aV4+XpSgxohPR1aA2IDIPtnaPWnDKGXAH1uLBBrm+KXADQ=
+	t=1768499955; cv=none; b=ZcaVAwCeJCvdOWqzV7hvPk0C6mY5i3LsridWsnAk/YChNuUnh9owp1vHYBuutnAxCDpvpflm59m/mbfNb4aCYhdtZDR7QvdJpUddorlN3et+08C50shJMyTz1ZdZbGVoEGpBsuxc/ezphg+Kk2CGa0iayYESkFP+aQ1xoc4B93c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498749; c=relaxed/simple;
-	bh=3xHGqtTal0thJBjK6VSnkOdW+fHJvakWI/zXIj5oHvg=;
+	s=arc-20240116; t=1768499955; c=relaxed/simple;
+	bh=yIwLk//Pml53rkD5JNKCgZY0UdpqU4q+8ALIhVZRxsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H0+ws8bxmvxEMA//SwRk+Z/MyD9uDs2hUYuur3/5m/9Atu6p6UqDbwv7/PRVnPN+4RVLNJdTIbYGy3UgD/NvaFf9NmZGHptA+ZNnO+wi2NVObkF88wFp/XWoGMvf+CPrpH61u81ny+xfWj/SkQX0CLjAM4MbtmOYoFRQGM0wq7s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rZDlI8kR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D79C9C116D0;
-	Thu, 15 Jan 2026 17:39:08 +0000 (UTC)
+	 MIME-Version; b=Ee1eaBKE2NDJF56qXx9qs7VkfyKG+8bzaP8djgGOq+p6ALYH8nrgak/Vub3EIC6mC5q3wi981cPKRTEn0c3+JbnPeiz5lUZkPJhOHsThnaOjDG9efeNF0+HOH/oW3QIPW4I4DQni5ZquOPBOVZH5FwMAYhdI2Zu1NVy6mTzbUgU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sS4ZeBBi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAA90C116D0;
+	Thu, 15 Jan 2026 17:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498749;
-	bh=3xHGqtTal0thJBjK6VSnkOdW+fHJvakWI/zXIj5oHvg=;
+	s=korg; t=1768499955;
+	bh=yIwLk//Pml53rkD5JNKCgZY0UdpqU4q+8ALIhVZRxsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rZDlI8kRsSeCY/hjlrC58MNZcsZ11yFZ/PxwE6tHOo3RwMPZaIXT/gI+0kg3+onZx
-	 +y+jvSBcfBAebF3XDDpWp3WehggmZuMRciSg0sSIW/4oDF8l7VHTWJF194NkdnV2In
-	 nIqBAekHyxsUksRgynTT8sImIgu9DxlZ+cSq8PlM=
+	b=sS4ZeBBi5xeB4zcNYBkdTs3s+AQXXVO2+TNZPnrGp1z1j+Y15UquwVREsYJhVABeg
+	 L7NqCEVxPl6pYoZEjJjrYEYkcd3PAnwfuGvVewlfA6ykEDl68WWZzB63y6DRbRUCbX
+	 AywdMP4Mh6REwgvljGQs5fsa0iqmRKWAfIHm6biA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+58b44a770a1585795351@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ashish Kalra <ashish.kalra@amd.com>,
+	Vasant Hegde <vasant.hegde@amd.com>,
+	Sairaj Kodilkar <sarunkod@amd.com>,
+	Joerg Roedel <joerg.roedel@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 541/554] arp: do not assume dev_hard_header() does not change skb->head
+Subject: [PATCH 5.10 406/451] Revert "iommu/amd: Skip enabling command/event buffers for kdump"
 Date: Thu, 15 Jan 2026 17:50:07 +0100
-Message-ID: <20260115164305.907390409@linuxfoundation.org>
+Message-ID: <20260115164245.628893616@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,63 +62,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-[ Upstream commit c92510f5e3f82ba11c95991824a41e59a9c5ed81 ]
+This reverts commit 30e91eeb0bc9b3daf402b26176d1d52c29ab53e4 which is
+commit 9be15fbfc6c5c89c22cf6e209f66ea43ee0e58bb upstream.
 
-arp_create() is the only dev_hard_header() caller
-making assumption about skb->head being unchanged.
+This causes problems in older kernel trees as SNP host kdump is not
+supported in them, so drop it from the stable branches.
 
-A recent commit broke this assumption.
-
-Initialize @arp pointer after dev_hard_header() call.
-
-Fixes: db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
-Reported-by: syzbot+58b44a770a1585795351@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260107212250.384552-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Ashish Kalra <ashish.kalra@amd.com>
+Link: https://lore.kernel.org/r/dacdff7f-0606-4ed5-b056-2de564404d51@amd.com
+Cc: Vasant Hegde <vasant.hegde@amd.com>
+Cc: Sairaj Kodilkar <sarunkod@amd.com>
+Cc: Joerg Roedel <joerg.roedel@amd.com>
+Cc: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/arp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/iommu/amd/init.c |   28 +++++++++-------------------
+ 1 file changed, 9 insertions(+), 19 deletions(-)
 
-diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-index ef69321886798..5a76164980344 100644
---- a/net/ipv4/arp.c
-+++ b/net/ipv4/arp.c
-@@ -542,7 +542,7 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
+--- a/drivers/iommu/amd/init.c
++++ b/drivers/iommu/amd/init.c
+@@ -697,16 +697,11 @@ static void iommu_enable_command_buffer(
  
- 	skb_reserve(skb, hlen);
- 	skb_reset_network_header(skb);
--	arp = skb_put(skb, arp_hdr_len(dev));
-+	skb_put(skb, arp_hdr_len(dev));
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_ARP);
- 	if (!src_hw)
-@@ -550,12 +550,13 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
- 	if (!dest_hw)
- 		dest_hw = dev->broadcast;
+ 	BUG_ON(iommu->cmd_buf == NULL);
  
--	/*
--	 *	Fill the device header for the ARP frame
-+	/* Fill the device header for the ARP frame.
-+	 * Note: skb->head can be changed.
- 	 */
- 	if (dev_hard_header(skb, dev, ptype, dest_hw, src_hw, skb->len) < 0)
- 		goto out;
+-	if (!is_kdump_kernel()) {
+-		/*
+-		 * Command buffer is re-used for kdump kernel and setting
+-		 * of MMIO register is not required.
+-		 */
+-		entry = iommu_virt_to_phys(iommu->cmd_buf);
+-		entry |= MMIO_CMD_SIZE_512;
+-		memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
+-			    &entry, sizeof(entry));
+-	}
++	entry = iommu_virt_to_phys(iommu->cmd_buf);
++	entry |= MMIO_CMD_SIZE_512;
++
++	memcpy_toio(iommu->mmio_base + MMIO_CMD_BUF_OFFSET,
++		    &entry, sizeof(entry));
  
-+	arp = arp_hdr(skb);
- 	/*
- 	 * Fill out the arp protocol part.
- 	 *
--- 
-2.51.0
-
+ 	amd_iommu_reset_cmd_buffer(iommu);
+ }
+@@ -755,15 +750,10 @@ static void iommu_enable_event_buffer(st
+ 
+ 	BUG_ON(iommu->evt_buf == NULL);
+ 
+-	if (!is_kdump_kernel()) {
+-		/*
+-		 * Event buffer is re-used for kdump kernel and setting
+-		 * of MMIO register is not required.
+-		 */
+-		entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
+-		memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
+-			    &entry, sizeof(entry));
+-	}
++	entry = iommu_virt_to_phys(iommu->evt_buf) | EVT_LEN_MASK;
++
++	memcpy_toio(iommu->mmio_base + MMIO_EVT_BUF_OFFSET,
++		    &entry, sizeof(entry));
+ 
+ 	/* set head and tail to zero manually */
+ 	writel(0x00, iommu->mmio_base + MMIO_EVT_HEAD_OFFSET);
 
 
 
