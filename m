@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209452-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4B01FD26C11
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 93C7CD27817
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DBBEB3067926
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:00 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D275430CDB40
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3F71828725F;
-	Thu, 15 Jan 2026 17:38:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 501683D7D7C;
+	Thu, 15 Jan 2026 17:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jC8PKmy1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kMaMkN8m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 039491A2389;
-	Thu, 15 Jan 2026 17:38:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1175D3C1963;
+	Thu, 15 Jan 2026 17:59:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498738; cv=none; b=GtU0O+oPQ35tU5tpKbGORo1exLdDLFDaRiUgHDrosnTndy5jhD5JsD5uIaxHnG8B7vQ7xdRNwkZU17R1xFXGMb1LAr64QYM1aT/940L7FKTGaBLSYlNap6K5TNYj7werv5bOkZwdp6G8DoecUrYaA//yiz5sJjgOWY+4FsGGsbE=
+	t=1768499941; cv=none; b=OxU+Z9KeDQGOah9ipAhJ7UR5PFUXzzVVI5qeFF0oFEWB+DXJZqwLN/kelJ5pdYS0OsT0pufZ4cwDLQ3EZ6+jJdZF+nkzCPC+RXubmk0puk/hgQSVnT+KMEsB0OAYkb83XRHn/3llFhb+7aRQQkPuHcUoEeDw7q7oghFQkjYUNbE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498738; c=relaxed/simple;
-	bh=/TjpLGAl5t729dsEbUy8vmumNWluo67jw50Dg7Dree0=;
+	s=arc-20240116; t=1768499941; c=relaxed/simple;
+	bh=DKMZxPm9QWQYuWuMs308aFIQUtILyk/tNFIctwfgdzA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=st67/lRIsxhynY2U9NyrMFH8fj/YOBGJjqw6c4Xu0JQJ7DkkYm+l1sqLKwF3zmaGWHnHBM9L6hd/lAjLwdgyPX+r0MPb9hdlZVU05rQEuD4A/dfUgS9RJJzU0lUeKEsbcHn+XcO7LJp5YyMoAL70ElMNWz9C2dXm4yi29OXLaNc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jC8PKmy1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E259C116D0;
-	Thu, 15 Jan 2026 17:38:57 +0000 (UTC)
+	 MIME-Version; b=C4lfYLcDWVwTiV4lCKoTbhkOzV+aHIAJgIsxHbLlJsqLeOFL7wiuLg6tdks3VUElwnsJP5HzZJgIPZDb6FpjWGoJ6gtm/C2yKiAr0kvXYe3h7afUxbKtRUTiPNAJlfKfU8RyMmKlYhdfpuBM3zRX7yTBlLRNaHQIJL2yM7PF4RI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kMaMkN8m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920A0C116D0;
+	Thu, 15 Jan 2026 17:59:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498737;
-	bh=/TjpLGAl5t729dsEbUy8vmumNWluo67jw50Dg7Dree0=;
+	s=korg; t=1768499940;
+	bh=DKMZxPm9QWQYuWuMs308aFIQUtILyk/tNFIctwfgdzA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jC8PKmy1F1cE0M7BLV1HbjZUOrgq341QaWTEEzZ56+4lEy4v3LQMDi95aOawItQDZ
-	 Li40KVnB1hs6tk1dDJ4LzBazo4xQqKswwihOVhSjyxJ0yGL1neqrMSjVuCAwadw93p
-	 IQ+GC/HGAXCaQhT1H827MeA/c0MFvMz1xOxpFX/c=
+	b=kMaMkN8m9ZPbJlZhwxaO6lOVSgI9nUB5KX3v39zOT6sJKWo0Z4BvrJUJuJxFQGkUb
+	 9h+G1A1sdlBQgEBvi6ShxmshCkWyhoF63aUEm6LYVAFQ6zz6FdtvDQ8LwGQjlCxjDb
+	 dHytJWcacmMTGkRtyEBqjTesdhpB0ysmVJb8Wn+8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	Jiri Kosina <jkosina@suse.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pavel Machek <pavel@ucw.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 537/554] HID: quirks: work around VID/PID conflict for appledisplay
+Subject: [PATCH 5.10 402/451] leds: lp50xx: Get rid of redundant check in lp50xx_enable_disable()
 Date: Thu, 15 Jan 2026 17:50:03 +0100
-Message-ID: <20260115164305.764371046@linuxfoundation.org>
+Message-ID: <20260115164245.481384446@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,52 +58,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
+[ Upstream commit 5d2bfb3fb95b2d448c0fbcaa2c58b215b2fa87fc ]
 
-For years I wondered why the Apple Cinema Display driver would not
-just work for me. Turns out the hidraw driver instantly takes it
-over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
+Since GPIO is optional the API is NULL aware and will check descriptor anyway.
+Remove duplicate redundant check in lp50xx_enable_disable().
 
-Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
-Signed-off-by: René Rebe <rene@exactco.de>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Pavel Machek <pavel@ucw.cz>
+Stable-dep-of: 434959618c47 ("leds: leds-lp50xx: Enable chip before any communication")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-quirks.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/leds/leds-lp50xx.c |    8 +++-----
+ 1 file changed, 3 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index 4b645db5cd4bc..cc2f462fced27 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -220,6 +220,15 @@ static const struct hid_device_id hid_quirks[] = {
-  * used as a driver. See hid_scan_report().
-  */
- static const struct hid_device_id hid_have_special_driver[] = {
-+#if IS_ENABLED(CONFIG_APPLEDISPLAY)
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
-+	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
-+#endif
- #if IS_ENABLED(CONFIG_HID_A4TECH)
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
--- 
-2.51.0
-
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -380,11 +380,9 @@ static int lp50xx_enable_disable(struct
+ {
+ 	int ret;
+ 
+-	if (priv->enable_gpio) {
+-		ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
+-		if (ret)
+-			return ret;
+-	}
++	ret = gpiod_direction_output(priv->enable_gpio, enable_disable);
++	if (ret)
++		return ret;
+ 
+ 	if (enable_disable)
+ 		return regmap_write(priv->regmap, LP50XX_DEV_CFG0, LP50XX_CHIP_EN);
 
 
 
