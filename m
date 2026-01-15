@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-209920-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209465-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 83B61D2786C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id BDBA0D26C7A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 86C7230CDAE8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7730B30C99FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFBB53D348B;
-	Thu, 15 Jan 2026 18:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B10DE39E6EA;
+	Thu, 15 Jan 2026 17:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WFtM/uu3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D27GwgWb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 691203BF2FC;
-	Thu, 15 Jan 2026 18:01:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6555D3624C4;
+	Thu, 15 Jan 2026 17:39:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768500069; cv=none; b=KkBSgHhoyMw1VvzbI+vP1LjUU11zW2WTLbZtBh0Uh16xEsCTm+P219zbTPo6y/9/HOfmX+9ZfflueRsCN9OdSTnzCbW1lGnIL/xjXmtuwXU/pTCVG3Y6Q+Qag9MxK2RSo/K0ufdu+dw0BFVz6ASbNZLnI9d1O+B/FtxfnABmwXY=
+	t=1768498775; cv=none; b=KqD9IBmFl/owjaH3z78Ko33r9Yq1glFFwrnEZ5NAORw77QokLEQFdukQB1FwaNuAs3gtdOoJXqdLvFf8zTrT3dwHVc7dJGx4YZTA9dtmviy23hyh8dSvVrEcOBxslXwuO7TxnB98q1RIoHoQH+ykHbdYLWcwBtc7VAZBtpR9KVo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768500069; c=relaxed/simple;
-	bh=zECb5k6D/MXOVIWqHSPjOmXWFKBAc3ngwqkbhUDw7P8=;
+	s=arc-20240116; t=1768498775; c=relaxed/simple;
+	bh=4ZD2pfzhrX49eguK2Jhkfx1ePbQHf67YJqc0o12TvCY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZxHwtBDbtsOCQAhQlW8UwUA24N74qRnIMq6gdL9otNZCDi7GHRw1x3fk6z/gien3WTKtfMQ4B9cEkd3Xe5kCo2j6QcYpG3ZVzvpr8NEyg31tfPTTld3ijV3qOkv5Q7o2+1oZ1TEQryUhYSE9gBnY9XTvWtfD7+gI7jOWHdUUmL4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WFtM/uu3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACFE6C116D0;
-	Thu, 15 Jan 2026 18:01:08 +0000 (UTC)
+	 MIME-Version; b=Nvt0gaMEPRBItuOswTup7vtB3rVALGqVGWQcc7/yGe0GqlCPhrWwNrayW2sQbqZNB7WUE81hnUxLxPg/ku+3C38WyZvMM6A2roycQlw/eWYVtZy9rbegmh4HJyHysyY4gUJfkH3iOdb8Lfgfys0yNFthjjlRRY2K/uvr1aqVxnk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D27GwgWb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2212C16AAE;
+	Thu, 15 Jan 2026 17:39:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768500069;
-	bh=zECb5k6D/MXOVIWqHSPjOmXWFKBAc3ngwqkbhUDw7P8=;
+	s=korg; t=1768498775;
+	bh=4ZD2pfzhrX49eguK2Jhkfx1ePbQHf67YJqc0o12TvCY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WFtM/uu33qoiVsiyB8WW+OQzmq1jM8iNpJacmLXTnWGdCg3GPxMx8BpppHrkbzydU
-	 iC+1aFb43rBOACFsqsRTMesCuRz/ZSUA0EuDZFVtRrpAiB4TAbQXDzmvtX0pZ9TFcM
-	 MiAExVlhqUhqH3GI5I6oCl1aUZugZYCqGj891J8g=
+	b=D27GwgWbAseboMgknaku9I8Ycuu1HbHT7NFQxP4AMbNLBQMZGeulDXkHrfxu1q6PK
+	 yhDWW5ql2N0e4S4FC9ko86eGXjMdHqIxU8Uj+2zQdBZZtNLBBpmaFkv6iIdpXXc2zc
+	 fQWPhwDuVWpq3LMml+EqLQ3rAqex4UsxLV/XjBG0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 5.10 414/451] drm/pl111: Fix error handling in pl111_amba_probe
+	Laibin Qiu <qiulaibin@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.15 549/554] blk-throttle: Set BIO_THROTTLED when bio has been throttled
 Date: Thu, 15 Jan 2026 17:50:15 +0100
-Message-ID: <20260115164245.915686244@linuxfoundation.org>
+Message-ID: <20260115164306.200991490@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +63,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Laibin Qiu <qiulaibin@huawei.com>
 
-commit 0ddd3bb4b14c9102c0267b3fd916c81fe5ab89c1 upstream.
+[ Upstream commit 5a011f889b4832aa80c2a872a5aade5c48d2756f ]
 
-Jump to the existing dev_put label when devm_request_irq() fails
-so drm_dev_put() and of_reserved_mem_device_release() run
-instead of returning early and leaking resources.
+1.In current process, all bio will set the BIO_THROTTLED flag
+after __blk_throtl_bio().
 
-Found via static analysis and code review.
+2.If bio needs to be throttled, it will start the timer and
+stop submit bio directly. Bio will submit in
+blk_throtl_dispatch_work_fn() when the timer expires.But in
+the current process, if bio is throttled. The BIO_THROTTLED
+will be set to bio after timer start. If the bio has been
+completed, it may cause use-after-free blow.
 
-Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20251211123345.2392065-1-linmq006@gmail.com
+BUG: KASAN: use-after-free in blk_throtl_bio+0x12f0/0x2c70
+Read of size 2 at addr ffff88801b8902d4 by task fio/26380
+
+ dump_stack+0x9b/0xce
+ print_address_description.constprop.6+0x3e/0x60
+ kasan_report.cold.9+0x22/0x3a
+ blk_throtl_bio+0x12f0/0x2c70
+ submit_bio_checks+0x701/0x1550
+ submit_bio_noacct+0x83/0xc80
+ submit_bio+0xa7/0x330
+ mpage_readahead+0x380/0x500
+ read_pages+0x1c1/0xbf0
+ page_cache_ra_unbounded+0x471/0x6f0
+ do_page_cache_ra+0xda/0x110
+ ondemand_readahead+0x442/0xae0
+ page_cache_async_ra+0x210/0x300
+ generic_file_buffered_read+0x4d9/0x2130
+ generic_file_read_iter+0x315/0x490
+ blkdev_read_iter+0x113/0x1b0
+ aio_read+0x2ad/0x450
+ io_submit_one+0xc8e/0x1d60
+ __se_sys_io_submit+0x125/0x350
+ do_syscall_64+0x2d/0x40
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Allocated by task 26380:
+ kasan_save_stack+0x19/0x40
+ __kasan_kmalloc.constprop.2+0xc1/0xd0
+ kmem_cache_alloc+0x146/0x440
+ mempool_alloc+0x125/0x2f0
+ bio_alloc_bioset+0x353/0x590
+ mpage_alloc+0x3b/0x240
+ do_mpage_readpage+0xddf/0x1ef0
+ mpage_readahead+0x264/0x500
+ read_pages+0x1c1/0xbf0
+ page_cache_ra_unbounded+0x471/0x6f0
+ do_page_cache_ra+0xda/0x110
+ ondemand_readahead+0x442/0xae0
+ page_cache_async_ra+0x210/0x300
+ generic_file_buffered_read+0x4d9/0x2130
+ generic_file_read_iter+0x315/0x490
+ blkdev_read_iter+0x113/0x1b0
+ aio_read+0x2ad/0x450
+ io_submit_one+0xc8e/0x1d60
+ __se_sys_io_submit+0x125/0x350
+ do_syscall_64+0x2d/0x40
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Freed by task 0:
+ kasan_save_stack+0x19/0x40
+ kasan_set_track+0x1c/0x30
+ kasan_set_free_info+0x1b/0x30
+ __kasan_slab_free+0x111/0x160
+ kmem_cache_free+0x94/0x460
+ mempool_free+0xd6/0x320
+ bio_free+0xe0/0x130
+ bio_put+0xab/0xe0
+ bio_endio+0x3a6/0x5d0
+ blk_update_request+0x590/0x1370
+ scsi_end_request+0x7d/0x400
+ scsi_io_completion+0x1aa/0xe50
+ scsi_softirq_done+0x11b/0x240
+ blk_mq_complete_request+0xd4/0x120
+ scsi_mq_done+0xf0/0x200
+ virtscsi_vq_done+0xbc/0x150
+ vring_interrupt+0x179/0x390
+ __handle_irq_event_percpu+0xf7/0x490
+ handle_irq_event_percpu+0x7b/0x160
+ handle_irq_event+0xcc/0x170
+ handle_edge_irq+0x215/0xb20
+ common_interrupt+0x60/0x120
+ asm_common_interrupt+0x1e/0x40
+
+Fix this by move BIO_THROTTLED set into the queue_lock.
+
+Signed-off-by: Laibin Qiu <qiulaibin@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20220301123919.2381579-1-qiulaibin@huawei.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Keerthana: Remove 'out' and handle return with reference to commit 81c7a63 ]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/pl111/pl111_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/blk-throttle.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/drivers/gpu/drm/pl111/pl111_drv.c
-+++ b/drivers/gpu/drm/pl111/pl111_drv.c
-@@ -302,7 +302,7 @@ static int pl111_amba_probe(struct amba_
- 			       variant->name, priv);
- 	if (ret != 0) {
- 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
--		return ret;
-+		goto dev_put;
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -2222,8 +2222,10 @@ bool blk_throtl_bio(struct bio *bio)
+ 	rcu_read_lock();
+ 
+ 	/* see throtl_charge_bio() */
+-	if (bio_flagged(bio, BIO_THROTTLED))
+-		goto out;
++	if (bio_flagged(bio, BIO_THROTTLED)) {
++		rcu_read_unlock();
++		return false;
++	}
+ 
+ 	if (!cgroup_subsys_on_dfl(io_cgrp_subsys)) {
+ 		blkg_rwstat_add(&tg->stat_bytes, bio->bi_opf,
+@@ -2231,8 +2233,10 @@ bool blk_throtl_bio(struct bio *bio)
+ 		blkg_rwstat_add(&tg->stat_ios, bio->bi_opf, 1);
  	}
  
- 	ret = pl111_modeset_init(drm);
+-	if (!tg->has_rules[rw])
+-		goto out;
++	if (!tg->has_rules[rw]) {
++		rcu_read_unlock();
++		return false;
++	}
+ 
+ 	spin_lock_irq(&q->queue_lock);
+ 
+@@ -2316,14 +2320,14 @@ again:
+ 	}
+ 
+ out_unlock:
+-	spin_unlock_irq(&q->queue_lock);
+-out:
+ 	bio_set_flag(bio, BIO_THROTTLED);
+ 
+ #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+ 	if (throttled || !td->track_bio_latency)
+ 		bio->bi_issue.value |= BIO_ISSUE_THROTL_SKIP_LATENCY;
+ #endif
++	spin_unlock_irq(&q->queue_lock);
++
+ 	rcu_read_unlock();
+ 	return throttled;
+ }
 
 
 
