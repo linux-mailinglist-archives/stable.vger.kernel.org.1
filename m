@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209329-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4EC8BD26DE2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:18 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B167D27242
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A08A031D5530
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id E3E3231475DD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35C2F3C0093;
-	Thu, 15 Jan 2026 17:33:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2DF3BF2FC;
+	Thu, 15 Jan 2026 17:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qBClWYMj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVUVwdvj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ECDE726CE04;
-	Thu, 15 Jan 2026 17:33:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733293C1994;
+	Thu, 15 Jan 2026 17:51:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498386; cv=none; b=gq4cnqiYG8hvpAJaycLOkeA4qBc8gHEswRKYNfygkNz4DuKrM0DgI43yVBHxjdB6VRcXRWL3j+Q3OBtoV0tlxOwzuLfs+TvdrfHO0tuenar4YifEwtz25wgi9hfel37pEoK6RdcHz8CotHoe6DqxEWFEvH5kPGhtWY94VLww7Bc=
+	t=1768499510; cv=none; b=Oh0TnWPf3Eeg9leqFKXVz2rFUbWmeMKmo+qRLoVXZDrNCVTgEQl0efJa6Dq3PXSlmRN/0MtmUig9rUDuie5PbmNfL4wq8x3fhXP6dPfBBFpFh51OkJ9CD26QDxmLr1e+PCJXyT4JaHmE1vGxB7j5gjz3TqGERnNmgc4FuoprlOk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498386; c=relaxed/simple;
-	bh=iUGgGcup5sSXrVzcVvyb+q+CyjfRFvYK7+bg3H2rIPg=;
+	s=arc-20240116; t=1768499510; c=relaxed/simple;
+	bh=E/xF8ZYGoQg/0sH6txWOgSiw3jL/CHdbLmfXoKnNJY4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KIGxJ/bqCP10GoAp8ucxVGvt81dGivDnj7GycLsWLDUzAjsYN03q08B1daKz0PZgfrLgSxOUVQyQx4R8h4XLeIvlwSa5DYIwFlvXg0AH0wN6JNBikYbOC3geWuJceWJYDYtBWFiDxIVbJH8amHxIKBRMxWbDHGceRC7KwbEYAyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qBClWYMj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 790CAC116D0;
-	Thu, 15 Jan 2026 17:33:05 +0000 (UTC)
+	 MIME-Version; b=Hutij0NrosOgJm8r3Cw1BFnYn1dY+9AQ9QbK56w6iv/mi8ZlABVM9b0rqg5gO7zqi4RgoBePKrv+IFsIJEgrDFyPfXqy3tEtNCY3Uc63K9rCR7AQ1SmTeCF4TxAqBcpZG/0PKcuiP2r0nRDQxCPXFnCpwjrFEXkyT4Nx0rALj+4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVUVwdvj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED2EC116D0;
+	Thu, 15 Jan 2026 17:51:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498385;
-	bh=iUGgGcup5sSXrVzcVvyb+q+CyjfRFvYK7+bg3H2rIPg=;
+	s=korg; t=1768499510;
+	bh=E/xF8ZYGoQg/0sH6txWOgSiw3jL/CHdbLmfXoKnNJY4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qBClWYMjA00IYOXFSKj5aGfTJTsksBSTzlrFG25K8hjMN0BXamGfDnLHMvAxfEvlw
-	 6CiKkvNnBPVunPJupI50XrHqDuDAVFYMe++mmwC36d5n7hqjsKN/0Ryrsov3FFt0jX
-	 fyPxWfOKKdNTUcGLsJ8s23tOSBaSXeYa/OlBD9KA=
+	b=fVUVwdvj0ycFyRZUdnG3ZLnhut3e8+bC06pKh9DFBnrSz+J/xWw7wVZkun/AIVAmM
+	 Yg81LN3bLQH1nx936D8K2dDO1wQ1RqmK31w+HPZ5BIcN2T+9NJUDc4foGDS1mdF3+4
+	 Daq4zBPM7ocydqoBTNOQOWUVtXw1I/SEFB4Sfvtc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-	Lee Jones <lee@kernel.org>
-Subject: [PATCH 5.15 386/554] mfd: max77620: Fix potential IRQ chip conflict when probing two devices
-Date: Thu, 15 Jan 2026 17:47:32 +0100
-Message-ID: <20260115164300.210585084@linuxfoundation.org>
+	ziming zhang <ezrakiez@gmail.com>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Xiubo Li <xiubli@redhat.com>
+Subject: [PATCH 5.10 252/451] libceph: make decode_pool() more resilient against corrupted osdmaps
+Date: Thu, 15 Jan 2026 17:47:33 +0100
+Message-ID: <20260115164240.007098684@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,86 +60,226 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 2bac49bad1f3553cc3b3bfb22cc194e9bd9e8427 upstream.
+commit 8c738512714e8c0aa18f8a10c072d5b01c83db39 upstream.
 
-MAX77620 is most likely always a single device on the board, however
-nothing stops board designers to have two of them, thus same device
-driver could probe twice. Or user could manually try to probing second
-time.
+If the osdmap is (maliciously) corrupted such that the encoded length
+of ceph_pg_pool envelope is less than what is expected for a particular
+encoding version, out-of-bounds reads may ensue because the only bounds
+check that is there is based on that length value.
 
-Device driver is not ready for that case, because it allocates
-statically 'struct regmap_irq_chip' as non-const and stores during
-probe in 'irq_drv_data' member a pointer to per-probe state
-container ('struct max77620_chip').  devm_regmap_add_irq_chip() does not
-make a copy of 'struct regmap_irq_chip' but store the pointer.
-
-Second probe - either successful or failure - would overwrite the
-'irq_drv_data' from previous device probe, so interrupts would be
-executed in a wrong context.
+This patch adds explicit bounds checks for each field that is decoded
+or skipped.
 
 Cc: stable@vger.kernel.org
-Fixes: 3df140d11c6d ("mfd: max77620: Mask/unmask interrupt before/after servicing it")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://patch.msgid.link/20251023101939.67991-2-krzysztof.kozlowski@linaro.org
-Signed-off-by: Lee Jones <lee@kernel.org>
+Reported-by: ziming zhang <ezrakiez@gmail.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Xiubo Li <xiubli@redhat.com>
+Tested-by: ziming zhang <ezrakiez@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mfd/max77620.c |   15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ net/ceph/osdmap.c |  118 ++++++++++++++++++++++++------------------------------
+ 1 file changed, 53 insertions(+), 65 deletions(-)
 
---- a/drivers/mfd/max77620.c
-+++ b/drivers/mfd/max77620.c
-@@ -254,7 +254,7 @@ static int max77620_irq_global_unmask(vo
- 	return ret;
- }
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -790,51 +790,49 @@ static int decode_pool(void **p, void *e
+ 	ceph_decode_need(p, end, len, bad);
+ 	pool_end = *p + len;
  
--static struct regmap_irq_chip max77620_top_irq_chip = {
-+static const struct regmap_irq_chip max77620_top_irq_chip = {
- 	.name = "max77620-top",
- 	.irqs = max77620_top_irqs,
- 	.num_irqs = ARRAY_SIZE(max77620_top_irqs),
-@@ -499,6 +499,7 @@ static int max77620_probe(struct i2c_cli
- {
- 	const struct regmap_config *rmap_config;
- 	struct max77620_chip *chip;
-+	struct regmap_irq_chip *chip_desc;
- 	const struct mfd_cell *mfd_cells;
- 	int n_mfd_cells;
- 	bool pm_off;
-@@ -509,6 +510,14 @@ static int max77620_probe(struct i2c_cli
- 		return -ENOMEM;
++	ceph_decode_need(p, end, 4 + 4 + 4, bad);
+ 	pi->type = ceph_decode_8(p);
+ 	pi->size = ceph_decode_8(p);
+ 	pi->crush_ruleset = ceph_decode_8(p);
+ 	pi->object_hash = ceph_decode_8(p);
+-
+ 	pi->pg_num = ceph_decode_32(p);
+ 	pi->pgp_num = ceph_decode_32(p);
  
- 	i2c_set_clientdata(client, chip);
+-	*p += 4 + 4;  /* skip lpg* */
+-	*p += 4;      /* skip last_change */
+-	*p += 8 + 4;  /* skip snap_seq, snap_epoch */
++	/* lpg*, last_change, snap_seq, snap_epoch */
++	ceph_decode_skip_n(p, end, 8 + 4 + 8 + 4, bad);
+ 
+ 	/* skip snaps */
+-	num = ceph_decode_32(p);
++	ceph_decode_32_safe(p, end, num, bad);
+ 	while (num--) {
+-		*p += 8;  /* snapid key */
+-		*p += 1 + 1; /* versions */
+-		len = ceph_decode_32(p);
+-		*p += len;
++		/* snapid key, pool snap (with versions) */
++		ceph_decode_skip_n(p, end, 8 + 2, bad);
++		ceph_decode_skip_string(p, end, bad);
+ 	}
+ 
+-	/* skip removed_snaps */
+-	num = ceph_decode_32(p);
+-	*p += num * (8 + 8);
++	/* removed_snaps */
++	ceph_decode_skip_map(p, end, 64, 64, bad);
+ 
++	ceph_decode_need(p, end, 8 + 8 + 4, bad);
+ 	*p += 8;  /* skip auid */
+ 	pi->flags = ceph_decode_64(p);
+ 	*p += 4;  /* skip crash_replay_interval */
+ 
+ 	if (ev >= 7)
+-		pi->min_size = ceph_decode_8(p);
++		ceph_decode_8_safe(p, end, pi->min_size, bad);
+ 	else
+ 		pi->min_size = pi->size - pi->size / 2;
+ 
+ 	if (ev >= 8)
+-		*p += 8 + 8;  /* skip quota_max_* */
++		/* quota_max_* */
++		ceph_decode_skip_n(p, end, 8 + 8, bad);
+ 
+ 	if (ev >= 9) {
+-		/* skip tiers */
+-		num = ceph_decode_32(p);
+-		*p += num * 8;
++		/* tiers */
++		ceph_decode_skip_set(p, end, 64, bad);
+ 
++		ceph_decode_need(p, end, 8 + 1 + 8 + 8, bad);
+ 		*p += 8;  /* skip tier_of */
+ 		*p += 1;  /* skip cache_mode */
+-
+ 		pi->read_tier = ceph_decode_64(p);
+ 		pi->write_tier = ceph_decode_64(p);
+ 	} else {
+@@ -842,86 +840,76 @@ static int decode_pool(void **p, void *e
+ 		pi->write_tier = -1;
+ 	}
+ 
+-	if (ev >= 10) {
+-		/* skip properties */
+-		num = ceph_decode_32(p);
+-		while (num--) {
+-			len = ceph_decode_32(p);
+-			*p += len; /* key */
+-			len = ceph_decode_32(p);
+-			*p += len; /* val */
+-		}
+-	}
++	if (ev >= 10)
++		/* properties */
++		ceph_decode_skip_map(p, end, string, string, bad);
+ 
+ 	if (ev >= 11) {
+-		/* skip hit_set_params */
+-		*p += 1 + 1; /* versions */
+-		len = ceph_decode_32(p);
+-		*p += len;
++		/* hit_set_params (with versions) */
++		ceph_decode_skip_n(p, end, 2, bad);
++		ceph_decode_skip_string(p, end, bad);
+ 
+-		*p += 4; /* skip hit_set_period */
+-		*p += 4; /* skip hit_set_count */
++		/* hit_set_period, hit_set_count */
++		ceph_decode_skip_n(p, end, 4 + 4, bad);
+ 	}
+ 
+ 	if (ev >= 12)
+-		*p += 4; /* skip stripe_width */
++		/* stripe_width */
++		ceph_decode_skip_32(p, end, bad);
+ 
+-	if (ev >= 13) {
+-		*p += 8; /* skip target_max_bytes */
+-		*p += 8; /* skip target_max_objects */
+-		*p += 4; /* skip cache_target_dirty_ratio_micro */
+-		*p += 4; /* skip cache_target_full_ratio_micro */
+-		*p += 4; /* skip cache_min_flush_age */
+-		*p += 4; /* skip cache_min_evict_age */
+-	}
+-
+-	if (ev >=  14) {
+-		/* skip erasure_code_profile */
+-		len = ceph_decode_32(p);
+-		*p += len;
+-	}
++	if (ev >= 13)
++		/* target_max_*, cache_target_*, cache_min_* */
++		ceph_decode_skip_n(p, end, 16 + 8 + 8, bad);
 +
-+	chip_desc = devm_kmemdup(&client->dev, &max77620_top_irq_chip,
-+				 sizeof(max77620_top_irq_chip),
-+				 GFP_KERNEL);
-+	if (!chip_desc)
-+		return -ENOMEM;
-+	chip_desc->irq_drv_data = chip;
-+
- 	chip->dev = &client->dev;
- 	chip->chip_irq = client->irq;
- 	chip->chip_id = (enum max77620_chip_id)id->driver_data;
-@@ -545,11 +554,9 @@ static int max77620_probe(struct i2c_cli
- 	if (ret < 0)
- 		return ret;
++	if (ev >= 14)
++		/* erasure_code_profile */
++		ceph_decode_skip_string(p, end, bad);
  
--	max77620_top_irq_chip.irq_drv_data = chip;
- 	ret = devm_regmap_add_irq_chip(chip->dev, chip->rmap, client->irq,
- 				       IRQF_ONESHOT | IRQF_SHARED, 0,
--				       &max77620_top_irq_chip,
--				       &chip->top_irq_data);
-+				       chip_desc, &chip->top_irq_data);
- 	if (ret < 0) {
- 		dev_err(chip->dev, "Failed to add regmap irq: %d\n", ret);
- 		return ret;
+ 	/*
+ 	 * last_force_op_resend_preluminous, will be overridden if the
+ 	 * map was encoded with RESEND_ON_SPLIT
+ 	 */
+ 	if (ev >= 15)
+-		pi->last_force_request_resend = ceph_decode_32(p);
++		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
+ 	else
+ 		pi->last_force_request_resend = 0;
+ 
+ 	if (ev >= 16)
+-		*p += 4; /* skip min_read_recency_for_promote */
++		/* min_read_recency_for_promote */
++		ceph_decode_skip_32(p, end, bad);
+ 
+ 	if (ev >= 17)
+-		*p += 8; /* skip expected_num_objects */
++		/* expected_num_objects */
++		ceph_decode_skip_64(p, end, bad);
+ 
+ 	if (ev >= 19)
+-		*p += 4; /* skip cache_target_dirty_high_ratio_micro */
++		/* cache_target_dirty_high_ratio_micro */
++		ceph_decode_skip_32(p, end, bad);
+ 
+ 	if (ev >= 20)
+-		*p += 4; /* skip min_write_recency_for_promote */
++		/* min_write_recency_for_promote */
++		ceph_decode_skip_32(p, end, bad);
+ 
+ 	if (ev >= 21)
+-		*p += 1; /* skip use_gmt_hitset */
++		/* use_gmt_hitset */
++		ceph_decode_skip_8(p, end, bad);
+ 
+ 	if (ev >= 22)
+-		*p += 1; /* skip fast_read */
++		/* fast_read */
++		ceph_decode_skip_8(p, end, bad);
+ 
+-	if (ev >= 23) {
+-		*p += 4; /* skip hit_set_grade_decay_rate */
+-		*p += 4; /* skip hit_set_search_last_n */
+-	}
++	if (ev >= 23)
++		/* hit_set_grade_decay_rate, hit_set_search_last_n */
++		ceph_decode_skip_n(p, end, 4 + 4, bad);
+ 
+ 	if (ev >= 24) {
+-		/* skip opts */
+-		*p += 1 + 1; /* versions */
+-		len = ceph_decode_32(p);
+-		*p += len;
++		/* opts (with versions) */
++		ceph_decode_skip_n(p, end, 2, bad);
++		ceph_decode_skip_string(p, end, bad);
+ 	}
+ 
+ 	if (ev >= 25)
+-		pi->last_force_request_resend = ceph_decode_32(p);
++		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
+ 
+ 	/* ignore the rest */
+ 
 
 
 
