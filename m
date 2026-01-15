@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-209479-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209863-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B4119D27720
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:48 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8585D2750D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6D96A3090B60
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:13 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1EF8F309EEC7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8BC27AC5C;
-	Thu, 15 Jan 2026 17:40:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 055793D7D34;
+	Thu, 15 Jan 2026 17:58:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZFA8u9/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mPGZ0FWB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1B41A2389;
-	Thu, 15 Jan 2026 17:40:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDF9F3D7D2B;
+	Thu, 15 Jan 2026 17:58:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498812; cv=none; b=pSS/yO1msiFGiJVxLiWK5HurG6UsqxLASvLRjkJipFJeBAwMtbX90sIvY0Kmyr9adJbr/QaKexm1kQB55pBNx2hWtVtFvsdzjumuPkgvJn1qyR0z2YGhkKQOk00UX46H9w3H3/9Gj5duwutIyNHaALDs5ij2cXECZm0wJacpBZc=
+	t=1768499906; cv=none; b=loSN45CMNBSirvsgBHp+SsgphotbcTH8CQ/I0jHPf6XyVJ4FtNYvtoPVYZCYQ4yJRRpRh+qmm4SNN1uUjsmU6pofDrz4/9dbQt96/d10RwvAOu8uXQSaRlYYgCnReu7LM7/oV0hac8gYVEW7ntbVOPKLCDHiaznmCiYKnsmGfFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498812; c=relaxed/simple;
-	bh=5L33FaXvxAxWpReGRg68xoI7cMEb8tHDn3UcKAe5ORM=;
+	s=arc-20240116; t=1768499906; c=relaxed/simple;
+	bh=8RhHrsSCUZNGlHhkav5OmL3U6AixnnjngBUtGK9luDw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L4TWXXmmtNwRU6L/5QAR898szzb8YVPnzc55zpUz/I2JDORPrqrGRmSXP60RQAhB/jD0/TnXgcEfEXB3k06PjB5HCbZPQRg3dibPG3vu1mUytkIwKtFJFarl6nByTTjlO8k0TSdjx17+8+ag5aL+ozI0hRyq69qcjgSYoUpkmoI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZFA8u9/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69510C116D0;
-	Thu, 15 Jan 2026 17:40:12 +0000 (UTC)
+	 MIME-Version; b=lxcalm3MWkvikOJXISsdIHEumM6WcLV4ymTqmY+MLumSEmiA3TzYFkXXphSGXWeRMxPCuYMZDWM+Ww4+u6GzWqmKUKXfOZRy6QAsxgw6GCFRdDdC59hN2IAdUN8llskeIyScs366HNGBlM+qi5L3cXADtVCa5Z7EEd5kUNLnRTI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mPGZ0FWB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48FF6C19422;
+	Thu, 15 Jan 2026 17:58:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498812;
-	bh=5L33FaXvxAxWpReGRg68xoI7cMEb8tHDn3UcKAe5ORM=;
+	s=korg; t=1768499906;
+	bh=8RhHrsSCUZNGlHhkav5OmL3U6AixnnjngBUtGK9luDw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XZFA8u9/J6LDaHOkIOh0PncUzYTirrtGOczaM5mC6Tc5EWOIA4Ib8urYzCxD9yexW
-	 v9WKcBgsFduwuOU1MiGismiDIuIkN30aM6nHN7/ptMvwmhvNk8OGyFDmWjogHScODW
-	 zmNCNsuqSrdH0lJQTbemlMqnst/1ww8MFmP9uMbA=
+	b=mPGZ0FWB/pYSJAV4XtBn73+VxNa8mUwc+t3N2XxuUwnBPZxKAckLPfea9O0iv64tA
+	 N9ZnCFTuNfyHXgR2eBjLDk+K0iyWgoxMR/Hmc8zwM7SfNR/fljbYPjB+p0rF9JBfF+
+	 7wVmnYq6egkR+ccI+a5k4QgEKVwwXyI3YILa7dhA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
+	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
+	Stefan Christ <contact@stefanchrist.eu>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	dri-devel@lists.freedesktop.org,
+	Thomas Zimmermann <tzimmermann@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 526/554] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
+Subject: [PATCH 5.10 391/451] drm/gma500: Remove unused helper psb_fbdev_fb_setcolreg()
 Date: Thu, 15 Jan 2026 17:49:52 +0100
-Message-ID: <20260115164305.367012446@linuxfoundation.org>
+Message-ID: <20260115164245.076992584@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +63,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
+[ Upstream commit be729f9de6c64240645dc80a24162ac4d3fe00a8 ]
 
-In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
-the err_release_rule label without freeing the allocated flow, leading
-to a memory leak.
+Remove psb_fbdev_fb_setcolreg(), which hasn't been called in almost
+a decade.
 
-Fix this by adding a new label err_destroy_flow and jumping to it when
-nft_use_inc() fails. This ensures that the flow is properly released
-in this error case.
+Gma500 commit 4d8d096e9ae8 ("gma500: introduce the framebuffer support
+code") added the helper psb_fbdev_fb_setcolreg() for setting the fbdev
+palette via fbdev's fb_setcolreg callback. Later
+commit 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for
+fb_ops") set several default helpers for fbdev emulation, including
+fb_setcmap.
 
-Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+The fbdev subsystem always prefers fb_setcmap over fb_setcolreg. [1]
+Hence, the gma500 code is no longer in use and gma500 has been using
+drm_fb_helper_setcmap() for several years without issues.
+
+Fixes: 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for fb_ops")
+Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Cc: Stefan Christ <contact@stefanchrist.eu>
+Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v4.10+
+Link: https://elixir.bootlin.com/linux/v6.16.9/source/drivers/video/fbdev/core/fbcmap.c#L246 # [1]
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Acked-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
+Link: https://lore.kernel.org/r/20250929082338.18845-1-tzimmermann@suse.de
+[ adapted file path from fbdev.c to framebuffer.c and removed fb_setcolreg from three fb_ops structures ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/gma500/framebuffer.c |   44 -----------------------------------
+ 1 file changed, 44 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 91b012e476be6..e37d2ef9538e5 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -3741,7 +3741,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+--- a/drivers/gpu/drm/gma500/framebuffer.c
++++ b/drivers/gpu/drm/gma500/framebuffer.c
+@@ -34,47 +34,6 @@ static const struct drm_framebuffer_func
+ 	.create_handle = drm_gem_fb_create_handle,
+ };
  
- 	if (!nft_use_inc(&chain->use)) {
- 		err = -EMFILE;
--		goto err_release_rule;
-+		goto err_destroy_flow;
- 	}
- 
- 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
-@@ -3791,6 +3791,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
- 
- err_destroy_flow_rule:
- 	nft_use_dec_restore(&chain->use);
-+err_destroy_flow:
- 	if (flow)
- 		nft_flow_rule_destroy(flow);
- err_release_rule:
--- 
-2.51.0
-
+-#define CMAP_TOHW(_val, _width) ((((_val) << (_width)) + 0x7FFF - (_val)) >> 16)
+-
+-static int psbfb_setcolreg(unsigned regno, unsigned red, unsigned green,
+-			   unsigned blue, unsigned transp,
+-			   struct fb_info *info)
+-{
+-	struct drm_fb_helper *fb_helper = info->par;
+-	struct drm_framebuffer *fb = fb_helper->fb;
+-	uint32_t v;
+-
+-	if (!fb)
+-		return -ENOMEM;
+-
+-	if (regno > 255)
+-		return 1;
+-
+-	red = CMAP_TOHW(red, info->var.red.length);
+-	blue = CMAP_TOHW(blue, info->var.blue.length);
+-	green = CMAP_TOHW(green, info->var.green.length);
+-	transp = CMAP_TOHW(transp, info->var.transp.length);
+-
+-	v = (red << info->var.red.offset) |
+-	    (green << info->var.green.offset) |
+-	    (blue << info->var.blue.offset) |
+-	    (transp << info->var.transp.offset);
+-
+-	if (regno < 16) {
+-		switch (fb->format->cpp[0] * 8) {
+-		case 16:
+-			((uint32_t *) info->pseudo_palette)[regno] = v;
+-			break;
+-		case 24:
+-		case 32:
+-			((uint32_t *) info->pseudo_palette)[regno] = v;
+-			break;
+-		}
+-	}
+-
+-	return 0;
+-}
+-
+ static int psbfb_pan(struct fb_var_screeninfo *var, struct fb_info *info)
+ {
+ 	struct drm_fb_helper *fb_helper = info->par;
+@@ -167,7 +126,6 @@ static int psbfb_mmap(struct fb_info *in
+ static const struct fb_ops psbfb_ops = {
+ 	.owner = THIS_MODULE,
+ 	DRM_FB_HELPER_DEFAULT_OPS,
+-	.fb_setcolreg = psbfb_setcolreg,
+ 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
+ 	.fb_copyarea = psbfb_copyarea,
+ 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
+@@ -178,7 +136,6 @@ static const struct fb_ops psbfb_ops = {
+ static const struct fb_ops psbfb_roll_ops = {
+ 	.owner = THIS_MODULE,
+ 	DRM_FB_HELPER_DEFAULT_OPS,
+-	.fb_setcolreg = psbfb_setcolreg,
+ 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
+ 	.fb_copyarea = drm_fb_helper_cfb_copyarea,
+ 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
+@@ -189,7 +146,6 @@ static const struct fb_ops psbfb_roll_op
+ static const struct fb_ops psbfb_unaccel_ops = {
+ 	.owner = THIS_MODULE,
+ 	DRM_FB_HELPER_DEFAULT_OPS,
+-	.fb_setcolreg = psbfb_setcolreg,
+ 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
+ 	.fb_copyarea = drm_fb_helper_cfb_copyarea,
+ 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
 
 
 
