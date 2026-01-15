@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-209390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 219C5D26B33
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:03 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B04D27419
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3E496306BD29
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1B43830EBE96
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75AA23C00B1;
-	Thu, 15 Jan 2026 17:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35AA3D2FF0;
+	Thu, 15 Jan 2026 17:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gi93e65p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHQK1fCo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37F5E3C00A5;
-	Thu, 15 Jan 2026 17:36:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84233D2FE6;
+	Thu, 15 Jan 2026 17:55:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498560; cv=none; b=g408SIqeoi9ZDDT+KUJOCEo+cRS1wR6Su/UwXVJDCqUEznt6EET6VUZiqyvQfEb3srKRKQPuBSBeSZ/NB5taGA1LvZiZ4LcmMJDLkoF+GiFAgmlSdsOzKN5Z7Np8yTmrNQ9U/6C9KDB/OCA28lk+i12UA+JaS4QSfPC2HUw9TQg=
+	t=1768499709; cv=none; b=BaroNF0j9W6OFyWP5u9V/njlyUBy6i8V1XSu3Uiqwy1C/+AA7fFpkRls9TqR8/ZHO1oIceKFbXgW4JWKs0grfUJm70rtQpdSrGhXuQrID8fR9WRdZJih1NZA7HplQJV76VNOEa/RYo9s1avMg823UU4+vuDgpIcaap0Bokzy/dM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498560; c=relaxed/simple;
-	bh=JIVlCRng450I/8LeGCFXaMFenfMqzO7vMCMOzZ7xuFc=;
+	s=arc-20240116; t=1768499709; c=relaxed/simple;
+	bh=xB06htfO3t48LXMupJtuk3SRnNx6xW/o0waUuFiNMj0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJF99b4eS2Nmv4V9UmB4D2hbroaMFb9ej7vaKM29cr5TYgyhW0QDy7IgM85LS9t5Jt2lmL1tpImsxLuTaiCd+vpKgE6MZI8iQHC44mTgxrEx+V+cKhJvy7Mf1Z5KPxhDx7hb0ba3/JVsxs9h8lTeP89uozq7MhC2ud21wDiiVvM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gi93e65p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8D52C16AAE;
-	Thu, 15 Jan 2026 17:35:59 +0000 (UTC)
+	 MIME-Version; b=GLUTuTHoLSmHWmPSclHvArCLR44QNmrkNe+xDLQQfQdJFKZgOLta3oxcj3MLZGjjH0j5T5ILYg1Zpjmp2K3M87TbQVMTYxD/1vOQ1zmX8HIzgjjDChgYuitJrrriTTtfHhXzGICkm6HWPrppqn6Hi20BFmyCFyd/jWimWFo1RN0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHQK1fCo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361BDC116D0;
+	Thu, 15 Jan 2026 17:55:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498560;
-	bh=JIVlCRng450I/8LeGCFXaMFenfMqzO7vMCMOzZ7xuFc=;
+	s=korg; t=1768499709;
+	bh=xB06htfO3t48LXMupJtuk3SRnNx6xW/o0waUuFiNMj0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gi93e65pystN+GsZC9QZwrZRb8bCovgchDGGYQrIyFqDwk1Ee0wA8xl0CvSNoNBhe
-	 UyHqZ0fhvm7NySE3hS55JQYieiI2ymRYcDUFKHb/CTmjF+rLXQcIIBUtw2ATXcZriZ
-	 wk0PARzZORgSmQ8Ykuzs9UEOFgJDZ+i3Rx8TAf+w=
+	b=iHQK1fCoqn5fLrI7dgT0oGcZs3tExk+oO7eikOARFqyREPR/IDcKKqbn6/UFMD2my
+	 2yIppfmkra/qytxabDy9ZFuInss83IPhqRYMd0CAfBVsYYCH+3ZdHHTY4f7A8jcViY
+	 XYLh9QPzcvIk5N27m0Tm7VSzUU9WTpd7jK+yaQfM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 457/554] media: vpif_capture: fix section mismatch
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10 322/451] media: cec: Fix debugfs leak on bus_register() failure
 Date: Thu, 15 Jan 2026 17:48:43 +0100
-Message-ID: <20260115164302.820793218@linuxfoundation.org>
+Message-ID: <20260115164242.548419887@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 0ef841113724166c3c484d0e9ae6db1eb5634fde ]
+commit c43bcd2b2aa3c2ca9d2433c3990ecbc2c47d10eb upstream.
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init.
+In cec_devnode_init(), the debugfs directory created with
+debugfs_create_dir() is not removed if bus_register() fails.
+This leaves a stale "cec" entry in debugfs and prevents
+proper module reloading.
 
-Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
-mismatch warning") incorrectly suppressed the modpost warning.
+Fix this by removing the debugfs directory in the error path.
 
-Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
-Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
-Cc: stable@vger.kernel.org	# 2.6.32
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: a56960e8b406 ("[media] cec: add HDMI CEC framework (core)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/davinci/vpif_capture.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/media/cec/core/cec-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/platform/davinci/vpif_capture.c
-+++ b/drivers/media/platform/davinci/vpif_capture.c
-@@ -1614,7 +1614,7 @@ err_cleanup:
-  * This creates device entries by register itself to the V4L2 driver and
-  * initializes fields of each channel objects
-  */
--static __init int vpif_probe(struct platform_device *pdev)
-+static int vpif_probe(struct platform_device *pdev)
- {
- 	struct vpif_subdev_info *subdevdata;
- 	struct i2c_adapter *i2c_adap;
-@@ -1817,7 +1817,7 @@ static int vpif_resume(struct device *de
+--- a/drivers/media/cec/core/cec-core.c
++++ b/drivers/media/cec/core/cec-core.c
+@@ -433,6 +433,7 @@ static int __init cec_devnode_init(void)
  
- static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
- 
--static __refdata struct platform_driver vpif_driver = {
-+static struct platform_driver vpif_driver = {
- 	.driver	= {
- 		.name	= VPIF_DRIVER_NAME,
- 		.pm	= &vpif_pm_ops,
+ 	ret = bus_register(&cec_bus_type);
+ 	if (ret < 0) {
++		debugfs_remove_recursive(top_cec_dir);
+ 		unregister_chrdev_region(cec_dev_t, CEC_NUM_DEVICES);
+ 		pr_warn("cec: bus_register failed\n");
+ 		return -EIO;
 
 
 
