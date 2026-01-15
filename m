@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208707-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208781-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9442FD262DB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49472D262A5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E9E7F30D0313
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:38 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5653C301D128
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A04F2C028F;
-	Thu, 15 Jan 2026 17:03:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE0C22D781B;
+	Thu, 15 Jan 2026 17:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CuSD266L"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gFZGHLDL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8F4A3BC4DA;
-	Thu, 15 Jan 2026 17:03:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7EF3F3A0E94;
+	Thu, 15 Jan 2026 17:07:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496617; cv=none; b=VGbYEb+gtEqZXugRWX8xS01Jcu8RoZI8xHe5xqgj3H1wECoDwptMf2/UHEw7FRzqRGHhUiV27ybqUJwSb83q6qHQlDVeWa1CsEP7D+zpfK8b51zY39yO4Ti8ZRJiS11d20ql1dnsUYbLuO4pU9f75Xwwnx9xUEMDSTHlcK9aNL8=
+	t=1768496824; cv=none; b=geWMYzaulZg2/HQ6pdaPfTwC7owndTdHcODnsrhR5hP8HWrQ89TjE3eGpRTaNg1pP9ul5vJq6vX2o7rqHeFif/brrrDkbOcjybSubA58LCTwcsgPvTw4VD+cqC3BQ1fIVp7M+iec10UnBtdfyIO8dPCXxQYKOj6HxxcrQMxuSIw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496617; c=relaxed/simple;
-	bh=MguM8u2zeY9UgYN8sDflQnN2rnbyz2lw+RIOlDyuhjg=;
+	s=arc-20240116; t=1768496824; c=relaxed/simple;
+	bh=7m+XyKE2ZPuiorwr+XGHXUO3fNGM0i3OsrSFCsPV7hk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ufBSO12TfIWD4Sor9fTepqObwZtfG3geKCq9AKQ+a09Bf65u2Rcl21G7GAYDehruaqV+OBLUrmcAcdXKzex52x2ixSzqGqtspvvYc0/SqKAW+inmu4yoM1knvrLKGAhhe+8GGr15AenaR+zdG+If5fIaR9XJeyCsAsawAs/EdMI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CuSD266L; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 285C8C116D0;
-	Thu, 15 Jan 2026 17:03:36 +0000 (UTC)
+	 MIME-Version; b=X95BIpzBZWUPdD89yx8Fkr2Tx23QzfNCS2isaqb95fVOWCAtyDv5YlWhgNxZwGCANcKL+R4gQF0cB4ZF8uTP+Evlq8JchaBD8BoLSv4P2PA6iuREw0M0AN0cfcprKew6LjqU6uLvXpENVFHat0yIu2UoMhXH/L3JBOKBau6baic=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gFZGHLDL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FE96C116D0;
+	Thu, 15 Jan 2026 17:07:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496617;
-	bh=MguM8u2zeY9UgYN8sDflQnN2rnbyz2lw+RIOlDyuhjg=;
+	s=korg; t=1768496824;
+	bh=7m+XyKE2ZPuiorwr+XGHXUO3fNGM0i3OsrSFCsPV7hk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CuSD266L0oidnfdr5wnSuZgaQDCcfUG3UArv5zCCp0JFWTB9DYrcvgS975Uh49+xQ
-	 1sGizSTxPgV/41eq/KE2/wGYVQFg3nZukZRc2ofH641Q8jkY+Jy+GjIjfBcIDctnFr
-	 nDy2/zxBYCepU/E0NE5VXBpOKg5Dy6fJFgmNuGhc=
+	b=gFZGHLDLgbDA+LcZdJrahEAw/lU0fp0wPj0a6jPP1NwWErF4CgVP8pmGuYOPsbdVo
+	 hcWt4lMrx+p/vnxCiV7zmKc6bC0upBwChX2SERP65Y/mVeBvotd2a9QXVppYgXEFie
+	 SQ8B4iOy3Qqg9Zij+YJ8a79S57H3/Ph8TIldTDT0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yang Li <yang.li85200@gmail.com>,
+	Guo Ren <guoren@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 076/119] net: fix memory leak in skb_segment_list for GRO packets
+Subject: [PATCH 6.6 28/88] csky: fix csky_cmpxchg_fixup not working
 Date: Thu, 15 Jan 2026 17:48:11 +0100
-Message-ID: <20260115164154.695566474@linuxfoundation.org>
+Message-ID: <20260115164147.331144176@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Yang Li <yang.li85200@gmail.com>
 
-[ Upstream commit 238e03d0466239410b72294b79494e43d4fabe77 ]
+[ Upstream commit 809ef03d6d21d5fea016bbf6babeec462e37e68c ]
 
-When skb_segment_list() is called during packet forwarding, it handles
-packets that were aggregated by the GRO engine.
+In the csky_cmpxchg_fixup function, it is incorrect to use the global
+variable csky_cmpxchg_stw to determine the address where the exception
+occurred.The global variable csky_cmpxchg_stw stores the opcode at the
+time of the exception, while &csky_cmpxchg_stw shows the address where
+the exception occurred.
 
-Historically, the segmentation logic in skb_segment_list assumes that
-individual segments are split from a parent SKB and may need to carry
-their own socket memory accounting. Accordingly, the code transfers
-truesize from the parent to the newly created segments.
-
-Prior to commit ed4cccef64c1 ("gro: fix ownership transfer"), this
-truesize subtraction in skb_segment_list() was valid because fragments
-still carry a reference to the original socket.
-
-However, commit ed4cccef64c1 ("gro: fix ownership transfer") changed
-this behavior by ensuring that fraglist entries are explicitly
-orphaned (skb->sk = NULL) to prevent illegal orphaning later in the
-stack. This change meant that the entire socket memory charge remained
-with the head SKB, but the corresponding accounting logic in
-skb_segment_list() was never updated.
-
-As a result, the current code unconditionally adds each fragment's
-truesize to delta_truesize and subtracts it from the parent SKB. Since
-the fragments are no longer charged to the socket, this subtraction
-results in an effective under-count of memory when the head is freed.
-This causes sk_wmem_alloc to remain non-zero, preventing socket
-destruction and leading to a persistent memory leak.
-
-The leak can be observed via KMEMLEAK when tearing down the networking
-environment:
-
-unreferenced object 0xffff8881e6eb9100 (size 2048):
-  comm "ping", pid 6720, jiffies 4295492526
-  backtrace:
-    kmem_cache_alloc_noprof+0x5c6/0x800
-    sk_prot_alloc+0x5b/0x220
-    sk_alloc+0x35/0xa00
-    inet6_create.part.0+0x303/0x10d0
-    __sock_create+0x248/0x640
-    __sys_socket+0x11b/0x1d0
-
-Since skb_segment_list() is exclusively used for SKB_GSO_FRAGLIST
-packets constructed by GRO, the truesize adjustment is removed.
-
-The call to skb_release_head_state() must be preserved. As documented in
-commit cf673ed0e057 ("net: fix fraglist segmentation reference count
-leak"), it is still required to correctly drop references to SKB
-extensions that may be overwritten during __copy_skb_header().
-
-Fixes: ed4cccef64c1 ("gro: fix ownership transfer")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260104213101.352887-1-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Yang Li <yang.li85200@gmail.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ arch/csky/mm/fault.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 6a92c03ee6f42..c3e1395d8ac5c 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4585,12 +4585,14 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- {
- 	struct sk_buff *list_skb = skb_shinfo(skb)->frag_list;
- 	unsigned int tnl_hlen = skb_tnl_header_len(skb);
--	unsigned int delta_truesize = 0;
- 	unsigned int delta_len = 0;
- 	struct sk_buff *tail = NULL;
- 	struct sk_buff *nskb, *tmp;
- 	int len_diff, err;
+diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
+index a885518ce1dd2..5226bc08c3360 100644
+--- a/arch/csky/mm/fault.c
++++ b/arch/csky/mm/fault.c
+@@ -45,8 +45,8 @@ static inline void csky_cmpxchg_fixup(struct pt_regs *regs)
+ 	if (trap_no(regs) != VEC_TLBMODIFIED)
+ 		return;
  
-+	/* Only skb_gro_receive_list generated skbs arrive here */
-+	DEBUG_NET_WARN_ON_ONCE(!(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST));
-+
- 	skb_push(skb, -skb_network_offset(skb) + offset);
- 
- 	/* Ensure the head is writeable before touching the shared info */
-@@ -4604,8 +4606,9 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- 		nskb = list_skb;
- 		list_skb = list_skb->next;
- 
-+		DEBUG_NET_WARN_ON_ONCE(nskb->sk);
-+
- 		err = 0;
--		delta_truesize += nskb->truesize;
- 		if (skb_shared(nskb)) {
- 			tmp = skb_clone(nskb, GFP_ATOMIC);
- 			if (tmp) {
-@@ -4648,7 +4651,6 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- 			goto err_linearize;
- 	}
- 
--	skb->truesize = skb->truesize - delta_truesize;
- 	skb->data_len = skb->data_len - delta_len;
- 	skb->len = skb->len - delta_len;
- 
+-	if (instruction_pointer(regs) == csky_cmpxchg_stw)
+-		instruction_pointer_set(regs, csky_cmpxchg_ldw);
++	if (instruction_pointer(regs) == (unsigned long)&csky_cmpxchg_stw)
++		instruction_pointer_set(regs, (unsigned long)&csky_cmpxchg_ldw);
+ 	return;
+ }
+ #endif
 -- 
 2.51.0
 
