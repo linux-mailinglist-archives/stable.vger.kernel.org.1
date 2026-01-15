@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-209247-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209686-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9246CD27055
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:01:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2AAA5D27C54
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:50:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 92FB03044946
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 3F3C8319B76C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 223DD3D2FE1;
-	Thu, 15 Jan 2026 17:29:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3F53D7D63;
+	Thu, 15 Jan 2026 17:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iB+1cDe8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r12TsqfL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA9EC3C197F;
-	Thu, 15 Jan 2026 17:29:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5703D7D3C;
+	Thu, 15 Jan 2026 17:50:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498152; cv=none; b=f+itA04EK5tLy5cbK7a9oQE27p7IRa3i7HYR6mrGljAoGdNoBj/gVVXMOJQy7L9Tny2xrYlEpC061Pz7DqwoLBg9lbMvQKY3GFge8AO6TBoD3NL3yXTlOGk/xx8rymZn08iqSVgEvlJqJmg8hx9vb3MwtkG5c8AxT+6B9c9hUQA=
+	t=1768499402; cv=none; b=SppILCBZBYjfEH9K1xjqL/1T2ER4CY3s00wDUIBBV73SCFci/CdCpB5v2qy8chIZaYXF2PiPEX4jXX4aeVuWMhP1zsQbbYfAHue3j8t5T+9JDoGavqW9NHLkfOpW3lfUMw2oGR+qRInmEZJzR7iLE/Mtbj/hNqPfZL2rMqtRbzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498152; c=relaxed/simple;
-	bh=OkFft/t5kw6I+WI/71zrU83OkZbZQDsLYhXh4v7+wes=;
+	s=arc-20240116; t=1768499402; c=relaxed/simple;
+	bh=TSPG6ONsrqv447c0B/iTZ0snGS+grqm7A9kKazQzxFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nRqxDQGHExat87eYT41kN6AAlv0INQsGmd9E5LZkZE6iGn6RkHiNWDMRwxnh1qsxPqUDHFDWsH/6dhRvofFJzDuUk+T7DWMi4+nAC5ggHuNZtxPnW7oODocHdsQR77JqRrxg+EWDr9QeHbByh8NpcDvr0Mc9FDm0K7tkt7uJAmI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iB+1cDe8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34360C116D0;
-	Thu, 15 Jan 2026 17:29:12 +0000 (UTC)
+	 MIME-Version; b=aLD79p4EG97MYsUQLcOxrKvssqH66heSt0yxxvT8ngJfXIgN4uQS1wUskL0BWdmrT5b/ejojX82SuBQZAq2KHTE70bA6s1JIVW2v52ZpLwBOk5qc+tatySni0xJl5aVn44L8N99+28eA1ubvlOIjNyntUaypaa2lKTYge4gklls=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r12TsqfL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D271C116D0;
+	Thu, 15 Jan 2026 17:50:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498152;
-	bh=OkFft/t5kw6I+WI/71zrU83OkZbZQDsLYhXh4v7+wes=;
+	s=korg; t=1768499402;
+	bh=TSPG6ONsrqv447c0B/iTZ0snGS+grqm7A9kKazQzxFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iB+1cDe84nmFc2a70BtOmTIh7VPgr64bp9DNv6vFyzKIS8NYWFIAPm+YRnxkhyqqT
-	 j9/QfSZ4UUkCxyqP57O+WJSS4UcTfxBtr+zT8JM3h4r8PshO67hKsGU51Og620YzJw
-	 P+BhmJJw48jZqa4MhjwvFBBRETUYARjPRMFY37dc=
+	b=r12TsqfLeB41lytqYMIoJ1IZ5nOu4os8fRWlO4kqtefNTRcXzWzfh7PRF+HPGgwWd
+	 Elhmh+5tBGtp3UQKUbHGCFy/donlvBG81CBGUhbrEFDLeWZfZjGRP/9dCZJF1wkHa0
+	 77pn49sfs8udgaNaj8YoIBJzOQAq8OBs2NqHjtGk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Andi Shyti <andi.shyti@kernel.org>
-Subject: [PATCH 5.15 331/554] i2c: amd-mp2: fix reference leak in MP2 PCI device
-Date: Thu, 15 Jan 2026 17:46:37 +0100
-Message-ID: <20260115164258.212272896@linuxfoundation.org>
+	Pengjie Zhang <zhangpengjie2@huawei.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+Subject: [PATCH 5.10 197/451] ACPI: CPPC: Fix missing PCC check for guaranteed_perf
+Date: Thu, 15 Jan 2026 17:46:38 +0100
+Message-ID: <20260115164238.027633960@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +59,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Pengjie Zhang <zhangpengjie2@huawei.com>
 
-commit a6ee6aac66fb394b7f6e6187c73bdcd873f2d139 upstream.
+commit 6ea3a44cef28add2d93b1ef119d84886cb1e3c9b upstream.
 
-In i2c_amd_probe(), amd_mp2_find_device() utilizes
-driver_find_next_device() which internally calls driver_find_device()
-to locate the matching device. driver_find_device() increments the
-reference count of the found device by calling get_device(), but
-amd_mp2_find_device() fails to call put_device() to decrement the
-reference count before returning. This results in a reference count
-leak of the PCI device each time i2c_amd_probe() is executed, which
-may prevent the device from being properly released and cause a memory
-leak.
+The current implementation overlooks the 'guaranteed_perf'
+register in this check.
 
-Found by code review.
+If the Guaranteed Performance register is located in the PCC
+subspace, the function currently attempts to read it without
+acquiring the lock and without sending the CMD_READ doorbell
+to the firmware. This can result in reading stale data.
 
-Cc: stable@vger.kernel.org
-Fixes: 529766e0a011 ("i2c: Add drivers for the AMD PCIe MP2 I2C controller")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Signed-off-by: Andi Shyti <andi.shyti@kernel.org>
-Link: https://lore.kernel.org/r/20251022095402.8846-1-make24@iscas.ac.cn
+Fixes: 29523f095397 ("ACPI / CPPC: Add support for guaranteed performance")
+Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
+Cc: 4.20+ <stable@vger.kernel.org> # 4.20+
+[ rjw: Subject and changelog edits ]
+Link: https://patch.msgid.link/20251210132227.1988380-1-zhangpengjie2@huawei.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/i2c/busses/i2c-amd-mp2-pci.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/acpi/cppc_acpi.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/i2c/busses/i2c-amd-mp2-pci.c
-+++ b/drivers/i2c/busses/i2c-amd-mp2-pci.c
-@@ -452,13 +452,16 @@ struct amd_mp2_dev *amd_mp2_find_device(
- {
- 	struct device *dev;
- 	struct pci_dev *pci_dev;
-+	struct amd_mp2_dev *mp2_dev;
- 
- 	dev = driver_find_next_device(&amd_mp2_pci_driver.driver, NULL);
- 	if (!dev)
- 		return NULL;
- 
- 	pci_dev = to_pci_dev(dev);
--	return (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-+	mp2_dev = (struct amd_mp2_dev *)pci_get_drvdata(pci_dev);
-+	put_device(dev);
-+	return mp2_dev;
- }
- EXPORT_SYMBOL_GPL(amd_mp2_find_device);
- 
+--- a/drivers/acpi/cppc_acpi.c
++++ b/drivers/acpi/cppc_acpi.c
+@@ -1097,7 +1097,8 @@ int cppc_get_perf_caps(int cpunum, struc
+ 	/* Are any of the regs PCC ?*/
+ 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
+ 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
+-		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg)) {
++		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
++		CPC_IN_PCC(guaranteed_reg)) {
+ 		if (pcc_ss_id < 0) {
+ 			pr_debug("Invalid pcc_ss_id\n");
+ 			return -ENODEV;
 
 
 
