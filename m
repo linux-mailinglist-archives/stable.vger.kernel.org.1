@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209787-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209369-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B628DD276C2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:50 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D415CD26A6A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 574D030562A2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1BDDD30A3980
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FD743D1CCE;
-	Thu, 15 Jan 2026 17:54:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8244A3B8BA5;
+	Thu, 15 Jan 2026 17:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qk32/46e"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLxcswGY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 26C813D1CB5;
-	Thu, 15 Jan 2026 17:54:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4626A274FE3;
+	Thu, 15 Jan 2026 17:34:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499690; cv=none; b=HyPvBcBN+3n6TULuKN5C7wup6VhBTN3bmVjMkjDeY9MfuXqoXkZTdNbAzj+OFglWBpT2ztgJnaCGdfjRDtpXND0sWzCxIqmlYWroVcJXJ0c5xeN//qQm50MqaQvYtoDBwQ4gjyp8sOvcmLb4I+VYaMi5qv+3szayARS6DPcR0Uk=
+	t=1768498499; cv=none; b=kUd0I4kpNMeFTJnGj+DdzDjOunsTUXAnYcu6Gmj7yNgdMDxk/KcsTIXYrHCNaREJqbGbusZTwUiagTsgZrU+ZCBhtk9Z4azLslpnpgCk8brngRjXJJ4bhaA1rZMo9W/nUef/WWh/Z1D2cdQwXXq9G3Nx7GHQWCqVBwi69L2KiKo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499690; c=relaxed/simple;
-	bh=eF2Acnhms8BvdSNUNBdAqEj4M0u2N8uAe6rSFpCC5FA=;
+	s=arc-20240116; t=1768498499; c=relaxed/simple;
+	bh=9bQ13QMTpJ42LaaaJbElXgoBF2OTOlgbVyciwg7c3dw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ra9XUD57pjo83rJ84I2mFcvsfQRDgw/uB1JezQxwspLd2nn1T7JjGsRnchrTlHG9EcW9ItwHGxwgFC65YPbHMO6eapPQNRYUtvHW1qaF2dSq+KWYTf/hsTXZq8iAtEJaNC+urXv4+5GjgkCdRg7jQ9+iyToEnjM2iqFEjqZJjCA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qk32/46e; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AC8CC116D0;
-	Thu, 15 Jan 2026 17:54:49 +0000 (UTC)
+	 MIME-Version; b=bBg1WhdSWsPVS1KDAxSH645kgA9kBCFRseSbIf18pV1zi2fjyi8G/+RLqlnsKlE4OCDNo3OoYSy3EHyFcwFL/ZH7t00Dfl1jifcdIddvP8DKyEq9VA1bhSHAPRbuHyxQdAVp3ouM1Im7vF/d0pzblwONd3VZsUtIrh7meQhJu8c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLxcswGY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB83EC116D0;
+	Thu, 15 Jan 2026 17:34:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499689;
-	bh=eF2Acnhms8BvdSNUNBdAqEj4M0u2N8uAe6rSFpCC5FA=;
+	s=korg; t=1768498499;
+	bh=9bQ13QMTpJ42LaaaJbElXgoBF2OTOlgbVyciwg7c3dw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qk32/46e+2KlFRoIdwkHk08P5OvXE20gJ+O+HLtBgJWgZOoJbiJaHNcng+nwFV42W
-	 sSTCqL4RX0nRrYX6SyJH30aBOPW/jqmevFdZSJAICNAAlGz1v+n75wcuHIyz/TjR2+
-	 Ho51tboJjQDEGVdvBobbn05WsY5C5TAHkZRHJ/1g=
+	b=sLxcswGYNmnL//W7oMXCdTbblP3LuLU8Ioz63bdsSjkavokByaMoiow32mDhT08HD
+	 T6yzRC1Pr4bvLC9soALoReXNW271FqE7otH+ZxYN7nDBN1rlqwaR6c+0d3Y/968Z3e
+	 G4x+DV+qWJFPF970XSkFzXHYTRlzXjHluPsUF30A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sven Schnelle <svens@stackframe.org>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 316/451] parisc: entry: set W bit for !compat tasks in syscall_restore_rfi()
-Date: Thu, 15 Jan 2026 17:48:37 +0100
-Message-ID: <20260115164242.332790793@linuxfoundation.org>
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 452/554] ARM: dts: microchip: sama5d2: fix spi flexcom fifo size to 32
+Date: Thu, 15 Jan 2026 17:48:38 +0100
+Message-ID: <20260115164302.632446078@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,63 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@stackframe.org>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-commit 5fb1d3ce3e74a4530042795e1e065422295f1371 upstream.
+[ Upstream commit 7d5864dc5d5ea6a35983dd05295fb17f2f2f44ce ]
 
-When the kernel leaves to userspace via syscall_restore_rfi(), the
-W bit is not set in the new PSW. This doesn't cause any problems
-because there's no 64 bit userspace for parisc. Simple static binaries
-are usually loaded at addresses way below the 32 bit limit so the W bit
-doesn't matter.
+Unlike standalone spi peripherals, on sama5d2, the flexcom spi have fifo
+size of 32 data. Fix flexcom/spi nodes where this property is wrong.
 
-Fix this by setting the W bit when TIF_32BIT is not set.
-
-Signed-off-by: Sven Schnelle <svens@stackframe.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 6b9a3584c7ed ("ARM: dts: at91: sama5d2: Add missing flexcom definitions")
+Cc: stable@vger.kernel.org # 5.8+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20251114140225.30372-1-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/asm-offsets.c |    2 ++
- arch/parisc/kernel/entry.S       |    5 ++++-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm/boot/dts/sama5d2.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/arch/parisc/kernel/asm-offsets.c
-+++ b/arch/parisc/kernel/asm-offsets.c
-@@ -262,6 +262,8 @@ int main(void)
- 	BLANK();
- 	DEFINE(TIF_BLOCKSTEP_PA_BIT, 31-TIF_BLOCKSTEP);
- 	DEFINE(TIF_SINGLESTEP_PA_BIT, 31-TIF_SINGLESTEP);
-+	DEFINE(TIF_32BIT_PA_BIT, 31-TIF_32BIT);
-+
- 	BLANK();
- 	DEFINE(ASM_PMD_SHIFT, PMD_SHIFT);
- 	DEFINE(ASM_PGDIR_SHIFT, PGDIR_SHIFT);
---- a/arch/parisc/kernel/entry.S
-+++ b/arch/parisc/kernel/entry.S
-@@ -1913,6 +1913,10 @@ syscall_restore_rfi:
- 	extru,= %r19,TIF_BLOCKSTEP_PA_BIT,1,%r0
- 	depi	-1,7,1,%r20			   /* T bit */
+--- a/arch/arm/boot/dts/sama5d2.dtsi
++++ b/arch/arm/boot/dts/sama5d2.dtsi
+@@ -555,7 +555,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(12))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
-+#ifdef CONFIG_64BIT
-+	extru,<> %r19,TIF_32BIT_PA_BIT,1,%r0
-+	depi	-1,4,1,%r20			   /* W bit */
-+#endif
- 	STREG	%r20,TASK_PT_PSW(%r1)
+@@ -625,7 +625,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(14))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
- 	/* Always store space registers, since sr3 can be changed (e.g. fork) */
-@@ -1926,7 +1930,6 @@ syscall_restore_rfi:
- 	STREG   %r25,TASK_PT_IASQ0(%r1)
- 	STREG   %r25,TASK_PT_IASQ1(%r1)
+@@ -835,7 +835,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(16))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
--	/* XXX W bit??? */
- 	/* Now if old D bit is clear, it means we didn't save all registers
- 	 * on syscall entry, so do that now.  This only happens on TRACEME
- 	 * calls, or if someone attached to us while we were on a syscall.
+@@ -925,7 +925,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(18))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
+ 
+@@ -976,7 +976,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(20))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
+ 
 
 
 
