@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-208771-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209752-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4906ED26291
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 911D7D27270
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3FAD130374E1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DD7FE30877A6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE3B3BF315;
-	Thu, 15 Jan 2026 17:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1CC6D3BFE27;
+	Thu, 15 Jan 2026 17:53:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2eWF1JrQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xlg91r3/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F1E93BF303;
-	Thu, 15 Jan 2026 17:06:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DF93C0095;
+	Thu, 15 Jan 2026 17:53:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496796; cv=none; b=nEb/kJPjZCELULVjgWuGodaUNJ87e2qrd7iZdSGEhdel8EOERXBvfFLEoyab04zbtJf/JOuROFQ+HUN2a0uJUpX2Trnul9wdOMYyD+44o120Aq73qwOU1Sk99Q3EC/yXqYkdHfYN4tfRvhWxzjQBTqXVdqf16pDJK/+1rdyRzF8=
+	t=1768499590; cv=none; b=tiRRO5g1PshBOtBHKrb8EhBx5MiJi/ldOHJdUYlpAEpZwNv+GbZ8NxNGhelCrwzyIZ6+q7Nyq/EEdh/DCbrI5bKu4hN6vo60qsidB8G4oCq8p0oE92uce+P50qBut9AKW6Z5KCNH9r9YfaM3veDGCahwvGFF5QPRmi9pJkUXwtY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496796; c=relaxed/simple;
-	bh=6JaJkqqQmLaNHVGQ+X/RftHv5aEkrHG9yY3EerSf+Yc=;
+	s=arc-20240116; t=1768499590; c=relaxed/simple;
+	bh=QUH3NacILdynOyMyEjtScfl18/EmTdqnEYBfltl86D0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u/tIYYJ7ig5linfm9vxNEnC/AJmojqedhCuQFH8U/qygeepSVr6Wfjv5dmd6JLW+diKYWB4pRJaxvidMJOQ03b2tP56xBna/bffU5ePUjiXof1xtDEVec3iLByhjBoBQDuXC+PgKgZhkMbofekdzRNg4hjs2fpDw86hkuFazmbY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2eWF1JrQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1CBCC116D0;
-	Thu, 15 Jan 2026 17:06:35 +0000 (UTC)
+	 MIME-Version; b=ecU8Xyc/ja1D0xQWGxyUyvc6baaCKHARWqowkZ9tjRca215+JuZQhcoJeeDh2XG9mKXK9VwCobEPzsg/R9bV6NjlO9+OIhMWoRSaDEoc73YUMGGweTvQvzC/QU5cjmMRSULvuuLY8jZ9HXDLizDhZKxT+KUFLuwRnOXeT8FipbY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xlg91r3/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607D9C116D0;
+	Thu, 15 Jan 2026 17:53:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496796;
-	bh=6JaJkqqQmLaNHVGQ+X/RftHv5aEkrHG9yY3EerSf+Yc=;
+	s=korg; t=1768499590;
+	bh=QUH3NacILdynOyMyEjtScfl18/EmTdqnEYBfltl86D0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2eWF1JrQM+lQJTCArFJX9C8j2dAlJFu8Zj034TUiiHnl019EPVhFMWr0EiuOeCPFz
-	 NJZ1whC1OaCQtIA7mSnn/LtO2YbRmmYaMKM57QXVVN8ODsabTEUK4dkw1PMC0fIIB1
-	 xTVTk3cRIXk5WSOln8Bs06CBy5QyFVdbUQZquCP8=
+	b=xlg91r3/IfejfKIbaaQEFsoYtWWiBhyqZRFy5lM7Ex50NHnjEKwGBr36CTF0GZ+YW
+	 ER2raovWfe799qWHW6iurUPc51QQ5V2fRSnR3/SL9wEr2JI6IOSKFTldXwWFzhp/zJ
+	 +8BsfRGJ5SOdRUMdfJC2eqEr9sgoip5PKKrXYXRk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Edwards <CFSworks@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 19/88] libceph: reset sparse-read state in osd_fault()
+	syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com,
+	Deepakkumar Karn <dkarn@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 281/451] net: usb: rtl8150: fix memory leak on usb_submit_urb() failure
 Date: Thu, 15 Jan 2026 17:48:02 +0100
-Message-ID: <20260115164147.011602456@linuxfoundation.org>
+Message-ID: <20260115164241.047721315@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Edwards <cfsworks@gmail.com>
+From: Deepakkumar Karn <dkarn@redhat.com>
 
-commit 11194b416ef95012c2cfe5f546d71af07b639e93 upstream.
+[ Upstream commit 12cab1191d9890097171156d06bfa8d31f1e39c8 ]
 
-When a fault occurs, the connection is abandoned, reestablished, and any
-pending operations are retried. The OSD client tracks the progress of a
-sparse-read reply using a separate state machine, largely independent of
-the messenger's state.
+In async_set_registers(), when usb_submit_urb() fails, the allocated
+  async_req structure and URB are not freed, causing a memory leak.
 
-If a connection is lost mid-payload or the sparse-read state machine
-returns an error, the sparse-read state is not reset. The OSD client
-will then interpret the beginning of a new reply as the continuation of
-the old one. If this makes the sparse-read machinery enter a failure
-state, it may never recover, producing loops like:
+  The completion callback async_set_reg_cb() is responsible for freeing
+  these allocations, but it is only called after the URB is successfully
+  submitted and completes (successfully or with error). If submission
+  fails, the callback never runs and the memory is leaked.
 
-  libceph:  [0] got 0 extents
-  libceph: data len 142248331 != extent len 0
-  libceph: osd0 (1)...:6801 socket error on read
-  libceph: data len 142248331 != extent len 0
-  libceph: osd0 (1)...:6801 socket error on read
+  Fix this by freeing both the URB and the request structure in the error
+  path when usb_submit_urb() fails.
 
-Therefore, reset the sparse-read state in osd_fault(), ensuring retries
-start from a clean state.
-
-Cc: stable@vger.kernel.org
-Fixes: f628d7999727 ("libceph: add sparse read support to OSD client")
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=8dd915c7cb0490fc8c52
+Fixes: 4d12997a9bb3 ("drivers: net: usb: rtl8150: concurrent URB bugfix")
+Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
+Link: https://patch.msgid.link/20251216151304.59865-2-dkarn@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osd_client.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/usb/rtl8150.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -4306,6 +4306,9 @@ static void osd_fault(struct ceph_connec
- 		goto out_unlock;
+diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
+index eb4f3f8a1906..185b8c8b19ba 100644
+--- a/drivers/net/usb/rtl8150.c
++++ b/drivers/net/usb/rtl8150.c
+@@ -211,6 +211,8 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
+ 		if (res == -ENODEV)
+ 			netif_device_detach(dev->netdev);
+ 		dev_err(&dev->udev->dev, "%s failed with %d\n", __func__, res);
++		kfree(req);
++		usb_free_urb(async_urb);
  	}
- 
-+	osd->o_sparse_op_idx = -1;
-+	ceph_init_sparse_read(&osd->o_sparse_read);
-+
- 	if (!reopen_osd(osd))
- 		kick_osd_requests(osd);
- 	maybe_request_map(osdc);
+ 	return res;
+ }
+-- 
+2.51.0
+
 
 
 
