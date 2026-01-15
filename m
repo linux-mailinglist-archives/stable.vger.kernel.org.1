@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209018-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209029-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97FEBD2698C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 34EB4D269B9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E649D317FB2A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:18:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3B8D3123105
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:18:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99AB82874E6;
-	Thu, 15 Jan 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3A4BC2C11EF;
+	Thu, 15 Jan 2026 17:18:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X/wZSWh6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MyqUiSLZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5E1E586334;
-	Thu, 15 Jan 2026 17:18:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F1A84258EC2;
+	Thu, 15 Jan 2026 17:18:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497501; cv=none; b=uyV6wtxsx2KvXsqmSZUOxTVwE43qXnQBgbyCC4lPu+Hgy4pXktb0PepTFJ6j+EzPG5Gzvoi5SVhaj7QLw8I0WxaCrMhSl8MsqYgMNm+QiTi2JjAzIs1x6H24Da16s6uNT8YIVQm+ZMqwOMlloSAnDL3BPb4+/fQSJCofkg+6VbM=
+	t=1768497533; cv=none; b=BsILlZXMIOQ4mPmDsEjThy+whbvlObFs+tI0Dkm3w5/tHmU1gE2kQgCg4t9mr5Z6DhnV2/0L+h93/GsFoF5nIQNTJmvgCBWVimannOPdxV4nk5zyefO3Lxjr6qjEt/OQzaoTlbhOnTEijWW3Cmv4zobWLf//BvAZW6wdv5QuXL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497501; c=relaxed/simple;
-	bh=9xoqtVfi1+ptCSPUXKXE0rpvTY+/ixGH6SdtSAFSgNk=;
+	s=arc-20240116; t=1768497533; c=relaxed/simple;
+	bh=tgKFBbIqsNbxe58KovoQn6JmJ4EJYEkkQzWhnIS3rr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jt4Y6k7gBz5RRNYzVflz3HWGW4kOEgDF4ndU8xmqgCyEQqELhMNzaNd0bj6tRJGXoZxu/qLGhe+rBRTFRFPuNmviTBjFwEsoTXWQL9Cm+tjjleOfLZoQd5FK1/yFh/A18DzflzmdPAeeND6WJL07wsGScv5mJFKCKCsQZL9VZDc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X/wZSWh6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB17AC116D0;
-	Thu, 15 Jan 2026 17:18:20 +0000 (UTC)
+	 MIME-Version; b=KfNoitXd3/yDxsdrWqmBlSKG7dfDwgMGW2SUjODa1P0V167+nZVp3lkXGTA4+TQkw1bpln6ryP0qg9ZG0aQI94pb2rYXuhMb7meCj1EhmOY28/oLXeIupq4s32gfp4qTgzIKAD5DHQAYxVcrI3Iyk76QyBGe5erVYcZ6jT2O35k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MyqUiSLZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 250D2C116D0;
+	Thu, 15 Jan 2026 17:18:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497501;
-	bh=9xoqtVfi1+ptCSPUXKXE0rpvTY+/ixGH6SdtSAFSgNk=;
+	s=korg; t=1768497532;
+	bh=tgKFBbIqsNbxe58KovoQn6JmJ4EJYEkkQzWhnIS3rr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X/wZSWh6wY9pbG0IwMXYz0qp32T4anWx288K5Pz1KEUbJJuIesj6hLlogX/tHLuQ5
-	 0F1nIJbTIlS6M+mCK9vHV7+cSr+C9wZSRKmEbqp/xHa+pcwSRR/uWKdJyVW45CnHvu
-	 C/QflRXu35KSe0J4sWGKvrkhhqwVFOuRDxJjv2KE=
+	b=MyqUiSLZLSnRcIWDs83VYCUeKeBCzdEy8pV0QU6GCNDBpA9oqGjJyVEn+pGtnWgaK
+	 BsN+Z4qbDS8ZbrlIut4KbUBiBxNLJsd2uwGqhCIc4pK5LFiUXcLmRkcUybqrnYw9W0
+	 AGyhFd3DO0SgkkHVn9ZM+9ycsEdnB2Zl8wZ02Gto=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Leo Yan <leo.yan@arm.com>,
 	Mike Leach <mike.leach@linaro.org>,
+	Yeoreun Yun <yeoreum.yun@arm.com>,
 	James Clark <james.clark@linaro.org>,
+	Leo Yan <leo.yan@arm.com>,
 	Suzuki K Poulose <suzuki.poulose@arm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 096/554] coresight: etm4x: Extract the trace unit controlling
-Date: Thu, 15 Jan 2026 17:42:42 +0100
-Message-ID: <20260115164249.718999358@linuxfoundation.org>
+Subject: [PATCH 5.15 097/554] coresight: etm4x: Add context synchronization before enabling trace
+Date: Thu, 15 Jan 2026 17:42:43 +0100
+Message-ID: <20260115164249.754611614@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -68,167 +69,83 @@ Content-Transfer-Encoding: 8bit
 
 From: Leo Yan <leo.yan@arm.com>
 
-[ Upstream commit 40f682ae5086366d51e29e66eb8a344501245d0d ]
+[ Upstream commit 64eb04ae545294e105ad91714dc3167a0b660731 ]
 
-The trace unit is controlled in the ETM hardware enabling and disabling.
-The sequential changes for support AUX pause and resume will reuse the
-same operations.
+According to the software usage PKLXF in Arm ARM (ARM DDI 0487 L.a), a
+Context synchronization event is required before enabling the trace
+unit.
 
-Extract the operations in the etm4_{enable|disable}_trace_unit()
-functions.  A minor improvement in etm4_enable_trace_unit() is for
-returning the timeout error to callers.
+An ISB is added to meet this requirement, particularly for guarding the
+operations in the flow:
 
-Signed-off-by: Leo Yan <leo.yan@arm.com>
+  etm4x_allow_trace()
+   `> kvm_tracing_set_el1_configuration()
+	`> write_sysreg_s(trfcr_while_in_guest, SYS_TRFCR_EL12)
+
+Improved the barrier comments to provide more accurate information.
+
+Fixes: 1ab3bb9df5e3 ("coresight: etm4x: Add necessary synchronization for sysreg access")
 Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Reviewed-by: James Clark <james.clark@linaro.org>
+Reviewed-by: Yeoreun Yun <yeoreum.yun@arm.com>
+Tested-by: James Clark <james.clark@linaro.org>
+Signed-off-by: Leo Yan <leo.yan@arm.com>
 Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20250401180708.385396-2-leo.yan@arm.com
-Stable-dep-of: 64eb04ae5452 ("coresight: etm4x: Add context synchronization before enabling trace")
+Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-5-f55553b6c8b3@arm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../coresight/coresight-etm4x-core.c          | 103 +++++++++++-------
- 1 file changed, 62 insertions(+), 41 deletions(-)
+ .../coresight/coresight-etm4x-core.c          | 27 ++++++++++++++++---
+ 1 file changed, 23 insertions(+), 4 deletions(-)
 
 diff --git a/drivers/hwtracing/coresight/coresight-etm4x-core.c b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-index 0b7aceb96d753..7cc854da81988 100644
+index 7cc854da81988..ce03a53fea7ad 100644
 --- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
 +++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -392,6 +392,44 @@ static int etm4x_wait_status(struct csdev_access *csa, int pos, int val)
- 	return coresight_timeout(csa, TRCSTATR, pos, val);
- }
+@@ -406,10 +406,24 @@ static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
+ 		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
  
-+static int etm4_enable_trace_unit(struct etmv4_drvdata *drvdata)
-+{
-+	struct coresight_device *csdev = drvdata->csdev;
-+	struct device *etm_dev = &csdev->dev;
-+	struct csdev_access *csa = &csdev->access;
+ 	etm4x_allow_trace(drvdata);
 +
 +	/*
-+	 * ETE mandates that the TRCRSR is written to before
-+	 * enabling it.
++	 * According to software usage PKLXF in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee the trace unit
++	 * will observe the new values of the System registers.
 +	 */
-+	if (etm4x_is_ete(drvdata))
-+		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
-+
-+	etm4x_allow_trace(drvdata);
-+	/* Enable the trace unit */
-+	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
-+
-+	/* Synchronize the register updates for sysreg access */
 +	if (!csa->io_mem)
 +		isb();
 +
-+	/* wait for TRCSTATR.IDLE to go back down to '0' */
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0)) {
-+		dev_err(etm_dev,
-+			"timeout while waiting for Idle Trace Status\n");
-+		return -ETIME;
-+	}
-+
-+	/*
-+	 * As recommended by section 4.3.7 ("Synchronization when using the
-+	 * memory-mapped interface") of ARM IHI 0064D
-+	 */
-+	dsb(sy);
-+	isb();
-+
-+	return 0;
-+}
-+
- static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- {
- 	int i, rc;
-@@ -500,33 +538,7 @@ static int etm4_enable_hw(struct etmv4_drvdata *drvdata)
- 		etm4x_relaxed_write32(csa, trcpdcr | TRCPDCR_PU, TRCPDCR);
- 	}
+ 	/* Enable the trace unit */
+ 	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
  
--	/*
--	 * ETE mandates that the TRCRSR is written to before
--	 * enabling it.
--	 */
--	if (etm4x_is_ete(drvdata))
--		etm4x_relaxed_write32(csa, TRCRSR_TA, TRCRSR);
--
--	etm4x_allow_trace(drvdata);
--	/* Enable the trace unit */
--	etm4x_relaxed_write32(csa, 1, TRCPRGCTLR);
--
 -	/* Synchronize the register updates for sysreg access */
--	if (!csa->io_mem)
--		isb();
--
--	/* wait for TRCSTATR.IDLE to go back down to '0' */
--	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 0))
--		dev_err(etm_dev,
--			"timeout while waiting for Idle Trace Status\n");
--
--	/*
--	 * As recommended by section 4.3.7 ("Synchronization when using the
--	 * memory-mapped interface") of ARM IHI 0064D
--	 */
--	dsb(sy);
--	isb();
--
-+	rc = etm4_enable_trace_unit(drvdata);
- done:
- 	etm4_cs_lock(drvdata, csa);
++	/*
++	 * As recommended by section 4.3.7 ("Synchronization when using system
++	 * instructions to progrom the trace unit") of ARM IHI 0064H.b, the
++	 * self-hosted trace analyzer must perform a Context synchronization
++	 * event between writing to the TRCPRGCTLR and reading the TRCSTATR.
++	 */
+ 	if (!csa->io_mem)
+ 		isb();
  
-@@ -800,25 +812,12 @@ static int etm4_enable(struct coresight_device *csdev,
- 	return ret;
- }
- 
--static void etm4_disable_hw(void *info)
-+static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
- {
- 	u32 control;
--	struct etmv4_drvdata *drvdata = info;
--	struct etmv4_config *config = &drvdata->config;
- 	struct coresight_device *csdev = drvdata->csdev;
- 	struct device *etm_dev = &csdev->dev;
- 	struct csdev_access *csa = &csdev->access;
--	int i;
--
--	etm4_cs_unlock(drvdata, csa);
--	etm4_disable_arch_specific(drvdata);
--
--	if (!drvdata->skip_power_up) {
--		/* power can be removed from the trace unit now */
--		control = etm4x_relaxed_read32(csa, TRCPDCR);
--		control &= ~TRCPDCR_PU;
--		etm4x_relaxed_write32(csa, control, TRCPDCR);
--	}
- 
- 	control = etm4x_relaxed_read32(csa, TRCPRGCTLR);
- 
-@@ -859,6 +858,28 @@ static void etm4_disable_hw(void *info)
- 	 * of ARM IHI 0064H.b.
+@@ -830,11 +844,16 @@ static void etm4_disable_trace_unit(struct etmv4_drvdata *drvdata)
  	 */
+ 	etm4x_prohibit_trace(drvdata);
+ 	/*
+-	 * Make sure everything completes before disabling, as recommended
+-	 * by section 7.3.77 ("TRCVICTLR, ViewInst Main Control Register,
+-	 * SSTATUS") of ARM IHI 0064D
++	 * Prevent being speculative at the point of disabling the trace unit,
++	 * as recommended by section 7.3.77 ("TRCVICTLR, ViewInst Main Control
++	 * Register, SSTATUS") of ARM IHI 0064D
+ 	 */
+ 	dsb(sy);
++	/*
++	 * According to software usage VKHHY in Arm ARM (ARM DDI 0487 L.a),
++	 * execute a Context synchronization event to guarantee no new
++	 * program-flow trace is generated.
++	 */
  	isb();
-+}
-+
-+static void etm4_disable_hw(void *info)
-+{
-+	u32 control;
-+	struct etmv4_drvdata *drvdata = info;
-+	struct etmv4_config *config = &drvdata->config;
-+	struct coresight_device *csdev = drvdata->csdev;
-+	struct csdev_access *csa = &csdev->access;
-+	int i;
-+
-+	etm4_cs_unlock(drvdata, csa);
-+	etm4_disable_arch_specific(drvdata);
-+
-+	if (!drvdata->skip_power_up) {
-+		/* power can be removed from the trace unit now */
-+		control = etm4x_relaxed_read32(csa, TRCPDCR);
-+		control &= ~TRCPDCR_PU;
-+		etm4x_relaxed_write32(csa, control, TRCPDCR);
-+	}
-+
-+	etm4_disable_trace_unit(drvdata);
- 
- 	/* read the status of the single shot comparators */
- 	for (i = 0; i < drvdata->nr_ss_cmp; i++) {
+ 	/* Trace synchronization barrier, is a nop if not supported */
+ 	tsb_csync();
 -- 
 2.51.0
 
