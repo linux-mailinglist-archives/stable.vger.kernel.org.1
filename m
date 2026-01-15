@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208536-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 292B4D2608F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0D950D25E97
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 72D713033BA2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 463C63011464
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3DB2D7DD7;
-	Thu, 15 Jan 2026 17:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B530F3BF2F3;
+	Thu, 15 Jan 2026 16:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvZHCvZA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdzkEhoI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C7829C338;
-	Thu, 15 Jan 2026 17:01:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B0E843AE6E2;
+	Thu, 15 Jan 2026 16:55:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496500; cv=none; b=e7j5Pgp8vbtUkNpDwkRc1ocmBL5i+nhYFit8cSN94HBVTdp17pv/XLsdcl0gHD3F2+v+Jg/u2Mdg6W6F8KgnOCyBBu7wM0GztA0wdKKnsfTI+jDrusGEyjKr/SENayoOi2u/mjzShNhadRjtaP8O9VXj0nG4hYeLrNALL3FR5Xw=
+	t=1768496128; cv=none; b=sWez73Ud4zJPrKEHZAUcA9BcQJz9GmYR299Vd/Btw7D+chguQBkBr1meRF428YDzDBcYfYIxFSTuLKyZKslzfJKzJs5I+HCN1kcySrdQ8r4iq+jP50SSB05Y+iWBT1KIXYtxcc3HzQj2kAZE/WfjNMKN337ED5R0rQqhghssRgs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496500; c=relaxed/simple;
-	bh=pCer/eoQg/+/hKPk9NVz8rvtwztvWe85om+Zcvx6MZM=;
+	s=arc-20240116; t=1768496128; c=relaxed/simple;
+	bh=Th2xOlxYrPjtoyn73Zp1tA0TihUHOzPgupZoHI9ea6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rEfimnOuE37BWbsXkws+Ff42HkXsAPOJmuoEGTOmt3IjmIxTmmAXyPXB7azEFms1vR5/hqANQ8l5vnHv2tHCTdrG7jnPnJeA3XEJh9WB4hmVzjMbQ6hUjIpVFzum3fFI1WCXi+BQhbniNvVW5diYgha3NA6Nqcz7WUml6YvWTzM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvZHCvZA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F435C116D0;
-	Thu, 15 Jan 2026 17:01:39 +0000 (UTC)
+	 MIME-Version; b=QTujYB8NJ4EVeRCis+EpzEYBcdjFiCc9w8mebq1b6eEB1CWy4QxlU9jnYAVkjDYV/FQ9nWZS+FtjypmG7OirQgFdgdpfp7h3mgfR3MkcdaOqQAUdpbhFQ7mmrtBQlpLVmuZCPtbvbC+F8+qOn2m/gMRxzOFm42IBotCTkL60djQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdzkEhoI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16BA9C116D0;
+	Thu, 15 Jan 2026 16:55:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496500;
-	bh=pCer/eoQg/+/hKPk9NVz8rvtwztvWe85om+Zcvx6MZM=;
+	s=korg; t=1768496128;
+	bh=Th2xOlxYrPjtoyn73Zp1tA0TihUHOzPgupZoHI9ea6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PvZHCvZAVxtaxlr9FRXSuSOeqITlVOi3osjgRUlqCCMeqSNxOxHukdQkBL2JZ/xGj
-	 ccsxiFObrcl6urxLc/rM75vyj+LTcH1dOm7MbW17Fz73FEHzth3NiQxa+eFuFWik5M
-	 g6/whqyYzUbYrlBKejesRBLdFahn1H3tVXLZMyBM=
+	b=JdzkEhoItIFFzeNZKguRZYD6+6lFWIcMqq2EwE46R2umsW6+NOil/DZQ7qr2BN8gZ
+	 iwrg0atLdjo3Oso79cW5hif2VHpKdD1rfSroj1NG489SCkubq4rCNgyer+4FL/eSPZ
+	 QTVcsob5nfxJfWNbJ49lbW9cqhQeKdI+y9DCknfU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Anshuman Khandual <anshuman.khandual@arm.com>,
-	Kevin Brodsky <kevin.brodsky@arm.com>,
-	Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 6.12 009/119] arm64: Fix cleared E0POE bit after cpu_suspend()/resume()
-Date: Thu, 15 Jan 2026 17:47:04 +0100
-Message-ID: <20260115164152.294611664@linuxfoundation.org>
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 088/181] netfilter: nft_synproxy: avoid possible data-race on update operation
+Date: Thu, 15 Jan 2026 17:47:05 +0100
+Message-ID: <20260115164205.500259726@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yeoreum Yun <yeoreum.yun@arm.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit bdf3f4176092df5281877cacf42f843063b4784d upstream.
+[ Upstream commit 36a3200575642846a96436d503d46544533bb943 ]
 
-TCR2_ELx.E0POE is set during smp_init().
-However, this bit is not reprogrammed when the CPU enters suspension and
-later resumes via cpu_resume(), as __cpu_setup() does not re-enable E0POE
-and there is no save/restore logic for the TCR2_ELx system register.
+During nft_synproxy eval we are reading nf_synproxy_info struct which
+can be modified on update operation concurrently. As nf_synproxy_info
+struct fits in 32 bits, use READ_ONCE/WRITE_ONCE annotations.
 
-As a result, the E0POE feature no longer works after cpu_resume().
-
-To address this, save and restore TCR2_EL1 in the cpu_suspend()/cpu_resume()
-path, rather than adding related logic to __cpu_setup(), taking into account
-possible future extensions of the TCR2_ELx feature.
-
-Fixes: bf83dae90fbc ("arm64: enable the Permission Overlay Extension for EL0")
-Cc: <stable@vger.kernel.org> # 6.12.x
-Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/include/asm/suspend.h |    2 +-
- arch/arm64/mm/proc.S             |    8 ++++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ net/netfilter/nft_synproxy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/arm64/include/asm/suspend.h
-+++ b/arch/arm64/include/asm/suspend.h
-@@ -2,7 +2,7 @@
- #ifndef __ASM_SUSPEND_H
- #define __ASM_SUSPEND_H
+diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+index 5d3e518259859..4d3e5a31b4125 100644
+--- a/net/netfilter/nft_synproxy.c
++++ b/net/netfilter/nft_synproxy.c
+@@ -48,7 +48,7 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
+ 				 struct tcphdr *_tcph,
+ 				 struct synproxy_options *opts)
+ {
+-	struct nf_synproxy_info info = priv->info;
++	struct nf_synproxy_info info = READ_ONCE(priv->info);
+ 	struct net *net = nft_net(pkt);
+ 	struct synproxy_net *snet = synproxy_pernet(net);
+ 	struct sk_buff *skb = pkt->skb;
+@@ -79,7 +79,7 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
+ 				 struct tcphdr *_tcph,
+ 				 struct synproxy_options *opts)
+ {
+-	struct nf_synproxy_info info = priv->info;
++	struct nf_synproxy_info info = READ_ONCE(priv->info);
+ 	struct net *net = nft_net(pkt);
+ 	struct synproxy_net *snet = synproxy_pernet(net);
+ 	struct sk_buff *skb = pkt->skb;
+@@ -340,7 +340,7 @@ static void nft_synproxy_obj_update(struct nft_object *obj,
+ 	struct nft_synproxy *newpriv = nft_obj_data(newobj);
+ 	struct nft_synproxy *priv = nft_obj_data(obj);
  
--#define NR_CTX_REGS 13
-+#define NR_CTX_REGS 14
- #define NR_CALLEE_SAVED_REGS 12
+-	priv->info = newpriv->info;
++	WRITE_ONCE(priv->info, newpriv->info);
+ }
  
- /*
---- a/arch/arm64/mm/proc.S
-+++ b/arch/arm64/mm/proc.S
-@@ -100,6 +100,10 @@ SYM_FUNC_START(cpu_do_suspend)
- 	 * call stack.
- 	 */
- 	str	x18, [x0, #96]
-+alternative_if ARM64_HAS_TCR2
-+	mrs	x2, REG_TCR2_EL1
-+	str	x2, [x0, #104]
-+alternative_else_nop_endif
- 	ret
- SYM_FUNC_END(cpu_do_suspend)
- 
-@@ -134,6 +138,10 @@ SYM_FUNC_START(cpu_do_resume)
- 	msr	tcr_el1, x8
- 	msr	vbar_el1, x9
- 	msr	mdscr_el1, x10
-+alternative_if ARM64_HAS_TCR2
-+	ldr	x2, [x0, #104]
-+	msr	REG_TCR2_EL1, x2
-+alternative_else_nop_endif
- 
- 	msr	sctlr_el1, x12
- 	set_this_cpu_offset x13
+ static struct nft_object_type nft_synproxy_obj_type;
+-- 
+2.51.0
+
 
 
 
