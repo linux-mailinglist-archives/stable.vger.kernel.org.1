@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-209442-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209479-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7F2C5D26BAC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4119D27720
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2132E30BEB55
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:31 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6D96A3090B60
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E8902C0270;
-	Thu, 15 Jan 2026 17:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A8BC27AC5C;
+	Thu, 15 Jan 2026 17:40:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FiDYbRW/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XZFA8u9/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 51AE14C81;
-	Thu, 15 Jan 2026 17:38:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB1B41A2389;
+	Thu, 15 Jan 2026 17:40:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498709; cv=none; b=qHSffhgUdUadkvIeOO6rwCrUqCh/VDTDEU6VDJlqh7YsMeVSXyT+F5q2PC4CaWy/Y6vIaE3cNjuVVhnST6ybH3LRUTzi2PAxfftFA7DgrVgkM+7lcu0dP7q17ihUC715P3qpNkrczJ29ikWZl8BtEXlU/GD7zHqsoLDBtTBWfx0=
+	t=1768498812; cv=none; b=pSS/yO1msiFGiJVxLiWK5HurG6UsqxLASvLRjkJipFJeBAwMtbX90sIvY0Kmyr9adJbr/QaKexm1kQB55pBNx2hWtVtFvsdzjumuPkgvJn1qyR0z2YGhkKQOk00UX46H9w3H3/9Gj5duwutIyNHaALDs5ij2cXECZm0wJacpBZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498709; c=relaxed/simple;
-	bh=56rqIMFw9ptKj6OcyE1pYb9snlSGnAkpGVzySWEq284=;
+	s=arc-20240116; t=1768498812; c=relaxed/simple;
+	bh=5L33FaXvxAxWpReGRg68xoI7cMEb8tHDn3UcKAe5ORM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nhkjNVikUFeADyY9Z/t3+yf+7WHyFaQzS2vCjESwRvvs5WMxUdJSGet4r0J2s3XafTsIperV5bYWe0cQhhfMr3UyaP5okKZBv/fAl+ADj6GhXw5//pi+uT7cAkomF2dDNYEVFFFC96TBZaSlJfB9af54AQ6R17Uplwyj7S1pIsk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FiDYbRW/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD504C116D0;
-	Thu, 15 Jan 2026 17:38:28 +0000 (UTC)
+	 MIME-Version; b=L4TWXXmmtNwRU6L/5QAR898szzb8YVPnzc55zpUz/I2JDORPrqrGRmSXP60RQAhB/jD0/TnXgcEfEXB3k06PjB5HCbZPQRg3dibPG3vu1mUytkIwKtFJFarl6nByTTjlO8k0TSdjx17+8+ag5aL+ozI0hRyq69qcjgSYoUpkmoI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XZFA8u9/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69510C116D0;
+	Thu, 15 Jan 2026 17:40:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498709;
-	bh=56rqIMFw9ptKj6OcyE1pYb9snlSGnAkpGVzySWEq284=;
+	s=korg; t=1768498812;
+	bh=5L33FaXvxAxWpReGRg68xoI7cMEb8tHDn3UcKAe5ORM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FiDYbRW/JmIEpj3S7ODYrx9L/CyTXHqRCrD02LtjDxT1K0WqUBpVsgUjzr9WfLa9S
-	 R2HnPWYuHnGMBLPcgiX0OdJobegmfSL6yxbDwC3GKLKzb2r4I5v99RwatWKJ105IgC
-	 eu7bVBAOmCs/eJjE79kN1m9HEmY3WHXTjaiRUWIw=
+	b=XZFA8u9/J6LDaHOkIOh0PncUzYTirrtGOczaM5mC6Tc5EWOIA4Ib8urYzCxD9yexW
+	 v9WKcBgsFduwuOU1MiGismiDIuIkN30aM6nHN7/ptMvwmhvNk8OGyFDmWjogHScODW
+	 zmNCNsuqSrdH0lJQTbemlMqnst/1ww8MFmP9uMbA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Zilin Guan <zilin@seu.edu.cn>,
 	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 525/554] netfilter: nft_synproxy: avoid possible data-race on update operation
-Date: Thu, 15 Jan 2026 17:49:51 +0100
-Message-ID: <20260115164305.330630371@linuxfoundation.org>
+Subject: [PATCH 5.15 526/554] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
+Date: Thu, 15 Jan 2026 17:49:52 +0100
+Message-ID: <20260115164305.367012446@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -64,53 +64,47 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 36a3200575642846a96436d503d46544533bb943 ]
+[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
 
-During nft_synproxy eval we are reading nf_synproxy_info struct which
-can be modified on update operation concurrently. As nf_synproxy_info
-struct fits in 32 bits, use READ_ONCE/WRITE_ONCE annotations.
+In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
+the err_release_rule label without freeing the allocated flow, leading
+to a memory leak.
 
-Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Fix this by adding a new label err_destroy_flow and jumping to it when
+nft_use_inc() fails. This ensures that the flow is properly released
+in this error case.
+
+Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
 Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_synproxy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
-index 0806813d3a767..46d2eefb0b218 100644
---- a/net/netfilter/nft_synproxy.c
-+++ b/net/netfilter/nft_synproxy.c
-@@ -48,7 +48,7 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
- 				 struct tcphdr *_tcph,
- 				 struct synproxy_options *opts)
- {
--	struct nf_synproxy_info info = priv->info;
-+	struct nf_synproxy_info info = READ_ONCE(priv->info);
- 	struct net *net = nft_net(pkt);
- 	struct synproxy_net *snet = synproxy_pernet(net);
- 	struct sk_buff *skb = pkt->skb;
-@@ -79,7 +79,7 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
- 				 struct tcphdr *_tcph,
- 				 struct synproxy_options *opts)
- {
--	struct nf_synproxy_info info = priv->info;
-+	struct nf_synproxy_info info = READ_ONCE(priv->info);
- 	struct net *net = nft_net(pkt);
- 	struct synproxy_net *snet = synproxy_pernet(net);
- 	struct sk_buff *skb = pkt->skb;
-@@ -339,7 +339,7 @@ static void nft_synproxy_obj_update(struct nft_object *obj,
- 	struct nft_synproxy *newpriv = nft_obj_data(newobj);
- 	struct nft_synproxy *priv = nft_obj_data(obj);
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 91b012e476be6..e37d2ef9538e5 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3741,7 +3741,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
  
--	priv->info = newpriv->info;
-+	WRITE_ONCE(priv->info, newpriv->info);
- }
+ 	if (!nft_use_inc(&chain->use)) {
+ 		err = -EMFILE;
+-		goto err_release_rule;
++		goto err_destroy_flow;
+ 	}
  
- static struct nft_object_type nft_synproxy_obj_type;
+ 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
+@@ -3791,6 +3791,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ err_destroy_flow_rule:
+ 	nft_use_dec_restore(&chain->use);
++err_destroy_flow:
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
 -- 
 2.51.0
 
