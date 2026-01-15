@@ -1,54 +1,52 @@
-Return-Path: <stable+bounces-209061-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209484-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABC84D2673A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3AAE0D26BB5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 325E7301CF8B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 402213093343
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA9602D780A;
-	Thu, 15 Jan 2026 17:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6AC0634216C;
+	Thu, 15 Jan 2026 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CkVKDp1Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HgW5kW0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6DC9E258EC2;
-	Thu, 15 Jan 2026 17:20:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25F5B27B340;
+	Thu, 15 Jan 2026 17:40:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497624; cv=none; b=kFN5spWyulndGaS91IwMkUAoeNrFUVBKel7SWMbiit3Lt9vsWIbVExNtvAN/6h0gzJWDWZ4i5YE204dIekvfTYd+UWv6WfFIf2px++6yjwCs5kwHXySOSEK+Mr6L0tXYjo4pqlNAthet0hiixMHtXybmluY6Z2qG+umqFkh7rtM=
+	t=1768498827; cv=none; b=iX1tN/K1ozH48YlQHyiz8H6fFijHPyxO5KZFvOI+Fyyxc1R6ZzBE0vPVyert0crM7Y/PtJr8EXRtGHmqT6G+PBZRXMtkKENMH/3y+KoHKa2lcT4xUhM+SDjSNNhrIPhWLl3+vJNw7pileUkiM2SLIAptbxGyp3LkgVTEo3cmbM4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497624; c=relaxed/simple;
-	bh=H9zzf2TLpaqlAqyTJarOMyWY9JdY5IX5W0dI4D6oRhI=;
+	s=arc-20240116; t=1768498827; c=relaxed/simple;
+	bh=1oOxh62t/Nefek9UJSNnYGcEbvdYzBC4aIFRK4t9diM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sZC7o3J9VEaFPtpbozMb7WuEUIYU58/mUOrTGG/SuOSIPovwfAaOTKyavKatiZOyq7JLCboOiSUbWjo3Uf3w7/A0Osvfpmmy2LtPW8dO5zEYnv8DEGHGztCltYzmEsQmeeMCzoLKvZ9QMD+1sLIuJWQGjzhRMKdBEycOaFiWujI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CkVKDp1Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7C76C116D0;
-	Thu, 15 Jan 2026 17:20:23 +0000 (UTC)
+	 MIME-Version; b=f+PQ2VY8TBqSJ7H7micrVLVxTdGROkjvpKPtwKzAa7izXbgQzhcb/J080TeoOPeTUys0rg3zdAJ3IbSqcirbf28I23VbwHHseJ6PqdSsVE5Q8FhKlhBEwjgCkl0slByjw7kogRV/UpEXqqkHbtHMYVcqlloioJ6W+QKfJML9k0s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HgW5kW0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A96D2C116D0;
+	Thu, 15 Jan 2026 17:40:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497624;
-	bh=H9zzf2TLpaqlAqyTJarOMyWY9JdY5IX5W0dI4D6oRhI=;
+	s=korg; t=1768498827;
+	bh=1oOxh62t/Nefek9UJSNnYGcEbvdYzBC4aIFRK4t9diM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CkVKDp1QB3/m+jkk4ncxWQZNaU95wcBLg2iMBlrE5fDC75rbVf5VzBc5/NHf9Y932
-	 u5qF+XbSxvqGFCpp7G8OOY6f7dyftL+dXNJuWAw0s4HliUmy+bzoN8HhEyQil2Xi2r
-	 FwcRDGe9WWXE8HP1EbPQuxV6fydUxZ5LRsc7A32Q=
+	b=HgW5kW0xCGB9nWOHsUkNEYaTNqrhmGzEDcTQvwnwSpoH5gzPNCBenOK+zZITCxGQm
+	 wF1buYnxz6cqmbssz6xT2Xw6rRyrChk9HpW9gqpcPQxbiGCOWWBXhW71o8wb1cBh1f
+	 z8/LqGX9UlqWzZlNt6c8lfe/sFQgdJOM9Qu/pmeQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 147/554] ACPI: processor_core: fix map_x2apic_id for amd-pstate on am4
-Date: Thu, 15 Jan 2026 17:43:33 +0100
-Message-ID: <20260115164251.579655243@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>
+Subject: [PATCH 5.10 013/451] USB: serial: ftdi_sio: match on interface number for jtag
+Date: Thu, 15 Jan 2026 17:43:34 +0100
+Message-ID: <20260115164231.368330906@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,69 +56,183 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 17e7972979e147cc51d4a165e6b6b0f93273ca68 ]
+commit 4e31a5d0a9ee672f708fc993c1d5520643f769fd upstream.
 
-On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
-and equivalent Gigabyte, amd-pstate does not initialize when the
-x2apic is enabled in the BIOS. Kernel debug messages include:
+Some FTDI devices have the first port reserved for JTAG and have been
+using a dedicated quirk to prevent binding to it.
 
-[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
-[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
-[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
+As can be inferred directly or indirectly from the commit messages,
+almost all of these devices are dual port devices which means that the
+more recently added macro for matching on interface number can be used
+instead (and some such devices do so already).
 
-I tracked this down to map_x2apic_id() checking device_declaration
-passed in via the type argument of acpi_get_phys_id() via
-map_madt_entry() while map_lapic_id() does not.
+This avoids probing interfaces that will never be bound and cleans up
+the match table somewhat.
 
-It appears these BIOSes use Processor statements for declaring the CPUs
-in the ACPI namespace instead of processor device objects (which should
-have been used). CPU declarations via Processor statements were
-deprecated in ACPI 6.0 that was released 10 years ago. They should not
-be used any more in any contemporary platform firmware.
+Note that the JTAG quirk is kept for quad port devices, which would
+otherwise require three match entries.
 
-I tried to contact Asus support multiple times, but never received a
-reply nor did any BIOS update ever change this.
-
-Fix amd-pstate w/ x2apic on am4 by allowing map_x2apic_id() to work with
-CPUs declared via Processor statements for IDs less than 255, which is
-consistent with ACPI 5.0 that still allowed Processor statements to be
-used for declaring CPUs.
-
-Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
-Signed-off-by: René Rebe <rene@exactco.de>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20251126.165513.1373131139292726554.rene@exactco.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/processor_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/serial/ftdi_sio.c |   72 ++++++++++++++----------------------------
+ 1 file changed, 24 insertions(+), 48 deletions(-)
 
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index 2ac48cda5b201..eae7efae3b5cf 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
- 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
- 		return -ENODEV;
- 
--	if (device_declaration && (apic->uid == acpi_id)) {
-+	if (apic->uid == acpi_id && (device_declaration || acpi_id < 255)) {
- 		*apic_id = apic->local_apic_id;
- 		return 0;
- 	}
--- 
-2.51.0
-
+--- a/drivers/usb/serial/ftdi_sio.c
++++ b/drivers/usb/serial/ftdi_sio.c
+@@ -606,10 +606,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, FTDI_IBS_PEDO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_IBS_PROD_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_TAVIR_STK500_PID) },
+-	{ USB_DEVICE(FTDI_VID, FTDI_TIAO_UMPA_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONLXM_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TIAO_UMPA_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_NT_ORIONLXM_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONLX_PLUS_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORION_IO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_NT_ORIONMX_PID) },
+@@ -820,24 +818,17 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, FTDI_ELSTER_UNICOM_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_PROPOX_JTAGCABLEII_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_PROPOX_ISPCABLEIII_PID) },
+-	{ USB_DEVICE(FTDI_VID, CYBER_CORTEX_AV_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, CYBER_CORTEX_AV_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_OCD_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_OCD_H_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_TINY_PID, 1) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(OLIMEX_VID, OLIMEX_ARM_USB_TINY_H_PID, 1) },
+-	{ USB_DEVICE(FIC_VID, FIC_NEO1973_DEBUG_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_OOCDLINK_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_TURTELIZER_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FIC_VID, FIC_NEO1973_DEBUG_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_OOCDLINK_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_DEVEL_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_EVAL_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, LMI_LM3S_ICDI_BOARD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_TURTELIZER_PID, 1) },
+ 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_USB60F) },
+ 	{ USB_DEVICE(RATOC_VENDOR_ID, RATOC_PRODUCT_ID_SCU18) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_REU_TINY_PID) },
+@@ -879,17 +870,14 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(ATMEL_VID, STK541_PID) },
+ 	{ USB_DEVICE(DE_VID, STB_PID) },
+ 	{ USB_DEVICE(DE_VID, WHT_PID) },
+-	{ USB_DEVICE(ADI_VID, ADI_GNICE_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(ADI_VID, ADI_GNICEPLUS_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(ADI_VID, ADI_GNICE_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ADI_VID, ADI_GNICEPLUS_PID, 1) },
+ 	{ USB_DEVICE_AND_INTERFACE_INFO(MICROCHIP_VID, MICROCHIP_USB_BOARD_PID,
+ 					USB_CLASS_VENDOR_SPEC,
+ 					USB_SUBCLASS_VENDOR_SPEC, 0x00) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(ACTEL_VID, MICROSEMI_ARROW_SF2PLUS_BOARD_PID, 2) },
+ 	{ USB_DEVICE(JETI_VID, JETI_SPC1201_PID) },
+-	{ USB_DEVICE(MARVELL_VID, MARVELL_SHEEVAPLUG_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(MARVELL_VID, MARVELL_SHEEVAPLUG_PID, 1) },
+ 	{ USB_DEVICE(LARSENBRUSGAARD_VID, LB_ALTITRACK_PID) },
+ 	{ USB_DEVICE(GN_OTOMETRICS_VID, AURICAL_USB_PID) },
+ 	{ USB_DEVICE(FTDI_VID, PI_C865_PID) },
+@@ -912,10 +900,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(PI_VID, PI_1016_PID) },
+ 	{ USB_DEVICE(KONDO_VID, KONDO_USB_SERIAL_PID) },
+ 	{ USB_DEVICE(BAYER_VID, BAYER_CONTOUR_CABLE_PID) },
+-	{ USB_DEVICE(FTDI_VID, MARVELL_OPENRD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, TI_XDS100V2_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, MARVELL_OPENRD_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, TI_XDS100V2_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO820_PID) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO720_PID) },
+ 	{ USB_DEVICE(FTDI_VID, HAMEG_HO730_PID) },
+@@ -924,18 +910,14 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, MJSG_SR_RADIO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, MJSG_HD_RADIO_PID) },
+ 	{ USB_DEVICE(FTDI_VID, MJSG_XM_RADIO_PID) },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_ST_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SLITE_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SH2_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_ST_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_SLITE_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, XVERVE_SIGNALYZER_SH2_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, XVERVE_SIGNALYZER_SH4_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+ 	{ USB_DEVICE(FTDI_VID, SEGWAY_RMP200_PID) },
+ 	{ USB_DEVICE(FTDI_VID, ACCESIO_COM4SM_PID) },
+-	{ USB_DEVICE(IONICS_VID, IONICS_PLUGCOMPUTER_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(IONICS_VID, IONICS_PLUGCOMPUTER_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_24_MASTER_WING_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_PC_WING_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CHAMSYS_USB_DMX_PID) },
+@@ -950,15 +932,12 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CINTERION_MC55I_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_FHE_PID) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_DOTEC_PID) },
+-	{ USB_DEVICE(QIHARDWARE_VID, MILKYMISTONE_JTAGSERIAL_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(ST_VID, ST_STMCLT_2232_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(QIHARDWARE_VID, MILKYMISTONE_JTAGSERIAL_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(ST_VID, ST_STMCLT_2232_PID, 1) },
+ 	{ USB_DEVICE(ST_VID, ST_STMCLT_4232_PID),
+ 		.driver_info = (kernel_ulong_t)&ftdi_stmclite_quirk },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_RF_R106) },
+-	{ USB_DEVICE(FTDI_VID, FTDI_DISTORTEC_JTAG_LOCK_PICK_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_DISTORTEC_JTAG_LOCK_PICK_PID, 1) },
+ 	{ USB_DEVICE(FTDI_VID, FTDI_LUMEL_PD12_PID) },
+ 	/* Crucible Devices */
+ 	{ USB_DEVICE(FTDI_VID, FTDI_CT_COMET_PID) },
+@@ -1033,8 +1012,7 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(ICPDAS_VID, ICPDAS_I7561U_PID) },
+ 	{ USB_DEVICE(ICPDAS_VID, ICPDAS_I7563U_PID) },
+ 	{ USB_DEVICE(WICED_VID, WICED_USB20706V2_PID) },
+-	{ USB_DEVICE(TI_VID, TI_CC3200_LAUNCHPAD_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(TI_VID, TI_CC3200_LAUNCHPAD_PID, 1) },
+ 	{ USB_DEVICE(CYPRESS_VID, CYPRESS_WICED_BT_USB_PID) },
+ 	{ USB_DEVICE(CYPRESS_VID, CYPRESS_WICED_WL_USB_PID) },
+ 	{ USB_DEVICE(AIRBUS_DS_VID, AIRBUS_DS_P8GR) },
+@@ -1054,10 +1032,8 @@ static const struct usb_device_id id_tab
+ 	{ USB_DEVICE(UBLOX_VID, UBLOX_C099F9P_ODIN_PID) },
+ 	{ USB_DEVICE_INTERFACE_NUMBER(UBLOX_VID, UBLOX_EVK_M101_PID, 2) },
+ 	/* FreeCalypso USB adapters */
+-	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
+-	{ USB_DEVICE(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID),
+-		.driver_info = (kernel_ulong_t)&ftdi_jtag_quirk },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_FALCONIA_JTAG_BUF_PID, 1) },
++	{ USB_DEVICE_INTERFACE_NUMBER(FTDI_VID, FTDI_FALCONIA_JTAG_UNBUF_PID, 1) },
+ 	/* GMC devices */
+ 	{ USB_DEVICE(GMC_VID, GMC_Z216C_PID) },
+ 	/* Altera USB Blaster 3 */
 
 
 
