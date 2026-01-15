@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209362-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7991BD26B00
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30682D266C9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8BFC0301A4E5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 227B5310DC62
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 099883D1CB6;
-	Thu, 15 Jan 2026 17:34:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C291D2C11EF;
+	Thu, 15 Jan 2026 17:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qhwKFMiS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4JmxHp6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD35F27AC5C;
-	Thu, 15 Jan 2026 17:34:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8378C2D5C9B;
+	Thu, 15 Jan 2026 17:08:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498479; cv=none; b=R7r6pFZ9TGVfKgxD3ONvARE+5IEV+t2iuTapUlaOij3xb/grhNb/68aWJJwP7rulqqT10BMwMTLE2YhnoFFYoBzfitfKHsr3PHyvvaNedfxwYinCqFQerKdVbPpsutbmB/fhba7nuxVmd/a28fIJk65pdAAyxgkxuPd7+i+g3OM=
+	t=1768496881; cv=none; b=sFKimF1jO/IuSIX3H3nYmOY3+JzkMDY86jY1HdOOqmJVhlVjW7b+0TXfCm5Px3GWgwwLCoSYu/i9J6reJdiyds4a9/tw0aV+nJrPoywzVRHAAfntiwND1SnYd4tgOvy0I4meFMAT3nfIwxpYzZP6ugdph/M3j/J9kN2KJn9w86Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498479; c=relaxed/simple;
-	bh=8658TILv8TMCQ/RyrtLoEVKDyU8dGfkHnNTXbunxkSM=;
+	s=arc-20240116; t=1768496881; c=relaxed/simple;
+	bh=Ei6Cuadi/SzNMiJ0UzxDP9Rpsv5U9m3a6vAcnz8V8Xs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CRMJvUkH8OJU8Va2qwxCfpqF9VCsF3GaDLKNn+1STyLDPJB8EMPhiKadrEQWa8Q5lakYZ8gzAbBGeHXcIqU1HQ1EPyZsvDHbDiR0FjlLpiogJcylMxxhzR/7VtSzIhzEFWrVLOLyuUYrbWqL5yAYPZz/QIikXKL3uVYwEixkJh0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qhwKFMiS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4591EC116D0;
-	Thu, 15 Jan 2026 17:34:39 +0000 (UTC)
+	 MIME-Version; b=Qjs76jKPmIuQ6BN4u3UickSF6vS3YXT/k8rmgmuDWhRDWshbfoftgGT0kIEU8GnAaiwOv8WC3dVtnmgW2zlPlEioz27f94FLSx3fdu1A1dsFkPteTH+qvo10cFol1u8Q2sCcmSpFVLekE4uJ/myjnOsZhDwjPOdSvHySj7KrLw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4JmxHp6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05205C116D0;
+	Thu, 15 Jan 2026 17:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498479;
-	bh=8658TILv8TMCQ/RyrtLoEVKDyU8dGfkHnNTXbunxkSM=;
+	s=korg; t=1768496881;
+	bh=Ei6Cuadi/SzNMiJ0UzxDP9Rpsv5U9m3a6vAcnz8V8Xs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qhwKFMiSCm7Fqs4u+Q6LZYYi6ekrnquGWrq/M5GtvWtCywWQre76ZbClDAKocY5zu
-	 edPCd0CMdByNx3AGCgEJwAjXcx1L1Zq1P+C2OBjWc8e6ZAG+Vyp+GMPyjWKZ5c1LhT
-	 u7InJULta1aVp1zGSMNjOnSeCNaqMjg5FXzOPApw=
+	b=j4JmxHp6xhsQ++SV2tiZhcsk41Y+flDmDVA3NaZog9gw3hhkBL4q1q35FyYSmdZbU
+	 GhKAHdeP96G6LWeOJ2lWS0w3wTt5WUCjzBpKglB3TOaQ+/vxCH7olvTbywUW9cDENE
+	 VUpGZ2srrSAfXtsHyLQa0csnzJchFJ9qJB+wMOa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mat Martineau <martineau@kernel.org>,
-	"Matthieu Baerts (NGI0)" <matttbe@kernel.org>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 446/554] mptcp: pm: ignore unknown endpoint flags
+Subject: [PATCH 6.6 49/88] netfilter: nf_conncount: update last_gc only when GC has been performed
 Date: Thu, 15 Jan 2026 17:48:32 +0100
-Message-ID: <20260115164302.412625992@linuxfoundation.org>
+Message-ID: <20260115164148.085142148@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: "Matthieu Baerts (NGI0)" <matttbe@kernel.org>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 0ace3297a7301911e52d8195cb1006414897c859 ]
+[ Upstream commit 7811ba452402d58628e68faedf38745b3d485e3c ]
 
-Before this patch, the kernel was saving any flags set by the userspace,
-even unknown ones. This doesn't cause critical issues because the kernel
-is only looking at specific ones. But on the other hand, endpoints dumps
-could tell the userspace some recent flags seem to be supported on older
-kernel versions.
+Currently last_gc is being updated everytime a new connection is
+tracked, that means that it is updated even if a GC wasn't performed.
+With a sufficiently high packet rate, it is possible to always bypass
+the GC, causing the list to grow infinitely.
 
-Instead, ignore all unknown flags when parsing them. By doing that, the
-userspace can continue to set unsupported flags, but it has a way to
-verify what is supported by the kernel.
+Update the last_gc value only when a GC has been actually performed.
 
-Note that it sounds better to continue accepting unsupported flags not
-to change the behaviour, but also that eases things on the userspace
-side by adding "optional" endpoint types only supported by newer kernel
-versions without having to deal with the different kernel versions.
-
-A note for the backports: there will be conflicts in mptcp.h on older
-versions not having the mentioned flags, the new line should still be
-added last, and the '5' needs to be adapted to have the same value as
-the last entry.
-
-Fixes: 01cacb00b35c ("mptcp: add netlink-based PM")
-Cc: stable@vger.kernel.org
-Reviewed-by: Mat Martineau <martineau@kernel.org>
-Signed-off-by: Matthieu Baerts (NGI0) <matttbe@kernel.org>
-Link: https://patch.msgid.link/20251205-net-mptcp-misc-fixes-6-19-rc1-v1-1-9e4781a6c1b8@kernel.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ GENMASK(5, 0) => GENMASK(3, 0) + context ]
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/uapi/linux/mptcp.h |    1 +
- net/mptcp/pm_netlink.c     |    3 ++-
- 2 files changed, 3 insertions(+), 1 deletion(-)
+ net/netfilter/nf_conncount.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/uapi/linux/mptcp.h
-+++ b/include/uapi/linux/mptcp.h
-@@ -74,6 +74,7 @@ enum {
- #define MPTCP_PM_ADDR_FLAG_SUBFLOW			(1 << 1)
- #define MPTCP_PM_ADDR_FLAG_BACKUP			(1 << 2)
- #define MPTCP_PM_ADDR_FLAG_FULLMESH			(1 << 3)
-+#define MPTCP_PM_ADDR_FLAGS_MASK			GENMASK(3, 0)
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index c00b8e522c5a7..a2c5a7ba0c6fc 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -229,6 +229,7 @@ static int __nf_conncount_add(struct net *net,
  
- enum {
- 	MPTCP_PM_CMD_UNSPEC,
---- a/net/mptcp/pm_netlink.c
-+++ b/net/mptcp/pm_netlink.c
-@@ -1294,7 +1294,8 @@ skip_family:
- 		entry->addr.id = nla_get_u8(tb[MPTCP_PM_ADDR_ATTR_ID]);
+ 		nf_ct_put(found_ct);
+ 	}
++	list->last_gc = (u32)jiffies;
  
- 	if (tb[MPTCP_PM_ADDR_ATTR_FLAGS])
--		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]);
-+		entry->flags = nla_get_u32(tb[MPTCP_PM_ADDR_ATTR_FLAGS]) &
-+			       MPTCP_PM_ADDR_FLAGS_MASK;
+ add_new_node:
+ 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
+@@ -248,7 +249,6 @@ static int __nf_conncount_add(struct net *net,
+ 	conn->jiffies32 = (u32)jiffies;
+ 	list_add_tail(&conn->node, &list->head);
+ 	list->count++;
+-	list->last_gc = (u32)jiffies;
  
- 	if (tb[MPTCP_PM_ADDR_ATTR_PORT]) {
- 		if (!(entry->flags & MPTCP_PM_ADDR_FLAG_SIGNAL)) {
+ out_put:
+ 	if (refcounted)
+-- 
+2.51.0
+
 
 
 
