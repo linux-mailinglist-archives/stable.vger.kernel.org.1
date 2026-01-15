@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209724-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209336-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9B167D27242
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38300D26AAF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E3E3231475DD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A7A1830366E6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CE2DF3BF2FC;
-	Thu, 15 Jan 2026 17:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17E7633B962;
+	Thu, 15 Jan 2026 17:33:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fVUVwdvj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QTD7Cmlp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 733293C1994;
-	Thu, 15 Jan 2026 17:51:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BB8FF2C0270;
+	Thu, 15 Jan 2026 17:33:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499510; cv=none; b=Oh0TnWPf3Eeg9leqFKXVz2rFUbWmeMKmo+qRLoVXZDrNCVTgEQl0efJa6Dq3PXSlmRN/0MtmUig9rUDuie5PbmNfL4wq8x3fhXP6dPfBBFpFh51OkJ9CD26QDxmLr1e+PCJXyT4JaHmE1vGxB7j5gjz3TqGERnNmgc4FuoprlOk=
+	t=1768498405; cv=none; b=XSj+DG2u8/qA76sT18E8CZyXxiME9doB/khvwE0Hs9fYvtlyhKIxd8F9+9+pw6BNvg8hUpTqL3owDyrdMCmzdr79wUdjeuvb1MKCPip4fRk2S34oOyK1VUQQZS76E9CblM3I2u+QofPXDM/OcyZwzVLUfnh2CJFvGoKjMUd6/Z0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499510; c=relaxed/simple;
-	bh=E/xF8ZYGoQg/0sH6txWOgSiw3jL/CHdbLmfXoKnNJY4=;
+	s=arc-20240116; t=1768498405; c=relaxed/simple;
+	bh=K/fSK+0iv+pivVh6LEmqvVNwgxMkImDbrkz/jYQ6vUQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Hutij0NrosOgJm8r3Cw1BFnYn1dY+9AQ9QbK56w6iv/mi8ZlABVM9b0rqg5gO7zqi4RgoBePKrv+IFsIJEgrDFyPfXqy3tEtNCY3Uc63K9rCR7AQ1SmTeCF4TxAqBcpZG/0PKcuiP2r0nRDQxCPXFnCpwjrFEXkyT4Nx0rALj+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fVUVwdvj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EED2EC116D0;
-	Thu, 15 Jan 2026 17:51:49 +0000 (UTC)
+	 MIME-Version; b=ZC6T9ApKhp9sDqfpNmTr3KBfNi+cJWPrV2m44VR3HQAOdDknfGstyVLbZxepOPOW/zqEuyIGgxPpSq1ONFC53ilbqn3/aIAbW3T/q8kwaKflgM5jZbaiqgIex9+mglPCtwL7eoHnU9mSvPAYzzsvdOytJKT/mgM5EijX4ldLs9o=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QTD7Cmlp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4884BC116D0;
+	Thu, 15 Jan 2026 17:33:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499510;
-	bh=E/xF8ZYGoQg/0sH6txWOgSiw3jL/CHdbLmfXoKnNJY4=;
+	s=korg; t=1768498405;
+	bh=K/fSK+0iv+pivVh6LEmqvVNwgxMkImDbrkz/jYQ6vUQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fVUVwdvj0ycFyRZUdnG3ZLnhut3e8+bC06pKh9DFBnrSz+J/xWw7wVZkun/AIVAmM
-	 Yg81LN3bLQH1nx936D8K2dDO1wQ1RqmK31w+HPZ5BIcN2T+9NJUDc4foGDS1mdF3+4
-	 Daq4zBPM7ocydqoBTNOQOWUVtXw1I/SEFB4Sfvtc=
+	b=QTD7Cmlp7sZwAtY9UmHq7MzKl5jVln30hkCU2tU1WAnwWfWlc5DQa0ehYULjDUGR5
+	 BNnqMaz8z0aQFV9cZeIhvkTlD/85i9mE3k40BwLwtZ4bPeGt1xqZ/gX8wFQyOsmmwb
+	 u5PiSworNn44JCoO9rRd4PIj1+v7l85eLwI7hFVE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Xiubo Li <xiubli@redhat.com>
-Subject: [PATCH 5.10 252/451] libceph: make decode_pool() more resilient against corrupted osdmaps
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Patrice Chotard <patrice.chotard@foss.st.com>,
+	Sean Young <sean@mess.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 387/554] media: rc: st_rc: Fix reset control resource leak
 Date: Thu, 15 Jan 2026 17:47:33 +0100
-Message-ID: <20260115164240.007098684@linuxfoundation.org>
+Message-ID: <20260115164300.246823406@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,226 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit 8c738512714e8c0aa18f8a10c072d5b01c83db39 upstream.
+commit 1240abf4b71f632f0117b056e22488e4d9808938 upstream.
 
-If the osdmap is (maliciously) corrupted such that the encoded length
-of ceph_pg_pool envelope is less than what is expected for a particular
-encoding version, out-of-bounds reads may ensue because the only bounds
-check that is there is based on that length value.
+The driver calls reset_control_get_optional_exclusive() but never calls
+reset_control_put() in error paths or in the remove function. This causes
+a resource leak when probe fails after successfully acquiring the reset
+control, or when the driver is unloaded.
 
-This patch adds explicit bounds checks for each field that is decoded
-or skipped.
+Switch to devm_reset_control_get_optional_exclusive() to automatically
+manage the reset control resource.
 
+Fixes: a4b80242d046 ("media: st-rc: explicitly request exclusive reset control")
 Cc: stable@vger.kernel.org
-Reported-by: ziming zhang <ezrakiez@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Xiubo Li <xiubli@redhat.com>
-Tested-by: ziming zhang <ezrakiez@gmail.com>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Patrice Chotard <patrice.chotard@foss.st.com>
+Signed-off-by: Sean Young <sean@mess.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |  118 ++++++++++++++++++++++++------------------------------
- 1 file changed, 53 insertions(+), 65 deletions(-)
+ drivers/media/rc/st_rc.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -790,51 +790,49 @@ static int decode_pool(void **p, void *e
- 	ceph_decode_need(p, end, len, bad);
- 	pool_end = *p + len;
- 
-+	ceph_decode_need(p, end, 4 + 4 + 4, bad);
- 	pi->type = ceph_decode_8(p);
- 	pi->size = ceph_decode_8(p);
- 	pi->crush_ruleset = ceph_decode_8(p);
- 	pi->object_hash = ceph_decode_8(p);
--
- 	pi->pg_num = ceph_decode_32(p);
- 	pi->pgp_num = ceph_decode_32(p);
- 
--	*p += 4 + 4;  /* skip lpg* */
--	*p += 4;      /* skip last_change */
--	*p += 8 + 4;  /* skip snap_seq, snap_epoch */
-+	/* lpg*, last_change, snap_seq, snap_epoch */
-+	ceph_decode_skip_n(p, end, 8 + 4 + 8 + 4, bad);
- 
- 	/* skip snaps */
--	num = ceph_decode_32(p);
-+	ceph_decode_32_safe(p, end, num, bad);
- 	while (num--) {
--		*p += 8;  /* snapid key */
--		*p += 1 + 1; /* versions */
--		len = ceph_decode_32(p);
--		*p += len;
-+		/* snapid key, pool snap (with versions) */
-+		ceph_decode_skip_n(p, end, 8 + 2, bad);
-+		ceph_decode_skip_string(p, end, bad);
- 	}
- 
--	/* skip removed_snaps */
--	num = ceph_decode_32(p);
--	*p += num * (8 + 8);
-+	/* removed_snaps */
-+	ceph_decode_skip_map(p, end, 64, 64, bad);
- 
-+	ceph_decode_need(p, end, 8 + 8 + 4, bad);
- 	*p += 8;  /* skip auid */
- 	pi->flags = ceph_decode_64(p);
- 	*p += 4;  /* skip crash_replay_interval */
- 
- 	if (ev >= 7)
--		pi->min_size = ceph_decode_8(p);
-+		ceph_decode_8_safe(p, end, pi->min_size, bad);
+--- a/drivers/media/rc/st_rc.c
++++ b/drivers/media/rc/st_rc.c
+@@ -287,7 +287,7 @@ static int st_rc_probe(struct platform_d
  	else
- 		pi->min_size = pi->size - pi->size / 2;
+ 		rc_dev->rx_base = rc_dev->base;
  
- 	if (ev >= 8)
--		*p += 8 + 8;  /* skip quota_max_* */
-+		/* quota_max_* */
-+		ceph_decode_skip_n(p, end, 8 + 8, bad);
- 
- 	if (ev >= 9) {
--		/* skip tiers */
--		num = ceph_decode_32(p);
--		*p += num * 8;
-+		/* tiers */
-+		ceph_decode_skip_set(p, end, 64, bad);
- 
-+		ceph_decode_need(p, end, 8 + 1 + 8 + 8, bad);
- 		*p += 8;  /* skip tier_of */
- 		*p += 1;  /* skip cache_mode */
--
- 		pi->read_tier = ceph_decode_64(p);
- 		pi->write_tier = ceph_decode_64(p);
- 	} else {
-@@ -842,86 +840,76 @@ static int decode_pool(void **p, void *e
- 		pi->write_tier = -1;
- 	}
- 
--	if (ev >= 10) {
--		/* skip properties */
--		num = ceph_decode_32(p);
--		while (num--) {
--			len = ceph_decode_32(p);
--			*p += len; /* key */
--			len = ceph_decode_32(p);
--			*p += len; /* val */
--		}
--	}
-+	if (ev >= 10)
-+		/* properties */
-+		ceph_decode_skip_map(p, end, string, string, bad);
- 
- 	if (ev >= 11) {
--		/* skip hit_set_params */
--		*p += 1 + 1; /* versions */
--		len = ceph_decode_32(p);
--		*p += len;
-+		/* hit_set_params (with versions) */
-+		ceph_decode_skip_n(p, end, 2, bad);
-+		ceph_decode_skip_string(p, end, bad);
- 
--		*p += 4; /* skip hit_set_period */
--		*p += 4; /* skip hit_set_count */
-+		/* hit_set_period, hit_set_count */
-+		ceph_decode_skip_n(p, end, 4 + 4, bad);
- 	}
- 
- 	if (ev >= 12)
--		*p += 4; /* skip stripe_width */
-+		/* stripe_width */
-+		ceph_decode_skip_32(p, end, bad);
- 
--	if (ev >= 13) {
--		*p += 8; /* skip target_max_bytes */
--		*p += 8; /* skip target_max_objects */
--		*p += 4; /* skip cache_target_dirty_ratio_micro */
--		*p += 4; /* skip cache_target_full_ratio_micro */
--		*p += 4; /* skip cache_min_flush_age */
--		*p += 4; /* skip cache_min_evict_age */
--	}
--
--	if (ev >=  14) {
--		/* skip erasure_code_profile */
--		len = ceph_decode_32(p);
--		*p += len;
--	}
-+	if (ev >= 13)
-+		/* target_max_*, cache_target_*, cache_min_* */
-+		ceph_decode_skip_n(p, end, 16 + 8 + 8, bad);
-+
-+	if (ev >= 14)
-+		/* erasure_code_profile */
-+		ceph_decode_skip_string(p, end, bad);
- 
- 	/*
- 	 * last_force_op_resend_preluminous, will be overridden if the
- 	 * map was encoded with RESEND_ON_SPLIT
- 	 */
- 	if (ev >= 15)
--		pi->last_force_request_resend = ceph_decode_32(p);
-+		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
- 	else
- 		pi->last_force_request_resend = 0;
- 
- 	if (ev >= 16)
--		*p += 4; /* skip min_read_recency_for_promote */
-+		/* min_read_recency_for_promote */
-+		ceph_decode_skip_32(p, end, bad);
- 
- 	if (ev >= 17)
--		*p += 8; /* skip expected_num_objects */
-+		/* expected_num_objects */
-+		ceph_decode_skip_64(p, end, bad);
- 
- 	if (ev >= 19)
--		*p += 4; /* skip cache_target_dirty_high_ratio_micro */
-+		/* cache_target_dirty_high_ratio_micro */
-+		ceph_decode_skip_32(p, end, bad);
- 
- 	if (ev >= 20)
--		*p += 4; /* skip min_write_recency_for_promote */
-+		/* min_write_recency_for_promote */
-+		ceph_decode_skip_32(p, end, bad);
- 
- 	if (ev >= 21)
--		*p += 1; /* skip use_gmt_hitset */
-+		/* use_gmt_hitset */
-+		ceph_decode_skip_8(p, end, bad);
- 
- 	if (ev >= 22)
--		*p += 1; /* skip fast_read */
-+		/* fast_read */
-+		ceph_decode_skip_8(p, end, bad);
- 
--	if (ev >= 23) {
--		*p += 4; /* skip hit_set_grade_decay_rate */
--		*p += 4; /* skip hit_set_search_last_n */
--	}
-+	if (ev >= 23)
-+		/* hit_set_grade_decay_rate, hit_set_search_last_n */
-+		ceph_decode_skip_n(p, end, 4 + 4, bad);
- 
- 	if (ev >= 24) {
--		/* skip opts */
--		*p += 1 + 1; /* versions */
--		len = ceph_decode_32(p);
--		*p += len;
-+		/* opts (with versions) */
-+		ceph_decode_skip_n(p, end, 2, bad);
-+		ceph_decode_skip_string(p, end, bad);
- 	}
- 
- 	if (ev >= 25)
--		pi->last_force_request_resend = ceph_decode_32(p);
-+		ceph_decode_32_safe(p, end, pi->last_force_request_resend, bad);
- 
- 	/* ignore the rest */
- 
+-	rc_dev->rstc = reset_control_get_optional_exclusive(dev, NULL);
++	rc_dev->rstc = devm_reset_control_get_optional_exclusive(dev, NULL);
+ 	if (IS_ERR(rc_dev->rstc)) {
+ 		ret = PTR_ERR(rc_dev->rstc);
+ 		goto err;
 
 
 
