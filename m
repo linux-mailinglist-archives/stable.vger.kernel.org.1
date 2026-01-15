@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208792-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 62D07D262EA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id B805DD260F7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 86DAB303DAE0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3F91430519FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F1163A35A4;
-	Thu, 15 Jan 2026 17:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A9A3A35A4;
+	Thu, 15 Jan 2026 17:02:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s/Ux7jN6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN8li3Dc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12CC711CAF;
-	Thu, 15 Jan 2026 17:07:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE582D238A;
+	Thu, 15 Jan 2026 17:02:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496856; cv=none; b=fF5q+jC/VV13yhwGfiec/ZxbT7l7LKuKOuAxgybSTWEimjHaAOHN3ThfQ7QKfutx3YQr9or4cyqkR1uMK9j27mVa5fStgr6SbuCf+RkC6A0NSfK6YZHHFRTwegJ/lBuC7CwNBO2FCr+Qzz8uGUZYxRLwhv9NcAFW6gPd82n9ZOg=
+	t=1768496560; cv=none; b=Up98a+oXUWbcY8wfk0Rnvtw9W/v8GWu0apRf6K7ViP3hm4AnnRGhe0wcU9EVbRrERiTZpVNmbGIZjPYFhVg2iCwz1rrz5UvH+ubWQ/F0Z11fY8L3MkU34t8Gra1JQMyEmuH3rXlyCJTG9+QkV+4mTA7fE0oDut2lO8CjqCW8nbw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496856; c=relaxed/simple;
-	bh=2cSinwMgjULdKTrcrSKm4jya5BF+wY0vvs9/HameIK0=;
+	s=arc-20240116; t=1768496560; c=relaxed/simple;
+	bh=Ajap/+yng1ladvtG1IXIRvukESYEv3R0oG2Riw/kTaE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RfAUic9u/8K3gUT6FrATn0cLNIOfOv8+IBhN6QXvukGDp3Fq9zTF1alLINaghkd40t22oSOW6fadiqMlCPCzVdhX5hnnkYiD3b/5074R+Cwcnn5uLCM6WkSRGld2dSDcXcw8xjpjzcfi+dI2oDqrlVWU9mg5nFjjcfIWHqktpdc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s/Ux7jN6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F1FC16AAE;
-	Thu, 15 Jan 2026 17:07:35 +0000 (UTC)
+	 MIME-Version; b=n4XUDF8BaRa69e5QrVZpCWL6DAhfZZ591hvnGNjmBeVNPGgdibtQsYQAwtFc5lz4JzyUfJyOAeYNa+okRHIyi7rVcAtYXGbG9qW7HS7jL7BFDfjBFEfLklGCO1tzzt2U4ktOzjVtpatAM+cgFNWJRvQNkE7Athmn3edz0iL9J7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN8li3Dc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B523C116D0;
+	Thu, 15 Jan 2026 17:02:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496856;
-	bh=2cSinwMgjULdKTrcrSKm4jya5BF+wY0vvs9/HameIK0=;
+	s=korg; t=1768496560;
+	bh=Ajap/+yng1ladvtG1IXIRvukESYEv3R0oG2Riw/kTaE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s/Ux7jN6uYPCq188Y0Kf9nMFr21j3oNydB9N0j2Di1fHcttJCAajGM/1x86cMtrDe
-	 516hHihszjzVLj4WlmjEtwMg87sNYJl3GuuLS6jbmtGxxhFFAaFBnbGAY2Xq97B9bv
-	 1T05Nu63xx6UUGE3G1AtSJiz/5PN2aKk3LBlbcuY=
+	b=TN8li3DcH/6Tp6caTJ/bCFMBF2l7DTflCvOCmGgmP3BsMRPJJN7GAlwPwlCSyKc8S
+	 4GknBnaJzwZOfeWFU7LM+OdTbLNPAnPimRLCEdQLZfdY6f5uRG4IKSm9t2M8LrXipK
+	 TTY3QCY7dL70dWohw1eP+RgZlH64yAWrfhdllPpU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.6 07/88] lib/crypto: aes: Fix missing MMU protection for AES S-box
+	Marek Vasut <marek.vasut@mailbox.org>,
+	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 055/119] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on DH electronics i.MX8M Plus DHCOM
 Date: Thu, 15 Jan 2026 17:47:50 +0100
-Message-ID: <20260115164146.584594364@linuxfoundation.org>
+Message-ID: <20260115164153.944751967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Marek Vasut <marek.vasut@mailbox.org>
 
-commit 74d74bb78aeccc9edc10db216d6be121cf7ec176 upstream.
+[ Upstream commit c63749a7ddc59ac6ec0b05abfa0a21af9f2c1d38 ]
 
-__cacheline_aligned puts the data in the ".data..cacheline_aligned"
-section, which isn't marked read-only i.e. it doesn't receive MMU
-protection.  Replace it with ____cacheline_aligned which does the right
-thing and just aligns the data while keeping it in ".rodata".
+Add missing 'clocks' property to LAN8740Ai PHY node, to allow the PHY driver
+to manage LAN8740Ai CLKIN reference clock supply. This fixes sporadic link
+bouncing caused by interruptions on the PHY reference clock, by letting the
+PHY driver manage the reference clock and assure there are no interruptions.
 
-Fixes: b5e0b032b6c3 ("crypto: aes - add generic time invariant AES cipher")
-Cc: stable@vger.kernel.org
-Reported-by: Qingfang Deng <dqfext@gmail.com>
-Closes: https://lore.kernel.org/r/20260105074712.498-1-dqfext@gmail.com/
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260107052023.174620-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This follows the matching PHY driver recommendation described in commit
+bedd8d78aba3 ("net: phy: smsc: LAN8710/20: add phy refclk in support")
+
+Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
+Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
+Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/crypto/aes.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/lib/crypto/aes.c
-+++ b/lib/crypto/aes.c
-@@ -12,7 +12,7 @@
-  * Emit the sbox as volatile const to prevent the compiler from doing
-  * constant folding on sbox references involving fixed indexes.
-  */
--static volatile const u8 __cacheline_aligned aes_sbox[] = {
-+static volatile const u8 ____cacheline_aligned aes_sbox[] = {
- 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
- 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
- 	0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
-@@ -47,7 +47,7 @@ static volatile const u8 __cacheline_ali
- 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
- };
- 
--static volatile const u8 __cacheline_aligned aes_inv_sbox[] = {
-+static volatile const u8 ____cacheline_aligned aes_inv_sbox[] = {
- 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
- 	0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
- 	0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
+diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+index 6835f28c1e3c5..1141b26d6b6f9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
+@@ -113,6 +113,7 @@ mdio {
+ 		ethphy0f: ethernet-phy@1 { /* SMSC LAN8740Ai */
+ 			compatible = "ethernet-phy-id0007.c110",
+ 				     "ethernet-phy-ieee802.3-c22";
++			clocks = <&clk IMX8MP_CLK_ENET_QOS>;
+ 			interrupt-parent = <&gpio3>;
+ 			interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
+ 			pinctrl-0 = <&pinctrl_ethphy0>;
+-- 
+2.51.0
+
 
 
 
