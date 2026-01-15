@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-209451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01C90D276A9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF6C1D275D2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:20:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 696E630EFE0F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A346631EFEA4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1AAA086334;
-	Thu, 15 Jan 2026 17:38:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF61B3D3494;
+	Thu, 15 Jan 2026 17:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t9CFz6tp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Gi+/eFYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0C891A2389;
-	Thu, 15 Jan 2026 17:38:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 661963D3488;
+	Thu, 15 Jan 2026 17:58:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498734; cv=none; b=AdjSJLyTarqMng1Iij21O8VwmxQCarhUuQyuIIYbvsHoBrHI1MmexgC1A3GIk0p/9TOfRoDUb9BhA0oSEjUBKfiA9uCUxY/+TX81DMzHhviPXHbQSB7r/M2Gm6UzfF0BsrJlJt8TTNdqdQYc0ZNwANqMOdNv+eYJYOgmFFFanno=
+	t=1768499938; cv=none; b=rC9V31YWntfG/yMAROuFIKpp2oWLNaFnRa8MwTUgkwZnYlO92acb5uRuFpI0ENEuMgr2X+mUb2B5hy1vnW7n7Hp147FzBd2CjwG3TH8eGsxCy0E35LyHkhZeug1uU7s7OY2qHJLUat28Imt2tFIGc2tgqRVuTopquZLy3mJQ99w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498734; c=relaxed/simple;
-	bh=zKyaV/IL6eKwJ6C/kmgq33YpkFpFuuQiZUfvu2UZwiI=;
+	s=arc-20240116; t=1768499938; c=relaxed/simple;
+	bh=/9TVuY373tl5l8haA/W0DwrVnW+dj2ThtlMtd4/2LNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ro1alQ/gWam1kzyydyCnyjXlvnrB5iDsmi3XxbiaNbgcWe/0ZC+m6hGfDXG45OjpQ35l+f/X4+WuvJ4WSoTEIdxiYiohikq3HofWVLElYQh2LalLs/8uxRoUuXjrBxSoFcja5zZmwB+q9HG9fU7qY6FQIo0yszI1fDZBtNH5Twg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t9CFz6tp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 561FDC116D0;
-	Thu, 15 Jan 2026 17:38:54 +0000 (UTC)
+	 MIME-Version; b=pFJkKKmYtXUXxlaXiRnogFrYJ2hJ+TpZAJaNAellW93ccpQvt7pkuf40pEb09oOHQiP9sTnWKz5Amh3BUEhGhHnX6nZNSEUneksgxPV/fPoG/wb+3kWEFpYhEPFLxTa5NKIVZ3AyxWaws7Bb9EornzMnU0u3tqF2qTkRwhAiUDs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Gi+/eFYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8516C116D0;
+	Thu, 15 Jan 2026 17:58:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498734;
-	bh=zKyaV/IL6eKwJ6C/kmgq33YpkFpFuuQiZUfvu2UZwiI=;
+	s=korg; t=1768499938;
+	bh=/9TVuY373tl5l8haA/W0DwrVnW+dj2ThtlMtd4/2LNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t9CFz6tpficxMzmsyIJEJmDWO6/Fwile8Z2bhM2Yz8iVdbgHq+yCZbZtIS6WLboA6
-	 WtAX/cipLkQyHYntEzCuPwzfSjxLF5tx5QyiGsUd+93iay6FZCVKGF7YDS+Rn3TEVb
-	 BO9sM1OpqhjGs1s1FtL9o9mFXSvgAv9Eofl2KpIc=
+	b=Gi+/eFYUoBRpJ4TdG9ih3AfLC+B4u45Up1y9o9lLJHjtKH0JBPNQuua2tTX2GqbPO
+	 xfxIY0IRy9M1vawDkgP2/+AXhrHe8KiE3+fx+97igM9FvSoViVsFdRnWZfRo0dxTMO
+	 8WKry/TIWii49UYQz+XcQldcTfYpYJ01oPFbZzdg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ray Jui <ray.jui@broadcom.com>,
-	Srijit Bose <srijit.bose@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Pavel Machek <pavel@ucw.cz>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 536/554] bnxt_en: Fix potential data corruption with HW GRO/LRO
+Subject: [PATCH 5.10 401/451] leds: lp50xx: Reduce level of dereferences
 Date: Thu, 15 Jan 2026 17:50:02 +0100
-Message-ID: <20260115164305.728269719@linuxfoundation.org>
+Message-ID: <20260115164245.444641744@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,93 +60,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srijit Bose <srijit.bose@broadcom.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit ffeafa65b2b26df2f5b5a6118d3174f17bd12ec5 ]
+[ Upstream commit 556f15fe023ec1d9f9cd2781ba6cd14bda650d22 ]
 
-Fix the max number of bits passed to find_first_zero_bit() in
-bnxt_alloc_agg_idx().  We were incorrectly passing the number of
-long words.  find_first_zero_bit() may fail to find a zero bit and
-cause a wrong ID to be used.  If the wrong ID is already in use, this
-can cause data corruption.  Sometimes an error like this can also be
-seen:
+The priv->dev is effectively the same as &priv->client->dev.
+So, drop the latter for the former.
 
-bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
-
-Fix it by passing the correct number of bits MAX_TPA_P5.  Use
-DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
-check to warn if a bit cannot be found and reset the ring [MChan].
-
-Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20251231083625.3911652-1-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Pavel Machek <pavel@ucw.cz>
+Stable-dep-of: 434959618c47 ("leds: leds-lp50xx: Enable chip before any communication")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/leds/leds-lp50xx.c |   26 ++++++++++++--------------
+ 1 file changed, 12 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 90719916184db..74344722d63d1 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1264,9 +1264,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
- 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
- 	u16 idx = agg_id & MAX_TPA_P5_MASK;
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -322,7 +322,7 @@ static int lp50xx_brightness_set(struct
  
--	if (test_bit(idx, map->agg_idx_bmap))
--		idx = find_first_zero_bit(map->agg_idx_bmap,
--					  BNXT_AGG_IDX_BMAP_SIZE);
-+	if (test_bit(idx, map->agg_idx_bmap)) {
-+		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
-+		if (idx >= MAX_TPA_P5)
-+			return INVALID_HW_RING_ID;
-+	}
- 	__set_bit(idx, map->agg_idx_bmap);
- 	map->agg_id_tbl[agg_id] = idx;
- 	return idx;
-@@ -1299,6 +1301,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
- 	if (bp->flags & BNXT_FLAG_CHIP_P5) {
- 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
- 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
-+		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
-+			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
-+				    rxr->bnapi->index,
-+				    TPA_START_AGG_ID_P5(tpa_start));
-+			bnxt_sched_reset_rxr(bp, rxr);
-+			return;
-+		}
- 	} else {
- 		agg_id = TPA_START_AGG_ID(tpa_start);
+ 	ret = regmap_write(led->priv->regmap, reg_val, brightness);
+ 	if (ret) {
+-		dev_err(&led->priv->client->dev,
++		dev_err(led->priv->dev,
+ 			"Cannot write brightness value %d\n", ret);
+ 		goto out;
  	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index ae4695fc067d5..56aae0d654e8a 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -872,11 +872,9 @@ struct bnxt_tpa_info {
- 	struct rx_agg_cmp	*agg_arr;
- };
+@@ -338,7 +338,7 @@ static int lp50xx_brightness_set(struct
+ 		ret = regmap_write(led->priv->regmap, reg_val,
+ 				   mc_dev->subled_info[i].intensity);
+ 		if (ret) {
+-			dev_err(&led->priv->client->dev,
++			dev_err(led->priv->dev,
+ 				"Cannot write intensity value %d\n", ret);
+ 			goto out;
+ 		}
+@@ -402,7 +402,7 @@ static int lp50xx_probe_leds(struct fwno
  
--#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
--
- struct bnxt_tpa_idx_map {
- 	u16		agg_id_tbl[1024];
--	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
-+	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
- };
+ 	if (num_leds > 1) {
+ 		if (num_leds > priv->chip_info->max_modules) {
+-			dev_err(&priv->client->dev, "reg property is invalid\n");
++			dev_err(priv->dev, "reg property is invalid\n");
+ 			return -EINVAL;
+ 		}
  
- struct bnxt_rx_ring_info {
--- 
-2.51.0
-
+@@ -410,13 +410,13 @@ static int lp50xx_probe_leds(struct fwno
+ 
+ 		ret = fwnode_property_read_u32_array(child, "reg", led_banks, num_leds);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "reg property is missing\n");
++			dev_err(priv->dev, "reg property is missing\n");
+ 			return ret;
+ 		}
+ 
+ 		ret = lp50xx_set_banks(priv, led_banks, num_leds);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "Cannot setup banked LEDs\n");
++			dev_err(priv->dev, "Cannot setup banked LEDs\n");
+ 			return ret;
+ 		}
+ 
+@@ -424,12 +424,12 @@ static int lp50xx_probe_leds(struct fwno
+ 	} else {
+ 		ret = fwnode_property_read_u32(child, "reg", &led_number);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "led reg property missing\n");
++			dev_err(priv->dev, "led reg property missing\n");
+ 			return ret;
+ 		}
+ 
+ 		if (led_number > priv->chip_info->num_leds) {
+-			dev_err(&priv->client->dev, "led-sources property is invalid\n");
++			dev_err(priv->dev, "led-sources property is invalid\n");
+ 			return -EINVAL;
+ 		}
+ 
+@@ -468,7 +468,7 @@ static int lp50xx_probe_dt(struct lp50xx
+ 		led = &priv->leds[i];
+ 		ret = fwnode_property_count_u32(child, "reg");
+ 		if (ret < 0) {
+-			dev_err(&priv->client->dev, "reg property is invalid\n");
++			dev_err(priv->dev, "reg property is invalid\n");
+ 			goto child_out;
+ 		}
+ 
+@@ -518,12 +518,11 @@ static int lp50xx_probe_dt(struct lp50xx
+ 		led_cdev = &led->mc_cdev.led_cdev;
+ 		led_cdev->brightness_set_blocking = lp50xx_brightness_set;
+ 
+-		ret = devm_led_classdev_multicolor_register_ext(&priv->client->dev,
++		ret = devm_led_classdev_multicolor_register_ext(priv->dev,
+ 						       &led->mc_cdev,
+ 						       &init_data);
+ 		if (ret) {
+-			dev_err(&priv->client->dev, "led register err: %d\n",
+-				ret);
++			dev_err(priv->dev, "led register err: %d\n", ret);
+ 			goto child_out;
+ 		}
+ 		i++;
+@@ -586,15 +585,14 @@ static int lp50xx_remove(struct i2c_clie
+ 
+ 	ret = lp50xx_enable_disable(led, 0);
+ 	if (ret) {
+-		dev_err(&led->client->dev, "Failed to disable chip\n");
++		dev_err(led->dev, "Failed to disable chip\n");
+ 		return ret;
+ 	}
+ 
+ 	if (led->regulator) {
+ 		ret = regulator_disable(led->regulator);
+ 		if (ret)
+-			dev_err(&led->client->dev,
+-				"Failed to disable regulator\n");
++			dev_err(led->dev, "Failed to disable regulator\n");
+ 	}
+ 
+ 	mutex_destroy(&led->lock);
 
 
 
