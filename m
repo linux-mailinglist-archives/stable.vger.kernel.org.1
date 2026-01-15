@@ -1,180 +1,135 @@
-Return-Path: <stable+bounces-208450-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208451-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1FC97D257F7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:51:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BA84AD2583F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:54:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 93B293008C91
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 15:51:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5314230321E3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 15:54:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8DA3AE714;
-	Thu, 15 Jan 2026 15:51:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D9237F0EC;
+	Thu, 15 Jan 2026 15:54:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="On7bqg4n"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X7D9GNZm"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-lj1-f180.google.com (mail-lj1-f180.google.com [209.85.208.180])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA9063A1E63
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 15:51:30 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.180
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768492294; cv=pass; b=ZlxpZi83Or5aHSIBlfsYxjrD0u3bD6t+adCvUrwlYxDQRPFs643rshnFb/iCfRQcxwWHOA3Qeup7Zri8CkDy2ZBZ3TIhsVzzMWMSa2/o+WDmixmUAZbjzKV0hNBSsEQkdZLaoE7yD+O7/sv/jwivVWRvj9P7IrnEzYYHa4VE2Y0=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768492294; c=relaxed/simple;
-	bh=5jZOHI7cz/tFkCcOhP8OROvIBT3DGTiFcQeywBuUSmM=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=rsh9QwJDPv7M1UQB/23iArKnhh9rrolGyyEWws4YAN8CEQd3k+OilWc6r5QgO9WIPS4RTMoSYF4qysQQNHt9YW2Wa4pboe6kgUSgm25XvSzjRVCIj7RMv91vLLaPp295D246iKzrbfqVclG9nkg33i+dfLOB+x0OdYqpc7cOcQg=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=On7bqg4n; arc=pass smtp.client-ip=209.85.208.180
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-lj1-f180.google.com with SMTP id 38308e7fff4ca-382fb6d38f7so8162231fa.3
-        for <stable@vger.kernel.org>; Thu, 15 Jan 2026 07:51:30 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768492289; cv=none;
-        d=google.com; s=arc-20240605;
-        b=IpRiXWzXEJlHPXX7BzCtIgfp40jG001ts30Sg2+OxLi7cKPu4TmnuDQ29E+6J4kSjx
-         9UPhMhZ2omZA7jtznEFeQL7BwTi9D+5z9Xm6rDbWefOYEcSog9PJ4YjF7zkaAbuhfPVa
-         oAN628QJJDy3BNoKfQ59k9ImVCdpgI3Mzb2bXmImnAWyii4BRVJDCAvHg+u8PrPuB1S6
-         kvzTFTmnuj9bm2Pm1NcRtdspaMqgKzqBkyyvc6GZLkeGiFJ6VEt+GFa56KZe4BHs2azk
-         J5Ub7Uq2qmiMAJOEFpCjIKlRW074tOFGY5wmIS+wMlOBto+uSIBMFEapThNe93pStVNb
-         9Q0w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=BLbV8wG5kDIJ8frOLw6GPwE++FJ1Hb8KJgZ7vb66YeM=;
-        fh=13QrNKdN8Mi/9E7QoqzzQ8iemKkvz7bNnQQHwlxFBCg=;
-        b=YXhXcKd6Pdsw6Q9QQtnYm8QLGO2xiGQHps57OoXB1TE47oU01yGDi0LK5xcZO2sTaF
-         E8ORl5ghToTltOHy0EqPbq9p+r+YpXwfpJincBu/8ra9e0OSTizVHIYj4mS2MCcb61fL
-         HmHR4G67nztxwl7l7vur0/BDHjGsm662HfYY0sYyP5Ea/xvLRcduZ/QlFF60cTNRrtRO
-         g06+YAdq5BJNIwzATScgAwJQYK5lxou+UGhs563haBvrdvuHHsaRwgUpsOBfgwZmSh77
-         qorj6bVUArCRojMVSCM+5UGGJsGXxCsv9K5BfFjUDorjNcV27OlZjKOhMNp8parWkXh6
-         oczg==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768492289; x=1769097089; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=BLbV8wG5kDIJ8frOLw6GPwE++FJ1Hb8KJgZ7vb66YeM=;
-        b=On7bqg4nFaVRC5n/YT04mltNUNXUk7sqOTpnl1nmKxvoQAC+/+WR7ZP1ejzWOyKVQv
-         XQc770ejj2kvZvXmhHT3Yg+uFnkOurB+gKxr3Mhdh7itkQXDrDWeNhcLmFhMw+RnHyQD
-         3oc42JoWdt3F0ZZ6KQnZmwgyElLZ2urdRplcIyOITA3188grVNJw1qOK4o/a57ERnpDT
-         Ulh/qfq68D9G2uE68UGt5M8Wixenjj77ai/fmaWm2E2PzAop0lAKW/LBfncTJ//1xIo/
-         mTHkqOIsQlCU+TlHHHvih09VRxFZTxwyOnw8NO0qLni0RGYCTnWHApuuSeZSdnKYb1wI
-         20lA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768492289; x=1769097089;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=BLbV8wG5kDIJ8frOLw6GPwE++FJ1Hb8KJgZ7vb66YeM=;
-        b=OYKXDp/yeHEYCpPkMhVWHZwgEr7gA75+7/KlWbA2/Q5oGe93QgCxaipiM7MChrJGOg
-         85Bghk9ZuQeuQ5PXKNT6RKshXS/BTEdapahMdUYYgb3+giCGBo09cFSohuN3kywql+Y8
-         LCPeWx1Iu8CGmAfv+GkYVW9F/SWVIoX8B1WmDffyRIVFwu15ayJ3zrIyuYCsgI3zsl6d
-         JNswY8cQj1IfmiU1USEyXNEiExPGNnfaRRUVOjaJzTF2Isl+Pp+xqALOgXFCcPossVPd
-         4PyGoPD7isZNd83LhQII3xnpZ8dJJ2j3RDBA5HcgOKzrlEhiqnD1sXbQE6CI1Mq+FQ3H
-         5WPw==
-X-Forwarded-Encrypted: i=1; AJvYcCX4+TxpasLPHcy2FtLWdxF/gpn9N1tp/xAm25MYfot2xDOFZ/RT+6SoDJqfLQLeJMwfOag8NLE=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzUT+5oI1/uDUiQxU4DOdijmYlHoMDB+d87ym7SAyPbJA58eJn2
-	R2qF62GlMMFZWB/bU/zap33m3gx0EkpTVHKUSYwm9Yg+ZPQ1Z7ShlBnewA/8/Ea+uH9L6saQCli
-	IUYJP7IzX6uluCPm859s+Y7W8X+wbphg=
-X-Gm-Gg: AY/fxX4enTdvWRCBWpao5TFpoh7JsFCnSR+Uce6zjfqTo7eeSQRnIfboScomFZlDGfw
-	bsqYlrY7NAmVM+tiedovRp/6GFFOM/Tdcsa68Y8DweQy2VeR/Zy/KfJFt/5B65C3pyqHl/EgPsc
-	w9Z2F/Z4UWAiMQ2b9SKRfMV1Up5KB00lai3v0hc5cHnPpnrU88++S38g1V3AtDtLcO9xWg+BCyQ
-	+KwX+bP6px/eN+DhH25VZnGtcy65UdXQDJEOJnHUX8u8I1ewUHDg/dndEKzA4BfKTFksnuiPwDC
-	hU3N2TXzM0wpiWdBmb0ya3/2DMiEj+9JW7hdjfNF+Wa2yEIenqaDI5EXtZ9s5NaQwQ+VWPPx9EQ
-	aC57jpA==
-X-Received: by 2002:a2e:b8c8:0:b0:383:5a4f:2603 with SMTP id
- 38308e7fff4ca-383841a426dmr659501fa.10.1768492288482; Thu, 15 Jan 2026
- 07:51:28 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6908719E968;
+	Thu, 15 Jan 2026 15:54:23 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768492464; cv=none; b=Sxb0OVYOU35KvcQVh2Uk5aPBfv/aMpgFDohU1QT2xCS4WvVIWYnKSffzEbzVN/SUjEJNJzMEf/S4Rm2Kpa84Cl6hprNoe4MIiR7eEbrMrWZ0IBSFD6ALMeabIHr0L6tNjrfA7HVUKynAwL93y7vQb+rBuL0KZSiphN6K7fM9HJs=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768492464; c=relaxed/simple;
+	bh=Ng8lbAeE8hy8V9NIB6JlbZBVjpd4Z2G+SVYhVaioCEw=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=LYQo0GzmctNUBD4cgytoG6j1OmOF3CYqluvKyMZhXDjJiY9U1uXFqYwx7JDcq6lUwzoVa8C2DYmrVDh2W3DGkGa2aT8X44xrgUf02C3JA7xWvDqgpVY52l2xgjILZWnHsovb5iHPJhHAgyOQvLSI0KOKHjRRhhmBYZVpeDqsQl0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X7D9GNZm; arc=none smtp.client-ip=198.175.65.12
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1768492464; x=1800028464;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=Ng8lbAeE8hy8V9NIB6JlbZBVjpd4Z2G+SVYhVaioCEw=;
+  b=X7D9GNZmXx3Ru7M3ePcLz30YzOl5l6MRliRAiZVhdP/bDHqwNwCnyyKk
+   c+HSf5RmFXQ8F+jKmK746qtgnxLhHlWOsYR7HHiJndOTTB2Qkrev+GLmk
+   zS4nTfSvKKzZDOgnf7fqgOaSrb3lfFOWX8RfmPDZV0WrbZHEGOSYzYM4u
+   vA6+AjlsfCIapfr+53XfNt37rf7HwcQsGEnNyiBl3in7DR8MDw4T8LQsu
+   8xp856jl7T9Kihhn3h7Ne+Xq79kqEvFnc5BurLpa3GjhOhf0EwAvzT0VE
+   1aq0iqbjziBWsVL2vqFGz7PQCJJSCsjsDft6kFZQXv42Vm4GQXWf/niz4
+   g==;
+X-CSE-ConnectionGUID: F9Hxy2obRRSCASH0BnwfPg==
+X-CSE-MsgGUID: jU4syllDSIGWyinO1l9Auw==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="81244422"
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
+   d="scan'208";a="81244422"
+Received: from fmviesa007.fm.intel.com ([10.60.135.147])
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 07:54:23 -0800
+X-CSE-ConnectionGUID: 9R+1lLHLTMWjAXMj01EQmw==
+X-CSE-MsgGUID: 0H6PN/MvSbyQcygvFTjhnQ==
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
+   d="scan'208";a="204595824"
+Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.74]) ([10.125.111.74])
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 07:54:22 -0800
+Message-ID: <cd6721c7-0963-4f4f-89d9-6634b8b559ae@intel.com>
+Date: Thu, 15 Jan 2026 07:54:21 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20250517085600.2857460-1-gary@garyguo.net> <CANiq72neLdtGORQ=GMsJ-mVgWscrAw4CB+_2cfbR4gtju4+azw@mail.gmail.com>
-In-Reply-To: <CANiq72neLdtGORQ=GMsJ-mVgWscrAw4CB+_2cfbR4gtju4+azw@mail.gmail.com>
-From: Tamir Duberstein <tamird@gmail.com>
-Date: Thu, 15 Jan 2026 10:50:52 -0500
-X-Gm-Features: AZwV_QgmS5MREKIO5CYv0cuexmqdXCEp7abbRQSIGNVpHXpWKf3VbWEU7Y4RQYE
-Message-ID: <CAJ-ks9n2pXZWUePZVNbR_dtvtdjZ0uW2NknkA69UsFeUiCV_gQ@mail.gmail.com>
-Subject: Re: [PATCH] rust: compile libcore with edition 2024 for 1.87+
-To: Miguel Ojeda <miguel.ojeda.sandonis@gmail.com>
-Cc: Gary Guo <gary@garyguo.net>, Miguel Ojeda <ojeda@kernel.org>, 
-	Alex Gaynor <alex.gaynor@gmail.com>, Boqun Feng <boqun.feng@gmail.com>, 
-	=?UTF-8?Q?Bj=C3=B6rn_Roy_Baron?= <bjorn3_gh@protonmail.com>, 
-	Benno Lossin <benno.lossin@proton.me>, Andreas Hindborg <a.hindborg@kernel.org>, 
-	Alice Ryhl <aliceryhl@google.com>, Trevor Gross <tmgross@umich.edu>, 
-	Danilo Krummrich <dakr@kernel.org>, stable@vger.kernel.org, rust-for-linux@vger.kernel.org, 
-	linux-kernel@vger.kernel.org, est31@protonmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever
+ XFD[i]=1
+To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org
+Cc: seanjc@google.com, x86@kernel.org, stable@vger.kernel.org
+References: <20260101090516.316883-1-pbonzini@redhat.com>
+ <20260101090516.316883-2-pbonzini@redhat.com>
+From: Dave Hansen <dave.hansen@intel.com>
+Content-Language: en-US
+Autocrypt: addr=dave.hansen@intel.com; keydata=
+ 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
+In-Reply-To: <20260101090516.316883-2-pbonzini@redhat.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-On Sun, May 25, 2025 at 5:26=E2=80=AFPM Miguel Ojeda
-<miguel.ojeda.sandonis@gmail.com> wrote:
->
-> On Sat, May 17, 2025 at 10:56=E2=80=AFAM Gary Guo <gary@garyguo.net> wrot=
-e:
-> >
-> > Rust 1.87 (released on 2025-05-15) compiles core library with edition
-> > 2024 instead of 2021 [1]. Ensure that the edition matches libcore's
-> > expectation to avoid potential breakage.
-> >
-> > Cc: stable@vger.kernel.org # Needed in 6.12.y and later (Rust is pinned=
- in older LTSs).
-> > Link: https://github.com/rust-lang/rust/pull/138162 [1]
-> > Closes: https://github.com/Rust-for-Linux/linux/issues/1163
-> > Signed-off-by: Gary Guo <gary@garyguo.net>
->
-> Applied to `rust-next` -- thanks everyone!
->
-> (I actually applied a couple days ago in advance of Monday's -next,
-> which explains the following report)
->
->     [ J3m3 reported in Zulip [2] that the `rust-analyzer` target was
->       broken after this patch -- indeed, we need to avoid `core-cfgs`
->       since those are passed to the `rust-analyzer` target.
->
->       So, instead, I tweaked the patch to create a new `core-edition`
->       variable and explicitly mention the `--edition` flag instead of
->       reusing `core-cfg`s.
->
->       In addition, pass a new argument using this new variable to
->       `generate_rust_analyzer.py` so that we set the right edition there.
->
->       By the way, for future reference: the `filter-out` change is needed
->       for Rust < 1.87, since otherwise we would skip the `--edition=3D202=
-1`
->       we just added, ending up with no edition flag, and thus the compile=
-r
->       would default to the 2015 one.
->
->       [2] https://rust-for-linux.zulipchat.com/#narrow/channel/291565/top=
-ic/x/near/520206547
->
->         - Miguel ]
->
-> I also added:
->
->     Reported-by: est31 <est31@protonmail.com>
->
-> since est31 told Gary in RustWeek, and we discussed the patch there.
->
-> @Gary: I hope the changes are OK with you (I can put the
-> `generate_rust_analyzer` ones in a different commit if you prefer).
-> Thanks!
->
-> Cheers,
-> Miguel
->
+On 1/1/26 01:05, Paolo Bonzini wrote:
+> When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
+> response to a guest WRMSR, clear XFD-disabled features in the saved (or to
+> be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
+> features that are disabled via the guest's XFD.  Because the kernel
+> executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
+> will cause XRSTOR to #NM and panic the kernel.
 
-Hey Miguel, regarding the rust-analyzer changes:
-
-I see only core was changed to use `core_edition`, but other sysroot
-crates (alloc, std, and proc_macro) still compile with edition 2021
-despite all having been updated in the same upstream PR. Was this
-intentional, or just an omission?
+It would be really nice to see the actual ordering of events here. What
+order do the KVM_SET_XSAVE, XFD[$FOO]=1 and kernel_fpu_begin() have to
+happen in to trigger this?
 
