@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209555-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209133-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D917CD27ABB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:39:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23F53D2730A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 03763302974E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C5AF631B2B5D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C5BC30214B;
-	Thu, 15 Jan 2026 17:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFD63BF2E6;
+	Thu, 15 Jan 2026 17:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ga+uyYq3"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUSxrGqK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0FFDA274FE3;
-	Thu, 15 Jan 2026 17:43:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E692D73B4;
+	Thu, 15 Jan 2026 17:23:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499030; cv=none; b=XqXPgNaxw9U7nGfvBv6Tw1bcUws3refyc9cvEuzi3Y1UFAs7xFK8/ZWrP8B5fajl8bJl4FTWX/Rs+tQ3QwID4/tUbhcJO8hrqh1cWmOvJkT6r57W/hwfI345CxuFuHaNlhvbAW8+fFnHUBgBCEAVJVdGe2CAXvQMmYCkH9bqpb4=
+	t=1768497827; cv=none; b=H2pKiRRYRIF14v9C91xdhfdTIVpJUnT8oMLdjLbLOIQ/25Rbr8ErAI5Lr0zpfn1eKwq+rVxBj59TCPL2zg+eUiyLGs8zBa1v49JWdxSTyLeqosiQnB+IFNzsH+70CmjeGzDqG/ODl7fiYOzSdhmQ9nAUhXD1PmoW0tpwWfQUfEc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499030; c=relaxed/simple;
-	bh=nz0ar0bhxMkxoCljRVPalxRKyfjzq+N64XcSXu40b8M=;
+	s=arc-20240116; t=1768497827; c=relaxed/simple;
+	bh=+/QCQ/WU2fFMjU1iBfixTrLAgOzlM7qZxKlo0pmWhjk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mt4VxibSVvAZYvbj8hfd+aVEebLzVj+Ir901Bw1SxwMRX6GxWIEff56/3ZaXz6K3hFxabZJxh/sryshVmdCDv+uDIHvC1zd4ICVmBdLeDthZnIZ/KdXUqYn/BvDdeklBb+uwefml8EXPuwjeRVP/D5I+09b5GU2i1g19vdCx/i4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ga+uyYq3; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FEE4C116D0;
-	Thu, 15 Jan 2026 17:43:49 +0000 (UTC)
+	 MIME-Version; b=SJt6hiryDHkCoQsXIQg+Z+00dwFgADvqhkKwhWeETl2Gpkdjw0Oocoz3HxRblH9XwjpNm7tIsa+FJXoysgc3SyO19nvVWX9bWfPf9MzGft6mGRq5eRRp8YELSSNSLtgZ57BzZW2yuy/IesWPnEUWQZNf5rVsZxDj6qf1bJkcx9Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUSxrGqK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8023C116D0;
+	Thu, 15 Jan 2026 17:23:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499029;
-	bh=nz0ar0bhxMkxoCljRVPalxRKyfjzq+N64XcSXu40b8M=;
+	s=korg; t=1768497827;
+	bh=+/QCQ/WU2fFMjU1iBfixTrLAgOzlM7qZxKlo0pmWhjk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ga+uyYq3ZipzgohhQzpQgbwe7bcEq+kZAy8lOWANN8OWzVcX/jzcuvWL1Y3gcVh95
-	 OUuFWI7s3Ni/2ycFw0armsACoGc3YTPWWegH2+wi3GRaVt90LV6dem48Hl54WPLGC0
-	 81QJ1DK9j/hMOMxCGkT6Av2uZhHGhHbgXYueJFEk=
+	b=kUSxrGqKhy6sfeVsmOYGopCmj3WHSUitqcSA+oTiKDZ7vFvrEwZTH3Hf11zRv+o31
+	 3TXzphOrX83WjKwbnK/B2+XJqMLmfgF4/R3AeBrmlSTay79nkG4NNJTAJ7P7CGTdi3
+	 /qmX5o8xw/AcEYJx6yWuOlqwthBKyqzmWewHr14w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Abdun Nihaal <nihaal@cse.iitm.ac.in>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com,
+	Yang Chenzhi <yang.chenzhi@vivo.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 082/451] wifi: rtl818x: Fix potential memory leaks in rtl8180_init_rx_ring()
-Date: Thu, 15 Jan 2026 17:44:43 +0100
-Message-ID: <20260115164233.882427146@linuxfoundation.org>
+Subject: [PATCH 5.15 218/554] hfsplus: fix missing hfs_bnode_get() in __hfs_bnode_create
+Date: Thu, 15 Jan 2026 17:44:44 +0100
+Message-ID: <20260115164254.140157011@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,67 +61,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abdun Nihaal <nihaal@cse.iitm.ac.in>
+From: Yang Chenzhi <yang.chenzhi@vivo.com>
 
-[ Upstream commit 9b5b9c042b30befc5b37e4539ace95af70843473 ]
+[ Upstream commit 152af114287851583cf7e0abc10129941f19466a ]
 
-In rtl8180_init_rx_ring(), memory is allocated for skb packets and DMA
-allocations in a loop. When an allocation fails, the previously
-successful allocations are not freed on exit.
+When sync() and link() are called concurrently, both threads may
+enter hfs_bnode_find() without finding the node in the hash table
+and proceed to create it.
 
-Fix that by jumping to err_free_rings label on error, which calls
-rtl8180_free_rx_ring() to free the allocations. Remove the free of
-rx_ring in rtl8180_init_rx_ring() error path, and set the freed
-priv->rx_buf entry to null, to avoid double free.
+Thread A:
+  hfsplus_write_inode()
+    -> hfsplus_write_system_inode()
+      -> hfs_btree_write()
+        -> hfs_bnode_find(tree, 0)
+          -> __hfs_bnode_create(tree, 0)
 
-Fixes: f653211197f3 ("Add rtl8180 wireless driver")
-Signed-off-by: Abdun Nihaal <nihaal@cse.iitm.ac.in>
-Reviewed-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251114094527.79842-1-nihaal@cse.iitm.ac.in
+Thread B:
+  hfsplus_create_cat()
+    -> hfs_brec_insert()
+      -> hfs_bnode_split()
+        -> hfs_bmap_alloc()
+          -> hfs_bnode_find(tree, 0)
+            -> __hfs_bnode_create(tree, 0)
+
+In this case, thread A creates the bnode, sets refcnt=1, and hashes it.
+Thread B also tries to create the same bnode, notices it has already
+been inserted, drops its own instance, and uses the hashed one without
+getting the node.
+
+```
+
+	node2 = hfs_bnode_findhash(tree, cnid);
+	if (!node2) {                                 <- Thread A
+		hash = hfs_bnode_hash(cnid);
+		node->next_hash = tree->node_hash[hash];
+		tree->node_hash[hash] = node;
+		tree->node_hash_cnt++;
+	} else {                                      <- Thread B
+		spin_unlock(&tree->hash_lock);
+		kfree(node);
+		wait_event(node2->lock_wq,
+			!test_bit(HFS_BNODE_NEW, &node2->flags));
+		return node2;
+	}
+```
+
+However, hfs_bnode_find() requires each call to take a reference.
+Here both threads end up setting refcnt=1. When they later put the node,
+this triggers:
+
+BUG_ON(!atomic_read(&node->refcnt))
+
+In this scenario, Thread B in fact finds the node in the hash table
+rather than creating a new one, and thus must take a reference.
+
+Fix this by calling hfs_bnode_get() when reusing a bnode newly created by
+another thread to ensure the refcount is updated correctly.
+
+A similar bug was fixed in HFS long ago in commit
+a9dc087fd3c4 ("fix missing hfs_bnode_get() in __hfs_bnode_create")
+but the same issue remained in HFS+ until now.
+
+Reported-by: syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com
+Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/20250829093912.611853-1-yang.chenzhi@vivo.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c | 9 ++-------
- 1 file changed, 2 insertions(+), 7 deletions(-)
+ fs/hfsplus/bnode.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-index 025619cd14e82..acd6743f3827f 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8180/dev.c
-@@ -1023,9 +1023,6 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 		dma_addr_t *mapping;
- 		entry = priv->rx_ring + priv->rx_ring_sz*i;
- 		if (!skb) {
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
- 			wiphy_err(dev->wiphy, "Cannot allocate RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1037,9 +1034,7 @@ static int rtl8180_init_rx_ring(struct ieee80211_hw *dev)
- 
- 		if (dma_mapping_error(&priv->pdev->dev, *mapping)) {
- 			kfree_skb(skb);
--			dma_free_coherent(&priv->pdev->dev,
--					  priv->rx_ring_sz * 32,
--					  priv->rx_ring, priv->rx_ring_dma);
-+			priv->rx_buf[i] = NULL;
- 			wiphy_err(dev->wiphy, "Cannot map DMA for RX skb\n");
- 			return -ENOMEM;
- 		}
-@@ -1130,7 +1125,7 @@ static int rtl8180_start(struct ieee80211_hw *dev)
- 
- 	ret = rtl8180_init_rx_ring(dev);
- 	if (ret)
--		return ret;
-+		goto err_free_rings;
- 
- 	for (i = 0; i < (dev->queues + 1); i++)
- 		if ((ret = rtl8180_init_tx_ring(dev, i, 16)))
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index 358294726ff17..7c127922ac0c7 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -488,6 +488,7 @@ static struct hfs_bnode *__hfs_bnode_create(struct hfs_btree *tree, u32 cnid)
+ 		tree->node_hash[hash] = node;
+ 		tree->node_hash_cnt++;
+ 	} else {
++		hfs_bnode_get(node2);
+ 		spin_unlock(&tree->hash_lock);
+ 		kfree(node);
+ 		wait_event(node2->lock_wq,
 -- 
 2.51.0
 
