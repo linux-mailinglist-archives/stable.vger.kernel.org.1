@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208896-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208800-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4C356D2680C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:35:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D592D262FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:14:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4636631EA624
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id AE9C8302910F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C76153C0089;
-	Thu, 15 Jan 2026 17:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2696B3BC4FE;
+	Thu, 15 Jan 2026 17:07:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GEbLW68k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoEZTlTX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B24B3BF2F7;
-	Thu, 15 Jan 2026 17:12:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49A53BC4D7;
+	Thu, 15 Jan 2026 17:07:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497152; cv=none; b=qypBmZhiC/2VYWhmu9TuvX26oZdDEPgxGZVHWTpkhjqGsbjhBnLho8Q+zP/H21GpxRA165Oh4DZgJ0qKJ23P2GSXHjTwD5fdD6h3ctxDjq8Zm2gk4Q5YW61Vjwn0S3se+L/2A2xzKl5y14Bjb1lxMykJk3wILck7W/1p+8aJfxY=
+	t=1768496878; cv=none; b=oIrCKfY91o9qQLS3clkBkGlr5lzt58PGChQ/bD50t2c1QptdN4tTpvybhI8PzOQQkIjMGj4tyeyGJqtdyXhRbg+isvtpwE0yc22DwMFWUn7Jic0g2vtV7UrSxrLYQvCglFZEIlH87j7uvP36gVWfBotHoAfjCltzo7dcehBf4Nc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497152; c=relaxed/simple;
-	bh=dTw27T6oUu9M9bxw31FJhyuH0my+b81Ip/u6IlTsvHQ=;
+	s=arc-20240116; t=1768496878; c=relaxed/simple;
+	bh=kpXjEIbC4AggIgCLmBmdlm+EbDMG8gw0KqvhbO0ABGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=suYN985s2bKps97PBhQuwYQb43c1fNh//UXxPx2JCWc69XBrvGIWH6cW0lYXhzNy0Fc1a/7H2Jpehs3ZCRxvPuSx0kOr/XPVaSCm25zYrjZNdAqkMNS+NKFop54ixFF9atbYGHQBUBGCXCk1YT6mcUQKH98W9tFqQ7c1rpVWtgY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GEbLW68k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0E6C19422;
-	Thu, 15 Jan 2026 17:12:31 +0000 (UTC)
+	 MIME-Version; b=mEf67jzeMMEd8XnjO8O5x8isy88OXF3wMVJpvUTXtqeiYq93nprVna+UzdNs4yMqoou1QLD6bMeA7yUJwhdmR8422p9cKNIMZz/QMfBKgiIVHJ9MazJhmIDlivMkf+fPA1BfHCDPRIJzbiHuhOkHBBCysx8A7IadcNHrzVFMN0U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoEZTlTX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17668C116D0;
+	Thu, 15 Jan 2026 17:07:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497152;
-	bh=dTw27T6oUu9M9bxw31FJhyuH0my+b81Ip/u6IlTsvHQ=;
+	s=korg; t=1768496878;
+	bh=kpXjEIbC4AggIgCLmBmdlm+EbDMG8gw0KqvhbO0ABGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GEbLW68kpW0Slxd3N3AdY8nEyFCbd91up6xysiER49goBWBpAFaxyntSE/DQPUHVN
-	 K8pzlrvYyExkZFpeEBrQNQ5XpsgIUEJ3WaC9bHkgUW+wmKDKqWtNyFn24jwyOJ4t9S
-	 AAcENx961knJa8nuytxTCyTn9dkoKZG6/e/ohCn0=
+	b=yoEZTlTXHzMkFKGJTIKg7IVlIpMOG9LOkC0GZLWEXfw1osW48SdEZswKQXYu5MatI
+	 aL1IDbIyR2iZAvw84NXGNzdKLFpOz/Uinqb/EtbLrZKMgrYOQoOSfO4fi7I6il+MUD
+	 iNCqOPCQwFJUM3Goqzj/gG8Dnvr5vTcvZ6W50Ns0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Magnus Lindholm <linmag7@gmail.com>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 21/72] alpha: dont reference obsolete termio struct for TC* constants
+Subject: [PATCH 6.6 48/88] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
 Date: Thu, 15 Jan 2026 17:48:31 +0100
-Message-ID: <20260115164144.264853978@linuxfoundation.org>
+Message-ID: <20260115164148.049445530@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam James <sam@gentoo.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 9aeed9041929812a10a6d693af050846942a1d16 ]
+[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
 
-Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
-drops the legacy termio struct, but the ioctls.h header still defines some
-TC* constants in terms of termio (via sizeof). Hardcode the values instead.
+In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
+the err_release_rule label without freeing the allocated flow, leading
+to a memory leak.
 
-This fixes building Python for example, which falls over like:
-  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+Fix this by adding a new label err_destroy_flow and jumping to it when
+nft_use_inc() fails. This ensures that the flow is properly released
+in this error case.
 
-Link: https://bugs.gentoo.org/961769
-Link: https://bugs.gentoo.org/962600
-Signed-off-by: Sam James <sam@gentoo.org>
-Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/6ebd3451908785cad53b50ca6bc46cfe9d6bc03c.1764922497.git.sam@gentoo.org
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/alpha/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index 971311605288f..a09d04b49cc65 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 394ee65e1d35f..43ebe3b4f886a 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4098,7 +4098,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA          0x40127417
-+#define TCSETA          0x80127418
-+#define TCSETAW         0x80127419
-+#define TCSETAF         0x8012741c
+ 	if (!nft_use_inc(&chain->use)) {
+ 		err = -EMFILE;
+-		goto err_release_rule;
++		goto err_destroy_flow;
+ 	}
  
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
+ 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
+@@ -4148,6 +4148,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ err_destroy_flow_rule:
+ 	nft_use_dec_restore(&chain->use);
++err_destroy_flow:
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
 -- 
 2.51.0
 
