@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209554-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209132-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BB10D27821
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9D3A8D268E4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5357A30C847C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4BEB9306745B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 859D72F619D;
-	Thu, 15 Jan 2026 17:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B599E3BC4C9;
+	Thu, 15 Jan 2026 17:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XjtkcLNc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZkMk3BoJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3EA962C3268;
-	Thu, 15 Jan 2026 17:43:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7865921CC5A;
+	Thu, 15 Jan 2026 17:23:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499027; cv=none; b=cCRl6FZOievYuDZ6gmgK4eHO7FhXQQjSw27cijCaNhX83s9D7FYNzvP10idB9fDCKXkLl54v7FF6zgOxICCXJmZNZsBPcTJPeyaFyg7Vuyn2dFmqLUz4o93mglMgPtCyHFN7SRW2RuR/rdQE7rWl/7S8EmiJ7EXjrKmPChyHk5Y=
+	t=1768497824; cv=none; b=Ya8PLU4dOMh1iBpBtbMQbcgxd8H+Q3Yb1XE8wnDMCdP60QmYGbscqdYrOhX3P1PWqm6f/9j1I8gCK6pBtV1FmPSskpAqLCYCiYPk6/6bsbFOH+qSzpSFPNMyID8XWI1/R68vGDL0YJjencYZwib0k6BddnxWvwTrMIEsVpMnaBQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499027; c=relaxed/simple;
-	bh=Lp7dYrd8eIm3MEZCcpQ3fXVxL4GHHjdc3EfVsGbyago=;
+	s=arc-20240116; t=1768497824; c=relaxed/simple;
+	bh=xNZV2rjWU8AJVcpuiDjRkANG358phhfsXyjNpxmLiI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgBBuBDQ6xY24uyobn/qSz03t1TJGZslaiHt2lUicFC1js+H2R/dMMXxl79bawJnzXqEeCVHrYCTrBC+1GvoZPXYOpthT3woGoVsnDUf9mx7txdBTqZrDgPYpSecEnubQAWrtQ0Jpxk5Ftnj1g4MnXgFGGDis/dt8EJhvircL0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XjtkcLNc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9249C116D0;
-	Thu, 15 Jan 2026 17:43:46 +0000 (UTC)
+	 MIME-Version; b=d7YYHAtsAP0IR/s0Snb2dtGl/hLOntWRev3bPcjAfAZ3GsH81U93OaZvnVtD5fBn3i1Bm/24nXY1zh2WQqzptDCjQxdEIeLeKghi/o3CBR7y4Xnm53qYXu4swTN6Lsn7CQ3eFx7lznBu5mqju3NvOpQgN1b2w1kxjwfVwI7CkDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZkMk3BoJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 002BEC116D0;
+	Thu, 15 Jan 2026 17:23:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499027;
-	bh=Lp7dYrd8eIm3MEZCcpQ3fXVxL4GHHjdc3EfVsGbyago=;
+	s=korg; t=1768497824;
+	bh=xNZV2rjWU8AJVcpuiDjRkANG358phhfsXyjNpxmLiI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XjtkcLNc3VtUSr4un46abOSBzdujKeZSLvBS18yWt6OS4E0n7OVvxidXrio4MmKTB
-	 StKr9+vQ4BAcSFJl0zLxqrhzlF3oRT4hWYPUAne/FNYQX0wHAD67zY+9E/mL5kMIUQ
-	 ygBhTmneg+U2/V8U4UKS8HNmxCj+gPyw/XfpWr9g=
+	b=ZkMk3BoJHTfqlD6ayweDOZG5P+a+s7sLELeELwXjwWwDz/gLryhMbh6nNBbDsGXg3
+	 PlkV4COBPS1+fweLZuR3pArpyJ4lPSgDPD60Ko2w7s9EAbsU+w5PoMRNLjmoSr8y0K
+	 EO5jbRStqnpCBUYckNdokrTqyhxzvWymXYOiMLO4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Bashirov <sergeybashirov@gmail.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Chuck Lever <chuck.lever@oracle.com>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 081/451] NFSD/blocklayout: Fix minlength check in proc_layoutget
-Date: Thu, 15 Jan 2026 17:44:42 +0100
-Message-ID: <20260115164233.846290941@linuxfoundation.org>
+Subject: [PATCH 5.15 217/554] hfsplus: fix volume corruption issue for generic/070
+Date: Thu, 15 Jan 2026 17:44:43 +0100
+Message-ID: <20260115164254.104176818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +62,124 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Bashirov <sergeybashirov@gmail.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit 3524b021b0ec620a76c89aee78e9d4b4130fb711 ]
+[ Upstream commit ed490f36f439b877393c12a2113601e4145a5a56 ]
 
-The extent returned by the file system may have a smaller offset than
-the segment offset requested by the client. In this case, the minimum
-segment length must be checked against the requested range. Otherwise,
-the client may not be able to continue the read/write operation.
+The xfstests' test-case generic/070 leaves HFS+ volume
+in corrupted state:
 
-Fixes: 8650b8a05850 ("nfsd: pNFS block layout driver")
-Signed-off-by: Sergey Bashirov <sergeybashirov@gmail.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+sudo ./check generic/070
+FSTYP -- hfsplus
+PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
+MKFS_OPTIONS -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/070 _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see xfstests-dev/results//generic/070.full for details)
+
+Ran: generic/070
+Failures: generic/070
+Failed 1 of 1 tests
+
+sudo fsck.hfsplus -d /dev/loop50
+** /dev/loop50
+Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+Executing fsck_hfs (version 540.1-Linux).
+** Checking non-journaled HFS Plus Volume.
+The volume name is test
+** Checking extents overflow file.
+Unused node is not erased (node = 1)
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0004
+CBTStat = 0x0000 CatStat = 0x00000000
+** Repairing volume.
+** Rechecking volume.
+** Checking non-journaled HFS Plus Volume.
+The volume name is test
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume test was repaired successfully.
+
+It is possible to see that fsck.hfsplus detected not
+erased and unused node for the case of extents overflow file.
+The HFS+ logic has special method that defines if the node
+should be erased:
+
+bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
+{
+	struct super_block *sb = tree->inode->i_sb;
+	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
+	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
+
+	return tree->cnid == HFSPLUS_CAT_CNID &&
+		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
+}
+
+However, it is possible to see that this method works
+only for the case of catalog file. But debugging of the issue
+has shown that HFSPLUS_VOL_UNUSED_NODE_FIX attribute has been
+requested for the extents overflow file too:
+
+catalog file
+kernel: hfsplus: node 4, num_recs 0, flags 0x10
+kernel: hfsplus: tree->cnid 4, volume_attr 0x80000800
+
+extents overflow file
+kernel: hfsplus: node 1, num_recs 0, flags 0x10
+kernel: hfsplus: tree->cnid 3, volume_attr 0x80000800
+
+This patch modifies the hfs_bnode_need_zeroout() by checking
+only volume_attr but not the b-tree ID because node zeroing
+can be requested for all HFS+ b-tree types.
+
+sudo ./check generic/070
+FSTYP         -- hfsplus
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #79 SMP PREEMPT_DYNAMIC Fri Oct 31 16:07:42 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/070 33s ...  34s
+Ran: generic/070
+Passed all 1 tests
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20251101001229.247432-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayout.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/hfsplus/bnode.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/nfsd/blocklayout.c b/fs/nfsd/blocklayout.c
-index aa9b7ae59a076..e01b141ac7334 100644
---- a/fs/nfsd/blocklayout.c
-+++ b/fs/nfsd/blocklayout.c
-@@ -27,6 +27,7 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- {
- 	struct nfsd4_layout_seg *seg = &args->lg_seg;
- 	struct super_block *sb = inode->i_sb;
-+	u64 length;
- 	u32 block_size = i_blocksize(inode);
- 	struct pnfs_block_extent *bex;
- 	struct iomap iomap;
-@@ -57,7 +58,8 @@ nfsd4_block_proc_layoutget(struct inode *inode, const struct svc_fh *fhp,
- 		goto out_error;
- 	}
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index e566cea238279..358294726ff17 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -717,6 +717,5 @@ bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
+ 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
+ 	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
  
--	if (iomap.length < args->lg_minlength) {
-+	length = iomap.offset + iomap.length - seg->offset;
-+	if (length < args->lg_minlength) {
- 		dprintk("pnfsd: extent smaller than minlength\n");
- 		goto out_layoutunavailable;
- 	}
+-	return tree->cnid == HFSPLUS_CAT_CNID &&
+-		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
++	return volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
+ }
 -- 
 2.51.0
 
