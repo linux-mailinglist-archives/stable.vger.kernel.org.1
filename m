@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-208535-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208666-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40109D25F97
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 292B4D2608F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B8D833043F68
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 72D713033BA2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8F8193AE6E2;
-	Thu, 15 Jan 2026 16:55:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD3DB2D7DD7;
+	Thu, 15 Jan 2026 17:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iUvPlsZg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PvZHCvZA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30066394487;
-	Thu, 15 Jan 2026 16:55:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80C7829C338;
+	Thu, 15 Jan 2026 17:01:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496126; cv=none; b=HXkT0LXohA059GEyyj1tZ259WFHZtP5O7DtJYdSHtEPydAWUh6JC+kq9YwEp80RLsi0TZnOmwr+/KXCHO/nFkRApfz5ikNpjQKRRaoza14/qJgT4x/+pzIgKaYj8PCVFh8c6sIkLlEBo45XhIulTPgHdhBpYil1WkrZlZ2hjefI=
+	t=1768496500; cv=none; b=e7j5Pgp8vbtUkNpDwkRc1ocmBL5i+nhYFit8cSN94HBVTdp17pv/XLsdcl0gHD3F2+v+Jg/u2Mdg6W6F8KgnOCyBBu7wM0GztA0wdKKnsfTI+jDrusGEyjKr/SENayoOi2u/mjzShNhadRjtaP8O9VXj0nG4hYeLrNALL3FR5Xw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496126; c=relaxed/simple;
-	bh=KcSCvoDEkV/eA/t2qzRgIFFZRIeShPTP246Aljnz4CM=;
+	s=arc-20240116; t=1768496500; c=relaxed/simple;
+	bh=pCer/eoQg/+/hKPk9NVz8rvtwztvWe85om+Zcvx6MZM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ccHTI6szX9rCqridPRHYPls4LjgTOS7vEiMCBW11YtNZAwIoc7leF4TK0MIF1oXYKAm12y+B/Ek9/NXiaKu2b3P5Zg9bpNAA5khM1pdckKdh/fxFIt/HqkwV0xxeNY0ujquELBDFCxXN2/nrub+D5F4H+2zRmI5xvANGXHDEDVc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iUvPlsZg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F540C19421;
-	Thu, 15 Jan 2026 16:55:25 +0000 (UTC)
+	 MIME-Version; b=rEfimnOuE37BWbsXkws+Ff42HkXsAPOJmuoEGTOmt3IjmIxTmmAXyPXB7azEFms1vR5/hqANQ8l5vnHv2tHCTdrG7jnPnJeA3XEJh9WB4hmVzjMbQ6hUjIpVFzum3fFI1WCXi+BQhbniNvVW5diYgha3NA6Nqcz7WUml6YvWTzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PvZHCvZA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F435C116D0;
+	Thu, 15 Jan 2026 17:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496125;
-	bh=KcSCvoDEkV/eA/t2qzRgIFFZRIeShPTP246Aljnz4CM=;
+	s=korg; t=1768496500;
+	bh=pCer/eoQg/+/hKPk9NVz8rvtwztvWe85om+Zcvx6MZM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iUvPlsZg7Wmol+dv5pFspaFWX5A7ces+zL/uF7rwyZ+ER3dfX2ETz5eHMCowIESXm
-	 e0s7IJWCLSbCIxoqzPic5QGBOHFaTJsCNPlxE26DOgf1WafCWkuPjzpKs4liBiWRUf
-	 pEPOKYe1M+PvncF7rjwV3o8qG7wzJFZ05aqkvhTY=
+	b=PvZHCvZAVxtaxlr9FRXSuSOeqITlVOi3osjgRUlqCCMeqSNxOxHukdQkBL2JZ/xGj
+	 ccsxiFObrcl6urxLc/rM75vyj+LTcH1dOm7MbW17Fz73FEHzth3NiQxa+eFuFWik5M
+	 g6/whqyYzUbYrlBKejesRBLdFahn1H3tVXLZMyBM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 087/181] netfilter: nft_set_pipapo: fix range overlap detection
+	Yeoreum Yun <yeoreum.yun@arm.com>,
+	Anshuman Khandual <anshuman.khandual@arm.com>,
+	Kevin Brodsky <kevin.brodsky@arm.com>,
+	Catalin Marinas <catalin.marinas@arm.com>
+Subject: [PATCH 6.12 009/119] arm64: Fix cleared E0POE bit after cpu_suspend()/resume()
 Date: Thu, 15 Jan 2026 17:47:04 +0100
-Message-ID: <20260115164205.465058565@linuxfoundation.org>
+Message-ID: <20260115164152.294611664@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,67 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Yeoreum Yun <yeoreum.yun@arm.com>
 
-[ Upstream commit 7711f4bb4b360d9c0ff84db1c0ec91e385625047 ]
+commit bdf3f4176092df5281877cacf42f843063b4784d upstream.
 
-set->klen has to be used, not sizeof().  The latter only compares a
-single register but a full check of the entire key is needed.
+TCR2_ELx.E0POE is set during smp_init().
+However, this bit is not reprogrammed when the CPU enters suspension and
+later resumes via cpu_resume(), as __cpu_setup() does not re-enable E0POE
+and there is no save/restore logic for the TCR2_ELx system register.
 
-Example:
-table ip t {
-        map s {
-                typeof iifname . ip saddr : verdict
-                flags interval
-        }
-}
+As a result, the E0POE feature no longer works after cpu_resume().
 
-nft add element t s '{ "lo" . 10.0.0.0/24 : drop }' # no error, expected
-nft add element t s '{ "lo" . 10.0.0.0/24 : drop }' # no error, expected
-nft add element t s '{ "lo" . 10.0.0.0/8 : drop }' # bug: no error
+To address this, save and restore TCR2_EL1 in the cpu_suspend()/cpu_resume()
+path, rather than adding related logic to __cpu_setup(), taking into account
+possible future extensions of the TCR2_ELx feature.
 
-The 3rd 'add element' should be rejected via -ENOTEMPTY, not -EEXIST,
-so userspace / nft can report an error to the user.
-
-The latter is only correct for the 2nd case (re-add of existing element).
-
-As-is, userspace is told that the command was successful, but no elements were
-added.
-
-After this patch, 3rd command gives:
-Error: Could not process rule: File exists
-add element t s { "lo" . 127.0.0.0/8 . "lo"  : drop }
-                  ^^^^^^^^^^^^^^^^^^^^^^^^^
-
-Fixes: 0eb4b5ee33f2 ("netfilter: nft_set_pipapo: Separate partial and complete overlap cases on insertion")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf83dae90fbc ("arm64: enable the Permission Overlay Extension for EL0")
+Cc: <stable@vger.kernel.org> # 6.12.x
+Signed-off-by: Yeoreum Yun <yeoreum.yun@arm.com>
+Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
+Reviewed-by: Kevin Brodsky <kevin.brodsky@arm.com>
+Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/include/asm/suspend.h |    2 +-
+ arch/arm64/mm/proc.S             |    8 ++++++++
+ 2 files changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 112fe46788b6f..6d77a5f0088ad 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -1317,8 +1317,8 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 		else
- 			dup_end = dup_key;
+--- a/arch/arm64/include/asm/suspend.h
++++ b/arch/arm64/include/asm/suspend.h
+@@ -2,7 +2,7 @@
+ #ifndef __ASM_SUSPEND_H
+ #define __ASM_SUSPEND_H
  
--		if (!memcmp(start, dup_key->data, sizeof(*dup_key->data)) &&
--		    !memcmp(end, dup_end->data, sizeof(*dup_end->data))) {
-+		if (!memcmp(start, dup_key->data, set->klen) &&
-+		    !memcmp(end, dup_end->data, set->klen)) {
- 			*elem_priv = &dup->priv;
- 			return -EEXIST;
- 		}
--- 
-2.51.0
-
+-#define NR_CTX_REGS 13
++#define NR_CTX_REGS 14
+ #define NR_CALLEE_SAVED_REGS 12
+ 
+ /*
+--- a/arch/arm64/mm/proc.S
++++ b/arch/arm64/mm/proc.S
+@@ -100,6 +100,10 @@ SYM_FUNC_START(cpu_do_suspend)
+ 	 * call stack.
+ 	 */
+ 	str	x18, [x0, #96]
++alternative_if ARM64_HAS_TCR2
++	mrs	x2, REG_TCR2_EL1
++	str	x2, [x0, #104]
++alternative_else_nop_endif
+ 	ret
+ SYM_FUNC_END(cpu_do_suspend)
+ 
+@@ -134,6 +138,10 @@ SYM_FUNC_START(cpu_do_resume)
+ 	msr	tcr_el1, x8
+ 	msr	vbar_el1, x9
+ 	msr	mdscr_el1, x10
++alternative_if ARM64_HAS_TCR2
++	ldr	x2, [x0, #104]
++	msr	REG_TCR2_EL1, x2
++alternative_else_nop_endif
+ 
+ 	msr	sctlr_el1, x12
+ 	set_this_cpu_offset x13
 
 
 
