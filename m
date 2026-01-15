@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209224-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209643-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A83EBD27008
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:00:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 651F5D27B7A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:43:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE9E631312DA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:28 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 87A5F30CB42D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:48:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9261B3D3D0B;
-	Thu, 15 Jan 2026 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6245A2F619D;
+	Thu, 15 Jan 2026 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="APrEhLZK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jTem82DV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E843D3D03;
-	Thu, 15 Jan 2026 17:28:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 261E52750ED;
+	Thu, 15 Jan 2026 17:48:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498087; cv=none; b=DurjmIZ8xO5wpSsA55D36ABXVvH9vR5npwYEzlWuG0dsT7u6tbvnAdj/SWAHZY4LBwDxr7IcX4+ab50Au0eGIj9hnC9/mogCu540jkKmafhVASsZIx7L/UyBIlTW9CNo/LxKDTvX46KcvcZREt4jep4EwWTun0iEbFbu94FZXUI=
+	t=1768499280; cv=none; b=aNVzwT4fJ4jH6mmcvtNPPnlv36l+s0+EekuObJpkzLJ2GnpSyKDyT5mxjL3HVWxFwXzoOvenpxNxi7Ui2STF6dHKawDMdcRSr2scZVqm7mRGsfZpNIc9Ak9NH3B/XcNLMezhMUi+6G2EazB9DQnS9TgoRG1acV3UPIfie1CwhRY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498087; c=relaxed/simple;
-	bh=S1llgWTLx5luKcqAFFiYFRm5JdXOR3PD05ND71+Hn60=;
+	s=arc-20240116; t=1768499280; c=relaxed/simple;
+	bh=HaVN9FwMzyWPeuzF3doKgpBk6EssGNBm0ZDBME+yqGw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=glcnhj2gRGys0aTauRcHd5KYYbLazG4SF5ljuwfxsjb9ZMS88HoIR61VNq7MpP2pVs+JjIyTz+FAGQ2YZBW3k9CbxcAFziUM0XdwuYXVGJ3LbiHd26Py4PWEnxuFW0exIP3PMXHL5yUkMtjQ+RNrV6q1sYn+Xec6xhT9qHb78c8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=APrEhLZK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4F81C116D0;
-	Thu, 15 Jan 2026 17:28:06 +0000 (UTC)
+	 MIME-Version; b=QyJERxsBz13Lng46SuhicscUQvDaLsv5aSQgGNMdqJQrImImfloWwlqYPexD/Hgonfm/gIYn/7a9nQGjplYZJAVJPGJbn0lZvCayxYqMW+6WTz6ZT3qj/wsVe0DqLCdYUBe6zWvmqAqeMgeFgqVdG7nkq7j2YJM+7RKn+NHBxKU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jTem82DV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4474C116D0;
+	Thu, 15 Jan 2026 17:47:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498087;
-	bh=S1llgWTLx5luKcqAFFiYFRm5JdXOR3PD05ND71+Hn60=;
+	s=korg; t=1768499280;
+	bh=HaVN9FwMzyWPeuzF3doKgpBk6EssGNBm0ZDBME+yqGw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=APrEhLZKlX4fUDjz5mA4/WcyicNTlXrpLhKniJoTmGhJ3E6ZXF4H1UTLs6PTwx2S9
-	 /TPQ2cN3HWtDr+Piwhu4niQvm0qCJoX70uM7OUxmV6Q9wp3A8RQBfkwVAI6FbXTi9O
-	 x9slzFqQ+OXJLUucz0fpRN+g1cv9N/kkR/joRKFs=
+	b=jTem82DVRS96zU5nWxoSpKQZDIX8mML4Dv1JQnLw42QZ4CBD0ZiviqRn66O+E8bkT
+	 kbwoVS5jaG3mDX1tQLCNh9ox9Dq/8hbJS/Og74YD0vcvfGbw1Ex+InK+IkTjSB7DPB
+	 sUaEdvxslOA9JNTy//Qmx7OkpfBaD2xz4xZ2dxOk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alison Schofield <alison.schofield@intel.com>,
-	Ira Weiny <ira.weiny@intel.com>,
-	Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 5.15 307/554] tools/testing/nvdimm: Use per-DIMM device handle
+	Ido Schimmel <idosch@nvidia.com>,
+	Petr Machata <petrm@nvidia.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 172/451] mlxsw: spectrum_mr: Fix use-after-free when updating multicast route stats
 Date: Thu, 15 Jan 2026 17:46:13 +0100
-Message-ID: <20260115164257.343923203@linuxfoundation.org>
+Message-ID: <20260115164237.128512674@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,66 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alison Schofield <alison.schofield@intel.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit f59b701b4674f7955170b54c4167c5590f4714eb upstream.
+[ Upstream commit 8ac1dacec458f55f871f7153242ed6ab60373b90 ]
 
-KASAN reports a global-out-of-bounds access when running these nfit
-tests: clear.sh, pmem-errors.sh, pfn-meta-errors.sh, btt-errors.sh,
-daxdev-errors.sh, and inject-error.sh.
+Cited commit added a dedicated mutex (instead of RTNL) to protect the
+multicast route list, so that it will not change while the driver
+periodically traverses it in order to update the kernel about multicast
+route stats that were queried from the device.
 
-[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
-[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
-[] The buggy address belongs to the variable:
-[] handle+0x1c/0x1df4 [nfit_test]
+One instance of list entry deletion (during route replace) was missed
+and it can result in a use-after-free [1].
 
-nfit_test_search_spa() uses handle[nvdimm->id] to retrieve a device
-handle and triggers a KASAN error when it reads past the end of the
-handle array. It should not be indexing the handle array at all.
+Fix by acquiring the mutex before deleting the entry from the list and
+releasing it afterwards.
 
-The correct device handle is stored in per-DIMM test data. Each DIMM
-has a struct nfit_mem that embeds a struct acpi_nfit_memdev that
-describes the NFIT device handle. Use that device handle here.
+[1]
+BUG: KASAN: slab-use-after-free in mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
+Read of size 8 at addr ffff8881523c2fa8 by task kworker/2:5/22043
 
-Fixes: 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
-Cc: stable@vger.kernel.org
-Signed-off-by: Alison Schofield <alison.schofield@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
-Link: https://patch.msgid.link/20251031234227.1303113-1-alison.schofield@intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CPU: 2 UID: 0 PID: 22043 Comm: kworker/2:5 Not tainted 6.18.0-rc1-custom-g1a3d6d7cd014 #1 PREEMPT(full)
+Hardware name: Mellanox Technologies Ltd. MSN2010/SA002610, BIOS 5.6.5 08/24/2017
+Workqueue: mlxsw_core mlxsw_sp_mr_stats_update [mlxsw_spectrum]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0xba/0x110
+ print_report+0x174/0x4f5
+ kasan_report+0xdf/0x110
+ mlxsw_sp_mr_stats_update+0x4a5/0x540 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:1006 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+ </TASK>
+
+Allocated by task 29933:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ mlxsw_sp_mr_route_add+0xd8/0x4770 [mlxsw_spectrum]
+ mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+
+Freed by task 29933:
+ kasan_save_stack+0x30/0x50
+ kasan_save_track+0x14/0x30
+ __kasan_save_free_info+0x3b/0x70
+ __kasan_slab_free+0x43/0x70
+ kfree+0x14e/0x700
+ mlxsw_sp_mr_route_add+0x2dea/0x4770 drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c:444 [mlxsw_spectrum]
+ mlxsw_sp_router_fibmr_event_work+0x371/0xad0 drivers/net/ethernet/mellanox/mlxsw/spectrum_router.c:7965 [mlxsw_spectrum]
+ process_one_work+0x9cc/0x18e0
+ worker_thread+0x5df/0xe40
+ kthread+0x3b8/0x730
+ ret_from_fork+0x3e9/0x560
+ ret_from_fork_asm+0x1a/0x30
+
+Fixes: f38656d06725 ("mlxsw: spectrum_mr: Protect multicast route list with a lock")
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/f996feecfd59fde297964bfc85040b6d83ec6089.1764695650.git.petrm@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/nvdimm/test/nfit.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/nvdimm/test/nfit.c
-+++ b/tools/testing/nvdimm/test/nfit.c
-@@ -672,6 +672,7 @@ static int nfit_test_search_spa(struct n
- 		.addr = spa->spa,
- 		.region = NULL,
- 	};
-+	struct nfit_mem *nfit_mem;
- 	u64 dpa;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
+index ee308d9aedcdc..d8a4bbb8e8998 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_mr.c
+@@ -440,7 +440,9 @@ int mlxsw_sp_mr_route_add(struct mlxsw_sp_mr_table *mr_table,
+ 		rhashtable_remove_fast(&mr_table->route_ht,
+ 				       &mr_orig_route->ht_node,
+ 				       mlxsw_sp_mr_route_ht_params);
++		mutex_lock(&mr_table->route_list_lock);
+ 		list_del(&mr_orig_route->node);
++		mutex_unlock(&mr_table->route_list_lock);
+ 		mlxsw_sp_mr_route_destroy(mr_table, mr_orig_route);
+ 	}
  
- 	ret = device_for_each_child(&bus->dev, &ctx,
-@@ -689,8 +690,12 @@ static int nfit_test_search_spa(struct n
- 	 */
- 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
- 	nvdimm = nd_mapping->nvdimm;
-+	nfit_mem = nvdimm_provider_data(nvdimm);
-+	if (!nfit_mem)
-+		return -EINVAL;
- 
--	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
-+	spa->devices[0].nfit_device_handle =
-+		__to_nfit_memdev(nfit_mem)->device_handle;
- 	spa->num_nvdimms = 1;
- 	spa->devices[0].dpa = dpa;
- 
+-- 
+2.51.0
+
 
 
 
