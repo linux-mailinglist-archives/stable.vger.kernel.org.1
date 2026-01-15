@@ -1,114 +1,196 @@
-Return-Path: <stable+bounces-209953-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209954-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 807ECD2844D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 21:00:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1E142D2873B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 21:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B608B300FD69
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 20:00:18 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 45DCD301D5A0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 20:38:02 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B11D632145B;
-	Thu, 15 Jan 2026 20:00:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC5D931AF15;
+	Thu, 15 Jan 2026 20:37:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="JLtqZrjt"
+	dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b="fIXMUg+L"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from SJ2PR03CU001.outbound.protection.outlook.com (mail-westusazon11012040.outbound.protection.outlook.com [52.101.43.40])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4D1D52EAB82
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 20:00:14 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.128.173
-ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768507216; cv=none; b=ZAYparxeWrOhq03t54KGGAusJGVhFJMUBK8utXfX9Qk0t9wbSvDjksmA18gFunXEHa6cSKLuaWgqVkNBajK6YPdngrJ54fFLSlbq9x36nMs09QDrixEd3tYGNNM/Elxki6jARj8DW8hKXrQE9bC5kZ6/3ncxZ2FHE61UOlEDMwY=
-ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768507216; c=relaxed/simple;
-	bh=VMIsD1egwo1cLTvv+6DvzP3o6Rv+S11pibHNd8YKHgg=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=T+ZxdxRJlX6SI4/7CVkvDJm2BImY1YiTR3TokTGDOEwudammZkn67n15fAOgcYkqGfnDQBkdWSLc/aF5ZFxwD6p56ndyyPfDQkYTOuQc0NM7bfqPe/LTINZ87M92o+RwbQ7Ie7wzmHALwR0cX2FvRpEHPkx3RAOz0VLVltqsoXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=JLtqZrjt; arc=none smtp.client-ip=209.85.128.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
-Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-78e6dc6d6d7so14105627b3.3
-        for <stable@vger.kernel.org>; Thu, 15 Jan 2026 12:00:14 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sladewatkins.com; s=google; t=1768507213; x=1769112013; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=f5v/2b9hS4lqAYWxqpA0HCoJBnyBMfO3blrngfEhtmM=;
-        b=JLtqZrjtTGojA6nDGjMHNVOPpqoiHs5B/6jFZ8AyOkdFk/x06pY7QwTBtz+KV2KjgB
-         H3/ayaH568c692KWbAeAa+xVHzNvRI+2j+/RnIaIg2/qSbw5/AqxmTSjKZnchaLJVn4f
-         WIYM0WbK0k8RBJGz468uLQVVV3LXD3VVnP7t1hkNSXhp8RLQ8C7X/gJVE+zJm+nQqpgA
-         wHCV0AITBcVSq/FLqXoPdasDCj+sd1ypmAjdEhwPvqgZpYbEJHOftCrrr/wgzT2e2maP
-         BL0YnFsaQhboHbECQ1rtNmsnl4gaVyp7EQSHEIv5QexvHFEHx2qsS171IE83ZJDMAFYf
-         rPhg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768507213; x=1769112013;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=f5v/2b9hS4lqAYWxqpA0HCoJBnyBMfO3blrngfEhtmM=;
-        b=LaLQ/o40LW6ncs2Uau7EnXSXZsX21rkJ2OFmdl4E9DRT56JpVcux6xBKHQZ20q3izS
-         CO3LcwL49CgOeCf4HHmmSPaaUUZIF1eoOCkg+1W4EF5/WoYUYr1wosVwhgYyCNhtnR+Q
-         PURPsmm/qIwscNy2qVOedO09quvROzG8714ckAZCNtseMNRu+PP0k5PVjSsYHj71SZc3
-         lXU//VmHgrmtnUZwn0+eUOkvcFQ5WSIA5ze2MTnUeWxiqabj2rpo/aUnWQY208bJPMK2
-         wba90/PKLZsN+WBDhXQSwksdqrMHCY/uhjX9FYhvIs1AWkfNBbyoz+i7Pf1/Mr8ECYtn
-         /P8w==
-X-Gm-Message-State: AOJu0YxQZ02MEZc1Ks3esPeSGXwl4F3l8it8HDDny2te54Mo9L7Y/Fe4
-	AJ69mtwU5tcroTlHiS28NxMf3kBGz7NtrlKEjdvrsXoyPtLaAb7hLcSjI6rp5qi7NehlP7gIO/4
-	mg0dZsWcK1kTYX4nWq0HTe7TQXKwXTqbZt1zaRN0OrFvX4TqxaimmNwKbwyHcnm4B0iedjIjznv
-	paAoHfHJ13hpELAITtv1DD9E3ccRE=
-X-Gm-Gg: AY/fxX6tyPfmiMkhsyO8R+ijcVL1gZjw/C/esWuCDgPI1pset62AvSzfCKKpL+V/9aR
-	Xvp69I4v9Qq7L8NYKaJ8Lh1i+FpF444jlWupOooTPndbNA4KIrG1wyLapzMNZHp7tQIGLtTboKa
-	a6B27NEH870zNTx3BedTaBDTO7QXaCoQwua2evYbqJnR9rV4o8DrxJc3WKmlyU690DlEYVWiAKb
-	/xegMr3QPvmWVf2lPworDWPZAbuHVSx+NLCdJG8Us3Zu/K7Mx2S93mKqcm9nBEIxTGnfpzmP75W
-	whertjyHccs1rYbT5bnjd6Epv1Yp
-X-Received: by 2002:a05:690c:90:b0:786:70d6:96ae with SMTP id
- 00721157ae682-793c67f6f84mr2729987b3.37.1768507213288; Thu, 15 Jan 2026
- 12:00:13 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 655BB30B527;
+	Thu, 15 Jan 2026 20:37:58 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=fail smtp.client-ip=52.101.43.40
+ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768509479; cv=fail; b=WSFlK2FIDiwWZpfwXa1FK8G1Nxbukc/x0t2JSmREtcDmgxI/PL9bIf5DT3h9wMtiIHT0vKIR92hJkWGPxd9xBv8fkq1MYO4k7MLU+aM8EDc0YlftMttV8s+5yF3Vfx870peF5jtmHuP1WqZT9YEpYTc50iOxHHWqHnkq46eGVKM=
+ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768509479; c=relaxed/simple;
+	bh=RTSl+WYNotFOmcW0PH1+m5kNVBxq5D/sralQj4WQ03I=;
+	h=From:To:CC:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version:Content-Type; b=ZxU/ajydOtPPGNRnkoeGdNsGUBhC1c9NkwqFojP+3kp3UlxRGvXUkSO8xxYvwE3rnp9nMICw5b6e6/BYY6+F6LbMuCnYdZZNBTHGlSwm/DrV2CxZ/CRkVP6QffdYuFjTpLLggSvp/+13pgyK6ab22ZXnln1G/bqqHIPHGwMtWzA=
+ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com; spf=fail smtp.mailfrom=amd.com; dkim=pass (1024-bit key) header.d=amd.com header.i=@amd.com header.b=fIXMUg+L; arc=fail smtp.client-ip=52.101.43.40
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=amd.com
+Authentication-Results: smtp.subspace.kernel.org; spf=fail smtp.mailfrom=amd.com
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector10001; d=microsoft.com; cv=none;
+ b=kxRa5ST61HcFIa1VjAti6azpCSN+6WPqKCN3l54JGUZKWogelGrHQykEAaTBYVShPXOPLKcEFmlwcCn67VZz68o/FGrWWPGAwLfi5VmMTZ+PgXCcY+70DsLnQSs50iW5b8vtqivl7eRWwQ7xPpHruFZhaM9d19MzlRiuQR3NdV/rFN8xyQ8BqJtiJpv4kK1qu3KoYnsz2DfG8EkqVLoOqQcL8DNRbwTGUch2HwO1ySCtBkPymXHxVI/IqbJtZcutdchTB2e1MU7MnqeDHZOe5pCDIjBSk7WLelIEO6r6JI0e8XSShSgVvzV0V6GAZbsIJoCYBtg2kYbSIVGRaKTgEw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector10001;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=ggNeQn2sO9VtmiX+PuSEK4aspDBa4S7w6rb/fhYSTgs=;
+ b=lADOtpCD7CL9nalK/Bd5EQ0GF/1Ngu7VI2g0OYODaF18xRif924frJ5G230TD3MjG+/QAX+714O6LsW+sCSognduh52UzvqLlD7oTKC4ZXtEJxnIzQSLdAntM9R+DB5Eh7OF3UaZRKdO1BzAgRE/ymy9/64OalnJO4oczDW66d27r0eOBOjmeizSShosrBdXyl8NczRd5Uj5cwbT8yJV9DW+dsOlGpgh4mb+vUhf/YmtAfUz4WW3YO9hNQf05OlTQNYSD7Y0Na3SjRcya3ANy/Esbb/+A/wBCDyU6SnIh/fdvVnu41I3kKlSCLrizic2jvputyspvpWs//su3aZbEw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=kernel.org smtp.mailfrom=amd.com; dmarc=pass
+ (p=quarantine sp=quarantine pct=100) action=none header.from=amd.com;
+ dkim=none (message not signed); arc=none (0)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=ggNeQn2sO9VtmiX+PuSEK4aspDBa4S7w6rb/fhYSTgs=;
+ b=fIXMUg+LJNlhaHPhqMBx0xL6k7JlcaemAzD7BUaKrGvbs/BsyyrGMUMSPoXzsFGnTh05eV8lJS4YPuFucfYGTGYiWit1iOLfcOqGVvWBwyYfzk2r3d/OUi6YClR1elGBICG5/JZcGXre4v5rfIGYKvohJjv8ttZAF9NcEQUFKDA=
+Received: from SJ0PR05CA0161.namprd05.prod.outlook.com (2603:10b6:a03:339::16)
+ by CY8PR12MB7243.namprd12.prod.outlook.com (2603:10b6:930:58::6) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.9499.7; Thu, 15 Jan
+ 2026 20:37:55 +0000
+Received: from SJ5PEPF000001ED.namprd05.prod.outlook.com
+ (2603:10b6:a03:339:cafe::e7) by SJ0PR05CA0161.outlook.office365.com
+ (2603:10b6:a03:339::16) with Microsoft SMTP Server (version=TLS1_3,
+ cipher=TLS_AES_256_GCM_SHA384) id 15.20.9520.4 via Frontend Transport; Thu,
+ 15 Jan 2026 20:37:47 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=satlexmb07.amd.com; pr=C
+Received: from satlexmb07.amd.com (165.204.84.17) by
+ SJ5PEPF000001ED.mail.protection.outlook.com (10.167.242.201) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.9542.4 via Frontend Transport; Thu, 15 Jan 2026 20:37:53 +0000
+Received: from dogwood-dvt-marlim.amd.com (10.180.168.240) by
+ satlexmb07.amd.com (10.181.42.216) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.2562.17; Thu, 15 Jan 2026 14:37:52 -0600
+From: Mario Limonciello <mario.limonciello@amd.com>
+To: <mario.limonciello@amd.com>, <hansg@kernel.org>,
+	<ilpo.jarvinen@linux.intel.com>, <jorge.lopez2@hp.com>,
+	<linux@weissschuh.net>
+CC: <stable@vger.kernel.org>, <platform-driver-x86@vger.kernel.org>
+Subject: [PATCH v2 1/3] platform/x86: hp-bioscfg: Fix kobject warnings for empty attribute names
+Date: Thu, 15 Jan 2026 14:31:10 -0600
+Message-ID: <20260115203725.828434-2-mario.limonciello@amd.com>
+X-Mailer: git-send-email 2.52.0
+In-Reply-To: <20260115203725.828434-1-mario.limonciello@amd.com>
+References: <20260115203725.828434-1-mario.limonciello@amd.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115164202.305475649@linuxfoundation.org>
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-From: Slade Watkins <sr@sladewatkins.com>
-Date: Thu, 15 Jan 2026 15:00:01 -0500
-X-Gm-Features: AZwV_Qg_JnrAlcMrroGYpyFHUDmG0eBuJ3RQfdnuXDZ_Nb9Tpz25ZcFdbDTC_qE
-Message-ID: <CAMC4fzJqyDb=yQvSdUxDPr3PxP0PjMT5_-m_YPuVT9enSjZMeA@mail.gmail.com>
-Subject: Re: [PATCH 6.18 000/181] 6.18.6-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-SW-RGPM-AntispamServ: glowwhale.rogueportmedia.com
-X-SW-RGPM-AntispamVer: Reporting (SpamAssassin 4.0.2-sladew)
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-ClientProxiedBy: satlexmb07.amd.com (10.181.42.216) To satlexmb07.amd.com
+ (10.181.42.216)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: SJ5PEPF000001ED:EE_|CY8PR12MB7243:EE_
+X-MS-Office365-Filtering-Correlation-Id: a4ea55c1-a916-4ba7-ba07-08de5475f577
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam:
+	BCL:0;ARA:13230040|82310400026|1800799024|36860700013|376014;
+X-Microsoft-Antispam-Message-Info:
+	=?us-ascii?Q?lJtOWQW7Sf3jzg4fl7eRMtZClUnpgbPwr5FEK10otx9pQ3Ny4G+3QIoycD7Y?=
+ =?us-ascii?Q?kzVB7hq1V+2K7wMC5N7XdZ9nZOSQjG7md+JN5PjkUzuu4tAsI+QtuatKDye8?=
+ =?us-ascii?Q?VS6Ahh1T6i0/s8dpLc/fS+vMSnZTIXIvx3jNuv5vqrwzPZzCcKpB1sQ/z9XH?=
+ =?us-ascii?Q?JL91m0n64ceht4LbkwFMKsxlHeknNIUyoMmRLnjjCXqxihajbvjVXsojFNR6?=
+ =?us-ascii?Q?GtJVj/QdM4nt+Cn2geTqR0Ct4UDDZ/hUNnaWev0b01S1ZMQL94iJOs6z9r2Z?=
+ =?us-ascii?Q?lviUWg3eyP9uZ7nNeBHpWnbiNvy6QhnplqzL9XK4dHkx0DuAksz+jIYibXgG?=
+ =?us-ascii?Q?uRkyBSNJ5DEKBQOJS5u1W8mbqdqFGldlynJAI2tM4UaR4H2RGR8fwuGXlTck?=
+ =?us-ascii?Q?gUrzCW3tAuW13R7YzaDdRviwscoXHfD9vQOO6yiE7k89LKPU5yOCSWA9/1TS?=
+ =?us-ascii?Q?WqYuW9c8tKGzKQ3jlYrTsQrTOan9JgfrWyP1bI6jC2ZGIJooYIdfVVx0Xxa0?=
+ =?us-ascii?Q?NJHkbL2f6vrK6T1Jwazdd7hePrMhlnF+GHjVqNFDvCR/Ebi+R5I+ZqqpTFZ8?=
+ =?us-ascii?Q?reqb7BgKMiiPfHSdFOzeUjhTjCh3qKLunrZqkru0Z/Jhq9QnHUiX1FC4n1qg?=
+ =?us-ascii?Q?Ri8aCzdf7ECOy8fDnx4q0T50kORa1ETkarBCSw1ZzH/fPBoBHcA9Yz3i0Q3p?=
+ =?us-ascii?Q?rCgjnyuDCvB1IiGRKm1yAAidXFI37a2+yLAh7ObrybBqITNg7ZQSzUp4y8NM?=
+ =?us-ascii?Q?+XxdCR8fCqafj+MBrmwa9QTechilQzKpwTLwCz8BXQaiPgG8Tt+/ESl0Rypj?=
+ =?us-ascii?Q?8dN7+TfwqBlILYeaRj8K+rPgdpPYwF/bORTBw5s4BLHriwFVjCeLkOGbdGL1?=
+ =?us-ascii?Q?FiQ924kQf0LKD/0mmP5eDqf5biFHs4SWcnNIcd8OkmZiMn5f+VTlgpRvzdUO?=
+ =?us-ascii?Q?AwtDLxt3TeO/Vahz0TAT0sJqkyt+0lKwGrNfY2QCKTedj/C0OzE/+xhl6qMP?=
+ =?us-ascii?Q?wgXCB8bUzsDjpkMvk1wG0QTuzW/OBdjJCt6lP7Tx/vUNCmIOm3r0fgXgzGey?=
+ =?us-ascii?Q?PTodpC3+578NfML2KdhH0D5TC+R8GEX5MdTUBR1nSB3uaYYVTu70GMPczQud?=
+ =?us-ascii?Q?XDTYYlWOrTRZFzOZXtBDoQc5oLRxgo5btMagIpc8x4vWqrExWPvl6wwRsXuS?=
+ =?us-ascii?Q?UFjnBblRjLDhCGOHCY2rZ2Sg99z6mZiRPuFTpoGUMkqnhhNxyMqT7HZqh7Za?=
+ =?us-ascii?Q?1g1F4Zlu2ht8V+l/B6YDN6s5NvcCHSiABZ8BTqIrBev1ybMWVYIaCzyxF0b6?=
+ =?us-ascii?Q?Ms0P7kv8RL2mLCEfxSQTKKi93eJi3caVB/vr1tvtIaxCLlv/uMzG2gxTi0rk?=
+ =?us-ascii?Q?8SyteFj/LTvrchm7vjRCH9DLhuZMxk3f8DPhJDXvwBh6LzfrJwFF+lhQ6HlG?=
+ =?us-ascii?Q?x7pbzbU3gQVRkbNZYEHs/Eq7Nn3oxDZ9ouBlRxuzbPmrfTror8o69WqG/Neq?=
+ =?us-ascii?Q?01UwHRdeO2EQ+9iyA6a8GMMaon6Lq3q/qlsMwlNX8Ypwm6Ebit8zWNW8H1tT?=
+ =?us-ascii?Q?cRoIyGjozk94wmUpPwGX0q2rmg/iw+hBgOdtoeqccuZ2ohjODjuj+N75vO/R?=
+ =?us-ascii?Q?d0BHQv32OTfRkMe+F2C4+2lhAVGBc8g+AfRmTxgOErkDPogxZHD0aTCy+IjB?=
+ =?us-ascii?Q?AwGaGA=3D=3D?=
+X-Forefront-Antispam-Report:
+	CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:satlexmb07.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230040)(82310400026)(1800799024)(36860700013)(376014);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 15 Jan 2026 20:37:53.8009
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: a4ea55c1-a916-4ba7-ba07-08de5475f577
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[satlexmb07.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource:
+	SJ5PEPF000001ED.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: CY8PR12MB7243
 
-On Thu, Jan 15, 2026 at 11:53=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.18.6 release.
-> There are 181 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 17 Jan 2026 16:41:26 +0000.
-> Anything received after that time might be too late.
+The hp-bioscfg driver attempts to register kobjects with empty names when
+the HP BIOS returns attributes with empty name strings. This causes
+multiple kernel warnings:
 
-6.18.6-rc1 built and run on my x86_64 test system (AMD Ryzen 9 9900X,
-System76 thelio-mira-r4-n3). No errors or regressions.
+  kobject: (00000000135fb5e6): attempted to be registered with empty name!
+  WARNING: CPU: 14 PID: 3336 at lib/kobject.c:219 kobject_add_internal+0x2eb/0x310
 
-Tested-by: Slade Watkins <sr@sladewatkins.com>
+Add validation in hp_init_bios_buffer_attribute() to check if the
+attribute name is empty after parsing it from the WMI buffer. If empty,
+log a debug message and skip registration of that attribute, allowing the
+module to continue processing other valid attributes.
 
-Thanks,
-Slade
+Cc: stable@vger.kernel.org
+Fixes: a34fc329b189 ("platform/x86: hp-bioscfg: bioscfg")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+---
+v2:
+ * Add missing include (Ilpo)
+ * Add Fixes tag (Ilpo)
+---
+ drivers/platform/x86/hp/hp-bioscfg/bioscfg.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+index 5bfa7159f5bc..dbe096eefa75 100644
+--- a/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
++++ b/drivers/platform/x86/hp/hp-bioscfg/bioscfg.c
+@@ -10,6 +10,8 @@
+ #include <linux/fs.h>
+ #include <linux/module.h>
+ #include <linux/kernel.h>
++#include <linux/printk.h>
++#include <linux/string.h>
+ #include <linux/wmi.h>
+ #include "bioscfg.h"
+ #include "../../firmware_attributes_class.h"
+@@ -781,6 +783,12 @@ static int hp_init_bios_buffer_attribute(enum hp_wmi_data_type attr_type,
+ 	if (ret < 0)
+ 		goto buff_attr_exit;
+ 
++	if (strlen(str) == 0) {
++		pr_debug("Ignoring attribute with empty name\n");
++		ret = 0;
++		goto buff_attr_exit;
++	}
++
+ 	if (attr_type == HPWMI_PASSWORD_TYPE ||
+ 	    attr_type == HPWMI_SECURE_PLATFORM_TYPE)
+ 		temp_kset = bioscfg_drv.authentication_dir_kset;
+-- 
+2.52.0
+
 
