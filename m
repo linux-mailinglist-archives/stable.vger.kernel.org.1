@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209492-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209057-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2133CD26D35
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:44 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id AEBC6D264A3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9EFAB30DA4F0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B3B4D300194F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4263AA1A8;
-	Thu, 15 Jan 2026 17:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EC0A2D541B;
+	Thu, 15 Jan 2026 17:20:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGkhIzoL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sx73pXr0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6ED3A0E9A;
-	Thu, 15 Jan 2026 17:40:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C631315530C;
+	Thu, 15 Jan 2026 17:20:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498850; cv=none; b=sVLJqjcjS7giU/rGlwv74HsThIbAEMa8RJgQu3WAjzAPFQj1ZBAQ2QvLyRiHtylHmY+Htxukl60bVUMwBKuPbWK2eZaiRYMwIBoHuJWBArHUE+1XqN+IHYjrLgQ/oMIGvgmq7kMdqSR9uJ7tl8eQVjWJ61BqTn3aoKH5VQWkSAo=
+	t=1768497612; cv=none; b=MkQsYVW97yr5tac81bclh6ytV06bXACle56niYDWc4AxnA6CggMgjHnvI562m3alKRec7GqcIyPsGgjUwtOEdHJh1YPCUSO/l68nB8hyelCq3Lt1YbFWbXNLzMo8AlLtBn+B88ANh+UWeTLL52goUNNs9jiS+eQKw8wejL2xsok=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498850; c=relaxed/simple;
-	bh=S79HGThcbZ75zQqgvzvT6b3wCG5FjL88d5RFfSfvdns=;
+	s=arc-20240116; t=1768497612; c=relaxed/simple;
+	bh=oiB3yJLXnV3wAMyLkSNhLqdnep9Tqbddf+Zg3Dd1mJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ci4eTOd5nTcrAJ4oCGUWe5y+dQevaOM/wfXRDzTF5aj3+6wI2JuSfoWz248+OWYIf+QJWN5AcPC4CSU1SS9Og0eCMKAnyXLBYeCoUIjDFel1xlJA7LFkSU672gngxPPqDBcB+Y0wZ1yun3b57leFMxIoNxS3ldoezuVLDLkI0NQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGkhIzoL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6883C116D0;
-	Thu, 15 Jan 2026 17:40:49 +0000 (UTC)
+	 MIME-Version; b=ipA0AzoIQNRQ91I2MbnLioUFDhVoTH+755UyjLzCJGjGAOu0MM1OrSp9fPJSHQGKOTCWJoxvjkiT54aTscDzsl6Oh1vdSL2iLXaZ3udFH1NkiHM13KFC8wXKpYW0Nl6NNR6PjTLkp4IogmKe8O7NaAKudWOD4W9oYish1c4Z/xc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sx73pXr0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E138C116D0;
+	Thu, 15 Jan 2026 17:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498850;
-	bh=S79HGThcbZ75zQqgvzvT6b3wCG5FjL88d5RFfSfvdns=;
+	s=korg; t=1768497612;
+	bh=oiB3yJLXnV3wAMyLkSNhLqdnep9Tqbddf+Zg3Dd1mJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QGkhIzoLHM544Pngzs3bBXxIBJCQjiqDpoWDZfpogeE4EuTBTOJX903hdLq7cQivi
-	 3sF0OK5ZYww6OYg/m4BL6JIg64OUD4lHyqig63dACyvDloF8Vu8qhr5ZlSIXGmLLgL
-	 dOGHwWzBpVKzg/4eBeFM2kZVZc5WDji0gtqz2hNg=
+	b=sx73pXr04CPKr1AJbz7UZ+z585PlXmSR9NE0qK0s0E3fFvlcyOHqeO4jfHrO89Bzk
+	 L90Ztiupe/+6Mymk5ZF/50u93r3da0Cb4R2sYv/0+gEA8gR6r9uiFka0My1YtuwVJL
+	 KT6vDEoTfH11jw3r2fYsLFhzBG9BZaJze/rStErs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
-	stable@kernel.org,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 007/451] ext4: refresh inline data size before write operations
-Date: Thu, 15 Jan 2026 17:43:28 +0100
-Message-ID: <20260115164231.146038957@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 143/554] ASoC: fsl_xcvr: Add Counter registers
+Date: Thu, 15 Jan 2026 17:43:29 +0100
+Message-ID: <20260115164251.427247559@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +60,161 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
+[ Upstream commit 107d170dc46e14cfa575d1b995107ef2f2e51dfe ]
 
-The cached ei->i_inline_size can become stale between the initial size
-check and when ext4_update_inline_data()/ext4_create_inline_data() use
-it. Although ext4_get_max_inline_size() reads the correct value at the
-time of the check, concurrent xattr operations can modify i_inline_size
-before ext4_write_lock_xattr() is acquired.
+These counter registers are part of register list,
+add them to complete the register map
 
-This causes ext4_update_inline_data() and ext4_create_inline_data() to
-work with stale capacity values, leading to a BUG_ON() crash in
-ext4_write_inline_data():
+- DMAC counter control registers
+- Data path Timestamp counter register
+- Data path bit counter register
+- Data path bit count timestamp register
+- Data path bit read timestamp register
 
-  kernel BUG at fs/ext4/inline.c:1331!
-  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
-
-The race window:
-1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
-2. Size check passes for 50-byte write
-3. [Another thread adds xattr, i_inline_size changes to 40]
-4. ext4_write_lock_xattr() acquires lock
-5. ext4_update_inline_data() uses stale i_inline_size = 60
-6. Attempts to write 50 bytes but only 40 bytes actually available
-7. BUG_ON() triggers
-
-Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
-immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
-and ext4_create_inline_data() work with current values that are protected
-from concurrent modifications.
-
-This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
-inline_data file while its xattrs are changing") which fixed i_inline_off
-staleness. This patch addresses the related i_inline_size staleness issue.
-
-Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
-Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
-Cc: stable@kernel.org
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://lore.kernel.org/r/1666940627-7611-1-git-send-email-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 73b97d46dde6 ("ASoC: fsl_xcvr: clear the channel status control memory")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_xcvr.c | 40 ++++++++++++++++++++++++++++++++++++++++
+ sound/soc/fsl/fsl_xcvr.h | 21 +++++++++++++++++++++
+ 2 files changed, 61 insertions(+)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -410,7 +410,12 @@ static int ext4_prepare_inline_data(hand
- 		return -ENOSPC;
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index d0556c79fdb15..1feb5758245f0 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -933,6 +933,14 @@ static const struct reg_default fsl_xcvr_reg_defaults[] = {
+ 	{ FSL_XCVR_RX_DPTH_CTRL_SET,	0x00002C89 },
+ 	{ FSL_XCVR_RX_DPTH_CTRL_CLR,	0x00002C89 },
+ 	{ FSL_XCVR_RX_DPTH_CTRL_TOG,	0x00002C89 },
++	{ FSL_XCVR_RX_DPTH_CNTR_CTRL,	0x00000000 },
++	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_SET, 0x00000000 },
++	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR, 0x00000000 },
++	{ FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG, 0x00000000 },
++	{ FSL_XCVR_RX_DPTH_TSCR, 0x00000000 },
++	{ FSL_XCVR_RX_DPTH_BCR,  0x00000000 },
++	{ FSL_XCVR_RX_DPTH_BCTR, 0x00000000 },
++	{ FSL_XCVR_RX_DPTH_BCRR, 0x00000000 },
+ 	{ FSL_XCVR_TX_DPTH_CTRL,	0x00000000 },
+ 	{ FSL_XCVR_TX_DPTH_CTRL_SET,	0x00000000 },
+ 	{ FSL_XCVR_TX_DPTH_CTRL_CLR,	0x00000000 },
+@@ -943,6 +951,14 @@ static const struct reg_default fsl_xcvr_reg_defaults[] = {
+ 	{ FSL_XCVR_TX_CS_DATA_3,	0x00000000 },
+ 	{ FSL_XCVR_TX_CS_DATA_4,	0x00000000 },
+ 	{ FSL_XCVR_TX_CS_DATA_5,	0x00000000 },
++	{ FSL_XCVR_TX_DPTH_CNTR_CTRL,	0x00000000 },
++	{ FSL_XCVR_TX_DPTH_CNTR_CTRL_SET, 0x00000000 },
++	{ FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR, 0x00000000 },
++	{ FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG, 0x00000000 },
++	{ FSL_XCVR_TX_DPTH_TSCR, 0x00000000 },
++	{ FSL_XCVR_TX_DPTH_BCR,	 0x00000000 },
++	{ FSL_XCVR_TX_DPTH_BCTR, 0x00000000 },
++	{ FSL_XCVR_TX_DPTH_BCRR, 0x00000000 },
+ 	{ FSL_XCVR_DEBUG_REG_0,		0x00000000 },
+ 	{ FSL_XCVR_DEBUG_REG_1,		0x00000000 },
+ };
+@@ -974,6 +990,14 @@ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
+ 	case FSL_XCVR_RX_DPTH_CTRL_SET:
+ 	case FSL_XCVR_RX_DPTH_CTRL_CLR:
+ 	case FSL_XCVR_RX_DPTH_CTRL_TOG:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL_SET:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG:
++	case FSL_XCVR_RX_DPTH_TSCR:
++	case FSL_XCVR_RX_DPTH_BCR:
++	case FSL_XCVR_RX_DPTH_BCTR:
++	case FSL_XCVR_RX_DPTH_BCRR:
+ 	case FSL_XCVR_TX_DPTH_CTRL:
+ 	case FSL_XCVR_TX_DPTH_CTRL_SET:
+ 	case FSL_XCVR_TX_DPTH_CTRL_CLR:
+@@ -984,6 +1008,14 @@ static bool fsl_xcvr_readable_reg(struct device *dev, unsigned int reg)
+ 	case FSL_XCVR_TX_CS_DATA_3:
+ 	case FSL_XCVR_TX_CS_DATA_4:
+ 	case FSL_XCVR_TX_CS_DATA_5:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL_SET:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG:
++	case FSL_XCVR_TX_DPTH_TSCR:
++	case FSL_XCVR_TX_DPTH_BCR:
++	case FSL_XCVR_TX_DPTH_BCTR:
++	case FSL_XCVR_TX_DPTH_BCRR:
+ 	case FSL_XCVR_DEBUG_REG_0:
+ 	case FSL_XCVR_DEBUG_REG_1:
+ 		return true;
+@@ -1016,6 +1048,10 @@ static bool fsl_xcvr_writeable_reg(struct device *dev, unsigned int reg)
+ 	case FSL_XCVR_RX_DPTH_CTRL_SET:
+ 	case FSL_XCVR_RX_DPTH_CTRL_CLR:
+ 	case FSL_XCVR_RX_DPTH_CTRL_TOG:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL_SET:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR:
++	case FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG:
+ 	case FSL_XCVR_TX_DPTH_CTRL_SET:
+ 	case FSL_XCVR_TX_DPTH_CTRL_CLR:
+ 	case FSL_XCVR_TX_DPTH_CTRL_TOG:
+@@ -1025,6 +1061,10 @@ static bool fsl_xcvr_writeable_reg(struct device *dev, unsigned int reg)
+ 	case FSL_XCVR_TX_CS_DATA_3:
+ 	case FSL_XCVR_TX_CS_DATA_4:
+ 	case FSL_XCVR_TX_CS_DATA_5:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL_SET:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR:
++	case FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG:
+ 		return true;
+ 	default:
+ 		return false;
+diff --git a/sound/soc/fsl/fsl_xcvr.h b/sound/soc/fsl/fsl_xcvr.h
+index 7f2853c60085e..4769b0fca21de 100644
+--- a/sound/soc/fsl/fsl_xcvr.h
++++ b/sound/soc/fsl/fsl_xcvr.h
+@@ -49,6 +49,16 @@
+ #define FSL_XCVR_RX_DPTH_CTRL_CLR	0x188
+ #define FSL_XCVR_RX_DPTH_CTRL_TOG	0x18c
  
- 	ext4_write_lock_xattr(inode, &no_expand);
--
-+	/*
-+	 * ei->i_inline_size may have changed since the initial check
-+	 * if other xattrs were added. Recalculate to ensure
-+	 * ext4_update_inline_data() validates against current capacity.
-+	 */
-+	(void) ext4_find_inline_data_nolock(inode);
- 	if (ei->i_inline_off)
- 		ret = ext4_update_inline_data(handle, inode, len);
- 	else
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL	0x1C0
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_SET	0x1C4
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_CLR	0x1C8
++#define FSL_XCVR_RX_DPTH_CNTR_CTRL_TOG	0x1CC
++
++#define FSL_XCVR_RX_DPTH_TSCR		0x1D0
++#define FSL_XCVR_RX_DPTH_BCR		0x1D4
++#define FSL_XCVR_RX_DPTH_BCTR		0x1D8
++#define FSL_XCVR_RX_DPTH_BCRR		0x1DC
++
+ #define FSL_XCVR_TX_DPTH_CTRL		0x220 /* TX datapath ctrl reg */
+ #define FSL_XCVR_TX_DPTH_CTRL_SET	0x224
+ #define FSL_XCVR_TX_DPTH_CTRL_CLR	0x228
+@@ -59,6 +69,17 @@
+ #define FSL_XCVR_TX_CS_DATA_3		0x23C
+ #define FSL_XCVR_TX_CS_DATA_4		0x240
+ #define FSL_XCVR_TX_CS_DATA_5		0x244
++
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL	0x260
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_SET	0x264
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_CLR	0x268
++#define FSL_XCVR_TX_DPTH_CNTR_CTRL_TOG	0x26C
++
++#define FSL_XCVR_TX_DPTH_TSCR		0x270
++#define FSL_XCVR_TX_DPTH_BCR		0x274
++#define FSL_XCVR_TX_DPTH_BCTR		0x278
++#define FSL_XCVR_TX_DPTH_BCRR		0x27C
++
+ #define FSL_XCVR_DEBUG_REG_0		0x2E0
+ #define FSL_XCVR_DEBUG_REG_1		0x2F0
+ 
+-- 
+2.51.0
+
 
 
 
