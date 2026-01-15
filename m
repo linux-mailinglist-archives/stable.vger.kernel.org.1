@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209508-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209120-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D2B9D27771
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:04 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2D70D266A9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F003A30CB8AF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:36 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id BBE863084E3C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7AEB92D9488;
-	Thu, 15 Jan 2026 17:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509FA3BF2E4;
+	Thu, 15 Jan 2026 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="a5lld4lw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WJMchSOY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F0B34A3C;
-	Thu, 15 Jan 2026 17:41:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 119952D9494;
+	Thu, 15 Jan 2026 17:23:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498896; cv=none; b=q6FayVEsRG2C300TCsO+ewnbO5xoHNqDsDEVvAkqr5otZYhBq4/zS2lF/DwXFheMibfuMFHOHvfMBQEMGVemI+dgJLRrKQdHg5zYJViRFtfHmPDLuVUg2TYzWUZn38VaO8mazc17SCKLDJMxRhWNSwTvv5ram804R112yAO9kJo=
+	t=1768497790; cv=none; b=WPCGMMt/qqg9DVfsL1xJGdQuy0GjjhVXVFZnhD1Ec/SOx7jNmlJfqD2iYc7koSTUUtnZT2PKYODDO2P0XpoIR33l+PTjAxSuG9KAZebiJPJ84VLlCRl7tlv7sdyli7LwWhB5DxmP0nJHw8dRtcb+yvzy5EXdZRhyrALi4E96img=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498896; c=relaxed/simple;
-	bh=fBrlD7H797EfXNfHhxhR+oHC4pjFvBHxbrOuJSKDK7w=;
+	s=arc-20240116; t=1768497790; c=relaxed/simple;
+	bh=+7/B4VWzhzzD1LXPcbUp8lwlaTysYpH6PmcijvkOz2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bPcROqqhkOjaXmBwbsh8yCRYewoKoytgYxP2Oz0LFfCkORjUXH2s1iS4bn2wRbJd0Xl9/OQuN5Y/nSsD2PV9nUccamFzkafSZjJ/VyGY7cLgKqTm9Nq4rZKaul4JaniuqWShKGKzv01TvjzYNhdQMnc5rXS9mmiVs7VaqIJWq8k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=a5lld4lw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2699C16AAE;
-	Thu, 15 Jan 2026 17:41:35 +0000 (UTC)
+	 MIME-Version; b=VlLcAFUg0lV8SPg94h53h+ZyiqCD8AdJU45Vkx2mudVtG+SAQ9uwH+FoXHBS1Q0qHs3PXeltLXT2DIe22Fv5AQdYQLVK+WaOnz1Yru8fRhR0wySDElwCJe7ILBsU7JeoiBCuFqsJdyJ5cNPLyXhZA4kOIrrvIf5skl/e/5PtXWQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WJMchSOY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91F4EC116D0;
+	Thu, 15 Jan 2026 17:23:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498896;
-	bh=fBrlD7H797EfXNfHhxhR+oHC4pjFvBHxbrOuJSKDK7w=;
+	s=korg; t=1768497790;
+	bh=+7/B4VWzhzzD1LXPcbUp8lwlaTysYpH6PmcijvkOz2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=a5lld4lwdeH65tncDJXTmByY+lRSrDj6ETjNJ3y4uE+2yWSGZKmF81eU7DAGb+wFF
-	 glVCSvnvspJUojiyWLak6r0vIBV/VuMrTERYVovkBRBWXaGUhCZwrjZonge+8Z3MZu
-	 SEg5BJKObTz9w+6/oYKuvLmiYGphbjTZGqvqgPy4=
+	b=WJMchSOYbma5ap00JPZVXDJ2Vb8e9ITedctyYR+QCSunpscnVqXKtkhl6p56rHS50
+	 xOA3MKr4osrfyTe7jp5qfOoQIjpPOJngfWGSrtmhd//OBvK5/3t6zuJJYUI/aTCS7U
+	 4UK4v1ogphC6wFDSCGcAqdw1UE8RgQmcWiBgz7jE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Philippe De Muyter <phdm@macqel.be>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Aiden Lambert <alambert48@gatech.edu>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 036/451] iio: imu: st_lsm6dsx: discard samples during filters settling time
+Subject: [PATCH 5.15 171/554] NFS: Avoid changing nlink when file removes and attribute updates race
 Date: Thu, 15 Jan 2026 17:43:57 +0100
-Message-ID: <20260115164232.198746807@linuxfoundation.org>
+Message-ID: <20260115164252.456055814@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,201 +60,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit db3c490503bee4d0611f9fc17fcd8cfe6fcdbcad ]
+[ Upstream commit bd4928ec799b31c492eb63f9f4a0c1e0bb4bb3f7 ]
 
-During digital filters settling time the driver is expected to drop
-samples since they can be corrupted. Introduce the capability to drop
-a given number of samples according to the configured ODR.
-Add sample_to_discard for LSM6DSM-like sensors since new generation
-devices (e.g. LSM6DSO) support DRDY mask where corrupted samples are
-masked in hw with values greather than 0x7ffd so the driver can easily
-discard them.
-I have not added sample_to_discard support for LSM6DS3 or LSM6DS3H since
-I do not have any sample for testing at the moment.
+If a file removal races with another operation that updates its
+attributes, then skip the change to nlink, and just mark the attributes
+as being stale.
 
-Reported-by: Philippe De Muyter <phdm@macqel.be>
-Tested-by: Philippe De Muyter <phdm@macqel.be>
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://lore.kernel.org/r/21dcd94935c147ef9b1da4984b3da6264ee9609e.1677496295.git.lorenzo@kernel.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: c6d702f2b771 ("iio: imu: st_lsm6dsx: Fix measurement unit for odr struct member")
+Reported-by: Aiden Lambert <alambert48@gatech.edu>
+Fixes: 59a707b0d42e ("NFS: Ensure we revalidate the inode correctly after remove or rename")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h       | 11 ++++
- .../iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c    | 57 ++++++++++++++++---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c  | 18 ++++++
- 3 files changed, 78 insertions(+), 8 deletions(-)
+ fs/nfs/dir.c | 19 +++++++++++++------
+ 1 file changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index b2202c5ad51e3..3c0ade6ab0d2e 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -119,6 +119,13 @@ struct st_lsm6dsx_odr_table_entry {
- 	int odr_len;
- };
- 
-+struct st_lsm6dsx_samples_to_discard {
-+	struct {
-+		u32 milli_hz;
-+		u16 samples;
-+	} val[ST_LSM6DSX_ODR_LIST_SIZE];
-+};
-+
- struct st_lsm6dsx_fs {
- 	u32 gain;
- 	u8 val;
-@@ -282,6 +289,7 @@ struct st_lsm6dsx_ext_dev_settings {
-  * @irq_config: interrupts related registers.
-  * @drdy_mask: register info for data-ready mask (addr + mask).
-  * @odr_table: Hw sensors odr table (Hz + val).
-+ * @samples_to_discard: Number of samples to discard for filters settling time.
-  * @fs_table: Hw sensors gain table (gain + val).
-  * @decimator: List of decimator register info (addr + mask).
-  * @batch: List of FIFO batching register info (addr + mask).
-@@ -315,6 +323,7 @@ struct st_lsm6dsx_settings {
- 	} irq_config;
- 	struct st_lsm6dsx_reg drdy_mask;
- 	struct st_lsm6dsx_odr_table_entry odr_table[2];
-+	struct st_lsm6dsx_samples_to_discard samples_to_discard[2];
- 	struct st_lsm6dsx_fs_table_entry fs_table[2];
- 	struct st_lsm6dsx_reg decimator[ST_LSM6DSX_ID_MAX];
- 	struct st_lsm6dsx_reg batch[2];
-@@ -336,6 +345,7 @@ enum st_lsm6dsx_fifo_mode {
-  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
-  * @gain: Configured sensor sensitivity.
-  * @odr: Output data rate of the sensor [Hz].
-+ * @samples_to_discard: Number of samples to discard for filters settling time.
-  * @watermark: Sensor watermark level.
-  * @decimator: Sensor decimation factor.
-  * @sip: Number of samples in a given pattern.
-@@ -350,6 +360,7 @@ struct st_lsm6dsx_sensor {
- 	u32 gain;
- 	u32 odr;
- 
-+	u16 samples_to_discard;
- 	u16 watermark;
- 	u8 decimator;
- 	u8 sip;
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-index 2ac08b8478968..29ee52c3036ba 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_buffer.c
-@@ -459,17 +459,31 @@ int st_lsm6dsx_read_fifo(struct st_lsm6dsx_hw *hw)
- 			}
- 
- 			if (gyro_sip > 0 && !(sip % gyro_sensor->decimator)) {
--				iio_push_to_buffers_with_timestamp(
--					hw->iio_devs[ST_LSM6DSX_ID_GYRO],
--					&hw->scan[ST_LSM6DSX_ID_GYRO],
--					gyro_sensor->ts_ref + ts);
-+				/*
-+				 * We need to discards gyro samples during
-+				 * filters settling time
-+				 */
-+				if (gyro_sensor->samples_to_discard > 0)
-+					gyro_sensor->samples_to_discard--;
-+				else
-+					iio_push_to_buffers_with_timestamp(
-+						hw->iio_devs[ST_LSM6DSX_ID_GYRO],
-+						&hw->scan[ST_LSM6DSX_ID_GYRO],
-+						gyro_sensor->ts_ref + ts);
- 				gyro_sip--;
- 			}
- 			if (acc_sip > 0 && !(sip % acc_sensor->decimator)) {
--				iio_push_to_buffers_with_timestamp(
--					hw->iio_devs[ST_LSM6DSX_ID_ACC],
--					&hw->scan[ST_LSM6DSX_ID_ACC],
--					acc_sensor->ts_ref + ts);
-+				/*
-+				 * We need to discards accel samples during
-+				 * filters settling time
-+				 */
-+				if (acc_sensor->samples_to_discard > 0)
-+					acc_sensor->samples_to_discard--;
-+				else
-+					iio_push_to_buffers_with_timestamp(
-+						hw->iio_devs[ST_LSM6DSX_ID_ACC],
-+						&hw->scan[ST_LSM6DSX_ID_ACC],
-+						acc_sensor->ts_ref + ts);
- 				acc_sip--;
- 			}
- 			if (ext_sip > 0 && !(sip % ext_sensor->decimator)) {
-@@ -659,6 +673,30 @@ int st_lsm6dsx_flush_fifo(struct st_lsm6dsx_hw *hw)
- 	return err;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 671b427b7b97a..2a325a79327bc 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1714,13 +1714,15 @@ static int nfs_dentry_delete(const struct dentry *dentry)
  }
  
-+static void
-+st_lsm6dsx_update_samples_to_discard(struct st_lsm6dsx_sensor *sensor)
-+{
-+	const struct st_lsm6dsx_samples_to_discard *data;
-+	struct st_lsm6dsx_hw *hw = sensor->hw;
-+	int i;
-+
-+	if (sensor->id != ST_LSM6DSX_ID_GYRO &&
-+	    sensor->id != ST_LSM6DSX_ID_ACC)
-+		return;
-+
-+	/* check if drdy mask is supported in hw */
-+	if (hw->settings->drdy_mask.addr)
-+		return;
-+
-+	data = &hw->settings->samples_to_discard[sensor->id];
-+	for (i = 0; i < ST_LSM6DSX_ODR_LIST_SIZE; i++) {
-+		if (data->val[i].milli_hz == sensor->odr) {
-+			sensor->samples_to_discard = data->val[i].samples;
-+			return;
-+		}
-+	}
-+}
-+
- int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
+ /* Ensure that we revalidate inode->i_nlink */
+-static void nfs_drop_nlink(struct inode *inode)
++static void nfs_drop_nlink(struct inode *inode, unsigned long gencount)
  {
- 	struct st_lsm6dsx_hw *hw = sensor->hw;
-@@ -678,6 +716,9 @@ int st_lsm6dsx_update_fifo(struct st_lsm6dsx_sensor *sensor, bool enable)
- 			goto out;
- 	}
- 
-+	if (enable)
-+		st_lsm6dsx_update_samples_to_discard(sensor);
++	struct nfs_inode *nfsi = NFS_I(inode);
 +
- 	err = st_lsm6dsx_device_set_enable(sensor, enable);
- 	if (err < 0)
- 		goto out;
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-index ce06ef7d80ee1..9ee1b29cfc27d 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx_core.c
-@@ -618,6 +618,24 @@ static const struct st_lsm6dsx_settings st_lsm6dsx_sensor_settings[] = {
- 				.fs_len = 4,
- 			},
- 		},
-+		.samples_to_discard = {
-+			[ST_LSM6DSX_ID_ACC] = {
-+				.val[0] = {  12500, 1 },
-+				.val[1] = {  26000, 1 },
-+				.val[2] = {  52000, 1 },
-+				.val[3] = { 104000, 2 },
-+				.val[4] = { 208000, 2 },
-+				.val[5] = { 416000, 2 },
-+			},
-+			[ST_LSM6DSX_ID_GYRO] = {
-+				.val[0] = {  12500,  2 },
-+				.val[1] = {  26000,  5 },
-+				.val[2] = {  52000,  7 },
-+				.val[3] = { 104000, 12 },
-+				.val[4] = { 208000, 20 },
-+				.val[5] = { 416000, 36 },
-+			},
-+		},
- 		.irq_config = {
- 			.irq1 = {
- 				.addr = 0x0d,
+ 	spin_lock(&inode->i_lock);
+ 	/* drop the inode if we're reasonably sure this is the last link */
+-	if (inode->i_nlink > 0)
++	if (inode->i_nlink > 0 && gencount == nfsi->attr_gencount)
+ 		drop_nlink(inode);
+-	NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
++	nfsi->attr_gencount = nfs_inc_attr_generation_counter();
+ 	nfs_set_cache_invalid(
+ 		inode, NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
+ 			       NFS_INO_INVALID_NLINK);
+@@ -1738,8 +1740,9 @@ static void nfs_dentry_iput(struct dentry *dentry, struct inode *inode)
+ 		nfs_set_cache_invalid(inode, NFS_INO_INVALID_DATA);
+ 
+ 	if (dentry->d_flags & DCACHE_NFSFS_RENAMED) {
++		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
+ 		nfs_complete_unlink(dentry, inode);
+-		nfs_drop_nlink(inode);
++		nfs_drop_nlink(inode, gencount);
+ 	}
+ 	iput(inode);
+ }
+@@ -2281,9 +2284,11 @@ static int nfs_safe_remove(struct dentry *dentry)
+ 
+ 	trace_nfs_remove_enter(dir, dentry);
+ 	if (inode != NULL) {
++		unsigned long gencount = READ_ONCE(NFS_I(inode)->attr_gencount);
++
+ 		error = NFS_PROTO(dir)->remove(dir, dentry);
+ 		if (error == 0)
+-			nfs_drop_nlink(inode);
++			nfs_drop_nlink(inode, gencount);
+ 	} else
+ 		error = NFS_PROTO(dir)->remove(dir, dentry);
+ 	if (error == -ENOENT)
+@@ -2475,6 +2480,7 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ {
+ 	struct inode *old_inode = d_inode(old_dentry);
+ 	struct inode *new_inode = d_inode(new_dentry);
++	unsigned long new_gencount = 0;
+ 	struct dentry *dentry = NULL;
+ 	struct rpc_task *task;
+ 	bool must_unblock = false;
+@@ -2532,6 +2538,7 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ 		} else {
+ 			new_dentry->d_fsdata = NFS_FSDATA_BLOCKED;
+ 			must_unblock = true;
++			new_gencount = NFS_I(new_inode)->attr_gencount;
+ 			spin_unlock(&new_dentry->d_lock);
+ 		}
+ 
+@@ -2568,7 +2575,7 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ 			new_dir, new_dentry, error);
+ 	if (!error) {
+ 		if (new_inode != NULL)
+-			nfs_drop_nlink(new_inode);
++			nfs_drop_nlink(new_inode, new_gencount);
+ 		/*
+ 		 * The d_move() should be here instead of in an async RPC completion
+ 		 * handler because we need the proper locks to move the dentry.  If
 -- 
 2.51.0
 
