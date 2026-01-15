@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209111-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E23FDD26877
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D72C4D2782F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 86C59305C639
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0E9223239AE1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8A0239B48E;
-	Thu, 15 Jan 2026 17:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3C052D94A7;
+	Thu, 15 Jan 2026 17:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MZrMTGF4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ko1fK2d8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8D10A2D73B4;
-	Thu, 15 Jan 2026 17:22:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 72DB42D541B;
+	Thu, 15 Jan 2026 17:44:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497764; cv=none; b=a4xmlylQuZb3DumEooX1Hm8Fsq6K37ri0nqbijlqV9s4oL/ceGQME+/doCzoL3KBrKfBCK0SKCNLxFxF4W67cJgrM+REIEOb9VO/wF6W2bchjn+gjRjYfOmf6pTTMog0aFgSq5WQBwVZ6hF1WgbvmQKDlBjpB447g/e0q1/vliw=
+	t=1768499058; cv=none; b=l/5d9wdpxtGw4oIKHtDxoCWDH2p0ddUQkiyvLSe3MHCbUv5YRYIWlDnmyQVmlcebj3KT1uyUeLgBUpFRA51uqc+3vGn/t98tkZXsM+k5DjnX7mJN435y5yyl5jd2RVvMNV9z7P/DULkxvV++xEPCBJtVv9UW1aRfVN2Hj7CkY3Q=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497764; c=relaxed/simple;
-	bh=geKlD3RBHy+kK1nhp65DuO37yFzg6aP0tw0S4m+Uz64=;
+	s=arc-20240116; t=1768499058; c=relaxed/simple;
+	bh=GiikNS5HFxPTEXcIL5KQbaP+ax6+g8vvUdXZoPF/Iog=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=kYoDDUecSgjcd3aqIhCDEBgH2SQFwyZaIkV303Jm7CjPvXd2hfNqZsThUO3IZsMPPbbEfHD9dVTGStbH+z55jPxlhdxYIjQ5IVCI5X+tJWvUBxSMq5/wOSvo49+xbT1WH/BDGIAJ5cIFEUM7nLPSi73jtzyZfWeh1HxFMrNI0oI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MZrMTGF4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1828FC116D0;
-	Thu, 15 Jan 2026 17:22:43 +0000 (UTC)
+	 MIME-Version; b=X/d/L6pIsm5SdSKPhLo8ItfNDQtVq0FjVAY/sfAQhP54ZWB+OHUz3epnBwg6F5z9kMgETxCBA/dHj3WNiRjsTEV3tW8nc8qZMO7Pe8JusLsVdyl9fbF0ghQe8Vbd8HYpbFa9EwqnoN+v1gOGTxkQhgqsyUDWGHKIjNbSyeInCfc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ko1fK2d8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0073AC116D0;
+	Thu, 15 Jan 2026 17:44:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497764;
-	bh=geKlD3RBHy+kK1nhp65DuO37yFzg6aP0tw0S4m+Uz64=;
+	s=korg; t=1768499058;
+	bh=GiikNS5HFxPTEXcIL5KQbaP+ax6+g8vvUdXZoPF/Iog=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MZrMTGF4duBGfguKjDXFd0aRsd/lQ4NzSPpLVbIEU6sT1Nhm3pgS0MQ5aC09lRkK+
-	 zOErpkSoPIt/3lBbGbPCzXc74g+or0SSy4+SrKSEnkHIkRzUAF0CHB5Ur2X2wJoa1m
-	 L5hWRxujF9V0xg4wHqstoQRq7n1oGJfU6HlykcGY=
+	b=ko1fK2d8//giDfW5OVCRCJLrOjvXAj6aspQgFu1Nrbw/LXoF5Iojt/EN8NZn5Zfhz
+	 vEh5ZThZkDLeEWb/jlA83ic2r0oooW3qWgRMSNxny9IZafuws4zIGG0fTI2B59cI55
+	 zxySkK4PKaP7qk0Ij3yseW1XPM1qDpGwCyiMv7UE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Gabor Juhos <j4g8y7@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 195/554] efi/cper: Adjust infopfx size to accept an extra space
+Subject: [PATCH 5.10 060/451] regulator: core: disable supply if enabling main regulator fails
 Date: Thu, 15 Jan 2026 17:44:21 +0100
-Message-ID: <20260115164253.316900460@linuxfoundation.org>
+Message-ID: <20260115164233.069398121@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +58,82 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Gabor Juhos <j4g8y7@gmail.com>
 
-[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
+[ Upstream commit fb1ebb10468da414d57153ddebaab29c38ef1a78 ]
 
-Compiling with W=1 with werror enabled produces an error:
+For 'always-on' and 'boot-on' regulators, the set_machine_constraints()
+may enable supply before enabling the main regulator, however if the
+latter fails, the function returns with an error but the supply remains
+enabled.
 
-drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
-drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                                                                ^
-drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+When this happens, the regulator_register() function continues on the
+error path where it puts the supply regulator. Since enabling the supply
+is not balanced with a disable call, a warning similar to the following
+gets issued from _regulator_put():
 
-As the logic there adds an space at the end of infopx buffer.
-Add an extra space to avoid such warning.
+    [    1.603889] WARNING: CPU: 2 PID: 44 at _regulator_put+0x8c/0xa0
+    [    1.603908] Modules linked in:
+    [    1.603926] CPU: 2 UID: 0 PID: 44 Comm: kworker/u16:3 Not tainted 6.18.0-rc4 #0 NONE
+    [    1.603938] Hardware name: Qualcomm Technologies, Inc. IPQ9574/AP-AL02-C7 (DT)
+    [    1.603945] Workqueue: async async_run_entry_fn
+    [    1.603958] pstate: 60400005 (nZCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+    [    1.603967] pc : _regulator_put+0x8c/0xa0
+    [    1.603976] lr : _regulator_put+0x7c/0xa0
+    ...
+    [    1.604140] Call trace:
+    [    1.604145]  _regulator_put+0x8c/0xa0 (P)
+    [    1.604156]  regulator_register+0x2ec/0xbf0
+    [    1.604166]  devm_regulator_register+0x60/0xb0
+    [    1.604178]  rpm_reg_probe+0x120/0x208
+    [    1.604187]  platform_probe+0x64/0xa8
+    ...
 
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+In order to avoid this, change the set_machine_constraints() function to
+disable the supply if enabling the main regulator fails.
+
+Fixes: 05f224ca6693 ("regulator: core: Clean enabling always-on regulators + their supplies")
+Signed-off-by: Gabor Juhos <j4g8y7@gmail.com>
+Link: https://patch.msgid.link/20251107-regulator-disable-supply-v1-1-c95f0536f1b5@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/efi/cper-arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 36d3b8b9da47e..f4b7a48327fbb 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -241,7 +241,7 @@ void cper_print_proc_arm(const char *pfx,
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
--	char newpfx[64], infopfx[64];
-+	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index b2d866d606512..7abc839a67c2d 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1495,6 +1495,8 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 	 * and we have control then make sure it is enabled.
+ 	 */
+ 	if (rdev->constraints->always_on || rdev->constraints->boot_on) {
++		bool supply_enabled = false;
++
+ 		/* If we want to enable this regulator, make sure that we know
+ 		 * the supplying regulator.
+ 		 */
+@@ -1514,11 +1516,14 @@ static int set_machine_constraints(struct regulator_dev *rdev)
+ 				rdev->supply = NULL;
+ 				return ret;
+ 			}
++			supply_enabled = true;
+ 		}
  
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
+ 		ret = _regulator_do_enable(rdev);
+ 		if (ret < 0 && ret != -EINVAL) {
+ 			rdev_err(rdev, "failed to enable: %pe\n", ERR_PTR(ret));
++			if (supply_enabled)
++				regulator_disable(rdev->supply);
+ 			return ret;
+ 		}
  
 -- 
 2.51.0
