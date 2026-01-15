@@ -1,125 +1,252 @@
-Return-Path: <stable+bounces-209965-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209966-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 351BED28F71
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 23:14:54 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 02334D28FBA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 23:20:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E0CFC30145BF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 22:14:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBCD6301584A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 22:20:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A04A3168EB;
-	Thu, 15 Jan 2026 22:14:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A412B2C15B8;
+	Thu, 15 Jan 2026 22:19:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="HZclqijV"
+	dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b="TKKLZYHW"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-dl1-f46.google.com (mail-dl1-f46.google.com [74.125.82.46])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80148328638
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 22:14:50 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.82.46
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C0842E2665;
+	Thu, 15 Jan 2026 22:19:59 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768515291; cv=none; b=lKqTMcBfNOQ8H1daaYg16BrnpT1232pVZvcJaiYAHsaaBiXLwHrV0H9Umjvrimgh4wkA+qBJkHMY8LuofJuP+91m5PCdSkkgDuXt83mf1n4YbbHSIyDtzu3AZduLg5u193+w28zcbfzndRs8heTupZp+BMOQ37h8AxvzaG3q/bw=
+	t=1768515599; cv=none; b=iCJ+yFH1RXX9IH0RcALePFcqD5UwV8l3UHkUtBAfDAfs00Wy/WhPzZar7gpnXnayD96YIQOONYDKQut4n/0gZ7+bb5IXlJSOqa7i/7M0p9cksWTELfXOw/6svU5qjcIx53tndutTodIaiFGds0KcMO3a/52N3qGoBdhh5FQmTIU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768515291; c=relaxed/simple;
-	bh=vYqybl/OXg4s7EVnnOq0Ov2iN5/Y0nfO6XmXgwJCpD4=;
-	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LpTLwKgZGajAuH+5OGlVFywRpM2ZJv0A8Tj2LzNWVYdwo0IZZgJoteKbmXgHm8Xj9cWXXkBj1j4whSUtBEaz1ZQLAdtzPzAusJuoujTpxlWCLJ5laiyCcu+vd92rbBLm4/OPu6TYpOHARJNvInEI4XPsYg2mjrPvIZppwA6Cz6E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=HZclqijV; arc=none smtp.client-ip=74.125.82.46
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-dl1-f46.google.com with SMTP id a92af1059eb24-121a0bcd364so1824817c88.0
-        for <stable@vger.kernel.org>; Thu, 15 Jan 2026 14:14:50 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768515290; x=1769120090; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WpivhtXYXF+CbF7riMiVosJzkbcZY0t+v9F4mqZiLjU=;
-        b=HZclqijVduRzp4lMfCF6HqKpumSp/MVLvvGdnTt8QIED/jhhMRzQzwvGcrI+C55znZ
-         ERNcRp5hJ2EiSu6K/ccJkf4YB7iAWOiyqA9Wn8aiQzAIWULAEs8br1jzw4T/D6L9ckPW
-         5n8OxhC02GIoiMp1PEWrbpcTQW9tQxSE7D8AdO7z62wpL8RXrg042M1kQdba3xbJaPw+
-         Zk3fXmmarETnjEiCrsyTAx2KGMCu+hU64zE5vGl2KFKzqrlSrpyvZvELBtBF1pJTZ14Y
-         9jQnTRewxiQLsx0m0mtamVhIvvFr+KIyo5fl+mU3Ndkhr4735tcQoMT43z/geGtdpSRe
-         2Bcg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768515290; x=1769120090;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-gg:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=WpivhtXYXF+CbF7riMiVosJzkbcZY0t+v9F4mqZiLjU=;
-        b=GpK7yKJRWj7d6E7rGyB87o0ZaXushApIEyX2ImY9RcCtj3bVITdpLEQjB/QKS7qQOi
-         2g6dba427MrBB2HY1wbLLZtYt02uEKjhaChjK4VVUam17bjRhfnVXcWFKvQ0emJ5eP++
-         /SMdGjTO6Wc+MSH5+LHC1YcR+iK5vMPZ0j1lp07mOTRfzOj9kqeCvL4A3gp415RC0cfv
-         jUO2msB4Qle0k9AUMwXN3o+KUZc0ZKGiTaj8YR/BYq//GMVNVjUCXCM28FnJgYWtHRnY
-         ZOjYTNOG0zjM59Tp/j9kEzbrGxLU2IhbNcZBWtvTrvazSzbW5iSfewYlYcPC8FntEr7H
-         nbUQ==
-X-Forwarded-Encrypted: i=1; AJvYcCUGdb+r7YOqSJl1sj92SiwO7JEiBwWJuu+TLUls2xKXsX1vqavTQTf/V5W1CFhhnoxRtYbY430=@vger.kernel.org
-X-Gm-Message-State: AOJu0YwUrkZ/Wa5VQbuIB/YKUqRcf3NDD2enGrARq6jXD484+susVpan
-	XQfzX9JjwaAkBab5nN+clIJyCIfx6/OjSVN6HOX7sF0zkktqnIkDz/En
-X-Gm-Gg: AY/fxX5KNDEJL7En10YoxbFu4+TWBx4iewjxxJMQVtBj/r/JB6aocbS3jC07ZtKsyqz
-	+iM05IEyyX0sTwhmAHFW0G+uFfFkWFiG9j9wX7WyCmvoiEUfHfXdzPlOglYCWftEPSCkY5AQYLV
-	TXhBP4EcupQ7zgJrVan0FzKs6jEB3vlulNhHKWPy6xtTW+m1dmPRptv6AL6vdT/xo0fogq22gMd
-	TfkZ8DdrB9qLAgW8KspboFEvQ8HSVInUF0GMQ5VRxgfX+3V0O1Luu/Ap835lX0vRf5kY7dmJmzJ
-	d2S4la1oCobCpP8wpoUwnIjRbJNetl36TaPinav0bb6sDwKMeZZpfz7hOB5s3ClNpWakDjNyju+
-	1kz3MBPiv593dupu1Vfxggzjw7/JJC6V+tW/BansH+hPWAJuK4XL3N/yE+KbgLLjEJvCVeL5oY/
-	Pae7SdG47zP37LHUQNmfCk0W1kaJ3ErNHSOkruSg==
-X-Received: by 2002:a05:7022:6085:b0:11e:395:7dfc with SMTP id a92af1059eb24-1244a766f7amr1197969c88.28.1768515289267;
-        Thu, 15 Jan 2026 14:14:49 -0800 (PST)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.gmail.com with ESMTPSA id a92af1059eb24-1244ad72063sm841918c88.6.2026.01.15.14.14.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 15 Jan 2026 14:14:48 -0800 (PST)
-Message-ID: <4fcad9db-9dad-4fa1-9d6c-b60e253d73a6@gmail.com>
-Date: Thu, 15 Jan 2026 14:14:46 -0800
+	s=arc-20240116; t=1768515599; c=relaxed/simple;
+	bh=rZRKBVdSUbBIz4w2GaUZcvrdQ1DBvEzgJd90WndafrY=;
+	h=Date:To:From:Subject:Message-Id; b=JDEFI7DrWuPb3+b4TPWlSZNhwn4+/Y3kNLT1uuuqsX7VCKRTp2tX+hYV7c/Co8dKsJWsbD0vHTY9NMDFHJzDHecElgp/YIAKXOmwFgEl4Qgs2k2wPZNg1jj2RabPDn7+/YUmX78SLA8EqB0boSxytrxyR0T8S2ST2QK7dSKoEJY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linux-foundation.org header.i=@linux-foundation.org header.b=TKKLZYHW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8765C116D0;
+	Thu, 15 Jan 2026 22:19:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+	s=korg; t=1768515598;
+	bh=rZRKBVdSUbBIz4w2GaUZcvrdQ1DBvEzgJd90WndafrY=;
+	h=Date:To:From:Subject:From;
+	b=TKKLZYHWrBqJM+tMR1qymchssQXhbq3lynKW7GtRGELpDK5kSaP1PEF4v93COSj2I
+	 ZjSaZ1xw3/z1UPHckAVY4zp6qq0FkcR3LCHvckS/0BTAyBlVxe3WiNELN5Zzc9Adkd
+	 2YMrHtJJpuueR4XdpKbZeQhFdLkM6MJeXx4Qk5mg=
+Date: Thu, 15 Jan 2026 14:19:57 -0800
+To: mm-commits@vger.kernel.org,willy@infradead.org,william.roche@oracle.com,surenb@google.com,stable@vger.kernel.org,rppt@kernel.org,rientjes@google.com,osalvador@suse.de,nao.horiguchi@gmail.com,muchun.song@linux.dev,mhocko@suse.com,lorenzo.stoakes@oracle.com,linmiaohe@huawei.com,liam.howlett@oracle.com,jiaqiyan@google.com,david@kernel.org,jane.chu@oracle.com,akpm@linux-foundation.org
+From: Andrew Morton <akpm@linux-foundation.org>
+Subject: [to-be-updated] mm-memory-failure-fix-missing-mf_stats-count-in-hugetlb-poison.patch removed from -mm tree
+Message-Id: <20260115221958.C8765C116D0@smtp.kernel.org>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 6.1 00/72] 6.1.161-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>, stable@vger.kernel.org
-Cc: patches@lists.linux.dev, linux-kernel@vger.kernel.org,
- torvalds@linux-foundation.org, akpm@linux-foundation.org,
- linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
- lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
- sudipm.mukherjee@gmail.com, rwarsow@gmx.de, conor@kernel.org,
- hargar@microsoft.com, broonie@kernel.org, achill@achill.org,
- sr@sladewatkins.com
-References: <20260115164143.482647486@linuxfoundation.org>
-Content-Language: en-US, fr-FR
-From: Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
 
-On 1/15/26 08:48, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.161 release.
-> There are 72 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 17 Jan 2026 16:41:26 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.161-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+The quilt patch titled
+     Subject: mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+has been removed from the -mm tree.  Its filename was
+     mm-memory-failure-fix-missing-mf_stats-count-in-hugetlb-poison.patch
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
+This patch was dropped because an updated version will be issued
+
+------------------------------------------------------
+From: Jane Chu <jane.chu@oracle.com>
+Subject: mm/memory-failure: fix missing ->mf_stats count in hugetlb poison
+Date: Tue, 13 Jan 2026 01:07:50 -0700
+
+When a newly poisoned subpage ends up in an already poisoned hugetlb
+folio, 'num_poisoned_pages' is incremented, but the per node ->mf_stats is
+not.  Fix the inconsistency by designating action_result() to update them
+both.
+
+While at it, define __get_huge_page_for_hwpoison() return values in terms
+of symbol names for better readibility.  Also rename
+folio_set_hugetlb_hwpoison() to hugetlb_update_hwpoison() since the
+function does more than the conventional bit setting and the fact three
+possible return values are expected.
+
+Link: https://lkml.kernel.org/r/20260113080751.2173497-1-jane.chu@oracle.com
+Fixes: 18f41fa616ee ("mm: memory-failure: bump memory failure stats to pglist_data")
+Signed-off-by: Jane Chu <jane.chu@oracle.com>
+Cc: David Hildenbrand <david@kernel.org>
+Cc: David Rientjes <rientjes@google.com>
+Cc: Jiaqi Yan <jiaqiyan@google.com>
+Cc: Liam Howlett <liam.howlett@oracle.com>
+Cc: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Cc: Miaohe Lin <linmiaohe@huawei.com>
+Cc: Michal Hocko <mhocko@suse.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: Muchun Song <muchun.song@linux.dev>
+Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
+Cc: Oscar Salvador <osalvador@suse.de>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: William Roche <william.roche@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/memory-failure.c |   75 +++++++++++++++++++++++++-----------------
+ 1 file changed, 45 insertions(+), 30 deletions(-)
+
+--- a/mm/memory-failure.c~mm-memory-failure-fix-missing-mf_stats-count-in-hugetlb-poison
++++ a/mm/memory-failure.c
+@@ -1883,12 +1883,24 @@ static unsigned long __folio_free_raw_hw
+ 	return count;
+ }
+ 
+-static int folio_set_hugetlb_hwpoison(struct folio *folio, struct page *page)
++#define	MF_HUGETLB_FOLIO_PRE_POISONED	3  /* folio already poisoned */
++#define	MF_HUGETLB_PAGE_PRE_POISON	4  /* exact page already poisoned */
++/*
++ * Set hugetlb folio as hwpoisoned, update folio private raw hwpoison list
++ * to keep track of the poisoned pages.
++ * Return:
++ *	0: folio was not already poisoned;
++ *	MF_HUGETLB_FOLIO_PRE_POISONED: folio was already poisoned: either
++ *		multiple pages being poisoned, or per page information unclear,
++ *	MF_HUGETLB_PAGE_PRE_POISON: folio was already poisoned, an exact
++ *		poisoned page is being consumed again.
++ */
++static int hugetlb_update_hwpoison(struct folio *folio, struct page *page)
+ {
+ 	struct llist_head *head;
+ 	struct raw_hwp_page *raw_hwp;
+ 	struct raw_hwp_page *p;
+-	int ret = folio_test_set_hwpoison(folio) ? -EHWPOISON : 0;
++	int ret = folio_test_set_hwpoison(folio) ? MF_HUGETLB_FOLIO_PRE_POISONED : 0;
+ 
+ 	/*
+ 	 * Once the hwpoison hugepage has lost reliable raw error info,
+@@ -1896,20 +1908,17 @@ static int folio_set_hugetlb_hwpoison(st
+ 	 * so skip to add additional raw error info.
+ 	 */
+ 	if (folio_test_hugetlb_raw_hwp_unreliable(folio))
+-		return -EHWPOISON;
++		return MF_HUGETLB_FOLIO_PRE_POISONED;
+ 	head = raw_hwp_list_head(folio);
+ 	llist_for_each_entry(p, head->first, node) {
+ 		if (p->page == page)
+-			return -EHWPOISON;
++			return MF_HUGETLB_PAGE_PRE_POISON;
+ 	}
+ 
+ 	raw_hwp = kmalloc(sizeof(struct raw_hwp_page), GFP_ATOMIC);
+ 	if (raw_hwp) {
+ 		raw_hwp->page = page;
+ 		llist_add(&raw_hwp->node, head);
+-		/* the first error event will be counted in action_result(). */
+-		if (ret)
+-			num_poisoned_pages_inc(page_to_pfn(page));
+ 	} else {
+ 		/*
+ 		 * Failed to save raw error info.  We no longer trace all
+@@ -1955,44 +1964,43 @@ void folio_clear_hugetlb_hwpoison(struct
+ 	folio_free_raw_hwp(folio, true);
+ }
+ 
++#define	MF_HUGETLB_FREED		0	/* freed hugepage */
++#define	MF_HUGETLB_IN_USED		1	/* in-use hugepage */
+ /*
+  * Called from hugetlb code with hugetlb_lock held.
+- *
+- * Return values:
+- *   0             - free hugepage
+- *   1             - in-use hugepage
+- *   2             - not a hugepage
+- *   -EBUSY        - the hugepage is busy (try to retry)
+- *   -EHWPOISON    - the hugepage is already hwpoisoned
+  */
+ int __get_huge_page_for_hwpoison(unsigned long pfn, int flags,
+ 				 bool *migratable_cleared)
+ {
+ 	struct page *page = pfn_to_page(pfn);
+ 	struct folio *folio = page_folio(page);
+-	int ret = 2;	/* fallback to normal page handling */
++	int ret = -EINVAL;
+ 	bool count_increased = false;
++	int rc;
+ 
+ 	if (!folio_test_hugetlb(folio))
+ 		goto out;
+ 
+ 	if (flags & MF_COUNT_INCREASED) {
+-		ret = 1;
++		ret = MF_HUGETLB_IN_USED;
+ 		count_increased = true;
+ 	} else if (folio_test_hugetlb_freed(folio)) {
+-		ret = 0;
++		ret = MF_HUGETLB_FREED;
+ 	} else if (folio_test_hugetlb_migratable(folio)) {
+-		ret = folio_try_get(folio);
+-		if (ret)
++		if (folio_try_get(folio)) {
++			ret = MF_HUGETLB_IN_USED;
+ 			count_increased = true;
++		} else
++			ret = MF_HUGETLB_FREED;
+ 	} else {
+ 		ret = -EBUSY;
+ 		if (!(flags & MF_NO_RETRY))
+ 			goto out;
+ 	}
+ 
+-	if (folio_set_hugetlb_hwpoison(folio, page)) {
+-		ret = -EHWPOISON;
++	rc = hugetlb_update_hwpoison(folio, page);
++	if (rc >= MF_HUGETLB_FOLIO_PRE_POISONED) {
++		ret = rc;
+ 		goto out;
+ 	}
+ 
+@@ -2029,22 +2037,29 @@ static int try_memory_failure_hugetlb(un
+ 	*hugetlb = 1;
+ retry:
+ 	res = get_huge_page_for_hwpoison(pfn, flags, &migratable_cleared);
+-	if (res == 2) { /* fallback to normal page handling */
++	switch (res) {
++	case -EINVAL:	/* fallback to normal page handling */
+ 		*hugetlb = 0;
+ 		return 0;
+-	} else if (res == -EHWPOISON) {
+-		if (flags & MF_ACTION_REQUIRED) {
+-			folio = page_folio(p);
+-			res = kill_accessing_process(current, folio_pfn(folio), flags);
+-		}
+-		action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
+-		return res;
+-	} else if (res == -EBUSY) {
++	case -EBUSY:
+ 		if (!(flags & MF_NO_RETRY)) {
+ 			flags |= MF_NO_RETRY;
+ 			goto retry;
+ 		}
+ 		return action_result(pfn, MF_MSG_GET_HWPOISON, MF_IGNORED);
++	case MF_HUGETLB_FOLIO_PRE_POISONED:
++	case MF_HUGETLB_PAGE_PRE_POISON:
++		if (flags & MF_ACTION_REQUIRED) {
++			folio = page_folio(p);
++			res = kill_accessing_process(current, folio_pfn(folio), flags);
++		}
++		if (res == MF_HUGETLB_FOLIO_PRE_POISONED)
++			action_result(pfn, MF_MSG_ALREADY_POISONED, MF_FAILED);
++		else
++			action_result(pfn, MF_MSG_HUGE, MF_FAILED);
++		return res;
++	default:
++		break;
+ 	}
+ 
+ 	folio = page_folio(p);
+_
+
+Patches currently in -mm which might be from jane.chu@oracle.com are
+
+mm-memory-failure-teach-kill_accessing_process-to-accept-hugetlb-tail-page-pfn.patch
+
 
