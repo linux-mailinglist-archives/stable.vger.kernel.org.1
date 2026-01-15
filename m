@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-208823-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208885-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C766D2670F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:50 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F481D26447
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F0DB931144B4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 75D25303606C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D0B3BC4F3;
-	Thu, 15 Jan 2026 17:09:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A53BF305;
+	Thu, 15 Jan 2026 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RS9LABw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbuEDlwl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479EB3BC4E8;
-	Thu, 15 Jan 2026 17:09:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2DF3BF2FD;
+	Thu, 15 Jan 2026 17:12:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496944; cv=none; b=bVqfMmX1Trh+oBMhhhnfud+GIK4ZrOWN5AAWtfRkSxwlRstJGhRe1BdxptYs8HUthmghmF1+2R4Udqhi4/vyjxgSrFaNioQ+7S8HEIIcNV9nUQbSITliruEfPFDRqUk/7CQ6K/pkuf2rLi1NPTj9inf0E3bC9hS7O2yxRX2KMzE=
+	t=1768497120; cv=none; b=ebYwg3vuv/J/K1NDBeOYQdm3NFA/Gmv41SB6JYPSiccncwVLL35TWWDXlk9fMrOagNyh2B/BGnTQH/KHKMfLVKVjJXlFX1iy09ktCS+u0RmDRKh7OJb5x09HdnAyyv65rkKYx1qWKuKU3H8YcCLo63Cqq5fFG9eYm/mCerADjKc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496944; c=relaxed/simple;
-	bh=EsAjLs8+AcxeR59+z6Xnnzfefn3fr1aV/FdTG1VkIm0=;
+	s=arc-20240116; t=1768497120; c=relaxed/simple;
+	bh=VposaqrpJo+TSPtl9DHlWRGCWeRo3r1lv1DS5n+WIFA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=k+H4y+yciqZVwIMqoJfFYLPAFU4pyTYyMhdLXpbrQioZBSWeW+wqNrhKSO/oRD/VAfTIAzGmqG8iUhJGkeZIkq08ayo/YaWN9y/JJXA/cvMMO2nzFvAof5gXscdqoAb2ch9PukQIU+lV4pw340NOEGgEMGkRc0rgb9A/tA/IMEk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RS9LABw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1FAC16AAE;
-	Thu, 15 Jan 2026 17:09:03 +0000 (UTC)
+	 MIME-Version; b=VyZcTowhEhtHhkmiZUWfSnbF+T4cVt6LACh/d3HsCCat+xiS0R1nX4tYoXMTly/Org1c2iFxY94Posm2gJi6gdPxeCpCE8z2oKKcnoo8jTSD3ef1zJUYxo5LwXbIJKkFJzFjwq8gEm6o5v48urJZxd+rfJS1CoCNvuhveOtliq0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbuEDlwl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C5EC19423;
+	Thu, 15 Jan 2026 17:12:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496943;
-	bh=EsAjLs8+AcxeR59+z6Xnnzfefn3fr1aV/FdTG1VkIm0=;
+	s=korg; t=1768497120;
+	bh=VposaqrpJo+TSPtl9DHlWRGCWeRo3r1lv1DS5n+WIFA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2RS9LABws9L1S4nTEwJSBryNHwbge5LvSzlj+Of8yX/aE1xOIoBT759w1oiyuSBK7
-	 0BhcZ61Q2NJ602L6C0Xpx12lM8+q3f3yL3xElvmNlSaUJ5NsfWJCInPjSfFKZCS9vn
-	 vzzervJtNLpzz1HsOeeCzYYsjGGEOoumkryoGe18=
+	b=AbuEDlwllV5Ogoa4HFMT70eZr/caAl5yKTZDUagxTX3Xng53zRM2NUkUvZ2X7woHt
+	 2a8l4PBGchUaYloYoqwOZ9iZyTTGiYiYrFF9Fot6cNaAb5SJ0sIx9SDCjflTQQkq/0
+	 qeroAslLlBnqB2w1pwFy9nMaBLyQCuG+rnVGuF8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mike Snitzer <snitzer@kernel.org>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Anna Schumaker <anna.schumaker@oracle.com>,
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 69/88] nfs_common: factor out nfs_errtbl and nfs_stat_to_errno
-Date: Thu, 15 Jan 2026 17:48:52 +0100
-Message-ID: <20260115164148.811084700@linuxfoundation.org>
+Subject: [PATCH 6.1 43/72] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
+Date: Thu, 15 Jan 2026 17:48:53 +0100
+Message-ID: <20260115164145.056413568@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,533 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mike Snitzer <snitzer@kernel.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 4806ded4c14c5e8fdc6ce885d83221a78c06a428 ]
+[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
 
-Common nfs_stat_to_errno() is used by both fs/nfs/nfs2xdr.c and
-fs/nfs/nfs3xdr.c
+Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+allocated memory for pp_qlt in ipc_mux_init() but did not free it in
+ipc_mux_deinit(). This results in a memory leak when the driver is
+unloaded.
 
-Will also be used by fs/nfsd/localio.c
+Free the allocated memory in ipc_mux_deinit() to fix the leak.
 
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
-Stable-dep-of: c6c209ceb87f ("NFSD: Remove NFSERR_EAGAIN")
+Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/Kconfig             |    1 
- fs/nfs/nfs2xdr.c           |   70 -----------------------------
- fs/nfs/nfs3xdr.c           |  108 ++++++++-------------------------------------
- fs/nfs/nfs4xdr.c           |    4 -
- fs/nfs_common/Makefile     |    2 
- fs/nfs_common/common.c     |   67 +++++++++++++++++++++++++++
- fs/nfsd/Kconfig            |    1 
- include/linux/nfs_common.h |   16 ++++++
- 8 files changed, 109 insertions(+), 160 deletions(-)
- create mode 100644 fs/nfs_common/common.c
- create mode 100644 include/linux/nfs_common.h
+ drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/fs/nfs/Kconfig
-+++ b/fs/nfs/Kconfig
-@@ -5,6 +5,7 @@ config NFS_FS
- 	select CRC32
- 	select LOCKD
- 	select SUNRPC
-+	select NFS_COMMON
- 	select NFS_ACL_SUPPORT if NFS_V3_ACL
- 	help
- 	  Choose Y here if you want to access files residing on other
---- a/fs/nfs/nfs2xdr.c
-+++ b/fs/nfs/nfs2xdr.c
-@@ -22,14 +22,12 @@
- #include <linux/nfs.h>
- #include <linux/nfs2.h>
- #include <linux/nfs_fs.h>
-+#include <linux/nfs_common.h>
- #include "nfstrace.h"
- #include "internal.h"
- 
- #define NFSDBG_FACILITY		NFSDBG_XDR
- 
--/* Mapping from NFS error code to "errno" error code. */
--#define errno_NFSERR_IO		EIO
--
- /*
-  * Declare the space requirements for NFS arguments and replies as
-  * number of 32bit-words
-@@ -64,8 +62,6 @@
- #define NFS_readdirres_sz	(1+NFS_pagepad_sz)
- #define NFS_statfsres_sz	(1+NFS_info_sz)
- 
--static int nfs_stat_to_errno(enum nfs_stat);
--
- /*
-  * Encode/decode NFSv2 basic data types
-  *
-@@ -1054,70 +1050,6 @@ out_default:
- 	return nfs_stat_to_errno(status);
- }
- 
--
--/*
-- * We need to translate between nfs status return values and
-- * the local errno values which may not be the same.
-- */
--static const struct {
--	int stat;
--	int errno;
--} nfs_errtbl[] = {
--	{ NFS_OK,		0		},
--	{ NFSERR_PERM,		-EPERM		},
--	{ NFSERR_NOENT,		-ENOENT		},
--	{ NFSERR_IO,		-errno_NFSERR_IO},
--	{ NFSERR_NXIO,		-ENXIO		},
--/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
--	{ NFSERR_ACCES,		-EACCES		},
--	{ NFSERR_EXIST,		-EEXIST		},
--	{ NFSERR_XDEV,		-EXDEV		},
--	{ NFSERR_NODEV,		-ENODEV		},
--	{ NFSERR_NOTDIR,	-ENOTDIR	},
--	{ NFSERR_ISDIR,		-EISDIR		},
--	{ NFSERR_INVAL,		-EINVAL		},
--	{ NFSERR_FBIG,		-EFBIG		},
--	{ NFSERR_NOSPC,		-ENOSPC		},
--	{ NFSERR_ROFS,		-EROFS		},
--	{ NFSERR_MLINK,		-EMLINK		},
--	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
--	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
--	{ NFSERR_DQUOT,		-EDQUOT		},
--	{ NFSERR_STALE,		-ESTALE		},
--	{ NFSERR_REMOTE,	-EREMOTE	},
--#ifdef EWFLUSH
--	{ NFSERR_WFLUSH,	-EWFLUSH	},
--#endif
--	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
--	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
--	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
--	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
--	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
--	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
--	{ NFSERR_BADTYPE,	-EBADTYPE	},
--	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
--	{ -1,			-EIO		}
--};
--
--/**
-- * nfs_stat_to_errno - convert an NFS status code to a local errno
-- * @status: NFS status code to convert
-- *
-- * Returns a local errno value, or -EIO if the NFS status code is
-- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
-- */
--static int nfs_stat_to_errno(enum nfs_stat status)
--{
--	int i;
--
--	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
--		if (nfs_errtbl[i].stat == (int)status)
--			return nfs_errtbl[i].errno;
--	}
--	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
--	return nfs_errtbl[i].errno;
--}
--
- #define PROC(proc, argtype, restype, timer)				\
- [NFSPROC_##proc] = {							\
- 	.p_proc	    =  NFSPROC_##proc,					\
---- a/fs/nfs/nfs3xdr.c
-+++ b/fs/nfs/nfs3xdr.c
-@@ -21,14 +21,13 @@
- #include <linux/nfs3.h>
- #include <linux/nfs_fs.h>
- #include <linux/nfsacl.h>
-+#include <linux/nfs_common.h>
-+
- #include "nfstrace.h"
- #include "internal.h"
- 
- #define NFSDBG_FACILITY		NFSDBG_XDR
- 
--/* Mapping from NFS error code to "errno" error code. */
--#define errno_NFSERR_IO		EIO
--
- /*
-  * Declare the space requirements for NFS arguments and replies as
-  * number of 32bit-words
-@@ -91,8 +90,6 @@
- 				NFS3_pagepad_sz)
- #define ACL3_setaclres_sz	(1+NFS3_post_op_attr_sz)
- 
--static int nfs3_stat_to_errno(enum nfs_stat);
--
- /*
-  * Map file type to S_IFMT bits
-  */
-@@ -1406,7 +1403,7 @@ static int nfs3_xdr_dec_getattr3res(stru
- out:
- 	return error;
- out_default:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1445,7 +1442,7 @@ static int nfs3_xdr_dec_setattr3res(stru
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1495,7 +1492,7 @@ out_default:
- 	error = decode_post_op_attr(xdr, result->dir_attr, userns);
- 	if (unlikely(error))
- 		goto out;
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1537,7 +1534,7 @@ static int nfs3_xdr_dec_access3res(struc
- out:
- 	return error;
- out_default:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1578,7 +1575,7 @@ static int nfs3_xdr_dec_readlink3res(str
- out:
- 	return error;
- out_default:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1658,7 +1655,7 @@ static int nfs3_xdr_dec_read3res(struct
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1728,7 +1725,7 @@ static int nfs3_xdr_dec_write3res(struct
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1795,7 +1792,7 @@ out_default:
- 	error = decode_wcc_data(xdr, result->dir_attr, userns);
- 	if (unlikely(error))
- 		goto out;
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1835,7 +1832,7 @@ static int nfs3_xdr_dec_remove3res(struc
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1881,7 +1878,7 @@ static int nfs3_xdr_dec_rename3res(struc
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -1926,7 +1923,7 @@ static int nfs3_xdr_dec_link3res(struct
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /**
-@@ -2101,7 +2098,7 @@ out_default:
- 	error = decode_post_op_attr(xdr, result->dir_attr, rpc_rqst_userns(req));
- 	if (unlikely(error))
- 		goto out;
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -2167,7 +2164,7 @@ static int nfs3_xdr_dec_fsstat3res(struc
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -2243,7 +2240,7 @@ static int nfs3_xdr_dec_fsinfo3res(struc
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -2304,7 +2301,7 @@ static int nfs3_xdr_dec_pathconf3res(str
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- /*
-@@ -2350,7 +2347,7 @@ static int nfs3_xdr_dec_commit3res(struc
- out:
- 	return error;
- out_status:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- #ifdef CONFIG_NFS_V3_ACL
-@@ -2416,7 +2413,7 @@ static int nfs3_xdr_dec_getacl3res(struc
- out:
- 	return error;
- out_default:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- static int nfs3_xdr_dec_setacl3res(struct rpc_rqst *req,
-@@ -2435,76 +2432,11 @@ static int nfs3_xdr_dec_setacl3res(struc
- out:
- 	return error;
- out_default:
--	return nfs3_stat_to_errno(status);
-+	return nfs_stat_to_errno(status);
- }
- 
- #endif  /* CONFIG_NFS_V3_ACL */
- 
--
--/*
-- * We need to translate between nfs status return values and
-- * the local errno values which may not be the same.
-- */
--static const struct {
--	int stat;
--	int errno;
--} nfs_errtbl[] = {
--	{ NFS_OK,		0		},
--	{ NFSERR_PERM,		-EPERM		},
--	{ NFSERR_NOENT,		-ENOENT		},
--	{ NFSERR_IO,		-errno_NFSERR_IO},
--	{ NFSERR_NXIO,		-ENXIO		},
--/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
--	{ NFSERR_ACCES,		-EACCES		},
--	{ NFSERR_EXIST,		-EEXIST		},
--	{ NFSERR_XDEV,		-EXDEV		},
--	{ NFSERR_NODEV,		-ENODEV		},
--	{ NFSERR_NOTDIR,	-ENOTDIR	},
--	{ NFSERR_ISDIR,		-EISDIR		},
--	{ NFSERR_INVAL,		-EINVAL		},
--	{ NFSERR_FBIG,		-EFBIG		},
--	{ NFSERR_NOSPC,		-ENOSPC		},
--	{ NFSERR_ROFS,		-EROFS		},
--	{ NFSERR_MLINK,		-EMLINK		},
--	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
--	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
--	{ NFSERR_DQUOT,		-EDQUOT		},
--	{ NFSERR_STALE,		-ESTALE		},
--	{ NFSERR_REMOTE,	-EREMOTE	},
--#ifdef EWFLUSH
--	{ NFSERR_WFLUSH,	-EWFLUSH	},
--#endif
--	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
--	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
--	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
--	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
--	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
--	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
--	{ NFSERR_BADTYPE,	-EBADTYPE	},
--	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
--	{ -1,			-EIO		}
--};
--
--/**
-- * nfs3_stat_to_errno - convert an NFS status code to a local errno
-- * @status: NFS status code to convert
-- *
-- * Returns a local errno value, or -EIO if the NFS status code is
-- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
-- */
--static int nfs3_stat_to_errno(enum nfs_stat status)
--{
--	int i;
--
--	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
--		if (nfs_errtbl[i].stat == (int)status)
--			return nfs_errtbl[i].errno;
--	}
--	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
--	return nfs_errtbl[i].errno;
--}
--
--
- #define PROC(proc, argtype, restype, timer)				\
- [NFS3PROC_##proc] = {							\
- 	.p_proc      = NFS3PROC_##proc,					\
---- a/fs/nfs/nfs4xdr.c
-+++ b/fs/nfs/nfs4xdr.c
-@@ -52,6 +52,7 @@
- #include <linux/nfs.h>
- #include <linux/nfs4.h>
- #include <linux/nfs_fs.h>
-+#include <linux/nfs_common.h>
- 
- #include "nfs4_fs.h"
- #include "nfs4trace.h"
-@@ -63,9 +64,6 @@
- 
- #define NFSDBG_FACILITY		NFSDBG_XDR
- 
--/* Mapping from NFS error code to "errno" error code. */
--#define errno_NFSERR_IO		EIO
--
- struct compound_hdr;
- static int nfs4_stat_to_errno(int);
- static void encode_layoutget(struct xdr_stream *xdr,
---- a/fs/nfs_common/Makefile
-+++ b/fs/nfs_common/Makefile
-@@ -8,3 +8,5 @@ nfs_acl-objs := nfsacl.o
- 
- obj-$(CONFIG_GRACE_PERIOD) += grace.o
- obj-$(CONFIG_NFS_V4_2_SSC_HELPER) += nfs_ssc.o
-+
-+obj-$(CONFIG_NFS_COMMON) += common.o
---- /dev/null
-+++ b/fs/nfs_common/common.c
-@@ -0,0 +1,67 @@
-+// SPDX-License-Identifier: GPL-2.0-only
-+
-+#include <linux/module.h>
-+#include <linux/nfs_common.h>
-+
-+/*
-+ * We need to translate between nfs status return values and
-+ * the local errno values which may not be the same.
-+ */
-+static const struct {
-+	int stat;
-+	int errno;
-+} nfs_errtbl[] = {
-+	{ NFS_OK,		0		},
-+	{ NFSERR_PERM,		-EPERM		},
-+	{ NFSERR_NOENT,		-ENOENT		},
-+	{ NFSERR_IO,		-errno_NFSERR_IO},
-+	{ NFSERR_NXIO,		-ENXIO		},
-+/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
-+	{ NFSERR_ACCES,		-EACCES		},
-+	{ NFSERR_EXIST,		-EEXIST		},
-+	{ NFSERR_XDEV,		-EXDEV		},
-+	{ NFSERR_NODEV,		-ENODEV		},
-+	{ NFSERR_NOTDIR,	-ENOTDIR	},
-+	{ NFSERR_ISDIR,		-EISDIR		},
-+	{ NFSERR_INVAL,		-EINVAL		},
-+	{ NFSERR_FBIG,		-EFBIG		},
-+	{ NFSERR_NOSPC,		-ENOSPC		},
-+	{ NFSERR_ROFS,		-EROFS		},
-+	{ NFSERR_MLINK,		-EMLINK		},
-+	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
-+	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
-+	{ NFSERR_DQUOT,		-EDQUOT		},
-+	{ NFSERR_STALE,		-ESTALE		},
-+	{ NFSERR_REMOTE,	-EREMOTE	},
-+#ifdef EWFLUSH
-+	{ NFSERR_WFLUSH,	-EWFLUSH	},
-+#endif
-+	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
-+	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
-+	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
-+	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
-+	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
-+	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
-+	{ NFSERR_BADTYPE,	-EBADTYPE	},
-+	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
-+	{ -1,			-EIO		}
-+};
-+
-+/**
-+ * nfs_stat_to_errno - convert an NFS status code to a local errno
-+ * @status: NFS status code to convert
-+ *
-+ * Returns a local errno value, or -EIO if the NFS status code is
-+ * not recognized.  This function is used jointly by NFSv2 and NFSv3.
-+ */
-+int nfs_stat_to_errno(enum nfs_stat status)
-+{
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+index fc928b298a984..b846889fcb099 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 	struct sk_buff_head *free_list;
+ 	union mux_msg mux_msg;
+ 	struct sk_buff *skb;
 +	int i;
-+
-+	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
-+		if (nfs_errtbl[i].stat == (int)status)
-+			return nfs_errtbl[i].errno;
+ 
+ 	if (!ipc_mux->initialized)
+ 		return;
+@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 		ipc_mux->channel->dl_pipe.is_open = false;
+ 	}
+ 
++	if (ipc_mux->protocol != MUX_LITE) {
++		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
++			kfree(ipc_mux->ul_adb.pp_qlt[i]);
 +	}
-+	return nfs_errtbl[i].errno;
-+}
-+EXPORT_SYMBOL_GPL(nfs_stat_to_errno);
---- a/fs/nfsd/Kconfig
-+++ b/fs/nfsd/Kconfig
-@@ -8,6 +8,7 @@ config NFSD
- 	select LOCKD
- 	select SUNRPC
- 	select EXPORTFS
-+	select NFS_COMMON
- 	select NFS_ACL_SUPPORT if NFSD_V2_ACL
- 	select NFS_ACL_SUPPORT if NFSD_V3_ACL
- 	depends on MULTIUSER
---- /dev/null
-+++ b/include/linux/nfs_common.h
-@@ -0,0 +1,16 @@
-+/* SPDX-License-Identifier: GPL-2.0 */
-+/*
-+ * This file contains constants and methods used by both NFS client and server.
-+ */
-+#ifndef _LINUX_NFS_COMMON_H
-+#define _LINUX_NFS_COMMON_H
 +
-+#include <linux/errno.h>
-+#include <uapi/linux/nfs.h>
-+
-+/* Mapping from NFS error code to "errno" error code. */
-+#define errno_NFSERR_IO EIO
-+
-+int nfs_stat_to_errno(enum nfs_stat status);
-+
-+#endif /* _LINUX_NFS_COMMON_H */
+ 	kfree(ipc_mux);
+ }
+-- 
+2.51.0
+
 
 
 
