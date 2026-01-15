@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-209697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209249-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C3FD27042
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:01:12 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FCEAD2676E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 730C430549B5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:40 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 82CF33040F3E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2686F3C1972;
-	Thu, 15 Jan 2026 17:50:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7C213C1FC5;
+	Thu, 15 Jan 2026 17:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWH6UUuF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jCTZDKpy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59CA2868B0;
-	Thu, 15 Jan 2026 17:50:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9F5EE1A5B9E;
+	Thu, 15 Jan 2026 17:29:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499433; cv=none; b=C4bbBdTbuBJKOIGhHsp4O29qqi6/wXE+wxjW8//OMvNpz0Gox4uA/OjELRpdzdIV+d3Fr+4SMGxX0hnYbQ8MacRmVanTBGzYWFfsx9T4hSoE//vKcfsu2rsqLEZqQ0vU9LihoJu2q9t95Plwkc3gQ7nrbKiF6/+Nt2S7MrK9PlU=
+	t=1768498158; cv=none; b=ejmtU1EHFInOj6SP3tsPT88FHzbXd7dyYqkivofTeWE1sPT1qNherTgbSsglC+d+iWC2Gk5ARDs+MyVLo5V+iISPPHRcjse4nctB0koNOicCavMpLWlE/PpZS316M/tpRkYVTrl4OxcXHUkdqBFd1ksXpbd52Y35jOWjqinpn9Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499433; c=relaxed/simple;
-	bh=p693OxGC5xArWPs4T50G79aqrTJv5oSovp5kmtCL/Eg=;
+	s=arc-20240116; t=1768498158; c=relaxed/simple;
+	bh=+YiyE2oyacGIpvvvKj2NVGGCMvPJZPzjS6qvNR7Ir8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=H36ZLouWytyw6nSf3Ej8nbA5nE914iNIK90y7ryhxACHwXK8rDMES+lMIMPTn+r0emD/JNbmb5rp290n6emLj4MHb97SlqOdYPFtql9BV+39IiB/d5rmRv4O0LVOuwTZrFawvTphx1uUMKrESgixjPf2FJNTMM1YBP1ndOqOkJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWH6UUuF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2352CC19423;
-	Thu, 15 Jan 2026 17:50:32 +0000 (UTC)
+	 MIME-Version; b=iLgZIfBwr4MXgPkM7xG6rOhNylsk3+ir02XbfoSUO6fk2GMzgyzCW3lh/Xh+tXB5pGxhB86nGsQPiCLr5KUz5Yms5isFPzrO8h37dZgzOqag9VDwgNF6hZORGsGknekCzB9rRt+GWDpi4Qxv9tjGeIsBfLhv7kUAEAtjbUHByh8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jCTZDKpy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE930C116D0;
+	Thu, 15 Jan 2026 17:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499433;
-	bh=p693OxGC5xArWPs4T50G79aqrTJv5oSovp5kmtCL/Eg=;
+	s=korg; t=1768498158;
+	bh=+YiyE2oyacGIpvvvKj2NVGGCMvPJZPzjS6qvNR7Ir8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sWH6UUuF9e4ruSgUI9XY7wtigCTIrP+17z7zuoUbVJAvr78ZpKl8GkNSlUOH2OUvt
-	 SIVwalPI3o3FLtOX2MosWYbnuBbp/TFeuGBXOTj2ujKa8HbjbyR+VG05wRipnMzId9
-	 +5jlXEc6jN4z8FfCyBMSwCyqZPukd1AkdJv1KagU=
+	b=jCTZDKpyElS+G2SuRkYyoWEV/Tvc5gwTGRf14/IMPaEvsrZ+/qIBie8B8X7BmS2wD
+	 odrU9OUx6tx4SRGNyD4qWT7fkIbt3B7SVynv1ZdEVBTNfnDdk2jd+62CpjFuvOzkr2
+	 tkY6b2clssKRyguXcA/8o8NsUxsm14fcwg/gJoes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
-	Mark Brown <broonie@kernel.org>
-Subject: [PATCH 5.10 198/451] spi: fsl-cpm: Check length parity before switching to 16 bit mode
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 333/554] hwmon: (w83791d) Convert macros to functions to avoid TOCTOU
 Date: Thu, 15 Jan 2026 17:46:39 +0100
-Message-ID: <20260115164238.064515701@linuxfoundation.org>
+Message-ID: <20260115164258.285431927@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +59,84 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit 1417927df8049a0194933861e9b098669a95c762 upstream.
+commit 670d7ef945d3a84683594429aea6ab2cdfa5ceb4 upstream.
 
-Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
-with even size") failed to make sure that the size is really even
-before switching to 16 bit mode. Until recently the problem went
-unnoticed because kernfs uses a pre-allocated bounce buffer of size
-PAGE_SIZE for reading EEPROM.
+The macro FAN_FROM_REG evaluates its arguments multiple times. When used
+in lockless contexts involving shared driver data, this leads to
+Time-of-Check to Time-of-Use (TOCTOU) race conditions, potentially
+causing divide-by-zero errors.
 
-But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
-introduced an additional dynamically allocated bounce buffer whose size
-is exactly the size of the transfer, leading to a buffer overrun in
-the fsl-cpm driver when that size is odd.
+Convert the macro to a static function. This guarantees that arguments
+are evaluated only once (pass-by-value), preventing the race
+conditions.
 
-Add the missing length parity verification and remain in 8 bit mode
-when the length is not even.
+Additionally, in store_fan_div, move the calculation of the minimum
+limit inside the update lock. This ensures that the read-modify-write
+sequence operates on consistent data.
 
-Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
+Adhere to the principle of minimal changes by only converting macros
+that evaluate arguments multiple times and are used in lockless
+contexts.
+
+Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+Fixes: 9873964d6eb2 ("[PATCH] HWMON: w83791d: New hardware monitoring driver for the Winbond W83791D")
 Cc: stable@vger.kernel.org
-Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251202180105.12842-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/spi/spi-fsl-spi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/w83791d.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/drivers/spi/spi-fsl-spi.c
-+++ b/drivers/spi/spi-fsl-spi.c
-@@ -369,7 +369,7 @@ static int fsl_spi_do_one_msg(struct spi
- 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
- 				t->bits_per_word = 8; /* pretend its 8 bits */
- 			if (t->bits_per_word == 8 && t->len >= 256 &&
--			    (mpc8xxx_spi->flags & SPI_CPM1))
-+			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
- 				t->bits_per_word = 16;
- 		}
- 	}
+--- a/drivers/hwmon/w83791d.c
++++ b/drivers/hwmon/w83791d.c
+@@ -218,9 +218,14 @@ static u8 fan_to_reg(long rpm, int div)
+ 	return clamp_val((1350000 + rpm * div / 2) / (rpm * div), 1, 254);
+ }
+ 
+-#define FAN_FROM_REG(val, div)	((val) == 0 ? -1 : \
+-				((val) == 255 ? 0 : \
+-					1350000 / ((val) * (div))))
++static int fan_from_reg(int val, int div)
++{
++	if (val == 0)
++		return -1;
++	if (val == 255)
++		return 0;
++	return 1350000 / (val * div);
++}
+ 
+ /* for temp1 which is 8-bit resolution, LSB = 1 degree Celsius */
+ #define TEMP1_FROM_REG(val)	((val) * 1000)
+@@ -521,7 +526,7 @@ static ssize_t show_##reg(struct device
+ 	struct w83791d_data *data = w83791d_update_device(dev); \
+ 	int nr = sensor_attr->index; \
+ 	return sprintf(buf, "%d\n", \
+-		FAN_FROM_REG(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
++		fan_from_reg(data->reg[nr], DIV_FROM_REG(data->fan_div[nr]))); \
+ }
+ 
+ show_fan_reg(fan);
+@@ -585,10 +590,10 @@ static ssize_t store_fan_div(struct devi
+ 	if (err)
+ 		return err;
+ 
++	mutex_lock(&data->update_lock);
+ 	/* Save fan_min */
+-	min = FAN_FROM_REG(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
++	min = fan_from_reg(data->fan_min[nr], DIV_FROM_REG(data->fan_div[nr]));
+ 
+-	mutex_lock(&data->update_lock);
+ 	data->fan_div[nr] = div_to_reg(nr, val);
+ 
+ 	switch (nr) {
 
 
 
