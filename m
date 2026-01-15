@@ -1,41 +1,41 @@
-Return-Path: <stable+bounces-208561-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208527-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E2333D25FC1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F992D25F41
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2F729306D2B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A05D630C0F0C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E9B8396B7D;
-	Thu, 15 Jan 2026 16:56:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 78F493BC4E2;
+	Thu, 15 Jan 2026 16:55:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N8N9gQ+f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YjWyX/nq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E77E4274B43;
-	Thu, 15 Jan 2026 16:56:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C3BE25228D;
+	Thu, 15 Jan 2026 16:55:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496199; cv=none; b=ddLz8logad1YgMGs5itZ3Bjd/YEUOEx4OAG6NZOkhq0+8sbrsWzsJSwExEc+PTp5UwcmcUz2NQCiX59f8LNZVFvE45u7VgRQglpT2Z/2viZAhRb7Rfx8vR4YK+RvbaAbA1ihg3FSjNSMtyXtM2/Cv555qFpU6ozKKEUf44N6DCw=
+	t=1768496103; cv=none; b=HWxL/vp+GqUO9XKEQWIA5Rm64SBY9Zkw7Ue9owClLAQ9lP9dbY+z8xLRUuP/YKTg0sr0PyUZ+VpwwaG9l73fD1PBpNGwxyJhsbO+veUovZy9SMP2LYi7MpHCd5vDzNR92iZOlRaJ63Q3VFmL3pS55Nd01yIwB7K8zaQijRYjMe8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496199; c=relaxed/simple;
-	bh=yjO07nObxFmrrgswHfLENexGrVtPN0pDLKwsA3WWny0=;
+	s=arc-20240116; t=1768496103; c=relaxed/simple;
+	bh=5TnVzDVn7sFvgS2cBk2nD0grTL0sM3Ti/cex0v+5AlQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AjlLs83KXrT5feaOyVbUUQLfQd3gs6ign+YAGtBQagQZNTyVwXc58UW4/wEKQX6FKFA1HjUQjw6qbdBkaKnK0yhUejXmb7aTaP8lHWQlhTgBwPnvE2e9JFahTp1vlFvzk8KipWY+oqBaAaDRAIaaAAQ4bt2GMIUrf6MIONHTWNA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N8N9gQ+f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76CC3C116D0;
-	Thu, 15 Jan 2026 16:56:38 +0000 (UTC)
+	 MIME-Version; b=Dm1nBDJaBoGxpN2A+2o9CbupkAO3ENfmtzaimvZlGiaCbgDPt5ez09pvlo+KBpSeUn+vvarmpE1pM5kNAWSqqGxUR2sDzuBoykI0qzgJfThRqd1ljwDs1UvQu4jerl+jEIrGDGgO66Ul0fTRnS30HeSDsZcx3F4Yntg8gr6FHig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YjWyX/nq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D5E7C16AAE;
+	Thu, 15 Jan 2026 16:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496198;
-	bh=yjO07nObxFmrrgswHfLENexGrVtPN0pDLKwsA3WWny0=;
+	s=korg; t=1768496102;
+	bh=5TnVzDVn7sFvgS2cBk2nD0grTL0sM3Ti/cex0v+5AlQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N8N9gQ+fGHrbBbs5w8aMDTV4X4XvB0Qcx/e6GoGDnh0YyhHJyOJ5wGJrCh/o9G5wt
-	 UJ85ko2kUjSEqdcIcMfk3d4IiMODpcMg4S71wzEuj4lBaL3ugxSWCOm9ZVEOtB9j1S
-	 iYLf0kJe3dtK4xOlOvBAm8UDCTiqJxgIksHhE2ss=
+	b=YjWyX/nqUdR0rYQA+sb2UUmKikpAb5PH09B2MJ+FuN9GU+ThbTpkHeZpivtaqtoZ+
+	 KzMQAcunUL51TOpI0T6NaGy66UKomHOZpIMLn6pOHcR0udJqjEUZCyvUzD+yATVrGi
+	 n5k/k3rs+zlka1Q1+MKVmH2tGW6N1dqwxFVkkKac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -43,9 +43,9 @@ Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	Wadim Egorov <w.egorov@phytec.de>,
 	Nishanth Menon <nm@ti.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 070/181] arm64: dts: ti: k3-am642-phyboard-electra-x27-gpio1-spi1-uart3: Fix schema warnings
-Date: Thu, 15 Jan 2026 17:46:47 +0100
-Message-ID: <20260115164204.851443974@linuxfoundation.org>
+Subject: [PATCH 6.18 071/181] arm64: dts: ti: k3-am62-lp-sk-nand: Rename pinctrls to fix schema warnings
+Date: Thu, 15 Jan 2026 17:46:48 +0100
+Message-ID: <20260115164204.887004762@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -66,59 +66,33 @@ Content-Transfer-Encoding: 8bit
 
 From: Wadim Egorov <w.egorov@phytec.de>
 
-[ Upstream commit d876bb9353d87dee0ae620300106e8def189c785 ]
+[ Upstream commit cf5e8adebe77917a4cc95e43e461cdbd857591ce ]
 
 Rename pinctrl nodes to comply with naming conventions required by
-pinctrl-single schema. Also, replace invalid integer assignment in
-SPI node with a boolean to align with omap-spi schema.
+pinctrl-single schema.
 
-Fixes: 638ab30ce4c6 ("arm64: dts: ti: am64-phyboard-electra: Add DT overlay for X27 connector")
+Fixes: e569152274fec ("arm64: dts: ti: am62-lp-sk: Add overlay for NAND expansion card")
 Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Link: https://patch.msgid.link/20251127122733.2523367-2-w.egorov@phytec.de
+Link: https://patch.msgid.link/20251127122733.2523367-3-w.egorov@phytec.de
 Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso   | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso
-index 996c42ec4253e..bea8efa3e9094 100644
---- a/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am642-phyboard-electra-x27-gpio1-spi1-uart3.dtso
-@@ -20,13 +20,13 @@
+diff --git a/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso b/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso
+index 173ac60723b64..b4daa674eaa1e 100644
+--- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso
++++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso
+@@ -14,7 +14,7 @@
  };
  
  &main_pmx0 {
--	main_gpio1_exp_header_gpio_pins_default: main-gpio1-exp-header-gpio-pins-default {
-+	main_gpio1_exp_header_gpio_pins_default: main-gpio1-exp-header-gpio-default-pins {
+-	gpmc0_pins_default: gpmc0-pins-default {
++	gpmc0_pins_default: gpmc0-default-pins {
  		pinctrl-single,pins = <
- 			AM64X_IOPAD(0x0220, PIN_INPUT, 7)	/* (D14) SPI1_CS1.GPIO1_48 */
- 		>;
- 	};
- 
--	main_spi1_pins_default: main-spi1-pins-default {
-+	main_spi1_pins_default: main-spi1-default-pins {
- 		pinctrl-single,pins = <
- 			AM64X_IOPAD(0x0224, PIN_INPUT, 0)	/* (C14) SPI1_CLK */
- 			AM64X_IOPAD(0x021C, PIN_OUTPUT, 0)	/* (B14) SPI1_CS0 */
-@@ -35,7 +35,7 @@
- 		>;
- 	};
- 
--	main_uart3_pins_default: main-uart3-pins-default {
-+	main_uart3_pins_default: main-uart3-default-pins {
- 		pinctrl-single,pins = <
- 			AM64X_IOPAD(0x0048, PIN_INPUT, 2)       /* (U20) GPMC0_AD3.UART3_RXD */
- 			AM64X_IOPAD(0x004c, PIN_OUTPUT, 2)      /* (U18) GPMC0_AD4.UART3_TXD */
-@@ -52,7 +52,7 @@
- &main_spi1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&main_spi1_pins_default>;
--	ti,pindir-d0-out-d1-in = <1>;
-+	ti,pindir-d0-out-d1-in;
- 	status = "okay";
- };
- 
+ 			AM62X_IOPAD(0x003c, PIN_INPUT, 0) /* (K19) GPMC0_AD0 */
+ 			AM62X_IOPAD(0x0040, PIN_INPUT, 0) /* (L19) GPMC0_AD1 */
 -- 
 2.51.0
 
