@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-208870-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208808-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id C00C3D263EC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 58C22D263DE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B8FCA304634A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7FABE308790E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27FFD3BF2EB;
-	Thu, 15 Jan 2026 17:11:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAFDD3BC4FE;
+	Thu, 15 Jan 2026 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKBudf1S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uTeOJo4B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEF562750ED;
-	Thu, 15 Jan 2026 17:11:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F58B3B8BB1;
+	Thu, 15 Jan 2026 17:08:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497077; cv=none; b=CMo0x5u0RCJWXlQJXYaz4rzMOFwEHpkqgWxZBnbKqy78EII09fad7EDtChKtj+r8+s3enT7go+/zfz4cc2A2OiQGF7nI5sZ/y07sNlQjdJNRWxR0/thusxoBTMF34Ow68dC4Bi/1ZtN1jTv3Mtov349IHwgRfwVkVa5zSVZvWqo=
+	t=1768496901; cv=none; b=dHOQ5iq72DrcsUWMf4ZBJfhpZBm/ihHaG88Z494UsdfV8eYeUi0JTBDr+LpJheNp8T866YOYEcyTgLpF+ChNvy7w/zAs+6n0SRgs46ZazJVQxOawk5Zgz8m9i3eUpUpXIj54/flYih6EqA2rg1ufW+f7PCxqrK9mMfHh150S3pM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497077; c=relaxed/simple;
-	bh=xMb/DzH3ObGZd+nYsNiRI4HHf9f6CMHx1m7pfZbMW7I=;
+	s=arc-20240116; t=1768496901; c=relaxed/simple;
+	bh=22/DgDwqlo/kRIQdJDzKOK8nI9/V1ufWfTa9gxG6jqU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cTBmYDC4irintc+sP3fTMIn5jYS4LNJX4AqBs3DYK6Z4itcG9OeBtxYtDGiZ/NjaGVHD/UBD1ReIzS/3gbuRsNgvIRJz6YsVekJjlPjmG1DBkNvo0IxcfZ/C7Qcrnw1/ZX6DQyvtAazW0b92/f7zfraMRxJkpPlcupbJpyq82oo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKBudf1S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68189C19422;
-	Thu, 15 Jan 2026 17:11:17 +0000 (UTC)
+	 MIME-Version; b=qDkCPDACjnrrSdowS7GM0QN3SxMbr/KIVltE39mQbTNaIf5AV3hvGWFosLOc2/vH3uGbN3IVm67kDdtDAhuBRrBX0ZR82bUdFLusY66j97u1LRHPQZ/mLvjQrvl7T5hUxAz5t7LPJRKuZWvxyeWiv02OvkoskqRPlGT1p9iZznM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uTeOJo4B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB02FC116D0;
+	Thu, 15 Jan 2026 17:08:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497077;
-	bh=xMb/DzH3ObGZd+nYsNiRI4HHf9f6CMHx1m7pfZbMW7I=;
+	s=korg; t=1768496901;
+	bh=22/DgDwqlo/kRIQdJDzKOK8nI9/V1ufWfTa9gxG6jqU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKBudf1S/O9nIYzOfSqFPyI9MwsIxZ4S0/7KYMNt8PJy//1DiQJT6rQ/Yg7lVvBtt
-	 ggu0vfJ/QXIOyUgCcFVLSSZb27bOZKwJk/V2cf3GrZnX5a7/aWuv4JLkNIpFAIUl+s
-	 7N2fpjcPDZZzze4jhYkSE9RwkN48DflqdWeNPiZE=
+	b=uTeOJo4Bxq+WpmT4zuYKI6jkEmsZuUoW+NYzXwRZzn8SCIHChhKd8eII763HEwWdQ
+	 fR2EjEoMbshZ85aWvF1qRINKPYP1EVhD4s4FooF6bs60clFkBkTA3VJ6mbHdRdOWUb
+	 Jx8u4jQNs8HRAFqMBv5KKBqDVFT/UM4qo6kQt/lc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 29/72] scsi: Revert "scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed"
+Subject: [PATCH 6.6 56/88] net/mlx5e: Dont print error message due to invalid module
 Date: Thu, 15 Jan 2026 17:48:39 +0100
-Message-ID: <20260115164144.552410320@linuxfoundation.org>
+Message-ID: <20260115164148.340856351@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 278712d20bc8ec29d1ad6ef9bdae9000ef2c220c ]
+[ Upstream commit 144297e2a24e3e54aee1180ec21120ea38822b97 ]
 
-This reverts commit ab2068a6fb84751836a84c26ca72b3beb349619d.
+Dumping module EEPROM on newer modules is supported through the netlink
+interface only.
 
-When probing the exp-attached sata device, libsas/libata will issue a
-hard reset in sas_probe_sata() -> ata_sas_async_probe(), then a
-broadcast event will be received after the disk probe fails, and this
-commit causes the probe will be re-executed on the disk, and a faulty
-disk may get into an indefinite loop of probe.
+Querying with old userspace ethtool (or other tools, such as 'lshw')
+which still uses the ioctl interface results in an error message that
+could flood dmesg (in addition to the expected error return value).
+The original message was added under the assumption that the driver
+should be able to handle all module types, but now that such flows are
+easily triggered from userspace, it doesn't serve its purpose.
 
-Therefore, revert this commit, although it can fix some temporary issues
-with disk probe failure.
+Change the log level of the print in mlx5_query_module_eeprom() to
+debug.
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20251202065627.140361-1-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: bb64143eee8c ("net/mlx5e: Add ethtool support for dump module EEPROM")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20251225132717.358820-5-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/port.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index 6ddccc67e808f..a94bd0790b055 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -119,20 +119,6 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
--
--	/*
--	 * If the device probe failed, the expander phy attached address
--	 * needs to be reset so that the phy will not be treated as flutter
--	 * in the next revalidation
--	 */
--	if (dev->parent && !dev_is_expander(dev->dev_type)) {
--		struct sas_phy *phy = dev->phy;
--		struct domain_device *parent = dev->parent;
--		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
--
--		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
--	}
--
- 	sas_unregister_dev(dev->port, dev);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+index 749f0fc2c189a..a5622b44385eb 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+@@ -432,7 +432,8 @@ int mlx5_query_module_eeprom(struct mlx5_core_dev *dev,
+ 		mlx5_qsfp_eeprom_params_set(&query.i2c_address, &query.page, &offset);
+ 		break;
+ 	default:
+-		mlx5_core_err(dev, "Module ID not recognized: 0x%x\n", module_id);
++		mlx5_core_dbg(dev, "Module ID not recognized: 0x%x\n",
++			      module_id);
+ 		return -EINVAL;
+ 	}
  
 -- 
 2.51.0
