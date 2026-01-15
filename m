@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209788-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6F6D8D26342
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:15:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6E3AD27335
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0AEE631B28E1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 681B9306C14E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BE13BC4D7;
-	Thu, 15 Jan 2026 17:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 09CA73D1CD9;
+	Thu, 15 Jan 2026 17:54:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eveA7Ani"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Il3l4aql"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDA43BFE4C;
-	Thu, 15 Jan 2026 17:05:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0DA43C00AA;
+	Thu, 15 Jan 2026 17:54:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496745; cv=none; b=GgsNWCj5BHLXOQAwsrIVXDlMOoC+D7F1E1mMlm3bKTdWc4D6ktQDyWs0W4Npnwuv8epNcmABnCCNG9xJLpXbYVwwa/V8W52HKmQBp15V1XLzSu9pM4y+xyohlqGznfAxjVo6yMgOZ3O++aEq8eAWTtmmPNayRirKSRXEFodlNoU=
+	t=1768499692; cv=none; b=b0IHr93drD6g9zGIcsDlRgZU7Z8NslAyFbH/05YXDOwG4jVa1KjhxWlh30PI9CGZ7lpxKiN/C78VsA9g3ZzaHsldceTOC2LXvFmEmmUW9Dv5UPDag0qyWWZEvTwF/QRakEwmVll9M8kGQu/ym9KnikANYYOvTc/PZ90TJQh1sQ0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496745; c=relaxed/simple;
-	bh=q06xSbu4z/YZ1c4vTx5tuXW3ZCrAr5mxB6LFNOuU03I=;
+	s=arc-20240116; t=1768499692; c=relaxed/simple;
+	bh=nf18jLEYGqjo9p8SI90o/A0pbQb66QGHekcam4KKLi8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6FnaRU81tkV6ciXwjfxnRVYrKkvJsZTarRmc5qKzsBDKZjUDlFTAefEMpZVJWbyzxRzUMnEZZ2ehlZohXRM02S5HN0iLEQWbbyYLTukmxcMZDikzHrzN6NZfnCJe0cEA36emOnEn+ZDBZvuHr6FD8z9AZOl1xpdnswuMjWLvfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eveA7Ani; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E780C16AAE;
-	Thu, 15 Jan 2026 17:05:45 +0000 (UTC)
+	 MIME-Version; b=jNQe2HSsYPV3ho3RQPhihLTE65ll1eOFqk/vfUYLUC02lJ/oNJfA4gYj5Io8LiRUIw8Ts4MMHeJtn+Cx9Bs6NeHODp78u9ubUwoZmFVTfv11R7dB/0fJZ5XZq1xdzdyoSNGw0MqQ4aL+IuwOpC/hUviNkbF1FMtKHqwnbnUyN9E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Il3l4aql; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B07AC116D0;
+	Thu, 15 Jan 2026 17:54:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496745;
-	bh=q06xSbu4z/YZ1c4vTx5tuXW3ZCrAr5mxB6LFNOuU03I=;
+	s=korg; t=1768499692;
+	bh=nf18jLEYGqjo9p8SI90o/A0pbQb66QGHekcam4KKLi8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=eveA7AniN62FZmrkLvka715j7O+23OuMjCiJt1PHRNvbNyhH25hqgiqEceqCLYBZ3
-	 1C+O3i5t77y+UIleiDKQiOIMVG/NDwrpIY8v9mGc4JjK063ozouHPcvQSqKOIVvBRW
-	 wiuivtZ2nW4SyAL8TGZh9DxfGCFztp9nDDSspu14=
+	b=Il3l4aqlqbpqmBICbD8ZPyPSpDoO2qrKLPUkPCq1GfKqUcDs0++VL8PQWNU9byJzt
+	 0om+UHHcSKqp+vixxA5sEqKgRk1sPSaILOCiY33ebAgKu1fpikOdIgntY4m+uPoIn+
+	 UoA3wuko2rZhf7DkfIh9FfxZAX3RMXztq6rP+9pQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumeet Pawnikar <sumeet4linux@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 103/119] powercap: fix race condition in register_control_type()
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10 317/451] media: adv7842: Avoid possible out-of-bounds array accesses in adv7842_cp_log_status()
 Date: Thu, 15 Jan 2026 17:48:38 +0100
-Message-ID: <20260115164155.670364092@linuxfoundation.org>
+Message-ID: <20260115164242.368641079@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,70 +59,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 7bda1910c4bccd4b8d4726620bb3d6bbfb62286e ]
+commit 8163419e3e05d71dcfa8fb49c8fdf8d76908fe51 upstream.
 
-The device becomes visible to userspace via device_register()
-even before it fully initialized by idr_init(). If userspace
-or another thread tries to register a zone immediately after
-device_register(), the control_type_valid() will fail because
-the control_type is not yet in the list. The IDR is not yet
-initialized, so this race condition causes zone registration
-failure.
+It's possible for cp_read() and hdmi_read() to return -EIO. Those
+values are further used as indexes for accessing arrays.
 
-Move idr_init() and list addition before device_register()
-fix the race condition.
+Fix that by checking return values where it's needed.
 
-Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-[ rjw: Subject adjustment, empty line added ]
-Link: https://patch.msgid.link/20251205190216.5032-1-sumeet4linux@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/powercap_sys.c | 16 +++++++++++-----
- 1 file changed, 11 insertions(+), 5 deletions(-)
+ drivers/media/i2c/adv7842.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index 4112a00973382..d14b36b75189d 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -625,17 +625,23 @@ struct powercap_control_type *powercap_register_control_type(
- 	INIT_LIST_HEAD(&control_type->node);
- 	control_type->dev.class = &powercap_class;
- 	dev_set_name(&control_type->dev, "%s", name);
--	result = device_register(&control_type->dev);
--	if (result) {
--		put_device(&control_type->dev);
--		return ERR_PTR(result);
--	}
- 	idr_init(&control_type->idr);
+--- a/drivers/media/i2c/adv7842.c
++++ b/drivers/media/i2c/adv7842.c
+@@ -2671,6 +2671,7 @@ static int adv7842_cp_log_status(struct
+ 	/* CP block */
+ 	struct adv7842_state *state = to_state(sd);
+ 	struct v4l2_dv_timings timings;
++	int temp;
+ 	u8 reg_io_0x02 = io_read(sd, 0x02);
+ 	u8 reg_io_0x21 = io_read(sd, 0x21);
+ 	u8 reg_rep_0x77 = rep_read(sd, 0x77);
+@@ -2793,8 +2794,9 @@ static int adv7842_cp_log_status(struct
+ 		  (((reg_io_0x02 >> 2) & 0x01) ^ (reg_io_0x02 & 0x01)) ?
+ 			"(16-235)" : "(0-255)",
+ 		  (reg_io_0x02 & 0x08) ? "enabled" : "disabled");
++	temp = cp_read(sd, 0xf4) >> 4;
+ 	v4l2_info(sd, "Color space conversion: %s\n",
+-		  csc_coeff_sel_rb[cp_read(sd, 0xf4) >> 4]);
++		  temp < 0 ? "" : csc_coeff_sel_rb[temp]);
  
- 	mutex_lock(&powercap_cntrl_list_lock);
- 	list_add_tail(&control_type->node, &powercap_cntrl_list);
- 	mutex_unlock(&powercap_cntrl_list_lock);
+ 	if (!is_digital_input(sd))
+ 		return 0;
+@@ -2824,8 +2826,9 @@ static int adv7842_cp_log_status(struct
+ 			hdmi_read(sd, 0x5f));
+ 	v4l2_info(sd, "AV Mute: %s\n",
+ 			(hdmi_read(sd, 0x04) & 0x40) ? "on" : "off");
++	temp = hdmi_read(sd, 0x0b) >> 6;
+ 	v4l2_info(sd, "Deep color mode: %s\n",
+-			deep_color_mode_txt[hdmi_read(sd, 0x0b) >> 6]);
++			temp < 0 ? "" : deep_color_mode_txt[temp]);
  
-+	result = device_register(&control_type->dev);
-+	if (result) {
-+		mutex_lock(&powercap_cntrl_list_lock);
-+		list_del(&control_type->node);
-+		mutex_unlock(&powercap_cntrl_list_lock);
-+
-+		idr_destroy(&control_type->idr);
-+		put_device(&control_type->dev);
-+		return ERR_PTR(result);
-+	}
-+
- 	return control_type;
- }
- EXPORT_SYMBOL_GPL(powercap_register_control_type);
--- 
-2.51.0
-
+ 	adv7842_log_infoframes(sd);
+ 
 
 
 
