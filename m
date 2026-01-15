@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208891-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5DB6ED2624E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE62ED267E0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0F05F3048C4C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8A3E231D86B6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECA63BF2FA;
-	Thu, 15 Jan 2026 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 649F33B8BAE;
+	Thu, 15 Jan 2026 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6Jy0tTl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bPqGgDAD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529653BF2F0;
-	Thu, 15 Jan 2026 17:09:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 284F02820C6;
+	Thu, 15 Jan 2026 17:12:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496995; cv=none; b=Y6ChjSamsI6bAaPoFukO1WhKofW30gH4bCJpKoMITZZOFkHnDIdMSWeddmlZRPxGZ/UJjMNeWjZirGiDRXKIg3PF1Xg2wiPtCK1GfYDzU4sE7Xts4i1LVr3PZ6i2O4zNIhdTZpkLrW0MPQpegPpxt92CQ0XwnDRjR6geBngxsK4=
+	t=1768497138; cv=none; b=kq1TS2IwRi2MXwpdrZiJQIbL8zBZv0KGCBz53Cg9f4nS9rQ2n4/GWCMhtJC72WGxH5MdQpI5UmINericDkhSo4MAI6KwJNGESa4CEBmrLtewR78mzugyGL7k4EOZFxZTwOKMpIEKpintPdc71Pl1AGd5vzh6tvYR8/F51Svr1SA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496995; c=relaxed/simple;
-	bh=WSXGdt9WMHb3hU1r6XlYsQvRNKGsN3JK7hdThwjZwF8=;
+	s=arc-20240116; t=1768497138; c=relaxed/simple;
+	bh=08/1lzGbIFVSIjfB+mlEesqW4kPqDGDFPSKN5rfDZC0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=U4jN3wzFZCQYnF+j9w29vQBk+voZQq5OohHN3CBMvWaH7d0AnsLmDLIH9rOqfGp6rVEHtZYt585qv6SqbAB/hDKgIu94SKkUS/M9yRxMF7QxHJ2GnA/AxMW0EnIXBU7D0vToImXBH6VZWtRI4Acw6wZJ2PFRR09iQBixspP9lu4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6Jy0tTl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AB9C116D0;
-	Thu, 15 Jan 2026 17:09:54 +0000 (UTC)
+	 MIME-Version; b=sqfdn66qNLgTzAujvrTQ2Z8aPQ+oma6W1jXprpYNj5rz3xBjZuinUQw/vwnuNpGT5wcWlbJIoAq+TUkaXfDuZOnb/whYGN2sls13IAr2cHrbU0za7L/eS7H2eq5waq2/Lw6b6I3T91NtfugPQ3IaXJdXKNOa9sU0xRRmmZzu6wA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bPqGgDAD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0F2CC16AAE;
+	Thu, 15 Jan 2026 17:12:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496994;
-	bh=WSXGdt9WMHb3hU1r6XlYsQvRNKGsN3JK7hdThwjZwF8=;
+	s=korg; t=1768497138;
+	bh=08/1lzGbIFVSIjfB+mlEesqW4kPqDGDFPSKN5rfDZC0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N6Jy0tTlKDOv9SUPiZhmEQhXKaA3FH4RBFhTeH90xOZQr9tUWXDnCU/4j0GtT5B2H
-	 hV5HyljHcsbhOa2BhRMSzzFbR4fmqdf4r8Qqv/+Qf5YYhT222mz5HPOufHylE+nzuj
-	 JLKMgiVEjIOK83z7WWg7dXpNDzwKtqSQ/f9CTaJk=
+	b=bPqGgDAD9CyDqoCGFEANTasxfMHr0GPvDSDKNDZJkCaN6xh6ZE3Rvkzzhz2pBRbV2
+	 PlIvtoOMtciz17As2/EsMqDGDnr6GWYD8aKX6goNGY9PTqcF6vo86ptTxAoeN6aM3O
+	 q9AtxnpsyeHUhTzFI7VqsmJjMOx+wJ3xE1jfghns=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	Xiang Mei <xmei5@asu.edu>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 75/88] bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN
+Subject: [PATCH 6.1 48/72] net/sched: sch_qfq: Fix NULL deref when deactivating inactive aggregate in qfq_reset
 Date: Thu, 15 Jan 2026 17:48:58 +0100
-Message-ID: <20260115164149.034032220@linuxfoundation.org>
+Message-ID: <20260115164145.236645028@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,131 +60,163 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Xiang Mei <xmei5@asu.edu>
 
-[ Upstream commit fe9544ed1a2e9217b2c5285c3a4ac0dc5a38bd7b ]
+[ Upstream commit c1d73b1480235731e35c81df70b08f4714a7d095 ]
 
-To test bpf_xdp_pull_data(), an xdp packet containing fragments as well
-as free linear data area after xdp->data_end needs to be created.
-However, bpf_prog_test_run_xdp() always fills the linear area with
-data_in before creating fragments, leaving no space to pull data. This
-patch will allow users to specify the linear data size through
-ctx->data_end.
+`qfq_class->leaf_qdisc->q.qlen > 0` does not imply that the class
+itself is active.
 
-Currently, ctx_in->data_end must match data_size_in and will not be the
-final ctx->data_end seen by xdp programs. This is because ctx->data_end
-is populated according to the xdp_buff passed to test_run. The linear
-data area available in an xdp_buff, max_linear_sz, is alawys filled up
-before copying data_in into fragments.
+Two qfq_class objects may point to the same leaf_qdisc. This happens
+when:
 
-This patch will allow users to specify the size of data that goes into
-the linear area. When ctx_in->data_end is different from data_size_in,
-only ctx_in->data_end bytes of data will be put into the linear area when
-creating the xdp_buff.
+1. one QFQ qdisc is attached to the dev as the root qdisc, and
 
-While ctx_in->data_end will be allowed to be different from data_size_in,
-it cannot be larger than the data_size_in as there will be no data to
-copy from user space. If it is larger than the maximum linear data area
-size, the layout suggested by the user will not be honored. Data beyond
-max_linear_sz bytes will still be copied into fragments.
+2. another QFQ qdisc is temporarily referenced (e.g., via qdisc_get()
+/ qdisc_put()) and is pending to be destroyed, as in function
+tc_new_tfilter.
 
-Finally, since it is possible for a NIC to produce a xdp_buff with empty
-linear data area, allow it when calling bpf_test_init() from
-bpf_prog_test_run_xdp() so that we can test XDP kfuncs with such
-xdp_buff. This is done by moving lower-bound check to callers as most of
-them already do except bpf_prog_test_run_skb(). The change also fixes a
-bug that allows passing an xdp_buff with data < ETH_HLEN. This can
-happen when ctx is used and metadata is at least ETH_HLEN.
+When packets are enqueued through the root QFQ qdisc, the shared
+leaf_qdisc->q.qlen increases. At the same time, the second QFQ
+qdisc triggers qdisc_put and qdisc_destroy: the qdisc enters
+qfq_reset() with its own q->q.qlen == 0, but its class's leaf
+qdisc->q.qlen > 0. Therefore, the qfq_reset would wrongly deactivate
+an inactive aggregate and trigger a null-deref in qfq_deactivate_agg:
 
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250922233356.3356453-7-ameryhung@gmail.com
-Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
+[    0.903172] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[    0.903571] #PF: supervisor write access in kernel mode
+[    0.903860] #PF: error_code(0x0002) - not-present page
+[    0.904177] PGD 10299b067 P4D 10299b067 PUD 10299c067 PMD 0
+[    0.904502] Oops: Oops: 0002 [#1] SMP NOPTI
+[    0.904737] CPU: 0 UID: 0 PID: 135 Comm: exploit Not tainted 6.19.0-rc3+ #2 NONE
+[    0.905157] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.17.0-0-gb52ca86e094d-prebuilt.qemu.org 04/01/2014
+[    0.905754] RIP: 0010:qfq_deactivate_agg (include/linux/list.h:992 (discriminator 2) include/linux/list.h:1006 (discriminator 2) net/sched/sch_qfq.c:1367 (discriminator 2) net/sched/sch_qfq.c:1393 (discriminator 2))
+[    0.906046] Code: 0f 84 4d 01 00 00 48 89 70 18 8b 4b 10 48 c7 c2 ff ff ff ff 48 8b 78 08 48 d3 e2 48 21 f2 48 2b 13 48 8b 30 48 d3 ea 8b 4b 18 0
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 84 4d 01 00 00    	je     0x153
+   6:	48 89 70 18          	mov    %rsi,0x18(%rax)
+   a:	8b 4b 10             	mov    0x10(%rbx),%ecx
+   d:	48 c7 c2 ff ff ff ff 	mov    $0xffffffffffffffff,%rdx
+  14:	48 8b 78 08          	mov    0x8(%rax),%rdi
+  18:	48 d3 e2             	shl    %cl,%rdx
+  1b:	48 21 f2             	and    %rsi,%rdx
+  1e:	48 2b 13             	sub    (%rbx),%rdx
+  21:	48 8b 30             	mov    (%rax),%rsi
+  24:	48 d3 ea             	shr    %cl,%rdx
+  27:	8b 4b 18             	mov    0x18(%rbx),%ecx
+	...
+[    0.907095] RSP: 0018:ffffc900004a39a0 EFLAGS: 00010246
+[    0.907368] RAX: ffff8881043a0880 RBX: ffff888102953340 RCX: 0000000000000000
+[    0.907723] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[    0.908100] RBP: ffff888102952180 R08: 0000000000000000 R09: 0000000000000000
+[    0.908451] R10: ffff8881043a0000 R11: 0000000000000000 R12: ffff888102952000
+[    0.908804] R13: ffff888102952180 R14: ffff8881043a0ad8 R15: ffff8881043a0880
+[    0.909179] FS:  000000002a1a0380(0000) GS:ffff888196d8d000(0000) knlGS:0000000000000000
+[    0.909572] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.909857] CR2: 0000000000000000 CR3: 0000000102993002 CR4: 0000000000772ef0
+[    0.910247] PKRU: 55555554
+[    0.910391] Call Trace:
+[    0.910527]  <TASK>
+[    0.910638]  qfq_reset_qdisc (net/sched/sch_qfq.c:357 net/sched/sch_qfq.c:1485)
+[    0.910826]  qdisc_reset (include/linux/skbuff.h:2195 include/linux/skbuff.h:2501 include/linux/skbuff.h:3424 include/linux/skbuff.h:3430 net/sched/sch_generic.c:1036)
+[    0.911040]  __qdisc_destroy (net/sched/sch_generic.c:1076)
+[    0.911236]  tc_new_tfilter (net/sched/cls_api.c:2447)
+[    0.911447]  rtnetlink_rcv_msg (net/core/rtnetlink.c:6958)
+[    0.911663]  ? __pfx_rtnetlink_rcv_msg (net/core/rtnetlink.c:6861)
+[    0.911894]  netlink_rcv_skb (net/netlink/af_netlink.c:2550)
+[    0.912100]  netlink_unicast (net/netlink/af_netlink.c:1319 net/netlink/af_netlink.c:1344)
+[    0.912296]  ? __alloc_skb (net/core/skbuff.c:706)
+[    0.912484]  netlink_sendmsg (net/netlink/af_netlink.c:1894)
+[    0.912682]  sock_write_iter (net/socket.c:727 (discriminator 1) net/socket.c:742 (discriminator 1) net/socket.c:1195 (discriminator 1))
+[    0.912880]  vfs_write (fs/read_write.c:593 fs/read_write.c:686)
+[    0.913077]  ksys_write (fs/read_write.c:738)
+[    0.913252]  do_syscall_64 (arch/x86/entry/syscall_64.c:63 (discriminator 1) arch/x86/entry/syscall_64.c:94 (discriminator 1))
+[    0.913438]  entry_SYSCALL_64_after_hwframe (arch/x86/entry/entry_64.S:131)
+[    0.913687] RIP: 0033:0x424c34
+[    0.913844] Code: 89 02 48 c7 c0 ff ff ff ff eb bd 66 2e 0f 1f 84 00 00 00 00 00 90 f3 0f 1e fa 80 3d 2d 44 09 00 00 74 13 b8 01 00 00 00 0f 05 9
+
+Code starting with the faulting instruction
+===========================================
+   0:	89 02                	mov    %eax,(%rdx)
+   2:	48 c7 c0 ff ff ff ff 	mov    $0xffffffffffffffff,%rax
+   9:	eb bd                	jmp    0xffffffffffffffc8
+   b:	66 2e 0f 1f 84 00 00 	cs nopw 0x0(%rax,%rax,1)
+  12:	00 00 00
+  15:	90                   	nop
+  16:	f3 0f 1e fa          	endbr64
+  1a:	80 3d 2d 44 09 00 00 	cmpb   $0x0,0x9442d(%rip)        # 0x9444e
+  21:	74 13                	je     0x36
+  23:	b8 01 00 00 00       	mov    $0x1,%eax
+  28:	0f 05                	syscall
+  2a:	09                   	.byte 0x9
+[    0.914807] RSP: 002b:00007ffea1938b78 EFLAGS: 00000202 ORIG_RAX: 0000000000000001
+[    0.915197] RAX: ffffffffffffffda RBX: 0000000000000001 RCX: 0000000000424c34
+[    0.915556] RDX: 000000000000003c RSI: 000000002af378c0 RDI: 0000000000000003
+[    0.915912] RBP: 00007ffea1938bc0 R08: 00000000004b8820 R09: 0000000000000000
+[    0.916297] R10: 0000000000000001 R11: 0000000000000202 R12: 00007ffea1938d28
+[    0.916652] R13: 00007ffea1938d38 R14: 00000000004b3828 R15: 0000000000000001
+[    0.917039]  </TASK>
+[    0.917158] Modules linked in:
+[    0.917316] CR2: 0000000000000000
+[    0.917484] ---[ end trace 0000000000000000 ]---
+[    0.917717] RIP: 0010:qfq_deactivate_agg (include/linux/list.h:992 (discriminator 2) include/linux/list.h:1006 (discriminator 2) net/sched/sch_qfq.c:1367 (discriminator 2) net/sched/sch_qfq.c:1393 (discriminator 2))
+[    0.917978] Code: 0f 84 4d 01 00 00 48 89 70 18 8b 4b 10 48 c7 c2 ff ff ff ff 48 8b 78 08 48 d3 e2 48 21 f2 48 2b 13 48 8b 30 48 d3 ea 8b 4b 18 0
+
+Code starting with the faulting instruction
+===========================================
+   0:	0f 84 4d 01 00 00    	je     0x153
+   6:	48 89 70 18          	mov    %rsi,0x18(%rax)
+   a:	8b 4b 10             	mov    0x10(%rbx),%ecx
+   d:	48 c7 c2 ff ff ff ff 	mov    $0xffffffffffffffff,%rdx
+  14:	48 8b 78 08          	mov    0x8(%rax),%rdi
+  18:	48 d3 e2             	shl    %cl,%rdx
+  1b:	48 21 f2             	and    %rsi,%rdx
+  1e:	48 2b 13             	sub    (%rbx),%rdx
+  21:	48 8b 30             	mov    (%rax),%rsi
+  24:	48 d3 ea             	shr    %cl,%rdx
+  27:	8b 4b 18             	mov    0x18(%rbx),%ecx
+	...
+[    0.918902] RSP: 0018:ffffc900004a39a0 EFLAGS: 00010246
+[    0.919198] RAX: ffff8881043a0880 RBX: ffff888102953340 RCX: 0000000000000000
+[    0.919559] RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000000
+[    0.919908] RBP: ffff888102952180 R08: 0000000000000000 R09: 0000000000000000
+[    0.920289] R10: ffff8881043a0000 R11: 0000000000000000 R12: ffff888102952000
+[    0.920648] R13: ffff888102952180 R14: ffff8881043a0ad8 R15: ffff8881043a0880
+[    0.921014] FS:  000000002a1a0380(0000) GS:ffff888196d8d000(0000) knlGS:0000000000000000
+[    0.921424] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    0.921710] CR2: 0000000000000000 CR3: 0000000102993002 CR4: 0000000000772ef0
+[    0.922097] PKRU: 55555554
+[    0.922240] Kernel panic - not syncing: Fatal exception
+[    0.922590] Kernel Offset: disabled
+
+Fixes: 0545a3037773 ("pkt_sched: QFQ - quick fair queue scheduler")
+Signed-off-by: Xiang Mei <xmei5@asu.edu>
+Link: https://patch.msgid.link/20260106034100.1780779-1-xmei5@asu.edu
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c                                | 15 ++++++++++++---
- .../bpf/prog_tests/xdp_context_test_run.c         |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ net/sched/sch_qfq.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 1e598c858a145..b4a912ed8f2ec 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -630,7 +630,7 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
- 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
- 	void *data;
+diff --git a/net/sched/sch_qfq.c b/net/sched/sch_qfq.c
+index 896ff7c741110..80a7173843b90 100644
+--- a/net/sched/sch_qfq.c
++++ b/net/sched/sch_qfq.c
+@@ -1483,7 +1483,7 @@ static void qfq_reset_qdisc(struct Qdisc *sch)
  
--	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
-+	if (user_size > PAGE_SIZE - headroom - tailroom)
- 		return ERR_PTR(-EINVAL);
+ 	for (i = 0; i < q->clhash.hashsize; i++) {
+ 		hlist_for_each_entry(cl, &q->clhash.hash[i], common.hnode) {
+-			if (cl->qdisc->q.qlen > 0)
++			if (cl_is_active(cl))
+ 				qfq_deactivate_class(q, cl);
  
- 	size = SKB_DATA_ALIGN(size);
-@@ -964,6 +964,9 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
- 	if (kattr->test.flags || kattr->test.cpu || kattr->test.batch_size)
- 		return -EINVAL;
- 
-+	if (size < ETH_HLEN)
-+		return -EINVAL;
-+
- 	data = bpf_test_init(kattr, kattr->test.data_size_in,
- 			     size, NET_SKB_PAD + NET_IP_ALIGN,
- 			     SKB_DATA_ALIGN(sizeof(struct skb_shared_info)));
-@@ -1144,7 +1147,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- {
- 	bool do_live = (kattr->test.flags & BPF_F_TEST_XDP_LIVE_FRAMES);
- 	u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--	u32 retval = 0, duration, max_linear_sz, size;
-+	u32 retval = 0, meta_sz = 0, duration, max_linear_sz, size;
- 	u32 linear_sz = kattr->test.data_size_in;
- 	u32 batch_size = kattr->test.batch_size;
- 	u32 headroom = XDP_PACKET_HEADROOM;
-@@ -1183,13 +1186,16 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 
- 	if (ctx) {
- 		/* There can't be user provided data before the meta data */
--		if (ctx->data_meta || ctx->data_end != kattr->test.data_size_in ||
-+		if (ctx->data_meta || ctx->data_end > kattr->test.data_size_in ||
- 		    ctx->data > ctx->data_end ||
- 		    unlikely(xdp_metalen_invalid(ctx->data)) ||
- 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
- 			goto free_ctx;
- 		/* Meta data is allocated from the headroom */
- 		headroom -= ctx->data;
-+
-+		meta_sz = ctx->data;
-+		linear_sz = ctx->data_end;
- 	}
- 
- 	max_linear_sz = PAGE_SIZE - headroom - tailroom;
-@@ -1199,6 +1205,9 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 	if (do_live && kattr->test.data_size_in > linear_sz)
- 		goto free_ctx;
- 
-+	if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
-+		return -EINVAL;
-+
- 	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
- 	if (IS_ERR(data)) {
- 		ret = PTR_ERR(data);
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index ab4952b9fb1d4..eab8625aad3b6 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -80,9 +80,7 @@ void test_xdp_context_test_run(void)
- 	/* Meta data must be 32 bytes or smaller */
- 	test_xdp_context_error(prog_fd, opts, 0, 36, sizeof(data), 0, 0, 0);
- 
--	/* Total size of data must match data_end - data_meta */
--	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
--			       sizeof(data) - 1, 0, 0, 0);
-+	/* Total size of data must be data_end - data_meta or larger */
- 	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
- 			       sizeof(data) + 1, 0, 0, 0);
- 
+ 			qdisc_reset(cl->qdisc);
 -- 
 2.51.0
 
