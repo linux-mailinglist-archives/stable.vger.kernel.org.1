@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209258-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E37D4D27149
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:04:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1F2E5D267A7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B24C731DF1DC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5BF93065B7B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8243E3D668A;
-	Thu, 15 Jan 2026 17:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AB2263D3300;
+	Thu, 15 Jan 2026 17:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aC3iT64v"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t+92Zpzo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45FBA3D6491;
-	Thu, 15 Jan 2026 17:49:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55BC93D3017;
+	Thu, 15 Jan 2026 17:29:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499377; cv=none; b=TPglZ9mzP7oU1rY/wrjm+Oz8KZk9CjHF67NDoUPLLbnq6WKuZJUZtA2lfc4oCB0Xp3lyhR2qeMpWc/Y8hsTUXPrCTwbIRuukgYCs9QSf+Sjb483DbY0R1zlYK0HgrY6ggS8oxsC9t21+rqgroI4dd2Z0d5lOeM0MlUwcN3lTv4Q=
+	t=1768498184; cv=none; b=E317kU5x1MEoB92x3HPX7WC/Oi4ZTCl80POsxq4CNLr9dQy2OuV9VT0NkSXrrV6gj5lT0WxPm8Bh+j8dqSEqy7iLz7XnO3ywtd4HyqSCCgBupoY0iSdEeqztXRWgCSZLRsmugQweNdi8idjmicLHJyh6WUfGNMmv944VdIjV8Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499377; c=relaxed/simple;
-	bh=AGP5hiLszOVdisoVkySlOWLCPhGG5Bq4yS8pqyhtaS8=;
+	s=arc-20240116; t=1768498184; c=relaxed/simple;
+	bh=CuTGPElDfxPFeAo3fuVjd9Pfi82HBXO01hCcJ8c+3Io=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g6F3QGpKG8P4aKth6p8IKZ8cclLzIjZq2qsdjtMkWDYheEBePyHhHHkOJR+VH+0cP0IIfB0CRz6HnxpfTMHWRw3n485x3LAXWjiDP61Ct4K+P1DJ6LQet5Z3bdC4NlH0dGXuS1wXa9ShVB1pbXA5/4zVJddQXUD1aQQNypLp9Zs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aC3iT64v; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFC6C19422;
-	Thu, 15 Jan 2026 17:49:36 +0000 (UTC)
+	 MIME-Version; b=qi64fg+CXT3scZfugjQIXw56lEqepNV2I95/rWQqsomXjD5Bx16zv4u60dRGZRpoLHezAQyD2ZDv9Nq7w+UUpNhWrjhbibklPAFCITfMSDkDCXH/19heRqJHkX18RPNLVC805FEddnysxbM8VEcVHQrCHtwecvXAridXgFmVzPA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t+92Zpzo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4574C116D0;
+	Thu, 15 Jan 2026 17:29:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499376;
-	bh=AGP5hiLszOVdisoVkySlOWLCPhGG5Bq4yS8pqyhtaS8=;
+	s=korg; t=1768498184;
+	bh=CuTGPElDfxPFeAo3fuVjd9Pfi82HBXO01hCcJ8c+3Io=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aC3iT64vze8OUoDWjML8Huyqi1t+Od/H/MZbXUZ8Swf3QTS/SLYAyDQlfOiizMWAL
-	 t4ynjZQDVww+a+CPykokOapVgtYSBXcvp1p7aIXpVvknK+qKgARv3KyIkPUEiplrHS
-	 pXorrtwUTBu+LjWZllY+dLAHG13zVelmVl44+LYo=
+	b=t+92ZpzozaWQv7htkaRrAbYbjEfOW/dm5t8ujcjp5dvev89qQPCfyvsFkqt3IOdyu
+	 T97PHgndLwmGMIAPJebBASYhXXbICPmZoQCeMOC3kFSCORa2gF9ZBT76UlU+/SFWPd
+	 YxTdA0mltV1h5MH/YLPFMwcvTL7oOlI/2tyZFvBg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matthias Schiffer <matthias.schiffer@tq-group.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Kevin Hilman <khilman@baylibre.com>,
+	Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>,
+	Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 206/451] ti-sysc: allow OMAP2 and OMAP4 timers to be reserved on AM33xx
+Subject: [PATCH 5.15 341/554] Bluetooth: btusb: revert use of devm_kzalloc in btusb
 Date: Thu, 15 Jan 2026 17:46:47 +0100
-Message-ID: <20260115164238.352745213@linuxfoundation.org>
+Message-ID: <20260115164258.573608245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthias Schiffer <matthias.schiffer@tq-group.com>
+From: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
 
-[ Upstream commit 3f61783920504b2cf99330b372d82914bb004d8e ]
+[ Upstream commit 252714f1e8bdd542025b16321c790458014d6880 ]
 
-am33xx.dtsi has the same clock setup as am35xx.dtsi, setting
-ti,no-reset-on-init and ti,no-idle on timer1_target and timer2_target,
-so AM33 needs the same workaround as AM35 to avoid ti-sysc probe
-failing on certain target modules.
+This reverts commit 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in
+btusb.c file").
 
-Signed-off-by: Matthias Schiffer <matthias.schiffer@tq-group.com>
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://lore.kernel.org/r/20250825131114.2206804-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Kevin Hilman <khilman@baylibre.com>
+In btusb_probe(), we use devm_kzalloc() to allocate the btusb data. This
+ties the lifetime of all the btusb data to the binding of a driver to
+one interface, INTF. In a driver that binds to other interfaces, ISOC
+and DIAG, this is an accident waiting to happen.
+
+The issue is revealed in btusb_disconnect(), where calling
+usb_driver_release_interface(&btusb_driver, data->intf) will have devm
+free the data that is also being used by the other interfaces of the
+driver that may not be released yet.
+
+To fix this, revert the use of devm and go back to freeing memory
+explicitly.
+
+Fixes: 98921dbd00c4e ("Bluetooth: Use devm_kzalloc in btusb.c file")
+Signed-off-by: Raphael Pinsonneault-Thibeault <rpthibeault@gmail.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ drivers/bluetooth/btusb.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index ed38c25fb0c5..fe5b0997aee6 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -37,6 +37,7 @@ enum sysc_soc {
- 	SOC_UNKNOWN,
- 	SOC_2420,
- 	SOC_2430,
-+	SOC_AM33,
- 	SOC_3430,
- 	SOC_AM35,
- 	SOC_3630,
-@@ -2933,6 +2934,7 @@ static void ti_sysc_idle(struct work_struct *work)
- static const struct soc_device_attribute sysc_soc_match[] = {
- 	SOC_FLAG("OMAP242*", SOC_2420),
- 	SOC_FLAG("OMAP243*", SOC_2430),
-+	SOC_FLAG("AM33*", SOC_AM33),
- 	SOC_FLAG("AM35*", SOC_AM35),
- 	SOC_FLAG("OMAP3[45]*", SOC_3430),
- 	SOC_FLAG("OMAP3[67]*", SOC_3630),
-@@ -3121,10 +3123,15 @@ static int sysc_check_active_timer(struct sysc *ddata)
- 	 * can be dropped if we stop supporting old beagleboard revisions
- 	 * A to B4 at some point.
- 	 */
--	if (sysc_soc->soc == SOC_3430 || sysc_soc->soc == SOC_AM35)
-+	switch (sysc_soc->soc) {
-+	case SOC_AM33:
-+	case SOC_3430:
-+	case SOC_AM35:
- 		error = -ENXIO;
--	else
-+		break;
-+	default:
- 		error = -EBUSY;
+diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
+index 95483a8d7b1e..c447e2e9417b 100644
+--- a/drivers/bluetooth/btusb.c
++++ b/drivers/bluetooth/btusb.c
+@@ -3788,7 +3788,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 			return -ENODEV;
+ 	}
+ 
+-	data = devm_kzalloc(&intf->dev, sizeof(*data), GFP_KERNEL);
++	data = kzalloc(sizeof(*data), GFP_KERNEL);
+ 	if (!data)
+ 		return -ENOMEM;
+ 
+@@ -3811,8 +3811,10 @@ static int btusb_probe(struct usb_interface *intf,
+ 		}
+ 	}
+ 
+-	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep)
++	if (!data->intr_ep || !data->bulk_tx_ep || !data->bulk_rx_ep) {
++		kfree(data);
+ 		return -ENODEV;
 +	}
  
- 	if ((ddata->cfg.quirks & SYSC_QUIRK_NO_RESET_ON_INIT) &&
- 	    (ddata->cfg.quirks & SYSC_QUIRK_NO_IDLE))
+ 	if (id->driver_info & BTUSB_AMP) {
+ 		data->cmdreq_type = USB_TYPE_CLASS | 0x01;
+@@ -3855,8 +3857,10 @@ static int btusb_probe(struct usb_interface *intf,
+ 	data->recv_acl = hci_recv_frame;
+ 
+ 	hdev = hci_alloc_dev_priv(priv_size);
+-	if (!hdev)
++	if (!hdev) {
++		kfree(data);
+ 		return -ENOMEM;
++	}
+ 
+ 	hdev->bus = HCI_USB;
+ 	hci_set_drvdata(hdev, data);
+@@ -4104,6 +4108,7 @@ static int btusb_probe(struct usb_interface *intf,
+ 	if (data->reset_gpio)
+ 		gpiod_put(data->reset_gpio);
+ 	hci_free_dev(hdev);
++	kfree(data);
+ 	return err;
+ }
+ 
+@@ -4149,6 +4154,7 @@ static void btusb_disconnect(struct usb_interface *intf)
+ 	}
+ 
+ 	hci_free_dev(hdev);
++	kfree(data);
+ }
+ 
+ #ifdef CONFIG_PM
 -- 
 2.51.0
 
