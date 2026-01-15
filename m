@@ -1,51 +1,53 @@
-Return-Path: <stable+bounces-208549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208555-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38AE3D25EB3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 403E7D25F19
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 796B6300751C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0592E3012C6F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 77637349B0A;
-	Thu, 15 Jan 2026 16:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 959E93B530C;
+	Thu, 15 Jan 2026 16:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h6cN1SV2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r/v68POQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B12325228D;
-	Thu, 15 Jan 2026 16:56:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5938C394487;
+	Thu, 15 Jan 2026 16:56:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496165; cv=none; b=Ty3GLIJq8jYIC37PhUDyd3HgtP6mvprAbQd3PzHfhPYM+PZoTFy04lhg6BoyxHgMTM13HYBMLACtAZv5NL9bEbDU1GRr8taELT+Y7DKzt6lHLhRRrg6rVv3GrwTH7oeJD10JngXlXa0IcAFXFLEsUHZyctqet6Q9tm8V2m56M/A=
+	t=1768496182; cv=none; b=hbo0n9+naj1NwJcRiWiUdZMgKdPRGUZQfFIxqNIx65UHoMAkVP8pjOR5wPlpTtnbPBEE14F5cRsHkmj7C98wypzconb2aGVN6Jv7mJ5tvc85/RT0NeAdhwNH/Rn/IalK5PHX44FU77ek13ZTCHKwXMJ9+Pyz6zUp6l8x6ezX4bw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496165; c=relaxed/simple;
-	bh=sjq8KJ4oENh2JYLAmw04qFNVg0QdgAgDpCnIJSJrhkM=;
+	s=arc-20240116; t=1768496182; c=relaxed/simple;
+	bh=WQdL9SjsMGvVqpQaOCGEC+UHc5zg/EH0KTOkawcnI5E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RAC7l+ovC6PJWxJ94F3pz/r2lL8fZT73zLq1KT36JkOYBkQrCGbIsUp3SSZ41Ah53Zth6toOnN1j582UpxvhMOw3LKytxZGbl5vDqw6G9d4Kr6/zICUAfxP7yQtc7TYhJisoHNUsyP3fCvfAJdjSBS9ASjXcLSYPgfOUi4+C3LE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h6cN1SV2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0254C116D0;
-	Thu, 15 Jan 2026 16:56:04 +0000 (UTC)
+	 MIME-Version; b=sEST/3uTXyvdPsY42XjazEw3312IOTYkAwAmfQXyty6giR6TvsXxUdT7acGomlFbqm63geMGPP3iicFHPXCQA/NQtoS45sHTKqNFQhXhQCxYgTtnQZSDlJacObw4S6N8+QPhHd81SH2y9L9kFYtsxYbOsGPUiU7oUtVJU0wQQjc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r/v68POQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98508C116D0;
+	Thu, 15 Jan 2026 16:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496165;
-	bh=sjq8KJ4oENh2JYLAmw04qFNVg0QdgAgDpCnIJSJrhkM=;
+	s=korg; t=1768496182;
+	bh=WQdL9SjsMGvVqpQaOCGEC+UHc5zg/EH0KTOkawcnI5E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h6cN1SV20QNxITOvRpPyzt9cT1I26O69m5eMKJ1pXStugYTsIC+Apza73oah1dew7
-	 GqGrSq6Zpt/W8kzP8emHvRyw4liPu/NLaFZCY5Eox0OxfPNcgR0lH/d+4/8zpBpTtm
-	 5EsxHcVX3C29HP48Xt00g4awzDxzMt1vT0y3IkwY=
+	b=r/v68POQKufGWRAHJnCV985M5GVrxhsSC5AN0Wnml60gEwHS9ySmY1N40KWiYPpVn
+	 KA/6TL3no5jnekhBVcwq0H0W8A6kgLWCQKEyIgT3j6+JhaOg7PTeIJFxqUcsdMyXz0
+	 B8ez9xrUkpQukelQzp2aogTOsdDKXamveSbobVOY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Gibson <daniel@gibson.sh>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Even Xu <even.xu@intel.com>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Benjamin Tissoires <bentiss@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 073/181] gpio: it87: balance superio enter/exit calls in error path
-Date: Thu, 15 Jan 2026 17:46:50 +0100
-Message-ID: <20260115164204.959139064@linuxfoundation.org>
+Subject: [PATCH 6.18 074/181] HID: Intel-thc-hid: Intel-thc: fix dma_unmap_sg() nents value
+Date: Thu, 15 Jan 2026 17:46:51 +0100
+Message-ID: <20260115164204.995033570@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -64,61 +66,74 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-[ Upstream commit a05543d6b05ba998fdbb4b383319ae5121bb7407 ]
+[ Upstream commit 0e13150c1a13a3a3d6184c24bfd080d5999945d1 ]
 
-We always call superio_enter() in it87_gpio_direction_out() but only
-call superio_exit() if the call to it87_gpio_set() succeeds. Move the
-label to balance the calls in error path as well.
+The `dma_unmap_sg()` functions should be called with the same nents as the
+`dma_map_sg()`, not the value the map function returned.
 
-Fixes: ef877a159072 ("gpio: it87: use new line value setter callbacks")
-Reported-by: Daniel Gibson <daniel@gibson.sh>
-Closes: https://lore.kernel.org/all/bd0a00e3-9b8c-43e8-8772-e67b91f4c71e@gibson.sh/
-Link: https://lore.kernel.org/r/20251210055026.23146-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Save the number of entries in struct thc_dma_configuration.
+
+Fixes: a688404b2e20 ("HID: intel-thc-hid: intel-thc: Add THC DMA interfaces")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Reviewed-by: Even Xu <even.xu@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-it87.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c | 4 +++-
+ drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.h | 2 ++
+ 2 files changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpio/gpio-it87.c b/drivers/gpio/gpio-it87.c
-index 5d677bcfccf26..2ad3c239367bc 100644
---- a/drivers/gpio/gpio-it87.c
-+++ b/drivers/gpio/gpio-it87.c
-@@ -12,6 +12,7 @@
+diff --git a/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c b/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c
+index 82b8854843e05..a0c368aa7979c 100644
+--- a/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c
++++ b/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.c
+@@ -232,6 +232,7 @@ static int setup_dma_buffers(struct thc_device *dev,
+ 		return 0;
  
- #define pr_fmt(fmt) KBUILD_MODNAME ": " fmt
+ 	memset(config->sgls, 0, sizeof(config->sgls));
++	memset(config->sgls_nent_pages, 0, sizeof(config->sgls_nent_pages));
+ 	memset(config->sgls_nent, 0, sizeof(config->sgls_nent));
  
-+#include <linux/cleanup.h>
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-@@ -241,23 +242,17 @@ static int it87_gpio_direction_out(struct gpio_chip *chip,
- 	mask = 1 << (gpio_num % 8);
- 	group = (gpio_num / 8);
+ 	cpu_addr = dma_alloc_coherent(dev->dev, prd_tbls_size,
+@@ -254,6 +255,7 @@ static int setup_dma_buffers(struct thc_device *dev,
+ 		}
+ 		count = dma_map_sg(dev->dev, config->sgls[i], nent, dir);
  
--	spin_lock(&it87_gpio->lock);
-+	guard(spinlock)(&it87_gpio->lock);
++		config->sgls_nent_pages[i] = nent;
+ 		config->sgls_nent[i] = count;
+ 	}
  
- 	rc = superio_enter();
- 	if (rc)
--		goto exit;
-+		return rc;
+@@ -299,7 +301,7 @@ static void release_dma_buffers(struct thc_device *dev,
+ 			continue;
  
- 	/* set the output enable bit */
- 	superio_set_mask(mask, group + it87_gpio->output_base);
+ 		dma_unmap_sg(dev->dev, config->sgls[i],
+-			     config->sgls_nent[i],
++			     config->sgls_nent_pages[i],
+ 			     config->dir);
  
- 	rc = it87_gpio_set(chip, gpio_num, val);
--	if (rc)
--		goto exit;
--
- 	superio_exit();
--
--exit:
--	spin_unlock(&it87_gpio->lock);
- 	return rc;
- }
+ 		sgl_free(config->sgls[i]);
+diff --git a/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.h b/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.h
+index 78917400492ca..541d33995baf3 100644
+--- a/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.h
++++ b/drivers/hid/intel-thc-hid/intel-thc/intel-thc-dma.h
+@@ -91,6 +91,7 @@ struct thc_prd_table {
+  * @dir: Direction of DMA for this config
+  * @prd_tbls: PRD tables for current DMA
+  * @sgls: Array of pointers to scatter-gather lists
++ * @sgls_nent_pages: Number of pages per scatter-gather list
+  * @sgls_nent: Actual number of entries per scatter-gather list
+  * @prd_tbl_num: Actual number of PRD tables
+  * @max_packet_size: Size of the buffer needed for 1 DMA message (1 PRD table)
+@@ -107,6 +108,7 @@ struct thc_dma_configuration {
+ 
+ 	struct thc_prd_table *prd_tbls;
+ 	struct scatterlist *sgls[PRD_TABLES_NUM];
++	u8 sgls_nent_pages[PRD_TABLES_NUM];
+ 	u8 sgls_nent[PRD_TABLES_NUM];
+ 	u8 prd_tbl_num;
  
 -- 
 2.51.0
