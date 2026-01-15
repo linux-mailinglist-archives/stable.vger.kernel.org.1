@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209263-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209682-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9C2F4D26802
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 961E3D271FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6D6E030499CA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2B4D433E3EF8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D27B3C1FE0;
-	Thu, 15 Jan 2026 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5973C3D7263;
+	Thu, 15 Jan 2026 17:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0bkO6qKU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pkxa0fWm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2104D3C009A;
-	Thu, 15 Jan 2026 17:29:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2793D2FE3;
+	Thu, 15 Jan 2026 17:49:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498198; cv=none; b=Yk73sahuXW2bxKnmSQRQ/804/duHN9n5QCryWrUZNIresj6Xkbez0UggHZm2Yr9GKrY0tGE8qwMTfYvz20xQK9ZBbINjPIyiI4At1zSEPh6JQEiZFZGBQtWTWzBfz0h4mcXvT8ik3qIZpQ/1pHbOUluXbrEaIPVHYdvcyzmY3g8=
+	t=1768499391; cv=none; b=G+Xa82zFzcgzcA6nTeNpz3yN38dMJOzHt2e+y3tgW/l7PHTm3i9/sETsjnDo3bwdSwiXzZ7dqumMdiB+H5yvbzTvEwp3Hiq+2AgyDvbkx+13Smdkgn4n2we8R9I0f0toJFvDgx1xT2JwC9WytUernLOGAKP0qSuAFgUlORLw7jw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498198; c=relaxed/simple;
-	bh=SC5ZHa0tYp0NWCwCJGbs1gB6cRQ2jD9mVuENi9AJ6F4=;
+	s=arc-20240116; t=1768499391; c=relaxed/simple;
+	bh=NeK6aB+ntuhWbppWJ68SvEiHcLev3QKMEdk6hHXnJ9w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GrCwcBXP51pWGIaiZKdMRHuahIfDhxJ/dRb9T34FnirsKl1Tt61/GeZ0v+gazhemEM7mK1KdZik24oU2WKNdCqBp3Ofwhhaeu5MYxVB98BBIBd/lY76aHSiAw1dodVZkQ9O5ywVwY5ES/Telrq8u4DFNOBjzjlFEiPAlHMWbqOw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0bkO6qKU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2B0DC116D0;
-	Thu, 15 Jan 2026 17:29:57 +0000 (UTC)
+	 MIME-Version; b=D21lBmdgUKJs8zOFPK3Cu8j0/QFdv9lVZibhSsI0cCPAk/hDK5t1qipFMzugnsp46cwVyJL1TGAo7U7ugiRs8zL9bT7WotvvzVMmFAaRBRpJJjSFvP/awcrilSqjhb/qcGg7OditfpbMvINELNPvp67wbydyTYWuQRi87IaYa8A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pkxa0fWm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F911C116D0;
+	Thu, 15 Jan 2026 17:49:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498198;
-	bh=SC5ZHa0tYp0NWCwCJGbs1gB6cRQ2jD9mVuENi9AJ6F4=;
+	s=korg; t=1768499391;
+	bh=NeK6aB+ntuhWbppWJ68SvEiHcLev3QKMEdk6hHXnJ9w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0bkO6qKU8826CX9BgRLGRseDlpM9n6pt9ToDSHmGJgW71QCmOvbr90ZFLIZqTWCns
-	 ltAUY7N9KeboqTvp24NSJSq4xahUapYN/hewoUY1NYDlycl0KgjjANLDEJyGU0IElv
-	 rwksBcCy6eKsHEEMuFUF1mOFoNA+Z04IjdSf1+fQ=
+	b=Pkxa0fWmbXSiia6eCkWY5M90k+jEohb3NK7ZsTqXPi9nn5mBMbzC/PxU4bk9D4/jU
+	 3jWpYnHj1dZ0Qg2K1Q7Rj/scuUZLhaP+MF3DKu2gp9EGrtEV/WLQtKofiXG8lcRObR
+	 vVmainnQCNuSQsXtEX+TMA44Xlf2s5kq0leYTgBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Li Qiang <liqiang01@kylinos.cn>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 346/554] platform/x86: msi-laptop: add missing sysfs_remove_group()
+Subject: [PATCH 5.10 211/451] via_wdt: fix critical boot hang due to unnamed resource allocation
 Date: Thu, 15 Jan 2026 17:46:52 +0100
-Message-ID: <20260115164258.752933831@linuxfoundation.org>
+Message-ID: <20260115164238.533725674@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,44 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Li Qiang <liqiang01@kylinos.cn>
 
-[ Upstream commit 1461209cf813b6ee6d40f29b96b544587df6d2b1 ]
+[ Upstream commit 7aa31ee9ec92915926e74731378c009c9cc04928 ]
 
-A sysfs group is created in msi_init() when old_ec_model is enabled, but
-never removed. Remove the msipf_old_attribute_group in that case.
+The VIA watchdog driver uses allocate_resource() to reserve a MMIO
+region for the watchdog control register. However, the allocated
+resource was not given a name, which causes the kernel resource tree
+to contain an entry marked as "<BAD>" under /proc/iomem on x86
+platforms.
 
-Fixes: 03696e51d75a ("msi-laptop: Disable brightness control for new EC")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20251217103617.27668-2-fourier.thomas@gmail.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+During boot, this unnamed resource can lead to a critical hang because
+subsequent resource lookups and conflict checks fail to handle the
+invalid entry properly.
+
+Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/msi-laptop.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/watchdog/via_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/platform/x86/msi-laptop.c b/drivers/platform/x86/msi-laptop.c
-index dfb4af759aa7..fd6b3383ac4f 100644
---- a/drivers/platform/x86/msi-laptop.c
-+++ b/drivers/platform/x86/msi-laptop.c
-@@ -1146,6 +1146,9 @@ static void __exit msi_cleanup(void)
- 	sysfs_remove_group(&msipf_device->dev.kobj, &msipf_attribute_group);
- 	if (!quirks->old_ec_model && threeg_exists)
- 		device_remove_file(&msipf_device->dev, &dev_attr_threeg);
-+	if (quirks->old_ec_model)
-+		sysfs_remove_group(&msipf_device->dev.kobj,
-+				   &msipf_old_attribute_group);
- 	platform_device_unregister(msipf_device);
- 	platform_driver_unregister(&msipf_driver);
- 	backlight_device_unregister(msibl_device);
+diff --git a/drivers/watchdog/via_wdt.c b/drivers/watchdog/via_wdt.c
+index eeb39f96e72e..c1ed3ce153cf 100644
+--- a/drivers/watchdog/via_wdt.c
++++ b/drivers/watchdog/via_wdt.c
+@@ -165,6 +165,7 @@ static int wdt_probe(struct pci_dev *pdev,
+ 		dev_err(&pdev->dev, "cannot enable PCI device\n");
+ 		return -ENODEV;
+ 	}
++	wdt_res.name = "via_wdt";
+ 
+ 	/*
+ 	 * Allocate a MMIO region which contains watchdog control register
 -- 
 2.51.0
 
