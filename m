@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-208774-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209739-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADA8FD26384
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D2E0D27D69
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:56:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0EF2B3166D7D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:07 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1AF753041929
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6913BF2FA;
-	Thu, 15 Jan 2026 17:06:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E4A83C1FD6;
+	Thu, 15 Jan 2026 17:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kccL8iG6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JwX9tHWw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BAB39A805;
-	Thu, 15 Jan 2026 17:06:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 402C93BC4D8;
+	Thu, 15 Jan 2026 17:52:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496805; cv=none; b=G/0QUVkYbNAPqclVKptXAl5SWO01gqGOvH2jZw6cZKne90i58rqv9XyTd9fbEua9f8GScbJxUj7qvx3UgRp/oCYw44t8agSZ2HXJJ6N7P8d++fKR5y1mvmuULkXBh3ghLD3Qdg2JUIV+uFKf4lEUtr5iWJtBUY5iZoELDHAiQL0=
+	t=1768499554; cv=none; b=hLKq1p4O6SInXmzVN3jVgl9+yYdTHxuL11gzFQ2dGLLWu4eKPFE5aKA3uRe2bJId1O7zNt+G1CDCaU/8Zw5ngEXIMT7BgXD5w1MEsKPOrbej3C/EzM5D5U4ilNQX1++LRSr05a2ZL/JFoykm7jivE+F94v1jV0CM9CQeo3z6zWw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496805; c=relaxed/simple;
-	bh=3Vk42v+mGwXc8lGbyZ+9g4nsg/zmKSsejBoNIn1G9mk=;
+	s=arc-20240116; t=1768499554; c=relaxed/simple;
+	bh=VsAuiMGR0cw4hngnJ6xTq/0XsIATkRdOdMpOCVDAkbM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=scT/F8Li59PqpLAyseDQffNqx9EGyOi5+hNLLe2icPTpCKIiDed9BehhxZsAOOtxJOGXxUCFrTkRJ7rF0JinxNMInEy/3aNygZdDQZ2bKaMMtDThk8PFijFQKWOrrEkefi+vH9aC+zK0OHjWm1RSpz9hzvUYqsTF+CTX2EncKp4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kccL8iG6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EB2C116D0;
-	Thu, 15 Jan 2026 17:06:44 +0000 (UTC)
+	 MIME-Version; b=g4qxOkkFrhcaSzNW/CbXpHHnfrOlvYhVakUPI42agJmgal6ghrMPmIDRj9YxkbOx+XM9GZbJ5oIyVW8YpItS9E9hSI8Z5ykfxxMz3AdckUEhYb3i0f767XAxeBNzXmpjOCQHPxbG+OKq9sYk1pG1W14MOtFjiKhHNrzFAKdEbR0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JwX9tHWw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B7A5C116D0;
+	Thu, 15 Jan 2026 17:52:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496804;
-	bh=3Vk42v+mGwXc8lGbyZ+9g4nsg/zmKSsejBoNIn1G9mk=;
+	s=korg; t=1768499553;
+	bh=VsAuiMGR0cw4hngnJ6xTq/0XsIATkRdOdMpOCVDAkbM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kccL8iG67XVf9vUbxYA3+1BPUbV6uMqce7PTiWK6wTP7+rcH+TeIIP4yGuwEvh99M
-	 XkyiklovGL1Qa8R+Ve+iPwdXKKPMkN5ZfP4psjYg75ZR4E5ajjIBnVvjKEwKf7ev4O
-	 hvwfzq6HsScoYWAP1D+qGZgyAcpRyD4Bx9A2vmN8=
+	b=JwX9tHWwxGaLDVwvO5f7FGPqlEyO86FKbtzJ2lM8i7uCHzoWvzf9vmGpGU5Fj5a+8
+	 8qVtdn+ACT3ctq1VNQ3myXA/caBmB3bpU24VHm3tOmsjJJQsOhxELCD20uQgvRm54K
+	 8dZq/CBQDS6zfTxHPfEmRt5Z/t6762nmWYWaFUnk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 04/88] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
+	Yu Kuai <yukuai3@huawei.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.10 266/451] soc: amlogic: canvas: fix device leak on lookup
 Date: Thu, 15 Jan 2026 17:47:47 +0100
-Message-ID: <20260115164146.476971803@linuxfoundation.org>
+Message-ID: <20260115164240.509032989@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit a4e305ed60f7c41bbf9aabc16dd75267194e0de3 upstream.
+commit 32200f4828de9d7e6db379909898e718747f4e18 upstream.
 
-pdev can be null and free_ring: can be called in 1297 with a null
-pdev.
+Make sure to drop the reference taken to the canvas platform device when
+looking up its driver data.
 
-Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260106094731.25819-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Also note that commit 28f851e6afa8 ("soc: amlogic: canvas: add missing
+put_device() call in meson_canvas_get()") fixed the leak in a lookup
+error path, but the reference is still leaking on success.
+
+Fixes: d4983983d987 ("soc: amlogic: add meson-canvas driver")
+Cc: stable@vger.kernel.org	# 4.20: 28f851e6afa8
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://patch.msgid.link/20250926142454.5929-2-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/3com/3c59x.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/soc/amlogic/meson-canvas.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/3com/3c59x.c
-+++ b/drivers/net/ethernet/3com/3c59x.c
-@@ -1473,7 +1473,7 @@ static int vortex_probe1(struct device *
- 		return 0;
+--- a/drivers/soc/amlogic/meson-canvas.c
++++ b/drivers/soc/amlogic/meson-canvas.c
+@@ -72,10 +72,9 @@ struct meson_canvas *meson_canvas_get(st
+ 	 * current state, this driver probe cannot return -EPROBE_DEFER
+ 	 */
+ 	canvas = dev_get_drvdata(&canvas_pdev->dev);
+-	if (!canvas) {
+-		put_device(&canvas_pdev->dev);
++	put_device(&canvas_pdev->dev);
++	if (!canvas)
+ 		return ERR_PTR(-EINVAL);
+-	}
  
- free_ring:
--	dma_free_coherent(&pdev->dev,
-+	dma_free_coherent(gendev,
- 		sizeof(struct boom_rx_desc) * RX_RING_SIZE +
- 		sizeof(struct boom_tx_desc) * TX_RING_SIZE,
- 		vp->rx_ring, vp->rx_ring_dma);
+ 	return canvas;
+ }
 
 
 
