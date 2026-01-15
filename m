@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-209470-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209892-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 45D6FD26BED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:39 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A618D277FF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id DB3143072C0F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:55 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2260630B6957
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F6423A0E9A;
-	Thu, 15 Jan 2026 17:39:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 757F63D34B1;
+	Thu, 15 Jan 2026 17:59:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MGczjbq0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vWt2eZGZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5B6027A462;
-	Thu, 15 Jan 2026 17:39:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3690B3D34A9;
+	Thu, 15 Jan 2026 17:59:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498789; cv=none; b=lAnMTG0tGALHvdiDnkaxLutg3us7BiUWSqJcLlL8ObORZpmwzuQ1pCJdVXvyDtDUW4VMndntI7xl0hN8AEWY4f/2jeI1Y65oTBHm+fDjj4E2a+8KJUSZv4PdWW1UJz2EShZG4HNGWMxhwQ4Dm75Ko0z3Sm2dsbVUNEocoeq6gJU=
+	t=1768499989; cv=none; b=raFmUpkjNs9wsJhLo4vfh9T3kNMMLJMdnTxAwB8xZZN+6wVsKzptom+9LN0occT0HADFJ4sO2xjH8TrCucjgRSpMJAoPhDScto3ti9f2KxtrxOxiW8HDR/BaHRV3NshDGe8GyUzWznAaBqsqeSjSA3ntmHYE7y/WAB9I/0++9+s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498789; c=relaxed/simple;
-	bh=LkvJHMO5tsJf5+1OUBz+rXAlfaVNh/jaAsPbPBAtxDc=;
+	s=arc-20240116; t=1768499989; c=relaxed/simple;
+	bh=MX9DZa3R71a7Um8tCgEw3VdtEL+44S6O+5WbFKXFDFw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=sPu2A731iNWL06nHg7WU2Z2RECqWFHSjNrEQpJ/LGFOgfsNAS6dFO9RFxYujifhEgOpVG5VYux0s94/XUTZ5MI/9SEMkJXTZFHED2/F87HZ29Te2sWyIETOXmFHLfNrCcjbQCGb0xOREuTCP/eLzV4RmTQQ7P+wVTjtYN0LQCTI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MGczjbq0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D11CC19422;
-	Thu, 15 Jan 2026 17:39:48 +0000 (UTC)
+	 MIME-Version:Content-Type; b=fWVKgdV0o3vTZ9yE4ZuCqhwjp5b696K7M+kzRSiLXJZB4PCLLL+1sSM5NCC5iXqB8tXSEp6CbaNmOAUBTHbKwZn8kYd8UYsZJN3Wh7xU8LSmZQn920MCnswGtsbB/nuX+u+KaloBqpSTtJPCVnkyCXwyhdCzwfVaPpqYyR1+Ah0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vWt2eZGZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D24FC116D0;
+	Thu, 15 Jan 2026 17:59:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498789;
-	bh=LkvJHMO5tsJf5+1OUBz+rXAlfaVNh/jaAsPbPBAtxDc=;
+	s=korg; t=1768499988;
+	bh=MX9DZa3R71a7Um8tCgEw3VdtEL+44S6O+5WbFKXFDFw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MGczjbq0M4iFeswvSzJYV+S95/RwNdlwP2plC6iThCHljokY79I/qMeS62/n2RGN6
-	 Hvq1aP1N9FXjm1zVyTx72hJSBcv/AxPuYhi05zsjBwtnyDQG76uaJiKDKnI6Hs0hD0
-	 H+dz+rNHdf1qRHH36395FA14aOrRqAJrJ/HDmi4g=
+	b=vWt2eZGZqxbhffqYheOvYUW+UrEvX7wBycxkCKKwE9n91Sc5lEt6MMBQL4MgtOw7u
+	 HHK0MkootHaGYv6Vh2yVE+XKcP5ylXlqLzyKfcKCMcMMSiuwYZeUK+mjvA/2cBsyLd
+	 hxgG+F9gRm1dQUZ62CwMzSLu/l/BKktoQ5CEl+sA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20R=C3=A1bek?= <mrabek@redhat.com>,
-	Tomas Henzl <thenzl@redhat.com>,
-	Changhui Zhong <czhong@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 554/554] scsi: sg: Fix occasional bogus elapsed time that exceeds timeout
-Date: Thu, 15 Jan 2026 17:50:20 +0100
-Message-ID: <20260115164306.382356079@linuxfoundation.org>
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
+Subject: [PATCH 5.10 420/451] ext4: fix out-of-bound read in ext4_xattr_inode_dec_ref_all()
+Date: Thu, 15 Jan 2026 17:50:21 +0100
+Message-ID: <20260115164246.131525907@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,154 +62,196 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Rábek <mrabek@redhat.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 0e1677654259a2f3ccf728de1edde922a3c4ba57 ]
+[ Upstream commit 5701875f9609b000d91351eaa6bfd97fe2f157f4 ]
 
-A race condition was found in sg_proc_debug_helper(). It was observed on
-a system using an IBM LTO-9 SAS Tape Drive (ULTRIUM-TD9) and monitoring
-/proc/scsi/sg/debug every second. A very large elapsed time would
-sometimes appear. This is caused by two race conditions.
+There's issue as follows:
+BUG: KASAN: use-after-free in ext4_xattr_inode_dec_ref_all+0x6ff/0x790
+Read of size 4 at addr ffff88807b003000 by task syz-executor.0/15172
 
-We reproduced the issue with an IBM ULTRIUM-HH9 tape drive on an x86_64
-architecture. A patched kernel was built, and the race condition could
-not be observed anymore after the application of this patch. A
-reproducer C program utilising the scsi_debug module was also built by
-Changhui Zhong and can be viewed here:
+CPU: 3 PID: 15172 Comm: syz-executor.0
+Call Trace:
+ __dump_stack lib/dump_stack.c:82 [inline]
+ dump_stack+0xbe/0xfd lib/dump_stack.c:123
+ print_address_description.constprop.0+0x1e/0x280 mm/kasan/report.c:400
+ __kasan_report.cold+0x6c/0x84 mm/kasan/report.c:560
+ kasan_report+0x3a/0x50 mm/kasan/report.c:585
+ ext4_xattr_inode_dec_ref_all+0x6ff/0x790 fs/ext4/xattr.c:1137
+ ext4_xattr_delete_inode+0x4c7/0xda0 fs/ext4/xattr.c:2896
+ ext4_evict_inode+0xb3b/0x1670 fs/ext4/inode.c:323
+ evict+0x39f/0x880 fs/inode.c:622
+ iput_final fs/inode.c:1746 [inline]
+ iput fs/inode.c:1772 [inline]
+ iput+0x525/0x6c0 fs/inode.c:1758
+ ext4_orphan_cleanup fs/ext4/super.c:3298 [inline]
+ ext4_fill_super+0x8c57/0xba40 fs/ext4/super.c:5300
+ mount_bdev+0x355/0x410 fs/super.c:1446
+ legacy_get_tree+0xfe/0x220 fs/fs_context.c:611
+ vfs_get_tree+0x8d/0x2f0 fs/super.c:1576
+ do_new_mount fs/namespace.c:2983 [inline]
+ path_mount+0x119a/0x1ad0 fs/namespace.c:3316
+ do_mount+0xfc/0x110 fs/namespace.c:3329
+ __do_sys_mount fs/namespace.c:3540 [inline]
+ __se_sys_mount+0x219/0x2e0 fs/namespace.c:3514
+ do_syscall_64+0x33/0x40 arch/x86/entry/common.c:46
+ entry_SYSCALL_64_after_hwframe+0x67/0xd1
 
-https://github.com/MichaelRabek/linux-tests/blob/master/drivers/scsi/sg/sg_race_trigger.c
+Memory state around the buggy address:
+ ffff88807b002f00: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ ffff88807b002f80: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+>ffff88807b003000: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+                   ^
+ ffff88807b003080: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
+ ffff88807b003100: ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff
 
-The first race happens between the reading of hp->duration in
-sg_proc_debug_helper() and request completion in sg_rq_end_io().  The
-hp->duration member variable may hold either of two types of
-information:
+Above issue happens as ext4_xattr_delete_inode() isn't check xattr
+is valid if xattr is in inode.
+To solve above issue call xattr_check_inode() check if xattr if valid
+in inode. In fact, we can directly verify in ext4_iget_extra_inode(),
+so that there is no divergent verification.
 
- #1 - The start time of the request. This value is present while
-      the request is not yet finished.
-
- #2 - The total execution time of the request (end_time - start_time).
-
-If sg_proc_debug_helper() executes *after* the value of hp->duration was
-changed from #1 to #2, but *before* srp->done is set to 1 in
-sg_rq_end_io(), a fresh timestamp is taken in the else branch, and the
-elapsed time (value type #2) is subtracted from a timestamp, which
-cannot yield a valid elapsed time (which is a type #2 value as well).
-
-To fix this issue, the value of hp->duration must change under the
-protection of the sfp->rq_list_lock in sg_rq_end_io().  Since
-sg_proc_debug_helper() takes this read lock, the change to srp->done and
-srp->header.duration will happen atomically from the perspective of
-sg_proc_debug_helper() and the race condition is thus eliminated.
-
-The second race condition happens between sg_proc_debug_helper() and
-sg_new_write(). Even though hp->duration is set to the current time
-stamp in sg_add_request() under the write lock's protection, it gets
-overwritten by a call to get_sg_io_hdr(), which calls copy_from_user()
-to copy struct sg_io_hdr from userspace into kernel space. hp->duration
-is set to the start time again in sg_common_write(). If
-sg_proc_debug_helper() is called between these two calls, an arbitrary
-value set by userspace (usually zero) is used to compute the elapsed
-time.
-
-To fix this issue, hp->duration must be set to the current timestamp
-again after get_sg_io_hdr() returns successfully. A small race window
-still exists between get_sg_io_hdr() and setting hp->duration, but this
-window is only a few instructions wide and does not result in observable
-issues in practice, as confirmed by testing.
-
-Additionally, we fix the format specifier from %d to %u for printing
-unsigned int values in sg_proc_debug_helper().
-
-Signed-off-by: Michal Rábek <mrabek@redhat.com>
-Suggested-by: Tomas Henzl <thenzl@redhat.com>
-Tested-by: Changhui Zhong <czhong@redhat.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Reviewed-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://patch.msgid.link/20251212160900.64924-1-mrabek@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e50e5129f384 ("ext4: xattr-in-inode support")
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250208063141.1539283-3-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: David Nyström <david.nystrom@est.tech>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ fs/ext4/inode.c |    5 +++++
+ fs/ext4/xattr.c |   26 +-------------------------
+ fs/ext4/xattr.h |    7 +++++++
+ 3 files changed, 13 insertions(+), 25 deletions(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 4d54f2697bb4e..d74bb7b42de89 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -736,6 +736,8 @@ sg_new_write(Sg_fd *sfp, struct file *file, const char __user *buf,
- 		sg_remove_request(sfp, srp);
- 		return -EFAULT;
- 	}
-+	hp->duration = jiffies_to_msecs(jiffies);
+--- a/fs/ext4/inode.c
++++ b/fs/ext4/inode.c
+@@ -4650,6 +4650,11 @@ static inline int ext4_iget_extra_inode(
+ 	    *magic == cpu_to_le32(EXT4_XATTR_MAGIC)) {
+ 		int err;
+ 
++		err = xattr_check_inode(inode, IHDR(inode, raw_inode),
++					ITAIL(inode, raw_inode));
++		if (err)
++			return err;
 +
- 	if (hp->interface_id != 'S') {
- 		sg_remove_request(sfp, srp);
- 		return -ENOSYS;
-@@ -821,7 +823,6 @@ sg_common_write(Sg_fd * sfp, Sg_request * srp,
- 		return -ENODEV;
- 	}
+ 		ext4_set_inode_state(inode, EXT4_STATE_XATTR);
+ 		err = ext4_find_inline_data_nolock(inode);
+ 		if (!err && ext4_has_inline_data(inode))
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -263,7 +263,7 @@ errout:
+ 	__ext4_xattr_check_block((inode), (bh),  __func__, __LINE__)
  
--	hp->duration = jiffies_to_msecs(jiffies);
- 	if (hp->interface_id != '\0' &&	/* v3 (or later) interface */
- 	    (SG_FLAG_Q_AT_TAIL & hp->flags))
- 		at_head = 0;
-@@ -1343,9 +1344,6 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
- 				      "sg_cmd_done: pack_id=%d, res=0x%x\n",
- 				      srp->header.pack_id, result));
- 	srp->header.resid = resid;
--	ms = jiffies_to_msecs(jiffies);
--	srp->header.duration = (ms > srp->header.duration) ?
--				(ms - srp->header.duration) : 0;
- 	if (0 != result) {
- 		struct scsi_sense_hdr sshdr;
  
-@@ -1395,6 +1393,9 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
- 			done = 0;
- 	}
- 	srp->done = done;
-+	ms = jiffies_to_msecs(jiffies);
-+	srp->header.duration = (ms > srp->header.duration) ?
-+				(ms - srp->header.duration) : 0;
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+-static int
++int
+ __xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
+ 			 void *end, const char *function, unsigned int line)
+ {
+@@ -280,9 +280,6 @@ errout:
+ 	return error;
+ }
  
- 	if (likely(done)) {
-@@ -2523,6 +2524,7 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
- 	const sg_io_hdr_t *hp;
- 	const char * cp;
- 	unsigned int ms;
-+	unsigned int duration;
+-#define xattr_check_inode(inode, header, end) \
+-	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
+-
+ static int
+ xattr_find_entry(struct inode *inode, struct ext4_xattr_entry **pentry,
+ 		 void *end, int name_index, const char *name, int sorted)
+@@ -600,9 +597,6 @@ ext4_xattr_ibody_get(struct inode *inode
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+ 	end = ITAIL(inode, raw_inode);
+-	error = xattr_check_inode(inode, header, end);
+-	if (error)
+-		goto cleanup;
+ 	entry = IFIRST(header);
+ 	error = xattr_find_entry(inode, &entry, end, name_index, name, 0);
+ 	if (error)
+@@ -734,7 +728,6 @@ ext4_xattr_ibody_list(struct dentry *den
+ 	struct ext4_xattr_ibody_header *header;
+ 	struct ext4_inode *raw_inode;
+ 	struct ext4_iloc iloc;
+-	void *end;
+ 	int error;
  
- 	k = 0;
- 	list_for_each_entry(fp, &sdp->sfds, sfd_siblings) {
-@@ -2560,13 +2562,17 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
- 			seq_printf(s, " id=%d blen=%d",
- 				   srp->header.pack_id, blen);
- 			if (srp->done)
--				seq_printf(s, " dur=%d", hp->duration);
-+				seq_printf(s, " dur=%u", hp->duration);
- 			else {
- 				ms = jiffies_to_msecs(jiffies);
--				seq_printf(s, " t_o/elap=%d/%d",
-+				duration = READ_ONCE(hp->duration);
-+				if (duration)
-+					duration = (ms > duration ?
-+						    ms - duration : 0);
-+				seq_printf(s, " t_o/elap=%u/%u",
- 					(new_interface ? hp->timeout :
- 						  jiffies_to_msecs(fp->timeout)),
--					(ms > hp->duration ? ms - hp->duration : 0));
-+					duration);
- 			}
- 			seq_printf(s, "ms sgat=%d op=0x%02x\n", usg,
- 				   (int) srp->data.cmd_opcode);
--- 
-2.51.0
-
+ 	if (!ext4_test_inode_state(inode, EXT4_STATE_XATTR))
+@@ -744,14 +737,9 @@ ext4_xattr_ibody_list(struct dentry *den
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = ITAIL(inode, raw_inode);
+-	error = xattr_check_inode(inode, header, end);
+-	if (error)
+-		goto cleanup;
+ 	error = ext4_xattr_list_entries(dentry, IFIRST(header),
+ 					buffer, buffer_size);
+ 
+-cleanup:
+ 	brelse(iloc.bh);
+ 	return error;
+ }
+@@ -815,7 +803,6 @@ int ext4_get_inode_usage(struct inode *i
+ 	struct ext4_xattr_ibody_header *header;
+ 	struct ext4_xattr_entry *entry;
+ 	qsize_t ea_inode_refs = 0;
+-	void *end;
+ 	int ret;
+ 
+ 	lockdep_assert_held_read(&EXT4_I(inode)->xattr_sem);
+@@ -826,10 +813,6 @@ int ext4_get_inode_usage(struct inode *i
+ 			goto out;
+ 		raw_inode = ext4_raw_inode(&iloc);
+ 		header = IHDR(inode, raw_inode);
+-		end = ITAIL(inode, raw_inode);
+-		ret = xattr_check_inode(inode, header, end);
+-		if (ret)
+-			goto out;
+ 
+ 		for (entry = IFIRST(header); !IS_LAST_ENTRY(entry);
+ 		     entry = EXT4_XATTR_NEXT(entry))
+@@ -2221,9 +2204,6 @@ int ext4_xattr_ibody_find(struct inode *
+ 	is->s.here = is->s.first;
+ 	is->s.end = ITAIL(inode, raw_inode);
+ 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
+-		error = xattr_check_inode(inode, header, is->s.end);
+-		if (error)
+-			return error;
+ 		/* Find the named attribute. */
+ 		error = xattr_find_entry(inode, &is->s.here, is->s.end,
+ 					 i->name_index, i->name, 0);
+@@ -2747,10 +2727,6 @@ retry:
+ 	min_offs = end - base;
+ 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
+ 
+-	error = xattr_check_inode(inode, header, end);
+-	if (error)
+-		goto cleanup;
+-
+ 	ifree = ext4_xattr_free_space(base, &min_offs, base, &total_ino);
+ 	if (ifree >= isize_diff)
+ 		goto shift;
+--- a/fs/ext4/xattr.h
++++ b/fs/ext4/xattr.h
+@@ -210,6 +210,13 @@ extern int ext4_xattr_ibody_set(handle_t
+ extern struct mb_cache *ext4_xattr_create_cache(void);
+ extern void ext4_xattr_destroy_cache(struct mb_cache *);
+ 
++extern int
++__xattr_check_inode(struct inode *inode, struct ext4_xattr_ibody_header *header,
++		    void *end, const char *function, unsigned int line);
++
++#define xattr_check_inode(inode, header, end) \
++	__xattr_check_inode((inode), (header), (end), __func__, __LINE__)
++
+ #ifdef CONFIG_EXT4_FS_SECURITY
+ extern int ext4_init_security(handle_t *handle, struct inode *inode,
+ 			      struct inode *dir, const struct qstr *qstr);
 
 
 
