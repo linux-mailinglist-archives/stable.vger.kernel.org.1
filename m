@@ -1,135 +1,220 @@
-Return-Path: <stable+bounces-209946-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C55ED281A5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 20:31:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 44A5AD281DD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 20:32:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1D2E4304F88F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:30:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B493B3007502
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:32:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DF22530AABE;
-	Thu, 15 Jan 2026 19:30:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDB58314A84;
+	Thu, 15 Jan 2026 19:32:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b="Ifib+84y"
+	dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b="hUNgSXjb"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 434A1309EEA
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 19:30:00 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=pass smtp.client-ip=209.85.208.45
-ARC-Seal:i=2; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768505404; cv=pass; b=eJGTC2KAcUQbCHzuJAgYrYBYHIfd9D8H0atp4j6UIF7AEUCWcZ0P/0BU9BwN2qxZ8/zyqoT3L383NaetPw5wWywtVPQK9C12+vrZbN0+pJeW9o0Z9nK7I15n7L8ESBeBAI2FgjwhmCEsvFeg1dp1h99rGDWmhUVGXc2UIAvAOac=
-ARC-Message-Signature:i=2; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768505404; c=relaxed/simple;
-	bh=xpAe4VquDRlbvhlajgDJdW88OXpSMesEONtyCKGlhWs=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=neAoOZJr9imSe1m8G3MBJROR8FHpoC7vhNIp4B9P644hBKhqlIKqXxnCrj1+9nhbZgY3T1Uw9Oqwg/FaFgnPwGmPryaRhpnOF81e5DNGmLzrEjdO85ZVAcrGNwUuAUKnrAEFJ2R5w2ScIbIdMQybptF64tCvV8gNpDASQiclnOQ=
-ARC-Authentication-Results:i=2; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com; spf=pass smtp.mailfrom=sladewatkins.com; dkim=pass (2048-bit key) header.d=sladewatkins.com header.i=@sladewatkins.com header.b=Ifib+84y; arc=pass smtp.client-ip=209.85.208.45
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=sladewatkins.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=sladewatkins.com
-Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-64baaa754c6so1956027a12.3
-        for <stable@vger.kernel.org>; Thu, 15 Jan 2026 11:30:00 -0800 (PST)
-ARC-Seal: i=1; a=rsa-sha256; t=1768505398; cv=none;
-        d=google.com; s=arc-20240605;
-        b=b6sqzIFdm7i9LQJOOi3W/zw6OdY6gFE5eLN/9S893ip4bwJpHtBLLvfGAr0nK/DaxN
-         woFeykg0DnUB2UfGBuAYRNMzCZvYMsJ7JQqPGBr74WaFRw9IdvT3vs9XbiZxYOt4/cXl
-         MhPkC8AI60tmB39ai9vge57so2aR6d0lVqnOLOxH0yZons+oGS0PjtewBx3brVhozrqC
-         jLm4ZN4EDWZ4cNhbPk3pTGBL06WEUqymAbZJ9Gqp53sa3pp7qk2LU/G0MgN65YFzAK9G
-         fVDOMtSdbxEAYwQzT0zFxq+z/Nz7/UAaXo6JvZ7bz0kMMkAvW4sTi1qpa3gJSnirHfxs
-         CEhg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=google.com; s=arc-20240605;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:dkim-signature;
-        bh=RLeW5LqW4wx788qexxNJwmsPJ9CgRqRlygUR7u9scY8=;
-        fh=Y74f01YznQtICCoVpDtu65QsUfM3VPu5xLIo3JzpQ/I=;
-        b=VIBtoOn59Lr7MbfXfVlSGGF7N2h4rcqkuieOfGQha2JTlxOUiKH/D0XExD2O/HlmPM
-         aezQ+DITCve9rV2vfa+9mpkhOmBh1yIpFWr/n8pBAupEuZO4jne91YgzIFIiZZMTpZ6A
-         nsYHx401KZgor2T9q4FnBtjyUFNIkyO8AoqLxaLOYd7rsWQ0jqI5esYGvxbh/5hr4jGt
-         HpRk2/G4dKO1rfkMNOD+qtPtbt2jjptJ/vJr+iwkISdzOm6p0nmRkzf+i7wJ72DU5XfW
-         s7AHuePt0mQ5KXoTF3pHmS50SJyO/cqMuR+urAywiIPPU8649vpgauVcYDzmcJIHisOe
-         dD9g==;
-        darn=vger.kernel.org
-ARC-Authentication-Results: i=1; mx.google.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sladewatkins.com; s=google; t=1768505398; x=1769110198; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=RLeW5LqW4wx788qexxNJwmsPJ9CgRqRlygUR7u9scY8=;
-        b=Ifib+84yFmSZAGvmyWnPeovvWcyXQ5F7tmgZH6xUnlHO61FNFtbRCjHe1n0szAFjQf
-         unlUcvkh32R7t1VZGgq2XW0Xb5zRPuVo+MZPxgj6BRN+vPQgssVWMcRUIJy9/Wygtqt6
-         4fGei2y4KC32F8Z0ZqoluFxoAAXljgKl4mXV/F+1SI+tNp0r5YYVF6/fttyJdrrafqMl
-         BmKbFf9+vHAFg1EwUZ9i55aRsWecfCM8mOArh1lSTQGxnvXfDwYGryIHMFskF2/7F1HD
-         KipEVmTyYTgGC3obvBYLoUc/Vy2cm4O6JPVOmAKJkVa7II1cIr8O1KQdi7iOTrh86Ci4
-         H+eA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768505398; x=1769110198;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=RLeW5LqW4wx788qexxNJwmsPJ9CgRqRlygUR7u9scY8=;
-        b=Q4ApMrUTNI3rAG4YnZikdBEyU3vcrAvauPyAzpUi+yWvImDsllrnblLblOKeMRdRc5
-         IGP44KKBnnRqedOfRFmSZcUg3NE6OoSlim/qVQqZhDSZ+pVVnwqiCNyop6txXHu39bvM
-         g9C5HQBK5YtGgpa1uBLuICdkajxKEyd5QB+KQMHtTVDpynjzjZ+KsbWM0hVlu3HGPXhF
-         /w2G6Ct2EG2/Gws+MJq66mBeTcdOf/EcqTjZVqgCxzxYJ/9DyO6LFZU3GyNvatHfG5nU
-         tZx1AkoYamfhlgZBxJwX4Z8vy3+NX3PUFgxXOKKTRV5mKWvpOEDfdL9OLSBjki1CSLuQ
-         mUJw==
-X-Gm-Message-State: AOJu0Yw6F8TJ6wmfzBdzbbhJoL+mVcJN1Uz9UAYAZ3Ydr4nQahw8Hbow
-	qCsP3YHXeyiHpEuVkry+up0oAcvwtBfsbmJbUNRAoSIFMo4EIsdw/0yYikubtosZ90QSo2uG9G6
-	nWWUF6eDdc3+HI0fGayKDQl/Kd8DAs/LoYOEjAz0zQVZHnA8uREcNE1Vn1tBRcCyGuXcjziebhR
-	llLNM/sKALa6af1ipqBytv+wfGvYs=
-X-Gm-Gg: AY/fxX6mbZsns/9V03l5BC0ozFWR312VylJvfCA2zqdDfv+Loz/4cJkxHb/IoPEBf61
-	Lvu6N82uqzUk8bOIv+ojulY/yrhWyTCUoC4hhk+fZfivm/Mbvg10pQdR9Lzn+KFgqcKzG05CBV5
-	2AItu3rplELFsFyeRomIMx/BT97GwlnSAU2HUvAMG5jTyDGOuPSB2JhqhpcMaEt7xUaKb6Id5MY
-	fJN9fdMFcegoJ3MsKPcafpMAG7YYygzNfPIC1BcNbG09eQadLm3K2Mj6jL9JtTjLdVL66QwAmyr
-	0OZ1TpT/PmQeTHP1JrWkCIOTUgDH
-X-Received: by 2002:a05:6402:1ec2:b0:650:891f:1c07 with SMTP id
- 4fb4d7f45d1cf-654526ca179mr478548a12.14.1768505397625; Thu, 15 Jan 2026
- 11:29:57 -0800 (PST)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DA3F4313E20
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 19:32:34 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=170.10.133.124
+ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
+	t=1768505556; cv=none; b=aUEoP+kMamrZBU2S0W8QXhGxkRxhvApiF6jxTcaQMSxmrOtxvUySlWGQR3AIWwf8pCC+rgBv6F2VsDMzu8suYetFR5AYq2A3pM8ZDhyFNul+IZwkYBxF0tBtBhUdbK0cojiFh5EBUwHlpQa0tqhcIzAI7aGt4ICNrnWE51ljMwk=
+ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
+	s=arc-20240116; t=1768505556; c=relaxed/simple;
+	bh=iN7tBzRxop9caKRj4q8iirBLtlGNWSDlzUiagfnuICE=;
+	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
+	 In-Reply-To:Content-Type; b=GRi9qNywhdkB9L6bdDV7/2l8l7FpjRLIrLqq3RGVOO0GEWSIkpqeHOMvg1EpebvG2NyzVmCBNcAW2N310+lA1gJPuCSKdp615a4c67PFnwdoriZSlOT8pfJiI8Z6BTMNpAkHd5VBuDN2A672Nto3j5f2AVMJiLtR0+ABp5nwEds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com; spf=pass smtp.mailfrom=redhat.com; dkim=pass (1024-bit key) header.d=redhat.com header.i=@redhat.com header.b=hUNgSXjb; arc=none smtp.client-ip=170.10.133.124
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=quarantine dis=none) header.from=redhat.com
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=redhat.com
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+	s=mimecast20190719; t=1768505553;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=voZQ7iSa47pr6K3TPQGa9aAJaocOGLGtnDD3AQrs/as=;
+	b=hUNgSXjbigIiq7UbFdC+/ywqk4zGuKG8z9g906a70Ptbqlsb14fplREupy5iuz/zUhEDL+
+	28miEont/iqGxgOPNd/lC/zDlPOX12giRNqpQtUL9x1NwQDSO2exuLEnX3KLh8jYVMtt2T
+	gsUYpl4BvlwcwPI6H3d+80jjPd758f0=
+Received: from mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com
+ (ec2-35-165-154-97.us-west-2.compute.amazonaws.com [35.165.154.97]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.3,
+ cipher=TLS_AES_256_GCM_SHA384) id us-mta-352-doPz6xgIN5ab0tDHAz5ngQ-1; Thu,
+ 15 Jan 2026 14:32:28 -0500
+X-MC-Unique: doPz6xgIN5ab0tDHAz5ngQ-1
+X-Mimecast-MFC-AGG-ID: doPz6xgIN5ab0tDHAz5ngQ_1768505546
+Received: from mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com [10.30.177.111])
+	(using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+	 key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+	(No client certificate requested)
+	by mx-prod-mc-06.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTPS id 083E218003FD;
+	Thu, 15 Jan 2026 19:32:26 +0000 (UTC)
+Received: from [10.22.88.141] (unknown [10.22.88.141])
+	by mx-prod-int-08.mail-002.prod.us-west-2.aws.redhat.com (Postfix) with ESMTP id E92A3180049F;
+	Thu, 15 Jan 2026 19:32:21 +0000 (UTC)
+Message-ID: <4300e404-39ab-4b76-82a6-2d583a9386c2@redhat.com>
+Date: Thu, 15 Jan 2026 14:32:21 -0500
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20260115164230.864985076@linuxfoundation.org>
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-From: Slade Watkins <sr@sladewatkins.com>
-Date: Thu, 15 Jan 2026 14:29:46 -0500
-X-Gm-Features: AZwV_QjqLkCgApoRuKv35Ai4LvCRp9OylMJtBpKdZNvHB7wDFP7nb5QcJ6zDEls
-Message-ID: <CAMC4fzKeXhgotO=3nB=csqZ=gaF9xRj2+AtfdqpLYE6j8dGQ7g@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/451] 5.10.248-rc1 review
-To: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: stable@vger.kernel.org, patches@lists.linux.dev, 
-	linux-kernel@vger.kernel.org, torvalds@linux-foundation.org, 
-	akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org, 
-	patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de, 
-	jonathanh@nvidia.com, f.fainelli@gmail.com, sudipm.mukherjee@gmail.com, 
-	rwarsow@gmx.de, conor@kernel.org, hargar@microsoft.com, broonie@kernel.org, 
-	achill@achill.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-SW-RGPM-AntispamServ: glowwhale.rogueportmedia.com
-X-SW-RGPM-AntispamVer: Reporting (SpamAssassin 4.0.2-sladew)
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] nvme: fix PCIe subsystem reset controller state
+ transition
+To: Nilay Shroff <nilay@linux.ibm.com>, linux-nvme@lists.infradead.org
+Cc: wagi@kernel.org, kbusch@kernel.org, axboe@kernel.dk, hch@lst.de,
+ sagi@grimberg.me, james.smart@broadcom.com, hare@suse.de,
+ shinichiro.kawasaki@wdc.com, wenxiong@linux.ibm.com, nnmlinux@linux.ibm.com,
+ emilne@redhat.com, mlombard@redhat.com, gjoyce@ibm.com,
+ stable@vger.kernel.org, maddy@linux.ibm.com
+References: <20260114072416.1901394-1-nilay@linux.ibm.com>
+Content-Language: en-US
+From: John Meneghini <jmeneghi@redhat.com>
+Organization: RHEL Core Storge Team
+In-Reply-To: <20260114072416.1901394-1-nilay@linux.ibm.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.4.1 on 10.30.177.111
 
-On Thu, Jan 15, 2026 at 12:40=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.10.248 release.
-> There are 451 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 17 Jan 2026 16:41:26 +0000.
-> Anything received after that time might be too late.
+Tested-by: John Menehgini <jmeneghi@redhat.com>
 
-5.10.248-rc1 built and run on my x86_64 test system (AMD Ryzen 9
-9900X, System76 thelio-mira-r4-n3). No errors or regressions.
+I've tested this patch with 6.19.0-rc5+ on both x86_64 and ppc64le platforms.
 
-Tested-by: Slade Watkins <sr@sladewatkins.com>
+Note that, on the PowerPC platform the following additional patch was needed:
 
-Thanks,
-Slade
+https://git.kernel.org/pub/scm/linux/kernel/git/powerpc/linux.git/commit/?h=next&id=815a8d2feb5615ae7f0b5befd206af0b0160614c
+
+/John
+
+[root@rdma-cert-03-lp10 ~]# uname -a
+Linux rdma-cert-03-lp10.rdma.lab.eng.rdu2.redhat.com 6.19.0-rc5+ #1 SMP Thu Jan 15 14:14:45 EST 2026 ppc64le GNU/Linux
+[root@rdma-cert-03-lp10 ~]# dmesg -C
+[root@rdma-cert-03-lp10 ~]# dmesg -Tw&
+[1] 15696
+[root@rdma-cert-03-lp10 ~]# nvme list-subsys
+nvme-subsys0 - NQN=nqn.1994-11.com.samsung:nvme:PM1735:HHHL:S4WANA0R400032
+                hostnqn=nqn.2014-08.org.nvmexpress:uuid:1654a627-93b6-4650-ba90-f4dc7a2fd3ee
+                iopolicy=numa
+\
+  +- nvme0 pcie 0018:01:00.0 live
+[root@rdma-cert-03-lp10 ~]# [Thu Jan 15 14:24:11 2026] block nvme0n1: No UUID available providing old NGUID
+
+[root@rdma-cert-03-lp10 ~]# nvme subsystem-reset /dev/nvme0
+[root@rdma-cert-03-lp10 ~]# nvme list-subsys /dev/nvme0n1
+[Thu Jan 15 14:25:29 2026] EEH: Recovering PHB#18-PE#10000
+[Thu Jan 15 14:25:29 2026] EEH: PE location: N/A, PHB location: N/A
+[Thu Jan 15 14:25:29 2026] EEH: Frozen PHB#18-PE#10000 detected
+[Thu Jan 15 14:25:29 2026] EEH: Call Trace:
+[Thu Jan 15 14:25:29 2026] EEH: [00000000d71b2d94] __eeh_send_failure_event+0x78/0x160
+[Thu Jan 15 14:25:29 2026] EEH: [00000000465f9a5f] eeh_dev_check_failure+0x2c0/0x700
+[Thu Jan 15 14:25:29 2026] EEH: [0000000015f9541b] nvme_timeout+0x274/0x690 [nvme]
+[Thu Jan 15 14:25:29 2026] EEH: [00000000231862b5] blk_mq_handle_expired+0xb0/0x130
+[Thu Jan 15 14:25:29 2026] EEH: [0000000080ea6b3b] bt_iter+0xf8/0x140
+[Thu Jan 15 14:25:29 2026] EEH: [00000000b79a498f] blk_mq_queue_tag_busy_iter+0x35c/0x700
+[Thu Jan 15 14:25:29 2026] EEH: [0000000077a6dbdc] blk_mq_timeout_work+0x1a8/0x240
+[Thu Jan 15 14:25:29 2026] EEH: [000000000ef3edde] process_one_work+0x1f4/0x500
+[Thu Jan 15 14:25:29 2026] EEH: [0000000039a4e1cd] worker_thread+0x33c/0x510
+[Thu Jan 15 14:25:29 2026] EEH: [000000005a866bd1] kthread+0x154/0x170
+[Thu Jan 15 14:25:29 2026] EEH: [0000000077e75258] start_kernel_thread+0x14/0x18
+[Thu Jan 15 14:25:29 2026] EEH: This PCI device has failed 1 times in the last hour and will be permanently disabled after 5 failures.
+[Thu Jan 15 14:25:29 2026] EEH: Notify device drivers to shutdown
+[Thu Jan 15 14:25:29 2026] EEH: Beginning: 'error_detected(IO frozen)'
+[Thu Jan 15 14:25:29 2026] PCI 0018:01:00.0#10000: EEH: Invoking nvme->error_detected(IO frozen)
+[Thu Jan 15 14:25:29 2026] nvme nvme0: frozen state error detected, reset controller
+[Thu Jan 15 14:25:29 2026] block nvme0n1: no usable path - requeuing I/O
+[Thu Jan 15 14:25:29 2026] block nvme0n1: no usable path - requeuing I/O
+[Thu Jan 15 14:25:29 2026] block nvme0n1: no usable path - requeuing I/O
+[Thu Jan 15 14:25:29 2026] block nvme0n1: no usable path - requeuing I/O
+[Thu Jan 15 14:25:29 2026] nvme nvme0: Identify namespace failed (-4)
+[Thu Jan 15 14:25:29 2026] PCI 0018:01:00.0#10000: EEH: nvme driver reports: 'need reset'
+[Thu Jan 15 14:25:29 2026] EEH: Finished:'error_detected(IO frozen)' with aggregate recovery state:'need reset'
+[Thu Jan 15 14:25:29 2026] EEH: Collect temporary log
+[Thu Jan 15 14:25:29 2026] EEH: of node=0018:01:00.0
+[Thu Jan 15 14:25:29 2026] EEH: PCI device/vendor: a824144d
+[Thu Jan 15 14:25:29 2026] EEH: PCI cmd/status register: 00100140
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E capabilities and status follow:
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E 00: 0002b010 10008fe2 00002910 00437084
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E 10: 10840000 00000000 00000000 00000000
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E 20: 00000000
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E AER capability register set follows:
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E AER 00: 14820001 00000000 00400000 00462030
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E AER 10: 00000000 0000e000 000002a0 00000000
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E AER 20: 00000000 00000000 00000000 00000000
+[Thu Jan 15 14:25:29 2026] EEH: PCI-E AER 30: 00000000 00000000
+[Thu Jan 15 14:25:29 2026] RTAS: event: 3, Type: Platform Error (224), Severity: 2
+[Thu Jan 15 14:25:29 2026] EEH: Reset without hotplug activity
+[Thu Jan 15 14:25:29 2026] block nvme0n1: no usable path - requeuing I/O
+[Thu Jan 15 14:25:29 2026] block nvme0n1: no usable path - requeuing I/O
+[Thu Jan 15 14:25:31 2026] EEH: Beginning: 'slot_reset'
+[Thu Jan 15 14:25:31 2026] PCI 0018:01:00.0#10000: EEH: Invoking nvme->slot_reset()
+[Thu Jan 15 14:25:31 2026] nvme nvme0: restart after slot reset
+[Thu Jan 15 14:25:31 2026] PCI 0018:01:00.0#10000: EEH: nvme driver reports: 'recovered'
+[Thu Jan 15 14:25:31 2026] EEH: Finished:'slot_reset' with aggregate recovery state:'recovered'
+[Thu Jan 15 14:25:31 2026] EEH: Notify device driver to resume
+[Thu Jan 15 14:25:31 2026] EEH: Beginning: 'resume'
+[Thu Jan 15 14:25:31 2026] PCI 0018:01:00.0#10000: EEH: Invoking nvme->resume()
+[Thu Jan 15 14:25:31 2026] nvme nvme0: D3 entry latency set to 10 seconds
+[Thu Jan 15 14:25:31 2026] nvme nvme0: 16/0/0 default/read/poll queues
+[Thu Jan 15 14:25:31 2026] PCI 0018:01:00.0#10000: EEH: nvme driver reports: 'none'
+[Thu Jan 15 14:25:31 2026] EEH: Finished:'resume'
+[Thu Jan 15 14:25:31 2026] EEH: Recovery successful.
+
+[root@rdma-cert-03-lp10 ~]# nvme list-subsys /dev/nvme0n1
+nvme-subsys0 - NQN=nqn.1994-11.com.samsung:nvme:PM1735:HHHL:S4WANA0R400032
+                hostnqn=nqn.2014-08.org.nvmexpress:uuid:1654a627-93b6-4650-ba90-f4dc7a2fd3ee
+                iopolicy=numa
+\
+  +- nvme0 pcie 0018:01:00.0 live optimized
+
+On 1/14/26 2:24 AM, Nilay Shroff wrote:
+> The commit d2fe192348f9 (“nvme: only allow entering LIVE from CONNECTING
+> state”) disallows controller state transitions directly from RESETTING
+> to LIVE. However, the NVMe PCIe subsystem reset path relies on this
+> transition to recover the controller on PowerPC (PPC) systems.
+> 
+> On PPC systems, issuing a subsystem reset causes a temporary loss of
+> communication with the NVMe adapter. A subsequent PCIe MMIO read then
+> triggers EEH recovery, which restores the PCIe link and brings the
+> controller back online. For EEH recovery to proceed correctly, the
+> controller must transition back to the LIVE state.
+> 
+> Due to the changes introduced by commit d2fe192348f9 (“nvme: only allow
+> entering LIVE from CONNECTING state”), the controller can no longer
+> transition directly from RESETTING to LIVE. As a result, EEH recovery
+> exits prematurely, leaving the controller stuck in the RESETTING state.
+> 
+> Fix this by explicitly transitioning the controller state from RESETTING
+> to CONNECTING and then to LIVE. This satisfies the updated state
+> transition rules and allows the controller to be successfully recovered
+> on PPC systems following a PCIe subsystem reset.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: d2fe192348f9 ("nvme: only allow entering LIVE from CONNECTING state")
+> Signed-off-by: Nilay Shroff <nilay@linux.ibm.com>
+> ---
+>   drivers/nvme/host/pci.c | 5 ++++-
+>   1 file changed, 4 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/nvme/host/pci.c b/drivers/nvme/host/pci.c
+> index 0e4caeab739c..3027bba232de 100644
+> --- a/drivers/nvme/host/pci.c
+> +++ b/drivers/nvme/host/pci.c
+> @@ -1532,7 +1532,10 @@ static int nvme_pci_subsystem_reset(struct nvme_ctrl *ctrl)
+>   	}
+>   
+>   	writel(NVME_SUBSYS_RESET, dev->bar + NVME_REG_NSSR);
+> -	nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE);
+> +
+> +	if (!nvme_change_ctrl_state(ctrl, NVME_CTRL_CONNECTING) ||
+> +	    !nvme_change_ctrl_state(ctrl, NVME_CTRL_LIVE))
+> +		goto unlock;
+>   
+>   	/*
+>   	 * Read controller status to flush the previous write and trigger a
+
 
