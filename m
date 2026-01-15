@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208759-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209401-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 25551D2614F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9157AD26B4E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 056BE302A061
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C3458311BDA0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D24153BFE21;
-	Thu, 15 Jan 2026 17:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0631E2D0610;
+	Thu, 15 Jan 2026 17:36:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p4gfnp5T"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1QseKIE6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 967A439A805;
-	Thu, 15 Jan 2026 17:06:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BDD171A2389;
+	Thu, 15 Jan 2026 17:36:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496762; cv=none; b=L8ZwFO0pCeEjTVuAe+MSO1vqv0DmVk5uYH41dxk8AElaLwTvjo/q97Rp59sLvLsRANtzKn7TGSj0f+J/AgFfL6YkdnAeeumP6Qa8/jsdgepQFXQ/NWe2gow8dcw0dtZsHOiSRvK/zKo6ctQ9SSwOmVic2mMgOCOnB2S2F+WBcvY=
+	t=1768498591; cv=none; b=m9tSZroJDep6HMibIwrmUGqIoepq3n2kBa2l6suvwuZmy4dELoc2CnJZ22kSv9xmBh6EFk1wP0EUWyWUqlqJpuwd1FT3gRLiKNKPrzytb8DvwtlJ7TZfCJSXijDMsXAZQb1iSRSSniIAtQdbk1aZkZ0pt/NcncBXi9JzweM4ywM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496762; c=relaxed/simple;
-	bh=CXhE8SYqzcJNWWLP1uEqoaOkpiezY8U6tCC1wSsL/iM=;
+	s=arc-20240116; t=1768498591; c=relaxed/simple;
+	bh=qaq3enyYAbCuNJBzVyP/hXb6U0B6MvTPzFSmvkeiUhY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lNHoCkgV6XWv/5GY9uAjdsWcP7FbD2+7vdsIQTapPsCQPuFi/q+7jcbxumpM9xXo9bIrolYsqSEFGEeJ2uWqXiKwPxI9iN1RuwB8Ea6FgBJt3hBRVhnffMqlzrsWtzHQTvHKJQM+xAc0q963Ft3wsxazePakXm4LHGsoy4+HIQo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p4gfnp5T; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191D2C16AAE;
-	Thu, 15 Jan 2026 17:06:01 +0000 (UTC)
+	 MIME-Version; b=F3Vkhv93DCZeB9KYBThPDgph+yYqcF8BPt5rMHxX/soI7MMT7/5bHSX3bkaJ9PFur6supBrigYmLlNH6MHxhxvZrPsMPnhMYbKtjJZDSVqBQRnTF+qZZwuWfolZUjuIIKmc00+riWIp31bocwitQZW28OShHhoJHamZ61VR0D1s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1QseKIE6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 489FFC116D0;
+	Thu, 15 Jan 2026 17:36:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496762;
-	bh=CXhE8SYqzcJNWWLP1uEqoaOkpiezY8U6tCC1wSsL/iM=;
+	s=korg; t=1768498591;
+	bh=qaq3enyYAbCuNJBzVyP/hXb6U0B6MvTPzFSmvkeiUhY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p4gfnp5TaZnWIK3Pzc8xinziCtv/qQpo1Ui4CXWwJDreryAOxxnelVL9WAQBpGR03
-	 IzZgRENEso2aRjQ4EnalaJ5gi5ZmTg3oxfIl7lkI/wP8jtsBQkDkjMxmc9kGuoOeHR
-	 Ep9XujoVDUZfndp8VlNOCsVhOiJ/T81/QCqeZWVQ=
+	b=1QseKIE6Rid1egxKfenoNETYrMsxW4KIOMCq1vb8jkJwL/Uam7WKm0zLy+kc7RT/p
+	 bIyyYDdqFQ9LK4vVhG/SCD/rkXmFJA61nA9JcfZd+ZYOAmZHZJY1jtaVyJTu9Xzv+q
+	 saDbdtvVfrhlIIB2UOvoNMa0HnOdc9B++TRREvBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Brian Kocoloski <brian.kocoloski@amd.com>,
-	Philip Yang <Philip.Yang@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 109/119] drm/amdkfd: Fix improper NULL termination of queue restore SMI event string
+Subject: [PATCH 5.15 458/554] media: verisilicon: Protect G2 HEVC decoder against invalid DPB index
 Date: Thu, 15 Jan 2026 17:48:44 +0100
-Message-ID: <20260115164155.885984941@linuxfoundation.org>
+Message-ID: <20260115164302.857771460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Kocoloski <brian.kocoloski@amd.com>
+From: Nicolas Dufresne <nicolas.dufresne@collabora.com>
 
-[ Upstream commit 969faea4e9d01787c58bab4d945f7ad82dad222d ]
+[ Upstream commit 47825b1646a6a9eca0f90baa3d4f98947c2add96 ]
 
-Pass character "0" rather than NULL terminator to properly format
-queue restoration SMI events. Currently, the NULL terminator precedes
-the newline character that is intended to delineate separate events
-in the SMI event buffer, which can break userspace parsers.
+Fix the Hantro G2 HEVC decoder so that we use DPB index 0 whenever a
+ninvalid index is received from user space. This protects the hardware
+from doing faulty memory access which then leads to bus errors.
 
-Signed-off-by: Brian Kocoloski <brian.kocoloski@amd.com>
-Reviewed-by: Philip Yang <Philip.Yang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 6e7143e5e6e21f9d5572e0390f7089e6d53edf3c)
+To be noted that when a reference is missing, userspace such as GStreamer
+passes an invalid DPB index of 255. This issue was found by seeking to a
+CRA picture using GStreamer. The framework is currently missing the code
+to skip over RASL pictures placed after the CRA. This situation can also
+occur while doing live streaming over lossy transport.
+
+Fixes: cb5dd5a0fa518 ("media: hantro: Introduce G2/HEVC decoder")
+Cc: stable@vger.kernel.org
+Reviewed-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/amdkfd/kfd_smi_events.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/staging/media/hantro/hantro_g2_hevc_dec.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdkfd/kfd_smi_events.c b/drivers/gpu/drm/amd/amdkfd/kfd_smi_events.c
-index de8b9abf7afcf..592953fe9afc2 100644
---- a/drivers/gpu/drm/amd/amdkfd/kfd_smi_events.c
-+++ b/drivers/gpu/drm/amd/amdkfd/kfd_smi_events.c
-@@ -312,7 +312,7 @@ void kfd_smi_event_queue_restore(struct kfd_node *node, pid_t pid)
- {
- 	kfd_smi_event_add(pid, node, KFD_SMI_EVENT_QUEUE_RESTORE,
- 			  KFD_EVENT_FMT_QUEUE_RESTORE(ktime_get_boottime_ns(), pid,
--			  node->id, 0));
-+			  node->id, '0'));
+--- a/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
++++ b/drivers/staging/media/hantro/hantro_g2_hevc_dec.c
+@@ -264,6 +264,15 @@ static void set_params(struct hantro_ctx
+ 	hantro_reg_write(vpu, &g2_apf_threshold, 8);
  }
  
- void kfd_smi_event_queue_restore_rescheduled(struct mm_struct *mm)
--- 
-2.51.0
-
++static u32 get_dpb_index(const struct v4l2_ctrl_hevc_decode_params *decode_params,
++			 const u32 index)
++{
++	if (index > decode_params->num_active_dpb_entries)
++		return 0;
++
++	return index;
++}
++
+ static void set_ref_pic_list(struct hantro_ctx *ctx)
+ {
+ 	const struct hantro_hevc_dec_ctrls *ctrls = &ctx->hevc_dec.ctrls;
+@@ -336,8 +345,10 @@ static void set_ref_pic_list(struct hant
+ 		list1[j++] = list1[i++];
+ 
+ 	for (i = 0; i < V4L2_HEVC_DPB_ENTRIES_NUM_MAX; i++) {
+-		hantro_reg_write(vpu, &ref_pic_regs0[i], list0[i]);
+-		hantro_reg_write(vpu, &ref_pic_regs1[i], list1[i]);
++		hantro_reg_write(vpu, &ref_pic_regs0[i],
++				 get_dpb_index(decode_params, list0[i]));
++		hantro_reg_write(vpu, &ref_pic_regs1[i],
++				 get_dpb_index(decode_params, list1[i]));
+ 	}
+ }
+ 
 
 
 
