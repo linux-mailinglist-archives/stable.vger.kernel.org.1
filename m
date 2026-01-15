@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-208737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id D7ADBD2663B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:09 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4377D2727A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53BA130F06CB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8D2F5319BE8A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A783AE701;
-	Thu, 15 Jan 2026 17:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 737BB3D5229;
+	Thu, 15 Jan 2026 17:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W+HdbbvF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xRRT45d/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7652A3A35A4;
-	Thu, 15 Jan 2026 17:05:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 364462FDC4D;
+	Thu, 15 Jan 2026 17:53:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496702; cv=none; b=s19+y2IJBPjBL8gxec3v8Y5+fRj6bpF8Qm+rCF/uM9H6ZkaFASIO+w/mMpY8vehV7XxMYfZyrNVQNh/7KFCxen6NXEaKoVXH6Cgm/SS6kFTdNbkRW4iKNWDmq7fFrKDwXFYG2EN0MjStfAq7JW8XrLVmF1GkkvZxZg+zPmnU+uU=
+	t=1768499605; cv=none; b=IlsQtDYJAuE2avxwa0BJWUYfpX+FZKNSefw4p+bUJvC/NHRWhbcK3iQ7CFIq0dOqoNpwfSmkX4BJQIhvKKPoFB8VvWF2i+QBefjBAEzuR7oFd7/xILsvwI6XN+QB/tYrE7aLY+JOWG4EI4LWbprfs3bEXMoDlECoh1EYOb6Goas=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496702; c=relaxed/simple;
-	bh=p075b3z4dQ2+k/JlTRz8WZgRVeBFk4QcOuVMtthwJmg=;
+	s=arc-20240116; t=1768499605; c=relaxed/simple;
+	bh=gTC7ROzL1JIL7TMGiqwW/OP0witxyKEroumu+2B92RQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=impNHdf8sf4lrwcrR4+dgZ/Lw8XsBTRnsGTj0aaQnoAVr+k/V4CkiywVSE44hruXR1Pn02JO9OzHypSmgQ4n95qUsOfL2BS1dgK5X6AhckM/4Us2Hy9sLYGHzOp7/q64tQ61kr/FdmTip6St4nFCHp2d2s5FnFFL17Ass/cPlFI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W+HdbbvF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00020C16AAE;
-	Thu, 15 Jan 2026 17:05:01 +0000 (UTC)
+	 MIME-Version; b=IiBD8Sr5rhgoKezqjBGqQ90wQjt+JZEQSlu1ZZ3x0W7fGHvvzNWhAyFKneyl0Tf2+fG6/OjQt3HeZagPTtBAArftSmMOb61EFgi4xQQT1lHp39GnzTk6ccjH6VLQD34m5jyUbM1/QZZKlm5G9oB7WpI6Qcnu8QU3f0sgAtUFPdc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xRRT45d/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B146EC116D0;
+	Thu, 15 Jan 2026 17:53:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496702;
-	bh=p075b3z4dQ2+k/JlTRz8WZgRVeBFk4QcOuVMtthwJmg=;
+	s=korg; t=1768499605;
+	bh=gTC7ROzL1JIL7TMGiqwW/OP0witxyKEroumu+2B92RQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=W+HdbbvFLdkJijQV1Rwn7A3n0uTLhgcsoO4l5wKbfVL+oYgHAdEe2bT9nN7iOQa9Q
-	 TWdaK942TlNObET033c0xABFLGzKGa96I9lRkLLqh3BBQLId9/4FdUQ/XBn5lnH7cn
-	 6zTiqwpR5U7WZP8u/0L7IA8z0Q4t1ZibHzImHHaQ=
+	b=xRRT45d/r/iY3akqta4VgccmJzDt07SMdtc6/PTi6VGTAXlCPMj9lXvJdusK1Wytb
+	 nQtUxGlmaSn6JDtH+ru5rx1dNYLTbwYpJDzZ5lwwmFNsJAbMmCOR/LZr7KzP6/5o5Z
+	 7ud0W6wsQ4+wy1l2GQdK04cnHsM6s8RsLg4/O2FU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ray Jui <ray.jui@broadcom.com>,
-	Srijit Bose <srijit.bose@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 072/119] bnxt_en: Fix potential data corruption with HW GRO/LRO
+Subject: [PATCH 5.10 286/451] net: bridge: Describe @tunnel_hash member in net_bridge_vlan_group struct
 Date: Thu, 15 Jan 2026 17:48:07 +0100
-Message-ID: <20260115164154.550948623@linuxfoundation.org>
+Message-ID: <20260115164241.229847000@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srijit Bose <srijit.bose@broadcom.com>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-[ Upstream commit ffeafa65b2b26df2f5b5a6118d3174f17bd12ec5 ]
+[ Upstream commit f79f9b7ace1713e4b83888c385f5f55519dfb687 ]
 
-Fix the max number of bits passed to find_first_zero_bit() in
-bnxt_alloc_agg_idx().  We were incorrectly passing the number of
-long words.  find_first_zero_bit() may fail to find a zero bit and
-cause a wrong ID to be used.  If the wrong ID is already in use, this
-can cause data corruption.  Sometimes an error like this can also be
-seen:
+Sphinx reports kernel-doc warning:
 
-bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
+WARNING: ./net/bridge/br_private.h:267 struct member 'tunnel_hash' not described in 'net_bridge_vlan_group'
 
-Fix it by passing the correct number of bits MAX_TPA_P5.  Use
-DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
-check to warn if a bit cannot be found and reset the ring [MChan].
+Fix it by describing @tunnel_hash member.
 
-Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20251231083625.3911652-1-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: efa5356b0d9753 ("bridge: per vlan dst_metadata netlink support")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251218042936.24175-2-bagasdotme@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ net/bridge/br_private.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index a3491b8383f5a..1f5149d45b089 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1412,9 +1412,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
- 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
- 	u16 idx = agg_id & MAX_TPA_P5_MASK;
- 
--	if (test_bit(idx, map->agg_idx_bmap))
--		idx = find_first_zero_bit(map->agg_idx_bmap,
--					  BNXT_AGG_IDX_BMAP_SIZE);
-+	if (test_bit(idx, map->agg_idx_bmap)) {
-+		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
-+		if (idx >= MAX_TPA_P5)
-+			return INVALID_HW_RING_ID;
-+	}
- 	__set_bit(idx, map->agg_idx_bmap);
- 	map->agg_id_tbl[agg_id] = idx;
- 	return idx;
-@@ -1478,6 +1480,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
- 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
- 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
-+		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
-+			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
-+				    rxr->bnapi->index,
-+				    TPA_START_AGG_ID_P5(tpa_start));
-+			bnxt_sched_reset_rxr(bp, rxr);
-+			return;
-+		}
- 	} else {
- 		agg_id = TPA_START_AGG_ID(tpa_start);
- 	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 37bb9091bf771..38690fdc3c46c 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1070,11 +1070,9 @@ struct bnxt_tpa_info {
- 	struct rx_agg_cmp	*agg_arr;
- };
- 
--#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
--
- struct bnxt_tpa_idx_map {
- 	u16		agg_id_tbl[1024];
--	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
-+	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
- };
- 
- struct bnxt_rx_ring_info {
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 259b43b435a9..19d77a8721fa 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -158,6 +158,7 @@ struct net_bridge_vlan {
+  * struct net_bridge_vlan_group
+  *
+  * @vlan_hash: VLAN entry rhashtable
++ * @tunnel_hash: Hash table to map from tunnel key ID (e.g. VXLAN VNI) to VLAN
+  * @vlan_list: sorted VLAN entry list
+  * @num_vlans: number of total VLAN entries
+  * @pvid: PVID VLAN id
 -- 
 2.51.0
 
