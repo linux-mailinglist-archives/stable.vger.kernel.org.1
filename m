@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209370-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id EF212D275E8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:12 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8C00FD2622D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 47DAC331036A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:31 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 499CB3022D1D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6DEBE3C1FE9;
-	Thu, 15 Jan 2026 17:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EC03BF301;
+	Thu, 15 Jan 2026 17:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EJiStjYN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOvrcIU7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FB893BFE54;
-	Thu, 15 Jan 2026 17:35:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC63A0E94;
+	Thu, 15 Jan 2026 17:05:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498502; cv=none; b=DRXaLZHIvbuiltXVR4fwqdcSExGArpn689qv8JaNjIltaCWU5rJXzP68zklJ15UbxlaMm+ra+UxtIlwPepXsoh+vAifRonJL31Rttbxq4C5RClZQCNY5Sz73DrArNwQaAu3xHq2E1p+0mKdapZMZ79EXsdQSgNdiOwJFuevZum0=
+	t=1768496748; cv=none; b=HtrxAArM7TupELwdKF6my+rVW5N+8kMfPL6qlhmRyoz0S5mt/udKJrw5mBoM2kIgYI3gxnzSXhrbk6Sg/X+dZEkDi/f5Hi9XGv0A5VB+/PdrZjTsMIowGy/iziWdbz40ycfBVmUmjDgBErDUz7R55sPRWasYZYtoRn2D6ZJP2tg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498502; c=relaxed/simple;
-	bh=wOeprH1yv0BMipo43e9uAsRaj6ti2p94cwifxfiUMl4=;
+	s=arc-20240116; t=1768496748; c=relaxed/simple;
+	bh=nUb+vz7dqVrrB0tjLiHRMamvd0SUtN3nmpdGkdmWaZA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XH+yTsMrhMQxqRAvjkQH72ouwHf/9ioXf6/043FAVT6FSy3InQcdJhQE4Cz5+s54ng6R0VM3IpZPfu7cTDck8uyWt/ajoOBJ46YqEhfXjQJVPZCRZZ275zNj4HY3qjUM7FwnujeopEFn8d5Sm0TB8MsD+a72KBys29xqF+FQE1c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EJiStjYN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACF29C116D0;
-	Thu, 15 Jan 2026 17:35:01 +0000 (UTC)
+	 MIME-Version; b=e68VUU8D+9DTVcIxKqcEssyLL6Pasc8keTlFkEk8Ev1BQ40jhHsMsOGjgiGG8rPPEmswEj3fT4D2I46TlsQQiJ6wZ1LqUJ2fRkp2Y1k68KllqGQRuHgFVonYl2+tB28AHoMGXndekVt3AqReEHN/XmrZiP3QXmRBK4JtKyGiGJo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOvrcIU7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E10EC116D0;
+	Thu, 15 Jan 2026 17:05:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498502;
-	bh=wOeprH1yv0BMipo43e9uAsRaj6ti2p94cwifxfiUMl4=;
+	s=korg; t=1768496748;
+	bh=nUb+vz7dqVrrB0tjLiHRMamvd0SUtN3nmpdGkdmWaZA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EJiStjYNGiKASsIZ/HkmHha7iKxzeGOb//Q9MJQDTQiVUf4xftC2eAK553NvYNycM
-	 /A/3oEZe3Lz3wRXe8a2nJLiuV1AlUOq0jBQYLTittsOl37q2zesfLacSDs/QrlmjjW
-	 PHurJDdc/IXwBi3dX+cMHcCqWoz99mj7WJRxSL50=
+	b=dOvrcIU7CZbgYot6fzi+ZUhn8TLG/dOMjB+CvG/50fXJpQeCA4AClYS/29ldxaJKh
+	 LvGG2mC5Rzy5y1zwYK2SlP6qkHbzOld8n9tmnCbWoKmMkpL3e2ZFCt2HWGZ9NBEYYR
+	 e/XWN/Nv4zJzz9Ew1OyjCoZKwk6Fl7iWqVv/neEE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Sumeet Pawnikar <sumeet4linux@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 453/554] crypto: af_alg - zero initialize memory allocated via sock_kmalloc
+Subject: [PATCH 6.12 104/119] powercap: fix sscanf() error return value handling
 Date: Thu, 15 Jan 2026 17:48:39 +0100
-Message-ID: <20260115164302.669215424@linuxfoundation.org>
+Message-ID: <20260115164155.706386139@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,104 +60,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shivani Agarwal <shivani.agarwal@broadcom.com>
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
 
-[ Upstream commit 6f6e309328d53a10c0fe1f77dec2db73373179b6 ]
+[ Upstream commit efc4c35b741af973de90f6826bf35d3b3ac36bf1 ]
 
-Several crypto user API contexts and requests allocated with
-sock_kmalloc() were left uninitialized, relying on callers to
-set fields explicitly. This resulted in the use of uninitialized
-data in certain error paths or when new fields are added in the
-future.
+Fix inconsistent error handling for sscanf() return value check.
 
-The ACVP patches also contain two user-space interface files:
-algif_kpp.c and algif_akcipher.c. These too rely on proper
-initialization of their context structures.
+Implicit boolean conversion is used instead of explicit return
+value checks. The code checks if (!sscanf(...)) which is incorrect
+because:
+ 1. sscanf returns the number of successfully parsed items
+ 2. On success, it returns 1 (one item passed)
+ 3. On failure, it returns 0 or EOF
+ 4. The check 'if (!sscanf(...))' is wrong because it treats
+    success (1) as failure
 
-A particular issue has been observed with the newly added
-'inflight' variable introduced in af_alg_ctx by commit:
+All occurrences of sscanf() now uses explicit return value check.
+With this behavior it returns '-EINVAL' when parsing fails (returns
+0 or EOF), and continues when parsing succeeds (returns 1).
 
-  67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-
-Because the context is not memset to zero after allocation,
-the inflight variable has contained garbage values. As a result,
-af_alg_alloc_areq() has incorrectly returned -EBUSY randomly when
-the garbage value was interpreted as true:
-
-  https://github.com/gregkh/linux/blame/master/crypto/af_alg.c#L1209
-
-The check directly tests ctx->inflight without explicitly
-comparing against true/false. Since inflight is only ever set to
-true or false later, an uninitialized value has triggered
--EBUSY failures. Zero-initializing memory allocated with
-sock_kmalloc() ensures inflight and other fields start in a known
-state, removing random issues caused by uninitialized data.
-
-Fixes: fe869cdb89c9 ("crypto: algif_hash - User-space interface for hash operations")
-Fixes: 5afdfd22e6ba ("crypto: algif_rng - add random number generator support")
-Fixes: 2d97591ef43d ("crypto: af_alg - consolidation of duplicate code")
-Fixes: 67b164a871af ("crypto: af_alg - Disallow multiple in-flight AIO requests")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-[ Adjust context ]
+Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
+[ rjw: Subject and changelog edits ]
+Link: https://patch.msgid.link/20251207151549.202452-1-sumeet4linux@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/af_alg.c     |    5 ++---
- crypto/algif_hash.c |    3 +--
- crypto/algif_rng.c  |    3 +--
- 3 files changed, 4 insertions(+), 7 deletions(-)
+ drivers/powercap/powercap_sys.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/crypto/af_alg.c
-+++ b/crypto/af_alg.c
-@@ -1139,14 +1139,13 @@ struct af_alg_async_req *af_alg_alloc_ar
- 	if (unlikely(!areq))
- 		return ERR_PTR(-ENOMEM);
+diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
+index d14b36b75189d..1ff369880beb2 100644
+--- a/drivers/powercap/powercap_sys.c
++++ b/drivers/powercap/powercap_sys.c
+@@ -68,7 +68,7 @@ static ssize_t show_constraint_##_attr(struct device *dev, \
+ 	int id; \
+ 	struct powercap_zone_constraint *pconst;\
+ 	\
+-	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
++	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
+ 		return -EINVAL; \
+ 	if (id >= power_zone->const_id_cnt)	\
+ 		return -EINVAL; \
+@@ -93,7 +93,7 @@ static ssize_t store_constraint_##_attr(struct device *dev,\
+ 	int id; \
+ 	struct powercap_zone_constraint *pconst;\
+ 	\
+-	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
++	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
+ 		return -EINVAL; \
+ 	if (id >= power_zone->const_id_cnt)	\
+ 		return -EINVAL; \
+@@ -162,7 +162,7 @@ static ssize_t show_constraint_name(struct device *dev,
+ 	ssize_t len = -ENODATA;
+ 	struct powercap_zone_constraint *pconst;
  
-+	memset(areq, 0, areqlen);
-+
- 	ctx->inflight = true;
- 
- 	areq->areqlen = areqlen;
- 	areq->sk = sk;
--	areq->last_rsgl = NULL;
- 	INIT_LIST_HEAD(&areq->rsgl_list);
--	areq->tsgl = NULL;
--	areq->tsgl_entries = 0;
- 
- 	return areq;
- }
---- a/crypto/algif_hash.c
-+++ b/crypto/algif_hash.c
-@@ -423,9 +423,8 @@ static int hash_accept_parent_nokey(void
- 	if (!ctx)
- 		return -ENOMEM;
- 
--	ctx->result = NULL;
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->more = false;
- 	crypto_init_wait(&ctx->wait);
- 
- 	ask->private = ctx;
---- a/crypto/algif_rng.c
-+++ b/crypto/algif_rng.c
-@@ -250,9 +250,8 @@ static int rng_accept_parent(void *priva
- 	if (!ctx)
- 		return -ENOMEM;
- 
-+	memset(ctx, 0, len);
- 	ctx->len = len;
--	ctx->addtl = NULL;
--	ctx->addtl_len = 0;
- 
- 	/*
- 	 * No seeding done at that point -- if multiple accepts are
+-	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id))
++	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1)
+ 		return -EINVAL;
+ 	if (id >= power_zone->const_id_cnt)
+ 		return -EINVAL;
+-- 
+2.51.0
+
 
 
 
