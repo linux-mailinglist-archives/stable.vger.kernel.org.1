@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209262-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209681-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C0FBD267F9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5782FD271CB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:06:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 07F5530848FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 424DE33D9C8E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D63C93C1FD9;
-	Thu, 15 Jan 2026 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5FEB3D6F34;
+	Thu, 15 Jan 2026 17:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j+Fds1V9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kkZpjyWP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 897F73C1FCC;
-	Thu, 15 Jan 2026 17:29:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 738653C00AA;
+	Thu, 15 Jan 2026 17:49:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498195; cv=none; b=RpFKJ+Bj09a6PD/Ldxkz78e2zjm80PMf2pYqSfNyRD6j+qgHAVN1tjTxIC8bL6YIcYXGKPZ5+ro3xOM3P+V3/ejcDPxS5cgCkNMxUpTOwgaNcNPgEeJSZ/HCyxSsUTSbWp63Nwa+i1f845UGVQ2mPrMzP/hp+xr0qufG8ZggtTY=
+	t=1768499388; cv=none; b=TgKPNihIX3UFrCXe4Cn+kYeIfIFXqeJY5OkJ6qw/hamQaxXHse6Yqej9Ds6NLo+ysPKz7mLdnZxDbuZ5NWpsuKmI506MXMogv+dqp+/waeLyYPANLn1XQTnKaIJBMu78tL5H5Fnye3plx6sDprM9WnX9MnpEYY/MHdo8YN7LuKg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498195; c=relaxed/simple;
-	bh=+C6Oict6VGh7RElSrcnZiXzvTn53zGYz1NL/i1hXqHQ=;
+	s=arc-20240116; t=1768499388; c=relaxed/simple;
+	bh=0ZBtzssjPq1dkW0lFk+sL2Ad0+saExS8wAy94+nOrhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SIkMPMx/a8kjm/r4lqoz05akFfVTWiQEGf8YkHLjJRsPrKb9y2s6bM8RwgfM+ZtPbSPpSTDd07xUBlVX8PB2p8dPAFNOtlEaeK3aA6zHTV0vtFxp1AZujBmagRfqIB2dLSOvnVtXjRRr60tezcFOOCqYHNJq5mIwGcykVuInDSY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j+Fds1V9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC293C116D0;
-	Thu, 15 Jan 2026 17:29:54 +0000 (UTC)
+	 MIME-Version; b=XLYLQ7aopsjbcLmq2Vx9/QpoDfgHUWMJVFNIOY44NH9gwtirlyWIJRCOaAEwV6fn/97n5wWieFqGJOJ+6tIDP32bf4RptGQPsS3HL3LnUD666/VO9woQJNBC6DIMfV9emZkM7W0lrssSKXLOjfx4SlKJYSbRYGJTGMZh3DmvoTQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kkZpjyWP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1C47C16AAE;
+	Thu, 15 Jan 2026 17:49:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498195;
-	bh=+C6Oict6VGh7RElSrcnZiXzvTn53zGYz1NL/i1hXqHQ=;
+	s=korg; t=1768499388;
+	bh=0ZBtzssjPq1dkW0lFk+sL2Ad0+saExS8wAy94+nOrhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j+Fds1V9R1OSc1OCWFiFK1SUTV82hhizLqku0MqB3tqQCnm/47of4a+wYXIHBdEdm
-	 G426VR0mxMMvcu1gMjiNbYlMvWhnPN88y9jPvZH0yMW0rXA0o0q89Vk5rz/AAxqw32
-	 cpzpOyYTKeuXTL6SseurSJP95fH6qh8EPkxt1ldQ=
+	b=kkZpjyWPJdKckaLmyU84F/05w3MB9uRw4Sj0AEanccNRRjWKId9JwOaMkACGbaDbQ
+	 nvGi76VtPxhutHgmNOt5jduxfCRb6HBBhKZFLQyjRAYKFdwrgw5JmO0ZuW1IxHOiiH
+	 Mk9a2bOo1lN1m5X04qGx5zIIReOxS5ccgYzGfd8U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 345/554] ip6_gre: make ip6gre_header() robust
+Subject: [PATCH 5.10 210/451] scsi: qla2xxx: Use reinit_completion on mbx_intr_comp
 Date: Thu, 15 Jan 2026 17:46:51 +0100
-Message-ID: <20260115164258.716815348@linuxfoundation.org>
+Message-ID: <20260115164238.497629469@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit db5b4e39c4e63700c68a7e65fc4e1f1375273476 ]
+[ Upstream commit 957aa5974989fba4ae4f807ebcb27f12796edd4d ]
 
-Over the years, syzbot found many ways to crash the kernel
-in ip6gre_header() [1].
+If a mailbox command completes immediately after
+wait_for_completion_timeout() times out, ha->mbx_intr_comp could be left
+in an inconsistent state, causing the next mailbox command not to wait
+for the hardware.  Fix by reinitializing the completion before use.
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
-
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ip6gre device.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff8a1d69a8 len:136 put:40 head:ffff888059bc7000 data:ffff888059bc6fe8 tail:0x70 end:0x6c0 dev:team0
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:213 !
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ip6gre_header+0xc8/0x790 net/ipv6/ip6_gre.c:1371
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  neigh_output include/net/neighbour.h:556 [inline]
-  ip6_finish_output2+0xfb3/0x1480 net/ipv6/ip6_output.c:136
- __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
-  ip6_finish_output+0x234/0x7d0 net/ipv6/ip6_output.c:220
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-
-Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
-Reported-by: syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/693b002c.a70a0220.33cd7b.0033.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251211173550.2032674-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/11b6485e-0bfd-4784-8f99-c06a196dad94@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_gre.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_mbx.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 501630e3f1b6..84ba9ad00135 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1383,9 +1383,16 @@ static int ip6gre_header(struct sk_buff *skb, struct net_device *dev,
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct ipv6hdr *ipv6h;
-+	int needed;
- 	__be16 *p;
+diff --git a/drivers/scsi/qla2xxx/qla_mbx.c b/drivers/scsi/qla2xxx/qla_mbx.c
+index 8b7c71e779a7..aa6a68e235c9 100644
+--- a/drivers/scsi/qla2xxx/qla_mbx.c
++++ b/drivers/scsi/qla2xxx/qla_mbx.c
+@@ -249,6 +249,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
+ 	/* Issue set host interrupt command to send cmd out. */
+ 	ha->flags.mbox_int = 0;
+ 	clear_bit(MBX_INTERRUPT, &ha->mbx_cmd_flags);
++	reinit_completion(&ha->mbx_intr_comp);
  
--	ipv6h = skb_push(skb, t->hlen + sizeof(*ipv6h));
-+	needed = t->hlen + sizeof(*ipv6h);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
-+
-+	ipv6h = skb_push(skb, needed);
- 	ip6_flow_hdr(ipv6h, 0, ip6_make_flowlabel(dev_net(dev), skb,
- 						  t->fl.u.ip6.flowlabel,
- 						  true, &t->fl.u.ip6));
+ 	/* Unlock mbx registers and wait for interrupt */
+ 	ql_dbg(ql_dbg_mbx, vha, 0x100f,
+@@ -275,6 +276,7 @@ qla2x00_mailbox_command(scsi_qla_host_t *vha, mbx_cmd_t *mcp)
+ 			    "cmd=%x Timeout.\n", command);
+ 			spin_lock_irqsave(&ha->hardware_lock, flags);
+ 			clear_bit(MBX_INTR_WAIT, &ha->mbx_cmd_flags);
++			reinit_completion(&ha->mbx_intr_comp);
+ 			spin_unlock_irqrestore(&ha->hardware_lock, flags);
+ 
+ 			if (chip_reset != ha->chip_reset) {
 -- 
 2.51.0
 
