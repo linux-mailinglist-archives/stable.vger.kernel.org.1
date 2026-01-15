@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208532-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208663-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7523DD25F87
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 716E0D260C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BBCAF30D4D3B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:18 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BDBED3015DCA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 93BCE3BF2FB;
-	Thu, 15 Jan 2026 16:55:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123C42D7DD7;
+	Thu, 15 Jan 2026 17:01:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qYzv8hbo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s51ADBZt"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C663B8BAB;
-	Thu, 15 Jan 2026 16:55:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2BF29ACDD;
+	Thu, 15 Jan 2026 17:01:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496117; cv=none; b=jJv48nmh5VUf2uCMYGpHeygvQMPRaVl+cQ+1i4RTRAQTnlBtj2R4Gx9pOWgDYTM6NMvLnmxcjOwrp7fObMM5vqpO574Z1/grcqinAuSFZE+a9Oh8/QcP6n2UfRou+3fDIeergwGz4PHmFJXp7aYkhLSkqDXrfRFtCfw1vetLfdk=
+	t=1768496491; cv=none; b=WOOQZmFDE4TFy8dvY2wUqAZ+Hk2crVX/IzOOlERVbrO2G9eIleZ/JHKUavKtZ5iz4BuMZ9tAB8zD6A977eyhweAZ9nNGBw88n9qqL+GSq0PH9UDaz4nJqDgBp0AGE1JCgEnezuHid+k1WdSO99lEKYDUAgwXozbGyRF27TnXl/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496117; c=relaxed/simple;
-	bh=afUsduel1+Ha3dY79t/HDe2X9tG5HodgBE4xuD9A4PM=;
+	s=arc-20240116; t=1768496491; c=relaxed/simple;
+	bh=rpjy90DfK8YXTEuBCzbj/YYGWTRfKTuA7HuleWp34jU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QxVSYOnxsWt7HcMz237RZz/DYglFhZFVs3Ndz6kL3/vLk0M7vvAaoy7m2BCWEBxkQCLR6c8xT1dTLuufT1qi4u99FkTV17nMTnbb62VJSpAWlaODOsf05yaCtGfSaOVUrZQe/XXJk0Slf4BY3Z5uehZWJ99VBSnUDesSuPP7d58=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qYzv8hbo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6409C116D0;
-	Thu, 15 Jan 2026 16:55:16 +0000 (UTC)
+	 MIME-Version; b=lAcJKgpkIs/+/F9mJAx5hRE7UtQFTXJnoOF0p+8eS1TyPmmu2YvxRCfYJy2OLr96wu1YJHf8qjx/PVzIMz9sb1S2VliJP/DQ53VN9R48XP/SFqM72CIbieCYDdDgxNrsGdTE8uv6RnY4a/xoYbt0d+scvB4asbg0MVJJgFa3ulM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s51ADBZt; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F64C116D0;
+	Thu, 15 Jan 2026 17:01:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496117;
-	bh=afUsduel1+Ha3dY79t/HDe2X9tG5HodgBE4xuD9A4PM=;
+	s=korg; t=1768496491;
+	bh=rpjy90DfK8YXTEuBCzbj/YYGWTRfKTuA7HuleWp34jU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qYzv8hbobp++eZfOpx6D8D1FGyHdfqhQo/iWOz/Q5Du9qCJBsfH2X7kx1tOLQYvdN
-	 Q7AmFYHBdlaelxEHOrofyogWL36Ua9qVz4y0ciFPzyGyO234EsTauJrjQGkBo3897u
-	 IuajXxVOCUxt7m1qYsEtk4Yavw+Wa1e4WsySjj/Y=
+	b=s51ADBZtytnr7RgsDijLXZzOF4Gqg30wA3KG5DiRToUhwy5XS4lZ0cLe5GQiTl5lt
+	 CmEZMKC1udhiM99eSDQz+8IdxaB75RbDOC2gXFeXr5/wBLyfoieFDmKQQ8lWq1Oc1g
+	 11PQLw+beAwhfwbog3nUNlcPV5rZiE6yMRCHdiTI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 084/181] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on DH electronics i.MX8M Plus DHCOM
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 006/119] NFSD: Remove NFSERR_EAGAIN
 Date: Thu, 15 Jan 2026 17:47:01 +0100
-Message-ID: <20260115164205.358606899@linuxfoundation.org>
+Message-ID: <20260115164152.187620061@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit c63749a7ddc59ac6ec0b05abfa0a21af9f2c1d38 ]
+commit c6c209ceb87f64a6ceebe61761951dcbbf4a0baa upstream.
 
-Add missing 'clocks' property to LAN8740Ai PHY node, to allow the PHY driver
-to manage LAN8740Ai CLKIN reference clock supply. This fixes sporadic link
-bouncing caused by interruptions on the PHY reference clock, by letting the
-PHY driver manage the reference clock and assure there are no interruptions.
+I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
+None of these RFCs have an NFS status code that match the numeric
+value "11".
 
-This follows the matching PHY driver recommendation described in commit
-bedd8d78aba3 ("net: phy: smsc: LAN8710/20: add phy refclk in support")
+Based on the meaning of the EAGAIN errno, I presume the use of this
+status in NFSD means NFS4ERR_DELAY. So replace the one usage of
+nfserr_eagain, and remove it from NFSD's NFS status conversion
+tables.
 
-Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
+era, but was not actually used by any code until commit f4e44b393389
+("NFSD: delay unmount source's export after inter-server copy
+completed."), at which time it become possible for NFSD to return
+a status code of 11 (which is not valid NFS protocol).
+
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Cc: stable@vger.kernel.org
+Reviewed-by: NeilBrown <neil@brown.name>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ fs/nfs_common/common.c   |    1 -
+ fs/nfsd/nfs4proc.c       |    2 +-
+ fs/nfsd/nfsd.h           |    1 -
+ include/trace/misc/nfs.h |    2 --
+ include/uapi/linux/nfs.h |    1 -
+ 5 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index 68c2e0156a5c8..f8303b7e2bd22 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -113,6 +113,7 @@ mdio {
- 		ethphy0f: ethernet-phy@1 { /* SMSC LAN8740Ai */
- 			compatible = "ethernet-phy-id0007.c110",
- 				     "ethernet-phy-ieee802.3-c22";
-+			clocks = <&clk IMX8MP_CLK_ENET_QOS>;
- 			interrupt-parent = <&gpio3>;
- 			interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
- 			pinctrl-0 = <&pinctrl_ethphy0>;
--- 
-2.51.0
-
+--- a/fs/nfs_common/common.c
++++ b/fs/nfs_common/common.c
+@@ -17,7 +17,6 @@ static const struct {
+ 	{ NFSERR_NOENT,		-ENOENT		},
+ 	{ NFSERR_IO,		-EIO		},
+ 	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+ 	{ NFSERR_ACCES,		-EACCES		},
+ 	{ NFSERR_EXIST,		-EEXIST		},
+ 	{ NFSERR_XDEV,		-EXDEV		},
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1359,7 +1359,7 @@ try_again:
+ 					(schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+-				return nfserr_eagain;
++				return nfserr_jukebox;
+ 			}
+ 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 			goto try_again;
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -226,7 +226,6 @@ void		nfsd_lockd_shutdown(void);
+ #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
+ #define	nfserr_io		cpu_to_be32(NFSERR_IO)
+ #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
+-#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
+ #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
+ #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
+ #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
+--- a/include/trace/misc/nfs.h
++++ b/include/trace/misc/nfs.h
+@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
+ TRACE_DEFINE_ENUM(NFSERR_NOENT);
+ TRACE_DEFINE_ENUM(NFSERR_IO);
+ TRACE_DEFINE_ENUM(NFSERR_NXIO);
+-TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
+ TRACE_DEFINE_ENUM(NFSERR_ACCES);
+ TRACE_DEFINE_ENUM(NFSERR_EXIST);
+ TRACE_DEFINE_ENUM(NFSERR_XDEV);
+@@ -52,7 +51,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
+ 		{ NFSERR_NXIO,			"NXIO" }, \
+ 		{ ECHILD,			"CHILD" }, \
+ 		{ ETIMEDOUT,			"TIMEDOUT" }, \
+-		{ NFSERR_EAGAIN,		"AGAIN" }, \
+ 		{ NFSERR_ACCES,			"ACCES" }, \
+ 		{ NFSERR_EXIST,			"EXIST" }, \
+ 		{ NFSERR_XDEV,			"XDEV" }, \
+--- a/include/uapi/linux/nfs.h
++++ b/include/uapi/linux/nfs.h
+@@ -49,7 +49,6 @@
+ 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
+ 	NFSERR_IO = 5,			/* v2 v3 v4 */
+ 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
+-	NFSERR_EAGAIN = 11,		/* v2 v3 */
+ 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
+ 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
+ 	NFSERR_XDEV = 18,		/*    v3 v4 */
 
 
 
