@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-208668-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58A7FD26099
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:07 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 23DA9D26000
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D74853060315
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 057C830DF5D1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D9C429C338;
-	Thu, 15 Jan 2026 17:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F353B9619;
+	Thu, 15 Jan 2026 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="S1qVVXGm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hZBn3Lg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2BA123BC4DA;
-	Thu, 15 Jan 2026 17:01:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614A9396B75;
+	Thu, 15 Jan 2026 16:57:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496506; cv=none; b=XiClCJTkM1J7Nqj3/jP0N9Tp2HJYHmbpIxG6lDI0Z3HyoWBsEfK/kFWj7ZUeQ2uDNWDAgT+tN/nfo7bkWdAviyUgsPTB7QyP5N5TNNUYz4tlrOMw4Jx4GQpq0e4ckgsKCt9fppfjdJoUtmcEIy3Zyoy8t6RqfogWT/40Tcau0u4=
+	t=1768496234; cv=none; b=Gq0Xlf3kjBA/liArilqZo7b6Mh1WvuwGMYK+KIz01+dQ3Rs166Ro6wWMThryltXorl0kfAo3Pikw6IpygLz0LHIQ8TyMmrNyPotdKHe2MfUfVgJRFqnHOiqyRqrxHvA1FiEclSVVbveUvbFrLJzT7alC5FAPgIpOF7sPuPAuZOY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496506; c=relaxed/simple;
-	bh=skkte8LD5koAr5YkBOz2UyYgnRv5lv6VaBzpcfnYLVs=;
+	s=arc-20240116; t=1768496234; c=relaxed/simple;
+	bh=jnHN5dckhkJPeQxHocYi0Mt0g3xo8SiSTkwwq+YcN1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LOFK48bR8dGHHbbVSZu/nCkvnRy0SyruvsY4cx53dMBf6rEmencu735qeFaaKIL/O0E3DSSjy5pk14shsUcDq2lTTMYqTVsA2CB5oBOWlWcSk5cfOLcxw3cTMNgFf1oFpyNiS5X9b9ajwXcqtVJrsrohUJW7fy6VXiRMTxnE8b8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=S1qVVXGm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7AACC116D0;
-	Thu, 15 Jan 2026 17:01:45 +0000 (UTC)
+	 MIME-Version; b=dnQCB5FwOgdKILV1wP8XYqunqlYKIM5pFk5ihdDCWCA2kFwskbJWN7WMxFQge+XLAeD/39ifCSoFnd1GhTKw5XLexfHOZoJbBC+M2jsZcJ3GBX+srcvb8dSD4HQbVzNuY04+UqeyYzTAKiMt2rHG3fConCqGUDgWLhkzjiGzFP8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hZBn3Lg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1D2C116D0;
+	Thu, 15 Jan 2026 16:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496506;
-	bh=skkte8LD5koAr5YkBOz2UyYgnRv5lv6VaBzpcfnYLVs=;
+	s=korg; t=1768496234;
+	bh=jnHN5dckhkJPeQxHocYi0Mt0g3xo8SiSTkwwq+YcN1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=S1qVVXGmTxezTXGxR9ZzDuLY18z4P7VmGW2ZlfFZqxfMhoFt4Qq11WAXb1A4+BCrs
-	 LV7NudwpsDA8I92hHrJ9UN5N0Zym4SQuXhMf180iowf9zuXWHaWOBaC9i5dtOmymOM
-	 HYNRYOAz4tRfzLZqdflkm9q0U6ZAuRLcZzJFE74E=
+	b=1hZBn3Lg1LKbomOkKkDqrW7dQm4APkktzY6f3s6Nte0lnmCLf6C8AVB6htBw19wr5
+	 RsLBa1EvZM0JRO3K4/Q5hf5Cp12gVm9joGXtnpOVhMQ4RV0DBxUqfBmd3jmQBm4CKR
+	 wkycRhWpyV+eJ80F1duimlpf2+uHjrJfGJ6LoqGQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rodrigo Vivi <rodrigo.vivi@intel.com>,
-	Xin Wang <x.wang@intel.com>
-Subject: [PATCH 6.12 029/119] drm/xe: make xe_gt_idle_disable_c6() handle the forcewake internally
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 107/181] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
 Date: Thu, 15 Jan 2026 17:47:24 +0100
-Message-ID: <20260115164153.013741232@linuxfoundation.org>
+Message-ID: <20260115164206.181218384@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,101 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Wang <x.wang@intel.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 1313351e71181a4818afeb8dfe202e4162091ef6 upstream.
+[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
 
-Move forcewake_get() into xe_gt_idle_enable_c6() to streamline the
-code and make it easier to use.
+Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+allocated memory for pp_qlt in ipc_mux_init() but did not free it in
+ipc_mux_deinit(). This results in a memory leak when the driver is
+unloaded.
 
-Suggested-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Xin Wang <x.wang@intel.com>
-Reviewed-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Link: https://lore.kernel.org/r/20250827000633.1369890-2-x.wang@intel.com
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Free the allocated memory in ipc_mux_deinit() to fix the leak.
+
+Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/xe/xe_gt_idle.c |   20 +++++++++++++-------
- drivers/gpu/drm/xe/xe_gt_idle.h |    2 +-
- drivers/gpu/drm/xe/xe_guc_pc.c  |   10 +---------
- 3 files changed, 15 insertions(+), 17 deletions(-)
+ drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/gpu/drm/xe/xe_gt_idle.c
-+++ b/drivers/gpu/drm/xe/xe_gt_idle.c
-@@ -204,11 +204,8 @@ static void gt_idle_fini(void *arg)
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+index fc928b298a984..b846889fcb099 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 	struct sk_buff_head *free_list;
+ 	union mux_msg mux_msg;
+ 	struct sk_buff *skb;
++	int i;
  
- 	xe_gt_idle_disable_pg(gt);
+ 	if (!ipc_mux->initialized)
+ 		return;
+@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 		ipc_mux->channel->dl_pipe.is_open = false;
+ 	}
  
--	if (gt_to_xe(gt)->info.skip_guc_pc) {
--		XE_WARN_ON(xe_force_wake_get(gt_to_fw(gt), XE_FW_GT));
-+	if (gt_to_xe(gt)->info.skip_guc_pc)
- 		xe_gt_idle_disable_c6(gt);
--		xe_force_wake_put(gt_to_fw(gt), XE_FW_GT);
--	}
- 
- 	sysfs_remove_files(kobj, gt_idle_attrs);
- 	kobject_put(kobj);
-@@ -266,14 +263,23 @@ void xe_gt_idle_enable_c6(struct xe_gt *
- 			RC_CTL_HW_ENABLE | RC_CTL_TO_MODE | RC_CTL_RC6_ENABLE);
++	if (ipc_mux->protocol != MUX_LITE) {
++		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
++			kfree(ipc_mux->ul_adb.pp_qlt[i]);
++	}
++
+ 	kfree(ipc_mux);
  }
- 
--void xe_gt_idle_disable_c6(struct xe_gt *gt)
-+int xe_gt_idle_disable_c6(struct xe_gt *gt)
- {
-+	unsigned int fw_ref;
-+
- 	xe_device_assert_mem_access(gt_to_xe(gt));
--	xe_force_wake_assert_held(gt_to_fw(gt), XE_FW_GT);
- 
- 	if (IS_SRIOV_VF(gt_to_xe(gt)))
--		return;
-+		return 0;
-+
-+	fw_ref = xe_force_wake_get(gt_to_fw(gt), XE_FW_GT);
-+	if (!fw_ref)
-+		return -ETIMEDOUT;
- 
- 	xe_mmio_write32(gt, RC_CONTROL, 0);
- 	xe_mmio_write32(gt, RC_STATE, 0);
-+
-+	xe_force_wake_put(gt_to_fw(gt), fw_ref);
-+
-+	return 0;
- }
---- a/drivers/gpu/drm/xe/xe_gt_idle.h
-+++ b/drivers/gpu/drm/xe/xe_gt_idle.h
-@@ -12,7 +12,7 @@ struct xe_gt;
- 
- int xe_gt_idle_init(struct xe_gt_idle *gtidle);
- void xe_gt_idle_enable_c6(struct xe_gt *gt);
--void xe_gt_idle_disable_c6(struct xe_gt *gt);
-+int xe_gt_idle_disable_c6(struct xe_gt *gt);
- void xe_gt_idle_enable_pg(struct xe_gt *gt);
- void xe_gt_idle_disable_pg(struct xe_gt *gt);
- 
---- a/drivers/gpu/drm/xe/xe_guc_pc.c
-+++ b/drivers/gpu/drm/xe/xe_guc_pc.c
-@@ -1008,15 +1008,7 @@ int xe_guc_pc_gucrc_disable(struct xe_gu
- 	if (ret)
- 		return ret;
- 
--	ret = xe_force_wake_get(gt_to_fw(gt), XE_FORCEWAKE_ALL);
--	if (ret)
--		return ret;
--
--	xe_gt_idle_disable_c6(gt);
--
--	XE_WARN_ON(xe_force_wake_put(gt_to_fw(gt), XE_FORCEWAKE_ALL));
--
--	return 0;
-+	return xe_gt_idle_disable_c6(gt);
- }
- 
- /**
+-- 
+2.51.0
+
 
 
 
