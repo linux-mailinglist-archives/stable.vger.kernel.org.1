@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209403-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 31A8CD2772A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:52 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BD40D27629
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id CE8EF306B552
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2475430F2D23
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D6F3D3007;
-	Thu, 15 Jan 2026 17:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD6DE3BFE3D;
+	Thu, 15 Jan 2026 17:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v32d8X0g"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KAqR+AR4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A68B214A9B;
-	Thu, 15 Jan 2026 17:56:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 717903B530F;
+	Thu, 15 Jan 2026 17:36:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499789; cv=none; b=jYZkRU8Qi16WDg7oAIMVmZD+/fz1vdgN9br239HZ+dJyhetwjbesrbZBjjJVkXXxvS1WclfkFtWWZiHKepKWWvSb79OCnlI6zdYBiuZjU22OQpzsdwfPLZMwURZEydQO6+sUrleDF8D8SP3INNDomI5vpkjPHOhtIkvwUsCRaXg=
+	t=1768498597; cv=none; b=qJowN/GLHMxuHndOCUChZmEF+ffX8fYazZsZyAvsq4lFqjRokpU8HhiF1VOeYdGcBp7UAsnQtmKE7eNKwKyZD/hLtuYQinbYxdINnWAT0UpLoSmsUrttQEgQvGmueXH0CxhhOHxHhySfzf82W1SPYx5r9v6VHTfUqDC1kzinQUg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499789; c=relaxed/simple;
-	bh=athYsHsmCtEUrbUfZWYgW7cOekBHRtAtWrmbqG9R6ms=;
+	s=arc-20240116; t=1768498597; c=relaxed/simple;
+	bh=ASv9ZcMfgvHLHUxaxKE4/0FC7gH9z26tEJ4tLu4dT2E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BAMxSnI66cPZsbpcpsQsIFmWN5l3O1XehHibTtu61i80mOod+vvmq61ccCpVMp2cf3YJxkzT8ye/LWmpzndWWOOPM3qZafdgkdS8OGA7dBtTr4EaVFc+Xyg2qS8+ym20uI0R69OY/Ke7iLw9cvwies6CKS/lv+fhwQzzqlJ9tuI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v32d8X0g; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896C9C116D0;
-	Thu, 15 Jan 2026 17:56:28 +0000 (UTC)
+	 MIME-Version; b=Q+8KTCIWKb1KYV7Rw+GD9iq1WVN7BIVA5jSnGTd90H6+q3ToT6QYNn5UZl8sse/PEFolNlk8SV2e8s+2dWsHGP3R/B/oVw5AzhPCSfX/zZ37aT4EoStKEsn8ar++nybS6nCP+0Qha35eoNOgH/pVv9I0fxC8VaoGfXjs0TA58cw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KAqR+AR4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1910C116D0;
+	Thu, 15 Jan 2026 17:36:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499788;
-	bh=athYsHsmCtEUrbUfZWYgW7cOekBHRtAtWrmbqG9R6ms=;
+	s=korg; t=1768498597;
+	bh=ASv9ZcMfgvHLHUxaxKE4/0FC7gH9z26tEJ4tLu4dT2E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=v32d8X0gpLKzJiu+XSzKn/9tG5pjV1G7STvRqqow+J7kjd8Pe8d9DHyviJlNt8YOq
-	 HQEGiZ2dbCllm9SbTcEh3P9cxLzZ+wqekq9/rZ5x0tf9TBSDutp6jNB0mlqP19uoWF
-	 DheBxGK2MbXb5Js1qt5xQNSI9btmgkiU7iKRSR/U=
+	b=KAqR+AR4wD0tilK8yNPmMHeg8DO0gP/VhBP/cp1I0UMB4+zNq8YE7fJqFrH8S5Fr3
+	 1/szZuHrzKsESE5Qhwm9r8BS1PQmmEEP7cj3PsOU/2dCVn7cecofz1T1Ul0lF2sW6E
+	 a6WpE6IDdmACd5zRnFwUAQhwEvoBcROnGRPg2Hes=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 351/451] xhci: dbgtty: fix device unregister
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 5.15 486/554] HID: core: Harden s32ton() against conversion to 0 bits
 Date: Thu, 15 Jan 2026 17:49:12 +0100
-Message-ID: <20260115164243.599453309@linuxfoundation.org>
+Message-ID: <20260115164303.904225253@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,53 +59,59 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f ]
+[ Upstream commit a6b87bfc2ab5bccb7ad953693c85d9062aef3fdd ]
 
-When DbC is disconnected then xhci_dbc_tty_unregister_device()
-is called. However if there is any user space process blocked
-on write to DbC terminal device then it will never be signalled
-and thus stay blocked indifinitely.
+Testing by the syzbot fuzzer showed that the HID core gets a
+shift-out-of-bounds exception when it tries to convert a 32-bit
+quantity to a 0-bit quantity.  Ideally this should never occur, but
+there are buggy devices and some might have a report field with size
+set to zero; we shouldn't reject the report or the device just because
+of that.
 
-This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
-The tty_vhangup() wakes up any blocked writers and causes subsequent
-write attempts to DbC terminal device to fail.
+Instead, harden the s32ton() routine so that it returns a reasonable
+result instead of crashing when it is called with the number of bits
+set to 0 -- the same as what snto32() does.
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/68753a08.050a0220.33d347.0008.GAE@google.com/
+Tested-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
+Fixes: dde5845a529f ("[PATCH] Generic HID layer - code split")
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/613a66cd-4309-4bce-a4f7-2905f9bce0c9@rowland.harvard.edu
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+[ s32ton() was moved by c653ffc28340 ("HID: stop exporting hid_snto32()").
+  Minor context change fixed. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/hid/hid-core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -468,6 +468,12 @@ static void xhci_dbc_tty_unregister_devi
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1349,7 +1349,12 @@ EXPORT_SYMBOL_GPL(hid_snto32);
  
- 	if (!port->registered)
- 		return;
-+	/*
-+	 * Hang up the TTY. This wakes up any blocked
-+	 * writers and causes subsequent writes to fail.
-+	 */
-+	tty_vhangup(port->port.tty);
+ static u32 s32ton(__s32 value, unsigned n)
+ {
+-	s32 a = value >> (n - 1);
++	s32 a;
 +
- 	tty_unregister_device(dbc_tty_driver, 0);
- 	xhci_dbc_tty_exit_port(port);
- 	port->registered = false;
++	if (!value || !n)
++		return 0;
++
++	a = value >> (n - 1);
+ 	if (a && a != -1)
+ 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
+ 	return value & ((1 << n) - 1);
 
 
 
