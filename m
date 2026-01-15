@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208800-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209815-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D592D262FB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:14:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C8DAD2775D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE9C8302910F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:59 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5D81F31EA972
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2696B3BC4FE;
-	Thu, 15 Jan 2026 17:07:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97A7C3D6680;
+	Thu, 15 Jan 2026 17:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yoEZTlTX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hlQwi04K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A49A53BC4D7;
-	Thu, 15 Jan 2026 17:07:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A98D3D6677;
+	Thu, 15 Jan 2026 17:56:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496878; cv=none; b=oIrCKfY91o9qQLS3clkBkGlr5lzt58PGChQ/bD50t2c1QptdN4tTpvybhI8PzOQQkIjMGj4tyeyGJqtdyXhRbg+isvtpwE0yc22DwMFWUn7Jic0g2vtV7UrSxrLYQvCglFZEIlH87j7uvP36gVWfBotHoAfjCltzo7dcehBf4Nc=
+	t=1768499769; cv=none; b=Y+WVZs6v+oCn70AogB5/dkT6tZXh+bwBrPRjMMsC9SdX/rl4aZuwPG2oK1QzSItN7c89Loo69YLpDwk9yLuwSrynQ/3gRsmpyaABnsOO+0nwKhinBzqt/lFb1Rnq8LTmybPg84738ywMbdL8wRBh56Q2pxeL6UY/TMS1OsoJQzw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496878; c=relaxed/simple;
-	bh=kpXjEIbC4AggIgCLmBmdlm+EbDMG8gw0KqvhbO0ABGY=;
+	s=arc-20240116; t=1768499769; c=relaxed/simple;
+	bh=NXUCBa53QfZix2i3oiyPsUILxrRsFTfF5f3++Um5Wa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mEf67jzeMMEd8XnjO8O5x8isy88OXF3wMVJpvUTXtqeiYq93nprVna+UzdNs4yMqoou1QLD6bMeA7yUJwhdmR8422p9cKNIMZz/QMfBKgiIVHJ9MazJhmIDlivMkf+fPA1BfHCDPRIJzbiHuhOkHBBCysx8A7IadcNHrzVFMN0U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yoEZTlTX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17668C116D0;
-	Thu, 15 Jan 2026 17:07:57 +0000 (UTC)
+	 MIME-Version; b=n5S+FVFR66zVYJ2XdcEDxhi3x13qXnHWKa1JyMpLtHUTZ4I08c/cpoz76cN7sKQLB9lqYF8xiaKiIC3nlPv0881WFDjxAXj7FB4fSoJyamtnI9OGpIInriNfe/JFlsGoe8XM95HrfNXgJBr5ukyvtJJoZvddv8EtKbCp5cuBCsA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hlQwi04K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBEF9C116D0;
+	Thu, 15 Jan 2026 17:56:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496878;
-	bh=kpXjEIbC4AggIgCLmBmdlm+EbDMG8gw0KqvhbO0ABGY=;
+	s=korg; t=1768499769;
+	bh=NXUCBa53QfZix2i3oiyPsUILxrRsFTfF5f3++Um5Wa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yoEZTlTXHzMkFKGJTIKg7IVlIpMOG9LOkC0GZLWEXfw1osW48SdEZswKQXYu5MatI
-	 aL1IDbIyR2iZAvw84NXGNzdKLFpOz/Uinqb/EtbLrZKMgrYOQoOSfO4fi7I6il+MUD
-	 iNCqOPCQwFJUM3Goqzj/gG8Dnvr5vTcvZ6W50Ns0=
+	b=hlQwi04K6MHNEtxX7fkHF5Nqq4g0gorcV6iw2XIO6FhjobmosFAQam3qg+lB1Zln6
+	 T07NqYkc8JAq2/ZHATX4XY1quTBmsYOWPjc0oHokR0amuE/aNNsF+iCKCGZFKCcabF
+	 tCLSJo1V0hxewvS50vheslgXzsbVPh888q/4X5HM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 48/88] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
+	Christian Hitz <christian.hitz@bbv.ch>,
+	Jacek Anaszewski <jacek.anaszewski@gmail.com>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 310/451] leds: leds-lp50xx: Allow LED 0 to be added to module bank
 Date: Thu, 15 Jan 2026 17:48:31 +0100
-Message-ID: <20260115164148.049445530@linuxfoundation.org>
+Message-ID: <20260115164242.114743933@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
+commit 26fe74d598c32e7bc6f150edfc4aa43e1bee55db upstream.
 
-In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
-the err_release_rule label without freeing the allocated flow, leading
-to a memory leak.
+led_banks contains LED module number(s) that should be grouped into the
+module bank. led_banks is 0-initialized.
+By checking the led_banks entries for 0, un-set entries are detected.
+But a 0-entry also indicates that LED module 0 should be grouped into the
+module bank.
 
-Fix this by adding a new label err_destroy_flow and jumping to it when
-nft_use_inc() fails. This ensures that the flow is properly released
-in this error case.
+By only iterating over the available entries no check for unused entries
+is required and LED module 0 can be added to bank.
 
-Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Reviewed-by: Jacek Anaszewski <jacek.anaszewski@gmail.com>
+Link: https://patch.msgid.link/20251008123222.1117331-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_tables_api.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/leds/leds-lp50xx.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 394ee65e1d35f..43ebe3b4f886a 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -4098,7 +4098,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -348,17 +348,15 @@ out:
+ 	return ret;
+ }
  
- 	if (!nft_use_inc(&chain->use)) {
- 		err = -EMFILE;
--		goto err_release_rule;
-+		goto err_destroy_flow;
- 	}
+-static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[])
++static int lp50xx_set_banks(struct lp50xx *priv, u32 led_banks[], int num_leds)
+ {
+ 	u8 led_config_lo, led_config_hi;
+ 	u32 bank_enable_mask = 0;
+ 	int ret;
+ 	int i;
  
- 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
-@@ -4148,6 +4148,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+-	for (i = 0; i < priv->chip_info->max_modules; i++) {
+-		if (led_banks[i])
+-			bank_enable_mask |= (1 << led_banks[i]);
+-	}
++	for (i = 0; i < num_leds; i++)
++		bank_enable_mask |= (1 << led_banks[i]);
  
- err_destroy_flow_rule:
- 	nft_use_dec_restore(&chain->use);
-+err_destroy_flow:
- 	if (flow)
- 		nft_flow_rule_destroy(flow);
- err_release_rule:
--- 
-2.51.0
-
+ 	led_config_lo = (u8)(bank_enable_mask & 0xff);
+ 	led_config_hi = (u8)(bank_enable_mask >> 8) & 0xff;
+@@ -416,7 +414,7 @@ static int lp50xx_probe_leds(struct fwno
+ 			return ret;
+ 		}
+ 
+-		ret = lp50xx_set_banks(priv, led_banks);
++		ret = lp50xx_set_banks(priv, led_banks, num_leds);
+ 		if (ret) {
+ 			dev_err(&priv->client->dev, "Cannot setup banked LEDs\n");
+ 			return ret;
 
 
 
