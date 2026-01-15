@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208634-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A0DB7D27641
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:27 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C86BD2612B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 329C23049AC6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E213830E617C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C17A23D4139;
-	Thu, 15 Jan 2026 17:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE43A9DA3;
+	Thu, 15 Jan 2026 17:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bKkHG2f5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIB0tG6p"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 82D313D4131;
-	Thu, 15 Jan 2026 17:52:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9EF379975;
+	Thu, 15 Jan 2026 17:00:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499579; cv=none; b=q8HpuoE3WuNKpTKGmtNMlrpFRbuD3BCyV3F53BOkemp2ZRJptap0esh3XaIJxJeFXvplr3TBuJrL159AWbr15vqfY2eSHRPlLLnxz9WOqCMYpdVdfyHIWOFOksAP4oTAQTx7NmjWBjlcNRBoH2ngidOsFtNbSG5206cXTsZZsTo=
+	t=1768496408; cv=none; b=CnOQH/w089eXMyu3a8AUyOiqr+Dk6gCAWvn30AWbhk/rOTu0VLiU4PtAFL2CyuPXMqvA9sO9uThquxGdb9q+ZHhK1BuNzy4uof42m+u8BK9aJkvg3dhG8qipASx4MF6m2he9xAMtZCXSWUnA6kXs/jWXxs/aIr9WLUJdfxVAw+M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499579; c=relaxed/simple;
-	bh=VSDQsnQgg1WRrhg81Ssxe9E4miohbmxI+v37Za37wlc=;
+	s=arc-20240116; t=1768496408; c=relaxed/simple;
+	bh=28B5FrkxaveGDFngIjdkENuZy27Y1fBNLPletrmRSnc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vlx+23JXh149L0gAAzdcOloMy4Qnd8ifwYTTUR00xvcBZqQlVz4PDEwG33biUWhLcCoYthXDLBPOhdm/w/BXjhF5rPVeBCCnVPJzt4fMFlTWgx9UBdH0JZ1PRO1B4PmP8wXFYvz/SCK/mATTzNSJXM6pG9E7zDXENj+GnIOa93o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bKkHG2f5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 130D5C116D0;
-	Thu, 15 Jan 2026 17:52:58 +0000 (UTC)
+	 MIME-Version; b=EmFo0MdDJX0SGSKY/kRI7ap3KjwCoGpYVTNFr3zOg0ocQPFvWKH765iOpY0jPNcnlkZRPEjSoY0Poka0WXYYta3R1QAXPRIkveKd/q1frKPtbAF5t72hgM8UXdRlozzO3odt6xpHeapyjEtHAw6NDGKzJzPUfLwsPDbpUoa/3mY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIB0tG6p; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7F8C116D0;
+	Thu, 15 Jan 2026 17:00:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499579;
-	bh=VSDQsnQgg1WRrhg81Ssxe9E4miohbmxI+v37Za37wlc=;
+	s=korg; t=1768496408;
+	bh=28B5FrkxaveGDFngIjdkENuZy27Y1fBNLPletrmRSnc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bKkHG2f5MvENoX+Cu7JSdP01TDMeXq95r3s5PoQbz5GGnhhNsxEsz092afliC6OTT
-	 IT+/5nwgBbceCaP2mEwZdkL4I21BPJpfda+G5ihVsnUPLWEzK5in1rby5Z0CpWFjCw
-	 p07nZbsjJiyuuARH6BtGR97XCIsgIaaBciwmqjzo=
+	b=XIB0tG6psh6t0NRGCh8EgLRFsc7sjmsB8n2XQohgGfw+IkGdNEGFISYYTus3TalIc
+	 RoFbfFtUH4meMziRWkeovyaz9L4otnVGEQ0ZDS+kSKfbT+gvf9uuVBX/pkioMkI/fA
+	 KUvazWdo+GVcwTX4gcBm95hWa1ybe+yLo6mIAgOs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Nimrod Oren <noren@nvidia.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 277/451] ip6_gre: make ip6gre_header() robust
+Subject: [PATCH 6.18 141/181] selftests: drv-net: Bring back tool() to driver __init__s
 Date: Thu, 15 Jan 2026 17:47:58 +0100
-Message-ID: <20260115164240.904937637@linuxfoundation.org>
+Message-ID: <20260115164207.407548802@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,78 +61,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit db5b4e39c4e63700c68a7e65fc4e1f1375273476 ]
+[ Upstream commit 353cfc0ef3f34ef7fe313ae38dac37f2454a7cf5 ]
 
-Over the years, syzbot found many ways to crash the kernel
-in ip6gre_header() [1].
+The pp_alloc_fail.py test (which doesn't run in NIPA CI?) uses tool, add
+back the import.
 
-This involves team or bonding drivers ability to dynamically
-change their dev->needed_headroom and/or dev->hard_header_len
+Resolves:
+  ImportError: cannot import name 'tool' from 'lib.py'
 
-In this particular crash mld_newpack() allocated an skb
-with a too small reserve/headroom, and by the time mld_sendpack()
-was called, syzbot managed to attach an ip6gre device.
-
-[1]
-skbuff: skb_under_panic: text:ffffffff8a1d69a8 len:136 put:40 head:ffff888059bc7000 data:ffff888059bc6fe8 tail:0x70 end:0x6c0 dev:team0
-------------[ cut here ]------------
- kernel BUG at net/core/skbuff.c:213 !
- <TASK>
-  skb_under_panic net/core/skbuff.c:223 [inline]
-  skb_push+0xc3/0xe0 net/core/skbuff.c:2641
-  ip6gre_header+0xc8/0x790 net/ipv6/ip6_gre.c:1371
-  dev_hard_header include/linux/netdevice.h:3436 [inline]
-  neigh_connected_output+0x286/0x460 net/core/neighbour.c:1618
-  neigh_output include/net/neighbour.h:556 [inline]
-  ip6_finish_output2+0xfb3/0x1480 net/ipv6/ip6_output.c:136
- __ip6_finish_output net/ipv6/ip6_output.c:-1 [inline]
-  ip6_finish_output+0x234/0x7d0 net/ipv6/ip6_output.c:220
-  NF_HOOK_COND include/linux/netfilter.h:307 [inline]
-  ip6_output+0x340/0x550 net/ipv6/ip6_output.c:247
-  NF_HOOK+0x9e/0x380 include/linux/netfilter.h:318
-  mld_sendpack+0x8d4/0xe60 net/ipv6/mcast.c:1855
-  mld_send_cr net/ipv6/mcast.c:2154 [inline]
-  mld_ifc_work+0x83e/0xd60 net/ipv6/mcast.c:2693
-
-Fixes: c12b395a4664 ("gre: Support GRE over IPv6")
-Reported-by: syzbot+43a2ebcf2a64b1102d64@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/693b002c.a70a0220.33cd7b.0033.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251211173550.2032674-1-edumazet@google.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 68a052239fc4 ("selftests: drv-net: update remaining Python init files")
+Reviewed-by: Nimrod Oren <noren@nvidia.com>
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Link: https://patch.msgid.link/20260105163319.47619-1-gal@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_gre.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ tools/testing/selftests/drivers/net/hw/lib/py/__init__.py | 4 ++--
+ tools/testing/selftests/net/lib/py/__init__.py            | 4 ++--
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ipv6/ip6_gre.c b/net/ipv6/ip6_gre.c
-index 13ac0ccdc8d7..1a5b4b176e18 100644
---- a/net/ipv6/ip6_gre.c
-+++ b/net/ipv6/ip6_gre.c
-@@ -1382,9 +1382,16 @@ static int ip6gre_header(struct sk_buff *skb, struct net_device *dev,
- {
- 	struct ip6_tnl *t = netdev_priv(dev);
- 	struct ipv6hdr *ipv6h;
-+	int needed;
- 	__be16 *p;
+diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+index fb010a48a5a19..a86f5c311fdcb 100644
+--- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
++++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
+@@ -22,7 +22,7 @@ try:
+         NlError, RtnlFamily, DevlinkFamily, PSPFamily
+     from net.lib.py import CmdExitFailure
+     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
+-        fd_read_timeout, ip, rand_port, wait_port_listen, wait_file
++        fd_read_timeout, ip, rand_port, wait_port_listen, wait_file, tool
+     from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
+     from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
+         ksft_setup
+@@ -37,7 +37,7 @@ try:
+                "CmdExitFailure",
+                "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
+                "fd_read_timeout", "ip", "rand_port",
+-               "wait_port_listen", "wait_file",
++               "wait_port_listen", "wait_file", "tool",
+                "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
+                "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
+                "ksft_setup",
+diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
+index 97b7cf2b20eb9..8f2da17d53510 100644
+--- a/tools/testing/selftests/net/lib/py/__init__.py
++++ b/tools/testing/selftests/net/lib/py/__init__.py
+@@ -12,7 +12,7 @@ from .ksft import KsftFailEx, KsftSkipEx, KsftXfailEx, ksft_pr, ksft_eq, \
+ from .netns import NetNS, NetNSEnter
+ from .nsim import NetdevSim, NetdevSimDev
+ from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
+-    bpftool, ip, ethtool, bpftrace, rand_port, wait_port_listen, wait_file
++    bpftool, ip, ethtool, bpftrace, rand_port, wait_port_listen, wait_file, tool
+ from .ynl import NlError, YnlFamily, EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily
+ from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily
  
--	ipv6h = skb_push(skb, t->hlen + sizeof(*ipv6h));
-+	needed = t->hlen + sizeof(*ipv6h);
-+	if (skb_headroom(skb) < needed &&
-+	    pskb_expand_head(skb, HH_DATA_ALIGN(needed - skb_headroom(skb)),
-+			     0, GFP_ATOMIC))
-+		return -needed;
-+
-+	ipv6h = skb_push(skb, needed);
- 	ip6_flow_hdr(ipv6h, 0, ip6_make_flowlabel(dev_net(dev), skb,
- 						  t->fl.u.ip6.flowlabel,
- 						  true, &t->fl.u.ip6));
+@@ -25,7 +25,7 @@ __all__ = ["KSRC",
+            "NetNS", "NetNSEnter",
+            "CmdExitFailure", "fd_read_timeout", "cmd", "bkg", "defer",
+            "bpftool", "ip", "ethtool", "bpftrace", "rand_port",
+-           "wait_port_listen", "wait_file",
++           "wait_port_listen", "wait_file", "tool",
+            "NetdevSim", "NetdevSimDev",
+            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
+            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
 -- 
 2.51.0
 
