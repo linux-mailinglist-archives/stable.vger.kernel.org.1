@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209155-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209575-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 36C7DD26758
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74D60D27879
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1D089304C713
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 14EA4327BDA4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80BC83BF307;
-	Thu, 15 Jan 2026 17:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C13AA43AA4;
+	Thu, 15 Jan 2026 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idNQcfX9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SnEHx71V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 368F03BF306;
-	Thu, 15 Jan 2026 17:24:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8327A2F619D;
+	Thu, 15 Jan 2026 17:44:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497890; cv=none; b=d+1lX6kTZVny8K5NCjBTFM0uw9JJI+XOuXKhknPEtz6M3HQ6fKQ+SC97bpXyZH66knuJPz4wJxOjrjqpgYfoL9Pn94JuVNHjLXz3m9z7VcwiQVamd2/enKk+OwBvaDP9FFZtBCIDHOuVUjvWNfnoambuTo47nFW6rCJIwwFfPKs=
+	t=1768499087; cv=none; b=eUOclEFZtXRNX6TYDGDDpsLp28ClgW7cZ1BAFjVZT5AGyKZJz/oYDw6KtRSzxUXNgh5M07AAkbBBjGngVZpGDAKe9TbPMrAh/53eW7vjVi0wtvvrJvGVnfcG50wIwYBqcwIeCDNnXe93bEiAhsNT0X/6BLsZBM6WXFIM9pU9b6g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497890; c=relaxed/simple;
-	bh=fyOHXi+fnaC6MoGBJAl4WlANg3nJLcL+VDp4ItRunH4=;
+	s=arc-20240116; t=1768499087; c=relaxed/simple;
+	bh=/MdwmH3OiAEeolBRsVUwQMZTLFrEG8TESGZvNxa0pjA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+7BSrrN4+CDEkWPZSeZISRwdsKjkMt/DjwTi0ibFf1ZHH7fslK8nBj84KHV0TXqX6IGczbQKjmgM5CO3Od5s4bokzw3MNQvVMuNiKK8m5PoFXOxtYnD4nS+RbpTe07U1VZukda5lacUtq9lu9CCRiolhFfvBnmjVx/3naf1R8M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idNQcfX9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC9A5C116D0;
-	Thu, 15 Jan 2026 17:24:49 +0000 (UTC)
+	 MIME-Version; b=uwbQnMeF8iI5cgRidv22ecEcT2tQa8U13QAe9jZYMZsIu/K1XdZtYY6K/Ga0eH3EP0f3Uzo1AgGO6FPxaZYpcaVW6QmfBAOxV6febe1mDPzXaOvh50qhJfPfB7NPKLK3QKsmZB3LkX6YBtCD1aaa+ukThQns3cnjIPobiqbXWvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SnEHx71V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0C1C116D0;
+	Thu, 15 Jan 2026 17:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497890;
-	bh=fyOHXi+fnaC6MoGBJAl4WlANg3nJLcL+VDp4ItRunH4=;
+	s=korg; t=1768499087;
+	bh=/MdwmH3OiAEeolBRsVUwQMZTLFrEG8TESGZvNxa0pjA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idNQcfX9+NivM9caEsNriqlpkAU9lHlvoUxNKxzKf1y32404oid5iSwEMwMuqim9r
-	 VvGVfEnNWd0sioIvYqqLrRTiqA2meNG98GhqXmUdyff5rZQZLK88et7Gz3F7jgF8Ma
-	 YhY+R4V+uT/2UZ0xJCWiJoQW4qlz740tMKMV08Lc=
+	b=SnEHx71V6Eny9mg8nRKQe+FIj/6l8VTAWvu4g9pfjwcDoq/dSbpL7Zwmty2MEj+0S
+	 +NwRg/CyexaRLKYO5p8tBCMTeMPAnabNLFkjj+ySCT+JUp/wz/5EUWxdwd29uMo9UD
+	 3gKmellKW2zevxwmVqKtgSBJE28/UJRf+TNMbrC8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dragos Tatulea <dtatulea@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Alex Hung <alex.hung@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 238/554] ethtool: Avoid overflowing userspace buffer on stats query
-Date: Thu, 15 Jan 2026 17:45:04 +0100
-Message-ID: <20260115164254.859117919@linuxfoundation.org>
+Subject: [PATCH 5.10 104/451] drm/amd/display: Fix logical vs bitwise bug in get_embedded_panel_info_v2_1()
+Date: Thu, 15 Jan 2026 17:45:05 +0100
+Message-ID: <20260115164234.680041933@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,161 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 7b07be1ff1cb6c49869910518650e8d0abc7d25f ]
+[ Upstream commit 1a79482699b4d1e43948d14f0c7193dc1dcad858 ]
 
-The ethtool -S command operates across three ioctl calls:
-ETHTOOL_GSSET_INFO for the size, ETHTOOL_GSTRINGS for the names, and
-ETHTOOL_GSTATS for the values.
+The .H_SYNC_POLARITY and .V_SYNC_POLARITY variables are 1 bit bitfields
+of a u32.  The ATOM_HSYNC_POLARITY define is 0x2 and the
+ATOM_VSYNC_POLARITY is 0x4.  When we do a bitwise negate of 0, 2, or 4
+then the last bit is always 1 so this code always sets .H_SYNC_POLARITY
+and .V_SYNC_POLARITY to true.
 
-If the number of stats changes between these calls (e.g., due to device
-reconfiguration), userspace's buffer allocation will be incorrect,
-potentially leading to buffer overflow.
+This code is instead intended to check if the ATOM_HSYNC_POLARITY or
+ATOM_VSYNC_POLARITY flags are set and reverse the result.  In other
+words, it's supposed to be a logical negate instead of a bitwise negate.
 
-Drivers are generally expected to maintain stable stat counts, but some
-drivers (e.g., mlx5, bnx2x, bna, ksz884x) use dynamic counters, making
-this scenario possible.
-
-Some drivers try to handle this internally:
-- bnad_get_ethtool_stats() returns early in case stats.n_stats is not
-  equal to the driver's stats count.
-- micrel/ksz884x also makes sure not to write anything beyond
-  stats.n_stats and overflow the buffer.
-
-However, both use stats.n_stats which is already assigned with the value
-returned from get_sset_count(), hence won't solve the issue described
-here.
-
-Change ethtool_get_strings(), ethtool_get_stats(),
-ethtool_get_phy_stats() to not return anything in case of a mismatch
-between userspace's size and get_sset_size(), to prevent buffer
-overflow.
-The returned n_stats value will be equal to zero, to reflect that
-nothing has been returned.
-
-This could result in one of two cases when using upstream ethtool,
-depending on when the size change is detected:
-1. When detected in ethtool_get_strings():
-    # ethtool -S eth2
-    no stats available
-
-2. When detected in get stats, all stats will be reported as zero.
-
-Both cases are presumably transient, and a subsequent ethtool call
-should succeed.
-
-Other than the overflow avoidance, these two cases are very evident (no
-output/cleared stats), which is arguably better than presenting
-incorrect/shifted stats.
-I also considered returning an error instead of a "silent" response, but
-that seems more destructive towards userspace apps.
-
-Notes:
-- This patch does not claim to fix the inherent race, it only makes sure
-  that we do not overflow the userspace buffer, and makes for a more
-  predictable behavior.
-
-- RTNL lock is held during each ioctl, the race window exists between
-  the separate ioctl calls when the lock is released.
-
-- Userspace ethtool always fills stats.n_stats, but it is likely that
-  these stats ioctls are implemented in other userspace applications
-  which might not fill it. The added code checks that it's not zero,
-  to prevent any regressions.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20251208121901.3203692-1-gal@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: ae79c310b1a6 ("drm/amd/display: Add DCE12 bios parser support")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Alex Hung <alex.hung@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/ioctl.c | 30 ++++++++++++++++++++++++------
- 1 file changed, 24 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 33b5c3d8f2f7f..81fe585ddfa91 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -1919,7 +1919,10 @@ static int ethtool_get_strings(struct net_device *dev, void __user *useraddr)
- 		return -ENOMEM;
- 	WARN_ON_ONCE(!ret);
+diff --git a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+index 9dd41eaf32cb5..3cc61bb6f8967 100644
+--- a/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
++++ b/drivers/gpu/drm/amd/display/dc/bios/bios_parser2.c
+@@ -961,10 +961,10 @@ static enum bp_result get_embedded_panel_info_v2_1(
+ 	/* not provided by VBIOS */
+ 	info->lcd_timing.misc_info.HORIZONTAL_CUT_OFF = 0;
  
--	gstrings.len = ret;
-+	if (gstrings.len && gstrings.len != ret)
-+		gstrings.len = 0;
-+	else
-+		gstrings.len = ret;
+-	info->lcd_timing.misc_info.H_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
+-			& ATOM_HSYNC_POLARITY);
+-	info->lcd_timing.misc_info.V_SYNC_POLARITY = ~(uint32_t) (lvds->lcd_timing.miscinfo
+-			& ATOM_VSYNC_POLARITY);
++	info->lcd_timing.misc_info.H_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
++						       ATOM_HSYNC_POLARITY);
++	info->lcd_timing.misc_info.V_SYNC_POLARITY = !(lvds->lcd_timing.miscinfo &
++						       ATOM_VSYNC_POLARITY);
  
- 	if (gstrings.len) {
- 		data = vzalloc(array_size(gstrings.len, ETH_GSTRING_LEN));
-@@ -2032,10 +2035,13 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
- 		return -EFAULT;
- 
--	stats.n_stats = n_stats;
-+	if (stats.n_stats && stats.n_stats != n_stats)
-+		stats.n_stats = 0;
-+	else
-+		stats.n_stats = n_stats;
- 
--	if (n_stats) {
--		data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (stats.n_stats) {
-+		data = vzalloc(array_size(stats.n_stats, sizeof(u64)));
- 		if (!data)
- 			return -ENOMEM;
- 		ops->get_ethtool_stats(dev, &stats, data);
-@@ -2047,7 +2053,9 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	if (copy_to_user(useraddr, &stats, sizeof(stats)))
- 		goto out;
- 	useraddr += sizeof(stats);
--	if (n_stats && copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		goto out;
- 	ret = 0;
- 
-@@ -2083,6 +2091,10 @@ static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = phy_ops->get_sset_count(phydev);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2103,6 +2115,10 @@ static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
- 		return -EOPNOTSUPP;
- 
- 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
-+	if (stats->n_stats && stats->n_stats != n_stats) {
-+		stats->n_stats = 0;
-+		return 0;
-+	}
- 
- 	ret = ethtool_vzalloc_stats_array(n_stats, data);
- 	if (ret)
-@@ -2139,7 +2155,9 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
- 	}
- 
- 	useraddr += sizeof(stats);
--	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
-+	if (stats.n_stats &&
-+	    copy_to_user(useraddr, data,
-+			 array_size(stats.n_stats, sizeof(u64))))
- 		ret = -EFAULT;
- 
-  out:
+ 	/* not provided by VBIOS */
+ 	info->lcd_timing.misc_info.VERTICAL_CUT_OFF = 0;
 -- 
 2.51.0
 
