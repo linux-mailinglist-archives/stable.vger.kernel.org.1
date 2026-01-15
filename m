@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-208761-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208797-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99851D26367
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3FFB8D262F7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84F7730B7AC4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 328E9303FA83
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B310E3BF2F7;
-	Thu, 15 Jan 2026 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BDB03BC4F3;
+	Thu, 15 Jan 2026 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0yhitkA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="atpLfwbr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFE73BF2FD;
-	Thu, 15 Jan 2026 17:06:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D28F33993;
+	Thu, 15 Jan 2026 17:07:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496768; cv=none; b=u6aYPqiHvnfHuBHczgL8nvXI9KHAonap778Uq5Mj/1b3By9ZVFH6d+kYtO9SbL4H9LSoKxSZdHdJCPFwwbIHGcS1f4beaQfiTGxR+yBh8rI/cuWTN8gTmp7xe67HTdhijFhzqRyqxGsqfsirt/i7fYn93leFGKnBGqL2GyOJNMY=
+	t=1768496870; cv=none; b=SvcyTeH9LcQysJlXIk1dcuQaWmsRRrBaAhviQ8y9Snx5DlE5B2AhS3hXEsBuoTw2H8pKniklN/RfGkfOmwvIHCcm3D8JJheZwn7CaqMege87BjsJi0WtnOCnxSXFvcjJQdQitu8AW14WGVKn1KTuJjXkU2bsEQ7H6Xi60BqE/xE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496768; c=relaxed/simple;
-	bh=cv3fDb0aNN8QZYXIOxICMe++yD6vjj+Za01SoMYXOKw=;
+	s=arc-20240116; t=1768496870; c=relaxed/simple;
+	bh=w/qZnW+sJqFTeXCfciqP2FIWtjFx4HgBSUJQPSt1mgg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IlZnEt/PwWri699UHHkDkKYIC1hzc7Lrnn8azMomFEmAItJHflEJK38YM7ZycjO0FCiLtIkoMH0OqqmR5MJCdHOfDedkb4Txy+HroS1o1+zXV9+OXT9XSRLfp9WNOxVr9743+UIxmwK1YmJKHhBx94fuoY9rnmxVHqobroHa64Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0yhitkA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6087C116D0;
-	Thu, 15 Jan 2026 17:06:07 +0000 (UTC)
+	 MIME-Version; b=gL54Z8gl4aJmEB4d9wzEXJYLnnv+F4G6ljZ07OOlijC4xPcOlPFrzLt2J8ZlbRq9kiZccHEANSeXuKvUCcADNN4Zlemi/rG+h8WinDyOTFdlnlw5/MslgVhMx4Xsg1WvBjrAo2ANHOpCnEkKxPZ2zy/WgppT2xJuf+5UOmUkCiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=atpLfwbr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8FDEBC116D0;
+	Thu, 15 Jan 2026 17:07:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496768;
-	bh=cv3fDb0aNN8QZYXIOxICMe++yD6vjj+Za01SoMYXOKw=;
+	s=korg; t=1768496869;
+	bh=w/qZnW+sJqFTeXCfciqP2FIWtjFx4HgBSUJQPSt1mgg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p0yhitkA0DZevx1UyYhqZSeuVBYtlv2lds3qdJm9Pk9pMnh4Am8CTcedm/cVNWYXb
-	 uFxcJ/eSoNQIecQoJ7FM5QsInIr5B/O9l6HVarQc19Muk8uTehRr5RUB0tYwv2BVyt
-	 I15E+KWNq+sA9U+L8gc6bC2rx3YK50cJ2RT4XXEU=
+	b=atpLfwbrGxDTG2B6DS3BfRzCtHUy49eupnvk15FxiXA6EU2mhnNuuSbfNaQtb5BpJ
+	 m1hHOD1bej5J95astTEvvGNes+ESZli+zT+l6EKfoH3uI96/bMzlyGIhuaU3qWHoHo
+	 IJ97NbJoEQg+IjzbceJ2fu56j5fql1RTXCBTZkjM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Jeff Layton <jlayton@kernel.org>,
+	Li Lingfeng <lilingfeng3@huawei.com>,
 	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
 	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 01/88] NFSD: Fix permission check for read access to executable-only files
-Date: Thu, 15 Jan 2026 17:47:44 +0100
-Message-ID: <20260115164146.369101014@linuxfoundation.org>
+Subject: [PATCH 6.6 02/88] nfsd: provide locking for v4_end_grace
+Date: Thu, 15 Jan 2026 17:47:45 +0100
+Message-ID: <20260115164146.406011305@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
 References: <20260115164146.312481509@linuxfoundation.org>
@@ -65,47 +65,183 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: NeilBrown <neil@brown.name>
 
-commit e901c7fce59e72d9f3c92733c379849c4034ac50 upstream.
+commit 2857bd59feb63fcf40fe4baf55401baea6b4feb4 upstream.
 
-Commit abc02e5602f7 ("NFSD: Support write delegations in LAYOUTGET")
-added NFSD_MAY_OWNER_OVERRIDE to the access flags passed from
-nfsd4_layoutget() to fh_verify().  This causes LAYOUTGET to fail for
-executable-only files, and causes xfstests generic/126 to fail on
-pNFS SCSI.
+Writing to v4_end_grace can race with server shutdown and result in
+memory being accessed after it was freed - reclaim_str_hashtbl in
+particularly.
 
-To allow read access to executable-only files, what we really want is:
-1. The "permissions" portion of the access flags (the lower 6 bits)
-   must be exactly NFSD_MAY_READ
-2. The "hints" portion of the access flags (the upper 26 bits) can
-   contain any combination of NFSD_MAY_OWNER_OVERRIDE and
-   NFSD_MAY_READ_IF_EXEC
+We cannot hold nfsd_mutex across the nfsd4_end_grace() call as that is
+held while client_tracking_op->init() is called and that can wait for
+an upcall to nfsdcltrack which can write to v4_end_grace, resulting in a
+deadlock.
 
-Fixes: abc02e5602f7 ("NFSD: Support write delegations in LAYOUTGET")
-Cc: stable@vger.kernel.org # v6.6+
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+nfsd4_end_grace() is also called by the landromat work queue and this
+doesn't require locking as server shutdown will stop the work and wait
+for it before freeing anything that nfsd4_end_grace() might access.
+
+However, we must be sure that writing to v4_end_grace doesn't restart
+the work item after shutdown has already waited for it.  For this we
+add a new flag protected with nn->client_lock.  It is set only while it
+is safe to make client tracking calls, and v4_end_grace only schedules
+work while the flag is set with the spinlock held.
+
+So this patch adds a nfsd_net field "client_tracking_active" which is
+set as described.  Another field "grace_end_forced", is set when
+v4_end_grace is written.  After this is set, and providing
+client_tracking_active is set, the laundromat is scheduled.
+This "grace_end_forced" field bypasses other checks for whether the
+grace period has finished.
+
+This resolves a race which can result in use-after-free.
+
+Reported-by: Li Lingfeng <lilingfeng3@huawei.com>
+Closes: https://lore.kernel.org/linux-nfs/20250623030015.2353515-1-neil@brown.name/T/#t
+Fixes: 7f5ef2e900d9 ("nfsd: add a v4_end_grace file to /proc/fs/nfsd")
+Cc: stable@vger.kernel.org
+Signed-off-by: NeilBrown <neil@brown.name>
+Tested-by: Li Lingfeng <lilingfeng3@huawei.com>
 Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neil@brown.name>
 Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/vfs.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/nfsd/netns.h     |    2 ++
+ fs/nfsd/nfs4state.c |   42 ++++++++++++++++++++++++++++++++++++++++--
+ fs/nfsd/nfsctl.c    |    3 +--
+ fs/nfsd/state.h     |    2 +-
+ 4 files changed, 44 insertions(+), 5 deletions(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -2474,8 +2474,8 @@ nfsd_permission(struct svc_rqst *rqstp,
+--- a/fs/nfsd/netns.h
++++ b/fs/nfsd/netns.h
+@@ -65,6 +65,8 @@ struct nfsd_net {
  
- 	/* Allow read access to binaries even when mode 111 */
- 	if (err == -EACCES && S_ISREG(inode->i_mode) &&
--	     (acc == (NFSD_MAY_READ | NFSD_MAY_OWNER_OVERRIDE) ||
--	      acc == (NFSD_MAY_READ | NFSD_MAY_READ_IF_EXEC)))
-+	     (((acc & NFSD_MAY_MASK) == NFSD_MAY_READ) &&
-+	      (acc & (NFSD_MAY_OWNER_OVERRIDE | NFSD_MAY_READ_IF_EXEC))))
- 		err = inode_permission(&nop_mnt_idmap, inode, MAY_EXEC);
+ 	struct lock_manager nfsd4_manager;
+ 	bool grace_ended;
++	bool grace_end_forced;
++	bool client_tracking_active;
+ 	time64_t boot_time;
  
- 	return err? nfserrno(err) : 0;
+ 	struct dentry *nfsd_client_dir;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -84,7 +84,7 @@ static u64 current_sessionid = 1;
+ /* forward declarations */
+ static bool check_for_locks(struct nfs4_file *fp, struct nfs4_lockowner *lowner);
+ static void nfs4_free_ol_stateid(struct nfs4_stid *stid);
+-void nfsd4_end_grace(struct nfsd_net *nn);
++static void nfsd4_end_grace(struct nfsd_net *nn);
+ static void _free_cpntf_state_locked(struct nfsd_net *nn, struct nfs4_cpntf_state *cps);
+ static void nfsd4_file_hash_remove(struct nfs4_file *fi);
+ 
+@@ -5924,7 +5924,7 @@ nfsd4_renew(struct svc_rqst *rqstp, stru
+ 	return nfs_ok;
+ }
+ 
+-void
++static void
+ nfsd4_end_grace(struct nfsd_net *nn)
+ {
+ 	/* do nothing if grace period already ended */
+@@ -5957,6 +5957,33 @@ nfsd4_end_grace(struct nfsd_net *nn)
+ 	 */
+ }
+ 
++/**
++ * nfsd4_force_end_grace - forcibly end the NFSv4 grace period
++ * @nn: network namespace for the server instance to be updated
++ *
++ * Forces bypass of normal grace period completion, then schedules
++ * the laundromat to end the grace period immediately. Does not wait
++ * for the grace period to fully terminate before returning.
++ *
++ * Return values:
++ *   %true: Grace termination schedule
++ *   %false: No action was taken
++ */
++bool nfsd4_force_end_grace(struct nfsd_net *nn)
++{
++	if (!nn->client_tracking_ops)
++		return false;
++	spin_lock(&nn->client_lock);
++	if (nn->grace_ended || !nn->client_tracking_active) {
++		spin_unlock(&nn->client_lock);
++		return false;
++	}
++	WRITE_ONCE(nn->grace_end_forced, true);
++	mod_delayed_work(laundry_wq, &nn->laundromat_work, 0);
++	spin_unlock(&nn->client_lock);
++	return true;
++}
++
+ /*
+  * If we've waited a lease period but there are still clients trying to
+  * reclaim, wait a little longer to give them a chance to finish.
+@@ -5966,6 +5993,8 @@ static bool clients_still_reclaiming(str
+ 	time64_t double_grace_period_end = nn->boot_time +
+ 					   2 * nn->nfsd4_lease;
+ 
++	if (READ_ONCE(nn->grace_end_forced))
++		return false;
+ 	if (nn->track_reclaim_completes &&
+ 			atomic_read(&nn->nr_reclaim_complete) ==
+ 			nn->reclaim_str_hashtbl_size)
+@@ -8197,6 +8226,8 @@ static int nfs4_state_create_net(struct
+ 	nn->unconf_name_tree = RB_ROOT;
+ 	nn->boot_time = ktime_get_real_seconds();
+ 	nn->grace_ended = false;
++	nn->grace_end_forced = false;
++	nn->client_tracking_active = false;
+ 	nn->nfsd4_manager.block_opens = true;
+ 	INIT_LIST_HEAD(&nn->nfsd4_manager.list);
+ 	INIT_LIST_HEAD(&nn->client_lru);
+@@ -8273,6 +8304,10 @@ nfs4_state_start_net(struct net *net)
+ 		return ret;
+ 	locks_start_grace(net, &nn->nfsd4_manager);
+ 	nfsd4_client_tracking_init(net);
++	/* safe for laundromat to run now */
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = true;
++	spin_unlock(&nn->client_lock);
+ 	if (nn->track_reclaim_completes && nn->reclaim_str_hashtbl_size == 0)
+ 		goto skip_grace;
+ 	printk(KERN_INFO "NFSD: starting %lld-second grace period (net %x)\n",
+@@ -8319,6 +8354,9 @@ nfs4_state_shutdown_net(struct net *net)
+ 
+ 	unregister_shrinker(&nn->nfsd_client_shrinker);
+ 	cancel_work_sync(&nn->nfsd_shrinker_work);
++	spin_lock(&nn->client_lock);
++	nn->client_tracking_active = false;
++	spin_unlock(&nn->client_lock);
+ 	cancel_delayed_work_sync(&nn->laundromat_work);
+ 	locks_end_grace(&nn->nfsd4_manager);
+ 
+--- a/fs/nfsd/nfsctl.c
++++ b/fs/nfsd/nfsctl.c
+@@ -1110,10 +1110,9 @@ static ssize_t write_v4_end_grace(struct
+ 		case 'Y':
+ 		case 'y':
+ 		case '1':
+-			if (!nn->nfsd_serv)
++			if (!nfsd4_force_end_grace(nn))
+ 				return -EBUSY;
+ 			trace_nfsd_end_grace(netns(file));
+-			nfsd4_end_grace(nn);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+--- a/fs/nfsd/state.h
++++ b/fs/nfsd/state.h
+@@ -717,7 +717,7 @@ static inline void get_nfs4_file(struct
+ struct nfsd_file *find_any_file(struct nfs4_file *f);
+ 
+ /* grace period management */
+-void nfsd4_end_grace(struct nfsd_net *nn);
++bool nfsd4_force_end_grace(struct nfsd_net *nn);
+ 
+ /* nfs4recover operations */
+ extern int nfsd4_client_tracking_init(struct net *net);
 
 
 
