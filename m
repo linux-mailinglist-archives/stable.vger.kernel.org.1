@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208876-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 99FD8D2629E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 248E6D2774D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D157F301AB9B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:42 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2839B306058B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0410C33993;
-	Thu, 15 Jan 2026 17:11:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B1B03D649D;
+	Thu, 15 Jan 2026 17:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mGDpFFDh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tWYg3W2V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BBBFA3A1CE4;
-	Thu, 15 Jan 2026 17:11:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D5533D6494;
+	Thu, 15 Jan 2026 17:55:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497094; cv=none; b=XTggXoxdZH5xkVXTOXc4h/yLt62rCdIinhnh9oVsRdSoyuWM10yVQNinJxjZRuiSQ3PpRh8LMh4bEVDrzw3IGc7RWxvvNSU7kiFkhGlDDbb5rT4mrlgdNIaqT5UEh/dXvCHxkYu9B7VVetWcqP+Be4kXVBHQAhbmd2eiIUndgC4=
+	t=1768499758; cv=none; b=cMCgoSAFaNk5kNGK4v8eTGWhZT1GeDDPhj5g2g8QtCnyRS88guLJeOyKN3OOsGgfEztiwNUsYPVPibtI7ggyiFnMHjzueh39tUKyQ6nZhXZegN8Dcecd4xY17hPl8N3l6au9AuMnGdaJaGHgXh4VCFPSo3XOgT4muw0Nd3sCStk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497094; c=relaxed/simple;
-	bh=cDRv9GJ3XmknBbLhIa0PSW5zGlCymewtxPI495TzKSs=;
+	s=arc-20240116; t=1768499758; c=relaxed/simple;
+	bh=kpGeTan8L0w2KAWt9Ga12RiJLPhBfIRldYc4sJaYXsU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lOk4XWb69ARLhr5G6JlVVg2LZJt3D/rWoU6KBRe+/kwlYnGd9DUV9dkBKIwJ5j/Q8SoEDIPYYxIrInYPEsdPDJ5QdqUVNy31CfDTANr7l2sUijleGC41ctuMsAsdJ/oqRiDyW+++sS5LhVvaWi2BCLmmNhWoiVVks7nFrsU8sBM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mGDpFFDh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D938C116D0;
-	Thu, 15 Jan 2026 17:11:34 +0000 (UTC)
+	 MIME-Version; b=rvNjLOv/XA/+5Dic6xgPlC9FSa90n4Y7EXtr2+3/iPtQzGhP8h0ytMYc9F26kVuB/VE5LHacvBaMwMjU+anJcWZCvWCekE5akxFhyqUcS2K7zlfKF24D0eWO4CwGGxCmFxG6lYKdVy6+e49QFH0yPNq/XY0vv0NoLnxNgtLA5y4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tWYg3W2V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C67FC2BCB2;
+	Thu, 15 Jan 2026 17:55:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497094;
-	bh=cDRv9GJ3XmknBbLhIa0PSW5zGlCymewtxPI495TzKSs=;
+	s=korg; t=1768499757;
+	bh=kpGeTan8L0w2KAWt9Ga12RiJLPhBfIRldYc4sJaYXsU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mGDpFFDhqtBgywhOmb4c0/FrVyoXO6P2chYWLbZRgLX5kbFVAx/GZ8j6VeXIrAgEE
-	 6Lnw/1mbfQyHdk/uZhxXSY2Pq4+kKVeD+4zbL1dUGO7xzEkfRCOHeqQBVn0TglyCOc
-	 rYmok8Kwzg48JprLn7+mXuoytRxVIzC/mXGeyOmo=
+	b=tWYg3W2V3ono4t07iX6DZCeIKv1eCSCsVxFHuSOdSgmiIkOekJ1q9S6+jpl6SxDIY
+	 xrYnst77mmvNlxtQvwKCM9UHAyUd+UFczkhNNxlFvKDyvHwC3h1gJ1B3dsxTCU2gvr
+	 JAec/D7T4xMa/2C7UyV5s4nVK8NP6FPEJ+iFYw9k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharath Chandra Vurukala <quic_sharathv@quicinc.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 6.1 17/72] net: Add locking to protect skb->dev access in ip_output
+	Suman Anna <s-anna@ti.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.10 306/451] iommu/omap: fix device leaks on probe_device()
 Date: Thu, 15 Jan 2026 17:48:27 +0100
-Message-ID: <20260115164144.119088292@linuxfoundation.org>
+Message-ID: <20260115164241.966504845@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,121 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 1dbf1d590d10a6d1978e8184f8dfe20af22d680a]
+commit b5870691065e6bbe6ba0650c0412636c6a239c5a upstream.
 
-In ip_output() skb->dev is updated from the skb_dst(skb)->dev
-this can become invalid when the interface is unregistered and freed,
+Make sure to drop the references taken to the iommu platform devices
+when looking up their driver data during probe_device().
 
-Introduced new skb_dst_dev_rcu() function to be used instead of
-skb_dst_dev() within rcu_locks in ip_output.This will ensure that
-all the skb's associated with the dev being deregistered will
-be transnmitted out first, before freeing the dev.
+Note that the arch data device pointer added by commit 604629bcb505
+("iommu/omap: add support for late attachment of iommu devices") has
+never been used. Remove it to underline that the references are not
+needed.
 
-Given that ip_output() is called within an rcu_read_lock()
-critical section or from a bottom-half context, it is safe to introduce
-an RCU read-side critical section within it.
-
-Multiple panic call stacks were observed when UL traffic was run
-in concurrency with device deregistration from different functions,
-pasting one sample for reference.
-
-[496733.627565][T13385] Call trace:
-[496733.627570][T13385] bpf_prog_ce7c9180c3b128ea_cgroupskb_egres+0x24c/0x7f0
-[496733.627581][T13385] __cgroup_bpf_run_filter_skb+0x128/0x498
-[496733.627595][T13385] ip_finish_output+0xa4/0xf4
-[496733.627605][T13385] ip_output+0x100/0x1a0
-[496733.627613][T13385] ip_send_skb+0x68/0x100
-[496733.627618][T13385] udp_send_skb+0x1c4/0x384
-[496733.627625][T13385] udp_sendmsg+0x7b0/0x898
-[496733.627631][T13385] inet_sendmsg+0x5c/0x7c
-[496733.627639][T13385] __sys_sendto+0x174/0x1e4
-[496733.627647][T13385] __arm64_sys_sendto+0x28/0x3c
-[496733.627653][T13385] invoke_syscall+0x58/0x11c
-[496733.627662][T13385] el0_svc_common+0x88/0xf4
-[496733.627669][T13385] do_el0_svc+0x2c/0xb0
-[496733.627676][T13385] el0_svc+0x2c/0xa4
-[496733.627683][T13385] el0t_64_sync_handler+0x68/0xb4
-[496733.627689][T13385] el0t_64_sync+0x1a4/0x1a8
-
-Changes in v3:
-- Replaced WARN_ON() with  WARN_ON_ONCE(), as suggested by Willem de Bruijn.
-- Dropped legacy lines mistakenly pulled in from an outdated branch.
-
-Changes in v2:
-- Addressed review comments from Eric Dumazet
-- Used READ_ONCE() to prevent potential load/store tearing
-- Added skb_dst_dev_rcu() and used along with rcu_read_lock() in ip_output
-
-Signed-off-by: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250730105118.GA26100@hu-sharathv-hyd.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Keerthana: Backported the patch to v5.15-v6.1 ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Fixes: 9d5018deec86 ("iommu/omap: Add support to program multiple iommus")
+Fixes: 7d6827748d54 ("iommu/omap: Fix iommu archdata name for DT-based devices")
+Cc: stable@vger.kernel.org	# 3.18
+Cc: Suman Anna <s-anna@ti.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/dst.h    |   12 ++++++++++++
- net/ipv4/ip_output.c |   16 +++++++++++-----
- 2 files changed, 23 insertions(+), 5 deletions(-)
+ drivers/iommu/omap-iommu.c |    2 +-
+ drivers/iommu/omap-iommu.h |    2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -555,6 +555,18 @@ static inline void skb_dst_update_pmtu_n
- 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
- }
+--- a/drivers/iommu/omap-iommu.c
++++ b/drivers/iommu/omap-iommu.c
+@@ -1686,6 +1686,7 @@ static struct iommu_device *omap_iommu_p
+ 		}
  
-+static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
-+{
-+	/* In the future, use rcu_dereference(dst->dev) */
-+	WARN_ON_ONCE(!rcu_read_lock_held());
-+	return READ_ONCE(dst->dev);
-+}
-+
-+static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
-+{
-+	return dst_dev_rcu(skb_dst(skb));
-+}
-+
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
- void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -420,17 +420,23 @@ int ip_mc_output(struct net *net, struct
+ 		oiommu = platform_get_drvdata(pdev);
++		put_device(&pdev->dev);
+ 		if (!oiommu) {
+ 			of_node_put(np);
+ 			kfree(arch_data);
+@@ -1693,7 +1694,6 @@ static struct iommu_device *omap_iommu_p
+ 		}
  
- int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb_dst(skb)->dev, *indev = skb->dev;
-+	struct net_device *dev, *indev = skb->dev;
-+	int ret_val;
-+
-+	rcu_read_lock();
-+	dev = skb_dst_dev_rcu(skb);
+ 		tmp->iommu_dev = oiommu;
+-		tmp->dev = &pdev->dev;
  
- 	IP_UPD_PO_STATS(net, IPSTATS_MIB_OUT, skb->len);
+ 		of_node_put(np);
+ 	}
+--- a/drivers/iommu/omap-iommu.h
++++ b/drivers/iommu/omap-iommu.h
+@@ -88,7 +88,6 @@ struct omap_iommu {
+ /**
+  * struct omap_iommu_arch_data - omap iommu private data
+  * @iommu_dev: handle of the OMAP iommu device
+- * @dev: handle of the iommu device
+  *
+  * This is an omap iommu private data object, which binds an iommu user
+  * to its iommu device. This object should be placed at the iommu user's
+@@ -97,7 +96,6 @@ struct omap_iommu {
+  */
+ struct omap_iommu_arch_data {
+ 	struct omap_iommu *iommu_dev;
+-	struct device *dev;
+ };
  
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_IP);
- 
--	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
--			    net, sk, skb, indev, dev,
--			    ip_finish_output,
--			    !(IPCB(skb)->flags & IPSKB_REROUTED));
-+	ret_val = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-+				net, sk, skb, indev, dev,
-+				ip_finish_output,
-+				!(IPCB(skb)->flags & IPSKB_REROUTED));
-+	rcu_read_unlock();
-+	return ret_val;
- }
- EXPORT_SYMBOL(ip_output);
- 
+ struct cr_regs {
 
 
 
