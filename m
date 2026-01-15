@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-209204-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 217AAD26891
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6AC9D27B58
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:43:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 107D6306AC6F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:12 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B17F430C8272
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40B1D3D2FF3;
-	Thu, 15 Jan 2026 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366703BFE4C;
+	Thu, 15 Jan 2026 17:47:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="on9T+TvO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uELs84S1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01B263D2FEA;
-	Thu, 15 Jan 2026 17:27:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC03BFE35;
+	Thu, 15 Jan 2026 17:47:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498030; cv=none; b=HBnNkm3bk1GB6Epq2JemHgKYEBiBz7+W4O5kvGpV4i102G2b6n3189SfIPTfSP4yPgEppUQZ//80VpSmpv4RdKzGV/ibZPcSmzCAw0izWu0mwuNjaNDZQEgGcudh2/SJq4EHi5Dg6b9LZwdS/42wxUqagGrAZ4NwdQbx5+DBaNM=
+	t=1768499235; cv=none; b=Ddz30DAgC6SVdkuj1W86Uo8afxURNrSlqSenkhZal+IkGJcAsortxWo+uMBK1Ig2u1aOEb0p+caahl8+NtQHfQBgDpqU4yvfWAC/UVlYIso0nabb47X7LiR+qOMDb+cA+MtYNKGc5oPA/vgfmGT0lixcawaZtQTWKLr9P+dorhs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498030; c=relaxed/simple;
-	bh=r0JEcXKhNFaK2rgp0jVDMdoFX/tbVuGloowilkVCezs=;
+	s=arc-20240116; t=1768499235; c=relaxed/simple;
+	bh=6NBm1MSlpUqM8Fx7O9ME3oeUoGFEMk/Gtf7ZaM9+iZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BCaKXjvfOBiP3KiV9MQew6BTjHuOXx90kdfpB7TECmSbWIvFJGfjjWYgV+VoS5Kxws1NngGS9xMV8rtAJkwzg2ygobRCej92lfytCecZlXRgOmli0rcLv+5xwmtffnm1SbCI6USqq6x1f0HbZomPOz2jswbdnP3dp0EmS8zzvts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=on9T+TvO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA9AC2BCB0;
-	Thu, 15 Jan 2026 17:27:09 +0000 (UTC)
+	 MIME-Version; b=sxkG5H2+gjj+I5k6K5/XZKQ1b3OJTR44jUc8OMv/CCZTVUISk73nCquJVzw2ShJImGvKsIsgZrRfrv0oQeNlyLVWaBTxCqb3u7DARNy3UzbpW/j4UtET9i6yRGKNLD8sSpxNa0QcvZp/AIrCF60JntZGKGASxLze7BBW9/a5jIc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uELs84S1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BB7C116D0;
+	Thu, 15 Jan 2026 17:47:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498029;
-	bh=r0JEcXKhNFaK2rgp0jVDMdoFX/tbVuGloowilkVCezs=;
+	s=korg; t=1768499234;
+	bh=6NBm1MSlpUqM8Fx7O9ME3oeUoGFEMk/Gtf7ZaM9+iZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=on9T+TvO0QbnE1LGqAz5Xk8hqaakWzPlxc/IGsa8HD5U1Kbn9GS9cloh8RigwrT/m
-	 EqudAHWery2MyDf8JPVeqq7BW89OqQcqFn9yHflzXGpTvYOsaopmIHUpiDtvqP8lBd
-	 zLI+f+U2Rpn4cagBY2lP/+sTMj48rvPrDTbtptlw=
+	b=uELs84S1VzR1xujJcmh+mvX31uZjsFK05BW+YUogSsCgrbWAb4kcjyCGwHs0aDL1t
+	 87XkPS/Xjp3qdH6s0VaPHqYDETuQskwzw0Bkn9pw/PvfmKYFaDaQ9OQBlSZUko1dfP
+	 z1VIfMd4YfPqFKOXctojS8elMv1WqIdKfhwVwpzo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Changcheng <chenchangcheng@kylinos.cn>
-Subject: [PATCH 5.15 289/554] usb: usb-storage: Maintain minimal modifications to the bcdDevice range.
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 154/451] netfilter: nft_connlimit: memleak if nf_ct_netns_get() fails
 Date: Thu, 15 Jan 2026 17:45:55 +0100
-Message-ID: <20260115164256.688397425@linuxfoundation.org>
+Message-ID: <20260115164236.484563355@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,36 +58,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Changcheng <chenchangcheng@kylinos.cn>
+From: Pablo Neira Ayuso <pablo@netfilter.org>
 
-commit 0831269b5f71594882accfceb02638124f88955d upstream.
+commit 7d70984a1ad4c445dff08edb9aacce8906b6a222 upstream.
 
-We cannot determine which models require the NO_ATA_1X and
-IGNORE_RESIDUE quirks aside from the EL-R12 optical drive device.
+Check if nf_ct_netns_get() fails then release the limit object
+previously allocated via kmalloc().
 
-Fixes: 955a48a5353f ("usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.")
-Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
-Link: https://patch.msgid.link/20251218012318.15978-1-chenchangcheng@kylinos.cn
+Fixes: 37f319f37d90 ("netfilter: nft_connlimit: move stateful fields out of expression data")
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/storage/unusual_uas.h |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nft_connlimit.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/storage/unusual_uas.h
-+++ b/drivers/usb/storage/unusual_uas.h
-@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x01
- 		US_FL_NO_ATA_1X),
+--- a/net/netfilter/nft_connlimit.c
++++ b/net/netfilter/nft_connlimit.c
+@@ -56,6 +56,7 @@ static int nft_connlimit_do_init(const s
+ {
+ 	bool invert = false;
+ 	u32 flags, limit;
++	int err;
  
- /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
--UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
-+UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x0309,
- 		"Initio Corporation",
- 		"INIC-3069",
- 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
+ 	if (!tb[NFTA_CONNLIMIT_COUNT])
+ 		return -EINVAL;
+@@ -78,7 +79,15 @@ static int nft_connlimit_do_init(const s
+ 	priv->limit	= limit;
+ 	priv->invert	= invert;
+ 
+-	return nf_ct_netns_get(ctx->net, ctx->family);
++	err = nf_ct_netns_get(ctx->net, ctx->family);
++	if (err < 0)
++		goto err_netns;
++
++	return 0;
++err_netns:
++	kfree(priv->list);
++
++	return err;
+ }
+ 
+ static void nft_connlimit_do_destroy(const struct nft_ctx *ctx,
 
 
 
