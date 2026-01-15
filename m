@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209816-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 30682D266C9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id AE3DCD27760
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 227B5310DC62
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9928930E9207
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:00 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C291D2C11EF;
-	Thu, 15 Jan 2026 17:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785583D300B;
+	Thu, 15 Jan 2026 17:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j4JmxHp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j448IytZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8378C2D5C9B;
-	Thu, 15 Jan 2026 17:08:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3AF193D6667;
+	Thu, 15 Jan 2026 17:56:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496881; cv=none; b=sFKimF1jO/IuSIX3H3nYmOY3+JzkMDY86jY1HdOOqmJVhlVjW7b+0TXfCm5Px3GWgwwLCoSYu/i9J6reJdiyds4a9/tw0aV+nJrPoywzVRHAAfntiwND1SnYd4tgOvy0I4meFMAT3nfIwxpYzZP6ugdph/M3j/J9kN2KJn9w86Q=
+	t=1768499772; cv=none; b=nxlLwSBBNu8Gfh33awbvyqZyUCs3NqJ4cI1YnYU/T58tH16my26AT9B/reKeMnvuwetPgd5/jKjDE7HR9Ji9es+UXJXBYVkLzCfmfPrPVDUE/AlJZcMOc7kE165DQIypB4J9jUvERNcBGVD3xMLxAj28ayF3+l9gcmileeefnXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496881; c=relaxed/simple;
-	bh=Ei6Cuadi/SzNMiJ0UzxDP9Rpsv5U9m3a6vAcnz8V8Xs=;
+	s=arc-20240116; t=1768499772; c=relaxed/simple;
+	bh=uXkSlEpKJT+bhz9mT/4jdt97kp3Zy3dYxmpCmGVcx8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Qjs76jKPmIuQ6BN4u3UickSF6vS3YXT/k8rmgmuDWhRDWshbfoftgGT0kIEU8GnAaiwOv8WC3dVtnmgW2zlPlEioz27f94FLSx3fdu1A1dsFkPteTH+qvo10cFol1u8Q2sCcmSpFVLekE4uJ/myjnOsZhDwjPOdSvHySj7KrLw8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j4JmxHp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05205C116D0;
-	Thu, 15 Jan 2026 17:08:00 +0000 (UTC)
+	 MIME-Version; b=bN6fNPdhuNTo20AY7doKxORLFYmlrepVDFiFTuA2VYgjBQl+zTiEVQEdVC0yh4F+Xs9rwSB8jYMeWPm0PYb52JHN5FMsdRn+gFjk54HDGE4QeycbLxNwkthJuKlTtJjzBsDL1ZtG3DruHx2gusGtVnXZ+UdXHKV85vw14zl041Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j448IytZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A22A5C116D0;
+	Thu, 15 Jan 2026 17:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496881;
-	bh=Ei6Cuadi/SzNMiJ0UzxDP9Rpsv5U9m3a6vAcnz8V8Xs=;
+	s=korg; t=1768499772;
+	bh=uXkSlEpKJT+bhz9mT/4jdt97kp3Zy3dYxmpCmGVcx8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j4JmxHp6xhsQ++SV2tiZhcsk41Y+flDmDVA3NaZog9gw3hhkBL4q1q35FyYSmdZbU
-	 GhKAHdeP96G6LWeOJ2lWS0w3wTt5WUCjzBpKglB3TOaQ+/vxCH7olvTbywUW9cDENE
-	 VUpGZ2srrSAfXtsHyLQa0csnzJchFJ9qJB+wMOa8=
+	b=j448IytZoCbE7iMlfk4bJDvOXNdbpR8YH9pYfUcKsZ+NgjW8Vo28ZtIKAwDYd13hg
+	 sKMaMmWLtXbQUQiqrCT7lLEFQBxetAHEh/1U0/oP5VRiFvdzI0QpBph6z55/GwWToU
+	 ZaIojZsfdhVwZmO160QEjnuzjiHbwVD3QsZiIaAo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 49/88] netfilter: nf_conncount: update last_gc only when GC has been performed
+	Christian Hitz <christian.hitz@bbv.ch>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 311/451] leds: leds-lp50xx: LP5009 supports 3 modules for a total of 9 LEDs
 Date: Thu, 15 Jan 2026 17:48:32 +0100
-Message-ID: <20260115164148.085142148@linuxfoundation.org>
+Message-ID: <20260115164242.151053855@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Christian Hitz <christian.hitz@bbv.ch>
 
-[ Upstream commit 7811ba452402d58628e68faedf38745b3d485e3c ]
+commit 5246e3673eeeccb4f5bf4f42375dd495d465ac15 upstream.
 
-Currently last_gc is being updated everytime a new connection is
-tracked, that means that it is updated even if a GC wasn't performed.
-With a sufficiently high packet rate, it is possible to always bypass
-the GC, causing the list to grow infinitely.
+LP5009 supports 9 LED outputs that are grouped into 3 modules.
 
-Update the last_gc value only when a GC has been actually performed.
-
-Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 242b81170fb8 ("leds: lp50xx: Add the LP50XX family of the RGB LED driver")
+Signed-off-by: Christian Hitz <christian.hitz@bbv.ch>
+Link: https://patch.msgid.link/20251022063305.972190-1-christian@klarinett.li
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conncount.c | 2 +-
+ drivers/leds/leds-lp50xx.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index c00b8e522c5a7..a2c5a7ba0c6fc 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -229,6 +229,7 @@ static int __nf_conncount_add(struct net *net,
+--- a/drivers/leds/leds-lp50xx.c
++++ b/drivers/leds/leds-lp50xx.c
+@@ -57,7 +57,7 @@
+ /* There are 3 LED outputs per bank */
+ #define LP50XX_LEDS_PER_MODULE	3
  
- 		nf_ct_put(found_ct);
- 	}
-+	list->last_gc = (u32)jiffies;
- 
- add_new_node:
- 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
-@@ -248,7 +249,6 @@ static int __nf_conncount_add(struct net *net,
- 	conn->jiffies32 = (u32)jiffies;
- 	list_add_tail(&conn->node, &list->head);
- 	list->count++;
--	list->last_gc = (u32)jiffies;
- 
- out_put:
- 	if (refcounted)
--- 
-2.51.0
-
+-#define LP5009_MAX_LED_MODULES	2
++#define LP5009_MAX_LED_MODULES	3
+ #define LP5012_MAX_LED_MODULES	4
+ #define LP5018_MAX_LED_MODULES	6
+ #define LP5024_MAX_LED_MODULES	8
 
 
 
