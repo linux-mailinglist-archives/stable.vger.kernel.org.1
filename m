@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-209859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209439-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id DE191D277CC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B3DB1D27680
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E4B5E31DA65F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7E45E32670CF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B99BE3BFE3B;
-	Thu, 15 Jan 2026 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB6C283FEF;
+	Thu, 15 Jan 2026 17:38:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UPbTZdAT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTzK9uhP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6B6742868B0;
-	Thu, 15 Jan 2026 17:58:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53344C81;
+	Thu, 15 Jan 2026 17:38:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499895; cv=none; b=l1VjiwGlT99c7tWWIiT1CmKpyEZPGKneQgLJtnoTMoSxnd4nPjCje8sLNEdM3+tOVh/aRtIpy4zBtjE9GBUTpiOyFC9d+4vDqw79w5vAVsWatuj+zFZmnsVB+gN1G7S9cE7gj2p0AClM6XZ8KTrDz6c3CC12QyBZRWwPQ5howe8=
+	t=1768498701; cv=none; b=OKndvsyEuqmCGi5DsXkzmBK8dX8CIMMfOSPkWjcnaBfgrhoCMP/9jGPwxQJOTEXLBWZnEYC5P8r4/q7HxvzOlSx5Z5FmHDvmqGSSiUU3qk8dI+qzXnUu5v+w70MniU3g90sbZ8W9ZSuKYA6V6hXV3VQ363zhXbDVIRKl9Am2X4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499895; c=relaxed/simple;
-	bh=z6bxf/1kPSxAhIJYvl7XmGrkzsg2HX63y2UQFJ/Z01o=;
+	s=arc-20240116; t=1768498701; c=relaxed/simple;
+	bh=iYtxQi8hR/CI073jcZbRNlMBHCVKqGjXtwez2OlKiLw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hoGPX/uDGFgltAfu0ZiQezwReqZ0TvOOiVhN5ZqnQBQWRkM2lJvrlXXCh3HAivefqFLU22kH7Ic2TRIR+QH6aCgEWHHckpjH6wGlWg6eV6QaeBPbY2ZQntBAzHtcOrxJ0gmwNDc3wrtrYHEpSDje2Tfwq3qHxkhze2S9YT0qElM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UPbTZdAT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE3CFC116D0;
-	Thu, 15 Jan 2026 17:58:14 +0000 (UTC)
+	 MIME-Version; b=Aa3RZhEW8m5hQV05UK8CVcgiHAzs+DkOpzvya5/iEYV5igsefCRXcnSq3AZI/MaiE6NnWNaa8/K+40kZFSp3R0400w6o0zZeapnCrHr+oJuX0fiSerUR8nNPJu1fjfO2fBlTKP2kGw2bmEWi8V1IXyo0ZBZsaL5K2PuaRYtRUEE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTzK9uhP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73755C116D0;
+	Thu, 15 Jan 2026 17:38:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499895;
-	bh=z6bxf/1kPSxAhIJYvl7XmGrkzsg2HX63y2UQFJ/Z01o=;
+	s=korg; t=1768498700;
+	bh=iYtxQi8hR/CI073jcZbRNlMBHCVKqGjXtwez2OlKiLw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UPbTZdATw3zc5TGxd+FKB3dQsMg8F4eENKl6TI5u4VZcNlomUm0lvvzDco3JYKdz4
-	 CfE1iZhYysbbC1tgF39ZBP0f3gMpiAs2qVWWaQxOhUA7j6GSaTr0lEQWwdLFXHObqU
-	 xc+nb2rxNGi/F2pfEe8RyJCjB9rpiZu8BVWADe5g=
+	b=iTzK9uhPT7bQAkAYv/4TvjRrN0WjMVRKSKpuunkIS50P9dN53KnvofgDCK6b7cy7u
+	 EuNs8caTE4k97z30Ot7+6lDfsFtzmV6B1D7565PlrYxzX+iSsh3lmF2kFDNhUG21LY
+	 aPqN14J4HMO07ekjO7lnVNDIuHPgOIC3869msEzg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Xingui Yang <yangxingui@huawei.com>,
+	Jason Yan <yanaijie@huawei.com>,
+	John Garry <john.g.garry@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 387/451] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
+Subject: [PATCH 5.15 522/554] scsi: Revert "scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed"
 Date: Thu, 15 Jan 2026 17:49:48 +0100
-Message-ID: <20260115164244.928356828@linuxfoundation.org>
+Message-ID: <20260115164305.223045938@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +62,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit cdd0f118ef87db8a664fb5ea366fd1766d2df1cd ]
+[ Upstream commit 278712d20bc8ec29d1ad6ef9bdae9000ef2c220c ]
 
-vpu_get_plat_device() increases the reference count of the returned
-platform device. However, when devm_kzalloc() fails, the reference
-is not released, causing a reference leak.
+This reverts commit ab2068a6fb84751836a84c26ca72b3beb349619d.
 
-Fix this by calling put_device() on fw_pdev->dev before returning
-on the error path.
+When probing the exp-attached sata device, libsas/libata will issue a
+hard reset in sas_probe_sata() -> ata_sas_async_probe(), then a
+broadcast event will be received after the disk probe fails, and this
+commit causes the probe will be re-executed on the disk, and a faulty
+disk may get into an indefinite loop of probe.
 
-Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ adapted file path from common/ subdirectory and adjusted devm_kzalloc target from plat_dev->dev to dev->plat_dev->dev ]
+Therefore, revert this commit, although it can fix some temporary issues
+with disk probe failure.
+
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Reviewed-by: Jason Yan <yanaijie@huawei.com>
+Reviewed-by: John Garry <john.g.garry@oracle.com>
+Link: https://patch.msgid.link/20251202065627.140361-1-yangxingui@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/libsas/sas_internal.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c
-+++ b/drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c
-@@ -94,8 +94,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_
- 	vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_handler, dev, rst_id);
+diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
+index 5028bc394c4f9..d7a1fb5c10c6e 100644
+--- a/drivers/scsi/libsas/sas_internal.h
++++ b/drivers/scsi/libsas/sas_internal.h
+@@ -111,20 +111,6 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
+ 		func, dev->parent ? "exp-attached" :
+ 		"direct-attached",
+ 		SAS_ADDR(dev->sas_addr), err);
+-
+-	/*
+-	 * If the device probe failed, the expander phy attached address
+-	 * needs to be reset so that the phy will not be treated as flutter
+-	 * in the next revalidation
+-	 */
+-	if (dev->parent && !dev_is_expander(dev->dev_type)) {
+-		struct sas_phy *phy = dev->phy;
+-		struct domain_device *parent = dev->parent;
+-		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
+-
+-		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
+-	}
+-
+ 	sas_unregister_dev(dev->port, dev);
+ }
  
- 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
--	if (!fw)
-+	if (!fw) {
-+		put_device(&fw_pdev->dev);
- 		return ERR_PTR(-ENOMEM);
-+	}
- 	fw->type = VPU;
- 	fw->ops = &mtk_vcodec_vpu_msg;
- 	fw->pdev = fw_pdev;
+-- 
+2.51.0
+
 
 
 
