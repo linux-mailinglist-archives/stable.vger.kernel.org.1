@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-209102-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209113-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D6A4ED26667
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CB39D27263
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8D9FE3069028
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9D1A320307E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8718E39B48E;
-	Thu, 15 Jan 2026 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 80C063A1E86;
+	Thu, 15 Jan 2026 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHKgBi4z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y238TWHT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461082C027B;
-	Thu, 15 Jan 2026 17:22:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 428FF27B340;
+	Thu, 15 Jan 2026 17:22:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497739; cv=none; b=IMWOwcpjhPkTUSrKzykdX0sDn2erT2/oxGjOUrYxIZPcihxZfGKT1VxzB02He4RWGIJiRak3pYjCCUG8N/606o9clUvs1TzDJrLYcQP/1oK1wATtqCymvtcvCMziCcym2ax1hZCgwywqwZzTPCktg9cJpnb1vCJG4xG98PMTri0=
+	t=1768497770; cv=none; b=h99GWDRy25gclB8q4pL8eaWXrqqG2zmWYHLhY34n+lrx7+LRL4HCDcmMUrtAYbiHeFFV1tedlmJoJJqrfLee6k0+dkaHpESyNXF/Fxt+EQQ483pVPpzHIDiRuPdUYHrb7G/lMhUDhdIiV2iPgXCzhfjMib0zY7I4+p9uMvg82kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497739; c=relaxed/simple;
-	bh=JNO6g6eT+QP+2Cq1ExekdTxpeTUFe5/yw+fV7XS6/eo=;
+	s=arc-20240116; t=1768497770; c=relaxed/simple;
+	bh=SFn3Tqn/k/u61skIhjiEVLO/qxo9RTzkja+sgtu5pds=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gU7Yu1y1m7pVzFQRJw8fbWGGDFU0cDzFno/vPtD8H6NGWs5QHTDuiDX8Uuo2EcuhhSLZBSVc0NOBxLhZ3H/fdH573LEnZSExISS4bRu76Z7phZPrSy6+QmRn4PuK+K/B24At4/gQ50FJZ08hX50tszJoPo7ovvCdZTOqDBMa5Bk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHKgBi4z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C680AC116D0;
-	Thu, 15 Jan 2026 17:22:18 +0000 (UTC)
+	 MIME-Version; b=bPfCKXYP/x5x1Ma++WVvJGUR6HBYdiVoHaR9RAqf/bvhD/FAbyapgp/KXD36zwKHJTeduXHGuF+rphV9j70+8FgbMoOXAi3s58kg0dOo9jJtpWGcsQMH623SQbvanJjoMQmg2T542lQoa+l5QB8ZkzpoARzz8DajQzW2pMuRdRQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y238TWHT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05DFC116D0;
+	Thu, 15 Jan 2026 17:22:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497739;
-	bh=JNO6g6eT+QP+2Cq1ExekdTxpeTUFe5/yw+fV7XS6/eo=;
+	s=korg; t=1768497770;
+	bh=SFn3Tqn/k/u61skIhjiEVLO/qxo9RTzkja+sgtu5pds=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JHKgBi4z3bfxuF1IvUnv+1LXyRizA7rgAm+FQRzxbysjssRwYX7a3S/k/72KdFPtv
-	 tRaftH0NQQL9Bb5U5QQlOzRO/RysIGuPR8hxGY1umYpEHlq3jNeialVp9yRqr8k0Z5
-	 V//vJv3EmvXq8arvMTC8H76ROWJDcBc4lw7vn4Lo=
+	b=y238TWHTRawxgJFa2pJ0WUZFFsiLKzZ0Mr0y0r5uOIFuLuiSYZRH83iIMFVWOdHRW
+	 fKmoK/OWjD28BrYhGVdYn9/2kuHgFlxAZqEAOZ2E+XyMhaVwF/dDDkybrF+oa1wLit
+	 G6JNQoDH/YlOGrJi+2dGHiar3oUBbnjrkAppsEic=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
+	NeilBrown <neilb@suse.de>,
 	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 169/554] NFS: Label the dentry with a verifier in nfs_rmdir() and nfs_unlink()
-Date: Thu, 15 Jan 2026 17:43:55 +0100
-Message-ID: <20260115164252.384480774@linuxfoundation.org>
+Subject: [PATCH 5.15 170/554] NFS: dont unhash dentry during unlink/rename
+Date: Thu, 15 Jan 2026 17:43:56 +0100
+Message-ID: <20260115164252.420735882@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -63,69 +64,234 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: NeilBrown <neilb@suse.de>
 
-[ Upstream commit 9019fb391de02cbff422090768b73afe9f6174df ]
+[ Upstream commit 3c59366c207e4c6c6569524af606baf017a55c61 ]
 
-After the success of an operation such as rmdir() or unlink(), we expect
-to add the dentry back to the dcache as an ordinary negative dentry.
-However in NFS, unless it is labelled with the appropriate verifier for
-the parent directory state, then nfs_lookup_revalidate will end up
-discarding that dentry and forcing a new lookup.
+NFS unlink() (and rename over existing target) must determine if the
+file is open, and must perform a "silly rename" instead of an unlink (or
+before rename) if it is.  Otherwise the client might hold a file open
+which has been removed on the server.
 
-The fix is to ensure that we relabel the dentry appropriately on
-success.
+Consequently if it determines that the file isn't open, it must block
+any subsequent opens until the unlink/rename has been completed on the
+server.
 
+This is currently achieved by unhashing the dentry.  This forces any
+open attempt to the slow-path for lookup which will block on i_rwsem on
+the directory until the unlink/rename completes.  A future patch will
+change the VFS to only get a shared lock on i_rwsem for unlink, so this
+will no longer work.
+
+Instead we introduce an explicit interlock.  A special value is stored
+in dentry->d_fsdata while the unlink/rename is running and
+->d_revalidate blocks while that value is present.  When ->d_revalidate
+unblocks, the dentry will be invalid.  This closes the race
+without requiring exclusion on i_rwsem.
+
+d_fsdata is already used in two different ways.
+1/ an IS_ROOT directory dentry might have a "devname" stored in
+   d_fsdata.  Such a dentry doesn't have a name and so cannot be the
+   target of unlink or rename.  For safety we check if an old devname
+   is still stored, and remove it if it is.
+2/ a dentry with DCACHE_NFSFS_RENAMED set will have a 'struct
+   nfs_unlinkdata' stored in d_fsdata.  While this is set maydelete()
+   will fail, so an unlink or rename will never proceed on such
+   a dentry.
+
+Neither of these can be in effect when a dentry is the target of unlink
+or rename.  So we can expect d_fsdata to be NULL, and store a special
+value ((void*)1) which is given the name NFS_FSDATA_BLOCKED to indicate
+that any lookup will be blocked.
+
+The d_count() is incremented under d_lock() when a lookup finds the
+dentry, so we check d_count() is low, and set NFS_FSDATA_BLOCKED under
+the same lock to avoid any races.
+
+Signed-off-by: NeilBrown <neilb@suse.de>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Stable-dep-of: bd4928ec799b ("NFS: Avoid changing nlink when file removes and attribute updates race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ fs/nfs/dir.c           | 72 +++++++++++++++++++++++++++++++-----------
+ include/linux/nfs_fs.h |  9 ++++++
+ 2 files changed, 63 insertions(+), 18 deletions(-)
 
 diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 32c3d0c454b19..9dceb6cb10417 100644
+index 9dceb6cb10417..671b427b7b97a 100644
 --- a/fs/nfs/dir.c
 +++ b/fs/nfs/dir.c
-@@ -2212,6 +2212,18 @@ static void nfs_dentry_handle_enoent(struct dentry *dentry)
- 		d_delete(dentry);
- }
+@@ -1626,6 +1626,8 @@ __nfs_lookup_revalidate(struct dentry *dentry, unsigned int flags,
+ 	int ret;
  
-+static void nfs_dentry_remove_handle_error(struct inode *dir,
-+					   struct dentry *dentry, int error)
-+{
-+	switch (error) {
-+	case -ENOENT:
-+		d_delete(dentry);
-+		fallthrough;
-+	case 0:
-+		nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
-+	}
-+}
-+
- int nfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 	if (flags & LOOKUP_RCU) {
++		if (dentry->d_fsdata == NFS_FSDATA_BLOCKED)
++			return -ECHILD;
+ 		parent = READ_ONCE(dentry->d_parent);
+ 		dir = d_inode_rcu(parent);
+ 		if (!dir)
+@@ -1634,6 +1636,9 @@ __nfs_lookup_revalidate(struct dentry *dentry, unsigned int flags,
+ 		if (parent != READ_ONCE(dentry->d_parent))
+ 			return -ECHILD;
+ 	} else {
++		/* Wait for unlink to complete */
++		wait_var_event(&dentry->d_fsdata,
++			       dentry->d_fsdata != NFS_FSDATA_BLOCKED);
+ 		parent = dget_parent(dentry);
+ 		ret = reval(d_inode(parent), dentry, flags);
+ 		dput(parent);
+@@ -2296,7 +2301,6 @@ static int nfs_safe_remove(struct dentry *dentry)
+ int nfs_unlink(struct inode *dir, struct dentry *dentry)
  {
  	int error;
-@@ -2234,6 +2246,7 @@ int nfs_rmdir(struct inode *dir, struct dentry *dentry)
- 		up_write(&NFS_I(d_inode(dentry))->rmdir_sem);
- 	} else
- 		error = NFS_PROTO(dir)->rmdir(dir, &dentry->d_name);
-+	nfs_dentry_remove_handle_error(dir, dentry, error);
- 	trace_nfs_rmdir_exit(dir, dentry, error);
+-	int need_rehash = 0;
  
- 	return error;
-@@ -2303,9 +2316,8 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
+ 	dfprintk(VFS, "NFS: unlink(%s/%lu, %pd)\n", dir->i_sb->s_id,
+ 		dir->i_ino, dentry);
+@@ -2310,15 +2314,25 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
+ 		error = nfs_sillyrename(dir, dentry);
+ 		goto out;
  	}
+-	if (!d_unhashed(dentry)) {
+-		__d_drop(dentry);
+-		need_rehash = 1;
+-	}
++	/* We must prevent any concurrent open until the unlink
++	 * completes.  ->d_revalidate will wait for ->d_fsdata
++	 * to clear.  We set it here to ensure no lookup succeeds until
++	 * the unlink is complete on the server.
++	 */
++	error = -ETXTBSY;
++	if (WARN_ON(dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
++	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED))
++		goto out;
++	if (dentry->d_fsdata)
++		/* old devname */
++		kfree(dentry->d_fsdata);
++	dentry->d_fsdata = NFS_FSDATA_BLOCKED;
++
  	spin_unlock(&dentry->d_lock);
  	error = nfs_safe_remove(dentry);
--	if (!error || error == -ENOENT) {
--		nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
--	} else if (need_rehash)
-+	nfs_dentry_remove_handle_error(dir, dentry, error);
-+	if (need_rehash)
- 		d_rehash(dentry);
+ 	nfs_dentry_remove_handle_error(dir, dentry, error);
+-	if (need_rehash)
+-		d_rehash(dentry);
++	dentry->d_fsdata = NULL;
++	wake_up_var(&dentry->d_fsdata);
  out:
  	trace_nfs_unlink_exit(dir, dentry, error);
+ 	return error;
+@@ -2422,6 +2436,15 @@ nfs_link(struct dentry *old_dentry, struct inode *dir, struct dentry *dentry)
+ }
+ EXPORT_SYMBOL_GPL(nfs_link);
+ 
++static void
++nfs_unblock_rename(struct rpc_task *task, struct nfs_renamedata *data)
++{
++	struct dentry *new_dentry = data->new_dentry;
++
++	new_dentry->d_fsdata = NULL;
++	wake_up_var(&new_dentry->d_fsdata);
++}
++
+ /*
+  * RENAME
+  * FIXME: Some nfsds, like the Linux user space nfsd, may generate a
+@@ -2452,8 +2475,9 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ {
+ 	struct inode *old_inode = d_inode(old_dentry);
+ 	struct inode *new_inode = d_inode(new_dentry);
+-	struct dentry *dentry = NULL, *rehash = NULL;
++	struct dentry *dentry = NULL;
+ 	struct rpc_task *task;
++	bool must_unblock = false;
+ 	int error = -EBUSY;
+ 
+ 	if (flags)
+@@ -2471,18 +2495,27 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ 	 * the new target.
+ 	 */
+ 	if (new_inode && !S_ISDIR(new_inode->i_mode)) {
+-		/*
+-		 * To prevent any new references to the target during the
+-		 * rename, we unhash the dentry in advance.
++		/* We must prevent any concurrent open until the unlink
++		 * completes.  ->d_revalidate will wait for ->d_fsdata
++		 * to clear.  We set it here to ensure no lookup succeeds until
++		 * the unlink is complete on the server.
+ 		 */
+-		if (!d_unhashed(new_dentry)) {
+-			d_drop(new_dentry);
+-			rehash = new_dentry;
++		error = -ETXTBSY;
++		if (WARN_ON(new_dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
++		    WARN_ON(new_dentry->d_fsdata == NFS_FSDATA_BLOCKED))
++			goto out;
++		if (new_dentry->d_fsdata) {
++			/* old devname */
++			kfree(new_dentry->d_fsdata);
++			new_dentry->d_fsdata = NULL;
+ 		}
+ 
++		spin_lock(&new_dentry->d_lock);
+ 		if (d_count(new_dentry) > 2) {
+ 			int err;
+ 
++			spin_unlock(&new_dentry->d_lock);
++
+ 			/* copy the target dentry's name */
+ 			dentry = d_alloc(new_dentry->d_parent,
+ 					 &new_dentry->d_name);
+@@ -2495,14 +2528,19 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ 				goto out;
+ 
+ 			new_dentry = dentry;
+-			rehash = NULL;
+ 			new_inode = NULL;
++		} else {
++			new_dentry->d_fsdata = NFS_FSDATA_BLOCKED;
++			must_unblock = true;
++			spin_unlock(&new_dentry->d_lock);
+ 		}
++
+ 	}
+ 
+ 	if (S_ISREG(old_inode->i_mode))
+ 		nfs_sync_inode(old_inode);
+-	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry, NULL);
++	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry,
++				must_unblock ? nfs_unblock_rename : NULL);
+ 	if (IS_ERR(task)) {
+ 		error = PTR_ERR(task);
+ 		goto out;
+@@ -2526,8 +2564,6 @@ int nfs_rename(struct user_namespace *mnt_userns, struct inode *old_dir,
+ 		spin_unlock(&old_inode->i_lock);
+ 	}
+ out:
+-	if (rehash)
+-		d_rehash(rehash);
+ 	trace_nfs_rename_exit(old_dir, old_dentry,
+ 			new_dir, new_dentry, error);
+ 	if (!error) {
+diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
+index 218e79ba263b2..d7c23708f7da4 100644
+--- a/include/linux/nfs_fs.h
++++ b/include/linux/nfs_fs.h
+@@ -673,6 +673,15 @@ static inline bool nfs_ooo_test(struct nfs_inode *nfsi)
+ 
+ #define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
+ 
++/* We need to block new opens while a file is being unlinked.
++ * If it is opened *before* we decide to unlink, we will silly-rename
++ * instead. If it is opened *after*, then we need to create or will fail.
++ * If we allow the two to race, we could end up with a file that is open
++ * but deleted on the server resulting in ESTALE.
++ * So use ->d_fsdata to record when the unlink is happening
++ * and block dentry revalidation while it is set.
++ */
++#define NFS_FSDATA_BLOCKED ((void*)1)
+ 
+ # undef ifdebug
+ # ifdef NFS_DEBUG
 -- 
 2.51.0
 
