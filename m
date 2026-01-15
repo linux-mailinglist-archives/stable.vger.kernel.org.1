@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id CB026D26639
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E436BD2668C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:29:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 150C93046F93
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA11316DC4C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD723A35A4;
-	Thu, 15 Jan 2026 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990833BF2FE;
+	Thu, 15 Jan 2026 17:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIcwWwFw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fKNu5IGN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94043396B7D;
-	Thu, 15 Jan 2026 17:04:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B6C73A7F5D;
+	Thu, 15 Jan 2026 17:06:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496699; cv=none; b=fgeAPL7XymqTrFGBWrqzX00RSEBFo0hqnTDUzIByD9KhRsQX6RVCNrakmLbQoXDeSq/sty7lG9pySEZ1H5F76GKROHl/CqmLk1fQrfVxZ0XUvE69iQb7LdfDYnGWAE3lQQ2mty7566onbACOpy3W97T5l2m6cYyxs5U/2NJzBNs=
+	t=1768496813; cv=none; b=Ysf0ylY1ZCl6/11oKOO/XGXIYcnyW9qd59jJy9DUQX4vQof058bWY06IoCZ9rIktSlYyDMrsgfNGH+VZQ6zrVFRJwD9w2XOlSqCpekeog8//dDffFrhIp03fg3jApBA4ROfwPpWh/VWIWdwWi0b6br35MLYJuhiHInud9us+zBg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496699; c=relaxed/simple;
-	bh=nd2K3xRIYAEUKtJaRgJfp+m/3nuL/OPQhF2LSL6bZq0=;
+	s=arc-20240116; t=1768496813; c=relaxed/simple;
+	bh=Dxmc8KeY9bBB/7AsRuOnvyF8p8lH8Eqj675cGMJPmaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TfLMRsqf9NXRXFX9jwBfmKMYPQae7VmLMbddgfF69Cjc2WuKpyF2VW4qRc0hie8ZbZUFqaGRe+Q7SQUk7qcSnPB0F+8ZxF99RJJSCZ62duxn5Pp+XQ2tdi9VT6zPXDmvD/az0LEMp6Qj3NlaPH+Te7fa6ecb7dJpUbpV/5b5nEU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIcwWwFw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25066C116D0;
-	Thu, 15 Jan 2026 17:04:58 +0000 (UTC)
+	 MIME-Version; b=Sh8WvROOUNC8pwpDVz+Sb4mY3/J+SYg5qXEFIoUCJ5vwGPUQE4gD8tmGoRB6sAqx8NaD3muh5epCB3Hbfx+0M0g7+6sc/ch3/9GdC0/Zn+/nLvbn89iAep7BjLqgbzMYn0q+xov660Fi/XvEjNBO7Id/NWg8npz8CmU4yIV7MMo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fKNu5IGN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD4CBC116D0;
+	Thu, 15 Jan 2026 17:06:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496699;
-	bh=nd2K3xRIYAEUKtJaRgJfp+m/3nuL/OPQhF2LSL6bZq0=;
+	s=korg; t=1768496813;
+	bh=Dxmc8KeY9bBB/7AsRuOnvyF8p8lH8Eqj675cGMJPmaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sIcwWwFwLDn93i9fdzsOoKG1XerVeYqQA5o/1uujDyRoN18YDGBa7ZlxSJkr3GqsT
-	 uCxGazQtA+HFdrleI+SmHU2FsAmCdqykcdowzsUDtk9LcGIBTkh6O06LTCe3raoVKx
-	 JrHpvK5IkR4f5TU+EkeajLRLMCwEBLRaK8xgKn50=
+	b=fKNu5IGNarXbDg29f0Z8LdB5JyHT3YIii157iEMUriUlv++OKn8ddi6nOpK+oAcXe
+	 6tKFVcGKeoOzeXiy88iXO5gPmNBmCx49jDrwi0OHosZ2bLkxFi1P9rWSLod4ZddDZv
+	 qjM8D1QfN17IfbK6fUmCy/BQARZDVOGeCxturHw8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 071/119] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
-Date: Thu, 15 Jan 2026 17:48:06 +0100
-Message-ID: <20260115164154.515274225@linuxfoundation.org>
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 24/88] nfsd: Fix NFSv3 atomicity bugs in nfsd_setattr()
+Date: Thu, 15 Jan 2026 17:48:07 +0100
+Message-ID: <20260115164147.188341985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +61,211 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
+commit 24d92de9186ebc340687caf7356e1070773e67bc upstream.
 
-Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-allocated memory for pp_qlt in ipc_mux_init() but did not free it in
-ipc_mux_deinit(). This results in a memory leak when the driver is
-unloaded.
+The main point of the guarded SETATTR is to prevent races with other
+WRITE and SETATTR calls. That requires that the check of the guard time
+against the inode ctime be done after taking the inode lock.
 
-Free the allocated memory in ipc_mux_deinit() to fix the leak.
+Furthermore, we need to take into account the 32-bit nature of
+timestamps in NFSv3, and the possibility that files may change at a
+faster rate than once a second.
 
-Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Stable-dep-of: 442d27ff09a2 ("nfsd: set security label during create operations")
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/nfs3proc.c  |    6 ++++--
+ fs/nfsd/nfs3xdr.c   |    5 +----
+ fs/nfsd/nfs4proc.c  |    3 +--
+ fs/nfsd/nfs4state.c |    2 +-
+ fs/nfsd/nfsproc.c   |    6 +++---
+ fs/nfsd/vfs.c       |   20 +++++++++++++-------
+ fs/nfsd/vfs.h       |    2 +-
+ fs/nfsd/xdr3.h      |    2 +-
+ 8 files changed, 25 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-index fc928b298a984..b846889fcb099 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 	struct sk_buff_head *free_list;
- 	union mux_msg mux_msg;
- 	struct sk_buff *skb;
-+	int i;
+--- a/fs/nfsd/nfs3proc.c
++++ b/fs/nfsd/nfs3proc.c
+@@ -71,13 +71,15 @@ nfsd3_proc_setattr(struct svc_rqst *rqst
+ 	struct nfsd_attrs attrs = {
+ 		.na_iattr	= &argp->attrs,
+ 	};
++	const struct timespec64 *guardtime = NULL;
  
- 	if (!ipc_mux->initialized)
- 		return;
-@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 		ipc_mux->channel->dl_pipe.is_open = false;
+ 	dprintk("nfsd: SETATTR(3)  %s\n",
+ 				SVCFH_fmt(&argp->fh));
+ 
+ 	fh_copy(&resp->fh, &argp->fh);
+-	resp->status = nfsd_setattr(rqstp, &resp->fh, &attrs,
+-				    argp->check_guard, argp->guardtime);
++	if (argp->check_guard)
++		guardtime = &argp->guardtime;
++	resp->status = nfsd_setattr(rqstp, &resp->fh, &attrs, guardtime);
+ 	return rpc_success;
+ }
+ 
+--- a/fs/nfsd/nfs3xdr.c
++++ b/fs/nfsd/nfs3xdr.c
+@@ -295,17 +295,14 @@ svcxdr_decode_sattr3(struct svc_rqst *rq
+ static bool
+ svcxdr_decode_sattrguard3(struct xdr_stream *xdr, struct nfsd3_sattrargs *args)
+ {
+-	__be32 *p;
+ 	u32 check;
+ 
+ 	if (xdr_stream_decode_bool(xdr, &check) < 0)
+ 		return false;
+ 	if (check) {
+-		p = xdr_inline_decode(xdr, XDR_UNIT * 2);
+-		if (!p)
++		if (!svcxdr_decode_nfstime3(xdr, &args->guardtime))
+ 			return false;
+ 		args->check_guard = 1;
+-		args->guardtime = be32_to_cpup(p);
+ 	} else
+ 		args->check_guard = 0;
+ 
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1160,8 +1160,7 @@ nfsd4_setattr(struct svc_rqst *rqstp, st
+ 		goto out;
+ 	save_no_wcc = cstate->current_fh.fh_no_wcc;
+ 	cstate->current_fh.fh_no_wcc = true;
+-	status = nfsd_setattr(rqstp, &cstate->current_fh, &attrs,
+-				0, (time64_t)0);
++	status = nfsd_setattr(rqstp, &cstate->current_fh, &attrs, NULL);
+ 	cstate->current_fh.fh_no_wcc = save_no_wcc;
+ 	if (!status)
+ 		status = nfserrno(attrs.na_labelerr);
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -5225,7 +5225,7 @@ nfsd4_truncate(struct svc_rqst *rqstp, s
+ 		return 0;
+ 	if (!(open->op_share_access & NFS4_SHARE_ACCESS_WRITE))
+ 		return nfserr_inval;
+-	return nfsd_setattr(rqstp, fh, &attrs, 0, (time64_t)0);
++	return nfsd_setattr(rqstp, fh, &attrs, NULL);
+ }
+ 
+ static __be32 nfs4_get_vfs_file(struct svc_rqst *rqstp, struct nfs4_file *fp,
+--- a/fs/nfsd/nfsproc.c
++++ b/fs/nfsd/nfsproc.c
+@@ -103,7 +103,7 @@ nfsd_proc_setattr(struct svc_rqst *rqstp
+ 		}
  	}
  
-+	if (ipc_mux->protocol != MUX_LITE) {
-+		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
-+			kfree(ipc_mux->ul_adb.pp_qlt[i]);
+-	resp->status = nfsd_setattr(rqstp, fhp, &attrs, 0, (time64_t)0);
++	resp->status = nfsd_setattr(rqstp, fhp, &attrs, NULL);
+ 	if (resp->status != nfs_ok)
+ 		goto out;
+ 
+@@ -390,8 +390,8 @@ nfsd_proc_create(struct svc_rqst *rqstp)
+ 		 */
+ 		attr->ia_valid &= ATTR_SIZE;
+ 		if (attr->ia_valid)
+-			resp->status = nfsd_setattr(rqstp, newfhp, &attrs, 0,
+-						    (time64_t)0);
++			resp->status = nfsd_setattr(rqstp, newfhp, &attrs,
++						    NULL);
+ 	}
+ 
+ out_unlock:
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -459,7 +459,6 @@ static int __nfsd_setattr(struct dentry
+  * @rqstp: controlling RPC transaction
+  * @fhp: filehandle of target
+  * @attr: attributes to set
+- * @check_guard: set to 1 if guardtime is a valid timestamp
+  * @guardtime: do not act if ctime.tv_sec does not match this timestamp
+  *
+  * This call may adjust the contents of @attr (in particular, this
+@@ -471,8 +470,7 @@ static int __nfsd_setattr(struct dentry
+  */
+ __be32
+ nfsd_setattr(struct svc_rqst *rqstp, struct svc_fh *fhp,
+-	     struct nfsd_attrs *attr,
+-	     int check_guard, time64_t guardtime)
++	     struct nfsd_attrs *attr, const struct timespec64 *guardtime)
+ {
+ 	struct dentry	*dentry;
+ 	struct inode	*inode;
+@@ -521,9 +519,6 @@ nfsd_setattr(struct svc_rqst *rqstp, str
+ 
+ 	nfsd_sanitize_attrs(inode, iap);
+ 
+-	if (check_guard && guardtime != inode_get_ctime_sec(inode))
+-		return nfserr_notsync;
+-
+ 	/*
+ 	 * The size case is special, it changes the file in addition to the
+ 	 * attributes, and file systems don't expect it to be mixed with
+@@ -541,6 +536,16 @@ nfsd_setattr(struct svc_rqst *rqstp, str
+ 	err = fh_fill_pre_attrs(fhp);
+ 	if (err)
+ 		goto out_unlock;
++
++	if (guardtime) {
++		struct timespec64 ctime = inode_get_ctime(inode);
++		if ((u32)guardtime->tv_sec != (u32)ctime.tv_sec ||
++		    guardtime->tv_nsec != ctime.tv_nsec) {
++			err = nfserr_notsync;
++			goto out_fill_attrs;
++		}
 +	}
 +
- 	kfree(ipc_mux);
- }
--- 
-2.51.0
-
+ 	for (retries = 1;;) {
+ 		struct iattr attrs;
+ 
+@@ -568,6 +573,7 @@ nfsd_setattr(struct svc_rqst *rqstp, str
+ 		attr->na_aclerr = set_posix_acl(&nop_mnt_idmap,
+ 						dentry, ACL_TYPE_DEFAULT,
+ 						attr->na_dpacl);
++out_fill_attrs:
+ 	fh_fill_post_attrs(fhp);
+ out_unlock:
+ 	inode_unlock(inode);
+@@ -1374,7 +1380,7 @@ nfsd_create_setattr(struct svc_rqst *rqs
+ 	 * if the attributes have not changed.
+ 	 */
+ 	if (iap->ia_valid)
+-		status = nfsd_setattr(rqstp, resfhp, attrs, 0, (time64_t)0);
++		status = nfsd_setattr(rqstp, resfhp, attrs, NULL);
+ 	else
+ 		status = nfserrno(commit_metadata(resfhp));
+ 
+--- a/fs/nfsd/vfs.h
++++ b/fs/nfsd/vfs.h
+@@ -69,7 +69,7 @@ __be32		 nfsd_lookup_dentry(struct svc_r
+ 				const char *, unsigned int,
+ 				struct svc_export **, struct dentry **);
+ __be32		nfsd_setattr(struct svc_rqst *, struct svc_fh *,
+-				struct nfsd_attrs *, int, time64_t);
++			     struct nfsd_attrs *, const struct timespec64 *);
+ int nfsd_mountpoint(struct dentry *, struct svc_export *);
+ #ifdef CONFIG_NFSD_V4
+ __be32		nfsd4_vfs_fallocate(struct svc_rqst *, struct svc_fh *,
+--- a/fs/nfsd/xdr3.h
++++ b/fs/nfsd/xdr3.h
+@@ -14,7 +14,7 @@ struct nfsd3_sattrargs {
+ 	struct svc_fh		fh;
+ 	struct iattr		attrs;
+ 	int			check_guard;
+-	time64_t		guardtime;
++	struct timespec64	guardtime;
+ };
+ 
+ struct nfsd3_diropargs {
 
 
 
