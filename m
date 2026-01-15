@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209528-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209074-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 68C3DD26DCA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7214AD26A67
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4A3D730B8431
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E3E3831D1535
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4494C2D73B4;
-	Thu, 15 Jan 2026 17:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A4873A7E07;
+	Thu, 15 Jan 2026 17:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MMGrVPIL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NpD+8qnE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 072AF3624C4;
-	Thu, 15 Jan 2026 17:42:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 116CF2F619D;
+	Thu, 15 Jan 2026 17:21:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498953; cv=none; b=nZlo0RkizGrrnuY4zwUadCqIBvAOqx7nEkqyN0jxl8t54KQsH2GfJJXi1M6krTr3H5/4WRH9b3UyNLlu1HcHfyaR5dzFuIZ4K+g4LbHP6t/xBz5K5JsO9oTLRlC9qbazC0uPMIoboL60EgrfhSIu8jlGSg/On61Olxm5jFugnCk=
+	t=1768497662; cv=none; b=XAYQyLLJUfuWFaH1oak5tTenQUU7b9UZXuul3TftNVi2pnmpBJ6IalRAwjx8f0L2PtnNEjaPsE4lqg5HArULzDJ73nca3VnzqTFNMCLpdWxWNXlUaSaOKDtKsXadKhLuI6M6aUYJfS6In4q6RebnPMD3efyuD4jd1Db+/W1Jrtg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498953; c=relaxed/simple;
-	bh=rbANHboZuPhB95wz4Ec23JL2yuxrlwffwMVZ3FLUi8g=;
+	s=arc-20240116; t=1768497662; c=relaxed/simple;
+	bh=woF4ujvGDPHjQnvHgtfO18MaVjfEdWps04KJfNhp+aI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=vBt4PRpu4Bg5W35It+hQ0aUb6VFHHD7gX0hrxroUV0Bl6R6Yklw80hPtqRyQC6DgUMg9oRodmrZZVkBAbnlNvFaZ0da76eRXo7utQbAVrWXPsYJEU2IEs7xAe8M2q+5yT2glb+60A83hcjuNwQZe9AozznrLPX4QGni0g6jwu3s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MMGrVPIL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832BFC116D0;
-	Thu, 15 Jan 2026 17:42:32 +0000 (UTC)
+	 MIME-Version; b=uWBUySQ7WtpRnVge8Cgu4yTusv0RdGMHsYpMtYeQeb2lozqv9fOvodeMgrUAGtRnlzR0phrnfUW4ep6bEJhfssLrvC6PIvkaZamHsWpx4HH5tcbzWXO3JhBof88lKR5L/XEzEftqUy1nsqhmzmqes9fmPOR1Q57WW0M2yHCknf0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NpD+8qnE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CFD7C116D0;
+	Thu, 15 Jan 2026 17:21:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498952;
-	bh=rbANHboZuPhB95wz4Ec23JL2yuxrlwffwMVZ3FLUi8g=;
+	s=korg; t=1768497661;
+	bh=woF4ujvGDPHjQnvHgtfO18MaVjfEdWps04KJfNhp+aI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MMGrVPILSEuYDgiu8EhEqb9sdAX0C92PAmzcY/Eh4WniOpm8tYGgnm5knEZLfwnsO
-	 3ihp4kP/NBVK1bSkroNyS0gxZyAbCnpKxJOdyHHsJsSVUqfgr4HRyGzHhBUj1GrYIa
-	 JwjduQOmzLuD5yrmsEIWcsYCb+0+UyUQLqYe9jZI=
+	b=NpD+8qnEMTMn2dN202nKhmCNBsAfWUcm49CAWWS/kHmpHYRiWJeTM7aveG9dVskqT
+	 dWWblI0v+Ktb2+d7+iQ/dmPVGL4Prxu8gBryCPdZECfsiU6cN7thVJBXHkl0TaR9cR
+	 TYUeyfyD7QCithTtRqHFSTh0VPwDXJmCpz4hs9Ok=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com,
-	stable <stable@kernel.org>,
-	Ian Abbott <abbotti@mev.co.uk>
-Subject: [PATCH 5.10 024/451] comedi: c6xdigio: Fix invalid PNP driver unregistration
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 159/554] netfilter: nf_conncount: rework API to use sk_buff directly
 Date: Thu, 15 Jan 2026 17:43:45 +0100
-Message-ID: <20260115164231.765913976@linuxfoundation.org>
+Message-ID: <20260115164252.023239080@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,171 +60,509 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ian Abbott <abbotti@mev.co.uk>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit 72262330f7b3ad2130e800cecf02adcce3c32c77 upstream.
+[ Upstream commit be102eb6a0e7c03db00e50540622f4e43b2d2844 ]
 
-The Comedi low-level driver "c6xdigio" seems to be for a parallel port
-connected device.  When the Comedi core calls the driver's Comedi
-"attach" handler `c6xdigio_attach()` to configure a Comedi to use this
-driver, it tries to enable the parallel port PNP resources by
-registering a PNP driver with `pnp_register_driver()`, but ignores the
-return value.  (The `struct pnp_driver` it uses has only the `name` and
-`id_table` members filled in.)  The driver's Comedi "detach" handler
-`c6xdigio_detach()` unconditionally unregisters the PNP driver with
-`pnp_unregister_driver()`.
+When using nf_conncount infrastructure for non-confirmed connections a
+duplicated track is possible due to an optimization introduced since
+commit d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC").
 
-It is possible for `c6xdigio_attach()` to return an error before it
-calls `pnp_register_driver()` and it is possible for the call to
-`pnp_register_driver()` to return an error (that is ignored).  In both
-cases, the driver should not be calling `pnp_unregister_driver()` as it
-does in `c6xdigio_detach()`.  (Note that `c6xdigio_detach()` will be
-called by the Comedi core if `c6xdigio_attach()` returns an error, or if
-the Comedi core decides to detach the Comedi device from the driver for
-some other reason.)
+In order to fix this introduce a new conncount API that receives
+directly an sk_buff struct.  It fetches the tuple and zone and the
+corresponding ct from it. It comes with both existing conncount variants
+nf_conncount_count_skb() and nf_conncount_add_skb(). In addition remove
+the old API and adjust all the users to use the new one.
 
-The unconditional call to `pnp_unregister_driver()` without a previous
-successful call to `pnp_register_driver()` will cause
-`driver_unregister()` to issue a warning "Unexpected driver
-unregister!".  This was detected by Syzbot [1].
+This way, for each sk_buff struct it is possible to check if there is a
+ct present and already confirmed. If so, skip the add operation.
 
-Also, the PNP driver registration and unregistration should be done at
-module init and exit time, respectively, not when attaching or detaching
-Comedi devices to the driver.  (There might be more than one Comedi
-device being attached to the driver, although that is unlikely.)
-
-Change the driver to do the PNP driver registration at module init time,
-and the unregistration at module exit time.  Since `c6xdigio_detach()`
-now only calls `comedi_legacy_detach()`, remove the function and change
-the Comedi driver "detach" handler to `comedi_legacy_detach`.
-
--------------------------------------------
-[1] Syzbot sample crash report:
-Unexpected driver unregister!
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister drivers/base/driver.c:273 [inline]
-WARNING: CPU: 0 PID: 5970 at drivers/base/driver.c:273 driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Modules linked in:
-CPU: 0 UID: 0 PID: 5970 Comm: syz.0.17 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 10/02/2025
-RIP: 0010:driver_unregister drivers/base/driver.c:273 [inline]
-RIP: 0010:driver_unregister+0x90/0xb0 drivers/base/driver.c:270
-Code: 48 89 ef e8 c2 e6 82 fc 48 89 df e8 3a 93 ff ff 5b 5d e9 c3 6d d9 fb e8 be 6d d9 fb 90 48 c7 c7 e0 f8 1f 8c e8 51 a2 97 fb 90 <0f> 0b 90 90 5b 5d e9 a5 6d d9 fb e8 e0 f4 41 fc eb 94 e8 d9 f4 41
-RSP: 0018:ffffc9000373f9a0 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffffffff8ff24720 RCX: ffffffff817b6ee8
-RDX: ffff88807c932480 RSI: ffffffff817b6ef5 RDI: 0000000000000001
-RBP: 0000000000000000 R08: 0000000000000001 R09: 0000000000000000
-R10: 0000000000000001 R11: 0000000000000001 R12: ffffffff8ff24660
-R13: dffffc0000000000 R14: 0000000000000000 R15: ffff88814cca0000
-FS:  000055556dab1500(0000) GS:ffff8881249d9000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000055f77f285cd0 CR3: 000000007d871000 CR4: 00000000003526f0
-Call Trace:
- <TASK>
- comedi_device_detach_locked+0x12f/0xa50 drivers/comedi/drivers.c:207
- comedi_device_detach+0x67/0xb0 drivers/comedi/drivers.c:215
- comedi_device_attach+0x43d/0x900 drivers/comedi/drivers.c:1011
- do_devconfig_ioctl+0x1b1/0x710 drivers/comedi/comedi_fops.c:872
- comedi_unlocked_ioctl+0x165d/0x2f00 drivers/comedi/comedi_fops.c:2178
- vfs_ioctl fs/ioctl.c:51 [inline]
- __do_sys_ioctl fs/ioctl.c:597 [inline]
- __se_sys_ioctl fs/ioctl.c:583 [inline]
- __x64_sys_ioctl+0x18e/0x210 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7fc05798eec9
-Code: ff ff c3 66 2e 0f 1f 84 00 00 00 00 00 0f 1f 40 00 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 a8 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007ffcf8184238 EFLAGS: 00000246 ORIG_RAX: 0000000000000010
-RAX: ffffffffffffffda RBX: 00007fc057be5fa0 RCX: 00007fc05798eec9
-RDX: 0000200000000080 RSI: 0000000040946400 RDI: 0000000000000003
-RBP: 00007fc057a11f91 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007fc057be5fa0 R14: 00007fc057be5fa0 R15: 0000000000000003
- </TASK>
--------------------------------------------
-
-Reported-by: syzbot+6616bba359cec7a1def1@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6616bba359cec7a1def1
-Fixes: 2c89e159cd2f ("Staging: comedi: add c6xdigio driver")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
-Link: https://patch.msgid.link/20251023123141.6537-1-abbotti@mev.co.uk
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Stable-dep-of: 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was skipped")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/staging/comedi/drivers/c6xdigio.c |   46 ++++++++++++++++++++++--------
- 1 file changed, 35 insertions(+), 11 deletions(-)
+ include/net/netfilter/nf_conntrack_count.h |  17 +-
+ net/netfilter/nf_conncount.c               | 177 ++++++++++++++-------
+ net/netfilter/nft_connlimit.c              |  21 +--
+ net/netfilter/xt_connlimit.c               |  14 +-
+ net/openvswitch/conntrack.c                |  16 +-
+ 5 files changed, 142 insertions(+), 103 deletions(-)
 
---- a/drivers/staging/comedi/drivers/c6xdigio.c
-+++ b/drivers/staging/comedi/drivers/c6xdigio.c
-@@ -250,9 +250,6 @@ static int c6xdigio_attach(struct comedi
- 	if (ret)
- 		return ret;
+diff --git a/include/net/netfilter/nf_conntrack_count.h b/include/net/netfilter/nf_conntrack_count.h
+index e227d997fc716..115bb7e572f7d 100644
+--- a/include/net/netfilter/nf_conntrack_count.h
++++ b/include/net/netfilter/nf_conntrack_count.h
+@@ -20,15 +20,14 @@ struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int family
+ void nf_conncount_destroy(struct net *net, unsigned int family,
+ 			  struct nf_conncount_data *data);
  
--	/*  Make sure that PnP ports get activated */
--	pnp_register_driver(&c6xdigio_pnp_driver);
+-unsigned int nf_conncount_count(struct net *net,
+-				struct nf_conncount_data *data,
+-				const u32 *key,
+-				const struct nf_conntrack_tuple *tuple,
+-				const struct nf_conntrack_zone *zone);
 -
- 	s = &dev->subdevices[0];
- 	/* pwm output subdevice */
- 	s->type		= COMEDI_SUBD_PWM;
-@@ -279,19 +276,46 @@ static int c6xdigio_attach(struct comedi
+-int nf_conncount_add(struct net *net, struct nf_conncount_list *list,
+-		     const struct nf_conntrack_tuple *tuple,
+-		     const struct nf_conntrack_zone *zone);
++unsigned int nf_conncount_count_skb(struct net *net,
++				    const struct sk_buff *skb,
++				    u16 l3num,
++				    struct nf_conncount_data *data,
++				    const u32 *key);
++
++int nf_conncount_add_skb(struct net *net, const struct sk_buff *skb,
++			 u16 l3num, struct nf_conncount_list *list);
+ 
+ void nf_conncount_list_init(struct nf_conncount_list *list);
+ 
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index ee808b018e4e1..5fdf451f2322c 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -122,15 +122,65 @@ find_or_evict(struct net *net, struct nf_conncount_list *list,
+ 	return ERR_PTR(-EAGAIN);
+ }
+ 
++static bool get_ct_or_tuple_from_skb(struct net *net,
++				     const struct sk_buff *skb,
++				     u16 l3num,
++				     struct nf_conn **ct,
++				     struct nf_conntrack_tuple *tuple,
++				     const struct nf_conntrack_zone **zone,
++				     bool *refcounted)
++{
++	const struct nf_conntrack_tuple_hash *h;
++	enum ip_conntrack_info ctinfo;
++	struct nf_conn *found_ct;
++
++	found_ct = nf_ct_get(skb, &ctinfo);
++	if (found_ct && !nf_ct_is_template(found_ct)) {
++		*tuple = found_ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
++		*zone = nf_ct_zone(found_ct);
++		*ct = found_ct;
++		return true;
++	}
++
++	if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb), l3num, net, tuple))
++		return false;
++
++	if (found_ct)
++		*zone = nf_ct_zone(found_ct);
++
++	h = nf_conntrack_find_get(net, *zone, tuple);
++	if (!h)
++		return true;
++
++	found_ct = nf_ct_tuplehash_to_ctrack(h);
++	*refcounted = true;
++	*ct = found_ct;
++
++	return true;
++}
++
+ static int __nf_conncount_add(struct net *net,
+-			      struct nf_conncount_list *list,
+-			      const struct nf_conntrack_tuple *tuple,
+-			      const struct nf_conntrack_zone *zone)
++			      const struct sk_buff *skb,
++			      u16 l3num,
++			      struct nf_conncount_list *list)
+ {
++	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+ 	const struct nf_conntrack_tuple_hash *found;
+ 	struct nf_conncount_tuple *conn, *conn_n;
++	struct nf_conntrack_tuple tuple;
++	struct nf_conn *ct = NULL;
+ 	struct nf_conn *found_ct;
+ 	unsigned int collect = 0;
++	bool refcounted = false;
++
++	if (!get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted))
++		return -ENOENT;
++
++	if (ct && nf_ct_is_confirmed(ct)) {
++		if (refcounted)
++			nf_ct_put(ct);
++		return 0;
++	}
+ 
+ 	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
+ 		goto add_new_node;
+@@ -144,10 +194,10 @@ static int __nf_conncount_add(struct net *net,
+ 		if (IS_ERR(found)) {
+ 			/* Not found, but might be about to be confirmed */
+ 			if (PTR_ERR(found) == -EAGAIN) {
+-				if (nf_ct_tuple_equal(&conn->tuple, tuple) &&
++				if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+ 				    nf_ct_zone_id(&conn->zone, conn->zone.dir) ==
+ 				    nf_ct_zone_id(zone, zone->dir))
+-					return 0; /* already exists */
++					goto out_put; /* already exists */
+ 			} else {
+ 				collect++;
+ 			}
+@@ -156,7 +206,7 @@ static int __nf_conncount_add(struct net *net,
+ 
+ 		found_ct = nf_ct_tuplehash_to_ctrack(found);
+ 
+-		if (nf_ct_tuple_equal(&conn->tuple, tuple) &&
++		if (nf_ct_tuple_equal(&conn->tuple, &tuple) &&
+ 		    nf_ct_zone_equal(found_ct, zone, zone->dir)) {
+ 			/*
+ 			 * We should not see tuples twice unless someone hooks
+@@ -165,7 +215,7 @@ static int __nf_conncount_add(struct net *net,
+ 			 * Attempt to avoid a re-add in this case.
+ 			 */
+ 			nf_ct_put(found_ct);
+-			return 0;
++			goto out_put;
+ 		} else if (already_closed(found_ct)) {
+ 			/*
+ 			 * we do not care about connections which are
+@@ -188,31 +238,35 @@ static int __nf_conncount_add(struct net *net,
+ 	if (conn == NULL)
+ 		return -ENOMEM;
+ 
+-	conn->tuple = *tuple;
++	conn->tuple = tuple;
+ 	conn->zone = *zone;
+ 	conn->cpu = raw_smp_processor_id();
+ 	conn->jiffies32 = (u32)jiffies;
+ 	list_add_tail(&conn->node, &list->head);
+ 	list->count++;
+ 	list->last_gc = (u32)jiffies;
++
++out_put:
++	if (refcounted)
++		nf_ct_put(ct);
  	return 0;
  }
  
--static void c6xdigio_detach(struct comedi_device *dev)
--{
--	comedi_legacy_detach(dev);
--	pnp_unregister_driver(&c6xdigio_pnp_driver);
--}
--
- static struct comedi_driver c6xdigio_driver = {
- 	.driver_name	= "c6xdigio",
- 	.module		= THIS_MODULE,
- 	.attach		= c6xdigio_attach,
--	.detach		= c6xdigio_detach,
-+	.detach		= comedi_legacy_detach,
- };
--module_comedi_driver(c6xdigio_driver);
-+
-+static bool c6xdigio_pnp_registered = false;
-+
-+static int __init c6xdigio_module_init(void)
-+{
-+	int ret;
-+
-+	ret = comedi_driver_register(&c6xdigio_driver);
-+	if (ret)
-+		return ret;
-+
-+	if (IS_ENABLED(CONFIG_PNP)) {
-+		/*  Try to activate the PnP ports */
-+		ret = pnp_register_driver(&c6xdigio_pnp_driver);
-+		if (ret) {
-+			pr_warn("failed to register pnp driver - err %d\n",
-+				ret);
-+			ret = 0;	/* ignore the error. */
-+		} else {
-+			c6xdigio_pnp_registered = true;
-+		}
-+	}
-+
-+	return 0;
-+}
-+module_init(c6xdigio_module_init);
-+
-+static void __exit c6xdigio_module_exit(void)
-+{
-+	if (c6xdigio_pnp_registered)
-+		pnp_unregister_driver(&c6xdigio_pnp_driver);
-+	comedi_driver_unregister(&c6xdigio_driver);
-+}
-+module_exit(c6xdigio_module_exit);
+-int nf_conncount_add(struct net *net,
+-		     struct nf_conncount_list *list,
+-		     const struct nf_conntrack_tuple *tuple,
+-		     const struct nf_conntrack_zone *zone)
++int nf_conncount_add_skb(struct net *net,
++			 const struct sk_buff *skb,
++			 u16 l3num,
++			 struct nf_conncount_list *list)
+ {
+ 	int ret;
  
- MODULE_AUTHOR("Comedi https://www.comedi.org");
- MODULE_DESCRIPTION("Comedi driver for the C6x_DIGIO DSP daughter card");
+ 	/* check the saved connections */
+ 	spin_lock_bh(&list->list_lock);
+-	ret = __nf_conncount_add(net, list, tuple, zone);
++	ret = __nf_conncount_add(net, skb, l3num, list);
+ 	spin_unlock_bh(&list->list_lock);
+ 
+ 	return ret;
+ }
+-EXPORT_SYMBOL_GPL(nf_conncount_add);
++EXPORT_SYMBOL_GPL(nf_conncount_add_skb);
+ 
+ void nf_conncount_list_init(struct nf_conncount_list *list)
+ {
+@@ -309,19 +363,22 @@ static void schedule_gc_worker(struct nf_conncount_data *data, int tree)
+ 
+ static unsigned int
+ insert_tree(struct net *net,
++	    const struct sk_buff *skb,
++	    u16 l3num,
+ 	    struct nf_conncount_data *data,
+ 	    struct rb_root *root,
+ 	    unsigned int hash,
+-	    const u32 *key,
+-	    const struct nf_conntrack_tuple *tuple,
+-	    const struct nf_conntrack_zone *zone)
++	    const u32 *key)
+ {
+ 	struct nf_conncount_rb *gc_nodes[CONNCOUNT_GC_MAX_NODES];
++	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
++	bool do_gc = true, refcounted = false;
++	unsigned int count = 0, gc_count = 0;
+ 	struct rb_node **rbnode, *parent;
+-	struct nf_conncount_rb *rbconn;
++	struct nf_conntrack_tuple tuple;
+ 	struct nf_conncount_tuple *conn;
+-	unsigned int count = 0, gc_count = 0;
+-	bool do_gc = true;
++	struct nf_conncount_rb *rbconn;
++	struct nf_conn *ct = NULL;
+ 
+ 	spin_lock_bh(&nf_conncount_locks[hash]);
+ restart:
+@@ -340,7 +397,7 @@ insert_tree(struct net *net,
+ 		} else {
+ 			int ret;
+ 
+-			ret = nf_conncount_add(net, &rbconn->list, tuple, zone);
++			ret = nf_conncount_add_skb(net, skb, l3num, &rbconn->list);
+ 			if (ret)
+ 				count = 0; /* hotdrop */
+ 			else
+@@ -364,30 +421,35 @@ insert_tree(struct net *net,
+ 		goto restart;
+ 	}
+ 
+-	/* expected case: match, insert new node */
+-	rbconn = kmem_cache_alloc(conncount_rb_cachep, GFP_ATOMIC);
+-	if (rbconn == NULL)
+-		goto out_unlock;
++	if (get_ct_or_tuple_from_skb(net, skb, l3num, &ct, &tuple, &zone, &refcounted)) {
++		/* expected case: match, insert new node */
++		rbconn = kmem_cache_alloc(conncount_rb_cachep, GFP_ATOMIC);
++		if (rbconn == NULL)
++			goto out_unlock;
+ 
+-	conn = kmem_cache_alloc(conncount_conn_cachep, GFP_ATOMIC);
+-	if (conn == NULL) {
+-		kmem_cache_free(conncount_rb_cachep, rbconn);
+-		goto out_unlock;
+-	}
++		conn = kmem_cache_alloc(conncount_conn_cachep, GFP_ATOMIC);
++		if (conn == NULL) {
++			kmem_cache_free(conncount_rb_cachep, rbconn);
++			goto out_unlock;
++		}
+ 
+-	conn->tuple = *tuple;
+-	conn->zone = *zone;
+-	conn->cpu = raw_smp_processor_id();
+-	conn->jiffies32 = (u32)jiffies;
+-	memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
++		conn->tuple = tuple;
++		conn->zone = *zone;
++		conn->cpu = raw_smp_processor_id();
++		conn->jiffies32 = (u32)jiffies;
++		memcpy(rbconn->key, key, sizeof(u32) * data->keylen);
++
++		nf_conncount_list_init(&rbconn->list);
++		list_add(&conn->node, &rbconn->list.head);
++		count = 1;
++		rbconn->list.count = count;
+ 
+-	nf_conncount_list_init(&rbconn->list);
+-	list_add(&conn->node, &rbconn->list.head);
+-	count = 1;
+-	rbconn->list.count = count;
++		rb_link_node_rcu(&rbconn->node, parent, rbnode);
++		rb_insert_color(&rbconn->node, root);
+ 
+-	rb_link_node_rcu(&rbconn->node, parent, rbnode);
+-	rb_insert_color(&rbconn->node, root);
++		if (refcounted)
++			nf_ct_put(ct);
++	}
+ out_unlock:
+ 	spin_unlock_bh(&nf_conncount_locks[hash]);
+ 	return count;
+@@ -395,10 +457,10 @@ insert_tree(struct net *net,
+ 
+ static unsigned int
+ count_tree(struct net *net,
++	   const struct sk_buff *skb,
++	   u16 l3num,
+ 	   struct nf_conncount_data *data,
+-	   const u32 *key,
+-	   const struct nf_conntrack_tuple *tuple,
+-	   const struct nf_conntrack_zone *zone)
++	   const u32 *key)
+ {
+ 	struct rb_root *root;
+ 	struct rb_node *parent;
+@@ -422,7 +484,7 @@ count_tree(struct net *net,
+ 		} else {
+ 			int ret;
+ 
+-			if (!tuple) {
++			if (!skb) {
+ 				nf_conncount_gc_list(net, &rbconn->list);
+ 				return rbconn->list.count;
+ 			}
+@@ -437,7 +499,7 @@ count_tree(struct net *net,
+ 			}
+ 
+ 			/* same source network -> be counted! */
+-			ret = __nf_conncount_add(net, &rbconn->list, tuple, zone);
++			ret = __nf_conncount_add(net, skb, l3num, &rbconn->list);
+ 			spin_unlock_bh(&rbconn->list.list_lock);
+ 			if (ret)
+ 				return 0; /* hotdrop */
+@@ -446,10 +508,10 @@ count_tree(struct net *net,
+ 		}
+ 	}
+ 
+-	if (!tuple)
++	if (!skb)
+ 		return 0;
+ 
+-	return insert_tree(net, data, root, hash, key, tuple, zone);
++	return insert_tree(net, skb, l3num, data, root, hash, key);
+ }
+ 
+ static void tree_gc_worker(struct work_struct *work)
+@@ -511,18 +573,19 @@ static void tree_gc_worker(struct work_struct *work)
+ }
+ 
+ /* Count and return number of conntrack entries in 'net' with particular 'key'.
+- * If 'tuple' is not null, insert it into the accounting data structure.
+- * Call with RCU read lock.
++ * If 'skb' is not null, insert the corresponding tuple into the accounting
++ * data structure. Call with RCU read lock.
+  */
+-unsigned int nf_conncount_count(struct net *net,
+-				struct nf_conncount_data *data,
+-				const u32 *key,
+-				const struct nf_conntrack_tuple *tuple,
+-				const struct nf_conntrack_zone *zone)
++unsigned int nf_conncount_count_skb(struct net *net,
++				    const struct sk_buff *skb,
++				    u16 l3num,
++				    struct nf_conncount_data *data,
++				    const u32 *key)
+ {
+-	return count_tree(net, data, key, tuple, zone);
++	return count_tree(net, skb, l3num, data, key);
++
+ }
+-EXPORT_SYMBOL_GPL(nf_conncount_count);
++EXPORT_SYMBOL_GPL(nf_conncount_count_skb);
+ 
+ struct nf_conncount_data *nf_conncount_init(struct net *net, unsigned int family,
+ 					    unsigned int keylen)
+diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
+index 403fffa14fa3b..d7dbc1ce6bd36 100644
+--- a/net/netfilter/nft_connlimit.c
++++ b/net/netfilter/nft_connlimit.c
+@@ -24,26 +24,11 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
+ 					 const struct nft_pktinfo *pkt,
+ 					 const struct nft_set_ext *ext)
+ {
+-	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+-	const struct nf_conntrack_tuple *tuple_ptr;
+-	struct nf_conntrack_tuple tuple;
+-	enum ip_conntrack_info ctinfo;
+-	const struct nf_conn *ct;
+ 	unsigned int count;
++	int err;
+ 
+-	tuple_ptr = &tuple;
+-
+-	ct = nf_ct_get(pkt->skb, &ctinfo);
+-	if (ct != NULL) {
+-		tuple_ptr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
+-		zone = nf_ct_zone(ct);
+-	} else if (!nf_ct_get_tuplepr(pkt->skb, skb_network_offset(pkt->skb),
+-				      nft_pf(pkt), nft_net(pkt), &tuple)) {
+-		regs->verdict.code = NF_DROP;
+-		return;
+-	}
+-
+-	if (nf_conncount_add(nft_net(pkt), priv->list, tuple_ptr, zone)) {
++	err = nf_conncount_add_skb(nft_net(pkt), pkt->skb, nft_pf(pkt), priv->list);
++	if (err) {
+ 		regs->verdict.code = NF_DROP;
+ 		return;
+ 	}
+diff --git a/net/netfilter/xt_connlimit.c b/net/netfilter/xt_connlimit.c
+index 9943a2bf7a7b8..489f101875584 100644
+--- a/net/netfilter/xt_connlimit.c
++++ b/net/netfilter/xt_connlimit.c
+@@ -31,8 +31,6 @@ connlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ {
+ 	struct net *net = xt_net(par);
+ 	const struct xt_connlimit_info *info = par->matchinfo;
+-	struct nf_conntrack_tuple tuple;
+-	const struct nf_conntrack_tuple *tuple_ptr = &tuple;
+ 	const struct nf_conntrack_zone *zone = &nf_ct_zone_dflt;
+ 	enum ip_conntrack_info ctinfo;
+ 	const struct nf_conn *ct;
+@@ -40,13 +38,8 @@ connlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 	u32 key[5];
+ 
+ 	ct = nf_ct_get(skb, &ctinfo);
+-	if (ct != NULL) {
+-		tuple_ptr = &ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple;
++	if (ct)
+ 		zone = nf_ct_zone(ct);
+-	} else if (!nf_ct_get_tuplepr(skb, skb_network_offset(skb),
+-				      xt_family(par), net, &tuple)) {
+-		goto hotdrop;
+-	}
+ 
+ 	if (xt_family(par) == NFPROTO_IPV6) {
+ 		const struct ipv6hdr *iph = ipv6_hdr(skb);
+@@ -69,10 +62,9 @@ connlimit_mt(const struct sk_buff *skb, struct xt_action_param *par)
+ 		key[1] = zone->id;
+ 	}
+ 
+-	connections = nf_conncount_count(net, info->data, key, tuple_ptr,
+-					 zone);
++	connections = nf_conncount_count_skb(net, skb, xt_family(par), info->data, key);
+ 	if (connections == 0)
+-		/* kmalloc failed, drop it entirely */
++		/* kmalloc failed or tuple couldn't be found, drop it entirely */
+ 		goto hotdrop;
+ 
+ 	return (connections > info->limit) ^ !!(info->flags & XT_CONNLIMIT_INVERT);
+diff --git a/net/openvswitch/conntrack.c b/net/openvswitch/conntrack.c
+index 85a338b681780..4c5480a345c9f 100644
+--- a/net/openvswitch/conntrack.c
++++ b/net/openvswitch/conntrack.c
+@@ -1161,8 +1161,8 @@ static u32 ct_limit_get(const struct ovs_ct_limit_info *info, u16 zone)
+ }
+ 
+ static int ovs_ct_check_limit(struct net *net,
+-			      const struct ovs_conntrack_info *info,
+-			      const struct nf_conntrack_tuple *tuple)
++			      const struct sk_buff *skb,
++			      const struct ovs_conntrack_info *info)
+ {
+ 	struct ovs_net *ovs_net = net_generic(net, ovs_net_id);
+ 	const struct ovs_ct_limit_info *ct_limit_info = ovs_net->ct_limit_info;
+@@ -1175,8 +1175,9 @@ static int ovs_ct_check_limit(struct net *net,
+ 	if (per_zone_limit == OVS_CT_LIMIT_UNLIMITED)
+ 		return 0;
+ 
+-	connections = nf_conncount_count(net, ct_limit_info->data,
+-					 &conncount_key, tuple, &info->zone);
++	connections = nf_conncount_count_skb(net, skb, info->family,
++					     ct_limit_info->data,
++					     &conncount_key);
+ 	if (connections > per_zone_limit)
+ 		return -ENOMEM;
+ 
+@@ -1205,8 +1206,7 @@ static int ovs_ct_commit(struct net *net, struct sw_flow_key *key,
+ #if	IS_ENABLED(CONFIG_NETFILTER_CONNCOUNT)
+ 	if (static_branch_unlikely(&ovs_ct_limit_enabled)) {
+ 		if (!nf_ct_is_confirmed(ct)) {
+-			err = ovs_ct_check_limit(net, info,
+-				&ct->tuplehash[IP_CT_DIR_ORIGINAL].tuple);
++			err = ovs_ct_check_limit(net, skb, info);
+ 			if (err) {
+ 				net_warn_ratelimited("openvswitch: zone: %u "
+ 					"exceeds conntrack limit\n",
+@@ -2058,8 +2058,8 @@ static int __ovs_ct_limit_get_zone_limit(struct net *net,
+ 	zone_limit.limit = limit;
+ 	nf_ct_zone_init(&ct_zone, zone_id, NF_CT_DEFAULT_ZONE_DIR, 0);
+ 
+-	zone_limit.count = nf_conncount_count(net, data, &conncount_key, NULL,
+-					      &ct_zone);
++	zone_limit.count = nf_conncount_count_skb(net, NULL, 0, data,
++						  &conncount_key);
+ 	return nla_put_nohdr(reply, sizeof(zone_limit), &zone_limit);
+ }
+ 
+-- 
+2.51.0
+
 
 
 
