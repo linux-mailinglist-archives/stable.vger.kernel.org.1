@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209408-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208878-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB7BFD26E9E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9D43D26481
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A1A8311D24C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7F77C31BDA25
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EBCC53A4F22;
-	Thu, 15 Jan 2026 17:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8309E3BF2F4;
+	Thu, 15 Jan 2026 17:11:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hx5tPAK7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vuWFnw1K"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AEB6E2F619D;
-	Thu, 15 Jan 2026 17:36:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 48DB93BC4F3;
+	Thu, 15 Jan 2026 17:11:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498611; cv=none; b=k4Dq35Na7S9h2axZwfMNBMuY3lBItfcelH8YnV75daU723BvLV34LWnEin2dkmd+d1pVMUpOsag1cRBAoREvot0GtFX4iuznxpiQXbUSa/fE+4Deq9+K+Aay1/ruZohphZa8qtQR4bzICIa/xy4k0Of9dkjCTXYECW++q6A3vkc=
+	t=1768497100; cv=none; b=qKBnSZvdu6dAigs/CEVtlPQ4ntKBRxq/N204+kuD9RCPTMit3Q2v8Raf7IbY6NHsLZRnjt407XdkKBpN5GNzdwypu6mNBHg3FJqz8aWP4E7/qSM+CYnacW0ywvswBGwWTmH5E2viKcuf0T0QgOvEl8w12wA7I/OFg3THSf9cZ8I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498611; c=relaxed/simple;
-	bh=jtasV+6Ydw2kkVmBbj1Uo3cIretycN7G1LQTNH0Bj0w=;
+	s=arc-20240116; t=1768497100; c=relaxed/simple;
+	bh=zjSqM5/UrEt+NWb0gLyJzfkgAzg4/I7nuW7+SKoAOXk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QjOYeMWYPtXyP9ymlYStErpkJyApRrwT3MTAKjnzEF4m7DmSX6q1vB10El435x5IuCMKuPpXbE30om0kZAGT4azNdWTWo4BWAQS8d/PMYiGD/1D+Fe1DDII9F9gY3KKmmBt02mZpCdPKIdSJHuDEyApJERT/5fl8/6HwH7busW0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hx5tPAK7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05A3FC116D0;
-	Thu, 15 Jan 2026 17:36:50 +0000 (UTC)
+	 MIME-Version; b=IWFOLt/cT+miqVz1hmJbsuAuYDggtU467jKE2eYdWJ8qTSHRnEwvo6voE8fCfKLayn7YnuXVvIDr8Eww8VK/5IgcLxRtyUKPARsce2wRBMW/fbKPLH7TPW4FwTaDAVReErL/93/qhJklwaHPhtGBOFZ6hXn2Ewb3ibc3O8fRi60=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vuWFnw1K; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA3E7C116D0;
+	Thu, 15 Jan 2026 17:11:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498611;
-	bh=jtasV+6Ydw2kkVmBbj1Uo3cIretycN7G1LQTNH0Bj0w=;
+	s=korg; t=1768497100;
+	bh=zjSqM5/UrEt+NWb0gLyJzfkgAzg4/I7nuW7+SKoAOXk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Hx5tPAK7/BQ/VpK/4DRb4bOHkm/S8HasvWl4kKnSeDjvKkhxCVjVgRhQX8wR5akyx
-	 58RfxbEsTwU8R4y2Q6Kn+Ox7ETS/QLtLzd1EFgf6A8+TYRHVtngknq/4mq8rYdWrzt
-	 YjdCzq8Myd9Eu1/Qj+NnKLv6CEb4D6dopOAmtkN0=
+	b=vuWFnw1Kx+JY/DcjqtiHhPZAjnCmw50q1ykxLjkeonUpllw0xh2mQTJiWQAxMvDRV
+	 UGURTj7wqXpBLsBZMO9065QQUvWu0Y2xaRdc7OZPSuO9imRuo+/Y6Ax1/0JoUhBtZQ
+	 HeJlOsjvOxd+4CnN5rJSrbXU+zsUtz2JARTcSwas=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Sylwester Nawrocki <s.nawrocki@samsung.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Elad Nachman <enachman@marvell.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 460/554] media: samsung: exynos4-is: fix potential ABBA deadlock on init
+Subject: [PATCH 6.1 36/72] net: marvell: prestera: fix NULL dereference on devlink_alloc() failure
 Date: Thu, 15 Jan 2026 17:48:46 +0100
-Message-ID: <20260115164302.930516093@linuxfoundation.org>
+Message-ID: <20260115164144.803498970@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Szyprowski <m.szyprowski@samsung.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-[ Upstream commit 17dc8ccd6dd5ffe30aa9b0d36e2af1389344ce2b ]
+[ Upstream commit a428e0da1248c353557970848994f35fd3f005e2 ]
 
-v4l2_device_register_subdev_nodes() must called without taking
-media_dev->graph_mutex to avoid potential AB-BA deadlock on further
-subdevice driver initialization.
+devlink_alloc() may return NULL on allocation failure, but
+prestera_devlink_alloc() unconditionally calls devlink_priv() on
+the returned pointer.
 
-Fixes: fa91f1056f17 ("[media] exynos4-is: Add support for asynchronous subdevices registration")
-Cc: stable@vger.kernel.org
-Signed-off-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Acked-by: Sylwester Nawrocki <s.nawrocki@samsung.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+This leads to a NULL pointer dereference if devlink allocation fails.
+Add a check for a NULL devlink pointer and return NULL early to avoid
+the crash.
+
+Fixes: 34dd1710f5a3 ("net: marvell: prestera: Add basic devlink support")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Acked-by: Elad Nachman <enachman@marvell.com>
+Link: https://patch.msgid.link/20251230052124.897012-1-alok.a.tiwari@oracle.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/exynos4-is/media-dev.c |   10 ++++++----
- 1 file changed, 6 insertions(+), 4 deletions(-)
+ drivers/net/ethernet/marvell/prestera/prestera_devlink.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/media/platform/exynos4-is/media-dev.c
-+++ b/drivers/media/platform/exynos4-is/media-dev.c
-@@ -1411,12 +1411,14 @@ static int subdev_notifier_complete(stru
- 	mutex_lock(&fmd->media_dev.graph_mutex);
+diff --git a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
+index 06279cd6da674..8f0ae62d4a893 100644
+--- a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
++++ b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
+@@ -392,6 +392,8 @@ struct prestera_switch *prestera_devlink_alloc(struct prestera_device *dev)
  
- 	ret = fimc_md_create_links(fmd);
--	if (ret < 0)
--		goto unlock;
-+	if (ret < 0) {
-+		mutex_unlock(&fmd->media_dev.graph_mutex);
-+		return ret;
-+	}
+ 	dl = devlink_alloc(&prestera_dl_ops, sizeof(struct prestera_switch),
+ 			   dev->dev);
++	if (!dl)
++		return NULL;
  
--	ret = v4l2_device_register_subdev_nodes(&fmd->v4l2_dev);
--unlock:
- 	mutex_unlock(&fmd->media_dev.graph_mutex);
-+
-+	ret = v4l2_device_register_subdev_nodes(&fmd->v4l2_dev);
- 	if (ret < 0)
- 		return ret;
- 
+ 	return devlink_priv(dl);
+ }
+-- 
+2.51.0
+
 
 
 
