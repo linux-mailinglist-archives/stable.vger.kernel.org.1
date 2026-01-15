@@ -1,116 +1,138 @@
-Return-Path: <stable+bounces-208387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208388-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id EB98FD21A1A
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 23:40:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D1B1D21DE7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:36:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8A38305744C
-	for <lists+stable@lfdr.de>; Wed, 14 Jan 2026 22:35:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13AE030382A6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 00:35:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65E853B8BB0;
-	Wed, 14 Jan 2026 22:35:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73F6913D51E;
+	Thu, 15 Jan 2026 00:35:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b="eMXZ2HAb"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="N8aevUHY"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pf1-f173.google.com (mail-pf1-f173.google.com [209.85.210.173])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-170.mta0.migadu.com (out-170.mta0.migadu.com [91.218.175.170])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7A653B5313
-	for <stable@vger.kernel.org>; Wed, 14 Jan 2026 22:34:54 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.210.173
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7219C56B81;
+	Thu, 15 Jan 2026 00:35:49 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.170
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768430102; cv=none; b=utuLplBh1xm2qTZpSmTwfDJJbRcKrj46z7KwD307FlBlhI8a6zoagIK+dZLaDLYBtVSx021I1PwTEkYH6z0Fa8elgZifyaa1+WY2BINU48YuqWqajZhYE0bOc5gcW8p7h3ZuAFaJJsFRWNGcmA8fnNEQz5Pdr3emray7KSYOZUI=
+	t=1768437351; cv=none; b=Ij7J7pu+kfHAQr8Pw5yIXikjfGrlrmx3KTQnomciIgAEpY2T+UobC4JUqisMNEgnAIpiazyMNoQWMyL/YNyBQdaVSMJePZqweBK74+HDAMj6KlTK7msXr4PHuqN3iTU1e4eCuad2Yu1EXPV92mdAp7sYO+xbgWG5fkbl8K+YIoA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768430102; c=relaxed/simple;
-	bh=EYJQkC3et4NWoDLKxXE9/Y3cP8J+4A1mfoi2Yh3t7Ao=;
-	h=From:To:Cc:In-Reply-To:References:Subject:Message-Id:Date:
-	 MIME-Version:Content-Type; b=rZaymlbWYZj7QRqhPdKVXFl67sdZdKgYHLlU6fdR1urJ87FwWH2ksc35VMdIxDtCrW4sj4StNrTV/ykO4Wrk93nNAHy7UHXYj5CgCEUdr0J8Q3Uwpkt5iMBhMxcpN92oAonf14jfx8z7tuZkfO2Kgi0X3ILJt5cSgkKQSds5xiY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com; spf=pass smtp.mailfrom=baylibre.com; dkim=pass (2048-bit key) header.d=baylibre-com.20230601.gappssmtp.com header.i=@baylibre-com.20230601.gappssmtp.com header.b=eMXZ2HAb; arc=none smtp.client-ip=209.85.210.173
-Authentication-Results: smtp.subspace.kernel.org; dmarc=none (p=none dis=none) header.from=baylibre.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=baylibre.com
-Received: by mail-pf1-f173.google.com with SMTP id d2e1a72fcca58-7f89d0b37f0so726222b3a.0
-        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 14:34:53 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=baylibre-com.20230601.gappssmtp.com; s=20230601; t=1768430090; x=1769034890; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=F13Qm7TgxMiPviQmHt+xP5v+NAbLWrPExXjm23CEPGM=;
-        b=eMXZ2HAbGDCWRtaSIFj+oHEoLe0dLjMadbchS19jmafxlj79Ju/HKkLpPcHQJHciI0
-         R9LrDaNmtYx/Asi8RIUBDZDefGRLdnjVzSvH1vJZJuYSQXg49GSunCyKd58oer1WBR4E
-         dsAdK3pUCot/k385lMU4tkx4a1zBN+bIr+oeAoqSctD/k4+pjUrh8OJS2mLl1nc1IK6Q
-         9+T3x3ikFfAxQcVqXjX4+E349bZnvtoaW+zGnMhhd3IPdlNpK61oqpqCJcmb0WLvTr8j
-         FYUmoxBvG3nh8zqvsb1AHXDqYvN9qnf2SQ0ltVbTEC/i3IhOE1G4fO9DN0W8JICSY1/U
-         u5fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768430090; x=1769034890;
-        h=content-transfer-encoding:mime-version:date:message-id:subject
-         :references:in-reply-to:cc:to:from:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=F13Qm7TgxMiPviQmHt+xP5v+NAbLWrPExXjm23CEPGM=;
-        b=gOj2vd8jRGTgRz9+BACnBGagosvXa5HFOXBQ1NzjG8FQpFCa9QIs8ALHVbU5L85AkL
-         AxgAvU3G9dGUKfuN5noGHtLYfoEyG97U8+AleedgQ7f/CyPzuXS0aTAIUoKbeQT0dSU3
-         pipeBL3SFh0Kkr1bMSjrBvUum6kuCwBrtQpnUX4w1RjP2aKipbgNjtqYMayK7UnSqtf3
-         THvK92VG7Kw5q9pJSTyUavOW5qs1YU1FB/WaKF14+TRKaN/o+rQoU1D1NZoHUyn5oemT
-         aLjN4kxLXHfvHWLg/6VF+jRUnpmHGzNOIKUwV3Pm5gJD3CdsjaCAobioGaiPp/adOMAz
-         tCIQ==
-X-Forwarded-Encrypted: i=1; AJvYcCW4qkStG8+9nXmHsG9H4w7z5TvoKmtza9ofU9qA7gahejUZfdEOTFRHzRQw5RIARitMMNdGoR4=@vger.kernel.org
-X-Gm-Message-State: AOJu0YybLzWIqYYXNBPmywxqKSMEMuEJPGs9R08bjH+GkL2wXXF4MIXS
-	0riaxisz2HgbgkI7Tvdn5DV5x17GEqPUEdwAgiqMZV2yp5SPO7+3MwT8yYc/HCHC6h0=
-X-Gm-Gg: AY/fxX5nhc/zPzLuJoRfb0y1FzOOAqmAAzyNAMqu9d2soim/flXshu2slw3bfgKgIs9
-	0Cv2xAPLIUwhE6XQv615ovWY7r2ZEkOeENzwQqdvxFNeOnIKO+7CUSt6mIRs3ZKdKk5vRxVndzJ
-	6svQqplilieCwYwtl8/FDhkoiva+3NavxzOEq9yiCFfVhQ4ysAl8g3xh3Nzjk7cEu3LZaRvcVpS
-	17wtB5uHswkWeLNIi1C2u8AHRLzQLucmnU7UvBXWwqBHwn7NKKNmNcELGG56yLVDQCSTT8WpRq3
-	KNeKex+heTuvGrpc3MtAJlLLFLhsi3MZ4/QTYQdjbeXeXczL+bNHK17cqgPZ/+iGoXMKrYDu8wm
-	U+twgFa/liurpQQLgNXwcz2kX2R1v5DlrVDx0NaWcXiqOuWTI1Dowu5XmhHKMKHq+oJytDeB0jb
-	Z6Egav4IFCshngvkON/mg=
-X-Received: by 2002:a05:6a00:810:b0:7e8:3fcb:bc4a with SMTP id d2e1a72fcca58-81f8f10b08fmr867741b3a.31.1768430090366;
-        Wed, 14 Jan 2026 14:34:50 -0800 (PST)
-Received: from localhost ([71.212.208.158])
-        by smtp.gmail.com with ESMTPSA id d2e1a72fcca58-81f8e64b7b8sm529270b3a.33.2026.01.14.14.34.49
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 14 Jan 2026 14:34:49 -0800 (PST)
-From: Kevin Hilman <khilman@baylibre.com>
-To: Aaro Koskinen <aaro.koskinen@iki.fi>, 
- Andreas Kemnade <andreas@kemnade.info>, Roger Quadros <rogerq@kernel.org>, 
- Tony Lindgren <tony@atomide.com>, Johan Hovold <johan@kernel.org>
-Cc: linux-omap@vger.kernel.org, linux-kernel@vger.kernel.org, 
- stable@vger.kernel.org
-In-Reply-To: <20251219110119.23507-1-johan@kernel.org>
-References: <20251219110119.23507-1-johan@kernel.org>
-Subject: Re: [PATCH] bus: omap-ocp2scp: fix OF populate on driver rebind
-Message-Id: <176843008938.3580410.12257045683463470692.b4-ty@baylibre.com>
-Date: Wed, 14 Jan 2026 14:34:49 -0800
+	s=arc-20240116; t=1768437351; c=relaxed/simple;
+	bh=hV/I1amt69oPCU6aay0nCIv9p4OreJli9oi11PddXe8=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=U87yLpQlWjKmO3Cc+U1e2hshV5Y+s68nkdnUKtIxUSw9828FAQa7OCRECNbFIqnzTUO44PlkBf+IXSBlzruATnnfQX3RPH9nzoRZuNka3VWXfvqDNsIX4ERxTZ1Bj9PHRHsNVlgCJpjaFRKZXiG75XcVAYuIQnRnUgZNUHuPH7k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=N8aevUHY; arc=none smtp.client-ip=91.218.175.170
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+Date: Thu, 15 Jan 2026 00:35:33 +0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768437337;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+	 in-reply-to:in-reply-to:references:references;
+	bh=TUJ2AGd/KuMhjjY9mP2rbYed6lZnsOVmk5YpNz11QZ0=;
+	b=N8aevUHY/lcHDX3YLe72XG0bqFGKINjWc5j4Gh0H76maMTTCj8dqyfUwj6ee3beW/O9Ed+
+	MoB99USzUSNf/QGwFo4u4HvTlmGrxsnEnfVz/Fy+RwQI83Y4q3NYWaBhCHdEt4WC73YnwK
+	g4if7sQEtYKfRyho59tlRMU0ZvoXqrI=
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, 
+	linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
+Message-ID: <6cozacewv4sop77ilrqnervzpifinxki2ykef55awan2ka5jdf@sqyj7jed3qii>
+References: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
+ <3rdy3n6phleyz2eltr5fkbsavlpfncgrnee7kep2jkh2air66c@euczg54kpt47>
+ <aUBjmHBHx1jsIcWJ@google.com>
+ <rlwgjee2tjf26jyvdwipdwejqgsira63nvn2r3zczehz3argi4@uarbt5af3wv2>
+ <aWgTjoAXdRrA99Dn@google.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Mailer: b4 0.15-dev-a6db3
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <aWgTjoAXdRrA99Dn@google.com>
+X-Migadu-Flow: FLOW_OUT
 
-
-On Fri, 19 Dec 2025 12:01:19 +0100, Johan Hovold wrote:
-> Since commit c6e126de43e7 ("of: Keep track of populated platform
-> devices") child devices will not be created by of_platform_populate()
-> if the devices had previously been deregistered individually so that the
-> OF_POPULATED flag is still set in the corresponding OF nodes.
+On Wed, Jan 14, 2026 at 02:07:10PM -0800, Sean Christopherson wrote:
+> On Mon, Dec 15, 2025, Yosry Ahmed wrote:
+> > On Mon, Dec 15, 2025 at 11:38:00AM -0800, Sean Christopherson wrote:
+> > > On Mon, Dec 15, 2025, Yosry Ahmed wrote:
+> > > > On Mon, Dec 15, 2025 at 07:26:54PM +0000, Yosry Ahmed wrote:
+> > > > > svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
+> > > > > already set correctly. This results in force_msr_bitmap_recalc always
+> > > > > being set to true on every nested transition, essentially undoing the
+> > > > > hyperv optimization in nested_svm_merge_msrpm().
+> > > > > 
+> > > > > Fix it by keeping track of whether LBR MSRs are intercepted or not and
+> > > > > only doing the update if needed, similar to x2avic_msrs_intercepted.
+> > > > > 
+> > > > > Avoid using svm_test_msr_bitmap_*() to check the status of the
+> > > > > intercepts, as an arbitrary MSR will need to be chosen as a
+> > > > > representative of all LBR MSRs, and this could theoretically break if
+> > > > > some of the MSRs intercepts are handled differently from the rest.
+> > > > > 
+> > > > > Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
+> > > > > only recently introduced with no direct alternatives in older kernels.
+> > > > > 
+> > > > > Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+> > > > 
+> > > > Sigh.. I had this patch file in my working directory and it was sent by
+> > > > mistake with the series, as the cover letter nonetheless. Sorry about
+> > > > that. Let me know if I should resend.
+> > > 
+> > > Eh, it's fine for now.  The important part is clarfying that this patch should
+> > > be ignored, which you've already done.
+> > 
+> > FWIW that patch is already in Linus's tree so even if someone applies
+> > it, it should be fine.
 > 
-> Switch to using of_platform_depopulate() instead of open coding so that
-> the child devices are created if the driver is rebound.
+> Narrator: it wasn't fine.
 > 
-> [...]
+> Please resend this series.  The base-commit is garbage because your working tree
+> was polluted with non-public patches, I can't quickly figure out what your "real"
+> base was, and I don't have the bandwidth to manually work through the mess.
+> 
+> In the future, please, please don't post patches against a non-public base.  It
+> adds a lot of friction on my end, and your series are quite literally the only
+> ones I've had problems with in the last ~6 months.
 
-Applied, thanks!
+Sorry this keeps happening, I honestly don't know how it happened. In my
+local repo the base commit is supposedly from your tree:
 
-[1/1] bus: omap-ocp2scp: fix OF populate on driver rebind
-      commit: 5eb63e9bb65d88abde647ced50fe6ad40c11de1a
+	$ git show 58e10b63777d0aebee2cf4e6c67e1a83e7edbe0f
 
-Best regards,
--- 
-Kevin Hilman <khilman@baylibre.com>
+	commit 58e10b63777d0aebee2cf4e6c67e1a83e7edbe0f
+	Merge: e0c26d47def7 297631388309
+	Author: Sean Christopherson <seanjc@google.com>
+	Date:   Mon Dec 8 14:58:37 2025 +0000
 
+	    Merge branch 'fixes'
+
+	    * fixes:
+	      KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
+	      KVM: VMX: Update SVI during runtime APICv activation
+	      KVM: nSVM: Set exit_code_hi to -1 when synthesizing SVM_EXIT_ERR (failed VMRUN)
+	      KVM: nSVM: Clear exit_code_hi in VMCB when synthesizing nested VM-Exits
+	      KVM: Harden and prepare for modifying existing guest_memfd memslots
+	      KVM: Disallow toggling KVM_MEM_GUEST_MEMFD on an existing memslot
+	      KVM: selftests: Add a CPUID testcase for KVM_SET_CPUID2 with runtime updates
+	      KVM: x86: Apply runtime updates to current CPUID during KVM_SET_CPUID{,2}
+	      KVM: selftests: Add missing "break" in rseq_test's param parsing
+
+But then I cannot actually find it in your tree. Perhaps I rebased the
+baseline patches accidentally :/
+
+Anyway, I rebased and retested on top of kvm-x86/next and will resend
+shortly.
 
