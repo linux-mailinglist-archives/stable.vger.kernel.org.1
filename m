@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-208969-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208976-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4DE75D2690F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:25 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CE7FD26581
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:24:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 409923162724
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:16:40 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 75A8A304C1E6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:16:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F983BF314;
-	Thu, 15 Jan 2026 17:16:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10ABC2F619D;
+	Thu, 15 Jan 2026 17:16:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTsIUEAO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hx9ItUYu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11C1258EC2;
-	Thu, 15 Jan 2026 17:16:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BECFC2D239B;
+	Thu, 15 Jan 2026 17:16:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497362; cv=none; b=sj8GF5nrCP8efniZvNd6Qim0Gh8A9QK8GPvKxnHjcDklpuK+jITNdzgO8NPVqlinK3A1E6lV8qedLlF/xpVpQxNsVcFo2mcVtzV0XuOCD5f9P2zPEWpYypKv7rV+XV/abVw9YiAV7TLyLeDSbSqpXhbCYygYlUq6RsEV6seD71I=
+	t=1768497381; cv=none; b=qZnn5M5MCwEmwXb2Z4DQUuVPcvmjT4CZSAQ7zgHlOqBWZveSJKAq8DHJVbHPbu+sfqR5LsyORnI6oeRJjQNF11/kN9CYj8yd+srHHUixbsZkpMmEkRA3tTXDs4dgvawrENpUEzprPn7BvlieAsifgs6+Nsy4oY9VAjQyr/N27AE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497362; c=relaxed/simple;
-	bh=uHXSY8z+uj1jV+bZIClCmvKcjc+hea+yK3QSg8Qijtc=;
+	s=arc-20240116; t=1768497381; c=relaxed/simple;
+	bh=kfNWi8fAdAgQ2/NrWhNaAxKpny/V+RJC9/HvVS6YrFc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=WqjCf2jy3NaHvk8zw8zuHtJOR+gA5IIyrluCEZiuFosbBidOSU78SMpq5+8uiuK4f0cvM3fP8n+L9Jlbx4WvriowIZeNZQNsvmy0kxHs3CgLrvgqmohqWCP1EwCdwkxKcor4I7K5/LNayjYkCUzx6bV7E4OjppMnr313r44pZbI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTsIUEAO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E16BC116D0;
-	Thu, 15 Jan 2026 17:16:01 +0000 (UTC)
+	 MIME-Version; b=oiGsLySA6GS3Z9fjYXJ6G6PwQptwvBKG6UFOiNzJKqg0inOmBPJxrs7WVSLQFEAUzuAkwN8K6iFPSe7SSyIDtQbJxZvwNLX7GHRqJMErZp2PRXgXaEwFQG7+SgRY2HQiTq3uip+apD/+4dLOvMqru7W8GAL7jrV0DTK4SJVRdrE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hx9ItUYu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 48CDCC116D0;
+	Thu, 15 Jan 2026 17:16:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497361;
-	bh=uHXSY8z+uj1jV+bZIClCmvKcjc+hea+yK3QSg8Qijtc=;
+	s=korg; t=1768497381;
+	bh=kfNWi8fAdAgQ2/NrWhNaAxKpny/V+RJC9/HvVS6YrFc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KTsIUEAObHkfjI/i/ZL82iJ+bCPiJGZY1QpxHKfjTrxq+1Rjbolykg31FespXdvu7
-	 jHJSr0pjv+oZh+NvdTYupMdMyW+PQBO5Agnx7t2uwauycLmFTdwDP41JluU6THym9z
-	 iORIfihLfFvH9E+z+aDs8yyhc/VgfnZgnDaEkvNE=
+	b=hx9ItUYuzWHGBwZjmb7EaDiaF+hCaipxe3AG04TotqD6tvceOv/wiBkTz960pvs7p
+	 MlWm5xHWv7jLDpP3+MOtjy1fIzfEqnYeAgr5J0u4MzU53ASMnpMGrLD1LoASN4OrQd
+	 dOpfoaLnC5RX7GcuX4hvd5hX0ZI6kaygVtNIGrgw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ston Jia <ston.jia@outlook.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Naoki Ueki <naoki25519@gmail.com>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/554] platform/x86: huawei-wmi: add keys for HONOR models
-Date: Thu, 15 Jan 2026 17:41:33 +0100
-Message-ID: <20260115164247.223192308@linuxfoundation.org>
+Subject: [PATCH 5.15 028/554] HID: elecom: Add support for ELECOM M-XT3URBK (018F)
+Date: Thu, 15 Jan 2026 17:41:34 +0100
+Message-ID: <20260115164247.259291493@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -58,49 +58,84 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jia Ston <ston.jia@outlook.com>
+From: Naoki Ueki <naoki25519@gmail.com>
 
-[ Upstream commit 5c72329716d0858621021193330594d5d26bf44d ]
+[ Upstream commit cdcbb8e8d10f656642380ee13516290437b52b36 ]
 
-HONOR MagicBook X16/X14 models produced in 2025 cannot use the Print
-Screen and YOYO keys properly, with the system reporting them as
-unknown key presses (codes: 0x028b and 0x028e).
+The ELECOM M-XT3URBK trackball has an additional device ID (0x018F), which
+shares the same report descriptor as the existing device (0x00FB). However,
+the driver does not currently recognize this new ID, resulting in only five
+buttons being functional.
 
-To resolve this, a key_entry is added for both the HONOR Print Screen
-key and the HONOR YOYO key, ensuring they function correctly on these
-models.
+This patch adds the new device ID so that all six buttons work properly.
 
-Signed-off-by: Ston Jia <ston.jia@outlook.com>
-Link: https://patch.msgid.link/20251029051804.220111-1-ston.jia@outlook.com
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Naoki Ueki <naoki25519@gmail.com>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/huawei-wmi.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/hid/hid-elecom.c | 6 ++++--
+ drivers/hid/hid-ids.h    | 3 ++-
+ drivers/hid/hid-quirks.c | 3 ++-
+ 3 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
-index 23ebd0c046e16..da9f80bde794f 100644
---- a/drivers/platform/x86/huawei-wmi.c
-+++ b/drivers/platform/x86/huawei-wmi.c
-@@ -82,6 +82,10 @@ static const struct key_entry huawei_wmi_keymap[] = {
- 	{ KE_KEY,    0x289, { KEY_WLAN } },
- 	// Huawei |M| key
- 	{ KE_KEY,    0x28a, { KEY_CONFIG } },
-+	// HONOR YOYO key
-+	{ KE_KEY,    0x28b, { KEY_NOTIFICATION_CENTER } },
-+	// HONOR print screen
-+	{ KE_KEY,    0x28e, { KEY_PRINT } },
- 	// Keyboard backlit
- 	{ KE_IGNORE, 0x293, { KEY_KBDILLUMTOGGLE } },
- 	{ KE_IGNORE, 0x294, { KEY_KBDILLUMUP } },
+diff --git a/drivers/hid/hid-elecom.c b/drivers/hid/hid-elecom.c
+index 4fa45ee77503b..f76fec79e8903 100644
+--- a/drivers/hid/hid-elecom.c
++++ b/drivers/hid/hid-elecom.c
+@@ -75,7 +75,8 @@ static __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ 		 */
+ 		mouse_button_fixup(hdev, rdesc, *rsize, 20, 28, 22, 14, 8);
+ 		break;
+-	case USB_DEVICE_ID_ELECOM_M_XT3URBK:
++	case USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB:
++	case USB_DEVICE_ID_ELECOM_M_XT3URBK_018F:
+ 	case USB_DEVICE_ID_ELECOM_M_XT3DRBK:
+ 	case USB_DEVICE_ID_ELECOM_M_XT4DRBK:
+ 		/*
+@@ -117,7 +118,8 @@ static __u8 *elecom_report_fixup(struct hid_device *hdev, __u8 *rdesc,
+ static const struct hid_device_id elecom_devices[] = {
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index d897d48404d21..b68293a505518 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -415,7 +415,8 @@
+ #define USB_VENDOR_ID_ELECOM		0x056e
+ #define USB_DEVICE_ID_ELECOM_BM084	0x0061
+ #define USB_DEVICE_ID_ELECOM_M_XGL20DLBK	0x00e6
+-#define USB_DEVICE_ID_ELECOM_M_XT3URBK	0x00fb
++#define USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB	0x00fb
++#define USB_DEVICE_ID_ELECOM_M_XT3URBK_018F	0x018f
+ #define USB_DEVICE_ID_ELECOM_M_XT3DRBK	0x00fc
+ #define USB_DEVICE_ID_ELECOM_M_XT4DRBK	0x00fd
+ #define USB_DEVICE_ID_ELECOM_M_DT1URBK	0x00fe
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index c07c7dc06d914..4b645db5cd4bc 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -382,7 +382,8 @@ static const struct hid_device_id hid_have_special_driver[] = {
+ #if IS_ENABLED(CONFIG_HID_ELECOM)
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_BM084) },
+ 	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XGL20DLBK) },
+-	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_00FB) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3URBK_018F) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT3DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_XT4DRBK) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_ELECOM, USB_DEVICE_ID_ELECOM_M_DT1URBK) },
 -- 
 2.51.0
 
