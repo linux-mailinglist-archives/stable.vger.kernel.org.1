@@ -1,57 +1,57 @@
-Return-Path: <stable+bounces-209379-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208757-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0359AD2716E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:05:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id ED220D26254
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 167403027099
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5BA203030D15
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013263BC4ED;
-	Thu, 15 Jan 2026 17:35:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662943C0091;
+	Thu, 15 Jan 2026 17:05:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT6XCxwN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FSndsRaB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88A830214B;
-	Thu, 15 Jan 2026 17:35:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2778C3C008A;
+	Thu, 15 Jan 2026 17:05:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498527; cv=none; b=VSyDf+OCj99Xlv/H8NPYBtO13D91kHduAtt6ild5CXdftR6ctYHzi8We+Foe5QHbcwJdo657e3K6oS95Q0k19HWTkexXlHoLvdp9IdniuV65/EvPRDfe7jNGIz+uTLYzKKGOPbiEYLG5/eqkDIQgvX04qD0XzIoMV2304NQeFh8=
+	t=1768496757; cv=none; b=XpCXjF/LtwPfMbzHXfU+hSWz0/wM+x5rkBm51X1JSEY+eXB+xo/1K8GHywdjoJ70XCMZw+fOtaTE2hCOWIBqhX8+bfFPz3OssUDMvG1IaosrOT+4EC1iQi3PyrT5mn3eJ1AozojjhAhKvEC+QEfLsEa98etJDqtJnYtwAxPAp7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498527; c=relaxed/simple;
-	bh=8aXiiVN62Vf2q1Qg1KwMTTQgKkMVLVHECR3Z5NmbhTQ=;
+	s=arc-20240116; t=1768496757; c=relaxed/simple;
+	bh=xlsFkmIequumzM1aVcg93vZgYtnpM53vwiGpOFsif3c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaZzwD6mh0c3J1EH6KAc7Fa54fauIev38ZoXWZmBmEEUyURKQQLo1i1v1nWkRbHbkoJ/A+9zF2Qx1P7Nr+hikMtGRjPY8FUeYxgStdGbmUyMCGnWe6HQTvhgRDpt3Hxkdei25QH4Vv7HyqyA7IsBDlskBONOdXC+8UvgAYTWl6k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT6XCxwN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D8AC116D0;
-	Thu, 15 Jan 2026 17:35:27 +0000 (UTC)
+	 MIME-Version; b=HeNJl+7yqvbYZkN78da8ylgIcyzmGfAxItN/YuMZCU7l+v4xu9DnfKtqIL+unkPxEcdEW2PnCBrCm2FrzlvadnOrN0PQwyp17zfrI1cO7Pb1WAL/gDluUOjOtaUzlU7OJBU0cd60dxvSYBbuPbEaC4wIoZIbfXJ/o/5dga3SmYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FSndsRaB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 749B6C116D0;
+	Thu, 15 Jan 2026 17:05:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498527;
-	bh=8aXiiVN62Vf2q1Qg1KwMTTQgKkMVLVHECR3Z5NmbhTQ=;
+	s=korg; t=1768496756;
+	bh=xlsFkmIequumzM1aVcg93vZgYtnpM53vwiGpOFsif3c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IT6XCxwNXIeqZc+NO665NuWTbjekxg+Vjk0b7X2ZDu4iGOtMvLZpDAgNVFvQns+eF
-	 Pg3Z3VlvI8NQxZNXjD5PLZjGGI/pwKTtrRWuabYm8AGqcErMCCQ2orheZFhRs5jByh
-	 /uczAQdTPeVQVgZVk9fSqLzC6aI10bK2p5N8dnCQ=
+	b=FSndsRaBTqajQbSCp3CVQrVbDJRZG/7ko5l1VNpSrreLB335PDf6rhJYAFdPbnhqY
+	 OhoeKp+vTU472t89D4+Ab1TR+yBIl6z4oEBMSPgAiYW4hb+IzMvbO6/oxpnJDISurt
+	 I0dE8Rq/6/1/1YumFyYqDsXhFdFyyDZhQPXxbCsE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <haoxiang_li2024@163.com>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Tzung-Bi Shih <tzungbi@kernel.org>,
-	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Swapnil Patel <swapnil.patel@amd.com>,
+	Charlene Liu <Charlene.Liu@amd.com>,
+	Chenyu Chen <chen-yu.chen@amd.com>,
+	Daniel Wheeler <daniel.wheeler@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 456/554] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
+Subject: [PATCH 6.12 107/119] drm/amd/display: Fix DP no audio issue
 Date: Thu, 15 Jan 2026 17:48:42 +0100
-Message-ID: <20260115164302.782733592@linuxfoundation.org>
+Message-ID: <20260115164155.814085598@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,49 +63,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Charlene Liu <Charlene.Liu@amd.com>
 
-[ Upstream commit cdd0f118ef87db8a664fb5ea366fd1766d2df1cd ]
+[ Upstream commit 3886b198bd6e49c801fe9552fcfbfc387a49fbbc ]
 
-vpu_get_plat_device() increases the reference count of the returned
-platform device. However, when devm_kzalloc() fails, the reference
-is not released, causing a reference leak.
+[why]
+need to enable APG_CLOCK_ENABLE enable first
+also need to wake up az from D3 before access az block
 
-Fix this by calling put_device() on fw_pdev->dev before returning
-on the error path.
-
-Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-[ adapted file path from common/ subdirectory and adjusted devm_kzalloc target from plat_dev->dev to dev->plat_dev->dev ]
+Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
+Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
+Signed-off-by: Chenyu Chen <chen-yu.chen@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit bf5e396957acafd46003318965500914d5f4edfa)
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c
-+++ b/drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c
-@@ -94,8 +94,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_
- 	vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_handler, dev, rst_id);
+diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+index 13e7c253ad697..31c7dfff27cbb 100644
+--- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
++++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
+@@ -1096,13 +1096,13 @@ void dce110_enable_audio_stream(struct pipe_ctx *pipe_ctx)
+ 			if (dc->current_state->res_ctx.pipe_ctx[i].stream_res.audio != NULL)
+ 				num_audio++;
+ 		}
++		if (num_audio >= 1 && clk_mgr->funcs->enable_pme_wa) {
++			/*wake AZ from D3 first before access az endpoint*/
++			clk_mgr->funcs->enable_pme_wa(clk_mgr);
++		}
  
- 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
--	if (!fw)
-+	if (!fw) {
-+		put_device(&fw_pdev->dev);
- 		return ERR_PTR(-ENOMEM);
-+	}
- 	fw->type = VPU;
- 	fw->ops = &mtk_vcodec_vpu_msg;
- 	fw->pdev = fw_pdev;
+ 		pipe_ctx->stream_res.audio->funcs->az_enable(pipe_ctx->stream_res.audio);
+ 
+-		if (num_audio >= 1 && clk_mgr->funcs->enable_pme_wa)
+-			/*this is the first audio. apply the PME w/a in order to wake AZ from D3*/
+-			clk_mgr->funcs->enable_pme_wa(clk_mgr);
+-
+ 		link_hwss->enable_audio_packet(pipe_ctx);
+ 
+ 		if (pipe_ctx->stream_res.audio)
+-- 
+2.51.0
+
 
 
 
