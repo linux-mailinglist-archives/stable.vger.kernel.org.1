@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209097-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209520-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2A5A8D27250
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:11 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2CD07D27A6A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 588483141394
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:11 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id C63D130F0637
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233C2C027B;
-	Thu, 15 Jan 2026 17:22:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E23D4A3C;
+	Thu, 15 Jan 2026 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsAXR6q7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aRfSMX8t"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62713A7F5D;
-	Thu, 15 Jan 2026 17:22:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FBF12D7DED;
+	Thu, 15 Jan 2026 17:42:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497724; cv=none; b=ktX7Y4KSQUaV/x8sVD53dbyLMbhVmTD+72BaHr6lPXGXpx4z+/XzSPos19PxK8zBM/2XVSKh3kDywBtbDKEYhVVkkhDOmVccxskXl8m41rwL/uE1HkKaXIwrEbKJ1GmMfg/RKfrO+xjshSEOG3NdB/GUKDf/Ok13aoeNnYXx1qk=
+	t=1768498930; cv=none; b=FIa7JVQFfO5NN8I2q93y3lvQUoT4l/p1YdJCjS855LHmUUTv5bXbY5G7qJcDtgePUTLrQLvURWGRcM6WsJ7MrOJof/8rP9aHYmZK9g3oU1dfN5GiO/Cb6CQSAR+q1EAhp9K113pXXexphnkWRxPRWy0HmNGjMSsc7xR0Hfum9PI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497724; c=relaxed/simple;
-	bh=+jPPXM2kxIM38HZwMu7LCI1BFtCYhk8flwim74U4RqE=;
+	s=arc-20240116; t=1768498930; c=relaxed/simple;
+	bh=vls6bn0BebndsqCnsUA+5bSg6Njri4NJ3slRJz21Qo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=l6jCfyuXHsmeEdztHGsMxHYea5yuCNuShrQXqhjPH78lgKcl87j82YyE8WCj3+g5cgyJGetuKRAYg8mh7bzQS43YuLu1QQIlsaU9+IvqXhDiG0AN4Lgafo05r1gHUUZURf8CmrC8iq+eVv+Ol1wF5nHguMvPreGac7o42bPgDig=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsAXR6q7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63209C16AAE;
-	Thu, 15 Jan 2026 17:22:04 +0000 (UTC)
+	 MIME-Version; b=AxVKzVlnyOqLaPTWwpUXOquxW3YGjQ2PwNKZXWL3EP7Pd7HLHtxnPQJsPcll+LgJnNerctcqcw+yzYJibxVU+J8XWDBNU7EMbBblib3zzOZuUQkuOgFzwUhPdhNoHKmNV3HYXboq2tPRy8RUiNpu8SxjoGwmCJvwwWfrGwpzldQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aRfSMX8t; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C088BC116D0;
+	Thu, 15 Jan 2026 17:42:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497724;
-	bh=+jPPXM2kxIM38HZwMu7LCI1BFtCYhk8flwim74U4RqE=;
+	s=korg; t=1768498930;
+	bh=vls6bn0BebndsqCnsUA+5bSg6Njri4NJ3slRJz21Qo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qsAXR6q7/DxTnIr00mfxU+saEvRfkDCxvv8p9i6FSiJhSLs9aE08l6j46ZT2IARL6
-	 51YnuQDQHJ8LHl2TveltREV4RlcjtZq3lxoN25eD00MdEO3wzwHXSlOdZXwZy2/iAY
-	 ddQLWhhY6dP9p5SaoTTYkAaedS5V+T+gimXPxrlg=
+	b=aRfSMX8tDDY6uiNFv9ERNC5Xm6PFXf+nhWMkdvy/XGTkCk2zffBd769KVPZotUI9I
+	 oBS0EkhEu5m2Ge3VBi1fSBfpE8D6PDyrMIc0FoEN8h8e1l5upkgOsscoTmEl1EWdMk
+	 cQmyyOJO+XMl+gYxTjV/4boTdzuDz9552YTE2B1c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@intel.com>,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Antonio Borneo <antonio.borneo@foss.st.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 182/554] fs/nls: Fix inconsistency between utf8_to_utf32() and utf32_to_utf8()
+Subject: [PATCH 5.10 047/451] pinctrl: stm32: fix hwspinlock resource leak in probe function
 Date: Thu, 15 Jan 2026 17:44:08 +0100
-Message-ID: <20260115164252.851866942@linuxfoundation.org>
+Message-ID: <20260115164232.600360166@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,66 +59,47 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit c36f9d7b2869a003a2f7d6ff2c6bac9e62fd7d68 ]
+[ Upstream commit 002679f79ed605e543fbace465557317cd307c9a ]
 
-After commit 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion"),
-the return values of utf8_to_utf32() and utf32_to_utf8() are
-inconsistent when encountering an error: utf8_to_utf32() returns -1,
-while utf32_to_utf8() returns errno codes. Fix this inconsistency
-by modifying utf8_to_utf32() to return errno codes as well.
+In stm32_pctl_probe(), hwspin_lock_request_specific() is called to
+request a hwspinlock, but the acquired lock is not freed on multiple
+error paths after this call. This causes resource leakage when the
+function fails to initialize properly.
 
-Fixes: 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion")
-Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251129111535.8984-1-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Use devm_hwspin_lock_request_specific() instead of
+hwspin_lock_request_specific() to automatically manage the hwspinlock
+resource lifecycle.
+
+Fixes: 97cfb6cd34f2 ("pinctrl: stm32: protect configuration registers with a hwspinlock")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Antonio Borneo <antonio.borneo@foss.st.com>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/pinctrl/stm32/pinctrl-stm32.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index 7eacded3c17d1..f072eb6b563f6 100644
---- a/fs/nls/nls_base.c
-+++ b/fs/nls/nls_base.c
-@@ -67,19 +67,22 @@ int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
- 			l &= t->lmask;
- 			if (l < t->lval || l > UNICODE_MAX ||
- 					(l & SURROGATE_MASK) == SURROGATE_PAIR)
--				return -1;
-+				return -EILSEQ;
-+
- 			*pu = (unicode_t) l;
- 			return nc;
- 		}
- 		if (inlen <= nc)
--			return -1;
-+			return -EOVERFLOW;
-+
- 		s++;
- 		c = (*s ^ 0x80) & 0xFF;
- 		if (c & 0xC0)
--			return -1;
-+			return -EILSEQ;
-+
- 		l = (l << 6) | c;
+diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
+index 6b6fdb7116590..0094ccb4c63c8 100644
+--- a/drivers/pinctrl/stm32/pinctrl-stm32.c
++++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
+@@ -1494,7 +1494,7 @@ int stm32_pctl_probe(struct platform_device *pdev)
+ 		if (hwlock_id == -EPROBE_DEFER)
+ 			return hwlock_id;
+ 	} else {
+-		pctl->hwlock = hwspin_lock_request_specific(hwlock_id);
++		pctl->hwlock = devm_hwspin_lock_request_specific(dev, hwlock_id);
  	}
--	return -1;
-+	return -EILSEQ;
- }
- EXPORT_SYMBOL(utf8_to_utf32);
  
+ 	spin_lock_init(&pctl->irqmux_lock);
 -- 
 2.51.0
 
