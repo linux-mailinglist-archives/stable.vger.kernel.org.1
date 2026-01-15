@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209357-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208724-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF6C9D269DA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F03B6D2617F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4489A308BA7C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:14 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 59F3F3029AE6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D943BC4F2;
-	Thu, 15 Jan 2026 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EBE32C0285;
+	Thu, 15 Jan 2026 17:04:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tM8VFv6t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nHpElFVb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4936C3AA1A8;
-	Thu, 15 Jan 2026 17:34:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E9FCA3BC4DB;
+	Thu, 15 Jan 2026 17:04:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498465; cv=none; b=VoR/PwiQ4f26q37rZ+mh0Ynnw72krWUyIk6uzziuQGVD5MNyE6U/g4zbRPPdfEKD+oW5jLs+xCQbG1MVSj8/xNUA1Ug5Z3YmZxs8QqQbk0X7GSGITvHMZwbAtm29Gh2ISD1nXzdxfP3AStqnc4FmaAiebKbp/vbh5CMIIdH1YkE=
+	t=1768496666; cv=none; b=bAbl0aVBxiyZFQYvqrojq0iri2DMO//Dbn6aO9DzIvoe5yR8D7zUpUZacXKRQ3HUocD13RuuOBk2zwPcmMDW2fdCCls5CzUILqRIZFgg0pGJtlLXCpN5t7RLvBL66yCRHZGnOb51+8YU5UtBH8OYk2bG4C4Yb4v1wqUS2+TEREk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498465; c=relaxed/simple;
-	bh=y31KjVAwaDhT675RqBEPNAtXVNNy9YwPtd4MA8eHMTM=;
+	s=arc-20240116; t=1768496666; c=relaxed/simple;
+	bh=BVqE+fxDxPrmES1TkHpWIKlQvd0+5NkiTwAMG3XjuXY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LQ+jhgU6GxMIUo9zoTPn+cY5Hk5YbcoH/23UWoVmVvvtcGS3OSwuJPT5A8zyjAKzy35pY85kFj+DWOByPhWG4/QvlosP4i0DiqcVXwfKsmc5Y+4EHTN2PEJsQ/EszzJc6Dld3BlluwW+S0xaElAb98fff00eh/429Qn9b1jsuI0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tM8VFv6t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C75F9C116D0;
-	Thu, 15 Jan 2026 17:34:24 +0000 (UTC)
+	 MIME-Version; b=bRfVgGvVwdft9Bw/BuHa/u1RH06/ZZAtRMbwnBR17s0QR/cmVM3q0Ru1UQyWalXx+BFLqjnfgFXRn6y9yOA+jOM0vEnGdrGBDKfcRR2ponbMIrPPL3nYVDI1hwYYX5/fR7keSws9o8nBGZRHUyoE/EMNeMil2Z2Uc+kafRgbKJc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nHpElFVb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A2C7C116D0;
+	Thu, 15 Jan 2026 17:04:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498465;
-	bh=y31KjVAwaDhT675RqBEPNAtXVNNy9YwPtd4MA8eHMTM=;
+	s=korg; t=1768496665;
+	bh=BVqE+fxDxPrmES1TkHpWIKlQvd0+5NkiTwAMG3XjuXY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tM8VFv6tMprgo5BodMKnzYiYfP56HdJQKIYZjjzGXlQ1kR9/LADyertkbbTOSj6J/
-	 bShW3gYe0TWrveBaPwdFr7D23Y3dAWMD0Q3sBCxGNg+5fVyAtL8ZqIiiwpUEFaX1fK
-	 XmfWCXT2McZXsxwxfjNB5CVhyZb1fpop3fxo5LLk=
+	b=nHpElFVbeIvFk/CpZ/cnQrey5pRpKuoASrekAb3L4E1Hd3lojr+xVctCliOc+YCPi
+	 6JfMo99A9EhAuJ9PS66HuYvg+h6IPzQo4QiEHz06vQRqQu8+yy1FkzVMjFm5zAj8PT
+	 lDAglk1fkf0uffh5CVHn9AjH3HjBjQRKLD2uvKS8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Boris Burkov <boris@bur.io>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 441/554] f2fs: fix to detect recoverable inode during dryrun of find_fsync_dnodes()
+Subject: [PATCH 6.12 092/119] btrfs: add extra error messages for delalloc range related errors
 Date: Thu, 15 Jan 2026 17:48:27 +0100
-Message-ID: <20260115164302.228804133@linuxfoundation.org>
+Message-ID: <20260115164155.270675216@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,95 +61,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 68d05693f8c031257a0822464366e1c2a239a512 ]
+[ Upstream commit 975a6a8855f45729a0fbfe2a8f2df2d3faef2a97 ]
 
-mkfs.f2fs -f /dev/vdd
-mount /dev/vdd /mnt/f2fs
-touch /mnt/f2fs/foo
-sync		# avoid CP_UMOUNT_FLAG in last f2fs_checkpoint.ckpt_flags
-touch /mnt/f2fs/bar
-f2fs_io fsync /mnt/f2fs/bar
-f2fs_io shutdown 2 /mnt/f2fs
-umount /mnt/f2fs
-blockdev --setro /dev/vdd
-mount /dev/vdd /mnt/f2fs
-mount: /mnt/f2fs: WARNING: source write-protected, mounted read-only.
+All the error handling bugs I hit so far are all -ENOSPC from either:
 
-For the case if we create and fsync a new inode before sudden power-cut,
-without norecovery or disable_roll_forward mount option, the following
-mount will succeed w/o recovering last fsynced inode.
+- cow_file_range()
+- run_delalloc_nocow()
+- submit_uncompressed_range()
 
-The problem here is that we only check inode_list list after
-find_fsync_dnodes() in f2fs_recover_fsync_data() to find out whether
-there is recoverable data in the iamge, but there is a missed case, if
-last fsynced inode is not existing in last checkpoint, then, we will
-fail to get its inode due to nat of inode node is not existing in last
-checkpoint, so the inode won't be linked in inode_list.
+Previously when those functions failed, there was no error message at
+all, making the debugging much harder.
 
-Let's detect such case in dyrun mode to fix this issue.
+So here we introduce extra error messages for:
 
-After this change, mount will fail as expected below:
-mount: /mnt/f2fs: cannot mount /dev/vdd read-only.
-       dmesg(1) may have more information after failed mount system call.
-demsg:
-F2FS-fs (vdd): Need to recover fsync data, but write access unavailable, please try mount w/ disable_roll_forward or norecovery
+- cow_file_range()
+- run_delalloc_nocow()
+- submit_uncompressed_range()
+- writepage_delalloc() when btrfs_run_delalloc_range() failed
+- extent_writepage() when extent_writepage_io() failed
 
-Cc: stable@kernel.org
-Fixes: 6781eabba1bd ("f2fs: give -EINVAL for norecovery and rw mount")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page ]
+One example of the new debug error messages is the following one:
+
+  run fstests generic/750 at 2024-12-08 12:41:41
+  BTRFS: device fsid 461b25f5-e240-4543-8deb-e7c2bd01a6d3 devid 1 transid 8 /dev/mapper/test-scratch1 (253:4) scanned by mount (2436600)
+  BTRFS info (device dm-4): first mount of filesystem 461b25f5-e240-4543-8deb-e7c2bd01a6d3
+  BTRFS info (device dm-4): using crc32c (crc32c-arm64) checksum algorithm
+  BTRFS info (device dm-4): forcing free space tree for sector size 4096 with page size 65536
+  BTRFS info (device dm-4): using free-space-tree
+  BTRFS warning (device dm-4): read-write for sector size 4096 with page size 65536 is experimental
+  BTRFS info (device dm-4): checking UUID tree
+  BTRFS error (device dm-4): cow_file_range failed, root=363 inode=412 start=503808 len=98304: -28
+  BTRFS error (device dm-4): run_delalloc_nocow failed, root=363 inode=412 start=503808 len=98304: -28
+  BTRFS error (device dm-4): failed to run delalloc range, root=363 ino=412 folio=458752 submit_bitmap=11-15 start=503808 len=98304: -28
+
+Which shows an error from cow_file_range() which is called inside a
+nocow write attempt, along with the extra bitmap from
+writepage_delalloc().
+
+Reviewed-by: Boris Burkov <boris@bur.io>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: e9e3b22ddfa7 ("btrfs: fix beyond-EOF write handling")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/recovery.c |    9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ fs/btrfs/extent_io.c |   15 +++++++++++++++
+ fs/btrfs/inode.c     |   12 ++++++++++++
+ 2 files changed, 27 insertions(+)
 
---- a/fs/f2fs/recovery.c
-+++ b/fs/f2fs/recovery.c
-@@ -343,7 +343,7 @@ static int recover_inode(struct inode *i
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1322,6 +1322,15 @@ static noinline_for_stack int writepage_
+ 						       wbc);
+ 			if (ret >= 0)
+ 				last_finished_delalloc_end = found_start + found_len;
++			if (unlikely(ret < 0))
++				btrfs_err_rl(fs_info,
++"failed to run delalloc range, root=%lld ino=%llu folio=%llu submit_bitmap=%*pbl start=%llu len=%u: %d",
++					     btrfs_root_id(inode->root),
++					     btrfs_ino(inode),
++					     folio_pos(folio),
++					     fs_info->sectors_per_page,
++					     &bio_ctrl->submit_bitmap,
++					     found_start, found_len, ret);
+ 		} else {
+ 			/*
+ 			 * We've hit an error during previous delalloc range,
+@@ -1621,6 +1630,12 @@ static int extent_writepage(struct folio
+ 				  PAGE_SIZE, bio_ctrl, i_size);
+ 	if (ret == 1)
+ 		return 0;
++	if (ret < 0)
++		btrfs_err_rl(fs_info,
++"failed to submit blocks, root=%lld inode=%llu folio=%llu submit_bitmap=%*pbl: %d",
++			     btrfs_root_id(inode->root), btrfs_ino(inode),
++			     folio_pos(folio), fs_info->sectors_per_page,
++			     &bio_ctrl->submit_bitmap, ret);
+ 
+ 	bio_ctrl->wbc->nr_to_write--;
+ 
+--- a/fs/btrfs/inode.c
++++ b/fs/btrfs/inode.c
+@@ -1163,6 +1163,10 @@ static void submit_uncompressed_range(st
+ 		if (locked_folio)
+ 			btrfs_folio_end_lock(inode->root->fs_info, locked_folio,
+ 					     start, async_extent->ram_size);
++		btrfs_err_rl(inode->root->fs_info,
++			"%s failed, root=%llu inode=%llu start=%llu len=%llu: %d",
++			     __func__, btrfs_root_id(inode->root),
++			     btrfs_ino(inode), start, async_extent->ram_size, ret);
+ 	}
  }
  
- static int find_fsync_dnodes(struct f2fs_sb_info *sbi, struct list_head *head,
--				bool check_only)
-+				bool check_only, bool *new_inode)
- {
- 	struct curseg_info *curseg;
- 	struct page *page = NULL;
-@@ -400,6 +400,8 @@ static int find_fsync_dnodes(struct f2fs
- 			if (IS_ERR(entry)) {
- 				err = PTR_ERR(entry);
- 				if (err == -ENOENT) {
-+					if (check_only)
-+						*new_inode = true;
- 					err = 0;
- 					goto next;
- 				}
-@@ -805,6 +807,7 @@ int f2fs_recover_fsync_data(struct f2fs_
- 	unsigned long s_flags = sbi->sb->s_flags;
- 	bool need_writecp = false;
- 	bool fix_curseg_write_pointer = false;
-+	bool new_inode = false;
- #ifdef CONFIG_QUOTA
- 	int quota_enabled;
- #endif
-@@ -829,8 +832,8 @@ int f2fs_recover_fsync_data(struct f2fs_
- 	down_write(&sbi->cp_global_sem);
+@@ -1623,6 +1627,10 @@ out_unlock:
+ 					     &cached, clear_bits, page_ops);
+ 		btrfs_qgroup_free_data(inode, NULL, start, end - start + 1, NULL);
+ 	}
++	btrfs_err_rl(fs_info,
++		     "%s failed, root=%llu inode=%llu start=%llu len=%llu: %d",
++		     __func__, btrfs_root_id(inode->root),
++		     btrfs_ino(inode), orig_start, end + 1 - orig_start, ret);
+ 	return ret;
+ }
  
- 	/* step #1: find fsynced inode numbers */
--	err = find_fsync_dnodes(sbi, &inode_list, check_only);
--	if (err || list_empty(&inode_list))
-+	err = find_fsync_dnodes(sbi, &inode_list, check_only, &new_inode);
-+	if (err < 0 || (list_empty(&inode_list) && (!check_only || !new_inode)))
- 		goto skip;
+@@ -2373,6 +2381,10 @@ error:
+ 		btrfs_qgroup_free_data(inode, NULL, cur_offset, end - cur_offset + 1, NULL);
+ 	}
+ 	btrfs_free_path(path);
++	btrfs_err_rl(fs_info,
++		     "%s failed, root=%llu inode=%llu start=%llu len=%llu: %d",
++		     __func__, btrfs_root_id(inode->root),
++		     btrfs_ino(inode), start, end + 1 - start, ret);
+ 	return ret;
+ }
  
- 	if (check_only) {
 
 
 
