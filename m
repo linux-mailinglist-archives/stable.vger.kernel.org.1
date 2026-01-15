@@ -1,173 +1,174 @@
-Return-Path: <stable+bounces-208390-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208391-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5EDEDD21F1D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 02:12:26 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 243B4D21F3B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 02:13:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 08BC030249FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:12:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 65B9E304DE37
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 01:13:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5423022D9F7;
-	Thu, 15 Jan 2026 01:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 381DF23B628;
+	Thu, 15 Jan 2026 01:13:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b="jTOCmLYN"
+	dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b="X8CfVZgl"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-pj1-f73.google.com (mail-pj1-f73.google.com [209.85.216.73])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from out-174.mta0.migadu.com (out-174.mta0.migadu.com [91.218.175.174])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A883622127E
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 01:12:22 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=209.85.216.73
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E95CE22A1D5
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 01:13:30 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=91.218.175.174
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768439544; cv=none; b=pgFgRxW+A9yoW9XafLsQ2K22ttsXvLVfPn9ulfYNRk/sNufFOkqDudlWwE9GoCqA5D0cPrWGpjClJ/jYcT1qefjFGvN/DZ8gFY5EntnlY69r0JSbeQB6rGCZTII6aSh9AVPQLkQBjanMz8IJLBi6sMeaaw4+9MMMKcntHlZTod8=
+	t=1768439612; cv=none; b=IPPW738R6wzv2OvbNKOzKRgr+nXJJzWmTM1L6IF7Fqjynlxqd+Vh0i5ViXvhaREG1wPRCoTnQrYWZcWIx6GS4qANaazJU/oPZ9dhz2GuF4lGEXVYM3R2xTTKgz9nBhIv8L6oJwikFPrk50MukvhrDHGJGZv5h0aHQxuD5/O1l8s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768439544; c=relaxed/simple;
-	bh=dVHAfBRpEgC5Ucvxc9exvOiwGfv4r7hTfYbBvXV5ZcU=;
-	h=Date:In-Reply-To:Mime-Version:References:Message-ID:Subject:From:
-	 To:Cc:Content-Type; b=DR2XhA8my/OItGP7kdpSxwYmQNvdmLYpyOTYoIHc49bw+P4VvAcpNrEJf7Eb5qSrs3hWi6zdG/LkG+uYA95xP5an4TVkEq/0TzJE2HwZFLBndLuUT/h8qxeLKNAAmh2kDwAJAjKXIYoZOc+pWXzok3KY+b2xqx7ZhcNS2dX9g8g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com; dkim=pass (2048-bit key) header.d=google.com header.i=@google.com header.b=jTOCmLYN; arc=none smtp.client-ip=209.85.216.73
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=reject dis=none) header.from=google.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=flex--seanjc.bounces.google.com
-Received: by mail-pj1-f73.google.com with SMTP id 98e67ed59e1d1-34c37b8dc4fso641710a91.2
-        for <stable@vger.kernel.org>; Wed, 14 Jan 2026 17:12:22 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20230601; t=1768439542; x=1769044342; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Blk5r+gNg8D5o7ALzuwBmyzjRV/ZbOgxlBeTlxNYU2g=;
-        b=jTOCmLYN5pEisIVnkBiZWAdCvCKly2lZVZIn6T1pgmqPSjKG818cNxul5DyEFJRGbz
-         MWP8N6i6vlZx2uWWKApBV7K/9PbyJdZm2cVvS5Ayz/nMP8wJT2Gu6gGieDQtsh1fuxkG
-         TCQmKF2o0AW/YlRvtQacn1nRFeBs4ZiL5X0t48A8zgLlepw5uO5x7F4Q+uDmojKJBOsz
-         ekIgVApVoHKVBYgE0pZps7sbyrgYGKaLBL4+meWp32CHelJx2ClARW1bZABsZp3lmtRm
-         0H+ChRnLfO6+n+fPHzJHJbRp7n/FlzxTw03xhkUsNj9zm2KODC87u3+5cXq4OcSf9gOS
-         wsGw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768439542; x=1769044342;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Blk5r+gNg8D5o7ALzuwBmyzjRV/ZbOgxlBeTlxNYU2g=;
-        b=dHyHyihJK2bufdOHuuTR3iibo30K+iw3iGYPd8rqZFX4k16ZPGRHYq9D+p9AgA7NTk
-         8WcHXnIVnM1bDcGmEGbXdCjKZkS1ekvZ9wgZ8aMT3bDauaNOcRwJWxeNbWY1aXrHkJP7
-         BvaDxYHJRkwFeq9bjokuxDIdpMTZbS76a5KHswlqjB6UuSLms8M8ruJKZ9hOkhQRQq7Z
-         BM1q3IjJnVR73L/pyuBjyZLV1oh+kyHv7w5574MmuRUD2BuWRvtWp+/kKHmlDaSNAWKz
-         jU7S+ezynmLnZtyoKOtsQIPi+SrZBwL8g2cGFNPYZ1CX4HRLvLCpDVzxUgeF32At5coK
-         Qwjw==
-X-Forwarded-Encrypted: i=1; AJvYcCUGZDLVe5PRVi3UwigR/sjUTFmcHmv1G4StIr19w9/gf25r+9JBQ6evUJGiLt5xKV8nIZiZdA0=@vger.kernel.org
-X-Gm-Message-State: AOJu0Ywzmo6qfzNDtQ3PmD+mAQWPS5R8jo6Pw7c/8KsE+LK9B1OfDUwg
-	4zoPGcX56F7zp3N3OwLIrPANLMa3cPBIEl3O/6ExPxnCv2NgF3RsJiZr8ZsuS8LBvEp7iwbMc17
-	DmD2cgw==
-X-Received: from pjre16.prod.google.com ([2002:a17:90a:b390:b0:340:9d73:9c06])
- (user=seanjc job=prod-delivery.src-stubby-dispatcher) by 2002:a17:90b:2250:b0:34c:a29d:992f
- with SMTP id 98e67ed59e1d1-3510913e074mr4478597a91.31.1768439542099; Wed, 14
- Jan 2026 17:12:22 -0800 (PST)
-Date: Wed, 14 Jan 2026 17:12:20 -0800
-In-Reply-To: <6cozacewv4sop77ilrqnervzpifinxki2ykef55awan2ka5jdf@sqyj7jed3qii>
+	s=arc-20240116; t=1768439612; c=relaxed/simple;
+	bh=KybUh/BRRf0sXH3LbhLQ5wT2bC+SrW3SAoOE77RFvRY=;
+	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
+	 MIME-Version; b=DCsIUCKFKc1uWqnpS1ZEBd+GGOJL+WDI9y0MephAuQuilEgA4o5bKjUP19/nHbuJpSBzdvuDULymRsaXFELJ4iUWpxJmKdqqACNtjASDO7FW7cHfF2+DEaEDVH37tDILO+K3GzlkZyi6ChujeCuqfoRC2HZLGZasAGdzYzU8FV8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev; spf=pass smtp.mailfrom=linux.dev; dkim=pass (1024-bit key) header.d=linux.dev header.i=@linux.dev header.b=X8CfVZgl; arc=none smtp.client-ip=91.218.175.174
+Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=linux.dev
+Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=linux.dev
+X-Report-Abuse: Please report any abuse attempt to abuse@migadu.com and include these headers.
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.dev; s=key1;
+	t=1768439608;
+	h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+	 to:to:cc:cc:mime-version:mime-version:
+	 content-transfer-encoding:content-transfer-encoding:
+	 in-reply-to:in-reply-to:references:references;
+	bh=JC6dMFBz0Nq3n10+HuEIFyVp7/kFO2fc5OMKv6jt4XI=;
+	b=X8CfVZglGsYgFr9AVOVx1yndDGaAAZXrtsEKikRkIlBqRTIgYOdVqItNqJBdYVdq78zs1j
+	mLU9BAVanUeF6ftZTfkOPI5YpqfuVPYGzXNpcMRsnk32iwVa2rEMbjobb9OtrYKAAlWxG+
+	zWhoWomFBdf41vVPXi7K4B7H3R4zpYI=
+From: Yosry Ahmed <yosry.ahmed@linux.dev>
+To: Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>,
+	kvm@vger.kernel.org,
+	linux-kernel@vger.kernel.org,
+	Yosry Ahmed <yosry.ahmed@linux.dev>,
+	stable@vger.kernel.org
+Subject: [PATCH v4 01/26] KVM: SVM: Switch svm_copy_lbrs() to a macro
+Date: Thu, 15 Jan 2026 01:12:47 +0000
+Message-ID: <20260115011312.3675857-2-yosry.ahmed@linux.dev>
+In-Reply-To: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
+References: <20260115011312.3675857-1-yosry.ahmed@linux.dev>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
-Mime-Version: 1.0
-References: <20251215192722.3654335-1-yosry.ahmed@linux.dev>
- <3rdy3n6phleyz2eltr5fkbsavlpfncgrnee7kep2jkh2air66c@euczg54kpt47>
- <aUBjmHBHx1jsIcWJ@google.com> <rlwgjee2tjf26jyvdwipdwejqgsira63nvn2r3zczehz3argi4@uarbt5af3wv2>
- <aWgTjoAXdRrA99Dn@google.com> <6cozacewv4sop77ilrqnervzpifinxki2ykef55awan2ka5jdf@sqyj7jed3qii>
-Message-ID: <aWg-9POhfPxbOZ3K@google.com>
-Subject: Re: [PATCH] KVM: SVM: Fix redundant updates of LBR MSR intercepts
-From: Sean Christopherson <seanjc@google.com>
-To: Yosry Ahmed <yosry.ahmed@linux.dev>
-Cc: Paolo Bonzini <pbonzini@redhat.com>, kvm@vger.kernel.org, linux-kernel@vger.kernel.org, 
-	stable@vger.kernel.org
-Content-Type: text/plain; charset="us-ascii"
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Migadu-Flow: FLOW_OUT
 
-On Thu, Jan 15, 2026, Yosry Ahmed wrote:
-> On Wed, Jan 14, 2026 at 02:07:10PM -0800, Sean Christopherson wrote:
-> > On Mon, Dec 15, 2025, Yosry Ahmed wrote:
-> > > On Mon, Dec 15, 2025 at 11:38:00AM -0800, Sean Christopherson wrote:
-> > > > On Mon, Dec 15, 2025, Yosry Ahmed wrote:
-> > > > > On Mon, Dec 15, 2025 at 07:26:54PM +0000, Yosry Ahmed wrote:
-> > > > > > svm_update_lbrv() always updates LBR MSRs intercepts, even when they are
-> > > > > > already set correctly. This results in force_msr_bitmap_recalc always
-> > > > > > being set to true on every nested transition, essentially undoing the
-> > > > > > hyperv optimization in nested_svm_merge_msrpm().
-> > > > > > 
-> > > > > > Fix it by keeping track of whether LBR MSRs are intercepted or not and
-> > > > > > only doing the update if needed, similar to x2avic_msrs_intercepted.
-> > > > > > 
-> > > > > > Avoid using svm_test_msr_bitmap_*() to check the status of the
-> > > > > > intercepts, as an arbitrary MSR will need to be chosen as a
-> > > > > > representative of all LBR MSRs, and this could theoretically break if
-> > > > > > some of the MSRs intercepts are handled differently from the rest.
-> > > > > > 
-> > > > > > Also, using svm_test_msr_bitmap_*() makes backports difficult as it was
-> > > > > > only recently introduced with no direct alternatives in older kernels.
-> > > > > > 
-> > > > > > Fixes: fbe5e5f030c2 ("KVM: nSVM: Always recalculate LBR MSR intercepts in svm_update_lbrv()")
-> > > > > > Cc: stable@vger.kernel.org
-> > > > > > Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
-> > > > > 
-> > > > > Sigh.. I had this patch file in my working directory and it was sent by
-> > > > > mistake with the series, as the cover letter nonetheless. Sorry about
-> > > > > that. Let me know if I should resend.
-> > > > 
-> > > > Eh, it's fine for now.  The important part is clarfying that this patch should
-> > > > be ignored, which you've already done.
-> > > 
-> > > FWIW that patch is already in Linus's tree so even if someone applies
-> > > it, it should be fine.
-> > 
-> > Narrator: it wasn't fine.
-> > 
-> > Please resend this series.  The base-commit is garbage because your working tree
-> > was polluted with non-public patches, I can't quickly figure out what your "real"
-> > base was, and I don't have the bandwidth to manually work through the mess.
-> > 
-> > In the future, please, please don't post patches against a non-public base.  It
-> > adds a lot of friction on my end, and your series are quite literally the only
-> > ones I've had problems with in the last ~6 months.
-> 
-> Sorry this keeps happening, I honestly don't know how it happened. In my
-> local repo the base commit is supposedly from your tree:
-> 
-> 	$ git show 58e10b63777d0aebee2cf4e6c67e1a83e7edbe0f
-> 
-> 	commit 58e10b63777d0aebee2cf4e6c67e1a83e7edbe0f
-> 	Merge: e0c26d47def7 297631388309
-> 	Author: Sean Christopherson <seanjc@google.com>
-> 	Date:   Mon Dec 8 14:58:37 2025 +0000
-> 
-> 	    Merge branch 'fixes'
-> 
-> 	    * fixes:
-> 	      KVM: nVMX: Immediately refresh APICv controls as needed on nested VM-Exit
-> 	      KVM: VMX: Update SVI during runtime APICv activation
-> 	      KVM: nSVM: Set exit_code_hi to -1 when synthesizing SVM_EXIT_ERR (failed VMRUN)
-> 	      KVM: nSVM: Clear exit_code_hi in VMCB when synthesizing nested VM-Exits
-> 	      KVM: Harden and prepare for modifying existing guest_memfd memslots
-> 	      KVM: Disallow toggling KVM_MEM_GUEST_MEMFD on an existing memslot
-> 	      KVM: selftests: Add a CPUID testcase for KVM_SET_CPUID2 with runtime updates
-> 	      KVM: x86: Apply runtime updates to current CPUID during KVM_SET_CPUID{,2}
-> 	      KVM: selftests: Add missing "break" in rseq_test's param parsing
-> 
-> But then I cannot actually find it in your tree. Perhaps I rebased the
-> baseline patches accidentally :/
+In preparation for using svm_copy_lbrs() with 'struct vmcb_save_area'
+without a containing 'struct vmcb', and later even 'struct
+vmcb_save_area_cached', make it a macro. Pull the call to
+vmcb_mark_dirty() out to the callers.
 
-Argh.  And now that I checked some of my other repositories, it looks like I have
-it in literally every repo _except_ the one I use to push to kvm-x86.
+Macros are generally not preferred compared to functions, mainly due to
+type-safety. However, in this case it seems like having a simple macro
+copying a few fields is better than copy-pasting the same 5 lines of
+code in different places.
 
-Double argh.  This is my fault.  12/08 lines up with the "KVM: x86 and guest_memfd
-fixes for 6.19" pull request I sent on 12/10.  So it makes sense that the only
-branch merged into kvm-x86/next would be 'fixes'.  I can only assume I forgot to
-tag that specific incarnation.
+On the bright side, pulling vmcb_mark_dirty() calls to the callers makes
+it clear that in one case, vmcb_mark_dirty() was being called on VMCB12.
+It is not architecturally defined for the CPU to clear arbitrary clean
+bits, and it is not needed, so drop that one call.
 
-So, my bad, and sorry for falsely accusing you.
+Technically fixes the non-architectural behavior of setting the dirty
+bit on VMCB12.
 
-> Anyway, I rebased and retested on top of kvm-x86/next and will resend
-> shortly.
+Fixes: d20c796ca370 ("KVM: x86: nSVM: implement nested LBR virtualization")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yosry Ahmed <yosry.ahmed@linux.dev>
+---
+ arch/x86/kvm/svm/nested.c | 16 ++++++++++------
+ arch/x86/kvm/svm/svm.c    | 11 -----------
+ arch/x86/kvm/svm/svm.h    | 10 +++++++++-
+ 3 files changed, 19 insertions(+), 18 deletions(-)
 
-Please do, even though I've now got this version applied locally; it'd be nice
-to have a conflict-free version.
+diff --git a/arch/x86/kvm/svm/nested.c b/arch/x86/kvm/svm/nested.c
+index f295a41ec659..58f843681a71 100644
+--- a/arch/x86/kvm/svm/nested.c
++++ b/arch/x86/kvm/svm/nested.c
+@@ -712,10 +712,12 @@ static void nested_vmcb02_prepare_save(struct vcpu_svm *svm, struct vmcb *vmcb12
+ 		 * Reserved bits of DEBUGCTL are ignored.  Be consistent with
+ 		 * svm_set_msr's definition of reserved bits.
+ 		 */
+-		svm_copy_lbrs(vmcb02, vmcb12);
++		svm_copy_lbrs(&vmcb02->save, &vmcb12->save);
++		vmcb_mark_dirty(vmcb02, VMCB_LBR);
+ 		vmcb02->save.dbgctl &= ~DEBUGCTL_RESERVED_BITS;
+ 	} else {
+-		svm_copy_lbrs(vmcb02, vmcb01);
++		svm_copy_lbrs(&vmcb02->save, &vmcb01->save);
++		vmcb_mark_dirty(vmcb02, VMCB_LBR);
+ 	}
+ 	svm_update_lbrv(&svm->vcpu);
+ }
+@@ -1238,10 +1240,12 @@ int nested_svm_vmexit(struct vcpu_svm *svm)
+ 		kvm_make_request(KVM_REQ_EVENT, &svm->vcpu);
+ 
+ 	if (unlikely(guest_cpu_cap_has(vcpu, X86_FEATURE_LBRV) &&
+-		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK)))
+-		svm_copy_lbrs(vmcb12, vmcb02);
+-	else
+-		svm_copy_lbrs(vmcb01, vmcb02);
++		     (svm->nested.ctl.virt_ext & LBR_CTL_ENABLE_MASK))) {
++		svm_copy_lbrs(&vmcb12->save, &vmcb02->save);
++	} else {
++		svm_copy_lbrs(&vmcb01->save, &vmcb02->save);
++		vmcb_mark_dirty(vmcb01, VMCB_LBR);
++	}
+ 
+ 	svm_update_lbrv(vcpu);
+ 
+diff --git a/arch/x86/kvm/svm/svm.c b/arch/x86/kvm/svm/svm.c
+index 7041498a8091..a387b52032cd 100644
+--- a/arch/x86/kvm/svm/svm.c
++++ b/arch/x86/kvm/svm/svm.c
+@@ -841,17 +841,6 @@ static void svm_recalc_msr_intercepts(struct kvm_vcpu *vcpu)
+ 	 */
+ }
+ 
+-void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb)
+-{
+-	to_vmcb->save.dbgctl		= from_vmcb->save.dbgctl;
+-	to_vmcb->save.br_from		= from_vmcb->save.br_from;
+-	to_vmcb->save.br_to		= from_vmcb->save.br_to;
+-	to_vmcb->save.last_excp_from	= from_vmcb->save.last_excp_from;
+-	to_vmcb->save.last_excp_to	= from_vmcb->save.last_excp_to;
+-
+-	vmcb_mark_dirty(to_vmcb, VMCB_LBR);
+-}
+-
+ static void __svm_enable_lbrv(struct kvm_vcpu *vcpu)
+ {
+ 	to_svm(vcpu)->vmcb->control.virt_ext |= LBR_CTL_ENABLE_MASK;
+diff --git a/arch/x86/kvm/svm/svm.h b/arch/x86/kvm/svm/svm.h
+index 7d28a739865f..2ce62cc55d7b 100644
+--- a/arch/x86/kvm/svm/svm.h
++++ b/arch/x86/kvm/svm/svm.h
+@@ -705,8 +705,16 @@ static inline void *svm_vcpu_alloc_msrpm(void)
+ 	return svm_alloc_permissions_map(MSRPM_SIZE, GFP_KERNEL_ACCOUNT);
+ }
+ 
++#define svm_copy_lbrs(to, from)					\
++({								\
++	(to)->dbgctl		= (from)->dbgctl;		\
++	(to)->br_from		= (from)->br_from;		\
++	(to)->br_to		= (from)->br_to;		\
++	(to)->last_excp_from	= (from)->last_excp_from;	\
++	(to)->last_excp_to	= (from)->last_excp_to;		\
++})
++
+ void svm_vcpu_free_msrpm(void *msrpm);
+-void svm_copy_lbrs(struct vmcb *to_vmcb, struct vmcb *from_vmcb);
+ void svm_enable_lbrv(struct kvm_vcpu *vcpu);
+ void svm_update_lbrv(struct kvm_vcpu *vcpu);
+ 
+-- 
+2.52.0.457.g6b5491de43-goog
 
-Again, my apologies.
 
