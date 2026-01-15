@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208822-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209802-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 72FFBD263FE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6A5E4D2773D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DB9423115200
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:02 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2707D31CA6A5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9A7733BF2F1;
-	Thu, 15 Jan 2026 17:09:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04D53D2FF8;
+	Thu, 15 Jan 2026 17:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VK6JKTLd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yxqmbc0q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5BAD03BC4DB;
-	Thu, 15 Jan 2026 17:09:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637CA3C00AE;
+	Thu, 15 Jan 2026 17:55:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496941; cv=none; b=r4h78EwxSupx3H35RLHCcERFTpwZYaxbIb7rRsL12I37XLE0/h0x1+yULg0wEOiTQxGjIihaYEfB1o2C9//yOEVdgnGQUGrV/cRVm1JyQ9Xdjg4ESuW88ZShauOP31hbMybY3ZTBOYO0vU4ERnYiQ0+1WVOu6U7ZktUsQ/V3DOo=
+	t=1768499732; cv=none; b=Z5bWVrkPw9Lxr3s215ngUkZqBx52tlhnMfI8eqyKM3p71ebEsYPGAYj3bKkhEg0w9T7K8EmurlwxLDcTcSdtnBBKe3b+aEPC0nwQ5x1v7aP1C5eljawYMNmMW2+xDAFC6Z1DO+mUYfk/see8MOOhrtCYIUIxeQYF77DN9v6HDVI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496941; c=relaxed/simple;
-	bh=JOfbakIgZj5lvq4eapbCKbdZwrkPCC/kKkXH2Q5YRuo=;
+	s=arc-20240116; t=1768499732; c=relaxed/simple;
+	bh=PVTnYCkGgu+z/WIwtmRujwQCrWRZ0T1MtjZfCo4HmD8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pD7niw+5aZh5S3q1oGRGhOTI/wrmjMEUesjAvPkEGdKQ1inNQsA7C6M3MbOYpmI+FPGVjLYFFZoBzbFIGfzm66Zucc2G4VihMmfIo9d6Xy2nECyNrqBrvnxgKLidRPM1VfTUjAqwE4HO7yMR42YPj0m97ujYJVEtPzwDpQecWRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VK6JKTLd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A09DDC19422;
-	Thu, 15 Jan 2026 17:09:00 +0000 (UTC)
+	 MIME-Version; b=lgdNsjZlDI7vn9Qc8jGm8mVt0KswfJwLpHyTuWunJcPV9H7k/4uA70fqdoZBR6h9tRVILk5SUonsN6MMTFfOE+oXXrK5da+AzbRvsldm8i5ZNgUVo4bnzQfk1JcqTPFCTenmyX9HBHODt+c2uGMgK+Yd6LQnEhATOtYkgn5alvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yxqmbc0q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9838DC116D0;
+	Thu, 15 Jan 2026 17:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496941;
-	bh=JOfbakIgZj5lvq4eapbCKbdZwrkPCC/kKkXH2Q5YRuo=;
+	s=korg; t=1768499732;
+	bh=PVTnYCkGgu+z/WIwtmRujwQCrWRZ0T1MtjZfCo4HmD8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VK6JKTLdvwEsrTfhO01nvMT5/0a84cANmtIcg4zqx4ICd65GZVx7hUcLwglTnIe9Q
-	 q1kfQECq5IvnLvB/ANZQnECCwIcWEy91OmJLTZlnLU63pln/hyiQ5IO8K1nYXLZuuI
-	 IrhyOV9iP6aniV91Omz3LK/55O4JIVuQyN08m80U=
+	b=Yxqmbc0qAnx/tEYWMPDfM92VnhY2PVJBfcmymbattJKTx8xgNqbQXpwrW0J6bWWf6
+	 tZorxRAakQndscUl5MImfmGkS55XtRRxO7L8uDUgn5MOTIQpLibdHMoyYFEsHsa1Rm
+	 AzY80P+wDXj5sdfLzwUo9Drdbm/SVncvZx8eeWnQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 68/88] NFS: trace: show TIMEDOUT instead of 0x6e
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.10 330/451] e1000: fix OOB in e1000_tbi_should_accept()
 Date: Thu, 15 Jan 2026 17:48:51 +0100
-Message-ID: <20260115164148.772722786@linuxfoundation.org>
+Message-ID: <20260115164242.834796787@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-[ Upstream commit cef48236dfe55fa266d505e8a497963a7bc5ef2a ]
+commit 9c72a5182ed92904d01057f208c390a303f00a0f upstream.
 
-__nfs_revalidate_inode may return ETIMEDOUT.
+In e1000_tbi_should_accept() we read the last byte of the frame via
+'data[length - 1]' to evaluate the TBI workaround. If the descriptor-
+reported length is zero or larger than the actual RX buffer size, this
+read goes out of bounds and can hit unrelated slab objects. The issue
+is observed from the NAPI receive path (e1000_clean_rx_irq):
 
-print symbol of ETIMEDOUT in nfs trace:
+==================================================================
+BUG: KASAN: slab-out-of-bounds in e1000_tbi_should_accept+0x610/0x790
+Read of size 1 at addr ffff888014114e54 by task sshd/363
 
-before:
-cat-5191 [005] 119.331127: nfs_revalidate_inode_exit: error=-110 (0x6e)
+CPU: 0 PID: 363 Comm: sshd Not tainted 5.18.0-rc1 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x5a/0x74
+ print_address_description+0x7b/0x440
+ print_report+0x101/0x200
+ kasan_report+0xc1/0xf0
+ e1000_tbi_should_accept+0x610/0x790
+ e1000_clean_rx_irq+0xa8c/0x1110
+ e1000_clean+0xde2/0x3c10
+ __napi_poll+0x98/0x380
+ net_rx_action+0x491/0xa20
+ __do_softirq+0x2c9/0x61d
+ do_softirq+0xd1/0x120
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xfe/0x130
+ ip_finish_output2+0x7d5/0xb00
+ __ip_queue_xmit+0xe24/0x1ab0
+ __tcp_transmit_skb+0x1bcb/0x3340
+ tcp_write_xmit+0x175d/0x6bd0
+ __tcp_push_pending_frames+0x7b/0x280
+ tcp_sendmsg_locked+0x2e4f/0x32d0
+ tcp_sendmsg+0x24/0x40
+ sock_write_iter+0x322/0x430
+ vfs_write+0x56c/0xa60
+ ksys_write+0xd1/0x190
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f511b476b10
+Code: 73 01 c3 48 8b 0d 88 d3 2b 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d f9 2b 2c 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 8e 9b 01 00 48 89 04 24
+RSP: 002b:00007ffc9211d4e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000004024 RCX: 00007f511b476b10
+RDX: 0000000000004024 RSI: 0000559a9385962c RDI: 0000000000000003
+RBP: 0000559a9383a400 R08: fffffffffffffff0 R09: 0000000000004f00
+R10: 0000000000000070 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc9211d57f R14: 0000559a9347bde7 R15: 0000000000000003
+ </TASK>
+Allocated by task 1:
+ __kasan_krealloc+0x131/0x1c0
+ krealloc+0x90/0xc0
+ add_sysfs_param+0xcb/0x8a0
+ kernel_add_sysfs_param+0x81/0xd4
+ param_sysfs_builtin+0x138/0x1a6
+ param_sysfs_init+0x57/0x5b
+ do_one_initcall+0x104/0x250
+ do_initcall_level+0x102/0x132
+ do_initcalls+0x46/0x74
+ kernel_init_freeable+0x28f/0x393
+ kernel_init+0x14/0x1a0
+ ret_from_fork+0x22/0x30
+The buggy address belongs to the object at ffff888014114000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 1620 bytes to the right of
+ 2048-byte region [ffff888014114000, ffff888014114800]
+The buggy address belongs to the physical page:
+page:ffffea0000504400 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14110
+head:ffffea0000504400 order:3 compound_mapcount:0 compound_pincount:0
+flags: 0x100000000010200(slab|head|node=0|zone=1)
+raw: 0100000000010200 0000000000000000 dead000000000001 ffff888013442000
+raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+==================================================================
 
-after:
-cat-1738 [004] 44.365509: nfs_revalidate_inode_exit: error=-110 (TIMEDOUT)
+This happens because the TBI check unconditionally dereferences the last
+byte without validating the reported length first:
 
-Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Stable-dep-of: c6c209ceb87f ("NFSD: Remove NFSERR_EAGAIN")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+	u8 last_byte = *(data + length - 1);
+
+Fix by rejecting the frame early if the length is zero, or if it exceeds
+adapter->rx_buffer_len. This preserves the TBI workaround semantics for
+valid frames and prevents touching memory beyond the RX buffer.
+
+Fixes: 2037110c96d5 ("e1000: move tbi workaround code into helper function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/trace/misc/nfs.h |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/e1000/e1000_main.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/include/trace/misc/nfs.h
-+++ b/include/trace/misc/nfs.h
-@@ -52,6 +52,7 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
- 		{ NFSERR_IO,			"IO" }, \
- 		{ NFSERR_NXIO,			"NXIO" }, \
- 		{ ECHILD,			"CHILD" }, \
-+		{ ETIMEDOUT,			"TIMEDOUT" }, \
- 		{ NFSERR_EAGAIN,		"AGAIN" }, \
- 		{ NFSERR_ACCES,			"ACCES" }, \
- 		{ NFSERR_EXIST,			"EXIST" }, \
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -4090,7 +4090,15 @@ static bool e1000_tbi_should_accept(stru
+ 				    u32 length, const u8 *data)
+ {
+ 	struct e1000_hw *hw = &adapter->hw;
+-	u8 last_byte = *(data + length - 1);
++	u8 last_byte;
++
++	/* Guard against OOB on data[length - 1] */
++	if (unlikely(!length))
++		return false;
++	/* Upper bound: length must not exceed rx_buffer_len */
++	if (unlikely(length > adapter->rx_buffer_len))
++		return false;
++	last_byte = *(data + length - 1);
+ 
+ 	if (TBI_ACCEPT(hw, status, errors, length, last_byte)) {
+ 		unsigned long irq_flags;
 
 
 
