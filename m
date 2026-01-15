@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-209242-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209665-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEFD269E0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 69ACED27412
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:14:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 147FB307CB6C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 770E23026968
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:52:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A0F3D1CC3;
-	Thu, 15 Jan 2026 17:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DF1B3D412F;
+	Thu, 15 Jan 2026 17:49:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3RCk/Tk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRM/NFaz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766D33C198C;
-	Thu, 15 Jan 2026 17:28:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19DD3D4126;
+	Thu, 15 Jan 2026 17:49:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498138; cv=none; b=hOUnNTPT86g6QtEe2IiOZ5H5BSJS+7+t/UIfzU3b5jMWSK4Y6x2IrlkgdOL0oz28Y5O13a0ypqbw1xjjhkDNzMTY7BharukLtFIDwYCgkZOdbUh0DTyIRa3xCXMqhBO2NAUIM/hiS0wx/H2mudMQpKsHpC6YJZpTD2LFm58s0sg=
+	t=1768499343; cv=none; b=XS5jya/k68LzRHsLh6khlqw04CenurgN7gLsNu9ZEGt2pnmUCFiSkhq7H/8lCuRAiCtvBmSurPXK+bOEZzv3ECNI0u/8j5n2Xa4XSXbQ6U6GDh2PYLVm7QOo/Hz0E1PhmQAaCi9nuDJS9pYKv6bARqoabMwxfwP7aUU6h+cOpWI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498138; c=relaxed/simple;
-	bh=xtFcWs5TIUFT02clnv3qq9Bx8v27PEix7DYXUf/yD9A=;
+	s=arc-20240116; t=1768499343; c=relaxed/simple;
+	bh=Bf/qQ5TrY0h4u8y/Yd3nvpXFvL9qBnSxtJPHYqzbLB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jfkCSL+Q6kyemLq2HY+NC5IZMf4a/ImAz1ZLW5HRi1VB7MESEP1LPudyGuzJD56v/ArUGCV1hUFlgOvwv089QK65dGASHLBvRcR2iCGCHVNPhTCE2IbRSgx1fMOG8ofbOZ9JrNe6bxQMwxOSMzT1Es0FukJBNRDgicri4klfyW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3RCk/Tk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EB8C116D0;
-	Thu, 15 Jan 2026 17:28:57 +0000 (UTC)
+	 MIME-Version; b=agwdRMakFh94Ta/nnJsPBH/OUAJERUlzunkgUR9grYspxCA7sBGYaceaexiTaYwGiGbCJ9RDA/6YR67d0A+Vwb4qSGAQ7lpKuo1ddkbkrr96rIpLIEZ4iGIINIqThUfETEph2i7vIQYlOIebPHkS2vYOFeCQlcT+bTuNOIFLzYQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRM/NFaz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 644A5C2BC87;
+	Thu, 15 Jan 2026 17:49:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498138;
-	bh=xtFcWs5TIUFT02clnv3qq9Bx8v27PEix7DYXUf/yD9A=;
+	s=korg; t=1768499342;
+	bh=Bf/qQ5TrY0h4u8y/Yd3nvpXFvL9qBnSxtJPHYqzbLB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c3RCk/TkMAo1UgDZ1RZxPOC67UldTJ1fqtX/L1GCgt0KU5AD8CPrz3QGnZZXXzPBM
-	 9E4nTJ5ezZoeaJhg+BqUsWB301NJUkpgRrFoP4UHEUqhKKLTjkLph6eoLQboXCjarq
-	 4q6s0BPxHUnIDsbUooO+q+N78NqDZatONCv/QQGM=
+	b=tRM/NFazpQN8LoLpKMntMPlEbbbC+Dr3/PmmL/lKZyu6aMZ9WZ8cJVe8xwb9hajWA
+	 y3zOV//YJnKgOWcvuoVM95Bl7CaXQT62BrlXnoPSfg44nw85Mt7YMn596OLK/xLek5
+	 qhIDY7q9a4YBrIvfTlEH64Q+LAja1BXn6gU2Jk7o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.15 327/554] amba: tegra-ahb: Fix device leak on SMMU enable
+	kernel test robot <lkp@intel.com>,
+	Dan Carpenter <error27@gmail.com>,
+	Guoqing Jiang <guoqing.jiang@linux.dev>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 192/451] block/rnbd-clt: fix wrong max ID in ida_alloc_max
 Date: Thu, 15 Jan 2026 17:46:33 +0100
-Message-ID: <20260115164258.065285421@linuxfoundation.org>
+Message-ID: <20260115164237.848271280@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +63,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-commit 500e1368e46928f4b2259612dcabb6999afae2a6 upstream.
+[ Upstream commit 9d6033e350694a67885605674244d43c9559dc36 ]
 
-Make sure to drop the reference taken to the AHB platform device when
-looking up its driver data while enabling the SMMU.
+We need to pass 'end - 1' to ida_alloc_max after switch from
+ida_simple_get to ida_alloc_max.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away.
+Otherwise smatch warns.
 
-Fixes: 89c788bab1f0 ("ARM: tegra: Add SMMU enabler in AHB")
-Cc: stable@vger.kernel.org	# 3.5
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/block/rnbd/rnbd-clt.c:1460 init_dev() error: Calling ida_alloc_max() with a 'max' argument which is a power of 2. -1 missing?
+
+Fixes: 24afc15dbe21 ("block/rnbd: Remove a useless mutex")
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/20221230010926.32243-1-guoqing.jiang@linux.dev
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c9b5645fd8ca ("block: rnbd-clt: Fix leaked ID in init_dev()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/amba/tegra-ahb.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/block/rnbd/rnbd-clt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/amba/tegra-ahb.c
-+++ b/drivers/amba/tegra-ahb.c
-@@ -144,6 +144,7 @@ int tegra_ahb_enable_smmu(struct device_
- 	if (!dev)
- 		return -EPROBE_DEFER;
- 	ahb = dev_get_drvdata(dev);
-+	put_device(dev);
- 	val = gizmo_readl(ahb, AHB_ARBITRATION_XBAR_CTRL);
- 	val |= AHB_ARBITRATION_XBAR_CTRL_SMMU_INIT_DONE;
- 	gizmo_writel(ahb, val, AHB_ARBITRATION_XBAR_CTRL);
+diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
+index ced9c4d7b926..ea4b7002f438 100644
+--- a/drivers/block/rnbd/rnbd-clt.c
++++ b/drivers/block/rnbd/rnbd-clt.c
+@@ -1378,7 +1378,7 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 		goto out_alloc;
+ 	}
+ 
+-	ret = ida_alloc_max(&index_ida, 1 << (MINORBITS - RNBD_PART_BITS),
++	ret = ida_alloc_max(&index_ida, (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
+ 			    GFP_KERNEL);
+ 	if (ret < 0) {
+ 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
+-- 
+2.51.0
+
 
 
 
