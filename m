@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D97ACD2618E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DF8DD274CB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 403BF302DCB3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4919C3198A5C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C71D3BF306;
-	Thu, 15 Jan 2026 17:06:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B9AE13C1FEB;
+	Thu, 15 Jan 2026 17:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1yIalGT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AGRoGnuo"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BF02D6611;
-	Thu, 15 Jan 2026 17:06:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7C6573D5227;
+	Thu, 15 Jan 2026 17:53:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496807; cv=none; b=mFt9QKY9TFjz2DOBC2MjihqjwDp5Uvf9Ne82MSOFTp58kz+IsxXfbomTNnh6pSPXQhMBBcttCP4vWArKmfQA+wcGsxe0LAwUiswh2dyPOWqZW75bZlmHoaX59U3/GZxD13QDVX2CSIW7j4b/f8RJENa8kbBd21j9A0wk0geJP14=
+	t=1768499602; cv=none; b=Hu/oNL7CToadFAlmrgRytNvxKE2q9ZwB1Jgrlz2M33RoIxCzc7kfGNXoRiq+S0Iqf+gIoRcdeoMBaWjybauvmjXBtR0sOKhQa7tJP3a0KOOFiwiY/Ke5HihthNlpAIFPOUjnRUITLj4iND5iaoRqTFz1wVjA6z+PRWGgHgscPNg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496807; c=relaxed/simple;
-	bh=lu4J5x49ZASu6g/12QyMf/ABqHOeX6ZsH2bZpHmK9CM=;
+	s=arc-20240116; t=1768499602; c=relaxed/simple;
+	bh=HcNBOjczZJtRy52hBXgJ3UgZx1Bo0j4GVsS6UHUyFk0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UOmAriH7nIv0/XHecLNPRAzpnNoZWoNv4LePyxsT2WPfMzmQhza8wht/rKUjLhitui4fjlVIeKkJFlynMElM0Mcvxf/6F1gx5O8VWQx/Cc/ETYA/dKJA7BFP8hIbYa6LcVwRo3CuzgoPzbiNK/D9B/69RnWC7kb++pc1djQ6gPU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1yIalGT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A739C116D0;
-	Thu, 15 Jan 2026 17:06:47 +0000 (UTC)
+	 MIME-Version; b=fbeb29tvnW1PJhCFfm+LzRGf4rQH4h+mRD5WdfcOJip7bDhmpn9dWh/kDsA9nmyAw8lTVFdkNbb6rgFEjfCuuGRgsqgvhqMYF8ri/4R7ZodbOrQw4h+IeCst9JkYwQqznj+nvLr6yTHjkY0uxP2REV/lu8p4d5kZDrERof5B6R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AGRoGnuo; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E54FAC116D0;
+	Thu, 15 Jan 2026 17:53:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496807;
-	bh=lu4J5x49ZASu6g/12QyMf/ABqHOeX6ZsH2bZpHmK9CM=;
+	s=korg; t=1768499602;
+	bh=HcNBOjczZJtRy52hBXgJ3UgZx1Bo0j4GVsS6UHUyFk0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=f1yIalGTvz44YDkiWnCMu2GXQMtL6y2PQ4BTkCgPrX6h0Hur9cNkoT0Cthobsahwz
-	 XAnLQYnBU8xcxKh0MVef0vhC2vgk4kHHiOjlemo7p6XZI+g7o3cY+VqBXfct4/4IyD
-	 vG7KPCihP8kIka1AIiLdWYB4hor0dsCpkJaiDN6o=
+	b=AGRoGnuoOjygNLyvwv1guubrm+wjHqu8vvLMLi8qSe7n2f9bTDLomEWMoW+k3XRjd
+	 VprVz1U+xPmBIsBWM6M0fwUl879Ebyt0yPqQ9H4Z9eSM0/ICipRR+a/AMbN7QHkuuo
+	 h6V/CCNCYeYjEEbj6v+MIJ+Sa8WSNFMJeM8cVJuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sharath Chandra Vurukala <quic_sharathv@quicinc.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 6.6 22/88] net: Add locking to protect skb->dev access in ip_output
-Date: Thu, 15 Jan 2026 17:48:05 +0100
-Message-ID: <20260115164147.118024894@linuxfoundation.org>
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 285/451] net: dsa: b53: skip multicast entries for fdb_dump()
+Date: Thu, 15 Jan 2026 17:48:06 +0100
+Message-ID: <20260115164241.194208623@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,118 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit 1dbf1d590d10a6d1978e8184f8dfe20af22d680a upstream.
+[ Upstream commit d42bce414d1c5c0b536758466a1f63ac358e613c ]
 
-In ip_output() skb->dev is updated from the skb_dst(skb)->dev
-this can become invalid when the interface is unregistered and freed,
+port_fdb_dump() is supposed to only add fdb entries, but we iterate over
+the full ARL table, which also includes multicast entries.
 
-Introduced new skb_dst_dev_rcu() function to be used instead of
-skb_dst_dev() within rcu_locks in ip_output.This will ensure that
-all the skb's associated with the dev being deregistered will
-be transnmitted out first, before freeing the dev.
+So check if the entry is a multicast entry before passing it on to the
+callback().
 
-Given that ip_output() is called within an rcu_read_lock()
-critical section or from a bottom-half context, it is safe to introduce
-an RCU read-side critical section within it.
+Additionally, the port of those entries is a bitmask, not a port number,
+so any included entries would have even be for the wrong port.
 
-Multiple panic call stacks were observed when UL traffic was run
-in concurrency with device deregistration from different functions,
-pasting one sample for reference.
-
-[496733.627565][T13385] Call trace:
-[496733.627570][T13385] bpf_prog_ce7c9180c3b128ea_cgroupskb_egres+0x24c/0x7f0
-[496733.627581][T13385] __cgroup_bpf_run_filter_skb+0x128/0x498
-[496733.627595][T13385] ip_finish_output+0xa4/0xf4
-[496733.627605][T13385] ip_output+0x100/0x1a0
-[496733.627613][T13385] ip_send_skb+0x68/0x100
-[496733.627618][T13385] udp_send_skb+0x1c4/0x384
-[496733.627625][T13385] udp_sendmsg+0x7b0/0x898
-[496733.627631][T13385] inet_sendmsg+0x5c/0x7c
-[496733.627639][T13385] __sys_sendto+0x174/0x1e4
-[496733.627647][T13385] __arm64_sys_sendto+0x28/0x3c
-[496733.627653][T13385] invoke_syscall+0x58/0x11c
-[496733.627662][T13385] el0_svc_common+0x88/0xf4
-[496733.627669][T13385] do_el0_svc+0x2c/0xb0
-[496733.627676][T13385] el0_svc+0x2c/0xa4
-[496733.627683][T13385] el0t_64_sync_handler+0x68/0xb4
-[496733.627689][T13385] el0t_64_sync+0x1a4/0x1a8
-
-Changes in v3:
-- Replaced WARN_ON() with  WARN_ON_ONCE(), as suggested by Willem de Bruijn.
-- Dropped legacy lines mistakenly pulled in from an outdated branch.
-
-Changes in v2:
-- Addressed review comments from Eric Dumazet
-- Used READ_ONCE() to prevent potential load/store tearing
-- Added skb_dst_dev_rcu() and used along with rcu_read_lock() in ip_output
-
-Signed-off-by: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20250730105118.GA26100@hu-sharathv-hyd.qualcomm.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-[ Keerthana: Backported the patch to v6.6.y ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251217205756.172123-1-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/dst.h    |   12 ++++++++++++
- net/ipv4/ip_output.c |   15 ++++++++++-----
- 2 files changed, 22 insertions(+), 5 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/include/net/dst.h
-+++ b/include/net/dst.h
-@@ -569,6 +569,18 @@ static inline void skb_dst_update_pmtu_n
- 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
- }
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index 416ed1ca1d52..b80e4216f98c 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1761,6 +1761,9 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 	if (!ent->is_valid)
+ 		return 0;
  
-+static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
-+{
-+	/* In the future, use rcu_dereference(dst->dev) */
-+	WARN_ON_ONCE(!rcu_read_lock_held());
-+	return READ_ONCE(dst->dev);
-+}
++	if (is_multicast_ether_addr(ent->mac))
++		return 0;
 +
-+static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
-+{
-+	return dst_dev_rcu(skb_dst(skb));
-+}
-+
- struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
- void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
- 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -425,15 +425,20 @@ int ip_mc_output(struct net *net, struct
+ 	if (port != ent->port)
+ 		return 0;
  
- int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
- {
--	struct net_device *dev = skb_dst(skb)->dev, *indev = skb->dev;
-+	struct net_device *dev, *indev = skb->dev;
-+	int ret_val;
- 
-+	rcu_read_lock();
-+	dev = skb_dst_dev_rcu(skb);
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_IP);
- 
--	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
--			    net, sk, skb, indev, dev,
--			    ip_finish_output,
--			    !(IPCB(skb)->flags & IPSKB_REROUTED));
-+	ret_val = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
-+				net, sk, skb, indev, dev,
-+				ip_finish_output,
-+				!(IPCB(skb)->flags & IPSKB_REROUTED));
-+	rcu_read_unlock();
-+	return ret_val;
- }
- EXPORT_SYMBOL(ip_output);
- 
+-- 
+2.51.0
+
 
 
 
