@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208839-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208921-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3FFFBD2674B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AA89BD26555
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:23:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3175C3123FD7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:51 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8B2053228519
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD83B3B8BC0;
-	Thu, 15 Jan 2026 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903E43BF2EB;
+	Thu, 15 Jan 2026 17:13:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h84CQtCr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szNw7y6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7053E2D3733;
-	Thu, 15 Jan 2026 17:09:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457633A7F43;
+	Thu, 15 Jan 2026 17:13:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496989; cv=none; b=n2bTcHBswgqgvUPbbu9U3cLg643m0wdk36KJBvMw2Xkx5GZCWhCN5+dEwHOcQa6f5Pva1y4sSL0+AlrdfPieDpeKx4Ad3I7eHMvEblDf7RLbWnbb91A8yPEQAsR27Y7IJ9QIzKteI8laRCmMiedCTcri3TNTZW6hcGFJ+PPI0wM=
+	t=1768497224; cv=none; b=B4FlWxWdQ1a1swx81CdM7DQbaicze32hu98rdNtGJ3WHcDbTETPE+fIKDD4wpmz0oDImp8+PzMYBwMWRP79iMmjNe2q2DL9e9rNGdN0oPN46oRUIOdLP0e+5Dfeeins6ZSFqIIfbieDjiXMerfGkoSoP8Fei/v/vlkD3FectDjQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496989; c=relaxed/simple;
-	bh=Y8htGl0oGdkdNjjSKOYcSpPWdZMSGHTWfBSMhkCOwJs=;
+	s=arc-20240116; t=1768497224; c=relaxed/simple;
+	bh=Lf27tLDSPrqyRzmc0mDcZQWW+XGZYwIUsoIJ5X7bpEY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=icS8xDVZrekoBpKu1ujOxVelSWo0VeCQkjy2KT7rRqUrmh+AqqC9HJ7eFtwkHACOH+6RoB6SrcPwzl+9hhWe2fCwPZvtX8gceZxqLf2lMFwdkwFKe0XfbEsMu37LuVtmW1+FIUmRmiCuy5uBOdKXqNS5ts3qUSUxjrqcq6RrQ/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h84CQtCr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0589C116D0;
-	Thu, 15 Jan 2026 17:09:48 +0000 (UTC)
+	 MIME-Version; b=IeG1piaQauaHNXknpMJEkQcLz+0zxK5SrI4gqdE3YGE5fj0bNcTUfRYbRtzDPBkiMb0FmKUVvccipEiv5VXn+SfiG02vHAjWccUiZPXStbkDn8ZD14pqBMsO9i7KgBQVmHlLqX2Who9LB8RlV/6qwLTK+Wazvbe3L75FGZiAe/4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szNw7y6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EC1C116D0;
+	Thu, 15 Jan 2026 17:13:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496989;
-	bh=Y8htGl0oGdkdNjjSKOYcSpPWdZMSGHTWfBSMhkCOwJs=;
+	s=korg; t=1768497223;
+	bh=Lf27tLDSPrqyRzmc0mDcZQWW+XGZYwIUsoIJ5X7bpEY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=h84CQtCrmV+CFpT6BgiX8sSqxkQOtY81u6eVSuPH6CkDRomLwuilcE4xbK1HVcuvz
-	 O5uHwYsp0YHdYfu6nDAU1sYYWzrox86ovWv3JFHAXbvWH3UCZUb5B9fwwSQQhMVgxb
-	 P/bpu2cQ1D5aK/UwKE6H9njes+Id3aCtiqRJeXX4=
+	b=szNw7y6D4vxEErdwWDAmALJ6NC2G0BUUqqQlQvLLQAMFAPj1Cj/Y4jbOLRsYqYBFJ
+	 77J6F8gXa0ACvn8k7/6f3N0L9GFaovK6buNB9czDlF2SCNxs926DxydrS+R3MTX87X
+	 m+KN9Lh+bNrR7WT4prKbgwwtkzosU11Olryj/9D0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shardul Bankar <shardulsb08@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Daniel Borkmann <daniel@iogearbox.net>
-Subject: [PATCH 6.6 87/88] bpf: test_run: Fix ctx leak in bpf_prog_test_run_xdp error path
+	NeilBrown <neil@brown.name>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 60/72] NFSD: Remove NFSERR_EAGAIN
 Date: Thu, 15 Jan 2026 17:49:10 +0100
-Message-ID: <20260115164149.464437793@linuxfoundation.org>
+Message-ID: <20260115164145.677871004@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shardul Bankar <shardulsb08@gmail.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-commit 7f9ee5fc97e14682e36fe22ae2654c07e4998b82 upstream.
+[ Upstream commit c6c209ceb87f64a6ceebe61761951dcbbf4a0baa ]
 
-Fix a memory leak in bpf_prog_test_run_xdp() where the context buffer
-allocated by bpf_ctx_init() is not freed when the function returns early
-due to a data size check.
+I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
+None of these RFCs have an NFS status code that match the numeric
+value "11".
 
-On the failing path:
-  ctx = bpf_ctx_init(...);
-  if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
-      return -EINVAL;
+Based on the meaning of the EAGAIN errno, I presume the use of this
+status in NFSD means NFS4ERR_DELAY. So replace the one usage of
+nfserr_eagain, and remove it from NFSD's NFS status conversion
+tables.
 
-The early return bypasses the cleanup label that kfree()s ctx, leading to a
-leak detectable by kmemleak under fuzzing. Change the return to jump to the
-existing free_ctx label.
+As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
+era, but was not actually used by any code until commit f4e44b393389
+("NFSD: delay unmount source's export after inter-server copy
+completed."), at which time it become possible for NFSD to return
+a status code of 11 (which is not valid NFS protocol).
 
-Fixes: fe9544ed1a2e ("bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN")
-Reported-by: BPF Runtime Fuzzer (BRF)
-Signed-off-by: Shardul Bankar <shardulsb08@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Acked-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://patch.msgid.link/20251014120037.1981316-1-shardulsb08@gmail.com
+Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
+Cc: stable@vger.kernel.org
+Reviewed-by: NeilBrown <neil@brown.name>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bpf/test_run.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs_common/common.c   |    1 -
+ fs/nfsd/nfs4proc.c       |    2 +-
+ fs/nfsd/nfsd.h           |    1 -
+ include/trace/misc/nfs.h |    2 --
+ include/uapi/linux/nfs.h |    1 -
+ 5 files changed, 1 insertion(+), 6 deletions(-)
 
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1214,7 +1214,7 @@ int bpf_prog_test_run_xdp(struct bpf_pro
- 		goto free_ctx;
- 
- 	if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
--		return -EINVAL;
-+		goto free_ctx;
- 
- 	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
- 	if (IS_ERR(data)) {
+--- a/fs/nfs_common/common.c
++++ b/fs/nfs_common/common.c
+@@ -16,7 +16,6 @@ static const struct {
+ 	{ NFSERR_NOENT,		-ENOENT		},
+ 	{ NFSERR_IO,		-errno_NFSERR_IO},
+ 	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+ 	{ NFSERR_ACCES,		-EACCES		},
+ 	{ NFSERR_EXIST,		-EEXIST		},
+ 	{ NFSERR_XDEV,		-EXDEV		},
+--- a/fs/nfsd/nfs4proc.c
++++ b/fs/nfsd/nfs4proc.c
+@@ -1321,7 +1321,7 @@ try_again:
+ 					(schedule_timeout(20*HZ) == 0)) {
+ 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 				kfree(work);
+-				return nfserr_eagain;
++				return nfserr_jukebox;
+ 			}
+ 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
+ 			goto try_again;
+--- a/fs/nfsd/nfsd.h
++++ b/fs/nfsd/nfsd.h
+@@ -201,7 +201,6 @@ void		nfsd_lockd_shutdown(void);
+ #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
+ #define	nfserr_io		cpu_to_be32(NFSERR_IO)
+ #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
+-#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
+ #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
+ #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
+ #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
+--- a/include/trace/misc/nfs.h
++++ b/include/trace/misc/nfs.h
+@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
+ TRACE_DEFINE_ENUM(NFSERR_NOENT);
+ TRACE_DEFINE_ENUM(NFSERR_IO);
+ TRACE_DEFINE_ENUM(NFSERR_NXIO);
+-TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
+ TRACE_DEFINE_ENUM(NFSERR_ACCES);
+ TRACE_DEFINE_ENUM(NFSERR_EXIST);
+ TRACE_DEFINE_ENUM(NFSERR_XDEV);
+@@ -53,7 +52,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
+ 		{ NFSERR_NXIO,			"NXIO" }, \
+ 		{ ECHILD,			"CHILD" }, \
+ 		{ ETIMEDOUT,			"TIMEDOUT" }, \
+-		{ NFSERR_EAGAIN,		"AGAIN" }, \
+ 		{ NFSERR_ACCES,			"ACCES" }, \
+ 		{ NFSERR_EXIST,			"EXIST" }, \
+ 		{ NFSERR_XDEV,			"XDEV" }, \
+--- a/include/uapi/linux/nfs.h
++++ b/include/uapi/linux/nfs.h
+@@ -49,7 +49,6 @@
+ 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
+ 	NFSERR_IO = 5,			/* v2 v3 v4 */
+ 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
+-	NFSERR_EAGAIN = 11,		/* v2 v3 */
+ 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
+ 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
+ 	NFSERR_XDEV = 18,		/*    v3 v4 */
 
 
 
