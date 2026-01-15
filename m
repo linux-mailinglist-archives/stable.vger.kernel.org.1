@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-208773-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209754-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E6544D26381
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50EBCD27D9B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:56:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D8F32316605B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9C03E30561F9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E9683BB9F4;
-	Thu, 15 Jan 2026 17:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E166E3C0089;
+	Thu, 15 Jan 2026 17:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tvJgraXE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1SqkQ0t8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7C13BF303;
-	Thu, 15 Jan 2026 17:06:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A38EF2D73AB;
+	Thu, 15 Jan 2026 17:53:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496802; cv=none; b=m+Um5FVWNmInz599N8pBHlVttdgu/EqgFV6C1tR62VmOJ2SsXrwR6u6mdo0le9dUWI/I3j+sw/NdUqBCSoFdRNjAk0up3TBFmgAILgScIrfGLK9gDhXeuReho1mwEZABenXaOLc1A49Zh8EjZ1a3wpUwAAtRs2NtQYbFFOBr5SM=
+	t=1768499596; cv=none; b=cT90UMGjkGTClEbIXY8OOa7liAAr6bn01M8YEjab1fe7tnxolAY3tYrIeApOYZQ1jaMxKG92kV5Rk5I2DILC3mS7WPmRoy8l5wh/U0AuLve4WTcPT6atSAfiQ4Ahd6UV+Mv8sSAlsPNCTpUyQPmx9+FQr9ppU0S6vwKCFAUN53o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496802; c=relaxed/simple;
-	bh=PXmWpVkxV5lyU6kqhauJdUg+uekR1bFzGb+RkEG5KWk=;
+	s=arc-20240116; t=1768499596; c=relaxed/simple;
+	bh=99EjvocyOPlEBw/Xz0TvSQzhPvzVO4XtCtaqraAWNl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QZIP4hvQpKBW+pwE0UclQbIhW1rkJwrYAHfri3UyCSayRVRpJHSep8XPCY+XX/dbDPIE8Y/3ckfZVmMZ2O6+GjMYhZ22lyyH4ldAR01dhbyOw7wYTMvE+ZC/l2efJWGqmR1rJIPtz6iWWGKwGm+kKi6pbDjBHYJEvNPnGDHJEeU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tvJgraXE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E3E2C116D0;
-	Thu, 15 Jan 2026 17:06:41 +0000 (UTC)
+	 MIME-Version; b=Cn6dT3lXLiUOJXShoSYdsKYatmqgW2ZSjZZFPA1dizDHgEIHb1ITHcpn4p16lsgNjGLnL9vti1nJazsuYTk6+coNqUNeBIHyTLdZ3PVhokPM/iQUNRGZZJd/SDQsqmS8y5Y01ArdyPoZElFuqU6Xou2dSlVEsF07/o2vu+SRZhc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1SqkQ0t8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E7F6C116D0;
+	Thu, 15 Jan 2026 17:53:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496802;
-	bh=PXmWpVkxV5lyU6kqhauJdUg+uekR1bFzGb+RkEG5KWk=;
+	s=korg; t=1768499596;
+	bh=99EjvocyOPlEBw/Xz0TvSQzhPvzVO4XtCtaqraAWNl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tvJgraXEuAp0CspAuAhioR//6JszuY/Z/QGUO+mPdMr7wTcUYwQkpOVU2Bi+91wRt
-	 ig6W1Qlp/DxQUlD1lVc90eSzrqL8ocEcLX0O3H3spnJAV9Swkp+EaSRNY6sj/8RCKt
-	 Kn0jDmNwKqjGHTHZWswMTdopqiFWEXQ99M/seyMo=
+	b=1SqkQ0t8Mq+RWWnTRlOJs5dKfEkhnBZoTYLmx4fhIJfeNs8A0IE54bnRMtWOXwTwc
+	 tTv8LjXZtE37TOhicwR8WAsNqLmRBWqbMH5lxU0/0HxXoImMlBFi5uLGb6y25/QJJZ
+	 L3qiRjmXo1e8OoGU+p2+ZumL9YrLU9dIdvz1Wn8w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pedro Demarchi Gomes <pedrodemargomes@gmail.com>,
-	David Hildenbrand <david@redhat.com>,
-	craftfever <craftfever@airmail.cc>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.6 21/88] ksm: use range-walk function to jump over holes in scan_get_next_rmap_item
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 283/451] firewire: nosy: switch from pci_ to dma_ API
 Date: Thu, 15 Jan 2026 17:48:04 +0100
-Message-ID: <20260115164147.082778603@linuxfoundation.org>
+Message-ID: <20260115164241.121734215@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,239 +59,227 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit f5548c318d6520d4fa3c5ed6003eeb710763cbc5 upstream.
+[ Upstream commit 01d12a6656f7fa239cddbd713656be83cdbdc9b3 ]
 
-Currently, scan_get_next_rmap_item() walks every page address in a VMA to
-locate mergeable pages.  This becomes highly inefficient when scanning
-large virtual memory areas that contain mostly unmapped regions, causing
-ksmd to use large amount of cpu without deduplicating much pages.
+The wrappers in include/linux/pci-dma-compat.h should go away.
 
-This patch replaces the per-address lookup with a range walk using
-walk_page_range().  The range walker allows KSM to skip over entire
-unmapped holes in a VMA, avoiding unnecessary lookups.  This problem was
-previously discussed in [1].
+The patch has been generated with the coccinelle script below and has been
+hand modified to replace GFP_ with a correct flag.
+It has been compile tested.
 
-Consider the following test program which creates a 32 TiB mapping in the
-virtual address space but only populates a single page:
+When memory is allocated in 'add_card()', GFP_KERNEL can be used because
+this flag is already used a few lines above and no lock is taken in the
+between.
 
-#include <unistd.h>
-#include <stdio.h>
-#include <sys/mman.h>
+While at it, also remove some useless casting.
 
-/* 32 TiB */
-const size_t size = 32ul * 1024 * 1024 * 1024 * 1024;
+@@ @@
+-    PCI_DMA_BIDIRECTIONAL
++    DMA_BIDIRECTIONAL
 
-int main() {
-        char *area = mmap(NULL, size, PROT_READ | PROT_WRITE,
-                          MAP_NORESERVE | MAP_PRIVATE | MAP_ANON, -1, 0);
+@@ @@
+-    PCI_DMA_TODEVICE
++    DMA_TO_DEVICE
 
-        if (area == MAP_FAILED) {
-                perror("mmap() failed\n");
-                return -1;
-        }
+@@ @@
+-    PCI_DMA_FROMDEVICE
++    DMA_FROM_DEVICE
 
-        /* Populate a single page such that we get an anon_vma. */
-        *area = 0;
+@@ @@
+-    PCI_DMA_NONE
++    DMA_NONE
 
-        /* Enable KSM. */
-        madvise(area, size, MADV_MERGEABLE);
-        pause();
-        return 0;
-}
+@@
+expression e1, e2, e3;
+@@
+-    pci_alloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
 
-$ ./ksm-sparse  &
-$ echo 1 > /sys/kernel/mm/ksm/run
+@@
+expression e1, e2, e3;
+@@
+-    pci_zalloc_consistent(e1, e2, e3)
++    dma_alloc_coherent(&e1->dev, e2, e3, GFP_)
 
-Without this patch ksmd uses 100% of the cpu for a long time (more then 1
-hour in my test machine) scanning all the 32 TiB virtual address space
-that contain only one mapped page.  This makes ksmd essentially deadlocked
-not able to deduplicate anything of value.  With this patch ksmd walks
-only the one mapped page and skips the rest of the 32 TiB virtual address
-space, making the scan fast using little cpu.
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_free_consistent(e1, e2, e3, e4)
++    dma_free_coherent(&e1->dev, e2, e3, e4)
 
-Link: https://lkml.kernel.org/r/20251023035841.41406-1-pedrodemargomes@gmail.com
-Link: https://lkml.kernel.org/r/20251022153059.22763-1-pedrodemargomes@gmail.com
-Link: https://lore.kernel.org/linux-mm/423de7a3-1c62-4e72-8e79-19a6413e420c@redhat.com/ [1]
-Fixes: 31dbd01f3143 ("ksm: Kernel SamePage Merging")
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
-Co-developed-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: craftfever <craftfever@airmail.cc>
-Closes: https://lkml.kernel.org/r/020cf8de6e773bb78ba7614ef250129f11a63781@murena.io
-Suggested-by: David Hildenbrand <david@redhat.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-[ change page to folios ]
-Signed-off-by: Pedro Demarchi Gomes <pedrodemargomes@gmail.com>
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_single(e1, e2, e3, e4)
++    dma_map_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_single(e1, e2, e3, e4)
++    dma_unmap_single(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4, e5;
+@@
+-    pci_map_page(e1, e2, e3, e4, e5)
++    dma_map_page(&e1->dev, e2, e3, e4, e5)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_page(e1, e2, e3, e4)
++    dma_unmap_page(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_map_sg(e1, e2, e3, e4)
++    dma_map_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_unmap_sg(e1, e2, e3, e4)
++    dma_unmap_sg(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_cpu(e1, e2, e3, e4)
++    dma_sync_single_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_single_for_device(e1, e2, e3, e4)
++    dma_sync_single_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_cpu(e1, e2, e3, e4)
++    dma_sync_sg_for_cpu(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2, e3, e4;
+@@
+-    pci_dma_sync_sg_for_device(e1, e2, e3, e4)
++    dma_sync_sg_for_device(&e1->dev, e2, e3, e4)
+
+@@
+expression e1, e2;
+@@
+-    pci_dma_mapping_error(e1, e2)
++    dma_mapping_error(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_dma_mask(e1, e2)
++    dma_set_mask(&e1->dev, e2)
+
+@@
+expression e1, e2;
+@@
+-    pci_set_consistent_dma_mask(e1, e2)
++    dma_set_coherent_mask(&e1->dev, e2)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/e1d7fa558f31abf294659a9d4edcc1e4fc065fab.1623590706.git.christophe.jaillet@wanadoo.fr
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: c48c0fd0e196 ("firewire: nosy: Fix dma_free_coherent() size")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/ksm.c |  126 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++-------
- 1 file changed, 113 insertions(+), 13 deletions(-)
+ drivers/firewire/nosy.c | 43 +++++++++++++++++++++++------------------
+ 1 file changed, 24 insertions(+), 19 deletions(-)
 
---- a/mm/ksm.c
-+++ b/mm/ksm.c
-@@ -2304,6 +2304,95 @@ static struct ksm_rmap_item *get_next_rm
- 	return rmap_item;
- }
+diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
+index 42d9f25efc5c..ea31ac7ac1ca 100644
+--- a/drivers/firewire/nosy.c
++++ b/drivers/firewire/nosy.c
+@@ -513,12 +513,12 @@ remove_card(struct pci_dev *dev)
+ 		wake_up_interruptible(&client->buffer.wait);
+ 	spin_unlock_irq(&lynx->client_list_lock);
  
-+struct ksm_next_page_arg {
-+	struct folio *folio;
-+	struct page *page;
-+	unsigned long addr;
-+};
-+
-+static int ksm_next_page_pmd_entry(pmd_t *pmdp, unsigned long addr, unsigned long end,
-+		struct mm_walk *walk)
-+{
-+	struct ksm_next_page_arg *private = walk->private;
-+	struct vm_area_struct *vma = walk->vma;
-+	pte_t *start_ptep = NULL, *ptep, pte;
-+	struct mm_struct *mm = walk->mm;
-+	struct folio *folio;
-+	struct page *page;
-+	spinlock_t *ptl;
-+	pmd_t pmd;
-+
-+	if (ksm_test_exit(mm))
-+		return 0;
-+
-+	cond_resched();
-+
-+	pmd = pmdp_get_lockless(pmdp);
-+	if (!pmd_present(pmd))
-+		return 0;
-+
-+	if (IS_ENABLED(CONFIG_TRANSPARENT_HUGEPAGE) && pmd_leaf(pmd)) {
-+		ptl = pmd_lock(mm, pmdp);
-+		pmd = pmdp_get(pmdp);
-+
-+		if (!pmd_present(pmd)) {
-+			goto not_found_unlock;
-+		} else if (pmd_leaf(pmd)) {
-+			page = vm_normal_page_pmd(vma, addr, pmd);
-+			if (!page)
-+				goto not_found_unlock;
-+			folio = page_folio(page);
-+
-+			if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-+				goto not_found_unlock;
-+
-+			page += ((addr & (PMD_SIZE - 1)) >> PAGE_SHIFT);
-+			goto found_unlock;
-+		}
-+		spin_unlock(ptl);
-+	}
-+
-+	start_ptep = pte_offset_map_lock(mm, pmdp, addr, &ptl);
-+	if (!start_ptep)
-+		return 0;
-+
-+	for (ptep = start_ptep; addr < end; ptep++, addr += PAGE_SIZE) {
-+		pte = ptep_get(ptep);
-+
-+		if (!pte_present(pte))
-+			continue;
-+
-+		page = vm_normal_page(vma, addr, pte);
-+		if (!page)
-+			continue;
-+		folio = page_folio(page);
-+
-+		if (folio_is_zone_device(folio) || !folio_test_anon(folio))
-+			continue;
-+		goto found_unlock;
-+	}
-+
-+not_found_unlock:
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	return 0;
-+found_unlock:
-+	folio_get(folio);
-+	spin_unlock(ptl);
-+	if (start_ptep)
-+		pte_unmap(start_ptep);
-+	private->page = page;
-+	private->folio = folio;
-+	private->addr = addr;
-+	return 1;
-+}
-+
-+static struct mm_walk_ops ksm_next_page_ops = {
-+	.pmd_entry = ksm_next_page_pmd_entry,
-+	.walk_lock = PGWALK_RDLOCK,
-+};
-+
- static struct ksm_rmap_item *scan_get_next_rmap_item(struct page **page)
- {
- 	struct mm_struct *mm;
-@@ -2390,32 +2479,43 @@ next_mm:
- 			ksm_scan.address = vma->vm_end;
+-	pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
+-			    lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
+-	pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
+-			    lynx->rcv_pcl, lynx->rcv_pcl_bus);
+-	pci_free_consistent(lynx->pci_device, PAGE_SIZE,
+-			    lynx->rcv_buffer, lynx->rcv_buffer_bus);
++	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
++			  lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
++	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
++			  lynx->rcv_pcl, lynx->rcv_pcl_bus);
++	dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE, lynx->rcv_buffer,
++			  lynx->rcv_buffer_bus);
  
- 		while (ksm_scan.address < vma->vm_end) {
-+			struct ksm_next_page_arg ksm_next_page_arg;
-+			struct page *tmp_page = NULL;
-+			struct folio *folio;
-+
- 			if (ksm_test_exit(mm))
- 				break;
--			*page = follow_page(vma, ksm_scan.address, FOLL_GET);
--			if (IS_ERR_OR_NULL(*page)) {
--				ksm_scan.address += PAGE_SIZE;
--				cond_resched();
--				continue;
-+
-+			int found;
-+
-+			found = walk_page_range_vma(vma, ksm_scan.address,
-+						    vma->vm_end,
-+						    &ksm_next_page_ops,
-+						    &ksm_next_page_arg);
-+
-+			if (found > 0) {
-+				folio = ksm_next_page_arg.folio;
-+				tmp_page = ksm_next_page_arg.page;
-+				ksm_scan.address = ksm_next_page_arg.addr;
-+			} else {
-+				VM_WARN_ON_ONCE(found < 0);
-+				ksm_scan.address = vma->vm_end - PAGE_SIZE;
- 			}
--			if (is_zone_device_page(*page))
--				goto next_page;
--			if (PageAnon(*page)) {
--				flush_anon_page(vma, *page, ksm_scan.address);
--				flush_dcache_page(*page);
-+			if (tmp_page) {
-+				flush_anon_page(vma, tmp_page, ksm_scan.address);
-+				flush_dcache_page(tmp_page);
- 				rmap_item = get_next_rmap_item(mm_slot,
- 					ksm_scan.rmap_list, ksm_scan.address);
- 				if (rmap_item) {
- 					ksm_scan.rmap_list =
- 							&rmap_item->rmap_list;
- 					ksm_scan.address += PAGE_SIZE;
-+					*page = tmp_page;
- 				} else
--					put_page(*page);
-+					folio_put(folio);
- 				mmap_read_unlock(mm);
- 				return rmap_item;
- 			}
--next_page:
--			put_page(*page);
- 			ksm_scan.address += PAGE_SIZE;
- 			cond_resched();
- 		}
+ 	iounmap(lynx->registers);
+ 	pci_disable_device(dev);
+@@ -534,7 +534,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ 	u32 p, end;
+ 	int ret, i;
+ 
+-	if (pci_set_dma_mask(dev, DMA_BIT_MASK(32))) {
++	if (dma_set_mask(&dev->dev, DMA_BIT_MASK(32))) {
+ 		dev_err(&dev->dev,
+ 		    "DMA address limits not supported for PCILynx hardware\n");
+ 		return -ENXIO;
+@@ -566,12 +566,16 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ 		goto fail_deallocate_lynx;
+ 	}
+ 
+-	lynx->rcv_start_pcl = pci_alloc_consistent(lynx->pci_device,
+-				sizeof(struct pcl), &lynx->rcv_start_pcl_bus);
+-	lynx->rcv_pcl = pci_alloc_consistent(lynx->pci_device,
+-				sizeof(struct pcl), &lynx->rcv_pcl_bus);
+-	lynx->rcv_buffer = pci_alloc_consistent(lynx->pci_device,
+-				RCV_BUFFER_SIZE, &lynx->rcv_buffer_bus);
++	lynx->rcv_start_pcl = dma_alloc_coherent(&lynx->pci_device->dev,
++						 sizeof(struct pcl),
++						 &lynx->rcv_start_pcl_bus,
++						 GFP_KERNEL);
++	lynx->rcv_pcl = dma_alloc_coherent(&lynx->pci_device->dev,
++					   sizeof(struct pcl),
++					   &lynx->rcv_pcl_bus, GFP_KERNEL);
++	lynx->rcv_buffer = dma_alloc_coherent(&lynx->pci_device->dev,
++					      RCV_BUFFER_SIZE,
++					      &lynx->rcv_buffer_bus, GFP_KERNEL);
+ 	if (lynx->rcv_start_pcl == NULL ||
+ 	    lynx->rcv_pcl == NULL ||
+ 	    lynx->rcv_buffer == NULL) {
+@@ -669,14 +673,15 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
+ 
+ fail_deallocate_buffers:
+ 	if (lynx->rcv_start_pcl)
+-		pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
+-				lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
++		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
++				  lynx->rcv_start_pcl,
++				  lynx->rcv_start_pcl_bus);
+ 	if (lynx->rcv_pcl)
+-		pci_free_consistent(lynx->pci_device, sizeof(struct pcl),
+-				lynx->rcv_pcl, lynx->rcv_pcl_bus);
++		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
++				  lynx->rcv_pcl, lynx->rcv_pcl_bus);
+ 	if (lynx->rcv_buffer)
+-		pci_free_consistent(lynx->pci_device, PAGE_SIZE,
+-				lynx->rcv_buffer, lynx->rcv_buffer_bus);
++		dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE,
++				  lynx->rcv_buffer, lynx->rcv_buffer_bus);
+ 	iounmap(lynx->registers);
+ 
+ fail_deallocate_lynx:
+-- 
+2.51.0
+
 
 
 
