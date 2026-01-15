@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209124-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AABD26D16
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E3BFD272E3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7DF2F304C1DF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 04E293132F02
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DDD3E34F24E;
-	Thu, 15 Jan 2026 17:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C45533B8BB3;
+	Thu, 15 Jan 2026 17:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rWBOQS32"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BSWiqiWQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A1EB54A3C;
-	Thu, 15 Jan 2026 17:41:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78B514C81;
+	Thu, 15 Jan 2026 17:23:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498907; cv=none; b=bCMv0HMFWYwMbg9bP/v4ERE5raTRfVSnukWkV7pMtmzQBaEUCZUdeW14KXr4IMEHMR10gcsHl8m/lOxED6dEyv1YZ3B1nZg60DY351OShQWQi1D6FKZf5UGbVhyi8gR8CIsO3v9bP1hdnUPZD1u7fjjsDlP2qih5zkFa7FLrJG8=
+	t=1768497801; cv=none; b=f42fzqI9GMwIHW68PJG2u8ucnS3skBJKimDOft1UQ2oxiiP9DdU2a0OtOAARH4u5xrIHxINzrl6a/gUF/LhAK3VGSBuAWW6s7vjndV85GpNTQB2UgePUm4s1/SV+5FVsp+fJ4Su8jxiUVzozYgLZsmWB+JGs1Kvl7PzhqqyRU/I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498907; c=relaxed/simple;
-	bh=k6LjTWIGkQd0kBBOl0ZcqwVMSfw/DqJdWWz324W5Epw=;
+	s=arc-20240116; t=1768497801; c=relaxed/simple;
+	bh=eeiPP0uPgP30kbfHQYwFgovCOZW1yy7H1vBKal8/hDE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GDvj22XeHDcSZTYrJXcrkjfiR3GhDgqF3HZ53mfgcdbjqbVFYJdepe+W88WTijWFgKX949vJoM0jgY7d+lRHU1G09yLMGDZnDSzg1vX5bz2VtmE4UrR3HzINh4fT0LSeDRFkfdX2pSpRwCrNrbOvjDDtVIcJXqXezorucssgDW8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rWBOQS32; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3267FC16AAE;
-	Thu, 15 Jan 2026 17:41:47 +0000 (UTC)
+	 MIME-Version; b=l3RO+69xi/LJVeTx3CA16qZ4WzdgsiSyh7IfRDu9YIFGYQnWWi0gOU9Jd70GHwxAZkhWVvoKuGs7KtUAlAqzpK0sOsdr1By7fZrtbOPZ3K8E1GWN/Nkah7/L56fgx2Rgdxz57hVc6KrU65SzTJzamskcPB8bXqLtDNrHIKKSXv0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BSWiqiWQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02561C116D0;
+	Thu, 15 Jan 2026 17:23:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498907;
-	bh=k6LjTWIGkQd0kBBOl0ZcqwVMSfw/DqJdWWz324W5Epw=;
+	s=korg; t=1768497801;
+	bh=eeiPP0uPgP30kbfHQYwFgovCOZW1yy7H1vBKal8/hDE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rWBOQS32GYAqiaQYare+3V3cKlYnE2I8TZ11oO3UgGW6oGtVZRArGi3TRkunknirR
-	 r1L13LqBeGmvwE7UOe797UY7UyVzqa2xMOyVcEriLutRv0w2hrBCam0tDhdJJI8Dm8
-	 mqQ+ZLqiPNKnYc6ppiK3BILiu7clSxKU9wmPa1lM=
+	b=BSWiqiWQkuaz0wHLqJIf0l7BmdxZmAh8hWvAGikCU/ffjU6SyIgqYRZGzLwhOAr0B
+	 tTaRny/4082Ru9t1POoWken6n6dNqbF0rTWiIZJet0ez7YxkAruWIbPq0un2WCU4lV
+	 KwjGwocxZg3I/94EeDp0VHjb+DE4ipCQVG/ykKOM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harald Freudenberger <freude@linux.ibm.com>,
-	Heiko Carstens <hca@linux.ibm.com>,
+	Michael Stoler <michael.stoler@vastdata.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 040/451] s390/ap: Dont leak debug feature files if AP instructions are not available
+Subject: [PATCH 5.15 175/554] NFS: Initialise verifiers for visible dentries in nfs_atomic_open()
 Date: Thu, 15 Jan 2026 17:44:01 +0100
-Message-ID: <20260115164232.342669919@linuxfoundation.org>
+Message-ID: <20260115164252.603390907@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +60,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Heiko Carstens <hca@linux.ibm.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 020d5dc57874e58d3ebae398f3fe258f029e3d06 ]
+[ Upstream commit 518c32a1bc4f8df1a8442ee8cdfea3e2fcff20a0 ]
 
-If no AP instructions are available the AP bus module leaks registered
-debug feature files. Change function call order to fix this.
+Ensure that the verifiers are initialised before calling
+d_splice_alias() in nfs_atomic_open().
 
-Fixes: cccd85bfb7bf ("s390/zcrypt: Rework debug feature invocations.")
-Reviewed-by: Harald Freudenberger <freude@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Reported-by: Michael Stoler <michael.stoler@vastdata.com>
+Fixes: 809fd143de88 ("NFSv4: Ensure nfs_atomic_open set the dentry verifier on ENOENT")
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/ap_bus.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/nfs/dir.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/s390/crypto/ap_bus.c b/drivers/s390/crypto/ap_bus.c
-index 13e56a23e41ec..a1903b4a7f00a 100644
---- a/drivers/s390/crypto/ap_bus.c
-+++ b/drivers/s390/crypto/ap_bus.c
-@@ -1648,15 +1648,15 @@ static int __init ap_module_init(void)
- {
- 	int rc, i;
- 
--	rc = ap_debug_init();
--	if (rc)
--		return rc;
--
- 	if (!ap_instructions_available()) {
- 		pr_warn("The hardware system does not support AP instructions\n");
- 		return -ENODEV;
- 	}
- 
-+	rc = ap_debug_init();
-+	if (rc)
-+		return rc;
-+
- 	/* init ap_queue hashtable */
- 	hash_init(ap_queues);
- 
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index dc0c50b97643b..6dd56841feab9 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1960,12 +1960,12 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 		d_drop(dentry);
+ 		switch (err) {
+ 		case -ENOENT:
+-			d_splice_alias(NULL, dentry);
+ 			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
+ 				dir_verifier = inode_peek_iversion_raw(dir);
+ 			else
+ 				dir_verifier = nfs_save_change_attribute(dir);
+ 			nfs_set_verifier(dentry, dir_verifier);
++			d_splice_alias(NULL, dentry);
+ 			break;
+ 		case -EISDIR:
+ 		case -ENOTDIR:
 -- 
 2.51.0
 
