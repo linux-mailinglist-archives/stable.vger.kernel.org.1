@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209562-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209108-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B1931D2784F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DC88D273E0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:13:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BCC27322A3D1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F269631646E8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461DD2D9ECB;
-	Thu, 15 Jan 2026 17:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8398D3A4F22;
+	Thu, 15 Jan 2026 17:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML/7R0YX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uUh+0GZp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032472D541B;
-	Thu, 15 Jan 2026 17:44:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B5202D6E72;
+	Thu, 15 Jan 2026 17:22:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499050; cv=none; b=Zje0Ub9eOjQdfmfqUUs3nNFCcp//OqKONnJbNfcnAfSx7fRphXpPjg3mFPprx+xzxiCT3mm1FqMaKkXC2S/ElNvCqjQVJAiY4nAT2cci/QQ8dDyBX/Qj+l4U5Kz4OZsyCdd9ZFqLcQk5d16It55QMcKA/zQA+TRAE7gPssOlXRs=
+	t=1768497756; cv=none; b=Z6fxkNWUXUYEbqq7R+YSz2fBBCiMxRMRrFjKNLKEg1tgBvuPq1HRds/8detwjMKjBGNgAB9Caieo7pHIwvU4Lz6pAfHWC7GG3h6ibqQHQ/jtXEKBxALcoMmESQPPPCX5PBOzlu6du/s8vP2Y9arzAdLXBnwJrQxjZlmaAxobxng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499050; c=relaxed/simple;
-	bh=HDxpvgeiC+BOQvL0xgY5jYY/mf4NtGd/hEe13F2STNw=;
+	s=arc-20240116; t=1768497756; c=relaxed/simple;
+	bh=l9F2Tw25/FRBE1IegQeuwrKK414HKHE/05UU+omoYJ0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oYpbFIB3o2UYQkoec27hrFzfqmu6xfWXwDKYU4QeFDILYsGYNd1nANomdYA89vK5k8sRinv4wMKxiuB+EfbmeQ5nUisrsF1KDs+VAsT3qFggt9tl/9yunK/qLCcIt6AYbNCGkU2V5oeTPzC/JZy9XilwKb6lAd+Ja1CowritZik=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML/7R0YX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834DDC116D0;
-	Thu, 15 Jan 2026 17:44:09 +0000 (UTC)
+	 MIME-Version; b=stEbKB9WqeevzcSGoDJRpf397spwJSbi7I4fnTBnT31pXLLwhb3ddf5R3mbB+Zq3RkO12O4Wt1Z2u1VLdpbLuXW3FVhLHrJbJrQ+1VkRNLqAIH4rFhRHPtr6HYdTaaMgO3y86AD0h/OGZXdBJic1FiKTezTvtRD8nPqL0HZF4oA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uUh+0GZp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BBA3C16AAE;
+	Thu, 15 Jan 2026 17:22:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499049;
-	bh=HDxpvgeiC+BOQvL0xgY5jYY/mf4NtGd/hEe13F2STNw=;
+	s=korg; t=1768497756;
+	bh=l9F2Tw25/FRBE1IegQeuwrKK414HKHE/05UU+omoYJ0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ML/7R0YXwxCYH9ebCGEXfhb2VChA8nYkstUNJ/wX6wxUig/A7xkiEaoyC9Om7Vug4
-	 QdSdYrs2h1dqKLsQVgM3yxsJojkBjDdrP8Y3HMPGNoVLOkHzi1lUhnnMbOPemsFZNK
-	 mddU3B2Fhg0Ukpx7jV6mITC+EFJ1Vdun/rHa+kcc=
+	b=uUh+0GZpxd7wDVg/8Ciy1rWJZUa3Hl3BhOZa+TT/HVqTpReFwOcv2caG4LUKl3PlS
+	 w52x825irffSZC5FENaD1PDJo6TqLGfmpraFmqTPbPN8JElqhQS+3yc/hJDAOewW3V
+	 Z1Qi4OdNcT+tNvNvBaW71k6Scly8ZE7ylKSXiTm0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Eric Whitney <enwlinux@gmail.com>,
-	Theodore Tso <tytso@mit.edu>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 057/451] ext4: minor defrag code improvements
+Subject: [PATCH 5.15 192/554] dm-raid: fix possible NULL dereference with undefined raid type
 Date: Thu, 15 Jan 2026 17:44:18 +0100
-Message-ID: <20260115164232.961342225@linuxfoundation.org>
+Message-ID: <20260115164253.209984408@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Whitney <enwlinux@gmail.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit d412df530f77d0f61c41b83f925997452fc3944c ]
+[ Upstream commit 2f6cfd6d7cb165a7af8877b838a9f6aab4159324 ]
 
-Modify the error returns for two file types that can't be defragged to
-more clearly communicate those restrictions to a caller.  When the
-defrag code is applied to swap files, return -ETXTBSY, and when applied
-to quota files, return -EOPNOTSUPP.  Move an extent tree search whose
-results are only occasionally required to the site always requiring them
-for improved efficiency.  Address a few typos.
+rs->raid_type is assigned from get_raid_type_by_ll(), which may return
+NULL. This NULL value could be dereferenced later in the condition
+'if (!(rs_is_raid10(rs) && rt_is_raid0(rs->raid_type)))'.
 
-Signed-off-by: Eric Whitney <enwlinux@gmail.com>
-Link: https://lore.kernel.org/r/20220722163910.268564-1-enwlinux@gmail.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: a2e5a3cea4b1 ("ext4: correct the checking of quota files before moving extents")
+Add a fail-fast check to return early with an error if raid_type is NULL,
+similar to other uses of this function.
+
+Found by Linux Verification Center (linuxtesting.org) with Svace.
+
+Fixes: 33e53f06850f ("dm raid: introduce extended superblock and new raid types to support takeover/reshaping")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/move_extent.c | 16 +++++++---------
- 1 file changed, 7 insertions(+), 9 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
-index 661a8544d7817..4cb1872c9af43 100644
---- a/fs/ext4/move_extent.c
-+++ b/fs/ext4/move_extent.c
-@@ -466,19 +466,17 @@ mext_check_arguments(struct inode *orig_inode,
- 	if (IS_IMMUTABLE(donor_inode) || IS_APPEND(donor_inode))
- 		return -EPERM;
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 8f02fa6d3301f..d4a44dca33fd5 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -2259,6 +2259,8 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
  
--	/* Ext4 move extent does not support swapfile */
-+	/* Ext4 move extent does not support swap files */
- 	if (IS_SWAPFILE(orig_inode) || IS_SWAPFILE(donor_inode)) {
--		ext4_debug("ext4 move extent: The argument files should "
--			"not be swapfile [ino:orig %lu, donor %lu]\n",
-+		ext4_debug("ext4 move extent: The argument files should not be swap files [ino:orig %lu, donor %lu]\n",
- 			orig_inode->i_ino, donor_inode->i_ino);
--		return -EBUSY;
-+		return -ETXTBSY;
- 	}
+ 			mddev->reshape_position = le64_to_cpu(sb->reshape_position);
+ 			rs->raid_type = get_raid_type_by_ll(mddev->level, mddev->layout);
++			if (!rs->raid_type)
++				return -EINVAL;
+ 		}
  
- 	if (ext4_is_quota_file(orig_inode) && ext4_is_quota_file(donor_inode)) {
--		ext4_debug("ext4 move extent: The argument files should "
--			"not be quota files [ino:orig %lu, donor %lu]\n",
-+		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %lu, donor %lu]\n",
- 			orig_inode->i_ino, donor_inode->i_ino);
--		return -EBUSY;
-+		return -EOPNOTSUPP;
- 	}
- 
- 	/* Ext4 move extent supports only extent based file */
-@@ -626,11 +624,11 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
- 		if (ret)
- 			goto out;
- 		ex = path[path->p_depth].p_ext;
--		next_blk = ext4_ext_next_allocated_block(path);
- 		cur_blk = le32_to_cpu(ex->ee_block);
- 		cur_len = ext4_ext_get_actual_len(ex);
- 		/* Check hole before the start pos */
- 		if (cur_blk + cur_len - 1 < o_start) {
-+			next_blk = ext4_ext_next_allocated_block(path);
- 			if (next_blk == EXT_MAX_BLOCKS) {
- 				o_start = o_end;
- 				ret = -ENODATA;
-@@ -659,7 +657,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
- 		donor_page_index = d_start >> (PAGE_SHIFT -
- 					       donor_inode->i_blkbits);
- 		offset_in_page = o_start % blocks_per_page;
--		if (cur_len > blocks_per_page- offset_in_page)
-+		if (cur_len > blocks_per_page - offset_in_page)
- 			cur_len = blocks_per_page - offset_in_page;
- 		/*
- 		 * Up semaphore to avoid following problems:
+ 	} else {
 -- 
 2.51.0
 
