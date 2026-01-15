@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209522-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209099-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D4689D26DC4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A04ED27291
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C76C53027577
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AE76C30478D9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A9DB34216C;
-	Thu, 15 Jan 2026 17:42:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B173A4F22;
+	Thu, 15 Jan 2026 17:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I705gB7z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H/UQAhYQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D24FC2C0F83;
-	Thu, 15 Jan 2026 17:42:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A64F621CC5A;
+	Thu, 15 Jan 2026 17:22:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498935; cv=none; b=mNm/BCLzkQipSL02bzRuRLp2E951x4hForMo/6QIqhEddaqybXYeGACHpPLetOfONZCFaLBjmE9VVC6V3FDi8UMjmGONm+3ZDLrBc/GP0XjPUZldYZJyNd4epWFa21Mva3b4+KoHnelJE3YOYsbPZdv99hxNC18+GLCJWSszYu4=
+	t=1768497731; cv=none; b=AxenI6ukVW9ncbm0N5Pkz+4y9xFnSvJcSW3MR6rIt34zcGDzb9aTYDbDTQ542x6Zml6TTIZ5G8JVCe1DxU9Np5ZI1p7avoLNaeOsLG4Qh5IRvy6OtlJQlTvP4nb4mtv7z5rQ9t4XW8EqbzJEL+wMdY5PCklGNoqEfh81MhIQUYw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498935; c=relaxed/simple;
-	bh=rSi57yX/SnIop7wGVDQP7S9a5+gJloXzpymBJeCN+es=;
+	s=arc-20240116; t=1768497731; c=relaxed/simple;
+	bh=jvTwUufVTw9dQuNhs4Osul5PIGp1A8femj9Y5plT4Wc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EP8nAx+Gt2oPHHU8IT2wkTkElxtby7EXALO+3Wz6xLPSlobBi6X0OUejhh0MRLtfswLr6WcB2MRgX8m9S2eKqArx1uG6400EqcxuvM0so3rhPI8BZf+SraK0RW0TmxL1mp6R9Kn3fgzB0FoOKx+jHYA/b6biAQ28YTohWWOU1Uo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I705gB7z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60790C116D0;
-	Thu, 15 Jan 2026 17:42:15 +0000 (UTC)
+	 MIME-Version; b=H4+PXXi9SiYECE0yWr+0gKdAFyjtjSrrBTnNlv95VH+eyFO7w5Inb7eH0fi1Hu25uf7z+7coqTMsdE9YcXSt9tDV+lXvzod0WSqGy1BGGaL6X7ylTtv/4YITGCZ5l/tqZ52WfM0dPpnCBhWBiljUqSVcMKRTknJq0uieG2eRZW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H/UQAhYQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EE2DC116D0;
+	Thu, 15 Jan 2026 17:22:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498935;
-	bh=rSi57yX/SnIop7wGVDQP7S9a5+gJloXzpymBJeCN+es=;
+	s=korg; t=1768497730;
+	bh=jvTwUufVTw9dQuNhs4Osul5PIGp1A8femj9Y5plT4Wc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I705gB7za6KQOGayPz053N9+3x4GXq6XIE/xL8IvSWY0biwlc7S1lW8cU0+wN0DhM
-	 QNX0itanrVVKWpbrFRe9XtRU5gwOyTGGneN7d83kGbyEwxw62jdz0n++nju4MNqZDr
-	 btUy2sfBnRvqPMppX0NaGURAjONlY56B6aSMlyRU=
+	b=H/UQAhYQUEQyrQNR29USNKhY/SkYEcDB6LX0FL76bM+xWvmgDq2BvoaKCU36HBO6S
+	 1D7Ti8zBYTP4xx/KLadekwJlIHxhhgrCuai5Zgt6wZ9W2E8RbkCfeGH1apYKHVy8VZ
+	 KTwmlO2U563gg1zvM8yb2FS178W8+575AcKe5mcw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
-	Jamie Iles <quic_jiles@quicinc.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/451] i3c: support dynamically added i2c devices
+Subject: [PATCH 5.15 184/554] ASoC: bcm: bcm63xx-pcm-whistler: Check return value of of_dma_configure()
 Date: Thu, 15 Jan 2026 17:44:10 +0100
-Message-ID: <20260115164232.672376136@linuxfoundation.org>
+Message-ID: <20260115164252.922356428@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,189 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamie Iles <quic_jiles@quicinc.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 72a4501b5d089772671360a6ec74d5350acf8c2e ]
+[ Upstream commit 0ebbd45c33d0049ebf5a22c1434567f0c420b333 ]
 
-I2C devices can be added to the system dynamically through several
-sources other than static board info including device tree overlays and
-sysfs i2c new_device.
+bcm63xx_soc_pcm_new() does not check the return value of
+of_dma_configure(), which may fail with -EPROBE_DEFER or
+other errors, allowing PCM setup to continue with incomplete
+DMA configuration.
 
-Add an I2C bus notifier to attach the clients at runtime if they were
-not defined in the board info.  For DT devices find the LVR in the reg
-property, for user-space new_device additions we synthesize a
-conservative setting of no spike filters and fast mode only.
+Add error checking for of_dma_configure() and return on failure.
 
-Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Link: https://lore.kernel.org/r/20220117174816.1963463-3-quic_jiles@quicinc.com
-Stable-dep-of: 9d4f219807d5 ("i3c: fix refcount inconsistency in i3c_master_register")
+Fixes: 88eb404ccc3e ("ASoC: brcm: Add DSL/PON SoC audio driver")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251202101642.492-1-vulab@iscas.ac.cn
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 128 ++++++++++++++++++++++++++++++++++++++++++-
- 1 file changed, 127 insertions(+), 1 deletion(-)
+ sound/soc/bcm/bcm63xx-pcm-whistler.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index e3fffc5015c10..f9f96c4bb9002 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2212,11 +2212,122 @@ static u32 i3c_master_i2c_funcs(struct i2c_adapter *adapter)
- 	return I2C_FUNC_SMBUS_EMUL | I2C_FUNC_I2C;
- }
+diff --git a/sound/soc/bcm/bcm63xx-pcm-whistler.c b/sound/soc/bcm/bcm63xx-pcm-whistler.c
+index b5096f64c576e..456aacc59e507 100644
+--- a/sound/soc/bcm/bcm63xx-pcm-whistler.c
++++ b/sound/soc/bcm/bcm63xx-pcm-whistler.c
+@@ -353,7 +353,9 @@ static int bcm63xx_soc_pcm_new(struct snd_soc_component *component,
  
-+static u8 i3c_master_i2c_get_lvr(struct i2c_client *client)
-+{
-+	/* Fall back to no spike filters and FM bus mode. */
-+	u8 lvr = I3C_LVR_I2C_INDEX(2) | I3C_LVR_I2C_FM_MODE;
-+
-+	if (client->dev.of_node) {
-+		u32 reg[3];
-+
-+		if (!of_property_read_u32_array(client->dev.of_node, "reg",
-+						reg, ARRAY_SIZE(reg)))
-+			lvr = reg[2];
-+	}
-+
-+	return lvr;
-+}
-+
-+static int i3c_master_i2c_attach(struct i2c_adapter *adap, struct i2c_client *client)
-+{
-+	struct i3c_master_controller *master = i2c_adapter_to_i3c_master(adap);
-+	enum i3c_addr_slot_status status;
-+	struct i2c_dev_desc *i2cdev;
-+	int ret;
-+
-+	/* Already added by board info? */
-+	if (i3c_master_find_i2c_dev_by_addr(master, client->addr))
-+		return 0;
-+
-+	status = i3c_bus_get_addr_slot_status(&master->bus, client->addr);
-+	if (status != I3C_ADDR_SLOT_FREE)
-+		return -EBUSY;
-+
-+	i3c_bus_set_addr_slot_status(&master->bus, client->addr,
-+				     I3C_ADDR_SLOT_I2C_DEV);
-+
-+	i2cdev = i3c_master_alloc_i2c_dev(master, client->addr,
-+					  i3c_master_i2c_get_lvr(client));
-+	if (IS_ERR(i2cdev)) {
-+		ret = PTR_ERR(i2cdev);
-+		goto out_clear_status;
-+	}
-+
-+	ret = i3c_master_attach_i2c_dev(master, i2cdev);
+ 	i2s_priv = dev_get_drvdata(asoc_rtd_to_cpu(rtd, 0)->dev);
+ 
+-	of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
++	ret = of_dma_configure(pcm->card->dev, pcm->card->dev->of_node, 1);
 +	if (ret)
-+		goto out_free_dev;
-+
-+	return 0;
-+
-+out_free_dev:
-+	i3c_master_free_i2c_dev(i2cdev);
-+out_clear_status:
-+	i3c_bus_set_addr_slot_status(&master->bus, client->addr,
-+				     I3C_ADDR_SLOT_FREE);
-+
-+	return ret;
-+}
-+
-+static int i3c_master_i2c_detach(struct i2c_adapter *adap, struct i2c_client *client)
-+{
-+	struct i3c_master_controller *master = i2c_adapter_to_i3c_master(adap);
-+	struct i2c_dev_desc *dev;
-+
-+	dev = i3c_master_find_i2c_dev_by_addr(master, client->addr);
-+	if (!dev)
-+		return -ENODEV;
-+
-+	i3c_master_detach_i2c_dev(dev);
-+	i3c_bus_set_addr_slot_status(&master->bus, dev->addr,
-+				     I3C_ADDR_SLOT_FREE);
-+	i3c_master_free_i2c_dev(dev);
-+
-+	return 0;
-+}
-+
- static const struct i2c_algorithm i3c_master_i2c_algo = {
- 	.master_xfer = i3c_master_i2c_adapter_xfer,
- 	.functionality = i3c_master_i2c_funcs,
- };
++		return ret;
  
-+static int i3c_i2c_notifier_call(struct notifier_block *nb, unsigned long action,
-+				 void *data)
-+{
-+	struct i2c_adapter *adap;
-+	struct i2c_client *client;
-+	struct device *dev = data;
-+	struct i3c_master_controller *master;
-+	int ret;
-+
-+	if (dev->type != &i2c_client_type)
-+		return 0;
-+
-+	client = to_i2c_client(dev);
-+	adap = client->adapter;
-+
-+	if (adap->algo != &i3c_master_i2c_algo)
-+		return 0;
-+
-+	master = i2c_adapter_to_i3c_master(adap);
-+
-+	i3c_bus_maintenance_lock(&master->bus);
-+	switch (action) {
-+	case BUS_NOTIFY_ADD_DEVICE:
-+		ret = i3c_master_i2c_attach(adap, client);
-+		break;
-+	case BUS_NOTIFY_DEL_DEVICE:
-+		ret = i3c_master_i2c_detach(adap, client);
-+		break;
-+	}
-+	i3c_bus_maintenance_unlock(&master->bus);
-+
-+	return ret;
-+}
-+
-+static struct notifier_block i2cdev_notifier = {
-+	.notifier_call = i3c_i2c_notifier_call,
-+};
-+
- static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
- {
- 	struct i2c_adapter *adap = i3c_master_to_i2c_adapter(master);
-@@ -2747,12 +2858,27 @@ void i3c_dev_free_ibi_locked(struct i3c_dev_desc *dev)
- 
- static int __init i3c_init(void)
- {
--	return bus_register(&i3c_bus_type);
-+	int res = bus_register_notifier(&i2c_bus_type, &i2cdev_notifier);
-+
-+	if (res)
-+		return res;
-+
-+	res = bus_register(&i3c_bus_type);
-+	if (res)
-+		goto out_unreg_notifier;
-+
-+	return 0;
-+
-+out_unreg_notifier:
-+	bus_unregister_notifier(&i2c_bus_type, &i2cdev_notifier);
-+
-+	return res;
- }
- subsys_initcall(i3c_init);
- 
- static void __exit i3c_exit(void)
- {
-+	bus_unregister_notifier(&i2c_bus_type, &i2cdev_notifier);
- 	idr_destroy(&i3c_bus_idr);
- 	bus_unregister(&i3c_bus_type);
- }
+ 	ret = dma_coerce_mask_and_coherent(pcm->card->dev, DMA_BIT_MASK(32));
+ 	if (ret)
 -- 
 2.51.0
 
