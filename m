@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-209851-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208917-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4FD277C0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 36394D264A6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A05FC3107F01
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:30 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 1ED47304C519
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DA53C196E;
-	Thu, 15 Jan 2026 17:57:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 768D63BF2F2;
+	Thu, 15 Jan 2026 17:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFBLmJ3S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v6HAQByv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873A3D7D0E;
-	Thu, 15 Jan 2026 17:57:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 388582F619D;
+	Thu, 15 Jan 2026 17:13:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499871; cv=none; b=XYv1X9BBUHAqGtC4+w/sg3AnNLmKvnA4/A9lwX2/+SvFd9fiWbRHU2xlxWKRjZnfKsE0OyQg/24/DqOu1BecRbHJsCEGg3HhX3ZfFmH80fVDqTvyfgYSzZkIjcafW3jCz2LEO3UpsDwPFvB0ByU8mPIyFSnppRT20/HYD3a5jLg=
+	t=1768497212; cv=none; b=SfCrgesLfZroHw/MjoPLfMNrh3oDLQdQV+x/ag5Cv+wL7TmKfzhFpdd7gPe633AID9O/kmZU3c3loWz+Z9DmlDWUjtwJ/NFZNV8qxEvnZ/N8pl4TpdNT13h2tG4XKz3+vy7pkCwcBLy+eaA9YgglI+cQ9zEHZzDUB8R8UPLrxRQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499871; c=relaxed/simple;
-	bh=rJJS4vxndoCTbCEG2PF2ki+wcRMpD6RV0CVl3F4vPbU=;
+	s=arc-20240116; t=1768497212; c=relaxed/simple;
+	bh=XOhfUfPwTjrqjjyxaQQ9Fb7Sq0uWsFAmMJlXFP0N+t0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y9h/j0yejkCbLDqr7HWwckBznhLt8eRvRTmzXXqqo73pnLpCzbOVZvgoQXrTULXUHpr5u7xj4voEqFNYIdIZTQSbmzvW6ucZvsJiV2pSBbYKGfhGxeam2IF9N6nONPcisQXpLgOZO9eVB1VuQG2WzUor3W8tobEykdshvZIs/yY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFBLmJ3S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE42C116D0;
-	Thu, 15 Jan 2026 17:57:51 +0000 (UTC)
+	 MIME-Version; b=r3UF4+fSFjkcVJCJRqJooqe47wTjaViLNaVwfpcVF6qvUq5Cb0OMkR6zUApzugNbnp4zE0caUqXhydTkPLCZj95t1lEh+d9hT1MrLGfFgqQQrpkf1izmioy+gvVnEwRsPLF18JbY2o+NVZIUpExK0lUDN0RForpNpiBdRO5mEtk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v6HAQByv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B728FC16AAE;
+	Thu, 15 Jan 2026 17:13:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499871;
-	bh=rJJS4vxndoCTbCEG2PF2ki+wcRMpD6RV0CVl3F4vPbU=;
+	s=korg; t=1768497212;
+	bh=XOhfUfPwTjrqjjyxaQQ9Fb7Sq0uWsFAmMJlXFP0N+t0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rFBLmJ3SABnJKanU/3z3giBPTZQCi44/oRNpGKtGhiIppqVWOe9tiAUWHBjFrBYs9
-	 kp/HCM0ZqJNDADNBzvPRMKOokH+D+u8pd7nl3yv21sr6Bf7iI3FA61Q6ndT2TbXI32
-	 HNkYX4W6vyySAFbN1ty5APXUkB9tN2n3QjQpDjqE=
+	b=v6HAQByvC0iLrPQ3nAqJD8ahLC9md9kMXwMBOjqt9NEE8kfKzFzwU8Hk4ksBe3Tk2
+	 uhDqqbnrwiwNQKCo00kam0HchIIK/FpbWisABxPpgcL58uUZfcLpNqpH1Jo3PBM6LS
+	 TPJ37+UOBfEJ8Sa/iT2kRpAJ7wKWHeCVB+D82Et4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.10 345/451] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 56/72] ALSA: ac97: fix a double free in snd_ac97_controller_register()
 Date: Thu, 15 Jan 2026 17:49:06 +0100
-Message-ID: <20260115164243.375415711@linuxfoundation.org>
+Message-ID: <20260115164145.528359848@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +60,69 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
+[ Upstream commit 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f ]
 
-Check that the resource which is converted to a surface exists before
-trying to use the cursor snooper on it.
+If ac97_add_adapter() fails, put_device() is the correct way to drop
+the device reference. kfree() is not required.
+Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
+the cleanup.
 
-vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
-because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
-unfortunately functions that accept the actual surfaces as objects might
-(and in case of the cursor snooper, do not) be able to handle null
-objects. Make sure that we validate not only the identifier (via the
-vmw_cmd_res_check) but also check that the actual resource exists before
-trying to do something with it.
+Found by code review.
 
-Fixes unchecked null-ptr reference in the snooping code.
-
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
-Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
+Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: Modified to apply on v5.10.y-v6.1.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ sound/ac97/bus.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1520,6 +1520,7 @@ static int vmw_cmd_dma(struct vmw_privat
- 		       SVGA3dCmdHeader *header)
- {
- 	struct vmw_buffer_object *vmw_bo = NULL;
-+	struct vmw_resource *res;
- 	struct vmw_surface *srf = NULL;
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
- 	int ret;
-@@ -1555,18 +1556,24 @@ static int vmw_cmd_dma(struct vmw_privat
- 
- 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
- 		VMW_RES_DIRTY_SET : 0;
--	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
--				dirty, user_surface_converter,
--				&cmd->body.host.sid, NULL);
-+	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
-+				user_surface_converter, &cmd->body.host.sid,
-+				NULL);
- 	if (unlikely(ret != 0)) {
- 		if (unlikely(ret != -ERESTARTSYS))
- 			VMW_DEBUG_USER("could not find surface for DMA.\n");
- 		return ret;
- 	}
- 
--	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
-+	res = sw_context->res_cache[vmw_res_surface].res;
-+	if (!res) {
-+		VMW_DEBUG_USER("Invalid DMA surface.\n");
-+		return -EINVAL;
-+	}
- 
--	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base, header);
-+	srf = vmw_res_to_srf(res);
-+	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base,
-+			     header);
- 
- 	return 0;
+--- a/sound/ac97/bus.c
++++ b/sound/ac97/bus.c
+@@ -299,6 +299,7 @@ static void ac97_adapter_release(struct
+ 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
+ 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
+ 		dev_name(ac97_ctrl->parent));
++	kfree(ac97_ctrl);
  }
+ 
+ static const struct device_type ac97_adapter_type = {
+@@ -320,7 +321,9 @@ static int ac97_add_adapter(struct ac97_
+ 		ret = device_register(&ac97_ctrl->adap);
+ 		if (ret)
+ 			put_device(&ac97_ctrl->adap);
+-	}
++	} else
++		kfree(ac97_ctrl);
++
+ 	if (!ret) {
+ 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
+ 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
+@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_control
+ 	ret = ac97_add_adapter(ac97_ctrl);
+ 
+ 	if (ret)
+-		goto err;
++		return ERR_PTR(ret);
+ 	ac97_bus_reset(ac97_ctrl);
+ 	ac97_bus_scan(ac97_ctrl);
+ 
+ 	return ac97_ctrl;
+-err:
+-	kfree(ac97_ctrl);
+-	return ERR_PTR(ret);
+ }
+ EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
+ 
 
 
 
