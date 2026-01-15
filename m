@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208634-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208696-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0C86BD2612B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D19D6D26229
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id E213830E617C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D974731314D5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 79EE43A9DA3;
-	Thu, 15 Jan 2026 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFBD2D73A0;
+	Thu, 15 Jan 2026 17:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XIB0tG6p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDkLHMzm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D9EF379975;
-	Thu, 15 Jan 2026 17:00:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A522D73BE;
+	Thu, 15 Jan 2026 17:03:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496408; cv=none; b=CnOQH/w089eXMyu3a8AUyOiqr+Dk6gCAWvn30AWbhk/rOTu0VLiU4PtAFL2CyuPXMqvA9sO9uThquxGdb9q+ZHhK1BuNzy4uof42m+u8BK9aJkvg3dhG8qipASx4MF6m2he9xAMtZCXSWUnA6kXs/jWXxs/aIr9WLUJdfxVAw+M=
+	t=1768496586; cv=none; b=uMRZWUECtYeKf3BWw4YJDbCflQxHg3JYNjOwFbVd8TtdOtsQo8REdoGS/j3Du49ioMVhOAcmlsyqYmI9HYh4PJqjJU/HkNoNsXrrNVGTj96yK9sfuSLEmAL2LO6VBCIw5fyS06t4kILpR3yFrVhLUI2jWNv1nhKeG3pAe3WWO5g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496408; c=relaxed/simple;
-	bh=28B5FrkxaveGDFngIjdkENuZy27Y1fBNLPletrmRSnc=;
+	s=arc-20240116; t=1768496586; c=relaxed/simple;
+	bh=tFlVnIQEStf/XH5ABTmZyz0BamqSFlhOyIurXDJM2/k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmFo0MdDJX0SGSKY/kRI7ap3KjwCoGpYVTNFr3zOg0ocQPFvWKH765iOpY0jPNcnlkZRPEjSoY0Poka0WXYYta3R1QAXPRIkveKd/q1frKPtbAF5t72hgM8UXdRlozzO3odt6xpHeapyjEtHAw6NDGKzJzPUfLwsPDbpUoa/3mY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XIB0tG6p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD7F8C116D0;
-	Thu, 15 Jan 2026 17:00:07 +0000 (UTC)
+	 MIME-Version; b=IXUG8Ar6hGrqAr9J8TtfspUg4e5ZxwezmUExvaI4WX75u3PuhgzVA30GL0PXdEodMK5wejAooHVdHF2OdGnFgP3vtZlbI1FkfwiozVOr5+t5rwIKG+gIAZ4VzRRvNL40dX+WZwWOrA/xm6d8WA2cBwp1LNY9Dy0SpPCwzQ1XyuA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDkLHMzm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B4CC116D0;
+	Thu, 15 Jan 2026 17:03:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496408;
-	bh=28B5FrkxaveGDFngIjdkENuZy27Y1fBNLPletrmRSnc=;
+	s=korg; t=1768496586;
+	bh=tFlVnIQEStf/XH5ABTmZyz0BamqSFlhOyIurXDJM2/k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XIB0tG6psh6t0NRGCh8EgLRFsc7sjmsB8n2XQohgGfw+IkGdNEGFISYYTus3TalIc
-	 RoFbfFtUH4meMziRWkeovyaz9L4otnVGEQ0ZDS+kSKfbT+gvf9uuVBX/pkioMkI/fA
-	 KUvazWdo+GVcwTX4gcBm95hWa1ybe+yLo6mIAgOs=
+	b=GDkLHMzmcQ+SRKpX9AewvnrZFYRIriGR7zi4bxnOeAhGti+O0PKDV4ANK0PBa0mXc
+	 Pjs4//ohtqlrWLrlEjn5cDNSswbxv+tIGA5pMUvU3TX3U/ZNy3YLdkziH8/P453ab1
+	 awr01vwueEgdUo+3kRV19lKebr9WVzWjJ7/0QGjk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nimrod Oren <noren@nvidia.com>,
-	Gal Pressman <gal@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 141/181] selftests: drv-net: Bring back tool() to driver __init__s
+Subject: [PATCH 6.12 063/119] netfilter: nf_conncount: update last_gc only when GC has been performed
 Date: Thu, 15 Jan 2026 17:47:58 +0100
-Message-ID: <20260115164207.407548802@linuxfoundation.org>
+Message-ID: <20260115164154.230450359@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-[ Upstream commit 353cfc0ef3f34ef7fe313ae38dac37f2454a7cf5 ]
+[ Upstream commit 7811ba452402d58628e68faedf38745b3d485e3c ]
 
-The pp_alloc_fail.py test (which doesn't run in NIPA CI?) uses tool, add
-back the import.
+Currently last_gc is being updated everytime a new connection is
+tracked, that means that it is updated even if a GC wasn't performed.
+With a sufficiently high packet rate, it is possible to always bypass
+the GC, causing the list to grow infinitely.
 
-Resolves:
-  ImportError: cannot import name 'tool' from 'lib.py'
+Update the last_gc value only when a GC has been actually performed.
 
-Fixes: 68a052239fc4 ("selftests: drv-net: update remaining Python init files")
-Reviewed-by: Nimrod Oren <noren@nvidia.com>
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Link: https://patch.msgid.link/20260105163319.47619-1-gal@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/drivers/net/hw/lib/py/__init__.py | 4 ++--
- tools/testing/selftests/net/lib/py/__init__.py            | 4 ++--
- 2 files changed, 4 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conncount.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-index fb010a48a5a19..a86f5c311fdcb 100644
---- a/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-+++ b/tools/testing/selftests/drivers/net/hw/lib/py/__init__.py
-@@ -22,7 +22,7 @@ try:
-         NlError, RtnlFamily, DevlinkFamily, PSPFamily
-     from net.lib.py import CmdExitFailure
-     from net.lib.py import bkg, cmd, bpftool, bpftrace, defer, ethtool, \
--        fd_read_timeout, ip, rand_port, wait_port_listen, wait_file
-+        fd_read_timeout, ip, rand_port, wait_port_listen, wait_file, tool
-     from net.lib.py import KsftSkipEx, KsftFailEx, KsftXfailEx
-     from net.lib.py import ksft_disruptive, ksft_exit, ksft_pr, ksft_run, \
-         ksft_setup
-@@ -37,7 +37,7 @@ try:
-                "CmdExitFailure",
-                "bkg", "cmd", "bpftool", "bpftrace", "defer", "ethtool",
-                "fd_read_timeout", "ip", "rand_port",
--               "wait_port_listen", "wait_file",
-+               "wait_port_listen", "wait_file", "tool",
-                "KsftSkipEx", "KsftFailEx", "KsftXfailEx",
-                "ksft_disruptive", "ksft_exit", "ksft_pr", "ksft_run",
-                "ksft_setup",
-diff --git a/tools/testing/selftests/net/lib/py/__init__.py b/tools/testing/selftests/net/lib/py/__init__.py
-index 97b7cf2b20eb9..8f2da17d53510 100644
---- a/tools/testing/selftests/net/lib/py/__init__.py
-+++ b/tools/testing/selftests/net/lib/py/__init__.py
-@@ -12,7 +12,7 @@ from .ksft import KsftFailEx, KsftSkipEx, KsftXfailEx, ksft_pr, ksft_eq, \
- from .netns import NetNS, NetNSEnter
- from .nsim import NetdevSim, NetdevSimDev
- from .utils import CmdExitFailure, fd_read_timeout, cmd, bkg, defer, \
--    bpftool, ip, ethtool, bpftrace, rand_port, wait_port_listen, wait_file
-+    bpftool, ip, ethtool, bpftrace, rand_port, wait_port_listen, wait_file, tool
- from .ynl import NlError, YnlFamily, EthtoolFamily, NetdevFamily, RtnlFamily, RtnlAddrFamily
- from .ynl import NetshaperFamily, DevlinkFamily, PSPFamily
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 3c1b155f7a0ea..828d5c64c68a3 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -229,6 +229,7 @@ static int __nf_conncount_add(struct net *net,
  
-@@ -25,7 +25,7 @@ __all__ = ["KSRC",
-            "NetNS", "NetNSEnter",
-            "CmdExitFailure", "fd_read_timeout", "cmd", "bkg", "defer",
-            "bpftool", "ip", "ethtool", "bpftrace", "rand_port",
--           "wait_port_listen", "wait_file",
-+           "wait_port_listen", "wait_file", "tool",
-            "NetdevSim", "NetdevSimDev",
-            "NetshaperFamily", "DevlinkFamily", "PSPFamily", "NlError",
-            "YnlFamily", "EthtoolFamily", "NetdevFamily", "RtnlFamily",
+ 		nf_ct_put(found_ct);
+ 	}
++	list->last_gc = (u32)jiffies;
+ 
+ add_new_node:
+ 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
+@@ -248,7 +249,6 @@ static int __nf_conncount_add(struct net *net,
+ 	conn->jiffies32 = (u32)jiffies;
+ 	list_add_tail(&conn->node, &list->head);
+ 	list->count++;
+-	list->last_gc = (u32)jiffies;
+ 
+ out_put:
+ 	if (refcounted)
 -- 
 2.51.0
 
