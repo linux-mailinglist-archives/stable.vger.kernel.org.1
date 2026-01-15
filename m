@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208837-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208919-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 753CAD26735
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:26 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C6790D264B6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:21:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6C8FE3120231
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 602E3300CEF6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0201B34216C;
-	Thu, 15 Jan 2026 17:09:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CF1D3BF317;
+	Thu, 15 Jan 2026 17:13:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytkBH+94"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gzmsNs1j"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B98B02D781B;
-	Thu, 15 Jan 2026 17:09:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3D493A7F43;
+	Thu, 15 Jan 2026 17:13:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496983; cv=none; b=Fg5yQm3xVunqojOSF42dM6qm7/UUQd6ibBvtOkwrwn8G4h7Z5YLEZowmdvpKTbopHuPt7bnO64t+pV+HejzWQeBP9GHagzI2yEyltX35/CF4bRiwCOn3tRCnxo/pV+rnRvtKCvtAdnlWk9h3QujlIgJTa0+UOGpXyNG6gbXynpw=
+	t=1768497218; cv=none; b=OEr6FOP8tzfn4AUnjGCboLFUz6uKs79757/lW/kB0n8PEVpz7qAxqaz4YkzekA9xFNFeh1tW+PNK3Xje5nZGUFS/r6itfjfCo1qJlENs/YP7SzJN23U9FXbiUKsRMqaxp7mTsG7lDZBmfTG8hcH+forvjBF4Cc3SPSidBYmXt6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496983; c=relaxed/simple;
-	bh=WP2vDiEbfUaSj302+P5KlpZsM+iCcbGUlKKEE65MwdI=;
+	s=arc-20240116; t=1768497218; c=relaxed/simple;
+	bh=sIffCSSsX4H5ff3K8OrDYVUNXj8ZVcrZXxYPC0XTLPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BooRPPBTZpzcTqQFqRvvKsHY4584JnR8hevOK9wcNXjH7C096lS41HOJbVFmHDJxIaiJppnhSrT3rAnXtAJB8Zlj6cW0m+8Zzlmi3D+1dfG5f55YtD12a2NiAP6tBRSUZjyzCEkdt+pAxolPh2CYbB+ySC3onpaXQy+yYodEbQA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytkBH+94; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4662BC19422;
-	Thu, 15 Jan 2026 17:09:43 +0000 (UTC)
+	 MIME-Version; b=DuC3EabDCGU7d41hw+htDZb8jr8Upxc4guOZGOfOePfbVo0GEC1dnMc0woogm8tP3fzNtVROtANXeyeBK1sSZ3IamujAMhkjv71zXtc8CQNOsu6UU5RAF/pL2Lvv+6J108DDPckcLUkJIj+wWOFhk4wg6LvC25ljLFkn2V+iMAk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gzmsNs1j; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A01C116D0;
+	Thu, 15 Jan 2026 17:13:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496983;
-	bh=WP2vDiEbfUaSj302+P5KlpZsM+iCcbGUlKKEE65MwdI=;
+	s=korg; t=1768497217;
+	bh=sIffCSSsX4H5ff3K8OrDYVUNXj8ZVcrZXxYPC0XTLPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ytkBH+94wlTM1ODuC0yAC8BuDgTlUXH2Rvw6asLpBNcox1+V3lLLYxe0+iD/KeMtR
-	 Ptd0l4/NdjH+XVD8sVbr3jZju+JVl/zyTiQ0Y6lpwKup/aWjxZxAdQBTYaNs8b/h5d
-	 mbjhf9agpiNJzW15l/XQEeS4Oen8NmkhVB9jZRBA=
+	b=gzmsNs1jD9JQh/gDKtSzMFRia+cSHKixNnuPP7TJmbe7KqoWr4wEBEh5RHE2JXa7z
+	 z0O+QKcSz+FnOftbnGzuxbyy7cxocN4fCAsXaCKZ39YaA1n1/JtJrOCUcZwVOXKgh1
+	 yeXjJ9nfCslbKjdv34yr+RRXZqeaqkl4QpVT/Q0U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chen Hanxiao <chenhx.fnst@fujitsu.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	Chuck Lever <chuck.lever@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 85/88] ASoC: fsl_sai: Add missing registers to cache default
+Subject: [PATCH 6.1 58/72] NFS: trace: show TIMEDOUT instead of 0x6e
 Date: Thu, 15 Jan 2026 17:49:08 +0100
-Message-ID: <20260115164149.392079562@linuxfoundation.org>
+Message-ID: <20260115164145.603997392@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,60 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Chen Hanxiao <chenhx.fnst@fujitsu.com>
 
-[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
+[ Upstream commit cef48236dfe55fa266d505e8a497963a7bc5ef2a ]
 
-Drivers does cache sync during runtime resume, setting all writable
-registers. Not all writable registers are set in cache default, resulting
-in the erorr message:
-  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
-  unexpected behavior
+__nfs_revalidate_inode may return ETIMEDOUT.
 
-Fix this by adding missing writable register defaults.
+print symbol of ETIMEDOUT in nfs trace:
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+before:
+cat-5191 [005] 119.331127: nfs_revalidate_inode_exit: error=-110 (0x6e)
+
+after:
+cat-1738 [004] 44.365509: nfs_revalidate_inode_exit: error=-110 (TIMEDOUT)
+
+Signed-off-by: Chen Hanxiao <chenhx.fnst@fujitsu.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Stable-dep-of: c6c209ceb87f ("NFSD: Remove NFSERR_EAGAIN")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 3 +++
- 1 file changed, 3 insertions(+)
+ include/trace/misc/nfs.h |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index 0de878d64a3bd..95a502ec3a057 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -979,6 +979,7 @@ static struct reg_default fsl_sai_reg_defaults_ofs0[] = {
- 	{FSL_SAI_TDR6, 0},
- 	{FSL_SAI_TDR7, 0},
- 	{FSL_SAI_TMR, 0},
-+	{FSL_SAI_TTCTL, 0},
- 	{FSL_SAI_RCR1(0), 0},
- 	{FSL_SAI_RCR2(0), 0},
- 	{FSL_SAI_RCR3(0), 0},
-@@ -1002,12 +1003,14 @@ static struct reg_default fsl_sai_reg_defaults_ofs8[] = {
- 	{FSL_SAI_TDR6, 0},
- 	{FSL_SAI_TDR7, 0},
- 	{FSL_SAI_TMR, 0},
-+	{FSL_SAI_TTCTL, 0},
- 	{FSL_SAI_RCR1(8), 0},
- 	{FSL_SAI_RCR2(8), 0},
- 	{FSL_SAI_RCR3(8), 0},
- 	{FSL_SAI_RCR4(8), 0},
- 	{FSL_SAI_RCR5(8), 0},
- 	{FSL_SAI_RMR, 0},
-+	{FSL_SAI_RTCTL, 0},
- 	{FSL_SAI_MCTL, 0},
- 	{FSL_SAI_MDIV, 0},
- };
--- 
-2.51.0
-
+--- a/include/trace/misc/nfs.h
++++ b/include/trace/misc/nfs.h
+@@ -52,6 +52,7 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
+ 		{ NFSERR_IO,			"IO" }, \
+ 		{ NFSERR_NXIO,			"NXIO" }, \
+ 		{ ECHILD,			"CHILD" }, \
++		{ ETIMEDOUT,			"TIMEDOUT" }, \
+ 		{ NFSERR_EAGAIN,		"AGAIN" }, \
+ 		{ NFSERR_ACCES,			"ACCES" }, \
+ 		{ NFSERR_EXIST,			"EXIST" }, \
 
 
 
