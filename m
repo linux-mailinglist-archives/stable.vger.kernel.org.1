@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209446-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209835-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2C6ED27205
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:27 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E1A7D273A7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:12:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D264E3086F72
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A711F31048BB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D464C81;
-	Thu, 15 Jan 2026 17:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D44733D7265;
+	Thu, 15 Jan 2026 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBL0Vske"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EQ1WM1HU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2B86334;
-	Thu, 15 Jan 2026 17:38:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878C43C00BF;
+	Thu, 15 Jan 2026 17:57:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498720; cv=none; b=hNYm9nI4lfZqKdcPGYKbYZ0e/3whhhM46bBvieu+fzZ+bP2pQ1+4ne72DUzbepsnRpsqS8E0cBntBfZsrKxY4nFevRoM2wAEZnSU//0KkD2s++VMqSd2KMKYyD4QuOngwNTUfPLAK232z3xhlK9Hp4Oxyf+KVQ7/XXJ9HKoz/NM=
+	t=1768499825; cv=none; b=LIDIUs7we9hK0HylLiL6M/NgfFzBIiLBRLZPnAWvoP8PZuOjtnr3RnlMOc6R3j9+IduZpK9+rLKh8ay1ISQoQeIVgvHfm5PS1XI7muyIJL/2auHxUEs+ZZZpHPtu/xM+bKls6tgXIRK3fGqLPZ0uiSZ+2Xo8AFEFB7jJ129dU90=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498720; c=relaxed/simple;
-	bh=vcb8DYub5I7ndI/ak1HH/wHxSCAJH/eudNXlyBxVylc=;
+	s=arc-20240116; t=1768499825; c=relaxed/simple;
+	bh=13nflMFjf4RskqzRazg4yzUffDVzU72jarIk58uwNI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y7oQe8Qk+9Ew21tgwww4oryyts4NW43cXcOBRxuh/Ao/L/0nfY6LB+Vc8Cd5/A4UvgqhwXPb06JIDsgwu/BqQ8F2xuL+OZ6krZPdyKaQ7zdNp8EOS4id2iW0dkZPEawq/OZBstwljgRSzklF3USOYcazVdwbelfaUTsOH9aIAU4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBL0Vske; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422D0C116D0;
-	Thu, 15 Jan 2026 17:38:40 +0000 (UTC)
+	 MIME-Version; b=DcpCJ9m6lhXahU8Kt5DAwo1ZNReQGZ5wvlrxuzhbb4A7slDiY+4ItsL03cxt+ECoqzu5bfdh+5l/rNMl7BlneCdL0v/pMq+nnk6hK4jXeq7gW/9OLjytzMSkRZJl8rEGG/ZyreQPKTA1zEIc1xl8/XqBALZxGOucthZ/2X3Dffo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EQ1WM1HU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1303BC116D0;
+	Thu, 15 Jan 2026 17:57:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498720;
-	bh=vcb8DYub5I7ndI/ak1HH/wHxSCAJH/eudNXlyBxVylc=;
+	s=korg; t=1768499825;
+	bh=13nflMFjf4RskqzRazg4yzUffDVzU72jarIk58uwNI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GBL0VskeqxRuqrXmcMrnrzOvYDxvQGMagH7P+z35gSHUikQVo4V9ExUjzzdd+GKvy
-	 hOhiUc47qVEIJqyXgRiDrJqdtw92IR5/r97TWr4QxEgUy7HZaIoEsZmcWKDyXY97kK
-	 rnDlo6SzhcsJPq8KmCbzw8dGc4sMwsSG6+ExcNpQ=
+	b=EQ1WM1HUql2+hMa8ZhyygCw94q8HPhySJ6IQJCARyDtKQ1Ig0LMlDTRdA0fsctzza
+	 JYN26sT7H34R2MAv1jFaL54ujCr/RjvktvC59p3gYXd414V7L061fdCiNDm1zqYVVF
+	 p/4stN2JvAt4K3jlP1ObBvXo69Qi81xxg5/ZY7nQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dan Carpenter <dan.carpenter@linaro.org>,
-	Cristian Marussi <cristian.marussi@arm.com>,
-	Amitai Gottlieb <amitaig@hailo.ai>,
-	Sudeep Holla <sudeep.holla@arm.com>
-Subject: [PATCH 5.15 497/554] firmware: arm_scmi: Fix unused notifier-block in unregister
+	stable@kernel.org,
+	syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com,
+	Chao Yu <chao@kernel.org>,
+	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 362/451] f2fs: fix to avoid updating zero-sized extent in extent cache
 Date: Thu, 15 Jan 2026 17:49:23 +0100
-Message-ID: <20260115164304.308193945@linuxfoundation.org>
+Message-ID: <20260115164244.001963041@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,44 +62,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amitai Gottlieb <amitaig@hailo.ai>
+From: Chao Yu <chao@kernel.org>
 
-In scmi_devm_notifier_unregister(), the notifier-block argument was ignored
-and never passed to devres_release(). As a result, the function always
-returned -ENOENT and failed to unregister the notifier.
+[ Upstream commit 7c37c79510329cd951a4dedf3f7bf7e2b18dccec ]
 
-Drivers that depend on this helper for teardown could therefore hit
-unexpected failures, including kernel panics.
+As syzbot reported:
 
-Commit 264a2c520628 ("firmware: arm_scmi: Simplify scmi_devm_notifier_unregister")
-removed the faulty code path during refactoring and hence this fix is not
-required upstream.
+F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
+------------[ cut here ]------------
+kernel BUG at fs/f2fs/extent_cache.c:678!
+Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
+CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
+RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
+Call Trace:
+ <TASK>
+ f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
+ f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
+ f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
+ f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
+ vfs_fallocate+0x669/0x7e0 fs/open.c:342
+ ioctl_preallocate fs/ioctl.c:289 [inline]
+ file_ioctl+0x611/0x780 fs/ioctl.c:-1
+ do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
+ __do_sys_ioctl fs/ioctl.c:595 [inline]
+ __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
+ do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
+ do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
+ entry_SYSCALL_64_after_hwframe+0x77/0x7f
+RIP: 0033:0x7f07bc58eec9
 
-Cc: <stable@vger.kernel.org> # 5.15.x, 6.1.x, and 6.6.x
-Fixes: 5ad3d1cf7d34 ("firmware: arm_scmi: Introduce new devres notification ops")
-Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
-Signed-off-by: Amitai Gottlieb <amitaig@hailo.ai>
-Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
+In error path of f2fs_zero_range(), it may add a zero-sized extent
+into extent cache, it should be avoided.
+
+Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
+Cc: stable@kernel.org
+Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/arm_scmi/notify.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/f2fs/file.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/firmware/arm_scmi/notify.c
-+++ b/drivers/firmware/arm_scmi/notify.c
-@@ -1539,6 +1539,7 @@ static int scmi_devm_notifier_unregister
- 	dres.handle = sdev->handle;
- 	dres.proto_id = proto_id;
- 	dres.evt_id = evt_id;
-+	dres.nb = nb;
- 	if (src_id) {
- 		dres.__src_id = *src_id;
- 		dres.src_id = &dres.__src_id;
+--- a/fs/f2fs/file.c
++++ b/fs/f2fs/file.c
+@@ -1458,7 +1458,8 @@ static int f2fs_do_zero_range(struct dno
+ 		f2fs_set_data_blkaddr(dn);
+ 	}
+ 
+-	f2fs_update_extent_cache_range(dn, start, 0, index - start);
++	if (index > start)
++		f2fs_update_extent_cache_range(dn, start, 0, index - start);
+ 
+ 	return ret;
+ }
 
 
 
