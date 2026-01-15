@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208861-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209768-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B09D26454
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:47 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0AB1BD274ED
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D7464314DD9B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:53 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AE0BF304D0AF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9360A25228D;
-	Thu, 15 Jan 2026 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCC623C1997;
+	Thu, 15 Jan 2026 17:53:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Exs/P1jK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZW9RfgxG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D562D781B;
-	Thu, 15 Jan 2026 17:10:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3C223D5242;
+	Thu, 15 Jan 2026 17:53:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497052; cv=none; b=PqNl+H8LEkexb4Si7PvjSGbCjBrr5Hpz8up2DwUDshK7gD0ZaaZSOldCS1DnEXuEKbmx4FMp1OiqD7ynLaAAzQ3EtKlzL0awlyEvQwAE/+Oq6g2Sj5Xrr8snJ/pX5QufcCY3nTwJ8/3S/CsB6Cc8xZ+tLEbOiY9oJn0RSvLj9fk=
+	t=1768499636; cv=none; b=LhFYW61p8X9edu8/4siWn5UDC2XX/k3dE5qqN3mbPpWJS3QJR7KChZaD8Wbkh1qQMpPtOLjzVV2Vby3hyy6dibvPBASJhhN8/LnEaIaN/ysRT/AJ5mQFBuDle98uO8tlu1Ycoo3+KCsgSorNXqEOLhN0ww8rmh91oaPSykiKTOg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497052; c=relaxed/simple;
-	bh=zpCmZmMwYUzU9DF6avncuHNEa4n6KXJ/zu3TmBaVO8E=;
+	s=arc-20240116; t=1768499636; c=relaxed/simple;
+	bh=phcAM1dAQnG5XGGPqmvyb+ASu1lwNxX+aRZGG0iE4SQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=c9Qq8j0AW2bHH1p5sX8xqOTac0gW8HAKWjN+VcCWRQLNmNrNuT3rM8ij9C5oePTKgSrLGpheq02RMRD7R324GuIOQGdjygZLSkQ//ohy3K8g91IBp1GK3MA0qxUvHxkj/qM0+sVsg3Z/GyeOh5zbn8I55HMfZtBPycKkfVlXE/E=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Exs/P1jK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F08C116D0;
-	Thu, 15 Jan 2026 17:10:51 +0000 (UTC)
+	 MIME-Version; b=bwYTZiRrfQM7NoqmTgR5G6NpOxETrl1RV7YIOoegTX6S8KHJEFhF/8bYDVT3m0lAPYqALaiqrcyH+nxoaePv8k0eV2xx9ygTZkxcjDGVDbu+qDIjVlLXTKYlDl67xJ4ATPyQ2HGgrYGD1GM8eZnXXtKZHRBXp13QodYDJyneM9Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZW9RfgxG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5BCCC116D0;
+	Thu, 15 Jan 2026 17:53:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497051;
-	bh=zpCmZmMwYUzU9DF6avncuHNEa4n6KXJ/zu3TmBaVO8E=;
+	s=korg; t=1768499636;
+	bh=phcAM1dAQnG5XGGPqmvyb+ASu1lwNxX+aRZGG0iE4SQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Exs/P1jKV+QsW53NiPPOPs3sdUnAFwuuj1N/kvytAmKZ210+4ZRWkKo49COyDYCUr
-	 0Bs/axMwjO9lvear5Wrwfqp6GLRiDotaCnIYLOi8UQFaOk1Cmr5avtEerrSeVoiKAw
-	 b/ufeicpqVDU/2MvE1kd/dCHQ3fWS08a1AAfy1Jg=
+	b=ZW9RfgxGjEIb5lZEDHTVxeLf84Dc1/MrG/onacgLliQjf/7B7MtuwHDI0seMPHWqX
+	 ZXjq3fEkACfQtagSI+v2CdXIsB1fYVS7ODRzghJ5m86TxiSCe/9+OPzIE4cxQuFqjo
+	 EKhTaB7cRyGMMd4SedV5oo5iiXKTO4gTOkloAork=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.1 07/72] drm/pl111: Fix error handling in pl111_amba_probe
+	Thomas Fourier <fourier.thomas@gmail.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 296/451] RDMA/bnxt_re: fix dma_free_coherent() pointer
 Date: Thu, 15 Jan 2026 17:48:17 +0100
-Message-ID: <20260115164143.757582067@linuxfoundation.org>
+Message-ID: <20260115164241.597523880@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 0ddd3bb4b14c9102c0267b3fd916c81fe5ab89c1 upstream.
+[ Upstream commit fcd431a9627f272b4c0bec445eba365fe2232a94 ]
 
-Jump to the existing dev_put label when devm_request_irq() fails
-so drm_dev_put() and of_reserved_mem_device_release() run
-instead of returning early and leaking resources.
+The dma_alloc_coherent() allocates a dma-mapped buffer, pbl->pg_arr[i].
+The dma_free_coherent() should pass the same buffer to
+dma_free_coherent() and not page-aligned.
 
-Found via static analysis and code review.
-
-Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20251211123345.2392065-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
+Link: https://patch.msgid.link/20251230085121.8023-2-fourier.thomas@gmail.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/pl111/pl111_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/gpu/drm/pl111/pl111_drv.c
-+++ b/drivers/gpu/drm/pl111/pl111_drv.c
-@@ -297,7 +297,7 @@ static int pl111_amba_probe(struct amba_
- 			       variant->name, priv);
- 	if (ret != 0) {
- 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
--		return ret;
-+		goto dev_put;
- 	}
- 
- 	ret = pl111_modeset_init(drm);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index 64e88104165e..8547a8512541 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -70,9 +70,7 @@ static void __free_pbl(struct bnxt_qplib_res *res, struct bnxt_qplib_pbl *pbl,
+ 		for (i = 0; i < pbl->pg_count; i++) {
+ 			if (pbl->pg_arr[i])
+ 				dma_free_coherent(&pdev->dev, pbl->pg_size,
+-						  (void *)((unsigned long)
+-						   pbl->pg_arr[i] &
+-						  PAGE_MASK),
++						  pbl->pg_arr[i],
+ 						  pbl->pg_map_arr[i]);
+ 			else
+ 				dev_warn(&pdev->dev,
+-- 
+2.51.0
+
 
 
 
