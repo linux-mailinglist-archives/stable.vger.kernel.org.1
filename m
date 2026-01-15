@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209578-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209141-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id A412CD27B0A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:40:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C0D4CD2731F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id F2C81304AE56
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A6833240A86
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 315FE3A7F5D;
-	Thu, 15 Jan 2026 17:44:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CBA3B8BB3;
+	Thu, 15 Jan 2026 17:24:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vDl4p0V5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T/+6J0Xf"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59633A0E9A;
-	Thu, 15 Jan 2026 17:44:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E58542D9494;
+	Thu, 15 Jan 2026 17:24:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499096; cv=none; b=lZ7R7NH6siU2EEsYito3X8pBkiHJTw1qTWIb1930KHiUTyUlZlo84jRKA03PtWPSXGFELy8f/GXkmZ4hp7RwyUPzXBtVSapYOSgVbAqUPualgAc9jUVcQJfussh28S2uum60WK11bD8WofQ7WV7Ei11HyniyBo7Dksi84hIrA7w=
+	t=1768497850; cv=none; b=WtzDHuTJJzgIaznz5NKRylagvIVsGUz3I/+7J417tKI/w5phwxBFeZFdjC0z+Kskdv9pn2ZiNl+eUu65qmJij2g3ZZsFWQATYEAblA2JDtqdTHHyGY6yBdRo53PH+GsLH5ifcclVcEfD3txg93DxK3Ao4OBV9GRC3ZO4XkDkvIg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499096; c=relaxed/simple;
-	bh=GY/Ub4hnpRGj7pi0DU/VzlrIEENkR8+hdUYGE+lZ7XU=;
+	s=arc-20240116; t=1768497850; c=relaxed/simple;
+	bh=mE6I6U4Cvebo4fodznGB+VFlixQqMRf5QmqwvZxVod4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VPTpoSMwEJ2sdMvDPfsWidPqq6cxLE/sLIXoox0f6kVwQCjrdlxWqrnn6Xl/NJpLbMnif+BWn2Vib/Dm0jmHofWZRjXk7iEtaIcWbKFZNTVsncKFti3zSj5LDWlRXyA9VR/6Db52MEYtmFLKm0yS1yv6b0El0fqOYmYRdYbvGrs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vDl4p0V5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 709AEC116D0;
-	Thu, 15 Jan 2026 17:44:55 +0000 (UTC)
+	 MIME-Version; b=EtFnT5bRxIWCTxWdua/Bzl50A8+WIBJywzcd6BrbbQjzMz6qTRsvcg0bxSqI9YunHOLXwcm+MyFSYXkE1fuMAA4McgGs2vZcIYVB3OrawPsRcAMLW5c/CoWDf0ptdZqt/FbOYbL8JJSLRpqwmstYGSESQkxCi2biQH94GNmRxKQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T/+6J0Xf; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71A37C116D0;
+	Thu, 15 Jan 2026 17:24:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499095;
-	bh=GY/Ub4hnpRGj7pi0DU/VzlrIEENkR8+hdUYGE+lZ7XU=;
+	s=korg; t=1768497849;
+	bh=mE6I6U4Cvebo4fodznGB+VFlixQqMRf5QmqwvZxVod4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vDl4p0V52KeIJ78mbpcCVwej+1SghIwOmYn/Yyt6WKuSb+3e96Z5FMKTcrwrrcWgT
-	 3Mkl81xpIyfH1TXTDzUt6cR41a0XomBjdMh1aXN1xUP6vvCWQelQGtI68vXDFW2ZmO
-	 fvjy9KIYT/3KJRkKuEDO/2ApQ8NWiembPVm9+fE4=
+	b=T/+6J0XfQiWvjrp/nioxTHkup1K/AqtZrZw8esTLGKKIxBf5J6RRpKSF3IenWXUXV
+	 2xhQHzG/6/etzTVUtNs4gKNkb51uC2jh3hZUbcrioLDHSn6OnJUm0MOnYUiyBWH2XV
+	 OGCUZZ3wKzgsmXjnNXbcNL4hcEpv+AdCBoQOqfJQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhao Yipeng <zhaoyipeng5@huawei.com>,
-	Roberto Sassu <roberto.sassu@huawei.com>,
-	Mimi Zohar <zohar@linux.ibm.com>,
+	Dmitry Skorodumov <skorodumov.dmitry@huawei.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/451] ima: Handle error code returned by ima_filter_rule_match()
-Date: Thu, 15 Jan 2026 17:44:50 +0100
-Message-ID: <20260115164234.138316622@linuxfoundation.org>
+Subject: [PATCH 5.15 225/554] ipvlan: Ignore PACKET_LOOPBACK in handle_mode_l2()
+Date: Thu, 15 Jan 2026 17:44:51 +0100
+Message-ID: <20260115164254.390605324@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhao Yipeng <zhaoyipeng5@huawei.com>
+From: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
 
-[ Upstream commit 738c9738e690f5cea24a3ad6fd2d9a323cf614f6 ]
+[ Upstream commit 0c57ff008a11f24f7f05fa760222692a00465fec ]
 
-In ima_match_rules(), if ima_filter_rule_match() returns -ENOENT due to
-the rule being NULL, the function incorrectly skips the 'if (!rc)' check
-and sets 'result = true'. The LSM rule is considered a match, causing
-extra files to be measured by IMA.
+Packets with pkt_type == PACKET_LOOPBACK are captured by
+handle_frame() function, but they don't have L2 header.
+We should not process them in handle_mode_l2().
 
-This issue can be reproduced in the following scenario:
-After unloading the SELinux policy module via 'semodule -d', if an IMA
-measurement is triggered before ima_lsm_rules is updated,
-in ima_match_rules(), the first call to ima_filter_rule_match() returns
--ESTALE. This causes the code to enter the 'if (rc == -ESTALE &&
-!rule_reinitialized)' block, perform ima_lsm_copy_rule() and retry. In
-ima_lsm_copy_rule(), since the SELinux module has been removed, the rule
-becomes NULL, and the second call to ima_filter_rule_match() returns
--ENOENT. This bypasses the 'if (!rc)' check and results in a false match.
+This doesn't affect old L2 functionality, since handling
+was anyway incorrect.
 
-Call trace:
-  selinux_audit_rule_match+0x310/0x3b8
-  security_audit_rule_match+0x60/0xa0
-  ima_match_rules+0x2e4/0x4a0
-  ima_match_policy+0x9c/0x1e8
-  ima_get_action+0x48/0x60
-  process_measurement+0xf8/0xa98
-  ima_bprm_check+0x98/0xd8
-  security_bprm_check+0x5c/0x78
-  search_binary_handler+0x6c/0x318
-  exec_binprm+0x58/0x1b8
-  bprm_execve+0xb8/0x130
-  do_execveat_common.isra.0+0x1a8/0x258
-  __arm64_sys_execve+0x48/0x68
-  invoke_syscall+0x50/0x128
-  el0_svc_common.constprop.0+0xc8/0xf0
-  do_el0_svc+0x24/0x38
-  el0_svc+0x44/0x200
-  el0t_64_sync_handler+0x100/0x130
-  el0t_64_sync+0x3c8/0x3d0
+Handle them the same way as in br_handle_frame():
+just pass the skb.
 
-Fix this by changing 'if (!rc)' to 'if (rc <= 0)' to ensure that error
-codes like -ENOENT do not bypass the check and accidentally result in a
-successful match.
+To observe invalid behaviour, just start "ping -b" on bcast address
+of port-interface.
 
-Fixes: 4af4662fa4a9d ("integrity: IMA policy")
-Signed-off-by: Zhao Yipeng <zhaoyipeng5@huawei.com>
-Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: 2ad7bf363841 ("ipvlan: Initial check-in of the IPVLAN driver.")
+Signed-off-by: Dmitry Skorodumov <skorodumov.dmitry@huawei.com>
+Link: https://patch.msgid.link/20251202103906.4087675-1-skorodumov.dmitry@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/ima_policy.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ipvlan/ipvlan_core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/security/integrity/ima/ima_policy.c b/security/integrity/ima/ima_policy.c
-index 8d69b2e27936a..540c1ec9fe729 100644
---- a/security/integrity/ima/ima_policy.c
-+++ b/security/integrity/ima/ima_policy.c
-@@ -581,7 +581,7 @@ static bool ima_match_rules(struct ima_rule_entry *rule, struct inode *inode,
- 				goto retry;
- 			}
- 		}
--		if (!rc) {
-+		if (rc <= 0) {
- 			result = false;
- 			goto out;
- 		}
+diff --git a/drivers/net/ipvlan/ipvlan_core.c b/drivers/net/ipvlan/ipvlan_core.c
+index a18b49db38ee0..35ec6d1af6ea6 100644
+--- a/drivers/net/ipvlan/ipvlan_core.c
++++ b/drivers/net/ipvlan/ipvlan_core.c
+@@ -725,6 +725,9 @@ static rx_handler_result_t ipvlan_handle_mode_l2(struct sk_buff **pskb,
+ 	struct ethhdr *eth = eth_hdr(skb);
+ 	rx_handler_result_t ret = RX_HANDLER_PASS;
+ 
++	if (unlikely(skb->pkt_type == PACKET_LOOPBACK))
++		return RX_HANDLER_PASS;
++
+ 	if (is_multicast_ether_addr(eth->h_dest)) {
+ 		if (ipvlan_external_frame(skb, port)) {
+ 			struct sk_buff *nskb = skb_clone(skb, GFP_ATOMIC);
 -- 
 2.51.0
 
