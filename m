@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-208658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ECBE0D260B6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2B02D2601D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 560F0300647E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 68B2330975AE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:58:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C44243A35A4;
-	Thu, 15 Jan 2026 17:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 410953B9619;
+	Thu, 15 Jan 2026 16:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bAM2czfP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mXXJGNdD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 878CA350A05;
-	Thu, 15 Jan 2026 17:01:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 03D9D396B75;
+	Thu, 15 Jan 2026 16:58:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496477; cv=none; b=E7iJ5PIuLNNJUpYIQfkeuBNr2GX3FVYQOgXkEh0RcNMvY/qLHYs2yqaN95mc6ixwqBRmhq5gC31pgCg16saSol7xgGTZo9jDjfSD/P+k0n4frV6Di9l/ivrPsYRQUZF8Reud1MidZ33FS+ULVAjErgpbFuFu3f8XQkTamELFikk=
+	t=1768496302; cv=none; b=H3Ctz/oV9jvo1Q/SZ8Znnr2qu87dOy2DmbnvYoDEzpI7rDaAq0zqT+s7ffj13LIZ4j1foJgh8fdP3jXeEsMfTVwDPmFZeVZz579wLzMpWGgyxPMjOkmxEqNwfw5LAZ8bbhHL+NfZW6i34aj8uIsJQRGY5j6OoZKudyd684guvXI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496477; c=relaxed/simple;
-	bh=Jp6HLUCLsHSa1cvnd5UfFnERefSrxHcX6/WH4vvPCPw=;
+	s=arc-20240116; t=1768496302; c=relaxed/simple;
+	bh=XskLo+rP7FLszMaeUg1yogr3i2hCwbzqc5CJKzgqy3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RQU+VkBEiUGpVJF3OV7XJPbmsmQ69i85CEj4ZCFMCs5OwnmnHcy2XcA7f0im6Yjo6aal0uZqS9GMfD0XwqHQG0BMoMzJU4cFyEPPVEf2E6ixeCFuAaOEdhV6DWZiqIegJi+MaqNiZ9Pon+udcz6hvyFo+vzx1MQgXqfVbbmX4jc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bAM2czfP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13144C16AAE;
-	Thu, 15 Jan 2026 17:01:16 +0000 (UTC)
+	 MIME-Version; b=QwDBdLnGU8fGOi8zV2gBq31lwL0tSHGDeyUd9pN4p7H/eJPxvfohpO++sn1U2l3XyFgWPjpRC0DoQwcO8FVaZUu3NwrGG5sIvB7BsgflKaqyOxmja3MMcOmah1FfPSB9jYoNVOnPppshBFa/1mExCxE8cNNS4qKx+6ZGgH7IifY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mXXJGNdD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82312C19422;
+	Thu, 15 Jan 2026 16:58:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496477;
-	bh=Jp6HLUCLsHSa1cvnd5UfFnERefSrxHcX6/WH4vvPCPw=;
+	s=korg; t=1768496301;
+	bh=XskLo+rP7FLszMaeUg1yogr3i2hCwbzqc5CJKzgqy3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bAM2czfPbYhMz7tJD3jKbLKDeK3dr1NJUen0adZr73a4CSO/9BhUPBDd+zbEmx/+R
-	 g1yxYSkJoFQdxFPUtmOkRHVdMN1ETpOJ18QbWVFAa/OyXSBmwSvO3KMf2VuFPQ7rzc
-	 WWAggFUSv9ieQnDlUApr4eOg/9MfPUZ4OlWwVkLc=
+	b=mXXJGNdDufeJuNOtj3av9k5CPT5laxMvHtHQL0ayGIpOWLg1n+kNVd9OYUujS5v50
+	 BiVZwKu3ZGvPKJ4ExO9oU2lDUaUXufkrOwvNTi5QDXyfZ7hisCPijoInL5gyVTy2tE
+	 rA4tOdqKOAI60Ts9nALf+AyfTpE7BNts2MZhp100=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam Edwards <CFSworks@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 026/119] libceph: reset sparse-read state in osd_fault()
-Date: Thu, 15 Jan 2026 17:47:21 +0100
-Message-ID: <20260115164152.905596774@linuxfoundation.org>
+	Cosmin Ratiu <cratiu@nvidia.com>,
+	Dragos Tatulea <dtatulea@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 105/181] net/mlx5e: Dealloc forgotten PSP RX modify header
+Date: Thu, 15 Jan 2026 17:47:22 +0100
+Message-ID: <20260115164206.110116878@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +63,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam Edwards <cfsworks@gmail.com>
+From: Cosmin Ratiu <cratiu@nvidia.com>
 
-commit 11194b416ef95012c2cfe5f546d71af07b639e93 upstream.
+[ Upstream commit 0462a15d2d1fafd3d48cf3c7c67393e42d03908c ]
 
-When a fault occurs, the connection is abandoned, reestablished, and any
-pending operations are retried. The OSD client tracks the progress of a
-sparse-read reply using a separate state machine, largely independent of
-the messenger's state.
+The commit which added RX steering rules for PSP forgot to free a modify
+header HW object on the cleanup path, which lead to health errors when
+reloading the driver and uninitializing the device:
 
-If a connection is lost mid-payload or the sparse-read state machine
-returns an error, the sparse-read state is not reset. The OSD client
-will then interpret the beginning of a new reply as the continuation of
-the old one. If this makes the sparse-read machinery enter a failure
-state, it may never recover, producing loops like:
+mlx5_core 0000:08:00.0: poll_health:803:(pid 3021): Fatal error 3 detected
 
-  libceph:  [0] got 0 extents
-  libceph: data len 142248331 != extent len 0
-  libceph: osd0 (1)...:6801 socket error on read
-  libceph: data len 142248331 != extent len 0
-  libceph: osd0 (1)...:6801 socket error on read
+Fix that by saving the modify header pointer in the PSP steering struct
+and deallocating it after freeing the rule which references it.
 
-Therefore, reset the sparse-read state in osd_fault(), ensuring retries
-start from a clean state.
-
-Cc: stable@vger.kernel.org
-Fixes: f628d7999727 ("libceph: add sparse read support to OSD client")
-Signed-off-by: Sam Edwards <CFSworks@gmail.com>
-Reviewed-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 9536fbe10c9d ("net/mlx5e: Add PSP steering in local NIC RX")
+Signed-off-by: Cosmin Ratiu <cratiu@nvidia.com>
+Reviewed-by: Dragos Tatulea <dtatulea@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20251225132717.358820-6-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osd_client.c |    3 +++
- 1 file changed, 3 insertions(+)
+ .../net/ethernet/mellanox/mlx5/core/en_accel/psp.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -4306,6 +4306,9 @@ static void osd_fault(struct ceph_connec
- 		goto out_unlock;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+index 8565cfe8d7dce..943d6fc6e7a04 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en_accel/psp.c
+@@ -41,6 +41,7 @@ struct mlx5e_accel_fs_psp_prot {
+ 	struct mlx5_flow_table *ft;
+ 	struct mlx5_flow_group *miss_group;
+ 	struct mlx5_flow_handle *miss_rule;
++	struct mlx5_modify_hdr *rx_modify_hdr;
+ 	struct mlx5_flow_destination default_dest;
+ 	struct mlx5e_psp_rx_err rx_err;
+ 	u32 refcnt;
+@@ -217,13 +218,19 @@ static int accel_psp_fs_rx_err_create_ft(struct mlx5e_psp_fs *fs,
+ 	return err;
+ }
+ 
+-static void accel_psp_fs_rx_fs_destroy(struct mlx5e_accel_fs_psp_prot *fs_prot)
++static void accel_psp_fs_rx_fs_destroy(struct mlx5e_psp_fs *fs,
++				       struct mlx5e_accel_fs_psp_prot *fs_prot)
+ {
+ 	if (fs_prot->def_rule) {
+ 		mlx5_del_flow_rules(fs_prot->def_rule);
+ 		fs_prot->def_rule = NULL;
  	}
  
-+	osd->o_sparse_op_idx = -1;
-+	ceph_init_sparse_read(&osd->o_sparse_read);
++	if (fs_prot->rx_modify_hdr) {
++		mlx5_modify_header_dealloc(fs->mdev, fs_prot->rx_modify_hdr);
++		fs_prot->rx_modify_hdr = NULL;
++	}
 +
- 	if (!reopen_osd(osd))
- 		kick_osd_requests(osd);
- 	maybe_request_map(osdc);
+ 	if (fs_prot->miss_rule) {
+ 		mlx5_del_flow_rules(fs_prot->miss_rule);
+ 		fs_prot->miss_rule = NULL;
+@@ -327,6 +334,7 @@ static int accel_psp_fs_rx_create_ft(struct mlx5e_psp_fs *fs,
+ 		modify_hdr = NULL;
+ 		goto out_err;
+ 	}
++	fs_prot->rx_modify_hdr = modify_hdr;
+ 
+ 	flow_act.action = MLX5_FLOW_CONTEXT_ACTION_FWD_DEST |
+ 			  MLX5_FLOW_CONTEXT_ACTION_CRYPTO_DECRYPT |
+@@ -347,7 +355,7 @@ static int accel_psp_fs_rx_create_ft(struct mlx5e_psp_fs *fs,
+ 	goto out;
+ 
+ out_err:
+-	accel_psp_fs_rx_fs_destroy(fs_prot);
++	accel_psp_fs_rx_fs_destroy(fs, fs_prot);
+ out:
+ 	kvfree(flow_group_in);
+ 	kvfree(spec);
+@@ -364,7 +372,7 @@ static int accel_psp_fs_rx_destroy(struct mlx5e_psp_fs *fs, enum accel_fs_psp_ty
+ 	/* The netdev unreg already happened, so all offloaded rule are already removed */
+ 	fs_prot = &accel_psp->fs_prot[type];
+ 
+-	accel_psp_fs_rx_fs_destroy(fs_prot);
++	accel_psp_fs_rx_fs_destroy(fs, fs_prot);
+ 
+ 	accel_psp_fs_rx_err_destroy_ft(fs, &fs_prot->rx_err);
+ 
+-- 
+2.51.0
+
 
 
 
