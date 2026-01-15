@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208885-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0F481D26447
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:37 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4460CD27440
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 75D25303606C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:05 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C62B03041FEC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EB4A53BF305;
-	Thu, 15 Jan 2026 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F0D2B3D1CB9;
+	Thu, 15 Jan 2026 17:55:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AbuEDlwl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UOaoFs4m"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AE2DF3BF2FD;
-	Thu, 15 Jan 2026 17:12:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 23BE43C00AE;
+	Thu, 15 Jan 2026 17:55:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497120; cv=none; b=ebYwg3vuv/J/K1NDBeOYQdm3NFA/Gmv41SB6JYPSiccncwVLL35TWWDXlk9fMrOagNyh2B/BGnTQH/KHKMfLVKVjJXlFX1iy09ktCS+u0RmDRKh7OJb5x09HdnAyyv65rkKYx1qWKuKU3H8YcCLo63Cqq5fFG9eYm/mCerADjKc=
+	t=1768499741; cv=none; b=jrPqslPPsBFBm4kqxVFY1Fodb+9AaczD03D/zfLV17/uGGqvDNyUwv96YFxDy6IjHQHZ7WzkO+Y2ZC8DRQ5KYFZLC9b77h1xySWGmukkWnYdUaUOSvB+Vrsz8I3aaDMB4kuxx112pYnjUD7GyNTckYjkzNBHtxEOtmPd9o9iKpE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497120; c=relaxed/simple;
-	bh=VposaqrpJo+TSPtl9DHlWRGCWeRo3r1lv1DS5n+WIFA=;
+	s=arc-20240116; t=1768499741; c=relaxed/simple;
+	bh=HUO6EHoS38Abp19yozkwumOQLi0jNF15EYKzZD7ULK0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VyZcTowhEhtHhkmiZUWfSnbF+T4cVt6LACh/d3HsCCat+xiS0R1nX4tYoXMTly/Org1c2iFxY94Posm2gJi6gdPxeCpCE8z2oKKcnoo8jTSD3ef1zJUYxo5LwXbIJKkFJzFjwq8gEm6o5v48urJZxd+rfJS1CoCNvuhveOtliq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AbuEDlwl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32C5EC19423;
-	Thu, 15 Jan 2026 17:12:00 +0000 (UTC)
+	 MIME-Version; b=ETklMx2sJ221jB85zO+8+bIUQSGCoa1a8HVKH1GcCs8d/nKgajQfu3Px5XmRK7iAeN3WGpYl2QU1l28nyMQ5AQTQiZTjNJCVUGzHCXPX8/C/P38fC72hEzz9IzVAHj2UERl1FluanGxsoBClDyaBj/lZ0hKqpOvM02NkQacKtmU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UOaoFs4m; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31948C116D0;
+	Thu, 15 Jan 2026 17:55:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497120;
-	bh=VposaqrpJo+TSPtl9DHlWRGCWeRo3r1lv1DS5n+WIFA=;
+	s=korg; t=1768499740;
+	bh=HUO6EHoS38Abp19yozkwumOQLi0jNF15EYKzZD7ULK0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AbuEDlwllV5Ogoa4HFMT70eZr/caAl5yKTZDUagxTX3Xng53zRM2NUkUvZ2X7woHt
-	 2a8l4PBGchUaYloYoqwOZ9iZyTTGiYiYrFF9Fot6cNaAb5SJ0sIx9SDCjflTQQkq/0
-	 qeroAslLlBnqB2w1pwFy9nMaBLyQCuG+rnVGuF8k=
+	b=UOaoFs4mtqLEEQZQBSxMMG4UAXXUfszmlygg8VP8/9ukPOwzfzwexCW9+Jr+Rc0a/
+	 tRSg+fIdodrqCLHl95btzppXLV4O3QJhd7myYWEouw7iTuiJMagiYk/XCW7hCIlM6s
+	 yZYRXtlTL+r1CMn4GCrenSP2Z3esgO7olZsHB6fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 43/72] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
+	Jeff Layton <jlayton@kernel.org>,
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 332/451] nfsd: Drop the client reference in client_states_open()
 Date: Thu, 15 Jan 2026 17:48:53 +0100
-Message-ID: <20260115164145.056413568@linuxfoundation.org>
+Message-ID: <20260115164242.906088721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,59 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
+commit 1f941b2c23fd34c6f3b76d36f9d0a2528fa92b8f upstream.
 
-Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-allocated memory for pp_qlt in ipc_mux_init() but did not free it in
-ipc_mux_deinit(). This results in a memory leak when the driver is
-unloaded.
+In error path, call drop_client() to drop the reference
+obtained by get_nfsdfs_clp().
 
-Free the allocated memory in ipc_mux_deinit() to fix the leak.
-
-Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 78599c42ae3c ("nfsd4: add file to display list of client's opens")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ fs/nfsd/nfs4state.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-index fc928b298a984..b846889fcb099 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 	struct sk_buff_head *free_list;
- 	union mux_msg mux_msg;
- 	struct sk_buff *skb;
-+	int i;
+--- a/fs/nfsd/nfs4state.c
++++ b/fs/nfsd/nfs4state.c
+@@ -2802,8 +2802,10 @@ static int client_states_open(struct ino
+ 		return -ENXIO;
  
- 	if (!ipc_mux->initialized)
- 		return;
-@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 		ipc_mux->channel->dl_pipe.is_open = false;
- 	}
- 
-+	if (ipc_mux->protocol != MUX_LITE) {
-+		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
-+			kfree(ipc_mux->ul_adb.pp_qlt[i]);
+ 	ret = seq_open(file, &states_seq_ops);
+-	if (ret)
++	if (ret) {
++		drop_client(clp);
+ 		return ret;
 +	}
-+
- 	kfree(ipc_mux);
- }
--- 
-2.51.0
-
+ 	s = file->private_data;
+ 	s->private = clp;
+ 	return 0;
 
 
 
