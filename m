@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-209791-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208811-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1562DD2753D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 57669D266F5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 16D5131BBED5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:45 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7983B308C398
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A96DE2C029F;
-	Thu, 15 Jan 2026 17:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8632D5C9B;
+	Thu, 15 Jan 2026 17:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OFwJcXDG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZcKvRMy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B8EA26CE04;
-	Thu, 15 Jan 2026 17:55:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB472820C6;
+	Thu, 15 Jan 2026 17:08:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499701; cv=none; b=T/HYDJuZhbqBWdEmGQpvY7XzQT6DfX9JHvJ09hqnqvDScnExRqX45VKzvQNhT+V7+oFKovtXCEbb3gAkkZz5TLdQGpYDebxeh2aTYAKoCPWElbM8RESNzdJTIwShqsRNCmr8/jZZhri892lEkrh5taW9FbSbE2l68+RVwrZmiIA=
+	t=1768496909; cv=none; b=SveCjdtNVUElki1z4NgGpqmvhowscmqxFlr+10jTSScRroCYfEFvKNFKdyXRh1j5U2MPkT3JQXarf8osuDgW3AjygvT08xFOKnK6CoqFcBhfHpehw28/NNozn814SSSt01fGnvaEZW+KNxoJY5lptzTwgmkPsHH0HRoDEs5wM4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499701; c=relaxed/simple;
-	bh=tFuGs4Q0XxOtoPoVRqsBQp2myFnAAgFiEp2/f44J+Sw=;
+	s=arc-20240116; t=1768496909; c=relaxed/simple;
+	bh=L7O2Tb/vPsfev1uQoB7dxKmjUrn0OYqMcxFuWRVZ35s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqjzNn5a0gjB3S1jB4Y7xgofByLNoaaJorn1EnEBCpgfxTXNqS/ou6j52k61oYxGvhsDKyOt9y3YXyCdTy6RVksdGUi8wBhIA2N74w+eGZsZL+aGjDKpZCQVYUPNKaI+Jxq7Ym2v6T/CGk/hPg4dO9+dLKQLoZ5DpG6xszCRhnw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OFwJcXDG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DED65C116D0;
-	Thu, 15 Jan 2026 17:55:00 +0000 (UTC)
+	 MIME-Version; b=nYbW2qDHWuYOOlVnrsd4wz1FXyGc8BUkqG992AtVe1ixj04ZIYm/jTI2Kl5X7ugJjn2Yi/g8el8Ionf9b5MIZQsXyy7ykVLiCFhjZLWfKiEN0VkRAt+Hsho+BPKgF1UkllCE4Rot29w6Kx+r8naHvHGQLoXdDANrJfAnfK7+PJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZcKvRMy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D799C16AAE;
+	Thu, 15 Jan 2026 17:08:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499701;
-	bh=tFuGs4Q0XxOtoPoVRqsBQp2myFnAAgFiEp2/f44J+Sw=;
+	s=korg; t=1768496909;
+	bh=L7O2Tb/vPsfev1uQoB7dxKmjUrn0OYqMcxFuWRVZ35s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OFwJcXDGXMM05hC9O8+jY/mHHR4kVkGyDKEEnY/i0SIGNafrt0+0sA+BOGX33kRJm
-	 BSoF5/FMejIXs/qaVPAB/79keSbBRjwxkRPVUqqbrlBUcr8A986NzfSw4QB8t6X0Hm
-	 VOhxctwjGU59eMiysegTjuEknRjcZu1q6ccKWi1g=
+	b=oZcKvRMyTbOxVkrGgEjFFtB3IC3oGrSS9kDPEV/mSUYXHP8FDkBaH6SQdd0I8Ctp9
+	 rL6UPASLcwsR4QfRpJhVbWNc8hdKRzPUEzG/NP73CmTwZGTXGfcx6t7VWP+f9Ga+7s
+	 EeTVgZgvS4UhXDXq6mCVTeVow0NCD7CRoImmhlfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.10 320/451] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
+	Ray Jui <ray.jui@broadcom.com>,
+	Srijit Bose <srijit.bose@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 58/88] bnxt_en: Fix potential data corruption with HW GRO/LRO
 Date: Thu, 15 Jan 2026 17:48:41 +0100
-Message-ID: <20260115164242.476538105@linuxfoundation.org>
+Message-ID: <20260115164148.413674549@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Srijit Bose <srijit.bose@broadcom.com>
 
-commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
+[ Upstream commit ffeafa65b2b26df2f5b5a6118d3174f17bd12ec5 ]
 
-The variables were never clamped because the return value of clamp_val()
-was not used. Fix this by assigning the clamped values, and use clamp()
-instead of clamp_val().
+Fix the max number of bits passed to find_first_zero_bit() in
+bnxt_alloc_agg_idx().  We were incorrectly passing the number of
+long words.  find_first_zero_bit() may fail to find a zero bit and
+cause a wrong ID to be used.  If the wrong ID is already in use, this
+can cause data corruption.  Sometimes an error like this can also be
+seen:
 
-Cc: stable@vger.kernel.org
-Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
+
+Fix it by passing the correct number of bits MAX_TPA_P5.  Use
+DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
+check to warn if a bit cannot be found and reset the ring [MChan].
+
+Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
+Reviewed-by: Ray Jui <ray.jui@broadcom.com>
+Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20251231083625.3911652-1-michael.chan@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/pxafb.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
- 	var->yres = max_t(int, var->yres, MIN_YRES);
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 8e4e8291d8c66..e337b6c7ee6f9 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1268,9 +1268,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
+ 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
+ 	u16 idx = agg_id & MAX_TPA_P5_MASK;
  
- 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
--		clamp_val(var->hsync_len, 1, 64);
--		clamp_val(var->vsync_len, 1, 64);
--		clamp_val(var->left_margin,  1, 255);
--		clamp_val(var->right_margin, 1, 255);
--		clamp_val(var->upper_margin, 1, 255);
--		clamp_val(var->lower_margin, 1, 255);
-+		var->hsync_len = clamp(var->hsync_len, 1, 64);
-+		var->vsync_len = clamp(var->vsync_len, 1, 64);
-+		var->left_margin  = clamp(var->left_margin,  1, 255);
-+		var->right_margin = clamp(var->right_margin, 1, 255);
-+		var->upper_margin = clamp(var->upper_margin, 1, 255);
-+		var->lower_margin = clamp(var->lower_margin, 1, 255);
+-	if (test_bit(idx, map->agg_idx_bmap))
+-		idx = find_first_zero_bit(map->agg_idx_bmap,
+-					  BNXT_AGG_IDX_BMAP_SIZE);
++	if (test_bit(idx, map->agg_idx_bmap)) {
++		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
++		if (idx >= MAX_TPA_P5)
++			return INVALID_HW_RING_ID;
++	}
+ 	__set_bit(idx, map->agg_idx_bmap);
+ 	map->agg_id_tbl[agg_id] = idx;
+ 	return idx;
+@@ -1303,6 +1305,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
+ 	if (bp->flags & BNXT_FLAG_CHIP_P5) {
+ 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
+ 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
++		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
++			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
++				    rxr->bnapi->index,
++				    TPA_START_AGG_ID_P5(tpa_start));
++			bnxt_sched_reset_rxr(bp, rxr);
++			return;
++		}
+ 	} else {
+ 		agg_id = TPA_START_AGG_ID(tpa_start);
  	}
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 0116f67593e3a..d96c9aabf97a7 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -898,11 +898,9 @@ struct bnxt_tpa_info {
+ 	struct rx_agg_cmp	*agg_arr;
+ };
  
- 	/* make sure each line is aligned on word boundary */
+-#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
+-
+ struct bnxt_tpa_idx_map {
+ 	u16		agg_id_tbl[1024];
+-	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
++	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
+ };
+ 
+ struct bnxt_rx_ring_info {
+-- 
+2.51.0
+
 
 
 
