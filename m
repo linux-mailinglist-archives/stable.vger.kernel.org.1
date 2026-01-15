@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209664-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209242-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 97C7ED26F80
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:15 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0FCEFD269E0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7622B304D0B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 147FB307CB6C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C7D3D3D1B;
-	Thu, 15 Jan 2026 17:49:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3A0F3D1CC3;
+	Thu, 15 Jan 2026 17:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDGf5l7D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c3RCk/Tk"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16A03C1999;
-	Thu, 15 Jan 2026 17:48:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 766D33C198C;
+	Thu, 15 Jan 2026 17:28:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499340; cv=none; b=QsdquMZ9PLjAGkjxQKeKol4hYP6PstAVdjBhUCFKFWjWDM7zQeXYyfikuxEgsqSPskjkJMqsJb94wnbhv6ew5L+WXPmOw4yGIirwEl/e+LOTXrDUJzUKg+zYqPV9/xL0ek+OcUEwaEvCDwo9a3nHArKFPKEmnGG381Nia/JXFoo=
+	t=1768498138; cv=none; b=hOUnNTPT86g6QtEe2IiOZ5H5BSJS+7+t/UIfzU3b5jMWSK4Y6x2IrlkgdOL0oz28Y5O13a0ypqbw1xjjhkDNzMTY7BharukLtFIDwYCgkZOdbUh0DTyIRa3xCXMqhBO2NAUIM/hiS0wx/H2mudMQpKsHpC6YJZpTD2LFm58s0sg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499340; c=relaxed/simple;
-	bh=AU1KwHw9V+I+VheeEofD5IcQ9xSqXhttqQmRrcfHM64=;
+	s=arc-20240116; t=1768498138; c=relaxed/simple;
+	bh=xtFcWs5TIUFT02clnv3qq9Bx8v27PEix7DYXUf/yD9A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aDnAUFmPM35T/AK2XAGe2Vn4MxzRHIaKDEABW26/VC5niVjCtGP+qRHFhRZAQI0KUx6LpDHARl825wvgF3/dalU129XA2JRCtBt2fzppKWHARQTrL3se56nTxtEkPy5tXk+sulHt8I5guvdRcvKkcM2rkxCew4iB2cERkrZ7Qmg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDGf5l7D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E067C116D0;
-	Thu, 15 Jan 2026 17:48:59 +0000 (UTC)
+	 MIME-Version; b=jfkCSL+Q6kyemLq2HY+NC5IZMf4a/ImAz1ZLW5HRi1VB7MESEP1LPudyGuzJD56v/ArUGCV1hUFlgOvwv089QK65dGASHLBvRcR2iCGCHVNPhTCE2IbRSgx1fMOG8ofbOZ9JrNe6bxQMwxOSMzT1Es0FukJBNRDgicri4klfyW4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c3RCk/Tk; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EB8C116D0;
+	Thu, 15 Jan 2026 17:28:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499339;
-	bh=AU1KwHw9V+I+VheeEofD5IcQ9xSqXhttqQmRrcfHM64=;
+	s=korg; t=1768498138;
+	bh=xtFcWs5TIUFT02clnv3qq9Bx8v27PEix7DYXUf/yD9A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZDGf5l7DfjIEFYIjEPLlzLONhQtcY84DlttGlLlSxSkXv4q5cvS+1UhM0FYg3KBfB
-	 HpgNkP/qVr7AuaQvU6EOe3mYDvXU1LV3JKUIbQzFVsvZGv6a7n5EQJync9fN9CgGfP
-	 lyagJD7Tduu/NVgEOX1S96Y5H/9KkmsOZ+cp0QqI=
+	b=c3RCk/TkMAo1UgDZ1RZxPOC67UldTJ1fqtX/L1GCgt0KU5AD8CPrz3QGnZZXXzPBM
+	 9E4nTJ5ezZoeaJhg+BqUsWB301NJUkpgRrFoP4UHEUqhKKLTjkLph6eoLQboXCjarq
+	 4q6s0BPxHUnIDsbUooO+q+N78NqDZatONCv/QQGM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 191/451] block/rnbd: Remove a useless mutex
-Date: Thu, 15 Jan 2026 17:46:32 +0100
-Message-ID: <20260115164237.812967482@linuxfoundation.org>
+	Johan Hovold <johan@kernel.org>,
+	Thierry Reding <treding@nvidia.com>
+Subject: [PATCH 5.15 327/554] amba: tegra-ahb: Fix device leak on SMMU enable
+Date: Thu, 15 Jan 2026 17:46:33 +0100
+Message-ID: <20260115164258.065285421@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,74 +59,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 24afc15dbe218f860994f627b4ba1fb09225a298 ]
+commit 500e1368e46928f4b2259612dcabb6999afae2a6 upstream.
 
-According to lib/idr.c,
-   The IDA handles its own locking.  It is safe to call any of the IDA
-   functions without synchronisation in your code.
+Make sure to drop the reference taken to the AHB platform device when
+looking up its driver data while enabling the SMMU.
 
-so the 'ida_lock' mutex can just be removed.
-It is here only to protect some ida_simple_get()/ida_simple_remove() calls.
+Note that holding a reference to a device does not prevent its driver
+data from going away.
 
-While at it, switch to ida_alloc_XXX()/ida_free() instead to
-ida_simple_get()/ida_simple_remove().
-The latter is deprecated and more verbose.
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Link: https://lore.kernel.org/r/7f9eccd8b1fce1bac45ac9b01a78cf72f54c0a61.1644266862.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: c9b5645fd8ca ("block: rnbd-clt: Fix leaked ID in init_dev()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89c788bab1f0 ("ARM: tegra: Add SMMU enabler in AHB")
+Cc: stable@vger.kernel.org	# 3.5
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rnbd/rnbd-clt.c | 11 +++--------
- 1 file changed, 3 insertions(+), 8 deletions(-)
+ drivers/amba/tegra-ahb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
-index 71b86fee81c2..ced9c4d7b926 100644
---- a/drivers/block/rnbd/rnbd-clt.c
-+++ b/drivers/block/rnbd/rnbd-clt.c
-@@ -23,7 +23,6 @@ MODULE_LICENSE("GPL");
- 
- static int rnbd_client_major;
- static DEFINE_IDA(index_ida);
--static DEFINE_MUTEX(ida_lock);
- static DEFINE_MUTEX(sess_lock);
- static LIST_HEAD(sess_list);
- 
-@@ -55,9 +54,7 @@ static void rnbd_clt_put_dev(struct rnbd_clt_dev *dev)
- 	if (!refcount_dec_and_test(&dev->refcount))
- 		return;
- 
--	mutex_lock(&ida_lock);
--	ida_simple_remove(&index_ida, dev->clt_device_id);
--	mutex_unlock(&ida_lock);
-+	ida_free(&index_ida, dev->clt_device_id);
- 	kfree(dev->hw_queues);
- 	kfree(dev->pathname);
- 	rnbd_clt_put_sess(dev->sess);
-@@ -1381,10 +1378,8 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 		goto out_alloc;
- 	}
- 
--	mutex_lock(&ida_lock);
--	ret = ida_simple_get(&index_ida, 0, 1 << (MINORBITS - RNBD_PART_BITS),
--			     GFP_KERNEL);
--	mutex_unlock(&ida_lock);
-+	ret = ida_alloc_max(&index_ida, 1 << (MINORBITS - RNBD_PART_BITS),
-+			    GFP_KERNEL);
- 	if (ret < 0) {
- 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
- 		       pathname, sess->sessname, ret);
--- 
-2.51.0
-
+--- a/drivers/amba/tegra-ahb.c
++++ b/drivers/amba/tegra-ahb.c
+@@ -144,6 +144,7 @@ int tegra_ahb_enable_smmu(struct device_
+ 	if (!dev)
+ 		return -EPROBE_DEFER;
+ 	ahb = dev_get_drvdata(dev);
++	put_device(dev);
+ 	val = gizmo_readl(ahb, AHB_ARBITRATION_XBAR_CTRL);
+ 	val |= AHB_ARBITRATION_XBAR_CTRL_SMMU_INIT_DONE;
+ 	gizmo_writel(ahb, val, AHB_ARBITRATION_XBAR_CTRL);
 
 
 
