@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-208947-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208958-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6DE80D2653C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id A36A5D26699
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B9DE73046A02
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9AEE5303029A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:16:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F23B3C0092;
-	Thu, 15 Jan 2026 17:14:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB203B8D59;
+	Thu, 15 Jan 2026 17:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVAlXPlK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+uGaGAp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE033A0E9A;
-	Thu, 15 Jan 2026 17:14:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F829B200;
+	Thu, 15 Jan 2026 17:15:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497298; cv=none; b=Sjizonc9F2zZl0IS0cNCIPafVRfoScj4RW72xasjAzHyt7seatp3eN+p5OxfGULCMdGmfz8P8+V1ThXVhXBlt1Gbhub8FHpjeC4EBai4Hc8WwB8xVUGlkWJwQrt2TvPvOUZCrCi0cjKvwdWgtU7fUPDOszBdElYKBegOiPaaeG8=
+	t=1768497330; cv=none; b=s9L/XRF+hD1yFtCB0itYu8t1fh9V2JHKFKD1UlZOfbLVPplJtaxCcZmd4EwYtT90I7Uppb8n5It/3DAK5LU3V41il2hgiUbjJkoRUgllSi301OwTu7D/+2LwCnZLz3OF1ESD449Wvnmo6MVHwxwZBDZAxW4S4NyNz/OlwPoAejg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497298; c=relaxed/simple;
-	bh=Mg9fYUZ69Uvbzl1DN2ks1DqAA0tWit1Lr227B2kRgpU=;
+	s=arc-20240116; t=1768497330; c=relaxed/simple;
+	bh=YI8JNCZY0hDFHdYH+kNDdT9M+eJH684RCs12pNCnsnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JAoC0FOW6li7cm2KvTHFGQEd158jeon5zN+4limhR4TZg3lQqC2aQOrpkX3UnrxuMvZdUWArmz26YTFiYqW5E7zop6N0C6vAXe7KcL3vT+L5Gd5DsMKAiTy6r7nnF+eVkcFpRHLLm9HV3L8PEgt1m0QLE4KIJyw9gAash9PaO00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVAlXPlK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E343C19425;
-	Thu, 15 Jan 2026 17:14:57 +0000 (UTC)
+	 MIME-Version:Content-Type; b=OQPw+ORf3HN5NUMpyWrWixVrWbYEgVkUJYx6V0j4Gh+8xfnPc2Mi37gVAnA9t2KGi6p0ojNYIlunAHo/uLWPnpxYw3UwhCISJUbV1B8aJy5HBQos9szq2sO/cg7GK6nhYqcXg/HlUkbFek/LfOhBIVvSFPC3N0nUrng+XTIOdLI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+uGaGAp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3882C116D0;
+	Thu, 15 Jan 2026 17:15:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497298;
-	bh=Mg9fYUZ69Uvbzl1DN2ks1DqAA0tWit1Lr227B2kRgpU=;
+	s=korg; t=1768497330;
+	bh=YI8JNCZY0hDFHdYH+kNDdT9M+eJH684RCs12pNCnsnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gVAlXPlK7Z13vgyGNFY5bgILnIAUjtnBhYLg7q/D+HexvvgwB2OUfNJgwEOShFpJX
-	 ZGz/+1EUOaXz18CXjN4+MZ+clobNK3I4lsYgorVXigGAkmfURU/B+jTc6hfQMaZ4O9
-	 eQtHpenKwvpOz+q05IMVdj+OSClVnK7iE3NmSA94=
+	b=o+uGaGAp1qPYU5oWvdh6ZQS5BYFoATAoKz9M0FG3aXhd9jQLmbt0DM/zU8YHfmW3U
+	 44m2mhEUEjdiZrx1hDJS5bD1j9QHyJpzYKBXa9wrC5Q51Alw0bPQkPKKuozS7siubS
+	 5NtpuZE4qY1lnwoNCfE8jDe32krwjqM8AffAW7BE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
-	Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Bugaddr <Bugaddr@protonmail.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 025/554] pinctrl: qcom: msm: Fix deadlock in pinmux configuration
-Date: Thu, 15 Jan 2026 17:41:31 +0100
-Message-ID: <20260115164247.151736344@linuxfoundation.org>
+Subject: [PATCH 5.15 026/554] platform/x86: acer-wmi: Ignore backlight event
+Date: Thu, 15 Jan 2026 17:41:32 +0100
+Message-ID: <20260115164247.186751245@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -60,52 +59,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit 1c2e70397b4125022dba80f6111271a37fb36bae ]
+[ Upstream commit 444a9256f8d106e08a6bc2dc8ef28a8699e4b3ba ]
 
-Replace disable_irq() with disable_irq_nosync() in msm_pinmux_set_mux()
-to prevent deadlock when wakeup IRQ is triggered on the same
-GPIO being reconfigured.
+On the Acer Nitro AN515-58, the event 4 - 0 is send by the ACPI
+firmware when the backlight up/down keys are pressed. Ignore this
+event to avoid spamming the kernel log with error messages, as the
+acpi-video driver already handles brightness up/down events.
 
-The issue occurs when a wakeup IRQ is triggered on a GPIO and the IRQ
-handler attempts to reconfigure the same GPIO's pinmux. In this scenario,
-msm_pinmux_set_mux() calls disable_irq() which waits for the currently
-running IRQ handler to complete, creating a circular dependency that
-results in deadlock.
-
-Using disable_irq_nosync() avoids waiting for the IRQ handler to
-complete, preventing the deadlock condition while still properly
-disabling the interrupt during pinmux reconfiguration.
-
-Suggested-by: Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Reported-by: Bugaddr <Bugaddr@protonmail.com>
+Closes: https://bugaddr.tech/posts/2025-11-16-debugging-the-acer-nitro-5-an515-58-fn-f10-keyboard-backlight-bug-on-linux/#wmi-interface-issues
+Tested-by: Bugaddr <Bugaddr@protonmail.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251117155938.3030-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/acer-wmi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index 676b16397b07c..1bb7be9ed92f2 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -213,7 +213,7 @@ static int msm_pinmux_set_mux(struct pinctrl_dev *pctldev,
- 	 */
- 	if (d && i != gpio_func &&
- 	    !test_and_set_bit(d->hwirq, pctrl->disabled_for_mux))
--		disable_irq(irq);
-+		disable_irq_nosync(irq);
+diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
+index 7ef80f517e76e..ea5dbe8081570 100644
+--- a/drivers/platform/x86/acer-wmi.c
++++ b/drivers/platform/x86/acer-wmi.c
+@@ -86,6 +86,7 @@ MODULE_ALIAS("wmi:676AA15E-6A47-4D9F-A2CC-1E6D18D14026");
  
- 	raw_spin_lock_irqsave(&pctrl->lock, flags);
- 
+ enum acer_wmi_event_ids {
+ 	WMID_HOTKEY_EVENT = 0x1,
++	WMID_BACKLIGHT_EVENT = 0x4,
+ 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
+ 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
+ 	WMID_AC_EVENT = 0x8,
+@@ -2060,6 +2061,9 @@ static void acer_wmi_notify(u32 value, void *context)
+ 			sparse_keymap_report_event(acer_wmi_input_dev, scancode, 1, true);
+ 		}
+ 		break;
++	case WMID_BACKLIGHT_EVENT:
++		/* Already handled by acpi-video */
++		break;
+ 	case WMID_ACCEL_OR_KBD_DOCK_EVENT:
+ 		acer_gsensor_event();
+ 		acer_kbd_dock_event(&return_value);
 -- 
 2.51.0
 
