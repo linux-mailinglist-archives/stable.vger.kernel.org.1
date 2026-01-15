@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-208559-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208640-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D9A7D25FB7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A6C24D26067
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 469FF3069D42
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 61A753070A86
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A80E8396B7D;
-	Thu, 15 Jan 2026 16:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A04F3BBA12;
+	Thu, 15 Jan 2026 17:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xTD0vSQG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKOrk3hX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A81F274B43;
-	Thu, 15 Jan 2026 16:56:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CCF62C237E;
+	Thu, 15 Jan 2026 17:00:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496193; cv=none; b=SRMxuNIcZAHiAhPuJKpLmmPV7WuG9lV44odjGcw4CANVK83lNFVUGFlEbvmxRRAoCozwJj+/0t70oz4ECn7YxRwVqE3DPSJH6YP8skbwNOz3egX4/X8ZawQHJvmy7Fp+3rIuYvo1hokkA1+abKQpbE9sigTgU78BQwSlQi+3LeY=
+	t=1768496425; cv=none; b=pawzYhiROFmt9vac6bNYQOL1gQKLuHmxd/EcNrvk9P1pAX05beqQb6LmYLljzEPoevoQsQFuo4E1o3OFL691zC4BH2spU7JdPGl6OWl3l6/HcxRLMFVJlQuhKquy5nnYFtID345OaJBNpqSnlH85FECr+snmkOFm4ZNIX9dfJ/E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496193; c=relaxed/simple;
-	bh=ej2dK1SYcn2OzZPfozRVsiROA49RgYuwFmZrp8rFeLY=;
+	s=arc-20240116; t=1768496425; c=relaxed/simple;
+	bh=QiFwwFK56VhQQeDFulXzS7hiwwlLXtTwbNT9vNMJLoM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d5VpweWTK+xGkmszmKfcE/qFfwcwFll1oDkRudLJIy6JHiYae5D9Y5Uz7a10yH4/rWkNLHVUHOgg6iVvGDYNZKtcrT0upyhmenc4G/zLO2yMz9QXX+5Hxk1jHv5w5R/Bh+z2qRENuwbodeCKr1dWD0QbXtK3kI/ASZihZOakb0A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xTD0vSQG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A4FC116D0;
-	Thu, 15 Jan 2026 16:56:32 +0000 (UTC)
+	 MIME-Version; b=dIY0qRCe3MrJY1mbsflZKoJoXpRvBXszS3Mb1B4SYZTmOBCHoFHmx84pcukz9rh/DBib9PS0sWO/5FgLZcnWO95lMWQipCy1vB0pmdUq1VxHqDcN1vLBUaOIG9MZeEfq4cyQF95Q/m0jIZB6m8GBh2HcbSw3xmMilaVkmtikB+w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKOrk3hX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEBDC16AAE;
+	Thu, 15 Jan 2026 17:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496193;
-	bh=ej2dK1SYcn2OzZPfozRVsiROA49RgYuwFmZrp8rFeLY=;
+	s=korg; t=1768496425;
+	bh=QiFwwFK56VhQQeDFulXzS7hiwwlLXtTwbNT9vNMJLoM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xTD0vSQGcE+Pyd9/65kfhF51EJYBx1ux3WjTCm40ejScvD/p6QjlV12qQ82BeEsMc
-	 Xx3DXBSvHncsd5dxbdeqkyCIoGwYUGuypqlWZLz1tSafhaf+Ojux/cKqvyhMvGXDmN
-	 Ti1aCdUGpeqKqPfZy1TRlMdMIgzyDTVPRGJ4V6OA=
+	b=CKOrk3hXmueqqDsGNGxYNkXEIesBVahlIWLEdZzb8t0Hj0gLWupk/92s1NYCLhMwE
+	 P2KYhyaYu+k80s/IbawB2jsa6ZH3GDl/kkbye5HVA4CzyDK5uy6TrwO+xywyI6eI8S
+	 6bDikmqGBkIsxhH52DfyinN4hUgqvQ9yM/zngQq8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harshita Bhilwaria <harshita.bhilwaria@intel.com>,
-	Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
-	Ahsan Atta <ahsan.atta@intel.com>,
-	Ravikumar PM <ravikumar.pm@intel.com>,
-	Srikanth Thokala <srikanth.thokala@intel.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 078/181] crypto: qat - fix duplicate restarting msg during AER error
-Date: Thu, 15 Jan 2026 17:46:55 +0100
-Message-ID: <20260115164205.145068841@linuxfoundation.org>
+	Scott Mayhew <smayhew@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.12 001/119] NFSD: Fix permission check for read access to executable-only files
+Date: Thu, 15 Jan 2026 17:46:56 +0100
+Message-ID: <20260115164152.007488721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,52 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Harshita Bhilwaria <harshita.bhilwaria@intel.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-[ Upstream commit 961ac9d97be72267255f1ed841aabf6694b17454 ]
+commit e901c7fce59e72d9f3c92733c379849c4034ac50 upstream.
 
-The restarting message from PF to VF is sent twice during AER error
-handling: once from adf_error_detected() and again from
-adf_disable_sriov().
-This causes userspace subservices to shutdown unexpectedly when they
-receive a duplicate restarting message after already being restarted.
+Commit abc02e5602f7 ("NFSD: Support write delegations in LAYOUTGET")
+added NFSD_MAY_OWNER_OVERRIDE to the access flags passed from
+nfsd4_layoutget() to fh_verify().  This causes LAYOUTGET to fail for
+executable-only files, and causes xfstests generic/126 to fail on
+pNFS SCSI.
 
-Avoid calling adf_pf2vf_notify_restarting() and
-adf_pf2vf_wait_for_restarting_complete() from adf_error_detected() so
-that the restarting msg is sent only once from PF to VF.
+To allow read access to executable-only files, what we really want is:
+1. The "permissions" portion of the access flags (the lower 6 bits)
+   must be exactly NFSD_MAY_READ
+2. The "hints" portion of the access flags (the upper 26 bits) can
+   contain any combination of NFSD_MAY_OWNER_OVERRIDE and
+   NFSD_MAY_READ_IF_EXEC
 
-Fixes: 9567d3dc760931 ("crypto: qat - improve aer error reset handling")
-Signed-off-by: Harshita Bhilwaria <harshita.bhilwaria@intel.com>
-Reviewed-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Reviewed-by: Ahsan Atta <ahsan.atta@intel.com>
-Reviewed-by: Ravikumar PM <ravikumar.pm@intel.com>
-Reviewed-by: Srikanth Thokala <srikanth.thokala@intel.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: abc02e5602f7 ("NFSD: Support write delegations in LAYOUTGET")
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/intel/qat/qat_common/adf_aer.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/nfsd/vfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/crypto/intel/qat/qat_common/adf_aer.c b/drivers/crypto/intel/qat/qat_common/adf_aer.c
-index 35679b21ff63b..a098689ab5b75 100644
---- a/drivers/crypto/intel/qat/qat_common/adf_aer.c
-+++ b/drivers/crypto/intel/qat/qat_common/adf_aer.c
-@@ -41,8 +41,6 @@ static pci_ers_result_t adf_error_detected(struct pci_dev *pdev,
- 	adf_error_notifier(accel_dev);
- 	adf_pf2vf_notify_fatal_error(accel_dev);
- 	adf_dev_restarting_notify(accel_dev);
--	adf_pf2vf_notify_restarting(accel_dev);
--	adf_pf2vf_wait_for_restarting_complete(accel_dev);
- 	pci_clear_master(pdev);
- 	adf_dev_down(accel_dev);
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -2568,8 +2568,8 @@ nfsd_permission(struct svc_cred *cred, s
  
--- 
-2.51.0
-
+ 	/* Allow read access to binaries even when mode 111 */
+ 	if (err == -EACCES && S_ISREG(inode->i_mode) &&
+-	     (acc == (NFSD_MAY_READ | NFSD_MAY_OWNER_OVERRIDE) ||
+-	      acc == (NFSD_MAY_READ | NFSD_MAY_READ_IF_EXEC)))
++	     (((acc & NFSD_MAY_MASK) == NFSD_MAY_READ) &&
++	      (acc & (NFSD_MAY_OWNER_OVERRIDE | NFSD_MAY_READ_IF_EXEC))))
+ 		err = inode_permission(&nop_mnt_idmap, inode, MAY_EXEC);
+ 
+ 	return err? nfserrno(err) : 0;
 
 
 
