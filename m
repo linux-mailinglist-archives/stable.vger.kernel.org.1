@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209277-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209700-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AACADD26D7C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FDE5D271BE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:06:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 53DF73191776
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:36 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 4A00931DE274
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 799FF3BFE53;
-	Thu, 15 Jan 2026 17:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1A143EC822;
+	Thu, 15 Jan 2026 17:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ltefft7Q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="W0pkNOz9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5B02D9494;
-	Thu, 15 Jan 2026 17:30:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 758983EC57C;
+	Thu, 15 Jan 2026 17:50:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498238; cv=none; b=XkuiTpwlpL7t2aMVfeza1ydfACABkBvNNbawDG/3/Tb/1/uHfwNSB+kbXer1o6n3OOc+sxmIgxPQirhyrc2eYhGIzO4WWiYZffhlvpBkPcKCho8qS0bbutIsz7G9YLJNLPzyp1n5knN+abn0Ka9Xf+wUh0KubQ4PA8gnJ8Y5NjQ=
+	t=1768499442; cv=none; b=HNPtV6ycrB4L5+/mWb35o3hG0tPW/pp4c2NiWkIeDl5P6EC5AFMV0eEHh44brqKbW4hHjpYLwO4ZxZiX7U/Zj2tiy5WEU7bYMuZYOcs52CE7YDeuIb0UzueOFThjFwUwBQtv/WFlWaXQOWZVgq24EUDACZ9gLxeAE3TNC3TsxUE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498238; c=relaxed/simple;
-	bh=SoaIHgQDPin8BpuGPFCdhF5OFWVpW+zleeHigZbPWQc=;
+	s=arc-20240116; t=1768499442; c=relaxed/simple;
+	bh=IoqcjD55rzyvIxlkDeenj1DBs8RpNBS23/YGqbhf0Q8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C3CLUQQ7ksoW/U3uKgCCAccxygpV9Qj/q+v6UT3JPCDtsw+0BdIvdqiUZ9hjCR5hFJZeVFe55was7GfDzvC7sIxpMH8B8dv6zTl/TCD0F4NXhjP2324zu0LkrmbfULR8Ha9tDkcYT0YVJce8Zose9J7z5OhVp6FzLbHt0TumNPo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ltefft7Q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD269C16AAE;
-	Thu, 15 Jan 2026 17:30:37 +0000 (UTC)
+	 MIME-Version; b=QvwA+5jwv/JXX8N+nnSFOLAGJvV1PiM47zNlaeA4AzxPd4A3IZ1d9w+CIL7khbIHbN4ScaNT0cjOwnczsdOTWtXJB3PZe1+39E7/rp4QwBusNK7Ni5FkB4oCBW7N2/QTIiM2HizTgrbMCsoH8ypcEOSvHvJC/rdPVEjLJyG1hG0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=W0pkNOz9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2393C16AAE;
+	Thu, 15 Jan 2026 17:50:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498238;
-	bh=SoaIHgQDPin8BpuGPFCdhF5OFWVpW+zleeHigZbPWQc=;
+	s=korg; t=1768499442;
+	bh=IoqcjD55rzyvIxlkDeenj1DBs8RpNBS23/YGqbhf0Q8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ltefft7QWIAIVMc7fal0WykQ2Crl4yDTnPwFeHrrB6r/sBhNqiM2VbzioXgg61Rc7
-	 /9Fxarg2yxKYzuvlZw7cxY02ANxj0SAPVedgbwAkz0GwpmLCuVImfs0q8duvYPAtoF
-	 3xE6F8dnTluNa9r0WUnqIMJ7S2zcOwwElr+L5V/Q=
+	b=W0pkNOz9aq3jiYAfB/p/zphlw7u05RiTVL31p+key1MZ3fnEe1d08KUX6H+l5AeaT
+	 EdKwRKH0Nn+g2k8i7joS8s/7g1kPppY6xNnri7stJVIFTVfvPQAwY2q8PM5WI/dU/8
+	 ItVyoT5eHqQfZ9q1+tY71NJmctvOeDXX4nISBgSA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jang Ingyu <ingyujang25@korea.ac.kr>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 362/554] RDMA/core: Fix logic error in ib_get_gids_from_rdma_hdr()
+	Byungchul Park <byungchul@sk.com>,
+	Jan Kara <jack@suse.cz>,
+	stable@kernel.org,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 227/451] jbd2: use a weaker annotation in journal handling
 Date: Thu, 15 Jan 2026 17:47:08 +0100
-Message-ID: <20260115164259.330596431@linuxfoundation.org>
+Message-ID: <20260115164239.107946738@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jang Ingyu <ingyujang25@korea.ac.kr>
+From: Byungchul Park <byungchul@sk.com>
 
-[ Upstream commit 8aaa848eaddd9ef8680fc6aafbd3a0646da5df40 ]
+commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
 
-Fix missing comparison operator for RDMA_NETWORK_ROCE_V1 in the
-conditional statement. The constant was used directly instead of
-being compared with net_type, causing the condition to always
-evaluate to true.
+jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
+to be placed between start_this_handle() and stop_this_handle().  So it
+marks the region with rwsem_acquire_read() and rwsem_release().
 
-Fixes: 1c15b4f2a42f ("RDMA/core: Modify enum ib_gid_type and enum rdma_network_type")
-Signed-off-by: Jang Ingyu <ingyujang25@korea.ac.kr>
-Link: https://patch.msgid.link/20251219041508.1725947-1-ingyujang25@korea.ac.kr
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the annotation is too strong for that purpose.  We don't have
+to use more than try lock annotation for that.
+
+rwsem_acquire_read() implies:
+
+   1. might be a waiter on contention of the lock.
+   2. enter to the critical section of the lock.
+
+All we need in here is to act 2, not 1.  So trylock version of
+annotation is sufficient for that purpose.  Now that dept partially
+relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
+potential wait and might report a deadlock by the wait.
+
+Replace it with trylock version of annotation.
+
+Signed-off-by: Byungchul Park <byungchul@sk.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Cc: stable@kernel.org
+Message-ID: <20251024073940.1063-1-byungchul@sk.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/core/verbs.c | 2 +-
+ fs/jbd2/transaction.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
-index bdc9564f0ff8..53552559917c 100644
---- a/drivers/infiniband/core/verbs.c
-+++ b/drivers/infiniband/core/verbs.c
-@@ -740,7 +740,7 @@ int ib_get_gids_from_rdma_hdr(const union rdma_network_hdr *hdr,
- 				       (struct in6_addr *)dgid);
- 		return 0;
- 	} else if (net_type == RDMA_NETWORK_IPV6 ||
--		   net_type == RDMA_NETWORK_IB || RDMA_NETWORK_ROCE_V1) {
-+		   net_type == RDMA_NETWORK_IB || net_type == RDMA_NETWORK_ROCE_V1) {
- 		*dgid = hdr->ibgrh.dgid;
- 		*sgid = hdr->ibgrh.sgid;
- 		return 0;
--- 
-2.51.0
-
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -448,7 +448,7 @@ repeat:
+ 	read_unlock(&journal->j_state_lock);
+ 	current->journal_info = handle;
+ 
+-	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
++	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
+ 	jbd2_journal_free_transaction(new_transaction);
+ 	/*
+ 	 * Ensure that no allocations done while the transaction is open are
 
 
 
