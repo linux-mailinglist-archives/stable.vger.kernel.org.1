@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209439-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3DB1D27680
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:00 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2AC4D277CF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7E45E32670CF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:21 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B464310AA6B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CB6C283FEF;
-	Thu, 15 Jan 2026 17:38:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3953D7D15;
+	Thu, 15 Jan 2026 17:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iTzK9uhP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PshyHQRx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E53344C81;
-	Thu, 15 Jan 2026 17:38:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB5E3D7D13;
+	Thu, 15 Jan 2026 17:58:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498701; cv=none; b=OKndvsyEuqmCGi5DsXkzmBK8dX8CIMMfOSPkWjcnaBfgrhoCMP/9jGPwxQJOTEXLBWZnEYC5P8r4/q7HxvzOlSx5Z5FmHDvmqGSSiUU3qk8dI+qzXnUu5v+w70MniU3g90sbZ8W9ZSuKYA6V6hXV3VQ363zhXbDVIRKl9Am2X4U=
+	t=1768499898; cv=none; b=KH+DhPr+Qlu5ljBNS6S5dHEAr5d7hdI9FUqoY70MErtSmckUhETF1CXhuBm0522+HfqAW1mFJKD3JDh5ZeqBKo5YSH2Ki6kSr1e65NrC4FMlYcLG7RxMMvyd+E6h+oMbu5YQKdyBMPykdDvaXkPnJkS4CnvfQgc3L97YFU8Izrw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498701; c=relaxed/simple;
-	bh=iYtxQi8hR/CI073jcZbRNlMBHCVKqGjXtwez2OlKiLw=;
+	s=arc-20240116; t=1768499898; c=relaxed/simple;
+	bh=mYptC2yX6gP8gaXFoDuoCxg/LC7gy6hsCTrM/bTssHs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Aa3RZhEW8m5hQV05UK8CVcgiHAzs+DkOpzvya5/iEYV5igsefCRXcnSq3AZI/MaiE6NnWNaa8/K+40kZFSp3R0400w6o0zZeapnCrHr+oJuX0fiSerUR8nNPJu1fjfO2fBlTKP2kGw2bmEWi8V1IXyo0ZBZsaL5K2PuaRYtRUEE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iTzK9uhP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73755C116D0;
-	Thu, 15 Jan 2026 17:38:20 +0000 (UTC)
+	 MIME-Version; b=V1AYuc2XX8mlAHQO4dZdLz6OsB1lLJEUcs2cSpCHSUHKmctfnJL3rnP8hqfi0jv/jUsJdyPyz181PvyJy9CDm51I5IX26TSoIdXuftTneMYKO1ut7C/o/+tEw3JRbt815iC6GCQn8Yu3bhbV3JD7uQV5hzMB62kPLmG0ECooECA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PshyHQRx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE644C116D0;
+	Thu, 15 Jan 2026 17:58:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498700;
-	bh=iYtxQi8hR/CI073jcZbRNlMBHCVKqGjXtwez2OlKiLw=;
+	s=korg; t=1768499898;
+	bh=mYptC2yX6gP8gaXFoDuoCxg/LC7gy6hsCTrM/bTssHs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iTzK9uhPT7bQAkAYv/4TvjRrN0WjMVRKSKpuunkIS50P9dN53KnvofgDCK6b7cy7u
-	 EuNs8caTE4k97z30Ot7+6lDfsFtzmV6B1D7565PlrYxzX+iSsh3lmF2kFDNhUG21LY
-	 aPqN14J4HMO07ekjO7lnVNDIuHPgOIC3869msEzg=
+	b=PshyHQRxpdajseszcFrxqLIYC4gU50JCGRrvEFMOzR7NCr5Ik7i0UZ7c6mtZqjXA6
+	 6g+N9/ii+HzsuTje5eS6o2YHevVKfglSDKDUOtSEw8ZQwkWEB95iz0HuUmxinryOdR
+	 h13P9EeDevtrO5CmLRyJydUkRlA18V/b5RBhEgbo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Johan Hovold <johan@kernel.org>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 522/554] scsi: Revert "scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed"
-Date: Thu, 15 Jan 2026 17:49:48 +0100
-Message-ID: <20260115164305.223045938@linuxfoundation.org>
+Subject: [PATCH 5.10 388/451] media: vpif_capture: fix section mismatch
+Date: Thu, 15 Jan 2026 17:49:49 +0100
+Message-ID: <20260115164244.965891485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,63 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 278712d20bc8ec29d1ad6ef9bdae9000ef2c220c ]
+[ Upstream commit 0ef841113724166c3c484d0e9ae6db1eb5634fde ]
 
-This reverts commit ab2068a6fb84751836a84c26ca72b3beb349619d.
+Platform drivers can be probed after their init sections have been
+discarded (e.g. on probe deferral or manual rebind through sysfs) so the
+probe function must not live in init.
 
-When probing the exp-attached sata device, libsas/libata will issue a
-hard reset in sas_probe_sata() -> ata_sas_async_probe(), then a
-broadcast event will be received after the disk probe fails, and this
-commit causes the probe will be re-executed on the disk, and a faulty
-disk may get into an indefinite loop of probe.
+Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
+mismatch warning") incorrectly suppressed the modpost warning.
 
-Therefore, revert this commit, although it can fix some temporary issues
-with disk probe failure.
-
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20251202065627.140361-1-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
+Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
+Cc: stable@vger.kernel.org	# 2.6.32
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/media/platform/davinci/vpif_capture.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index 5028bc394c4f9..d7a1fb5c10c6e 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -111,20 +111,6 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
--
--	/*
--	 * If the device probe failed, the expander phy attached address
--	 * needs to be reset so that the phy will not be treated as flutter
--	 * in the next revalidation
--	 */
--	if (dev->parent && !dev_is_expander(dev->dev_type)) {
--		struct sas_phy *phy = dev->phy;
--		struct domain_device *parent = dev->parent;
--		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
--
--		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
--	}
--
- 	sas_unregister_dev(dev->port, dev);
- }
+--- a/drivers/media/platform/davinci/vpif_capture.c
++++ b/drivers/media/platform/davinci/vpif_capture.c
+@@ -1614,7 +1614,7 @@ err_cleanup:
+  * This creates device entries by register itself to the V4L2 driver and
+  * initializes fields of each channel objects
+  */
+-static __init int vpif_probe(struct platform_device *pdev)
++static int vpif_probe(struct platform_device *pdev)
+ {
+ 	struct vpif_subdev_info *subdevdata;
+ 	struct i2c_adapter *i2c_adap;
+@@ -1817,7 +1817,7 @@ static int vpif_resume(struct device *de
  
--- 
-2.51.0
-
+ static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
+ 
+-static __refdata struct platform_driver vpif_driver = {
++static struct platform_driver vpif_driver = {
+ 	.driver	= {
+ 		.name	= VPIF_DRIVER_NAME,
+ 		.pm	= &vpif_pm_ops,
 
 
 
