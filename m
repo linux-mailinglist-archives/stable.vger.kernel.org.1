@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209691-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209304-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5CA8ED27514
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:17 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E6CBED27559
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EF22630FB4BA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A9C4032F30C2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C313E8C59;
-	Thu, 15 Jan 2026 17:50:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 33EFA3C00BC;
+	Thu, 15 Jan 2026 17:31:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xJYzdTZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rAQTz8sQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B60463E8C51;
-	Thu, 15 Jan 2026 17:50:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAFE23BF2E6;
+	Thu, 15 Jan 2026 17:31:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499416; cv=none; b=f0/vduQHVGivQUNSfJZcTUXAb86va3UstRiSbzfM359i7D6res82UYck3dvlkOaSp1De0r5hKeJk8FNJZZPUccbhAz2lfn3/Oz8zeafGVG5gLVTA6Bc7/ma+oR3xvx/iSNirHYXkaNBxKSUp9Rk1jnYbKtPOX/VPxA54Ouimtm0=
+	t=1768498315; cv=none; b=V0JzLAqpVEYdUhuzzEgDJU7h06CpHNzmcLgQWl+vYNfasRd1db4wEM0UjA2IwiQq7T8H+WmZE064r24eWyJN56LqAGaPz0XWiKA49eTOtam7okWpZaArvUImQqwWO/bmaUrGNkmic7LFYHBNljGwi9OqJpTtyPoAa5oWYgFd0KA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499416; c=relaxed/simple;
-	bh=EdhMw2RMnDFA1/DC98RMY+vi6E0eP+LuWpZhexbPxlY=;
+	s=arc-20240116; t=1768498315; c=relaxed/simple;
+	bh=nKOluNQc3N5sYFgCUTHWHOB5BY19hYmaIjd9nXPdZHU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=r7vIqUTwggkLcC1peNXYfvPlGvXeYVey103wtZWCzmP1VExwLtdNg0Jv5kUvvYRmX5WgysViTA3WNZOWbktFoKJvVNU1pgI6fXRHsCqcW49AljnpOaQCdSmI+n2M8dOAGL/Md3G8Yb7CJYPz1ouMi+MfvK5sNa7qM0VJ/ocGLRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xJYzdTZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 367AEC19425;
-	Thu, 15 Jan 2026 17:50:16 +0000 (UTC)
+	 MIME-Version; b=Gaavgrgt9BbGudqsgslbFUg+dx0fTJZtcXJfYMY5tDnKLT0bpNHjapE/2rBVIqV5orEbH1YH0Cv9ZmtZqK77/usdF+7peXNs16T9Kn2yAr8VzeolPGQ4Ru7MKBOdrVshZd7zS3bwu28a2ezndjNn7tE2WiXsMUuaOHYmnPb6ZCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rAQTz8sQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76262C116D0;
+	Thu, 15 Jan 2026 17:31:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499416;
-	bh=EdhMw2RMnDFA1/DC98RMY+vi6E0eP+LuWpZhexbPxlY=;
+	s=korg; t=1768498314;
+	bh=nKOluNQc3N5sYFgCUTHWHOB5BY19hYmaIjd9nXPdZHU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xJYzdTZ6i/4kvhpZI83Le1hphQhKPLfEfs82k981kAKLWyg2bW2YCc5UnvKGDSOuI
-	 XGsjkQPYLQoXADweRh1Z8cMm1+sRJRZyU14akUcNccaCajfAbjiSY0TRM27fM8g0ec
-	 Iv4REPravxoDMcSE6s2A1NLwe2mPMm+Q1mBUrkEU=
+	b=rAQTz8sQeqKpBlSZ6xel89YYgkYyzNQ+5nulFrfe7f9SJy+aKSKglH+5SMp8+iC7j
+	 ExJHsy4Sr06w201VXE3u7eYjHipVPHLjt6rwawn9KK/RI4SvA9c/jvGf/VBTs26Tgi
+	 pq4JPWOafOm/afvARkiICMjkoKM5i026JsLH58Gs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Justin Tee <justin.tee@broadcom.com>,
-	Christoph Hellwig <hch@lst.de>,
-	Daniel Wagner <wagi@kernel.org>,
-	Keith Busch <kbusch@kernel.org>,
+	Bagas Sanjaya <bagasdotme@gmail.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 219/451] nvme-fc: dont hold rport lock when putting ctrl
-Date: Thu, 15 Jan 2026 17:47:00 +0100
-Message-ID: <20260115164238.821426188@linuxfoundation.org>
+Subject: [PATCH 5.15 355/554] net: bridge: Describe @tunnel_hash member in net_bridge_vlan_group struct
+Date: Thu, 15 Jan 2026 17:47:01 +0100
+Message-ID: <20260115164259.078364745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,66 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Wagner <wagi@kernel.org>
+From: Bagas Sanjaya <bagasdotme@gmail.com>
 
-[ Upstream commit b71cbcf7d170e51148d5467820ae8a72febcb651 ]
+[ Upstream commit f79f9b7ace1713e4b83888c385f5f55519dfb687 ]
 
-nvme_fc_ctrl_put can acquire the rport lock when freeing the
-ctrl object:
+Sphinx reports kernel-doc warning:
 
-nvme_fc_ctrl_put
-  nvme_fc_ctrl_free
-    spin_lock_irqsave(rport->lock)
+WARNING: ./net/bridge/br_private.h:267 struct member 'tunnel_hash' not described in 'net_bridge_vlan_group'
 
-Thus we can't hold the rport lock when calling nvme_fc_ctrl_put.
+Fix it by describing @tunnel_hash member.
 
-Justin suggested use the safe list iterator variant because
-nvme_fc_ctrl_put will also modify the rport->list.
-
-Cc: Justin Tee <justin.tee@broadcom.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Daniel Wagner <wagi@kernel.org>
-Signed-off-by: Keith Busch <kbusch@kernel.org>
+Fixes: efa5356b0d9753 ("bridge: per vlan dst_metadata netlink support")
+Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251218042936.24175-2-bagasdotme@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/nvme/host/fc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ net/bridge/br_private.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/nvme/host/fc.c b/drivers/nvme/host/fc.c
-index e37e7207c60c..dbc9173ec0f8 100644
---- a/drivers/nvme/host/fc.c
-+++ b/drivers/nvme/host/fc.c
-@@ -1500,14 +1500,14 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- {
- 	struct fcnvme_ls_disconnect_assoc_rqst *rqst =
- 					&lsop->rqstbuf->rq_dis_assoc;
--	struct nvme_fc_ctrl *ctrl, *ret = NULL;
-+	struct nvme_fc_ctrl *ctrl, *tmp, *ret = NULL;
- 	struct nvmefc_ls_rcv_op *oldls = NULL;
- 	u64 association_id = be64_to_cpu(rqst->associd.association_id);
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&rport->lock, flags);
- 
--	list_for_each_entry(ctrl, &rport->ctrl_list, ctrl_list) {
-+	list_for_each_entry_safe(ctrl, tmp, &rport->ctrl_list, ctrl_list) {
- 		if (!nvme_fc_ctrl_get(ctrl))
- 			continue;
- 		spin_lock(&ctrl->lock);
-@@ -1520,7 +1520,9 @@ nvme_fc_match_disconn_ls(struct nvme_fc_rport *rport,
- 		if (ret)
- 			/* leave the ctrl get reference */
- 			break;
-+		spin_unlock_irqrestore(&rport->lock, flags);
- 		nvme_fc_ctrl_put(ctrl);
-+		spin_lock_irqsave(&rport->lock, flags);
- 	}
- 
- 	spin_unlock_irqrestore(&rport->lock, flags);
+diff --git a/net/bridge/br_private.h b/net/bridge/br_private.h
+index 8acb427ae6de..0fd8dad7eca4 100644
+--- a/net/bridge/br_private.h
++++ b/net/bridge/br_private.h
+@@ -221,6 +221,7 @@ struct net_bridge_vlan {
+  * struct net_bridge_vlan_group
+  *
+  * @vlan_hash: VLAN entry rhashtable
++ * @tunnel_hash: Hash table to map from tunnel key ID (e.g. VXLAN VNI) to VLAN
+  * @vlan_list: sorted VLAN entry list
+  * @num_vlans: number of total VLAN entries
+  * @pvid: PVID VLAN id
 -- 
 2.51.0
 
