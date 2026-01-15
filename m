@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208711-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208860-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AC122D2614B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1EE07D2677B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2BC343026544
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE3B530E3D47
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E6D33F390;
-	Thu, 15 Jan 2026 17:03:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC3E3A7F43;
+	Thu, 15 Jan 2026 17:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5Uy30hz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGvAtbpz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93C2C028F;
-	Thu, 15 Jan 2026 17:03:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DAB2D781B;
+	Thu, 15 Jan 2026 17:10:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496629; cv=none; b=OVsAhPHNssP8dvAAmoGhwXNSDSeGF+HCQM62PZ9cS7DwyNy4Eg9SrOhW21wJHWJh0rbrRc61r8BmA5m9mn3ReCsQ0kjLunSh6goVpUZtPSWB3FXzUfJhr8d6A1UOVf0P7lsxh1mkI8Eicr75EoUf/mdJTznVHy20ww9oU0JFRio=
+	t=1768497049; cv=none; b=LfC7yW3owtQq87PbqnCDq2lrGwgHAq5Z9EU7Ewu+Jaa0SMKddXMSob3jkgTHie+WUc4YC5LF1gNLSt55vvC3aocejmY3+nk6VgVnes5Q98ZVMtp/nukdaq/8HCYCjW+qxf4OrSQ6uAapcKBVmQYLtqjBobYfwbJF7oEAejRMbOI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496629; c=relaxed/simple;
-	bh=b65guiZd1QqrrlmYB7+Lw77OgaBhr8A1647e/t6Mbt8=;
+	s=arc-20240116; t=1768497049; c=relaxed/simple;
+	bh=I8W+aG/3zRePFkBX/8hxnKWxjJhJjilHuufJ7iTvI/g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jWdLscn/gATkMt2gWrliGDv9z/3sr0ruz3v9y1uZv3fvDvxxHb5rrXHdYmhLGxTvDnqYvwBWKAeXw2z9jN1VNWletWwtGuGVsJvFoXU1BG+6r7m46apg2H6nP4aiHstM16eu6b9Q5bUifcSjhW7UAIDgykFFR6mBuCR1PxPaHYc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5Uy30hz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0DAC116D0;
-	Thu, 15 Jan 2026 17:03:48 +0000 (UTC)
+	 MIME-Version; b=FY/Wq3b04f08uewLPbsoOSpVxG6IJbYnyWb7LKqJmHPW0NR/+PWKT4jcV5JPxFnjSdnl+Z+mitAtrEaVMDKzlJl+IK/U1G0X3Oi1hUCpArnkjCCp2wt+Ms85kZ+I1ki0CbwzAC9rOewI1ayn/Edrh/4PUiSQJU39mwEK4RmdLsw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGvAtbpz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B455AC116D0;
+	Thu, 15 Jan 2026 17:10:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496628;
-	bh=b65guiZd1QqrrlmYB7+Lw77OgaBhr8A1647e/t6Mbt8=;
+	s=korg; t=1768497049;
+	bh=I8W+aG/3zRePFkBX/8hxnKWxjJhJjilHuufJ7iTvI/g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=G5Uy30hzWJSiQEiX5+gSV3DznyeUHUsBcKSRfzxea7OBaCwRVfZ+9arlWQ2sRBvy6
-	 vml7okYp22obkc1kVcrCNZ5dviAtEAeCOVYdHxlSXy/CzvJGlyc8IrZAXLgdr+e1aM
-	 7d7nDvLu948rM+TmbO7PKiyYfwpPDu5M2pjbnkEM=
+	b=fGvAtbpz4F8D9MnbuvEsQ48n5CokytHSpUaT2diN5SUv3HuU9qPfZxy6pQ+iUiT7/
+	 OUYqJcu5BAHHM5Vclfl2vRkkXR0/gjm43fjakll9WJzics9dNdGD1kuRVHa/ZKm00y
+	 kCT9k0wUsQJhWUfUOdoS1g8w6QBTPaZPlJ8BKfYk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yohei Kojima <yk@y-koj.net>,
-	Breno Leitao <leitao@debian.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 080/119] net: netdevsim: fix inconsistent carrier state after link/unlink
-Date: Thu, 15 Jan 2026 17:48:15 +0100
-Message-ID: <20260115164154.839970736@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.1 06/72] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Thu, 15 Jan 2026 17:48:16 +0100
+Message-ID: <20260115164143.722099028@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,84 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yohei Kojima <yk@y-koj.net>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit d83dddffe1904e4a576d11a541878850a8e64cd2 ]
+commit 23f9485510c338476b9735d516c1d4aacb810d46 upstream.
 
-This patch fixes the edge case behavior on ifup/ifdown and
-linking/unlinking two netdevsim interfaces:
+An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+CONFIG_PROVE_RAW_LOCK_NESTING warns:
+=============================
+[ BUG: Invalid wait context ]
+6.18.0-rc1+git... #1
+-----------------------------
+some-user-space-process/1251 is trying to lock:
+(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+other info that might help us debug this:
+context-{2:2}
+no locks held by some-user-space-process/....
+stack backtrace:
+CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+Call trace:
+ show_stack (C)
+ dump_stack_lvl
+ dump_stack
+ __lock_acquire
+ lock_acquire
+ _raw_spin_lock_irqsave
+ counter_push_event [counter]
+ interrupt_cnt_isr [interrupt_cnt]
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_simple_irq
+ handle_irq_desc
+ generic_handle_domain_irq
+ gpio_irq_handler
+ handle_irq_desc
+ generic_handle_domain_irq
+ gic_handle_irq
+ call_on_irq_stack
+ do_interrupt_handler
+ el0_interrupt
+ __el0_irq_handler_common
+ el0t_64_irq_handler
+ el0t_64_irq
 
-1. unlink two interfaces netdevsim1 and netdevsim2
-2. ifdown netdevsim1
-3. ifup netdevsim1
-4. link two interfaces netdevsim1 and netdevsim2
-5. (Now two interfaces are linked in terms of netdevsim peer, but
-    carrier state of the two interfaces remains DOWN.)
+... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+alternative to switching to raw_spinlock_t, because the latter would limit
+all potential nested locks to raw_spinlock_t only.
 
-This inconsistent behavior is caused by the current implementation,
-which only cares about the "link, then ifup" order, not "ifup, then
-link" order. This patch fixes the inconsistency by calling
-netif_carrier_on() when two netdevsim interfaces are linked.
-
-This patch fixes buggy behavior on NetworkManager-based systems which
-causes the netdevsim test to fail with the following error:
-
-  # timeout set to 600
-  # selftests: drivers/net/netdevsim: peer.sh
-  # 2025/12/25 00:54:03 socat[9115] W address is opened in read-write mode but only supports read-only
-  # 2025/12/25 00:56:17 socat[9115] W connect(7, AF=2 192.168.1.1:1234, 16): Connection timed out
-  # 2025/12/25 00:56:17 socat[9115] E TCP:192.168.1.1:1234: Connection timed out
-  # expected 3 bytes, got 0
-  # 2025/12/25 00:56:17 socat[9109] W exiting on signal 15
-  not ok 13 selftests: drivers/net/netdevsim: peer.sh # exit=1
-
-This patch also solves timeout on TCP Fast Open (TFO) test in
-NetworkManager-based systems because it also depends on netdevsim's
-carrier consistency.
-
-Fixes: 1a8fed52f7be ("netdevsim: set the carrier when the device goes up")
-Signed-off-by: Yohei Kojima <yk@y-koj.net>
-Reviewed-by: Breno Leitao <leitao@debian.org>
-Link: https://patch.msgid.link/602c9e1ba5bb2ee1997bb38b1d866c9c3b807ae9.1767624906.git.yk@y-koj.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20251118083603.778626-1-alexander.sverdlin@siemens.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/netdevsim/bus.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/counter/interrupt-cnt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
-index 64c0cdd31bf85..067cbf788da48 100644
---- a/drivers/net/netdevsim/bus.c
-+++ b/drivers/net/netdevsim/bus.c
-@@ -314,6 +314,11 @@ static ssize_t link_device_store(const struct bus_type *bus, const char *buf, si
- 	rcu_assign_pointer(nsim_a->peer, nsim_b);
- 	rcu_assign_pointer(nsim_b->peer, nsim_a);
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct pl
  
-+	if (netif_running(dev_a) && netif_running(dev_b)) {
-+		netif_carrier_on(dev_a);
-+		netif_carrier_on(dev_b);
-+	}
-+
- out_err:
- 	put_net(ns_b);
- 	put_net(ns_a);
-@@ -363,6 +368,9 @@ static ssize_t unlink_device_store(const struct bus_type *bus, const char *buf,
- 	if (!peer)
- 		goto out_put_netns;
+ 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+-			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+-			       dev_name(dev), counter);
++			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
+ 	if (ret)
+ 		return ret;
  
-+	netif_carrier_off(dev);
-+	netif_carrier_off(peer->netdev);
-+
- 	err = 0;
- 	RCU_INIT_POINTER(nsim->peer, NULL);
- 	RCU_INIT_POINTER(peer->peer, NULL);
--- 
-2.51.0
-
 
 
 
