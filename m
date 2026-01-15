@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209213-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209661-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 661D5D26BEA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9E7C4D279DC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:35:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C2C2310B471
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2C71E33927C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1A90E2D9494;
-	Thu, 15 Jan 2026 17:27:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE453D3D05;
+	Thu, 15 Jan 2026 17:48:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fSaZcvkr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mX6PCda4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CEA973D34A7;
-	Thu, 15 Jan 2026 17:27:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1533D3CF9;
+	Thu, 15 Jan 2026 17:48:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498055; cv=none; b=M1WpI4BzC+qqN99fMiuPzO+MMDmvWHDVJ4bXpptMJPpZhRCikZQEa/dowI+WvsejLfIqDYvOZSUVN8V3Yk6/R9otkr3eVgIqA/oVP3KcHkIS3UJc1JxVlPmnPjRs1w9c9IGxTHQZ2Pr+H92UV//Q76bEec0iQGpp1DfiWmg/QXI=
+	t=1768499331; cv=none; b=UvTULfsJT/+m86n0o/gQn1OjTmkrMix1VBtn7zyHm6qW6Kmt4+YDyPzJSRkrRitLsC/QSrRCVgYsYw0Uh8gUlrZtWz9DGmdkU9HAiormF++ZBYeVsgCiaiJUAHDkVrOKM1HzlhETb0JAir0e/e1FBd8Isz1hUWR7TDUBsNp7djA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498055; c=relaxed/simple;
-	bh=iGFKqqn7r+INX+DlU4k9dm+nmdquKnWn9lRPMG6to2Q=;
+	s=arc-20240116; t=1768499331; c=relaxed/simple;
+	bh=KfsnhChN/zqTeH4xqv5/oQO3tL+HwhjOxH51IlO7JGE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pgjGQsEuPuTs+UPhYODdYR6m3yK0Y7hnFJ1uvLKodSpJPo11+/uqrTlXFwTWCz0c/I43+lrrVOvuBlzcreNC2HUsJLOyEIcY3uMc0pZUF2ipqvQInn3Gavuq7GEXctoOXVtjsDILS3V+I1989M4ANhv3UWgB/AiaPF1FiKkDva8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fSaZcvkr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C8CEC19425;
-	Thu, 15 Jan 2026 17:27:35 +0000 (UTC)
+	 MIME-Version; b=f1Y0ufMe/goIFOTcwuHKaXb8YNbMyZjV3cNIt75lEkh26TVwD/JrZ5bWODPBEROYvT7hgxkon322p7dQ7z5V1doPgfeho1mwJpi7ZNGhf+VIvHoMaLSe/tEk7LuUwnbNgGMcCWP+6s5uz/8c7+QiQKjkAx/rE1Xseq48GJ2UgKY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mX6PCda4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C4AC116D0;
+	Thu, 15 Jan 2026 17:48:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498055;
-	bh=iGFKqqn7r+INX+DlU4k9dm+nmdquKnWn9lRPMG6to2Q=;
+	s=korg; t=1768499331;
+	bh=KfsnhChN/zqTeH4xqv5/oQO3tL+HwhjOxH51IlO7JGE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fSaZcvkrqzshpaTaTZ3EQ5Gc3dtKU7dSVSS/cUikLMzLhBY/pxZxDmQQOGUU70n8c
-	 mpJJmxQ85kU4CSpllY6Xp7/s5bP5cOq1kS21c/FO5tg2h/PTURGwDXu73VlbI1rUmT
-	 J4Vz2wgeEzk7qXQOmiwmeTnqkEzerg9+XF9OIGg0=
+	b=mX6PCda4pVmqSVBLLY8D+IJqZkjU2TSFaR8xhO/eHHPWk0gfvS+eDTv2tPOMF9Tla
+	 QCWlc30kcUIYE4N7WXs7Fdxq81VfoqczxlStKcY3Q7vb/nvPp3wx9C/NNzdyPZ3xRc
+	 1gZi3Csnfao8Xfj7yFzbC6IQIg09Q9AoyRiuAG6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Haoxiang Li <haoxiang_li2024@163.com>
-Subject: [PATCH 5.15 297/554] usb: renesas_usbhs: Fix a resource leak in usbhs_pipe_malloc()
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 162/451] hfsplus: fix volume corruption issue for generic/070
 Date: Thu, 15 Jan 2026 17:46:03 +0100
-Message-ID: <20260115164256.983977668@linuxfoundation.org>
+Message-ID: <20260115164236.770997887@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +62,127 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <haoxiang_li2024@163.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit 36cc7e09df9e43db21b46519b740145410dd9f4a upstream.
+[ Upstream commit ed490f36f439b877393c12a2113601e4145a5a56 ]
 
-usbhsp_get_pipe() set pipe's flags to IS_USED. In error paths,
-usbhsp_put_pipe() is required to clear pipe's flags to prevent
-pipe exhaustion.
+The xfstests' test-case generic/070 leaves HFS+ volume
+in corrupted state:
 
-Fixes: f1407d5c6624 ("usb: renesas_usbhs: Add Renesas USBHS common code")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
-Link: https://patch.msgid.link/20251204132129.109234-1-haoxiang_li2024@163.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+sudo ./check generic/070
+FSTYP -- hfsplus
+PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
+MKFS_OPTIONS -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/070 _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
+(see xfstests-dev/results//generic/070.full for details)
+
+Ran: generic/070
+Failures: generic/070
+Failed 1 of 1 tests
+
+sudo fsck.hfsplus -d /dev/loop50
+** /dev/loop50
+Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+Executing fsck_hfs (version 540.1-Linux).
+** Checking non-journaled HFS Plus Volume.
+The volume name is test
+** Checking extents overflow file.
+Unused node is not erased (node = 1)
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0004
+CBTStat = 0x0000 CatStat = 0x00000000
+** Repairing volume.
+** Rechecking volume.
+** Checking non-journaled HFS Plus Volume.
+The volume name is test
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume test was repaired successfully.
+
+It is possible to see that fsck.hfsplus detected not
+erased and unused node for the case of extents overflow file.
+The HFS+ logic has special method that defines if the node
+should be erased:
+
+bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
+{
+	struct super_block *sb = tree->inode->i_sb;
+	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
+	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
+
+	return tree->cnid == HFSPLUS_CAT_CNID &&
+		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
+}
+
+However, it is possible to see that this method works
+only for the case of catalog file. But debugging of the issue
+has shown that HFSPLUS_VOL_UNUSED_NODE_FIX attribute has been
+requested for the extents overflow file too:
+
+catalog file
+kernel: hfsplus: node 4, num_recs 0, flags 0x10
+kernel: hfsplus: tree->cnid 4, volume_attr 0x80000800
+
+extents overflow file
+kernel: hfsplus: node 1, num_recs 0, flags 0x10
+kernel: hfsplus: tree->cnid 3, volume_attr 0x80000800
+
+This patch modifies the hfs_bnode_need_zeroout() by checking
+only volume_attr but not the b-tree ID because node zeroing
+can be requested for all HFS+ b-tree types.
+
+sudo ./check generic/070
+FSTYP         -- hfsplus
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #79 SMP PREEMPT_DYNAMIC Fri Oct 31 16:07:42 PDT 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/070 33s ...  34s
+Ran: generic/070
+Passed all 1 tests
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20251101001229.247432-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/renesas_usbhs/pipe.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/hfsplus/bnode.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/usb/renesas_usbhs/pipe.c
-+++ b/drivers/usb/renesas_usbhs/pipe.c
-@@ -713,11 +713,13 @@ struct usbhs_pipe *usbhs_pipe_malloc(str
- 	/* make sure pipe is not busy */
- 	ret = usbhsp_pipe_barrier(pipe);
- 	if (ret < 0) {
-+		usbhsp_put_pipe(pipe);
- 		dev_err(dev, "pipe setup failed %d\n", usbhs_pipe_number(pipe));
- 		return NULL;
- 	}
+diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
+index e566cea238279..358294726ff17 100644
+--- a/fs/hfsplus/bnode.c
++++ b/fs/hfsplus/bnode.c
+@@ -717,6 +717,5 @@ bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
+ 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
+ 	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
  
- 	if (usbhsp_setup_pipecfg(pipe, is_host, dir_in, &pipecfg)) {
-+		usbhsp_put_pipe(pipe);
- 		dev_err(dev, "can't setup pipe\n");
- 		return NULL;
- 	}
+-	return tree->cnid == HFSPLUS_CAT_CNID &&
+-		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
++	return volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
+ }
+-- 
+2.51.0
+
 
 
 
