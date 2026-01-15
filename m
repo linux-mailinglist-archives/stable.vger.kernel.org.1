@@ -1,133 +1,114 @@
-Return-Path: <stable+bounces-208445-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B8CE6D25067
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 15:47:16 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EF98AD25221
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:01:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 21C363025592
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 14:41:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2203530C4557
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 14:54:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B680A2F069E;
-	Thu, 15 Jan 2026 14:41:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 843F93A1D0B;
+	Thu, 15 Jan 2026 14:54:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b="ZehheyHn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9LTaB+6"
 X-Original-To: stable@vger.kernel.org
-Received: from mail-yx1-f47.google.com (mail-yx1-f47.google.com [74.125.224.47])
-	(using TLSv1.2 with cipher ECDHE-RSA-AES128-GCM-SHA256 (128/128 bits))
+Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
+	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5E752EDD74
-	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 14:41:07 +0000 (UTC)
-Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=74.125.224.47
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 46C773A1A5B
+	for <stable@vger.kernel.org>; Thu, 15 Jan 2026 14:54:19 +0000 (UTC)
+Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768488070; cv=none; b=R+rqYwnKM3wzboTgVOhOskOdgH/Beysa9UG0by51zT2A7gMiD/PTOG5QayVHUJvAUUszwYMx09tcfXT6EMFN0Hchakc0MKWZE8a9yeSrkq/zD7H99A8kIswlS7hAJd/Uii56h0LiYqE9SanzIg/QMxXg2kHXlhkvr0kShgDAnjo=
+	t=1768488859; cv=none; b=NSbUEgdTGJFziwimrVX3oN7reAHPrbOwlvDolxD/YI9tvtb8Z0DRxbmozUVi5B41YguiuFSSOjCa1NTf9BEVwU5+ku3OYQWnwlTn/XKK5RAiNJWFnJDbLHIz9NPzd6P5l2uVYzYNyUmE6j3Q8lUtRsJ4cdq3XpejuW+LmuszFnI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768488070; c=relaxed/simple;
-	bh=GInh3nUv0oilWh4/RLwMQ0PHdeVF5xMKr3XHFWhjCro=;
-	h=MIME-Version:References:In-Reply-To:From:Date:Message-ID:Subject:
-	 To:Cc:Content-Type; b=Vc3Bzd3EKRGczy9FStkKkQNZld6iPfj0BRFt5iAVkaaJX7zDxHcOeEWQZ1mXijXSNwQ2PKQZ2I6Xj0cc/rnSX/06ea1yLe53RD5N+fqerPKVbBD7r4CYkMwS3hcawqlCjdzsBfmEuh29m118YJkRGR+kj7h3rxBJojzBczoKkNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com; spf=pass smtp.mailfrom=gmail.com; dkim=pass (2048-bit key) header.d=gmail.com header.i=@gmail.com header.b=ZehheyHn; arc=none smtp.client-ip=74.125.224.47
-Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=gmail.com
-Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=gmail.com
-Received: by mail-yx1-f47.google.com with SMTP id 956f58d0204a3-644715aad1aso1134042d50.0
-        for <stable@vger.kernel.org>; Thu, 15 Jan 2026 06:41:06 -0800 (PST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20230601; t=1768488065; x=1769092865; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Z81HGMXqVmwkEbr9DtP4R35AytWB4ncl1E46T6NrNg0=;
-        b=ZehheyHn6EuL34hwqiFCUob4fz5uerSfY5hrvx9UfRtYIFGAfpzQeblOT7C7Fx4Lk6
-         CXleJje4yWCLMlXjIGJ76QyrkgoxPsLK854p+Odaea+18n+zT5FpiEiGWZmvXDjCq9YR
-         tSoyOb2Pr0jOXz7HOGZ88K3DYcloesk51iQZgpIxH/NwEscNgkO7sdXfjI1xa5tTomq+
-         eWgg/kHhiflt1XZJG7q7LvIjDkgMtEzq7yuvnzE3N0ZK7/5XT6nS+jGJyV42irHMD7AZ
-         MRG5eP4Tnv+Rn2YO412Mrp8EWMibYWeIs/E6Lq87jOqX2z3DhPq1NNQf+2rHinWsglt+
-         r8Fw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1768488065; x=1769092865;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-gg:x-gm-message-state:from
-         :to:cc:subject:date:message-id:reply-to;
-        bh=Z81HGMXqVmwkEbr9DtP4R35AytWB4ncl1E46T6NrNg0=;
-        b=aMaqj8VOl1Ld5EnnetiLhz1kP6CyaVt6JSb2BcvDn3Ip0GY7R5G9hed390h7aBcC8N
-         yUVagwf5XbsJvrCdG9f4qutn5IrVI6wGzWAJVPtpWi1RpSE01OO7l9TKm+jrliGjDLoP
-         r3P5/gERHV9bNKTi8hgv92U3PDmq8lDCEr2ZyH2YPfKafoOO5J6Oo0qI1jCQdm+QzxnQ
-         wP54ElAy/SsPScGy2clH4J2jk7TIxXFGzS3Ow+l0uw+ycvFYutBPX1UsVoniIyydr5lL
-         QpLbfIzzxHbC+JkDAPgzH6wx6Cuv160bYcrd5+VMtn3biz4B4B7wIPYGYVgq3JT8NKIp
-         XfWA==
-X-Forwarded-Encrypted: i=1; AJvYcCUa/n7xzDx2ZwM6jMyvLwE/kjRIjtRxsmBeeQRk/KPTR3gLsPHTeZJaQ8zvf1MAxrdclUuxj6M=@vger.kernel.org
-X-Gm-Message-State: AOJu0YzLkl9z5WxUuBcWPU+SATokXoc5dh731PF2cPcFmIyDyvO5PsWi
-	Q6jXtQvMEacPgGMPbiXHRc0W3THqtOd4vYK3V+uQ/Fh1G6mIKWNK7TIyZgHVhiNg+HZYSXStLSP
-	2OZf+wKXR2r4PFhRzdhVvTd8rBPONub0=
-X-Gm-Gg: AY/fxX75O0ei41Lh2Q7w706AlGR4rv67NhD3zt+ny48Ea35EcTwOvara44vlNbq2yqw
-	MbJ9pLJg6mAMdpPX9guzhnemz1Qov8Vj/3bcIBQkTCdkJ+SSl+SjfJIArHVTlVVc2JMscNX2DmE
-	g8Yoc2NEv7eBvZkVaPDd6CUlSv3n0x3gXYyXm1geU0n6dr8om5NlhWrHgT3IcEbAU7IYPy7Uz8o
-	9+pwDnKQjT1YagqVof1yLl0LRZu19y5jxiGGtlJ9Liq0N2GT/0w2qSL0dATTsnGTMvdz48=
-X-Received: by 2002:a05:690e:bc5:b0:644:50c7:a50f with SMTP id
- 956f58d0204a3-6490a6349c2mr2227428d50.24.1768488065507; Thu, 15 Jan 2026
- 06:41:05 -0800 (PST)
+	s=arc-20240116; t=1768488859; c=relaxed/simple;
+	bh=eGX1uIRNiVRKNpnEQWr8+h6ChiHJM3AhnFKihXO9glk=;
+	h=Date:From:To:Cc:Subject:Message-ID:References:MIME-Version:
+	 Content-Type:Content-Disposition:In-Reply-To; b=n1IQsXZG/+JYmelhKR5JkflO1UQ2rYuBMLEs8yxf8VPo71gVT7+k4uA5KRWzpeAKelyum4gG1PFpt/04mpNqzFzMh0X5ThmqfmJu0yctjwRAoZo4gkwpaEPJ2pYxswMdsLQ6Qt6AwpDHdsX3EWxZB/t4W98waPq0C/x8B//mGXI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9LTaB+6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C7E1C116D0;
+	Thu, 15 Jan 2026 14:54:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+	s=korg; t=1768488858;
+	bh=eGX1uIRNiVRKNpnEQWr8+h6ChiHJM3AhnFKihXO9glk=;
+	h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+	b=b9LTaB+6r/7k8EKDOi1pwgm0veGkJiuWN8LB/wZXURid5/s/OOhZUk+GWmvxMSxce
+	 A+fopu9qWO0EGrCmQldwhkXS/9g7clJXTFjY1GYdszDUZgVlP3eVn1xJIjjVLx87Pu
+	 3OLGCVLmirlgqlxsDlHseui2Y5fedl4g8eqFOdHE=
+Date: Thu, 15 Jan 2026 15:54:16 +0100
+From: Greg KH <gregkh@linuxfoundation.org>
+To: Chen Ridong <chenridong@huaweicloud.com>
+Cc: Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
+	stable@vger.kernel.org, lujialin4@huawei.com
+Subject: Re: [PATCH stable] cpuset: Fix missing adaptation for
+ cpuset_is_populated
+Message-ID: <2026011510-untouched-widen-8f33@gregkh>
+References: <2026011258-raving-unlovable-5059@gregkh>
+ <20260114015129.1156361-1-chenridong@huaweicloud.com>
+ <bb71a754-ed2e-4535-aa20-c8d0a9ec4be1@huaweicloud.com>
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-References: <20251215004145.2760442-1-sashal@kernel.org> <20251215004145.2760442-3-sashal@kernel.org>
- <CAPnZJGD0ifVdHTRcMzKBFX8UEf_me1KTrkbwezZrhzndcTx-3Q@mail.gmail.com>
- <aV5Ap8TgMEDLucWR@laps> <CAPnZJGCJ1LZRzfzO=958EfcrLm4Z3pYdtHZEpp812fstsUcOAQ@mail.gmail.com>
- <2026011119-stadium-trilogy-22ac@gregkh> <CAPnZJGAXLEgqKx+XA3RugES1kcawtqMEYPTzFERcf2kgRjNbFQ@mail.gmail.com>
- <2026011237-stage-cognitive-53c0@gregkh>
-In-Reply-To: <2026011237-stage-cognitive-53c0@gregkh>
-From: Askar Safin <safinaskar@gmail.com>
-Date: Thu, 15 Jan 2026 17:40:29 +0300
-X-Gm-Features: AZwV_QgBhEkHg8G4nrRtDlicjTzqS5qOFrS_cH_u9ZI-9GPpebn_HVcGMuB8Eec
-Message-ID: <CAPnZJGCPM2hjbjX6_V5ko0KZ4m1gQ_fA2bL8R51UwiwQ3=ForQ@mail.gmail.com>
-Subject: Re: [PATCH AUTOSEL 6.18-6.17] ALSA: hda: intel-dsp-config: Prefer
- legacy driver as fallback
-To: Greg KH <gregkh@linuxfoundation.org>
-Cc: Sasha Levin <sashal@kernel.org>, patches@lists.linux.dev, stable@vger.kernel.org, 
-	Takashi Iwai <tiwai@suse.de>, Peter Ujfalusi <peter.ujfalusi@linux.intel.com>, 
-	kai.vehmanen@linux.intel.com, cezary.rojewski@intel.com, 
-	ranjani.sridharan@linux.intel.com, rf@opensource.cirrus.com, 
-	bradynorander@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <bb71a754-ed2e-4535-aa20-c8d0a9ec4be1@huaweicloud.com>
 
-On Mon, Jan 12, 2026 at 1:54=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
-> On Sun, Jan 11, 2026 at 07:01:53PM +0300, Askar Safin wrote:
-> > On Sun, Jan 11, 2026 at 3:24=E2=80=AFPM Greg KH <gregkh@linuxfoundation=
-.org> wrote:
-> > > Why?  I see no context here :(
-> >
-> > Please, backport 161a0c617ab1 to all stable kernels, which have 82d9d54=
-a6c0e.
-> >
-> > 161a0c617ab1 fixes bug, reported by me here:
-> > https://lore.kernel.org/all/20251014034156.4480-1-safinaskar@gmail.com/=
- .
-> >
-> > I did bisect and found that 2d9223d2d64c is the culprit. But then Takas=
-hi Iwai
-> > explained that the bug appeared earlier:
-> > https://lore.kernel.org/all/87345iebky.wl-tiwai@suse.de/ .
-> > Iwai said: "the bug itself was introduced
-> > from the very beginning, and it could hit earlier".
-> >
-> > I assume "the very beginning" here should be interpreted as
-> > "commit, where intel-dsp-config.c appeared", because the fix
-> > modifies "intel-dsp-config.c".
-> >
-> > "intel-dsp-config.c" introduced in 82d9d54a6c0e, so
-> > 161a0c617ab1 should be backported to all kernels, which
-> > have 82d9d54a6c0e.
->
-> This only applies to one tree (6.18.y), can you provide working
-> backports for all of the other stable trees?
+On Wed, Jan 14, 2026 at 10:13:16AM +0800, Chen Ridong wrote:
+> 
+> 
+> On 2026/1/14 9:51, Chen Ridong wrote:
+> > From: Chen Ridong <chenridong@huawei.com>
+> > 
+> > Commit b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
+> > was backported to the long‑term support (LTS) branches. However, because
+> > commit d5cf4d34a333 ("cgroup/cpuset: Don't track # of local child
+> > partitions") was not backported, a corresponding adaptation to the
+> > backported code is still required.
+> > 
+> > To ensure correct behavior, replace cgroup_is_populated with
+> > cpuset_is_populated in the partition_is_populated function.
+> > 
+> > Cc: stable@vger.kernel.org	# 6.1+
+> > Fixes: b1bcaed1e39a ("cpuset: Treat cpusets in attaching as populated")
+> > Signed-off-by: Chen Ridong <chenridong@huawei.com>
+> > ---
+> >  kernel/cgroup/cpuset.c | 2 +-
+> >  1 file changed, 1 insertion(+), 1 deletion(-)
+> > 
+> > diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
+> > index f61dde0497f3..3c466e742751 100644
+> > --- a/kernel/cgroup/cpuset.c
+> > +++ b/kernel/cgroup/cpuset.c
+> > @@ -486,7 +486,7 @@ static inline bool partition_is_populated(struct cpuset *cs,
+> >  	    cs->attach_in_progress)
+> >  		return true;
+> >  	if (!excluded_child && !cs->nr_subparts_cpus)
+> > -		return cgroup_is_populated(cs->css.cgroup);
+> > +		return cpuset_is_populated(cs);
+> >  
+> >  	rcu_read_lock();
+> >  	cpuset_for_each_descendant_pre(cp, pos_css, cs) {
+> 
+> Hi Greg,
+> 
+> Is this patch suitable for applying?
 
-I just sent backport to 6.12.y.   I hope this backport will also apply
-cleanly to older trees.
+It needs approval from the maintainers of this file.
 
---=20
-Askar Safin
+> Note:  Because the corresponding commit varies between LTS branches,, the Fixes tag points to a
+> mainline commit.
+
+As this is only for 6.1.y, why not point it at the commit there?
+
+Or is this for other branches?  If so, which ones?  It might be best to
+provide a backport for all of the relevant ones so that we get it right.
+
+thanks,
+
+greg k-h
 
