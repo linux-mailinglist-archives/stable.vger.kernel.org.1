@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209299-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209718-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A7D7FD26930
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D5576D2728D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 732D030C70E6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C26603051F37
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 12B193C1FFC;
-	Thu, 15 Jan 2026 17:31:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FB53C1996;
+	Thu, 15 Jan 2026 17:51:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zcA4f99x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeCmvshi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C71443BF30A;
-	Thu, 15 Jan 2026 17:31:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB6C3C1987;
+	Thu, 15 Jan 2026 17:51:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498300; cv=none; b=Nt2Er3/wN9WxqPpEJUVMdNzJLc44GLKiqAiKPlLpLpu3T2JH1hxK+KSnD3dhuo6EAkH+K2LJ018wzbMf9YeIVwb287b/fRHmk02V64MIyw7JounLjsO6lYtShowANd2cq/2kClEB7uzKpAhlln4qAjsmhSDRBgOibRYqAGdTweg=
+	t=1768499493; cv=none; b=twQ5WmLD4N9hciMJbgq1vIH0nsdxmJNh30AjzIJnMDm01gu5Wd3NVAXC1eHx3bsOqRQm+Hx6p9t5oSs/k7rsQHRZVz1FxXqHFETvWHHAfGNm6ssHlPXZQE7BJAVUZ3dCGw/+ku+3n/e5BL+aFZ7hU3shnz+3TnrD6SVL+Q2anFY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498300; c=relaxed/simple;
-	bh=2P6ANUOXeMux0uSJgUdxPLJg4pkqbqNpX9WyLx3rHHk=;
+	s=arc-20240116; t=1768499493; c=relaxed/simple;
+	bh=zM/Upa3ZlpCfrMrfe49Lg858Hf6H+iazElK1epBNBts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=I1D/NSF9VkxIHHj6618k7U4ScZFwd5URGK6fY7tp0yjkrK843bsUTe7z3NZ6aYsoc6U19WTzC6BKwcIefOLC/OS6RKisq++c+dr0RxDjCAjNs/iBYKqZzwmCx0I6f7PunyGgghsGEjmY+gx+pFMeUBGW+n7qcLhrTcIdlsuG0xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zcA4f99x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531E6C116D0;
-	Thu, 15 Jan 2026 17:31:40 +0000 (UTC)
+	 MIME-Version; b=VES4ANvSXbqVSMqa616HAK0Bd/Dd7nn2w1nUJtUb357BDgDhGFfeVt+HGbh7TNnX/Yk1TLVnO6QlpzK6YD8t3u5yAh9epPk35OYdyLhMjG7XxRsOuD9WG3RosiQFoNqbpVAcr3/7ViE+3/dLUKmjH4yBGJzX72i0BZUjBx8E4Zg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeCmvshi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FE2C116D0;
+	Thu, 15 Jan 2026 17:51:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498300;
-	bh=2P6ANUOXeMux0uSJgUdxPLJg4pkqbqNpX9WyLx3rHHk=;
+	s=korg; t=1768499493;
+	bh=zM/Upa3ZlpCfrMrfe49Lg858Hf6H+iazElK1epBNBts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zcA4f99xMo7i0ENvyknvz33uFH7xknWefKySiIqA5DeFy5PrHOTS398Q59P/D236+
-	 mEvqu5KXcfQ7EvKfJd0zRDWMGDUvd1QJzsLHXDNu2GZKCKcetQCylT7pROALj9WZer
-	 kpbvXI8aKsglUsOxyDzDdvt/e6E0hSpiRyFGXUck=
+	b=oeCmvshizw+jYn2SKc5z3ObiC8R/UuoFXgN2vhAnKY5zEXDqmqoQpmeKhhrx9x5Cx
+	 j8nbM+IwCxUanxCOn6GhiB3FqJWYYXZOu6gRgXW8Y2iET1FjQZNTLExmmJbKHuRJ5U
+	 Bu+Cvz2SiqnCVwqIky8Me4Yh2P4pJjWYaDZrsBCc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Subject: [PATCH 5.15 382/554] PCI/PM: Reinstate clearing state_saved in legacy and !PM codepaths
+	syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com,
+	Jeongjun Park <aha310510@gmail.com>,
+	Daniel Almeida <daniel.almeida@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.10 247/451] media: vidtv: initialize local pointers upon transfer of memory ownership
 Date: Thu, 15 Jan 2026 17:47:28 +0100
-Message-ID: <20260115164300.064232144@linuxfoundation.org>
+Message-ID: <20260115164239.828101742@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +61,61 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 894f475f88e06c0f352c829849560790dbdedbe5 upstream.
+commit 98aabfe2d79f74613abc2b0b1cef08f97eaf5322 upstream.
 
-When a PCI device is suspended, it is normally the PCI core's job to save
-Config Space and put the device into a low power state.  However drivers
-are allowed to assume these responsibilities.  When they do, the PCI core
-can tell by looking at the state_saved flag in struct pci_dev:  The flag
-is cleared before commencing the suspend sequence and it is set when
-pci_save_state() is called.  If the PCI core finds the flag set late in
-the suspend sequence, it refrains from calling pci_save_state() itself.
+vidtv_channel_si_init() creates a temporary list (program, service, event)
+and ownership of the memory itself is transferred to the PAT/SDT/EIT
+tables through vidtv_psi_pat_program_assign(),
+vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
 
-But there are two corner cases where the PCI core neglects to clear the
-flag before commencing the suspend sequence:
+The problem here is that the local pointer where the memory ownership
+transfer was completed is not initialized to NULL. This causes the
+vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
+in the flow that jumps to free_eit, the memory that was freed by
+vidtv_psi_*_table_destroy() can be accessed again by
+vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so it
+is freed once again.
 
-* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
-  to clear the flag.  The (stale) flag is subsequently queried by
-  pci_legacy_suspend() itself and pci_legacy_suspend_late().
+Therefore, to prevent use-after-free and double-free vulnerability,
+local pointers must be initialized to NULL when transferring memory
+ownership.
 
-* If a device has no driver or its driver has no PCI PM callbacks,
-  pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
-  subsequently queried by pci_pm_freeze_noirq().
-
-The flag may be set prior to suspend if the device went through error
-recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
-to restore Config Space after reset.
-
-The flag may also be set if drivers call pci_save_state() on probe to
-allow for recovery from subsequent errors.
-
-The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
-don't call pci_save_state() and so the state that will be restored on
-resume is the one recorded on last error recovery or on probe, not the one
-that the device had on suspend.  If the two states happen to be identical,
-there's no problem.
-
-Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
-The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
-saved_state after the state has been restored") deemed it unnecessary
-because it assumed that it's sufficient to clear the flag on resume in
-pci_restore_state().  The commit seemingly did not take into account that
-pci_save_state() and pci_restore_state() are not only used by power
-management code, but also for error recovery.
-
-Devices without driver or whose driver has no PCI PM callbacks may be in
-runtime suspend when pci_pm_freeze() is called.  Their state has already
-been saved, so don't clear the flag to skip a pointless pci_save_state()
-in pci_pm_freeze_noirq().
-
-None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
-so clear the flag unconditionally in their case.
-
-Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been restored")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.32+
-Link: https://patch.msgid.link/094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de
+Cc: <stable@vger.kernel.org>
+Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=1d9c0edea5907af239e0
+Fixes: 3be8037960bc ("media: vidtv: add error checks")
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-driver.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/media/test-drivers/vidtv/vidtv_channel.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -598,6 +598,8 @@ static int pci_legacy_suspend(struct dev
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 	struct pci_driver *drv = pci_dev->driver;
+--- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
++++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
+@@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_m
  
-+	pci_dev->state_saved = false;
-+
- 	if (drv && drv->suspend) {
- 		pci_power_t prev = pci_dev->current_state;
- 		int error;
-@@ -999,6 +1001,8 @@ static int pci_pm_freeze(struct device *
+ 	/* assemble all programs and assign to PAT */
+ 	vidtv_psi_pat_program_assign(m->si.pat, programs);
++	programs = NULL;
  
- 	if (!pm) {
- 		pci_pm_default_suspend(pci_dev);
-+		if (!pm_runtime_suspended(dev))
-+			pci_dev->state_saved = false;
- 		return 0;
- 	}
+ 	/* assemble all services and assign to SDT */
+ 	vidtv_psi_sdt_service_assign(m->si.sdt, services);
++	services = NULL;
  
+ 	/* assemble all events and assign to EIT */
+ 	vidtv_psi_eit_event_assign(m->si.eit, events);
++	events = NULL;
+ 
+ 	m->si.pmt_secs = vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
+ 								     m->pcr_pid);
 
 
 
