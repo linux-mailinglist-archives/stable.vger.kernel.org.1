@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209434-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209888-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EF6D26B84
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:02 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4B74D277F8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BBED2309B82B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:13 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2FE6930D0A37
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:18 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E7D03624C4;
-	Thu, 15 Jan 2026 17:38:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 643023E8C5C;
+	Thu, 15 Jan 2026 17:59:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wXWNi7nD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Fc0MGEj4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E678222D9F7;
-	Thu, 15 Jan 2026 17:38:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D3C53D349F;
+	Thu, 15 Jan 2026 17:59:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498685; cv=none; b=nVqkRwoViwr2HO1Jbwi6OODQf0bB/ysN0gKU6wtWTFh6agXgwKaM3fy4ipkz3RXtCCU0P9fHpmo2hOfuU7C27TgevddK+JdiuPXaTL0fjNgCuLEd1RP0XQL47OOGYIwGQQnyhGYcsW+i+TlKpH3e3jrlG8RVyIg+onyXuC6O3qM=
+	t=1768499978; cv=none; b=OswuqJjnxF9dNGHHfuDFNGaCKUe83+fOSLhvmxfmtRq0kBqUkS7MA5nqBHZb4uhwFC6N/lFaLcPGt/2FHbvnZjLUkpOuI1q/eS88qKmAqsgqsUmBxacDCXbl6OedU40z6iEtzGoZQ32Ckx3PdywdC3A12daogtTXE8C8kK9L4YI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498685; c=relaxed/simple;
-	bh=cbcUC8fp9Iv2bq5tQdM1ZlYBeBVEx+4gYo1NRociiR8=;
+	s=arc-20240116; t=1768499978; c=relaxed/simple;
+	bh=LP3oHkCKW1nds/wrMQuc4uNc5my8IY+bS+ERkqXe7oQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TSZomQ/A+qJ3QAJQW8nktWuAg2Zev7XLRcAI8+14kjdj/Y40TrYi8o76nrjArj83pEX/xkFshrXZnd7rh1enrYfLfCNZ2MoyxPM2NzEjp+0g+adzgVjU/ZOJQUnjyWh37vjvCSDf5VXVS51+XK3sGFJeRfDetlURoDdPPFu98W4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wXWNi7nD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75457C116D0;
-	Thu, 15 Jan 2026 17:38:04 +0000 (UTC)
+	 MIME-Version; b=sLJnsIiyb/21m026rntJHdGMfzH0ljZz7mGGfcjxy6Uc8sHKmtoDdeCbVyPqiXP0Ral6Pu47rTDug7E+4Et6jZFTVJvY/2HJtcvw+v76Is1nxb9Ma+ddAS84XBzbbW9/hIUGxZE+5avHhyNGmkyVJxYj0Cs3xpxv8kv54yFKS4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Fc0MGEj4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60F60C116D0;
+	Thu, 15 Jan 2026 17:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498684;
-	bh=cbcUC8fp9Iv2bq5tQdM1ZlYBeBVEx+4gYo1NRociiR8=;
+	s=korg; t=1768499977;
+	bh=LP3oHkCKW1nds/wrMQuc4uNc5my8IY+bS+ERkqXe7oQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wXWNi7nDdDLdsZQB+PtUwS3kv08OZmT7XGbH62EqaNk6YSCFNGK0C/D5JRJPiOXpw
-	 x1fnuZzzqkscvD197YV8CFyYJGjSC/tjfFUb6D3BQwmK0AlhO50bi2SU5cE7G5RIoQ
-	 9ZRyvUGYotXxX38wrXhKG0svJjkeib0dt+iyyitc=
+	b=Fc0MGEj4v9SqP07looUr5Z4aAaBYJe2mHad9JBTGTfh68g9/Yo0+xcGyjROltbJvF
+	 r/5pwYhPnc6c2DkQJPhBQoLsTLGcfe4UbVVjqgTb1NvyoPY4s80TdClaW8be7gWqC7
+	 JrWkXaaocCYj6ZW4iEUg/cFGDGTzrfCnT/Og4aLQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Magnus Lindholm <linmag7@gmail.com>,
+	Miaohe Lin <linmiaohe@huawei.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Muchun Song <songmuchun@bytedance.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 518/554] alpha: dont reference obsolete termio struct for TC* constants
+Subject: [PATCH 5.10 383/451] mm/balloon_compaction: make balloon page compaction callbacks static
 Date: Thu, 15 Jan 2026 17:49:44 +0100
-Message-ID: <20260115164305.076738826@linuxfoundation.org>
+Message-ID: <20260115164244.778754008@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,98 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam James <sam@gentoo.org>
+From: Miaohe Lin <linmiaohe@huawei.com>
 
-[ Upstream commit 9aeed9041929812a10a6d693af050846942a1d16 ]
+[ Upstream commit 504c1cabe325df65c18ef38365ddd1a41c6b591b ]
 
-Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
-drops the legacy termio struct, but the ioctls.h header still defines some
-TC* constants in terms of termio (via sizeof). Hardcode the values instead.
+Since commit b1123ea6d3b3 ("mm: balloon: use general non-lru movable page
+feature"), these functions are called via balloon_aops callbacks. They're
+not called directly outside this file. So make them static and clean up
+the relevant code.
 
-This fixes building Python for example, which falls over like:
-  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
-
-Link: https://bugs.gentoo.org/961769
-Link: https://bugs.gentoo.org/962600
-Signed-off-by: Sam James <sam@gentoo.org>
-Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/6ebd3451908785cad53b50ca6bc46cfe9d6bc03c.1764922497.git.sam@gentoo.org
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
+Link: https://lore.kernel.org/r/20220125132221.2220-1-linmiaohe@huawei.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Reviewed-by: Muchun Song <songmuchun@bytedance.com>
+Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ include/linux/balloon_compaction.h |   22 ----------------------
+ mm/balloon_compaction.c            |    6 +++---
+ 2 files changed, 3 insertions(+), 25 deletions(-)
 
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index 971311605288f..a09d04b49cc65 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+--- a/include/linux/balloon_compaction.h
++++ b/include/linux/balloon_compaction.h
+@@ -80,12 +80,6 @@ static inline void balloon_devinfo_init(
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA          0x40127417
-+#define TCSETA          0x80127418
-+#define TCSETAW         0x80127419
-+#define TCSETAF         0x8012741c
+ #ifdef CONFIG_BALLOON_COMPACTION
+ extern const struct address_space_operations balloon_aops;
+-extern bool balloon_page_isolate(struct page *page,
+-				isolate_mode_t mode);
+-extern void balloon_page_putback(struct page *page);
+-extern int balloon_page_migrate(struct address_space *mapping,
+-				struct page *newpage,
+-				struct page *page, enum migrate_mode mode);
  
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
--- 
-2.51.0
-
+ /*
+  * balloon_page_insert - insert a page into the balloon's page list and make
+@@ -155,22 +149,6 @@ static inline void balloon_page_delete(s
+ 	list_del(&page->lru);
+ }
+ 
+-static inline bool balloon_page_isolate(struct page *page)
+-{
+-	return false;
+-}
+-
+-static inline void balloon_page_putback(struct page *page)
+-{
+-	return;
+-}
+-
+-static inline int balloon_page_migrate(struct page *newpage,
+-				struct page *page, enum migrate_mode mode)
+-{
+-	return 0;
+-}
+-
+ static inline gfp_t balloon_mapping_gfp_mask(void)
+ {
+ 	return GFP_HIGHUSER;
+--- a/mm/balloon_compaction.c
++++ b/mm/balloon_compaction.c
+@@ -203,7 +203,7 @@ EXPORT_SYMBOL_GPL(balloon_page_dequeue);
+ 
+ #ifdef CONFIG_BALLOON_COMPACTION
+ 
+-bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
++static bool balloon_page_isolate(struct page *page, isolate_mode_t mode)
+ 
+ {
+ 	struct balloon_dev_info *b_dev_info = balloon_page_device(page);
+@@ -217,7 +217,7 @@ bool balloon_page_isolate(struct page *p
+ 	return true;
+ }
+ 
+-void balloon_page_putback(struct page *page)
++static void balloon_page_putback(struct page *page)
+ {
+ 	struct balloon_dev_info *b_dev_info = balloon_page_device(page);
+ 	unsigned long flags;
+@@ -230,7 +230,7 @@ void balloon_page_putback(struct page *p
+ 
+ 
+ /* move_to_new_page() counterpart for a ballooned page */
+-int balloon_page_migrate(struct address_space *mapping,
++static int balloon_page_migrate(struct address_space *mapping,
+ 		struct page *newpage, struct page *page,
+ 		enum migrate_mode mode)
+ {
 
 
 
