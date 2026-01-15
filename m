@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208730-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4BB0D260BD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:44 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CC9F8D26013
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 44F413004286
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:44 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6126C30360EA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4377A39B4BF;
-	Thu, 15 Jan 2026 17:04:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FA693BF2E8;
+	Thu, 15 Jan 2026 16:59:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VyR4uZHY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ORQxopPC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0804A2C0285;
-	Thu, 15 Jan 2026 17:04:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7E803A7F43;
+	Thu, 15 Jan 2026 16:59:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496683; cv=none; b=uxFMSsOwt3NZKoDszKesrcl4AkHlgi+7vukOWvBZhBsS8z++kyjxQzQO+rr6CHhRMwLzH2+QxlaPyKsHHMdqC6p/hxXw4WvbULQ73WWlh94y8Uy9/+EXQZqsCfMXt+BK4j3aaTg7vd267t5k0EgIfgBKbz1Emo4cHfm6APAfTxg=
+	t=1768496383; cv=none; b=VvDj/scOSRHS6qwiUUw0eG9m5eaviH0IRyUjNVDlHGNUXMYfe1esMV9nlBesKCVGSvsq1uRMn7fouVCsTkZQoCefsRHeYPSfoVDkHSb6RkTCNqnh/fN+aWcH7rhYFFLJwgw6iy3x2fqWX3E8AeWIvXXvZq7Du3sVI3rgekh0oQc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496683; c=relaxed/simple;
-	bh=JCbQqfdlPHL86Mt0tgo35rzawRyPPSn9Ere4/0buQCM=;
+	s=arc-20240116; t=1768496383; c=relaxed/simple;
+	bh=Cbzh5bC1/Yb5ahlUjz41ns7rBuLavlxpcPBSEycZX8c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n8Ys9c3uREbqK+tN2qFAIElRQQtAG/ubvBfRge0iavJEUAv9gp7MevoDgTSzr8aYMWpVsK37cTLANq5riiE5MF7E7kBZMTSXy7CpZZNbhOhTB250zw3BdRFWXCr6vOUnpmOiy4p1pwTvjdthws8b19ND5xGOXjX0aH9ltMB73o0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VyR4uZHY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C1E8C116D0;
-	Thu, 15 Jan 2026 17:04:42 +0000 (UTC)
+	 MIME-Version; b=PjBj+H5EHXPubS44wewf3PPEdnMgIn/TjuRdtuUkTfWsBQSsS8b/3VIEQeZ1Gbwccwbw/d32v2E4mogOlE713VYt8tiM87R/z88/NJt+kbzFdpXTKQ1xMFtMWmv3S/O1wMrt7zhtLHY6Fflo5q7YjCn+D6pRV8o6QqKV3Zudn/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ORQxopPC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57250C116D0;
+	Thu, 15 Jan 2026 16:59:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496682;
-	bh=JCbQqfdlPHL86Mt0tgo35rzawRyPPSn9Ere4/0buQCM=;
+	s=korg; t=1768496383;
+	bh=Cbzh5bC1/Yb5ahlUjz41ns7rBuLavlxpcPBSEycZX8c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VyR4uZHYm203vSgWOtrvNgZQ1+tevvgoiNqVaWxNgqKhRfFnwP3v5N4KwybxdYGp+
-	 ADM2I59+gGMbEvyHW1AFJFciJsLDAQKGZbXP1eiPzmT15fJ9BfIE7bzaNPg0eTHIEk
-	 jWTOu+2W1l4haqc8nF4j/BalG5HxW6W0GzyIi6G0=
+	b=ORQxopPCJGH2DZL3WFmb7gzD7jp77o0DTJ+B0CHwhQ27nYDMXajg4uoj6qmWaglt7
+	 u0SWJaLcWKwG2oY/bAmrY7nYvdLTUGXqk3AVzNSqdUQgDoKH0eKksgG7ajdMbgi9Ex
+	 2VEbwu/LbuAW5O57mjTFXwjvrrLFLm/PVbJbQTNA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yonghong Song <yonghong.song@linux.dev>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Caleb Sander Mateos <csander@purestorage.com>,
+	Christoph Hellwig <hch@lst.de>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 097/119] bpf: Fix an issue in bpf_prog_test_run_xdp when page size greater than 4K
+Subject: [PATCH 6.18 175/181] block: validate pi_offset integrity limit
 Date: Thu, 15 Jan 2026 17:48:32 +0100
-Message-ID: <20260115164155.455406671@linuxfoundation.org>
+Message-ID: <20260115164208.632477265@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,221 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yonghong Song <yonghong.song@linux.dev>
+From: Caleb Sander Mateos <csander@purestorage.com>
 
-[ Upstream commit 4fc012daf9c074772421c904357abf586336b1ca ]
+[ Upstream commit ccb8a3c08adf8121e2afb8e704f007ce99324d79 ]
 
-The bpf selftest xdp_adjust_tail/xdp_adjust_frags_tail_grow failed on
-arm64 with 64KB page:
-   xdp_adjust_tail/xdp_adjust_frags_tail_grow:FAIL
+The PI tuple must be contained within the metadata value, so validate
+that pi_offset + pi_tuple_size <= metadata_size. This guards against
+block drivers that report invalid pi_offset values.
 
-In bpf_prog_test_run_xdp(), the xdp->frame_sz is set to 4K, but later on
-when constructing frags, with 64K page size, the frag data_len could
-be more than 4K. This will cause problems in bpf_xdp_frags_increase_tail().
-
-To fix the failure, the xdp->frame_sz is set to be PAGE_SIZE so kernel
-can test different page size properly. With the kernel change, the user
-space and bpf prog needs adjustment. Currently, the MAX_SKB_FRAGS default
-value is 17, so for 4K page, the maximum packet size will be less than 68K.
-To test 64K page, a bigger maximum packet size than 68K is desired. So two
-different functions are implemented for subtest xdp_adjust_frags_tail_grow.
-Depending on different page size, different data input/output sizes are used
-to adapt with different page size.
-
-Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20250612035032.2207498-1-yonghong.song@linux.dev
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
+Signed-off-by: Caleb Sander Mateos <csander@purestorage.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bpf/test_run.c                            |  2 +-
- .../bpf/prog_tests/xdp_adjust_tail.c          | 96 +++++++++++++++++--
- .../bpf/progs/test_xdp_adjust_tail_grow.c     |  8 +-
- 3 files changed, 97 insertions(+), 9 deletions(-)
+ block/blk-settings.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 8612023bec60d..6418846d6bc65 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1248,7 +1248,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 		headroom -= ctx->data;
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index d74b13ec8e548..f2c1940fe6f1a 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -148,10 +148,9 @@ static int blk_validate_integrity_limits(struct queue_limits *lim)
+ 		return -EINVAL;
  	}
  
--	max_data_sz = 4096 - headroom - tailroom;
-+	max_data_sz = PAGE_SIZE - headroom - tailroom;
- 	if (size > max_data_sz) {
- 		/* disallow live data mode for jumbo frames */
- 		if (do_live)
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-index 53d6ad8c2257e..df90f5b4cee58 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_adjust_tail.c
-@@ -37,21 +37,26 @@ static void test_xdp_adjust_tail_shrink(void)
- 	bpf_object__close(obj);
- }
- 
--static void test_xdp_adjust_tail_grow(void)
-+static void test_xdp_adjust_tail_grow(bool is_64k_pagesize)
- {
- 	const char *file = "./test_xdp_adjust_tail_grow.bpf.o";
- 	struct bpf_object *obj;
--	char buf[4096]; /* avoid segfault: large buf to hold grow results */
-+	char buf[8192]; /* avoid segfault: large buf to hold grow results */
- 	__u32 expect_sz;
- 	int err, prog_fd;
- 	LIBBPF_OPTS(bpf_test_run_opts, topts,
- 		.data_in = &pkt_v4,
--		.data_size_in = sizeof(pkt_v4),
- 		.data_out = buf,
- 		.data_size_out = sizeof(buf),
- 		.repeat = 1,
- 	);
- 
-+	/* topts.data_size_in as a special signal to bpf prog */
-+	if (is_64k_pagesize)
-+		topts.data_size_in = sizeof(pkt_v4) - 1;
-+	else
-+		topts.data_size_in = sizeof(pkt_v4);
-+
- 	err = bpf_prog_test_load(file, BPF_PROG_TYPE_XDP, &obj, &prog_fd);
- 	if (!ASSERT_OK(err, "test_xdp_adjust_tail_grow"))
- 		return;
-@@ -206,7 +211,7 @@ static void test_xdp_adjust_frags_tail_shrink(void)
- 	bpf_object__close(obj);
- }
- 
--static void test_xdp_adjust_frags_tail_grow(void)
-+static void test_xdp_adjust_frags_tail_grow_4k(void)
- {
- 	const char *file = "./test_xdp_adjust_tail_grow.bpf.o";
- 	__u32 exp_size;
-@@ -271,16 +276,93 @@ static void test_xdp_adjust_frags_tail_grow(void)
- 	bpf_object__close(obj);
- }
- 
-+static void test_xdp_adjust_frags_tail_grow_64k(void)
-+{
-+	const char *file = "./test_xdp_adjust_tail_grow.bpf.o";
-+	__u32 exp_size;
-+	struct bpf_program *prog;
-+	struct bpf_object *obj;
-+	int err, i, prog_fd;
-+	__u8 *buf;
-+	LIBBPF_OPTS(bpf_test_run_opts, topts);
-+
-+	obj = bpf_object__open(file);
-+	if (libbpf_get_error(obj))
-+		return;
-+
-+	prog = bpf_object__next_program(obj, NULL);
-+	if (bpf_object__load(obj))
-+		goto out;
-+
-+	prog_fd = bpf_program__fd(prog);
-+
-+	buf = malloc(262144);
-+	if (!ASSERT_OK_PTR(buf, "alloc buf 256Kb"))
-+		goto out;
-+
-+	/* Test case add 10 bytes to last frag */
-+	memset(buf, 1, 262144);
-+	exp_size = 90000 + 10;
-+
-+	topts.data_in = buf;
-+	topts.data_out = buf;
-+	topts.data_size_in = 90000;
-+	topts.data_size_out = 262144;
-+	err = bpf_prog_test_run_opts(prog_fd, &topts);
-+
-+	ASSERT_OK(err, "90Kb+10b");
-+	ASSERT_EQ(topts.retval, XDP_TX, "90Kb+10b retval");
-+	ASSERT_EQ(topts.data_size_out, exp_size, "90Kb+10b size");
-+
-+	for (i = 0; i < 90000; i++) {
-+		if (buf[i] != 1)
-+			ASSERT_EQ(buf[i], 1, "90Kb+10b-old");
-+	}
-+
-+	for (i = 90000; i < 90010; i++) {
-+		if (buf[i] != 0)
-+			ASSERT_EQ(buf[i], 0, "90Kb+10b-new");
-+	}
-+
-+	for (i = 90010; i < 262144; i++) {
-+		if (buf[i] != 1)
-+			ASSERT_EQ(buf[i], 1, "90Kb+10b-untouched");
-+	}
-+
-+	/* Test a too large grow */
-+	memset(buf, 1, 262144);
-+	exp_size = 90001;
-+
-+	topts.data_in = topts.data_out = buf;
-+	topts.data_size_in = 90001;
-+	topts.data_size_out = 262144;
-+	err = bpf_prog_test_run_opts(prog_fd, &topts);
-+
-+	ASSERT_OK(err, "90Kb+10b");
-+	ASSERT_EQ(topts.retval, XDP_DROP, "90Kb+10b retval");
-+	ASSERT_EQ(topts.data_size_out, exp_size, "90Kb+10b size");
-+
-+	free(buf);
-+out:
-+	bpf_object__close(obj);
-+}
-+
- void test_xdp_adjust_tail(void)
- {
-+	int page_size = getpagesize();
-+
- 	if (test__start_subtest("xdp_adjust_tail_shrink"))
- 		test_xdp_adjust_tail_shrink();
- 	if (test__start_subtest("xdp_adjust_tail_grow"))
--		test_xdp_adjust_tail_grow();
-+		test_xdp_adjust_tail_grow(page_size == 65536);
- 	if (test__start_subtest("xdp_adjust_tail_grow2"))
- 		test_xdp_adjust_tail_grow2();
- 	if (test__start_subtest("xdp_adjust_frags_tail_shrink"))
- 		test_xdp_adjust_frags_tail_shrink();
--	if (test__start_subtest("xdp_adjust_frags_tail_grow"))
--		test_xdp_adjust_frags_tail_grow();
-+	if (test__start_subtest("xdp_adjust_frags_tail_grow")) {
-+		if (page_size == 65536)
-+			test_xdp_adjust_frags_tail_grow_64k();
-+		else
-+			test_xdp_adjust_frags_tail_grow_4k();
-+	}
- }
-diff --git a/tools/testing/selftests/bpf/progs/test_xdp_adjust_tail_grow.c b/tools/testing/selftests/bpf/progs/test_xdp_adjust_tail_grow.c
-index 81bb38d72cedd..e311e206be072 100644
---- a/tools/testing/selftests/bpf/progs/test_xdp_adjust_tail_grow.c
-+++ b/tools/testing/selftests/bpf/progs/test_xdp_adjust_tail_grow.c
-@@ -17,7 +17,9 @@ int _xdp_adjust_tail_grow(struct xdp_md *xdp)
- 	/* Data length determine test case */
- 
- 	if (data_len == 54) { /* sizeof(pkt_v4) */
--		offset = 4096; /* test too large offset */
-+		offset = 4096; /* test too large offset, 4k page size */
-+	} else if (data_len == 53) { /* sizeof(pkt_v4) - 1 */
-+		offset = 65536; /* test too large offset, 64k page size */
- 	} else if (data_len == 74) { /* sizeof(pkt_v6) */
- 		offset = 40;
- 	} else if (data_len == 64) {
-@@ -29,6 +31,10 @@ int _xdp_adjust_tail_grow(struct xdp_md *xdp)
- 		offset = 10;
- 	} else if (data_len == 9001) {
- 		offset = 4096;
-+	} else if (data_len == 90000) {
-+		offset = 10; /* test a small offset, 64k page size */
-+	} else if (data_len == 90001) {
-+		offset = 65536; /* test too large offset, 64k page size */
- 	} else {
- 		return XDP_ABORTED; /* No matching test */
+-	if (bi->pi_tuple_size > bi->metadata_size) {
+-		pr_warn("pi_tuple_size (%u) exceeds metadata_size (%u)\n",
+-			 bi->pi_tuple_size,
+-			 bi->metadata_size);
++	if (bi->pi_offset + bi->pi_tuple_size > bi->metadata_size) {
++		pr_warn("pi_offset (%u) + pi_tuple_size (%u) exceeds metadata_size (%u)\n",
++			bi->pi_offset, bi->pi_tuple_size, bi->metadata_size);
+ 		return -EINVAL;
  	}
+ 
 -- 
 2.51.0
 
