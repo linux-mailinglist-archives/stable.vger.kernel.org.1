@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209798-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209409-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id E3C03D2742D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1AC96D2762F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id EFF833041233
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F9553116602
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:34 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D68433D6464;
-	Thu, 15 Jan 2026 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A634227B340;
+	Thu, 15 Jan 2026 17:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lQKb07Kk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EciIZ51V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A3673D605F;
-	Thu, 15 Jan 2026 17:55:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 696932C21F4;
+	Thu, 15 Jan 2026 17:36:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499721; cv=none; b=IABDge/YuPbbVYGvcXhtz7KkLiRiBCzcIqDgUmUZ/op3Au25+cITpTwNYbViFx5Hrk0RBgyU5voYpWVXEYBjaET1hFfSyzHzf1x7WyiHj33ckhfW0JsAN1ohjXSpchfa+DTIIOhTz0aDbzOo6R+KxtmDhhAAlfMXQyzEPKievDc=
+	t=1768498614; cv=none; b=pvr804DlWO/WpkRgafVeuvSHOiXpEEWPtu03EWPiQ3NyAQtHDpb8GxC+aS9r5yLZSyN1pSLNBsDzaDJmVyHK2N1M0yMNhgwKEK8XrKFYnE7DEFueOsdMc5EqzxKoEx+IeNgyjnnkXzhZLg+j3rew+cMNR5gGFu91JCHBY+/wHm0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499721; c=relaxed/simple;
-	bh=95aOj5KeigYmAh5PgcbFpL807adaFbwKlGoYALmRbHA=;
+	s=arc-20240116; t=1768498614; c=relaxed/simple;
+	bh=SqiFs8YR7mqMqJHqx6cUvxbkU+8o2twpqmO+aAI+7LI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G+MCZ/a0bFjUJU+KuscMC6jWARx41DwR58TDSRaO+iEAzklcdd8QUSKoSQa9/gPMBBg7w1N9RdrRQjgDOERCmzi99bLEvpcelkgVEU+Q0ZxSgkTOLRoAGlYeMLygciPcsdS1N/P5coR/lfFrcfCQ/1UJ/QwIAh0Dvq27WXT8tgA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lQKb07Kk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DD1BC116D0;
-	Thu, 15 Jan 2026 17:55:20 +0000 (UTC)
+	 MIME-Version; b=QKvFs5pPk+92FQgki21vAyoL+aq+2/3ZsGA8w8UiNwDLN8MWE9P9+htHlJni1F/CYEhZvHW3OflUgZ0qm8FLqVtFpHeMurfc2ny9tKJP+xoCyJcyT7RvCpHSglonADkY4eXAVJUIwdYyrikQPQDy5ovfcARPhbwsDPwGWbpm52M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EciIZ51V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDABFC116D0;
+	Thu, 15 Jan 2026 17:36:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499720;
-	bh=95aOj5KeigYmAh5PgcbFpL807adaFbwKlGoYALmRbHA=;
+	s=korg; t=1768498614;
+	bh=SqiFs8YR7mqMqJHqx6cUvxbkU+8o2twpqmO+aAI+7LI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lQKb07Kkf2RIgKocqsGxBITGeqwm60oIKP1NB3KPP4pYySzmEmvH07PJbJTXDVtla
-	 afULRCZKWD95vYUEEFgpWU9w+RD2noHhxGma3Z+2LfhjnZYz8OqGJkNz6XrUDq4FaQ
-	 Jhxb8j9CV6ioOjrL51dVYwBh49F45E7kDQpeo1yY=
+	b=EciIZ51Vt1d8WkMlDsrrmRmSQHLIJiTQEP9Fn93C7TxcH2v6ABYyBMvdGH8TIVoN4
+	 Cc2jtaA+oArkzh1WsR3ano2mZkvRla3d2CVT+aYT834G/O86McCoF+bC9qPjWGcu8P
+	 oIt8MBiom4RbzIrEAYEPuS2XPE1t7Ipq2hmTdguY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 326/451] media: i2c: adv7842: Remove redundant cancel_delayed_work in probe
+	Miaoqian Lin <linmq006@gmail.com>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Fabrizio Castro <fabrizio.castro.jz@renesas.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 461/554] media: renesas: rcar_drif: fix device node reference leak in rcar_drif_bond_enabled
 Date: Thu, 15 Jan 2026 17:48:47 +0100
-Message-ID: <20260115164242.691121734@linuxfoundation.org>
+Message-ID: <20260115164302.969084061@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +62,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8 upstream.
+[ Upstream commit 445e1658894fd74eab7e53071fa16233887574ed ]
 
-The delayed_work delayed_work_enable_hotplug is initialized with
-INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
-anywhere in the probe function.
+The function calls of_parse_phandle() which returns
+a device node with an incremented reference count. When the bonded device
+is not available, the function
+returns NULL without releasing the reference, causing a reference leak.
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
+Add of_node_put(np) to release the device node reference.
+The of_node_put function handles NULL pointers.
 
-Remove the redundant cancel_delayed_work() from error handling
-path and adjust the goto label accordingly to simplify the code
-and avoid potential confusion.
+Found through static analysis by reviewing the doc of of_parse_phandle()
+and cross-checking its usage patterns across the codebase.
 
-Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+Fixes: 7625ee981af1 ("[media] media: platform: rcar_drif: Add DRIF support")
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Fabrizio Castro <fabrizio.castro.jz@renesas.com>
 Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7842.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/media/platform/rcar_drif.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/i2c/adv7842.c
-+++ b/drivers/media/i2c/adv7842.c
-@@ -3552,7 +3552,7 @@ static int adv7842_probe(struct i2c_clie
- 	state->pad.flags = MEDIA_PAD_FL_SOURCE;
- 	err = media_entity_pads_init(&sd->entity, 1, &state->pad);
- 	if (err)
--		goto err_work_queues;
-+		goto err_i2c;
+--- a/drivers/media/platform/rcar_drif.c
++++ b/drivers/media/platform/rcar_drif.c
+@@ -1253,6 +1253,7 @@ static struct device_node *rcar_drif_bon
+ 	if (np && of_device_is_available(np))
+ 		return np;
  
- 	err = adv7842_core_init(sd);
- 	if (err)
-@@ -3573,8 +3573,6 @@ static int adv7842_probe(struct i2c_clie
++	of_node_put(np);
+ 	return NULL;
+ }
  
- err_entity:
- 	media_entity_cleanup(&sd->entity);
--err_work_queues:
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
- err_i2c:
- 	adv7842_unregister_clients(sd);
- err_hdl:
 
 
 
