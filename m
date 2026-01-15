@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209612-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209210-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51827D278F7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:31:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0BB1AD26B9C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CA4C131C3ECC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7A39B30AFB3B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7D923BFE49;
-	Thu, 15 Jan 2026 17:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D013D3313;
+	Thu, 15 Jan 2026 17:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oaDr+jKP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A48k1F+X"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A96183BF317;
-	Thu, 15 Jan 2026 17:46:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087053C1FDA;
+	Thu, 15 Jan 2026 17:27:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499192; cv=none; b=Wy0tRLbNNZKqwR4oy4pg9exIBwY5zi5cUPUJEiMh3YT44nF7BdziFVF5qcKjBU1nRnO+7pIzOvbmozLNxkt8Qy/HEtSHTNo3t3tMLlOs9d7gm47EJ6931yQO7C8c+Ddw+FeMfvvZhlysjx2TnGMiQtD95nDwgjQeDR67pebrcQY=
+	t=1768498047; cv=none; b=APWgZhBYf1v8JUwhc0mb6lXhVdZw548uhK+wuBtdBy7pa/92qDLGjSQXkeXHTW8uSt+4jrbkRKCCAFSyDSil1icibHLTUnIKAphJB0pksvjLa7suv43dPF+IdJmzIAKrT2JN9j20u2gussyZK8y+5wAlnVs7ZXLhvUkrGEZel40=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499192; c=relaxed/simple;
-	bh=3pnqiJp4PkorglSSX0JLyjFSahR1WBaBq9kvs+ZsO9U=;
+	s=arc-20240116; t=1768498047; c=relaxed/simple;
+	bh=ijThx/t2DIN2BwUyptZwkXQ8SE+IY0jkkCfbv3fDpoc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EOsKPbJDXFk31XYVdGlbnNm3IrinAONKdUr2wN2v6EzxzaYh5G1OiL31tpxQvQ1r4IlAgdVv4CZgA5ZQJN1J2zuO+Vnz1a2+aGMLUPYlFRKV2fpdKwpLp8oKUPZcqpGzlI2NXBex1viFqRLU6zG+Eyk+7UeB3LzfkyeI8FDm72c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oaDr+jKP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBD44C116D0;
-	Thu, 15 Jan 2026 17:46:31 +0000 (UTC)
+	 MIME-Version; b=iM4WiVg6lTVHdQz7Xk7tjSkq53TpRrqB40N15jTb/cqqkC/s6+NJ1XfyJlhAqTiCjzMK6dBvZiIz1MnBNuWTsFqjvZZJlE55ma6Uotst1Dodo8avUTvMhdCvXrQAJKWX0xhDnjKqG/QFqgYuzqye8mP7TkpzvqE0X/sUqUEdxI4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A48k1F+X; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B80C19422;
+	Thu, 15 Jan 2026 17:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499192;
-	bh=3pnqiJp4PkorglSSX0JLyjFSahR1WBaBq9kvs+ZsO9U=;
+	s=korg; t=1768498046;
+	bh=ijThx/t2DIN2BwUyptZwkXQ8SE+IY0jkkCfbv3fDpoc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oaDr+jKP/+cEqhwiPGGis7aBKR2jo8OtBTJ2aQm7a3kM6Z7JSlssfbS/XipP5D5pj
-	 IGY4OjQmJIVlx+x0TeavjHAn3M8pq7G8CynawsQetGCRED+7IIS81U5v3QGH3Zbw0Q
-	 N6qzEyP7b7UZ/juTiHSG+XnSIaKjOrZsBfzfZAIg=
+	b=A48k1F+XDMv017b4/BvgQ8UoyL5f6zzh9JQ8qIVSNLFNPdBv8vrkW4goRrD6xHvfG
+	 FUUH2/Zc4kYBys+BsbNyDgO/AZSau2oK0JzkDM6UN9xLUOmxbqcSO06rW9Sq7ytvi5
+	 IK2qQqBPiiS7gKTEXncTdvCQfwuZ7gUh4lMiVIqo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yuanbin <xieyuanbin1@huawei.com>,
-	Liyuan Pang <pangliyuan1@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 141/451] ARM: 9464/1: fix input-only operand modification in load_unaligned_zeropad()
-Date: Thu, 15 Jan 2026 17:45:42 +0100
-Message-ID: <20260115164236.018119628@linuxfoundation.org>
+	Sarthak Garg <sarthak.garg@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Adrian Hunter <adrian.hunter@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 277/554] mmc: sdhci-msm: Avoid early clock doubling during HS400 transition
+Date: Thu, 15 Jan 2026 17:45:43 +0100
+Message-ID: <20260115164256.255501423@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,71 +61,126 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liyuan Pang <pangliyuan1@huawei.com>
+From: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
 
-[ Upstream commit edb924a7211c9aa7a4a415e03caee4d875e46b8e ]
+commit b1f856b1727c2eaa4be2c6d7cd7a8ed052bbeb87 upstream.
 
-In the inline assembly inside load_unaligned_zeropad(), the "addr" is
-constrained as input-only operand. The compiler assumes that on exit
-from the asm statement these operands contain the same values as they
-had before executing the statement, but when kernel page fault happened, the assembly fixup code "bic %2 %2, #0x3" modify the value of "addr", which may lead to an unexpected behavior.
+According to the hardware programming guide, the clock frequency must
+remain below 52MHz during the transition to HS400 mode.
 
-Use a temporary variable "tmp" to handle it, instead of modifying the
-input-only operand, just like what arm64's load_unaligned_zeropad()
-does.
+However,in the current implementation, the timing is set to HS400 (a
+DDR mode) before adjusting the clock. This causes the clock to double
+prematurely to 104MHz during the transition phase, violating the
+specification and potentially resulting in CRC errors or CMD timeouts.
 
-Fixes: b9a50f74905a ("ARM: 7450/1: dcache: select DCACHE_WORD_ACCESS for little-endian ARMv6+ CPUs")
-Co-developed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Liyuan Pang <pangliyuan1@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This change ensures that clock doubling is avoided during intermediate
+transitions and is applied only when the card requires a 200MHz clock
+for HS400 operation.
+
+Signed-off-by: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/include/asm/word-at-a-time.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/mmc/host/sdhci-msm.c |   27 +++++++++++++++------------
+ 1 file changed, 15 insertions(+), 12 deletions(-)
 
-diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
-index 352ab213520d2..2e6d0b4349f47 100644
---- a/arch/arm/include/asm/word-at-a-time.h
-+++ b/arch/arm/include/asm/word-at-a-time.h
-@@ -66,7 +66,7 @@ static inline unsigned long find_zero(unsigned long mask)
-  */
- static inline unsigned long load_unaligned_zeropad(const void *addr)
+--- a/drivers/mmc/host/sdhci-msm.c
++++ b/drivers/mmc/host/sdhci-msm.c
+@@ -340,41 +340,43 @@ static void sdhci_msm_v5_variant_writel_
+ 	writel_relaxed(val, host->ioaddr + offset);
+ }
+ 
+-static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host)
++static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host,
++						    unsigned int clock,
++						    unsigned int timing)
  {
--	unsigned long ret, offset;
-+	unsigned long ret, tmp;
+-	struct mmc_ios ios = host->mmc->ios;
+ 	/*
+ 	 * The SDHC requires internal clock frequency to be double the
+ 	 * actual clock that will be set for DDR mode. The controller
+ 	 * uses the faster clock(100/400MHz) for some of its parts and
+ 	 * send the actual required clock (50/200MHz) to the card.
+ 	 */
+-	if (ios.timing == MMC_TIMING_UHS_DDR50 ||
+-	    ios.timing == MMC_TIMING_MMC_DDR52 ||
+-	    ios.timing == MMC_TIMING_MMC_HS400 ||
++	if (timing == MMC_TIMING_UHS_DDR50 ||
++	    timing == MMC_TIMING_MMC_DDR52 ||
++	    (timing == MMC_TIMING_MMC_HS400 &&
++	    clock == MMC_HS200_MAX_DTR) ||
+ 	    host->flags & SDHCI_HS400_TUNING)
+ 		return 2;
+ 	return 1;
+ }
  
- 	/* Load word from unaligned pointer addr */
- 	asm(
-@@ -74,9 +74,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"2:\n"
- 	"	.pushsection .text.fixup,\"ax\"\n"
- 	"	.align 2\n"
--	"3:	and	%1, %2, #0x3\n"
--	"	bic	%2, %2, #0x3\n"
--	"	ldr	%0, [%2]\n"
-+	"3:	bic	%1, %2, #0x3\n"
-+	"	ldr	%0, [%1]\n"
-+	"	and	%1, %2, #0x3\n"
- 	"	lsl	%1, %1, #0x3\n"
- #ifndef __ARMEB__
- 	"	lsr	%0, %0, %1\n"
-@@ -89,7 +89,7 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"	.align	3\n"
- 	"	.long	1b, 3b\n"
- 	"	.popsection"
--	: "=&r" (ret), "=&r" (offset)
-+	: "=&r" (ret), "=&r" (tmp)
- 	: "r" (addr), "Qo" (*(unsigned long *)addr));
+ static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
+-					    unsigned int clock)
++					    unsigned int clock,
++					    unsigned int timing)
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
+-	struct mmc_ios curr_ios = host->mmc->ios;
+ 	struct clk *core_clk = msm_host->bulk_clks[0].clk;
+ 	unsigned long achieved_rate;
+ 	unsigned int desired_rate;
+ 	unsigned int mult;
+ 	int rc;
  
- 	return ret;
--- 
-2.51.0
-
+-	mult = msm_get_clock_mult_for_bus_mode(host);
++	mult = msm_get_clock_mult_for_bus_mode(host, clock, timing);
+ 	desired_rate = clock * mult;
+ 	rc = dev_pm_opp_set_rate(mmc_dev(host->mmc), desired_rate);
+ 	if (rc) {
+ 		pr_err("%s: Failed to set clock at rate %u at timing %d\n",
+-		       mmc_hostname(host->mmc), desired_rate, curr_ios.timing);
++		       mmc_hostname(host->mmc), desired_rate, timing);
+ 		return;
+ 	}
+ 
+@@ -393,7 +395,7 @@ static void msm_set_clock_rate_for_bus_m
+ 	msm_host->clk_rate = desired_rate;
+ 
+ 	pr_debug("%s: Setting clock at rate %lu at timing %d\n",
+-		 mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
++		 mmc_hostname(host->mmc), achieved_rate, timing);
+ }
+ 
+ /* Platform specific tuning */
+@@ -1235,7 +1237,7 @@ static int sdhci_msm_execute_tuning(stru
+ 	 */
+ 	if (host->flags & SDHCI_HS400_TUNING) {
+ 		sdhci_msm_hc_select_mode(host);
+-		msm_set_clock_rate_for_bus_mode(host, ios.clock);
++		msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
+ 		host->flags &= ~SDHCI_HS400_TUNING;
+ 	}
+ 
+@@ -1860,6 +1862,7 @@ static void sdhci_msm_set_clock(struct s
+ {
+ 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
+ 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
++	struct mmc_ios ios = host->mmc->ios;
+ 
+ 	if (!clock) {
+ 		host->mmc->actual_clock = msm_host->clk_rate = 0;
+@@ -1868,7 +1871,7 @@ static void sdhci_msm_set_clock(struct s
+ 
+ 	sdhci_msm_hc_select_mode(host);
+ 
+-	msm_set_clock_rate_for_bus_mode(host, clock);
++	msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
+ out:
+ 	__sdhci_msm_set_clock(host, clock);
+ }
 
 
 
