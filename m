@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209766-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208711-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01A16D27286
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AC122D2614B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 5F6563081281
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:32 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2BC343026544
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04023D1CB2;
-	Thu, 15 Jan 2026 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 34E6D33F390;
+	Thu, 15 Jan 2026 17:03:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEPma+sG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G5Uy30hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0833D1CA2;
-	Thu, 15 Jan 2026 17:53:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC93C2C028F;
+	Thu, 15 Jan 2026 17:03:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499630; cv=none; b=dN8SvQhAhZ6kHVW47XBJfVowMI2Elp3zIP/6ghhHp+W7xQrEIYUfFX3LLcj0m54TDBoPz/xlmgscjOk9zdN49zUIqxy5WaPaeagqEGR4sw9jILN6gqaSI1y3EX4cieZkLX5/NXaBF0GdqJdIJUewd0lAL8wAQIVlmgKe7JYedLs=
+	t=1768496629; cv=none; b=OVsAhPHNssP8dvAAmoGhwXNSDSeGF+HCQM62PZ9cS7DwyNy4Eg9SrOhW21wJHWJh0rbrRc61r8BmA5m9mn3ReCsQ0kjLunSh6goVpUZtPSWB3FXzUfJhr8d6A1UOVf0P7lsxh1mkI8Eicr75EoUf/mdJTznVHy20ww9oU0JFRio=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499630; c=relaxed/simple;
-	bh=jWCcCyRUp3l8dFvYfu8Mdj/iiHkuARzkK55je8y+MJk=;
+	s=arc-20240116; t=1768496629; c=relaxed/simple;
+	bh=b65guiZd1QqrrlmYB7+Lw77OgaBhr8A1647e/t6Mbt8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nUAY7RBkSJ0pCs8lE4PvtIdFtxe9ngUjPPldXf1JBPDxHdoVMJZ6hNGNqt0rFV4WlV5vbgkUUTN57jqkYZ7ka8KHs/vju+rY4+yR0WJ+caobD4mUpYA6k2FQZyU1ipTQ7h1yiJ3ctXThLy8zH7N89DZ6c/WLRkvY7X5/mYpjeJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEPma+sG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEB5C116D0;
-	Thu, 15 Jan 2026 17:53:50 +0000 (UTC)
+	 MIME-Version; b=jWdLscn/gATkMt2gWrliGDv9z/3sr0ruz3v9y1uZv3fvDvxxHb5rrXHdYmhLGxTvDnqYvwBWKAeXw2z9jN1VNWletWwtGuGVsJvFoXU1BG+6r7m46apg2H6nP4aiHstM16eu6b9Q5bUifcSjhW7UAIDgykFFR6mBuCR1PxPaHYc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G5Uy30hz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A0DAC116D0;
+	Thu, 15 Jan 2026 17:03:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499630;
-	bh=jWCcCyRUp3l8dFvYfu8Mdj/iiHkuARzkK55je8y+MJk=;
+	s=korg; t=1768496628;
+	bh=b65guiZd1QqrrlmYB7+Lw77OgaBhr8A1647e/t6Mbt8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JEPma+sG+M/9FyyMRi0y56YGjuPqH0m6j1F15d2gu7xfQysju0fnmFMveCWR/Nh89
-	 q+c4zEQ17KwF++HGvt/egPcIMe7wDCrWAOFMOuPggf2rvdqbJ35kgmcpJ2mKj7NTSu
-	 +AQxzXfEkj2JnN8XrV7P5mJnv00oPO0SfNN1SL7k=
+	b=G5Uy30hzWJSiQEiX5+gSV3DznyeUHUsBcKSRfzxea7OBaCwRVfZ+9arlWQ2sRBvy6
+	 vml7okYp22obkc1kVcrCNZ5dviAtEAeCOVYdHxlSXy/CzvJGlyc8IrZAXLgdr+e1aM
+	 7d7nDvLu948rM+TmbO7PKiyYfwpPDu5M2pjbnkEM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	Yohei Kojima <yk@y-koj.net>,
+	Breno Leitao <leitao@debian.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 294/451] RDMA/bnxt_re: Fix IB_SEND_IP_CSUM handling in post_send
+Subject: [PATCH 6.12 080/119] net: netdevsim: fix inconsistent carrier state after link/unlink
 Date: Thu, 15 Jan 2026 17:48:15 +0100
-Message-ID: <20260115164241.526207836@linuxfoundation.org>
+Message-ID: <20260115164154.839970736@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +61,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Yohei Kojima <yk@y-koj.net>
 
-[ Upstream commit f01765a2361323e78e3d91b1cb1d5527a83c5cf7 ]
+[ Upstream commit d83dddffe1904e4a576d11a541878850a8e64cd2 ]
 
-The bnxt_re SEND path checks wr->send_flags to enable features such as
-IP checksum offload. However, send_flags is a bitmask and may contain
-multiple flags (e.g. IB_SEND_SIGNALED | IB_SEND_IP_CSUM), while the
-existing code uses a switch() statement that only matches when
-send_flags is exactly IB_SEND_IP_CSUM.
+This patch fixes the edge case behavior on ifup/ifdown and
+linking/unlinking two netdevsim interfaces:
 
-As a result, checksum offload is not enabled when additional SEND
-flags are present.
+1. unlink two interfaces netdevsim1 and netdevsim2
+2. ifdown netdevsim1
+3. ifup netdevsim1
+4. link two interfaces netdevsim1 and netdevsim2
+5. (Now two interfaces are linked in terms of netdevsim peer, but
+    carrier state of the two interfaces remains DOWN.)
 
-Replace the switch() with a bitmask test:
+This inconsistent behavior is caused by the current implementation,
+which only cares about the "link, then ifup" order, not "ifup, then
+link" order. This patch fixes the inconsistency by calling
+netif_carrier_on() when two netdevsim interfaces are linked.
 
-    if (wr->send_flags & IB_SEND_IP_CSUM)
+This patch fixes buggy behavior on NetworkManager-based systems which
+causes the netdevsim test to fail with the following error:
 
-This ensures IP checksum offload is enabled correctly when multiple
-SEND flags are used.
+  # timeout set to 600
+  # selftests: drivers/net/netdevsim: peer.sh
+  # 2025/12/25 00:54:03 socat[9115] W address is opened in read-write mode but only supports read-only
+  # 2025/12/25 00:56:17 socat[9115] W connect(7, AF=2 192.168.1.1:1234, 16): Connection timed out
+  # 2025/12/25 00:56:17 socat[9115] E TCP:192.168.1.1:1234: Connection timed out
+  # expected 3 bytes, got 0
+  # 2025/12/25 00:56:17 socat[9109] W exiting on signal 15
+  not ok 13 selftests: drivers/net/netdevsim: peer.sh # exit=1
 
-Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Link: https://patch.msgid.link/20251219093308.2415620-1-alok.a.tiwari@oracle.com
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+This patch also solves timeout on TCP Fast Open (TFO) test in
+NetworkManager-based systems because it also depends on netdevsim's
+carrier consistency.
+
+Fixes: 1a8fed52f7be ("netdevsim: set the carrier when the device goes up")
+Signed-off-by: Yohei Kojima <yk@y-koj.net>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/602c9e1ba5bb2ee1997bb38b1d866c9c3b807ae9.1767624906.git.yk@y-koj.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +------
- 1 file changed, 1 insertion(+), 6 deletions(-)
+ drivers/net/netdevsim/bus.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-index 089d7de829a0..5d0c1241b948 100644
---- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-+++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
-@@ -2647,14 +2647,9 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
- 				wqe.rawqp1.lflags |=
- 					SQ_SEND_RAWETH_QP1_LFLAGS_ROCE_CRC;
- 			}
--			switch (wr->send_flags) {
--			case IB_SEND_IP_CSUM:
-+			if (wr->send_flags & IB_SEND_IP_CSUM)
- 				wqe.rawqp1.lflags |=
- 					SQ_SEND_RAWETH_QP1_LFLAGS_IP_CHKSUM;
--				break;
--			default:
--				break;
--			}
- 			fallthrough;
- 		case IB_WR_SEND_WITH_INV:
- 			rc = bnxt_re_build_send_wqe(qp, wr, &wqe);
+diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
+index 64c0cdd31bf85..067cbf788da48 100644
+--- a/drivers/net/netdevsim/bus.c
++++ b/drivers/net/netdevsim/bus.c
+@@ -314,6 +314,11 @@ static ssize_t link_device_store(const struct bus_type *bus, const char *buf, si
+ 	rcu_assign_pointer(nsim_a->peer, nsim_b);
+ 	rcu_assign_pointer(nsim_b->peer, nsim_a);
+ 
++	if (netif_running(dev_a) && netif_running(dev_b)) {
++		netif_carrier_on(dev_a);
++		netif_carrier_on(dev_b);
++	}
++
+ out_err:
+ 	put_net(ns_b);
+ 	put_net(ns_a);
+@@ -363,6 +368,9 @@ static ssize_t unlink_device_store(const struct bus_type *bus, const char *buf,
+ 	if (!peer)
+ 		goto out_put_netns;
+ 
++	netif_carrier_off(dev);
++	netif_carrier_off(peer->netdev);
++
+ 	err = 0;
+ 	RCU_INIT_POINTER(nsim->peer, NULL);
+ 	RCU_INIT_POINTER(peer->peer, NULL);
 -- 
 2.51.0
 
