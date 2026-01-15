@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209343-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 85B06D26A0D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:01 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id CB026D26639
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DDBCC30E2FDB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 150C93046F93
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EAD903BFE5B;
-	Thu, 15 Jan 2026 17:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFD723A35A4;
+	Thu, 15 Jan 2026 17:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M8mlhgGe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sIcwWwFw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADA943BF2EA;
-	Thu, 15 Jan 2026 17:33:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 94043396B7D;
+	Thu, 15 Jan 2026 17:04:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498425; cv=none; b=QBo1kUJBwpbVjsIDU/SckBVwf8njAvc2z+xBHQW64QbFkMGagF91USHfIrzG08xXbzeqMD82dEiUs/zPx8mW+Lpqyrsg4AJ2ZWA6YVLVrlqR0srq3jtncnCIfNiSHA+Tmd1lrjRSuGBN4j4ykC1A5zpp9RsqGiXL9q+kMPHQi1s=
+	t=1768496699; cv=none; b=fgeAPL7XymqTrFGBWrqzX00RSEBFo0hqnTDUzIByD9KhRsQX6RVCNrakmLbQoXDeSq/sty7lG9pySEZ1H5F76GKROHl/CqmLk1fQrfVxZ0XUvE69iQb7LdfDYnGWAE3lQQ2mty7566onbACOpy3W97T5l2m6cYyxs5U/2NJzBNs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498425; c=relaxed/simple;
-	bh=+VXjLMispNyYRg50jHGXqJgWBUK4XbthuAikC4vOvvY=;
+	s=arc-20240116; t=1768496699; c=relaxed/simple;
+	bh=nd2K3xRIYAEUKtJaRgJfp+m/3nuL/OPQhF2LSL6bZq0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GJCgYG7wWkdv7kfMeUC+iUZHTzhPLu4U6qtvHacu64ezcWSF8Ff1vlFS/BFC7U/NDFIiSXwfvnnZ9y34yNlfUZIXSEQwSv/EaEZCTzpBf0HRp5JcfQJ7zF7SHHeX8CQL1set29uO7p+ZMQ7uzvvz/Y/1bLKVye1lmlvG7bTs5b0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M8mlhgGe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37F44C116D0;
-	Thu, 15 Jan 2026 17:33:45 +0000 (UTC)
+	 MIME-Version; b=TfLMRsqf9NXRXFX9jwBfmKMYPQae7VmLMbddgfF69Cjc2WuKpyF2VW4qRc0hie8ZbZUFqaGRe+Q7SQUk7qcSnPB0F+8ZxF99RJJSCZ62duxn5Pp+XQ2tdi9VT6zPXDmvD/az0LEMp6Qj3NlaPH+Te7fa6ecb7dJpUbpV/5b5nEU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sIcwWwFw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25066C116D0;
+	Thu, 15 Jan 2026 17:04:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498425;
-	bh=+VXjLMispNyYRg50jHGXqJgWBUK4XbthuAikC4vOvvY=;
+	s=korg; t=1768496699;
+	bh=nd2K3xRIYAEUKtJaRgJfp+m/3nuL/OPQhF2LSL6bZq0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=M8mlhgGew0gwBE0IBTMO/OUjPZb7F8mzoOs0OsVhAeBr5VquQrnXaKStdW7cbespn
-	 8h1UsaDl3pwkRa+EnhBG/9lXBUIAnpe+GUr/0tI9QqO0km4wwT/XoO2/YOZ2UyHX8j
-	 R2zK9+n0RErZ0mEg9ss6ZmMcqCBUqxPf33+jW3lY=
+	b=sIcwWwFwLDn93i9fdzsOoKG1XerVeYqQA5o/1uujDyRoN18YDGBa7ZlxSJkr3GqsT
+	 uCxGazQtA+HFdrleI+SmHU2FsAmCdqykcdowzsUDtk9LcGIBTkh6O06LTCe3raoVKx
+	 JrHpvK5IkR4f5TU+EkeajLRLMCwEBLRaK8xgKn50=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 420/554] mm/damon/tests/core-kunit: handle memory failure from damon_test_target()
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 071/119] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
 Date: Thu, 15 Jan 2026 17:48:06 +0100
-Message-ID: <20260115164301.446472860@linuxfoundation.org>
+Message-ID: <20260115164154.515274225@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit fafe953de2c661907c94055a2497c6b8dbfd26f3 upstream.
+[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
 
-damon_test_target() is assuming all dynamic memory allocation in it will
-succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+allocated memory for pp_qlt in ipc_mux_init() but did not free it in
+ipc_mux_deinit(). This results in a memory leak when the driver is
+unloaded.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-4-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Free the allocated memory in ipc_mux_deinit() to fix the leak.
+
+Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core-test.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -58,7 +58,14 @@ static void damon_test_target(struct kun
- 	struct damon_ctx *c = damon_new_ctx();
- 	struct damon_target *t;
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+index fc928b298a984..b846889fcb099 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 	struct sk_buff_head *free_list;
+ 	union mux_msg mux_msg;
+ 	struct sk_buff *skb;
++	int i;
  
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+
- 	t = damon_new_target(42);
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
+ 	if (!ipc_mux->initialized)
+ 		return;
+@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 		ipc_mux->channel->dl_pipe.is_open = false;
+ 	}
+ 
++	if (ipc_mux->protocol != MUX_LITE) {
++		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
++			kfree(ipc_mux->ul_adb.pp_qlt[i]);
 +	}
- 	KUNIT_EXPECT_EQ(test, 42ul, t->id);
- 	KUNIT_EXPECT_EQ(test, 0u, nr_damon_targets(c));
- 
++
+ 	kfree(ipc_mux);
+ }
+-- 
+2.51.0
+
 
 
 
