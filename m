@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209722-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209285-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4693D27450
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DA9DDD26D91
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 683B93160CDE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2022C317A9C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9127B3D3CF2;
-	Thu, 15 Jan 2026 17:51:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 54A663C00BD;
+	Thu, 15 Jan 2026 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F7rsN0CH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dDVaIDP/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BF923C0085;
-	Thu, 15 Jan 2026 17:51:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 17F273BF302;
+	Thu, 15 Jan 2026 17:31:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499505; cv=none; b=r26cQzmVd5gkPfq0zYGPVh0AMGWyYrhXlozZAjZ6FY+f3nHyPJUCmN2G9k6tyIY5OHKuidBoBfd9l9opRC7QuzK2FfILd7zmmpjzMP4ZpD8pI/dvJ7Ly/ZA+UlslF8FFqRrEGqo3U5totq1dGMjTRZ823LcNIjbUP/zZGXqB7/A=
+	t=1768498261; cv=none; b=CdEaNa9BVX4wQbO6ZIkfvmeLYRJH7dVFRG5OYVw2sTBFk9lTZK8XC6pnHR9l/UQJAV7raJOcopen+2tLXq2QkSyHC/8xadl1usLJPWtnDsUSqOf5UaOemFwGIiSuhwex5zLhijscC5kK+kkxt8pnvI5FBiQ1nt9s/Uzjxp8APlo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499505; c=relaxed/simple;
-	bh=7tcD0KYnNm8+UTDMPga3Kecx/9opHoCk+/gb+WUAb/Y=;
+	s=arc-20240116; t=1768498261; c=relaxed/simple;
+	bh=omiyMzynNdnRpL9K4oS2TUAGHxRxU9EMFnkEEdZ+VFo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=tuT/5zOqDO5nmPigFWbig4zShNGqVuwa00NBlyc7GAHDIIR7xVKBvdbNCqdthDxfuO4gIk/+4kwAgP3NPumEiMMUWIswwGr0gLxryniBn9GOc5aOaReoH2YMYYm4eWZxhAatrbf+M86HxPTxbvtYgP+cu3WTVSDM9RZLUXauoBg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F7rsN0CH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B7C9C116D0;
-	Thu, 15 Jan 2026 17:51:44 +0000 (UTC)
+	 MIME-Version; b=TWs/CQQ6AoHLjoXmGDiJlEXEyYysXQwvsFqS8hBJTLp+7LR5Bahvkz6k8elHtEOAVqMPfIJ4inwaWIGQWqAw/6GXVgIgZr0KjPXqVmXGbUiHoBzYl6DPBExZHjd3Cni5Pr/PmNYkZrq2r4T122Cm92T6k+7YeYBfwVqpGpiwh48=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dDVaIDP/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97FF7C116D0;
+	Thu, 15 Jan 2026 17:31:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499504;
-	bh=7tcD0KYnNm8+UTDMPga3Kecx/9opHoCk+/gb+WUAb/Y=;
+	s=korg; t=1768498261;
+	bh=omiyMzynNdnRpL9K4oS2TUAGHxRxU9EMFnkEEdZ+VFo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F7rsN0CHSBc3afsaexF3XY+TeYf9VQxYmB60mjqf1h9hiGdS2JQWnnvCwz0bPLD83
-	 N7KNOqKdVyzmYoSd9fqwtH6hl7wluL7DN5XvAdTtDwwx04D/8nRlk2Bu50tR3xlYYT
-	 e1VUPMD8xQrFJl70gul4micyY4/jNbtJ8K7Ui3Lk=
+	b=dDVaIDP/r874qDqaZmn+IxlI3Wz9ee0+4FI6hQlTtCDfkdKJmvJKm3xmcE9NQe7d5
+	 QZDjsPXG5dHc0Tnh6EKXaBDWsMsAL2/blruRfBOl1tbpF5fyGHilfipJs9pxYDsib9
+	 zw4vFjh4MYMk7Jgqr89EW9qElXl9IS7/X0BLFmk8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Ma Ke <make24@iscas.ac.cn>
-Subject: [PATCH 5.10 233/451] USB: lpc32xx_udc: Fix error handling in probe
-Date: Thu, 15 Jan 2026 17:47:14 +0100
-Message-ID: <20260115164239.324759125@linuxfoundation.org>
+	olivier moysan <olivier.moysan@st.com>,
+	Wen Yang <yellowriver2010@hotmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.15 369/554] ASoC: stm32: sai: fix device leak on probe
+Date: Thu, 15 Jan 2026 17:47:15 +0100
+Message-ID: <20260115164259.582543441@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,105 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ma Ke <make24@iscas.ac.cn>
+From: Johan Hovold <johan@kernel.org>
 
-commit c84117912bddd9e5d87e68daf182410c98181407 upstream.
+commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
 
-lpc32xx_udc_probe() acquires an i2c_client reference through
-isp1301_get_client() but fails to release it in both error handling
-paths and the normal removal path. This could result in a reference
-count leak for the I2C device, preventing proper cleanup and potentially
-leading to resource exhaustion. Add put_device() to release the
-reference in the probe failure path and in the remove function.
+Make sure to drop the reference taken when looking up the sync provider
+device and its driver data during DAI probe on probe failures and on
+unbind.
 
-Calling path: isp1301_get_client() -> of_find_i2c_device_by_node() ->
-i2c_find_device_by_fwnode(). As comments of i2c_find_device_by_fwnode()
-says, 'The user must call put_device(&client->dev) once done with the
-i2c client.'
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Found by code review.
-
-Cc: stable <stable@kernel.org>
-Fixes: 24a28e428351 ("USB: gadget driver for LPC32xx")
-Signed-off-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://patch.msgid.link/20251215020931.15324-1-make24@iscas.ac.cn
+Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
+Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
+Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
+Cc: olivier moysan <olivier.moysan@st.com>
+Cc: Wen Yang <yellowriver2010@hotmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/gadget/udc/lpc32xx_udc.c |   21 +++++++++++++++------
- 1 file changed, 15 insertions(+), 6 deletions(-)
+ sound/soc/stm/stm32_sai.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/gadget/udc/lpc32xx_udc.c
-+++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
-@@ -3026,7 +3026,7 @@ static int lpc32xx_udc_probe(struct plat
- 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
- 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
- 	if (retval)
--		return retval;
-+		goto i2c_fail;
- 
- 	udc->board = &lpc32xx_usbddata;
- 
-@@ -3044,28 +3044,32 @@ static int lpc32xx_udc_probe(struct plat
- 	/* Get IRQs */
- 	for (i = 0; i < 4; i++) {
- 		udc->udp_irq[i] = platform_get_irq(pdev, i);
--		if (udc->udp_irq[i] < 0)
--			return udc->udp_irq[i];
-+		if (udc->udp_irq[i] < 0) {
-+			retval = udc->udp_irq[i];
-+			goto i2c_fail;
-+		}
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -127,6 +127,7 @@ static int stm32_sai_set_sync(struct stm
  	}
  
- 	udc->udp_baseaddr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(udc->udp_baseaddr)) {
- 		dev_err(udc->dev, "IO map failure\n");
--		return PTR_ERR(udc->udp_baseaddr);
-+		retval = PTR_ERR(udc->udp_baseaddr);
-+		goto i2c_fail;
- 	}
+ 	sai_provider = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!sai_provider) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"SAI sync provider data not found\n");
+@@ -143,7 +144,6 @@ static int stm32_sai_set_sync(struct stm
+ 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
  
- 	/* Get USB device clock */
- 	udc->usb_slv_clk = devm_clk_get(&pdev->dev, NULL);
- 	if (IS_ERR(udc->usb_slv_clk)) {
- 		dev_err(udc->dev, "failed to acquire USB device clock\n");
--		return PTR_ERR(udc->usb_slv_clk);
-+		retval = PTR_ERR(udc->usb_slv_clk);
-+		goto i2c_fail;
- 	}
- 
- 	/* Enable USB device clock */
- 	retval = clk_prepare_enable(udc->usb_slv_clk);
- 	if (retval < 0) {
- 		dev_err(udc->dev, "failed to start USB device clock\n");
--		return retval;
-+		goto i2c_fail;
- 	}
- 
- 	/* Setup deferred workqueue data */
-@@ -3167,6 +3171,8 @@ dma_alloc_fail:
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- i2c_fail:
-+	if (udc->isp1301_i2c_client)
-+		put_device(&udc->isp1301_i2c_client->dev);
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
- 
-@@ -3192,6 +3198,9 @@ static int lpc32xx_udc_remove(struct pla
- 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
- 			  udc->udca_v_base, udc->udca_p_base);
- 
-+	if (udc->isp1301_i2c_client)
-+		put_device(&udc->isp1301_i2c_client->dev);
-+
- 	clk_disable_unprepare(udc->usb_slv_clk);
- 
- 	return 0;
+ error:
+-	put_device(&pdev->dev);
+ 	of_node_put(np_provider);
+ 	return ret;
+ }
 
 
 
