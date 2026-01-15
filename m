@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209558-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209135-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23599D2783D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:29 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4D966D266EC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 77C0E320165F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:00 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 16F693028556
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E556F2F619D;
-	Thu, 15 Jan 2026 17:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EEA13BF2FF;
+	Thu, 15 Jan 2026 17:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w5A2O49X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Eua+waEU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A7F1C2C0F83;
-	Thu, 15 Jan 2026 17:43:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CE274C81;
+	Thu, 15 Jan 2026 17:23:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499038; cv=none; b=LUcOXZooqqv3AEJ2ll6Dtc24Y7LJji26IEdV9XoACdcCgp3KjuJKyLwJ4lrbeKpLEduSs2p6hW7uc1tQBe5LW160jGOy/JaX7z9HpxtA+0ZAG7gPqlOnxO8vIQKRiSXjV9pUDbvKQmLJG1CaffkjS1DfDslxqO+qe/3rdSTHTJc=
+	t=1768497833; cv=none; b=sRshrOLvrr5ogfRbCCnakw2J7AOYAtLsaVStxQJ//h48d/zcy7diBZPEkG0IsYswy6lUtD4lbA/f3hAIu06dBjqaOix9Bi8AIV9k1AovguSrOkSNk11vQVHP6+ShpsbQsMmQ+CecbubkahhzqoEGlAEtvBaQFHkNEf+XBMYHHj8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499038; c=relaxed/simple;
-	bh=t2TYCUw83TBAJcdPglguLX8IdUxrIBUVILNfzne9JRE=;
+	s=arc-20240116; t=1768497833; c=relaxed/simple;
+	bh=xx7fbpFJUQaeedtSb8F2KQsk5yhtUjVK/aqGwET3hcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EKMnFNA7GZck7RZ/5EtU2Oo+jvuM4hv75A++prEHuwIsN0Fv+xYH3ahJWXHoDDaSKQ34xuL9tTk7O8SJf0uzyvH4AtN0cQ6GUOgktFMOXpM1yi5veo08euCXa7umRw9jRlJdML0Aj6EIxdSlbS3RBr7iieR+9qQNIU4iqjCYT4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w5A2O49X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33011C116D0;
-	Thu, 15 Jan 2026 17:43:58 +0000 (UTC)
+	 MIME-Version; b=poKqIOD5WJOf8NkWllRRVeAtONJeuCv3m/g8re2VQY9Oa9YUT3xmLrrVYtuRqGuNY8YB0Sl3K83aZgl8DKUDwqam4g5HUfev6iVhH3Q/FwZhwekcSqeKbsAfZ9nVqVuMomlzr+P758EMZYrjcJWnDhJ5QFCGongVAPyNZgKRCvQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Eua+waEU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91160C116D0;
+	Thu, 15 Jan 2026 17:23:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499038;
-	bh=t2TYCUw83TBAJcdPglguLX8IdUxrIBUVILNfzne9JRE=;
+	s=korg; t=1768497833;
+	bh=xx7fbpFJUQaeedtSb8F2KQsk5yhtUjVK/aqGwET3hcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w5A2O49XpJRbKHcuRiMkTyCklB+Qiizf9gMMpvD/P9a5YCpBPGP7dkKdDLV3yjgLL
-	 3GXPDW1lisFcDa+dXB33m7w55gVaWZpwFNAeP0xgFEE+/IgGhYacNVy8fEJPTvcX4C
-	 bEBm0ZipqmD4dGsK5EUKFSAoKACTh5pojqs8Wr9c=
+	b=Eua+waEUjiwGuKGteWRzFZ9/iJPJt4CRz4uCuKHJfCbNHew3etdL6t4ripYoHLdRx
+	 05CosegkWWu2ElkWoHdr6scxILb5OhcRGN10IimVyIxUsV4ii+ZrhrgyQdWMF1nyBe
+	 b2eFMppOfezPDO6G+mn20VLEZhrsvb92RyPsJ0y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@baylibre.com>,
-	Florian Fainelli <florian.fainelli@broadcom.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <ukleinek@kernel.org>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/451] pwm: bcm2835: Make sure the channel is enabled after pwm_request()
+Subject: [PATCH 5.15 220/554] hfsplus: fix volume corruption issue for generic/073
 Date: Thu, 15 Jan 2026 17:44:46 +0100
-Message-ID: <20260115164233.992658069@linuxfoundation.org>
+Message-ID: <20260115164254.211548696@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,89 +60,129 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-[ Upstream commit cda323dbda76600bf9761970d58517648f0de67d ]
+[ Upstream commit 24e17a29cf7537f0947f26a50f85319abd723c6c ]
 
-The .free callback cleared among others the enable bit PWENx in the
-control register. When the PWM is requested later again this bit isn't
-restored but the core assumes the PWM is enabled and thus skips a
-request to configure the same state as before.
+The xfstests' test-case generic/073 leaves HFS+ volume
+in corrupted state:
 
-To fix that don't touch the hardware configuration in .free(). For
-symmetry also drop .request() and configure the mode completely in
-.apply().
+sudo ./check generic/073
+FSTYP -- hfsplus
+PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
+MKFS_OPTIONS -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-Fixes: e5a06dc5ac1f ("pwm: Add BCM2835 PWM driver")
-Signed-off-by: Uwe Kleine-König <u.kleine-koenig@baylibre.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://patch.msgid.link/20251118174303.1761577-2-u.kleine-koenig@baylibre.com
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+generic/073 _check_generic_filesystem: filesystem on /dev/loop51 is inconsistent
+(see XFSTESTS-2/xfstests-dev/results//generic/073.full for details)
+
+Ran: generic/073
+Failures: generic/073
+Failed 1 of 1 tests
+
+sudo fsck.hfsplus -d /dev/loop51
+** /dev/loop51
+Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+Executing fsck_hfs (version 540.1-Linux).
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+Invalid directory item count
+(It should be 1 instead of 0)
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+CBTStat = 0x0000 CatStat = 0x00004000
+** Repairing volume.
+** Rechecking volume.
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled was repaired successfully.
+
+The test is doing these steps on final phase:
+
+mv $SCRATCH_MNT/testdir_1/bar $SCRATCH_MNT/testdir_2/bar
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/testdir_1
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/foo
+
+So, we move file bar from testdir_1 into testdir_2 folder. It means that HFS+
+logic decrements the number of entries in testdir_1 and increments number of
+entries in testdir_2. Finally, we do fsync only for testdir_1 and foo but not
+for testdir_2. As a result, this is the reason why fsck.hfsplus detects the
+volume corruption afterwards.
+
+This patch fixes the issue by means of adding the
+hfsplus_cat_write_inode() call for old_dir and new_dir in
+hfsplus_rename() after the successful ending of
+hfsplus_rename_cat(). This method makes modification of in-core
+inode objects for old_dir and new_dir but it doesn't save these
+modifications in Catalog File's entries. It was expected that
+hfsplus_write_inode() will save these modifications afterwards.
+However, because generic/073 does fsync only for testdir_1 and foo
+then testdir_2 modification hasn't beed saved into Catalog File's
+entry and it was flushed without this modification. And it was
+detected by fsck.hfsplus. Now, hfsplus_rename() stores in Catalog
+File all modified entries and correct state of Catalog File will
+be flushed during hfsplus_file_fsync() call. Finally, it makes
+fsck.hfsplus happy.
+
+sudo ./check generic/073
+FSTYP         -- hfsplus
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #93 SMP PREEMPT_DYNAMIC Wed Nov 12 14:37:49 PST 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/073 32s ...  32s
+Ran: generic/073
+Passed all 1 tests
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20251112232522.814038-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-bcm2835.c | 28 +++-------------------------
- 1 file changed, 3 insertions(+), 25 deletions(-)
+ fs/hfsplus/dir.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
-index aec1a963f46e2..0a7819f2200a2 100644
---- a/drivers/pwm/pwm-bcm2835.c
-+++ b/drivers/pwm/pwm-bcm2835.c
-@@ -35,29 +35,6 @@ static inline struct bcm2835_pwm *to_bcm2835_pwm(struct pwm_chip *chip)
- 	return container_of(chip, struct bcm2835_pwm, chip);
- }
- 
--static int bcm2835_pwm_request(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	value |= (PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--
--	return 0;
--}
--
--static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--}
--
- static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 			     const struct pwm_state *state)
- {
-@@ -90,6 +67,9 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
- 	/* set polarity */
- 	val = readl(pc->base + PWM_CONTROL);
- 
-+	val &= ~(PWM_CONTROL_MASK << PWM_CONTROL_SHIFT(pwm->hwpwm));
-+	val |= PWM_MODE << PWM_CONTROL_SHIFT(pwm->hwpwm);
+diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
+index 84714bbccc123..98a30ca6354ce 100644
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -552,8 +552,13 @@ static int hfsplus_rename(struct user_namespace *mnt_userns,
+ 	res = hfsplus_rename_cat((u32)(unsigned long)old_dentry->d_fsdata,
+ 				 old_dir, &old_dentry->d_name,
+ 				 new_dir, &new_dentry->d_name);
+-	if (!res)
++	if (!res) {
+ 		new_dentry->d_fsdata = old_dentry->d_fsdata;
 +
- 	if (state->polarity == PWM_POLARITY_NORMAL)
- 		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
- 	else
-@@ -107,8 +87,6 @@ static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
++		res = hfsplus_cat_write_inode(old_dir);
++		if (!res)
++			res = hfsplus_cat_write_inode(new_dir);
++	}
+ 	return res;
  }
  
- static const struct pwm_ops bcm2835_pwm_ops = {
--	.request = bcm2835_pwm_request,
--	.free = bcm2835_pwm_free,
- 	.apply = bcm2835_pwm_apply,
- 	.owner = THIS_MODULE,
- };
 -- 
 2.51.0
 
