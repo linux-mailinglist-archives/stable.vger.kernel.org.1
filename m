@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-208763-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208774-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A992D26162
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:42 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADA8FD26384
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 812EB30259E5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0EF2B3166D7D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 336CF3BFE37;
-	Thu, 15 Jan 2026 17:06:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D6913BF2FA;
+	Thu, 15 Jan 2026 17:06:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UZjqm2yT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kccL8iG6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E91DE3BF2F8;
-	Thu, 15 Jan 2026 17:06:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E4BAB39A805;
+	Thu, 15 Jan 2026 17:06:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496774; cv=none; b=PkPrHMviBsgGjpXQObEWfmwu3KoBpHdtjwmN05BPOv66FTXlis+HoY6mfwjEdQuKo4EpXr1w54xyU0XoaPyRu05LHoXHdU3p6uO343luxJMeAze7TvzH67afz2DzRgd9mSwxiKdfSO2x4Bg20OwTG3cDjVrNIb8VASViKc4qkeM=
+	t=1768496805; cv=none; b=G/0QUVkYbNAPqclVKptXAl5SWO01gqGOvH2jZw6cZKne90i58rqv9XyTd9fbEua9f8GScbJxUj7qvx3UgRp/oCYw44t8agSZ2HXJJ6N7P8d++fKR5y1mvmuULkXBh3ghLD3Qdg2JUIV+uFKf4lEUtr5iWJtBUY5iZoELDHAiQL0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496774; c=relaxed/simple;
-	bh=lzTxtNJCnZyfmqEH+mLtJEzTn//i83QTkcyCMOCBxNk=;
+	s=arc-20240116; t=1768496805; c=relaxed/simple;
+	bh=3Vk42v+mGwXc8lGbyZ+9g4nsg/zmKSsejBoNIn1G9mk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZkukLNRyxC0Q/LKvWwhmmlQkEFkqX2q2VhWoKbwAp1sQfP2N9aq3MdNMbLdLjegcvP4SFuk0/4Wmgv4RvPPLI8Y+7dmdmbvgxfsueeuJN6uVlaw3w/ROd2zcOrsW+qZNZDxV/ICJAR0YLKYmDS/Z2ybZm7/WVTFcBSOf/jQPGBA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UZjqm2yT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65EB3C16AAE;
-	Thu, 15 Jan 2026 17:06:13 +0000 (UTC)
+	 MIME-Version; b=scT/F8Li59PqpLAyseDQffNqx9EGyOi5+hNLLe2icPTpCKIiDed9BehhxZsAOOtxJOGXxUCFrTkRJ7rF0JinxNMInEy/3aNygZdDQZ2bKaMMtDThk8PFijFQKWOrrEkefi+vH9aC+zK0OHjWm1RSpz9hzvUYqsTF+CTX2EncKp4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kccL8iG6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72EB2C116D0;
+	Thu, 15 Jan 2026 17:06:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496773;
-	bh=lzTxtNJCnZyfmqEH+mLtJEzTn//i83QTkcyCMOCBxNk=;
+	s=korg; t=1768496804;
+	bh=3Vk42v+mGwXc8lGbyZ+9g4nsg/zmKSsejBoNIn1G9mk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UZjqm2yTxI3qKYAdk/yWOU4Qy3x3ETiGZk8motoeI3fd3yaghC0aBFba6cXnvoenu
-	 +HfZCtFJBzdCYQIUu02hZJSPctqTCVGCvlXZidYavpzE8ODv8QDcTwtCcbSRyjUbqS
-	 IA7L7N+Ddo9t3Yn+64k+8VtfKWxTalhPN5UlQ7wM=
+	b=kccL8iG67XVf9vUbxYA3+1BPUbV6uMqce7PTiWK6wTP7+rcH+TeIIP4yGuwEvh99M
+	 XkyiklovGL1Qa8R+Ve+iPwdXKKPMkN5ZfP4psjYg75ZR4E5ajjIBnVvjKEwKf7ev4O
+	 hvwfzq6HsScoYWAP1D+qGZgyAcpRyD4Bx9A2vmN8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Thomas Fourier <fourier.thomas@gmail.com>,
 	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.6 03/88] atm: Fix dma_free_coherent() size
-Date: Thu, 15 Jan 2026 17:47:46 +0100
-Message-ID: <20260115164146.441707174@linuxfoundation.org>
+Subject: [PATCH 6.6 04/88] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
+Date: Thu, 15 Jan 2026 17:47:47 +0100
+Message-ID: <20260115164146.476971803@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
 References: <20260115164146.312481509@linuxfoundation.org>
@@ -65,33 +65,32 @@ Content-Transfer-Encoding: 8bit
 
 From: Thomas Fourier <fourier.thomas@gmail.com>
 
-commit 4d984b0574ff708e66152763fbfdef24ea40933f upstream.
+commit a4e305ed60f7c41bbf9aabc16dd75267194e0de3 upstream.
 
-The size of the buffer is not the same when alloc'd with
-dma_alloc_coherent() in he_init_tpdrq() and freed.
+pdev can be null and free_ring: can be called in 1297 with a null
+pdev.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260107090141.80900-2-fourier.thomas@gmail.com
+Link: https://patch.msgid.link/20260106094731.25819-2-fourier.thomas@gmail.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/atm/he.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/3com/3c59x.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/atm/he.c
-+++ b/drivers/atm/he.c
-@@ -1587,7 +1587,8 @@ he_stop(struct he_dev *he_dev)
- 				  he_dev->tbrq_base, he_dev->tbrq_phys);
+--- a/drivers/net/ethernet/3com/3c59x.c
++++ b/drivers/net/ethernet/3com/3c59x.c
+@@ -1473,7 +1473,7 @@ static int vortex_probe1(struct device *
+ 		return 0;
  
- 	if (he_dev->tpdrq_base)
--		dma_free_coherent(&he_dev->pci_dev->dev, CONFIG_TBRQ_SIZE * sizeof(struct he_tbrq),
-+		dma_free_coherent(&he_dev->pci_dev->dev,
-+				  CONFIG_TPDRQ_SIZE * sizeof(struct he_tpdrq),
- 				  he_dev->tpdrq_base, he_dev->tpdrq_phys);
- 
- 	dma_pool_destroy(he_dev->tpd_pool);
+ free_ring:
+-	dma_free_coherent(&pdev->dev,
++	dma_free_coherent(gendev,
+ 		sizeof(struct boom_rx_desc) * RX_RING_SIZE +
+ 		sizeof(struct boom_tx_desc) * TX_RING_SIZE,
+ 		vp->rx_ring, vp->rx_ring_dma);
 
 
 
