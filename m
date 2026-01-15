@@ -1,57 +1,56 @@
-Return-Path: <stable+bounces-209872-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209477-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55D32D2765C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:46 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4B146D26BF6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 996B9304E0AD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3FADC30D37D6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2DA623C1FCB;
-	Thu, 15 Jan 2026 17:58:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4EC383624C4;
+	Thu, 15 Jan 2026 17:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YrkMQofW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yvjTvKlM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E55E93D3488;
-	Thu, 15 Jan 2026 17:58:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 132882F619D;
+	Thu, 15 Jan 2026 17:40:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499933; cv=none; b=F7GONw3B1ccdHQR9vGZ79dao892c6fN68xuZu0epByHLzRzp+wlcBLpQSeon3EjaGvDIXq0T8AV9zgJsqSprygcEBMJ6cAvVKSotl4vq8da24LMOd/0D9AboU1P/E1ZSV2kZeOoiNcSja4LIwGxTHjNJMwfHQRJRrUCcTrpRAU8=
+	t=1768498807; cv=none; b=ZoXzQ9WRr+wUNu4EKAhATROgRVXphaA8Xuvti+2T9noH5SnQEaCobk9u87pYobywPrLkVNAB96kkTpMdMA2dIaqKPUheems02WQ6ZRzS31LhWav024oVf+K8+Tb/5y7yR56TqXanpsEy13+E7VbSMroRdgWHhbhG0F5U8sNvqic=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499933; c=relaxed/simple;
-	bh=gozQfJiKhFz35rgji1RJ7xmZHzUgarPr9DwJve7UIlA=;
+	s=arc-20240116; t=1768498807; c=relaxed/simple;
+	bh=RIVcA52VbCkhP4A5MIVPDVWP528TjEXBuDzjv7A1iNA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XP+DFOSQqz9CvjCWC2IpFWjVbeQm1YldIioHhrM+BOsRqWnFoQF8SG3hkNIp6FVRqofj15tYPJ3+1HCbg9T8yTKpDk2P207BgQQg2wK3JaNkh+QNts/BY5IjlUlUFg7Xnyga4nCyqH3E/afla2Sq2MsIJSQe4cQsSuupgtbo0jQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YrkMQofW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259CAC116D0;
-	Thu, 15 Jan 2026 17:58:51 +0000 (UTC)
+	 MIME-Version; b=ZNgPvoFFIcUu2gYjumIRLIJnsT5F3zO522b1HJ0iDrHw1pqPjNSYNJnPCw/4J6MgYtoE0bdvCepfH0ND/eU27UkoDqyLC+nLZvUqbMCQ04yT388rQ/1TPAUcYQmU/kjfPGN6yVKmBvEN0Bgnaj8enz3vlP93SVBbdm0L4z/hqgE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yvjTvKlM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90A29C116D0;
+	Thu, 15 Jan 2026 17:40:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499932;
-	bh=gozQfJiKhFz35rgji1RJ7xmZHzUgarPr9DwJve7UIlA=;
+	s=korg; t=1768498806;
+	bh=RIVcA52VbCkhP4A5MIVPDVWP528TjEXBuDzjv7A1iNA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YrkMQofWQjelfuXxY4HB14RWOBoa+kOPrr5233U16Sn665FgyF6Ipkh7L2r0ir2cP
-	 XW53YZqdCVXLQvYehlzo4w5AEoQaAST6G3sEqKFabIrX/PmQOCFXh3xHwzaEZ2UGn7
-	 DZSnsEzfRlxSAZmbxKs1c1uuxvuUuJZzXTyo+YCI=
+	b=yvjTvKlMwLcGb4UEgSJNf4Rl8b6Zt8Sc52mhZeHyTvHTAtlest2wTP/aK+jddBNjk
+	 blIZZUY2URF6QDs4yVGFxZlHYkOV/Rce312kkUuik3G3Bf/Nd7iOfvQRvjjEsAvxS1
+	 Vqi29eIKSw1vBnrBgdwSTJosw5VRcPtBFGkBpzmQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Josef Bacik <josef@toxicpanda.com>,
-	David Sterba <dsterba@suse.com>,
-	Bin Lan <bin.lan.cn@windriver.com>,
-	He Zhe <zhe.he@windriver.com>,
-	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Subject: [PATCH 5.10 399/451] btrfs: do not clean up repair bio if submit fails
+	Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 534/554] net/mlx5e: Dont print error message due to invalid module
 Date: Thu, 15 Jan 2026 17:50:00 +0100
-Message-ID: <20260115164245.371212741@linuxfoundation.org>
+Message-ID: <20260115164305.656346209@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,67 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Josef Bacik <josef@toxicpanda.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 8cbc3001a3264d998d6b6db3e23f935c158abd4d ]
+[ Upstream commit 144297e2a24e3e54aee1180ec21120ea38822b97 ]
 
-The submit helper will always run bio_endio() on the bio if it fails to
-submit, so cleaning up the bio just leads to a variety of use-after-free
-and NULL pointer dereference bugs because we race with the endio
-function that is cleaning up the bio.  Instead just return BLK_STS_OK as
-the repair function has to continue to process the rest of the pages,
-and the endio for the repair bio will do the appropriate cleanup for the
-page that it was given.
+Dumping module EEPROM on newer modules is supported through the netlink
+interface only.
 
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Josef Bacik <josef@toxicpanda.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-[Minor context change fixed.]
-Signed-off-by: Bin Lan <bin.lan.cn@windriver.com>
-Signed-off-by: He Zhe <zhe.he@windriver.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[ Keerthana: Backported the patch to v5.10.y ]
-Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Querying with old userspace ethtool (or other tools, such as 'lshw')
+which still uses the ioctl interface results in an error message that
+could flood dmesg (in addition to the expected error return value).
+The original message was added under the assumption that the driver
+should be able to handle all module types, but now that such flows are
+easily triggered from userspace, it doesn't serve its purpose.
+
+Change the log level of the print in mlx5_query_module_eeprom() to
+debug.
+
+Fixes: bb64143eee8c ("net/mlx5e: Add ethtool support for dump module EEPROM")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20251225132717.358820-5-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/extent_io.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/port.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/fs/btrfs/extent_io.c
-+++ b/fs/btrfs/extent_io.c
-@@ -2655,7 +2655,6 @@ blk_status_t btrfs_submit_read_repair(st
- 	bool need_validation;
- 	struct bio *repair_bio;
- 	struct btrfs_io_bio *repair_io_bio;
--	blk_status_t status;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+index fd79860de723b..fdf708d642887 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+@@ -414,7 +414,8 @@ int mlx5_query_module_eeprom(struct mlx5_core_dev *dev,
+ 		mlx5_qsfp_eeprom_params_set(&query.i2c_address, &query.page, &offset);
+ 		break;
+ 	default:
+-		mlx5_core_err(dev, "Module ID not recognized: 0x%x\n", module_id);
++		mlx5_core_dbg(dev, "Module ID not recognized: 0x%x\n",
++			      module_id);
+ 		return -EINVAL;
+ 	}
  
- 	btrfs_debug(fs_info,
- 		   "repair read error: read error at %llu", start);
-@@ -2699,13 +2698,13 @@ blk_status_t btrfs_submit_read_repair(st
- "repair read error: submitting new read to mirror %d, in_validation=%d",
- 		    failrec->this_mirror, failrec->in_validation);
- 
--	status = submit_bio_hook(inode, repair_bio, failrec->this_mirror,
--				 failrec->bio_flags);
--	if (status) {
--		free_io_failure(failure_tree, tree, failrec);
--		bio_put(repair_bio);
--	}
--	return status;
-+	/*
-+	 * At this point we have a bio, so any errors from submit_bio_hook()
-+	 * will be handled by the endio on the repair_bio, so we can't return an
-+	 * error here.
-+	 */
-+	submit_bio_hook(inode, repair_bio, failrec->this_mirror, failrec->bio_flags);
-+	return BLK_STS_OK;
- }
- 
- /* lots and lots of room for performance fixes in the end_bio funcs */
+-- 
+2.51.0
+
 
 
 
