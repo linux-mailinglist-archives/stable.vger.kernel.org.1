@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208683-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 40031D26205
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:59 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C899BD27480
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F228431279A8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8B4493175B2C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CE453BF312;
-	Thu, 15 Jan 2026 17:02:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5E4839B48E;
+	Thu, 15 Jan 2026 17:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qpstO+6l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LOZL/edK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F3B773BF2E7;
-	Thu, 15 Jan 2026 17:02:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37A023D4112;
+	Thu, 15 Jan 2026 17:52:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496550; cv=none; b=KgrviJIj8g/kBlcUFbGC3AkAVAlrIxqMDShZqzn3SRS3f1PhCyhPigYmQqXZETSGqcU8RCnTZyfSfa9dsXXg9DSBB1MwGVE1VLmxPj1D/0n3D+KFAbrIATuPy/oOe+JbDTkbs03uYRlvYp9Wsdzt8e/bcnAn/Pl1csaypQtidg4=
+	t=1768499551; cv=none; b=iAJQSnBki89xwsYkhPYlMviqJ1xbB+ChSU73UlksdieaP38tK3fV/ahWm7GCVxh+3FlO1yabbKqfmNDGZenX4yH4RcTXPqDEtTaXEbF3OdwpiWjI8W3qYKI9AvYhLcJAQMEtBEpE0uOImnQgEGH7OjnVWkP/alsS36TUSeL7AY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496550; c=relaxed/simple;
-	bh=AKriqnetDojCNaZelgQfDw6QToRkj2BtodAN4Lf8JNY=;
+	s=arc-20240116; t=1768499551; c=relaxed/simple;
+	bh=0deYh9QofRe1W/vTO9Mzo2lCDuQWGLDBhG4E4OVSdAQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=i75KNKAvuliyVsOCChZ2MXQ+WlLC9036rugrfBC8wHebJi3xBv0pMmVlnFPDc563DP/ohUCd375D2loAmLzMsFpxmh0HHtFQErHyyR2bCKGqR1APps9IWdBmNqmfApYa2t+VkiqxdmsYhchp05dP3ePr2F4zfQ4CcJWpYLFzm4k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qpstO+6l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 286A0C19422;
-	Thu, 15 Jan 2026 17:02:28 +0000 (UTC)
+	 MIME-Version; b=cWk349az56WW/vMmVMo0sHSoiuX2smVfrGKx+P3WOIFi8yN2GgdKdTTTricvBiV8HyTbVB+hS7m5n8b9NW38X45WJtRfFGN9oittd1MS0hp7DuHe+zAm5X0OgfteOF1JA9YOGgVjEbDIsZONjGUCSQqg890cg/99zQmZnFgxX+k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LOZL/edK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0B16C116D0;
+	Thu, 15 Jan 2026 17:52:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496549;
-	bh=AKriqnetDojCNaZelgQfDw6QToRkj2BtodAN4Lf8JNY=;
+	s=korg; t=1768499551;
+	bh=0deYh9QofRe1W/vTO9Mzo2lCDuQWGLDBhG4E4OVSdAQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qpstO+6lAfQHEH1nGTpw3UT7c4vVAK3krKHBtleEI9I/yO0uGt3bB8tzFIOngxw/j
-	 A5BJ1GisYdhWzcb5DbkmdaFsMDYDkY5/zHJ3Kpy1kNRmhP0ryfFTap682fkRkDh2q9
-	 i9yKtrRXz/zmzGPMM+cG1eqE1h1Roh1vI4ZJTDbo=
+	b=LOZL/edK28S/bex74HCSfo73x1XH2HM5IPCGRsYvBvq0Xf2M06wot+8vXxGrv458C
+	 8v0GNX1kDW4vs9qUtYqb+fxSfkw+GSxvYqvnApuqGD6/uP0yY1sOSmz8ZIz6oRXGXp
+	 evBKTe/a+xC8+JWKhY2cY+liweBaAtqbfA97Oi88=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wadim Egorov <w.egorov@phytec.de>,
-	Nishanth Menon <nm@ti.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 051/119] arm64: dts: ti: k3-am62-lp-sk-nand: Rename pinctrls to fix schema warnings
+	Brian Masney <bmasney@redhat.com>,
+	Miaoqian Lin <linmq006@gmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	Bjorn Andersson <andersson@kernel.org>
+Subject: [PATCH 5.10 265/451] soc: qcom: ocmem: fix device leak on lookup
 Date: Thu, 15 Jan 2026 17:47:46 +0100
-Message-ID: <20260115164153.801434519@linuxfoundation.org>
+Message-ID: <20260115164240.472449597@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wadim Egorov <w.egorov@phytec.de>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit cf5e8adebe77917a4cc95e43e461cdbd857591ce ]
+commit b5c16ea57b030b8e9428ec726e26219dfe05c3d9 upstream.
 
-Rename pinctrl nodes to comply with naming conventions required by
-pinctrl-single schema.
+Make sure to drop the reference taken to the ocmem platform device when
+looking up its driver data.
 
-Fixes: e569152274fec ("arm64: dts: ti: am62-lp-sk: Add overlay for NAND expansion card")
-Signed-off-by: Wadim Egorov <w.egorov@phytec.de>
-Link: https://patch.msgid.link/20251127122733.2523367-3-w.egorov@phytec.de
-Signed-off-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Also note that commit 0ff027027e05 ("soc: qcom: ocmem: Fix missing
+put_device() call in of_get_ocmem") fixed the leak in a lookup error
+path, but the reference is still leaking on success.
+
+Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
+Cc: stable@vger.kernel.org	# 5.5: 0ff027027e05
+Cc: Brian Masney <bmasney@redhat.com>
+Cc: Miaoqian Lin <linmq006@gmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Brian Masney <bmasney@redhat.com>
+Link: https://lore.kernel.org/r/20250926143511.6715-2-johan@kernel.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso | 2 +-
+ drivers/soc/qcom/ocmem.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso b/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso
-index 173ac60723b64..b4daa674eaa1e 100644
---- a/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso
-+++ b/arch/arm64/boot/dts/ti/k3-am62-lp-sk-nand.dtso
-@@ -14,7 +14,7 @@
- };
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -211,9 +211,9 @@ struct ocmem *of_get_ocmem(struct device
+ 	of_node_put(devnode);
  
- &main_pmx0 {
--	gpmc0_pins_default: gpmc0-pins-default {
-+	gpmc0_pins_default: gpmc0-default-pins {
- 		pinctrl-single,pins = <
- 			AM62X_IOPAD(0x003c, PIN_INPUT, 0) /* (K19) GPMC0_AD0 */
- 			AM62X_IOPAD(0x0040, PIN_INPUT, 0) /* (L19) GPMC0_AD1 */
--- 
-2.51.0
-
+ 	ocmem = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!ocmem) {
+ 		dev_err(dev, "Cannot get ocmem\n");
+-		put_device(&pdev->dev);
+ 		return ERR_PTR(-ENODEV);
+ 	}
+ 	return ocmem;
 
 
 
