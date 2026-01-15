@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209924-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209469-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 78FAED278B8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:30:06 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 58424D26C84
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB5CC30AC152
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DCFCF30CB9E1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id ADF973BFE4C;
-	Thu, 15 Jan 2026 18:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D9CD22C21F4;
+	Thu, 15 Jan 2026 17:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ju2+C3o0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LtjbRU2O"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 704673B8BC0;
-	Thu, 15 Jan 2026 18:01:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9DBF52D7DED;
+	Thu, 15 Jan 2026 17:39:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768500080; cv=none; b=YdJmdU47X/R+9Tz46kMbC3nTQuOE4SFwVAgY4qL7BA6dGkjcnzl0/PAPVjVAKn7KywyxKePIPmbdrdNmn6XJ3vogEbeeMlQG0HJSODQtfJfkxPnGWMuwe/P9gOUqQVb0WBv9E+uV8BH45TTBX5FtB14+Uv67rN51v3SUyfyRJuw=
+	t=1768498786; cv=none; b=npXBb2aNaxOMkx7+QKbiuMN0EVQ7mQ2UNzsC3fCUXUmjcu1o62IpHC9fUqM58XoUZuVs7NVsh9lGvY5nQjOe6OvOqZnv8p60mzlgNv8zXlooZDVNr6pQ17CV3VqJxBKkQYxxvB6S3jZL7Rq9eP0E6LcfdHgM+Mygm6r+FGoWsGM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768500080; c=relaxed/simple;
-	bh=dmvnBP9+xo10RY6bI2mBJEA2BYztnekHZaV56IhSCE4=;
+	s=arc-20240116; t=1768498786; c=relaxed/simple;
+	bh=aJLPi4KrQ3tRgKbXosSMM/Rt31GASwMDC2pcoUQ5FSo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UhV9uZ2soiQcCUNCFeUp+6Ce6bT0wGqCfzFyrGmB9suZgT0mw6v+zC7uChQS0SbPB6t+ZciqmZFiU/LpAKVJw0ubGVTLfceBmAiCqbJt2NwKfEZfdCKNbORvKv2m3MDdtY5gajQpTcwJBOh//qNJJVLaATRcxkgLjrW36vMXaRo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ju2+C3o0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECFFAC116D0;
-	Thu, 15 Jan 2026 18:01:19 +0000 (UTC)
+	 MIME-Version; b=uun584ImA9v+JWGNRpo39WiDa4ycdw4deRH9IH+Yw5V2DxkKSGE2WiOlWBjS4c8qg148NgHJ2rPZsOlXx3jXJSuRTvJrVkbVnesvLrB9aaqjTzvInKjUUcw65ItZJrizgpZqmeRXPEUfU1RolWpKwqp3pTeldmJfw5ek86kFdcY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LtjbRU2O; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20B86C116D0;
+	Thu, 15 Jan 2026 17:39:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768500080;
-	bh=dmvnBP9+xo10RY6bI2mBJEA2BYztnekHZaV56IhSCE4=;
+	s=korg; t=1768498786;
+	bh=aJLPi4KrQ3tRgKbXosSMM/Rt31GASwMDC2pcoUQ5FSo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ju2+C3o0GNV+Uzh+Bv2jrLq4TPFO/QkIuF6Bokv0oAi9xE7MSm63+ahaymfvFEFxg
-	 sjN04WIFOC8D8HDzZh/Bs7pSxYFYjZHk5IYg9ZiyB6lY6b69lavO4Mcxw7mEpSDKQZ
-	 wFRuAO5Vv+IpwCvLU1eOCohkLGgppO226yRfOhUI=
+	b=LtjbRU2OIZ/FzAH14u9shi1uEu/sivIf/NvqFextIryL5B7nDZGvqFt9aMxJbrmwD
+	 JTiBJOLOIkYboqOo81amh6N5MPZ3zgqjQGYOudpS6D0FLdilR5TnyMXHBp4rFQKYzV
+	 UOJvGE+kuBPVHYNl3aBB8QLkfYPAkRGlUNqcuDiM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH 5.10 418/451] libceph: make calc_target() set t->paused, not just clear it
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 553/554] ASoC: fsl_sai: Add missing registers to cache default
 Date: Thu, 15 Jan 2026 17:50:19 +0100
-Message-ID: <20260115164246.059224338@linuxfoundation.org>
+Message-ID: <20260115164306.346171962@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit c0fe2994f9a9d0a2ec9e42441ea5ba74b6a16176 upstream.
+[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
 
-Currently calc_target() clears t->paused if the request shouldn't be
-paused anymore, but doesn't ever set t->paused even though it's able to
-determine when the request should be paused.  Setting t->paused is left
-to __submit_request() which is fine for regular requests but doesn't
-work for linger requests -- since __submit_request() doesn't operate
-on linger requests, there is nowhere for lreq->t.paused to be set.
-One consequence of this is that watches don't get reestablished on
-paused -> unpaused transitions in cases where requests have been paused
-long enough for the (paused) unwatch request to time out and for the
-subsequent (re)watch request to enter the paused state.  On top of the
-watch not getting reestablished, rbd_reregister_watch() gets stuck with
-rbd_dev->watch_mutex held:
+Drivers does cache sync during runtime resume, setting all writable
+registers. Not all writable registers are set in cache default, resulting
+in the erorr message:
+  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
+  unexpected behavior
 
-  rbd_register_watch
-    __rbd_register_watch
-      ceph_osdc_watch
-        linger_reg_commit_wait
+Fix this by adding missing writable register defaults.
 
-It's waiting for lreq->reg_commit_wait to be completed, but for that to
-happen the respective request needs to end up on need_resend_linger list
-and be kicked when requests are unpaused.  There is no chance for that
-if the request in question is never marked paused in the first place.
-
-The fact that rbd_dev->watch_mutex remains taken out forever then
-prevents the image from getting unmapped -- "rbd unmap" would inevitably
-hang in D state on an attempt to grab the mutex.
-
-Cc: stable@vger.kernel.org
-Reported-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osd_client.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -1529,6 +1529,7 @@ static enum calc_target_result calc_targ
- 	struct ceph_pg_pool_info *pi;
- 	struct ceph_pg pgid, last_pgid;
- 	struct ceph_osds up, acting;
-+	bool should_be_paused;
- 	bool is_read = t->flags & CEPH_OSD_FLAG_READ;
- 	bool is_write = t->flags & CEPH_OSD_FLAG_WRITE;
- 	bool force_resend = false;
-@@ -1597,10 +1598,16 @@ static enum calc_target_result calc_targ
- 				 &last_pgid))
- 		force_resend = true;
- 
--	if (t->paused && !target_should_be_paused(osdc, t, pi)) {
--		t->paused = false;
-+	should_be_paused = target_should_be_paused(osdc, t, pi);
-+	if (t->paused && !should_be_paused) {
- 		unpaused = true;
- 	}
-+	if (t->paused != should_be_paused) {
-+		dout("%s t %p paused %d -> %d\n", __func__, t, t->paused,
-+		     should_be_paused);
-+		t->paused = should_be_paused;
-+	}
-+
- 	legacy_change = ceph_pg_compare(&t->pgid, &pgid) ||
- 			ceph_osds_changed(&t->acting, &acting,
- 					  t->used_replica || any_change);
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 45d8ef029a638..82911e5ed1796 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -779,6 +779,7 @@ static struct reg_default fsl_sai_reg_defaults_ofs0[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(0), 0},
+ 	{FSL_SAI_RCR2(0), 0},
+ 	{FSL_SAI_RCR3(0), 0},
+@@ -802,12 +803,14 @@ static struct reg_default fsl_sai_reg_defaults_ofs8[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(8), 0},
+ 	{FSL_SAI_RCR2(8), 0},
+ 	{FSL_SAI_RCR3(8), 0},
+ 	{FSL_SAI_RCR4(8), 0},
+ 	{FSL_SAI_RCR5(8), 0},
+ 	{FSL_SAI_RMR, 0},
++	{FSL_SAI_RTCTL, 0},
+ 	{FSL_SAI_MCTL, 0},
+ 	{FSL_SAI_MDIV, 0},
+ };
+-- 
+2.51.0
+
 
 
 
