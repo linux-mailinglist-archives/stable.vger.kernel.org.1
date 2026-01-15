@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-208573-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208585-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23DA9D26000
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:05 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 526FED25F8A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 057C830DF5D1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:15 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id B130B3066D52
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D0F353B9619;
-	Thu, 15 Jan 2026 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C5396B75;
+	Thu, 15 Jan 2026 16:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1hZBn3Lg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSfN+U2z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 614A9396B75;
-	Thu, 15 Jan 2026 16:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A46839C624;
+	Thu, 15 Jan 2026 16:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496234; cv=none; b=Gq0Xlf3kjBA/liArilqZo7b6Mh1WvuwGMYK+KIz01+dQ3Rs166Ro6wWMThryltXorl0kfAo3Pikw6IpygLz0LHIQ8TyMmrNyPotdKHe2MfUfVgJRFqnHOiqyRqrxHvA1FiEclSVVbveUvbFrLJzT7alC5FAPgIpOF7sPuPAuZOY=
+	t=1768496265; cv=none; b=MtTMYsXxqE4T2/vG+0FRISgiPfVh3nel4kpuwmik5C9PcIrgYEBDRxT9o8tDJZ+/8uqaWobtw4XsT2UKHruqL/B4ymLX6UejRGjf6XIn+M4X+IXt3AqchRoT8ntyq90BDPe9fKUSnnTM4pmRNjJOwWvlbr9X1ndKdKyp1J0858o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496234; c=relaxed/simple;
-	bh=jnHN5dckhkJPeQxHocYi0Mt0g3xo8SiSTkwwq+YcN1s=;
+	s=arc-20240116; t=1768496265; c=relaxed/simple;
+	bh=tn535ekHrS7O0ErNKZS6K0RG3Nv3lajb45ZJbxoKjBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dnQCB5FwOgdKILV1wP8XYqunqlYKIM5pFk5ihdDCWCA2kFwskbJWN7WMxFQge+XLAeD/39ifCSoFnd1GhTKw5XLexfHOZoJbBC+M2jsZcJ3GBX+srcvb8dSD4HQbVzNuY04+UqeyYzTAKiMt2rHG3fConCqGUDgWLhkzjiGzFP8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1hZBn3Lg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC1D2C116D0;
-	Thu, 15 Jan 2026 16:57:13 +0000 (UTC)
+	 MIME-Version; b=m6plosglKBT+HvBkjrqEGtCuvTo4g9ek/7DTnkg3JQNr4M8qxvmBAMnM/33g8DCoxQopdolKuGfds71GdUqA8eaiAhhev6QqNYQrrwNKYzx75S7gYR44M1ePxnQTEUsngH48AxnvCutPUrQa0Y7AqfBn6xq6Y0OWvYEPK42PVDg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSfN+U2z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECFDC116D0;
+	Thu, 15 Jan 2026 16:57:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496234;
-	bh=jnHN5dckhkJPeQxHocYi0Mt0g3xo8SiSTkwwq+YcN1s=;
+	s=korg; t=1768496265;
+	bh=tn535ekHrS7O0ErNKZS6K0RG3Nv3lajb45ZJbxoKjBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1hZBn3Lg1LKbomOkKkDqrW7dQm4APkktzY6f3s6Nte0lnmCLf6C8AVB6htBw19wr5
-	 RsLBa1EvZM0JRO3K4/Q5hf5Cp12gVm9joGXtnpOVhMQ4RV0DBxUqfBmd3jmQBm4CKR
-	 wkycRhWpyV+eJ80F1duimlpf2+uHjrJfGJ6LoqGQ=
+	b=XSfN+U2znJ/+xWTOqxr8M519MDbUfHLSU3ovKITU2TNsw04+RXzO2ZQld6OcW/ngI
+	 0fyhIC5Br/LKreL1jZ/9c7Z7UXHxQaxqSXgkDgs2Jsl/XhtR61OlBWKKeG2aW0IJs4
+	 Rzq6fseXYAEl2WPXfAoNnAiNrTBT5I6KLQQEUPa8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Ray Jui <ray.jui@broadcom.com>,
+	Srijit Bose <srijit.bose@broadcom.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 107/181] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
-Date: Thu, 15 Jan 2026 17:47:24 +0100
-Message-ID: <20260115164206.181218384@linuxfoundation.org>
+Subject: [PATCH 6.18 108/181] bnxt_en: Fix potential data corruption with HW GRO/LRO
+Date: Thu, 15 Jan 2026 17:47:25 +0100
+Message-ID: <20260115164206.217170901@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -66,52 +67,86 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Srijit Bose <srijit.bose@broadcom.com>
 
-[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
+[ Upstream commit ffeafa65b2b26df2f5b5a6118d3174f17bd12ec5 ]
 
-Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-allocated memory for pp_qlt in ipc_mux_init() but did not free it in
-ipc_mux_deinit(). This results in a memory leak when the driver is
-unloaded.
+Fix the max number of bits passed to find_first_zero_bit() in
+bnxt_alloc_agg_idx().  We were incorrectly passing the number of
+long words.  find_first_zero_bit() may fail to find a zero bit and
+cause a wrong ID to be used.  If the wrong ID is already in use, this
+can cause data corruption.  Sometimes an error like this can also be
+seen:
 
-Free the allocated memory in ipc_mux_deinit() to fix the leak.
+bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
 
-Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
+Fix it by passing the correct number of bits MAX_TPA_P5.  Use
+DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
+check to warn if a bit cannot be found and reset the ring [MChan].
+
+Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
+Reviewed-by: Ray Jui <ray.jui@broadcom.com>
+Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
+Signed-off-by: Michael Chan <michael.chan@broadcom.com>
+Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
+Link: https://patch.msgid.link/20251231083625.3911652-1-michael.chan@broadcom.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
+ drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-index fc928b298a984..b846889fcb099 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 	struct sk_buff_head *free_list;
- 	union mux_msg mux_msg;
- 	struct sk_buff *skb;
-+	int i;
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+index 0366323ab0676..95c774d98da66 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
+@@ -1482,9 +1482,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
+ 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
+ 	u16 idx = agg_id & MAX_TPA_P5_MASK;
  
- 	if (!ipc_mux->initialized)
- 		return;
-@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 		ipc_mux->channel->dl_pipe.is_open = false;
- 	}
- 
-+	if (ipc_mux->protocol != MUX_LITE) {
-+		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
-+			kfree(ipc_mux->ul_adb.pp_qlt[i]);
+-	if (test_bit(idx, map->agg_idx_bmap))
+-		idx = find_first_zero_bit(map->agg_idx_bmap,
+-					  BNXT_AGG_IDX_BMAP_SIZE);
++	if (test_bit(idx, map->agg_idx_bmap)) {
++		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
++		if (idx >= MAX_TPA_P5)
++			return INVALID_HW_RING_ID;
 +	}
-+
- 	kfree(ipc_mux);
- }
+ 	__set_bit(idx, map->agg_idx_bmap);
+ 	map->agg_id_tbl[agg_id] = idx;
+ 	return idx;
+@@ -1548,6 +1550,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
+ 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
+ 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
+ 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
++		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
++			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
++				    rxr->bnapi->index,
++				    TPA_START_AGG_ID_P5(tpa_start));
++			bnxt_sched_reset_rxr(bp, rxr);
++			return;
++		}
+ 	} else {
+ 		agg_id = TPA_START_AGG_ID(tpa_start);
+ 	}
+diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+index 3613a172483a1..45bbaec75ded4 100644
+--- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
++++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
+@@ -1079,11 +1079,9 @@ struct bnxt_tpa_info {
+ 	struct rx_agg_cmp	*agg_arr;
+ };
+ 
+-#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
+-
+ struct bnxt_tpa_idx_map {
+ 	u16		agg_id_tbl[1024];
+-	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
++	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
+ };
+ 
+ struct bnxt_rx_ring_info {
 -- 
 2.51.0
 
