@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208786-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208859-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DF031D261B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:43 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6C226D2677C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BAC7B302F698
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A508A31457F3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 303D23A35A4;
-	Thu, 15 Jan 2026 17:07:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CD93A1CE4;
+	Thu, 15 Jan 2026 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="q6q390fv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8vLAbVz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E7D98260569;
-	Thu, 15 Jan 2026 17:07:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2BC33993;
+	Thu, 15 Jan 2026 17:10:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496839; cv=none; b=fnTS2liHKShAr3dl7AWfhv5ZyyVwYlyqrDXyFruR7MbxCEOhz/kJD4mI+Zg9GD0Xo8Pw5y2Ro5VaoyYdhWDhsGXQALHWL3B0ehjtqLjoi12/+RTlDuKYLRhC9GOWcCE9UWM0Isy7CB3HpHuBsmNJn42csDUW0JsHWcKmIWOyJj0=
+	t=1768497046; cv=none; b=JtnDf+ifW3PMsZc2rewvJ+2uhU0FRlJjasILiDx5vCpx+vP8Vo5Zz2G+jUL0S6kf89YQ3Vy7LYr+0pbLVRPfCdzywDFDmtLc6UnUZcNdZvIy580/oMyI5HWztxSlnnk4OY+3cX/b8V1wXzf/OsIALr/qm8dUKo61lCV7eJQnyqo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496839; c=relaxed/simple;
-	bh=kG9zHmuPdAOWad+qXOEdbzveK4mpxvGOXipI23Sbnrc=;
+	s=arc-20240116; t=1768497046; c=relaxed/simple;
+	bh=t8M0B4vdnfep4V8bdxVMviH1d7aCyKFWFNr1oB/f4II=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h9xws0/9QuDUfNmWpmd1kPgLYHWMPRVFLe+9xfPkYsx1n3CDlEnOFz7beKgzPRq9K5TMds1/bop0HvhGb4OSoEz9TlIz6DM24cFN9jglZek9vEcvGUeATsjE0YJL3TTNqUxKeSCG5KBu7xQ7vsHQHj15SQxxXnwpcrGatPw+SLs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=q6q390fv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7538AC116D0;
-	Thu, 15 Jan 2026 17:07:18 +0000 (UTC)
+	 MIME-Version; b=L2lmP+Mtf38w1IhoNBAC1gON4cUyzp1srQOks1RS4UVw3V6zPcMvFfWNyhZpODQB8QDPGRznN5RvptpE1Udn+hurBw7r4UcjaG9axHZB1notNVC/pMCpy3h3ECM0n84CamNasQZHQ77Q1l+9KGMDyGa5PeybmRNtQiQXY4wnPz0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8vLAbVz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72B7C116D0;
+	Thu, 15 Jan 2026 17:10:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496838;
-	bh=kG9zHmuPdAOWad+qXOEdbzveK4mpxvGOXipI23Sbnrc=;
+	s=korg; t=1768497046;
+	bh=t8M0B4vdnfep4V8bdxVMviH1d7aCyKFWFNr1oB/f4II=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=q6q390fvNxEPgNGUZI28HgizZq9zPKyPveuoHCd4/bwSHPlomIeyb44msJZUiFTzR
-	 Co9K7qPP7C7I7SKoTCWOss1HpPk0tA+6ngZyVVNh0tAf+/6r7ie1R5qSSwNYShhg4h
-	 lNhuRdCR52yp4sjm5lXCY9HUSnOuEEzA+p/T5iAE=
+	b=y8vLAbVziHVuXcops4bjw59Z0RYO9ZwsL7ISfCfhzfH50qP8u4XrnMbgmAQGDPFv1
+	 iE0FOud7FAeraq45EGTRknjHZS6+5L1KrdO90b9lg3rhfOsz2jOqmkrhYflbELokhR
+	 ghSp1ltgS7PAc+mGbJA8PIp+CgW2mRE2qAOj8lx0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Benjamin Coddington <bcodding@hammerspace.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 32/88] NFSv4: ensure the open stateid seqid doesnt go backwards
+	Qingfang Deng <dqfext@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 6.1 05/72] lib/crypto: aes: Fix missing MMU protection for AES S-box
 Date: Thu, 15 Jan 2026 17:48:15 +0100
-Message-ID: <20260115164147.475250931@linuxfoundation.org>
+Message-ID: <20260115164143.685907173@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,79 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 2e47c3cc64b44b0b06cd68c2801db92ff143f2b2 ]
+commit 74d74bb78aeccc9edc10db216d6be121cf7ec176 upstream.
 
-We have observed an NFSv4 client receiving a LOCK reply with a status of
-NFS4ERR_OLD_STATEID and subsequently retrying the LOCK request with an
-earlier seqid value in the stateid.  As this was for a new lockowner,
-that would imply that nfs_set_open_stateid_locked() had updated the open
-stateid seqid with an earlier value.
+__cacheline_aligned puts the data in the ".data..cacheline_aligned"
+section, which isn't marked read-only i.e. it doesn't receive MMU
+protection.  Replace it with ____cacheline_aligned which does the right
+thing and just aligns the data while keeping it in ".rodata".
 
-Looking at nfs_set_open_stateid_locked(), if the incoming seqid is out
-of sequence, the task will sleep on the state->waitq for up to 5
-seconds.  If the task waits for the full 5 seconds, then after finishing
-the wait it'll update the open stateid seqid with whatever value the
-incoming seqid has.  If there are multiple waiters in this scenario,
-then the last one to perform said update may not be the one with the
-highest seqid.
-
-Add a check to ensure that the seqid can only be incremented, and add a
-tracepoint to indicate when old seqids are skipped.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Benjamin Coddington <bcodding@hammerspace.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: b5e0b032b6c3 ("crypto: aes - add generic time invariant AES cipher")
+Cc: stable@vger.kernel.org
+Reported-by: Qingfang Deng <dqfext@gmail.com>
+Closes: https://lore.kernel.org/r/20260105074712.498-1-dqfext@gmail.com/
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260107052023.174620-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c  | 13 +++++++++++--
- fs/nfs/nfs4trace.h |  1 +
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ lib/crypto/aes.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index a0a71a163ffed..fe6986939bc90 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -1700,8 +1700,17 @@ static void nfs_set_open_stateid_locked(struct nfs4_state *state,
- 		if (nfs_stateid_is_sequential(state, stateid))
- 			break;
+--- a/lib/crypto/aes.c
++++ b/lib/crypto/aes.c
+@@ -12,7 +12,7 @@
+  * Emit the sbox as volatile const to prevent the compiler from doing
+  * constant folding on sbox references involving fixed indexes.
+  */
+-static volatile const u8 __cacheline_aligned aes_sbox[] = {
++static volatile const u8 ____cacheline_aligned aes_sbox[] = {
+ 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
+ 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+ 	0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
+@@ -47,7 +47,7 @@ static volatile const u8 __cacheline_ali
+ 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
+ };
  
--		if (status)
--			break;
-+		if (status) {
-+			if (nfs4_stateid_match_other(stateid, &state->open_stateid) &&
-+			    !nfs4_stateid_is_newer(stateid, &state->open_stateid)) {
-+				trace_nfs4_open_stateid_update_skip(state->inode,
-+								    stateid, status);
-+				return;
-+			} else {
-+				break;
-+			}
-+		}
-+
- 		/* Rely on seqids for serialisation with NFSv4.0 */
- 		if (!nfs4_has_session(NFS_SERVER(state->inode)->nfs_client))
- 			break;
-diff --git a/fs/nfs/nfs4trace.h b/fs/nfs/nfs4trace.h
-index d27919d7241d3..52a985ebe2b1d 100644
---- a/fs/nfs/nfs4trace.h
-+++ b/fs/nfs/nfs4trace.h
-@@ -1248,6 +1248,7 @@ DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_setattr);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_delegreturn);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_open_stateid_update);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_open_stateid_update_wait);
-+DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_open_stateid_update_skip);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_close_stateid_update_wait);
- 
- DECLARE_EVENT_CLASS(nfs4_getattr_event,
--- 
-2.51.0
-
+-static volatile const u8 __cacheline_aligned aes_inv_sbox[] = {
++static volatile const u8 ____cacheline_aligned aes_inv_sbox[] = {
+ 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
+ 	0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
+ 	0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
 
 
 
