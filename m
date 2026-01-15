@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209125-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 94798D268A5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id DF19FD26D3A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5EDEF307FBE7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:31 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 253E5305CA7D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 82533399011;
-	Thu, 15 Jan 2026 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7BA63BC4D7;
+	Thu, 15 Jan 2026 17:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YUg5APX7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="G9lWhkJD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45DC04C81;
-	Thu, 15 Jan 2026 17:23:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 748173A35D9;
+	Thu, 15 Jan 2026 17:41:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497804; cv=none; b=SUTaM4YZJ6DwV5BERLQa2JW4zxGA09VlXJit0JpJ7119U68OCgLLFbIglmOWVZaqnCbyT1X4QxPvYAyX9Sa5q1c3qDe/iRWbqz58hz4hLQdRuN8+C7JGf97VE7CfdHNiIyWc5Y8tHD5qQS9KNgzWvlULnRkEf9mlwCQcTDgZP5I=
+	t=1768498910; cv=none; b=A3nq2lpJt5pYMBG78WP1dCOelKjN75fe4HMCj17ZaB1DgQHqkGa2s523BvadnHR6mkhBZQAY3rdcQLZP+re+uoO5b+ZVeylwRV8NKrrOJyjiArsy7ulAkh4WV44YVdnuVAGvre+dloYdmaIBFg4kTVjByWMcRQRoJcQb5FoO7KU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497804; c=relaxed/simple;
-	bh=0NAilvdNgoUt6kO3svJ6ir5lHbGu7f4bQ9hUWdSvG+E=;
+	s=arc-20240116; t=1768498910; c=relaxed/simple;
+	bh=mhF6ylQVaa3cnXRefkNYgtWIFF/IpLlIrbmwnopMbT8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AmWlW2M9u6q9aKUELI+8SK7Mz+z8y53PZm3S2Qj5hGghxGhikDv+hiD8YQ/bhRN2em0/nEGUVoSszvkwOL0ZtNqbtofbEpJTlaY55ovB1zJsNuEVwm16qupY7iaSp4ZhGByYlNS6meG/a3IIWICLjNvebcAKyoUSjAOB644i3hk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YUg5APX7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C61D6C19422;
-	Thu, 15 Jan 2026 17:23:23 +0000 (UTC)
+	 MIME-Version; b=l5LpnX74FkTvBRUOq8LzTi+JjtihqPWqiWKvcjL1yoNLKHSuAdXtOwV4V5zk3G61NhFdye+A+59OcvvtKv1w9/HlDifAXoB/5wGUbt9p1l3s6cTpy1nueD+azKmbsISi1QQnfYxKQFnKnz5USlS3QVxRrqrL++l+TzUW3n6RqEg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=G9lWhkJD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00100C16AAE;
+	Thu, 15 Jan 2026 17:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497804;
-	bh=0NAilvdNgoUt6kO3svJ6ir5lHbGu7f4bQ9hUWdSvG+E=;
+	s=korg; t=1768498910;
+	bh=mhF6ylQVaa3cnXRefkNYgtWIFF/IpLlIrbmwnopMbT8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YUg5APX7ODe8oJpIWSS1xlnF7qtuEJLffFtXjydcw88aMxKk15iyEe/UKFjQ5A9na
-	 1udzSJW7nT4TM0+gjAy0Kh0F7Mzq1O9ccXIPMAqIZfRUkuDxE11VW9BXvkk8yd619c
-	 8Q/F0Z3fCrV4i2K1QUawSPGk3z1+E9If9zs0g3dQ=
+	b=G9lWhkJDgUM67zD5vL7QcrLMWpoZfoRwFSBmxvzOjlGL1IUgt+IBRmn/CDWrReTRO
+	 /SraRm2m25OTKiUdeziF6vUCZxayICnBn334yhikQ6OTkqLv5pn5+SCQHcDWQ43RWn
+	 pj/DprtVqaCZn81pxP9udM08OhfUnbug4vYKc5HM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Curley <jcurley@purestorage.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 176/554] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
+Subject: [PATCH 5.10 041/451] firmware: imx: scu-irq: fix OF node leak in
 Date: Thu, 15 Jan 2026 17:44:02 +0100
-Message-ID: <20260115164252.639517327@linuxfoundation.org>
+Message-ID: <20260115164232.378532575@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Curley <jcurley@purestorage.com>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
+[ Upstream commit ee67247843a2b62d1473cfa4df300e69b5190ccf ]
 
-Fixes a crash when layout is null during this call stack:
+imx_scu_enable_general_irq_channel() calls of_parse_phandle_with_args(),
+but does not release the OF node reference. Add a of_node_put() call
+to release the reference.
 
-write_inode
-    -> nfs4_write_inode
-        -> pnfs_layoutcommit_inode
-
-pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
-around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
-to reference a null layout.
-
-Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
-Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 851826c7566e ("firmware: imx: enable imx scu general irq function")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/firmware/imx/imx-scu-irq.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index ef273b71f0198..50d608f6c6906 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -465,6 +465,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 	struct pnfs_layout_segment *lseg, *next;
+diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
+index d9dcc20945c6a..32b1ca4e10508 100644
+--- a/drivers/firmware/imx/imx-scu-irq.c
++++ b/drivers/firmware/imx/imx-scu-irq.c
+@@ -160,8 +160,10 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
  
- 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
-+	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
- 		pnfs_clear_lseg_state(lseg, lseg_list);
- 	pnfs_clear_layoutreturn_info(lo);
+ 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+-				       "#mbox-cells", 0, &spec))
++				       "#mbox-cells", 0, &spec)) {
+ 		i = of_alias_get_id(spec.np, "mu");
++		of_node_put(spec.np);
++	}
+ 
+ 	/* use mu1 as general mu irq channel if failed */
+ 	if (i < 0)
 -- 
 2.51.0
 
