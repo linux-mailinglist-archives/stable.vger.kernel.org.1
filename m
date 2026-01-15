@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209248-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209697-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A1613D26764
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:55 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75C3FD27042
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:01:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id D5A4F303F7CB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 730C430549B5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208443D2FF0;
-	Thu, 15 Jan 2026 17:29:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2686F3C1972;
+	Thu, 15 Jan 2026 17:50:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCo9T/bR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sWH6UUuF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8763BC4C9;
-	Thu, 15 Jan 2026 17:29:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D59CA2868B0;
+	Thu, 15 Jan 2026 17:50:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498155; cv=none; b=sk+yNZMkX4676ojf63ROFZzGq206rfyVn2tS74Nz/MQa67qb5SExaCax3R4xNYDH1SqWJMXZpNgwVV2iiRizR61biGXyBPegVjm6ej5FTPK0zz7Idl40e4vXMWGzkpmqQAX2kJG9y92+YifPP1TmH7H54g/wmPikk026+g06pGw=
+	t=1768499433; cv=none; b=C4bbBdTbuBJKOIGhHsp4O29qqi6/wXE+wxjW8//OMvNpz0Gox4uA/OjELRpdzdIV+d3Fr+4SMGxX0hnYbQ8MacRmVanTBGzYWFfsx9T4hSoE//vKcfsu2rsqLEZqQ0vU9LihoJu2q9t95Plwkc3gQ7nrbKiF6/+Nt2S7MrK9PlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498155; c=relaxed/simple;
-	bh=gj+glx0lMmER5PVtUXxIRlOfhsAVv8a3CXRZtJQ23+I=;
+	s=arc-20240116; t=1768499433; c=relaxed/simple;
+	bh=p693OxGC5xArWPs4T50G79aqrTJv5oSovp5kmtCL/Eg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kgmavEDU/6LbZKuzPkxcw4ZOaT+PczR7Ib0qj61AQZhqPdeFFe7DTH33/gS79PHowvsYZcthJs+0aGlkgJC0NO48FsvVl9MWNxgG6SCoHeEoTI08ptNmImmAqS68MkB9RHx7kB9YgR4s73CdxGNOEHsza8uzqjFrU3jVCW/yPGw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCo9T/bR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1561CC116D0;
-	Thu, 15 Jan 2026 17:29:14 +0000 (UTC)
+	 MIME-Version; b=H36ZLouWytyw6nSf3Ej8nbA5nE914iNIK90y7ryhxACHwXK8rDMES+lMIMPTn+r0emD/JNbmb5rp290n6emLj4MHb97SlqOdYPFtql9BV+39IiB/d5rmRv4O0LVOuwTZrFawvTphx1uUMKrESgixjPf2FJNTMM1YBP1ndOqOkJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sWH6UUuF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2352CC19423;
+	Thu, 15 Jan 2026 17:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498155;
-	bh=gj+glx0lMmER5PVtUXxIRlOfhsAVv8a3CXRZtJQ23+I=;
+	s=korg; t=1768499433;
+	bh=p693OxGC5xArWPs4T50G79aqrTJv5oSovp5kmtCL/Eg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rCo9T/bRSxd+jOyMAmkhUoHv2RfhKNK1RUbgUo4mmT2mQKvYakC3hFa6SAfSCg0Fm
-	 o4iXTdb5KhnaUdbXno7RoWnFFC2xjUS41G+lmHlMrh4qJ0UXpOvxtV399bXqjNyjsq
-	 zVaYSx3vReSCAUHLwmR1Y/wLK7qrweB6f6PGESE8=
+	b=sWH6UUuF9e4ruSgUI9XY7wtigCTIrP+17z7zuoUbVJAvr78ZpKl8GkNSlUOH2OUvt
+	 SIVwalPI3o3FLtOX2MosWYbnuBbp/TFeuGBXOTj2ujKa8HbjbyR+VG05wRipnMzId9
+	 +5jlXEc6jN4z8FfCyBMSwCyqZPukd1AkdJv1KagU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gui-Dong Han <hanguidong02@gmail.com>,
-	Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 332/554] hwmon: (max16065) Use local variable to avoid TOCTOU
-Date: Thu, 15 Jan 2026 17:46:38 +0100
-Message-ID: <20260115164258.248685114@linuxfoundation.org>
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Sverdlin Alexander <alexander.sverdlin@siemens.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 198/451] spi: fsl-cpm: Check length parity before switching to 16 bit mode
+Date: Thu, 15 Jan 2026 17:46:39 +0100
+Message-ID: <20260115164238.064515701@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,56 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gui-Dong Han <hanguidong02@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-commit b8d5acdcf525f44e521ca4ef51dce4dac403dab4 upstream.
+commit 1417927df8049a0194933861e9b098669a95c762 upstream.
 
-In max16065_current_show, data->curr_sense is read twice: once for the
-error check and again for the calculation. Since
-i2c_smbus_read_byte_data returns negative error codes on failure, if the
-data changes to an error code between the check and the use, ADC_TO_CURR
-results in an incorrect calculation.
+Commit fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers
+with even size") failed to make sure that the size is really even
+before switching to 16 bit mode. Until recently the problem went
+unnoticed because kernfs uses a pre-allocated bounce buffer of size
+PAGE_SIZE for reading EEPROM.
 
-Read data->curr_sense into a local variable to ensure consistency. Note
-that data->curr_gain is constant and safe to access directly.
+But commit 8ad6249c51d0 ("eeprom: at25: convert to spi-mem API")
+introduced an additional dynamically allocated bounce buffer whose size
+is exactly the size of the transfer, leading to a buffer overrun in
+the fsl-cpm driver when that size is odd.
 
-This aligns max16065_current_show with max16065_input_show, which
-already uses a local variable for the same reason.
+Add the missing length parity verification and remain in 8 bit mode
+when the length is not even.
 
-Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
-Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Fixes: fc96ec826bce ("spi: fsl-cpm: Use 16 bit mode for large transfers with even size")
 Cc: stable@vger.kernel.org
-Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
-Link: https://lore.kernel.org/r/20251128124709.3876-1-hanguidong02@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/638496dd-ec60-4e53-bad7-eb657f67d580@csgroup.eu/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Reviewed-by: Sverdlin Alexander <alexander.sverdlin@siemens.com>
+Link: https://patch.msgid.link/3c4d81c3923c93f95ec56702a454744a4bad3cfc.1763627618.git.christophe.leroy@csgroup.eu
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/max16065.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/spi/spi-fsl-spi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/max16065.c
-+++ b/drivers/hwmon/max16065.c
-@@ -216,12 +216,13 @@ static ssize_t max16065_current_show(str
- 				     struct device_attribute *da, char *buf)
- {
- 	struct max16065_data *data = max16065_update_device(dev);
-+	int curr_sense = data->curr_sense;
- 
--	if (unlikely(data->curr_sense < 0))
--		return data->curr_sense;
-+	if (unlikely(curr_sense < 0))
-+		return curr_sense;
- 
- 	return sysfs_emit(buf, "%d\n",
--			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
-+			  ADC_TO_CURR(curr_sense, data->curr_gain));
- }
- 
- static ssize_t max16065_limit_store(struct device *dev,
+--- a/drivers/spi/spi-fsl-spi.c
++++ b/drivers/spi/spi-fsl-spi.c
+@@ -369,7 +369,7 @@ static int fsl_spi_do_one_msg(struct spi
+ 			if (t->bits_per_word == 16 || t->bits_per_word == 32)
+ 				t->bits_per_word = 8; /* pretend its 8 bits */
+ 			if (t->bits_per_word == 8 && t->len >= 256 &&
+-			    (mpc8xxx_spi->flags & SPI_CPM1))
++			    !(t->len & 1) && (mpc8xxx_spi->flags & SPI_CPM1))
+ 				t->bits_per_word = 16;
+ 		}
+ 	}
 
 
 
