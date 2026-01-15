@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-209589-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209596-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58992D27B1C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:41:20 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6383BD26F09
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AE833307FC7A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:30 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 26BAE3273E80
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6C6EC3BC4D8;
-	Thu, 15 Jan 2026 17:45:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D1893BFE27;
+	Thu, 15 Jan 2026 17:45:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AdgWQlNN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2p1bNy66"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 305042D73AB;
-	Thu, 15 Jan 2026 17:45:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1CF2D73AB;
+	Thu, 15 Jan 2026 17:45:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499127; cv=none; b=hez43jHfwAef35xO0qRlv5ebmLrIUJ86kvmxk2j8upPyMehxm0sh0vBa5FCTxXQAkbjnOIgThKTmfUAlMwDe/3sExS/ROCUNbGIiteAudXI1kpbBCw0YsiKo0ARRmKNC1dHOvu4kbU+TYtF4A/wMpnLgjb9GOQCG3RITY5TQlc0=
+	t=1768499147; cv=none; b=RQxhnohZc7jqIJupmWU9Csjkli+L9aUJB/JoExBWTpYY62YwE8Y2jHUOTKnOAR5pX4zI7Id1icg4KxFT0e14zun0YHaBwAql03R9dOknaxi/HlRIrNAg/coYwpmB+41chBR8ebG6PEmkBXrWnRvhY8kDFCkztNC5J3gur3qFseM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499127; c=relaxed/simple;
-	bh=+CZPauTgaxye7PysiKqE7DfTpXl46jvb6m8rD5BdAj8=;
+	s=arc-20240116; t=1768499147; c=relaxed/simple;
+	bh=NqxF7irkJJ94Ta3EUfu9jaKOg96l+oSTLX5ePlfy8Cs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Ay/+lJi4gRJGo06hHTxmKI5bxRqePnxUgYEzVsu+9ziMMMUD5AWiUl3vvD7QTD2Eiz6KDH8iiioKZR1XINhUtZwslVNK+9IbJ7jyKpuXPXTaOsJC+ab18htvVlkapFNpd8WoIOFviQaVcsYpC3kaiCQI3hzwAEVxZAU7hil3c0Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AdgWQlNN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CC6DC116D0;
-	Thu, 15 Jan 2026 17:45:26 +0000 (UTC)
+	 MIME-Version; b=Iss8pgGlBAVawCjVyDm33mHPus+tNd8266eo0HmjJqEgAEYpI2czcSccrbI8j6yQ4s2bw+xU3Ep5RuJaai1WOGyj3MWDwpswvD+C3B+RIeC9KZE0HFyKGqF7EKbMfz4io4qEFSgjLJSy/iFHkolvnLcb39u9iTg+bxQKBlxwcb4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2p1bNy66; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EEAAC116D0;
+	Thu, 15 Jan 2026 17:45:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499126;
-	bh=+CZPauTgaxye7PysiKqE7DfTpXl46jvb6m8rD5BdAj8=;
+	s=korg; t=1768499146;
+	bh=NqxF7irkJJ94Ta3EUfu9jaKOg96l+oSTLX5ePlfy8Cs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AdgWQlNNQTK+2ivEhaHTUI9MlTgwova8KvtKoIzs6V6/myDmHCSj5ozLpjrjT/4l1
-	 nTuJLdT1g//E9WF1BcaYUSNhjaNrcw7h0wt3hR8NtnylIFulaC3TSInat0dX6+kO/a
-	 YReQLlSoy8KbxYLOCA2njLK7HjmHotuZaiFNx6WY=
+	b=2p1bNy664B8IT+EMSzR6j2SVKax3OtDb2JeTDv+fVbf9UpuLAB9towQZzup8poSZJ
+	 ichMRgyAfJoSWQcQEgWGo68smO+luHsRr0HlwH+WvsLWNthcp4i3O0B6Y9KRmLVv8I
+	 QqW4HLzj08LsHp2f3fGqDrv5Q8kwP8lGteuTg7U0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Oliver Neukum <oneukum@suse.com>,
+	Jisheng Zhang <jszhang@kernel.org>,
+	Minas Harutyunyan <hminas@synopsys.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 090/451] usb: chaoskey: fix locking for O_NONBLOCK
-Date: Thu, 15 Jan 2026 17:44:51 +0100
-Message-ID: <20260115164234.174331217@linuxfoundation.org>
+Subject: [PATCH 5.10 091/451] usb: dwc2: disable platform lowlevel hw resources during shutdown
+Date: Thu, 15 Jan 2026 17:44:52 +0100
+Message-ID: <20260115164234.210177943@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -63,49 +64,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Oliver Neukum <oneukum@suse.com>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit a2fa8a12e6bc9d89c0505b8dd7ae38ec173d25de ]
+[ Upstream commit 7481a97c5f49f10c7490bb990d0e863f23b9bb71 ]
 
-A failure to take a lock with O_NONBLOCK needs to result
-in -EAGAIN. Change it.
+On some SoC platforms, in shutdown stage, most components' power is cut
+off, but there's still power supply to the so called always-on
+domain, so if the dwc2's regulator is from the always-on domain, we
+need to explicitly disable it to save power.
 
-Fixes: 66e3e591891da ("usb: Add driver for Altus Metrum ChaosKey device (v2)")
-Signed-off-by: Oliver Neukum <oneukum@suse.com>
-Link: https://patch.msgid.link/20251030093918.2248104-1-oneukum@suse.com
+Disable platform lowlevel hw resources such as phy, clock and
+regulators etc. in device shutdown hook to reduce non-necessary power
+consumption when the platform enters shutdown stage.
+
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Acked-by: Minas Harutyunyan <hminas@synopsys.com>
+Link: https://lore.kernel.org/r/20250629094655.747-1-jszhang@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: b6ebcfdcac40 ("usb: dwc2: fix hang during shutdown if set as peripheral")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/misc/chaoskey.c | 16 +++++++++++++---
- 1 file changed, 13 insertions(+), 3 deletions(-)
+ drivers/usb/dwc2/platform.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/misc/chaoskey.c b/drivers/usb/misc/chaoskey.c
-index d99d424c05a7a..50909cc9a0bb2 100644
---- a/drivers/usb/misc/chaoskey.c
-+++ b/drivers/usb/misc/chaoskey.c
-@@ -445,9 +445,19 @@ static ssize_t chaoskey_read(struct file *file,
- 			goto bail;
- 		mutex_unlock(&dev->rng_lock);
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index f421650cfa03e..57ef6dcb489b8 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -343,6 +343,9 @@ static void dwc2_driver_shutdown(struct platform_device *dev)
  
--		result = mutex_lock_interruptible(&dev->lock);
--		if (result)
--			goto bail;
-+		if (file->f_flags & O_NONBLOCK) {
-+			result = mutex_trylock(&dev->lock);
-+			if (result == 0) {
-+				result = -EAGAIN;
-+				goto bail;
-+			} else {
-+				result = 0;
-+			}
-+		} else {
-+			result = mutex_lock_interruptible(&dev->lock);
-+			if (result)
-+				goto bail;
-+		}
- 		if (dev->valid == dev->used) {
- 			result = _chaoskey_fill(dev);
- 			if (result < 0) {
+ 	dwc2_disable_global_interrupts(hsotg);
+ 	synchronize_irq(hsotg->irq);
++
++	if (hsotg->ll_hw_enabled)
++		dwc2_lowlevel_hw_disable(hsotg);
+ }
+ 
+ /**
 -- 
 2.51.0
 
