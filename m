@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209444-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208914-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3F2ED26BB4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6E4A7D26550
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:23:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C787230BF8EE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 01B733222C83
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3CFDB28725F;
-	Thu, 15 Jan 2026 17:38:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 063163BFE27;
+	Thu, 15 Jan 2026 17:13:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nsREkB2f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mtVw/ewF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EFAE126CE04;
-	Thu, 15 Jan 2026 17:38:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFB42F619D;
+	Thu, 15 Jan 2026 17:13:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498715; cv=none; b=F8CBiFXJ+YJPIhuELcbaIXh3vgSFhxj5FWtsbmFgSzfTBLixQzx0kV2vKGjda+74+G2VXxiIHdYSd/e46oUHD7g8DE9/o+VcNFCee1t7weDd9n/XttyYLAp3WrI42x76m+w7Gh0FSXmUTAb+43aYk7wEfRwA6GTmaDP7mFfTTFY=
+	t=1768497203; cv=none; b=fmyURFtWui4UXZyc84rGp3+VQe1BgOT8ZKWBjtz6QMmGzfZ9OZyXCngYfFsW1ECpSLgg1R/BF2hPcR59ZFZ16/r1CHFc87GQPBB877hC3TaN6dO1EUJvbqudBBhFLG2EnlsNgUov5elJS+udkTsiax1LUN8Ca596425C4rnAJLk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498715; c=relaxed/simple;
-	bh=zGzw/8l5s7BXgrp95t8Z47XklL/n7SlmTG8nwLOtbmI=;
+	s=arc-20240116; t=1768497203; c=relaxed/simple;
+	bh=Ww0isepZsg3RL47S7CM/H+lLjC/Qlxav8eHwApMPlio=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CIdwf4+AYtfSYEgP3dAKDiG4KOjLOPrdI3EbtKQm0zzSWoi887IXAvBrune1SIsOaPNFbMCUfW5b9SBbzPU6KnFnQRQ+oTGgCwH1sGJDb3jvN9LwWQxOCvgJiIrVHZFZ6X82eKj2xdP1IWMO4BP21e+LLtwrI0gBfS1HaxkPdns=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nsREkB2f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A26BC116D0;
-	Thu, 15 Jan 2026 17:38:34 +0000 (UTC)
+	 MIME-Version; b=YdpOOT4C2FrukQVgRre6iHnxGjcBp7yki4BfI53TTWJRLtfS7I/bFgRlRYA0zx5IhaoCycrS4INkPgp0RI9DfLqpHuqAixGQAfSN4KdOZjZX4OdacpvcbRkxEQSRqmiD9E/gWZ0Zpr9BUESe0nyImq0T2CyyklMTimo0AGV6Q2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mtVw/ewF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440B3C116D0;
+	Thu, 15 Jan 2026 17:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498714;
-	bh=zGzw/8l5s7BXgrp95t8Z47XklL/n7SlmTG8nwLOtbmI=;
+	s=korg; t=1768497203;
+	bh=Ww0isepZsg3RL47S7CM/H+lLjC/Qlxav8eHwApMPlio=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nsREkB2fBkZtwiLLD7Vpwqy0/HU8bXXSd7kOk1sdW4tSycaPJU6TZ40gZZGb0qnkF
-	 fFs/3UMqO87HLahtq0cv35TEDAuVxGKUZG7NtnmN/YpzsOOu1Ksq4pC/zr4g8fR9K7
-	 SxCxip8aSlDvDqZs16huHNwOecm0PKh2ZTg3+/aI=
+	b=mtVw/ewF75QGhdZ+1ogTI3hzldrj0QsLuXgD8vYQ1Pq4m/Ui5SiGTXk4PEL2YLuZy
+	 ri61MyV+/tk6Epo4BMmuTNh/G5+YefDkxUNDk+XkhQrtJGJaU/RsvBi5FGT9pjKdFW
+	 HgTzpOoeaHc0O0OBkHt2H3fbxVR/Xw2ZyhXRMCK0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jason Yan <yanaijie@huawei.com>,
-	Theodore Tso <tytso@mit.edu>,
-	Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
-Subject: [PATCH 5.15 495/554] ext4: factor out ext4_hash_info_init()
-Date: Thu, 15 Jan 2026 17:49:21 +0100
-Message-ID: <20260115164304.235360620@linuxfoundation.org>
+	Shardul Bankar <shardulsb08@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Daniel Borkmann <daniel@iogearbox.net>
+Subject: [PATCH 6.1 72/72] bpf: test_run: Fix ctx leak in bpf_prog_test_run_xdp error path
+Date: Thu, 15 Jan 2026 17:49:22 +0100
+Message-ID: <20260115164146.114481975@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,94 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Yan <yanaijie@huawei.com>
+From: Shardul Bankar <shardulsb08@gmail.com>
 
-commit db9345d9e6f075e1ec26afadf744078ead935fec upstream.
+commit 7f9ee5fc97e14682e36fe22ae2654c07e4998b82 upstream.
 
-Factor out ext4_hash_info_init() to simplify __ext4_fill_super(). No
-functional change.
+Fix a memory leak in bpf_prog_test_run_xdp() where the context buffer
+allocated by bpf_ctx_init() is not freed when the function returns early
+due to a data size check.
 
-Signed-off-by: Jason Yan <yanaijie@huawei.com>
-Link: https://lore.kernel.org/r/20230323140517.1070239-2-yanaijie@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: a2187431c395 ("ext4: fix error message when rejecting the default hash")
-[cascardo: conflicts due to other parts of ext4_fill_super having been factored out]
-Signed-off-by: Thadeu Lima de Souza Cascardo <cascardo@igalia.com>
+On the failing path:
+  ctx = bpf_ctx_init(...);
+  if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
+      return -EINVAL;
+
+The early return bypasses the cleanup label that kfree()s ctx, leading to a
+leak detectable by kmemleak under fuzzing. Change the return to jump to the
+existing free_ctx label.
+
+Fixes: fe9544ed1a2e ("bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN")
+Reported-by: BPF Runtime Fuzzer (BRF)
+Signed-off-by: Shardul Bankar <shardulsb08@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Acked-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://patch.msgid.link/20251014120037.1981316-1-shardulsb08@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/super.c |   50 ++++++++++++++++++++++++++++++--------------------
- 1 file changed, 30 insertions(+), 20 deletions(-)
+ net/bpf/test_run.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -3897,6 +3897,35 @@ static void ext4_setup_csum_trigger(stru
- 	sbi->s_journal_triggers[type].tr_triggers.t_frozen = trigger;
- }
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1344,7 +1344,7 @@ int bpf_prog_test_run_xdp(struct bpf_pro
+ 		goto free_ctx;
  
-+static void ext4_hash_info_init(struct super_block *sb)
-+{
-+	struct ext4_sb_info *sbi = EXT4_SB(sb);
-+	struct ext4_super_block *es = sbi->s_es;
-+	unsigned int i;
-+
-+	for (i = 0; i < 4; i++)
-+		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
-+
-+	sbi->s_def_hash_version = es->s_def_hash_version;
-+	if (ext4_has_feature_dir_index(sb)) {
-+		i = le32_to_cpu(es->s_flags);
-+		if (i & EXT2_FLAGS_UNSIGNED_HASH)
-+			sbi->s_hash_unsigned = 3;
-+		else if ((i & EXT2_FLAGS_SIGNED_HASH) == 0) {
-+#ifdef __CHAR_UNSIGNED__
-+			if (!sb_rdonly(sb))
-+				es->s_flags |=
-+					cpu_to_le32(EXT2_FLAGS_UNSIGNED_HASH);
-+			sbi->s_hash_unsigned = 3;
-+#else
-+			if (!sb_rdonly(sb))
-+				es->s_flags |=
-+					cpu_to_le32(EXT2_FLAGS_SIGNED_HASH);
-+#endif
-+		}
-+	}
-+}
-+
- static int ext4_fill_super(struct super_block *sb, void *data, int silent)
- {
- 	struct dax_device *dax_dev = fs_dax_get_by_bdev(sb->s_bdev);
-@@ -4415,26 +4444,7 @@ static int ext4_fill_super(struct super_
- 	sbi->s_addr_per_block_bits = ilog2(EXT4_ADDR_PER_BLOCK(sb));
- 	sbi->s_desc_per_block_bits = ilog2(EXT4_DESC_PER_BLOCK(sb));
+ 	if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
+-		return -EINVAL;
++		goto free_ctx;
  
--	for (i = 0; i < 4; i++)
--		sbi->s_hash_seed[i] = le32_to_cpu(es->s_hash_seed[i]);
--	sbi->s_def_hash_version = es->s_def_hash_version;
--	if (ext4_has_feature_dir_index(sb)) {
--		i = le32_to_cpu(es->s_flags);
--		if (i & EXT2_FLAGS_UNSIGNED_HASH)
--			sbi->s_hash_unsigned = 3;
--		else if ((i & EXT2_FLAGS_SIGNED_HASH) == 0) {
--#ifdef __CHAR_UNSIGNED__
--			if (!sb_rdonly(sb))
--				es->s_flags |=
--					cpu_to_le32(EXT2_FLAGS_UNSIGNED_HASH);
--			sbi->s_hash_unsigned = 3;
--#else
--			if (!sb_rdonly(sb))
--				es->s_flags |=
--					cpu_to_le32(EXT2_FLAGS_SIGNED_HASH);
--#endif
--		}
--	}
-+	ext4_hash_info_init(sb);
- 
- 	/* Handle clustersize */
- 	clustersize = BLOCK_SIZE << le32_to_cpu(es->s_log_cluster_size);
+ 	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
+ 	if (IS_ERR(data)) {
 
 
 
