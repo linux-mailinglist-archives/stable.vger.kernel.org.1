@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209365-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209759-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E28C2D26E60
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id D7DDBD27654
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7EB5831ED402
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:23 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 5439631DCB4E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 631D13D1CC1;
-	Thu, 15 Jan 2026 17:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2E4253C00A1;
+	Thu, 15 Jan 2026 17:53:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1gd8VDhj"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WpWLjTjS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 25BD93C1975;
-	Thu, 15 Jan 2026 17:34:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E60643BF2F0;
+	Thu, 15 Jan 2026 17:53:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498488; cv=none; b=QuZ4Tb7oPIOYcyvHMtxZJJO2WWhPrQx2qD1J3/7//zGPK3GIv5RnqPAQG2N+O3aikVXOa4ChpmoTMN/viZeGPyE4dvANfjEqp+55FctZmGkUc78cXZm1y/j4bHZKrK0qrm8xhDtloJgwpVbk8qaiB3+NUAMxkCYaAtXYIsFdSV4=
+	t=1768499611; cv=none; b=uamrvvN5tAunDHDAY+ivirvCA9OgFU6Gq3wclVV9NEexo6EGaCRqXs0nixQSfiwxoIwozrdaHy28FtrlOuTXUDAzM3RhVNhcWO/3UgmwCArH0W0ci/AKXXbsYBvcCgybPjFIcAW/kedHDzeupkUmsj2idujLZe8/CNGsEfO4LUM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498488; c=relaxed/simple;
-	bh=jW+UizdYD/6i6EdynZ483e57E6cQ3TDzgB1t3/iktjM=;
+	s=arc-20240116; t=1768499611; c=relaxed/simple;
+	bh=gB0USa7f6MEtE5eA6cyvH+pulpcoP1Clf1hfaYFpUhM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HNn3AuYuxwxxSuf7te0yUcybEgB3K5pxZBnV702XMfLf/lcHaOR0HKWTdV3ldZLGT2laTgYgzE6rNXKyNK11fUimfcONt7fcFt/vHVCPEpzry44K3BPBZ6wSdT04sptvA2208884m07oy9yE9wOsx3X2+rSfdbklXc+VGEGZYaI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1gd8VDhj; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8820C116D0;
-	Thu, 15 Jan 2026 17:34:47 +0000 (UTC)
+	 MIME-Version; b=FvnsKVpEHsZVWJJx59uAv/Y509AuRRuOTpmsVN8HeXq9sYADmPOH3sFzL5zBEqgU2AkKtVTSZU9PCI0mSTluufeyEE6MQ+T5gEFycrIFv7HeRslgrjFCe4EI+A9LiLEBrMvUykxrf5gOleVHkuptw5r6Jmyc3G4C6XIr2g28qK0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WpWLjTjS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67DB0C116D0;
+	Thu, 15 Jan 2026 17:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498488;
-	bh=jW+UizdYD/6i6EdynZ483e57E6cQ3TDzgB1t3/iktjM=;
+	s=korg; t=1768499610;
+	bh=gB0USa7f6MEtE5eA6cyvH+pulpcoP1Clf1hfaYFpUhM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1gd8VDhj6rThLLXBHeGUly/NNig7kjAJ4znHH+ClDwF4GUyUj+u4zFqo+UOjmQ5qv
-	 Jz/ViETiTLdxHOQZtYJ0ZEO7sYggs35zjspG7uCj8WZfLF/UbhnykKillDPaBs5Bqr
-	 hYNFCIq6LxsqqV5BEqp6t7J962qfHp628h3fBY/k=
+	b=WpWLjTjSxUEu81HsZMcsmevik7Oob7bGE9YkmDfU+ulQeEqrVpQFCLQkydB30myUf
+	 ZCXBSY7NtckXsgmBZIhqOiILhF8eoQ9Xe9sLj/RNZF0lf8YiuQ2VndVWVQjzTLd9wb
+	 UpOMC1F6Wksb+ZqSbaup8bofeQuLsYiFgUwfmTaM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 422/554] mm/damon/tests/core-kunit: handle memory alloc failure from damon_test_aggregate()
+	Anshumali Gaur <agaur@marvell.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 287/451] octeontx2-pf: fix "UBSAN: shift-out-of-bounds error"
 Date: Thu, 15 Jan 2026 17:48:08 +0100
-Message-ID: <20260115164301.531958817@linuxfoundation.org>
+Message-ID: <20260115164241.265187399@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,60 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Anshumali Gaur <agaur@marvell.com>
 
-commit f79f2fc44ebd0ed655239046be3e80e8804b5545 upstream.
+[ Upstream commit 85f4b0c650d9f9db10bda8d3acfa1af83bf78cf7 ]
 
-damon_test_aggregate() is assuming all dynamic memory allocation in it
-will succeed.  Those are indeed likely in the real use cases since those
-allocations are too small to fail, but theoretically those could fail.  In
-the case, inappropriate memory access can happen.  Fix it by appropriately
-cleanup pre-allocated memory and skip the execution of the remaining tests
-in the failure cases.
+This patch ensures that the RX ring size (rx_pending) is not
+set below the permitted length. This avoids UBSAN
+shift-out-of-bounds errors when users passes small or zero
+ring sizes via ethtool -G.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-5-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d45d8979840d ("octeontx2-pf: Add basic ethtool support")
+Signed-off-by: Anshumali Gaur <agaur@marvell.com>
+Link: https://patch.msgid.link/20251219062226.524844-1-agaur@marvell.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core-test.h |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -99,12 +99,22 @@ static void damon_test_aggregate(struct
- 	struct damon_region *r;
- 	int it, ir;
- 
--	damon_set_targets(ctx, target_ids, 3);
-+	if (!ctx)
-+		kunit_skip(test, "ctx alloc fail");
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+index 9b6938dde267..6e547e177511 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_ethtool.c
+@@ -382,6 +382,14 @@ static int otx2_set_ringparam(struct net_device *netdev,
+ 	 */
+ 	if (rx_count < pfvf->hw.rq_skid)
+ 		rx_count =  pfvf->hw.rq_skid;
 +
-+	if (damon_set_targets(ctx, target_ids, 3)) {
-+		damon_destroy_ctx(ctx);
-+		kunit_skip(test, "target alloc fail");
++	if (ring->rx_pending < 16) {
++		netdev_err(netdev,
++			   "rx ring size %u invalid, min is 16\n",
++			   ring->rx_pending);
++		return -EINVAL;
 +	}
++
+ 	rx_count = Q_COUNT(Q_SIZE(rx_count, 3));
  
- 	it = 0;
- 	damon_for_each_target(t, ctx) {
- 		for (ir = 0; ir < 3; ir++) {
- 			r = damon_new_region(saddr[it][ir], eaddr[it][ir]);
-+			if (!r) {
-+				damon_destroy_ctx(ctx);
-+				kunit_skip(test, "region alloc fail");
-+			}
- 			r->nr_accesses = accesses[it][ir];
- 			damon_add_region(r, t);
- 		}
+ 	/* Due pipelining impact minimum 2000 unused SQ CQE's
+-- 
+2.51.0
+
 
 
 
