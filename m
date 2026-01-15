@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208743-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208879-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7BF33D261A4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01117D267BA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 997913045752
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C6B43098DD3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C80283BF2E0;
-	Thu, 15 Jan 2026 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9AD3BF2FD;
+	Thu, 15 Jan 2026 17:11:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j52JqovJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSegBJhu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85BAC3BF303;
-	Thu, 15 Jan 2026 17:05:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303D2D781B;
+	Thu, 15 Jan 2026 17:11:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496719; cv=none; b=g7nnQxqc7hqPi9boTMGwmAbyncco35bm8WqblQvo+iu/Yr6QcgLeII4814RDZEhSa8RUcJ1ox51L+i3ahBMO8jbeR9rMVkuxM8G/eZzlJqi87Dqi39IflxJTVqF+8z49CD5PhJNkkt+JWVI9lbQ+tm5q+kBfPFjap/K26Z8P5WI=
+	t=1768497103; cv=none; b=ESc/sHSkpsRN32BzmAM5bqA2cd7n2lVmBh8lS3xu8GwZaAHkvb89TItUR9Rpa0s8eC2iT6hHJLtbGgVBHFudp2x0vvE7UvuDIRMRvDiGGg64n5B1DjpBCaUWCz54ucV4A+bSTqNnhP96WM/kaV0xTVfhklBfGBQR97PDjbuI+CE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496719; c=relaxed/simple;
-	bh=fwaOdEZr4RvL+h5n/gcT/FutY8LZ6o5yAkGjjg5/Xx8=;
+	s=arc-20240116; t=1768497103; c=relaxed/simple;
+	bh=56588g3OmdAfhqrzY9pb9Doc84JMo3Kbb7FIAYFI+f4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RMSotmvAocDexEjhbjtduhzG7YIUtJmxr8Pnfgo8C4fM+3dxud8eVPN58KCW0szFufQS6j+SmFanlBsrfeINkSJPPGGbWsmbsJr9Haz+WI+o/dro7QgyVjFof3/JX3FKjAhpNjYimsxOIIdNg8bxz367pdGrqTC32u0ldz7i9Bo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j52JqovJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FEA3C19422;
-	Thu, 15 Jan 2026 17:05:18 +0000 (UTC)
+	 MIME-Version; b=gmxCyE3aqBAOzvdlBehtPQaVpxghhjo5agFEfmIsRv/zcQP4QMOt+2u3NsgkWR/oejV5Y7v346YgmhEQEDgeG5j6OJJTC4tYsRULGaT9DalSx6/u0Qg3fLHttLzLzF5vSxoFGqdgmEuyPN/x1xLRflX/GuIazSG+DDxLOJYbAFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSegBJhu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A95BC116D0;
+	Thu, 15 Jan 2026 17:11:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496719;
-	bh=fwaOdEZr4RvL+h5n/gcT/FutY8LZ6o5yAkGjjg5/Xx8=;
+	s=korg; t=1768497103;
+	bh=56588g3OmdAfhqrzY9pb9Doc84JMo3Kbb7FIAYFI+f4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j52JqovJbvIDRn7LWGsjtC5JldI0/MXBc+X+sYeKu3hB2pF9q9WMhSMM0pHlfeVpM
-	 kTze4l2f4eFNlRKEi+Q58zk59liHVmQRfxm4+jIQR0ZK3FInjA6smIwjgkTHJNZZGU
-	 5z2mz/IoBU1oTKk19+dq5y0HFX47O8hZo33Wmiqo=
+	b=iSegBJhuDFGEu7crgJYvIZxdRsChVhVMFMNHUjrDyorblBz371P6bZdNJW1iDSfyJ
+	 jtRVCuaud4+bT0U4BMCAZbwXpsRLQKvolbDUVSH7h5DP0M2xMXXdvSWansAqJl2VqO
+	 UDQcQKYA/yjsykqeZbyKiwHKAHVTc988lsJrPUlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrew Elantsev <elantsew.andrew@gmail.com>,
-	Mark Brown <broonie@kernel.org>,
+	Alexandre Knecht <knecht.alexandre@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 112/119] ASoC: amd: yc: Add quirk for Honor MagicBook X16 2025
+Subject: [PATCH 6.1 37/72] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
 Date: Thu, 15 Jan 2026 17:48:47 +0100
-Message-ID: <20260115164156.002789962@linuxfoundation.org>
+Message-ID: <20260115164144.839580675@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +62,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Elantsev <elantsew.andrew@gmail.com>
+From: Alexandre Knecht <knecht.alexandre@gmail.com>
 
-[ Upstream commit e2cb8ef0372665854fca6fa7b30b20dd35acffeb ]
+[ Upstream commit 3128df6be147768fe536986fbb85db1d37806a9f ]
 
-Add a DMI quirk for the Honor MagicBook X16 2025 laptop
-fixing the issue where the internal microphone was
-not detected.
+When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
+incorrectly stripped from frames during egress processing.
 
-Signed-off-by: Andrew Elantsev <elantsew.andrew@gmail.com>
-Link: https://patch.msgid.link/20251210203800.142822-1-elantsew.andrew@gmail.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
+from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
+moves any "next" VLAN from the payload into hwaccel:
+
+    /* move next vlan tag to hw accel tag */
+    __skb_vlan_pop(skb, &vlan_tci);
+    __vlan_hwaccel_put_tag(skb, vlan_proto, vlan_tci);
+
+For QinQ frames where the C-VLAN sits in the payload, this moves it to
+hwaccel where it gets lost during VXLAN encapsulation.
+
+Fix by calling __vlan_hwaccel_clear_tag() directly, which clears only
+the hwaccel S-VLAN and leaves the payload untouched.
+
+This path is only taken when vlan_tunnel is enabled and tunnel_info
+is configured, so 802.1Q bridges are unaffected.
+
+Tested with 802.1ad bridge + VXLAN vlan_tunnel, verified C-VLAN
+preserved in VXLAN payload via tcpdump.
+
+Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
+Signed-off-by: Alexandre Knecht <knecht.alexandre@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20251228020057.2788865-1-knecht.alexandre@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ net/bridge/br_vlan_tunnel.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
-index e362c2865ec13..3dcd29c9ad9b2 100644
---- a/sound/soc/amd/yc/acp6x-mach.c
-+++ b/sound/soc/amd/yc/acp6x-mach.c
-@@ -654,6 +654,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
- 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
- 		}
- 	},
-+	{
-+		.driver_data = &acp6x_card,
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_VENDOR, "HONOR"),
-+			DMI_MATCH(DMI_PRODUCT_NAME, "GOH-X"),
-+		}
-+	},
- 	{}
- };
+diff --git a/net/bridge/br_vlan_tunnel.c b/net/bridge/br_vlan_tunnel.c
+index 6399a8a69d076..0f03572d89d09 100644
+--- a/net/bridge/br_vlan_tunnel.c
++++ b/net/bridge/br_vlan_tunnel.c
+@@ -187,7 +187,6 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+ {
+ 	struct metadata_dst *tunnel_dst;
+ 	__be64 tunnel_id;
+-	int err;
  
+ 	if (!vlan)
+ 		return 0;
+@@ -197,9 +196,13 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+ 		return 0;
+ 
+ 	skb_dst_drop(skb);
+-	err = skb_vlan_pop(skb);
+-	if (err)
+-		return err;
++	/* For 802.1ad (QinQ), skb_vlan_pop() incorrectly moves the C-VLAN
++	 * from payload to hwaccel after clearing S-VLAN. We only need to
++	 * clear the hwaccel S-VLAN; the C-VLAN must stay in payload for
++	 * correct VXLAN encapsulation. This is also correct for 802.1Q
++	 * where no C-VLAN exists in payload.
++	 */
++	__vlan_hwaccel_clear_tag(skb);
+ 
+ 	tunnel_dst = rcu_dereference(vlan->tinfo.tunnel_dst);
+ 	if (tunnel_dst && dst_hold_safe(&tunnel_dst->dst))
 -- 
 2.51.0
 
