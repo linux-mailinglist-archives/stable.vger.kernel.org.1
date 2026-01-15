@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209139-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209567-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 48BD1D26702
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:38 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 434B4D27824
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 13E013049F59
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:29 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EBF49323EAAD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 136843B8BAB;
-	Thu, 15 Jan 2026 17:24:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A086F2F619D;
+	Thu, 15 Jan 2026 17:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yp/GMFxN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bOFgzjfh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD97A3BFE31;
-	Thu, 15 Jan 2026 17:24:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 644352D541B;
+	Thu, 15 Jan 2026 17:44:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497844; cv=none; b=cyLJ64EP9i1mJXi7sy2wqNT0/oJUs5ohR2CqrErxzjB5tv8EELpSVtQfDxyiCQbH8zb9OptIe1yT3Jju2yC97YUMT0noY30KuESKnyRytSTn1pa6zuN37sep1kXi7Cxpe0YBWLoZjcQHUILawh8jO9og62t0J1jFeRhGvPz5kdU=
+	t=1768499064; cv=none; b=KhPpT6yglohZ1+F2v/Gvb7H+aLLBZ9aH6tEGueodJmjA6uX1grdkjDBp10bpAdoRvgTxgogxw21PjDI6b9A53ZwH5BGZo0N1zQwhFTXa5+aEVSz6rc2z0D/QgJ/wrp7GfsJJi6CfpNGMCZrjLX91MfJ12Xi1BAy09Xbuiol8j9o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497844; c=relaxed/simple;
-	bh=irPqPGckg/6OdK5bluDk0nvbGRwP2ZArvRGis36Ni2M=;
+	s=arc-20240116; t=1768499064; c=relaxed/simple;
+	bh=Ok2pV3s5j/Z/6J72+jUZfTtLhwPc4u6qOLMUJ86RpwU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VnS99oiM6eQXZUskSS47BdWqIUMTHNAYK/8Yi9wTE088Cc8LQo7p36goDoLhMcw2+K60g1SkOxDLIVJoImpYDsaYxIWTxj1YeVZVhs9yPlmTixU5vmdUNhZ0L8AV8fzUlv5NaueaEJQAkCOJ1zGGdCOWJJ/e3MK/Fc0aEBauB8I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yp/GMFxN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9A07C16AAE;
-	Thu, 15 Jan 2026 17:24:03 +0000 (UTC)
+	 MIME-Version; b=u3WZvQkU6Vg7dcGhRPSxFxl6EM8no/JCEcfqz4cuWSLzca8crdeYkwe63Xd+t69G8BkXvbd11Z5G5w4i8p3vG/o6RfP0p7deV9NWBXlzeEhhLUTexhnlV6YQb/kDg/3Lf/rkYQfzL7y9c1O2lJrsxKH6UF+6Cj5bZ4oZ9R4DiVA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bOFgzjfh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF6A6C116D0;
+	Thu, 15 Jan 2026 17:44:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497844;
-	bh=irPqPGckg/6OdK5bluDk0nvbGRwP2ZArvRGis36Ni2M=;
+	s=korg; t=1768499064;
+	bh=Ok2pV3s5j/Z/6J72+jUZfTtLhwPc4u6qOLMUJ86RpwU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yp/GMFxNKR2hwYpkylqnvkFVkJPK7pROIrIXMB5F0hMJqq7MXR45VYOn0PSunZLLM
-	 aeAie+fLF1IhM4cjd8bW0IBhhCQfN6sKmzVKfZYcwL0De9kJXUtBWH2yg67hfpqPyZ
-	 EJAVxHiKrEd9zTj84i84tc04S1qu4HXbOHx5+LcQ=
+	b=bOFgzjfhd/zz7novnxHaUPkXPPvMQY379adKVHfo2PtwTZbE9f2RRYUT+hCI2WAmN
+	 CmrSH+TgwDXaU+p7QcaIaODEB+qUUsMOHIJw/cXe6t5+V/JMvgBeGG4hQrdkzBV3zy
+	 pf3J4bPXQjFAJKM0zT1EOWh8eJiZTiGQFHZz2sqc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com,
-	Wang Liang <wangliang74@huawei.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Seungjin Bae <eeodqql09@gmail.com>,
+	Ping-Ke Shih <pkshih@realtek.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 223/554] netrom: Fix memory leak in nr_sendmsg()
+Subject: [PATCH 5.10 088/451] wifi: rtl818x: rtl8187: Fix potential buffer underflow in rtl8187_rx_cb()
 Date: Thu, 15 Jan 2026 17:44:49 +0100
-Message-ID: <20260115164254.318364372@linuxfoundation.org>
+Message-ID: <20260115164234.100534956@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,91 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wang Liang <wangliang74@huawei.com>
+From: Seungjin Bae <eeodqql09@gmail.com>
 
-[ Upstream commit 613d12dd794e078be8ff3cf6b62a6b9acf7f4619 ]
+[ Upstream commit b647d2574e4583c2e3b0ab35568f60c88e910840 ]
 
-syzbot reported a memory leak [1].
+The rtl8187_rx_cb() calculates the rx descriptor header address
+by subtracting its size from the skb tail pointer.
+However, it does not validate if the received packet
+(skb->len from urb->actual_length) is large enough to contain this
+header.
 
-When function sock_alloc_send_skb() return NULL in nr_output(), the
-original skb is not freed, which was allocated in nr_sendmsg(). Fix this
-by freeing it before return.
+If a truncated packet is received, this will lead to a buffer
+underflow, reading memory before the start of the skb data area,
+and causing a kernel panic.
 
-[1]
-BUG: memory leak
-unreferenced object 0xffff888129f35500 (size 240):
-  comm "syz.0.17", pid 6119, jiffies 4294944652
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 10 52 28 81 88 ff ff  ..........R(....
-  backtrace (crc 1456a3e4):
-    kmemleak_alloc_recursive include/linux/kmemleak.h:44 [inline]
-    slab_post_alloc_hook mm/slub.c:4983 [inline]
-    slab_alloc_node mm/slub.c:5288 [inline]
-    kmem_cache_alloc_node_noprof+0x36f/0x5e0 mm/slub.c:5340
-    __alloc_skb+0x203/0x240 net/core/skbuff.c:660
-    alloc_skb include/linux/skbuff.h:1383 [inline]
-    alloc_skb_with_frags+0x69/0x3f0 net/core/skbuff.c:6671
-    sock_alloc_send_pskb+0x379/0x3e0 net/core/sock.c:2965
-    sock_alloc_send_skb include/net/sock.h:1859 [inline]
-    nr_sendmsg+0x287/0x450 net/netrom/af_netrom.c:1105
-    sock_sendmsg_nosec net/socket.c:727 [inline]
-    __sock_sendmsg net/socket.c:742 [inline]
-    sock_write_iter+0x293/0x2a0 net/socket.c:1195
-    new_sync_write fs/read_write.c:593 [inline]
-    vfs_write+0x45d/0x710 fs/read_write.c:686
-    ksys_write+0x143/0x170 fs/read_write.c:738
-    do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
-    do_syscall_64+0xa4/0xfa0 arch/x86/entry/syscall_64.c:94
-    entry_SYSCALL_64_after_hwframe+0x77/0x7f
+Add length checks for both rtl8187 and rtl8187b descriptor headers
+before attempting to access them, dropping the packet cleanly if the
+check fails.
 
-Reported-by: syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=d7abc36bbbb6d7d40b58
-Tested-by: syzbot+d7abc36bbbb6d7d40b58@syzkaller.appspotmail.com
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Wang Liang <wangliang74@huawei.com>
-Link: https://patch.msgid.link/20251129041315.1550766-1-wangliang74@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 6f7853f3cbe4 ("rtl8187: change rtl8187_dev.c to support RTL8187B (part 2)")
+Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
+Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
+Link: https://patch.msgid.link/20251118013258.1789949-2-eeodqql09@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netrom/nr_out.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../wireless/realtek/rtl818x/rtl8187/dev.c    | 27 +++++++++++++------
+ 1 file changed, 19 insertions(+), 8 deletions(-)
 
-diff --git a/net/netrom/nr_out.c b/net/netrom/nr_out.c
-index 5e531394a724b..2b3cbceb0b52d 100644
---- a/net/netrom/nr_out.c
-+++ b/net/netrom/nr_out.c
-@@ -43,8 +43,10 @@ void nr_output(struct sock *sk, struct sk_buff *skb)
- 		frontlen = skb_headroom(skb);
+diff --git a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+index c9df185dc3f4f..00493a2391179 100644
+--- a/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
++++ b/drivers/net/wireless/realtek/rtl818x/rtl8187/dev.c
+@@ -338,14 +338,16 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 	spin_unlock_irqrestore(&priv->rx_queue.lock, f);
+ 	skb_put(skb, urb->actual_length);
  
- 		while (skb->len > 0) {
--			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL)
-+			if ((skbn = sock_alloc_send_skb(sk, frontlen + NR_MAX_PACKET_SIZE, 0, &err)) == NULL) {
-+				kfree_skb(skb);
- 				return;
-+			}
+-	if (unlikely(urb->status)) {
+-		dev_kfree_skb_irq(skb);
+-		return;
+-	}
++	if (unlikely(urb->status))
++		goto free_skb;
  
- 			skb_reserve(skbn, frontlen);
+ 	if (!priv->is_rtl8187b) {
+-		struct rtl8187_rx_hdr *hdr =
+-			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
++		struct rtl8187_rx_hdr *hdr;
++
++		if (skb->len < sizeof(struct rtl8187_rx_hdr))
++			goto free_skb;
++
++		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
+ 		flags = le32_to_cpu(hdr->flags);
+ 		/* As with the RTL8187B below, the AGC is used to calculate
+ 		 * signal strength. In this case, the scaling
+@@ -355,8 +357,12 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 		rx_status.antenna = (hdr->signal >> 7) & 1;
+ 		rx_status.mactime = le64_to_cpu(hdr->mac_time);
+ 	} else {
+-		struct rtl8187b_rx_hdr *hdr =
+-			(typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
++		struct rtl8187b_rx_hdr *hdr;
++
++		if (skb->len < sizeof(struct rtl8187b_rx_hdr))
++			goto free_skb;
++
++		hdr = (typeof(hdr))(skb_tail_pointer(skb) - sizeof(*hdr));
+ 		/* The Realtek datasheet for the RTL8187B shows that the RX
+ 		 * header contains the following quantities: signal quality,
+ 		 * RSSI, AGC, the received power in dB, and the measured SNR.
+@@ -409,6 +415,11 @@ static void rtl8187_rx_cb(struct urb *urb)
+ 		skb_unlink(skb, &priv->rx_queue);
+ 		dev_kfree_skb_irq(skb);
+ 	}
++	return;
++
++free_skb:
++	dev_kfree_skb_irq(skb);
++	return;
+ }
  
+ static int rtl8187_init_urbs(struct ieee80211_hw *dev)
 -- 
 2.51.0
 
