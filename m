@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208795-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209323-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209CED266C2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:40 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A655D26A8B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 896CA3074A76
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:48 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 84DB230328C5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D3E9D3BF2FF;
-	Thu, 15 Jan 2026 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4F86C3BF2E4;
+	Thu, 15 Jan 2026 17:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXydBgMd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mOqlNGyH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 721412D5C9B;
-	Thu, 15 Jan 2026 17:07:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11A242C3268;
+	Thu, 15 Jan 2026 17:32:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496864; cv=none; b=fJbp0/bOAo/gD4LU2R1/8He6e/s4xcp85TzPPMBVG30U8WHR3Ze24suWZhPMZmvSY//3VV9vS4euHZNTzXPMwnuht8rjtjQqC5KMODZCPiGXGwLmS8RZRieXJGAsj9nia0rGBwOdIW5ffQdB/PgCld99d5oGxOoA5vIsi3sNh3o=
+	t=1768498369; cv=none; b=Ww3rasUSRQHC3+wc9qAcTOJugtZ+0wOuiGgSnB6zao0CPjIokDyoNaDDOo3c3m4xHxKShHM0F/B26shqT6x1F/u7N+DZhYPK7XVu64hjiF+OqxA1A0VBXAusNYs+bv0D3ID3l9yNxoFQZhtEJ5ja0c3BHtaGthgTA2zvYK1dbxo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496864; c=relaxed/simple;
-	bh=3JHM7wDqGNHV/6vw7jVf+XW3JP5L7YlprjhBfUJOXmQ=;
+	s=arc-20240116; t=1768498369; c=relaxed/simple;
+	bh=5T3DKo+Cn1jsCrbu4Fwuw0tKmrxJc7YM01g0Ats9JLI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ucEwvNyiXq3HwdLuOr5gp/mcBysR1mO5vTpBaQCBNi0WXzaU1NGCL1W2B5SGFMrmBAlfIBsbrmJX1Vyw7OzhqIGoRKHjdruF0GrAOoWQuTciSI+K3jYJSt1N+VW4sZ65nUkBCmp4lqHS/2SYqJMCQmGWYdemKvtBUe8PeClTZyE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXydBgMd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2A8CC16AAE;
-	Thu, 15 Jan 2026 17:07:43 +0000 (UTC)
+	 MIME-Version; b=b3uVRdH4PX22AOXW1Qt0rEShwUNrKL0Sg/ujucmAuryxs28hxwco/YAb03wpHOvEkV5QJpxMmLPqgVt7oaAD23Vtfv9TKEYRwsGDKd6hXZNblEYxhAExXBkCPTLc8BCkJdTzQOCE1Teh/958AUbixhVHe4x0EhNvpvS9MdefOIQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mOqlNGyH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81C46C116D0;
+	Thu, 15 Jan 2026 17:32:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496864;
-	bh=3JHM7wDqGNHV/6vw7jVf+XW3JP5L7YlprjhBfUJOXmQ=;
+	s=korg; t=1768498368;
+	bh=5T3DKo+Cn1jsCrbu4Fwuw0tKmrxJc7YM01g0Ats9JLI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXydBgMdY7ECsCLM6wfxrJw4Q1UgKMfrZi3GTRRB8u8sXnPFOdwwD/l4YCyZSFCCS
-	 6AEYh1tXF5g97kihxIG3wgOLfcOd66/HstOF7XikZHIKhdx9dp/03wipkhiZzSD4jd
-	 kCvB9byzs5ntIosJyrl0XgNQm032WPTndHpoi8xY=
+	b=mOqlNGyH9gjxztDWdSe9JLGxGD3RM1YnHBEBa3xlwAUEI0XGtZkGWxm6KtxnGph1N
+	 /63ceLzcagj2Jy6Ekq/lzJyL3kEDJd8KVqOC743CV9hCSk5i4zlz2VEyZsfa07k0/N
+	 zRYb5wiGYQk0kNSu0X47MfLkmK7eSKsBWdMq+9Ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.6 10/88] drm/pl111: Fix error handling in pl111_amba_probe
+	syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 407/554] net: nfc: fix deadlock between nfc_unregister_device and rfkill_fop_write
 Date: Thu, 15 Jan 2026 17:47:53 +0100
-Message-ID: <20260115164146.692913432@linuxfoundation.org>
+Message-ID: <20260115164300.964245460@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +61,96 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 0ddd3bb4b14c9102c0267b3fd916c81fe5ab89c1 upstream.
+commit 1ab526d97a57e44d26fadcc0e9adeb9c0c0182f5 upstream.
 
-Jump to the existing dev_put label when devm_request_irq() fails
-so drm_dev_put() and of_reserved_mem_device_release() run
-instead of returning early and leaking resources.
+A deadlock can occur between nfc_unregister_device() and rfkill_fop_write()
+due to lock ordering inversion between device_lock and rfkill_global_mutex.
 
-Found via static analysis and code review.
+The problematic lock order is:
 
-Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
+Thread A (rfkill_fop_write):
+  rfkill_fop_write()
+    mutex_lock(&rfkill_global_mutex)
+      rfkill_set_block()
+        nfc_rfkill_set_block()
+          nfc_dev_down()
+            device_lock(&dev->dev)    <- waits for device_lock
+
+Thread B (nfc_unregister_device):
+  nfc_unregister_device()
+    device_lock(&dev->dev)
+      rfkill_unregister()
+        mutex_lock(&rfkill_global_mutex)  <- waits for rfkill_global_mutex
+
+This creates a classic ABBA deadlock scenario.
+
+Fix this by moving rfkill_unregister() and rfkill_destroy() outside the
+device_lock critical section. Store the rfkill pointer in a local variable
+before releasing the lock, then call rfkill_unregister() after releasing
+device_lock.
+
+This change is safe because rfkill_fop_write() holds rfkill_global_mutex
+while calling the rfkill callbacks, and rfkill_unregister() also acquires
+rfkill_global_mutex before cleanup. Therefore, rfkill_unregister() will
+wait for any ongoing callback to complete before proceeding, and
+device_del() is only called after rfkill_unregister() returns, preventing
+any use-after-free.
+
+The similar lock ordering in nfc_register_device() (device_lock ->
+rfkill_global_mutex via rfkill_register) is safe because during
+registration the device is not yet in rfkill_list, so no concurrent
+rfkill operations can occur on this device.
+
+Fixes: 3e3b5dfcd16a ("NFC: reorder the logic in nfc_{un,}register_device")
 Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20251211123345.2392065-1-linmq006@gmail.com
+Reported-by: syzbot+4ef89409a235d804c6c2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=4ef89409a235d804c6c2
+Link: https://lore.kernel.org/all/20251217054908.178907-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251218012355.279940-1-kartikey406@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/pl111/pl111_drv.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/nfc/core.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/pl111/pl111_drv.c
-+++ b/drivers/gpu/drm/pl111/pl111_drv.c
-@@ -294,7 +294,7 @@ static int pl111_amba_probe(struct amba_
- 			       variant->name, priv);
- 	if (ret != 0) {
- 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
--		return ret;
-+		goto dev_put;
- 	}
+--- a/net/nfc/core.c
++++ b/net/nfc/core.c
+@@ -1154,6 +1154,7 @@ EXPORT_SYMBOL(nfc_register_device);
+ void nfc_unregister_device(struct nfc_dev *dev)
+ {
+ 	int rc;
++	struct rfkill *rfk = NULL;
  
- 	ret = pl111_modeset_init(drm);
+ 	pr_debug("dev_name=%s\n", dev_name(&dev->dev));
+ 
+@@ -1164,13 +1165,17 @@ void nfc_unregister_device(struct nfc_de
+ 
+ 	device_lock(&dev->dev);
+ 	if (dev->rfkill) {
+-		rfkill_unregister(dev->rfkill);
+-		rfkill_destroy(dev->rfkill);
++		rfk = dev->rfkill;
+ 		dev->rfkill = NULL;
+ 	}
+ 	dev->shutting_down = true;
+ 	device_unlock(&dev->dev);
+ 
++	if (rfk) {
++		rfkill_unregister(rfk);
++		rfkill_destroy(rfk);
++	}
++
+ 	if (dev->ops->check_presence) {
+ 		del_timer_sync(&dev->check_pres_timer);
+ 		cancel_work_sync(&dev->check_pres_work);
 
 
 
