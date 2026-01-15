@@ -1,56 +1,62 @@
-Return-Path: <stable+bounces-209533-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209114-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0977FD27315
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:53 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F194D26689
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:29:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 093DD30F41D3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E2423304017A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B2639E6EA;
-	Thu, 15 Jan 2026 17:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 558CA3BF309;
+	Thu, 15 Jan 2026 17:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIp6Qcr6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Oi2KCusm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6474E2C0F83;
-	Thu, 15 Jan 2026 17:42:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 188393BF2FF;
+	Thu, 15 Jan 2026 17:22:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498967; cv=none; b=uHxwk+s3tVMYaEdUtkLNaiCoux+PqCYu/nbQNZlpbhNR5rf7LZ5qbzQqOXD8Q7XOBMUU46f5wlPieuUQv2es59CLnjizjbE61J/sAoDCC2XceubgRgepLIO+oNaGop8n0G1q+MWeWbxi8k+mVIB84luwsnupnYeHmQqzNivESl8=
+	t=1768497773; cv=none; b=Da25ic+hnNxwKpTPm4YQ/UEJ4dN4oOfoys31k9Nx3L65VWtkjFiEDnNFxmcoOb7Tno30eSO06N92A7wLfPdH0C63Hw/8LDzSqTqCcETIEquBmPJQW51M4MSQ/236K9K/KDx9I33ZhNOC60Thnm/+SU3d8uJTPXWH8zn8bXNKVco=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498967; c=relaxed/simple;
-	bh=7bZGgKrdrRRnu5TGqNiSp6aYaTlPUYfIJ2gQg0AAlhI=;
+	s=arc-20240116; t=1768497773; c=relaxed/simple;
+	bh=n4WGg28TsKyx7SXgKEM+UGHWpFeqHWMDfJY1JZxPPNI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jUX0T5pvDkYITGxHNLeltiSo7sx0c2xG02immn90IQoVmHFtoVXKDawB+Xgzv7k++wxZVilgavkLwEWX6USfPeilwKtw6eGFC0OEOk+0UnyduFuFEMzPGXswh4fTvUd1evjtBew6pWuxAlkv99E6p7vajAWjP4eDVrP62O0RrPQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIp6Qcr6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D53C116D0;
-	Thu, 15 Jan 2026 17:42:46 +0000 (UTC)
+	 MIME-Version; b=n3+NARavRMuhQDCi7FMQTZxT74rY2CKXQyyKEFSfDJvBbFazkBvt67NJHAMES56cSmBXRKM3qrHXjzxyc/y0AdLSBAX3a6iph58NA7hbJrYoDhr4ChKUmSS45LQC3O/qpf4qGqBoJzNVdobEI6nEziPPeK/GpbXP/Hrr3zZ+ra8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Oi2KCusm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 701B5C16AAE;
+	Thu, 15 Jan 2026 17:22:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498967;
-	bh=7bZGgKrdrRRnu5TGqNiSp6aYaTlPUYfIJ2gQg0AAlhI=;
+	s=korg; t=1768497773;
+	bh=n4WGg28TsKyx7SXgKEM+UGHWpFeqHWMDfJY1JZxPPNI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nIp6Qcr6Ve9L51qRoh1zeCVbM4UG/DPxjrrDRsyOXnABAH5k/rA0Xtmed10L/I+gU
-	 Y2nRovkooDUZqlN6yvHCrAF7NWvJduayiNshoLWL/WXfbtM8IxXZ7OKTYvnMgAZLyp
-	 5GujXTBvAfA3foS9VA67qPEeOxdwVZ4/AtU20JoE=
+	b=Oi2KCusmN74gvwMbz7m3+dSqqFb3WTEvRe03gzQfd8PkrB1cpCZdmrPaPHGpCjHK2
+	 yoRMUcl+zlDcBIw7tacLylCm/L0f7EuXm+4SnlhEt0eSa/seMCsMc5RRAUjqEanXrV
+	 ZZPnewbTYo7BEeREocQK/uUGJg1uuwOMhQv4ArOo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yu Kuai <yukuai3@huawei.com>,
-	Ming Lei <ming.lei@redhat.com>,
-	Josef Bacik <josef@toxicpanda.com>,
-	Jens Axboe <axboe@kernel.dk>,
+	Dmitry Antipov <dmantipov@yandex.ru>,
+	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
+	Heming Zhao <heming.zhao@suse.com>,
+	Joseph Qi <joseph.qi@linux.alibaba.com>,
+	Mark Fasheh <mark@fasheh.com>,
+	Joel Becker <jlbec@evilplan.org>,
+	Junxiao Bi <junxiao.bi@oracle.com>,
+	Changwei Ge <gechangwei@live.cn>,
+	Jun Piao <piaojun@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 062/451] nbd: partition nbd_read_stat() into nbd_read_reply() and nbd_handle_reply()
+Subject: [PATCH 5.15 197/554] ocfs2: fix memory leak in ocfs2_merge_rec_left()
 Date: Thu, 15 Jan 2026 17:44:23 +0100
-Message-ID: <20260115164233.142350086@linuxfoundation.org>
+Message-ID: <20260115164253.387841861@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,164 +68,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit 3fe1db626a56cdf259c348404f2c5429e2f065a1 ]
+[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
 
-Prepare to fix uaf in nbd_read_stat(), no functional changes.
+In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
+move, thus allowing 'ocfs2_free_path()' to free it before return.
 
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Josef Bacik <josef@toxicpanda.com>
-Link: https://lore.kernel.org/r/20210916093350.1410403-7-yukuai3@huawei.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 9517b82d8d42 ("nbd: defer config put in recv_work")
+Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
+Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
+Reviewed-by: Heming Zhao <heming.zhao@suse.com>
+Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/block/nbd.c | 74 +++++++++++++++++++++++++++------------------
- 1 file changed, 44 insertions(+), 30 deletions(-)
+ fs/ocfs2/alloc.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
-index 555e87a6d3a6d..92a94fa568a05 100644
---- a/drivers/block/nbd.c
-+++ b/drivers/block/nbd.c
-@@ -673,38 +673,45 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
- 	return 0;
- }
- 
--/* NULL returned = something went wrong, inform userspace */
--static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
-+static int nbd_read_reply(struct nbd_device *nbd, int index,
-+			  struct nbd_reply *reply)
- {
--	struct nbd_config *config = nbd->config;
--	int result;
--	struct nbd_reply reply;
--	struct nbd_cmd *cmd;
--	struct request *req = NULL;
--	u64 handle;
--	u16 hwq;
--	u32 tag;
--	struct kvec iov = {.iov_base = &reply, .iov_len = sizeof(reply)};
-+	struct kvec iov = {.iov_base = reply, .iov_len = sizeof(*reply)};
- 	struct iov_iter to;
--	int ret = 0;
-+	int result;
- 
--	reply.magic = 0;
--	iov_iter_kvec(&to, READ, &iov, 1, sizeof(reply));
-+	reply->magic = 0;
-+	iov_iter_kvec(&to, READ, &iov, 1, sizeof(*reply));
- 	result = sock_xmit(nbd, index, 0, &to, MSG_WAITALL, NULL);
- 	if (result < 0) {
--		if (!nbd_disconnected(config))
-+		if (!nbd_disconnected(nbd->config))
- 			dev_err(disk_to_dev(nbd->disk),
- 				"Receive control failed (result %d)\n", result);
--		return ERR_PTR(result);
-+		return result;
- 	}
- 
--	if (ntohl(reply.magic) != NBD_REPLY_MAGIC) {
-+	if (ntohl(reply->magic) != NBD_REPLY_MAGIC) {
- 		dev_err(disk_to_dev(nbd->disk), "Wrong magic (0x%lx)\n",
--				(unsigned long)ntohl(reply.magic));
--		return ERR_PTR(-EPROTO);
-+				(unsigned long)ntohl(reply->magic));
-+		return -EPROTO;
- 	}
- 
--	memcpy(&handle, reply.handle, sizeof(handle));
-+	return 0;
-+}
-+
-+/* NULL returned = something went wrong, inform userspace */
-+static struct nbd_cmd *nbd_handle_reply(struct nbd_device *nbd, int index,
-+					struct nbd_reply *reply)
-+{
-+	int result;
-+	struct nbd_cmd *cmd;
-+	struct request *req = NULL;
-+	u64 handle;
-+	u16 hwq;
-+	u32 tag;
-+	int ret = 0;
-+
-+	memcpy(&handle, reply->handle, sizeof(handle));
- 	tag = nbd_handle_to_tag(handle);
- 	hwq = blk_mq_unique_tag_to_hwq(tag);
- 	if (hwq < nbd->tag_set.nr_hw_queues)
-@@ -737,9 +744,9 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
- 		ret = -ENOENT;
- 		goto out;
- 	}
--	if (ntohl(reply.error)) {
-+	if (ntohl(reply->error)) {
- 		dev_err(disk_to_dev(nbd->disk), "Other side returned error (%d)\n",
--			ntohl(reply.error));
-+			ntohl(reply->error));
- 		cmd->status = BLK_STS_IOERR;
- 		goto out;
- 	}
-@@ -748,6 +755,7 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
- 	if (rq_data_dir(req) != WRITE) {
- 		struct req_iterator iter;
- 		struct bio_vec bvec;
-+		struct iov_iter to;
- 
- 		rq_for_each_segment(bvec, req, iter) {
- 			iov_iter_bvec(&to, READ, &bvec, 1, bvec.bv_len);
-@@ -761,7 +769,7 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
- 				 * and let the timeout stuff handle resubmitting
- 				 * this request onto another connection.
- 				 */
--				if (nbd_disconnected(config)) {
-+				if (nbd_disconnected(nbd->config)) {
- 					cmd->status = BLK_STS_IOERR;
- 					goto out;
- 				}
-@@ -785,24 +793,30 @@ static void recv_work(struct work_struct *work)
- 						     work);
- 	struct nbd_device *nbd = args->nbd;
- 	struct nbd_config *config = nbd->config;
-+	struct nbd_sock *nsock;
- 	struct nbd_cmd *cmd;
- 	struct request *rq;
- 
- 	while (1) {
--		cmd = nbd_read_stat(nbd, args->index);
--		if (IS_ERR(cmd)) {
--			struct nbd_sock *nsock = config->socks[args->index];
-+		struct nbd_reply reply;
- 
--			mutex_lock(&nsock->tx_lock);
--			nbd_mark_nsock_dead(nbd, nsock, 1);
--			mutex_unlock(&nsock->tx_lock);
-+		if (nbd_read_reply(nbd, args->index, &reply))
-+			break;
-+
-+		cmd = nbd_handle_reply(nbd, args->index, &reply);
-+		if (IS_ERR(cmd))
- 			break;
--		}
- 
- 		rq = blk_mq_rq_from_pdu(cmd);
- 		if (likely(!blk_should_fake_timeout(rq->q)))
- 			blk_mq_complete_request(rq);
- 	}
-+
-+	nsock = config->socks[args->index];
-+	mutex_lock(&nsock->tx_lock);
-+	nbd_mark_nsock_dead(nbd, nsock, 1);
-+	mutex_unlock(&nsock->tx_lock);
-+
- 	nbd_config_put(nbd);
- 	atomic_dec(&config->recv_threads);
- 	wake_up(&config->recv_wq);
+diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
+index 9c95d911a14b1..9589b462b5913 100644
+--- a/fs/ocfs2/alloc.c
++++ b/fs/ocfs2/alloc.c
+@@ -3647,7 +3647,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
+ 			 * So we use the new rightmost path.
+ 			 */
+ 			ocfs2_mv_path(right_path, left_path);
+-			left_path = NULL;
+ 		} else
+ 			ocfs2_complete_edge_insert(handle, left_path,
+ 						   right_path, subtree_index);
 -- 
 2.51.0
 
