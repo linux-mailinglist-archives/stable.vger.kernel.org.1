@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208729-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1D03D260E0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:24 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8577DD260BA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5E993036ACA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 047E4300387D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47C5D3B9619;
-	Thu, 15 Jan 2026 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5D2DE3A35A4;
+	Thu, 15 Jan 2026 17:04:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YJIJDc1x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OJ37jkFu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B59233F8DA;
-	Thu, 15 Jan 2026 16:59:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D77A2C0285;
+	Thu, 15 Jan 2026 17:04:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496381; cv=none; b=b3qH3lX3Leaa1rkUtwO/pZRl8Sg6owdwc+XpvBerqUA3e/3c+FVHamFAuOgPQqXWdP2uREnlmST7p/5xX7U0SA+FO2VtkPlozjQYpX89pi4bckAk4Np1GjFTDtrnadyQ/+Z+7ZoWuzBieK4+zW4u8r/unJ387m9TecLRe25UzsY=
+	t=1768496680; cv=none; b=afR5tAphW6ErMa27soaYQ7TIrafTiySqTPMKfZAGX6tMtGfNPKEfugkXvazmfQQxQJuhIhxOOZiN5smmmje/bS6TCaPX/AB4K+4LLZqVJRVEaUUEnag3Hs1lDFxSqxRiQkfRN2uSZLt47FtM60Q+14BqXyhq0ZhoBDUbrKW7QeY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496381; c=relaxed/simple;
-	bh=KAi3myD4Va9ohcwOn/MdIlQYdTXAEkFCxaxGUKDlIBI=;
+	s=arc-20240116; t=1768496680; c=relaxed/simple;
+	bh=Xywwu5uUHr2sgvLHganwXAxMTZIYNOZ3mQ+/1P6Zimw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L9Zi2ja1Qe41vhuYE4naG1QMZmShJNfOd77xJd76YyMIsrkst0HbJ1kMhbX0Q+rcMYBOksFxZIpQn3WerzOlgAr6TjqoPdGjC2h6dnv1WV4N1NYqhbjN8ZggezqqharZIQkJfT60Vi/bSjX4bBZGDskKtGy+FzBkkAHAb/nby/s=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YJIJDc1x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F4A2C116D0;
-	Thu, 15 Jan 2026 16:59:40 +0000 (UTC)
+	 MIME-Version; b=ZYnkom84VEXB2MnNnJUocxZygyk9pnj1zNocHezMCZwYugzCspqFT9Az4X3p69dblfAL9SHLuRe58UI5Rgy7fS6hMe08i3jMZcBI9+o9Tdj5jX12voCoFwiJAfkiS5oMwKquSh+MxDpct9SzUw2MOQKHm5zCVPCKaQKvgmGG5FY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OJ37jkFu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 615EEC116D0;
+	Thu, 15 Jan 2026 17:04:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496380;
-	bh=KAi3myD4Va9ohcwOn/MdIlQYdTXAEkFCxaxGUKDlIBI=;
+	s=korg; t=1768496679;
+	bh=Xywwu5uUHr2sgvLHganwXAxMTZIYNOZ3mQ+/1P6Zimw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YJIJDc1xlCJASAvucZ8j6lbqJA6AdkplP+gST/fjiiWKYEB0T7SCIecWYnbiP4RY9
-	 gNI9HTFj0O02fwciAKC6XIDkTb4wltH4qI20TwUoZbeGLq899hIT49Hsp1jRAuxbLu
-	 0lihxE0KXnwMa8bDunaSi+hNIjdtbNOKV/4JyeOw=
+	b=OJ37jkFukvrB9VT8KvMdnpTMA2jGX1F/z1jM9VPXxWZv7i8mvNRA2WpzIdlGz0IMB
+	 TW+/EUglSTSCZGkCB4uMciZEiM1Jk/T6f70c5zSXKqVnhBPJOd4ZSrXBB1OrNg/r1j
+	 a2XSmHCq76jN6iHcqkd9W7rVzI3DrOzetVdtYK54=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	Marc Kleine-Budde <mkl@pengutronix.de>,
+	Filipe Manana <fdmanana@suse.com>,
+	Qu Wenruo <wqu@suse.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 174/181] can: j1939: make j1939_session_activate() fail if device is no longer registered
+Subject: [PATCH 6.12 096/119] btrfs: fix beyond-EOF write handling
 Date: Thu, 15 Jan 2026 17:48:31 +0100
-Message-ID: <20260115164208.596142601@linuxfoundation.org>
+Message-ID: <20260115164155.418555680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,157 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Qu Wenruo <wqu@suse.com>
 
-[ Upstream commit 5d5602236f5db19e8b337a2cd87a90ace5ea776d ]
+[ Upstream commit e9e3b22ddfa760762b696ac6417c8d6edd182e49 ]
 
-syzbot is still reporting
+[BUG]
+For the following write sequence with 64K page size and 4K fs block size,
+it will lead to file extent items to be inserted without any data
+checksum:
 
-  unregister_netdevice: waiting for vcan0 to become free. Usage count = 2
+  mkfs.btrfs -s 4k -f $dev > /dev/null
+  mount $dev $mnt
+  xfs_io -f -c "pwrite 0 16k" -c "pwrite 32k 4k" -c pwrite "60k 64K" \
+            -c "truncate 16k" $mnt/foobar
+  umount $mnt
 
-even after commit 93a27b5891b8 ("can: j1939: add missing calls in
-NETDEV_UNREGISTER notification handler") was added. A debug printk() patch
-found that j1939_session_activate() can succeed even after
-j1939_cancel_active_session() from j1939_netdev_notify(NETDEV_UNREGISTER)
-has completed.
+This will result the following 2 file extent items to be inserted (extra
+trace point added to insert_ordered_extent_file_extent()):
 
-Since j1939_cancel_active_session() is processed with the session list lock
-held, checking ndev->reg_state in j1939_session_activate() with the session
-list lock held can reliably close the race window.
+  btrfs_finish_one_ordered: root=5 ino=257 file_off=61440 num_bytes=4096 csum_bytes=0
+  btrfs_finish_one_ordered: root=5 ino=257 file_off=0 num_bytes=16384 csum_bytes=16384
 
-Reported-by: syzbot <syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com>
-Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Acked-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://patch.msgid.link/b9653191-d479-4c8b-8536-1326d028db5c@I-love.SAKURA.ne.jp
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Note for file offset 60K, we're inserting a file extent without any
+data checksum.
+
+Also note that range [32K, 36K) didn't reach
+insert_ordered_extent_file_extent(), which is the correct behavior as
+that OE is fully truncated, should not result any file extent.
+
+Although file extent at 60K will be later dropped by btrfs_truncate(),
+if the transaction got committed after file extent inserted but before
+the file extent dropping, we will have a small window where we have a
+file extent beyond EOF and without any data checksum.
+
+That will cause "btrfs check" to report error.
+
+[CAUSE]
+The sequence happens like this:
+
+- Buffered write dirtied the page cache and updated isize
+
+  Now the inode size is 64K, with the following page cache layout:
+
+  0             16K             32K              48K           64K
+  |/////////////|               |//|                        |//|
+
+- Truncate the inode to 16K
+  Which will trigger writeback through:
+
+  btrfs_setsize()
+  |- truncate_setsize()
+  |  Now the inode size is set to 16K
+  |
+  |- btrfs_truncate()
+     |- btrfs_wait_ordered_range() for [16K, u64(-1)]
+        |- btrfs_fdatawrite_range() for [16K, u64(-1)}
+	   |- extent_writepage() for folio 0
+	      |- writepage_delalloc()
+	      |  Generated OE for [0, 16K), [32K, 36K] and [60K, 64K)
+	      |
+	      |- extent_writepage_io()
+
+  Then inside extent_writepage_io(), the dirty fs blocks are handled
+  differently:
+
+  - Submit write for range [0, 16K)
+    As they are still inside the inode size (16K).
+
+  - Mark OE [32K, 36K) as truncated
+    Since we only call btrfs_lookup_first_ordered_range() once, which
+    returned the first OE after file offset 16K.
+
+  - Mark all OEs inside range [16K, 64K) as finished
+    Which will mark OE ranges [32K, 36K) and [60K, 64K) as finished.
+
+    For OE [32K, 36K) since it's already marked as truncated, and its
+    truncated length is 0, no file extent will be inserted.
+
+    For OE [60K, 64K) it has never been submitted thus has no data
+    checksum, and we insert the file extent as usual.
+    This is the root cause of file extent at 60K to be inserted without
+    any data checksum.
+
+  - Clear dirty flags for range [16K, 64K)
+    It is the function btrfs_folio_clear_dirty() which searches and clears
+    any dirty blocks inside that range.
+
+[FIX]
+The bug itself was introduced a long time ago, way before subpage and
+large folio support.
+
+At that time, fs block size must match page size, thus the range
+[cur, end) is just one fs block.
+
+But later with subpage and large folios, the same range [cur, end)
+can have multiple blocks and ordered extents.
+
+Later commit 18de34daa7c6 ("btrfs: truncate ordered extent when skipping
+writeback past i_size") was fixing a bug related to subpage/large
+folios, but it's still utilizing the old range [cur, end), meaning only
+the first OE will be marked as truncated.
+
+The proper fix here is to make EOF handling block-by-block, not trying
+to handle the whole range to @end.
+
+By this we always locate and truncate the OE for every dirty block.
+
+CC: stable@vger.kernel.org # 5.15+
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/j1939/transport.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/btrfs/extent_io.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/can/j1939/transport.c b/net/can/j1939/transport.c
-index fbf5c8001c9df..613a911dda100 100644
---- a/net/can/j1939/transport.c
-+++ b/net/can/j1939/transport.c
-@@ -1567,6 +1567,8 @@ int j1939_session_activate(struct j1939_session *session)
- 	if (active) {
- 		j1939_session_put(active);
- 		ret = -EAGAIN;
-+	} else if (priv->ndev->reg_state != NETREG_REGISTERED) {
-+		ret = -ENODEV;
- 	} else {
- 		WARN_ON_ONCE(session->state != J1939_SESSION_NEW);
- 		list_add_tail(&session->active_session_list_entry,
--- 
-2.51.0
-
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1531,7 +1531,7 @@ static noinline_for_stack int extent_wri
+ 			unsigned long flags;
+ 
+ 			ordered = btrfs_lookup_first_ordered_range(inode, cur,
+-								   folio_end - cur);
++								   fs_info->sectorsize);
+ 			/*
+ 			 * We have just run delalloc before getting here, so
+ 			 * there must be an ordered extent.
+@@ -1545,7 +1545,7 @@ static noinline_for_stack int extent_wri
+ 			btrfs_put_ordered_extent(ordered);
+ 
+ 			btrfs_mark_ordered_io_finished(inode, folio, cur,
+-						       end - cur, true);
++						       fs_info->sectorsize, true);
+ 			/*
+ 			 * This range is beyond i_size, thus we don't need to
+ 			 * bother writing back.
+@@ -1554,8 +1554,8 @@ static noinline_for_stack int extent_wri
+ 			 * writeback the sectors with subpage dirty bits,
+ 			 * causing writeback without ordered extent.
+ 			 */
+-			btrfs_folio_clear_dirty(fs_info, folio, cur, end - cur);
+-			break;
++			btrfs_folio_clear_dirty(fs_info, folio, cur, fs_info->sectorsize);
++			continue;
+ 		}
+ 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
+ 		if (unlikely(ret < 0)) {
 
 
 
