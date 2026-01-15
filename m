@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209189-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209608-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 180B2D26842
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:35:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D653BD26E86
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 82CC1305A0FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 951EB30DA20F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 939A13BFE31;
-	Thu, 15 Jan 2026 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B3FDB3BFE37;
+	Thu, 15 Jan 2026 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ILRBDrzq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BYBgYZKW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56EEA399011;
-	Thu, 15 Jan 2026 17:26:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 705D53C1981;
+	Thu, 15 Jan 2026 17:46:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497987; cv=none; b=mNkXqxvgtz1ES99d61kFCluuUlsNn0FStBEymw/nuSXA+8UxNHATHOCMrJFVBqBFJBjulAktVgZx02NFxq7A7ojSP/0C7hnpZbNxNlObD7stXR2u+gztqru2sP9VWrSHAjjTIIUbQfH71XQXBzfqDVszN0q5l3IXAasP/o89OZ8=
+	t=1768499181; cv=none; b=L+3beccCm0C8LWXrWBDMbG4KSEvdH0nVd5nWX6UiBfVnXNxn1Zws9qXD0qO5mlQQQH1JOFcu/cvnKDtioARZO7fhGS2BTm/Fu8HGRXgAeaqegrR+pN2wM+G+Q8qIet5SmBQgquwMNXjVu2B4Tg/wNqTUAixgoKoUXAnt7cmP/Dc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497987; c=relaxed/simple;
-	bh=TPjbPUpkNjKY/IqZYghauoLT7Dy23+8FitfJz3fauBU=;
+	s=arc-20240116; t=1768499181; c=relaxed/simple;
+	bh=Vek8Cy9b4D0qV4ggQmrPUVrvj63FJCUsz43QWgb+FIc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VgV9bHjWyLIoHOdyi6EvDgUmyUfzVVNzGSvch/FMD73OoIjaUHk7ik9Zo1KOkFWDRok97l9mrDxdxJtBwK2trgbYpcTS3DwFFcuWpdcbrMt6aYEKAc85Z8IC6FY1yNzfqAlHDY84WdJ66bV6DA2dkB7+Y1t2dc4eRxIiAAHCWT4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ILRBDrzq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81B1C116D0;
-	Thu, 15 Jan 2026 17:26:26 +0000 (UTC)
+	 MIME-Version; b=Q0XImsXwDHqGU7nmdEJUIlEs62WYRR0uBNTBe+1MTbA3Xmvs+E9B7Mj++ixHj1eu5IPOQNsaRE2y8JSCsIaLjDpB00XCNQstMsqMBdPhAgK5h8V6mEMOrqD5fkFRb1J4wLaEP8mNig8CdGU3Y94lESeL/71iQzii75fWUHuSnY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BYBgYZKW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93B2DC19422;
+	Thu, 15 Jan 2026 17:46:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497987;
-	bh=TPjbPUpkNjKY/IqZYghauoLT7Dy23+8FitfJz3fauBU=;
+	s=korg; t=1768499181;
+	bh=Vek8Cy9b4D0qV4ggQmrPUVrvj63FJCUsz43QWgb+FIc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ILRBDrzqk72BF3M6+RAFJxBkF8cJWEJLlgVT6oTqnp5GRO81xvTVrX0P6yvVJ+eqc
-	 W0GzMyR40lq/EgCJPFmb2odBQeJdfT+uIsg5aa7JvH9On1LxuHSQmxVJqyqfENVRH9
-	 x4BgYawD0xjakLwOE9Fhz7E40S2bH0rnIPy4fMm4=
+	b=BYBgYZKWmXwyzQ+jpjXl9p1HRWt5IYm0MR1THRYmD/KI+2I3+6rEFz3m4UL56sdMZ
+	 YIVLe5yuHUiK92eIIz4bkPnuaHMtwCPbXVfNgAgD/qYY1NW1or9gJ5XPrnWj+wE3eL
+	 G9W8VxqALJcRDqd3xqsfBBDtvdGDxfMN5FLfcCxQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Wenhua Lin <Wenhua.Lin@unisoc.com>,
-	Cixi Geng <cixi.geng@linux.dev>,
+	Cong Zhang <cong.zhang@oss.qualcomm.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 272/554] serial: sprd: Return -EPROBE_DEFER when uart clock is not ready
+Subject: [PATCH 5.10 137/451] blk-mq: Abort suspend when wakeup events are pending
 Date: Thu, 15 Jan 2026 17:45:38 +0100
-Message-ID: <20260115164256.075009422@linuxfoundation.org>
+Message-ID: <20260115164235.875228261@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,65 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wenhua Lin <Wenhua.Lin@unisoc.com>
+From: Cong Zhang <cong.zhang@oss.qualcomm.com>
 
-[ Upstream commit 29e8a0c587e328ed458380a45d6028adf64d7487 ]
+[ Upstream commit c196bf43d706592d8801a7513603765080e495fb ]
 
-In sprd_clk_init(), when devm_clk_get() returns -EPROBE_DEFER
-for either uart or source clock, we should propagate the
-error instead of just warning and continuing with NULL clocks.
+During system suspend, wakeup capable IRQs for block device can be
+delayed, which can cause blk_mq_hctx_notify_offline() to hang
+indefinitely while waiting for pending request to complete.
+Skip the request waiting loop and abort suspend when wakeup events are
+pending to prevent the deadlock.
 
-Currently the driver only emits a warning when clock acquisition
-fails and proceeds with NULL clock pointers. This can lead to
-issues later when the clocks are actually needed. More importantly,
-when the clock provider is not ready yet and returns -EPROBE_DEFER,
-we should return this error to allow deferred probing.
-
-This change adds explicit checks for -EPROBE_DEFER after both:
-1. devm_clk_get(uport->dev, uart)
-2. devm_clk_get(uport->dev, source)
-
-When -EPROBE_DEFER is encountered, the function now returns
--EPROBE_DEFER to let the driver framework retry probing
-later when the clock dependencies are resolved.
-
-Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
-Link: https://patch.msgid.link/20251022030840.956589-1-Wenhua.Lin@unisoc.com
-Reviewed-by: Cixi Geng <cixi.geng@linux.dev>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: bf0beec0607d ("blk-mq: drain I/O when all CPUs in a hctx are offline")
+Signed-off-by: Cong Zhang <cong.zhang@oss.qualcomm.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sprd_serial.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ block/blk-mq.c | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
-index a1952e4f1fcb..e850959ecf55 100644
---- a/drivers/tty/serial/sprd_serial.c
-+++ b/drivers/tty/serial/sprd_serial.c
-@@ -1137,6 +1137,9 @@ static int sprd_clk_init(struct uart_port *uport)
+diff --git a/block/blk-mq.c b/block/blk-mq.c
+index 21531aa163cb4..a720097460676 100644
+--- a/block/blk-mq.c
++++ b/block/blk-mq.c
+@@ -23,6 +23,7 @@
+ #include <linux/sched/sysctl.h>
+ #include <linux/sched/topology.h>
+ #include <linux/sched/signal.h>
++#include <linux/suspend.h>
+ #include <linux/delay.h>
+ #include <linux/crash_dump.h>
+ #include <linux/prefetch.h>
+@@ -2548,6 +2549,7 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ {
+ 	struct blk_mq_hw_ctx *hctx = hlist_entry_safe(node,
+ 			struct blk_mq_hw_ctx, cpuhp_online);
++	int ret = 0;
  
- 	clk_uart = devm_clk_get(uport->dev, "uart");
- 	if (IS_ERR(clk_uart)) {
-+		if (PTR_ERR(clk_uart) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+
- 		dev_warn(uport->dev, "uart%d can't get uart clock\n",
- 			 uport->line);
- 		clk_uart = NULL;
-@@ -1144,6 +1147,9 @@ static int sprd_clk_init(struct uart_port *uport)
+ 	if (!cpumask_test_cpu(cpu, hctx->cpumask) ||
+ 	    !blk_mq_last_cpu_in_hctx(cpu, hctx))
+@@ -2569,12 +2571,24 @@ static int blk_mq_hctx_notify_offline(unsigned int cpu, struct hlist_node *node)
+ 	 * frozen and there are no requests.
+ 	 */
+ 	if (percpu_ref_tryget(&hctx->queue->q_usage_counter)) {
+-		while (blk_mq_hctx_has_requests(hctx))
++		while (blk_mq_hctx_has_requests(hctx)) {
++			/*
++			 * The wakeup capable IRQ handler of block device is
++			 * not called during suspend. Skip the loop by checking
++			 * pm_wakeup_pending to prevent the deadlock and improve
++			 * suspend latency.
++			 */
++			if (pm_wakeup_pending()) {
++				clear_bit(BLK_MQ_S_INACTIVE, &hctx->state);
++				ret = -EBUSY;
++				break;
++			}
+ 			msleep(5);
++		}
+ 		percpu_ref_put(&hctx->queue->q_usage_counter);
+ 	}
  
- 	clk_parent = devm_clk_get(uport->dev, "source");
- 	if (IS_ERR(clk_parent)) {
-+		if (PTR_ERR(clk_parent) == -EPROBE_DEFER)
-+			return -EPROBE_DEFER;
-+
- 		dev_warn(uport->dev, "uart%d can't get source clock\n",
- 			 uport->line);
- 		clk_parent = NULL;
+-	return 0;
++	return ret;
+ }
+ 
+ static int blk_mq_hctx_notify_online(unsigned int cpu, struct hlist_node *node)
 -- 
 2.51.0
 
