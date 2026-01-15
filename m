@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208570-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208676-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 583D2D25FF9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ECC5D260B0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 73F4A3082D14
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C388F3047416
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19291349B0A;
-	Thu, 15 Jan 2026 16:57:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A9739B4BF;
+	Thu, 15 Jan 2026 17:02:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dk3o850J"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbS3A6Q0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D189A3624C4;
-	Thu, 15 Jan 2026 16:57:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6491350A05;
+	Thu, 15 Jan 2026 17:02:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496225; cv=none; b=M/JL5D2dyGZFmecH7i+C804s2pfjlP77bVwUTJP+OL0Nv8Az9mKZ97Gc0sICnDpBITWfqdm+Od3/i4T7LBqXZZrfD9c+U4k2tF6sI5/tTENUV+z6cCnDof5FAkujth96WmcJ+/Vheo5qTKIaS/habbO1LvREA9zEFZxaWrEhk8k=
+	t=1768496529; cv=none; b=ohdLnzxN52FWQACvmgP/K7G8jv98+MZ89H7cUmBYpiflj/lWWWBs9as7QH/IAOqybvrN/r3NdoDOVN07jpv5bng6a2QqaDztd4tEHEczKtCDqtEM5ITHSyT3a+s2YnQzVVHBOJ6YZpvZ55KunvcpbPZmC5KgliGt8ddigU+f8LM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496225; c=relaxed/simple;
-	bh=AGABEdQBnVth9k5TR6blHigiJmGK+n2q+aCjjF0KRVY=;
+	s=arc-20240116; t=1768496529; c=relaxed/simple;
+	bh=IO+JoswLJY9KxPg7y4nZA1EsTTdsJguP4HLMJ/ULNHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D4jav8CcKdmr4wQ2dpQXR4EFzTRXlnI++PYcHJL7VzzhebclaGWol1HUfi+1jsVrcwows6KZOs/4Ra7lSk/VyWS81yZPr9fpo35bn3rnzjBp0jb3imJkzKACItaPk1JvwfW4RNfdVfJU7SvizhSB5NP+bQxvN22SvvkEG+KAWpw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dk3o850J; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 623CEC116D0;
-	Thu, 15 Jan 2026 16:57:05 +0000 (UTC)
+	 MIME-Version; b=TF2O/Ep6xIFrfipLQpmJV4PAy4/JIjRImjnuA9rk1KClIe9nQJnC2hpXn8Gcb/Pi//BIfC6YxmkbDWjyq13ofoBtTQLuqt7IinD2iZxtUkua6jBAfc2eyVInsV1U9aIMMruiYvBqRnX+Jg0Rqod5EvbadjmCVuaU+eaJQ1P8zdw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbS3A6Q0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F92C116D0;
+	Thu, 15 Jan 2026 17:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496225;
-	bh=AGABEdQBnVth9k5TR6blHigiJmGK+n2q+aCjjF0KRVY=;
+	s=korg; t=1768496529;
+	bh=IO+JoswLJY9KxPg7y4nZA1EsTTdsJguP4HLMJ/ULNHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Dk3o850J5KOlsVhzXa056WauXYUE8RiLIbwwlbA0gH4pWlUhWXCCKRv8oWqpVSiNm
-	 RSkVgyDVtG7exE9tqTasM2WLs5KgFiCfnrRtfKC8E7VwVGVowBc6t+0XZLIX6iT1+u
-	 k+6joDCJABN7XO06NNkQkteeeH3NdkWrkup17+jI=
+	b=XbS3A6Q0kMfYUHuvthdL3246xNNroU/SII5X4f4wJ9hf6ZXHwVLIqfTi7b4URuZXl
+	 K3SPWKOwk/9L4vc0rac+jgyVVFSnLts8crFqicyZHfl6JY6d+1i4x7wjhnfI6v46fr
+	 Ihbwq/bInemGx49SY5SEskkVzS9oParj5B38uK74=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Aaron Erhardt <aer@tuxedocomputers.com>,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	"Luke D. Jones" <luke@ljones.dev>,
-	"Mario Limonciello (AMD)" <superm1@kernel.org>,
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 122/181] PCI/VGA: Dont assume the only VGA device on a system is `boot_vga`
-Date: Thu, 15 Jan 2026 17:47:39 +0100
-Message-ID: <20260115164206.717711672@linuxfoundation.org>
+Subject: [PATCH 6.12 045/119] btrfs: fix qgroup_snapshot_quick_inherit() squota bug
+Date: Thu, 15 Jan 2026 17:47:40 +0100
+Message-ID: <20260115164153.586251319@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +61,110 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello (AMD) <superm1@kernel.org>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit fd390ff144513eb0310c350b1cf5fa8d6ddd0c53 ]
+[ Upstream commit 7ee19a59a75e3d5b9ec00499b86af8e2a46fbe86 ]
 
-Some systems ship with multiple display class devices but not all
-of them are VGA devices. If the "only" VGA device on the system is not
-used for displaying the image on the screen marking it as `boot_vga`
-because nothing was found is totally wrong.
+qgroup_snapshot_quick_inherit() detects conditions where the snapshot
+destination would land in the same parent qgroup as the snapshot source
+subvolume. In this case we can avoid costly qgroup calculations and just
+add the nodesize of the new snapshot to the parent.
 
-This behavior actually leads to mistakes of the wrong device being
-advertised to userspace and then userspace can make incorrect decisions.
+However, in the case of squotas this is actually a double count, and
+also an undercount for deeper qgroup nestings.
 
-As there is an accurate `boot_display` sysfs file stop lying about
-`boot_vga` by assuming if nothing is found it's the right device.
+The following annotated script shows the issue:
 
-Reported-by: Aaron Erhardt <aer@tuxedocomputers.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220712
-Tested-by: Aaron Erhardt <aer@tuxedocomputers.com>
-Acked-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: ad90860bd10ee ("fbcon: Use screen info to find primary device")
-Tested-by: Luke D. Jones <luke@ljones.dev>
-Signed-off-by: Mario Limonciello (AMD) <superm1@kernel.org>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patch.msgid.link/20260106044638.52906-1-superm1@kernel.org
+  btrfs quota enable --simple "$mnt"
+
+  # Create 2-level qgroup hierarchy
+  btrfs qgroup create 2/100 "$mnt"  # Q2 (level 2)
+  btrfs qgroup create 1/100 "$mnt"  # Q1 (level 1)
+  btrfs qgroup assign 1/100 2/100 "$mnt"
+
+  # Create base subvolume
+  btrfs subvolume create "$mnt/base" >/dev/null
+  base_id=$(btrfs subvolume show "$mnt/base" | grep 'Subvolume ID:' | awk '{print $3}')
+
+  # Create intermediate snapshot and add to Q1
+  btrfs subvolume snapshot "$mnt/base" "$mnt/intermediate" >/dev/null
+  inter_id=$(btrfs subvolume show "$mnt/intermediate" | grep 'Subvolume ID:' | awk '{print $3}')
+  btrfs qgroup assign "0/$inter_id" 1/100 "$mnt"
+
+  # Create working snapshot with --inherit (auto-adds to Q1)
+  # src=intermediate (in only Q1)
+  # dst=snap (inheriting only into Q1)
+  # This double counts the 16k nodesize of the snapshot in Q1, and
+  # undercounts it in Q2.
+  btrfs subvolume snapshot -i 1/100 "$mnt/intermediate" "$mnt/snap" >/dev/null
+  snap_id=$(btrfs subvolume show "$mnt/snap" | grep 'Subvolume ID:' | awk '{print $3}')
+
+  # Fully complete snapshot creation
+  sync
+
+  # Delete working snapshot
+  # Q1 and Q2 will lose the full snap usage
+  btrfs subvolume delete "$mnt/snap" >/dev/null
+
+  # Delete intermediate and remove from Q1
+  # Q1 and Q2 will lose the full intermediate usage
+  btrfs qgroup remove "0/$inter_id" 1/100 "$mnt"
+  btrfs subvolume delete "$mnt/intermediate" >/dev/null
+
+  # Q1 should be at 0, but still has 16k. Q2 is "correct" at 0 (for now...)
+
+  # Trigger cleaner, wait for deletions
+  mount -o remount,sync=1 "$mnt"
+  btrfs subvolume sync "$mnt" "$snap_id"
+  btrfs subvolume sync "$mnt" "$inter_id"
+
+  # Remove Q1 from Q2
+  # Frees 16k more from Q2, underflowing it to 16EiB
+  btrfs qgroup remove 1/100 2/100 "$mnt"
+
+  # And show the bad state:
+  btrfs qgroup show -pc "$mnt"
+
+        Qgroupid    Referenced    Exclusive Parent   Child   Path
+        --------    ----------    --------- ------   -----   ----
+        0/5           16.00KiB     16.00KiB -        -       <toplevel>
+        0/256         16.00KiB     16.00KiB -        -       base
+        1/100         16.00KiB     16.00KiB -        -       <0 member qgroups>
+        2/100         16.00EiB     16.00EiB -        -       <0 member qgroups>
+
+Fix this by simply not doing this quick inheritance with squotas.
+
+I suspect that it is also wrong in normal qgroups to not recurse up the
+qgroup tree in the quick inherit case, though other consistency checks
+will likely fix it anyway.
+
+Fixes: b20fe56cd285 ("btrfs: qgroup: allow quick inherit if snapshot is created and added to the same parent")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/vgaarb.c | 7 -------
- 1 file changed, 7 deletions(-)
+ fs/btrfs/qgroup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pci/vgaarb.c b/drivers/pci/vgaarb.c
-index 436fa7f4c3873..baa242b140993 100644
---- a/drivers/pci/vgaarb.c
-+++ b/drivers/pci/vgaarb.c
-@@ -652,13 +652,6 @@ static bool vga_is_boot_device(struct vga_device *vgadev)
- 		return true;
- 	}
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 3c77f3506faf3..f23b482dfad9e 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -3298,6 +3298,9 @@ static int qgroup_snapshot_quick_inherit(struct btrfs_fs_info *fs_info,
+ 	struct btrfs_qgroup_list *list;
+ 	int nr_parents = 0;
  
--	/*
--	 * Vgadev has neither IO nor MEM enabled.  If we haven't found any
--	 * other VGA devices, it is the best candidate so far.
--	 */
--	if (!boot_vga)
--		return true;
--
- 	return false;
- }
- 
++	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_FULL)
++		return 0;
++
+ 	src = find_qgroup_rb(fs_info, srcid);
+ 	if (!src)
+ 		return -ENOENT;
 -- 
 2.51.0
 
