@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209159-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209548-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1D314D2736E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:12:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 57530D277EC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 05184324562B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:39 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CEB8531D07C0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273DE3BFE37;
-	Thu, 15 Jan 2026 17:25:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 835712D73B4;
+	Thu, 15 Jan 2026 17:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6yecjE5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JQvULITz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3F53AEF27;
-	Thu, 15 Jan 2026 17:25:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F212C0F83;
+	Thu, 15 Jan 2026 17:43:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497901; cv=none; b=cviN+aTOz4pIga5P6R3KIwyFIWZaXCQj+zomld4ctL/uHY3ITXJFttNZqaReF889IxGzWYqzI230KbNbsy+E0yeoYXp4lWmYps4ZAkjZDEFFNa8JxeV2QAOTi0p024qVu/3xi5kD3QagICwamE3xxysZBiobIpFE2CBuE5/xYdI=
+	t=1768499010; cv=none; b=Jx1s8IW20K9pNkBT3DAjTkZm0Rr51qPIECfG+3ZknpRAik8sMtz2MxJixVmeZXgc8sA9a6qFjSB6vaaTQ0HbSE3JmB+/cwA9JpKBII7a41BsT/sd3Q7cdJWzQ4uLTuBBhem1vblpnRgE2fjsFHAi3vEVvkjUiTEg6KT8e7jt2lo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497901; c=relaxed/simple;
-	bh=xW1t6HtPkZph4ed2TvICkHRnd8dJHUb9DwhFiKLCu94=;
+	s=arc-20240116; t=1768499010; c=relaxed/simple;
+	bh=LpT2QNETDRqMzuOOHR08tNvLmujln28Jrqnsrh6UcGY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l54WafzIoegpEF+VIcNb72Gv51CPpAGuaMIDFxGHimvCi/jPdIiuVpJnV3VKdvcMgL5DYOpt4gXYDIELUfWP4qIvhWxWYGjqpOgci+SOxzYqoR+1M4mf3KZvJ65zhxHJPd2Gc/FQWWAGZ5FLEc423vJ5sJryDyVi7WvPWFWQdN4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6yecjE5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64554C116D0;
-	Thu, 15 Jan 2026 17:25:01 +0000 (UTC)
+	 MIME-Version; b=jULkQ2yybhEjKod9VWIRhk7A0WUwaAyswcGYyPTdyuc5/x8zcqP5Ns8YtGMSVeWMnUYMEjijYpJEobk5NfW8IyKapIHbNv5UZEM7B984U1oYjkTNl2yt/asgr5Tczm4MJqXl504UJYvhhKplDteTFFxmdbz809Yw3zXGOOeUS7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JQvULITz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98680C116D0;
+	Thu, 15 Jan 2026 17:43:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497901;
-	bh=xW1t6HtPkZph4ed2TvICkHRnd8dJHUb9DwhFiKLCu94=;
+	s=korg; t=1768499010;
+	bh=LpT2QNETDRqMzuOOHR08tNvLmujln28Jrqnsrh6UcGY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=m6yecjE5pYc/l82RV2ncoTQLrJTTwwbcXsgsBpxhe8/Ldr7jnUon+6mOlfUDMHIGo
-	 xPO8cXPo3CoPzZCvMiQN0OZFAL1f3XVL5coNl4FeBGxFdSVJIjmZzCZpKOVueVDeAK
-	 rZNIpGSLH8IJtb9vsxGt1YzbMnnDHcWrkLQqWlFM=
+	b=JQvULITzBp7fmugt42uxp7oq0qgqbEiptvu++lH4my6wP4xWPml95D+TrEz9bpOST
+	 XUyMkI/2ty8Mb4kDKQa489PR3rxmND29Nz12tWB5+yCAK72zrQhdBuyww51sTwk57V
+	 GXICkO1z85C1DbL2AvfYiV2ORDpta7rh+9+lIozo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Doug Berger <opendmb@gmail.com>,
-	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
+	Markus Elfring <Markus.Elfring@web.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 210/554] sched/deadline: only set free_cpus for online runqueues
-Date: Thu, 15 Jan 2026 17:44:36 +0100
-Message-ID: <20260115164253.853877007@linuxfoundation.org>
+Subject: [PATCH 5.10 076/451] leds: netxbig: Fix GPIO descriptor leak in error paths
+Date: Thu, 15 Jan 2026 17:44:37 +0100
+Message-ID: <20260115164233.663103812@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,191 +61,115 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Doug Berger <opendmb@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 382748c05e58a9f1935f5a653c352422375566ea ]
+[ Upstream commit 03865dd8af52eb16c38062df2ed30a91b604780e ]
 
-Commit 16b269436b72 ("sched/deadline: Modify cpudl::free_cpus
-to reflect rd->online") introduced the cpudl_set/clear_freecpu
-functions to allow the cpu_dl::free_cpus mask to be manipulated
-by the deadline scheduler class rq_on/offline callbacks so the
-mask would also reflect this state.
+The function netxbig_gpio_ext_get() acquires GPIO descriptors but
+fails to release them when errors occur mid-way through initialization.
+The cleanup callback registered by devm_add_action_or_reset() only
+runs on success, leaving acquired GPIOs leaked on error paths.
 
-Commit 9659e1eeee28 ("sched/deadline: Remove cpu_active_mask
-from cpudl_find()") removed the check of the cpu_active_mask to
-save some processing on the premise that the cpudl::free_cpus
-mask already reflected the runqueue online state.
+Add goto-based error handling to release all acquired GPIOs before
+returning errors.
 
-Unfortunately, there are cases where it is possible for the
-cpudl_clear function to set the free_cpus bit for a CPU when the
-deadline runqueue is offline. When this occurs while a CPU is
-connected to the default root domain the flag may retain the bad
-state after the CPU has been unplugged. Later, a different CPU
-that is transitioning through the default root domain may push a
-deadline task to the powered down CPU when cpudl_find sees its
-free_cpus bit is set. If this happens the task will not have the
-opportunity to run.
-
-One example is outlined here:
-https://lore.kernel.org/lkml/20250110233010.2339521-1-opendmb@gmail.com
-
-Another occurs when the last deadline task is migrated from a
-CPU that has an offlined runqueue. The dequeue_task member of
-the deadline scheduler class will eventually call cpudl_clear
-and set the free_cpus bit for the CPU.
-
-This commit modifies the cpudl_clear function to be aware of the
-online state of the deadline runqueue so that the free_cpus mask
-can be updated appropriately.
-
-It is no longer necessary to manage the mask outside of the
-cpudl_set/clear functions so the cpudl_set/clear_freecpu
-functions are removed. In addition, since the free_cpus mask is
-now only updated under the cpudl lock the code was changed to
-use the non-atomic __cpumask functions.
-
-Signed-off-by: Doug Berger <opendmb@gmail.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 9af512e81964 ("leds: netxbig: Convert to use GPIO descriptors")
+Suggested-by: Markus Elfring <Markus.Elfring@web.de>
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251031021620.781-1-vulab@iscas.ac.cn
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/cpudeadline.c | 34 +++++++++-------------------------
- kernel/sched/cpudeadline.h |  4 +---
- kernel/sched/deadline.c    |  8 ++++----
- 3 files changed, 14 insertions(+), 32 deletions(-)
+ drivers/leds/leds-netxbig.c | 36 ++++++++++++++++++++++++++----------
+ 1 file changed, 26 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/sched/cpudeadline.c b/kernel/sched/cpudeadline.c
-index 221ca10505738..219cec91ecee4 100644
---- a/kernel/sched/cpudeadline.c
-+++ b/kernel/sched/cpudeadline.c
-@@ -166,12 +166,13 @@ int cpudl_find(struct cpudl *cp, struct task_struct *p,
-  * cpudl_clear - remove a CPU from the cpudl max-heap
-  * @cp: the cpudl max-heap context
-  * @cpu: the target CPU
-+ * @online: the online state of the deadline runqueue
-  *
-  * Notes: assumes cpu_rq(cpu)->lock is locked
-  *
-  * Returns: (void)
-  */
--void cpudl_clear(struct cpudl *cp, int cpu)
-+void cpudl_clear(struct cpudl *cp, int cpu, bool online)
- {
- 	int old_idx, new_cpu;
- 	unsigned long flags;
-@@ -184,7 +185,7 @@ void cpudl_clear(struct cpudl *cp, int cpu)
- 	if (old_idx == IDX_INVALID) {
- 		/*
- 		 * Nothing to remove if old_idx was invalid.
--		 * This could happen if a rq_offline_dl is
-+		 * This could happen if rq_online_dl or rq_offline_dl is
- 		 * called for a CPU without -dl tasks running.
- 		 */
- 	} else {
-@@ -195,9 +196,12 @@ void cpudl_clear(struct cpudl *cp, int cpu)
- 		cp->elements[new_cpu].idx = old_idx;
- 		cp->elements[cpu].idx = IDX_INVALID;
- 		cpudl_heapify(cp, old_idx);
--
--		cpumask_set_cpu(cpu, cp->free_cpus);
- 	}
-+	if (likely(online))
-+		__cpumask_set_cpu(cpu, cp->free_cpus);
-+	else
-+		__cpumask_clear_cpu(cpu, cp->free_cpus);
+diff --git a/drivers/leds/leds-netxbig.c b/drivers/leds/leds-netxbig.c
+index c2cc45e19c4b2..1083c71fe3bb2 100644
+--- a/drivers/leds/leds-netxbig.c
++++ b/drivers/leds/leds-netxbig.c
+@@ -364,6 +364,9 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 	if (!addr)
+ 		return -ENOMEM;
+ 
++	gpio_ext->addr = addr;
++	gpio_ext->num_addr = 0;
 +
- 	raw_spin_unlock_irqrestore(&cp->lock, flags);
+ 	/*
+ 	 * We cannot use devm_ managed resources with these GPIO descriptors
+ 	 * since they are associated with the "GPIO extension device" which
+@@ -375,45 +378,58 @@ static int netxbig_gpio_ext_get(struct device *dev,
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "addr", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_set_code;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension addr");
+ 		addr[i] = gpiod;
++		gpio_ext->num_addr++;
+ 	}
+-	gpio_ext->addr = addr;
+-	gpio_ext->num_addr = num_addr;
+ 
+ 	ret = gpiod_count(gpio_ext_dev, "data");
+ 	if (ret < 0) {
+ 		dev_err(dev,
+ 			"Failed to count GPIOs in DT property data-gpios\n");
+-		return ret;
++		goto err_free_addr;
+ 	}
+ 	num_data = ret;
+ 	data = devm_kcalloc(dev, num_data, sizeof(*data), GFP_KERNEL);
+-	if (!data)
+-		return -ENOMEM;
++	if (!data) {
++		ret = -ENOMEM;
++		goto err_free_addr;
++	}
++
++	gpio_ext->data = data;
++	gpio_ext->num_data = 0;
+ 
+ 	for (i = 0; i < num_data; i++) {
+ 		gpiod = gpiod_get_index(gpio_ext_dev, "data", i,
+ 					GPIOD_OUT_LOW);
+ 		if (IS_ERR(gpiod))
+-			return PTR_ERR(gpiod);
++			goto err_free_data;
+ 		gpiod_set_consumer_name(gpiod, "GPIO extension data");
+ 		data[i] = gpiod;
++		gpio_ext->num_data++;
+ 	}
+-	gpio_ext->data = data;
+-	gpio_ext->num_data = num_data;
+ 
+ 	gpiod = gpiod_get(gpio_ext_dev, "enable", GPIOD_OUT_LOW);
+ 	if (IS_ERR(gpiod)) {
+ 		dev_err(dev,
+ 			"Failed to get GPIO from DT property enable-gpio\n");
+-		return PTR_ERR(gpiod);
++		goto err_free_data;
+ 	}
+ 	gpiod_set_consumer_name(gpiod, "GPIO extension enable");
+ 	gpio_ext->enable = gpiod;
+ 
+ 	return devm_add_action_or_reset(dev, netxbig_gpio_ext_remove, gpio_ext);
++
++err_free_data:
++	for (i = 0; i < gpio_ext->num_data; i++)
++		gpiod_put(gpio_ext->data[i]);
++err_set_code:
++	ret = PTR_ERR(gpiod);
++err_free_addr:
++	for (i = 0; i < gpio_ext->num_addr; i++)
++		gpiod_put(gpio_ext->addr[i]);
++	return ret;
  }
  
-@@ -228,7 +232,7 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
- 		cp->elements[new_idx].cpu = cpu;
- 		cp->elements[cpu].idx = new_idx;
- 		cpudl_heapify_up(cp, new_idx);
--		cpumask_clear_cpu(cpu, cp->free_cpus);
-+		__cpumask_clear_cpu(cpu, cp->free_cpus);
- 	} else {
- 		cp->elements[old_idx].dl = dl;
- 		cpudl_heapify(cp, old_idx);
-@@ -237,26 +241,6 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
- 	raw_spin_unlock_irqrestore(&cp->lock, flags);
- }
- 
--/*
-- * cpudl_set_freecpu - Set the cpudl.free_cpus
-- * @cp: the cpudl max-heap context
-- * @cpu: rd attached CPU
-- */
--void cpudl_set_freecpu(struct cpudl *cp, int cpu)
--{
--	cpumask_set_cpu(cpu, cp->free_cpus);
--}
--
--/*
-- * cpudl_clear_freecpu - Clear the cpudl.free_cpus
-- * @cp: the cpudl max-heap context
-- * @cpu: rd attached CPU
-- */
--void cpudl_clear_freecpu(struct cpudl *cp, int cpu)
--{
--	cpumask_clear_cpu(cpu, cp->free_cpus);
--}
--
- /*
-  * cpudl_init - initialize the cpudl structure
-  * @cp: the cpudl max-heap context
-diff --git a/kernel/sched/cpudeadline.h b/kernel/sched/cpudeadline.h
-index 0adeda93b5fb5..ecff718d94aea 100644
---- a/kernel/sched/cpudeadline.h
-+++ b/kernel/sched/cpudeadline.h
-@@ -18,9 +18,7 @@ struct cpudl {
- #ifdef CONFIG_SMP
- int  cpudl_find(struct cpudl *cp, struct task_struct *p, struct cpumask *later_mask);
- void cpudl_set(struct cpudl *cp, int cpu, u64 dl);
--void cpudl_clear(struct cpudl *cp, int cpu);
-+void cpudl_clear(struct cpudl *cp, int cpu, bool online);
- int  cpudl_init(struct cpudl *cp);
--void cpudl_set_freecpu(struct cpudl *cp, int cpu);
--void cpudl_clear_freecpu(struct cpudl *cp, int cpu);
- void cpudl_cleanup(struct cpudl *cp);
- #endif /* CONFIG_SMP */
-diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
-index 708c3960bd06e..923ac2244d4b5 100644
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -1418,7 +1418,7 @@ static void dec_dl_deadline(struct dl_rq *dl_rq, u64 deadline)
- 	if (!dl_rq->dl_nr_running) {
- 		dl_rq->earliest_dl.curr = 0;
- 		dl_rq->earliest_dl.next = 0;
--		cpudl_clear(&rq->rd->cpudl, rq->cpu);
-+		cpudl_clear(&rq->rd->cpudl, rq->cpu, rq->online);
- 		cpupri_set(&rq->rd->cpupri, rq->cpu, rq->rt.highest_prio.curr);
- 	} else {
- 		struct rb_node *leftmost = dl_rq->root.rb_leftmost;
-@@ -2377,9 +2377,10 @@ static void rq_online_dl(struct rq *rq)
- 	if (rq->dl.overloaded)
- 		dl_set_overload(rq);
- 
--	cpudl_set_freecpu(&rq->rd->cpudl, rq->cpu);
- 	if (rq->dl.dl_nr_running > 0)
- 		cpudl_set(&rq->rd->cpudl, rq->cpu, rq->dl.earliest_dl.curr);
-+	else
-+		cpudl_clear(&rq->rd->cpudl, rq->cpu, true);
- }
- 
- /* Assumes rq->lock is held */
-@@ -2388,8 +2389,7 @@ static void rq_offline_dl(struct rq *rq)
- 	if (rq->dl.overloaded)
- 		dl_clear_overload(rq);
- 
--	cpudl_clear(&rq->rd->cpudl, rq->cpu);
--	cpudl_clear_freecpu(&rq->rd->cpudl, rq->cpu);
-+	cpudl_clear(&rq->rd->cpudl, rq->cpu, false);
- }
- 
- void __init init_sched_dl_class(void)
+ static int netxbig_leds_get_of_pdata(struct device *dev,
 -- 
 2.51.0
 
