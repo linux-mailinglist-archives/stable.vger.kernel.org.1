@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-208982-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208947-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 19F0CD265D5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:26:02 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6DE80D2653C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A253531757EF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:06 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B9DE73046A02
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F1E3BFE37;
-	Thu, 15 Jan 2026 17:16:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F23B3C0092;
+	Thu, 15 Jan 2026 17:14:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn9ckpCi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gVAlXPlK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80153BC4F2;
-	Thu, 15 Jan 2026 17:16:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CCE033A0E9A;
+	Thu, 15 Jan 2026 17:14:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497399; cv=none; b=La3a/h5g7zjn2OO5ssgU0kNqb82N1eWqYMtP1Yp6OEqw7W+3CMLX5cjlQZ8hYpckkRWvC6DPI5dE6fwWxI2oZtZEC50saHxYNyrVxD0QVFh3I4Bc/PBDMlnIQsxDkIA9am0zOnWIDxbFD9SF7HrKpbkXcO2IfBO4Jgylr1Tc8+E=
+	t=1768497298; cv=none; b=Sjizonc9F2zZl0IS0cNCIPafVRfoScj4RW72xasjAzHyt7seatp3eN+p5OxfGULCMdGmfz8P8+V1ThXVhXBlt1Gbhub8FHpjeC4EBai4Hc8WwB8xVUGlkWJwQrt2TvPvOUZCrCi0cjKvwdWgtU7fUPDOszBdElYKBegOiPaaeG8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497399; c=relaxed/simple;
-	bh=Ce3/7tilmOaGB17pcXEu9G2Czo6i28AD00r4F9npUZ8=;
+	s=arc-20240116; t=1768497298; c=relaxed/simple;
+	bh=Mg9fYUZ69Uvbzl1DN2ks1DqAA0tWit1Lr227B2kRgpU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jPnDh/OPdZOqCNjDA5iq3J0P0kNy7eBq5ovw7XDkMLoxgAjbYF19uZzyanXc8vsXUZ4hwlpyC2KZO4iH32WKslYZ24CjoVuSsT29gqHXOlRsDVPnKtkk2M6RyfsVYw9cjCGgSYYmYt2l6gcHUjKT7ZLTN5dPtP9ES8z/VgJVtbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn9ckpCi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F59C116D0;
-	Thu, 15 Jan 2026 17:16:38 +0000 (UTC)
+	 MIME-Version; b=JAoC0FOW6li7cm2KvTHFGQEd158jeon5zN+4limhR4TZg3lQqC2aQOrpkX3UnrxuMvZdUWArmz26YTFiYqW5E7zop6N0C6vAXe7KcL3vT+L5Gd5DsMKAiTy6r7nnF+eVkcFpRHLLm9HV3L8PEgt1m0QLE4KIJyw9gAash9PaO00=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gVAlXPlK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E343C19425;
+	Thu, 15 Jan 2026 17:14:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497398;
-	bh=Ce3/7tilmOaGB17pcXEu9G2Czo6i28AD00r4F9npUZ8=;
+	s=korg; t=1768497298;
+	bh=Mg9fYUZ69Uvbzl1DN2ks1DqAA0tWit1Lr227B2kRgpU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Cn9ckpCiFqik3Gjr11Zc/Cp+QAd9zVH4MxHoLt2wqiBu6Drt0qmGbepq33vcIBW3H
-	 5hpw9axBF0u11D7FWqjo4KBmsmHS6IHpcOufoZJpIC0HZcbQexxVZA5zhHC+tHEpji
-	 3uf//DXOCHUTRIl4mioki+CNDznX3nu7WiXSYraA=
+	b=gVAlXPlK7Z13vgyGNFY5bgILnIAUjtnBhYLg7q/D+HexvvgwB2OUfNJgwEOShFpJX
+	 ZGz/+1EUOaXz18CXjN4+MZ+clobNK3I4lsYgorVXigGAkmfURU/B+jTc6hfQMaZ4O9
+	 eQtHpenKwvpOz+q05IMVdj+OSClVnK7iE3NmSA94=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
-	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
-	Tigran Aivazian <aivazian.tigran@gmail.com>,
-	Christian Brauner <brauner@kernel.org>,
+	Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
+	Praveen Talari <praveen.talari@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 024/554] bfs: Reconstruct file type when loading from disk
-Date: Thu, 15 Jan 2026 17:41:30 +0100
-Message-ID: <20260115164247.115490580@linuxfoundation.org>
+Subject: [PATCH 5.15 025/554] pinctrl: qcom: msm: Fix deadlock in pinmux configuration
+Date: Thu, 15 Jan 2026 17:41:31 +0100
+Message-ID: <20260115164247.151736344@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -66,71 +66,46 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+From: Praveen Talari <praveen.talari@oss.qualcomm.com>
 
-[ Upstream commit 34ab4c75588c07cca12884f2bf6b0347c7a13872 ]
+[ Upstream commit 1c2e70397b4125022dba80f6111271a37fb36bae ]
 
-syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
-the S_IFMT bits of the 32bits "mode" field loaded from disk are corrupted
-or when the 32bits "attributes" field loaded from disk are corrupted.
+Replace disable_irq() with disable_irq_nosync() in msm_pinmux_set_mux()
+to prevent deadlock when wakeup IRQ is triggered on the same
+GPIO being reconfigured.
 
-A documentation says that BFS uses only lower 9 bits of the "mode" field.
-But I can't find an explicit explanation that the unused upper 23 bits
-(especially, the S_IFMT bits) are initialized with 0.
+The issue occurs when a wakeup IRQ is triggered on a GPIO and the IRQ
+handler attempts to reconfigure the same GPIO's pinmux. In this scenario,
+msm_pinmux_set_mux() calls disable_irq() which waits for the currently
+running IRQ handler to complete, creating a circular dependency that
+results in deadlock.
 
-Therefore, ignore the S_IFMT bits of the "mode" field loaded from disk.
-Also, verify that the value of the "attributes" field loaded from disk is
-either BFS_VREG or BFS_VDIR (because BFS supports only regular files and
-the root directory).
+Using disable_irq_nosync() avoids waiting for the IRQ handler to
+complete, preventing the deadlock condition while still properly
+disabling the interrupt during pinmux reconfiguration.
 
-Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
-Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
-Link: https://patch.msgid.link/fabce673-d5b9-4038-8287-0fd65d80203b@I-love.SAKURA.ne.jp
-Reviewed-by: Tigran Aivazian <aivazian.tigran@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Suggested-by: Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>
+Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/bfs/inode.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/pinctrl/qcom/pinctrl-msm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
-index fd691e4815c56..fa4e002925852 100644
---- a/fs/bfs/inode.c
-+++ b/fs/bfs/inode.c
-@@ -60,7 +60,19 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 	off = (ino - BFS_ROOT_INO) % BFS_INODES_PER_BLOCK;
- 	di = (struct bfs_inode *)bh->b_data + off;
+diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
+index 676b16397b07c..1bb7be9ed92f2 100644
+--- a/drivers/pinctrl/qcom/pinctrl-msm.c
++++ b/drivers/pinctrl/qcom/pinctrl-msm.c
+@@ -213,7 +213,7 @@ static int msm_pinmux_set_mux(struct pinctrl_dev *pctldev,
+ 	 */
+ 	if (d && i != gpio_func &&
+ 	    !test_and_set_bit(d->hwirq, pctrl->disabled_for_mux))
+-		disable_irq(irq);
++		disable_irq_nosync(irq);
  
--	inode->i_mode = 0x0000FFFF & le32_to_cpu(di->i_mode);
-+	/*
-+	 * https://martin.hinner.info/fs/bfs/bfs-structure.html explains that
-+	 * BFS in SCO UnixWare environment used only lower 9 bits of di->i_mode
-+	 * value. This means that, although bfs_write_inode() saves whole
-+	 * inode->i_mode bits (which include S_IFMT bits and S_IS{UID,GID,VTX}
-+	 * bits), middle 7 bits of di->i_mode value can be garbage when these
-+	 * bits were not saved by bfs_write_inode().
-+	 * Since we can't tell whether middle 7 bits are garbage, use only
-+	 * lower 12 bits (i.e. tolerate S_IS{UID,GID,VTX} bits possibly being
-+	 * garbage) and reconstruct S_IFMT bits for Linux environment from
-+	 * di->i_vtype value.
-+	 */
-+	inode->i_mode = 0x00000FFF & le32_to_cpu(di->i_mode);
- 	if (le32_to_cpu(di->i_vtype) == BFS_VDIR) {
- 		inode->i_mode |= S_IFDIR;
- 		inode->i_op = &bfs_dir_inops;
-@@ -70,6 +82,11 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
- 		inode->i_op = &bfs_file_inops;
- 		inode->i_fop = &bfs_file_operations;
- 		inode->i_mapping->a_ops = &bfs_aops;
-+	} else {
-+		brelse(bh);
-+		printf("Unknown vtype=%u %s:%08lx\n",
-+		       le32_to_cpu(di->i_vtype), inode->i_sb->s_id, ino);
-+		goto error;
- 	}
+ 	raw_spin_lock_irqsave(&pctrl->lock, flags);
  
- 	BFS_I(inode)->i_sblock =  le32_to_cpu(di->i_sblock);
 -- 
 2.51.0
 
