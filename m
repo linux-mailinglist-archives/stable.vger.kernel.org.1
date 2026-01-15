@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209601-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209148-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60EB6D26E57
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C975BD26E67
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id CE0883031D59
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:17 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D815A3092252
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F653BFE27;
-	Thu, 15 Jan 2026 17:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 651BE3BFE2A;
+	Thu, 15 Jan 2026 17:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTRCfCrS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bb6WDLQ2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375853BF2FC;
-	Thu, 15 Jan 2026 17:46:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 275F42D6E72;
+	Thu, 15 Jan 2026 17:24:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499161; cv=none; b=m4nP6ZpUwdBEudHk0Joa7DU8BIDNYVmAI15EEFhorDLD/PdsZJ7AoWU/dvTEgxro2RRGGPaHh2P2OUTBFyUl5+RG+3F0xEvNby9YnAc73BLHeuIXeghauFrAJt8MhQnpws7hmstdff0qhjPJoh89rLJGaW4HjlSUrvSHXYUbHFs=
+	t=1768497870; cv=none; b=RnvW82wkctWb93Av7Zp+w3Usgz3oA0lLye/x91/A0gkX2xg5yPnmxPvCYkPpato1R0i+fq6pdfDzkrNpvmthWyHnfqlqDSM7Le/yPtFkL+5VVPzf6jsRiqrPGQ0t12/TH3rz+aKl6CfKXygoBvKWd1A/P4LigkjvwXIcp+5zFgA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499161; c=relaxed/simple;
-	bh=lJ5piVtz93lexCNvo9Uvxa9f8jvIgvoqGlpEcRvnE6w=;
+	s=arc-20240116; t=1768497870; c=relaxed/simple;
+	bh=VTnxQDHs77UlUVh6jO39zylT+SZJTwg/HVFa3a87Ac4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oWn4pLLanYvwYVvTUset9/dXMfidI2UBKpkfP7ICFR2OyvptLx55h3elLIZmLRSzvh7F4QpoHir/DSxyztnAKiWbhq2Vf++SLftArwRh7jsKNYpdaEiQJEMmV9cuRTRvEjFGgDAZKlcTzuTAKcPDoHq9TsE8WNJuDXaFzt8VT4c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTRCfCrS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8345C116D0;
-	Thu, 15 Jan 2026 17:46:00 +0000 (UTC)
+	 MIME-Version; b=JJqm+GWsYhu3sXuRo9C58kuidDg9SQC3zQe5ysAsdjmymuFQBxgE+DmQgv+LEJPd93O2w0sa0DHhqaOHRQMsouJYCMWk65SyZTQBx9319TmpV7oEIOffjTUj2bJ45yv4rsAnkDJT0YSrxYaA/i0lZxArBTbfHo0LxO+AggrEclk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bb6WDLQ2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C1E2C116D0;
+	Thu, 15 Jan 2026 17:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499161;
-	bh=lJ5piVtz93lexCNvo9Uvxa9f8jvIgvoqGlpEcRvnE6w=;
+	s=korg; t=1768497870;
+	bh=VTnxQDHs77UlUVh6jO39zylT+SZJTwg/HVFa3a87Ac4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lTRCfCrShaKSEdZJOCTBaY3lmT2+4gFNB1Qji65t7D10W365MN0F/lU98k9t+p7xf
-	 k0JFPLVA2NW4uCe7cUf8BmD6Vxw8P1ioV6LM5hc8/FgnAcd5sScpVy8pydhmUUOi1P
-	 qoUp3ve9A6fMXgTffJn6+JlVae69bcjUgpQXOdWQ=
+	b=bb6WDLQ24YKMyd98dUniYCh5uCAPVY2xKTqBYkZqVZJOEoq/RXXxTIK5VbtadDD4t
+	 m9dCkkHHiYSjjfit9+yNRqx7p15yK9DzfDPlaD0JaBnQZRk4h48TyUs8V3qX92JJvM
+	 NZ2p30f8kWQgHUjh0JixBop3hwbKUFMuLK5KVAqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Simon Horman <horms@kernel.org>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 096/451] crypto: ccree - Correctly handle return of sg_nents_for_len
-Date: Thu, 15 Jan 2026 17:44:57 +0100
-Message-ID: <20260115164234.390503118@linuxfoundation.org>
+Subject: [PATCH 5.15 232/554] caif: fix integer underflow in cffrml_receive()
+Date: Thu, 15 Jan 2026 17:44:58 +0100
+Message-ID: <20260115164254.643093653@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +62,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
+[ Upstream commit 8a11ff0948b5ad09b71896b7ccc850625f9878d1 ]
 
-Fix error handling in cc_map_hash_request_update where sg_nents_for_len
-return value was assigned to u32, converting negative errors to large
-positive values before passing to sg_copy_to_buffer.
+The cffrml_receive() function extracts a length field from the packet
+header and, when FCS is disabled, subtracts 2 from this length without
+validating that len >= 2.
 
-Check sg_nents_for_len return value and propagate errors before
-assigning to areq_ctx->in_nents.
+If an attacker sends a malicious packet with a length field of 0 or 1
+to an interface with FCS disabled, the subtraction causes an integer
+underflow.
 
-Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+This can lead to memory exhaustion and kernel instability, potential
+information disclosure if padding contains uninitialized kernel memory.
+
+Fix this by validating that len >= 2 before performing the subtraction.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: b482cd2053e3 ("net-caif: add CAIF core protocol stack")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/SYBPR01MB7881511122BAFEA8212A1608AFA6A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/caif/cffrml.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
-index 6140e49273226..5754dc88c684c 100644
---- a/drivers/crypto/ccree/cc_buffer_mgr.c
-+++ b/drivers/crypto/ccree/cc_buffer_mgr.c
-@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	int rc = 0;
- 	u32 dummy = 0;
- 	u32 mapped_nents = 0;
-+	int sg_nents;
+diff --git a/net/caif/cffrml.c b/net/caif/cffrml.c
+index 6651a8dc62e04..d4d63586053ad 100644
+--- a/net/caif/cffrml.c
++++ b/net/caif/cffrml.c
+@@ -92,8 +92,15 @@ static int cffrml_receive(struct cflayer *layr, struct cfpkt *pkt)
+ 	len = le16_to_cpu(tmp);
  
- 	dev_dbg(dev, " update params : curr_buff=%pK curr_buff_cnt=0x%X nbytes=0x%X src=%pK curr_index=%u\n",
- 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
-@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	if (total_in_len < block_size) {
- 		dev_dbg(dev, " less than one block: curr_buff=%pK *curr_buff_cnt=0x%X copy_to=%pK\n",
- 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
--		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
-+		sg_nents = sg_nents_for_len(src, nbytes);
-+		if (sg_nents < 0)
-+			return sg_nents;
-+		areq_ctx->in_nents = sg_nents;
- 		sg_copy_to_buffer(src, areq_ctx->in_nents,
- 				  &curr_buff[*curr_buff_cnt], nbytes);
- 		*curr_buff_cnt += nbytes;
+ 	/* Subtract for FCS on length if FCS is not used. */
+-	if (!this->dofcs)
++	if (!this->dofcs) {
++		if (len < 2) {
++			++cffrml_rcv_error;
++			pr_err("Invalid frame length (%d)\n", len);
++			cfpkt_destroy(pkt);
++			return -EPROTO;
++		}
+ 		len -= 2;
++	}
+ 
+ 	if (cfpkt_setlen(pkt, len) < 0) {
+ 		++cffrml_rcv_error;
 -- 
 2.51.0
 
