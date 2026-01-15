@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209440-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F2AC4D277CF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:28 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 24C22D271F0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3B464310AA6B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id EE70C3080BD2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7E3953D7D15;
-	Thu, 15 Jan 2026 17:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F28F27A462;
+	Thu, 15 Jan 2026 17:38:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PshyHQRx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xmL5uFsN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3FB5E3D7D13;
-	Thu, 15 Jan 2026 17:58:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6FFB4C81;
+	Thu, 15 Jan 2026 17:38:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499898; cv=none; b=KH+DhPr+Qlu5ljBNS6S5dHEAr5d7hdI9FUqoY70MErtSmckUhETF1CXhuBm0522+HfqAW1mFJKD3JDh5ZeqBKo5YSH2Ki6kSr1e65NrC4FMlYcLG7RxMMvyd+E6h+oMbu5YQKdyBMPykdDvaXkPnJkS4CnvfQgc3L97YFU8Izrw=
+	t=1768498703; cv=none; b=LfvEGbNWWK6tSe3ffF2iJXVlOKanCu0fiUmBsR0amM4osriSO4P9cBDQnPv6wAZ5Baq5lwia3/NqI07LDQRxy3vkzAM/e/7uLqCvFK40m/cWiOvYikyQnqchKCawNbN6lFlnv/CYDcs1kn4G1oTA/I3zeWAj/VXZnWjIx3qdEWU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499898; c=relaxed/simple;
-	bh=mYptC2yX6gP8gaXFoDuoCxg/LC7gy6hsCTrM/bTssHs=;
+	s=arc-20240116; t=1768498703; c=relaxed/simple;
+	bh=JHVU0FYmKGztC6lmbFOpkBMOu0Pi9TiLl+lobgQ8v1s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V1AYuc2XX8mlAHQO4dZdLz6OsB1lLJEUcs2cSpCHSUHKmctfnJL3rnP8hqfi0jv/jUsJdyPyz181PvyJy9CDm51I5IX26TSoIdXuftTneMYKO1ut7C/o/+tEw3JRbt815iC6GCQn8Yu3bhbV3JD7uQV5hzMB62kPLmG0ECooECA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PshyHQRx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE644C116D0;
-	Thu, 15 Jan 2026 17:58:17 +0000 (UTC)
+	 MIME-Version; b=gSifiHV3CZsfZgMFFCIsBYwSREtsPYw0FvO9ANWHcs+je1v/Bxzsz5r/fVWk5c5jrelgJa874KS1ADdQOWhPidmKpK/hZctCn7RvNTP14hhZRUCv7uVt7H2coaDKDbiIAffuuUrUigv4s/LosoeNqTq0qaMIdEp4Y4iWhdRg6Zw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xmL5uFsN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536F9C116D0;
+	Thu, 15 Jan 2026 17:38:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499898;
-	bh=mYptC2yX6gP8gaXFoDuoCxg/LC7gy6hsCTrM/bTssHs=;
+	s=korg; t=1768498703;
+	bh=JHVU0FYmKGztC6lmbFOpkBMOu0Pi9TiLl+lobgQ8v1s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PshyHQRxpdajseszcFrxqLIYC4gU50JCGRrvEFMOzR7NCr5Ik7i0UZ7c6mtZqjXA6
-	 6g+N9/ii+HzsuTje5eS6o2YHevVKfglSDKDUOtSEw8ZQwkWEB95iz0HuUmxinryOdR
-	 h13P9EeDevtrO5CmLRyJydUkRlA18V/b5RBhEgbo=
+	b=xmL5uFsN1AoMKGwCov1u2qiuM2dNFUnfW9+LWqjeb2dYNxxFRuTBOwhp+CFcx8XTI
+	 RkarxoR8ccK+39JdxUQ9msnEn+MqBR5h8z7J3G1y+jxECT9uwc5aY9akEKRBiZQIbf
+	 dAgT/axZEIppF+53UGIK4gUwy9e/zGoSGMI72Ceo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>,
+	Frank Li <Frank.Li@nxp.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 388/451] media: vpif_capture: fix section mismatch
+Subject: [PATCH 5.15 523/554] arm64: dts: add off-on-delay-us for usdhc2 regulator
 Date: Thu, 15 Jan 2026 17:49:49 +0100
-Message-ID: <20260115164244.965891485@linuxfoundation.org>
+Message-ID: <20260115164305.258250389@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +61,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Haibo Chen <haibo.chen@nxp.com>
 
-[ Upstream commit 0ef841113724166c3c484d0e9ae6db1eb5634fde ]
+[ Upstream commit ca643894a37a25713029b36cfe7d1bae515cac08 ]
 
-Platform drivers can be probed after their init sections have been
-discarded (e.g. on probe deferral or manual rebind through sysfs) so the
-probe function must not live in init.
+For SD card, according to the spec requirement, for sd card power reset
+operation, it need sd card supply voltage to be lower than 0.5v and keep
+over 1ms, otherwise, next time power back the sd card supply voltage to
+3.3v, sd card can't support SD3.0 mode again.
 
-Note that commit ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section
-mismatch warning") incorrectly suppressed the modpost warning.
+To match such requirement on imx8qm-mek board, add 4.8ms delay between
+sd power off and power on.
 
-Fixes: ffa1b391c61b ("V4L/DVB: vpif_cap/disp: Removed section mismatch warning")
-Fixes: 6ffefff5a9e7 ("V4L/DVB (12906c): V4L : vpif capture driver for DM6467")
-Cc: stable@vger.kernel.org	# 2.6.32
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Fixes: 307fd14d4b14 ("arm64: dts: imx: add imx8qm mek support")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/davinci/vpif_capture.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/media/platform/davinci/vpif_capture.c
-+++ b/drivers/media/platform/davinci/vpif_capture.c
-@@ -1614,7 +1614,7 @@ err_cleanup:
-  * This creates device entries by register itself to the V4L2 driver and
-  * initializes fields of each channel objects
-  */
--static __init int vpif_probe(struct platform_device *pdev)
-+static int vpif_probe(struct platform_device *pdev)
- {
- 	struct vpif_subdev_info *subdevdata;
- 	struct i2c_adapter *i2c_adap;
-@@ -1817,7 +1817,7 @@ static int vpif_resume(struct device *de
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+index 470e4e4aa8c78..059f8c0ab93d9 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
++++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
+@@ -34,6 +34,7 @@ reg_usdhc2_vmmc: usdhc2-vmmc {
+ 		regulator-max-microvolt = <3000000>;
+ 		gpio = <&lsio_gpio4 7 GPIO_ACTIVE_HIGH>;
+ 		enable-active-high;
++		off-on-delay-us = <4800>;
+ 	};
+ };
  
- static SIMPLE_DEV_PM_OPS(vpif_pm_ops, vpif_suspend, vpif_resume);
- 
--static __refdata struct platform_driver vpif_driver = {
-+static struct platform_driver vpif_driver = {
- 	.driver	= {
- 		.name	= VPIF_DRIVER_NAME,
- 		.pm	= &vpif_pm_ops,
+-- 
+2.51.0
+
 
 
 
