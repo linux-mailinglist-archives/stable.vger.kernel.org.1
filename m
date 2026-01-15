@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208739-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209750-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B0396D26641
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4E871D274BB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F396F301869B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:08 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96BDC317E46B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 828D63BF2E0;
-	Thu, 15 Jan 2026 17:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA8A23C1FF6;
+	Thu, 15 Jan 2026 17:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="onm+Cw5r"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0b7Xwa7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D0FF3BC4D7;
-	Thu, 15 Jan 2026 17:05:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37E303D4123;
+	Thu, 15 Jan 2026 17:53:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496708; cv=none; b=igP7ExK8eHhd6mNjJrULd25oBbUS7sJA3MSLBD37eCYnpyI+oyZ3dqJhpm2M8XpbqcMp0efWfG70aXY8XRmmhCY9wR4t4shAZGOMgnnUno5OY4QSHjCij2bdOrMou8S0R81l0KBL+R6xZH8Qu7Q+qgQR//sd3kSeCoZLX05cB5E=
+	t=1768499585; cv=none; b=scJ0U+9cWlbO6qMX2qIFPv3E5vAGq6w9Xb0MggjtEks9ExLw2rNyiwybt6913K9wnzsotegWKh0fQW8xbUbryF7+tGiXXZqtT1u7cArwaNDA+Z0PPyVGi0hG1lwvYJswTyc7kU2odrX7CZ9kqIaBfF/yk4B2mQ7ZYaj7O1gpgoQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496708; c=relaxed/simple;
-	bh=kcHu9XGAbzoFuXHb+eiQzxUXC7SR0PDNqI23KhfLYP8=;
+	s=arc-20240116; t=1768499585; c=relaxed/simple;
+	bh=cPCjDMwIG+2Jaz7R5bBTmcQkqX9SfjfstTs9URvFaiA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E36g3f8QYWuXqZSs3LWuxCyDeItW8CVGQiD4d8Qq5XMpsTBywdVi8awvqxAmASgUZh4n/t/8/B3f2C0cyzxNpC5Hvp5hoPtkXrX5wFNMZ9+Zqz65crjrfrZeF1DLBTEhrr2CsO2d4VnIaID9WQ1WbBAghzS2n53jgUQAWr0G2ho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=onm+Cw5r; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A50F8C116D0;
-	Thu, 15 Jan 2026 17:05:07 +0000 (UTC)
+	 MIME-Version:Content-Type; b=ejLQh+8RPEaW0Nu9cXHR0xEaUFvV+z/ua4K9VMrM/Ctd+/77Do/9Rm1gxafXaa8rxoBHBl9JfvsGhSL2xYe39fypHzfNipLgvTPrBFCeC0hoRsfoMu8J7gU6nkwS/Jb8GA75IasxXLsO6qUwpnQYNT2ULWdrpHrHTGNwEyW2WIM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0b7Xwa7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8378C116D0;
+	Thu, 15 Jan 2026 17:53:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496708;
-	bh=kcHu9XGAbzoFuXHb+eiQzxUXC7SR0PDNqI23KhfLYP8=;
+	s=korg; t=1768499585;
+	bh=cPCjDMwIG+2Jaz7R5bBTmcQkqX9SfjfstTs9URvFaiA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=onm+Cw5rJk5IUD5HiIcJdd/Vk/oUbXCB99hwMfqmIK0xU7UWy5nnBgFLf+vJ4hOGS
-	 pLEzl4l4yerkhPR/zNYBiIYeco9db74DO26DYcK0RC6Jb6IH0sp0Xtg7JT8GbHwL2E
-	 U211aeqg4JkRPGIjczv25hOQvyvpCgYL2vrGXTUc=
+	b=U0b7Xwa7bn/XR3ZjwTWfAHgcTCfYlc1OlzA0trLEcubCUk3muRec852sAwvse8o1r
+	 HkEGKQxofhh5UT12I6D6JPW+DW1VHey6YOi1mNZKOcguDG9rzXWZa6CgjNkzk+R+6t
+	 5ouz4CchnTV3jx2rxNfkpzatgSIWzC4gp00Vo3y8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Elad Nachman <enachman@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 064/119] net: marvell: prestera: fix NULL dereference on devlink_alloc() failure
-Date: Thu, 15 Jan 2026 17:47:59 +0100
-Message-ID: <20260115164154.265594190@linuxfoundation.org>
+Subject: [PATCH 5.10 279/451] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
+Date: Thu, 15 Jan 2026 17:48:00 +0100
+Message-ID: <20260115164240.975831194@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit a428e0da1248c353557970848994f35fd3f005e2 ]
+[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
 
-devlink_alloc() may return NULL on allocation failure, but
-prestera_devlink_alloc() unconditionally calls devlink_priv() on
-the returned pointer.
+The ibm_rtl_init() function searches for the signature but has a pointer
+arithmetic error. The loop counter suggests searching at 4-byte intervals
+but the implementation only advances by 1 byte per iteration.
 
-This leads to a NULL pointer dereference if devlink allocation fails.
-Add a check for a NULL devlink pointer and return NULL early to avoid
-the crash.
+Fix by properly advancing the pointer by sizeof(unsigned int) bytes
+each iteration.
 
-Fixes: 34dd1710f5a3 ("net: marvell: prestera: Add basic devlink support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: Elad Nachman <enachman@marvell.com>
-Link: https://patch.msgid.link/20251230052124.897012-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/prestera/prestera_devlink.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/platform/x86/ibm_rtl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
-index 2a4c9df4eb797..e63d95c1842f3 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
-@@ -387,6 +387,8 @@ struct prestera_switch *prestera_devlink_alloc(struct prestera_device *dev)
- 
- 	dl = devlink_alloc(&prestera_dl_ops, sizeof(struct prestera_switch),
- 			   dev->dev);
-+	if (!dl)
-+		return NULL;
- 
- 	return devlink_priv(dl);
- }
+diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
+index 5fc665f7d9b3..10cab7bdfe15 100644
+--- a/drivers/platform/x86/ibm_rtl.c
++++ b/drivers/platform/x86/ibm_rtl.c
+@@ -262,7 +262,7 @@ static int __init ibm_rtl_init(void) {
+ 	/* search for the _RTL_ signature at the start of the table */
+ 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
+ 		struct ibm_rtl_table __iomem * tmp;
+-		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
++		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
+ 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
+ 			phys_addr_t addr;
+ 			unsigned int plen;
 -- 
 2.51.0
 
