@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209085-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209487-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52BF9D2661B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:27:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 73387D26D20
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D6561303838D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A64BA30D8BBC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 978FC2F619D;
-	Thu, 15 Jan 2026 17:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id DAFDE2D94A7;
+	Thu, 15 Jan 2026 17:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZqU2rS4p"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="guG0nFQ1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5997B3A1E86;
-	Thu, 15 Jan 2026 17:21:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E10A274FE3;
+	Thu, 15 Jan 2026 17:40:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497693; cv=none; b=D0tOzUW0KKBKy+0YVttO68hc67BadkrIk2OQyrUNkHwpLtdkxzLWEqdx2+yd30MiPGmLVLzyqVhYhtw3eaVXVAp7Rk2uxoy/oRVi1kjBhGo/Zm1sL4bFucMPZepbAcIf6YU7im9CSZgVB+/csCvYEgLnvnhogmGyj0Kmc73Bepk=
+	t=1768498835; cv=none; b=Pc+I1icfykpTm9m+dDNbUtQAmN4qlHlWp6Yq2DxFxmLaF4onFFVdrMt63isKOKCzfRmET2UY3oOe0DpAesg5QH1bA1E8QHmPK1b7e+OPFGu81eyypYJ8OJ4b5L0vE8UelrQFPaTogZlbbhSPznLLHmJc3Io55iwF4czb6mFGlZk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497693; c=relaxed/simple;
-	bh=npcIGcaQniEePFgskXAIX1w8pdcBiyM/qsPGPM0LJw4=;
+	s=arc-20240116; t=1768498835; c=relaxed/simple;
+	bh=ivQadeAg689zU6WAy88sX/B+LObjrGdAjqsUhnUfrIY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l6WU0kA/C1UCibARY1Pvx1fhIdJPkOjWz3wJN3aHp+E9PXvG/ApegqNsQ4tdMufEBdmZvA4IdANHMI2NWdzeEAW9WpuCJnfo6Vsm/PirkI9WogEZgc52qLfQwDhBLmrGOR99SAwsFeLxkDj8YBpR5aa28/bWd+WT8Jsf7hIyxRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZqU2rS4p; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EBFC19423;
-	Thu, 15 Jan 2026 17:21:32 +0000 (UTC)
+	 MIME-Version; b=Oqct3GW3xGgjcoKu+iWvafmHVSztldYMHwMHskSxwf4L/ODyUppdF4jSx5WnkdaO054160yUiZpllGR6kyS+tLpnG0XLce4DH0DVj2g/szxXaC+VwYFXH1sbPySUHPoxqiIMB2X5adUG/5gK0tr17ihEwJxmz2oVvLujCxw+iAM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=guG0nFQ1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BEBDC116D0;
+	Thu, 15 Jan 2026 17:40:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497693;
-	bh=npcIGcaQniEePFgskXAIX1w8pdcBiyM/qsPGPM0LJw4=;
+	s=korg; t=1768498835;
+	bh=ivQadeAg689zU6WAy88sX/B+LObjrGdAjqsUhnUfrIY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZqU2rS4pAz37gzRTPkV8WCbIGUEc9z9q+Pg/oX5AYLCTDFmJWh+bLWTowMmOAo7Og
-	 +5pUZhHW/01De3RaM53WX4NGBXzGLsrz4YtcVb4XjvfCXWkeYMhKydmN6gRmbYrQXf
-	 s1VYTctcD7c/D1ubdv55g4YtL6fS+OugRuP813kg=
+	b=guG0nFQ14yCFhJOsrBfCI2GE/kRjcMPFbhX14XGihRb2UYI2hfvwd4jbPphtMjoTE
+	 71qhySFYPsbvmz0Xf8IAvPOweSs9Dq96L3meiZHO7aJUcfqDTr0ovF4lPgJPtWkxYn
+	 XNF/0vfZjfYVTVIJHC5kM0Vz0cAwz8PlUiNUesRQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mans Rullgard <mans@mansr.com>,
-	Daniel Thompson <daniel.thompson@linaro.org>,
-	Lee Jones <lee@kernel.org>,
+	Sabrina Dubroca <sd@queasysnail.net>,
+	Steffen Klassert <steffen.klassert@secunet.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 137/554] backlight: led_bl: Take led_access lock when required
+Subject: [PATCH 5.10 002/451] Revert "xfrm: destroy xfrm_state synchronously on net exit path"
 Date: Thu, 15 Jan 2026 17:43:23 +0100
-Message-ID: <20260115164251.210692231@linuxfoundation.org>
+Message-ID: <20260115164230.963258225@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,75 +60,178 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mans Rullgard <mans@mansr.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit a33677b9211b6c328ad359b072043af94f7c9592 ]
+[ Upstream commit 2a198bbec6913ae1c90ec963750003c6213668c7 ]
 
-The led_access lock must be held when calling led_sysfs_enable() and
-led_sysfs_disable().  This fixes warnings such as this:
+This reverts commit f75a2804da391571563c4b6b29e7797787332673.
 
-[    2.432495] ------------[ cut here ]------------
-[    2.437316] WARNING: CPU: 0 PID: 22 at drivers/leds/led-core.c:349 led_sysfs_disable+0x54/0x58
-[    2.446105] Modules linked in:
-[    2.449218] CPU: 0 PID: 22 Comm: kworker/u2:1 Not tainted 6.3.8+ #1
-[    2.456268] Hardware name: Generic AM3517 (Flattened Device Tree)
-[    2.462402] Workqueue: events_unbound deferred_probe_work_func
-[    2.468353]  unwind_backtrace from show_stack+0x10/0x14
-[    2.473632]  show_stack from dump_stack_lvl+0x24/0x2c
-[    2.478759]  dump_stack_lvl from __warn+0x9c/0xc4
-[    2.483551]  __warn from warn_slowpath_fmt+0x64/0xc0
-[    2.488586]  warn_slowpath_fmt from led_sysfs_disable+0x54/0x58
-[    2.494567]  led_sysfs_disable from led_bl_probe+0x20c/0x3b0
-[    2.500305]  led_bl_probe from platform_probe+0x5c/0xb8
-[    2.505615]  platform_probe from really_probe+0xc8/0x2a0
-[    2.510986]  really_probe from __driver_probe_device+0x88/0x19c
-[    2.516967]  __driver_probe_device from driver_probe_device+0x30/0xcc
-[    2.523498]  driver_probe_device from __device_attach_driver+0x94/0xc4
-[    2.530090]  __device_attach_driver from bus_for_each_drv+0x80/0xcc
-[    2.536437]  bus_for_each_drv from __device_attach+0xf8/0x19c
-[    2.542236]  __device_attach from bus_probe_device+0x8c/0x90
-[    2.547973]  bus_probe_device from deferred_probe_work_func+0x80/0xb0
-[    2.554504]  deferred_probe_work_func from process_one_work+0x228/0x4c0
-[    2.561187]  process_one_work from worker_thread+0x1fc/0x4d0
-[    2.566925]  worker_thread from kthread+0xb4/0xd0
-[    2.571685]  kthread from ret_from_fork+0x14/0x2c
-[    2.576446] Exception stack(0xd0079fb0 to 0xd0079ff8)
-[    2.581573] 9fa0:                                     00000000 00000000 00000000 00000000
-[    2.589813] 9fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
-[    2.598052] 9fe0: 00000000 00000000 00000000 00000000 00000013 00000000
-[    2.604888] ---[ end trace 0000000000000000 ]---
+With all states (whether user or kern) removed from the hashtables
+during deletion, there's no need for synchronous destruction of
+states. xfrm6_tunnel states still need to have been destroyed (which
+will be the case when its last user is deleted (not destroyed)) so
+that xfrm6_tunnel_free_spi removes it from the per-netns hashtable
+before the netns is destroyed.
 
-Signed-off-by: Mans Rullgard <mans@mansr.com>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://lore.kernel.org/r/20230619160249.10414-1-mans@mansr.com
-Signed-off-by: Lee Jones <lee@kernel.org>
-Stable-dep-of: 9341d6698f4c ("backlight: led-bl: Add devlink to supplier LEDs")
+This has the benefit of skipping one synchronize_rcu per state (in
+__xfrm_state_destroy(sync=true)) when we exit a netns.
+
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/led_bl.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ include/net/xfrm.h      | 12 +++---------
+ net/ipv6/xfrm6_tunnel.c |  2 +-
+ net/key/af_key.c        |  2 +-
+ net/xfrm/xfrm_state.c   | 23 +++++++++--------------
+ net/xfrm/xfrm_user.c    |  2 +-
+ 5 files changed, 15 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 589dae9ebb638..d360def24747d 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -209,8 +209,11 @@ static int led_bl_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->bl_dev);
- 	}
+diff --git a/include/net/xfrm.h b/include/net/xfrm.h
+index a8584de9b18b7..411949a66a83c 100644
+--- a/include/net/xfrm.h
++++ b/include/net/xfrm.h
+@@ -794,7 +794,7 @@ static inline void xfrm_pols_put(struct xfrm_policy **pols, int npols)
+ 		xfrm_pol_put(pols[i]);
+ }
  
--	for (i = 0; i < priv->nb_leds; i++)
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_disable(priv->leds[i]);
-+		mutex_unlock(&priv->leds[i]->led_access);
-+	}
+-void __xfrm_state_destroy(struct xfrm_state *, bool);
++void __xfrm_state_destroy(struct xfrm_state *);
  
- 	backlight_update_status(priv->bl_dev);
+ static inline void __xfrm_state_put(struct xfrm_state *x)
+ {
+@@ -804,13 +804,7 @@ static inline void __xfrm_state_put(struct xfrm_state *x)
+ static inline void xfrm_state_put(struct xfrm_state *x)
+ {
+ 	if (refcount_dec_and_test(&x->refcnt))
+-		__xfrm_state_destroy(x, false);
+-}
+-
+-static inline void xfrm_state_put_sync(struct xfrm_state *x)
+-{
+-	if (refcount_dec_and_test(&x->refcnt))
+-		__xfrm_state_destroy(x, true);
++		__xfrm_state_destroy(x);
+ }
  
+ static inline void xfrm_state_hold(struct xfrm_state *x)
+@@ -1585,7 +1579,7 @@ struct xfrmk_spdinfo {
+ 
+ struct xfrm_state *xfrm_find_acq_byseq(struct net *net, u32 mark, u32 seq);
+ int xfrm_state_delete(struct xfrm_state *x);
+-int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync);
++int xfrm_state_flush(struct net *net, u8 proto, bool task_valid);
+ int xfrm_dev_state_flush(struct net *net, struct net_device *dev, bool task_valid);
+ void xfrm_sad_getinfo(struct net *net, struct xfrmk_sadinfo *si);
+ void xfrm_spd_getinfo(struct net *net, struct xfrmk_spdinfo *si);
+diff --git a/net/ipv6/xfrm6_tunnel.c b/net/ipv6/xfrm6_tunnel.c
+index 61ffc01b6c479..70f9540937489 100644
+--- a/net/ipv6/xfrm6_tunnel.c
++++ b/net/ipv6/xfrm6_tunnel.c
+@@ -331,7 +331,7 @@ static void __net_exit xfrm6_tunnel_net_exit(struct net *net)
+ 	struct xfrm6_tunnel_net *xfrm6_tn = xfrm6_tunnel_pernet(net);
+ 	unsigned int i;
+ 
+-	xfrm_state_flush(net, 0, false, true);
++	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
+ 	xfrm_flush_gc();
+ 
+ 	for (i = 0; i < XFRM6_TUNNEL_SPI_BYADDR_HSIZE; i++)
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index f42854973ba8d..de4606d2eb643 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1770,7 +1770,7 @@ static int pfkey_flush(struct sock *sk, struct sk_buff *skb, const struct sadb_m
+ 	if (proto == 0)
+ 		return -EINVAL;
+ 
+-	err = xfrm_state_flush(net, proto, true, false);
++	err = xfrm_state_flush(net, proto, true);
+ 	err2 = unicast_flush_resp(sk, hdr);
+ 	if (err || err2) {
+ 		if (err == -ESRCH) /* empty table - go quietly */
+diff --git a/net/xfrm/xfrm_state.c b/net/xfrm/xfrm_state.c
+index 3cd878a25602a..a45d7e1dc5c6f 100644
+--- a/net/xfrm/xfrm_state.c
++++ b/net/xfrm/xfrm_state.c
+@@ -476,7 +476,7 @@ void xfrm_state_free(struct xfrm_state *x)
+ }
+ EXPORT_SYMBOL(xfrm_state_free);
+ 
+-static void ___xfrm_state_destroy(struct xfrm_state *x)
++static void xfrm_state_gc_destroy(struct xfrm_state *x)
+ {
+ 	hrtimer_cancel(&x->mtimer);
+ 	del_timer_sync(&x->rtimer);
+@@ -514,7 +514,7 @@ static void xfrm_state_gc_task(struct work_struct *work)
+ 	synchronize_rcu();
+ 
+ 	hlist_for_each_entry_safe(x, tmp, &gc_list, gclist)
+-		___xfrm_state_destroy(x);
++		xfrm_state_gc_destroy(x);
+ }
+ 
+ static enum hrtimer_restart xfrm_timer_handler(struct hrtimer *me)
+@@ -637,19 +637,14 @@ struct xfrm_state *xfrm_state_alloc(struct net *net)
+ }
+ EXPORT_SYMBOL(xfrm_state_alloc);
+ 
+-void __xfrm_state_destroy(struct xfrm_state *x, bool sync)
++void __xfrm_state_destroy(struct xfrm_state *x)
+ {
+ 	WARN_ON(x->km.state != XFRM_STATE_DEAD);
+ 
+-	if (sync) {
+-		synchronize_rcu();
+-		___xfrm_state_destroy(x);
+-	} else {
+-		spin_lock_bh(&xfrm_state_gc_lock);
+-		hlist_add_head(&x->gclist, &xfrm_state_gc_list);
+-		spin_unlock_bh(&xfrm_state_gc_lock);
+-		schedule_work(&xfrm_state_gc_work);
+-	}
++	spin_lock_bh(&xfrm_state_gc_lock);
++	hlist_add_head(&x->gclist, &xfrm_state_gc_list);
++	spin_unlock_bh(&xfrm_state_gc_lock);
++	schedule_work(&xfrm_state_gc_work);
+ }
+ EXPORT_SYMBOL(__xfrm_state_destroy);
+ 
+@@ -758,7 +753,7 @@ xfrm_dev_state_flush_secctx_check(struct net *net, struct net_device *dev, bool
+ }
+ #endif
+ 
+-int xfrm_state_flush(struct net *net, u8 proto, bool task_valid, bool sync)
++int xfrm_state_flush(struct net *net, u8 proto, bool task_valid)
+ {
+ 	int i, err = 0, cnt = 0;
+ 
+@@ -2707,7 +2702,7 @@ void xfrm_state_fini(struct net *net)
+ 	unsigned int sz;
+ 
+ 	flush_work(&net->xfrm.state_hash_work);
+-	xfrm_state_flush(net, 0, false, true);
++	xfrm_state_flush(net, IPSEC_PROTO_ANY, false);
+ 	flush_work(&xfrm_state_gc_work);
+ 
+ 	WARN_ON(!list_empty(&net->xfrm.state_all));
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index aa509857b6660..480da22b7ef85 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2111,7 +2111,7 @@ static int xfrm_flush_sa(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	struct xfrm_usersa_flush *p = nlmsg_data(nlh);
+ 	int err;
+ 
+-	err = xfrm_state_flush(net, p->proto, true, false);
++	err = xfrm_state_flush(net, p->proto, true);
+ 	if (err) {
+ 		if (err == -ESRCH) /* empty table */
+ 			return 0;
 -- 
 2.51.0
 
