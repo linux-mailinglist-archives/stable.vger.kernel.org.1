@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209345-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208861-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3427D2758F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:53 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B09D26454
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B275231EBFF1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D7464314DD9B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AF3683BF2EA;
-	Thu, 15 Jan 2026 17:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9360A25228D;
+	Thu, 15 Jan 2026 17:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="njqwsosG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Exs/P1jK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71FA52D9494;
-	Thu, 15 Jan 2026 17:33:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 56D562D781B;
+	Thu, 15 Jan 2026 17:10:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498431; cv=none; b=nf19fbBGt5ykBHIhA/NyiL/hjaeInC1qKpzqVvPNbtfSYmBj45sR1LW2/Q/bl8oE0Iwh9/EslD1BAQAqm+t8RsUVR3DSoJ8VPw0HzxdKsmRgu6a4/DLCxXdOPRwO2VqHsZ+9uXqF0HbCOEQfhxw30cQXHXPVHFUM1DZRhF2Db+w=
+	t=1768497052; cv=none; b=PqNl+H8LEkexb4Si7PvjSGbCjBrr5Hpz8up2DwUDshK7gD0ZaaZSOldCS1DnEXuEKbmx4FMp1OiqD7ynLaAAzQ3EtKlzL0awlyEvQwAE/+Oq6g2Sj5Xrr8snJ/pX5QufcCY3nTwJ8/3S/CsB6Cc8xZ+tLEbOiY9oJn0RSvLj9fk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498431; c=relaxed/simple;
-	bh=WXGOImubF+m4Qfl9EOErqBUKcfE9YbTP6uQw/PQmE+0=;
+	s=arc-20240116; t=1768497052; c=relaxed/simple;
+	bh=zpCmZmMwYUzU9DF6avncuHNEa4n6KXJ/zu3TmBaVO8E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=STYcMnoTp4VAhi+7evz+uabdq6Svi6JkEgML5yMQKT4BbTwe8ocoa/zZPksE7HT3X91n30b6KDbU7CzyyAfNCOpoK4lq9amiGdpBgntuEwugf1ZM9s1nSKtGjMYL9XuawElg8zvs/AVXcZy50tpzcgjWBuvJIeYWalGCTDWpCs4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=njqwsosG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F392FC116D0;
-	Thu, 15 Jan 2026 17:33:50 +0000 (UTC)
+	 MIME-Version; b=c9Qq8j0AW2bHH1p5sX8xqOTac0gW8HAKWjN+VcCWRQLNmNrNuT3rM8ij9C5oePTKgSrLGpheq02RMRD7R324GuIOQGdjygZLSkQ//ohy3K8g91IBp1GK3MA0qxUvHxkj/qM0+sVsg3Z/GyeOh5zbn8I55HMfZtBPycKkfVlXE/E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Exs/P1jK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89F08C116D0;
+	Thu, 15 Jan 2026 17:10:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498431;
-	bh=WXGOImubF+m4Qfl9EOErqBUKcfE9YbTP6uQw/PQmE+0=;
+	s=korg; t=1768497051;
+	bh=zpCmZmMwYUzU9DF6avncuHNEa4n6KXJ/zu3TmBaVO8E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=njqwsosGGm5dKrujAd5zombiux7edsWdyl27rcBUK5FPCJXzpj4UwplsT2+kaLoU/
-	 bIgkQ8gTuGxnD9Tf4ON7BGOR8jfjC5EzS4h52kY0ltkZD0IZuYdhAi3Zj0YSjtS2Y2
-	 2TmH29u7lOljJ6TKsEdBoz49duHPGgQRsZr8SJvQ=
+	b=Exs/P1jKV+QsW53NiPPOPs3sdUnAFwuuj1N/kvytAmKZ210+4ZRWkKo49COyDYCUr
+	 0Bs/axMwjO9lvear5Wrwfqp6GLRiDotaCnIYLOi8UQFaOk1Cmr5avtEerrSeVoiKAw
+	 b/ufeicpqVDU/2MvE1kd/dCHQ3fWS08a1AAfy1Jg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 430/554] xhci: dbgtty: fix device unregister
-Date: Thu, 15 Jan 2026 17:48:16 +0100
-Message-ID: <20260115164301.824187086@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Javier Martinez Canillas <javierm@redhat.com>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.1 07/72] drm/pl111: Fix error handling in pl111_amba_probe
+Date: Thu, 15 Jan 2026 17:48:17 +0100
+Message-ID: <20260115164143.757582067@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,52 +58,44 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Łukasz Bartosik <ukaszb@chromium.org>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-[ Upstream commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f ]
+commit 0ddd3bb4b14c9102c0267b3fd916c81fe5ab89c1 upstream.
 
-When DbC is disconnected then xhci_dbc_tty_unregister_device()
-is called. However if there is any user space process blocked
-on write to DbC terminal device then it will never be signalled
-and thus stay blocked indifinitely.
+Jump to the existing dev_put label when devm_request_irq() fails
+so drm_dev_put() and of_reserved_mem_device_release() run
+instead of returning early and leaking resources.
 
-This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
-The tty_vhangup() wakes up any blocked writers and causes subsequent
-write attempts to DbC terminal device to fail.
+Found via static analysis and code review.
 
-Cc: stable <stable@kernel.org>
-Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
-Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
-Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
+Cc: stable@vger.kernel.org
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20251211123345.2392065-1-linmq006@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/xhci-dbgtty.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/gpu/drm/pl111/pl111_drv.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-dbgtty.c
-+++ b/drivers/usb/host/xhci-dbgtty.c
-@@ -489,6 +489,12 @@ static void xhci_dbc_tty_unregister_devi
+--- a/drivers/gpu/drm/pl111/pl111_drv.c
++++ b/drivers/gpu/drm/pl111/pl111_drv.c
+@@ -297,7 +297,7 @@ static int pl111_amba_probe(struct amba_
+ 			       variant->name, priv);
+ 	if (ret != 0) {
+ 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
+-		return ret;
++		goto dev_put;
+ 	}
  
- 	if (!port->registered)
- 		return;
-+	/*
-+	 * Hang up the TTY. This wakes up any blocked
-+	 * writers and causes subsequent writes to fail.
-+	 */
-+	tty_vhangup(port->port.tty);
-+
- 	tty_unregister_device(dbc_tty_driver, port->minor);
- 	xhci_dbc_tty_exit_port(port);
- 	port->registered = false;
+ 	ret = pl111_modeset_init(drm);
 
 
 
