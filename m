@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-208709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E69A9D262DE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 74AD7D2639B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F27A53141388
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1EE0931757F4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EA21345758;
-	Thu, 15 Jan 2026 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644373BF2FA;
+	Thu, 15 Jan 2026 17:07:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EyiZKvtV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zN2bCsMK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C162C028F;
-	Thu, 15 Jan 2026 17:03:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420323A0E94;
+	Thu, 15 Jan 2026 17:07:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496623; cv=none; b=QpD7U2ZramVPrAGlTYaMVk8QVEPOveTheTlc3Tdpt1C2cnH5v4JCugSeG96mDFkFxwOAQ/2bI9PFqe/zU6FLusgcK7bMvAxBuZ/rzAuU9uDfNg3IpA6aM6ufh652zTrRkvfuxI5IgyU9vAK8RJwtpEtzdQ0mUbIuJay1rAc0/bs=
+	t=1768496830; cv=none; b=BaEKq+II9BWxAdaa4yky55W8eDrv9yfzYzp3lQyAX4P/YAYxZ1Y/UQGCtWpYeiCY/cgpP+O23y1jolQUC0HNGuLM+nHWhsQr8/P2n3q0jpOQADl5mJm55cvXXojJVgsQe+IDGw9HQpKUbLhA4UWcM2kiSmJEX1JKDK4JivzpcNQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496623; c=relaxed/simple;
-	bh=ncroNg3cxGDY2JtcOv/nvgEK415YzPrZz0AhjRWv34k=;
+	s=arc-20240116; t=1768496830; c=relaxed/simple;
+	bh=maB+bXoG02GcPQ1dqhIHaM7qoU0LZ81THk6jUJOeZgk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ED6C4HrPb7tZ5KKwFHm3ES4T3fwGMmBUxayGQ5PDhWw2L8TVvZtJ0wmIR/aLSxVelDwHCiagOhyQPzUskRw64cUOYr4lzaLBHY7by1mQoclIxpScS73ukbuHPtCnV2TyTa7tsLLRHfVQTf/DL9c46Mx6t504Rrx4tvay1fEYUFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EyiZKvtV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E026AC116D0;
-	Thu, 15 Jan 2026 17:03:42 +0000 (UTC)
+	 MIME-Version; b=nOinmecRRqmglV4qFS5klnJB7DYr8oKnMLVjryVx5YCOgkeCABhjwLs83KljC8Cw1+7CTKq2LcMbuIuFZH/rv3DRZZ07DxtoEmMaThBZcxigysdOf75e+NFtyYXtVXgv7i6WshbNWb1iQXxEfSKPHSNRCLSPyUoX1437KgEWOx0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zN2bCsMK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA68C116D0;
+	Thu, 15 Jan 2026 17:07:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496623;
-	bh=ncroNg3cxGDY2JtcOv/nvgEK415YzPrZz0AhjRWv34k=;
+	s=korg; t=1768496830;
+	bh=maB+bXoG02GcPQ1dqhIHaM7qoU0LZ81THk6jUJOeZgk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EyiZKvtVE4gbVNNrDXeYtyW9OJ3+o0BDmtbPr9aEycV3hrK2L5w/gd4avRLQLS/8k
-	 mrnSUVmkuQ22DTaKWjdrVG5VuFXerEaMretxkWQMr3XuVN9Vd5uojFRmY0SmBfa3Bk
-	 xAu/UjPODeog3WiMcgY+An8gPfaykju3OynbpaTc=
+	b=zN2bCsMKHqZQFzqZBLq2Lf/nzTfnftNIPwmBYecLH0V4gNupaOas52PG+WOMksQ6j
+	 0CrXS4CNoFn79ocOn6xcgxXTpt2MoZkXs6Llhm7shgMQRhQxfqpdnKAGLYHOSbf0Fn
+	 cnnaFZI+b74MC34no14a56wPGqnsInpAHEf3LmaE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Sam James <sam@gentoo.org>,
+	Magnus Lindholm <linmag7@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 078/119] idpf: fix memory leak in idpf_vport_rel()
+Subject: [PATCH 6.6 30/88] alpha: dont reference obsolete termio struct for TC* constants
 Date: Thu, 15 Jan 2026 17:48:13 +0100
-Message-ID: <20260115164154.767371937@linuxfoundation.org>
+Message-ID: <20260115164147.403174869@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,56 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Sam James <sam@gentoo.org>
 
-[ Upstream commit f6242b354605faff263ca45882b148200915a3f6 ]
+[ Upstream commit 9aeed9041929812a10a6d693af050846942a1d16 ]
 
-Free vport->rx_ptype_lkup in idpf_vport_rel() to avoid leaking memory
-during a reset. Reported by kmemleak:
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-unreferenced object 0xff450acac838a000 (size 4096):
-  comm "kworker/u258:5", pid 7732, jiffies 4296830044
-  hex dump (first 32 bytes):
-    00 00 00 00 00 10 00 00 00 10 00 00 00 00 00 00  ................
-    00 00 00 00 00 00 00 00 00 10 00 00 00 00 00 00  ................
-  backtrace (crc 3da81902):
-    __kmalloc_cache_noprof+0x469/0x7a0
-    idpf_send_get_rx_ptype_msg+0x90/0x570 [idpf]
-    idpf_init_task+0x1ec/0x8d0 [idpf]
-    process_one_work+0x226/0x6d0
-    worker_thread+0x19e/0x340
-    kthread+0x10f/0x250
-    ret_from_fork+0x251/0x2b0
-    ret_from_fork_asm+0x1a/0x30
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Fixes: 0fe45467a104 ("idpf: add create vport and netdev configuration")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Signed-off-by: Sam James <sam@gentoo.org>
+Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/6ebd3451908785cad53b50ca6bc46cfe9d6bc03c.1764922497.git.sam@gentoo.org
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/alpha/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 568b57cb2298e..a0677b3277839 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -968,6 +968,8 @@ static void idpf_vport_rel(struct idpf_vport *vport)
- 		kfree(adapter->vport_config[idx]->req_qs_chunks);
- 		adapter->vport_config[idx]->req_qs_chunks = NULL;
- 	}
-+	kfree(vport->rx_ptype_lkup);
-+	vport->rx_ptype_lkup = NULL;
- 	kfree(vport);
- 	adapter->num_alloc_vports--;
- }
+diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
+index 971311605288f..a09d04b49cc65 100644
+--- a/arch/alpha/include/uapi/asm/ioctls.h
++++ b/arch/alpha/include/uapi/asm/ioctls.h
+@@ -23,10 +23,10 @@
+ #define TCSETSW		_IOW('t', 21, struct termios)
+ #define TCSETSF		_IOW('t', 22, struct termios)
+ 
+-#define TCGETA		_IOR('t', 23, struct termio)
+-#define TCSETA		_IOW('t', 24, struct termio)
+-#define TCSETAW		_IOW('t', 25, struct termio)
+-#define TCSETAF		_IOW('t', 28, struct termio)
++#define TCGETA          0x40127417
++#define TCSETA          0x80127418
++#define TCSETAW         0x80127419
++#define TCSETAF         0x8012741c
+ 
+ #define TCSBRK		_IO('t', 29)
+ #define TCXONC		_IO('t', 30)
 -- 
 2.51.0
 
