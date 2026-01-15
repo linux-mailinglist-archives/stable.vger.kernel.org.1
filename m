@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209133-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209556-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 23F53D2730A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:48 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4F32ED27ABE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:39:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C5AF631B2B5D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 65A3E3062B5B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EFD63BF2E6;
-	Thu, 15 Jan 2026 17:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 337932D9ECB;
+	Thu, 15 Jan 2026 17:43:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kUSxrGqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgtWcrl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55E692D73B4;
-	Thu, 15 Jan 2026 17:23:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EAF312F619D;
+	Thu, 15 Jan 2026 17:43:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497827; cv=none; b=H2pKiRRYRIF14v9C91xdhfdTIVpJUnT8oMLdjLbLOIQ/25Rbr8ErAI5Lr0zpfn1eKwq+rVxBj59TCPL2zg+eUiyLGs8zBa1v49JWdxSTyLeqosiQnB+IFNzsH+70CmjeGzDqG/ODl7fiYOzSdhmQ9nAUhXD1PmoW0tpwWfQUfEc=
+	t=1768499033; cv=none; b=DkP/0J2vtO7ellQqBGyukS5wAbc4ripfydJelp8nO5l7dAbiSihk7iPdyohN0jbdYYZkXs60wxrhRFyKY8d+TGzN5asYpd1lH1w3SiduJE7bEUXzSIKRruuBNDkaHJryDUeNCzjNx1AGPD5RtS7BzORmHay/X1TfIECsYxOpJvU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497827; c=relaxed/simple;
-	bh=+/QCQ/WU2fFMjU1iBfixTrLAgOzlM7qZxKlo0pmWhjk=;
+	s=arc-20240116; t=1768499033; c=relaxed/simple;
+	bh=0Bbi/dSPshpPZ39eglnvWz/v43KG2DnUYpJd9mOTpPw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJt6hiryDHkCoQsXIQg+Z+00dwFgADvqhkKwhWeETl2Gpkdjw0Oocoz3HxRblH9XwjpNm7tIsa+FJXoysgc3SyO19nvVWX9bWfPf9MzGft6mGRq5eRRp8YELSSNSLtgZ57BzZW2yuy/IesWPnEUWQZNf5rVsZxDj6qf1bJkcx9Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kUSxrGqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8023C116D0;
-	Thu, 15 Jan 2026 17:23:46 +0000 (UTC)
+	 MIME-Version; b=im0FfvV2oSDJRQhsBv7g8ujjCfPC+zadyoikJNrgXTHDUw5SmigxVtK29SEtXyGl5atVcKBiRJN4LlnFxs99YCrb4w1KCD+7jft+dtRWc3ExWGNuFCIlbMHoWlAuszbsnyZd4CxCUSvvh/p54/FcM7KVNDnmOEqaLR/vbAn0E+s=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgtWcrl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F8FC116D0;
+	Thu, 15 Jan 2026 17:43:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497827;
-	bh=+/QCQ/WU2fFMjU1iBfixTrLAgOzlM7qZxKlo0pmWhjk=;
+	s=korg; t=1768499032;
+	bh=0Bbi/dSPshpPZ39eglnvWz/v43KG2DnUYpJd9mOTpPw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kUSxrGqKhy6sfeVsmOYGopCmj3WHSUitqcSA+oTiKDZ7vFvrEwZTH3Hf11zRv+o31
-	 3TXzphOrX83WjKwbnK/B2+XJqMLmfgF4/R3AeBrmlSTay79nkG4NNJTAJ7P7CGTdi3
-	 /qmX5o8xw/AcEYJx6yWuOlqwthBKyqzmWewHr14w=
+	b=NgtWcrl1+X0LncXLYFDWlX9F0rXIpDcomfOcekqgYtRU24i5bD7woaAkMgZR9oY+U
+	 4nXrSeEo+S4Zs9fNLtIhxu4HvSxbHHwC3eHJhEGV/mWv/H1MauluSon9wlT8MWRaCt
+	 oo1BT3JKiwmQ+Dsg84OCU++6Y5KDWZx6yBxn8O6I=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com,
-	Yang Chenzhi <yang.chenzhi@vivo.com>,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 218/554] hfsplus: fix missing hfs_bnode_get() in __hfs_bnode_create
+Subject: [PATCH 5.10 083/451] powerpc/64s/ptdump: Fix kernel_hash_pagetable dump for ISA v3.00 HPTE format
 Date: Thu, 15 Jan 2026 17:44:44 +0100
-Message-ID: <20260115164254.140157011@linuxfoundation.org>
+Message-ID: <20260115164233.918261662@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,93 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Chenzhi <yang.chenzhi@vivo.com>
+From: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
 
-[ Upstream commit 152af114287851583cf7e0abc10129941f19466a ]
+[ Upstream commit eae40a6da63faa9fb63ff61f8fa2b3b57da78a84 ]
 
-When sync() and link() are called concurrently, both threads may
-enter hfs_bnode_find() without finding the node in the hash table
-and proceed to create it.
+HPTE format was changed since Power9 (ISA 3.0) onwards. While dumping
+kernel hash page tables, nothing gets printed on powernv P9+. This patch
+utilizes the helpers added in the patch tagged as fixes, to convert new
+format to old format and dump the hptes. This fix is only needed for
+native_find() (powernv), since pseries continues to work fine with the
+old format.
 
-Thread A:
-  hfsplus_write_inode()
-    -> hfsplus_write_system_inode()
-      -> hfs_btree_write()
-        -> hfs_bnode_find(tree, 0)
-          -> __hfs_bnode_create(tree, 0)
-
-Thread B:
-  hfsplus_create_cat()
-    -> hfs_brec_insert()
-      -> hfs_bnode_split()
-        -> hfs_bmap_alloc()
-          -> hfs_bnode_find(tree, 0)
-            -> __hfs_bnode_create(tree, 0)
-
-In this case, thread A creates the bnode, sets refcnt=1, and hashes it.
-Thread B also tries to create the same bnode, notices it has already
-been inserted, drops its own instance, and uses the hashed one without
-getting the node.
-
-```
-
-	node2 = hfs_bnode_findhash(tree, cnid);
-	if (!node2) {                                 <- Thread A
-		hash = hfs_bnode_hash(cnid);
-		node->next_hash = tree->node_hash[hash];
-		tree->node_hash[hash] = node;
-		tree->node_hash_cnt++;
-	} else {                                      <- Thread B
-		spin_unlock(&tree->hash_lock);
-		kfree(node);
-		wait_event(node2->lock_wq,
-			!test_bit(HFS_BNODE_NEW, &node2->flags));
-		return node2;
-	}
-```
-
-However, hfs_bnode_find() requires each call to take a reference.
-Here both threads end up setting refcnt=1. When they later put the node,
-this triggers:
-
-BUG_ON(!atomic_read(&node->refcnt))
-
-In this scenario, Thread B in fact finds the node in the hash table
-rather than creating a new one, and thus must take a reference.
-
-Fix this by calling hfs_bnode_get() when reusing a bnode newly created by
-another thread to ensure the refcount is updated correctly.
-
-A similar bug was fixed in HFS long ago in commit
-a9dc087fd3c4 ("fix missing hfs_bnode_get() in __hfs_bnode_create")
-but the same issue remained in HFS+ until now.
-
-Reported-by: syzbot+005d2a9ecd9fbf525f6a@syzkaller.appspotmail.com
-Signed-off-by: Yang Chenzhi <yang.chenzhi@vivo.com>
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Link: https://lore.kernel.org/r/20250829093912.611853-1-yang.chenzhi@vivo.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Fixes: 6b243fcfb5f1e ("powerpc/64: Simplify adaptation to new ISA v3.00 HPTE format")
+Signed-off-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/4c2bb9e5b3cfbc0dd80b61b67cdd3ccfc632684c.1761834163.git.ritesh.list@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/hfsplus/bnode.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/mm/ptdump/hashpagetable.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index 358294726ff17..7c127922ac0c7 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -488,6 +488,7 @@ static struct hfs_bnode *__hfs_bnode_create(struct hfs_btree *tree, u32 cnid)
- 		tree->node_hash[hash] = node;
- 		tree->node_hash_cnt++;
- 	} else {
-+		hfs_bnode_get(node2);
- 		spin_unlock(&tree->hash_lock);
- 		kfree(node);
- 		wait_event(node2->lock_wq,
+diff --git a/arch/powerpc/mm/ptdump/hashpagetable.c b/arch/powerpc/mm/ptdump/hashpagetable.c
+index ad6df9a2e7c8c..6fed0fc236ff5 100644
+--- a/arch/powerpc/mm/ptdump/hashpagetable.c
++++ b/arch/powerpc/mm/ptdump/hashpagetable.c
+@@ -216,6 +216,8 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
+ 	vpn  = hpt_vpn(ea, vsid, ssize);
+ 	hash = hpt_hash(vpn, shift, ssize);
+ 	want_v = hpte_encode_avpn(vpn, psize, ssize);
++	if (cpu_has_feature(CPU_FTR_ARCH_300))
++		want_v = hpte_old_to_new_v(want_v);
+ 
+ 	/* to check in the secondary hash table, we invert the hash */
+ 	if (!primary)
+@@ -229,6 +231,10 @@ static int native_find(unsigned long ea, int psize, bool primary, u64 *v, u64
+ 			/* HPTE matches */
+ 			*v = be64_to_cpu(hptep->v);
+ 			*r = be64_to_cpu(hptep->r);
++			if (cpu_has_feature(CPU_FTR_ARCH_300)) {
++				*v = hpte_new_to_old_v(*v, *r);
++				*r = hpte_new_to_old_r(*r);
++			}
+ 			return 0;
+ 		}
+ 		++hpte_group;
 -- 
 2.51.0
 
