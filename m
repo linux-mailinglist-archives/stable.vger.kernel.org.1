@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208754-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209789-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C00FD2622D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id DD1E3D2771B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 499CB3022D1D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 722813164B53
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0EC03BF301;
-	Thu, 15 Jan 2026 17:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95A13C00AA;
+	Thu, 15 Jan 2026 17:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dOvrcIU7"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxzzmEDK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83CC63A0E94;
-	Thu, 15 Jan 2026 17:05:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC90B3D1CD0;
+	Thu, 15 Jan 2026 17:54:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496748; cv=none; b=HtrxAArM7TupELwdKF6my+rVW5N+8kMfPL6qlhmRyoz0S5mt/udKJrw5mBoM2kIgYI3gxnzSXhrbk6Sg/X+dZEkDi/f5Hi9XGv0A5VB+/PdrZjTsMIowGy/iziWdbz40ycfBVmUmjDgBErDUz7R55sPRWasYZYtoRn2D6ZJP2tg=
+	t=1768499695; cv=none; b=dIHj5ZbejOsJ9ijoRpWhhL2+a6PnwJddU9Z/YEYjZ2ibuKdxXzCzziQAwCdJJsC4s9l7JfVvbwcs+2StrFYKTn+zd4VnxHlg0+mT2QrtsX7WaENl0Exy0Li9LEksMh5y2YGuEFdz1gFk3f4DXq5ryBFHGrCPWq9FCeaS5YdnIQ4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496748; c=relaxed/simple;
-	bh=nUb+vz7dqVrrB0tjLiHRMamvd0SUtN3nmpdGkdmWaZA=;
+	s=arc-20240116; t=1768499695; c=relaxed/simple;
+	bh=uH+7bwFrheRlgZhm4PKS+Mpx5O2YrIh97VgL6xMPBHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=e68VUU8D+9DTVcIxKqcEssyLL6Pasc8keTlFkEk8Ev1BQ40jhHsMsOGjgiGG8rPPEmswEj3fT4D2I46TlsQQiJ6wZ1LqUJ2fRkp2Y1k68KllqGQRuHgFVonYl2+tB28AHoMGXndekVt3AqReEHN/XmrZiP3QXmRBK4JtKyGiGJo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dOvrcIU7; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E10EC116D0;
-	Thu, 15 Jan 2026 17:05:47 +0000 (UTC)
+	 MIME-Version; b=ClPdDa/Il9zhqelobylkrJTZxdP1rJB8rAJIqYbSXEwjKPxcr5xxPnjRdBGJutGaBKt0jQqsXjppXIgZTzUIjNm6+Lm/7gobNOQpHcSxFM9rcwoEct4k5EQDm2YE54/g8+SrfH5T9cmtFF2t8sx25ct6T4oITgs919eSouebgqk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxzzmEDK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375A3C116D0;
+	Thu, 15 Jan 2026 17:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496748;
-	bh=nUb+vz7dqVrrB0tjLiHRMamvd0SUtN3nmpdGkdmWaZA=;
+	s=korg; t=1768499695;
+	bh=uH+7bwFrheRlgZhm4PKS+Mpx5O2YrIh97VgL6xMPBHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dOvrcIU7CZbgYot6fzi+ZUhn8TLG/dOMjB+CvG/50fXJpQeCA4AClYS/29ldxaJKh
-	 LvGG2mC5Rzy5y1zwYK2SlP6qkHbzOld8n9tmnCbWoKmMkpL3e2ZFCt2HWGZ9NBEYYR
-	 e/XWN/Nv4zJzz9Ew1OyjCoZKwk6Fl7iWqVv/neEE=
+	b=MxzzmEDKTeG+HMcpMlUoMhix+Mj9qWTxtBAVDV/Ud3Onjp9L36O5mNxVs4pRORHHo
+	 igA4uxXkdlN1cl1x0dKaSpBUE0tobASTs8p1zg2qbv3LwW3+7OWnHzGQQt2EZS0PnQ
+	 s8ogI5E/WVrdt3HBC19/Ya2eRhkGAHDty4+ysFgM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sumeet Pawnikar <sumeet4linux@gmail.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 104/119] powercap: fix sscanf() error return value handling
+	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>
+Subject: [PATCH 5.10 318/451] dm-ebs: Mark full buffer dirty even on partial write
 Date: Thu, 15 Jan 2026 17:48:39 +0100
-Message-ID: <20260115164155.706386139@linuxfoundation.org>
+Message-ID: <20260115164242.404556745@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,72 +59,123 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumeet Pawnikar <sumeet4linux@gmail.com>
+From: Uladzislau Rezki (Sony) <urezki@gmail.com>
 
-[ Upstream commit efc4c35b741af973de90f6826bf35d3b3ac36bf1 ]
+commit 7fa3e7d114abc9cc71cc35d768e116641074ddb4 upstream.
 
-Fix inconsistent error handling for sscanf() return value check.
+When performing a read-modify-write(RMW) operation, any modification
+to a buffered block must cause the entire buffer to be marked dirty.
 
-Implicit boolean conversion is used instead of explicit return
-value checks. The code checks if (!sscanf(...)) which is incorrect
-because:
- 1. sscanf returns the number of successfully parsed items
- 2. On success, it returns 1 (one item passed)
- 3. On failure, it returns 0 or EOF
- 4. The check 'if (!sscanf(...))' is wrong because it treats
-    success (1) as failure
+Marking only a subrange as dirty is incorrect because the underlying
+device block size(ubs) defines the minimum read/write granularity. A
+lower device can perform I/O only on regions which are fully aligned
+and sized to ubs.
 
-All occurrences of sscanf() now uses explicit return value check.
-With this behavior it returns '-EINVAL' when parsing fails (returns
-0 or EOF), and continues when parsing succeeds (returns 1).
+This change ensures that write-back operations always occur in full
+ubs-sized chunks, matching the intended emulation semantics of the
+EBS target.
 
-Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251207151549.202452-1-sumeet4linux@gmail.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As for user space visible impact, submitting sub-ubs and misaligned
+I/O for devices which are tuned to ubs sizes only, will reject such
+requests, therefore it can lead to losing data. Example:
+
+1) Create a 8K nvme device in qemu by adding
+
+-device nvme,drive=drv0,serial=foo,logical_block_size=8192,physical_block_size=8192
+
+2) Setup dm-ebs to emulate 512B to 8K mapping
+
+urezki@pc638:~/bin$ cat dmsetup.sh
+
+lower=/dev/nvme0n1
+len=$(blockdev --getsz "$lower")
+
+echo "0 $len ebs $lower 0 1 16" | dmsetup create nvme-8k
+urezki@pc638:~/bin$
+
+offset 0, ebs=1 and ubs=16(in sectors).
+
+3) Create an ext4 filesystem(default 4K block size)
+
+urezki@pc638:~/bin$ sudo mkfs.ext4 -F /dev/dm-0
+mke2fs 1.47.0 (5-Feb-2023)
+Discarding device blocks: done
+Creating filesystem with 2072576 4k blocks and 518144 inodes
+Filesystem UUID: bd0b6ca6-0506-4e31-86da-8d22c9d50b63
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: mkfs.ext4: Input/output error while writing out and closing file system
+urezki@pc638:~/bin$ dmesg
+
+<snip>
+[ 1618.875449] buffer_io_error: 1028 callbacks suppressed
+[ 1618.875456] Buffer I/O error on dev dm-0, logical block 0, lost async page write
+[ 1618.875527] Buffer I/O error on dev dm-0, logical block 1, lost async page write
+[ 1618.875602] Buffer I/O error on dev dm-0, logical block 2, lost async page write
+[ 1618.875620] Buffer I/O error on dev dm-0, logical block 3, lost async page write
+[ 1618.875639] Buffer I/O error on dev dm-0, logical block 4, lost async page write
+[ 1618.894316] Buffer I/O error on dev dm-0, logical block 5, lost async page write
+[ 1618.894358] Buffer I/O error on dev dm-0, logical block 6, lost async page write
+[ 1618.894380] Buffer I/O error on dev dm-0, logical block 7, lost async page write
+[ 1618.894405] Buffer I/O error on dev dm-0, logical block 8, lost async page write
+[ 1618.894427] Buffer I/O error on dev dm-0, logical block 9, lost async page write
+<snip>
+
+Many I/O errors because the lower 8K device rejects sub-ubs/misaligned
+requests.
+
+with a patch:
+
+urezki@pc638:~/bin$ sudo mkfs.ext4 -F /dev/dm-0
+mke2fs 1.47.0 (5-Feb-2023)
+Discarding device blocks: done
+Creating filesystem with 2072576 4k blocks and 518144 inodes
+Filesystem UUID: 9b54f44f-ef55-4bd4-9e40-c8b775a616ac
+Superblock backups stored on blocks:
+        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
+
+Allocating group tables: done
+Writing inode tables: done
+Creating journal (16384 blocks): done
+Writing superblocks and filesystem accounting information: done
+
+urezki@pc638:~/bin$ sudo mount /dev/dm-0 /mnt/
+urezki@pc638:~/bin$ ls -al /mnt/
+total 24
+drwxr-xr-x  3 root root  4096 Oct 17 15:13 .
+drwxr-xr-x 19 root root  4096 Jul 10 19:42 ..
+drwx------  2 root root 16384 Oct 17 15:13 lost+found
+urezki@pc638:~/bin$
+
+After this change: mkfs completes; mount succeeds.
+
+Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/powercap/powercap_sys.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/md/dm-ebs-target.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
-index d14b36b75189d..1ff369880beb2 100644
---- a/drivers/powercap/powercap_sys.c
-+++ b/drivers/powercap/powercap_sys.c
-@@ -68,7 +68,7 @@ static ssize_t show_constraint_##_attr(struct device *dev, \
- 	int id; \
- 	struct powercap_zone_constraint *pconst;\
- 	\
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
- 		return -EINVAL; \
- 	if (id >= power_zone->const_id_cnt)	\
- 		return -EINVAL; \
-@@ -93,7 +93,7 @@ static ssize_t store_constraint_##_attr(struct device *dev,\
- 	int id; \
- 	struct powercap_zone_constraint *pconst;\
- 	\
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id)) \
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1) \
- 		return -EINVAL; \
- 	if (id >= power_zone->const_id_cnt)	\
- 		return -EINVAL; \
-@@ -162,7 +162,7 @@ static ssize_t show_constraint_name(struct device *dev,
- 	ssize_t len = -ENODATA;
- 	struct powercap_zone_constraint *pconst;
+--- a/drivers/md/dm-ebs-target.c
++++ b/drivers/md/dm-ebs-target.c
+@@ -101,7 +101,7 @@ static int __ebs_rw_bvec(struct ebs_c *e
+ 			} else {
+ 				flush_dcache_page(bv->bv_page);
+ 				memcpy(ba, pa, cur_len);
+-				dm_bufio_mark_partial_buffer_dirty(b, buf_off, buf_off + cur_len);
++				dm_bufio_mark_buffer_dirty(b);
+ 			}
  
--	if (!sscanf(dev_attr->attr.name, "constraint_%d_", &id))
-+	if (sscanf(dev_attr->attr.name, "constraint_%d_", &id) != 1)
- 		return -EINVAL;
- 	if (id >= power_zone->const_id_cnt)
- 		return -EINVAL;
--- 
-2.51.0
-
+ 			dm_bufio_release(b);
 
 
 
