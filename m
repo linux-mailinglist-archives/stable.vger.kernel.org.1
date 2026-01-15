@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-209624-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209203-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0B69ED26F83
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:20 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 69080D26B96
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C86230B3A71
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9DEA316EDB4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D05F3C1967;
-	Thu, 15 Jan 2026 17:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605F73C197D;
+	Thu, 15 Jan 2026 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4V858ae"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCUC8VSl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1633BF2EA;
-	Thu, 15 Jan 2026 17:47:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233683C008E;
+	Thu, 15 Jan 2026 17:27:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499226; cv=none; b=QAxgJ91ZdE7fwLq33Ft6EoFHSo9MUQq+AiMYjp44uqpvXE4zLPxle/lrTJebzhgZEuNQiKNH/7Xli3NXNFXNQZtNpGBsTzkXzHVUIsRC/WsigBQfOlxtU5APm+CDJxSmxCsY544gvlSCjRZinzEO0pOPqZcK5388hK6EDEhpt6E=
+	t=1768498027; cv=none; b=QiglLoAEGbQHTPb4BK8i2VWSnPgnBnzJyHJhfZ8iXsWsfesxrLNBAYLDuHCus1G/1zXl7B0NU4B+nhNyiBvczIH+EY7o2B6GWOiultMkEv5TdLmk3edNsU6wKOsYx/fNUIrd0S8HB+dZMbwyoP9Ezfy4gA4j5XiR8R0nS6gmjmU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499226; c=relaxed/simple;
-	bh=KtcSZqt6GaGkfuYouRD2yPRKgoS3hR3OJztnMLtGNnA=;
+	s=arc-20240116; t=1768498027; c=relaxed/simple;
+	bh=h3ZVyySazTKFlfUqisdUKxhZes3hzsckwqIpomhVfIM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gKTfApSO6z2fhosK5ujtqGD0qqxtJf1CP4a1JLtoMCVLGZru0o6Bd9YApcmsjntFrrX2OKLh47KXPbDZfmfb2AV4qaLq90pnthw9T872KaQikzmLtYR2Hl/b56ae40oooFtEBU/5TIT7mimtxq6x8SlcWTNctPIzQToRgZEt9Ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4V858ae; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB5AC19422;
-	Thu, 15 Jan 2026 17:47:05 +0000 (UTC)
+	 MIME-Version; b=IqGJhPnxY3XV5yvJltvjM0FLqyEXA4hlWaHUQQW8tCRy6mvR7NA7qAVH2411verkpeXuGzZLwrvH5FlmD8ha1CBmxGtbutIgrNEB85ty1/9kLS4mvIsOjV1wFEDDNaDC8yiHJ2H2q0Kiv1N2lZJn/Uz3zgyOmGlRjBY0/eOb5JU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCUC8VSl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16B9C19423;
+	Thu, 15 Jan 2026 17:27:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499226;
-	bh=KtcSZqt6GaGkfuYouRD2yPRKgoS3hR3OJztnMLtGNnA=;
+	s=korg; t=1768498027;
+	bh=h3ZVyySazTKFlfUqisdUKxhZes3hzsckwqIpomhVfIM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r4V858aeMuBVy9lsUXELdpqMwMMc2SaRTXNiiJCZktG2TtNXJRXwSojhkPhJgSh9h
-	 x1eQ8/Pt1AmDTDEelvmo8fzrnncOMX7WeQAA12nu1qfQwCm6vNQqDLfjeP9NnIKQIp
-	 6yH57h/qp0wvHx2+l1x7yyACWwTeouYdeUaMdIYo=
+	b=aCUC8VSlRM28b8oSLpZMdrRYgiflVUdgTUz5HHZaMbn1NqHidRsmRrwXpqG7e+ln7
+	 m2jlheAmuHzWoxNJPKE7hdmxseteovwMT2uNbeaihq8P+L3pla1t9aij4vQYEQsI7F
+	 +hARPWZQ3Qa/oqKPsfk9foU3KXla2OD1tyqQQF3Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicklas Bo Jensen <njensen@akamai.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 152/451] netfilter: nf_conncount: garbage collection is not skipped when jiffies wrap around
-Date: Thu, 15 Jan 2026 17:45:53 +0100
-Message-ID: <20260115164236.412522445@linuxfoundation.org>
+	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 288/554] media: v4l2-mem2mem: Fix outdated documentation
+Date: Thu, 15 Jan 2026 17:45:54 +0100
+Message-ID: <20260115164256.653126370@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicklas Bo Jensen <njensen@akamai.com>
+From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-commit df08c94baafb001de6cf44bb7098bb557f36c335 upstream.
+commit 082b86919b7a94de01d849021b4da820a6cb89dc upstream.
 
-nf_conncount is supposed to skip garbage collection if it has already
-run garbage collection in the same jiffy. Unfortunately, this is broken
-when jiffies wrap around which this patch fixes.
+Commit cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in
+v4l2_m2m_job_finish") deferred calls to .device_run() to a work queue to
+avoid recursive calls when a job is finished right away from
+.device_run(). It failed to update the v4l2_m2m_job_finish()
+documentation that still states the function must not be called from
+.device_run(). Fix it.
 
-The problem is that last_gc in the nf_conncount_list struct is an u32,
-but jiffies is an unsigned long which is 8 bytes on my systems. When
-those two are compared it only works until last_gc wraps around.
-
-See bug report: https://bugzilla.netfilter.org/show_bug.cgi?id=1778
-for more details.
-
-Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
-Signed-off-by: Nicklas Bo Jensen <njensen@akamai.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Fixes: cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in v4l2_m2m_job_finish")
+Cc: stable@vger.kernel.org
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conncount.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/media/v4l2-mem2mem.h |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -182,7 +182,7 @@ static int __nf_conncount_add(struct net
- 		return -EEXIST;
- 	}
- 
--	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
-+	if ((u32)jiffies == list->last_gc)
- 		goto add_new_node;
- 
- 	/* check the saved connections */
-@@ -288,7 +288,7 @@ bool nf_conncount_gc_list(struct net *ne
- 	bool ret = false;
- 
- 	/* don't bother if we just did GC */
--	if (time_is_after_eq_jiffies((unsigned long)READ_ONCE(list->last_gc)))
-+	if ((u32)jiffies == READ_ONCE(list->last_gc))
- 		return false;
- 
- 	/* don't bother if other cpu is already doing GC */
+--- a/include/media/v4l2-mem2mem.h
++++ b/include/media/v4l2-mem2mem.h
+@@ -185,8 +185,7 @@ void v4l2_m2m_try_schedule(struct v4l2_m
+  * other instances to take control of the device.
+  *
+  * This function has to be called only after &v4l2_m2m_ops->device_run
+- * callback has been called on the driver. To prevent recursion, it should
+- * not be called directly from the &v4l2_m2m_ops->device_run callback though.
++ * callback has been called on the driver.
+  */
+ void v4l2_m2m_job_finish(struct v4l2_m2m_dev *m2m_dev,
+ 			 struct v4l2_m2m_ctx *m2m_ctx);
 
 
 
