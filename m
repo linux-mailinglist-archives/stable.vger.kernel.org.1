@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209834-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209446-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 223F3D27E40
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:59:58 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B2C6ED27205
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8742331F74AE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:58 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D264E3086F72
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F583D7260;
-	Thu, 15 Jan 2026 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F2D464C81;
+	Thu, 15 Jan 2026 17:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XK/WijTY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GBL0Vske"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A79A33D3309;
-	Thu, 15 Jan 2026 17:57:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B4C2B86334;
+	Thu, 15 Jan 2026 17:38:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499822; cv=none; b=HAwk9rvgncBsaJTP4kGiqtI2XkOAj4Jc508IhZ4nmHogcyjL8WNn6us1031wiiboyiMs33boFHHXKlEf7QON2CpLl+rhw8QAalUMNKJIJryDCpO5ofpbdACri0GFmK9mM7C7II7R/inb0KcMW+GRQ0tnLpsSyC9Cv5TxPGM0pj0=
+	t=1768498720; cv=none; b=hNYm9nI4lfZqKdcPGYKbYZ0e/3whhhM46bBvieu+fzZ+bP2pQ1+4ne72DUzbepsnRpsqS8E0cBntBfZsrKxY4nFevRoM2wAEZnSU//0KkD2s++VMqSd2KMKYyD4QuOngwNTUfPLAK232z3xhlK9Hp4Oxyf+KVQ7/XXJ9HKoz/NM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499822; c=relaxed/simple;
-	bh=EmV5Ci7qBAt3PgL8rsCiB5qpRaZ98m3P7ww/xp/156A=;
+	s=arc-20240116; t=1768498720; c=relaxed/simple;
+	bh=vcb8DYub5I7ndI/ak1HH/wHxSCAJH/eudNXlyBxVylc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pQDLWQblwuRYBvJamnY8CZ/O6Uga2AnntYo/vxMcNALoW/3tWAA72mcspDYFUU9eZFhVGL3n2Z52fSrMrTAq1ltLd0U2e7i+XEgFqN1XRrzH4kfbzPe9avhkwL3rSk3tbCdaNco2v9hLIbXnbIm4Ur+2jo4rFzPQM+YSbE8KNIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XK/WijTY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07A63C116D0;
-	Thu, 15 Jan 2026 17:57:01 +0000 (UTC)
+	 MIME-Version; b=Y7oQe8Qk+9Ew21tgwww4oryyts4NW43cXcOBRxuh/Ao/L/0nfY6LB+Vc8Cd5/A4UvgqhwXPb06JIDsgwu/BqQ8F2xuL+OZ6krZPdyKaQ7zdNp8EOS4id2iW0dkZPEawq/OZBstwljgRSzklF3USOYcazVdwbelfaUTsOH9aIAU4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GBL0Vske; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 422D0C116D0;
+	Thu, 15 Jan 2026 17:38:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499822;
-	bh=EmV5Ci7qBAt3PgL8rsCiB5qpRaZ98m3P7ww/xp/156A=;
+	s=korg; t=1768498720;
+	bh=vcb8DYub5I7ndI/ak1HH/wHxSCAJH/eudNXlyBxVylc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XK/WijTYnOqhA2UpwI+WJFcRsQ+vVyu+UE+SE+Ah7fUsqoMKZGqi6vGAG+OdTMxNz
-	 6XBubuEmhDfeQqpWfSpy22mnVUrgOZWTHjRTTp8OQjFKsiSnDe3Qx1INtigVy19GdB
-	 Nz7qikNxNQfVydHaYjmcEFM5xi9Qa7X2FABCXIrw=
+	b=GBL0VskeqxRuqrXmcMrnrzOvYDxvQGMagH7P+z35gSHUikQVo4V9ExUjzzdd+GKvy
+	 hOhiUc47qVEIJqyXgRiDrJqdtw92IR5/r97TWr4QxEgUy7HZaIoEsZmcWKDyXY97kK
+	 rnDlo6SzhcsJPq8KmCbzw8dGc4sMwsSG6+ExcNpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 361/451] f2fs: fix to propagate error from f2fs_enable_checkpoint()
-Date: Thu, 15 Jan 2026 17:49:22 +0100
-Message-ID: <20260115164243.964884121@linuxfoundation.org>
+	Dan Carpenter <dan.carpenter@linaro.org>,
+	Cristian Marussi <cristian.marussi@arm.com>,
+	Amitai Gottlieb <amitaig@hailo.ai>,
+	Sudeep Holla <sudeep.holla@arm.com>
+Subject: [PATCH 5.15 497/554] firmware: arm_scmi: Fix unused notifier-block in unregister
+Date: Thu, 15 Jan 2026 17:49:23 +0100
+Message-ID: <20260115164304.308193945@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Amitai Gottlieb <amitaig@hailo.ai>
 
-[ Upstream commit be112e7449a6e1b54aa9feac618825d154b3a5c7 ]
+In scmi_devm_notifier_unregister(), the notifier-block argument was ignored
+and never passed to devres_release(). As a result, the function always
+returned -ENOENT and failed to unregister the notifier.
 
-In order to let userspace detect such error rather than suffering
-silent failure.
+Drivers that depend on this helper for teardown could therefore hit
+unexpected failures, including kernel panics.
 
-Fixes: 4354994f097d ("f2fs: checkpoint disabling")
-Cc: stable@kernel.org
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ adapted error handling to use restore_gc ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Commit 264a2c520628 ("firmware: arm_scmi: Simplify scmi_devm_notifier_unregister")
+removed the faulty code path during refactoring and hence this fix is not
+required upstream.
+
+Cc: <stable@vger.kernel.org> # 5.15.x, 6.1.x, and 6.6.x
+Fixes: 5ad3d1cf7d34 ("firmware: arm_scmi: Introduce new devres notification ops")
+Reviewed-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Cristian Marussi <cristian.marussi@arm.com>
+Signed-off-by: Amitai Gottlieb <amitaig@hailo.ai>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/super.c |   24 +++++++++++++++---------
- 1 file changed, 15 insertions(+), 9 deletions(-)
+ drivers/firmware/arm_scmi/notify.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1836,9 +1836,10 @@ restore_flag:
- 	return err;
- }
- 
--static void f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
-+static int f2fs_enable_checkpoint(struct f2fs_sb_info *sbi)
- {
- 	int retry = DEFAULT_RETRY_IO_COUNT;
-+	int ret;
- 
- 	/* we should flush all the data to keep data consistency */
- 	do {
-@@ -1857,7 +1858,11 @@ static void f2fs_enable_checkpoint(struc
- 	set_sbi_flag(sbi, SBI_IS_DIRTY);
- 	up_write(&sbi->gc_lock);
- 
--	f2fs_sync_fs(sbi->sb, 1);
-+	ret = f2fs_sync_fs(sbi->sb, 1);
-+	if (ret)
-+		f2fs_err(sbi, "%s sync_fs failed, ret: %d", __func__, ret);
-+
-+	return ret;
- }
- 
- static int f2fs_remount(struct super_block *sb, int *flags, char *data)
-@@ -2005,7 +2010,9 @@ static int f2fs_remount(struct super_blo
- 			if (err)
- 				goto restore_gc;
- 		} else {
--			f2fs_enable_checkpoint(sbi);
-+			err = f2fs_enable_checkpoint(sbi);
-+			if (err)
-+				goto restore_gc;
- 		}
- 	}
- 
-@@ -3933,13 +3940,12 @@ reset_checkpoint:
- 	/* f2fs_recover_fsync_data() cleared this already */
- 	clear_sbi_flag(sbi, SBI_POR_DOING);
- 
--	if (test_opt(sbi, DISABLE_CHECKPOINT)) {
-+	if (test_opt(sbi, DISABLE_CHECKPOINT))
- 		err = f2fs_disable_checkpoint(sbi);
--		if (err)
--			goto sync_free_meta;
--	} else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG)) {
--		f2fs_enable_checkpoint(sbi);
--	}
-+	else if (is_set_ckpt_flags(sbi, CP_DISABLED_FLAG))
-+		err = f2fs_enable_checkpoint(sbi);
-+	if (err)
-+		goto sync_free_meta;
- 
- 	/*
- 	 * If filesystem is not mounted as read-only then
+--- a/drivers/firmware/arm_scmi/notify.c
++++ b/drivers/firmware/arm_scmi/notify.c
+@@ -1539,6 +1539,7 @@ static int scmi_devm_notifier_unregister
+ 	dres.handle = sdev->handle;
+ 	dres.proto_id = proto_id;
+ 	dres.evt_id = evt_id;
++	dres.nb = nb;
+ 	if (src_id) {
+ 		dres.__src_id = *src_id;
+ 		dres.src_id = &dres.__src_id;
 
 
 
