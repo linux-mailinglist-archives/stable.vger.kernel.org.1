@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-208677-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209310-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4A4DFD261ED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:31 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B4207D26DD2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 07785311C98B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5BF083119D46
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D64212D73BE;
-	Thu, 15 Jan 2026 17:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D60D3C197A;
+	Thu, 15 Jan 2026 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s7hUMK0Y"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BO0ETR+f"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A15C2C028F;
-	Thu, 15 Jan 2026 17:02:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FC1B3C1975;
+	Thu, 15 Jan 2026 17:32:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496532; cv=none; b=J+ySl1uOqT4/nB4mCr3GSmz9wCxzOq579ztHpAcCCzR5oI69kEWr2fMbsRyx94q5ip/OHNvMk8b466xSznSWMGSnDqPSUH+fTDwT4tKz0ehp33CQFO2iQC5qmebQF8Lg2gxducRSdx3Fhlztq/JvpQOev96PTY/JH84iLYK+KpU=
+	t=1768498332; cv=none; b=TNYHZGBwedy0mEhmAOeGrxxt6GywskoeUIBujDvdmsYFwHcS/R09CDrdD8LNGXPZH7zxDjEcPE0GCJNwA2V7hpS8P6PvXC9gh/iaU8IqqcjTYV4JpAAgtrdGoOZjmDoSy8CxUITFSVyduCvcSBhoPrYc6uXk25HFn7qe2E1jDu4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496532; c=relaxed/simple;
-	bh=dKcqbBixiWyS6Kesxlf4sDBRrrr3AlKSwOrpYLl7/9w=;
+	s=arc-20240116; t=1768498332; c=relaxed/simple;
+	bh=TQyB83BZawHCIKJCP0ISOSiebGPA3hizNON54bAHdHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TwG/iQLjrTAmICvViSznu5kvGmFXsS7Sa72njZePYDMw6JHbnsOAlTOF/BPH0tLHhs0EqsKSP9wReMqDlAcIcN5Rvh728yV1FMVe8KYQeaYr8iJ9QBlNFI9UHJima31pJ3b7uqhUi73k6weQ05VTxquzTGzhW9wfXu8+uFVvPGA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s7hUMK0Y; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27259C116D0;
-	Thu, 15 Jan 2026 17:02:11 +0000 (UTC)
+	 MIME-Version; b=YYoN3DcXNivfN9SA7E2/vooXeR6fBsG/DFORlveVTcH3B1JNjsMHcL9qO8cAkDTtV6QNO8U9/VYRFpoB2RTCVrVHcQZGtqsdqBroJKH6Krm4AXF3x0LEf0EtLnf+Kg7SQuHHjzJPQRoSG9PCQ/xu0F6ViEoq7nAwhfWZpMVpDnc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BO0ETR+f; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 811DBC116D0;
+	Thu, 15 Jan 2026 17:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496532;
-	bh=dKcqbBixiWyS6Kesxlf4sDBRrrr3AlKSwOrpYLl7/9w=;
+	s=korg; t=1768498331;
+	bh=TQyB83BZawHCIKJCP0ISOSiebGPA3hizNON54bAHdHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s7hUMK0YrAPq43lNFEV7vGv8FzfjyGPdVUws6XDj2gbi70du0ZUWV0uL5m6AJldLl
-	 XPtukijYqWRDLAKyooNL9iGJn9rjHSSZ6/fKEm88XD4hRkSxZ4ZztED9hWY0YWYLGz
-	 cwQwYbtecKUHN7qfqYjO0u3OYQzxaJkt5D+2dPU0=
+	b=BO0ETR+f0h0KvEiVnCpUY1G6zlysmyWD5o9DGviVad6OMWAWfkFFoKFkNw+MQBqm2
+	 ADriYzzomu/XGlYK5OG28H5rmDF4i0agF57ZM3T/FniepIMKVhbN75YCn8WXm4chlL
+	 19ycj6gbanXyor7sEHyqlmoD19S12W+xlwj+KMUk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Boris Burkov <boris@bur.io>,
-	Qu Wenruo <wqu@suse.com>,
-	David Sterba <dsterba@suse.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 046/119] btrfs: qgroup: update all parent qgroups when doing quick inherit
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 395/554] media: cec: Fix debugfs leak on bus_register() failure
 Date: Thu, 15 Jan 2026 17:47:41 +0100
-Message-ID: <20260115164153.622142826@linuxfoundation.org>
+Message-ID: <20260115164300.533459057@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qu Wenruo <wqu@suse.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit 68d4b3fa18d72b7f649e83012e7e08f1881f6b75 ]
+commit c43bcd2b2aa3c2ca9d2433c3990ecbc2c47d10eb upstream.
 
-[BUG]
-There is a bug that if a subvolume has multi-level parent qgroups, and
-is able to do a quick inherit, only the direct parent qgroup got
-updated:
+In cec_devnode_init(), the debugfs directory created with
+debugfs_create_dir() is not removed if bus_register() fails.
+This leaves a stale "cec" entry in debugfs and prevents
+proper module reloading.
 
-  mkfs.btrfs  -f -O quota $dev
-  mount $dev $mnt
-  btrfs subv create $mnt/subv1
-  btrfs qgroup create 1/100 $mnt
-  btrfs qgroup create 2/100 $mnt
-  btrfs qgroup assign 1/100 2/100 $mnt
-  btrfs qgroup assign 0/256 1/100 $mnt
-  btrfs qgroup show -p --sync $mnt
+Fix this by removing the debugfs directory in the error path.
 
-  Qgroupid    Referenced    Exclusive Parent     Path
-  --------    ----------    --------- ------     ----
-  0/5           16.00KiB     16.00KiB -          <toplevel>
-  0/256         16.00KiB     16.00KiB 1/100      subv1
-  1/100         16.00KiB     16.00KiB 2/100      2/100<1 member qgroup>
-  2/100         16.00KiB     16.00KiB -          <0 member qgroups>
-
-  btrfs subv snap -i 1/100 $mnt/subv1 $mnt/snap1
-  btrfs qgroup show -p --sync $mnt
-
-  Qgroupid    Referenced    Exclusive Parent     Path
-  --------    ----------    --------- ------     ----
-  0/5           16.00KiB     16.00KiB -          <toplevel>
-  0/256         16.00KiB     16.00KiB 1/100      subv1
-  0/257         16.00KiB     16.00KiB 1/100      snap1
-  1/100         32.00KiB     32.00KiB 2/100      2/100<1 member qgroup>
-  2/100         16.00KiB     16.00KiB -          <0 member qgroups>
-  # Note that 2/100 is not updated, and qgroup numbers are inconsistent
-
-  umount $mnt
-
-[CAUSE]
-If the snapshot source subvolume belongs to a parent qgroup, and the new
-snapshot target is also added to the new same parent qgroup, we allow a
-quick update without marking qgroup inconsistent.
-
-But that quick update only update the parent qgroup, without checking if
-there is any more parent qgroups.
-
-[FIX]
-Iterate through all parent qgroups during the quick inherit.
-
-Reported-by: Boris Burkov <boris@bur.io>
-Fixes: b20fe56cd285 ("btrfs: qgroup: allow quick inherit if snapshot is created and added to the same parent")
-Reviewed-by: Boris Burkov <boris@bur.io>
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a56960e8b406 ("[media] cec: add HDMI CEC framework (core)")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/qgroup.c | 18 ++++++++++++++++--
- 1 file changed, 16 insertions(+), 2 deletions(-)
+ drivers/media/cec/core/cec-core.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index f23b482dfad9e..029017afaf344 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3295,7 +3295,10 @@ static int qgroup_snapshot_quick_inherit(struct btrfs_fs_info *fs_info,
- {
- 	struct btrfs_qgroup *src;
- 	struct btrfs_qgroup *parent;
-+	struct btrfs_qgroup *qgroup;
- 	struct btrfs_qgroup_list *list;
-+	LIST_HEAD(qgroup_list);
-+	const u32 nodesize = fs_info->nodesize;
- 	int nr_parents = 0;
+--- a/drivers/media/cec/core/cec-core.c
++++ b/drivers/media/cec/core/cec-core.c
+@@ -433,6 +433,7 @@ static int __init cec_devnode_init(void)
  
- 	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_FULL)
-@@ -3335,8 +3338,19 @@ static int qgroup_snapshot_quick_inherit(struct btrfs_fs_info *fs_info,
- 	if (parent->excl != parent->rfer)
- 		return 1;
- 
--	parent->excl += fs_info->nodesize;
--	parent->rfer += fs_info->nodesize;
-+	qgroup_iterator_add(&qgroup_list, parent);
-+	list_for_each_entry(qgroup, &qgroup_list, iterator) {
-+		qgroup->rfer += nodesize;
-+		qgroup->rfer_cmpr += nodesize;
-+		qgroup->excl += nodesize;
-+		qgroup->excl_cmpr += nodesize;
-+		qgroup_dirty(fs_info, qgroup);
-+
-+		/* Append parent qgroups to @qgroup_list. */
-+		list_for_each_entry(list, &qgroup->groups, next_group)
-+			qgroup_iterator_add(&qgroup_list, list->group);
-+	}
-+	qgroup_iterator_clean(&qgroup_list);
- 	return 0;
- }
- 
--- 
-2.51.0
-
+ 	ret = bus_register(&cec_bus_type);
+ 	if (ret < 0) {
++		debugfs_remove_recursive(top_cec_dir);
+ 		unregister_chrdev_region(cec_dev_t, CEC_NUM_DEVICES);
+ 		pr_warn("cec: bus_register failed\n");
+ 		return -EIO;
 
 
 
