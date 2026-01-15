@@ -1,99 +1,54 @@
-Return-Path: <stable+bounces-209387-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208841-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BD8D6D26E83
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:23 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5DB6ED2624E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6EF11313D40F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0F05F3048C4C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F60F3BFE5D;
-	Thu, 15 Jan 2026 17:35:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8ECA63BF2FA;
+	Thu, 15 Jan 2026 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tUnvRyCy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N6Jy0tTl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C00083BC4C9;
-	Thu, 15 Jan 2026 17:35:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 529653BF2F0;
+	Thu, 15 Jan 2026 17:09:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498551; cv=none; b=bb1mIZT7vJQ3UJJUtEMagBJO0n4ETHU1c035u8vlB1t0gghy93k0dEeMuYjvkOjZ1z+byzsa/49ZK0KJomCtJ6XYNPnJ9eRT2WpGkYSIoEScS5SXivHAdlXY6UHyudN8PsQUmbKJ6I8zgPCff0E5jawm1z1LHeYb383xgqbiuBU=
+	t=1768496995; cv=none; b=Y6ChjSamsI6bAaPoFukO1WhKofW30gH4bCJpKoMITZZOFkHnDIdMSWeddmlZRPxGZ/UJjMNeWjZirGiDRXKIg3PF1Xg2wiPtCK1GfYDzU4sE7Xts4i1LVr3PZ6i2O4zNIhdTZpkLrW0MPQpegPpxt92CQ0XwnDRjR6geBngxsK4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498551; c=relaxed/simple;
-	bh=+H9jzRknxi3m9Gbkmcb762ncKvznnz0R5GpXpc3LcEs=;
+	s=arc-20240116; t=1768496995; c=relaxed/simple;
+	bh=WSXGdt9WMHb3hU1r6XlYsQvRNKGsN3JK7hdThwjZwF8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=QDTkYrlrASartDFgQHHBKUq9ZOrL4d9k1MvwVLscg82kTwWaSZEEUsClVNl69MdCSSRtIE3UzicWmccHhbK0acaqn5xQV/28Jmr+mfgM7A2M0xU8N3ZL1WGkeM3zKITRo9uyYHorUGQ39ZP6QWw3ZH5hlWr8d/+QTxbmskvjnL8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tUnvRyCy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CEE4C116D0;
-	Thu, 15 Jan 2026 17:35:50 +0000 (UTC)
+	 MIME-Version; b=U4jN3wzFZCQYnF+j9w29vQBk+voZQq5OohHN3CBMvWaH7d0AnsLmDLIH9rOqfGp6rVEHtZYt585qv6SqbAB/hDKgIu94SKkUS/M9yRxMF7QxHJ2GnA/AxMW0EnIXBU7D0vToImXBH6VZWtRI4Acw6wZJ2PFRR09iQBixspP9lu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N6Jy0tTl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86AB9C116D0;
+	Thu, 15 Jan 2026 17:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498551;
-	bh=+H9jzRknxi3m9Gbkmcb762ncKvznnz0R5GpXpc3LcEs=;
+	s=korg; t=1768496994;
+	bh=WSXGdt9WMHb3hU1r6XlYsQvRNKGsN3JK7hdThwjZwF8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tUnvRyCyzpu46xoXtg+8W6AAgSdgVXC/5G9PcMR6TbxvHvjm0yNccBuvz6vpmPsYk
-	 i7cgwarKdxGEBsve8AHReyYHhRifBWlpdBr4u2xbb44YZ1U4PRQR2yW0Ugve1jYGR4
-	 pRo7482yIFCdhFTWBhMBXewhUX3NDvusBAZzx8aw=
+	b=N6Jy0tTlKDOv9SUPiZhmEQhXKaA3FH4RBFhTeH90xOZQr9tUWXDnCU/4j0GtT5B2H
+	 hV5HyljHcsbhOa2BhRMSzzFbR4fmqdf4r8Qqv/+Qf5YYhT222mz5HPOufHylE+nzuj
+	 JLKMgiVEjIOK83z7WWg7dXpNDzwKtqSQ/f9CTaJk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christian Brauner <brauner@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Gregory Price <gourry@gourry.net>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jason Wang <jasowang@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Zi Yan <ziy@nvidia.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 472/554] mm/balloon_compaction: convert balloon_page_delete() to balloon_page_finalize()
+Subject: [PATCH 6.6 75/88] bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN
 Date: Thu, 15 Jan 2026 17:48:58 +0100
-Message-ID: <20260115164303.383460578@linuxfoundation.org>
+Message-ID: <20260115164149.034032220@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -103,230 +58,136 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit 15504b1163007bbfbd9a63460d5c14737c16e96d ]
+[ Upstream commit fe9544ed1a2e9217b2c5285c3a4ac0dc5a38bd7b ]
 
-Let's move the removal of the page from the balloon list into the single
-caller, to remove the dependency on the PG_isolated flag and clarify
-locking requirements.
+To test bpf_xdp_pull_data(), an xdp packet containing fragments as well
+as free linear data area after xdp->data_end needs to be created.
+However, bpf_prog_test_run_xdp() always fills the linear area with
+data_in before creating fragments, leaving no space to pull data. This
+patch will allow users to specify the linear data size through
+ctx->data_end.
 
-Note that for now, balloon_page_delete() was used on two paths:
+Currently, ctx_in->data_end must match data_size_in and will not be the
+final ctx->data_end seen by xdp programs. This is because ctx->data_end
+is populated according to the xdp_buff passed to test_run. The linear
+data area available in an xdp_buff, max_linear_sz, is alawys filled up
+before copying data_in into fragments.
 
-(1) Removing a page from the balloon for deflation through
-    balloon_page_list_dequeue()
-(2) Removing an isolated page from the balloon for migration in the
-    per-driver migration handlers. Isolated pages were already removed from
-    the balloon list during isolation.
+This patch will allow users to specify the size of data that goes into
+the linear area. When ctx_in->data_end is different from data_size_in,
+only ctx_in->data_end bytes of data will be put into the linear area when
+creating the xdp_buff.
 
-So instead of relying on the flag, we can just distinguish both cases
-directly and handle it accordingly in the caller.
+While ctx_in->data_end will be allowed to be different from data_size_in,
+it cannot be larger than the data_size_in as there will be no data to
+copy from user space. If it is larger than the maximum linear data area
+size, the layout suggested by the user will not be honored. Data beyond
+max_linear_sz bytes will still be copied into fragments.
 
-We'll shuffle the operations a bit such that they logically make more
-sense (e.g., remove from the list before clearing flags).
+Finally, since it is possible for a NIC to produce a xdp_buff with empty
+linear data area, allow it when calling bpf_test_init() from
+bpf_prog_test_run_xdp() so that we can test XDP kfuncs with such
+xdp_buff. This is done by moving lower-bound check to callers as most of
+them already do except bpf_prog_test_run_skb(). The change also fixes a
+bug that allows passing an xdp_buff with data < ETH_HLEN. This can
+happen when ctx is used and metadata is at least ETH_HLEN.
 
-In balloon migration functions we can now move the balloon_page_finalize()
-out of the balloon lock and perform the finalization just before dropping
-the balloon reference.
-
-Document that the page lock is currently required when modifying the
-movability aspects of a page; hopefully we can soon decouple this from the
-page lock.
-
-Link: https://lkml.kernel.org/r/20250704102524.326966-3-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: Zi Yan <ziy@nvidia.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250922233356.3356453-7-ameryhung@gmail.com
+Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/platforms/pseries/cmm.c |    2 -
- drivers/misc/vmw_balloon.c           |    3 --
- drivers/virtio/virtio_balloon.c      |    4 ---
- include/linux/balloon_compaction.h   |   43 +++++++++++++----------------------
- mm/balloon_compaction.c              |    3 +-
- 5 files changed, 21 insertions(+), 34 deletions(-)
+ net/bpf/test_run.c                                | 15 ++++++++++++---
+ .../bpf/prog_tests/xdp_context_test_run.c         |  4 +---
+ 2 files changed, 13 insertions(+), 6 deletions(-)
 
---- a/arch/powerpc/platforms/pseries/cmm.c
-+++ b/arch/powerpc/platforms/pseries/cmm.c
-@@ -550,7 +550,6 @@ static int cmm_migratepage(struct balloo
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 1e598c858a145..b4a912ed8f2ec 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -630,7 +630,7 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
+ 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
+ 	void *data;
  
- 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
- 	balloon_page_insert(b_dev_info, newpage);
--	balloon_page_delete(page);
- 	b_dev_info->isolated_pages--;
- 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+-	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
++	if (user_size > PAGE_SIZE - headroom - tailroom)
+ 		return ERR_PTR(-EINVAL);
  
-@@ -560,6 +559,7 @@ static int cmm_migratepage(struct balloo
- 	 */
- 	plpar_page_set_active(page);
+ 	size = SKB_DATA_ALIGN(size);
+@@ -964,6 +964,9 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 	if (kattr->test.flags || kattr->test.cpu || kattr->test.batch_size)
+ 		return -EINVAL;
  
-+	balloon_page_finalize(page);
- 	/* balloon page list reference */
- 	put_page(page);
- 
---- a/drivers/misc/vmw_balloon.c
-+++ b/drivers/misc/vmw_balloon.c
-@@ -1805,8 +1805,7 @@ static int vmballoon_migratepage(struct
- 	 * @pages_lock . We keep holding @comm_lock since we will need it in a
- 	 * second.
- 	 */
--	balloon_page_delete(page);
--
-+	balloon_page_finalize(page);
- 	put_page(page);
- 
- 	/* Inflate */
---- a/drivers/virtio/virtio_balloon.c
-+++ b/drivers/virtio/virtio_balloon.c
-@@ -796,15 +796,13 @@ static int virtballoon_migratepage(struc
- 	tell_host(vb, vb->inflate_vq);
- 
- 	/* balloon's page migration 2nd step -- deflate "page" */
--	spin_lock_irqsave(&vb_dev_info->pages_lock, flags);
--	balloon_page_delete(page);
--	spin_unlock_irqrestore(&vb_dev_info->pages_lock, flags);
- 	vb->num_pfns = VIRTIO_BALLOON_PAGES_PER_PAGE;
- 	set_page_pfns(vb, vb->pfns, page);
- 	tell_host(vb, vb->deflate_vq);
- 
- 	mutex_unlock(&vb->balloon_lock);
- 
-+	balloon_page_finalize(page);
- 	put_page(page); /* balloon reference */
- 
- 	return MIGRATEPAGE_SUCCESS;
---- a/include/linux/balloon_compaction.h
-+++ b/include/linux/balloon_compaction.h
-@@ -100,27 +100,6 @@ static inline void balloon_page_insert(s
- }
- 
- /*
-- * balloon_page_delete - delete a page from balloon's page list and clear
-- *			 the page->private assignement accordingly.
-- * @page    : page to be released from balloon's page list
-- *
-- * Caller must ensure the page is locked and the spin_lock protecting balloon
-- * pages list is held before deleting a page from the balloon device.
-- */
--static inline void balloon_page_delete(struct page *page)
--{
--	__ClearPageOffline(page);
--	__ClearPageMovable(page);
--	set_page_private(page, 0);
--	/*
--	 * No touch page.lru field once @page has been isolated
--	 * because VM is using the field.
--	 */
--	if (!PageIsolated(page))
--		list_del(&page->lru);
--}
--
--/*
-  * balloon_page_device - get the b_dev_info descriptor for the balloon device
-  *			 that enqueues the given page.
-  */
-@@ -143,12 +122,6 @@ static inline void balloon_page_insert(s
- 	list_add(&page->lru, &balloon->pages);
- }
- 
--static inline void balloon_page_delete(struct page *page)
--{
--	__ClearPageOffline(page);
--	list_del(&page->lru);
--}
--
- static inline gfp_t balloon_mapping_gfp_mask(void)
- {
- 	return GFP_HIGHUSER;
-@@ -157,6 +130,22 @@ static inline gfp_t balloon_mapping_gfp_
- #endif /* CONFIG_BALLOON_COMPACTION */
- 
- /*
-+ * balloon_page_finalize - prepare a balloon page that was removed from the
-+ *			   balloon list for release to the page allocator
-+ * @page: page to be released to the page allocator
-+ *
-+ * Caller must ensure that the page is locked.
-+ */
-+static inline void balloon_page_finalize(struct page *page)
-+{
-+	if (IS_ENABLED(CONFIG_BALLOON_COMPACTION)) {
-+		__ClearPageMovable(page);
-+		set_page_private(page, 0);
-+	}
-+	__ClearPageOffline(page);
-+}
++	if (size < ETH_HLEN)
++		return -EINVAL;
 +
-+/*
-  * balloon_page_push - insert a page into a page list.
-  * @head : pointer to list
-  * @page : page to be added
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_compaction.c
-@@ -93,7 +93,8 @@ size_t balloon_page_list_dequeue(struct
- 		if (!trylock_page(page))
- 			continue;
+ 	data = bpf_test_init(kattr, kattr->test.data_size_in,
+ 			     size, NET_SKB_PAD + NET_IP_ALIGN,
+ 			     SKB_DATA_ALIGN(sizeof(struct skb_shared_info)));
+@@ -1144,7 +1147,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ {
+ 	bool do_live = (kattr->test.flags & BPF_F_TEST_XDP_LIVE_FRAMES);
+ 	u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
+-	u32 retval = 0, duration, max_linear_sz, size;
++	u32 retval = 0, meta_sz = 0, duration, max_linear_sz, size;
+ 	u32 linear_sz = kattr->test.data_size_in;
+ 	u32 batch_size = kattr->test.batch_size;
+ 	u32 headroom = XDP_PACKET_HEADROOM;
+@@ -1183,13 +1186,16 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
  
--		balloon_page_delete(page);
-+		list_del(&page->lru);
-+		balloon_page_finalize(page);
- 		__count_vm_event(BALLOON_DEFLATE);
- 		list_add(&page->lru, pages);
- 		unlock_page(page);
+ 	if (ctx) {
+ 		/* There can't be user provided data before the meta data */
+-		if (ctx->data_meta || ctx->data_end != kattr->test.data_size_in ||
++		if (ctx->data_meta || ctx->data_end > kattr->test.data_size_in ||
+ 		    ctx->data > ctx->data_end ||
+ 		    unlikely(xdp_metalen_invalid(ctx->data)) ||
+ 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
+ 			goto free_ctx;
+ 		/* Meta data is allocated from the headroom */
+ 		headroom -= ctx->data;
++
++		meta_sz = ctx->data;
++		linear_sz = ctx->data_end;
+ 	}
+ 
+ 	max_linear_sz = PAGE_SIZE - headroom - tailroom;
+@@ -1199,6 +1205,9 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 	if (do_live && kattr->test.data_size_in > linear_sz)
+ 		goto free_ctx;
+ 
++	if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
++		return -EINVAL;
++
+ 	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
+ 	if (IS_ERR(data)) {
+ 		ret = PTR_ERR(data);
+diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+index ab4952b9fb1d4..eab8625aad3b6 100644
+--- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
++++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
+@@ -80,9 +80,7 @@ void test_xdp_context_test_run(void)
+ 	/* Meta data must be 32 bytes or smaller */
+ 	test_xdp_context_error(prog_fd, opts, 0, 36, sizeof(data), 0, 0, 0);
+ 
+-	/* Total size of data must match data_end - data_meta */
+-	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
+-			       sizeof(data) - 1, 0, 0, 0);
++	/* Total size of data must be data_end - data_meta or larger */
+ 	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
+ 			       sizeof(data) + 1, 0, 0, 0);
+ 
+-- 
+2.51.0
+
 
 
 
