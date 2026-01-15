@@ -1,63 +1,63 @@
-Return-Path: <stable+bounces-208451-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208452-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BA84AD2583F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:54:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id C30FDD25A33
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:13:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5314230321E3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 15:54:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2A0A4305E37C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:07:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C7D9237F0EC;
-	Thu, 15 Jan 2026 15:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B4CAD3B8D7F;
+	Thu, 15 Jan 2026 16:07:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="X7D9GNZm"
+	dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b="XvJe7Q/v"
 X-Original-To: stable@vger.kernel.org
 Received: from mgamail.intel.com (mgamail.intel.com [198.175.65.12])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6908719E968;
-	Thu, 15 Jan 2026 15:54:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 12E672C158D;
+	Thu, 15 Jan 2026 16:07:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=198.175.65.12
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768492464; cv=none; b=Sxb0OVYOU35KvcQVh2Uk5aPBfv/aMpgFDohU1QT2xCS4WvVIWYnKSffzEbzVN/SUjEJNJzMEf/S4Rm2Kpa84Cl6hprNoe4MIiR7eEbrMrWZ0IBSFD6ALMeabIHr0L6tNjrfA7HVUKynAwL93y7vQb+rBuL0KZSiphN6K7fM9HJs=
+	t=1768493239; cv=none; b=WMEq0miJBIm8VbVk0ncT7L+w/o8jaDygCEXyQ+9kwQd/li9jADCpYVVYLXKsr/vqS6t81+pVirhuLKaz2b9meoQIbdda22AJwmBitnsHLp3kBZBX9BoEhrkf7Y15b4LR9pGlpHIfq2q0qE0i5zsUiZRdTsdCYlngSX4YIGVL3Ls=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768492464; c=relaxed/simple;
-	bh=Ng8lbAeE8hy8V9NIB6JlbZBVjpd4Z2G+SVYhVaioCEw=;
+	s=arc-20240116; t=1768493239; c=relaxed/simple;
+	bh=4hVo9QhNF0mQJKDOPUsLixHePJzUqC8nsw1n0EGaNoQ=;
 	h=Message-ID:Date:MIME-Version:Subject:To:Cc:References:From:
-	 In-Reply-To:Content-Type; b=LYQo0GzmctNUBD4cgytoG6j1OmOF3CYqluvKyMZhXDjJiY9U1uXFqYwx7JDcq6lUwzoVa8C2DYmrVDh2W3DGkGa2aT8X44xrgUf02C3JA7xWvDqgpVY52l2xgjILZWnHsovb5iHPJhHAgyOQvLSI0KOKHjRRhhmBYZVpeDqsQl0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=X7D9GNZm; arc=none smtp.client-ip=198.175.65.12
+	 In-Reply-To:Content-Type; b=lS8/K6zdenvizxEPzwR0EMrm0CyoUW4fHRRb3j52ZXJNfje5NtiRkNbelgAwb7EQn+3vFpp03LuJYxjkV+i+BgoMoCD8wFqUAcVKTdEeVCTt2uRW6LpH2xpXuUEJFllgAEpc84fDMZSAFERzuxVg/YDzCNN92B5HOb/Z/aJ2FJw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com; spf=pass smtp.mailfrom=intel.com; dkim=pass (2048-bit key) header.d=intel.com header.i=@intel.com header.b=XvJe7Q/v; arc=none smtp.client-ip=198.175.65.12
 Authentication-Results: smtp.subspace.kernel.org; dmarc=pass (p=none dis=none) header.from=intel.com
 Authentication-Results: smtp.subspace.kernel.org; spf=pass smtp.mailfrom=intel.com
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1768492464; x=1800028464;
+  t=1768493239; x=1800029239;
   h=message-id:date:mime-version:subject:to:cc:references:
    from:in-reply-to:content-transfer-encoding;
-  bh=Ng8lbAeE8hy8V9NIB6JlbZBVjpd4Z2G+SVYhVaioCEw=;
-  b=X7D9GNZmXx3Ru7M3ePcLz30YzOl5l6MRliRAiZVhdP/bDHqwNwCnyyKk
-   c+HSf5RmFXQ8F+jKmK746qtgnxLhHlWOsYR7HHiJndOTTB2Qkrev+GLmk
-   zS4nTfSvKKzZDOgnf7fqgOaSrb3lfFOWX8RfmPDZV0WrbZHEGOSYzYM4u
-   vA6+AjlsfCIapfr+53XfNt37rf7HwcQsGEnNyiBl3in7DR8MDw4T8LQsu
-   8xp856jl7T9Kihhn3h7Ne+Xq79kqEvFnc5BurLpa3GjhOhf0EwAvzT0VE
-   1aq0iqbjziBWsVL2vqFGz7PQCJJSCsjsDft6kFZQXv42Vm4GQXWf/niz4
-   g==;
-X-CSE-ConnectionGUID: F9Hxy2obRRSCASH0BnwfPg==
-X-CSE-MsgGUID: jU4syllDSIGWyinO1l9Auw==
-X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="81244422"
+  bh=4hVo9QhNF0mQJKDOPUsLixHePJzUqC8nsw1n0EGaNoQ=;
+  b=XvJe7Q/vj7Ijc8zVaDKgaFAto9jsTp0T3MAsXYoHjGfLnmqGI7FTpL9K
+   s0dZqLxuecVixoHeC9BfXOIdhG0lS5WmHCFTEeViQEjvnILTfhrlVYD1G
+   SPjZNb+njda7CHGDAXWq8Qbj8VwpmvibL0JETbpTiu52JErKFDP/oJrpq
+   Fqdn9zzUssXboCwRAeIU7cUtDn1uTRchg5S1Ao3EeEpzMCREh5O6tfYK9
+   r+s50J4OlY+5hueS991xN0LiOYj4N1z2P68HQ7BSWLuddqlA1kz9NwnxZ
+   n+BRkVyX/UX4ouqo7YQudZaWo2WoB+lxH/rzx6mfwg+NzVXNqspJnD5fk
+   w==;
+X-CSE-ConnectionGUID: k5d8C9M3Sba9jAYDcowzAQ==
+X-CSE-MsgGUID: LLXFCRZiSCCcLJw6TwSxEg==
+X-IronPort-AV: E=McAfee;i="6800,10657,11672"; a="81246842"
 X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="81244422"
+   d="scan'208";a="81246842"
 Received: from fmviesa007.fm.intel.com ([10.60.135.147])
-  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 07:54:23 -0800
-X-CSE-ConnectionGUID: 9R+1lLHLTMWjAXMj01EQmw==
-X-CSE-MsgGUID: 0H6PN/MvSbyQcygvFTjhnQ==
+  by orvoesa104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 08:07:18 -0800
+X-CSE-ConnectionGUID: 1nWqk8GJRtORNqONwoazaw==
+X-CSE-MsgGUID: Dwsc1QZ6Rh+wRvFqnM/HKw==
 X-ExtLoop1: 1
 X-IronPort-AV: E=Sophos;i="6.21,228,1763452800"; 
-   d="scan'208";a="204595824"
+   d="scan'208";a="204600697"
 Received: from cmdeoliv-mobl4.amr.corp.intel.com (HELO [10.125.111.74]) ([10.125.111.74])
-  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 07:54:22 -0800
-Message-ID: <cd6721c7-0963-4f4f-89d9-6634b8b559ae@intel.com>
-Date: Thu, 15 Jan 2026 07:54:21 -0800
+  by fmviesa007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 15 Jan 2026 08:07:17 -0800
+Message-ID: <9beb7ca4-7bcf-45f1-aefa-f8e6e8122ede@intel.com>
+Date: Thu, 15 Jan 2026 08:07:16 -0800
 Precedence: bulk
 X-Mailing-List: stable@vger.kernel.org
 List-Id: <stable.vger.kernel.org>
@@ -67,11 +67,14 @@ MIME-Version: 1.0
 User-Agent: Mozilla Thunderbird
 Subject: Re: [PATCH 1/4] x86/fpu: Clear XSTATE_BV[i] in save state whenever
  XFD[i]=1
-To: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
- kvm@vger.kernel.org
-Cc: seanjc@google.com, x86@kernel.org, stable@vger.kernel.org
+To: Jim Mattson <jmattson@google.com>, Sean Christopherson <seanjc@google.com>
+Cc: Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org,
+ kvm@vger.kernel.org, x86@kernel.org, stable@vger.kernel.org
 References: <20260101090516.316883-1-pbonzini@redhat.com>
  <20260101090516.316883-2-pbonzini@redhat.com>
+ <CALMp9eSWwjZ83VQXRSD3ciwHmtaK5_i-941KdiAv9V9eU20B8g@mail.gmail.com>
+ <aVxiowGbWNgY2cWD@google.com>
+ <CALMp9eToT-af8kntKK2TiFHHUcUQgU25GaaNqq49RZZt2Buffg@mail.gmail.com>
 From: Dave Hansen <dave.hansen@intel.com>
 Content-Language: en-US
 Autocrypt: addr=dave.hansen@intel.com; keydata=
@@ -117,19 +120,20 @@ Autocrypt: addr=dave.hansen@intel.com; keydata=
  MTsCeQDdjpgHsj+P2ZDeEKCbma4m6Ez/YWs4+zDm1X8uZDkZcfQlD9NldbKDJEXLIjYWo1PH
  hYepSffIWPyvBMBTW2W5FRjJ4vLRrJSUoEfJuPQ3vW9Y73foyo/qFoURHO48AinGPZ7PC7TF
  vUaNOTjKedrqHkaOcqB185ahG2had0xnFsDPlx5y
-In-Reply-To: <20260101090516.316883-2-pbonzini@redhat.com>
+In-Reply-To: <CALMp9eToT-af8kntKK2TiFHHUcUQgU25GaaNqq49RZZt2Buffg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
 
-On 1/1/26 01:05, Paolo Bonzini wrote:
-> When loading guest XSAVE state via KVM_SET_XSAVE, and when updating XFD in
-> response to a guest WRMSR, clear XFD-disabled features in the saved (or to
-> be restored) XSTATE_BV to ensure KVM doesn't attempt to load state for
-> features that are disabled via the guest's XFD.  Because the kernel
-> executes XRSTOR with the guest's XFD, saving XSTATE_BV[i]=1 with XFD[i]=1
-> will cause XRSTOR to #NM and panic the kernel.
+On 1/6/26 09:56, Jim Mattson wrote:
+> Apologies. You're right. Though Intel is a bit coy, the only way to
+> interpret that section of the SDM is to conclude that the AMX state in
+> the CPU becomes undefined when XFD[18] is set.
 
-It would be really nice to see the actual ordering of events here. What
-order do the KVM_SET_XSAVE, XFD[$FOO]=1 and kernel_fpu_begin() have to
-happen in to trigger this?
+I'll touch base with the folks that wrote that blurb. I'm a little
+nervous to interpret that "software should not..." blurb as a full
+architectural DANGER sign partly because it's in a "RECOMMENDATIONS FOR
+SYSTEM SOFTWARE" section.
+
+I'm _sure_ they discussed tying XFD[i] and XINUSE[i] together and there
+was a good reason they did not.
 
