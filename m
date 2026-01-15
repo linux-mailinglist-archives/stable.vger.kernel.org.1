@@ -1,54 +1,57 @@
-Return-Path: <stable+bounces-209576-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209163-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DB15D27827
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:20 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 934D2D26EAE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1A455327BDB6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:51 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7DA8330DEC66
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CF8C73195F9;
-	Thu, 15 Jan 2026 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7396A3C00BA;
+	Thu, 15 Jan 2026 17:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xtJnlDUO"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HQTJWN1q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 92BA62D948D;
-	Thu, 15 Jan 2026 17:44:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3750B3C00AE;
+	Thu, 15 Jan 2026 17:25:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499090; cv=none; b=ikmirpTIvzyURoGN/G+DuhP4l3N3lcW9/P4s+EsKpLHfZwy3kzKaUxaYb5twbzaVYo/tr4bUr17J99/iRKjAfM7Q+PnkYOls27jbGQu02IfucJueGHRpGCkATb+tC+Zd7hqxIGUbkw+F7AeCUQ2+bHkmyPRBN0dCg6QoxshWmhE=
+	t=1768497913; cv=none; b=C+Z3lP3/ToYmv0j6Hkqm0CMthXgsCgH+7o67GEb7gBZ7DvZg4SZHcex9JZvYEIymZL7qoTe3Q0CseaZXn3gFIOeo4MnVgYvg7fpb04lM0qpz9bXQ6NaVolfTHvjpKIxXOgiVj5+5WMFZIzVeCaeP0GWt59QcrPPRbzum48CHf2E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499090; c=relaxed/simple;
-	bh=IuApcJ5Lc5DW5L6esifQLN1INBPUSrfgrvSHW0Iy16A=;
+	s=arc-20240116; t=1768497913; c=relaxed/simple;
+	bh=TmOJU39YD4CogocjU7orea3IEvHKpOOKTye0DVyOU+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=G0fT1WYdFR5rZwWcESR9eextvZR0822ccq0e88u3+kEpHE6gbL9aQOUk3gjaAUR1VNcCoE4m/Qp6UtsCk7y3VQljB2jvefnRouNkwaL1LVBH6K536Bv+UdyFJC7lwQr+DVv+Yot6kQrPbHABhifyhvRqmAL3LUajNn0xq44PBP0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xtJnlDUO; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9B64C116D0;
-	Thu, 15 Jan 2026 17:44:49 +0000 (UTC)
+	 MIME-Version; b=nTXLvgUHFLyCJ4zkGdPcstQfwO4sLIn/yoL9ws1RuLGhYS49doxZ/EUAfKybkAYSWpolbUke2W+7yjidKU1tQBa25igAx4bJPq0O8tFkGxLycvCBviQzFX3BVZ1Cmor1ZWxvbFjIwNmeRbTCMVfRXGMA8s1uHdL4eX0Gm4YHt4A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HQTJWN1q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70DAC16AAE;
+	Thu, 15 Jan 2026 17:25:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499090;
-	bh=IuApcJ5Lc5DW5L6esifQLN1INBPUSrfgrvSHW0Iy16A=;
+	s=korg; t=1768497913;
+	bh=TmOJU39YD4CogocjU7orea3IEvHKpOOKTye0DVyOU+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xtJnlDUOfcSWcMgiIq+2kYR/ZoFrjrU8fOCCDMgKQoa40Y2gP6vuQBcuSreXk0Yl1
-	 5jFSBl5QRDhLCYYAiMl7HXUejLxGgJT+DnVnpTn7SvwM+19zDMO0317tyVnSS5mwJB
-	 iIAJJkCPKs3ML6gVGQnyFa39Jm1l0ZESFXsPqXJE=
+	b=HQTJWN1qruJImTIiGWrPHS7T5nwM3UvDm9R6ksQ7rKLy3NBsd3zh8wk4pcUnHvg4V
+	 be83ZQPaZ3LBkRdvjjpUFcf1rWG4DXioiM47my325bfjpb+X9ZT9kGMLxKd4p/LPPH
+	 KrZlRcW9fTsclk+BXTlEfEuFPRtk1qG3erVHVxIg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Shay Drory <shayd@nvidia.com>,
+	Moshe Shemesh <moshe@nvidia.com>,
+	Breno Leitao <leitao@debian.org>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 105/451] ACPI: processor_core: fix map_x2apic_id for amd-pstate on am4
+Subject: [PATCH 5.15 240/554] net/mlx5: fw_tracer, Validate format string parameters
 Date: Thu, 15 Jan 2026 17:45:06 +0100
-Message-ID: <20260115164234.715695180@linuxfoundation.org>
+Message-ID: <20260115164254.930821709@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,66 +61,199 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: René Rebe <rene@exactco.de>
+From: Shay Drory <shayd@nvidia.com>
 
-[ Upstream commit 17e7972979e147cc51d4a165e6b6b0f93273ca68 ]
+[ Upstream commit b35966042d20b14e2d83330049f77deec5229749 ]
 
-On all AMD AM4 systems I have seen, e.g ASUS X470-i, Pro WS X570 Ace
-and equivalent Gigabyte, amd-pstate does not initialize when the
-x2apic is enabled in the BIOS. Kernel debug messages include:
+Add validation for format string parameters in the firmware tracer to
+prevent potential security vulnerabilities and crashes from malformed
+format strings received from firmware.
 
-[    0.315438] acpi LNXCPU:00: Failed to get CPU physical ID.
-[    0.354756] ACPI CPPC: No CPC descriptor for CPU:0
-[    0.714951] amd_pstate: the _CPC object is not present in SBIOS or ACPI disabled
+The firmware tracer receives format strings from the device firmware and
+uses them to format trace messages. Without proper validation, bad
+firmware could provide format strings with invalid format specifiers
+(e.g., %s, %p, %n) that could lead to crashes, or other undefined
+behavior.
 
-I tracked this down to map_x2apic_id() checking device_declaration
-passed in via the type argument of acpi_get_phys_id() via
-map_madt_entry() while map_lapic_id() does not.
+Add mlx5_tracer_validate_params() to validate that all format specifiers
+in trace strings are limited to safe integer/hex formats (%x, %d, %i,
+%u, %llx, %lx, etc.). Reject strings containing other format types that
+could be used to access arbitrary memory or cause crashes.
+Invalid format strings are added to the trace output for visibility with
+"BAD_FORMAT: " prefix.
 
-It appears these BIOSes use Processor statements for declaring the CPUs
-in the ACPI namespace instead of processor device objects (which should
-have been used). CPU declarations via Processor statements were
-deprecated in ACPI 6.0 that was released 10 years ago. They should not
-be used any more in any contemporary platform firmware.
-
-I tried to contact Asus support multiple times, but never received a
-reply nor did any BIOS update ever change this.
-
-Fix amd-pstate w/ x2apic on am4 by allowing map_x2apic_id() to work with
-CPUs declared via Processor statements for IDs less than 255, which is
-consistent with ACPI 5.0 that still allowed Processor statements to be
-used for declaring CPUs.
-
-Fixes: 7237d3de78ff ("x86, ACPI: add support for x2apic ACPI extensions")
-Signed-off-by: René Rebe <rene@exactco.de>
-[ rjw: Changelog edits ]
-Link: https://patch.msgid.link/20251126.165513.1373131139292726554.rene@exactco.de
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
+Signed-off-by: Shay Drory <shayd@nvidia.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reported-by: Breno Leitao <leitao@debian.org>
+Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
+Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
+Link: https://patch.msgid.link/1765284977-1363052-4-git-send-email-tariqt@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/processor_core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ .../mellanox/mlx5/core/diag/fw_tracer.c       | 83 ++++++++++++++++---
+ .../mellanox/mlx5/core/diag/fw_tracer.h       |  1 +
+ 2 files changed, 74 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/acpi/processor_core.c b/drivers/acpi/processor_core.c
-index 2ac48cda5b201..eae7efae3b5cf 100644
---- a/drivers/acpi/processor_core.c
-+++ b/drivers/acpi/processor_core.c
-@@ -54,7 +54,7 @@ static int map_x2apic_id(struct acpi_subtable_header *entry,
- 	if (!(apic->lapic_flags & ACPI_MADT_ENABLED))
- 		return -ENODEV;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+index d982b468dcc1d..6b49bda8bea2a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
+@@ -33,6 +33,7 @@
+ #include "lib/eq.h"
+ #include "fw_tracer.h"
+ #include "fw_tracer_tracepoint.h"
++#include <linux/ctype.h>
  
--	if (device_declaration && (apic->uid == acpi_id)) {
-+	if (apic->uid == acpi_id && (device_declaration || acpi_id < 255)) {
- 		*apic_id = apic->local_apic_id;
- 		return 0;
- 	}
+ static int mlx5_query_mtrc_caps(struct mlx5_fw_tracer *tracer)
+ {
+@@ -354,6 +355,43 @@ static const char *VAL_PARM		= "%llx";
+ static const char *REPLACE_64_VAL_PARM	= "%x%x";
+ static const char *PARAM_CHAR		= "%";
+ 
++static bool mlx5_is_valid_spec(const char *str)
++{
++	/* Parse format specifiers to find the actual type.
++	 * Structure: %[flags][width][.precision][length]type
++	 * Skip flags, width, precision & length.
++	 */
++	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
++		str++;
++
++	/* Check if it's a valid integer/hex specifier:
++	 * Valid formats: %x, %d, %i, %u, etc.
++	 */
++	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
++	    *str != 'u' && *str != 'c')
++		return false;
++
++	return true;
++}
++
++static bool mlx5_tracer_validate_params(const char *str)
++{
++	const char *substr = str;
++
++	if (!str)
++		return false;
++
++	substr = strstr(substr, PARAM_CHAR);
++	while (substr) {
++		if (!mlx5_is_valid_spec(substr + 1))
++			return false;
++
++		substr = strstr(substr + 1, PARAM_CHAR);
++	}
++
++	return true;
++}
++
+ static int mlx5_tracer_message_hash(u32 message_id)
+ {
+ 	return jhash_1word(message_id, 0) & (MESSAGE_HASH_SIZE - 1);
+@@ -413,6 +451,10 @@ static int mlx5_tracer_get_num_of_params(char *str)
+ 	char *substr, *pstr = str;
+ 	int num_of_params = 0;
+ 
++	/* Validate that all parameters are valid before processing */
++	if (!mlx5_tracer_validate_params(str))
++		return -EINVAL;
++
+ 	/* replace %llx with %x%x */
+ 	substr = strstr(pstr, VAL_PARM);
+ 	while (substr) {
+@@ -564,14 +606,17 @@ void mlx5_tracer_print_trace(struct tracer_string_format *str_frmt,
+ {
+ 	char	tmp[512];
+ 
+-	snprintf(tmp, sizeof(tmp), str_frmt->string,
+-		 str_frmt->params[0],
+-		 str_frmt->params[1],
+-		 str_frmt->params[2],
+-		 str_frmt->params[3],
+-		 str_frmt->params[4],
+-		 str_frmt->params[5],
+-		 str_frmt->params[6]);
++	if (str_frmt->invalid_string)
++		snprintf(tmp, sizeof(tmp), "BAD_FORMAT: %s", str_frmt->string);
++	else
++		snprintf(tmp, sizeof(tmp), str_frmt->string,
++			 str_frmt->params[0],
++			 str_frmt->params[1],
++			 str_frmt->params[2],
++			 str_frmt->params[3],
++			 str_frmt->params[4],
++			 str_frmt->params[5],
++			 str_frmt->params[6]);
+ 
+ 	trace_mlx5_fw(dev->tracer, trace_timestamp, str_frmt->lost,
+ 		      str_frmt->event_id, tmp);
+@@ -603,6 +648,13 @@ static int mlx5_tracer_handle_raw_string(struct mlx5_fw_tracer *tracer,
+ 	return 0;
+ }
+ 
++static void mlx5_tracer_handle_bad_format_string(struct mlx5_fw_tracer *tracer,
++						 struct tracer_string_format *cur_string)
++{
++	cur_string->invalid_string = true;
++	list_add_tail(&cur_string->list, &tracer->ready_strings_list);
++}
++
+ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 					   struct tracer_event *tracer_event)
+ {
+@@ -613,12 +665,18 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 		if (!cur_string)
+ 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 
+-		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
+-		cur_string->last_param_num = 0;
+ 		cur_string->event_id = tracer_event->event_id;
+ 		cur_string->tmsn = tracer_event->string_event.tmsn;
+ 		cur_string->timestamp = tracer_event->string_event.timestamp;
+ 		cur_string->lost = tracer_event->lost_event;
++		cur_string->last_param_num = 0;
++		cur_string->num_of_params = mlx5_tracer_get_num_of_params(cur_string->string);
++		if (cur_string->num_of_params < 0) {
++			pr_debug("%s Invalid format string parameters\n",
++				 __func__);
++			mlx5_tracer_handle_bad_format_string(tracer, cur_string);
++			return 0;
++		}
+ 		if (cur_string->num_of_params == 0) /* trace with no params */
+ 			list_add_tail(&cur_string->list, &tracer->ready_strings_list);
+ 	} else {
+@@ -628,6 +686,11 @@ static int mlx5_tracer_handle_string_trace(struct mlx5_fw_tracer *tracer,
+ 				 __func__, tracer_event->string_event.tmsn);
+ 			return mlx5_tracer_handle_raw_string(tracer, tracer_event);
+ 		}
++		if (cur_string->num_of_params < 0) {
++			pr_debug("%s string parameter of invalid string, dumping\n",
++				 __func__);
++			return 0;
++		}
+ 		cur_string->last_param_num += 1;
+ 		if (cur_string->last_param_num > TRACER_MAX_PARAMS) {
+ 			pr_debug("%s Number of params exceeds the max (%d)\n",
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+index 568efb1e2bd24..603ef441f1b21 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.h
+@@ -117,6 +117,7 @@ struct tracer_string_format {
+ 	struct list_head list;
+ 	u32 timestamp;
+ 	bool lost;
++	bool invalid_string;
+ };
+ 
+ enum mlx5_fw_tracer_ownership_state {
 -- 
 2.51.0
 
