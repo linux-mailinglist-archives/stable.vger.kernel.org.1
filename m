@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209472-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209868-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1C1FD26CB0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id CC4FED27800
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AF31B30727FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3764931152C9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E3F3B3BF2E4;
-	Thu, 15 Jan 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8879D3D7D75;
+	Thu, 15 Jan 2026 17:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T7SZlycA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f7QVrrkL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A6DAE26CE04;
-	Thu, 15 Jan 2026 17:39:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 49B873D7D69;
+	Thu, 15 Jan 2026 17:58:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498792; cv=none; b=F8/fS/MzIecJH8bklDvF5pUkZamZvYgAqqhmr2BmO/kSGVPbMi29GbTgSBMnJJvo6f/lrovDEM/vsXpvvgBiVWR0udGV5AhsuGJhdlVtk7/sztMOZ7wkVAfulCgMGk7s3jJwjVNhi2acaxa3SBhDC1GKvxnO4D+kANZ30M2CZoE=
+	t=1768499921; cv=none; b=hUDQa+YtAfNGyQnTEOlENGc7fplnjXs9MSF2u96K2RfsB8qkvU3qmXCrRF+qw0lZB5PEGG8Wsb/e9FMqradNqqhITRsS8e15rWgnI96dmzmbEDkrwUm5gS1q3kSyIVSO0AaAiFn+ZGDqS5FdE1jYgKFIYxZSVC8AbTfJb0nnNJE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498792; c=relaxed/simple;
-	bh=LVC5uDeg4nurXvtpHBwFDRpUXRVrrHtRf4bopRXjE2E=;
+	s=arc-20240116; t=1768499921; c=relaxed/simple;
+	bh=W4sP4csE6KKCLnfKb0TWObbWVScfRHdA9RcDjONxy3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=UHPLZLBybf2lMaB+UhnXZuYYmo4ZivK6FYcW027inL3OQ/BfshCQTo1JXZYc/jKJ9KClXFW+gWxFNFrynoUSXfj0nPsvwavk3o8uGPOU4SSvvH9hytuSqmj3XwKiJvN1/tOyEkG077bp75uXiHWC+1lNosGqRZGJafVN/HWnCyg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T7SZlycA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D772FC16AAE;
-	Thu, 15 Jan 2026 17:39:51 +0000 (UTC)
+	 MIME-Version; b=obDX7LLQ5B0HRMmF37AQQwFP91m+o71qx7ZkBwJrrKkNghI9iDOP/ueD5t8rcxBkyol9GWA/+buoO2PsGeNgw1jv5XQeKLcLkFOZVdwg1C4oodkFaoLCI2sQrMiTCDeHu7QnLXqWKtxPp/c2exh5ObSRfez3w19Enhfuh1rLxvw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f7QVrrkL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9FCCC19422;
+	Thu, 15 Jan 2026 17:58:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498792;
-	bh=LVC5uDeg4nurXvtpHBwFDRpUXRVrrHtRf4bopRXjE2E=;
+	s=korg; t=1768499921;
+	bh=W4sP4csE6KKCLnfKb0TWObbWVScfRHdA9RcDjONxy3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T7SZlycAksKlqofGZKvWr7TTwgw1CAgUsyGD8ka9qo+Qo288+oayslxNxfMhA75Gy
-	 Wrc9Ob98F2uDnBDgu1MPhXl0iQJkruiSSjAKkm5IOUWdeBMrSIxSTylDOpt2GW264m
-	 oFxz1Fr1lCRJJrXlnmOLeVi9yhoO/ekuaE92HFGc=
+	b=f7QVrrkLPSpacs9yGizWvzjpGhi2kKQ5N6AJEwLDnthOJ3CAmYgdFaRonOyOi0gjU
+	 CURv+wsehpQlgOLSvdMaKhp7zyj2fY5iLvOH2ZI1hJVmrKoJdTNesIJt7mupDOJ/UJ
+	 Qp1/47e2nnLm53SQ4XAiBDe7y5gmX/TZarRfFp8M=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Knecht <knecht.alexandre@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 529/554] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
-Date: Thu, 15 Jan 2026 17:49:55 +0100
-Message-ID: <20260115164305.474834786@linuxfoundation.org>
+	"lduncan@suse.com, cleech@redhat.com, michael.christie@oracle.com, James.Bottomley@HansenPartnership.com, martin.petersen@oracle.com, open-iscsi@googlegroups.com, linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org, ajay.kaher@broadcom.com, alexey.makhalov@broadcom.com, vamsi-krishna.brahmajosyula@broadcom.com, yin.ding@broadcom.com, tapas.kundu@broadcom.com, Shivani Agarwal" <shivani.agarwal@broadcom.com>,
+	Lee Duncan <lduncan@suse.com>,
+	Mike Christie <michael.christie@oracle.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 395/451] scsi: iscsi: Move pool freeing
+Date: Thu, 15 Jan 2026 17:49:56 +0100
+Message-ID: <20260115164245.223934708@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +62,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Knecht <knecht.alexandre@gmail.com>
+From: Mike Christie <michael.christie@oracle.com>
 
-[ Upstream commit 3128df6be147768fe536986fbb85db1d37806a9f ]
+[ Upstream commit a1f3486b3b095ed2259d7a1fc021a8b6e72a5365 ]
 
-When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
-incorrectly stripped from frames during egress processing.
+This doesn't fix any bugs, but it makes more sense to free the pool after
+we have removed the session. At that time we know nothing is touching any
+of the session fields, because all devices have been removed and scans are
+stopped.
 
-br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
-from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
-moves any "next" VLAN from the payload into hwaccel:
-
-    /* move next vlan tag to hw accel tag */
-    __skb_vlan_pop(skb, &vlan_tci);
-    __vlan_hwaccel_put_tag(skb, vlan_proto, vlan_tci);
-
-For QinQ frames where the C-VLAN sits in the payload, this moves it to
-hwaccel where it gets lost during VXLAN encapsulation.
-
-Fix by calling __vlan_hwaccel_clear_tag() directly, which clears only
-the hwaccel S-VLAN and leaves the payload untouched.
-
-This path is only taken when vlan_tunnel is enabled and tunnel_info
-is configured, so 802.1Q bridges are unaffected.
-
-Tested with 802.1ad bridge + VXLAN vlan_tunnel, verified C-VLAN
-preserved in VXLAN payload via tcpdump.
-
-Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
-Signed-off-by: Alexandre Knecht <knecht.alexandre@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251228020057.2788865-1-knecht.alexandre@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/r/20210525181821.7617-19-michael.christie@oracle.com
+Reviewed-by: Lee Duncan <lduncan@suse.com>
+Signed-off-by: Mike Christie <michael.christie@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+[Shivani: Modified to apply on 5.10.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_vlan_tunnel.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/scsi/libiscsi.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/bridge/br_vlan_tunnel.c b/net/bridge/br_vlan_tunnel.c
-index 6399a8a69d076..0f03572d89d09 100644
---- a/net/bridge/br_vlan_tunnel.c
-+++ b/net/bridge/br_vlan_tunnel.c
-@@ -187,7 +187,6 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- {
- 	struct metadata_dst *tunnel_dst;
- 	__be64 tunnel_id;
--	int err;
+--- a/drivers/scsi/libiscsi.c
++++ b/drivers/scsi/libiscsi.c
+@@ -2902,10 +2902,9 @@ void iscsi_session_teardown(struct iscsi
+ 	struct module *owner = cls_session->transport->owner;
+ 	struct Scsi_Host *shost = session->host;
  
- 	if (!vlan)
- 		return 0;
-@@ -197,9 +196,13 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 		return 0;
+-	iscsi_pool_free(&session->cmdpool);
+-
+ 	iscsi_remove_session(cls_session);
  
- 	skb_dst_drop(skb);
--	err = skb_vlan_pop(skb);
--	if (err)
--		return err;
-+	/* For 802.1ad (QinQ), skb_vlan_pop() incorrectly moves the C-VLAN
-+	 * from payload to hwaccel after clearing S-VLAN. We only need to
-+	 * clear the hwaccel S-VLAN; the C-VLAN must stay in payload for
-+	 * correct VXLAN encapsulation. This is also correct for 802.1Q
-+	 * where no C-VLAN exists in payload.
-+	 */
-+	__vlan_hwaccel_clear_tag(skb);
- 
- 	tunnel_dst = rcu_dereference(vlan->tinfo.tunnel_dst);
- 	if (tunnel_dst && dst_hold_safe(&tunnel_dst->dst))
--- 
-2.51.0
-
++	iscsi_pool_free(&session->cmdpool);
+ 	kfree(session->password);
+ 	kfree(session->password_in);
+ 	kfree(session->username);
 
 
 
