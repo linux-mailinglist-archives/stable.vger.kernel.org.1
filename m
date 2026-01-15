@@ -1,52 +1,56 @@
-Return-Path: <stable+bounces-209530-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209066-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 592B2D27A7A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3B639D264BC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:21:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AF6A530F21B3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C15143009F66
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C50594A3C;
-	Thu, 15 Jan 2026 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 328E22D7DED;
+	Thu, 15 Jan 2026 17:20:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ann24PDo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VxEqZ4Nl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 87F4C2F619D;
-	Thu, 15 Jan 2026 17:42:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E98F22C3268;
+	Thu, 15 Jan 2026 17:20:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498958; cv=none; b=XFmZzeRZ/pPRl/+9ZN/Vuz6+y/gRd1rETvW0oQvdszrpRvc+sMa5mMhHucEHpNgFJmWfHBRPLs2lkgfD1I9A8cx4/2RXUW5D2oWiKhegaufM8OoepnsP3XTJQQq54q3lr3U9UG5B9koUS8hR2FE+qxdQ5N2JmHjxrOFq2zUG8e8=
+	t=1768497639; cv=none; b=dC1uQi/SbbXAsVujyNc3OYATydMTrK8E90lJVDgBCyRnNW+f0xMfl+zNH9v5NhovH95uJGyDMtiob11vsZ1nrF0t/UKYoaZdAt/Nv+Y+fuZ7xUKZ/PFtDySOuNLqlHIrJ85eCtMUIw2Kt4jhv/O1mZF9BbI8NclpcdDSgyQ7tI8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498958; c=relaxed/simple;
-	bh=+0Rab4jmdgJn+UiRN8tvEm/M87EQlkNcGEFWqJnuJtI=;
+	s=arc-20240116; t=1768497639; c=relaxed/simple;
+	bh=WHdBnqQxm8rOsqzIdEnmNicx5gH+C4uOPQIjwKbaa6I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u36+rECWe4zumWfXa3GH8qId1Os+xW4TPGKeovJBBcSdDndBnmwutlye8uLrxjJAHx0ZGdw+Xiy8np5mjBlF1Cn4B3o/qg8CqULKSvggLtX7vCKNLPaih3xYs/zz8qzxKiY3OlOkAap0BF99802PMjf7dpR/5c1k3+LW2E9X8BE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ann24PDo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08CA6C116D0;
-	Thu, 15 Jan 2026 17:42:37 +0000 (UTC)
+	 MIME-Version; b=jkfCwypOxqPgnuEbBOSdV9Lzq04Lkq9YoSGy3bUYNlts1STM0D6pnDwdSTtMZbNOU4gbfVpsP8Y/4Y83EMLlzgVWu4oqRU0a1FoYvxrAnRgGjfXKY32/rZFNb9YYpwD1kVj5rsqt5+u2v7uC9XHzXG15CWjS0DB7mRONQszXqbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VxEqZ4Nl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B6E6C116D0;
+	Thu, 15 Jan 2026 17:20:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498958;
-	bh=+0Rab4jmdgJn+UiRN8tvEm/M87EQlkNcGEFWqJnuJtI=;
+	s=korg; t=1768497638;
+	bh=WHdBnqQxm8rOsqzIdEnmNicx5gH+C4uOPQIjwKbaa6I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ann24PDohKqwYKso7TJyMicUfrKqjx7DXwFAGDBq97AbHY+lpjFRnjIjJC6LLrgqs
-	 ycqbIvodK4M0+yaNj97UHrnwULEJbrQGSJ0yKccsGTsyDh+wFpu26FF7LqYrEq0tVA
-	 VAS0mPIoCSLvn0aTmnvnkabKKmuGclDOAz5W2O2s=
+	b=VxEqZ4NlUVnt/UhMRNtErqdx1YMNEGgWEkdeAYkelykBKD6Kz0uaoKKevYFtQRulJ
+	 sI/fOLfuJEp4IS1vvq9rKK1Sp0MuFxPw0NaCLd2EBg0f2RZCX7cNemux3vExfcmcwT
+	 fr1iwUbfXHV14SHrYSR2iHRtEfRrmNJwlMZ+aQ+g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 016/451] USB: serial: kobil_sct: fix TIOCMBIS and TIOCMBIC
+	Parav Pandit <parav@nvidia.com>,
+	Eli Cohen <elic@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 151/554] vdpa: Introduce query of device config layout
 Date: Thu, 15 Jan 2026 17:43:37 +0100
-Message-ID: <20260115164231.476654810@linuxfoundation.org>
+Message-ID: <20260115164251.729661673@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,83 +62,332 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Parav Pandit <parav@nvidia.com>
 
-commit d432df758f92c4c28aac409bc807fd1716167577 upstream.
+[ Upstream commit ad69dd0bf26b88ec6ab26f8bbe5cd74fbed7672a ]
 
-Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
-should not deassert any lines that are not in the mask.
+Introduce a command to query a device config layout.
 
-Fix this long-standing issue dating back to 2003 when the support for
-these ioctls was added with the introduction of the tiocmset() callback.
+An example query of network vdpa device:
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+$ vdpa dev add name bar mgmtdev vdpasim_net
+
+$ vdpa dev config show
+bar: mac 00:35:09:19:48:05 link up link_announce false mtu 1500
+
+$ vdpa dev config show -jp
+{
+    "config": {
+        "bar": {
+            "mac": "00:35:09:19:48:05",
+            "link ": "up",
+            "link_announce ": false,
+            "mtu": 1500,
+        }
+    }
+}
+
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Signed-off-by: Eli Cohen <elic@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Link: https://lore.kernel.org/r/20211026175519.87795-3-parav@nvidia.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: e40b6abe0b12 ("virtio_vdpa: fix misleading return in void function")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/kobil_sct.c |   18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/vdpa/vdpa.c       | 176 ++++++++++++++++++++++++++++++++++++++
+ include/linux/vdpa.h      |   2 +
+ include/uapi/linux/vdpa.h |   6 ++
+ 3 files changed, 184 insertions(+)
 
---- a/drivers/usb/serial/kobil_sct.c
-+++ b/drivers/usb/serial/kobil_sct.c
-@@ -421,7 +421,7 @@ static int kobil_tiocmset(struct tty_str
- 	struct usb_serial_port *port = tty->driver_data;
- 	struct device *dev = &port->dev;
- 	struct kobil_private *priv;
--	int result;
-+	int result = 0;
- 	int dtr = 0;
- 	int rts = 0;
+diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
+index 563b06563e17a..b12fc70510bb7 100644
+--- a/drivers/vdpa/vdpa.c
++++ b/drivers/vdpa/vdpa.c
+@@ -14,6 +14,8 @@
+ #include <uapi/linux/vdpa.h>
+ #include <net/genetlink.h>
+ #include <linux/mod_devicetable.h>
++#include <linux/virtio_net.h>
++#include <linux/virtio_ids.h>
  
-@@ -438,12 +438,12 @@ static int kobil_tiocmset(struct tty_str
- 	if (set & TIOCM_DTR)
- 		dtr = 1;
- 	if (clear & TIOCM_RTS)
--		rts = 0;
-+		rts = 1;
- 	if (clear & TIOCM_DTR)
--		dtr = 0;
-+		dtr = 1;
+ static LIST_HEAD(mdev_head);
+ /* A global mutex that protects vdpa management device and device level operations. */
+@@ -58,6 +60,7 @@ static void vdpa_release_dev(struct device *d)
+ 		ops->free(vdev);
  
--	if (priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
--		if (dtr != 0)
-+	if (dtr && priv->device_type == KOBIL_ADAPTER_B_PRODUCT_ID) {
-+		if (set & TIOCM_DTR)
- 			dev_dbg(dev, "%s - Setting DTR\n", __func__);
- 		else
- 			dev_dbg(dev, "%s - Clearing DTR\n", __func__);
-@@ -451,13 +451,13 @@ static int kobil_tiocmset(struct tty_str
- 			  usb_sndctrlpipe(port->serial->dev, 0),
- 			  SUSBCRequest_SetStatusLinesOrQueues,
- 			  USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
--			  ((dtr != 0) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
-+			  ((set & TIOCM_DTR) ? SUSBCR_SSL_SETDTR : SUSBCR_SSL_CLRDTR),
- 			  0,
- 			  NULL,
- 			  0,
- 			  KOBIL_TIMEOUT);
--	} else {
--		if (rts != 0)
-+	} else if (rts) {
-+		if (set & TIOCM_RTS)
- 			dev_dbg(dev, "%s - Setting RTS\n", __func__);
- 		else
- 			dev_dbg(dev, "%s - Clearing RTS\n", __func__);
-@@ -465,7 +465,7 @@ static int kobil_tiocmset(struct tty_str
- 			usb_sndctrlpipe(port->serial->dev, 0),
- 			SUSBCRequest_SetStatusLinesOrQueues,
- 			USB_TYPE_VENDOR | USB_RECIP_ENDPOINT | USB_DIR_OUT,
--			((rts != 0) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
-+			((set & TIOCM_RTS) ? SUSBCR_SSL_SETRTS : SUSBCR_SSL_CLRRTS),
- 			0,
- 			NULL,
- 			0,
+ 	ida_simple_remove(&vdpa_index_ida, vdev->index);
++	mutex_destroy(&vdev->cf_mutex);
+ 	kfree(vdev);
+ }
+ 
+@@ -119,6 +122,7 @@ struct vdpa_device *__vdpa_alloc_device(struct device *parent,
+ 	if (err)
+ 		goto err_name;
+ 
++	mutex_init(&vdev->cf_mutex);
+ 	device_initialize(&vdev->dev);
+ 
+ 	return vdev;
+@@ -301,6 +305,7 @@ void vdpa_get_config(struct vdpa_device *vdev, unsigned int offset,
+ {
+ 	const struct vdpa_config_ops *ops = vdev->config;
+ 
++	mutex_lock(&vdev->cf_mutex);
+ 	/*
+ 	 * Config accesses aren't supposed to trigger before features are set.
+ 	 * If it does happen we assume a legacy guest.
+@@ -308,6 +313,7 @@ void vdpa_get_config(struct vdpa_device *vdev, unsigned int offset,
+ 	if (!vdev->features_valid)
+ 		vdpa_set_features(vdev, 0);
+ 	ops->get_config(vdev, offset, buf, len);
++	mutex_unlock(&vdev->cf_mutex);
+ }
+ EXPORT_SYMBOL_GPL(vdpa_get_config);
+ 
+@@ -321,7 +327,9 @@ EXPORT_SYMBOL_GPL(vdpa_get_config);
+ void vdpa_set_config(struct vdpa_device *vdev, unsigned int offset,
+ 		     const void *buf, unsigned int length)
+ {
++	mutex_lock(&vdev->cf_mutex);
+ 	vdev->config->set_config(vdev, offset, buf, length);
++	mutex_unlock(&vdev->cf_mutex);
+ }
+ EXPORT_SYMBOL_GPL(vdpa_set_config);
+ 
+@@ -654,6 +662,168 @@ static int vdpa_nl_cmd_dev_get_dumpit(struct sk_buff *msg, struct netlink_callba
+ 	return msg->len;
+ }
+ 
++static int vdpa_dev_net_mq_config_fill(struct vdpa_device *vdev,
++				       struct sk_buff *msg, u64 features,
++				       const struct virtio_net_config *config)
++{
++	u16 val_u16;
++
++	if ((features & (1ULL << VIRTIO_NET_F_MQ)) == 0)
++		return 0;
++
++	val_u16 = le16_to_cpu(config->max_virtqueue_pairs);
++	return nla_put_u16(msg, VDPA_ATTR_DEV_NET_CFG_MAX_VQP, val_u16);
++}
++
++static int vdpa_dev_net_config_fill(struct vdpa_device *vdev, struct sk_buff *msg)
++{
++	struct virtio_net_config config = {};
++	u64 features;
++	u16 val_u16;
++
++	vdpa_get_config(vdev, 0, &config, sizeof(config));
++
++	if (nla_put(msg, VDPA_ATTR_DEV_NET_CFG_MACADDR, sizeof(config.mac),
++		    config.mac))
++		return -EMSGSIZE;
++
++	val_u16 = le16_to_cpu(config.status);
++	if (nla_put_u16(msg, VDPA_ATTR_DEV_NET_STATUS, val_u16))
++		return -EMSGSIZE;
++
++	val_u16 = le16_to_cpu(config.mtu);
++	if (nla_put_u16(msg, VDPA_ATTR_DEV_NET_CFG_MTU, val_u16))
++		return -EMSGSIZE;
++
++	features = vdev->config->get_features(vdev);
++
++	return vdpa_dev_net_mq_config_fill(vdev, msg, features, &config);
++}
++
++static int
++vdpa_dev_config_fill(struct vdpa_device *vdev, struct sk_buff *msg, u32 portid, u32 seq,
++		     int flags, struct netlink_ext_ack *extack)
++{
++	u32 device_id;
++	void *hdr;
++	int err;
++
++	hdr = genlmsg_put(msg, portid, seq, &vdpa_nl_family, flags,
++			  VDPA_CMD_DEV_CONFIG_GET);
++	if (!hdr)
++		return -EMSGSIZE;
++
++	if (nla_put_string(msg, VDPA_ATTR_DEV_NAME, dev_name(&vdev->dev))) {
++		err = -EMSGSIZE;
++		goto msg_err;
++	}
++
++	device_id = vdev->config->get_device_id(vdev);
++	if (nla_put_u32(msg, VDPA_ATTR_DEV_ID, device_id)) {
++		err = -EMSGSIZE;
++		goto msg_err;
++	}
++
++	switch (device_id) {
++	case VIRTIO_ID_NET:
++		err = vdpa_dev_net_config_fill(vdev, msg);
++		break;
++	default:
++		err = -EOPNOTSUPP;
++		break;
++	}
++	if (err)
++		goto msg_err;
++
++	genlmsg_end(msg, hdr);
++	return 0;
++
++msg_err:
++	genlmsg_cancel(msg, hdr);
++	return err;
++}
++
++static int vdpa_nl_cmd_dev_config_get_doit(struct sk_buff *skb, struct genl_info *info)
++{
++	struct vdpa_device *vdev;
++	struct sk_buff *msg;
++	const char *devname;
++	struct device *dev;
++	int err;
++
++	if (!info->attrs[VDPA_ATTR_DEV_NAME])
++		return -EINVAL;
++	devname = nla_data(info->attrs[VDPA_ATTR_DEV_NAME]);
++	msg = nlmsg_new(NLMSG_DEFAULT_SIZE, GFP_KERNEL);
++	if (!msg)
++		return -ENOMEM;
++
++	mutex_lock(&vdpa_dev_mutex);
++	dev = bus_find_device(&vdpa_bus, NULL, devname, vdpa_name_match);
++	if (!dev) {
++		NL_SET_ERR_MSG_MOD(info->extack, "device not found");
++		err = -ENODEV;
++		goto dev_err;
++	}
++	vdev = container_of(dev, struct vdpa_device, dev);
++	if (!vdev->mdev) {
++		NL_SET_ERR_MSG_MOD(info->extack, "unmanaged vdpa device");
++		err = -EINVAL;
++		goto mdev_err;
++	}
++	err = vdpa_dev_config_fill(vdev, msg, info->snd_portid, info->snd_seq,
++				   0, info->extack);
++	if (!err)
++		err = genlmsg_reply(msg, info);
++
++mdev_err:
++	put_device(dev);
++dev_err:
++	mutex_unlock(&vdpa_dev_mutex);
++	if (err)
++		nlmsg_free(msg);
++	return err;
++}
++
++static int vdpa_dev_config_dump(struct device *dev, void *data)
++{
++	struct vdpa_device *vdev = container_of(dev, struct vdpa_device, dev);
++	struct vdpa_dev_dump_info *info = data;
++	int err;
++
++	if (!vdev->mdev)
++		return 0;
++	if (info->idx < info->start_idx) {
++		info->idx++;
++		return 0;
++	}
++	err = vdpa_dev_config_fill(vdev, info->msg, NETLINK_CB(info->cb->skb).portid,
++				   info->cb->nlh->nlmsg_seq, NLM_F_MULTI,
++				   info->cb->extack);
++	if (err)
++		return err;
++
++	info->idx++;
++	return 0;
++}
++
++static int
++vdpa_nl_cmd_dev_config_get_dumpit(struct sk_buff *msg, struct netlink_callback *cb)
++{
++	struct vdpa_dev_dump_info info;
++
++	info.msg = msg;
++	info.cb = cb;
++	info.start_idx = cb->args[0];
++	info.idx = 0;
++
++	mutex_lock(&vdpa_dev_mutex);
++	bus_for_each_dev(&vdpa_bus, NULL, &info, vdpa_dev_config_dump);
++	mutex_unlock(&vdpa_dev_mutex);
++	cb->args[0] = info.idx;
++	return msg->len;
++}
++
+ static const struct nla_policy vdpa_nl_policy[VDPA_ATTR_MAX + 1] = {
+ 	[VDPA_ATTR_MGMTDEV_BUS_NAME] = { .type = NLA_NUL_STRING },
+ 	[VDPA_ATTR_MGMTDEV_DEV_NAME] = { .type = NLA_STRING },
+@@ -685,6 +855,12 @@ static const struct genl_ops vdpa_nl_ops[] = {
+ 		.doit = vdpa_nl_cmd_dev_get_doit,
+ 		.dumpit = vdpa_nl_cmd_dev_get_dumpit,
+ 	},
++	{
++		.cmd = VDPA_CMD_DEV_CONFIG_GET,
++		.validate = GENL_DONT_VALIDATE_STRICT | GENL_DONT_VALIDATE_DUMP,
++		.doit = vdpa_nl_cmd_dev_config_get_doit,
++		.dumpit = vdpa_nl_cmd_dev_config_get_dumpit,
++	},
+ };
+ 
+ static struct genl_family vdpa_nl_family __ro_after_init = {
+diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
+index 88ed82e03b666..d26f5777f30f7 100644
+--- a/include/linux/vdpa.h
++++ b/include/linux/vdpa.h
+@@ -69,6 +69,7 @@ struct vdpa_mgmt_dev;
+  * @dev: underlying device
+  * @dma_dev: the actual device that is performing DMA
+  * @config: the configuration ops for this device.
++ * @cf_mutex: Protects get and set access to configuration layout.
+  * @index: device index
+  * @features_valid: were features initialized? for legacy guests
+  * @use_va: indicate whether virtual address must be used by this device
+@@ -80,6 +81,7 @@ struct vdpa_device {
+ 	struct device dev;
+ 	struct device *dma_dev;
+ 	const struct vdpa_config_ops *config;
++	struct mutex cf_mutex; /* Protects get/set config */
+ 	unsigned int index;
+ 	bool features_valid;
+ 	bool use_va;
+diff --git a/include/uapi/linux/vdpa.h b/include/uapi/linux/vdpa.h
+index 66a41e4ec163a..37ef30130a283 100644
+--- a/include/uapi/linux/vdpa.h
++++ b/include/uapi/linux/vdpa.h
+@@ -17,6 +17,7 @@ enum vdpa_command {
+ 	VDPA_CMD_DEV_NEW,
+ 	VDPA_CMD_DEV_DEL,
+ 	VDPA_CMD_DEV_GET,		/* can dump */
++	VDPA_CMD_DEV_CONFIG_GET,	/* can dump */
+ };
+ 
+ enum vdpa_attr {
+@@ -33,6 +34,11 @@ enum vdpa_attr {
+ 	VDPA_ATTR_DEV_MAX_VQS,			/* u32 */
+ 	VDPA_ATTR_DEV_MAX_VQ_SIZE,		/* u16 */
+ 
++	VDPA_ATTR_DEV_NET_CFG_MACADDR,		/* binary */
++	VDPA_ATTR_DEV_NET_STATUS,		/* u8 */
++	VDPA_ATTR_DEV_NET_CFG_MAX_VQP,		/* u16 */
++	VDPA_ATTR_DEV_NET_CFG_MTU,		/* u16 */
++
+ 	/* new attributes must be added above here */
+ 	VDPA_ATTR_MAX,
+ };
+-- 
+2.51.0
+
 
 
 
