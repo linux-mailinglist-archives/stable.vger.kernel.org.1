@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209781-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209319-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0738BD27702
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:37 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 37A2CD269A1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 0A62B30A6690
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04D6630D7E41
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 752513C00A2;
-	Thu, 15 Jan 2026 17:54:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05C873C1974;
+	Thu, 15 Jan 2026 17:32:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QfVNItHg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NHTrmagE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 379CE3D1CBE;
-	Thu, 15 Jan 2026 17:54:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BC6A22C3268;
+	Thu, 15 Jan 2026 17:32:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499673; cv=none; b=iOMVVTOZeWO4EkmWVHVXHZ0wO5wpCSYo/vsnu7HLFxunclvRZUwQGvS38spu6/VKvWj6VZ+2U+znv4D0A8731E1KxQH1PwwU54famhpKLQ++k4KcdSE2TvvXeilx06QLMkazJfMVg8TOhV19yvYP7JxNPUj4sva5oQwVlckotz4=
+	t=1768498357; cv=none; b=QP0cgnJ7ywwe67/7cvhnSBaYYsIbpxuqhMQFbdb2VQx5+aCgJfKXo7Y1JSOxaNE2Y007Xh/BcGiQqiEHg7lzAS9Lg6vkJfIZeYnuUyyHOXPAEiSvJ/7jtGxTKMcK//9vpeZ1Vkh9mQX6Mh8Vhi4X7nl+R7rs4yfSf43BKP5McZo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499673; c=relaxed/simple;
-	bh=HP+GISZQUoBeCIUNV6txwj530CGAw/6h372M1mLQVtM=;
+	s=arc-20240116; t=1768498357; c=relaxed/simple;
+	bh=CkDdKgHyCCCjE41vfLzRIcOJHe2ObP+tfBp/3f1dN/Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ld9jV2YIfCPMzZKFA/P1crEzvimChdAJlr5muXJ4YR1XUEP0C3dupHMdRXbt6jsKwtF6iHo2PkGSdpnHywwbS/7FZ1fWrbGztZb4o2JGmxVcbiQNX1Cllrn+bRNZneDVN+LJhArK+uuKoRhO9rtEhAwYOTRuwDFk1HNS/cexcZQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QfVNItHg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70302C116D0;
-	Thu, 15 Jan 2026 17:54:32 +0000 (UTC)
+	 MIME-Version; b=N0/QFFan6ezWS1jk/Z5NVuJniA8qhVczZEyNoGyO+JGdRZuVLcENnBIR6X73yGrAlbOYPZ6uRNLFE+WreItaoX944vXSCMFo7GuACjLnbgmhErIC7D2WEXDjGzB4KeEDkrrvESC9j3+9jRjR69DWn3Wx4DKmU9F9180Zr3gVTNw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NHTrmagE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45E60C116D0;
+	Thu, 15 Jan 2026 17:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499672;
-	bh=HP+GISZQUoBeCIUNV6txwj530CGAw/6h372M1mLQVtM=;
+	s=korg; t=1768498357;
+	bh=CkDdKgHyCCCjE41vfLzRIcOJHe2ObP+tfBp/3f1dN/Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QfVNItHgHXTfV+mT8GNgX7RrbIqHJYPJ+rZKuHEZ89TOTAKh9EhrNWfquDG2Bfqfl
-	 sccLevnUue1SsB64sKdi2cvFndsIifhhJcoRbf0rk+LcNKXWWHvmt5kTMGn8JngJQC
-	 JunDuE1iTvzhGziymWMkBNtSSr7e4/zXVbRCLdg0=
+	b=NHTrmagETwB/mo3+mqCHQ3/c0kY8ysPtVwxmiXaEDxr4fqlt7HHNNn12Ceomsvz7G
+	 fJhLW6gguAIeN14I4NvjpP70ssslD1gF3P9GBVlYzS6MgrtDf0CrGGFA7VEQ9zPwmx
+	 zlvAw24n0ozH9Mhnf194U6zzknyicsBNTFhEeJi0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>
-Subject: [PATCH 5.10 267/451] rpmsg: glink: fix rpmsg device leak
-Date: Thu, 15 Jan 2026 17:47:48 +0100
-Message-ID: <20260115164240.545671191@linuxfoundation.org>
+	Guangshuo Li <lgs201920130244@gmail.com>,
+	Simon Horman <horms@kernel.org>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>
+Subject: [PATCH 5.15 403/554] e1000: fix OOB in e1000_tbi_should_accept()
+Date: Thu, 15 Jan 2026 17:47:49 +0100
+Message-ID: <20260115164300.822652478@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,88 +61,128 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Guangshuo Li <lgs201920130244@gmail.com>
 
-commit a53e356df548f6b0e82529ef3cc6070f42622189 upstream.
+commit 9c72a5182ed92904d01057f208c390a303f00a0f upstream.
 
-While testing rpmsg-char interface it was noticed that duplicate sysfs
-entries are getting created and below warning is noticed.
+In e1000_tbi_should_accept() we read the last byte of the frame via
+'data[length - 1]' to evaluate the TBI workaround. If the descriptor-
+reported length is zero or larger than the actual RX buffer size, this
+read goes out of bounds and can hit unrelated slab objects. The issue
+is observed from the NAPI receive path (e1000_clean_rx_irq):
 
-Reason for this is that we are leaking rpmsg device pointer, setting it
-null without actually unregistering device.
-Any further attempts to unregister fail because rpdev is NULL,
-resulting in a leak.
+==================================================================
+BUG: KASAN: slab-out-of-bounds in e1000_tbi_should_accept+0x610/0x790
+Read of size 1 at addr ffff888014114e54 by task sshd/363
 
-Fix this by unregistering rpmsg device before removing its reference
-from rpmsg channel.
+CPU: 0 PID: 363 Comm: sshd Not tainted 5.18.0-rc1 #1
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
+Call Trace:
+ <IRQ>
+ dump_stack_lvl+0x5a/0x74
+ print_address_description+0x7b/0x440
+ print_report+0x101/0x200
+ kasan_report+0xc1/0xf0
+ e1000_tbi_should_accept+0x610/0x790
+ e1000_clean_rx_irq+0xa8c/0x1110
+ e1000_clean+0xde2/0x3c10
+ __napi_poll+0x98/0x380
+ net_rx_action+0x491/0xa20
+ __do_softirq+0x2c9/0x61d
+ do_softirq+0xd1/0x120
+ </IRQ>
+ <TASK>
+ __local_bh_enable_ip+0xfe/0x130
+ ip_finish_output2+0x7d5/0xb00
+ __ip_queue_xmit+0xe24/0x1ab0
+ __tcp_transmit_skb+0x1bcb/0x3340
+ tcp_write_xmit+0x175d/0x6bd0
+ __tcp_push_pending_frames+0x7b/0x280
+ tcp_sendmsg_locked+0x2e4f/0x32d0
+ tcp_sendmsg+0x24/0x40
+ sock_write_iter+0x322/0x430
+ vfs_write+0x56c/0xa60
+ ksys_write+0xd1/0x190
+ do_syscall_64+0x43/0x90
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f511b476b10
+Code: 73 01 c3 48 8b 0d 88 d3 2b 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d f9 2b 2c 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 8e 9b 01 00 48 89 04 24
+RSP: 002b:00007ffc9211d4e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
+RAX: ffffffffffffffda RBX: 0000000000004024 RCX: 00007f511b476b10
+RDX: 0000000000004024 RSI: 0000559a9385962c RDI: 0000000000000003
+RBP: 0000559a9383a400 R08: fffffffffffffff0 R09: 0000000000004f00
+R10: 0000000000000070 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffc9211d57f R14: 0000559a9347bde7 R15: 0000000000000003
+ </TASK>
+Allocated by task 1:
+ __kasan_krealloc+0x131/0x1c0
+ krealloc+0x90/0xc0
+ add_sysfs_param+0xcb/0x8a0
+ kernel_add_sysfs_param+0x81/0xd4
+ param_sysfs_builtin+0x138/0x1a6
+ param_sysfs_init+0x57/0x5b
+ do_one_initcall+0x104/0x250
+ do_initcall_level+0x102/0x132
+ do_initcalls+0x46/0x74
+ kernel_init_freeable+0x28f/0x393
+ kernel_init+0x14/0x1a0
+ ret_from_fork+0x22/0x30
+The buggy address belongs to the object at ffff888014114000
+ which belongs to the cache kmalloc-2k of size 2048
+The buggy address is located 1620 bytes to the right of
+ 2048-byte region [ffff888014114000, ffff888014114800]
+The buggy address belongs to the physical page:
+page:ffffea0000504400 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14110
+head:ffffea0000504400 order:3 compound_mapcount:0 compound_pincount:0
+flags: 0x100000000010200(slab|head|node=0|zone=1)
+raw: 0100000000010200 0000000000000000 dead000000000001 ffff888013442000
+raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
+page dumped because: kasan: bad access detected
+==================================================================
 
-sysfs: cannot create duplicate filename '/devices/platform/soc@0/3700000.remot
-eproc/remoteproc/remoteproc1/3700000.remoteproc:glink-edge/3700000.remoteproc:
-glink-edge.adsp_apps.-1.-1'
-[  114.115347] CPU: 0 UID: 0 PID: 9 Comm: kworker/0:0 Not
- tainted 6.16.0-rc4 #7 PREEMPT
-[  114.115355] Hardware name: Qualcomm Technologies, Inc. Robotics RB3gen2 (DT)
-[  114.115358] Workqueue: events qcom_glink_work
-[  114.115371] Call trace:8
-[  114.115374]  show_stack+0x18/0x24 (C)
-[  114.115382]  dump_stack_lvl+0x60/0x80
-[  114.115388]  dump_stack+0x18/0x24
-[  114.115393]  sysfs_warn_dup+0x64/0x80
-[  114.115402]  sysfs_create_dir_ns+0xf4/0x120
-[  114.115409]  kobject_add_internal+0x98/0x260
-[  114.115416]  kobject_add+0x9c/0x108
-[  114.115421]  device_add+0xc4/0x7a0
-[  114.115429]  rpmsg_register_device+0x5c/0xb0
-[  114.115434]  qcom_glink_work+0x4bc/0x820
-[  114.115438]  process_one_work+0x148/0x284
-[  114.115446]  worker_thread+0x2c4/0x3e0
-[  114.115452]  kthread+0x12c/0x204
-[  114.115457]  ret_from_fork+0x10/0x20
-[  114.115464] kobject: kobject_add_internal failed for 3700000.remoteproc:
-glink-edge.adsp_apps.-1.-1 with -EEXIST, don't try to register things with
-the same name in the same directory.
-[  114.250045] rpmsg 3700000.remoteproc:glink-edge.adsp_apps.-1.-1:
-device_add failed: -17
+This happens because the TBI check unconditionally dereferences the last
+byte without validating the reported length first:
 
-Fixes: 835764ddd9af ("rpmsg: glink: Move the common glink protocol implementation to glink_native.c")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Link: https://lore.kernel.org/r/20250822100043.2604794-2-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+	u8 last_byte = *(data + length - 1);
+
+Fix by rejecting the frame early if the length is zero, or if it exceeds
+adapter->rx_buffer_len. This preserves the TBI workaround semantics for
+valid frames and prevents touching memory beyond the RX buffer.
+
+Fixes: 2037110c96d5 ("e1000: move tbi workaround code into helper function")
+Cc: stable@vger.kernel.org
+Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/rpmsg/qcom_glink_native.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/net/ethernet/intel/e1000/e1000_main.c |   10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -1244,6 +1244,7 @@ static void qcom_glink_destroy_ept(struc
+--- a/drivers/net/ethernet/intel/e1000/e1000_main.c
++++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
+@@ -4089,7 +4089,15 @@ static bool e1000_tbi_should_accept(stru
+ 				    u32 length, const u8 *data)
  {
- 	struct glink_channel *channel = to_glink_channel(ept);
- 	struct qcom_glink *glink = channel->glink;
-+	struct rpmsg_channel_info chinfo;
- 	unsigned long flags;
- 
- 	spin_lock_irqsave(&channel->recv_lock, flags);
-@@ -1251,6 +1252,13 @@ static void qcom_glink_destroy_ept(struc
- 	spin_unlock_irqrestore(&channel->recv_lock, flags);
- 
- 	/* Decouple the potential rpdev from the channel */
-+	if (channel->rpdev) {
-+		strscpy_pad(chinfo.name, channel->name, sizeof(chinfo.name));
-+		chinfo.src = RPMSG_ADDR_ANY;
-+		chinfo.dst = RPMSG_ADDR_ANY;
+ 	struct e1000_hw *hw = &adapter->hw;
+-	u8 last_byte = *(data + length - 1);
++	u8 last_byte;
 +
-+		rpmsg_unregister_device(glink->dev, &chinfo);
-+	}
- 	channel->rpdev = NULL;
++	/* Guard against OOB on data[length - 1] */
++	if (unlikely(!length))
++		return false;
++	/* Upper bound: length must not exceed rx_buffer_len */
++	if (unlikely(length > adapter->rx_buffer_len))
++		return false;
++	last_byte = *(data + length - 1);
  
- 	qcom_glink_send_close_req(glink, channel);
+ 	if (TBI_ACCEPT(hw, status, errors, length, last_byte)) {
+ 		unsigned long irq_flags;
 
 
 
