@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-209614-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209625-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519EFD26F53
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:57:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A07E4D26EA4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0F162313EC5E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:04 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7E28D30BF3E1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65D303BF317;
-	Thu, 15 Jan 2026 17:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DB13C1980;
+	Thu, 15 Jan 2026 17:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDEUDy87"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJz5W0W1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27F233BF2FA;
-	Thu, 15 Jan 2026 17:46:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141223BF309;
+	Thu, 15 Jan 2026 17:47:09 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499198; cv=none; b=fDOFvTCjLAyn8piaGx03VIahrKZbLPS0fMVAAqVbFoI7MCi8pklvCCXqBuuBopYrhOIJ+jHMEobuPHui4mAOraSZzemluUA4VaGZYdFoOOOXisVYBIEne+J9CE4U5vfER2G3OEgAVmmLTdRvQEu+G4UiUllqSpoW3cRswCg5W/c=
+	t=1768499229; cv=none; b=cvTLrQwuTcBjoVvMzkXupagKXW0rZjxqWAl4PQaIqMB3f+G35jbJ1CuR4WiTYff5nh9AVMDH+qGyvczudywSUManS8+dwLnpz7FofXmgH1q4DJKI72+WNdPBTg9NSfkRUBa4ukIn9OAjWYqj6AE3EIUIjQI+PNGoHVdlb5cgYAQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499198; c=relaxed/simple;
-	bh=RMqGM5QFrDUmmp4Vem1Af3IksCMqQvbFW3QQNqr1Y70=;
+	s=arc-20240116; t=1768499229; c=relaxed/simple;
+	bh=gy5Tf/IJ8LXgZXsf49X0ZUq20OhGRPtde5TEEvkPiRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=VPD1lzf9H9aCyL6AJO7bWLo6D67o1da6uAdNF8djT+g5/WJZ1G/bnwFzwobe7cZu+d/zlwKVavye2D9RW+lTlSAxb4sal54MhhR1sYNBfar2pnt+oXekncYcSWKB08QCSFRc7Pq92m6ATfdj/zeQ74zf1HXOqQ/O3hy3z8mz2VI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDEUDy87; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AA999C16AAE;
-	Thu, 15 Jan 2026 17:46:37 +0000 (UTC)
+	 MIME-Version; b=LAfFVuzK0YKRjl9laip/8K/91biAM/XnqGsHB7cBUQ3qQc3fefeMGTbL7osGkN6AExnRW/jm2Wqi5eYsZ/kukRuOVuPTj05hEzDGFKBkLX+aqqUXcN+jDJq5sOvg7PAGzctgAZSVJUANxdENrfgxPHYLH1BwQ6BD6YH4NsAqAkg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJz5W0W1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F314C16AAE;
+	Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499198;
-	bh=RMqGM5QFrDUmmp4Vem1Af3IksCMqQvbFW3QQNqr1Y70=;
+	s=korg; t=1768499228;
+	bh=gy5Tf/IJ8LXgZXsf49X0ZUq20OhGRPtde5TEEvkPiRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDEUDy87T5jeITqGnR1y4UBDJhP+L9CEPnuJBiAAWMKhEmEPzVpfOhrpkQNjB2Re1
-	 yYKGiA3jGgQGJy8jLK9yNYROP/xmQQ5CIRJB0cW2ntus1Yl/BUXbWAD/pKDhUy/mGW
-	 UnahS86vlZjj1BHWT1kURYronUVR4RNuPkOo45ks=
+	b=IJz5W0W1lYL6rx7gGmmrpeEQo3UjIqSZqwK68A2qPWXvUubyyEkxaYfIxefgEEcHH
+	 wB9i5BDt5CDaTWiDwhPB/3blPQvC0Pxv5tiE5zWhipMIEn9cfWhTa7ePyth7b4bG/E
+	 k/xnH7CkXu/gflNRRcBerk+s3zt4m8ZTXQb0RQuw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Armin Wolf <W_Armin@gmx.de>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Jonathan Curley <jcurley@purestorage.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 125/451] fs/nls: Fix utf16 to utf8 conversion
-Date: Thu, 15 Jan 2026 17:45:26 +0100
-Message-ID: <20260115164235.444225862@linuxfoundation.org>
+Subject: [PATCH 5.10 126/451] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
+Date: Thu, 15 Jan 2026 17:45:27 +0100
+Message-ID: <20260115164235.480027998@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -58,83 +58,46 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Jonathan Curley <jcurley@purestorage.com>
 
-[ Upstream commit 25524b6190295577e4918c689644451365e6466d ]
+[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
 
-Currently the function responsible for converting between utf16 and
-utf8 strings will ignore any characters that cannot be converted. This
-however also includes multi-byte characters that do not fit into the
-provided string buffer.
+Fixes a crash when layout is null during this call stack:
 
-This can cause problems if such a multi-byte character is followed by
-a single-byte character. In such a case the multi-byte character might
-be ignored when the provided string buffer is too small, but the
-single-byte character might fit and is thus still copied into the
-resulting string.
+write_inode
+    -> nfs4_write_inode
+        -> pnfs_layoutcommit_inode
 
-Fix this by stop filling the provided string buffer once a character
-does not fit. In order to be able to do this extend utf32_to_utf8()
-to return useful errno codes instead of -1.
+pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
+around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
+to reference a null layout.
 
-Fixes: 74675a58507e ("NLS: update handling of Unicode")
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251111131125.3379-2-W_Armin@gmx.de
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
+Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nls/nls_base.c | 16 ++++++++++++----
- 1 file changed, 12 insertions(+), 4 deletions(-)
+ fs/nfs/pnfs.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
-index a026dbd3593f6..7eacded3c17d1 100644
---- a/fs/nls/nls_base.c
-+++ b/fs/nls/nls_base.c
-@@ -94,7 +94,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
+diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
+index e14cf7140bab4..c5dd301c43d7b 100644
+--- a/fs/nfs/pnfs.c
++++ b/fs/nfs/pnfs.c
+@@ -465,6 +465,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
+ 	struct pnfs_layout_segment *lseg, *next;
  
- 	l = u;
- 	if (l > UNICODE_MAX || (l & SURROGATE_MASK) == SURROGATE_PAIR)
--		return -1;
-+		return -EILSEQ;
- 
- 	nc = 0;
- 	for (t = utf8_table; t->cmask && maxout; t++, maxout--) {
-@@ -110,7 +110,7 @@ int utf32_to_utf8(unicode_t u, u8 *s, int maxout)
- 			return nc;
- 		}
- 	}
--	return -1;
-+	return -EOVERFLOW;
- }
- EXPORT_SYMBOL(utf32_to_utf8);
- 
-@@ -217,8 +217,16 @@ int utf16s_to_utf8s(const wchar_t *pwcs, int inlen, enum utf16_endian endian,
- 				inlen--;
- 			}
- 			size = utf32_to_utf8(u, op, maxout);
--			if (size == -1) {
--				/* Ignore character and move on */
-+			if (size < 0) {
-+				if (size == -EILSEQ) {
-+					/* Ignore character and move on */
-+					continue;
-+				}
-+				/*
-+				 * Stop filling the buffer with data once a character
-+				 * does not fit anymore.
-+				 */
-+				break;
- 			} else {
- 				op += size;
- 				maxout -= size;
+ 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
++	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
+ 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
+ 		pnfs_clear_lseg_state(lseg, lseg_list);
+ 	pnfs_clear_layoutreturn_info(lo);
 -- 
 2.51.0
 
