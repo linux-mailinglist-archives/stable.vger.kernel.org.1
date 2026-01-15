@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208647-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208543-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 11A05D26082
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:33 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DE89D25ED3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E54B130262A8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39220301D60A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55D1A39B4BF;
-	Thu, 15 Jan 2026 17:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B462E3BF301;
+	Thu, 15 Jan 2026 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="idsQB0zL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1uR4EmzS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 145173BC4D7;
-	Thu, 15 Jan 2026 17:00:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 781973BC4EE;
+	Thu, 15 Jan 2026 16:55:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496446; cv=none; b=u5WiSlVFP7JuSApNDJEazUc5Kbzd4GQbtfXoELa5L6N3HkakPteGlI0DB0RHtkpWxqZhjHZGTCmPScB/6fLzJxfF9//OKzyzeNAebUMnU1F1UI7jDPHUbDbgLhUcBNFPUWVtfH0Tvi3tINkCP8oLYf5MDxeKy1Ce82lfKGSK2PI=
+	t=1768496148; cv=none; b=kWaQBHBc8KyASZxGrhg+0hnzSeHLHVcs7/ERsOuaqdqu/U2wcxNXoWedw5oqWwbLh2P5nzGuhVgUVigQVfDO3AWKQvj11Ra67yXp08B59W8LoHr1d4zSlCYdbliUh7cdqvkM9Y/g9EbSlPkiP+KmxlMvm+Pt2GSBUkyrPRrv/Ss=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496446; c=relaxed/simple;
-	bh=iKMwoiKhIU8kLzpV4FJfOw+oyHBRbBbQKij3XlRfOOc=;
+	s=arc-20240116; t=1768496148; c=relaxed/simple;
+	bh=BnodaE5asFb+MpBUeLj+cqAymUPm4SsW12Iqg2DR0W0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iKBP6mp+XqZOWLqMzWw9BonJGVruZdUHN0/aDPy0MzNSAtnMti6Vw06TcTeCOKcAGDvHJ53fITP5f9p1d4FtKXUiGkH9OYdIhkNgtW9XHDsbYYACv8iGOZdxdVDv0HGOt8bXJGS4jelaF0dWgMKYsD5uJDqVdyYC8x07/8J0x2M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=idsQB0zL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 932BBC116D0;
-	Thu, 15 Jan 2026 17:00:45 +0000 (UTC)
+	 MIME-Version; b=twY5hlKOhPZg3h0Q4x/qU6tHH1trFWgxPQg+KEa2n/IqZcZvmLGLS6i3ybPlKdHJWAsN62zcYyG2k51TGNEzoCwLbxzi+BbUrAdpcZcQyVYXW21C8EKhJCs+k0p1TmCToFcfXKZ1K0O5hRWVy3fkbA5meNBR4h2crbnXcfE6ndY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1uR4EmzS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 043E3C19421;
+	Thu, 15 Jan 2026 16:55:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496446;
-	bh=iKMwoiKhIU8kLzpV4FJfOw+oyHBRbBbQKij3XlRfOOc=;
+	s=korg; t=1768496148;
+	bh=BnodaE5asFb+MpBUeLj+cqAymUPm4SsW12Iqg2DR0W0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=idsQB0zLGaMpejAT6Yb7oboWinPS/1so4KYl2sQim75ifz6Fhiv3crcSxu0AsIKSa
-	 s3ZAHwRX3uYR8GxWgigPE4gcj01WYUUQMcv8kVgodI+a1atpKbxnyWuey1WqwdCU4g
-	 MnI9VcREQ+WzEEB3NgZCbzdUp7QTs0sSJK6pWn64=
+	b=1uR4EmzS8/9Ho3cUh9taNabZEWcJVH0/48znDjTgRNnCv8NiVukxfbBzMEGqlMX5D
+	 5aA3sjPWckUblHXcZSgXfnP+PRfNcYj8Xx/xM8zX9gu3+EIiCcat3Qo/JycSTNOecW
+	 hOz9Y/3Thag4l7DIWHQm6jck+TiFjnmc8ofNTJ9A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Javier Martinez Canillas <javierm@redhat.com>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.12 016/119] drm/pl111: Fix error handling in pl111_amba_probe
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 094/181] netfilter: nf_conncount: update last_gc only when GC has been performed
 Date: Thu, 15 Jan 2026 17:47:11 +0100
-Message-ID: <20260115164152.548889935@linuxfoundation.org>
+Message-ID: <20260115164205.715178457@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit 0ddd3bb4b14c9102c0267b3fd916c81fe5ab89c1 upstream.
+[ Upstream commit 7811ba452402d58628e68faedf38745b3d485e3c ]
 
-Jump to the existing dev_put label when devm_request_irq() fails
-so drm_dev_put() and of_reserved_mem_device_release() run
-instead of returning early and leaking resources.
+Currently last_gc is being updated everytime a new connection is
+tracked, that means that it is updated even if a GC wasn't performed.
+With a sufficiently high packet rate, it is possible to always bypass
+the GC, causing the list to grow infinitely.
 
-Found via static analysis and code review.
+Update the last_gc value only when a GC has been actually performed.
 
-Fixes: bed41005e617 ("drm/pl111: Initial drm/kms driver for pl111")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20251211123345.2392065-1-linmq006@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/pl111/pl111_drv.c |    2 +-
+ net/netfilter/nf_conncount.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/pl111/pl111_drv.c
-+++ b/drivers/gpu/drm/pl111/pl111_drv.c
-@@ -294,7 +294,7 @@ static int pl111_amba_probe(struct amba_
- 			       variant->name, priv);
- 	if (ret != 0) {
- 		dev_err(dev, "%s failed irq %d\n", __func__, ret);
--		return ret;
-+		goto dev_put;
- 	}
+diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
+index 3c1b155f7a0ea..828d5c64c68a3 100644
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -229,6 +229,7 @@ static int __nf_conncount_add(struct net *net,
  
- 	ret = pl111_modeset_init(drm);
+ 		nf_ct_put(found_ct);
+ 	}
++	list->last_gc = (u32)jiffies;
+ 
+ add_new_node:
+ 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
+@@ -248,7 +249,6 @@ static int __nf_conncount_add(struct net *net,
+ 	conn->jiffies32 = (u32)jiffies;
+ 	list_add_tail(&conn->node, &list->head);
+ 	list->count++;
+-	list->last_gc = (u32)jiffies;
+ 
+ out_put:
+ 	if (refcounted)
+-- 
+2.51.0
+
 
 
 
