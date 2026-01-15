@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209301-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1B3EFD26939
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:09 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id EAB9FD26F46
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:57:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9B03F30C8904
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:02 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C6ACF3033B8B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B1C833D1CA7;
-	Thu, 15 Jan 2026 17:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 47FCE3D3007;
+	Thu, 15 Jan 2026 17:50:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y2J9MHbQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hUBNrwix"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7280E3BF2FF;
-	Thu, 15 Jan 2026 17:31:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A4203D300D;
+	Thu, 15 Jan 2026 17:50:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498306; cv=none; b=K3/ASAyCj555alD6h3vBoCVC08z/OzyAAK42yRX6tIOaooKkyTTQKYUN3jGn1tAFcuPPOWobCIN2uZlxnm1Lcdu9x7wN5boR8B9zTDOwYI890KTB0ktNqlALWuqBb34h9rqwYN/Ds+t1HDrfQhz6e7spsLlZibSw8tZB7ZnkXcs=
+	t=1768499414; cv=none; b=AlRbfXKI7nX2Ev+3721hASwk1pqUScbzvR3yAxbQjk9W8VcDl+l+lKQ9DviHvj7J0PcANERhn5Novc8rNxKHIdBg8ZUDmI/beV2NFwvUIxI0ITf/J8Nm+TUXtT2YuLnB994JiqBsNReE9bQMVKMdsicgIOsZ5ZaESI+XTEA5hdQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498306; c=relaxed/simple;
-	bh=a7Pjjg0Gv7vYzeBZmn5cy0lLoFB0TKhoJMQOW7cvqws=;
+	s=arc-20240116; t=1768499414; c=relaxed/simple;
+	bh=C5tSA08JuPmC5YtnHErF+vSQsMpPGqBKsMnZyEI7hvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qeKqJruGbOsadfM1Qn+vERnduZja+kxoXO0x/kAYgPGQ4FgM93RXTdJT/jCWgsHn49so3L2L4ELtanaltmchaPKn/TccRUvhWo+X4zQbarhrE+6zWB4t7HAnIhIRJtR+i0LdcMQGHH1leVTqC2u0Dj8gz3m6d5HQfB4QwvoF9rg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y2J9MHbQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0071AC16AAE;
-	Thu, 15 Jan 2026 17:31:45 +0000 (UTC)
+	 MIME-Version; b=kGQEdaKg+V5PBf+ou93TTT8OA7F5btmLamvnt9M9bzUpK8uacZ8wyBDOodkZXV4VN97nRh6I+aD1xlFjv1nz0puZD35SgasNa4sAnYRFsCAV0SBOXTirHoZGbcqpm1KDxt0ggCQIKtcmmU2wov7prOat2UaTVEM7PwvHe2519ck=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hUBNrwix; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C48FC19423;
+	Thu, 15 Jan 2026 17:50:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498306;
-	bh=a7Pjjg0Gv7vYzeBZmn5cy0lLoFB0TKhoJMQOW7cvqws=;
+	s=korg; t=1768499413;
+	bh=C5tSA08JuPmC5YtnHErF+vSQsMpPGqBKsMnZyEI7hvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y2J9MHbQ+rfWkCXvPNxqkfYBzbRsDb1Qk/E0m+95C7HzCj1P7iCufHY52IKGJMKrQ
-	 wGKhVQM72oD5XE601rilscry08IGiX1DafEks/5dvrjkck00alA5tfRa7kfakrf59R
-	 B67THAPvBk/nI2NH4CtUn/hLht7/DRtiCa9KxnY4=
+	b=hUBNrwixvREiZ1Q46RHTKxox1d2ZAMb1QR+hpaXHew9OpGn74XBooHdzi8hKgR/do
+	 XZn6nsE3cQG7PUlaIIVPSyjG8SKrFIrNV2v4ym9BRIzLVtWgpJOa27RNxDwbr6spFM
+	 gMOuX3Yi+PIy0VaAsno51S+/RizrMnqaw7DmINF8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-	Takashi Sakamoto <o-takashi@sakamocchi.jp>,
+	Wenhua Lin <Wenhua.Lin@unisoc.com>,
+	Cixi Geng <cixi.geng@linux.dev>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 352/554] firewire: nosy: Fix dma_free_coherent() size
-Date: Thu, 15 Jan 2026 17:46:58 +0100
-Message-ID: <20260115164258.969216536@linuxfoundation.org>
+Subject: [PATCH 5.10 218/451] serial: sprd: Return -EPROBE_DEFER when uart clock is not ready
+Date: Thu, 15 Jan 2026 17:46:59 +0100
+Message-ID: <20260115164238.785036525@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,70 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Wenhua Lin <Wenhua.Lin@unisoc.com>
 
-[ Upstream commit c48c0fd0e19684b6ecdb4108a429e3a4e73f5e21 ]
+[ Upstream commit 29e8a0c587e328ed458380a45d6028adf64d7487 ]
 
-It looks like the buffer allocated and mapped in add_card() is done
-with size RCV_BUFFER_SIZE which is 16 KB and 4KB.
+In sprd_clk_init(), when devm_clk_get() returns -EPROBE_DEFER
+for either uart or source clock, we should propagate the
+error instead of just warning and continuing with NULL clocks.
 
-Fixes: 286468210d83 ("firewire: new driver: nosy - IEEE 1394 traffic sniffer")
-Co-developed-by: Thomas Fourier <fourier.thomas@gmail.com>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Co-developed-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/20251216165420.38355-2-fourier.thomas@gmail.com
-Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
+Currently the driver only emits a warning when clock acquisition
+fails and proceeds with NULL clock pointers. This can lead to
+issues later when the clocks are actually needed. More importantly,
+when the clock provider is not ready yet and returns -EPROBE_DEFER,
+we should return this error to allow deferred probing.
+
+This change adds explicit checks for -EPROBE_DEFER after both:
+1. devm_clk_get(uport->dev, uart)
+2. devm_clk_get(uport->dev, source)
+
+When -EPROBE_DEFER is encountered, the function now returns
+-EPROBE_DEFER to let the driver framework retry probing
+later when the clock dependencies are resolved.
+
+Signed-off-by: Wenhua Lin <Wenhua.Lin@unisoc.com>
+Link: https://patch.msgid.link/20251022030840.956589-1-Wenhua.Lin@unisoc.com
+Reviewed-by: Cixi Geng <cixi.geng@linux.dev>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firewire/nosy.c | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/tty/serial/sprd_serial.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/firewire/nosy.c b/drivers/firewire/nosy.c
-index ea31ac7ac1ca..e59053738a43 100644
---- a/drivers/firewire/nosy.c
-+++ b/drivers/firewire/nosy.c
-@@ -36,6 +36,8 @@
+diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
+index a1952e4f1fcb..e850959ecf55 100644
+--- a/drivers/tty/serial/sprd_serial.c
++++ b/drivers/tty/serial/sprd_serial.c
+@@ -1137,6 +1137,9 @@ static int sprd_clk_init(struct uart_port *uport)
  
- static char driver_name[] = KBUILD_MODNAME;
- 
-+#define RCV_BUFFER_SIZE (16 * 1024)
+ 	clk_uart = devm_clk_get(uport->dev, "uart");
+ 	if (IS_ERR(clk_uart)) {
++		if (PTR_ERR(clk_uart) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
 +
- /* this is the physical layout of a PCL, its size is 128 bytes */
- struct pcl {
- 	__le32 next;
-@@ -517,16 +519,14 @@ remove_card(struct pci_dev *dev)
- 			  lynx->rcv_start_pcl, lynx->rcv_start_pcl_bus);
- 	dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 			  lynx->rcv_pcl, lynx->rcv_pcl_bus);
--	dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE, lynx->rcv_buffer,
--			  lynx->rcv_buffer_bus);
-+	dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
-+			  lynx->rcv_buffer, lynx->rcv_buffer_bus);
+ 		dev_warn(uport->dev, "uart%d can't get uart clock\n",
+ 			 uport->line);
+ 		clk_uart = NULL;
+@@ -1144,6 +1147,9 @@ static int sprd_clk_init(struct uart_port *uport)
  
- 	iounmap(lynx->registers);
- 	pci_disable_device(dev);
- 	lynx_put(lynx);
- }
- 
--#define RCV_BUFFER_SIZE (16 * 1024)
--
- static int
- add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- {
-@@ -680,7 +680,7 @@ add_card(struct pci_dev *dev, const struct pci_device_id *unused)
- 		dma_free_coherent(&lynx->pci_device->dev, sizeof(struct pcl),
- 				  lynx->rcv_pcl, lynx->rcv_pcl_bus);
- 	if (lynx->rcv_buffer)
--		dma_free_coherent(&lynx->pci_device->dev, PAGE_SIZE,
-+		dma_free_coherent(&lynx->pci_device->dev, RCV_BUFFER_SIZE,
- 				  lynx->rcv_buffer, lynx->rcv_buffer_bus);
- 	iounmap(lynx->registers);
- 
+ 	clk_parent = devm_clk_get(uport->dev, "source");
+ 	if (IS_ERR(clk_parent)) {
++		if (PTR_ERR(clk_parent) == -EPROBE_DEFER)
++			return -EPROBE_DEFER;
++
+ 		dev_warn(uport->dev, "uart%d can't get source clock\n",
+ 			 uport->line);
+ 		clk_parent = NULL;
 -- 
 2.51.0
 
