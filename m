@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208772-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C56CBD2637E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:44 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A6BD272D7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A401A30EB0AC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:04 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4BB45305C90E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 990D33BF2EF;
-	Thu, 15 Jan 2026 17:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9433C1FE8;
+	Thu, 15 Jan 2026 17:53:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xs6M7aQR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMcjICTs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3C5623BF319;
-	Thu, 15 Jan 2026 17:06:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51843C0093;
+	Thu, 15 Jan 2026 17:53:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496799; cv=none; b=ddi0flAYQpR829cRrglEp67MyrFjodSJZeYr+GZLDt8FjxfQIWQgMkQ0lXXOV+f+ee5cjNQjuK18bL4YimdUganvCzWgkLqg++FcQ9g42s0YpMHc+t4EdfzZcXTYctFgQNNM7a/AKukN1pJwVO5zwYPKrWm0dsaPQYzhGI47Bbs=
+	t=1768499593; cv=none; b=hkj6wHgPyJ2UvaF/mR5tAnAmLQvwd3tno9AntPD0rih//eu4RasGTMNdLZr84NHeMhwHrM+QeJF0dGF3/Ga1iCfjsM3E3wk8+EJPo+cHY/bAZcL4xAQyqBIh+EC+0g+ECjHfTDFcyMoOg3hKFt/HgmNsN2uy27XcoLYKxTA7QqU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496799; c=relaxed/simple;
-	bh=a/iK5FTWomllkG5nZzHmYW17FZcV+mHDU9oLIXgdaJ8=;
+	s=arc-20240116; t=1768499593; c=relaxed/simple;
+	bh=SIUQoIQWlgTCk2qt9L1hczeKedkIz6aO7mWiyQoaOvc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SGjcNY9xzx+gfPPfu3+3fZaEKkOt3RQpoSWbF4wbc+/NBS/u343qUzpBeg+2hdfIHYAfDTQWdGUxO8ybIkjhlgyPCYpwi0n9xDV3hjFBngBEEQj1vDEftBHjkJmostKycmj/3+vs5MkoxIRzqV4cGXuq1yDberLIl2rR+h9hlus=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xs6M7aQR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B936FC16AAE;
-	Thu, 15 Jan 2026 17:06:38 +0000 (UTC)
+	 MIME-Version; b=oX4ejP2qgPbShKBuFGinaHMV4zgenKFOIrzeCoN6PH3aEjrfqiXd3RTMO7FTNa5DMwwXlVPD034x0PBsxaN/Tbh+dTobcsnboE7Maqy5eRJdocfKvsPiKUx36Xw3q+mQ/l1UMwNyQQVwnwLAlAcXqTRtV0mXYli+v792EVYGABg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMcjICTs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCD2C116D0;
+	Thu, 15 Jan 2026 17:53:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496799;
-	bh=a/iK5FTWomllkG5nZzHmYW17FZcV+mHDU9oLIXgdaJ8=;
+	s=korg; t=1768499593;
+	bh=SIUQoIQWlgTCk2qt9L1hczeKedkIz6aO7mWiyQoaOvc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Xs6M7aQRNB1Vsoc3gKUudK5H28AI0aSw5Vqa0w+1PAZwlQUKmnsl7pKAXlgv3pSMJ
-	 V7lHV27knCzu58Y2ODfX/ri8hM+DRn/1UeDisfO/zaVMe2enmGkZOn2pU+1ZLsdirp
-	 DUXNJuHF2TrVCWXNIFSSX2OCefnNdgkUU2dWvpMs=
+	b=EMcjICTsq7X2IGS84dO7UGRVFxWNEBPlUEKGKWST/twt82zBBG6beCzYtUS6G04Ga
+	 /P+Z2RD9boI9kEAUdHJmXTgmsNKdTEXbKp4bwu4ou4c+PvCo3dsOKesHo7DkiW1l0U
+	 kYq5PD+23MVVAdOcaAhQHEjJIV4xWYGmAT4a7+q4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH 6.6 20/88] libceph: make calc_target() set t->paused, not just clear it
+	Stephen Rothwell <sfr@canb.auug.org.au>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	Alexey Skidanov <alexey.skidanov@intel.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 282/451] genalloc.h: fix htmldocs warning
 Date: Thu, 15 Jan 2026 17:48:03 +0100
-Message-ID: <20260115164147.047044596@linuxfoundation.org>
+Message-ID: <20260115164241.085968968@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,79 +62,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Andrew Morton <akpm@linux-foundation.org>
 
-commit c0fe2994f9a9d0a2ec9e42441ea5ba74b6a16176 upstream.
+[ Upstream commit 5393802c94e0ab1295c04c94c57bcb00222d4674 ]
 
-Currently calc_target() clears t->paused if the request shouldn't be
-paused anymore, but doesn't ever set t->paused even though it's able to
-determine when the request should be paused.  Setting t->paused is left
-to __submit_request() which is fine for regular requests but doesn't
-work for linger requests -- since __submit_request() doesn't operate
-on linger requests, there is nowhere for lreq->t.paused to be set.
-One consequence of this is that watches don't get reestablished on
-paused -> unpaused transitions in cases where requests have been paused
-long enough for the (paused) unwatch request to time out and for the
-subsequent (re)watch request to enter the paused state.  On top of the
-watch not getting reestablished, rbd_reregister_watch() gets stuck with
-rbd_dev->watch_mutex held:
+WARNING: include/linux/genalloc.h:52 function parameter 'start_addr' not described in 'genpool_algo_t'
 
-  rbd_register_watch
-    __rbd_register_watch
-      ceph_osdc_watch
-        linger_reg_commit_wait
-
-It's waiting for lreq->reg_commit_wait to be completed, but for that to
-happen the respective request needs to end up on need_resend_linger list
-and be kicked when requests are unpaused.  There is no chance for that
-if the request in question is never marked paused in the first place.
-
-The fact that rbd_dev->watch_mutex remains taken out forever then
-prevents the image from getting unmapped -- "rbd unmap" would inevitably
-hang in D state on an attempt to grab the mutex.
-
-Cc: stable@vger.kernel.org
-Reported-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 52fbf1134d47 ("lib/genalloc.c: fix allocation of aligned buffer from non-aligned chunk")
+Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
+Closes: https://lkml.kernel.org/r/20251127130624.563597e3@canb.auug.org.au
+Acked-by: Randy Dunlap <rdunlap@infradead.org>
+Tested-by: Randy Dunlap <rdunlap@infradead.org>
+Cc: Alexey Skidanov <alexey.skidanov@intel.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osd_client.c |   11 +++++++++--
- 1 file changed, 9 insertions(+), 2 deletions(-)
+ include/linux/genalloc.h | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/ceph/osd_client.c
-+++ b/net/ceph/osd_client.c
-@@ -1611,6 +1611,7 @@ static enum calc_target_result calc_targ
- 	struct ceph_pg_pool_info *pi;
- 	struct ceph_pg pgid, last_pgid;
- 	struct ceph_osds up, acting;
-+	bool should_be_paused;
- 	bool is_read = t->flags & CEPH_OSD_FLAG_READ;
- 	bool is_write = t->flags & CEPH_OSD_FLAG_WRITE;
- 	bool force_resend = false;
-@@ -1679,10 +1680,16 @@ static enum calc_target_result calc_targ
- 				 &last_pgid))
- 		force_resend = true;
- 
--	if (t->paused && !target_should_be_paused(osdc, t, pi)) {
--		t->paused = false;
-+	should_be_paused = target_should_be_paused(osdc, t, pi);
-+	if (t->paused && !should_be_paused) {
- 		unpaused = true;
- 	}
-+	if (t->paused != should_be_paused) {
-+		dout("%s t %p paused %d -> %d\n", __func__, t, t->paused,
-+		     should_be_paused);
-+		t->paused = should_be_paused;
-+	}
-+
- 	legacy_change = ceph_pg_compare(&t->pgid, &pgid) ||
- 			ceph_osds_changed(&t->acting, &acting,
- 					  t->used_replica || any_change);
+diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
+index 0bd581003cd5..60de63e46b33 100644
+--- a/include/linux/genalloc.h
++++ b/include/linux/genalloc.h
+@@ -44,6 +44,7 @@ struct gen_pool;
+  * @nr: The number of zeroed bits we're looking for
+  * @data: optional additional data used by the callback
+  * @pool: the pool being allocated from
++ * @start_addr: start address of memory chunk
+  */
+ typedef unsigned long (*genpool_algo_t)(unsigned long *map,
+ 			unsigned long size,
+-- 
+2.51.0
+
 
 
 
