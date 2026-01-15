@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209271-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209685-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12E76D27517
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:20 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 532B5D27312
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5B7632EF3FF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9F6DC30FD9F7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C71F3BFE3D;
-	Thu, 15 Jan 2026 17:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19D653D7D1B;
+	Thu, 15 Jan 2026 17:50:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="niiHxVne"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lGXGEELl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20D0B28725F;
-	Thu, 15 Jan 2026 17:30:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0AAF33993;
+	Thu, 15 Jan 2026 17:49:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498221; cv=none; b=SWqN1JWkg8uYnTqGwvf0nn0RzlBQKnIkxQZnfrFEb3TNPbNISMUNf8xjlHqEyY8blAX8GKkqrSCbkOyZVwslzO/UNyUD0YxM4vj6SkKzXOfOTCQc/ggs/HHe3TzuHy3mgMP0OQxi8HWFm20WGK2fghtR/IfEWyTb6MwU3qCIB48=
+	t=1768499399; cv=none; b=uNBQpbppj5imFa82wdWLnlhUsBJhX38ijJXCgb7S2SvfvhLrFEKw1mCEwNBg+Bz0z4G5EM871UDk4s/wqTU4439s5MKf+eyvBY7J/Bou05xI5smx7fCrvBmCJ1RzJQ+0ZU+r2esuqZoTCvr/d2amUjLG4s754+cQkvF+9abGLMs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498221; c=relaxed/simple;
-	bh=j7Qd0Y5QOXJUVrcaqQ75asf5TcRA77xvRYJb7ozwpKk=;
+	s=arc-20240116; t=1768499399; c=relaxed/simple;
+	bh=11InHHmsUCJQIsQa1lGzTRO3Wt6LTmZVzUCeD50vrHQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HRJXqI6A1wxrSjeWGozZ9UZQ9jHiCAQmkNtMWUHQ9Hf6klXy9bx9+jdNMYw+jiFNxNCxf92+D7pm9IIrhYMT4tqL+GSPh0aVhOOrV6y8Ve9hkpINj6EleKzLNNqAPovWLhHzQ9WqoUPmgbYzITfszlb3fmvqEGl/JtyXbnvliJs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=niiHxVne; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2415C116D0;
-	Thu, 15 Jan 2026 17:30:20 +0000 (UTC)
+	 MIME-Version; b=hMDukw21R1exQXnLzF6LEJSrnQz5cTHj+/BNZjhSzSPHwWVPm1oaT1qucJWmdBW5cRlUEV0kfvUiwPhaLXJS9gGYY2F+dYKLkOE+8ewMlnqcSqCxOAl8ysmHWFMNt9k2isLIrL0IGbrcJJmjiJMi8lj6jmExiZ5x0QoQwZfGqm8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lGXGEELl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3576DC19425;
+	Thu, 15 Jan 2026 17:49:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498221;
-	bh=j7Qd0Y5QOXJUVrcaqQ75asf5TcRA77xvRYJb7ozwpKk=;
+	s=korg; t=1768499399;
+	bh=11InHHmsUCJQIsQa1lGzTRO3Wt6LTmZVzUCeD50vrHQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=niiHxVnevKHbAfZagzf4JXfC8414PrsxnJzheb6INegAcd0iY3kOo87O3JeYSZ8eZ
-	 dyEUjT+iRPrH4/ZN3YhxGxHnGoWbpXkGGPTvWFBtsC+2lfdxtAxPo+96CA76kpkiNQ
-	 k1FZkpv7D+jDPFLHz8T35zMv9X3hNnd2C1uByO6A=
+	b=lGXGEELl2GVQUZTgCDraHPqwaDn1gMRkUpALlqM8twPW0Y/HdhtQJZaCA/paMMlZc
+	 bSqSHHYZV1FjcF3Jub3ZhnL5VKcdXHxlCYjxq1Dow1yjs32Jj314XXdme5MPdZOgFB
+	 6Ysr/UHSKqsptS8oFyAnczF2zXWvcJo2B4hIRqX4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com,
-	Jiri Pirko <jiri@nvidia.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	syzbot+205ef33a3b636b4181fb@syzkaller.appspotmail.com,
+	Lizhi Xu <lizhi.xu@windriver.com>,
+	Shuah Khan <skhan@linuxfoundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 348/554] team: fix check for port enabled in team_queue_override_port_prio_changed()
-Date: Thu, 15 Jan 2026 17:46:54 +0100
-Message-ID: <20260115164258.825510111@linuxfoundation.org>
+Subject: [PATCH 5.10 214/451] usbip: Fix locking bug in RT-enabled kernels
+Date: Thu, 15 Jan 2026 17:46:55 +0100
+Message-ID: <20260115164238.640450617@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,102 +61,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiri Pirko <jiri@nvidia.com>
+From: Lizhi Xu <lizhi.xu@windriver.com>
 
-[ Upstream commit 932ac51d9953eaf77a1252f79b656d4ca86163c6 ]
+[ Upstream commit 09bf21bf5249880f62fe759b53b14b4b52900c6c ]
 
-There has been a syzkaller bug reported recently with the following
-trace:
+Interrupts are disabled before entering usb_hcd_giveback_urb().
+A spinlock_t becomes a sleeping lock on PREEMPT_RT, so it cannot be
+acquired with disabled interrupts.
 
-list_del corruption, ffff888058bea080->prev is LIST_POISON2 (dead000000000122)
-------------[ cut here ]------------
-kernel BUG at lib/list_debug.c:59!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 3 UID: 0 PID: 21246 Comm: syz.0.2928 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__list_del_entry_valid_or_report+0x13e/0x200 lib/list_debug.c:59
-Code: 48 c7 c7 e0 71 f0 8b e8 30 08 ef fc 90 0f 0b 48 89 ef e8 a5 02 55 fd 48 89 ea 48 89 de 48 c7 c7 40 72 f0 8b e8 13 08 ef fc 90 <0f> 0b 48 89 ef e8 88 02 55 fd 48 89 ea 48 b8 00 00 00 00 00 fc ff
-RSP: 0018:ffffc9000d49f370 EFLAGS: 00010286
-RAX: 000000000000004e RBX: ffff888058bea080 RCX: ffffc9002817d000
-RDX: 0000000000000000 RSI: ffffffff819becc6 RDI: 0000000000000005
-RBP: dead000000000122 R08: 0000000000000005 R09: 0000000000000000
-R10: 0000000080000000 R11: 0000000000000001 R12: ffff888039e9c230
-R13: ffff888058bea088 R14: ffff888058bea080 R15: ffff888055461480
-FS:  00007fbbcfe6f6c0(0000) GS:ffff8880d6d0a000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 000000110c3afcb0 CR3: 00000000382c7000 CR4: 0000000000352ef0
+Save the interrupt status and restore it after usb_hcd_giveback_urb().
+
+syz reported:
+BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
 Call Trace:
- <TASK>
- __list_del_entry_valid include/linux/list.h:132 [inline]
- __list_del_entry include/linux/list.h:223 [inline]
- list_del_rcu include/linux/rculist.h:178 [inline]
- __team_queue_override_port_del drivers/net/team/team_core.c:826 [inline]
- __team_queue_override_port_del drivers/net/team/team_core.c:821 [inline]
- team_queue_override_port_prio_changed drivers/net/team/team_core.c:883 [inline]
- team_priority_option_set+0x171/0x2f0 drivers/net/team/team_core.c:1534
- team_option_set drivers/net/team/team_core.c:376 [inline]
- team_nl_options_set_doit+0x8ae/0xe60 drivers/net/team/team_core.c:2653
- genl_family_rcv_msg_doit+0x209/0x2f0 net/netlink/genetlink.c:1115
- genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
- genl_rcv_msg+0x55c/0x800 net/netlink/genetlink.c:1210
- netlink_rcv_skb+0x158/0x420 net/netlink/af_netlink.c:2552
- genl_rcv+0x28/0x40 net/netlink/genetlink.c:1219
- netlink_unicast_kernel net/netlink/af_netlink.c:1320 [inline]
- netlink_unicast+0x5aa/0x870 net/netlink/af_netlink.c:1346
- netlink_sendmsg+0x8c8/0xdd0 net/netlink/af_netlink.c:1896
- sock_sendmsg_nosec net/socket.c:727 [inline]
- __sock_sendmsg net/socket.c:742 [inline]
- ____sys_sendmsg+0xa98/0xc70 net/socket.c:2630
- ___sys_sendmsg+0x134/0x1d0 net/socket.c:2684
- __sys_sendmsg+0x16d/0x220 net/socket.c:2716
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xcd/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
+ dump_stack_lvl+0x189/0x250 lib/dump_stack.c:120
+ rt_spin_lock+0xc7/0x2c0 kernel/locking/spinlock_rt.c:57
+ spin_lock include/linux/spinlock_rt.h:44 [inline]
+ mon_bus_complete drivers/usb/mon/mon_main.c:134 [inline]
+ mon_complete+0x5c/0x200 drivers/usb/mon/mon_main.c:147
+ usbmon_urb_complete include/linux/usb/hcd.h:738 [inline]
+ __usb_hcd_giveback_urb+0x254/0x5e0 drivers/usb/core/hcd.c:1647
+ vhci_urb_enqueue+0xb4f/0xe70 drivers/usb/usbip/vhci_hcd.c:818
 
-The problem is in this flow:
-1) Port is enabled, queue_id != 0, in qom_list
-2) Port gets disabled
-        -> team_port_disable()
-        -> team_queue_override_port_del()
-        -> del (removed from list)
-3) Port is disabled, queue_id != 0, not in any list
-4) Priority changes
-        -> team_queue_override_port_prio_changed()
-        -> checks: port disabled && queue_id != 0
-        -> calls del - hits the BUG as it is removed already
-
-To fix this, change the check in team_queue_override_port_prio_changed()
-so it returns early if port is not enabled.
-
-Reported-by: syzbot+422806e5f4cce722a71f@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=422806e5f4cce722a71f
-Fixes: 6c31ff366c11 ("team: remove synchronize_rcu() called during queue override change")
-Signed-off-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251212102953.167287-1-jiri@resnulli.us
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reported-by: syzbot+205ef33a3b636b4181fb@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=205ef33a3b636b4181fb
+Signed-off-by: Lizhi Xu <lizhi.xu@windriver.com>
+Acked-by: Shuah Khan <skhan@linuxfoundation.org>
+Link: https://lore.kernel.org/r/20250916014143.1439759-1-lizhi.xu@windriver.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/usbip/vhci_hcd.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 1e0adeb5e177..f866f7a4be31 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -873,7 +873,7 @@ static void __team_queue_override_enabled_check(struct team *team)
- static void team_queue_override_port_prio_changed(struct team *team,
- 						  struct team_port *port)
- {
--	if (!port->queue_id || team_port_enabled(port))
-+	if (!port->queue_id || !team_port_enabled(port))
- 		return;
- 	__team_queue_override_port_del(team, port);
- 	__team_queue_override_port_add(team, port);
+diff --git a/drivers/usb/usbip/vhci_hcd.c b/drivers/usb/usbip/vhci_hcd.c
+index 2d2506c59881..e5660f0e97e8 100644
+--- a/drivers/usb/usbip/vhci_hcd.c
++++ b/drivers/usb/usbip/vhci_hcd.c
+@@ -830,15 +830,15 @@ static int vhci_urb_enqueue(struct usb_hcd *hcd, struct urb *urb, gfp_t mem_flag
+ no_need_xmit:
+ 	usb_hcd_unlink_urb_from_ep(hcd, urb);
+ no_need_unlink:
+-	spin_unlock_irqrestore(&vhci->lock, flags);
+ 	if (!ret) {
+ 		/* usb_hcd_giveback_urb() should be called with
+ 		 * irqs disabled
+ 		 */
+-		local_irq_disable();
++		spin_unlock(&vhci->lock);
+ 		usb_hcd_giveback_urb(hcd, urb, urb->status);
+-		local_irq_enable();
++		spin_lock(&vhci->lock);
+ 	}
++	spin_unlock_irqrestore(&vhci->lock, flags);
+ 	return ret;
+ }
+ 
 -- 
 2.51.0
 
