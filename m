@@ -1,59 +1,54 @@
-Return-Path: <stable+bounces-208710-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209377-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35A58D262E7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 83566D26B21
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B125B30D3151
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3DFC930A76B0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CC737C117;
-	Thu, 15 Jan 2026 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7D38C2D94A7;
+	Thu, 15 Jan 2026 17:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cUVNHYZS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zzZJv5/U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 27B6C33F390;
-	Thu, 15 Jan 2026 17:03:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 403CE39E199;
+	Thu, 15 Jan 2026 17:35:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496626; cv=none; b=TWn+2zBSHbTYNqFn4t7ZePDGC4hV2ZYdDUUliuaTMP7ZCuPNki+r6OIU0Twmu7kGANGWQRVunhy8YC/OtMWVx9W3+C3rS1OX44AdbRtjzl6I5E+OZAK6JelhREpBzZvy0vsMkTPUhfopUyQ55Movl+Ik79M0OswpKkdg826FkR0=
+	t=1768498522; cv=none; b=rTLLG4eZTmcjVRjlrxgTT9/1A1ALtcu4tMb6PL2gsnpf/X2Pka8j1N3wUeqxalBBKVHS1Yl+IST7993Hh2PQdcmoesDnEI6GJAabpoW/Bvg3ULvPKvVG1wg4z3hdYCAVVToiMvy9K7LEw1HIoJY7kTge3EH8Oh93uGDo+cPBM9U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496626; c=relaxed/simple;
-	bh=V/4IsE3J1rWsfVBWdWCemfxmYS9CM8tdecuA3Nv9PQM=;
+	s=arc-20240116; t=1768498522; c=relaxed/simple;
+	bh=Mu5dzSqCimUCYk8Hywtpvx78jxom5Qsct0G439U0Vsg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Tqz8+gw5huyHapwF3+ysFpewGYZE1aQVSO1uhrIYJTfQ6KSh6hLgatdxzmWKJVtJKTAisx/3jZOQq7ZTI7KY3WIdYd1S9AaXxYnB9sF0En9pxSS4QCRoEYS9TRbuqf/Q8cnqV+G8IHcQrqdTQmM2Gt79Ink78M8JwaF1S/9mjLQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cUVNHYZS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC074C116D0;
-	Thu, 15 Jan 2026 17:03:45 +0000 (UTC)
+	 MIME-Version; b=Vi7LbRa46hraZEKH4ZX7qHN/pK0UC0Ok/cyTssAHVS1ars+J7F2o3Xd36w0idixgT9D9b7WtkzKXd+JNaFJWEpaDIvKhfmBnK3nppIuXbRlxysdhIZclZZYwWPntolTtsT6BvTkH6451gfDS5OpbU/Z/TYSI7sVAI1Bw0i3jb+A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zzZJv5/U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86414C116D0;
+	Thu, 15 Jan 2026 17:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496626;
-	bh=V/4IsE3J1rWsfVBWdWCemfxmYS9CM8tdecuA3Nv9PQM=;
+	s=korg; t=1768498521;
+	bh=Mu5dzSqCimUCYk8Hywtpvx78jxom5Qsct0G439U0Vsg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cUVNHYZSTpj6kY8+8MJQBStKeOTRE4Ly+LpiOHdSDspXyeOA/Ns6nBW7v1ddM49WO
-	 w8D4kzGBK3LAa02ZU7XCkJ6gRKLWx7ss+5XlW5ElzadgOnZruUNhS+DHImMvsxDY0A
-	 DCKVQTriFuUaXntIHvanTVrSC8oS1WYZW00ZbmKw=
+	b=zzZJv5/U4Jk5hFQE8f47aIh7YYe8K+Dpx46WRi7OCYFkPYhpZs/4n3JoHaSZmIZ8i
+	 mqJkJXTQfmvjpHruusf+qZXq3zuj5ghpDOhCK2FKNtUHXj5nep3bEebXvUjS+L92m3
+	 fRkfNltWISCcW3GgOzQEwgURbs92yhVJHpFDvpBs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Joshua Hay <joshua.a.hay@intel.com>,
-	Alexander Lobakin <aleksander.lobakin@intel.com>,
-	Madhu Chittim <madhu.chittim@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	David Decotigny <ddecotig@google.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	stable <stable@kernel.org>,
+	Jimmy Hu <hhhuuu@google.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 079/119] idpf: cap maximum Rx buffer size
+Subject: [PATCH 5.15 428/554] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
 Date: Thu, 15 Jan 2026 17:48:14 +0100
-Message-ID: <20260115164154.803585362@linuxfoundation.org>
+Message-ID: <20260115164301.753410734@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -65,80 +60,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joshua Hay <joshua.a.hay@intel.com>
+From: Jimmy Hu <hhhuuu@google.com>
 
-[ Upstream commit 086efe0a1ecc36cffe46640ce12649a4cd3ff171 ]
+[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
 
-The HW only supports a maximum Rx buffer size of 16K-128. On systems
-using large pages, the libeth logic can configure the buffer size to be
-larger than this. The upper bound is PAGE_SIZE while the lower bound is
-MTU rounded up to the nearest power of 2. For example, ARM systems with
-a 64K page size and an mtu of 9000 will set the Rx buffer size to 16K,
-which will cause the config Rx queues message to fail.
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-Initialize the bufq/fill queue buf_len field to the maximum supported
-size. This will trigger the libeth logic to cap the maximum Rx buffer
-size by reducing the upper bound.
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
 
-Fixes: 74d1412ac8f37 ("idpf: use libeth Rx buffer management for payload buffer")
-Signed-off-by: Joshua Hay <joshua.a.hay@intel.com>
-Acked-by: Alexander Lobakin <aleksander.lobakin@intel.com>
-Reviewed-by: Madhu Chittim <madhu.chittim@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Reviewed-by: David Decotigny <ddecotig@google.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
+
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
+
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
+
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_txrx.c | 8 +++++---
- drivers/net/ethernet/intel/idpf/idpf_txrx.h | 1 +
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/usb/gadget/udc/core.c |   17 ++++++++++++++++-
+ include/linux/usb/gadget.h    |    5 +++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.c b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-index d03fb063a1efa..3ddf7b1e85ef4 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.c
-@@ -655,9 +655,10 @@ static int idpf_rx_buf_alloc_singleq(struct idpf_rx_queue *rxq)
- static int idpf_rx_bufs_init_singleq(struct idpf_rx_queue *rxq)
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1066,8 +1066,13 @@ static void usb_gadget_state_work(struct
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
  {
- 	struct libeth_fq fq = {
--		.count	= rxq->desc_count,
--		.type	= LIBETH_FQE_MTU,
--		.nid	= idpf_q_vector_to_mem(rxq->q_vector),
-+		.count		= rxq->desc_count,
-+		.type		= LIBETH_FQE_MTU,
-+		.buf_len	= IDPF_RX_MAX_BUF_SZ,
-+		.nid		= idpf_q_vector_to_mem(rxq->q_vector),
- 	};
- 	int ret;
++	unsigned long flags;
++
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
  
-@@ -714,6 +715,7 @@ static int idpf_rx_bufs_init(struct idpf_buf_queue *bufq,
- 		.truesize	= bufq->truesize,
- 		.count		= bufq->desc_count,
- 		.type		= type,
-+		.buf_len	= IDPF_RX_MAX_BUF_SZ,
- 		.hsplit		= idpf_queue_has(HSPLIT_EN, bufq),
- 		.nid		= idpf_q_vector_to_mem(bufq->q_vector),
- 	};
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_txrx.h b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-index 48d55b373425b..5f8a9b9f5d5d7 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-+++ b/drivers/net/ethernet/intel/idpf/idpf_txrx.h
-@@ -96,6 +96,7 @@ do {								\
- 		idx = 0;					\
- } while (0)
+@@ -1298,6 +1303,8 @@ void usb_initialize_gadget(struct device
+ 		void (*release)(struct device *dev))
+ {
+ 	dev_set_name(&gadget->dev, "gadget");
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
  
-+#define IDPF_RX_MAX_BUF_SZ			(16384 - 128)
- #define IDPF_RX_BUF_STRIDE			32
- #define IDPF_RX_BUF_POST_STRIDE			16
- #define IDPF_LOW_WATERMARK			64
--- 
-2.51.0
-
+@@ -1478,6 +1485,7 @@ static void usb_gadget_remove_driver(str
+ void usb_del_gadget(struct usb_gadget *gadget)
+ {
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
+ 
+ 	if (!udc)
+ 		return;
+@@ -1496,6 +1504,13 @@ void usb_del_gadget(struct usb_gadget *g
+ 	mutex_unlock(&udc_lock);
+ 
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	device_unregister(&udc->dev);
+ 	device_del(&gadget->dev);
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -375,6 +375,9 @@ struct usb_gadget_ops {
+  *	can handle. The UDC must support this and all slower speeds and lower
+  *	number of lanes.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -449,6 +452,8 @@ struct usb_gadget {
+ 	enum usb_ssp_rate		max_ssp_rate;
+ 
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
 
 
 
