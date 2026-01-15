@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-209313-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209736-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0779D26A7C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id E1346D2725D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C10C63030770
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 39ED331635DE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 396CE3C1988;
-	Thu, 15 Jan 2026 17:32:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3BA3C1999;
+	Thu, 15 Jan 2026 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XwEXrxcs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAHAjAea"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEFFE3C1970;
-	Thu, 15 Jan 2026 17:32:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5673C1997;
+	Thu, 15 Jan 2026 17:52:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498341; cv=none; b=ljYb3jLb+whyTwQzVRK1316E+4wYwz8xjgZEnoBXsAreTuCvilS0dO3aBR+W5hbhjc3XOwsRy8fU7rv13OQJQJ9mvHB5XrrGj80vuDylPuFyPYUcVfIgr7S1EvCPPWHhCeLTQC69gSoBAx53VdM5ezjHtjQLF3WDpoxpA+Bd0AY=
+	t=1768499545; cv=none; b=mI/Rop4RcnfJqzT/9sI1hyd8ffON/+KxHk08RvAUNg+KTWtq8ZL/jjis3bKLtnKGzCBN3RxaY7ojoSWCygG0J0UCCj36HCUpU7NffyRYUSyBZK2u5PqmSu6hBOvHStmtOXZbrDBDj3bDn8/+VT48vqwX2OT/9vgN4OJRSgx4Z6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498341; c=relaxed/simple;
-	bh=QufKhM/MPodqN935JrNF9rXp1+bdJbsPzIJTkNavftg=;
+	s=arc-20240116; t=1768499545; c=relaxed/simple;
+	bh=Wur3+XaQaKrJ4K3WAlihJl1MHcLKIbOk9ddHGULjgYc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VleIJBuW5Sp1uxcu7hBhiXDrKR2tHZHtxGrtgPA2Bl9YqwTKs9lKMn52XJY5teCJX1rMop4Mwz5HYUSMXXFlHwlCxV1+R9ZdIRfAMEFAVepgcrxh+UAj+kiDqkN39Awc85Vad0CLV+0j9tA2wB1NHy0rJ+upejcvXpVRHCRyA9o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XwEXrxcs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DE57C116D0;
-	Thu, 15 Jan 2026 17:32:19 +0000 (UTC)
+	 MIME-Version; b=PsrljYG+ReC0haeK75T5E/TC3+rx7Bw3+n4BHSJIWepr7Wv9POvsHX84MNYsGm4syBsH98ET0kr2/biZuTwirTmDZpFu+PgiOSRbDBdDuY7CxKnRVbvkrR+iB0CmMzVa42Q7znywC/WXOinYBWX7yJUL91aEAPteatodaLrp0LU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAHAjAea; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC09C116D0;
+	Thu, 15 Jan 2026 17:52:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498340;
-	bh=QufKhM/MPodqN935JrNF9rXp1+bdJbsPzIJTkNavftg=;
+	s=korg; t=1768499545;
+	bh=Wur3+XaQaKrJ4K3WAlihJl1MHcLKIbOk9ddHGULjgYc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XwEXrxcsKHgCQWC/bHBc3qpEUd2gAXsEVz8n8rtAIiOyHkQ06Y237nSQGj870OdFj
-	 fZg6QoCfDZDuDWOj9dGIoe19WLZTTb0sKJR59Mk6Ukh2qQUYUY8axYV6iT5eYO6bB2
-	 rW3yRIUqXT4X9Ar32y02k/5RrnlvJgScNef839kg=
+	b=mAHAjAeaNClEy/Zvvah1GBNJ8tFiKISX5rtC1Ab9wKxnheKrlAQV/u7NeRgBf0dQb
+	 c0bhoAQV2333U41tpJKhynDHLisf3/3z3MhsYynGCFUMLXxOyfYYcaGL+hkEC1Mtzx
+	 KmHS4bqCi2vowq9vH1GQkYUHG4RgT40eoWEItrFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Duoming Zhou <duoming@zju.edu.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 398/554] media: i2c: ADV7604: Remove redundant cancel_delayed_work in probe
+	Harry Wentland <harry.wentland@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 5.10 263/451] drm/amd/display: Use GFP_ATOMIC in dc_create_plane_state()
 Date: Thu, 15 Jan 2026 17:47:44 +0100
-Message-ID: <20260115164300.641519265@linuxfoundation.org>
+Message-ID: <20260115164240.399884319@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,55 +59,37 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 8f34f24355a607b98ecd9924837aab13c676eeca upstream.
+commit 3c41114dcdabb7b25f5bc33273c6db9c7af7f4a7 upstream.
 
-The delayed_work delayed_work_enable_hotplug is initialized with
-INIT_DELAYED_WORK() in adv76xx_probe(), but it is never scheduled
-anywhere in the probe function.
+This can get called from an atomic context.
 
-Calling cancel_delayed_work() on a work that has never been
-scheduled is redundant and unnecessary, as there is no pending
-work to cancel.
-
-Remove the redundant cancel_delayed_work() from error handling
-path and adjust the goto label accordingly to simplify the code
-and avoid potential confusion.
-
-Fixes: 54450f591c99 ("[media] adv7604: driver for the Analog Devices ADV7604 video decoder")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4470
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit 8acdad9344cc7b4e7bc01f0dfea80093eb3768db)
 Cc: stable@vger.kernel.org
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/adv7604.c |    4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/media/i2c/adv7604.c
-+++ b/drivers/media/i2c/adv7604.c
-@@ -3615,7 +3615,7 @@ static int adv76xx_probe(struct i2c_clie
- 	err = media_entity_pads_init(&sd->entity, state->source_pad + 1,
- 				state->pads);
- 	if (err)
--		goto err_work_queues;
-+		goto err_i2c;
+--- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
++++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
+@@ -104,7 +104,7 @@ void enable_surface_flip_reporting(struc
+ struct dc_plane_state *dc_create_plane_state(struct dc *dc)
+ {
+ 	struct dc_plane_state *plane_state = kvzalloc(sizeof(*plane_state),
+-							GFP_KERNEL);
++							GFP_ATOMIC);
  
- 	/* Configure regmaps */
- 	err = configure_regmaps(state);
-@@ -3656,8 +3656,6 @@ static int adv76xx_probe(struct i2c_clie
- 
- err_entity:
- 	media_entity_cleanup(&sd->entity);
--err_work_queues:
--	cancel_delayed_work(&state->delayed_work_enable_hotplug);
- err_i2c:
- 	adv76xx_unregister_clients(state);
- err_hdl:
+ 	if (NULL == plane_state)
+ 		return NULL;
 
 
 
