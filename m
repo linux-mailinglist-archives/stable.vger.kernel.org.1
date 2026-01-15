@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209082-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D27ED26CCE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C308D26A9A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B660430482E7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:23 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 63697312F40B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D1C62C21F4;
-	Thu, 15 Jan 2026 17:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 339713A7F5D;
+	Thu, 15 Jan 2026 17:21:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xb0wLX2i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b9cabBAs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2FEFC30214B;
-	Thu, 15 Jan 2026 17:41:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EA76F3A0E98;
+	Thu, 15 Jan 2026 17:21:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498879; cv=none; b=qAyFcxWG1uFRZQgCqL2AGCpPQ3o0UUAPEizuXolZazpv4f5yQ3Gg5Cxej6byTyH9T+2JzQvesKqyE0bFCKaqi4GPSCi/m2n+SC1p7QHbo3kQuAdJ8DeHorelzkpXIJokAD62MBgQy+DKz7FqLFP48/zn0suqqypa1Ql3m0S2d3s=
+	t=1768497685; cv=none; b=ZQBho9iji50qrxGKv6JXTL8i8DLUL1XJW5x2yKP+E3qHHurNyHZ4hEGiFmimZb5pJzGK7M4MdnCZBHWgSYOkPX6a4dnKdEaeoUYZKBO/IOKjXEAmuMCXAb52iE+5x74GkB+T1mHQf4pmXSKO26Vn249/2QsOQIB8mfkVGEIkueg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498879; c=relaxed/simple;
-	bh=mVZTK6wm0PAAGI7k1r4QYFlOsHGl4XUyAuezsJRlS2g=;
+	s=arc-20240116; t=1768497685; c=relaxed/simple;
+	bh=Yj0poCItF8kZTX0dsKPiYnq3mL25ORCAW/xk1yTgses=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cUw3ZFtaGd2J4vaUnyPlkQGUQjsK6TTIU/PafTZaGQphQTOIp3rpHWj+flaf963MryKKVgvO5I/d0Nd7npRbgQvGpaitFfPPiCHs6V8qPcs0Yc0B85juW0NWsWuJHdEF9fvzjucnuiH6u5DeU64hT7FmcptlZp3YBGoeYztd9HA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xb0wLX2i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADECBC116D0;
-	Thu, 15 Jan 2026 17:41:18 +0000 (UTC)
+	 MIME-Version; b=VWTzfmzD1ByWR1QLlaX8X25Koi2rO+jZwXcu1VR34NM6Q/ypvGaQg5GUhJmVzL8G5bzzX89BvABOS/BfSp9mFeiBuD617YXgSgwqeqF3iyMIhjHKjvn/jFEfVMFELWzOeLjMKIOu5WHOQiLaAFGZje5SOaW5dgj+b4ctrpfPgMc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b9cabBAs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CAC7C116D0;
+	Thu, 15 Jan 2026 17:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498879;
-	bh=mVZTK6wm0PAAGI7k1r4QYFlOsHGl4XUyAuezsJRlS2g=;
+	s=korg; t=1768497684;
+	bh=Yj0poCItF8kZTX0dsKPiYnq3mL25ORCAW/xk1yTgses=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xb0wLX2isEJZoUylgxqx42bv1dIG6pDWvAqxb4sW87Gr7+suTaZ5WRnQW8onNNn3p
-	 ERAfo2iM+VFa/ys3CmuX1iIynZy63IUFyKDDGqGwPCa/Q0ibSLQjdsS8XocbRLaqWt
-	 9MgnYbX57esmRm9txO68+SCVFAogQBLP/xGGFCOE=
+	b=b9cabBAs0BYHxbaVxVqTrXpC2D47gNbfqGfAFSnhOCsJzQ06YPUZ2vTWGnYYczxOD
+	 pyIsol3/msISH//Y59a6Dot6NcyrD3PWek6gDaSc5zPwCHkNEl1/jN1qq8FNBkc4jk
+	 FA01lpvxBkCbGqjTWC3TPmoIlpP/pZpMciMqBzqA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Seungjin Bae <eeodqql09@gmail.com>,
+	Matthijs Kooijman <matthijs@stdin.nl>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 031/451] USB: Fix descriptor count when handling invalid MBIM extended descriptor
+Subject: [PATCH 5.15 166/554] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
 Date: Thu, 15 Jan 2026 17:43:52 +0100
-Message-ID: <20260115164232.019372777@linuxfoundation.org>
+Message-ID: <20260115164252.276662488@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,49 +62,97 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Seungjin Bae <eeodqql09@gmail.com>
+From: Matthijs Kooijman <matthijs@stdin.nl>
 
-[ Upstream commit 5570ad1423ee60f6e972dadb63fb2e5f90a54cbe ]
+[ Upstream commit b5fe46efc147516a908d2d31bf40eb858ab76d51 ]
 
-In cdc_parse_cdc_header(), the check for the USB_CDC_MBIM_EXTENDED_TYPE
-descriptor was using 'break' upon detecting an invalid length.
+The pinctrl-single driver handles pin_config_set by looking up the
+requested setting in a DT-defined lookup table, which defines what bits
+correspond to each setting. There is no way to add
+PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
+code to disable the bias by applying the disable values of both the
+pullup and pulldown entries in the table.
 
-This was incorrect because 'break' only exits the switch statement,
-causing the code to fall through to cnt++, thus incorrectly
-incrementing the count of parsed descriptors for a descriptor that was
-actually invalid and being discarded.
+However, this code is inside the table-lookup loop, so it would only
+execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
+which can never exist, so this code never runs.
 
-This patch changes 'break' to 'goto next_desc;' to ensure that the
-logic skips the counter increment and correctly proceeds to the next
-descriptor in the buffer. This maintains an accurate count of only
-the successfully parsed descriptors.
+This commit lifts the offending code out of the loop, so it just
+executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
+skippipng the table lookup loop.
 
-Fixes: e4c6fb7794982 ("usbnet: move the CDC parser into USB core")
-Signed-off-by: Seungjin Bae <eeodqql09@gmail.com>
-Link: https://lore.kernel.org/r/20250928185611.764589-1-eeodqql09@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also introduces a new `param` variable to make the code slightly
+more readable.
+
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
+versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
+the lookup table, but that was removed, which is probably how this bug
+was introduced.
+
+Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
+Reviewed-by: Haojian Zhuang <haojian.zhuang@linaro.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Message-ID: <20240319110633.230329-1-matthijs@stdin.nl>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 61d1bb53547d ("pinctrl: single: Fix incorrect type for error return variable")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/core/message.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/pinctrl/pinctrl-single.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/core/message.c b/drivers/usb/core/message.c
-index d64aaff223e79..059ea576c6c1d 100644
---- a/drivers/usb/core/message.c
-+++ b/drivers/usb/core/message.c
-@@ -2381,7 +2381,7 @@ int cdc_parse_cdc_header(struct usb_cdc_parsed_header *hdr,
- 			break;
- 		case USB_CDC_MBIM_EXTENDED_TYPE:
- 			if (elength < sizeof(struct usb_cdc_mbim_extended_desc))
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index a72911e8ea82d..b81297084f097 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -557,21 +557,30 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 	unsigned offset = 0, shift = 0, i, data, ret;
+ 	u32 arg;
+ 	int j;
++	enum pin_config_param param;
+ 
+ 	ret = pcs_get_function(pctldev, pin, &func);
+ 	if (ret)
+ 		return ret;
+ 
+ 	for (j = 0; j < num_configs; j++) {
++		param = pinconf_to_config_param(configs[j]);
++
++		/* BIAS_DISABLE has no entry in the func->conf table */
++		if (param == PIN_CONFIG_BIAS_DISABLE) {
++			/* This just disables all bias entries */
++			pcs_pinconf_clear_bias(pctldev, pin);
++			continue;
++		}
++
+ 		for (i = 0; i < func->nconfs; i++) {
+-			if (pinconf_to_config_param(configs[j])
+-				!= func->conf[i].param)
++			if (param != func->conf[i].param)
+ 				continue;
+ 
+ 			offset = pin * (pcs->width / BITS_PER_BYTE);
+ 			data = pcs->read(pcs->base + offset);
+ 			arg = pinconf_to_config_argument(configs[j]);
+-			switch (func->conf[i].param) {
++			switch (param) {
+ 			/* 2 parameters */
+ 			case PIN_CONFIG_INPUT_SCHMITT:
+ 			case PIN_CONFIG_DRIVE_STRENGTH:
+@@ -583,9 +592,6 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 				data |= (arg << shift) & func->conf[i].mask;
+ 				break;
+ 			/* 4 parameters */
+-			case PIN_CONFIG_BIAS_DISABLE:
+-				pcs_pinconf_clear_bias(pctldev, pin);
 -				break;
-+				goto next_desc;
- 			hdr->usb_cdc_mbim_extended_desc =
- 				(struct usb_cdc_mbim_extended_desc *)buffer;
- 			break;
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+ 				if (arg) {
 -- 
 2.51.0
 
