@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209360-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209814-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 548E6D26A37
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7633FD2771A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2B31230EC9E7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6ACE230679FD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 62CDB3C00B8;
-	Thu, 15 Jan 2026 17:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B1F3D6684;
+	Thu, 15 Jan 2026 17:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hKVvOJUo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgYKNkhp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0D1B13C00A6;
-	Thu, 15 Jan 2026 17:34:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E4B3D667A;
+	Thu, 15 Jan 2026 17:56:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498474; cv=none; b=XhLJE2QOf+sciTTjgO6gGx2Upvl27zh6FVPvjy/fcS+5dYH3E0QYGbBpd8dj2lm3GmDgNB7DixtFn6ziD2/gO6Uz5MgqTVyeeyYezZl/d9TBzuidujUJpKXOPgCoHJoxGzgoZXQg3hPx1fprnaOEZblSM+nunCuinWapXsUlEoE=
+	t=1768499766; cv=none; b=PNQXMD+sKUltVnxNWPLUAYaxsou3+sPcLkEUkfo+2YkyOAdrysplxLhUlsysAJtetJsF/3ySLT3xV2pi/sumt0n/BXUqJ19QWnh6iWqvGkDRrB19/5AFdgH2/tQqUo50fLUSo4ZNWpxUnJPUJbddocWHjlD61XCzYfaeLV9rdG0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498474; c=relaxed/simple;
-	bh=mRPfj2RlzLMCYSnjXmaTKSQwkjTxOuvXQDx2sZ41XvI=;
+	s=arc-20240116; t=1768499766; c=relaxed/simple;
+	bh=gToUPtLcosQ7D+MLrqo/u1R/qUQtPy8T5np/vDBpxVA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m+/z316J80kb+Gb4gfxWp+uQGSM7Q/3HZfiROoS01Wk26ZPx83PV04fCLcAo9JZWEvsObLob6I58Rju4GDezDSqqviowCAFBmTBKZ5xXtOl4j26Ug983yMffbq2F4cnVINouKUiiAksX+JEH+TYSiWi2Q/rcfvKdaa4awDxpmg4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hKVvOJUo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DC19C116D0;
-	Thu, 15 Jan 2026 17:34:33 +0000 (UTC)
+	 MIME-Version; b=Q3r0Wyp/hcMJDMaeZnZ3g1ROmkvjegaNAZRnXhIRZd0DfIL0uZmyigYeT+TBZI/eaNBqls6QLQ0GH8yeeHWg+3ZzX3eOocgMiinnVJChpRG+HHRYl32ulry58o+3Ksyw+e920eDsQHZlr3ULYEocjn5JRjG5VIhVDjPkr2dgJzg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgYKNkhp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CE6C116D0;
+	Thu, 15 Jan 2026 17:56:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498473;
-	bh=mRPfj2RlzLMCYSnjXmaTKSQwkjTxOuvXQDx2sZ41XvI=;
+	s=korg; t=1768499766;
+	bh=gToUPtLcosQ7D+MLrqo/u1R/qUQtPy8T5np/vDBpxVA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hKVvOJUo1CbLWCBb13R5MJ+MCTgLju3WphZHAIRTQwixb5TvHBy1fr50aSBjrV25Q
-	 PbIos5ctnjcLURy8RkcpNsxxVUuBYoQLXLHDVikKW6LdaYttUIHSjEdGMbWYzsB151
-	 20nQRVsFEilFxarVFwYtrKm1cEZT9CN7BdMysmy8=
+	b=NgYKNkhpuxBIRHrrpGsIOnje/g8yqWUx4deK07MjP/1iC+i+4VeAlT5M+16SElF9P
+	 WiPHh6BndcnU2XC3+PNlMivKewqW4EU2k5oVNaMZ+nPKexul9y7bPpRLTjPvwq11HR
+	 ZWDP8OPVv4RxscdaAhBBnINBnwPPtVMpmOsOCk9Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 444/554] f2fs: fix to avoid updating zero-sized extent in extent cache
+	Lukas Wunner <lukas@wunner.de>,
+	Bjorn Helgaas <bhelgaas@google.com>,
+	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
+Subject: [PATCH 5.10 309/451] PCI/PM: Reinstate clearing state_saved in legacy and !PM codepaths
 Date: Thu, 15 Jan 2026 17:48:30 +0100
-Message-ID: <20260115164302.339461125@linuxfoundation.org>
+Message-ID: <20260115164242.077635314@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,67 +60,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Lukas Wunner <lukas@wunner.de>
 
-[ Upstream commit 7c37c79510329cd951a4dedf3f7bf7e2b18dccec ]
+commit 894f475f88e06c0f352c829849560790dbdedbe5 upstream.
 
-As syzbot reported:
+When a PCI device is suspended, it is normally the PCI core's job to save
+Config Space and put the device into a low power state.  However drivers
+are allowed to assume these responsibilities.  When they do, the PCI core
+can tell by looking at the state_saved flag in struct pci_dev:  The flag
+is cleared before commencing the suspend sequence and it is set when
+pci_save_state() is called.  If the PCI core finds the flag set late in
+the suspend sequence, it refrains from calling pci_save_state() itself.
 
-F2FS-fs (loop0): __update_extent_tree_range: extent len is zero, type: 0, extent [0, 0, 0], age [0, 0]
-------------[ cut here ]------------
-kernel BUG at fs/f2fs/extent_cache.c:678!
-Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-CPU: 0 UID: 0 PID: 5336 Comm: syz.0.0 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:__update_extent_tree_range+0x13bc/0x1500 fs/f2fs/extent_cache.c:678
-Call Trace:
- <TASK>
- f2fs_update_read_extent_cache_range+0x192/0x3e0 fs/f2fs/extent_cache.c:1085
- f2fs_do_zero_range fs/f2fs/file.c:1657 [inline]
- f2fs_zero_range+0x10c1/0x1580 fs/f2fs/file.c:1737
- f2fs_fallocate+0x583/0x990 fs/f2fs/file.c:2030
- vfs_fallocate+0x669/0x7e0 fs/open.c:342
- ioctl_preallocate fs/ioctl.c:289 [inline]
- file_ioctl+0x611/0x780 fs/ioctl.c:-1
- do_vfs_ioctl+0xb33/0x1430 fs/ioctl.c:576
- __do_sys_ioctl fs/ioctl.c:595 [inline]
- __se_sys_ioctl+0x82/0x170 fs/ioctl.c:583
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0x3b0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f07bc58eec9
+But there are two corner cases where the PCI core neglects to clear the
+flag before commencing the suspend sequence:
 
-In error path of f2fs_zero_range(), it may add a zero-sized extent
-into extent cache, it should be avoided.
+* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
+  to clear the flag.  The (stale) flag is subsequently queried by
+  pci_legacy_suspend() itself and pci_legacy_suspend_late().
 
-Fixes: 6e9619499f53 ("f2fs: support in batch fzero in dnode page")
-Cc: stable@kernel.org
-Reported-by: syzbot+24124df3170c3638b35f@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/68e5d698.050a0220.256323.0032.GAE@google.com
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+* If a device has no driver or its driver has no PCI PM callbacks,
+  pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
+  subsequently queried by pci_pm_freeze_noirq().
+
+The flag may be set prior to suspend if the device went through error
+recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
+to restore Config Space after reset.
+
+The flag may also be set if drivers call pci_save_state() on probe to
+allow for recovery from subsequent errors.
+
+The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
+don't call pci_save_state() and so the state that will be restored on
+resume is the one recorded on last error recovery or on probe, not the one
+that the device had on suspend.  If the two states happen to be identical,
+there's no problem.
+
+Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
+The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
+saved_state after the state has been restored") deemed it unnecessary
+because it assumed that it's sufficient to clear the flag on resume in
+pci_restore_state().  The commit seemingly did not take into account that
+pci_save_state() and pci_restore_state() are not only used by power
+management code, but also for error recovery.
+
+Devices without driver or whose driver has no PCI PM callbacks may be in
+runtime suspend when pci_pm_freeze() is called.  Their state has already
+been saved, so don't clear the flag to skip a pointless pci_save_state()
+in pci_pm_freeze_noirq().
+
+None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
+so clear the flag unconditionally in their case.
+
+Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been restored")
+Signed-off-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
+Cc: stable@vger.kernel.org # v2.6.32+
+Link: https://patch.msgid.link/094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/file.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/pci/pci-driver.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1470,7 +1470,8 @@ static int f2fs_do_zero_range(struct dno
- 		f2fs_set_data_blkaddr(dn);
+--- a/drivers/pci/pci-driver.c
++++ b/drivers/pci/pci-driver.c
+@@ -584,6 +584,8 @@ static int pci_legacy_suspend(struct dev
+ 	struct pci_dev *pci_dev = to_pci_dev(dev);
+ 	struct pci_driver *drv = pci_dev->driver;
+ 
++	pci_dev->state_saved = false;
++
+ 	if (drv && drv->suspend) {
+ 		pci_power_t prev = pci_dev->current_state;
+ 		int error;
+@@ -985,6 +987,8 @@ static int pci_pm_freeze(struct device *
+ 
+ 	if (!pm) {
+ 		pci_pm_default_suspend(pci_dev);
++		if (!pm_runtime_suspended(dev))
++			pci_dev->state_saved = false;
+ 		return 0;
  	}
  
--	f2fs_update_extent_cache_range(dn, start, 0, index - start);
-+	if (index > start)
-+		f2fs_update_extent_cache_range(dn, start, 0, index - start);
- 
- 	return ret;
- }
 
 
 
