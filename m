@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-208812-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209379-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6B34FD263EB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:15 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0359AD2716E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:05:37 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 200293108765
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:34 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 167403027099
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C820D3A0E94;
-	Thu, 15 Jan 2026 17:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 013263BC4ED;
+	Thu, 15 Jan 2026 17:35:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nYV7eTdC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IT6XCxwN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BDA133993;
-	Thu, 15 Jan 2026 17:08:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B88A830214B;
+	Thu, 15 Jan 2026 17:35:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496912; cv=none; b=m/55Yp02G0B18NBD8NwoLvNll1PeOwQTvwPEuTeY96eV92EOPr7fvPYiJjfgH/RUmoqxT86NVD25RYony6sITh0JJWYCCFzT1IPLioQVJ3sBiqVN4JsoacY+ElMXRkOIvgHsGAU/X3A0uAJi0btfMDJWb9unBc6nh0LbT7vrM/U=
+	t=1768498527; cv=none; b=VSyDf+OCj99Xlv/H8NPYBtO13D91kHduAtt6ild5CXdftR6ctYHzi8We+Foe5QHbcwJdo657e3K6oS95Q0k19HWTkexXlHoLvdp9IdniuV65/EvPRDfe7jNGIz+uTLYzKKGOPbiEYLG5/eqkDIQgvX04qD0XzIoMV2304NQeFh8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496912; c=relaxed/simple;
-	bh=CC1oljP2GRYMBudJGs9k47UcPCipdl8pzYwVGTBCB5Y=;
+	s=arc-20240116; t=1768498527; c=relaxed/simple;
+	bh=8aXiiVN62Vf2q1Qg1KwMTTQgKkMVLVHECR3Z5NmbhTQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T+3BBdvWUCB8ZQnCq9ZOkQnJmvubgaC84AA3HZpgHsYLFkSBrTKdm3gQ2H99tS7p/ZjhPd0RwhfiDQwRHN5N65Bp0h4fDq4eIlOyFds05/09BzU66gw+VfS0JU8/hZOrJ4buC+BPX0Cnoiz5l5Scr8SE+Ur0cDyfGLEi0gEHLXI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nYV7eTdC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16A4FC16AAE;
-	Thu, 15 Jan 2026 17:08:31 +0000 (UTC)
+	 MIME-Version; b=EaZzwD6mh0c3J1EH6KAc7Fa54fauIev38ZoXWZmBmEEUyURKQQLo1i1v1nWkRbHbkoJ/A+9zF2Qx1P7Nr+hikMtGRjPY8FUeYxgStdGbmUyMCGnWe6HQTvhgRDpt3Hxkdei25QH4Vv7HyqyA7IsBDlskBONOdXC+8UvgAYTWl6k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IT6XCxwN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D8AC116D0;
+	Thu, 15 Jan 2026 17:35:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496912;
-	bh=CC1oljP2GRYMBudJGs9k47UcPCipdl8pzYwVGTBCB5Y=;
+	s=korg; t=1768498527;
+	bh=8aXiiVN62Vf2q1Qg1KwMTTQgKkMVLVHECR3Z5NmbhTQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=nYV7eTdC4tvRjR809PmsuOE+Y5///5AQZUCtHRyE2V+LZhkSSuJq8ZBhES+6mkT97
-	 0y75WbhmzGpmeTKdb+lzmhH07vPiwqpdqUB0zW4hiISX8/yIof4pZ1XH6suJL0szH4
-	 UoHSoUt0cn8SfbsWiBWZmCy74pi3ttNSH2jYlj1Y=
+	b=IT6XCxwNXIeqZc+NO665NuWTbjekxg+Vjk0b7X2ZDu4iGOtMvLZpDAgNVFvQns+eF
+	 Pg3Z3VlvI8NQxZNXjD5PLZjGGI/pwKTtrRWuabYm8AGqcErMCCQ2orheZFhRs5jByh
+	 /uczAQdTPeVQVgZVk9fSqLzC6aI10bK2p5N8dnCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mohammad Heib <mheib@redhat.com>,
-	Willem de Bruijn <willemb@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Haoxiang Li <haoxiang_li2024@163.com>,
+	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
+	Tzung-Bi Shih <tzungbi@kernel.org>,
+	Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 59/88] net: fix memory leak in skb_segment_list for GRO packets
+Subject: [PATCH 5.15 456/554] media: mediatek: vcodec: Fix a reference leak in mtk_vcodec_fw_vpu_init()
 Date: Thu, 15 Jan 2026 17:48:42 +0100
-Message-ID: <20260115164148.449601526@linuxfoundation.org>
+Message-ID: <20260115164302.782733592@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,113 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohammad Heib <mheib@redhat.com>
+From: Haoxiang Li <haoxiang_li2024@163.com>
 
-[ Upstream commit 238e03d0466239410b72294b79494e43d4fabe77 ]
+[ Upstream commit cdd0f118ef87db8a664fb5ea366fd1766d2df1cd ]
 
-When skb_segment_list() is called during packet forwarding, it handles
-packets that were aggregated by the GRO engine.
+vpu_get_plat_device() increases the reference count of the returned
+platform device. However, when devm_kzalloc() fails, the reference
+is not released, causing a reference leak.
 
-Historically, the segmentation logic in skb_segment_list assumes that
-individual segments are split from a parent SKB and may need to carry
-their own socket memory accounting. Accordingly, the code transfers
-truesize from the parent to the newly created segments.
+Fix this by calling put_device() on fw_pdev->dev before returning
+on the error path.
 
-Prior to commit ed4cccef64c1 ("gro: fix ownership transfer"), this
-truesize subtraction in skb_segment_list() was valid because fragments
-still carry a reference to the original socket.
-
-However, commit ed4cccef64c1 ("gro: fix ownership transfer") changed
-this behavior by ensuring that fraglist entries are explicitly
-orphaned (skb->sk = NULL) to prevent illegal orphaning later in the
-stack. This change meant that the entire socket memory charge remained
-with the head SKB, but the corresponding accounting logic in
-skb_segment_list() was never updated.
-
-As a result, the current code unconditionally adds each fragment's
-truesize to delta_truesize and subtracts it from the parent SKB. Since
-the fragments are no longer charged to the socket, this subtraction
-results in an effective under-count of memory when the head is freed.
-This causes sk_wmem_alloc to remain non-zero, preventing socket
-destruction and leading to a persistent memory leak.
-
-The leak can be observed via KMEMLEAK when tearing down the networking
-environment:
-
-unreferenced object 0xffff8881e6eb9100 (size 2048):
-  comm "ping", pid 6720, jiffies 4295492526
-  backtrace:
-    kmem_cache_alloc_noprof+0x5c6/0x800
-    sk_prot_alloc+0x5b/0x220
-    sk_alloc+0x35/0xa00
-    inet6_create.part.0+0x303/0x10d0
-    __sock_create+0x248/0x640
-    __sys_socket+0x11b/0x1d0
-
-Since skb_segment_list() is exclusively used for SKB_GSO_FRAGLIST
-packets constructed by GRO, the truesize adjustment is removed.
-
-The call to skb_release_head_state() must be preserved. As documented in
-commit cf673ed0e057 ("net: fix fraglist segmentation reference count
-leak"), it is still required to correctly drop references to SKB
-extensions that may be overwritten during __copy_skb_header().
-
-Fixes: ed4cccef64c1 ("gro: fix ownership transfer")
-Signed-off-by: Mohammad Heib <mheib@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Link: https://patch.msgid.link/20260104213101.352887-1-mheib@redhat.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: e25a89f743b1 ("media: mtk-vcodec: potential dereference of null pointer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <haoxiang_li2024@163.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+[ adapted file path from common/ subdirectory and adjusted devm_kzalloc target from plat_dev->dev to dev->plat_dev->dev ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/skbuff.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index 073e2c5274079..4c28954f915fa 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4344,12 +4344,14 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- {
- 	struct sk_buff *list_skb = skb_shinfo(skb)->frag_list;
- 	unsigned int tnl_hlen = skb_tnl_header_len(skb);
--	unsigned int delta_truesize = 0;
- 	unsigned int delta_len = 0;
- 	struct sk_buff *tail = NULL;
- 	struct sk_buff *nskb, *tmp;
- 	int len_diff, err;
+--- a/drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c
++++ b/drivers/media/platform/mtk-vcodec/mtk_vcodec_fw_vpu.c
+@@ -94,8 +94,10 @@ struct mtk_vcodec_fw *mtk_vcodec_fw_vpu_
+ 	vpu_wdt_reg_handler(fw_pdev, mtk_vcodec_vpu_reset_handler, dev, rst_id);
  
-+	/* Only skb_gro_receive_list generated skbs arrive here */
-+	DEBUG_NET_WARN_ON_ONCE(!(skb_shinfo(skb)->gso_type & SKB_GSO_FRAGLIST));
-+
- 	skb_push(skb, -skb_network_offset(skb) + offset);
- 
- 	/* Ensure the head is writeable before touching the shared info */
-@@ -4363,8 +4365,9 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- 		nskb = list_skb;
- 		list_skb = list_skb->next;
- 
-+		DEBUG_NET_WARN_ON_ONCE(nskb->sk);
-+
- 		err = 0;
--		delta_truesize += nskb->truesize;
- 		if (skb_shared(nskb)) {
- 			tmp = skb_clone(nskb, GFP_ATOMIC);
- 			if (tmp) {
-@@ -4407,7 +4410,6 @@ struct sk_buff *skb_segment_list(struct sk_buff *skb,
- 			goto err_linearize;
- 	}
- 
--	skb->truesize = skb->truesize - delta_truesize;
- 	skb->data_len = skb->data_len - delta_len;
- 	skb->len = skb->len - delta_len;
- 
--- 
-2.51.0
-
+ 	fw = devm_kzalloc(&dev->plat_dev->dev, sizeof(*fw), GFP_KERNEL);
+-	if (!fw)
++	if (!fw) {
++		put_device(&fw_pdev->dev);
+ 		return ERR_PTR(-ENOMEM);
++	}
+ 	fw->type = VPU;
+ 	fw->ops = &mtk_vcodec_vpu_msg;
+ 	fw->pdev = fw_pdev;
 
 
 
