@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-208694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209780-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id BF5D7D260FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B093FD27530
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9A7E530215ED
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:01 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DB53E30A13D3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 06ED02D7D47;
-	Thu, 15 Jan 2026 17:03:01 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 571DE3D524C;
+	Thu, 15 Jan 2026 17:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pXhFnAn8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ODCn4z7l"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD47F29C338;
-	Thu, 15 Jan 2026 17:03:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1A4EA3AA1B2;
+	Thu, 15 Jan 2026 17:54:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496580; cv=none; b=Y4dzx0FEeT2zOCF55EK7KGP9Tg0OgcWSiVFdA+glMQkPi0tu5m43pYJQJg4byfvLt3fzzCMNibwxyCQXOR7zaT60IVS8dxM7/tIHyHsRlBELhgblmCJdq3hkK+fY4+2jyoYBumea8i48IQGTdLZqemgaW7wO+lTwMjcbZ5cCjcE=
+	t=1768499670; cv=none; b=XSXDWl9D8EMXLEiLS8uwqOMhQGSbahn9xPc4lIldAoB0FZtcpYwG60sFLMj8aF/kt5glPmUVlGgW9Pxd8rlE7XBZbzCxrUq3TjMF3KiySXu9BYIyERjj8wPzrjo9NW2Wx9hgvpAs9HSwT4kZNuCaB8YLtHkoSiHXWZyKlYFkoY8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496580; c=relaxed/simple;
-	bh=59yGgqjrFadTDzPfVpm/Vj1h1TVOs6pFTQVjODk/7wg=;
+	s=arc-20240116; t=1768499670; c=relaxed/simple;
+	bh=POrHtl3x8f8nBbA63Od0Y78Xb3flaCv5tbqjuPsxE7M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=PNhA2zL1ZRUaQ2zEoqrh0VG4bzHEEvPohSsWnE+pyMzBmZdhJS2NYNIxjE9J7EIga/tzQhkxLERSsgsPJG5WwRi+vDwOoN8BfqlLk/G5peGo7qT3HX8wgInT5aGW0lAVlyqXdT+HT0tCNPwdoZ1mAhO4LV7dEE5J0AvflWZoqRI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pXhFnAn8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4839EC116D0;
-	Thu, 15 Jan 2026 17:03:00 +0000 (UTC)
+	 MIME-Version:Content-Type; b=JEazGe5KRVP10bl39ChLxELN5U6EZrlKwp8nT8Ud7l+D3q2TqPQhxIA267OMvr/8cnH4Re18Z1ZQ6Ott0tod+btjDNH6/FJ0UTOgrLIwmmLuLG7/4BTYYDoGbsPR8Z3tEZpOtKa6VjWnSNozJeVpCKqjFLk0BWijtmrSiRkwh6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ODCn4z7l; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97624C116D0;
+	Thu, 15 Jan 2026 17:54:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496580;
-	bh=59yGgqjrFadTDzPfVpm/Vj1h1TVOs6pFTQVjODk/7wg=;
+	s=korg; t=1768499670;
+	bh=POrHtl3x8f8nBbA63Od0Y78Xb3flaCv5tbqjuPsxE7M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pXhFnAn8JbLK6zSNzVarBySBGtIsh0tvZnrJMQhDTmZBlXYYPzCKMIfvUE80293zM
-	 dYlh3s/+75c4B/mItNjG1kW+DWw2DqkafYKlbKiCMIX7pvF5/ZVouDjjMoKz3k9DIK
-	 m64sHPclMt51NyIMP7CQQ7MuKlr+KH6+6p8oZihU=
+	b=ODCn4z7l0ErmVsR4wCgJu0vt9EXOUhfwj42NzhMPwpId9JRu20zVqFTf7P+nk5n5b
+	 InarvO4h5j+JSo4kaVnj3WFIHI09sESsMr1koJhCQ8K05BI9HC23nDt+83bpGRHe+l
+	 GjCj8THLXtcqZDC4Fla08ONDh3CoJsd8tV2n5JAQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ernest Van Hoecke <ernest.vanhoecke@toradex.com>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>,
+	Adrian Moreno <amorenoz@redhat.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Eelco Chaudron <echaudro@redhat.com>,
+	Aaron Conole <aconole@redhat.com>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 061/119] gpio: pca953x: handle short interrupt pulses on PCAL devices
-Date: Thu, 15 Jan 2026 17:47:56 +0100
-Message-ID: <20260115164154.158941434@linuxfoundation.org>
+Subject: [PATCH 5.10 276/451] net: openvswitch: Avoid needlessly taking the RTNL on vport destroy
+Date: Thu, 15 Jan 2026 17:47:57 +0100
+Message-ID: <20260115164240.869129821@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,147 +64,67 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
+From: Toke Høiland-Jørgensen <toke@redhat.com>
 
-[ Upstream commit 014a17deb41201449f76df2b20c857a9c3294a7c ]
+[ Upstream commit 5498227676303e3ffa9a3a46214af96bc3e81314 ]
 
-GPIO drivers with latch input support may miss short pulses on input
-pins even when input latching is enabled. The generic interrupt logic in
-the pca953x driver reports interrupts by comparing the current input
-value against the previously sampled one and only signals an event when
-a level change is observed between two reads.
+The openvswitch teardown code will immediately call
+ovs_netdev_detach_dev() in response to a NETDEV_UNREGISTER notification.
+It will then start the dp_notify_work workqueue, which will later end up
+calling the vport destroy() callback. This callback takes the RTNL to do
+another ovs_netdev_detach_port(), which in this case is unnecessary.
+This causes extra pressure on the RTNL, in some cases leading to
+"unregister_netdevice: waiting for XX to become free" warnings on
+teardown.
 
-For short pulses, the first edge is captured when the input register is
-read, but if the signal returns to its previous level before the read,
-the second edge is not observed. As a result, successive pulses can
-produce identical input values at read time and no level change is
-detected, causing interrupts to be missed. Below timing diagram shows
-this situation where the top signal is the input pin level and the
-bottom signal indicates the latched value.
+We can straight-forwardly avoid the extra RTNL lock acquisition by
+checking the device flags before taking the lock, and skip the locking
+altogether if the IFF_OVS_DATAPATH flag has already been unset.
 
-─────┐     ┌──*───────────────┐     ┌──*─────────────────┐     ┌──*───
-     │     │  .               │     │  .                 │     │  .
-     │     │  │               │     │  │                 │     │  │
-     └──*──┘  │               └──*──┘  │                 └──*──┘  │
-Input   │     │                  │     │                    │     │
-        ▼     │                  ▼     │                    ▼     │
-       IRQ    │                 IRQ    │                   IRQ    │
-              .                        .                          .
-─────┐        .┌──────────────┐        .┌────────────────┐        .┌──
-     │         │              │         │                │         │
-     │         │              │         │                │         │
-     └────────*┘              └────────*┘                └────────*┘
-Latched       │                        │                          │
-              ▼                        ▼                          ▼
-            READ 0                   READ 0                     READ 0
-                                   NO CHANGE                  NO CHANGE
-
-PCAL variants provide an interrupt status register that records which
-pins triggered an interrupt, but the status and input registers cannot
-be read atomically. The interrupt status is only cleared when the input
-port is read, and the input value must also be read to determine the
-triggering edge. If another interrupt occurs on a different line after
-the status register has been read but before the input register is
-sampled, that event will not be reflected in the earlier status
-snapshot, so relying solely on the interrupt status register is also
-insufficient.
-
-Support for input latching and interrupt status handling was previously
-added by [1], but the interrupt status-based logic was reverted by [2]
-due to these issues. This patch addresses the original problem by
-combining both sources of information. Events indicated by the interrupt
-status register are merged with events detected through the existing
-level-change logic. As a result:
-
-* short pulses, whose second edges are invisible, are detected via the
-  interrupt status register, and
-* interrupts that occur between the status and input reads are still
-  caught by the generic level-change logic.
-
-This significantly improves robustness on devices that signal interrupts
-as short pulses, while avoiding the issues that led to the earlier
-reversion. In practice, even if only the first edge of a pulse is
-observable, the interrupt is reliably detected.
-
-This fixes missed interrupts from an Ilitek touch controller with its
-interrupt line connected to a PCAL6416A, where active-low pulses are
-approximately 200 us long.
-
-[1] commit 44896beae605 ("gpio: pca953x: add PCAL9535 interrupt support for Galileo Gen2")
-[2] commit d6179f6c6204 ("gpio: pca953x: Improve interrupt support")
-
-Fixes: d6179f6c6204 ("gpio: pca953x: Improve interrupt support")
-Signed-off-by: Ernest Van Hoecke <ernest.vanhoecke@toradex.com>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20251217153050.142057-1-ernestvanhoecke@gmail.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Fixes: b07c26511e94 ("openvswitch: fix vport-netdev unregister")
+Tested-by: Adrian Moreno <amorenoz@redhat.com>
+Signed-off-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Acked-by: Eelco Chaudron <echaudro@redhat.com>
+Acked-by: Aaron Conole <aconole@redhat.com>
+Link: https://patch.msgid.link/20251211115006.228876-1-toke@redhat.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-pca953x.c | 25 ++++++++++++++++++++++++-
- 1 file changed, 24 insertions(+), 1 deletion(-)
+ net/openvswitch/vport-netdev.c | 17 +++++++++++++----
+ 1 file changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
-index 76879dc6461c4..34000f699ba7f 100644
---- a/drivers/gpio/gpio-pca953x.c
-+++ b/drivers/gpio/gpio-pca953x.c
-@@ -846,14 +846,35 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
- 	DECLARE_BITMAP(old_stat, MAX_LINE);
- 	DECLARE_BITMAP(cur_stat, MAX_LINE);
- 	DECLARE_BITMAP(new_stat, MAX_LINE);
-+	DECLARE_BITMAP(int_stat, MAX_LINE);
- 	DECLARE_BITMAP(trigger, MAX_LINE);
- 	DECLARE_BITMAP(edges, MAX_LINE);
- 	int ret;
+diff --git a/net/openvswitch/vport-netdev.c b/net/openvswitch/vport-netdev.c
+index 57d6436e6f6a..72cf13bbf3dd 100644
+--- a/net/openvswitch/vport-netdev.c
++++ b/net/openvswitch/vport-netdev.c
+@@ -155,10 +155,19 @@ void ovs_netdev_detach_dev(struct vport *vport)
  
-+	if (chip->driver_data & PCA_PCAL) {
-+		/* Read INT_STAT before it is cleared by the input-port read. */
-+		ret = pca953x_read_regs(chip, PCAL953X_INT_STAT, int_stat);
-+		if (ret)
-+			return false;
+ static void netdev_destroy(struct vport *vport)
+ {
+-	rtnl_lock();
+-	if (netif_is_ovs_port(vport->dev))
+-		ovs_netdev_detach_dev(vport);
+-	rtnl_unlock();
++	/* When called from ovs_db_notify_wq() after a dp_device_event(), the
++	 * port has already been detached, so we can avoid taking the RTNL by
++	 * checking this first.
++	 */
++	if (netif_is_ovs_port(vport->dev)) {
++		rtnl_lock();
++		/* Check again while holding the lock to ensure we don't race
++		 * with the netdev notifier and detach twice.
++		 */
++		if (netif_is_ovs_port(vport->dev))
++			ovs_netdev_detach_dev(vport);
++		rtnl_unlock();
 +	}
-+
- 	ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
- 	if (ret)
- 		return false;
  
-+	if (chip->driver_data & PCA_PCAL) {
-+		/* Detect short pulses via INT_STAT. */
-+		bitmap_and(trigger, int_stat, chip->irq_mask, gc->ngpio);
-+
-+		/* Apply filter for rising/falling edge selection. */
-+		bitmap_replace(new_stat, chip->irq_trig_fall, chip->irq_trig_raise,
-+			       cur_stat, gc->ngpio);
-+
-+		bitmap_and(int_stat, new_stat, trigger, gc->ngpio);
-+	} else {
-+		bitmap_zero(int_stat, gc->ngpio);
-+	}
-+
- 	/* Remove output pins from the equation */
- 	pca953x_read_regs(chip, chip->regs->direction, reg_direction);
- 
-@@ -867,7 +888,8 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
- 
- 	if (bitmap_empty(chip->irq_trig_level_high, gc->ngpio) &&
- 	    bitmap_empty(chip->irq_trig_level_low, gc->ngpio)) {
--		if (bitmap_empty(trigger, gc->ngpio))
-+		if (bitmap_empty(trigger, gc->ngpio) &&
-+		    bitmap_empty(int_stat, gc->ngpio))
- 			return false;
- 	}
- 
-@@ -875,6 +897,7 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
- 	bitmap_and(old_stat, chip->irq_trig_raise, new_stat, gc->ngpio);
- 	bitmap_or(edges, old_stat, cur_stat, gc->ngpio);
- 	bitmap_and(pending, edges, trigger, gc->ngpio);
-+	bitmap_or(pending, pending, int_stat, gc->ngpio);
- 
- 	bitmap_and(cur_stat, new_stat, chip->irq_trig_level_high, gc->ngpio);
- 	bitmap_and(cur_stat, cur_stat, chip->irq_mask, gc->ngpio);
+ 	call_rcu(&vport->rcu, vport_netdev_free);
+ }
 -- 
 2.51.0
 
