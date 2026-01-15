@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209767-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 511B3D27670
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A60C6D26131
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BB50131DD527
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:33 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AF924302D8BB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09343D5244;
-	Thu, 15 Jan 2026 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1740B345758;
+	Thu, 15 Jan 2026 17:03:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYXaXlf0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KZIWHh3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794913C0094;
-	Thu, 15 Jan 2026 17:53:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CF7C32D73A0;
+	Thu, 15 Jan 2026 17:03:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499633; cv=none; b=N5OVLkynKcS/MxCINdxEC/1zhHssncMJgD4Ktk2jO01lZCI+G2PS/wlPdW+HqdpPWcEmSxMHjVnntDYammxjCO5+5xgmGjho1mXYruRJm1E5oIsfMAvDKjvbd9EfVRYr0JigtcLWw3XFtHmatCvejgiKpuyKcWYdS8eK33Rxbv4=
+	t=1768496631; cv=none; b=BlHbJ0C3EpKXwsW5pBdjNH+0+X8wI2SkI5rOpefIEslsQ8XnbsDbT/EwvFK1D96enArNw8Mk9FiYJKuqs2IUKuaIZZ/O+I41OBTh3bb+g5FCUgRtIbygg5V2m2LIP71MBnZ5XtUQYzmBBqP9udVM9CGCXePW4HdJXRg08PfnSF0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499633; c=relaxed/simple;
-	bh=E4YHxKS4aifImUFxlxyr0VK8FK/11gp5HfupGYB+Oa0=;
+	s=arc-20240116; t=1768496631; c=relaxed/simple;
+	bh=vLu8X1PAwoaHoe7Ysu153t7VwCk76nrWND2vl3n7Yl0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qu1FvHCttdB1wJ9+wQGSca15zq7g3/+ZYqE9V63Xjb2uigjPAkVECUF7nQC2JC2AEq+AUbQ2JxfeuJ7+VH3r0GIRswU2YisfQDwYFB5aP+TI3zfjYI944tzT3NwYVjK3EgA0OxmpLm3UoPbaMfljtZBbP4WFIMYiyyhJB51pqs8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYXaXlf0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0602AC116D0;
-	Thu, 15 Jan 2026 17:53:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=sylOZpt417EFTuzL9uUACrmwDqabRj1E6g/mOm1tCXD17LgfJTqXbfjdd32M2Nt1Zg1nkAFmTsjJ76dwNFjesCVOk7PQE0Vy4YkPoNFrjFHVvgWzFQoGwp+spjXnx3vTmHSzRj+ZWqIO39WEvZvHdXVffeA7UX3nXvX4VLmEC5k=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KZIWHh3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE3CC116D0;
+	Thu, 15 Jan 2026 17:03:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499633;
-	bh=E4YHxKS4aifImUFxlxyr0VK8FK/11gp5HfupGYB+Oa0=;
+	s=korg; t=1768496631;
+	bh=vLu8X1PAwoaHoe7Ysu153t7VwCk76nrWND2vl3n7Yl0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tYXaXlf0Z919nzvt6kO2fjnofwFUeaWk74V1WjLioFQiZv4M3zXhL4FUqqPKq8Y43
-	 OLnIWwTMZIYmegf50KDJGv2Af2A7cYW6B3QVHmaMGMY1a/bmXK7sZQRjoWVvLMlHp8
-	 VXTlKquWvUWp6Xo5xcIGSic9zCy9RkDwxFC7gLwY=
+	b=KZIWHh3SDsz0gx8fcck/Az4ESVDorLRz0goXNuQlJcmhkp0ELMgZxeUQ6R/IB8Wn8
+	 hiELVoTDCQsiqv72QepZoxGYrGnZ8u3YM4q7PxS2b5zW6SA8y84L4wgslBUhXQrChE
+	 ryZvT3qzyUPq3VX4fp4lKDU7qf039tgGMcBWsazU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
-	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-	Selvin Xavier <selvin.xavier@broadcom.com>,
-	Leon Romanovsky <leon@kernel.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 295/451] RDMA/bnxt_re: Fix to use correct page size for PDE table
+Subject: [PATCH 6.12 081/119] HID: quirks: work around VID/PID conflict for appledisplay
 Date: Thu, 15 Jan 2026 17:48:16 +0100
-Message-ID: <20260115164241.561883973@linuxfoundation.org>
+Message-ID: <20260115164154.874920857@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 3d70e0fb0f289b0c778041c5bb04d099e1aa7c1c ]
+[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
 
-In bnxt_qplib_alloc_init_hwq(), while allocating memory for PDE table
-driver incorrectly is using the "pg_size" value passed to the function.
-Fixed to use the right value 4K. Also, fixed the allocation size for
-PBL table.
+For years I wondered why the Apple Cinema Display driver would not
+just work for me. Turns out the hidraw driver instantly takes it
+over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
 
-Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
-Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
-Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://patch.msgid.link/20251223131855.145955-1-kalesh-anakkur.purayil@broadcom.com
-Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-index be98b23488b4..64e88104165e 100644
---- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
-+++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
-@@ -242,7 +242,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 			if (npbl % BIT(MAX_PDL_LVL_SHIFT))
- 				npde++;
- 			/* Alloc PDE pages */
--			sginfo.pgsize = npde * pg_size;
-+			sginfo.pgsize = npde * ROCE_PG_SIZE_4K;
- 			sginfo.npages = 1;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_0], &sginfo);
- 			if (rc)
-@@ -250,7 +250,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
- 
- 			/* Alloc PBL pages */
- 			sginfo.npages = npbl;
--			sginfo.pgsize = PAGE_SIZE;
-+			sginfo.pgsize = ROCE_PG_SIZE_4K;
- 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_1], &sginfo);
- 			if (rc)
- 				goto fail;
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 2da21415e676c..192b8f63baaab 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -232,6 +232,15 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
++#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
++#endif
+ #if IS_ENABLED(CONFIG_HID_A4TECH)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
 -- 
 2.51.0
 
