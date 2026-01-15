@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209753-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208629-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75A6BD272D7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:08 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 98FE6D26111
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4BB45305C90E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2060730AB52B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E9433C1FE8;
-	Thu, 15 Jan 2026 17:53:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785183BF2FE;
+	Thu, 15 Jan 2026 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EMcjICTs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PlwJkh97"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C51843C0093;
-	Thu, 15 Jan 2026 17:53:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BD8B3BF2E4;
+	Thu, 15 Jan 2026 16:59:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499593; cv=none; b=hkj6wHgPyJ2UvaF/mR5tAnAmLQvwd3tno9AntPD0rih//eu4RasGTMNdLZr84NHeMhwHrM+QeJF0dGF3/Ga1iCfjsM3E3wk8+EJPo+cHY/bAZcL4xAQyqBIh+EC+0g+ECjHfTDFcyMoOg3hKFt/HgmNsN2uy27XcoLYKxTA7QqU=
+	t=1768496392; cv=none; b=ny0p20qEuXMrSW+Lk2TbKJBDxAe/SkJSoD04tqi0WO1FUDZmEhR6KzemkSAHIk9/uU/3SIKAMIfrohDf1xI0+nB7wlk+GdC89dgoIsODICvmCcLwygxp0iOH7GU4TUOrK/UnKHb7IZ14TKmLxm1xSnDft+qhyimQabZj2Jb8NUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499593; c=relaxed/simple;
-	bh=SIUQoIQWlgTCk2qt9L1hczeKedkIz6aO7mWiyQoaOvc=;
+	s=arc-20240116; t=1768496392; c=relaxed/simple;
+	bh=RQK+Uo6qD78QcuXeE1WmlNCmo4Q3T3qQ0HsE9mKI+JI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oX4ejP2qgPbShKBuFGinaHMV4zgenKFOIrzeCoN6PH3aEjrfqiXd3RTMO7FTNa5DMwwXlVPD034x0PBsxaN/Tbh+dTobcsnboE7Maqy5eRJdocfKvsPiKUx36Xw3q+mQ/l1UMwNyQQVwnwLAlAcXqTRtV0mXYli+v792EVYGABg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EMcjICTs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FCD2C116D0;
-	Thu, 15 Jan 2026 17:53:13 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pTEa9rFZUnzhNDnLlB8mBah9PEks55ghZVIbXs8C2LqTU1uJsBtNEhGxLULJDFHsDPyNu2O8OlYpVLEkwIfX19IB10nedgWG0UE4aGIIqJGDMoWCidbmabDslVdF1AQnWZqO6K1Ogsp08L1OngJpJRP0g8lEDPZjGJMfGbTdl3U=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PlwJkh97; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF29BC19421;
+	Thu, 15 Jan 2026 16:59:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499593;
-	bh=SIUQoIQWlgTCk2qt9L1hczeKedkIz6aO7mWiyQoaOvc=;
+	s=korg; t=1768496392;
+	bh=RQK+Uo6qD78QcuXeE1WmlNCmo4Q3T3qQ0HsE9mKI+JI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=EMcjICTsq7X2IGS84dO7UGRVFxWNEBPlUEKGKWST/twt82zBBG6beCzYtUS6G04Ga
-	 /P+Z2RD9boI9kEAUdHJmXTgmsNKdTEXbKp4bwu4ou4c+PvCo3dsOKesHo7DkiW1l0U
-	 kYq5PD+23MVVAdOcaAhQHEjJIV4xWYGmAT4a7+q4=
+	b=PlwJkh97rb5udZh9q3z4SYQ8UfM0ayZKM1Y8DgeHiFwf+qUmV3ZqkkYIji4c7AONw
+	 TmXEG4lSZ0eN+UvdorRBO7k39aqNFoSDVaeJhtv9fvMr8lE6GCKqY6AryhNJbwFE7v
+	 tWtUQ5qjqqyQ3nZAT+FrLgZhmcRENxao+OsboFmw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Alexey Skidanov <alexey.skidanov@intel.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 282/451] genalloc.h: fix htmldocs warning
+Subject: [PATCH 6.18 146/181] HID: quirks: work around VID/PID conflict for appledisplay
 Date: Thu, 15 Jan 2026 17:48:03 +0100
-Message-ID: <20260115164241.085968968@linuxfoundation.org>
+Message-ID: <20260115164207.586112968@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,42 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 5393802c94e0ab1295c04c94c57bcb00222d4674 ]
+[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
 
-WARNING: include/linux/genalloc.h:52 function parameter 'start_addr' not described in 'genpool_algo_t'
+For years I wondered why the Apple Cinema Display driver would not
+just work for me. Turns out the hidraw driver instantly takes it
+over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
 
-Fixes: 52fbf1134d47 ("lib/genalloc.c: fix allocation of aligned buffer from non-aligned chunk")
-Reported-by: Stephen Rothwell <sfr@canb.auug.org.au>
-Closes: https://lkml.kernel.org/r/20251127130624.563597e3@canb.auug.org.au
-Acked-by: Randy Dunlap <rdunlap@infradead.org>
-Tested-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Alexey Skidanov <alexey.skidanov@intel.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/genalloc.h | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/include/linux/genalloc.h b/include/linux/genalloc.h
-index 0bd581003cd5..60de63e46b33 100644
---- a/include/linux/genalloc.h
-+++ b/include/linux/genalloc.h
-@@ -44,6 +44,7 @@ struct gen_pool;
-  * @nr: The number of zeroed bits we're looking for
-  * @data: optional additional data used by the callback
-  * @pool: the pool being allocated from
-+ * @start_addr: start address of memory chunk
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index c89a015686c07..6a8a7ca3d8047 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -232,6 +232,15 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
   */
- typedef unsigned long (*genpool_algo_t)(unsigned long *map,
- 			unsigned long size,
+ static const struct hid_device_id hid_have_special_driver[] = {
++#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
++#endif
+ #if IS_ENABLED(CONFIG_HID_A4TECH)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
 -- 
 2.51.0
 
