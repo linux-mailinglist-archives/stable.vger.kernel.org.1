@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209181-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209635-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0840BD26818
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:35:11 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id BC0F4D2792B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:32:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id B74CE30381BB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:32 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AA57A32B49C2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3E1553C00A1;
-	Thu, 15 Jan 2026 17:26:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB523BF2F6;
+	Thu, 15 Jan 2026 17:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Myop0JEk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7O5u8ok"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F07224C81;
-	Thu, 15 Jan 2026 17:26:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734ED2BDC13;
+	Thu, 15 Jan 2026 17:47:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497965; cv=none; b=dV6kc6lScQzwHe7C6XQTQj1pOdiOVYzwI59LTF7e8QLVv2T4cW9oj2uhSOZnwMwdsiwxFVZj6d2BN1bpTYQ1GclLGyiJw/kyOYlz/Na67ZpESQMroDjFhVcQlxOxiYB71NdsUwJCkDFnkOdIFsKNkrMHtzxJRzrMCtMXxGzeBvM=
+	t=1768499257; cv=none; b=SVOe3rs07Q0fq4ZAvZ5/iWfRU+cvlcZQCS47gTcRYnO2Ac+ptUzD5SD/Sx0SdticfH3V03wiGyJILFiXkmU/UcqhF94YtmoLWQI6m49jhFkQlXPdvadv50pcDsROj1l1giRIa+j5lA94GEauuz2b771w6xZf5YZOLL7eEhC//4Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497965; c=relaxed/simple;
-	bh=qHcHqy1vRu1IAr3htjDwgBsEe/0lpOkvUSkam3dHzA4=;
+	s=arc-20240116; t=1768499257; c=relaxed/simple;
+	bh=MbW8rA9JqGB+PqzWg9Lu3z5skrop5Hu6z2Iy36F2v0s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sdNAAgHrq5P66A+/+qjGr7QF7sdSp6dKJJ9ICEbPjt201Gfqn+k7d4rrsETyYm4BbaEHY5Ix4xXrJ2HCb94/dIznJDuUHtT3JJ1zJhMjq2aCiI83zWrRhuW5qiE5s0B4LLHM6y3A7coQsHjf09B4XSU1NSB9f+KpZbNrNvZNKRA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Myop0JEk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34582C116D0;
-	Thu, 15 Jan 2026 17:26:04 +0000 (UTC)
+	 MIME-Version; b=BFhEh2tKEifTqz0jejAEIWAqBgmFkXnEnX210zo0JqjGgfXOnv8Ncgv6RTLvoscZcjzav7zj7fSrTvu2GrI5Mut6ycN+Ogf09YqE/RVg3luMyt/PWRC7JnSN+I0gxL8c5khgA1IHAnquEoiur/tpCw7XiDTvHBjqgu9PyFpK644=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7O5u8ok; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D12C116D0;
+	Thu, 15 Jan 2026 17:47:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497964;
-	bh=qHcHqy1vRu1IAr3htjDwgBsEe/0lpOkvUSkam3dHzA4=;
+	s=korg; t=1768499257;
+	bh=MbW8rA9JqGB+PqzWg9Lu3z5skrop5Hu6z2Iy36F2v0s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Myop0JEkH6fpc3oZmmzeT3uSaJlbonfj9EhuTDeB4OUASzq0yc0k5aV2yAVy8tQu/
-	 pkauRoPHXykcwfp1tFQKmglXNQg30goZQlX6pzRdP6GfacBxjf3xQw+KWEFhJEQFOn
-	 sFx1ALJy6xo/nmRxd7+ZEXoGconoXcvM4cE2zyWQ=
+	b=J7O5u8ok/MtpodgDG1L2iox7BAiXDQ7Mh5mKCty6zAh3AKFrbt/10DHvQ5Ypfehcp
+	 jyUrRUQIkZkb85s3rNTGTwjQ1TWFTiQUcvhHkNAYKgknJzQ70mrEskmeUHfD63sa0p
+	 869gbEiOveGLub2jnwMENUa2NF25/Jy1VzfPDkR8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Ondrej Mosnacek <omosnace@redhat.com>,
+	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 265/554] via_wdt: fix critical boot hang due to unnamed resource allocation
+Subject: [PATCH 5.10 130/451] fs_context: drop the unused lsm_flags member
 Date: Thu, 15 Jan 2026 17:45:31 +0100
-Message-ID: <20260115164255.822691833@linuxfoundation.org>
+Message-ID: <20260115164235.625004634@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,45 +60,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Ondrej Mosnacek <omosnace@redhat.com>
 
-[ Upstream commit 7aa31ee9ec92915926e74731378c009c9cc04928 ]
+[ Upstream commit 4e04143c869c5b6d499fbd5083caa860d5c942c3 ]
 
-The VIA watchdog driver uses allocate_resource() to reserve a MMIO
-region for the watchdog control register. However, the allocated
-resource was not given a name, which causes the kernel resource tree
-to contain an entry marked as "<BAD>" under /proc/iomem on x86
-platforms.
+This isn't ever used by VFS now, and it couldn't even work. Any FS that
+uses the SECURITY_LSM_NATIVE_LABELS flag needs to also process the
+value returned back from the LSM, so it needs to do its
+security_sb_set_mnt_opts() call on its own anyway.
 
-During boot, this unnamed resource can lead to a critical hang because
-subsequent resource lookups and conflict checks fail to handle the
-invalid entry properly.
-
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
+Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
+Stable-dep-of: 8675c69816e4 ("NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/via_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/filesystems/mount_api.rst | 1 -
+ fs/nfs/super.c                          | 3 ---
+ include/linux/fs_context.h              | 1 -
+ include/linux/security.h                | 2 +-
+ 4 files changed, 1 insertion(+), 6 deletions(-)
 
-diff --git a/drivers/watchdog/via_wdt.c b/drivers/watchdog/via_wdt.c
-index eeb39f96e72e..c1ed3ce153cf 100644
---- a/drivers/watchdog/via_wdt.c
-+++ b/drivers/watchdog/via_wdt.c
-@@ -165,6 +165,7 @@ static int wdt_probe(struct pci_dev *pdev,
- 		dev_err(&pdev->dev, "cannot enable PCI device\n");
- 		return -ENODEV;
- 	}
-+	wdt_res.name = "via_wdt";
+diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
+index 8fb03f57546d1..a38cc2be8d998 100644
+--- a/Documentation/filesystems/mount_api.rst
++++ b/Documentation/filesystems/mount_api.rst
+@@ -79,7 +79,6 @@ context.  This is represented by the fs_context structure::
+ 		unsigned int		sb_flags;
+ 		unsigned int		sb_flags_mask;
+ 		unsigned int		s_iflags;
+-		unsigned int		lsm_flags;
+ 		enum fs_context_purpose	purpose:8;
+ 		...
+ 	};
+diff --git a/fs/nfs/super.c b/fs/nfs/super.c
+index 2d2238548a6e5..45b4240fdc081 100644
+--- a/fs/nfs/super.c
++++ b/fs/nfs/super.c
+@@ -1259,9 +1259,6 @@ int nfs_get_tree_common(struct fs_context *fc)
+ 		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
+ 			fc->sb_flags |= SB_SYNCHRONOUS;
  
- 	/*
- 	 * Allocate a MMIO region which contains watchdog control register
+-	if (server->caps & NFS_CAP_SECURITY_LABEL)
+-		fc->lsm_flags |= SECURITY_LSM_NATIVE_LABELS;
+-
+ 	/* Get a superblock - note that we may end up sharing one that already exists */
+ 	fc->s_fs_info = server;
+ 	s = sget_fc(fc, compare_super, nfs_set_super);
+diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
+index 40dd74bdd9fbd..9229ac6a53260 100644
+--- a/include/linux/fs_context.h
++++ b/include/linux/fs_context.h
+@@ -104,7 +104,6 @@ struct fs_context {
+ 	unsigned int		sb_flags;	/* Proposed superblock flags (SB_*) */
+ 	unsigned int		sb_flags_mask;	/* Superblock flags that were changed */
+ 	unsigned int		s_iflags;	/* OR'd with sb->s_iflags */
+-	unsigned int		lsm_flags;	/* Information flags from the fs to the LSM */
+ 	enum fs_context_purpose	purpose:8;
+ 	enum fs_context_phase	phase:8;	/* The phase the context is in */
+ 	bool			need_free:1;	/* Need to call ops->free() */
+diff --git a/include/linux/security.h b/include/linux/security.h
+index e32e040f094c2..c75dd495be77c 100644
+--- a/include/linux/security.h
++++ b/include/linux/security.h
+@@ -68,7 +68,7 @@ struct watch_notification;
+ /* If capable is being called by a setid function */
+ #define CAP_OPT_INSETID BIT(2)
+ 
+-/* LSM Agnostic defines for fs_context::lsm_flags */
++/* LSM Agnostic defines for security_sb_set_mnt_opts() flags */
+ #define SECURITY_LSM_NATIVE_LABELS	1
+ 
+ struct ctl_table;
 -- 
 2.51.0
 
