@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208790-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209771-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 435D3D263B9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:42 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F2E3D27DC1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:57:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1790A30BCABC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:43 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D30BB31E2A55
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B436C3BB9F4;
-	Thu, 15 Jan 2026 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 534CF3BFE42;
+	Thu, 15 Jan 2026 17:54:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LrSu3QUU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctxaJZLT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 757273195F9;
-	Thu, 15 Jan 2026 17:07:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0EDD73D5DAF;
+	Thu, 15 Jan 2026 17:54:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496850; cv=none; b=QWeVNLrR1Xmtto/dsqPJWvndbvr1BSC8RvdPK7/UXzYTg89BmLIg492KiUfAczvEnS0gPMQQEzCZcKAjG7pxts3P9FnQtfNEMxPjiq4wHxtjBXdPhO/7QBrzeGBPKPKg1MUxu096NdFHVvYtdCe7QryK4CD+TJ5Xf2xps2RZU5E=
+	t=1768499645; cv=none; b=QSCSFeCzdy5mFkbQYQVFqLdwDn+AFoymCrqhk4LxSfIf2sBqM04rgjiXah1dr3uzgeM57I34+mpSm/zyK2mOf3EQ7s2DA13a98ybu5NL7NcM4560BqJT5G2GfVKQmIbuGF2RZqH83qMYejYGUUa+fKNE2hS/EZjj3X50ol8PXZs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496850; c=relaxed/simple;
-	bh=UMWbYdf50iLYJ1rWaXB0c9/PmA/NzENYMOQdRi6asHw=;
+	s=arc-20240116; t=1768499645; c=relaxed/simple;
+	bh=YsSXZ4QbcjepYA5WiPEM+IiQPljt49+N0cUnozvLRJU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uMG0AgoiHis9zp/Ym7J51srrC/Mlcw5A/kshoTt8wq2IoLTnpxLjRUpwTT4y/jK/fYe0vPjMQk9FkKoOgRRd4mgp1pEZQ4opA9o6izAA5oRXjsYDHnxaqIzSV1FnZXpNhzpn6eEF+gquZVdXqusoHLAtDfsbTrFn19UxF44Ppog=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LrSu3QUU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EF284C116D0;
-	Thu, 15 Jan 2026 17:07:29 +0000 (UTC)
+	 MIME-Version; b=ocVSLsjmLThidZesz24KvSy0VbzWDR9jOFQYYY8mshyzm01xhJax6AF7ftWtswwuspwdv4PTKFVe4pVFvInIz1wJiOHqd+9oFKxJ5xlIaeA8+uumPi3Hmq1tnmAfboKWSzyF1CyMLDW2OrqzDfoGsxdHTtsIrL99S653lzKYMKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctxaJZLT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5821AC116D0;
+	Thu, 15 Jan 2026 17:54:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496850;
-	bh=UMWbYdf50iLYJ1rWaXB0c9/PmA/NzENYMOQdRi6asHw=;
+	s=korg; t=1768499644;
+	bh=YsSXZ4QbcjepYA5WiPEM+IiQPljt49+N0cUnozvLRJU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LrSu3QUU5uyDjUXvylbI/Vh7yqNam5Va3LjHbwNqfrRwli0Yf8x4SEZbSKWM/Agjj
-	 Q8s1aR1xTfC4NdrIZ9dtn8wVn91RVU8Y/T2+KdySSP/xkh4nNnvk+NFo6K5RAa8OMy
-	 1sPT9cgSnD4hS9MS7v5fUYmasNU5YsaYjNLCwL/k=
+	b=ctxaJZLTV6Pd4/uY0T5W0vXOb4oRPfriSEzdoecQm7nDPnfIFnbtXMEYEDjVhwEvU
+	 bECEUWtp0RcaGmcNb4fUpSBFPHhMSjrV+LF3DksLO99PQ8+hZa+DCfYdk7iQWyO5ae
+	 Kb9WZZYjIh6KAx9VegONl57qTpKbEW6yvytMcyXc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 36/88] smb/client: fix NT_STATUS_NO_DATA_DETECTED value
+	olivier moysan <olivier.moysan@st.com>,
+	Wen Yang <yellowriver2010@hotmail.com>,
+	Johan Hovold <johan@kernel.org>,
+	olivier moysan <olivier.moysan@foss.st.com>,
+	Mark Brown <broonie@kernel.org>
+Subject: [PATCH 5.10 298/451] ASoC: stm32: sai: fix device leak on probe
 Date: Thu, 15 Jan 2026 17:48:19 +0100
-Message-ID: <20260115164147.618607979@linuxfoundation.org>
+Message-ID: <20260115164241.669520761@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a1237c203f1757480dc2f3b930608ee00072d3cc ]
+commit e26ff429eaf10c4ef1bc3dabd9bf27eb54b7e1f4 upstream.
 
-This was reported by the KUnit tests in the later patches.
+Make sure to drop the reference taken when looking up the sync provider
+device and its driver data during DAI probe on probe failures and on
+unbind.
 
-See MS-ERREF 2.3.1 STATUS_NO_DATA_DETECTED. Keep it consistent with the
-value in the documentation.
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
 
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 7dd0d835582f ("ASoC: stm32: sai: simplify sync modes management")
+Fixes: 1c3816a19487 ("ASoC: stm32: sai: add missing put_device()")
+Cc: stable@vger.kernel.org	# 4.16: 1c3816a19487
+Cc: olivier moysan <olivier.moysan@st.com>
+Cc: Wen Yang <yellowriver2010@hotmail.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
+Link: https://patch.msgid.link/20251124104908.15754-2-johan@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/nterr.h | 2 +-
+ sound/soc/stm/stm32_sai.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
-index d46d42559eea2..e3a341316a711 100644
---- a/fs/smb/client/nterr.h
-+++ b/fs/smb/client/nterr.h
-@@ -41,7 +41,7 @@ extern const struct nt_err_code_struct nt_errs[];
- #define NT_STATUS_MEDIA_CHANGED    0x8000001c
- #define NT_STATUS_END_OF_MEDIA     0x8000001e
- #define NT_STATUS_MEDIA_CHECK      0x80000020
--#define NT_STATUS_NO_DATA_DETECTED 0x8000001c
-+#define NT_STATUS_NO_DATA_DETECTED 0x80000022
- #define NT_STATUS_STOPPED_ON_SYMLINK 0x8000002d
- #define NT_STATUS_DEVICE_REQUIRES_CLEANING 0x80000288
- #define NT_STATUS_DEVICE_DOOR_OPEN 0x80000289
--- 
-2.51.0
-
+--- a/sound/soc/stm/stm32_sai.c
++++ b/sound/soc/stm/stm32_sai.c
+@@ -127,6 +127,7 @@ static int stm32_sai_set_sync(struct stm
+ 	}
+ 
+ 	sai_provider = platform_get_drvdata(pdev);
++	put_device(&pdev->dev);
+ 	if (!sai_provider) {
+ 		dev_err(&sai_client->pdev->dev,
+ 			"SAI sync provider data not found\n");
+@@ -143,7 +144,6 @@ static int stm32_sai_set_sync(struct stm
+ 	ret = stm32_sai_sync_conf_provider(sai_provider, synco);
+ 
+ error:
+-	put_device(&pdev->dev);
+ 	of_node_put(np_provider);
+ 	return ret;
+ }
 
 
 
