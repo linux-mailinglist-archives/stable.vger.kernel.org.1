@@ -1,62 +1,54 @@
-Return-Path: <stable+bounces-209404-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7AAA6D26E97
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 49F6FD27770
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 36B2032388A0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:30 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 09DD131B87B0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 806663C1965;
-	Thu, 15 Jan 2026 17:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2ECEF3D6487;
+	Thu, 15 Jan 2026 17:56:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uWB+8xES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="R5zjIeZ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 42F813BF2FF;
-	Thu, 15 Jan 2026 17:36:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E50E83D3016;
+	Thu, 15 Jan 2026 17:56:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498600; cv=none; b=swGCp0EYARHqNWzD8ewwcNbUZSVcr2X+4kybI1OOD3NN92wFsHSdq/Fya6j01GdXhJE2AJwhlxb2W6GKUQ5jTC3vZ4vN2eaPQVybgAuCJXbtYXd2gCP09m4UjfvLHJyOicv08qUAF1W/fxRTz+iSUAVLgY1Xpr5ytQktR8peG9k=
+	t=1768499792; cv=none; b=il3Ezsamo1ptMm4VTghkq4nTGC6csnzDymw9qhv2xw0nUV07rLh+8dbRW0D+DEO4x3MjmIVysu2sc2OT4WNc3TpUeqv7tqEkdGUixjhEDf4Xh2Wd9nvbgu8KZSJcqHoZEraOQhhp4bPpHXRT447lOLhUsaBLDM/JMvfotTDJchs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498600; c=relaxed/simple;
-	bh=dKIGyu/TbXEzP6l1W3h8aq7gyFZwiz0KZftI0UXtrRo=;
+	s=arc-20240116; t=1768499792; c=relaxed/simple;
+	bh=M38oMJhnQ0h2It1Pg+OEfYAOZOugB8N+59PXrbfHQkw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbNR/UUcg0eYVx0SvPD9MTwt/Cep1KlB61V0jpvjtCoboaRPr5+3Ro7NOnoscJlhDb/pXItFHFQ3K+Jfa5NHXXORBRIdIx2GerhL1j4kHR/HWxMRik2dAbC55KIAz9e4vj88kyqU21Tdafy0K2BJY2l9RbQNgk15JQEobZrwsA4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uWB+8xES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F90FC116D0;
-	Thu, 15 Jan 2026 17:36:39 +0000 (UTC)
+	 MIME-Version; b=Of3Wpj9evZhQbNHV7xSqgtYXvZv/+jNnq8tRBQ+x6rN3NEJmIcMwhwQFOL8Isg/uZFTJEDivQtoz2KP0RsCTwn6dpH81IdX4GTPELnpP4ueX1IYGZMBuTBudCJtCHPpIbBzo5d6Pf4MjG/W+VGRC04pFVsx6VVUqBmV85ntu28Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=R5zjIeZ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68C60C116D0;
+	Thu, 15 Jan 2026 17:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498600;
-	bh=dKIGyu/TbXEzP6l1W3h8aq7gyFZwiz0KZftI0UXtrRo=;
+	s=korg; t=1768499791;
+	bh=M38oMJhnQ0h2It1Pg+OEfYAOZOugB8N+59PXrbfHQkw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uWB+8xESFaDgMYLEIlyU65GKvo+AN9nkWkchL8dL0Qyn2JHDSVHJc64+aWhevWBzx
-	 B3UzPzDpfgG7+0BLdWggDWR7Jbe2D/pp76ItCiRhxvjerTu/w6Zl8vW8q8lAXr7RCi
-	 2xksmWEPyFxZv5xs9mSxt1oOB+ZMsl+vNrGfIfOc=
+	b=R5zjIeZ+pJfGjGcVkO64CPMkxhzzSvX3fDtuKB8kL96v8oyLzV/9qYDBddvsuWUvS
+	 6Qi7n8KyfYAfHL4r5WsEMGYRuWy9rmza4m7m+A2abVIA7ndwy9Vaj0aS40+elLsCcm
+	 mJVmJ1qKOnaC+wzvfedeGIMihQijoga2YbRSfL/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Peter Xu <peterx@redhat.com>,
-	Mike Kravetz <mike.kravetz@oracle.com>,
-	James Houghton <jthoughton@google.com>,
-	Andrea Arcangeli <aarcange@redhat.com>,
-	Axel Rasmussen <axelrasmussen@google.com>,
-	David Hildenbrand <david@redhat.com>,
-	Muchun Song <songmuchun@bytedance.com>,
-	Nadav Amit <nadav.amit@gmail.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	"David Hildenbrand (Red Hat)" <david@kernel.org>
-Subject: [PATCH 5.15 487/554] mm/mprotect: use long for page accountings and retval
+	stable <stable@kernel.org>,
+	Jimmy Hu <hhhuuu@google.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 352/451] usb: gadget: udc: fix use-after-free in usb_gadget_state_work
 Date: Thu, 15 Jan 2026 17:49:13 +0100
-Message-ID: <20260115164303.941408184@linuxfoundation.org>
+Message-ID: <20260115164243.635182566@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,225 +60,119 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Xu <peterx@redhat.com>
+From: Jimmy Hu <hhhuuu@google.com>
 
-commit a79390f5d6a78647fd70856bd42b22d994de0ba2 upstream.
+[ Upstream commit baeb66fbd4201d1c4325074e78b1f557dff89b5b ]
 
-Switch to use type "long" for page accountings and retval across the whole
-procedure of change_protection().
+A race condition during gadget teardown can lead to a use-after-free
+in usb_gadget_state_work(), as reported by KASAN:
 
-The change should have shrinked the possible maximum page number to be
-half comparing to previous (ULONG_MAX / 2), but it shouldn't overflow on
-any system either because the maximum possible pages touched by change
-protection should be ULONG_MAX / PAGE_SIZE.
+  BUG: KASAN: invalid-access in sysfs_notify+0x2c/0xd0
+  Workqueue: events usb_gadget_state_work
 
-Two reasons to switch from "unsigned long" to "long":
+The fundamental race occurs because a concurrent event (e.g., an
+interrupt) can call usb_gadget_set_state() and schedule gadget->work
+at any time during the cleanup process in usb_del_gadget().
 
-  1. It suites better on count_vm_numa_events(), whose 2nd parameter takes
-     a long type.
+Commit 399a45e5237c ("usb: gadget: core: flush gadget workqueue after
+device removal") attempted to fix this by moving flush_work() to after
+device_del(). However, this does not fully solve the race, as a new
+work item can still be scheduled *after* flush_work() completes but
+before the gadget's memory is freed, leading to the same use-after-free.
 
-  2. It paves way for returning negative (error) values in the future.
+This patch fixes the race condition robustly by introducing a 'teardown'
+flag and a 'state_lock' spinlock to the usb_gadget struct. The flag is
+set during cleanup in usb_del_gadget() *before* calling flush_work() to
+prevent any new work from being scheduled once cleanup has commenced.
+The scheduling site, usb_gadget_set_state(), now checks this flag under
+the lock before queueing the work, thus safely closing the race window.
 
-Currently the only caller that consumes this retval is change_prot_numa(),
-where the unsigned long was converted to an int.  Since at it, touching up
-the numa code to also take a long, so it'll avoid any possible overflow
-too during the int-size convertion.
-
-Link: https://lkml.kernel.org/r/20230104225207.1066932-3-peterx@redhat.com
-Signed-off-by: Peter Xu <peterx@redhat.com>
-Acked-by: Mike Kravetz <mike.kravetz@oracle.com>
-Acked-by: James Houghton <jthoughton@google.com>
-Cc: Andrea Arcangeli <aarcange@redhat.com>
-Cc: Axel Rasmussen <axelrasmussen@google.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: Nadav Amit <nadav.amit@gmail.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 5702f75375aa9 ("usb: gadget: udc-core: move sysfs_notify() to a workqueue")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Jimmy Hu <hhhuuu@google.com>
+Link: https://patch.msgid.link/20251023054945.233861-1-hhhuuu@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 [ Adjust context ]
-Signed-off-by: Harry Yoo <harry.yoo@oracle.com>
-Acked-by: David Hildenbrand (Red Hat) <david@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/hugetlb.h |    4 ++--
- include/linux/mm.h      |    2 +-
- mm/hugetlb.c            |    4 ++--
- mm/mempolicy.c          |    2 +-
- mm/mprotect.c           |   26 +++++++++++++-------------
- 5 files changed, 19 insertions(+), 19 deletions(-)
+ drivers/usb/gadget/udc/core.c |   17 ++++++++++++++++-
+ include/linux/usb/gadget.h    |    5 +++++
+ 2 files changed, 21 insertions(+), 1 deletion(-)
 
---- a/include/linux/hugetlb.h
-+++ b/include/linux/hugetlb.h
-@@ -208,7 +208,7 @@ struct page *follow_huge_pgd(struct mm_s
- 
- int pmd_huge(pmd_t pmd);
- int pud_huge(pud_t pud);
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot);
- 
- bool is_hugetlb_entry_migration(pte_t pte);
-@@ -379,7 +379,7 @@ static inline void move_hugetlb_state(st
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1037,8 +1037,13 @@ static void usb_gadget_state_work(struct
+ void usb_gadget_set_state(struct usb_gadget *gadget,
+ 		enum usb_device_state state)
  {
++	unsigned long flags;
++
++	spin_lock_irqsave(&gadget->state_lock, flags);
+ 	gadget->state = state;
+-	schedule_work(&gadget->work);
++	if (!gadget->teardown)
++		schedule_work(&gadget->work);
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
  }
+ EXPORT_SYMBOL_GPL(usb_gadget_set_state);
  
--static inline unsigned long hugetlb_change_protection(
-+static inline long hugetlb_change_protection(
- 			struct vm_area_struct *vma, unsigned long address,
- 			unsigned long end, pgprot_t newprot)
+@@ -1199,6 +1204,8 @@ void usb_initialize_gadget(struct device
+ 		void (*release)(struct device *dev))
  {
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1910,7 +1910,7 @@ extern unsigned long move_page_tables(st
- #define  MM_CP_UFFD_WP_ALL                 (MM_CP_UFFD_WP | \
- 					    MM_CP_UFFD_WP_RESOLVE)
+ 	dev_set_name(&gadget->dev, "gadget");
++	spin_lock_init(&gadget->state_lock);
++	gadget->teardown = false;
+ 	INIT_WORK(&gadget->work, usb_gadget_state_work);
+ 	gadget->dev.parent = parent;
  
--extern unsigned long change_protection(struct vm_area_struct *vma, unsigned long start,
-+extern long change_protection(struct vm_area_struct *vma, unsigned long start,
- 			      unsigned long end, pgprot_t newprot,
- 			      unsigned long cp_flags);
- extern int mprotect_fixup(struct vm_area_struct *vma,
---- a/mm/hugetlb.c
-+++ b/mm/hugetlb.c
-@@ -5644,7 +5644,7 @@ long follow_hugetlb_page(struct mm_struc
- 	return i ? i : err;
- }
- 
--unsigned long hugetlb_change_protection(struct vm_area_struct *vma,
-+long hugetlb_change_protection(struct vm_area_struct *vma,
- 		unsigned long address, unsigned long end, pgprot_t newprot)
+@@ -1376,6 +1383,7 @@ static void usb_gadget_remove_driver(str
+ void usb_del_gadget(struct usb_gadget *gadget)
  {
- 	struct mm_struct *mm = vma->vm_mm;
-@@ -5652,7 +5652,7 @@ unsigned long hugetlb_change_protection(
- 	pte_t *ptep;
- 	pte_t pte;
- 	struct hstate *h = hstate_vma(vma);
--	unsigned long pages = 0;
-+	long pages = 0;
- 	bool shared_pmd = false;
- 	struct mmu_notifier_range range;
+ 	struct usb_udc *udc = gadget->udc;
++	unsigned long flags;
  
---- a/mm/mempolicy.c
-+++ b/mm/mempolicy.c
-@@ -634,7 +634,7 @@ unlock:
- unsigned long change_prot_numa(struct vm_area_struct *vma,
- 			unsigned long addr, unsigned long end)
- {
--	int nr_updated;
-+	long nr_updated;
+ 	if (!udc)
+ 		return;
+@@ -1394,6 +1402,13 @@ void usb_del_gadget(struct usb_gadget *g
+ 	mutex_unlock(&udc_lock);
  
- 	nr_updated = change_protection(vma, addr, end, PAGE_NONE, MM_CP_PROT_NUMA);
- 	if (nr_updated)
---- a/mm/mprotect.c
-+++ b/mm/mprotect.c
-@@ -35,13 +35,13 @@
- 
- #include "internal.h"
- 
--static unsigned long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
-+static long change_pte_range(struct vm_area_struct *vma, pmd_t *pmd,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags)
- {
- 	pte_t *pte, oldpte;
- 	spinlock_t *ptl;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	int target_node = NUMA_NO_NODE;
- 	bool dirty_accountable = cp_flags & MM_CP_DIRTY_ACCT;
- 	bool prot_numa = cp_flags & MM_CP_PROT_NUMA;
-@@ -219,13 +219,13 @@ static inline int pmd_none_or_clear_bad_
- 	return 0;
- }
- 
--static inline unsigned long change_pmd_range(struct vm_area_struct *vma,
-+static inline long change_pmd_range(struct vm_area_struct *vma,
- 		pud_t *pud, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	pmd_t *pmd;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 	unsigned long nr_huge_updates = 0;
- 	struct mmu_notifier_range range;
- 
-@@ -233,7 +233,7 @@ static inline unsigned long change_pmd_r
- 
- 	pmd = pmd_offset(pud, addr);
- 	do {
--		unsigned long this_pages;
-+		long this_pages;
- 
- 		next = pmd_addr_end(addr, end);
- 
-@@ -291,13 +291,13 @@ next:
- 	return pages;
- }
- 
--static inline unsigned long change_pud_range(struct vm_area_struct *vma,
-+static inline long change_pud_range(struct vm_area_struct *vma,
- 		p4d_t *p4d, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	pud_t *pud;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	pud = pud_offset(p4d, addr);
- 	do {
-@@ -311,13 +311,13 @@ static inline unsigned long change_pud_r
- 	return pages;
- }
- 
--static inline unsigned long change_p4d_range(struct vm_area_struct *vma,
-+static inline long change_p4d_range(struct vm_area_struct *vma,
- 		pgd_t *pgd, unsigned long addr, unsigned long end,
- 		pgprot_t newprot, unsigned long cp_flags)
- {
- 	p4d_t *p4d;
- 	unsigned long next;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	p4d = p4d_offset(pgd, addr);
- 	do {
-@@ -331,7 +331,7 @@ static inline unsigned long change_p4d_r
- 	return pages;
- }
- 
--static unsigned long change_protection_range(struct vm_area_struct *vma,
-+static long change_protection_range(struct vm_area_struct *vma,
- 		unsigned long addr, unsigned long end, pgprot_t newprot,
- 		unsigned long cp_flags)
- {
-@@ -339,7 +339,7 @@ static unsigned long change_protection_r
- 	pgd_t *pgd;
- 	unsigned long next;
- 	unsigned long start = addr;
--	unsigned long pages = 0;
-+	long pages = 0;
- 
- 	BUG_ON(addr >= end);
- 	pgd = pgd_offset(mm, addr);
-@@ -361,11 +361,11 @@ static unsigned long change_protection_r
- 	return pages;
- }
- 
--unsigned long change_protection(struct vm_area_struct *vma, unsigned long start,
-+long change_protection(struct vm_area_struct *vma, unsigned long start,
- 		       unsigned long end, pgprot_t newprot,
- 		       unsigned long cp_flags)
- {
--	unsigned long pages;
-+	long pages;
- 
- 	BUG_ON((cp_flags & MM_CP_UFFD_WP_ALL) == MM_CP_UFFD_WP_ALL);
- 
+ 	kobject_uevent(&udc->dev.kobj, KOBJ_REMOVE);
++	/*
++	 * Set the teardown flag before flushing the work to prevent new work
++	 * from being scheduled while we are cleaning up.
++	 */
++	spin_lock_irqsave(&gadget->state_lock, flags);
++	gadget->teardown = true;
++	spin_unlock_irqrestore(&gadget->state_lock, flags);
+ 	flush_work(&gadget->work);
+ 	device_unregister(&udc->dev);
+ 	device_del(&gadget->dev);
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -341,6 +341,9 @@ struct usb_gadget_ops {
+  * @max_speed: Maximal speed the UDC can handle.  UDC must support this
+  *      and all slower speeds.
+  * @state: the state we are now (attached, suspended, configured, etc)
++ * @state_lock: Spinlock protecting the `state` and `teardown` members.
++ * @teardown: True if the device is undergoing teardown, used to prevent
++ *	new work from being scheduled during cleanup.
+  * @name: Identifies the controller hardware type.  Used in diagnostics
+  *	and sometimes configuration.
+  * @dev: Driver model state for this abstract device.
+@@ -408,6 +411,8 @@ struct usb_gadget {
+ 	enum usb_device_speed		speed;
+ 	enum usb_device_speed		max_speed;
+ 	enum usb_device_state		state;
++	spinlock_t			state_lock;
++	bool				teardown;
+ 	const char			*name;
+ 	struct device			dev;
+ 	unsigned			isoch_delay;
 
 
 
