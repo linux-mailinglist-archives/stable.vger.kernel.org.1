@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209887-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209433-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9C7BD276A3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:31 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D232D26AE3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F31503022B08
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:16 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DF5643064010
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 584F13E8C40;
-	Thu, 15 Jan 2026 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 65CD339E6EA;
+	Thu, 15 Jan 2026 17:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X68nzox5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Hcaq3HUP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C3553E8C55;
-	Thu, 15 Jan 2026 17:59:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 286B622D9F7;
+	Thu, 15 Jan 2026 17:38:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499975; cv=none; b=gT7G+ii3sdk60DOXVnt34imfXtJWldgmB7+nvLUKk7/pRF5U9rgfRr/8cet/xR20t/3kJVVuea5Hmno2sNgXKcJp776OWM7a9UjH3qKjKRdvA1G6bpqyEBrsil68MPeeKydaZ/7sSWYAB65C473b80C25voLnjKncjc7BYuEN/M=
+	t=1768498682; cv=none; b=IEHami5gvXjDFv/UsP+kS2Nhy10TpnQKEQ0LQFqsGainh5u5EZhK4EYatlBi1uWB2tIPAWGkTKtbyjq4W5IwJ4YaULej/vKwyYHanbwb45IouOq7FA5vucjALugvrjuX+4q9wUY2kycckdzgvvhjbEDqluh3ZZuVbm3YWto/Jsw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499975; c=relaxed/simple;
-	bh=+xc2PoHvquFpvatESoMvMXzUNlo/GHxGdTWr1PTxG/Q=;
+	s=arc-20240116; t=1768498682; c=relaxed/simple;
+	bh=sfh73MwTubifGp0qjps2S7Y7NUbKrE+7vjJqtgYTDJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uL4Mngjy88XIsFqICzvMuSckLoIjn7V2I0Q8SVrKjxM5OLhKwZs42HZICrSqddeQ+y+6i7LcsrEzAvumQ/gJHaA1Ucg10WCr39E3RuDieZdVHRns3+m96uq13Z1nTMwvpH5U5DEQE20EtVCtQbsQIsNo+vVOOc6NRWwARnSRWcE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X68nzox5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DD4DC116D0;
-	Thu, 15 Jan 2026 17:59:34 +0000 (UTC)
+	 MIME-Version; b=jUcvb1cozwi0WYduTGqaw3+FiPhYKgUiCSfdk2pmUiWEEox91J278ZUOSeyAk1XRsMA9MK5vRWrg2YmAARYUUaO1E7tm2MN2PsUGYhxK50SZRfgim6O5poh1DVqY+l9t5sNqbJKOdFuN/fLCE/0dQWZ10dbZgaEj/5BSVZu4Iug=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Hcaq3HUP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FAEC116D0;
+	Thu, 15 Jan 2026 17:38:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499975;
-	bh=+xc2PoHvquFpvatESoMvMXzUNlo/GHxGdTWr1PTxG/Q=;
+	s=korg; t=1768498682;
+	bh=sfh73MwTubifGp0qjps2S7Y7NUbKrE+7vjJqtgYTDJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=X68nzox53sbx5z4OMKrNcoDKgCzGMWA2bk9Wd7k4udq3O3ftyN03X50sxHknqLG9J
-	 VO6DP6/wKsSQFpeR6z2VWKCN/FPRQcl0wI4ZKX7G33qlooGkxkq1ip+0vIcHxHbnxE
-	 8cgxsu17s2jiJUfpedVMn/Zr3GbHUUUvHS9qwcYw=
+	b=Hcaq3HUPnxWDgPqGtcKWn6NtxiUyr3Uiuj3X1g1Zxl75+RieywWf8fCl2BWFZx2q/
+	 hyg1G4Hq9cZW+m3dTccObm2bVy4Ra1UvdMh27epOdN/yVCclQz4dKvX0Vk+dJYTU2Q
+	 v7F2tIJnwg/dsxtfSbqXo2r2SyeGVENikcJmj+cQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Olivier Moysan <olivier.moysan@st.com>,
-	Johan Hovold <johan@kernel.org>,
-	olivier moysan <olivier.moysan@foss.st.com>,
-	Mark Brown <broonie@kernel.org>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 382/451] ASoC: stm32: sai: fix clk prepare imbalance on probe failure
+Subject: [PATCH 5.15 517/554] ARM: 9461/1: Disable HIGHPTE on PREEMPT_RT kernels
 Date: Thu, 15 Jan 2026 17:49:43 +0100
-Message-ID: <20260115164244.742292266@linuxfoundation.org>
+Message-ID: <20260115164305.040655808@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,95 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-[ Upstream commit 312ec2f0d9d1a5656f76d770bbf1d967e9289aa7 ]
+[ Upstream commit fedadc4137234c3d00c4785eeed3e747fe9036ae ]
 
-Make sure to unprepare the parent clock also on probe failures (e.g.
-probe deferral).
+gup_pgd_range() is invoked with disabled interrupts and invokes
+__kmap_local_page_prot() via pte_offset_map(), gup_p4d_range().
+With HIGHPTE enabled, __kmap_local_page_prot() invokes kmap_high_get()
+which uses a spinlock_t via lock_kmap_any(). This leads to an
+sleeping-while-atomic error on PREEMPT_RT because spinlock_t becomes a
+sleeping lock and must not be acquired in atomic context.
 
-Fixes: a14bf98c045b ("ASoC: stm32: sai: fix possible circular locking")
-Cc: stable@vger.kernel.org	# 5.5
-Cc: Olivier Moysan <olivier.moysan@st.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: olivier moysan <olivier.moysan@foss.st.com>
-Link: https://patch.msgid.link/20251124104908.15754-3-johan@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+The loop in map_new_virtual() uses wait_queue_head_t for wake up which
+also is using a spinlock_t.
+
+Since HIGHPTE is rarely needed at all, turn it off for PREEMPT_RT
+to allow the use of get_user_pages_fast().
+
+[arnd: rework patch to turn off HIGHPTE instead of HAVE_PAST_GUP]
+
+Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/stm/stm32_sai_sub.c |   28 +++++++++++++++++++++-------
- 1 file changed, 21 insertions(+), 7 deletions(-)
+ arch/arm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/sound/soc/stm/stm32_sai_sub.c
-+++ b/sound/soc/stm/stm32_sai_sub.c
-@@ -1485,14 +1485,21 @@ static int stm32_sai_sub_parse_of(struct
- 	if (of_find_property(np, "#clock-cells", NULL)) {
- 		ret = stm32_sai_add_mclk_provider(sai);
- 		if (ret < 0)
--			return ret;
-+			goto err_unprepare_pclk;
- 	} else {
- 		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
--		if (IS_ERR(sai->sai_mclk))
--			return PTR_ERR(sai->sai_mclk);
-+		if (IS_ERR(sai->sai_mclk)) {
-+			ret = PTR_ERR(sai->sai_mclk);
-+			goto err_unprepare_pclk;
-+		}
- 	}
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index f2fbb170d813c..74357ce8967b4 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1473,7 +1473,7 @@ config HIGHMEM
  
- 	return 0;
-+
-+err_unprepare_pclk:
-+	clk_unprepare(sai->pdata->pclk);
-+
-+	return ret;
- }
- 
- static int stm32_sai_sub_probe(struct platform_device *pdev)
-@@ -1536,26 +1543,33 @@ static int stm32_sai_sub_probe(struct pl
- 			       IRQF_SHARED, dev_name(&pdev->dev), sai);
- 	if (ret) {
- 		dev_err(&pdev->dev, "IRQ request returned %d\n", ret);
--		return ret;
-+		goto err_unprepare_pclk;
- 	}
- 
- 	if (STM_SAI_PROTOCOL_IS_SPDIF(sai))
- 		conf = &stm32_sai_pcm_config_spdif;
- 
- 	ret = snd_dmaengine_pcm_register(&pdev->dev, conf, 0);
--	if (ret)
--		return dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
-+	if (ret) {
-+		ret = dev_err_probe(&pdev->dev, ret, "Could not register pcm dma\n");
-+		goto err_unprepare_pclk;
-+	}
- 
- 	ret = snd_soc_register_component(&pdev->dev, &stm32_component,
- 					 &sai->cpu_dai_drv, 1);
- 	if (ret) {
- 		snd_dmaengine_pcm_unregister(&pdev->dev);
--		return ret;
-+		goto err_unprepare_pclk;
- 	}
- 
- 	pm_runtime_enable(&pdev->dev);
- 
- 	return 0;
-+
-+err_unprepare_pclk:
-+	clk_unprepare(sai->pdata->pclk);
-+
-+	return ret;
- }
- 
- static int stm32_sai_sub_remove(struct platform_device *pdev)
+ config HIGHPTE
+ 	bool "Allocate 2nd-level pagetables from highmem" if EXPERT
+-	depends on HIGHMEM
++	depends on HIGHMEM && !PREEMPT_RT
+ 	default y
+ 	help
+ 	  The VM uses one page of physical memory for each page table.
+-- 
+2.51.0
+
 
 
 
