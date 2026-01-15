@@ -1,99 +1,54 @@
-Return-Path: <stable+bounces-209386-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208890-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 758DAD26E80
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 868F7D26469
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F2DDD320E32A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3B0A3037B89
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA75F3BFE37;
-	Thu, 15 Jan 2026 17:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DABC2750ED;
+	Thu, 15 Jan 2026 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JuFvnv8x"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ljBLHSLx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AADDF2C3268;
-	Thu, 15 Jan 2026 17:35:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 20F813BC4FE;
+	Thu, 15 Jan 2026 17:12:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498548; cv=none; b=cOmJckET3p4CMJjN/nb2mQfScY7OdfAUGODWcRuBRvRttNNcg9WXESJYhr8uZqg1e3A6EYiaTSI/0FipHZzOFlpJtHH0n6itthkW98AfFwX2uYo7j/c9vc816XjwZcLEGXkK+oZcTma+kqhm1x5AgM5sj3sLaoZiBCfPmN1G/yI=
+	t=1768497135; cv=none; b=Mq2rwsp4m5rAKwxW+xdKSjrJhByNORO/+kUFncowvsrB6LnY32cpvvR0gZzRX9pGkpkf7lQs+vtJxl2RiomNDJ3nfhrg0F1eBuOlpAQsjMHzArtwHWeBU+GhQ6wwCmNXEyUNLJYmmnC/gGbaWB03pHvVHPKOnsmniE0fB7MdhC8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498548; c=relaxed/simple;
-	bh=IcwYgkLEnKjW8Q1cAyX0vZqUf3Zx4LkfjXkhIKZCaDc=;
+	s=arc-20240116; t=1768497135; c=relaxed/simple;
+	bh=iVZXVkAsoLEYJKFsiXneuuJcoEaRZVmBM/KiH1fQ8K0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=AIu83fZ4lW47AT9HdtmNuj74o3KtuHmmULg7/dnMdxcqP/kIW+wcWlOrT09fMlnUcU243T50BPc041WNKBAjZ5xP0Ey/JW7YQm2LzLR/EVx3iTaElZR65Wq7yBjL7cYSVXA7TTHoJq1QTb0Ff8RxcxhaUb3qfx2Sn3T+tAeeyWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JuFvnv8x; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B061C116D0;
-	Thu, 15 Jan 2026 17:35:47 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WsYZ46ZoM9lAnG80alN7Skmne3H7OhyvdHkyPFU+Wc6HsijRZvRVkDBodsiF+M5HNQZkSnxqUEsRTTBTc7hgjmZWpUVYDSMiLDl1/B82rf3MXP6LzGjbkNGLqVAr413oXuKEAT5PPHWlswGcxr7LnZTq+LDSLku9j+ZKRK28MDI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ljBLHSLx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5487C116D0;
+	Thu, 15 Jan 2026 17:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498548;
-	bh=IcwYgkLEnKjW8Q1cAyX0vZqUf3Zx4LkfjXkhIKZCaDc=;
+	s=korg; t=1768497135;
+	bh=iVZXVkAsoLEYJKFsiXneuuJcoEaRZVmBM/KiH1fQ8K0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JuFvnv8xpiCp0gi0Z4njDrGcvrCZnAQvUdNjI5RasjjXiFgOr6vVHZkxKL+ZxXrIW
-	 tt0WoNggDxT3ZxQ+WI/ow7c9N1qjT7PaVovEePfp/OAWpJMiBDGNhceUj9KbbVGcwn
-	 QrP06p3GVSgYP9jUxgMPXKhYU1D3O8jo5hvAu/oU=
+	b=ljBLHSLxWp25Ys+Nyzau9C46MpxQtp8o/UEkuTJctNJ6k8mGsOlBJjNsSqz8/ncRL
+	 YQL2iVAIDShysqQ3zrcJ54MgYSn4esnkTf+eRJFXjcKDfvaIQoDM1GHo/o8RxbXOtg
+	 hnHBtJvxkuYPod0NDpW6vMGAzZX5eGR03sOdkaiU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	David Hildenbrand <david@redhat.com>,
-	Zi Yan <ziy@nvidia.com>,
-	Lorenzo Stoakes <lorenzo.stoakes@oracle.com>,
-	Alistair Popple <apopple@nvidia.com>,
-	Al Viro <viro@zeniv.linux.org.uk>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Brendan Jackman <jackmanb@google.com>,
-	Byungchul Park <byungchul@sk.com>,
-	Chengming Zhou <chengming.zhou@linux.dev>,
-	Christian Brauner <brauner@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	=?UTF-8?q?Eugenio=20P=C3=A9=20rez?= <eperezma@redhat.com>,
-	Gregory Price <gourry@gourry.net>,
-	"Huang, Ying" <ying.huang@linux.alibaba.com>,
-	Jan Kara <jack@suse.cz>,
-	Jason Gunthorpe <jgg@ziepe.ca>,
-	Jason Wang <jasowang@redhat.com>,
-	Jerrin Shaji George <jerrin.shaji-george@broadcom.com>,
-	Johannes Weiner <hannes@cmpxchg.org>,
-	John Hubbard <jhubbard@nvidia.com>,
-	Jonathan Corbet <corbet@lwn.net>,
-	Joshua Hahn <joshua.hahnjy@gmail.com>,
-	Liam Howlett <liam.howlett@oracle.com>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
-	Mathew Brost <matthew.brost@intel.com>,
-	"Matthew Wilcox (Oracle)" <willy@infradead.org>,
-	Miaohe Lin <linmiaohe@huawei.com>,
-	Michael Ellerman <mpe@ellerman.id.au>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Michal Hocko <mhocko@suse.com>,
-	Mike Rapoport <rppt@kernel.org>,
-	Minchan Kim <minchan@kernel.org>,
-	Naoya Horiguchi <nao.horiguchi@gmail.com>,
-	Nicholas Piggin <npiggin@gmail.com>,
-	Oscar Salvador <osalvador@suse.de>,
-	Peter Xu <peterx@redhat.com>,
-	Qi Zheng <zhengqi.arch@bytedance.com>,
-	Rakie Kim <rakie.kim@sk.com>,
-	Rik van Riel <riel@surriel.com>,
-	Sergey Senozhatsky <senozhatsky@chromium.org>,
-	Shakeel Butt <shakeel.butt@linux.dev>,
-	Suren Baghdasaryan <surenb@google.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-	xu xin <xu.xin16@zte.com.cn>,
-	Harry Yoo <harry.yoo@oracle.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 471/554] mm/balloon_compaction: we cannot have isolated pages in the balloon list
+Subject: [PATCH 6.1 47/72] HID: quirks: work around VID/PID conflict for appledisplay
 Date: Thu, 15 Jan 2026 17:48:57 +0100
-Message-ID: <20260115164303.345761086@linuxfoundation.org>
+Message-ID: <20260115164145.200644093@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -106,111 +61,49 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit fb05f992b6bbb4702307d96f00703ee637b24dbf ]
+[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
 
-Patch series "mm/migration: rework movable_ops page migration (part 1)",
-v2.
+For years I wondered why the Apple Cinema Display driver would not
+just work for me. Turns out the hidraw driver instantly takes it
+over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
 
-In the future, as we decouple "struct page" from "struct folio", pages
-that support "non-lru page migration" -- movable_ops page migration such
-as memory balloons and zsmalloc -- will no longer be folios.  They will
-not have ->mapping, ->lru, and likely no refcount and no page lock.  But
-they will have a type and flags 🙂
-
-This is the first part (other parts not written yet) of decoupling
-movable_ops page migration from folio migration.
-
-In this series, we get rid of the ->mapping usage, and start cleaning up
-the code + separating it from folio migration.
-
-Migration core will have to be further reworked to not treat movable_ops
-pages like folios.  This is the first step into that direction.
-
-This patch (of 29):
-
-The core will set PG_isolated only after mops->isolate_page() was called.
-In case of the balloon, that is where we will remove it from the balloon
-list.  So we cannot have isolated pages in the balloon list.
-
-Let's drop this unnecessary check.
-
-Link: https://lkml.kernel.org/r/20250704102524.326966-2-david@redhat.com
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Acked-by: Zi Yan <ziy@nvidia.com>
-Reviewed-by: Lorenzo Stoakes <lorenzo.stoakes@oracle.com>
-Cc: Alistair Popple <apopple@nvidia.com>
-Cc: Al Viro <viro@zeniv.linux.org.uk>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Brendan Jackman <jackmanb@google.com>
-Cc: Byungchul Park <byungchul@sk.com>
-Cc: Chengming Zhou <chengming.zhou@linux.dev>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
-Cc: Eugenio Pé rez <eperezma@redhat.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Gregory Price <gourry@gourry.net>
-Cc: "Huang, Ying" <ying.huang@linux.alibaba.com>
-Cc: Jan Kara <jack@suse.cz>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: Jason Wang <jasowang@redhat.com>
-Cc: Jerrin Shaji George <jerrin.shaji-george@broadcom.com>
-Cc: Johannes Weiner <hannes@cmpxchg.org>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Jonathan Corbet <corbet@lwn.net>
-Cc: Joshua Hahn <joshua.hahnjy@gmail.com>
-Cc: Liam Howlett <liam.howlett@oracle.com>
-Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
-Cc: Mathew Brost <matthew.brost@intel.com>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Miaohe Lin <linmiaohe@huawei.com>
-Cc: Michael Ellerman <mpe@ellerman.id.au>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Mike Rapoport <rppt@kernel.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Naoya Horiguchi <nao.horiguchi@gmail.com>
-Cc: Nicholas Piggin <npiggin@gmail.com>
-Cc: Oscar Salvador <osalvador@suse.de>
-Cc: Peter Xu <peterx@redhat.com>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Rakie Kim <rakie.kim@sk.com>
-Cc: Rik van Riel <riel@surriel.com>
-Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
-Cc: Shakeel Butt <shakeel.butt@linux.dev>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Cc: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Cc: xu xin <xu.xin16@zte.com.cn>
-Cc: Harry Yoo <harry.yoo@oracle.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 0da2ba35c0d5 ("powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages")
+Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/balloon_compaction.c |    6 ------
- 1 file changed, 6 deletions(-)
+ drivers/hid/hid-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/mm/balloon_compaction.c
-+++ b/mm/balloon_compaction.c
-@@ -93,12 +93,6 @@ size_t balloon_page_list_dequeue(struct
- 		if (!trylock_page(page))
- 			continue;
- 
--		if (IS_ENABLED(CONFIG_BALLOON_COMPACTION) &&
--		    PageIsolated(page)) {
--			/* raced with isolation */
--			unlock_page(page);
--			continue;
--		}
- 		balloon_page_delete(page);
- 		__count_vm_event(BALLOON_DEFLATE);
- 		list_add(&page->lru, pages);
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 249e626d1c6a3..b6bec3614cfea 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -220,6 +220,15 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
++#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
++#endif
+ #if IS_ENABLED(CONFIG_HID_A4TECH)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
+-- 
+2.51.0
+
 
 
 
