@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209363-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208731-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9D42D26B0F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B27C8D2618B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 88AB630A13E7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 954C430116C9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDA713D300C;
-	Thu, 15 Jan 2026 17:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18DA03ACEFE;
+	Thu, 15 Jan 2026 17:04:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pY3FzAkU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BVg9R8Dw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90FB03C1FF7;
-	Thu, 15 Jan 2026 17:34:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0D34396B7D;
+	Thu, 15 Jan 2026 17:04:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498482; cv=none; b=CkUN1C4ijEzEKxEcYYT6zdX7PcgAlk/4zpVe/I28/PctZkQkGoo/PSTw7QKtmA9LH2BpmuhgzzvHEf408uSza+Gmh4XV2HYOkb0607dW2y+prOGdY+SRE3JuQbmcWUum7zabfVK6BWTx7zFjXoJm5/DEzChY8ieswTMZ8PAQQqk=
+	t=1768496685; cv=none; b=qYGHxlEW5geN18ISwSy+YnGPiXk5EtFT8JwNQN7+7UU3cCveNHv964GKP2xQVlAq4ptX/KXQl/admmLoWTANkJ6J3wcxC14jsIvNbGkMwLI2+8DcRnnTyBqdFKNqXYNMdHluAALmQiQYQpagGseFhi38e3Puf3m1Y2Kr9EQsXIA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498482; c=relaxed/simple;
-	bh=unSTz3ebMc2rKuovF4uakWjEFMzCmW/fs9sjEtSq20g=;
+	s=arc-20240116; t=1768496685; c=relaxed/simple;
+	bh=6304m6usle0uJoivSqNSJg2YRsR3ulcvOjjM1ARVDng=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=eGTv9DH/8a03zeRTOpqFNAq7bbhVXwYhdzCU8B1dZnmtfWgpDf/e++T5npvWRkBjUz+F24P/XLpzc1nsyr0z27ww9BD1SjdZULkuswTJb8HFU4rOKiYKY3LccxG9RwJUGMuVQLSQxeoq5hZ0UhDPT4FJsZDP4XenDszkCXStbWI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pY3FzAkU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DF1AC116D0;
-	Thu, 15 Jan 2026 17:34:41 +0000 (UTC)
+	 MIME-Version; b=hSlUFPEcaci3UTEsheGTPyxqUlX/yOjhjtPOWrXDsdkRQOSZtFDTvDVIDeF1c4YnUezACIchsLPc8M8+83/1VSj97S9l6cilyfLzDsla+nnHRCmiu6VQM1PG3puW3EgSNYERSCvpWTksrFLbf4VaW1rvAieITlik5wmHyUZaeL0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BVg9R8Dw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D670C116D0;
+	Thu, 15 Jan 2026 17:04:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498482;
-	bh=unSTz3ebMc2rKuovF4uakWjEFMzCmW/fs9sjEtSq20g=;
+	s=korg; t=1768496685;
+	bh=6304m6usle0uJoivSqNSJg2YRsR3ulcvOjjM1ARVDng=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pY3FzAkUldq6jKIAB72KC9bRve2sHll/Rn2k6aEnLd7Vp8Os9tvA/8tSSUMJt0T8l
-	 QaaZPDrjDAtUDKJaN7rXCDzJg6F4kLTigRqqC4VFZJIePK946v0ES726H+C3YYVCgR
-	 v39f1H+9NXxIynl57+10owHlIt1LU4Re6KoN+XI8=
+	b=BVg9R8DwzzwNdqE8jSkTX+CyHeAYRRFHwYzIq5Ga+b6AwLqZUp1YHkjcD+6ey7KAt
+	 PfLA5R0Z5vYkdkO1/7RqKAsVOBZHZ9iqvwTduyrL67lvVhztbahzThabUx6Fnu1I7F
+	 HpAMw6Hq4TcMuvXQbKGImKPlerYuj41IFHm+PY3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
+	Amery Hung <ameryhung@gmail.com>,
+	Martin KaFai Lau <martin.lau@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 447/554] usb: ohci-nxp: Use helper function devm_clk_get_enabled()
+Subject: [PATCH 6.12 098/119] bpf: Make variables in bpf_prog_test_run_xdp less confusing
 Date: Thu, 15 Jan 2026 17:48:33 +0100
-Message-ID: <20260115164302.449193121@linuxfoundation.org>
+Message-ID: <20260115164155.491181318@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +60,106 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Amery Hung <ameryhung@gmail.com>
 
-[ Upstream commit c146ede472717f352b7283a525bd9a1a2b15e2cf ]
+[ Upstream commit 7eb83bff02ad5e82e8c456c58717ef181c220870 ]
 
-devm_clk_get() and clk_prepare_enable() can be replaced by helper
-function devm_clk_get_enabled(). Let's use devm_clk_get_enabled() to
-simplify code and avoid calling clk_disable_unprepare().
+Change the variable naming in bpf_prog_test_run_xdp() to make the
+overall logic less confusing. As different modes were added to the
+function over the time, some variables got overloaded, making
+it hard to understand and changing the code becomes error-prone.
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240902123020.29267-3-zhangzekun11@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: b4c61e542faf ("usb: ohci-nxp: fix device leak on probe failure")
+Replace "size" with "linear_sz" where it refers to the size of metadata
+and data. If "size" refers to input data size, use test.data_size_in
+directly.
+
+Replace "max_data_sz" with "max_linear_sz" to better reflect the fact
+that it is the maximum size of metadata and data (i.e., linear_sz). Also,
+xdp_rxq.frags_size is always PAGE_SIZE, so just set it directly instead
+of subtracting headroom and tailroom and adding them back.
+
+Signed-off-by: Amery Hung <ameryhung@gmail.com>
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://patch.msgid.link/20250922233356.3356453-6-ameryhung@gmail.com
+Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-nxp.c |   18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ net/bpf/test_run.c | 26 +++++++++++++-------------
+ 1 file changed, 13 insertions(+), 13 deletions(-)
 
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -51,8 +51,6 @@ static struct hc_driver __read_mostly oh
- 
- static struct i2c_client *isp1301_i2c_client;
- 
--static struct clk *usb_host_clk;
--
- static void isp1301_configure_lpc32xx(void)
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 6418846d6bc65..c8b8ac6ecbc20 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1200,9 +1200,9 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
  {
- 	/* LPC32XX only supports DAT_SE0 USB mode */
-@@ -155,6 +153,7 @@ static int ohci_hcd_nxp_probe(struct pla
- 	struct resource *res;
- 	int ret = 0, irq;
- 	struct device_node *isp1301_node;
-+	struct clk *usb_host_clk;
+ 	bool do_live = (kattr->test.flags & BPF_F_TEST_XDP_LIVE_FRAMES);
+ 	u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
++	u32 retval = 0, duration, max_linear_sz, size;
++	u32 linear_sz = kattr->test.data_size_in;
+ 	u32 batch_size = kattr->test.batch_size;
+-	u32 retval = 0, duration, max_data_sz;
+-	u32 size = kattr->test.data_size_in;
+ 	u32 headroom = XDP_PACKET_HEADROOM;
+ 	u32 repeat = kattr->test.repeat;
+ 	struct netdev_rx_queue *rxqueue;
+@@ -1239,7 +1239,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
  
- 	if (pdev->dev.of_node) {
- 		isp1301_node = of_parse_phandle(pdev->dev.of_node,
-@@ -180,26 +179,20 @@ static int ohci_hcd_nxp_probe(struct pla
+ 	if (ctx) {
+ 		/* There can't be user provided data before the meta data */
+-		if (ctx->data_meta || ctx->data_end != size ||
++		if (ctx->data_meta || ctx->data_end != kattr->test.data_size_in ||
+ 		    ctx->data > ctx->data_end ||
+ 		    unlikely(xdp_metalen_invalid(ctx->data)) ||
+ 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
+@@ -1248,30 +1248,30 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 		headroom -= ctx->data;
  	}
  
- 	/* Enable USB host clock */
--	usb_host_clk = devm_clk_get(&pdev->dev, NULL);
-+	usb_host_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(usb_host_clk)) {
--		dev_err(&pdev->dev, "failed to acquire USB OHCI clock\n");
-+		dev_err(&pdev->dev, "failed to acquire and start USB OHCI clock\n");
- 		ret = PTR_ERR(usb_host_clk);
- 		goto fail_disable;
- 	}
- 
--	ret = clk_prepare_enable(usb_host_clk);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "failed to start USB OHCI clock\n");
--		goto fail_disable;
+-	max_data_sz = PAGE_SIZE - headroom - tailroom;
+-	if (size > max_data_sz) {
+-		/* disallow live data mode for jumbo frames */
+-		if (do_live)
+-			goto free_ctx;
+-		size = max_data_sz;
 -	}
--
- 	isp1301_configure();
++	max_linear_sz = PAGE_SIZE - headroom - tailroom;
++	linear_sz = min_t(u32, linear_sz, max_linear_sz);
++
++	/* disallow live data mode for jumbo frames */
++	if (do_live && kattr->test.data_size_in > linear_sz)
++		goto free_ctx;
  
- 	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
- 	if (!hcd) {
- 		dev_err(&pdev->dev, "Failed to allocate HC buffer\n");
- 		ret = -ENOMEM;
--		goto fail_hcd;
-+		goto fail_disable;
+-	data = bpf_test_init(kattr, size, max_data_sz, headroom, tailroom);
++	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
+ 	if (IS_ERR(data)) {
+ 		ret = PTR_ERR(data);
+ 		goto free_ctx;
  	}
  
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -230,8 +223,6 @@ static int ohci_hcd_nxp_probe(struct pla
- 	ohci_nxp_stop_hc();
- fail_resource:
- 	usb_put_hcd(hcd);
--fail_hcd:
--	clk_disable_unprepare(usb_host_clk);
- fail_disable:
- 	isp1301_i2c_client = NULL;
- 	return ret;
-@@ -244,7 +235,6 @@ static int ohci_hcd_nxp_remove(struct pl
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
--	clk_disable_unprepare(usb_host_clk);
- 	isp1301_i2c_client = NULL;
+ 	rxqueue = __netif_get_rx_queue(current->nsproxy->net_ns->loopback_dev, 0);
+-	rxqueue->xdp_rxq.frag_size = headroom + max_data_sz + tailroom;
++	rxqueue->xdp_rxq.frag_size = PAGE_SIZE;
+ 	xdp_init_buff(&xdp, rxqueue->xdp_rxq.frag_size, &rxqueue->xdp_rxq);
+-	xdp_prepare_buff(&xdp, data, headroom, size, true);
++	xdp_prepare_buff(&xdp, data, headroom, linear_sz, true);
+ 	sinfo = xdp_get_shared_info_from_buff(&xdp);
  
- 	return 0;
+ 	ret = xdp_convert_md_to_buff(ctx, &xdp);
+ 	if (ret)
+ 		goto free_data;
+ 
++	size = linear_sz;
+ 	if (unlikely(kattr->test.data_size_in > size)) {
+ 		void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
+ 
+-- 
+2.51.0
+
 
 
 
