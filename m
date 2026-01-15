@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-208748-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208823-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ABD4BD261CA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C766D2670F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3C9343067909
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:35 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F0DB931144B4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7B623ACEFE;
-	Thu, 15 Jan 2026 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5D0B3BC4F3;
+	Thu, 15 Jan 2026 17:09:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OnCpfddg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2RS9LABw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA7022C0285;
-	Thu, 15 Jan 2026 17:05:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 479EB3BC4E8;
+	Thu, 15 Jan 2026 17:09:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496733; cv=none; b=le+Qr3MrFc76dtaTkJMb8ZQcTg8QHs3ha5TTXhVr3pCfdw8S0tRsY7Gfbni6upBg+VvdlT/xD7iZItZC1Lz4sB+qjuUfPkdZgQz5ysDs4pWej0vl86rBXUJsUQYuF8jtTRuUP5vcr49iQkOVSXqCpiLIjGQkFB4jGfjuCQyAC7k=
+	t=1768496944; cv=none; b=bVqfMmX1Trh+oBMhhhnfud+GIK4ZrOWN5AAWtfRkSxwlRstJGhRe1BdxptYs8HUthmghmF1+2R4Udqhi4/vyjxgSrFaNioQ+7S8HEIIcNV9nUQbSITliruEfPFDRqUk/7CQ6K/pkuf2rLi1NPTj9inf0E3bC9hS7O2yxRX2KMzE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496733; c=relaxed/simple;
-	bh=BuqdIhAImmSsqD0SnBb4Idm6LzIalk/18jQovS+vjPg=;
+	s=arc-20240116; t=1768496944; c=relaxed/simple;
+	bh=EsAjLs8+AcxeR59+z6Xnnzfefn3fr1aV/FdTG1VkIm0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rgBUYBkuUH39zv6gEgiX97QVE/QhO7RlYhvbFwoqucf+WIJlvN7ed7tcbgRyvgloWd+R9tBPmEfUvE9VLK2Ab9iT+yP/EXiI19mh9rklQG9Il3kD8cvSnBS8IUSc74JIX/qRl6LnYOnPBTxeOgIxolnudRiEuSYqqbwxNAVWlYo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OnCpfddg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D88DC16AAE;
-	Thu, 15 Jan 2026 17:05:33 +0000 (UTC)
+	 MIME-Version; b=k+H4y+yciqZVwIMqoJfFYLPAFU4pyTYyMhdLXpbrQioZBSWeW+wqNrhKSO/oRD/VAfTIAzGmqG8iUhJGkeZIkq08ayo/YaWN9y/JJXA/cvMMO2nzFvAof5gXscdqoAb2ch9PukQIU+lV4pw340NOEGgEMGkRc0rgb9A/tA/IMEk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2RS9LABw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A1FAC16AAE;
+	Thu, 15 Jan 2026 17:09:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496733;
-	bh=BuqdIhAImmSsqD0SnBb4Idm6LzIalk/18jQovS+vjPg=;
+	s=korg; t=1768496943;
+	bh=EsAjLs8+AcxeR59+z6Xnnzfefn3fr1aV/FdTG1VkIm0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OnCpfddgclXaluwoy86Ao37pJiKUVGlArKI7iBrhoh7Bwr97A0t7WQiV8XkBcZZI1
-	 y4NOnn2K7At/9qQxcQPuvj4tjlhrXJyQZMrXRIFKYzdLf/t2QiBmJ8C+bSgp2g0+8T
-	 kscbiACHnknpKOyYxRpKkXWN3rlNb/gIUBVTuWdc=
+	b=2RS9LABws9L1S4nTEwJSBryNHwbge5LvSzlj+Of8yX/aE1xOIoBT759w1oiyuSBK7
+	 0BhcZ61Q2NJ602L6C0Xpx12lM8+q3f3yL3xElvmNlSaUJ5NsfWJCInPjSfFKZCS9vn
+	 vzzervJtNLpzz1HsOeeCzYYsjGGEOoumkryoGe18=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan McDowell <noodles@meta.com>,
-	Jarkko Sakkinen <jarkko@kernel.org>
-Subject: [PATCH 6.12 117/119] tpm2-sessions: Fix out of range indexing in name_size
+	Mike Snitzer <snitzer@kernel.org>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neilb@suse.de>,
+	Anna Schumaker <anna.schumaker@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 69/88] nfs_common: factor out nfs_errtbl and nfs_stat_to_errno
 Date: Thu, 15 Jan 2026 17:48:52 +0100
-Message-ID: <20260115164156.184030946@linuxfoundation.org>
+Message-ID: <20260115164148.811084700@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,408 +62,533 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Mike Snitzer <snitzer@kernel.org>
 
-commit 6e9722e9a7bfe1bbad649937c811076acf86e1fd upstream.
+[ Upstream commit 4806ded4c14c5e8fdc6ce885d83221a78c06a428 ]
 
-'name_size' does not have any range checks, and it just directly indexes
-with TPM_ALG_ID, which could lead into memory corruption at worst.
+Common nfs_stat_to_errno() is used by both fs/nfs/nfs2xdr.c and
+fs/nfs/nfs3xdr.c
 
-Address the issue by only processing known values and returning -EINVAL for
-unrecognized values.
+Will also be used by fs/nfsd/localio.c
 
-Make also 'tpm_buf_append_name' and 'tpm_buf_fill_hmac_session' fallible so
-that errors are detected before causing any spurious TPM traffic.
-
-End also the authorization session on failure in both of the functions, as
-the session state would be then by definition corrupted.
-
-Cc: stable@vger.kernel.org # v6.10+
-Fixes: 1085b8276bb4 ("tpm: Add the rest of the session HMAC API")
-Reviewed-by: Jonathan McDowell <noodles@meta.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neilb@suse.de>
+Signed-off-by: Anna Schumaker <anna.schumaker@oracle.com>
+Stable-dep-of: c6c209ceb87f ("NFSD: Remove NFSERR_EAGAIN")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm2-cmd.c               |   23 +++++-
- drivers/char/tpm/tpm2-sessions.c          |  114 ++++++++++++++++++++----------
- include/linux/tpm.h                       |   13 ++-
- security/keys/trusted-keys/trusted_tpm2.c |   29 ++++++-
- 4 files changed, 126 insertions(+), 53 deletions(-)
+ fs/nfs/Kconfig             |    1 
+ fs/nfs/nfs2xdr.c           |   70 -----------------------------
+ fs/nfs/nfs3xdr.c           |  108 ++++++++-------------------------------------
+ fs/nfs/nfs4xdr.c           |    4 -
+ fs/nfs_common/Makefile     |    2 
+ fs/nfs_common/common.c     |   67 +++++++++++++++++++++++++++
+ fs/nfsd/Kconfig            |    1 
+ include/linux/nfs_common.h |   16 ++++++
+ 8 files changed, 109 insertions(+), 160 deletions(-)
+ create mode 100644 fs/nfs_common/common.c
+ create mode 100644 include/linux/nfs_common.h
 
---- a/drivers/char/tpm/tpm2-cmd.c
-+++ b/drivers/char/tpm/tpm2-cmd.c
-@@ -253,7 +253,11 @@ int tpm2_pcr_extend(struct tpm_chip *chi
- 	}
+--- a/fs/nfs/Kconfig
++++ b/fs/nfs/Kconfig
+@@ -5,6 +5,7 @@ config NFS_FS
+ 	select CRC32
+ 	select LOCKD
+ 	select SUNRPC
++	select NFS_COMMON
+ 	select NFS_ACL_SUPPORT if NFS_V3_ACL
+ 	help
+ 	  Choose Y here if you want to access files residing on other
+--- a/fs/nfs/nfs2xdr.c
++++ b/fs/nfs/nfs2xdr.c
+@@ -22,14 +22,12 @@
+ #include <linux/nfs.h>
+ #include <linux/nfs2.h>
+ #include <linux/nfs_fs.h>
++#include <linux/nfs_common.h>
+ #include "nfstrace.h"
+ #include "internal.h"
  
- 	if (!disable_pcr_integrity) {
--		tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
-+		rc = tpm_buf_append_name(chip, &buf, pcr_idx, NULL);
-+		if (rc) {
-+			tpm_buf_destroy(&buf);
-+			return rc;
-+		}
- 		tpm_buf_append_hmac_session(chip, &buf, 0, NULL, 0);
- 	} else {
- 		tpm_buf_append_handle(chip, &buf, pcr_idx);
-@@ -268,8 +272,14 @@ int tpm2_pcr_extend(struct tpm_chip *chi
- 			       chip->allocated_banks[i].digest_size);
- 	}
+ #define NFSDBG_FACILITY		NFSDBG_XDR
  
--	if (!disable_pcr_integrity)
--		tpm_buf_fill_hmac_session(chip, &buf);
-+	if (!disable_pcr_integrity) {
-+		rc = tpm_buf_fill_hmac_session(chip, &buf);
-+		if (rc) {
-+			tpm_buf_destroy(&buf);
-+			return rc;
-+		}
-+	}
-+
- 	rc = tpm_transmit_cmd(chip, &buf, 0, "attempting extend a PCR value");
- 	if (!disable_pcr_integrity)
- 		rc = tpm_buf_check_hmac_response(chip, &buf, rc);
-@@ -327,7 +337,12 @@ int tpm2_get_random(struct tpm_chip *chi
- 						| TPM2_SA_CONTINUE_SESSION,
- 						NULL, 0);
- 		tpm_buf_append_u16(&buf, num_bytes);
--		tpm_buf_fill_hmac_session(chip, &buf);
-+		err = tpm_buf_fill_hmac_session(chip, &buf);
-+		if (err) {
-+			tpm_buf_destroy(&buf);
-+			return err;
-+		}
-+
- 		err = tpm_transmit_cmd(chip, &buf,
- 				       offsetof(struct tpm2_get_random_out,
- 						buffer),
---- a/drivers/char/tpm/tpm2-sessions.c
-+++ b/drivers/char/tpm/tpm2-sessions.c
-@@ -144,16 +144,23 @@ struct tpm2_auth {
+-/* Mapping from NFS error code to "errno" error code. */
+-#define errno_NFSERR_IO		EIO
+-
  /*
-  * Name Size based on TPM algorithm (assumes no hash bigger than 255)
-  */
--static u8 name_size(const u8 *name)
-+static int name_size(const u8 *name)
- {
--	static u8 size_map[] = {
--		[TPM_ALG_SHA1] = SHA1_DIGEST_SIZE,
--		[TPM_ALG_SHA256] = SHA256_DIGEST_SIZE,
--		[TPM_ALG_SHA384] = SHA384_DIGEST_SIZE,
--		[TPM_ALG_SHA512] = SHA512_DIGEST_SIZE,
--	};
--	u16 alg = get_unaligned_be16(name);
--	return size_map[alg] + 2;
-+	u16 hash_alg = get_unaligned_be16(name);
-+
-+	switch (hash_alg) {
-+	case TPM_ALG_SHA1:
-+		return SHA1_DIGEST_SIZE + 2;
-+	case TPM_ALG_SHA256:
-+		return SHA256_DIGEST_SIZE + 2;
-+	case TPM_ALG_SHA384:
-+		return SHA384_DIGEST_SIZE + 2;
-+	case TPM_ALG_SHA512:
-+		return SHA512_DIGEST_SIZE + 2;
-+	default:
-+		pr_warn("tpm: unsupported name algorithm: 0x%04x\n", hash_alg);
-+		return -EINVAL;
-+	}
- }
+  * Declare the space requirements for NFS arguments and replies as
+  * number of 32bit-words
+@@ -64,8 +62,6 @@
+ #define NFS_readdirres_sz	(1+NFS_pagepad_sz)
+ #define NFS_statfsres_sz	(1+NFS_info_sz)
  
- static int tpm2_read_public(struct tpm_chip *chip, u32 handle, void *name)
-@@ -234,9 +241,11 @@ static int tpm2_read_public(struct tpm_c
-  * As with most tpm_buf operations, success is assumed because failure
-  * will be caused by an incorrect programming model and indicated by a
-  * kernel message.
-+ *
-+ * Ends the authorization session on failure.
-  */
--void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
--			 u32 handle, u8 *name)
-+int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
-+			u32 handle, u8 *name)
- {
- #ifdef CONFIG_TCG_TPM2_HMAC
- 	enum tpm2_mso_type mso = tpm2_handle_mso(handle);
-@@ -247,18 +256,22 @@ void tpm_buf_append_name(struct tpm_chip
- 
- 	if (!tpm2_chip_auth(chip)) {
- 		tpm_buf_append_handle(chip, buf, handle);
--		return;
-+		return 0;
- 	}
- 
- #ifdef CONFIG_TCG_TPM2_HMAC
- 	slot = (tpm_buf_length(buf) - TPM_HEADER_SIZE) / 4;
- 	if (slot >= AUTH_MAX_NAMES) {
--		dev_err(&chip->dev, "TPM: too many handles\n");
--		return;
-+		dev_err(&chip->dev, "too many handles\n");
-+		ret = -EIO;
-+		goto err;
- 	}
- 	auth = chip->auth;
--	WARN(auth->session != tpm_buf_length(buf),
--	     "name added in wrong place\n");
-+	if (auth->session != tpm_buf_length(buf)) {
-+		dev_err(&chip->dev, "session state malformed");
-+		ret = -EIO;
-+		goto err;
-+	}
- 	tpm_buf_append_u32(buf, handle);
- 	auth->session += 4;
- 
-@@ -271,17 +284,29 @@ void tpm_buf_append_name(struct tpm_chip
- 				goto err;
- 		}
- 	} else {
--		if (name)
--			dev_err(&chip->dev, "TPM: Handle does not require name but one is specified\n");
-+		if (name) {
-+			dev_err(&chip->dev, "handle 0x%08x does not use a name\n",
-+				handle);
-+			ret = -EIO;
-+			goto err;
-+		}
- 	}
- 
- 	auth->name_h[slot] = handle;
--	if (name)
--		memcpy(auth->name[slot], name, name_size(name));
--	return;
-+	if (name) {
-+		ret = name_size(name);
-+		if (ret < 0)
-+			goto err;
- 
-+		memcpy(auth->name[slot], name, ret);
-+	}
-+#endif
-+	return 0;
-+
-+#ifdef CONFIG_TCG_TPM2_HMAC
- err:
- 	tpm2_end_auth_session(chip);
-+	return tpm_ret_to_err(ret);
- #endif
- }
- EXPORT_SYMBOL_GPL(tpm_buf_append_name);
-@@ -599,11 +624,9 @@ static void tpm_buf_append_salt(struct t
-  * encryption key and encrypts the first parameter of the command
-  * buffer with it.
+-static int nfs_stat_to_errno(enum nfs_stat);
+-
+ /*
+  * Encode/decode NFSv2 basic data types
   *
-- * As with most tpm_buf operations, success is assumed because failure
-- * will be caused by an incorrect programming model and indicated by a
-- * kernel message.
-+ * Ends the authorization session on failure.
+@@ -1054,70 +1050,6 @@ out_default:
+ 	return nfs_stat_to_errno(status);
+ }
+ 
+-
+-/*
+- * We need to translate between nfs status return values and
+- * the local errno values which may not be the same.
+- */
+-static const struct {
+-	int stat;
+-	int errno;
+-} nfs_errtbl[] = {
+-	{ NFS_OK,		0		},
+-	{ NFSERR_PERM,		-EPERM		},
+-	{ NFSERR_NOENT,		-ENOENT		},
+-	{ NFSERR_IO,		-errno_NFSERR_IO},
+-	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+-	{ NFSERR_ACCES,		-EACCES		},
+-	{ NFSERR_EXIST,		-EEXIST		},
+-	{ NFSERR_XDEV,		-EXDEV		},
+-	{ NFSERR_NODEV,		-ENODEV		},
+-	{ NFSERR_NOTDIR,	-ENOTDIR	},
+-	{ NFSERR_ISDIR,		-EISDIR		},
+-	{ NFSERR_INVAL,		-EINVAL		},
+-	{ NFSERR_FBIG,		-EFBIG		},
+-	{ NFSERR_NOSPC,		-ENOSPC		},
+-	{ NFSERR_ROFS,		-EROFS		},
+-	{ NFSERR_MLINK,		-EMLINK		},
+-	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
+-	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
+-	{ NFSERR_DQUOT,		-EDQUOT		},
+-	{ NFSERR_STALE,		-ESTALE		},
+-	{ NFSERR_REMOTE,	-EREMOTE	},
+-#ifdef EWFLUSH
+-	{ NFSERR_WFLUSH,	-EWFLUSH	},
+-#endif
+-	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
+-	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
+-	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
+-	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
+-	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
+-	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
+-	{ NFSERR_BADTYPE,	-EBADTYPE	},
+-	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
+-	{ -1,			-EIO		}
+-};
+-
+-/**
+- * nfs_stat_to_errno - convert an NFS status code to a local errno
+- * @status: NFS status code to convert
+- *
+- * Returns a local errno value, or -EIO if the NFS status code is
+- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
+- */
+-static int nfs_stat_to_errno(enum nfs_stat status)
+-{
+-	int i;
+-
+-	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
+-		if (nfs_errtbl[i].stat == (int)status)
+-			return nfs_errtbl[i].errno;
+-	}
+-	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
+-	return nfs_errtbl[i].errno;
+-}
+-
+ #define PROC(proc, argtype, restype, timer)				\
+ [NFSPROC_##proc] = {							\
+ 	.p_proc	    =  NFSPROC_##proc,					\
+--- a/fs/nfs/nfs3xdr.c
++++ b/fs/nfs/nfs3xdr.c
+@@ -21,14 +21,13 @@
+ #include <linux/nfs3.h>
+ #include <linux/nfs_fs.h>
+ #include <linux/nfsacl.h>
++#include <linux/nfs_common.h>
++
+ #include "nfstrace.h"
+ #include "internal.h"
+ 
+ #define NFSDBG_FACILITY		NFSDBG_XDR
+ 
+-/* Mapping from NFS error code to "errno" error code. */
+-#define errno_NFSERR_IO		EIO
+-
+ /*
+  * Declare the space requirements for NFS arguments and replies as
+  * number of 32bit-words
+@@ -91,8 +90,6 @@
+ 				NFS3_pagepad_sz)
+ #define ACL3_setaclres_sz	(1+NFS3_post_op_attr_sz)
+ 
+-static int nfs3_stat_to_errno(enum nfs_stat);
+-
+ /*
+  * Map file type to S_IFMT bits
   */
--void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
-+int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf)
- {
- 	u32 cc, handles, val;
- 	struct tpm2_auth *auth = chip->auth;
-@@ -614,9 +637,12 @@ void tpm_buf_fill_hmac_session(struct tp
- 	u32 attrs;
- 	u8 cphash[SHA256_DIGEST_SIZE];
- 	struct sha256_state sctx;
-+	int ret;
+@@ -1406,7 +1403,7 @@ static int nfs3_xdr_dec_getattr3res(stru
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
  
--	if (!auth)
--		return;
-+	if (!auth) {
-+		ret = -EIO;
-+		goto err;
+ /*
+@@ -1445,7 +1442,7 @@ static int nfs3_xdr_dec_setattr3res(stru
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1495,7 +1492,7 @@ out_default:
+ 	error = decode_post_op_attr(xdr, result->dir_attr, userns);
+ 	if (unlikely(error))
+ 		goto out;
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1537,7 +1534,7 @@ static int nfs3_xdr_dec_access3res(struc
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1578,7 +1575,7 @@ static int nfs3_xdr_dec_readlink3res(str
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1658,7 +1655,7 @@ static int nfs3_xdr_dec_read3res(struct
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1728,7 +1725,7 @@ static int nfs3_xdr_dec_write3res(struct
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1795,7 +1792,7 @@ out_default:
+ 	error = decode_wcc_data(xdr, result->dir_attr, userns);
+ 	if (unlikely(error))
+ 		goto out;
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1835,7 +1832,7 @@ static int nfs3_xdr_dec_remove3res(struc
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1881,7 +1878,7 @@ static int nfs3_xdr_dec_rename3res(struc
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -1926,7 +1923,7 @@ static int nfs3_xdr_dec_link3res(struct
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /**
+@@ -2101,7 +2098,7 @@ out_default:
+ 	error = decode_post_op_attr(xdr, result->dir_attr, rpc_rqst_userns(req));
+ 	if (unlikely(error))
+ 		goto out;
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2167,7 +2164,7 @@ static int nfs3_xdr_dec_fsstat3res(struc
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2243,7 +2240,7 @@ static int nfs3_xdr_dec_fsinfo3res(struc
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2304,7 +2301,7 @@ static int nfs3_xdr_dec_pathconf3res(str
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ /*
+@@ -2350,7 +2347,7 @@ static int nfs3_xdr_dec_commit3res(struc
+ out:
+ 	return error;
+ out_status:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ #ifdef CONFIG_NFS_V3_ACL
+@@ -2416,7 +2413,7 @@ static int nfs3_xdr_dec_getacl3res(struc
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ static int nfs3_xdr_dec_setacl3res(struct rpc_rqst *req,
+@@ -2435,76 +2432,11 @@ static int nfs3_xdr_dec_setacl3res(struc
+ out:
+ 	return error;
+ out_default:
+-	return nfs3_stat_to_errno(status);
++	return nfs_stat_to_errno(status);
+ }
+ 
+ #endif  /* CONFIG_NFS_V3_ACL */
+ 
+-
+-/*
+- * We need to translate between nfs status return values and
+- * the local errno values which may not be the same.
+- */
+-static const struct {
+-	int stat;
+-	int errno;
+-} nfs_errtbl[] = {
+-	{ NFS_OK,		0		},
+-	{ NFSERR_PERM,		-EPERM		},
+-	{ NFSERR_NOENT,		-ENOENT		},
+-	{ NFSERR_IO,		-errno_NFSERR_IO},
+-	{ NFSERR_NXIO,		-ENXIO		},
+-/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
+-	{ NFSERR_ACCES,		-EACCES		},
+-	{ NFSERR_EXIST,		-EEXIST		},
+-	{ NFSERR_XDEV,		-EXDEV		},
+-	{ NFSERR_NODEV,		-ENODEV		},
+-	{ NFSERR_NOTDIR,	-ENOTDIR	},
+-	{ NFSERR_ISDIR,		-EISDIR		},
+-	{ NFSERR_INVAL,		-EINVAL		},
+-	{ NFSERR_FBIG,		-EFBIG		},
+-	{ NFSERR_NOSPC,		-ENOSPC		},
+-	{ NFSERR_ROFS,		-EROFS		},
+-	{ NFSERR_MLINK,		-EMLINK		},
+-	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
+-	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
+-	{ NFSERR_DQUOT,		-EDQUOT		},
+-	{ NFSERR_STALE,		-ESTALE		},
+-	{ NFSERR_REMOTE,	-EREMOTE	},
+-#ifdef EWFLUSH
+-	{ NFSERR_WFLUSH,	-EWFLUSH	},
+-#endif
+-	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
+-	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
+-	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
+-	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
+-	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
+-	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
+-	{ NFSERR_BADTYPE,	-EBADTYPE	},
+-	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
+-	{ -1,			-EIO		}
+-};
+-
+-/**
+- * nfs3_stat_to_errno - convert an NFS status code to a local errno
+- * @status: NFS status code to convert
+- *
+- * Returns a local errno value, or -EIO if the NFS status code is
+- * not recognized.  This function is used jointly by NFSv2 and NFSv3.
+- */
+-static int nfs3_stat_to_errno(enum nfs_stat status)
+-{
+-	int i;
+-
+-	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
+-		if (nfs_errtbl[i].stat == (int)status)
+-			return nfs_errtbl[i].errno;
+-	}
+-	dprintk("NFS: Unrecognized nfs status value: %u\n", status);
+-	return nfs_errtbl[i].errno;
+-}
+-
+-
+ #define PROC(proc, argtype, restype, timer)				\
+ [NFS3PROC_##proc] = {							\
+ 	.p_proc      = NFS3PROC_##proc,					\
+--- a/fs/nfs/nfs4xdr.c
++++ b/fs/nfs/nfs4xdr.c
+@@ -52,6 +52,7 @@
+ #include <linux/nfs.h>
+ #include <linux/nfs4.h>
+ #include <linux/nfs_fs.h>
++#include <linux/nfs_common.h>
+ 
+ #include "nfs4_fs.h"
+ #include "nfs4trace.h"
+@@ -63,9 +64,6 @@
+ 
+ #define NFSDBG_FACILITY		NFSDBG_XDR
+ 
+-/* Mapping from NFS error code to "errno" error code. */
+-#define errno_NFSERR_IO		EIO
+-
+ struct compound_hdr;
+ static int nfs4_stat_to_errno(int);
+ static void encode_layoutget(struct xdr_stream *xdr,
+--- a/fs/nfs_common/Makefile
++++ b/fs/nfs_common/Makefile
+@@ -8,3 +8,5 @@ nfs_acl-objs := nfsacl.o
+ 
+ obj-$(CONFIG_GRACE_PERIOD) += grace.o
+ obj-$(CONFIG_NFS_V4_2_SSC_HELPER) += nfs_ssc.o
++
++obj-$(CONFIG_NFS_COMMON) += common.o
+--- /dev/null
++++ b/fs/nfs_common/common.c
+@@ -0,0 +1,67 @@
++// SPDX-License-Identifier: GPL-2.0-only
++
++#include <linux/module.h>
++#include <linux/nfs_common.h>
++
++/*
++ * We need to translate between nfs status return values and
++ * the local errno values which may not be the same.
++ */
++static const struct {
++	int stat;
++	int errno;
++} nfs_errtbl[] = {
++	{ NFS_OK,		0		},
++	{ NFSERR_PERM,		-EPERM		},
++	{ NFSERR_NOENT,		-ENOENT		},
++	{ NFSERR_IO,		-errno_NFSERR_IO},
++	{ NFSERR_NXIO,		-ENXIO		},
++/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
++	{ NFSERR_ACCES,		-EACCES		},
++	{ NFSERR_EXIST,		-EEXIST		},
++	{ NFSERR_XDEV,		-EXDEV		},
++	{ NFSERR_NODEV,		-ENODEV		},
++	{ NFSERR_NOTDIR,	-ENOTDIR	},
++	{ NFSERR_ISDIR,		-EISDIR		},
++	{ NFSERR_INVAL,		-EINVAL		},
++	{ NFSERR_FBIG,		-EFBIG		},
++	{ NFSERR_NOSPC,		-ENOSPC		},
++	{ NFSERR_ROFS,		-EROFS		},
++	{ NFSERR_MLINK,		-EMLINK		},
++	{ NFSERR_NAMETOOLONG,	-ENAMETOOLONG	},
++	{ NFSERR_NOTEMPTY,	-ENOTEMPTY	},
++	{ NFSERR_DQUOT,		-EDQUOT		},
++	{ NFSERR_STALE,		-ESTALE		},
++	{ NFSERR_REMOTE,	-EREMOTE	},
++#ifdef EWFLUSH
++	{ NFSERR_WFLUSH,	-EWFLUSH	},
++#endif
++	{ NFSERR_BADHANDLE,	-EBADHANDLE	},
++	{ NFSERR_NOT_SYNC,	-ENOTSYNC	},
++	{ NFSERR_BAD_COOKIE,	-EBADCOOKIE	},
++	{ NFSERR_NOTSUPP,	-ENOTSUPP	},
++	{ NFSERR_TOOSMALL,	-ETOOSMALL	},
++	{ NFSERR_SERVERFAULT,	-EREMOTEIO	},
++	{ NFSERR_BADTYPE,	-EBADTYPE	},
++	{ NFSERR_JUKEBOX,	-EJUKEBOX	},
++	{ -1,			-EIO		}
++};
++
++/**
++ * nfs_stat_to_errno - convert an NFS status code to a local errno
++ * @status: NFS status code to convert
++ *
++ * Returns a local errno value, or -EIO if the NFS status code is
++ * not recognized.  This function is used jointly by NFSv2 and NFSv3.
++ */
++int nfs_stat_to_errno(enum nfs_stat status)
++{
++	int i;
++
++	for (i = 0; nfs_errtbl[i].stat != -1; i++) {
++		if (nfs_errtbl[i].stat == (int)status)
++			return nfs_errtbl[i].errno;
 +	}
- 
- 	/* save the command code in BE format */
- 	auth->ordinal = head->ordinal;
-@@ -625,9 +651,11 @@ void tpm_buf_fill_hmac_session(struct tp
- 
- 	i = tpm2_find_cc(chip, cc);
- 	if (i < 0) {
--		dev_err(&chip->dev, "Command 0x%x not found in TPM\n", cc);
--		return;
-+		dev_err(&chip->dev, "command 0x%08x not found\n", cc);
-+		ret = -EIO;
-+		goto err;
- 	}
++	return nfs_errtbl[i].errno;
++}
++EXPORT_SYMBOL_GPL(nfs_stat_to_errno);
+--- a/fs/nfsd/Kconfig
++++ b/fs/nfsd/Kconfig
+@@ -8,6 +8,7 @@ config NFSD
+ 	select LOCKD
+ 	select SUNRPC
+ 	select EXPORTFS
++	select NFS_COMMON
+ 	select NFS_ACL_SUPPORT if NFSD_V2_ACL
+ 	select NFS_ACL_SUPPORT if NFSD_V3_ACL
+ 	depends on MULTIUSER
+--- /dev/null
++++ b/include/linux/nfs_common.h
+@@ -0,0 +1,16 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * This file contains constants and methods used by both NFS client and server.
++ */
++#ifndef _LINUX_NFS_COMMON_H
++#define _LINUX_NFS_COMMON_H
 +
- 	attrs = chip->cc_attrs_tbl[i];
- 
- 	handles = (attrs >> TPM2_CC_ATTR_CHANDLES) & GENMASK(2, 0);
-@@ -641,9 +669,9 @@ void tpm_buf_fill_hmac_session(struct tp
- 		u32 handle = tpm_buf_read_u32(buf, &offset_s);
- 
- 		if (auth->name_h[i] != handle) {
--			dev_err(&chip->dev, "TPM: handle %d wrong for name\n",
--				  i);
--			return;
-+			dev_err(&chip->dev, "invalid handle 0x%08x\n", handle);
-+			ret = -EIO;
-+			goto err;
- 		}
- 	}
- 	/* point offset_s to the start of the sessions */
-@@ -674,12 +702,14 @@ void tpm_buf_fill_hmac_session(struct tp
- 		offset_s += len;
- 	}
- 	if (offset_s != offset_p) {
--		dev_err(&chip->dev, "TPM session length is incorrect\n");
--		return;
-+		dev_err(&chip->dev, "session length is incorrect\n");
-+		ret = -EIO;
-+		goto err;
- 	}
- 	if (!hmac) {
--		dev_err(&chip->dev, "TPM could not find HMAC session\n");
--		return;
-+		dev_err(&chip->dev, "could not find HMAC session\n");
-+		ret = -EIO;
-+		goto err;
- 	}
- 
- 	/* encrypt before HMAC */
-@@ -711,8 +741,11 @@ void tpm_buf_fill_hmac_session(struct tp
- 		if (mso == TPM2_MSO_PERSISTENT ||
- 		    mso == TPM2_MSO_VOLATILE ||
- 		    mso == TPM2_MSO_NVRAM) {
--			sha256_update(&sctx, auth->name[i],
--				      name_size(auth->name[i]));
-+			ret = name_size(auth->name[i]);
-+			if (ret < 0)
-+				goto err;
++#include <linux/errno.h>
++#include <uapi/linux/nfs.h>
 +
-+			sha256_update(&sctx, auth->name[i], ret);
- 		} else {
- 			__be32 h = cpu_to_be32(auth->name_h[i]);
- 
-@@ -733,6 +766,11 @@ void tpm_buf_fill_hmac_session(struct tp
- 	sha256_update(&sctx, &auth->attrs, 1);
- 	tpm2_hmac_final(&sctx, auth->session_key, sizeof(auth->session_key)
- 			+ auth->passphrase_len, hmac);
-+	return 0;
++/* Mapping from NFS error code to "errno" error code. */
++#define errno_NFSERR_IO EIO
 +
-+err:
-+	tpm2_end_auth_session(chip);
-+	return ret;
- }
- EXPORT_SYMBOL(tpm_buf_fill_hmac_session);
- 
---- a/include/linux/tpm.h
-+++ b/include/linux/tpm.h
-@@ -523,8 +523,8 @@ static inline struct tpm2_auth *tpm2_chi
- #endif
- }
- 
--void tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
--			 u32 handle, u8 *name);
-+int tpm_buf_append_name(struct tpm_chip *chip, struct tpm_buf *buf,
-+			u32 handle, u8 *name);
- void tpm_buf_append_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf,
- 				 u8 attributes, u8 *passphrase,
- 				 int passphraselen);
-@@ -557,7 +557,7 @@ static inline void tpm_buf_append_hmac_s
- #ifdef CONFIG_TCG_TPM2_HMAC
- 
- int tpm2_start_auth_session(struct tpm_chip *chip);
--void tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
-+int tpm_buf_fill_hmac_session(struct tpm_chip *chip, struct tpm_buf *buf);
- int tpm_buf_check_hmac_response(struct tpm_chip *chip, struct tpm_buf *buf,
- 				int rc);
- void tpm2_end_auth_session(struct tpm_chip *chip);
-@@ -571,10 +571,13 @@ static inline int tpm2_start_auth_sessio
- static inline void tpm2_end_auth_session(struct tpm_chip *chip)
- {
- }
--static inline void tpm_buf_fill_hmac_session(struct tpm_chip *chip,
--					     struct tpm_buf *buf)
++int nfs_stat_to_errno(enum nfs_stat status);
 +
-+static inline int tpm_buf_fill_hmac_session(struct tpm_chip *chip,
-+					    struct tpm_buf *buf)
- {
-+	return 0;
- }
-+
- static inline int tpm_buf_check_hmac_response(struct tpm_chip *chip,
- 					      struct tpm_buf *buf,
- 					      int rc)
---- a/security/keys/trusted-keys/trusted_tpm2.c
-+++ b/security/keys/trusted-keys/trusted_tpm2.c
-@@ -283,7 +283,10 @@ int tpm2_seal_trusted(struct tpm_chip *c
- 		goto out_put;
- 	}
- 
--	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-+	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-+	if (rc)
-+		goto out;
-+
- 	tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_DECRYPT,
- 				    options->keyauth, TPM_DIGEST_SIZE);
- 
-@@ -331,7 +334,10 @@ int tpm2_seal_trusted(struct tpm_chip *c
- 		goto out;
- 	}
- 
--	tpm_buf_fill_hmac_session(chip, &buf);
-+	rc = tpm_buf_fill_hmac_session(chip, &buf);
-+	if (rc)
-+		goto out;
-+
- 	rc = tpm_transmit_cmd(chip, &buf, 4, "sealing data");
- 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
- 	if (rc)
-@@ -448,7 +454,10 @@ static int tpm2_load_cmd(struct tpm_chip
- 		return rc;
- 	}
- 
--	tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-+	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-+	if (rc)
-+		goto out;
-+
- 	tpm_buf_append_hmac_session(chip, &buf, 0, options->keyauth,
- 				    TPM_DIGEST_SIZE);
- 
-@@ -460,7 +469,10 @@ static int tpm2_load_cmd(struct tpm_chip
- 		goto out;
- 	}
- 
--	tpm_buf_fill_hmac_session(chip, &buf);
-+	rc = tpm_buf_fill_hmac_session(chip, &buf);
-+	if (rc)
-+		goto out;
-+
- 	rc = tpm_transmit_cmd(chip, &buf, 4, "loading blob");
- 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
- 	if (!rc)
-@@ -508,7 +520,9 @@ static int tpm2_unseal_cmd(struct tpm_ch
- 		return rc;
- 	}
- 
--	tpm_buf_append_name(chip, &buf, blob_handle, NULL);
-+	rc = tpm_buf_append_name(chip, &buf, options->keyhandle, NULL);
-+	if (rc)
-+		goto out;
- 
- 	if (!options->policyhandle) {
- 		tpm_buf_append_hmac_session(chip, &buf, TPM2_SA_ENCRYPT,
-@@ -533,7 +547,10 @@ static int tpm2_unseal_cmd(struct tpm_ch
- 						NULL, 0);
- 	}
- 
--	tpm_buf_fill_hmac_session(chip, &buf);
-+	rc = tpm_buf_fill_hmac_session(chip, &buf);
-+	if (rc)
-+		goto out;
-+
- 	rc = tpm_transmit_cmd(chip, &buf, 6, "unsealing");
- 	rc = tpm_buf_check_hmac_response(chip, &buf, rc);
- 	if (rc > 0)
++#endif /* _LINUX_NFS_COMMON_H */
 
 
 
