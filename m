@@ -1,53 +1,59 @@
-Return-Path: <stable+bounces-209437-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9F35FD26AEB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id A4829D2777C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7A47030BD734
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id DBFAE31FE921
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:38 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B41226CE04;
-	Thu, 15 Jan 2026 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 11F9B3D7D11;
+	Thu, 15 Jan 2026 17:58:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SVK7rNck"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vc8CGpgh"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F68518AFD;
-	Thu, 15 Jan 2026 17:38:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AA3033D3332;
+	Thu, 15 Jan 2026 17:58:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498695; cv=none; b=bMPrE2qPtvYIJi3ecKgw8JCDXs94XjAtLIinC7YfiBfeMzTwEcfaPxSJbP2r00Agwn15mrVkwm45x2PW3yIz6XXhSYej2SXRcHUvGvH+a0QLVZK4mTifittjEr7rjXm8jizcFu8Qhy+X5vYqyLitSGdR498jteWtrfcX6AHZ/lk=
+	t=1768499892; cv=none; b=jbX73Gb3x/gDzFHX9U0g3AF1FvN+BCFvOt1aSIx9wlg81luTtmRwmll1qrB7L6xZfmiP9lwbNtjvIIHS9y+ajvUHG9nfLXpS3snqvrTakLLNq1BMlGuFJ5uFfpC9+qppFduF3TJwHQE/oF4u3yoFt3+2hRFnKShdeytYWrPpDQ8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498695; c=relaxed/simple;
-	bh=RdgZacMSIDBNdynGtaFkEjLMoR36pQ5hnCngPwgf+pE=;
+	s=arc-20240116; t=1768499892; c=relaxed/simple;
+	bh=isC7FTbIM6aHoVlElYEJHnIpRGQIcI+COsgq/giPGfQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NS2AUHTWBhq27GxnMC3MjHrReQ3hLJpGI0BuXM5o9RKw7QWOXI+A2ge9f6B7/FunGK2UNNW2ukP8++5mChjGaeY7uA0U+gKp50Ir2DAY1fpbG1ltPV1TGQvv1ZCSI4jh66KvA0zSHmuCHqfl1gwFrFcFhWfy2NEw2DN+XL3E8pI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SVK7rNck; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E10A8C116D0;
-	Thu, 15 Jan 2026 17:38:14 +0000 (UTC)
+	 MIME-Version; b=i9wkcBN/DYrSQApmrrScqNc9gcYIei92t9jPBd/JY/+5/LrG4isPGt+0OsuFeiIaVnFqeSzPdRz4eTXZLYdD7zYGrKwpyRgenR1cQ8mZjqR/EskGn37FCXX5qfsN3gVnajddwVpfFm8LHLgjHRcv+68lBY0soygc5UYjdThedvU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vc8CGpgh; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38E46C116D0;
+	Thu, 15 Jan 2026 17:58:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498695;
-	bh=RdgZacMSIDBNdynGtaFkEjLMoR36pQ5hnCngPwgf+pE=;
+	s=korg; t=1768499892;
+	bh=isC7FTbIM6aHoVlElYEJHnIpRGQIcI+COsgq/giPGfQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SVK7rNckQmTNk+kXS4gG+LXSjt8wSB4bP2+bhXzf/eypmzicyGKbXI3Zp4kuJ42bM
-	 tivmbbg4lFpviQVK0GqL2SZhdwB6SmmAB860ulAzu0xOwPMXemsyDLhRk4b+bfcvh3
-	 aHyB3JlgOGICGF2WpHlasf8Eq7H9y3DEWmugK8SM=
+	b=Vc8CGpghW1WWcNV1Ii4vW+HL/yNoyV2Ewv8GJggknLL3zit4qfKMmcaNRFcv6nkYJ
+	 gsyh3NFOnBqHqPPe9NeXmtHXqpIw8JwFrYJFYos18Tn7dXchFQ/sgiU7cvNuH1gnsU
+	 Jro+yPmXZCR35a5HhsBVj0XucR28MkNp/YQGv5mk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	David Hildenbrand <david@redhat.com>,
+	"Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Michael Ellerman <mpe@ellerman.id.au>,
+	Nicholas Piggin <npiggin@gmail.com>,
+	Andrew Morton <akpm@linux-foundation.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 520/554] NFS: Fix up the automount fs_context to use the correct cred
-Date: Thu, 15 Jan 2026 17:49:46 +0100
-Message-ID: <20260115164305.151452953@linuxfoundation.org>
+Subject: [PATCH 5.10 386/451] powerpc/pseries/cmm: adjust BALLOON_MIGRATE when migrating pages
+Date: Thu, 15 Jan 2026 17:49:47 +0100
+Message-ID: <20260115164244.891632856@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +65,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: David Hildenbrand <david@redhat.com>
 
-[ Upstream commit a2a8fc27dd668e7562b5326b5ed2f1604cb1e2e9 ]
+[ Upstream commit 0da2ba35c0d532ca0fe7af698b17d74c4d084b9a ]
 
-When automounting, the fs_context should be fixed up to use the cred
-from the parent filesystem, since the operation is just extending the
-namespace. Authorisation to enter that namespace will already have been
-provided by the preceding lookup.
+Let's properly adjust BALLOON_MIGRATE like the other drivers.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Note that the INFLATE/DEFLATE events are triggered from the core when
+enqueueing/dequeueing pages.
+
+This was found by code inspection.
+
+Link: https://lkml.kernel.org/r/20251021100606.148294-3-david@redhat.com
+Fixes: fe030c9b85e6 ("powerpc/pseries/cmm: Implement balloon compaction")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
+Cc: Christophe Leroy <christophe.leroy@csgroup.eu>
+Cc: Madhavan Srinivasan <maddy@linux.ibm.com>
+Cc: Michael Ellerman <mpe@ellerman.id.au>
+Cc: Nicholas Piggin <npiggin@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/namespace.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ arch/powerpc/platforms/pseries/cmm.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 8fb570fd376a1..6367f067dd7be 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -170,6 +170,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	if (!ctx->clone_data.fattr)
- 		goto out_fc;
+--- a/arch/powerpc/platforms/pseries/cmm.c
++++ b/arch/powerpc/platforms/pseries/cmm.c
+@@ -550,6 +550,7 @@ static int cmm_migratepage(struct balloo
  
-+	if (fc->cred != server->cred) {
-+		put_cred(fc->cred);
-+		fc->cred = get_cred(server->cred);
-+	}
-+
- 	if (fc->net_ns != client->cl_net) {
- 		put_net(fc->net_ns);
- 		fc->net_ns = get_net(client->cl_net);
--- 
-2.51.0
-
+ 	spin_lock_irqsave(&b_dev_info->pages_lock, flags);
+ 	balloon_page_insert(b_dev_info, newpage);
++	__count_vm_event(BALLOON_MIGRATE);
+ 	b_dev_info->isolated_pages--;
+ 	spin_unlock_irqrestore(&b_dev_info->pages_lock, flags);
+ 
 
 
 
