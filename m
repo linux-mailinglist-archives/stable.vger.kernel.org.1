@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-209374-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209762-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B115CD275F5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B09AD27283
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 20C493151E83
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:39 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 84FF0305FFB1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5856399011;
-	Thu, 15 Jan 2026 17:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE3993D523D;
+	Thu, 15 Jan 2026 17:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HtJ5nq76"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pz6aULUO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7836186334;
-	Thu, 15 Jan 2026 17:35:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7BA4D3D1CA9;
+	Thu, 15 Jan 2026 17:53:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498513; cv=none; b=OEECqWIZXB2tzwvy6GNsnn9DpXpKlOcJUHxCCzN3HL+KzwO2SR2PXiiFs8CULKPnfM3rzNDkoiDyYDq/l3gquLCiC43nKIyewZwZXfF1lXtk+9vt3LB+HecV9PGif8WLi1K8h+GjA24qMWUlGjbIp2PCaWsC4kpYRPR6BIKOHbo=
+	t=1768499619; cv=none; b=nOkMptb3RLbHLR57raHkeB3sEJBJhd2aCbPgau46vJHOOX2sgy0KnScK7bxRx1aut4BMZcNXPydSZw7Bg2II2EJm9oEaTZ/TbudC1zXCRrzqUF72qr9lAxsrdlNHKGvUREf9oadafeEPJqlh19MICBQIgTzmn8VHcn4CmVhCi78=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498513; c=relaxed/simple;
-	bh=CuQjundJQb6vx3EIMlIveNPl6Aabfx8Kuu9FZIBp4YM=;
+	s=arc-20240116; t=1768499619; c=relaxed/simple;
+	bh=YCpKph1RWUxL6uHpu6tOlfiLHUKYtEm1bnATUomk2hY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ntQqucPwAK1FInVZPTI9uKuJjsBELpYj1eDvC2WIOgZQh8aZsEBftOvRf5lN+auDFPtgqkq6KyH3b1C4UMwXlLJaArjUtLRgcOzPMc8YjzKaeuB5MZGrWZKOGvZW92KTpMlOLXg/YWg/tC9eDncYW6Lx08AGR3vgCj62ocBtEH4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HtJ5nq76; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08AB6C116D0;
-	Thu, 15 Jan 2026 17:35:12 +0000 (UTC)
+	 MIME-Version; b=KZs6SJT1hJX7rbu2jMTFtvhM7fETYQN9HLiVqwQmL4iUjhkBQqlNznC6b2OUJLwdWc/OxyxLtgCpq+s2yMQN1sku/zPWq5P06+YYkI7nTN0jT/3CigULhxHUXhHDikuwEEu8nmnXkZT2V6eqob44BH5mqnpnACwkbWM8YWTiis8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pz6aULUO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03BEAC116D0;
+	Thu, 15 Jan 2026 17:53:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498513;
-	bh=CuQjundJQb6vx3EIMlIveNPl6Aabfx8Kuu9FZIBp4YM=;
+	s=korg; t=1768499619;
+	bh=YCpKph1RWUxL6uHpu6tOlfiLHUKYtEm1bnATUomk2hY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HtJ5nq76evpv6UtU6x8tYUBjnW4uJm+1wL1KKwCbec3TDLqdvecndqbMIR2BZwniq
-	 AYHBL1HMCzcQutklFFNLNo3WXl1fee6r8HSl1r+p7Crru6kitHsfF24eUWzsTLLQvg
-	 nFV+eJJPqjIKjUt3BPmxyD+m/yqiuArJywC0ZdKc=
+	b=Pz6aULUO7rkZOl0qoWKq8FMvNJHwr7FNhVtzLQxoITMmku6P5XXAEn/URb38ptHC8
+	 LJUfM/IM9IASDyqwDvOrNde9gWBfJ/+r3b1yBu4nTLvwnK09eiS8FzuvIvaFDASq+o
+	 sXp8B4EpLHgNf+waHb0ZEcrb6iEk+OzI9y/1j2gk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zack Rusin <zack.rusin@broadcom.com>,
-	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
-	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
-	dri-devel@lists.freedesktop.org,
-	Ian Forbes <ian.forbes@broadcom.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.15 425/554] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
+	Fatma Alwasmi <falwasmi@purdue.edu>,
+	Pwnverse <stanksal@purdue.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 290/451] net: rose: fix invalid array index in rose_kill_by_device()
 Date: Thu, 15 Jan 2026 17:48:11 +0100
-Message-ID: <20260115164301.642687055@linuxfoundation.org>
+Message-ID: <20260115164241.373403764@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,82 +61,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zack.rusin@broadcom.com>
+From: Pwnverse <stanksal@purdue.edu>
 
-[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
+[ Upstream commit 6595beb40fb0ec47223d3f6058ee40354694c8e4 ]
 
-Check that the resource which is converted to a surface exists before
-trying to use the cursor snooper on it.
+rose_kill_by_device() collects sockets into a local array[] and then
+iterates over them to disconnect sockets bound to a device being brought
+down.
 
-vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
-because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
-unfortunately functions that accept the actual surfaces as objects might
-(and in case of the cursor snooper, do not) be able to handle null
-objects. Make sure that we validate not only the identifier (via the
-vmw_cmd_res_check) but also check that the actual resource exists before
-trying to do something with it.
+The loop mistakenly indexes array[cnt] instead of array[i]. For cnt <
+ARRAY_SIZE(array), this reads an uninitialized entry; for cnt ==
+ARRAY_SIZE(array), it is an out-of-bounds read. Either case can lead to
+an invalid socket pointer dereference and also leaks references taken
+via sock_hold().
 
-Fixes unchecked null-ptr reference in the snooping code.
+Fix the index to use i.
 
-Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
-Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
-Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
-Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
-Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
+Fixes: 64b8bc7d5f143 ("net/rose: fix races in rose_kill_by_device()")
+Co-developed-by: Fatma Alwasmi <falwasmi@purdue.edu>
+Signed-off-by: Fatma Alwasmi <falwasmi@purdue.edu>
+Signed-off-by: Pwnverse <stanksal@purdue.edu>
+Link: https://patch.msgid.link/20251222212227.4116041-1-ritviktanksalkar@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-[Shivani: Modified to apply on v5.10.y-v6.1.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   17 ++++++++++++-----
- 1 file changed, 12 insertions(+), 5 deletions(-)
+ net/rose/af_rose.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1525,6 +1525,7 @@ static int vmw_cmd_dma(struct vmw_privat
- 		       SVGA3dCmdHeader *header)
- {
- 	struct vmw_buffer_object *vmw_bo = NULL;
-+	struct vmw_resource *res;
- 	struct vmw_surface *srf = NULL;
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
- 	int ret;
-@@ -1560,18 +1561,24 @@ static int vmw_cmd_dma(struct vmw_privat
+diff --git a/net/rose/af_rose.c b/net/rose/af_rose.c
+index f8cd085c4234..04173c85d92b 100644
+--- a/net/rose/af_rose.c
++++ b/net/rose/af_rose.c
+@@ -204,7 +204,7 @@ static void rose_kill_by_device(struct net_device *dev)
+ 	spin_unlock_bh(&rose_list_lock);
  
- 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
- 		VMW_RES_DIRTY_SET : 0;
--	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
--				dirty, user_surface_converter,
--				&cmd->body.host.sid, NULL);
-+	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
-+				user_surface_converter, &cmd->body.host.sid,
-+				NULL);
- 	if (unlikely(ret != 0)) {
- 		if (unlikely(ret != -ERESTARTSYS))
- 			VMW_DEBUG_USER("could not find surface for DMA.\n");
- 		return ret;
- 	}
- 
--	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
-+	res = sw_context->res_cache[vmw_res_surface].res;
-+	if (!res) {
-+		VMW_DEBUG_USER("Invalid DMA surface.\n");
-+		return -EINVAL;
-+	}
- 
--	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base, header);
-+	srf = vmw_res_to_srf(res);
-+	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base,
-+			     header);
- 
- 	return 0;
- }
+ 	for (i = 0; i < cnt; i++) {
+-		sk = array[cnt];
++		sk = array[i];
+ 		rose = rose_sk(sk);
+ 		lock_sock(sk);
+ 		spin_lock_bh(&rose_list_lock);
+-- 
+2.51.0
+
 
 
 
