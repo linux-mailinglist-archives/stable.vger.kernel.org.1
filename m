@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209112-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BCBCBD27266
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:26 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0977FD27315
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8A8593201777
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:52 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 093DD30F41D3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 97CF12C027B;
-	Thu, 15 Jan 2026 17:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2B2639E6EA;
+	Thu, 15 Jan 2026 17:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mhQ52ood"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nIp6Qcr6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B4C4E56A;
-	Thu, 15 Jan 2026 17:22:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6474E2C0F83;
+	Thu, 15 Jan 2026 17:42:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497767; cv=none; b=IIJHRUU1HMUnyztTuzf0roQ50dVyf/metZhdYobzZlSDpHDgawUOFdVPLq+PdTAWKjyCP5I8pzkEQF46CUCwSMU1JUiTekZPefixa4RTbmot09M8hNVpAfvdAyNCxsebamnnxZtPoKlFHoHFzGZ4AgzLonxbLBrOB+CiztlpNMU=
+	t=1768498967; cv=none; b=uHxwk+s3tVMYaEdUtkLNaiCoux+PqCYu/nbQNZlpbhNR5rf7LZ5qbzQqOXD8Q7XOBMUU46f5wlPieuUQv2es59CLnjizjbE61J/sAoDCC2XceubgRgepLIO+oNaGop8n0G1q+MWeWbxi8k+mVIB84luwsnupnYeHmQqzNivESl8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497767; c=relaxed/simple;
-	bh=ElxKMT0muGCLpnrLX+YrGOfBl2U1hLJXguBvFshYtoQ=;
+	s=arc-20240116; t=1768498967; c=relaxed/simple;
+	bh=7bZGgKrdrRRnu5TGqNiSp6aYaTlPUYfIJ2gQg0AAlhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sh++FAkRptc/67NMTF0BbujafPYfUKHXiY/yfbS3xYtCKHlT2dZ/+F9m8aJOj3KFOYSDusc4Tm2sbFxNUuicbqRMzgyriEiSUcUM/Dniq3hRpOiDvVcIj92XC1wqbFR/HFOn0Z0nL2jD30lm77P1eV0IPKXIm8Ni4UZTM0GGEOI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mhQ52ood; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE10CC116D0;
-	Thu, 15 Jan 2026 17:22:46 +0000 (UTC)
+	 MIME-Version; b=jUX0T5pvDkYITGxHNLeltiSo7sx0c2xG02immn90IQoVmHFtoVXKDawB+Xgzv7k++wxZVilgavkLwEWX6USfPeilwKtw6eGFC0OEOk+0UnyduFuFEMzPGXswh4fTvUd1evjtBew6pWuxAlkv99E6p7vajAWjP4eDVrP62O0RrPQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nIp6Qcr6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92D53C116D0;
+	Thu, 15 Jan 2026 17:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497767;
-	bh=ElxKMT0muGCLpnrLX+YrGOfBl2U1hLJXguBvFshYtoQ=;
+	s=korg; t=1768498967;
+	bh=7bZGgKrdrRRnu5TGqNiSp6aYaTlPUYfIJ2gQg0AAlhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mhQ52oodn1mOXHRnZ5+VVB2d7bX26fH7UaB7CAPNbe5kGQv0yzV1dYyHh0HWo6rAv
-	 PrAqK5aqiWP61WzeIwDAt/6IhVKQzkcqIzUVy60ppjElsBUCHxYv1zqF1zpB/ad/wg
-	 7Z/u6EaTcZXAtBgGfoIkf8J4ph4GIgJHaqnCtlO0=
+	b=nIp6Qcr6Ve9L51qRoh1zeCVbM4UG/DPxjrrDRsyOXnABAH5k/rA0Xtmed10L/I+gU
+	 Y2nRovkooDUZqlN6yvHCrAF7NWvJduayiNshoLWL/WXfbtM8IxXZ7OKTYvnMgAZLyp
+	 5GujXTBvAfA3foS9VA67qPEeOxdwVZ4/AtU20JoE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Josef Bacik <josef@toxicpanda.com>,
+	Jens Axboe <axboe@kernel.dk>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 196/554] efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
-Date: Thu, 15 Jan 2026 17:44:22 +0100
-Message-ID: <20260115164253.353011590@linuxfoundation.org>
+Subject: [PATCH 5.10 062/451] nbd: partition nbd_read_stat() into nbd_read_reply() and nbd_handle_reply()
+Date: Thu, 15 Jan 2026 17:44:23 +0100
+Message-ID: <20260115164233.142350086@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,232 +62,164 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 96b010536ee020e716d28d9b359a4bcd18800aeb ]
+[ Upstream commit 3fe1db626a56cdf259c348404f2c5429e2f065a1 ]
 
-Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
-was defined simply as:
+Prepare to fix uaf in nbd_read_stat(), no functional changes.
 
-Type at byte offset 4:
-
-	- Cache error
-	- TLB Error
-	- Bus Error
-	- Micro-architectural Error
-	All other values are reserved
-
-Yet, there was no information about how this would be encoded.
-
-Spec 2.9A errata corrected it by defining:
-
-	- Bit 1 - Cache Error
-	- Bit 2 - TLB Error
-	- Bit 3 - Bus Error
-	- Bit 4 - Micro-architectural Error
-	All other values are reserved
-
-That actually aligns with the values already defined on older
-versions at N.2.4.1. Generic Processor Error Section.
-
-Spec 2.10 also preserve the same encoding as 2.9A.
-
-Adjust CPER and GHES handling code for both generic and ARM
-processors to properly handle UEFI 2.9A and 2.10 encoding.
-
-Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Reviewed-by: Josef Bacik <josef@toxicpanda.com>
+Link: https://lore.kernel.org/r/20210916093350.1410403-7-yukuai3@huawei.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 9517b82d8d42 ("nbd: defer config put in recv_work")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/apei/ghes.c        | 16 +++++++----
- drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
- include/linux/cper.h            | 10 +++----
- 3 files changed, 39 insertions(+), 37 deletions(-)
+ drivers/block/nbd.c | 74 +++++++++++++++++++++++++++------------------
+ 1 file changed, 44 insertions(+), 30 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 250ea9ec5f0c2..bdb23ca251e23 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -22,6 +22,7 @@
- #include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
- #include <linux/timer.h>
-@@ -500,6 +501,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index 555e87a6d3a6d..92a94fa568a05 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -673,38 +673,45 @@ static int nbd_send_cmd(struct nbd_device *nbd, struct nbd_cmd *cmd, int index)
+ 	return 0;
+ }
+ 
+-/* NULL returned = something went wrong, inform userspace */
+-static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
++static int nbd_read_reply(struct nbd_device *nbd, int index,
++			  struct nbd_reply *reply)
  {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
-@@ -513,9 +515,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
- 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
--		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-+		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
- 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
--		const char *error_type = "unknown error";
+-	struct nbd_config *config = nbd->config;
+-	int result;
+-	struct nbd_reply reply;
+-	struct nbd_cmd *cmd;
+-	struct request *req = NULL;
+-	u64 handle;
+-	u16 hwq;
+-	u32 tag;
+-	struct kvec iov = {.iov_base = &reply, .iov_len = sizeof(reply)};
++	struct kvec iov = {.iov_base = reply, .iov_len = sizeof(*reply)};
+ 	struct iov_iter to;
+-	int ret = 0;
++	int result;
  
- 		/*
- 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-@@ -529,12 +530,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 			continue;
- 		}
- 
--		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
--			error_type = cper_proc_error_type_strs[err_info->type];
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
- 
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
--				    "Unhandled processor error type: %s\n",
--				    error_type);
-+				    "Unhandled processor error type 0x%02x: %s%s\n",
-+				    err_info->type, error_type,
-+				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
- 		p += err_info->length;
+-	reply.magic = 0;
+-	iov_iter_kvec(&to, READ, &iov, 1, sizeof(reply));
++	reply->magic = 0;
++	iov_iter_kvec(&to, READ, &iov, 1, sizeof(*reply));
+ 	result = sock_xmit(nbd, index, 0, &to, MSG_WAITALL, NULL);
+ 	if (result < 0) {
+-		if (!nbd_disconnected(config))
++		if (!nbd_disconnected(nbd->config))
+ 			dev_err(disk_to_dev(nbd->disk),
+ 				"Receive control failed (result %d)\n", result);
+-		return ERR_PTR(result);
++		return result;
  	}
  
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index f4b7a48327fbb..ea43589944ba5 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -94,15 +94,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
- 	bool time_out, access_mode;
- 
--	/* If the type is unknown, bail. */
--	if (type > CPER_ARM_MAX_TYPE)
--		return;
--
- 	/*
- 	 * Vendor type errors have error information values that are vendor
- 	 * specific.
- 	 */
--	if (type == CPER_ARM_VENDOR_ERROR)
-+	if (type & CPER_ARM_VENDOR_ERROR)
- 		return;
- 
- 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
-@@ -117,43 +113,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
- 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
- 			   & CPER_ARM_ERR_OPERATION_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%scache error, operation type: %s\n", pfx,
- 				       arm_cache_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_TLB_ERROR:
-+		}
-+		if (type & CPER_ARM_TLB_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sTLB error, operation type: %s\n", pfx,
- 				       arm_tlb_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_BUS_ERROR:
-+		}
-+		if (type & CPER_ARM_BUS_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sbus error, operation type: %s\n", pfx,
- 				       arm_bus_err_op_strs[op_type]);
- 			}
--			break;
- 		}
+-	if (ntohl(reply.magic) != NBD_REPLY_MAGIC) {
++	if (ntohl(reply->magic) != NBD_REPLY_MAGIC) {
+ 		dev_err(disk_to_dev(nbd->disk), "Wrong magic (0x%lx)\n",
+-				(unsigned long)ntohl(reply.magic));
+-		return ERR_PTR(-EPROTO);
++				(unsigned long)ntohl(reply->magic));
++		return -EPROTO;
  	}
  
- 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
- 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
- 			 & CPER_ARM_ERR_LEVEL_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR)
- 			printk("%scache level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_TLB_ERROR:
+-	memcpy(&handle, reply.handle, sizeof(handle));
++	return 0;
++}
 +
-+		if (type & CPER_ARM_TLB_ERROR)
- 			printk("%sTLB level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_BUS_ERROR:
++/* NULL returned = something went wrong, inform userspace */
++static struct nbd_cmd *nbd_handle_reply(struct nbd_device *nbd, int index,
++					struct nbd_reply *reply)
++{
++	int result;
++	struct nbd_cmd *cmd;
++	struct request *req = NULL;
++	u64 handle;
++	u16 hwq;
++	u32 tag;
++	int ret = 0;
 +
-+		if (type & CPER_ARM_BUS_ERROR)
- 			printk("%saffinity level at which the bus error occurred: %d\n",
- 			       pfx, level);
--			break;
++	memcpy(&handle, reply->handle, sizeof(handle));
+ 	tag = nbd_handle_to_tag(handle);
+ 	hwq = blk_mq_unique_tag_to_hwq(tag);
+ 	if (hwq < nbd->tag_set.nr_hw_queues)
+@@ -737,9 +744,9 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
+ 		ret = -ENOENT;
+ 		goto out;
+ 	}
+-	if (ntohl(reply.error)) {
++	if (ntohl(reply->error)) {
+ 		dev_err(disk_to_dev(nbd->disk), "Other side returned error (%d)\n",
+-			ntohl(reply.error));
++			ntohl(reply->error));
+ 		cmd->status = BLK_STS_IOERR;
+ 		goto out;
+ 	}
+@@ -748,6 +755,7 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
+ 	if (rq_data_dir(req) != WRITE) {
+ 		struct req_iterator iter;
+ 		struct bio_vec bvec;
++		struct iov_iter to;
+ 
+ 		rq_for_each_segment(bvec, req, iter) {
+ 			iov_iter_bvec(&to, READ, &bvec, 1, bvec.bv_len);
+@@ -761,7 +769,7 @@ static struct nbd_cmd *nbd_read_stat(struct nbd_device *nbd, int index)
+ 				 * and let the timeout stuff handle resubmitting
+ 				 * this request onto another connection.
+ 				 */
+-				if (nbd_disconnected(config)) {
++				if (nbd_disconnected(nbd->config)) {
+ 					cmd->status = BLK_STS_IOERR;
+ 					goto out;
+ 				}
+@@ -785,24 +793,30 @@ static void recv_work(struct work_struct *work)
+ 						     work);
+ 	struct nbd_device *nbd = args->nbd;
+ 	struct nbd_config *config = nbd->config;
++	struct nbd_sock *nsock;
+ 	struct nbd_cmd *cmd;
+ 	struct request *rq;
+ 
+ 	while (1) {
+-		cmd = nbd_read_stat(nbd, args->index);
+-		if (IS_ERR(cmd)) {
+-			struct nbd_sock *nsock = config->socks[args->index];
++		struct nbd_reply reply;
+ 
+-			mutex_lock(&nsock->tx_lock);
+-			nbd_mark_nsock_dead(nbd, nsock, 1);
+-			mutex_unlock(&nsock->tx_lock);
++		if (nbd_read_reply(nbd, args->index, &reply))
++			break;
++
++		cmd = nbd_handle_reply(nbd, args->index, &reply);
++		if (IS_ERR(cmd))
+ 			break;
 -		}
+ 
+ 		rq = blk_mq_rq_from_pdu(cmd);
+ 		if (likely(!blk_should_fake_timeout(rq->q)))
+ 			blk_mq_complete_request(rq);
  	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-@@ -242,6 +233,7 @@ void cper_print_proc_arm(const char *pfx,
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
- 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-+	char error_type[120];
- 
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
-@@ -290,9 +282,15 @@ void cper_print_proc_arm(const char *pfx,
- 				       newpfx);
- 		}
- 
--		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
--			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
--			cper_proc_error_type_strs[err_info->type] : "unknown");
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
 +
-+		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
-+		       error_type,
-+		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
++	nsock = config->socks[args->index];
++	mutex_lock(&nsock->tx_lock);
++	nbd_mark_nsock_dead(nbd, nsock, 1);
++	mutex_unlock(&nsock->tx_lock);
 +
- 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
- 			printk("%serror_info: 0x%016llx\n", newpfx,
- 			       err_info->error_info);
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 724a5e3c122d6..a31e22cc839eb 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -270,11 +270,11 @@ enum {
- #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
- #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
- 
--#define CPER_ARM_CACHE_ERROR			0
--#define CPER_ARM_TLB_ERROR			1
--#define CPER_ARM_BUS_ERROR			2
--#define CPER_ARM_VENDOR_ERROR			3
--#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
-+#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
-+#define CPER_ARM_CACHE_ERROR			BIT(1)
-+#define CPER_ARM_TLB_ERROR			BIT(2)
-+#define CPER_ARM_BUS_ERROR			BIT(3)
-+#define CPER_ARM_VENDOR_ERROR			BIT(4)
- 
- #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
- #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
+ 	nbd_config_put(nbd);
+ 	atomic_dec(&config->recv_threads);
+ 	wake_up(&config->recv_wq);
 -- 
 2.51.0
 
