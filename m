@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209742-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208656-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E5FA3D2748C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5F8EED261AA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6543830E280F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:44 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA353108627
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D077B3C1FD4;
-	Thu, 15 Jan 2026 17:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509DC2C028F;
+	Thu, 15 Jan 2026 17:01:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2Glo5jcr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSn8TKOK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9405E3C199E;
-	Thu, 15 Jan 2026 17:52:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13244350A05;
+	Thu, 15 Jan 2026 17:01:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499562; cv=none; b=sNV8SjE1DTg84WHlMcmGSSimRx7EsGym7oNhP4f4Xt4l0iBquwDuB84eR7T4GJlFX6GaaJsZYggULQDLGmMX4onCNm7SjcZeRmjYjRmwmgtncYg4iwRtHoaz16VrdWhFkr3Co39EOt4W73BcjbngIY8U3qGZnDx7ZnFS+8zC5vg=
+	t=1768496472; cv=none; b=u2KF63Pr1X14U/j64CKyf0KjAhZ4CWFs33iQtsvRL1DMelp1f4vSnHgA0A3pPhMuUq5+5viTxsIwQigzZxQE1Br6DghVPwyXm2sstbcgq+sEFQ4MeGWROOfDuiH1Xu1OAx7UWcilXBKSjQwSZTLfxoDbxTyj1HNUxS1V5ut5+ak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499562; c=relaxed/simple;
-	bh=N4x2L/aZ/yqfUVZzcu1Lca0vKA+wtyoOfhOCidXtlZA=;
+	s=arc-20240116; t=1768496472; c=relaxed/simple;
+	bh=Rd/F/+dmcje+rzLWHWAnAaUWGJLURKzY681oeaA0BRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=cFaqJ3jXQLh3mktTrU2QsbTkXG90y8dc6OMhGjMoC5TcZb3/KMplh/wKOiRpSTwLPsdsTHOB4IMqr3UgbvM6ObpjFJLxmL8rOUholu7ugnV16Dwv3V7LL5td68ZgDZMueIVJX534XhTy7c9XcaCO+lPRN4nHC77NkD+L9H32Has=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2Glo5jcr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 216DAC116D0;
-	Thu, 15 Jan 2026 17:52:41 +0000 (UTC)
+	 MIME-Version; b=CAXDWmqgbf6jpGcDQEmJ3bV8MVUtyQDuJ5Jzy5MPzaKuFZEOKeZaxsWDBmqzDLRnsDWgdfauSQHgVVeMuHj3cCKtrgPsxT80HBM5A8mcPiXUe8LxgD4qa7XJlTvpRXc3vEnphHkfXqIuoWVcwOFT+SAU4MekQ/Bkl59gEcHFCg8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSn8TKOK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513E2C116D0;
+	Thu, 15 Jan 2026 17:01:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499562;
-	bh=N4x2L/aZ/yqfUVZzcu1Lca0vKA+wtyoOfhOCidXtlZA=;
+	s=korg; t=1768496471;
+	bh=Rd/F/+dmcje+rzLWHWAnAaUWGJLURKzY681oeaA0BRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2Glo5jcrl6nCgLguMLsE26YtxVvNU1xSJijlMzuIsVfxuuPDPuCad+5HzlexZb3ps
-	 uorzLCvHnl0np74ch+1nCdLDwmjlyc72qCObeTceyrsnQTp1O+In7Rn4MAGi4XD4xN
-	 UnXlyI7VeViIHIjtbZY37aX8oWImZi6FHuU7NWLc=
+	b=wSn8TKOKgoAhtHIID7nQp9o048tWn9xmMYTxdO4geo8q1/5Wj0b/kLDFjSsHWcnp9
+	 p1VPXCnGIQOwYi9k20zUqq9xs0lhs8Jl3pcrEkdhqL5wJJDIUV0DSE7g05iNrlM1qL
+	 Vz/fkEKkKmA+9Xmw+Aw2QhllFPHUuesL9iScHllY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tianchu Chen <flynnnchen@tencent.com>,
-	Arnd Bergmann <arnd@arndb.de>,
-	stable <stable@kernel.org>
-Subject: [PATCH 5.10 237/451] char: applicom: fix NULL pointer dereference in ac_ioctl
-Date: Thu, 15 Jan 2026 17:47:18 +0100
-Message-ID: <20260115164239.467084956@linuxfoundation.org>
+	Tuo Li <islituo@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
+	Ilya Dryomov <idryomov@gmail.com>
+Subject: [PATCH 6.12 024/119] libceph: make free_choose_arg_map() resilient to partial allocation
+Date: Thu, 15 Jan 2026 17:47:19 +0100
+Message-ID: <20260115164152.834735006@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tianchu Chen <flynnnchen@tencent.com>
+From: Tuo Li <islituo@gmail.com>
 
-commit 82d12088c297fa1cef670e1718b3d24f414c23f7 upstream.
+commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
 
-Discovered by Atuin - Automated Vulnerability Discovery Engine.
+free_choose_arg_map() may dereference a NULL pointer if its caller fails
+after a partial allocation.
 
-In ac_ioctl, the validation of IndexCard and the check for a valid
-RamIO pointer are skipped when cmd is 6. However, the function
-unconditionally executes readb(apbs[IndexCard].RamIO + VERS) at the
-end.
+For example, in decode_choose_args(), if allocation of arg_map->args
+fails, execution jumps to the fail label and free_choose_arg_map() is
+called. Since arg_map->size is updated to a non-zero value before memory
+allocation, free_choose_arg_map() will iterate over arg_map->args and
+dereference a NULL pointer.
 
-If cmd is 6, IndexCard may reference a board that does not exist
-(where RamIO is NULL), leading to a NULL pointer dereference.
+To prevent this potential NULL pointer dereference and make
+free_choose_arg_map() more resilient, add checks for pointers before
+iterating.
 
-Fix this by skipping the readb access when cmd is 6, as this
-command is a global information query and does not target a specific
-board context.
-
-Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
-Acked-by: Arnd Bergmann <arnd@arndb.de>
-Cc: stable <stable@kernel.org>
-Link: https://patch.msgid.link/20251128155323.a786fde92ebb926cbe96fcb1@linux.dev
+Cc: stable@vger.kernel.org
+Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/applicom.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ net/ceph/osdmap.c |   20 ++++++++++++--------
+ 1 file changed, 12 insertions(+), 8 deletions(-)
 
---- a/drivers/char/applicom.c
-+++ b/drivers/char/applicom.c
-@@ -836,7 +836,10 @@ static long ac_ioctl(struct file *file,
- 		ret = -ENOTTY;
- 		break;
+--- a/net/ceph/osdmap.c
++++ b/net/ceph/osdmap.c
+@@ -241,22 +241,26 @@ static struct crush_choose_arg_map *allo
+ 
+ static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
+ {
+-	if (arg_map) {
+-		int i, j;
++	int i, j;
+ 
+-		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++	if (!arg_map)
++		return;
+ 
++	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++
++	if (arg_map->args) {
+ 		for (i = 0; i < arg_map->size; i++) {
+ 			struct crush_choose_arg *arg = &arg_map->args[i];
+-
+-			for (j = 0; j < arg->weight_set_size; j++)
+-				kfree(arg->weight_set[j].weights);
+-			kfree(arg->weight_set);
++			if (arg->weight_set) {
++				for (j = 0; j < arg->weight_set_size; j++)
++					kfree(arg->weight_set[j].weights);
++				kfree(arg->weight_set);
++			}
+ 			kfree(arg->ids);
+ 		}
+ 		kfree(arg_map->args);
+-		kfree(arg_map);
  	}
--	Dummy = readb(apbs[IndexCard].RamIO + VERS);
-+
-+	if (cmd != 6)
-+		Dummy = readb(apbs[IndexCard].RamIO + VERS);
-+
- 	kfree(adgl);
- 	mutex_unlock(&ac_mutex);
- 	return 0;
++	kfree(arg_map);
+ }
+ 
+ DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
 
 
 
