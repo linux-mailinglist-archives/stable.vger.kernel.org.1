@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209233-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209621-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A638FD274B2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:02 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 758E0D26E4D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B230632E250D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 56D4F30B786F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30F593BC4D7;
-	Thu, 15 Jan 2026 17:28:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D1083C009F;
+	Thu, 15 Jan 2026 17:46:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sZuqWvMi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XBiM1GJa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E8F4F3A7F5D;
-	Thu, 15 Jan 2026 17:28:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C22723C0099;
+	Thu, 15 Jan 2026 17:46:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498113; cv=none; b=J1TdEEvitc0tCROXPeRcrho48ZfAnHpNbgmnQogld2mn4FKUsAlGlTlga89DDuq54ISdfiuivchgjpUtpQR/snWQnTmY7EnuUw6iwlq/7DwnRx08FUdRYJOh8ytq9c1VkdgzookN2RO8Z7L+2B5K9tFQvSvMwMyiM83OmfQovB8=
+	t=1768499217; cv=none; b=aLYUsZlXEyT7Sd/28grpuJQMK3WsQCTiYd26Q18825sSgzroSiTNZczNY91H/718du3YATdtqyL/LlH0AQT/1ZLXCJLWr4uIlxCD/AgojCD8waAq4U0RpF/czGgNx1TCuKV55x3kvArfMxb+OCPZtrBq9qtdh9HCTV4Ml/yOOho=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498113; c=relaxed/simple;
-	bh=P0tqoJPKZtfLyK0aopKS/iOUpndA4a3MfFtGVFQA4As=;
+	s=arc-20240116; t=1768499217; c=relaxed/simple;
+	bh=2DhvskFPTP4FV8KEnwo5AA4f2acj402fkpFKAbT8XSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jrFN9ZRXPecNI0BRNsEC6NWvJ1RHqYigWK54NNwewKhrRlZzIsSpB4lHkb+Ae4NKNxnRWBdLMrfT9vNC/Paj1n0C4/E+zQLZv1YxxecJ/bbXTtnCGH0C/SGkGx+xJjffh9va2cRdsBHuC8LSAux7zRaq7I/OJ8WULzFWmAx2rbw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sZuqWvMi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 723E3C116D0;
-	Thu, 15 Jan 2026 17:28:32 +0000 (UTC)
+	 MIME-Version; b=BtR8I6LvEwjYnHaSAUnzn3EIPvpf9dVgmdEbuDkCbA0Uji0tIpKfnjDFjkCjJAyEawOHecMG/fBQezs5mAzyLCvLLHImA/PCCSDpxbsZNXEsxKRj0lWi9b2wVIoTv5bnOuTxAJsqPYl9sMBOjWPPWtd/4r5ehAA58rpvcNXCgII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XBiM1GJa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB31C16AAE;
+	Thu, 15 Jan 2026 17:46:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498112;
-	bh=P0tqoJPKZtfLyK0aopKS/iOUpndA4a3MfFtGVFQA4As=;
+	s=korg; t=1768499217;
+	bh=2DhvskFPTP4FV8KEnwo5AA4f2acj402fkpFKAbT8XSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sZuqWvMimvNu/9Uumba3mMfruzMPc9ZGMoMZokVhYFDUP7MhUpYUyb2+AfgLbZF8+
-	 uwNkGuZcjj123XJH58+tueTTGN9lx3QUJqfTiBMHPE9eSGmIWyFs6omRpN3H5Zveq1
-	 6WBRR1en5YtPdw3Sin1MvMF7i9zRPWa9MI9TK4J8=
+	b=XBiM1GJaEnyfzRmL1uuy8vjU/EtJexIxqwDCPa3sSZmaU4bHV1XszlWFElKx/LbHW
+	 yb84S1t167eLvS11pLDezM34KcaVdUfySpzH4Le5DWY4k0s+gM3V9rFvgwbXn540uc
+	 6JpDR31vClGNlqyhB0jwFFSqxsq6uFVrUd4E3zPo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Zhang Yi <yi.zhang@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 284/554] ext4: clear i_state_flags when alloc inode
+	stable <stable@kernel.org>,
+	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Subject: [PATCH 5.10 149/451] usb: phy: Initialize struct usb_phy list_head
 Date: Thu, 15 Jan 2026 17:45:50 +0100
-Message-ID: <20260115164256.509531468@linuxfoundation.org>
+Message-ID: <20260115164236.305801572@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,64 +59,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
 
-commit 4091c8206cfd2e3bb529ef260887296b90d9b6a2 upstream.
+commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
 
-i_state_flags used on 32-bit archs, need to clear this flag when
-alloc inode.
-Find this issue when umount ext4, sometimes track the inode as orphan
-accidently, cause ext4 mesg dump.
+As part of the registration of a new 'struct usb_phy' with the USB PHY core
+via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
+usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
+order for the new instance x to be stored in phy_list, a static list
+kept internally by the core.
 
-Fixes: acf943e9768e ("ext4: fix checks for orphan inodes")
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251104-ext4-v1-1-73691a0800f9@nxp.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+when executing either of the registration functions above it is possible
+that usb_add_extcon() fails, leading to either function returning before
+the call to list_add_tail(), leaving x->head uninitialized.
+
+Then, when a driver tries to undo the failed registration by calling
+usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
+list_del(&x->head) acting on an uninitialized variable, and thus a
+possible NULL pointer dereference.
+
+Fix this by initializing x->head before usb_add_extcon() has a
+chance to fail. Note that this was not needed before 7d21114dc6a2 since
+list_add_phy() was executed unconditionally and it guaranteed that x->head
+was initialized.
+
+Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/ialloc.c |    1 -
- fs/ext4/inode.c  |    1 -
- fs/ext4/super.c  |    1 +
- 3 files changed, 1 insertion(+), 2 deletions(-)
+ drivers/usb/phy/phy.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/ext4/ialloc.c
-+++ b/fs/ext4/ialloc.c
-@@ -1301,7 +1301,6 @@ got:
- 					      sizeof(gen));
+--- a/drivers/usb/phy/phy.c
++++ b/drivers/usb/phy/phy.c
+@@ -634,6 +634,8 @@ int usb_add_phy(struct usb_phy *x, enum
+ 		return -EINVAL;
  	}
  
--	ext4_clear_state_flags(ei); /* Only relevant on 32-bit archs */
- 	ext4_set_inode_state(inode, EXT4_STATE_NEW);
++	INIT_LIST_HEAD(&x->head);
++
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
+@@ -679,6 +681,8 @@ int usb_add_phy_dev(struct usb_phy *x)
+ 		return -EINVAL;
+ 	}
  
- 	ei->i_extra_isize = sbi->s_want_extra_isize;
---- a/fs/ext4/inode.c
-+++ b/fs/ext4/inode.c
-@@ -4754,7 +4754,6 @@ struct inode *__ext4_iget(struct super_b
- 	ei->i_projid = make_kprojid(&init_user_ns, i_projid);
- 	set_nlink(inode, le16_to_cpu(raw_inode->i_links_count));
- 
--	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
- 	ei->i_inline_off = 0;
- 	ei->i_dir_start_lookup = 0;
- 	ei->i_dtime = le32_to_cpu(raw_inode->i_dtime);
---- a/fs/ext4/super.c
-+++ b/fs/ext4/super.c
-@@ -1300,6 +1300,7 @@ static struct inode *ext4_alloc_inode(st
- 
- 	inode_set_iversion(&ei->vfs_inode, 1);
- 	ei->i_flags = 0;
-+	ext4_clear_state_flags(ei);	/* Only relevant on 32-bit archs */
- 	spin_lock_init(&ei->i_raw_lock);
- 	INIT_LIST_HEAD(&ei->i_prealloc_list);
- 	atomic_set(&ei->i_prealloc_active, 0);
++	INIT_LIST_HEAD(&x->head);
++
+ 	usb_charger_init(x);
+ 	ret = usb_add_extcon(x);
+ 	if (ret)
 
 
 
