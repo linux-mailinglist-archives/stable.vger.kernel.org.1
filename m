@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209291-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208659-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3EE71D27528
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31E74D261B4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6384631BD462
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E8822310C885
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8951D27AC5C;
-	Thu, 15 Jan 2026 17:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2FA52D73BE;
+	Thu, 15 Jan 2026 17:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ISb8xKAf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KiPpP/wY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4C7073A0E98;
-	Thu, 15 Jan 2026 17:31:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8693D29ACDD;
+	Thu, 15 Jan 2026 17:01:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498278; cv=none; b=DY8xrOr0PPIvb8kaxZFvKkHTBNSXh3xFt/ApB/Jooe7vr7WiJY0rxNQlJHD+C7gyqJPouG532RCAJSBSNRqCsRs2ZuRlMgaSl9Oe1M6NlrfpeWavxBtYXpw+0dhy4Z9tzUH1mj7AvZLb7m3TAldSjLvnMGTgTL3/jgEdLj8D1Hk=
+	t=1768496480; cv=none; b=h5VgG/UjtEWmLuGJ0HALvDFt0vQXJsRjOhwXMVymXk8scTd0aGAt/o6Eh56romENbEEkZze52H5XndNTuNczZRS6ZjRiB2th+0ssGEvS4BDNK1QTBXBN3OUCIMtSzpRQoZdklB7FuEexk4bsy+JS7hyIRTyt/lf3fM+cAbGmkpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498278; c=relaxed/simple;
-	bh=lcSPt9wL2jeRj174ajlm88brCefOOmTYJI8fBMQk/ps=;
+	s=arc-20240116; t=1768496480; c=relaxed/simple;
+	bh=pr1bQ4pEij7MjkTRKFQo99aQ6QUECN4sYl33NxMBfSA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PauY8suqHcw/oc2+YsjuIg76sFDkmTPAtYs9f1BbYkXQCywtqwTEc11SQ+sNN1E878TRXqse2brNtuW1+MYKmRHbQoVG45dybg+avuRzFIpBTj/D6NysU8bdxoLet3KTEJvaNnNqWyzj8B4kq2Mu0OsH1+OHVuk2p+Xqqss9xX0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ISb8xKAf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E7A0C116D0;
-	Thu, 15 Jan 2026 17:31:17 +0000 (UTC)
+	 MIME-Version; b=keJz+eb9UmAEGT50Q/uiopPCQ1FCo0hG0gCZoMxzkg8xHUaUdKCuoCPBnCgTfNJ5yCbfnLuzONZagORf+Zh8OCyg2qFJTv6dtPddYEjFJMchGYHoVUaKfF8m01mH2k/2V/SVTQxnvwTkLNoO4Xs7C+u33xsgWD/oY8lsi18qCzM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KiPpP/wY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A820C116D0;
+	Thu, 15 Jan 2026 17:01:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498278;
-	bh=lcSPt9wL2jeRj174ajlm88brCefOOmTYJI8fBMQk/ps=;
+	s=korg; t=1768496480;
+	bh=pr1bQ4pEij7MjkTRKFQo99aQ6QUECN4sYl33NxMBfSA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ISb8xKAfYxjBruQekTKpRRkhYR7DP24VuUfuApdOzifPYiy116OsNJcbLvxolykRh
-	 TQR2mV6JDV5swJ635G2DgtFaupN19YGd6q6SFd1uHBptbZ9VSSwmfHLSewIrNx5jhb
-	 VT0ptQ9vp5gH20XQ7P2liQWLr4i6wQ3byXpgt02U=
+	b=KiPpP/wYBkXaqTSzRfMv2OqD2WJnCekQrtNj9VTnE0XpN7mUQnzprOILBRpPpG9r/
+	 Yt7Z0sjXiN3tPvHJ+k/j2SSY6xxugekKTbjAyqbgsZBzaWWgIcQ/0i2vAhC3T0GPU5
+	 rWrw0dv6dAoPSs69lOw1rcuJ2gZfSLTEUewBib/Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Magnus Damm <damm+renesas@opensource.se>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.15 375/554] iommu/ipmmu-vmsa: fix device leak on of_xlate()
-Date: Thu, 15 Jan 2026 17:47:21 +0100
-Message-ID: <20260115164259.806788038@linuxfoundation.org>
+	Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>,
+	Ilya Dryomov <idryomov@gmail.com>,
+	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Subject: [PATCH 6.12 027/119] libceph: make calc_target() set t->paused, not just clear it
+Date: Thu, 15 Jan 2026 17:47:22 +0100
+Message-ID: <20260115164152.942070458@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,79 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Ilya Dryomov <idryomov@gmail.com>
 
-commit 80aa518452c4aceb9459f9a8e3184db657d1b441 upstream.
+commit c0fe2994f9a9d0a2ec9e42441ea5ba74b6a16176 upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during of_xlate().
+Currently calc_target() clears t->paused if the request shouldn't be
+paused anymore, but doesn't ever set t->paused even though it's able to
+determine when the request should be paused.  Setting t->paused is left
+to __submit_request() which is fine for regular requests but doesn't
+work for linger requests -- since __submit_request() doesn't operate
+on linger requests, there is nowhere for lreq->t.paused to be set.
+One consequence of this is that watches don't get reestablished on
+paused -> unpaused transitions in cases where requests have been paused
+long enough for the (paused) unwatch request to time out and for the
+subsequent (re)watch request to enter the paused state.  On top of the
+watch not getting reestablished, rbd_reregister_watch() gets stuck with
+rbd_dev->watch_mutex held:
 
-Fixes: 7b2d59611fef ("iommu/ipmmu-vmsa: Replace local utlb code with fwspec ids")
-Cc: stable@vger.kernel.org	# 4.14
-Cc: Magnus Damm <damm+renesas@opensource.se>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+  rbd_register_watch
+    __rbd_register_watch
+      ceph_osdc_watch
+        linger_reg_commit_wait
+
+It's waiting for lreq->reg_commit_wait to be completed, but for that to
+happen the respective request needs to end up on need_resend_linger list
+and be kicked when requests are unpaused.  There is no chance for that
+if the request in question is never marked paused in the first place.
+
+The fact that rbd_dev->watch_mutex remains taken out forever then
+prevents the image from getting unmapped -- "rbd unmap" would inevitably
+hang in D state on an attempt to grab the mutex.
+
+Cc: stable@vger.kernel.org
+Reported-by: Raphael Zimmer <raphael.zimmer@tu-ilmenau.de>
+Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/ipmmu-vmsa.c |    2 ++
- 1 file changed, 2 insertions(+)
+ net/ceph/osd_client.c |   11 +++++++++--
+ 1 file changed, 9 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/ipmmu-vmsa.c
-+++ b/drivers/iommu/ipmmu-vmsa.c
-@@ -710,6 +710,8 @@ static int ipmmu_init_platform_device(st
+--- a/net/ceph/osd_client.c
++++ b/net/ceph/osd_client.c
+@@ -1611,6 +1611,7 @@ static enum calc_target_result calc_targ
+ 	struct ceph_pg_pool_info *pi;
+ 	struct ceph_pg pgid, last_pgid;
+ 	struct ceph_osds up, acting;
++	bool should_be_paused;
+ 	bool is_read = t->flags & CEPH_OSD_FLAG_READ;
+ 	bool is_write = t->flags & CEPH_OSD_FLAG_WRITE;
+ 	bool force_resend = false;
+@@ -1679,10 +1680,16 @@ static enum calc_target_result calc_targ
+ 				 &last_pgid))
+ 		force_resend = true;
  
- 	dev_iommu_priv_set(dev, platform_get_drvdata(ipmmu_pdev));
- 
-+	put_device(&ipmmu_pdev->dev);
+-	if (t->paused && !target_should_be_paused(osdc, t, pi)) {
+-		t->paused = false;
++	should_be_paused = target_should_be_paused(osdc, t, pi);
++	if (t->paused && !should_be_paused) {
+ 		unpaused = true;
+ 	}
++	if (t->paused != should_be_paused) {
++		dout("%s t %p paused %d -> %d\n", __func__, t, t->paused,
++		     should_be_paused);
++		t->paused = should_be_paused;
++	}
 +
- 	return 0;
- }
- 
+ 	legacy_change = ceph_pg_compare(&t->pgid, &pgid) ||
+ 			ceph_osds_changed(&t->acting, &acting,
+ 					  t->used_replica || any_change);
 
 
 
