@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209455-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 71B45D27673
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E7BBBD276BF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id BAE2E30B0F38
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B1789313A2A4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A4B523DA7C0;
-	Thu, 15 Jan 2026 17:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A81C527AC5C;
+	Thu, 15 Jan 2026 17:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NfujhRQo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gWpbljip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 64C243D332A;
-	Thu, 15 Jan 2026 17:59:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A4CE1A2389;
+	Thu, 15 Jan 2026 17:39:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499952; cv=none; b=CKP5jAzj3yi5vYFBp797V6gncIF3Xj2nwTZNZgug5DxItJWYNAKzsPN8Mt+9pOvLkHKuxLCbdKlB62oEUXoUAZiQKxP+zPHKoN53N72d72UVJ47pTsiZ+IZoWW/BpZIe1WEJa6dXrISjDAyX6uUOVLRycPw6AaW5jG+ye22CihM=
+	t=1768498746; cv=none; b=YZjEpe0YJUJoTIzOzpcfRz7fOLjDy+6nGSMqmDgW5YowUUZf/Z/Yb3TnIDLsHfGdlSQ4ULDxiZTYgv4QifLa3FC1yaZ7gaNye9ZcR57KP3v3QAADENgiv1TmxYIcPV2nkAU5UNxqkd99/uDWdXpA/m1sWjWmbOFXmJq/ZEglCg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499952; c=relaxed/simple;
-	bh=YWzlM9X6N2wvUxlFCdqhuVl7EIfnhR57dc1deiILRG4=;
+	s=arc-20240116; t=1768498746; c=relaxed/simple;
+	bh=buBYC2+7+HA6jTcwixgJau8zkk0OhnAYQhqg14JJL5o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=XgNtXotgo8d5KWd+zZV7bYoPj4Zr3ayh9F1Pld6bdGRNtX8WoUob1ng3PfitcY2STEYZYl/3kKeqZH9s2xZRcKi6ReoAkh4dLdco2Ny7vhXM8vYqvJDLw6ZDH5NCceZ2FueU8fAYD1wAxlt9kgosw3R9fJBRCf39mctaNynpahQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NfujhRQo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E28E7C19422;
-	Thu, 15 Jan 2026 17:59:11 +0000 (UTC)
+	 MIME-Version; b=AXlKiJbP0kNstcEZhY+ls4ij39LMTyEEvNP9AZbGeOzQCFZ7gFIibktQ0f9f+CIRyHCBHpSEQZ2tF+FR4QcSqSQVDo3yngBEwxB2cPYSKkjajyCY+Kd/6vGlMPtPidKbG66Xid2CmKyj80qIs2O+B1gyi/bEN43UodNEu64MLcE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gWpbljip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E998BC116D0;
+	Thu, 15 Jan 2026 17:39:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499952;
-	bh=YWzlM9X6N2wvUxlFCdqhuVl7EIfnhR57dc1deiILRG4=;
+	s=korg; t=1768498746;
+	bh=buBYC2+7+HA6jTcwixgJau8zkk0OhnAYQhqg14JJL5o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NfujhRQo6XpcVlEnOzQWsP8PNz1zlyklJ2U7p+0K53SHmK6dNFTmWlqsmdbtUxCMr
-	 V6Ktpq88k8DPsFVph+UGwRSKJkwXGeyZCqP8jOwMwWZbIbeNB6Eou+g2jGOVdmQliQ
-	 e9rDH0V0thTuJTfL8VS2L1Z0dRSi0QtfpGh0rOcc=
+	b=gWpbljipVsMNTXXYOGQj+NuLJscZrBCe4gAQlaIKfEpBlhZaA9+SpgcVc1ZdXZI3F
+	 tPSWsTTYOqGiDKURy+kZFrX3aNmKzxHPzTwE4wQYA/MkQNyLNvEecCQvkF1oeClXlz
+	 2m9gZgPP8gltj1gQwyac5KJd1Fm1yY2XTCqVDITs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sean Nyekjaer <sean@geanix.com>,
-	=?UTF-8?q?Uwe=20Kleine-K=F6nig?= <ukleinek@kernel.org>
-Subject: [PATCH 5.10 405/451] pwm: stm32: Always program polarity
+	kernel test robot <lkp@intel.com>,
+	Wei Fang <wei.fang@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 540/554] net: enetc: fix build warning when PAGE_SIZE is greater than 128K
 Date: Thu, 15 Jan 2026 17:50:06 +0100
-Message-ID: <20260115164245.591933947@linuxfoundation.org>
+Message-ID: <20260115164305.871631396@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,43 +60,56 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Nyekjaer <sean@geanix.com>
+From: Wei Fang <wei.fang@nxp.com>
 
-Commit 7346e7a058a2 ("pwm: stm32: Always do lazy disabling") triggered a
-regression where PWM polarity changes could be ignored.
+[ Upstream commit 4b5bdabb5449b652122e43f507f73789041d4abe ]
 
-stm32_pwm_set_polarity() was skipped due to a mismatch between the
-cached pwm->state.polarity and the actual hardware state, leaving the
-hardware polarity unchanged.
+The max buffer size of ENETC RX BD is 0xFFFF bytes, so if the PAGE_SIZE
+is greater than 128K, ENETC_RXB_DMA_SIZE and ENETC_RXB_DMA_SIZE_XDP will
+be greater than 0xFFFF, thus causing a build warning.
 
-Fixes: 7edf7369205b ("pwm: Add driver for STM32 plaftorm")
-Cc: stable@vger.kernel.org # <= 6.12
-Signed-off-by: Sean Nyekjaer <sean@geanix.com>
-Co-developed-by: Uwe Kleine-König <ukleinek@kernel.org>
-Signed-off-by: Uwe Kleine-König <ukleinek@kernel.org>
+This will not cause any practical issues because ENETC is currently only
+used on the ARM64 platform, and the max PAGE_SIZE is 64K. So this patch
+is only for fixing the build warning that occurs when compiling ENETC
+drivers for other platforms.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202601050637.kHEKKOG7-lkp@intel.com/
+Fixes: e59bc32df2e9 ("net: enetc: correct the value of ENETC_RXB_TRUESIZE")
+Signed-off-by: Wei Fang <wei.fang@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Link: https://patch.msgid.link/20260107091204.1980222-1-wei.fang@nxp.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-stm32.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/ethernet/freescale/enetc/enetc.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/pwm/pwm-stm32.c
-+++ b/drivers/pwm/pwm-stm32.c
-@@ -458,8 +458,7 @@ static int stm32_pwm_apply(struct pwm_ch
- 		return 0;
- 	}
+diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
+index 40c8f0f026a5b..adcb53167d3f9 100644
+--- a/drivers/net/ethernet/freescale/enetc/enetc.h
++++ b/drivers/net/ethernet/freescale/enetc/enetc.h
+@@ -40,9 +40,9 @@ struct enetc_tx_swbd {
+ #define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
+ #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
+ #define ENETC_RXB_DMA_SIZE	\
+-	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
++	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD, 0xffff)
+ #define ENETC_RXB_DMA_SIZE_XDP	\
+-	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM)
++	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM, 0xffff)
  
--	if (state->polarity != pwm->state.polarity)
--		stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
-+	stm32_pwm_set_polarity(priv, pwm->hwpwm, state->polarity);
- 
- 	ret = stm32_pwm_config(priv, pwm->hwpwm,
- 			       state->duty_cycle, state->period);
+ struct enetc_rx_swbd {
+ 	dma_addr_t dma;
+-- 
+2.51.0
+
 
 
 
