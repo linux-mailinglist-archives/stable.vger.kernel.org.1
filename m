@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-209200-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209623-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21D09D2688B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6825DD2733B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:24 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 050DF307BECB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:49 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A8D030B6078
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E859C3D1CCA;
-	Thu, 15 Jan 2026 17:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C79843BFE4F;
+	Thu, 15 Jan 2026 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FXBxeijT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tbLdLJGE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9BD183BFE45;
-	Thu, 15 Jan 2026 17:26:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C3083BFE36;
+	Thu, 15 Jan 2026 17:47:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498018; cv=none; b=WfBZpVdsbliFuabm9Ioz0uJphUL9udxVhrmWlycMiNws+6NlQDRbjUu0dU9iIxVAZ9Y8lX5DGFyfZk/F3cgsocFT1M6wRQUewvHy3i+Dep9Gvz6WhAja4PcF/0OCLBJOKG+hCHIT06+NAJgVijEojWl9gAt+x/QkozrthatPIJc=
+	t=1768499223; cv=none; b=GxEkyG1OWcCAYvsZGJsJvCb0H/wmf4b8/bmBAcSi4cHBiQ141dEfUFUngC83UoVZ7OKv59a30M0cE9ZDmOy57RCjgzJRywcJvCVfYc86MKzT+WHlMmUzulqpQxfYGdIiTDgeqLf6E/MGZAG4MZM5D964MbA6m/WJjR8Nj+A30OY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498018; c=relaxed/simple;
-	bh=jBJMwQ2zF/bDVQqI2kKIAjKs3MoGIFV44o33wdcy+iw=;
+	s=arc-20240116; t=1768499223; c=relaxed/simple;
+	bh=G8BibseTnFMY+dlqcSBEYMD5BDx7wMyzndxu5yh5w8I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jlRAw/Coao2XvW/6yCU1PGWgVTZ/4XzQylOfhG73pZwlmAe/muP800yzQfsUM1+9Lp4YEJlJidnY3CdtGQJrpVHOtHfripTN+CFOdK2v1fsbKdOrHKKpj0aGMfc5QfPLb+3sb/C9EwjY0vtTevlKUXHUO3mv2J702JFDM0UuaA8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FXBxeijT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27795C19423;
-	Thu, 15 Jan 2026 17:26:57 +0000 (UTC)
+	 MIME-Version; b=Yzt8uM+KSdUPCjluOhCvZ0vOCjZbMeLkSJ569lfGmTmWHFjoKMo/HwqsgYItZKjdDL85919Rq/4pId1Ura3/lGjYZ7jaH1g9xyBL0jHey1mth+3E4y90//uhMJVLmXo9NKH27H5gxdp9UsgkjZdY8/1VhumIl+B6IOUUwkVOdmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tbLdLJGE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9A40C16AAE;
+	Thu, 15 Jan 2026 17:47:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498018;
-	bh=jBJMwQ2zF/bDVQqI2kKIAjKs3MoGIFV44o33wdcy+iw=;
+	s=korg; t=1768499223;
+	bh=G8BibseTnFMY+dlqcSBEYMD5BDx7wMyzndxu5yh5w8I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FXBxeijTs5mk9mlAroshItCzisXT2gj0fO0w/Xb36LkKRMyCuQbmTUbju9K5l9lfT
-	 atXjUFNudbWHZ8TDErFG0l9JVA0+4Z99FvUSCtoe4s+fXXdVIAyLtHcnhdRBsNt7VP
-	 EDOfnGdE4QChJgcIPuNJ8QUPi7zEVpNZuOC/oA60=
+	b=tbLdLJGEeDo9ibYAd8f0+d1WgBt+D8f8micjl9D8Usd9/YI7GfqdsNrqkvwSYKz/V
+	 YhTLAlSDC5sLEtrO0BLJe7SSSArUJlk2p+HgUPMOge0uVz/Mv4ALuhkaQMGa3fFBrL
+	 1jL9c72BJLBxX0qyMSBC0bpzUoVXKcIncgAUR2y4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yongjian Sun <sunyongjian1@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org
-Subject: [PATCH 5.15 285/554] ext4: fix incorrect group number assertion in mb_check_buddy
-Date: Thu, 15 Jan 2026 17:45:51 +0100
-Message-ID: <20260115164256.545506223@linuxfoundation.org>
+	Sun Ke <sunke32@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>
+Subject: [PATCH 5.10 151/451] NFS: Fix missing unlock in nfs_unlink()
+Date: Thu, 15 Jan 2026 17:45:52 +0100
+Message-ID: <20260115164236.376971427@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,68 +59,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yongjian Sun <sunyongjian1@huawei.com>
+From: Sun Ke <sunke32@huawei.com>
 
-commit 3f7a79d05c692c7cfec70bf104b1b3c3d0ce6247 upstream.
+commit 2067231a9e2cbbcae0a4aca6ac36ff2dd6a7b701 upstream.
 
-When the MB_CHECK_ASSERT macro is enabled, an assertion failure can
-occur in __mb_check_buddy when checking preallocated blocks (pa) in
-a block group:
+Add the missing unlock before goto.
 
-Assertion failure in mb_free_blocks() : "groupnr == e4b->bd_group"
-
-This happens when a pa at the very end of a block group (e.g.,
-pa_pstart=32765, pa_len=3 in a group of 32768 blocks) becomes
-exhausted - its pa_pstart is advanced by pa_len to 32768, which
-lies in the next block group. If this exhausted pa (with pa_len == 0)
-is still in the bb_prealloc_list during the buddy check, the assertion
-incorrectly flags it as belonging to the wrong group. A possible
-sequence is as follows:
-
-ext4_mb_new_blocks
-  ext4_mb_release_context
-    pa->pa_pstart += EXT4_C2B(sbi, ac->ac_b_ex.fe_len)
-    pa->pa_len -= ac->ac_b_ex.fe_len
-
-	                 __mb_check_buddy
-                           for each pa in group
-                             ext4_get_group_no_and_offset
-                             MB_CHECK_ASSERT(groupnr == e4b->bd_group)
-
-To fix this, we modify the check to skip block group validation for
-exhausted preallocations (where pa_len == 0). Such entries are in a
-transitional state and will be removed from the list soon, so they
-should not trigger an assertion. This change prevents the false
-positive while maintaining the integrity of the checks for active
-allocations.
-
-Fixes: c9de560ded61f ("ext4: Add multi block allocator for ext4")
-Signed-off-by: Yongjian Sun <sunyongjian1@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251106060614.631382-2-sunyongjian@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
+Fixes: 3c59366c207e ("NFS: don't unhash dentry during unlink/rename")
+Signed-off-by: Sun Ke <sunke32@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ext4/mballoc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/dir.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -767,6 +767,8 @@ static void __mb_check_buddy(struct ext4
- 		ext4_group_t groupnr;
- 		struct ext4_prealloc_space *pa;
- 		pa = list_entry(cur, struct ext4_prealloc_space, pa_group_list);
-+		if (!pa->pa_len)
-+			continue;
- 		ext4_get_group_no_and_offset(sb, pa->pa_pstart, &groupnr, &k);
- 		MB_CHECK_ASSERT(groupnr == e4b->bd_group);
- 		for (i = 0; i < pa->pa_len; i++)
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -2109,8 +2109,10 @@ int nfs_unlink(struct inode *dir, struct
+ 	 */
+ 	error = -ETXTBSY;
+ 	if (WARN_ON(dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
+-	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED))
++	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED)) {
++		spin_unlock(&dentry->d_lock);
+ 		goto out;
++	}
+ 	if (dentry->d_fsdata)
+ 		/* old devname */
+ 		kfree(dentry->d_fsdata);
 
 
 
