@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-209090-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209054-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AF657D26637
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:09 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 15BAFD26A19
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8DC283039F85
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:48 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A35613163F3F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3DF8C2D239B;
-	Thu, 15 Jan 2026 17:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5816D2D73B4;
+	Thu, 15 Jan 2026 17:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="POspRXDS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqBsWwDi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 01AA927AC5C;
-	Thu, 15 Jan 2026 17:21:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBDE258EC2;
+	Thu, 15 Jan 2026 17:20:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497705; cv=none; b=ihYP4ZsMN4mhAmkrse7q/EdXwveveD8Jio4eBIluf3YS276X6eAxeKjo21zzdjTPq1Gp8y11a74sZ0Z6LUMre4MMzBYRvbMR9Skbln0XfowdYLVqdeBsaIwfSEQfj7FRYCVknC1Ap4IOQVGHn6AJEY/geE6ORhPoi+wXG5bOOq8=
+	t=1768497604; cv=none; b=NYLn1pY+7Sgh6n1uc6vmEPSTHdsJzs3+tCx0TG7/7882k4RRy4qIy8WCx7plB0FSOjqMQQPOW1wBjV4OyiPEGZj/dywpEGT0ZLkEoRA2qJq3WARNSnQmJxrH3/qfEs2zK2qvPgdGzMam4wJLA1uyiPfwMBveCOcn0hhQlUkYwUs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497705; c=relaxed/simple;
-	bh=DtM0zKgWTAbwKE7soCQRJIH+gm3uqMgGOlKc1FBwER8=;
+	s=arc-20240116; t=1768497604; c=relaxed/simple;
+	bh=IkDU48IR9BQ6q/QcrYZhFVPRbRpQonD06QWsXjIAj7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hqmZoWr1qut5MtO0ye9xVTVsP6/VB9MneUhw/30VG5ZWeiorjf/UiYqWwCYf+vRfgcxm0dvzKfuE0TVdvzrs3qiPV7/vicGujZ/zR5OIcs4YS33HwYHZ9u2Pfg1JErewW6+MU6awnCaKfwadFj5OqTv1BKLwyNZDuYPEc4IVMb4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=POspRXDS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8414DC116D0;
-	Thu, 15 Jan 2026 17:21:44 +0000 (UTC)
+	 MIME-Version; b=MSY1NbSqaPQMVi0ZDJ4SnAKcdpK7bd02NU4fvEhB8B+VUymb1S5Ij5CUz/LJa177hxJbCvxNDITfu2hWxh9j6rpO5EuhSlsPBpKEswNDoWBQQv95H4OI/fvx2LaYVliLk6GLZWROK5amDmyP0ShyHr/VLJ9VOULWl+HhT0e+Q4Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqBsWwDi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3BFC116D0;
+	Thu, 15 Jan 2026 17:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497704;
-	bh=DtM0zKgWTAbwKE7soCQRJIH+gm3uqMgGOlKc1FBwER8=;
+	s=korg; t=1768497604;
+	bh=IkDU48IR9BQ6q/QcrYZhFVPRbRpQonD06QWsXjIAj7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=POspRXDSbz1LitfIYgQkod6x02B7Xh2lGL2n2YdmmGgiPVs0ETIK8PPVfCpKq9H4c
-	 jCcWVyRbW5Y1zVWYIRlfL6O6jmX9e6hDgTV/fZzWbeAAvd1GhjbI4NKISEwFpbLBsz
-	 z13+iRh1DBPhf9f81q/REY+rB/aac+MS1ekgw5DM=
+	b=fqBsWwDiRbVOTxlwcZpwzjITbOTjOJmQ7IIjj9PJpggTfAAVfUYtH1NY92RHtNIk9
+	 wAmjjrNBqIQZPWlvHiZb+lmJJk+Kg8WNghwKmlybkfxyyTyxoYvSe6MZ4k/jQ63p6z
+	 HvcygttljZ7FepH5HCjMKIYOLu2wPr0yHuEUrOCU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Matt Bobrowski <mattbobrowski@google.com>,
-	Jiri Olsa <jolsa@kernel.org>,
-	Alexei Starovoitov <ast@kernel.org>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 131/554] selftests/bpf: Improve reliability of test_perf_branches_no_hw()
-Date: Thu, 15 Jan 2026 17:43:17 +0100
-Message-ID: <20260115164250.992960910@linuxfoundation.org>
+Subject: [PATCH 5.15 132/554] crypto: ccree - Correctly handle return of sg_nents_for_len
+Date: Thu, 15 Jan 2026 17:43:18 +0100
+Message-ID: <20260115164251.028728977@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -65,124 +64,49 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Matt Bobrowski <mattbobrowski@google.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit ae24fc8a16b0481ea8c5acbc66453c49ec0431c4 ]
+[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
 
-Currently, test_perf_branches_no_hw() relies on the busy loop within
-test_perf_branches_common() being slow enough to allow at least one
-perf event sample tick to occur before starting to tear down the
-backing perf event BPF program. With a relatively small fixed
-iteration count of 1,000,000, this is not guaranteed on modern fast
-CPUs, resulting in the test run to subsequently fail with the
-following:
+Fix error handling in cc_map_hash_request_update where sg_nents_for_len
+return value was assigned to u32, converting negative errors to large
+positive values before passing to sg_copy_to_buffer.
 
-bpf_testmod.ko is already unloaded.
-Loading bpf_testmod.ko...
-Successfully loaded bpf_testmod.ko.
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_good_sample:PASS:output not valid 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_stack 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_global 0 nsec
-check_good_sample:PASS:read_branches_size 0 nsec
-test_perf_branches_no_hw:PASS:perf_event_open 0 nsec
-test_perf_branches_common:PASS:test_perf_branches_load 0 nsec
-test_perf_branches_common:PASS:attach_perf_event 0 nsec
-test_perf_branches_common:PASS:set_affinity 0 nsec
-check_bad_sample:FAIL:output not valid no valid sample from prog
-Summary: 0/1 PASSED, 0 SKIPPED, 1 FAILED
-Successfully unloaded bpf_testmod.ko.
+Check sg_nents_for_len return value and propagate errors before
+assigning to areq_ctx->in_nents.
 
-On a modern CPU (i.e. one with a 3.5 GHz clock rate), executing 1
-million increments of a volatile integer can take significantly less
-than 1 millisecond. If the spin loop and detachment of the perf event
-BPF program elapses before the first 1 ms sampling interval elapses,
-the perf event will never end up firing. Fix this by bumping the loop
-iteration counter a little within test_perf_branches_common(), along
-with ensuring adding another loop termination condition which is
-directly influenced by the backing perf event BPF program
-executing. Notably, a concious decision was made to not adjust the
-sample_freq value as that is just not a reliable way to go about
-fixing the problem. It effectively still leaves the race window open.
-
-Fixes: 67306f84ca78c ("selftests/bpf: Add bpf_read_branch_records() selftest")
-Signed-off-by: Matt Bobrowski <mattbobrowski@google.com>
-Reviewed-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20251119143540.2911424-1-mattbobrowski@google.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/bpf/prog_tests/perf_branches.c     | 16 ++++++++++++++--
- .../selftests/bpf/progs/test_perf_branches.c     |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/perf_branches.c b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-index 4a17253413a3a..67cf46056ffe9 100644
---- a/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-+++ b/tools/testing/selftests/bpf/prog_tests/perf_branches.c
-@@ -15,6 +15,10 @@ static void check_good_sample(struct test_perf_branches *skel)
- 	int pbe_size = sizeof(struct perf_branch_entry);
- 	int duration = 0;
+diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
+index 6140e49273226..5754dc88c684c 100644
+--- a/drivers/crypto/ccree/cc_buffer_mgr.c
++++ b/drivers/crypto/ccree/cc_buffer_mgr.c
+@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	int rc = 0;
+ 	u32 dummy = 0;
+ 	u32 mapped_nents = 0;
++	int sg_nents;
  
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -45,6 +49,10 @@ static void check_bad_sample(struct test_perf_branches *skel)
- 	int written_stack = skel->bss->written_stack_out;
- 	int duration = 0;
- 
-+	if (CHECK(!skel->bss->run_cnt, "invalid run_cnt",
-+		  "checked sample validity before prog run"))
-+		return;
-+
- 	if (CHECK(!skel->bss->valid, "output not valid",
- 		 "no valid sample from prog"))
- 		return;
-@@ -83,8 +91,12 @@ static void test_perf_branches_common(int perf_fd,
- 	err = pthread_setaffinity_np(pthread_self(), sizeof(cpu_set), &cpu_set);
- 	if (CHECK(err, "set_affinity", "cpu #0, err %d\n", err))
- 		goto out_destroy;
--	/* spin the loop for a while (random high number) */
--	for (i = 0; i < 1000000; ++i)
-+
-+	/* Spin the loop for a while by using a high iteration count, and by
-+	 * checking whether the specific run count marker has been explicitly
-+	 * incremented at least once by the backing perf_event BPF program.
-+	 */
-+	for (i = 0; i < 100000000 && !*(volatile int *)&skel->bss->run_cnt; ++i)
- 		++j;
- 
- 	test_perf_branches__detach(skel);
-diff --git a/tools/testing/selftests/bpf/progs/test_perf_branches.c b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-index a1ccc831c882f..05ac9410cd68c 100644
---- a/tools/testing/selftests/bpf/progs/test_perf_branches.c
-+++ b/tools/testing/selftests/bpf/progs/test_perf_branches.c
-@@ -8,6 +8,7 @@
- #include <bpf/bpf_tracing.h>
- 
- int valid = 0;
-+int run_cnt = 0;
- int required_size_out = 0;
- int written_stack_out = 0;
- int written_global_out = 0;
-@@ -24,6 +25,8 @@ int perf_branches(void *ctx)
- 	__u64 entries[4 * 3] = {0};
- 	int required_size, written_stack, written_global;
- 
-+	++run_cnt;
-+
- 	/* write to stack */
- 	written_stack = bpf_read_branch_records(ctx, entries, sizeof(entries), 0);
- 	/* ignore spurious events */
+ 	dev_dbg(dev, " update params : curr_buff=%pK curr_buff_cnt=0x%X nbytes=0x%X src=%pK curr_index=%u\n",
+ 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
+@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	if (total_in_len < block_size) {
+ 		dev_dbg(dev, " less than one block: curr_buff=%pK *curr_buff_cnt=0x%X copy_to=%pK\n",
+ 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
+-		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
++		sg_nents = sg_nents_for_len(src, nbytes);
++		if (sg_nents < 0)
++			return sg_nents;
++		areq_ctx->in_nents = sg_nents;
+ 		sg_copy_to_buffer(src, areq_ctx->in_nents,
+ 				  &curr_buff[*curr_buff_cnt], nbytes);
+ 		*curr_buff_cnt += nbytes;
 -- 
 2.51.0
 
