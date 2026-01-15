@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209694-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209272-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4472FD2753A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:18:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0DFF1D26A1F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 40C3131A8E59
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:57:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7470B302B7C7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 90DF93E95A7;
-	Thu, 15 Jan 2026 17:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8BF263C009B;
+	Thu, 15 Jan 2026 17:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L/nYy2hq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eGKl09MJ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4AB323BFE3B;
-	Thu, 15 Jan 2026 17:50:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4F58828725F;
+	Thu, 15 Jan 2026 17:30:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499425; cv=none; b=j9CKsfX5uhwVSPsItzXjr7zGTbhBxl+LD0FvTLB40pxbMMAr6BRKXO6ArjCn5GDCTvVsXMMKUbHNmpWWbqk+7KkstasYILve8xMYMctDJKZBM0DnMTEn6InDcLXPbkN7kseiWoFGaXjqz+CnVU/ZfEJlzQ9o1p3b05ItEDATeO4=
+	t=1768498224; cv=none; b=RRAlyzXKOM+uHB/LG2REpQaSETH8eUMkZRaoVTbJICz0LHOSh6Gr1+jMLSDxmZRXPgtJe27bcNDjpghwZnm0ttAlJnMw2BcX0Bm0iG67l/L/sxpqYlIOUyxnvroRx7Cg8Ttu/l3n5iHe0p15nq8pcXS1Ce1VPvkPqxI6mIUCdZQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499425; c=relaxed/simple;
-	bh=r2F+bDsgju9/+wUjZuBLrZba69vliGtSakJ4yp8BhkY=;
+	s=arc-20240116; t=1768498224; c=relaxed/simple;
+	bh=t2egqOv15JrAnAkjHQx5+EnLyP/53PW6HbFbvfiSSHY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oVZNFb1xAkHTL0fSUlUtffxX9W/IawMPDqpz8y7fAI8KXlIhF+kncSKoEO6OO9ZfdvdrqiogQcIxh7UJomGtvAVpo1MJYJ6PWK/69qbLyNKriyduCO00RkhQWcrDcFZV8JBA+AX3L/2+l/MHBLa22q/RYSIo/7FAidzL+hFvZCY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L/nYy2hq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90140C2BC9E;
-	Thu, 15 Jan 2026 17:50:24 +0000 (UTC)
+	 MIME-Version; b=QhjROkx4x7E9IgELSeK4zt7CTV31ujM+IcWih8Qdi3eQsVMCQlya1zPqzUIQYdd1fwT+0UxRJj2uZ0t173uYDSsbCzYP7LE1eBo8Kg6n3FHFPybGQHYs++gCVYqk7SwYF7WIB6fD8I1qL3rztbomCdGWPS3cZ3okqW6BVaUSbCY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eGKl09MJ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FEF4C116D0;
+	Thu, 15 Jan 2026 17:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499424;
-	bh=r2F+bDsgju9/+wUjZuBLrZba69vliGtSakJ4yp8BhkY=;
+	s=korg; t=1768498224;
+	bh=t2egqOv15JrAnAkjHQx5+EnLyP/53PW6HbFbvfiSSHY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L/nYy2hq3N3kWRVTZ7ZwJlzyOn9EKhz0hndHWYgOJYoz0FtcCiuw2jRd3weZxkCy5
-	 Yj41kL2h9t5skP98J1cMr9YeYkWAL7E3vJWN19dMQTlX3zGG+iGkwjVID/RkAuWDbu
-	 TXoZjoTMrhmCmDDZBatGr8c+bI3OFOxcOxeMEF+Y=
+	b=eGKl09MJfi88Q+1gkNgfgUlAx5YbMlHWx3cc8YU6coZ3RTlVVCdCbm5E4MhpQ5xR7
+	 WHpiVXvgunFAOs7EhQr3uRXP6RsS/Uk2Xsq1M33YtPeSfR9qz0SZdqUZ5WRJSXlVbj
+	 NqK1yXay75T4JeDspq/XjmiYb72FEYuuUe8sOmVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.10 222/451] lib/crypto: x86/blake2s: Fix 32-bit arg treated as 64-bit
+	Paul Moore <paul@paul-moore.com>,
+	Will Rosenberg <whrosenb@asu.edu>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 357/554] ipv6: BUG() in pskb_expand_head() as part of calipso_skbuff_setattr()
 Date: Thu, 15 Jan 2026 17:47:03 +0100
-Message-ID: <20260115164238.929331513@linuxfoundation.org>
+Message-ID: <20260115164259.149459030@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,62 +61,102 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Will Rosenberg <whrosenb@asu.edu>
 
-commit 2f22115709fc7ebcfa40af3367a508fbbd2f71e9 upstream.
+[ Upstream commit 58fc7342b529803d3c221101102fe913df7adb83 ]
 
-In the C code, the 'inc' argument to the assembly functions
-blake2s_compress_ssse3() and blake2s_compress_avx512() is declared with
-type u32, matching blake2s_compress().  The assembly code then reads it
-from the 64-bit %rcx.  However, the ABI doesn't guarantee zero-extension
-to 64 bits, nor do gcc or clang guarantee it.  Therefore, fix these
-functions to read this argument from the 32-bit %ecx.
+There exists a kernel oops caused by a BUG_ON(nhead < 0) at
+net/core/skbuff.c:2232 in pskb_expand_head().
+This bug is triggered as part of the calipso_skbuff_setattr()
+routine when skb_cow() is passed headroom > INT_MAX
+(i.e. (int)(skb_headroom(skb) + len_delta) < 0).
 
-In theory, this bug could have caused the wrong 'inc' value to be used,
-causing incorrect BLAKE2s hashes.  In practice, probably not: I've fixed
-essentially this same bug in many other assembly files too, but there's
-never been a real report of it having caused a problem.  In x86_64, all
-writes to 32-bit registers are zero-extended to 64 bits.  That results
-in zero-extension in nearly all situations.  I've only been able to
-demonstrate a lack of zero-extension with a somewhat contrived example
-involving truncation, e.g. when the C code has a u64 variable holding
-0x1234567800000040 and passes it as a u32 expecting it to be truncated
-to 0x40 (64).  But that's not what the real code does, of course.
+The root cause of the bug is due to an implicit integer cast in
+__skb_cow(). The check (headroom > skb_headroom(skb)) is meant to ensure
+that delta = headroom - skb_headroom(skb) is never negative, otherwise
+we will trigger a BUG_ON in pskb_expand_head(). However, if
+headroom > INT_MAX and delta <= -NET_SKB_PAD, the check passes, delta
+becomes negative, and pskb_expand_head() is passed a negative value for
+nhead.
 
-Fixes: ed0356eda153 ("crypto: blake2s - x86_64 SIMD implementation")
-Cc: stable@vger.kernel.org
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251102234209.62133-2-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix the trigger condition in calipso_skbuff_setattr(). Avoid passing
+"negative" headroom sizes to skb_cow() within calipso_skbuff_setattr()
+by only using skb_cow() to grow headroom.
+
+PoC:
+	Using `netlabelctl` tool:
+
+        netlabelctl map del default
+        netlabelctl calipso add pass doi:7
+        netlabelctl map add default address:0::1/128 protocol:calipso,7
+
+        Then run the following PoC:
+
+        int fd = socket(AF_INET6, SOCK_DGRAM, IPPROTO_UDP);
+
+        // setup msghdr
+        int cmsg_size = 2;
+        int cmsg_len = 0x60;
+        struct msghdr msg;
+        struct sockaddr_in6 dest_addr;
+        struct cmsghdr * cmsg = (struct cmsghdr *) calloc(1,
+                        sizeof(struct cmsghdr) + cmsg_len);
+        msg.msg_name = &dest_addr;
+        msg.msg_namelen = sizeof(dest_addr);
+        msg.msg_iov = NULL;
+        msg.msg_iovlen = 0;
+        msg.msg_control = cmsg;
+        msg.msg_controllen = cmsg_len;
+        msg.msg_flags = 0;
+
+        // setup sockaddr
+        dest_addr.sin6_family = AF_INET6;
+        dest_addr.sin6_port = htons(31337);
+        dest_addr.sin6_flowinfo = htonl(31337);
+        dest_addr.sin6_addr = in6addr_loopback;
+        dest_addr.sin6_scope_id = 31337;
+
+        // setup cmsghdr
+        cmsg->cmsg_len = cmsg_len;
+        cmsg->cmsg_level = IPPROTO_IPV6;
+        cmsg->cmsg_type = IPV6_HOPOPTS;
+        char * hop_hdr = (char *)cmsg + sizeof(struct cmsghdr);
+        hop_hdr[1] = 0x9; //set hop size - (0x9 + 1) * 8 = 80
+
+        sendmsg(fd, &msg, 0);
+
+Fixes: 2917f57b6bc1 ("calipso: Allow the lsm to label the skbuff directly.")
+Suggested-by: Paul Moore <paul@paul-moore.com>
+Signed-off-by: Will Rosenberg <whrosenb@asu.edu>
+Acked-by: Paul Moore <paul@paul-moore.com>
+Link: https://patch.msgid.link/20251219173637.797418-1-whrosenb@asu.edu
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/crypto/blake2s-core.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv6/calipso.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/x86/crypto/blake2s-core.S
-+++ b/arch/x86/crypto/blake2s-core.S
-@@ -54,7 +54,7 @@ SYM_FUNC_START(blake2s_compress_ssse3)
- 	movdqa		ROT16(%rip),%xmm12
- 	movdqa		ROR328(%rip),%xmm13
- 	movdqu		0x20(%rdi),%xmm14
--	movq		%rcx,%xmm15
-+	movd		%ecx,%xmm15
- 	leaq		SIGMA+0xa0(%rip),%r8
- 	jmp		.Lbeginofloop
- 	.align		32
-@@ -179,7 +179,7 @@ SYM_FUNC_START(blake2s_compress_avx512)
- 	vmovdqu		(%rdi),%xmm0
- 	vmovdqu		0x10(%rdi),%xmm1
- 	vmovdqu		0x20(%rdi),%xmm4
--	vmovq		%rcx,%xmm5
-+	vmovd		%ecx,%xmm5
- 	vmovdqa		IV(%rip),%xmm14
- 	vmovdqa		IV+16(%rip),%xmm15
- 	jmp		.Lblake2s_compress_avx512_mainloop
+diff --git a/net/ipv6/calipso.c b/net/ipv6/calipso.c
+index 24666291c54a..72079ef2959b 100644
+--- a/net/ipv6/calipso.c
++++ b/net/ipv6/calipso.c
+@@ -1345,7 +1345,8 @@ static int calipso_skbuff_setattr(struct sk_buff *skb,
+ 	/* At this point new_end aligns to 4n, so (new_end & 4) pads to 8n */
+ 	pad = ((new_end & 4) + (end & 7)) & 7;
+ 	len_delta = new_end - (int)end + pad;
+-	ret_val = skb_cow(skb, skb_headroom(skb) + len_delta);
++	ret_val = skb_cow(skb,
++			  skb_headroom(skb) + (len_delta > 0 ? len_delta : 0));
+ 	if (ret_val < 0)
+ 		return ret_val;
+ 
+-- 
+2.51.0
+
 
 
 
