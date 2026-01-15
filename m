@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-209840-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209418-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 63CE8D277A0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:54 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id B9A26D271A3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:06:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6C9383103FB0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:05 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9A3F5307B69B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 30CAC3D330C;
-	Thu, 15 Jan 2026 17:57:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E8E39E6EA;
+	Thu, 15 Jan 2026 17:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="esJ6/e08"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/IF/fuu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E82113D3314;
-	Thu, 15 Jan 2026 17:57:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE7027A462;
+	Thu, 15 Jan 2026 17:37:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499840; cv=none; b=jdrWP9W1pxo4xNXRNs7mrsOLwcDbFxKzo4JRJaGBQaeMLY9tBP8XAD0Si0buJEGtg4NhINZcZFxZ1ODJToZDOvUq7fKRUXhDIOz3mtXgq+EWn+52qLLZWYRuKE6k1hU3JaJYpjF9AyU5MTHHRKE0IU1oGXFizJz6U41uA5XhAZQ=
+	t=1768498639; cv=none; b=F3Q3lKe53xzEjC7gMOdoFJVeHogOvd0kIYgmTTwUj9cQs6xZTT2rIZZH3ZtLfVLwaAaBxPkMJOMhtj5X5AUwquump+UUWsRLn/BzMNrp4DZo89NMPfVGngRyNVq9du6bm+KSHsoYdGIqsq8iXMZaW6xWbd63tdJza7SeX3wspW0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499840; c=relaxed/simple;
-	bh=r5E1YMyjYCYQ1j1ca9liD55VTMhpDZCIrFvQp+wBrGc=;
+	s=arc-20240116; t=1768498639; c=relaxed/simple;
+	bh=6B3KGPbe2loPMSMJ9WOsXwBni7KBe/ImFNIGbgHxILE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pSUWZJOue1idOL93s9s3bTJblMp5AZLKlPr0VBI2GqI4XfAcwh69cJMiRAcfD4wgudepE/LKjUFTx8Dm+OCDRU2ojRzgqQkxxSNv09LIppQUKHcHG9YnDvTFdpKzhY0QOPqZsPgo7GVGNJQBuq+Uzo5tl4mhUwKdkgkI1d2KIsU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=esJ6/e08; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE0EC116D0;
-	Thu, 15 Jan 2026 17:57:19 +0000 (UTC)
+	 MIME-Version; b=qvSQ6hTOeKClpUIQjUuPTBVzTTCg9AgPqcspS9IxJNJGxBpgHUw46JAw3nrcpbQV+vQagDqZWKIzB3XA4JLIs9BoLYXx1K0hep2rPxPmWUEjO8hEvrx+14OddAHn32Ht/jCc9IIwZ3GzbsxSkOjaZ/nyAsJLdfQNF8So0u6Hmo0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/IF/fuu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38077C116D0;
+	Thu, 15 Jan 2026 17:37:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499839;
-	bh=r5E1YMyjYCYQ1j1ca9liD55VTMhpDZCIrFvQp+wBrGc=;
+	s=korg; t=1768498639;
+	bh=6B3KGPbe2loPMSMJ9WOsXwBni7KBe/ImFNIGbgHxILE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=esJ6/e088OGgVyYkdxh4zavBnmvQkY0uKbkPbpoKDNnbOxw7bOMWHQkEy+poyM4j9
-	 W+x5XptF/cACSa074GBk1tGFFQcqkHz5mSvX6b+vJrCNJ+mQJdN5gBbZbq283vChfa
-	 1XixkBbd3ettJ1t6ZEgamAQ1OxIH6+88hIpqlub0=
+	b=l/IF/fuuW94lu1d1TitC+iXa5NtycdVybtzetW+T5mShMuJDAQ7ysZSuutD6lf4QK
+	 YTeu9PY5GBRllizrLTP9CAp/SyCAFtWuwkljGIG+zmpYNt7QEAFESw/QP86gCI+1DW
+	 F/4nZD7LKxJ63EySPTyEjzkr4DuMQbY7o5SMfBAc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 367/451] jbd2: fix the inconsistency between checksum and data in memory for journal sb
-Date: Thu, 15 Jan 2026 17:49:28 +0100
-Message-ID: <20260115164244.184919851@linuxfoundation.org>
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 5.15 503/554] mei: me: add nova lake point S DID
+Date: Thu, 15 Jan 2026 17:49:29 +0100
+Message-ID: <20260115164304.524377864@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 6abfe107894af7e8ce3a2e120c619d81ee764ad5 ]
+commit 420f423defcf6d0af2263d38da870ca4a20c0990 upstream.
 
-Copying the file system while it is mounted as read-only results in
-a mount failure:
-[~]# mkfs.ext4 -F /dev/sdc
-[~]# mount /dev/sdc -o ro /mnt/test
-[~]# dd if=/dev/sdc of=/dev/sda bs=1M
-[~]# mount /dev/sda /mnt/test1
-[ 1094.849826] JBD2: journal checksum error
-[ 1094.850927] EXT4-fs (sda): Could not load journal inode
-mount: mount /dev/sda on /mnt/test1 failed: Bad message
+Add Nova Lake S device id.
 
-The process described above is just an abstracted way I came up with to
-reproduce the issue. In the actual scenario, the file system was mounted
-read-only and then copied while it was still mounted. It was found that
-the mount operation failed. The user intended to verify the data or use
-it as a backup, and this action was performed during a version upgrade.
-Above issue may happen as follows:
-ext4_fill_super
- set_journal_csum_feature_set(sb)
-  if (ext4_has_metadata_csum(sb))
-   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
-  if (test_opt(sb, JOURNAL_CHECKSUM)
-   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
-    lock_buffer(journal->j_sb_buffer);
-    sb->s_feature_incompat  |= cpu_to_be32(incompat);
-    //The data in the journal sb was modified, but the checksum was not
-      updated, so the data remaining in memory has a mismatch between the
-      data and the checksum.
-    unlock_buffer(journal->j_sb_buffer);
-
-In this case, the journal sb copied over is in a state where the checksum
-and data are inconsistent, so mounting fails.
-To solve the above issue, update the checksum in memory after modifying
-the journal sb.
-
-Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Changed jbd2_superblock_csum(sb) to jbd2_superblock_csum(journal, sb) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20251215105915.1672659-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -2224,6 +2224,12 @@ int jbd2_journal_set_features(journal_t
- 	sb->s_feature_compat    |= cpu_to_be32(compat);
- 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
- 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
- 	unlock_buffer(journal->j_sb_buffer);
- 	journal->j_revoke_records_per_block =
- 				journal_revoke_records_per_block(journal);
-@@ -2254,9 +2260,17 @@ void jbd2_journal_clear_features(journal
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -122,6 +122,8 @@
  
- 	sb = journal->j_superblock;
+ #define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
  
-+	lock_buffer(journal->j_sb_buffer);
- 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
- 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
- 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
-+	unlock_buffer(journal->j_sb_buffer);
- 	journal->j_revoke_records_per_block =
- 				journal_revoke_records_per_block(journal);
- }
++#define MEI_DEV_ID_NVL_S      0x6E68  /* Nova Lake Point S */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -128,6 +128,8 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_NVL_S, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
