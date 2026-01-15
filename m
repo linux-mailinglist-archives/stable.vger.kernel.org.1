@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208652-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209733-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 848D7D2619B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:28 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D0CE4D272AD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EEE09310318F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:01 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 6B74230ABD38
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9BE292D73BE;
-	Thu, 15 Jan 2026 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1113C1FCF;
+	Thu, 15 Jan 2026 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ImwtSV6k"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTVcnzKB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F0B02C028F;
-	Thu, 15 Jan 2026 17:01:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF073C199C;
+	Thu, 15 Jan 2026 17:52:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496460; cv=none; b=HB1beEXLEpod2SEq6bHBDfNdunUfd4GJzL5n+30Lv7Uwt5NbmBUvRgGdjq95glRPBcaJ1VMmTJ0GshxxjI8uNkHG6XYbqNbhAXHiFcGGFJYa6uEThVPzH8Jpy4SvVDSKUxGIFzSDk1FAeKbytKYO44Z2Wa0jVzqGN4D/fLxTUBU=
+	t=1768499536; cv=none; b=G/sVG83qSfFRJU0jkq/7p29uXtBIb000ZYvzIPk18/HW7iLUPd3hwE0TbadD7wOmX+YrRqvvGgv0YqDmQ0Dp3gfJtKc2YhiC2a2uRaAQv7n7gQ5OJ4n0DywOmg6WXSWyaRIRNEEF57Q1u631L91+WALGw5xE/mIcP8fNrdlL+FQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496460; c=relaxed/simple;
-	bh=x5utBmX91qQ51chHOnTyuh5fJp3uEoMVuNBlhdAX9SM=;
+	s=arc-20240116; t=1768499536; c=relaxed/simple;
+	bh=JoMPPQZaBmZ9iI5S/FSqYwo7mmTksXoQeeWLyARlerQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pfu5tnm4ulIySUte77ubGzT2nzimYJqZ7uY3+zZeI1+D0bW9c3XHePMI8Z+KgTdkVl+YdiiZang+xnjapx2K1pIshNsx5fvmXspwXT7cXHanbEGnXgcmBbaX6OAO4mzTORM+bgouRFMHFs23Oqr/cDN4onvWIVnJ9xVsPIFX9/w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ImwtSV6k; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6052C116D0;
-	Thu, 15 Jan 2026 17:00:59 +0000 (UTC)
+	 MIME-Version; b=DLMwZpsE/atfbjp3WBnjJW3HA5JbIGUzJKPWJG9v9AglLpyKFzdgLYq3W+JPb1j/H9r7CiWCv+LSHl1muksAik+cqUv79XKHA3HMei4+H9nfylGP3IgOR01Zzx9yt5QQKP1qoWKVRE4N75V5wWVCV4yNNX1O5OM6n5GhnLlpK+Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTVcnzKB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD62C116D0;
+	Thu, 15 Jan 2026 17:52:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496460;
-	bh=x5utBmX91qQ51chHOnTyuh5fJp3uEoMVuNBlhdAX9SM=;
+	s=korg; t=1768499536;
+	bh=JoMPPQZaBmZ9iI5S/FSqYwo7mmTksXoQeeWLyARlerQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ImwtSV6k9IlDknflA7/tBldrwPnd6Z/woSovq9tVP9bCh7XJlKuGJhAlSE7n8wYvY
-	 9bLygS1teq/HBehkmILtWE0IpPWORv4zFW7EBiAolYtjnt6ENw52XlPuIGFNb5Jh1m
-	 Pfe2ASuyOQUL8i0F+Pv+BsWDuUizjL3Tz70HsgJ4=
+	b=NTVcnzKBYTnK5gMKdH/T/WtcNk/ForAvwfATX5WTv7riAhp8i5ufFx+VO8vzfR5jO
+	 OgO4D0EZv8i9dbyWkxOwePoHmx5EGECDp/N/KtaUWjrh2tG/H4oVFQv/aKlG72Uakt
+	 1dNbIMTObuB72L7owDmRM5NY1BsUcxqlT9RRORhk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.12 020/119] wifi: avoid kernel-infoleak from struct iw_point
+	stable <stable@kernel.org>,
+	Duoming Zhou <duoming@zju.edu.cn>
+Subject: [PATCH 5.10 234/451] usb: phy: fsl-usb: Fix use-after-free in delayed work during device removal
 Date: Thu, 15 Jan 2026 17:47:15 +0100
-Message-ID: <20260115164152.690370483@linuxfoundation.org>
+Message-ID: <20260115164239.360073394@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +59,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 21cbf883d073abbfe09e3924466aa5e0449e7261 upstream.
+commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f upstream.
 
-struct iw_point has a 32bit hole on 64bit arches.
+The delayed work item otg_event is initialized in fsl_otg_conf() and
+scheduled under two conditions:
+1. When a host controller binds to the OTG controller.
+2. When the USB ID pin state changes (cable insertion/removal).
 
-struct iw_point {
-  void __user   *pointer;       /* Pointer to the data  (in user space) */
-  __u16         length;         /* number of fields or size in bytes */
-  __u16         flags;          /* Optional params */
-};
+A race condition occurs when the device is removed via fsl_otg_remove():
+the fsl_otg instance may be freed while the delayed work is still pending
+or executing. This leads to use-after-free when the work function
+fsl_otg_event() accesses the already freed memory.
 
-Make sure to zero the structure to avoid disclosing 32bits of kernel data
-to user space.
+The problematic scenario:
 
-Fixes: 87de87d5e47f ("wext: Dispatch and handle compat ioctls entirely in net/wireless/wext.c")
-Reported-by: syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/695f83f3.050a0220.1c677c.0392.GAE@google.com/T/#u
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: stable@vger.kernel.org
-Link: https://patch.msgid.link/20260108101927.857582-1-edumazet@google.com
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+(detach thread)            | (delayed work)
+fsl_otg_remove()           |
+  kfree(fsl_otg_dev) //FREE| fsl_otg_event()
+                           |   og = container_of(...) //USE
+                           |   og-> //USE
+
+Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
+before deallocating the fsl_otg structure. This ensures the delayed work
+is properly canceled and completes execution prior to memory deallocation.
+
+This bug was identified through static analysis.
+
+Fixes: 0807c500a1a6 ("USB: add Freescale USB OTG Transceiver driver")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://patch.msgid.link/20251205034831.12846-1-duoming@zju.edu.cn
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/wireless/wext-core.c |    4 ++++
- net/wireless/wext-priv.c |    4 ++++
- 2 files changed, 8 insertions(+)
+ drivers/usb/phy/phy-fsl-usb.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/net/wireless/wext-core.c
-+++ b/net/wireless/wext-core.c
-@@ -1103,6 +1103,10 @@ static int compat_standard_call(struct n
- 		return ioctl_standard_call(dev, iwr, cmd, info, handler);
+--- a/drivers/usb/phy/phy-fsl-usb.c
++++ b/drivers/usb/phy/phy-fsl-usb.c
+@@ -987,6 +987,7 @@ static int fsl_otg_remove(struct platfor
+ {
+ 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
  
- 	iwp_compat = (struct compat_iw_point *) &iwr->u.data;
-+
-+	/* struct iw_point has a 32bit hole on 64bit arches. */
-+	memset(&iwp, 0, sizeof(iwp));
-+
- 	iwp.pointer = compat_ptr(iwp_compat->pointer);
- 	iwp.length = iwp_compat->length;
- 	iwp.flags = iwp_compat->flags;
---- a/net/wireless/wext-priv.c
-+++ b/net/wireless/wext-priv.c
-@@ -228,6 +228,10 @@ int compat_private_call(struct net_devic
- 		struct iw_point iwp;
++	disable_delayed_work_sync(&fsl_otg_dev->otg_event);
+ 	usb_remove_phy(&fsl_otg_dev->phy);
+ 	free_irq(fsl_otg_dev->irq, fsl_otg_dev);
  
- 		iwp_compat = (struct compat_iw_point *) &iwr->u.data;
-+
-+		/* struct iw_point has a 32bit hole on 64bit arches. */
-+		memset(&iwp, 0, sizeof(iwp));
-+
- 		iwp.pointer = compat_ptr(iwp_compat->pointer);
- 		iwp.length = iwp_compat->length;
- 		iwp.flags = iwp_compat->flags;
 
 
 
