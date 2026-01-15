@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208656-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209289-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5F8EED261AA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:36 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C1E01D26D9A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA353108627
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:12 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 528CB31BA541
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 509DC2C028F;
-	Thu, 15 Jan 2026 17:01:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9893C3BF307;
+	Thu, 15 Jan 2026 17:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wSn8TKOK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y9bL0g/B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 13244350A05;
-	Thu, 15 Jan 2026 17:01:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5A12A3A0E98;
+	Thu, 15 Jan 2026 17:31:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496472; cv=none; b=u2KF63Pr1X14U/j64CKyf0KjAhZ4CWFs33iQtsvRL1DMelp1f4vSnHgA0A3pPhMuUq5+5viTxsIwQigzZxQE1Br6DghVPwyXm2sstbcgq+sEFQ4MeGWROOfDuiH1Xu1OAx7UWcilXBKSjQwSZTLfxoDbxTyj1HNUxS1V5ut5+ak=
+	t=1768498272; cv=none; b=V3jMz7yR1FgCrkd9zLEam9Ej81boyLn2WWz3dNnHsrl/tGyWZaVfFOh3eYVbQ2ksmr1dgMJBQ9DTKMja7IozS/F11BBYTJ+AMZX6hGVp0CNcMRIyu8HbkQr8aXgdvru+LSg+OjGgcigeaVSuFbglmeWS6VtXwGcRGZsabi9Cau0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496472; c=relaxed/simple;
-	bh=Rd/F/+dmcje+rzLWHWAnAaUWGJLURKzY681oeaA0BRk=;
+	s=arc-20240116; t=1768498272; c=relaxed/simple;
+	bh=IwjY0JnqA+WkD74y2Ow+DZPsrdinf+76nIxuGUEJJuo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CAXDWmqgbf6jpGcDQEmJ3bV8MVUtyQDuJ5Jzy5MPzaKuFZEOKeZaxsWDBmqzDLRnsDWgdfauSQHgVVeMuHj3cCKtrgPsxT80HBM5A8mcPiXUe8LxgD4qa7XJlTvpRXc3vEnphHkfXqIuoWVcwOFT+SAU4MekQ/Bkl59gEcHFCg8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wSn8TKOK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 513E2C116D0;
-	Thu, 15 Jan 2026 17:01:11 +0000 (UTC)
+	 MIME-Version; b=KOGYNYNj2Mu6KF4bZrswjh9DPFlejE6ACgeM2KytFdqja+L3cQ8DiUv9AJDBBbnIpKCu9+wNRN81JbMGpVUDjq/vlEhfTVxGZ7aZcYO4jQ24taRhrv/7+wWy8sZpndxBi639ykHBdKG9GmSSc2NybX+wbO1Q0MnTerb/f+Et2X0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y9bL0g/B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB06FC116D0;
+	Thu, 15 Jan 2026 17:31:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496471;
-	bh=Rd/F/+dmcje+rzLWHWAnAaUWGJLURKzY681oeaA0BRk=;
+	s=korg; t=1768498272;
+	bh=IwjY0JnqA+WkD74y2Ow+DZPsrdinf+76nIxuGUEJJuo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wSn8TKOKgoAhtHIID7nQp9o048tWn9xmMYTxdO4geo8q1/5Wj0b/kLDFjSsHWcnp9
-	 p1VPXCnGIQOwYi9k20zUqq9xs0lhs8Jl3pcrEkdhqL5wJJDIUV0DSE7g05iNrlM1qL
-	 Vz/fkEKkKmA+9Xmw+Aw2QhllFPHUuesL9iScHllY=
+	b=y9bL0g/Bff1HjL2Uocc3CLz1GbnjYb+dw9X8Kjy1Dv1Cyot691IIg7inLSSk8TzKE
+	 0QqdkXmVFsjohVoJ/1cgjmLCfGo15Vdo1gxJcYIL8n6NS5K0tIr7NdfiOAG2TlZxyX
+	 3VghdIvLEmW4oqdZzUa06blqSJpOq4ooSlHFJwO0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 024/119] libceph: make free_choose_arg_map() resilient to partial allocation
+	Sven Peter <sven@kernel.org>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.15 373/554] iommu/apple-dart: fix device leak on of_xlate()
 Date: Thu, 15 Jan 2026 17:47:19 +0100
-Message-ID: <20260115164152.834735006@linuxfoundation.org>
+Message-ID: <20260115164259.732157797@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
+commit a6eaa872c52a181ae9a290fd4e40c9df91166d7a upstream.
 
-free_choose_arg_map() may dereference a NULL pointer if its caller fails
-after a partial allocation.
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-For example, in decode_choose_args(), if allocation of arg_map->args
-fails, execution jumps to the fail label and free_choose_arg_map() is
-called. Since arg_map->size is updated to a non-zero value before memory
-allocation, free_choose_arg_map() will iterate over arg_map->args and
-dereference a NULL pointer.
-
-To prevent this potential NULL pointer dereference and make
-free_choose_arg_map() more resilient, add checks for pointers before
-iterating.
-
-Cc: stable@vger.kernel.org
-Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 46d1fb072e76 ("iommu/dart: Add DART iommu driver")
+Cc: stable@vger.kernel.org	# 5.15
+Cc: Sven Peter <sven@kernel.org>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ drivers/iommu/apple-dart.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -241,22 +241,26 @@ static struct crush_choose_arg_map *allo
+--- a/drivers/iommu/apple-dart.c
++++ b/drivers/iommu/apple-dart.c
+@@ -611,6 +611,8 @@ static int apple_dart_of_xlate(struct de
+ 	struct apple_dart *cfg_dart;
+ 	int i, sid;
  
- static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
- {
--	if (arg_map) {
--		int i, j;
-+	int i, j;
- 
--		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+	if (!arg_map)
-+		return;
- 
-+	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
++	put_device(&iommu_pdev->dev);
 +
-+	if (arg_map->args) {
- 		for (i = 0; i < arg_map->size; i++) {
- 			struct crush_choose_arg *arg = &arg_map->args[i];
--
--			for (j = 0; j < arg->weight_set_size; j++)
--				kfree(arg->weight_set[j].weights);
--			kfree(arg->weight_set);
-+			if (arg->weight_set) {
-+				for (j = 0; j < arg->weight_set_size; j++)
-+					kfree(arg->weight_set[j].weights);
-+				kfree(arg->weight_set);
-+			}
- 			kfree(arg->ids);
- 		}
- 		kfree(arg_map->args);
--		kfree(arg_map);
- 	}
-+	kfree(arg_map);
- }
- 
- DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
+ 	if (args->args_count != 1)
+ 		return -EINVAL;
+ 	sid = args->args[0];
 
 
 
