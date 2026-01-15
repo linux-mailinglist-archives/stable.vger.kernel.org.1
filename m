@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209350-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208798-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33190D26E1A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:50 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B8C3D263D2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 336BB31F1380
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 6A9C331675AF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC84D3BF315;
-	Thu, 15 Jan 2026 17:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 471273BC4E8;
+	Thu, 15 Jan 2026 17:07:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="g6N2YrKR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tI4xIrhz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F473399011;
-	Thu, 15 Jan 2026 17:34:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E10041A08AF;
+	Thu, 15 Jan 2026 17:07:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498445; cv=none; b=WR1BoUU/ZpBbSrWsqbtsK454Jyq4851rn/yGXJFd17cmv8dGdgGK5qAuHzOLtpZ1BQFuuK60NCzfQXwgcMwj4tLOC2fN3l+udqNI2q5TAKGjP3ECTiMa8gg1R1iqL02s+VIXBT8nsMc2kcnQ9ZRZKMwLcdvvDuq2GqmHv3L5keQ=
+	t=1768496873; cv=none; b=I9vFc3btZH2HM4el6XYPHzlBd+ZnNCBigHiVXj22yJ10OQBJHJuyAQHwum2kpFIiZsTwbQez5Xz2tpJfp7kJBEbzG6LskRvnv9iCTD9CNcmk1vH2LUVPf7tEVhOIm7lzAHwY3m34pNwSMFnhXd97Mly9Ru4jWYykVQDhwm2v2ec=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498445; c=relaxed/simple;
-	bh=0Wla8otLegldpC9LWlbOVbfvsdwq8EaPbNj7t/bdpKE=;
+	s=arc-20240116; t=1768496873; c=relaxed/simple;
+	bh=tlb9wnwB1GLzA6l8qPnVddu2GzYqDs84eCBleJQmeXg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mNQa6ps01e9RZmyyk7mcaHeVvMfkLaWRMShmdNyvXksA+auEEHk30Oq/ih6e9xwA3u+D46jatKOU2jhzJWYHv8Z/asE7vX0lGf4tV/jP0CDgkEQj8b/XQb85KmbqUnOIefeAorFKPrLLtMNdDnSbvr4NeBhaUvVGsOo1uDbrPgM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=g6N2YrKR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F15E6C16AAE;
-	Thu, 15 Jan 2026 17:34:04 +0000 (UTC)
+	 MIME-Version; b=dS/AraKpV6HS315cS9VoqLKdELp6kYlZRFb31lc6gtJ50KvIjCo14QFeGu9Mu9XvkG1XAtjrVBzXs1V4f8SctqYyBlqBvScEOIsbVHQa7wcvnqSJ3qJDHXr0wvsR6x6ZiUoo4hAdi9QeH+Qq7uLJkHgWUB9ory30Bz9uBuRvm+E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tI4xIrhz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67261C116D0;
+	Thu, 15 Jan 2026 17:07:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498445;
-	bh=0Wla8otLegldpC9LWlbOVbfvsdwq8EaPbNj7t/bdpKE=;
+	s=korg; t=1768496872;
+	bh=tlb9wnwB1GLzA6l8qPnVddu2GzYqDs84eCBleJQmeXg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=g6N2YrKROPjb4xSOKOmmmXVz1FNMb0xaFcg8yBwVz5+R1HazfybYDbN2bUgYpe4JC
-	 fzOJzKXbvyIfxV5FCZ5BZaA5QL78+paxlk77NJiunv7TO/6eZwxCw/Q99JAO/U4aH9
-	 CFyrD7/XLjGTnRAhF11u6tTUzB45e9Opt12Uq/5I=
+	b=tI4xIrhzdoq47n35JhYtoCGdu3xEpe6FxF+q01tE6BOAY6M+AA0QugBDE1+mKNuM6
+	 qR6azulByeFu/U+C5JHiO6Sht0QonhgowSXkFvDU8SKWSexF1VejYnoeqDCavnTLTX
+	 N34OcA+QvoXcPpwtHHLVkJLLOXNL5/tuyi9Sos44=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yuhao Jiang <danisjiang@gmail.com>,
-	Junrui Luo <moonafterrain@outlook.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Brian Kao <powenkao@google.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 435/554] ALSA: wavefront: Clear substream pointers on close
+Subject: [PATCH 6.6 38/88] scsi: ufs: core: Fix EH failure after W-LUN resume error
 Date: Thu, 15 Jan 2026 17:48:21 +0100
-Message-ID: <20260115164302.007582739@linuxfoundation.org>
+Message-ID: <20260115164147.689891955@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +61,131 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junrui Luo <moonafterrain@outlook.com>
+From: Brian Kao <powenkao@google.com>
 
-[ Upstream commit e11c5c13ce0ab2325d38fe63500be1dd88b81e38 ]
+[ Upstream commit b4bb6daf4ac4d4560044ecdd81e93aa2f6acbb06 ]
 
-Clear substream pointers in close functions to avoid leaving dangling
-pointers, helping to improve code safety and
-prevents potential issues.
+When a W-LUN resume fails, its parent devices in the SCSI hierarchy,
+including the scsi_target, may be runtime suspended. Subsequently, the
+error handler in ufshcd_recover_pm_error() fails to set the W-LUN device
+back to active because the parent target is not active.  This results in
+the following errors:
 
-Reported-by: Yuhao Jiang <danisjiang@gmail.com>
-Reported-by: Junrui Luo <moonafterrain@outlook.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
-Link: https://patch.msgid.link/SYBPR01MB7881DF762CAB45EE42F6D812AFC2A@SYBPR01MB7881.ausprd01.prod.outlook.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-[ No guard() in older trees ]
+  google-ufshcd 3c2d0000.ufs: ufshcd_err_handler started; HBA state eh_fatal; ...
+  ufs_device_wlun 0:0:0:49488: START_STOP failed for power mode: 1, result 40000
+  ufs_device_wlun 0:0:0:49488: ufshcd_wl_runtime_resume failed: -5
+  ...
+  ufs_device_wlun 0:0:0:49488: runtime PM trying to activate child device 0:0:0:49488 but parent (target0:0:0) is not active
+
+Address this by:
+
+ 1. Ensuring the W-LUN's parent scsi_target is runtime resumed before
+    attempting to set the W-LUN to active within
+    ufshcd_recover_pm_error().
+
+ 2. Explicitly checking for power.runtime_error on the HBA and W-LUN
+    devices before calling pm_runtime_set_active() to clear the error
+    state.
+
+ 3. Adding pm_runtime_get_sync(hba->dev) in
+    ufshcd_err_handling_prepare() to ensure the HBA itself is active
+    during error recovery, even if a child device resume failed.
+
+These changes ensure the device power states are managed correctly
+during error recovery.
+
+Signed-off-by: Brian Kao <powenkao@google.com>
+Tested-by: Brian Kao <powenkao@google.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251112063214.1195761-1-powenkao@google.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/isa/wavefront/wavefront_midi.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/ufs/core/ufshcd.c | 36 ++++++++++++++++++++++++++++--------
+ 1 file changed, 28 insertions(+), 8 deletions(-)
 
---- a/sound/isa/wavefront/wavefront_midi.c
-+++ b/sound/isa/wavefront/wavefront_midi.c
-@@ -294,6 +294,7 @@ static int snd_wavefront_midi_input_clos
- 	        return -EIO;
+diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
+index 50d8a816d943a..9f53ee92486dc 100644
+--- a/drivers/ufs/core/ufshcd.c
++++ b/drivers/ufs/core/ufshcd.c
+@@ -6383,6 +6383,11 @@ static void ufshcd_clk_scaling_suspend(struct ufs_hba *hba, bool suspend)
  
- 	spin_lock_irqsave (&midi->open, flags);
-+	midi->substream_input[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_INPUT;
- 	spin_unlock_irqrestore (&midi->open, flags);
+ static void ufshcd_err_handling_prepare(struct ufs_hba *hba)
+ {
++	/*
++	 * A WLUN resume failure could potentially lead to the HBA being
++	 * runtime suspended, so take an extra reference on hba->dev.
++	 */
++	pm_runtime_get_sync(hba->dev);
+ 	ufshcd_rpm_get_sync(hba);
+ 	if (pm_runtime_status_suspended(&hba->ufs_device_wlun->sdev_gendev) ||
+ 	    hba->is_sys_suspended) {
+@@ -6423,6 +6428,7 @@ static void ufshcd_err_handling_unprepare(struct ufs_hba *hba)
+ 	if (ufshcd_is_clkscaling_supported(hba))
+ 		ufshcd_clk_scaling_suspend(hba, false);
+ 	ufshcd_rpm_put(hba);
++	pm_runtime_put(hba->dev);
+ }
  
-@@ -318,6 +319,7 @@ static int snd_wavefront_midi_output_clo
- 	        return -EIO;
+ static inline bool ufshcd_err_handling_should_stop(struct ufs_hba *hba)
+@@ -6437,28 +6443,42 @@ static inline bool ufshcd_err_handling_should_stop(struct ufs_hba *hba)
+ #ifdef CONFIG_PM
+ static void ufshcd_recover_pm_error(struct ufs_hba *hba)
+ {
++	struct scsi_target *starget = hba->ufs_device_wlun->sdev_target;
+ 	struct Scsi_Host *shost = hba->host;
+ 	struct scsi_device *sdev;
+ 	struct request_queue *q;
+-	int ret;
++	bool resume_sdev_queues = false;
  
- 	spin_lock_irqsave (&midi->open, flags);
-+	midi->substream_output[mpu] = NULL;
- 	midi->mode[mpu] &= ~MPU401_MODE_OUTPUT;
- 	spin_unlock_irqrestore (&midi->open, flags);
- 	return 0;
+ 	hba->is_sys_suspended = false;
++
+ 	/*
+-	 * Set RPM status of wlun device to RPM_ACTIVE,
+-	 * this also clears its runtime error.
++	 * Ensure the parent's error status is cleared before proceeding
++	 * to the child, as the parent must be active to activate the child.
+ 	 */
+-	ret = pm_runtime_set_active(&hba->ufs_device_wlun->sdev_gendev);
++	if (hba->dev->power.runtime_error) {
++		/* hba->dev has no functional parent thus simplily set RPM_ACTIVE */
++		pm_runtime_set_active(hba->dev);
++		resume_sdev_queues = true;
++	}
++
++	if (hba->ufs_device_wlun->sdev_gendev.power.runtime_error) {
++		/*
++		 * starget, parent of wlun, might be suspended if wlun resume failed.
++		 * Make sure parent is resumed before set child (wlun) active.
++		 */
++		pm_runtime_get_sync(&starget->dev);
++		pm_runtime_set_active(&hba->ufs_device_wlun->sdev_gendev);
++		pm_runtime_put_sync(&starget->dev);
++		resume_sdev_queues = true;
++	}
+ 
+-	/* hba device might have a runtime error otherwise */
+-	if (ret)
+-		ret = pm_runtime_set_active(hba->dev);
+ 	/*
+ 	 * If wlun device had runtime error, we also need to resume those
+ 	 * consumer scsi devices in case any of them has failed to be
+ 	 * resumed due to supplier runtime resume failure. This is to unblock
+ 	 * blk_queue_enter in case there are bios waiting inside it.
+ 	 */
+-	if (!ret) {
++	if (resume_sdev_queues) {
+ 		shost_for_each_device(sdev, shost) {
+ 			q = sdev->request_queue;
+ 			if (q->dev && (q->rpm_status == RPM_SUSPENDED ||
+-- 
+2.51.0
+
 
 
 
