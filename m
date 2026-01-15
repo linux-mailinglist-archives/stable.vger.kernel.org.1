@@ -1,60 +1,54 @@
-Return-Path: <stable+bounces-209721-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208701-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 17914D2729C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:12 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B6C66D262D1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A47983052AB2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 86EBD3043F58
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55EA13BFE4F;
-	Thu, 15 Jan 2026 17:51:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA9037C117;
+	Thu, 15 Jan 2026 17:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A7MsAy5f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bp4J3fu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 159363D3CEA;
-	Thu, 15 Jan 2026 17:51:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9133B2D73A0;
+	Thu, 15 Jan 2026 17:03:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499502; cv=none; b=L/VKpIfZaRKtrmH0c9Z0027+9EgS3d5fx2+I1mIoSB8b5NpJ1/Z4ZL3O4zQY2M5fSQeKoyyxyWqmoN0yFjVV3kL0+sBGbPElqeVhaC32RABy+0aDN3SAeQ0ua47pS021RrFlkf5mXXwFhCyFoXrFV3+d2jVVkOnBU4Z7PcEa1TE=
+	t=1768496600; cv=none; b=msgnGZGPAQWQU96jLqiqf7+akeYILvJgqIewdqRvF25pZTCtEu+GeVoayY4vGzx7/NF5sLr0Xn4303lBopHxiS2MqhaACn8LwLvtLDS+8hbYAsFakjXOK6Uz2p2knkTQJ2RymaJ5NlQuh6SR8L1/53NADm6AhJT8ED0s0oLvAUk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499502; c=relaxed/simple;
-	bh=LBZq/SQaaq8LWHBxdlh5VQ9CsQhLSF5jihrjDqJUnQ8=;
+	s=arc-20240116; t=1768496600; c=relaxed/simple;
+	bh=pfLtNF9FlT5jc8txtTiBKdTDyZNlEFvexpCxN7RmMaQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pYVNpMUxoHJ2KltprlJZHg7xrEJPsXVENWUm7xCXUkw86768ub+XihrbCH8v+hy6QLKMAOVG9Xq4xIPRkEpEx7en6aqPEZcCLrc6z1d7JEwHe7ixZV/kzgb3G2jDGd/e9oASzf5O6ewrTy3fRcGmjdB0jBm25it0g6/R6zL2GvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A7MsAy5f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8085BC19422;
-	Thu, 15 Jan 2026 17:51:41 +0000 (UTC)
+	 MIME-Version; b=HbvivBVi5LyMPeImUK6cImF8sj8wqw8SEgf8vWNodQO8imrDeFq/p7GI2oIUT24iroluLeoqkbtBAHq/sWf6TlL+mocDfKpzkDHFYye+tUTwwHB/ePwCgfIsB0T5L6hc2FRTQ8XVD/NTrxjqR77rght+Om5xaaVKxpJNgvBwAII=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bp4J3fu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C648C116D0;
+	Thu, 15 Jan 2026 17:03:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499501;
-	bh=LBZq/SQaaq8LWHBxdlh5VQ9CsQhLSF5jihrjDqJUnQ8=;
+	s=korg; t=1768496600;
+	bh=pfLtNF9FlT5jc8txtTiBKdTDyZNlEFvexpCxN7RmMaQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A7MsAy5fvbZmKtQomy/2IKrDvzAQmNa/kgLK5uiTp21YVMJiiG1FztnjDi4lBy57z
-	 Q8q5DoQcUPx9eulQaFjtnb7/BXRbUKllTarclVvGzqkUg9NBPbuaA92ITjFGLu/d32
-	 Xn6ux/s1Ry5A293j2Kotp6T2nIP/PHPunx1/03ag=
+	b=2bp4J3fuBqzYCAh4uE0C88QUKNeFpDLlb4PuPEgZhW/PP1TigZ6higryemH3bhViN
+	 EeUtn5A1bWys+2Fj6+vHN/dSBVyZdcnZGqaI40n+SMSDqZwxKbUi+Yr0Un061Xv8wS
+	 x93+qPLsD0LFXbmiEcd5yqCJ2NqQlABAF6lAekDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jiyuan Xie <xiejiyuan@vivo.com>,
-	Zhichi Lin <zhichi.lin@vivo.com>,
-	Sami Tolvanen <samitolvanen@google.com>,
-	Will Deacon <will@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Kees Cook <keescook@chromium.org>,
-	Marco Elver <elver@google.com>,
-	Yee Lee <yee.lee@mediatek.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.10 250/451] scs: fix a wrong parameter in __scs_magic
+	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 036/119] ASoC: rockchip: Fix Wvoid-pointer-to-enum-cast warning (again)
 Date: Thu, 15 Jan 2026 17:47:31 +0100
-Message-ID: <20260115164239.935210283@linuxfoundation.org>
+Message-ID: <20260115164153.264338142@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -66,70 +60,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhichi Lin <zhichi.lin@vivo.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
 
-commit 08bd4c46d5e63b78e77f2605283874bbe868ab19 upstream.
+[ Upstream commit 57d508b5f718730f74b11e0dc9609ac7976802d1 ]
 
-__scs_magic() needs a 'void *' variable, but a 'struct task_struct *' is
-given.  'task_scs(tsk)' is the starting address of the task's shadow call
-stack, and '__scs_magic(task_scs(tsk))' is the end address of the task's
-shadow call stack.  Here should be '__scs_magic(task_scs(tsk))'.
+'version' is an enum, thus cast of pointer on 64-bit compile test with
+clang W=1 causes:
 
-The user-visible effect of this bug is that when CONFIG_DEBUG_STACK_USAGE
-is enabled, the shadow call stack usage checking function
-(scs_check_usage) would scan an incorrect memory range.  This could lead
-to:
+  rockchip_pdm.c:583:17: error: cast to smaller integer type 'enum rk_pdm_version' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
 
-1. **Inaccurate stack usage reporting**: The function would calculate
-   wrong usage statistics for the shadow call stack, potentially showing
-   incorrect value in kmsg.
+This was already fixed in commit 49a4a8d12612 ("ASoC: rockchip: Fix
+Wvoid-pointer-to-enum-cast warning") but then got bad in
+commit 9958d85968ed ("ASoC: Use device_get_match_data()").
 
-2. **Potential kernel crash**: If the value of __scs_magic(tsk)is
-   greater than that of __scs_magic(task_scs(tsk)), the for loop may
-   access unmapped memory, potentially causing a kernel panic.  However,
-   this scenario is unlikely because task_struct is allocated via the slab
-   allocator (which typically returns lower addresses), while the shadow
-   call stack returned by task_scs(tsk) is allocated via vmalloc(which
-   typically returns higher addresses).
+Discussion on LKML also pointed out that 'uintptr_t' is not the correct
+type and either 'kernel_ulong_t' or 'unsigned long' should be used,
+with several arguments towards the latter [1].
 
-However, since this is purely a debugging feature
-(CONFIG_DEBUG_STACK_USAGE), normal production systems should be not
-unaffected.  The bug only impacts developers and testers who are actively
-debugging stack usage with this configuration enabled.
-
-Link: https://lkml.kernel.org/r/20251011082222.12965-1-zhichi.lin@vivo.com
-Fixes: 5bbaf9d1fcb9 ("scs: Add support for stack usage debugging")
-Signed-off-by: Jiyuan Xie <xiejiyuan@vivo.com>
-Signed-off-by: Zhichi Lin <zhichi.lin@vivo.com>
-Reviewed-by: Sami Tolvanen <samitolvanen@google.com>
-Acked-by: Will Deacon <will@kernel.org>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Will Deacon <will@kernel.org>
-Cc: Yee Lee <yee.lee@mediatek.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/r/CAMuHMdX7t=mabqFE5O-Cii3REMuyaePHmqX+j_mqyrn6XXzsoA@mail.gmail.com/ [1]
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251203141644.106459-2-krzysztof.kozlowski@oss.qualcomm.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/scs.c |    2 +-
+ sound/soc/rockchip/rockchip_pdm.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/kernel/scs.c
-+++ b/kernel/scs.c
-@@ -71,7 +71,7 @@ static void scs_check_usage(struct task_
- 	if (!IS_ENABLED(CONFIG_DEBUG_STACK_USAGE))
- 		return;
+diff --git a/sound/soc/rockchip/rockchip_pdm.c b/sound/soc/rockchip/rockchip_pdm.c
+index cae91108f7a8e..30d51e03d49e9 100644
+--- a/sound/soc/rockchip/rockchip_pdm.c
++++ b/sound/soc/rockchip/rockchip_pdm.c
+@@ -580,7 +580,7 @@ static int rockchip_pdm_probe(struct platform_device *pdev)
+ 	if (!pdm)
+ 		return -ENOMEM;
  
--	for (p = task_scs(tsk); p < __scs_magic(tsk); ++p) {
-+	for (p = task_scs(tsk); p < __scs_magic(task_scs(tsk)); ++p) {
- 		if (!READ_ONCE_NOCHECK(*p))
- 			break;
- 		used += sizeof(*p);
+-	pdm->version = (enum rk_pdm_version)device_get_match_data(&pdev->dev);
++	pdm->version = (unsigned long)device_get_match_data(&pdev->dev);
+ 	if (pdm->version == RK_PDM_RK3308) {
+ 		pdm->reset = devm_reset_control_get(&pdev->dev, "pdm-m");
+ 		if (IS_ERR(pdm->reset))
+-- 
+2.51.0
+
 
 
 
