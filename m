@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208545-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208649-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 113A2D25EDA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:42 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 74A97D26009
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9A93E301AAB2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9BB943007C1E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F88D274B43;
-	Thu, 15 Jan 2026 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C3982D73BE;
+	Thu, 15 Jan 2026 17:00:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Qeq6Fjtl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qAFiUOlW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607693624C4;
-	Thu, 15 Jan 2026 16:55:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C384B29ACDD;
+	Thu, 15 Jan 2026 17:00:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496154; cv=none; b=V+ebS1y5WysaXmLD8FcopgjrIJ3DqveOFt3GsqQa83e8nm3pJJ6hf54dZBIZ0S88sAddAXlMgLVFzSDTEuz5mPgfhAAj2fJifug5lI0lhhNcHE2COfCSjotYD1yn3JTAjkIbUnCql6C+r2jwaOQ9z+46C4TLE3y/0gwH+LVAcds=
+	t=1768496451; cv=none; b=Qa6gpBN5SD35QJj1otQcBrhdbbtonEfVihZvSH39foGFQieJb1GMW0k/q8waIVa4lc4P27VcevYWh0LRBfRq8H72p5LfOFFUMekt79Antd4zr+FgnYZ7Whx6Kv0Qhwz93nQHr81/z+uGq5h8LhJu9hZr1MXJS01djHIDmc8Jzpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496154; c=relaxed/simple;
-	bh=dNwM6t2hJHl2TfwsC+SAcR0E346e0thgF4jd4KXaQ4Q=;
+	s=arc-20240116; t=1768496451; c=relaxed/simple;
+	bh=h87IpPUZQHkhPhJf4m+hskmi4naG/4Ml2ZrtCb8qqiY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZfnFhfdXz7U++oLGrrz7d+Yoi5rnCmn9S7cHFRLISQ3AGTKtTpnIgQSvgZLLZMR6xw+a2yDuVuS8lHu7abBE2Maj9Dg8zrhj+IPnxg/3vPHracQw4WoRRIjhnqbKFt2ErcuO5tZ/Hh7dU5McuW8erZ1cYUuvghNbcsroc6XQTdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Qeq6Fjtl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2AA7C116D0;
-	Thu, 15 Jan 2026 16:55:53 +0000 (UTC)
+	 MIME-Version; b=uNIM37W2Qrs9a0FHw+wBREGBtWuAkJXYGLLIM/eiSgkA/B40YCuW20TyutXgUcJkLsaCG/Q+3/Gyq+8+Q+7RuJMeGjYBFSCjAXcAbfJM9oqHwN3FsLBUo/tga6jkt4Ko4P+X9V6LPJZ0hAHdPwS8z0aRWS0YVcRLBvaNfZY5k3I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qAFiUOlW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9BCC116D0;
+	Thu, 15 Jan 2026 17:00:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496154;
-	bh=dNwM6t2hJHl2TfwsC+SAcR0E346e0thgF4jd4KXaQ4Q=;
+	s=korg; t=1768496451;
+	bh=h87IpPUZQHkhPhJf4m+hskmi4naG/4Ml2ZrtCb8qqiY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Qeq6Fjtl+cd4/NdB3bfq5+68soVIMcWkRLP2cFy3gKlolhx5rgPjnsvov9s7tKePq
-	 /Cz7O9R1Lag9IfvPVxaye3FB0j6l0UpB8N4FXzKvBxxZTMXhdZp7ioql+SjxOfXbaU
-	 OIeanSnkNfpY8WC9xBLK9VG7osRaecCCXKYq7CYM=
+	b=qAFiUOlWRYTLsPbpJvetkT9sRxxV7PNnA7za7RXhE44R1wrG2AAhwwj8StJ0WT5KS
+	 uQJr2kxtvAigWXkWUR8husn+095e75Qa0Zue04q3On+J2+ILE/3plv+jc+b+u592uI
+	 fYoafpGvFOQZa50wNYN8xqqboHeE/dIgbiAmoDKw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Knecht <knecht.alexandre@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 096/181] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.12 018/119] gpio: rockchip: mark the GPIO controller as sleeping
 Date: Thu, 15 Jan 2026 17:47:13 +0100
-Message-ID: <20260115164205.787089620@linuxfoundation.org>
+Message-ID: <20260115164152.619430175@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,80 +60,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Knecht <knecht.alexandre@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 3128df6be147768fe536986fbb85db1d37806a9f ]
+commit 20cf2aed89ac6d78a0122e31c875228e15247194 upstream.
 
-When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
-incorrectly stripped from frames during egress processing.
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization.
 
-br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
-from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
-moves any "next" VLAN from the payload into hwaccel:
+This can cause the following lockdep splat with shared GPIOs enabled on
+boards which have multiple devices using the same GPIO:
 
-    /* move next vlan tag to hw accel tag */
-    __skb_vlan_pop(skb, &vlan_tci);
-    __vlan_hwaccel_put_tag(skb, vlan_proto, vlan_tci);
+BUG: sleeping function called from invalid context at
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name:
+kworker/u16:0
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+6 locks held by kworker/u16:0/12:
+  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0},
+at: process_one_work+0x18c/0x604
+  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at:
+process_one_work+0x1b4/0x604
+  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at:
+__device_attach+0x38/0x1b0
+  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at:
+gpiod_direction_output_raw_commit+0x0/0x360
+  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at:
+gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
+  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at:
+gpiod_direction_output_raw_commit+0x0/0x360
+irq event stamp: 81450
+hardirqs last  enabled at (81449): [<ffff8000813acba4>]
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (81450): [<ffff8000813abfb8>]
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (79616): [<ffff8000811455fc>]
+__alloc_skb+0x17c/0x1e8
+softirqs last disabled at (79614): [<ffff8000811455fc>]
+__alloc_skb+0x17c/0x1e8
+CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted
+6.19.0-rc4-next-20260105+ #11975 PREEMPT
+Hardware name: Hardkernel ODROID-M1 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_direction+0x3c/0xe0
+  pinctrl_gpio_direction_output+0x14/0x20
+  rockchip_gpio_direction_output+0xb8/0x19c
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_direction_output+0x34/0xf8
+  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_configure_flags+0xbc/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get_optional+0x18/0x30
+  rockchip_pcie_probe+0x98/0x380
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
 
-For QinQ frames where the C-VLAN sits in the payload, this moves it to
-hwaccel where it gets lost during VXLAN encapsulation.
-
-Fix by calling __vlan_hwaccel_clear_tag() directly, which clears only
-the hwaccel S-VLAN and leaves the payload untouched.
-
-This path is only taken when vlan_tunnel is enabled and tunnel_info
-is configured, so 802.1Q bridges are unaffected.
-
-Tested with 802.1ad bridge + VXLAN vlan_tunnel, verified C-VLAN
-preserved in VXLAN payload via tcpdump.
-
-Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
-Signed-off-by: Alexandre Knecht <knecht.alexandre@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251228020057.2788865-1-knecht.alexandre@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+Cc: stable@vger.kernel.org
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com/
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bridge/br_vlan_tunnel.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-rockchip.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/bridge/br_vlan_tunnel.c b/net/bridge/br_vlan_tunnel.c
-index a966a6ec82634..257cae9f15698 100644
---- a/net/bridge/br_vlan_tunnel.c
-+++ b/net/bridge/br_vlan_tunnel.c
-@@ -189,7 +189,6 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 	IP_TUNNEL_DECLARE_FLAGS(flags) = { };
- 	struct metadata_dst *tunnel_dst;
- 	__be64 tunnel_id;
--	int err;
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -584,6 +584,7 @@ static int rockchip_gpiolib_register(str
+ 	gc->ngpio = bank->nr_pins;
+ 	gc->label = bank->name;
+ 	gc->parent = bank->dev;
++	gc->can_sleep = true;
  
- 	if (!vlan)
- 		return 0;
-@@ -199,9 +198,13 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 		return 0;
- 
- 	skb_dst_drop(skb);
--	err = skb_vlan_pop(skb);
--	if (err)
--		return err;
-+	/* For 802.1ad (QinQ), skb_vlan_pop() incorrectly moves the C-VLAN
-+	 * from payload to hwaccel after clearing S-VLAN. We only need to
-+	 * clear the hwaccel S-VLAN; the C-VLAN must stay in payload for
-+	 * correct VXLAN encapsulation. This is also correct for 802.1Q
-+	 * where no C-VLAN exists in payload.
-+	 */
-+	__vlan_hwaccel_clear_tag(skb);
- 
- 	if (BR_INPUT_SKB_CB(skb)->backup_nhid) {
- 		__set_bit(IP_TUNNEL_KEY_BIT, flags);
--- 
-2.51.0
-
+ 	ret = gpiochip_add_data(gc, bank);
+ 	if (ret) {
 
 
 
