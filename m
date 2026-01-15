@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209260-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209680-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C9933D267E3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:34 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38227D271C1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:06:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C9A32307C9F1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DA2F333D7C70
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5363C0095;
-	Thu, 15 Jan 2026 17:29:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DCA93D6F28;
+	Thu, 15 Jan 2026 17:49:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QopqzinT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cWUKoY2g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE21C3D3311;
-	Thu, 15 Jan 2026 17:29:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5A073C00B0;
+	Thu, 15 Jan 2026 17:49:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498189; cv=none; b=K8S5ChA11WZBXcj2kM9tBOtQq8UMPb4dj+i8bP8L5jGbHNk0HoPJnO7CmGAg1y7PDF9nhs24okoi2klfKN3Z/QJHE2i11An2ZlkRRSnbllgFZlgvKXfAek0NOtDG2CBrXKb7RBHgOMwqzZi3lZ8RzbfphNnT5iJ9UoyPuin+GKM=
+	t=1768499385; cv=none; b=ZWdJiMuvMc/cFYhnfGoqD2D+kESyPPlSwkY2cg2SuDT+m0sIv6M72vXfqV+JCgEc1HDw2aR22lAWXNCMk9LW+mugssPKyl8DkXu0RhRwO1hlht3hvFmRYhsz4Sug0C63UJkH9JWkzL99mn/Y40ht6tkbFBZR8xfZSr/E1y7WkoY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498189; c=relaxed/simple;
-	bh=bwRrVX2PtxeWK9NoFP0iw5U43sV5o2mz+OT5AbIHda0=;
+	s=arc-20240116; t=1768499385; c=relaxed/simple;
+	bh=fX6e3Lrg7PEyoDebCmmeSLtdHUlIQHd5spjgRHnCeaA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=hx5KnU9zB5Qfq8CZkIvo/KlcL22YRPb6i53Vk14mr1dvizU75BwojjkVJBdqxVxRf3woJEvjC9Xd44iqng58/NZYcUywg/kHd7T6QjZTyBuQudIHzz0ie6C/bJo8gRuofFIHBlJmjWzB/Won9BM4bLh5qzi3J1CuUIDNHwyES6g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QopqzinT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C22AC116D0;
-	Thu, 15 Jan 2026 17:29:49 +0000 (UTC)
+	 MIME-Version; b=FdjTltQZ/0wN/um+w/w+yDHBuGDeAlzPe83yqFWGXd88pYm/ee5I5nxLlD/qI1rpkKyRkqkyekSJyT/BT247UgmTteqdJWyMQVRZsqJDbyeMQch7cReHCxqFzH/LdBaLxqGDSXXuhBsh9M8t3jcKGRwJEqlKRovfP9LH5P0gJu4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cWUKoY2g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EADCDC2BC86;
+	Thu, 15 Jan 2026 17:49:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498189;
-	bh=bwRrVX2PtxeWK9NoFP0iw5U43sV5o2mz+OT5AbIHda0=;
+	s=korg; t=1768499385;
+	bh=fX6e3Lrg7PEyoDebCmmeSLtdHUlIQHd5spjgRHnCeaA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QopqzinTZcAImNwAmxJs1Mq1p/BHptVD516mERLoYTzaASdy8ejBdQGmCz5lD/fB6
-	 RxrfDuT1bDPGQJSknsv/xrhzaXnvmMjQUMD5W0agoNdF9dRyTAP29IvmWMNeqSOJ4B
-	 /b8RYItrAuYqeCNg/ZouT1Npm0pc+qLI4AZB+Af8=
+	b=cWUKoY2g4HYzCb1KnlgG8yoUIQP8QYsztrHmFdtSYW59HMwicxj7/j9oLn9LE5Sxz
+	 xCx2m6PJ3CkN2zIWFBJQcZYSljZEIwTdxfWpwn4Qkv7bvIREUQhIGP371hT10e+hZK
+	 e3KAesDtLKT9TFkeXcwcGj7AX+nZOxX76ZghCQ0c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jacky Chou <jacky_chou@aspeedtech.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Tony Battersby <tonyb@cybernetics.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 343/554] net: mdio: aspeed: add dummy read to avoid read-after-write issue
-Date: Thu, 15 Jan 2026 17:46:49 +0100
-Message-ID: <20260115164258.644808978@linuxfoundation.org>
+Subject: [PATCH 5.10 209/451] scsi: qla2xxx: Fix initiator mode with qlini_mode=exclusive
+Date: Thu, 15 Jan 2026 17:46:50 +0100
+Message-ID: <20260115164238.461435105@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jacky Chou <jacky_chou@aspeedtech.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
+[ Upstream commit 8f58fc64d559b5fda1b0a5e2a71422be61e79ab9 ]
 
-The Aspeed MDIO controller may return incorrect data when a read operation
-follows immediately after a write. Due to a controller bug, the subsequent
-read can latch stale data, causing the polling logic to terminate earlier
-than expected.
+When given the module parameter qlini_mode=exclusive, qla2xxx in
+initiator mode is initially unable to successfully send SCSI commands to
+devices it finds while scanning, resulting in an escalating series of
+resets until an adapter reset clears the issue.  Fix by checking the
+active mode instead of the module parameter.
 
-To work around this hardware issue, insert a dummy read after each write
-operation. This ensures that the next actual read returns the correct
-data and prevents premature polling exit.
-
-This workaround has been verified to stabilize MDIO transactions on
-affected Aspeed platforms.
-
-Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
-Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://patch.msgid.link/1715ec14-ba9a-45dc-9cf2-d41aa6b81b5e@cybernetics.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-aspeed.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/scsi/qla2xxx/qla_os.c | 8 +-------
+ 1 file changed, 1 insertion(+), 7 deletions(-)
 
-diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-index f22be2f069e9..a929399a10d1 100644
---- a/drivers/net/mdio/mdio-aspeed.c
-+++ b/drivers/net/mdio/mdio-aspeed.c
-@@ -57,6 +57,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
+diff --git a/drivers/scsi/qla2xxx/qla_os.c b/drivers/scsi/qla2xxx/qla_os.c
+index a6ecb4bb7456..f35a53cc00dd 100644
+--- a/drivers/scsi/qla2xxx/qla_os.c
++++ b/drivers/scsi/qla2xxx/qla_os.c
+@@ -3288,13 +3288,7 @@ qla2x00_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
+ 	    base_vha->mgmt_svr_loop_id, host->sg_tablesize);
  
- 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
+ 	if (ha->mqenable) {
+-		bool startit = false;
+-
+-		if (QLA_TGT_MODE_ENABLED())
+-			startit = false;
+-
+-		if (ql2x_ini_mode == QLA2XXX_INI_MODE_ENABLED)
+-			startit = true;
++		bool startit = !!(host->active_mode & MODE_INITIATOR);
  
-+	/* Workaround for read-after-write issue.
-+	 * The controller may return stale data if a read follows immediately
-+	 * after a write. A dummy read forces the hardware to update its
-+	 * internal state, ensuring that the next real read returns correct data.
-+	 */
-+	ioread32(ctx->base + ASPEED_MDIO_CTRL);
-+
- 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
- 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
- 				ASPEED_MDIO_INTERVAL_US,
+ 		/* Create start of day qpairs for Block MQ */
+ 		for (i = 0; i < ha->max_qpairs; i++)
 -- 
 2.51.0
 
