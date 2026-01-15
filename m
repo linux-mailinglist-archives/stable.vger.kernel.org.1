@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209158-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209546-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 55294D26AF4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id D8ED9D277F2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BF2E93163D8A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0A10531D6818
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 623473C008D;
-	Thu, 15 Jan 2026 17:24:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9ED2B2D9ECB;
+	Thu, 15 Jan 2026 17:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RkF+ylUq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Dmk35ycK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2680D3BFE39;
-	Thu, 15 Jan 2026 17:24:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 616CE2D541B;
+	Thu, 15 Jan 2026 17:43:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497899; cv=none; b=i6ZZIgiJpWY3D2f76Kh18klf64MXHyu+BsDx0T11XfPiwXV5BNUi3SvBpBiWOwU8fdEW9iB8buzRI92WmBn6af9SiW4Zza+EaO4T3mgu/BYvBwF44oWqszRaBZdYcijls9rmbpF99VN6WJqfqW7t+/sPFCn5V5NBMc6+u9CymwA=
+	t=1768499004; cv=none; b=b+IHS8eymvBc0X2+Q9v/dH/T60nGAHnEw9L4qRgq5POAhbVpNnE2t0Z+V8KVxUZLmJHbL4KRk75kaEyLAYU9CEerNMB6BJad5aEBAiagX+7+UbVWmMFspksZe7zofkmwCcEMaAhpxpkjtttyNDsJ84VjI4uM38Ut6DxkdWnKPyM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497899; c=relaxed/simple;
-	bh=M2Ntu76J/hB90ZWfS9wkzIb/ZtNQ09al7/EJ4ZYAuH0=;
+	s=arc-20240116; t=1768499004; c=relaxed/simple;
+	bh=iL8HG70ghfCwCJxpOoNOwpdXjOx+4klQhX6ogx+6EmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V4XdAqWEv2MefJyksiAlNuVR/ysq9mgULv6gtzbxXfQrksuIJ/W9Oju1TVAdNrPMFYy4E/dn1R3Gsy6v7opR0XmjPNkBibCgX+SoScUhfwaRSPcUEkcBrfRyI5iI/LN/aBZHde0LiAX/aH0FUvB5Y6pLln8V7iBgSVrzWZTWj1k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RkF+ylUq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60A41C16AAE;
-	Thu, 15 Jan 2026 17:24:58 +0000 (UTC)
+	 MIME-Version; b=W7CCnr31xiFkpAQJikYMMWWgpwLzkdmLMY9vdx47Axs0EJ1NtaeaAdc2WcisAB0ygn/UpLKqIybfpG+H1uFi9CNMHv3Z13E1/4fhfiP65mdrKkF6J2+Wevc4xURC7IZxkbzYUsoGDgyi3LiK5PlH/1f71Z3dVbhtkDxi5Snwdkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Dmk35ycK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D39C6C116D0;
+	Thu, 15 Jan 2026 17:43:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497898;
-	bh=M2Ntu76J/hB90ZWfS9wkzIb/ZtNQ09al7/EJ4ZYAuH0=;
+	s=korg; t=1768499004;
+	bh=iL8HG70ghfCwCJxpOoNOwpdXjOx+4klQhX6ogx+6EmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RkF+ylUqHwXmsoDoMmXuHfCSVUgFOo00n7Vs1EZ7/zM4B2IukBFv86oIjGbLHohJT
-	 hPfX5nohQHRaZQJaGPEc94P8NwNdsYCH2OGSntz2afJv4sv82Xes+AQhfUsiamL6GG
-	 0Sr2UZpfcUgWK51bsRKLQyQ9c6tdGaWfyxtEC1Y4=
+	b=Dmk35ycKuCJhF6NIPdQeNJ3GCpz8243vdvfOeNaA9QTRiVzEscJS5vp0JaGE/iD2O
+	 lvkSHA8l5AI4EC8fFvjKzwhHT43z7IGPzYszhB6sjw6im+ino+RnlO4ijBzgYUJyRm
+	 Yb+IOIu/nvlCrIXc3lYSxAJ4/L2rscD4cnShJ2Ck=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+eadd98df8bceb15d7fed@syzkaller.appspotmail.com,
-	Qu Wenruo <wqu@suse.com>,
-	Deepanshu Kartikey <kartikey406@gmail.com>,
-	David Sterba <dsterba@suse.com>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 209/554] btrfs: fix memory leak of fs_devices in degraded seed device path
+Subject: [PATCH 5.10 074/451] ACPI: property: Fix fwnode refcount leak in acpi_fwnode_graph_parse_endpoint()
 Date: Thu, 15 Jan 2026 17:44:35 +0100
-Message-ID: <20260115164253.817819535@linuxfoundation.org>
+Message-ID: <20260115164233.577414774@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,52 +61,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepanshu Kartikey <kartikey406@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit b57f2ddd28737db6ff0e9da8467f0ab9d707e997 ]
+[ Upstream commit 593ee49222a0d751062fd9a5e4a963ade4ec028a ]
 
-In open_seed_devices(), when find_fsid() fails and we're in DEGRADED
-mode, a new fs_devices is allocated via alloc_fs_devices() but is never
-added to the seed_list before returning. This contrasts with the normal
-path where fs_devices is properly added via list_add().
+acpi_fwnode_graph_parse_endpoint() calls fwnode_get_parent() to obtain the
+parent fwnode but returns without calling fwnode_handle_put() on it. This
+potentially leads to a fwnode refcount leak and prevents the parent node
+from being released properly.
 
-If any error occurs later in read_one_dev() or btrfs_read_chunk_tree(),
-the cleanup code iterates seed_list to free seed devices, but this
-orphaned fs_devices is never found and never freed, causing a memory
-leak. Any devices allocated via add_missing_dev() and attached to this
-fs_devices are also leaked.
+Call fwnode_handle_put() on the parent fwnode before returning to prevent
+the leak from occurring.
 
-Fix this by adding the newly allocated fs_devices to seed_list in the
-degraded path, consistent with the normal path.
-
-Fixes: 5f37583569442 ("Btrfs: move the missing device to its own fs device list")
-Reported-by: syzbot+eadd98df8bceb15d7fed@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=eadd98df8bceb15d7fed
-Tested-by: syzbot+eadd98df8bceb15d7fed@syzkaller.appspotmail.com
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: 3b27d00e7b6d ("device property: Move fwnode graph ops to firmware specific locations")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Reviewed-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+[ rjw: Changelog edits ]
+Link: https://patch.msgid.link/20251111075000.1828-1-vulab@iscas.ac.cn
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c | 1 +
+ drivers/acpi/property.c | 1 +
  1 file changed, 1 insertion(+)
 
-diff --git a/fs/btrfs/volumes.c b/fs/btrfs/volumes.c
-index 316f099a0bcfe..c18918ce8edde 100644
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -7322,6 +7322,7 @@ static struct btrfs_fs_devices *open_seed_devices(struct btrfs_fs_info *fs_info,
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 821150dcb9762..7c3d98fae457d 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1423,6 +1423,7 @@ static int acpi_fwnode_graph_parse_endpoint(const struct fwnode_handle *fwnode,
+ 	if (fwnode_property_read_u32(fwnode, "reg", &endpoint->id))
+ 		fwnode_property_read_u32(fwnode, "endpoint", &endpoint->id);
  
- 		fs_devices->seeding = true;
- 		fs_devices->opened = 1;
-+		list_add(&fs_devices->seed_list, &fs_info->fs_devices->seed_list);
- 		return fs_devices;
- 	}
++	fwnode_handle_put(port_fwnode);
+ 	return 0;
+ }
  
 -- 
 2.51.0
