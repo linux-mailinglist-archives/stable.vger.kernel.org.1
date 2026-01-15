@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-209737-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209314-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 448AED272B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F314AD26989
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 650533058C7B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:38 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AFDCB30D6680
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5C213B8D5F;
-	Thu, 15 Jan 2026 17:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C6A8B3BC4F2;
+	Thu, 15 Jan 2026 17:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LpeRKJau"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r91fHnrv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 406153D4112;
-	Thu, 15 Jan 2026 17:52:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8ABCE3AE701;
+	Thu, 15 Jan 2026 17:32:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499548; cv=none; b=de/eaTCnmEIIYxa0O0YNH3784/KOZpp5ce/B+SmL6gwCaPzDgeyNXmCjujVSFV3ZEqTI/CdtWFqPJVrErQWwT36jbMVPYzr3GBP0hZWOFFWKvztfPqVZijpEnjJSZrVj3PAkOkwzukNKqzjU4f2ufcWCGoK57dCX9zAW04ffDm8=
+	t=1768498343; cv=none; b=FjanyGLoZtvejlIrUyCyNZ2Isi8Ip1wbYwY16yWImXj30lOPQxx7valt0b2xs4GgP0HIh7GnJoKrcRvyzxKa3MLTJNgmYNg2ybrIYqDMC8gZXhqraucop3HFK28Xjn2OtsiBfuzxGqG7eySALpdc41OwQ1gjhU2GDIyH0euhjig=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499548; c=relaxed/simple;
-	bh=Z8Fg9pT8SBIr9R8BK0SaeAQWGNKDWIBQTz05M/9o9QY=;
+	s=arc-20240116; t=1768498343; c=relaxed/simple;
+	bh=5fwUWIpxp58EGaMa1nYy4RqhJlItmZ0x5F7Y7RJBsL8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=fYik7eoW736fF21vK18kSVNhPD9OEOjoD5G+/pCsjKZzqIGG8rCdQkrJJ1/ZLg6daDDIZj2Gs3lv74ze9igDBNM8ljoswjaTkPrsGIQsMEIqRydN6t2TJWuzxeNgouHQW4PmDwTBhvno2fj0h5f7goYqbEOUVZmN2TuzviFmRI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LpeRKJau; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7E00C116D0;
-	Thu, 15 Jan 2026 17:52:27 +0000 (UTC)
+	 MIME-Version; b=lIBoupJlRqa2r8vK84KS0dxeJHTNmWqH0nIytOLzl7PqzAWlndPms+biD/pyQ9xeBH1BUwVIb7Ia3UYHe9AXvr+93k3UDtok2j2RmxudaPuBtu6dcLPQz6CCKM+pwMqoV37rSHbXWgtUEDLGSBFr0m9ovPPqKf3WHdvOjua0Tq4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r91fHnrv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15216C116D0;
+	Thu, 15 Jan 2026 17:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499548;
-	bh=Z8Fg9pT8SBIr9R8BK0SaeAQWGNKDWIBQTz05M/9o9QY=;
+	s=korg; t=1768498343;
+	bh=5fwUWIpxp58EGaMa1nYy4RqhJlItmZ0x5F7Y7RJBsL8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LpeRKJauxXWfxq3eVl0CvHmmA0x7rzG/B5PEB8vxTNk+I2aaVeqPkQu1q/EQKlGNO
-	 j+b9TMrPaoWHoNk+ElSVpqQPilThRbeYF1Nh4qNH7uCSJ0gIl+hnBYHD/EjdVG0HSY
-	 byw15yuS5apFFWe39JR8ccRD9pOg8ZlY+xpNGi5I=
+	b=r91fHnrvArivWAARUPWGsULU1D4cG2fApVZ2n5gRLZqstho8xq9Z/LTergo7+DCc1
+	 +Njcb3yLDWP3DjcAb6e45gWpNlB2EDFMmXccYP0YyCtmWmKMn7FjFn+ptg1BxJfbwq
+	 O9Pnsug8kJe7GzBDVJSziqOSBdZH9irIVVZqfiJc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>,
-	Thierry Reding <treding@nvidia.com>
-Subject: [PATCH 5.10 264/451] amba: tegra-ahb: Fix device leak on SMMU enable
+	Duoming Zhou <duoming@zju.edu.cn>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 399/554] media: i2c: adv7842: Remove redundant cancel_delayed_work in probe
 Date: Thu, 15 Jan 2026 17:47:45 +0100
-Message-ID: <20260115164240.435239228@linuxfoundation.org>
+Message-ID: <20260115164300.677252234@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,39 +59,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-commit 500e1368e46928f4b2259612dcabb6999afae2a6 upstream.
+commit e66a5cc606c58e72f18f9cdd868a3672e918f9f8 upstream.
 
-Make sure to drop the reference taken to the AHB platform device when
-looking up its driver data while enabling the SMMU.
+The delayed_work delayed_work_enable_hotplug is initialized with
+INIT_DELAYED_WORK() in adv7842_probe(), but it is never scheduled
+anywhere in the probe function.
 
-Note that holding a reference to a device does not prevent its driver
-data from going away.
+Calling cancel_delayed_work() on a work that has never been
+scheduled is redundant and unnecessary, as there is no pending
+work to cancel.
 
-Fixes: 89c788bab1f0 ("ARM: tegra: Add SMMU enabler in AHB")
-Cc: stable@vger.kernel.org	# 3.5
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Remove the redundant cancel_delayed_work() from error handling
+path and adjust the goto label accordingly to simplify the code
+and avoid potential confusion.
+
+Fixes: a89bcd4c6c20 ("[media] adv7842: add new video decoder driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/amba/tegra-ahb.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/adv7842.c |    4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/amba/tegra-ahb.c
-+++ b/drivers/amba/tegra-ahb.c
-@@ -144,6 +144,7 @@ int tegra_ahb_enable_smmu(struct device_
- 	if (!dev)
- 		return -EPROBE_DEFER;
- 	ahb = dev_get_drvdata(dev);
-+	put_device(dev);
- 	val = gizmo_readl(ahb, AHB_ARBITRATION_XBAR_CTRL);
- 	val |= AHB_ARBITRATION_XBAR_CTRL_SMMU_INIT_DONE;
- 	gizmo_writel(ahb, val, AHB_ARBITRATION_XBAR_CTRL);
+--- a/drivers/media/i2c/adv7842.c
++++ b/drivers/media/i2c/adv7842.c
+@@ -3575,7 +3575,7 @@ static int adv7842_probe(struct i2c_clie
+ 	err = media_entity_pads_init(&sd->entity, ADV7842_PAD_SOURCE + 1,
+ 				     state->pads);
+ 	if (err)
+-		goto err_work_queues;
++		goto err_i2c;
+ 
+ 	err = adv7842_core_init(sd);
+ 	if (err)
+@@ -3596,8 +3596,6 @@ static int adv7842_probe(struct i2c_clie
+ 
+ err_entity:
+ 	media_entity_cleanup(&sd->entity);
+-err_work_queues:
+-	cancel_delayed_work(&state->delayed_work_enable_hotplug);
+ err_i2c:
+ 	adv7842_unregister_clients(sd);
+ err_hdl:
 
 
 
