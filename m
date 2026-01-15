@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209106-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209560-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5BA4AD26531
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:41 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99385D26DC7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 4332B301559E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:31 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id AB5A03060EE8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E242A2D239B;
-	Thu, 15 Jan 2026 17:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9AC3A0B16;
+	Thu, 15 Jan 2026 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0M134WJi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Xbv3VLj2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C4702D6E72;
-	Thu, 15 Jan 2026 17:22:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 907D42D94A7;
+	Thu, 15 Jan 2026 17:44:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497750; cv=none; b=AcloM00TIle0Ft5D8zDA2RtKa9qGidkwA2UYCRKZJuPqu7OpofqUfLjDZLHTNbfpxd/PIGZj1jtj9GgMRlhKriWsK/VYKpQe2h1ezRw0mKIRPCoVdzEesYlw0KJuLwDdFbGIw3YpZbhcy3e3+l1y9tMcufVpK+LL6FdLa0sIgyg=
+	t=1768499044; cv=none; b=pFjaWpswu0qlYBPs+25fkDsdo7cRHsL5qPMOdhhUyw91zgCw8rIxM7d0RVcNhMvA0hixd7Z5v2giYAZOCyKrLj/AE2YzRm8pu1nugcWwaUECcHnEsAz0m4ghcd95d05LWj5qntHDiKwlyppS7+IYEKo5XmEnnkqYmCtsVnN3tv0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497750; c=relaxed/simple;
-	bh=8542yIQ7SYGCwGc3+EmWz8Cjf0Xiq08ZC0yBWTLjGAc=;
+	s=arc-20240116; t=1768499044; c=relaxed/simple;
+	bh=g0PI9fkUmBS6D2iRkLjqFnQZEXNSgPe/M/cmYOLfyts=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iSce+mtHXClIWbTC2jS5pnYtee9s57PFgfqoI+8jR58Ljp77vls60UaZ+JO6ZLAe6KqaEMZKONNBE0C2DOopu1/gknMWQr9Fzkf7f2rVZuE9rqOi99USk/v/hb2AmoMRpOECwThANoNzdoddm6ImOP9ypVqdDQHkzWHYQYbRT/U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0M134WJi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 189CFC116D0;
-	Thu, 15 Jan 2026 17:22:29 +0000 (UTC)
+	 MIME-Version; b=A9HK8ejDmINvOa3uWac/x6ow2SGVwox4DoFUAASRbSB2aHRFXl1xUkROVFHj8MYoV28Hkj5uneJ778SxPO3kfpSF7lMHQFhtH58cbLhlbMjXVOP0sagI7cUNOb1dxdiBROmgnmbMl5b0CDN2z+/3oEHEiZxSMy88YJjFoGV27zY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Xbv3VLj2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2316C116D0;
+	Thu, 15 Jan 2026 17:44:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497750;
-	bh=8542yIQ7SYGCwGc3+EmWz8Cjf0Xiq08ZC0yBWTLjGAc=;
+	s=korg; t=1768499044;
+	bh=g0PI9fkUmBS6D2iRkLjqFnQZEXNSgPe/M/cmYOLfyts=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0M134WJiqQUJx/gqhRiOii93ZsedTSaKsUTU3YaEQcxLQbs+7HPhdafcvceqLHZFq
-	 BodrsDmQRltKLls0271rme4Dr+rkaQWc92WP3VXRVm5Agsp/p+8iDLoYUFYfUfJKUT
-	 ZaiO4PZCLJbX4SCgyXyhhKZvorVfs4u2prXJT1Nc=
+	b=Xbv3VLj2hlGOfOIxkyatCkrZ3XmIzY4B8S6LK2EtQWQhW8jzi946JrpFma1kwjtDC
+	 uKtcG4+bWvFKAdXw1MvWf6YvMUCi6cop1tFWRdfdR8Ecj6b7pua42ZZeENs5XCsnmu
+	 atnHWJQ8bQvrgOtzp40a3+4jaNHiElaaU97aYIJ8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andres J Rosa <andyrosa@gmail.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 190/554] ALSA: uapi: Fix typo in asound.h comment
+Subject: [PATCH 5.10 055/451] scsi: target: Do not write NUL characters into ASCII configfs output
 Date: Thu, 15 Jan 2026 17:44:16 +0100
-Message-ID: <20260115164253.137168196@linuxfoundation.org>
+Message-ID: <20260115164232.890241310@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,38 +60,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andres J Rosa <andyrosa@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit 9a97857db0c5655b8932f86b5d18bb959079b0ee ]
+[ Upstream commit c03b55f235e283cae49c88b9602fd11096b92eba ]
 
-Fix 'level-shit' to 'level-shift' in struct snd_cea_861_aud_if comment.
+NUL characters are not allowed in ASCII configfs output. Hence this
+patch.
 
-Fixes: 7ba1c40b536e ("ALSA: Add definitions for CEA-861 Audio InfoFrames")
-Signed-off-by: Andres J Rosa <andyrosa@gmail.com>
-Link: https://patch.msgid.link/20251203162509.1822-1-andyrosa@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251027184639.3501254-2-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/sound/asound.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/target/target_core_configfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/include/uapi/sound/asound.h b/include/uapi/sound/asound.h
-index 93e40f91bd49a..6b9d4e0befa9d 100644
---- a/include/uapi/sound/asound.h
-+++ b/include/uapi/sound/asound.h
-@@ -76,7 +76,7 @@ struct snd_cea_861_aud_if {
- 	unsigned char db2_sf_ss; /* sample frequency and size */
- 	unsigned char db3; /* not used, all zeros */
- 	unsigned char db4_ca; /* channel allocation code */
--	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shit values */
-+	unsigned char db5_dminh_lsv; /* downmix inhibit & level-shift values */
- };
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index e6996428c07d2..182a89ecc5428 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -2635,7 +2635,6 @@ static ssize_t target_lu_gp_members_show(struct config_item *item, char *page)
+ 		cur_len = snprintf(buf, LU_GROUP_NAME_BUF, "%s/%s\n",
+ 			config_item_name(&hba->hba_group.cg_item),
+ 			config_item_name(&dev->dev_group.cg_item));
+-		cur_len++; /* Extra byte for NULL terminator */
  
- /****************************************************************************
+ 		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
 -- 
 2.51.0
 
