@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208697-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209717-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06FA2D26103
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:56 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 51BA6D275F9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BAD0E3040D1C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:09 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8251B3138FE0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 63667350A05;
-	Thu, 15 Jan 2026 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3AE3D34A5;
+	Thu, 15 Jan 2026 17:51:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p/6vEo3h"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2tAZC9hz"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 192282D73A0;
-	Thu, 15 Jan 2026 17:03:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D10BA3BFE37;
+	Thu, 15 Jan 2026 17:51:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496589; cv=none; b=s2LsPMS4A/7aTtVIQfxwj9qC1Rd7lSAodUCNX0FLLxkeBDtD8rR3HBOpa/buKeAXYozdnOxRbz2F3hp1YseHGdjWonaXSucRZ0AQ9d5+kSdkB3qrgbh3MMHBVwRogjnUDMxcsSWqiXIiFBiPYm3nag9wXRsQkaMoziTE9TbW80E=
+	t=1768499490; cv=none; b=Jng093/2d0fZPEKETiUgjkuCbe4qG0BYWK50iHI/iRtO+BWABN7uknwe1TP5UB8DCreQc84sFXFOIf2jefwZSHDQ24/nP9F2YPwYbdsJOBq4zGYV2RaLU4fVBNEewAR12y2drFNhuMYdvW6wD8DUuXH8PJ3LPlEwKzpzGBkDNPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496589; c=relaxed/simple;
-	bh=rBKttZ3+1MCMUY/2XohaR47LjW5TDjppH509OEEUKt0=;
+	s=arc-20240116; t=1768499490; c=relaxed/simple;
+	bh=Lrul5P/j2ODWA/sYOvto6rqNxnfYAZ8UINZcc/mLYKc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZoF3xlLBJYv+/7ic78bh1df9toZd4bb6aYVFqic8dM0z25tYYFCYIU5sQwHqH4By7eUpEHg1G9JdytQh7ySMxuWr8sPi81K5A54NxZmn3kBTVJuMC9RcvrI0scr9sx7xZkR42ZiOGhluczb4VTbGKrQ2Ga16/i4XRXL3KzMdg8U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p/6vEo3h; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B8E9C16AAE;
-	Thu, 15 Jan 2026 17:03:08 +0000 (UTC)
+	 MIME-Version; b=V9AVUeYtd4LU6WaUsAGxej6Z9iC8Sz8yXCWvVcTp2KL5OizOeSzf00iJxAA+/CkgPat3hEMLqpxGDtNtX3CA+OpHWHojleL2g0+O/8f0aH9Zo6dia5NGaIxp/xZH2002FXdf7J84TyzBFhBem8HSznffY4aw8cvDkpFpTNxM71M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2tAZC9hz; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F9ADC116D0;
+	Thu, 15 Jan 2026 17:51:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496589;
-	bh=rBKttZ3+1MCMUY/2XohaR47LjW5TDjppH509OEEUKt0=;
+	s=korg; t=1768499490;
+	bh=Lrul5P/j2ODWA/sYOvto6rqNxnfYAZ8UINZcc/mLYKc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=p/6vEo3hibcD8KjvV+HvpkNELazsNBrTEW/WZxCJHL1pcU+oFmWbMMiBwNVqcjCMi
-	 Gr3gWxyboSCM/LAYkCU9M2GDVAWswJpg1ivggFM8WSZRd7TPmIpbejaxaqZPJE2jOs
-	 yPNe/xOltQBwThIS8SLGHBUfml6JaBqFinib7Slo=
+	b=2tAZC9hzvyrzHcwdFlNZOCKnV9HRqQgGP+gO990TcxmfG0/KWz2NDz7f/VsDPUdeI
+	 R/egKjl4J1X8EZlcPvjnkIlV+1MuNKfkW54h4/UtrlXLg3XF+2xPYMIjE6DIx+v29A
+	 9Q5kamHDjwetWZGjepTQF6Uhj22XK2/yNXRBHyXY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 032/119] ARM: 9461/1: Disable HIGHPTE on PREEMPT_RT kernels
+	Alison Schofield <alison.schofield@intel.com>,
+	Ira Weiny <ira.weiny@intel.com>,
+	Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 5.10 246/451] tools/testing/nvdimm: Use per-DIMM device handle
 Date: Thu, 15 Jan 2026 17:47:27 +0100
-Message-ID: <20260115164153.121790390@linuxfoundation.org>
+Message-ID: <20260115164239.791515070@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,56 +60,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+From: Alison Schofield <alison.schofield@intel.com>
 
-[ Upstream commit fedadc4137234c3d00c4785eeed3e747fe9036ae ]
+commit f59b701b4674f7955170b54c4167c5590f4714eb upstream.
 
-gup_pgd_range() is invoked with disabled interrupts and invokes
-__kmap_local_page_prot() via pte_offset_map(), gup_p4d_range().
-With HIGHPTE enabled, __kmap_local_page_prot() invokes kmap_high_get()
-which uses a spinlock_t via lock_kmap_any(). This leads to an
-sleeping-while-atomic error on PREEMPT_RT because spinlock_t becomes a
-sleeping lock and must not be acquired in atomic context.
+KASAN reports a global-out-of-bounds access when running these nfit
+tests: clear.sh, pmem-errors.sh, pfn-meta-errors.sh, btt-errors.sh,
+daxdev-errors.sh, and inject-error.sh.
 
-The loop in map_new_virtual() uses wait_queue_head_t for wake up which
-also is using a spinlock_t.
+[] BUG: KASAN: global-out-of-bounds in nfit_test_ctl+0x769f/0x7840 [nfit_test]
+[] Read of size 4 at addr ffffffffc03ea01c by task ndctl/1215
+[] The buggy address belongs to the variable:
+[] handle+0x1c/0x1df4 [nfit_test]
 
-Since HIGHPTE is rarely needed at all, turn it off for PREEMPT_RT
-to allow the use of get_user_pages_fast().
+nfit_test_search_spa() uses handle[nvdimm->id] to retrieve a device
+handle and triggers a KASAN error when it reads past the end of the
+handle array. It should not be indexing the handle array at all.
 
-[arnd: rework patch to turn off HIGHPTE instead of HAVE_PAST_GUP]
+The correct device handle is stored in per-DIMM test data. Each DIMM
+has a struct nfit_mem that embeds a struct acpi_nfit_memdev that
+describes the NFIT device handle. Use that device handle here.
 
-Co-developed-by: Arnd Bergmann <arnd@arndb.de>
-
-Acked-by: Linus Walleij <linus.walleij@linaro.org>
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 10246dc84dfc ("acpi nfit: nfit_test supports translate SPA")
+Cc: stable@vger.kernel.org
+Signed-off-by: Alison Schofield <alison.schofield@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>> ---
+Link: https://patch.msgid.link/20251031234227.1303113-1-alison.schofield@intel.com
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/nvdimm/test/nfit.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
-index d5bf16462bdba..cc8beccc4e86d 100644
---- a/arch/arm/Kconfig
-+++ b/arch/arm/Kconfig
-@@ -1229,7 +1229,7 @@ config HIGHMEM
+--- a/tools/testing/nvdimm/test/nfit.c
++++ b/tools/testing/nvdimm/test/nfit.c
+@@ -673,6 +673,7 @@ static int nfit_test_search_spa(struct n
+ 		.addr = spa->spa,
+ 		.region = NULL,
+ 	};
++	struct nfit_mem *nfit_mem;
+ 	u64 dpa;
  
- config HIGHPTE
- 	bool "Allocate 2nd-level pagetables from highmem" if EXPERT
--	depends on HIGHMEM
-+	depends on HIGHMEM && !PREEMPT_RT
- 	default y
- 	help
- 	  The VM uses one page of physical memory for each page table.
--- 
-2.51.0
-
+ 	ret = device_for_each_child(&bus->dev, &ctx,
+@@ -690,8 +691,12 @@ static int nfit_test_search_spa(struct n
+ 	 */
+ 	nd_mapping = &nd_region->mapping[nd_region->ndr_mappings - 1];
+ 	nvdimm = nd_mapping->nvdimm;
++	nfit_mem = nvdimm_provider_data(nvdimm);
++	if (!nfit_mem)
++		return -EINVAL;
+ 
+-	spa->devices[0].nfit_device_handle = handle[nvdimm->id];
++	spa->devices[0].nfit_device_handle =
++		__to_nfit_memdev(nfit_mem)->device_handle;
+ 	spa->num_nvdimms = 1;
+ 	spa->devices[0].dpa = dpa;
+ 
 
 
 
