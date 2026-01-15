@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209550-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209129-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8B3A8D26DDB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52B64D272FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C43013048928
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9781A314CA80
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 374AF2C0F83;
-	Thu, 15 Jan 2026 17:43:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4B13BFE2A;
+	Thu, 15 Jan 2026 17:23:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Bwdt2LuI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qArxfcul"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7C12C3268;
-	Thu, 15 Jan 2026 17:43:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBCE3A0E9A;
+	Thu, 15 Jan 2026 17:23:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499016; cv=none; b=M16riZHfVWfXkTIuMfdCB0j282RCWQ2104yszju6UKA9vYCAIScG0xY8B4lY6hHcbC97aB/SVOgCmea33DjBmeklO1AvtLUySdeT3nA0RwGHhv7ruMVyp9uwa8FO7YkHoCriH7xLAd5JGO0juMqziKOXFD2IM95KNI9vF6GXEfs=
+	t=1768497815; cv=none; b=mK/nD8vTnGbnHLP8f0BDl4I6vWV9YH6tZc/COBpoF5O0Mx7aMmD7nObb15rfcZ/UXs5DUze4McRX+D20409JompiTlDUzjDHQ5z9lHVYZwRU0zHxMm9KM7hY9n7+4JLP3frKo3qno12crmrm7/uWCuhl+xM2vLkR95fHVvxFbYs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499016; c=relaxed/simple;
-	bh=CH/VsXFjJTBDmf34p164DqsMQvK8YVIIWSe+lsJv99o=;
+	s=arc-20240116; t=1768497815; c=relaxed/simple;
+	bh=JLk5KTEQ+GuZM3DABOBMIFzRcFTK6wXahe0KH4bND7o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iIihlQ1HNHEhqGVZqeN55Rio+rGlCk3Qi5OaGZ9plWGefdWosLKoBCTrLEKN1/8J77UUe9VAPtVreAwRwV9XyeBZIFN1d6YIxcYSi4rDidF5pmmhRKADLL8ZnuriczDgfOodvYhO+rwwi815PEc5ZhmM+Eesn4v5URPLAqT9kbk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Bwdt2LuI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7AA6EC116D0;
-	Thu, 15 Jan 2026 17:43:35 +0000 (UTC)
+	 MIME-Version; b=Uia/5qLBpIIAyhr5R9n/6VosakpP/OfDcL03j3QAFTisYmwBIG1erFF09yazc+m7nfmjfq7PpEEGLTnvyTuAKv9ehQoHBTlX7mZaqMsFTKwJyyZSPWzopO5bPdd+lkj2Rh879odeLmjwt7srMp8Z9gJQun9vnCdYZvAb2678xDA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qArxfcul; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A3BC16AAE;
+	Thu, 15 Jan 2026 17:23:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499015;
-	bh=CH/VsXFjJTBDmf34p164DqsMQvK8YVIIWSe+lsJv99o=;
+	s=korg; t=1768497815;
+	bh=JLk5KTEQ+GuZM3DABOBMIFzRcFTK6wXahe0KH4bND7o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Bwdt2LuIVfU7EGCGqh+0KsQn4kR63M6P3oKbUhlfkWl0SS3aDNzjwaUaigeXbFDDG
-	 Vv7jaeYD2hA1ne2QJYDG48dXfxzF8HxBCpmGaji5yA+2mfZ/L+Anbn48OzMFnPjP01
-	 pTbwieJmXAatwY6EIHIx341DuNlHjJo864SqV2+w=
+	b=qArxfculER8Bd+wIPFJwKvjBKfNw8x8ZDNURKqWg+JG8HnvZhyt5m4H1Lxzr7DwHp
+	 RAPs30ATXKx6cWS2yshfoeekEFgZOxGva/+QHhWi3TSN2PeTtcaAGHldMZppSortca
+	 cq1bRpXHR2oYK6+6Tgb1oxa2f7HUFbCuuDbtXOdI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrii Nakryiko <andrii@kernel.org>,
-	Eduard Zingerman <eddyz87@gmail.com>,
+	Shuhao Fu <sfual@cse.ust.hk>,
+	Viresh Kumar <viresh.kumar@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 078/451] selftests/bpf: Fix failure paths in send_signal test
-Date: Thu, 15 Jan 2026 17:44:39 +0100
-Message-ID: <20260115164233.736261316@linuxfoundation.org>
+Subject: [PATCH 5.15 214/554] cpufreq: s5pv210: fix refcount leak
+Date: Thu, 15 Jan 2026 17:44:40 +0100
+Message-ID: <20260115164253.996317529@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexei Starovoitov <ast@kernel.org>
+From: Shuhao Fu <sfual@cse.ust.hk>
 
-[ Upstream commit c13339039891dbdfa6c1972f0483bd07f610b776 ]
+[ Upstream commit 2de5cb96060a1664880d65b120e59485a73588a8 ]
 
-When test_send_signal_kern__open_and_load() fails parent closes the
-pipe which cases ASSERT_EQ(read(pipe_p2c...)) to fail, but child
-continues and enters infinite loop, while parent is stuck in wait(NULL).
-Other error paths have similar issue, so kill the child before waiting on it.
+In function `s5pv210_cpu_init`, a possible refcount inconsistency has
+been identified, causing a resource leak.
 
-The bug was discovered while compiling all of selftests with -O1 instead of -O2
-which caused progs/test_send_signal_kern.c to fail to load.
+Why it is a bug:
+1. For every clk_get, there should be a matching clk_put on every
+successive error handling path.
+2. After calling `clk_get(dmc1_clk)`, variable `dmc1_clk` will not be
+freed even if any error happens.
 
-Fixes: ab8b7f0cb358 ("tools/bpf: Add self tests for bpf_send_signal_thread()")
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Link: https://lore.kernel.org/bpf/20251113171153.2583-1-alexei.starovoitov@gmail.com
+How it is fixed: For every failed path, an extra goto label is added to
+ensure `dmc1_clk` will be freed regardlessly.
+
+Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/send_signal.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/cpufreq/s5pv210-cpufreq.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/send_signal.c b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-index 0b6349070824b..b6e09b383fdb8 100644
---- a/tools/testing/selftests/bpf/prog_tests/send_signal.c
-+++ b/tools/testing/selftests/bpf/prog_tests/send_signal.c
-@@ -144,6 +144,11 @@ static void test_send_signal_common(struct perf_event_attr *attr,
- skel_open_load_failure:
- 	close(pipe_c2p[0]);
- 	close(pipe_p2c[1]);
-+	/*
-+	 * Child is either about to exit cleanly or stuck in case of errors.
-+	 * Nudge it to exit.
-+	 */
-+	kill(pid, SIGKILL);
- 	wait(NULL);
- }
+diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
+index ad7d4f272ddcb..f51b2e84ef63d 100644
+--- a/drivers/cpufreq/s5pv210-cpufreq.c
++++ b/drivers/cpufreq/s5pv210-cpufreq.c
+@@ -518,7 +518,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
  
+ 	if (policy->cpu != 0) {
+ 		ret = -EINVAL;
+-		goto out_dmc1;
++		goto out;
+ 	}
+ 
+ 	/*
+@@ -530,7 +530,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
+ 		pr_err("CPUFreq doesn't support this memory type\n");
+ 		ret = -EINVAL;
+-		goto out_dmc1;
++		goto out;
+ 	}
+ 
+ 	/* Find current refresh counter and frequency each DMC */
+@@ -544,6 +544,8 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+ 	cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
+ 	return 0;
+ 
++out:
++	clk_put(dmc1_clk);
+ out_dmc1:
+ 	clk_put(dmc0_clk);
+ out_dmc0:
 -- 
 2.51.0
 
