@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208903-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209822-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0AD72D2644E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:43 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 31A8CD2772A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A5362303180C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CE8EF306B552
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0604D3BFE35;
-	Thu, 15 Jan 2026 17:12:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 46D6F3D3007;
+	Thu, 15 Jan 2026 17:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="b5MfXJET"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="v32d8X0g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BCF413BFE43;
-	Thu, 15 Jan 2026 17:12:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0A68B214A9B;
+	Thu, 15 Jan 2026 17:56:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497172; cv=none; b=AxNmGb+kdOUefH9uikFZFsg3rwMquCLAnmOAPVZecAS0AWLO1g/8KhansjDAwoMj50HtBoqBDjfzLQsyWym0r3wD2aFJeNHp9z4IufkTIEdhcx5oytzklpO/UA2REQvtohAocSCcDI+LVhMUMd2NUKuq2vP49okaeRJ++kbth0o=
+	t=1768499789; cv=none; b=jYZkRU8Qi16WDg7oAIMVmZD+/fz1vdgN9br239HZ+dJyhetwjbesrbZBjjJVkXXxvS1WclfkFtWWZiHKepKWWvSb79OCnlI6zdYBiuZjU22OQpzsdwfPLZMwURZEydQO6+sUrleDF8D8SP3INNDomI5vpkjPHOhtIkvwUsCRaXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497172; c=relaxed/simple;
-	bh=ij6i4To6LtVq/sUh1VekxR9mrkf0pUYb4IufoTAuLAs=;
+	s=arc-20240116; t=1768499789; c=relaxed/simple;
+	bh=athYsHsmCtEUrbUfZWYgW7cOekBHRtAtWrmbqG9R6ms=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=khPUGhD9nqvMAvWYEDFGIWAdpoaQIczEBJQEYbKbQwC4RUd0B81Rhzw5K53DpWBlYe3YmRQzEscbCxEE4QMy2472ntC2c+w0FSbtuwabj9aH3Y3fYKtHuOor3IKzZMd8JTa6hQA5dhb/UanG/FluqcOFkDqSXn+ymeTQhT/d3Uc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=b5MfXJET; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4453AC116D0;
-	Thu, 15 Jan 2026 17:12:52 +0000 (UTC)
+	 MIME-Version:Content-Type; b=BAMxSnI66cPZsbpcpsQsIFmWN5l3O1XehHibTtu61i80mOod+vvmq61ccCpVMp2cf3YJxkzT8ye/LWmpzndWWOOPM3qZafdgkdS8OGA7dBtTr4EaVFc+Xyg2qS8+ym20uI0R69OY/Ke7iLw9cvwies6CKS/lv+fhwQzzqlJ9tuI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=v32d8X0g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 896C9C116D0;
+	Thu, 15 Jan 2026 17:56:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497172;
-	bh=ij6i4To6LtVq/sUh1VekxR9mrkf0pUYb4IufoTAuLAs=;
+	s=korg; t=1768499788;
+	bh=athYsHsmCtEUrbUfZWYgW7cOekBHRtAtWrmbqG9R6ms=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=b5MfXJETj/N9SLHRTO+Dmo8d4zwtcFJ35CdWFfbeJUfecA3+V/nvib4B2X7ePK2ix
-	 j03eKzkrvvSpAEstOiMnsaLTRMx56eNwqXIQ8Rguc9bYQRcnBMHRCZVXT+ZkoXB8A3
-	 YM5AFSJN4/7iUGcBr3HVAREqdoay3s7jJRbISXsY=
+	b=v32d8X0gpLKzJiu+XSzKn/9tG5pjV1G7STvRqqow+J7kjd8Pe8d9DHyviJlNt8YOq
+	 HQEGiZ2dbCllm9SbTcEh3P9cxLzZ+wqekq9/rZ5x0tf9TBSDutp6jNB0mlqP19uoWF
+	 DheBxGK2MbXb5Js1qt5xQNSI9btmgkiU7iKRSR/U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
+	stable <stable@kernel.org>,
+	=?UTF-8?q?=C5=81ukasz=20Bartosik?= <ukaszb@chromium.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 62/72] bpf: Make variables in bpf_prog_test_run_xdp less confusing
+Subject: [PATCH 5.10 351/451] xhci: dbgtty: fix device unregister
 Date: Thu, 15 Jan 2026 17:49:12 +0100
-Message-ID: <20260115164145.751344388@linuxfoundation.org>
+Message-ID: <20260115164243.599453309@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,108 +58,53 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Łukasz Bartosik <ukaszb@chromium.org>
 
-[ Upstream commit 7eb83bff02ad5e82e8c456c58717ef181c220870 ]
+[ Upstream commit 1f73b8b56cf35de29a433aee7bfff26cea98be3f ]
 
-Change the variable naming in bpf_prog_test_run_xdp() to make the
-overall logic less confusing. As different modes were added to the
-function over the time, some variables got overloaded, making
-it hard to understand and changing the code becomes error-prone.
+When DbC is disconnected then xhci_dbc_tty_unregister_device()
+is called. However if there is any user space process blocked
+on write to DbC terminal device then it will never be signalled
+and thus stay blocked indifinitely.
 
-Replace "size" with "linear_sz" where it refers to the size of metadata
-and data. If "size" refers to input data size, use test.data_size_in
-directly.
+This fix adds a tty_vhangup() call in xhci_dbc_tty_unregister_device().
+The tty_vhangup() wakes up any blocked writers and causes subsequent
+write attempts to DbC terminal device to fail.
 
-Replace "max_data_sz" with "max_linear_sz" to better reflect the fact
-that it is the maximum size of metadata and data (i.e., linear_sz). Also,
-xdp_rxq.frags_size is always PAGE_SIZE, so just set it directly instead
-of subtracting headroom and tailroom and adding them back.
-
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250922233356.3356453-6-ameryhung@gmail.com
-Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
+Cc: stable <stable@kernel.org>
+Fixes: dfba2174dc42 ("usb: xhci: Add DbC support in xHCI driver")
+Signed-off-by: Łukasz Bartosik <ukaszb@chromium.org>
+Link: https://patch.msgid.link/20251119212910.1245694-1-ukaszb@google.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Adjust context ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bpf/test_run.c | 26 +++++++++++++-------------
- 1 file changed, 13 insertions(+), 13 deletions(-)
+ drivers/usb/host/xhci-dbgtty.c |    6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 939bd0d866aba..397736cc2d786 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -1277,9 +1277,9 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- {
- 	bool do_live = (kattr->test.flags & BPF_F_TEST_XDP_LIVE_FRAMES);
- 	u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
-+	u32 retval = 0, duration, max_linear_sz, size;
-+	u32 linear_sz = kattr->test.data_size_in;
- 	u32 batch_size = kattr->test.batch_size;
--	u32 retval = 0, duration, max_data_sz;
--	u32 size = kattr->test.data_size_in;
- 	u32 headroom = XDP_PACKET_HEADROOM;
- 	u32 repeat = kattr->test.repeat;
- 	struct netdev_rx_queue *rxqueue;
-@@ -1313,7 +1313,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+--- a/drivers/usb/host/xhci-dbgtty.c
++++ b/drivers/usb/host/xhci-dbgtty.c
+@@ -468,6 +468,12 @@ static void xhci_dbc_tty_unregister_devi
  
- 	if (ctx) {
- 		/* There can't be user provided data before the meta data */
--		if (ctx->data_meta || ctx->data_end != size ||
-+		if (ctx->data_meta || ctx->data_end != kattr->test.data_size_in ||
- 		    ctx->data > ctx->data_end ||
- 		    unlikely(xdp_metalen_invalid(ctx->data)) ||
- 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
-@@ -1322,30 +1322,30 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 		headroom -= ctx->data;
- 	}
- 
--	max_data_sz = PAGE_SIZE - headroom - tailroom;
--	if (size > max_data_sz) {
--		/* disallow live data mode for jumbo frames */
--		if (do_live)
--			goto free_ctx;
--		size = max_data_sz;
--	}
-+	max_linear_sz = PAGE_SIZE - headroom - tailroom;
-+	linear_sz = min_t(u32, linear_sz, max_linear_sz);
+ 	if (!port->registered)
+ 		return;
++	/*
++	 * Hang up the TTY. This wakes up any blocked
++	 * writers and causes subsequent writes to fail.
++	 */
++	tty_vhangup(port->port.tty);
 +
-+	/* disallow live data mode for jumbo frames */
-+	if (do_live && kattr->test.data_size_in > linear_sz)
-+		goto free_ctx;
- 
--	data = bpf_test_init(kattr, size, max_data_sz, headroom, tailroom);
-+	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
- 	if (IS_ERR(data)) {
- 		ret = PTR_ERR(data);
- 		goto free_ctx;
- 	}
- 
- 	rxqueue = __netif_get_rx_queue(current->nsproxy->net_ns->loopback_dev, 0);
--	rxqueue->xdp_rxq.frag_size = headroom + max_data_sz + tailroom;
-+	rxqueue->xdp_rxq.frag_size = PAGE_SIZE;
- 	xdp_init_buff(&xdp, rxqueue->xdp_rxq.frag_size, &rxqueue->xdp_rxq);
--	xdp_prepare_buff(&xdp, data, headroom, size, true);
-+	xdp_prepare_buff(&xdp, data, headroom, linear_sz, true);
- 	sinfo = xdp_get_shared_info_from_buff(&xdp);
- 
- 	ret = xdp_convert_md_to_buff(ctx, &xdp);
- 	if (ret)
- 		goto free_data;
- 
-+	size = linear_sz;
- 	if (unlikely(kattr->test.data_size_in > size)) {
- 		void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
- 
--- 
-2.51.0
-
+ 	tty_unregister_device(dbc_tty_driver, 0);
+ 	xhci_dbc_tty_exit_port(port);
+ 	port->registered = false;
 
 
 
