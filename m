@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209238-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209662-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9A00ED274C1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id A107FD279E2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:35:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9321F32E3A5B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B55A03016DE7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662B73C197A;
-	Thu, 15 Jan 2026 17:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A93143D3CF3;
+	Thu, 15 Jan 2026 17:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcoruFom"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IUWYGTrl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285682C027B;
-	Thu, 15 Jan 2026 17:28:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AA463C0085;
+	Thu, 15 Jan 2026 17:48:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498127; cv=none; b=DtCdtpoTU2L97SnafDGAB6vOFYDQhhk+hrpvC8dbff5x3lzupDPpQTfJCHIS1NGTLDc4T7KL2WvvfBGQulS/RqL33BVkVH4f1Rzp5qhknIFJ3Qzpew8i0WXnTIjOgHyv2Sr3li63ae8GI9LuyQr4g5d/m2YN+iX5k2Vnhz/b+Uo=
+	t=1768499334; cv=none; b=AtewJmt4YQ8h4sghgCGeEbwRD+0jFFdSDqB2b0foyNhVYMSMx8KzTyn7i/hvNu7AGKQBljpXk56aYL5+Nx2K58WNHKw6Env0uz3OIdwKKgt7ozKPzgyh5ANaxjdvo/rAWNjaT/PExw/Ewvg7kticH9UMYvpd06ZjzgAtB/QxTpg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498127; c=relaxed/simple;
-	bh=AmluADb9lFN+QkxIDOOkcTm5Hx90Gk46SUEZp+hyxEU=;
+	s=arc-20240116; t=1768499334; c=relaxed/simple;
+	bh=dewKG7tWQKGLf14jI177Qbgvt6FiouC8OouWVKpAdnI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LDBfM5wnLh4veRg41heizextAzTV//7ehQVDEDMNF9475ZcJF3MtVDJnzZk4ppeNMvTSFZ47cnA7b/CIC6fo9vmxLyutyOWfrRaSOpa2xAV50s8X9/45ewb6u/1XKKY7KMkI/906xZAEDSojanY9XGSbhlxdsvNgIOJBwxka4CA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcoruFom; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B36C116D0;
-	Thu, 15 Jan 2026 17:28:46 +0000 (UTC)
+	 MIME-Version; b=XTB5SiHogXICq0BvQe+wd4JdD8u91RxHFT5LIultSuifddaNc4SqSTYtnLxO3ujmUpO3stLT4TibZu7FczHbGmuHQ6yFEgqspNtLVsaWKlc2idEPwyNiCJW7xykSRrmE3bazp1pE6Mp71kX1bcFyUP1sSS++0uopjUajGd03408=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IUWYGTrl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB6BDC2BCAF;
+	Thu, 15 Jan 2026 17:48:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498127;
-	bh=AmluADb9lFN+QkxIDOOkcTm5Hx90Gk46SUEZp+hyxEU=;
+	s=korg; t=1768499334;
+	bh=dewKG7tWQKGLf14jI177Qbgvt6FiouC8OouWVKpAdnI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QcoruFomEN0Ldl0ziiifLIU7S4JXU53p16Rm229WdklMJa8cqK01xDckTEL0by7kY
-	 wL6h+sbpyNTmdHx7qtsogtY8JFOvscbrElw4TUDMRq74utmpW9P5NkDzqeKebXbbC0
-	 MQQvS6KmgKgUrcvHQw/39rRbbcYgIzn3w80VzChg=
+	b=IUWYGTrlJL/7IzhjDjg2suerfSXA381YCjcpenzOcAptO7fNFViKkm+uMqja+u3r0
+	 JF8XBaprPWNJNaakY/htfx9hYX4gqEvP8tlervv5Lz9uF7dYKAtRZDbO1PdWFzstwS
+	 SED3rxoS2lSkzs234tD7oh0gTzKCrhOZl3QOyPt0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 5.15 323/554] nfsd: Mark variable __maybe_unused to avoid W=1 build break
-Date: Thu, 15 Jan 2026 17:46:29 +0100
-Message-ID: <20260115164257.920058042@linuxfoundation.org>
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 189/451] hwmon: (ibmpex) fix use-after-free in high/low store
+Date: Thu, 15 Jan 2026 17:46:30 +0100
+Message-ID: <20260115164237.739658489@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,46 +61,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit ebae102897e760e9e6bc625f701dd666b2163bd1 upstream.
+[ Upstream commit 6946c726c3f4c36f0f049e6f97e88c510b15f65d ]
 
-Clang is not happy about set but (in some cases) unused variable:
+The ibmpex_high_low_store() function retrieves driver data using
+dev_get_drvdata() and uses it without validation. This creates a race
+condition where the sysfs callback can be invoked after the data
+structure is freed, leading to use-after-free.
 
-fs/nfsd/export.c:1027:17: error: variable 'inode' set but not used [-Werror,-Wunused-but-set-variable]
+Fix by adding a NULL check after dev_get_drvdata(), and reordering
+operations in the deletion path to prevent TOCTOU.
 
-since it's used as a parameter to dprintk() which might be configured
-a no-op. To avoid uglifying code with the specific ifdeffery just mark
-the variable __maybe_unused.
-
-The commit [1], which introduced this behaviour, is quite old and hence
-the Fixes tag points to the first of the Git era.
-
-Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=0431923fb7a1 [1]
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 57c7c3a0fdea ("hwmon: IBM power meter driver")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://lore.kernel.org/r/MEYPR01MB7886BE2F51BFE41875B74B60AFA0A@MEYPR01MB7886.ausprd01.prod.outlook.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/export.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/hwmon/ibmpex.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/export.c
-+++ b/fs/nfsd/export.c
-@@ -990,7 +990,7 @@ exp_rootfh(struct net *net, struct auth_
+diff --git a/drivers/hwmon/ibmpex.c b/drivers/hwmon/ibmpex.c
+index fe90f0536d76..235d56e96879 100644
+--- a/drivers/hwmon/ibmpex.c
++++ b/drivers/hwmon/ibmpex.c
+@@ -282,6 +282,9 @@ static ssize_t ibmpex_high_low_store(struct device *dev,
  {
- 	struct svc_export	*exp;
- 	struct path		path;
--	struct inode		*inode;
-+	struct inode		*inode __maybe_unused;
- 	struct svc_fh		fh;
- 	int			err;
- 	struct nfsd_net		*nn = net_generic(net, nfsd_net_id);
+ 	struct ibmpex_bmc_data *data = dev_get_drvdata(dev);
+ 
++	if (!data)
++		return -ENODEV;
++
+ 	ibmpex_reset_high_low_data(data);
+ 
+ 	return count;
+@@ -514,6 +517,9 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
+ {
+ 	int i, j;
+ 
++	hwmon_device_unregister(data->hwmon_dev);
++	dev_set_drvdata(data->bmc_device, NULL);
++
+ 	device_remove_file(data->bmc_device,
+ 			   &sensor_dev_attr_reset_high_low.dev_attr);
+ 	device_remove_file(data->bmc_device, &sensor_dev_attr_name.dev_attr);
+@@ -527,8 +533,7 @@ static void ibmpex_bmc_delete(struct ibmpex_bmc_data *data)
+ 		}
+ 
+ 	list_del(&data->list);
+-	dev_set_drvdata(data->bmc_device, NULL);
+-	hwmon_device_unregister(data->hwmon_dev);
++
+ 	ipmi_destroy_user(data->user);
+ 	kfree(data->sensors);
+ 	kfree(data);
+-- 
+2.51.0
+
 
 
 
