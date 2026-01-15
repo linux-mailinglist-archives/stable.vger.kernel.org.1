@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209259-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209678-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9AC18D267C8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id CF47CD27AA0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 933FE307401F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:00 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8992E33D6104
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 01D383D4138;
-	Thu, 15 Jan 2026 17:29:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15C6D3BFE5F;
+	Thu, 15 Jan 2026 17:49:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ntCHL4UI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iiYw4mDy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 787323D3307;
-	Thu, 15 Jan 2026 17:29:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CB8163BFE2E;
+	Thu, 15 Jan 2026 17:49:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498187; cv=none; b=E0E0pJbmBbb07WQgMsio6di5OgICWtsElJSnW6TWnuAEIOWI2KzxzRj0wybj9Ow1RtybGx/6MBKNGXCMLgdd48SscQj06zNQTVwuTW66MMwHnFfnTZIXeGaZ1wW3+w8qTUVKCSTJlI+Kc/+SOcSRdcJgDNrdppXV9DKEcqJRyo0=
+	t=1768499379; cv=none; b=jGoI0WgIbjLpqPOCLNNCqUJ/dGbfpdZ41buoK341IuTTfp+qmkzfQz195rIPU16Yvlu6ZKZIsp0IoCRJp3/cjSredJ2tNZSTAFdUbg7324f3n/jgJZJvr7YVO4mOq6DtEYboMAwRBxsneXhOoGI9VM5bd46ELTLen/aVPa76Qik=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498187; c=relaxed/simple;
-	bh=ZLzHcrnYq6eh537n2gRpxQBBRfivxZLSe/ZIMjZAaMY=;
+	s=arc-20240116; t=1768499379; c=relaxed/simple;
+	bh=UXKcDL1U8XFexPDFXiUSA27HI6TXM0Y8/4hVbZe8BS4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=E41x9dH5rLMR0kEAjy5t4PAz4+Z6XEjUFR1Hg6gNAGV9n0rQqv8t1JM80JhuPNfLiLJ1IcH2IchGgBwfwYuZTaGM1ZIHI5uAktNloK+Fuvup5H7018IkRavq3pnCJABDEdhg4X9OHUpMBBwEKUVruntD2HhBmPHEIBvxvxz1OW4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ntCHL4UI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DECEC116D0;
-	Thu, 15 Jan 2026 17:29:46 +0000 (UTC)
+	 MIME-Version; b=aOQMQcmeclhkmAaCoJa4XyW8e9zP/SD5AxNEwV+mEl1ztrPnuNZZaMu1lUX499wqufBEQdlP0usi8phcozul0HsWlzL+dadTAsdVKPsSihnMjGzlkho7HuoVgfllVzYvCm0DWmP6mCJCdN4dEzrK/kJ/sgun6obHk7liaQ2u7sg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iiYw4mDy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A43DC2BC9E;
+	Thu, 15 Jan 2026 17:49:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498186;
-	bh=ZLzHcrnYq6eh537n2gRpxQBBRfivxZLSe/ZIMjZAaMY=;
+	s=korg; t=1768499379;
+	bh=UXKcDL1U8XFexPDFXiUSA27HI6TXM0Y8/4hVbZe8BS4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ntCHL4UIpOE40S+QADnXg5yIGjDIf4Rzbet9PxclU53ZRR4tohsXGP43TqunUG1Qx
-	 cYg+tHQkBa/RT5rYOxjltZS9dMaoPZR5uw79ApAXm+yoDywA4h+2pCMV2viNSkc9CK
-	 ITnZQnEN9Ucv0mhOEAqXLP8YX8rOw1FCijHataWM=
+	b=iiYw4mDytzHeEpsPTPyY3Rjf65f9OyF/cm4zTyza2M19xR510z21BMsLtuuJTlutU
+	 ACe6VS2f4QCip5XV7tcRGZMhRbPPeD9XvAiN+Z2NVvGkIwyYxOQH58Kr5g8SQlhX5q
+	 soXJS7TwJ5+h4/9CxGvtLTEKW8rb8r4KNc5oRMjY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Potin Lai <potin.lai@quantatw.com>,
+	Josua Mayer <josua@solid-run.com>,
 	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Gregory CLEMENT <gregory.clement@bootlin.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 342/554] net: mdio: aspeed: move reg accessing part into separate functions
+Subject: [PATCH 5.10 207/451] clk: mvebu: cp110 add CLK_IGNORE_UNUSED to pcie_x10, pcie_x11 & pcie_x4
 Date: Thu, 15 Jan 2026 17:46:48 +0100
-Message-ID: <20260115164258.609778557@linuxfoundation.org>
+Message-ID: <20260115164238.388883527@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,140 +61,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Potin Lai <potin.lai@quantatw.com>
+From: Josua Mayer <josua@solid-run.com>
 
-[ Upstream commit 737ca352569e744bf753b4522a6f91b120a734f1 ]
+[ Upstream commit f0e6bc0c3ef4b4afb299bd6912586cafd5d864e9 ]
 
-Add aspeed_mdio_op() and aseed_mdio_get_data() for register accessing.
+CP110 based platforms rely on the bootloader for pci port
+initialization.
+TF-A actively prevents non-uboot re-configuration of pci lanes, and many
+boards do not have software control over the pci card reset.
 
-aspeed_mdio_op() handles operations, write command to control register,
-then check and wait operations is finished (bit 31 is cleared).
+If a pci port had link at boot-time and the clock is stopped at a later
+point, the link fails and can not be recovered.
 
-aseed_mdio_get_data() fetchs the result value of operation from data
-register.
+PCI controller driver probe - and by extension ownership of a driver for
+the pci clocks - may be delayed especially on large modular kernels,
+causing the clock core to start disabling unused clocks.
 
-Signed-off-by: Potin Lai <potin.lai@quantatw.com>
+Add the CLK_IGNORE_UNUSED flag to the three pci port's clocks to ensure
+they are not stopped before the pci controller driver has taken
+ownership and tested for an existing link.
+
+This fixes failed pci link detection when controller driver probes late,
+e.g. with arm64 defconfig and CONFIG_PHY_MVEBU_CP110_COMPHY=m.
+
+Closes: https://lore.kernel.org/r/b71596c7-461b-44b6-89ab-3cfbd492639f@solid-run.com
+Signed-off-by: Josua Mayer <josua@solid-run.com>
 Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: d1a1a4bade4b ("net: mdio: aspeed: add dummy read to avoid read-after-write issue")
+Signed-off-by: Gregory CLEMENT <gregory.clement@bootlin.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/mdio/mdio-aspeed.c | 70 ++++++++++++++++++----------------
- 1 file changed, 38 insertions(+), 32 deletions(-)
+ drivers/clk/mvebu/cp110-system-controller.c | 20 ++++++++++++++++++++
+ 1 file changed, 20 insertions(+)
 
-diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-index e2273588c75b..f22be2f069e9 100644
---- a/drivers/net/mdio/mdio-aspeed.c
-+++ b/drivers/net/mdio/mdio-aspeed.c
-@@ -39,34 +39,35 @@ struct aspeed_mdio {
- 	void __iomem *base;
+diff --git a/drivers/clk/mvebu/cp110-system-controller.c b/drivers/clk/mvebu/cp110-system-controller.c
+index 84c8900542e4..b477396917ad 100644
+--- a/drivers/clk/mvebu/cp110-system-controller.c
++++ b/drivers/clk/mvebu/cp110-system-controller.c
+@@ -110,6 +110,25 @@ static const char * const gate_base_names[] = {
+ 	[CP110_GATE_EIP197]	= "eip197"
  };
  
--static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
-+static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
-+			  u16 data)
- {
- 	struct aspeed_mdio *ctx = bus->priv;
- 	u32 ctrl;
--	u32 data;
--	int rc;
- 
--	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d\n", __func__, addr,
--		regnum);
--
--	/* Just clause 22 for the moment */
--	if (regnum & MII_ADDR_C45)
--		return -EOPNOTSUPP;
-+	dev_dbg(&bus->dev, "%s: st: %u op: %u, phyad: %u, regad: %u, data: %u\n",
-+		__func__, st, op, phyad, regad, data);
- 
- 	ctrl = ASPEED_MDIO_CTRL_FIRE
--		| FIELD_PREP(ASPEED_MDIO_CTRL_ST, ASPEED_MDIO_CTRL_ST_C22)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_OP, MDIO_C22_OP_READ)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_PHYAD, addr)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_REGAD, regnum);
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_ST, st)
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_OP, op)
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_PHYAD, phyad)
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_REGAD, regad)
-+		| FIELD_PREP(ASPEED_MDIO_DATA_MIIRDATA, data);
- 
- 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
- 
--	rc = readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
-+	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
- 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
- 				ASPEED_MDIO_INTERVAL_US,
- 				ASPEED_MDIO_TIMEOUT_US);
--	if (rc < 0)
--		return rc;
-+}
-+
-+static int aspeed_mdio_get_data(struct mii_bus *bus)
++static unsigned long gate_flags(const u8 bit_idx)
 +{
-+	struct aspeed_mdio *ctx = bus->priv;
-+	int rc;
-+	u32 data;
- 
- 	rc = readl_poll_timeout(ctx->base + ASPEED_MDIO_DATA, data,
- 				data & ASPEED_MDIO_DATA_IDLE,
-@@ -78,31 +79,36 @@ static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
- 	return FIELD_GET(ASPEED_MDIO_DATA_MIIRDATA, data);
- }
- 
--static int aspeed_mdio_write(struct mii_bus *bus, int addr, int regnum, u16 val)
-+static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
- {
--	struct aspeed_mdio *ctx = bus->priv;
--	u32 ctrl;
-+	int rc;
- 
--	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d, val: 0x%x\n",
--		__func__, addr, regnum, val);
-+	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d\n", __func__, addr,
-+		regnum);
- 
- 	/* Just clause 22 for the moment */
- 	if (regnum & MII_ADDR_C45)
- 		return -EOPNOTSUPP;
- 
--	ctrl = ASPEED_MDIO_CTRL_FIRE
--		| FIELD_PREP(ASPEED_MDIO_CTRL_ST, ASPEED_MDIO_CTRL_ST_C22)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_OP, MDIO_C22_OP_WRITE)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_PHYAD, addr)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_REGAD, regnum)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_MIIWDATA, val);
-+	rc = aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C22, MDIO_C22_OP_READ,
-+			    addr, regnum, 0);
-+	if (rc < 0)
-+		return rc;
- 
--	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
-+	return aspeed_mdio_get_data(bus);
-+}
- 
--	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
--				  !(ctrl & ASPEED_MDIO_CTRL_FIRE),
--				  ASPEED_MDIO_INTERVAL_US,
--				  ASPEED_MDIO_TIMEOUT_US);
-+static int aspeed_mdio_write(struct mii_bus *bus, int addr, int regnum, u16 val)
-+{
-+	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d, val: 0x%x\n",
-+		__func__, addr, regnum, val);
++	switch (bit_idx) {
++	case CP110_GATE_PCIE_X1_0:
++	case CP110_GATE_PCIE_X1_1:
++	case CP110_GATE_PCIE_X4:
++		/*
++		 * If a port had an active link at boot time, stopping
++		 * the clock creates a failed state from which controller
++		 * driver can not recover.
++		 * Prevent stopping this clock till after a driver has taken
++		 * ownership.
++		 */
++		return CLK_IGNORE_UNUSED;
++	default:
++		return 0;
++	}
++};
 +
-+	/* Just clause 22 for the moment */
-+	if (regnum & MII_ADDR_C45)
-+		return -EOPNOTSUPP;
-+
-+	return aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C22, MDIO_C22_OP_WRITE,
-+			      addr, regnum, val);
- }
+ struct cp110_gate_clk {
+ 	struct clk_hw hw;
+ 	struct regmap *regmap;
+@@ -171,6 +190,7 @@ static struct clk_hw *cp110_register_gate(const char *name,
+ 	init.ops = &cp110_gate_ops;
+ 	init.parent_names = &parent_name;
+ 	init.num_parents = 1;
++	init.flags = gate_flags(bit_idx);
  
- static int aspeed_mdio_probe(struct platform_device *pdev)
+ 	gate->regmap = regmap;
+ 	gate->bit_idx = bit_idx;
 -- 
 2.51.0
 
