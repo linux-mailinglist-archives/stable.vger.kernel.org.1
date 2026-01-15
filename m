@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-208512-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208514-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 18574D25E52
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0C558D25EE0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AEA9A300D299
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:54:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1581F303B7F2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:54:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7B3B3624C4;
-	Thu, 15 Jan 2026 16:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D057396B8F;
+	Thu, 15 Jan 2026 16:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xHH4boI8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K+z3oqah"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9B3B9396B75;
-	Thu, 15 Jan 2026 16:54:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 30DCD42049;
+	Thu, 15 Jan 2026 16:54:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496060; cv=none; b=EwHNxXnOTiJ81yvEcUDNyx2kxk0ozRckRNV7UVuhAJz4Pt/57lVti1y77X0QUkmCuj9/VnHPG7GAXW+obrh2DTi1yxexM5qYZ6HM/rm7qcAFd2IDnuC+VmyzCjFInpMdGiBxB6Nm6ZoqNWbEZHSaC04TV6lgj02A+bK2RxueiFM=
+	t=1768496066; cv=none; b=Oq/5rKwQTJT/Zp4IfrwWZDvDU4Bl1fvjvuAK80gv0LXSGFjMRVGeyxvsG4g0MwalYVv0ME6DnG+Olan0aVmcG7kiGIu6fs0mivRat1IcMUagRVHtNEQWgMOiQSk3H/hX4P+u7QJH0HpqG3cHi3H6vWPevrF9l768Uej2GZiQ5es=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496060; c=relaxed/simple;
-	bh=1CiEMI6r7XQbbOF8hsOwILJ0ai1u16GuCLlArL4VP2Y=;
+	s=arc-20240116; t=1768496066; c=relaxed/simple;
+	bh=DfkQW+IwSf2iYTVOhReVEjQAn7rZRI4L2dXiplxPW2Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TLHpNpxovGho1NSHdlB+VJdi8daYkAHbf0t0pMmPGH9/ruRie6Sw1Pt8iMm/cC+QiS00PxuXvaNx65AIff+rAETlU+pNa+khe0H+fkLMiKD/Wdp3D9Su4rpK5wL6Y8Z9g6gHdRwTi8UPE7Q+QlaLpVGTdx7wwS32qF92aoG/ZOc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xHH4boI8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BBD3C16AAE;
-	Thu, 15 Jan 2026 16:54:19 +0000 (UTC)
+	 MIME-Version; b=Jd30oBYa4eP3GtEaqjq0yKf2rwA/48VkpjaDu6ikq6JAPpSZermzl9uu/lTugyxcsbsUQO/OlP4UW7iwuCPsUbwg0IOjwTQviiMx9r6s8FS1664MjshywJU4IDC5devNxwJNsvN4vQ8PNGmSF9tt0dzmFJhxZgifE8p/SU47kH8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K+z3oqah; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BE8C116D0;
+	Thu, 15 Jan 2026 16:54:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496060;
-	bh=1CiEMI6r7XQbbOF8hsOwILJ0ai1u16GuCLlArL4VP2Y=;
+	s=korg; t=1768496066;
+	bh=DfkQW+IwSf2iYTVOhReVEjQAn7rZRI4L2dXiplxPW2Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xHH4boI8w95txzWsg7g4eDsgd7czffpGYUprVc9J4GFnKbTctuNj7dvuyVcaY3f9X
-	 cnnl6awy5tQa3sPRv8npfqIaZlpyPU9rnG5GIKzSwj7WnXEfmr/CBYLTlHCNd1W4lW
-	 PnjqtLp1NkRwWl+eshF/7bpxcxGZYZgt1MbdoZ5w=
+	b=K+z3oqahTzJRVDuGBoQJ3+PQXF/w4FvI9LJ6EEgDQlgW6PsNbdDH4JDeq+A6O15gN
+	 yi4/JQHLpgaZ/m4OrJJu/Xhmez+Odhc7WXyLwnKGadKFapX2rzgNp+wLikba61mzWG
+	 X8z6tbbB1aEGsh7BRCvgbwZWXsf1SnVqcX5JwVCQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xingui Yang <yangxingui@huawei.com>,
-	Jason Yan <yanaijie@huawei.com>,
-	John Garry <john.g.garry@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Qu Wenruo <wqu@suse.com>,
+	Boris Burkov <boris@bur.io>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 063/181] scsi: Revert "scsi: libsas: Fix exp-attached device scan after probe failure scanned in again after probe failed"
-Date: Thu, 15 Jan 2026 17:46:40 +0100
-Message-ID: <20260115164204.602300017@linuxfoundation.org>
+Subject: [PATCH 6.18 064/181] btrfs: fix qgroup_snapshot_quick_inherit() squota bug
+Date: Thu, 15 Jan 2026 17:46:41 +0100
+Message-ID: <20260115164204.637368369@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -66,56 +65,106 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Xingui Yang <yangxingui@huawei.com>
+From: Boris Burkov <boris@bur.io>
 
-[ Upstream commit 278712d20bc8ec29d1ad6ef9bdae9000ef2c220c ]
+[ Upstream commit 7ee19a59a75e3d5b9ec00499b86af8e2a46fbe86 ]
 
-This reverts commit ab2068a6fb84751836a84c26ca72b3beb349619d.
+qgroup_snapshot_quick_inherit() detects conditions where the snapshot
+destination would land in the same parent qgroup as the snapshot source
+subvolume. In this case we can avoid costly qgroup calculations and just
+add the nodesize of the new snapshot to the parent.
 
-When probing the exp-attached sata device, libsas/libata will issue a
-hard reset in sas_probe_sata() -> ata_sas_async_probe(), then a
-broadcast event will be received after the disk probe fails, and this
-commit causes the probe will be re-executed on the disk, and a faulty
-disk may get into an indefinite loop of probe.
+However, in the case of squotas this is actually a double count, and
+also an undercount for deeper qgroup nestings.
 
-Therefore, revert this commit, although it can fix some temporary issues
-with disk probe failure.
+The following annotated script shows the issue:
 
-Signed-off-by: Xingui Yang <yangxingui@huawei.com>
-Reviewed-by: Jason Yan <yanaijie@huawei.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://patch.msgid.link/20251202065627.140361-1-yangxingui@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+  btrfs quota enable --simple "$mnt"
+
+  # Create 2-level qgroup hierarchy
+  btrfs qgroup create 2/100 "$mnt"  # Q2 (level 2)
+  btrfs qgroup create 1/100 "$mnt"  # Q1 (level 1)
+  btrfs qgroup assign 1/100 2/100 "$mnt"
+
+  # Create base subvolume
+  btrfs subvolume create "$mnt/base" >/dev/null
+  base_id=$(btrfs subvolume show "$mnt/base" | grep 'Subvolume ID:' | awk '{print $3}')
+
+  # Create intermediate snapshot and add to Q1
+  btrfs subvolume snapshot "$mnt/base" "$mnt/intermediate" >/dev/null
+  inter_id=$(btrfs subvolume show "$mnt/intermediate" | grep 'Subvolume ID:' | awk '{print $3}')
+  btrfs qgroup assign "0/$inter_id" 1/100 "$mnt"
+
+  # Create working snapshot with --inherit (auto-adds to Q1)
+  # src=intermediate (in only Q1)
+  # dst=snap (inheriting only into Q1)
+  # This double counts the 16k nodesize of the snapshot in Q1, and
+  # undercounts it in Q2.
+  btrfs subvolume snapshot -i 1/100 "$mnt/intermediate" "$mnt/snap" >/dev/null
+  snap_id=$(btrfs subvolume show "$mnt/snap" | grep 'Subvolume ID:' | awk '{print $3}')
+
+  # Fully complete snapshot creation
+  sync
+
+  # Delete working snapshot
+  # Q1 and Q2 will lose the full snap usage
+  btrfs subvolume delete "$mnt/snap" >/dev/null
+
+  # Delete intermediate and remove from Q1
+  # Q1 and Q2 will lose the full intermediate usage
+  btrfs qgroup remove "0/$inter_id" 1/100 "$mnt"
+  btrfs subvolume delete "$mnt/intermediate" >/dev/null
+
+  # Q1 should be at 0, but still has 16k. Q2 is "correct" at 0 (for now...)
+
+  # Trigger cleaner, wait for deletions
+  mount -o remount,sync=1 "$mnt"
+  btrfs subvolume sync "$mnt" "$snap_id"
+  btrfs subvolume sync "$mnt" "$inter_id"
+
+  # Remove Q1 from Q2
+  # Frees 16k more from Q2, underflowing it to 16EiB
+  btrfs qgroup remove 1/100 2/100 "$mnt"
+
+  # And show the bad state:
+  btrfs qgroup show -pc "$mnt"
+
+        Qgroupid    Referenced    Exclusive Parent   Child   Path
+        --------    ----------    --------- ------   -----   ----
+        0/5           16.00KiB     16.00KiB -        -       <toplevel>
+        0/256         16.00KiB     16.00KiB -        -       base
+        1/100         16.00KiB     16.00KiB -        -       <0 member qgroups>
+        2/100         16.00EiB     16.00EiB -        -       <0 member qgroups>
+
+Fix this by simply not doing this quick inheritance with squotas.
+
+I suspect that it is also wrong in normal qgroups to not recurse up the
+qgroup tree in the quick inherit case, though other consistency checks
+will likely fix it anyway.
+
+Fixes: b20fe56cd285 ("btrfs: qgroup: allow quick inherit if snapshot is created and added to the same parent")
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Signed-off-by: Boris Burkov <boris@bur.io>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/libsas/sas_internal.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ fs/btrfs/qgroup.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/scsi/libsas/sas_internal.h b/drivers/scsi/libsas/sas_internal.h
-index 6706f2be8d274..da5408c701cdd 100644
---- a/drivers/scsi/libsas/sas_internal.h
-+++ b/drivers/scsi/libsas/sas_internal.h
-@@ -145,20 +145,6 @@ static inline void sas_fail_probe(struct domain_device *dev, const char *func, i
- 		func, dev->parent ? "exp-attached" :
- 		"direct-attached",
- 		SAS_ADDR(dev->sas_addr), err);
--
--	/*
--	 * If the device probe failed, the expander phy attached address
--	 * needs to be reset so that the phy will not be treated as flutter
--	 * in the next revalidation
--	 */
--	if (dev->parent && !dev_is_expander(dev->dev_type)) {
--		struct sas_phy *phy = dev->phy;
--		struct domain_device *parent = dev->parent;
--		struct ex_phy *ex_phy = &parent->ex_dev.ex_phy[phy->number];
--
--		memset(ex_phy->attached_sas_addr, 0, SAS_ADDR_SIZE);
--	}
--
- 	sas_unregister_dev(dev->port, dev);
- }
+diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
+index 31ad8580322a6..7faaa777010d7 100644
+--- a/fs/btrfs/qgroup.c
++++ b/fs/btrfs/qgroup.c
+@@ -3247,6 +3247,9 @@ static int qgroup_snapshot_quick_inherit(struct btrfs_fs_info *fs_info,
+ 	struct btrfs_qgroup_list *list;
+ 	int nr_parents = 0;
  
++	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_FULL)
++		return 0;
++
+ 	src = find_qgroup_rb(fs_info, srcid);
+ 	if (!src)
+ 		return -ENOENT;
 -- 
 2.51.0
 
