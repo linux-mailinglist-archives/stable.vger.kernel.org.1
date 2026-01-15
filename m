@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-208983-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208994-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 3D6A4D26929
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:55 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AC9DD26936
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6A2130F0809
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A3D5930BBDEC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 05F143BC4F2;
-	Thu, 15 Jan 2026 17:16:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AFBA1A9F96;
+	Thu, 15 Jan 2026 17:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wq1hGSBx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ml/ammv7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BE5092874E6;
-	Thu, 15 Jan 2026 17:16:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1CB8C29B200;
+	Thu, 15 Jan 2026 17:17:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497401; cv=none; b=u7NuV7KU7sRqKBma/k1A4cY33uh/Wye/JyBmcodDjIUirU0Od7j+TIqT3mHbkciwPmEILV09qv+tPrax6nnNmlhrPDsE0JeKGDvAwehl04/9dy8pS0+8Vp4cqYTzARKDx9vIzMo+qddxYp9rU1p/6f/CEiZZttAWv2PiDkvDRXY=
+	t=1768497433; cv=none; b=oNTmkOHsBFx6NZf456nLtzfnMGySbbVj+SurtoOX0A28YDa1qpmwp+xy78vQhOkbeNqatuLMC26bIxsADhxLMrcuHg5EyTA2b5yGJpOWXJfrJItCtpQqStV9FAP6v3EfGF8jMF/TUU5PQWQhTJge8b4RCRs9vDBjN2W265YyE4s=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497401; c=relaxed/simple;
-	bh=axFEBiuJq/2HEf2VO+AMSdD34//QSGX3dwIx84WF4UU=;
+	s=arc-20240116; t=1768497433; c=relaxed/simple;
+	bh=0+V2ukhW2vluKJSgLEpsIxssPUone6zUz30UhaBRJAE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SPqysqYLrsFKac/IYGGM7qxWZPBIBgjOntM6yGP3phPHcVnyOidkdA8Ld3tkSzJFFcKjoMev0AhmWO8wIDnLgtU3+MPaAMd1MUdzhRO4rKc6FJgLEJm/JjILm9ZSyDk2YAyvg1Uh7pqD5ZQe8pqF0pAsGBnDvuMhpuFC3sPi1cA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wq1hGSBx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CA2BC116D0;
-	Thu, 15 Jan 2026 17:16:41 +0000 (UTC)
+	 MIME-Version; b=pVuH1Hru7CURwTbtxd1/WoL0BZtlinqaRKRKI/mSVWwyWNbOUqZ5sKLr1epJfRZ+wlZwmtjqoGPxyiLqrkubVz1APxKAXdKoQvcCD8NAkBlmn8rLVA60bVG5ESOP8gD593AiSDo4Kjeq9CU32aSa2iDiufYamJ3e8+E8vNGPKzI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ml/ammv7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1B5AC116D0;
+	Thu, 15 Jan 2026 17:17:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497401;
-	bh=axFEBiuJq/2HEf2VO+AMSdD34//QSGX3dwIx84WF4UU=;
+	s=korg; t=1768497433;
+	bh=0+V2ukhW2vluKJSgLEpsIxssPUone6zUz30UhaBRJAE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wq1hGSBxSCF2FwUWI93mNBNPNTwZT7zOCtNm+BRg/To6bpyP6eRJExz1ZRzrLJ4Qf
-	 9Lz56eT3EGXJH3JCrKfRkNWs0T50y1mJfcDiP1kGyDZfl/hB+9w8Njhtg3whgypKUb
-	 YLTTTn/Cox7UtXSVYxtiUXHaR8O/QvOfQi7RgZ0g=
+	b=ml/ammv72yB9u9s0RkWBhRuQPBOjZdWx0mT2mtH8MyN0eTuQ1+WXNTB/vkxPDghLu
+	 Pf6TPqwSnYl7tm6wJZLHeka2rbKjhnBqJCZcNppQo/6ZxCQO7ppmkEc99bmUp84c7t
+	 C+GxmrphVM3gbqfJMLNSUfXL7xH0pNNNsYtSvaRg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Antonio Borneo <antonio.borneo@foss.st.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jamie Iles <quic_jiles@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 061/554] pinctrl: stm32: fix hwspinlock resource leak in probe function
-Date: Thu, 15 Jan 2026 17:42:07 +0100
-Message-ID: <20260115164248.454447003@linuxfoundation.org>
+Subject: [PATCH 5.15 062/554] i3c: remove i2c board info from i2c_dev_desc
+Date: Thu, 15 Jan 2026 17:42:08 +0100
+Message-ID: <20260115164248.489724222@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -65,41 +64,102 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Jamie Iles <quic_jiles@quicinc.com>
 
-[ Upstream commit 002679f79ed605e543fbace465557317cd307c9a ]
+[ Upstream commit 31b9887c7258ca47d9c665a80f19f006c86756b1 ]
 
-In stm32_pctl_probe(), hwspin_lock_request_specific() is called to
-request a hwspinlock, but the acquired lock is not freed on multiple
-error paths after this call. This causes resource leakage when the
-function fails to initialize properly.
+I2C board info is only required during adapter setup so there is no
+requirement to keeping a pointer to it once running.  To support dynamic
+device addition we can't rely on board info - user-space creation
+through sysfs won't have a boardinfo.
 
-Use devm_hwspin_lock_request_specific() instead of
-hwspin_lock_request_specific() to automatically manage the hwspinlock
-resource lifecycle.
-
-Fixes: 97cfb6cd34f2 ("pinctrl: stm32: protect configuration registers with a hwspinlock")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Antonio Borneo <antonio.borneo@foss.st.com>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20220117174816.1963463-2-quic_jiles@quicinc.com
+Stable-dep-of: 9d4f219807d5 ("i3c: fix refcount inconsistency in i3c_master_register")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/stm32/pinctrl-stm32.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master.c       | 18 ++++++++++--------
+ include/linux/i3c/master.h |  1 -
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pinctrl/stm32/pinctrl-stm32.c b/drivers/pinctrl/stm32/pinctrl-stm32.c
-index 821ec5a97551d..e8afed94fccc1 100644
---- a/drivers/pinctrl/stm32/pinctrl-stm32.c
-+++ b/drivers/pinctrl/stm32/pinctrl-stm32.c
-@@ -1490,7 +1490,7 @@ int stm32_pctl_probe(struct platform_device *pdev)
- 		if (hwlock_id == -EPROBE_DEFER)
- 			return hwlock_id;
- 	} else {
--		pctl->hwlock = hwspin_lock_request_specific(hwlock_id);
-+		pctl->hwlock = devm_hwspin_lock_request_specific(dev, hwlock_id);
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 717b337f9e22d..d4e9299472679 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -610,7 +610,7 @@ static void i3c_master_free_i2c_dev(struct i2c_dev_desc *dev)
+ 
+ static struct i2c_dev_desc *
+ i3c_master_alloc_i2c_dev(struct i3c_master_controller *master,
+-			 const struct i2c_dev_boardinfo *boardinfo)
++			 u16 addr, u8 lvr)
+ {
+ 	struct i2c_dev_desc *dev;
+ 
+@@ -619,9 +619,8 @@ i3c_master_alloc_i2c_dev(struct i3c_master_controller *master,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	dev->common.master = master;
+-	dev->boardinfo = boardinfo;
+-	dev->addr = boardinfo->base.addr;
+-	dev->lvr = boardinfo->lvr;
++	dev->addr = addr;
++	dev->lvr = lvr;
+ 
+ 	return dev;
+ }
+@@ -695,7 +694,7 @@ i3c_master_find_i2c_dev_by_addr(const struct i3c_master_controller *master,
+ 	struct i2c_dev_desc *dev;
+ 
+ 	i3c_bus_for_each_i2cdev(&master->bus, dev) {
+-		if (dev->boardinfo->base.addr == addr)
++		if (dev->addr == addr)
+ 			return dev;
  	}
  
- 	spin_lock_init(&pctl->irqmux_lock);
+@@ -1692,7 +1691,9 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 					     i2cboardinfo->base.addr,
+ 					     I3C_ADDR_SLOT_I2C_DEV);
+ 
+-		i2cdev = i3c_master_alloc_i2c_dev(master, i2cboardinfo);
++		i2cdev = i3c_master_alloc_i2c_dev(master,
++						  i2cboardinfo->base.addr,
++						  i2cboardinfo->lvr);
+ 		if (IS_ERR(i2cdev)) {
+ 			ret = PTR_ERR(i2cdev);
+ 			goto err_detach_devs;
+@@ -2178,6 +2179,7 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
+ {
+ 	struct i2c_adapter *adap = i3c_master_to_i2c_adapter(master);
+ 	struct i2c_dev_desc *i2cdev;
++	struct i2c_dev_boardinfo *i2cboardinfo;
+ 	int ret;
+ 
+ 	adap->dev.parent = master->dev.parent;
+@@ -2197,8 +2199,8 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
+ 	 * We silently ignore failures here. The bus should keep working
+ 	 * correctly even if one or more i2c devices are not registered.
+ 	 */
+-	i3c_bus_for_each_i2cdev(&master->bus, i2cdev)
+-		i2cdev->dev = i2c_new_client_device(adap, &i2cdev->boardinfo->base);
++	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node)
++		i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index 9cb39d901cd5f..604a126b78c83 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -85,7 +85,6 @@ struct i2c_dev_boardinfo {
+  */
+ struct i2c_dev_desc {
+ 	struct i3c_i2c_dev_desc common;
+-	const struct i2c_dev_boardinfo *boardinfo;
+ 	struct i2c_client *dev;
+ 	u16 addr;
+ 	u8 lvr;
 -- 
 2.51.0
 
