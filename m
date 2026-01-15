@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208899-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209364-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80312D26577
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:24:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id E29AFD26E5D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:53 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id E13A1307EFF0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:13:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D41E31960FA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CCD5A3C1FF8;
-	Thu, 15 Jan 2026 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D74C3D1CC3;
+	Thu, 15 Jan 2026 17:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QettO7vG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w759kiES"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5C2FA3C1FE3;
-	Thu, 15 Jan 2026 17:12:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602593D1CC1;
+	Thu, 15 Jan 2026 17:34:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497161; cv=none; b=cq511dfdVxuUI051yjqBoZPiHPVeyRSCtvRbHp+AfaGZFvdT70h/jTvTK9Vi1rsFtVhjx31Dw1c7meG+S/VyOd3iY51iSrQ2+7vY+H3lf/vXTGTbGIlLCHeWdsIKsCLfj5rzRaNpJTDUiPF04mAkmFvJw4kLqSlq726lnymTCW0=
+	t=1768498485; cv=none; b=hKYFkStyQzt2gCa8QPmsg/dKnJdJ7AQjZdrfshvAL6Eg/ELkVirjDAguiIGLoVfQ6gA/x3TGdiELhnErhEli+CYRuNNH/g5m3vnAMYd9L59gVAED9z38Sonwo3MTM7czb7STTiBqdtjNoORpNR2SXdUcrfS+G5bWPRtwpz5abx0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497161; c=relaxed/simple;
-	bh=aa2X3TpEg79O5roxPLbA+iwcuAYMM4rnsmrjmHs3uQQ=;
+	s=arc-20240116; t=1768498485; c=relaxed/simple;
+	bh=D40gTbJGdcoXNI92YCI3jYCRscnKNin13Jw1trmDxZk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gA6Wy5dPBRbNg0QLyZLCf+K2iaUa79nA5PLpJV9mUpi2RYdGMYIXnQLzKgZ4BvPmwfWWTeEk/zggm60HNMYKyJjglmEMGA5wi2EZhblS5B1rYfD29o8gRs+sBhXF892KNzSRyVivFStHTmwpK+PIm3tAekKZ5595mQytQebV28U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QettO7vG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE74FC2BC87;
-	Thu, 15 Jan 2026 17:12:40 +0000 (UTC)
+	 MIME-Version; b=C+vOP0dU5wjpmup1AuJHvpmMusjPXLRHZndaQXSvBmTBOPhimlPSYJy3Yedmg8stq1IG3lybd7vCK69QuOzmVxYivzZuF0LPgVEUXxprzw2b4l8nN7U8y0c9VdGEzZ1ulAjNUx9PblnLBZwu8YAqFOaNks3VqE01OxBXhR86q08=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w759kiES; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0956C116D0;
+	Thu, 15 Jan 2026 17:34:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497161;
-	bh=aa2X3TpEg79O5roxPLbA+iwcuAYMM4rnsmrjmHs3uQQ=;
+	s=korg; t=1768498485;
+	bh=D40gTbJGdcoXNI92YCI3jYCRscnKNin13Jw1trmDxZk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QettO7vG0VP9tRGnjZZL5qiY9Kn7UFGXHcHrfT2XZ1zdmLu7vpf5xIgtiIuW4XegA
-	 sFVt9f8JzffPsLTvMoJdTf/EQNEoEy5/5H109sMyUihLN0unw8VUgZe2YzpcWptn72
-	 nzh0YKOTL4uJ4TSluueGFazRmGeqJOyQ5eRFGBao=
+	b=w759kiESjrWvU1CD+Pd6yb+JV9lp2yCcoSlIMBzAwZu8ffd/NhSTMDRPALG+XU8R5
+	 D7XfIOwWUDw7A9P6gpLRFgakxlb3E+c3oAaa52A3b8EJiREXF0EqLTagDY/2AuTEG0
+	 jPZqBiQDr7nA2ozi4VSgjhqQ2Odw8YkmzjxatH3Y=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ChenXiaoSong <chenxiaosong@kylinos.cn>,
-	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
-	Steve French <stfrench@microsoft.com>,
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
+	Alan Stern <stern@rowland.harvard.edu>,
+	Vladimir Zapolskiy <vz@mleia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 24/72] smb/client: fix NT_STATUS_UNABLE_TO_FREE_VM value
+Subject: [PATCH 5.15 448/554] usb: ohci-nxp: fix device leak on probe failure
 Date: Thu, 15 Jan 2026 17:48:34 +0100
-Message-ID: <20260115164144.372533278@linuxfoundation.org>
+Message-ID: <20260115164302.486116694@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ChenXiaoSong <chenxiaosong@kylinos.cn>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 9f99caa8950a76f560a90074e3a4b93cfa8b3d84 ]
+[ Upstream commit b4c61e542faf8c9131d69ecfc3ad6de96d1b2ab8 ]
 
-This was reported by the KUnit tests in the later patches.
+Make sure to drop the reference taken when looking up the PHY I2C device
+during probe on probe failure (e.g. probe deferral) and on driver
+unbind.
 
-See MS-ERREF 2.3.1 STATUS_UNABLE_TO_FREE_VM. Keep it consistent with the
-value in the documentation.
-
-Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
-Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
+Cc: stable@vger.kernel.org	# 3.5
+Reported-by: Ma Ke <make24@iscas.ac.cn>
+Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Acked-by: Alan Stern <stern@rowland.harvard.edu>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251218153519.19453-4-johan@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/client/nterr.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/host/ohci-nxp.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
-index edd4741cab0a1..7ce063a1dc3f6 100644
---- a/fs/smb/client/nterr.h
-+++ b/fs/smb/client/nterr.h
-@@ -70,7 +70,7 @@ extern const struct nt_err_code_struct nt_errs[];
- #define NT_STATUS_NO_MEMORY 0xC0000000 | 0x0017
- #define NT_STATUS_CONFLICTING_ADDRESSES 0xC0000000 | 0x0018
- #define NT_STATUS_NOT_MAPPED_VIEW 0xC0000000 | 0x0019
--#define NT_STATUS_UNABLE_TO_FREE_VM 0x80000000 | 0x001a
-+#define NT_STATUS_UNABLE_TO_FREE_VM 0xC0000000 | 0x001a
- #define NT_STATUS_UNABLE_TO_DELETE_SECTION 0xC0000000 | 0x001b
- #define NT_STATUS_INVALID_SYSTEM_SERVICE 0xC0000000 | 0x001c
- #define NT_STATUS_ILLEGAL_INSTRUCTION 0xC0000000 | 0x001d
--- 
-2.51.0
-
+--- a/drivers/usb/host/ohci-nxp.c
++++ b/drivers/usb/host/ohci-nxp.c
+@@ -224,6 +224,7 @@ static int ohci_hcd_nxp_probe(struct pla
+ fail_resource:
+ 	usb_put_hcd(hcd);
+ fail_disable:
++	put_device(&isp1301_i2c_client->dev);
+ 	isp1301_i2c_client = NULL;
+ 	return ret;
+ }
+@@ -235,6 +236,7 @@ static int ohci_hcd_nxp_remove(struct pl
+ 	usb_remove_hcd(hcd);
+ 	ohci_nxp_stop_hc();
+ 	usb_put_hcd(hcd);
++	put_device(&isp1301_i2c_client->dev);
+ 	isp1301_i2c_client = NULL;
+ 
+ 	return 0;
 
 
 
