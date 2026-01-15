@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8C353D26085
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:34 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 5411AD25EA7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:00 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3943A3082AF0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id DE0273015138
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B92B3BB9F4;
-	Thu, 15 Jan 2026 17:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5A2AC3BF2F1;
+	Thu, 15 Jan 2026 16:55:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qj60A7OJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfa+xnkX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3B6972C237E;
-	Thu, 15 Jan 2026 17:00:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9E9F2FDC4D;
+	Thu, 15 Jan 2026 16:55:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496440; cv=none; b=sdTQKjMl3e5u7TKJlQZILsv91wm7OOpTS+coU8YHZU0wsbHwZPahlYNkpkdI+GK8/WBWZ90icqTSAqzqyOTn6LWWZM1xa5HqtHkj7+ldqkdgLFC9SoC85KbjWBfe9ILOH4sPVac++t2WJWoTD4Mo7knxBaA7jf/SRPWERj9xSqg=
+	t=1768496145; cv=none; b=rIfw5DrLkTmiN/KyG7Je0HbfcYA6jNQ8kAExyDf69UNG0tYpTUda6rTPKyMoG2Y6ffKUoePs4slOc5wqhC7lqLcX8dUsW7w22RZD+yTDgDfrUHLA6XZNCYNlTcRBA3ReT8LA5ViCIekiNOrXYsh782Z/AYPKXH6WEMQEvYTn9L8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496440; c=relaxed/simple;
-	bh=taa6vnN49xzUrZULppcR6LUUaHNEHau9R/DpFYDxvCs=;
+	s=arc-20240116; t=1768496145; c=relaxed/simple;
+	bh=d8HadI0ymNo+mU558JfyWQfIJsGsqcTBkZQ7n6JGgaM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DMDuPFupKqhWbC6oh9nDi9eN3z3ZrB5oYu3RAMByEIuQv2e+QZX4ZQ2yfT3PBG2lWPr2A5Y3qrdqNk0II+14dLIB/K8LM3igngPbd4QWPGrpOIhXEWb1oVdNovgZLKDCrNFwPzIdJWgocpIn6UkmYGCQrbeeqyyF8Ie2LWSU1xo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qj60A7OJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8595C116D0;
-	Thu, 15 Jan 2026 17:00:39 +0000 (UTC)
+	 MIME-Version; b=Jn1A9YN3gtDKaHtvEoKlBkbSJMP1og4GiwPyeH+N4AHIXlnmCe2HMG2cYtLyPTRXn5t9gNg4Z1jU9D1YueBuvX4e9GrC7fQze8EwhcMLxOKcq0eLNcEIrVt0+C0vqr6lUNKI8HVdhK+llNUtfEpD2btsHYEtNVY2VJgLXgfGNTs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfa+xnkX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD20C116D0;
+	Thu, 15 Jan 2026 16:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496440;
-	bh=taa6vnN49xzUrZULppcR6LUUaHNEHau9R/DpFYDxvCs=;
+	s=korg; t=1768496145;
+	bh=d8HadI0ymNo+mU558JfyWQfIJsGsqcTBkZQ7n6JGgaM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qj60A7OJZKc3L7R78kyqzBUASnhB0ZotLOTu5Wdj+dCEHFM0ZKrkbA7DG+3NJjqEU
-	 Fbj0Qyim+xZG2dLURvMq+wRAYQmotALcqKB8az47pYOzmt+kGThUg8iesLD1qofQHm
-	 B+1Hb7rxUYC5AOfDPaORMqZspz1X07Tnq+CVmiw4=
+	b=qfa+xnkXHDORjSc0ljcT5rFlNRUb3xsJKUSoPF9AjdZq9GqLpZHTdiS2aF1Kpc3II
+	 Wu4oc79fIiCeOxPE2GMIl8mCilAJnAPCLOsVXdk79OlyS+IJVNyNH0FaPXZC0wb/YP
+	 AFSIiWnWArtUnEKORXfBcjn/ZEYBh+wAQoZtktKU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.12 014/119] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
-Date: Thu, 15 Jan 2026 17:47:09 +0100
-Message-ID: <20260115164152.477147402@linuxfoundation.org>
+	Zilin Guan <zilin@seu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 093/181] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
+Date: Thu, 15 Jan 2026 17:47:10 +0100
+Message-ID: <20260115164205.680395794@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 23f9485510c338476b9735d516c1d4aacb810d46 upstream.
+[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
 
-An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
-CONFIG_PROVE_RAW_LOCK_NESTING warns:
-=============================
-[ BUG: Invalid wait context ]
-6.18.0-rc1+git... #1
------------------------------
-some-user-space-process/1251 is trying to lock:
-(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
-other info that might help us debug this:
-context-{2:2}
-no locks held by some-user-space-process/....
-stack backtrace:
-CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
-Call trace:
- show_stack (C)
- dump_stack_lvl
- dump_stack
- __lock_acquire
- lock_acquire
- _raw_spin_lock_irqsave
- counter_push_event [counter]
- interrupt_cnt_isr [interrupt_cnt]
- __handle_irq_event_percpu
- handle_irq_event
- handle_simple_irq
- handle_irq_desc
- generic_handle_domain_irq
- gpio_irq_handler
- handle_irq_desc
- generic_handle_domain_irq
- gic_handle_irq
- call_on_irq_stack
- do_interrupt_handler
- el0_interrupt
- __el0_irq_handler_common
- el0t_64_irq_handler
- el0t_64_irq
+In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
+the err_release_rule label without freeing the allocated flow, leading
+to a memory leak.
 
-... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
-alternative to switching to raw_spinlock_t, because the latter would limit
-all potential nested locks to raw_spinlock_t only.
+Fix this by adding a new label err_destroy_flow and jumping to it when
+nft_use_inc() fails. This ensures that the flow is properly released
+in this error case.
 
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
-Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20251118083603.778626-1-alexander.sverdlin@siemens.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/interrupt-cnt.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ net/netfilter/nf_tables_api.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/counter/interrupt-cnt.c
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct pl
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 1a204f6371ad1..a3669acd68a32 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -4378,7 +4378,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
  
- 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
- 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
--			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
--			       dev_name(dev), counter);
-+			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
- 	if (ret)
- 		return ret;
+ 	if (!nft_use_inc(&chain->use)) {
+ 		err = -EMFILE;
+-		goto err_release_rule;
++		goto err_destroy_flow;
+ 	}
  
+ 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
+@@ -4428,6 +4428,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ err_destroy_flow_rule:
+ 	nft_use_dec_restore(&chain->use);
++err_destroy_flow:
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
+-- 
+2.51.0
+
 
 
 
