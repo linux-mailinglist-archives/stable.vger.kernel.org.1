@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208630-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 21700D260C6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:53 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F1AC0D26024
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9095730060EB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9D429301D9CF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 86D683A35A4;
-	Thu, 15 Jan 2026 17:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661FF3BF2EF;
+	Thu, 15 Jan 2026 16:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dmdGLJGf"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L20OpbzA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4B3572D73A0;
-	Thu, 15 Jan 2026 17:04:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279993B9619;
+	Thu, 15 Jan 2026 16:59:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496691; cv=none; b=aZRZEwi80Vw0zHTXdbNiYWzzleXs1gUBuoPR3SqDDkDFZt6YtQsTOTAUothMNk++ERZEeSY0xFcOhLp9eYDXtNi95WF/WfC/QpyorsaqnNy7p/6f13cl+TMMsXQehKpQF0uicNtwLYkG+W3SN+cT7MjtTxkaxUrrFIE+ctZ0ncI=
+	t=1768496395; cv=none; b=Rcgg0X1rOIpj66ena5T8Xtmua7gqNIlc1USEyuUGvdGt9F5PdgeGzaXN6+nSUSe1Ba0Yh5LZafJHht1hzVzB2O6dPslQVv521AO08HC+wb8465trzJe7+wqX2smFCHRmvmToa+SmYcUN5d/bKNxYJ57PqmVHLcZ+sRmk/7H6KCg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496691; c=relaxed/simple;
-	bh=hWGuC9G0Hv1lJ2D2z18mvqArs8rb9ctOypaDByIP8a4=;
+	s=arc-20240116; t=1768496395; c=relaxed/simple;
+	bh=IH0Nx5PfyN/veTq82G6Wul1q37Ddiy+KYZ/P2h7GUWM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q6OBNbsD2aaPrkXlCUGbPgvbG3M1IDfnY1klHcDFx+OmeiMJSW5wAxJy/Tfr2y2ZmtJ7UFHMB4Op4vV2VH1n4k6Qu2mMauwTel+BnK2sTUpcxCl/SsRwlzVx4O1e0hJuSYpHMbbnlKpyB1U0NVerrm81lJskiUg/NyoA5Ke3nn8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dmdGLJGf; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF0A2C116D0;
-	Thu, 15 Jan 2026 17:04:50 +0000 (UTC)
+	 MIME-Version; b=mTXhaxe/iH+BlSb1Wrp1J3WZlrsiLsFB8DPkOAML9C+bPbVG42WzlVmt0lESJBth0Qc6yES0G5gzVxMK7S1kBhWWwS0B826l7HO1abAAIIXx6h1Iz0JaDS9okahZA7Sv0EcZZG2dJrxQ4G/x6/3cIXgMJj0a8TQbmsRkCmPcSYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L20OpbzA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C9BC116D0;
+	Thu, 15 Jan 2026 16:59:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496691;
-	bh=hWGuC9G0Hv1lJ2D2z18mvqArs8rb9ctOypaDByIP8a4=;
+	s=korg; t=1768496395;
+	bh=IH0Nx5PfyN/veTq82G6Wul1q37Ddiy+KYZ/P2h7GUWM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dmdGLJGf/twLQBq+WABDsOFK4vZODkQW0eo3EvzF8Jnx8ZeEW8/05K9U8XgpJpbw6
-	 o4Sewkzj7N1rD9DgNhPX65nmKKWIoEr3SgCA3KBgXsqAx3zPbNp/iatkc8aZGe0t0+
-	 jytL5H89TZkgb+pdwWwu2vUqRttU+3EvYT3VQa00=
+	b=L20OpbzAyaK1tRwXME75cWjuPbXGWabQKcvAq+xgJVf10nGfOcJ79oTXUN7fQMsKm
+	 G+nPgwt6UuYoC2/J/3Rh3BkiiLWIFKEXuSO94Jaaq5l+yxqPur1JtVOvi9D0RtL2Y1
+	 jZKR1xKVkLO0uAYPuT1nGDmcprsmayfgjE/q44ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiang Mei <xmei5@asu.edu>,
-	Weiming Shi <bestswngs@gmail.com>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 068/119] net: sock: fix hardened usercopy panic in sock_recv_errqueue
-Date: Thu, 15 Jan 2026 17:48:03 +0100
-Message-ID: <20260115164154.407298227@linuxfoundation.org>
+Subject: [PATCH 6.18 147/181] net: airoha: Fix schedule while atomic in airoha_ppe_deinit()
+Date: Thu, 15 Jan 2026 17:48:04 +0100
+Message-ID: <20260115164207.622358052@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,116 +60,53 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Weiming Shi <bestswngs@gmail.com>
+From: Lorenzo Bianconi <lorenzo@kernel.org>
 
-[ Upstream commit 2a71a1a8d0ed718b1c7a9ac61f07e5755c47ae20 ]
+[ Upstream commit 6abcf751bc084804a9e5b3051442e8a2ce67f48a ]
 
-skbuff_fclone_cache was created without defining a usercopy region,
-[1] unlike skbuff_head_cache which properly whitelists the cb[] field.
-[2] This causes a usercopy BUG() when CONFIG_HARDENED_USERCOPY is
-enabled and the kernel attempts to copy sk_buff.cb data to userspace
-via sock_recv_errqueue() -> put_cmsg().
+airoha_ppe_deinit() runs airoha_npu_ppe_deinit() in atomic context.
+airoha_npu_ppe_deinit routine allocates ppe_data buffer with GFP_KERNEL
+flag. Rely on rcu_replace_pointer in airoha_ppe_deinit routine in order
+to fix schedule while atomic issue in airoha_npu_ppe_deinit() since we
+do not need atomic context there.
 
-The crash occurs when: 1. TCP allocates an skb using alloc_skb_fclone()
-   (from skbuff_fclone_cache) [1]
-2. The skb is cloned via skb_clone() using the pre-allocated fclone
-[3] 3. The cloned skb is queued to sk_error_queue for timestamp
-reporting 4. Userspace reads the error queue via recvmsg(MSG_ERRQUEUE)
-5. sock_recv_errqueue() calls put_cmsg() to copy serr->ee from skb->cb
-[4] 6. __check_heap_object() fails because skbuff_fclone_cache has no
-   usercopy whitelist [5]
-
-When cloned skbs allocated from skbuff_fclone_cache are used in the
-socket error queue, accessing the sock_exterr_skb structure in skb->cb
-via put_cmsg() triggers a usercopy hardening violation:
-
-[    5.379589] usercopy: Kernel memory exposure attempt detected from SLUB object 'skbuff_fclone_cache' (offset 296, size 16)!
-[    5.382796] kernel BUG at mm/usercopy.c:102!
-[    5.383923] Oops: invalid opcode: 0000 [#1] SMP KASAN NOPTI
-[    5.384903] CPU: 1 UID: 0 PID: 138 Comm: poc_put_cmsg Not tainted 6.12.57 #7
-[    5.384903] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.3-0-ga6ed6b701f0a-prebuilt.qemu.org 04/01/2014
-[    5.384903] RIP: 0010:usercopy_abort+0x6c/0x80
-[    5.384903] Code: 1a 86 51 48 c7 c2 40 15 1a 86 41 52 48 c7 c7 c0 15 1a 86 48 0f 45 d6 48 c7 c6 80 15 1a 86 48 89 c1 49 0f 45 f3 e8 84 27 88 ff <0f> 0b 490
-[    5.384903] RSP: 0018:ffffc900006f77a8 EFLAGS: 00010246
-[    5.384903] RAX: 000000000000006f RBX: ffff88800f0ad2a8 RCX: 1ffffffff0f72e74
-[    5.384903] RDX: 0000000000000000 RSI: 0000000000000004 RDI: ffffffff87b973a0
-[    5.384903] RBP: 0000000000000010 R08: 0000000000000000 R09: fffffbfff0f72e74
-[    5.384903] R10: 0000000000000003 R11: 79706f6372657375 R12: 0000000000000001
-[    5.384903] R13: ffff88800f0ad2b8 R14: ffffea00003c2b40 R15: ffffea00003c2b00
-[    5.384903] FS:  0000000011bc4380(0000) GS:ffff8880bf100000(0000) knlGS:0000000000000000
-[    5.384903] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    5.384903] CR2: 000056aa3b8e5fe4 CR3: 000000000ea26004 CR4: 0000000000770ef0
-[    5.384903] PKRU: 55555554
-[    5.384903] Call Trace:
-[    5.384903]  <TASK>
-[    5.384903]  __check_heap_object+0x9a/0xd0
-[    5.384903]  __check_object_size+0x46c/0x690
-[    5.384903]  put_cmsg+0x129/0x5e0
-[    5.384903]  sock_recv_errqueue+0x22f/0x380
-[    5.384903]  tls_sw_recvmsg+0x7ed/0x1960
-[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
-[    5.384903]  ? schedule+0x6d/0x270
-[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
-[    5.384903]  ? mutex_unlock+0x81/0xd0
-[    5.384903]  ? __pfx_mutex_unlock+0x10/0x10
-[    5.384903]  ? __pfx_tls_sw_recvmsg+0x10/0x10
-[    5.384903]  ? _raw_spin_lock_irqsave+0x8f/0xf0
-[    5.384903]  ? _raw_read_unlock_irqrestore+0x20/0x40
-[    5.384903]  ? srso_alias_return_thunk+0x5/0xfbef5
-
-The crash offset 296 corresponds to skb2->cb within skbuff_fclones:
-  - sizeof(struct sk_buff) = 232 - offsetof(struct sk_buff, cb) = 40 -
-  offset of skb2.cb in fclones = 232 + 40 = 272 - crash offset 296 =
-  272 + 24 (inside sock_exterr_skb.ee)
-
-This patch uses a local stack variable as a bounce buffer to avoid the hardened usercopy check failure.
-
-[1] https://elixir.bootlin.com/linux/v6.12.62/source/net/ipv4/tcp.c#L885
-[2] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5104
-[3] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5566
-[4] https://elixir.bootlin.com/linux/v6.12.62/source/net/core/skbuff.c#L5491
-[5] https://elixir.bootlin.com/linux/v6.12.62/source/mm/slub.c#L5719
-
-Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-Reported-by: Xiang Mei <xmei5@asu.edu>
-Signed-off-by: Weiming Shi <bestswngs@gmail.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251223203534.1392218-2-bestswngs@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
+Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20260105-airoha-fw-ethtool-v2-1-3b32b158cc31@kernel.org
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/sock.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/airoha/airoha_ppe.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 97cc796a1d334..58f3f0d979540 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -3769,7 +3769,7 @@ void sock_enable_timestamp(struct sock *sk, enum sock_flags flag)
- int sock_recv_errqueue(struct sock *sk, struct msghdr *msg, int len,
- 		       int level, int type)
+diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
+index c0e17035db18e..190d98970014f 100644
+--- a/drivers/net/ethernet/airoha/airoha_ppe.c
++++ b/drivers/net/ethernet/airoha/airoha_ppe.c
+@@ -1466,13 +1466,16 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
  {
--	struct sock_exterr_skb *serr;
-+	struct sock_extended_err ee;
- 	struct sk_buff *skb;
- 	int copied, err;
+ 	struct airoha_npu *npu;
  
-@@ -3789,8 +3789,9 @@ int sock_recv_errqueue(struct sock *sk, struct msghdr *msg, int len,
+-	rcu_read_lock();
+-	npu = rcu_dereference(eth->npu);
++	mutex_lock(&flow_offload_mutex);
++
++	npu = rcu_replace_pointer(eth->npu, NULL,
++				  lockdep_is_held(&flow_offload_mutex));
+ 	if (npu) {
+ 		npu->ops.ppe_deinit(npu);
+ 		airoha_npu_put(npu);
+ 	}
+-	rcu_read_unlock();
++
++	mutex_unlock(&flow_offload_mutex);
  
- 	sock_recv_timestamp(msg, sk, skb);
- 
--	serr = SKB_EXT_ERR(skb);
--	put_cmsg(msg, level, type, sizeof(serr->ee), &serr->ee);
-+	/* We must use a bounce buffer for CONFIG_HARDENED_USERCOPY=y */
-+	ee = SKB_EXT_ERR(skb)->ee;
-+	put_cmsg(msg, level, type, sizeof(ee), &ee);
- 
- 	msg->msg_flags |= MSG_ERRQUEUE;
- 	err = copied;
+ 	rhashtable_destroy(&eth->ppe->l2_flows);
+ 	rhashtable_destroy(&eth->flow_table);
 -- 
 2.51.0
 
