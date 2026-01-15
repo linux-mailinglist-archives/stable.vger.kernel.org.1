@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-208818-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208745-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526A8D2620A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id F27B2D26659
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id BA30D30542A2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C5BF303C289
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F5D42820C6;
-	Thu, 15 Jan 2026 17:08:50 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81483396B7D;
+	Thu, 15 Jan 2026 17:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xktGfn01"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="posU9O15"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C5FB133993;
-	Thu, 15 Jan 2026 17:08:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3394D2D6E74;
+	Thu, 15 Jan 2026 17:05:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496929; cv=none; b=Y8pXequO9bOW4a2vE9ytir6IYiBSqaCLbEIrVBBf2VsiCx4w0RFMWS+0uz+kkqkatfexoxi412rCvmXCbefCjefrh5Y0VzEdsKwvDtg8J4PCnrzoj27ng3YKKxNkWZPJg5fWQlCB/5dMWGH70yE7es514B3G44KS1MxrBcYaYhw=
+	t=1768496725; cv=none; b=qGLg1cgcgzQ3bFs/2tikn8BGx2auM9G2i6Lwx/gqvQfHgsr53QMgsO5mzIbeoO1JrLdLifXt2F/qxfbP6UlKd3Y6Lf4Vwi9fEJGBfmwIk4NzYhGeLWe5/aUk1MmwpZG1uMYWgLNE96Z9DZqPTqkEnht3kTJSUQQfBchRbRm/cgw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496929; c=relaxed/simple;
-	bh=z1cQXLKQQ4ekzACrUthQ9XDMEXfA1vc7AsqRn2OFkWY=;
+	s=arc-20240116; t=1768496725; c=relaxed/simple;
+	bh=xGS2lPZgNNHqT0wWuT4swcez38oqb2stnP17f912za4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qOm1t+8siJwQew3fYj9HqAOukuOOO4xzgti0IriIfKRKzmW0nbE65M8SAXwLPPTLnjFfh3pFNlEYKBEQsA5ZWOYiZsZ36YCYutK5ZDWQPZqfCMFuB/xc8VV/yDDgJndHH71CljCF0fysz9JNg9n5dzabbgO5+Vzvlb5IwH3Tk3Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xktGfn01; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16067C116D0;
-	Thu, 15 Jan 2026 17:08:48 +0000 (UTC)
+	 MIME-Version; b=VRh1qpIfKL6zaSmry60PpGFTm4iEXNo4MGlSMl7KSao/FxPIHmJ0gpjwnRqaqzQgZvV/fa4z+7OtbjA2lDBf6aPHXhITwcIpASXjLfsNj46WXOhFmFsmpfvMcGVe0ITG/QrMvDdLDkFqOJa4BBty+3sQJ9514sGOl4DoJHxcdgM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=posU9O15; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B28F1C116D0;
+	Thu, 15 Jan 2026 17:05:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496929;
-	bh=z1cQXLKQQ4ekzACrUthQ9XDMEXfA1vc7AsqRn2OFkWY=;
+	s=korg; t=1768496725;
+	bh=xGS2lPZgNNHqT0wWuT4swcez38oqb2stnP17f912za4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=xktGfn01EywFwPewEPmdb4Or6zlXp8PSkypgyUWwfc45bDXFJfy6vql9d61XhlYCX
-	 7XMhic5ZG15ow8TcR0ggWN1Lom7HH/TirMlrBjsBuF4AmyAqhuUxF3esEUUrjj8De6
-	 tg6BH906CD1mmibmT52X3BxRlR+ZLXDudvf6Y3SQ=
+	b=posU9O15cG96c7dPbLOkskhsNf89omB0/mtuddsJ/w3HQJy5Gk6buyiXol7cj1+Xv
+	 mkppdbqjGvNDhbOcrMLZRjEAKNgL9277G4A2+PQtVj4Ro3Vj53hG33P80e329N3eTh
+	 aqKqPVly1Kd3vLrd1sDFaB+pDNCg9ykPXJsPg8Uk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hengqi Chen <hengqi.chen@gmail.com>,
-	Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.6 65/88] LoongArch: Add more instruction opcodes and emit_* helpers
-Date: Thu, 15 Jan 2026 17:48:48 +0100
-Message-ID: <20260115164148.663413944@linuxfoundation.org>
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 114/119] ASoC: fsl_sai: Add missing registers to cache default
+Date: Thu, 15 Jan 2026 17:48:49 +0100
+Message-ID: <20260115164156.074404916@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,77 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hengqi Chen <hengqi.chen@gmail.com>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-commit add28024405ed600afaa02749989d4fd119f9057 upstream.
+[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
 
-This patch adds more instruction opcodes and their corresponding emit_*
-helpers which will be used in later patches.
+Drivers does cache sync during runtime resume, setting all writable
+registers. Not all writable registers are set in cache default, resulting
+in the erorr message:
+  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
+  unexpected behavior
 
-Signed-off-by: Hengqi Chen <hengqi.chen@gmail.com>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by adding missing writable register defaults.
+
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/loongarch/include/asm/inst.h |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ sound/soc/fsl/fsl_sai.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/arch/loongarch/include/asm/inst.h
-+++ b/arch/loongarch/include/asm/inst.h
-@@ -65,6 +65,8 @@ enum reg2_op {
- 	revbd_op	= 0x0f,
- 	revh2w_op	= 0x10,
- 	revhd_op	= 0x11,
-+	extwh_op	= 0x16,
-+	extwb_op	= 0x17,
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index bc3bf1c55d3c1..88547621bcdbe 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1041,6 +1041,7 @@ static struct reg_default fsl_sai_reg_defaults_ofs0[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(0), 0},
+ 	{FSL_SAI_RCR2(0), 0},
+ 	{FSL_SAI_RCR3(0), 0},
+@@ -1064,12 +1065,14 @@ static struct reg_default fsl_sai_reg_defaults_ofs8[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(8), 0},
+ 	{FSL_SAI_RCR2(8), 0},
+ 	{FSL_SAI_RCR3(8), 0},
+ 	{FSL_SAI_RCR4(8), 0},
+ 	{FSL_SAI_RCR5(8), 0},
+ 	{FSL_SAI_RMR, 0},
++	{FSL_SAI_RTCTL, 0},
+ 	{FSL_SAI_MCTL, 0},
+ 	{FSL_SAI_MDIV, 0},
  };
- 
- enum reg2i5_op {
-@@ -556,6 +558,8 @@ static inline void emit_##NAME(union loo
- DEF_EMIT_REG2_FORMAT(revb2h, revb2h_op)
- DEF_EMIT_REG2_FORMAT(revb2w, revb2w_op)
- DEF_EMIT_REG2_FORMAT(revbd, revbd_op)
-+DEF_EMIT_REG2_FORMAT(extwh, extwh_op)
-+DEF_EMIT_REG2_FORMAT(extwb, extwb_op)
- 
- #define DEF_EMIT_REG2I5_FORMAT(NAME, OP)				\
- static inline void emit_##NAME(union loongarch_instruction *insn,	\
-@@ -607,6 +611,9 @@ DEF_EMIT_REG2I12_FORMAT(lu52id, lu52id_o
- DEF_EMIT_REG2I12_FORMAT(andi, andi_op)
- DEF_EMIT_REG2I12_FORMAT(ori, ori_op)
- DEF_EMIT_REG2I12_FORMAT(xori, xori_op)
-+DEF_EMIT_REG2I12_FORMAT(ldb, ldb_op)
-+DEF_EMIT_REG2I12_FORMAT(ldh, ldh_op)
-+DEF_EMIT_REG2I12_FORMAT(ldw, ldw_op)
- DEF_EMIT_REG2I12_FORMAT(ldbu, ldbu_op)
- DEF_EMIT_REG2I12_FORMAT(ldhu, ldhu_op)
- DEF_EMIT_REG2I12_FORMAT(ldwu, ldwu_op)
-@@ -695,9 +702,12 @@ static inline void emit_##NAME(union loo
- 	insn->reg3_format.rk = rk;					\
- }
- 
-+DEF_EMIT_REG3_FORMAT(addw, addw_op)
- DEF_EMIT_REG3_FORMAT(addd, addd_op)
- DEF_EMIT_REG3_FORMAT(subd, subd_op)
- DEF_EMIT_REG3_FORMAT(muld, muld_op)
-+DEF_EMIT_REG3_FORMAT(divd, divd_op)
-+DEF_EMIT_REG3_FORMAT(modd, modd_op)
- DEF_EMIT_REG3_FORMAT(divdu, divdu_op)
- DEF_EMIT_REG3_FORMAT(moddu, moddu_op)
- DEF_EMIT_REG3_FORMAT(and, and_op)
-@@ -709,6 +719,9 @@ DEF_EMIT_REG3_FORMAT(srlw, srlw_op)
- DEF_EMIT_REG3_FORMAT(srld, srld_op)
- DEF_EMIT_REG3_FORMAT(sraw, sraw_op)
- DEF_EMIT_REG3_FORMAT(srad, srad_op)
-+DEF_EMIT_REG3_FORMAT(ldxb, ldxb_op)
-+DEF_EMIT_REG3_FORMAT(ldxh, ldxh_op)
-+DEF_EMIT_REG3_FORMAT(ldxw, ldxw_op)
- DEF_EMIT_REG3_FORMAT(ldxbu, ldxbu_op)
- DEF_EMIT_REG3_FORMAT(ldxhu, ldxhu_op)
- DEF_EMIT_REG3_FORMAT(ldxwu, ldxwu_op)
+-- 
+2.51.0
+
 
 
 
