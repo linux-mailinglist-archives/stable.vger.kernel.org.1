@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-209627-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209205-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6AC9D27B58
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:43:14 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 313DAD26898
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B17F430C8272
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:46 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 9C4DE306ED33
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:23 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 366703BFE4C;
-	Thu, 15 Jan 2026 17:47:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15F583BFE47;
+	Thu, 15 Jan 2026 17:27:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uELs84S1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tzpRawcF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EEDC03BFE35;
-	Thu, 15 Jan 2026 17:47:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC5E03BF2E4;
+	Thu, 15 Jan 2026 17:27:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499235; cv=none; b=Ddz30DAgC6SVdkuj1W86Uo8afxURNrSlqSenkhZal+IkGJcAsortxWo+uMBK1Ig2u1aOEb0p+caahl8+NtQHfQBgDpqU4yvfWAC/UVlYIso0nabb47X7LiR+qOMDb+cA+MtYNKGc5oPA/vgfmGT0lixcawaZtQTWKLr9P+dorhs=
+	t=1768498032; cv=none; b=bhPFn5WrSnbZ6LoBkdQoTzdFSycISQDDiWNDLYy0Dz4oPHleYUm+KTja8aRIzeRa8MRf2c3f1UVigv9zdAFLMKTcW8etYRVkU56q5t+28j/bD5J6+hGCFHHz9dK8auQkqhPgmGJp9U/YQbr1pfS1MikDNPd8Hy4BRu0WCK+VCY0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499235; c=relaxed/simple;
-	bh=6NBm1MSlpUqM8Fx7O9ME3oeUoGFEMk/Gtf7ZaM9+iZc=;
+	s=arc-20240116; t=1768498032; c=relaxed/simple;
+	bh=BGjsBhKsI7PpcYlZ3rPq3Hs6fe6C6JTbYj2VJXJPWWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sxkG5H2+gjj+I5k6K5/XZKQ1b3OJTR44jUc8OMv/CCZTVUISk73nCquJVzw2ShJImGvKsIsgZrRfrv0oQeNlyLVWaBTxCqb3u7DARNy3UzbpW/j4UtET9i6yRGKNLD8sSpxNa0QcvZp/AIrCF60JntZGKGASxLze7BBW9/a5jIc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uELs84S1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34BB7C116D0;
-	Thu, 15 Jan 2026 17:47:14 +0000 (UTC)
+	 MIME-Version; b=ZLU8mZNtRCsTI4OlhFGSWO1YdD04HuOGpQ9QS/P2XI3bG8CEYqPsVIEq+FZEtlJlD6Dpa24J7Kf5qWUIiZwFgo19p2RuV1lS2whk1PZ+HUWRqIcFVAjNCIyjzYJaQFlE4KJz5N+1V6gqwWlIpgZQSFZDxE5dmezb5nYtBMIgEkc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tzpRawcF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A6BBC116D0;
+	Thu, 15 Jan 2026 17:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499234;
-	bh=6NBm1MSlpUqM8Fx7O9ME3oeUoGFEMk/Gtf7ZaM9+iZc=;
+	s=korg; t=1768498032;
+	bh=BGjsBhKsI7PpcYlZ3rPq3Hs6fe6C6JTbYj2VJXJPWWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uELs84S1VzR1xujJcmh+mvX31uZjsFK05BW+YUogSsCgrbWAb4kcjyCGwHs0aDL1t
-	 87XkPS/Xjp3qdH6s0VaPHqYDETuQskwzw0Bkn9pw/PvfmKYFaDaQ9OQBlSZUko1dfP
-	 z1VIfMd4YfPqFKOXctojS8elMv1WqIdKfhwVwpzo=
+	b=tzpRawcF/BGViGdIQiOvLyQEc7I80NDCrrxGk9JlpTqazhISjW4mfS8ub3NJlx1fj
+	 E4MeTsgxlNDr25mDVKuxbaQGvoBNw2VqhW98GgtoyDX0OaP4JsZor7/HyFlLYuyrQv
+	 ibrvqcf+4+wgCRWJ8qbRDYLBB4MJX/LbDM21RMpE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.10 154/451] netfilter: nft_connlimit: memleak if nf_ct_netns_get() fails
-Date: Thu, 15 Jan 2026 17:45:55 +0100
-Message-ID: <20260115164236.484563355@linuxfoundation.org>
+	Jeongjun Park <aha310510@gmail.com>,
+	Hans Verkuil <hverkuil+cisco@kernel.org>
+Subject: [PATCH 5.15 290/554] media: dvb-usb: dtv5100: fix out-of-bounds in dtv5100_i2c_msg()
+Date: Thu, 15 Jan 2026 17:45:56 +0100
+Message-ID: <20260115164256.724233252@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,51 +59,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jeongjun Park <aha310510@gmail.com>
 
-commit 7d70984a1ad4c445dff08edb9aacce8906b6a222 upstream.
+commit b91e6aafe8d356086cc621bc03e35ba2299e4788 upstream.
 
-Check if nf_ct_netns_get() fails then release the limit object
-previously allocated via kmalloc().
+rlen value is a user-controlled value, but dtv5100_i2c_msg() does not
+check the size of the rlen value. Therefore, if it is set to a value
+larger than sizeof(st->data), an out-of-bounds vuln occurs for st->data.
 
-Fixes: 37f319f37d90 ("netfilter: nft_connlimit: move stateful fields out of expression data")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Therefore, we need to add proper range checking to prevent this vuln.
+
+Fixes: 60688d5e6e6e ("V4L/DVB (8735): dtv5100: replace dummy frontend by zl10353")
+Cc: stable@vger.kernel.org
+Signed-off-by: Jeongjun Park <aha310510@gmail.com>
+Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_connlimit.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb/dtv5100.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -56,6 +56,7 @@ static int nft_connlimit_do_init(const s
- {
- 	bool invert = false;
- 	u32 flags, limit;
-+	int err;
+--- a/drivers/media/usb/dvb-usb/dtv5100.c
++++ b/drivers/media/usb/dvb-usb/dtv5100.c
+@@ -55,6 +55,11 @@ static int dtv5100_i2c_msg(struct dvb_us
+ 	}
+ 	index = (addr << 8) + wbuf[0];
  
- 	if (!tb[NFTA_CONNLIMIT_COUNT])
- 		return -EINVAL;
-@@ -78,7 +79,15 @@ static int nft_connlimit_do_init(const s
- 	priv->limit	= limit;
- 	priv->invert	= invert;
- 
--	return nf_ct_netns_get(ctx->net, ctx->family);
-+	err = nf_ct_netns_get(ctx->net, ctx->family);
-+	if (err < 0)
-+		goto err_netns;
++	if (rlen > sizeof(st->data)) {
++		warn("rlen = %x is too big!\n", rlen);
++		return -EINVAL;
++	}
 +
-+	return 0;
-+err_netns:
-+	kfree(priv->list);
-+
-+	return err;
- }
- 
- static void nft_connlimit_do_destroy(const struct nft_ctx *ctx,
+ 	memcpy(st->data, rbuf, rlen);
+ 	msleep(1); /* avoid I2C errors */
+ 	return usb_control_msg(d->udev, pipe, request,
 
 
 
