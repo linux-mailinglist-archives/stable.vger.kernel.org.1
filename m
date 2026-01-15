@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209519-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209097-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66359D27A6E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2A5A8D27250
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:11 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id AFC8C3076E22
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:34 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 588483141394
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D0C3BB9F4;
-	Thu, 15 Jan 2026 17:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2233C2C027B;
+	Thu, 15 Jan 2026 17:22:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QW+5jwX4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qsAXR6q7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62C2039449C;
-	Thu, 15 Jan 2026 17:42:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D62713A7F5D;
+	Thu, 15 Jan 2026 17:22:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498927; cv=none; b=R5pmrFC0EEd5dKg0RwDz6uzyKj4BMxGJ8kKmjBUwYRzBi8AXw9RvDMm+e/SF3pZCZl0Ofewo/o+zhmJg899P6aJGnhRFdSjoCkB6ldUckZewIHlvGLqOKCVXPwJqa7zY85dY5ZtA3yM0ytQzkleA0Uq97KsSwHioqRt+FCilxlo=
+	t=1768497724; cv=none; b=ktX7Y4KSQUaV/x8sVD53dbyLMbhVmTD+72BaHr6lPXGXpx4z+/XzSPos19PxK8zBM/2XVSKh3kDywBtbDKEYhVVkkhDOmVccxskXl8m41rwL/uE1HkKaXIwrEbKJ1GmMfg/RKfrO+xjshSEOG3NdB/GUKDf/Ok13aoeNnYXx1qk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498927; c=relaxed/simple;
-	bh=R8efUh1rz864d1UgeIbnpjBP3TSMP6toGxJ6mLuhOSU=;
+	s=arc-20240116; t=1768497724; c=relaxed/simple;
+	bh=+jPPXM2kxIM38HZwMu7LCI1BFtCYhk8flwim74U4RqE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OHnEMSy8S+UaIBXsvYrWD8Nf7SDXNeRJVWZDqk2Xc0KqB3MgbG8ic2zcx1mQE23luBh928EVnMYnUxMZqlQZUs4Q+lBDiAanNpKqBGJEbw6QKP4jIxGToAUK97OwVHuo7lMzZ7vAe6lOKgiMDG+gzfL8Re5Bbchxht2ip91lcBU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QW+5jwX4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7303C116D0;
-	Thu, 15 Jan 2026 17:42:06 +0000 (UTC)
+	 MIME-Version:Content-Type; b=l6jCfyuXHsmeEdztHGsMxHYea5yuCNuShrQXqhjPH78lgKcl87j82YyE8WCj3+g5cgyJGetuKRAYg8mh7bzQS43YuLu1QQIlsaU9+IvqXhDiG0AN4Lgafo05r1gHUUZURf8CmrC8iq+eVv+Ol1wF5nHguMvPreGac7o42bPgDig=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qsAXR6q7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63209C16AAE;
+	Thu, 15 Jan 2026 17:22:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498927;
-	bh=R8efUh1rz864d1UgeIbnpjBP3TSMP6toGxJ6mLuhOSU=;
+	s=korg; t=1768497724;
+	bh=+jPPXM2kxIM38HZwMu7LCI1BFtCYhk8flwim74U4RqE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QW+5jwX4gVRVAoqKfYFgweG2Epmn2UeQAprF3vJjPfj5Orw2Rycl19O4F51H17jzc
-	 YRQOf64KiBuyiw/WuVeFsPZCriQr8RxpbtSwz+Q9iv6R/efzJ/lhtJRr5p2cyNBnfH
-	 rJh2VFqkd2uwuAXRVbcJjhnzNxsNdlA1lHNFnnAA=
+	b=qsAXR6q7/DxTnIr00mfxU+saEvRfkDCxvv8p9i6FSiJhSLs9aE08l6j46ZT2IARL6
+	 51YnuQDQHJ8LHl2TveltREV4RlcjtZq3lxoN25eD00MdEO3wzwHXSlOdZXwZy2/iAY
+	 ddQLWhhY6dP9p5SaoTTYkAaedS5V+T+gimXPxrlg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tengda Wu <wutengda@huaweicloud.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-	Josh Poimboeuf <jpoimboe@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@intel.com>,
+	Armin Wolf <W_Armin@gmx.de>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 046/451] x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()
-Date: Thu, 15 Jan 2026 17:44:07 +0100
-Message-ID: <20260115164232.562819639@linuxfoundation.org>
+Subject: [PATCH 5.15 182/554] fs/nls: Fix inconsistency between utf8_to_utf32() and utf32_to_utf8()
+Date: Thu, 15 Jan 2026 17:44:08 +0100
+Message-ID: <20260115164252.851866942@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,120 +59,66 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tengda Wu <wutengda@huaweicloud.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit ced37e9ceae50e4cb6cd058963bd315ec9afa651 ]
+[ Upstream commit c36f9d7b2869a003a2f7d6ff2c6bac9e62fd7d68 ]
 
-When triggering a stack dump via sysrq (echo t > /proc/sysrq-trigger),
-KASAN may report false-positive out-of-bounds access:
+After commit 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion"),
+the return values of utf8_to_utf32() and utf32_to_utf8() are
+inconsistent when encountering an error: utf8_to_utf32() returns -1,
+while utf32_to_utf8() returns errno codes. Fix this inconsistency
+by modifying utf8_to_utf32() to return errno codes as well.
 
-  BUG: KASAN: out-of-bounds in __show_regs+0x4b/0x340
-  Call Trace:
-    dump_stack_lvl
-    print_address_description.constprop.0
-    print_report
-    __show_regs
-    show_trace_log_lvl
-    sched_show_task
-    show_state_filter
-    sysrq_handle_showstate
-    __handle_sysrq
-    write_sysrq_trigger
-    proc_reg_write
-    vfs_write
-    ksys_write
-    do_syscall_64
-    entry_SYSCALL_64_after_hwframe
-
-The issue occurs as follows:
-
-  Task A (walk other tasks' stacks)           Task B (running)
-  1. echo t > /proc/sysrq-trigger
-  show_trace_log_lvl
-    regs = unwind_get_entry_regs()
-    show_regs_if_on_stack(regs)
-                                              2. The stack value pointed by
-                                                 `regs` keeps changing, and
-                                                 so are the tags in its
-                                                 KASAN shadow region.
-      __show_regs(regs)
-        regs->ax, regs->bx, ...
-          3. hit KASAN redzones, OOB
-
-When task A walks task B's stack without suspending it, the continuous changes
-in task B's stack (and corresponding KASAN shadow tags) may cause task A to
-hit KASAN redzones when accessing obsolete values on the stack, resulting in
-false positive reports.
-
-Simply stopping the task before unwinding is not a viable fix, as it would
-alter the state intended to inspect. This is especially true for diagnosing
-misbehaving tasks (e.g., in a hard lockup), where stopping might fail or hide
-the root cause by changing the call stack.
-
-Therefore, fix this by disabling KASAN checks during asynchronous stack
-unwinding, which is identified when the unwinding task does not match the
-current task (task != current).
-
-  [ bp: Align arguments on function's opening brace. ]
-
-Fixes: 3b3fa11bc700 ("x86/dumpstack: Print any pt_regs found on the stack")
-Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://patch.msgid.link/all/20251023090632.269121-1-wutengda@huaweicloud.com
+Fixes: 25524b619029 ("fs/nls: Fix utf16 to utf8 conversion")
+Suggested-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@intel.com>
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Link: https://patch.msgid.link/20251129111535.8984-1-W_Armin@gmx.de
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/dumpstack.c | 23 +++++++++++++++++++++--
- 1 file changed, 21 insertions(+), 2 deletions(-)
+ fs/nls/nls_base.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index df6d3d859ca1b..dc0cd8c1ac137 100644
---- a/arch/x86/kernel/dumpstack.c
-+++ b/arch/x86/kernel/dumpstack.c
-@@ -189,8 +189,8 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
-  * in false positive reports. Disable instrumentation to avoid those.
-  */
- __no_kmsan_checks
--static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
--			unsigned long *stack, const char *log_lvl)
-+static void __show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
-+				 unsigned long *stack, const char *log_lvl)
- {
- 	struct unwind_state state;
- 	struct stack_info stack_info = {0};
-@@ -311,6 +311,25 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+diff --git a/fs/nls/nls_base.c b/fs/nls/nls_base.c
+index 7eacded3c17d1..f072eb6b563f6 100644
+--- a/fs/nls/nls_base.c
++++ b/fs/nls/nls_base.c
+@@ -67,19 +67,22 @@ int utf8_to_utf32(const u8 *s, int inlen, unicode_t *pu)
+ 			l &= t->lmask;
+ 			if (l < t->lval || l > UNICODE_MAX ||
+ 					(l & SURROGATE_MASK) == SURROGATE_PAIR)
+-				return -1;
++				return -EILSEQ;
++
+ 			*pu = (unicode_t) l;
+ 			return nc;
+ 		}
+ 		if (inlen <= nc)
+-			return -1;
++			return -EOVERFLOW;
++
+ 		s++;
+ 		c = (*s ^ 0x80) & 0xFF;
+ 		if (c & 0xC0)
+-			return -1;
++			return -EILSEQ;
++
+ 		l = (l << 6) | c;
  	}
+-	return -1;
++	return -EILSEQ;
  }
+ EXPORT_SYMBOL(utf8_to_utf32);
  
-+static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
-+			       unsigned long *stack, const char *log_lvl)
-+{
-+	/*
-+	 * Disable KASAN to avoid false positives during walking another
-+	 * task's stacks, as values on these stacks may change concurrently
-+	 * with task execution.
-+	 */
-+	bool disable_kasan = task && task != current;
-+
-+	if (disable_kasan)
-+		kasan_disable_current();
-+
-+	__show_trace_log_lvl(task, regs, stack, log_lvl);
-+
-+	if (disable_kasan)
-+		kasan_enable_current();
-+}
-+
- void show_stack(struct task_struct *task, unsigned long *sp,
- 		       const char *loglvl)
- {
 -- 
 2.51.0
 
