@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209364-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208639-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E29AFD26E5D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:53 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B1B9D26158
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8D41E31960FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:22 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0410030D613B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D74C3D1CC3;
-	Thu, 15 Jan 2026 17:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B01162D73BE;
+	Thu, 15 Jan 2026 17:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w759kiES"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f80t2sYU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 602593D1CC1;
-	Thu, 15 Jan 2026 17:34:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 740272BD5AF;
+	Thu, 15 Jan 2026 17:00:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498485; cv=none; b=hKYFkStyQzt2gCa8QPmsg/dKnJdJ7AQjZdrfshvAL6Eg/ELkVirjDAguiIGLoVfQ6gA/x3TGdiELhnErhEli+CYRuNNH/g5m3vnAMYd9L59gVAED9z38Sonwo3MTM7czb7STTiBqdtjNoORpNR2SXdUcrfS+G5bWPRtwpz5abx0=
+	t=1768496422; cv=none; b=m6KWFaSgo+0qUnGg/eZAQ7bCZ5FbnL9AOPVLFlZVQF63bZV+yTy3yAXQkFbYKwmlZyFLJ11G4ZT5aOKqx+PcPmzLPJklL9uwX1HlAow/6IJFtrAydGuC7ca8Wz7tU9ubWu8eI/YLB8bBMSL3Z7Puf1LL6dwzKxiBCS6ZffgsxP0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498485; c=relaxed/simple;
-	bh=D40gTbJGdcoXNI92YCI3jYCRscnKNin13Jw1trmDxZk=;
+	s=arc-20240116; t=1768496422; c=relaxed/simple;
+	bh=KCSNYpos81sKN6nNn6dztANMnTge/ilspQTI5LaHSm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=C+vOP0dU5wjpmup1AuJHvpmMusjPXLRHZndaQXSvBmTBOPhimlPSYJy3Yedmg8stq1IG3lybd7vCK69QuOzmVxYivzZuF0LPgVEUXxprzw2b4l8nN7U8y0c9VdGEzZ1ulAjNUx9PblnLBZwu8YAqFOaNks3VqE01OxBXhR86q08=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w759kiES; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0956C116D0;
-	Thu, 15 Jan 2026 17:34:44 +0000 (UTC)
+	 MIME-Version; b=Av/FCF6bMwbCHn32FunUhEFqrztoa283T58oqJajhomo4b3AXSohjw66vmRG1ErhnNYwOzyZDrX17kVmx5CqPzygaPFOWdA2EnrYlT53T0cu094eSIVCgfK63/O2EvOOr21QoyIpr+dkMziPcvCWJS8KKXWiJx+Z2k17QunRBTg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f80t2sYU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1C31C116D0;
+	Thu, 15 Jan 2026 17:00:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498485;
-	bh=D40gTbJGdcoXNI92YCI3jYCRscnKNin13Jw1trmDxZk=;
+	s=korg; t=1768496422;
+	bh=KCSNYpos81sKN6nNn6dztANMnTge/ilspQTI5LaHSm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w759kiESjrWvU1CD+Pd6yb+JV9lp2yCcoSlIMBzAwZu8ffd/NhSTMDRPALG+XU8R5
-	 D7XfIOwWUDw7A9P6gpLRFgakxlb3E+c3oAaa52A3b8EJiREXF0EqLTagDY/2AuTEG0
-	 jPZqBiQDr7nA2ozi4VSgjhqQ2Odw8YkmzjxatH3Y=
+	b=f80t2sYUS41fyLJM4sBJk+I2EI9ywGmrGqbbSGgbvGvkFNCoqK/RH+p0jc0ZOEyw9
+	 PYPlq3K/RoX8ad3Xa3FpgdfzTB24ZR6uyxfwqcyhsCcGQCaVAc2VV7RhLl5CjU3/I9
+	 0xiJdW5JpmTv9OwmtsV1SR6ig8e65Cz/ycOFl8aA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ma Ke <make24@iscas.ac.cn>,
-	Johan Hovold <johan@kernel.org>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Vladimir Zapolskiy <vz@mleia.com>,
+	Andrew Elantsev <elantsew.andrew@gmail.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 448/554] usb: ohci-nxp: fix device leak on probe failure
+Subject: [PATCH 6.18 177/181] ASoC: amd: yc: Add quirk for Honor MagicBook X16 2025
 Date: Thu, 15 Jan 2026 17:48:34 +0100
-Message-ID: <20260115164302.486116694@linuxfoundation.org>
+Message-ID: <20260115164208.703984109@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Andrew Elantsev <elantsew.andrew@gmail.com>
 
-[ Upstream commit b4c61e542faf8c9131d69ecfc3ad6de96d1b2ab8 ]
+[ Upstream commit e2cb8ef0372665854fca6fa7b30b20dd35acffeb ]
 
-Make sure to drop the reference taken when looking up the PHY I2C device
-during probe on probe failure (e.g. probe deferral) and on driver
-unbind.
+Add a DMI quirk for the Honor MagicBook X16 2025 laptop
+fixing the issue where the internal microphone was
+not detected.
 
-Fixes: 73108aa90cbf ("USB: ohci-nxp: Use isp1301 driver")
-Cc: stable@vger.kernel.org	# 3.5
-Reported-by: Ma Ke <make24@iscas.ac.cn>
-Link: https://lore.kernel.org/lkml/20251117013428.21840-1-make24@iscas.ac.cn/
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
-Link: https://patch.msgid.link/20251218153519.19453-4-johan@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Andrew Elantsev <elantsew.andrew@gmail.com>
+Link: https://patch.msgid.link/20251210203800.142822-1-elantsew.andrew@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-nxp.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/soc/amd/yc/acp6x-mach.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -224,6 +224,7 @@ static int ohci_hcd_nxp_probe(struct pla
- fail_resource:
- 	usb_put_hcd(hcd);
- fail_disable:
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
- 	return ret;
- }
-@@ -235,6 +236,7 @@ static int ohci_hcd_nxp_remove(struct pl
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
-+	put_device(&isp1301_i2c_client->dev);
- 	isp1301_i2c_client = NULL;
+diff --git a/sound/soc/amd/yc/acp6x-mach.c b/sound/soc/amd/yc/acp6x-mach.c
+index f210a253da9f5..bf4d9d3365617 100644
+--- a/sound/soc/amd/yc/acp6x-mach.c
++++ b/sound/soc/amd/yc/acp6x-mach.c
+@@ -661,6 +661,13 @@ static const struct dmi_system_id yc_acp_quirk_table[] = {
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "Bravo 15 C7UCX"),
+ 		}
+ 	},
++	{
++		.driver_data = &acp6x_card,
++		.matches = {
++			DMI_MATCH(DMI_BOARD_VENDOR, "HONOR"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "GOH-X"),
++		}
++	},
+ 	{}
+ };
  
- 	return 0;
+-- 
+2.51.0
+
 
 
 
