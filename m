@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209369-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208807-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id D415CD26A6A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:15 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8E2EFD266E5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1BDDD30A3980
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 18E6930FCC34
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8244A3B8BA5;
-	Thu, 15 Jan 2026 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6972C11EF;
+	Thu, 15 Jan 2026 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sLxcswGY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Md2Wjae1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4626A274FE3;
-	Thu, 15 Jan 2026 17:34:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CAF1A08AF;
+	Thu, 15 Jan 2026 17:08:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498499; cv=none; b=kUd0I4kpNMeFTJnGj+DdzDjOunsTUXAnYcu6Gmj7yNgdMDxk/KcsTIXYrHCNaREJqbGbusZTwUiagTsgZrU+ZCBhtk9Z4azLslpnpgCk8brngRjXJJ4bhaA1rZMo9W/nUef/WWh/Z1D2cdQwXXq9G3Nx7GHQWCqVBwi69L2KiKo=
+	t=1768496898; cv=none; b=WtZGtKwofr0DIQBPPlrVJbHrs8nmVmHtTdGBXijKQHb4ztWSuEa65PvhqT62S2zJoTyA5tQlUhctwyc22ZcIkmEyntMdSTpHUg4E8vT7Qz2JdC0Z+CxYUD7ehMsh0fe5XuMSX104DhU+KYlOh5I3C0NLKUj7Q/hLevpoKsSfXP4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498499; c=relaxed/simple;
-	bh=9bQ13QMTpJ42LaaaJbElXgoBF2OTOlgbVyciwg7c3dw=;
+	s=arc-20240116; t=1768496898; c=relaxed/simple;
+	bh=vZNeysPrIPImpM+tZ0mSZAftcqyHKJH4B95PTLl+B3k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bBg1WhdSWsPVS1KDAxSH645kgA9kBCFRseSbIf18pV1zi2fjyi8G/+RLqlnsKlE4OCDNo3OoYSy3EHyFcwFL/ZH7t00Dfl1jifcdIddvP8DKyEq9VA1bhSHAPRbuHyxQdAVp3ouM1Im7vF/d0pzblwONd3VZsUtIrh7meQhJu8c=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sLxcswGY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB83EC116D0;
-	Thu, 15 Jan 2026 17:34:58 +0000 (UTC)
+	 MIME-Version; b=rGy6zx+lcFOVbptOa1KX9A13iaAqQzYJehmCQFT7FTj+/GCHjqpxP6gqTF10s9/uK3GCDGziDHS5y4ByJ5am2DOdiMrMhix75IZr5Vz6qEAyfPgQKqKZ4Ff2cL/SFVPwWymL6L+wML53zDiGT/scW9hPk9U97u27h9VXbLESdxM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Md2Wjae1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FBBC116D0;
+	Thu, 15 Jan 2026 17:08:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498499;
-	bh=9bQ13QMTpJ42LaaaJbElXgoBF2OTOlgbVyciwg7c3dw=;
+	s=korg; t=1768496898;
+	bh=vZNeysPrIPImpM+tZ0mSZAftcqyHKJH4B95PTLl+B3k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sLxcswGYNmnL//W7oMXCdTbblP3LuLU8Ioz63bdsSjkavokByaMoiow32mDhT08HD
-	 T6yzRC1Pr4bvLC9soALoReXNW271FqE7otH+ZxYN7nDBN1rlqwaR6c+0d3Y/968Z3e
-	 G4x+DV+qWJFPF970XSkFzXHYTRlzXjHluPsUF30A=
+	b=Md2Wjae1Dy9dGhyaBXuRxO7BxN/jh0floYPlUI2xJK1VfeZon5S4vfzDB0Je435Ay
+	 xUy1m6kUNN+mTDSLO0A66rHcCuND7zWbsLkmHSWV1dXKD2m+bTUcEDCAvSouIqBJAU
+	 zWUtYAmWA7ZqAK8vshPExR+9i7hK9KNdqNVp9Tdw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Di Zhu <zhud@hygon.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 452/554] ARM: dts: microchip: sama5d2: fix spi flexcom fifo size to 32
+Subject: [PATCH 6.6 55/88] netdev: preserve NETIF_F_ALL_FOR_ALL across TSO updates
 Date: Thu, 15 Jan 2026 17:48:38 +0100
-Message-ID: <20260115164302.632446078@linuxfoundation.org>
+Message-ID: <20260115164148.305227534@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,75 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: Di Zhu <zhud@hygon.cn>
 
-[ Upstream commit 7d5864dc5d5ea6a35983dd05295fb17f2f2f44ce ]
+[ Upstream commit 02d1e1a3f9239cdb3ecf2c6d365fb959d1bf39df ]
 
-Unlike standalone spi peripherals, on sama5d2, the flexcom spi have fifo
-size of 32 data. Fix flexcom/spi nodes where this property is wrong.
+Directly increment the TSO features incurs a side effect: it will also
+directly clear the flags in NETIF_F_ALL_FOR_ALL on the master device,
+which can cause issues such as the inability to enable the nocache copy
+feature on the bonding driver.
 
-Fixes: 6b9a3584c7ed ("ARM: dts: at91: sama5d2: Add missing flexcom definitions")
-Cc: stable@vger.kernel.org # 5.8+
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20251114140225.30372-1-nicolas.ferre@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+The fix is to include NETIF_F_ALL_FOR_ALL in the update mask, thereby
+preventing it from being cleared.
+
+Fixes: b0ce3508b25e ("bonding: allow TSO being set on bonding master")
+Signed-off-by: Di Zhu <zhud@hygon.cn>
+Link: https://patch.msgid.link/20251224012224.56185-1-zhud@hygon.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/sama5d2.dtsi |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ include/linux/netdevice.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/arm/boot/dts/sama5d2.dtsi
-+++ b/arch/arm/boot/dts/sama5d2.dtsi
-@@ -555,7 +555,7 @@
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(12))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 030d9de2ba2d2..202e557496fb4 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -4998,7 +4998,8 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
+ static inline netdev_features_t netdev_add_tso_features(netdev_features_t features,
+ 							netdev_features_t mask)
+ {
+-	return netdev_increment_features(features, NETIF_F_ALL_TSO, mask);
++	return netdev_increment_features(features, NETIF_F_ALL_TSO |
++					 NETIF_F_ALL_FOR_ALL, mask);
+ }
  
-@@ -625,7 +625,7 @@
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(14))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -835,7 +835,7 @@
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(16))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -925,7 +925,7 @@
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(18))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
-@@ -976,7 +976,7 @@
- 						 AT91_XDMAC_DT_PER_IF(1) |
- 						 AT91_XDMAC_DT_PERID(20))>;
- 					dma-names = "tx", "rx";
--					atmel,fifo-size = <16>;
-+					atmel,fifo-size = <32>;
- 					status = "disabled";
- 				};
- 
+ int __netdev_update_features(struct net_device *dev);
+-- 
+2.51.0
+
 
 
 
