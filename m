@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209547-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209159-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 688C8D277F5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D314D2736E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:12:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 874AF31BBE91
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 05184324562B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EB1630214B;
-	Thu, 15 Jan 2026 17:43:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 273DE3BFE37;
+	Thu, 15 Jan 2026 17:25:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E2bziiXG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m6yecjE5"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3AFC2D73B4;
-	Thu, 15 Jan 2026 17:43:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE3F53AEF27;
+	Thu, 15 Jan 2026 17:25:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499007; cv=none; b=uPyyloP2F3TK3ezUOmhXBEeTKMvFncvaE9J0FKKUJbF96jcroLPqNxNVLaPuwnfMrVeRhrvGonKBOOpanGbTEFkyKqtyAJwgD4jMFlFhsjn9VzSnTria+93WL5umeLiiXAwJL2kJRqtuVok994HoXiuheEoP6ZVzr6bE8YhCuaM=
+	t=1768497901; cv=none; b=cviN+aTOz4pIga5P6R3KIwyFIWZaXCQj+zomld4ctL/uHY3ITXJFttNZqaReF889IxGzWYqzI230KbNbsy+E0yeoYXp4lWmYps4ZAkjZDEFFNa8JxeV2QAOTi0p024qVu/3xi5kD3QagICwamE3xxysZBiobIpFE2CBuE5/xYdI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499007; c=relaxed/simple;
-	bh=5eiVqiWLQ2102rJm71sGErBvWPwg3Ogmn+n4bML51p8=;
+	s=arc-20240116; t=1768497901; c=relaxed/simple;
+	bh=xW1t6HtPkZph4ed2TvICkHRnd8dJHUb9DwhFiKLCu94=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XgBQ7O5r/U0vvnqFdQyBqrVPdreEeezTcLsXe36ylcMmRCRYe+8rUhWCSa34ZI0EyhRAVvctXPhpxdlong1RJ+O3QmoLpa71IcuMA0+9pDiCB0eW/U5TYcloKXVo37dHRKMOY4xvREFBV2ljD/XBt+tXdge47eSEmKtIg0hxLXU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E2bziiXG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B453FC116D0;
-	Thu, 15 Jan 2026 17:43:26 +0000 (UTC)
+	 MIME-Version; b=l54WafzIoegpEF+VIcNb72Gv51CPpAGuaMIDFxGHimvCi/jPdIiuVpJnV3VKdvcMgL5DYOpt4gXYDIELUfWP4qIvhWxWYGjqpOgci+SOxzYqoR+1M4mf3KZvJ65zhxHJPd2Gc/FQWWAGZ5FLEc423vJ5sJryDyVi7WvPWFWQdN4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m6yecjE5; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64554C116D0;
+	Thu, 15 Jan 2026 17:25:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499007;
-	bh=5eiVqiWLQ2102rJm71sGErBvWPwg3Ogmn+n4bML51p8=;
+	s=korg; t=1768497901;
+	bh=xW1t6HtPkZph4ed2TvICkHRnd8dJHUb9DwhFiKLCu94=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E2bziiXGfKgByivuLVRpjUmR/TFJwhfrJGNwlbhELMIhP3dUp+SdSUXoCWKNi5ojQ
-	 93hPwKVLJq3mrUf0ylCgGVBDw/A0x1zIACmFlRpoYeBki0doX0ZU9vV+dRSMnVrItl
-	 jRM0wANh2tZL7VSVFDSTk0cLQQNJLLADP8HpYmNo=
+	b=m6yecjE5pYc/l82RV2ncoTQLrJTTwwbcXsgsBpxhe8/Ldr7jnUon+6mOlfUDMHIGo
+	 xPO8cXPo3CoPzZCvMiQN0OZFAL1f3XVL5coNl4FeBGxFdSVJIjmZzCZpKOVueVDeAK
+	 rZNIpGSLH8IJtb9vsxGt1YzbMnnDHcWrkLQqWlFM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Doug Berger <opendmb@gmail.com>,
+	"Peter Zijlstra (Intel)" <peterz@infradead.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 075/451] scsi: sim710: Fix resource leak by adding missing ioport_unmap() calls
+Subject: [PATCH 5.15 210/554] sched/deadline: only set free_cpus for online runqueues
 Date: Thu, 15 Jan 2026 17:44:36 +0100
-Message-ID: <20260115164233.616714591@linuxfoundation.org>
+Message-ID: <20260115164253.853877007@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +60,191 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Doug Berger <opendmb@gmail.com>
 
-[ Upstream commit acd194d9b5bac419e04968ffa44351afabb50bac ]
+[ Upstream commit 382748c05e58a9f1935f5a653c352422375566ea ]
 
-The driver calls ioport_map() to map I/O ports in sim710_probe_common()
-but never calls ioport_unmap() to release the mapping. This causes
-resource leaks in both the error path when request_irq() fails and in
-the normal device removal path via sim710_device_remove().
+Commit 16b269436b72 ("sched/deadline: Modify cpudl::free_cpus
+to reflect rd->online") introduced the cpudl_set/clear_freecpu
+functions to allow the cpu_dl::free_cpus mask to be manipulated
+by the deadline scheduler class rq_on/offline callbacks so the
+mask would also reflect this state.
 
-Add ioport_unmap() calls in the out_release error path and in
-sim710_device_remove().
+Commit 9659e1eeee28 ("sched/deadline: Remove cpu_active_mask
+from cpudl_find()") removed the check of the cpu_active_mask to
+save some processing on the premise that the cpudl::free_cpus
+mask already reflected the runqueue online state.
 
-Fixes: 56fece20086e ("[PATCH] finally fix 53c700 to use the generic iomem infrastructure")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Link: https://patch.msgid.link/20251029032555.1476-1-vulab@iscas.ac.cn
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Unfortunately, there are cases where it is possible for the
+cpudl_clear function to set the free_cpus bit for a CPU when the
+deadline runqueue is offline. When this occurs while a CPU is
+connected to the default root domain the flag may retain the bad
+state after the CPU has been unplugged. Later, a different CPU
+that is transitioning through the default root domain may push a
+deadline task to the powered down CPU when cpudl_find sees its
+free_cpus bit is set. If this happens the task will not have the
+opportunity to run.
+
+One example is outlined here:
+https://lore.kernel.org/lkml/20250110233010.2339521-1-opendmb@gmail.com
+
+Another occurs when the last deadline task is migrated from a
+CPU that has an offlined runqueue. The dequeue_task member of
+the deadline scheduler class will eventually call cpudl_clear
+and set the free_cpus bit for the CPU.
+
+This commit modifies the cpudl_clear function to be aware of the
+online state of the deadline runqueue so that the free_cpus mask
+can be updated appropriately.
+
+It is no longer necessary to manage the mask outside of the
+cpudl_set/clear functions so the cpudl_set/clear_freecpu
+functions are removed. In addition, since the free_cpus mask is
+now only updated under the cpudl lock the code was changed to
+use the non-atomic __cpumask functions.
+
+Signed-off-by: Doug Berger <opendmb@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/sim710.c | 2 ++
- 1 file changed, 2 insertions(+)
+ kernel/sched/cpudeadline.c | 34 +++++++++-------------------------
+ kernel/sched/cpudeadline.h |  4 +---
+ kernel/sched/deadline.c    |  8 ++++----
+ 3 files changed, 14 insertions(+), 32 deletions(-)
 
-diff --git a/drivers/scsi/sim710.c b/drivers/scsi/sim710.c
-index 22302612e032b..3c2a07bf92094 100644
---- a/drivers/scsi/sim710.c
-+++ b/drivers/scsi/sim710.c
-@@ -133,6 +133,7 @@ static int sim710_probe_common(struct device *dev, unsigned long base_addr,
-  out_put_host:
- 	scsi_host_put(host);
-  out_release:
-+	ioport_unmap(hostdata->base);
- 	release_region(base_addr, 64);
-  out_free:
- 	kfree(hostdata);
-@@ -148,6 +149,7 @@ static int sim710_device_remove(struct device *dev)
+diff --git a/kernel/sched/cpudeadline.c b/kernel/sched/cpudeadline.c
+index 221ca10505738..219cec91ecee4 100644
+--- a/kernel/sched/cpudeadline.c
++++ b/kernel/sched/cpudeadline.c
+@@ -166,12 +166,13 @@ int cpudl_find(struct cpudl *cp, struct task_struct *p,
+  * cpudl_clear - remove a CPU from the cpudl max-heap
+  * @cp: the cpudl max-heap context
+  * @cpu: the target CPU
++ * @online: the online state of the deadline runqueue
+  *
+  * Notes: assumes cpu_rq(cpu)->lock is locked
+  *
+  * Returns: (void)
+  */
+-void cpudl_clear(struct cpudl *cp, int cpu)
++void cpudl_clear(struct cpudl *cp, int cpu, bool online)
+ {
+ 	int old_idx, new_cpu;
+ 	unsigned long flags;
+@@ -184,7 +185,7 @@ void cpudl_clear(struct cpudl *cp, int cpu)
+ 	if (old_idx == IDX_INVALID) {
+ 		/*
+ 		 * Nothing to remove if old_idx was invalid.
+-		 * This could happen if a rq_offline_dl is
++		 * This could happen if rq_online_dl or rq_offline_dl is
+ 		 * called for a CPU without -dl tasks running.
+ 		 */
+ 	} else {
+@@ -195,9 +196,12 @@ void cpudl_clear(struct cpudl *cp, int cpu)
+ 		cp->elements[new_cpu].idx = old_idx;
+ 		cp->elements[cpu].idx = IDX_INVALID;
+ 		cpudl_heapify(cp, old_idx);
+-
+-		cpumask_set_cpu(cpu, cp->free_cpus);
+ 	}
++	if (likely(online))
++		__cpumask_set_cpu(cpu, cp->free_cpus);
++	else
++		__cpumask_clear_cpu(cpu, cp->free_cpus);
++
+ 	raw_spin_unlock_irqrestore(&cp->lock, flags);
+ }
  
- 	scsi_remove_host(host);
- 	NCR_700_release(host);
-+	ioport_unmap(hostdata->base);
- 	kfree(hostdata);
- 	free_irq(host->irq, host);
- 	release_region(host->base, 64);
+@@ -228,7 +232,7 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
+ 		cp->elements[new_idx].cpu = cpu;
+ 		cp->elements[cpu].idx = new_idx;
+ 		cpudl_heapify_up(cp, new_idx);
+-		cpumask_clear_cpu(cpu, cp->free_cpus);
++		__cpumask_clear_cpu(cpu, cp->free_cpus);
+ 	} else {
+ 		cp->elements[old_idx].dl = dl;
+ 		cpudl_heapify(cp, old_idx);
+@@ -237,26 +241,6 @@ void cpudl_set(struct cpudl *cp, int cpu, u64 dl)
+ 	raw_spin_unlock_irqrestore(&cp->lock, flags);
+ }
+ 
+-/*
+- * cpudl_set_freecpu - Set the cpudl.free_cpus
+- * @cp: the cpudl max-heap context
+- * @cpu: rd attached CPU
+- */
+-void cpudl_set_freecpu(struct cpudl *cp, int cpu)
+-{
+-	cpumask_set_cpu(cpu, cp->free_cpus);
+-}
+-
+-/*
+- * cpudl_clear_freecpu - Clear the cpudl.free_cpus
+- * @cp: the cpudl max-heap context
+- * @cpu: rd attached CPU
+- */
+-void cpudl_clear_freecpu(struct cpudl *cp, int cpu)
+-{
+-	cpumask_clear_cpu(cpu, cp->free_cpus);
+-}
+-
+ /*
+  * cpudl_init - initialize the cpudl structure
+  * @cp: the cpudl max-heap context
+diff --git a/kernel/sched/cpudeadline.h b/kernel/sched/cpudeadline.h
+index 0adeda93b5fb5..ecff718d94aea 100644
+--- a/kernel/sched/cpudeadline.h
++++ b/kernel/sched/cpudeadline.h
+@@ -18,9 +18,7 @@ struct cpudl {
+ #ifdef CONFIG_SMP
+ int  cpudl_find(struct cpudl *cp, struct task_struct *p, struct cpumask *later_mask);
+ void cpudl_set(struct cpudl *cp, int cpu, u64 dl);
+-void cpudl_clear(struct cpudl *cp, int cpu);
++void cpudl_clear(struct cpudl *cp, int cpu, bool online);
+ int  cpudl_init(struct cpudl *cp);
+-void cpudl_set_freecpu(struct cpudl *cp, int cpu);
+-void cpudl_clear_freecpu(struct cpudl *cp, int cpu);
+ void cpudl_cleanup(struct cpudl *cp);
+ #endif /* CONFIG_SMP */
+diff --git a/kernel/sched/deadline.c b/kernel/sched/deadline.c
+index 708c3960bd06e..923ac2244d4b5 100644
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -1418,7 +1418,7 @@ static void dec_dl_deadline(struct dl_rq *dl_rq, u64 deadline)
+ 	if (!dl_rq->dl_nr_running) {
+ 		dl_rq->earliest_dl.curr = 0;
+ 		dl_rq->earliest_dl.next = 0;
+-		cpudl_clear(&rq->rd->cpudl, rq->cpu);
++		cpudl_clear(&rq->rd->cpudl, rq->cpu, rq->online);
+ 		cpupri_set(&rq->rd->cpupri, rq->cpu, rq->rt.highest_prio.curr);
+ 	} else {
+ 		struct rb_node *leftmost = dl_rq->root.rb_leftmost;
+@@ -2377,9 +2377,10 @@ static void rq_online_dl(struct rq *rq)
+ 	if (rq->dl.overloaded)
+ 		dl_set_overload(rq);
+ 
+-	cpudl_set_freecpu(&rq->rd->cpudl, rq->cpu);
+ 	if (rq->dl.dl_nr_running > 0)
+ 		cpudl_set(&rq->rd->cpudl, rq->cpu, rq->dl.earliest_dl.curr);
++	else
++		cpudl_clear(&rq->rd->cpudl, rq->cpu, true);
+ }
+ 
+ /* Assumes rq->lock is held */
+@@ -2388,8 +2389,7 @@ static void rq_offline_dl(struct rq *rq)
+ 	if (rq->dl.overloaded)
+ 		dl_clear_overload(rq);
+ 
+-	cpudl_clear(&rq->rd->cpudl, rq->cpu);
+-	cpudl_clear_freecpu(&rq->rd->cpudl, rq->cpu);
++	cpudl_clear(&rq->rd->cpudl, rq->cpu, false);
+ }
+ 
+ void __init init_sched_dl_class(void)
 -- 
 2.51.0
 
