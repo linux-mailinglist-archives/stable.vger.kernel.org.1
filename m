@@ -1,57 +1,52 @@
-Return-Path: <stable+bounces-209645-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209227-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 37ADAD26EC7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8DD06D26C63
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1985E310E86D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:48:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D14753199A9E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5002F619D;
-	Thu, 15 Jan 2026 17:48:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DDE13C1FFE;
+	Thu, 15 Jan 2026 17:28:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oLOnbkDV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kqwmEeCP"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6A523BF2EA;
-	Thu, 15 Jan 2026 17:48:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C56093C1FFB;
+	Thu, 15 Jan 2026 17:28:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499285; cv=none; b=A+bpl1gGb8T8TLHF/aP2CJQRJ6DArmvlmEpz/dn8OLH0atSRjO6GUg8GNZcIg8F32coL0Ni05+m+DzJWgjhxmAS5Uz/7tYMrkzmlaKblhmZJi3G9CBM52o1Kn+SgwBH4FJCMbtruGGDh9cq3rqcys0wN882C2AN1CXvEMI5kllY=
+	t=1768498095; cv=none; b=GTYm0ntSkKAdBq32vCoUlFf744OfUMkbTqhhP9lqLaqc4E0qdXsZKWJUoE6dJE2JnFFUZlPldhQ8kiFnJq0sSaO5QAXz+o9dsv6HmY+yCp0wCiCpqc9DwbdftoeHTrp+XGPQj73u9LR0f3sLVQ3kb87k2QZERsE9rV7H0nKo4Og=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499285; c=relaxed/simple;
-	bh=8VKBXgaVr/ouGQOoXAZV/8jdntauq6TeTgfccc+WA5g=;
+	s=arc-20240116; t=1768498095; c=relaxed/simple;
+	bh=41jvnbtUkZeh754hjDlMEWd+CxTyJSkITBdrY/Wv3Zo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RRbXoxwORrdZih5QNUwL018RMw7HGqqC2wWt55hroHx7s5hQArX3rt2eS9S3Ym1EA/+gCEPdY1H82mWe8jpcBKIps7Y7yDKjYGfJynrI4Ls+s+IDh+U3tv+l6AQzSHk1KxuaWBBXaBLjyE1mQm9LepCSMSDxq93P2fNIjp+ztL0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oLOnbkDV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 528A3C16AAE;
-	Thu, 15 Jan 2026 17:48:05 +0000 (UTC)
+	 MIME-Version; b=N+1JWQWDyBjdZdHG+MX2l1hnGn+Vxrnlg9Md5DtDULCWaBospvBny8CSRU7EGvdOtcebFSlV8grU1yGMdmA7Hw9IkhMzlhDjRawt5mRZ0dR1y8gClA1VBbkPVN54L+am7/UyPNE0Q4R6iCz5UFcbZ/orRDcp3wOJVyidUIf21Aw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kqwmEeCP; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A9B1C116D0;
+	Thu, 15 Jan 2026 17:28:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499285;
-	bh=8VKBXgaVr/ouGQOoXAZV/8jdntauq6TeTgfccc+WA5g=;
+	s=korg; t=1768498095;
+	bh=41jvnbtUkZeh754hjDlMEWd+CxTyJSkITBdrY/Wv3Zo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oLOnbkDV+0q861v9NEriHce0WeUW5CJPcb2pCcj3DAtrALWtbbQnd1QZTACmryLl3
-	 IFRzWLoHOF2pmPkp+C7X0O48o1h6ucmD/oPk7OfOiNDFFY7oPJ0tuOh7HjRcL5wy93
-	 dXM2Af6uhSBxs25GkIOzr5o47ADxTMgwiLcH5FWM=
+	b=kqwmEeCPClgrKTz9FTRXxWwggV07rz96Dg06TnAszP/wwQK5bsxh4d3RE4VhV2Awc
+	 wgQ2OFc9/lX4eLzFw2X4RM8LuDiR0JUS1+qGpSRIXHQkA5u5UnkFAMibyO3GDm7M0M
+	 KFulh9wdaW3T+s2+qXRY6ZvE/3DKxJus7dnOaD7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonas Gorski <jonas.gorski@gmail.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	Alexey Simakov <bigalex934@gmail.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 174/451] broadcom: b44: prevent uninitialized value usage
-Date: Thu, 15 Jan 2026 17:46:15 +0100
-Message-ID: <20260115164237.201215170@linuxfoundation.org>
+	Tzung-Bi Shih <tzungbi@kernel.org>
+Subject: [PATCH 5.15 310/554] platform/chrome: cros_ec_ishtp: Fix UAF after unbinding driver
+Date: Thu, 15 Jan 2026 17:46:16 +0100
+Message-ID: <20260115164257.452519277@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,50 +58,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Simakov <bigalex934@gmail.com>
+From: Tzung-Bi Shih <tzungbi@kernel.org>
 
-[ Upstream commit 50b3db3e11864cb4e18ff099cfb38e11e7f87a68 ]
+commit 944edca81e7aea15f83cf9a13a6ab67f711e8abd upstream.
 
-On execution path with raised B44_FLAG_EXTERNAL_PHY, b44_readphy()
-leaves bmcr value uninitialized and it is used later in the code.
+After unbinding the driver, another kthread `cros_ec_console_log_work`
+is still accessing the device, resulting an UAF and crash.
 
-Add check of this flag at the beginning of the b44_nway_reset() and
-exit early of the function with restarting autonegotiation if an
-external PHY is used.
+The driver doesn't unregister the EC device in .remove() which should
+shutdown sub-devices synchronously.  Fix it.
 
-Fixes: 753f492093da ("[B44]: port to native ssb support")
-Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
-Reviewed-by: Michael Chan <michael.chan@broadcom.com>
-Link: https://patch.msgid.link/20251205155815.4348-1-bigalex934@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 26a14267aff2 ("platform/chrome: Add ChromeOS EC ISHTP driver")
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20251031033900.3577394-1-tzungbi@kernel.org
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/broadcom/b44.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/platform/chrome/cros_ec_ishtp.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
-index 7ad9a47156912..f29a38675afb6 100644
---- a/drivers/net/ethernet/broadcom/b44.c
-+++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -1809,6 +1809,9 @@ static int b44_nway_reset(struct net_device *dev)
- 	u32 bmcr;
- 	int r;
+--- a/drivers/platform/chrome/cros_ec_ishtp.c
++++ b/drivers/platform/chrome/cros_ec_ishtp.c
+@@ -710,6 +710,7 @@ static void cros_ec_ishtp_remove(struct
  
-+	if (bp->flags & B44_FLAG_EXTERNAL_PHY)
-+		return phy_ethtool_nway_reset(dev);
-+
- 	spin_lock_irq(&bp->lock);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
--- 
-2.51.0
-
+ 	cancel_work_sync(&client_data->work_ishtp_reset);
+ 	cancel_work_sync(&client_data->work_ec_evt);
++	cros_ec_unregister(client_data->ec_dev);
+ 	cros_ish_deinit(cros_ish_cl);
+ 	ishtp_put_device(cl_device);
+ }
 
 
 
