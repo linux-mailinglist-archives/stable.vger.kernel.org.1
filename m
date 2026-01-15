@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209714-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209295-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9211BD27446
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:51 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5434DD26A5A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 85BD7315CEF1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:49 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id D542E3066464
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26B423C1984;
-	Thu, 15 Jan 2026 17:51:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BE11A3C00AC;
+	Thu, 15 Jan 2026 17:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IsLydBBr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hupMZD19"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8CDFE3EDD47;
-	Thu, 15 Jan 2026 17:51:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81C053BFE25;
+	Thu, 15 Jan 2026 17:31:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499482; cv=none; b=cKUZ/UxzC9zBTdGKUV+vePK8vpjynsy+wMeViQyM91Kext9ZDBOAEcaZrfyUwUnnUJZ9UYAka5YqKNvFwFfPfXhaDaBAyVMZgY55zcbrCJD+M3+q2vwUol2ZAA9SbefqlirdWdgmTaHGHLHFvYObzTx374yPFc8iY07wQFvbUMQ=
+	t=1768498289; cv=none; b=WEokXggAzssxXADHKWGMBA+c7bkbIy2f48Tukyj638A729EOe+tGaPl2BOHIlwAPY51gtxJwt/n4G8RKT7HZ/kNWkmfl+A07u+T6dDFiCEXzpBrMXnYvNole5lPSjW2++v2CnmR+VSGmjpqCfz5c0NmEMAwBvxnIs369H20sW8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499482; c=relaxed/simple;
-	bh=rgOZxQOc9+AgadC7a3TC/5x8jsTgCUwDuENfEnI/tLE=;
+	s=arc-20240116; t=1768498289; c=relaxed/simple;
+	bh=05LFg9SExZC3uOwrhb7/T0YQUluQzx1mT/J8vTCFX4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iY9O0VV8mlE39uKzHDkTuXN29ZM9+u2skd9zQhJNmFOl8FJyvb1wd9zxZJewUvILS3A8zY/0l1RNuSncRG7cCX1uZHgJbhQ547yjvMh0+If9B6OPzZ8JVGFJ00CfCr+JJr9JRSBvxL2ThPwZ9yaxmnWmUE/X0fGwcZfnCPHWfwM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IsLydBBr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C80C16AAE;
-	Thu, 15 Jan 2026 17:51:21 +0000 (UTC)
+	 MIME-Version; b=O3ernyWoX1gd+slUjXqmBk6KOK1+AUA8gJalyB+oMK6gLQjsi0fJ/kodlB3TImwlXxZyQWmukah5solZEKPrD81R1Gtji3SWpuIHh5yiAgeQ835tidGQipM4MryPa8nq5ybMt8cSlalWLxiwiDnvRrN4UM/HkW/Zq6D6L/odqYg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hupMZD19; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CAFCC116D0;
+	Thu, 15 Jan 2026 17:31:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499482;
-	bh=rgOZxQOc9+AgadC7a3TC/5x8jsTgCUwDuENfEnI/tLE=;
+	s=korg; t=1768498289;
+	bh=05LFg9SExZC3uOwrhb7/T0YQUluQzx1mT/J8vTCFX4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IsLydBBrlITRNHGyLNbe7wptYzV2OXc/8KTP0T124jsn7VdoW38f/4W7j815w9Bkd
-	 PC46EDSQN0Fr8C94vONzjSfds0qxhycwl814LfzM2d1rxwNIHApDxnpZPFK6xQ3y6b
-	 E+llpd1Vc9+9QUxiEUqKKmDK5UpKo7HzVwFIqdbQ=
+	b=hupMZD19iTMa7W8/Gg0AA4KLVxzTpQDI87FybzGNJANp2vWnwFC+ulqdTSjdIoZhZ
+	 cC7zTmvOguR90MAMRS7zEfLppeq0m9Op7BNvdeXdAw37yKr0a0VA8nsbSgE0XE40Rz
+	 B14Zlgl2w9E4Jh6jBpoVuGDhIkaDhWWxHB8s838U=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andrey Vatoropin <a.vatoropin@crpt.ru>,
-	Mike Christie <michael.christie@oracle.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 243/451] scsi: target: Reset t_task_cdb pointer in error case
+	Suman Anna <s-anna@ti.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.15 378/554] iommu/omap: fix device leaks on probe_device()
 Date: Thu, 15 Jan 2026 17:47:24 +0100
-Message-ID: <20260115164239.683481264@linuxfoundation.org>
+Message-ID: <20260115164259.917760020@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +61,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Vatoropin <a.vatoropin@crpt.ru>
+From: Johan Hovold <johan@kernel.org>
 
-commit 5053eab38a4c4543522d0c320c639c56a8b59908 upstream.
+commit b5870691065e6bbe6ba0650c0412636c6a239c5a upstream.
 
-If allocation of cmd->t_task_cdb fails, it remains NULL but is later
-dereferenced in the 'err' path.
+Make sure to drop the references taken to the iommu platform devices
+when looking up their driver data during probe_device().
 
-In case of error, reset NULL t_task_cdb value to point at the default
-fixed-size buffer.
+Note that the arch data device pointer added by commit 604629bcb505
+("iommu/omap: add support for late attachment of iommu devices") has
+never been used. Remove it to underline that the references are not
+needed.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 9e95fb805dc0 ("scsi: target: Fix NULL pointer dereference")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Vatoropin <a.vatoropin@crpt.ru>
-Reviewed-by: Mike Christie <michael.christie@oracle.com>
-Link: https://patch.msgid.link/20251118084014.324940-1-a.vatoropin@crpt.ru
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9d5018deec86 ("iommu/omap: Add support to program multiple iommus")
+Fixes: 7d6827748d54 ("iommu/omap: Fix iommu archdata name for DT-based devices")
+Cc: stable@vger.kernel.org	# 3.18
+Cc: Suman Anna <s-anna@ti.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/target/target_core_transport.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/iommu/omap-iommu.c |    2 +-
+ drivers/iommu/omap-iommu.h |    2 --
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
---- a/drivers/target/target_core_transport.c
-+++ b/drivers/target/target_core_transport.c
-@@ -1449,6 +1449,7 @@ target_cmd_init_cdb(struct se_cmd *cmd,
- 		cmd->t_task_cdb = kzalloc(scsi_command_size(cdb),
- 						GFP_KERNEL);
- 		if (!cmd->t_task_cdb) {
-+			cmd->t_task_cdb = &cmd->__t_task_cdb[0];
- 			pr_err("Unable to allocate cmd->t_task_cdb"
- 				" %u > sizeof(cmd->__t_task_cdb): %lu ops\n",
- 				scsi_command_size(cdb),
+--- a/drivers/iommu/omap-iommu.c
++++ b/drivers/iommu/omap-iommu.c
+@@ -1682,6 +1682,7 @@ static struct iommu_device *omap_iommu_p
+ 		}
+ 
+ 		oiommu = platform_get_drvdata(pdev);
++		put_device(&pdev->dev);
+ 		if (!oiommu) {
+ 			of_node_put(np);
+ 			kfree(arch_data);
+@@ -1689,7 +1690,6 @@ static struct iommu_device *omap_iommu_p
+ 		}
+ 
+ 		tmp->iommu_dev = oiommu;
+-		tmp->dev = &pdev->dev;
+ 
+ 		of_node_put(np);
+ 	}
+--- a/drivers/iommu/omap-iommu.h
++++ b/drivers/iommu/omap-iommu.h
+@@ -88,7 +88,6 @@ struct omap_iommu {
+ /**
+  * struct omap_iommu_arch_data - omap iommu private data
+  * @iommu_dev: handle of the OMAP iommu device
+- * @dev: handle of the iommu device
+  *
+  * This is an omap iommu private data object, which binds an iommu user
+  * to its iommu device. This object should be placed at the iommu user's
+@@ -97,7 +96,6 @@ struct omap_iommu {
+  */
+ struct omap_iommu_arch_data {
+ 	struct omap_iommu *iommu_dev;
+-	struct device *dev;
+ };
+ 
+ struct cr_regs {
 
 
 
