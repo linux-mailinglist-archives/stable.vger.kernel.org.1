@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208859-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209766-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6C226D2677C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:22 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A16D27286
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:54 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A508A31457F3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 5F6563081281
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A6CD93A1CE4;
-	Thu, 15 Jan 2026 17:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F04023D1CB2;
+	Thu, 15 Jan 2026 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8vLAbVz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JEPma+sG"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6A2BC33993;
-	Thu, 15 Jan 2026 17:10:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC0833D1CA2;
+	Thu, 15 Jan 2026 17:53:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497046; cv=none; b=JtnDf+ifW3PMsZc2rewvJ+2uhU0FRlJjasILiDx5vCpx+vP8Vo5Zz2G+jUL0S6kf89YQ3Vy7LYr+0pbLVRPfCdzywDFDmtLc6UnUZcNdZvIy580/oMyI5HWztxSlnnk4OY+3cX/b8V1wXzf/OsIALr/qm8dUKo61lCV7eJQnyqo=
+	t=1768499630; cv=none; b=dN8SvQhAhZ6kHVW47XBJfVowMI2Elp3zIP/6ghhHp+W7xQrEIYUfFX3LLcj0m54TDBoPz/xlmgscjOk9zdN49zUIqxy5WaPaeagqEGR4sw9jILN6gqaSI1y3EX4cieZkLX5/NXaBF0GdqJdIJUewd0lAL8wAQIVlmgKe7JYedLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497046; c=relaxed/simple;
-	bh=t8M0B4vdnfep4V8bdxVMviH1d7aCyKFWFNr1oB/f4II=;
+	s=arc-20240116; t=1768499630; c=relaxed/simple;
+	bh=jWCcCyRUp3l8dFvYfu8Mdj/iiHkuARzkK55je8y+MJk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L2lmP+Mtf38w1IhoNBAC1gON4cUyzp1srQOks1RS4UVw3V6zPcMvFfWNyhZpODQB8QDPGRznN5RvptpE1Udn+hurBw7r4UcjaG9axHZB1notNVC/pMCpy3h3ECM0n84CamNasQZHQ77Q1l+9KGMDyGa5PeybmRNtQiQXY4wnPz0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8vLAbVz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72B7C116D0;
-	Thu, 15 Jan 2026 17:10:45 +0000 (UTC)
+	 MIME-Version; b=nUAY7RBkSJ0pCs8lE4PvtIdFtxe9ngUjPPldXf1JBPDxHdoVMJZ6hNGNqt0rFV4WlV5vbgkUUTN57jqkYZ7ka8KHs/vju+rY4+yR0WJ+caobD4mUpYA6k2FQZyU1ipTQ7h1yiJ3ctXThLy8zH7N89DZ6c/WLRkvY7X5/mYpjeJI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JEPma+sG; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BEB5C116D0;
+	Thu, 15 Jan 2026 17:53:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497046;
-	bh=t8M0B4vdnfep4V8bdxVMviH1d7aCyKFWFNr1oB/f4II=;
+	s=korg; t=1768499630;
+	bh=jWCcCyRUp3l8dFvYfu8Mdj/iiHkuARzkK55je8y+MJk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8vLAbVziHVuXcops4bjw59Z0RYO9ZwsL7ISfCfhzfH50qP8u4XrnMbgmAQGDPFv1
-	 iE0FOud7FAeraq45EGTRknjHZS6+5L1KrdO90b9lg3rhfOsz2jOqmkrhYflbELokhR
-	 ghSp1ltgS7PAc+mGbJA8PIp+CgW2mRE2qAOj8lx0=
+	b=JEPma+sG+M/9FyyMRi0y56YGjuPqH0m6j1F15d2gu7xfQysju0fnmFMveCWR/Nh89
+	 q+c4zEQ17KwF++HGvt/egPcIMe7wDCrWAOFMOuPggf2rvdqbJ35kgmcpJ2mKj7NTSu
+	 +AQxzXfEkj2JnN8XrV7P5mJnv00oPO0SfNN1SL7k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qingfang Deng <dqfext@gmail.com>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 6.1 05/72] lib/crypto: aes: Fix missing MMU protection for AES S-box
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 294/451] RDMA/bnxt_re: Fix IB_SEND_IP_CSUM handling in post_send
 Date: Thu, 15 Jan 2026 17:48:15 +0100
-Message-ID: <20260115164143.685907173@linuxfoundation.org>
+Message-ID: <20260115164241.526207836@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,51 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 74d74bb78aeccc9edc10db216d6be121cf7ec176 upstream.
+[ Upstream commit f01765a2361323e78e3d91b1cb1d5527a83c5cf7 ]
 
-__cacheline_aligned puts the data in the ".data..cacheline_aligned"
-section, which isn't marked read-only i.e. it doesn't receive MMU
-protection.  Replace it with ____cacheline_aligned which does the right
-thing and just aligns the data while keeping it in ".rodata".
+The bnxt_re SEND path checks wr->send_flags to enable features such as
+IP checksum offload. However, send_flags is a bitmask and may contain
+multiple flags (e.g. IB_SEND_SIGNALED | IB_SEND_IP_CSUM), while the
+existing code uses a switch() statement that only matches when
+send_flags is exactly IB_SEND_IP_CSUM.
 
-Fixes: b5e0b032b6c3 ("crypto: aes - add generic time invariant AES cipher")
-Cc: stable@vger.kernel.org
-Reported-by: Qingfang Deng <dqfext@gmail.com>
-Closes: https://lore.kernel.org/r/20260105074712.498-1-dqfext@gmail.com/
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20260107052023.174620-1-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+As a result, checksum offload is not enabled when additional SEND
+flags are present.
+
+Replace the switch() with a bitmask test:
+
+    if (wr->send_flags & IB_SEND_IP_CSUM)
+
+This ensures IP checksum offload is enabled correctly when multiple
+SEND flags are used.
+
+Fixes: 1ac5a4047975 ("RDMA/bnxt_re: Add bnxt_re RoCE driver")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20251219093308.2415620-1-alok.a.tiwari@oracle.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/crypto/aes.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/ib_verbs.c | 7 +------
+ 1 file changed, 1 insertion(+), 6 deletions(-)
 
---- a/lib/crypto/aes.c
-+++ b/lib/crypto/aes.c
-@@ -12,7 +12,7 @@
-  * Emit the sbox as volatile const to prevent the compiler from doing
-  * constant folding on sbox references involving fixed indexes.
-  */
--static volatile const u8 __cacheline_aligned aes_sbox[] = {
-+static volatile const u8 ____cacheline_aligned aes_sbox[] = {
- 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
- 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
- 	0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
-@@ -47,7 +47,7 @@ static volatile const u8 __cacheline_ali
- 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
- };
- 
--static volatile const u8 __cacheline_aligned aes_inv_sbox[] = {
-+static volatile const u8 ____cacheline_aligned aes_inv_sbox[] = {
- 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
- 	0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
- 	0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
+diff --git a/drivers/infiniband/hw/bnxt_re/ib_verbs.c b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+index 089d7de829a0..5d0c1241b948 100644
+--- a/drivers/infiniband/hw/bnxt_re/ib_verbs.c
++++ b/drivers/infiniband/hw/bnxt_re/ib_verbs.c
+@@ -2647,14 +2647,9 @@ int bnxt_re_post_send(struct ib_qp *ib_qp, const struct ib_send_wr *wr,
+ 				wqe.rawqp1.lflags |=
+ 					SQ_SEND_RAWETH_QP1_LFLAGS_ROCE_CRC;
+ 			}
+-			switch (wr->send_flags) {
+-			case IB_SEND_IP_CSUM:
++			if (wr->send_flags & IB_SEND_IP_CSUM)
+ 				wqe.rawqp1.lflags |=
+ 					SQ_SEND_RAWETH_QP1_LFLAGS_IP_CHKSUM;
+-				break;
+-			default:
+-				break;
+-			}
+ 			fallthrough;
+ 		case IB_WR_SEND_WITH_INV:
+ 			rc = bnxt_re_build_send_wqe(qp, wr, &wqe);
+-- 
+2.51.0
+
 
 
 
