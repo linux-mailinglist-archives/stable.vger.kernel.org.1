@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208871-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208756-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6974D26475
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4C7F1D26236
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 952AD31CAA1E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:37 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09149302D9B8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23C473BF31C;
-	Thu, 15 Jan 2026 17:11:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 69B3D3BF30F;
+	Thu, 15 Jan 2026 17:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z7wbnGj4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OfkgODP8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB9613BF314;
-	Thu, 15 Jan 2026 17:11:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D2073BF30A;
+	Thu, 15 Jan 2026 17:05:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497080; cv=none; b=T+nnBbRHjAScZ0pWAGKU7C41S5L+h5BpCaKcwaZup0vIQlFr5hvNj1dhoIYf5QXpdFGlR86zce7YVDLRJ1Pz4GAWFucVwn6YYW/vnSVgVSOq6Ix88lRcoTkEmHCJmwwjXUMJA8m8brHBrviv9yxNNRFIb5n/+GkZ51E2a+JsBao=
+	t=1768496754; cv=none; b=JFHTZVJrluvkhK0yvMMMHRArRFe9H461FpGUl6L+xfJbFU7bn7phE61ELUZ+SUwTNzcJZA+N2nDMSTAYFk86Z8Vq7EBEUs8K3+LirQB2rtWMjyqhQNs6Fh6yKHhpiD1jA8jbnz/V6CAY9ls8/rObE45t5YpeLqev1wZh/Iexj8A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497080; c=relaxed/simple;
-	bh=d9HAJGoj9iaWOMawjRsUJOa63a9Q/ISnE31juS06do0=;
+	s=arc-20240116; t=1768496754; c=relaxed/simple;
+	bh=zll4jvel5PKNAMJUvOf+3etQmqmHYCW4S++MBucOTpo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MTclxJjff0AUzfNqaIY9GV4LxOrVLSBDBmS3lGXPGPyAUKOVmBu4UEFzNtW9q12nNOpGHZVaOhbU1GzqdvXwpNDaO7k9tho0CT+BVlc82SzD51lhuLShQSpB0faKVGRxwAdznEvqD/UY/uCGc83CbMhQURFIqivR7u2kTJ+tCOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z7wbnGj4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A428C19422;
-	Thu, 15 Jan 2026 17:11:20 +0000 (UTC)
+	 MIME-Version; b=YlpvBV4Cx31SGwmlTaTu/gVD9k1PQYRi6nTRfeLXdRd/DdYVrALmAWRJW3Q6Uw98S9z6SPZvvKOUAoAhyNzmWcH6notOFmMdWbTA6TzPnjFoRZrs5qYVkDw0pKwzpbuqY0ZdnQ7SmI5S5h95mTgGrOn+CDBPeX2tMqai3uTQJYk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OfkgODP8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC3E6C116D0;
+	Thu, 15 Jan 2026 17:05:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497080;
-	bh=d9HAJGoj9iaWOMawjRsUJOa63a9Q/ISnE31juS06do0=;
+	s=korg; t=1768496754;
+	bh=zll4jvel5PKNAMJUvOf+3etQmqmHYCW4S++MBucOTpo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z7wbnGj4vR7ewGDrkxkcBEPu+HWUUuPZuIu24qMV9GNHzjOH6tQeAk2PPd1xQYNt4
-	 jsq69Q/YCc7CxNFaJSMI0tbYYWByaqmaZR+YYMeKHJZLWnENTROrzPK/dbffrRQA6f
-	 Y0QMUc8ghfa9sNKKZ2KbKiLijZEqHyIdcnPO2aT8=
+	b=OfkgODP8qhjt203a4kqfOoCvLEWmC/3pA9gZXnV8nUWrbL4SFg1YJy3dJWuRoUcQk
+	 lMINdEVfq6uENuULIYCiWN2UQVW1ndMCBVnF5MmDHOFZE/fJG+PNHc3hmzMLxKO9q2
+	 ugRku2phf7YS21wxQrV1py3qXApwXvrG0WE1sZp0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Frank Li <Frank.Li@nxp.com>,
-	Haibo Chen <haibo.chen@nxp.com>,
-	Shawn Guo <shawnguo@kernel.org>,
+	Emerson Pinter <e@pinter.dev>,
+	Niklas Cassel <cassel@kernel.org>,
+	Damien Le Moal <dlemoal@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 30/72] arm64: dts: add off-on-delay-us for usdhc2 regulator
-Date: Thu, 15 Jan 2026 17:48:40 +0100
-Message-ID: <20260115164144.588065369@linuxfoundation.org>
+Subject: [PATCH 6.12 106/119] ata: libata-core: Disable LPM on ST2000DM008-2FR102
+Date: Thu, 15 Jan 2026 17:48:41 +0100
+Message-ID: <20260115164155.777881584@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,43 +61,39 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haibo Chen <haibo.chen@nxp.com>
+From: Niklas Cassel <cassel@kernel.org>
 
-[ Upstream commit ca643894a37a25713029b36cfe7d1bae515cac08 ]
+[ Upstream commit ba624ba88d9f5c3e2ace9bb6697dbeb05b2dbc44 ]
 
-For SD card, according to the spec requirement, for sd card power reset
-operation, it need sd card supply voltage to be lower than 0.5v and keep
-over 1ms, otherwise, next time power back the sd card supply voltage to
-3.3v, sd card can't support SD3.0 mode again.
+According to a user report, the ST2000DM008-2FR102 has problems with LPM.
 
-To match such requirement on imx8qm-mek board, add 4.8ms delay between
-sd power off and power on.
-
-Fixes: 307fd14d4b14 ("arm64: dts: imx: add imx8qm mek support")
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Signed-off-by: Haibo Chen <haibo.chen@nxp.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Reported-by: Emerson Pinter <e@pinter.dev>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=220693
+Signed-off-by: Niklas Cassel <cassel@kernel.org>
+Signed-off-by: Damien Le Moal <dlemoal@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm-mek.dts | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/ata/libata-core.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-index 470e4e4aa8c78..059f8c0ab93d9 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-mek.dts
-@@ -34,6 +34,7 @@ reg_usdhc2_vmmc: usdhc2-vmmc {
- 		regulator-max-microvolt = <3000000>;
- 		gpio = <&lsio_gpio4 7 GPIO_ACTIVE_HIGH>;
- 		enable-active-high;
-+		off-on-delay-us = <4800>;
- 	};
- };
+diff --git a/drivers/ata/libata-core.c b/drivers/ata/libata-core.c
+index 0cb97181d10a9..802967eabc344 100644
+--- a/drivers/ata/libata-core.c
++++ b/drivers/ata/libata-core.c
+@@ -4064,6 +4064,9 @@ static const struct ata_dev_quirks_entry __ata_dev_quirks[] = {
+ 	{ "ST3320[68]13AS",	"SD1[5-9]",	ATA_QUIRK_NONCQ |
+ 						ATA_QUIRK_FIRMWARE_WARN },
  
++	/* Seagate disks with LPM issues */
++	{ "ST2000DM008-2FR102",	NULL,		ATA_QUIRK_NOLPM },
++
+ 	/* drives which fail FPDMA_AA activation (some may freeze afterwards)
+ 	   the ST disks also have LPM issues */
+ 	{ "ST1000LM024 HN-M101MBB", NULL,	ATA_QUIRK_BROKEN_FPDMA_AA |
 -- 
 2.51.0
 
