@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-208502-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208513-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E935D25EBA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:14 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 18B19D25ED6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9C1BA303807C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:53:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C0D01306B6B5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:54:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A43396B8F;
-	Thu, 15 Jan 2026 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D5793A7E0B;
+	Thu, 15 Jan 2026 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0QTBfEq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e2iJdGOa"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AC93624C4;
-	Thu, 15 Jan 2026 16:53:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 606D942049;
+	Thu, 15 Jan 2026 16:54:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496032; cv=none; b=MDrI34cXEAJfIwINRDCU1N0gE6JppUD7LjSE706DwMhS70IwU4+bbDSg7ntww4Nj+OL68u5rdLHn65jpA3eVCTHCkBGxMIzkOKjGig0ktPW/eAMyOW3GqupTqFJ13Q2gOxxqnbO0Y67ul4eIl70YsZb+Zz8wq632JXPZl7xdSPU=
+	t=1768496063; cv=none; b=t1jJUhn/L1hHbDR0NAHSgE8o+wUIwshLDmDhnGeWJ6lRsSjCYST6tiDeo5olQU6kiWbpjrr1ufhSqoEJOtS7eLI6HFw2lqqIG61n80+TK+lL8eou2tsbVL7ZEmxg44SqwfNowmUcp/kQOjUJeB+SeN0JddVIttDPUMsZNIjb53I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496032; c=relaxed/simple;
-	bh=/ZcsqsvOsCKowyVHm/AjgjqhAMGzhWrJfvJXJxFqwnw=;
+	s=arc-20240116; t=1768496063; c=relaxed/simple;
+	bh=J4bTb74X9OJ6aksbrTPMfbYESZ5lkTEr6OFMxyZ2TyM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Sze/EzeUxwOXkpEjfUmHLykSyD1pBuXhg4kYji/htGwO3HOw4bgCOnGka8U6Tojj/o8DS/OlpYB88XgeyR9ofN4TsvR1KZ1W6gpzHKVQs9gxwT/zwLu9Gj7fuCq+I9t34kl6EeKG6kq1Fm2f37xicgXmnuOnlEAXC+FoCCFG7Z0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0QTBfEq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B997AC19421;
-	Thu, 15 Jan 2026 16:53:51 +0000 (UTC)
+	 MIME-Version; b=CK5y2YxjHaGA11W9SHTT/nxFHEzUrkMMBB41InLqJrAzj4YzFzWHuOq1zeh/W2YJEdtxpBvzus//5KHQeip5J4NbBAfooe/T5gYbD7Btd4Vq8OCB7QlygNP8aCszYdTe7Da4ZRwcRTw5/EqtkrFt5H2f3OZJhtKKGGYk0alnB8M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e2iJdGOa; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3808C116D0;
+	Thu, 15 Jan 2026 16:54:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496032;
-	bh=/ZcsqsvOsCKowyVHm/AjgjqhAMGzhWrJfvJXJxFqwnw=;
+	s=korg; t=1768496063;
+	bh=J4bTb74X9OJ6aksbrTPMfbYESZ5lkTEr6OFMxyZ2TyM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e0QTBfEqXChby/JFMeYatNjMsSySPrrFvRRXwUPqGj5K5sEW4nf4PUt5YjqOzGdyl
-	 Q/di7Wt9MTF4cP5LbAzaseWJPyld+dQgrMuwf1O4O51e0VNUlEqgcLGS+rYbwQkREa
-	 CT9btAWmWLCbXwZMkSoejkRaTxLmumOyHMecbLHw=
+	b=e2iJdGOa/UZXgg26rlryrIm42pGpZvTxmt1n92uNBEASakn0nlWq0lrDI9anNCL+C
+	 pJwOHYy48km945m+Xl9Bi8GnBKfNmDpI2Et4RZI469BkJE9xntwbVojneiwB4SGytm
+	 99BDHZdA9EIkH9DfVaiyWKeqQ/eRlbTTckYgn/fU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-	Maxime Ripard <mripard@kernel.org>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.18 036/181] Revert "drm/mediatek: dsi: Fix DSI host and panel bridge pre-enable order"
-Date: Thu, 15 Jan 2026 17:46:13 +0100
-Message-ID: <20260115164203.632184368@linuxfoundation.org>
+	syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
+	Johannes Berg <johannes.berg@intel.com>
+Subject: [PATCH 6.18 037/181] wifi: avoid kernel-infoleak from struct iw_point
+Date: Thu, 15 Jan 2026 17:46:14 +0100
+Message-ID: <20260115164203.668561581@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -64,44 +64,60 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 33e8150bd32d7dc25c977bb455f1f5d54bfd5241 upstream.
+commit 21cbf883d073abbfe09e3924466aa5e0449e7261 upstream.
 
-This reverts commit f5b1819193667bf62c3c99d3921b9429997a14b2.
+struct iw_point has a 32bit hole on 64bit arches.
 
-As the original commit (c9b1150a68d9 ("drm/atomic-helper: Re-order
-bridge chain pre-enable and post-disable")) causing the issue has been
-reverted, let's revert the fix for mediatek.
+struct iw_point {
+  void __user   *pointer;       /* Pointer to the data  (in user space) */
+  __u16         length;         /* number of fields or size in bytes */
+  __u16         flags;          /* Optional params */
+};
 
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Cc: stable@vger.kernel.org # v6.17+
-Fixes: c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable")
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Reviewed-by: Linus Walleij <linusw@kernel.org>
-Tested-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Link: https://patch.msgid.link/20251205-drm-seq-fix-v1-2-fda68fa1b3de@ideasonboard.com
+Make sure to zero the structure to avoid disclosing 32bits of kernel data
+to user space.
+
+Fixes: 87de87d5e47f ("wext: Dispatch and handle compat ioctls entirely in net/wireless/wext.c")
+Reported-by: syzbot+bfc7323743ca6dbcc3d3@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/695f83f3.050a0220.1c677c.0392.GAE@google.com/T/#u
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: stable@vger.kernel.org
+Link: https://patch.msgid.link/20260108101927.857582-1-edumazet@google.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/mediatek/mtk_dsi.c |    6 ------
- 1 file changed, 6 deletions(-)
+ net/wireless/wext-core.c |    4 ++++
+ net/wireless/wext-priv.c |    4 ++++
+ 2 files changed, 8 insertions(+)
 
---- a/drivers/gpu/drm/mediatek/mtk_dsi.c
-+++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
-@@ -1002,12 +1002,6 @@ static int mtk_dsi_host_attach(struct mi
- 			return PTR_ERR(dsi->next_bridge);
- 	}
+--- a/net/wireless/wext-core.c
++++ b/net/wireless/wext-core.c
+@@ -1101,6 +1101,10 @@ static int compat_standard_call(struct n
+ 		return ioctl_standard_call(dev, iwr, cmd, info, handler);
  
--	/*
--	 * set flag to request the DSI host bridge be pre-enabled before device bridge
--	 * in the chain, so the DSI host is ready when the device bridge is pre-enabled
--	 */
--	dsi->next_bridge->pre_enable_prev_first = true;
--
- 	drm_bridge_add(&dsi->bridge);
+ 	iwp_compat = (struct compat_iw_point *) &iwr->u.data;
++
++	/* struct iw_point has a 32bit hole on 64bit arches. */
++	memset(&iwp, 0, sizeof(iwp));
++
+ 	iwp.pointer = compat_ptr(iwp_compat->pointer);
+ 	iwp.length = iwp_compat->length;
+ 	iwp.flags = iwp_compat->flags;
+--- a/net/wireless/wext-priv.c
++++ b/net/wireless/wext-priv.c
+@@ -228,6 +228,10 @@ int compat_private_call(struct net_devic
+ 		struct iw_point iwp;
  
- 	ret = component_add(host->dev, &mtk_dsi_component_ops);
+ 		iwp_compat = (struct compat_iw_point *) &iwr->u.data;
++
++		/* struct iw_point has a 32bit hole on 64bit arches. */
++		memset(&iwp, 0, sizeof(iwp));
++
+ 		iwp.pointer = compat_ptr(iwp_compat->pointer);
+ 		iwp.length = iwp_compat->length;
+ 		iwp.flags = iwp_compat->flags;
 
 
 
