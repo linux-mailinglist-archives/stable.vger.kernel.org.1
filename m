@@ -1,58 +1,53 @@
-Return-Path: <stable+bounces-209775-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209322-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 820F9D2740F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:14:48 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 92F8BD26995
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 512A330E8A82
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:26 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 73CA63078670
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5126A3D603D;
-	Thu, 15 Jan 2026 17:54:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7A83F3C0092;
+	Thu, 15 Jan 2026 17:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yMgKBqCh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSn/u7uu"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EF7D33D602C;
-	Thu, 15 Jan 2026 17:54:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CEFE2D9488;
+	Thu, 15 Jan 2026 17:32:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499657; cv=none; b=EHsAST7JfA11F2p3X9es/HnZ0bK3fVsYZwIPU9mZuB9mNRLKPbAsGkZtlaFmfprk2H+uYS/dSleK1YeJ4weudSRFFRw4f/6UjE3jOJC4bU5Kaf9wI5qYZKxHleSoyxH655dK/LN+4dstdAJHi/Mq6k7BWGlki0SFHkF/QUT9yVk=
+	t=1768498366; cv=none; b=uT3gZ3aTzb1+fRTdO4m/s+hT8PWqYM0BIHwJiHRsqDlU1R48PfEetg86N9JjYHm4HVBkd+3ITjQ7+zdnEaz8EOP8B6DjrsTLJhaV3qhMsoTtTJTdqPczZRYY0+PyE0pSQKBY1wsAmKi5kWbcQMcImQGPw8XPqvsSMrmI9nXGFlM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499657; c=relaxed/simple;
-	bh=qElGZQgn1OiMW6kuDT+++Mx7DQsGSdS5ysiHo0MV5/c=;
+	s=arc-20240116; t=1768498366; c=relaxed/simple;
+	bh=QeRcs9jybQHO1fdxzg9nPAzvfDAJcrvAG2Q+xfB3fO0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uWfB+Vzc4yD9Tdvd2m605IqCWMo8zvXG3/d7lVBUoEWzo7xxqrM69XF9ZtQX159NdvqLYUfBTRbhQ+GfQ3H16wQgtcSaCkJVKcEs3yW7TITX02JTwIpDM1UVJl5wecEBC037+uOxfLhx/B9+btvQIgpux2j5iQPo7DwWE1uvo9Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yMgKBqCh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87D92C116D0;
-	Thu, 15 Jan 2026 17:54:15 +0000 (UTC)
+	 MIME-Version; b=iXkAxYHVDOn/EnsuN9UFVVwPLKkk407f6nAdVNyni61ZiEiiNr6JK8FMnx9WU+/XaU7mtuWIDW5Sfys4HHqHMxIoNicHsQ2p9zQo57l3y6m8Oy/1DAf8BiKC2ofuT8yI/Vbt9UAaSIX0nutGssWwLU6+W3/wk6OE/mpWGgoBS7g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSn/u7uu; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB2F2C116D0;
+	Thu, 15 Jan 2026 17:32:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499655;
-	bh=qElGZQgn1OiMW6kuDT+++Mx7DQsGSdS5ysiHo0MV5/c=;
+	s=korg; t=1768498366;
+	bh=QeRcs9jybQHO1fdxzg9nPAzvfDAJcrvAG2Q+xfB3fO0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yMgKBqChiD5lxEOzEr51CEaPlRTmfuB4s7oFHsLOa5uDOjwwhHY/SJikaQYFVxMyH
-	 tpPhhhiVCr7UPHou+Nu5idNi51B2Ejt+c70USL4eIgfMXars7kbZFKeou7nSYu4okJ
-	 Uebx2Jl9hcgpu9K7rGQQN3TJStxl5l02wvlS5iLk=
+	b=TSn/u7uu2ehtGBOgi/inzSABqIQQjY5gUlv0uMOeTMBCamwxCa+UE+ZuBxTZTXaql
+	 ZvPRLdW3q/18EA1NyzXgesTMPmk4nBmzodhTs+ZlU5PvPs150VOig08ukDOU7DpI+8
+	 E2ZmLAXFG5sk2Oaa113dafpnNo9iX+LHc8sEwDpQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.10 271/451] i40e: fix scheduling in set_rx_mode
+	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 406/554] net: usb: sr9700: fix incorrect command used to write single register
 Date: Thu, 15 Jan 2026 17:47:52 +0100
-Message-ID: <20260115164240.689339984@linuxfoundation.org>
+Message-ID: <20260115164300.929027122@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,58 +59,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
 
-[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
+commit fa0b198be1c6775bc7804731a43be5d899d19e7a upstream.
 
-Add service task schedule to set_rx_mode.
-In some cases there are error messages printed out in PTP application
-(ptp4l):
+This fixes the device failing to initialize with "error reading MAC
+address" for me, probably because the incorrect write of NCR_RST to
+SR_NCR is not actually resetting the device.
 
-ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
-
-This happens when service task would not run immediately after
-set_rx_mode, and we need it for setup tasks. This service task checks, if
-PTP RX packets are hung in firmware, and propagate correct settings such
-as multicast address for IEEE 1588 Precision Time Protocol.
-RX timestamping depends on some of these filters set. Bug happens only
-with high PTP packets frequency incoming, and not every run since
-sometimes service task is being ran from a different place immediately
-after starting ptp4l.
-
-Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
-Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c9b37458e95629b1d1171457afdcc1bf1eb7881d ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+Link: https://patch.msgid.link/20251221082400.50688-1-enelsonmoore@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/usb/sr9700.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index f11cb3176cab..f11d6166186f 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -2101,6 +2101,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
- 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
- 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
- 	}
-+	i40e_service_event_schedule(vsi->back);
+--- a/drivers/net/usb/sr9700.c
++++ b/drivers/net/usb/sr9700.c
+@@ -52,7 +52,7 @@ static int sr_read_reg(struct usbnet *de
+ 
+ static int sr_write_reg(struct usbnet *dev, u8 reg, u8 value)
+ {
+-	return usbnet_write_cmd(dev, SR_WR_REGS, SR_REQ_WR_REG,
++	return usbnet_write_cmd(dev, SR_WR_REG, SR_REQ_WR_REG,
+ 				value, reg, NULL, 0);
  }
  
- /**
--- 
-2.51.0
-
+@@ -65,7 +65,7 @@ static void sr_write_async(struct usbnet
+ 
+ static void sr_write_reg_async(struct usbnet *dev, u8 reg, u8 value)
+ {
+-	usbnet_write_cmd_async(dev, SR_WR_REGS, SR_REQ_WR_REG,
++	usbnet_write_cmd_async(dev, SR_WR_REG, SR_REQ_WR_REG,
+ 			       value, reg, NULL, 0);
+ }
+ 
 
 
 
