@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-209606-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209188-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C8DA1D26F2E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:57:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 859A2D26F36
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:57:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 831903329EAE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 497DD30BB98A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:53 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 96F203BF309;
-	Thu, 15 Jan 2026 17:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BA39586334;
+	Thu, 15 Jan 2026 17:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YQhs7bYZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DxN/4Sl1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59B3E3BFE29;
-	Thu, 15 Jan 2026 17:46:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A08D2D0C79;
+	Thu, 15 Jan 2026 17:26:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499175; cv=none; b=EeFTvi4jIiTeVx7auh9/m7EZR6RglBoqFGE8yINv9RhZww83Suy16n6JbWX8+AgiJ047IltiZpFYoZKq/YExCbLoYHhmFplYUCo4TbHnO82NzA9DftWXgWBDRf0o23tI2YMEgo5a6lq3FQ0ZvkLVDuLjkx+l8ZfKGTHnU0erpRE=
+	t=1768497984; cv=none; b=g6RhS5riumtJyEYyJFwwFfZ27tvW+XRDdFCEhQrqHbUyZuXio/l73xZWRzyRYPB6QSe5ra0vvMPwNSxqHgfHRSkGQST+5QL+kzvAAds+cFozJEJrDVWgfjn11uN9syT5eow/mtqMvkxz4EMj0pZ/pXJqF7dYCGbRUlNKDwcf4M4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499175; c=relaxed/simple;
-	bh=A0d45ukhUGFRENsVTGpxXBC+mYhb3OU2YcXI4ZCsSQc=;
+	s=arc-20240116; t=1768497984; c=relaxed/simple;
+	bh=1UtsToLvofkMELPVYW1itPwygSMACF8m8uo/z0WnoVM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TKZoKetuLVwiuwTR994uuq6iL/BAsLn43VqbHpZKRedSMS6HHTtlt9lw/Jra53rg8iyw4jegzhUZ7G74iNktkfQjOKyv21eBm28We2EeS4urxzoJKgJVdA/opHzbnlbnRTdiviL/LYsf4O1ibPqwQxdvB0kea9jeBdlz6sklDyo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YQhs7bYZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA2A3C116D0;
-	Thu, 15 Jan 2026 17:46:14 +0000 (UTC)
+	 MIME-Version; b=SLIezYxHXiHfNAcGct9LP5kS2TEnOjFj7eifItR7dPBYJeiO84Qsbkn8keK6QmNnEqHtY3bSrqyqfOi+VF1YIhC2b73Bgmqxo5TS5/tmWmyMsmi9MsxWrKSaZeB0gwCRS7ciuxcCcz6iQYxBqGAVK3+MNHRuS6j4g3lMBZvfmJ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DxN/4Sl1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 065F7C16AAE;
+	Thu, 15 Jan 2026 17:26:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499175;
-	bh=A0d45ukhUGFRENsVTGpxXBC+mYhb3OU2YcXI4ZCsSQc=;
+	s=korg; t=1768497984;
+	bh=1UtsToLvofkMELPVYW1itPwygSMACF8m8uo/z0WnoVM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YQhs7bYZgC00h0Cw7kdEaJU16axKLE2MVqcrSjEcItHeRI7EEXDT42RRxZ5u3MCyg
-	 c+1rAVGkUDS0yO6koQTe+Iow8Mi3Oqg600FZZYG+c8F7gzvcuAGud4nMsJOLtCBtRs
-	 3UKu7CnqiIyJbuyvlvZj75FGJsYWFghHJI5ncwZ0=
+	b=DxN/4Sl1FgSOc+Cnd2lYu3kCy3NS0+A6EY5VRdJcaIqQUH0wxj8pZzdtjr0U+1yYm
+	 940g2OrRctL+fGfmmd9igr6lP/fqNNyUleqQznuepDilg4jEXvh/36ao5yZ866UbKd
+	 jtFVBC0E04qpZbNmC8HhakDA7Us1VM8CZ1zNSRUg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shengjiu Wang <shengjiu.wang@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	Chen Changcheng <chenchangcheng@kylinos.cn>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 135/451] ASoC: ak4458: Disable regulator when error happens
-Date: Thu, 15 Jan 2026 17:45:36 +0100
-Message-ID: <20260115164235.804425254@linuxfoundation.org>
+Subject: [PATCH 5.15 271/554] usb: usb-storage: No additional quirks need to be added to the EL-R12 optical drive.
+Date: Thu, 15 Jan 2026 17:45:37 +0100
+Message-ID: <20260115164256.039103666@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,47 +59,66 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Chen Changcheng <chenchangcheng@kylinos.cn>
 
-[ Upstream commit ae585fabb9713a43e358cf606451386757225c95 ]
+[ Upstream commit 955a48a5353f4fe009704a9a4272a3adf627cd35 ]
 
-Disable regulator in runtime resume when error happens to balance
-the reference count of regulator.
+The optical drive of EL-R12 has the same vid and pid as INIC-3069,
+as follows:
+T:  Bus=02 Lev=02 Prnt=02 Port=01 Cnt=01 Dev#=  3 Spd=5000 MxCh= 0
+D:  Ver= 3.00 Cls=00(>ifc ) Sub=00 Prot=00 MxPS= 9 #Cfgs=  1
+P:  Vendor=13fd ProdID=3940 Rev= 3.10
+S:  Manufacturer=HL-DT-ST
+S:  Product= DVD+-RW GT80N
+S:  SerialNumber=423349524E4E38303338323439202020
+C:* #Ifs= 1 Cfg#= 1 Atr=80 MxPwr=144mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=08(stor.) Sub=02 Prot=50 Driver=usb-storage
+E:  Ad=83(I) Atr=02(Bulk) MxPS=1024 Ivl=0ms
+E:  Ad=0a(O) Atr=02(Bulk) MxPS=1024 Ivl=0ms
 
-Fixes: 7e3096e8f823 ("ASoC: ak4458: Add regulator support")
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Link: https://patch.msgid.link/20251203100529.3841203-2-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+This will result in the optical drive device also adding
+the quirks of US_FL_NO_ATA_1X. When performing an erase operation,
+it will fail, and the reason for the failure is as follows:
+[  388.967742] sr 5:0:0:0: [sr0] tag#0 Send: scmd 0x00000000d20c33a7
+[  388.967742] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
+[  388.967773] sr 5:0:0:0: [sr0] tag#0 Done: SUCCESS Result: hostbyte=DID_TARGET_FAILURE driverbyte=DRIVER_OK cmd_age=0s
+[  388.967773] sr 5:0:0:0: [sr0] tag#0 CDB: ATA command pass through(12)/Blank a1 11 00 00 00 00 00 00 00 00 00 00
+[  388.967803] sr 5:0:0:0: [sr0] tag#0 Sense Key : Illegal Request [current]
+[  388.967803] sr 5:0:0:0: [sr0] tag#0 Add. Sense: Invalid field in cdb
+[  388.967803] sr 5:0:0:0: [sr0] tag#0 scsi host busy 1 failed 0
+[  388.967803] sr 5:0:0:0: Notifying upper driver of completion (result 8100002)
+[  388.967834] sr 5:0:0:0: [sr0] tag#0 0 sectors total, 0 bytes done.
+
+For the EL-R12 standard optical drive, all operational commands
+and usage scenarios were tested without adding the IGNORE_RESIDUE quirks,
+and no issues were encountered. It can be reasonably concluded
+that removing the IGNORE_RESIDUE quirks has no impact.
+
+Signed-off-by: Chen Changcheng <chenchangcheng@kylinos.cn>
+Link: https://patch.msgid.link/20251121064020.29332-1-chenchangcheng@kylinos.cn
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/ak4458.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ drivers/usb/storage/unusual_uas.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/ak4458.c b/sound/soc/codecs/ak4458.c
-index 85a1d00894a9c..af4873c97d3aa 100644
---- a/sound/soc/codecs/ak4458.c
-+++ b/sound/soc/codecs/ak4458.c
-@@ -683,7 +683,15 @@ static int __maybe_unused ak4458_runtime_resume(struct device *dev)
- 	regcache_cache_only(ak4458->regmap, false);
- 	regcache_mark_dirty(ak4458->regmap);
+diff --git a/drivers/usb/storage/unusual_uas.h b/drivers/usb/storage/unusual_uas.h
+index 1477e31d7763..b695f5ba9a40 100644
+--- a/drivers/usb/storage/unusual_uas.h
++++ b/drivers/usb/storage/unusual_uas.h
+@@ -98,7 +98,7 @@ UNUSUAL_DEV(0x125f, 0xa94a, 0x0160, 0x0160,
+ 		US_FL_NO_ATA_1X),
  
--	return regcache_sync(ak4458->regmap);
-+	ret = regcache_sync(ak4458->regmap);
-+	if (ret)
-+		goto err;
-+
-+	return 0;
-+err:
-+	regcache_cache_only(ak4458->regmap, true);
-+	regulator_bulk_disable(ARRAY_SIZE(ak4458->supplies), ak4458->supplies);
-+	return ret;
- }
- #endif /* CONFIG_PM */
- 
+ /* Reported-by: Benjamin Tissoires <benjamin.tissoires@redhat.com> */
+-UNUSUAL_DEV(0x13fd, 0x3940, 0x0000, 0x9999,
++UNUSUAL_DEV(0x13fd, 0x3940, 0x0309, 0x0309,
+ 		"Initio Corporation",
+ 		"INIC-3069",
+ 		USB_SC_DEVICE, USB_PR_DEVICE, NULL,
 -- 
 2.51.0
 
