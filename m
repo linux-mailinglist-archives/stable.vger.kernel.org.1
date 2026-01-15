@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-208692-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209777-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9CED8D262B1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:52 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2D56BD276AF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0FDDA312E8D9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 8DD8A31E88BF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6855533F390;
-	Thu, 15 Jan 2026 17:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9FE3C009B;
+	Thu, 15 Jan 2026 17:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tPindOvV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8ufTfZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2B5F42D238A;
-	Thu, 15 Jan 2026 17:02:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37733D1CC6;
+	Thu, 15 Jan 2026 17:54:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496575; cv=none; b=GiZvv8WviWsNhIPpDZSEhf2v8g5gtoQDZTAK5SfvVCSz6hLLN3WpcvvvQv34MwtLsEGFYLe2SfK8LE4AtVYXpKNvZgwGyyz5m+4pzx2+2gtRwmuOBhMb7Y6xkoXaDMWfifTu2rzPcMmguYykxiQZVK1m0WuA90QpWPHhWq/oxUI=
+	t=1768499661; cv=none; b=b9Cy2ZVdlvB2+pfV5RYRUrVplUhUxBiMwvlrhl7FehHyIjwBEIw9V5u+k8Yd1jYtk5ZOV3MkkDXZO6iry51WMhibUr3VIJYrTUi8JdzNMep8awG8XXw3se96Yldv9k+69OIXZSgo+zRbNUIQVeaucUjzlS1Z8tDCznbvEPk9c7k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496575; c=relaxed/simple;
-	bh=CR5neT5MyYywNiUnESM8lILbBnkAxvb47GunNZ/GsnA=;
+	s=arc-20240116; t=1768499661; c=relaxed/simple;
+	bh=xigkQMQ8pW0JCGIlB+aLhH314u6jPfM+QHNIBQKuCEM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pXCxW9LIOeNvu4/Y2+q8+nAAg1iSN5DOfmoDq+zuJ/CdaeKzaNPd6bKv57RnCK4D+rZo5Fn7oh9Zd26opEpJ7PRek4CwGPgAg7guUmp3eJIuvHEsqFavvOKBccEmARmdiJ39+ZHggR8uub2I/T4q87bHCs5r5BGKjb32XXO9ILY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tPindOvV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB515C116D0;
-	Thu, 15 Jan 2026 17:02:54 +0000 (UTC)
+	 MIME-Version; b=qS+VI9OLRJjQGN57hF4MrnDIRDJ5vnG9GQndMmY7RRFLR3UXjxVniCBV2cMM10tKduGEaYQSQpFxKp0Crung4qEQXFE5NdqHCPzYfbue8RikHQ1wTT0SC/9L5uDyty2mHT0dQ/jwYja4o5oN/ig4deCEnYLXgMyGaVUYW0zwQ2g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8ufTfZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D544C116D0;
+	Thu, 15 Jan 2026 17:54:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496575;
-	bh=CR5neT5MyYywNiUnESM8lILbBnkAxvb47GunNZ/GsnA=;
+	s=korg; t=1768499661;
+	bh=xigkQMQ8pW0JCGIlB+aLhH314u6jPfM+QHNIBQKuCEM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tPindOvV7iqoOAYLacDyCWmT1MnpYE6nYnSiC/Q4QMOoecMqqGxoK6OfoEJ1Rgkco
-	 ueJvdhPPRw7NTJUohoW+l4S0YKhLxz8YRA+Ko4Zw1uk7QrHDv1MQtPfkN1V6QrYN/v
-	 Olt763FW8h5JWTjypPzq5aSEs/bjVYBPGGJiX6ts=
+	b=y8ufTfZd77AW4wyf0kP0x5+UF0VklmbeD0cNSu2A0S//V8AVaIt1DMHgQNHnYB5GZ
+	 5HmqgvnD93Cej61KI7SL7As9VClIp0X50+0JH9UiRFAiO0gO6nEM0klKIh9dWfnnLS
+	 8Xnm0orgQ5Cmnd4AfncRDcPzKI3Ar4duPJyVYgiE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	Xiumei Mu <xmu@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 059/119] netfilter: nft_synproxy: avoid possible data-race on update operation
+Subject: [PATCH 5.10 273/451] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
 Date: Thu, 15 Jan 2026 17:47:54 +0100
-Message-ID: <20260115164154.088285394@linuxfoundation.org>
+Message-ID: <20260115164240.761950622@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,57 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 36a3200575642846a96436d503d46544533bb943 ]
+[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
 
-During nft_synproxy eval we are reading nf_synproxy_info struct which
-can be modified on update operation concurrently. As nf_synproxy_info
-struct fits in 32 bits, use READ_ONCE/WRITE_ONCE annotations.
+As soon as crypto_aead_encrypt is called, the underlying request
+may be freed by an asynchronous completion.  Thus dereferencing
+req->iv after it returns is invalid.
 
-Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Instead of checking req->iv against info, create a new variable
+unaligned_info and use it for that purpose instead.
+
+Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Reported-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_synproxy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ crypto/seqiv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
-index 5d3e518259859..4d3e5a31b4125 100644
---- a/net/netfilter/nft_synproxy.c
-+++ b/net/netfilter/nft_synproxy.c
-@@ -48,7 +48,7 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
- 				 struct tcphdr *_tcph,
- 				 struct synproxy_options *opts)
- {
--	struct nf_synproxy_info info = priv->info;
-+	struct nf_synproxy_info info = READ_ONCE(priv->info);
- 	struct net *net = nft_net(pkt);
- 	struct synproxy_net *snet = synproxy_pernet(net);
- 	struct sk_buff *skb = pkt->skb;
-@@ -79,7 +79,7 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
- 				 struct tcphdr *_tcph,
- 				 struct synproxy_options *opts)
- {
--	struct nf_synproxy_info info = priv->info;
-+	struct nf_synproxy_info info = READ_ONCE(priv->info);
- 	struct net *net = nft_net(pkt);
- 	struct synproxy_net *snet = synproxy_pernet(net);
- 	struct sk_buff *skb = pkt->skb;
-@@ -340,7 +340,7 @@ static void nft_synproxy_obj_update(struct nft_object *obj,
- 	struct nft_synproxy *newpriv = nft_obj_data(newobj);
- 	struct nft_synproxy *priv = nft_obj_data(obj);
+diff --git a/crypto/seqiv.c b/crypto/seqiv.c
+index b1bcfe537daf..562ab102226a 100644
+--- a/crypto/seqiv.c
++++ b/crypto/seqiv.c
+@@ -51,6 +51,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
+ 	struct aead_request *subreq = aead_request_ctx(req);
+ 	crypto_completion_t compl;
++	bool unaligned_info;
+ 	void *data;
+ 	u8 *info;
+ 	unsigned int ivsize = 8;
+@@ -80,8 +81,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 			return err;
+ 	}
  
--	priv->info = newpriv->info;
-+	WRITE_ONCE(priv->info, newpriv->info);
+-	if (unlikely(!IS_ALIGNED((unsigned long)info,
+-				 crypto_aead_alignmask(geniv) + 1))) {
++	unaligned_info = !IS_ALIGNED((unsigned long)info,
++				     crypto_aead_alignmask(geniv) + 1);
++	if (unlikely(unaligned_info)) {
+ 		info = kmemdup(req->iv, ivsize, req->base.flags &
+ 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
+ 			       GFP_ATOMIC);
+@@ -101,7 +103,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
+ 
+ 	err = crypto_aead_encrypt(subreq);
+-	if (unlikely(info != req->iv))
++	if (unlikely(unaligned_info))
+ 		seqiv_aead_encrypt_complete2(req, err);
+ 	return err;
  }
- 
- static struct nft_object_type nft_synproxy_obj_type;
 -- 
 2.51.0
 
