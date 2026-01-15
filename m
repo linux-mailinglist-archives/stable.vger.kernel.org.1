@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209463-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209912-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15F9CD276D8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:06 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5D12DD27E8D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 20:03:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 936643150D06
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 09A733013165
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9968A283FEF;
-	Thu, 15 Jan 2026 17:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5ABCC3D3CEB;
+	Thu, 15 Jan 2026 18:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="AL2MCaEW"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aITLLtpS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5CB2D27A462;
-	Thu, 15 Jan 2026 17:39:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1D68A3E9599;
+	Thu, 15 Jan 2026 18:00:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498769; cv=none; b=sSe0/eHKMk1tj7/+x0Jq4Z5YADlA4pxaYYrG8Ook7CgP3FFYul+y8bkpNyW63N4So5sFULYcMAMCkdSL6qzzaFX9lTj2HldjT+yARjy5I+48lv+t0S1LJ4Oy/RW8LS/Tg+iIYd4J1kEIEdpMeIt0Vzawu0YSh07FyR/fbj8YWIs=
+	t=1768500046; cv=none; b=aiozqRGAsrYzVskopPsrnqbIxT/yuexn7zFwk/zcdm1dgdS+r9S/MIftugx9UTd6+yatoJgzaGaRNsz/KdI58dbViuK9RaiIwzBg7SDDAJCdSEU7LDV7G5PLVI1525XOzkL2dEdyxpOJZKECcgpN71CJkJnmBeX3YNqmS5aIFm8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498769; c=relaxed/simple;
-	bh=C9NWac1JEfykLDBZ7GQ9zYcgzcKDmozA+GMu5EEgUYQ=;
+	s=arc-20240116; t=1768500046; c=relaxed/simple;
+	bh=8Ccalfc05MOKY7fco6xX/H9wl80vCYjIvif51R0mjcs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VjtyPiU8zquZWvf+SQPdeWO5i7K2tBuGPYnZ7Mhr7aNwvnlzo0WL5kEKUBOStC7ht6GwYnyPNm1pdPi+NSs0SI1VouBFOrfYCB3ZP4EelujpPisfchHpPPZ2S5lgtrAVcmFAepXFHJoDgUmcaet/D3KbW+FvXWg2qPmtaeXHihw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=AL2MCaEW; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDA0DC116D0;
-	Thu, 15 Jan 2026 17:39:28 +0000 (UTC)
+	 MIME-Version; b=IUpBMJcN733Eqq8zDgsRNyrIB7hSvedCye5QHp9j67ci7A9Bkuu3Zf4wAE1QG+27lXJRckTx7UZQV/GqUJobRFHf8/bPJ/1Axznu6mBUv7oayLGjDF0B70HykltsIs4MAuO/bsar0UJRMEQVt4/KPujvcwmkpwvZ26HMzRmFxss=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aITLLtpS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D8F1C19423;
+	Thu, 15 Jan 2026 18:00:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498769;
-	bh=C9NWac1JEfykLDBZ7GQ9zYcgzcKDmozA+GMu5EEgUYQ=;
+	s=korg; t=1768500046;
+	bh=8Ccalfc05MOKY7fco6xX/H9wl80vCYjIvif51R0mjcs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=AL2MCaEWUXlC7u+pJSGGK+rJKbxzaDYSP0CZhcyEUotRl9+M20beSW8E21/qAzQvL
-	 RCYr2XRcEfpyl7i2nsKGUYxMuc+VKcvY8fa3REx48QevJNmlDQe7UBUbC/nUfixQdP
-	 2QkeUnjiqn9SZ6nGvlzt7WrVWQoeZmnSmaXVarG0=
+	b=aITLLtpSwan24716tgkTVVMv/TQ2FkTv5TzK7EQxy8IMTVX2uOUEbGIpJpDXP3/+P
+	 F2DHEuRn+ZU9lNgHmOYd+TvucJZWQWfcrRgLehkR6wqBobvZR+WS7e+5NOCqdgBbId
+	 Uu1cZjTkkdLXYOMjJayE4i4CAQ61JCQI1vmDKI6A=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Linus Walleij <linus.walleij@linaro.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 547/554] pinctrl: qcom: lpass-lpi: Remove duplicate assignment of of_gpio_n_cells
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 5.10 412/451] mei: me: add nova lake point S DID
 Date: Thu, 15 Jan 2026 17:50:13 +0100
-Message-ID: <20260115164306.126812013@linuxfoundation.org>
+Message-ID: <20260115164245.844244302@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,37 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit a3fc976a2d68cb74ae4234314002e4e398e4c337 ]
+commit 420f423defcf6d0af2263d38da870ca4a20c0990 upstream.
 
-The of_gpio_n_cells default is 2 when ->of_xlate() callback is
-not defined. No need to assign it explicitly in the driver.
+Add Nova Lake S device id.
 
-Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Link: https://lore.kernel.org/r/20230112184923.80442-1-andriy.shevchenko@linux.intel.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
-Stable-dep-of: ebc18e9854e5 ("pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20251215105915.1672659-1-alexander.usyskin@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -644,7 +644,6 @@ static int lpi_pinctrl_probe(struct plat
- 	pctrl->chip.base = -1;
- 	pctrl->chip.ngpio = data->npins;
- 	pctrl->chip.label = dev_name(dev);
--	pctrl->chip.of_gpio_n_cells = 2;
- 	pctrl->chip.can_sleep = false;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -122,6 +122,8 @@
  
- 	mutex_init(&pctrl->lock);
+ #define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
+ 
++#define MEI_DEV_ID_NVL_S      0x6E68  /* Nova Lake Point S */
++
+ /*
+  * MEI HW Section
+  */
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -128,6 +128,8 @@ static const struct pci_device_id mei_me
+ 
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
+ 
++	{MEI_PCI_DEVICE(MEI_DEV_ID_NVL_S, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
