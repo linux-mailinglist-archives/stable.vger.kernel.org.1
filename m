@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209461-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209865-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB7E7D276D2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:59 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 17BA8D2763B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 057B3314DBF8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:39:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id E360B30543CA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0E20827B340;
-	Thu, 15 Jan 2026 17:39:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C88933D7D6F;
+	Thu, 15 Jan 2026 17:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OZzUgPCA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zkVe5z2y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C061F2749DF;
-	Thu, 15 Jan 2026 17:39:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8443D3D7D6C;
+	Thu, 15 Jan 2026 17:58:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498763; cv=none; b=Y4yml1mdkf884ObseQ2Noo2u3nN9kvo0kJgG5y9LKVKxOnSPmax8EkscUIo+SEz/QabDX7q/zH32ryHbxnO+63rFxPXEfbWYdXfgJFaVePkpSi+j2Jh364rsK5Woc5ATGmvy1eFE9VnQoVuq0+8vZQeZ44L/CkhStn3ncPkRLmk=
+	t=1768499912; cv=none; b=RFchG740CvzbxKnxXXI0Wb+XCu2ZMt7Z38xDWsTILgVLES6+fIa1/SmzJietXtstQ62a6s3+CIdEgmmQe/1/TOEatqR2KP32H5YWB+Dz7WrM0st+t7Xx2+Y8iIvUMo3oRjvXcWiT3r7gRv7O4cVvPouEyabKDFqZBKZDIMpLQlc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498763; c=relaxed/simple;
-	bh=qHMVfdQ5nqGzSkzF85Af2ROv49HmYDGGpZy57ID2dyI=;
+	s=arc-20240116; t=1768499912; c=relaxed/simple;
+	bh=eQl3TbBVJIYse2nrm/w5Fa5o7I2Ab3aZPSCQs6biKug=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qKkTfeNfOl4CEseKO1pvWqgRGcq8+BCisrTngwEVydkA3cDiSwhIngg0ddSpQfYPRIOQQLWZQSuRXF6ry5Pko6HgOUqUQAHMESagDS4wurYUiY43zRzBCb+eqbc2dH0qqRCP80TMp748bL73gGC6NJWvnuVW1oAcI0v2+dmf/iY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OZzUgPCA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17B6AC116D0;
-	Thu, 15 Jan 2026 17:39:22 +0000 (UTC)
+	 MIME-Version; b=uIu+ujCN1J29lbMCanFEScfyERehpZnPFWqZJknP2wIhjY7sPIVL5WhWiOwGjjsr1ys/aoLWIe4L1tHSeM53+6kc3mvPNpsvlof/0q42PI5jQ6YSW1Z0lJ2d26+f2GX1XEwEmvhpDXU+OJriUy5nBa/f729MIW5OthfVSf1egj0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zkVe5z2y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C7EAC16AAE;
+	Thu, 15 Jan 2026 17:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498763;
-	bh=qHMVfdQ5nqGzSkzF85Af2ROv49HmYDGGpZy57ID2dyI=;
+	s=korg; t=1768499912;
+	bh=eQl3TbBVJIYse2nrm/w5Fa5o7I2Ab3aZPSCQs6biKug=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OZzUgPCAqOqRZ6jEWD7uL6iIK6NAcRhMVdKAxT/LSwPdQcHP/JpgGS+b57rc/w4ty
-	 NpsYK3Ug2B5u/CU8GBsdBOH3A979wyOB15jy4YI8iR2cSugYLZhIsFAT7ONgdEB+uG
-	 PjlE4WdOpN1/dzojNhj3OYHbgbvm3lQKP2zVMDjc=
+	b=zkVe5z2yk7ae1g/5/jgZPGZHxuRF8gehxEQ82q8xL1g3b7DeqKXagHLA9av5fd34O
+	 oTELz0eyl+JisroStk04pYjJcgx85RAY+oj6rTJAUYN3577DARgeK5Y6J0Wo2PDhL4
+	 msSbWaGmMD3VNdVXQIOEKnHgR9PPa99O3rwkTPgQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alok Tiwari <alok.a.tiwari@oracle.com>,
-	Elad Nachman <enachman@marvell.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 528/554] net: marvell: prestera: fix NULL dereference on devlink_alloc() failure
+	Aurelien Couderc <aurelien.couderc2002@gmail.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.10 393/451] NFSD: NFSv4 file creation neglects setting ACL
 Date: Thu, 15 Jan 2026 17:49:54 +0100
-Message-ID: <20260115164305.438988574@linuxfoundation.org>
+Message-ID: <20260115164245.151340252@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +59,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alok Tiwari <alok.a.tiwari@oracle.com>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit a428e0da1248c353557970848994f35fd3f005e2 ]
+[ Upstream commit 913f7cf77bf14c13cfea70e89bcb6d0b22239562 ]
 
-devlink_alloc() may return NULL on allocation failure, but
-prestera_devlink_alloc() unconditionally calls devlink_priv() on
-the returned pointer.
+An NFSv4 client that sets an ACL with a named principal during file
+creation retrieves the ACL afterwards, and finds that it is only a
+default ACL (based on the mode bits) and not the ACL that was
+requested during file creation. This violates RFC 8881 section
+6.4.1.3: "the ACL attribute is set as given".
 
-This leads to a NULL pointer dereference if devlink allocation fails.
-Add a check for a NULL devlink pointer and return NULL early to avoid
-the crash.
+The issue occurs in nfsd_create_setattr(). On 6.1.y, the check to
+determine whether nfsd_setattr() should be called is simply
+"iap->ia_valid", which only accounts for iattr changes. When only
+an ACL is present (and no iattr fields are set), nfsd_setattr() is
+skipped and the POSIX ACL is never applied to the inode.
 
-Fixes: 34dd1710f5a3 ("net: marvell: prestera: Add basic devlink support")
-Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
-Acked-by: Elad Nachman <enachman@marvell.com>
-Link: https://patch.msgid.link/20251230052124.897012-1-alok.a.tiwari@oracle.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Subsequently, when the client retrieves the ACL, the server finds
+no POSIX ACL on the inode and returns one generated from the file's
+mode bits rather than returning the originally-specified ACL.
+
+Reported-by: Aurelien Couderc <aurelien.couderc2002@gmail.com>
+Fixes: c0cbe70742f4 ("NFSD: add posix ACLs to struct nfsd_attrs")
+Cc: stable@vger.kernel.org
+[ cel: Adjust nfsd_create_setattr() instead of nfsd_attrs_valid() ]
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/prestera/prestera_devlink.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfsd/vfs.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
-index 68b442eb6d694..59e865df6cee0 100644
---- a/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
-+++ b/drivers/net/ethernet/marvell/prestera/prestera_devlink.c
-@@ -396,6 +396,8 @@ struct prestera_switch *prestera_devlink_alloc(struct prestera_device *dev)
- 
- 	dl = devlink_alloc(&prestera_dl_ops, sizeof(struct prestera_switch),
- 			   dev->dev);
-+	if (!dl)
-+		return NULL;
- 
- 	return devlink_priv(dl);
- }
--- 
-2.51.0
-
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -1335,7 +1335,7 @@ nfsd_create_setattr(struct svc_rqst *rqs
+ 	 * Callers expect new file metadata to be committed even
+ 	 * if the attributes have not changed.
+ 	 */
+-	if (iap->ia_valid)
++	if (iap->ia_valid || attrs->na_pacl || attrs->na_dpacl)
+ 		status = nfsd_setattr(rqstp, resfhp, attrs, 0, (time64_t)0);
+ 	else
+ 		status = nfserrno(commit_metadata(resfhp));
 
 
 
