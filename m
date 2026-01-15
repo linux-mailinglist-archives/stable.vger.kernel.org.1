@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-209658-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209236-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D9638D27098
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:02:16 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 91CF4D274BC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 182943384D32
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:50:50 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4F17132E3547
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 741FF3D349A;
-	Thu, 15 Jan 2026 17:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE0433C196E;
+	Thu, 15 Jan 2026 17:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SzilIbWQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gku3Tag7"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 264A53BFE29;
-	Thu, 15 Jan 2026 17:48:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71ECD3A7F5D;
+	Thu, 15 Jan 2026 17:28:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499323; cv=none; b=nhGlj5sKUJNFVHNPeezePaJT8v5+9zsITvFSLS1NAqFfYimIus3mvjLuxG2Sdf1Azf10ekBobuQfrRonWtPLTLkCjaWiO8ge4k9tTHrRSjEPiXrSu0Cmo6IkpdSODIY4jh0kXyl1tH+v36CTgrp1HTcf0grgZJTCK/dRoIbTxcY=
+	t=1768498121; cv=none; b=uuzURsQlHIhn5OMoMRtdsBNJVWuBSMNgQjDr8m+TSOmTl/Cf+L2rJsuxU/kpwJrxvKB79F5k0FAQFiUBPIJqiBmyFx4rPzZLpNZVGCHP2vwdnpus1D1nKnF9u+oOTLDQW/5Ihp7bLMaorsNj4oazlxJxKTu5/bh7LTHhu/Ww/kw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499323; c=relaxed/simple;
-	bh=GP6p3Kq0d1TyW7NB3FBn8y7Y7judo6Ot/Ju7IZprfII=;
+	s=arc-20240116; t=1768498121; c=relaxed/simple;
+	bh=dchSxLUWCl0LB48lCrIKRCFWaMrybOtVT4ks/k/cMuw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Zkx3+n2xkpYxZRaTMBV++X7mD+cvwgJYvDcUZrIl4JJglkZmIMagw7y4CZP8WnajQAfxN7Re9nia5PtwDLW8Nj3WoSekb4i3tUd7NDlXXFJ/cwmZ4VVr5i0AFeazsjCwK4wOe63Iaai668THkU8f6CpmqaKLQjZHYXDpfdiANN8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SzilIbWQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8816C2BC86;
-	Thu, 15 Jan 2026 17:48:42 +0000 (UTC)
+	 MIME-Version; b=RJBMkdu8ErkCLrRT8o7pgtsc+Az7IcXCXn0rq3O/UGq6Vz4I9cpnpTZevKgeXWkwJ+1cB6vIbEBim3mB0tVxVFuqt60ByE1RIKCBe0udnjuvGa1VA3BX6GuCQAJygsrZLNnZ+dWxVfjmWF3WtydpKGM185o6N218XCGlWIGdDG4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gku3Tag7; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1477C116D0;
+	Thu, 15 Jan 2026 17:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499323;
-	bh=GP6p3Kq0d1TyW7NB3FBn8y7Y7judo6Ot/Ju7IZprfII=;
+	s=korg; t=1768498121;
+	bh=dchSxLUWCl0LB48lCrIKRCFWaMrybOtVT4ks/k/cMuw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SzilIbWQINen81QIpsQcw/2PhqzemVrped+mMj4Ey633XyzK/TjmSJHtaNNdRUDj2
-	 SX63kKZgnCJaRJbXiJzmQP1vciyp3E75YkUlgq/bQ3WqcZKx2jvTYe+amt/jEJTzQf
-	 BxjLZARaph2UYPfboypqCTB428ZSZ4vxu4t0s7/M=
+	b=gku3Tag7ZiNk6ZD7oKRhGX8+q4E4/snZICx4S2cOUpQFpVdDGcRe03+IbC3LRDG3E
+	 ybwQ/WjAIN0H65aVFTuyD+8S5p9izmSxHRix54d61kHCZkWIxlguIfIgBWnsFOXlYx
+	 5mXG68LOycYctsCAPJvlyGrF3bjwxHxLsVOQZ0qU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shay Drory <shayd@nvidia.com>,
-	Breno Leitao <leitao@debian.org>,
-	Moshe Shemesh <moshe@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 186/451] net/mlx5: fw_tracer, Handle escaped percent properly
+	Ed Tsai <ed.tsai@mediatek.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 321/554] PM: runtime: Do not clear needs_force_resume with enabled runtime PM
 Date: Thu, 15 Jan 2026 17:46:27 +0100
-Message-ID: <20260115164237.632010161@linuxfoundation.org>
+Message-ID: <20260115164257.847241216@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,89 +60,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shay Drory <shayd@nvidia.com>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit c0289f67f7d6a0dfba0e92cfe661a5c70c8c6e92 ]
+commit 359afc8eb02a518fbdd0cbd462c8c2827c6cbec2 upstream.
 
-The firmware tracer's format string validation and parameter counting
-did not properly handle escaped percent signs (%%). This caused
-fw_tracer to count more parameters when trace format strings contained
-literal percent characters.
+Commit 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in
+pm_runtime_reinit()") added provisional clearing of power.needs_force_resume
+to pm_runtime_reinit(), but it is done unconditionally which is a
+mistake because pm_runtime_reinit() may race with driver probing
+and removal [1].
 
-To fix it, allow %% to pass string validation and skip %% sequences when
-counting parameters since they represent literal percent signs rather
-than format specifiers.
+To address this, notice that power.needs_force_resume should never
+be set when runtime PM is enabled and so it only needs to be cleared
+when runtime PM is disabled, and update pm_runtime_init() to only
+clear that flag when runtime PM is disabled.
 
-Fixes: 70dd6fdb8987 ("net/mlx5: FW tracer, parse traces and kernel tracing support")
-Signed-off-by: Shay Drory <shayd@nvidia.com>
-Reported-by: Breno Leitao <leitao@debian.org>
-Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
-Closes: https://lore.kernel.org/netdev/hanz6rzrb2bqbplryjrakvkbmv4y5jlmtthnvi3thg5slqvelp@t3s3erottr6s/
-Signed-off-by: Tariq Toukan <tariqt@nvidia.com>
-Link: https://patch.msgid.link/1765284977-1363052-5-git-send-email-tariqt@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 89d9cec3b1e9 ("PM: runtime: Clear power.needs_force_resume in pm_runtime_reinit()")
+Reported-by: Ed Tsai <ed.tsai@mediatek.com>
+Closes: https://lore.kernel.org/linux-pm/20251215122154.3180001-1-ed.tsai@mediatek.com/ [1]
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Cc: 6.17+ <stable@vger.kernel.org> # 6.17+
+Reviewed-by: Ulf Hansson <ulf.hansson@linaro.org>
+Link: https://patch.msgid.link/12807571.O9o76ZdvQC@rafael.j.wysocki
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../mellanox/mlx5/core/diag/fw_tracer.c       | 20 +++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ drivers/base/power/runtime.c |   22 ++++++++++++----------
+ 1 file changed, 12 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-index 2645e941ef1ce..f3985421e739e 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/diag/fw_tracer.c
-@@ -364,11 +364,11 @@ static bool mlx5_is_valid_spec(const char *str)
- 	while (isdigit(*str) || *str == '#' || *str == '.' || *str == 'l')
- 		str++;
- 
--	/* Check if it's a valid integer/hex specifier:
-+	/* Check if it's a valid integer/hex specifier or %%:
- 	 * Valid formats: %x, %d, %i, %u, etc.
- 	 */
- 	if (*str != 'x' && *str != 'X' && *str != 'd' && *str != 'i' &&
--	    *str != 'u' && *str != 'c')
-+	    *str != 'u' && *str != 'c' && *str != '%')
- 		return false;
- 
- 	return true;
-@@ -386,7 +386,11 @@ static bool mlx5_tracer_validate_params(const char *str)
- 		if (!mlx5_is_valid_spec(substr + 1))
- 			return false;
- 
--		substr = strstr(substr + 1, PARAM_CHAR);
-+		if (*(substr + 1) == '%')
-+			substr = strstr(substr + 2, PARAM_CHAR);
-+		else
-+			substr = strstr(substr + 1, PARAM_CHAR);
+--- a/drivers/base/power/runtime.c
++++ b/drivers/base/power/runtime.c
+@@ -1747,16 +1747,18 @@ void pm_runtime_init(struct device *dev)
+  */
+ void pm_runtime_reinit(struct device *dev)
+ {
+-	if (!pm_runtime_enabled(dev)) {
+-		if (dev->power.runtime_status == RPM_ACTIVE)
+-			pm_runtime_set_suspended(dev);
+-		if (dev->power.irq_safe) {
+-			spin_lock_irq(&dev->power.lock);
+-			dev->power.irq_safe = 0;
+-			spin_unlock_irq(&dev->power.lock);
+-			if (dev->parent)
+-				pm_runtime_put(dev->parent);
+-		}
++	if (pm_runtime_enabled(dev))
++		return;
 +
++	if (dev->power.runtime_status == RPM_ACTIVE)
++		pm_runtime_set_suspended(dev);
++
++	if (dev->power.irq_safe) {
++		spin_lock_irq(&dev->power.lock);
++		dev->power.irq_safe = 0;
++		spin_unlock_irq(&dev->power.lock);
++		if (dev->parent)
++			pm_runtime_put(dev->parent);
  	}
- 
- 	return true;
-@@ -463,11 +467,15 @@ static int mlx5_tracer_get_num_of_params(char *str)
- 		substr = strstr(pstr, VAL_PARM);
- 	}
- 
--	/* count all the % characters */
-+	/* count all the % characters, but skip %% (escaped percent) */
- 	substr = strstr(str, PARAM_CHAR);
- 	while (substr) {
--		num_of_params += 1;
--		str = substr + 1;
-+		if (*(substr + 1) != '%') {
-+			num_of_params += 1;
-+			str = substr + 1;
-+		} else {
-+			str = substr + 2;
-+		}
- 		substr = strstr(str, PARAM_CHAR);
- 	}
- 
--- 
-2.51.0
-
+ 	/*
+ 	 * Clear power.needs_force_resume in case it has been set by
 
 
 
