@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208764-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208693-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EC88D26168
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5A13AD26222
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 81AF2302663D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C2BB31302A7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E29AE3BF2FD;
-	Thu, 15 Jan 2026 17:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 313AA2D73BE;
+	Thu, 15 Jan 2026 17:02:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P083iDhh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kJQvMyuy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A5E453BC4DA;
-	Thu, 15 Jan 2026 17:06:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E982829C338;
+	Thu, 15 Jan 2026 17:02:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496776; cv=none; b=kgaibLqePeLhhQx9J0yIlJ0BjJFd3cOrt8Q8IoAwB8q+p+X+Gu+V5vs7ekm8LkmNRCF7tf2/iPzbHwvkreSmwri6oTY+hGXbxb6PcX5rSYb4D2wtXhWJKi27+UhW5jqkKtJpJmkQerdzoBtZZSRtiqC8Rm9G/qUZJCPOc8jzmME=
+	t=1768496578; cv=none; b=K4iPHakfWqguMQLx/SIGJ77UKYnQKXDb6T1qDhDPIkbe/G+8gT0fWO/5m5zdquM0ExjR8NzReYL4YNIJGlabHzFlCJA1JUDLg8aM1p15gOxTzMX80c8zF/nLcFynAcamilLgjobipZcWvaFVjayWb5nFyjnU1EVPIY++61ORRAs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496776; c=relaxed/simple;
-	bh=jTNlysq5yDs6UTuoNzOC6ywjAQUzXySA4ZqI/dlEcGM=;
+	s=arc-20240116; t=1768496578; c=relaxed/simple;
+	bh=Hr+4WVOk5RqdCnTi2hRoHPvn4AXa5XaW6QiUJn7LBhI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=g5Pykr61F9PN+A7ViiSXpLk/iIE3eCep/wOix4lNgU/FgELfoltbYk5EKAuWnAtYJNq1abUE8HJKX/qghAvdXAIyDW4mR+EJM2m7sJ7B2e6CwgOglwYl2P1lF2sM0ubuLQEjoCtrZi/bh6es84f/9sParkQgaVLjSeoRAGV2Sz4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P083iDhh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36DE2C19422;
-	Thu, 15 Jan 2026 17:06:16 +0000 (UTC)
+	 MIME-Version; b=HQrnsD0Dye6BGcywZBKF39pMLrY9xJXR3gNlC+ntXttHvoJlnvz5FSIq7bEt81YWI3CWbPGdGX0jMkkMUnGCnLn6ZYPf4JA7vLNeIqlo7JUpWnE+oPVcmTRj8LT011N31+dtjWanygvd0tJg805mG5qsbJGGo9YfdmKJ5485rEQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kJQvMyuy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7889CC116D0;
+	Thu, 15 Jan 2026 17:02:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496776;
-	bh=jTNlysq5yDs6UTuoNzOC6ywjAQUzXySA4ZqI/dlEcGM=;
+	s=korg; t=1768496577;
+	bh=Hr+4WVOk5RqdCnTi2hRoHPvn4AXa5XaW6QiUJn7LBhI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=P083iDhhvAAbV9yLs/NgEZqE+5D5B5Dcbrxuuwc5vXR1rImIedkQBTxTPgfMYMgIa
-	 1l+qXojZ5ClzExEiyryK1lynpZO+BuRu9ITIAiCZkz6Uq9oHEhJZF3xv+yb3iP6oNQ
-	 ErUd6vrEz5tLCEadZQzvnIuKw+1yNQr0z7l5zFQI=
+	b=kJQvMyuyr+UeITQo+sI2d91cszzEQ3Wa/9OEPfwUHgdRX+sDgvb7ltGjgeQFqwa9O
+	 vyOz7aGv6UyxzPxHbtNZMHTIxJxP8YPolM23Kmw+2GkA8w2R+/HLLyYJBknjnkvzNl
+	 ukQ7YKXGdvB7elkQsTZM6cp3G/9Lanty9Uc8du20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.6 12/88] gpio: rockchip: mark the GPIO controller as sleeping
+	Potin Lai <potin.lai.pt@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 060/119] gpio: pca953x: Add support for level-triggered interrupts
 Date: Thu, 15 Jan 2026 17:47:55 +0100
-Message-ID: <20260115164146.763306463@linuxfoundation.org>
+Message-ID: <20260115164154.123388586@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +60,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Potin Lai <potin.lai.pt@gmail.com>
 
-commit 20cf2aed89ac6d78a0122e31c875228e15247194 upstream.
+[ Upstream commit 417b0f8d08f878615de9481c6e8827fbc8b57ed2 ]
 
-The GPIO controller is configured as non-sleeping but it uses generic
-pinctrl helpers which use a mutex for synchronization.
+Adds support for level-triggered interrupts in the PCA953x GPIO
+expander driver. Previously, the driver only supported edge-triggered
+interrupts, which could lead to missed events in scenarios where an
+interrupt condition persists until it is explicitly cleared.
 
-This can cause the following lockdep splat with shared GPIOs enabled on
-boards which have multiple devices using the same GPIO:
+By enabling level-triggered interrupts, the driver can now detect and
+respond to sustained interrupt conditions more reliably.
 
-BUG: sleeping function called from invalid context at
-kernel/locking/mutex.c:591
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name:
-kworker/u16:0
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-6 locks held by kworker/u16:0/12:
-  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0},
-at: process_one_work+0x18c/0x604
-  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at:
-process_one_work+0x1b4/0x604
-  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at:
-__device_attach+0x38/0x1b0
-  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at:
-gpiod_direction_output_raw_commit+0x0/0x360
-  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at:
-gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
-  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at:
-gpiod_direction_output_raw_commit+0x0/0x360
-irq event stamp: 81450
-hardirqs last  enabled at (81449): [<ffff8000813acba4>]
-_raw_spin_unlock_irqrestore+0x74/0x78
-hardirqs last disabled at (81450): [<ffff8000813abfb8>]
-_raw_spin_lock_irqsave+0x84/0x88
-softirqs last  enabled at (79616): [<ffff8000811455fc>]
-__alloc_skb+0x17c/0x1e8
-softirqs last disabled at (79614): [<ffff8000811455fc>]
-__alloc_skb+0x17c/0x1e8
-CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted
-6.19.0-rc4-next-20260105+ #11975 PREEMPT
-Hardware name: Hardkernel ODROID-M1 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x24
-  __might_resched+0x144/0x248
-  __might_sleep+0x48/0x98
-  __mutex_lock+0x5c/0x894
-  mutex_lock_nested+0x24/0x30
-  pinctrl_get_device_gpio_range+0x44/0x128
-  pinctrl_gpio_direction+0x3c/0xe0
-  pinctrl_gpio_direction_output+0x14/0x20
-  rockchip_gpio_direction_output+0xb8/0x19c
-  gpiochip_direction_output+0x38/0x94
-  gpiod_direction_output_raw_commit+0x1d8/0x360
-  gpiod_direction_output_nonotify+0x7c/0x230
-  gpiod_direction_output+0x34/0xf8
-  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
-  gpiochip_direction_output+0x38/0x94
-  gpiod_direction_output_raw_commit+0x1d8/0x360
-  gpiod_direction_output_nonotify+0x7c/0x230
-  gpiod_configure_flags+0xbc/0x480
-  gpiod_find_and_request+0x1a0/0x574
-  gpiod_get_index+0x58/0x84
-  devm_gpiod_get_index+0x20/0xb4
-  devm_gpiod_get_optional+0x18/0x30
-  rockchip_pcie_probe+0x98/0x380
-  platform_probe+0x5c/0xac
-  really_probe+0xbc/0x298
-
-Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-Cc: stable@vger.kernel.org
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com/
-Acked-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+Link: https://lore.kernel.org/r/20250409-gpio-pca953x-level-triggered-irq-v3-1-7f184d814934@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 014a17deb412 ("gpio: pca953x: handle short interrupt pulses on PCAL devices")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rockchip.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/gpio/gpio-pca953x.c | 32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -584,6 +584,7 @@ static int rockchip_gpiolib_register(str
- 	gc->ngpio = bank->nr_pins;
- 	gc->label = bank->name;
- 	gc->parent = bank->dev;
-+	gc->can_sleep = true;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index bb7c1bf5f856e..76879dc6461c4 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -215,6 +215,8 @@ struct pca953x_chip {
+ 	DECLARE_BITMAP(irq_stat, MAX_LINE);
+ 	DECLARE_BITMAP(irq_trig_raise, MAX_LINE);
+ 	DECLARE_BITMAP(irq_trig_fall, MAX_LINE);
++	DECLARE_BITMAP(irq_trig_level_high, MAX_LINE);
++	DECLARE_BITMAP(irq_trig_level_low, MAX_LINE);
+ #endif
+ 	atomic_t wakeup_path;
  
- 	ret = gpiochip_add_data(gc, bank);
- 	if (ret) {
+@@ -773,6 +775,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	pca953x_read_regs(chip, chip->regs->direction, reg_direction);
+ 
+ 	bitmap_or(irq_mask, chip->irq_trig_fall, chip->irq_trig_raise, gc->ngpio);
++	bitmap_or(irq_mask, irq_mask, chip->irq_trig_level_high, gc->ngpio);
++	bitmap_or(irq_mask, irq_mask, chip->irq_trig_level_low, gc->ngpio);
+ 	bitmap_complement(reg_direction, reg_direction, gc->ngpio);
+ 	bitmap_and(irq_mask, irq_mask, reg_direction, gc->ngpio);
+ 
+@@ -790,13 +794,15 @@ static int pca953x_irq_set_type(struct irq_data *d, unsigned int type)
+ 	struct device *dev = &chip->client->dev;
+ 	irq_hw_number_t hwirq = irqd_to_hwirq(d);
+ 
+-	if (!(type & IRQ_TYPE_EDGE_BOTH)) {
++	if (!(type & IRQ_TYPE_SENSE_MASK)) {
+ 		dev_err(dev, "irq %d: unsupported type %d\n", d->irq, type);
+ 		return -EINVAL;
+ 	}
+ 
+ 	assign_bit(hwirq, chip->irq_trig_fall, type & IRQ_TYPE_EDGE_FALLING);
+ 	assign_bit(hwirq, chip->irq_trig_raise, type & IRQ_TYPE_EDGE_RISING);
++	assign_bit(hwirq, chip->irq_trig_level_low, type & IRQ_TYPE_LEVEL_LOW);
++	assign_bit(hwirq, chip->irq_trig_level_high, type & IRQ_TYPE_LEVEL_HIGH);
+ 
+ 	return 0;
+ }
+@@ -809,6 +815,8 @@ static void pca953x_irq_shutdown(struct irq_data *d)
+ 
+ 	clear_bit(hwirq, chip->irq_trig_raise);
+ 	clear_bit(hwirq, chip->irq_trig_fall);
++	clear_bit(hwirq, chip->irq_trig_level_low);
++	clear_bit(hwirq, chip->irq_trig_level_high);
+ }
+ 
+ static void pca953x_irq_print_chip(struct irq_data *data, struct seq_file *p)
+@@ -839,6 +847,7 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
+ 	DECLARE_BITMAP(cur_stat, MAX_LINE);
+ 	DECLARE_BITMAP(new_stat, MAX_LINE);
+ 	DECLARE_BITMAP(trigger, MAX_LINE);
++	DECLARE_BITMAP(edges, MAX_LINE);
+ 	int ret;
+ 
+ 	ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
+@@ -856,13 +865,26 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
+ 
+ 	bitmap_copy(chip->irq_stat, new_stat, gc->ngpio);
+ 
+-	if (bitmap_empty(trigger, gc->ngpio))
+-		return false;
++	if (bitmap_empty(chip->irq_trig_level_high, gc->ngpio) &&
++	    bitmap_empty(chip->irq_trig_level_low, gc->ngpio)) {
++		if (bitmap_empty(trigger, gc->ngpio))
++			return false;
++	}
+ 
+ 	bitmap_and(cur_stat, chip->irq_trig_fall, old_stat, gc->ngpio);
+ 	bitmap_and(old_stat, chip->irq_trig_raise, new_stat, gc->ngpio);
+-	bitmap_or(new_stat, old_stat, cur_stat, gc->ngpio);
+-	bitmap_and(pending, new_stat, trigger, gc->ngpio);
++	bitmap_or(edges, old_stat, cur_stat, gc->ngpio);
++	bitmap_and(pending, edges, trigger, gc->ngpio);
++
++	bitmap_and(cur_stat, new_stat, chip->irq_trig_level_high, gc->ngpio);
++	bitmap_and(cur_stat, cur_stat, chip->irq_mask, gc->ngpio);
++	bitmap_or(pending, pending, cur_stat, gc->ngpio);
++
++	bitmap_complement(cur_stat, new_stat, gc->ngpio);
++	bitmap_and(cur_stat, cur_stat, reg_direction, gc->ngpio);
++	bitmap_and(old_stat, cur_stat, chip->irq_trig_level_low, gc->ngpio);
++	bitmap_and(old_stat, old_stat, chip->irq_mask, gc->ngpio);
++	bitmap_or(pending, pending, old_stat, gc->ngpio);
+ 
+ 	return !bitmap_empty(pending, gc->ngpio);
+ }
+-- 
+2.51.0
+
 
 
 
