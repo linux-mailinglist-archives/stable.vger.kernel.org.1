@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209813-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208832-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3739D27466
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0EBBAD2672C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 656D0307CF2E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:55 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 69DB7309E448
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D5E3D6664;
-	Thu, 15 Jan 2026 17:56:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0FDEA3A1CE4;
+	Thu, 15 Jan 2026 17:09:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iEQt8Mf/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CMYn6v8V"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9FDB3D667D;
-	Thu, 15 Jan 2026 17:56:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C7DA22FDC4D;
+	Thu, 15 Jan 2026 17:09:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499763; cv=none; b=Pt4fatb3mfz1RhXvXt0Vq2u43067/QIfaJAWcja3HWwfH2TVTuw++MYUW5KyNxETyI7NunrgBPYaCowoBm8Z1m4fUrtsci2UMXaa2qVo0te563N6vWyTaCSwBqVMRCEfI6IcSO6rtuWe7M8Jw1XXEAibcWJg5k0Y1HSS+L+c4AA=
+	t=1768496969; cv=none; b=M5gA34iB7aHKcRG+qMsUXS+jMIJMsbwm0hZDZHuHS0uKSt3+JoJzeoOFbgBZ2bQa8sv7A7RgNQVD2FSdo+PzsS2uXGWwbncnri4pzWBYdlLSCwgYztAKzdMhG1spReQu1/4KdDmgfD4m1LCraKaI9rTVkTUWGOcHrE4DCIm2zvk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499763; c=relaxed/simple;
-	bh=9Km+ZYVrgkIItC4AFjPngdUOnntc20LNHvU0Cjnjsr0=;
+	s=arc-20240116; t=1768496969; c=relaxed/simple;
+	bh=Ne4x8Obt43xZ71TGy985rrCSIGx3YrL/p9FnCsnfQYw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LTqp+CIJjTzaNDIKRgdqy/85ph4s74ndlXNpJEoyvBrQ9DBAVzEIVguaq9MSKGXPV4iR9zoCFO/qUX5fWy+mRHU8eJd1K3uShgj5sbOuec5y19UpwrM3T4YxYH10CMeaFSOL/4+8LOaKzM180UZfN8mB6zC0lol2aVU2G+YgaWM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iEQt8Mf/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 405EFC116D0;
-	Thu, 15 Jan 2026 17:56:03 +0000 (UTC)
+	 MIME-Version; b=TFSYt4i26uiCGXcY8pbXd0wHC+k/x/Su6lHIIHdOzgVbRrLO+SiKJ1CWPhfTiz4h40kTYblcdQ/d634WoE6DjiAhDImLcAqJ7lRH7YBLI69fwRylrgZk55glGL6zUEQsGSoM84kzvNgn8ebQyxswiH4cgPBfOvC9M+vinFI4slA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CMYn6v8V; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D035C19422;
+	Thu, 15 Jan 2026 17:09:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499763;
-	bh=9Km+ZYVrgkIItC4AFjPngdUOnntc20LNHvU0Cjnjsr0=;
+	s=korg; t=1768496969;
+	bh=Ne4x8Obt43xZ71TGy985rrCSIGx3YrL/p9FnCsnfQYw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iEQt8Mf/nTywxGWe0RkpPwyUUnJFF8rMLZWRrdPIHDNj2IaOZ7SdpmlplBJG9VIPq
-	 W2xqOEpypWw+Hs5QzDM+0Gt8A3HircCpAs/ww8ArIDlXv0KASUP2/VojEm2Ae9UN94
-	 gPVRR2EUgW/uYB+Ywx7HYMPKIxXfmdjNVwuyyVJo=
+	b=CMYn6v8VCGG4WIPR5JdR/mPGnd9oSpu6aQPumvMNsqNgDx2Fn1uB/MgTr2mJ0lkr0
+	 rTDeTlR0Ac5KpbH3E6hseoamhvREJEyvnyXGCReBNqHkXqa5siXOYEw4PbI9PEkzGX
+	 KWPeoeIRT57XHdlpbNXjC0A4jlODXNkNzBAAIW28=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Hans de Goede <johannes.goede@oss.qualcomm.com>,
-	Jiri Kosina <jkosina@suse.com>
-Subject: [PATCH 5.10 308/451] HID: logitech-dj: Remove duplicate error logging
+	Potin Lai <potin.lai.pt@gmail.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 46/88] gpio: pca953x: Add support for level-triggered interrupts
 Date: Thu, 15 Jan 2026 17:48:29 +0100
-Message-ID: <20260115164242.041166561@linuxfoundation.org>
+Message-ID: <20260115164147.977655526@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,168 +60,121 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <johannes.goede@oss.qualcomm.com>
+From: Potin Lai <potin.lai.pt@gmail.com>
 
-commit ca389a55d8b2d86a817433bf82e0602b68c4d541 upstream.
+[ Upstream commit 417b0f8d08f878615de9481c6e8827fbc8b57ed2 ]
 
-logi_dj_recv_query_paired_devices() and logi_dj_recv_switch_to_dj_mode()
-both have 2 callers which all log an error if the function fails. Move
-the error logging to inside these 2 functions to remove the duplicated
-error logging in the callers.
+Adds support for level-triggered interrupts in the PCA953x GPIO
+expander driver. Previously, the driver only supported edge-triggered
+interrupts, which could lead to missed events in scenarios where an
+interrupt condition persists until it is explicitly cleared.
 
-While at it also move the logi_dj_recv_send_report() call error handling
-in logi_dj_recv_switch_to_dj_mode() to directly after the call. That call
-only fails if the report cannot be found and in that case it does nothing,
-so the msleep() is not necessary on failures.
+By enabling level-triggered interrupts, the driver can now detect and
+respond to sustained interrupt conditions more reliably.
 
-Fixes: 6f20d3261265 ("HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hans de Goede <johannes.goede@oss.qualcomm.com>
-Signed-off-by: Jiri Kosina <jkosina@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Potin Lai <potin.lai.pt@gmail.com>
+Link: https://lore.kernel.org/r/20250409-gpio-pca953x-level-triggered-irq-v3-1-7f184d814934@gmail.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 014a17deb412 ("gpio: pca953x: handle short interrupt pulses on PCAL devices")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-dj.c |   56 +++++++++++++++++-------------------------
- 1 file changed, 23 insertions(+), 33 deletions(-)
+ drivers/gpio/gpio-pca953x.c | 32 +++++++++++++++++++++++++++-----
+ 1 file changed, 27 insertions(+), 5 deletions(-)
 
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -755,7 +755,6 @@ static void delayedwork_callback(struct
- 	struct dj_workitem workitem;
- 	unsigned long flags;
- 	int count;
--	int retval;
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index de965e6353c5b..6b9bfdebadb5a 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -207,6 +207,8 @@ struct pca953x_chip {
+ 	DECLARE_BITMAP(irq_stat, MAX_LINE);
+ 	DECLARE_BITMAP(irq_trig_raise, MAX_LINE);
+ 	DECLARE_BITMAP(irq_trig_fall, MAX_LINE);
++	DECLARE_BITMAP(irq_trig_level_high, MAX_LINE);
++	DECLARE_BITMAP(irq_trig_level_low, MAX_LINE);
+ #endif
+ 	atomic_t wakeup_path;
  
- 	dbg_hid("%s\n", __func__);
+@@ -767,6 +769,8 @@ static void pca953x_irq_bus_sync_unlock(struct irq_data *d)
+ 	pca953x_read_regs(chip, chip->regs->direction, reg_direction);
  
-@@ -792,11 +791,7 @@ static void delayedwork_callback(struct
- 		logi_dj_recv_destroy_djhid_device(djrcv_dev, &workitem);
- 		break;
- 	case WORKITEM_TYPE_UNKNOWN:
--		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
--		if (retval) {
--			hid_err(djrcv_dev->hidpp, "%s: logi_dj_recv_query_paired_devices error: %d\n",
--				__func__, retval);
--		}
-+		logi_dj_recv_query_paired_devices(djrcv_dev);
- 		break;
- 	case WORKITEM_TYPE_EMPTY:
- 		dbg_hid("%s: device list is empty\n", __func__);
-@@ -1173,8 +1168,10 @@ static int logi_dj_recv_query_paired_dev
+ 	bitmap_or(irq_mask, chip->irq_trig_fall, chip->irq_trig_raise, gc->ngpio);
++	bitmap_or(irq_mask, irq_mask, chip->irq_trig_level_high, gc->ngpio);
++	bitmap_or(irq_mask, irq_mask, chip->irq_trig_level_low, gc->ngpio);
+ 	bitmap_complement(reg_direction, reg_direction, gc->ngpio);
+ 	bitmap_and(irq_mask, irq_mask, reg_direction, gc->ngpio);
  
- 	djrcv_dev->last_query = jiffies;
+@@ -784,13 +788,15 @@ static int pca953x_irq_set_type(struct irq_data *d, unsigned int type)
+ 	struct device *dev = &chip->client->dev;
+ 	irq_hw_number_t hwirq = irqd_to_hwirq(d);
  
--	if (djrcv_dev->type != recvr_type_dj)
--		return logi_dj_recv_query_hidpp_devices(djrcv_dev);
-+	if (djrcv_dev->type != recvr_type_dj) {
-+		retval = logi_dj_recv_query_hidpp_devices(djrcv_dev);
-+		goto out;
+-	if (!(type & IRQ_TYPE_EDGE_BOTH)) {
++	if (!(type & IRQ_TYPE_SENSE_MASK)) {
+ 		dev_err(dev, "irq %d: unsupported type %d\n", d->irq, type);
+ 		return -EINVAL;
+ 	}
+ 
+ 	assign_bit(hwirq, chip->irq_trig_fall, type & IRQ_TYPE_EDGE_FALLING);
+ 	assign_bit(hwirq, chip->irq_trig_raise, type & IRQ_TYPE_EDGE_RISING);
++	assign_bit(hwirq, chip->irq_trig_level_low, type & IRQ_TYPE_LEVEL_LOW);
++	assign_bit(hwirq, chip->irq_trig_level_high, type & IRQ_TYPE_LEVEL_HIGH);
+ 
+ 	return 0;
+ }
+@@ -803,6 +809,8 @@ static void pca953x_irq_shutdown(struct irq_data *d)
+ 
+ 	clear_bit(hwirq, chip->irq_trig_raise);
+ 	clear_bit(hwirq, chip->irq_trig_fall);
++	clear_bit(hwirq, chip->irq_trig_level_low);
++	clear_bit(hwirq, chip->irq_trig_level_high);
+ }
+ 
+ static void pca953x_irq_print_chip(struct irq_data *data, struct seq_file *p)
+@@ -833,6 +841,7 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
+ 	DECLARE_BITMAP(cur_stat, MAX_LINE);
+ 	DECLARE_BITMAP(new_stat, MAX_LINE);
+ 	DECLARE_BITMAP(trigger, MAX_LINE);
++	DECLARE_BITMAP(edges, MAX_LINE);
+ 	int ret;
+ 
+ 	ret = pca953x_read_regs(chip, chip->regs->input, cur_stat);
+@@ -850,13 +859,26 @@ static bool pca953x_irq_pending(struct pca953x_chip *chip, unsigned long *pendin
+ 
+ 	bitmap_copy(chip->irq_stat, new_stat, gc->ngpio);
+ 
+-	if (bitmap_empty(trigger, gc->ngpio))
+-		return false;
++	if (bitmap_empty(chip->irq_trig_level_high, gc->ngpio) &&
++	    bitmap_empty(chip->irq_trig_level_low, gc->ngpio)) {
++		if (bitmap_empty(trigger, gc->ngpio))
++			return false;
 +	}
  
- 	dj_report = kzalloc(sizeof(struct dj_report), GFP_KERNEL);
- 	if (!dj_report)
-@@ -1184,6 +1181,10 @@ static int logi_dj_recv_query_paired_dev
- 	dj_report->report_type = REPORT_TYPE_CMD_GET_PAIRED_DEVICES;
- 	retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
- 	kfree(dj_report);
-+out:
-+	if (retval < 0)
-+		hid_err(djrcv_dev->hidpp, "%s error:%d\n", __func__, retval);
+ 	bitmap_and(cur_stat, chip->irq_trig_fall, old_stat, gc->ngpio);
+ 	bitmap_and(old_stat, chip->irq_trig_raise, new_stat, gc->ngpio);
+-	bitmap_or(new_stat, old_stat, cur_stat, gc->ngpio);
+-	bitmap_and(pending, new_stat, trigger, gc->ngpio);
++	bitmap_or(edges, old_stat, cur_stat, gc->ngpio);
++	bitmap_and(pending, edges, trigger, gc->ngpio);
 +
- 	return retval;
- }
- 
-@@ -1209,6 +1210,8 @@ static int logi_dj_recv_switch_to_dj_mod
- 								(u8)timeout;
- 
- 		retval = logi_dj_recv_send_report(djrcv_dev, dj_report);
-+		if (retval)
-+			goto out;
- 
- 		/*
- 		 * Ugly sleep to work around a USB 3.0 bug when the receiver is
-@@ -1217,11 +1220,6 @@ static int logi_dj_recv_switch_to_dj_mod
- 		 * 50 msec should gives enough time to the receiver to be ready.
- 		 */
- 		msleep(50);
--
--		if (retval) {
--			kfree(dj_report);
--			return retval;
--		}
- 	}
- 
- 	/*
-@@ -1247,7 +1245,12 @@ static int logi_dj_recv_switch_to_dj_mod
- 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
- 			HID_REQ_SET_REPORT);
- 
-+out:
- 	kfree(dj_report);
++	bitmap_and(cur_stat, new_stat, chip->irq_trig_level_high, gc->ngpio);
++	bitmap_and(cur_stat, cur_stat, chip->irq_mask, gc->ngpio);
++	bitmap_or(pending, pending, cur_stat, gc->ngpio);
 +
-+	if (retval < 0)
-+		hid_err(hdev, "%s error:%d\n", __func__, retval);
-+
- 	return retval;
++	bitmap_complement(cur_stat, new_stat, gc->ngpio);
++	bitmap_and(cur_stat, cur_stat, reg_direction, gc->ngpio);
++	bitmap_and(old_stat, cur_stat, chip->irq_trig_level_low, gc->ngpio);
++	bitmap_and(old_stat, old_stat, chip->irq_mask, gc->ngpio);
++	bitmap_or(pending, pending, old_stat, gc->ngpio);
+ 
+ 	return !bitmap_empty(pending, gc->ngpio);
  }
- 
-@@ -1753,11 +1756,8 @@ static int logi_dj_probe(struct hid_devi
- 
- 	if (has_hidpp) {
- 		retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
--		if (retval < 0) {
--			hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
--				__func__, retval);
-+		if (retval < 0)
- 			goto switch_to_dj_mode_fail;
--		}
- 	}
- 
- 	/* This is enabling the polling urb on the IN endpoint */
-@@ -1775,15 +1775,11 @@ static int logi_dj_probe(struct hid_devi
- 		spin_lock_irqsave(&djrcv_dev->lock, flags);
- 		djrcv_dev->ready = true;
- 		spin_unlock_irqrestore(&djrcv_dev->lock, flags);
--		retval = logi_dj_recv_query_paired_devices(djrcv_dev);
--		if (retval < 0) {
--			hid_err(hdev, "%s: logi_dj_recv_query_paired_devices error:%d\n",
--				__func__, retval);
--			/*
--			 * This can happen with a KVM, let the probe succeed,
--			 * logi_dj_recv_queue_unknown_work will retry later.
--			 */
--		}
-+		/*
-+		 * This can fail with a KVM. Ignore errors to let the probe
-+		 * succeed, logi_dj_recv_queue_unknown_work will retry later.
-+		 */
-+		logi_dj_recv_query_paired_devices(djrcv_dev);
- 	}
- 
- 	return 0;
-@@ -1800,18 +1796,12 @@ hid_hw_start_fail:
- #ifdef CONFIG_PM
- static int logi_dj_reset_resume(struct hid_device *hdev)
- {
--	int retval;
- 	struct dj_receiver_dev *djrcv_dev = hid_get_drvdata(hdev);
- 
- 	if (!djrcv_dev || djrcv_dev->hidpp != hdev)
- 		return 0;
- 
--	retval = logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
--	if (retval < 0) {
--		hid_err(hdev, "%s: logi_dj_recv_switch_to_dj_mode returned error:%d\n",
--			__func__, retval);
--	}
--
-+	logi_dj_recv_switch_to_dj_mode(djrcv_dev, 0);
- 	return 0;
- }
- #endif
+-- 
+2.51.0
+
 
 
 
