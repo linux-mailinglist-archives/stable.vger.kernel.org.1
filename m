@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209490-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209089-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 43E23D26D25
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 59EFAD26512
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 41E24307B3EF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A5DF23040D35
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:21:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9D3482D94A7;
-	Thu, 15 Jan 2026 17:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4BF9C2C027B;
+	Thu, 15 Jan 2026 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmsyVB8F"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="llQvD/Zi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 60FB61A2389;
-	Thu, 15 Jan 2026 17:40:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E7BF4C81;
+	Thu, 15 Jan 2026 17:21:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498844; cv=none; b=JdFwZssTE3VoSS/gBvq7MaPHtuZ4ypKBS00FeLor1cqOTm9q6ApZgLnVqZsOlGGms1h0s00ERM2vxB5LluURc62yQKQ24gykggOhqyTq78Zlgxc6qSYfe8HOpYDf2RU9ccQ4ez3S5Px6ojhESk9uOIp8kk+jaaRK8HkKsFKHJRw=
+	t=1768497702; cv=none; b=mxW+WAdzTmB+Tvc7ppfG6gl1/Q2WaHX5nzzhn2xlzZYYQQzqg+jVPhW5Nc8jVZbZoxlT89Mc0m9sgpiz6wm0LEGmV9QlOxJ1gG/66SqwFtHqYv/NnlzPQ7e5bGU8SREDgYvIz7URTCU2j74jeJCMBtws0DrvofPjYUIH0e9ckDk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498844; c=relaxed/simple;
-	bh=2ofqnW618QA5bTuvQrVU6lGmkxdVMcjBzSDLK0/uvVQ=;
+	s=arc-20240116; t=1768497702; c=relaxed/simple;
+	bh=Eplw8XhwO9Klq+m6Tb3wim+l/mnrocjU36aNo3gxc+g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=WmVu0fslrdPEiKeaWK/EI4eIhE6xsQsytDgpg5we7qJiLNC9FGcyvWErBO2VVXPKsoZOMLvfN0vsfVyZaqTyGGjSUMh+aZVzZIvJgbnuVmUAqCzb+3rJVXUtdRqnl51+EVIZlDJ6O5bs/Fw+RZwe2xC5A4OGFqFi/g1Se9GdcR0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmsyVB8F; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0081C116D0;
-	Thu, 15 Jan 2026 17:40:43 +0000 (UTC)
+	 MIME-Version; b=p89aIt3lPmZ4emOKd85jRNF0rXZ86Xjv/E/CcqK7Ltb1A1KYNAzm2Kb+TXdcbw0ZGkGMyaNixiGw2Q5TboAJbjodcbNTt7pmSrBsUJ9Af4whPhyGXXuoqujPEgpYByTQoZXjWypvZEyLSS6+iYDWIRSPsfGTfWZEpy/4KGC98PQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=llQvD/Zi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B2B6C116D0;
+	Thu, 15 Jan 2026 17:21:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498844;
-	bh=2ofqnW618QA5bTuvQrVU6lGmkxdVMcjBzSDLK0/uvVQ=;
+	s=korg; t=1768497701;
+	bh=Eplw8XhwO9Klq+m6Tb3wim+l/mnrocjU36aNo3gxc+g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmsyVB8FyiDyqLJGAPzoFXossidY9wfzAY2tXE6UzBJKRVRBHVARFeXFNe6lhTEnG
-	 l2jxgkOMQyrijtnFg1Eq8rjqHhynsegiBVT11beSkhNlsAui6hEwBk0KHPYc+BGI+6
-	 s42aF0tEUVycOxzc1PC4Wdszn3LbtUETbmtBDjBM=
+	b=llQvD/Zii7sRflqRGQw/3BQxhBE43GP94scwyOOIAOld6ocRo9+Cnt1/wUrskSlkO
+	 OoofccZHAaYflJk2a5uI6vJzvabR9XtEVfYIaiv/DHnalzD0F8BB5/xREtiNh3JtBu
+	 SnBIuV7TbdBLWakLjD5FnsqyNYlSKH4f9HIfJ6so=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bagas Sanjaya <bagasdotme@gmail.com>,
-	Randy Dunlap <rdunlap@infradead.org>,
-	Jonathan Corbet <corbet@lwn.net>
-Subject: [PATCH 5.10 005/451] Documentation: process: Also mention Sasha Levin as stable tree maintainer
+	Stephan Gerhold <stephan.gerhold@linaro.org>,
+	Will Deacon <will@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 140/554] iommu/arm-smmu-qcom: Enable use of all SMR groups when running bare-metal
 Date: Thu, 15 Jan 2026 17:43:26 +0100
-Message-ID: <20260115164231.074397464@linuxfoundation.org>
+Message-ID: <20260115164251.319073964@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +60,89 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bagas Sanjaya <bagasdotme@gmail.com>
+From: Stephan Gerhold <stephan.gerhold@linaro.org>
 
-commit ba2457109d5b47a90fe565b39524f7225fc23e60 upstream.
+[ Upstream commit 5583a55e074b33ccd88ac0542fd7cd656a7e2c8c ]
 
-Sasha has also maintaining stable branch in conjunction with Greg
-since cb5d21946d2a2f ("MAINTAINERS: Add Sasha as a stable branch
-maintainer"). Mention him in 2.Process.rst.
+Some platforms (e.g. SC8280XP and X1E) support more than 128 stream
+matching groups. This is more than what is defined as maximum by the ARM
+SMMU architecture specification. Commit 122611347326 ("iommu/arm-smmu-qcom:
+Limit the SMR groups to 128") disabled use of the additional groups because
+they don't exhibit the same behavior as the architecture supported ones.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Jonathan Corbet <corbet@lwn.net>
-Message-ID: <20251022034336.22839-1-bagasdotme@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+It seems like this is just another quirk of the hypervisor: When running
+bare-metal without the hypervisor, the additional groups appear to behave
+just like all others. The boot firmware uses some of the additional groups,
+so ignoring them in this situation leads to stream match conflicts whenever
+we allocate a new SMR group for the same SID.
+
+The workaround exists primarily because the bypass quirk detection fails
+when using a S2CR register from the additional matching groups, so let's
+perform the test with the last reliable S2CR (127) and then limit the
+number of SMR groups only if we detect that we are running below the
+hypervisor (because of the bypass quirk).
+
+Fixes: 122611347326 ("iommu/arm-smmu-qcom: Limit the SMR groups to 128")
+Signed-off-by: Stephan Gerhold <stephan.gerhold@linaro.org>
+Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/process/2.Process.rst |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c | 27 ++++++++++++++--------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
---- a/Documentation/process/2.Process.rst
-+++ b/Documentation/process/2.Process.rst
-@@ -104,8 +104,10 @@ kernels go out with a handful of known r
- of them are serious.
+diff --git a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+index da249140ed2a1..d145e0df01a98 100644
+--- a/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
++++ b/drivers/iommu/arm/arm-smmu/arm-smmu-qcom.c
+@@ -263,17 +263,19 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
  
- Once a stable release is made, its ongoing maintenance is passed off to the
--"stable team," currently Greg Kroah-Hartman. The stable team will release
--occasional updates to the stable release using the 5.x.y numbering scheme.
-+"stable team," currently consists of Greg Kroah-Hartman and Sasha Levin. The
-+stable team will release occasional updates to the stable release using the
-+5.x.y numbering scheme.
+ 	/*
+ 	 * Some platforms support more than the Arm SMMU architected maximum of
+-	 * 128 stream matching groups. For unknown reasons, the additional
+-	 * groups don't exhibit the same behavior as the architected registers,
+-	 * so limit the groups to 128 until the behavior is fixed for the other
+-	 * groups.
++	 * 128 stream matching groups. The additional registers appear to have
++	 * the same behavior as the architected registers in the hardware.
++	 * However, on some firmware versions, the hypervisor does not
++	 * correctly trap and emulate accesses to the additional registers,
++	 * resulting in unexpected behavior.
++	 *
++	 * If there are more than 128 groups, use the last reliable group to
++	 * detect if we need to apply the bypass quirk.
+ 	 */
+-	if (smmu->num_mapping_groups > 128) {
+-		dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
+-		smmu->num_mapping_groups = 128;
+-	}
+-
+-	last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
++	if (smmu->num_mapping_groups > 128)
++		last_s2cr = ARM_SMMU_GR0_S2CR(127);
++	else
++		last_s2cr = ARM_SMMU_GR0_S2CR(smmu->num_mapping_groups - 1);
+ 
+ 	/*
+ 	 * With some firmware versions writes to S2CR of type FAULT are
+@@ -296,6 +298,11 @@ static int qcom_smmu_cfg_probe(struct arm_smmu_device *smmu)
+ 
+ 		reg = FIELD_PREP(ARM_SMMU_CBAR_TYPE, CBAR_TYPE_S1_TRANS_S2_BYPASS);
+ 		arm_smmu_gr1_write(smmu, ARM_SMMU_GR1_CBAR(qsmmu->bypass_cbndx), reg);
 +
- To be considered for an update release, a patch must (1) fix a significant
- bug, and (2) already be merged into the mainline for the next development
- kernel. Kernels will typically receive stable updates for a little more
++		if (smmu->num_mapping_groups > 128) {
++			dev_notice(smmu->dev, "\tLimiting the stream matching groups to 128\n");
++			smmu->num_mapping_groups = 128;
++		}
+ 	}
+ 
+ 	for (i = 0; i < smmu->num_mapping_groups; i++) {
+-- 
+2.51.0
+
 
 
 
