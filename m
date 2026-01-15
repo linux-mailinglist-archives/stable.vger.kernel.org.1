@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-208893-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209818-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1F138D26474
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:21 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 63B9ED2746D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id B6F7E3025E26
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:12:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 03D46307F25E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00C413B8BAE;
-	Thu, 15 Jan 2026 17:12:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0286C3D2FE5;
+	Thu, 15 Jan 2026 17:56:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IrhmFmgt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAxdG73g"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B80D03A7F43;
-	Thu, 15 Jan 2026 17:12:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B9E7A3624C4;
+	Thu, 15 Jan 2026 17:56:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497143; cv=none; b=L8wj0TLyk6/DIw+L1L/4YoBIVwQovow7PBWDPFWWwRdgcRZKlVXgQSHUoUVYE4kFFtdJ6BtncgOPUaOr1sgYOoopnQFcoeqJhUSXRHvkNrWF2Qu1WgnuIgBVaHs7C8AygtAApNogxv8B5rMYE6Xx37cz0XXrNDUqGGObxrhzbmo=
+	t=1768499777; cv=none; b=X+Gbbglja1SQSPXQ/eM3sTWCt0zn/ziBTx6oQsgfrSZq69EV0YDvqZXsDmPKPCcNPJefUaMNZwtoG0l27We5NTPfdZXBsBmgPL/RU5eryvzRnRTqavxNLubLvYFdV9gvPpJbF3MCmv4nR8SkrBXRQ9R9DZpRGRYucSBszSESemA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497143; c=relaxed/simple;
-	bh=eRWM0v8QaMgjpHttR1MWSzaJJ0/akhHJaaBUDcwqw2M=;
+	s=arc-20240116; t=1768499777; c=relaxed/simple;
+	bh=RhSlbeUIum+7yH8JIRPB2hymLq8eToLWOvBt0BppZVQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Bm2lvbI8BfIH9xLzoRZBsHYH4j3eAcOj5SD7CX2CNx6mvZ8VYKBDiw2zJprfe0W5rTYVbScZ4D40xDpHmJBMSLxoFyce3GgRYYQ05HYalexf1Zg3pPcgS1sUsdwMRHHzpVHA5ZL0gXfde6okWQVPQAkK15Sq1nTrVpCgsJaKFyk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IrhmFmgt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D779C116D0;
-	Thu, 15 Jan 2026 17:12:23 +0000 (UTC)
+	 MIME-Version; b=Kjl39rYdbopZ9296SO7KSlEBXzNTv0wkdaElvUcaCkEUCvLSliYa3WRjcnLST5GCPfoT4mExCagoJw1nf5uB+dyKKZyB2W6pXiKiKxOO2zBVldwoQqaQkxqMjcD5MdiSDfhz1o6ZTP08ows2gMpqJiBcYaZhjmdCZ4wHraLwahw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAxdG73g; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4659FC116D0;
+	Thu, 15 Jan 2026 17:56:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497143;
-	bh=eRWM0v8QaMgjpHttR1MWSzaJJ0/akhHJaaBUDcwqw2M=;
+	s=korg; t=1768499777;
+	bh=RhSlbeUIum+7yH8JIRPB2hymLq8eToLWOvBt0BppZVQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IrhmFmgtsh9rzQS1yqi+BDPOBZKQCaTmFxigrqxgtwI1RTIWZtaoEskjPP4y4iLtD
-	 KiGiX/xtTlNG0UFfuQvy6qWPXARcWzx0Sen0EHoXSBWKinMUwgvqiZrr56hXBBANIs
-	 wZrzRmOHJAaalZNkGzsQEPqyBXtqdacdjBADM19o=
+	b=uAxdG73gz9QqtyZf6s5o8TagqWU/FFnC7hJluwqLAceDpEgTNEW8+wqNagpHQ0p4U
+	 fcAjBJKeaiNz7fvEVxHsvV7REmfEqGJmpLB/Pw1kl4bogLDCVeE18eCMWc5vTXC0gz
+	 ZQ+aiFTB0jMJwkDYhsfpH+TdF10cEOeKH0r5dxqY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	kernel test robot <lkp@intel.com>,
-	Wei Fang <wei.fang@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 50/72] net: enetc: fix build warning when PAGE_SIZE is greater than 128K
+	Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Filip Hejsek <filip.hejsek@gmail.com>
+Subject: [PATCH 5.10 339/451] virtio_console: fix order of fields cols and rows
 Date: Thu, 15 Jan 2026 17:49:00 +0100
-Message-ID: <20260115164145.307968634@linuxfoundation.org>
+Message-ID: <20260115164243.158335026@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,54 +60,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Fang <wei.fang@nxp.com>
+From: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
 
-[ Upstream commit 4b5bdabb5449b652122e43f507f73789041d4abe ]
+commit 5326ab737a47278dbd16ed3ee7380b26c7056ddd upstream.
 
-The max buffer size of ENETC RX BD is 0xFFFF bytes, so if the PAGE_SIZE
-is greater than 128K, ENETC_RXB_DMA_SIZE and ENETC_RXB_DMA_SIZE_XDP will
-be greater than 0xFFFF, thus causing a build warning.
+According to section 5.3.6.2 (Multiport Device Operation) of the virtio
+spec(version 1.2) a control buffer with the event VIRTIO_CONSOLE_RESIZE
+is followed by a virtio_console_resize struct containing cols then rows.
+The kernel implements this the wrong way around (rows then cols) resulting
+in the two values being swapped.
 
-This will not cause any practical issues because ENETC is currently only
-used on the ARM64 platform, and the max PAGE_SIZE is 64K. So this patch
-is only for fixing the build warning that occurs when compiling ENETC
-drivers for other platforms.
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202601050637.kHEKKOG7-lkp@intel.com/
-Fixes: e59bc32df2e9 ("net: enetc: correct the value of ENETC_RXB_TRUESIZE")
-Signed-off-by: Wei Fang <wei.fang@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20260107091204.1980222-1-wei.fang@nxp.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Maximilian Immanuel Brandtner <maxbr@linux.ibm.com>
+Message-Id: <20250324144300.905535-1-maxbr@linux.ibm.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Cc: Filip Hejsek <filip.hejsek@gmail.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc.h | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/char/virtio_console.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc.h b/drivers/net/ethernet/freescale/enetc/enetc.h
-index aacdfe98b65ab..d2ad5be02a0d8 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc.h
-+++ b/drivers/net/ethernet/freescale/enetc/enetc.h
-@@ -43,9 +43,9 @@ struct enetc_tx_swbd {
- #define ENETC_RXB_TRUESIZE	(PAGE_SIZE >> 1)
- #define ENETC_RXB_PAD		NET_SKB_PAD /* add extra space if needed */
- #define ENETC_RXB_DMA_SIZE	\
--	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD)
-+	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - ENETC_RXB_PAD, 0xffff)
- #define ENETC_RXB_DMA_SIZE_XDP	\
--	(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM)
-+	min(SKB_WITH_OVERHEAD(ENETC_RXB_TRUESIZE) - XDP_PACKET_HEADROOM, 0xffff)
+--- a/drivers/char/virtio_console.c
++++ b/drivers/char/virtio_console.c
+@@ -1617,8 +1617,8 @@ static void handle_control_message(struc
+ 		break;
+ 	case VIRTIO_CONSOLE_RESIZE: {
+ 		struct {
+-			__virtio16 rows;
+ 			__virtio16 cols;
++			__virtio16 rows;
+ 		} size;
  
- struct enetc_rx_swbd {
- 	dma_addr_t dma;
--- 
-2.51.0
-
+ 		if (!is_console_port(port))
 
 
 
