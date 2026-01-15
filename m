@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-209324-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208796-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B5370D27571
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:21 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 52AB7D262F1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 5C76931D15D2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:29 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D7B953028887
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B0F3C199B;
-	Thu, 15 Jan 2026 17:32:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7BD613BC4DB;
+	Thu, 15 Jan 2026 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHAmTpOg"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kuVLsJGB"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF603C199C;
-	Thu, 15 Jan 2026 17:32:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3CF9911CAF;
+	Thu, 15 Jan 2026 17:07:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498371; cv=none; b=g1gpQFr0CAmKUHUbLQHbz3yv7Qga98bAUyHghZFIjARuklRL8Dl+MBVDivIZ4CfDIa15xxi1MX4m06pOvwM7bUK5XrcPfnwY5rEwP//9vBoK5vmU9zMq6abtj8/zaVrqWHI+rEVEaIjwUOmVeUOmlRfHZsVGLkJtE4er734d5w4=
+	t=1768496867; cv=none; b=G1taz9LE+8u5NJkYB478SdR2EW3NnClQAAb+4foBxvH302AtVJRPOrSiPSGRsQJT7IUgzquic2KnS4fok3Eiryhj+ysW5RX93Kav01LmyptHP6Y3jZkD46eF85p9ldhsy60BNOSjTGdPPoSgosfehB7HDnsiunmX3FaUzhA7oLw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498371; c=relaxed/simple;
-	bh=EhGUXMMZHl9T4DzkR3GpbyAjvS/MQD1VEYaeMz/ca/M=;
+	s=arc-20240116; t=1768496867; c=relaxed/simple;
+	bh=N6t4kFbYGrfDd25gTklcv8sfhakymyTp3woVAXgFV9s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rsxyjOUAsR0oD6pPopDeEtIMUNKw4HD/xRMyzy5LTQQobQ7UqvlLu00USGbNfss4NWVCPgjANbxr43LPwuV2etppu9ZzA8BZnVn58Z+qs1efiJi3HvHMV2VxlXB+KWddOOIh5W5Nq9qa2JPDqJMDVEZB2i0Rn+bX9X37GOnY/mc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHAmTpOg; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59908C116D0;
-	Thu, 15 Jan 2026 17:32:51 +0000 (UTC)
+	 MIME-Version; b=nFeXsZEXZUm5EEIMBbV95K+GzYM3jNO8dlgS5BrwvXeJmCCGhTGokNNXUlPnVeGsaIsOrW+L1NaJJGYPgjwojV/VLupmxV603p7D46ab/srqITk15yN3cqtcnm0fVxu96FUN1ucsBwt4ZzXX/RxX1+e4cdt/o56qE0Im6qSDs7E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kuVLsJGB; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F77C16AAE;
+	Thu, 15 Jan 2026 17:07:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498371;
-	bh=EhGUXMMZHl9T4DzkR3GpbyAjvS/MQD1VEYaeMz/ca/M=;
+	s=korg; t=1768496867;
+	bh=N6t4kFbYGrfDd25gTklcv8sfhakymyTp3woVAXgFV9s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XHAmTpOgob4ewpG4lqyhnJgccIEOflRcYUWuOjAEs5jtrGEtBz+rJapwOegeJwqkS
-	 OmqnTW+jqLbC6ONB9zuRDvD4hW8O/MNRNo/5cl232UTCCEUnlWNL82yK85n8Re+VzF
-	 YGCpzrvai7lLk7YT8dCuq1XLOharrOFTk6Joyb20=
+	b=kuVLsJGBud+CU1KtfqyPQ5w8H8WRyySBfwqfKtuCA1O9G7R2OG+HReRA31K0/Nkc0
+	 AgU92OQkjqQReWxx2NIUHeDDZj+hiBTHJz7473JKMX3VxKYjrF3c1+FCT20/GV/upV
+	 gocYekrH7cy3jZkThd7r5ojtX2u4ldLYJHlhWcxU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kevin Hao <kexin.hao@windriver.com>,
-	Xiaolei Wang <xiaolei.wang@windriver.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 408/554] net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()
+	Lijo Lazar <lijo.lazar@amd.com>,
+	Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.6 11/88] drm/radeon: Remove __counted_by from ClockInfoArray.clockInfo[]
 Date: Thu, 15 Jan 2026 17:47:54 +0100
-Message-ID: <20260115164301.000400985@linuxfoundation.org>
+Message-ID: <20260115164146.728437370@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,175 +59,38 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Alex Deucher <alexander.deucher@amd.com>
 
-commit 99537d5c476cada9cf75aef9fa75579a31faadb9 upstream.
+commit 19158c7332468bc28572bdca428e89c7954ee1b1 upstream.
 
-In the non-RT kernel, local_bh_disable() merely disables preemption,
-whereas it maps to an actual spin lock in the RT kernel. Consequently,
-when attempting to refill RX buffers via netdev_alloc_skb() in
-macb_mac_link_up(), a deadlock scenario arises as follows:
+clockInfo[] is a generic uchar pointer to variable sized structures
+which vary from ASIC to ASIC.
 
-   WARNING: possible circular locking dependency detected
-   6.18.0-08691-g2061f18ad76e #39 Not tainted
-   ------------------------------------------------------
-   kworker/0:0/8 is trying to acquire lock:
-   ffff00080369bbe0 (&bp->lock){+.+.}-{3:3}, at: macb_start_xmit+0x808/0xb7c
-
-   but task is already holding lock:
-   ffff000803698e58 (&queue->tx_ptr_lock){+...}-{3:3}, at: macb_start_xmit
-   +0x148/0xb7c
-
-   which lock already depends on the new lock.
-
-   the existing dependency chain (in reverse order) is:
-
-   -> #3 (&queue->tx_ptr_lock){+...}-{3:3}:
-          rt_spin_lock+0x50/0x1f0
-          macb_start_xmit+0x148/0xb7c
-          dev_hard_start_xmit+0x94/0x284
-          sch_direct_xmit+0x8c/0x37c
-          __dev_queue_xmit+0x708/0x1120
-          neigh_resolve_output+0x148/0x28c
-          ip6_finish_output2+0x2c0/0xb2c
-          __ip6_finish_output+0x114/0x308
-          ip6_output+0xc4/0x4a4
-          mld_sendpack+0x220/0x68c
-          mld_ifc_work+0x2a8/0x4f4
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   -> #2 (_xmit_ETHER#2){+...}-{3:3}:
-          rt_spin_lock+0x50/0x1f0
-          sch_direct_xmit+0x11c/0x37c
-          __dev_queue_xmit+0x708/0x1120
-          neigh_resolve_output+0x148/0x28c
-          ip6_finish_output2+0x2c0/0xb2c
-          __ip6_finish_output+0x114/0x308
-          ip6_output+0xc4/0x4a4
-          mld_sendpack+0x220/0x68c
-          mld_ifc_work+0x2a8/0x4f4
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   -> #1 ((softirq_ctrl.lock)){+.+.}-{3:3}:
-          lock_release+0x250/0x348
-          __local_bh_enable_ip+0x7c/0x240
-          __netdev_alloc_skb+0x1b4/0x1d8
-          gem_rx_refill+0xdc/0x240
-          gem_init_rings+0xb4/0x108
-          macb_mac_link_up+0x9c/0x2b4
-          phylink_resolve+0x170/0x614
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   -> #0 (&bp->lock){+.+.}-{3:3}:
-          __lock_acquire+0x15a8/0x2084
-          lock_acquire+0x1cc/0x350
-          rt_spin_lock+0x50/0x1f0
-          macb_start_xmit+0x808/0xb7c
-          dev_hard_start_xmit+0x94/0x284
-          sch_direct_xmit+0x8c/0x37c
-          __dev_queue_xmit+0x708/0x1120
-          neigh_resolve_output+0x148/0x28c
-          ip6_finish_output2+0x2c0/0xb2c
-          __ip6_finish_output+0x114/0x308
-          ip6_output+0xc4/0x4a4
-          mld_sendpack+0x220/0x68c
-          mld_ifc_work+0x2a8/0x4f4
-          process_one_work+0x20c/0x5f8
-          worker_thread+0x1b0/0x35c
-          kthread+0x144/0x200
-          ret_from_fork+0x10/0x20
-
-   other info that might help us debug this:
-
-   Chain exists of:
-     &bp->lock --> _xmit_ETHER#2 --> &queue->tx_ptr_lock
-
-    Possible unsafe locking scenario:
-
-          CPU0                    CPU1
-          ----                    ----
-     lock(&queue->tx_ptr_lock);
-                                  lock(_xmit_ETHER#2);
-                                  lock(&queue->tx_ptr_lock);
-     lock(&bp->lock);
-
-    *** DEADLOCK ***
-
-   Call trace:
-    show_stack+0x18/0x24 (C)
-    dump_stack_lvl+0xa0/0xf0
-    dump_stack+0x18/0x24
-    print_circular_bug+0x28c/0x370
-    check_noncircular+0x198/0x1ac
-    __lock_acquire+0x15a8/0x2084
-    lock_acquire+0x1cc/0x350
-    rt_spin_lock+0x50/0x1f0
-    macb_start_xmit+0x808/0xb7c
-    dev_hard_start_xmit+0x94/0x284
-    sch_direct_xmit+0x8c/0x37c
-    __dev_queue_xmit+0x708/0x1120
-    neigh_resolve_output+0x148/0x28c
-    ip6_finish_output2+0x2c0/0xb2c
-    __ip6_finish_output+0x114/0x308
-    ip6_output+0xc4/0x4a4
-    mld_sendpack+0x220/0x68c
-    mld_ifc_work+0x2a8/0x4f4
-    process_one_work+0x20c/0x5f8
-    worker_thread+0x1b0/0x35c
-    kthread+0x144/0x200
-    ret_from_fork+0x10/0x20
-
-Notably, invoking the mog_init_rings() callback upon link establishment
-is unnecessary. Instead, we can exclusively call mog_init_rings() within
-the ndo_open() callback. This adjustment resolves the deadlock issue.
-Furthermore, since MACB_CAPS_MACB_IS_EMAC cases do not use mog_init_rings()
-when opening the network interface via at91ether_open(), moving
-mog_init_rings() to macb_open() also eliminates the MACB_CAPS_MACB_IS_EMAC
-check.
-
-Fixes: 633e98a711ac ("net: macb: use resolved link config in mac_link_up()")
+Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4374
+Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+(cherry picked from commit dc135aa73561b5acc74eadf776e48530996529a3)
 Cc: stable@vger.kernel.org
-Suggested-by: Kevin Hao <kexin.hao@windriver.com>
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Link: https://patch.msgid.link/20251222015624.1994551-1-xiaolei.wang@windriver.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/cadence/macb_main.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/radeon/pptable.h |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/cadence/macb_main.c
-+++ b/drivers/net/ethernet/cadence/macb_main.c
-@@ -777,7 +777,6 @@ static void macb_mac_link_up(struct phyl
- 		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
- 		 * cleared the pipeline and control registers.
- 		 */
--		bp->macbgem_ops.mog_init_rings(bp);
- 		macb_init_buffers(bp);
+--- a/drivers/gpu/drm/radeon/pptable.h
++++ b/drivers/gpu/drm/radeon/pptable.h
+@@ -450,7 +450,7 @@ typedef struct _ClockInfoArray{
+     //sizeof(ATOM_PPLIB_CLOCK_INFO)
+     UCHAR ucEntrySize;
+     
+-    UCHAR clockInfo[] __counted_by(ucNumEntries);
++    UCHAR clockInfo[] /*__counted_by(ucNumEntries)*/;
+ }ClockInfoArray;
  
- 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
-@@ -2478,6 +2477,8 @@ static void gem_init_rings(struct macb *
- 	unsigned int q;
- 	int i;
- 
-+	bp->macbgem_ops.mog_init_rings(bp);
-+
- 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
- 		for (i = 0; i < bp->tx_ring_size; i++) {
- 			desc = macb_tx_desc(queue, i);
+ typedef struct _NonClockInfoArray{
 
 
 
