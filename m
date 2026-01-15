@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208784-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208858-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id C4610D2639E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:05 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id BFD50D2624A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 4766030F030C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:17 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 2A8B3300CF0D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C38EF2D5C9B;
-	Thu, 15 Jan 2026 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C2B4B3A1CE4;
+	Thu, 15 Jan 2026 17:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zxOxoe9z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D2pc1BK0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 551983BF301;
-	Thu, 15 Jan 2026 17:07:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8663B1A08AF;
+	Thu, 15 Jan 2026 17:10:43 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496833; cv=none; b=ZuHDLpOkzsyoU7NqwfftPsmqyE0xP63NCOcdB561grl21q9VkbGaAWt1ZSeJPWiE5w2kKxN+4sROA2Smgqh2rOzWXtHHpyjN2Jwkm+GPIumSfyTRzJrhrKmN9zApREbRVKHlcITW4dtqQqKVYQZS42tOsiw9eCECXqDjqD+TBbE=
+	t=1768497043; cv=none; b=DJrzUfDG9QnHRzkv7WmdBcPwnn1UP7jk4lzFGDNWr32YLGQIXbd3Rou1MrGsRN5SVXti9cpgu2/3eDzjYsYf7Rkcp3jYd34vqmxF/74BmpL7voti5oSFY8O4Axik/zUy/rIR9KSiQhxCqHuMMLIJ/VwHFT48iDLXV2V/FDJCwK0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496833; c=relaxed/simple;
-	bh=GtTxZ1spdxXuH1kOx09t9FH3iN16kLyMmPMgpuO2TC8=;
+	s=arc-20240116; t=1768497043; c=relaxed/simple;
+	bh=rQ6m91mdkPQG3vise2l2fkWWR1Ja9hucj3QbnxhRwZQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=APVmV9o0yjFD+zo9bA0Nhfg+DDBR0+q/2tDPJ/IPLgKlAPbolVmHCy8JvvPsY01EdEjBWe0ORPsVGCi4Yxot/t7ZVOQtvfP7jrsQGV458DeJv7LJIlyBuuzyVe5EyBiZNkMlEj0m0oWbwjUIK3y37vjZS5/V9tzQBrNEu1H+kEo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zxOxoe9z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D6DAC116D0;
-	Thu, 15 Jan 2026 17:07:12 +0000 (UTC)
+	 MIME-Version; b=Y2gJl2jsc9eGA+j7OnUs/uOQ7zpVREby6/IF2v1tX7NdG9g9Kj1bms8/9T+FozFtjLPgNKOn+b8Jxq6af1uwDGLaZbHYLxEzDru10EYLIKiRi9eu86OxluHsaRxxojypOBypKfFkpg4K8v03raA65WqC85UZua7x2p7HcA2Z6qQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D2pc1BK0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13334C116D0;
+	Thu, 15 Jan 2026 17:10:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496833;
-	bh=GtTxZ1spdxXuH1kOx09t9FH3iN16kLyMmPMgpuO2TC8=;
+	s=korg; t=1768497043;
+	bh=rQ6m91mdkPQG3vise2l2fkWWR1Ja9hucj3QbnxhRwZQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zxOxoe9zt2f4gFzUNlhbjZZUg+qCXuyISOM8fgfdekf9gfbSyOZH5fVZws6xgbinl
-	 geRF+HEWfnuTP5lO1xxwG7Mwc7Sla/hCyIg0j0Bna8canKTuR/BjpSuosuIEC1wxAS
-	 zkSNLPjyCU/+MsA/COzmDlHsTVDuMNXPzzayQ6Bo=
+	b=D2pc1BK0HBSwLJLKfpDVRBHrJuTHPRoewmQjA50zeYC+Xtxcfx90Azz+FlanifOUj
+	 YF+0q4q2+LjBlg+Na0PQV7I4VdPQb1QyJex42lae9Gmw9yOvjJtRLzvd2fZzb2MaZp
+	 kYVU5WoiNn8BDLnnwmvcPme0lhw1gmtJhUs+/sZs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mikulas Patocka <mpatocka@redhat.com>,
-	Jiping Ma <jiping.ma2@windriver.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 31/88] dm-snapshot: fix scheduling while atomic on real-time kernels
+	stable <stable@kernel.org>,
+	Tomas Winkler <tomasw@gmail.com>,
+	Alexander Usyskin <alexander.usyskin@intel.com>
+Subject: [PATCH 6.1 04/72] mei: me: add nova lake point S DID
 Date: Thu, 15 Jan 2026 17:48:14 +0100
-Message-ID: <20260115164147.439805751@linuxfoundation.org>
+Message-ID: <20260115164143.650227365@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,243 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Alexander Usyskin <alexander.usyskin@intel.com>
 
-[ Upstream commit 8581b19eb2c5ccf06c195d3b5468c3c9d17a5020 ]
+commit 420f423defcf6d0af2263d38da870ca4a20c0990 upstream.
 
-There is reported 'scheduling while atomic' bug when using dm-snapshot on
-real-time kernels. The reason for the bug is that the hlist_bl code does
-preempt_disable() when taking the lock and the kernel attempts to take
-other spinlocks while holding the hlist_bl lock.
+Add Nova Lake S device id.
 
-Fix this by converting a hlist_bl spinlock into a regular spinlock.
-
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Reported-by: Jiping Ma <jiping.ma2@windriver.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable <stable@kernel.org>
+Co-developed-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Tomas Winkler <tomasw@gmail.com>
+Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
+Link: https://patch.msgid.link/20251215105915.1672659-1-alexander.usyskin@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-exception-store.h |  2 +-
- drivers/md/dm-snap.c            | 73 +++++++++++++++------------------
- 2 files changed, 35 insertions(+), 40 deletions(-)
+ drivers/misc/mei/hw-me-regs.h |    2 ++
+ drivers/misc/mei/pci-me.c     |    2 ++
+ 2 files changed, 4 insertions(+)
 
-diff --git a/drivers/md/dm-exception-store.h b/drivers/md/dm-exception-store.h
-index b679766375381..061b4d3108132 100644
---- a/drivers/md/dm-exception-store.h
-+++ b/drivers/md/dm-exception-store.h
-@@ -29,7 +29,7 @@ typedef sector_t chunk_t;
-  * chunk within the device.
-  */
- struct dm_exception {
--	struct hlist_bl_node hash_list;
-+	struct hlist_node hash_list;
+--- a/drivers/misc/mei/hw-me-regs.h
++++ b/drivers/misc/mei/hw-me-regs.h
+@@ -122,6 +122,8 @@
  
- 	chunk_t old_chunk;
- 	chunk_t new_chunk;
-diff --git a/drivers/md/dm-snap.c b/drivers/md/dm-snap.c
-index 0ace06d1bee38..dcffa3441a662 100644
---- a/drivers/md/dm-snap.c
-+++ b/drivers/md/dm-snap.c
-@@ -40,10 +40,15 @@ static const char dm_snapshot_merge_target_name[] = "snapshot-merge";
- #define DM_TRACKED_CHUNK_HASH(x)	((unsigned long)(x) & \
- 					 (DM_TRACKED_CHUNK_HASH_SIZE - 1))
+ #define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
  
-+struct dm_hlist_head {
-+	struct hlist_head head;
-+	spinlock_t lock;
-+};
++#define MEI_DEV_ID_NVL_S      0x6E68  /* Nova Lake Point S */
 +
- struct dm_exception_table {
- 	uint32_t hash_mask;
- 	unsigned int hash_shift;
--	struct hlist_bl_head *table;
-+	struct dm_hlist_head *table;
- };
- 
- struct dm_snapshot {
-@@ -628,8 +633,8 @@ static uint32_t exception_hash(struct dm_exception_table *et, chunk_t chunk);
- 
- /* Lock to protect access to the completed and pending exception hash tables. */
- struct dm_exception_table_lock {
--	struct hlist_bl_head *complete_slot;
--	struct hlist_bl_head *pending_slot;
-+	spinlock_t *complete_slot;
-+	spinlock_t *pending_slot;
- };
- 
- static void dm_exception_table_lock_init(struct dm_snapshot *s, chunk_t chunk,
-@@ -638,20 +643,20 @@ static void dm_exception_table_lock_init(struct dm_snapshot *s, chunk_t chunk,
- 	struct dm_exception_table *complete = &s->complete;
- 	struct dm_exception_table *pending = &s->pending;
- 
--	lock->complete_slot = &complete->table[exception_hash(complete, chunk)];
--	lock->pending_slot = &pending->table[exception_hash(pending, chunk)];
-+	lock->complete_slot = &complete->table[exception_hash(complete, chunk)].lock;
-+	lock->pending_slot = &pending->table[exception_hash(pending, chunk)].lock;
- }
- 
- static void dm_exception_table_lock(struct dm_exception_table_lock *lock)
- {
--	hlist_bl_lock(lock->complete_slot);
--	hlist_bl_lock(lock->pending_slot);
-+	spin_lock_nested(lock->complete_slot, 1);
-+	spin_lock_nested(lock->pending_slot, 2);
- }
- 
- static void dm_exception_table_unlock(struct dm_exception_table_lock *lock)
- {
--	hlist_bl_unlock(lock->pending_slot);
--	hlist_bl_unlock(lock->complete_slot);
-+	spin_unlock(lock->pending_slot);
-+	spin_unlock(lock->complete_slot);
- }
- 
- static int dm_exception_table_init(struct dm_exception_table *et,
-@@ -661,13 +666,15 @@ static int dm_exception_table_init(struct dm_exception_table *et,
- 
- 	et->hash_shift = hash_shift;
- 	et->hash_mask = size - 1;
--	et->table = kvmalloc_array(size, sizeof(struct hlist_bl_head),
-+	et->table = kvmalloc_array(size, sizeof(struct dm_hlist_head),
- 				   GFP_KERNEL);
- 	if (!et->table)
- 		return -ENOMEM;
- 
--	for (i = 0; i < size; i++)
--		INIT_HLIST_BL_HEAD(et->table + i);
-+	for (i = 0; i < size; i++) {
-+		INIT_HLIST_HEAD(&et->table[i].head);
-+		spin_lock_init(&et->table[i].lock);
-+	}
- 
- 	return 0;
- }
-@@ -675,16 +682,17 @@ static int dm_exception_table_init(struct dm_exception_table *et,
- static void dm_exception_table_exit(struct dm_exception_table *et,
- 				    struct kmem_cache *mem)
- {
--	struct hlist_bl_head *slot;
-+	struct dm_hlist_head *slot;
- 	struct dm_exception *ex;
--	struct hlist_bl_node *pos, *n;
-+	struct hlist_node *pos;
- 	int i, size;
- 
- 	size = et->hash_mask + 1;
- 	for (i = 0; i < size; i++) {
- 		slot = et->table + i;
- 
--		hlist_bl_for_each_entry_safe(ex, pos, n, slot, hash_list) {
-+		hlist_for_each_entry_safe(ex, pos, &slot->head, hash_list) {
-+			hlist_del(&ex->hash_list);
- 			kmem_cache_free(mem, ex);
- 			cond_resched();
- 		}
-@@ -700,7 +708,7 @@ static uint32_t exception_hash(struct dm_exception_table *et, chunk_t chunk)
- 
- static void dm_remove_exception(struct dm_exception *e)
- {
--	hlist_bl_del(&e->hash_list);
-+	hlist_del(&e->hash_list);
- }
- 
  /*
-@@ -710,12 +718,11 @@ static void dm_remove_exception(struct dm_exception *e)
- static struct dm_exception *dm_lookup_exception(struct dm_exception_table *et,
- 						chunk_t chunk)
- {
--	struct hlist_bl_head *slot;
--	struct hlist_bl_node *pos;
-+	struct hlist_head *slot;
- 	struct dm_exception *e;
- 
--	slot = &et->table[exception_hash(et, chunk)];
--	hlist_bl_for_each_entry(e, pos, slot, hash_list)
-+	slot = &et->table[exception_hash(et, chunk)].head;
-+	hlist_for_each_entry(e, slot, hash_list)
- 		if (chunk >= e->old_chunk &&
- 		    chunk <= e->old_chunk + dm_consecutive_chunk_count(e))
- 			return e;
-@@ -762,18 +769,17 @@ static void free_pending_exception(struct dm_snap_pending_exception *pe)
- static void dm_insert_exception(struct dm_exception_table *eh,
- 				struct dm_exception *new_e)
- {
--	struct hlist_bl_head *l;
--	struct hlist_bl_node *pos;
-+	struct hlist_head *l;
- 	struct dm_exception *e = NULL;
- 
--	l = &eh->table[exception_hash(eh, new_e->old_chunk)];
-+	l = &eh->table[exception_hash(eh, new_e->old_chunk)].head;
- 
- 	/* Add immediately if this table doesn't support consecutive chunks */
- 	if (!eh->hash_shift)
- 		goto out;
- 
- 	/* List is ordered by old_chunk */
--	hlist_bl_for_each_entry(e, pos, l, hash_list) {
-+	hlist_for_each_entry(e, l, hash_list) {
- 		/* Insert after an existing chunk? */
- 		if (new_e->old_chunk == (e->old_chunk +
- 					 dm_consecutive_chunk_count(e) + 1) &&
-@@ -804,13 +810,13 @@ static void dm_insert_exception(struct dm_exception_table *eh,
- 		 * Either the table doesn't support consecutive chunks or slot
- 		 * l is empty.
- 		 */
--		hlist_bl_add_head(&new_e->hash_list, l);
-+		hlist_add_head(&new_e->hash_list, l);
- 	} else if (new_e->old_chunk < e->old_chunk) {
- 		/* Add before an existing exception */
--		hlist_bl_add_before(&new_e->hash_list, &e->hash_list);
-+		hlist_add_before(&new_e->hash_list, &e->hash_list);
- 	} else {
- 		/* Add to l's tail: e is the last exception in this slot */
--		hlist_bl_add_behind(&new_e->hash_list, &e->hash_list);
-+		hlist_add_behind(&new_e->hash_list, &e->hash_list);
- 	}
- }
- 
-@@ -820,7 +826,6 @@ static void dm_insert_exception(struct dm_exception_table *eh,
+  * MEI HW Section
   */
- static int dm_add_exception(void *context, chunk_t old, chunk_t new)
- {
--	struct dm_exception_table_lock lock;
- 	struct dm_snapshot *s = context;
- 	struct dm_exception *e;
+--- a/drivers/misc/mei/pci-me.c
++++ b/drivers/misc/mei/pci-me.c
+@@ -129,6 +129,8 @@ static const struct pci_device_id mei_me
  
-@@ -833,17 +838,7 @@ static int dm_add_exception(void *context, chunk_t old, chunk_t new)
- 	/* Consecutive_count is implicitly initialised to zero */
- 	e->new_chunk = new;
+ 	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
  
--	/*
--	 * Although there is no need to lock access to the exception tables
--	 * here, if we don't then hlist_bl_add_head(), called by
--	 * dm_insert_exception(), will complain about accessing the
--	 * corresponding list without locking it first.
--	 */
--	dm_exception_table_lock_init(s, old, &lock);
--
--	dm_exception_table_lock(&lock);
- 	dm_insert_exception(&s->complete, e);
--	dm_exception_table_unlock(&lock);
- 
- 	return 0;
- }
-@@ -873,7 +868,7 @@ static int calc_max_buckets(void)
- 	/* use a fixed size of 2MB */
- 	unsigned long mem = 2 * 1024 * 1024;
- 
--	mem /= sizeof(struct hlist_bl_head);
-+	mem /= sizeof(struct dm_hlist_head);
- 
- 	return mem;
- }
--- 
-2.51.0
-
++	{MEI_PCI_DEVICE(MEI_DEV_ID_NVL_S, MEI_ME_PCH15_CFG)},
++
+ 	/* required last entry */
+ 	{0, }
+ };
 
 
 
