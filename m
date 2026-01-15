@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209278-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id A189FD270FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:03:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E13ED26A31
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 837CB306BD2B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:26 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 05CEF3019E3B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BD78B3D3481;
-	Thu, 15 Jan 2026 17:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 468CF3D348F;
+	Thu, 15 Jan 2026 17:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LZrK5wMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VaRB5cT2"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7CAB13C1977;
-	Thu, 15 Jan 2026 17:50:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 09C3B2D9494;
+	Thu, 15 Jan 2026 17:30:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499445; cv=none; b=FqcHC6havaIX8ZDzT3mLiXYzDDyHXMvXvSAqOixO2bcOAHOwzLL29olZSp6ZFQreTeJqi7PFwQnWfzoTi8cIpRDvMdUyT7UBpLMSdfonZ4rMzqMRQjXL8OE3ELJd5TdajZ3T/cyzC0WW6x6Dj/SOMumhTkQIe9nONxKmjvyR0VU=
+	t=1768498241; cv=none; b=Gp9um2nZ0F3gpaNnfW4q08Dtm+eFB2CETmIFyYtBNI2qV6TEK+toFBHZP6DPDzJLiEF/LigSry6BVpl8HFTG7xFC0wZrqJ22P0wbdj5WDubRU9dSB6EVdbigUEKjqFv95VYMJcueESnYU+5fMyTT0upzPFQkPXTgfM3jK/CpLbM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499445; c=relaxed/simple;
-	bh=uvePmVDHoFEXJ0VTqmNTQ3T8o3WStO3aspgY8U/HaS0=;
+	s=arc-20240116; t=1768498241; c=relaxed/simple;
+	bh=zZvvoX35ugeYZqm82Yuck3LVlITqAe/Iz9FUAWl+IWs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GRucXJBqvVZ99K7YbAHGBPQXvYxFWgecv+78ERAwRcifjys1u/0h96jx4y3ofO7uozJidNJ2PoyiY66MqvB6DVDCLFeeebdRQwiX6XNVWs+9DE2Dv3tgPVJYIaECErVaKxPlZgxaNpjsvCY6kzAqpG42c8YwvhUjBnT8BXV8u4g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LZrK5wMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B96C2C19422;
-	Thu, 15 Jan 2026 17:50:44 +0000 (UTC)
+	 MIME-Version; b=DWnW5TiOYpVrZccZeNen6NyeM+XXUg+FBA/m9qRfM6rFg+Lx+P5J3hvvmhNaEecsWFhVQdU0ZQJ8IycpAF4z2IF3SxBGWfmnfBAz+CNA7IqlYAyjiCLDwO4srwyi0QdsZMLF0KPQqKpgpz3oyYsUzJpMBEuUbWkZziWh9qdiADY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VaRB5cT2; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C275C116D0;
+	Thu, 15 Jan 2026 17:30:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499445;
-	bh=uvePmVDHoFEXJ0VTqmNTQ3T8o3WStO3aspgY8U/HaS0=;
+	s=korg; t=1768498240;
+	bh=zZvvoX35ugeYZqm82Yuck3LVlITqAe/Iz9FUAWl+IWs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LZrK5wMNkhRVT3FyxYaNwAHR6fNic88P6ep2XhrRS2L2Zb8gYhGRFePqEkeTGgqRQ
-	 BbhZVmmw46DVuvVH72xwUJMWaUUW3oMxmehoeNZ6KS5769KSOgi3OzsqqQt1Ck6QlH
-	 o4+2E4nK9JOgzSqWoDJd0LHQSSfByMuPgqDNqchY=
+	b=VaRB5cT26IvM9OYXK3xqzjNwPfPNjCFJNEyCTD8zQrmTlz4QIj79mHcFV9gHJy7fo
+	 9aSt6x8YTFqG2h7Io0M4JzhxZ/WsENQEwTraiEuxbV22UP0+iecwWwFwJgOulK7DEi
+	 cBqzsvv9FK2HTAK7IAZDdTscVpaAMOIXZ/nCt2aY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 228/451] media: v4l2-mem2mem: Fix outdated documentation
+	Alok Tiwari <alok.a.tiwari@oracle.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 363/554] RDMA/bnxt_re: Fix incorrect BAR check in bnxt_qplib_map_creq_db()
 Date: Thu, 15 Jan 2026 17:47:09 +0100
-Message-ID: <20260115164239.143709104@linuxfoundation.org>
+Message-ID: <20260115164259.366149374@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Alok Tiwari <alok.a.tiwari@oracle.com>
 
-commit 082b86919b7a94de01d849021b4da820a6cb89dc upstream.
+[ Upstream commit 145a417a39d7efbc881f52e829817376972b278c ]
 
-Commit cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in
-v4l2_m2m_job_finish") deferred calls to .device_run() to a work queue to
-avoid recursive calls when a job is finished right away from
-.device_run(). It failed to update the v4l2_m2m_job_finish()
-documentation that still states the function must not be called from
-.device_run(). Fix it.
+RCFW_COMM_CONS_PCI_BAR_REGION is defined as BAR 2, so checking
+!creq_db->reg.bar_id is incorrect and always false.
 
-Fixes: cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in v4l2_m2m_job_finish")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+pci_resource_start() returns the BAR base address, and a value of 0
+indicates that the BAR is unassigned. Update the condition to test
+bar_base == 0 instead.
+
+This ensures the driver detects and logs an error for an unassigned
+RCFW communication BAR.
+
+Fixes: cee0c7bba486 ("RDMA/bnxt_re: Refactor command queue management code")
+Signed-off-by: Alok Tiwari <alok.a.tiwari@oracle.com>
+Link: https://patch.msgid.link/20251217100158.752504-1-alok.a.tiwari@oracle.com
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/media/v4l2-mem2mem.h |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_rcfw.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/media/v4l2-mem2mem.h
-+++ b/include/media/v4l2-mem2mem.h
-@@ -185,8 +185,7 @@ void v4l2_m2m_try_schedule(struct v4l2_m
-  * other instances to take control of the device.
-  *
-  * This function has to be called only after &v4l2_m2m_ops->device_run
-- * callback has been called on the driver. To prevent recursion, it should
-- * not be called directly from the &v4l2_m2m_ops->device_run callback though.
-+ * callback has been called on the driver.
-  */
- void v4l2_m2m_job_finish(struct v4l2_m2m_dev *m2m_dev,
- 			 struct v4l2_m2m_ctx *m2m_ctx);
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+index 2394dcc0338c..67c12e604e9b 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_rcfw.c
+@@ -779,7 +779,7 @@ static int bnxt_qplib_map_creq_db(struct bnxt_qplib_rcfw *rcfw, u32 reg_offt)
+ 
+ 	creq_db->reg.bar_id = RCFW_COMM_CONS_PCI_BAR_REGION;
+ 	creq_db->reg.bar_base = pci_resource_start(pdev, creq_db->reg.bar_id);
+-	if (!creq_db->reg.bar_id)
++	if (!creq_db->reg.bar_base)
+ 		dev_err(&pdev->dev,
+ 			"QPLIB: CREQ BAR region %d resc start is 0!",
+ 			creq_db->reg.bar_id);
+-- 
+2.51.0
+
 
 
 
