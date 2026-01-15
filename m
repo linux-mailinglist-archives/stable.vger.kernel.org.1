@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-208811-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208872-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57669D266F5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:24 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1572ED26411
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7983B308C398
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:30 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 58469304B20B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA8632D5C9B;
-	Thu, 15 Jan 2026 17:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D7E8C3BF314;
+	Thu, 15 Jan 2026 17:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oZcKvRMy"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SJ4GFv2I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADB472820C6;
-	Thu, 15 Jan 2026 17:08:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9AE6C2820C6;
+	Thu, 15 Jan 2026 17:11:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496909; cv=none; b=SveCjdtNVUElki1z4NgGpqmvhowscmqxFlr+10jTSScRroCYfEFvKNFKdyXRh1j5U2MPkT3JQXarf8osuDgW3AjygvT08xFOKnK6CoqFcBhfHpehw28/NNozn814SSSt01fGnvaEZW+KNxoJY5lptzTwgmkPsHH0HRoDEs5wM4Y=
+	t=1768497083; cv=none; b=UDC3zBweDEijSXsyXX7MWbu2m8GIflgWAFkymk3F8NNAkTSQTkf2PRDOfoPq4IiO8wlw94HMzXMcqpl/UOl4Tr8rFuzIAX4CbLk2s8tAZx+9wFrLIisfb0yregT2lr0raUX1OA/vxfjQY7Isejf3DmtLMWil7on0Ai4n59mlbiQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496909; c=relaxed/simple;
-	bh=L7O2Tb/vPsfev1uQoB7dxKmjUrn0OYqMcxFuWRVZ35s=;
+	s=arc-20240116; t=1768497083; c=relaxed/simple;
+	bh=DyzUzWKdy9KPWHQFDThAeA/IYfxcxN/jbphzlTSyLxU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nYbW2qDHWuYOOlVnrsd4wz1FXyGc8BUkqG992AtVe1ixj04ZIYm/jTI2Kl5X7ugJjn2Yi/g8el8Ionf9b5MIZQsXyy7ykVLiCFhjZLWfKiEN0VkRAt+Hsho+BPKgF1UkllCE4Rot29w6Kx+r8naHvHGQLoXdDANrJfAnfK7+PJI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oZcKvRMy; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D799C16AAE;
-	Thu, 15 Jan 2026 17:08:29 +0000 (UTC)
+	 MIME-Version; b=kufB0pIcuu7rnrjNnAsaQjsZQ7O24YabKtqdMbnN6ilsL2dATFUTp/0ED4zDQe4LA7tMF3vqkjXCHpIOzNqeVIcyrz5qCCndIvoGphsExhd6kal1T+/1xO7NtuFi83E35qhwPHNtYVwfH9rcFhkCl0+UP9yDB6IK1CmabKLaYZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SJ4GFv2I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20990C116D0;
+	Thu, 15 Jan 2026 17:11:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496909;
-	bh=L7O2Tb/vPsfev1uQoB7dxKmjUrn0OYqMcxFuWRVZ35s=;
+	s=korg; t=1768497083;
+	bh=DyzUzWKdy9KPWHQFDThAeA/IYfxcxN/jbphzlTSyLxU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oZcKvRMyTbOxVkrGgEjFFtB3IC3oGrSS9kDPEV/mSUYXHP8FDkBaH6SQdd0I8Ctp9
-	 rL6UPASLcwsR4QfRpJhVbWNc8hdKRzPUEzG/NP73CmTwZGTXGfcx6t7VWP+f9Ga+7s
-	 EeTVgZgvS4UhXDXq6mCVTeVow0NCD7CRoImmhlfI=
+	b=SJ4GFv2IH9q+KEy8pacfN9JILKpKVv9AVQM49oVJ2OGNmeVvcJIrtSO0hm9gEsoyK
+	 Ml7butgI6eeeKvBdfGVRa39l56u9QyC68nNyc3K/i9VFajLDCJ3UQo4t3R7rkgNgD8
+	 48n4VZrZr8vBwo96pQ/4JSE2nE8jcR4omtraigv4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ray Jui <ray.jui@broadcom.com>,
-	Srijit Bose <srijit.bose@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Ian Ray <ian.ray@gehealthcare.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 58/88] bnxt_en: Fix potential data corruption with HW GRO/LRO
+Subject: [PATCH 6.1 31/72] ARM: dts: imx6q-ba16: fix RTC interrupt level
 Date: Thu, 15 Jan 2026 17:48:41 +0100
-Message-ID: <20260115164148.413674549@linuxfoundation.org>
+Message-ID: <20260115164144.624198924@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,90 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srijit Bose <srijit.bose@broadcom.com>
+From: Ian Ray <ian.ray@gehealthcare.com>
 
-[ Upstream commit ffeafa65b2b26df2f5b5a6118d3174f17bd12ec5 ]
+[ Upstream commit e6a4eedd49ce27c16a80506c66a04707e0ee0116 ]
 
-Fix the max number of bits passed to find_first_zero_bit() in
-bnxt_alloc_agg_idx().  We were incorrectly passing the number of
-long words.  find_first_zero_bit() may fail to find a zero bit and
-cause a wrong ID to be used.  If the wrong ID is already in use, this
-can cause data corruption.  Sometimes an error like this can also be
-seen:
+RTC interrupt level should be set to "LOW". This was revealed by the
+introduction of commit:
 
-bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
+  f181987ef477 ("rtc: m41t80: use IRQ flags obtained from fwnode")
 
-Fix it by passing the correct number of bits MAX_TPA_P5.  Use
-DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
-check to warn if a bit cannot be found and reset the ring [MChan].
+which changed the way IRQ type is obtained.
 
-Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20251231083625.3911652-1-michael.chan@broadcom.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 56c27310c1b4 ("ARM: dts: imx: Add Advantech BA-16 Qseven module")
+Signed-off-by: Ian Ray <ian.ray@gehealthcare.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/imx6q-ba16.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 8e4e8291d8c66..e337b6c7ee6f9 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1268,9 +1268,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
- 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
- 	u16 idx = agg_id & MAX_TPA_P5_MASK;
- 
--	if (test_bit(idx, map->agg_idx_bmap))
--		idx = find_first_zero_bit(map->agg_idx_bmap,
--					  BNXT_AGG_IDX_BMAP_SIZE);
-+	if (test_bit(idx, map->agg_idx_bmap)) {
-+		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
-+		if (idx >= MAX_TPA_P5)
-+			return INVALID_HW_RING_ID;
-+	}
- 	__set_bit(idx, map->agg_idx_bmap);
- 	map->agg_id_tbl[agg_id] = idx;
- 	return idx;
-@@ -1303,6 +1305,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
- 	if (bp->flags & BNXT_FLAG_CHIP_P5) {
- 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
- 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
-+		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
-+			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
-+				    rxr->bnapi->index,
-+				    TPA_START_AGG_ID_P5(tpa_start));
-+			bnxt_sched_reset_rxr(bp, rxr);
-+			return;
-+		}
- 	} else {
- 		agg_id = TPA_START_AGG_ID(tpa_start);
- 	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 0116f67593e3a..d96c9aabf97a7 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -898,11 +898,9 @@ struct bnxt_tpa_info {
- 	struct rx_agg_cmp	*agg_arr;
+diff --git a/arch/arm/boot/dts/imx6q-ba16.dtsi b/arch/arm/boot/dts/imx6q-ba16.dtsi
+index f266f1b7e0cfc..0c033e69ecc04 100644
+--- a/arch/arm/boot/dts/imx6q-ba16.dtsi
++++ b/arch/arm/boot/dts/imx6q-ba16.dtsi
+@@ -335,7 +335,7 @@ rtc@32 {
+ 		pinctrl-0 = <&pinctrl_rtc>;
+ 		reg = <0x32>;
+ 		interrupt-parent = <&gpio4>;
+-		interrupts = <10 IRQ_TYPE_LEVEL_HIGH>;
++		interrupts = <10 IRQ_TYPE_LEVEL_LOW>;
+ 	};
  };
  
--#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
--
- struct bnxt_tpa_idx_map {
- 	u16		agg_id_tbl[1024];
--	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
-+	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
- };
- 
- struct bnxt_rx_ring_info {
 -- 
 2.51.0
 
