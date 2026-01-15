@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209653-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209265-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0EF17D2798F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:34:23 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 6977CD26D4F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 673DC32E304A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:49:46 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7DF1730D3AF5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069473D1CD9;
-	Thu, 15 Jan 2026 17:48:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6CD6D3BF2F3;
+	Thu, 15 Jan 2026 17:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QKyZKLS1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c/e4ecYV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AD7333BFE34;
-	Thu, 15 Jan 2026 17:48:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2F9353D522B;
+	Thu, 15 Jan 2026 17:30:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499308; cv=none; b=cRBuzLPIKuTN9E/6IunIDh5KQQHaHeyyRNpo5JRoB2KTelYpKi75buugY1Ve0hW5PmjrnCP7AIicJLemrRWalHu4j5F8c3jkKmD0m0DCv4f6BeqszC23QJSJjsPFRgSlFsLSzDZIFL1RfS//Wty+91P/psHuqxtI/uwgLQaRlZw=
+	t=1768498204; cv=none; b=FuAOIOHGj9jKFH80S/f1ssyF5Iy0IVQu0DRKLE6/he6RtvXO0a8xD3PbbRY5frqD7cQO41WKbppzPbqNNrVuz52WkSewM2Lys0FqRW2ImtzRfR6IRJKxFQU4mlCs6/XzNlpoIEVnsiEHEXSj+1JymoHIXphs8MGViCJAx8ogzA8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499308; c=relaxed/simple;
-	bh=sQyW5anxP8xXW2yEIRCvrJ43G7ZjlGpASNdZ4+f10Uw=;
+	s=arc-20240116; t=1768498204; c=relaxed/simple;
+	bh=wWW+hz0GadVxPwphTaMuw2hwpMAxHvt/qS+bwCqKaq4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uda/oWxlUCFF+zGdq4Pa3GIR92UkG1eNiQ00m2FtxOg5NEIOLy6NCP5XiuTNELRk9+OLozRWsPU2CxxCXM7s+gwzLpGw9BtLzWd3hqgHuKofY59oActOqDl8O2hqEHjnrt+gOJwQC6N/ULEaoOcxwmlEhdfwLVXaTmmBfdXa5bw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QKyZKLS1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 280DDC116D0;
-	Thu, 15 Jan 2026 17:48:27 +0000 (UTC)
+	 MIME-Version; b=phbtym3fd6xuLD4CAVn5N6JGQkYaVU8pVJ6lKLzUfdXlm8d2ZVq+LTiI1Rgi7iFL0vaTewDa+gRaAkonLdUe49VZQsyOjysk0p9d3ZeI2A85By4XZpsfoLu2YLP0miwQi2G3WiDpJzsFYlCClUVfUDuFn1DLTSg9q3CoARTtCFs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c/e4ecYV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6DDC116D0;
+	Thu, 15 Jan 2026 17:30:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499308;
-	bh=sQyW5anxP8xXW2yEIRCvrJ43G7ZjlGpASNdZ4+f10Uw=;
+	s=korg; t=1768498204;
+	bh=wWW+hz0GadVxPwphTaMuw2hwpMAxHvt/qS+bwCqKaq4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QKyZKLS1imEIID5xKRdQXB4+lUrebub1xzaTliQxHWss3B/5XAZ8y9pTMKYguuEOb
-	 VO6LNlTwdlTS2RfNzG2ytwtLxlSwcI+s26pOoApbVu8koyCS3RIIFv9b9YbT/qGUUy
-	 qag+2/1V43GYtxNrDm5NwUevw8k5t4koDPbOXHjE=
+	b=c/e4ecYV72sTOsUzbF+L6CdjRZi235leJzNz4eVq17OMmVsWi+CsoBkP3UTZJkDDP
+	 x5zw7g+z50URiQCfaVvNaq+7OpIGNZn5rX0kSgBv5DNQMVgq06R8wJCfD3Q7ja86k2
+	 YJ7VGlRweFNOC2BvPw6JJFkq9K/8fH60jPfCMAKA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 181/451] net/ethtool/ioctl: remove if n_stats checks from ethtool_get_phy_stats
+	fuqiang wang <fuqiang.wng@gmail.com>,
+	Sean Christopherson <seanjc@google.com>
+Subject: [PATCH 5.15 316/554] KVM: x86: Fix VM hard lockup after prolonged inactivity with periodic HV timer
 Date: Thu, 15 Jan 2026 17:46:22 +0100
-Message-ID: <20260115164237.451935025@linuxfoundation.org>
+Message-ID: <20260115164257.669547688@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,72 +59,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: fuqiang wang <fuqiang.wng@gmail.com>
 
-[ Upstream commit fd4778581d61d8848b532f8cdc9b325138748437 ]
+commit 18ab3fc8e880791aa9f7c000261320fc812b5465 upstream.
 
-Now that we always early return if we don't have any stats we can remove
-these checks as they're no longer necessary.
+When advancing the target expiration for the guest's APIC timer in periodic
+mode, set the expiration to "now" if the target expiration is in the past
+(similar to what is done in update_target_expiration()).  Blindly adding
+the period to the previous target expiration can result in KVM generating
+a practically unbounded number of hrtimer IRQs due to programming an
+expired timer over and over.  In extreme scenarios, e.g. if userspace
+pauses/suspends a VM for an extended duration, this can even cause hard
+lockups in the host.
 
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7b07be1ff1cb ("ethtool: Avoid overflowing userspace buffer on stats query")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Currently, the bug only affects Intel CPUs when using the hypervisor timer
+(HV timer), a.k.a. the VMX preemption timer.  Unlike the software timer,
+a.k.a. hrtimer, which KVM keeps running even on exits to userspace, the
+HV timer only runs while the guest is active.  As a result, if the vCPU
+does not run for an extended duration, there will be a huge gap between
+the target expiration and the current time the vCPU resumes running.
+Because the target expiration is incremented by only one period on each
+timer expiration, this leads to a series of timer expirations occurring
+rapidly after the vCPU/VM resumes.
+
+More critically, when the vCPU first triggers a periodic HV timer
+expiration after resuming, advancing the expiration by only one period
+will result in a target expiration in the past.  As a result, the delta
+may be calculated as a negative value.  When the delta is converted into
+an absolute value (tscdeadline is an unsigned u64), the resulting value
+can overflow what the HV timer is capable of programming.  I.e. the large
+value will exceed the VMX Preemption Timer's maximum bit width of
+cpu_preemption_timer_multi + 32, and thus cause KVM to switch from the
+HV timer to the software timer (hrtimers).
+
+After switching to the software timer, periodic timer expiration callbacks
+may be executed consecutively within a single clock interrupt handler,
+because hrtimers honors KVM's request for an expiration in the past and
+immediately re-invokes KVM's callback after reprogramming.  And because
+the interrupt handler runs with IRQs disabled, restarting KVM's hrtimer
+over and over until the target expiration is advanced to "now" can result
+in a hard lockup.
+
+E.g. the following hard lockup was triggered in the host when running a
+Windows VM (only relevant because it used the APIC timer in periodic mode)
+after resuming the VM from a long suspend (in the host).
+
+  NMI watchdog: Watchdog detected hard LOCKUP on cpu 45
+  ...
+  RIP: 0010:advance_periodic_target_expiration+0x4d/0x80 [kvm]
+  ...
+  RSP: 0018:ff4f88f5d98d8ef0 EFLAGS: 00000046
+  RAX: fff0103f91be678e RBX: fff0103f91be678e RCX: 00843a7d9e127bcc
+  RDX: 0000000000000002 RSI: 0052ca4003697505 RDI: ff440d5bfbdbd500
+  RBP: ff440d5956f99200 R08: ff2ff2a42deb6a84 R09: 000000000002a6c0
+  R10: 0122d794016332b3 R11: 0000000000000000 R12: ff440db1af39cfc0
+  R13: ff440db1af39cfc0 R14: ffffffffc0d4a560 R15: ff440db1af39d0f8
+  FS:  00007f04a6ffd700(0000) GS:ff440db1af380000(0000) knlGS:000000e38a3b8000
+  CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+  CR2: 000000d5651feff8 CR3: 000000684e038002 CR4: 0000000000773ee0
+  PKRU: 55555554
+  Call Trace:
+   <IRQ>
+   apic_timer_fn+0x31/0x50 [kvm]
+   __hrtimer_run_queues+0x100/0x280
+   hrtimer_interrupt+0x100/0x210
+   ? ttwu_do_wakeup+0x19/0x160
+   smp_apic_timer_interrupt+0x6a/0x130
+   apic_timer_interrupt+0xf/0x20
+   </IRQ>
+
+Moreover, if the suspend duration of the virtual machine is not long enough
+to trigger a hard lockup in this scenario, since commit 98c25ead5eda
+("KVM: VMX: Move preemption timer <=> hrtimer dance to common x86"), KVM
+will continue using the software timer until the guest reprograms the APIC
+timer in some way.  Since the periodic timer does not require frequent APIC
+timer register programming, the guest may continue to use the software
+timer in perpetuity.
+
+Fixes: d8f2f498d9ed ("x86/kvm: fix LAPIC timer drift when guest uses periodic mode")
+Cc: stable@vger.kernel.org
+Signed-off-by: fuqiang wang <fuqiang.wng@gmail.com>
+[sean: massage comments and changelog]
+Link: https://patch.msgid.link/20251113205114.1647493-4-seanjc@google.com
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/ioctl.c | 24 ++++++++++--------------
- 1 file changed, 10 insertions(+), 14 deletions(-)
+ arch/x86/kvm/lapic.c |   28 +++++++++++++++++++++++-----
+ 1 file changed, 23 insertions(+), 5 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index ede11854f493f..8f7efe152a7bb 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -2063,28 +2063,24 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
+--- a/arch/x86/kvm/lapic.c
++++ b/arch/x86/kvm/lapic.c
+@@ -1803,15 +1803,33 @@ static void advance_periodic_target_expi
+ 	ktime_t delta;
  
- 	stats.n_stats = n_stats;
- 
--	if (n_stats) {
--		data = vzalloc(array_size(n_stats, sizeof(u64)));
--		if (!data)
--			return -ENOMEM;
-+	data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (!data)
-+		return -ENOMEM;
- 
--		if (phydev && !ops->get_ethtool_phy_stats &&
--		    phy_ops && phy_ops->get_stats) {
--			ret = phy_ops->get_stats(phydev, &stats, data);
--			if (ret < 0)
--				goto out;
--		} else {
--			ops->get_ethtool_phy_stats(dev, &stats, data);
--		}
-+	if (phydev && !ops->get_ethtool_phy_stats &&
-+		phy_ops && phy_ops->get_stats) {
-+		ret = phy_ops->get_stats(phydev, &stats, data);
-+		if (ret < 0)
-+			goto out;
- 	} else {
--		data = NULL;
-+		ops->get_ethtool_phy_stats(dev, &stats, data);
- 	}
- 
- 	ret = -EFAULT;
- 	if (copy_to_user(useraddr, &stats, sizeof(stats)))
- 		goto out;
- 	useraddr += sizeof(stats);
--	if (n_stats && copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
-+	if (copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
- 		goto out;
- 	ret = 0;
- 
--- 
-2.51.0
-
+ 	/*
+-	 * Synchronize both deadlines to the same time source or
+-	 * differences in the periods (caused by differences in the
+-	 * underlying clocks or numerical approximation errors) will
+-	 * cause the two to drift apart over time as the errors
+-	 * accumulate.
++	 * Use kernel time as the time source for both the hrtimer deadline and
++	 * TSC-based deadline so that they stay synchronized.  Computing each
++	 * deadline independently will cause the two deadlines to drift apart
++	 * over time as differences in the periods accumulate, e.g. due to
++	 * differences in the underlying clocks or numerical approximation errors.
+ 	 */
+ 	apic->lapic_timer.target_expiration =
+ 		ktime_add_ns(apic->lapic_timer.target_expiration,
+ 				apic->lapic_timer.period);
++
++	/*
++	 * If the new expiration is in the past, e.g. because userspace stopped
++	 * running the VM for an extended duration, then force the expiration
++	 * to "now" and don't try to play catch-up with the missed events.  KVM
++	 * will only deliver a single interrupt regardless of how many events
++	 * are pending, i.e. restarting the timer with an expiration in the
++	 * past will do nothing more than waste host cycles, and can even lead
++	 * to a hard lockup in extreme cases.
++	 */
++	if (ktime_before(apic->lapic_timer.target_expiration, now))
++		apic->lapic_timer.target_expiration = now;
++
++	/*
++	 * Note, ensuring the expiration isn't in the past also prevents delta
++	 * from going negative, which could cause the TSC deadline to become
++	 * excessively large due to it an unsigned value.
++	 */
+ 	delta = ktime_sub(apic->lapic_timer.target_expiration, now);
+ 	apic->lapic_timer.tscdeadline = kvm_read_l1_tsc(apic->vcpu, tscl) +
+ 		nsec_to_cycles(apic->vcpu, delta);
 
 
 
