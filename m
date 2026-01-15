@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208805-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208636-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5E58DD266DC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 408EFD26152
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 623F4307BD3D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DBBAD30BBA14
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE6E1A08AF;
-	Thu, 15 Jan 2026 17:08:13 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7DCA239B4BF;
+	Thu, 15 Jan 2026 17:00:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BalrG59Z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NsfT5CKC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CC733993;
-	Thu, 15 Jan 2026 17:08:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 40B1D2D640D;
+	Thu, 15 Jan 2026 17:00:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496892; cv=none; b=GK2IAkTrrDxiv4YugRi6MNayJFG5d/oRNO8z+8fD+myu1yoE4ZIHnuxtNCCM6cfhznrC+iSg4aJn4pKct8q6IZ5Jb+ITtlYAwKr3T1uKGAznFWEbHxbrF/PxZgO5RBicsKB3qbEvI5xd7AmoEWlPKKfkC0BJb93pgcZzn/B/rP8=
+	t=1768496416; cv=none; b=WdlxQgnw9Wt4uL0+s/z/0ibDKMnjPnHietk8khr3PGSUt8C8fDa7ZxF3QFSlzvksYhRB8nkvE4ppIgfQh5iMxZnV2/n9I6wbtDc/V8DceD6Vaf6ae6pSqL67OZ+aDwNoaV73THTynu/r90+NT+GsjLQAnWoI3dVSvSH8wPHbjuU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496892; c=relaxed/simple;
-	bh=sXFCOfEcZJQ+uWFcKQPSIzIK99/dLo+HpUN+MznfeWc=;
+	s=arc-20240116; t=1768496416; c=relaxed/simple;
+	bh=APM0nu4F2DRGi4IOwA3+mJoGkE+dY56TaR3yRlK9/oE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=l57b7tbqT443YKJGD7KVHV7ktP3+nYYSFz1Hamr+qSc20OGrzGDPTm8jAS0hvjb7GH8rCayRgyC1U7lv5G8ZewkwPxk9I7YF9bIGBtBlHUEWr9HgEr7ekr0UxAO9iHXwWebck/gbdwG2cqeCI1Wo8yl129fVi4h55XNo6LnbyUc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BalrG59Z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C95C116D0;
-	Thu, 15 Jan 2026 17:08:12 +0000 (UTC)
+	 MIME-Version; b=LqoexMT3Fcd/WosUp4xzLfS8kpzU2UJ0NsITjabPQrKCpfRGYjqMl3FD3CMlIouXmrLRpSEgaFB9yHwLZ5Jfibi7rBoSYXXjn6IabwjgobfEOmo7b71QSjEJmONrNerUQXo74REDSKvggn6xTAP8rhYPGdUFyyU+Gj3016pgZp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NsfT5CKC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DCA5C16AAE;
+	Thu, 15 Jan 2026 17:00:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496892;
-	bh=sXFCOfEcZJQ+uWFcKQPSIzIK99/dLo+HpUN+MznfeWc=;
+	s=korg; t=1768496413;
+	bh=APM0nu4F2DRGi4IOwA3+mJoGkE+dY56TaR3yRlK9/oE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BalrG59ZOARwkXcxJmTQd5uU+s8X/3zZerhYIGzfG26Jj94LKKeqsGLuwJsoedXeN
-	 22lpOUC/JprMSFaI9cY5N39mkP2nWJcS3+JVixAXi61KQQUNDDl87ECT1eKoczMY2n
-	 KlE1n3XzM7Pbgvk3fdBQZTDinA3v8sU27PXYt6W4=
+	b=NsfT5CKCk/RYUI/WLKL2Oq2X/7aqHcVu8ktIM3KsBvqSTlaik6y0xOxrJ6/N4UWO2
+	 WnXTK+36dn8gLUrcR+XC1NfnZUDRgQbQdvJyjIvrQSRDYy4/H6AidYpO0dHXGE1Bmq
+	 k8KnYWR1fSr/h0eKhOTjWXVt9ZfxdIapvKY4XFDg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"yuan.gao" <yuan.gao@ucloud.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 53/88] inet: ping: Fix icmp out counting
+Subject: [PATCH 6.18 179/181] ASoC: fsl_sai: Add missing registers to cache default
 Date: Thu, 15 Jan 2026 17:48:36 +0100
-Message-ID: <20260115164148.233877307@linuxfoundation.org>
+Message-ID: <20260115164208.776257229@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,57 +60,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan.gao <yuan.gao@ucloud.cn>
+From: Alexander Stein <alexander.stein@ew.tq-group.com>
 
-[ Upstream commit 4c0856c225b39b1def6c9a6bc56faca79550da13 ]
+[ Upstream commit 90ed688792a6b7012b3e8a2f858bc3fe7454d0eb ]
 
-When the ping program uses an IPPROTO_ICMP socket to send ICMP_ECHO
-messages, ICMP_MIB_OUTMSGS is counted twice.
+Drivers does cache sync during runtime resume, setting all writable
+registers. Not all writable registers are set in cache default, resulting
+in the erorr message:
+  fsl-sai 30c30000.sai: using zero-initialized flat cache, this may cause
+  unexpected behavior
 
-    ping_v4_sendmsg
-      ping_v4_push_pending_frames
-        ip_push_pending_frames
-          ip_finish_skb
-            __ip_make_skb
-              icmp_out_count(net, icmp_type); // first count
-      icmp_out_count(sock_net(sk), user_icmph.type); // second count
+Fix this by adding missing writable register defaults.
 
-However, when the ping program uses an IPPROTO_RAW socket,
-ICMP_MIB_OUTMSGS is counted correctly only once.
-
-Therefore, the first count should be removed.
-
-Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
-Signed-off-by: yuan.gao <yuan.gao@ucloud.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251224063145.3615282-1-yuan.gao@ucloud.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Link: https://patch.msgid.link/20251216102246.676181-1-alexander.stein@ew.tq-group.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/ping.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/soc/fsl/fsl_sai.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
-index 5c848136bc266..47f2e7dd554ad 100644
---- a/net/ipv4/ping.c
-+++ b/net/ipv4/ping.c
-@@ -839,10 +839,8 @@ static int ping_v4_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- out_free:
- 	if (free)
- 		kfree(ipc.opt);
--	if (!err) {
--		icmp_out_count(sock_net(sk), user_icmph.type);
-+	if (!err)
- 		return len;
--	}
- 	return err;
- 
- do_confirm:
+diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
+index 86730c2149146..2fa14fbdfe1a8 100644
+--- a/sound/soc/fsl/fsl_sai.c
++++ b/sound/soc/fsl/fsl_sai.c
+@@ -1081,6 +1081,7 @@ static const struct reg_default fsl_sai_reg_defaults_ofs0[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(0), 0},
+ 	{FSL_SAI_RCR2(0), 0},
+ 	{FSL_SAI_RCR3(0), 0},
+@@ -1104,12 +1105,14 @@ static const struct reg_default fsl_sai_reg_defaults_ofs8[] = {
+ 	{FSL_SAI_TDR6, 0},
+ 	{FSL_SAI_TDR7, 0},
+ 	{FSL_SAI_TMR, 0},
++	{FSL_SAI_TTCTL, 0},
+ 	{FSL_SAI_RCR1(8), 0},
+ 	{FSL_SAI_RCR2(8), 0},
+ 	{FSL_SAI_RCR3(8), 0},
+ 	{FSL_SAI_RCR4(8), 0},
+ 	{FSL_SAI_RCR5(8), 0},
+ 	{FSL_SAI_RMR, 0},
++	{FSL_SAI_RTCTL, 0},
+ 	{FSL_SAI_MCTL, 0},
+ 	{FSL_SAI_MDIV, 0},
+ };
 -- 
 2.51.0
 
