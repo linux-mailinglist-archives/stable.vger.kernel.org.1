@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209129-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 52B64D272FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:39 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 525F9D26DD8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9781A314CA80
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:55 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CBCB33049FC4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0A4B13BFE2A;
-	Thu, 15 Jan 2026 17:23:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1932D2D94A7;
+	Thu, 15 Jan 2026 17:43:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qArxfcul"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aXuvbv/Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BEBCE3A0E9A;
-	Thu, 15 Jan 2026 17:23:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D0ADD26CE04;
+	Thu, 15 Jan 2026 17:43:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497815; cv=none; b=mK/nD8vTnGbnHLP8f0BDl4I6vWV9YH6tZc/COBpoF5O0Mx7aMmD7nObb15rfcZ/UXs5DUze4McRX+D20409JompiTlDUzjDHQ5z9lHVYZwRU0zHxMm9KM7hY9n7+4JLP3frKo3qno12crmrm7/uWCuhl+xM2vLkR95fHVvxFbYs=
+	t=1768499018; cv=none; b=MNCTxvffeErAvQfTfzRuGXSlVnokxqBuzx0yhJUfzs/yldoljGQmrlnQBLeLMCeuukMQttfXCXYPM67dhI4Bv6bgDL5GMtBKUD1Z59l2foawEgYizdyE2hlngvEX809tD3lxN932TqJ+ylqZTpdVObUsRv9A0VE7quSZ3c9q6JU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497815; c=relaxed/simple;
-	bh=JLk5KTEQ+GuZM3DABOBMIFzRcFTK6wXahe0KH4bND7o=;
+	s=arc-20240116; t=1768499018; c=relaxed/simple;
+	bh=osDfMmbwdiolGriAgkoXF/2uYILwpza58WV/mPfGxmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Uia/5qLBpIIAyhr5R9n/6VosakpP/OfDcL03j3QAFTisYmwBIG1erFF09yazc+m7nfmjfq7PpEEGLTnvyTuAKv9ehQoHBTlX7mZaqMsFTKwJyyZSPWzopO5bPdd+lkj2Rh879odeLmjwt7srMp8Z9gJQun9vnCdYZvAb2678xDA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qArxfcul; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49A3BC16AAE;
-	Thu, 15 Jan 2026 17:23:35 +0000 (UTC)
+	 MIME-Version; b=NEB3SzLnN//DtLS8M2h0glQcR8VkCcxNLoBjpSVjB+FyL19GIUgr0aZnmou+4fz52ywpK9JCDxDh+zxej3v7dkSUX+XaCfEX39RNku0NVA+Dbcz7gY5Mfj36gwgyKjmfQCxU/ubaOuNlrOhZi+/rF/vSUTrsT6gW68GH3UGe0kk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aXuvbv/Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 531CAC116D0;
+	Thu, 15 Jan 2026 17:43:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497815;
-	bh=JLk5KTEQ+GuZM3DABOBMIFzRcFTK6wXahe0KH4bND7o=;
+	s=korg; t=1768499018;
+	bh=osDfMmbwdiolGriAgkoXF/2uYILwpza58WV/mPfGxmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=qArxfculER8Bd+wIPFJwKvjBKfNw8x8ZDNURKqWg+JG8HnvZhyt5m4H1Lxzr7DwHp
-	 RAPs30ATXKx6cWS2yshfoeekEFgZOxGva/+QHhWi3TSN2PeTtcaAGHldMZppSortca
-	 cq1bRpXHR2oYK6+6Tgb1oxa2f7HUFbCuuDbtXOdI=
+	b=aXuvbv/YNYngA0IaytMi9fuFP+dJOmd+UIvvWUnLcheFWaWZ84EmzlA5efR6i49jr
+	 tw8NBNE4S63MaqCQdEGLVLIgt+lJiqSNsa7qPfk/MKL15wLgy1KaOutrjD7b3jH9TJ
+	 EMkodUTvtvSW2CfNqawdUsCKt1+JQFL4os6Hn1ac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Viresh Kumar <viresh.kumar@linaro.org>,
+	Liu Xinpeng <liuxp11@chinatelecom.cn>,
+	Guenter Roeck <linux@roeck-us.net>,
+	Wim Van Sebroeck <wim@linux-watchdog.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 214/554] cpufreq: s5pv210: fix refcount leak
+Subject: [PATCH 5.10 079/451] watchdog: wdat_wdt: Stop watchdog when uninstalling module
 Date: Thu, 15 Jan 2026 17:44:40 +0100
-Message-ID: <20260115164253.996317529@linuxfoundation.org>
+Message-ID: <20260115164233.772483050@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,64 +61,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuhao Fu <sfual@cse.ust.hk>
+From: Liu Xinpeng <liuxp11@chinatelecom.cn>
 
-[ Upstream commit 2de5cb96060a1664880d65b120e59485a73588a8 ]
+[ Upstream commit 330415ebea81b65842e4cc6d2fd985c1b369e650 ]
 
-In function `s5pv210_cpu_init`, a possible refcount inconsistency has
-been identified, causing a resource leak.
+Test shows that wachdog still reboots machine after the module
+is removed. Use watchdog_stop_on_unregister to stop the watchdog
+on removing.
 
-Why it is a bug:
-1. For every clk_get, there should be a matching clk_put on every
-successive error handling path.
-2. After calling `clk_get(dmc1_clk)`, variable `dmc1_clk` will not be
-freed even if any error happens.
-
-How it is fixed: For every failed path, an extra goto label is added to
-ensure `dmc1_clk` will be freed regardlessly.
-
-Signed-off-by: Shuhao Fu <sfual@cse.ust.hk>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Liu Xinpeng <liuxp11@chinatelecom.cn>
+eviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/1650984810-6247-4-git-send-email-liuxp11@chinatelecom.cn
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Stable-dep-of: 25c0b472eab8 ("watchdog: wdat_wdt: Fix ACPI table leak in probe function")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/s5pv210-cpufreq.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/watchdog/wdat_wdt.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/cpufreq/s5pv210-cpufreq.c b/drivers/cpufreq/s5pv210-cpufreq.c
-index ad7d4f272ddcb..f51b2e84ef63d 100644
---- a/drivers/cpufreq/s5pv210-cpufreq.c
-+++ b/drivers/cpufreq/s5pv210-cpufreq.c
-@@ -518,7 +518,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
+diff --git a/drivers/watchdog/wdat_wdt.c b/drivers/watchdog/wdat_wdt.c
+index c60723f5ed99d..ec308836aad9c 100644
+--- a/drivers/watchdog/wdat_wdt.c
++++ b/drivers/watchdog/wdat_wdt.c
+@@ -463,6 +463,7 @@ static int wdat_wdt_probe(struct platform_device *pdev)
  
- 	if (policy->cpu != 0) {
- 		ret = -EINVAL;
--		goto out_dmc1;
-+		goto out;
- 	}
+ 	watchdog_set_nowayout(&wdat->wdd, nowayout);
+ 	watchdog_stop_on_reboot(&wdat->wdd);
++	watchdog_stop_on_unregister(&wdat->wdd);
+ 	return devm_watchdog_register_device(dev, &wdat->wdd);
+ }
  
- 	/*
-@@ -530,7 +530,7 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 	if ((mem_type != LPDDR) && (mem_type != LPDDR2)) {
- 		pr_err("CPUFreq doesn't support this memory type\n");
- 		ret = -EINVAL;
--		goto out_dmc1;
-+		goto out;
- 	}
- 
- 	/* Find current refresh counter and frequency each DMC */
-@@ -544,6 +544,8 @@ static int s5pv210_cpu_init(struct cpufreq_policy *policy)
- 	cpufreq_generic_init(policy, s5pv210_freq_table, 40000);
- 	return 0;
- 
-+out:
-+	clk_put(dmc1_clk);
- out_dmc1:
- 	clk_put(dmc0_clk);
- out_dmc0:
 -- 
 2.51.0
 
