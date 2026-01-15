@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208585-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208592-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 526FED25F8A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:55 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id AEF79D25FD2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:58 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B130B3066D52
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:47 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id CA83C301949B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:58:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B60C5396B75;
-	Thu, 15 Jan 2026 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4E7DC396B75;
+	Thu, 15 Jan 2026 16:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XSfN+U2z"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YB7IjvbR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7A46839C624;
-	Thu, 15 Jan 2026 16:57:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E3343BC4EE;
+	Thu, 15 Jan 2026 16:58:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496265; cv=none; b=MtTMYsXxqE4T2/vG+0FRISgiPfVh3nel4kpuwmik5C9PcIrgYEBDRxT9o8tDJZ+/8uqaWobtw4XsT2UKHruqL/B4ymLX6UejRGjf6XIn+M4X+IXt3AqchRoT8ntyq90BDPe9fKUSnnTM4pmRNjJOwWvlbr9X1ndKdKyp1J0858o=
+	t=1768496285; cv=none; b=fXcduWNZSOCQ9RW35gY9E9+bOZKMT1XxMAwjNJ4e+Z4ff+Lk6+uWuToPharY6OzaLIBJBQpXd4Eh9ctbO6Zq7kdXQIgmPuPg39F12VN/czLyIl/PINdiAPjj2Q6WLOvHqyXq4Ijx6SGXz5OFrYNO0AgmHAXpf0t+QFKCoLQGkU4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496265; c=relaxed/simple;
-	bh=tn535ekHrS7O0ErNKZS6K0RG3Nv3lajb45ZJbxoKjBE=;
+	s=arc-20240116; t=1768496285; c=relaxed/simple;
+	bh=GbkiGVkNqdh/wnUnRjTwsfjBcKaNq9OLc5+JL0OURJY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=m6plosglKBT+HvBkjrqEGtCuvTo4g9ek/7DTnkg3JQNr4M8qxvmBAMnM/33g8DCoxQopdolKuGfds71GdUqA8eaiAhhev6QqNYQrrwNKYzx75S7gYR44M1ePxnQTEUsngH48AxnvCutPUrQa0Y7AqfBn6xq6Y0OWvYEPK42PVDg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XSfN+U2z; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECFDC116D0;
-	Thu, 15 Jan 2026 16:57:44 +0000 (UTC)
+	 MIME-Version; b=roRM5yTr9ud220J8vq5rDFZL/bUtqMRKdDX+rBtE46xYLRzAac9ykMOrpfE/EUx+zMf/cfU4MM5ycwc5sm7dQx9dCq4kC0/9873BghqxHaXFfjwLxVMos2weGJJe/JoFY8YPIytNX9ptNSSPCsQ2bJ8S0F3c9Uq0B4dGof5Hrj4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YB7IjvbR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70C21C116D0;
+	Thu, 15 Jan 2026 16:58:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496265;
-	bh=tn535ekHrS7O0ErNKZS6K0RG3Nv3lajb45ZJbxoKjBE=;
+	s=korg; t=1768496284;
+	bh=GbkiGVkNqdh/wnUnRjTwsfjBcKaNq9OLc5+JL0OURJY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XSfN+U2znJ/+xWTOqxr8M519MDbUfHLSU3ovKITU2TNsw04+RXzO2ZQld6OcW/ngI
-	 0fyhIC5Br/LKreL1jZ/9c7Z7UXHxQaxqSXgkDgs2Jsl/XhtR61OlBWKKeG2aW0IJs4
-	 Rzq6fseXYAEl2WPXfAoNnAiNrTBT5I6KLQQEUPa8=
+	b=YB7IjvbR1MWlUbovMD25FLIqTp/h7Y3/y9lbfuSt4mRYVFw4ThGiTVz4OqCgukraS
+	 RCCOC7U1Lsv9AymYcESazt5HA6LOXfMwJyaflleT7PQrEy+YZOJNPckmM3l0L/bDY/
+	 majcvTMqJ5VHVY6uEfcT9VdC8k9DALKsE0xnNzZc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ray Jui <ray.jui@broadcom.com>,
-	Srijit Bose <srijit.bose@broadcom.com>,
-	Michael Chan <michael.chan@broadcom.com>,
-	Vadim Fedorenko <vadim.fedorenko@linux.dev>,
+	Kommula Shiva Shankar <kshankar@marvell.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 108/181] bnxt_en: Fix potential data corruption with HW GRO/LRO
-Date: Thu, 15 Jan 2026 17:47:25 +0100
-Message-ID: <20260115164206.217170901@linuxfoundation.org>
+Subject: [PATCH 6.18 109/181] virtio_net: fix device mismatch in devm_kzalloc/devm_kfree
+Date: Thu, 15 Jan 2026 17:47:26 +0100
+Message-ID: <20260115164206.252993397@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -67,86 +67,124 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Srijit Bose <srijit.bose@broadcom.com>
+From: Kommula Shiva Shankar <kshankar@marvell.com>
 
-[ Upstream commit ffeafa65b2b26df2f5b5a6118d3174f17bd12ec5 ]
+[ Upstream commit acb4bc6e1ba34ae1a34a9334a1ce8474c909466e ]
 
-Fix the max number of bits passed to find_first_zero_bit() in
-bnxt_alloc_agg_idx().  We were incorrectly passing the number of
-long words.  find_first_zero_bit() may fail to find a zero bit and
-cause a wrong ID to be used.  If the wrong ID is already in use, this
-can cause data corruption.  Sometimes an error like this can also be
-seen:
+Initial rss_hdr allocation uses virtio_device->device,
+but virtnet_set_queues() frees using net_device->device.
+This device mismatch causing below devres warning
 
-bnxt_en 0000:83:00.0 enp131s0np0: TPA end agg_buf 2 != expected agg_bufs 1
+[ 3788.514041] ------------[ cut here ]------------
+[ 3788.514044] WARNING: drivers/base/devres.c:1095 at devm_kfree+0x84/0x98, CPU#16: vdpa/1463
+[ 3788.514054] Modules linked in: octep_vdpa virtio_net virtio_vdpa [last unloaded: virtio_vdpa]
+[ 3788.514064] CPU: 16 UID: 0 PID: 1463 Comm: vdpa Tainted: G        W           6.18.0 #10 PREEMPT
+[ 3788.514067] Tainted: [W]=WARN
+[ 3788.514069] Hardware name: Marvell CN106XX board (DT)
+[ 3788.514071] pstate: 63400009 (nZCv daif +PAN -UAO +TCO +DIT -SSBS BTYPE=--)
+[ 3788.514074] pc : devm_kfree+0x84/0x98
+[ 3788.514076] lr : devm_kfree+0x54/0x98
+[ 3788.514079] sp : ffff800084e2f220
+[ 3788.514080] x29: ffff800084e2f220 x28: ffff0003b2366000 x27: 000000000000003f
+[ 3788.514085] x26: 000000000000003f x25: ffff000106f17c10 x24: 0000000000000080
+[ 3788.514089] x23: ffff00045bb8ab08 x22: ffff00045bb8a000 x21: 0000000000000018
+[ 3788.514093] x20: ffff0004355c3080 x19: ffff00045bb8aa00 x18: 0000000000080000
+[ 3788.514098] x17: 0000000000000040 x16: 000000000000001f x15: 000000000007ffff
+[ 3788.514102] x14: 0000000000000488 x13: 0000000000000005 x12: 00000000000fffff
+[ 3788.514106] x11: ffffffffffffffff x10: 0000000000000005 x9 : ffff800080c8c05c
+[ 3788.514110] x8 : ffff800084e2eeb8 x7 : 0000000000000000 x6 : 000000000000003f
+[ 3788.514115] x5 : ffff8000831bafe0 x4 : ffff800080c8b010 x3 : ffff0004355c3080
+[ 3788.514119] x2 : ffff0004355c3080 x1 : 0000000000000000 x0 : 0000000000000000
+[ 3788.514123] Call trace:
+[ 3788.514125]  devm_kfree+0x84/0x98 (P)
+[ 3788.514129]  virtnet_set_queues+0x134/0x2e8 [virtio_net]
+[ 3788.514135]  virtnet_probe+0x9c0/0xe00 [virtio_net]
+[ 3788.514139]  virtio_dev_probe+0x1e0/0x338
+[ 3788.514144]  really_probe+0xc8/0x3a0
+[ 3788.514149]  __driver_probe_device+0x84/0x170
+[ 3788.514152]  driver_probe_device+0x44/0x120
+[ 3788.514155]  __device_attach_driver+0xc4/0x168
+[ 3788.514158]  bus_for_each_drv+0x8c/0xf0
+[ 3788.514161]  __device_attach+0xa4/0x1c0
+[ 3788.514164]  device_initial_probe+0x1c/0x30
+[ 3788.514168]  bus_probe_device+0xb4/0xc0
+[ 3788.514170]  device_add+0x614/0x828
+[ 3788.514173]  register_virtio_device+0x214/0x258
+[ 3788.514175]  virtio_vdpa_probe+0xa0/0x110 [virtio_vdpa]
+[ 3788.514179]  vdpa_dev_probe+0xa8/0xd8
+[ 3788.514183]  really_probe+0xc8/0x3a0
+[ 3788.514186]  __driver_probe_device+0x84/0x170
+[ 3788.514189]  driver_probe_device+0x44/0x120
+[ 3788.514192]  __device_attach_driver+0xc4/0x168
+[ 3788.514195]  bus_for_each_drv+0x8c/0xf0
+[ 3788.514197]  __device_attach+0xa4/0x1c0
+[ 3788.514200]  device_initial_probe+0x1c/0x30
+[ 3788.514203]  bus_probe_device+0xb4/0xc0
+[ 3788.514206]  device_add+0x614/0x828
+[ 3788.514209]  _vdpa_register_device+0x58/0x88
+[ 3788.514211]  octep_vdpa_dev_add+0x104/0x228 [octep_vdpa]
+[ 3788.514215]  vdpa_nl_cmd_dev_add_set_doit+0x2d0/0x3c0
+[ 3788.514218]  genl_family_rcv_msg_doit+0xe4/0x158
+[ 3788.514222]  genl_rcv_msg+0x218/0x298
+[ 3788.514225]  netlink_rcv_skb+0x64/0x138
+[ 3788.514229]  genl_rcv+0x40/0x60
+[ 3788.514233]  netlink_unicast+0x32c/0x3b0
+[ 3788.514237]  netlink_sendmsg+0x170/0x3b8
+[ 3788.514241]  __sys_sendto+0x12c/0x1c0
+[ 3788.514246]  __arm64_sys_sendto+0x30/0x48
+[ 3788.514249]  invoke_syscall.constprop.0+0x58/0xf8
+[ 3788.514255]  do_el0_svc+0x48/0xd0
+[ 3788.514259]  el0_svc+0x48/0x210
+[ 3788.514264]  el0t_64_sync_handler+0xa0/0xe8
+[ 3788.514268]  el0t_64_sync+0x198/0x1a0
+[ 3788.514271] ---[ end trace 0000000000000000 ]---
 
-Fix it by passing the correct number of bits MAX_TPA_P5.  Use
-DECLARE_BITMAP() to more cleanly define the bitmap.  Add a sanity
-check to warn if a bit cannot be found and reset the ring [MChan].
+Fix by using virtio_device->device consistently for
+allocation and deallocation
 
-Fixes: ec4d8e7cf024 ("bnxt_en: Add TPA ID mapping logic for 57500 chips.")
-Reviewed-by: Ray Jui <ray.jui@broadcom.com>
-Signed-off-by: Srijit Bose <srijit.bose@broadcom.com>
-Signed-off-by: Michael Chan <michael.chan@broadcom.com>
-Reviewed-by: Vadim Fedorenko <vadim.fedorenko@linux.dev>
-Link: https://patch.msgid.link/20251231083625.3911652-1-michael.chan@broadcom.com
+Fixes: 4944be2f5ad8c ("virtio_net: Allocate rss_hdr with devres")
+Signed-off-by: Kommula Shiva Shankar <kshankar@marvell.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://patch.msgid.link/20260102101900.692770-1-kshankar@marvell.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt.c | 15 ++++++++++++---
- drivers/net/ethernet/broadcom/bnxt/bnxt.h |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/virtio_net.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.c b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-index 0366323ab0676..95c774d98da66 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.c
-@@ -1482,9 +1482,11 @@ static u16 bnxt_alloc_agg_idx(struct bnxt_rx_ring_info *rxr, u16 agg_id)
- 	struct bnxt_tpa_idx_map *map = rxr->rx_tpa_idx_map;
- 	u16 idx = agg_id & MAX_TPA_P5_MASK;
+diff --git a/drivers/net/virtio_net.c b/drivers/net/virtio_net.c
+index 8e04adb57f52a..4e1a5291099a5 100644
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3783,7 +3783,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 	if (vi->has_rss && !netif_is_rxfh_configured(dev)) {
+ 		old_rss_hdr = vi->rss_hdr;
+ 		old_rss_trailer = vi->rss_trailer;
+-		vi->rss_hdr = devm_kzalloc(&dev->dev, virtnet_rss_hdr_size(vi), GFP_KERNEL);
++		vi->rss_hdr = devm_kzalloc(&vi->vdev->dev, virtnet_rss_hdr_size(vi), GFP_KERNEL);
+ 		if (!vi->rss_hdr) {
+ 			vi->rss_hdr = old_rss_hdr;
+ 			return -ENOMEM;
+@@ -3794,7 +3794,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
  
--	if (test_bit(idx, map->agg_idx_bmap))
--		idx = find_first_zero_bit(map->agg_idx_bmap,
--					  BNXT_AGG_IDX_BMAP_SIZE);
-+	if (test_bit(idx, map->agg_idx_bmap)) {
-+		idx = find_first_zero_bit(map->agg_idx_bmap, MAX_TPA_P5);
-+		if (idx >= MAX_TPA_P5)
-+			return INVALID_HW_RING_ID;
-+	}
- 	__set_bit(idx, map->agg_idx_bmap);
- 	map->agg_id_tbl[agg_id] = idx;
- 	return idx;
-@@ -1548,6 +1550,13 @@ static void bnxt_tpa_start(struct bnxt *bp, struct bnxt_rx_ring_info *rxr,
- 	if (bp->flags & BNXT_FLAG_CHIP_P5_PLUS) {
- 		agg_id = TPA_START_AGG_ID_P5(tpa_start);
- 		agg_id = bnxt_alloc_agg_idx(rxr, agg_id);
-+		if (unlikely(agg_id == INVALID_HW_RING_ID)) {
-+			netdev_warn(bp->dev, "Unable to allocate agg ID for ring %d, agg 0x%x\n",
-+				    rxr->bnapi->index,
-+				    TPA_START_AGG_ID_P5(tpa_start));
-+			bnxt_sched_reset_rxr(bp, rxr);
-+			return;
-+		}
- 	} else {
- 		agg_id = TPA_START_AGG_ID(tpa_start);
+ 		if (!virtnet_commit_rss_command(vi)) {
+ 			/* restore ctrl_rss if commit_rss_command failed */
+-			devm_kfree(&dev->dev, vi->rss_hdr);
++			devm_kfree(&vi->vdev->dev, vi->rss_hdr);
+ 			vi->rss_hdr = old_rss_hdr;
+ 			vi->rss_trailer = old_rss_trailer;
+ 
+@@ -3802,7 +3802,7 @@ static int virtnet_set_queues(struct virtnet_info *vi, u16 queue_pairs)
+ 				 queue_pairs);
+ 			return -EINVAL;
+ 		}
+-		devm_kfree(&dev->dev, old_rss_hdr);
++		devm_kfree(&vi->vdev->dev, old_rss_hdr);
+ 		goto succ;
  	}
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt.h b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-index 3613a172483a1..45bbaec75ded4 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt.h
-@@ -1079,11 +1079,9 @@ struct bnxt_tpa_info {
- 	struct rx_agg_cmp	*agg_arr;
- };
  
--#define BNXT_AGG_IDX_BMAP_SIZE	(MAX_TPA_P5 / BITS_PER_LONG)
--
- struct bnxt_tpa_idx_map {
- 	u16		agg_id_tbl[1024];
--	unsigned long	agg_idx_bmap[BNXT_AGG_IDX_BMAP_SIZE];
-+	DECLARE_BITMAP(agg_idx_bmap, MAX_TPA_P5);
- };
- 
- struct bnxt_rx_ring_info {
 -- 
 2.51.0
 
