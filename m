@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209618-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209231-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C3FA3D27A9D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:49 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 35269D2701B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:00:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 228D1310B249
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7144C301C3BC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A8A183BFE47;
-	Thu, 15 Jan 2026 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 83E903D1CA8;
+	Thu, 15 Jan 2026 17:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z9DxlDXh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UR5ChWhg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AED02F619D;
-	Thu, 15 Jan 2026 17:46:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 486CB3BFE3C;
+	Thu, 15 Jan 2026 17:28:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499209; cv=none; b=du1p01AFDP2RvQ3uy9idBPXt8cKIT7AuJJlgd/u6Q25GfR0qjs35wW6Jh3wObBgrUZ0R+GWIhAntvmau32mUC4kkmF6PK9dUqvw8TLkncBKsedhEqFUr/Ikw7fb3EPev8Pv6zoHkD2EzSL3gDYRGqekOQ3eBFited1DVVvkdplY=
+	t=1768498107; cv=none; b=FzhiAWoz1Ypi3HXs03gCvNrZjOvkC6VHXPuIQLUxZbPF1X/EdlwfDo60JhtNk8lnYzObEnEk+EfflT41uTDw2aHo+lLMTYFtqwHb+fmnsU82stxCr1LlJ+LlVGKEkAJPxLExuYWWXcFbm8y2sLoi8RGVYv/pNkVAgEh1O/ZtHYA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499209; c=relaxed/simple;
-	bh=JF0HO2ubdsgr57oZcwNCgbYuIpDPHwZsbG+5VOJmF4w=;
+	s=arc-20240116; t=1768498107; c=relaxed/simple;
+	bh=FS985oOkl/X8pPcasQ7IRXVFJ+GePShIWqoBeWCyZo4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K+Jf2FyH6jiBGr3SOEigO/DTt5ROcYa0Z3y4z9ImQwZSfWHrMGol5vjnDxq2COmcMK5MfnJyEKFADCP7SS3dGEoCjbI4u+umYcULvfGTeK+rH3ZeXZyL89pBu+TZqjOdm1J+cmK1ArVIMGXK0JSguW+TXogBYOSj0fd6DyBDKSU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z9DxlDXh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3859C116D0;
-	Thu, 15 Jan 2026 17:46:48 +0000 (UTC)
+	 MIME-Version; b=a39JIflPWLrJ163jQDVhX3bb/le2Oag8gvONwi7DJiBy/sZEmhgW2uUDzhfaB6FVOVNWou1nkatpwkOw8boSHJ6q0kM4wMd6GWSOGMgs0QH8jmJatfwEvD+XUTM40v7JbB1YJqlCFQAVdp1MofziuNJspWueXgfWSBu9tlNSFTM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UR5ChWhg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA760C116D0;
+	Thu, 15 Jan 2026 17:28:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499209;
-	bh=JF0HO2ubdsgr57oZcwNCgbYuIpDPHwZsbG+5VOJmF4w=;
+	s=korg; t=1768498107;
+	bh=FS985oOkl/X8pPcasQ7IRXVFJ+GePShIWqoBeWCyZo4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Z9DxlDXhPTRD8c4gqm8HjkIXptOYfB1NtO2X1Eis5cONiDJHSlIVeYefgDWPlr3Z4
-	 wC89/wgyJSGFRCqqaiuSCEx1L6fDH4ienwOqJkzIdj7VMPcIAoyEnmNeG6l2dichzw
-	 VaYsIm6VKslPD5P0hRaZqErB8Iy8wdDVPTGzOLkw=
+	b=UR5ChWhgpxuClcW86qbjP787onkAbJlxPu3fcOY/k4TnLArh2QQqP5zMJ5N7YL9Iy
+	 dZx3eKVU0oXW97hV61VgfN8WIVrGozgWlYZLQu3VGmDPpBi//ZvdVuJN4KNBHvk5cF
+	 wTs4YVEeDKLOLncKGaScdKHdk6f2ePJD30QKRDTo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 146/451] efi/cper: align ARM CPER type with UEFI 2.9A/2.10 specs
-Date: Thu, 15 Jan 2026 17:45:47 +0100
-Message-ID: <20260115164236.198042995@linuxfoundation.org>
+	John Warthog9 Hawley <warthog9@kernel.org>,
+	"John W. Krahn" <jwkrahn@shaw.ca>,
+	Steven Rostedt <rostedt@goodmis.org>
+Subject: [PATCH 5.15 282/554] ktest.pl: Fix uninitialized var in config-bisect.pl
+Date: Thu, 15 Jan 2026 17:45:48 +0100
+Message-ID: <20260115164256.436434748@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,235 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-[ Upstream commit 96b010536ee020e716d28d9b359a4bcd18800aeb ]
+commit d3042cbe84a060b4df764eb6c5300bbe20d125ca upstream.
 
-Up to UEFI spec 2.9, the type byte of CPER struct for ARM processor
-was defined simply as:
+The error path of copying the old config used the wrong variable in the
+error message:
 
-Type at byte offset 4:
+ $ mkdir /tmp/build
+ $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad
+ $ chmod 0 /tmp/build
+ $ ./tools/testing/ktest/config-bisect.pl -b /tmp/build config-good /tmp/config-bad good
+ cp /tmp/build//.config config-good.tmp ... [0 seconds] FAILED!
+ Use of uninitialized value $config in concatenation (.) or string at ./tools/testing/ktest/config-bisect.pl line 744.
+ failed to copy  to config-good.tmp
 
-	- Cache error
-	- TLB Error
-	- Bus Error
-	- Micro-architectural Error
-	All other values are reserved
+When it should have shown:
 
-Yet, there was no information about how this would be encoded.
+ failed to copy /tmp/build//.config to config-good.tmp
 
-Spec 2.9A errata corrected it by defining:
-
-	- Bit 1 - Cache Error
-	- Bit 2 - TLB Error
-	- Bit 3 - Bus Error
-	- Bit 4 - Micro-architectural Error
-	All other values are reserved
-
-That actually aligns with the values already defined on older
-versions at N.2.4.1. Generic Processor Error Section.
-
-Spec 2.10 also preserve the same encoding as 2.9A.
-
-Adjust CPER and GHES handling code for both generic and ARM
-processors to properly handle UEFI 2.9A and 2.10 encoding.
-
-Link: https://uefi.org/specs/UEFI/2.10/Apx_N_Common_Platform_Error_Record.html#arm-processor-error-information
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Cc: John 'Warthog9' Hawley <warthog9@kernel.org>
+Fixes: 0f0db065999cf ("ktest: Add standalone config-bisect.pl program")
+Link: https://patch.msgid.link/20251203180924.6862bd26@gandalf.local.home
+Reported-by: "John W. Krahn" <jwkrahn@shaw.ca>
+Signed-off-by: Steven Rostedt <rostedt@goodmis.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/apei/ghes.c        | 16 +++++++----
- drivers/firmware/efi/cper-arm.c | 50 ++++++++++++++++-----------------
- include/linux/cper.h            | 10 +++----
- 3 files changed, 39 insertions(+), 37 deletions(-)
+ tools/testing/ktest/config-bisect.pl |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/acpi/apei/ghes.c b/drivers/acpi/apei/ghes.c
-index 250ea9ec5f0c2..bdb23ca251e23 100644
---- a/drivers/acpi/apei/ghes.c
-+++ b/drivers/acpi/apei/ghes.c
-@@ -22,6 +22,7 @@
- #include <linux/moduleparam.h>
- #include <linux/init.h>
- #include <linux/acpi.h>
-+#include <linux/bitfield.h>
- #include <linux/io.h>
- #include <linux/interrupt.h>
- #include <linux/timer.h>
-@@ -500,6 +501,7 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- {
- 	struct cper_sec_proc_arm *err = acpi_hest_get_payload(gdata);
- 	int flags = sync ? MF_ACTION_REQUIRED : 0;
-+	char error_type[120];
- 	bool queued = false;
- 	int sec_sev, i;
- 	char *p;
-@@ -513,9 +515,8 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 	p = (char *)(err + 1);
- 	for (i = 0; i < err->err_info_num; i++) {
- 		struct cper_arm_err_info *err_info = (struct cper_arm_err_info *)p;
--		bool is_cache = (err_info->type == CPER_ARM_CACHE_ERROR);
-+		bool is_cache = err_info->type & CPER_ARM_CACHE_ERROR;
- 		bool has_pa = (err_info->validation_bits & CPER_ARM_INFO_VALID_PHYSICAL_ADDR);
--		const char *error_type = "unknown error";
+--- a/tools/testing/ktest/config-bisect.pl
++++ b/tools/testing/ktest/config-bisect.pl
+@@ -741,9 +741,9 @@ if ($start) {
+ 	die "Can not find file $bad\n";
+     }
+     if ($val eq "good") {
+-	run_command "cp $output_config $good" or die "failed to copy $config to $good\n";
++	run_command "cp $output_config $good" or die "failed to copy $output_config to $good\n";
+     } elsif ($val eq "bad") {
+-	run_command "cp $output_config $bad" or die "failed to copy $config to $bad\n";
++	run_command "cp $output_config $bad" or die "failed to copy $output_config to $bad\n";
+     }
+ }
  
- 		/*
- 		 * The field (err_info->error_info & BIT(26)) is fixed to set to
-@@ -529,12 +530,15 @@ static bool ghes_handle_arm_hw_error(struct acpi_hest_generic_data *gdata,
- 			continue;
- 		}
- 
--		if (err_info->type < ARRAY_SIZE(cper_proc_error_type_strs))
--			error_type = cper_proc_error_type_strs[err_info->type];
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
- 
- 		pr_warn_ratelimited(FW_WARN GHES_PFX
--				    "Unhandled processor error type: %s\n",
--				    error_type);
-+				    "Unhandled processor error type 0x%02x: %s%s\n",
-+				    err_info->type, error_type,
-+				    (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
- 		p += err_info->length;
- 	}
- 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index f4b7a48327fbb..ea43589944ba5 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -94,15 +94,11 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	bool proc_context_corrupt, corrected, precise_pc, restartable_pc;
- 	bool time_out, access_mode;
- 
--	/* If the type is unknown, bail. */
--	if (type > CPER_ARM_MAX_TYPE)
--		return;
--
- 	/*
- 	 * Vendor type errors have error information values that are vendor
- 	 * specific.
- 	 */
--	if (type == CPER_ARM_VENDOR_ERROR)
-+	if (type & CPER_ARM_VENDOR_ERROR)
- 		return;
- 
- 	if (error_info & CPER_ARM_ERR_VALID_TRANSACTION_TYPE) {
-@@ -117,43 +113,38 @@ static void cper_print_arm_err_info(const char *pfx, u32 type,
- 	if (error_info & CPER_ARM_ERR_VALID_OPERATION_TYPE) {
- 		op_type = ((error_info >> CPER_ARM_ERR_OPERATION_SHIFT)
- 			   & CPER_ARM_ERR_OPERATION_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_cache_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%scache error, operation type: %s\n", pfx,
- 				       arm_cache_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_TLB_ERROR:
-+		}
-+		if (type & CPER_ARM_TLB_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_tlb_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sTLB error, operation type: %s\n", pfx,
- 				       arm_tlb_err_op_strs[op_type]);
- 			}
--			break;
--		case CPER_ARM_BUS_ERROR:
-+		}
-+		if (type & CPER_ARM_BUS_ERROR) {
- 			if (op_type < ARRAY_SIZE(arm_bus_err_op_strs)) {
--				printk("%soperation type: %s\n", pfx,
-+				printk("%sbus error, operation type: %s\n", pfx,
- 				       arm_bus_err_op_strs[op_type]);
- 			}
--			break;
- 		}
- 	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_LEVEL) {
- 		level = ((error_info >> CPER_ARM_ERR_LEVEL_SHIFT)
- 			 & CPER_ARM_ERR_LEVEL_MASK);
--		switch (type) {
--		case CPER_ARM_CACHE_ERROR:
-+		if (type & CPER_ARM_CACHE_ERROR)
- 			printk("%scache level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_TLB_ERROR:
-+
-+		if (type & CPER_ARM_TLB_ERROR)
- 			printk("%sTLB level: %d\n", pfx, level);
--			break;
--		case CPER_ARM_BUS_ERROR:
-+
-+		if (type & CPER_ARM_BUS_ERROR)
- 			printk("%saffinity level at which the bus error occurred: %d\n",
- 			       pfx, level);
--			break;
--		}
- 	}
- 
- 	if (error_info & CPER_ARM_ERR_VALID_PROC_CONTEXT_CORRUPT) {
-@@ -242,6 +233,7 @@ void cper_print_proc_arm(const char *pfx,
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
- 	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
-+	char error_type[120];
- 
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
-@@ -290,9 +282,15 @@ void cper_print_proc_arm(const char *pfx,
- 				       newpfx);
- 		}
- 
--		printk("%serror_type: %d, %s\n", newpfx, err_info->type,
--			err_info->type < ARRAY_SIZE(cper_proc_error_type_strs) ?
--			cper_proc_error_type_strs[err_info->type] : "unknown");
-+		cper_bits_to_str(error_type, sizeof(error_type),
-+				 FIELD_GET(CPER_ARM_ERR_TYPE_MASK, err_info->type),
-+				 cper_proc_error_type_strs,
-+				 ARRAY_SIZE(cper_proc_error_type_strs));
-+
-+		printk("%serror_type: 0x%02x: %s%s\n", newpfx, err_info->type,
-+		       error_type,
-+		       (err_info->type & ~CPER_ARM_ERR_TYPE_MASK) ? " with reserved bit(s)" : "");
-+
- 		if (err_info->validation_bits & CPER_ARM_INFO_VALID_ERR_INFO) {
- 			printk("%serror_info: 0x%016llx\n", newpfx,
- 			       err_info->error_info);
-diff --git a/include/linux/cper.h b/include/linux/cper.h
-index 724a5e3c122d6..a31e22cc839eb 100644
---- a/include/linux/cper.h
-+++ b/include/linux/cper.h
-@@ -270,11 +270,11 @@ enum {
- #define CPER_ARM_INFO_FLAGS_PROPAGATED		BIT(2)
- #define CPER_ARM_INFO_FLAGS_OVERFLOW		BIT(3)
- 
--#define CPER_ARM_CACHE_ERROR			0
--#define CPER_ARM_TLB_ERROR			1
--#define CPER_ARM_BUS_ERROR			2
--#define CPER_ARM_VENDOR_ERROR			3
--#define CPER_ARM_MAX_TYPE			CPER_ARM_VENDOR_ERROR
-+#define CPER_ARM_ERR_TYPE_MASK			GENMASK(4,1)
-+#define CPER_ARM_CACHE_ERROR			BIT(1)
-+#define CPER_ARM_TLB_ERROR			BIT(2)
-+#define CPER_ARM_BUS_ERROR			BIT(3)
-+#define CPER_ARM_VENDOR_ERROR			BIT(4)
- 
- #define CPER_ARM_ERR_VALID_TRANSACTION_TYPE	BIT(0)
- #define CPER_ARM_ERR_VALID_OPERATION_TYPE	BIT(1)
--- 
-2.51.0
-
 
 
 
