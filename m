@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209549-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209161-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E77E6D277EF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B569ED26AFA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B08C131D7B5F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 467A6314A32B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5E5332D73B4;
-	Thu, 15 Jan 2026 17:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE5E34216C;
+	Thu, 15 Jan 2026 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KcyXGEZ6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAZdiVkY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 226662C0F83;
-	Thu, 15 Jan 2026 17:43:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B7A39B48E;
+	Thu, 15 Jan 2026 17:25:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499013; cv=none; b=lHIviWiHGepB7GYG4GQkLSyiVgbq40zUAoCfbwvIZ+fR5VjuQv95PaVSUgl4IHRPb9URy3Uhq4aIn1hGtRYR33hEnVVK5798G/cYw4P5/FfDsSrtQ9XUao6uqPcK6usYmdbOReCmDoSF1gbkdKIWXqlc9fqZuhmjWBhhYu2uO7M=
+	t=1768497907; cv=none; b=sBZw+ZqVOyjXc1FPZBhCfdrs2iTZ4ZKop04U/pcPq7BVKCmC3yHsgLbg1XLUXiScJXUuvvaU8PjOdsouqrW/yA6EyUTpWonZR+ZMigGIh4AAIybFHnSsjFSEzG4WH/wZI/JngmjH6JIx7mQ1eKTfdZObuoNhZIc+snsoVgl4XNo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499013; c=relaxed/simple;
-	bh=5chU0IIhOjVS7zeGlAFJfJAN5u8X6tUlLMvQca7VuyY=;
+	s=arc-20240116; t=1768497907; c=relaxed/simple;
+	bh=s6pEeZ3OvFkDuDWL8ngyQHiiRxLy/lbiZialyks/CdM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D2FjV7I84IqINSJyNOqFTl4mJW0XY0Ay8/UGj2xaWT0k8go2l9H3/1NZMTgMWfsmb6UY2NPAeM/PoZTgpLj9UXSrBDckI0aV6TgJcobTAnxQISYkIongpS0H+V105NveWwqmvOjHWGg/03WMprVV8tI8A7D0Gm9/X93bHFpUFcI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KcyXGEZ6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A23E7C116D0;
-	Thu, 15 Jan 2026 17:43:32 +0000 (UTC)
+	 MIME-Version; b=T4tywQoxyxldXeaFGhTuO9QYxxW9V3kEa2tA1pIfceh4KZY5GxzvUdow4DLlUZTunW9YrouN/euhgsF/epFkaPclVXrkWv1pqCJVz6FrrsSOgWh+QMyESM1amq8jST/AU25Jhajdp2+FmkTMFugkrQLMxrx5WSHjzD28AAM0PY4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAZdiVkY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E64FC116D0;
+	Thu, 15 Jan 2026 17:25:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499013;
-	bh=5chU0IIhOjVS7zeGlAFJfJAN5u8X6tUlLMvQca7VuyY=;
+	s=korg; t=1768497907;
+	bh=s6pEeZ3OvFkDuDWL8ngyQHiiRxLy/lbiZialyks/CdM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KcyXGEZ64xOuDhZDP2W7gXJmQ6Y/Ckxo0ehhO4y89Gea64znTRHkWymx1qZVX/VtZ
-	 nDlSexuFr43489GqeX3onYhizD21zdnJ9oLUhS7T4oEn4p1znsBIhL+SsPbxfsbxvl
-	 brLMSJev+VEStV/1xp+XRIKgdXBwfHho+XS4wsjk=
+	b=OAZdiVkYWMZOPfXooI0BD2lQJkfNAiLJ+o6S4AxndepBUoMo3dG5J8uv11nVhRmI9
+	 uxORORG2bJHUMf3z2CckOB7IlJXA5AbanOKxiGfJEw6qu44SyDenauT/9is2Iw8vSr
+	 C98PD/tWjUcYsuYN6njaAZOaPqkOiSDfHG9Ok0Go=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Siddharth Vadapalli <s-vadapalli@ti.com>,
-	Manivannan Sadhasivam <mani@kernel.org>,
-	Bjorn Helgaas <bhelgaas@google.com>,
+	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
+	WangYuli <wangyl5933@chinaunicom.cn>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 077/451] PCI: keystone: Exit ks_pcie_probe() for invalid mode
+Subject: [PATCH 5.15 212/554] ACPICA: Avoid walking the Namespace if start_node is NULL
 Date: Thu, 15 Jan 2026 17:44:38 +0100
-Message-ID: <20260115164233.699696014@linuxfoundation.org>
+Message-ID: <20260115164253.924575021@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,48 +61,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Siddharth Vadapalli <s-vadapalli@ti.com>
+From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
 
-[ Upstream commit 95d9c3f0e4546eaec0977f3b387549a8463cd49f ]
+[ Upstream commit 9d6c58dae8f6590c746ac5d0012ffe14a77539f0 ]
 
-Commit under Fixes introduced support for PCIe EP mode on AM654x platforms.
-When the mode happens to be either "DW_PCIE_RC_TYPE" or "DW_PCIE_EP_TYPE",
-the PCIe Controller is configured accordingly. However, when the mode is
-neither of them, an error message is displayed, but the driver probe
-succeeds. Since this "invalid" mode is not associated with a functional
-PCIe Controller, the probe should fail.
+Although commit 0c9992315e73 ("ACPICA: Avoid walking the ACPI Namespace
+if it is not there") fixed the situation when both start_node and
+acpi_gbl_root_node are NULL, the Linux kernel mainline now still crashed
+on Honor Magicbook 14 Pro [1].
 
-Fix the behavior by exiting "ks_pcie_probe()" with the return value of
-"-EINVAL" in addition to displaying the existing error message when the
-mode is invalid.
+That happens due to the access to the member of parent_node in
+acpi_ns_get_next_node().  The NULL pointer dereference will always
+happen, no matter whether or not the start_node is equal to
+ACPI_ROOT_OBJECT, so move the check of start_node being NULL
+out of the if block.
 
-Fixes: 23284ad677a9 ("PCI: keystone: Add support for PCIe EP in AM654x Platforms")
-Signed-off-by: Siddharth Vadapalli <s-vadapalli@ti.com>
-Signed-off-by: Manivannan Sadhasivam <mani@kernel.org>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://patch.msgid.link/20251029080547.1253757-4-s-vadapalli@ti.com
+Unfortunately, all the attempts to contact Honor have failed, they
+refused to provide any technical support for Linux.
+
+The bad DSDT table's dump could be found on GitHub [2].
+
+DMI: HONOR FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025
+
+Link: https://github.com/acpica/acpica/commit/1c1b57b9eba4554cb132ee658dd942c0210ed20d
+Link: https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7 [1]
+Link: https://github.com/denis-bb/honor-fmb-p-dsdt [2]
+Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
+[ rjw: Subject adjustment, changelog edits ]
+Link: https://patch.msgid.link/20251125-acpica-v1-1-99e63b1b25f8@linux.dev
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/dwc/pci-keystone.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/acpi/acpica/nswalk.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pci/controller/dwc/pci-keystone.c b/drivers/pci/controller/dwc/pci-keystone.c
-index 6245c179ce49f..6844c4652e702 100644
---- a/drivers/pci/controller/dwc/pci-keystone.c
-+++ b/drivers/pci/controller/dwc/pci-keystone.c
-@@ -1382,6 +1382,8 @@ static int ks_pcie_probe(struct platform_device *pdev)
- 		break;
- 	default:
- 		dev_err(dev, "INVALID device type %d\n", mode);
-+		ret = -EINVAL;
-+		goto err_get_sync;
+diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
+index e7c30ce06e189..dee2cb5fb9617 100644
+--- a/drivers/acpi/acpica/nswalk.c
++++ b/drivers/acpi/acpica/nswalk.c
+@@ -169,9 +169,12 @@ acpi_ns_walk_namespace(acpi_object_type type,
+ 
+ 	if (start_node == ACPI_ROOT_OBJECT) {
+ 		start_node = acpi_gbl_root_node;
+-		if (!start_node) {
+-			return_ACPI_STATUS(AE_NO_NAMESPACE);
+-		}
++	}
++
++	/* Avoid walking the namespace if the StartNode is NULL */
++
++	if (!start_node) {
++		return_ACPI_STATUS(AE_NO_NAMESPACE);
  	}
  
- 	ks_pcie_enable_error_irq(ks_pcie);
+ 	/* Null child means "get first node" */
 -- 
 2.51.0
 
