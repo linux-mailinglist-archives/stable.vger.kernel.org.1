@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209371-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208755-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 51B6FD275EC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:18 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id AD914D26347
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:15:26 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D08A33313BEA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1F43031B6FDE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 986383D1CCD;
-	Thu, 15 Jan 2026 17:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8546F3BC4DB;
+	Thu, 15 Jan 2026 17:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wJdid9z6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xY1Sm928"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5B5D63BC4E8;
-	Thu, 15 Jan 2026 17:35:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 489B1396B7D;
+	Thu, 15 Jan 2026 17:05:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498505; cv=none; b=WyLCa1lY3v0bztCHepO21mvWs39uRDmiIfWaPeGtWLVD2tPvBdE0leBIVb9yROrjvRQlz2+0cJwlUXnMs7/fXEMYXHFnfyYB0kbu4xoyIwaVXnKp9f8XaN+qO4f3TVYjCaQWrFrPcu6cREiOUWRVSxaKd+ReQTFuxtv4rOcstxM=
+	t=1768496751; cv=none; b=MNm125ht3dFPl1QE/KQCKY5llFkD/JJ90s027ZJfkr1aFg8UzvKW1u5mi9jrsEdaKCTlN8N4QYEKJL0eCA1uNK7lhcr00virRzcM6QRWxZSnEYbw1UQhcndazMclmqmRd3Q/ZjIJTOASh7loXEFgeOjljQZYpL3JMWZMijjsApQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498505; c=relaxed/simple;
-	bh=lJUwe/oAvHSXMJXaR/wiG5RFAGpHGXQEPJ3kdQ2Y0Rg=;
+	s=arc-20240116; t=1768496751; c=relaxed/simple;
+	bh=Dip87YbBbkRZwGuruxRGQxqSsvXP9F9yU+vRLiS0/Rc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=dJ9vTWmjmzH0NUlxvNGlfPfUH3Xn8lMg7wdHLss9F7LoxY9DEmP/d8XySRmLf1Y9/y7DEou+CeKUE+T83f8A+LP0GJ3NxfofPuasV5KD2/2MdUg8e1rgCNtfV0Lukm09T8rUAyKnAbwCv8P0RBHdjyjze/XYMzOeMSi+ePzAf00=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wJdid9z6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B655C116D0;
-	Thu, 15 Jan 2026 17:35:04 +0000 (UTC)
+	 MIME-Version; b=VVtSmEpT7ZL91PgMGOyWWdHWnuLeJhLC7XIICvnLMIGtjxHy1TdTc4+ojGU+woLgP6efhB7CIHO7Qed077bUwNW5t82rs6qqQVKenjzaXz5kj8jqxqGP+PzdPh54TWmumluta5oq8c9YKvgeUNv8R5PwXGhDYIZ5fp8EOYdZBps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xY1Sm928; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC462C116D0;
+	Thu, 15 Jan 2026 17:05:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498504;
-	bh=lJUwe/oAvHSXMJXaR/wiG5RFAGpHGXQEPJ3kdQ2Y0Rg=;
+	s=korg; t=1768496751;
+	bh=Dip87YbBbkRZwGuruxRGQxqSsvXP9F9yU+vRLiS0/Rc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wJdid9z6sW+CZVeVeYZ1uYBHIUOe1SAX46tSHNoUyM0FvGgJVfO4rQ216nhMfX//U
-	 wrJh1UNpSiEnP0miPNt7GYzCRgmY7NEOvwj7NcwSrd4dQ4TBQTE9TPcZ588C2/h8vv
-	 XvjNE2zHzYwEO9CJJLvyoSraoUFUGrKiGEsgLV5Q=
+	b=xY1Sm928zXpjcjYm7+jYH9GQU1WwI+9DzPGElFLKdgg3hSqQUp+x/lk5y6JdatJ2K
+	 9bXjypVpG5/iFFVWnPJbL6pZu4dmblnc+kr6jvwK8ZujpPz7BNr0/IBu5eQgEBTMfF
+	 gCk+e3pY83H0TFWun45+NqaA8Sg6tHh5JI1NI5OE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jim Mattson <jmattson@google.com>,
-	Sean Christopherson <seanjc@google.com>,
+	Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 454/554] KVM: SVM: Mark VMCB_NPT as dirty on nested VMRUN
+Subject: [PATCH 6.12 105/119] netfilter: nf_tables: avoid chain re-validation if possible
 Date: Thu, 15 Jan 2026 17:48:40 +0100
-Message-ID: <20260115164302.707644804@linuxfoundation.org>
+Message-ID: <20260115164155.742574624@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,43 +60,273 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jim Mattson <jmattson@google.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 7c8b465a1c91f674655ea9cec5083744ec5f796a ]
+[ Upstream commit 8e1a1bc4f5a42747c08130b8242ebebd1210b32f ]
 
-Mark the VMCB_NPT bit as dirty in nested_vmcb02_prepare_save()
-on every nested VMRUN.
+Hamza Mahfooz reports cpu soft lock-ups in
+nft_chain_validate():
 
-If L1 changes the PAT MSR between two VMRUN instructions on the same
-L1 vCPU, the g_pat field in the associated vmcb02 will change, and the
-VMCB_NPT clean bit should be cleared.
+ watchdog: BUG: soft lockup - CPU#1 stuck for 27s! [iptables-nft-re:37547]
+[..]
+ RIP: 0010:nft_chain_validate+0xcb/0x110 [nf_tables]
+[..]
+  nft_immediate_validate+0x36/0x50 [nf_tables]
+  nft_chain_validate+0xc9/0x110 [nf_tables]
+  nft_immediate_validate+0x36/0x50 [nf_tables]
+  nft_chain_validate+0xc9/0x110 [nf_tables]
+  nft_immediate_validate+0x36/0x50 [nf_tables]
+  nft_chain_validate+0xc9/0x110 [nf_tables]
+  nft_immediate_validate+0x36/0x50 [nf_tables]
+  nft_chain_validate+0xc9/0x110 [nf_tables]
+  nft_immediate_validate+0x36/0x50 [nf_tables]
+  nft_chain_validate+0xc9/0x110 [nf_tables]
+  nft_immediate_validate+0x36/0x50 [nf_tables]
+  nft_chain_validate+0xc9/0x110 [nf_tables]
+  nft_table_validate+0x6b/0xb0 [nf_tables]
+  nf_tables_validate+0x8b/0xa0 [nf_tables]
+  nf_tables_commit+0x1df/0x1eb0 [nf_tables]
+[..]
 
-Fixes: 4bb170a5430b ("KVM: nSVM: do not mark all VMCB02 fields dirty on nested vmexit")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jim Mattson <jmattson@google.com>
-Link: https://lore.kernel.org/r/20250922162935.621409-3-jmattson@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ adapted vmcb02 local variable to svm->vmcb direct access pattern ]
+Currently nf_tables will traverse the entire table (chain graph), starting
+from the entry points (base chains), exploring all possible paths
+(chain jumps).  But there are cases where we could avoid revalidation.
+
+Consider:
+1  input -> j2 -> j3
+2  input -> j2 -> j3
+3  input -> j1 -> j2 -> j3
+
+Then the second rule does not need to revalidate j2, and, by extension j3,
+because this was already checked during validation of the first rule.
+We need to validate it only for rule 3.
+
+This is needed because chain loop detection also ensures we do not exceed
+the jump stack: Just because we know that j2 is cycle free, its last jump
+might now exceed the allowed stack size.  We also need to update all
+reachable chains with the new largest observed call depth.
+
+Care has to be taken to revalidate even if the chain depth won't be an
+issue: chain validation also ensures that expressions are not called from
+invalid base chains.  For example, the masquerade expression can only be
+called from NAT postrouting base chains.
+
+Therefore we also need to keep record of the base chain context (type,
+hooknum) and revalidate if the chain becomes reachable from a different
+hook location.
+
+Reported-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Closes: https://lore.kernel.org/netfilter-devel/20251118221735.GA5477@linuxonhyperv3.guj3yctzbm1etfxqx2vob5hsef.xx.internal.cloudapp.net/
+Tested-by: Hamza Mahfooz <hamzamahfooz@linux.microsoft.com>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/svm/nested.c |    1 +
- 1 file changed, 1 insertion(+)
+ include/net/netfilter/nf_tables.h | 34 +++++++++++----
+ net/netfilter/nf_tables_api.c     | 69 +++++++++++++++++++++++++++++--
+ 2 files changed, 91 insertions(+), 12 deletions(-)
 
---- a/arch/x86/kvm/svm/nested.c
-+++ b/arch/x86/kvm/svm/nested.c
-@@ -456,6 +456,7 @@ static void nested_vmcb02_prepare_save(s
- 	bool new_vmcb12 = false;
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index ee550229d4ffa..d440583aa4b24 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1093,6 +1093,29 @@ struct nft_rule_blob {
+ 		__attribute__((aligned(__alignof__(struct nft_rule_dp))));
+ };
  
- 	nested_vmcb02_compute_g_pat(svm);
-+	vmcb_mark_dirty(svm->vmcb, VMCB_NPT);
++enum nft_chain_types {
++	NFT_CHAIN_T_DEFAULT = 0,
++	NFT_CHAIN_T_ROUTE,
++	NFT_CHAIN_T_NAT,
++	NFT_CHAIN_T_MAX
++};
++
++/**
++ *	struct nft_chain_validate_state - validation state
++ *
++ *	If a chain is encountered again during table validation it is
++ *	possible to avoid revalidation provided the calling context is
++ *	compatible.  This structure stores relevant calling context of
++ *	previous validations.
++ *
++ *	@hook_mask: the hook numbers and locations the chain is linked to
++ *	@depth: the deepest call chain level the chain is linked to
++ */
++struct nft_chain_validate_state {
++	u8			hook_mask[NFT_CHAIN_T_MAX];
++	u8			depth;
++};
++
+ /**
+  *	struct nft_chain - nf_tables chain
+  *
+@@ -1111,6 +1134,7 @@ struct nft_rule_blob {
+  *	@udlen: user data length
+  *	@udata: user data in the chain
+  *	@blob_next: rule blob pointer to the next in the chain
++ *	@vstate: validation state
+  */
+ struct nft_chain {
+ 	struct nft_rule_blob		__rcu *blob_gen_0;
+@@ -1130,9 +1154,10 @@ struct nft_chain {
  
- 	/* Load the nested guest state */
- 	if (svm->nested.vmcb12_gpa != svm->nested.last_vmcb12_gpa) {
+ 	/* Only used during control plane commit phase: */
+ 	struct nft_rule_blob		*blob_next;
++	struct nft_chain_validate_state vstate;
+ };
+ 
+-int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain);
++int nft_chain_validate(const struct nft_ctx *ctx, struct nft_chain *chain);
+ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+ 			 const struct nft_set_iter *iter,
+ 			 struct nft_elem_priv *elem_priv);
+@@ -1140,13 +1165,6 @@ int nft_set_catchall_validate(const struct nft_ctx *ctx, struct nft_set *set);
+ int nf_tables_bind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
+ void nf_tables_unbind_chain(const struct nft_ctx *ctx, struct nft_chain *chain);
+ 
+-enum nft_chain_types {
+-	NFT_CHAIN_T_DEFAULT = 0,
+-	NFT_CHAIN_T_ROUTE,
+-	NFT_CHAIN_T_NAT,
+-	NFT_CHAIN_T_MAX
+-};
+-
+ /**
+  * 	struct nft_chain_type - nf_tables chain type info
+  *
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index 6a2b7ce67e7f3..c3613d8e7d725 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -120,6 +120,29 @@ static void nft_validate_state_update(struct nft_table *table, u8 new_validate_s
+ 
+ 	table->validate_state = new_validate_state;
+ }
++
++static bool nft_chain_vstate_valid(const struct nft_ctx *ctx,
++				   const struct nft_chain *chain)
++{
++	const struct nft_base_chain *base_chain;
++	enum nft_chain_types type;
++	u8 hooknum;
++
++	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain)))
++		return false;
++
++	base_chain = nft_base_chain(ctx->chain);
++	hooknum = base_chain->ops.hooknum;
++	type = base_chain->type->type;
++
++	/* chain is already validated for this call depth */
++	if (chain->vstate.depth >= ctx->level &&
++	    chain->vstate.hook_mask[type] & BIT(hooknum))
++		return true;
++
++	return false;
++}
++
+ static void nf_tables_trans_destroy_work(struct work_struct *w);
+ 
+ static void nft_trans_gc_work(struct work_struct *work);
+@@ -3898,6 +3921,29 @@ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *r
+ 	nf_tables_rule_destroy(ctx, rule);
+ }
+ 
++static void nft_chain_vstate_update(const struct nft_ctx *ctx, struct nft_chain *chain)
++{
++	const struct nft_base_chain *base_chain;
++	enum nft_chain_types type;
++	u8 hooknum;
++
++	/* ctx->chain must hold the calling base chain. */
++	if (WARN_ON_ONCE(!nft_is_base_chain(ctx->chain))) {
++		memset(&chain->vstate, 0, sizeof(chain->vstate));
++		return;
++	}
++
++	base_chain = nft_base_chain(ctx->chain);
++	hooknum = base_chain->ops.hooknum;
++	type = base_chain->type->type;
++
++	BUILD_BUG_ON(BIT(NF_INET_NUMHOOKS) > U8_MAX);
++
++	chain->vstate.hook_mask[type] |= BIT(hooknum);
++	if (chain->vstate.depth < ctx->level)
++		chain->vstate.depth = ctx->level;
++}
++
+ /** nft_chain_validate - loop detection and hook validation
+  *
+  * @ctx: context containing call depth and base chain
+@@ -3907,15 +3953,25 @@ static void nf_tables_rule_release(const struct nft_ctx *ctx, struct nft_rule *r
+  * and set lookups until either the jump limit is hit or all reachable
+  * chains have been validated.
+  */
+-int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
++int nft_chain_validate(const struct nft_ctx *ctx, struct nft_chain *chain)
+ {
+ 	struct nft_expr *expr, *last;
+ 	struct nft_rule *rule;
+ 	int err;
+ 
++	BUILD_BUG_ON(NFT_JUMP_STACK_SIZE > 255);
+ 	if (ctx->level == NFT_JUMP_STACK_SIZE)
+ 		return -EMLINK;
+ 
++	if (ctx->level > 0) {
++		/* jumps to base chains are not allowed. */
++		if (nft_is_base_chain(chain))
++			return -ELOOP;
++
++		if (nft_chain_vstate_valid(ctx, chain))
++			return 0;
++	}
++
+ 	list_for_each_entry(rule, &chain->rules, list) {
+ 		if (fatal_signal_pending(current))
+ 			return -EINTR;
+@@ -3936,6 +3992,7 @@ int nft_chain_validate(const struct nft_ctx *ctx, const struct nft_chain *chain)
+ 		}
+ 	}
+ 
++	nft_chain_vstate_update(ctx, chain);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(nft_chain_validate);
+@@ -3947,7 +4004,7 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
+ 		.net	= net,
+ 		.family	= table->family,
+ 	};
+-	int err;
++	int err = 0;
+ 
+ 	list_for_each_entry(chain, &table->chains, list) {
+ 		if (!nft_is_base_chain(chain))
+@@ -3956,12 +4013,16 @@ static int nft_table_validate(struct net *net, const struct nft_table *table)
+ 		ctx.chain = chain;
+ 		err = nft_chain_validate(&ctx, chain);
+ 		if (err < 0)
+-			return err;
++			goto err;
+ 
+ 		cond_resched();
+ 	}
+ 
+-	return 0;
++err:
++	list_for_each_entry(chain, &table->chains, list)
++		memset(&chain->vstate, 0, sizeof(chain->vstate));
++
++	return err;
+ }
+ 
+ int nft_setelem_validate(const struct nft_ctx *ctx, struct nft_set *set,
+-- 
+2.51.0
+
 
 
 
