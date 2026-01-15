@@ -1,52 +1,52 @@
-Return-Path: <stable+bounces-208591-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208599-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id EC2A8D25FB4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:38 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E8A8DD25FDF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B020930203BD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:58:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 219B03006E1B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:58:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5DBB52FDC4D;
-	Thu, 15 Jan 2026 16:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BCD03B530C;
+	Thu, 15 Jan 2026 16:58:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rOO/bQEc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WXjNZ20Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 21907349B0A;
-	Thu, 15 Jan 2026 16:58:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C1EBF25228D;
+	Thu, 15 Jan 2026 16:58:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496282; cv=none; b=cdlNueeKoqwkWXrD3wZ/TWhmTvTL27ciKiV9G8S3X/1JECJvSZ4qGeZwXQdXYC/S6ch/y2+FIQlVHCr8mlbEUE100LnwrDY1kb249OurK4dEJsHapw5HrputMYTt5zPKVoZC/MFku5fVSxYt+arLC9RPyE0GvOyuUmHEg699ZMw=
+	t=1768496304; cv=none; b=q2d1se/IuKt/fqM/y9HszTZKKeY0FGF/mPer5qXqbatDsB/Moxdkt/yxFstOeCRV06636HMmntm0qHZ8FsYMfT8YND8i/jU+YaQ41VZX4HWFfZXbIpeXwPWIXRRl6//tCnu2WggSxHHchk0XDv6oRaI6iYNoEysp6qDLEpPdUmI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496282; c=relaxed/simple;
-	bh=uhSZKxDpARUQYOLlrH8MpV0X55rOI9ZdlaKEM2jO6Mw=;
+	s=arc-20240116; t=1768496304; c=relaxed/simple;
+	bh=+n2VLiuILWr9eQLEvITAu6cMpby7hiB4gsyDvEKNBmU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NOa7e8XIdyY/5p2OAZpe4NlVIxCdj4HaN7vdcmltawW/kqKn/RY0UjkJrxvwu1M3y5PZ2/BNg5H2xvzuWm0IL0fhjSZ5a1/i/UGQ9jImwHgSxBHaMQ06ASAYApFs2s+8c7tnZTWe8h1LsS9XabOPh6LTUOKf7o43lQ4/6bWpOPs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rOO/bQEc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A286AC116D0;
-	Thu, 15 Jan 2026 16:58:01 +0000 (UTC)
+	 MIME-Version; b=YI60x5dpS0TotmQE+9/znPJE0fxSuFmZ/55Nl5+VTQJjNYZ1LSoEoPPBEkBmuTXRzvVMfTtbTlwG9FkqiKglf+EvNG9ZtkBJ0xBv9KNOhRMjCv41t3xd7jdw1HfUn8gsdkxrKxQBompEAF4hgkiDaaxu7doBBq+cMKkTn5r65bE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WXjNZ20Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49D35C116D0;
+	Thu, 15 Jan 2026 16:58:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496282;
-	bh=uhSZKxDpARUQYOLlrH8MpV0X55rOI9ZdlaKEM2jO6Mw=;
+	s=korg; t=1768496304;
+	bh=+n2VLiuILWr9eQLEvITAu6cMpby7hiB4gsyDvEKNBmU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rOO/bQEc3RfE1WNS6Q94+E3F61Gb1YzEfvreuUPncPufjZBZ6CZiBjCQilF0dFvOo
-	 JXc69537fe/Scbbp4ALbomrCMXZYwXOA96zfC8r0b1Gkjz2MFrzifVrovOEIR9QhWd
-	 VPaVyfHm4dpFoXm4EMaEztvL8eXenH63jicgLO0I=
+	b=WXjNZ20Yodsn+IAYgfKKghLniw5DD6ByDiwydBo+JsogdvQIZokehisR2fzVsYqds
+	 Z/3GXqcvZjEjjUS0ajtQcax5qfCDPa4eK3EIgD9PFt+I06DgfIouGj76wLRrywJjOm
+	 /4bCo0dvOTVQmLtwb78KC5LLyPsdD7/IlNNu6qHs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8f1c492ffa4644ff3826@syzkaller.appspotmail.com,
-	Shivani Gupta <shivani07g@gmail.com>,
+	Yohei Kojima <yk@y-koj.net>,
+	Breno Leitao <leitao@debian.org>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 140/181] net/sched: act_api: avoid dereferencing ERR_PTR in tcf_idrinfo_destroy
-Date: Thu, 15 Jan 2026 17:47:57 +0100
-Message-ID: <20260115164207.371646054@linuxfoundation.org>
+Subject: [PATCH 6.18 142/181] net: netdevsim: fix inconsistent carrier state after link/unlink
+Date: Thu, 15 Jan 2026 17:47:59 +0100
+Message-ID: <20260115164207.443242689@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -65,42 +65,77 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Shivani Gupta <shivani07g@gmail.com>
+From: Yohei Kojima <yk@y-koj.net>
 
-[ Upstream commit adb25a46dc0a43173f5ea5f5f58fc8ba28970c7c ]
+[ Upstream commit d83dddffe1904e4a576d11a541878850a8e64cd2 ]
 
-syzbot reported a crash in tc_act_in_hw() during netns teardown where
-tcf_idrinfo_destroy() passed an ERR_PTR(-EBUSY) value as a tc_action
-pointer, leading to an invalid dereference.
+This patch fixes the edge case behavior on ifup/ifdown and
+linking/unlinking two netdevsim interfaces:
 
-Guard against ERR_PTR entries when iterating the action IDR so teardown
-does not call tc_act_in_hw() on an error pointer.
+1. unlink two interfaces netdevsim1 and netdevsim2
+2. ifdown netdevsim1
+3. ifup netdevsim1
+4. link two interfaces netdevsim1 and netdevsim2
+5. (Now two interfaces are linked in terms of netdevsim peer, but
+    carrier state of the two interfaces remains DOWN.)
 
-Fixes: 84a7d6797e6a ("net/sched: acp_api: no longer acquire RTNL in tc_action_net_exit()")
-Link: https://syzkaller.appspot.com/bug?extid=8f1c492ffa4644ff3826
-Reported-by: syzbot+8f1c492ffa4644ff3826@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8f1c492ffa4644ff3826
-Signed-off-by: Shivani Gupta <shivani07g@gmail.com>
-Link: https://patch.msgid.link/20260105005905.243423-1-shivani07g@gmail.com
+This inconsistent behavior is caused by the current implementation,
+which only cares about the "link, then ifup" order, not "ifup, then
+link" order. This patch fixes the inconsistency by calling
+netif_carrier_on() when two netdevsim interfaces are linked.
+
+This patch fixes buggy behavior on NetworkManager-based systems which
+causes the netdevsim test to fail with the following error:
+
+  # timeout set to 600
+  # selftests: drivers/net/netdevsim: peer.sh
+  # 2025/12/25 00:54:03 socat[9115] W address is opened in read-write mode but only supports read-only
+  # 2025/12/25 00:56:17 socat[9115] W connect(7, AF=2 192.168.1.1:1234, 16): Connection timed out
+  # 2025/12/25 00:56:17 socat[9115] E TCP:192.168.1.1:1234: Connection timed out
+  # expected 3 bytes, got 0
+  # 2025/12/25 00:56:17 socat[9109] W exiting on signal 15
+  not ok 13 selftests: drivers/net/netdevsim: peer.sh # exit=1
+
+This patch also solves timeout on TCP Fast Open (TFO) test in
+NetworkManager-based systems because it also depends on netdevsim's
+carrier consistency.
+
+Fixes: 1a8fed52f7be ("netdevsim: set the carrier when the device goes up")
+Signed-off-by: Yohei Kojima <yk@y-koj.net>
+Reviewed-by: Breno Leitao <leitao@debian.org>
+Link: https://patch.msgid.link/602c9e1ba5bb2ee1997bb38b1d866c9c3b807ae9.1767624906.git.yk@y-koj.net
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/sched/act_api.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/netdevsim/bus.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/net/sched/act_api.c b/net/sched/act_api.c
-index ff6be5cfe2b05..e1ab0faeb8113 100644
---- a/net/sched/act_api.c
-+++ b/net/sched/act_api.c
-@@ -940,6 +940,8 @@ void tcf_idrinfo_destroy(const struct tc_action_ops *ops,
- 	int ret;
+diff --git a/drivers/net/netdevsim/bus.c b/drivers/net/netdevsim/bus.c
+index 70e8c38ddad6b..d16b95304aa7e 100644
+--- a/drivers/net/netdevsim/bus.c
++++ b/drivers/net/netdevsim/bus.c
+@@ -332,6 +332,11 @@ static ssize_t link_device_store(const struct bus_type *bus, const char *buf, si
+ 	rcu_assign_pointer(nsim_a->peer, nsim_b);
+ 	rcu_assign_pointer(nsim_b->peer, nsim_a);
  
- 	idr_for_each_entry_ul(idr, p, tmp, id) {
-+		if (IS_ERR(p))
-+			continue;
- 		if (tc_act_in_hw(p) && !mutex_taken) {
- 			rtnl_lock();
- 			mutex_taken = true;
++	if (netif_running(dev_a) && netif_running(dev_b)) {
++		netif_carrier_on(dev_a);
++		netif_carrier_on(dev_b);
++	}
++
+ out_err:
+ 	put_net(ns_b);
+ 	put_net(ns_a);
+@@ -381,6 +386,9 @@ static ssize_t unlink_device_store(const struct bus_type *bus, const char *buf,
+ 	if (!peer)
+ 		goto out_put_netns;
+ 
++	netif_carrier_off(dev);
++	netif_carrier_off(peer->netdev);
++
+ 	err = 0;
+ 	RCU_INIT_POINTER(nsim->peer, NULL);
+ 	RCU_INIT_POINTER(peer->peer, NULL);
 -- 
 2.51.0
 
