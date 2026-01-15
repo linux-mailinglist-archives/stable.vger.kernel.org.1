@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208738-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8F258D26686
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:29:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26B1BD26631
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7DA0E316DC75
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:10 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D55C630D0499
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:07 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 596713BF2F6;
-	Thu, 15 Jan 2026 17:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D436F3AE701;
+	Thu, 15 Jan 2026 17:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsE5vv6C"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YsLZkK6D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C6313A7F5D;
-	Thu, 15 Jan 2026 17:06:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9866F2C0285;
+	Thu, 15 Jan 2026 17:05:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496816; cv=none; b=B23J+CSZFSzGZxC8vAzLLgs+WaVbkSONiUghPqFapPgN9B4QFZNY73Etx7rPM/2D5mciH5jdKb0P2yhMHORVehmh5myoHo5kDaJhLJV9/LzPIWGzfqxRBoirTqKHSCAcefpgxO0bwFSVCfcBgXfR92pZVfEwQcBbD3Xjy6rjnP0=
+	t=1768496705; cv=none; b=ohXtj/86fwAKFch+KSFnNzN8eN9GLLn6oS1xUYHNYRwJsOan1rqw7++FSyVPFOJHpvVIxm2jsI+bx8hPjUtj50GUWDVPZNZKgmo79VZbTnpSwR80sME6jHvddsu5ZlUoTHXJO8RWGrew0Az2i2BdP0nGxW9VErD5acD0uFaZEbc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496816; c=relaxed/simple;
-	bh=SAzb5bgw5iIIKeJHt4niMId2X3BVg+5YF9i8JoXjdLw=;
+	s=arc-20240116; t=1768496705; c=relaxed/simple;
+	bh=AegRlaPLFMs2sUxJ+s08+DOKN1gXj9O9auVa3G+7Wz8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZoLSX6ztewK+UH6o///dK5c2ftWXqdI/yDLYXNUGhD3tHuu2r+ztIzag90KgwFMdwX8Yg8MdWh/i2TPNnWmTvslA74eR5icSGX+QkJXgOHMIEtAk/sYvIE77U6INdDQNGF0ztcC680qcuKaVyDUmGaxvIs/DKkJCa6+npyvFRoE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsE5vv6C; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4A9C116D0;
-	Thu, 15 Jan 2026 17:06:55 +0000 (UTC)
+	 MIME-Version; b=pRDPjAgdtv4bgWSU4k20MWwfGBE7H//y+EVBjOBA2cLacAsIRzMg398THNlQ04tI6OMHUX9p7NShI5C6AGG61xLbWOnhiIvJ0DTEQYnx7dRKUJhQpsS7a0fFyxm6s/bvZqeKDV2clBCH2ZYFlpLWAREoMKBX3KzpJgSvwYfyFRk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YsLZkK6D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE698C19422;
+	Thu, 15 Jan 2026 17:05:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496816;
-	bh=SAzb5bgw5iIIKeJHt4niMId2X3BVg+5YF9i8JoXjdLw=;
+	s=korg; t=1768496705;
+	bh=AegRlaPLFMs2sUxJ+s08+DOKN1gXj9O9auVa3G+7Wz8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=YsE5vv6CHeMUAQTaTOZVXgSGkeDutOX2YHb8EwZ8heDz6XKvT1rghYsn5+IG/dNvF
-	 5eLbRAWQlDiHv/hs+4CmB5jeu2/GSvYucUiceDWV3Bqfrb5ni9unL8LTa+6EA5DTMC
-	 QPcOUbEkDWYlYz5FRNOsMe1bdwFiw/fzAqqmY5BQ=
+	b=YsLZkK6DaAFhrAftNSG7om638CSzOJ5TyFIEfxk7kbF7PS9ldWIEjZ/srlTwNZgB9
+	 lfiSj7ix2kzip5jsqWZgMRpNdU9JSoQKoZcf1/FU8Q275mVoQJpvusf+BA4WOGcen9
+	 iiy5OjzzT+co6RMVIsNjDcPzAu/5dFVujGjVb6bc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stephen Smalley <stephen.smalley.work@gmail.com>,
-	Jeff Layton <jlayton@kernel.org>,
-	NeilBrown <neilb@suse.de>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.6 25/88] nfsd: set security label during create operations
+	Michal Luczaj <mhal@rbox.co>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 073/119] vsock: Make accept()ed sockets use custom setsockopt()
 Date: Thu, 15 Jan 2026 17:48:08 +0100
-Message-ID: <20260115164147.224139173@linuxfoundation.org>
+Message-ID: <20260115164154.587497536@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,112 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephen Smalley <stephen.smalley.work@gmail.com>
+From: Michal Luczaj <mhal@rbox.co>
 
-commit 442d27ff09a218b61020ab56387dbc508ad6bfa6 upstream.
+[ Upstream commit ce5e612dd411de096aa041b9e9325ba1bec5f9f4 ]
 
-When security labeling is enabled, the client can pass a file security
-label as part of a create operation for the new file, similar to mode
-and other attributes. At present, the security label is received by nfsd
-and passed down to nfsd_create_setattr(), but nfsd_setattr() is never
-called and therefore the label is never set on the new file. This bug
-may have been introduced on or around commit d6a97d3f589a ("NFSD:
-add security label to struct nfsd_attrs"). Looking at nfsd_setattr()
-I am uncertain as to whether the same issue presents for
-file ACLs and therefore requires a similar fix for those.
+SO_ZEROCOPY handling in vsock_connectible_setsockopt() does not get called
+on accept()ed sockets due to a missing flag. Flip it.
 
-An alternative approach would be to introduce a new LSM hook to set the
-"create SID" of the current task prior to the actual file creation, which
-would atomically label the new inode at creation time. This would be better
-for SELinux and a similar approach has been used previously
-(see security_dentry_create_files_as) but perhaps not usable by other LSMs.
-
-Reproducer:
-1. Install a Linux distro with SELinux - Fedora is easiest
-2. git clone https://github.com/SELinuxProject/selinux-testsuite
-3. Install the requisite dependencies per selinux-testsuite/README.md
-4. Run something like the following script:
-MOUNT=$HOME/selinux-testsuite
-sudo systemctl start nfs-server
-sudo exportfs -o rw,no_root_squash,security_label localhost:$MOUNT
-sudo mkdir -p /mnt/selinux-testsuite
-sudo mount -t nfs -o vers=4.2 localhost:$MOUNT /mnt/selinux-testsuite
-pushd /mnt/selinux-testsuite/
-sudo make -C policy load
-pushd tests/filesystem
-sudo runcon -t test_filesystem_t ./create_file -f trans_test_file \
-	-e test_filesystem_filetranscon_t -v
-sudo rm -f trans_test_file
-popd
-sudo make -C policy unload
-popd
-sudo umount /mnt/selinux-testsuite
-sudo exportfs -u localhost:$MOUNT
-sudo rmdir /mnt/selinux-testsuite
-sudo systemctl stop nfs-server
-
-Expected output:
-<eliding noise from commands run prior to or after the test itself>
-Process context:
-	unconfined_u:unconfined_r:test_filesystem_t:s0-s0:c0.c1023
-Created file: trans_test_file
-File context: unconfined_u:object_r:test_filesystem_filetranscon_t:s0
-File context is correct
-
-Actual output:
-<eliding noise from commands run prior to or after the test itself>
-Process context:
-	unconfined_u:unconfined_r:test_filesystem_t:s0-s0:c0.c1023
-Created file: trans_test_file
-File context: system_u:object_r:test_file_t:s0
-File context error, expected:
-	test_filesystem_filetranscon_t
-got:
-	test_file_t
-
-Signed-off-by: Stephen Smalley <stephen.smalley.work@gmail.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Reviewed-by: NeilBrown <neilb@suse.de>
-Stable-dep-of: 913f7cf77bf1 ("NFSD: NFSv4 file creation neglects setting ACL")
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e0718bd82e27 ("vsock: enable setting SO_ZEROCOPY")
+Signed-off-by: Michal Luczaj <mhal@rbox.co>
+Link: https://patch.msgid.link/20251229-vsock-child-sock-custom-sockopt-v2-1-64778d6c4f88@rbox.co
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c |    2 +-
- fs/nfsd/vfs.h |    8 ++++++++
- 2 files changed, 9 insertions(+), 1 deletion(-)
+ net/vmw_vsock/af_vsock.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -1379,7 +1379,7 @@ nfsd_create_setattr(struct svc_rqst *rqs
- 	 * Callers expect new file metadata to be committed even
- 	 * if the attributes have not changed.
- 	 */
--	if (iap->ia_valid)
-+	if (nfsd_attrs_valid(attrs))
- 		status = nfsd_setattr(rqstp, resfhp, attrs, NULL);
- 	else
- 		status = nfserrno(commit_metadata(resfhp));
---- a/fs/nfsd/vfs.h
-+++ b/fs/nfsd/vfs.h
-@@ -60,6 +60,14 @@ static inline void nfsd_attrs_free(struc
- 	posix_acl_release(attrs->na_dpacl);
- }
- 
-+static inline bool nfsd_attrs_valid(struct nfsd_attrs *attrs)
-+{
-+	struct iattr *iap = attrs->na_iattr;
+diff --git a/net/vmw_vsock/af_vsock.c b/net/vmw_vsock/af_vsock.c
+index 621be9be64f67..282d973233245 100644
+--- a/net/vmw_vsock/af_vsock.c
++++ b/net/vmw_vsock/af_vsock.c
+@@ -1742,6 +1742,10 @@ static int vsock_accept(struct socket *sock, struct socket *newsock,
+ 		} else {
+ 			newsock->state = SS_CONNECTED;
+ 			sock_graft(connected, newsock);
 +
-+	return (iap->ia_valid || (attrs->na_seclabel &&
-+		attrs->na_seclabel->len));
-+}
++			set_bit(SOCK_CUSTOM_SOCKOPT,
++				&connected->sk_socket->flags);
 +
- __be32		nfserrno (int errno);
- int		nfsd_cross_mnt(struct svc_rqst *rqstp, struct dentry **dpp,
- 		                struct svc_export **expp);
+ 			if (vsock_msgzerocopy_allow(vconnected->transport))
+ 				set_bit(SOCK_SUPPORT_ZC,
+ 					&connected->sk_socket->flags);
+-- 
+2.51.0
+
 
 
 
