@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-208921-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209400-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA89BD26555
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:23:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id B7059D2761E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 8B2053228519
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id B3BEF3231D54
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 903E43BF2EB;
-	Thu, 15 Jan 2026 17:13:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2A2EF27A462;
+	Thu, 15 Jan 2026 17:36:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="szNw7y6D"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kt10sUov"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 457633A7F43;
-	Thu, 15 Jan 2026 17:13:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF42F2D060B;
+	Thu, 15 Jan 2026 17:36:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497224; cv=none; b=B4FlWxWdQ1a1swx81CdM7DQbaicze32hu98rdNtGJ3WHcDbTETPE+fIKDD4wpmz0oDImp8+PzMYBwMWRP79iMmjNe2q2DL9e9rNGdN0oPN46oRUIOdLP0e+5Dfeeins6ZSFqIIfbieDjiXMerfGkoSoP8Fei/v/vlkD3FectDjQ=
+	t=1768498588; cv=none; b=gGRFlYBGHU7tRJnCgxtlaqwK32HSVdUWtKiY5b9EUhLKCbTVbGsq2eOECwmNvcxRoQUI9UuvNiZ+tG5zQHChxV/QGsXai8FpR6kER1Q52Z0mD+knhUN1oO8PWvlbDmJH8a1j8ORgb8PeEzghEtdLnX3PTk5eYtke6cjlhccuWpI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497224; c=relaxed/simple;
-	bh=Lf27tLDSPrqyRzmc0mDcZQWW+XGZYwIUsoIJ5X7bpEY=;
+	s=arc-20240116; t=1768498588; c=relaxed/simple;
+	bh=mmtDX58XG2fwXtivbUFlEEwcSIhvK34y8GvNaW8oVlw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IeG1piaQauaHNXknpMJEkQcLz+0zxK5SrI4gqdE3YGE5fj0bNcTUfRYbRtzDPBkiMb0FmKUVvccipEiv5VXn+SfiG02vHAjWccUiZPXStbkDn8ZD14pqBMsO9i7KgBQVmHlLqX2Who9LB8RlV/6qwLTK+Wazvbe3L75FGZiAe/4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=szNw7y6D; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15EC1C116D0;
-	Thu, 15 Jan 2026 17:13:42 +0000 (UTC)
+	 MIME-Version:Content-Type; b=cI6o7LUWywxYwXLEvtuJFzC+BSto8wD2BC5OFjl5kEO9hEOMvphIFzU3phca8QXJ3NvknuFLe4Qg9RhQb3n43O27E2w9FoBK0yG/DY3WEUTl0vsv2mBM+jhXANf2NMJhSP1YqJVuKNEwCWcYKYX4z4ZJfmL5x6zaGzItBunfjoc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kt10sUov; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69990C116D0;
+	Thu, 15 Jan 2026 17:36:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497223;
-	bh=Lf27tLDSPrqyRzmc0mDcZQWW+XGZYwIUsoIJ5X7bpEY=;
+	s=korg; t=1768498588;
+	bh=mmtDX58XG2fwXtivbUFlEEwcSIhvK34y8GvNaW8oVlw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=szNw7y6D4vxEErdwWDAmALJ6NC2G0BUUqqQlQvLLQAMFAPj1Cj/Y4jbOLRsYqYBFJ
-	 77J6F8gXa0ACvn8k7/6f3N0L9GFaovK6buNB9czDlF2SCNxs926DxydrS+R3MTX87X
-	 m+KN9Lh+bNrR7WT4prKbgwwtkzosU11Olryj/9D0=
+	b=kt10sUovHqxuVTFBTdfq0mi/1DV2IEhjsqXQyR/8mv0b6Mdii/ERktqtgoSZY670+
+	 bjNiVc/3ugB+FLSFupYwcubj6RKsydteqs7fMq+jDLW4wquJkotLbiE8dDA5DCj//v
+	 eSRB6dK7CaFw+HpZs05SSki2SUjSf+0I4j4HxVpk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 60/72] NFSD: Remove NFSERR_EAGAIN
+	Jakub Kicinski <kuba@kernel.org>,
+	syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com,
+	Dong Chenchen <dongchenchen2@huawei.com>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Mina Almasry <almasrymina@google.com>,
+	Ruohan Lan <ruohanlan@aliyun.com>
+Subject: [PATCH 5.15 484/554] page_pool: Fix use-after-free in page_pool_recycle_in_ring
 Date: Thu, 15 Jan 2026 17:49:10 +0100
-Message-ID: <20260115164145.677871004@linuxfoundation.org>
+Message-ID: <20260115164303.831711125@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,105 +61,134 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Dong Chenchen <dongchenchen2@huawei.com>
 
-[ Upstream commit c6c209ceb87f64a6ceebe61761951dcbbf4a0baa ]
+[ Upstream commit 271683bb2cf32e5126c592b5d5e6a756fa374fd9 ]
 
-I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
-None of these RFCs have an NFS status code that match the numeric
-value "11".
+syzbot reported a uaf in page_pool_recycle_in_ring:
 
-Based on the meaning of the EAGAIN errno, I presume the use of this
-status in NFSD means NFS4ERR_DELAY. So replace the one usage of
-nfserr_eagain, and remove it from NFSD's NFS status conversion
-tables.
+BUG: KASAN: slab-use-after-free in lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+Read of size 8 at addr ffff8880286045a0 by task syz.0.284/6943
 
-As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
-era, but was not actually used by any code until commit f4e44b393389
-("NFSD: delay unmount source's export after inter-server copy
-completed."), at which time it become possible for NFSD to return
-a status code of 11 (which is not valid NFS protocol).
+CPU: 0 UID: 0 PID: 6943 Comm: syz.0.284 Not tainted 6.13.0-rc3-syzkaller-gdfa94ce54f41 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 09/13/2024
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:94 [inline]
+ dump_stack_lvl+0x241/0x360 lib/dump_stack.c:120
+ print_address_description mm/kasan/report.c:378 [inline]
+ print_report+0x169/0x550 mm/kasan/report.c:489
+ kasan_report+0x143/0x180 mm/kasan/report.c:602
+ lock_release+0x151/0xa30 kernel/locking/lockdep.c:5862
+ __raw_spin_unlock_bh include/linux/spinlock_api_smp.h:165 [inline]
+ _raw_spin_unlock_bh+0x1b/0x40 kernel/locking/spinlock.c:210
+ spin_unlock_bh include/linux/spinlock.h:396 [inline]
+ ptr_ring_produce_bh include/linux/ptr_ring.h:164 [inline]
+ page_pool_recycle_in_ring net/core/page_pool.c:707 [inline]
+ page_pool_put_unrefed_netmem+0x748/0xb00 net/core/page_pool.c:826
+ page_pool_put_netmem include/net/page_pool/helpers.h:323 [inline]
+ page_pool_put_full_netmem include/net/page_pool/helpers.h:353 [inline]
+ napi_pp_put_page+0x149/0x2b0 net/core/skbuff.c:1036
+ skb_pp_recycle net/core/skbuff.c:1047 [inline]
+ skb_free_head net/core/skbuff.c:1094 [inline]
+ skb_release_data+0x6c4/0x8a0 net/core/skbuff.c:1125
+ skb_release_all net/core/skbuff.c:1190 [inline]
+ __kfree_skb net/core/skbuff.c:1204 [inline]
+ sk_skb_reason_drop+0x1c9/0x380 net/core/skbuff.c:1242
+ kfree_skb_reason include/linux/skbuff.h:1263 [inline]
+ __skb_queue_purge_reason include/linux/skbuff.h:3343 [inline]
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+root cause is:
+
+page_pool_recycle_in_ring
+  ptr_ring_produce
+    spin_lock(&r->producer_lock);
+    WRITE_ONCE(r->queue[r->producer++], ptr)
+      //recycle last page to pool
+				page_pool_release
+				  page_pool_scrub
+				    page_pool_empty_ring
+				      ptr_ring_consume
+				      page_pool_return_page  //release all page
+				  __page_pool_destroy
+				     free_percpu(pool->recycle_stats);
+				     free(pool) //free
+
+     spin_unlock(&r->producer_lock); //pool->ring uaf read
+  recycle_stat_inc(pool, ring);
+
+page_pool can be free while page pool recycle the last page in ring.
+Add producer-lock barrier to page_pool_release to prevent the page
+pool from being free before all pages have been recycled.
+
+recycle_stat_inc() is empty when CONFIG_PAGE_POOL_STATS is not
+enabled, which will trigger Wempty-body build warning. Add definition
+for pool stat macro to fix warning.
+
+Suggested-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/netdev/20250513083123.3514193-1-dongchenchen2@huawei.com
+Fixes: ff7d6b27f894 ("page_pool: refurbish version of page_pool code")
+Reported-by: syzbot+204a4382fcb3311f3858@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=204a4382fcb3311f3858
+Signed-off-by: Dong Chenchen <dongchenchen2@huawei.com>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Reviewed-by: Mina Almasry <almasrymina@google.com>
+Link: https://patch.msgid.link/20250527114152.3119109-1-dongchenchen2@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[ Linux 5.15.y does not support page pool statistics
+  (CONFIG_PAGE_POOL_STATS), so remove the related source code
+  changes from the patch. ]
+Signed-off-by: Ruohan Lan <ruohanlan@aliyun.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs_common/common.c   |    1 -
- fs/nfsd/nfs4proc.c       |    2 +-
- fs/nfsd/nfsd.h           |    1 -
- include/trace/misc/nfs.h |    2 --
- include/uapi/linux/nfs.h |    1 -
- 5 files changed, 1 insertion(+), 6 deletions(-)
+ net/core/page_pool.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
---- a/fs/nfs_common/common.c
-+++ b/fs/nfs_common/common.c
-@@ -16,7 +16,6 @@ static const struct {
- 	{ NFSERR_NOENT,		-ENOENT		},
- 	{ NFSERR_IO,		-errno_NFSERR_IO},
- 	{ NFSERR_NXIO,		-ENXIO		},
--/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
- 	{ NFSERR_ACCES,		-EACCES		},
- 	{ NFSERR_EXIST,		-EEXIST		},
- 	{ NFSERR_XDEV,		-EXDEV		},
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1321,7 +1321,7 @@ try_again:
- 					(schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
--				return nfserr_eagain;
-+				return nfserr_jukebox;
- 			}
- 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 			goto try_again;
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -201,7 +201,6 @@ void		nfsd_lockd_shutdown(void);
- #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
- #define	nfserr_io		cpu_to_be32(NFSERR_IO)
- #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
--#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
- #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
- #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
- #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
---- a/include/trace/misc/nfs.h
-+++ b/include/trace/misc/nfs.h
-@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
- TRACE_DEFINE_ENUM(NFSERR_NOENT);
- TRACE_DEFINE_ENUM(NFSERR_IO);
- TRACE_DEFINE_ENUM(NFSERR_NXIO);
--TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
- TRACE_DEFINE_ENUM(NFSERR_ACCES);
- TRACE_DEFINE_ENUM(NFSERR_EXIST);
- TRACE_DEFINE_ENUM(NFSERR_XDEV);
-@@ -53,7 +52,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
- 		{ NFSERR_NXIO,			"NXIO" }, \
- 		{ ECHILD,			"CHILD" }, \
- 		{ ETIMEDOUT,			"TIMEDOUT" }, \
--		{ NFSERR_EAGAIN,		"AGAIN" }, \
- 		{ NFSERR_ACCES,			"ACCES" }, \
- 		{ NFSERR_EXIST,			"EXIST" }, \
- 		{ NFSERR_XDEV,			"XDEV" }, \
---- a/include/uapi/linux/nfs.h
-+++ b/include/uapi/linux/nfs.h
-@@ -49,7 +49,6 @@
- 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
- 	NFSERR_IO = 5,			/* v2 v3 v4 */
- 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
--	NFSERR_EAGAIN = 11,		/* v2 v3 */
- 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
- 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
- 	NFSERR_XDEV = 18,		/*    v3 v4 */
+--- a/net/core/page_pool.c
++++ b/net/core/page_pool.c
+@@ -414,14 +414,14 @@ static void page_pool_return_page(struct
+ 
+ static bool page_pool_recycle_in_ring(struct page_pool *pool, struct page *page)
+ {
+-	int ret;
++	bool in_softirq, ret;
++
+ 	/* BH protection not needed if current is softirq */
+-	if (in_softirq())
+-		ret = ptr_ring_produce(&pool->ring, page);
+-	else
+-		ret = ptr_ring_produce_bh(&pool->ring, page);
++	in_softirq = page_pool_producer_lock(pool);
++	ret = !__ptr_ring_produce(&pool->ring, page);
++	page_pool_producer_unlock(pool, in_softirq);
+ 
+-	return (ret == 0) ? true : false;
++	return ret;
+ }
+ 
+ /* Only allow direct recycling in special circumstances, into the
+@@ -684,10 +684,14 @@ static void page_pool_scrub(struct page_
+ 
+ static int page_pool_release(struct page_pool *pool)
+ {
++	bool in_softirq;
+ 	int inflight;
+ 
+ 	page_pool_scrub(pool);
+ 	inflight = page_pool_inflight(pool);
++	/* Acquire producer lock to make sure producers have exited. */
++	in_softirq = page_pool_producer_lock(pool);
++	page_pool_producer_unlock(pool, in_softirq);
+ 	if (!inflight)
+ 		page_pool_free(pool);
+ 
 
 
 
