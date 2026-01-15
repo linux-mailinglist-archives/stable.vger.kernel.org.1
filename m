@@ -1,84 +1,53 @@
-Return-Path: <stable+bounces-208975-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209017-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5C257D2657E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:24:32 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 48262D26600
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:27:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3C536305899A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:16:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 29E38317E149
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:18:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 284523A9D9F;
-	Thu, 15 Jan 2026 17:16:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA6DE29B200;
+	Thu, 15 Jan 2026 17:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e5opy4Lb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yQDcoXYq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DED74280327;
-	Thu, 15 Jan 2026 17:16:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 869BE258EC2;
+	Thu, 15 Jan 2026 17:18:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497378; cv=none; b=FuuBEGdAvLrDHgbd+qjZV5dmv0Eq2ikfwYoVcO4i34MD3HNcG8x+RR1grEmBJjLFkp+cLSSKKrVP8iij2ukDaCd9UNhIvqhhQA6yE5ovtiEtKbncH/+QfQ5Id75LCgvbt65qojs9k9TftEGsuzSpeOIO9McX/itVpS92tYFaJxQ=
+	t=1768497498; cv=none; b=K5lqSjlhma6HbRvmLoOlA8DOleRkLHL21Z63vAFh2dvzjjHrTMRBpQxLXrMg/i8ygusCSCzVI0pybBXA8LT71CXc8x/g7E/Ljk3bXVEldSu9Te3b3GvdMkftgQlb0M01ER/mPdtXH2OUoDHvtuQPs/U5rQoH6gNTubNJmDOYVp8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497378; c=relaxed/simple;
-	bh=DFSzto33tx0Ev7UOYy/CE5TcMeyoosOWyPVBvW0+pc4=;
+	s=arc-20240116; t=1768497498; c=relaxed/simple;
+	bh=VFnbuzl7oqmOSZKfaRyAuKMun70GZhg6ALVEo2fLcWQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aeLFWiJz35ht+lsM7bo5CS8e5otyjV6YMWcD9+tpR1/m0Ge1gQ9d/PrzLhUMngIN5dd9bySPQ1/G5Ehh87N2Y5vD1SrEl1itZDpAi6QaJ6k5JPc7sWKbLDquUGl5wWZwmDzgZaTWro7Tw+8UQFWiaj9oSyVJo86/kQG4NZwSDYg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e5opy4Lb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40D1AC116D0;
-	Thu, 15 Jan 2026 17:16:18 +0000 (UTC)
+	 MIME-Version; b=Zjc+aGLkPn31o6n5tBNTF98nW2oNS7FxHpl5UF3mlmyeE2OqmlqTuADJOPvWsI+zO83a2+9SJe3DQQd0sd9miPcS4VbVKPBnk0HbNrcJqFvIP0qVVOKSmuo52ZllSSPuAwOOuYdOC1nbYrCMBM91ZtPu0iPi9lJ9002owYKIkTY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yQDcoXYq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D42D4C116D0;
+	Thu, 15 Jan 2026 17:18:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497378;
-	bh=DFSzto33tx0Ev7UOYy/CE5TcMeyoosOWyPVBvW0+pc4=;
+	s=korg; t=1768497498;
+	bh=VFnbuzl7oqmOSZKfaRyAuKMun70GZhg6ALVEo2fLcWQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=e5opy4Lb4PK0KAporcu9RkeI7jejHjv2epaVOPLvnfA38G3bkzagmWJK6h+k8ZWAT
-	 BNcGLTZq+N7NzALsvwubNmLE2a24uAq+yTXgBcD282wQLl096W8P7mDH3ZTR94QzMz
-	 uCANycsW/VXH6NjKORhG7q+O31rjZmx4yeSFF5F0=
+	b=yQDcoXYqydQZbjEFCNUyKN73b2Y5MBtj4uI5NrM2Y8xSIYsNH/qQFXNlixGliH3ot
+	 bkpHckeiK48nyrVy5tLQUNbkLUbmO0Kux0KRGKBLkjOqjsGzKRqC8B/lRefEznX2bG
+	 iNO9Ft4j7e1cGGJ0HWxczZscnEcSdx/LIhInwI0o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexander Potapenko <glider@google.com>,
-	Alexander Viro <viro@zeniv.linux.org.uk>,
-	Alexei Starovoitov <ast@kernel.org>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
-	Andrey Konovalov <andreyknvl@google.com>,
-	Andy Lutomirski <luto@kernel.org>,
-	Arnd Bergmann <arnd@arndb.de>,
-	Borislav Petkov <bp@alien8.de>,
-	Christoph Hellwig <hch@lst.de>,
-	Christoph Lameter <cl@linux.com>,
-	David Rientjes <rientjes@google.com>,
-	Dmitry Vyukov <dvyukov@google.com>,
-	Eric Biggers <ebiggers@google.com>,
-	Eric Biggers <ebiggers@kernel.org>,
-	Eric Dumazet <edumazet@google.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Ilya Leoshkevich <iii@linux.ibm.com>,
-	Ingo Molnar <mingo@redhat.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Joonsoo Kim <iamjoonsoo.kim@lge.com>,
-	Kees Cook <keescook@chromium.org>,
-	Marco Elver <elver@google.com>,
-	Mark Rutland <mark.rutland@arm.com>,
-	Matthew Wilcox <willy@infradead.org>,
-	"Michael S. Tsirkin" <mst@redhat.com>,
-	Pekka Enberg <penberg@kernel.org>,
-	Peter Zijlstra <peterz@infradead.org>,
-	Petr Mladek <pmladek@suse.com>,
-	Stephen Rothwell <sfr@canb.auug.org.au>,
-	Steven Rostedt <rostedt@goodmis.org>,
-	Thomas Gleixner <tglx@linutronix.de>,
-	Vasily Gorbik <gor@linux.ibm.com>,
-	Vegard Nossum <vegard.nossum@oracle.com>,
-	Vlastimil Babka <vbabka@suse.cz>,
-	Andrew Morton <akpm@linux-foundation.org>,
+	Tengda Wu <wutengda@huaweicloud.com>,
+	"Borislav Petkov (AMD)" <bp@alien8.de>,
+	Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+	Josh Poimboeuf <jpoimboe@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 059/554] x86: kmsan: dont instrument stack walking functions
-Date: Thu, 15 Jan 2026 17:42:05 +0100
-Message-ID: <20260115164248.382514922@linuxfoundation.org>
+Subject: [PATCH 5.15 060/554] x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()
+Date: Thu, 15 Jan 2026 17:42:06 +0100
+Message-ID: <20260115164248.419375653@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -97,114 +66,114 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Alexander Potapenko <glider@google.com>
+From: Tengda Wu <wutengda@huaweicloud.com>
 
-[ Upstream commit 37ad4ee8364255c73026a3c343403b5977fa7e79 ]
+[ Upstream commit ced37e9ceae50e4cb6cd058963bd315ec9afa651 ]
 
-Upon function exit, KMSAN marks local variables as uninitialized.  Further
-function calls may result in the compiler creating the stack frame where
-these local variables resided.  This results in frame pointers being
-marked as uninitialized data, which is normally correct, because they are
-not stack-allocated.
+When triggering a stack dump via sysrq (echo t > /proc/sysrq-trigger),
+KASAN may report false-positive out-of-bounds access:
 
-However stack unwinding functions are supposed to read and dereference the
-frame pointers, in which case KMSAN might be reporting uses of
-uninitialized values.
+  BUG: KASAN: out-of-bounds in __show_regs+0x4b/0x340
+  Call Trace:
+    dump_stack_lvl
+    print_address_description.constprop.0
+    print_report
+    __show_regs
+    show_trace_log_lvl
+    sched_show_task
+    show_state_filter
+    sysrq_handle_showstate
+    __handle_sysrq
+    write_sysrq_trigger
+    proc_reg_write
+    vfs_write
+    ksys_write
+    do_syscall_64
+    entry_SYSCALL_64_after_hwframe
 
-To work around that, we mark update_stack_state(), unwind_next_frame() and
-show_trace_log_lvl() with __no_kmsan_checks, preventing all KMSAN reports
-inside those functions and making them return initialized values.
+The issue occurs as follows:
 
-Link: https://lkml.kernel.org/r/20220915150417.722975-40-glider@google.com
-Signed-off-by: Alexander Potapenko <glider@google.com>
-Cc: Alexander Viro <viro@zeniv.linux.org.uk>
-Cc: Alexei Starovoitov <ast@kernel.org>
-Cc: Andrey Konovalov <andreyknvl@gmail.com>
-Cc: Andrey Konovalov <andreyknvl@google.com>
-Cc: Andy Lutomirski <luto@kernel.org>
-Cc: Arnd Bergmann <arnd@arndb.de>
-Cc: Borislav Petkov <bp@alien8.de>
-Cc: Christoph Hellwig <hch@lst.de>
-Cc: Christoph Lameter <cl@linux.com>
-Cc: David Rientjes <rientjes@google.com>
-Cc: Dmitry Vyukov <dvyukov@google.com>
-Cc: Eric Biggers <ebiggers@google.com>
-Cc: Eric Biggers <ebiggers@kernel.org>
-Cc: Eric Dumazet <edumazet@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Herbert Xu <herbert@gondor.apana.org.au>
-Cc: Ilya Leoshkevich <iii@linux.ibm.com>
-Cc: Ingo Molnar <mingo@redhat.com>
-Cc: Jens Axboe <axboe@kernel.dk>
-Cc: Joonsoo Kim <iamjoonsoo.kim@lge.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Marco Elver <elver@google.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Michael S. Tsirkin <mst@redhat.com>
-Cc: Pekka Enberg <penberg@kernel.org>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: Petr Mladek <pmladek@suse.com>
-Cc: Stephen Rothwell <sfr@canb.auug.org.au>
-Cc: Steven Rostedt <rostedt@goodmis.org>
-Cc: Thomas Gleixner <tglx@linutronix.de>
-Cc: Vasily Gorbik <gor@linux.ibm.com>
-Cc: Vegard Nossum <vegard.nossum@oracle.com>
-Cc: Vlastimil Babka <vbabka@suse.cz>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: ced37e9ceae5 ("x86/dumpstack: Prevent KASAN false positive warnings in __show_regs()")
+  Task A (walk other tasks' stacks)           Task B (running)
+  1. echo t > /proc/sysrq-trigger
+  show_trace_log_lvl
+    regs = unwind_get_entry_regs()
+    show_regs_if_on_stack(regs)
+                                              2. The stack value pointed by
+                                                 `regs` keeps changing, and
+                                                 so are the tags in its
+                                                 KASAN shadow region.
+      __show_regs(regs)
+        regs->ax, regs->bx, ...
+          3. hit KASAN redzones, OOB
+
+When task A walks task B's stack without suspending it, the continuous changes
+in task B's stack (and corresponding KASAN shadow tags) may cause task A to
+hit KASAN redzones when accessing obsolete values on the stack, resulting in
+false positive reports.
+
+Simply stopping the task before unwinding is not a viable fix, as it would
+alter the state intended to inspect. This is especially true for diagnosing
+misbehaving tasks (e.g., in a hard lockup), where stopping might fail or hide
+the root cause by changing the call stack.
+
+Therefore, fix this by disabling KASAN checks during asynchronous stack
+unwinding, which is identified when the unwinding task does not match the
+current task (task != current).
+
+  [ bp: Align arguments on function's opening brace. ]
+
+Fixes: 3b3fa11bc700 ("x86/dumpstack: Print any pt_regs found on the stack")
+Signed-off-by: Tengda Wu <wutengda@huaweicloud.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Reviewed-by: Andrey Ryabinin <ryabinin.a.a@gmail.com>
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://patch.msgid.link/all/20251023090632.269121-1-wutengda@huaweicloud.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/dumpstack.c    |  6 ++++++
- arch/x86/kernel/unwind_frame.c | 11 +++++++++++
- 2 files changed, 17 insertions(+)
+ arch/x86/kernel/dumpstack.c | 23 +++++++++++++++++++++--
+ 1 file changed, 21 insertions(+), 2 deletions(-)
 
 diff --git a/arch/x86/kernel/dumpstack.c b/arch/x86/kernel/dumpstack.c
-index 8a8660074284f..4adbc85b74a33 100644
+index 4adbc85b74a33..82ade5a7879ff 100644
 --- a/arch/x86/kernel/dumpstack.c
 +++ b/arch/x86/kernel/dumpstack.c
-@@ -183,6 +183,12 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+@@ -189,8 +189,8 @@ static void show_regs_if_on_stack(struct stack_info *info, struct pt_regs *regs,
+  * in false positive reports. Disable instrumentation to avoid those.
+  */
+ __no_kmsan_checks
+-static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
+-			unsigned long *stack, const char *log_lvl)
++static void __show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++				 unsigned long *stack, const char *log_lvl)
+ {
+ 	struct unwind_state state;
+ 	struct stack_info stack_info = {0};
+@@ -311,6 +311,25 @@ static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
  	}
  }
  
-+/*
-+ * This function reads pointers from the stack and dereferences them. The
-+ * pointers may not have their KMSAN shadow set up properly, which may result
-+ * in false positive reports. Disable instrumentation to avoid those.
-+ */
-+__no_kmsan_checks
- static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
- 			unsigned long *stack, const char *log_lvl)
++static void show_trace_log_lvl(struct task_struct *task, struct pt_regs *regs,
++			       unsigned long *stack, const char *log_lvl)
++{
++	/*
++	 * Disable KASAN to avoid false positives during walking another
++	 * task's stacks, as values on these stacks may change concurrently
++	 * with task execution.
++	 */
++	bool disable_kasan = task && task != current;
++
++	if (disable_kasan)
++		kasan_disable_current();
++
++	__show_trace_log_lvl(task, regs, stack, log_lvl);
++
++	if (disable_kasan)
++		kasan_enable_current();
++}
++
+ void show_stack(struct task_struct *task, unsigned long *sp,
+ 		       const char *loglvl)
  {
-diff --git a/arch/x86/kernel/unwind_frame.c b/arch/x86/kernel/unwind_frame.c
-index d7c44b257f7f4..8943114f9ebed 100644
---- a/arch/x86/kernel/unwind_frame.c
-+++ b/arch/x86/kernel/unwind_frame.c
-@@ -183,6 +183,16 @@ static struct pt_regs *decode_frame_pointer(unsigned long *bp)
- }
- #endif
- 
-+/*
-+ * While walking the stack, KMSAN may stomp on stale locals from other
-+ * functions that were marked as uninitialized upon function exit, and
-+ * now hold the call frame information for the current function (e.g. the frame
-+ * pointer). Because KMSAN does not specifically mark call frames as
-+ * initialized, false positive reports are possible. To prevent such reports,
-+ * we mark the functions scanning the stack (here and below) with
-+ * __no_kmsan_checks.
-+ */
-+__no_kmsan_checks
- static bool update_stack_state(struct unwind_state *state,
- 			       unsigned long *next_bp)
- {
-@@ -251,6 +261,7 @@ static bool update_stack_state(struct unwind_state *state,
- 	return true;
- }
- 
-+__no_kmsan_checks
- bool unwind_next_frame(struct unwind_state *state)
- {
- 	struct pt_regs *regs;
 -- 
 2.51.0
 
