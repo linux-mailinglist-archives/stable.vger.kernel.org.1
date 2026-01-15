@@ -1,56 +1,52 @@
-Return-Path: <stable+bounces-209617-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209230-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 079C9D26E44
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:24 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C2B1ED274A1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1C20830E2E33
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3068632E1221
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 114823BFE20;
-	Thu, 15 Jan 2026 17:46:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE8BC4C81;
+	Thu, 15 Jan 2026 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CqtEuBjp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r6fSvSyK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C90162F619D;
-	Thu, 15 Jan 2026 17:46:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6FE803C1FFF;
+	Thu, 15 Jan 2026 17:28:24 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499206; cv=none; b=BRNXW091i7FVDJjH/qavPgrYj+OnpdBSVxR1Y3jcM9ne7ycPIDxzuCGR9y7GqW3bPJKBQXIFFu2kIN2XmI8yGEnomCO67JiRiqptA/OZ+xAUre6frTauybL2Wogy5MTmmUJKhjKqf6G87eWQcG3HngvhAzazsNRqazyeshh6n8k=
+	t=1768498104; cv=none; b=Kttp/+bXqJLs1YT964l4205XAxtD/3Z+G866xpTFaLnVbRRi4e6Z93W6xLZm81Aq3w5gfM2PGajKtQJ1/BBgZvkMkOXVH0QTBwj0BuIATIZycGgf2JBTZvNufn7AHb3NatZRo/UeZ8IcqwvYlEzqONAssSM1ask2rKCgsXb2Iak=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499206; c=relaxed/simple;
-	bh=Kr2nXVzYFNNTY8luczyVmpx0r/RZGNeefPk6aaPHXLM=;
+	s=arc-20240116; t=1768498104; c=relaxed/simple;
+	bh=kLa+EhI/THGfo95SEqsPFB6Rt/lmuG5sPSbTLdn9C3A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a+v805tHh0s1jbBi3JqXfGVL0ZQNx7UErOMmGuY08vyDL2NTLmNwR9d6RBWsC7fsOTHP+Xb4eG3eK89cX6SorF2TCtub3oW1JwGUSpYgNHWh1kqLxfMT/nKQih89d+vS1PZu11Ou7yp9P2o3dMMOnHV9ixElRrJ2TW05UaTZQ5U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CqtEuBjp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F68DC16AAE;
-	Thu, 15 Jan 2026 17:46:45 +0000 (UTC)
+	 MIME-Version; b=AM5YW+YEO9HUeidGBC6srlMb8sjRHcRwL+NVp+MM21tI7pe7VGRiRLRx0qw2wbaOWoaPsdZ1jvYVymIE5F7LWKPnPCWLE/BlsN179i77S3AZCAxph0B8Y4ZXyu4Tl8lBvCfkhDhK76rT2yGc4bmH78pJYq390dFQotUpxVpPb/M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r6fSvSyK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EEA93C116D0;
+	Thu, 15 Jan 2026 17:28:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499206;
-	bh=Kr2nXVzYFNNTY8luczyVmpx0r/RZGNeefPk6aaPHXLM=;
+	s=korg; t=1768498104;
+	bh=kLa+EhI/THGfo95SEqsPFB6Rt/lmuG5sPSbTLdn9C3A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CqtEuBjpLQHSsayTG4r6wJ39mnrv5Od2MWsWgS/XEM+0BMz1MK8WIqjUpWcOQyfSv
-	 pzOUqoaJFYjTWoEbKtqjxRxbcARr0Mqj4IQmECaWFwBfdLbS2UbXkfBGX7moSCCLD3
-	 o3SK65qGPM+/yspTcXWDDZL8QMlfNzMvxsKV74bQ=
+	b=r6fSvSyKPsYYxUskUsvq5MDQrL1uwzZB9iqeA+fp7Ciqs6dRho8u2tgUZmd7NiYlb
+	 WOA9kQns9Qxeb2ak7WyMm0ivNJGuczopB29cQloCXwiuYI6a24iDJRED+5yiAKep4f
+	 OMHvb5tU9yRSn2pSu7jlY5RHOzpX4FPSrcfJqUKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Mauro Carvalho Chehab <mchehab+huawei@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-	"Borislav Petkov (AMD)" <bp@alien8.de>,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 145/451] efi/cper: Adjust infopfx size to accept an extra space
-Date: Thu, 15 Jan 2026 17:45:46 +0100
-Message-ID: <20260115164236.162253759@linuxfoundation.org>
+	Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Subject: [PATCH 5.15 281/554] fs/ntfs3: fix mount failure for sparse runs in run_unpack()
+Date: Thu, 15 Jan 2026 17:45:47 +0100
+Message-ID: <20260115164256.400367184@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,55 +56,48 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
+From: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
 
-[ Upstream commit 8ad2c72e21efb3dc76c5b14089fa7984cdd87898 ]
+commit 801f614ba263cb37624982b27b4c82f3c3c597a9 upstream.
 
-Compiling with W=1 with werror enabled produces an error:
+Some NTFS volumes failed to mount because sparse data runs were not
+handled correctly during runlist unpacking. The code performed arithmetic
+on the special SPARSE_LCN64 marker, leading to invalid LCN values and
+mount errors.
 
-drivers/firmware/efi/cper-arm.c: In function ‘cper_print_proc_arm’:
-drivers/firmware/efi/cper-arm.c:298:64: error: ‘snprintf’ output may be truncated before the last format character [-Werror=format-truncation=]
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                                                                ^
-drivers/firmware/efi/cper-arm.c:298:25: note: ‘snprintf’ output between 2 and 65 bytes into a destination of size 64
-  298 |                         snprintf(infopfx, sizeof(infopfx), "%s ", newpfx);
-      |                         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+Add an explicit check for the case described above, marking the run as
+sparse without applying arithmetic.
 
-As the logic there adds an space at the end of infopx buffer.
-Add an extra space to avoid such warning.
-
-Signed-off-by: Mauro Carvalho Chehab <mchehab+huawei@kernel.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Acked-by: Borislav Petkov (AMD) <bp@alien8.de>
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 736fc7bf5f68 ("fs: ntfs3: Fix integer overflow in run_unpack()")
+Cc: stable@vger.kernel.org
+Signed-off-by: Konstantin Komarov <almaz.alexandrovich@paragon-software.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/firmware/efi/cper-arm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/ntfs3/run.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/efi/cper-arm.c b/drivers/firmware/efi/cper-arm.c
-index 36d3b8b9da47e..f4b7a48327fbb 100644
---- a/drivers/firmware/efi/cper-arm.c
-+++ b/drivers/firmware/efi/cper-arm.c
-@@ -241,7 +241,7 @@ void cper_print_proc_arm(const char *pfx,
- 	int i, len, max_ctx_type;
- 	struct cper_arm_err_info *err_info;
- 	struct cper_arm_ctx_info *ctx_info;
--	char newpfx[64], infopfx[64];
-+	char newpfx[64], infopfx[ARRAY_SIZE(newpfx) + 1];
+--- a/fs/ntfs3/run.c
++++ b/fs/ntfs3/run.c
+@@ -937,8 +937,12 @@ int run_unpack(struct runs_tree *run, st
+ 			if (!dlcn)
+ 				return -EINVAL;
  
- 	printk("%sMIDR: 0x%016llx\n", pfx, proc->midr);
- 
--- 
-2.51.0
-
+-			if (check_add_overflow(prev_lcn, dlcn, &lcn))
++			/* Check special combination: 0 + SPARSE_LCN64. */
++			if (!prev_lcn && dlcn == SPARSE_LCN64) {
++				lcn = SPARSE_LCN64;
++			} else if (check_add_overflow(prev_lcn, dlcn, &lcn)) {
+ 				return -EINVAL;
++			}
+ 			prev_lcn = lcn;
+ 		} else
+ 			return -EINVAL;
 
 
 
