@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-209127-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209540-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2FE8FD266B5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:21 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 01A1BD277D6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 62D5B308773B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:33 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1C95131CA26E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 638123A1E86;
-	Thu, 15 Jan 2026 17:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8866B3624C4;
+	Thu, 15 Jan 2026 17:43:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MotN5MVM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z+RuOjws"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2517827B340;
-	Thu, 15 Jan 2026 17:23:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2DAE32D94A7;
+	Thu, 15 Jan 2026 17:43:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497810; cv=none; b=dhcM6XgG9N2u9TlsDD+ZsoR28kJ96HMfBjkLv5r2Ap6stUoQDvXjviZgV8+PPh98DBZsxvdbeqGQX+Nmy8V5tn+L+eP6ZXuFEaTgYV/JZTYoz2AiWpvhlbbNEkf8i79mXY9n+aB7OmmSkA3kdLaLgpvTlWtxpCSf2ZCnwX6GRWg=
+	t=1768498987; cv=none; b=ac7ekNav2yXeigc9LNWkLhprU+eKkwO0ckh0vE8Wx7DVTLIjoJ4bZRkHgnMKKUtQTAvuvpiHU20W2Ixh/WxixuRRLqq6KE/jpgDeN6W4J9+9vkMbFowvndRSs8mAiJcu87HLXU9VckFJ1OIW8uNDt2S2MwuLuFQ6gbo1XmU8ItE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497810; c=relaxed/simple;
-	bh=bH/r2sf1RHMQxlsvQWz8+RKI+UekEdBIH91QzEhYNm8=;
+	s=arc-20240116; t=1768498987; c=relaxed/simple;
+	bh=mcqkFsg/RX4IlVqbwKDYg37Gilagk3tdvNEz3n2gbV8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z0pfThCHe8M7eTB/1t+LJBcRuZawe9u5w71RXxqaZBtd5aE3AZCmMpA3y/DUlBrZZrGDAGc3oToNm0YDm4Tg+1SnyR1ODt/LWJN+yNqUxbZOs2VgSMD1XlVAEFL3HwGhBm/3EEvWOlsmN1/mtEwji1tCpJuuGV7r8lv5tTcA1pE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MotN5MVM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DFCCC116D0;
-	Thu, 15 Jan 2026 17:23:29 +0000 (UTC)
+	 MIME-Version; b=YMqv89WWEbZDQptj4mM4TYGo5k8+xsauNVVLiwOHTpPuA987kX3WNqgfjM8mgklYpiXAxMG92Je9H7VsezpC3L+HPTFXIEl0LjknbjTs6NHhwei4JvGxbKO998Myq0MEClAIfRj9rCyj6+hw1JhrZ1stYYLnMYSEnaKFGQo+kLE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z+RuOjws; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B1FC116D0;
+	Thu, 15 Jan 2026 17:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497810;
-	bh=bH/r2sf1RHMQxlsvQWz8+RKI+UekEdBIH91QzEhYNm8=;
+	s=korg; t=1768498986;
+	bh=mcqkFsg/RX4IlVqbwKDYg37Gilagk3tdvNEz3n2gbV8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MotN5MVMDFJB7HJ5uvP1B2JzorVVh1hHuVjg7WLbXz3NErC7N8hYvMS7Be68MdMHJ
-	 tca5hJr8ICluVb1kxEJR4lv7XywI/3HFjakpb1zV2O6xTLCKxHbFkXcUTIl7N8FGAH
-	 /nhdJ7d4Z5rgiX+5lL739JGQjecXFUtZ1DWDswqw=
+	b=z+RuOjwss3/rChR+hRvMKPX0caLJzi4rUcbgUAW5JLP3E5OefQQ0coHUlAaluPfao
+	 Agjc1Em/wG30lS5WUGU33ustTlZZxWnqRzIjFoOni3s71eDNYWvkXISXjpcy+R5RSw
+	 gH/xwlCFqOt6spDA+35MqfFv7sK5r1on0xgCTld4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yeoreum Yun <yeoreum.yun@arm.com>,
-	Mike Leach <mike.leach@linaro.org>,
-	James Clark <james.clark@linaro.org>,
-	Leo Yan <leo.yan@arm.com>,
-	Suzuki K Poulose <suzuki.poulose@arm.com>
-Subject: [PATCH 5.15 204/554] coresight: etm4x: Correct polling IDLE bit
+	Miquel Raynal <miquel.raynal@bootlin.com>,
+	Stephen Boyd <sboyd@kernel.org>,
+	Geert Uytterhoeven <geert+renesas@glider.be>,
+	Vinod Koul <vkoul@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 069/451] clk: renesas: r9a06g032: Export function to set dmamux
 Date: Thu, 15 Jan 2026 17:44:30 +0100
-Message-ID: <20260115164253.639692966@linuxfoundation.org>
+Message-ID: <20260115164233.397731345@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,43 +62,116 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Leo Yan <leo.yan@arm.com>
+From: Miquel Raynal <miquel.raynal@bootlin.com>
 
-commit 4dc4e22f9536341255f5de6047977a80ff47eaef upstream.
+[ Upstream commit 885525c1e7e27ea6207d648a8db20dfbbd9e4238 ]
 
-Since commit 4ff6039ffb79 ("coresight-etm4x: add isb() before reading
-the TRCSTATR"), the code has incorrectly been polling the PMSTABLE bit
-instead of the IDLE bit.
+The dmamux register is located within the system controller.
 
-This commit corrects the typo.
+Without syscon, we need an extra helper in order to give write access to
+this register to a dmamux driver.
 
-Fixes: 4ff6039ffb79 ("coresight-etm4x: add isb() before reading the TRCSTATR")
-Reviewed-by: Yeoreum Yun <yeoreum.yun@arm.com>
-Reviewed-by: Mike Leach <mike.leach@linaro.org>
-Tested-by: James Clark <james.clark@linaro.org>
-Signed-off-by: Leo Yan <leo.yan@arm.com>
-Signed-off-by: Suzuki K Poulose <suzuki.poulose@arm.com>
-Link: https://lore.kernel.org/r/20251111-arm_coresight_power_management_fix-v6-4-f55553b6c8b3@arm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Acked-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20220427095653.91804-5-miquel.raynal@bootlin.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Stable-dep-of: f8def051bbcf ("clk: renesas: r9a06g032: Fix memory leak in error path")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwtracing/coresight/coresight-etm4x-core.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/renesas/r9a06g032-clocks.c        | 35 ++++++++++++++++++-
+ include/linux/soc/renesas/r9a06g032-sysctrl.h | 11 ++++++
+ 2 files changed, 45 insertions(+), 1 deletion(-)
+ create mode 100644 include/linux/soc/renesas/r9a06g032-sysctrl.h
 
---- a/drivers/hwtracing/coresight/coresight-etm4x-core.c
-+++ b/drivers/hwtracing/coresight/coresight-etm4x-core.c
-@@ -1761,7 +1761,7 @@ static int __etm4_cpu_save(struct etmv4_
- 		state->trcpdcr = etm4x_read32(csa, TRCPDCR);
+diff --git a/drivers/clk/renesas/r9a06g032-clocks.c b/drivers/clk/renesas/r9a06g032-clocks.c
+index 285f6ac25372d..65cd6ed68923e 100644
+--- a/drivers/clk/renesas/r9a06g032-clocks.c
++++ b/drivers/clk/renesas/r9a06g032-clocks.c
+@@ -20,9 +20,12 @@
+ #include <linux/pm_clock.h>
+ #include <linux/pm_domain.h>
+ #include <linux/slab.h>
++#include <linux/soc/renesas/r9a06g032-sysctrl.h>
+ #include <linux/spinlock.h>
+ #include <dt-bindings/clock/r9a06g032-sysctrl.h>
  
- 	/* wait for TRCSTATR.IDLE to go up */
--	if (etm4x_wait_status(csa, TRCSTATR_PMSTABLE_BIT, 1)) {
-+	if (etm4x_wait_status(csa, TRCSTATR_IDLE_BIT, 1)) {
- 		dev_err(etm_dev,
- 			"timeout while waiting for Idle Trace Status\n");
- 		etm4_os_unlock(drvdata);
++#define R9A06G032_SYSCTRL_DMAMUX 0xA0
++
+ struct r9a06g032_gate {
+ 	u16 gate, reset, ready, midle,
+ 		scon, mirack, mistat;
+@@ -315,6 +318,30 @@ struct r9a06g032_priv {
+ 	void __iomem *reg;
+ };
+ 
++static struct r9a06g032_priv *sysctrl_priv;
++
++/* Exported helper to access the DMAMUX register */
++int r9a06g032_sysctrl_set_dmamux(u32 mask, u32 val)
++{
++	unsigned long flags;
++	u32 dmamux;
++
++	if (!sysctrl_priv)
++		return -EPROBE_DEFER;
++
++	spin_lock_irqsave(&sysctrl_priv->lock, flags);
++
++	dmamux = readl(sysctrl_priv->reg + R9A06G032_SYSCTRL_DMAMUX);
++	dmamux &= ~mask;
++	dmamux |= val & mask;
++	writel(dmamux, sysctrl_priv->reg + R9A06G032_SYSCTRL_DMAMUX);
++
++	spin_unlock_irqrestore(&sysctrl_priv->lock, flags);
++
++	return 0;
++}
++EXPORT_SYMBOL_GPL(r9a06g032_sysctrl_set_dmamux);
++
+ /* register/bit pairs are encoded as an uint16_t */
+ static void
+ clk_rdesc_set(struct r9a06g032_priv *clocks,
+@@ -961,7 +988,13 @@ static int __init r9a06g032_clocks_probe(struct platform_device *pdev)
+ 	if (error)
+ 		return error;
+ 
+-	return r9a06g032_add_clk_domain(dev);
++	error = r9a06g032_add_clk_domain(dev);
++	if (error)
++		return error;
++
++	sysctrl_priv = clocks;
++
++	return 0;
+ }
+ 
+ static const struct of_device_id r9a06g032_match[] = {
+diff --git a/include/linux/soc/renesas/r9a06g032-sysctrl.h b/include/linux/soc/renesas/r9a06g032-sysctrl.h
+new file mode 100644
+index 0000000000000..066dfb15cbddd
+--- /dev/null
++++ b/include/linux/soc/renesas/r9a06g032-sysctrl.h
+@@ -0,0 +1,11 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++#ifndef __LINUX_SOC_RENESAS_R9A06G032_SYSCTRL_H__
++#define __LINUX_SOC_RENESAS_R9A06G032_SYSCTRL_H__
++
++#ifdef CONFIG_CLK_R9A06G032
++int r9a06g032_sysctrl_set_dmamux(u32 mask, u32 val);
++#else
++static inline int r9a06g032_sysctrl_set_dmamux(u32 mask, u32 val) { return -ENODEV; }
++#endif
++
++#endif /* __LINUX_SOC_RENESAS_R9A06G032_SYSCTRL_H__ */
+-- 
+2.51.0
+
 
 
 
