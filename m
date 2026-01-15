@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-208916-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209395-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 60E39D265FD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:26:59 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 30311D26E8D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:38 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 5440A306F039
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 47B8A313CFD6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9B9233C0095;
-	Thu, 15 Jan 2026 17:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D3CC27AC5C;
+	Thu, 15 Jan 2026 17:36:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pZyx5pfZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zYkKf2Rw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 55D382750ED;
-	Thu, 15 Jan 2026 17:13:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E59C13BF2FA;
+	Thu, 15 Jan 2026 17:36:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497209; cv=none; b=V7ThOZmUS8pLpsa7T6aai1tcGZ4ZpoVfSfblS0cVdPue/YdsyJvVlol/2ic3yObpaLllRtiS//TZASJVKmMzaA/RgBfA8ImIgJtBz+zw+igqRkbaPLjZXIKnok3a4u/QSRz5rZlqCUbVatl1NGhv+jk4AXLY0CmpkwuUjcidQO4=
+	t=1768498575; cv=none; b=URNF5NGT5EEUV3BAY4TqNcK1dcVDrbObhX+9EBheonR7bcnsbGBa2LHoX8ANZGJio67w1GyJ75pQS13FbfC5BZXJiV66zsM+ltGIlsVPSebstNYSNXxZE6g0m/sq7kIzKnJavJZXQjkHfOiuW1CQ2xvmKawOR6aSjCNt5kISyag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497209; c=relaxed/simple;
-	bh=9zD1lcHYp0s6idq8vu+MRd8SlUhlwhRWlva81SYLoMU=;
+	s=arc-20240116; t=1768498575; c=relaxed/simple;
+	bh=sr1gSCrKQUMMyQqGGhJJr/BoumKLrKi6nz2tUlE1AB8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oBY5ZnFEED+/bdis/QFw9P4e7K8eJnEfS6gKqIhpOPIh5K7XzRw3PFbslpLIkrviRtbhy505mroyELrwK/MWwFeR6RnEZoE7ABB3dboTVQKQGgPkbsunr6TB3MFrnrXEEuDaq5hA7avOCDqY9zKi4S9Qk93t6omfDsVJDUT2DPE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pZyx5pfZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3076C116D0;
-	Thu, 15 Jan 2026 17:13:28 +0000 (UTC)
+	 MIME-Version; b=QaMk0C4+cAEsrKQIQknGS2BQESuaCm2dnLkWxswnqH2Zpa8q3y+95zBYaiQSRCKOwOlI3tKoCA7SN536t3MEXKW68OC7z7JyhMgb6WMK1vy8+QOBsqEroi/J/LbXAPN+i8SLmvcG4z+JCwMaeyl9qDq4jEXGFcSYSegbqnqe27c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zYkKf2Rw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10096C116D0;
+	Thu, 15 Jan 2026 17:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497209;
-	bh=9zD1lcHYp0s6idq8vu+MRd8SlUhlwhRWlva81SYLoMU=;
+	s=korg; t=1768498574;
+	bh=sr1gSCrKQUMMyQqGGhJJr/BoumKLrKi6nz2tUlE1AB8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=pZyx5pfZwKwBZF+dGniMks2Q3lDTROrye/gaKstbq/cZQ51u20awFtnBg9xy/hIMo
-	 VULmOez1DZBx8H9uqfgoXHgyPymMl7J0+OR4o6SxWb+O2ElcbJUSzrQCfnmoN+p7Y3
-	 bQiM7KtBuiOrH6WYH2vcAJLOyVPYLF4MioW/stxs=
+	b=zYkKf2RwE2FwxsTk5WG26DE2neJjwgyyS86NWeau7U+PR1lQ2hUOWUxS8algKKb+y
+	 K+JO/IfNTMcVoX2EXNgqtWS9BnNiOvFZRN1wOON0RJgjHUZ/y3LRgIhxl3L2gqEZqM
+	 Px1X+WbOxbsRZzw8mvqeYnnuN3kDJpo1h0N08gbE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Takashi Iwai <tiwai@suse.de>,
+	Jouni Malinen <jouni.malinen@oss.qualcomm.com>,
+	Johannes Berg <johannes.berg@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 55/72] ALSA: ac97bus: Use guard() for mutex locks
+Subject: [PATCH 5.15 479/554] wifi: mac80211: Discard Beacon frames to non-broadcast address
 Date: Thu, 15 Jan 2026 17:49:05 +0100
-Message-ID: <20260115164145.491140499@linuxfoundation.org>
+Message-ID: <20260115164303.644961838@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,94 +60,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
 
-[ Upstream commit c07824a14d99c10edd4ec4c389d219af336ecf20 ]
+[ Upstream commit 193d18f60588e95d62e0f82b6a53893e5f2f19f8 ]
 
-Replace the manual mutex lock/unlock pairs with guard() for code
-simplification.
+Beacon frames are required to be sent to the broadcast address, see IEEE
+Std 802.11-2020, 11.1.3.1 ("The Address 1 field of the Beacon .. frame
+shall be set to the broadcast address"). A unicast Beacon frame might be
+used as a targeted attack to get one of the associated STAs to do
+something (e.g., using CSA to move it to another channel). As such, it
+is better have strict filtering for this on the received side and
+discard all Beacon frames that are sent to an unexpected address.
 
-Only code refactoring, and no behavior change.
+This is even more important for cases where beacon protection is used.
+The current implementation in mac80211 is correctly discarding unicast
+Beacon frames if the Protected Frame bit in the Frame Control field is
+set to 0. However, if that bit is set to 1, the logic used for checking
+for configured BIGTK(s) does not actually work. If the driver does not
+have logic for dropping unicast Beacon frames with Protected Frame bit
+1, these frames would be accepted in mac80211 processing as valid Beacon
+frames even though they are not protected. This would allow beacon
+protection to be bypassed. While the logic for checking beacon
+protection could be extended to cover this corner case, a more generic
+check for discard all Beacon frames based on A1=unicast address covers
+this without needing additional changes.
 
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Link: https://patch.msgid.link/20250829151335.7342-18-tiwai@suse.de
-Stable-dep-of: 830988b6cf19 ("ALSA: ac97: fix a double free in snd_ac97_controller_register()")
+Address all these issues by dropping received Beacon frames if they are
+sent to a non-broadcast address.
+
+Cc: stable@vger.kernel.org
+Fixes: af2d14b01c32 ("mac80211: Beacon protection using the new BIGTK (STA)")
+Signed-off-by: Jouni Malinen <jouni.malinen@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251215151134.104501-1-jouni.malinen@oss.qualcomm.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+[ adapted RX_DROP return value to RX_DROP_MONITOR ]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/ac97/bus.c |   22 +++++++++-------------
- 1 file changed, 9 insertions(+), 13 deletions(-)
+ net/mac80211/rx.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/sound/ac97/bus.c
-+++ b/sound/ac97/bus.c
-@@ -242,10 +242,9 @@ static ssize_t cold_reset_store(struct d
- {
- 	struct ac97_controller *ac97_ctrl;
+--- a/net/mac80211/rx.c
++++ b/net/mac80211/rx.c
+@@ -3193,6 +3193,11 @@ ieee80211_rx_h_mgmt_check(struct ieee802
+ 	if (!ieee80211_is_mgmt(mgmt->frame_control))
+ 		return RX_DROP_MONITOR;
  
--	mutex_lock(&ac97_controllers_mutex);
-+	guard(mutex)(&ac97_controllers_mutex);
- 	ac97_ctrl = to_ac97_controller(dev);
- 	ac97_ctrl->ops->reset(ac97_ctrl);
--	mutex_unlock(&ac97_controllers_mutex);
- 	return len;
- }
- static DEVICE_ATTR_WO(cold_reset);
-@@ -259,10 +258,9 @@ static ssize_t warm_reset_store(struct d
- 	if (!dev)
- 		return -ENODEV;
- 
--	mutex_lock(&ac97_controllers_mutex);
-+	guard(mutex)(&ac97_controllers_mutex);
- 	ac97_ctrl = to_ac97_controller(dev);
- 	ac97_ctrl->ops->warm_reset(ac97_ctrl);
--	mutex_unlock(&ac97_controllers_mutex);
- 	return len;
- }
- static DEVICE_ATTR_WO(warm_reset);
-@@ -285,10 +283,10 @@ static const struct attribute_group *ac9
- 
- static void ac97_del_adapter(struct ac97_controller *ac97_ctrl)
- {
--	mutex_lock(&ac97_controllers_mutex);
--	ac97_ctrl_codecs_unregister(ac97_ctrl);
--	list_del(&ac97_ctrl->controllers);
--	mutex_unlock(&ac97_controllers_mutex);
-+	scoped_guard(mutex, &ac97_controllers_mutex) {
-+		ac97_ctrl_codecs_unregister(ac97_ctrl);
-+		list_del(&ac97_ctrl->controllers);
-+	}
- 
- 	device_unregister(&ac97_ctrl->adap);
- }
-@@ -312,7 +310,7 @@ static int ac97_add_adapter(struct ac97_
- {
- 	int ret;
- 
--	mutex_lock(&ac97_controllers_mutex);
-+	guard(mutex)(&ac97_controllers_mutex);
- 	ret = idr_alloc(&ac97_adapter_idr, ac97_ctrl, 0, 0, GFP_KERNEL);
- 	ac97_ctrl->nr = ret;
- 	if (ret >= 0) {
-@@ -323,13 +321,11 @@ static int ac97_add_adapter(struct ac97_
- 		if (ret)
- 			put_device(&ac97_ctrl->adap);
- 	}
--	if (!ret)
-+	if (!ret) {
- 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
--	mutex_unlock(&ac97_controllers_mutex);
--
--	if (!ret)
- 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
- 			dev_name(ac97_ctrl->parent));
-+	}
- 	return ret;
- }
- 
++	/* Drop non-broadcast Beacon frames */
++	if (ieee80211_is_beacon(mgmt->frame_control) &&
++	    !is_broadcast_ether_addr(mgmt->da))
++		return RX_DROP_MONITOR;
++
+ 	if (rx->sdata->vif.type == NL80211_IFTYPE_AP &&
+ 	    ieee80211_is_beacon(mgmt->frame_control) &&
+ 	    !(rx->flags & IEEE80211_RX_BEACON_REPORTED)) {
 
 
 
