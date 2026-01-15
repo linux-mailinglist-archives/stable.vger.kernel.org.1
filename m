@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-208856-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209764-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 00CA8D26247
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id D4FB8D274E1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3AA3D3019E2F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:41 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 17A1530FF251
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5855C3BC4E8;
-	Thu, 15 Jan 2026 17:10:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6BF003D523B;
+	Thu, 15 Jan 2026 17:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ItFLatBA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JUbmnh2Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B03133993;
-	Thu, 15 Jan 2026 17:10:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D1113D1CAA;
+	Thu, 15 Jan 2026 17:53:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497038; cv=none; b=Nw9QGhOLlyZ3alUQMbBYK3m0Y4lPQt82QoAfp9ZfOeChpHnsNIU4qbesHz2txOOPTB4Wrjctxrifr16BqOtcHhTrDDnPzyCz5H0L+QS6x02cvSsx8PHCbn2eWMVRUavGSimw1QNcvx/OHA1JA/njVKuMFk4ENj9wV8fx7Le31k4=
+	t=1768499625; cv=none; b=hLJAEB5uB7WHAR1lxsBZ3+zt3SCq+JOfm8pyc8tGpkyfEz00nbh3wP6ENV0OnWdAAiin/vGZfVDbFyZ/cW/Uyscq9K0uYx4XB9bcOx2Y0n5/IAr1BKMwidDXy2nA9K0aDdbVN2t957zbt5xvCOpvm/pgauopu9jKZ7Fma+XxOmM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497038; c=relaxed/simple;
-	bh=JiBbyEL4eeuEv62KlpkZ7lBP1aukxz41FUzzB96inqQ=;
+	s=arc-20240116; t=1768499625; c=relaxed/simple;
+	bh=vV0TSHGiG5WVdUt+WqIYPWwjpFefm6oIHmlG9s5/HXE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rG1uiG4vLdn/Oy2rhbTjrm2XMhNCVh7h8QXKY7snriWClEHbv/KMAQaUpdLUL28AmH+Tvs2/VsZNYeuZb4pvgOW68smCyvAi1MnvI8qbYfJNEpMbpRomAXijsOv9udiZtCcFdXZxr3nUyNneCkCoNhpAghiEEv7leOvmOOCJ6/k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ItFLatBA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60358C116D0;
-	Thu, 15 Jan 2026 17:10:37 +0000 (UTC)
+	 MIME-Version; b=aICIJGOdSgzd2ibSbxmz8jrDg8a/0nv6eNUmf88SolbiPZIk/KlEXHWbJLfXel3AlpLXvrz9eG5iztGV0adqpz/cjmLL2FhPhO5lwHy3L/6CDMFgO0w/jLwwm27EfmCJtlS69qw7Zy/+z6s04q24M3TGAudBwrWeEn+TvtEDfS0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JUbmnh2Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7AAC116D0;
+	Thu, 15 Jan 2026 17:53:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497037;
-	bh=JiBbyEL4eeuEv62KlpkZ7lBP1aukxz41FUzzB96inqQ=;
+	s=korg; t=1768499625;
+	bh=vV0TSHGiG5WVdUt+WqIYPWwjpFefm6oIHmlG9s5/HXE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ItFLatBA5ISlYgJafmGq+15ei7tAlHRdLDJJV6CiN9rKN721nd+EhhCpPWxtITpZR
-	 J3d6qUFvyvfyjeYDt9N7rlQpvTHu6CgRVxmvE+OCkq0ivPFpP1R8Gh3MB5G24CsHoM
-	 76n7EEE6HaWof5G2LRX8wU3hRLBFTLv7GajTNzlw=
+	b=JUbmnh2Qauc0vA3cZJEDQJdcasEXjRXFmH6mQAlOvPPujDO6gKn76vnMpmIHfEWS+
+	 /pGKOE6P3HqJwEjxsEVPBrcd7r734L3AtlL4oqnFsIAFSeytcdAmOvCdBOy6OIBlui
+	 gouHra/Gqpq1HlJSez/8JQtDsJB+LwcC+iEyzurw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.1 02/72] net: 3com: 3c59x: fix possible null dereference in vortex_probe1()
-Date: Thu, 15 Jan 2026 17:48:12 +0100
-Message-ID: <20260115164143.576001763@linuxfoundation.org>
+	Jang Ingyu <ingyujang25@korea.ac.kr>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 292/451] RDMA/core: Fix logic error in ib_get_gids_from_rdma_hdr()
+Date: Thu, 15 Jan 2026 17:48:13 +0100
+Message-ID: <20260115164241.444579258@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,38 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Jang Ingyu <ingyujang25@korea.ac.kr>
 
-commit a4e305ed60f7c41bbf9aabc16dd75267194e0de3 upstream.
+[ Upstream commit 8aaa848eaddd9ef8680fc6aafbd3a0646da5df40 ]
 
-pdev can be null and free_ring: can be called in 1297 with a null
-pdev.
+Fix missing comparison operator for RDMA_NETWORK_ROCE_V1 in the
+conditional statement. The constant was used directly instead of
+being compared with net_type, causing the condition to always
+evaluate to true.
 
-Fixes: 55c82617c3e8 ("3c59x: convert to generic DMA API")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Link: https://patch.msgid.link/20260106094731.25819-2-fourier.thomas@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1c15b4f2a42f ("RDMA/core: Modify enum ib_gid_type and enum rdma_network_type")
+Signed-off-by: Jang Ingyu <ingyujang25@korea.ac.kr>
+Link: https://patch.msgid.link/20251219041508.1725947-1-ingyujang25@korea.ac.kr
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/3com/3c59x.c |    2 +-
+ drivers/infiniband/core/verbs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/3com/3c59x.c
-+++ b/drivers/net/ethernet/3com/3c59x.c
-@@ -1473,7 +1473,7 @@ static int vortex_probe1(struct device *
+diff --git a/drivers/infiniband/core/verbs.c b/drivers/infiniband/core/verbs.c
+index 4fcabe5a84be..4a28f30c39f1 100644
+--- a/drivers/infiniband/core/verbs.c
++++ b/drivers/infiniband/core/verbs.c
+@@ -735,7 +735,7 @@ int ib_get_gids_from_rdma_hdr(const union rdma_network_hdr *hdr,
+ 				       (struct in6_addr *)dgid);
  		return 0;
- 
- free_ring:
--	dma_free_coherent(&pdev->dev,
-+	dma_free_coherent(gendev,
- 		sizeof(struct boom_rx_desc) * RX_RING_SIZE +
- 		sizeof(struct boom_tx_desc) * TX_RING_SIZE,
- 		vp->rx_ring, vp->rx_ring_dma);
+ 	} else if (net_type == RDMA_NETWORK_IPV6 ||
+-		   net_type == RDMA_NETWORK_IB || RDMA_NETWORK_ROCE_V1) {
++		   net_type == RDMA_NETWORK_IB || net_type == RDMA_NETWORK_ROCE_V1) {
+ 		*dgid = hdr->ibgrh.dgid;
+ 		*sgid = hdr->ibgrh.sgid;
+ 		return 0;
+-- 
+2.51.0
+
 
 
 
