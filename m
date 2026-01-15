@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-209531-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209542-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3A9ED26D61
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0CD20D26EE7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:56:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 926B0308C690
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:47 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A487531CF253
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9EDD734216C;
-	Thu, 15 Jan 2026 17:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 372244A3C;
+	Thu, 15 Jan 2026 17:43:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CNCVsE8S"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qfBvmOb4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 617D52D7DED;
-	Thu, 15 Jan 2026 17:42:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF4672C3268;
+	Thu, 15 Jan 2026 17:43:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498961; cv=none; b=m2PxbfuKbSLUyPkNBv2HKI2hjvJNWd//7AoN1hZgZjZM89WgpQYNefxsGSUGpOLKGQEci3EE0FTbS3BL7Ih1IAO9wglCK1U0HbZtLvXHDjAzf9+ZjnxUrNQvP/NSz7ppsfV/D2pajcqjFLBwSGnNq6FFIuD0RSpvQ/640etf10I=
+	t=1768498992; cv=none; b=ED30lCsqNdjU19p48eLJS9e2yBfwtyXWUwlWz+PL3AXp5gzKb0WqSlR6yWh5+lcVyOZq04CKvydJj2+JlITz9iWe/GW6cZmIsqlwbIZeQOtNtsqIxOlpiZGGLB5vVkRblmbIJq7Cd379VSmqiuk/B6Jb3BPZLyXmOiIkXVJJaMQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498961; c=relaxed/simple;
-	bh=Jfh5+zzP5M05YPBqQ5rrwk51IL9hhEHGlC5k2XHYqD4=;
+	s=arc-20240116; t=1768498992; c=relaxed/simple;
+	bh=Xd5WSdC5GDGnX7eV0vrLVhOAKzVXjm19HQWsRE+9Uvo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lEg5KozRceJnhOGJDk2Qg4bkyUacd4tLMBK2a3jM60JKtr2RQbvjS5BoBcR4ipozhy+PLJ+wO8i7txY1K6ubISY5FHpjqXRZEM0S/XtOBUH1mwpEGggfgMQsm3rlhk5So4pomJftRbGPDeYbK5gF6elrqB7Z1g2neeIzbkzbqA0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CNCVsE8S; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFF9EC116D0;
-	Thu, 15 Jan 2026 17:42:40 +0000 (UTC)
+	 MIME-Version; b=t+CfQJKgCBg3Czpu9BByaHivDkIk7YyD8yPXKV1ZIJHkrNo0Z8uB7GvUtjukwbLRt40bDIUNvJkD4wnfrfOZdZCYtRPwbcpRf7cvewcoXoS5j+HdMTRFCeOCQiCzQLDUO01MEG72W1YXFiQ2OfM5Dz8+4KVgv4yUTH1KqjlRd/c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qfBvmOb4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 228FAC116D0;
+	Thu, 15 Jan 2026 17:43:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498961;
-	bh=Jfh5+zzP5M05YPBqQ5rrwk51IL9hhEHGlC5k2XHYqD4=;
+	s=korg; t=1768498992;
+	bh=Xd5WSdC5GDGnX7eV0vrLVhOAKzVXjm19HQWsRE+9Uvo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CNCVsE8SXWO5qprfdmVcIzjoBRTet4g3y9/t66YVkZaID1ZbMV1d1uNuJ8529laKw
-	 91G+VZjhjVFsU4ETVvkaqOZIr9uI04gymSp+PmmPt4W0kM8aZASU3gpripv5n6FJmR
-	 R7P2lfhTi+bE0F7aPzqpgKWl4NVBy/DKfyOyRrV4=
+	b=qfBvmOb4II9hszw5+qB0oCeqZbuzfwY84k9vm6EJrLw7iRAQdaBUM5NGDpSJIcXKe
+	 13JXp1T4+r4mbVB6HglFOoPRej/oVYL0HmZOr2C+1+Yj5EXkeUtl++WpORPK4jGmpv
+	 IDu2kQkztaOLLuVPN6C1Ed28j5GMrMlBqf4NGsfw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Shuhao Fu <sfual@cse.ust.hk>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Ivan Abramov <i.abramov@mt-integration.ru>,
+	Sebastian Reichel <sebastian.reichel@collabora.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 052/451] i3c: fix refcount inconsistency in i3c_master_register
-Date: Thu, 15 Jan 2026 17:44:13 +0100
-Message-ID: <20260115164232.781852936@linuxfoundation.org>
+Subject: [PATCH 5.10 053/451] power: supply: wm831x: Check wm831x_set_bits() return value
+Date: Thu, 15 Jan 2026 17:44:14 +0100
+Message-ID: <20260115164232.818600997@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -65,57 +64,52 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Ivan Abramov <i.abramov@mt-integration.ru>
 
-[ Upstream commit 9d4f219807d5ac11fb1d596e4ddb09336b040067 ]
+[ Upstream commit ea14bae6df18942bccb467fcf5ff33ca677b8253 ]
 
-In `i3c_master_register`, a possible refcount inconsistency has been
-identified, causing possible resource leak.
+Since wm831x_set_bits() may return error, log failure and exit from
+wm831x_usb_limit_change() in such case.
 
-Function `of_node_get` increases the refcount of `parent->of_node`. If
-function `i3c_bus_init` fails, the function returns immediately without
-a corresponding decrease, resulting in an inconsistent refcounter.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Move call i3c_bus_init() after device_initialize() to let callback
-i3c_masterdev_release() release of_node.
-
-Reported-by: Shuhao Fu <sfual@cse.ust.hk>
-Closes: https://lore.kernel.org/linux-i3c/aO2tjp_FsV_WohPG@osx.local/T/#m2c05a982beeb14e7bf039c1d8db856734bf234c7
-Fixes: 3a379bbcea0a ("i3c: Add core I3C infrastructure")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Link: https://patch.msgid.link/20251016143814.2551256-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 626b6cd5f52e ("power: wm831x_power: Support USB charger current limit management")
+Signed-off-by: Ivan Abramov <i.abramov@mt-integration.ru>
+Link: https://patch.msgid.link/20251009170553.566561-1-i.abramov@mt-integration.ru
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/power/supply/wm831x_power.c | 10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
-index 507fb6d26d330..527bea0ffcd7f 100644
---- a/drivers/i3c/master.c
-+++ b/drivers/i3c/master.c
-@@ -2661,10 +2661,6 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	INIT_LIST_HEAD(&master->boardinfo.i2c);
- 	INIT_LIST_HEAD(&master->boardinfo.i3c);
+diff --git a/drivers/power/supply/wm831x_power.c b/drivers/power/supply/wm831x_power.c
+index 18b33f14dfeef..aae655109862c 100644
+--- a/drivers/power/supply/wm831x_power.c
++++ b/drivers/power/supply/wm831x_power.c
+@@ -144,6 +144,7 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 							 struct wm831x_power,
+ 							 usb_notify);
+ 	unsigned int i, best;
++	int ret;
  
--	ret = i3c_bus_init(i3cbus, master->dev.of_node);
--	if (ret)
--		return ret;
--
- 	device_initialize(&master->dev);
- 	dev_set_name(&master->dev, "i3c-%d", i3cbus->id);
+ 	/* Find the highest supported limit */
+ 	best = 0;
+@@ -156,8 +157,13 @@ static int wm831x_usb_limit_change(struct notifier_block *nb,
+ 	dev_dbg(wm831x_power->wm831x->dev,
+ 		"Limiting USB current to %umA", wm831x_usb_limits[best]);
  
-@@ -2672,6 +2668,10 @@ int i3c_master_register(struct i3c_master_controller *master,
- 	master->dev.coherent_dma_mask = parent->coherent_dma_mask;
- 	master->dev.dma_parms = parent->dma_parms;
+-	wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
+-		        WM831X_USB_ILIM_MASK, best);
++	ret = wm831x_set_bits(wm831x_power->wm831x, WM831X_POWER_STATE,
++			      WM831X_USB_ILIM_MASK, best);
++	if (ret < 0) {
++		dev_err(wm831x_power->wm831x->dev,
++			"Failed to set USB current limit: %d\n", ret);
++		return ret;
++	}
  
-+	ret = i3c_bus_init(i3cbus, master->dev.of_node);
-+	if (ret)
-+		goto err_put_dev;
-+
- 	ret = of_populate_i3c_bus(master);
- 	if (ret)
- 		goto err_put_dev;
+ 	return 0;
+ }
 -- 
 2.51.0
 
