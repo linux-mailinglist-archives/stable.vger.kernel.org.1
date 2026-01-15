@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-209161-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209128-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B569ED26AFA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E034CD269D7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 467A6314A32B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 033B031FA0DF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BDE5E34216C;
-	Thu, 15 Jan 2026 17:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3EEB23AEF27;
+	Thu, 15 Jan 2026 17:23:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OAZdiVkY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QvX9/RGm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 81B7A39B48E;
-	Thu, 15 Jan 2026 17:25:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A123A7E07;
+	Thu, 15 Jan 2026 17:23:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497907; cv=none; b=sBZw+ZqVOyjXc1FPZBhCfdrs2iTZ4ZKop04U/pcPq7BVKCmC3yHsgLbg1XLUXiScJXUuvvaU8PjOdsouqrW/yA6EyUTpWonZR+ZMigGIh4AAIybFHnSsjFSEzG4WH/wZI/JngmjH6JIx7mQ1eKTfdZObuoNhZIc+snsoVgl4XNo=
+	t=1768497813; cv=none; b=q7VZW4JJbZJ7p6VIwvvmyU9Fpy32N+e80T2t0Ip2yzs0WFXUtlaubAr+qyx4XijrZRtIBd1HKnjEhrofO9PTwwZSJ/DEHZMSMq9+ICmAxHbYtuy4+yoz61K9GSpkVoQ4uSsa8jl0xl8tgtdxRo4SpDtkmF/qyzzoPL+U2QppUV8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497907; c=relaxed/simple;
-	bh=s6pEeZ3OvFkDuDWL8ngyQHiiRxLy/lbiZialyks/CdM=;
+	s=arc-20240116; t=1768497813; c=relaxed/simple;
+	bh=nsbemScoKsehXuBnxsVW/k7IsMlVWjTGfYILGwZMPtI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=T4tywQoxyxldXeaFGhTuO9QYxxW9V3kEa2tA1pIfceh4KZY5GxzvUdow4DLlUZTunW9YrouN/euhgsF/epFkaPclVXrkWv1pqCJVz6FrrsSOgWh+QMyESM1amq8jST/AU25Jhajdp2+FmkTMFugkrQLMxrx5WSHjzD28AAM0PY4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OAZdiVkY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E64FC116D0;
-	Thu, 15 Jan 2026 17:25:06 +0000 (UTC)
+	 MIME-Version; b=E/VaISxNf1sMONlI2DwhkzvJOu1i64t6DlE6gU3NxQsaPJWfqfQaitXFZRSsTlyo5zCy+UdfJBEmxNzQdk2qkL1Vlb2bYz5t08Gpv3zH+pZ/QkxdV3bdYO+RZkdiDRClDncigR8cxjQvhc3xsxaa9sA4JeqVEuXGz+d5BE4/GjI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QvX9/RGm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73B30C19422;
+	Thu, 15 Jan 2026 17:23:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497907;
-	bh=s6pEeZ3OvFkDuDWL8ngyQHiiRxLy/lbiZialyks/CdM=;
+	s=korg; t=1768497812;
+	bh=nsbemScoKsehXuBnxsVW/k7IsMlVWjTGfYILGwZMPtI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OAZdiVkYWMZOPfXooI0BD2lQJkfNAiLJ+o6S4AxndepBUoMo3dG5J8uv11nVhRmI9
-	 uxORORG2bJHUMf3z2CckOB7IlJXA5AbanOKxiGfJEw6qu44SyDenauT/9is2Iw8vSr
-	 C98PD/tWjUcYsuYN6njaAZOaPqkOiSDfHG9Ok0Go=
+	b=QvX9/RGmTVmAONlHYncQ3Bq+eVHbXCUHRPTJ+LiG7QDaD+yu0TFa5gJfr3bya+2Ik
+	 sI3imNBTFZFl62JFnNtAOYsfqFDkY6LDmdjEq8svLUzgMW+Vg3AkH4DRcmcmcfM5S8
+	 Cf8L9a51x6SzT4tQW/jHJvNIJRiM0k0g46LalhSU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Cryolitia PukNgae <cryolitia.pukngae@linux.dev>,
-	WangYuli <wangyl5933@chinaunicom.cn>,
+	Sakari Ailus <sakari.ailus@linux.intel.com>,
+	Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+	Jonathan Cameron <jonathan.cameron@huawei.com>,
 	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 212/554] ACPICA: Avoid walking the Namespace if start_node is NULL
-Date: Thu, 15 Jan 2026 17:44:38 +0100
-Message-ID: <20260115164253.924575021@linuxfoundation.org>
+Subject: [PATCH 5.15 213/554] ACPI: property: Use ACPI functions in acpi_graph_get_next_endpoint() only
+Date: Thu, 15 Jan 2026 17:44:39 +0100
+Message-ID: <20260115164253.960606852@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -65,61 +66,56 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
+From: Sakari Ailus <sakari.ailus@linux.intel.com>
 
-[ Upstream commit 9d6c58dae8f6590c746ac5d0012ffe14a77539f0 ]
+[ Upstream commit 5d010473cdeaabf6a2d3a9e2aed2186c1b73c213 ]
 
-Although commit 0c9992315e73 ("ACPICA: Avoid walking the ACPI Namespace
-if it is not there") fixed the situation when both start_node and
-acpi_gbl_root_node are NULL, the Linux kernel mainline now still crashed
-on Honor Magicbook 14 Pro [1].
+Calling fwnode_get_next_child_node() in ACPI implementation of the fwnode
+property API is somewhat problematic as the latter is used in the
+impelementation of the former. Instead of using
+fwnode_get_next_child_node() in acpi_graph_get_next_endpoint(), call
+acpi_get_next_subnode() directly instead.
 
-That happens due to the access to the member of parent_node in
-acpi_ns_get_next_node().  The NULL pointer dereference will always
-happen, no matter whether or not the start_node is equal to
-ACPI_ROOT_OBJECT, so move the check of start_node being NULL
-out of the if block.
-
-Unfortunately, all the attempts to contact Honor have failed, they
-refused to provide any technical support for Linux.
-
-The bad DSDT table's dump could be found on GitHub [2].
-
-DMI: HONOR FMB-P/FMB-P-PCB, BIOS 1.13 05/08/2025
-
-Link: https://github.com/acpica/acpica/commit/1c1b57b9eba4554cb132ee658dd942c0210ed20d
-Link: https://gist.github.com/Cryolitia/a860ffc97437dcd2cd988371d5b73ed7 [1]
-Link: https://github.com/denis-bb/honor-fmb-p-dsdt [2]
-Signed-off-by: Cryolitia PukNgae <cryolitia.pukngae@linux.dev>
-Reviewed-by: WangYuli <wangyl5933@chinaunicom.cn>
-[ rjw: Subject adjustment, changelog edits ]
-Link: https://patch.msgid.link/20251125-acpica-v1-1-99e63b1b25f8@linux.dev
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Reviewed-by: Jonathan Cameron <jonathan.cameron@huawei.com>
+Link: https://patch.msgid.link/20251001104320.1272752-3-sakari.ailus@linux.intel.com
 Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/acpi/acpica/nswalk.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/acpi/property.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/acpi/acpica/nswalk.c b/drivers/acpi/acpica/nswalk.c
-index e7c30ce06e189..dee2cb5fb9617 100644
---- a/drivers/acpi/acpica/nswalk.c
-+++ b/drivers/acpi/acpica/nswalk.c
-@@ -169,9 +169,12 @@ acpi_ns_walk_namespace(acpi_object_type type,
+diff --git a/drivers/acpi/property.c b/drivers/acpi/property.c
+index 7f0fa58b634a3..cb4bcc90d4be5 100644
+--- a/drivers/acpi/property.c
++++ b/drivers/acpi/property.c
+@@ -1168,7 +1168,7 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
  
- 	if (start_node == ACPI_ROOT_OBJECT) {
- 		start_node = acpi_gbl_root_node;
--		if (!start_node) {
--			return_ACPI_STATUS(AE_NO_NAMESPACE);
--		}
-+	}
-+
-+	/* Avoid walking the namespace if the StartNode is NULL */
-+
-+	if (!start_node) {
-+		return_ACPI_STATUS(AE_NO_NAMESPACE);
+ 	if (!prev) {
+ 		do {
+-			port = fwnode_get_next_child_node(fwnode, port);
++			port = acpi_get_next_subnode(fwnode, port);
+ 			/*
+ 			 * The names of the port nodes begin with "port@"
+ 			 * followed by the number of the port node and they also
+@@ -1186,13 +1186,13 @@ static struct fwnode_handle *acpi_graph_get_next_endpoint(
+ 	if (!port)
+ 		return NULL;
+ 
+-	endpoint = fwnode_get_next_child_node(port, prev);
++	endpoint = acpi_get_next_subnode(port, prev);
+ 	while (!endpoint) {
+-		port = fwnode_get_next_child_node(fwnode, port);
++		port = acpi_get_next_subnode(fwnode, port);
+ 		if (!port)
+ 			break;
+ 		if (is_acpi_graph_node(port, "port"))
+-			endpoint = fwnode_get_next_child_node(port, NULL);
++			endpoint = acpi_get_next_subnode(port, NULL);
  	}
  
- 	/* Null child means "get first node" */
+ 	/*
 -- 
 2.51.0
 
