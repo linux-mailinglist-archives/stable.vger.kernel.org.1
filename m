@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-209733-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209740-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id D0CE4D272AD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2E4FFD27D6E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 6B74230ABD38
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:33 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1CE9030397BA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1113C1FCF;
-	Thu, 15 Jan 2026 17:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13F233C1FD5;
+	Thu, 15 Jan 2026 17:52:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NTVcnzKB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="YnA5HJjU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6EF073C199C;
-	Thu, 15 Jan 2026 17:52:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBB693BC4D8;
+	Thu, 15 Jan 2026 17:52:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499536; cv=none; b=G/sVG83qSfFRJU0jkq/7p29uXtBIb000ZYvzIPk18/HW7iLUPd3hwE0TbadD7wOmX+YrRqvvGgv0YqDmQ0Dp3gfJtKc2YhiC2a2uRaAQv7n7gQ5OJ4n0DywOmg6WXSWyaRIRNEEF57Q1u631L91+WALGw5xE/mIcP8fNrdlL+FQ=
+	t=1768499556; cv=none; b=H/irwZWQP9A5v4ucHuEN8b3OwHw7mu0W/UWlSM/FfU7UN9WGv06XNmXPePhJVeeXUA56PfU3hVSVDlVU31W0VGtjuJOVV11+J+JXg0csnz78OPhd/WYHtYTvnX/hY7yrKp5pxYryxGy8gsED+nONLzC/6534e8NqnmYaCzHDiRw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499536; c=relaxed/simple;
-	bh=JoMPPQZaBmZ9iI5S/FSqYwo7mmTksXoQeeWLyARlerQ=;
+	s=arc-20240116; t=1768499556; c=relaxed/simple;
+	bh=KzK91GU4c0TaLKduIY5jYHysScQCfseEXaKZU54idPA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DLMwZpsE/atfbjp3WBnjJW3HA5JbIGUzJKPWJG9v9AglLpyKFzdgLYq3W+JPb1j/H9r7CiWCv+LSHl1muksAik+cqUv79XKHA3HMei4+H9nfylGP3IgOR01Zzx9yt5QQKP1qoWKVRE4N75V5wWVCV4yNNX1O5OM6n5GhnLlpK+Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NTVcnzKB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD62C116D0;
-	Thu, 15 Jan 2026 17:52:15 +0000 (UTC)
+	 MIME-Version; b=LDMMsYCIMf8WsYYnA9tp2nkgdkLsVelfYlsgOaprL7AJUAWRXXTkvVT6HaQO6Ul87THTz3RNjjvuXr8XHhnjUrGlcGYjzReKO4kM/20w/cFrt4KV1VjF3WQZ0z620w4FKtnTdMDUwcovrvKZGKw7Xlrc5IVUbPwE25957QgqIiU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=YnA5HJjU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58BC6C116D0;
+	Thu, 15 Jan 2026 17:52:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499536;
-	bh=JoMPPQZaBmZ9iI5S/FSqYwo7mmTksXoQeeWLyARlerQ=;
+	s=korg; t=1768499556;
+	bh=KzK91GU4c0TaLKduIY5jYHysScQCfseEXaKZU54idPA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NTVcnzKBYTnK5gMKdH/T/WtcNk/ForAvwfATX5WTv7riAhp8i5ufFx+VO8vzfR5jO
-	 OgO4D0EZv8i9dbyWkxOwePoHmx5EGECDp/N/KtaUWjrh2tG/H4oVFQv/aKlG72Uakt
-	 1dNbIMTObuB72L7owDmRM5NY1BsUcxqlT9RRORhk=
+	b=YnA5HJjUFM4SeM2WfQADCa7aiSfVkLVdQlTMQM10SGlFeHZBfrRNDQCO3l+a0uCME
+	 8VlM9yAyZDQeL6ER4MnJMMEWY8bQxjsKT8/UnIWb8lfLblFKRu/XGnAhmf6ZEe2n8v
+	 89IzQ7Edb0vtHcwDMnBVmHdlHnBj1jWc2I5CzRHA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	stable <stable@kernel.org>,
-	Duoming Zhou <duoming@zju.edu.cn>
-Subject: [PATCH 5.10 234/451] usb: phy: fsl-usb: Fix use-after-free in delayed work during device removal
-Date: Thu, 15 Jan 2026 17:47:15 +0100
-Message-ID: <20260115164239.360073394@linuxfoundation.org>
+	Miaoqian Lin <linmq006@gmail.com>,
+	Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Subject: [PATCH 5.10 235/451] usb: dwc3: of-simple: fix clock resource leak in dwc3_of_simple_probe
+Date: Thu, 15 Jan 2026 17:47:16 +0100
+Message-ID: <20260115164239.395592412@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -63,53 +64,57 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+From: Miaoqian Lin <linmq006@gmail.com>
 
-commit 41ca62e3e21e48c2903b3b45e232cf4f2ff7434f upstream.
+commit 3b4961313d31e200c9e974bb1536cdea217f78b5 upstream.
 
-The delayed work item otg_event is initialized in fsl_otg_conf() and
-scheduled under two conditions:
-1. When a host controller binds to the OTG controller.
-2. When the USB ID pin state changes (cable insertion/removal).
+When clk_bulk_prepare_enable() fails, the error path jumps to
+err_resetc_assert, skipping clk_bulk_put_all() and leaking the
+clock references acquired by clk_bulk_get_all().
 
-A race condition occurs when the device is removed via fsl_otg_remove():
-the fsl_otg instance may be freed while the delayed work is still pending
-or executing. This leads to use-after-free when the work function
-fsl_otg_event() accesses the already freed memory.
+Add err_clk_put_all label to properly release clock resources
+in all error paths.
 
-The problematic scenario:
+Found via static analysis and code review.
 
-(detach thread)            | (delayed work)
-fsl_otg_remove()           |
-  kfree(fsl_otg_dev) //FREE| fsl_otg_event()
-                           |   og = container_of(...) //USE
-                           |   og-> //USE
-
-Fix this by calling disable_delayed_work_sync() in fsl_otg_remove()
-before deallocating the fsl_otg structure. This ensures the delayed work
-is properly canceled and completes execution prior to memory deallocation.
-
-This bug was identified through static analysis.
-
-Fixes: 0807c500a1a6 ("USB: add Freescale USB OTG Transceiver driver")
+Fixes: c0c61471ef86 ("usb: dwc3: of-simple: Convert to bulk clk API")
 Cc: stable <stable@kernel.org>
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://patch.msgid.link/20251205034831.12846-1-duoming@zju.edu.cn
+Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
+Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+Link: https://patch.msgid.link/20251211064937.2360510-1-linmq006@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/phy/phy-fsl-usb.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/usb/dwc3/dwc3-of-simple.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/usb/phy/phy-fsl-usb.c
-+++ b/drivers/usb/phy/phy-fsl-usb.c
-@@ -987,6 +987,7 @@ static int fsl_otg_remove(struct platfor
- {
- 	struct fsl_usb2_platform_data *pdata = dev_get_platdata(&pdev->dev);
+--- a/drivers/usb/dwc3/dwc3-of-simple.c
++++ b/drivers/usb/dwc3/dwc3-of-simple.c
+@@ -71,11 +71,11 @@ static int dwc3_of_simple_probe(struct p
+ 	simple->num_clocks = ret;
+ 	ret = clk_bulk_prepare_enable(simple->num_clocks, simple->clks);
+ 	if (ret)
+-		goto err_resetc_assert;
++		goto err_clk_put_all;
  
-+	disable_delayed_work_sync(&fsl_otg_dev->otg_event);
- 	usb_remove_phy(&fsl_otg_dev->phy);
- 	free_irq(fsl_otg_dev->irq, fsl_otg_dev);
+ 	ret = of_platform_populate(np, NULL, NULL, dev);
+ 	if (ret)
+-		goto err_clk_put;
++		goto err_clk_disable;
  
+ 	pm_runtime_set_active(dev);
+ 	pm_runtime_enable(dev);
+@@ -83,8 +83,9 @@ static int dwc3_of_simple_probe(struct p
+ 
+ 	return 0;
+ 
+-err_clk_put:
++err_clk_disable:
+ 	clk_bulk_disable_unprepare(simple->num_clocks, simple->clks);
++err_clk_put_all:
+ 	clk_bulk_put_all(simple->num_clocks, simple->clks);
+ 
+ err_resetc_assert:
 
 
 
