@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209625-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209177-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A07E4D26EA4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 975BBD26A64
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 7E28D30BF3E1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:44 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id B623530F9332
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 50DB13C1980;
-	Thu, 15 Jan 2026 17:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D8F9D3C0094;
+	Thu, 15 Jan 2026 17:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="IJz5W0W1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2ZwEOkNQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 141223BF309;
-	Thu, 15 Jan 2026 17:47:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9A7F63C1FD3;
+	Thu, 15 Jan 2026 17:25:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499229; cv=none; b=cvTLrQwuTcBjoVvMzkXupagKXW0rZjxqWAl4PQaIqMB3f+G35jbJ1CuR4WiTYff5nh9AVMDH+qGyvczudywSUManS8+dwLnpz7FofXmgH1q4DJKI72+WNdPBTg9NSfkRUBa4ukIn9OAjWYqj6AE3EIUIjQI+PNGoHVdlb5cgYAQ=
+	t=1768497953; cv=none; b=l9xSoT8++Y3lgPHTpKCLWRYJKrfipkbKZ36AZM+w54meQBxW1/XL9ExftBqpwa4h7F2K52z2cV7byxPWDP2NdzZp0TVSTSbq7J+Tnc1/+oXnynO1EWImNzwtSrn9aG/oSPBuSDidXuLmWH6yEKQNfpdzp9U1hJEpET1FN1HFG6w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499229; c=relaxed/simple;
-	bh=gy5Tf/IJ8LXgZXsf49X0ZUq20OhGRPtde5TEEvkPiRU=;
+	s=arc-20240116; t=1768497953; c=relaxed/simple;
+	bh=UaqEhagsB+OuIWElqtfEVfyi0WKdXfvHZGNjS+fvEI8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LAfFVuzK0YKRjl9laip/8K/91biAM/XnqGsHB7cBUQ3qQc3fefeMGTbL7osGkN6AExnRW/jm2Wqi5eYsZ/kukRuOVuPTj05hEzDGFKBkLX+aqqUXcN+jDJq5sOvg7PAGzctgAZSVJUANxdENrfgxPHYLH1BwQ6BD6YH4NsAqAkg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=IJz5W0W1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F314C16AAE;
-	Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
+	 MIME-Version; b=Rc8T+IEDbGVulFkOADcvI7svLhZ7oyCUJ5SDYZ5Uhs1puCXPVkv8lYyZ60ZlrccaCRzbIev86J0W8zmVUnP0ZWjdGEl0blbf1JSOo9Ka8g1LjtJ2wUKb+lRLrruhkudMzsytT0N7jO/E9Qm45q1BaDY0nwg5sH0Ai+C/KQQ1HCc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2ZwEOkNQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE304C16AAE;
+	Thu, 15 Jan 2026 17:25:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499228;
-	bh=gy5Tf/IJ8LXgZXsf49X0ZUq20OhGRPtde5TEEvkPiRU=;
+	s=korg; t=1768497953;
+	bh=UaqEhagsB+OuIWElqtfEVfyi0WKdXfvHZGNjS+fvEI8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=IJz5W0W1lYL6rx7gGmmrpeEQo3UjIqSZqwK68A2qPWXvUubyyEkxaYfIxefgEEcHH
-	 wB9i5BDt5CDaTWiDwhPB/3blPQvC0Pxv5tiE5zWhipMIEn9cfWhTa7ePyth7b4bG/E
-	 k/xnH7CkXu/gflNRRcBerk+s3zt4m8ZTXQb0RQuw=
+	b=2ZwEOkNQX/1jqwTzoApufQp7Ubb7ZjtZ+ZKUbSst+YAuEfqfo08Y4Dmp2Wzs39k/D
+	 iEgJbgnGT4Ie39bZwoE7zApEviGrpekQ8SO7mlyKuNlM14w9z539L27qik0KNv2pig
+	 d7k6rwrtQ+207cQkGsFGvNGn41aZBwjvQSGmaITE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jonathan Curley <jcurley@purestorage.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Ben Collins <bcollins@kernel.org>,
+	Christophe Leroy <christophe.leroy@csgroup.eu>,
+	Madhavan Srinivasan <maddy@linux.ibm.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 126/451] NFSv4/pNFS: Clear NFS_INO_LAYOUTCOMMIT in pnfs_mark_layout_stateid_invalid
+Subject: [PATCH 5.15 261/554] powerpc/addnote: Fix overflow on 32-bit builds
 Date: Thu, 15 Jan 2026 17:45:27 +0100
-Message-ID: <20260115164235.480027998@linuxfoundation.org>
+Message-ID: <20260115164255.680635600@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,44 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonathan Curley <jcurley@purestorage.com>
+From: Ben Collins <bcollins@kernel.org>
 
-[ Upstream commit e0f8058f2cb56de0b7572f51cd563ca5debce746 ]
+[ Upstream commit 825ce89a3ef17f84cf2c0eacfa6b8dc9fd11d13f ]
 
-Fixes a crash when layout is null during this call stack:
+The PUT_64[LB]E() macros need to cast the value to unsigned long long
+like the GET_64[LB]E() macros. Caused lots of warnings when compiled
+on 32-bit, and clobbered addresses (36-bit P4080).
 
-write_inode
-    -> nfs4_write_inode
-        -> pnfs_layoutcommit_inode
-
-pnfs_set_layoutcommit relies on the lseg refcount to keep the layout
-around. Need to clear NFS_INO_LAYOUTCOMMIT otherwise we might attempt
-to reference a null layout.
-
-Fixes: fe1cf9469d7bc ("pNFS: Clear all layout segment state in pnfs_mark_layout_stateid_invalid")
-Signed-off-by: Jonathan Curley <jcurley@purestorage.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Ben Collins <bcollins@kernel.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
+Link: https://patch.msgid.link/2025042122-mustard-wrasse-694572@boujee-and-buff
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/pnfs.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/powerpc/boot/addnote.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/pnfs.c b/fs/nfs/pnfs.c
-index e14cf7140bab4..c5dd301c43d7b 100644
---- a/fs/nfs/pnfs.c
-+++ b/fs/nfs/pnfs.c
-@@ -465,6 +465,7 @@ pnfs_mark_layout_stateid_invalid(struct pnfs_layout_hdr *lo,
- 	struct pnfs_layout_segment *lseg, *next;
+diff --git a/arch/powerpc/boot/addnote.c b/arch/powerpc/boot/addnote.c
+index 53b3b2621457..78704927453a 100644
+--- a/arch/powerpc/boot/addnote.c
++++ b/arch/powerpc/boot/addnote.c
+@@ -68,8 +68,8 @@ static int e_class = ELFCLASS32;
+ #define PUT_16BE(off, v)(buf[off] = ((v) >> 8) & 0xff, \
+ 			 buf[(off) + 1] = (v) & 0xff)
+ #define PUT_32BE(off, v)(PUT_16BE((off), (v) >> 16L), PUT_16BE((off) + 2, (v)))
+-#define PUT_64BE(off, v)((PUT_32BE((off), (v) >> 32L), \
+-			  PUT_32BE((off) + 4, (v))))
++#define PUT_64BE(off, v)((PUT_32BE((off), (unsigned long long)(v) >> 32L), \
++			  PUT_32BE((off) + 4, (unsigned long long)(v))))
  
- 	set_bit(NFS_LAYOUT_INVALID_STID, &lo->plh_flags);
-+	clear_bit(NFS_INO_LAYOUTCOMMIT, &NFS_I(lo->plh_inode)->flags);
- 	list_for_each_entry_safe(lseg, next, &lo->plh_segs, pls_list)
- 		pnfs_clear_lseg_state(lseg, lseg_list);
- 	pnfs_clear_layoutreturn_info(lo);
+ #define GET_16LE(off)	((buf[off]) + (buf[(off)+1] << 8))
+ #define GET_32LE(off)	(GET_16LE(off) + (GET_16LE((off)+2U) << 16U))
+@@ -78,7 +78,8 @@ static int e_class = ELFCLASS32;
+ #define PUT_16LE(off, v) (buf[off] = (v) & 0xff, \
+ 			  buf[(off) + 1] = ((v) >> 8) & 0xff)
+ #define PUT_32LE(off, v) (PUT_16LE((off), (v)), PUT_16LE((off) + 2, (v) >> 16L))
+-#define PUT_64LE(off, v) (PUT_32LE((off), (v)), PUT_32LE((off) + 4, (v) >> 32L))
++#define PUT_64LE(off, v) (PUT_32LE((off), (unsigned long long)(v)), \
++			  PUT_32LE((off) + 4, (unsigned long long)(v) >> 32L))
+ 
+ #define GET_16(off)	(e_data == ELFDATA2MSB ? GET_16BE(off) : GET_16LE(off))
+ #define GET_32(off)	(e_data == ELFDATA2MSB ? GET_32BE(off) : GET_32LE(off))
 -- 
 2.51.0
 
