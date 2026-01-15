@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209789-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208810-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id DD1E3D2771B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7D5E2D263E8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 722813164B53
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9F5A83173C17
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E95A13C00AA;
-	Thu, 15 Jan 2026 17:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F5E3A7F5D;
+	Thu, 15 Jan 2026 17:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MxzzmEDK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mR8XVp7n"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AC90B3D1CD0;
-	Thu, 15 Jan 2026 17:54:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BAE2D5C9B;
+	Thu, 15 Jan 2026 17:08:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499695; cv=none; b=dIHj5ZbejOsJ9ijoRpWhhL2+a6PnwJddU9Z/YEYjZ2ibuKdxXzCzziQAwCdJJsC4s9l7JfVvbwcs+2StrFYKTn+zd4VnxHlg0+mT2QrtsX7WaENl0Exy0Li9LEksMh5y2YGuEFdz1gFk3f4DXq5ryBFHGrCPWq9FCeaS5YdnIQ4=
+	t=1768496907; cv=none; b=ln7uNws//nlbGhp2qqDDtSo9fqCWqsXc1Y+yigTlnnDShGrNCl8z4MJrGA9sWaI6ws0/0nLjtiDqrLg3/J2Kix7GkoAXF/Ej0BnrWitkFw2g98qnthfrCOw5TD05llFv/N1eD6zN9sHALZuFufBJgbybG9PkEqt4EvnryS2FlAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499695; c=relaxed/simple;
-	bh=uH+7bwFrheRlgZhm4PKS+Mpx5O2YrIh97VgL6xMPBHY=;
+	s=arc-20240116; t=1768496907; c=relaxed/simple;
+	bh=6gN1XKF5iEgm729SACStsqa5XK6CIf65cwmUTBog+VE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ClPdDa/Il9zhqelobylkrJTZxdP1rJB8rAJIqYbSXEwjKPxcr5xxPnjRdBGJutGaBKt0jQqsXjppXIgZTzUIjNm6+Lm/7gobNOQpHcSxFM9rcwoEct4k5EQDm2YE54/g8+SrfH5T9cmtFF2t8sx25ct6T4oITgs919eSouebgqk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MxzzmEDK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 375A3C116D0;
-	Thu, 15 Jan 2026 17:54:55 +0000 (UTC)
+	 MIME-Version; b=u1mf9scyjxNBH23cDK6p1oc9e8g0ShQhPBgIxNRF3Agy/0fmAUm/L7mONMAeRm4skKmYeKD0fBsdHSAfL/eZ8bFa2WAS0UtOQuxtQeJdVRAAtso8Mcbp/kCek63lTjAJ8DaDP6bPWL6PbNdr+3fAvlDcJAV+akhTB273j42TD/I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mR8XVp7n; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E037C116D0;
+	Thu, 15 Jan 2026 17:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499695;
-	bh=uH+7bwFrheRlgZhm4PKS+Mpx5O2YrIh97VgL6xMPBHY=;
+	s=korg; t=1768496906;
+	bh=6gN1XKF5iEgm729SACStsqa5XK6CIf65cwmUTBog+VE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MxzzmEDKTeG+HMcpMlUoMhix+Mj9qWTxtBAVDV/Ud3Onjp9L36O5mNxVs4pRORHHo
-	 igA4uxXkdlN1cl1x0dKaSpBUE0tobASTs8p1zg2qbv3LwW3+7OWnHzGQQt2EZS0PnQ
-	 s8ogI5E/WVrdt3HBC19/Ya2eRhkGAHDty4+ysFgM=
+	b=mR8XVp7nIdz26E5j3g31sLpZWNm4fWZyjfTp0oj2n5UYZ89JBhJrIWiS4hEvx1CUE
+	 wy35J7t1Q15rAE0FtrnL7ODBEemtevlDm1hzGEy3LMzOTzpLpLIurPMzpVj0pwmi4b
+	 cv5pPkBTEo3H1D4YV5B2EBuojRIHcw2Az5zyaaUw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-	Mikulas Patocka <mpatocka@redhat.com>
-Subject: [PATCH 5.10 318/451] dm-ebs: Mark full buffer dirty even on partial write
-Date: Thu, 15 Jan 2026 17:48:39 +0100
-Message-ID: <20260115164242.404556745@linuxfoundation.org>
+	Jianhao Xu <jianhao.xu@seu.edu.cn>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Loic Poulain <loic.poulain@oss.qualcomm.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 57/88] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
+Date: Thu, 15 Jan 2026 17:48:40 +0100
+Message-ID: <20260115164148.376540960@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,123 +62,59 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Uladzislau Rezki (Sony) <urezki@gmail.com>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-commit 7fa3e7d114abc9cc71cc35d768e116641074ddb4 upstream.
+[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
 
-When performing a read-modify-write(RMW) operation, any modification
-to a buffered block must cause the entire buffer to be marked dirty.
+Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+allocated memory for pp_qlt in ipc_mux_init() but did not free it in
+ipc_mux_deinit(). This results in a memory leak when the driver is
+unloaded.
 
-Marking only a subrange as dirty is incorrect because the underlying
-device block size(ubs) defines the minimum read/write granularity. A
-lower device can perform I/O only on regions which are fully aligned
-and sized to ubs.
+Free the allocated memory in ipc_mux_deinit() to fix the leak.
 
-This change ensures that write-back operations always occur in full
-ubs-sized chunks, matching the intended emulation semantics of the
-EBS target.
-
-As for user space visible impact, submitting sub-ubs and misaligned
-I/O for devices which are tuned to ubs sizes only, will reject such
-requests, therefore it can lead to losing data. Example:
-
-1) Create a 8K nvme device in qemu by adding
-
--device nvme,drive=drv0,serial=foo,logical_block_size=8192,physical_block_size=8192
-
-2) Setup dm-ebs to emulate 512B to 8K mapping
-
-urezki@pc638:~/bin$ cat dmsetup.sh
-
-lower=/dev/nvme0n1
-len=$(blockdev --getsz "$lower")
-
-echo "0 $len ebs $lower 0 1 16" | dmsetup create nvme-8k
-urezki@pc638:~/bin$
-
-offset 0, ebs=1 and ubs=16(in sectors).
-
-3) Create an ext4 filesystem(default 4K block size)
-
-urezki@pc638:~/bin$ sudo mkfs.ext4 -F /dev/dm-0
-mke2fs 1.47.0 (5-Feb-2023)
-Discarding device blocks: done
-Creating filesystem with 2072576 4k blocks and 518144 inodes
-Filesystem UUID: bd0b6ca6-0506-4e31-86da-8d22c9d50b63
-Superblock backups stored on blocks:
-        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
-
-Allocating group tables: done
-Writing inode tables: done
-Creating journal (16384 blocks): done
-Writing superblocks and filesystem accounting information: mkfs.ext4: Input/output error while writing out and closing file system
-urezki@pc638:~/bin$ dmesg
-
-<snip>
-[ 1618.875449] buffer_io_error: 1028 callbacks suppressed
-[ 1618.875456] Buffer I/O error on dev dm-0, logical block 0, lost async page write
-[ 1618.875527] Buffer I/O error on dev dm-0, logical block 1, lost async page write
-[ 1618.875602] Buffer I/O error on dev dm-0, logical block 2, lost async page write
-[ 1618.875620] Buffer I/O error on dev dm-0, logical block 3, lost async page write
-[ 1618.875639] Buffer I/O error on dev dm-0, logical block 4, lost async page write
-[ 1618.894316] Buffer I/O error on dev dm-0, logical block 5, lost async page write
-[ 1618.894358] Buffer I/O error on dev dm-0, logical block 6, lost async page write
-[ 1618.894380] Buffer I/O error on dev dm-0, logical block 7, lost async page write
-[ 1618.894405] Buffer I/O error on dev dm-0, logical block 8, lost async page write
-[ 1618.894427] Buffer I/O error on dev dm-0, logical block 9, lost async page write
-<snip>
-
-Many I/O errors because the lower 8K device rejects sub-ubs/misaligned
-requests.
-
-with a patch:
-
-urezki@pc638:~/bin$ sudo mkfs.ext4 -F /dev/dm-0
-mke2fs 1.47.0 (5-Feb-2023)
-Discarding device blocks: done
-Creating filesystem with 2072576 4k blocks and 518144 inodes
-Filesystem UUID: 9b54f44f-ef55-4bd4-9e40-c8b775a616ac
-Superblock backups stored on blocks:
-        32768, 98304, 163840, 229376, 294912, 819200, 884736, 1605632
-
-Allocating group tables: done
-Writing inode tables: done
-Creating journal (16384 blocks): done
-Writing superblocks and filesystem accounting information: done
-
-urezki@pc638:~/bin$ sudo mount /dev/dm-0 /mnt/
-urezki@pc638:~/bin$ ls -al /mnt/
-total 24
-drwxr-xr-x  3 root root  4096 Oct 17 15:13 .
-drwxr-xr-x 19 root root  4096 Jul 10 19:42 ..
-drwx------  2 root root 16384 Oct 17 15:13 lost+found
-urezki@pc638:~/bin$
-
-After this change: mkfs completes; mount succeeds.
-
-Signed-off-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
+Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
+Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-ebs-target.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/drivers/md/dm-ebs-target.c
-+++ b/drivers/md/dm-ebs-target.c
-@@ -101,7 +101,7 @@ static int __ebs_rw_bvec(struct ebs_c *e
- 			} else {
- 				flush_dcache_page(bv->bv_page);
- 				memcpy(ba, pa, cur_len);
--				dm_bufio_mark_partial_buffer_dirty(b, buf_off, buf_off + cur_len);
-+				dm_bufio_mark_buffer_dirty(b);
- 			}
+diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+index fc928b298a984..b846889fcb099 100644
+--- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
++++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
+@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 	struct sk_buff_head *free_list;
+ 	union mux_msg mux_msg;
+ 	struct sk_buff *skb;
++	int i;
  
- 			dm_bufio_release(b);
+ 	if (!ipc_mux->initialized)
+ 		return;
+@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
+ 		ipc_mux->channel->dl_pipe.is_open = false;
+ 	}
+ 
++	if (ipc_mux->protocol != MUX_LITE) {
++		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
++			kfree(ipc_mux->ul_adb.pp_qlt[i]);
++	}
++
+ 	kfree(ipc_mux);
+ }
+-- 
+2.51.0
+
 
 
 
