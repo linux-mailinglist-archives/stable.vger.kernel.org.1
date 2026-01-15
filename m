@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209214-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9E7C4D279DC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:35:49 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F430D26BF3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:48:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2C71E33927C3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id ACA903124D1A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1DE453D3D05;
-	Thu, 15 Jan 2026 17:48:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F9EA3D34BB;
+	Thu, 15 Jan 2026 17:27:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mX6PCda4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rwz9pe9q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9E1533D3CF9;
-	Thu, 15 Jan 2026 17:48:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B55123BF301;
+	Thu, 15 Jan 2026 17:27:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499331; cv=none; b=UvTULfsJT/+m86n0o/gQn1OjTmkrMix1VBtn7zyHm6qW6Kmt4+YDyPzJSRkrRitLsC/QSrRCVgYsYw0Uh8gUlrZtWz9DGmdkU9HAiormF++ZBYeVsgCiaiJUAHDkVrOKM1HzlhETb0JAir0e/e1FBd8Isz1hUWR7TDUBsNp7djA=
+	t=1768498058; cv=none; b=W0f1suT1ynpslCe9IFIRY+5FCFfvRTtN0KF06jpPGcjLifYWdmrZvDf4beKt2V3DYYem4pt+dX3BHl6A2BAqKEkgVrTreeoa6IQ3mgj+N7xenwO10NnjzaK0e2GAeLMWWcoSOALl6K33uHjMvnNgpA7e4VBcih6ZDnEKXlz//sU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499331; c=relaxed/simple;
-	bh=KfsnhChN/zqTeH4xqv5/oQO3tL+HwhjOxH51IlO7JGE=;
+	s=arc-20240116; t=1768498058; c=relaxed/simple;
+	bh=0j0edBThRX3vunsC9zOxb75AJvVNX/lO5mB8quiHWmI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=f1Y0ufMe/goIFOTcwuHKaXb8YNbMyZjV3cNIt75lEkh26TVwD/JrZ5bWODPBEROYvT7hgxkon322p7dQ7z5V1doPgfeho1mwJpi7ZNGhf+VIvHoMaLSe/tEk7LuUwnbNgGMcCWP+6s5uz/8c7+QiQKjkAx/rE1Xseq48GJ2UgKY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mX6PCda4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8C4AC116D0;
-	Thu, 15 Jan 2026 17:48:50 +0000 (UTC)
+	 MIME-Version; b=m5pTbsIoLFuRTWOW5oF0q7mlVgSkwvYlbxBDQ9ZykQ9hdVO6qWrChcd+BOAC0hDT9KIFVArwWjmNY6ivVure/GFxt3lGauC9HKMmnDxjwqxxs3KGctwvD4+9J3asaah26u0oYpehK6VaSxygPkUxXntxAxv/q5CY2Oc2gBasNhw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rwz9pe9q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28F71C4AF60;
+	Thu, 15 Jan 2026 17:27:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499331;
-	bh=KfsnhChN/zqTeH4xqv5/oQO3tL+HwhjOxH51IlO7JGE=;
+	s=korg; t=1768498058;
+	bh=0j0edBThRX3vunsC9zOxb75AJvVNX/lO5mB8quiHWmI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mX6PCda4pVmqSVBLLY8D+IJqZkjU2TSFaR8xhO/eHHPWk0gfvS+eDTv2tPOMF9Tla
-	 QCWlc30kcUIYE4N7WXs7Fdxq81VfoqczxlStKcY3Q7vb/nvPp3wx9C/NNzdyPZ3xRc
-	 1gZi3Csnfao8Xfj7yFzbC6IQIg09Q9AoyRiuAG6w=
+	b=Rwz9pe9q+imBHMZSrprZ7NDKq9mVZuChk9vUq8enBqybp/pTD7/LqX/1ctXIbfkYA
+	 eFjjvmji5cUbw9OG+0NQfkklFninXx26BPBTeQz09oge7HFJ4O7JIXFGTc6A/vUn21
+	 RnNZBWKOKMJtCEYZRPr1sy1Y0kjmiwNqMF0JEyac=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Viacheslav Dubeyko <slava@dubeyko.com>,
-	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-	Yangtao Li <frank.li@vivo.com>,
-	linux-fsdevel@vger.kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 162/451] hfsplus: fix volume corruption issue for generic/070
-Date: Thu, 15 Jan 2026 17:46:03 +0100
-Message-ID: <20260115164236.770997887@linuxfoundation.org>
+	Tianchu Chen <flynnnchen@tencent.com>,
+	Arnd Bergmann <arnd@arndb.de>,
+	stable <stable@kernel.org>
+Subject: [PATCH 5.15 298/554] char: applicom: fix NULL pointer dereference in ac_ioctl
+Date: Thu, 15 Jan 2026 17:46:04 +0100
+Message-ID: <20260115164257.018804130@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,127 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Viacheslav Dubeyko <slava@dubeyko.com>
+From: Tianchu Chen <flynnnchen@tencent.com>
 
-[ Upstream commit ed490f36f439b877393c12a2113601e4145a5a56 ]
+commit 82d12088c297fa1cef670e1718b3d24f414c23f7 upstream.
 
-The xfstests' test-case generic/070 leaves HFS+ volume
-in corrupted state:
+Discovered by Atuin - Automated Vulnerability Discovery Engine.
 
-sudo ./check generic/070
-FSTYP -- hfsplus
-PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
-MKFS_OPTIONS -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+In ac_ioctl, the validation of IndexCard and the check for a valid
+RamIO pointer are skipped when cmd is 6. However, the function
+unconditionally executes readb(apbs[IndexCard].RamIO + VERS) at the
+end.
 
-generic/070 _check_generic_filesystem: filesystem on /dev/loop50 is inconsistent
-(see xfstests-dev/results//generic/070.full for details)
+If cmd is 6, IndexCard may reference a board that does not exist
+(where RamIO is NULL), leading to a NULL pointer dereference.
 
-Ran: generic/070
-Failures: generic/070
-Failed 1 of 1 tests
+Fix this by skipping the readb access when cmd is 6, as this
+command is a global information query and does not target a specific
+board context.
 
-sudo fsck.hfsplus -d /dev/loop50
-** /dev/loop50
-Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
-Executing fsck_hfs (version 540.1-Linux).
-** Checking non-journaled HFS Plus Volume.
-The volume name is test
-** Checking extents overflow file.
-Unused node is not erased (node = 1)
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0004
-CBTStat = 0x0000 CatStat = 0x00000000
-** Repairing volume.
-** Rechecking volume.
-** Checking non-journaled HFS Plus Volume.
-The volume name is test
-** Checking extents overflow file.
-** Checking catalog file.
-** Checking multi-linked files.
-** Checking catalog hierarchy.
-** Checking extended attributes file.
-** Checking volume bitmap.
-** Checking volume information.
-** The volume test was repaired successfully.
-
-It is possible to see that fsck.hfsplus detected not
-erased and unused node for the case of extents overflow file.
-The HFS+ logic has special method that defines if the node
-should be erased:
-
-bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
-{
-	struct super_block *sb = tree->inode->i_sb;
-	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
-	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
-
-	return tree->cnid == HFSPLUS_CAT_CNID &&
-		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
-}
-
-However, it is possible to see that this method works
-only for the case of catalog file. But debugging of the issue
-has shown that HFSPLUS_VOL_UNUSED_NODE_FIX attribute has been
-requested for the extents overflow file too:
-
-catalog file
-kernel: hfsplus: node 4, num_recs 0, flags 0x10
-kernel: hfsplus: tree->cnid 4, volume_attr 0x80000800
-
-extents overflow file
-kernel: hfsplus: node 1, num_recs 0, flags 0x10
-kernel: hfsplus: tree->cnid 3, volume_attr 0x80000800
-
-This patch modifies the hfs_bnode_need_zeroout() by checking
-only volume_attr but not the b-tree ID because node zeroing
-can be requested for all HFS+ b-tree types.
-
-sudo ./check generic/070
-FSTYP         -- hfsplus
-PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #79 SMP PREEMPT_DYNAMIC Fri Oct 31 16:07:42 PDT 2025
-MKFS_OPTIONS  -- /dev/loop51
-MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
-
-generic/070 33s ...  34s
-Ran: generic/070
-Passed all 1 tests
-
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-cc: Yangtao Li <frank.li@vivo.com>
-cc: linux-fsdevel@vger.kernel.org
-Link: https://lore.kernel.org/r/20251101001229.247432-1-slava@dubeyko.com
-Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Tianchu Chen <flynnnchen@tencent.com>
+Acked-by: Arnd Bergmann <arnd@arndb.de>
+Cc: stable <stable@kernel.org>
+Link: https://patch.msgid.link/20251128155323.a786fde92ebb926cbe96fcb1@linux.dev
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/hfsplus/bnode.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/char/applicom.c |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/fs/hfsplus/bnode.c b/fs/hfsplus/bnode.c
-index e566cea238279..358294726ff17 100644
---- a/fs/hfsplus/bnode.c
-+++ b/fs/hfsplus/bnode.c
-@@ -717,6 +717,5 @@ bool hfs_bnode_need_zeroout(struct hfs_btree *tree)
- 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(sb);
- 	const u32 volume_attr = be32_to_cpu(sbi->s_vhdr->attributes);
- 
--	return tree->cnid == HFSPLUS_CAT_CNID &&
--		volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
-+	return volume_attr & HFSPLUS_VOL_UNUSED_NODE_FIX;
- }
--- 
-2.51.0
-
+--- a/drivers/char/applicom.c
++++ b/drivers/char/applicom.c
+@@ -836,7 +836,10 @@ static long ac_ioctl(struct file *file,
+ 		ret = -ENOTTY;
+ 		break;
+ 	}
+-	Dummy = readb(apbs[IndexCard].RamIO + VERS);
++
++	if (cmd != 6)
++		Dummy = readb(apbs[IndexCard].RamIO + VERS);
++
+ 	kfree(adgl);
+ 	mutex_unlock(&ac_mutex);
+ 	return ret;
 
 
 
