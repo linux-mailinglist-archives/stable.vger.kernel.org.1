@@ -1,53 +1,57 @@
-Return-Path: <stable+bounces-209426-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209855-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id E31D7D26B90
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:15 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 14730D277C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:22 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7D1AD3099D49
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:06 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 33A653176504
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9093A3A0E98;
-	Thu, 15 Jan 2026 17:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3FAA63C1975;
+	Thu, 15 Jan 2026 17:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kU6YnuRk"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qyBT25hj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5398686334;
-	Thu, 15 Jan 2026 17:37:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 034983BFE3B;
+	Thu, 15 Jan 2026 17:58:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498662; cv=none; b=ODub4rzOTGp0cBGh4VdF9ufbF4xceQH8ou/3emyAW7eyVslK1KjpyNxjiCR5Y0cKBO20h0+e4f2E54AYxcxJxBAMqSard+2h2YA1frq1XLlG93x+7DOTb1kOiEkoSd8Adr+tgfpUCiaw+uVpCqB9W3f9Rvul5aYUkTCiWbyS39E=
+	t=1768499883; cv=none; b=ZlfWrx3LKkrhwQxuqTjfVFMGprm3cBiQuGGqzEBOqS53TTeqNZyqVH5imJQ0ekArGD0rHm2u+G67h7rYsPwTwd4ZyixQaI1D8+rY/xRyjNm/uWxfbNtTvcgQBb9kYQIc+BbNtDBc/ZLX1JHBYAQ5N50Weei1xR+VGR4kAPVuGlY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498662; c=relaxed/simple;
-	bh=xF7W17tgLlqq2OHXCd6PkBf8KHfLBp9HIpkpUdCCkWQ=;
+	s=arc-20240116; t=1768499883; c=relaxed/simple;
+	bh=xSzdY7XISreeEJ/3mRDiHlTG7vBJg3Lle6aBFCxNn2w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uQ8etEzp4JpE3hwzU+4LXDcoGVbWjRLqvk8D7wsqcrjiOynMLNg0L5g3RTvBYxsfrUFkgEA6+sCZnx8lFD64JTtL45VHO4EjL19UzreOtj8nz/l72tI3BbN6KfLWw9trp5bYlsJMbcFJV8Gl13/CL3TbQb1wnNtY14lGPKw4PIE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kU6YnuRk; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D84C116D0;
-	Thu, 15 Jan 2026 17:37:41 +0000 (UTC)
+	 MIME-Version; b=mht2oIn8HoUtEOuqy53FRgYDAucmyKcTziWJ9hLG0yWDWgfGV7URHE/0AgReHHjxYzfEdyaUBW9o1EVRUTjW3WMZsgzyS12IQnXL4uZ0Ydi1TY/7D905LgGXRfBah22pDWzaPIqP3Ad4XrJsyD+xrCYAwRqq3ebYMzTKEAVBUUQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qyBT25hj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87706C116D0;
+	Thu, 15 Jan 2026 17:58:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498662;
-	bh=xF7W17tgLlqq2OHXCd6PkBf8KHfLBp9HIpkpUdCCkWQ=;
+	s=korg; t=1768499882;
+	bh=xSzdY7XISreeEJ/3mRDiHlTG7vBJg3Lle6aBFCxNn2w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kU6YnuRkRBSlqzR66bEsu/iFssqlMUE8SxDflRgkbAAP+VQD7U8XQSgTuX0nUjW7y
-	 KGbcup8YaA1x6zC8S0qpw3G2CJ9avdB8MpmW7yLzffyeQGINTvZ2a8l+6HV2z6znAs
-	 HByeNU0ZsP/VX+e5nuN5uJlb30wULomJK/6iDdOc=
+	b=qyBT25hjufJhpbVh6XWtQ0rK0LvOUSZMmDQLuAifmDHp1vDZvRBKMJvp9VHtcYPra
+	 9mAihj2/gbRGHdnagk4k6S3ffjgXv/xNtFlbYrY4q71CUt+HMTuYvpuuiB5CdYR+Oe
+	 FU5n9kQuCgY9wFqnr8dHUVrYWL0JAlgRRdSTzj4g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ilya Dryomov <idryomov@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Subject: [PATCH 5.15 510/554] libceph: return the handler error from mon_handle_auth_done()
+	Rob Clark <robin.clark@oss.qualcomm.com>,
+	Yu Kuai <yukuai3@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 375/451] iommu/qcom: fix device leak on of_xlate()
 Date: Thu, 15 Jan 2026 17:49:36 +0100
-Message-ID: <20260115164304.777029735@linuxfoundation.org>
+Message-ID: <20260115164244.482456981@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +63,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit e84b48d31b5008932c0a0902982809fbaa1d3b70 upstream.
+[ Upstream commit 6a3908ce56e6879920b44ef136252b2f0c954194 ]
 
-Currently any error from ceph_auth_handle_reply_done() is propagated
-via finish_auth() but isn't returned from mon_handle_auth_done().  This
-results in higher layers learning that (despite the monitor considering
-us to be successfully authenticated) something went wrong in the
-authentication phase and reacting accordingly, but msgr2 still trying
-to proceed with establishing the session in the background.  In the
-case of secure mode this can trigger a WARN in setup_crypto() and later
-lead to a NULL pointer dereference inside of prepare_auth_signature().
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-Cc: stable@vger.kernel.org
-Fixes: cd1a677cad99 ("libceph, ceph: implement msgr2.1 protocol (crc and secure modes)")
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
+Note that commit e2eae09939a8 ("iommu/qcom: add missing put_device()
+call in qcom_iommu_of_xlate()") fixed the leak in a couple of error
+paths, but the reference is still leaking on success and late failures.
+
+Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
+Cc: stable@vger.kernel.org	# 4.14: e2eae09939a8
+Cc: Rob Clark <robin.clark@oss.qualcomm.com>
+Cc: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+[ adapted validation logic from max_asid to num_ctxs ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/mon_client.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/arm/arm-smmu/qcom_iommu.c |   10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
---- a/net/ceph/mon_client.c
-+++ b/net/ceph/mon_client.c
-@@ -1418,7 +1418,7 @@ static int mon_handle_auth_done(struct c
- 	if (!ret)
- 		finish_hunting(monc);
- 	mutex_unlock(&monc->mutex);
--	return 0;
-+	return ret;
- }
+--- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
++++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
+@@ -586,15 +586,15 @@ static int qcom_iommu_of_xlate(struct de
  
- static int mon_handle_auth_bad_method(struct ceph_connection *con,
+ 	qcom_iommu = platform_get_drvdata(iommu_pdev);
+ 
++	put_device(&iommu_pdev->dev);
++
+ 	/* make sure the asid specified in dt is valid, so we don't have
+ 	 * to sanity check this elsewhere, since 'asid - 1' is used to
+ 	 * index into qcom_iommu->ctxs:
+ 	 */
+ 	if (WARN_ON(asid < 1) ||
+-	    WARN_ON(asid > qcom_iommu->num_ctxs)) {
+-		put_device(&iommu_pdev->dev);
++	    WARN_ON(asid > qcom_iommu->num_ctxs))
+ 		return -EINVAL;
+-	}
+ 
+ 	if (!dev_iommu_priv_get(dev)) {
+ 		dev_iommu_priv_set(dev, qcom_iommu);
+@@ -603,10 +603,8 @@ static int qcom_iommu_of_xlate(struct de
+ 		 * multiple different iommu devices.  Multiple context
+ 		 * banks are ok, but multiple devices are not:
+ 		 */
+-		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev))) {
+-			put_device(&iommu_pdev->dev);
++		if (WARN_ON(qcom_iommu != dev_iommu_priv_get(dev)))
+ 			return -EINVAL;
+-		}
+ 	}
+ 
+ 	return iommu_fwspec_add_ids(dev, &asid, 1);
 
 
 
