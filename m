@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208701-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209318-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C66D262D1
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:18 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id ACFBDD26DCE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 86EBD3043F58
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:22 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 39B86303AC1F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:24 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CFA9037C117;
-	Thu, 15 Jan 2026 17:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 21AB22D780A;
+	Thu, 15 Jan 2026 17:32:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2bp4J3fu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ibDsVkEx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9133B2D73A0;
-	Thu, 15 Jan 2026 17:03:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D8ACF2C3268;
+	Thu, 15 Jan 2026 17:32:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496600; cv=none; b=msgnGZGPAQWQU96jLqiqf7+akeYILvJgqIewdqRvF25pZTCtEu+GeVoayY4vGzx7/NF5sLr0Xn4303lBopHxiS2MqhaACn8LwLvtLDS+8hbYAsFakjXOK6Uz2p2knkTQJ2RymaJ5NlQuh6SR8L1/53NADm6AhJT8ED0s0oLvAUk=
+	t=1768498354; cv=none; b=TftTAIseig/HknUOjh4yOZ45Y8XrDjSONszPlEEfhrqaMYRHKbWcklA05yfP/7tgLzeQE7b2BpOQ1vofwCf4eAotH8tPzvG3hsIya2KSVN3x7AvLTc65t+s1HyeOCt1cL0ozjZOhHuiuJWAXLXNn+PyE0FLSjDDeP/UOUE6g5JI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496600; c=relaxed/simple;
-	bh=pfLtNF9FlT5jc8txtTiBKdTDyZNlEFvexpCxN7RmMaQ=;
+	s=arc-20240116; t=1768498354; c=relaxed/simple;
+	bh=tYSOfI+DyG3jRVLV1DKmuloYlEvlRnvkTJeHqgx4udA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HbvivBVi5LyMPeImUK6cImF8sj8wqw8SEgf8vWNodQO8imrDeFq/p7GI2oIUT24iroluLeoqkbtBAHq/sWf6TlL+mocDfKpzkDHFYye+tUTwwHB/ePwCgfIsB0T5L6hc2FRTQ8XVD/NTrxjqR77rght+Om5xaaVKxpJNgvBwAII=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2bp4J3fu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C648C116D0;
-	Thu, 15 Jan 2026 17:03:19 +0000 (UTC)
+	 MIME-Version; b=p5PBUo2Swb7tnEiufX7uoS0x4/i1lOBzenuCoBOtO3bzWTshLkxRpgBdSYuQzZ06yomUWh9UXjecEbBqDOIUDFyWCJgvIwvE/laPqoU5z6lua5RRWj2N3L9S3TI29csJyXLcpv0bcqBdTRJSesCW7mHiQHYLGlcCRfT7D4BUG3M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ibDsVkEx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62A56C116D0;
+	Thu, 15 Jan 2026 17:32:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496600;
-	bh=pfLtNF9FlT5jc8txtTiBKdTDyZNlEFvexpCxN7RmMaQ=;
+	s=korg; t=1768498354;
+	bh=tYSOfI+DyG3jRVLV1DKmuloYlEvlRnvkTJeHqgx4udA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2bp4J3fuBqzYCAh4uE0C88QUKNeFpDLlb4PuPEgZhW/PP1TigZ6higryemH3bhViN
-	 EeUtn5A1bWys+2Fj6+vHN/dSBVyZdcnZGqaI40n+SMSDqZwxKbUi+Yr0Un061Xv8wS
-	 x93+qPLsD0LFXbmiEcd5yqCJ2NqQlABAF6lAekDg=
+	b=ibDsVkExL76VAT0+QXmMcwSrOxrpMYkV1Cpg2OLUU02mIsg2GSgcil72xAAlauL3R
+	 mn2lB3VNKLBAUosLK4hcZSkGg2ZcgES+ABvLMIKcz2KJX6BspnN2VZsqhmKbo1XtAR
+	 h7aeLIfxIlMrWpirtkBFt4lRsKQHTSvCsPRmjygk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 036/119] ASoC: rockchip: Fix Wvoid-pointer-to-enum-cast warning (again)
+	Johan Hovold <johan@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.15 385/554] mfd: altera-sysmgr: Fix device leak on sysmgr regmap lookup
 Date: Thu, 15 Jan 2026 17:47:31 +0100
-Message-ID: <20260115164153.264338142@linuxfoundation.org>
+Message-ID: <20260115164300.173907157@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit 57d508b5f718730f74b11e0dc9609ac7976802d1 ]
+commit ccb7cd3218e48665f3c7e19eede0da5f069c323d upstream.
 
-'version' is an enum, thus cast of pointer on 64-bit compile test with
-clang W=1 causes:
+Make sure to drop the reference taken to the sysmgr platform device when
+retrieving its driver data.
 
-  rockchip_pdm.c:583:17: error: cast to smaller integer type 'enum rk_pdm_version' from 'const void *' [-Werror,-Wvoid-pointer-to-enum-cast]
+Note that holding a reference to a device does not prevent its driver
+data from going away.
 
-This was already fixed in commit 49a4a8d12612 ("ASoC: rockchip: Fix
-Wvoid-pointer-to-enum-cast warning") but then got bad in
-commit 9958d85968ed ("ASoC: Use device_get_match_data()").
-
-Discussion on LKML also pointed out that 'uintptr_t' is not the correct
-type and either 'kernel_ulong_t' or 'unsigned long' should be used,
-with several arguments towards the latter [1].
-
-Link: https://lore.kernel.org/r/CAMuHMdX7t=mabqFE5O-Cii3REMuyaePHmqX+j_mqyrn6XXzsoA@mail.gmail.com/ [1]
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251203141644.106459-2-krzysztof.kozlowski@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: f36e789a1f8d ("mfd: altera-sysmgr: Add SOCFPGA System Manager")
+Cc: stable@vger.kernel.org	# 5.2
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/rockchip/rockchip_pdm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/mfd/altera-sysmgr.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/sound/soc/rockchip/rockchip_pdm.c b/sound/soc/rockchip/rockchip_pdm.c
-index cae91108f7a8e..30d51e03d49e9 100644
---- a/sound/soc/rockchip/rockchip_pdm.c
-+++ b/sound/soc/rockchip/rockchip_pdm.c
-@@ -580,7 +580,7 @@ static int rockchip_pdm_probe(struct platform_device *pdev)
- 	if (!pdm)
- 		return -ENOMEM;
+--- a/drivers/mfd/altera-sysmgr.c
++++ b/drivers/mfd/altera-sysmgr.c
+@@ -118,6 +118,8 @@ struct regmap *altr_sysmgr_regmap_lookup
  
--	pdm->version = (enum rk_pdm_version)device_get_match_data(&pdev->dev);
-+	pdm->version = (unsigned long)device_get_match_data(&pdev->dev);
- 	if (pdm->version == RK_PDM_RK3308) {
- 		pdm->reset = devm_reset_control_get(&pdev->dev, "pdm-m");
- 		if (IS_ERR(pdm->reset))
--- 
-2.51.0
-
+ 	sysmgr = dev_get_drvdata(dev);
+ 
++	put_device(dev);
++
+ 	return sysmgr->regmap;
+ }
+ EXPORT_SYMBOL_GPL(altr_sysmgr_regmap_lookup_by_phandle);
 
 
 
