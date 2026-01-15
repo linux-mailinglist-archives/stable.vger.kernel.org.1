@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209282-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209687-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id DCED6D26A34
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E2E3D27C5A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:50:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 9103E3056E1C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D9ABE302EAE7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC3E03C1FC4;
-	Thu, 15 Jan 2026 17:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0A0F3D3003;
+	Thu, 15 Jan 2026 17:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="gz+kjURx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ehgkccnc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 902683BFE43;
-	Thu, 15 Jan 2026 17:30:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 816BF3D2FE0;
+	Thu, 15 Jan 2026 17:50:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498252; cv=none; b=pZAHPX7BYt0GMA2dtGbcHTLFSAvLcYIlJZS6FQYGrPvndyVrGctziDDX0BfT6RS0Fr70negQSHFo0fjgU4NbAXAKivokJ9kG3BFp81X2BzqSh1Vj10ls5IPE203uvhMdsGHPPxzsgTsPKFdQelR8I+HLmEPgQIeTg8y7cBbWwBI=
+	t=1768499405; cv=none; b=ouXcmFdzEROG3YEvHqlObRbCbLsZmp3tVtNr+jCUYxVJZXaYEpbsN9R8Y26cpcmmW+mlXfOV8c27Rx+LpogH/f7d8rRGtz9siAYUgWH2W2zj+kZtaua+lHcEdBYDKBkNwxfdvmnseoPO8heLxrIctXaUgZAdlmplSest2EVQ3pA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498252; c=relaxed/simple;
-	bh=J6QB77yQHYZL5DEIEmf7/dOZkraIKVyBJIzJA+Qk1YA=;
+	s=arc-20240116; t=1768499405; c=relaxed/simple;
+	bh=nwB7poy+0E6NqxWv9MWOYXi6yiZwJuZkYGvLb16fGPY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZRpRw6248O0sgPTUGtTtkkd2vJhLsfWFAT5vHUxdkLIgyHpwYpMyLxwfqmVZx7cCFZFfD7njLPRSRi9qX38VS1xFiZ6yTQBpeagafKX/94G0x+wmnOtEzl1awSvAYbRlUSv90gjvvXtj0awz837/4a2yWdhB17Q2NBgjN899lxw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=gz+kjURx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4EC7C116D0;
-	Thu, 15 Jan 2026 17:30:51 +0000 (UTC)
+	 MIME-Version; b=MGNpVvuMjlTenmj3UWLhqbxsQqC3ebC6S51BwmQzo7lSGvkje0ogWCSxp0wKHYzhdhuVIMu548LPhlFMv2DRznEPk97rtk4KAizlywdF803Br3mavkuVlDyDpnDbVNJIu6lyHGjGP66Pd5kmydhF3moUQ2VnSJ7PxVNjNafbHGc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ehgkccnc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C32D8C116D0;
+	Thu, 15 Jan 2026 17:50:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498252;
-	bh=J6QB77yQHYZL5DEIEmf7/dOZkraIKVyBJIzJA+Qk1YA=;
+	s=korg; t=1768499405;
+	bh=nwB7poy+0E6NqxWv9MWOYXi6yiZwJuZkYGvLb16fGPY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=gz+kjURx4ZsW5Ml+VhSsCyELViZ82qW07sK2x1CCGjT5QioxZklov6GVfyF5y1K8b
-	 P4ZMfLJp5qfAIhJkh0MWddfqeRsIGyKRcQ6cKxmtVoW+i6W1A3GBZG2vt6MylWxs0A
-	 qchTJ04L3+bU0ejEtdPkd6xISzf3xt5N/988M18E=
+	b=ehgkccncdVUS1HEKWem7ym6LLYdLBwzLoupNV6TN7z5YJgC0sXMx0oER0hsmcHUeC
+	 lqbseEMAk9qNmidTeBELXlwfjcgq02AvYDKSJ79YUTm+b0NMzADSX6JQK8piBfPTMx
+	 lfa8zTN3pZGJ4+e+Vfx2xLSpZOpWgW9uKrdBPCZ0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com,
-	Deepakkumar Karn <dkarn@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Mark Pearson <mpearson-lenovo@squebb.ca>,
+	Heikki Krogerus <heikki.krogerus@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 349/554] net: usb: rtl8150: fix memory leak on usb_submit_urb() failure
-Date: Thu, 15 Jan 2026 17:46:55 +0100
-Message-ID: <20260115164258.860403074@linuxfoundation.org>
+Subject: [PATCH 5.10 215/451] usb: typec: ucsi: Handle incorrect num_connectors capability
+Date: Thu, 15 Jan 2026 17:46:56 +0100
+Message-ID: <20260115164238.676554132@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,49 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deepakkumar Karn <dkarn@redhat.com>
+From: Mark Pearson <mpearson-lenovo@squebb.ca>
 
-[ Upstream commit 12cab1191d9890097171156d06bfa8d31f1e39c8 ]
+[ Upstream commit 30cd2cb1abf4c4acdb1ddb468c946f68939819fb ]
 
-In async_set_registers(), when usb_submit_urb() fails, the allocated
-  async_req structure and URB are not freed, causing a memory leak.
+The UCSI spec states that the num_connectors field is 7 bits, and the
+8th bit is reserved and should be set to zero.
+Some buggy FW has been known to set this bit, and it can lead to a
+system not booting.
+Flag that the FW is not behaving correctly, and auto-fix the value
+so that the system boots correctly.
 
-  The completion callback async_set_reg_cb() is responsible for freeing
-  these allocations, but it is only called after the URB is successfully
-  submitted and completes (successfully or with error). If submission
-  fails, the callback never runs and the memory is leaked.
+Found on Lenovo P1 G8 during Linux enablement program. The FW will
+be fixed, but seemed worth addressing in case it hit platforms that
+aren't officially Linux supported.
 
-  Fix this by freeing both the URB and the request structure in the error
-  path when usb_submit_urb() fails.
-
-Reported-by: syzbot+8dd915c7cb0490fc8c52@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=8dd915c7cb0490fc8c52
-Fixes: 4d12997a9bb3 ("drivers: net: usb: rtl8150: concurrent URB bugfix")
-Signed-off-by: Deepakkumar Karn <dkarn@redhat.com>
-Link: https://patch.msgid.link/20251216151304.59865-2-dkarn@redhat.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Mark Pearson <mpearson-lenovo@squebb.ca>
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20250821185319.2585023-1-mpearson-lenovo@squebb.ca
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/rtl8150.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/usb/typec/ucsi/ucsi.c | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
-diff --git a/drivers/net/usb/rtl8150.c b/drivers/net/usb/rtl8150.c
-index 011cf3a35378..fa69d59a309a 100644
---- a/drivers/net/usb/rtl8150.c
-+++ b/drivers/net/usb/rtl8150.c
-@@ -211,6 +211,8 @@ static int async_set_registers(rtl8150_t *dev, u16 indx, u16 size, u16 reg)
- 		if (res == -ENODEV)
- 			netif_device_detach(dev->netdev);
- 		dev_err(&dev->udev->dev, "%s failed with %d\n", __func__, res);
-+		kfree(req);
-+		usb_free_urb(async_urb);
+diff --git a/drivers/usb/typec/ucsi/ucsi.c b/drivers/usb/typec/ucsi/ucsi.c
+index 0851d93d5909..60339c746694 100644
+--- a/drivers/usb/typec/ucsi/ucsi.c
++++ b/drivers/usb/typec/ucsi/ucsi.c
+@@ -1220,6 +1220,12 @@ static int ucsi_init(struct ucsi *ucsi)
+ 		ret = -ENODEV;
+ 		goto err_reset;
  	}
- 	return res;
- }
++	/* Check if reserved bit set. This is out of spec but happens in buggy FW */
++	if (ucsi->cap.num_connectors & 0x80) {
++		dev_warn(ucsi->dev, "UCSI: Invalid num_connectors %d. Likely buggy FW\n",
++			 ucsi->cap.num_connectors);
++		ucsi->cap.num_connectors &= 0x7f; // clear bit and carry on
++	}
+ 
+ 	/* Allocate the connectors. Released in ucsi_unregister_ppm() */
+ 	ucsi->connector = kcalloc(ucsi->cap.num_connectors + 1,
 -- 
 2.51.0
 
