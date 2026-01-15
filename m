@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209170-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209593-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2EA8ED269F5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 05B3CD278C1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:30:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 63F88301A809
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:24 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id DF4853162B43
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 98E403BFE2F;
-	Thu, 15 Jan 2026 17:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B5E603BF309;
+	Thu, 15 Jan 2026 17:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XCKYc1cb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F/UwSZKm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 259483C0086;
-	Thu, 15 Jan 2026 17:25:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 69D583BC4EB;
+	Thu, 15 Jan 2026 17:45:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497933; cv=none; b=IJFyhu3VyGTYvl22fJPZi3sqs3XJVz9GwG5VCFbsgp3LF7aVGHehYHgO5QRmgMZxfBDQ/OH/pVLwac7BMr1rGKyR/q+N0/wEUPlYzCWkcME1L8RCziEx9sgqwlxNf9i00Vd9quYiih6LxlQstwJdrDcsrF/VpkMSSi8MgrIDgG0=
+	t=1768499138; cv=none; b=sfpUpVYcy1qBfH0VAZxcOS2z5wCZrdMADM3TVFNdCUNkIkfuRVv0hccrEIOkF+cu2E/na2ZYIoFgBQtfa3jw59ZXeH/ji0SvaGOOMsSiwysIAnA44aI68R3uunN4tBlGBpKlOND1Xp24dtZfTQJjruhR3o4xC1BKitdatvHGe8Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497933; c=relaxed/simple;
-	bh=bsgDLaQqyJbGe+ARhtZS56mZ+nbiDn0B/c1NikFa678=;
+	s=arc-20240116; t=1768499138; c=relaxed/simple;
+	bh=ipbRhe9lFSNrPZEiGGSnsk2aGmzZSXmpvwltKF+OL18=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VZuDDEZ2sypGMCHxz3aPyyL8bjv8Zs/k6/y7z2ijlpZQgvWJw7VXI+5NvvpA0MlV4roQz1ZxiTX6RI3gnFql4KqgCUtZcslvNxXt0VIZEuIpWEzMw6gy8p8LTcr0WpSWZVttrR9SFGNmwmzUDpgVlibPZ1OypX6vfFvF6i3wFHo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XCKYc1cb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D565C16AAE;
-	Thu, 15 Jan 2026 17:25:32 +0000 (UTC)
+	 MIME-Version; b=uWXuipfLEKi+otNYcP1EZFM3fPmwAiv59n75YIJknyr5JYJuTLWoS2ZT8P3ASZ4cf9l0TXTHKMAQ38V8fLsGgc5ExVYxlWtDHi1db/cl53nC7tm8ordIUSHSa18rgke4KdnBzBa7gnUwhnJPIMIPnGqZdCPQ5LJL+Exez/vRdgo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F/UwSZKm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E535AC116D0;
+	Thu, 15 Jan 2026 17:45:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497933;
-	bh=bsgDLaQqyJbGe+ARhtZS56mZ+nbiDn0B/c1NikFa678=;
+	s=korg; t=1768499138;
+	bh=ipbRhe9lFSNrPZEiGGSnsk2aGmzZSXmpvwltKF+OL18=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XCKYc1cbOUevZGrb19uirMjDtMBoZ9kh1dwBKiQA9Ix0vydsGIu8CAyje6AXDLz3b
-	 1IkrLTEwom3kFJBVGv2XlzxdMUQQHoxP40U3fLKsd+tKsbTbpZSsHbUDEt3A4CCWsq
-	 Ad0jXvGrrk4oRAnPVJ/xjnhctBVnj4cQ188c7z04=
+	b=F/UwSZKmbkzqArW2lsXbFfgQwPf5Zxl8El7aP0f/7wtjSGpfVDxSYrECE3AyBglb4
+	 TbDJtyFhttWf+0Zd7eo9nKZrAQArW/W9e5H13HjvcO+u1aAYJNX9e1Uzq18d8mwBpp
+	 pd81VCAUMRG3OoH5AgivOQuZXtXjkduiDRIUPlPU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"DARKNAVY (@DarkNavyOrg)" <vr@darknavy.com>,
-	Shipei Qu <qu@darknavy.com>,
-	Takashi Iwai <tiwai@suse.de>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 255/554] ALSA: usb-mixer: us16x08: validate meter packet indices
+Subject: [PATCH 5.10 120/451] NFS: Clean up function nfs_mark_dir_for_revalidate()
 Date: Thu, 15 Jan 2026 17:45:21 +0100
-Message-ID: <20260115164255.465377450@linuxfoundation.org>
+Message-ID: <20260115164235.264292665@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shipei Qu <qu@darknavy.com>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 5526c1c6ba1d0913c7dfcbbd6fe1744ea7c55f1e ]
+[ Upstream commit fd6d3feed041e96b84680d0bfc1e7abc8f65de92 ]
 
-get_meter_levels_from_urb() parses the 64-byte meter packets sent by
-the device and fills the per-channel arrays meter_level[],
-comp_level[] and master_level[] in struct snd_us16x08_meter_store.
-
-Currently the function derives the channel index directly from the
-meter packet (MUB2(meter_urb, s) - 1) and uses it to index those
-arrays without validating the range. If the packet contains a
-negative or out-of-range channel number, the driver may write past
-the end of these arrays.
-
-Introduce a local channel variable and validate it before updating the
-arrays. We reject negative indices, limit meter_level[] and
-comp_level[] to SND_US16X08_MAX_CHANNELS, and guard master_level[]
-updates with ARRAY_SIZE(master_level).
-
-Fixes: d2bb390a2081 ("ALSA: usb-audio: Tascam US-16x08 DSP mixer quirk")
-Reported-by: DARKNAVY (@DarkNavyOrg) <vr@darknavy.com>
-Closes: https://lore.kernel.org/tencent_21C112743C44C1A2517FF219@qq.com
-Signed-off-by: Shipei Qu <qu@darknavy.com>
-Link: https://patch.msgid.link/20251217024630.59576-1-qu@darknavy.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: bd4928ec799b ("NFS: Avoid changing nlink when file removes and attribute updates race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/mixer_us16x08.c | 20 ++++++++++++++------
- 1 file changed, 14 insertions(+), 6 deletions(-)
+ fs/nfs/dir.c      | 4 +---
+ fs/nfs/inode.c    | 2 +-
+ fs/nfs/internal.h | 3 ++-
+ 3 files changed, 4 insertions(+), 5 deletions(-)
 
-diff --git a/sound/usb/mixer_us16x08.c b/sound/usb/mixer_us16x08.c
-index 2f6fa722442f..c13bc858e282 100644
---- a/sound/usb/mixer_us16x08.c
-+++ b/sound/usb/mixer_us16x08.c
-@@ -656,17 +656,25 @@ static void get_meter_levels_from_urb(int s,
- 	u8 *meter_urb)
- {
- 	int val = MUC2(meter_urb, s) + (MUC3(meter_urb, s) << 8);
-+	int ch = MUB2(meter_urb, s) - 1;
-+
-+	if (ch < 0)
-+		return;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 935029632d5f6..e38ebe8bfb169 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1203,10 +1203,8 @@ int nfs_lookup_verify_inode(struct inode *inode, unsigned int flags)
  
- 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
- 		MUA2(meter_urb, s) == 0x04 && MUB0(meter_urb, s) == 0x62) {
--		if (MUC0(meter_urb, s) == 0x72)
--			store->meter_level[MUB2(meter_urb, s) - 1] = val;
--		if (MUC0(meter_urb, s) == 0xb2)
--			store->comp_level[MUB2(meter_urb, s) - 1] = val;
-+		if (ch < SND_US16X08_MAX_CHANNELS) {
-+			if (MUC0(meter_urb, s) == 0x72)
-+				store->meter_level[ch] = val;
-+			if (MUC0(meter_urb, s) == 0xb2)
-+				store->comp_level[ch] = val;
-+		}
- 	}
- 	if (MUA0(meter_urb, s) == 0x61 && MUA1(meter_urb, s) == 0x02 &&
--		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62)
--		store->master_level[MUB2(meter_urb, s) - 1] = val;
-+		MUA2(meter_urb, s) == 0x02 && MUB0(meter_urb, s) == 0x62) {
-+		if (ch < ARRAY_SIZE(store->master_level))
-+			store->master_level[ch] = val;
-+	}
+ static void nfs_mark_dir_for_revalidate(struct inode *inode)
+ {
+-	struct nfs_inode *nfsi = NFS_I(inode);
+-
+ 	spin_lock(&inode->i_lock);
+-	nfsi->cache_validity |= NFS_INO_REVAL_PAGECACHE;
++	nfs_set_cache_invalid(inode, NFS_INO_REVAL_PAGECACHE);
+ 	spin_unlock(&inode->i_lock);
  }
  
- /* Function to retrieve current meter values from the device.
+diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
+index 3e3114a9d1937..e04739bf59261 100644
+--- a/fs/nfs/inode.c
++++ b/fs/nfs/inode.c
+@@ -207,7 +207,7 @@ static bool nfs_has_xattr_cache(const struct nfs_inode *nfsi)
+ }
+ #endif
+ 
+-static void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
++void nfs_set_cache_invalid(struct inode *inode, unsigned long flags)
+ {
+ 	struct nfs_inode *nfsi = NFS_I(inode);
+ 	bool have_delegation = NFS_PROTO(inode)->have_delegation(inode, FMODE_READ);
+diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
+index 838f3a3744851..10759e1b89fb2 100644
+--- a/fs/nfs/internal.h
++++ b/fs/nfs/internal.h
+@@ -424,7 +424,8 @@ extern int nfs_write_inode(struct inode *, struct writeback_control *);
+ extern int nfs_drop_inode(struct inode *);
+ extern void nfs_clear_inode(struct inode *);
+ extern void nfs_evict_inode(struct inode *);
+-void nfs_zap_acl_cache(struct inode *inode);
++extern void nfs_zap_acl_cache(struct inode *inode);
++extern void nfs_set_cache_invalid(struct inode *inode, unsigned long flags);
+ extern bool nfs_check_cache_invalid(struct inode *, unsigned long);
+ extern int nfs_wait_bit_killable(struct wait_bit_key *key, int mode);
+ extern int nfs_wait_atomic_killable(atomic_t *p, unsigned int mode);
 -- 
 2.51.0
 
