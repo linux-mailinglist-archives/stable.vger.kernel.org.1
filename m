@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209635-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209182-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id BC0F4D2792B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:32:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 891D6D2681C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:35:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id AA57A32B49C2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:56 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id EAF433037BE1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:27:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFB523BF2F6;
-	Thu, 15 Jan 2026 17:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC2B93C00A5;
+	Thu, 15 Jan 2026 17:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="J7O5u8ok"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Piem1hLq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 734ED2BDC13;
-	Thu, 15 Jan 2026 17:47:37 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7D3E43BFE53;
+	Thu, 15 Jan 2026 17:26:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499257; cv=none; b=SVOe3rs07Q0fq4ZAvZ5/iWfRU+cvlcZQCS47gTcRYnO2Ac+ptUzD5SD/Sx0SdticfH3V03wiGyJILFiXkmU/UcqhF94YtmoLWQI6m49jhFkQlXPdvadv50pcDsROj1l1giRIa+j5lA94GEauuz2b771w6xZf5YZOLL7eEhC//4Y=
+	t=1768497967; cv=none; b=B2K/n0AqMjynmBoO7eID5cL5wfwXpRkdT4QeoDYaG7s7OiCxkOkUxWz/Uo5r6T3PN0YWHvGHGcqIrmnySyOTKZWzSiO1W3LZWlc5gExeisXOp0bDc8ZY8W9nt1W1cDby57ccsoUhh/SnsEaE7FVTuxlz4oulR1MgZO6Rg1/taF4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499257; c=relaxed/simple;
-	bh=MbW8rA9JqGB+PqzWg9Lu3z5skrop5Hu6z2Iy36F2v0s=;
+	s=arc-20240116; t=1768497967; c=relaxed/simple;
+	bh=jKqln8d3K+wKYymmugF0BYpwKxrMIy/DvNxFiZvCMmQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BFhEh2tKEifTqz0jejAEIWAqBgmFkXnEnX210zo0JqjGgfXOnv8Ncgv6RTLvoscZcjzav7zj7fSrTvu2GrI5Mut6ycN+Ogf09YqE/RVg3luMyt/PWRC7JnSN+I0gxL8c5khgA1IHAnquEoiur/tpCw7XiDTvHBjqgu9PyFpK644=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=J7O5u8ok; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D12C116D0;
-	Thu, 15 Jan 2026 17:47:36 +0000 (UTC)
+	 MIME-Version; b=a6QvRTBd9eCLAdRPWmTvIGRO3r/hhg5Qh/ODVyFMgBLlBBBxAEIyYRhRje66dAfdlny4yqAinfp6lhxZt9q8dzdRFKM/eyi1mnGY1i0D5gupGmBWsqwzsw/oTeF6P0N35z6/yYz/bkQXhW1sk4MjWAjdofiukp/DIGl4AcIWTAA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Piem1hLq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 091AFC116D0;
+	Thu, 15 Jan 2026 17:26:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499257;
-	bh=MbW8rA9JqGB+PqzWg9Lu3z5skrop5Hu6z2Iy36F2v0s=;
+	s=korg; t=1768497967;
+	bh=jKqln8d3K+wKYymmugF0BYpwKxrMIy/DvNxFiZvCMmQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=J7O5u8ok/MtpodgDG1L2iox7BAiXDQ7Mh5mKCty6zAh3AKFrbt/10DHvQ5Ypfehcp
-	 jyUrRUQIkZkb85s3rNTGTwjQ1TWFTiQUcvhHkNAYKgknJzQ70mrEskmeUHfD63sa0p
-	 869gbEiOveGLub2jnwMENUa2NF25/Jy1VzfPDkR8=
+	b=Piem1hLqae9yDeGm5dieozr2vATP6ssFU+fDXdtF+KM+/4FshnLyC2Ju5tjnJ8pCe
+	 Sn9xUyFNkLR1xjZxMGToxQfSbj5MG+LYODG5VpWHsZVVClbmiSbbWwD14f+5yqFDY2
+	 DR2glDgUpTPzByIKAqJ8hzv4PqMV2o15cfmbL+wk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ondrej Mosnacek <omosnace@redhat.com>,
-	"Christian Brauner (Microsoft)" <brauner@kernel.org>,
+	Troy Mitchell <troy.mitchell@linux.dev>,
+	Philipp Zabel <p.zabel@pengutronix.de>,
+	Encrow Thorne <jyc0019@gmail.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 130/451] fs_context: drop the unused lsm_flags member
-Date: Thu, 15 Jan 2026 17:45:31 +0100
-Message-ID: <20260115164235.625004634@linuxfoundation.org>
+Subject: [PATCH 5.15 266/554] reset: fix BIT macro reference
+Date: Thu, 15 Jan 2026 17:45:32 +0100
+Message-ID: <20260115164255.858782625@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,81 +61,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Mosnacek <omosnace@redhat.com>
+From: Encrow Thorne <jyc0019@gmail.com>
 
-[ Upstream commit 4e04143c869c5b6d499fbd5083caa860d5c942c3 ]
+[ Upstream commit f3d8b64ee46c9b4b0b82b1a4642027728bac95b8 ]
 
-This isn't ever used by VFS now, and it couldn't even work. Any FS that
-uses the SECURITY_LSM_NATIVE_LABELS flag needs to also process the
-value returned back from the LSM, so it needs to do its
-security_sb_set_mnt_opts() call on its own anyway.
+RESET_CONTROL_FLAGS_BIT_* macros use BIT(), but reset.h does not
+include bits.h. This causes compilation errors when including
+reset.h standalone.
 
-Signed-off-by: Ondrej Mosnacek <omosnace@redhat.com>
-Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
-Stable-dep-of: 8675c69816e4 ("NFS: Automounted filesystems should inherit ro,noexec,nodev,sync flags")
+Include bits.h to make reset.h self-contained.
+
+Suggested-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Troy Mitchell <troy.mitchell@linux.dev>
+Reviewed-by: Philipp Zabel <p.zabel@pengutronix.de>
+Signed-off-by: Encrow Thorne <jyc0019@gmail.com>
+Signed-off-by: Philipp Zabel <p.zabel@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/filesystems/mount_api.rst | 1 -
- fs/nfs/super.c                          | 3 ---
- include/linux/fs_context.h              | 1 -
- include/linux/security.h                | 2 +-
- 4 files changed, 1 insertion(+), 6 deletions(-)
+ include/linux/reset.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/Documentation/filesystems/mount_api.rst b/Documentation/filesystems/mount_api.rst
-index 8fb03f57546d1..a38cc2be8d998 100644
---- a/Documentation/filesystems/mount_api.rst
-+++ b/Documentation/filesystems/mount_api.rst
-@@ -79,7 +79,6 @@ context.  This is represented by the fs_context structure::
- 		unsigned int		sb_flags;
- 		unsigned int		sb_flags_mask;
- 		unsigned int		s_iflags;
--		unsigned int		lsm_flags;
- 		enum fs_context_purpose	purpose:8;
- 		...
- 	};
-diff --git a/fs/nfs/super.c b/fs/nfs/super.c
-index 2d2238548a6e5..45b4240fdc081 100644
---- a/fs/nfs/super.c
-+++ b/fs/nfs/super.c
-@@ -1259,9 +1259,6 @@ int nfs_get_tree_common(struct fs_context *fc)
- 		if (ctx->clone_data.sb->s_flags & SB_SYNCHRONOUS)
- 			fc->sb_flags |= SB_SYNCHRONOUS;
+diff --git a/include/linux/reset.h b/include/linux/reset.h
+index 7bb583737528..23abb90398ad 100644
+--- a/include/linux/reset.h
++++ b/include/linux/reset.h
+@@ -2,6 +2,7 @@
+ #ifndef _LINUX_RESET_H_
+ #define _LINUX_RESET_H_
  
--	if (server->caps & NFS_CAP_SECURITY_LABEL)
--		fc->lsm_flags |= SECURITY_LSM_NATIVE_LABELS;
--
- 	/* Get a superblock - note that we may end up sharing one that already exists */
- 	fc->s_fs_info = server;
- 	s = sget_fc(fc, compare_super, nfs_set_super);
-diff --git a/include/linux/fs_context.h b/include/linux/fs_context.h
-index 40dd74bdd9fbd..9229ac6a53260 100644
---- a/include/linux/fs_context.h
-+++ b/include/linux/fs_context.h
-@@ -104,7 +104,6 @@ struct fs_context {
- 	unsigned int		sb_flags;	/* Proposed superblock flags (SB_*) */
- 	unsigned int		sb_flags_mask;	/* Superblock flags that were changed */
- 	unsigned int		s_iflags;	/* OR'd with sb->s_iflags */
--	unsigned int		lsm_flags;	/* Information flags from the fs to the LSM */
- 	enum fs_context_purpose	purpose:8;
- 	enum fs_context_phase	phase:8;	/* The phase the context is in */
- 	bool			need_free:1;	/* Need to call ops->free() */
-diff --git a/include/linux/security.h b/include/linux/security.h
-index e32e040f094c2..c75dd495be77c 100644
---- a/include/linux/security.h
-+++ b/include/linux/security.h
-@@ -68,7 +68,7 @@ struct watch_notification;
- /* If capable is being called by a setid function */
- #define CAP_OPT_INSETID BIT(2)
- 
--/* LSM Agnostic defines for fs_context::lsm_flags */
-+/* LSM Agnostic defines for security_sb_set_mnt_opts() flags */
- #define SECURITY_LSM_NATIVE_LABELS	1
- 
- struct ctl_table;
++#include <linux/bits.h>
+ #include <linux/err.h>
+ #include <linux/errno.h>
+ #include <linux/types.h>
 -- 
 2.51.0
 
