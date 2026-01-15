@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-209686-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209248-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2AAA5D27C54
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:50:19 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id A1613D26764
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F3C8319B76C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5A4F303F7CB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA3F53D7D63;
-	Thu, 15 Jan 2026 17:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 208443D2FF0;
+	Thu, 15 Jan 2026 17:29:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r12TsqfL"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rCo9T/bR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8B5703D7D3C;
-	Thu, 15 Jan 2026 17:50:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE8763BC4C9;
+	Thu, 15 Jan 2026 17:29:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499402; cv=none; b=SppILCBZBYjfEH9K1xjqL/1T2ER4CY3s00wDUIBBV73SCFci/CdCpB5v2qy8chIZaYXF2PiPEX4jXX4aeVuWMhP1zsQbbYfAHue3j8t5T+9JDoGavqW9NHLkfOpW3lfUMw2oGR+qRInmEZJzR7iLE/Mtbj/hNqPfZL2rMqtRbzE=
+	t=1768498155; cv=none; b=sk+yNZMkX4676ojf63ROFZzGq206rfyVn2tS74Nz/MQa67qb5SExaCax3R4xNYDH1SqWJMXZpNgwVV2iiRizR61biGXyBPegVjm6ej5FTPK0zz7Idl40e4vXMWGzkpmqQAX2kJG9y92+YifPP1TmH7H54g/wmPikk026+g06pGw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499402; c=relaxed/simple;
-	bh=TSPG6ONsrqv447c0B/iTZ0snGS+grqm7A9kKazQzxFA=;
+	s=arc-20240116; t=1768498155; c=relaxed/simple;
+	bh=gj+glx0lMmER5PVtUXxIRlOfhsAVv8a3CXRZtJQ23+I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=aLD79p4EG97MYsUQLcOxrKvssqH66heSt0yxxvT8ngJfXIgN4uQS1wUskL0BWdmrT5b/ejojX82SuBQZAq2KHTE70bA6s1JIVW2v52ZpLwBOk5qc+tatySni0xJl5aVn44L8N99+28eA1ubvlOIjNyntUaypaa2lKTYge4gklls=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r12TsqfL; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D271C116D0;
-	Thu, 15 Jan 2026 17:50:01 +0000 (UTC)
+	 MIME-Version; b=kgmavEDU/6LbZKuzPkxcw4ZOaT+PczR7Ib0qj61AQZhqPdeFFe7DTH33/gS79PHowvsYZcthJs+0aGlkgJC0NO48FsvVl9MWNxgG6SCoHeEoTI08ptNmImmAqS68MkB9RHx7kB9YgR4s73CdxGNOEHsza8uzqjFrU3jVCW/yPGw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rCo9T/bR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1561CC116D0;
+	Thu, 15 Jan 2026 17:29:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499402;
-	bh=TSPG6ONsrqv447c0B/iTZ0snGS+grqm7A9kKazQzxFA=;
+	s=korg; t=1768498155;
+	bh=gj+glx0lMmER5PVtUXxIRlOfhsAVv8a3CXRZtJQ23+I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=r12TsqfLeB41lytqYMIoJ1IZ5nOu4os8fRWlO4kqtefNTRcXzWzfh7PRF+HPGgwWd
-	 Elhmh+5tBGtp3UQKUbHGCFy/donlvBG81CBGUhbrEFDLeWZfZjGRP/9dCZJF1wkHa0
-	 77pn49sfs8udgaNaj8YoIBJzOQAq8OBs2NqHjtGk=
+	b=rCo9T/bRSxd+jOyMAmkhUoHv2RfhKNK1RUbgUo4mmT2mQKvYakC3hFa6SAfSCg0Fm
+	 o4iXTdb5KhnaUdbXno7RoWnFFC2xjUS41G+lmHlMrh4qJ0UXpOvxtV399bXqjNyjsq
+	 zVaYSx3vReSCAUHLwmR1Y/wLK7qrweB6f6PGESE8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pengjie Zhang <zhangpengjie2@huawei.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 5.10 197/451] ACPI: CPPC: Fix missing PCC check for guaranteed_perf
+	Gui-Dong Han <hanguidong02@gmail.com>,
+	Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.15 332/554] hwmon: (max16065) Use local variable to avoid TOCTOU
 Date: Thu, 15 Jan 2026 17:46:38 +0100
-Message-ID: <20260115164238.027633960@linuxfoundation.org>
+Message-ID: <20260115164258.248685114@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,45 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pengjie Zhang <zhangpengjie2@huawei.com>
+From: Gui-Dong Han <hanguidong02@gmail.com>
 
-commit 6ea3a44cef28add2d93b1ef119d84886cb1e3c9b upstream.
+commit b8d5acdcf525f44e521ca4ef51dce4dac403dab4 upstream.
 
-The current implementation overlooks the 'guaranteed_perf'
-register in this check.
+In max16065_current_show, data->curr_sense is read twice: once for the
+error check and again for the calculation. Since
+i2c_smbus_read_byte_data returns negative error codes on failure, if the
+data changes to an error code between the check and the use, ADC_TO_CURR
+results in an incorrect calculation.
 
-If the Guaranteed Performance register is located in the PCC
-subspace, the function currently attempts to read it without
-acquiring the lock and without sending the CMD_READ doorbell
-to the firmware. This can result in reading stale data.
+Read data->curr_sense into a local variable to ensure consistency. Note
+that data->curr_gain is constant and safe to access directly.
 
-Fixes: 29523f095397 ("ACPI / CPPC: Add support for guaranteed performance")
-Signed-off-by: Pengjie Zhang <zhangpengjie2@huawei.com>
-Cc: 4.20+ <stable@vger.kernel.org> # 4.20+
-[ rjw: Subject and changelog edits ]
-Link: https://patch.msgid.link/20251210132227.1988380-1-zhangpengjie2@huawei.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+This aligns max16065_current_show with max16065_input_show, which
+already uses a local variable for the same reason.
+
+Link: https://lore.kernel.org/all/CALbr=LYJ_ehtp53HXEVkSpYoub+XYSTU8Rg=o1xxMJ8=5z8B-g@mail.gmail.com/
+Fixes: f5bae2642e3d ("hwmon: Driver for MAX16065 System Manager and compatibles")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gui-Dong Han <hanguidong02@gmail.com>
+Link: https://lore.kernel.org/r/20251128124709.3876-1-hanguidong02@gmail.com
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/acpi/cppc_acpi.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hwmon/max16065.c |    7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/acpi/cppc_acpi.c
-+++ b/drivers/acpi/cppc_acpi.c
-@@ -1097,7 +1097,8 @@ int cppc_get_perf_caps(int cpunum, struc
- 	/* Are any of the regs PCC ?*/
- 	if (CPC_IN_PCC(highest_reg) || CPC_IN_PCC(lowest_reg) ||
- 		CPC_IN_PCC(lowest_non_linear_reg) || CPC_IN_PCC(nominal_reg) ||
--		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg)) {
-+		CPC_IN_PCC(low_freq_reg) || CPC_IN_PCC(nom_freq_reg) ||
-+		CPC_IN_PCC(guaranteed_reg)) {
- 		if (pcc_ss_id < 0) {
- 			pr_debug("Invalid pcc_ss_id\n");
- 			return -ENODEV;
+--- a/drivers/hwmon/max16065.c
++++ b/drivers/hwmon/max16065.c
+@@ -216,12 +216,13 @@ static ssize_t max16065_current_show(str
+ 				     struct device_attribute *da, char *buf)
+ {
+ 	struct max16065_data *data = max16065_update_device(dev);
++	int curr_sense = data->curr_sense;
+ 
+-	if (unlikely(data->curr_sense < 0))
+-		return data->curr_sense;
++	if (unlikely(curr_sense < 0))
++		return curr_sense;
+ 
+ 	return sysfs_emit(buf, "%d\n",
+-			  ADC_TO_CURR(data->curr_sense, data->curr_gain));
++			  ADC_TO_CURR(curr_sense, data->curr_gain));
+ }
+ 
+ static ssize_t max16065_limit_store(struct device *dev,
 
 
 
