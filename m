@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208735-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208775-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0594D26644
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D97ACD2618E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A61343088857
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:57 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 403BF302DCB3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D7839B4BF;
-	Thu, 15 Jan 2026 17:04:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C71D3BF306;
+	Thu, 15 Jan 2026 17:06:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDRj8tMN"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="f1yIalGT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC512C0285;
-	Thu, 15 Jan 2026 17:04:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0BF02D6611;
+	Thu, 15 Jan 2026 17:06:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496696; cv=none; b=llVM7hIeAee6o7u52H9fn6JyYP5iCyKI2Nn56wMmVoxJVc9unTCgZYy9iauqb4TzG7lNucZ24/7ESuIoPD+B8FKVhO/NH5a8/3J+2ePiB8zZfsGWsaZ2LHBqeNqZObgF78VO5fyvczNKs0/jEB0x1Rfr0OIlJNkRBMgKEABr/sc=
+	t=1768496807; cv=none; b=mFt9QKY9TFjz2DOBC2MjihqjwDp5Uvf9Ne82MSOFTp58kz+IsxXfbomTNnh6pSPXQhMBBcttCP4vWArKmfQA+wcGsxe0LAwUiswh2dyPOWqZW75bZlmHoaX59U3/GZxD13QDVX2CSIW7j4b/f8RJENa8kbBd21j9A0wk0geJP14=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496696; c=relaxed/simple;
-	bh=SNuow4mO4C6xrtT6fzzsnhSJHb/y83l3dXUteCQbqCI=;
+	s=arc-20240116; t=1768496807; c=relaxed/simple;
+	bh=lu4J5x49ZASu6g/12QyMf/ABqHOeX6ZsH2bZpHmK9CM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SJdXLDzSqkSyO4HzzL/ekorSCjVWudTKmHzlZtJG6tYhrUWSIyx32jImhDZRjqc5mSljmNA8PtLMk0cJjBmG7q/MjE3afCtzEE3D5kZFE1PlNKWjjS09dSruAm3LTY01Zhf9IxJIUwWqz4xgeQnFRGS6o/w9t8qVSEQ7rRreT8Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDRj8tMN; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B58DC116D0;
-	Thu, 15 Jan 2026 17:04:56 +0000 (UTC)
+	 MIME-Version; b=UOmAriH7nIv0/XHecLNPRAzpnNoZWoNv4LePyxsT2WPfMzmQhza8wht/rKUjLhitui4fjlVIeKkJFlynMElM0Mcvxf/6F1gx5O8VWQx/Cc/ETYA/dKJA7BFP8hIbYa6LcVwRo3CuzgoPzbiNK/D9B/69RnWC7kb++pc1djQ6gPU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=f1yIalGT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A739C116D0;
+	Thu, 15 Jan 2026 17:06:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496696;
-	bh=SNuow4mO4C6xrtT6fzzsnhSJHb/y83l3dXUteCQbqCI=;
+	s=korg; t=1768496807;
+	bh=lu4J5x49ZASu6g/12QyMf/ABqHOeX6ZsH2bZpHmK9CM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TDRj8tMNIscKTsoKje25Jc7pgKFJSZ/1NRgtpvsbArwii7sumlSoKfVEe9Mtw15Dn
-	 N9jeMq9uOZ9L5YHmHkX+QiLUKD98HSqY2RSAHcsqNLxVKm0gKziJC2LGQW4p9Oo1pv
-	 71J12pYGDiI2t8O+yv7U3PfCbXkZyySxoGd4YJoY=
+	b=f1yIalGTvz44YDkiWnCMu2GXQMtL6y2PQ4BTkCgPrX6h0Hur9cNkoT0Cthobsahwz
+	 XAnLQYnBU8xcxKh0MVef0vhC2vgk4kHHiOjlemo7p6XZI+g7o3cY+VqBXfct4/4IyD
+	 vG7KPCihP8kIka1AIiLdWYB4hor0dsCpkJaiDN6o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Gal Pressman <gal@nvidia.com>,
-	Tariq Toukan <tariqt@nvidia.com>,
-	Mark Bloch <mbloch@nvidia.com>,
+	Sharath Chandra Vurukala <quic_sharathv@quicinc.com>,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 070/119] net/mlx5e: Dont print error message due to invalid module
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Subject: [PATCH 6.6 22/88] net: Add locking to protect skb->dev access in ip_output
 Date: Thu, 15 Jan 2026 17:48:05 +0100
-Message-ID: <20260115164154.478625953@linuxfoundation.org>
+Message-ID: <20260115164147.118024894@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,55 +61,118 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gal Pressman <gal@nvidia.com>
+From: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
 
-[ Upstream commit 144297e2a24e3e54aee1180ec21120ea38822b97 ]
+commit 1dbf1d590d10a6d1978e8184f8dfe20af22d680a upstream.
 
-Dumping module EEPROM on newer modules is supported through the netlink
-interface only.
+In ip_output() skb->dev is updated from the skb_dst(skb)->dev
+this can become invalid when the interface is unregistered and freed,
 
-Querying with old userspace ethtool (or other tools, such as 'lshw')
-which still uses the ioctl interface results in an error message that
-could flood dmesg (in addition to the expected error return value).
-The original message was added under the assumption that the driver
-should be able to handle all module types, but now that such flows are
-easily triggered from userspace, it doesn't serve its purpose.
+Introduced new skb_dst_dev_rcu() function to be used instead of
+skb_dst_dev() within rcu_locks in ip_output.This will ensure that
+all the skb's associated with the dev being deregistered will
+be transnmitted out first, before freeing the dev.
 
-Change the log level of the print in mlx5_query_module_eeprom() to
-debug.
+Given that ip_output() is called within an rcu_read_lock()
+critical section or from a bottom-half context, it is safe to introduce
+an RCU read-side critical section within it.
 
-Fixes: bb64143eee8c ("net/mlx5e: Add ethtool support for dump module EEPROM")
-Signed-off-by: Gal Pressman <gal@nvidia.com>
-Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
-Signed-off-by: Mark Bloch <mbloch@nvidia.com>
-Link: https://patch.msgid.link/20251225132717.358820-5-mbloch@nvidia.com
+Multiple panic call stacks were observed when UL traffic was run
+in concurrency with device deregistration from different functions,
+pasting one sample for reference.
+
+[496733.627565][T13385] Call trace:
+[496733.627570][T13385] bpf_prog_ce7c9180c3b128ea_cgroupskb_egres+0x24c/0x7f0
+[496733.627581][T13385] __cgroup_bpf_run_filter_skb+0x128/0x498
+[496733.627595][T13385] ip_finish_output+0xa4/0xf4
+[496733.627605][T13385] ip_output+0x100/0x1a0
+[496733.627613][T13385] ip_send_skb+0x68/0x100
+[496733.627618][T13385] udp_send_skb+0x1c4/0x384
+[496733.627625][T13385] udp_sendmsg+0x7b0/0x898
+[496733.627631][T13385] inet_sendmsg+0x5c/0x7c
+[496733.627639][T13385] __sys_sendto+0x174/0x1e4
+[496733.627647][T13385] __arm64_sys_sendto+0x28/0x3c
+[496733.627653][T13385] invoke_syscall+0x58/0x11c
+[496733.627662][T13385] el0_svc_common+0x88/0xf4
+[496733.627669][T13385] do_el0_svc+0x2c/0xb0
+[496733.627676][T13385] el0_svc+0x2c/0xa4
+[496733.627683][T13385] el0t_64_sync_handler+0x68/0xb4
+[496733.627689][T13385] el0t_64_sync+0x1a4/0x1a8
+
+Changes in v3:
+- Replaced WARN_ON() with  WARN_ON_ONCE(), as suggested by Willem de Bruijn.
+- Dropped legacy lines mistakenly pulled in from an outdated branch.
+
+Changes in v2:
+- Addressed review comments from Eric Dumazet
+- Used READ_ONCE() to prevent potential load/store tearing
+- Added skb_dst_dev_rcu() and used along with rcu_read_lock() in ip_output
+
+Signed-off-by: Sharath Chandra Vurukala <quic_sharathv@quicinc.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20250730105118.GA26100@hu-sharathv-hyd.qualcomm.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Keerthana: Backported the patch to v6.6.y ]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/port.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/net/dst.h    |   12 ++++++++++++
+ net/ipv4/ip_output.c |   15 ++++++++++-----
+ 2 files changed, 22 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-index 389b34d56b751..79c477e05e46c 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
-@@ -430,7 +430,8 @@ int mlx5_query_module_eeprom(struct mlx5_core_dev *dev,
- 		mlx5_qsfp_eeprom_params_set(&query.i2c_address, &query.page, &offset);
- 		break;
- 	default:
--		mlx5_core_err(dev, "Module ID not recognized: 0x%x\n", module_id);
-+		mlx5_core_dbg(dev, "Module ID not recognized: 0x%x\n",
-+			      module_id);
- 		return -EINVAL;
- 	}
+--- a/include/net/dst.h
++++ b/include/net/dst.h
+@@ -569,6 +569,18 @@ static inline void skb_dst_update_pmtu_n
+ 		dst->ops->update_pmtu(dst, NULL, skb, mtu, false);
+ }
  
--- 
-2.51.0
-
++static inline struct net_device *dst_dev_rcu(const struct dst_entry *dst)
++{
++	/* In the future, use rcu_dereference(dst->dev) */
++	WARN_ON_ONCE(!rcu_read_lock_held());
++	return READ_ONCE(dst->dev);
++}
++
++static inline struct net_device *skb_dst_dev_rcu(const struct sk_buff *skb)
++{
++	return dst_dev_rcu(skb_dst(skb));
++}
++
+ struct dst_entry *dst_blackhole_check(struct dst_entry *dst, u32 cookie);
+ void dst_blackhole_update_pmtu(struct dst_entry *dst, struct sock *sk,
+ 			       struct sk_buff *skb, u32 mtu, bool confirm_neigh);
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -425,15 +425,20 @@ int ip_mc_output(struct net *net, struct
+ 
+ int ip_output(struct net *net, struct sock *sk, struct sk_buff *skb)
+ {
+-	struct net_device *dev = skb_dst(skb)->dev, *indev = skb->dev;
++	struct net_device *dev, *indev = skb->dev;
++	int ret_val;
+ 
++	rcu_read_lock();
++	dev = skb_dst_dev_rcu(skb);
+ 	skb->dev = dev;
+ 	skb->protocol = htons(ETH_P_IP);
+ 
+-	return NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
+-			    net, sk, skb, indev, dev,
+-			    ip_finish_output,
+-			    !(IPCB(skb)->flags & IPSKB_REROUTED));
++	ret_val = NF_HOOK_COND(NFPROTO_IPV4, NF_INET_POST_ROUTING,
++				net, sk, skb, indev, dev,
++				ip_finish_output,
++				!(IPCB(skb)->flags & IPSKB_REROUTED));
++	rcu_read_unlock();
++	return ret_val;
+ }
+ EXPORT_SYMBOL(ip_output);
+ 
 
 
 
