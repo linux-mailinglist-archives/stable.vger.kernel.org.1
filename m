@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209744-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209290-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 80C6DD27489
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:45 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id C332DD268D4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id EE082317A27A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:46 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 056CB30B78E1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:46 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8B73E34216C;
-	Thu, 15 Jan 2026 17:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 738FE3BF315;
+	Thu, 15 Jan 2026 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GIc6Nk/R"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mnqVutGp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4EE2A3C1FD9;
-	Thu, 15 Jan 2026 17:52:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 34B703B530F;
+	Thu, 15 Jan 2026 17:31:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499568; cv=none; b=fHbd9sLilx15KIi5jgt5dAsjoo5o8dBm4vr6nenuKpRjLPgPt3GxUO7KJ4RRxToCmkrxgIB2IC8ZopZgedR7OXMdAAblh2tPmq5ahQnTxP/SwijGxzIWstBwytezzehXvTltxgUTxG1yXkEAsGhOsQldXnl2O4XOxm7baH197NU=
+	t=1768498275; cv=none; b=GaCXLO5BdFSV3k1QGYPqLxxQB8sRtXUvTFEvgd4tdtMtBJlztXL0D5N6zZB6C9h6tcW7OhHGKJXNCb16ST3Z6zbyBtN/ZwaMPTV5vFPrYRU66yxi1oXOZQ2w8oMvsByw2N/8yaPa2qJ5k2eFqgv58Do6UizI9IpKd7Sc0kk3A4M=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499568; c=relaxed/simple;
-	bh=33q5sfb/X5NAvH1e1mKaMR3uouOwZ6qmn63uwQrAOyg=;
+	s=arc-20240116; t=1768498275; c=relaxed/simple;
+	bh=bCSkDlNZzTqSMgtMoVCW2wKjf2AAPUky2BPqviw/ibE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JHoaSnsLTm3zmLSYpHEa2XhtR8gJQEicycwkvsYzjEfKii3QrHcGKEAxN02NpycdGF46biXF9oKz3+ZLL/zd7ZHMnl6nhmkgSnfgWSWpl7mg1bHKpZTxL4ofEWfz4TzvIF4ldiP7zwNjUT1diuVhWdZxmWpEuaRb7iws3IBB93M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GIc6Nk/R; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0D6AC116D0;
-	Thu, 15 Jan 2026 17:52:47 +0000 (UTC)
+	 MIME-Version; b=nAO/eVCTxA0mzlSVqmfzu0f+LcJSDqUSeM8YjGHU8amzVH562Rpq3ieysJNsaFyMnDOYh9BVafPCxmUsLZTWFIgRtqBbX/MWz0P14dL8l1Ja8QjeJSnfDB32HJNIjpRN5xdWVwwvK6f9YeqzppNuiF2eNDJk1/rLjUUax52OR+8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mnqVutGp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3FAEC116D0;
+	Thu, 15 Jan 2026 17:31:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499568;
-	bh=33q5sfb/X5NAvH1e1mKaMR3uouOwZ6qmn63uwQrAOyg=;
+	s=korg; t=1768498275;
+	bh=bCSkDlNZzTqSMgtMoVCW2wKjf2AAPUky2BPqviw/ibE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GIc6Nk/R4MY/swGaSdgfr9xVZWRwNn+wWsxfZO5of5q5DjEL3/I4I3i2iYrhSPfGW
-	 LXltPBOUtATZpl9GfsbZOTgT+OJlseSjSQJoMlZk6h9//hDBtmBCYzODz994r01h1e
-	 xpl0t4PeSLPA1xJw2vnwatbHjX62Vm/xtFxa+L+k=
+	b=mnqVutGp9vfRNJLQJiQR63X8AS95wRO2oBiTMvLT3KpJZttOM92gM7a5xU4jXyRyU
+	 zTOuFLnOGMBgwqg06RM5vKyBI+qrdNFH/WB3IH+964n8x5pTT6WkRTXSUMyKI23x+d
+	 QggmExWz1Mui86rVDyNw4OUkTKwyoFi6jgrv7uDQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.10 239/451] cpufreq: nforce2: fix reference count leak in nforce2
+	Yu Kuai <yukuai3@huawei.com>,
+	Robin Murphy <robin.murphy@arm.com>,
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Johan Hovold <johan@kernel.org>,
+	Joerg Roedel <joerg.roedel@amd.com>
+Subject: [PATCH 5.15 374/554] iommu/exynos: fix device leak on of_xlate()
 Date: Thu, 15 Jan 2026 17:47:20 +0100
-Message-ID: <20260115164239.539285015@linuxfoundation.org>
+Message-ID: <20260115164259.769660680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 9600156bb99852c216a2128cdf9f114eb67c350f upstream.
+commit 05913cc43cb122f9afecdbe775115c058b906e1b upstream.
 
-There are two reference count leaks in this driver:
+Make sure to drop the reference taken to the iommu platform device when
+looking up its driver data during of_xlate().
 
-1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
-   of the PCI device, but pci_dev_put() is never called to release it,
-   thus leaking the reference.
+Note that commit 1a26044954a6 ("iommu/exynos: add missing put_device()
+call in exynos_iommu_of_xlate()") fixed the leak in a couple of error
+paths, but the reference is still leaking on success.
 
-2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
-   nforce2_dev which is stored in a global variable, but the reference
-   is never released when the module is unloaded.
-
-Fix both by:
-- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
-  the configuration.
-- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
-  global device reference.
-
-Found via static analysis.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: aa759fd376fb ("iommu/exynos: Add callback for initializing devices from device tree")
+Cc: stable@vger.kernel.org	# 4.2: 1a26044954a6
+Cc: Yu Kuai <yukuai3@huawei.com>
+Acked-by: Robin Murphy <robin.murphy@arm.com>
+Acked-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/cpufreq-nforce2.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/iommu/exynos-iommu.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/cpufreq/cpufreq-nforce2.c
-+++ b/drivers/cpufreq/cpufreq-nforce2.c
-@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int
- 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
- 	fsb /= 1000000;
+--- a/drivers/iommu/exynos-iommu.c
++++ b/drivers/iommu/exynos-iommu.c
+@@ -1284,17 +1284,14 @@ static int exynos_iommu_of_xlate(struct
+ 		return -ENODEV;
  
-+	pci_dev_put(nforce2_sub5);
-+
- 	/* Check if PLL register is already set */
- 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
+ 	data = platform_get_drvdata(sysmmu);
+-	if (!data) {
+-		put_device(&sysmmu->dev);
++	put_device(&sysmmu->dev);
++	if (!data)
+ 		return -ENODEV;
+-	}
  
-@@ -432,6 +434,7 @@ static int __init nforce2_init(void)
- static void __exit nforce2_exit(void)
- {
- 	cpufreq_unregister_driver(&nforce2_driver);
-+	pci_dev_put(nforce2_dev);
- }
+ 	if (!owner) {
+ 		owner = kzalloc(sizeof(*owner), GFP_KERNEL);
+-		if (!owner) {
+-			put_device(&sysmmu->dev);
++		if (!owner)
+ 			return -ENOMEM;
+-		}
  
- module_init(nforce2_init);
+ 		INIT_LIST_HEAD(&owner->controllers);
+ 		mutex_init(&owner->rpm_lock);
 
 
 
