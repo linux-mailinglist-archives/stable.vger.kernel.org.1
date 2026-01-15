@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208860-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209767-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1EE07D2677B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 511B3D27670
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BE3B530E3D47
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id BB50131DD527
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6EC3E3A7F43;
-	Thu, 15 Jan 2026 17:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C09343D5244;
+	Thu, 15 Jan 2026 17:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fGvAtbpz"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tYXaXlf0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 31DAB2D781B;
-	Thu, 15 Jan 2026 17:10:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 794913C0094;
+	Thu, 15 Jan 2026 17:53:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497049; cv=none; b=LfC7yW3owtQq87PbqnCDq2lrGwgHAq5Z9EU7Ewu+Jaa0SMKddXMSob3jkgTHie+WUc4YC5LF1gNLSt55vvC3aocejmY3+nk6VgVnes5Q98ZVMtp/nukdaq/8HCYCjW+qxf4OrSQ6uAapcKBVmQYLtqjBobYfwbJF7oEAejRMbOI=
+	t=1768499633; cv=none; b=N5OVLkynKcS/MxCINdxEC/1zhHssncMJgD4Ktk2jO01lZCI+G2PS/wlPdW+HqdpPWcEmSxMHjVnntDYammxjCO5+5xgmGjho1mXYruRJm1E5oIsfMAvDKjvbd9EfVRYr0JigtcLWw3XFtHmatCvejgiKpuyKcWYdS8eK33Rxbv4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497049; c=relaxed/simple;
-	bh=I8W+aG/3zRePFkBX/8hxnKWxjJhJjilHuufJ7iTvI/g=;
+	s=arc-20240116; t=1768499633; c=relaxed/simple;
+	bh=E4YHxKS4aifImUFxlxyr0VK8FK/11gp5HfupGYB+Oa0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FY/Wq3b04f08uewLPbsoOSpVxG6IJbYnyWb7LKqJmHPW0NR/+PWKT4jcV5JPxFnjSdnl+Z+mitAtrEaVMDKzlJl+IK/U1G0X3Oi1hUCpArnkjCCp2wt+Ms85kZ+I1ki0CbwzAC9rOewI1ayn/Edrh/4PUiSQJU39mwEK4RmdLsw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fGvAtbpz; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B455AC116D0;
-	Thu, 15 Jan 2026 17:10:48 +0000 (UTC)
+	 MIME-Version; b=qu1FvHCttdB1wJ9+wQGSca15zq7g3/+ZYqE9V63Xjb2uigjPAkVECUF7nQC2JC2AEq+AUbQ2JxfeuJ7+VH3r0GIRswU2YisfQDwYFB5aP+TI3zfjYI944tzT3NwYVjK3EgA0OxmpLm3UoPbaMfljtZBbP4WFIMYiyyhJB51pqs8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tYXaXlf0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0602AC116D0;
+	Thu, 15 Jan 2026 17:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497049;
-	bh=I8W+aG/3zRePFkBX/8hxnKWxjJhJjilHuufJ7iTvI/g=;
+	s=korg; t=1768499633;
+	bh=E4YHxKS4aifImUFxlxyr0VK8FK/11gp5HfupGYB+Oa0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fGvAtbpz4F8D9MnbuvEsQ48n5CokytHSpUaT2diN5SUv3HuU9qPfZxy6pQ+iUiT7/
-	 OUYqJcu5BAHHM5Vclfl2vRkkXR0/gjm43fjakll9WJzics9dNdGD1kuRVHa/ZKm00y
-	 kCT9k0wUsQJhWUfUOdoS1g8w6QBTPaZPlJ8BKfYk=
+	b=tYXaXlf0Z919nzvt6kO2fjnofwFUeaWk74V1WjLioFQiZv4M3zXhL4FUqqPKq8Y43
+	 OLnIWwTMZIYmegf50KDJGv2Af2A7cYW6B3QVHmaMGMY1a/bmXK7sZQRjoWVvLMlHp8
+	 VXTlKquWvUWp6Xo5xcIGSic9zCy9RkDwxFC7gLwY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Oleksij Rempel <o.rempel@pengutronix.de>,
-	William Breathitt Gray <wbg@kernel.org>
-Subject: [PATCH 6.1 06/72] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+	Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>,
+	Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+	Selvin Xavier <selvin.xavier@broadcom.com>,
+	Leon Romanovsky <leon@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 295/451] RDMA/bnxt_re: Fix to use correct page size for PDE table
 Date: Thu, 15 Jan 2026 17:48:16 +0100
-Message-ID: <20260115164143.722099028@linuxfoundation.org>
+Message-ID: <20260115164241.561883973@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,82 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+From: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
 
-commit 23f9485510c338476b9735d516c1d4aacb810d46 upstream.
+[ Upstream commit 3d70e0fb0f289b0c778041c5bb04d099e1aa7c1c ]
 
-An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
-CONFIG_PROVE_RAW_LOCK_NESTING warns:
-=============================
-[ BUG: Invalid wait context ]
-6.18.0-rc1+git... #1
------------------------------
-some-user-space-process/1251 is trying to lock:
-(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
-other info that might help us debug this:
-context-{2:2}
-no locks held by some-user-space-process/....
-stack backtrace:
-CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
-Call trace:
- show_stack (C)
- dump_stack_lvl
- dump_stack
- __lock_acquire
- lock_acquire
- _raw_spin_lock_irqsave
- counter_push_event [counter]
- interrupt_cnt_isr [interrupt_cnt]
- __handle_irq_event_percpu
- handle_irq_event
- handle_simple_irq
- handle_irq_desc
- generic_handle_domain_irq
- gpio_irq_handler
- handle_irq_desc
- generic_handle_domain_irq
- gic_handle_irq
- call_on_irq_stack
- do_interrupt_handler
- el0_interrupt
- __el0_irq_handler_common
- el0t_64_irq_handler
- el0t_64_irq
+In bnxt_qplib_alloc_init_hwq(), while allocating memory for PDE table
+driver incorrectly is using the "pg_size" value passed to the function.
+Fixed to use the right value 4K. Also, fixed the allocation size for
+PBL table.
 
-... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
-alternative to switching to raw_spinlock_t, because the latter would limit
-all potential nested locks to raw_spinlock_t only.
-
-Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
-Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
-Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
-Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
-Link: https://lore.kernel.org/r/20251118083603.778626-1-alexander.sverdlin@siemens.com
-Signed-off-by: William Breathitt Gray <wbg@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 0c4dcd602817 ("RDMA/bnxt_re: Refactor hardware queue memory allocation")
+Signed-off-by: Damodharam Ammepalli <damodharam.ammepalli@broadcom.com>
+Signed-off-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://patch.msgid.link/20251223131855.145955-1-kalesh-anakkur.purayil@broadcom.com
+Reviewed-by: Selvin Xavier <selvin.xavier@broadcom.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/counter/interrupt-cnt.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/infiniband/hw/bnxt_re/qplib_res.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/counter/interrupt-cnt.c
-+++ b/drivers/counter/interrupt-cnt.c
-@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct pl
+diff --git a/drivers/infiniband/hw/bnxt_re/qplib_res.c b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+index be98b23488b4..64e88104165e 100644
+--- a/drivers/infiniband/hw/bnxt_re/qplib_res.c
++++ b/drivers/infiniband/hw/bnxt_re/qplib_res.c
+@@ -242,7 +242,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
+ 			if (npbl % BIT(MAX_PDL_LVL_SHIFT))
+ 				npde++;
+ 			/* Alloc PDE pages */
+-			sginfo.pgsize = npde * pg_size;
++			sginfo.pgsize = npde * ROCE_PG_SIZE_4K;
+ 			sginfo.npages = 1;
+ 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_0], &sginfo);
+ 			if (rc)
+@@ -250,7 +250,7 @@ int bnxt_qplib_alloc_init_hwq(struct bnxt_qplib_hwq *hwq,
  
- 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
- 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
--			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
--			       dev_name(dev), counter);
-+			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
- 	if (ret)
- 		return ret;
- 
+ 			/* Alloc PBL pages */
+ 			sginfo.npages = npbl;
+-			sginfo.pgsize = PAGE_SIZE;
++			sginfo.pgsize = ROCE_PG_SIZE_4K;
+ 			rc = __alloc_pbl(res, &hwq->pbl[PBL_LVL_1], &sginfo);
+ 			if (rc)
+ 				goto fail;
+-- 
+2.51.0
+
 
 
 
