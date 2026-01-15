@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208662-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209303-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id ED131D261C0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:51 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5AC3DD26959
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id DC2B430942CD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1193330CE859
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26D2F2D73BE;
-	Thu, 15 Jan 2026 17:01:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 579163D1CBA;
+	Thu, 15 Jan 2026 17:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cSGZ1orq"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ykbbc4PL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFAC29C338;
-	Thu, 15 Jan 2026 17:01:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 19B5C3C1967;
+	Thu, 15 Jan 2026 17:31:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496488; cv=none; b=TmNQDDkdaY4QSBvFercyzwhlTLC12YcpyD6d0lPWvX86JfTB2+GTaL+vOWegLqrg7dHyk8fChbIV9G1j8zBcKteXXLLcb3DQZaIUMorMDubRwsqPt2b/vDg0NEWKnzNqgj8P0fktx0CRrfS69JTIX4J/M9K+z7F2Dt110+HqvRA=
+	t=1768498312; cv=none; b=RBZWroliKY1c7+VnQDqIr14CDfDuHE6IewvEju3p6PgEjPPwEPvbbCgufmBup4OP/JPc1/qcCAHD3p9nHVavel4gg0XEGVv9XOx8PSfGU197sdYuErmHmV8doMlytksr5vwyt8qf1/WhLNF7QWOfNZ1Gw72xCScvdC3jXPnYbBA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496488; c=relaxed/simple;
-	bh=6/H2kcHugN7QQFe1ujESfDuNK70t4/5810PKwH0IpN0=;
+	s=arc-20240116; t=1768498312; c=relaxed/simple;
+	bh=EvyTCg+WQDfLlGBSwabf6YrKaTXaQPZVOW9rwpWzCOY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vbpi+UGuBeN9RVFBVrSFZP9MmdsS+BAf9HquTXx60ezfxYTNmizbwnzQ1/J4KQ6jQyMOPjgHfoQ6ABqceGKPMYqOcMS8FOZxNOkkEY/gkpW4mnkJ7sdgPa9fDMnD/s/YbO2rsHQog6tF2ZFRWImIj6Zr5TRqaeqpoufsWzDFYVI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cSGZ1orq; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EF4AC116D0;
-	Thu, 15 Jan 2026 17:01:28 +0000 (UTC)
+	 MIME-Version; b=d5VZ3Jwx7SZ4GK5biJyGC2dRbP1fp8uPRLf+opTRELHjcPSGFC3WYmNf10HbR1uBwOIcq4OQY7nYzhD+lM76ArHNV8uAPKhemKa4AKyWC6anOHfZSYpEoP82lKCxrPERPZdg0c4AeJZNxCc292l7IjkpL3HeKfLegDa8o3c/ngE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ykbbc4PL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98FF5C16AAE;
+	Thu, 15 Jan 2026 17:31:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496488;
-	bh=6/H2kcHugN7QQFe1ujESfDuNK70t4/5810PKwH0IpN0=;
+	s=korg; t=1768498312;
+	bh=EvyTCg+WQDfLlGBSwabf6YrKaTXaQPZVOW9rwpWzCOY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cSGZ1orq7RYllroBh4e46vr0RBGzI+xbCHnpTavW+T0D6L4NU2MDLK/2vubMaEx+x
-	 eDinclTe7NtKbywWtNBf+GgiWuzryl9V9qEbZstMQg7tM3FnMnKkXeOmRP7zKx5iE/
-	 mSxY6IgTPRAT23MzVKn72Gy590U7rT/hXtnAcRiI=
+	b=ykbbc4PLHF3nVU8Nj4P9HF2bZFQkNm6RKeOvAR498z6vagK31uHN0m6k1U3ApBtm4
+	 awfNsYoi/6cGMPFsGOPKnTK/hNCMp8BhaAYZB8AcnbikxX/QiX5WMfh0bAF6QTatnK
+	 iZoIsJXRK4GvuJwnsFRJnBPZz4Atnc3wafnr3HlM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+6ee3b889bdeada0a6226@syzkaller.appspotmail.com,
-	Edward Adam Davis <eadavis@qq.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 005/119] NFSD: net ref data still needs to be freed even if net hasnt startup
+	syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 354/554] net: usb: asix: validate PHY address before use
 Date: Thu, 15 Jan 2026 17:47:00 +0100
-Message-ID: <20260115164152.152252831@linuxfoundation.org>
+Message-ID: <20260115164259.042330680@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,88 +62,58 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Edward Adam Davis <eadavis@qq.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-commit 0b88bfa42e5468baff71909c2f324a495318532b upstream.
+[ Upstream commit a1e077a3f76eea0dc671ed6792e7d543946227e8 ]
 
-When the NFSD instance doesn't to startup, the net ref data memory is
-not properly reclaimed, which triggers the memory leak issue reported
-by syzbot [1].
+The ASIX driver reads the PHY address from the USB device via
+asix_read_phy_addr(). A malicious or faulty device can return an
+invalid address (>= PHY_MAX_ADDR), which causes a warning in
+mdiobus_get_phy():
 
-To avoid the problem reported in [1], the net ref data memory reclamation
-action is moved outside of nfsd_net_up when the net is shutdown.
+  addr 207 out of range
+  WARNING: drivers/net/phy/mdio_bus.c:76
 
-[1]
-unreferenced object 0xffff88812a39dfc0 (size 64):
-  backtrace (crc a2262fc6):
-    percpu_ref_init+0x94/0x1e0 lib/percpu-refcount.c:76
-    nfsd_create_serv+0xbe/0x260 fs/nfsd/nfssvc.c:605
-    nfsd_nl_listener_set_doit+0x62/0xb00 fs/nfsd/nfsctl.c:1882
-    genl_family_rcv_msg_doit+0x11e/0x190 net/netlink/genetlink.c:1115
-    genl_family_rcv_msg net/netlink/genetlink.c:1195 [inline]
-    genl_rcv_msg+0x2fd/0x440 net/netlink/genetlink.c:1210
+Validate the PHY address in asix_read_phy_addr() and remove the
+now-redundant check in ax88172a.c.
 
-BUG: memory leak
-
-Reported-by: syzbot+6ee3b889bdeada0a6226@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=6ee3b889bdeada0a6226
-Fixes: 39972494e318 ("nfsd: update percpu_ref to manage references on nfsd_net")
-Cc: stable@vger.kernel.org
-Signed-off-by: Edward Adam Davis <eadavis@qq.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reported-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=3d43c9066a5b54902232
+Tested-by: syzbot+3d43c9066a5b54902232@syzkaller.appspotmail.com
+Fixes: 7e88b11a862a ("net: usb: asix: refactor asix_read_phy_addr() and handle errors on return")
+Link: https://lore.kernel.org/all/20251217085057.270704-1-kartikey406@gmail.com/T/ [v1]
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251218011156.276824-1-kartikey406@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfssvc.c |   30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ drivers/net/usb/asix_common.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nfsd/nfssvc.c
-+++ b/fs/nfsd/nfssvc.c
-@@ -434,26 +434,26 @@ static void nfsd_shutdown_net(struct net
- {
- 	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
+diff --git a/drivers/net/usb/asix_common.c b/drivers/net/usb/asix_common.c
+index 00c23f1d1c94..8c613e3ea05a 100644
+--- a/drivers/net/usb/asix_common.c
++++ b/drivers/net/usb/asix_common.c
+@@ -333,6 +333,11 @@ int asix_read_phy_addr(struct usbnet *dev, bool internal)
+ 	offset = (internal ? 1 : 0);
+ 	ret = buf[offset];
  
--	if (!nn->nfsd_net_up)
--		return;
--
--	percpu_ref_kill_and_confirm(&nn->nfsd_net_ref, nfsd_net_done);
--	wait_for_completion(&nn->nfsd_net_confirm_done);
--
--	nfsd_export_flush(net);
--	nfs4_state_shutdown_net(net);
--	nfsd_reply_cache_shutdown(nn);
--	nfsd_file_cache_shutdown_net(net);
--	if (nn->lockd_up) {
--		lockd_down(net);
--		nn->lockd_up = false;
-+	if (nn->nfsd_net_up) {
-+		percpu_ref_kill_and_confirm(&nn->nfsd_net_ref, nfsd_net_done);
-+		wait_for_completion(&nn->nfsd_net_confirm_done);
++	if (ret >= PHY_MAX_ADDR) {
++		netdev_err(dev->net, "invalid PHY address: %d\n", ret);
++		return -ENODEV;
++	}
 +
-+		nfsd_export_flush(net);
-+		nfs4_state_shutdown_net(net);
-+		nfsd_reply_cache_shutdown(nn);
-+		nfsd_file_cache_shutdown_net(net);
-+		if (nn->lockd_up) {
-+			lockd_down(net);
-+			nn->lockd_up = false;
-+		}
-+		wait_for_completion(&nn->nfsd_net_free_done);
- 	}
+ 	netdev_dbg(dev->net, "%s PHY address 0x%x\n",
+ 		   internal ? "internal" : "external", ret);
  
--	wait_for_completion(&nn->nfsd_net_free_done);
- 	percpu_ref_exit(&nn->nfsd_net_ref);
- 
-+	if (nn->nfsd_net_up)
-+		nfsd_shutdown_generic();
- 	nn->nfsd_net_up = false;
--	nfsd_shutdown_generic();
- }
- 
- static DEFINE_SPINLOCK(nfsd_notifier_lock);
+-- 
+2.51.0
+
 
 
 
