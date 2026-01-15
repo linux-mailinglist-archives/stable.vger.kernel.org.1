@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-209167-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209590-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id DEFD6D26EBF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:28 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9BB6DD26DE8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:23 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 39DF430E6EEA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 1AD233058564
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1275B3BF302;
-	Thu, 15 Jan 2026 17:25:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 110BE3BF2FE;
+	Thu, 15 Jan 2026 17:45:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N3tpCHF8"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="So59+67w"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C018F2D0C79;
-	Thu, 15 Jan 2026 17:25:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C847D3BC4EB;
+	Thu, 15 Jan 2026 17:45:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497924; cv=none; b=j20MZ75OFSdnIk3/mS6wSDzzz0HZEP3vYI4+lOckz5zkgKLXJH4Is732y1a8Jcbtd9kf5zwhP/n75PoVplFQ61x7sJj3cpBaIo/iPwHCJHmaMupu7U8t0Hb7ox2hoksTEoyKm+XVqrLl/8GHZMaRhXADLJ92xrBIAkBZt/40DKQ=
+	t=1768499129; cv=none; b=aEL/UcBvc6NTF75IO3+ovfhX1x/7tNxrsrXQ7S2eVgBYYF+QY5NMO2BgD3wxx5e0NTNKqG9o7XczjUP7kkAfSggBbd3tD8U+RwN1Dq61fDf5SXstK9zmhjs/cjOZSzpC2aRtOPMd8/JxhVmLQENmCgTXoEjzQm9/DDqgOYm71FU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497924; c=relaxed/simple;
-	bh=OiEyeJd6A/xd+goITSJYoK19eo9jzp6eIKB7VmpGQYc=;
+	s=arc-20240116; t=1768499129; c=relaxed/simple;
+	bh=/wgC/dPSr/0v2oowFXVzv4fcGGpeNtI2VxTCRD3/c20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GOhVpGC/4zs6VqMZCBEKyZgubEYjejTZCt9RlmHNsuXUG4T+5dI2pRXlG0YO7LBNLaQsuexTmUH+fadG5sGstzVs2c14pBtQGxn1zRkamK4lNYWmOMLqbzKo4TpYKoq4AG+THljaZdsqeMop7QlzI3gB0akOp6abaWM2k0CJvmM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N3tpCHF8; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 332A4C116D0;
-	Thu, 15 Jan 2026 17:25:24 +0000 (UTC)
+	 MIME-Version; b=IMlxUOj5nlqmTl09Mx+ZETTo6lNWQeQsz1n0owqUF5MuUq9vbY3X+6aOyVixXdCWZcgFeVHRNk+ujnhAVslUxOJjZ6sg1rY4dLzLMRsjBeuwH/S0JH4p+s5JTdusE/1XhcBnaKCkpaoSofxmK7uPaVfjn6EVQKfzV+DJnP0nkdk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=So59+67w; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47C0FC116D0;
+	Thu, 15 Jan 2026 17:45:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497924;
-	bh=OiEyeJd6A/xd+goITSJYoK19eo9jzp6eIKB7VmpGQYc=;
+	s=korg; t=1768499129;
+	bh=/wgC/dPSr/0v2oowFXVzv4fcGGpeNtI2VxTCRD3/c20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=N3tpCHF8Q/5SaFd6YBzOlmqNpURlEXQLW50r3qKEFuqozIQzxtcrCPasIcnPU7AEc
-	 OZX8360stsA3J9ZuxoJEU+v4tFBZWsagQ1YofyKlaviRUurhmvlutVEyxfiMasYcuh
-	 Syp2kArgaCR85DHntjATCQGJ4xFpouf4Q89a/XrA=
+	b=So59+67wDF4xuLcuGfx2wM7xrwvZ+5xFcCfJm+S71Sj8lHkk2rqLwCPjeyCNB6r5+
+	 8h6oGahpTMlWTNqvxFm5FmknTkaCQVQzXP+M912xuimGYIkoWxkpbclQzBXo6DsLM5
+	 PG8uX1LBYOeucZvAHDrCyq4Lh9qhe6l2TtS7IsRs=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com,
-	Shaurya Rane <ssrane_b23@ee.vjti.ac.in>,
-	Felix Maurer <fmaurer@redhat.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.15 252/554] net/hsr: fix NULL pointer dereference in prp_get_untagged_frame()
+	Matthijs Kooijman <matthijs@stdin.nl>,
+	Haojian Zhuang <haojian.zhuang@linaro.org>,
+	Tony Lindgren <tony@atomide.com>,
+	Linus Walleij <linus.walleij@linaro.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 117/451] pinctrl: single: Fix PIN_CONFIG_BIAS_DISABLE handling
 Date: Thu, 15 Jan 2026 17:45:18 +0100
-Message-ID: <20260115164255.359406289@linuxfoundation.org>
+Message-ID: <20260115164235.155904351@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,90 +62,100 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
+From: Matthijs Kooijman <matthijs@stdin.nl>
 
-commit 188e0fa5a679570ea35474575e724d8211423d17 upstream.
+[ Upstream commit b5fe46efc147516a908d2d31bf40eb858ab76d51 ]
 
-prp_get_untagged_frame() calls __pskb_copy() to create frame->skb_std
-but doesn't check if the allocation failed. If __pskb_copy() returns
-NULL, skb_clone() is called with a NULL pointer, causing a crash:
+The pinctrl-single driver handles pin_config_set by looking up the
+requested setting in a DT-defined lookup table, which defines what bits
+correspond to each setting. There is no way to add
+PIN_CONFIG_BIAS_DISABLE entries to the table, since there is instead
+code to disable the bias by applying the disable values of both the
+pullup and pulldown entries in the table.
 
-Oops: general protection fault, probably for non-canonical address 0xdffffc000000000f: 0000 [#1] SMP KASAN NOPTI
-KASAN: null-ptr-deref in range [0x0000000000000078-0x000000000000007f]
-CPU: 0 UID: 0 PID: 5625 Comm: syz.1.18 Not tainted syzkaller #0 PREEMPT(full)
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.16.3-debian-1.16.3-2~bpo12+1 04/01/2014
-RIP: 0010:skb_clone+0xd7/0x3a0 net/core/skbuff.c:2041
-Code: 03 42 80 3c 20 00 74 08 4c 89 f7 e8 23 29 05 f9 49 83 3e 00 0f 85 a0 01 00 00 e8 94 dd 9d f8 48 8d 6b 7e 49 89 ee 49 c1 ee 03 <43> 0f b6 04 26 84 c0 0f 85 d1 01 00 00 44 0f b6 7d 00 41 83 e7 0c
-RSP: 0018:ffffc9000d00f200 EFLAGS: 00010207
-RAX: ffffffff892235a1 RBX: 0000000000000000 RCX: ffff88803372a480
-RDX: 0000000000000000 RSI: 0000000000000820 RDI: 0000000000000000
-RBP: 000000000000007e R08: ffffffff8f7d0f77 R09: 1ffffffff1efa1ee
-R10: dffffc0000000000 R11: fffffbfff1efa1ef R12: dffffc0000000000
-R13: 0000000000000820 R14: 000000000000000f R15: ffff88805144cc00
-FS:  0000555557f6d500(0000) GS:ffff88808d72f000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000555581d35808 CR3: 000000005040e000 CR4: 0000000000352ef0
-Call Trace:
- <TASK>
- hsr_forward_do net/hsr/hsr_forward.c:-1 [inline]
- hsr_forward_skb+0x1013/0x2860 net/hsr/hsr_forward.c:741
- hsr_handle_frame+0x6ce/0xa70 net/hsr/hsr_slave.c:84
- __netif_receive_skb_core+0x10b9/0x4380 net/core/dev.c:5966
- __netif_receive_skb_one_core net/core/dev.c:6077 [inline]
- __netif_receive_skb+0x72/0x380 net/core/dev.c:6192
- netif_receive_skb_internal net/core/dev.c:6278 [inline]
- netif_receive_skb+0x1cb/0x790 net/core/dev.c:6337
- tun_rx_batched+0x1b9/0x730 drivers/net/tun.c:1485
- tun_get_user+0x2b65/0x3e90 drivers/net/tun.c:1953
- tun_chr_write_iter+0x113/0x200 drivers/net/tun.c:1999
- new_sync_write fs/read_write.c:593 [inline]
- vfs_write+0x5c9/0xb30 fs/read_write.c:686
- ksys_write+0x145/0x250 fs/read_write.c:738
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0xfa/0xfa0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x77/0x7f
-RIP: 0033:0x7f0449f8e1ff
-Code: 89 54 24 18 48 89 74 24 10 89 7c 24 08 e8 f9 92 02 00 48 8b 54 24 18 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 01 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 31 44 89 c7 48 89 44 24 08 e8 4c 93 02 00 48
-RSP: 002b:00007ffd7ad94c90 EFLAGS: 00000293 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 00007f044a1e5fa0 RCX: 00007f0449f8e1ff
-RDX: 000000000000003e RSI: 0000200000000500 RDI: 00000000000000c8
-RBP: 00007ffd7ad94d20 R08: 0000000000000000 R09: 0000000000000000
-R10: 000000000000003e R11: 0000000000000293 R12: 0000000000000001
-R13: 00007f044a1e5fa0 R14: 00007f044a1e5fa0 R15: 0000000000000003
- </TASK>
+However, this code is inside the table-lookup loop, so it would only
+execute if there is an entry for PIN_CONFIG_BIAS_DISABLE in the table,
+which can never exist, so this code never runs.
 
-Add a NULL check immediately after __pskb_copy() to handle allocation
-failures gracefully.
+This commit lifts the offending code out of the loop, so it just
+executes directly whenever PIN_CONFIG_BIAS_DISABLE is requested,
+skippipng the table lookup loop.
 
-Reported-by: syzbot+2fa344348a579b779e05@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=2fa344348a579b779e05
-Fixes: f266a683a480 ("net/hsr: Better frame dispatch")
-Cc: stable@vger.kernel.org
-Signed-off-by: Shaurya Rane <ssrane_b23@ee.vjti.ac.in>
-Reviewed-by: Felix Maurer <fmaurer@redhat.com>
-Tested-by: Felix Maurer <fmaurer@redhat.com>
-Link: https://patch.msgid.link/20251129093718.25320-1-ssrane_b23@ee.vjti.ac.in
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This also introduces a new `param` variable to make the code slightly
+more readable.
+
+This bug seems to have existed when this code was first merged in commit
+9dddb4df90d13 ("pinctrl: single: support generic pinconf"). Earlier
+versions of this patch did have an entry for PIN_CONFIG_BIAS_DISABLE in
+the lookup table, but that was removed, which is probably how this bug
+was introduced.
+
+Signed-off-by: Matthijs Kooijman <matthijs@stdin.nl>
+Reviewed-by: Haojian Zhuang <haojian.zhuang@linaro.org>
+Reviewed-by: Tony Lindgren <tony@atomide.com>
+Message-ID: <20240319110633.230329-1-matthijs@stdin.nl>
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Stable-dep-of: 61d1bb53547d ("pinctrl: single: Fix incorrect type for error return variable")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/hsr/hsr_forward.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/pinctrl/pinctrl-single.c | 18 ++++++++++++------
+ 1 file changed, 12 insertions(+), 6 deletions(-)
 
---- a/net/hsr/hsr_forward.c
-+++ b/net/hsr/hsr_forward.c
-@@ -134,6 +134,8 @@ struct sk_buff *prp_get_untagged_frame(s
- 				__pskb_copy(frame->skb_prp,
- 					    skb_headroom(frame->skb_prp),
- 					    GFP_ATOMIC);
-+			if (!frame->skb_std)
-+				return NULL;
- 		} else {
- 			/* Unexpected */
- 			WARN_ONCE(1, "%s:%d: Unexpected frame received (port_src %s)\n",
+diff --git a/drivers/pinctrl/pinctrl-single.c b/drivers/pinctrl/pinctrl-single.c
+index 9485737638b3c..bdcb5ede9b631 100644
+--- a/drivers/pinctrl/pinctrl-single.c
++++ b/drivers/pinctrl/pinctrl-single.c
+@@ -556,21 +556,30 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 	unsigned offset = 0, shift = 0, i, data, ret;
+ 	u32 arg;
+ 	int j;
++	enum pin_config_param param;
+ 
+ 	ret = pcs_get_function(pctldev, pin, &func);
+ 	if (ret)
+ 		return ret;
+ 
+ 	for (j = 0; j < num_configs; j++) {
++		param = pinconf_to_config_param(configs[j]);
++
++		/* BIAS_DISABLE has no entry in the func->conf table */
++		if (param == PIN_CONFIG_BIAS_DISABLE) {
++			/* This just disables all bias entries */
++			pcs_pinconf_clear_bias(pctldev, pin);
++			continue;
++		}
++
+ 		for (i = 0; i < func->nconfs; i++) {
+-			if (pinconf_to_config_param(configs[j])
+-				!= func->conf[i].param)
++			if (param != func->conf[i].param)
+ 				continue;
+ 
+ 			offset = pin * (pcs->width / BITS_PER_BYTE);
+ 			data = pcs->read(pcs->base + offset);
+ 			arg = pinconf_to_config_argument(configs[j]);
+-			switch (func->conf[i].param) {
++			switch (param) {
+ 			/* 2 parameters */
+ 			case PIN_CONFIG_INPUT_SCHMITT:
+ 			case PIN_CONFIG_DRIVE_STRENGTH:
+@@ -581,9 +590,6 @@ static int pcs_pinconf_set(struct pinctrl_dev *pctldev,
+ 				data |= (arg << shift) & func->conf[i].mask;
+ 				break;
+ 			/* 4 parameters */
+-			case PIN_CONFIG_BIAS_DISABLE:
+-				pcs_pinconf_clear_bias(pctldev, pin);
+-				break;
+ 			case PIN_CONFIG_BIAS_PULL_DOWN:
+ 			case PIN_CONFIG_BIAS_PULL_UP:
+ 				if (arg) {
+-- 
+2.51.0
+
 
 
 
