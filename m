@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209415-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33610D27E47
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 20:00:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1FA5CD2764B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:30 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61AD730D9B1C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BE57F325497C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 458E13D330B;
-	Thu, 15 Jan 2026 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 907853BFE35;
+	Thu, 15 Jan 2026 17:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="E4mkaRVs"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NE6Ob0kV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 093193D3012;
-	Thu, 15 Jan 2026 17:57:14 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5472F3BF31D;
+	Thu, 15 Jan 2026 17:37:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499834; cv=none; b=sq1sZG1kuxpotA3fQFbmM02ZpgWaFZ0FfCSS+qHNEZmYtxQUOHC2iIrbRSvLeucT1gnAAYIN4DVRyygx7OqIhLYrYI11cHESu4Jiky8AuNnnTVwSVL4RnGWDTNu2+KC2C2F0iewNndLPuAjX7+DKcx/PVVqZ/UxlKjxy8RZ7ZoE=
+	t=1768498631; cv=none; b=UPWhajjJO3DpOxS9LLvZCpprPG7l8zVVyp6YUFcpszBHHR99KLnt3hou4BpYyjIJI3N0rSQfUlOF19Ae6hRwA1rdaQQvtwO4BcHIzgMNdbIhrBltVADFhNqau/3ICWCHIo88s62gJQCeAFxerDFw3R+9R08d36sSKGqlKp6NLtk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499834; c=relaxed/simple;
-	bh=bShhk6KSVMpZzL5Yu90B8ooQmZzpYbrWYcFuIfdBrUQ=;
+	s=arc-20240116; t=1768498631; c=relaxed/simple;
+	bh=gaLRKYwzP99upEKGaDY6khW/vlHEqFsGb7MIK8WK/yI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NWky8xI8MrBWqaDfaDpQgSwxsWUVUw9WF15CwrbAZ8hVVNPUKwQtX0PjP7t3pK6I0DYcdwhiZm3Ut8u39a3K0DLUh9e2+zP34CrnTaqB/R5lVd1hX0th533CEK1RdKuznh8Axxma2Ybgvi2j+ibCATVXNEn9zdbWu08H+uaPlLc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=E4mkaRVs; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CB35C116D0;
-	Thu, 15 Jan 2026 17:57:13 +0000 (UTC)
+	 MIME-Version; b=U1gdCEzufZnN7FCLkzYAwwxDIvIEwt9TO2HepSpY6Gi/yYenPdL8cewFbuOCDzz5jyQIZHQyIC+0Fjs05Vm8TgSTUvkkcJmGswJcKZxG9rYsz32nTLWmiW4iKgfb5YOXxiTdOhQvIEUgY+PR3Hopnu5kWTnOPui5Pw7h/rGjabA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NE6Ob0kV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4A09C116D0;
+	Thu, 15 Jan 2026 17:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499833;
-	bh=bShhk6KSVMpZzL5Yu90B8ooQmZzpYbrWYcFuIfdBrUQ=;
+	s=korg; t=1768498631;
+	bh=gaLRKYwzP99upEKGaDY6khW/vlHEqFsGb7MIK8WK/yI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=E4mkaRVsm6JblFulGeGrTPdoumEy5bAL0ZAXbbONpIdeTX8Zjzf2WiB+/nfauEHn4
-	 ONNaJdmrVrK0ZnEgL0FiZ9bCF5KU+4e11Ko8SOHIMt3I7sC+6/jAUlOkdHPKNMjJSg
-	 wcK4KhlB0aqc1SwGYeIRgdhnydS53mF5pMHgnrL4=
+	b=NE6Ob0kV9a9KP6n55ByU5z8cZxw3JEgtMn0vChnaawL3LiKEkyhGQbFgojPIVB6Ma
+	 efYaxzUm71QIAE7vMv1W1aeyWcu6KLdCyk86bhMB6KDiTkvZv3g3SLfOVs6dv+w571
+	 b0Gu/L9rv0NUYjsH6LY5t8OIwaJ746uyQPDqcQuE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Zhang Zekun <zhangzekun11@huawei.com>,
-	Alan Stern <stern@rowland.harvard.edu>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 365/451] usb: ohci-nxp: Use helper function devm_clk_get_enabled()
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH 5.15 500/554] usb: gadget: lpc32xx_udc: fix clock imbalance in error path
 Date: Thu, 15 Jan 2026 17:49:26 +0100
-Message-ID: <20260115164244.112054486@linuxfoundation.org>
+Message-ID: <20260115164304.417440252@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,95 +60,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Zekun <zhangzekun11@huawei.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c146ede472717f352b7283a525bd9a1a2b15e2cf ]
+commit 782be79e4551550d7a82b1957fc0f7347e6d461f upstream.
 
-devm_clk_get() and clk_prepare_enable() can be replaced by helper
-function devm_clk_get_enabled(). Let's use devm_clk_get_enabled() to
-simplify code and avoid calling clk_disable_unprepare().
+A recent change fixing a device reference leak introduced a clock
+imbalance by reusing an error path so that the clock may be disabled
+before having been enabled.
 
-Signed-off-by: Zhang Zekun <zhangzekun11@huawei.com>
-Acked-by: Alan Stern <stern@rowland.harvard.edu>
-Link: https://lore.kernel.org/r/20240902123020.29267-3-zhangzekun11@huawei.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: b4c61e542faf ("usb: ohci-nxp: fix device leak on probe failure")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that the clock framework allows for passing in NULL clocks so there
+is no risk for a NULL pointer dereference.
+
+Also drop the bogus I2C client NULL check added by the offending commit
+as the pointer has already been verified to be non-NULL.
+
+Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
+Cc: stable@vger.kernel.org
+Cc: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251218153519.19453-2-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/host/ohci-nxp.c |   18 ++++--------------
- 1 file changed, 4 insertions(+), 14 deletions(-)
+ drivers/usb/gadget/udc/lpc32xx_udc.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/drivers/usb/host/ohci-nxp.c
-+++ b/drivers/usb/host/ohci-nxp.c
-@@ -51,8 +51,6 @@ static struct hc_driver __read_mostly oh
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -3025,7 +3025,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
+ 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (retval)
+-		goto i2c_fail;
++		goto err_put_client;
  
- static struct i2c_client *isp1301_i2c_client;
+ 	udc->board = &lpc32xx_usbddata;
  
--static struct clk *usb_host_clk;
+@@ -3045,7 +3045,7 @@ static int lpc32xx_udc_probe(struct plat
+ 		udc->udp_irq[i] = platform_get_irq(pdev, i);
+ 		if (udc->udp_irq[i] < 0) {
+ 			retval = udc->udp_irq[i];
+-			goto i2c_fail;
++			goto err_put_client;
+ 		}
+ 	}
+ 
+@@ -3053,7 +3053,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	if (IS_ERR(udc->udp_baseaddr)) {
+ 		dev_err(udc->dev, "IO map failure\n");
+ 		retval = PTR_ERR(udc->udp_baseaddr);
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Get USB device clock */
+@@ -3061,14 +3061,14 @@ static int lpc32xx_udc_probe(struct plat
+ 	if (IS_ERR(udc->usb_slv_clk)) {
+ 		dev_err(udc->dev, "failed to acquire USB device clock\n");
+ 		retval = PTR_ERR(udc->usb_slv_clk);
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Enable USB device clock */
+ 	retval = clk_prepare_enable(udc->usb_slv_clk);
+ 	if (retval < 0) {
+ 		dev_err(udc->dev, "failed to start USB device clock\n");
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Setup deferred workqueue data */
+@@ -3170,9 +3170,10 @@ dma_alloc_fail:
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ i2c_fail:
+-	if (udc->isp1301_i2c_client)
+-		put_device(&udc->isp1301_i2c_client->dev);
+ 	clk_disable_unprepare(udc->usb_slv_clk);
++err_put_client:
++	put_device(&udc->isp1301_i2c_client->dev);
++
+ 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
+ 
+ 	return retval;
+@@ -3197,11 +3198,9 @@ static int lpc32xx_udc_remove(struct pla
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ 
+-	if (udc->isp1301_i2c_client)
+-		put_device(&udc->isp1301_i2c_client->dev);
 -
- static void isp1301_configure_lpc32xx(void)
- {
- 	/* LPC32XX only supports DAT_SE0 USB mode */
-@@ -155,6 +153,7 @@ static int ohci_hcd_nxp_probe(struct pla
- 	struct resource *res;
- 	int ret = 0, irq;
- 	struct device_node *isp1301_node;
-+	struct clk *usb_host_clk;
+ 	clk_disable_unprepare(udc->usb_slv_clk);
  
- 	if (pdev->dev.of_node) {
- 		isp1301_node = of_parse_phandle(pdev->dev.of_node,
-@@ -180,26 +179,20 @@ static int ohci_hcd_nxp_probe(struct pla
- 	}
- 
- 	/* Enable USB host clock */
--	usb_host_clk = devm_clk_get(&pdev->dev, NULL);
-+	usb_host_clk = devm_clk_get_enabled(&pdev->dev, NULL);
- 	if (IS_ERR(usb_host_clk)) {
--		dev_err(&pdev->dev, "failed to acquire USB OHCI clock\n");
-+		dev_err(&pdev->dev, "failed to acquire and start USB OHCI clock\n");
- 		ret = PTR_ERR(usb_host_clk);
- 		goto fail_disable;
- 	}
- 
--	ret = clk_prepare_enable(usb_host_clk);
--	if (ret < 0) {
--		dev_err(&pdev->dev, "failed to start USB OHCI clock\n");
--		goto fail_disable;
--	}
--
- 	isp1301_configure();
- 
- 	hcd = usb_create_hcd(driver, &pdev->dev, dev_name(&pdev->dev));
- 	if (!hcd) {
- 		dev_err(&pdev->dev, "Failed to allocate HC buffer\n");
- 		ret = -ENOMEM;
--		goto fail_hcd;
-+		goto fail_disable;
- 	}
- 
- 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
-@@ -230,8 +223,6 @@ static int ohci_hcd_nxp_probe(struct pla
- 	ohci_nxp_stop_hc();
- fail_resource:
- 	usb_put_hcd(hcd);
--fail_hcd:
--	clk_disable_unprepare(usb_host_clk);
- fail_disable:
- 	isp1301_i2c_client = NULL;
- 	return ret;
-@@ -244,7 +235,6 @@ static int ohci_hcd_nxp_remove(struct pl
- 	usb_remove_hcd(hcd);
- 	ohci_nxp_stop_hc();
- 	usb_put_hcd(hcd);
--	clk_disable_unprepare(usb_host_clk);
- 	isp1301_i2c_client = NULL;
- 
++	put_device(&udc->isp1301_i2c_client->dev);
  	return 0;
+ }
+ 
 
 
 
