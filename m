@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208897-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208627-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 34622D264F7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:21:41 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 38916D260EA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:36 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id F212A30C6867
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:13:09 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2567B30552F4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:48 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8850A3C00AE;
-	Thu, 15 Jan 2026 17:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D12F83B9619;
+	Thu, 15 Jan 2026 16:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XMRiQUEn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yZkFZ/sp"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 460CB3BFE59;
-	Thu, 15 Jan 2026 17:12:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 95E0E3A7F43;
+	Thu, 15 Jan 2026 16:59:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497155; cv=none; b=g46I+28UUOu1U/47lGJY9gjy450Hok+TDrL/BL61VBSmURvakyZYTd9KIoGPBaM7fkJFtOr+vrifgCiCksCCZhCgEJBQ9OqAYWtlxG3lKzzROF7CCaPsGw3/dMYbj1htmniNTl4gdbBuQ9GV97QDq3VfanPXMWb9lY1HmZwo+WU=
+	t=1768496386; cv=none; b=KYGVPq5LyqtebfQZGNNgcB+dIJb0WHmpxA/jGvOetksTCoN66Vn+P/IFn45RaeFwxbcbwfVei29g6wrhNt/1EWuyOQTnDN+bYUXJcSBny5h+gz7fogUdxEEvMiNDfrZJ52xdBMPros1fp28UeCCYJKrUu0XcxVHwtRLUuyRl1uk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497155; c=relaxed/simple;
-	bh=S9iQU8MfUEn5OL6q9og0coBwset3QvSS5amZ9bLM5js=;
+	s=arc-20240116; t=1768496386; c=relaxed/simple;
+	bh=T5DGKortasLn4zlEHsrDA3MOteJj7vKCVgOJRhbo4vE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nISR05TriwDk6AQXWzCTvNbx45KQxZqTGQmPylsTutaUoMT93LB+oLuHDO0pnBy7VxTQGX7TkZr/HxO/Tup1S4MK1wgzBu+ZwkQCvyB+5KzG/xJ6MeGkIK7Gm5zvdZgOx0scrS2YdkqHVoPx/ZcetwC9reaT8U0b37E7waKKMNU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XMRiQUEn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8D60C2BCB2;
-	Thu, 15 Jan 2026 17:12:34 +0000 (UTC)
+	 MIME-Version; b=Ft5sW0sz5RPm2zoucJjFGXN+Qs6fi5pZb3RiQC81kxShtVavrdvN+2jFu/NnrjdcklPVKwJoLvHeajWHbFu2gqXj81XrPvvQNamMS/lMQXC5pYhyyddCplE9mS1Bri8BMkO2cXWjuyilHR426uCtSa6hMJuQGQc2zYqOIfcHMKM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yZkFZ/sp; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 247E9C116D0;
+	Thu, 15 Jan 2026 16:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497155;
-	bh=S9iQU8MfUEn5OL6q9og0coBwset3QvSS5amZ9bLM5js=;
+	s=korg; t=1768496386;
+	bh=T5DGKortasLn4zlEHsrDA3MOteJj7vKCVgOJRhbo4vE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XMRiQUEnrnTL9yypS/IP1ILjSX7iRrFQk6OzLpL+c52JtMR2GV45TWBZJVxiIJvqt
-	 2YjQ1zg9QqTjCoF6oJr1GqMMQB//biEQgfma5nGdxDylSPaHoSSSxKtO125um9qx+u
-	 Vy8591flAvq3rzik5qeGTz5r7e7J73Xllsx0W/Vw=
+	b=yZkFZ/spjiS6Vpc6wWR53Q3XVCcFwx8brXGQ5ABXhqZtJLCzKSlby3t0S0PSdilLq
+	 1OI4UM+hzpl2K6c4V2CHH2YZFObYQJRpr0KK3Q/yFwGwxhrhYAZMOn3Pa1ZGSF3ZDE
+	 fxwpA1W3t5x4viYxcylr3BcA3a2gRH0z0psi37Yg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Scott Mayhew <smayhew@redhat.com>,
-	Benjamin Coddington <bcodding@hammerspace.com>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Jussi Laako <jussi@sonarnerd.net>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 22/72] NFSv4: ensure the open stateid seqid doesnt go backwards
-Date: Thu, 15 Jan 2026 17:48:32 +0100
-Message-ID: <20260115164144.301129043@linuxfoundation.org>
+Subject: [PATCH 6.18 176/181] ALSA: usb-audio: Update for native DSD support quirks
+Date: Thu, 15 Jan 2026 17:48:33 +0100
+Message-ID: <20260115164208.668058862@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,76 +60,62 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Scott Mayhew <smayhew@redhat.com>
+From: Jussi Laako <jussi@sonarnerd.net>
 
-[ Upstream commit 2e47c3cc64b44b0b06cd68c2801db92ff143f2b2 ]
+[ Upstream commit da3a7efff64ec0d63af4499eea3a46a2e13b5797 ]
 
-We have observed an NFSv4 client receiving a LOCK reply with a status of
-NFS4ERR_OLD_STATEID and subsequently retrying the LOCK request with an
-earlier seqid value in the stateid.  As this was for a new lockowner,
-that would imply that nfs_set_open_stateid_locked() had updated the open
-stateid seqid with an earlier value.
+Maintenance patch for native DSD support.
 
-Looking at nfs_set_open_stateid_locked(), if the incoming seqid is out
-of sequence, the task will sleep on the state->waitq for up to 5
-seconds.  If the task waits for the full 5 seconds, then after finishing
-the wait it'll update the open stateid seqid with whatever value the
-incoming seqid has.  If there are multiple waiters in this scenario,
-then the last one to perform said update may not be the one with the
-highest seqid.
+Add set of missing device and vendor quirks; TEAC, Esoteric, Luxman and
+Musical Fidelity.
 
-Add a check to ensure that the seqid can only be incremented, and add a
-tracepoint to indicate when old seqids are skipped.
-
-Signed-off-by: Scott Mayhew <smayhew@redhat.com>
-Reviewed-by: Benjamin Coddington <bcodding@hammerspace.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Jussi Laako <jussi@sonarnerd.net>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20251211152224.1780782-1-jussi@sonarnerd.net
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c  | 13 +++++++++++--
- fs/nfs/nfs4trace.h |  1 +
- 2 files changed, 12 insertions(+), 2 deletions(-)
+ sound/usb/quirks.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index d4ae2ce56af4a..8258bce82e5bc 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -1700,8 +1700,17 @@ static void nfs_set_open_stateid_locked(struct nfs4_state *state,
- 		if (nfs_stateid_is_sequential(state, stateid))
- 			break;
- 
--		if (status)
--			break;
-+		if (status) {
-+			if (nfs4_stateid_match_other(stateid, &state->open_stateid) &&
-+			    !nfs4_stateid_is_newer(stateid, &state->open_stateid)) {
-+				trace_nfs4_open_stateid_update_skip(state->inode,
-+								    stateid, status);
-+				return;
-+			} else {
-+				break;
-+			}
-+		}
-+
- 		/* Rely on seqids for serialisation with NFSv4.0 */
- 		if (!nfs4_has_session(NFS_SERVER(state->inode)->nfs_client))
- 			break;
-diff --git a/fs/nfs/nfs4trace.h b/fs/nfs/nfs4trace.h
-index c8a57cfde64b4..0fc1b4a6eab90 100644
---- a/fs/nfs/nfs4trace.h
-+++ b/fs/nfs/nfs4trace.h
-@@ -1248,6 +1248,7 @@ DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_setattr);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_delegreturn);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_open_stateid_update);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_open_stateid_update_wait);
-+DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_open_stateid_update_skip);
- DEFINE_NFS4_INODE_STATEID_EVENT(nfs4_close_stateid_update_wait);
- 
- DECLARE_EVENT_CLASS(nfs4_getattr_event,
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 61bd61ffb1b23..94a8fdc9c6d3c 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2230,6 +2230,12 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 	DEVICE_FLG(0x0644, 0x806b, /* TEAC UD-701 */
+ 		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY |
+ 		   QUIRK_FLAG_IFACE_DELAY),
++	DEVICE_FLG(0x0644, 0x807d, /* TEAC UD-507 */
++		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY |
++		   QUIRK_FLAG_IFACE_DELAY),
++	DEVICE_FLG(0x0644, 0x806c, /* Esoteric XD */
++		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY |
++		   QUIRK_FLAG_IFACE_DELAY),
+ 	DEVICE_FLG(0x06f8, 0xb000, /* Hercules DJ Console (Windows Edition) */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x06f8, 0xd002, /* Hercules DJ Console (Macintosh Edition) */
+@@ -2388,6 +2394,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x30be, 0x0101, /* Schiit Hel */
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
++	DEVICE_FLG(0x3255, 0x0000, /* Luxman D-10X */
++		   QUIRK_FLAG_ITF_USB_DSD_DAC | QUIRK_FLAG_CTL_MSG_DELAY),
+ 	DEVICE_FLG(0x339b, 0x3a07, /* Synaptics HONOR USB-C HEADSET */
+ 		   QUIRK_FLAG_MIXER_PLAYBACK_MIN_MUTE),
+ 	DEVICE_FLG(0x413c, 0xa506, /* Dell AE515 sound bar */
+@@ -2431,6 +2439,8 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x2622, /* IAG Limited devices */
+ 		   QUIRK_FLAG_DSD_RAW),
++	VENDOR_FLG(0x2772, /* Musical Fidelity devices */
++		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x278b, /* Rotel? */
+ 		   QUIRK_FLAG_DSD_RAW),
+ 	VENDOR_FLG(0x292b, /* Gustard/Ess based devices */
 -- 
 2.51.0
 
