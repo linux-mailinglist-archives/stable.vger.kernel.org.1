@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209709-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209256-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E6CED275C2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:20:36 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id ADBDFD26798
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0179131BBA67
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:48 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6972C3061609
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 199D03D34AF;
-	Thu, 15 Jan 2026 17:51:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F16723C1FCE;
+	Thu, 15 Jan 2026 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QL7KbFeB"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="m0AcjdMM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D1DFD3C198E;
-	Thu, 15 Jan 2026 17:51:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3E693C1FCC;
+	Thu, 15 Jan 2026 17:29:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499467; cv=none; b=MCC0QmJDwF2YBn7LVPGpUdhvswQpL9WVfV0uan1GZhGlQBju/ZiZyO/dJKSRYNm+aDoKFxkiiXrV5jRTPn9XUwMAd3m/Q6z86wIztX1vGfLAzVBPxZrYDB4VCgdHV3QRSz5NY+kCNtIbjt6d6UBgetU93WHq65PjpzOy4YBWdwM=
+	t=1768498178; cv=none; b=qnL1HZEftTommlP7W+Cy58+dPaEiIrbP5dlPMC1Ea4s/DSzfXpyisvUdzUrGV9j/wOXGA8YFA2PFLsUXKj0TDquMBV0soOZH2hFBMqUsqB0pQIGuDuCZfMq/lhNX2xILQn3dL2qm3xhdjQz8jirAbwfwv+OC0mrPRrvreOqm6lU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499467; c=relaxed/simple;
-	bh=J2vj7rLe7NUs6jqLLFi+OvRFYTigO3qtLalYPBsyMXI=;
+	s=arc-20240116; t=1768498178; c=relaxed/simple;
+	bh=pygp8l5P2f/qM3za0y8rxaGsnH4UmijIPse72PIu+xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oIHLLRjpes4I3/8T7gN4HsWt5EFCx26+nTAPsJmWcXvr+NVWVAFc7ssw0PPRtnjnpnwiO3Ci5zYTckDrQujk5mEPXQqTYh22S+luhr55kMmFb46ghjJPhPXJGDrGkfhzrAS/5u/wqJ2zaRB4sirevpAw+KcZxqtcU1yBhv1ShBQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QL7KbFeB; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E7E8C16AAE;
-	Thu, 15 Jan 2026 17:51:07 +0000 (UTC)
+	 MIME-Version; b=XNsccq1g5SPeuHii2ubWmZ717SoZtq5J2c6K2Yp2GxeXD21CJOlYf8lzVlebFk/iu6KqQNNDf1LWJnEYw0sNLdaGNVpRdEKpFecftpTtpQmILcwTHk31c8eaZ2BDgxtsS2Jqz7NcDma5aZqmWVH8H/wE544Y5d7O54Xg68tbFlA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=m0AcjdMM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 046B5C116D0;
+	Thu, 15 Jan 2026 17:29:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499467;
-	bh=J2vj7rLe7NUs6jqLLFi+OvRFYTigO3qtLalYPBsyMXI=;
+	s=korg; t=1768498178;
+	bh=pygp8l5P2f/qM3za0y8rxaGsnH4UmijIPse72PIu+xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QL7KbFeBybBuynNn793btAR0BZtZdckAKen56CSPhaCw+oywjObXx3S4O29AZDA29
-	 DdvNnM2i6NCxx7KVSE29/HXK650YYVOewURV30atGBrJ5Sq/wmYZnHT8+AB3d58Fs/
-	 XZNgPYLXX+Br9hUtGokZX9kSarlvfssZomrezeEE=
+	b=m0AcjdMMEC+M1rrXn/SKWnMKfHX6xV8+32Jpv33g1I2yZOSzJG6rpJOdBjFmjB658
+	 vwBFPBnnyqcp2siQn/K6ModeRSbRInag9elehTIeXltDT0uRjQn72/dblfaMbsEKb9
+	 KpBeYoEgxbMaBrKpxa5xuaQEQcEcQSZ3LuCAJGsk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jinhui Guo <guojinhui.liam@bytedance.com>,
-	Corey Minyard <corey@minyard.net>,
+	Xiumei Mu <xmu@redhat.com>,
+	Xin Long <lucien.xin@gmail.com>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 204/451] ipmi: Fix __scan_channels() failing to rescan channels
-Date: Thu, 15 Jan 2026 17:46:45 +0100
-Message-ID: <20260115164238.280710702@linuxfoundation.org>
+Subject: [PATCH 5.15 340/554] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
+Date: Thu, 15 Jan 2026 17:46:46 +0100
+Message-ID: <20260115164258.538133082@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +61,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinhui Guo <guojinhui.liam@bytedance.com>
+From: Herbert Xu <herbert@gondor.apana.org.au>
 
-[ Upstream commit 6bd30d8fc523fb880b4be548e8501bc0fe8f42d4 ]
+[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
 
-channel_handler() sets intf->channels_ready to true but never
-clears it, so __scan_channels() skips any rescan. When the BMC
-firmware changes a rescan is required. Allow it by clearing
-the flag before starting a new scan.
+As soon as crypto_aead_encrypt is called, the underlying request
+may be freed by an asynchronous completion.  Thus dereferencing
+req->iv after it returns is invalid.
 
-Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
-Message-ID: <20250930074239.2353-3-guojinhui.liam@bytedance.com>
-Signed-off-by: Corey Minyard <corey@minyard.net>
+Instead of checking req->iv against info, create a new variable
+unaligned_info and use it for that purpose instead.
+
+Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
+Reported-by: Xiumei Mu <xmu@redhat.com>
+Reported-by: Xin Long <lucien.xin@gmail.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_msghandler.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ crypto/seqiv.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
-index 117454a5603b..a72cd57dd8a5 100644
---- a/drivers/char/ipmi/ipmi_msghandler.c
-+++ b/drivers/char/ipmi/ipmi_msghandler.c
-@@ -605,7 +605,8 @@ static void __ipmi_bmc_unregister(struct ipmi_smi *intf);
- static int __ipmi_bmc_register(struct ipmi_smi *intf,
- 			       struct ipmi_device_id *id,
- 			       bool guid_set, guid_t *guid, int intf_num);
--static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id);
-+static int __scan_channels(struct ipmi_smi *intf,
-+				struct ipmi_device_id *id, bool rescan);
- 
- 
- /**
-@@ -2556,7 +2557,7 @@ static int __bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
- 		if (__ipmi_bmc_register(intf, &id, guid_set, &guid, intf_num))
- 			need_waiter(intf); /* Retry later on an error. */
- 		else
--			__scan_channels(intf, &id);
-+			__scan_channels(intf, &id, false);
- 
- 
- 		if (!intf_set) {
-@@ -2576,7 +2577,7 @@ static int __bmc_get_device_id(struct ipmi_smi *intf, struct bmc_device *bmc,
- 		goto out_noprocessing;
- 	} else if (memcmp(&bmc->fetch_id, &bmc->id, sizeof(bmc->id)))
- 		/* Version info changes, scan the channels again. */
--		__scan_channels(intf, &bmc->fetch_id);
-+		__scan_channels(intf, &bmc->fetch_id, true);
- 
- 	bmc->dyn_id_expiry = jiffies + IPMI_DYN_DEV_ID_EXPIRY;
- 
-@@ -3326,10 +3327,17 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
- /*
-  * Must be holding intf->bmc_reg_mutex to call this.
-  */
--static int __scan_channels(struct ipmi_smi *intf, struct ipmi_device_id *id)
-+static int __scan_channels(struct ipmi_smi *intf,
-+				struct ipmi_device_id *id,
-+				bool rescan)
- {
- 	int rv;
- 
-+	if (rescan) {
-+		/* Clear channels_ready to force channels rescan. */
-+		intf->channels_ready = false;
-+	}
-+
- 	if (ipmi_version_major(id) > 1
- 			|| (ipmi_version_major(id) == 1
- 			    && ipmi_version_minor(id) >= 5)) {
-@@ -3501,7 +3509,7 @@ int ipmi_add_smi(struct module         *owner,
+diff --git a/crypto/seqiv.c b/crypto/seqiv.c
+index b1bcfe537daf..562ab102226a 100644
+--- a/crypto/seqiv.c
++++ b/crypto/seqiv.c
+@@ -51,6 +51,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
+ 	struct aead_request *subreq = aead_request_ctx(req);
+ 	crypto_completion_t compl;
++	bool unaligned_info;
+ 	void *data;
+ 	u8 *info;
+ 	unsigned int ivsize = 8;
+@@ -80,8 +81,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 			return err;
  	}
  
- 	mutex_lock(&intf->bmc_reg_mutex);
--	rv = __scan_channels(intf, &id);
-+	rv = __scan_channels(intf, &id, false);
- 	mutex_unlock(&intf->bmc_reg_mutex);
- 	if (rv)
- 		goto out_err_bmc_reg;
+-	if (unlikely(!IS_ALIGNED((unsigned long)info,
+-				 crypto_aead_alignmask(geniv) + 1))) {
++	unaligned_info = !IS_ALIGNED((unsigned long)info,
++				     crypto_aead_alignmask(geniv) + 1);
++	if (unlikely(unaligned_info)) {
+ 		info = kmemdup(req->iv, ivsize, req->base.flags &
+ 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
+ 			       GFP_ATOMIC);
+@@ -101,7 +103,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
+ 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
+ 
+ 	err = crypto_aead_encrypt(subreq);
+-	if (unlikely(info != req->iv))
++	if (unlikely(unaligned_info))
+ 		seqiv_aead_encrypt_complete2(req, err);
+ 	return err;
+ }
 -- 
 2.51.0
 
