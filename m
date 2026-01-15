@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208758-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208875-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73E22D2625A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:24 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E2708D2641A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 28C4130322D4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:41 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1081F304BBB2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:42 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0F5873BF31F;
-	Thu, 15 Jan 2026 17:06:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 24D822750ED;
+	Thu, 15 Jan 2026 17:11:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="F0AM2VxJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zEH6SPue"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C67DB3BF31C;
-	Thu, 15 Jan 2026 17:05:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DCA6033993;
+	Thu, 15 Jan 2026 17:11:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496759; cv=none; b=piOaMGIACEc483nzvp6vcLtsUqLKG521BXidGk8++CeLwbn1TskwHKV4akYZoXLGjF93jn1Hw1g4cJeBxX4JHStCSEKwEHK9pINTV3Nw4ABovgeCeU8kNVGeatiFqU3bndGaFHCxRT0+3ezB22mEeMwhTc8G6HlzV5eJF4rTo9U=
+	t=1768497091; cv=none; b=N/t1uo3x09iWmLfDLCxGcejyhhnlWXVbmgnoed9ZlOonp5F8VnI0OzjX37AbpSOizbnbvWHOSxvMdtYSTEQJyAmyQXJoPJalBY5IZQBtL7TcB7otci9TqioEVdyUhBhegdHFJuL1wVvbZZzqeEHeaSLDvAem33jeFp26ZeNrBxc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496759; c=relaxed/simple;
-	bh=JtArep7jUM58TiSOVXof8PVKhCUKPEOjmOVjh35jmdI=;
+	s=arc-20240116; t=1768497091; c=relaxed/simple;
+	bh=DidZO0CFzpjzkfbQRSb5hEVHEPeT0UKwJRL4aMViAa8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=d/cU5h7aSCvL/NEJkeBMtrMci+mcyeJHK1ph9koBkkuYigekSZbsmcggytAeoo90oSYt0E4Xc8qKUt0toxpbaV9m3HYWJLnH9BLQERWHFdie6H0LzWVB72IODuBUbx2oLcrPYIylUB1XoNyE1ej0Br+36R0dg05JtKG26dHtnNk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=F0AM2VxJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52333C16AAE;
-	Thu, 15 Jan 2026 17:05:59 +0000 (UTC)
+	 MIME-Version; b=jO2tlepCm8Mkb6hiHbiYBsgTc9DeWmhJCwoEAbSPYqIXH5mVR/rdjC41cIDyKGvqdy+intOwFUcJ5FF7ifGp72wgvqlMVtjo7TNaN7K8g/rsJNMeVdbnXUi0/EB2fiVPfMZfA9sMh5HQ8p7C9LROG70vyUWq+TMBpn7ow1u+dzs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zEH6SPue; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AE3AC116D0;
+	Thu, 15 Jan 2026 17:11:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496759;
-	bh=JtArep7jUM58TiSOVXof8PVKhCUKPEOjmOVjh35jmdI=;
+	s=korg; t=1768497091;
+	bh=DidZO0CFzpjzkfbQRSb5hEVHEPeT0UKwJRL4aMViAa8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=F0AM2VxJbXBRVhEMIfsWuW6OTXy49EBFRFFZfLxEDgKSaNtwB+Aqueww+ndRLJXM1
-	 6USH+3i60sukjne/sk9NOnNW/5ZFH6mEZHhUjp6INvJx55wHDw8PoQijLZQgew3Iij
-	 mhCrXzJwli0t13Celo63eY7aCx1gREnkhofqTEEU=
+	b=zEH6SPueMWrOw75jX/qHPlYXnK9V7Du4Us1Eznox+Ni5tiohtjzj4PT2MDmMqKCgT
+	 xj5oEvcfWRSM2sgLMjFhOEQsrAAAOwb2McPEkF5AcwffldfkLOhL9LwCWVL7IQm9Me
+	 Ba/0MWhCQeE42+wyNIt+9O19qAOPFrH3MZnOdy3w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fei Shao <fshao@chromium.org>,
-	Mark Brown <broonie@kernel.org>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Florian Westphal <fw@strlen.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 108/119] spi: mt65xx: Use IRQF_ONESHOT with threaded IRQ
-Date: Thu, 15 Jan 2026 17:48:43 +0100
-Message-ID: <20260115164155.849566108@linuxfoundation.org>
+Subject: [PATCH 6.1 34/72] netfilter: nf_tables: fix memory leak in nf_tables_newrule()
+Date: Thu, 15 Jan 2026 17:48:44 +0100
+Message-ID: <20260115164144.731704255@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fei Shao <fshao@chromium.org>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 8c04b77f87e6e321ae6acd28ce1de5553916153f ]
+[ Upstream commit d077e8119ddbb4fca67540f1a52453631a47f221 ]
 
-This driver is migrated to use threaded IRQ since commit 5972eb05ca32
-("spi: spi-mt65xx: Use threaded interrupt for non-SPIMEM transfer"), and
-we almost always want to disable the interrupt line to avoid excess
-interrupts while the threaded handler is processing SPI transfer.
-Use IRQF_ONESHOT for that purpose.
+In nf_tables_newrule(), if nft_use_inc() fails, the function jumps to
+the err_release_rule label without freeing the allocated flow, leading
+to a memory leak.
 
-In practice, we see MediaTek devices show SPI transfer timeout errors
-when communicating with ChromeOS EC in certain scenarios, and with
-IRQF_ONESHOT, the issue goes away.
+Fix this by adding a new label err_destroy_flow and jumping to it when
+nft_use_inc() fails. This ensures that the flow is properly released
+in this error case.
 
-Signed-off-by: Fei Shao <fshao@chromium.org>
-Link: https://patch.msgid.link/20251217101131.1975131-1-fshao@chromium.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 1689f25924ada ("netfilter: nf_tables: report use refcount overflow")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-mt65xx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_tables_api.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-mt65xx.c b/drivers/spi/spi-mt65xx.c
-index dfee244fc3173..5532ace0b1334 100644
---- a/drivers/spi/spi-mt65xx.c
-+++ b/drivers/spi/spi-mt65xx.c
-@@ -1266,7 +1266,7 @@ static int mtk_spi_probe(struct platform_device *pdev)
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b278f493cc93c..d154e3e0c9803 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -3811,7 +3811,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
  
- 	ret = devm_request_threaded_irq(dev, irq, mtk_spi_interrupt,
- 					mtk_spi_interrupt_thread,
--					IRQF_TRIGGER_NONE, dev_name(dev), host);
-+					IRQF_ONESHOT, dev_name(dev), host);
- 	if (ret)
- 		return dev_err_probe(dev, ret, "failed to register irq\n");
+ 	if (!nft_use_inc(&chain->use)) {
+ 		err = -EMFILE;
+-		goto err_release_rule;
++		goto err_destroy_flow;
+ 	}
  
+ 	if (info->nlh->nlmsg_flags & NLM_F_REPLACE) {
+@@ -3861,6 +3861,7 @@ static int nf_tables_newrule(struct sk_buff *skb, const struct nfnl_info *info,
+ 
+ err_destroy_flow_rule:
+ 	nft_use_dec_restore(&chain->use);
++err_destroy_flow:
+ 	if (flow)
+ 		nft_flow_rule_destroy(flow);
+ err_release_rule:
 -- 
 2.51.0
 
