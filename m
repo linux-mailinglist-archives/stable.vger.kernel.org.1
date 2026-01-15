@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209109-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209563-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 12776D272A6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:09:26 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 9B302D27856
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:45 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 58D7B315A8D2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id D8E4B3230E92
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 27D943B8BB3;
-	Thu, 15 Jan 2026 17:22:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 601662D9ECB;
+	Thu, 15 Jan 2026 17:44:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="c1fspJpx"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="h74BSpWE"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DD3143A7E07;
-	Thu, 15 Jan 2026 17:22:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 231B02C0F83;
+	Thu, 15 Jan 2026 17:44:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497758; cv=none; b=DENN721jLo7nFWTfNEYSiteG/zosp+qwPy01Izn666QAlRKGBOprVNUbzMl3IsQW6jIFl3i7ziHRMPmnZmB0dIOfveQyXkbb9CdhrsA0eTF7pCWkcIsgZSZJQwKifcw6Yw9LVTDEVAYVeneu+z9cJnf8ZKXUInDXp+LvK8JLunU=
+	t=1768499053; cv=none; b=Jguyvl3cx04n22e4eqc16jN41SbsUUFyxa5z57fiDNq/gwSPLSsZYPBFXHDXCq3dgh02gd3JrY4KAr5OfcCLPQToHQYFYhb911KeRVaPrsrIj+xRKb4arhpUACI7pr5NVkRDbiJNRlhI9ylhD6pyOUPo4C6457ntdv2FqGXPfLQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497758; c=relaxed/simple;
-	bh=LtxZILs3h9nAOWpxi1wJ/+tTN4fR6G9mLFrUC/GiHH8=;
+	s=arc-20240116; t=1768499053; c=relaxed/simple;
+	bh=rylK+gMM8MfvR3m1KHlrjltWUINYuP/XimSpREiB/CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=pbGDadsPLpXw74x3gSHpuqf4fje2A5FGjrFCJeUGXAuynsVaubBXeIsbSZDug8zVt+OHFLFmTtkqHZZztebcmL2xzsDlRwASqUUH8knYbHGCEm2N/ItdlmVv11BWMWhoekjm7onavc02KwC7POlvKER0FrGNcCrtj8A0o8De0Sg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=c1fspJpx; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68870C19422;
-	Thu, 15 Jan 2026 17:22:38 +0000 (UTC)
+	 MIME-Version; b=mjSMxpYb+Uykw9DceIWay9H12EJ74XRzLBFGfMJFlFj17nfgVbaZW4Taw7vGC7g7IGFUw5TVO9JVxkwV8rCif+Sv/lHQ2FYUMyL0DbiWtEtBDgF2YIizLMwjFiCcKVcQudXcp/ZaQDv/VxHER4XiPhu0tXvkVMfZIDlJF91CggY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=h74BSpWE; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5C22AC116D0;
+	Thu, 15 Jan 2026 17:44:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497758;
-	bh=LtxZILs3h9nAOWpxi1wJ/+tTN4fR6G9mLFrUC/GiHH8=;
+	s=korg; t=1768499052;
+	bh=rylK+gMM8MfvR3m1KHlrjltWUINYuP/XimSpREiB/CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=c1fspJpxMRmIcMMu+N1tuG2CTGjwYbx7Z/v7fY9CgxmiZ0wMie9ktpHb64r4q1bjr
-	 ITrSrYeVkqZoL9c3ZxZTJZImdWrOUrRI4XhE+HcD5rS4LSKEgzCEaib0CH6cw6r9E+
-	 CBaedwoAzyTaxA1qwK7KZU6dCmwUfvVNIlHQO3H8=
+	b=h74BSpWEoLnrFElmhujTyiBT13JG/TrLmwuWNcEKOJClSvN3/UxrtGGnnAzLcY3Z7
+	 Szo7h24E1TelVx/u4tMoZZZ4cNqcD3uJclIjJnm2SwmGsykYYu3Aytw7DhA9aHjlpX
+	 /JtV4iZqjyhFGFn1uS0xa8AheEBp6Pkm0/DhcINI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Benjamin Marzinski <bmarzins@redhat.com>,
-	Mikulas Patocka <mpatocka@redhat.com>,
+	Zhang Yi <yi.zhang@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 193/554] dm log-writes: Add missing set_freezable() for freezable kthread
+Subject: [PATCH 5.10 058/451] ext4: correct the checking of quota files before moving extents
 Date: Thu, 15 Jan 2026 17:44:19 +0100
-Message-ID: <20260115164253.245492218@linuxfoundation.org>
+Message-ID: <20260115164232.996825923@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,42 +61,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit ab08f9c8b363297cafaf45475b08f78bf19b88ef ]
+[ Upstream commit a2e5a3cea4b18f6e2575acc444a5e8cce1fc8260 ]
 
-The log_writes_kthread() calls try_to_freeze() but lacks set_freezable(),
-rendering the freeze attempt ineffective since kernel threads are
-non-freezable by default. This prevents proper thread suspension during
-system suspend/hibernate.
+The move extent operation should return -EOPNOTSUPP if any of the inodes
+is a quota inode, rather than requiring both to be quota inodes.
 
-Add set_freezable() to explicitly mark the thread as freezable.
-
-Fixes: 0e9cebe72459 ("dm: add log writes target")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Reviewed-by: Benjamin Marzinski <bmarzins@redhat.com>
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Fixes: 02749a4c2082 ("ext4: add ext4_is_quota_file()")
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Message-ID: <20251013015128.499308-2-yi.zhang@huaweicloud.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-log-writes.c | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/move_extent.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-log-writes.c b/drivers/md/dm-log-writes.c
-index d93a4db235124..d9e17fd5fe764 100644
---- a/drivers/md/dm-log-writes.c
-+++ b/drivers/md/dm-log-writes.c
-@@ -454,6 +454,7 @@ static int log_writes_kthread(void *arg)
- 	struct log_writes_c *lc = (struct log_writes_c *)arg;
- 	sector_t sector = 0;
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 4cb1872c9af43..b1ad339165e41 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -473,7 +473,7 @@ mext_check_arguments(struct inode *orig_inode,
+ 		return -ETXTBSY;
+ 	}
  
-+	set_freezable();
- 	while (!kthread_should_stop()) {
- 		bool super = false;
- 		bool logging_enabled;
+-	if (ext4_is_quota_file(orig_inode) && ext4_is_quota_file(donor_inode)) {
++	if (ext4_is_quota_file(orig_inode) || ext4_is_quota_file(donor_inode)) {
+ 		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %lu, donor %lu]\n",
+ 			orig_inode->i_ino, donor_inode->i_ino);
+ 		return -EOPNOTSUPP;
 -- 
 2.51.0
 
