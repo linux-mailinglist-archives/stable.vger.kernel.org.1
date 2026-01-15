@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208661-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209302-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 38EB5D26264
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:11:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9C650D26DBE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:48 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B5157309403B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 4D9B432F25A8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6925E2D238A;
-	Thu, 15 Jan 2026 17:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7925A3D34B7;
+	Thu, 15 Jan 2026 17:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wKKzRp2t"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UwoS60p+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2D16629C338;
-	Thu, 15 Jan 2026 17:01:26 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3D5C93D1CAA;
+	Thu, 15 Jan 2026 17:31:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496486; cv=none; b=Q3wDqJ2nOqUUxyME9glrcutCKqu+SFHMxoBhgEoUBr86eZlppBGNAGBviGdU3iyWVFAq0uCD6UJjtD9sj4yC86/VtsHZ2fUA3bA2FPIJ597PRdEtJqySZ4P5wir0mvHcsvHt5Y2tfVKSf7B6VQr1j6EBNEO/DpeDPKDaHiWBfvU=
+	t=1768498309; cv=none; b=bsPQ5+XNE5XBZE1BmbJoGATNOjJhnwZJlRwf8+9RAfpanKNwon5Z+PT69OyrY5SqSnr7FTfqlmBuzUGElLLGIiU9RidzFERVAxjBsjQcnzGXbzaz/kW1ja9TwU4Ytt84m4+d6OTaREL4Yp9p4MpTO2K2lKPOmOq/YBWIwq4zWzs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496486; c=relaxed/simple;
-	bh=keSAJ/YqNd85wNust8mK3MLANf6+ETFsNOINzYKFT6M=;
+	s=arc-20240116; t=1768498309; c=relaxed/simple;
+	bh=2VzlfXVILUj97CxC5/VSQg6gP/cCd+7y8F3DMsbUkm8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q0crJxU3ty421BnUE6YpcjV9N/hczDYnKULa6vvoFmFbnNVNiu9rqBO2PCAawuWE2AbDZ2vc0AMawxsIBmpiWgsFI8etdUhij+chJAA7H8R+GP25eZNdnstryOR7qeKwbFGDlGEcRuuHwJc664O1Iwzvu0r3Z0qToNsQMvQQgFc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wKKzRp2t; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC0DFC16AAE;
-	Thu, 15 Jan 2026 17:01:25 +0000 (UTC)
+	 MIME-Version; b=dNhVVDNcYGdpho0lDIQnZJjAe9e92jV/I3O/HnnBggLhTQuyrX0UDqKhPrQTKTZu7xxxEBich5lC3qL8ol0pBsBlNSGUQxSTRYQO32CiWtC6MlTQX0nHb0pg2VOD7Wtgg+3NX91E6by05j0XiB97wHtOUkyvxHZAnRtNOGfWR5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UwoS60p+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE58BC116D0;
+	Thu, 15 Jan 2026 17:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496486;
-	bh=keSAJ/YqNd85wNust8mK3MLANf6+ETFsNOINzYKFT6M=;
+	s=korg; t=1768498309;
+	bh=2VzlfXVILUj97CxC5/VSQg6gP/cCd+7y8F3DMsbUkm8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wKKzRp2tTBq1ul/ckhwQA5UPB/WUVe4On1vSqpdbrBp2l1RlYyzS77tdkPt3TvAHh
-	 Kh/m7BodMZQAxDzqmEDp8JdZk2sQ5Ne7o+i90nB8Rffk155s0zdKG1rG3mOTNwKMFi
-	 u4LtPo0cBzTVwx7dbzO0XObRnbTewj9HgmSUS9lA=
+	b=UwoS60p+H0SyJLyGGF1G9blAlOI9AtiNPbcSWk+Eqd7EcfMXY2XYQXgoaSH2JlwqS
+	 /JRyVMxF9B0EfqlQRFUi0IFYNtsCXOzXwPZEv3izTUywMdAJBcr00ZrtZFY6zp9umg
+	 bpHzX8BZnBtyrNdB8rUk/rOt0rUKeJt10+zXAp48=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Olga Kornievskaia <okorniev@redhat.com>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 004/119] nfsd: check that server is running in unlock_filesystem
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Florian Fainelli <florian.fainelli@broadcom.com>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 353/554] net: dsa: b53: skip multicast entries for fdb_dump()
 Date: Thu, 15 Jan 2026 17:46:59 +0100
-Message-ID: <20260115164152.116981402@linuxfoundation.org>
+Message-ID: <20260115164259.005944880@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,111 +61,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <okorniev@redhat.com>
+From: Jonas Gorski <jonas.gorski@gmail.com>
 
-commit d0424066fcd294977f310964bed6f2a487fa4515 upstream.
+[ Upstream commit d42bce414d1c5c0b536758466a1f63ac358e613c ]
 
-If we are trying to unlock the filesystem via an administrative
-interface and nfsd isn't running, it crashes the server. This
-happens currently because nfsd4_revoke_states() access state
-structures (eg., conf_id_hashtbl) that has been freed as a part
-of the server shutdown.
+port_fdb_dump() is supposed to only add fdb entries, but we iterate over
+the full ARL table, which also includes multicast entries.
 
-[   59.465072] Call trace:
-[   59.465308]  nfsd4_revoke_states+0x1b4/0x898 [nfsd] (P)
-[   59.465830]  write_unlock_fs+0x258/0x440 [nfsd]
-[   59.466278]  nfsctl_transaction_write+0xb0/0x120 [nfsd]
-[   59.466780]  vfs_write+0x1f0/0x938
-[   59.467088]  ksys_write+0xfc/0x1f8
-[   59.467395]  __arm64_sys_write+0x74/0xb8
-[   59.467746]  invoke_syscall.constprop.0+0xdc/0x1e8
-[   59.468177]  do_el0_svc+0x154/0x1d8
-[   59.468489]  el0_svc+0x40/0xe0
-[   59.468767]  el0t_64_sync_handler+0xa0/0xe8
-[   59.469138]  el0t_64_sync+0x1ac/0x1b0
+So check if the entry is a multicast entry before passing it on to the
+callback().
 
-Ensure this can't happen by taking the nfsd_mutex and checking that
-the server is still up, and then holding the mutex across the call to
-nfsd4_revoke_states().
+Additionally, the port of those entries is a bitmask, not a port number,
+so any included entries would have even be for the wrong port.
 
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Fixes: 1ac3629bf0125 ("nfsd: prepare for supporting admin-revocation of state")
-Cc: stable@vger.kernel.org
-Signed-off-by: Olga Kornievskaia <okorniev@redhat.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da6df85c6fb ("net: dsa: b53: Implement ARL add/del/dump operations")
+Signed-off-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://patch.msgid.link/20251217205756.172123-1-jonas.gorski@gmail.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    5 ++---
- fs/nfsd/nfsctl.c    |    9 ++++++++-
- fs/nfsd/state.h     |    4 ++--
- 3 files changed, 12 insertions(+), 6 deletions(-)
+ drivers/net/dsa/b53/b53_common.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1743,7 +1743,7 @@ static struct nfs4_stid *find_one_sb_sti
+diff --git a/drivers/net/dsa/b53/b53_common.c b/drivers/net/dsa/b53/b53_common.c
+index d5ed733c0c97..a43cbb481529 100644
+--- a/drivers/net/dsa/b53/b53_common.c
++++ b/drivers/net/dsa/b53/b53_common.c
+@@ -1832,6 +1832,9 @@ static int b53_fdb_copy(int port, const struct b53_arl_entry *ent,
+ 	if (!ent->is_valid)
+ 		return 0;
  
- /**
-  * nfsd4_revoke_states - revoke all nfsv4 states associated with given filesystem
-- * @net:  used to identify instance of nfsd (there is one per net namespace)
-+ * @nn:   used to identify instance of nfsd (there is one per net namespace)
-  * @sb:   super_block used to identify target filesystem
-  *
-  * All nfs4 states (open, lock, delegation, layout) held by the server instance
-@@ -1755,9 +1755,8 @@ static struct nfs4_stid *find_one_sb_sti
-  * The clients which own the states will subsequently being notified that the
-  * states have been "admin-revoked".
-  */
--void nfsd4_revoke_states(struct net *net, struct super_block *sb)
-+void nfsd4_revoke_states(struct nfsd_net *nn, struct super_block *sb)
- {
--	struct nfsd_net *nn = net_generic(net, nfsd_net_id);
- 	unsigned int idhashval;
- 	unsigned int sc_types;
++	if (is_multicast_ether_addr(ent->mac))
++		return 0;
++
+ 	if (port != ent->port)
+ 		return 0;
  
---- a/fs/nfsd/nfsctl.c
-+++ b/fs/nfsd/nfsctl.c
-@@ -262,6 +262,7 @@ static ssize_t write_unlock_fs(struct fi
- 	struct path path;
- 	char *fo_path;
- 	int error;
-+	struct nfsd_net *nn;
- 
- 	/* sanity check */
- 	if (size == 0)
-@@ -288,7 +289,13 @@ static ssize_t write_unlock_fs(struct fi
- 	 * 3.  Is that directory the root of an exported file system?
- 	 */
- 	error = nlmsvc_unlock_all_by_sb(path.dentry->d_sb);
--	nfsd4_revoke_states(netns(file), path.dentry->d_sb);
-+	mutex_lock(&nfsd_mutex);
-+	nn = net_generic(netns(file), nfsd_net_id);
-+	if (nn->nfsd_serv)
-+		nfsd4_revoke_states(nn, path.dentry->d_sb);
-+	else
-+		error = -EINVAL;
-+	mutex_unlock(&nfsd_mutex);
- 
- 	path_put(&path);
- 	return error;
---- a/fs/nfsd/state.h
-+++ b/fs/nfsd/state.h
-@@ -759,9 +759,9 @@ static inline void get_nfs4_file(struct
- struct nfsd_file *find_any_file(struct nfs4_file *f);
- 
- #ifdef CONFIG_NFSD_V4
--void nfsd4_revoke_states(struct net *net, struct super_block *sb);
-+void nfsd4_revoke_states(struct nfsd_net *nn, struct super_block *sb);
- #else
--static inline void nfsd4_revoke_states(struct net *net, struct super_block *sb)
-+static inline void nfsd4_revoke_states(struct nfsd_net *nn, struct super_block *sb)
- {
- }
- #endif
+-- 
+2.51.0
+
 
 
 
