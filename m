@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-209144-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209598-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 54EA0D27325
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2ABF0D26E54
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6A58E3201664
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:35 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 96E9E30A43B5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC1923BC4E8;
-	Thu, 15 Jan 2026 17:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1211B3BF309;
+	Thu, 15 Jan 2026 17:45:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UrPIGTPh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CT+a7x7I"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7FC49E56A;
-	Thu, 15 Jan 2026 17:24:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C183C3C0098;
+	Thu, 15 Jan 2026 17:45:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497858; cv=none; b=kcYXqhY7Voo/SvYg4RVROy3kCZZK11Hw/zAszs/HoRKalRil4gHo013WmB+AK5F9d8kjn62K0Fzs88po09oJGuOJVW8wgshGcdVAhd0J7RxmOws6jkpWuvzzKOp3vuuqBxu5yTQxWNizdXEsRkX2Yxptcm1yTvl5spbRovL8fvE=
+	t=1768499152; cv=none; b=l8af6IP3LoFxe13tp0nYQxbGk0Y5mrhH3pNfTUMoraRqMA/2BRtrh+thv4bnZ5uwfuHt+uP7okiQH1dSQFWajv4D8bbJFkRUlNBZakcq82wqIO3mo2T0S9NdO4n61YlhZYQjLWpW+9BPpT7/yNA576ylhiBmuVSAxmQQILi46Ng=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497858; c=relaxed/simple;
-	bh=MsoxqxCtewwJZnJqWs/RBSEMKeN3l5hLidRiMbayGSo=;
+	s=arc-20240116; t=1768499152; c=relaxed/simple;
+	bh=WrYIflEjcc2O4cZBo9lzLQfxBw9pDe6dZ32ak8gVXvY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=G7QVe+JgJlNP1aqwLGt8Bac0VPEo89+uEbbB0ABOd62rQOwSPJHMxwtpd7oB3Hv01+jAPvvMWReL3aobcRzllWyaJK3GaEANBFm/XTYTUsJStr55V7QCNdGHH2lYQr1MeDlxY0bCE3ZxU8fp815Vl82rQ/BSSbZPMtUP5/LJivA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UrPIGTPh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BD78C116D0;
-	Thu, 15 Jan 2026 17:24:17 +0000 (UTC)
+	 MIME-Version; b=SbH5qai0yWkiv2ntBIEPwjH6/ydRdKaLt3OCwVF60/l08cU2k0rgPn19Y+g1hwPe4GlRrQVoLY0dmXrLgY7thrr8vHu5HrCGgGi9huzQ9vf2AbnPOu9TopJDhQ8XKFCl0OEp4f0R5WThP6D/Uf6pk72ui3ALOdzcFuvizTNF0ps=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CT+a7x7I; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E1FC19422;
+	Thu, 15 Jan 2026 17:45:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497858;
-	bh=MsoxqxCtewwJZnJqWs/RBSEMKeN3l5hLidRiMbayGSo=;
+	s=korg; t=1768499152;
+	bh=WrYIflEjcc2O4cZBo9lzLQfxBw9pDe6dZ32ak8gVXvY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UrPIGTPhgjC6CrAHQCxkEE1zVtdPw/XANlZAmlY+Gn/DF0sM5rSBdSKbMxHTz0Ijx
-	 IXn+wgHbBY/NI21f9ILEwqNe7DLR5ZxScVCxsW0d/n++eA2tiMkfpsQdRoU8GE/zj3
-	 L/ptTLd3wAiEMQEa/7CGu4iBhDsABPO2IIM0Pxa8=
+	b=CT+a7x7Iv6Y1nM3ZwWJnBYTwZMDq+soFQHuBq1fvH9zpR1bdcsOJ2VXYsk7i1zygK
+	 +AWl2Rc000lW9pBN4225xPKPDVSTeKPTUGGj7Zg2Rgsqiz3MVsOhgULED/4j6rFOTH
+	 WUFdGO45X1bexaGejx9d6kI++NdVer/RmuFXIdvo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Junvy Yang <zhuque@tencent.com>,
-	Ilya Maximets <i.maximets@ovn.org>,
-	Aaron Conole <aconole@redhat.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Jisheng Zhang <jszhang@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 228/554] net: openvswitch: fix middle attribute validation in push_nsh() action
+Subject: [PATCH 5.10 093/451] usb: dwc2: fix hang during suspend if set as peripheral
 Date: Thu, 15 Jan 2026 17:44:54 +0100
-Message-ID: <20260115164254.498183078@linuxfoundation.org>
+Message-ID: <20260115164234.281715386@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,113 +59,68 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Maximets <i.maximets@ovn.org>
+From: Jisheng Zhang <jszhang@kernel.org>
 
-[ Upstream commit 5ace7ef87f059d68b5f50837ef3e8a1a4870c36e ]
+[ Upstream commit 2b94b054ac4974ad2f89f7f7461840c851933adb ]
 
-The push_nsh() action structure looks like this:
+dwc2 on most platforms needs phy controller, clock and power supply.
+All of them must be enabled/activated to properly operate. If dwc2
+is configured as peripheral mode, then all the above three hardware
+resources are disabled at the end of the probe:
 
- OVS_ACTION_ATTR_PUSH_NSH(OVS_KEY_ATTR_NSH(OVS_NSH_KEY_ATTR_BASE,...))
+	/* Gadget code manages lowlevel hw on its own */
+	if (hsotg->dr_mode == USB_DR_MODE_PERIPHERAL)
+		dwc2_lowlevel_hw_disable(hsotg);
 
-The outermost OVS_ACTION_ATTR_PUSH_NSH attribute is OK'ed by the
-nla_for_each_nested() inside __ovs_nla_copy_actions().  The innermost
-OVS_NSH_KEY_ATTR_BASE/MD1/MD2 are OK'ed by the nla_for_each_nested()
-inside nsh_key_put_from_nlattr().  But nothing checks if the attribute
-in the middle is OK.  We don't even check that this attribute is the
-OVS_KEY_ATTR_NSH.  We just do a double unwrap with a pair of nla_data()
-calls - first time directly while calling validate_push_nsh() and the
-second time as part of the nla_for_each_nested() macro, which isn't
-safe, potentially causing invalid memory access if the size of this
-attribute is incorrect.  The failure may not be noticed during
-validation due to larger netlink buffer, but cause trouble later during
-action execution where the buffer is allocated exactly to the size:
+But the dwc2_suspend() tries to read the dwc2's reg to check whether
+is_device_mode or not, this would result in hang during suspend if dwc2
+is configured as peripheral mode.
 
- BUG: KASAN: slab-out-of-bounds in nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
- Read of size 184 at addr ffff88816459a634 by task a.out/22624
+Fix this hang by bypassing suspend/resume if lowlevel hw isn't
+enabled.
 
- CPU: 8 UID: 0 PID: 22624 6.18.0-rc7+ #115 PREEMPT(voluntary)
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x51/0x70
-  print_address_description.constprop.0+0x2c/0x390
-  kasan_report+0xdd/0x110
-  kasan_check_range+0x35/0x1b0
-  __asan_memcpy+0x20/0x60
-  nsh_hdr_from_nlattr+0x1dd/0x6a0 [openvswitch]
-  push_nsh+0x82/0x120 [openvswitch]
-  do_execute_actions+0x1405/0x2840 [openvswitch]
-  ovs_execute_actions+0xd5/0x3b0 [openvswitch]
-  ovs_packet_cmd_execute+0x949/0xdb0 [openvswitch]
-  genl_family_rcv_msg_doit+0x1d6/0x2b0
-  genl_family_rcv_msg+0x336/0x580
-  genl_rcv_msg+0x9f/0x130
-  netlink_rcv_skb+0x11f/0x370
-  genl_rcv+0x24/0x40
-  netlink_unicast+0x73e/0xaa0
-  netlink_sendmsg+0x744/0xbf0
-  __sys_sendto+0x3d6/0x450
-  do_syscall_64+0x79/0x2c0
-  entry_SYSCALL_64_after_hwframe+0x76/0x7e
-  </TASK>
-
-Let's add some checks that the attribute is properly sized and it's
-the only one attribute inside the action.  Technically, there is no
-real reason for OVS_KEY_ATTR_NSH to be there, as we know that we're
-pushing an NSH header already, it just creates extra nesting, but
-that's how uAPI works today.  So, keeping as it is.
-
-Fixes: b2d0f5d5dc53 ("openvswitch: enable NSH support")
-Reported-by: Junvy Yang <zhuque@tencent.com>
-Signed-off-by: Ilya Maximets <i.maximets@ovn.org>
-Acked-by: Eelco Chaudron echaudro@redhat.com
-Reviewed-by: Aaron Conole <aconole@redhat.com>
-Link: https://patch.msgid.link/20251204105334.900379-1-i.maximets@ovn.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 09a75e857790 ("usb: dwc2: refactor common low-level hw code to platform.c")
+Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+Link: https://patch.msgid.link/20251104002503.17158-3-jszhang@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/openvswitch/flow_netlink.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ drivers/usb/dwc2/platform.c | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/net/openvswitch/flow_netlink.c b/net/openvswitch/flow_netlink.c
-index 7c2692f897f99..a7a9e4df3f600 100644
---- a/net/openvswitch/flow_netlink.c
-+++ b/net/openvswitch/flow_netlink.c
-@@ -2757,13 +2757,20 @@ static int validate_and_copy_set_tun(const struct nlattr *attr,
- 	return err;
- }
- 
--static bool validate_push_nsh(const struct nlattr *attr, bool log)
-+static bool validate_push_nsh(const struct nlattr *a, bool log)
+diff --git a/drivers/usb/dwc2/platform.c b/drivers/usb/dwc2/platform.c
+index 175b4c0886284..db667038c8ebc 100644
+--- a/drivers/usb/dwc2/platform.c
++++ b/drivers/usb/dwc2/platform.c
+@@ -626,9 +626,13 @@ static int dwc2_driver_probe(struct platform_device *dev)
+ static int __maybe_unused dwc2_suspend(struct device *dev)
  {
-+	struct nlattr *nsh_key = nla_data(a);
- 	struct sw_flow_match match;
- 	struct sw_flow_key key;
+ 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
+-	bool is_device_mode = dwc2_is_device_mode(dwc2);
++	bool is_device_mode;
+ 	int ret = 0;
  
-+	/* There must be one and only one NSH header. */
-+	if (!nla_ok(nsh_key, nla_len(a)) ||
-+	    nla_total_size(nla_len(nsh_key)) != nla_len(a) ||
-+	    nla_type(nsh_key) != OVS_KEY_ATTR_NSH)
-+		return false;
++	if (!dwc2->ll_hw_enabled)
++		return 0;
 +
- 	ovs_match_init(&match, &key, true, NULL);
--	return !nsh_key_put_from_nlattr(attr, &match, false, true, log);
-+	return !nsh_key_put_from_nlattr(nsh_key, &match, false, true, log);
- }
++	is_device_mode = dwc2_is_device_mode(dwc2);
+ 	if (is_device_mode)
+ 		dwc2_hsotg_suspend(dwc2);
  
- /* Return false if there are any non-masked bits set.
-@@ -3317,7 +3324,7 @@ static int __ovs_nla_copy_actions(struct net *net, const struct nlattr *attr,
- 					return -EINVAL;
- 			}
- 			mac_proto = MAC_PROTO_NONE;
--			if (!validate_push_nsh(nla_data(a), log))
-+			if (!validate_push_nsh(a, log))
- 				return -EINVAL;
- 			break;
+@@ -679,6 +683,9 @@ static int __maybe_unused dwc2_resume(struct device *dev)
+ 	struct dwc2_hsotg *dwc2 = dev_get_drvdata(dev);
+ 	int ret = 0;
  
++	if (!dwc2->ll_hw_enabled)
++		return 0;
++
+ 	if (dwc2->phy_off_for_suspend && dwc2->ll_hw_enabled) {
+ 		ret = __dwc2_lowlevel_hw_enable(dwc2);
+ 		if (ret)
 -- 
 2.51.0
 
