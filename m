@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209418-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209842-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B9A26D271A3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:06:32 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 13B78D2774A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9A3F5307B69B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:48 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 4873F31F7A71
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E7E8E39E6EA;
-	Thu, 15 Jan 2026 17:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02BC03D726D;
+	Thu, 15 Jan 2026 17:57:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l/IF/fuu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="M4fJKRFX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AAE7027A462;
-	Thu, 15 Jan 2026 17:37:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9D45F3D3012;
+	Thu, 15 Jan 2026 17:57:25 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498639; cv=none; b=F3Q3lKe53xzEjC7gMOdoFJVeHogOvd0kIYgmTTwUj9cQs6xZTT2rIZZH3ZtLfVLwaAaBxPkMJOMhtj5X5AUwquump+UUWsRLn/BzMNrp4DZo89NMPfVGngRyNVq9du6bm+KSHsoYdGIqsq8iXMZaW6xWbd63tdJza7SeX3wspW0=
+	t=1768499845; cv=none; b=edXXAap6Oiom9BMOeYY6Hj7lPWnYEQq7nHrAUS20AxiAfJ5xnHJIPcWx3NjupAuSbiNVLVQ9vdcceVaFK4lAuuV9x0O/NgdxDMdmAaAAna2SP5e0xxUG5MZMv4+TmLHorBRjOKJlrHG4QCCetc1syJTY6HBciMTsMI3DuhMfdos=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498639; c=relaxed/simple;
-	bh=6B3KGPbe2loPMSMJ9WOsXwBni7KBe/ImFNIGbgHxILE=;
+	s=arc-20240116; t=1768499845; c=relaxed/simple;
+	bh=yCAyyAsDTyMk7EcAOMH/YCsuuMEbwmIL1tCMMF9eS0k=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qvSQ6hTOeKClpUIQjUuPTBVzTTCg9AgPqcspS9IxJNJGxBpgHUw46JAw3nrcpbQV+vQagDqZWKIzB3XA4JLIs9BoLYXx1K0hep2rPxPmWUEjO8hEvrx+14OddAHn32Ht/jCc9IIwZ3GzbsxSkOjaZ/nyAsJLdfQNF8So0u6Hmo0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l/IF/fuu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38077C116D0;
-	Thu, 15 Jan 2026 17:37:19 +0000 (UTC)
+	 MIME-Version; b=UUYyGIqu15dtceXQyiWoZ7UdqkXvE8gn75wf3S7Ks5oTDZwIt6k/v1d0OYKSgeee+0gajaU5ieeKmBfef8rlwj5XDGIU2WbrogVra3UzKaqhKSTLncXF67zhExLvadZA0dySBQ+40hox1fUclTtcfFhMv+g3iqoXax2qtt0shp0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=M4fJKRFX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23014C116D0;
+	Thu, 15 Jan 2026 17:57:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498639;
-	bh=6B3KGPbe2loPMSMJ9WOsXwBni7KBe/ImFNIGbgHxILE=;
+	s=korg; t=1768499845;
+	bh=yCAyyAsDTyMk7EcAOMH/YCsuuMEbwmIL1tCMMF9eS0k=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=l/IF/fuuW94lu1d1TitC+iXa5NtycdVybtzetW+T5mShMuJDAQ7ysZSuutD6lf4QK
-	 YTeu9PY5GBRllizrLTP9CAp/SyCAFtWuwkljGIG+zmpYNt7QEAFESw/QP86gCI+1DW
-	 F/4nZD7LKxJ63EySPTyEjzkr4DuMQbY7o5SMfBAc=
+	b=M4fJKRFXLEpvjFNmlJFeMRoupLl5eXKIdTkWa/29lYPSyT/PDqtM+SHwLQLC4a1Sr
+	 EyK2yH6RjpdaNsCf8LQWyHeSFxwT81B30pDEyIhHTkPswmT/+8FEWhx2X5pPaA99xu
+	 zQgMYOXppi/nBoJyfhn99IF2FsZzA4tcXN4POjOg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Tomas Winkler <tomasw@gmail.com>,
-	Alexander Usyskin <alexander.usyskin@intel.com>
-Subject: [PATCH 5.15 503/554] mei: me: add nova lake point S DID
+	Lai Yi <yi1.lai@linux.intel.com>,
+	Jonathan McDowell <noodles@meta.com>,
+	Roberto Sassu <roberto.sassu@huawei.com>,
+	Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 368/451] tpm: Cap the number of PCR banks
 Date: Thu, 15 Jan 2026 17:49:29 +0100
-Message-ID: <20260115164304.524377864@linuxfoundation.org>
+Message-ID: <20260115164244.222214150@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,49 +62,107 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Usyskin <alexander.usyskin@intel.com>
+From: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
 
-commit 420f423defcf6d0af2263d38da870ca4a20c0990 upstream.
+[ Upstream commit faf07e611dfa464b201223a7253e9dc5ee0f3c9e ]
 
-Add Nova Lake S device id.
+tpm2_get_pcr_allocation() does not cap any upper limit for the number of
+banks. Cap the limit to eight banks so that out of bounds values coming
+from external I/O cause on only limited harm.
 
-Cc: stable <stable@kernel.org>
-Co-developed-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Tomas Winkler <tomasw@gmail.com>
-Signed-off-by: Alexander Usyskin <alexander.usyskin@intel.com>
-Link: https://patch.msgid.link/20251215105915.1672659-1-alexander.usyskin@intel.com
+Cc: stable@vger.kernel.org # v5.10+
+Fixes: bcfff8384f6c ("tpm: dynamically allocate the allocated_banks array")
+Tested-by: Lai Yi <yi1.lai@linux.intel.com>
+Reviewed-by: Jonathan McDowell <noodles@meta.com>
+Reviewed-by: Roberto Sassu <roberto.sassu@huawei.com>
+Signed-off-by: Jarkko Sakkinen <jarkko.sakkinen@opinsys.com>
+[ added backward-compatible define for TPM_MAX_DIGEST_SIZE to support older ima_init.c code still using that macro name ]
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/misc/mei/hw-me-regs.h |    2 ++
- drivers/misc/mei/pci-me.c     |    2 ++
- 2 files changed, 4 insertions(+)
+ drivers/char/tpm/tpm-chip.c |    1 -
+ drivers/char/tpm/tpm1-cmd.c |    5 -----
+ drivers/char/tpm/tpm2-cmd.c |    8 +++-----
+ include/linux/tpm.h         |    9 ++++++---
+ 4 files changed, 9 insertions(+), 14 deletions(-)
 
---- a/drivers/misc/mei/hw-me-regs.h
-+++ b/drivers/misc/mei/hw-me-regs.h
-@@ -122,6 +122,8 @@
+--- a/drivers/char/tpm/tpm-chip.c
++++ b/drivers/char/tpm/tpm-chip.c
+@@ -269,7 +269,6 @@ static void tpm_dev_release(struct devic
  
- #define MEI_DEV_ID_WCL_P      0x4D70  /* Wildcat Lake P */
+ 	kfree(chip->work_space.context_buf);
+ 	kfree(chip->work_space.session_buf);
+-	kfree(chip->allocated_banks);
+ 	kfree(chip);
+ }
  
-+#define MEI_DEV_ID_NVL_S      0x6E68  /* Nova Lake Point S */
-+
- /*
-  * MEI HW Section
+--- a/drivers/char/tpm/tpm1-cmd.c
++++ b/drivers/char/tpm/tpm1-cmd.c
+@@ -794,11 +794,6 @@ int tpm1_pm_suspend(struct tpm_chip *chi
   */
---- a/drivers/misc/mei/pci-me.c
-+++ b/drivers/misc/mei/pci-me.c
-@@ -128,6 +128,8 @@ static const struct pci_device_id mei_me
+ int tpm1_get_pcr_allocation(struct tpm_chip *chip)
+ {
+-	chip->allocated_banks = kcalloc(1, sizeof(*chip->allocated_banks),
+-					GFP_KERNEL);
+-	if (!chip->allocated_banks)
+-		return -ENOMEM;
+-
+ 	chip->allocated_banks[0].alg_id = TPM_ALG_SHA1;
+ 	chip->allocated_banks[0].digest_size = hash_digest_size[HASH_ALGO_SHA1];
+ 	chip->allocated_banks[0].crypto_id = HASH_ALGO_SHA1;
+--- a/drivers/char/tpm/tpm2-cmd.c
++++ b/drivers/char/tpm/tpm2-cmd.c
+@@ -574,11 +574,9 @@ ssize_t tpm2_get_pcr_allocation(struct t
  
- 	{MEI_PCI_DEVICE(MEI_DEV_ID_WCL_P, MEI_ME_PCH15_CFG)},
+ 	nr_possible_banks = be32_to_cpup(
+ 		(__be32 *)&buf.data[TPM_HEADER_SIZE + 5]);
+-
+-	chip->allocated_banks = kcalloc(nr_possible_banks,
+-					sizeof(*chip->allocated_banks),
+-					GFP_KERNEL);
+-	if (!chip->allocated_banks) {
++	if (nr_possible_banks > TPM2_MAX_PCR_BANKS) {
++		pr_err("tpm: out of bank capacity: %u > %u\n",
++		       nr_possible_banks, TPM2_MAX_PCR_BANKS);
+ 		rc = -ENOMEM;
+ 		goto out;
+ 	}
+--- a/include/linux/tpm.h
++++ b/include/linux/tpm.h
+@@ -25,7 +25,10 @@
+ #include <crypto/hash_info.h>
  
-+	{MEI_PCI_DEVICE(MEI_DEV_ID_NVL_S, MEI_ME_PCH15_CFG)},
+ #define TPM_DIGEST_SIZE 20	/* Max TPM v1.2 PCR size */
+-#define TPM_MAX_DIGEST_SIZE SHA512_DIGEST_SIZE
 +
- 	/* required last entry */
- 	{0, }
- };
++#define TPM2_MAX_DIGEST_SIZE	SHA512_DIGEST_SIZE
++#define TPM2_MAX_PCR_BANKS	8
++#define TPM_MAX_DIGEST_SIZE	TPM2_MAX_DIGEST_SIZE
+ 
+ struct tpm_chip;
+ struct trusted_key_payload;
+@@ -44,7 +47,7 @@ enum tpm_algorithms {
+ 
+ struct tpm_digest {
+ 	u16 alg_id;
+-	u8 digest[TPM_MAX_DIGEST_SIZE];
++	u8 digest[TPM2_MAX_DIGEST_SIZE];
+ } __packed;
+ 
+ struct tpm_bank_info {
+@@ -150,7 +153,7 @@ struct tpm_chip {
+ 	unsigned int groups_cnt;
+ 
+ 	u32 nr_allocated_banks;
+-	struct tpm_bank_info *allocated_banks;
++	struct tpm_bank_info allocated_banks[TPM2_MAX_PCR_BANKS];
+ #ifdef CONFIG_ACPI
+ 	acpi_handle acpi_dev_handle;
+ 	char ppi_version[TPM_PPI_VERSION_LEN + 1];
 
 
 
