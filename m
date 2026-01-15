@@ -1,50 +1,50 @@
-Return-Path: <stable+bounces-208981-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208948-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D0B5D265D2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:26:00 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0A199D268CA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:40 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 84E29324D0A0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:05 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 17CB53195D55
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3BC113BFE3C;
-	Thu, 15 Jan 2026 17:16:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E387E3C1991;
+	Thu, 15 Jan 2026 17:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZWMjfCsr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y6oq9OcO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F378B3BF2E7;
-	Thu, 15 Jan 2026 17:16:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A54663C198E;
+	Thu, 15 Jan 2026 17:15:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497396; cv=none; b=t53TcUPBmWWuQlF88mb9Y3+w4rV9AU/+CdUi3nyX++ba2Ym6/cdR8fxV9E/qvVTJT6ElyeIj8YqCbbkqAyblbHjRZwl6jioSUzTC7m8xrwhueIp43zkiKKGQbqgXRrQ6t9E/gSTzh1qnYL8ABIN9RljfLZjhyN/dJdXRrLUI80Y=
+	t=1768497301; cv=none; b=uewEP+NJRQPJ627hif0bzjWiQ84Cwo6mYnyUFNhj2HDx6i2qXhLE4F+7+RGp+3JaQWAOZoi4D3EuLKirRd66v1wigK2+7jfrgkxcpLQXdaEw20kF1CKmxOza/t2Yn5RTWUcEIKjsvTDnqJJajuFKv5aNwKsB3o1D0AGvQM9w+go=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497396; c=relaxed/simple;
-	bh=rYVNV89rejfKw+MNnU1YIBXoScoL+C/g/CugO7AhfVU=;
+	s=arc-20240116; t=1768497301; c=relaxed/simple;
+	bh=dR0zWbCe/B+NghnG8+BYc/pdTDqD6rz4bl4+2GkqHJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=up2a8LQeYmPPPfZydgU40sRwzbD1fxQgz+NDPxQtXMkt6kUP/x42mbL/jMokSbSOStr7nKO8SMWbzWe/kGlWM55NTCdefwU/cRyPdcAy6buE21nxdfBvko+fKuO+HSkbSvOs+1/OfcnA74K2tUlWA09C5GO0rlGjf6Oav6QC9Mk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZWMjfCsr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E038C19422;
-	Thu, 15 Jan 2026 17:16:35 +0000 (UTC)
+	 MIME-Version; b=XDlX0UFqzAoMDfQ9bX0chg2vSUrnNRyIjLSmLwRkYeDz4EZIQ3PTtUFcs7l+wagsRkW67AG1EDJ5YDPz4TShbl8b4GqJvn7N7GSgQ2LQF/T8z+JfjrerluI3DNV+QMvUc36lDSlL6mNc0U4XM18yTQu+Eh68GS+jW6jO1yI7MQE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y6oq9OcO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E17F7C116D0;
+	Thu, 15 Jan 2026 17:15:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497395;
-	bh=rYVNV89rejfKw+MNnU1YIBXoScoL+C/g/CugO7AhfVU=;
+	s=korg; t=1768497301;
+	bh=dR0zWbCe/B+NghnG8+BYc/pdTDqD6rz4bl4+2GkqHJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZWMjfCsrt4R231dzo3lujV0DKVB9Iso9VI6GG/m2v5gDFxG6U1klEKMpciHRdN/r/
-	 cjCa+Rqh/YK3X3GI/BdY7rIWRyGtw6Q8Oo3RkRcF9BaE6c3dQpHJei0QR7v8TfYRmt
-	 +45YxpwDMgro6flN/fRYPjuum9G0i1qLxpla6wVE=
+	b=y6oq9OcOmFlsN5dtYQjbb/Zax3aTIpsaZnWfzdvkSVh70YqzE9w1yAXr9qeCZTHBr
+	 qdxWf7Tzgzq4FkOA5LbEgKrNUhl4knxtYkeB4MqksAWN4qLsTnyZ/53sdj/UN0DxA8
+	 IJxMa91pEmWCyFmLE6AXZlhN2oAhbmperTH0KBWg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
 	Navaneeth K <knavaneeth786@gmail.com>,
 	stable <stable@kernel.org>
-Subject: [PATCH 5.15 033/554] staging: rtl8723bs: fix stack buffer overflow in OnAssocReq IE parsing
-Date: Thu, 15 Jan 2026 17:41:39 +0100
-Message-ID: <20260115164247.438346903@linuxfoundation.org>
+Subject: [PATCH 5.15 034/554] staging: rtl8723bs: fix out-of-bounds read in OnBeacon ESR IE parsing
+Date: Thu, 15 Jan 2026 17:41:40 +0100
+Message-ID: <20260115164247.474978495@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -65,48 +65,44 @@ Content-Transfer-Encoding: 8bit
 
 From: Navaneeth K <knavaneeth786@gmail.com>
 
-commit 6ef0e1c10455927867cac8f0ed6b49f328f8cf95 upstream.
+commit 502ddcc405b69fa92e0add6c1714d654504f6fd7 upstream.
 
-The Supported Rates IE length from an incoming Association Request frame
-was used directly as the memcpy() length when copying into a fixed-size
-16-byte stack buffer (supportRate). A malicious station can advertise an
-IE length larger than 16 bytes, causing a stack buffer overflow.
+The Extended Supported Rates (ESR) IE handling in OnBeacon accessed
+*(p + 1 + ielen) and *(p + 2 + ielen) without verifying that these
+offsets lie within the received frame buffer. A malformed beacon with
+an ESR IE positioned at the end of the buffer could cause an
+out-of-bounds read, potentially triggering a kernel panic.
 
-Clamp ie_len to the buffer size before copying the Supported Rates IE,
-and correct the bounds check when merging Extended Supported Rates to
-prevent a second potential overflow.
+Add a boundary check to ensure that the ESR IE body and the subsequent
+bytes are within the limits of the frame before attempting to access
+them.
 
-This prevents kernel stack corruption triggered by malformed association
-requests.
+This prevents OOB reads caused by malformed beacon frames.
 
 Signed-off-by: Navaneeth K <knavaneeth786@gmail.com>
 Cc: stable <stable@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/staging/rtl8723bs/core/rtw_mlme_ext.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
 --- a/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
 +++ b/drivers/staging/rtl8723bs/core/rtw_mlme_ext.c
-@@ -1042,6 +1042,9 @@ unsigned int OnAssocReq(struct adapter *
- 		status = WLAN_STATUS_CHALLENGE_FAIL;
- 		goto OnAssocReqFail;
- 	} else {
-+		if (ie_len > sizeof(supportRate))
-+			ie_len = sizeof(supportRate);
-+
- 		memcpy(supportRate, p+2, ie_len);
- 		supportRateNum = ie_len;
+@@ -584,9 +584,11 @@ unsigned int OnBeacon(struct adapter *pa
  
-@@ -1049,7 +1052,7 @@ unsigned int OnAssocReq(struct adapter *
- 				pkt_len - WLAN_HDR_A3_LEN - ie_offset);
- 		if (p) {
+ 	p = rtw_get_ie(pframe + sizeof(struct ieee80211_hdr_3addr) + _BEACON_IE_OFFSET_, WLAN_EID_EXT_SUPP_RATES, &ielen, precv_frame->u.hdr.len - sizeof(struct ieee80211_hdr_3addr) - _BEACON_IE_OFFSET_);
+ 	if (p && ielen > 0) {
+-		if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
+-			/* Invalid value 0x2D is detected in Extended Supported Rates (ESR) IE. Try to fix the IE length to avoid failed Beacon parsing. */
+-			*(p + 1) = ielen - 1;
++		if (p + 2 + ielen < pframe + len) {
++			if ((*(p + 1 + ielen) == 0x2D) && (*(p + 2 + ielen) != 0x2D))
++				/* Invalid value 0x2D is detected in Extended Supported Rates (ESR) IE. Try to fix the IE length to avoid failed Beacon parsing. */
++				*(p + 1) = ielen - 1;
++		}
+ 	}
  
--			if (supportRateNum <= sizeof(supportRate)) {
-+			if (supportRateNum + ie_len <= sizeof(supportRate)) {
- 				memcpy(supportRate+supportRateNum, p+2, ie_len);
- 				supportRateNum += ie_len;
- 			}
+ 	if (pmlmeext->sitesurvey_res.state == SCAN_PROCESS) {
 
 
 
