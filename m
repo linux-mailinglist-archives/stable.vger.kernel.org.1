@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209098-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209521-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id AED91D267BE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6AE80D26DB5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:51:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D17A43052493
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:16 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AC88B301BB3F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 069053BF2F1;
-	Thu, 15 Jan 2026 17:22:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 495C739E6EA;
+	Thu, 15 Jan 2026 17:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QXhfRpSG"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sXZ84tHs"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BD4253A1E86;
-	Thu, 15 Jan 2026 17:22:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CCC12D7DED;
+	Thu, 15 Jan 2026 17:42:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497727; cv=none; b=smtnKAo4rtLiffp04VnWYacPA50PISGzdYqb4WJcY/VUTfBkFIxvAE7TWKuIgr7Tn6MrbkwlE7VpZlVVOVwIcWOtcd7puNcgAFMqA1ZDt+3mppGJ+10yGZOnlYabo63mQw/ooFppZ7/oebGRlC5j6/I5l8KoQUzBR0FwMqTEiJc=
+	t=1768498933; cv=none; b=Q4SEgLIkzuc0n2EHC8xHV4lqi0JCQChZKjQDos5ayVgi4rAvNlDQJLG2u/mSB5hXfLIMuzEeAIIpvwC1wi3Atun9uH9All+vvjONKhRDpY2Qvk1OP2ldFu37F8bST9zQsH1KyGPBf9I4ei4tF9/30H03yCzIMSJ7YRAVz7Kb9Aw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497727; c=relaxed/simple;
-	bh=HBa6/vKzK28gCQpHEMe/7/tCvrzofvByhHP/B0f8fcs=;
+	s=arc-20240116; t=1768498933; c=relaxed/simple;
+	bh=oijnhO/B/xogsr8LBRtlG1a42SOqELBABftEoX/Y8Hs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=EvyKqSr4CRW+AtF5IjFpECO26OSvaomXoDBG9YNUHR45sWxM06WLOwb1U+KgScGqbfxgJmYwddYKAiqZ8ENQ6BlEsk40gL01X138NLSfurAz4hKkIPYY0DNZ5PctPB9ZbPOrYfpvZwEWb2DCw4vS6Y3dtXAJRZ76lb7FEac+cts=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QXhfRpSG; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4706DC116D0;
-	Thu, 15 Jan 2026 17:22:07 +0000 (UTC)
+	 MIME-Version; b=CnwOybbMiaw6lryjyjl9WQkKwQrVdoPi5/z8T5GBcGu8aQEfthjInIrZmrH9T+x/NTveRSzM8fXpAm35QGXpIrpzWaCoMg3ShO3YvplxDyg2bg5qqaQXfzW+N2PJxQpkQqpRhiAqUcEs7ZKuF0Oter7e20NTOWlEhsBEDL4Hfpg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sXZ84tHs; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F33DC116D0;
+	Thu, 15 Jan 2026 17:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497727;
-	bh=HBa6/vKzK28gCQpHEMe/7/tCvrzofvByhHP/B0f8fcs=;
+	s=korg; t=1768498932;
+	bh=oijnhO/B/xogsr8LBRtlG1a42SOqELBABftEoX/Y8Hs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=QXhfRpSGRoIISOJS6AUQ5TXB2EKTNQsLGUhTUBI3sJfiHvFTRq9ZCtJjoEKQpqtMO
-	 vW+4GcLYe/CaG2J87oyZdLuNc1YIlA/dX9bDKTuHo+mP86CJcU+A/Z/8wM8TcCPcez
-	 JVg6ruVaae6aYCAdXig9q/089fG6ROp43MFQVPpc=
+	b=sXZ84tHsuTFwDdOcCq6eEnfSgOc0hubchQ+GsH0444qz1RY090CVPVCbwKPWnbcQO
+	 RFJl5hcqQUMlJR9I0pNtF7FAM8T2IxXYD+WHIbOQhqsP/tQ8z/FMO5VGrHDTtt4CfS
+	 sw9v/pBqexJUr7bvCqcKZpdpkafzjuTr+VdgDGBQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Anton Khirnov <anton@khirnov.net>,
-	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-	Denis Benato <benato.denis96@gmail.com>,
-	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jamie Iles <quic_jiles@quicinc.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 183/554] platform/x86: asus-wmi: use brightness_set_blocking() for kbd led
+Subject: [PATCH 5.10 048/451] i3c: remove i2c board info from i2c_dev_desc
 Date: Thu, 15 Jan 2026 17:44:09 +0100
-Message-ID: <20260115164252.887224013@linuxfoundation.org>
+Message-ID: <20260115164232.636822339@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,80 +58,108 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anton Khirnov <anton@khirnov.net>
+From: Jamie Iles <quic_jiles@quicinc.com>
 
-[ Upstream commit ccb61a328321ba3f8567e350664c9ca7a42b6c70 ]
+[ Upstream commit 31b9887c7258ca47d9c665a80f19f006c86756b1 ]
 
-kbd_led_set() can sleep, and so may not be used as the brightness_set()
-callback.
+I2C board info is only required during adapter setup so there is no
+requirement to keeping a pointer to it once running.  To support dynamic
+device addition we can't rely on board info - user-space creation
+through sysfs won't have a boardinfo.
 
-Otherwise using this led with a trigger leads to system hangs
-accompanied by:
-BUG: scheduling while atomic: acpi_fakekeyd/2588/0x00000003
-CPU: 4 UID: 0 PID: 2588 Comm: acpi_fakekeyd Not tainted 6.17.9+deb14-amd64 #1 PREEMPT(lazy)  Debian 6.17.9-1
-Hardware name: ASUSTeK COMPUTER INC. ASUS EXPERTBOOK B9403CVAR/B9403CVAR, BIOS B9403CVAR.311 12/24/2024
-Call Trace:
- <TASK>
- [...]
- schedule_timeout+0xbd/0x100
- __down_common+0x175/0x290
- down_timeout+0x67/0x70
- acpi_os_wait_semaphore+0x57/0x90
- [...]
- asus_wmi_evaluate_method3+0x87/0x190 [asus_wmi]
- led_trigger_event+0x3f/0x60
- [...]
-
-Fixes: 9fe44fc98ce4 ("platform/x86: asus-wmi: Simplify the keyboard brightness updating process")
-Signed-off-by: Anton Khirnov <anton@khirnov.net>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
-Reviewed-by: Denis Benato <benato.denis96@gmail.com>
-Link: https://patch.msgid.link/20251129101307.18085-3-anton@khirnov.net
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20220117174816.1963463-2-quic_jiles@quicinc.com
+Stable-dep-of: 9d4f219807d5 ("i3c: fix refcount inconsistency in i3c_master_register")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/asus-wmi.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/i3c/master.c       | 18 ++++++++++--------
+ include/linux/i3c/master.h |  1 -
+ 2 files changed, 10 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/platform/x86/asus-wmi.c b/drivers/platform/x86/asus-wmi.c
-index d9933d3718129..7714a8327021f 100644
---- a/drivers/platform/x86/asus-wmi.c
-+++ b/drivers/platform/x86/asus-wmi.c
-@@ -822,14 +822,14 @@ static void do_kbd_led_set(struct led_classdev *led_cdev, int value)
- 	kbd_led_update(asus);
- }
+diff --git a/drivers/i3c/master.c b/drivers/i3c/master.c
+index 203b7497b52dc..e3fffc5015c10 100644
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -656,7 +656,7 @@ static void i3c_master_free_i2c_dev(struct i2c_dev_desc *dev)
  
--static void kbd_led_set(struct led_classdev *led_cdev,
--			enum led_brightness value)
-+static int kbd_led_set(struct led_classdev *led_cdev, enum led_brightness value)
+ static struct i2c_dev_desc *
+ i3c_master_alloc_i2c_dev(struct i3c_master_controller *master,
+-			 const struct i2c_dev_boardinfo *boardinfo)
++			 u16 addr, u8 lvr)
  {
- 	/* Prevent disabling keyboard backlight on module unregister */
- 	if (led_cdev->flags & LED_UNREGISTERING)
--		return;
-+		return 0;
+ 	struct i2c_dev_desc *dev;
  
- 	do_kbd_led_set(led_cdev, value);
-+	return 0;
+@@ -665,9 +665,8 @@ i3c_master_alloc_i2c_dev(struct i3c_master_controller *master,
+ 		return ERR_PTR(-ENOMEM);
+ 
+ 	dev->common.master = master;
+-	dev->boardinfo = boardinfo;
+-	dev->addr = boardinfo->base.addr;
+-	dev->lvr = boardinfo->lvr;
++	dev->addr = addr;
++	dev->lvr = lvr;
+ 
+ 	return dev;
  }
+@@ -741,7 +740,7 @@ i3c_master_find_i2c_dev_by_addr(const struct i3c_master_controller *master,
+ 	struct i2c_dev_desc *dev;
  
- static void kbd_led_set_by_kbd(struct asus_wmi *asus, enum led_brightness value)
-@@ -966,7 +966,7 @@ static int asus_wmi_led_init(struct asus_wmi *asus)
- 		asus->kbd_led_wk = led_val;
- 		asus->kbd_led.name = "asus::kbd_backlight";
- 		asus->kbd_led.flags = LED_BRIGHT_HW_CHANGED;
--		asus->kbd_led.brightness_set = kbd_led_set;
-+		asus->kbd_led.brightness_set_blocking = kbd_led_set;
- 		asus->kbd_led.brightness_get = kbd_led_get;
- 		asus->kbd_led.max_brightness = 3;
+ 	i3c_bus_for_each_i2cdev(&master->bus, dev) {
+-		if (dev->boardinfo->base.addr == addr)
++		if (dev->addr == addr)
+ 			return dev;
+ 	}
  
+@@ -1731,7 +1730,9 @@ static int i3c_master_bus_init(struct i3c_master_controller *master)
+ 					     i2cboardinfo->base.addr,
+ 					     I3C_ADDR_SLOT_I2C_DEV);
+ 
+-		i2cdev = i3c_master_alloc_i2c_dev(master, i2cboardinfo);
++		i2cdev = i3c_master_alloc_i2c_dev(master,
++						  i2cboardinfo->base.addr,
++						  i2cboardinfo->lvr);
+ 		if (IS_ERR(i2cdev)) {
+ 			ret = PTR_ERR(i2cdev);
+ 			goto err_detach_devs;
+@@ -2220,6 +2221,7 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
+ {
+ 	struct i2c_adapter *adap = i3c_master_to_i2c_adapter(master);
+ 	struct i2c_dev_desc *i2cdev;
++	struct i2c_dev_boardinfo *i2cboardinfo;
+ 	int ret;
+ 
+ 	adap->dev.parent = master->dev.parent;
+@@ -2239,8 +2241,8 @@ static int i3c_master_i2c_adapter_init(struct i3c_master_controller *master)
+ 	 * We silently ignore failures here. The bus should keep working
+ 	 * correctly even if one or more i2c devices are not registered.
+ 	 */
+-	i3c_bus_for_each_i2cdev(&master->bus, i2cdev)
+-		i2cdev->dev = i2c_new_client_device(adap, &i2cdev->boardinfo->base);
++	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node)
++		i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
+ 
+ 	return 0;
+ }
+diff --git a/include/linux/i3c/master.h b/include/linux/i3c/master.h
+index ea3781d730064..b31170e37655f 100644
+--- a/include/linux/i3c/master.h
++++ b/include/linux/i3c/master.h
+@@ -85,7 +85,6 @@ struct i2c_dev_boardinfo {
+  */
+ struct i2c_dev_desc {
+ 	struct i3c_i2c_dev_desc common;
+-	const struct i2c_dev_boardinfo *boardinfo;
+ 	struct i2c_client *dev;
+ 	u16 addr;
+ 	u8 lvr;
 -- 
 2.51.0
 
