@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208769-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208704-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BDAB5D26374
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:35 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id DC8F7D26144
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3C7283160D8B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:00 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 555463025FB1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 00E353A35A4;
-	Thu, 15 Jan 2026 17:06:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5EE1F350A05;
+	Thu, 15 Jan 2026 17:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="kjgdDxtX"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qkV+CJcV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B64813BC4E8;
-	Thu, 15 Jan 2026 17:06:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22BAA2D73A0;
+	Thu, 15 Jan 2026 17:03:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496790; cv=none; b=JtEApnuuTt8gtbhttBzAdC7IO2gnFkjn367nfgBFbcSyJs63WePeBIsfRpjfdHn3Xkd5SgilDuUEf1PhcK7RDPgosh35ys6jXpHgRscyT0ERtLyf6XRyhadPuTcrqGysQAh5DIBq7wHR4DhJcO3/YviJOhhMIKgTtrrIIv4Xy1s=
+	t=1768496609; cv=none; b=rQKRUH76dGUcgh/Cf8suYAHSTWY1uBiVIDK7wthNPc8og2+F6s6u/gx9bKWfp9YHSu6O4HareaJQmMbwdRKPExuecUBu/v0QW2pNohAIFx0OhHjuXx9RVpJLg0VI7PiUaa3HrQXqI92xFrGJ7rWCOFUm5ZT619VLaYrBQhLejaA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496790; c=relaxed/simple;
-	bh=p4J3+7vKN6ct16YCHdxnVFbty/nYgeetTWznw3nSDm8=;
+	s=arc-20240116; t=1768496609; c=relaxed/simple;
+	bh=gYiDYe8cSfBeCI/meXJthw+n/NQf4+S2pDAftkbTgB4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HjgUpgp/0qN+ruRtW3fOwMjf7ZFOUqg03fndhZ3DDA5G9p/pGwxJf9ZCfTAI3gcD+m88+2VzsfZohhDf02hAhWknMCOEOJ6GAlbhfeefNhYtZEoSg+t5gvnaqtgtdO68kYzHXcWPXmIGC7sBKEoUl7mphnUjY+kmjy3Zk0MVWZ0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=kjgdDxtX; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 440FEC116D0;
-	Thu, 15 Jan 2026 17:06:30 +0000 (UTC)
+	 MIME-Version; b=fuGuaKp8F6p6uX+1vMkaH8Iv8jreOppJr9mAhWGdyspV9AZunUZ0AmbmyXI7yawv5A2kABa9i1cbPitISmG0fXqGmU6pW+zLO5UZjB3OV19SO62nWarz60QPE2zhs38FuuBWLJvwyQBV4f4eZzLkzDb2bFjW8S976sw2HmTo7ts=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qkV+CJcV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93C09C116D0;
+	Thu, 15 Jan 2026 17:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496790;
-	bh=p4J3+7vKN6ct16YCHdxnVFbty/nYgeetTWznw3nSDm8=;
+	s=korg; t=1768496609;
+	bh=gYiDYe8cSfBeCI/meXJthw+n/NQf4+S2pDAftkbTgB4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=kjgdDxtXHVEedczYtL+umcB7NQFyZjeOlhEO8agyruRcDobB0OMnJb/Ed9FVbE0GD
-	 PgXMEv56nFNhQdCPdLie/kFFUI/vB2fRFCOjFmu0ANo0rEpscBKI/K+M/nOlX1RY7m
-	 oKII35u8JlP99ctrgTqaYZQNRSUWNopRYxvLa4Eo=
+	b=qkV+CJcV2DNa/IJTZD9JqVRnEHpCKjMkSJY7qFLzKXZ4te6DSpeJl4nx0Fns+5tgD
+	 9vmBHoK/WnDr/8kNBICrpoPWIpxgYq0jNto8Kw4ANCIt9In3K+SuluAVE1jmIe49jd
+	 yQBfjw4EtzuUcDrohu05AGrbHqt5OO3LIaxAkc7g=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.6 17/88] libceph: make free_choose_arg_map() resilient to partial allocation
+	Alexandre Knecht <knecht.alexandre@gmail.com>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Nikolay Aleksandrov <razor@blackwall.org>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 065/119] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
 Date: Thu, 15 Jan 2026 17:48:00 +0100
-Message-ID: <20260115164146.941255245@linuxfoundation.org>
+Message-ID: <20260115164154.301208098@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +62,80 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Alexandre Knecht <knecht.alexandre@gmail.com>
 
-commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
+[ Upstream commit 3128df6be147768fe536986fbb85db1d37806a9f ]
 
-free_choose_arg_map() may dereference a NULL pointer if its caller fails
-after a partial allocation.
+When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
+incorrectly stripped from frames during egress processing.
 
-For example, in decode_choose_args(), if allocation of arg_map->args
-fails, execution jumps to the fail label and free_choose_arg_map() is
-called. Since arg_map->size is updated to a non-zero value before memory
-allocation, free_choose_arg_map() will iterate over arg_map->args and
-dereference a NULL pointer.
+br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
+from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
+moves any "next" VLAN from the payload into hwaccel:
 
-To prevent this potential NULL pointer dereference and make
-free_choose_arg_map() more resilient, add checks for pointers before
-iterating.
+    /* move next vlan tag to hw accel tag */
+    __skb_vlan_pop(skb, &vlan_tci);
+    __vlan_hwaccel_put_tag(skb, vlan_proto, vlan_tci);
 
-Cc: stable@vger.kernel.org
-Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+For QinQ frames where the C-VLAN sits in the payload, this moves it to
+hwaccel where it gets lost during VXLAN encapsulation.
+
+Fix by calling __vlan_hwaccel_clear_tag() directly, which clears only
+the hwaccel S-VLAN and leaves the payload untouched.
+
+This path is only taken when vlan_tunnel is enabled and tunnel_info
+is configured, so 802.1Q bridges are unaffected.
+
+Tested with 802.1ad bridge + VXLAN vlan_tunnel, verified C-VLAN
+preserved in VXLAN payload via tcpdump.
+
+Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
+Signed-off-by: Alexandre Knecht <knecht.alexandre@gmail.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://patch.msgid.link/20251228020057.2788865-1-knecht.alexandre@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ net/bridge/br_vlan_tunnel.c | 11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -241,22 +241,26 @@ static struct crush_choose_arg_map *allo
+diff --git a/net/bridge/br_vlan_tunnel.c b/net/bridge/br_vlan_tunnel.c
+index a966a6ec82634..257cae9f15698 100644
+--- a/net/bridge/br_vlan_tunnel.c
++++ b/net/bridge/br_vlan_tunnel.c
+@@ -189,7 +189,6 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+ 	IP_TUNNEL_DECLARE_FLAGS(flags) = { };
+ 	struct metadata_dst *tunnel_dst;
+ 	__be64 tunnel_id;
+-	int err;
  
- static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
- {
--	if (arg_map) {
--		int i, j;
-+	int i, j;
+ 	if (!vlan)
+ 		return 0;
+@@ -199,9 +198,13 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
+ 		return 0;
  
--		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+	if (!arg_map)
-+		return;
+ 	skb_dst_drop(skb);
+-	err = skb_vlan_pop(skb);
+-	if (err)
+-		return err;
++	/* For 802.1ad (QinQ), skb_vlan_pop() incorrectly moves the C-VLAN
++	 * from payload to hwaccel after clearing S-VLAN. We only need to
++	 * clear the hwaccel S-VLAN; the C-VLAN must stay in payload for
++	 * correct VXLAN encapsulation. This is also correct for 802.1Q
++	 * where no C-VLAN exists in payload.
++	 */
++	__vlan_hwaccel_clear_tag(skb);
  
-+	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+
-+	if (arg_map->args) {
- 		for (i = 0; i < arg_map->size; i++) {
- 			struct crush_choose_arg *arg = &arg_map->args[i];
--
--			for (j = 0; j < arg->weight_set_size; j++)
--				kfree(arg->weight_set[j].weights);
--			kfree(arg->weight_set);
-+			if (arg->weight_set) {
-+				for (j = 0; j < arg->weight_set_size; j++)
-+					kfree(arg->weight_set[j].weights);
-+				kfree(arg->weight_set);
-+			}
- 			kfree(arg->ids);
- 		}
- 		kfree(arg_map->args);
--		kfree(arg_map);
- 	}
-+	kfree(arg_map);
- }
- 
- DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
+ 	if (BR_INPUT_SKB_CB(skb)->backup_nhid) {
+ 		__set_bit(IP_TUNNEL_KEY_BIT, flags);
+-- 
+2.51.0
+
 
 
 
