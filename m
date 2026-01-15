@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209389-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208843-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6917D26B24
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:49 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9059DD26437
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 4F488306BD01
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:02 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5958E30C38DE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA47D3C00AB;
-	Thu, 15 Jan 2026 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 765563BF2FD;
+	Thu, 15 Jan 2026 17:10:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="I/H28xqV"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Y858YchH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 98F8B3C00A6;
-	Thu, 15 Jan 2026 17:35:57 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3665B3BC4E8;
+	Thu, 15 Jan 2026 17:10:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498557; cv=none; b=lK8dBkp5olfhgyXWA4hoQ0HLXQl2fNLygM9HTDGg8GHp+h5DtkmXjn+wcbqfegwbO8S6R02K1WLySTCLebdKs4mcZezXH7rg5N3SpPNDpNC9869BJ6rMPWwpNBBPqH9f8Yrj73rEx0ptvTNIesBhAHayNdqxJa3wdrq4yR1iVwM=
+	t=1768497001; cv=none; b=AhcXRCWBI7cdLMxRvc4V0gm7d8tH0TojtwIqrBxiblh1bzbWoaZRsNuWN+EiX45pfEI95s33z210SUx+ZRMgZ5qOim5/nNSj0ynbD/hQlzS7FcM2ieZHwiPtYT+ZGruWq96E2yg7cY3uAU/8PiVNi+4FkTalPyRxkHUgAJba73I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498557; c=relaxed/simple;
-	bh=0+SYvKZrGxZo/TC8wmZaNfyYu9mwR/kTYwM1QqqY9tg=;
+	s=arc-20240116; t=1768497001; c=relaxed/simple;
+	bh=1isOONgbOKA3tSCIDlfYPiD/wlcA5Mc0cnuGhph+0Yc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=ML+5bW6tDw1esxl6hw9jmb6qcUa2OeAvzWZgBePFLRyjwqyUGepnagLC4fFz0y0z2Z5YgE+f99VjIcjC0d9Q8ot+6k4NOzU1IkpG/dlC8nBWotVL1J3ZDTDONKolnB/93fxulrn65dZ1/YiZn3h/UZzfs+kZKm6eNOjWd5nQiNw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=I/H28xqV; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E377EC19422;
-	Thu, 15 Jan 2026 17:35:56 +0000 (UTC)
+	 MIME-Version:Content-Type; b=pjtmXSMUGGef+IlcW4JrB52SOi27jCqPg5/SMlX7Ipxn0Cf3NNdv2n6tKeh31ghiYBZZ8m42c7hanIoSSp/dYXR7CtE1XKmiG2rnV4d47qmpBiBGQ624Aprp+Retj4QoPerfe3p9sGPYDui4LCO0Mm2ctIYoKjBBOvdLOhIF8w0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Y858YchH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B60DC19423;
+	Thu, 15 Jan 2026 17:10:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498557;
-	bh=0+SYvKZrGxZo/TC8wmZaNfyYu9mwR/kTYwM1QqqY9tg=;
+	s=korg; t=1768497000;
+	bh=1isOONgbOKA3tSCIDlfYPiD/wlcA5Mc0cnuGhph+0Yc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=I/H28xqV/aj1OSC3FjOUtc4nNfQ3T0xuaLLTu+LLzffooYWpYAUkMDliMQaGQmshi
-	 W/geg4vQkMAIREf/vo8xWBn3tF/q7iLHnmNcWO8usPzxJaZ615IS2Do6Dp3qjm6pkN
-	 tyHYjyXmpnm3BH3Pm4lKuYpYRYUGztyTh3tVznNk=
+	b=Y858YchHWH27JY0z37eW+t2AOpkLjuyTAQtDFK1kCI5OXg9dLlu4KIBe/4nMmccvK
+	 VhNg7Toklxqs7jCzEN1/W0xA790zTQGjfNa84vBCVbgL6H4QKzHaSmUU+N9FWlr8rK
+	 Dty6zYjLBGJcLl5y2TdFAbBy8apKndPycuTlalJE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rob Herring <robh@kernel.org>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
+	syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	=?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@redhat.com>,
+	Alexei Starovoitov <ast@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 474/554] pmdomain: Use device_get_match_data()
+Subject: [PATCH 6.6 77/88] bpf: Fix reference count leak in bpf_prog_test_run_xdp()
 Date: Thu, 15 Jan 2026 17:49:00 +0100
-Message-ID: <20260115164303.457984475@linuxfoundation.org>
+Message-ID: <20260115164149.104962248@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,136 +63,81 @@ MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Herring <robh@kernel.org>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 3ba9fdfaa550936837b50b73d6c27ac401fde875 ]
+[ Upstream commit ec69daabe45256f98ac86c651b8ad1b2574489a7 ]
 
-Use preferred device_get_match_data() instead of of_match_device() to
-get the driver match data. With this, adjust the includes to explicitly
-include the correct headers.
+syzbot is reporting
 
-Signed-off-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20231006224614.444488-1-robh@kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 73cb5f6eafb0 ("pmdomain: imx: Fix reference count leak in imx_gpc_probe()")
+  unregister_netdevice: waiting for sit0 to become free. Usage count = 2
+
+problem. A debug printk() patch found that a refcount is obtained at
+xdp_convert_md_to_buff() from bpf_prog_test_run_xdp().
+
+According to commit ec94670fcb3b ("bpf: Support specifying ingress via
+xdp_md context in BPF_PROG_TEST_RUN"), the refcount obtained by
+xdp_convert_md_to_buff() will be released by xdp_convert_buff_to_md().
+
+Therefore, we can consider that the error handling path introduced by
+commit 1c1949982524 ("bpf: introduce frags support to
+bpf_prog_test_run_xdp()") forgot to call xdp_convert_buff_to_md().
+
+Reported-by: syzbot+881d65229ca4f9ae8c84@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=881d65229ca4f9ae8c84
+Fixes: 1c1949982524 ("bpf: introduce frags support to bpf_prog_test_run_xdp()")
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Toke Høiland-Jørgensen <toke@redhat.com>
+Link: https://lore.kernel.org/r/af090e53-9d9b-4412-8acb-957733b3975c@I-love.SAKURA.ne.jp
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/soc/actions/owl-sps.c     |   16 +++++-----------
- drivers/soc/imx/gpc.c             |    7 +++----
- drivers/soc/rockchip/pm_domains.c |   13 ++++---------
- 3 files changed, 12 insertions(+), 24 deletions(-)
+ net/bpf/test_run.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
---- a/drivers/soc/actions/owl-sps.c
-+++ b/drivers/soc/actions/owl-sps.c
-@@ -8,8 +8,10 @@
-  * Copyright (c) 2017 Andreas Färber
-  */
+diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
+index 1989d239939b1..7e11ec31d40e4 100644
+--- a/net/bpf/test_run.c
++++ b/net/bpf/test_run.c
+@@ -1243,13 +1243,13 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
  
-+#include <linux/mod_devicetable.h>
- #include <linux/of_address.h>
--#include <linux/of_platform.h>
-+#include <linux/platform_device.h>
-+#include <linux/property.h>
- #include <linux/pm_domain.h>
- #include <linux/soc/actions/owl-sps.h>
- #include <dt-bindings/power/owl-s500-powergate.h>
-@@ -96,24 +98,16 @@ static int owl_sps_init_domain(struct ow
+ 			if (sinfo->nr_frags == MAX_SKB_FRAGS) {
+ 				ret = -ENOMEM;
+-				goto out;
++				goto out_put_dev;
+ 			}
  
- static int owl_sps_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *match;
- 	const struct owl_sps_info *sps_info;
- 	struct owl_sps *sps;
- 	int i, ret;
+ 			page = alloc_page(GFP_KERNEL);
+ 			if (!page) {
+ 				ret = -ENOMEM;
+-				goto out;
++				goto out_put_dev;
+ 			}
  
--	if (!pdev->dev.of_node) {
--		dev_err(&pdev->dev, "no device node\n");
--		return -ENODEV;
--	}
--
--	match = of_match_device(pdev->dev.driver->of_match_table, &pdev->dev);
--	if (!match || !match->data) {
-+	sps_info = device_get_match_data(&pdev->dev);
-+	if (!sps_info) {
- 		dev_err(&pdev->dev, "unknown compatible or missing data\n");
- 		return -EINVAL;
- 	}
- 
--	sps_info = match->data;
--
- 	sps = devm_kzalloc(&pdev->dev,
- 			   struct_size(sps, domains, sps_info->num_domains),
- 			   GFP_KERNEL);
---- a/drivers/soc/imx/gpc.c
-+++ b/drivers/soc/imx/gpc.c
-@@ -7,9 +7,10 @@
- #include <linux/clk.h>
- #include <linux/delay.h>
- #include <linux/io.h>
--#include <linux/of_device.h>
-+#include <linux/of.h>
- #include <linux/platform_device.h>
- #include <linux/pm_domain.h>
-+#include <linux/property.h>
- #include <linux/regmap.h>
- #include <linux/regulator/consumer.h>
- 
-@@ -403,9 +404,7 @@ clk_err:
- 
- static int imx_gpc_probe(struct platform_device *pdev)
- {
--	const struct of_device_id *of_id =
--			of_match_device(imx_gpc_dt_ids, &pdev->dev);
--	const struct imx_gpc_dt_data *of_id_data = of_id->data;
-+	const struct imx_gpc_dt_data *of_id_data = device_get_match_data(&pdev->dev);
- 	struct device_node *pgc_node;
- 	struct regmap *regmap;
- 	void __iomem *base;
---- a/drivers/soc/rockchip/pm_domains.c
-+++ b/drivers/soc/rockchip/pm_domains.c
-@@ -8,11 +8,13 @@
- #include <linux/io.h>
- #include <linux/iopoll.h>
- #include <linux/err.h>
-+#include <linux/platform_device.h>
- #include <linux/pm_clock.h>
- #include <linux/pm_domain.h>
-+#include <linux/property.h>
-+#include <linux/of.h>
- #include <linux/of_address.h>
- #include <linux/of_clk.h>
--#include <linux/of_platform.h>
- #include <linux/clk.h>
- #include <linux/regmap.h>
- #include <linux/mfd/syscon.h>
-@@ -634,7 +636,6 @@ static int rockchip_pm_domain_probe(stru
- 	struct device_node *node;
- 	struct device *parent;
- 	struct rockchip_pmu *pmu;
--	const struct of_device_id *match;
- 	const struct rockchip_pmu_info *pmu_info;
- 	int error;
- 
-@@ -643,13 +644,7 @@ static int rockchip_pm_domain_probe(stru
- 		return -ENODEV;
- 	}
- 
--	match = of_match_device(dev->driver->of_match_table, dev);
--	if (!match || !match->data) {
--		dev_err(dev, "missing pmu data\n");
--		return -EINVAL;
--	}
--
--	pmu_info = match->data;
-+	pmu_info = device_get_match_data(dev);
- 
- 	pmu = devm_kzalloc(dev,
- 			   struct_size(pmu, domains, pmu_info->num_domains),
+ 			frag = &sinfo->frags[sinfo->nr_frags++];
+@@ -1261,7 +1261,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 			if (copy_from_user(page_address(page), data_in + size,
+ 					   data_len)) {
+ 				ret = -EFAULT;
+-				goto out;
++				goto out_put_dev;
+ 			}
+ 			sinfo->xdp_frags_size += data_len;
+ 			size += data_len;
+@@ -1276,6 +1276,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
+ 		ret = bpf_test_run_xdp_live(prog, &xdp, repeat, batch_size, &duration);
+ 	else
+ 		ret = bpf_test_run(prog, &xdp, repeat, &retval, &duration, true);
++out_put_dev:
+ 	/* We convert the xdp_buff back to an xdp_md before checking the return
+ 	 * code so the reference count of any held netdevice will be decremented
+ 	 * even if the test run failed.
+-- 
+2.51.0
+
 
 
 
