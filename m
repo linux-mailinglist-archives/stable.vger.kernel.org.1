@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209659-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209237-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BB6ACD27061
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:01:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2C9B5D2671F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id AD20530848DD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:50:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 04924300EA08
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 22AB23D3490;
-	Thu, 15 Jan 2026 17:48:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B483C1975;
+	Thu, 15 Jan 2026 17:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PX27ufYY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSu8+Xl6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D65533BFE37;
-	Thu, 15 Jan 2026 17:48:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AE23BFE4B;
+	Thu, 15 Jan 2026 17:28:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499325; cv=none; b=XJ0ckXaI9nA6nn3ZC1/tHXQLFh+pCF14eKvO8b5iYfWump9AWVTGvoh4idCT5i+ux/R4OwdrvV7MxrimIcQ6kbrZTF6txaZ4Zykfe7vbTupJP/lSwwJ8xU2wnFSzh1Kd//I8QqFOdnHd6DIMHfYAST/n9Umv0oOWDg5focPEL8Q=
+	t=1768498124; cv=none; b=BB+z3QyTl8maHJStO6aiiUohfKQmqqauqzC9LZDJri1d5K7hrXm10SqRzXI2M9l35v1lwyFvn3+YXX+2cfdXaOEFaTkOxUCjxGiO45OcTdlmrodWbbHg06Y0X1N2RzPaapUjvPXIq5AC9eKhlM7CuyLSdf2uZ06Wkzdei6TzSOc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499325; c=relaxed/simple;
-	bh=kB8iM03DzYJUdsvCilaxNzS5HVEQNw3KrB+feHbCe/s=;
+	s=arc-20240116; t=1768498124; c=relaxed/simple;
+	bh=SMqWPfR9OnaUm38rFMTbtwvmFchxbJSW/3D1HWzpXI4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=V31XsDjXF386qTUbeKUSwtn3KxiFxK3yieezwFG3SQxY1p0Wv7/m1hffQlXd7JW0Swmyf46GFSsUNw6HpJXQv1CaKHFBbkl9DVGEIJdnzWcNCofKvphX907u6Un0JIH4EhfAra1rZnkXYdY86Rk4CnjvPXQ5wT3jMaLoCwcZ5Nk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PX27ufYY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64183C19422;
-	Thu, 15 Jan 2026 17:48:45 +0000 (UTC)
+	 MIME-Version; b=EaqUO6+XLdIsOkqHXP1iKnAwzEWjjwEX3zHTIbwqtZrhQypS/z9Lojsyy+qwOStxXtCMauDXrk8QnI9PQXTyeqAA4KsmuPktn2vRvdOVTXP+V58xyQg/xV+pBTXn1052cxvFZXW7d1oC61hJEnNsYzufIsIQctbSIESTmMBa+R0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSu8+Xl6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4BEC116D0;
+	Thu, 15 Jan 2026 17:28:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499325;
-	bh=kB8iM03DzYJUdsvCilaxNzS5HVEQNw3KrB+feHbCe/s=;
+	s=korg; t=1768498124;
+	bh=SMqWPfR9OnaUm38rFMTbtwvmFchxbJSW/3D1HWzpXI4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PX27ufYYsx/5B6KoftzPAU+LGplufxlCUf+eKluuFZiDr2hDsPxReRG9ojQwrbR9g
-	 TaldlPBJeo6BKxBS1Yu6XscTDuRID3fmzMBUDcM9fXxy6YN8TlK4LIpe5b530kpOw0
-	 isNfkPb7p0U28pv7scJKaCR8wOgYN5rDLz2YyDbM=
+	b=iSu8+Xl6V7ZQZiBXP3w9jP15xKRyXza16n5sm1XkICpiPueXv+4wuxcHMpLdY4oAF
+	 JltOe5u/YQnnUOIV5EeX0RZOS0cg+dbw57hY981dund4EvV61fO7zRTiopzjGt0/dA
+	 ZR7YLFiErIcwVC1Qrqh9K82SYaRWo5Rgso1Sd+VE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 187/451] net: hns3: using the num_tqps in the vf driver to apply for resources
+	Sudheendra Raghav Neela <sneela@tugraz.at>,
+	Amir Goldstein <amir73il@gmail.com>,
+	Jan Kara <jack@suse.cz>
+Subject: [PATCH 5.15 322/554] fsnotify: do not generate ACCESS/MODIFY events on child for special files
 Date: Thu, 15 Jan 2026 17:46:28 +0100
-Message-ID: <20260115164237.667721558@linuxfoundation.org>
+Message-ID: <20260115164257.884351253@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,57 +60,63 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Amir Goldstein <amir73il@gmail.com>
 
-[ Upstream commit c2a16269742e176fccdd0ef9c016a233491a49ad ]
+commit 635bc4def026a24e071436f4f356ea08c0eed6ff upstream.
 
-Currently, hdev->htqp is allocated using hdev->num_tqps, and kinfo->tqp
-is allocated using kinfo->num_tqps. However, kinfo->num_tqps is set to
-min(new_tqps, hdev->num_tqps);  Therefore, kinfo->num_tqps may be smaller
-than hdev->num_tqps, which causes some hdev->htqp[i] to remain
-uninitialized in hclgevf_knic_setup().
+inotify/fanotify do not allow users with no read access to a file to
+subscribe to events (e.g. IN_ACCESS/IN_MODIFY), but they do allow the
+same user to subscribe for watching events on children when the user
+has access to the parent directory (e.g. /dev).
 
-Thus, this patch allocates hdev->htqp and kinfo->tqp using hdev->num_tqps,
-ensuring that the lengths of hdev->htqp and kinfo->tqp are consistent
-and that all elements are properly initialized.
+Users with no read access to a file but with read access to its parent
+directory can still stat the file and see if it was accessed/modified
+via atime/mtime change.
 
-Fixes: e2cb1dec9779 ("net: hns3: Add HNS3 VF HCL(Hardware Compatibility Layer) Support")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251211023737.2327018-2-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+The same is not true for special files (e.g. /dev/null). Users will not
+generally observe atime/mtime changes when other users read/write to
+special files, only when someone sets atime/mtime via utimensat().
+
+Align fsnotify events with this stat behavior and do not generate
+ACCESS/MODIFY events to parent watchers on read/write of special files.
+The events are still generated to parent watchers on utimensat(). This
+closes some side-channels that could be possibly used for information
+exfiltration [1].
+
+[1] https://snee.la/pdf/pubs/file-notification-attacks.pdf
+
+Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
+CC: stable@vger.kernel.org
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/notify/fsnotify.c |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-index 15dca78fd736c..98abb47014b75 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3vf/hclgevf_main.c
-@@ -434,12 +434,12 @@ static int hclgevf_knic_setup(struct hclgevf_dev *hdev)
- 	new_tqps = kinfo->rss_size * num_tc;
- 	kinfo->num_tqps = min(new_tqps, hdev->num_tqps);
- 
--	kinfo->tqp = devm_kcalloc(&hdev->pdev->dev, kinfo->num_tqps,
-+	kinfo->tqp = devm_kcalloc(&hdev->pdev->dev, hdev->num_tqps,
- 				  sizeof(struct hnae3_queue *), GFP_KERNEL);
- 	if (!kinfo->tqp)
- 		return -ENOMEM;
- 
--	for (i = 0; i < kinfo->num_tqps; i++) {
-+	for (i = 0; i < hdev->num_tqps; i++) {
- 		hdev->htqp[i].q.handle = &hdev->nic;
- 		hdev->htqp[i].q.tqp_index = i;
- 		kinfo->tqp[i] = &hdev->htqp[i].q;
--- 
-2.51.0
-
+--- a/fs/notify/fsnotify.c
++++ b/fs/notify/fsnotify.c
+@@ -224,8 +224,15 @@ int __fsnotify_parent(struct dentry *den
+ 	/*
+ 	 * Include parent/name in notification either if some notification
+ 	 * groups require parent info or the parent is interested in this event.
++	 * The parent interest in ACCESS/MODIFY events does not apply to special
++	 * files, where read/write are not on the filesystem of the parent and
++	 * events can provide an undesirable side-channel for information
++	 * exfiltration.
+ 	 */
+-	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS;
++	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS &&
++			    !(data_type == FSNOTIFY_EVENT_PATH &&
++			      d_is_special(dentry) &&
++			      (mask & (FS_ACCESS | FS_MODIFY)));
+ 	if (parent_needed || parent_interested) {
+ 		/* When notifying parent, child should be passed as data */
+ 		WARN_ON_ONCE(inode != fsnotify_data_inode(data, data_type));
 
 
 
