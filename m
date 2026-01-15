@@ -1,53 +1,52 @@
-Return-Path: <stable+bounces-208702-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209723-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id B948CD2613E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:06 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F058AD2723E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:04 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 2FC8F3025E32
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A9AD1316A4CC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B13F3350A05;
-	Thu, 15 Jan 2026 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D65E33BFE4C;
+	Thu, 15 Jan 2026 17:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FqLnUN1/"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BvBoau5U"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 74F942C028F;
-	Thu, 15 Jan 2026 17:03:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90B8C3D3D04;
+	Thu, 15 Jan 2026 17:51:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496603; cv=none; b=Wmsr9WphamLJnJ1hm3036O3/OTj3L/M9nUhK67Taml71QES14oQA3ameVrJkqThKSvQ0y0vtmA6G+372yYBAraLkXwJWLaJov1Qt2cFC2XYfxkZ8CAX5GQDclffFfqhyv421H8876xruvZsF3jaKPwecg5o9LkR7mvak7Li8kKY=
+	t=1768499507; cv=none; b=grasJ8GPYtTtjSQtlcZWttENE486nlNAaeyq0PB7ZxJTYJ6z5+YuYr00zN8NQYQAZnLHW1fKCyOhKTY3weGCgCvirt/amB6SRu029aBfW/KCS24pD3u0Vlpe/HvGe9Ck+UrTckxmTg/Sont3GrCIwvJzhRuFyjW3E9pc2SLegLc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496603; c=relaxed/simple;
-	bh=x4ckkry0keS64/YkmvC4zJvpKUOIUPepB2DfI6l90UA=;
+	s=arc-20240116; t=1768499507; c=relaxed/simple;
+	bh=dMz84Q2iKghKK3CXSLsS6U/2PpXdLdF8f2NJ7D2sR20=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=amrJBHLJzd4V/j3Tf6PvVpHwT6zfsWOrPAqHQzhM45FyOhsI8bj5LMaLcU9ZIL3J/u7/QcEp/Y/Hl4aOhvF5g4h/BeZ0sbPN+effDygyH/OLYSLAhce3qXkHcztLjAeg/3rOQvFgmD4Cshr4GsIydmiKwwdKUSirKJcnA5OrMU0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FqLnUN1/; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00072C116D0;
-	Thu, 15 Jan 2026 17:03:22 +0000 (UTC)
+	 MIME-Version; b=Go/LkBTAX95aucu4GXoALuslsY7KFNK0sJ1jc4pseAhyHD8+1UZONT0FAf0Z/eoMdAOIAH5XOPy09Bo3q6pdTRbIA8OuBzakgea7kHYTADIRPl1pF9x4vL4dha8trhaGgAQSS7CNj24YZ/73jh/CtxSN2pDPBLxhhZHQHV9TgtQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BvBoau5U; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DD25C116D0;
+	Thu, 15 Jan 2026 17:51:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496603;
-	bh=x4ckkry0keS64/YkmvC4zJvpKUOIUPepB2DfI6l90UA=;
+	s=korg; t=1768499507;
+	bh=dMz84Q2iKghKK3CXSLsS6U/2PpXdLdF8f2NJ7D2sR20=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=FqLnUN1/9Y+YgdzHAe7LIW6sgTSKq/ADC10FJ2vmJ1EGoqQMFKUkGebt4hJlAnUfn
-	 e7/0DQwz1dPJwDHlQ6babLQ1pUFBsoIi1xZZBtcpft5RVVeqmCbe4a/IXtT/O8fARF
-	 /Go75fLRL+uxL46/VERV5mffdLxO8YqYUrsd1X88=
+	b=BvBoau5U1w/X+XLGYgKMh3DGT8J7pP+KFOlVEJEC7TGmNhfvyHWywvHg1eT0Ulkfx
+	 IgNXdsBtXdczESXb3jEuJByCC3CDKY1OV5vL5ktE4NFZMLmpSMUDz/rYom+YbLZSC3
+	 rsZ8Y14sy1xWJpF6zOK6KRwnAAoNq9KnKiv8LJKQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 037/119] NFS: Fix up the automount fs_context to use the correct cred
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 251/451] parisc: Do not reprogram affinitiy on ASP chip
 Date: Thu, 15 Jan 2026 17:47:32 +0100
-Message-ID: <20260115164153.299809361@linuxfoundation.org>
+Message-ID: <20260115164239.971192549@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +58,41 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit a2a8fc27dd668e7562b5326b5ed2f1604cb1e2e9 ]
+commit dca7da244349eef4d78527cafc0bf80816b261f5 upstream.
 
-When automounting, the fs_context should be fixed up to use the cred
-from the parent filesystem, since the operation is just extending the
-namespace. Authorisation to enter that namespace will already have been
-provided by the preceding lookup.
+The ASP chip is a very old variant of the GSP chip and is used e.g. in
+HP 730 workstations. When trying to reprogram the affinity it will crash
+with a HPMC as the relevant registers don't seem to be at the usual
+location.  Let's avoid the crash by checking the sversion. Also note,
+that reprogramming isn't necessary either, as the HP730 is a just a
+single-CPU machine.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: stable@vger.kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/namespace.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/parisc/gsc.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 923b5c1eb47e9..99ef1146096fe 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -170,6 +170,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	if (!ctx->clone_data.fattr)
- 		goto out_fc;
+--- a/drivers/parisc/gsc.c
++++ b/drivers/parisc/gsc.c
+@@ -154,7 +154,9 @@ static int gsc_set_affinity_irq(struct i
+ 	gsc_dev->eim = ((u32) gsc_dev->gsc_irq.txn_addr) | gsc_dev->gsc_irq.txn_data;
  
-+	if (fc->cred != server->cred) {
-+		put_cred(fc->cred);
-+		fc->cred = get_cred(server->cred);
-+	}
-+
- 	if (fc->net_ns != client->cl_net) {
- 		put_net(fc->net_ns);
- 		fc->net_ns = get_net(client->cl_net);
--- 
-2.51.0
-
+ 	/* switch IRQ's for devices below LASI/WAX to other CPU */
+-	gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
++	/* ASP chip (svers 0x70) does not support reprogramming */
++	if (gsc_dev->gsc->id.sversion != 0x70)
++		gsc_writel(gsc_dev->eim, gsc_dev->hpa + OFFSET_IAR);
+ 
+ 	irq_data_update_effective_affinity(d, &tmask);
+ 
 
 
 
