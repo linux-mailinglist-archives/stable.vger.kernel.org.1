@@ -1,62 +1,56 @@
-Return-Path: <stable+bounces-209619-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209232-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1288ED27900
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:31:42 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C4D20D274AF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9018C3164C82
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9D04431173E3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CADC83BF30A;
-	Thu, 15 Jan 2026 17:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5180F3D3D13;
+	Thu, 15 Jan 2026 17:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HJnKM7nP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bDdjaY+i"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F2A03BFE5D;
-	Thu, 15 Jan 2026 17:46:52 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1504D3BFE3B;
+	Thu, 15 Jan 2026 17:28:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499212; cv=none; b=rfnAqigN4I4RIsObAcl34WJ8ob4hOcWgmfVH48t2Soot45xfTWr2SvDo/VSsZxpD0KdoXYAsnposneJbhMD7RjTNa5G3WflyHV23SW9DX3ZE5ygBSiBQSe2JUGLZfa2euaMVH33nF+5JhKZHECpfiTDaA6PIEM4Ufnc74g+eA/s=
+	t=1768498110; cv=none; b=FS8luoMvPjXghBHZhQ0p/x1/XJTGrWV7CHTqtZ49j3ufek+nud3Lbwv8vAeNbmIjseZhvBCtrhJVw4IBeuCeybwZ0B76X3PF/jjYDyGnBJGv1cj449rXqERevXiiNSpPU63xaeE0ndFdakNmQaLWZFJ4UaeYmbkfZe4cMRDkAXE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499212; c=relaxed/simple;
-	bh=zhO00BepGUpjnfHlKXK4G0w7uIt5DzxFkWUTk0XY8UM=;
+	s=arc-20240116; t=1768498110; c=relaxed/simple;
+	bh=Mt0k6bdguzT6rprkjhIureHscKRaMKExrAJacXdZnJE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GQBTQufU8eOm81U32T6HOtqTY3QSHvk4w8jmENy8coXFlXO6TcjX5T7UKwAaYhOkK+8bc5zRzU8ng+e+Bkk9yNzz+eqg1rDauY+PT8+1/bV8TOUdUnbCVZ2/Mrt/HSfwXdKPuCD8PWj47DBQ2fM1V8AFwhA6CTLoCbXnT7gOc7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HJnKM7nP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F277C116D0;
-	Thu, 15 Jan 2026 17:46:51 +0000 (UTC)
+	 MIME-Version; b=G5QunQe5lMFHZf+dr7z2lAbNJ99BewIGe2KNunJDS8LjuYddsoe9Dx8a1d4EyW3zC8q3RnwofmhXzEHpMxXMSuqwzqPZYufQpExrUiaU29w289K6Pecp6UmeifCqcyzCzAQruW2FnkaTIes6F0gjG8zIPqKDkUBCMM/z8hwHO98=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bDdjaY+i; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 956DDC16AAE;
+	Thu, 15 Jan 2026 17:28:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499212;
-	bh=zhO00BepGUpjnfHlKXK4G0w7uIt5DzxFkWUTk0XY8UM=;
+	s=korg; t=1768498110;
+	bh=Mt0k6bdguzT6rprkjhIureHscKRaMKExrAJacXdZnJE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=HJnKM7nPCX7GyKj0Ku0KKqGwSTCIm3qkqhzRzTPFIZaWKIQNwWhQjo0ZcqhZNAfx2
-	 6ifmnpGwPAEiXR0h2P5jWMPlTGEM00y5TBcbmTss7HF2DN3AUfk50+asrbK9SA3iDw
-	 aiEscYR6VLdu7Gge38+HXpxJ3rsg/91G+xhm+URo=
+	b=bDdjaY+ixaNlZbJA9KCRpsGpky2Sdcjy75S0WR9dZmhf2bHRWqBlgN3sNzc9Zsfnm
+	 A/HJa1C2/LuJQhU0uH6mrhMRxG5OQVEoevyrYRTzS10Xb6NI3IqEcfgz8uTWahombb
+	 6dWGCcgm42ZvAex57SBixAd0hdp60wthGd6Xn1WM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Dmitry Antipov <dmantipov@yandex.ru>,
-	syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com,
-	Heming Zhao <heming.zhao@suse.com>,
-	Joseph Qi <joseph.qi@linux.alibaba.com>,
-	Mark Fasheh <mark@fasheh.com>,
-	Joel Becker <jlbec@evilplan.org>,
-	Junxiao Bi <junxiao.bi@oracle.com>,
-	Changwei Ge <gechangwei@live.cn>,
-	Jun Piao <piaojun@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 147/451] ocfs2: fix memory leak in ocfs2_merge_rec_left()
-Date: Thu, 15 Jan 2026 17:45:48 +0100
-Message-ID: <20260115164236.233677052@linuxfoundation.org>
+	stable@kernel.org,
+	Karina Yankevich <k.yankevich@omp.ru>,
+	Sergey Shtylyov <s.shtylyov@omp.ru>,
+	Baokun Li <libaokun1@huawei.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.15 283/554] ext4: xattr: fix null pointer deref in ext4_raw_inode()
+Date: Thu, 15 Jan 2026 17:45:49 +0100
+Message-ID: <20260115164256.471493946@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -68,50 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Karina Yankevich <k.yankevich@omp.ru>
 
-[ Upstream commit 2214ec4bf89d0fd27717322d3983a2f3b469c7f3 ]
+commit b97cb7d6a051aa6ebd57906df0e26e9e36c26d14 upstream.
 
-In 'ocfs2_merge_rec_left()', do not reset 'left_path' to NULL after
-move, thus allowing 'ocfs2_free_path()' to free it before return.
+If ext4_get_inode_loc() fails (e.g. if it returns -EFSCORRUPTED),
+iloc.bh will remain set to NULL. Since ext4_xattr_inode_dec_ref_all()
+lacks error checking, this will lead to a null pointer dereference
+in ext4_raw_inode(), called right after ext4_get_inode_loc().
 
-Link: https://lkml.kernel.org/r/20251205065159.392749-1-dmantipov@yandex.ru
-Fixes: 677b975282e4 ("ocfs2: Add support for cross extent block")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Reported-by: syzbot+cfc7cab3bb6eaa7c4de2@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=cfc7cab3bb6eaa7c4de2
-Reviewed-by: Heming Zhao <heming.zhao@suse.com>
-Acked-by: Joseph Qi <joseph.qi@linux.alibaba.com>
-Cc: Mark Fasheh <mark@fasheh.com>
-Cc: Joel Becker <jlbec@evilplan.org>
-Cc: Junxiao Bi <junxiao.bi@oracle.com>
-Cc: Changwei Ge <gechangwei@live.cn>
-Cc: Jun Piao <piaojun@huawei.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Fixes: c8e008b60492 ("ext4: ignore xattrs past end")
+Cc: stable@kernel.org
+Signed-off-by: Karina Yankevich <k.yankevich@omp.ru>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Baokun Li <libaokun1@huawei.com>
+Message-ID: <20251022093253.3546296-1-k.yankevich@omp.ru>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ocfs2/alloc.c | 1 -
- 1 file changed, 1 deletion(-)
+ fs/ext4/xattr.c |    6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/fs/ocfs2/alloc.c b/fs/ocfs2/alloc.c
-index 94c7acfebe183..9f61a6d64cbce 100644
---- a/fs/ocfs2/alloc.c
-+++ b/fs/ocfs2/alloc.c
-@@ -3649,7 +3649,6 @@ static int ocfs2_merge_rec_left(struct ocfs2_path *right_path,
- 			 * So we use the new rightmost path.
- 			 */
- 			ocfs2_mv_path(right_path, left_path);
--			left_path = NULL;
- 		} else
- 			ocfs2_complete_edge_insert(handle, left_path,
- 						   right_path, subtree_index);
--- 
-2.51.0
-
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -1138,7 +1138,11 @@ ext4_xattr_inode_dec_ref_all(handle_t *h
+ 	if (block_csum)
+ 		end = (void *)bh->b_data + bh->b_size;
+ 	else {
+-		ext4_get_inode_loc(parent, &iloc);
++		err = ext4_get_inode_loc(parent, &iloc);
++		if (err) {
++			EXT4_ERROR_INODE(parent, "parent inode loc (error %d)", err);
++			return;
++		}
+ 		end = (void *)ext4_raw_inode(&iloc) + EXT4_SB(parent->i_sb)->s_inode_size;
+ 	}
+ 
 
 
 
