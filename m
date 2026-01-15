@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209843-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209419-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7483DD277A6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:56 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C911D26B6A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2201A30C1E6E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:09 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8294F30708EB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C12A23D3318;
-	Thu, 15 Jan 2026 17:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AD8ED2D6E6B;
+	Thu, 15 Jan 2026 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JdbGNcpI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="N9uW9IBx"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 835063D3012;
-	Thu, 15 Jan 2026 17:57:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7069E27A462;
+	Thu, 15 Jan 2026 17:37:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499848; cv=none; b=COyQgkZe2MXwR/XOoI0ggwSvlTViq61HqfPes+W9rJNFU31dfqncqXsoLiwIZTauVueXNfNbFSzhQccE8YRRzltgHcuwvd+1m4ssNwWqUz+V+tiV0J6a4RqluACs5u4NHpNx0HjA4XU/4g8XcGlMHUD7uDwpiEyNxN6xTUfVV6w=
+	t=1768498642; cv=none; b=vAFYvv6gB5ywJr2MUxjSW1iUiKA33olbLY30d5DxJt1TCYPR/ykO4QE6nYI3Q/T+fHGtCXDbe5mKfj1ikSOAxL7enrBaeqzoHx8PXZqr8+hXQc74/7HcmU5imCllaP3emcx/LIf5fN+z2I0p5yJ5WSrJLZdk2KFI1Iwso0rm06A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499848; c=relaxed/simple;
-	bh=6eh8DGzuGSOJua9ZovXFV1oghCLxA9D3Rhqxirawqpw=;
+	s=arc-20240116; t=1768498642; c=relaxed/simple;
+	bh=YzzZ2k3mm5C/GhO2pHI1h22RKPBkpc/jU+9NJUxZmsk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=q8Ggy2ydRJU97irOBxUVWAHnPnoDrNs1sQxNjgwaQueWbFjw6I8ndER9r0gGp6VbDKb91z9ah2DIJwLOW9/YK/V45p6ElCSrCFduxcaCzDLxM2ANCuXDYPgUFemizn49SPpJ4br9d2Bz9yN3nd+8lb/CenskXkP2yPMeitrY2N8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JdbGNcpI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ADA2C116D0;
-	Thu, 15 Jan 2026 17:57:27 +0000 (UTC)
+	 MIME-Version; b=RIRmnGdyHBFUpIEozEduxGvkokqg/sBsleeB8vTAu5VjQkcr9ovmgPQmVCxJtsjwX4DZVqABaVMnWCv3/pmq+hhLUQa/CPMUAq874Ov8un6Care9Yhrgz3gG0EEVyqHk82yywMKev17q4Jz+wPGzINKpMk8PizGtxUuPXMfflyE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=N9uW9IBx; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00BCEC116D0;
+	Thu, 15 Jan 2026 17:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499848;
-	bh=6eh8DGzuGSOJua9ZovXFV1oghCLxA9D3Rhqxirawqpw=;
+	s=korg; t=1768498642;
+	bh=YzzZ2k3mm5C/GhO2pHI1h22RKPBkpc/jU+9NJUxZmsk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=JdbGNcpI6cVqIUCZGQIIirUaQ1NLrjeI38D0mEStm3fu1HiS51murBuGpKCh/iRiO
-	 pw8JdjnP0mbVMfOgq9ZadFtNhWpYxfbT8c0l1yvWzWbzwjVfOTdWyDEUDereUbORoQ
-	 iHUHbM1obRuN2gXcwb8F5axGgNt8OsiF1wVTVh2Q=
+	b=N9uW9IBxR7dpL94pF3OowtsBbP3nn2K2HNZgWpRpiKd0lm5EKRQv2OFj/pkRf5lc6
+	 3xLySYHDWsXxLBov3WzdJAMZSF0bS8IjZ+aNmRE5ZbAdDPzehfYYa9tN+21s5Vo2zT
+	 uewZsTjiC1OwkR1Jnpk2DTEdZN7gv072J8xUjpTc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 369/451] NFSD: Clear SECLABEL in the suppattr_exclcreat bitmap
+	Qingfang Deng <dqfext@gmail.com>,
+	Ard Biesheuvel <ardb@kernel.org>,
+	Eric Biggers <ebiggers@kernel.org>
+Subject: [PATCH 5.15 504/554] lib/crypto: aes: Fix missing MMU protection for AES S-box
 Date: Thu, 15 Jan 2026 17:49:30 +0100
-Message-ID: <20260115164244.259167430@linuxfoundation.org>
+Message-ID: <20260115164304.560562100@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,59 +60,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Eric Biggers <ebiggers@kernel.org>
 
-[ Upstream commit 27d17641cacfedd816789b75d342430f6b912bd2 ]
+commit 74d74bb78aeccc9edc10db216d6be121cf7ec176 upstream.
 
->>From RFC 8881:
+__cacheline_aligned puts the data in the ".data..cacheline_aligned"
+section, which isn't marked read-only i.e. it doesn't receive MMU
+protection.  Replace it with ____cacheline_aligned which does the right
+thing and just aligns the data while keeping it in ".rodata".
 
-5.8.1.14. Attribute 75: suppattr_exclcreat
-
-> The bit vector that would set all REQUIRED and RECOMMENDED
-> attributes that are supported by the EXCLUSIVE4_1 method of file
-> creation via the OPEN operation. The scope of this attribute
-> applies to all objects with a matching fsid.
-
-There's nothing in RFC 8881 that states that suppattr_exclcreat is
-or is not allowed to contain bits for attributes that are clear in
-the reported supported_attrs bitmask. But it doesn't make sense for
-an NFS server to indicate that it /doesn't/ implement an attribute,
-but then also indicate that clients /are/ allowed to set that
-attribute using OPEN(create) with EXCLUSIVE4_1.
-
-Ensure that the SECURITY_LABEL and ACL bits are not set in the
-suppattr_exclcreat bitmask when they are also not set in the
-supported_attrs bitmask.
-
-Fixes: 8c18f2052e75 ("nfsd41: SUPPATTR_EXCLCREAT attribute")
+Fixes: b5e0b032b6c3 ("crypto: aes - add generic time invariant AES cipher")
 Cc: stable@vger.kernel.org
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[ Adjust context ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Qingfang Deng <dqfext@gmail.com>
+Closes: https://lore.kernel.org/r/20260105074712.498-1-dqfext@gmail.com/
+Acked-by: Ard Biesheuvel <ardb@kernel.org>
+Link: https://lore.kernel.org/r/20260107052023.174620-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4xdr.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ lib/crypto/aes.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -3408,6 +3408,11 @@ out_acl:
- 		u32 supp[3];
+--- a/lib/crypto/aes.c
++++ b/lib/crypto/aes.c
+@@ -12,7 +12,7 @@
+  * Emit the sbox as volatile const to prevent the compiler from doing
+  * constant folding on sbox references involving fixed indexes.
+  */
+-static volatile const u8 __cacheline_aligned aes_sbox[] = {
++static volatile const u8 ____cacheline_aligned aes_sbox[] = {
+ 	0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5,
+ 	0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
+ 	0xca, 0x82, 0xc9, 0x7d, 0xfa, 0x59, 0x47, 0xf0,
+@@ -47,7 +47,7 @@ static volatile const u8 __cacheline_ali
+ 	0x41, 0x99, 0x2d, 0x0f, 0xb0, 0x54, 0xbb, 0x16,
+ };
  
- 		memcpy(supp, nfsd_suppattrs[minorversion], sizeof(supp));
-+		if (!IS_POSIXACL(d_inode(dentry)))
-+			supp[0] &= ~FATTR4_WORD0_ACL;
-+		if (!contextsupport)
-+			supp[2] &= ~FATTR4_WORD2_SECURITY_LABEL;
-+
- 		supp[0] &= NFSD_SUPPATTR_EXCLCREAT_WORD0;
- 		supp[1] &= NFSD_SUPPATTR_EXCLCREAT_WORD1;
- 		supp[2] &= NFSD_SUPPATTR_EXCLCREAT_WORD2;
+-static volatile const u8 __cacheline_aligned aes_inv_sbox[] = {
++static volatile const u8 ____cacheline_aligned aes_inv_sbox[] = {
+ 	0x52, 0x09, 0x6a, 0xd5, 0x30, 0x36, 0xa5, 0x38,
+ 	0xbf, 0x40, 0xa3, 0x9e, 0x81, 0xf3, 0xd7, 0xfb,
+ 	0x7c, 0xe3, 0x39, 0x82, 0x9b, 0x2f, 0xff, 0x87,
 
 
 
