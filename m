@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209216-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209670-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 830E1D2745B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:14 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 0ACA7D26FB2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C6DFE30D9A97
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:30:52 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 2878A30A6EA4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:52:58 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CA9083D3CE0;
-	Thu, 15 Jan 2026 17:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4C8A63D5DBE;
+	Thu, 15 Jan 2026 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vopcLuAi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="HhoVE8yK"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7B4E43C00B3;
-	Thu, 15 Jan 2026 17:27:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0B66D3D5DBB;
+	Thu, 15 Jan 2026 17:49:17 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498064; cv=none; b=f1MEhTOAGJ7IVaVY5IutUul7WWe8VIlrRlrm1JioFfBmMYk4MOuh7u1xk5b0cfEqic770mD917Qsndqvnmq4I/gm0yjqEECkF/9mSs90EH9RRFHrXDLsS93nR+DL51i9UjOl5Vujxo/HbRDcEozcs9E6afFgwMj2E+gcMHeTJ8U=
+	t=1768499357; cv=none; b=UTAR1pM7n89lt7NKRCfuVywcyMywpoErgZYGLS73L4Cgewmf0EAd1/xWBIAcDdFO5TsudaOV6QbEe05Z3sWgJWxJZm1NCoMoVlvqos5Y0wlQIV052nRec4PQaZrL9HJrcRt/r7/WZBbSNPc+n8Xu/h+h6YoDyy8QLOKDXHwEbwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498064; c=relaxed/simple;
-	bh=E5wak5lpjmWGp9nESiZ8/o8YFG4mCG9RMYVXcwsYluA=;
+	s=arc-20240116; t=1768499357; c=relaxed/simple;
+	bh=gShcsjqcbn+QSLnhCVMUP1DVQgtctaYhVw3ozrNKg4I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=K2Fs8ajOsDRstrQO3yAHtRcqR9L3T61AthpK7ydPEoTNE0RKhEyt71R+EzljPBL6sKIwjE8OObVpTadFnD3GNNyP1IiMBO4TAt16CmQNnPbjnTAm1YCpsGwDboR9o+LmL2gL+7/xYQLVbwIMtqP/B94V+R8Y2IZ0NDLo/lRJALY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vopcLuAi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 025E4C19423;
-	Thu, 15 Jan 2026 17:27:43 +0000 (UTC)
+	 MIME-Version; b=opIc8jDbbiG4rDj2GmlaBF7rXkByv69npqIxaHyW8Bt63zu/iVtqVOix0pboqocrgEkOq89tZPO2EoDHl++R7M+3W50zf9oeHfq13ChB1vgUppLKLfIoqsNiMZztXOaJcM0ck3Ghd731/roHkbfEW66Xr+eORDLlnuinmCgUxjs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=HhoVE8yK; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 869A2C16AAE;
+	Thu, 15 Jan 2026 17:49:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498064;
-	bh=E5wak5lpjmWGp9nESiZ8/o8YFG4mCG9RMYVXcwsYluA=;
+	s=korg; t=1768499356;
+	bh=gShcsjqcbn+QSLnhCVMUP1DVQgtctaYhVw3ozrNKg4I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vopcLuAijdaEhNSnDLkxv7ui2mb/6SzJoFufx78iZikdYSkJiU7Dprp1ckPT+3ri2
-	 3dii0ns1Qxz43Q/vuS8QcIG2RE7BSb+rSgomS1f9XVLqTB9Yn5YwVecSQbUZp0bEmU
-	 pjN9bc3iENQPt3Hxjg5R8pLzTkKCxJQimZt7mGdQ=
+	b=HhoVE8yK6UQTouMbuSsMuAd9LE6G/U3+9v9t8/uUSYt9r0hS6AUtOzSpuDWKNfrS6
+	 objrCw40GEb4RIRn5CcGfyI/U9Dumuz6es44mNyQiG33h80wYN02ZYZbA8xq/ygQsy
+	 GS5+D8bTQaqSH3OLeux8UxDeM6UVS+PNijc+F8hc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 5.15 300/554] cpufreq: nforce2: fix reference count leak in nforce2
+	Viacheslav Dubeyko <slava@dubeyko.com>,
+	John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+	Yangtao Li <frank.li@vivo.com>,
+	linux-fsdevel@vger.kernel.org,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 165/451] hfsplus: fix volume corruption issue for generic/073
 Date: Thu, 15 Jan 2026 17:46:06 +0100
-Message-ID: <20260115164257.090425834@linuxfoundation.org>
+Message-ID: <20260115164236.878008488@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,60 +62,130 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaoqian Lin <linmq006@gmail.com>
+From: Viacheslav Dubeyko <slava@dubeyko.com>
 
-commit 9600156bb99852c216a2128cdf9f114eb67c350f upstream.
+[ Upstream commit 24e17a29cf7537f0947f26a50f85319abd723c6c ]
 
-There are two reference count leaks in this driver:
+The xfstests' test-case generic/073 leaves HFS+ volume
+in corrupted state:
 
-1. In nforce2_fsb_read(): pci_get_subsys() increases the reference count
-   of the PCI device, but pci_dev_put() is never called to release it,
-   thus leaking the reference.
+sudo ./check generic/073
+FSTYP -- hfsplus
+PLATFORM -- Linux/x86_64 hfsplus-testing-0001 6.17.0-rc1+ #4 SMP PREEMPT_DYNAMIC Wed Oct 1 15:02:44 PDT 2025
+MKFS_OPTIONS -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
 
-2. In nforce2_detect_chipset(): pci_get_subsys() gets a reference to the
-   nforce2_dev which is stored in a global variable, but the reference
-   is never released when the module is unloaded.
+generic/073 _check_generic_filesystem: filesystem on /dev/loop51 is inconsistent
+(see XFSTESTS-2/xfstests-dev/results//generic/073.full for details)
 
-Fix both by:
-- Adding pci_dev_put(nforce2_sub5) in nforce2_fsb_read() after reading
-  the configuration.
-- Adding pci_dev_put(nforce2_dev) in nforce2_exit() to release the
-  global device reference.
+Ran: generic/073
+Failures: generic/073
+Failed 1 of 1 tests
 
-Found via static analysis.
+sudo fsck.hfsplus -d /dev/loop51
+** /dev/loop51
+Using cacheBlockSize=32K cacheTotalBlock=1024 cacheSize=32768K.
+Executing fsck_hfs (version 540.1-Linux).
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+Invalid directory item count
+(It should be 1 instead of 0)
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+Verify Status: VIStat = 0x0000, ABTStat = 0x0000 EBTStat = 0x0000
+CBTStat = 0x0000 CatStat = 0x00004000
+** Repairing volume.
+** Rechecking volume.
+** Checking non-journaled HFS Plus Volume.
+The volume name is untitled
+** Checking extents overflow file.
+** Checking catalog file.
+** Checking multi-linked files.
+** Checking catalog hierarchy.
+** Checking extended attributes file.
+** Checking volume bitmap.
+** Checking volume information.
+** The volume untitled was repaired successfully.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Signed-off-by: Miaoqian Lin <linmq006@gmail.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The test is doing these steps on final phase:
+
+mv $SCRATCH_MNT/testdir_1/bar $SCRATCH_MNT/testdir_2/bar
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/testdir_1
+$XFS_IO_PROG -c "fsync" $SCRATCH_MNT/foo
+
+So, we move file bar from testdir_1 into testdir_2 folder. It means that HFS+
+logic decrements the number of entries in testdir_1 and increments number of
+entries in testdir_2. Finally, we do fsync only for testdir_1 and foo but not
+for testdir_2. As a result, this is the reason why fsck.hfsplus detects the
+volume corruption afterwards.
+
+This patch fixes the issue by means of adding the
+hfsplus_cat_write_inode() call for old_dir and new_dir in
+hfsplus_rename() after the successful ending of
+hfsplus_rename_cat(). This method makes modification of in-core
+inode objects for old_dir and new_dir but it doesn't save these
+modifications in Catalog File's entries. It was expected that
+hfsplus_write_inode() will save these modifications afterwards.
+However, because generic/073 does fsync only for testdir_1 and foo
+then testdir_2 modification hasn't beed saved into Catalog File's
+entry and it was flushed without this modification. And it was
+detected by fsck.hfsplus. Now, hfsplus_rename() stores in Catalog
+File all modified entries and correct state of Catalog File will
+be flushed during hfsplus_file_fsync() call. Finally, it makes
+fsck.hfsplus happy.
+
+sudo ./check generic/073
+FSTYP         -- hfsplus
+PLATFORM      -- Linux/x86_64 hfsplus-testing-0001 6.18.0-rc3+ #93 SMP PREEMPT_DYNAMIC Wed Nov 12 14:37:49 PST 2025
+MKFS_OPTIONS  -- /dev/loop51
+MOUNT_OPTIONS -- /dev/loop51 /mnt/scratch
+
+generic/073 32s ...  32s
+Ran: generic/073
+Passed all 1 tests
+
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+cc: Yangtao Li <frank.li@vivo.com>
+cc: linux-fsdevel@vger.kernel.org
+Link: https://lore.kernel.org/r/20251112232522.814038-1-slava@dubeyko.com
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq-nforce2.c |    3 +++
- 1 file changed, 3 insertions(+)
+ fs/hfsplus/dir.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/cpufreq/cpufreq-nforce2.c
-+++ b/drivers/cpufreq/cpufreq-nforce2.c
-@@ -145,6 +145,8 @@ static unsigned int nforce2_fsb_read(int
- 	pci_read_config_dword(nforce2_sub5, NFORCE2_BOOTFSB, &fsb);
- 	fsb /= 1000000;
- 
-+	pci_dev_put(nforce2_sub5);
+diff --git a/fs/hfsplus/dir.c b/fs/hfsplus/dir.c
+index 29a9dcfbe81f7..292cc06206a10 100644
+--- a/fs/hfsplus/dir.c
++++ b/fs/hfsplus/dir.c
+@@ -550,8 +550,13 @@ static int hfsplus_rename(struct inode *old_dir, struct dentry *old_dentry,
+ 	res = hfsplus_rename_cat((u32)(unsigned long)old_dentry->d_fsdata,
+ 				 old_dir, &old_dentry->d_name,
+ 				 new_dir, &new_dentry->d_name);
+-	if (!res)
++	if (!res) {
+ 		new_dentry->d_fsdata = old_dentry->d_fsdata;
 +
- 	/* Check if PLL register is already set */
- 	pci_read_config_byte(nforce2_dev, NFORCE2_PLLENABLE, (u8 *)&temp);
- 
-@@ -432,6 +434,7 @@ static int __init nforce2_init(void)
- static void __exit nforce2_exit(void)
- {
- 	cpufreq_unregister_driver(&nforce2_driver);
-+	pci_dev_put(nforce2_dev);
++		res = hfsplus_cat_write_inode(old_dir);
++		if (!res)
++			res = hfsplus_cat_write_inode(new_dir);
++	}
+ 	return res;
  }
  
- module_init(nforce2_init);
+-- 
+2.51.0
+
 
 
 
