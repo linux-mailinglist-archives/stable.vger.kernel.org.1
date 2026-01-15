@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209237-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209660-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2C9B5D2671F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 33709D279C5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:35:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 04924300EA08
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:03 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0DB253387A27
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:01 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 99B483C1975;
-	Thu, 15 Jan 2026 17:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B463D34AC;
+	Thu, 15 Jan 2026 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSu8+Xl6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSXEiMoD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 58AE23BFE4B;
-	Thu, 15 Jan 2026 17:28:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1C726E71F;
+	Thu, 15 Jan 2026 17:48:48 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498124; cv=none; b=BB+z3QyTl8maHJStO6aiiUohfKQmqqauqzC9LZDJri1d5K7hrXm10SqRzXI2M9l35v1lwyFvn3+YXX+2cfdXaOEFaTkOxUCjxGiO45OcTdlmrodWbbHg06Y0X1N2RzPaapUjvPXIq5AC9eKhlM7CuyLSdf2uZ06Wkzdei6TzSOc=
+	t=1768499328; cv=none; b=uwCVvKu8CQwFmDWk4MoJWhQ2/vZfLYcZZalYsertlleZvOwo02OaYGN13n0RLKiWTtK2qql7D/n/egiJB11QBEJMFDUriXI9YnBkdMJyVosHrLWM1/dntXkvVLnZ/DufbJAEDrYIV1WgL/Oa6GjUwAMVzfwdXuGqVXqv3pbjTjY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498124; c=relaxed/simple;
-	bh=SMqWPfR9OnaUm38rFMTbtwvmFchxbJSW/3D1HWzpXI4=;
+	s=arc-20240116; t=1768499328; c=relaxed/simple;
+	bh=9i3Ot30MvbqxOeAUR/TWjZd7Icw9xvIX4ZyxWl/3sSU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EaqUO6+XLdIsOkqHXP1iKnAwzEWjjwEX3zHTIbwqtZrhQypS/z9Lojsyy+qwOStxXtCMauDXrk8QnI9PQXTyeqAA4KsmuPktn2vRvdOVTXP+V58xyQg/xV+pBTXn1052cxvFZXW7d1oC61hJEnNsYzufIsIQctbSIESTmMBa+R0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSu8+Xl6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA4BEC116D0;
-	Thu, 15 Jan 2026 17:28:43 +0000 (UTC)
+	 MIME-Version; b=iq2geKMBVB5fW+kcGSPfO5Ato+QPyaILgHpD17wbxWEvvODFsjejUKoF+eEcE7LtL9ZkXNlbqt1VYCzublxSbUEZzC94sjVO0qaTm8ZNtpUI7JtFEG4FRwMHMrnkHzYHJ3GjO2amMM2Gsx9hmhJbOkGsvCZNuH70+x94S4VMIds=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSXEiMoD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A103C19422;
+	Thu, 15 Jan 2026 17:48:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498124;
-	bh=SMqWPfR9OnaUm38rFMTbtwvmFchxbJSW/3D1HWzpXI4=;
+	s=korg; t=1768499328;
+	bh=9i3Ot30MvbqxOeAUR/TWjZd7Icw9xvIX4ZyxWl/3sSU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSu8+Xl6V7ZQZiBXP3w9jP15xKRyXza16n5sm1XkICpiPueXv+4wuxcHMpLdY4oAF
-	 JltOe5u/YQnnUOIV5EeX0RZOS0cg+dbw57hY981dund4EvV61fO7zRTiopzjGt0/dA
-	 ZR7YLFiErIcwVC1Qrqh9K82SYaRWo5Rgso1Sd+VE=
+	b=iSXEiMoDc/6ajqx5zNEeWKuWQidvNYLntPpHIMoyd6CXWHml+IybrKG55jUv5Jayq
+	 ebfUsF+x9GvbTaP2sXOyOyHQWSXcYimT91kf8uIaU8vc6EsYGk9owf0ZItsMi0wVeQ
+	 caDJaEuJu6FdyPwuO5fZ+N1bl8516iuAzCEIYnio=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sudheendra Raghav Neela <sneela@tugraz.at>,
-	Amir Goldstein <amir73il@gmail.com>,
-	Jan Kara <jack@suse.cz>
-Subject: [PATCH 5.15 322/554] fsnotify: do not generate ACCESS/MODIFY events on child for special files
-Date: Thu, 15 Jan 2026 17:46:28 +0100
-Message-ID: <20260115164257.884351253@linuxfoundation.org>
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 188/451] net: hns3: add VLAN id validation before using
+Date: Thu, 15 Jan 2026 17:46:29 +0100
+Message-ID: <20260115164237.703621784@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,63 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amir Goldstein <amir73il@gmail.com>
+From: Jian Shen <shenjian15@huawei.com>
 
-commit 635bc4def026a24e071436f4f356ea08c0eed6ff upstream.
+[ Upstream commit 6ef935e65902bfed53980ad2754b06a284ea8ac1 ]
 
-inotify/fanotify do not allow users with no read access to a file to
-subscribe to events (e.g. IN_ACCESS/IN_MODIFY), but they do allow the
-same user to subscribe for watching events on children when the user
-has access to the parent directory (e.g. /dev).
+Currently, the VLAN id may be used without validation when
+receive a VLAN configuration mailbox from VF. The length of
+vlan_del_fail_bmap is BITS_TO_LONGS(VLAN_N_VID). It may cause
+out-of-bounds memory access once the VLAN id is bigger than
+or equal to VLAN_N_VID.
 
-Users with no read access to a file but with read access to its parent
-directory can still stat the file and see if it was accessed/modified
-via atime/mtime change.
+Therefore, VLAN id needs to be checked to ensure it is within
+the range of VLAN_N_VID.
 
-The same is not true for special files (e.g. /dev/null). Users will not
-generally observe atime/mtime changes when other users read/write to
-special files, only when someone sets atime/mtime via utimensat().
-
-Align fsnotify events with this stat behavior and do not generate
-ACCESS/MODIFY events to parent watchers on read/write of special files.
-The events are still generated to parent watchers on utimensat(). This
-closes some side-channels that could be possibly used for information
-exfiltration [1].
-
-[1] https://snee.la/pdf/pubs/file-notification-attacks.pdf
-
-Reported-by: Sudheendra Raghav Neela <sneela@tugraz.at>
-CC: stable@vger.kernel.org
-Signed-off-by: Amir Goldstein <amir73il@gmail.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251211023737.2327018-4-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/notify/fsnotify.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/notify/fsnotify.c
-+++ b/fs/notify/fsnotify.c
-@@ -224,8 +224,15 @@ int __fsnotify_parent(struct dentry *den
- 	/*
- 	 * Include parent/name in notification either if some notification
- 	 * groups require parent info or the parent is interested in this event.
-+	 * The parent interest in ACCESS/MODIFY events does not apply to special
-+	 * files, where read/write are not on the filesystem of the parent and
-+	 * events can provide an undesirable side-channel for information
-+	 * exfiltration.
- 	 */
--	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS;
-+	parent_interested = mask & p_mask & ALL_FSNOTIFY_EVENTS &&
-+			    !(data_type == FSNOTIFY_EVENT_PATH &&
-+			      d_is_special(dentry) &&
-+			      (mask & (FS_ACCESS | FS_MODIFY)));
- 	if (parent_needed || parent_interested) {
- 		/* When notifying parent, child should be passed as data */
- 		WARN_ON_ONCE(inode != fsnotify_data_inode(data, data_type));
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index aa987cad7cadf..99b5b956ed8f9 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -9196,6 +9196,9 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
+ 	bool writen_to_tbl = false;
+ 	int ret = 0;
+ 
++	if (vlan_id >= VLAN_N_VID)
++		return -EINVAL;
++
+ 	/* When device is resetting or reset failed, firmware is unable to
+ 	 * handle mailbox. Just record the vlan id, and remove it after
+ 	 * reset finished.
+-- 
+2.51.0
+
 
 
 
