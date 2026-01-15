@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208715-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209332-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26EA2D262F4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:13:51 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4218AD270EC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:03:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id EA74C30E092D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:01 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 2091B303AF2A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9AA2D39B4BF;
-	Thu, 15 Jan 2026 17:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A90FC3D1CBB;
+	Thu, 15 Jan 2026 17:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sx5jTgaQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ytHEPSx4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5D45E2D73A0;
-	Thu, 15 Jan 2026 17:04:00 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C1633C1FE0;
+	Thu, 15 Jan 2026 17:33:14 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496640; cv=none; b=IK1LL1nPJplNGp11Fvfz8JKj/PhFH6G6PXbS5+rCfbKTINX5VJ4T9w5aQC2ua4R5Ss3h4XjA9ptwJq+BEbaxWcSA17ztcv57Sxt7so9tCeIurL87s6gKjKcYw0D3iuUYCQ+9OuJ3UiwHgSkGu44x36NnLmoO14ewyg8MLjjpWII=
+	t=1768498394; cv=none; b=JzPWQfu/MgE3bO6WLJQhL6eDzFLQVLmqjSq60MJp8CDT+Up8nauKbPQolEA7sK2CRS15caQBmC6ALkGB2CHrVdsET6msfWKqxou/Q/ur4hjBNQ7WAcsrjEGe97Z1yumYa9pv8kjFz91N+8VtvtetYQT8Tgn02GUe4J8lt0Pffwc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496640; c=relaxed/simple;
-	bh=62p7FhhztHRNK8rDL1VY3JXsvWLo4B7cZEs9yuoOtO0=;
+	s=arc-20240116; t=1768498394; c=relaxed/simple;
+	bh=gJ59L8hCo+Adkyq+ZTMthQO2VWExKukWvpsWUcxo22s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kW3wKX/MdUR7UPKrm8/9/5FB6IgnOckhWBhmTRGgublcABvPr4IJwxC+LP6W/nhLVL0ioSJdbj1W7CZ+fwsFZGJ4kCXR8Lzc+Q8Fsiy2SFB4m6YpS7z90/LnN8s+LXaZ5g3myAA+8GAeRDgD+bnurWBdVPqGHuWsvrMCvk2CsZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sx5jTgaQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3621C116D0;
-	Thu, 15 Jan 2026 17:03:59 +0000 (UTC)
+	 MIME-Version; b=KmDLBlOQoKl0mQUmkY9fBWSIUuMf0obvkdRQFOSEXNgMx53DX4KXAUjK5Qy7r+6KZY6vEH9EY52SO/1gsnyBc99W+ScXAWcnDvRQKYNb4Sc7+awTH8preKHeu5vw0GZgH+LFnwLGZxqXrfzdURtACb1++fiCaAw2Cz47J/7Pmpk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ytHEPSx4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA05FC116D0;
+	Thu, 15 Jan 2026 17:33:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496640;
-	bh=62p7FhhztHRNK8rDL1VY3JXsvWLo4B7cZEs9yuoOtO0=;
+	s=korg; t=1768498394;
+	bh=gJ59L8hCo+Adkyq+ZTMthQO2VWExKukWvpsWUcxo22s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=sx5jTgaQBSP0XxfKmVFhhh4fmBaLzo5fRaKK0dB01k9nb9eZ7lMSgBi8b9Og5gNxq
-	 0+VPy+1qydVT+coHp1Fv90qmLs+bIECQtkgEWfQ0k+NzwV2g8TmXzBF1vZU0KTB+Y+
-	 Va2oq8IytKeO9Ak9z7WACCrCUW/Hay4UekMid53s=
+	b=ytHEPSx4zcCan7saONAM7wUdu0iQXnTXfdIS4wmkSyv6BPYi4y3wXO4tZvRwwgDHX
+	 eSizCKDZJAFjQA2asEUtNsb1OyMbmxVZ3cJ4SWPUwLCcsKWOms3VYt/j0W7YCvIwG3
+	 rcZ3cFihwQa5Vk00S3qRySsgVoYjeCJ1HpGvQ63o=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jerry Wu <w.7erry@foxmail.com>,
-	Vladimir Oltean <vladimir.oltean@nxp.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 066/119] net: mscc: ocelot: Fix crash when adding interface under a lag
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 415/554] mm/damon/tests/vaddr-kunit: handle alloc failures on damon_test_split_evenly_succ()
 Date: Thu, 15 Jan 2026 17:48:01 +0100
-Message-ID: <20260115164154.336941276@linuxfoundation.org>
+Message-ID: <20260115164301.260543627@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jerry Wu <w.7erry@foxmail.com>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 34f3ff52cb9fa7dbf04f5c734fcc4cb6ed5d1a95 ]
+commit 0a63a0e7570b9b2631dfb8d836dc572709dce39e upstream.
 
-Commit 15faa1f67ab4 ("lan966x: Fix crash when adding interface under a lag")
-fixed a similar issue in the lan966x driver caused by a NULL pointer dereference.
-The ocelot_set_aggr_pgids() function in the ocelot driver has similar logic
-and is susceptible to the same crash.
+damon_test_split_evenly_succ() is assuming all dynamic memory allocation
+in it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-This issue specifically affects the ocelot_vsc7514.c frontend, which leaves
-unused ports as NULL pointers. The felix_vsc9959.c frontend is unaffected as
-it uses the DSA framework which registers all ports.
-
-Fix this by checking if the port pointer is valid before accessing it.
-
-Fixes: 528d3f190c98 ("net: mscc: ocelot: drop the use of the "lags" array")
-Signed-off-by: Jerry Wu <w.7erry@foxmail.com>
-Reviewed-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Link: https://patch.msgid.link/tencent_75EF812B305E26B0869C673DD1160866C90A@qq.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-20-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/mscc/ocelot.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ mm/damon/vaddr-test.h |    9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mscc/ocelot.c b/drivers/net/ethernet/mscc/ocelot.c
-index 08bee56aea35f..c345d9b17c892 100644
---- a/drivers/net/ethernet/mscc/ocelot.c
-+++ b/drivers/net/ethernet/mscc/ocelot.c
-@@ -2307,14 +2307,16 @@ static void ocelot_set_aggr_pgids(struct ocelot *ocelot)
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -290,10 +290,17 @@ static void damon_test_split_evenly_succ
+ 	unsigned long start, unsigned long end, unsigned int nr_pieces)
+ {
+ 	struct damon_target *t = damon_new_target(42);
+-	struct damon_region *r = damon_new_region(start, end);
++	struct damon_region *r;
+ 	unsigned long expected_width = (end - start) / nr_pieces;
+ 	unsigned long i = 0;
  
- 	/* Now, set PGIDs for each active LAG */
- 	for (lag = 0; lag < ocelot->num_phys_ports; lag++) {
--		struct net_device *bond = ocelot->ports[lag]->bond;
-+		struct ocelot_port *ocelot_port = ocelot->ports[lag];
- 		int num_active_ports = 0;
-+		struct net_device *bond;
- 		unsigned long bond_mask;
- 		u8 aggr_idx[16];
- 
--		if (!bond || (visited & BIT(lag)))
-+		if (!ocelot_port || !ocelot_port->bond || (visited & BIT(lag)))
- 			continue;
- 
-+		bond = ocelot_port->bond;
- 		bond_mask = ocelot_get_bond_mask(ocelot, bond);
- 
- 		for_each_set_bit(port, &bond_mask, ocelot->num_phys_ports) {
--- 
-2.51.0
-
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++	r = damon_new_region(start, end);
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
+ 	damon_add_region(r, t);
+ 	KUNIT_EXPECT_EQ(test,
+ 			damon_va_evenly_split_region(t, r, nr_pieces), 0);
 
 
 
