@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209375-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208782-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8DDA0D26E70
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:54:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7C44ED26395
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 336BA318C688
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:40 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 1896E31757CB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:14 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D01323AE701;
-	Thu, 15 Jan 2026 17:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9E05D260569;
+	Thu, 15 Jan 2026 17:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="z19yUa5N"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pvfEHrkD"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 910F34C81;
-	Thu, 15 Jan 2026 17:35:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5EF873BB9F4;
+	Thu, 15 Jan 2026 17:07:07 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498516; cv=none; b=rwd4TZVWesNFhcMSeDqVTz505UFhjRLq6N6YhdfuuVgPQHHFzCotCa5FkX7rzccKNObYiX6ECH6jrQlXf3RDaWh3yEYGNKeDvcSuRl36Ys2AeMOtvWkkPS3VyilFjPPtjhJolUtilAgN5h/lnc4YTfTek8BF0J82OyPTueYfh7E=
+	t=1768496827; cv=none; b=cguSiwE+pzor4yu9u34EP6FirbnWdmWWQZ4cgw0RGu9Az9Yxl1L4z9jl7WRiF3ByVfy1ZSKgQWXF8Z5f7DD/xzJzzpJ6Gx6HxCn17DXDh80BAk2MVKkWyHpSQ9HYvxuOfG223Kj5RXNNx3+75lGYm2X2mpnUndNc8MJUdO44LrY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498516; c=relaxed/simple;
-	bh=xx5PG68XQ1e+l1VEeQj5fc/jjT7ZDdWfY1qX5JaFZgo=;
+	s=arc-20240116; t=1768496827; c=relaxed/simple;
+	bh=/RwHM9lte/Xjb3olM7Mn8JMfa0B3h6VDLg7KM/fMIIU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbFXc/bU2HSA2v98j+1vH3XCJSrJHVVxU9nmkAVhrqXJItezAf+yktB1z6Lf/cwgTUT6xVZwqXvl4P7+9ynBV+sR0bLyNrJqB6RTnyEvpoe3xSZ0aXjxtZzN9w66xWbWKqri2rUp4oXnQ7+HiBMAPMaDtS2AnRSEqG/MyfK5aks=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=z19yUa5N; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6D8DC16AAE;
-	Thu, 15 Jan 2026 17:35:15 +0000 (UTC)
+	 MIME-Version; b=NgwgH4DCncVdyvmvvenhaUdEvx9WvgLfhwkbOjwrBOkaMNQ+wfQKAfw3yVKLBsdjr9dGB5uXi+ZG8XYhm7hGXosx8K0D0csDRg9g7mISN667eUCV6RxqxFsQWQsTCchu4n2YD8wzvNbLSOOwNHAbTgOd1Gt17haktWnK8WH6tcc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pvfEHrkD; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE8D6C116D0;
+	Thu, 15 Jan 2026 17:07:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498516;
-	bh=xx5PG68XQ1e+l1VEeQj5fc/jjT7ZDdWfY1qX5JaFZgo=;
+	s=korg; t=1768496827;
+	bh=/RwHM9lte/Xjb3olM7Mn8JMfa0B3h6VDLg7KM/fMIIU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=z19yUa5NBdZdAWQQ/DSNxBWrxhmebRm9wuhWSfGLIZFsjPQttgU6RdsxbSXXaGJv2
-	 B85FLz73WR5WxQfPXxFPeNvyEyYAHwa07EXAuuizzd9HV6xRb9gD4cI3C2bqh1bFAh
-	 tHdVoy7LAwybkyIB0iMfARdEUHK66ozqP9Uf8Kng=
+	b=pvfEHrkDYqbVWZtW6KnySZCMOtfNSv2KOkxxAh/8ZLUqp7Q1CaQxyhrTimVTokzq4
+	 bo3m/2Co8wH8LbUatodKGUpTltGtCdTpD2a29JRQ4WPcPGwz0I2VAdCKPQuvmASWQ2
+	 s/E8Jtu7VepPtW4lqfeDyJ//jZLsTDiODDLwxWoU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Niklas Neronin <niklas.neronin@linux.intel.com>,
-	Mathias Nyman <mathias.nyman@linux.intel.com>,
-	Shivani Agarwal <shivani.agarwal@broadcom.com>
-Subject: [PATCH 5.15 426/554] usb: xhci: move link chain bit quirk checks into one helper function.
+	Linus Walleij <linus.walleij@linaro.org>,
+	Arnd Bergmann <arnd@arndb.de>,
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 29/88] ARM: 9461/1: Disable HIGHPTE on PREEMPT_RT kernels
 Date: Thu, 15 Jan 2026 17:48:12 +0100
-Message-ID: <20260115164301.679709786@linuxfoundation.org>
+Message-ID: <20260115164147.367851909@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,105 +62,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Niklas Neronin <niklas.neronin@linux.intel.com>
+From: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
 
-commit 7476a2215c07703db5e95efaa3fc5b9f957b9417 upstream.
+[ Upstream commit fedadc4137234c3d00c4785eeed3e747fe9036ae ]
 
-Older 0.95 xHCI hosts and some other specific newer hosts require the
-chain bit to be set for Link TRBs even if the link TRB is not in the
-middle of a transfer descriptor (TD).
+gup_pgd_range() is invoked with disabled interrupts and invokes
+__kmap_local_page_prot() via pte_offset_map(), gup_p4d_range().
+With HIGHPTE enabled, __kmap_local_page_prot() invokes kmap_high_get()
+which uses a spinlock_t via lock_kmap_any(). This leads to an
+sleeping-while-atomic error on PREEMPT_RT because spinlock_t becomes a
+sleeping lock and must not be acquired in atomic context.
 
-move the checks for all those cases  into one xhci_link_chain_quirk()
-function to clean up and avoid code duplication.
+The loop in map_new_virtual() uses wait_queue_head_t for wake up which
+also is using a spinlock_t.
 
-No functional changes.
+Since HIGHPTE is rarely needed at all, turn it off for PREEMPT_RT
+to allow the use of get_user_pages_fast().
 
-[skip renaming chain_links flag, reword commit message -Mathias]
+[arnd: rework patch to turn off HIGHPTE instead of HAVE_PAST_GUP]
 
-Signed-off-by: Niklas Neronin <niklas.neronin@linux.intel.com>
-Signed-off-by: Mathias Nyman <mathias.nyman@linux.intel.com>
-Link: https://lore.kernel.org/r/20240626124835.1023046-10-mathias.nyman@linux.intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-[Shivani: Modified to apply on v5.10.y-v6.1.y]
-Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Co-developed-by: Arnd Bergmann <arnd@arndb.de>
+
+Acked-by: Linus Walleij <linus.walleij@linaro.org>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/host/xhci-mem.c  |   10 ++--------
- drivers/usb/host/xhci-ring.c |    8 ++------
- drivers/usb/host/xhci.h      |    7 +++++--
- 3 files changed, 9 insertions(+), 16 deletions(-)
+ arch/arm/Kconfig | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/host/xhci-mem.c
-+++ b/drivers/usb/host/xhci-mem.c
-@@ -133,10 +133,7 @@ static void xhci_link_rings(struct xhci_
- 	if (!ring || !first || !last)
- 		return;
+diff --git a/arch/arm/Kconfig b/arch/arm/Kconfig
+index 57c0448d017a1..be3b0f83eee57 100644
+--- a/arch/arm/Kconfig
++++ b/arch/arm/Kconfig
+@@ -1308,7 +1308,7 @@ config HIGHMEM
  
--	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
--	chain_links = !!(xhci_link_trb_quirk(xhci) ||
--			 (ring->type == TYPE_ISOC &&
--			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
-+	chain_links = xhci_link_chain_quirk(xhci, ring->type);
- 
- 	next = ring->enq_seg->next;
- 	xhci_link_segments(ring->enq_seg, first, ring->type, chain_links);
-@@ -326,10 +323,7 @@ static int xhci_alloc_segments_for_ring(
- 	struct xhci_segment *prev;
- 	bool chain_links;
- 
--	/* Set chain bit for 0.95 hosts, and for isoc rings on AMD 0.96 host */
--	chain_links = !!(xhci_link_trb_quirk(xhci) ||
--			 (type == TYPE_ISOC &&
--			  (xhci->quirks & XHCI_AMD_0x96_HOST)));
-+	chain_links = xhci_link_chain_quirk(xhci, type);
- 
- 	prev = xhci_segment_alloc(xhci, cycle_state, max_packet, flags);
- 	if (!prev)
---- a/drivers/usb/host/xhci-ring.c
-+++ b/drivers/usb/host/xhci-ring.c
-@@ -250,9 +250,7 @@ static void inc_enq(struct xhci_hcd *xhc
- 		 * AMD 0.96 host, carry over the chain bit of the previous TRB
- 		 * (which may mean the chain bit is cleared).
- 		 */
--		if (!(ring->type == TYPE_ISOC &&
--		      (xhci->quirks & XHCI_AMD_0x96_HOST)) &&
--		    !xhci_link_trb_quirk(xhci)) {
-+		if (!xhci_link_chain_quirk(xhci, ring->type)) {
- 			next->link.control &= cpu_to_le32(~TRB_CHAIN);
- 			next->link.control |= cpu_to_le32(chain);
- 		}
-@@ -3425,9 +3423,7 @@ static int prepare_ring(struct xhci_hcd
- 		/* If we're not dealing with 0.95 hardware or isoc rings
- 		 * on AMD 0.96 host, clear the chain bit.
- 		 */
--		if (!xhci_link_trb_quirk(xhci) &&
--		    !(ep_ring->type == TYPE_ISOC &&
--		      (xhci->quirks & XHCI_AMD_0x96_HOST)))
-+		if (!xhci_link_chain_quirk(xhci, ep_ring->type))
- 			ep_ring->enqueue->link.control &=
- 				cpu_to_le32(~TRB_CHAIN);
- 		else
---- a/drivers/usb/host/xhci.h
-+++ b/drivers/usb/host/xhci.h
-@@ -1768,9 +1768,12 @@ static inline void xhci_write_64(struct
- 	lo_hi_writeq(val, regs);
- }
- 
--static inline int xhci_link_trb_quirk(struct xhci_hcd *xhci)
-+
-+/* Link TRB chain should always be set on 0.95 hosts, and AMD 0.96 ISOC rings */
-+static inline bool xhci_link_chain_quirk(struct xhci_hcd *xhci, enum xhci_ring_type type)
- {
--	return xhci->quirks & XHCI_LINK_TRB_QUIRK;
-+	return (xhci->quirks & XHCI_LINK_TRB_QUIRK) ||
-+	       (type == TYPE_ISOC && (xhci->quirks & XHCI_AMD_0x96_HOST));
- }
- 
- /* xHCI debugging */
+ config HIGHPTE
+ 	bool "Allocate 2nd-level pagetables from highmem" if EXPERT
+-	depends on HIGHMEM
++	depends on HIGHMEM && !PREEMPT_RT
+ 	default y
+ 	help
+ 	  The VM uses one page of physical memory for each page table.
+-- 
+2.51.0
+
 
 
 
