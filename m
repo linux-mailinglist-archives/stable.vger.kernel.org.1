@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209056-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209492-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3EFFD26A22
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:17 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 2133CD26D35
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C4F29319C855
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:10 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9EFAB30DA4F0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 235D52D780A;
-	Thu, 15 Jan 2026 17:20:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE4263AA1A8;
+	Thu, 15 Jan 2026 17:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kq+PEyZn"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QGkhIzoL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DB51D15530C;
-	Thu, 15 Jan 2026 17:20:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F6ED3A0E9A;
+	Thu, 15 Jan 2026 17:40:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497609; cv=none; b=Y4uM/ScqLzj3mogwF2qzSBI9yxGFHkljvanXFw9kQL9m5nctmn/K0RmnPHkaoJV5orbb2VdtuUhCtGFsETF4qVZbcrEtRbU1ghXJI4Ax1OfZdi3IHfYA4l1XKOBRAjYuEm+NBqZaeriiyiA6cLVJ8A1iASBjRlFhdJcWk0icVVo=
+	t=1768498850; cv=none; b=sVLJqjcjS7giU/rGlwv74HsThIbAEMa8RJgQu3WAjzAPFQj1ZBAQ2QvLyRiHtylHmY+Htxukl60bVUMwBKuPbWK2eZaiRYMwIBoHuJWBArHUE+1XqN+IHYjrLgQ/oMIGvgmq7kMdqSR9uJ7tl8eQVjWJ61BqTn3aoKH5VQWkSAo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497609; c=relaxed/simple;
-	bh=GivHQIFwhmiC4F9aSfR4UZD1MxzU+dd3LBSo937oyvw=;
+	s=arc-20240116; t=1768498850; c=relaxed/simple;
+	bh=S79HGThcbZ75zQqgvzvT6b3wCG5FjL88d5RFfSfvdns=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SuCpY5bLBNkUTvlAnzjpkCLihDCu7f75aWQnUhHdzJEtd7OXzpFH8arCqJgnxXtF/M84ewRGNW2YsZcp8/Xj8tuZesRdcl53Q7C+cD0929TcJ4+EdI1+s/jjpdAJQ7oMzQX4Gq9UYj+zQQFZwsfq6Ch2w11uC/0PM7Qohj+xVng=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kq+PEyZn; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65548C16AAE;
-	Thu, 15 Jan 2026 17:20:09 +0000 (UTC)
+	 MIME-Version; b=Ci4eTOd5nTcrAJ4oCGUWe5y+dQevaOM/wfXRDzTF5aj3+6wI2JuSfoWz248+OWYIf+QJWN5AcPC4CSU1SS9Og0eCMKAnyXLBYeCoUIjDFel1xlJA7LFkSU672gngxPPqDBcB+Y0wZ1yun3b57leFMxIoNxS3ldoezuVLDLkI0NQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QGkhIzoL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6883C116D0;
+	Thu, 15 Jan 2026 17:40:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497609;
-	bh=GivHQIFwhmiC4F9aSfR4UZD1MxzU+dd3LBSo937oyvw=;
+	s=korg; t=1768498850;
+	bh=S79HGThcbZ75zQqgvzvT6b3wCG5FjL88d5RFfSfvdns=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Kq+PEyZnzSp/CtgjS5K0FglhKkFlzw62YznDP4Y/VTz2oeGfv5gfCO+bQjbl8CkSe
-	 DKdfX8iel5m0DTjT7fkQQ3w70LVDE8ghu8uBoFH99BQlsL2zNU1vXscokYz2GrTWnv
-	 5g7rH4qgQxJmVJcDM4JYtPRWjWSNqNztecwgRWNc=
+	b=QGkhIzoLHM544Pngzs3bBXxIBJCQjiqDpoWDZfpogeE4EuTBTOJX903hdLq7cQivi
+	 3sF0OK5ZYww6OYg/m4BL6JIg64OUD4lHyqig63dACyvDloF8Vu8qhr5ZlSIXGmLLgL
+	 dOGHwWzBpVKzg/4eBeFM2kZVZc5WDji0gtqz2hNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Krzysztof Czurylo <krzysztof.czurylo@intel.com>,
-	Tatyana Nikolova <tatyana.e.nikolova@intel.com>,
-	Leon Romanovsky <leon@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 142/554] RDMA/irdma: Fix data race in irdma_free_pble
+	syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com,
+	stable@kernel.org,
+	Deepanshu Kartikey <kartikey406@gmail.com>,
+	Theodore Tso <tytso@mit.edu>
+Subject: [PATCH 5.10 007/451] ext4: refresh inline data size before write operations
 Date: Thu, 15 Jan 2026 17:43:28 +0100
-Message-ID: <20260115164251.391252814@linuxfoundation.org>
+Message-ID: <20260115164231.146038957@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,85 +61,72 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
+From: Deepanshu Kartikey <kartikey406@gmail.com>
 
-[ Upstream commit 81f44409fb4f027d1e6d54edbeba5156ad94b214 ]
+commit 892e1cf17555735e9d021ab036c36bc7b58b0e3b upstream.
 
-Protects pble_rsrc counters with mutex to prevent data race.
-Fixes the following data race in irdma_free_pble reported by KCSAN:
+The cached ei->i_inline_size can become stale between the initial size
+check and when ext4_update_inline_data()/ext4_create_inline_data() use
+it. Although ext4_get_max_inline_size() reads the correct value at the
+time of the check, concurrent xattr operations can modify i_inline_size
+before ext4_write_lock_xattr() is acquired.
 
-BUG: KCSAN: data-race in irdma_free_pble [irdma] / irdma_free_pble [irdma]
+This causes ext4_update_inline_data() and ext4_create_inline_data() to
+work with stale capacity values, leading to a BUG_ON() crash in
+ext4_write_inline_data():
 
-write to 0xffff91430baa0078 of 8 bytes by task 16956 on cpu 5:
- irdma_free_pble+0x3b/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+  kernel BUG at fs/ext4/inline.c:1331!
+  BUG_ON(pos + len > EXT4_I(inode)->i_inline_size);
 
-read to 0xffff91430baa0078 of 8 bytes by task 16953 on cpu 2:
- irdma_free_pble+0x23/0xb0 [irdma]
- irdma_dereg_mr+0x108/0x110 [irdma]
- ib_dereg_mr_user+0x74/0x160 [ib_core]
- uverbs_free_mr+0x26/0x30 [ib_uverbs]
- destroy_hw_idr_uobject+0x4a/0x90 [ib_uverbs]
- uverbs_destroy_uobject+0x7b/0x330 [ib_uverbs]
- uobj_destroy+0x61/0xb0 [ib_uverbs]
- ib_uverbs_run_method+0x1f2/0x380 [ib_uverbs]
- ib_uverbs_cmd_verbs+0x365/0x440 [ib_uverbs]
- ib_uverbs_ioctl+0x111/0x190 [ib_uverbs]
- __x64_sys_ioctl+0xc9/0x100
- do_syscall_64+0x44/0xa0
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+The race window:
+1. ext4_get_max_inline_size() reads i_inline_size = 60 (correct)
+2. Size check passes for 50-byte write
+3. [Another thread adds xattr, i_inline_size changes to 40]
+4. ext4_write_lock_xattr() acquires lock
+5. ext4_update_inline_data() uses stale i_inline_size = 60
+6. Attempts to write 50 bytes but only 40 bytes actually available
+7. BUG_ON() triggers
 
-value changed: 0x0000000000005a62 -> 0x0000000000005a68
+Fix this by recalculating i_inline_size via ext4_find_inline_data_nolock()
+immediately after acquiring xattr_sem. This ensures ext4_update_inline_data()
+and ext4_create_inline_data() work with current values that are protected
+from concurrent modifications.
 
-Fixes: e8c4dbc2fcac ("RDMA/irdma: Add PBLE resource manager")
-Signed-off-by: Krzysztof Czurylo <krzysztof.czurylo@intel.com>
-Signed-off-by: Tatyana Nikolova <tatyana.e.nikolova@intel.com>
-Link: https://patch.msgid.link/20251125025350.180-3-tatyana.e.nikolova@intel.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This is similar to commit a54c4613dac1 ("ext4: fix race writing to an
+inline_data file while its xattrs are changing") which fixed i_inline_off
+staleness. This patch addresses the related i_inline_size staleness issue.
+
+Reported-by: syzbot+f3185be57d7e8dda32b8@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=f3185be57d7e8dda32b8
+Cc: stable@kernel.org
+Signed-off-by: Deepanshu Kartikey <kartikey406@gmail.com>
+Message-ID: <20251020060936.474314-1-kartikey406@gmail.com>
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/irdma/pble.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/ext4/inline.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/irdma/pble.c b/drivers/infiniband/hw/irdma/pble.c
-index 6562592695b70..f4d5d1cee681f 100644
---- a/drivers/infiniband/hw/irdma/pble.c
-+++ b/drivers/infiniband/hw/irdma/pble.c
-@@ -507,12 +507,14 @@ enum irdma_status_code irdma_get_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- void irdma_free_pble(struct irdma_hmc_pble_rsrc *pble_rsrc,
- 		     struct irdma_pble_alloc *palloc)
- {
--	pble_rsrc->freedpbles += palloc->total_cnt;
+--- a/fs/ext4/inline.c
++++ b/fs/ext4/inline.c
+@@ -410,7 +410,12 @@ static int ext4_prepare_inline_data(hand
+ 		return -ENOSPC;
+ 
+ 	ext4_write_lock_xattr(inode, &no_expand);
 -
- 	if (palloc->level == PBLE_LEVEL_2)
- 		free_lvl2(pble_rsrc, palloc);
++	/*
++	 * ei->i_inline_size may have changed since the initial check
++	 * if other xattrs were added. Recalculate to ensure
++	 * ext4_update_inline_data() validates against current capacity.
++	 */
++	(void) ext4_find_inline_data_nolock(inode);
+ 	if (ei->i_inline_off)
+ 		ret = ext4_update_inline_data(handle, inode, len);
  	else
- 		irdma_prm_return_pbles(&pble_rsrc->pinfo,
- 				       &palloc->level1.chunkinfo);
-+
-+	mutex_lock(&pble_rsrc->pble_mutex_lock);
-+	pble_rsrc->freedpbles += palloc->total_cnt;
- 	pble_rsrc->stats_alloc_freed++;
-+	mutex_unlock(&pble_rsrc->pble_mutex_lock);
- }
--- 
-2.51.0
-
 
 
 
