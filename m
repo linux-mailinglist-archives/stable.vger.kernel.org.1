@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208696-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209328-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D19D6D26229
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:16 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 88A27D26DE3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id D974731314D5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:07 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C308E32F5CEB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:32 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8FFBD2D73A0;
-	Thu, 15 Jan 2026 17:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7261C3C1FC8;
+	Thu, 15 Jan 2026 17:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GDkLHMzm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vgU6G+hF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 54A522D73BE;
-	Thu, 15 Jan 2026 17:03:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3351F3BF31F;
+	Thu, 15 Jan 2026 17:33:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496586; cv=none; b=uMRZWUECtYeKf3BWw4YJDbCflQxHg3JYNjOwFbVd8TtdOtsQo8REdoGS/j3Du49ioMVhOAcmlsyqYmI9HYh4PJqjJU/HkNoNsXrrNVGTj96yK9sfuSLEmAL2LO6VBCIw5fyS06t4kILpR3yFrVhLUI2jWNv1nhKeG3pAe3WWO5g=
+	t=1768498383; cv=none; b=WX7iPCHQ1SptAGchjA9Wy73RBsYmokScivOMrORvIaKOtBpg1vIx/HrfB0zsmjzVjGrcrzZUJK+tPbQJwAZJ6fSElBLLUshPaE2bssRvhokR2zCJjHfCVbN+uLKPM+cro/DtVLZMTkxHk3dr7qLF+qAP3KplTYtk5Cq+ZcFfSA4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496586; c=relaxed/simple;
-	bh=tFlVnIQEStf/XH5ABTmZyz0BamqSFlhOyIurXDJM2/k=;
+	s=arc-20240116; t=1768498383; c=relaxed/simple;
+	bh=NtReQYVZznkCk4BAg4wNTtjFYLItBYJVt2Q+tHJEWhs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IXUG8Ar6hGrqAr9J8TtfspUg4e5ZxwezmUExvaI4WX75u3PuhgzVA30GL0PXdEodMK5wejAooHVdHF2OdGnFgP3vtZlbI1FkfwiozVOr5+t5rwIKG+gIAZ4VzRRvNL40dX+WZwWOrA/xm6d8WA2cBwp1LNY9Dy0SpPCwzQ1XyuA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GDkLHMzm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7B4CC116D0;
-	Thu, 15 Jan 2026 17:03:05 +0000 (UTC)
+	 MIME-Version; b=RBp9HhX68aenMs6GRlGs5OWrx/S4tZikLRovLlu8Um1Q6J/v0jml9wNjSywdC/xbdn+VqNxzMUr1DSGXrGgQoV9PhDLxKnvMRywKIjokVTaZ8A/tFJv2OSkQtfcRNSEjG1VqiEgBO4lakPod6tzxKbUPuRQFRk3MOnaYHUF1CDM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vgU6G+hF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B34A2C116D0;
+	Thu, 15 Jan 2026 17:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496586;
-	bh=tFlVnIQEStf/XH5ABTmZyz0BamqSFlhOyIurXDJM2/k=;
+	s=korg; t=1768498383;
+	bh=NtReQYVZznkCk4BAg4wNTtjFYLItBYJVt2Q+tHJEWhs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GDkLHMzmcQ+SRKpX9AewvnrZFYRIriGR7zi4bxnOeAhGti+O0PKDV4ANK0PBa0mXc
-	 Pjs4//ohtqlrWLrlEjn5cDNSswbxv+tIGA5pMUvU3TX3U/ZNy3YLdkziH8/P453ab1
-	 awr01vwueEgdUo+3kRV19lKebr9WVzWjJ7/0QGjk=
+	b=vgU6G+hFLyMe9i31LUt36a5SrB5iX/GZ2GUYuPSr0xokHN4pQjKoEDu9ZJAQamFIh
+	 0xjK4mQkKk77JQLS1XGuKZ5TiZuioQr0PqEInjmpIRYi7YElSNw7cT6Rmwwy0lXZY3
+	 SDCTBDT0h7gYn9e5jjoPY0hSZWp4Mp7W5CQvhInc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 063/119] netfilter: nf_conncount: update last_gc only when GC has been performed
+	SeongJae Park <sj@kernel.org>,
+	Brendan Higgins <brendan.higgins@linux.dev>,
+	David Gow <davidgow@google.com>,
+	Kefeng Wang <wangkefeng.wang@huawei.com>,
+	Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.15 412/554] mm/damon/tests/vaddr-kunit: handle alloc failures in damon_test_split_evenly_fail()
 Date: Thu, 15 Jan 2026 17:47:58 +0100
-Message-ID: <20260115164154.230450359@linuxfoundation.org>
+Message-ID: <20260115164301.147612282@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,52 +62,55 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: SeongJae Park <sj@kernel.org>
 
-[ Upstream commit 7811ba452402d58628e68faedf38745b3d485e3c ]
+commit 7890e5b5bb6e386155c6e755fe70e0cdcc77f18e upstream.
 
-Currently last_gc is being updated everytime a new connection is
-tracked, that means that it is updated even if a GC wasn't performed.
-With a sufficiently high packet rate, it is possible to always bypass
-the GC, causing the list to grow infinitely.
+damon_test_split_evenly_fail() is assuming all dynamic memory allocation
+in it will succeed.  Those are indeed likely in the real use cases since
+those allocations are too small to fail, but theoretically those could
+fail.  In the case, inappropriate memory access can happen.  Fix it by
+appropriately cleanup pre-allocated memory and skip the execution of the
+remaining tests in the failure cases.
 
-Update the last_gc value only when a GC has been actually performed.
-
-Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20251101182021.74868-19-sj@kernel.org
+Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Cc: Brendan Higgins <brendan.higgins@linux.dev>
+Cc: David Gow <davidgow@google.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: <stable@vger.kernel.org>	[5.15+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: SeongJae Park <sj@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conncount.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/damon/vaddr-test.h |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/nf_conncount.c b/net/netfilter/nf_conncount.c
-index 3c1b155f7a0ea..828d5c64c68a3 100644
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -229,6 +229,7 @@ static int __nf_conncount_add(struct net *net,
+--- a/mm/damon/vaddr-test.h
++++ b/mm/damon/vaddr-test.h
+@@ -256,7 +256,16 @@ static void damon_test_split_evenly_fail
+ 		unsigned long start, unsigned long end, unsigned int nr_pieces)
+ {
+ 	struct damon_target *t = damon_new_target(42);
+-	struct damon_region *r = damon_new_region(start, end);
++	struct damon_region *r;
++
++	if (!t)
++		kunit_skip(test, "target alloc fail");
++
++	r = damon_new_region(start, end);
++	if (!r) {
++		damon_free_target(t);
++		kunit_skip(test, "region alloc fail");
++	}
  
- 		nf_ct_put(found_ct);
- 	}
-+	list->last_gc = (u32)jiffies;
- 
- add_new_node:
- 	if (WARN_ON_ONCE(list->count > INT_MAX)) {
-@@ -248,7 +249,6 @@ static int __nf_conncount_add(struct net *net,
- 	conn->jiffies32 = (u32)jiffies;
- 	list_add_tail(&conn->node, &list->head);
- 	list->count++;
--	list->last_gc = (u32)jiffies;
- 
- out_put:
- 	if (refcounted)
--- 
-2.51.0
-
+ 	damon_add_region(r, t);
+ 	KUNIT_EXPECT_EQ(test,
 
 
 
