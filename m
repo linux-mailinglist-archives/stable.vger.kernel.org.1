@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209510-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209123-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 4024CD2777E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:13 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 21D04D266AC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB13E31162C4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 35BD33041711
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452212D94A7;
-	Thu, 15 Jan 2026 17:41:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E42172D6E72;
+	Thu, 15 Jan 2026 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHadsEk6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j2f10M0x"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E849D2D9ECB;
-	Thu, 15 Jan 2026 17:41:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A70914C81;
+	Thu, 15 Jan 2026 17:23:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498902; cv=none; b=HI9RCeLHshCaFsqpoA+CdsX+JhKLc1HO0iy9gR21BY77vld/c+l1difSJGnTBqE3BcUKTX4P0V7OOd2SKwqConotHCgGnFCDv3LhtueiyrcrZ9SebnAeHvL5tg/0uXkUTLrelu7JiY67FKr3cE3eKjmIBR0tOXOp0zYZx2t8CZc=
+	t=1768497798; cv=none; b=UuSB+K4qHwOfPTIzd3SEXKeMFZQXcIYxxpY+orPWaKMiZGcZbYOgHSbfgDK8//yDumkwaARsO+7SPuxIWzWLsuR2q6jritaMBIMt1gNE0JM65YVwabrZ2WAky3STB0H6D3i/iMWQvIjBuN+9rKsou1myNRJ20LucJz9nAxVdlLs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498902; c=relaxed/simple;
-	bh=qOx1LIiKtvW5qb7091zDI3CdjRD9I55RX5pMUChATuY=;
+	s=arc-20240116; t=1768497798; c=relaxed/simple;
+	bh=+XwIigOvCxM10Ub5tBv0ee2M4YxAfyac/U2L5UHG54s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CfiBoTSZf5kYb/hn1379chkpb6+pp5fG+C/daqKXCQ/MzAZ/38S/KVxJBVPuX9uOV178c3CvMmLvbVw++R+aWnMO+/lVuygQ7S026peZrEq8Gp3EtaOUSZNnMknRMObiC74iEaT5cMXPXGshtJPWdW1tuPjjoDYj8zZReXVKK5w=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHadsEk6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E37C116D0;
-	Thu, 15 Jan 2026 17:41:41 +0000 (UTC)
+	 MIME-Version; b=MW4jRGOpTTvari5vSvNOoGRE/p5Kzk3qC7uh+zmh4fXDCIaz6ESCfjRa42kbzNo7u5ZrF3SV/JZMcggaLuRxG+h91HpL4cepVP+BmSLGYLVjX9f45It5IYV5nVYTFwpJy76EkmMumJvJxnToSwwjdt3540RJPpmD4afDL8n+Ndk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j2f10M0x; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264A3C116D0;
+	Thu, 15 Jan 2026 17:23:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498901;
-	bh=qOx1LIiKtvW5qb7091zDI3CdjRD9I55RX5pMUChATuY=;
+	s=korg; t=1768497798;
+	bh=+XwIigOvCxM10Ub5tBv0ee2M4YxAfyac/U2L5UHG54s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=GHadsEk6O1x9FOmMU7Kg9S9tMIpQB18ntbSqufe862OfKnJV4wc8NNdPUiPLotGO1
-	 7UpquIfvPbVGn/JDS3mWqoSLmr/deq4WI8BAtFcujR6/ZTk2w07pmR3ccO6w6cTFyj
-	 +LwTqK4cS7KhKtL/BVdhYub9TvvZf0Hj3Xd2kJNg=
+	b=j2f10M0xHdxEoBIsLJ/NrR6ZGNTGXm97G3PC7MJRUOuqbhiE/Zu8Vf+Guw/Ez4oWT
+	 qO6wHz0wQxCNQMCb71Wd5H9wV/sf00V1FMXNp96dMg/mjFJP8BhqZwEqeXU+9P2T+6
+	 BgIFG6udJOyn9C0Xpbp69MbHoteLTpAWpQwtlFaA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Lukas Wunner <lukas@wunner.de>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/451] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
-Date: Thu, 15 Jan 2026 17:43:59 +0100
-Message-ID: <20260115164232.269904863@linuxfoundation.org>
+Subject: [PATCH 5.15 174/554] NFS: Fix the verifier for case sensitive filesystem in nfs_atomic_open()
+Date: Thu, 15 Jan 2026 17:44:00 +0100
+Message-ID: <20260115164252.564681858@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
+[ Upstream commit 68eaba4ca924a97a863c5c81c0b23a11dcb6db90 ]
 
-Use check_add_overflow() to guard against potential integer overflows
-when adding the binary blob lengths and the size of an asymmetric_key_id
-structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
-possible buffer overflow when copying data from potentially malicious
-X.509 certificate fields that can be arbitrarily large, such as ASN.1
-INTEGER serial numbers, issuer names, etc.
-
-Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: 518c32a1bc4f ("NFS: Initialise verifiers for visible dentries in nfs_atomic_open()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ fs/nfs/dir.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
-index 33e77d846caa8..ef0e56642a078 100644
---- a/crypto/asymmetric_keys/asymmetric_type.c
-+++ b/crypto/asymmetric_keys/asymmetric_type.c
-@@ -11,6 +11,7 @@
- #include <crypto/public_key.h>
- #include <linux/seq_file.h>
- #include <linux/module.h>
-+#include <linux/overflow.h>
- #include <linux/slab.h>
- #include <linux/ctype.h>
- #include <keys/system_keyring.h>
-@@ -138,12 +139,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
- 						     size_t len_2)
- {
- 	struct asymmetric_key_id *kid;
--
--	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
--		      GFP_KERNEL);
-+	size_t kid_sz;
-+	size_t len;
-+
-+	if (check_add_overflow(len_1, len_2, &len))
-+		return ERR_PTR(-EOVERFLOW);
-+	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
-+		return ERR_PTR(-EOVERFLOW);
-+	kid = kmalloc(kid_sz, GFP_KERNEL);
- 	if (!kid)
- 		return ERR_PTR(-ENOMEM);
--	kid->len = len_1 + len_2;
-+	kid->len = len;
- 	memcpy(kid->data, val_1, len_1);
- 	memcpy(kid->data + len_1, val_2, len_2);
- 	return kid;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 2a325a79327bc..dc0c50b97643b 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -1887,6 +1887,7 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 	struct iattr attr = { .ia_valid = ATTR_OPEN };
+ 	struct inode *inode;
+ 	unsigned int lookup_flags = 0;
++	unsigned long dir_verifier;
+ 	bool switched = false;
+ 	int created = 0;
+ 	int err;
+@@ -1960,7 +1961,11 @@ int nfs_atomic_open(struct inode *dir, struct dentry *dentry,
+ 		switch (err) {
+ 		case -ENOENT:
+ 			d_splice_alias(NULL, dentry);
+-			nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
++			if (nfs_server_capable(dir, NFS_CAP_CASE_INSENSITIVE))
++				dir_verifier = inode_peek_iversion_raw(dir);
++			else
++				dir_verifier = nfs_save_change_attribute(dir);
++			nfs_set_verifier(dentry, dir_verifier);
+ 			break;
+ 		case -EISDIR:
+ 		case -ENOTDIR:
 -- 
 2.51.0
 
