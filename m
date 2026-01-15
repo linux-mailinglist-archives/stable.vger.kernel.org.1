@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-208958-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208969-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A36A5D26699
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4DE75D2690F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 9AEE5303029A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:16:17 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 409923162724
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:16:40 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CB203B8D59;
-	Thu, 15 Jan 2026 17:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 40F983BF314;
+	Thu, 15 Jan 2026 17:16:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+uGaGAp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KTsIUEAO"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 408F829B200;
-	Thu, 15 Jan 2026 17:15:30 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E11C1258EC2;
+	Thu, 15 Jan 2026 17:16:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497330; cv=none; b=s9L/XRF+hD1yFtCB0itYu8t1fh9V2JHKFKD1UlZOfbLVPplJtaxCcZmd4EwYtT90I7Uppb8n5It/3DAK5LU3V41il2hgiUbjJkoRUgllSi301OwTu7D/+2LwCnZLz3OF1ESD449Wvnmo6MVHwxwZBDZAxW4S4NyNz/OlwPoAejg=
+	t=1768497362; cv=none; b=sj8GF5nrCP8efniZvNd6Qim0Gh8A9QK8GPvKxnHjcDklpuK+jITNdzgO8NPVqlinK3A1E6lV8qedLlF/xpVpQxNsVcFo2mcVtzV0XuOCD5f9P2zPEWpYypKv7rV+XV/abVw9YiAV7TLyLeDSbSqpXhbCYygYlUq6RsEV6seD71I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497330; c=relaxed/simple;
-	bh=YI8JNCZY0hDFHdYH+kNDdT9M+eJH684RCs12pNCnsnw=;
+	s=arc-20240116; t=1768497362; c=relaxed/simple;
+	bh=uHXSY8z+uj1jV+bZIClCmvKcjc+hea+yK3QSg8Qijtc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=OQPw+ORf3HN5NUMpyWrWixVrWbYEgVkUJYx6V0j4Gh+8xfnPc2Mi37gVAnA9t2KGi6p0ojNYIlunAHo/uLWPnpxYw3UwhCISJUbV1B8aJy5HBQos9szq2sO/cg7GK6nhYqcXg/HlUkbFek/LfOhBIVvSFPC3N0nUrng+XTIOdLI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+uGaGAp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3882C116D0;
-	Thu, 15 Jan 2026 17:15:29 +0000 (UTC)
+	 MIME-Version:Content-Type; b=WqjCf2jy3NaHvk8zw8zuHtJOR+gA5IIyrluCEZiuFosbBidOSU78SMpq5+8uiuK4f0cvM3fP8n+L9Jlbx4WvriowIZeNZQNsvmy0kxHs3CgLrvgqmohqWCP1EwCdwkxKcor4I7K5/LNayjYkCUzx6bV7E4OjppMnr313r44pZbI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KTsIUEAO; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E16BC116D0;
+	Thu, 15 Jan 2026 17:16:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497330;
-	bh=YI8JNCZY0hDFHdYH+kNDdT9M+eJH684RCs12pNCnsnw=;
+	s=korg; t=1768497361;
+	bh=uHXSY8z+uj1jV+bZIClCmvKcjc+hea+yK3QSg8Qijtc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+uGaGAp1qPYU5oWvdh6ZQS5BYFoATAoKz9M0FG3aXhd9jQLmbt0DM/zU8YHfmW3U
-	 44m2mhEUEjdiZrx1hDJS5bD1j9QHyJpzYKBXa9wrC5Q51Alw0bPQkPKKuozS7siubS
-	 5NtpuZE4qY1lnwoNCfE8jDe32krwjqM8AffAW7BE=
+	b=KTsIUEAObHkfjI/i/ZL82iJ+bCPiJGZY1QpxHKfjTrxq+1Rjbolykg31FespXdvu7
+	 jHJSr0pjv+oZh+NvdTYupMdMyW+PQBO5Agnx7t2uwauycLmFTdwDP41JluU6THym9z
+	 iORIfihLfFvH9E+z+aDs8yyhc/VgfnZgnDaEkvNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Bugaddr <Bugaddr@protonmail.com>,
-	Armin Wolf <W_Armin@gmx.de>,
+	Ston Jia <ston.jia@outlook.com>,
 	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 026/554] platform/x86: acer-wmi: Ignore backlight event
-Date: Thu, 15 Jan 2026 17:41:32 +0100
-Message-ID: <20260115164247.186751245@linuxfoundation.org>
+Subject: [PATCH 5.15 027/554] platform/x86: huawei-wmi: add keys for HONOR models
+Date: Thu, 15 Jan 2026 17:41:33 +0100
+Message-ID: <20260115164247.223192308@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -66,49 +65,42 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Jia Ston <ston.jia@outlook.com>
 
-[ Upstream commit 444a9256f8d106e08a6bc2dc8ef28a8699e4b3ba ]
+[ Upstream commit 5c72329716d0858621021193330594d5d26bf44d ]
 
-On the Acer Nitro AN515-58, the event 4 - 0 is send by the ACPI
-firmware when the backlight up/down keys are pressed. Ignore this
-event to avoid spamming the kernel log with error messages, as the
-acpi-video driver already handles brightness up/down events.
+HONOR MagicBook X16/X14 models produced in 2025 cannot use the Print
+Screen and YOYO keys properly, with the system reporting them as
+unknown key presses (codes: 0x028b and 0x028e).
 
-Reported-by: Bugaddr <Bugaddr@protonmail.com>
-Closes: https://bugaddr.tech/posts/2025-11-16-debugging-the-acer-nitro-5-an515-58-fn-f10-keyboard-backlight-bug-on-linux/#wmi-interface-issues
-Tested-by: Bugaddr <Bugaddr@protonmail.com>
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Link: https://patch.msgid.link/20251117155938.3030-1-W_Armin@gmx.de
+To resolve this, a key_entry is added for both the HONOR Print Screen
+key and the HONOR YOYO key, ensuring they function correctly on these
+models.
+
+Signed-off-by: Ston Jia <ston.jia@outlook.com>
+Link: https://patch.msgid.link/20251029051804.220111-1-ston.jia@outlook.com
 Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/acer-wmi.c | 4 ++++
+ drivers/platform/x86/huawei-wmi.c | 4 ++++
  1 file changed, 4 insertions(+)
 
-diff --git a/drivers/platform/x86/acer-wmi.c b/drivers/platform/x86/acer-wmi.c
-index 7ef80f517e76e..ea5dbe8081570 100644
---- a/drivers/platform/x86/acer-wmi.c
-+++ b/drivers/platform/x86/acer-wmi.c
-@@ -86,6 +86,7 @@ MODULE_ALIAS("wmi:676AA15E-6A47-4D9F-A2CC-1E6D18D14026");
- 
- enum acer_wmi_event_ids {
- 	WMID_HOTKEY_EVENT = 0x1,
-+	WMID_BACKLIGHT_EVENT = 0x4,
- 	WMID_ACCEL_OR_KBD_DOCK_EVENT = 0x5,
- 	WMID_GAMING_TURBO_KEY_EVENT = 0x7,
- 	WMID_AC_EVENT = 0x8,
-@@ -2060,6 +2061,9 @@ static void acer_wmi_notify(u32 value, void *context)
- 			sparse_keymap_report_event(acer_wmi_input_dev, scancode, 1, true);
- 		}
- 		break;
-+	case WMID_BACKLIGHT_EVENT:
-+		/* Already handled by acpi-video */
-+		break;
- 	case WMID_ACCEL_OR_KBD_DOCK_EVENT:
- 		acer_gsensor_event();
- 		acer_kbd_dock_event(&return_value);
+diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
+index 23ebd0c046e16..da9f80bde794f 100644
+--- a/drivers/platform/x86/huawei-wmi.c
++++ b/drivers/platform/x86/huawei-wmi.c
+@@ -82,6 +82,10 @@ static const struct key_entry huawei_wmi_keymap[] = {
+ 	{ KE_KEY,    0x289, { KEY_WLAN } },
+ 	// Huawei |M| key
+ 	{ KE_KEY,    0x28a, { KEY_CONFIG } },
++	// HONOR YOYO key
++	{ KE_KEY,    0x28b, { KEY_NOTIFICATION_CENTER } },
++	// HONOR print screen
++	{ KE_KEY,    0x28e, { KEY_PRINT } },
+ 	// Keyboard backlit
+ 	{ KE_IGNORE, 0x293, { KEY_KBDILLUMTOGGLE } },
+ 	{ KE_IGNORE, 0x294, { KEY_KBDILLUMUP } },
 -- 
 2.51.0
 
