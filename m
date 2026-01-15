@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209770-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208714-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 35B2BD2768F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E525D2615E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7D7A23051DF8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:50 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 05188301CF86
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:59 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49643D5DA9;
-	Thu, 15 Jan 2026 17:54:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id D66B5396B7D;
+	Thu, 15 Jan 2026 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T49EJuLU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mTJztD4Q"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C883D5D97;
-	Thu, 15 Jan 2026 17:54:02 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8AF642D73A0;
+	Thu, 15 Jan 2026 17:03:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499642; cv=none; b=Tu6fq/j0HOfjkBXp1+D6i/DANavQRs82nUJH9SL4LCo+QczsUCU/7zLRHqGUJhopbvdaGY0UKOnlbhmKPsHDwoZG2Sb/WlGj5d9XyvG4GMRM+Hs/zvgqgXCUMUylCMzKERkbHzz4yjWDcQZVaGEoSxE7ryqsNiClTEJwpouDeXs=
+	t=1768496637; cv=none; b=BvrBL7kksXl6spAmSzknuT+tXJjhjr45lxNBOp6Wo+w4XiavH6W34x+pRdnsV455/Ipv5cIz8h2r1PjRD87Bae2lBsq/d2q+qh0tTJP0lxbfQwuEkTKzr3k66mrBWxd3crT2P29WIMjGcZm9sYUK81NnNP+UsrfalzEfajOqDow=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499642; c=relaxed/simple;
-	bh=/L7vZP43AEtsAh9Po48Hfd6RWqT4Fr3rizQbFfnIXBE=;
+	s=arc-20240116; t=1768496637; c=relaxed/simple;
+	bh=qX7IEhsNPF9qsXc9jvtga8HArkCk833s9EWLEmpaZcY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EDkwfp79PH4kt2oVj+D4eLC9jPqCEKpTV1/B7acMUHnGqJMntzzOK9aIomU7MQlH96k9j33ULCIJo6X5FvCSy7ngdqkuohiH4PUGwq2YfHX7vPDlLJ0275vg70Fqz/E+rU2oiuVpGNc0F8AkZxo/b/Is8urmuB29/giRPRZoMXo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T49EJuLU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757F2C16AAE;
-	Thu, 15 Jan 2026 17:54:01 +0000 (UTC)
+	 MIME-Version; b=FkeRlzQgtePxaiPoh/yz51/jIr/zglL+9yFE2NiMGAREcP/nh5iJNVHGCMdlvGkIcWV3m1tBj0cgZ7EkGs52uXQO4/ur8IaJDk0DVsxCkX0Hds+iZh0/jbdEuicRsS8jlwMsizFIF0qPoR/9PZ2ok/FO0yhxrVUvKOKy/VKhEro=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mTJztD4Q; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16CEFC116D0;
+	Thu, 15 Jan 2026 17:03:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499641;
-	bh=/L7vZP43AEtsAh9Po48Hfd6RWqT4Fr3rizQbFfnIXBE=;
+	s=korg; t=1768496637;
+	bh=qX7IEhsNPF9qsXc9jvtga8HArkCk833s9EWLEmpaZcY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T49EJuLUTNeCtTKAhv/DC+n5tQ0HeHOADWnuG6fFag8UZ8UtJWebm3TKS1Cerkdmq
-	 vtfCnh5efBfjhJtpvO0Wc0MlQuKDy9BOcxtraS6jQa1TQg0ol8O6duu+acnMef/dh7
-	 sF4dRFsKLg+zNJlTFr5f2lp57Z/C0+/qT0U+O0zQ=
+	b=mTJztD4Qd+QBeG8DTA5G9wSE7yAtiyOAHCECp20295Ud/xe4Dj9r6QL3Megf0x9Wu
+	 zLfXibYdGYUENs3QTAbJ/ehGbqrahJm/8lgKDvoIhgVtSG/2YUOmYNupMDBDekg2rk
+	 K4usBqUNVB4Qzonrvm89FR0Y13HDMKxB5+NaC5W0=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
-	Yipeng Zou <zouyipeng@huawei.com>,
-	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-	Shuah Khan <skhan@linuxfoundation.org>,
+	Petko Manolov <petkan@nucleusys.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 297/451] selftests/ftrace: traceonoff_triggers: strip off names
+Subject: [PATCH 6.12 083/119] net: usb: pegasus: fix memory leak in update_eth_regs_async()
 Date: Thu, 15 Jan 2026 17:48:18 +0100
-Message-ID: <20260115164241.633893924@linuxfoundation.org>
+Message-ID: <20260115164154.946290583@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,93 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Petko Manolov <petkan@nucleusys.com>
 
-[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
+[ Upstream commit afa27621a28af317523e0836dad430bec551eb54 ]
 
-The func_traceonoff_triggers.tc sometimes goes to fail
-on my board, Kunpeng-920.
+When asynchronously writing to the device registers and if usb_submit_urb()
+fail, the code fail to release allocated to this point resources.
 
-[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
-=== Ftrace unit tests ===
-[1] ftrace - test for function traceon/off triggers     [FAIL]
-[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
-
-I look up the log, and it shows that the md5sum is different between csum1 and csum2.
-
-++ cnt=611
-++ sleep .1
-+++ cnt_trace
-+++ grep -v '^#' trace
-+++ wc -l
-++ cnt2=611
-++ '[' 611 -ne 611 ']'
-+++ cat tracing_on
-++ on=0
-++ '[' 0 '!=' 0 ']'
-+++ md5sum trace
-++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
-++ sleep .1
-+++ md5sum trace
-++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
-++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
-++ fail 'Tracing file is still changing'
-++ echo Tracing file is still changing
-Tracing file is still changing
-++ exit_fail
-++ exit 1
-
-So I directly dump the trace file before md5sum, the diff shows that:
-
-[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
-dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
-dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
-<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
-<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
-
-And we can see that <...> filed be filled with names.
-
-We can strip off the names there to fix that.
-
-After strip off the names:
-
-kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
-kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
-<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
-<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
-<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
-
-Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
-Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
-Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 323b34963d11 ("drivers: net: usb: pegasus: fix control urb submission")
+Signed-off-by: Petko Manolov <petkan@nucleusys.com>
+Link: https://patch.msgid.link/20260106084821.3746677-1-petko.manolov@konsulko.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc |    5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/usb/pegasus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-+++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
-@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
-     fail "Tracing is not off"
- fi
- 
--csum1=`md5sum trace`
-+# Cannot rely on names being around as they are only cached, strip them
-+csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
- sleep $SLEEP_TIME
--csum2=`md5sum trace`
-+csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
- 
- if [ "$csum1" != "$csum2" ]; then
-     fail "Tracing file is still changing"
+diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
+index 81ca64debc5b9..c514483134f05 100644
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -168,6 +168,8 @@ static int update_eth_regs_async(pegasus_t *pegasus)
+ 			netif_device_detach(pegasus->net);
+ 		netif_err(pegasus, drv, pegasus->net,
+ 			  "%s returned %d\n", __func__, ret);
++		usb_free_urb(async_urb);
++		kfree(req);
+ 	}
+ 	return ret;
+ }
+-- 
+2.51.0
+
 
 
 
