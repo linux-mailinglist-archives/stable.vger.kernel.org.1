@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209638-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209173-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73743D26EBB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4FB21D273BA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:13:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id A54D730FB3B4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:59 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9751A328E406
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6E6C83BFE4B;
-	Thu, 15 Jan 2026 17:47:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF83F3A7F5D;
+	Thu, 15 Jan 2026 17:25:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="SxnZgGiA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZCKMNXut"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2E7B13BF31F;
-	Thu, 15 Jan 2026 17:47:45 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E3A413C198A;
+	Thu, 15 Jan 2026 17:25:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499266; cv=none; b=TbKHSAHGYOpcutHi+KK1onJ54C0xrwdyyg6LhASbVyx17EM7/kQFLSBltMGdyjnRJGNXABv2y4HBJ72EEAEvyHb4bmvHU2dU46rNb1a0C2SwKSLNQwPrgpltcrDlZZt6kdVy7eLRa0T2CQHUrnqsOxOvooDAdHG2tLiUStu77O0=
+	t=1768497942; cv=none; b=fmPFJpnfqWkoAY94+Q+RaGdgzGphsCrbDx6zxn2qcIqcjLL4mvhnYO1QsFOuckZRS7HKK1Gp0q+fnOFE4Wcw1llpnsIFB7aG/PxJTIcoLCBOwO2XA4If9CzGb3MUzylVM2AHMqOulLd7yc7GghawJJF4Q4pisZlIajRfFUrRp6Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499266; c=relaxed/simple;
-	bh=dwa7LE273k7A+baGXux/kDx1aIH7TDQRxUbQ2geALW0=;
+	s=arc-20240116; t=1768497942; c=relaxed/simple;
+	bh=s8SW+bu5a8Y9HGT764MIzixPIHpwyLi0MA0AWKgirn4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lW9sNXjVEMt5jUlrLYcCtGaLL3W5jZiaiu7SXwSWM7pDL+rxVa3uLs/Og3nXqjINK4c2pRM39xIrp8dwjiP8TMCT6tMHVxWLa9sffdAfr77cPJ0/qeqDO6+4b8pMlGw+BE4nfYz+XHJH/uuEOtK919sOGOazlCl7aYJw+z79PJw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=SxnZgGiA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA42C116D0;
-	Thu, 15 Jan 2026 17:47:45 +0000 (UTC)
+	 MIME-Version; b=kRRX36ZztooFs4WVvz4j1d3U3Hbpnxs6CcLwMQZSSXeH03vHP+WpE95LgyFP6kwdPEUo2LTFtn8I1oo1apAlg3gvLsMjuKlZBquugu6k2af9hZR2PYnpDZWh/OsowQFNPAizz+fBKVoPdBnBSlPF08Aw5nJWBZWCaI+yRlJq1cQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZCKMNXut; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CE21C19423;
+	Thu, 15 Jan 2026 17:25:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499265;
-	bh=dwa7LE273k7A+baGXux/kDx1aIH7TDQRxUbQ2geALW0=;
+	s=korg; t=1768497941;
+	bh=s8SW+bu5a8Y9HGT764MIzixPIHpwyLi0MA0AWKgirn4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=SxnZgGiAd6s8W9JKd0X6hOglAVLjeKxO/VcL4LWQxQ+tGup+Rq6mzKyZf1+9QVCCU
-	 PsKH3JQM1e+mk+7y/UzkIEQWZINki4CLTRRgaovlKYs7uGvJbNSxUYftMPJ5FhRnYT
-	 +6IDpBJWv7Qg6UtLfypwfH6vRalvPDQjvmgWwm5U=
+	b=ZCKMNXut04qfD3VbhHvN/Yihw/Y83ZYG/gJvVAEChMjT/MwkGIUsgo+hN47pQBhGE
+	 C0Sxr74I1mQLMU/nKoL30dZsY6mgeS31jalFcZvH0P+MrJxWtAXPVNvcPXHAczA3l1
+	 yLOLKp0J6EWxfAWbopaK5m0sLpF2d7imshNI60WY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neilb@suse.de>,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Peng Fan <peng.fan@nxp.com>,
+	Shawn Guo <shawnguo@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 123/451] NFS: dont unhash dentry during unlink/rename
+Subject: [PATCH 5.15 258/554] firmware: imx: scu-irq: Init workqueue before request mbox channel
 Date: Thu, 15 Jan 2026 17:45:24 +0100
-Message-ID: <20260115164235.372390370@linuxfoundation.org>
+Message-ID: <20260115164255.572388865@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,238 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: NeilBrown <neilb@suse.de>
+From: Peng Fan <peng.fan@nxp.com>
 
-[ Upstream commit 3c59366c207e4c6c6569524af606baf017a55c61 ]
+[ Upstream commit 81fb53feb66a3aefbf6fcab73bb8d06f5b0c54ad ]
 
-NFS unlink() (and rename over existing target) must determine if the
-file is open, and must perform a "silly rename" instead of an unlink (or
-before rename) if it is.  Otherwise the client might hold a file open
-which has been removed on the server.
+With mailbox channel requested, there is possibility that interrupts may
+come in, so need to make sure the workqueue is initialized before
+the queue is scheduled by mailbox rx callback.
 
-Consequently if it determines that the file isn't open, it must block
-any subsequent opens until the unlink/rename has been completed on the
-server.
-
-This is currently achieved by unhashing the dentry.  This forces any
-open attempt to the slow-path for lookup which will block on i_rwsem on
-the directory until the unlink/rename completes.  A future patch will
-change the VFS to only get a shared lock on i_rwsem for unlink, so this
-will no longer work.
-
-Instead we introduce an explicit interlock.  A special value is stored
-in dentry->d_fsdata while the unlink/rename is running and
-->d_revalidate blocks while that value is present.  When ->d_revalidate
-unblocks, the dentry will be invalid.  This closes the race
-without requiring exclusion on i_rwsem.
-
-d_fsdata is already used in two different ways.
-1/ an IS_ROOT directory dentry might have a "devname" stored in
-   d_fsdata.  Such a dentry doesn't have a name and so cannot be the
-   target of unlink or rename.  For safety we check if an old devname
-   is still stored, and remove it if it is.
-2/ a dentry with DCACHE_NFSFS_RENAMED set will have a 'struct
-   nfs_unlinkdata' stored in d_fsdata.  While this is set maydelete()
-   will fail, so an unlink or rename will never proceed on such
-   a dentry.
-
-Neither of these can be in effect when a dentry is the target of unlink
-or rename.  So we can expect d_fsdata to be NULL, and store a special
-value ((void*)1) which is given the name NFS_FSDATA_BLOCKED to indicate
-that any lookup will be blocked.
-
-The d_count() is incremented under d_lock() when a lookup finds the
-dentry, so we check d_count() is low, and set NFS_FSDATA_BLOCKED under
-the same lock to avoid any races.
-
-Signed-off-by: NeilBrown <neilb@suse.de>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Stable-dep-of: bd4928ec799b ("NFS: Avoid changing nlink when file removes and attribute updates race")
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c           | 72 +++++++++++++++++++++++++++++++-----------
- include/linux/nfs_fs.h |  9 ++++++
- 2 files changed, 63 insertions(+), 18 deletions(-)
+ drivers/firmware/imx/imx-scu-irq.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index 442e9835d5a3f..6dc3dcf23550d 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -1411,6 +1411,8 @@ __nfs_lookup_revalidate(struct dentry *dentry, unsigned int flags,
- 	int ret;
+diff --git a/drivers/firmware/imx/imx-scu-irq.c b/drivers/firmware/imx/imx-scu-irq.c
+index 32b1ca4e1050..06c49a61a079 100644
+--- a/drivers/firmware/imx/imx-scu-irq.c
++++ b/drivers/firmware/imx/imx-scu-irq.c
+@@ -148,6 +148,8 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 	cl->dev = dev;
+ 	cl->rx_callback = imx_scu_irq_callback;
  
- 	if (flags & LOOKUP_RCU) {
-+		if (dentry->d_fsdata == NFS_FSDATA_BLOCKED)
-+			return -ECHILD;
- 		parent = READ_ONCE(dentry->d_parent);
- 		dir = d_inode_rcu(parent);
- 		if (!dir)
-@@ -1419,6 +1421,9 @@ __nfs_lookup_revalidate(struct dentry *dentry, unsigned int flags,
- 		if (parent != READ_ONCE(dentry->d_parent))
- 			return -ECHILD;
- 	} else {
-+		/* Wait for unlink to complete */
-+		wait_var_event(&dentry->d_fsdata,
-+			       dentry->d_fsdata != NFS_FSDATA_BLOCKED);
- 		parent = dget_parent(dentry);
- 		ret = reval(d_inode(parent), dentry, flags);
- 		dput(parent);
-@@ -2079,7 +2084,6 @@ static int nfs_safe_remove(struct dentry *dentry)
- int nfs_unlink(struct inode *dir, struct dentry *dentry)
- {
- 	int error;
--	int need_rehash = 0;
- 
- 	dfprintk(VFS, "NFS: unlink(%s/%lu, %pd)\n", dir->i_sb->s_id,
- 		dir->i_ino, dentry);
-@@ -2093,15 +2097,25 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
- 		error = nfs_sillyrename(dir, dentry);
- 		goto out;
- 	}
--	if (!d_unhashed(dentry)) {
--		__d_drop(dentry);
--		need_rehash = 1;
--	}
-+	/* We must prevent any concurrent open until the unlink
-+	 * completes.  ->d_revalidate will wait for ->d_fsdata
-+	 * to clear.  We set it here to ensure no lookup succeeds until
-+	 * the unlink is complete on the server.
-+	 */
-+	error = -ETXTBSY;
-+	if (WARN_ON(dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
-+	    WARN_ON(dentry->d_fsdata == NFS_FSDATA_BLOCKED))
-+		goto out;
-+	if (dentry->d_fsdata)
-+		/* old devname */
-+		kfree(dentry->d_fsdata);
-+	dentry->d_fsdata = NFS_FSDATA_BLOCKED;
++	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
 +
- 	spin_unlock(&dentry->d_lock);
- 	error = nfs_safe_remove(dentry);
- 	nfs_dentry_remove_handle_error(dir, dentry, error);
--	if (need_rehash)
--		d_rehash(dentry);
-+	dentry->d_fsdata = NULL;
-+	wake_up_var(&dentry->d_fsdata);
- out:
- 	trace_nfs_unlink_exit(dir, dentry, error);
- 	return error;
-@@ -2204,6 +2218,15 @@ nfs_link(struct dentry *old_dentry, struct inode *dir, struct dentry *dentry)
- }
- EXPORT_SYMBOL_GPL(nfs_link);
- 
-+static void
-+nfs_unblock_rename(struct rpc_task *task, struct nfs_renamedata *data)
-+{
-+	struct dentry *new_dentry = data->new_dentry;
-+
-+	new_dentry->d_fsdata = NULL;
-+	wake_up_var(&new_dentry->d_fsdata);
-+}
-+
- /*
-  * RENAME
-  * FIXME: Some nfsds, like the Linux user space nfsd, may generate a
-@@ -2234,8 +2257,9 @@ int nfs_rename(struct inode *old_dir, struct dentry *old_dentry,
- {
- 	struct inode *old_inode = d_inode(old_dentry);
- 	struct inode *new_inode = d_inode(new_dentry);
--	struct dentry *dentry = NULL, *rehash = NULL;
-+	struct dentry *dentry = NULL;
- 	struct rpc_task *task;
-+	bool must_unblock = false;
- 	int error = -EBUSY;
- 
- 	if (flags)
-@@ -2253,18 +2277,27 @@ int nfs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	 * the new target.
- 	 */
- 	if (new_inode && !S_ISDIR(new_inode->i_mode)) {
--		/*
--		 * To prevent any new references to the target during the
--		 * rename, we unhash the dentry in advance.
-+		/* We must prevent any concurrent open until the unlink
-+		 * completes.  ->d_revalidate will wait for ->d_fsdata
-+		 * to clear.  We set it here to ensure no lookup succeeds until
-+		 * the unlink is complete on the server.
- 		 */
--		if (!d_unhashed(new_dentry)) {
--			d_drop(new_dentry);
--			rehash = new_dentry;
-+		error = -ETXTBSY;
-+		if (WARN_ON(new_dentry->d_flags & DCACHE_NFSFS_RENAMED) ||
-+		    WARN_ON(new_dentry->d_fsdata == NFS_FSDATA_BLOCKED))
-+			goto out;
-+		if (new_dentry->d_fsdata) {
-+			/* old devname */
-+			kfree(new_dentry->d_fsdata);
-+			new_dentry->d_fsdata = NULL;
- 		}
- 
-+		spin_lock(&new_dentry->d_lock);
- 		if (d_count(new_dentry) > 2) {
- 			int err;
- 
-+			spin_unlock(&new_dentry->d_lock);
-+
- 			/* copy the target dentry's name */
- 			dentry = d_alloc(new_dentry->d_parent,
- 					 &new_dentry->d_name);
-@@ -2277,14 +2310,19 @@ int nfs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 				goto out;
- 
- 			new_dentry = dentry;
--			rehash = NULL;
- 			new_inode = NULL;
-+		} else {
-+			new_dentry->d_fsdata = NFS_FSDATA_BLOCKED;
-+			must_unblock = true;
-+			spin_unlock(&new_dentry->d_lock);
- 		}
-+
+ 	/* SCU general IRQ uses general interrupt channel 3 */
+ 	ch = mbox_request_channel_byname(cl, "gip3");
+ 	if (IS_ERR(ch)) {
+@@ -157,8 +159,6 @@ int imx_scu_enable_general_irq_channel(struct device *dev)
+ 		return ret;
  	}
  
- 	if (S_ISREG(old_inode->i_mode))
- 		nfs_sync_inode(old_inode);
--	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry, NULL);
-+	task = nfs_async_rename(old_dir, new_dir, old_dentry, new_dentry,
-+				must_unblock ? nfs_unblock_rename : NULL);
- 	if (IS_ERR(task)) {
- 		error = PTR_ERR(task);
- 		goto out;
-@@ -2308,8 +2346,6 @@ int nfs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 		spin_unlock(&old_inode->i_lock);
- 	}
- out:
--	if (rehash)
--		d_rehash(rehash);
- 	trace_nfs_rename_exit(old_dir, old_dentry,
- 			new_dir, new_dentry, error);
- 	if (!error) {
-diff --git a/include/linux/nfs_fs.h b/include/linux/nfs_fs.h
-index 7488864589a7a..8d4f019b7af8e 100644
---- a/include/linux/nfs_fs.h
-+++ b/include/linux/nfs_fs.h
-@@ -591,6 +591,15 @@ nfs_fileid_to_ino_t(u64 fileid)
- 
- #define NFS_JUKEBOX_RETRY_TIME (5 * HZ)
- 
-+/* We need to block new opens while a file is being unlinked.
-+ * If it is opened *before* we decide to unlink, we will silly-rename
-+ * instead. If it is opened *after*, then we need to create or will fail.
-+ * If we allow the two to race, we could end up with a file that is open
-+ * but deleted on the server resulting in ESTALE.
-+ * So use ->d_fsdata to record when the unlink is happening
-+ * and block dentry revalidation while it is set.
-+ */
-+#define NFS_FSDATA_BLOCKED ((void*)1)
- 
- # undef ifdebug
- # ifdef NFS_DEBUG
+-	INIT_WORK(&imx_sc_irq_work, imx_scu_irq_work_handler);
+-
+ 	if (!of_parse_phandle_with_args(dev->of_node, "mboxes",
+ 				       "#mbox-cells", 0, &spec)) {
+ 		i = of_alias_get_id(spec.np, "mu");
 -- 
 2.51.0
 
