@@ -1,53 +1,53 @@
-Return-Path: <stable+bounces-208898-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209783-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A6A0DD26546
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:23:11 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 70C91D2732E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 25B1E306D78D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:13:27 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 98834309A46F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 73D1A3BFE20;
-	Thu, 15 Jan 2026 17:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CC58E3B8D45;
+	Thu, 15 Jan 2026 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BhuHLHj5"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k1yxgpzX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 201973C008C;
-	Thu, 15 Jan 2026 17:12:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8DD822C11EF;
+	Thu, 15 Jan 2026 17:54:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497158; cv=none; b=UL3PKWzARTMEJNdlwMxiiGnK7cWavOS7S4fFcQTGVIL/M3VZPv+nYxtnJ8kS6VdSGkTdIH81WE3X8W708fXJq3lLoEySRG76bXrKodJkNRfSwrN6yFHwW6ObIbrK9sqfN7g76VHUPcs8D1Gf7SsVOudWMKUKcUXsUytZbIh28oc=
+	t=1768499678; cv=none; b=sEU/qz3OwPn+xXmCE09EfKhtW5raOtg8kJj/Umx7uND2ZwGCvyXgfWhdvSud98E2zEWgK506l+PwcvmVBJixoFTcngJ/K7hvlmuvPplOzwL636Fv0HN1kFremn9slD721enHP7YNzJeY8h5YEcvOLroVGQSVPRxVjZEv0PHKNXQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497158; c=relaxed/simple;
-	bh=FZrKhozBTkBdHvFqGAfl5T/v3YdY7N3M5T3g7D+MV1c=;
+	s=arc-20240116; t=1768499678; c=relaxed/simple;
+	bh=jy2ad5OXUY6QtH0G8bE7v896UDll6HejA1eM4bfwRMI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KGaLvIBGiGXdhP8apQ6gO4STPOpUDERC/sABIQNNyXOrUKH6v9t1nzRi9R/fHWvjuONaNdM982RZ7FRQ42vh3ZudQ6bN8p31nL8YrcBDg7K9/fOOXfr+1bXdE1/bGHCAdORgZjRZXjGSsl8p01wGtVId/EEmJoDomFbfzmrPZn0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BhuHLHj5; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84095C2BC86;
-	Thu, 15 Jan 2026 17:12:37 +0000 (UTC)
+	 MIME-Version; b=taOg0MSfeB4r6WyVSKi6PuK2sQvtuvAJNRW5n+mHXgkJfxWTtCwPmS4IEjl16PWrkQiAT0XULb4Ntqi16YHWLzfshQnmG3K8S3M1MF4qlp/WRP00B+s4tPhMFiuXCHml+J6OKPWIjZllSGsESATI8t1nNa9kzk4hXaDeh9p4xbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k1yxgpzX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D17DC116D0;
+	Thu, 15 Jan 2026 17:54:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497157;
-	bh=FZrKhozBTkBdHvFqGAfl5T/v3YdY7N3M5T3g7D+MV1c=;
+	s=korg; t=1768499678;
+	bh=jy2ad5OXUY6QtH0G8bE7v896UDll6HejA1eM4bfwRMI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BhuHLHj5aqW0QukHb50LcUhmM9EoqK9FI8T2BKX8+IcRqigToZquB3gKT5SFug3Do
-	 G7+HlTG+LduSJ5XoKSIyJjVqvpcSFP1nNpf2MQFbVQdIVfLS/Ff6Eyld+3GLOk3zHo
-	 D5BhQfnZukOZiNBFYc8E/NS1qzcX+cNphZNBwV4Y=
+	b=k1yxgpzXt3RXxbzEfJEJVHV1fK4SmRtGLT1GNHOJvP69KJSCF9Vhpg3CJ19Si24jz
+	 7D/RS8gXFN288/EV4MY+AFb0xKd2/H20xfpHQ5cpoFPEpYKaPhOV+N7NcJrKz9Ncaf
+	 vDL4EaIFBwoLOwlcocS8vOdB00JmPc3LR3/7WXTY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 23/72] NFS: Fix up the automount fs_context to use the correct cred
+	Johan Hovold <johan@kernel.org>,
+	Lee Jones <lee@kernel.org>
+Subject: [PATCH 5.10 312/451] mfd: altera-sysmgr: Fix device leak on sysmgr regmap lookup
 Date: Thu, 15 Jan 2026 17:48:33 +0100
-Message-ID: <20260115164144.337141398@linuxfoundation.org>
+Message-ID: <20260115164242.186413464@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,44 +59,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit a2a8fc27dd668e7562b5326b5ed2f1604cb1e2e9 ]
+commit ccb7cd3218e48665f3c7e19eede0da5f069c323d upstream.
 
-When automounting, the fs_context should be fixed up to use the cred
-from the parent filesystem, since the operation is just extending the
-namespace. Authorisation to enter that namespace will already have been
-provided by the preceding lookup.
+Make sure to drop the reference taken to the sysmgr platform device when
+retrieving its driver data.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away.
+
+Fixes: f36e789a1f8d ("mfd: altera-sysmgr: Add SOCFPGA System Manager")
+Cc: stable@vger.kernel.org	# 5.2
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/namespace.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/mfd/altera-sysmgr.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/fs/nfs/namespace.c b/fs/nfs/namespace.c
-index 663f1a3f7cc3e..5cbbe59e56234 100644
---- a/fs/nfs/namespace.c
-+++ b/fs/nfs/namespace.c
-@@ -170,6 +170,11 @@ struct vfsmount *nfs_d_automount(struct path *path)
- 	if (!ctx->clone_data.fattr)
- 		goto out_fc;
+--- a/drivers/mfd/altera-sysmgr.c
++++ b/drivers/mfd/altera-sysmgr.c
+@@ -118,6 +118,8 @@ struct regmap *altr_sysmgr_regmap_lookup
  
-+	if (fc->cred != server->cred) {
-+		put_cred(fc->cred);
-+		fc->cred = get_cred(server->cred);
-+	}
+ 	sysmgr = dev_get_drvdata(dev);
+ 
++	put_device(dev);
 +
- 	if (fc->net_ns != client->cl_net) {
- 		put_net(fc->net_ns);
- 		fc->net_ns = get_net(client->cl_net);
--- 
-2.51.0
-
+ 	return sysmgr->regmap;
+ }
+ EXPORT_SYMBOL_GPL(altr_sysmgr_regmap_lookup_by_phandle);
 
 
 
