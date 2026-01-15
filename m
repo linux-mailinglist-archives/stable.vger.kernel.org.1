@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209402-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209821-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 944A0D26B54
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:24 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1C12BD27576
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 0609F303514A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:24 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 8BC4830EC0A5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CD0BE3BFE43;
-	Thu, 15 Jan 2026 17:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id ABE973D300D;
+	Thu, 15 Jan 2026 17:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fzWtFbBa"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="X9TvuXkU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8F9603C1980;
-	Thu, 15 Jan 2026 17:36:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E7F8346AE8;
+	Thu, 15 Jan 2026 17:56:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498594; cv=none; b=JI1rCo59hHUATpDu4oSYTtlXPO0LOacSASVdn4i6eoydyTZA5nAkURcjvQoszKj0n7JRw+CYPcedFwHAJeOAEYZovbjQxrFxcAARVuNhUSQZOKHjO2K50p+PngO7HkSfEEuP9jytLT13w/GynpF/djeigynXD1VMDmjuU9q1HBE=
+	t=1768499786; cv=none; b=JoRhFL2l8dZn7hYcfHat0Okbln+Gwu9SBC+e5ov+iRC0E4lX7XtpnoiLejhriLpwV1WlmrpBvLpB8EgB1HqHKM4R7sPFIdhxfDp6CW2UBVnuGYvCa4FqjK8UaOffeWd4l46s9YGOSO7NHc9thuV+Fe2H5HMOJslj+/XrXyMvayo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498594; c=relaxed/simple;
-	bh=U91Uws8IE9TO7DOz7vVEIfILKWXry6zRqIBHo0K4uv0=;
+	s=arc-20240116; t=1768499786; c=relaxed/simple;
+	bh=UwJ7wJyEGgYCi9KJjN5ex0xz8S2Nz3bv0NR2Zvg1qEA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=La14AheSjN16p44QPKezPHfy1Sxc63m2YHuSyAe7WYsVtfC211XiLGX3vs9ahn9XpzFOrV3LepWp2AO72dvZDmDxH2HyWvNqDxhdb3QRS47ALgxGMXJIOJA94ptDezbC1WxVKkYnd0dhXckdeHJCbhvv28JgV7VXKaxF/MoIo2U=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fzWtFbBa; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B27CC116D0;
-	Thu, 15 Jan 2026 17:36:33 +0000 (UTC)
+	 MIME-Version; b=Xw2FoO2Os19DgtzWX64Dsv4Oz/PkkNZnNjfV2zeXrD5Ljh6pyIZ6QRjrRH2O+VbNThNUFmOKkh4rtBxwh4z3e9mxKtLqhYZJ1iPPowkQN5UIoXkpcJyzALjThHsHZD/BKXz8FR5cBrQD7L0WXQYjs9RjrKmNDPol1/2kyZt3FFA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=X9TvuXkU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE30C116D0;
+	Thu, 15 Jan 2026 17:56:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498594;
-	bh=U91Uws8IE9TO7DOz7vVEIfILKWXry6zRqIBHo0K4uv0=;
+	s=korg; t=1768499786;
+	bh=UwJ7wJyEGgYCi9KJjN5ex0xz8S2Nz3bv0NR2Zvg1qEA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fzWtFbBaycFaNpDx6eKpkpnOw5aZvHvQfQG1pWUn/MjLkGHPEGUm7LeRFvZGeicfu
-	 wH0btAo0uBumDafCb1S3djXX5CzB2kNt++nj6rOrF6rcmOq5RbO5Ar5kmt5/KWSRmO
-	 YXo7d4xS64Ww4aGdzBAwd23b/OCEMsek7w1N3XdY=
+	b=X9TvuXkU3J6n74bQjiABPt7RFNQufLn6eVFPK7qQsYyaAACQPLP5jEugN1xbvBuBB
+	 wkQPw01ybvLd9EuggV7SA00gfngUxxPCo0YJymguaSdmncq7T6d2+cuoyRb84SI2CV
+	 z3I88Hgf8Pvb8lFdZobwRq3cbCVK37Ke002toRtI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To: stable@vger.kernel.org,
-	seanjc@google.com
+To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rajani Kantha <681739313@139.com>
-Subject: [PATCH 5.15 485/554] KVM: x86: Acquire kvm->srcu when handling KVM_SET_VCPU_EVENTS
+	Alan Stern <stern@rowland.harvard.edu>,
+	syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com,
+	Benjamin Tissoires <bentiss@kernel.org>,
+	Wenshan Lan <jetlan9@163.com>
+Subject: [PATCH 5.10 350/451] HID: core: Harden s32ton() against conversion to 0 bits
 Date: Thu, 15 Jan 2026 17:49:11 +0100
-Message-ID: <20260115164303.867825622@linuxfoundation.org>
+Message-ID: <20260115164243.562342480@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,88 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sean Christopherson <seanjc@google.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 4bcdd831d9d01e0fb64faea50732b59b2ee88da1 upstream.
+[ Upstream commit a6b87bfc2ab5bccb7ad953693c85d9062aef3fdd ]
 
-Grab kvm->srcu when processing KVM_SET_VCPU_EVENTS, as KVM will forcibly
-leave nested VMX/SVM if SMM mode is being toggled, and leaving nested VMX
-reads guest memory.
+Testing by the syzbot fuzzer showed that the HID core gets a
+shift-out-of-bounds exception when it tries to convert a 32-bit
+quantity to a 0-bit quantity.  Ideally this should never occur, but
+there are buggy devices and some might have a report field with size
+set to zero; we shouldn't reject the report or the device just because
+of that.
 
-Note, kvm_vcpu_ioctl_x86_set_vcpu_events() can also be called from KVM_RUN
-via sync_regs(), which already holds SRCU.  I.e. trying to precisely use
-kvm_vcpu_srcu_read_lock() around the problematic SMM code would cause
-problems.  Acquiring SRCU isn't all that expensive, so for simplicity,
-grab it unconditionally for KVM_SET_VCPU_EVENTS.
+Instead, harden the s32ton() routine so that it returns a reasonable
+result instead of crashing when it is called with the number of bits
+set to 0 -- the same as what snto32() does.
 
- =============================
- WARNING: suspicious RCU usage
- 6.10.0-rc7-332d2c1d713e-next-vm #552 Not tainted
- -----------------------------
- include/linux/kvm_host.h:1027 suspicious rcu_dereference_check() usage!
-
- other info that might help us debug this:
-
- rcu_scheduler_active = 2, debug_locks = 1
- 1 lock held by repro/1071:
-  #0: ffff88811e424430 (&vcpu->mutex){+.+.}-{3:3}, at: kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-
- stack backtrace:
- CPU: 15 PID: 1071 Comm: repro Not tainted 6.10.0-rc7-332d2c1d713e-next-vm #552
- Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
- Call Trace:
-  <TASK>
-  dump_stack_lvl+0x7f/0x90
-  lockdep_rcu_suspicious+0x13f/0x1a0
-  kvm_vcpu_gfn_to_memslot+0x168/0x190 [kvm]
-  kvm_vcpu_read_guest+0x3e/0x90 [kvm]
-  nested_vmx_load_msr+0x6b/0x1d0 [kvm_intel]
-  load_vmcs12_host_state+0x432/0xb40 [kvm_intel]
-  vmx_leave_nested+0x30/0x40 [kvm_intel]
-  kvm_vcpu_ioctl_x86_set_vcpu_events+0x15d/0x2b0 [kvm]
-  kvm_arch_vcpu_ioctl+0x1107/0x1750 [kvm]
-  ? mark_held_locks+0x49/0x70
-  ? kvm_vcpu_ioctl+0x7d/0x970 [kvm]
-  ? kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  kvm_vcpu_ioctl+0x497/0x970 [kvm]
-  ? lock_acquire+0xba/0x2d0
-  ? find_held_lock+0x2b/0x80
-  ? do_user_addr_fault+0x40c/0x6f0
-  ? lock_release+0xb7/0x270
-  __x64_sys_ioctl+0x82/0xb0
-  do_syscall_64+0x6c/0x170
-  entry_SYSCALL_64_after_hwframe+0x4b/0x53
- RIP: 0033:0x7ff11eb1b539
-  </TASK>
-
-Fixes: f7e570780efc ("KVM: x86: Forcibly leave nested virt when SMM state is toggled")
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Reported-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/68753a08.050a0220.33d347.0008.GAE@google.com/
+Tested-by: syzbot+b63d677d63bcac06cf90@syzkaller.appspotmail.com
+Fixes: dde5845a529f ("[PATCH] Generic HID layer - code split")
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20240723232055.3643811-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-[ Based on kernel 5.15 available functions, using srcu_read_lock/srcu_read_unlock instead of
-kvm_vcpu_srcu_read_lock/kvm_vcpu_srcu_read_unlock ]
-Signed-off-by: Rajani Kantha <681739313@139.com>
+Link: https://patch.msgid.link/613a66cd-4309-4bce-a4f7-2905f9bce0c9@rowland.harvard.edu
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+[ s32ton() was moved by c653ffc28340 ("HID: stop exporting hid_snto32()").
+  Minor context change fixed. ]
+Signed-off-by: Wenshan Lan <jetlan9@163.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kvm/x86.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/hid/hid-core.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/arch/x86/kvm/x86.c
-+++ b/arch/x86/kvm/x86.c
-@@ -5294,7 +5294,9 @@ long kvm_arch_vcpu_ioctl(struct file *fi
- 		if (copy_from_user(&events, argp, sizeof(struct kvm_vcpu_events)))
- 			break;
+--- a/drivers/hid/hid-core.c
++++ b/drivers/hid/hid-core.c
+@@ -1349,7 +1349,12 @@ EXPORT_SYMBOL_GPL(hid_snto32);
  
-+		vcpu->srcu_idx = srcu_read_lock(&vcpu->kvm->srcu);
- 		r = kvm_vcpu_ioctl_x86_set_vcpu_events(vcpu, &events);
-+		srcu_read_unlock(&vcpu->kvm->srcu, vcpu->srcu_idx);
- 		break;
- 	}
- 	case KVM_GET_DEBUGREGS: {
+ static u32 s32ton(__s32 value, unsigned n)
+ {
+-	s32 a = value >> (n - 1);
++	s32 a;
++
++	if (!value || !n)
++		return 0;
++
++	a = value >> (n - 1);
+ 	if (a && a != -1)
+ 		return value < 0 ? 1 << (n - 1) : (1 << (n - 1)) - 1;
+ 	return value & ((1 << n) - 1);
 
 
 
