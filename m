@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208879-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208817-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 01117D267BA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:11 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 1D51FD26204
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:59 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7C6B43098DD3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:45 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BA2173052ED7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6B9AD3BF2FD;
-	Thu, 15 Jan 2026 17:11:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 08B122D3733;
+	Thu, 15 Jan 2026 17:08:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSegBJhu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PmYSxABd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8303D2D781B;
-	Thu, 15 Jan 2026 17:11:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C06E133993;
+	Thu, 15 Jan 2026 17:08:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497103; cv=none; b=ESc/sHSkpsRN32BzmAM5bqA2cd7n2lVmBh8lS3xu8GwZaAHkvb89TItUR9Rpa0s8eC2iT6hHJLtbGgVBHFudp2x0vvE7UvuDIRMRvDiGGg64n5B1DjpBCaUWCz54ucV4A+bSTqNnhP96WM/kaV0xTVfhklBfGBQR97PDjbuI+CE=
+	t=1768496926; cv=none; b=Q+EzndgMFzvDSqzBY8+wZKWBkoqxTVjJlgZueanEHs6VnH8om82ZOfT+5Kei0rbSPwuwImz0ilUIg3JfGcPNa6NusNA4DnuLfHuye24lZNB/6dnjRGEsCib7f2Ek5RALnyiKgDKIt9FboQEA7VaQKp/rwgPOtjpttazuD9ZQAsM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497103; c=relaxed/simple;
-	bh=56588g3OmdAfhqrzY9pb9Doc84JMo3Kbb7FIAYFI+f4=;
+	s=arc-20240116; t=1768496926; c=relaxed/simple;
+	bh=sgDASbvZ3/JJ7nET1uv2ThROS+Z9JbBIykvcAECD8tA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gmxCyE3aqBAOzvdlBehtPQaVpxghhjo5agFEfmIsRv/zcQP4QMOt+2u3NsgkWR/oejV5Y7v346YgmhEQEDgeG5j6OJJTC4tYsRULGaT9DalSx6/u0Qg3fLHttLzLzF5vSxoFGqdgmEuyPN/x1xLRflX/GuIazSG+DDxLOJYbAFA=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSegBJhu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A95BC116D0;
-	Thu, 15 Jan 2026 17:11:42 +0000 (UTC)
+	 MIME-Version; b=OklT84S/Wgpq6ru6qgPT3CaQSkMPMgEROSAiB6DHxA/BC+5+Jvhs/m/Bf5w90QF/iJtWfM1bkNRLaEcBfr17Cn0zHXb2JHFS931pVG7tQmwWb14ijnqOBJ+LczQkpyxCPXHlORQ1DdCBQwjUEBUbphBWESAt83wC/kaH+MmvoOw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PmYSxABd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CE6FC116D0;
+	Thu, 15 Jan 2026 17:08:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497103;
-	bh=56588g3OmdAfhqrzY9pb9Doc84JMo3Kbb7FIAYFI+f4=;
+	s=korg; t=1768496926;
+	bh=sgDASbvZ3/JJ7nET1uv2ThROS+Z9JbBIykvcAECD8tA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSegBJhuDFGEu7crgJYvIZxdRsChVhVMFMNHUjrDyorblBz371P6bZdNJW1iDSfyJ
-	 jtRVCuaud4+bT0U4BMCAZbwXpsRLQKvolbDUVSH7h5DP0M2xMXXdvSWansAqJl2VqO
-	 UDQcQKYA/yjsykqeZbyKiwHKAHVTc988lsJrPUlM=
+	b=PmYSxABdqDhjtXdyMATZlXx2dX7fTclv1cOkqBqikKfT4NTtHAivjI1xo8nTPrycW
+	 ihwHsl+xStRooBF7na6Qah790Hi9D9AvIH8NCbvtLH1XOZTXvEZBd+WVQJmxcVtZjn
+	 K5O6nnYR23YacYLTXnCjMWmFSCdPj7vT2z7/z+kU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexandre Knecht <knecht.alexandre@gmail.com>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Nikolay Aleksandrov <razor@blackwall.org>,
+	syzbot+58b44a770a1585795351@syzkaller.appspotmail.com,
+	Eric Dumazet <edumazet@google.com>,
 	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 37/72] bridge: fix C-VLAN preservation in 802.1ad vlan_tunnel egress
+Subject: [PATCH 6.6 64/88] arp: do not assume dev_hard_header() does not change skb->head
 Date: Thu, 15 Jan 2026 17:48:47 +0100
-Message-ID: <20260115164144.839580675@linuxfoundation.org>
+Message-ID: <20260115164148.627159820@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,77 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexandre Knecht <knecht.alexandre@gmail.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 3128df6be147768fe536986fbb85db1d37806a9f ]
+[ Upstream commit c92510f5e3f82ba11c95991824a41e59a9c5ed81 ]
 
-When using an 802.1ad bridge with vlan_tunnel, the C-VLAN tag is
-incorrectly stripped from frames during egress processing.
+arp_create() is the only dev_hard_header() caller
+making assumption about skb->head being unchanged.
 
-br_handle_egress_vlan_tunnel() uses skb_vlan_pop() to remove the S-VLAN
-from hwaccel before VXLAN encapsulation. However, skb_vlan_pop() also
-moves any "next" VLAN from the payload into hwaccel:
+A recent commit broke this assumption.
 
-    /* move next vlan tag to hw accel tag */
-    __skb_vlan_pop(skb, &vlan_tci);
-    __vlan_hwaccel_put_tag(skb, vlan_proto, vlan_tci);
+Initialize @arp pointer after dev_hard_header() call.
 
-For QinQ frames where the C-VLAN sits in the payload, this moves it to
-hwaccel where it gets lost during VXLAN encapsulation.
-
-Fix by calling __vlan_hwaccel_clear_tag() directly, which clears only
-the hwaccel S-VLAN and leaves the payload untouched.
-
-This path is only taken when vlan_tunnel is enabled and tunnel_info
-is configured, so 802.1Q bridges are unaffected.
-
-Tested with 802.1ad bridge + VXLAN vlan_tunnel, verified C-VLAN
-preserved in VXLAN payload via tcpdump.
-
-Fixes: 11538d039ac6 ("bridge: vlan dst_metadata hooks in ingress and egress paths")
-Signed-off-by: Alexandre Knecht <knecht.alexandre@gmail.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://patch.msgid.link/20251228020057.2788865-1-knecht.alexandre@gmail.com
+Fixes: db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
+Reported-by: syzbot+58b44a770a1585795351@syzkaller.appspotmail.com
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Link: https://patch.msgid.link/20260107212250.384552-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_vlan_tunnel.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ net/ipv4/arp.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/net/bridge/br_vlan_tunnel.c b/net/bridge/br_vlan_tunnel.c
-index 6399a8a69d076..0f03572d89d09 100644
---- a/net/bridge/br_vlan_tunnel.c
-+++ b/net/bridge/br_vlan_tunnel.c
-@@ -187,7 +187,6 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- {
- 	struct metadata_dst *tunnel_dst;
- 	__be64 tunnel_id;
--	int err;
+diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
+index 784dc8b37be5a..4ea5987e06b61 100644
+--- a/net/ipv4/arp.c
++++ b/net/ipv4/arp.c
+@@ -563,7 +563,7 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
  
- 	if (!vlan)
- 		return 0;
-@@ -197,9 +196,13 @@ int br_handle_egress_vlan_tunnel(struct sk_buff *skb,
- 		return 0;
+ 	skb_reserve(skb, hlen);
+ 	skb_reset_network_header(skb);
+-	arp = skb_put(skb, arp_hdr_len(dev));
++	skb_put(skb, arp_hdr_len(dev));
+ 	skb->dev = dev;
+ 	skb->protocol = htons(ETH_P_ARP);
+ 	if (!src_hw)
+@@ -571,12 +571,13 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
+ 	if (!dest_hw)
+ 		dest_hw = dev->broadcast;
  
- 	skb_dst_drop(skb);
--	err = skb_vlan_pop(skb);
--	if (err)
--		return err;
-+	/* For 802.1ad (QinQ), skb_vlan_pop() incorrectly moves the C-VLAN
-+	 * from payload to hwaccel after clearing S-VLAN. We only need to
-+	 * clear the hwaccel S-VLAN; the C-VLAN must stay in payload for
-+	 * correct VXLAN encapsulation. This is also correct for 802.1Q
-+	 * where no C-VLAN exists in payload.
-+	 */
-+	__vlan_hwaccel_clear_tag(skb);
+-	/*
+-	 *	Fill the device header for the ARP frame
++	/* Fill the device header for the ARP frame.
++	 * Note: skb->head can be changed.
+ 	 */
+ 	if (dev_hard_header(skb, dev, ptype, dest_hw, src_hw, skb->len) < 0)
+ 		goto out;
  
- 	tunnel_dst = rcu_dereference(vlan->tinfo.tunnel_dst);
- 	if (tunnel_dst && dst_hold_safe(&tunnel_dst->dst))
++	arp = arp_hdr(skb);
+ 	/*
+ 	 * Fill out the arp protocol part.
+ 	 *
 -- 
 2.51.0
 
