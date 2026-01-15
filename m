@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-209308-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209730-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 16306D2697F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3ED9DD273C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:13:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 8500D30D4A3B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:15 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id AA1AD30A640E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 81BEB3C1972;
-	Thu, 15 Jan 2026 17:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AFA903D4118;
+	Thu, 15 Jan 2026 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="OKS6ED6B"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DL1GMY9B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 45F2B3AA1A8;
-	Thu, 15 Jan 2026 17:32:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4E6E73D4115;
+	Thu, 15 Jan 2026 17:52:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498326; cv=none; b=vGN7FsF8ujLbUqOLlT4YNKJy1/bj7dlHh8V4+1K80og0FBX5e+AMRzkLpXQT6k3e4cAOBA3OMbo2CejgfHmF1d0oKmxfxq/MTZvX4u8uu1VhJYjib6sV3AzT3br3yXkmI7IgDNaGaA3SItDh0KFDCpqe2ClNFSWVI+baCxTKUFo=
+	t=1768499528; cv=none; b=rHc8OQL9WC5XIzCc+77x+3XnfBU6I6ylSNAC1YGMKPZVHbI/NbjBZq8PSpHIBvLiyVRxcYOv0sQA/etoEo0jKKHCtzw2hwRCmw5XymeMhcjY5TqYC7rxMwUDXJvS0LPTriBvrBPvBSHbT1VHza81l1/NA5kDqM3SixLvqaboeX0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498326; c=relaxed/simple;
-	bh=BZaiOfHPUSwWG8SQ7mYOuNpgJPnJDPfFsvQcKSr3byk=;
+	s=arc-20240116; t=1768499528; c=relaxed/simple;
+	bh=MsAXkm1gGHrr4ARuAs+MNlP9qxa1WNSGyXWTz7P/9Xk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Xpp/IXt2mJCZ4SHx8Zz4ejQHcw9WtLhJuGBoRmTvngLM60UZkZdN2FV+C4LCTt5hlpwUrz9K5OuYAp51yu47MgRXu4s0xCfjiIBdCvqENDr9uJx7Wo88cyWE60on8X6TJHY7bXNZufJ9Cv+lTHpISV9FkJ+gVVqzu0b5b60PjWo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=OKS6ED6B; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C471FC116D0;
-	Thu, 15 Jan 2026 17:32:05 +0000 (UTC)
+	 MIME-Version; b=Z2nQIUKenuxANperi8Tw1w16O85seI8YcunvPeoovEBgl3Rd9YWk3gx52C8BsCl7c/J6OwUfVIrBECrk8aXvOwvBRSzNi1sBxyg7Fr8Mqo0HiNrgGmP6LHTCwPD5Z4fBWlEGyk+3W3rOTrvVYnzih/Nz4/O7ktPW7bmXjU2eh0g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DL1GMY9B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53A06C16AAE;
+	Thu, 15 Jan 2026 17:52:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498326;
-	bh=BZaiOfHPUSwWG8SQ7mYOuNpgJPnJDPfFsvQcKSr3byk=;
+	s=korg; t=1768499527;
+	bh=MsAXkm1gGHrr4ARuAs+MNlP9qxa1WNSGyXWTz7P/9Xk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=OKS6ED6BOVOe+cb4vDJ2/gtwtNdgYDMLFvEuiUafXK6V/QO3vmuey1NcsUcZDIfRy
-	 UEMMey9jy/8AJN7bLDE08IUbZ+IxpK242uSvVYX+Zga1nn4j1HHDsgZYcMgIA1Uwwn
-	 B1ZbnReqcn/Vn6vHvwlq/+xDV65SN2OTKT6NJOrY=
+	b=DL1GMY9BWWBURvJY5BNi2ULVklhAuIEE7WSYU4hz0aOLefsM1QhI2GdaP/EUO1ojn
+	 orpP2vAvREh/M5OWH/dgrW0LVoyWNCX3faWnCsl1kmEO9kib+rFASkrwoFPKNfm79h
+	 IuYx5HVpNYsVrNXOaX38ols3LM8Dv1Uef/5zDz3E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thorsten Blum <thorsten.blum@linux.dev>,
-	Helge Deller <deller@gmx.de>
-Subject: [PATCH 5.15 393/554] fbdev: pxafb: Fix multiple clamped values in pxafb_adjust_timing
+	Masami Hiramatsu <mhiramat@kernel.org>,
+	Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+	Arnaldo Carvalho de Melo <acme@kernel.org>,
+	Jiri Olsa <jolsa@kernel.org>,
+	Namhyung Kim <namhyung@kernel.org>,
+	Ian Rogers <irogers@google.com>,
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>
+Subject: [PATCH 5.10 258/451] tracing: Do not register unsupported perf events
 Date: Thu, 15 Jan 2026 17:47:39 +0100
-Message-ID: <20260115164300.461029071@linuxfoundation.org>
+Message-ID: <20260115164240.221086818@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +64,87 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thorsten Blum <thorsten.blum@linux.dev>
+From: Steven Rostedt <rostedt@goodmis.org>
 
-commit 0155e868cbc111846cc2809c1546ea53810a56ae upstream.
+commit ef7f38df890f5dcd2ae62f8dbde191d72f3bebae upstream.
 
-The variables were never clamped because the return value of clamp_val()
-was not used. Fix this by assigning the clamped values, and use clamp()
-instead of clamp_val().
+Synthetic events currently do not have a function to register perf events.
+This leads to calling the tracepoint register functions with a NULL
+function pointer which triggers:
+
+ ------------[ cut here ]------------
+ WARNING: kernel/tracepoint.c:175 at tracepoint_add_func+0x357/0x370, CPU#2: perf/2272
+ Modules linked in: kvm_intel kvm irqbypass
+ CPU: 2 UID: 0 PID: 2272 Comm: perf Not tainted 6.18.0-ftest-11964-ge022764176fc-dirty #323 PREEMPTLAZY
+ Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 1.17.0-debian-1.17.0-1 04/01/2014
+ RIP: 0010:tracepoint_add_func+0x357/0x370
+ Code: 28 9c e8 4c 0b f5 ff eb 0f 4c 89 f7 48 c7 c6 80 4d 28 9c e8 ab 89 f4 ff 31 c0 5b 41 5c 41 5d 41 5e 41 5f 5d c3 cc cc cc cc cc <0f> 0b 49 c7 c6 ea ff ff ff e9 ee fe ff ff 0f 0b e9 f9 fe ff ff 0f
+ RSP: 0018:ffffabc0c44d3c40 EFLAGS: 00010246
+ RAX: 0000000000000001 RBX: ffff9380aa9e4060 RCX: 0000000000000000
+ RDX: 000000000000000a RSI: ffffffff9e1d4a98 RDI: ffff937fcf5fd6c8
+ RBP: 0000000000000001 R08: 0000000000000007 R09: ffff937fcf5fc780
+ R10: 0000000000000003 R11: ffffffff9c193910 R12: 000000000000000a
+ R13: ffffffff9e1e5888 R14: 0000000000000000 R15: ffffabc0c44d3c78
+ FS:  00007f6202f5f340(0000) GS:ffff93819f00f000(0000) knlGS:0000000000000000
+ CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+ CR2: 000055d3162281a8 CR3: 0000000106a56003 CR4: 0000000000172ef0
+ Call Trace:
+  <TASK>
+  tracepoint_probe_register+0x5d/0x90
+  synth_event_reg+0x3c/0x60
+  perf_trace_event_init+0x204/0x340
+  perf_trace_init+0x85/0xd0
+  perf_tp_event_init+0x2e/0x50
+  perf_try_init_event+0x6f/0x230
+  ? perf_event_alloc+0x4bb/0xdc0
+  perf_event_alloc+0x65a/0xdc0
+  __se_sys_perf_event_open+0x290/0x9f0
+  do_syscall_64+0x93/0x7b0
+  ? entry_SYSCALL_64_after_hwframe+0x76/0x7e
+  ? trace_hardirqs_off+0x53/0xc0
+  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+
+Instead, have the code return -ENODEV, which doesn't warn and has perf
+error out with:
+
+ # perf record -e synthetic:futex_wait
+Error:
+The sys_perf_event_open() syscall returned with 19 (No such device) for event (synthetic:futex_wait).
+"dmesg | grep -i perf" may provide additional information.
+
+Ideally perf should support synthetic events, but for now just fix the
+warning. The support can come later.
 
 Cc: stable@vger.kernel.org
-Fixes: 3f16ff608a75 ("[ARM] pxafb: cleanup of the timing checking code")
-Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
-Signed-off-by: Helge Deller <deller@gmx.de>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Cc: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+Cc: Arnaldo Carvalho de Melo <acme@kernel.org>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Link: https://patch.msgid.link/20251216182440.147e4453@gandalf.local.home
+Fixes: 4b147936fa509 ("tracing: Add support for 'synthetic' events")
+Reported-by: Ian Rogers <irogers@google.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/pxafb.c |   12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ kernel/trace/trace_events.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/video/fbdev/pxafb.c
-+++ b/drivers/video/fbdev/pxafb.c
-@@ -418,12 +418,12 @@ static int pxafb_adjust_timing(struct px
- 	var->yres = max_t(int, var->yres, MIN_YRES);
+--- a/kernel/trace/trace_events.c
++++ b/kernel/trace/trace_events.c
+@@ -303,6 +303,8 @@ int trace_event_reg(struct trace_event_c
  
- 	if (!(fbi->lccr0 & LCCR0_LCDT)) {
--		clamp_val(var->hsync_len, 1, 64);
--		clamp_val(var->vsync_len, 1, 64);
--		clamp_val(var->left_margin,  1, 255);
--		clamp_val(var->right_margin, 1, 255);
--		clamp_val(var->upper_margin, 1, 255);
--		clamp_val(var->lower_margin, 1, 255);
-+		var->hsync_len = clamp(var->hsync_len, 1, 64);
-+		var->vsync_len = clamp(var->vsync_len, 1, 64);
-+		var->left_margin  = clamp(var->left_margin,  1, 255);
-+		var->right_margin = clamp(var->right_margin, 1, 255);
-+		var->upper_margin = clamp(var->upper_margin, 1, 255);
-+		var->lower_margin = clamp(var->lower_margin, 1, 255);
- 	}
- 
- 	/* make sure each line is aligned on word boundary */
+ #ifdef CONFIG_PERF_EVENTS
+ 	case TRACE_REG_PERF_REGISTER:
++		if (!call->class->perf_probe)
++			return -ENODEV;
+ 		return tracepoint_probe_register(call->tp,
+ 						 call->class->perf_probe,
+ 						 call);
 
 
 
