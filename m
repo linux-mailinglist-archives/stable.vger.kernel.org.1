@@ -1,57 +1,58 @@
-Return-Path: <stable+bounces-209396-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209851-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 59DD7D26B45
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:18 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 4AA4FD277C0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 6AF0B30AE612
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:11 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A05FC3107F01
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C54AF3C196A;
-	Thu, 15 Jan 2026 17:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02DA53C196E;
+	Thu, 15 Jan 2026 17:57:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="w2KY3pHZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rFBLmJ3S"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8840E3C1967;
-	Thu, 15 Jan 2026 17:36:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B873A3D7D0E;
+	Thu, 15 Jan 2026 17:57:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498577; cv=none; b=bf33M4GZWOfwL52JntjYlrPEbQlZpTNfjgnYW3AAXkD23onLjzkQovdpqUwyZIbz7FocPEsL8r4ItQPM3NtHx+ci0UJg4Ej+rEZ+hgT0hrRcdsg6V6SyMwnAFN6Y+7TrDOd8VtGa/1FMohLuR6QvhN6ovGaBlnSoQ/AoZOUts/U=
+	t=1768499871; cv=none; b=XYv1X9BBUHAqGtC4+w/sg3AnNLmKvnA4/A9lwX2/+SvFd9fiWbRHU2xlxWKRjZnfKsE0OyQg/24/DqOu1BecRbHJsCEGg3HhX3ZfFmH80fVDqTvyfgYSzZkIjcafW3jCz2LEO3UpsDwPFvB0ByU8mPIyFSnppRT20/HYD3a5jLg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498577; c=relaxed/simple;
-	bh=1UQgR+y9q/y5mjquLJ8qbpgrHFmvF5pK24VEjbvReRA=;
+	s=arc-20240116; t=1768499871; c=relaxed/simple;
+	bh=rJJS4vxndoCTbCEG2PF2ki+wcRMpD6RV0CVl3F4vPbU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzT6Tc03vfSmv1K4ZlELU5EzpivE5sKJmmRWQuS0dsMzjR+TQWIDxYPFQyRH3HalZu/fP5vYY0SFZfGmli9rRD0tFmRwsRkaVIZ57U/LEqbh3th2nmUpLGfZGyJl/oC7J+iAn0BIJjPNZw2+10FqBBbfLp2dgpx2Ot3NHI42FDQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=w2KY3pHZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13E16C16AAE;
-	Thu, 15 Jan 2026 17:36:16 +0000 (UTC)
+	 MIME-Version; b=Y9h/j0yejkCbLDqr7HWwckBznhLt8eRvRTmzXXqqo73pnLpCzbOVZvgoQXrTULXUHpr5u7xj4voEqFNYIdIZTQSbmzvW6ucZvsJiV2pSBbYKGfhGxeam2IF9N6nONPcisQXpLgOZO9eVB1VuQG2WzUor3W8tobEykdshvZIs/yY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rFBLmJ3S; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE42C116D0;
+	Thu, 15 Jan 2026 17:57:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498577;
-	bh=1UQgR+y9q/y5mjquLJ8qbpgrHFmvF5pK24VEjbvReRA=;
+	s=korg; t=1768499871;
+	bh=rJJS4vxndoCTbCEG2PF2ki+wcRMpD6RV0CVl3F4vPbU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=w2KY3pHZI8B5Pi0Yt/Ma0RfqTDYoE80PbBkqijnEGiRISj5pPotmYHVT3J0xJZxsF
-	 NcX/5MppYuhJ3KSiH4y9jkiTkX6kE4o2ww+S6o51fH7+kI6ccFa4VZwYKaKlZsSIfa
-	 hO1Utov2r78gCR5AwJufCWwLGDz4fgLY1BiCtKmo=
+	b=rFBLmJ3SABnJKanU/3z3giBPTZQCi44/oRNpGKtGhiIppqVWOe9tiAUWHBjFrBYs9
+	 kp/HCM0ZqJNDADNBzvPRMKOokH+D+u8pd7nl3yv21sr6Bf7iI3FA61Q6ndT2TbXI32
+	 HNkYX4W6vyySAFbN1ty5APXUkB9tN2n3QjQpDjqE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Patrik Jakobsson <patrik.r.jakobsson@gmail.com>,
-	Stefan Christ <contact@stefanchrist.eu>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Zack Rusin <zack.rusin@broadcom.com>,
+	Kuzey Arda Bulut <kuzeyardabulut@gmail.com>,
+	Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>,
 	dri-devel@lists.freedesktop.org,
-	Thomas Zimmermann <tzimmermann@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 480/554] drm/gma500: Remove unused helper psb_fbdev_fb_setcolreg()
+	Ian Forbes <ian.forbes@broadcom.com>,
+	Sasha Levin <sashal@kernel.org>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 345/451] drm/vmwgfx: Fix a null-ptr access in the cursor snooper
 Date: Thu, 15 Jan 2026 17:49:06 +0100
-Message-ID: <20260115164303.682571701@linuxfoundation.org>
+Message-ID: <20260115164243.375415711@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,103 +64,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Zack Rusin <zack.rusin@broadcom.com>
 
-[ Upstream commit be729f9de6c64240645dc80a24162ac4d3fe00a8 ]
+[ Upstream commit 5ac2c0279053a2c5265d46903432fb26ae2d0da2 ]
 
-Remove psb_fbdev_fb_setcolreg(), which hasn't been called in almost
-a decade.
+Check that the resource which is converted to a surface exists before
+trying to use the cursor snooper on it.
 
-Gma500 commit 4d8d096e9ae8 ("gma500: introduce the framebuffer support
-code") added the helper psb_fbdev_fb_setcolreg() for setting the fbdev
-palette via fbdev's fb_setcolreg callback. Later
-commit 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for
-fb_ops") set several default helpers for fbdev emulation, including
-fb_setcmap.
+vmw_cmd_res_check allows explicit invalid (SVGA3D_INVALID_ID) identifiers
+because some svga commands accept SVGA3D_INVALID_ID to mean "no surface",
+unfortunately functions that accept the actual surfaces as objects might
+(and in case of the cursor snooper, do not) be able to handle null
+objects. Make sure that we validate not only the identifier (via the
+vmw_cmd_res_check) but also check that the actual resource exists before
+trying to do something with it.
 
-The fbdev subsystem always prefers fb_setcmap over fb_setcolreg. [1]
-Hence, the gma500 code is no longer in use and gma500 has been using
-drm_fb_helper_setcmap() for several years without issues.
+Fixes unchecked null-ptr reference in the snooping code.
 
-Fixes: 3da6c2f3b730 ("drm/gma500: use DRM_FB_HELPER_DEFAULT_OPS for fb_ops")
-Cc: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Cc: Stefan Christ <contact@stefanchrist.eu>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
+Signed-off-by: Zack Rusin <zack.rusin@broadcom.com>
+Fixes: c0951b797e7d ("drm/vmwgfx: Refactor resource management")
+Reported-by: Kuzey Arda Bulut <kuzeyardabulut@gmail.com>
+Cc: Broadcom internal kernel review list <bcm-kernel-feedback-list@broadcom.com>
 Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v4.10+
-Link: https://elixir.bootlin.com/linux/v6.16.9/source/drivers/video/fbdev/core/fbcmap.c#L246 # [1]
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Acked-by: Patrik Jakobsson <patrik.r.jakobsson@gmail.com>
-Link: https://lore.kernel.org/r/20250929082338.18845-1-tzimmermann@suse.de
-[ adapted patch from fbdev.c to framebuffer.c where the function was named psbfb_setcolreg() instead of psb_fbdev_fb_setcolreg() ]
+Reviewed-by: Ian Forbes <ian.forbes@broadcom.com>
+Link: https://lore.kernel.org/r/20250917153655.1968583-1-zack.rusin@broadcom.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Shivani: Modified to apply on v5.10.y-v6.1.y]
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/gma500/framebuffer.c |   42 -----------------------------------
- 1 file changed, 42 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   17 ++++++++++++-----
+ 1 file changed, 12 insertions(+), 5 deletions(-)
 
---- a/drivers/gpu/drm/gma500/framebuffer.c
-+++ b/drivers/gpu/drm/gma500/framebuffer.c
-@@ -35,47 +35,6 @@ static const struct drm_framebuffer_func
- 	.create_handle = drm_gem_fb_create_handle,
- };
- 
--#define CMAP_TOHW(_val, _width) ((((_val) << (_width)) + 0x7FFF - (_val)) >> 16)
--
--static int psbfb_setcolreg(unsigned regno, unsigned red, unsigned green,
--			   unsigned blue, unsigned transp,
--			   struct fb_info *info)
--{
--	struct drm_fb_helper *fb_helper = info->par;
--	struct drm_framebuffer *fb = fb_helper->fb;
--	uint32_t v;
--
--	if (!fb)
--		return -ENOMEM;
--
--	if (regno > 255)
--		return 1;
--
--	red = CMAP_TOHW(red, info->var.red.length);
--	blue = CMAP_TOHW(blue, info->var.blue.length);
--	green = CMAP_TOHW(green, info->var.green.length);
--	transp = CMAP_TOHW(transp, info->var.transp.length);
--
--	v = (red << info->var.red.offset) |
--	    (green << info->var.green.offset) |
--	    (blue << info->var.blue.offset) |
--	    (transp << info->var.transp.offset);
--
--	if (regno < 16) {
--		switch (fb->format->cpp[0] * 8) {
--		case 16:
--			((uint32_t *) info->pseudo_palette)[regno] = v;
--			break;
--		case 24:
--		case 32:
--			((uint32_t *) info->pseudo_palette)[regno] = v;
--			break;
--		}
--	}
--
--	return 0;
--}
--
- static vm_fault_t psbfb_vm_fault(struct vm_fault *vmf)
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1520,6 +1520,7 @@ static int vmw_cmd_dma(struct vmw_privat
+ 		       SVGA3dCmdHeader *header)
  {
- 	struct vm_area_struct *vma = vmf->vma;
-@@ -147,7 +106,6 @@ static int psbfb_mmap(struct fb_info *in
- static const struct fb_ops psbfb_unaccel_ops = {
- 	.owner = THIS_MODULE,
- 	DRM_FB_HELPER_DEFAULT_OPS,
--	.fb_setcolreg = psbfb_setcolreg,
- 	.fb_fillrect = drm_fb_helper_cfb_fillrect,
- 	.fb_copyarea = drm_fb_helper_cfb_copyarea,
- 	.fb_imageblit = drm_fb_helper_cfb_imageblit,
+ 	struct vmw_buffer_object *vmw_bo = NULL;
++	struct vmw_resource *res;
+ 	struct vmw_surface *srf = NULL;
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdSurfaceDMA);
+ 	int ret;
+@@ -1555,18 +1556,24 @@ static int vmw_cmd_dma(struct vmw_privat
+ 
+ 	dirty = (cmd->body.transfer == SVGA3D_WRITE_HOST_VRAM) ?
+ 		VMW_RES_DIRTY_SET : 0;
+-	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface,
+-				dirty, user_surface_converter,
+-				&cmd->body.host.sid, NULL);
++	ret = vmw_cmd_res_check(dev_priv, sw_context, vmw_res_surface, dirty,
++				user_surface_converter, &cmd->body.host.sid,
++				NULL);
+ 	if (unlikely(ret != 0)) {
+ 		if (unlikely(ret != -ERESTARTSYS))
+ 			VMW_DEBUG_USER("could not find surface for DMA.\n");
+ 		return ret;
+ 	}
+ 
+-	srf = vmw_res_to_srf(sw_context->res_cache[vmw_res_surface].res);
++	res = sw_context->res_cache[vmw_res_surface].res;
++	if (!res) {
++		VMW_DEBUG_USER("Invalid DMA surface.\n");
++		return -EINVAL;
++	}
+ 
+-	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base, header);
++	srf = vmw_res_to_srf(res);
++	vmw_kms_cursor_snoop(srf, sw_context->fp->tfile, &vmw_bo->base,
++			     header);
+ 
+ 	return 0;
+ }
 
 
 
