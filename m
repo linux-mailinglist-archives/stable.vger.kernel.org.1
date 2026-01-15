@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209358-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208831-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5B265D26E27
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:59 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 48D7AD26417
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 12F3931F8807
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A712C311D07E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9DE803B8BA7;
-	Thu, 15 Jan 2026 17:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 55F9F3A1CE4;
+	Thu, 15 Jan 2026 17:09:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fQLgfPJ9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZTvpib8B"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 607963A7F5D;
-	Thu, 15 Jan 2026 17:34:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 182E82FDC4D;
+	Thu, 15 Jan 2026 17:09:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498468; cv=none; b=LuDfRghh2gHh9EbUKrFLz5zrD3uy73iF4h1MlflrsFlznckQZh2ZHs9ipGI2894xDHVMtSROT3ixyKEgsZZw3Y17+K5PUPaLJ8CQnEZ73af4nBirGGhdXWdsqJ+wWRbYrTc2UiHd9lH4+DV9qi094nBhUfFFaXqfwpu5nrJS5bg=
+	t=1768496967; cv=none; b=fg0UwXThgpZUal/mmzDRTagh5c3+1xrhigXUkmPiXeTGeUh0MUn/SHUWUTeZMj1rQ1CSDb85vj81gfwGV4raLEAqQh6yoVka+hAzpSscP2Mi0XF2Bs1naAg5/lPI1FQk5DOwCiK1cNNaru9+jBJQzklaHYq9KswvE3fxLdPKDAg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498468; c=relaxed/simple;
-	bh=kec0/pxSptzfIoeJq0FDv/mJRL3Zpj2HPLwgay8ly6Y=;
+	s=arc-20240116; t=1768496967; c=relaxed/simple;
+	bh=hJiLbbHwMC7cDVNQeikXwl4VtvgqYjWVeaHJ6Zlao7I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=BFqCJn71ljO9242C4i7YPKWWXQuwrL6AeMGJwtfNjJx6/WKBaBAC6F/cZNRLoa+xojNtKMNAxTFO0NJTs6zb8hMt5AeOrgTVb+HH15iEIPWCwLvsU1KQbgwFraXyRBQSnSQERvUP6Jmsd/ziKDZebcIPsx8wbjCSfzNQqo0I230=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fQLgfPJ9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A825CC16AAE;
-	Thu, 15 Jan 2026 17:34:27 +0000 (UTC)
+	 MIME-Version; b=hKNRX9j8KeDdjpgnC6mGHrht6kBmieRa9Hl+g62qIGtcVcd9UV95kTcHXEdItc8PYtDKqkXDwtb/HDRjn55hdXEfxMqnbOHX43Uzs94A37U/+JsX8PkgYU+SxqwDAJsYKWTXGA8TKUFJG/3BfZFwQdUJ4peN5BP/Kxj4utekbmA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZTvpib8B; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 629BFC116D0;
+	Thu, 15 Jan 2026 17:09:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498468;
-	bh=kec0/pxSptzfIoeJq0FDv/mJRL3Zpj2HPLwgay8ly6Y=;
+	s=korg; t=1768496966;
+	bh=hJiLbbHwMC7cDVNQeikXwl4VtvgqYjWVeaHJ6Zlao7I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fQLgfPJ9JIE1P/OlaooHREhA7mV/5ihDuSlx+D+TXKWUm/Ie6OA2cR8e4oqGqVEhJ
-	 PWFeQ3DR/TmpNEDQfZM4N3uNCWrKSPKhuaK3w7dCjE1jEupa066V04jqtfzMRsjn+J
-	 rJ+zBwrt7rjTHQf1QoOXfaKoSSsei9URsJjiPS6Y=
+	b=ZTvpib8Bp+CTp6bgfqDHtOxWJfpBAXXCcjivmUO8wbHZiMYNwSg6rCHmNIzJSd763
+	 oz7eJldAbMh3R2aCZYHv5hS93mcyy8PC7UN14auv1YEp/0xu1tPCBHNmVWUFGheYc5
+	 M5qJd18eVh64vOH3tFDHJQJK5SydnxpA0PW5T5KU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable@kernel.org,
-	Hong Yun <yhong@link.cuhk.edu.hk>,
-	Chao Yu <chao@kernel.org>,
-	Jaegeuk Kim <jaegeuk@kernel.org>,
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 442/554] f2fs: use global inline_xattr_slab instead of per-sb slab cache
+Subject: [PATCH 6.6 45/88] gpio: pca953x: Utilise temporary variable for struct device
 Date: Thu, 15 Jan 2026 17:48:28 +0100
-Message-ID: <20260115164302.265750906@linuxfoundation.org>
+Message-ID: <20260115164147.940581307@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,242 +58,125 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 1f27ef42bb0b7c0740c5616ec577ec188b8a1d05 ]
+[ Upstream commit 6811886ac91eb414b1b74920e05e6590c3f2a688 ]
 
-As Hong Yun reported in mailing list:
+We have a temporary variable to keep pointer to struct device.
+Utilise it where it makes sense.
 
-loop7: detected capacity change from 0 to 131072
-------------[ cut here ]------------
-kmem_cache of name 'f2fs_xattr_entry-7:7' already exists
-WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-WARNING: CPU: 0 PID: 24426 at mm/slab_common.c:110 __kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
-CPU: 0 UID: 0 PID: 24426 Comm: syz.7.1370 Not tainted 6.17.0-rc4 #1 PREEMPT(full)
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.13.0-1ubuntu1.1 04/01/2014
-RIP: 0010:kmem_cache_sanity_check mm/slab_common.c:109 [inline]
-RIP: 0010:__kmem_cache_create_args+0xa6/0x320 mm/slab_common.c:307
-Call Trace:
- __kmem_cache_create include/linux/slab.h:353 [inline]
- f2fs_kmem_cache_create fs/f2fs/f2fs.h:2943 [inline]
- f2fs_init_xattr_caches+0xa5/0xe0 fs/f2fs/xattr.c:843
- f2fs_fill_super+0x1645/0x2620 fs/f2fs/super.c:4918
- get_tree_bdev_flags+0x1fb/0x260 fs/super.c:1692
- vfs_get_tree+0x43/0x140 fs/super.c:1815
- do_new_mount+0x201/0x550 fs/namespace.c:3808
- do_mount fs/namespace.c:4136 [inline]
- __do_sys_mount fs/namespace.c:4347 [inline]
- __se_sys_mount+0x298/0x2f0 fs/namespace.c:4324
- do_syscall_x64 arch/x86/entry/syscall_64.c:63 [inline]
- do_syscall_64+0x8e/0x3a0 arch/x86/entry/syscall_64.c:94
- entry_SYSCALL_64_after_hwframe+0x76/0x7e
-
-The bug can be reproduced w/ below scripts:
-- mount /dev/vdb /mnt1
-- mount /dev/vdc /mnt2
-- umount /mnt1
-- mounnt /dev/vdb /mnt1
-
-The reason is if we created two slab caches, named f2fs_xattr_entry-7:3
-and f2fs_xattr_entry-7:7, and they have the same slab size. Actually,
-slab system will only create one slab cache core structure which has
-slab name of "f2fs_xattr_entry-7:3", and two slab caches share the same
-structure and cache address.
-
-So, if we destroy f2fs_xattr_entry-7:3 cache w/ cache address, it will
-decrease reference count of slab cache, rather than release slab cache
-entirely, since there is one more user has referenced the cache.
-
-Then, if we try to create slab cache w/ name "f2fs_xattr_entry-7:3" again,
-slab system will find that there is existed cache which has the same name
-and trigger the warning.
-
-Let's changes to use global inline_xattr_slab instead of per-sb slab cache
-for fixing.
-
-Fixes: a999150f4fe3 ("f2fs: use kmem_cache pool during inline xattr lookups")
-Cc: stable@kernel.org
-Reported-by: Hong Yun <yhong@link.cuhk.edu.hk>
-Tested-by: Hong Yun <yhong@link.cuhk.edu.hk>
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
-[ folio => page + different module init/exit ordering ]
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Stable-dep-of: 014a17deb412 ("gpio: pca953x: handle short interrupt pulses on PCAL devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/f2fs/f2fs.h  |    3 ---
- fs/f2fs/super.c |   15 +++++++--------
- fs/f2fs/xattr.c |   32 +++++++++++---------------------
- fs/f2fs/xattr.h |   10 ++++++----
- 4 files changed, 24 insertions(+), 36 deletions(-)
+ drivers/gpio/gpio-pca953x.c | 30 ++++++++++++++----------------
+ 1 file changed, 14 insertions(+), 16 deletions(-)
 
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -1763,9 +1763,6 @@ struct f2fs_sb_info {
+diff --git a/drivers/gpio/gpio-pca953x.c b/drivers/gpio/gpio-pca953x.c
+index 3a0b999521e44..de965e6353c5b 100644
+--- a/drivers/gpio/gpio-pca953x.c
++++ b/drivers/gpio/gpio-pca953x.c
+@@ -781,11 +781,11 @@ static int pca953x_irq_set_type(struct irq_data *d, unsigned int type)
+ {
+ 	struct gpio_chip *gc = irq_data_get_irq_chip_data(d);
+ 	struct pca953x_chip *chip = gpiochip_get_data(gc);
++	struct device *dev = &chip->client->dev;
+ 	irq_hw_number_t hwirq = irqd_to_hwirq(d);
  
- 	struct workqueue_struct *post_read_wq;	/* post read workqueue */
- 
--	struct kmem_cache *inline_xattr_slab;	/* inline xattr entry */
--	unsigned int inline_xattr_slab_size;	/* default inline xattr slab size */
--
- 	/* For reclaimed segs statistics per each GC mode */
- 	unsigned int gc_segment_mode;		/* GC state for reclaimed segments */
- 	unsigned int gc_reclaimed_segs[MAX_GC_MODE];	/* Reclaimed segs for each mode */
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -1655,7 +1655,6 @@ static void f2fs_put_super(struct super_
- 
- 	destroy_device_list(sbi);
- 	f2fs_destroy_page_array_cache(sbi);
--	f2fs_destroy_xattr_caches(sbi);
- 	mempool_destroy(sbi->write_io_dummy);
- #ifdef CONFIG_QUOTA
- 	for (i = 0; i < MAXQUOTAS; i++)
-@@ -4166,13 +4165,9 @@ try_onemore:
- 		}
+ 	if (!(type & IRQ_TYPE_EDGE_BOTH)) {
+-		dev_err(&chip->client->dev, "irq %d: unsupported type %d\n",
+-			d->irq, type);
++		dev_err(dev, "irq %d: unsupported type %d\n", d->irq, type);
+ 		return -EINVAL;
  	}
  
--	/* init per sbi slab cache */
--	err = f2fs_init_xattr_caches(sbi);
--	if (err)
--		goto free_io_dummy;
- 	err = f2fs_init_page_array_cache(sbi);
- 	if (err)
--		goto free_xattr_cache;
-+		goto free_io_dummy;
+@@ -902,7 +902,7 @@ static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
+ 	int ret;
  
- 	/* get an inode for meta space */
- 	sbi->meta_inode = f2fs_iget(sb, F2FS_META_INO(sbi));
-@@ -4492,8 +4487,6 @@ free_meta_inode:
- 	sbi->meta_inode = NULL;
- free_page_array_cache:
- 	f2fs_destroy_page_array_cache(sbi);
--free_xattr_cache:
--	f2fs_destroy_xattr_caches(sbi);
- free_io_dummy:
- 	mempool_destroy(sbi->write_io_dummy);
- free_percpu:
-@@ -4660,7 +4653,12 @@ static int __init init_f2fs_fs(void)
- 	err = f2fs_create_casefold_cache();
- 	if (err)
- 		goto free_compress_cache;
-+	err = f2fs_init_xattr_cache();
-+	if (err)
-+		goto free_casefold_cache;
+ 	if (dmi_first_match(pca953x_dmi_acpi_irq_info)) {
+-		ret = pca953x_acpi_get_irq(&client->dev);
++		ret = pca953x_acpi_get_irq(dev);
+ 		if (ret > 0)
+ 			client->irq = ret;
+ 	}
+@@ -940,10 +940,9 @@ static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
+ 	girq->threaded = true;
+ 	girq->first = irq_base; /* FIXME: get rid of this */
+ 
+-	ret = devm_request_threaded_irq(&client->dev, client->irq,
+-					NULL, pca953x_irq_handler,
+-					IRQF_ONESHOT | IRQF_SHARED,
+-					dev_name(&client->dev), chip);
++	ret = devm_request_threaded_irq(dev, client->irq, NULL, pca953x_irq_handler,
++					IRQF_ONESHOT | IRQF_SHARED, dev_name(dev),
++					chip);
+ 	if (ret)
+ 		return dev_err_probe(dev, client->irq, "failed to request irq\n");
+ 
+@@ -951,13 +950,13 @@ static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
+ }
+ 
+ #else /* CONFIG_GPIO_PCA953X_IRQ */
+-static int pca953x_irq_setup(struct pca953x_chip *chip,
+-			     int irq_base)
++static int pca953x_irq_setup(struct pca953x_chip *chip, int irq_base)
+ {
+ 	struct i2c_client *client = chip->client;
++	struct device *dev = &client->dev;
+ 
+ 	if (client->irq && irq_base != -1 && (chip->driver_data & PCA_INT))
+-		dev_warn(&client->dev, "interrupt support not compiled in\n");
++		dev_warn(dev, "interrupt support not compiled in\n");
+ 
  	return 0;
-+free_casefold_cache:
-+	f2fs_destroy_casefold_cache();
- free_compress_cache:
- 	f2fs_destroy_compress_cache();
- free_compress_mempool:
-@@ -4700,6 +4698,7 @@ fail:
+ }
+@@ -1048,11 +1047,11 @@ static int pca953x_probe(struct i2c_client *client)
+ 	int ret;
+ 	const struct regmap_config *regmap_config;
  
- static void __exit exit_f2fs_fs(void)
- {
-+	f2fs_destroy_xattr_cache();
- 	f2fs_destroy_casefold_cache();
- 	f2fs_destroy_compress_cache();
- 	f2fs_destroy_compress_mempool();
---- a/fs/f2fs/xattr.c
-+++ b/fs/f2fs/xattr.c
-@@ -23,11 +23,12 @@
- #include "xattr.h"
- #include "segment.h"
+-	chip = devm_kzalloc(&client->dev, sizeof(*chip), GFP_KERNEL);
++	chip = devm_kzalloc(dev, sizeof(*chip), GFP_KERNEL);
+ 	if (chip == NULL)
+ 		return -ENOMEM;
  
-+static struct kmem_cache *inline_xattr_slab;
- static void *xattr_alloc(struct f2fs_sb_info *sbi, int size, bool *is_inline)
- {
--	if (likely(size == sbi->inline_xattr_slab_size)) {
-+	if (likely(size == DEFAULT_XATTR_SLAB_SIZE)) {
- 		*is_inline = true;
--		return f2fs_kmem_cache_alloc(sbi->inline_xattr_slab,
-+		return f2fs_kmem_cache_alloc(inline_xattr_slab,
- 					GFP_F2FS_ZERO, false, sbi);
+-	pdata = dev_get_platdata(&client->dev);
++	pdata = dev_get_platdata(dev);
+ 	if (pdata) {
+ 		irq_base = pdata->irq_base;
+ 		chip->gpio_start = pdata->gpio_base;
+@@ -1069,8 +1068,7 @@ static int pca953x_probe(struct i2c_client *client)
+ 		 * using "reset" GPIO. Otherwise any of those platform
+ 		 * must use _DSD method with corresponding property.
+ 		 */
+-		reset_gpio = devm_gpiod_get_optional(&client->dev, "reset",
+-						     GPIOD_OUT_LOW);
++		reset_gpio = devm_gpiod_get_optional(dev, "reset", GPIOD_OUT_LOW);
+ 		if (IS_ERR(reset_gpio))
+ 			return dev_err_probe(dev, PTR_ERR(reset_gpio),
+ 					     "Failed to get reset gpio\n");
+@@ -1090,10 +1088,10 @@ static int pca953x_probe(struct i2c_client *client)
+ 	pca953x_setup_gpio(chip, chip->driver_data & PCA_GPIO_MASK);
+ 
+ 	if (NBANK(chip) > 2 || PCA_CHIP_TYPE(chip->driver_data) == PCA957X_TYPE) {
+-		dev_info(&client->dev, "using AI\n");
++		dev_info(dev, "using AI\n");
+ 		regmap_config = &pca953x_ai_i2c_regmap;
+ 	} else {
+-		dev_info(&client->dev, "using no AI\n");
++		dev_info(dev, "using no AI\n");
+ 		regmap_config = &pca953x_i2c_regmap;
  	}
- 	*is_inline = false;
-@@ -38,7 +39,7 @@ static void xattr_free(struct f2fs_sb_in
- 							bool is_inline)
- {
- 	if (is_inline)
--		kmem_cache_free(sbi->inline_xattr_slab, xattr_addr);
-+		kmem_cache_free(inline_xattr_slab, xattr_addr);
- 	else
- 		kfree(xattr_addr);
- }
-@@ -818,25 +819,14 @@ int f2fs_setxattr(struct inode *inode, i
- 	return err;
- }
  
--int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi)
-+int __init f2fs_init_xattr_cache(void)
- {
--	dev_t dev = sbi->sb->s_bdev->bd_dev;
--	char slab_name[32];
--
--	sprintf(slab_name, "f2fs_xattr_entry-%u:%u", MAJOR(dev), MINOR(dev));
--
--	sbi->inline_xattr_slab_size = F2FS_OPTION(sbi).inline_xattr_size *
--					sizeof(__le32) + XATTR_PADDING_SIZE;
--
--	sbi->inline_xattr_slab = f2fs_kmem_cache_create(slab_name,
--					sbi->inline_xattr_slab_size);
--	if (!sbi->inline_xattr_slab)
--		return -ENOMEM;
--
--	return 0;
-+	inline_xattr_slab = f2fs_kmem_cache_create("f2fs_xattr_entry",
-+					DEFAULT_XATTR_SLAB_SIZE);
-+	return inline_xattr_slab ? 0 : -ENOMEM;
- }
- 
--void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi)
-+void f2fs_destroy_xattr_cache(void)
- {
--	kmem_cache_destroy(sbi->inline_xattr_slab);
--}
-+	kmem_cache_destroy(inline_xattr_slab);
-+}
-\ No newline at end of file
---- a/fs/f2fs/xattr.h
-+++ b/fs/f2fs/xattr.h
-@@ -88,6 +88,8 @@ struct f2fs_xattr_entry {
- 			F2FS_TOTAL_EXTRA_ATTR_SIZE / sizeof(__le32) -	\
- 			DEF_INLINE_RESERVED_SIZE -			\
- 			MIN_INLINE_DENTRY_SIZE / sizeof(__le32))
-+#define DEFAULT_XATTR_SLAB_SIZE	(DEFAULT_INLINE_XATTR_ADDRS *		\
-+				sizeof(__le32) + XATTR_PADDING_SIZE)
- 
- /*
-  * On-disk structure of f2fs_xattr
-@@ -131,8 +133,8 @@ extern int f2fs_setxattr(struct inode *,
- extern int f2fs_getxattr(struct inode *, int, const char *, void *,
- 						size_t, struct page *);
- extern ssize_t f2fs_listxattr(struct dentry *, char *, size_t);
--extern int f2fs_init_xattr_caches(struct f2fs_sb_info *);
--extern void f2fs_destroy_xattr_caches(struct f2fs_sb_info *);
-+int __init f2fs_init_xattr_cache(void);
-+void f2fs_destroy_xattr_cache(void);
- #else
- 
- #define f2fs_xattr_handlers	NULL
-@@ -149,8 +151,8 @@ static inline int f2fs_getxattr(struct i
- {
- 	return -EOPNOTSUPP;
- }
--static inline int f2fs_init_xattr_caches(struct f2fs_sb_info *sbi) { return 0; }
--static inline void f2fs_destroy_xattr_caches(struct f2fs_sb_info *sbi) { }
-+static inline int __init f2fs_init_xattr_cache(void) { return 0; }
-+static inline void f2fs_destroy_xattr_cache(void) { }
- #endif
- 
- #ifdef CONFIG_F2FS_FS_SECURITY
+-- 
+2.51.0
+
 
 
 
