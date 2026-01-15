@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208630-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208734-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F1AC0D26024
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:47 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3E9F2D260CC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9D429301D9CF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:55 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id B40A730049E0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 661FF3BF2EF;
-	Thu, 15 Jan 2026 16:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 61E233ACEFE;
+	Thu, 15 Jan 2026 17:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="L20OpbzA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0f9947NL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 279993B9619;
-	Thu, 15 Jan 2026 16:59:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2430939B4BF;
+	Thu, 15 Jan 2026 17:04:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496395; cv=none; b=Rcgg0X1rOIpj66ena5T8Xtmua7gqNIlc1USEyuUGvdGt9F5PdgeGzaXN6+nSUSe1Ba0Yh5LZafJHht1hzVzB2O6dPslQVv521AO08HC+wb8465trzJe7+wqX2smFCHRmvmToa+SmYcUN5d/bKNxYJ57PqmVHLcZ+sRmk/7H6KCg=
+	t=1768496694; cv=none; b=JyQFe+LrinQumpsxGA4KSnpyjvPNsXOMVmZOfNfMp0RROW5v7dp38XzSSVGwLht6pvVdb9aRCgaaecN5u7RF6PLLSbwL7I5ZKF8jdc6ne7QepH8lViLNgeA+XtUbbU3HZSoIef7vesPuBr3MANYs0jEwZYqe2rlChlCmUv5gSLU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496395; c=relaxed/simple;
-	bh=IH0Nx5PfyN/veTq82G6Wul1q37Ddiy+KYZ/P2h7GUWM=;
+	s=arc-20240116; t=1768496694; c=relaxed/simple;
+	bh=EeIPgk/KWfiGfe16DKRdckqO5rmhlcwYqBsYxAHG1dM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=mTXhaxe/iH+BlSb1Wrp1J3WZlrsiLsFB8DPkOAML9C+bPbVG42WzlVmt0lESJBth0Qc6yES0G5gzVxMK7S1kBhWWwS0B826l7HO1abAAIIXx6h1Iz0JaDS9okahZA7Sv0EcZZG2dJrxQ4G/x6/3cIXgMJj0a8TQbmsRkCmPcSYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=L20OpbzA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C9BC116D0;
-	Thu, 15 Jan 2026 16:59:54 +0000 (UTC)
+	 MIME-Version; b=ee0nN6PInA7ubnKock/6eSgTz+jbjP93HHjoGv5zodF+ps8qj9/yyMwL1eC8b9YZeAsG9OXJYinb2dqeGEVVWO8fqCvcwDzmmr8Vv4z/y8TkKn+TtP4qHHDOssKudLWC5HYUbD3o/hkS4F7r5thxrUoDk8oF1dtM7Wsy8h2Kpw8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0f9947NL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCE3C116D0;
+	Thu, 15 Jan 2026 17:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496395;
-	bh=IH0Nx5PfyN/veTq82G6Wul1q37Ddiy+KYZ/P2h7GUWM=;
+	s=korg; t=1768496694;
+	bh=EeIPgk/KWfiGfe16DKRdckqO5rmhlcwYqBsYxAHG1dM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=L20OpbzAyaK1tRwXME75cWjuPbXGWabQKcvAq+xgJVf10nGfOcJ79oTXUN7fQMsKm
-	 G+nPgwt6UuYoC2/J/3Rh3BkiiLWIFKEXuSO94Jaaq5l+yxqPur1JtVOvi9D0RtL2Y1
-	 jZKR1xKVkLO0uAYPuT1nGDmcprsmayfgjE/q44ow=
+	b=0f9947NL23wk82hJCxJYqXTbeIoQKJfKHsj0KtBfTrUQokjHMnKtpdhFehXxrew7y
+	 sJtVsBnfUSghV6nBJr2yldQ2+sYhubyZpfrauaOqz0UDO8cSw1uJkpowMl5inmVT/A
+	 c93Q61+x7ydW2Sh7O+kqeQQ9bu0/oWLRSzOqMevU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
+	Di Zhu <zhud@hygon.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 147/181] net: airoha: Fix schedule while atomic in airoha_ppe_deinit()
+Subject: [PATCH 6.12 069/119] netdev: preserve NETIF_F_ALL_FOR_ALL across TSO updates
 Date: Thu, 15 Jan 2026 17:48:04 +0100
-Message-ID: <20260115164207.622358052@linuxfoundation.org>
+Message-ID: <20260115164154.442420647@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,53 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenzo Bianconi <lorenzo@kernel.org>
+From: Di Zhu <zhud@hygon.cn>
 
-[ Upstream commit 6abcf751bc084804a9e5b3051442e8a2ce67f48a ]
+[ Upstream commit 02d1e1a3f9239cdb3ecf2c6d365fb959d1bf39df ]
 
-airoha_ppe_deinit() runs airoha_npu_ppe_deinit() in atomic context.
-airoha_npu_ppe_deinit routine allocates ppe_data buffer with GFP_KERNEL
-flag. Rely on rcu_replace_pointer in airoha_ppe_deinit routine in order
-to fix schedule while atomic issue in airoha_npu_ppe_deinit() since we
-do not need atomic context there.
+Directly increment the TSO features incurs a side effect: it will also
+directly clear the flags in NETIF_F_ALL_FOR_ALL on the master device,
+which can cause issues such as the inability to enable the nocache copy
+feature on the bonding driver.
 
-Fixes: 00a7678310fe3 ("net: airoha: Introduce flowtable offload support")
-Signed-off-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Link: https://patch.msgid.link/20260105-airoha-fw-ethtool-v2-1-3b32b158cc31@kernel.org
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+The fix is to include NETIF_F_ALL_FOR_ALL in the update mask, thereby
+preventing it from being cleared.
+
+Fixes: b0ce3508b25e ("bonding: allow TSO being set on bonding master")
+Signed-off-by: Di Zhu <zhud@hygon.cn>
+Link: https://patch.msgid.link/20251224012224.56185-1-zhud@hygon.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/airoha/airoha_ppe.c | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ include/linux/netdevice.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/airoha/airoha_ppe.c b/drivers/net/ethernet/airoha/airoha_ppe.c
-index c0e17035db18e..190d98970014f 100644
---- a/drivers/net/ethernet/airoha/airoha_ppe.c
-+++ b/drivers/net/ethernet/airoha/airoha_ppe.c
-@@ -1466,13 +1466,16 @@ void airoha_ppe_deinit(struct airoha_eth *eth)
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 35b886385f329..77a99c8ab01c7 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -4986,7 +4986,8 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
+ static inline netdev_features_t netdev_add_tso_features(netdev_features_t features,
+ 							netdev_features_t mask)
  {
- 	struct airoha_npu *npu;
+-	return netdev_increment_features(features, NETIF_F_ALL_TSO, mask);
++	return netdev_increment_features(features, NETIF_F_ALL_TSO |
++					 NETIF_F_ALL_FOR_ALL, mask);
+ }
  
--	rcu_read_lock();
--	npu = rcu_dereference(eth->npu);
-+	mutex_lock(&flow_offload_mutex);
-+
-+	npu = rcu_replace_pointer(eth->npu, NULL,
-+				  lockdep_is_held(&flow_offload_mutex));
- 	if (npu) {
- 		npu->ops.ppe_deinit(npu);
- 		airoha_npu_put(npu);
- 	}
--	rcu_read_unlock();
-+
-+	mutex_unlock(&flow_offload_mutex);
- 
- 	rhashtable_destroy(&eth->ppe->l2_flows);
- 	rhashtable_destroy(&eth->flow_table);
+ int __netdev_update_features(struct net_device *dev);
 -- 
 2.51.0
 
