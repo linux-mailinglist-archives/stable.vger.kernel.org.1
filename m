@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209116-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209535-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57594D2669C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 436CDD26ED7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8962E3040F37
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A4761328A6C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DE8483BFE2A;
-	Thu, 15 Jan 2026 17:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4A4932D73B4;
+	Thu, 15 Jan 2026 17:42:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="j1VgIDyT"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="P0Ttko5Y"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A240D3BFE22;
-	Thu, 15 Jan 2026 17:22:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 06ECD39E199;
+	Thu, 15 Jan 2026 17:42:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497778; cv=none; b=lcGma/1YrjR2Y+nOyFiasMDQTT2nS5Tb4HlMM+vciCNl4L4TWCOPXQEiR8o7l/jsMvUr5AG5gJJ5uStENm9vWXOp599KXypMKihGrDF+6E031x2ValzCmxlxy9xi6chgq9P3a6/GNoV7xiYHa5kIzFTyU0MfVrpPxb40hFNt6PQ=
+	t=1768498973; cv=none; b=J4WkbOXSrEOy9HJXmgT5Jx4JqG8e6r5qneo2m8qMQSJGBqTahMnu2rYaVCokz7hrshcnp3TT63eYqPJvrxhYn0NXQoynt2uc2XjjFT1Yqo2bi2MrDJFbrNoWxbwZu++DL+6RDtV7QByNktvqHvwDQKWlxXJFkKHCe4ba+E+KgFo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497778; c=relaxed/simple;
-	bh=eRk/p7Pvg0Amh/U1YKm4RsL/zhhONEG4csrA91P+WP0=;
+	s=arc-20240116; t=1768498973; c=relaxed/simple;
+	bh=b+PN0cG9NiJDQnqeDQOsqCQb5KJpgdsjhvHvDk0YkXo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NMhA/QN++aiND0hZVlRXj1nWdjxVGACmIXruylLJcijCq4TDb/JmilSwegzB5sG8MycRpZr2dTHnDO4NHeTQqptph5Ql9X4o2g7LLz/GOeUGX0aQ89hgmpYbqTHMVXW15ovQepeBZQfJOhpCBK/EXXovKT7da+VHK/A5DEmMFN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=j1VgIDyT; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31796C116D0;
-	Thu, 15 Jan 2026 17:22:58 +0000 (UTC)
+	 MIME-Version; b=LEAQYiCS/IHjBLMO0ZZYhDbHfUOijxp9GB5ofeyD5nTUAjA3/TMmaiavgD7jHkvtsO9JO8n5jV1rY6rl40lxwNLBBDaASJvGLz7CAKKd7c3wZmtrBgOp72deOF7Gs3u+6QyLo5ZvUqYmS98N9SGnCSYhFIIt+/FuIRlnbtsxY1c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=P0Ttko5Y; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E4AFC116D0;
+	Thu, 15 Jan 2026 17:42:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497778;
-	bh=eRk/p7Pvg0Amh/U1YKm4RsL/zhhONEG4csrA91P+WP0=;
+	s=korg; t=1768498972;
+	bh=b+PN0cG9NiJDQnqeDQOsqCQb5KJpgdsjhvHvDk0YkXo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=j1VgIDyT73liQBR9NvUMCxWYX11iwCPYt9gc8Xpjv3h1mcSyPefwZfWDyJnObfOAX
-	 DdnC0+hOyKVu5PiVP8s0ZVjIl3KaPMp4d/tMLUaHNhEpP6uL+ChRSO9ktZsnhbJIEi
-	 a7p9X1yDrpE1idGs17YBTi57c1Prehq9nHVmjKmc=
+	b=P0Ttko5Y+FnSNkCyaz51cyft66SEF7vkDOMN5/32e7ko8oALO9pBJWKKGcfu2fYHR
+	 KjrIx8H4qIgazD/mxQMsoC2dtoUb6fW3XO2XoHuZbkxWQ/EAwMCK5cSIT3+KlDglFz
+	 b47ka+Jzyv/FL64L7boC470KNTwN1VpVKOX7QDsA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	stable <stable@kernel.org>,
-	Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Subject: [PATCH 5.15 199/554] usb: phy: Initialize struct usb_phy list_head
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 064/451] scsi: stex: Fix reboot_notifier leak in probe error path
 Date: Thu, 15 Jan 2026 17:44:25 +0100
-Message-ID: <20260115164253.459758966@linuxfoundation.org>
+Message-ID: <20260115164233.214267928@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,64 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-commit c69ff68b097b0f53333114f1b2c3dc128f389596 upstream.
+[ Upstream commit 20da637eb545b04753e20c675cfe97b04c7b600b ]
 
-As part of the registration of a new 'struct usb_phy' with the USB PHY core
-via either usb_add_phy(struct usb_phy *x, ...) or usb_add_phy_dev(struct
-usb_phy *x) these functions call list_add_tail(&x->head, phy_list) in
-order for the new instance x to be stored in phy_list, a static list
-kept internally by the core.
+In stex_probe(), register_reboot_notifier() is called at the beginning,
+but if any subsequent initialization step fails, the function returns
+without unregistering the notifier, resulting in a resource leak.
 
-After 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-when executing either of the registration functions above it is possible
-that usb_add_extcon() fails, leading to either function returning before
-the call to list_add_tail(), leaving x->head uninitialized.
+Add unregister_reboot_notifier() in the out_disable error path to ensure
+proper cleanup on all failure paths.
 
-Then, when a driver tries to undo the failed registration by calling
-usb_remove_phy(struct usb_phy *x) there will be an unconditional call to
-list_del(&x->head) acting on an uninitialized variable, and thus a
-possible NULL pointer dereference.
-
-Fix this by initializing x->head before usb_add_extcon() has a
-chance to fail. Note that this was not needed before 7d21114dc6a2 since
-list_add_phy() was executed unconditionally and it guaranteed that x->head
-was initialized.
-
-Fixes: 7d21114dc6a2 ("usb: phy: Introduce one extcon device into usb phy")
-Cc: stable <stable@kernel.org>
-Signed-off-by: Diogo Ivo <diogo.ivo@tecnico.ulisboa.pt>
-Link: https://patch.msgid.link/20251121-diogo-smaug_typec-v2-1-5c37c1169d57@tecnico.ulisboa.pt
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 61b745fa63db ("scsi: stex: Add S6 support")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251104094847.270-1-vulab@iscas.ac.cn
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/scsi/stex.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/usb/phy/phy.c
-+++ b/drivers/usb/phy/phy.c
-@@ -672,6 +672,8 @@ int usb_add_phy(struct usb_phy *x, enum
- 		return -EINVAL;
- 	}
+diff --git a/drivers/scsi/stex.c b/drivers/scsi/stex.c
+index fa607f2182500..2b074b26db725 100644
+--- a/drivers/scsi/stex.c
++++ b/drivers/scsi/stex.c
+@@ -1849,6 +1849,7 @@ static int stex_probe(struct pci_dev *pdev, const struct pci_device_id *id)
+ out_scsi_host_put:
+ 	scsi_host_put(host);
+ out_disable:
++	unregister_reboot_notifier(&stex_notifier);
+ 	pci_disable_device(pdev);
  
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
-@@ -722,6 +724,8 @@ int usb_add_phy_dev(struct usb_phy *x)
- 		return -EINVAL;
- 	}
- 
-+	INIT_LIST_HEAD(&x->head);
-+
- 	usb_charger_init(x);
- 	ret = usb_add_extcon(x);
- 	if (ret)
+ 	return err;
+-- 
+2.51.0
+
 
 
 
