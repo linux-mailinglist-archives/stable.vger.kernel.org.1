@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-209292-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209712-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 81DD6D268D7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:52 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5BE25D2727D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 1436530B9365
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:47 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id ADC913050909
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2F6A83BFE27;
-	Thu, 15 Jan 2026 17:31:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B46C13EDD41;
+	Thu, 15 Jan 2026 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uOrt1LFv"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CdQxv8r1"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E6DF73A0E98;
-	Thu, 15 Jan 2026 17:31:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 76C7C3EDAD8;
+	Thu, 15 Jan 2026 17:51:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498281; cv=none; b=lSxMHtX+8AsNWyOybZNfMf/zQHH9nLNcfOAL4drGnXmjXUKCliRdnG9toVunj9ONxki8LTaBB1SGuEwclpuYhoGIevTz3SzSR0sYHR/Lc7LOJzvYnzoQnB2CTR5DUip5ihCsdgOi7XUd114a+p6quYGs28RAQBnj6PL+SALWrrA=
+	t=1768499476; cv=none; b=EI5DbG941qK9IdrFKbNFn5CFtU1qjoQFKqVwJ4cwTSHZLpDzD4smeC6s62IKzMLxXD++yWKCDT+I3NNgz4+EWrTZ1i0yRriWCPueLIcYxwatsz+0nqMV6yxfZsf5tYI/d72s+xaEFAcUneZAp3L/exWgDdziVkkFvg4vAiANUXM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498281; c=relaxed/simple;
-	bh=9hHL4hll79qJVMpEQe8Rgg67EcCifAZKhwkOk+o83jI=;
+	s=arc-20240116; t=1768499476; c=relaxed/simple;
+	bh=0A3U9aqkDw3Cvw+p3KvbXT3DLmvHG7dN3nqvd/SRchg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=HMXXfiqBOuo6H9RyZSFpeizKcJMwqpPTJjWLuxvRx+50TGGPiRKgwBRLVIL9sJVGGZA1we5vjWBZdQXQ4211Pi4mZHoPIBEa6UCdYcPdKUyNtUcSXvwXohmZ9rTRefsxgtJY8SCsuVI15CN4NQ7G+XBUcKx3dhlUVoe/FhlPdX4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uOrt1LFv; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7303CC116D0;
-	Thu, 15 Jan 2026 17:31:20 +0000 (UTC)
+	 MIME-Version; b=sJBSuEiLT/Lk2h3jEgbYKH0z3VOFOZMZ4U+Vk8jwgTYNLBm9Tzr7nF4IwOv+ulF0WYRNwJBTP3E7YugzeDGDyJ1haffRgTSS1Z5od8JYCrrOoocSWYec5py5hIoJaQHU3cQigryT1f1UK38hHYIFYra7zH3ob79+4wDWg9kt7hw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CdQxv8r1; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC17EC19425;
+	Thu, 15 Jan 2026 17:51:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498280;
-	bh=9hHL4hll79qJVMpEQe8Rgg67EcCifAZKhwkOk+o83jI=;
+	s=korg; t=1768499476;
+	bh=0A3U9aqkDw3Cvw+p3KvbXT3DLmvHG7dN3nqvd/SRchg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uOrt1LFvfyjwXMV59OzPzkmoTLhkyUA5U+grYqSrBrrAwonKdCAEo20qmdO++iohM
-	 GkfqWvDsuUx7IN2o7hAKGRCit7nim9gCal+Gmqt6IhdjaFn7MNcVAByPmHAbN12TEQ
-	 2+dxD01tjnsmm6TLtA2UkSd5G1QjsLXOzjDmbxac=
+	b=CdQxv8r1AYGnoWwE/DL8mN/ba8MvEcTV/PSFOBwGXZ3mmeNUn0Z4ZmWUj941L9LCe
+	 kutkdIyI9nOULmr6ODNi8tOigxp9cleNFBYwebq80SnJ1mV2rZD7/8cZlGrMAZzSqb
+	 xpva9Uu/zbss3wRCEAANtK4CYlGbMb8ls9xpv6Ao=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Honghui Zhang <honghui.zhang@mediatek.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Yong Wu <yong.wu@mediatek.com>,
-	Johan Hovold <johan@kernel.org>,
-	AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.15 376/554] iommu/mediatek-v1: fix device leak on probe_device()
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 241/451] scsi: aic94xx: fix use-after-free in device removal path
 Date: Thu, 15 Jan 2026 17:47:22 +0100
-Message-ID: <20260115164259.843631901@linuxfoundation.org>
+Message-ID: <20260115164239.611594823@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,41 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-commit c77ad28bfee0df9cbc719eb5adc9864462cfb65b upstream.
+commit f6ab594672d4cba08540919a4e6be2e202b60007 upstream.
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during probe_device().
+The asd_pci_remove() function fails to synchronize with pending tasklets
+before freeing the asd_ha structure, leading to a potential
+use-after-free vulnerability.
 
-Fixes: b17336c55d89 ("iommu/mediatek: add support for mtk iommu generation one HW")
-Cc: stable@vger.kernel.org	# 4.8
-Cc: Honghui Zhang <honghui.zhang@mediatek.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Reviewed-by: Yong Wu <yong.wu@mediatek.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
+When a device removal is triggered (via hot-unplug or module unload),
+race condition can occur.
+
+The fix adds tasklet_kill() before freeing the asd_ha structure,
+ensuring all scheduled tasklets complete before cleanup proceeds.
+
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 2908d778ab3e ("[SCSI] aic94xx: new driver")
+Cc: stable@vger.kernel.org
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/ME2PR01MB3156AB7DCACA206C845FC7E8AFFDA@ME2PR01MB3156.ausprd01.prod.outlook.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/iommu/mtk_iommu_v1.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/scsi/aic94xx/aic94xx_init.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/iommu/mtk_iommu_v1.c
-+++ b/drivers/iommu/mtk_iommu_v1.c
-@@ -393,6 +393,8 @@ static int mtk_iommu_create_mapping(stru
- 			return -EINVAL;
+--- a/drivers/scsi/aic94xx/aic94xx_init.c
++++ b/drivers/scsi/aic94xx/aic94xx_init.c
+@@ -897,6 +897,9 @@ static void asd_pci_remove(struct pci_de
  
- 		dev_iommu_priv_set(dev, platform_get_drvdata(m4updev));
+ 	asd_disable_ints(asd_ha);
+ 
++	/* Ensure all scheduled tasklets complete before freeing resources */
++	tasklet_kill(&asd_ha->seq.dl_tasklet);
 +
-+		put_device(&m4updev->dev);
- 	}
+ 	asd_remove_dev_attrs(asd_ha);
  
- 	ret = iommu_fwspec_add_ids(dev, args->args, 1);
+ 	/* XXX more here as needed */
 
 
 
