@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208765-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209779-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7676DD2616B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9FA26D276FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 66ACD301C34F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:56 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 9622930A10FE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AC1C63BC4DA;
-	Thu, 15 Jan 2026 17:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7B3293D1CC0;
+	Thu, 15 Jan 2026 17:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MiegpHuY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLnbd6nZ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6F7882EC090;
-	Thu, 15 Jan 2026 17:06:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3DDF63AA1B2;
+	Thu, 15 Jan 2026 17:54:27 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496779; cv=none; b=nVQBUoClDVIJkOabqZ2mGZ46Q5QtOl0TvhGRQFi4Ihi7oXt2vsWLuTCclgUjdmTS5l5m05upWvrd0de2mY0msrv82AuEnySPWixm4b1hQbfiBR5SaN6ICdAM9pSbxIdpHGPOBZzsV2K1gMHjvbcSctHqTHOmsczlUMeU7lahZ6g=
+	t=1768499667; cv=none; b=BLYhnmqcck3Ihf8e8GuYYRhWJ4mT35hVAeQjZZ2itQ2iPTNYaKz/tcqHadxzQHjPPwMi3yZcynw95VAhp5dUBg0Zd+Ktba+ndgx0mJ6zb7iJIWtxt/G4ogNRgWtdI9yu1QrPteeu52rVc4FZeVABEAMv5ybACk1QbBO5ijmUwAE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496779; c=relaxed/simple;
-	bh=pjPnQb/kBfF0g514aCOpu+IMnHUI8KvsNYii1sg4ofc=;
+	s=arc-20240116; t=1768499667; c=relaxed/simple;
+	bh=r09wft6PoxxCJZGptvNBzgwX1e/vBmg3RJIe/ciczUU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OG1FbX6ZzSIKe1Ne9tdvoTnHUcqOQAu9BBUN7Zt9XRNGzJZ0TaxoassqKKw3XxOUloAxKbe/FvwbgBE7LBHBOjzlRJ6DX7QxVxii1lRD1kgmeyPeHHgTXcDijhrLXXX8CwYw5Z468Bn9aYfL5OM/3vv1zcIqIQIPNs/wG0Ad1r4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MiegpHuY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F14FCC116D0;
-	Thu, 15 Jan 2026 17:06:18 +0000 (UTC)
+	 MIME-Version; b=i/2MzEKrkRozOog12ORyIO4HZKRLUOXY5WjgLY8vE0fYU7hM+VQgpplWOuZ4ou5BBK5kSypL5YNTW4V3MR5rZuKWuK7E4M8m4U2uPrD1SxZrH+o1+ina/95UnPbw69jgDZybdzzaZMeJI11PWuNgX/wCGVhSrbnP5wZaM7fjZ6Y=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLnbd6nZ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD938C116D0;
+	Thu, 15 Jan 2026 17:54:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496779;
-	bh=pjPnQb/kBfF0g514aCOpu+IMnHUI8KvsNYii1sg4ofc=;
+	s=korg; t=1768499667;
+	bh=r09wft6PoxxCJZGptvNBzgwX1e/vBmg3RJIe/ciczUU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MiegpHuYppRSOzsIrhuYFWSwJX+MTAFWeuJkG984GWcLXmCGESWDifPyt+m5qSqzc
-	 vsuS4jImadPjlTJSKcx4bp1NpLwVeGuH2e3V+WIpDp3TS9ZdIuBDUNYYRoF7hSmJeB
-	 sHoArtd3rpPnvw5AGZAm7kvB005xwJodawp5iQik=
+	b=ZLnbd6nZK2vdXsbPwjz6EX/SOT4ciAG87MmZu0em7UScrggVX5R1YYLGWdcP7wy1u
+	 4HVtN9o9WKrRivnFiY1AzNG9VgzuW0MXrAPszyYZz2uubBAtn+unVxemhA9Vx24APv
+	 t5aYd/awlTblqrUQzjccrJGEsrUUZVlHkUh8CsIA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Val Packett <val@packett.cool>,
-	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linusw@kernel.org>
-Subject: [PATCH 6.6 13/88] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 275/451] net: mdio: aspeed: add dummy read to avoid read-after-write issue
 Date: Thu, 15 Jan 2026 17:47:56 +0100
-Message-ID: <20260115164146.799627248@linuxfoundation.org>
+Message-ID: <20260115164240.833255406@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,92 +61,57 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-commit ebc18e9854e5a2b62a041fb57b216a903af45b85 upstream.
+[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
 
-The gpio_chip settings in this driver say the controller can't sleep
-but it actually uses a mutex for synchronization. This triggers the
-following BUG():
+The Aspeed MDIO controller may return incorrect data when a read operation
+follows immediately after a write. Due to a controller bug, the subsequent
+read can latch stale data, causing the polling logic to terminate earlier
+than expected.
 
-[    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
-[    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
-[    9.233669] preempt_count: 1, expected: 0
-[    9.233673] RCU nest depth: 0, expected: 0
-[    9.233688] Tainted: [W]=WARN
-[    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
-[    9.233694] Call trace:
-[    9.233696]  show_stack+0x24/0x38 (C)
-[    9.233709]  dump_stack_lvl+0x40/0x88
-[    9.233716]  dump_stack+0x18/0x24
-[    9.233722]  __might_resched+0x148/0x160
-[    9.233731]  __might_sleep+0x38/0x98
-[    9.233736]  mutex_lock+0x30/0xd8
-[    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
-[    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
-[    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
-[    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
-[    9.233779]  gpiod_direction_output+0x38/0xd0
-[    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
-[    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
-[    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
-[    9.233806]  gpiod_configure_flags+0x2c0/0x580
-[    9.233812]  gpiod_find_and_request+0x358/0x4f8
-[    9.233819]  gpiod_get_index+0x7c/0x98
-[    9.233826]  devm_gpiod_get+0x34/0xb0
-[    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
-[    9.233836]  auxiliary_bus_probe+0xb0/0xf0
-[    9.233845]  really_probe+0x14c/0x450
-[    9.233853]  __driver_probe_device+0xb0/0x188
-[    9.233858]  driver_probe_device+0x4c/0x250
-[    9.233863]  __driver_attach+0xf8/0x2a0
-[    9.233868]  bus_for_each_dev+0xf8/0x158
-[    9.233872]  driver_attach+0x30/0x48
-[    9.233876]  bus_add_driver+0x158/0x2b8
-[    9.233880]  driver_register+0x74/0x118
-[    9.233886]  __auxiliary_driver_register+0x94/0xe8
-[    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
-[    9.233898]  do_one_initcall+0xec/0x300
-[    9.233903]  do_init_module+0x64/0x260
-[    9.233910]  load_module+0x16c4/0x1900
-[    9.233915]  __arm64_sys_finit_module+0x24c/0x378
-[    9.233919]  invoke_syscall+0x4c/0xe8
-[    9.233925]  el0_svc_common+0x8c/0xf0
-[    9.233929]  do_el0_svc+0x28/0x40
-[    9.233934]  el0_svc+0x38/0x100
-[    9.233938]  el0t_64_sync_handler+0x84/0x130
-[    9.233943]  el0t_64_sync+0x17c/0x180
+To work around this hardware issue, insert a dummy read after each write
+operation. This ensures that the next actual read returns the correct
+data and prevents premature polling exit.
 
-Mark the controller as sleeping.
+This workaround has been verified to stabilize MDIO transactions on
+affected Aspeed platforms.
 
-Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
-Cc: stable@vger.kernel.org
-Reported-by: Val Packett <val@packett.cool>
-Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Linus Walleij <linusw@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/mdio/mdio-aspeed.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-+++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
-@@ -464,7 +464,7 @@ int lpi_pinctrl_probe(struct platform_de
- 	pctrl->chip.base = -1;
- 	pctrl->chip.ngpio = data->npins;
- 	pctrl->chip.label = dev_name(dev);
--	pctrl->chip.can_sleep = false;
-+	pctrl->chip.can_sleep = true;
+diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
+index f22be2f069e9..a929399a10d1 100644
+--- a/drivers/net/mdio/mdio-aspeed.c
++++ b/drivers/net/mdio/mdio-aspeed.c
+@@ -57,6 +57,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
  
- 	mutex_init(&pctrl->lock);
+ 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
  
++	/* Workaround for read-after-write issue.
++	 * The controller may return stale data if a read follows immediately
++	 * after a write. A dummy read forces the hardware to update its
++	 * internal state, ensuring that the next real read returns correct data.
++	 */
++	ioread32(ctx->base + ASPEED_MDIO_CTRL);
++
+ 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
+ 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
+ 				ASPEED_MDIO_INTERVAL_US,
+-- 
+2.51.0
+
 
 
 
