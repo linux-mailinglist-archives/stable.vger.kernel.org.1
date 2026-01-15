@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-209660-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209238-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 33709D279C5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:35:28 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9A00ED274C1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:17:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0DB253387A27
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:01 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9321F32E3A5B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E8B463D34AC;
-	Thu, 15 Jan 2026 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 662B73C197A;
+	Thu, 15 Jan 2026 17:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iSXEiMoD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QcoruFom"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9C1C726E71F;
-	Thu, 15 Jan 2026 17:48:48 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 285682C027B;
+	Thu, 15 Jan 2026 17:28:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499328; cv=none; b=uwCVvKu8CQwFmDWk4MoJWhQ2/vZfLYcZZalYsertlleZvOwo02OaYGN13n0RLKiWTtK2qql7D/n/egiJB11QBEJMFDUriXI9YnBkdMJyVosHrLWM1/dntXkvVLnZ/DufbJAEDrYIV1WgL/Oa6GjUwAMVzfwdXuGqVXqv3pbjTjY=
+	t=1768498127; cv=none; b=DtCdtpoTU2L97SnafDGAB6vOFYDQhhk+hrpvC8dbff5x3lzupDPpQTfJCHIS1NGTLDc4T7KL2WvvfBGQulS/RqL33BVkVH4f1Rzp5qhknIFJ3Qzpew8i0WXnTIjOgHyv2Sr3li63ae8GI9LuyQr4g5d/m2YN+iX5k2Vnhz/b+Uo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499328; c=relaxed/simple;
-	bh=9i3Ot30MvbqxOeAUR/TWjZd7Icw9xvIX4ZyxWl/3sSU=;
+	s=arc-20240116; t=1768498127; c=relaxed/simple;
+	bh=AmluADb9lFN+QkxIDOOkcTm5Hx90Gk46SUEZp+hyxEU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iq2geKMBVB5fW+kcGSPfO5Ato+QPyaILgHpD17wbxWEvvODFsjejUKoF+eEcE7LtL9ZkXNlbqt1VYCzublxSbUEZzC94sjVO0qaTm8ZNtpUI7JtFEG4FRwMHMrnkHzYHJ3GjO2amMM2Gsx9hmhJbOkGsvCZNuH70+x94S4VMIds=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iSXEiMoD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A103C19422;
-	Thu, 15 Jan 2026 17:48:47 +0000 (UTC)
+	 MIME-Version; b=LDBfM5wnLh4veRg41heizextAzTV//7ehQVDEDMNF9475ZcJF3MtVDJnzZk4ppeNMvTSFZ47cnA7b/CIC6fo9vmxLyutyOWfrRaSOpa2xAV50s8X9/45ewb6u/1XKKY7KMkI/906xZAEDSojanY9XGSbhlxdsvNgIOJBwxka4CA=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QcoruFom; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B36C116D0;
+	Thu, 15 Jan 2026 17:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499328;
-	bh=9i3Ot30MvbqxOeAUR/TWjZd7Icw9xvIX4ZyxWl/3sSU=;
+	s=korg; t=1768498127;
+	bh=AmluADb9lFN+QkxIDOOkcTm5Hx90Gk46SUEZp+hyxEU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iSXEiMoDc/6ajqx5zNEeWKuWQidvNYLntPpHIMoyd6CXWHml+IybrKG55jUv5Jayq
-	 ebfUsF+x9GvbTaP2sXOyOyHQWSXcYimT91kf8uIaU8vc6EsYGk9owf0ZItsMi0wVeQ
-	 caDJaEuJu6FdyPwuO5fZ+N1bl8516iuAzCEIYnio=
+	b=QcoruFomEN0Ldl0ziiifLIU7S4JXU53p16Rm229WdklMJa8cqK01xDckTEL0by7kY
+	 wL6h+sbpyNTmdHx7qtsogtY8JFOvscbrElw4TUDMRq74utmpW9P5NkDzqeKebXbbC0
+	 MQQvS6KmgKgUrcvHQw/39rRbbcYgIzn3w80VzChg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jian Shen <shenjian15@huawei.com>,
-	Jijie Shao <shaojijie@huawei.com>,
-	Simon Horman <horms@kernel.org>,
-	Paolo Abeni <pabeni@redhat.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 188/451] net: hns3: add VLAN id validation before using
+	Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 5.15 323/554] nfsd: Mark variable __maybe_unused to avoid W=1 build break
 Date: Thu, 15 Jan 2026 17:46:29 +0100
-Message-ID: <20260115164237.703621784@linuxfoundation.org>
+Message-ID: <20260115164257.920058042@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,51 +59,46 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 
-[ Upstream commit 6ef935e65902bfed53980ad2754b06a284ea8ac1 ]
+commit ebae102897e760e9e6bc625f701dd666b2163bd1 upstream.
 
-Currently, the VLAN id may be used without validation when
-receive a VLAN configuration mailbox from VF. The length of
-vlan_del_fail_bmap is BITS_TO_LONGS(VLAN_N_VID). It may cause
-out-of-bounds memory access once the VLAN id is bigger than
-or equal to VLAN_N_VID.
+Clang is not happy about set but (in some cases) unused variable:
 
-Therefore, VLAN id needs to be checked to ensure it is within
-the range of VLAN_N_VID.
+fs/nfsd/export.c:1027:17: error: variable 'inode' set but not used [-Werror,-Wunused-but-set-variable]
 
-Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://patch.msgid.link/20251211023737.2327018-4-shaojijie@huawei.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+since it's used as a parameter to dprintk() which might be configured
+a no-op. To avoid uglifying code with the specific ifdeffery just mark
+the variable __maybe_unused.
+
+The commit [1], which introduced this behaviour, is quite old and hence
+the Fixes tag points to the first of the Git era.
+
+Link: https://git.kernel.org/pub/scm/linux/kernel/git/history/history.git/commit/?id=0431923fb7a1 [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Cc: stable@vger.kernel.org
+Signed-off-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/nfsd/export.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index aa987cad7cadf..99b5b956ed8f9 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -9196,6 +9196,9 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
- 	bool writen_to_tbl = false;
- 	int ret = 0;
- 
-+	if (vlan_id >= VLAN_N_VID)
-+		return -EINVAL;
-+
- 	/* When device is resetting or reset failed, firmware is unable to
- 	 * handle mailbox. Just record the vlan id, and remove it after
- 	 * reset finished.
--- 
-2.51.0
-
+--- a/fs/nfsd/export.c
++++ b/fs/nfsd/export.c
+@@ -990,7 +990,7 @@ exp_rootfh(struct net *net, struct auth_
+ {
+ 	struct svc_export	*exp;
+ 	struct path		path;
+-	struct inode		*inode;
++	struct inode		*inode __maybe_unused;
+ 	struct svc_fh		fh;
+ 	int			err;
+ 	struct nfsd_net		*nn = net_generic(net, nfsd_net_id);
 
 
 
