@@ -1,50 +1,52 @@
-Return-Path: <stable+bounces-209221-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209228-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0FB4AD26972
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3F58FD27498
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 7CCE23053123
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EB82432E0C15
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:31:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 296B13BF30E;
-	Thu, 15 Jan 2026 17:27:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EC375399011;
+	Thu, 15 Jan 2026 17:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rnUU0hrE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tEjCFonQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E19AF86334;
-	Thu, 15 Jan 2026 17:27:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A619E3BF2FF;
+	Thu, 15 Jan 2026 17:28:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498079; cv=none; b=ZU6CqoPWdABWZHE2rgOZEy1SFCUOtbZj1lUIrxyXVi2AMWEqva/HRxOM8qLZVLNzBV9WAZZ1ubbzmWf2J9YvsSGqeR4TeY7GRMuX4VFlCTl0QEMCWVFCSfsTLdociqmDQzkDu23GErqtkGvT8eP1nMf/8Z+T/8t+nBvWQjsx3xM=
+	t=1768498098; cv=none; b=NBL3k1I3QFao1cOn33JluQxNhYigmus/3ZAs8uVhHfe/ZF6PPk3q22lnQ+j9pfNEhLwag0HwKXSIowvJVaQFZkXc5kFQuamzL1cLSTPwd4HP5onxhr8Mf7WtLMX9M7brjEZj7h2qca9My7zRaOo2+S8h6/vImRNmb149edq6748=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498079; c=relaxed/simple;
-	bh=aiAatU9TL5El4aiMfzGQ3qc2DEfLITbXpCkxtsJHfWY=;
+	s=arc-20240116; t=1768498098; c=relaxed/simple;
+	bh=CIgom2USfIawX/+65QpwSkay18ttvhkupV/MKscZ/So=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=OuwxOpjry+rsFApiAc972kJpMzr9HBNwKUzYX63DbwoAqocatTbQR3joX5sBJUX9aZ/9/YsYPCUOt8RDzKkZ/R5WbJH4+oCnK20nbEB2Z2rb/pZrbpDj4Z4uh6dJ8Gyu2FgghYXbctLbq/Tjsm77jrKq/HTU40zOHpeZ7dZ2ow8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rnUU0hrE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5FFF3C116D0;
-	Thu, 15 Jan 2026 17:27:58 +0000 (UTC)
+	 MIME-Version; b=fZOknRweyVlV83oxLurNTPG69dQFK0UuqRHxsdU/ihD+cpmpeM/2AjDC8xnFV3+uAfwAdKvP3YySA1G7BfPEWMk/Q+8stOjjDTyU8+31lhAO25daDTJ+Z7eoNql0s5+xfCUlZMMSb57oJSHO6comN5BLjjNttpQZp+5jJ9tYlP4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tEjCFonQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DECCC116D0;
+	Thu, 15 Jan 2026 17:28:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498078;
-	bh=aiAatU9TL5El4aiMfzGQ3qc2DEfLITbXpCkxtsJHfWY=;
+	s=korg; t=1768498098;
+	bh=CIgom2USfIawX/+65QpwSkay18ttvhkupV/MKscZ/So=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=rnUU0hrE1qq8kWiz+C2WZE4EeuVgqRLHPF4RU9wlqBC0N50jLQ8gOaTSZpM7FkYoR
-	 OzhUk5q4/bgTLLpg2dcemreQge1bQx2K0BehoVivWJMb/dKo1/GoXnTDNYUFSvoiEa
-	 DN1hZo2UwFtoQHrHop3hRgPd2J8vyZOOBopJdHAk=
+	b=tEjCFonQ/7UFE/cGio8nc007g2B94bcq74X4yHCq2ENcaMgBdokn/EIWJEyQZ0oKX
+	 vsWWVn2zpyz6uRbq2VOaGMM6H8Bjjf9H4os6Txb+oQVERRTY3LDiBwvuE+NqRz3HXP
+	 nji2FZjDu5OG4Vh6JFizD1Xr38r5DSLcy6yjiXVA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ard Biesheuvel <ardb@kernel.org>,
-	Eric Biggers <ebiggers@kernel.org>
-Subject: [PATCH 5.15 278/554] lib/crypto: x86/blake2s: Fix 32-bit arg treated as 64-bit
-Date: Thu, 15 Jan 2026 17:45:44 +0100
-Message-ID: <20260115164256.291451188@linuxfoundation.org>
+	Li Chen <chenl311@chinatelecom.cn>,
+	Chaitanya Kulkarni <kch@nvidia.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 5.15 279/554] block: rate-limit capacity change info log
+Date: Thu, 15 Jan 2026 17:45:45 +0100
+Message-ID: <20260115164256.329207725@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -63,58 +65,40 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Biggers <ebiggers@kernel.org>
+From: Li Chen <chenl311@chinatelecom.cn>
 
-commit 2f22115709fc7ebcfa40af3367a508fbbd2f71e9 upstream.
+commit 3179a5f7f86bcc3acd5d6fb2a29f891ef5615852 upstream.
 
-In the C code, the 'inc' argument to the assembly functions
-blake2s_compress_ssse3() and blake2s_compress_avx512() is declared with
-type u32, matching blake2s_compress().  The assembly code then reads it
-from the 64-bit %rcx.  However, the ABI doesn't guarantee zero-extension
-to 64 bits, nor do gcc or clang guarantee it.  Therefore, fix these
-functions to read this argument from the 32-bit %ecx.
+loop devices under heavy stress-ng loop streessor can trigger many
+capacity change events in a short time. Each event prints an info
+message from set_capacity_and_notify(), flooding the console and
+contributing to soft lockups on slow consoles.
 
-In theory, this bug could have caused the wrong 'inc' value to be used,
-causing incorrect BLAKE2s hashes.  In practice, probably not: I've fixed
-essentially this same bug in many other assembly files too, but there's
-never been a real report of it having caused a problem.  In x86_64, all
-writes to 32-bit registers are zero-extended to 64 bits.  That results
-in zero-extension in nearly all situations.  I've only been able to
-demonstrate a lack of zero-extension with a somewhat contrived example
-involving truncation, e.g. when the C code has a u64 variable holding
-0x1234567800000040 and passes it as a u32 expecting it to be truncated
-to 0x40 (64).  But that's not what the real code does, of course.
+Switch the printk in set_capacity_and_notify() to
+pr_info_ratelimited() so frequent capacity changes do not spam
+the log while still reporting occasional changes.
 
-Fixes: ed0356eda153 ("crypto: blake2s - x86_64 SIMD implementation")
 Cc: stable@vger.kernel.org
-Reviewed-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20251102234209.62133-2-ebiggers@kernel.org
-Signed-off-by: Eric Biggers <ebiggers@kernel.org>
+Signed-off-by: Li Chen <chenl311@chinatelecom.cn>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/crypto/blake2s-core.S |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ block/genhd.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/crypto/blake2s-core.S
-+++ b/arch/x86/crypto/blake2s-core.S
-@@ -54,7 +54,7 @@ SYM_FUNC_START(blake2s_compress_ssse3)
- 	movdqa		ROT16(%rip),%xmm12
- 	movdqa		ROR328(%rip),%xmm13
- 	movdqu		0x20(%rdi),%xmm14
--	movq		%rcx,%xmm15
-+	movd		%ecx,%xmm15
- 	leaq		SIGMA+0xa0(%rip),%r8
- 	jmp		.Lbeginofloop
- 	.align		32
-@@ -179,7 +179,7 @@ SYM_FUNC_START(blake2s_compress_avx512)
- 	vmovdqu		(%rdi),%xmm0
- 	vmovdqu		0x10(%rdi),%xmm1
- 	vmovdqu		0x20(%rdi),%xmm4
--	vmovq		%rcx,%xmm5
-+	vmovd		%ecx,%xmm5
- 	vmovdqa		IV(%rip),%xmm14
- 	vmovdqa		IV+16(%rip),%xmm15
- 	jmp		.Lblake2s_compress_avx512_mainloop
+--- a/block/genhd.c
++++ b/block/genhd.c
+@@ -83,7 +83,7 @@ bool set_capacity_and_notify(struct gend
+ 	    (disk->flags & GENHD_FL_HIDDEN))
+ 		return false;
+ 
+-	pr_info("%s: detected capacity change from %lld to %lld\n",
++	pr_info_ratelimited("%s: detected capacity change from %lld to %lld\n",
+ 		disk->disk_name, capacity, size);
+ 
+ 	/*
 
 
 
