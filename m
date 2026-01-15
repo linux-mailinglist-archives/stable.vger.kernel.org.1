@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-209286-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208653-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 10B38D268C4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:35 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5C16CD261A1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:31 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 9047030B45FB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:43 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C434A303D6AE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1F33A3C00BB;
-	Thu, 15 Jan 2026 17:31:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75B4F3A35A4;
+	Thu, 15 Jan 2026 17:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="LD65Ox2A"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uasv9aZW"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D6D233BFE5D;
-	Thu, 15 Jan 2026 17:31:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 371512D73BE;
+	Thu, 15 Jan 2026 17:01:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498263; cv=none; b=RU42lqYaENeez0CbGLgMX1KjQopmYGzoF8vq+j3BnMxT7L9loScbX8mwn6RVHBuHnjMO7RWM8/VHb65yk/z4KA72nfK/nbHv5inrQymAWP2CvUZ8AwseM2nlePmPxdx2S9/6hoYwUQjK9h7JM0rTUbYnn4EspvDwNFyvhHFtvVE=
+	t=1768496463; cv=none; b=nakxhno4vy4mZt/YmX6ENBfLQ065s2LapXWolyK9VNVyMw4WnQwI8Jm9kcZySvtpJoiwt1zIR9ImS42Yo4Nm0RfZnipT9yOpcxb5jELhErz6UfQwxDd9hHft8bdklBBSJCUV7K30pwuX85xNACK80QOrqJ6WojNnWIbsIL+pwKE=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498263; c=relaxed/simple;
-	bh=VL7Z1ON77dSqivqeRgY/ft544iDgkCxCErOPuYBFbj4=;
+	s=arc-20240116; t=1768496463; c=relaxed/simple;
+	bh=dEwORo43Ux+z3oFxKwrZOTrVdeasUwzL1H72tTPFUYo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L0UENl66gYx7E9dnz9pMh51uxVyvak5kOwLp7lNxG4Sr5RKx1jK57NC0RcDsArpZmV6jH9Yv+71S/Pd/6p66LLHBO1gIqo62Ail6RENR/NN+VgtPH4G/Fh+7N2BuunPautTuRnRHTMAYxzcCR6cQv1Q4qQONEExtCblsjzKHnRg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=LD65Ox2A; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E2AC116D0;
-	Thu, 15 Jan 2026 17:31:03 +0000 (UTC)
+	 MIME-Version; b=W/n/3LFM9SXmHBK9HUhaplFQCE05km71jowjdKHSCQG8+umXHIY6kh9ZnRPBlt4/lUWkBeZU1qocp5MVZy4CIRnonFpUKv1yBL7F8dJYqH7x7kWCvbvekehW8SSyk+RBVZ45Gzx5fd9amf5Apo978XTxpHKxboJFg3R8eJXjMUI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uasv9aZW; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54DFC116D0;
+	Thu, 15 Jan 2026 17:01:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498263;
-	bh=VL7Z1ON77dSqivqeRgY/ft544iDgkCxCErOPuYBFbj4=;
+	s=korg; t=1768496463;
+	bh=dEwORo43Ux+z3oFxKwrZOTrVdeasUwzL1H72tTPFUYo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=LD65Ox2A+g6ah3iY+o99wzOsxzd2Ns5uhWf3TNHV19T+EnBPmO8bb/QfrgkUD1kt5
-	 eeEuQbw691SFwVkd086nV9QLkzKf2RnOxSImAn32p1DoXljHTgJg5opxFxWaZCINAu
-	 KeVuZf2f7UJdxg6f6BAhHo9q+Ox37arvkB16X1Yg=
+	b=uasv9aZWxdPEYqtT8zPRgjbqqOweWnB7aBq0atVmPYo1dfMzADP4BGaSGjVjpARwO
+	 yKQouJPv2Xi0wBoe7x6MFR0PN2fYUzxiLHWezdrb824WXcs8KVFVlMphpI76HXXEEe
+	 Er2yxfy4dh/m4At2XSFpBHwuo6x8bmEfcW5OvTZQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Stable@vger.kernel.org,
-	Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>,
-	Mark Brown <broonie@kernel.org>,
-	Alexey Klimov <alexey.klimov@linaro.org>
-Subject: [PATCH 5.15 370/554] ASoC: qcom: q6asm-dai: perform correct state check before closing
+	Johannes Berg <johannes.berg@intel.com>,
+	Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>
+Subject: [PATCH 6.12 021/119] wifi: mac80211: restore non-chanctx injection behaviour
 Date: Thu, 15 Jan 2026 17:47:16 +0100
-Message-ID: <20260115164259.618787813@linuxfoundation.org>
+Message-ID: <20260115164152.726117811@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,50 +59,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
+From: Johannes Berg <johannes.berg@intel.com>
 
-commit bfbb12dfa144d45575bcfe139a71360b3ce80237 upstream.
+commit d594cc6f2c588810888df70c83a9654b6bc7942d upstream.
 
-Do not stop a q6asm stream if its not started, this can result in
-unnecessary dsp command which will timeout anyway something like below:
+During the transition to use channel contexts throughout, the
+ability to do injection while in monitor mode concurrent with
+another interface was lost, since the (virtual) monitor won't
+have a chanctx assigned in this scenario.
 
-q6asm-dai ab00000.remoteproc:glink-edge:apr:service@7:dais: CMD 10bcd timeout
+It's harder to fix drivers that actually transitioned to using
+channel contexts themselves, such as mt76, but it's easy to do
+those that are (still) just using the emulation. Do that.
 
-Fix this by correctly checking the state.
-
-Fixes: 2a9e92d371db ("ASoC: qdsp6: q6asm: Add q6asm dai driver")
-Cc: Stable@vger.kernel.org
-Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@oss.qualcomm.com>
-Tested-by: Alexey Klimov <alexey.klimov@linaro.org> # RB5, RB3
-Link: https://patch.msgid.link/20251023102444.88158-5-srinivas.kandagatla@oss.qualcomm.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=218763
+Reported-and-tested-by: Oscar Alfonso Diaz <oscar.alfonso.diaz@gmail.com>
+Fixes: 0a44dfc07074 ("wifi: mac80211: simplify non-chanctx drivers")
+Link: https://patch.msgid.link/20251216105242.18366-2-johannes@sipsolutions.net
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/qcom/qdsp6/q6asm-dai.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/mac80211/tx.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/sound/soc/qcom/qdsp6/q6asm-dai.c
-+++ b/sound/soc/qcom/qdsp6/q6asm-dai.c
-@@ -237,13 +237,14 @@ static int q6asm_dai_prepare(struct snd_
- 	prtd->pcm_count = snd_pcm_lib_period_bytes(substream);
- 	prtd->pcm_irq_pos = 0;
- 	/* rate and channels are sent to audio driver */
--	if (prtd->state) {
-+	if (prtd->state == Q6ASM_STREAM_RUNNING) {
- 		/* clear the previous setup if any  */
- 		q6asm_cmd(prtd->audio_client, prtd->stream_id, CMD_CLOSE);
- 		q6asm_unmap_memory_regions(substream->stream,
- 					   prtd->audio_client);
- 		q6routing_stream_close(soc_prtd->dai_link->id,
- 					 substream->stream);
-+		prtd->state = Q6ASM_STREAM_STOPPED;
- 	}
+--- a/net/mac80211/tx.c
++++ b/net/mac80211/tx.c
+@@ -2395,6 +2395,8 @@ netdev_tx_t ieee80211_monitor_start_xmit
  
- 	ret = q6asm_map_memory_regions(substream->stream, prtd->audio_client,
+ 	if (chanctx_conf)
+ 		chandef = &chanctx_conf->def;
++	else if (local->emulate_chanctx)
++		chandef = &local->hw.conf.chandef;
+ 	else
+ 		goto fail_rcu;
+ 
 
 
 
