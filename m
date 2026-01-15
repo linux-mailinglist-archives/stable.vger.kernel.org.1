@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209778-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209325-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0E1D4D276B3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:40 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 318BDD269B3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C8F6131E8C09
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:29 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 893753079D1C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B16633D1CC6;
-	Thu, 15 Jan 2026 17:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFE663BFE36;
+	Thu, 15 Jan 2026 17:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="VFYrglgd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UNiz3kwM"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 742D03D1CB3;
-	Thu, 15 Jan 2026 17:54:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B361922D9F7;
+	Thu, 15 Jan 2026 17:32:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499664; cv=none; b=t1KESCB7PQ9konkKpHIG8A7ZMjL7tSkfrf85zXXAwuLUNAHL0kJg2nDMNN6DDVwVI9HKMBg/LAxP7DqkCNkEoYBGsEBkJl8Eem//g7L6rS9Cg8301MFIVuC0W4i9YLPrHba+9rDK7X6D6xqJxbaIUDUtudo4p+5Gj5qQ0EEZ2NM=
+	t=1768498374; cv=none; b=rx+Yb/Q7tWlxhWydtAUbv5D3zhTeZhDDuHlpIWK7H4GtRaiH7ApKFQihrenJYqe1il8m1QsJjNgOB7Nfsr1b7Liz/eojOK+G2Yrj/xO1Wk0HObL0lQLOR3FkN/strN62X2Ok9c5zgmheMXrLq4g4DHHhPYvZqvzlpqcPXl8HNJY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499664; c=relaxed/simple;
-	bh=bIqarl9aTtBWwbVo24iX+eWq03ThTkB+GjxrIAL5ALQ=;
+	s=arc-20240116; t=1768498374; c=relaxed/simple;
+	bh=Zvo3UaY0UqNTizXHlSH7MyjnNGP4dY4NGU2+A1Opi9U=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=czsKBiZdPSsUGtRCz2Y8jZdulfUDXj2vHuVAodo1lXCK3u0v7acNdkurNPpadNPyJiYARfrLH0Sv/OsCHiO+2cF5hDp8pSKYvsy1Ez5OYz+yMmhQwDz7weTrGAUFFZHsLoXjz1XHJbmnXPv1ei77HvrKn1xMANIkJCpDxqRni+4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=VFYrglgd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3DC8C116D0;
-	Thu, 15 Jan 2026 17:54:23 +0000 (UTC)
+	 MIME-Version; b=UFCCDO9cN2CesAXKxOqgMM3NMqBaunhPDc/fI3FvRSqRjmtKiy9qpHbOaSBTnEGMiSXjN4W6khLEnlCC7+bB7I+wHazzGCGwqjZM/CU2StEyA+1id6/R269y0C6J+KrNR1ShnGr7Mws6o/mv0UIUkja9st11zP60F/+mCLeXa9M=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UNiz3kwM; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A798C116D0;
+	Thu, 15 Jan 2026 17:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499664;
-	bh=bIqarl9aTtBWwbVo24iX+eWq03ThTkB+GjxrIAL5ALQ=;
+	s=korg; t=1768498374;
+	bh=Zvo3UaY0UqNTizXHlSH7MyjnNGP4dY4NGU2+A1Opi9U=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=VFYrglgdh6y75x5uVaDdgHXuB0J0osJ6kn6zMK7q36GN7xZz3XWORmEU/ZvZ6mtEK
-	 eOmnNgRt/rYibaFDIZHB5vQEbmNOETHIMY5pBp5Xvxxzn6cvW0mR9wwTIb7CBSPRNd
-	 c+7Q9M1V0FfoUhU2UvtFa2PuFEK0tFqqzIQUzfTs=
+	b=UNiz3kwMqYzo8fuHWQLzT4sxsizMvot0n/omScZG4UZ0L59DvDl86h+h4UxURwu+q
+	 P4dbX8Wui07/r46VhGmePIfNyIEsGU+ZuzxyyKlfUvD4tzXP+8P+I2MhPe0DmBWT8e
+	 YUFPHq98Lt7pccExHZ5UwFI6x9SY1WcabbqwsFBI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Potin Lai <potin.lai@quantatw.com>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 274/451] net: mdio: aspeed: move reg accessing part into separate functions
+	Akhil P Oommen <akhilpo@oss.qualcomm.com>,
+	Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>,
+	Rob Clark <robin.clark@oss.qualcomm.com>
+Subject: [PATCH 5.15 409/554] drm/msm/a6xx: Fix out of bound IO access in a6xx_get_gmu_registers
 Date: Thu, 15 Jan 2026 17:47:55 +0100
-Message-ID: <20260115164240.797640229@linuxfoundation.org>
+Message-ID: <20260115164301.036617967@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,143 +60,40 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Potin Lai <potin.lai@quantatw.com>
+From: Akhil P Oommen <akhilpo@oss.qualcomm.com>
 
-[ Upstream commit 737ca352569e744bf753b4522a6f91b120a734f1 ]
+commit 779b68a5bf2764c8ed3aa800e41ba0d5d007e1e7 upstream.
 
-Add aspeed_mdio_op() and aseed_mdio_get_data() for register accessing.
+REG_A6XX_GMU_AO_AHB_FENCE_CTRL register falls under GMU's register
+range. So, use gmu_write() routines to write to this register.
 
-aspeed_mdio_op() handles operations, write command to control register,
-then check and wait operations is finished (bit 31 is cleared).
-
-aseed_mdio_get_data() fetchs the result value of operation from data
-register.
-
-Signed-off-by: Potin Lai <potin.lai@quantatw.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: d1a1a4bade4b ("net: mdio: aspeed: add dummy read to avoid read-after-write issue")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 1707add81551 ("drm/msm/a6xx: Add a6xx gpu state")
+Cc: stable@vger.kernel.org
+Signed-off-by: Akhil P Oommen <akhilpo@oss.qualcomm.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@oss.qualcomm.com>
+Patchwork: https://patchwork.freedesktop.org/patch/688993/
+Message-ID: <20251118-kaana-gpu-support-v4-1-86eeb8e93fb6@oss.qualcomm.com>
+Signed-off-by: Rob Clark <robin.clark@oss.qualcomm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/mdio/mdio-aspeed.c | 70 ++++++++++++++++++----------------
- 1 file changed, 38 insertions(+), 32 deletions(-)
+ drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
-index e2273588c75b..f22be2f069e9 100644
---- a/drivers/net/mdio/mdio-aspeed.c
-+++ b/drivers/net/mdio/mdio-aspeed.c
-@@ -39,34 +39,35 @@ struct aspeed_mdio {
- 	void __iomem *base;
- };
+--- a/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
++++ b/drivers/gpu/drm/msm/adreno/a6xx_gpu_state.c
+@@ -794,7 +794,7 @@ static void a6xx_get_gmu_registers(struc
+ 		return;
  
--static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
-+static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
-+			  u16 data)
- {
- 	struct aspeed_mdio *ctx = bus->priv;
- 	u32 ctrl;
--	u32 data;
--	int rc;
+ 	/* Set the fence to ALLOW mode so we can access the registers */
+-	gpu_write(gpu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
++	gmu_write(&a6xx_gpu->gmu, REG_A6XX_GMU_AO_AHB_FENCE_CTRL, 0);
  
--	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d\n", __func__, addr,
--		regnum);
--
--	/* Just clause 22 for the moment */
--	if (regnum & MII_ADDR_C45)
--		return -EOPNOTSUPP;
-+	dev_dbg(&bus->dev, "%s: st: %u op: %u, phyad: %u, regad: %u, data: %u\n",
-+		__func__, st, op, phyad, regad, data);
- 
- 	ctrl = ASPEED_MDIO_CTRL_FIRE
--		| FIELD_PREP(ASPEED_MDIO_CTRL_ST, ASPEED_MDIO_CTRL_ST_C22)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_OP, MDIO_C22_OP_READ)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_PHYAD, addr)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_REGAD, regnum);
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_ST, st)
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_OP, op)
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_PHYAD, phyad)
-+		| FIELD_PREP(ASPEED_MDIO_CTRL_REGAD, regad)
-+		| FIELD_PREP(ASPEED_MDIO_DATA_MIIRDATA, data);
- 
- 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
- 
--	rc = readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
-+	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
- 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
- 				ASPEED_MDIO_INTERVAL_US,
- 				ASPEED_MDIO_TIMEOUT_US);
--	if (rc < 0)
--		return rc;
-+}
-+
-+static int aspeed_mdio_get_data(struct mii_bus *bus)
-+{
-+	struct aspeed_mdio *ctx = bus->priv;
-+	int rc;
-+	u32 data;
- 
- 	rc = readl_poll_timeout(ctx->base + ASPEED_MDIO_DATA, data,
- 				data & ASPEED_MDIO_DATA_IDLE,
-@@ -78,31 +79,36 @@ static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
- 	return FIELD_GET(ASPEED_MDIO_DATA_MIIRDATA, data);
- }
- 
--static int aspeed_mdio_write(struct mii_bus *bus, int addr, int regnum, u16 val)
-+static int aspeed_mdio_read(struct mii_bus *bus, int addr, int regnum)
- {
--	struct aspeed_mdio *ctx = bus->priv;
--	u32 ctrl;
-+	int rc;
- 
--	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d, val: 0x%x\n",
--		__func__, addr, regnum, val);
-+	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d\n", __func__, addr,
-+		regnum);
- 
- 	/* Just clause 22 for the moment */
- 	if (regnum & MII_ADDR_C45)
- 		return -EOPNOTSUPP;
- 
--	ctrl = ASPEED_MDIO_CTRL_FIRE
--		| FIELD_PREP(ASPEED_MDIO_CTRL_ST, ASPEED_MDIO_CTRL_ST_C22)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_OP, MDIO_C22_OP_WRITE)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_PHYAD, addr)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_REGAD, regnum)
--		| FIELD_PREP(ASPEED_MDIO_CTRL_MIIWDATA, val);
-+	rc = aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C22, MDIO_C22_OP_READ,
-+			    addr, regnum, 0);
-+	if (rc < 0)
-+		return rc;
- 
--	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
-+	return aspeed_mdio_get_data(bus);
-+}
- 
--	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
--				  !(ctrl & ASPEED_MDIO_CTRL_FIRE),
--				  ASPEED_MDIO_INTERVAL_US,
--				  ASPEED_MDIO_TIMEOUT_US);
-+static int aspeed_mdio_write(struct mii_bus *bus, int addr, int regnum, u16 val)
-+{
-+	dev_dbg(&bus->dev, "%s: addr: %d, regnum: %d, val: 0x%x\n",
-+		__func__, addr, regnum, val);
-+
-+	/* Just clause 22 for the moment */
-+	if (regnum & MII_ADDR_C45)
-+		return -EOPNOTSUPP;
-+
-+	return aspeed_mdio_op(bus, ASPEED_MDIO_CTRL_ST_C22, MDIO_C22_OP_WRITE,
-+			      addr, regnum, val);
- }
- 
- static int aspeed_mdio_probe(struct platform_device *pdev)
--- 
-2.51.0
-
+ 	_a6xx_get_gmu_registers(gpu, a6xx_state, &a6xx_gmu_reglist[2],
+ 		&a6xx_state->gmu_registers[2], false);
 
 
 
