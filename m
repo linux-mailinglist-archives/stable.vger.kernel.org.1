@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208904-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209824-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id A73C7D26451
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:45 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id A053ED27476
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 8F4FD308671A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 4EE2730438F0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C0C573BFE42;
-	Thu, 15 Jan 2026 17:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03E143D668F;
+	Thu, 15 Jan 2026 17:56:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x76J6FXZ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="bM6mq+FX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 83EE73BB9F4;
-	Thu, 15 Jan 2026 17:12:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BAFE93D3016;
+	Thu, 15 Jan 2026 17:56:34 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497175; cv=none; b=mPXxe/vmmIG15V+d1iLowDv8NhimMoGtE612AUSl+U9PXutfJZLEBj53nD1Bc4gjoCkoVmGy5jHncR2xx2nmitE7AEbMmElU1nsxA0HS4310xfHpVLr1OnfGssFYLnWBqWwmRN+wiWpKGNNLrGt8wxJAFc/AYeitdozT6iFsEoo=
+	t=1768499794; cv=none; b=O6BRuKB29c26cx5LNZDZddGZP1tztr29RWbBI+By6NEmstrGp4Q1pUqnKk2VS5yMgB6M0iDdF3b0HOwIO9c5u2/JuTuWGP6hHnGs1UuN5SEruS3X803qFRF9viPemgXYAsjjBlnK0AGOQReJA9n7wGAMc8p2notzgMsIo7of48c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497175; c=relaxed/simple;
-	bh=jnGuuzGTle42Skhf/Z4E458VVN/WoN12dITJRWHQiyM=;
+	s=arc-20240116; t=1768499794; c=relaxed/simple;
+	bh=jwEVhWNMFXKdx4nDxcDSIUiujNbxg+O/42nw9+TF12A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ZPI5+RhOdXed/DdiWsaTlWyKWJjrayQIS7s2qh2i9j0l2TxfrnG1l8PBltZxzeWHAUQb65pW/NREa28/A7mwgdoi9KnH6KMXFo+RZ9Ookkc7TuVuJXmjHjvZmH7WzSk69hjfq9h4oT1J80NTMT8wsiEo+jWxC/ElQ7mS24h/1+8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x76J6FXZ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14D9AC116D0;
-	Thu, 15 Jan 2026 17:12:54 +0000 (UTC)
+	 MIME-Version; b=KlCx5p4Y9h5VLxJr41+51jrkw0PESJ75JyQVnh8jN0SjSgg1P8oWRA8CxF3ZSY1i+6d1HBonNQ7E1vb34ybAa+2tgChHaVJHaZyAujsbIqRf8L5JF+JzEDXjt/vZ4sQ5m3SkcJCqvfeKDnETXiGXvMUo+cCbD79Tf1W2oIIfhbs=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=bM6mq+FX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37C37C116D0;
+	Thu, 15 Jan 2026 17:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497175;
-	bh=jnGuuzGTle42Skhf/Z4E458VVN/WoN12dITJRWHQiyM=;
+	s=korg; t=1768499794;
+	bh=jwEVhWNMFXKdx4nDxcDSIUiujNbxg+O/42nw9+TF12A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x76J6FXZGu2yrf9naRA0a7Wa4P0J/lB7j066ghcfHGFfoPZv2rfZxvdiQNO1HN0Ae
-	 RpoyFqadJ5fH85mmL6Swz/UvRmCxdnoqXTuUAidIbRwgLQfvsbh5r+/gcXHGK3CBhw
-	 9J6QEuT1NqhEsxPSAcy70++6WW40eW6g/9ze6HqQ=
+	b=bM6mq+FXcl9ZYZqf9PtoKVYPgiyMFHrovbwYNK9cKYR8WbjKBBTxfpyzvJHmxud8L
+	 s2Uo7bHLJnKUX3/CtDnel0KZFaulnJqSVlLU5rIObxXYpO+E6oucQCtLw1XiKo8wc8
+	 pLa3Exj/OcKyIscYvMjw5v+3QV6nMUYDziPsrwHQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Amery Hung <ameryhung@gmail.com>,
-	Martin KaFai Lau <martin.lau@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 63/72] bpf: Support specifying linear xdp packet data size for BPF_PROG_TEST_RUN
-Date: Thu, 15 Jan 2026 17:49:13 +0100
-Message-ID: <20260115164145.788054631@linuxfoundation.org>
+	Kees Cook <keescook@chromium.org>,
+	Saeed Mahameed <saeedm@nvidia.com>,
+	Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+Subject: [PATCH 5.10 353/451] net/mlx5e: Avoid field-overflowing memcpy()
+Date: Thu, 15 Jan 2026 17:49:14 +0100
+Message-ID: <20260115164243.670664354@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,134 +60,139 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amery Hung <ameryhung@gmail.com>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit fe9544ed1a2e9217b2c5285c3a4ac0dc5a38bd7b ]
+commit ad5185735f7dab342fdd0dd41044da4c9ccfef67 upstream.
 
-To test bpf_xdp_pull_data(), an xdp packet containing fragments as well
-as free linear data area after xdp->data_end needs to be created.
-However, bpf_prog_test_run_xdp() always fills the linear area with
-data_in before creating fragments, leaving no space to pull data. This
-patch will allow users to specify the linear data size through
-ctx->data_end.
+In preparation for FORTIFY_SOURCE performing compile-time and run-time
+field bounds checking for memcpy(), memmove(), and memset(), avoid
+intentionally writing across neighboring fields.
 
-Currently, ctx_in->data_end must match data_size_in and will not be the
-final ctx->data_end seen by xdp programs. This is because ctx->data_end
-is populated according to the xdp_buff passed to test_run. The linear
-data area available in an xdp_buff, max_linear_sz, is alawys filled up
-before copying data_in into fragments.
+Use flexible arrays instead of zero-element arrays (which look like they
+are always overflowing) and split the cross-field memcpy() into two halves
+that can be appropriately bounds-checked by the compiler.
 
-This patch will allow users to specify the size of data that goes into
-the linear area. When ctx_in->data_end is different from data_size_in,
-only ctx_in->data_end bytes of data will be put into the linear area when
-creating the xdp_buff.
+We were doing:
 
-While ctx_in->data_end will be allowed to be different from data_size_in,
-it cannot be larger than the data_size_in as there will be no data to
-copy from user space. If it is larger than the maximum linear data area
-size, the layout suggested by the user will not be honored. Data beyond
-max_linear_sz bytes will still be copied into fragments.
+	#define ETH_HLEN  14
+	#define VLAN_HLEN  4
+	...
+	#define MLX5E_XDP_MIN_INLINE (ETH_HLEN + VLAN_HLEN)
+	...
+        struct mlx5e_tx_wqe      *wqe  = mlx5_wq_cyc_get_wqe(wq, pi);
+	...
+        struct mlx5_wqe_eth_seg  *eseg = &wqe->eth;
+        struct mlx5_wqe_data_seg *dseg = wqe->data;
+	...
+	memcpy(eseg->inline_hdr.start, xdptxd->data, MLX5E_XDP_MIN_INLINE);
 
-Finally, since it is possible for a NIC to produce a xdp_buff with empty
-linear data area, allow it when calling bpf_test_init() from
-bpf_prog_test_run_xdp() so that we can test XDP kfuncs with such
-xdp_buff. This is done by moving lower-bound check to callers as most of
-them already do except bpf_prog_test_run_skb(). The change also fixes a
-bug that allows passing an xdp_buff with data < ETH_HLEN. This can
-happen when ctx is used and metadata is at least ETH_HLEN.
+target is wqe->eth.inline_hdr.start (which the compiler sees as being
+2 bytes in size), but copying 18, intending to write across start
+(really vlan_tci, 2 bytes). The remaining 16 bytes get written into
+wqe->data[0], covering byte_count (4 bytes), lkey (4 bytes), and addr
+(8 bytes).
 
-Signed-off-by: Amery Hung <ameryhung@gmail.com>
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
-Link: https://patch.msgid.link/20250922233356.3356453-7-ameryhung@gmail.com
-Stable-dep-of: e558cca21779 ("bpf, test_run: Subtract size of xdp_frame from allowed metadata size")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+struct mlx5e_tx_wqe {
+        struct mlx5_wqe_ctrl_seg   ctrl;                 /*     0    16 */
+        struct mlx5_wqe_eth_seg    eth;                  /*    16    16 */
+        struct mlx5_wqe_data_seg   data[];               /*    32     0 */
+
+        /* size: 32, cachelines: 1, members: 3 */
+        /* last cacheline: 32 bytes */
+};
+
+struct mlx5_wqe_eth_seg {
+        u8                         swp_outer_l4_offset;  /*     0     1 */
+        u8                         swp_outer_l3_offset;  /*     1     1 */
+        u8                         swp_inner_l4_offset;  /*     2     1 */
+        u8                         swp_inner_l3_offset;  /*     3     1 */
+        u8                         cs_flags;             /*     4     1 */
+        u8                         swp_flags;            /*     5     1 */
+        __be16                     mss;                  /*     6     2 */
+        __be32                     flow_table_metadata;  /*     8     4 */
+        union {
+                struct {
+                        __be16     sz;                   /*    12     2 */
+                        u8         start[2];             /*    14     2 */
+                } inline_hdr;                            /*    12     4 */
+                struct {
+                        __be16     type;                 /*    12     2 */
+                        __be16     vlan_tci;             /*    14     2 */
+                } insert;                                /*    12     4 */
+                __be32             trailer;              /*    12     4 */
+        };                                               /*    12     4 */
+
+        /* size: 16, cachelines: 1, members: 9 */
+        /* last cacheline: 16 bytes */
+};
+
+struct mlx5_wqe_data_seg {
+        __be32                     byte_count;           /*     0     4 */
+        __be32                     lkey;                 /*     4     4 */
+        __be64                     addr;                 /*     8     8 */
+
+        /* size: 16, cachelines: 1, members: 3 */
+        /* last cacheline: 16 bytes */
+};
+
+So, split the memcpy() so the compiler can reason about the buffer
+sizes.
+
+"pahole" shows no size nor member offset changes to struct mlx5e_tx_wqe
+nor struct mlx5e_umr_wqe. "objdump -d" shows no meaningful object
+code changes (i.e. only source line number induced differences and
+optimizations).
+
+Fixes: b5503b994ed5 ("net/mlx5e: XDP TX forwarding support")
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[ Brennan : Applied to v5.10, convert inline_mtts to flex array (not in union) ]
+Signed-off-by: Brennan Lamoreaux <brennan.lamoreaux@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/bpf/test_run.c                                | 15 ++++++++++++---
- .../bpf/prog_tests/xdp_context_test_run.c         |  4 +---
- 2 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/en.h     |    4 ++--
+ drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c |    4 +++-
+ 2 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/net/bpf/test_run.c b/net/bpf/test_run.c
-index 397736cc2d786..2bc83525986f3 100644
---- a/net/bpf/test_run.c
-+++ b/net/bpf/test_run.c
-@@ -768,7 +768,7 @@ static void *bpf_test_init(const union bpf_attr *kattr, u32 user_size,
- 	void __user *data_in = u64_to_user_ptr(kattr->test.data_in);
- 	void *data;
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en.h
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en.h
+@@ -199,7 +199,7 @@ static inline int mlx5e_get_max_num_chan
+ struct mlx5e_tx_wqe {
+ 	struct mlx5_wqe_ctrl_seg ctrl;
+ 	struct mlx5_wqe_eth_seg  eth;
+-	struct mlx5_wqe_data_seg data[0];
++	struct mlx5_wqe_data_seg data[];
+ };
  
--	if (user_size < ETH_HLEN || user_size > PAGE_SIZE - headroom - tailroom)
-+	if (user_size > PAGE_SIZE - headroom - tailroom)
- 		return ERR_PTR(-EINVAL);
+ struct mlx5e_rx_wqe_ll {
+@@ -215,7 +215,7 @@ struct mlx5e_umr_wqe {
+ 	struct mlx5_wqe_ctrl_seg       ctrl;
+ 	struct mlx5_wqe_umr_ctrl_seg   uctrl;
+ 	struct mlx5_mkey_seg           mkc;
+-	struct mlx5_mtt                inline_mtts[0];
++	struct mlx5_mtt                inline_mtts[];
+ };
  
- 	size = SKB_DATA_ALIGN(size);
-@@ -1097,6 +1097,9 @@ int bpf_prog_test_run_skb(struct bpf_prog *prog, const union bpf_attr *kattr,
- 	if (kattr->test.flags || kattr->test.cpu || kattr->test.batch_size)
- 		return -EINVAL;
+ extern const char mlx5e_self_tests[][ETH_GSTRING_LEN];
+--- a/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/en/xdp.c
+@@ -341,8 +341,10 @@ mlx5e_xmit_xdp_frame(struct mlx5e_xdpsq
  
-+	if (size < ETH_HLEN)
-+		return -EINVAL;
-+
- 	data = bpf_test_init(kattr, kattr->test.data_size_in,
- 			     size, NET_SKB_PAD + NET_IP_ALIGN,
- 			     SKB_DATA_ALIGN(sizeof(struct skb_shared_info)));
-@@ -1277,7 +1280,7 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- {
- 	bool do_live = (kattr->test.flags & BPF_F_TEST_XDP_LIVE_FRAMES);
- 	u32 tailroom = SKB_DATA_ALIGN(sizeof(struct skb_shared_info));
--	u32 retval = 0, duration, max_linear_sz, size;
-+	u32 retval = 0, meta_sz = 0, duration, max_linear_sz, size;
- 	u32 linear_sz = kattr->test.data_size_in;
- 	u32 batch_size = kattr->test.batch_size;
- 	u32 headroom = XDP_PACKET_HEADROOM;
-@@ -1313,13 +1316,16 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 
- 	if (ctx) {
- 		/* There can't be user provided data before the meta data */
--		if (ctx->data_meta || ctx->data_end != kattr->test.data_size_in ||
-+		if (ctx->data_meta || ctx->data_end > kattr->test.data_size_in ||
- 		    ctx->data > ctx->data_end ||
- 		    unlikely(xdp_metalen_invalid(ctx->data)) ||
- 		    (do_live && (kattr->test.data_out || kattr->test.ctx_out)))
- 			goto free_ctx;
- 		/* Meta data is allocated from the headroom */
- 		headroom -= ctx->data;
-+
-+		meta_sz = ctx->data;
-+		linear_sz = ctx->data_end;
- 	}
- 
- 	max_linear_sz = PAGE_SIZE - headroom - tailroom;
-@@ -1329,6 +1335,9 @@ int bpf_prog_test_run_xdp(struct bpf_prog *prog, const union bpf_attr *kattr,
- 	if (do_live && kattr->test.data_size_in > linear_sz)
- 		goto free_ctx;
- 
-+	if (kattr->test.data_size_in - meta_sz < ETH_HLEN)
-+		return -EINVAL;
-+
- 	data = bpf_test_init(kattr, linear_sz, max_linear_sz, headroom, tailroom);
- 	if (IS_ERR(data)) {
- 		ret = PTR_ERR(data);
-diff --git a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-index ab4952b9fb1d4..eab8625aad3b6 100644
---- a/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-+++ b/tools/testing/selftests/bpf/prog_tests/xdp_context_test_run.c
-@@ -80,9 +80,7 @@ void test_xdp_context_test_run(void)
- 	/* Meta data must be 32 bytes or smaller */
- 	test_xdp_context_error(prog_fd, opts, 0, 36, sizeof(data), 0, 0, 0);
- 
--	/* Total size of data must match data_end - data_meta */
--	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
--			       sizeof(data) - 1, 0, 0, 0);
-+	/* Total size of data must be data_end - data_meta or larger */
- 	test_xdp_context_error(prog_fd, opts, 0, sizeof(__u32),
- 			       sizeof(data) + 1, 0, 0, 0);
- 
--- 
-2.51.0
-
+ 	/* copy the inline part if required */
+ 	if (sq->min_inline_mode != MLX5_INLINE_MODE_NONE) {
+-		memcpy(eseg->inline_hdr.start, xdptxd->data, MLX5E_XDP_MIN_INLINE);
++		memcpy(eseg->inline_hdr.start, xdptxd->data, sizeof(eseg->inline_hdr.start));
+ 		eseg->inline_hdr.sz = cpu_to_be16(MLX5E_XDP_MIN_INLINE);
++		memcpy(dseg, xdptxd->data + sizeof(eseg->inline_hdr.start),
++		       MLX5E_XDP_MIN_INLINE - sizeof(eseg->inline_hdr.start));
+ 		dma_len  -= MLX5E_XDP_MIN_INLINE;
+ 		dma_addr += MLX5E_XDP_MIN_INLINE;
+ 		dseg++;
 
 
 
