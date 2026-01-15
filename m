@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209802-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208747-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6A5E4D2773D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:25:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 45194D261B0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:39 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 2707D31CA6A5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D3EA83018CAB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:31 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A04D53D2FF8;
-	Thu, 15 Jan 2026 17:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0ACC93BBA12;
+	Thu, 15 Jan 2026 17:05:31 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Yxqmbc0q"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="EkX8E2du"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 637CA3C00AE;
-	Thu, 15 Jan 2026 17:55:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C021C3A35A4;
+	Thu, 15 Jan 2026 17:05:30 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499732; cv=none; b=Z5bWVrkPw9Lxr3s215ngUkZqBx52tlhnMfI8eqyKM3p71ebEsYPGAYj3bKkhEg0w9T7K8EmurlwxLDcTcSdtnBBKe3b+aEPC0nwQ5x1v7aP1C5eljawYMNmMW2+xDAFC6Z1DO+mUYfk/see8MOOhrtCYIUIxeQYF77DN9v6HDVI=
+	t=1768496730; cv=none; b=VhC98VBOpP8803fJqegTnZQOme8OWwumT456kqm51rat2rLKqqg4VURXAfnK3EtQ6uGZPcq2u0kjAbAjLBNvcb5KNCQHTf+Oka3MLoskm+8bTVowVSV35v3w3vUPICvJDZC7Rtra0hVRaEShO/llUQGn46FMsa6n3HkGzn8BANw=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499732; c=relaxed/simple;
-	bh=PVTnYCkGgu+z/WIwtmRujwQCrWRZ0T1MtjZfCo4HmD8=;
+	s=arc-20240116; t=1768496730; c=relaxed/simple;
+	bh=tNjTr2ZV0Nvb0MOHXkx9EaCTqTpxFm03+hekWwXYd3Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lgdNsjZlDI7vn9Qc8jGm8mVt0KswfJwLpHyTuWunJcPV9H7k/4uA70fqdoZBR6h9tRVILk5SUonsN6MMTFfOE+oXXrK5da+AzbRvsldm8i5ZNgUVo4bnzQfk1JcqTPFCTenmyX9HBHODt+c2uGMgK+Yd6LQnEhATOtYkgn5alvU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Yxqmbc0q; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9838DC116D0;
-	Thu, 15 Jan 2026 17:55:31 +0000 (UTC)
+	 MIME-Version; b=oOz1cPzUOzGIbXRjFe6fgc+tcsX4LCTMO070t6yUojN1JIvx3GWQPYaptcU6+4/TfMuVQKC5s6/Gu/zRhC7SQQVi81Ef7Jk9hn5wNGXvCpr6NUsXkfzAW+NDUPgidi1trnUw38aZbh2a0Y1hRQPmhp1tjsEST/+MSeQzg8Lmhm0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=EkX8E2du; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DC51C116D0;
+	Thu, 15 Jan 2026 17:05:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499732;
-	bh=PVTnYCkGgu+z/WIwtmRujwQCrWRZ0T1MtjZfCo4HmD8=;
+	s=korg; t=1768496730;
+	bh=tNjTr2ZV0Nvb0MOHXkx9EaCTqTpxFm03+hekWwXYd3Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Yxqmbc0qAnx/tEYWMPDfM92VnhY2PVJBfcmymbattJKTx8xgNqbQXpwrW0J6bWWf6
-	 tZorxRAakQndscUl5MImfmGkS55XtRRxO7L8uDUgn5MOTIQpLibdHMoyYFEsHsa1Rm
-	 AzY80P+wDXj5sdfLzwUo9Drdbm/SVncvZx8eeWnQ=
+	b=EkX8E2du1fK4DxZvgvRLwavxu26WdvzZKJX60qds6NIYfyeleSc+nl5UwytJjlro6
+	 IcHDuWPUOTfc2NmzA8mkGX1HRr1D9xakJV2iAHFw81Sza8avai7jmrcEE+TVZmFOx0
+	 wGoz73OUxm1wwr974QF1xB6Z2L8OckOGcI4fd7oI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Guangshuo Li <lgs201920130244@gmail.com>,
-	Simon Horman <horms@kernel.org>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>
-Subject: [PATCH 5.10 330/451] e1000: fix OOB in e1000_tbi_should_accept()
+	Mateusz Litwin <mateusz.litwin@nokia.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 116/119] spi: cadence-quadspi: Prevent lost complete() call during indirect read
 Date: Thu, 15 Jan 2026 17:48:51 +0100
-Message-ID: <20260115164242.834796787@linuxfoundation.org>
+Message-ID: <20260115164156.148225718@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,128 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guangshuo Li <lgs201920130244@gmail.com>
+From: Mateusz Litwin <mateusz.litwin@nokia.com>
 
-commit 9c72a5182ed92904d01057f208c390a303f00a0f upstream.
+[ Upstream commit d67396c9d697041b385d70ff2fd59cb07ae167e8 ]
 
-In e1000_tbi_should_accept() we read the last byte of the frame via
-'data[length - 1]' to evaluate the TBI workaround. If the descriptor-
-reported length is zero or larger than the actual RX buffer size, this
-read goes out of bounds and can hit unrelated slab objects. The issue
-is observed from the NAPI receive path (e1000_clean_rx_irq):
+A race condition exists between the read loop and IRQ `complete()` call.
+An interrupt could call the complete() between the inner loop and
+reinit_completion(), potentially losing the completion event and causing
+an unnecessary timeout. Moving reinit_completion() before the loop
+prevents this. A premature signal will only result in a spurious wakeup
+and another wait cycle, which is preferable to waiting for a timeout.
 
-==================================================================
-BUG: KASAN: slab-out-of-bounds in e1000_tbi_should_accept+0x610/0x790
-Read of size 1 at addr ffff888014114e54 by task sshd/363
-
-CPU: 0 PID: 363 Comm: sshd Not tainted 5.18.0-rc1 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.12.0-59-gc9ba5276e321-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <IRQ>
- dump_stack_lvl+0x5a/0x74
- print_address_description+0x7b/0x440
- print_report+0x101/0x200
- kasan_report+0xc1/0xf0
- e1000_tbi_should_accept+0x610/0x790
- e1000_clean_rx_irq+0xa8c/0x1110
- e1000_clean+0xde2/0x3c10
- __napi_poll+0x98/0x380
- net_rx_action+0x491/0xa20
- __do_softirq+0x2c9/0x61d
- do_softirq+0xd1/0x120
- </IRQ>
- <TASK>
- __local_bh_enable_ip+0xfe/0x130
- ip_finish_output2+0x7d5/0xb00
- __ip_queue_xmit+0xe24/0x1ab0
- __tcp_transmit_skb+0x1bcb/0x3340
- tcp_write_xmit+0x175d/0x6bd0
- __tcp_push_pending_frames+0x7b/0x280
- tcp_sendmsg_locked+0x2e4f/0x32d0
- tcp_sendmsg+0x24/0x40
- sock_write_iter+0x322/0x430
- vfs_write+0x56c/0xa60
- ksys_write+0xd1/0x190
- do_syscall_64+0x43/0x90
- entry_SYSCALL_64_after_hwframe+0x44/0xae
-RIP: 0033:0x7f511b476b10
-Code: 73 01 c3 48 8b 0d 88 d3 2b 00 f7 d8 64 89 01 48 83 c8 ff c3 66 0f 1f 44 00 00 83 3d f9 2b 2c 00 00 75 10 b8 01 00 00 00 0f 05 <48> 3d 01 f0 ff ff 73 31 c3 48 83 ec 08 e8 8e 9b 01 00 48 89 04 24
-RSP: 002b:00007ffc9211d4e8 EFLAGS: 00000246 ORIG_RAX: 0000000000000001
-RAX: ffffffffffffffda RBX: 0000000000004024 RCX: 00007f511b476b10
-RDX: 0000000000004024 RSI: 0000559a9385962c RDI: 0000000000000003
-RBP: 0000559a9383a400 R08: fffffffffffffff0 R09: 0000000000004f00
-R10: 0000000000000070 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffc9211d57f R14: 0000559a9347bde7 R15: 0000000000000003
- </TASK>
-Allocated by task 1:
- __kasan_krealloc+0x131/0x1c0
- krealloc+0x90/0xc0
- add_sysfs_param+0xcb/0x8a0
- kernel_add_sysfs_param+0x81/0xd4
- param_sysfs_builtin+0x138/0x1a6
- param_sysfs_init+0x57/0x5b
- do_one_initcall+0x104/0x250
- do_initcall_level+0x102/0x132
- do_initcalls+0x46/0x74
- kernel_init_freeable+0x28f/0x393
- kernel_init+0x14/0x1a0
- ret_from_fork+0x22/0x30
-The buggy address belongs to the object at ffff888014114000
- which belongs to the cache kmalloc-2k of size 2048
-The buggy address is located 1620 bytes to the right of
- 2048-byte region [ffff888014114000, ffff888014114800]
-The buggy address belongs to the physical page:
-page:ffffea0000504400 refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x14110
-head:ffffea0000504400 order:3 compound_mapcount:0 compound_pincount:0
-flags: 0x100000000010200(slab|head|node=0|zone=1)
-raw: 0100000000010200 0000000000000000 dead000000000001 ffff888013442000
-raw: 0000000000000000 0000000000080008 00000001ffffffff 0000000000000000
-page dumped because: kasan: bad access detected
-==================================================================
-
-This happens because the TBI check unconditionally dereferences the last
-byte without validating the reported length first:
-
-	u8 last_byte = *(data + length - 1);
-
-Fix by rejecting the frame early if the length is zero, or if it exceeds
-adapter->rx_buffer_len. This preserves the TBI workaround semantics for
-valid frames and prevents touching memory beyond the RX buffer.
-
-Fixes: 2037110c96d5 ("e1000: move tbi workaround code into helper function")
-Cc: stable@vger.kernel.org
-Signed-off-by: Guangshuo Li <lgs201920130244@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mateusz Litwin <mateusz.litwin@nokia.com>
+Link: https://patch.msgid.link/20251218-cqspi_indirect_read_improve-v2-1-396079972f2a@nokia.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/e1000/e1000_main.c |   10 +++++++++-
+ drivers/spi/spi-cadence-quadspi.c | 10 +++++++++-
  1 file changed, 9 insertions(+), 1 deletion(-)
 
---- a/drivers/net/ethernet/intel/e1000/e1000_main.c
-+++ b/drivers/net/ethernet/intel/e1000/e1000_main.c
-@@ -4090,7 +4090,15 @@ static bool e1000_tbi_should_accept(stru
- 				    u32 length, const u8 *data)
- {
- 	struct e1000_hw *hw = &adapter->hw;
--	u8 last_byte = *(data + length - 1);
-+	u8 last_byte;
-+
-+	/* Guard against OOB on data[length - 1] */
-+	if (unlikely(!length))
-+		return false;
-+	/* Upper bound: length must not exceed rx_buffer_len */
-+	if (unlikely(length > adapter->rx_buffer_len))
-+		return false;
-+	last_byte = *(data + length - 1);
+diff --git a/drivers/spi/spi-cadence-quadspi.c b/drivers/spi/spi-cadence-quadspi.c
+index aca3681d32ea1..e1d64a9a34462 100644
+--- a/drivers/spi/spi-cadence-quadspi.c
++++ b/drivers/spi/spi-cadence-quadspi.c
+@@ -758,6 +758,7 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 	readl(reg_base + CQSPI_REG_INDIRECTRD); /* Flush posted write. */
  
- 	if (TBI_ACCEPT(hw, status, errors, length, last_byte)) {
- 		unsigned long irq_flags;
+ 	while (remaining > 0) {
++		ret = 0;
+ 		if (use_irq &&
+ 		    !wait_for_completion_timeout(&cqspi->transfer_complete,
+ 						 msecs_to_jiffies(CQSPI_READ_TIMEOUT_MS)))
+@@ -770,6 +771,14 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 		if (cqspi->slow_sram)
+ 			writel(0x0, reg_base + CQSPI_REG_IRQMASK);
+ 
++		/*
++		 * Prevent lost interrupt and race condition by reinitializing early.
++		 * A spurious wakeup and another wait cycle can occur here,
++		 * which is preferable to waiting until timeout if interrupt is lost.
++		 */
++		if (use_irq)
++			reinit_completion(&cqspi->transfer_complete);
++
+ 		bytes_to_read = cqspi_get_rd_sram_level(cqspi);
+ 
+ 		if (ret && bytes_to_read == 0) {
+@@ -802,7 +811,6 @@ static int cqspi_indirect_read_execute(struct cqspi_flash_pdata *f_pdata,
+ 		}
+ 
+ 		if (use_irq && remaining > 0) {
+-			reinit_completion(&cqspi->transfer_complete);
+ 			if (cqspi->slow_sram)
+ 				writel(CQSPI_REG_IRQ_WATERMARK, reg_base + CQSPI_REG_IRQMASK);
+ 		}
+-- 
+2.51.0
+
 
 
 
