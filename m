@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209424-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209889-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 04631D2765B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:22:46 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DCD38D277FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:50 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 66784325A660
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7007430AF190
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id DB40E30214B;
-	Thu, 15 Jan 2026 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id F17883E8C5E;
+	Thu, 15 Jan 2026 17:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="PqocHsFm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSmT5ir8"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 9EC5528725F;
-	Thu, 15 Jan 2026 17:37:36 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B3A973E8C51;
+	Thu, 15 Jan 2026 17:59:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498656; cv=none; b=eJDS1OzbpazQJw0tx+bi1KFBPikTLQ3egrLzHk/B1MrJC8I/cegXfTJvcUM/I+xG5eZYQ9Xdv1Wy92Ja260nKAqK1TZTOxv2nRwnb+b5fpB5kFjqZIMVP03PPVyybLKPS2vea+VETO3HABA3PZmyvaLMSug+dupfLFKKoEKJS9k=
+	t=1768499980; cv=none; b=i308LJhh/pyY5s+QnVWBbSKAIqzkroooGG7FqX3VAOF/fsAtP6IlRGfRRWvLVEpfxPt9QY+5mJi6VW++N8HfxnLxfH+TaTz7rjD+WGc9Qfopady6W8jpZ+H2aSktyf8ALKar8/3pZ9h/dRzPzySoFihpCxG3daMlw2JpP1mDVXg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498656; c=relaxed/simple;
-	bh=bwOqhAWAPLGzByZr71W+hEH2p948Pu95j2nfYNk/dhA=;
+	s=arc-20240116; t=1768499980; c=relaxed/simple;
+	bh=Ud7DVjA8PcDKXUz3cjARxagDtsUflNs/1swQPIFSZRU=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=AzLS24F5bBCWgsfndV9hd/k6Drht1FMG8Dzy6LUhWcA7VRMZMyQKUijCsquNS80zUqwD3U+k/i2GNfq0Xyj1lqZ4nZLWqDcYBkPabQrqB0BkfP5DjgD3AtIRrp9263R5wUssS8ajYRGQHle9W7D63lOyGKJpfqgGPSdxrjSSF5k=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=PqocHsFm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A2D7C116D0;
-	Thu, 15 Jan 2026 17:37:35 +0000 (UTC)
+	 MIME-Version; b=Rph4jsEv+ApSwCW70qDf+o1HqmEtUcSGcIQdfpQcum1izEYYU/KkDWRhREQGg+EIpH8j5fk7lWS5QU8YcCVn0+qW7NibmTrUZMBQ7ysCQRtE3HzHNlzOAyTul//sFkIf7V4tmmmZ8KFtFukuaz0c2nYCWM2pW+QThPU3k7kB4gM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSmT5ir8; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E0ADC16AAE;
+	Thu, 15 Jan 2026 17:59:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498656;
-	bh=bwOqhAWAPLGzByZr71W+hEH2p948Pu95j2nfYNk/dhA=;
+	s=korg; t=1768499980;
+	bh=Ud7DVjA8PcDKXUz3cjARxagDtsUflNs/1swQPIFSZRU=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=PqocHsFmcLmSbzpOizGga8CRXsTO0rZiz1XnFXVid9w06MBAnP/O2DGT3X+NsUfzg
-	 VMfcP2Egcoe4o9s/wqv1G+tKvGH6B2VxXlVAovMIJRD74m3DbWyUNiOfs1lzodKxq1
-	 ssXZaGZyTRPZTxhQaIsXZz2Iwwnp/0K28kAvxp5I=
+	b=TSmT5ir8MDYCnCcocJvlkhgaiDIFbACzz/NcdhGj3hxCEAl7wUrkvbz3LQnk+1RvQ
+	 xZ93k13EDbqUFH+IwsANhzEVO8IsHL0DT1F7wRuXLkCFl/Ly9S6f9Z1DdGlgcpynA/
+	 80nrs10WsPCZT/KPg+usS0iFFyHYzCXpeOl+ApME=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Tuo Li <islituo@gmail.com>,
-	Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 5.15 509/554] libceph: make free_choose_arg_map() resilient to partial allocation
+	Nicolas Ferre <nicolas.ferre@microchip.com>,
+	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 374/451] ARM: dts: microchip: sama5d2: fix spi flexcom fifo size to 32
 Date: Thu, 15 Jan 2026 17:49:35 +0100
-Message-ID: <20260115164304.740598423@linuxfoundation.org>
+Message-ID: <20260115164244.445442721@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,74 +60,75 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Nicolas Ferre <nicolas.ferre@microchip.com>
 
-commit e3fe30e57649c551757a02e1cad073c47e1e075e upstream.
+[ Upstream commit 7d5864dc5d5ea6a35983dd05295fb17f2f2f44ce ]
 
-free_choose_arg_map() may dereference a NULL pointer if its caller fails
-after a partial allocation.
+Unlike standalone spi peripherals, on sama5d2, the flexcom spi have fifo
+size of 32 data. Fix flexcom/spi nodes where this property is wrong.
 
-For example, in decode_choose_args(), if allocation of arg_map->args
-fails, execution jumps to the fail label and free_choose_arg_map() is
-called. Since arg_map->size is updated to a non-zero value before memory
-allocation, free_choose_arg_map() will iterate over arg_map->args and
-dereference a NULL pointer.
-
-To prevent this potential NULL pointer dereference and make
-free_choose_arg_map() more resilient, add checks for pointers before
-iterating.
-
-Cc: stable@vger.kernel.org
-Co-authored-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Reviewed-by: Viacheslav Dubeyko <Slava.Dubeyko@ibm.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
+Fixes: 6b9a3584c7ed ("ARM: dts: at91: sama5d2: Add missing flexcom definitions")
+Cc: stable@vger.kernel.org # 5.8+
+Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
+Link: https://lore.kernel.org/r/20251114140225.30372-1-nicolas.ferre@microchip.com
+Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ceph/osdmap.c |   20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/arm/boot/dts/sama5d2.dtsi |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -225,22 +225,26 @@ static struct crush_choose_arg_map *allo
+--- a/arch/arm/boot/dts/sama5d2.dtsi
++++ b/arch/arm/boot/dts/sama5d2.dtsi
+@@ -555,7 +555,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(12))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
- static void free_choose_arg_map(struct crush_choose_arg_map *arg_map)
- {
--	if (arg_map) {
--		int i, j;
-+	int i, j;
+@@ -625,7 +625,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(14))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
--		WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+	if (!arg_map)
-+		return;
+@@ -835,7 +835,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(16))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
-+	WARN_ON(!RB_EMPTY_NODE(&arg_map->node));
-+
-+	if (arg_map->args) {
- 		for (i = 0; i < arg_map->size; i++) {
- 			struct crush_choose_arg *arg = &arg_map->args[i];
--
--			for (j = 0; j < arg->weight_set_size; j++)
--				kfree(arg->weight_set[j].weights);
--			kfree(arg->weight_set);
-+			if (arg->weight_set) {
-+				for (j = 0; j < arg->weight_set_size; j++)
-+					kfree(arg->weight_set[j].weights);
-+				kfree(arg->weight_set);
-+			}
- 			kfree(arg->ids);
- 		}
- 		kfree(arg_map->args);
--		kfree(arg_map);
- 	}
-+	kfree(arg_map);
- }
+@@ -925,7 +925,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(18))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
  
- DEFINE_RB_FUNCS(choose_arg_map, struct crush_choose_arg_map, choose_args_index,
+@@ -976,7 +976,7 @@
+ 						 AT91_XDMAC_DT_PER_IF(1) |
+ 						 AT91_XDMAC_DT_PERID(20))>;
+ 					dma-names = "tx", "rx";
+-					atmel,fifo-size = <16>;
++					atmel,fifo-size = <32>;
+ 					status = "disabled";
+ 				};
+ 
 
 
 
