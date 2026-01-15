@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208669-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208565-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 636A7D260A3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:19 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 28F15D25FE6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B09E330848C9
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:52 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C9E1030DB582
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:51 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6FC053BC4FE;
-	Thu, 15 Jan 2026 17:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 18AB6396B75;
+	Thu, 15 Jan 2026 16:56:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="O1VRs3VU"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Vf7ShjCV"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 325EF3BBA12;
-	Thu, 15 Jan 2026 17:01:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C991E3BF2E4;
+	Thu, 15 Jan 2026 16:56:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496509; cv=none; b=YgCJ3ugKhH1hN28/yJCnIk/QGq4mwUcvoJeK4NS1ke27hCZHPaf+6iQW143UdpXakF569mtxbSXUak45VGxwWbVrkwxmAKkin/ifzBTKcgS4qNim7Ib0RabQsaDo9GUuYKONCZHbz+7CfierDM9zI5ehOcdwPKRMd1Fj+4HsSYU=
+	t=1768496210; cv=none; b=nOIEnCdPm7QVzLma7nfhVghiE2K5jLzG4RDlUXzKy21PBLeDl03s0SwNbbw/0SH+p2bzHkIpfjB6kOpdmvkcWjsSqySb21Mfjag45uJgcIzbOMw8Szqagaa3csBaxexjMf0ssQNO/hqh2jZaYPvi9uVChgJPtHciEaqre1LKk7w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496509; c=relaxed/simple;
-	bh=xR3Kk4B8wFmT578y0X7aHg2kztxgHNNPkC79C5lilro=;
+	s=arc-20240116; t=1768496210; c=relaxed/simple;
+	bh=XzLph8tJMR0g1XhS5dgTlypJw6LCXDjw15DyQy5g+nk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TW/zWS15n/BrqqfILx1266xH/w0l5JSLEDJ7FvboQ8sxvCM3qjy8ACI5Y4oPWC2TP0+qmf5P0+AMHKtzwhaQh6TG5DYAt5dWrmQRFptCAqfC+mch9LNIleip4a0KtkvDrqcIigu8eOudBhR0x3ktk0nEQRXdKvZshqQzC3bptIQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=O1VRs3VU; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB7CCC116D0;
-	Thu, 15 Jan 2026 17:01:48 +0000 (UTC)
+	 MIME-Version; b=ZI0sXO73LLtnxG0QKnsfNBOMjXbeAcgGvrkCDm9Ll1P35gatVt+q2CV61nLoRa17xeXw9kQQcazWhrgz++fMI1ZuAnfjIZzLbRR7RVSBLq0qhx/e9bA2vYyFabt7ylSgT386qVjqpRa2307g6TtVviLWmTVq8XAM6tU5gjrn4pY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Vf7ShjCV; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D798C19422;
+	Thu, 15 Jan 2026 16:56:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496509;
-	bh=xR3Kk4B8wFmT578y0X7aHg2kztxgHNNPkC79C5lilro=;
+	s=korg; t=1768496210;
+	bh=XzLph8tJMR0g1XhS5dgTlypJw6LCXDjw15DyQy5g+nk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=O1VRs3VUq3AViKkC+2XEe7wL49Awb8nXwmBxQb/XbpQ6S/XEGD+5PGpCIb5/DUClj
-	 Uj+PDP34uP88JhIKx7MpViEdNRmyEVzyGBcDuZA5Vyr9+v/h/q8z9VoH6XYHmPrLsY
-	 Q0m4vV7B95ji/N6WL7QSiNYbF4DYlyZT9ZVyFaRo=
+	b=Vf7ShjCV6tXT6hPoSFVJ7H3tFF62a7mmJjYwZOaegibFYvzPuWE1yU3L2C4IW+gfZ
+	 Dyb6kuSOhmsvj5bbvWrZ/Vmoziij5AdHgPm1k7jPog9oekPvaEbDZYuTd2aXPvMkIH
+	 YKfTVzC4N9TCJ9tvuJ0MZwt4MtQCrx/kFtgkusVk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Rosen Penev <rosenp@gmail.com>,
-	Alex Hung <alex.hung@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
+	Filipe Manana <fdmanana@suse.com>,
+	Suchit Karunakaran <suchitkarunakaran@gmail.com>,
+	David Sterba <dsterba@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 038/119] drm/amd/display: shrink struct members
-Date: Thu, 15 Jan 2026 17:47:33 +0100
-Message-ID: <20260115164153.335797628@linuxfoundation.org>
+Subject: [PATCH 6.18 117/181] btrfs: fix NULL pointer dereference in do_abort_log_replay()
+Date: Thu, 15 Jan 2026 17:47:34 +0100
+Message-ID: <20260115164206.539159264@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,94 +61,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rosen Penev <rosenp@gmail.com>
+From: Suchit Karunakaran <suchitkarunakaran@gmail.com>
 
-[ Upstream commit 7329417fc9ac128729c3a092b006c8f1fd0d04a6 ]
+[ Upstream commit 530e3d4af566ca44807d79359b90794dea24c4f3 ]
 
-On a 32-bit ARM system, the audio_decoder struct ends up being too large
-for dp_retrain_link_dp_test.
+Coverity reported a NULL pointer dereference issue (CID 1666756) in
+do_abort_log_replay(). When btrfs_alloc_path() fails in
+replay_one_buffer(), wc->subvol_path is NULL, but btrfs_abort_log_replay()
+calls do_abort_log_replay() which unconditionally dereferences
+wc->subvol_path when attempting to print debug information. Fix this by
+adding a NULL check before dereferencing wc->subvol_path in
+do_abort_log_replay().
 
-link_dp_cts.c:157:1: error: the frame size of 1328 bytes is larger than
-1280 bytes [-Werror=frame-larger-than=]
-
-This is mitigated by shrinking the members of the struct and avoids
-having to deal with dynamic allocation.
-
-feed_back_divider is assigned but otherwise unused. Remove both.
-
-pixel_repetition looks like it should be a bool since it's only ever
-assigned to 1. But there are checks for 2 and 4. Reduce to uint8_t.
-
-Remove ss_percentage_divider. Unused.
-
-Shrink refresh_rate as it gets assigned to at most a 3 digit integer
-value.
-
-Signed-off-by: Rosen Penev <rosenp@gmail.com>
-Reviewed-by: Alex Hung <alex.hung@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 3849efdc7888d537f09c3dcfaea4b3cd377a102e)
+Fixes: 2753e4917624 ("btrfs: dump detailed info and specific messages on log replay failures")
+Reviewed-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: Suchit Karunakaran <suchitkarunakaran@gmail.com>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../drm/amd/display/dc/hwss/dce110/dce110_hwseq.c    |  3 ---
- drivers/gpu/drm/amd/display/include/audio_types.h    | 12 +++++-------
- 2 files changed, 5 insertions(+), 10 deletions(-)
+ fs/btrfs/tree-log.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-index 03b22e9115ea8..13e7c253ad697 100644
---- a/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-+++ b/drivers/gpu/drm/amd/display/dc/hwss/dce110/dce110_hwseq.c
-@@ -1448,9 +1448,6 @@ static void build_audio_output(
- 						state->clk_mgr);
- 	}
+diff --git a/fs/btrfs/tree-log.c b/fs/btrfs/tree-log.c
+index de9ea9d52482f..1444857de9fe8 100644
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -189,7 +189,7 @@ static void do_abort_log_replay(struct walk_control *wc, const char *function,
  
--	audio_output->pll_info.feed_back_divider =
--			pipe_ctx->pll_settings.feedback_divider;
--
- 	audio_output->pll_info.dto_source =
- 		translate_to_dto_source(
- 			pipe_ctx->stream_res.tg->inst + 1);
-diff --git a/drivers/gpu/drm/amd/display/include/audio_types.h b/drivers/gpu/drm/amd/display/include/audio_types.h
-index e4a26143f14c9..6699ad4fa825e 100644
---- a/drivers/gpu/drm/amd/display/include/audio_types.h
-+++ b/drivers/gpu/drm/amd/display/include/audio_types.h
-@@ -47,15 +47,15 @@ struct audio_crtc_info {
- 	uint32_t h_total;
- 	uint32_t h_active;
- 	uint32_t v_active;
--	uint32_t pixel_repetition;
- 	uint32_t requested_pixel_clock_100Hz; /* in 100Hz */
- 	uint32_t calculated_pixel_clock_100Hz; /* in 100Hz */
--	uint32_t refresh_rate;
-+	uint32_t dsc_bits_per_pixel;
-+	uint32_t dsc_num_slices;
- 	enum dc_color_depth color_depth;
- 	enum dc_pixel_encoding pixel_encoding;
-+	uint16_t refresh_rate;
-+	uint8_t pixel_repetition;
- 	bool interlaced;
--	uint32_t dsc_bits_per_pixel;
--	uint32_t dsc_num_slices;
- };
- struct azalia_clock_info {
- 	uint32_t pixel_clock_in_10khz;
-@@ -78,11 +78,9 @@ enum audio_dto_source {
+ 	btrfs_abort_transaction(wc->trans, error);
  
- struct audio_pll_info {
- 	uint32_t audio_dto_source_clock_in_khz;
--	uint32_t feed_back_divider;
-+	uint32_t ss_percentage;
- 	enum audio_dto_source dto_source;
- 	bool ss_enabled;
--	uint32_t ss_percentage;
--	uint32_t ss_percentage_divider;
- };
- 
- struct audio_channel_associate_info {
+-	if (wc->subvol_path->nodes[0]) {
++	if (wc->subvol_path && wc->subvol_path->nodes[0]) {
+ 		btrfs_crit(fs_info,
+ 			   "subvolume (root %llu) leaf currently being processed:",
+ 			   btrfs_root_id(wc->root));
 -- 
 2.51.0
 
