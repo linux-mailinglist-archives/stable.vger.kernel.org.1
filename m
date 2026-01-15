@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209432-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209886-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id B2E14D26ECD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:55:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 8ED3DD27859
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:46 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0C905325DEA7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:38:12 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id D5269315F967
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 85D682D595B;
-	Thu, 15 Jan 2026 17:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id AA4DD3D7D9F;
+	Thu, 15 Jan 2026 17:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cg3kSekb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="i0FUVJUv"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 498A028725F;
-	Thu, 15 Jan 2026 17:37:59 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6E8083D349D;
+	Thu, 15 Jan 2026 17:59:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498679; cv=none; b=PBcU6Z5jHKbDfJIeI5SaOB5uilF/DmHAXA3UU5sdQdUOumgsLwWPgOzce9rrYam2YsxCDVvsQXDCi+xZe6inevFN6EFETFRW3m/BVtEuWtYkt1Q7N+XFatzGvpbkFm+g36SusbeoeECL5kqImlwZjGlHncZQyb4StOsyhFUvw3U=
+	t=1768499972; cv=none; b=nWHDoy+oqC2499HWH1Ayskl5Z4CgQUZNrzIWgo4f8C6w/LVJoSMMl+wAf0PWHP8rD6sYxUlQKMHxJameSu8KxBrk4+hlDFNLbHspIGPS/HGeIK4bBBiWO+HXBxQ7nodAZH3kH8tyOe+8R0Kkp14w0fNsqaorely4T3YftTc4NlU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498679; c=relaxed/simple;
-	bh=sq4HR/ueQtnmOnLD9y71Aye8EoFWDdcfgoUv6b3ISz0=;
+	s=arc-20240116; t=1768499972; c=relaxed/simple;
+	bh=Ys6f8NEPzO93FkeNYNyskmK+FT7saQRao6VBNQJEIWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=RvQCXIFNzJC7GgurxOBVJ1t1ivqsQeHZqYmMW+fnEtJwIr26YmnINRb0UngzIr4scKlOitddnUhjosZN9RfAmKqBmLTHRfjn0RXPlydXQy860CZ6U9Aux5oaKsteCWfijU8Eq0ZtCb89/F72dzPDSCZiN3W5tOGoRL1NtDPq6/M=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cg3kSekb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C819CC116D0;
-	Thu, 15 Jan 2026 17:37:58 +0000 (UTC)
+	 MIME-Version; b=F3LBgw1V9P1enbXA1GS4uh0KONvxElyGX26cgrU3D55M62Igmw+cKGPRmeyOnrqszVy77a1vWw/x0p81QgvWAoJ0inesT0O7RqwcJBuiR1438F5v/RPRLL4RlIt1AA3E8S4RvDjIFLM5AflFXF8CUZ9zxHkEYZ55uiSBn5t0Kvg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=i0FUVJUv; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBAD0C16AAE;
+	Thu, 15 Jan 2026 17:59:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498679;
-	bh=sq4HR/ueQtnmOnLD9y71Aye8EoFWDdcfgoUv6b3ISz0=;
+	s=korg; t=1768499972;
+	bh=Ys6f8NEPzO93FkeNYNyskmK+FT7saQRao6VBNQJEIWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cg3kSekblsobJKhH79eIKSsLITuBrx77jwpWmBSBRsgc4xsx/Zz7xVCRGGXENLRb+
-	 EJmLkxrZH9O3CrzKJmciTpPZV/j/1XsxupT717r0/z+bVw0ddnPIB1syW7s+SQkYhq
-	 BX993OE3LX4G4prUD61hCyJf1sBHsuBEmwaP/s9Y=
+	b=i0FUVJUvvWNRNiQZ5VE8UaXLKUV5pDA+P+Cp8QcVHE/IqeBILb/J8rK6nNSXKHieT
+	 ye5FhyJsaLzwwCTpmE2pdeCi68aX52764taALWU6hX2w4CQmOMJvRkpYDqJP0D2i8z
+	 a9dHZc4QPm38kXmeve+Q6xL6MQKm8Py3KaMDeGKg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Yang Li <yang.li85200@gmail.com>,
-	Guo Ren <guoren@kernel.org>,
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 516/554] csky: fix csky_cmpxchg_fixup not working
+Subject: [PATCH 5.10 381/451] ASoC: stm32: sai: Use the devm_clk_get_optional() helper
 Date: Thu, 15 Jan 2026 17:49:42 +0100
-Message-ID: <20260115164305.005043503@linuxfoundation.org>
+Message-ID: <20260115164244.704972557@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.li85200@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 809ef03d6d21d5fea016bbf6babeec462e37e68c ]
+[ Upstream commit 374628fb668e50b42fe81f2a63af616182415bcd ]
 
-In the csky_cmpxchg_fixup function, it is incorrect to use the global
-variable csky_cmpxchg_stw to determine the address where the exception
-occurred.The global variable csky_cmpxchg_stw stores the opcode at the
-time of the exception, while &csky_cmpxchg_stw shows the address where
-the exception occurred.
+Use devm_clk_get_optional() instead of hand writing it.
+This saves some LoC and improves the semantic.
 
-Signed-off-by: Yang Li <yang.li85200@gmail.com>
-Signed-off-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/f7987f18dadf77bfa09969fd4c82d5a0f4e4e3b7.1684594838.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 312ec2f0d9d1 ("ASoC: stm32: sai: fix clk prepare imbalance on probe failure")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/csky/mm/fault.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
-diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
-index 7215a46b6b8eb..98699fdeeeb54 100644
---- a/arch/csky/mm/fault.c
-+++ b/arch/csky/mm/fault.c
-@@ -45,8 +45,8 @@ static inline void csky_cmpxchg_fixup(struct pt_regs *regs)
- 	if (trap_no(regs) != VEC_TLBMODIFIED)
- 		return;
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1487,12 +1487,9 @@ static int stm32_sai_sub_parse_of(struct
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		sai->sai_mclk = devm_clk_get(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk)) {
+-			if (PTR_ERR(sai->sai_mclk) != -ENOENT)
+-				return PTR_ERR(sai->sai_mclk);
+-			sai->sai_mclk = NULL;
+-		}
++		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
++		if (IS_ERR(sai->sai_mclk))
++			return PTR_ERR(sai->sai_mclk);
+ 	}
  
--	if (instruction_pointer(regs) == csky_cmpxchg_stw)
--		instruction_pointer_set(regs, csky_cmpxchg_ldw);
-+	if (instruction_pointer(regs) == (unsigned long)&csky_cmpxchg_stw)
-+		instruction_pointer_set(regs, (unsigned long)&csky_cmpxchg_ldw);
- 	return;
- }
- #endif
--- 
-2.51.0
-
+ 	return 0;
 
 
 
