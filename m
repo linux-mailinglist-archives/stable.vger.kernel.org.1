@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208807-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208753-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 8E2EFD266E5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:10 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6F6D8D26342
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:15:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 18E6930FCC34
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:19 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0AEE631B28E1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:15 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id AE6972C11EF;
-	Thu, 15 Jan 2026 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E9BE13BC4D7;
+	Thu, 15 Jan 2026 17:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Md2Wjae1"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="eveA7Ani"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 71CAF1A08AF;
-	Thu, 15 Jan 2026 17:08:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ABDA43BFE4C;
+	Thu, 15 Jan 2026 17:05:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496898; cv=none; b=WtZGtKwofr0DIQBPPlrVJbHrs8nmVmHtTdGBXijKQHb4ztWSuEa65PvhqT62S2zJoTyA5tQlUhctwyc22ZcIkmEyntMdSTpHUg4E8vT7Qz2JdC0Z+CxYUD7ehMsh0fe5XuMSX104DhU+KYlOh5I3C0NLKUj7Q/hLevpoKsSfXP4=
+	t=1768496745; cv=none; b=GgsNWCj5BHLXOQAwsrIVXDlMOoC+D7F1E1mMlm3bKTdWc4D6ktQDyWs0W4Npnwuv8epNcmABnCCNG9xJLpXbYVwwa/V8W52HKmQBp15V1XLzSu9pM4y+xyohlqGznfAxjVo6yMgOZ3O++aEq8eAWTtmmPNayRirKSRXEFodlNoU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496898; c=relaxed/simple;
-	bh=vZNeysPrIPImpM+tZ0mSZAftcqyHKJH4B95PTLl+B3k=;
+	s=arc-20240116; t=1768496745; c=relaxed/simple;
+	bh=q06xSbu4z/YZ1c4vTx5tuXW3ZCrAr5mxB6LFNOuU03I=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rGy6zx+lcFOVbptOa1KX9A13iaAqQzYJehmCQFT7FTj+/GCHjqpxP6gqTF10s9/uK3GCDGziDHS5y4ByJ5am2DOdiMrMhix75IZr5Vz6qEAyfPgQKqKZ4Ff2cL/SFVPwWymL6L+wML53zDiGT/scW9hPk9U97u27h9VXbLESdxM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Md2Wjae1; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2FBBC116D0;
-	Thu, 15 Jan 2026 17:08:17 +0000 (UTC)
+	 MIME-Version; b=p6FnaRU81tkV6ciXwjfxnRVYrKkvJsZTarRmc5qKzsBDKZjUDlFTAefEMpZVJWbyzxRzUMnEZZ2ehlZohXRM02S5HN0iLEQWbbyYLTukmxcMZDikzHrzN6NZfnCJe0cEA36emOnEn+ZDBZvuHr6FD8z9AZOl1xpdnswuMjWLvfY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=eveA7Ani; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E780C16AAE;
+	Thu, 15 Jan 2026 17:05:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496898;
-	bh=vZNeysPrIPImpM+tZ0mSZAftcqyHKJH4B95PTLl+B3k=;
+	s=korg; t=1768496745;
+	bh=q06xSbu4z/YZ1c4vTx5tuXW3ZCrAr5mxB6LFNOuU03I=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Md2Wjae1Dy9dGhyaBXuRxO7BxN/jh0floYPlUI2xJK1VfeZon5S4vfzDB0Je435Ay
-	 xUy1m6kUNN+mTDSLO0A66rHcCuND7zWbsLkmHSWV1dXKD2m+bTUcEDCAvSouIqBJAU
-	 zWUtYAmWA7ZqAK8vshPExR+9i7hK9KNdqNVp9Tdw=
+	b=eveA7AniN62FZmrkLvka715j7O+23OuMjCiJt1PHRNvbNyhH25hqgiqEceqCLYBZ3
+	 1C+O3i5t77y+UIleiDKQiOIMVG/NDwrpIY8v9mGc4JjK063ozouHPcvQSqKOIVvBRW
+	 wiuivtZ2nW4SyAL8TGZh9DxfGCFztp9nDDSspu14=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Di Zhu <zhud@hygon.cn>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Sumeet Pawnikar <sumeet4linux@gmail.com>,
+	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 55/88] netdev: preserve NETIF_F_ALL_FOR_ALL across TSO updates
+Subject: [PATCH 6.12 103/119] powercap: fix race condition in register_control_type()
 Date: Thu, 15 Jan 2026 17:48:38 +0100
-Message-ID: <20260115164148.305227534@linuxfoundation.org>
+Message-ID: <20260115164155.670364092@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,45 +60,67 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Di Zhu <zhud@hygon.cn>
+From: Sumeet Pawnikar <sumeet4linux@gmail.com>
 
-[ Upstream commit 02d1e1a3f9239cdb3ecf2c6d365fb959d1bf39df ]
+[ Upstream commit 7bda1910c4bccd4b8d4726620bb3d6bbfb62286e ]
 
-Directly increment the TSO features incurs a side effect: it will also
-directly clear the flags in NETIF_F_ALL_FOR_ALL on the master device,
-which can cause issues such as the inability to enable the nocache copy
-feature on the bonding driver.
+The device becomes visible to userspace via device_register()
+even before it fully initialized by idr_init(). If userspace
+or another thread tries to register a zone immediately after
+device_register(), the control_type_valid() will fail because
+the control_type is not yet in the list. The IDR is not yet
+initialized, so this race condition causes zone registration
+failure.
 
-The fix is to include NETIF_F_ALL_FOR_ALL in the update mask, thereby
-preventing it from being cleared.
+Move idr_init() and list addition before device_register()
+fix the race condition.
 
-Fixes: b0ce3508b25e ("bonding: allow TSO being set on bonding master")
-Signed-off-by: Di Zhu <zhud@hygon.cn>
-Link: https://patch.msgid.link/20251224012224.56185-1-zhud@hygon.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sumeet Pawnikar <sumeet4linux@gmail.com>
+[ rjw: Subject adjustment, empty line added ]
+Link: https://patch.msgid.link/20251205190216.5032-1-sumeet4linux@gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/netdevice.h | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/powercap/powercap_sys.c | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
 
-diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
-index 030d9de2ba2d2..202e557496fb4 100644
---- a/include/linux/netdevice.h
-+++ b/include/linux/netdevice.h
-@@ -4998,7 +4998,8 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
- static inline netdev_features_t netdev_add_tso_features(netdev_features_t features,
- 							netdev_features_t mask)
- {
--	return netdev_increment_features(features, NETIF_F_ALL_TSO, mask);
-+	return netdev_increment_features(features, NETIF_F_ALL_TSO |
-+					 NETIF_F_ALL_FOR_ALL, mask);
- }
+diff --git a/drivers/powercap/powercap_sys.c b/drivers/powercap/powercap_sys.c
+index 4112a00973382..d14b36b75189d 100644
+--- a/drivers/powercap/powercap_sys.c
++++ b/drivers/powercap/powercap_sys.c
+@@ -625,17 +625,23 @@ struct powercap_control_type *powercap_register_control_type(
+ 	INIT_LIST_HEAD(&control_type->node);
+ 	control_type->dev.class = &powercap_class;
+ 	dev_set_name(&control_type->dev, "%s", name);
+-	result = device_register(&control_type->dev);
+-	if (result) {
+-		put_device(&control_type->dev);
+-		return ERR_PTR(result);
+-	}
+ 	idr_init(&control_type->idr);
  
- int __netdev_update_features(struct net_device *dev);
+ 	mutex_lock(&powercap_cntrl_list_lock);
+ 	list_add_tail(&control_type->node, &powercap_cntrl_list);
+ 	mutex_unlock(&powercap_cntrl_list_lock);
+ 
++	result = device_register(&control_type->dev);
++	if (result) {
++		mutex_lock(&powercap_cntrl_list_lock);
++		list_del(&control_type->node);
++		mutex_unlock(&powercap_cntrl_list_lock);
++
++		idr_destroy(&control_type->idr);
++		put_device(&control_type->dev);
++		return ERR_PTR(result);
++	}
++
+ 	return control_type;
+ }
+ EXPORT_SYMBOL_GPL(powercap_register_control_type);
 -- 
 2.51.0
 
