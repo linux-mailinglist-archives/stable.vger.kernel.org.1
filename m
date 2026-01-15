@@ -1,55 +1,56 @@
-Return-Path: <stable+bounces-208676-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208571-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0ECC5D260B0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:31 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id F0D65D25F5E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:58:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id C388F3047416
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:10 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9D2B7301A807
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:57:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 25A9739B4BF;
-	Thu, 15 Jan 2026 17:02:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E0F8D396B75;
+	Thu, 15 Jan 2026 16:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XbS3A6Q0"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rrVLXLyc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C6491350A05;
-	Thu, 15 Jan 2026 17:02:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A44702FDC4D;
+	Thu, 15 Jan 2026 16:57:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496529; cv=none; b=ohdLnzxN52FWQACvmgP/K7G8jv98+MZ89H7cUmBYpiflj/lWWWBs9as7QH/IAOqybvrN/r3NdoDOVN07jpv5bng6a2QqaDztd4tEHEczKtCDqtEM5ITHSyT3a+s2YnQzVVHBOJ6YZpvZ55KunvcpbPZmC5KgliGt8ddigU+f8LM=
+	t=1768496228; cv=none; b=upyurRdxMbZ576Gr+/E6WAt9dOIcWeevN8uiYINTonmLclDGXyCSC7w9A0FjO+hjR5OKl30KxSFq5kfn2Gt1Zwqk/HTdg1qEfvydx1jLTTMA/uDA9OR7bsW+3lb/haOaMfMtHwdj6k/iiNPOB5m8yqSR1j5b/tD2sLrbNysws5U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496529; c=relaxed/simple;
-	bh=IO+JoswLJY9KxPg7y4nZA1EsTTdsJguP4HLMJ/ULNHY=;
+	s=arc-20240116; t=1768496228; c=relaxed/simple;
+	bh=rWnMXHc6mXTxJhzg/pxuCTpfOikyqxka4/5MhuSsXFg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=TF2O/Ep6xIFrfipLQpmJV4PAy4/JIjRImjnuA9rk1KClIe9nQJnC2hpXn8Gcb/Pi//BIfC6YxmkbDWjyq13ofoBtTQLuqt7IinD2iZxtUkua6jBAfc2eyVInsV1U9aIMMruiYvBqRnX+Jg0Rqod5EvbadjmCVuaU+eaJQ1P8zdw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XbS3A6Q0; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53F92C116D0;
-	Thu, 15 Jan 2026 17:02:09 +0000 (UTC)
+	 MIME-Version; b=EAHdWuIvXJA+mtqu2NdkXIosbxIoemScGq9u0t2B78di6UvytO/O+UppUwKxCm0188zEBwBSNkIaK8plKSWljA9YvsHGZwY1BRfzkf6Jwe6xkHJJD1UTmolaFGEsOUYt0VZTGUBbn5ryafT0y3NoNGgZXQC9FiN0iIWjpT5ditk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rrVLXLyc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324E4C116D0;
+	Thu, 15 Jan 2026 16:57:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496529;
-	bh=IO+JoswLJY9KxPg7y4nZA1EsTTdsJguP4HLMJ/ULNHY=;
+	s=korg; t=1768496228;
+	bh=rWnMXHc6mXTxJhzg/pxuCTpfOikyqxka4/5MhuSsXFg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=XbS3A6Q0kMfYUHuvthdL3246xNNroU/SII5X4f4wJ9hf6ZXHwVLIqfTi7b4URuZXl
-	 K3SPWKOwk/9L4vc0rac+jgyVVFSnLts8crFqicyZHfl6JY6d+1i4x7wjhnfI6v46fr
-	 Ihbwq/bInemGx49SY5SEskkVzS9oParj5B38uK74=
+	b=rrVLXLyczglfUU7WppmsmHc+8a/Gkb+RRrXsvMUs+GpR+FQ7eYeVi1RghwPsT/8aB
+	 79BEkEOG56ENTvkusceVE960r/UB4CXJtLZ5neUMVUeKueaeAgUmiE53lG4qkhjRyy
+	 oYIYGFJ4AZgZZaB2Au5g7MVfYUf00wwnyQpbq+CM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Qu Wenruo <wqu@suse.com>,
-	Boris Burkov <boris@bur.io>,
-	David Sterba <dsterba@suse.com>,
+	Emil Tantilov <emil.s.tantilov@intel.com>,
+	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+	Samuel Salin <Samuel.salin@intel.com>,
+	Tony Nguyen <anthony.l.nguyen@intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 045/119] btrfs: fix qgroup_snapshot_quick_inherit() squota bug
+Subject: [PATCH 6.18 123/181] idpf: keep the netdev when a reset fails
 Date: Thu, 15 Jan 2026 17:47:40 +0100
-Message-ID: <20260115164153.586251319@linuxfoundation.org>
+Message-ID: <20260115164206.754310544@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,110 +62,109 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Burkov <boris@bur.io>
+From: Emil Tantilov <emil.s.tantilov@intel.com>
 
-[ Upstream commit 7ee19a59a75e3d5b9ec00499b86af8e2a46fbe86 ]
+[ Upstream commit 083029bd8b445595222a3cd14076b880781c1765 ]
 
-qgroup_snapshot_quick_inherit() detects conditions where the snapshot
-destination would land in the same parent qgroup as the snapshot source
-subvolume. In this case we can avoid costly qgroup calculations and just
-add the nodesize of the new snapshot to the parent.
+During a successful reset the driver would re-allocate vport resources
+while keeping the netdevs intact. However, in case of an error in the
+init task, the netdev of the failing vport will be unregistered,
+effectively removing the network interface:
 
-However, in the case of squotas this is actually a double count, and
-also an undercount for deeper qgroup nestings.
+[  121.211076] idpf 0000:83:00.0: enabling device (0100 -> 0102)
+[  121.221976] idpf 0000:83:00.0: Device HW Reset initiated
+[  124.161229] idpf 0000:83:00.0 ens801f0: renamed from eth0
+[  124.163364] idpf 0000:83:00.0 ens801f0d1: renamed from eth1
+[  125.934656] idpf 0000:83:00.0 ens801f0d2: renamed from eth2
+[  128.218429] idpf 0000:83:00.0 ens801f0d3: renamed from eth3
 
-The following annotated script shows the issue:
+ip -br a
+ens801f0         UP
+ens801f0d1       UP
+ens801f0d2       UP
+ens801f0d3       UP
+echo 1 > /sys/class/net/ens801f0/device/reset
 
-  btrfs quota enable --simple "$mnt"
+[  145.885537] idpf 0000:83:00.0: resetting
+[  145.990280] idpf 0000:83:00.0: reset done
+[  146.284766] idpf 0000:83:00.0: HW reset detected
+[  146.296610] idpf 0000:83:00.0: Device HW Reset initiated
+[  211.556719] idpf 0000:83:00.0: Transaction timed-out (op:526 cookie:7700 vc_op:526 salt:77 timeout:60000ms)
+[  272.996705] idpf 0000:83:00.0: Transaction timed-out (op:502 cookie:7800 vc_op:502 salt:78 timeout:60000ms)
 
-  # Create 2-level qgroup hierarchy
-  btrfs qgroup create 2/100 "$mnt"  # Q2 (level 2)
-  btrfs qgroup create 1/100 "$mnt"  # Q1 (level 1)
-  btrfs qgroup assign 1/100 2/100 "$mnt"
+ip -br a
+ens801f0d1       DOWN
+ens801f0d2       DOWN
+ens801f0d3       DOWN
 
-  # Create base subvolume
-  btrfs subvolume create "$mnt/base" >/dev/null
-  base_id=$(btrfs subvolume show "$mnt/base" | grep 'Subvolume ID:' | awk '{print $3}')
+Re-shuffle the logic in the error path of the init task to make sure the
+netdevs remain intact. This will allow the driver to attempt recovery via
+subsequent resets, provided the FW is still functional.
 
-  # Create intermediate snapshot and add to Q1
-  btrfs subvolume snapshot "$mnt/base" "$mnt/intermediate" >/dev/null
-  inter_id=$(btrfs subvolume show "$mnt/intermediate" | grep 'Subvolume ID:' | awk '{print $3}')
-  btrfs qgroup assign "0/$inter_id" 1/100 "$mnt"
+The main change is to make sure that idpf_decfg_netdev() is not called
+should the init task fail during a reset. The error handling is
+consolidated under unwind_vports, as the removed labels had the same
+cleanup logic split depending on the point of failure.
 
-  # Create working snapshot with --inherit (auto-adds to Q1)
-  # src=intermediate (in only Q1)
-  # dst=snap (inheriting only into Q1)
-  # This double counts the 16k nodesize of the snapshot in Q1, and
-  # undercounts it in Q2.
-  btrfs subvolume snapshot -i 1/100 "$mnt/intermediate" "$mnt/snap" >/dev/null
-  snap_id=$(btrfs subvolume show "$mnt/snap" | grep 'Subvolume ID:' | awk '{print $3}')
-
-  # Fully complete snapshot creation
-  sync
-
-  # Delete working snapshot
-  # Q1 and Q2 will lose the full snap usage
-  btrfs subvolume delete "$mnt/snap" >/dev/null
-
-  # Delete intermediate and remove from Q1
-  # Q1 and Q2 will lose the full intermediate usage
-  btrfs qgroup remove "0/$inter_id" 1/100 "$mnt"
-  btrfs subvolume delete "$mnt/intermediate" >/dev/null
-
-  # Q1 should be at 0, but still has 16k. Q2 is "correct" at 0 (for now...)
-
-  # Trigger cleaner, wait for deletions
-  mount -o remount,sync=1 "$mnt"
-  btrfs subvolume sync "$mnt" "$snap_id"
-  btrfs subvolume sync "$mnt" "$inter_id"
-
-  # Remove Q1 from Q2
-  # Frees 16k more from Q2, underflowing it to 16EiB
-  btrfs qgroup remove 1/100 2/100 "$mnt"
-
-  # And show the bad state:
-  btrfs qgroup show -pc "$mnt"
-
-        Qgroupid    Referenced    Exclusive Parent   Child   Path
-        --------    ----------    --------- ------   -----   ----
-        0/5           16.00KiB     16.00KiB -        -       <toplevel>
-        0/256         16.00KiB     16.00KiB -        -       base
-        1/100         16.00KiB     16.00KiB -        -       <0 member qgroups>
-        2/100         16.00EiB     16.00EiB -        -       <0 member qgroups>
-
-Fix this by simply not doing this quick inheritance with squotas.
-
-I suspect that it is also wrong in normal qgroups to not recurse up the
-qgroup tree in the quick inherit case, though other consistency checks
-will likely fix it anyway.
-
-Fixes: b20fe56cd285 ("btrfs: qgroup: allow quick inherit if snapshot is created and added to the same parent")
-Reviewed-by: Qu Wenruo <wqu@suse.com>
-Signed-off-by: Boris Burkov <boris@bur.io>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Fixes: ce1b75d0635c ("idpf: add ptypes and MAC filter support")
+Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
+Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Tested-by: Samuel Salin <Samuel.salin@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/qgroup.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/ethernet/intel/idpf/idpf_lib.c | 17 ++++++-----------
+ 1 file changed, 6 insertions(+), 11 deletions(-)
 
-diff --git a/fs/btrfs/qgroup.c b/fs/btrfs/qgroup.c
-index 3c77f3506faf3..f23b482dfad9e 100644
---- a/fs/btrfs/qgroup.c
-+++ b/fs/btrfs/qgroup.c
-@@ -3298,6 +3298,9 @@ static int qgroup_snapshot_quick_inherit(struct btrfs_fs_info *fs_info,
- 	struct btrfs_qgroup_list *list;
- 	int nr_parents = 0;
+diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+index aaafe40f5eaf7..452f3107378cb 100644
+--- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
++++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
+@@ -1579,6 +1579,10 @@ void idpf_init_task(struct work_struct *work)
+ 		goto unwind_vports;
+ 	}
  
-+	if (btrfs_qgroup_mode(fs_info) != BTRFS_QGROUP_MODE_FULL)
-+		return 0;
++	err = idpf_send_get_rx_ptype_msg(vport);
++	if (err)
++		goto unwind_vports;
 +
- 	src = find_qgroup_rb(fs_info, srcid);
- 	if (!src)
- 		return -ENOENT;
+ 	index = vport->idx;
+ 	vport_config = adapter->vport_config[index];
+ 
+@@ -1590,15 +1594,11 @@ void idpf_init_task(struct work_struct *work)
+ 	err = idpf_check_supported_desc_ids(vport);
+ 	if (err) {
+ 		dev_err(&pdev->dev, "failed to get required descriptor ids\n");
+-		goto cfg_netdev_err;
++		goto unwind_vports;
+ 	}
+ 
+ 	if (idpf_cfg_netdev(vport))
+-		goto cfg_netdev_err;
+-
+-	err = idpf_send_get_rx_ptype_msg(vport);
+-	if (err)
+-		goto handle_err;
++		goto unwind_vports;
+ 
+ 	/* Once state is put into DOWN, driver is ready for dev_open */
+ 	np = netdev_priv(vport->netdev);
+@@ -1645,11 +1645,6 @@ void idpf_init_task(struct work_struct *work)
+ 
+ 	return;
+ 
+-handle_err:
+-	idpf_decfg_netdev(vport);
+-cfg_netdev_err:
+-	idpf_vport_rel(vport);
+-	adapter->vports[index] = NULL;
+ unwind_vports:
+ 	if (default_vport) {
+ 		for (index = 0; index < adapter->max_vports; index++) {
 -- 
 2.51.0
 
