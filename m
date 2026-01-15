@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209162-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209539-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id CF928D269A7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:40:33 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 064DED277D7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:27:33 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D182730BBFB4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:42 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 0C2F631CACA1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:08 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E4733BC4D8;
-	Thu, 15 Jan 2026 17:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D3932D663D;
+	Thu, 15 Jan 2026 17:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="cV8HRUG4"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pbmQgNa+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 512D53A1E86;
-	Thu, 15 Jan 2026 17:25:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE15E555;
+	Thu, 15 Jan 2026 17:43:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497910; cv=none; b=polOZOKoJAqeCgzmLk0wc+GcgCUAhEpKRRO/9lpmWm6v38F4hSHvDdyyuIlXjhPhxf3CEXIxJKab1ORPjroDne7VL8wsgEwBjrYEtzBcflzNBf/7K09OtG7Ol210WRm7pEo2sR9hYUiv0EW+BDsugZoIUNb6n2RVjXPS8mK81lE=
+	t=1768498984; cv=none; b=RecZToII3R3qZV9Gljo/OwvhUcFBGuZs0dpv9BZ1hvQziWfDL4A1Ox9Bt45yy3AScWTzOmiJEHp26rjy1fLBt7qFxjQB4bp+xN/tAuNdeUT7cqASa/HGLlZQ0X8cOlr+mzmxCj1GBIa34kKnZ19q324A4YZxw37G4OqmKyiPKrU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497910; c=relaxed/simple;
-	bh=9a0mnm6/ZJ2boU2ckJhbeiw5cZ/rgah2fqEjKCWvDUg=;
+	s=arc-20240116; t=1768498984; c=relaxed/simple;
+	bh=JX1tmltUU/Ewean0fBovDGpBt+iOHBhdfbCURMK44rs=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=JslMkf+Gzd8pQWRkpLTDO/ehP9u7fBqUVHz39cN/GIdgHsm2hgrYlDq3AUofsDOPDbG5A089JxpU77rtInnIZEpI1lcZU791R3IBMpm3v0CNpwjpqrxiE6b/twqZzV34DmyOjl7CcLLZju9jVG5Db3BWTiDhs4RXc2XS6F+6sWs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=cV8HRUG4; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C26C116D0;
-	Thu, 15 Jan 2026 17:25:09 +0000 (UTC)
+	 MIME-Version; b=sA0C/TkiA4rFOBaCvNirdz3eGRCngcPk3ZfclWaA1ZETtuWFMKxH0mZIBBQ3RCztDJpQuiuqTTAqywjI4WCbCv1+FJicz7nUifOS3L7FSs1cvR4Wfeo3E52SCcdH7RmlNx7O19LKtQuBOC/l3CcTFwT6STqJP6vEn+2KNKpcpU0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pbmQgNa+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8006C116D0;
+	Thu, 15 Jan 2026 17:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497910;
-	bh=9a0mnm6/ZJ2boU2ckJhbeiw5cZ/rgah2fqEjKCWvDUg=;
+	s=korg; t=1768498984;
+	bh=JX1tmltUU/Ewean0fBovDGpBt+iOHBhdfbCURMK44rs=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=cV8HRUG4e+ZcFRgTLGSyZLTr/wF1e8XE99TsZg96fZI12y2N/+vie5oxXhM7PG0Az
-	 Ax29m2PfosQj+jxoIKY3DdJ0FeGOdlVSB41ZbHdbSzY3FJ851dPe9TNzxEo1Y6YQ4n
-	 aR45KC3UeFKOt5xHswMZY1uHJy6Z8IJTktUDaUVs=
+	b=pbmQgNa+p27w/sd9sU2S5Dzlrf4AO+20E3EXFmPG7fF1PxAyOGGudcXGtVHd/jqyR
+	 kjvtuUfVxnzzWWhSOeOgm630jZfEcd5+0Hxi0N0RyN5SSws/pmFLDeHjAqDR8T/63k
+	 37y1XZ/ukR3kKclHFBMm7wzjSINFER3+vrrNZyPM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicklas Bo Jensen <njensen@akamai.com>,
-	Florian Westphal <fw@strlen.de>,
-	Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 5.15 203/554] netfilter: nf_conncount: garbage collection is not skipped when jiffies wrap around
+	Zheng Qixing <zhengqixing@huawei.com>,
+	Yu Kuai <yukuai@fnnas.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 068/451] nbd: defer config unlock in nbd_genl_connect
 Date: Thu, 15 Jan 2026 17:44:29 +0100
-Message-ID: <20260115164253.603634806@linuxfoundation.org>
+Message-ID: <20260115164233.362608555@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +61,77 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicklas Bo Jensen <njensen@akamai.com>
+From: Zheng Qixing <zhengqixing@huawei.com>
 
-commit df08c94baafb001de6cf44bb7098bb557f36c335 upstream.
+[ Upstream commit 1649714b930f9ea6233ce0810ba885999da3b5d4 ]
 
-nf_conncount is supposed to skip garbage collection if it has already
-run garbage collection in the same jiffy. Unfortunately, this is broken
-when jiffies wrap around which this patch fixes.
+There is one use-after-free warning when running NBD_CMD_CONNECT and
+NBD_CLEAR_SOCK:
 
-The problem is that last_gc in the nf_conncount_list struct is an u32,
-but jiffies is an unsigned long which is 8 bytes on my systems. When
-those two are compared it only works until last_gc wraps around.
+nbd_genl_connect
+  nbd_alloc_and_init_config // config_refs=1
+  nbd_start_device // config_refs=2
+  set NBD_RT_HAS_CONFIG_REF			open nbd // config_refs=3
+  recv_work done // config_refs=2
+						NBD_CLEAR_SOCK // config_refs=1
+						close nbd // config_refs=0
+  refcount_inc -> uaf
 
-See bug report: https://bugzilla.netfilter.org/show_bug.cgi?id=1778
-for more details.
+------------[ cut here ]------------
+refcount_t: addition on 0; use-after-free.
+WARNING: CPU: 24 PID: 1014 at lib/refcount.c:25 refcount_warn_saturate+0x12e/0x290
+ nbd_genl_connect+0x16d0/0x1ab0
+ genl_family_rcv_msg_doit+0x1f3/0x310
+ genl_rcv_msg+0x44a/0x790
 
-Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
-Signed-off-by: Nicklas Bo Jensen <njensen@akamai.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The issue can be easily reproduced by adding a small delay before
+refcount_inc(&nbd->config_refs) in nbd_genl_connect():
+
+        mutex_unlock(&nbd->config_lock);
+        if (!ret) {
+                set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
++               printk("before sleep\n");
++               mdelay(5 * 1000);
++               printk("after sleep\n");
+                refcount_inc(&nbd->config_refs);
+                nbd_connect_reply(info, nbd->index);
+        }
+
+Fixes: e46c7287b1c2 ("nbd: add a basic netlink interface")
+Signed-off-by: Zheng Qixing <zhengqixing@huawei.com>
+Reviewed-by: Yu Kuai <yukuai@fnnas.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_conncount.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/block/nbd.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/nf_conncount.c
-+++ b/net/netfilter/nf_conncount.c
-@@ -182,7 +182,7 @@ static int __nf_conncount_add(struct net
- 		return -EEXIST;
+diff --git a/drivers/block/nbd.c b/drivers/block/nbd.c
+index faa3f6c52f5f9..649a1e8812652 100644
+--- a/drivers/block/nbd.c
++++ b/drivers/block/nbd.c
+@@ -2052,12 +2052,13 @@ static int nbd_genl_connect(struct sk_buff *skb, struct genl_info *info)
  	}
- 
--	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
-+	if ((u32)jiffies == list->last_gc)
- 		goto add_new_node;
- 
- 	/* check the saved connections */
-@@ -288,7 +288,7 @@ bool nf_conncount_gc_list(struct net *ne
- 	bool ret = false;
- 
- 	/* don't bother if we just did GC */
--	if (time_is_after_eq_jiffies((unsigned long)READ_ONCE(list->last_gc)))
-+	if ((u32)jiffies == READ_ONCE(list->last_gc))
- 		return false;
- 
- 	/* don't bother if other cpu is already doing GC */
+ 	ret = nbd_start_device(nbd);
+ out:
+-	mutex_unlock(&nbd->config_lock);
+ 	if (!ret) {
+ 		set_bit(NBD_RT_HAS_CONFIG_REF, &config->runtime_flags);
+ 		refcount_inc(&nbd->config_refs);
+ 		nbd_connect_reply(info, nbd->index);
+ 	}
++	mutex_unlock(&nbd->config_lock);
++
+ 	nbd_config_put(nbd);
+ 	if (put_dev)
+ 		nbd_put(nbd);
+-- 
+2.51.0
+
 
 
 
