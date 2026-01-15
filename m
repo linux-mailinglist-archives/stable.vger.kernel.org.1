@@ -1,51 +1,51 @@
-Return-Path: <stable+bounces-209016-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208984-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 5D76FD26404
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:40 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 76850D266CC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:30:49 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3EE7A30123D6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:18:16 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 1D9F7302E60F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:09 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 088B22C08AC;
-	Thu, 15 Jan 2026 17:18:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EA6393A1E86;
+	Thu, 15 Jan 2026 17:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZLn31zPE"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tShNr9qL"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C0858258EC2;
-	Thu, 15 Jan 2026 17:18:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id ADDAE2874E6;
+	Thu, 15 Jan 2026 17:16:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497495; cv=none; b=T1VEloK89KEXGXMX2zowR0h4Dbt/OxMwZCGN/Z/Qa4plootjHjlYihcZWeSvsqpMcx7ZuSvRLjz0l+GkqSmSy5KbxdPs7pzOhJRwcQoLOVGki0kJ94DUdqI3EuRdZlFOiRMPFsky+1BAHI+CpQYgI9XromqBeatNK7ocIBNIBL8=
+	t=1768497404; cv=none; b=BrXBoorfprGJlrHaor7XHDw8IAR9aeWiQW5uxlJ1gm6P6XOA68gYhK2+oAt8VIjpClmuqYJFGEPpyysIvQ4oTPWj02W6wdhoEQAJuILZcXBmLQv7RBGSEvoPIFy5UYECfUG6xyRQFKv8JZvyNZ0+MDXW5oBKv5uzPN0MTYjgkf8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497495; c=relaxed/simple;
-	bh=GFaI0YiauHOrvpDtgcl7kc4jc1/lv4gs5dHaoQ2Iq8Q=;
+	s=arc-20240116; t=1768497404; c=relaxed/simple;
+	bh=ebyuVoe1cT2BoKMDRme6FllSTjXTu5ZvUelyKEx2r4s=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=GGBhW+D36WYnpQwIY3CgesGZexwHPF0BNNVdYxHxc0OzYbsU0pCxRu19jH6T52pmQA/MThnpCfyZN12ovySZEowrLvRH/8VWKmkJX9WMqJEP0sIUE+/4E7tumxI1MBX7yBJOagd263cfw8SEctCIx++gl689569//t8cdn01+TI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZLn31zPE; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1123CC116D0;
-	Thu, 15 Jan 2026 17:18:14 +0000 (UTC)
+	 MIME-Version; b=bz/Db6dNOC9rD1gzPS/3kCPgGPDnrAqyP9A8J9oo4nqWNMMGeZVof0mAviHf5z554d2FHg4Svcwo5VllqM+h+u6g8l4RXhLpHXASZ3SSQ/IK5YYDuLGqgkGjkj8dzvTHS7AXfbBKiVszNJ3If1WtdrZ3LBeEDVAg/5e+Vy3abN8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tShNr9qL; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 364CFC16AAE;
+	Thu, 15 Jan 2026 17:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497495;
-	bh=GFaI0YiauHOrvpDtgcl7kc4jc1/lv4gs5dHaoQ2Iq8Q=;
+	s=korg; t=1768497404;
+	bh=ebyuVoe1cT2BoKMDRme6FllSTjXTu5ZvUelyKEx2r4s=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ZLn31zPEYV0BRrqUsjEraEDvQuH2rfe8Kb1IpW+SIg1j0Jtp5irSCxP8SsLaKlcAx
-	 eLhflUEHfC6PrfsgTcY7doxBZWPTQONOQb2E5Fs7X2JVrF36CC7N//4IxX8n8Umw6J
-	 fmNpPefdqNpJZc5YE2+g/oHLXcUtls1bRbGCAM0A=
+	b=tShNr9qLhlS/uBIQ0wQlIdAr0E1ZM71BsUpAOu3OI4uiqpHSZX1ebciF/BZGFwH+q
+	 n66d2bE3VcqL3F/MKUqO2A1bZBvuS7v6clcupN3/+hLds736NZa+A6cJInrMfa+JKW
+	 VOEXDreFao/JpE11/JzS5XbaEYxBoT9Ulx1IPxBc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= <nabijaczleweli@nabijaczleweli.xyz>,
-	Sebastian Reichel <sebastian.reichel@collabora.com>,
+	Bart Van Assche <bvanassche@acm.org>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 069/554] power: supply: apm_power: only unset own apm_get_power_status
-Date: Thu, 15 Jan 2026 17:42:15 +0100
-Message-ID: <20260115164248.740286096@linuxfoundation.org>
+Subject: [PATCH 5.15 070/554] scsi: target: Do not write NUL characters into ASCII configfs output
+Date: Thu, 15 Jan 2026 17:42:16 +0100
+Message-ID: <20260115164248.776572340@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -58,44 +58,40 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
 5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+From: Bart Van Assche <bvanassche@acm.org>
 
-[ Upstream commit bd44ea12919ac4e83c9f3997240fe58266aa8799 ]
+[ Upstream commit c03b55f235e283cae49c88b9602fd11096b92eba ]
 
-Mirroring drivers/macintosh/apm_emu.c, this means that
-  modprobe apm_power && modprobe $anotherdriver && modprobe -r apm_power
-leaves $anotherdriver's apm_get_power_status instead of deleting it.
+NUL characters are not allowed in ASCII configfs output. Hence this
+patch.
 
-Fixes: 3788ec932bfd ("[BATTERY] APM emulation driver for class batteries")
-Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
-Link: https://patch.msgid.link/xczpgox57hxbunkcbdl5fxhc4gnsajsipldfidi7355afezk64@tarta.nabijaczleweli.xyz
-Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
+Fixes: c66ac9db8d4a ("[SCSI] target: Add LIO target core v4.0.0-rc6")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://patch.msgid.link/20251027184639.3501254-2-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/power/supply/apm_power.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/target/target_core_configfs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/power/supply/apm_power.c b/drivers/power/supply/apm_power.c
-index 9d1a7fbcaed42..50b9636945599 100644
---- a/drivers/power/supply/apm_power.c
-+++ b/drivers/power/supply/apm_power.c
-@@ -365,7 +365,8 @@ static int __init apm_battery_init(void)
+diff --git a/drivers/target/target_core_configfs.c b/drivers/target/target_core_configfs.c
+index 73a9e7b0ecbc7..120c19e41012b 100644
+--- a/drivers/target/target_core_configfs.c
++++ b/drivers/target/target_core_configfs.c
+@@ -2677,7 +2677,6 @@ static ssize_t target_lu_gp_members_show(struct config_item *item, char *page)
+ 		cur_len = snprintf(buf, LU_GROUP_NAME_BUF, "%s/%s\n",
+ 			config_item_name(&hba->hba_group.cg_item),
+ 			config_item_name(&dev->dev_group.cg_item));
+-		cur_len++; /* Extra byte for NULL terminator */
  
- static void __exit apm_battery_exit(void)
- {
--	apm_get_power_status = NULL;
-+	if (apm_get_power_status == apm_battery_apm_get_power_status)
-+		apm_get_power_status = NULL;
- }
- 
- module_init(apm_battery_init);
+ 		if ((cur_len + len) > PAGE_SIZE || cur_len > LU_GROUP_NAME_BUF) {
+ 			pr_warn("Ran out of lu_gp_show_attr"
 -- 
 2.51.0
 
