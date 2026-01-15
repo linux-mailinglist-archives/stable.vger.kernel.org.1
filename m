@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-208687-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209320-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id B805DD260F7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id F2255D26A83
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:43:27 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 3F91430519FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:42 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 183EA3058C72
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:26 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 28A9A3A35A4;
-	Thu, 15 Jan 2026 17:02:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id EFF353C199E;
+	Thu, 15 Jan 2026 17:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TN8li3Dc"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sUaHZfRI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEE582D238A;
-	Thu, 15 Jan 2026 17:02:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id AF8FF3C1999;
+	Thu, 15 Jan 2026 17:32:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496560; cv=none; b=Up98a+oXUWbcY8wfk0Rnvtw9W/v8GWu0apRf6K7ViP3hm4AnnRGhe0wcU9EVbRrERiTZpVNmbGIZjPYFhVg2iCwz1rrz5UvH+ubWQ/F0Z11fY8L3MkU34t8Gra1JQMyEmuH3rXlyCJTG9+QkV+4mTA7fE0oDut2lO8CjqCW8nbw=
+	t=1768498360; cv=none; b=tELz0hPjxPpYDuQN0BptO62GQIWqvVBtnuqKysAFuBfvtvO5fI3INhk8o2K9RzXNVn3DOarHln89Yy70AXNTPSHJ3QlFApd4ca64wFckR9eazZL6Lg2L75KxyJWogZfgCAPO6j2Av8H7ml6ZTFhYhHalO+7XsDkOT9WDsthLi1w=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496560; c=relaxed/simple;
-	bh=Ajap/+yng1ladvtG1IXIRvukESYEv3R0oG2Riw/kTaE=;
+	s=arc-20240116; t=1768498360; c=relaxed/simple;
+	bh=gNGax0mcKcLkTsz0w95tpyFmOVWt+K3LGWMoNb2GugA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n4XUDF8BaRa69e5QrVZpCWL6DAhfZZ591hvnGNjmBeVNPGgdibtQsYQAwtFc5lz4JzyUfJyOAeYNa+okRHIyi7rVcAtYXGbG9qW7HS7jL7BFDfjBFEfLklGCO1tzzt2U4ktOzjVtpatAM+cgFNWJRvQNkE7Athmn3edz0iL9J7g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TN8li3Dc; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B523C116D0;
-	Thu, 15 Jan 2026 17:02:40 +0000 (UTC)
+	 MIME-Version; b=Se+UDQ1WJjzvcE8UkydbioC+k/6XAc4F9Ku3nH82WUXfUcdC2OvGOCCGuocGIkHpOZgJPO8Y7bSyTRz/v+OsfW+3LFPEnsLCoN66oY4Raja8AtwooJ3gHzJbHnJQtTsN9CwgxVKdKblVD6Zc1GqVfjFewdOYjKeKlCzhhEQgLgQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sUaHZfRI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2927CC116D0;
+	Thu, 15 Jan 2026 17:32:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496560;
-	bh=Ajap/+yng1ladvtG1IXIRvukESYEv3R0oG2Riw/kTaE=;
+	s=korg; t=1768498360;
+	bh=gNGax0mcKcLkTsz0w95tpyFmOVWt+K3LGWMoNb2GugA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TN8li3DcH/6Tp6caTJ/bCFMBF2l7DTflCvOCmGgmP3BsMRPJJN7GAlwPwlCSyKc8S
-	 4GknBnaJzwZOfeWFU7LM+OdTbLNPAnPimRLCEdQLZfdY6f5uRG4IKSm9t2M8LrXipK
-	 TTY3QCY7dL70dWohw1eP+RgZlH64yAWrfhdllPpU=
+	b=sUaHZfRInWhvcfeKEqRZaJIq0jb+f5/g8/61B41m2q8n7Xg01tHrZrL2GO919QJ8Q
+	 CwFSraHeY2qH5lkxUH47yEf0U+bemmgJ0E8YM4IEBbpQJXJoyzs/vkncC0SGGhBE9+
+	 MyVO3ghMdjieScaF6t9OxY9mn0N0gk8qm9uWcMFI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 055/119] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on DH electronics i.MX8M Plus DHCOM
+	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 404/554] fjes: Add missing iounmap in fjes_hw_init()
 Date: Thu, 15 Jan 2026 17:47:50 +0100
-Message-ID: <20260115164153.944751967@linuxfoundation.org>
+Message-ID: <20260115164300.857904056@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,46 +60,65 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
 
-[ Upstream commit c63749a7ddc59ac6ec0b05abfa0a21af9f2c1d38 ]
+commit 15ef641a0c6728d25a400df73922e80ab2cf029c upstream.
 
-Add missing 'clocks' property to LAN8740Ai PHY node, to allow the PHY driver
-to manage LAN8740Ai CLKIN reference clock supply. This fixes sporadic link
-bouncing caused by interruptions on the PHY reference clock, by letting the
-PHY driver manage the reference clock and assure there are no interruptions.
+In error paths, add fjes_hw_iounmap() to release the
+resource acquired by fjes_hw_iomap(). Add a goto label
+to do so.
 
-This follows the matching PHY driver recommendation described in commit
-bedd8d78aba3 ("net: phy: smsc: LAN8710/20: add phy refclk in support")
-
-Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 8cdc3f6c5d22 ("fjes: Hardware initialization routine")
+Cc: stable@vger.kernel.org
+Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+Signed-off-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251211073756.101824-1-lihaoxiang@isrc.iscas.ac.cn
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/fjes/fjes_hw.c |   12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index 6835f28c1e3c5..1141b26d6b6f9 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -113,6 +113,7 @@ mdio {
- 		ethphy0f: ethernet-phy@1 { /* SMSC LAN8740Ai */
- 			compatible = "ethernet-phy-id0007.c110",
- 				     "ethernet-phy-ieee802.3-c22";
-+			clocks = <&clk IMX8MP_CLK_ENET_QOS>;
- 			interrupt-parent = <&gpio3>;
- 			interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
- 			pinctrl-0 = <&pinctrl_ethphy0>;
--- 
-2.51.0
-
+--- a/drivers/net/fjes/fjes_hw.c
++++ b/drivers/net/fjes/fjes_hw.c
+@@ -333,7 +333,7 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 
+ 	ret = fjes_hw_reset(hw);
+ 	if (ret)
+-		return ret;
++		goto err_iounmap;
+ 
+ 	fjes_hw_set_irqmask(hw, REG_ICTL_MASK_ALL, true);
+ 
+@@ -346,8 +346,10 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 	hw->max_epid = fjes_hw_get_max_epid(hw);
+ 	hw->my_epid = fjes_hw_get_my_epid(hw);
+ 
+-	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid))
+-		return -ENXIO;
++	if ((hw->max_epid == 0) || (hw->my_epid >= hw->max_epid)) {
++		ret = -ENXIO;
++		goto err_iounmap;
++	}
+ 
+ 	ret = fjes_hw_setup(hw);
+ 
+@@ -355,6 +357,10 @@ int fjes_hw_init(struct fjes_hw *hw)
+ 	hw->hw_info.trace_size = FJES_DEBUG_BUFFER_SIZE;
+ 
+ 	return ret;
++
++err_iounmap:
++	fjes_hw_iounmap(hw);
++	return ret;
+ }
+ 
+ void fjes_hw_exit(struct fjes_hw *hw)
 
 
 
