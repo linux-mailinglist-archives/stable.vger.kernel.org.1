@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209666-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209244-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id ADD45D27123
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:04:05 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id C6B4DD26CF8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:50:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 88C7833A9F07
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:52:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E7E1D31931D0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0DA1D3D522D;
-	Thu, 15 Jan 2026 17:49:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4D8EE3C1997;
+	Thu, 15 Jan 2026 17:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tfLfVxqK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WTsOXR/A"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C4D753D522C;
-	Thu, 15 Jan 2026 17:49:05 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 077D73C0091;
+	Thu, 15 Jan 2026 17:29:04 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499345; cv=none; b=Pogu9fNM1tpEVqsOVWGVh2eg4LoXym53kTZLuWQDXc2AzPJwlyx1Xl48nbrCebk7kFhG2su/D996fE6lOuZ88bpJftb7J7cbMyOkH/APYrJIFLX5YAjjhBZh1X3tvmRjUXmAepsXrL0B9VF1/NIJkhl31k7z5hCdOiTQebMO6tM=
+	t=1768498144; cv=none; b=toappFzd/n5VvIwvWEitS4S3++jHgplULPU2NAg2g0fOSNLmf8GrGlyua3JUh+K2zialtCTlZMummUn2hw63eMHMt+wxXhNN0YUVqueqAYJkX/3IGm65J2UhOVV7LCf8UbwqTZQWj+cLvMTToi3FDHqxKB9bLoSJcFgu2riOF48=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499345; c=relaxed/simple;
-	bh=lI9My9LglapK0/vtJf7eh3mYFHRfUbRjpoUjrz05cXg=;
+	s=arc-20240116; t=1768498144; c=relaxed/simple;
+	bh=gnSeeAPWMDqpSLrJjIMh9x+97xWWqopvP1Myy2RlG8g=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bcW1b7C9gQ9Azfqg5y130qZauJEydicMKOkHYK/JM0mghF63y4n9V9miabS/LCwvzyex9GeWVL98fu6lANUuK7Adtybrm/ceI0S+VGBqNysg4HJHvsyDKu5G2virvKnX8Y29Ky/AZ61EXU3WFn5hkFYrGa/ejn8Z5iAb+lxq/10=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tfLfVxqK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D6A4C19423;
-	Thu, 15 Jan 2026 17:49:05 +0000 (UTC)
+	 MIME-Version; b=pn71RdIe1X/BD533ri+nszBGG7w111QMJ2FzaEEP1P9//gKXGbBN2uupqZ2VaoSPSgh8Hn6Pomktj8LPmPFh0ExbCMLhwU8qXXaawJOAQuQSxNVa5HhByhabrej5CiB8yHghb7+TrvcdYc6bDjNp8utMEazvzXLjaLG73D3x7vM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WTsOXR/A; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88E2EC116D0;
+	Thu, 15 Jan 2026 17:29:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499345;
-	bh=lI9My9LglapK0/vtJf7eh3mYFHRfUbRjpoUjrz05cXg=;
+	s=korg; t=1768498143;
+	bh=gnSeeAPWMDqpSLrJjIMh9x+97xWWqopvP1Myy2RlG8g=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tfLfVxqKby+W+iMxqvlnM6zO3JROYH159K+yjIb5plMK3zsznyKtWg/8Sg21w4sUV
-	 RkvASFhmfTvJHjdJQFS94oKFuQPuriwwS9+d13f8Pn6sDSXdSnZ5YVKG9I1BgCIKTw
-	 hq27Q69v1VbRx6yQ/IylrwxlaG/Ripj8OaE2DU2M=
+	b=WTsOXR/AfuarvWH7buLlargXQ5DYv4Cc6UhNv1UIA6J8KIk5an0cNz9J2R4SwLhRG
+	 2U/Wx7ar5i7aJEB7fCfC6mxL8g0Lw1mZjbLLB/rV+UzV+aoMlJY2CS78DfAuEJRg/K
+	 13rx6AMM3oj35tNi0PL4i6Ow8SgV7AMCwOH6OFd4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Thomas Fourier <fourier.thomas@gmail.com>,
-	Jack Wang <jinpu.wang@ionos.com>,
-	Jens Axboe <axboe@kernel.dk>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 193/451] block: rnbd-clt: Fix leaked ID in init_dev()
-Date: Thu, 15 Jan 2026 17:46:34 +0100
-Message-ID: <20260115164237.883966937@linuxfoundation.org>
+	Yu Kuai <yukuai3@huawei.com>,
+	Johan Hovold <johan@kernel.org>,
+	Martin Blumenstingl <martin.blumenstingl@googlemail.com>,
+	Neil Armstrong <neil.armstrong@linaro.org>
+Subject: [PATCH 5.15 329/554] soc: amlogic: canvas: fix device leak on lookup
+Date: Thu, 15 Jan 2026 17:46:35 +0100
+Message-ID: <20260115164258.138849167@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Fourier <fourier.thomas@gmail.com>
+From: Johan Hovold <johan@kernel.org>
 
-[ Upstream commit c9b5645fd8ca10f310e41b07540f98e6a9720f40 ]
+commit 32200f4828de9d7e6db379909898e718747f4e18 upstream.
 
-If kstrdup() fails in init_dev(), then the newly allocated ID is lost.
+Make sure to drop the reference taken to the canvas platform device when
+looking up its driver data.
 
-Fixes: 64e8a6ece1a5 ("block/rnbd-clt: Dynamically alloc buffer for pathname & blk_symlink_name")
-Signed-off-by: Thomas Fourier <fourier.thomas@gmail.com>
-Acked-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Note that holding a reference to a device does not prevent its driver
+data from going away so there is no point in keeping the reference.
+
+Also note that commit 28f851e6afa8 ("soc: amlogic: canvas: add missing
+put_device() call in meson_canvas_get()") fixed the leak in a lookup
+error path, but the reference is still leaking on success.
+
+Fixes: d4983983d987 ("soc: amlogic: add meson-canvas driver")
+Cc: stable@vger.kernel.org	# 4.20: 28f851e6afa8
+Cc: Yu Kuai <yukuai3@huawei.com>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Martin Blumenstingl <martin.blumenstingl@googlemail.com>
+Link: https://patch.msgid.link/20250926142454.5929-2-johan@kernel.org
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rnbd/rnbd-clt.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+ drivers/soc/amlogic/meson-canvas.c |    5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
-index ea4b7002f438..2aebb07eff92 100644
---- a/drivers/block/rnbd/rnbd-clt.c
-+++ b/drivers/block/rnbd/rnbd-clt.c
-@@ -1378,9 +1378,11 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 		goto out_alloc;
- 	}
+--- a/drivers/soc/amlogic/meson-canvas.c
++++ b/drivers/soc/amlogic/meson-canvas.c
+@@ -72,10 +72,9 @@ struct meson_canvas *meson_canvas_get(st
+ 	 * current state, this driver probe cannot return -EPROBE_DEFER
+ 	 */
+ 	canvas = dev_get_drvdata(&canvas_pdev->dev);
+-	if (!canvas) {
+-		put_device(&canvas_pdev->dev);
++	put_device(&canvas_pdev->dev);
++	if (!canvas)
+ 		return ERR_PTR(-EINVAL);
+-	}
  
--	ret = ida_alloc_max(&index_ida, (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
--			    GFP_KERNEL);
--	if (ret < 0) {
-+	dev->clt_device_id = ida_alloc_max(&index_ida,
-+					   (1 << (MINORBITS - RNBD_PART_BITS)) - 1,
-+					   GFP_KERNEL);
-+	if (dev->clt_device_id < 0) {
-+		ret = dev->clt_device_id;
- 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
- 		       pathname, sess->sessname, ret);
- 		goto out_queues;
-@@ -1389,10 +1391,9 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 	dev->pathname = kstrdup(pathname, GFP_KERNEL);
- 	if (!dev->pathname) {
- 		ret = -ENOMEM;
--		goto out_queues;
-+		goto out_ida;
- 	}
- 
--	dev->clt_device_id	= ret;
- 	dev->sess		= sess;
- 	dev->access_mode	= access_mode;
- 	mutex_init(&dev->lock);
-@@ -1407,6 +1408,8 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
- 
- 	return dev;
- 
-+out_ida:
-+	ida_free(&index_ida, dev->clt_device_id);
- out_queues:
- 	kfree(dev->hw_queues);
- out_alloc:
--- 
-2.51.0
-
+ 	return canvas;
+ }
 
 
 
