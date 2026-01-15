@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208821-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209801-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id AA15FD263FB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 90D89D27439
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C8E7D309B93C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:59 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id F21C230736FD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:19 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C3DD72C11EF;
-	Thu, 15 Jan 2026 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E423BF30C;
+	Thu, 15 Jan 2026 17:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="H5DAf0Bi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3L8tEd9"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7669F2820C6;
-	Thu, 15 Jan 2026 17:08:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C79F3D2FE4;
+	Thu, 15 Jan 2026 17:55:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496938; cv=none; b=tCYWMEXet5F4l8LcFNhYjCjEAeX7FAdmTHdyFIAXdSeYwh6m0Q1sc4/fk4LnNqW/Vbg9SLrKVnWAXUb2l/c3mhIDbKbXycMmOopaZ6SToDt1Rr6dipWHLf07bIuQzSgmMincAsb6kNYAbeQKOUtEk8WzcUgywdRie3Mq2VVmbqs=
+	t=1768499729; cv=none; b=WPeSdMBYY8Ch2eTb08GeX/Ym9kL7oTIV2p8ZVR6GM3pLzv/9mWUfrssqqpxnI+E+PYr/eaP6PU9huTzUMdNynBanxawAIbzpaco0NTDAkF7GQw2tclNe2D99t9xvY569g0AH6TQr+u+RonQeWHahG8k0zQmD4xxn7v801LfBlqI=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496938; c=relaxed/simple;
-	bh=wtkH650UyjzEzY/+IG0IXhyBGzrbgKB1GTg6GlzFxxs=;
+	s=arc-20240116; t=1768499729; c=relaxed/simple;
+	bh=tqHYNrgN9Md66lX0Cx8LLKN3gV+uPR74Sb3t2djiCr0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=rq3+2Za23q4YSjD/PkHaHEZbCo/zYJS62MD1s7YKKfVFMVy/lIhn+GqOaQYA4ocRlVhwucFrA2FKipsztYgL/pYzzHCNph8U6yO2PmIgaFTAYXzQr81IcsiNc7Esz6HKvR7ce6d02yCu8dmBVbJFtl+mlZuBWfCBWQoRrUa2LEs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=H5DAf0Bi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0E41C116D0;
-	Thu, 15 Jan 2026 17:08:57 +0000 (UTC)
+	 MIME-Version; b=FW4kMyfFThEUW38YYZeiM3p49NCWpdnOnjjaWas06crxmj2T/dLG+CIZLmZTN+5jkj//BceI2kYpIqAyB6QxO2ffhoJLi3iiocytJaI5XmZX2hRSpJFETtj9KhbCkdPDWdg1axBH2+b5TWuyJOE4qs+1yBopvyXtbVOyoFE34ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3L8tEd9; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D5CC116D0;
+	Thu, 15 Jan 2026 17:55:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496938;
-	bh=wtkH650UyjzEzY/+IG0IXhyBGzrbgKB1GTg6GlzFxxs=;
+	s=korg; t=1768499729;
+	bh=tqHYNrgN9Md66lX0Cx8LLKN3gV+uPR74Sb3t2djiCr0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=H5DAf0Bi7cZncKStunIKSB2ixgIz2Yq69s8AjcjP4tF/4jRDuDKvYhAtvFafvxLjL
-	 eWrYdUMlsTh6ZtTlLGGz9A11TDT92iKOdzlMCtjYigZj5qlEplonRi3msmAyX9T1jZ
-	 diJ/EvbIK/bIVrU+TUMxYzgJYrqPN9ja05jUqIxE=
+	b=T3L8tEd9/iVo45/pI2VkAwPvrfjBZ7fbvHVFzLXCWGRsui831U9SUWxXuiUgp/GlC
+	 Bfwxpuae1AJxnd8WZmyGfFhaGgSmdPgKl/hJaz0XTLtRhmDVIuXDFYZtyvUtD3a8Dk
+	 mv4GxNQDZHzWoUxosKO4/Jg6eaunFdvxIaGFS0tY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>,
-	Takashi Iwai <tiwai@suse.de>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 67/88] ALSA: ac97: fix a double free in snd_ac97_controller_register()
+	syzbot+b0da83a6c0e2e2bddbd4@syzkaller.appspotmail.com,
+	Jason Gunthorpe <jgg@nvidia.com>
+Subject: [PATCH 5.10 329/451] RDMA/cm: Fix leaking the multicast GID table reference
 Date: Thu, 15 Jan 2026 17:48:50 +0100
-Message-ID: <20260115164148.736099734@linuxfoundation.org>
+Message-ID: <20260115164242.798604093@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,69 +59,56 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-[ Upstream commit 830988b6cf197e6dcffdfe2008c5738e6c6c3c0f ]
+commit 57f3cb6c84159d12ba343574df2115fb18dd83ca upstream.
 
-If ac97_add_adapter() fails, put_device() is the correct way to drop
-the device reference. kfree() is not required.
-Add kfree() if idr_alloc() fails and in ac97_adapter_release() to do
-the cleanup.
+If the CM ID is destroyed while the CM event for multicast creating is
+still queued the cancel_work_sync() will prevent the work from running
+which also prevents destroying the ah_attr. This leaks a refcount and
+triggers a WARN:
 
-Found by code review.
+   GID entry ref leak for dev syz1 index 2 ref=573
+   WARNING: CPU: 1 PID: 655 at drivers/infiniband/core/cache.c:809 release_gid_table drivers/infiniband/core/cache.c:806 [inline]
+   WARNING: CPU: 1 PID: 655 at drivers/infiniband/core/cache.c:809 gid_table_release_one+0x284/0x3cc drivers/infiniband/core/cache.c:886
 
-Fixes: 74426fbff66e ("ALSA: ac97: add an ac97 bus")
+Destroy the ah_attr after canceling the work, it is safe to call this
+twice.
+
+Link: https://patch.msgid.link/r/0-v1-4285d070a6b2+20a-rdma_mc_gid_leak_syz_jgg@nvidia.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Haoxiang Li <lihaoxiang@isrc.iscas.ac.cn>
-Link: https://patch.msgid.link/20251219162845.657525-1-lihaoxiang@isrc.iscas.ac.cn
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: fe454dc31e84 ("RDMA/ucma: Fix use-after-free bug in ucma_create_uevent")
+Reported-by: syzbot+b0da83a6c0e2e2bddbd4@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/68232e7b.050a0220.f2294.09f6.GAE@google.com
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/ac97/bus.c |   10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ drivers/infiniband/core/cma.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/sound/ac97/bus.c
-+++ b/sound/ac97/bus.c
-@@ -299,6 +299,7 @@ static void ac97_adapter_release(struct
- 	idr_remove(&ac97_adapter_idr, ac97_ctrl->nr);
- 	dev_dbg(&ac97_ctrl->adap, "adapter unregistered by %s\n",
- 		dev_name(ac97_ctrl->parent));
-+	kfree(ac97_ctrl);
+--- a/drivers/infiniband/core/cma.c
++++ b/drivers/infiniband/core/cma.c
+@@ -1840,6 +1840,7 @@ static void destroy_mc(struct rdma_id_pr
+ 		ib_sa_free_multicast(mc->sa_mc);
+ 
+ 	if (rdma_protocol_roce(id_priv->id.device, id_priv->id.port_num)) {
++		struct rdma_cm_event *event = &mc->iboe_join.event;
+ 		struct rdma_dev_addr *dev_addr =
+ 			&id_priv->id.route.addr.dev_addr;
+ 		struct net_device *ndev = NULL;
+@@ -1862,6 +1863,8 @@ static void destroy_mc(struct rdma_id_pr
+ 		dev_put(ndev);
+ 
+ 		cancel_work_sync(&mc->iboe_join.work);
++		if (event->event == RDMA_CM_EVENT_MULTICAST_JOIN)
++			rdma_destroy_ah_attr(&event->param.ud.ah_attr);
+ 	}
+ 	kfree(mc);
  }
- 
- static const struct device_type ac97_adapter_type = {
-@@ -320,7 +321,9 @@ static int ac97_add_adapter(struct ac97_
- 		ret = device_register(&ac97_ctrl->adap);
- 		if (ret)
- 			put_device(&ac97_ctrl->adap);
--	}
-+	} else
-+		kfree(ac97_ctrl);
-+
- 	if (!ret) {
- 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
- 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
-@@ -361,14 +364,11 @@ struct ac97_controller *snd_ac97_control
- 	ret = ac97_add_adapter(ac97_ctrl);
- 
- 	if (ret)
--		goto err;
-+		return ERR_PTR(ret);
- 	ac97_bus_reset(ac97_ctrl);
- 	ac97_bus_scan(ac97_ctrl);
- 
- 	return ac97_ctrl;
--err:
--	kfree(ac97_ctrl);
--	return ERR_PTR(ret);
- }
- EXPORT_SYMBOL_GPL(snd_ac97_controller_register);
- 
 
 
 
