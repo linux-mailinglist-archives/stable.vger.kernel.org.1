@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-209599-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209145-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id ACDE7D26E23
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:57 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 095B1D27328
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:11:08 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 352B330A54F4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:14 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 93C8D3238363
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C01143BC4EB;
-	Thu, 15 Jan 2026 17:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2D073A1E86;
+	Thu, 15 Jan 2026 17:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2swS26XJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QJMSUvTm"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8367927B340;
-	Thu, 15 Jan 2026 17:45:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6601E21CC5A;
+	Thu, 15 Jan 2026 17:24:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499155; cv=none; b=jAJIy8dsQ04VdopeYwvq33ToTz4i0rLgKe5jHRHI3RH0nC6d3ZWJp3mXNPDNZKBJ318F3S0lW9qKrYOEGBSYfgysKqNnC9gjheEl61hUP8qclp+kuAXMrJNLgGX2+mUMf1u4ZPVJK9XmOqsS3r1qWdMVMfaV2bop2oa/biS0O0w=
+	t=1768497861; cv=none; b=BXRbTrZYLM1+bnEu7Mx9CTFdA7IYKqJ1yb0v1tjtFEihCl/DMsuaa9EgpLNhTbtOxvalbI9d6HmJcATSb5PWXi+i1RKOMeWRJcfyfWB2fngUIov9gwUqNMtMTTgYxCOXBVhBt3VgP96Jcsx90GtwSkPO3/DwfrNqitzoqn8cD6I=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499155; c=relaxed/simple;
-	bh=F6g0q5qRF8MrBnJZQ7msD2nkloLm3er+5d85d0BqM1E=;
+	s=arc-20240116; t=1768497861; c=relaxed/simple;
+	bh=ACKYjJbdk3r08RXr4A93bRVInzLWdonXVymRcimWYgw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VKcyehrmY70vY7yn59DtHvtJuW+hU93iAN/zwDkCUgfu2xt4fLSX0jbGeeRS0zlTNdPSBwymVf5BLv3ja0PhwN/RlLzCKICTU2RYN9gnPm+FWkkei7c6H4TBoWjLIrTiQVYE2lp9Lu/Rg5d1i6kxBcf2sdsMNcHjqt47rh5p+Z8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2swS26XJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 107DAC116D0;
-	Thu, 15 Jan 2026 17:45:54 +0000 (UTC)
+	 MIME-Version; b=GWZ1KB/nFMeOhQnobLu3oPrucnB34Wh5iGAwrxejeMcrqPfrhlurLagd2waE6aNRyR9uV1GM9M/wBVVGqh/SM8Vrb8t00ZgeWzejYM/T4nZiJd4aIT/Jck5l8YbLRVrXNX3SXgrkRVK0IzecDLe5eMXqtAc+dL9yejAUc+nroKE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QJMSUvTm; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2FF3C116D0;
+	Thu, 15 Jan 2026 17:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499155;
-	bh=F6g0q5qRF8MrBnJZQ7msD2nkloLm3er+5d85d0BqM1E=;
+	s=korg; t=1768497861;
+	bh=ACKYjJbdk3r08RXr4A93bRVInzLWdonXVymRcimWYgw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=2swS26XJNnCV6uSkGQ8t9Po4AY18wlsUgG82RsnUw8kIOAGOn5nnvP3mpBnd09IJL
-	 6B851ni1yyJW/+nB87aOPU1b2ALz9ta1KFe6UNx9EtnyGPquzj7GzQf0pdTYdogw9c
-	 014IqtMluEKEN3Y9UYymyS0s5c9spS8n3qUo2K4k=
+	b=QJMSUvTm1KfnAymNkJWjF1E2ornJSXJcuUdRip1K+tr47PGQvQJrcIxUtVV8uNZq7
+	 RFZqEaK3uEpgMXYQ6krLMaj2HmHSJFh7sSKY8jcoSCriXlV6LpV06ZtEo1vo+FbPD7
+	 7C4rBWHrKP4kfBhEGLL/88dLmqVe48VnMvBQnf+E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com,
-	Gopi Krishna Menon <krishnagopi487@gmail.com>,
-	Andrey Konovalov <andreyknvl@gmail.com>,
+	Jonas Gorski <jonas.gorski@gmail.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Alexey Simakov <bigalex934@gmail.com>,
+	Michael Chan <michael.chan@broadcom.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/451] usb: raw-gadget: cap raw_io transfer length to KMALLOC_MAX_SIZE
+Subject: [PATCH 5.15 229/554] broadcom: b44: prevent uninitialized value usage
 Date: Thu, 15 Jan 2026 17:44:55 +0100
-Message-ID: <20260115164234.317488143@linuxfoundation.org>
+Message-ID: <20260115164254.534772691@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,64 +63,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gopi Krishna Menon <krishnagopi487@gmail.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-[ Upstream commit a5160af78be7fcf3ade6caab0a14e349560c96d7 ]
+[ Upstream commit 50b3db3e11864cb4e18ff099cfb38e11e7f87a68 ]
 
-The previous commit removed the PAGE_SIZE limit on transfer length of
-raw_io buffer in order to avoid any problems with emulating USB devices
-whose full configuration descriptor exceeds PAGE_SIZE in length. However
-this also removes the upperbound on user supplied length, allowing very
-large values to be passed to the allocator.
+On execution path with raised B44_FLAG_EXTERNAL_PHY, b44_readphy()
+leaves bmcr value uninitialized and it is used later in the code.
 
-syzbot on fuzzing the transfer length with very large value (1.81GB)
-results in kmalloc() to fall back to the page allocator, which triggers
-a kernel warning as the page allocator cannot handle allocations more
-than MAX_PAGE_ORDER/KMALLOC_MAX_SIZE.
+Add check of this flag at the beginning of the b44_nway_reset() and
+exit early of the function with restarting autonegotiation if an
+external PHY is used.
 
-Since there is no limit imposed on the size of buffer for both control
-and non control transfers, cap the raw_io transfer length to
-KMALLOC_MAX_SIZE and return -EINVAL for larger transfer length to
-prevent any warnings from the page allocator.
-
-Fixes: 37b9dd0d114a ("usb: raw-gadget: do not limit transfer length")
-Tested-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Reported-by: syzbot+d8fd35fa6177afa8c92b@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68fc07a0.a70a0220.3bf6c6.01ab.GAE@google.com/
-Signed-off-by: Gopi Krishna Menon <krishnagopi487@gmail.com>
-Reviewed-by: Andrey Konovalov <andreyknvl@gmail.com>
-Link: https://patch.msgid.link/20251028165659.50962-1-krishnagopi487@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 753f492093da ("[B44]: port to native ssb support")
+Reviewed-by: Jonas Gorski <jonas.gorski@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Reviewed-by: Michael Chan <michael.chan@broadcom.com>
+Link: https://patch.msgid.link/20251205155815.4348-1-bigalex934@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/legacy/raw_gadget.c | 3 +++
+ drivers/net/ethernet/broadcom/b44.c | 3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/drivers/usb/gadget/legacy/raw_gadget.c b/drivers/usb/gadget/legacy/raw_gadget.c
-index d9cbbde8ff59d..a82c6e19572b6 100644
---- a/drivers/usb/gadget/legacy/raw_gadget.c
-+++ b/drivers/usb/gadget/legacy/raw_gadget.c
-@@ -38,6 +38,7 @@ MODULE_LICENSE("GPL");
+diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
+index ce370ef641f01..3c4e0a78b8a03 100644
+--- a/drivers/net/ethernet/broadcom/b44.c
++++ b/drivers/net/ethernet/broadcom/b44.c
+@@ -1811,6 +1811,9 @@ static int b44_nway_reset(struct net_device *dev)
+ 	u32 bmcr;
+ 	int r;
  
- static DEFINE_IDA(driver_id_numbers);
- #define DRIVER_DRIVER_NAME_LENGTH_MAX	32
-+#define USB_RAW_IO_LENGTH_MAX KMALLOC_MAX_SIZE
- 
- #define RAW_EVENT_QUEUE_SIZE	16
- 
-@@ -619,6 +620,8 @@ static void *raw_alloc_io_data(struct usb_raw_ep_io *io, void __user *ptr,
- 		return ERR_PTR(-EINVAL);
- 	if (!usb_raw_io_flags_valid(io->flags))
- 		return ERR_PTR(-EINVAL);
-+	if (io->length > USB_RAW_IO_LENGTH_MAX)
-+		return ERR_PTR(-EINVAL);
- 	if (get_from_user)
- 		data = memdup_user(ptr + sizeof(*io), io->length);
- 	else {
++	if (bp->flags & B44_FLAG_EXTERNAL_PHY)
++		return phy_ethtool_nway_reset(dev);
++
+ 	spin_lock_irq(&bp->lock);
+ 	b44_readphy(bp, MII_BMCR, &bmcr);
+ 	b44_readphy(bp, MII_BMCR, &bmcr);
 -- 
 2.51.0
 
