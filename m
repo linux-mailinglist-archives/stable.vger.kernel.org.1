@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209806-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209383-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C6A45D2743D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:46 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 2EBF2D26AEE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id D13C830F4E00
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:25 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C345030ACC40
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 03C583D6481;
-	Thu, 15 Jan 2026 17:55:44 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A5EED3BF31F;
+	Thu, 15 Jan 2026 17:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="K4OoV5/f"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="sEv0WnJl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 85B143D6473;
-	Thu, 15 Jan 2026 17:55:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 687663BF30A;
+	Thu, 15 Jan 2026 17:35:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499743; cv=none; b=tHDNpNxm5XjtLnqcOAi+TslHD0kZMupEzIQBTLpxYhzOoiNhjiSt1p8CWy8q/N/RBeevBpv6Pb8IE+TigIekc4e27fbOGZ7kgdE0fwix3DVnhdtyJjdg5vDvGZrvJGPd0SVQwws3GQvyqUfZuKrd4Ape9C4PU9VrH4RZpfljZMc=
+	t=1768498539; cv=none; b=cGuFzr8efKrhd8kqdNN5fUD7xaxctGRf+tyJRTw9KaEW1sFaBa17xUKFbRpSEtwzV2AOXbvuYZbvqiD0CrKbl7mSEU+CO3LCkzt4X8qKjciLVHaoHzLYwOX7bjKiOC0EnybMlhbz9jakX/ogkr+pl+orCHogQhENg8mjqHeKPis=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499743; c=relaxed/simple;
-	bh=6rjsZA0XxO2uRBhMpMEFVEUIQawBDwxp5T5TSQOcGew=;
+	s=arc-20240116; t=1768498539; c=relaxed/simple;
+	bh=UjhgxRopQ0amcQ5l4CeMoF7JKoQkHx1YCcNHOaQoOKo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uxZ9Gt1vqTZa1KaC6CnQfU6jPRuPwz97NDF+/dpXD0YINgVJIa5EsKakZ6qEhCsUDP1B9whG6/ddcvcrOaLslXMtY4RL7eVPpF/bK291Pq0vcpQTNASzgqgomylyBUX44lVpW0gxkQOMolaso3FSiG1fcwoKBnnCYwPMw1NFEEQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=K4OoV5/f; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FB0AC116D0;
-	Thu, 15 Jan 2026 17:55:42 +0000 (UTC)
+	 MIME-Version; b=JMYdZvDF4N3gw7+NJusVMCrw7jKdFkCDqOk26VU25JFNt09lI2mkVPLpdog3vDg18/j2j54wcwYIupjWq/t4JfknbxQfGYvAn9a8HrfebOrckFL0fbuBwv3qaTVvEieKAgxXb+eslCsqUxp40BS9v/Gmk5ih+Ir4iJbmX8v5qHI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=sEv0WnJl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D929C116D0;
+	Thu, 15 Jan 2026 17:35:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499743;
-	bh=6rjsZA0XxO2uRBhMpMEFVEUIQawBDwxp5T5TSQOcGew=;
+	s=korg; t=1768498539;
+	bh=UjhgxRopQ0amcQ5l4CeMoF7JKoQkHx1YCcNHOaQoOKo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=K4OoV5/fFqDM60Ah91b+UB4/lHB5ROkvE8TMXUWkpieYMmqjFAUtL44SXDi2DsPs+
-	 CCd/3PTNum3Q8tqjl/IUIfResFwiAanN4jm2Ifk5RS5+ZfFH3UWK02dS+kdRTrx/TU
-	 XF7UnO+2qhq2/SBU8rdX+XK9ObNh8lwzdf/tYwaA=
+	b=sEv0WnJlj7ZEXsVOls+zYDIOUdjEy0T9RCjFLqmsXtaId8WfB+ZTSrY7HJvWJT2K1
+	 wzR4PrIWVV+Dz8r99hnxM7RELEF/X1dkG82orynTchV/KYZdLkuWZQyQpezLm2IEQt
+	 UO9bn+SHwW4I7uWe1ShqTZqSh4ijT6j78VhHiVtM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ethan Nelson-Moore <enelsonmoore@gmail.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 333/451] net: usb: sr9700: fix incorrect command used to write single register
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 468/554] ASoC: stm32: sai: Use the devm_clk_get_optional() helper
 Date: Thu, 15 Jan 2026 17:48:54 +0100
-Message-ID: <20260115164242.942066967@linuxfoundation.org>
+Message-ID: <20260115164303.233278170@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ethan Nelson-Moore <enelsonmoore@gmail.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit fa0b198be1c6775bc7804731a43be5d899d19e7a upstream.
+[ Upstream commit 374628fb668e50b42fe81f2a63af616182415bcd ]
 
-This fixes the device failing to initialize with "error reading MAC
-address" for me, probably because the incorrect write of NCR_RST to
-SR_NCR is not actually resetting the device.
+Use devm_clk_get_optional() instead of hand writing it.
+This saves some LoC and improves the semantic.
 
-Fixes: c9b37458e95629b1d1171457afdcc1bf1eb7881d ("USB2NET : SR9700 : One chip USB 1.1 USB2NET SR9700Device Driver Support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ethan Nelson-Moore <enelsonmoore@gmail.com>
-Link: https://patch.msgid.link/20251221082400.50688-1-enelsonmoore@gmail.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/f7987f18dadf77bfa09969fd4c82d5a0f4e4e3b7.1684594838.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Stable-dep-of: 312ec2f0d9d1 ("ASoC: stm32: sai: fix clk prepare imbalance on probe failure")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/usb/sr9700.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/stm/stm32_sai_sub.c |    9 +++------
+ 1 file changed, 3 insertions(+), 6 deletions(-)
 
---- a/drivers/net/usb/sr9700.c
-+++ b/drivers/net/usb/sr9700.c
-@@ -52,7 +52,7 @@ static int sr_read_reg(struct usbnet *de
+--- a/sound/soc/stm/stm32_sai_sub.c
++++ b/sound/soc/stm/stm32_sai_sub.c
+@@ -1486,12 +1486,9 @@ static int stm32_sai_sub_parse_of(struct
+ 		if (ret < 0)
+ 			return ret;
+ 	} else {
+-		sai->sai_mclk = devm_clk_get(&pdev->dev, "MCLK");
+-		if (IS_ERR(sai->sai_mclk)) {
+-			if (PTR_ERR(sai->sai_mclk) != -ENOENT)
+-				return PTR_ERR(sai->sai_mclk);
+-			sai->sai_mclk = NULL;
+-		}
++		sai->sai_mclk = devm_clk_get_optional(&pdev->dev, "MCLK");
++		if (IS_ERR(sai->sai_mclk))
++			return PTR_ERR(sai->sai_mclk);
+ 	}
  
- static int sr_write_reg(struct usbnet *dev, u8 reg, u8 value)
- {
--	return usbnet_write_cmd(dev, SR_WR_REGS, SR_REQ_WR_REG,
-+	return usbnet_write_cmd(dev, SR_WR_REG, SR_REQ_WR_REG,
- 				value, reg, NULL, 0);
- }
- 
-@@ -64,7 +64,7 @@ static void sr_write_async(struct usbnet
- 
- static void sr_write_reg_async(struct usbnet *dev, u8 reg, u8 value)
- {
--	usbnet_write_cmd_async(dev, SR_WR_REGS, SR_REQ_WR_REG,
-+	usbnet_write_cmd_async(dev, SR_WR_REG, SR_REQ_WR_REG,
- 			       value, reg, NULL, 0);
- }
- 
+ 	return 0;
 
 
 
