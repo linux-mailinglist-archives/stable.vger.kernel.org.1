@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209241-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209664-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1A224D27045
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:01:13 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 97C7ED26F80
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 53CB7313B9FE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:28 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 7622B304D0B7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:51:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id D5CEB3D1CC5;
-	Thu, 15 Jan 2026 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 39C7D3D3D1B;
+	Thu, 15 Jan 2026 17:49:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lFXffyHP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ZDGf5l7D"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 993703D1CC3;
-	Thu, 15 Jan 2026 17:28:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id F16A03C1999;
+	Thu, 15 Jan 2026 17:48:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498135; cv=none; b=hOCGboUaC2ykTLaeHFCL9KG7AgvwQXBllBc0j57SgXUXO6cS5o/K/xUP1Ebqwl78wYVXhGD0WHz5sNpWLQ0Flqrs6rMEysSESusoDsSgO8IGrUlbYrCT1KlUWFb7f/CA/6fkTRRT23kT6balFxn/Ow/ZGfgKK02Ss+7tbYZL5/o=
+	t=1768499340; cv=none; b=QsdquMZ9PLjAGkjxQKeKol4hYP6PstAVdjBhUCFKFWjWDM7zQeXYyfikuxEgsqSPskjkJMqsJb94wnbhv6ew5L+WXPmOw4yGIirwEl/e+LOTXrDUJzUKg+zYqPV9/xL0ek+OcUEwaEvCDwo9a3nHArKFPKEmnGG381Nia/JXFoo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498135; c=relaxed/simple;
-	bh=DCTLY1YFJYCDomGEYqosVi9qnCznz5Bq7bOc5E1N/5M=;
+	s=arc-20240116; t=1768499340; c=relaxed/simple;
+	bh=AU1KwHw9V+I+VheeEofD5IcQ9xSqXhttqQmRrcfHM64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=SQXNeBvospoSARJH5ECu0fDlpJimxDQTfieaPU8L7vLJsWbyhq0rAhw+FmuP8Q2eJfmKTC+3UVRRLMIS85juSQPZmOPyn37O/ccSeDtY0G31f4uR8+h00WzmvylvAPSuHFXeGcjAmw0NSevb6IH9R9PEdgwhsjzvSVsxV0la0BY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lFXffyHP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25721C16AAE;
-	Thu, 15 Jan 2026 17:28:54 +0000 (UTC)
+	 MIME-Version; b=aDnAUFmPM35T/AK2XAGe2Vn4MxzRHIaKDEABW26/VC5niVjCtGP+qRHFhRZAQI0KUx6LpDHARl825wvgF3/dalU129XA2JRCtBt2fzppKWHARQTrL3se56nTxtEkPy5tXk+sulHt8I5guvdRcvKkcM2rkxCew4iB2cERkrZ7Qmg=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ZDGf5l7D; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E067C116D0;
+	Thu, 15 Jan 2026 17:48:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498135;
-	bh=DCTLY1YFJYCDomGEYqosVi9qnCznz5Bq7bOc5E1N/5M=;
+	s=korg; t=1768499339;
+	bh=AU1KwHw9V+I+VheeEofD5IcQ9xSqXhttqQmRrcfHM64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=lFXffyHPZxnaAwTdzhnquiVluwpipaKMvKBKGYqCzggd7UXMSkFEzfNOqHS6gRCwg
-	 cJa1RYLNdCxqxvw1qZ8200yKRP+ce2oC8Fdts4rNlqX5SjeByrg4HrHronYJGcDbiV
-	 jrSYM7muLZ6sBhhDveU5VhkUwbSQ4d2gr1w1ousM=
+	b=ZDGf5l7DfjIEFYIjEPLlzLONhQtcY84DlttGlLlSxSkXv4q5cvS+1UhM0FYg3KBfB
+	 HpgNkP/qVr7AuaQvU6EOe3mYDvXU1LV3JKUIbQzFVsvZGv6a7n5EQJync9fN9CgGfP
+	 lyagJD7Tduu/NVgEOX1S96Y5H/9KkmsOZ+cp0QqI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.15 326/554] drm/amd/display: Use GFP_ATOMIC in dc_create_plane_state()
+	Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+	Jack Wang <jinpu.wang@ionos.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 191/451] block/rnbd: Remove a useless mutex
 Date: Thu, 15 Jan 2026 17:46:32 +0100
-Message-ID: <20260115164258.029381255@linuxfoundation.org>
+Message-ID: <20260115164237.812967482@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +61,74 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 3c41114dcdabb7b25f5bc33273c6db9c7af7f4a7 upstream.
+[ Upstream commit 24afc15dbe218f860994f627b4ba1fb09225a298 ]
 
-This can get called from an atomic context.
+According to lib/idr.c,
+   The IDA handles its own locking.  It is safe to call any of the IDA
+   functions without synchronisation in your code.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4470
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8acdad9344cc7b4e7bc01f0dfea80093eb3768db)
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+so the 'ida_lock' mutex can just be removed.
+It is here only to protect some ida_simple_get()/ida_simple_remove() calls.
+
+While at it, switch to ida_alloc_XXX()/ida_free() instead to
+ida_simple_get()/ida_simple_remove().
+The latter is deprecated and more verbose.
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Acked-by: Jack Wang <jinpu.wang@ionos.com>
+Link: https://lore.kernel.org/r/7f9eccd8b1fce1bac45ac9b01a78cf72f54c0a61.1644266862.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: c9b5645fd8ca ("block: rnbd-clt: Fix leaked ID in init_dev()")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/block/rnbd/rnbd-clt.c | 11 +++--------
+ 1 file changed, 3 insertions(+), 8 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-@@ -104,7 +104,7 @@ void enable_surface_flip_reporting(struc
- struct dc_plane_state *dc_create_plane_state(struct dc *dc)
- {
- 	struct dc_plane_state *plane_state = kvzalloc(sizeof(*plane_state),
--							GFP_KERNEL);
-+							GFP_ATOMIC);
+diff --git a/drivers/block/rnbd/rnbd-clt.c b/drivers/block/rnbd/rnbd-clt.c
+index 71b86fee81c2..ced9c4d7b926 100644
+--- a/drivers/block/rnbd/rnbd-clt.c
++++ b/drivers/block/rnbd/rnbd-clt.c
+@@ -23,7 +23,6 @@ MODULE_LICENSE("GPL");
  
- 	if (NULL == plane_state)
- 		return NULL;
+ static int rnbd_client_major;
+ static DEFINE_IDA(index_ida);
+-static DEFINE_MUTEX(ida_lock);
+ static DEFINE_MUTEX(sess_lock);
+ static LIST_HEAD(sess_list);
+ 
+@@ -55,9 +54,7 @@ static void rnbd_clt_put_dev(struct rnbd_clt_dev *dev)
+ 	if (!refcount_dec_and_test(&dev->refcount))
+ 		return;
+ 
+-	mutex_lock(&ida_lock);
+-	ida_simple_remove(&index_ida, dev->clt_device_id);
+-	mutex_unlock(&ida_lock);
++	ida_free(&index_ida, dev->clt_device_id);
+ 	kfree(dev->hw_queues);
+ 	kfree(dev->pathname);
+ 	rnbd_clt_put_sess(dev->sess);
+@@ -1381,10 +1378,8 @@ static struct rnbd_clt_dev *init_dev(struct rnbd_clt_session *sess,
+ 		goto out_alloc;
+ 	}
+ 
+-	mutex_lock(&ida_lock);
+-	ret = ida_simple_get(&index_ida, 0, 1 << (MINORBITS - RNBD_PART_BITS),
+-			     GFP_KERNEL);
+-	mutex_unlock(&ida_lock);
++	ret = ida_alloc_max(&index_ida, 1 << (MINORBITS - RNBD_PART_BITS),
++			    GFP_KERNEL);
+ 	if (ret < 0) {
+ 		pr_err("Failed to initialize device '%s' from session %s, allocating idr failed, err: %d\n",
+ 		       pathname, sess->sessname, ret);
+-- 
+2.51.0
+
 
 
 
