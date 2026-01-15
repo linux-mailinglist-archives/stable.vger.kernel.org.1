@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209154-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209573-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id F3879D26976
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:56 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 8356AD27AF1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:40:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 02F4C30B4728
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:21 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 9DC61302C730
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39D92C027B;
-	Thu, 15 Jan 2026 17:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C5F232D948D;
+	Thu, 15 Jan 2026 17:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7ZBqMVe"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1BSGNAY/"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770AF3BF2FF;
-	Thu, 15 Jan 2026 17:24:47 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 886FC2D9ECB;
+	Thu, 15 Jan 2026 17:44:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497887; cv=none; b=HDvHGgAOWvUr2+rHCpNMna4yulFGvA1nXquhWpIry6FNuB1aR3RBR0n3WW1V4s8fjB4Ze4rDdzcaDTBjp0/Lg90CPANXfVx/7viq34ooXUGnQlCBhEGQXSSrAWuQolwbrHINDAhiwyxDk2gNyA+YLpqa+bYaZdo/+e3MSCbdGXs=
+	t=1768499081; cv=none; b=qz85YDgiViBbEO2zCjWixlC6XQciTMuyyCg0qhldTOZ+CmH0sooRgq+BYMs3rTLvkcoArBWeLz0Jo/YbjfUSrHqWv2MbcmBW/g2lWMDZWEnrliGyGEEXSQjj5l5+t/zgH992e8BRX+u6lYbEre4Q1o5FTzKHStWRPZXUuWaDEvs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497887; c=relaxed/simple;
-	bh=jl4gEiGoL7PMsr4yxmYsDVnpYN2MjTt7Re1SZaB0q1Q=;
+	s=arc-20240116; t=1768499081; c=relaxed/simple;
+	bh=M/YUrDQzfiwagd5Wys3YRQJmYXAUWAmuAEFdCZ5oe7A=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=h4LRy5nV7GRE6TBhib4Umacf3czMaNm/Oggc/FDLCD/u/6q78yisdXQ4Z9zZgXI8P7aE911mZv2Hi5azOwpBvyA+5PwF4tNAFXGOfBlILqZCBTg50eefA5N5aMAFGyc2AAi+eJA2hRvcsi23KoAbBxMpnZaceOooyXKEDOOmdAw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7ZBqMVe; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E4FC116D0;
-	Thu, 15 Jan 2026 17:24:46 +0000 (UTC)
+	 MIME-Version; b=f3SSOgmpixfMzF1OavGt+45kBbP5N/A1LJoisBqGFVLXDB3+1GXuimwueuLUftK1MNeZxLNKVLgdX5ncdhRI6StG55pvDIYdFlV5q0SnAtPH5T8zhrKxR1I3hclNz2X60DRAnnV2RCTmkUvrs1xI8U+teyJT36KMGnxbHNEiJgk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1BSGNAY/; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 168A4C116D0;
+	Thu, 15 Jan 2026 17:44:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497887;
-	bh=jl4gEiGoL7PMsr4yxmYsDVnpYN2MjTt7Re1SZaB0q1Q=;
+	s=korg; t=1768499081;
+	bh=M/YUrDQzfiwagd5Wys3YRQJmYXAUWAmuAEFdCZ5oe7A=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=d7ZBqMVeQWovGJKBq4Yr+cKG+B4V8KKDH0Jz4gsUC+yW0b5sz6AsE20Z6J/TFCpfG
-	 hjsEkZSffOWPySujMdXCpFCp5IlQgR8XmU/TzHf4Us1FOP6Kt6TRtXPrO9yhsx4LAL
-	 dFB9rkUISGjba43WlPmhHvq9VPdnFUsq8c8VH400=
+	b=1BSGNAY/15RtresUk3o8vbT1e8dyGwsUukyYKJcWB1gpNyetvAZJn5AVvGv4opdXw
+	 I5It+EQm4dBIEn0oO7vbG4R2B5xfATcdZv+Ajd10m54K5uxwsQ4IBdclxsquCfnYyh
+	 +WYswbNXRjK6bN32bBHw9sPKrodbCrKoDu+phjco=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniil Tatianin <d-tatianin@yandex-team.ru>,
-	Andrew Lunn <andrew@lunn.ch>,
-	"David S. Miller" <davem@davemloft.net>,
+	Randy Dunlap <rdunlap@infradead.org>,
+	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
+	Lee Jones <lee@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 237/554] net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers
+Subject: [PATCH 5.10 102/451] backlight: lp855x: Fix lp855x.h kernel-doc warnings
 Date: Thu, 15 Jan 2026 17:45:03 +0100
-Message-ID: <20260115164254.823646369@linuxfoundation.org>
+Message-ID: <20260115164234.608167101@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,170 +61,52 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniil Tatianin <d-tatianin@yandex-team.ru>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 201ed315f9676809cd5b20a39206e964106d4f27 ]
+[ Upstream commit 2d45db63260c6ae3cf007361e04a1c41bd265084 ]
 
-So that it's easier to follow and make sense of the branching and
-various conditions.
+Add a missing struct short description and a missing leading " *" to
+lp855x.h to avoid kernel-doc warnings:
 
-Stats retrieval has been split into two separate functions
-ethtool_get_phy_stats_phydev & ethtool_get_phy_stats_ethtool.
-The former attempts to retrieve the stats using phydev & phy_ops, while
-the latter uses ethtool_ops.
+Warning: include/linux/platform_data/lp855x.h:126 missing initial short
+ description on line:
+ * struct lp855x_platform_data
+Warning: include/linux/platform_data/lp855x.h:131 bad line:
+   Only valid when mode is PWM_BASED.
 
-Actual n_stats validation & array allocation has been moved into a new
-ethtool_vzalloc_stats_array helper.
-
-This also fixes a potential NULL dereference of
-ops->get_ethtool_phy_stats where it was getting called in an else branch
-unconditionally without making sure it was actually present.
-
-Found by Linux Verification Center (linuxtesting.org) with the SVACE
-static analysis tool.
-
-Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 7b07be1ff1cb ("ethtool: Avoid overflowing userspace buffer on stats query")
+Fixes: 7be865ab8634 ("backlight: new backlight driver for LP855x devices")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
+Link: https://patch.msgid.link/20251111060916.1995920-1-rdunlap@infradead.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ethtool/ioctl.c | 102 ++++++++++++++++++++++++++++++--------------
- 1 file changed, 69 insertions(+), 33 deletions(-)
+ include/linux/platform_data/lp855x.h | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
-index 2ffd52d886cfc..33b5c3d8f2f7f 100644
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -2056,23 +2056,8 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
- 	return ret;
- }
+diff --git a/include/linux/platform_data/lp855x.h b/include/linux/platform_data/lp855x.h
+index ab222dd05bbc2..3b4a891acefe9 100644
+--- a/include/linux/platform_data/lp855x.h
++++ b/include/linux/platform_data/lp855x.h
+@@ -124,12 +124,12 @@ struct lp855x_rom_data {
+ };
  
--static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
-+static int ethtool_vzalloc_stats_array(int n_stats, u64 **data)
- {
--	const struct ethtool_phy_ops *phy_ops = ethtool_phy_ops;
--	const struct ethtool_ops *ops = dev->ethtool_ops;
--	struct phy_device *phydev = dev->phydev;
--	struct ethtool_stats stats;
--	u64 *data;
--	int ret, n_stats;
--
--	if (!phydev && (!ops->get_ethtool_phy_stats || !ops->get_sset_count))
--		return -EOPNOTSUPP;
--
--	if (phydev && !ops->get_ethtool_phy_stats &&
--	    phy_ops && phy_ops->get_sset_count)
--		n_stats = phy_ops->get_sset_count(phydev);
--	else
--		n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
- 	if (n_stats < 0)
- 		return n_stats;
- 	if (n_stats > S32_MAX / sizeof(u64))
-@@ -2080,31 +2065,82 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
- 	if (WARN_ON_ONCE(!n_stats))
- 		return -EOPNOTSUPP;
- 
-+	*data = vzalloc(array_size(n_stats, sizeof(u64)));
-+	if (!*data)
-+		return -ENOMEM;
-+
-+	return 0;
-+}
-+
-+static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
-+					 struct ethtool_stats *stats,
-+					 u64 **data)
-+ {
-+	const struct ethtool_phy_ops *phy_ops = ethtool_phy_ops;
-+	int n_stats, ret;
-+
-+	if (!phy_ops || !phy_ops->get_sset_count || !phy_ops->get_stats)
-+		return -EOPNOTSUPP;
-+
-+	n_stats = phy_ops->get_sset_count(phydev);
-+
-+	ret = ethtool_vzalloc_stats_array(n_stats, data);
-+	if (ret)
-+		return ret;
-+
-+	stats->n_stats = n_stats;
-+	return phy_ops->get_stats(phydev, stats, *data);
-+}
-+
-+static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
-+					  struct ethtool_stats *stats,
-+					  u64 **data)
-+{
-+	const struct ethtool_ops *ops = dev->ethtool_ops;
-+	int n_stats, ret;
-+
-+	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
-+		return -EOPNOTSUPP;
-+
-+	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
-+
-+	ret = ethtool_vzalloc_stats_array(n_stats, data);
-+	if (ret)
-+		return ret;
-+
-+	stats->n_stats = n_stats;
-+	ops->get_ethtool_phy_stats(dev, stats, *data);
-+
-+	return 0;
-+}
-+
-+static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
-+{
-+	struct phy_device *phydev = dev->phydev;
-+	struct ethtool_stats stats;
-+	u64 *data = NULL;
-+	int ret = -EOPNOTSUPP;
-+
- 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
- 		return -EFAULT;
- 
--	stats.n_stats = n_stats;
-+	if (phydev)
-+		ret = ethtool_get_phy_stats_phydev(phydev, &stats, &data);
- 
--	data = vzalloc(array_size(n_stats, sizeof(u64)));
--	if (!data)
--		return -ENOMEM;
-+	if (ret == -EOPNOTSUPP)
-+		ret = ethtool_get_phy_stats_ethtool(dev, &stats, &data);
- 
--	if (phydev && !ops->get_ethtool_phy_stats &&
--		phy_ops && phy_ops->get_stats) {
--		ret = phy_ops->get_stats(phydev, &stats, data);
--		if (ret < 0)
--			goto out;
--	} else {
--		ops->get_ethtool_phy_stats(dev, &stats, data);
--	}
-+	if (ret)
-+		goto out;
- 
--	ret = -EFAULT;
--	if (copy_to_user(useraddr, &stats, sizeof(stats)))
-+	if (copy_to_user(useraddr, &stats, sizeof(stats))) {
-+		ret = -EFAULT;
- 		goto out;
-+	}
-+
- 	useraddr += sizeof(stats);
--	if (copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
--		goto out;
--	ret = 0;
-+	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
-+		ret = -EFAULT;
- 
-  out:
- 	vfree(data);
+ /**
+- * struct lp855x_platform_data
++ * struct lp855x_platform_data - lp855 platform-specific data
+  * @name : Backlight driver name. If it is not defined, default name is set.
+  * @device_control : value of DEVICE CONTROL register
+  * @initial_brightness : initial value of backlight brightness
+  * @period_ns : platform specific pwm period value. unit is nano.
+-		Only valid when mode is PWM_BASED.
++ *		Only valid when mode is PWM_BASED.
+  * @size_program : total size of lp855x_rom_data
+  * @rom_data : list of new eeprom/eprom registers
+  */
 -- 
 2.51.0
 
