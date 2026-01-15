@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209777-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209324-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2D56BD276AF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:39 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B5370D27571
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 8DD8A31E88BF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 5C76931D15D2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:29 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id EF9FE3C009B;
-	Thu, 15 Jan 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 16B0F3C199B;
+	Thu, 15 Jan 2026 17:32:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y8ufTfZd"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="XHAmTpOg"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B37733D1CC6;
-	Thu, 15 Jan 2026 17:54:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CBF603C199C;
+	Thu, 15 Jan 2026 17:32:51 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499661; cv=none; b=b9Cy2ZVdlvB2+pfV5RYRUrVplUhUxBiMwvlrhl7FehHyIjwBEIw9V5u+k8Yd1jYtk5ZOV3MkkDXZO6iry51WMhibUr3VIJYrTUi8JdzNMep8awG8XXw3se96Yldv9k+69OIXZSgo+zRbNUIQVeaucUjzlS1Z8tDCznbvEPk9c7k=
+	t=1768498371; cv=none; b=g1gpQFr0CAmKUHUbLQHbz3yv7Qga98bAUyHghZFIjARuklRL8Dl+MBVDivIZ4CfDIa15xxi1MX4m06pOvwM7bUK5XrcPfnwY5rEwP//9vBoK5vmU9zMq6abtj8/zaVrqWHI+rEVEaIjwUOmVeUOmlRfHZsVGLkJtE4er734d5w4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499661; c=relaxed/simple;
-	bh=xigkQMQ8pW0JCGIlB+aLhH314u6jPfM+QHNIBQKuCEM=;
+	s=arc-20240116; t=1768498371; c=relaxed/simple;
+	bh=EhGUXMMZHl9T4DzkR3GpbyAjvS/MQD1VEYaeMz/ca/M=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qS+VI9OLRJjQGN57hF4MrnDIRDJ5vnG9GQndMmY7RRFLR3UXjxVniCBV2cMM10tKduGEaYQSQpFxKp0Crung4qEQXFE5NdqHCPzYfbue8RikHQ1wTT0SC/9L5uDyty2mHT0dQ/jwYja4o5oN/ig4deCEnYLXgMyGaVUYW0zwQ2g=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y8ufTfZd; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D544C116D0;
-	Thu, 15 Jan 2026 17:54:21 +0000 (UTC)
+	 MIME-Version; b=rsxyjOUAsR0oD6pPopDeEtIMUNKw4HD/xRMyzy5LTQQobQ7UqvlLu00USGbNfss4NWVCPgjANbxr43LPwuV2etppu9ZzA8BZnVn58Z+qs1efiJi3HvHMV2VxlXB+KWddOOIh5W5Nq9qa2JPDqJMDVEZB2i0Rn+bX9X37GOnY/mc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=XHAmTpOg; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59908C116D0;
+	Thu, 15 Jan 2026 17:32:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499661;
-	bh=xigkQMQ8pW0JCGIlB+aLhH314u6jPfM+QHNIBQKuCEM=;
+	s=korg; t=1768498371;
+	bh=EhGUXMMZHl9T4DzkR3GpbyAjvS/MQD1VEYaeMz/ca/M=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y8ufTfZd77AW4wyf0kP0x5+UF0VklmbeD0cNSu2A0S//V8AVaIt1DMHgQNHnYB5GZ
-	 5HmqgvnD93Cej61KI7SL7As9VClIp0X50+0JH9UiRFAiO0gO6nEM0klKIh9dWfnnLS
-	 8Xnm0orgQ5Cmnd4AfncRDcPzKI3Ar4duPJyVYgiE=
+	b=XHAmTpOgob4ewpG4lqyhnJgccIEOflRcYUWuOjAEs5jtrGEtBz+rJapwOegeJwqkS
+	 OmqnTW+jqLbC6ONB9zuRDvD4hW8O/MNRNo/5cl232UTCCEUnlWNL82yK85n8Re+VzF
+	 YGCpzrvai7lLk7YT8dCuq1XLOharrOFTk6Joyb20=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xiumei Mu <xmu@redhat.com>,
-	Xin Long <lucien.xin@gmail.com>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 273/451] crypto: seqiv - Do not use req->iv after crypto_aead_encrypt
+	Kevin Hao <kexin.hao@windriver.com>,
+	Xiaolei Wang <xiaolei.wang@windriver.com>,
+	Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 5.15 408/554] net: macb: Relocate mog_init_rings() callback from macb_mac_link_up() to macb_open()
 Date: Thu, 15 Jan 2026 17:47:54 +0100
-Message-ID: <20260115164240.761950622@linuxfoundation.org>
+Message-ID: <20260115164301.000400985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,66 +60,175 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-[ Upstream commit 50fdb78b7c0bcc550910ef69c0984e751cac72fa ]
+commit 99537d5c476cada9cf75aef9fa75579a31faadb9 upstream.
 
-As soon as crypto_aead_encrypt is called, the underlying request
-may be freed by an asynchronous completion.  Thus dereferencing
-req->iv after it returns is invalid.
+In the non-RT kernel, local_bh_disable() merely disables preemption,
+whereas it maps to an actual spin lock in the RT kernel. Consequently,
+when attempting to refill RX buffers via netdev_alloc_skb() in
+macb_mac_link_up(), a deadlock scenario arises as follows:
 
-Instead of checking req->iv against info, create a new variable
-unaligned_info and use it for that purpose instead.
+   WARNING: possible circular locking dependency detected
+   6.18.0-08691-g2061f18ad76e #39 Not tainted
+   ------------------------------------------------------
+   kworker/0:0/8 is trying to acquire lock:
+   ffff00080369bbe0 (&bp->lock){+.+.}-{3:3}, at: macb_start_xmit+0x808/0xb7c
 
-Fixes: 0a270321dbf9 ("[CRYPTO] seqiv: Add Sequence Number IV Generator")
-Reported-by: Xiumei Mu <xmu@redhat.com>
-Reported-by: Xin Long <lucien.xin@gmail.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   but task is already holding lock:
+   ffff000803698e58 (&queue->tx_ptr_lock){+...}-{3:3}, at: macb_start_xmit
+   +0x148/0xb7c
+
+   which lock already depends on the new lock.
+
+   the existing dependency chain (in reverse order) is:
+
+   -> #3 (&queue->tx_ptr_lock){+...}-{3:3}:
+          rt_spin_lock+0x50/0x1f0
+          macb_start_xmit+0x148/0xb7c
+          dev_hard_start_xmit+0x94/0x284
+          sch_direct_xmit+0x8c/0x37c
+          __dev_queue_xmit+0x708/0x1120
+          neigh_resolve_output+0x148/0x28c
+          ip6_finish_output2+0x2c0/0xb2c
+          __ip6_finish_output+0x114/0x308
+          ip6_output+0xc4/0x4a4
+          mld_sendpack+0x220/0x68c
+          mld_ifc_work+0x2a8/0x4f4
+          process_one_work+0x20c/0x5f8
+          worker_thread+0x1b0/0x35c
+          kthread+0x144/0x200
+          ret_from_fork+0x10/0x20
+
+   -> #2 (_xmit_ETHER#2){+...}-{3:3}:
+          rt_spin_lock+0x50/0x1f0
+          sch_direct_xmit+0x11c/0x37c
+          __dev_queue_xmit+0x708/0x1120
+          neigh_resolve_output+0x148/0x28c
+          ip6_finish_output2+0x2c0/0xb2c
+          __ip6_finish_output+0x114/0x308
+          ip6_output+0xc4/0x4a4
+          mld_sendpack+0x220/0x68c
+          mld_ifc_work+0x2a8/0x4f4
+          process_one_work+0x20c/0x5f8
+          worker_thread+0x1b0/0x35c
+          kthread+0x144/0x200
+          ret_from_fork+0x10/0x20
+
+   -> #1 ((softirq_ctrl.lock)){+.+.}-{3:3}:
+          lock_release+0x250/0x348
+          __local_bh_enable_ip+0x7c/0x240
+          __netdev_alloc_skb+0x1b4/0x1d8
+          gem_rx_refill+0xdc/0x240
+          gem_init_rings+0xb4/0x108
+          macb_mac_link_up+0x9c/0x2b4
+          phylink_resolve+0x170/0x614
+          process_one_work+0x20c/0x5f8
+          worker_thread+0x1b0/0x35c
+          kthread+0x144/0x200
+          ret_from_fork+0x10/0x20
+
+   -> #0 (&bp->lock){+.+.}-{3:3}:
+          __lock_acquire+0x15a8/0x2084
+          lock_acquire+0x1cc/0x350
+          rt_spin_lock+0x50/0x1f0
+          macb_start_xmit+0x808/0xb7c
+          dev_hard_start_xmit+0x94/0x284
+          sch_direct_xmit+0x8c/0x37c
+          __dev_queue_xmit+0x708/0x1120
+          neigh_resolve_output+0x148/0x28c
+          ip6_finish_output2+0x2c0/0xb2c
+          __ip6_finish_output+0x114/0x308
+          ip6_output+0xc4/0x4a4
+          mld_sendpack+0x220/0x68c
+          mld_ifc_work+0x2a8/0x4f4
+          process_one_work+0x20c/0x5f8
+          worker_thread+0x1b0/0x35c
+          kthread+0x144/0x200
+          ret_from_fork+0x10/0x20
+
+   other info that might help us debug this:
+
+   Chain exists of:
+     &bp->lock --> _xmit_ETHER#2 --> &queue->tx_ptr_lock
+
+    Possible unsafe locking scenario:
+
+          CPU0                    CPU1
+          ----                    ----
+     lock(&queue->tx_ptr_lock);
+                                  lock(_xmit_ETHER#2);
+                                  lock(&queue->tx_ptr_lock);
+     lock(&bp->lock);
+
+    *** DEADLOCK ***
+
+   Call trace:
+    show_stack+0x18/0x24 (C)
+    dump_stack_lvl+0xa0/0xf0
+    dump_stack+0x18/0x24
+    print_circular_bug+0x28c/0x370
+    check_noncircular+0x198/0x1ac
+    __lock_acquire+0x15a8/0x2084
+    lock_acquire+0x1cc/0x350
+    rt_spin_lock+0x50/0x1f0
+    macb_start_xmit+0x808/0xb7c
+    dev_hard_start_xmit+0x94/0x284
+    sch_direct_xmit+0x8c/0x37c
+    __dev_queue_xmit+0x708/0x1120
+    neigh_resolve_output+0x148/0x28c
+    ip6_finish_output2+0x2c0/0xb2c
+    __ip6_finish_output+0x114/0x308
+    ip6_output+0xc4/0x4a4
+    mld_sendpack+0x220/0x68c
+    mld_ifc_work+0x2a8/0x4f4
+    process_one_work+0x20c/0x5f8
+    worker_thread+0x1b0/0x35c
+    kthread+0x144/0x200
+    ret_from_fork+0x10/0x20
+
+Notably, invoking the mog_init_rings() callback upon link establishment
+is unnecessary. Instead, we can exclusively call mog_init_rings() within
+the ndo_open() callback. This adjustment resolves the deadlock issue.
+Furthermore, since MACB_CAPS_MACB_IS_EMAC cases do not use mog_init_rings()
+when opening the network interface via at91ether_open(), moving
+mog_init_rings() to macb_open() also eliminates the MACB_CAPS_MACB_IS_EMAC
+check.
+
+Fixes: 633e98a711ac ("net: macb: use resolved link config in mac_link_up()")
+Cc: stable@vger.kernel.org
+Suggested-by: Kevin Hao <kexin.hao@windriver.com>
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Link: https://patch.msgid.link/20251222015624.1994551-1-xiaolei.wang@windriver.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/seqiv.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/cadence/macb_main.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/crypto/seqiv.c b/crypto/seqiv.c
-index b1bcfe537daf..562ab102226a 100644
---- a/crypto/seqiv.c
-+++ b/crypto/seqiv.c
-@@ -51,6 +51,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 	struct aead_geniv_ctx *ctx = crypto_aead_ctx(geniv);
- 	struct aead_request *subreq = aead_request_ctx(req);
- 	crypto_completion_t compl;
-+	bool unaligned_info;
- 	void *data;
- 	u8 *info;
- 	unsigned int ivsize = 8;
-@@ -80,8 +81,9 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 			return err;
- 	}
+--- a/drivers/net/ethernet/cadence/macb_main.c
++++ b/drivers/net/ethernet/cadence/macb_main.c
+@@ -777,7 +777,6 @@ static void macb_mac_link_up(struct phyl
+ 		/* Initialize rings & buffers as clearing MACB_BIT(TE) in link down
+ 		 * cleared the pipeline and control registers.
+ 		 */
+-		bp->macbgem_ops.mog_init_rings(bp);
+ 		macb_init_buffers(bp);
  
--	if (unlikely(!IS_ALIGNED((unsigned long)info,
--				 crypto_aead_alignmask(geniv) + 1))) {
-+	unaligned_info = !IS_ALIGNED((unsigned long)info,
-+				     crypto_aead_alignmask(geniv) + 1);
-+	if (unlikely(unaligned_info)) {
- 		info = kmemdup(req->iv, ivsize, req->base.flags &
- 			       CRYPTO_TFM_REQ_MAY_SLEEP ? GFP_KERNEL :
- 			       GFP_ATOMIC);
-@@ -101,7 +103,7 @@ static int seqiv_aead_encrypt(struct aead_request *req)
- 	scatterwalk_map_and_copy(info, req->dst, req->assoclen, ivsize, 1);
+ 		for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue)
+@@ -2478,6 +2477,8 @@ static void gem_init_rings(struct macb *
+ 	unsigned int q;
+ 	int i;
  
- 	err = crypto_aead_encrypt(subreq);
--	if (unlikely(info != req->iv))
-+	if (unlikely(unaligned_info))
- 		seqiv_aead_encrypt_complete2(req, err);
- 	return err;
- }
--- 
-2.51.0
-
++	bp->macbgem_ops.mog_init_rings(bp);
++
+ 	for (q = 0, queue = bp->queues; q < bp->num_queues; ++q, ++queue) {
+ 		for (i = 0; i < bp->tx_ring_size; i++) {
+ 			desc = macb_tx_desc(queue, i);
 
 
 
