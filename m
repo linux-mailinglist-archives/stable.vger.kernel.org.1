@@ -1,55 +1,53 @@
-Return-Path: <stable+bounces-208881-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208819-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90E84D262AB
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:12:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0F291D2620D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:01 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 3DA00302426C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:50 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 7A89F300FEE8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:54 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 74CB83A0E94;
-	Thu, 15 Jan 2026 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A2A822D5C9B;
+	Thu, 15 Jan 2026 17:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="tRYc7b9O"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ijkTyxfy"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 392A72750ED;
-	Thu, 15 Jan 2026 17:11:49 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 67B3733993;
+	Thu, 15 Jan 2026 17:08:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497109; cv=none; b=KtCjUB73LmE4KREUR/QBq9R23YuZCB8mEL5DiGJcZGj8OY8eXLfH0mdtj0E4I4znGy6R6FHgbLRB/BTDT/ssAhaxnCI/cpbaowRhR3HWnjvV5SdFKUxKJ8e6kGzTTwOwN4k5vZ0LJpor6rdM8AdRuedYOVbOsCfX6JJb7FO9SB0=
+	t=1768496932; cv=none; b=oquA1HTC0bwaFfcnqrQzlPW1exIFV5zUolAoKAP3wp46T3+Wpp1juR+zK16oX0oYpbqPhRmCVzwJiQJxXw71QzNeM+Y5fEPq2aoFUz4x+VqHH3NsIsGuDb1pXWwE2OZsOR/AYgk72I5IeZ2uHMPDuYTS1V0/+GE3nxYMFhHQZ2c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497109; c=relaxed/simple;
-	bh=aEbeb3aZVUCxJSZ7yw06vBbUeqWnKhSnad7h7zPqZTo=;
+	s=arc-20240116; t=1768496932; c=relaxed/simple;
+	bh=94XlK6m+aiOoHzukg3SVxLxruAUiydf/dZ9vLQyt5ak=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Z4Xn962aaFsdKE7CiIRee5EfTzcSUDuoNDQFWNSwzRdRcShZIfzReLMDlO29jrvfbHlQ6VELWyU/p54seQAQhyUyNjAl6ZwOhAqZYVfmZ4MfcUG+/T1pJSTlfENlE6oOOKMifzD5Cuu5tpo7ZnJoxP+mMtr1oXxIESt8loEUgzk=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=tRYc7b9O; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C08C116D0;
-	Thu, 15 Jan 2026 17:11:48 +0000 (UTC)
+	 MIME-Version; b=TzxolZAAQkEduhXM/EriMPbza/OLK8qlfrUFw9KVly1jn4YDcexOdV2I+UIjGN3z+e1C50d+1AZ/XFjZaZgEyKybrPI3koeoscTxgfY7L1LuciILrM/2xR8j31Ez8zt5BgDOEQGx343ryycMadqfzGs7jhFV/oDhAlWsEruxpV0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ijkTyxfy; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5D61C116D0;
+	Thu, 15 Jan 2026 17:08:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497109;
-	bh=aEbeb3aZVUCxJSZ7yw06vBbUeqWnKhSnad7h7zPqZTo=;
+	s=korg; t=1768496932;
+	bh=94XlK6m+aiOoHzukg3SVxLxruAUiydf/dZ9vLQyt5ak=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=tRYc7b9OUyTtGVvwub3T5ojW+R3WGWwRtKQDp8i3z8WwmXhQYcg8XdV8Ps/sPIZbm
-	 GgBpzxp4v3AHSJi7wqeEQAn0P5XTeamdJrTwfW3BJ4OoMMqyU/NHWj2lWdVP5f/MoN
-	 11N+FQ8nR0YcMywMy7d1uLoTpXa25gGyIMZTEC1A=
+	b=ijkTyxfyIWfc7K46B2VfjsfVyqJbE1bGFRorhVUzOmN60sZIBsgBZSIs2DM81Shxv
+	 L2l0zT/+HRVl5B7X9ddTVj3QRvkhWj/0QcICRLBNSH0cG/YeB1IU0rguxra2fa8SI5
+	 Us/oqINbYsbWWFV1PkGb2aMjX1hkeOn8YcwwtefM=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	"yuan.gao" <yuan.gao@ucloud.cn>,
-	Ido Schimmel <idosch@nvidia.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Takashi Iwai <tiwai@suse.de>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 39/72] inet: ping: Fix icmp out counting
+Subject: [PATCH 6.6 66/88] ALSA: ac97bus: Use guard() for mutex locks
 Date: Thu, 15 Jan 2026 17:48:49 +0100
-Message-ID: <20260115164144.911527798@linuxfoundation.org>
+Message-ID: <20260115164148.698812705@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,60 +59,94 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: yuan.gao <yuan.gao@ucloud.cn>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 4c0856c225b39b1def6c9a6bc56faca79550da13 ]
+[ Upstream commit c07824a14d99c10edd4ec4c389d219af336ecf20 ]
 
-When the ping program uses an IPPROTO_ICMP socket to send ICMP_ECHO
-messages, ICMP_MIB_OUTMSGS is counted twice.
+Replace the manual mutex lock/unlock pairs with guard() for code
+simplification.
 
-    ping_v4_sendmsg
-      ping_v4_push_pending_frames
-        ip_push_pending_frames
-          ip_finish_skb
-            __ip_make_skb
-              icmp_out_count(net, icmp_type); // first count
-      icmp_out_count(sock_net(sk), user_icmph.type); // second count
+Only code refactoring, and no behavior change.
 
-However, when the ping program uses an IPPROTO_RAW socket,
-ICMP_MIB_OUTMSGS is counted correctly only once.
-
-Therefore, the first count should be removed.
-
-Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
-Signed-off-by: yuan.gao <yuan.gao@ucloud.cn>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Tested-by: Ido Schimmel <idosch@nvidia.com>
-Link: https://patch.msgid.link/20251224063145.3615282-1-yuan.gao@ucloud.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://patch.msgid.link/20250829151335.7342-18-tiwai@suse.de
+Stable-dep-of: 830988b6cf19 ("ALSA: ac97: fix a double free in snd_ac97_controller_register()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ping.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ sound/ac97/bus.c |   22 +++++++++-------------
+ 1 file changed, 9 insertions(+), 13 deletions(-)
 
-diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
-index 5178a3f3cb537..cadf743ab4f52 100644
---- a/net/ipv4/ping.c
-+++ b/net/ipv4/ping.c
-@@ -848,10 +848,8 @@ static int ping_v4_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
- out_free:
- 	if (free)
- 		kfree(ipc.opt);
--	if (!err) {
--		icmp_out_count(sock_net(sk), user_icmph.type);
-+	if (!err)
- 		return len;
--	}
- 	return err;
+--- a/sound/ac97/bus.c
++++ b/sound/ac97/bus.c
+@@ -242,10 +242,9 @@ static ssize_t cold_reset_store(struct d
+ {
+ 	struct ac97_controller *ac97_ctrl;
  
- do_confirm:
--- 
-2.51.0
-
+-	mutex_lock(&ac97_controllers_mutex);
++	guard(mutex)(&ac97_controllers_mutex);
+ 	ac97_ctrl = to_ac97_controller(dev);
+ 	ac97_ctrl->ops->reset(ac97_ctrl);
+-	mutex_unlock(&ac97_controllers_mutex);
+ 	return len;
+ }
+ static DEVICE_ATTR_WO(cold_reset);
+@@ -259,10 +258,9 @@ static ssize_t warm_reset_store(struct d
+ 	if (!dev)
+ 		return -ENODEV;
+ 
+-	mutex_lock(&ac97_controllers_mutex);
++	guard(mutex)(&ac97_controllers_mutex);
+ 	ac97_ctrl = to_ac97_controller(dev);
+ 	ac97_ctrl->ops->warm_reset(ac97_ctrl);
+-	mutex_unlock(&ac97_controllers_mutex);
+ 	return len;
+ }
+ static DEVICE_ATTR_WO(warm_reset);
+@@ -285,10 +283,10 @@ static const struct attribute_group *ac9
+ 
+ static void ac97_del_adapter(struct ac97_controller *ac97_ctrl)
+ {
+-	mutex_lock(&ac97_controllers_mutex);
+-	ac97_ctrl_codecs_unregister(ac97_ctrl);
+-	list_del(&ac97_ctrl->controllers);
+-	mutex_unlock(&ac97_controllers_mutex);
++	scoped_guard(mutex, &ac97_controllers_mutex) {
++		ac97_ctrl_codecs_unregister(ac97_ctrl);
++		list_del(&ac97_ctrl->controllers);
++	}
+ 
+ 	device_unregister(&ac97_ctrl->adap);
+ }
+@@ -312,7 +310,7 @@ static int ac97_add_adapter(struct ac97_
+ {
+ 	int ret;
+ 
+-	mutex_lock(&ac97_controllers_mutex);
++	guard(mutex)(&ac97_controllers_mutex);
+ 	ret = idr_alloc(&ac97_adapter_idr, ac97_ctrl, 0, 0, GFP_KERNEL);
+ 	ac97_ctrl->nr = ret;
+ 	if (ret >= 0) {
+@@ -323,13 +321,11 @@ static int ac97_add_adapter(struct ac97_
+ 		if (ret)
+ 			put_device(&ac97_ctrl->adap);
+ 	}
+-	if (!ret)
++	if (!ret) {
+ 		list_add(&ac97_ctrl->controllers, &ac97_controllers);
+-	mutex_unlock(&ac97_controllers_mutex);
+-
+-	if (!ret)
+ 		dev_dbg(&ac97_ctrl->adap, "adapter registered by %s\n",
+ 			dev_name(ac97_ctrl->parent));
++	}
+ 	return ret;
+ }
+ 
 
 
 
