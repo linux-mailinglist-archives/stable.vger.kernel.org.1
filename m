@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209147-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209601-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C0B75D26722
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:04 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 60EB6D26E57
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id A8F06305F096
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:49 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id CE0883031D59
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:46:17 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7CE0C3BFE22;
-	Thu, 15 Jan 2026 17:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 76F653BFE27;
+	Thu, 15 Jan 2026 17:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1YQQQzLP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="lTRCfCrS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F89F3BFE21;
-	Thu, 15 Jan 2026 17:24:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 375853BF2FC;
+	Thu, 15 Jan 2026 17:46:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497867; cv=none; b=JDASLd7S4DZ1ZOdBVnmcJt2Fd8TCRmOE0u42Gx8aFno53G2rK2trogyLv9LAYhu2kqzahWAs0l00ddRr+8y//9maD0hV7jMmfH5oLzJZxDZDt0DxuuGf6sf7DcaiEnYm3xTozJZgjo1A4b2l/epQfUMqz0I3gPnTGbW1b/e/IYs=
+	t=1768499161; cv=none; b=m4nP6ZpUwdBEudHk0Joa7DU8BIDNYVmAI15EEFhorDLD/PdsZJ7AoWU/dvTEgxro2RRGGPaHh2P2OUTBFyUl5+RG+3F0xEvNby9YnAc73BLHeuIXeghauFrAJt8MhQnpws7hmstdff0qhjPJoh89rLJGaW4HjlSUrvSHXYUbHFs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497867; c=relaxed/simple;
-	bh=lOvRMNz/QbSuo8ypHtnTCFixXNYhTZtdPIXO5/LwP3c=;
+	s=arc-20240116; t=1768499161; c=relaxed/simple;
+	bh=lJ5piVtz93lexCNvo9Uvxa9f8jvIgvoqGlpEcRvnE6w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=fvwYRNhAhKHxx72sRzRat+rhdrsGT+cTFH/LOBquoosJVLeTAsbhgN6bhraAxM9J75TEuQIKCnSkhWdaUSJJs1jbXZYUMkfmsbaihu8ShqeTSbFeCyxQWMXs8qnDgowPA6kNV5OeMnzFvCy5QrEQPjG5uMrerUMtuNmE3UN+QZI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1YQQQzLP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 925BAC16AAE;
-	Thu, 15 Jan 2026 17:24:26 +0000 (UTC)
+	 MIME-Version; b=oWn4pLLanYvwYVvTUset9/dXMfidI2UBKpkfP7ICFR2OyvptLx55h3elLIZmLRSzvh7F4QpoHir/DSxyztnAKiWbhq2Vf++SLftArwRh7jsKNYpdaEiQJEMmV9cuRTRvEjFGgDAZKlcTzuTAKcPDoHq9TsE8WNJuDXaFzt8VT4c=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=lTRCfCrS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8345C116D0;
+	Thu, 15 Jan 2026 17:46:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497867;
-	bh=lOvRMNz/QbSuo8ypHtnTCFixXNYhTZtdPIXO5/LwP3c=;
+	s=korg; t=1768499161;
+	bh=lJ5piVtz93lexCNvo9Uvxa9f8jvIgvoqGlpEcRvnE6w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=1YQQQzLPkqCUdzT+Hfd5QGRc8tEjyrBjibzeEvmhhuOR8P81ryq/uN6cyk0BI1nv8
-	 77AEWiyuAJ9JaDY2YhlAZw2yeGiY0cwZ60I98QME+SOqbqpSbNbxEGPZFe0aBPs8iZ
-	 I6aMUk6cZh8pf+jfVUkVsZNpCIilPAwPg+rS6Zok=
+	b=lTRCfCrShaKSEdZJOCTBaY3lmT2+4gFNB1Qji65t7D10W365MN0F/lU98k9t+p7xf
+	 k0JFPLVA2NW4uCe7cUf8BmD6Vxw8P1ioV6LM5hc8/FgnAcd5sScpVy8pydhmUUOi1P
+	 qoUp3ve9A6fMXgTffJn6+JlVae69bcjUgpQXOdWQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Slavin Liu <slavin452@gmail.com>,
-	Julian Anastasov <ja@ssi.bg>,
-	Florian Westphal <fw@strlen.de>,
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 231/554] ipvs: fix ipv4 null-ptr-deref in route error path
+Subject: [PATCH 5.10 096/451] crypto: ccree - Correctly handle return of sg_nents_for_len
 Date: Thu, 15 Jan 2026 17:44:57 +0100
-Message-ID: <20260115164254.606478231@linuxfoundation.org>
+Message-ID: <20260115164234.390503118@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,82 +58,55 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slavin Liu <slavin452@gmail.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit ad891bb3d079a46a821bf2b8867854645191bab0 ]
+[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
 
-The IPv4 code path in __ip_vs_get_out_rt() calls dst_link_failure()
-without ensuring skb->dev is set, leading to a NULL pointer dereference
-in fib_compute_spec_dst() when ipv4_link_failure() attempts to send
-ICMP destination unreachable messages.
+Fix error handling in cc_map_hash_request_update where sg_nents_for_len
+return value was assigned to u32, converting negative errors to large
+positive values before passing to sg_copy_to_buffer.
 
-The issue emerged after commit ed0de45a1008 ("ipv4: recompile ip options
-in ipv4_link_failure") started calling __ip_options_compile() from
-ipv4_link_failure(). This code path eventually calls fib_compute_spec_dst()
-which dereferences skb->dev. An attempt was made to fix the NULL skb->dev
-dereference in commit 0113d9c9d1cc ("ipv4: fix null-deref in
-ipv4_link_failure"), but it only addressed the immediate dev_net(skb->dev)
-dereference by using a fallback device. The fix was incomplete because
-fib_compute_spec_dst() later in the call chain still accesses skb->dev
-directly, which remains NULL when IPVS calls dst_link_failure().
+Check sg_nents_for_len return value and propagate errors before
+assigning to areq_ctx->in_nents.
 
-The crash occurs when:
-1. IPVS processes a packet in NAT mode with a misconfigured destination
-2. Route lookup fails in __ip_vs_get_out_rt() before establishing a route
-3. The error path calls dst_link_failure(skb) with skb->dev == NULL
-4. ipv4_link_failure() → ipv4_send_dest_unreach() →
-   __ip_options_compile() → fib_compute_spec_dst()
-5. fib_compute_spec_dst() dereferences NULL skb->dev
-
-Apply the same fix used for IPv6 in commit 326bf17ea5d4 ("ipvs: fix
-ipv6 route unreach panic"): set skb->dev from skb_dst(skb)->dev before
-calling dst_link_failure().
-
-KASAN: null-ptr-deref in range [0x0000000000000328-0x000000000000032f]
-CPU: 1 PID: 12732 Comm: syz.1.3469 Not tainted 6.6.114 #2
-RIP: 0010:__in_dev_get_rcu include/linux/inetdevice.h:233
-RIP: 0010:fib_compute_spec_dst+0x17a/0x9f0 net/ipv4/fib_frontend.c:285
-Call Trace:
-  <TASK>
-  spec_dst_fill net/ipv4/ip_options.c:232
-  spec_dst_fill net/ipv4/ip_options.c:229
-  __ip_options_compile+0x13a1/0x17d0 net/ipv4/ip_options.c:330
-  ipv4_send_dest_unreach net/ipv4/route.c:1252
-  ipv4_link_failure+0x702/0xb80 net/ipv4/route.c:1265
-  dst_link_failure include/net/dst.h:437
-  __ip_vs_get_out_rt+0x15fd/0x19e0 net/netfilter/ipvs/ip_vs_xmit.c:412
-  ip_vs_nat_xmit+0x1d8/0xc80 net/netfilter/ipvs/ip_vs_xmit.c:764
-
-Fixes: ed0de45a1008 ("ipv4: recompile ip options in ipv4_link_failure")
-Signed-off-by: Slavin Liu <slavin452@gmail.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_xmit.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_xmit.c b/net/netfilter/ipvs/ip_vs_xmit.c
-index c87dbc8970023..f82834349ca2c 100644
---- a/net/netfilter/ipvs/ip_vs_xmit.c
-+++ b/net/netfilter/ipvs/ip_vs_xmit.c
-@@ -420,6 +420,9 @@ __ip_vs_get_out_rt(struct netns_ipvs *ipvs, int skb_af, struct sk_buff *skb,
- 	return -1;
+diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
+index 6140e49273226..5754dc88c684c 100644
+--- a/drivers/crypto/ccree/cc_buffer_mgr.c
++++ b/drivers/crypto/ccree/cc_buffer_mgr.c
+@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	int rc = 0;
+ 	u32 dummy = 0;
+ 	u32 mapped_nents = 0;
++	int sg_nents;
  
- err_unreach:
-+	if (!skb->dev)
-+		skb->dev = skb_dst(skb)->dev;
-+
- 	dst_link_failure(skb);
- 	return -1;
- }
+ 	dev_dbg(dev, " update params : curr_buff=%pK curr_buff_cnt=0x%X nbytes=0x%X src=%pK curr_index=%u\n",
+ 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
+@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
+ 	if (total_in_len < block_size) {
+ 		dev_dbg(dev, " less than one block: curr_buff=%pK *curr_buff_cnt=0x%X copy_to=%pK\n",
+ 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
+-		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
++		sg_nents = sg_nents_for_len(src, nbytes);
++		if (sg_nents < 0)
++			return sg_nents;
++		areq_ctx->in_nents = sg_nents;
+ 		sg_copy_to_buffer(src, areq_ctx->in_nents,
+ 				  &curr_buff[*curr_buff_cnt], nbytes);
+ 		*curr_buff_cnt += nbytes;
 -- 
 2.51.0
 
