@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209679-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209260-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 06039D27485
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:16:42 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id C9933D267E3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:34 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 61F2930D7CF6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:34 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C9A32307C9F1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:04 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2268B3D6F22;
-	Thu, 15 Jan 2026 17:49:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1E5363C0095;
+	Thu, 15 Jan 2026 17:29:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vZg56Fj2"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="QopqzinT"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D9C543D6F17;
-	Thu, 15 Jan 2026 17:49:42 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CE21C3D3311;
+	Thu, 15 Jan 2026 17:29:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499382; cv=none; b=otXdtD77Y2lNIihnK7N2d0S5uak5cOzMn6S5R1A9g/hEmdfOcoJwxq0l2awEHvY1pHKLTFPSk4xpyV4rRTCW8FNPaGGQhADFvDpeCvll4TyArNAHXyJ0JWc4FWwRl8TxmNQQgrqfIL9dlsNLwsYgcQ1wg6nX5J5g4GaDxtvY30M=
+	t=1768498189; cv=none; b=K8S5ChA11WZBXcj2kM9tBOtQq8UMPb4dj+i8bP8L5jGbHNk0HoPJnO7CmGAg1y7PDF9nhs24okoi2klfKN3Z/QJHE2i11An2ZlkRRSnbllgFZlgvKXfAek0NOtDG2CBrXKb7RBHgOMwqzZi3lZ8RzbfphNnT5iJ9UoyPuin+GKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499382; c=relaxed/simple;
-	bh=YQAoAoZyXq1NglJWJ+uoYNSHXjfqguZcHg8oR6ohVDE=;
+	s=arc-20240116; t=1768498189; c=relaxed/simple;
+	bh=bwRrVX2PtxeWK9NoFP0iw5U43sV5o2mz+OT5AbIHda0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VaOOIENbEAhou5o/q2IdbJNM+HCuLs1Jbe5TfetbrYHn/X0SXkOes62r58vO8wXg086E9k0oyaavm0A+IyhtL2UvcJaDaHYcsjbN2K0omeJSAii0BqSkosChugq8qQyKuDK6yt4bpLgNptAigipFgsW0HgtrANede2fEmBXNR7A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vZg56Fj2; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 27136C16AAE;
-	Thu, 15 Jan 2026 17:49:41 +0000 (UTC)
+	 MIME-Version; b=hx5KnU9zB5Qfq8CZkIvo/KlcL22YRPb6i53Vk14mr1dvizU75BwojjkVJBdqxVxRf3woJEvjC9Xd44iqng58/NZYcUywg/kHd7T6QjZTyBuQudIHzz0ie6C/bJo8gRuofFIHBlJmjWzB/Won9BM4bLh5qzi3J1CuUIDNHwyES6g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=QopqzinT; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C22AC116D0;
+	Thu, 15 Jan 2026 17:29:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499382;
-	bh=YQAoAoZyXq1NglJWJ+uoYNSHXjfqguZcHg8oR6ohVDE=;
+	s=korg; t=1768498189;
+	bh=bwRrVX2PtxeWK9NoFP0iw5U43sV5o2mz+OT5AbIHda0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=vZg56Fj2NpUy6SrRNf9MwQDJoy/k0t2pA/sL+t+itKaA8JKo0Os5pnRo6SM3OXk2Z
-	 UyRfI7ZXpIKv6oeuSfe++5m0KMrN4WUKRT3zhwUo3sqmViAl5VgCPlAXUy9D8vKG8S
-	 VjqmJkSm+JMhezZJQ3lEbizkKtV7BTlzsr8TmNiA=
+	b=QopqzinTZcAImNwAmxJs1Mq1p/BHptVD516mERLoYTzaASdy8ejBdQGmCz5lD/fB6
+	 RxrfDuT1bDPGQJSknsv/xrhzaXnvmMjQUMD5W0agoNdF9dRyTAP29IvmWMNeqSOJ4B
+	 /b8RYItrAuYqeCNg/ZouT1Npm0pc+qLI4AZB+Af8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ben Collins <bcollins@kernel.org>,
-	Christophe Leroy <christophe.leroy@csgroup.eu>,
-	Madhavan Srinivasan <maddy@linux.ibm.com>,
+	Jacky Chou <jacky_chou@aspeedtech.com>,
+	Andrew Lunn <andrew@lunn.ch>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 208/451] powerpc/addnote: Fix overflow on 32-bit builds
+Subject: [PATCH 5.15 343/554] net: mdio: aspeed: add dummy read to avoid read-after-write issue
 Date: Thu, 15 Jan 2026 17:46:49 +0100
-Message-ID: <20260115164238.425097681@linuxfoundation.org>
+Message-ID: <20260115164258.644808978@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,52 +61,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ben Collins <bcollins@kernel.org>
+From: Jacky Chou <jacky_chou@aspeedtech.com>
 
-[ Upstream commit 825ce89a3ef17f84cf2c0eacfa6b8dc9fd11d13f ]
+[ Upstream commit d1a1a4bade4b20c0858d0b2f81d2611de055f675 ]
 
-The PUT_64[LB]E() macros need to cast the value to unsigned long long
-like the GET_64[LB]E() macros. Caused lots of warnings when compiled
-on 32-bit, and clobbered addresses (36-bit P4080).
+The Aspeed MDIO controller may return incorrect data when a read operation
+follows immediately after a write. Due to a controller bug, the subsequent
+read can latch stale data, causing the polling logic to terminate earlier
+than expected.
 
-Signed-off-by: Ben Collins <bcollins@kernel.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Madhavan Srinivasan <maddy@linux.ibm.com>
-Link: https://patch.msgid.link/2025042122-mustard-wrasse-694572@boujee-and-buff
+To work around this hardware issue, insert a dummy read after each write
+operation. This ensures that the next actual read returns the correct
+data and prevents premature polling exit.
+
+This workaround has been verified to stabilize MDIO transactions on
+affected Aspeed platforms.
+
+Fixes: f160e99462c6 ("net: phy: Add mdio-aspeed")
+Signed-off-by: Jacky Chou <jacky_chou@aspeedtech.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://patch.msgid.link/20251211-aspeed_mdio_add_dummy_read-v3-1-382868869004@aspeedtech.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/boot/addnote.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/net/mdio/mdio-aspeed.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/arch/powerpc/boot/addnote.c b/arch/powerpc/boot/addnote.c
-index 53b3b2621457..78704927453a 100644
---- a/arch/powerpc/boot/addnote.c
-+++ b/arch/powerpc/boot/addnote.c
-@@ -68,8 +68,8 @@ static int e_class = ELFCLASS32;
- #define PUT_16BE(off, v)(buf[off] = ((v) >> 8) & 0xff, \
- 			 buf[(off) + 1] = (v) & 0xff)
- #define PUT_32BE(off, v)(PUT_16BE((off), (v) >> 16L), PUT_16BE((off) + 2, (v)))
--#define PUT_64BE(off, v)((PUT_32BE((off), (v) >> 32L), \
--			  PUT_32BE((off) + 4, (v))))
-+#define PUT_64BE(off, v)((PUT_32BE((off), (unsigned long long)(v) >> 32L), \
-+			  PUT_32BE((off) + 4, (unsigned long long)(v))))
+diff --git a/drivers/net/mdio/mdio-aspeed.c b/drivers/net/mdio/mdio-aspeed.c
+index f22be2f069e9..a929399a10d1 100644
+--- a/drivers/net/mdio/mdio-aspeed.c
++++ b/drivers/net/mdio/mdio-aspeed.c
+@@ -57,6 +57,13 @@ static int aspeed_mdio_op(struct mii_bus *bus, u8 st, u8 op, u8 phyad, u8 regad,
  
- #define GET_16LE(off)	((buf[off]) + (buf[(off)+1] << 8))
- #define GET_32LE(off)	(GET_16LE(off) + (GET_16LE((off)+2U) << 16U))
-@@ -78,7 +78,8 @@ static int e_class = ELFCLASS32;
- #define PUT_16LE(off, v) (buf[off] = (v) & 0xff, \
- 			  buf[(off) + 1] = ((v) >> 8) & 0xff)
- #define PUT_32LE(off, v) (PUT_16LE((off), (v)), PUT_16LE((off) + 2, (v) >> 16L))
--#define PUT_64LE(off, v) (PUT_32LE((off), (v)), PUT_32LE((off) + 4, (v) >> 32L))
-+#define PUT_64LE(off, v) (PUT_32LE((off), (unsigned long long)(v)), \
-+			  PUT_32LE((off) + 4, (unsigned long long)(v) >> 32L))
+ 	iowrite32(ctrl, ctx->base + ASPEED_MDIO_CTRL);
  
- #define GET_16(off)	(e_data == ELFDATA2MSB ? GET_16BE(off) : GET_16LE(off))
- #define GET_32(off)	(e_data == ELFDATA2MSB ? GET_32BE(off) : GET_32LE(off))
++	/* Workaround for read-after-write issue.
++	 * The controller may return stale data if a read follows immediately
++	 * after a write. A dummy read forces the hardware to update its
++	 * internal state, ensuring that the next real read returns correct data.
++	 */
++	ioread32(ctx->base + ASPEED_MDIO_CTRL);
++
+ 	return readl_poll_timeout(ctx->base + ASPEED_MDIO_CTRL, ctrl,
+ 				!(ctrl & ASPEED_MDIO_CTRL_FIRE),
+ 				ASPEED_MDIO_INTERVAL_US,
 -- 
 2.51.0
 
