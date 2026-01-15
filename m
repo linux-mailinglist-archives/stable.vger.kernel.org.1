@@ -1,50 +1,51 @@
-Return-Path: <stable+bounces-208491-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208502-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B6C82D25E60
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:54:51 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0E935D25EBA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 595D4309539C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:53:21 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C1BA303807C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:53:52 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 26CBD3B8BAB;
-	Thu, 15 Jan 2026 16:53:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 75A43396B8F;
+	Thu, 15 Jan 2026 16:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="V+stWOij"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="e0QTBfEq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DE23F396B75;
-	Thu, 15 Jan 2026 16:53:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37AC93624C4;
+	Thu, 15 Jan 2026 16:53:52 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496000; cv=none; b=b1Pd0VRYoIZo/0ZkdX2LS2kLKfJMbLCPyqGVoJSz7NdbKTzpAq060WsHqqnvZbD1uZ4wcK/tzrc3YPM6ezs45AEv9nFibkl8nGh0GwTE5AJkssz9w3r17ZRe2Vx77NVvR9+9BkRfcAJwQKCLPt76nCQ0ugW4BO6YIgNJooWUH2o=
+	t=1768496032; cv=none; b=MDrI34cXEAJfIwINRDCU1N0gE6JppUD7LjSE706DwMhS70IwU4+bbDSg7ntww4Nj+OL68u5rdLHn65jpA3eVCTHCkBGxMIzkOKjGig0ktPW/eAMyOW3GqupTqFJ13Q2gOxxqnbO0Y67ul4eIl70YsZb+Zz8wq632JXPZl7xdSPU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496000; c=relaxed/simple;
-	bh=2Xl7rEhFSQGPW4ZzWVXxsEkhvIIuOpJOB0mWdGML64M=;
+	s=arc-20240116; t=1768496032; c=relaxed/simple;
+	bh=/ZcsqsvOsCKowyVHm/AjgjqhAMGzhWrJfvJXJxFqwnw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=n/3R0Zc5M8qxzcpzOMfI9jZyf7Lt9+/T0IwHHoX75T7RJvQ1EckCT67pIrUIxaUsfaW8Q6qrJe2WGBA8klpneERThTq0Bu3PIBZr/1niPgg8ePEywZt/N4/gisS7GBVbypbL2juaqV1F/Bnkud6y3G9cgSWNCnWPn8jaCdHIUN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=V+stWOij; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A08AC116D0;
-	Thu, 15 Jan 2026 16:53:20 +0000 (UTC)
+	 MIME-Version; b=Sze/EzeUxwOXkpEjfUmHLykSyD1pBuXhg4kYji/htGwO3HOw4bgCOnGka8U6Tojj/o8DS/OlpYB88XgeyR9ofN4TsvR1KZ1W6gpzHKVQs9gxwT/zwLu9Gj7fuCq+I9t34kl6EeKG6kq1Fm2f37xicgXmnuOnlEAXC+FoCCFG7Z0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=e0QTBfEq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B997AC19421;
+	Thu, 15 Jan 2026 16:53:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496000;
-	bh=2Xl7rEhFSQGPW4ZzWVXxsEkhvIIuOpJOB0mWdGML64M=;
+	s=korg; t=1768496032;
+	bh=/ZcsqsvOsCKowyVHm/AjgjqhAMGzhWrJfvJXJxFqwnw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=V+stWOijlUD65UD4F8/U3/Rv2Fgci2hI0jQRHwMLEJ/7NGDl+BdZ/fH944dIdlrhD
-	 f2e40TxdfIhvmNoxVOTV+3BsWs9Vkqx8/P1kD8BYgeW8VT68w03TZ9tRR1IzMGM+VY
-	 Vi3zc0oqAVP6hvm7/ArrB6KuRr8HobNEl07x2O08=
+	b=e0QTBfEqXChby/JFMeYatNjMsSySPrrFvRRXwUPqGj5K5sEW4nf4PUt5YjqOzGdyl
+	 Q/di7Wt9MTF4cP5LbAzaseWJPyld+dQgrMuwf1O4O51e0VNUlEqgcLGS+rYbwQkREa
+	 CT9btAWmWLCbXwZMkSoejkRaTxLmumOyHMecbLHw=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Malaya Kumar Rout <mrout@redhat.com>,
-	"Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH 6.18 035/181] PM: hibernate: Fix crash when freeing invalid crypto compressor
-Date: Thu, 15 Jan 2026 17:46:12 +0100
-Message-ID: <20260115164203.595145257@linuxfoundation.org>
+	Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
+	Maxime Ripard <mripard@kernel.org>,
+	Linus Walleij <linusw@kernel.org>
+Subject: [PATCH 6.18 036/181] Revert "drm/mediatek: dsi: Fix DSI host and panel bridge pre-enable order"
+Date: Thu, 15 Jan 2026 17:46:13 +0100
+Message-ID: <20260115164203.632184368@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
 References: <20260115164202.305475649@linuxfoundation.org>
@@ -63,64 +64,44 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Malaya Kumar Rout <mrout@redhat.com>
+From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
 
-commit 7966cf0ebe32c981bfa3db252cb5fc3bb1bf2e77 upstream.
+commit 33e8150bd32d7dc25c977bb455f1f5d54bfd5241 upstream.
 
-When crypto_alloc_acomp() fails, it returns an ERR_PTR value, not NULL.
+This reverts commit f5b1819193667bf62c3c99d3921b9429997a14b2.
 
-The cleanup code in save_compressed_image() and load_compressed_image()
-unconditionally calls crypto_free_acomp() without checking for ERR_PTR,
-which causes crypto_acomp_tfm() to dereference an invalid pointer and
-crash the kernel.
+As the original commit (c9b1150a68d9 ("drm/atomic-helper: Re-order
+bridge chain pre-enable and post-disable")) causing the issue has been
+reverted, let's revert the fix for mediatek.
 
-This can be triggered when the compression algorithm is unavailable
-(e.g., CONFIG_CRYPTO_LZO not enabled).
-
-Fix by adding IS_ERR_OR_NULL() checks before calling crypto_free_acomp()
-and acomp_request_free(), similar to the existing kthread_stop() check.
-
-Fixes: b03d542c3c95 ("PM: hibernate: Use crypto_acomp interface")
-Signed-off-by: Malaya Kumar Rout <mrout@redhat.com>
-Cc: 6.15+ <stable@vger.kernel.org> # 6.15+
-[ rjw: Added 2 empty code lines ]
-Link: https://patch.msgid.link/20251230115613.64080-1-mrout@redhat.com
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Cc: stable@vger.kernel.org # v6.17+
+Fixes: c9b1150a68d9 ("drm/atomic-helper: Re-order bridge chain pre-enable and post-disable")
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Reviewed-by: Linus Walleij <linusw@kernel.org>
+Tested-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Link: https://patch.msgid.link/20251205-drm-seq-fix-v1-2-fda68fa1b3de@ideasonboard.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/power/swap.c |   14 ++++++++++----
- 1 file changed, 10 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dsi.c |    6 ------
+ 1 file changed, 6 deletions(-)
 
---- a/kernel/power/swap.c
-+++ b/kernel/power/swap.c
-@@ -897,8 +897,11 @@ out_clean:
- 		for (thr = 0; thr < nr_threads; thr++) {
- 			if (data[thr].thr)
- 				kthread_stop(data[thr].thr);
--			acomp_request_free(data[thr].cr);
--			crypto_free_acomp(data[thr].cc);
-+			if (data[thr].cr)
-+				acomp_request_free(data[thr].cr);
-+
-+			if (!IS_ERR_OR_NULL(data[thr].cc))
-+				crypto_free_acomp(data[thr].cc);
- 		}
- 		vfree(data);
+--- a/drivers/gpu/drm/mediatek/mtk_dsi.c
++++ b/drivers/gpu/drm/mediatek/mtk_dsi.c
+@@ -1002,12 +1002,6 @@ static int mtk_dsi_host_attach(struct mi
+ 			return PTR_ERR(dsi->next_bridge);
  	}
-@@ -1519,8 +1522,11 @@ out_clean:
- 		for (thr = 0; thr < nr_threads; thr++) {
- 			if (data[thr].thr)
- 				kthread_stop(data[thr].thr);
--			acomp_request_free(data[thr].cr);
--			crypto_free_acomp(data[thr].cc);
-+			if (data[thr].cr)
-+				acomp_request_free(data[thr].cr);
-+
-+			if (!IS_ERR_OR_NULL(data[thr].cc))
-+				crypto_free_acomp(data[thr].cc);
- 		}
- 		vfree(data);
- 	}
+ 
+-	/*
+-	 * set flag to request the DSI host bridge be pre-enabled before device bridge
+-	 * in the chain, so the DSI host is ready when the device bridge is pre-enabled
+-	 */
+-	dsi->next_bridge->pre_enable_prev_first = true;
+-
+ 	drm_bridge_add(&dsi->bridge);
+ 
+ 	ret = component_add(host->dev, &mtk_dsi_component_ops);
 
 
 
