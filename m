@@ -1,52 +1,57 @@
-Return-Path: <stable+bounces-209486-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209064-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 92D76D2722B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 873CBD26A3D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6E13230E1866
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:40:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id AB9F2311543A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:33 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 188D93B8D5F;
-	Thu, 15 Jan 2026 17:40:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2CED02D541B;
+	Thu, 15 Jan 2026 17:20:33 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmCDeCNI"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="D3ZrmrUQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D01A22C21F4;
-	Thu, 15 Jan 2026 17:40:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D3DDA258EC2;
+	Thu, 15 Jan 2026 17:20:32 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498832; cv=none; b=IDgpdSt7rk6NX+PCRhZhUi7+QNwSOg1K6TJGCA6hZSnDd/2NvB/kekwXc2MpleOAAH7Jd21/EJyfbaNXTD2GJ2bmvRnCvDJxkfnNOicWr7yIxxiZZ9DlEsoJHBpBr5L3MoFcipDN9aBJKcdYrJdl+eZWHu1W8PkokzJWFRfkK8I=
+	t=1768497632; cv=none; b=GVnzb3TGSug43dzwLQEhYuVyjOQHWlEQMgadoisOZ6V7E3ktatfyt2elMIHWg9VypcaEP8Zxz7byEBIubHuSql52ZR5QiqRC0FAs0Yl1osdnTVwUU2C3AJbM0PaD9w5L/5ve82jP4sPrXVrQUKXXMbMZDPTnYPHFSadbRkJdWKM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498832; c=relaxed/simple;
-	bh=v3KeZSkV2F1Fq440TzrHfPJ+dl4Zkk13fQ4XhaypkvQ=;
+	s=arc-20240116; t=1768497632; c=relaxed/simple;
+	bh=gQ63h490usZBsQMcHf0JK9zOtGTwfzBM6KHDb7Mz0qg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Vo/kQiS4y8KRhodd6Ai/1yLxuTdS/8mjiZqCrNLw9U0rpOvGB2K1gu/EwJukYGaVqtjHQty9LmSdx1OdEATAYf6IJiYIIcWyh4yZE7OC7jm106Tbih3du+Cqdn9tl3ENGwWhP52m17SNvu50cDfGVQuLNj/9HDA3h4ukvyOzr7Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmCDeCNI; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59629C19423;
-	Thu, 15 Jan 2026 17:40:32 +0000 (UTC)
+	 MIME-Version; b=JXGI2sG7814BJF1r9Rvo9ygtQqfq1FQZ6l2Mr+8s5CduMsSPOP/VDF+PoKjEWTi0oC9JEcnBLKU3jxsjMnU697aiYlmcVMTv0usQ94KAC8n3t9ao/2NVYLtWn1ApWLH2PFbe1V0AGhYtDHZJ1BCPO7a4xKJBVZOb4F7TXEKkqec=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=D3ZrmrUQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 606F6C116D0;
+	Thu, 15 Jan 2026 17:20:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498832;
-	bh=v3KeZSkV2F1Fq440TzrHfPJ+dl4Zkk13fQ4XhaypkvQ=;
+	s=korg; t=1768497632;
+	bh=gQ63h490usZBsQMcHf0JK9zOtGTwfzBM6KHDb7Mz0qg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MmCDeCNIWtmNV9N2lF0B+jpKuIMTajSd137uMfIe+YhCuYoru9txBExtI0ejriHtr
-	 w8VAvLBTY/OiK8lYk1zeCXzm1I6V2lk744YdTM3VMsTXRymsoHmQTA43kK+WKaN7/a
-	 Cmwx+SYDuT9xlY369/vSaYRkFvI5NpY3ejZ1cYhk=
+	b=D3ZrmrUQ/Hi0EtV1KOQLd/lUHlyLcdqTxYTubY/W6+UxE93+fkkYsUWzT21ra+IkF
+	 fpo3sCbnTAPfG4ZhSsdt3+a6rRU3mFCQYRba1HDb+9dXj9E3M80kITS646/r5STRc+
+	 W9GH/DUUPgJEBtr2ppVU8dWb4SBbpG2wafIglUA4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Johan Hovold <johan@kernel.org>
-Subject: [PATCH 5.10 015/451] USB: serial: belkin_sa: fix TIOCMBIS and TIOCMBIC
+	Parav Pandit <parav@nvidia.com>,
+	Eli Cohen <elic@nvidia.com>,
+	Jason Wang <jasowang@redhat.com>,
+	Stefano Garzarella <sgarzare@redhat.com>,
+	"Michael S. Tsirkin" <mst@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 150/554] vdpa: Introduce and use vdpa device get, set config helpers
 Date: Thu, 15 Jan 2026 17:43:36 +0100
-Message-ID: <20260115164231.441137932@linuxfoundation.org>
+Message-ID: <20260115164251.689883672@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,83 +63,155 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Parav Pandit <parav@nvidia.com>
 
-commit b6e0b3016187446ddef9edac03cd9d544ac63f11 upstream.
+[ Upstream commit 6dbb1f1687a2ccdfc5b84b0a35bbc6dfefc4de3b ]
 
-Asserting or deasserting a modem control line using TIOCMBIS or TIOCMBIC
-should not deassert any lines that are not in the mask.
+Subsequent patches enable get and set configuration either
+via management device or via vdpa device' config ops.
 
-Fix this long-standing regression dating back to 2003 when the
-tiocmset() callback was introduced.
+This requires synchronization between multiple callers to get and set
+config callbacks. Features setting also influence the layout of the
+configuration fields endianness.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Cc: stable@vger.kernel.org
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To avoid exposing synchronization primitives to callers, introduce
+helper for setting the configuration and use it.
+
+Signed-off-by: Parav Pandit <parav@nvidia.com>
+Reviewed-by: Eli Cohen <elic@nvidia.com>
+Acked-by: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Stefano Garzarella <sgarzare@redhat.com>
+Link: https://lore.kernel.org/r/20211026175519.87795-2-parav@nvidia.com
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Stable-dep-of: e40b6abe0b12 ("virtio_vdpa: fix misleading return in void function")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/serial/belkin_sa.c |   28 +++++++++++++++++-----------
- 1 file changed, 17 insertions(+), 11 deletions(-)
+ drivers/vdpa/vdpa.c          | 36 ++++++++++++++++++++++++++++++++++++
+ drivers/vhost/vdpa.c         |  3 +--
+ drivers/virtio/virtio_vdpa.c |  3 +--
+ include/linux/vdpa.h         | 19 ++++---------------
+ 4 files changed, 42 insertions(+), 19 deletions(-)
 
---- a/drivers/usb/serial/belkin_sa.c
-+++ b/drivers/usb/serial/belkin_sa.c
-@@ -448,7 +448,7 @@ static int belkin_sa_tiocmset(struct tty
- 	struct belkin_sa_private *priv = usb_get_serial_port_data(port);
- 	unsigned long control_state;
- 	unsigned long flags;
--	int retval;
-+	int retval = 0;
- 	int rts = 0;
- 	int dtr = 0;
+diff --git a/drivers/vdpa/vdpa.c b/drivers/vdpa/vdpa.c
+index 86571498c1c23..563b06563e17a 100644
+--- a/drivers/vdpa/vdpa.c
++++ b/drivers/vdpa/vdpa.c
+@@ -289,6 +289,42 @@ void vdpa_mgmtdev_unregister(struct vdpa_mgmt_dev *mdev)
+ }
+ EXPORT_SYMBOL_GPL(vdpa_mgmtdev_unregister);
  
-@@ -465,26 +465,32 @@ static int belkin_sa_tiocmset(struct tty
- 	}
- 	if (clear & TIOCM_RTS) {
- 		control_state &= ~TIOCM_RTS;
--		rts = 0;
-+		rts = 1;
- 	}
- 	if (clear & TIOCM_DTR) {
- 		control_state &= ~TIOCM_DTR;
--		dtr = 0;
-+		dtr = 1;
- 	}
++/**
++ * vdpa_get_config - Get one or more device configuration fields.
++ * @vdev: vdpa device to operate on
++ * @offset: starting byte offset of the field
++ * @buf: buffer pointer to read to
++ * @len: length of the configuration fields in bytes
++ */
++void vdpa_get_config(struct vdpa_device *vdev, unsigned int offset,
++		     void *buf, unsigned int len)
++{
++	const struct vdpa_config_ops *ops = vdev->config;
++
++	/*
++	 * Config accesses aren't supposed to trigger before features are set.
++	 * If it does happen we assume a legacy guest.
++	 */
++	if (!vdev->features_valid)
++		vdpa_set_features(vdev, 0);
++	ops->get_config(vdev, offset, buf, len);
++}
++EXPORT_SYMBOL_GPL(vdpa_get_config);
++
++/**
++ * vdpa_set_config - Set one or more device configuration fields.
++ * @vdev: vdpa device to operate on
++ * @offset: starting byte offset of the field
++ * @buf: buffer pointer to read from
++ * @length: length of the configuration fields in bytes
++ */
++void vdpa_set_config(struct vdpa_device *vdev, unsigned int offset,
++		     const void *buf, unsigned int length)
++{
++	vdev->config->set_config(vdev, offset, buf, length);
++}
++EXPORT_SYMBOL_GPL(vdpa_set_config);
++
+ static bool mgmtdev_handle_match(const struct vdpa_mgmt_dev *mdev,
+ 				 const char *busname, const char *devname)
+ {
+diff --git a/drivers/vhost/vdpa.c b/drivers/vhost/vdpa.c
+index 58ba684037f9e..0f61ca0598b71 100644
+--- a/drivers/vhost/vdpa.c
++++ b/drivers/vhost/vdpa.c
+@@ -238,7 +238,6 @@ static long vhost_vdpa_set_config(struct vhost_vdpa *v,
+ 				  struct vhost_vdpa_config __user *c)
+ {
+ 	struct vdpa_device *vdpa = v->vdpa;
+-	const struct vdpa_config_ops *ops = vdpa->config;
+ 	struct vhost_vdpa_config config;
+ 	unsigned long size = offsetof(struct vhost_vdpa_config, buf);
+ 	u8 *buf;
+@@ -252,7 +251,7 @@ static long vhost_vdpa_set_config(struct vhost_vdpa *v,
+ 	if (IS_ERR(buf))
+ 		return PTR_ERR(buf);
  
- 	priv->control_state = control_state;
- 	spin_unlock_irqrestore(&priv->lock, flags);
+-	ops->set_config(vdpa, config.off, buf, config.len);
++	vdpa_set_config(vdpa, config.off, buf, config.len);
  
--	retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST, rts);
--	if (retval < 0) {
--		dev_err(&port->dev, "Set RTS error %d\n", retval);
--		goto exit;
-+	if (rts) {
-+		retval = BSA_USB_CMD(BELKIN_SA_SET_RTS_REQUEST,
-+					!!(control_state & TIOCM_RTS));
-+		if (retval < 0) {
-+			dev_err(&port->dev, "Set RTS error %d\n", retval);
-+			goto exit;
-+		}
- 	}
+ 	kvfree(buf);
+ 	return 0;
+diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
+index 1c29446aafb44..b5ab5f59f96ac 100644
+--- a/drivers/virtio/virtio_vdpa.c
++++ b/drivers/virtio/virtio_vdpa.c
+@@ -65,9 +65,8 @@ static void virtio_vdpa_set(struct virtio_device *vdev, unsigned offset,
+ 			    const void *buf, unsigned len)
+ {
+ 	struct vdpa_device *vdpa = vd_get_vdpa(vdev);
+-	const struct vdpa_config_ops *ops = vdpa->config;
  
--	retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST, dtr);
--	if (retval < 0) {
--		dev_err(&port->dev, "Set DTR error %d\n", retval);
--		goto exit;
-+	if (dtr) {
-+		retval = BSA_USB_CMD(BELKIN_SA_SET_DTR_REQUEST,
-+					!!(control_state & TIOCM_DTR));
-+		if (retval < 0) {
-+			dev_err(&port->dev, "Set DTR error %d\n", retval);
-+			goto exit;
-+		}
- 	}
- exit:
- 	return retval;
+-	ops->set_config(vdpa, offset, buf, len);
++	vdpa_set_config(vdpa, offset, buf, len);
+ }
+ 
+ static u32 virtio_vdpa_generation(struct virtio_device *vdev)
+diff --git a/include/linux/vdpa.h b/include/linux/vdpa.h
+index 4fb198c8dbf61..88ed82e03b666 100644
+--- a/include/linux/vdpa.h
++++ b/include/linux/vdpa.h
+@@ -388,21 +388,10 @@ static inline int vdpa_set_features(struct vdpa_device *vdev, u64 features)
+ 	return ops->set_features(vdev, features);
+ }
+ 
+-static inline void vdpa_get_config(struct vdpa_device *vdev,
+-				   unsigned int offset, void *buf,
+-				   unsigned int len)
+-{
+-	const struct vdpa_config_ops *ops = vdev->config;
+-
+-	/*
+-	 * Config accesses aren't supposed to trigger before features are set.
+-	 * If it does happen we assume a legacy guest.
+-	 */
+-	if (!vdev->features_valid)
+-		vdpa_set_features(vdev, 0);
+-	ops->get_config(vdev, offset, buf, len);
+-}
+-
++void vdpa_get_config(struct vdpa_device *vdev, unsigned int offset,
++		     void *buf, unsigned int len);
++void vdpa_set_config(struct vdpa_device *dev, unsigned int offset,
++		     const void *buf, unsigned int length);
+ /**
+  * struct vdpa_mgmtdev_ops - vdpa device ops
+  * @dev_add: Add a vdpa device using alloc and register
+-- 
+2.51.0
+
 
 
 
