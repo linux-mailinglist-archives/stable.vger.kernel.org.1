@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209210-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209613-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 0BB1AD26B9C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:26 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3578D26E3B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 7A39B30AFB3B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:29:51 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 0799E30DD2B3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:03 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 44D013D3313;
-	Thu, 15 Jan 2026 17:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E49D3BF309;
+	Thu, 15 Jan 2026 17:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A48k1F+X"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Aehx4yZd"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 087053C1FDA;
-	Thu, 15 Jan 2026 17:27:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4BD2C3BC4D8;
+	Thu, 15 Jan 2026 17:46:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498047; cv=none; b=APWgZhBYf1v8JUwhc0mb6lXhVdZw548uhK+wuBtdBy7pa/92qDLGjSQXkeXHTW8uSt+4jrbkRKCCAFSyDSil1icibHLTUnIKAphJB0pksvjLa7suv43dPF+IdJmzIAKrT2JN9j20u2gussyZK8y+5wAlnVs7ZXLhvUkrGEZel40=
+	t=1768499195; cv=none; b=pMpVNweWy8Y5cZNpQ7cObN/GEq4uf8QsrNwiHMqh8ole7KQlsQTu6r9E+KsRZOMvYDInRq1xfoQHlyzvpXz3/Y9FYgV5oHKsecVUqEudoMSTsxC1mtrTLR1J1VDzBRmxUaj73ekul8zZtY+M+pbMLMS2R4tCbg+o39yAbhfwHhg=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498047; c=relaxed/simple;
-	bh=ijThx/t2DIN2BwUyptZwkXQ8SE+IY0jkkCfbv3fDpoc=;
+	s=arc-20240116; t=1768499195; c=relaxed/simple;
+	bh=UX8p4c5NphjChGY7/fyfq0MW04BWwliZx6pFSiO0t4Y=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iM4WiVg6lTVHdQz7Xk7tjSkq53TpRrqB40N15jTb/cqqkC/s6+NJ1XfyJlhAqTiCjzMK6dBvZiIz1MnBNuWTsFqjvZZJlE55ma6Uotst1Dodo8avUTvMhdCvXrQAJKWX0xhDnjKqG/QFqgYuzqye8mP7TkpzvqE0X/sUqUEdxI4=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A48k1F+X; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B80C19422;
-	Thu, 15 Jan 2026 17:27:26 +0000 (UTC)
+	 MIME-Version; b=ZBdJplyVrbtVcLibZqTH0ecWCSF/teahstU3G3R2cVUU3YyuvCs5h3NokJ/Qk6X4v5SX21N+a2ztpR8CGp71UgLy/QrkmDjo4rOas3APi204Fqlmuuwi5D3rYElzKZ5gPQXmPCuHESxG49Xnq+M6imfD0Cz1nYH7Y8IjZ4EnVLw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Aehx4yZd; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBA19C116D0;
+	Thu, 15 Jan 2026 17:46:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498046;
-	bh=ijThx/t2DIN2BwUyptZwkXQ8SE+IY0jkkCfbv3fDpoc=;
+	s=korg; t=1768499195;
+	bh=UX8p4c5NphjChGY7/fyfq0MW04BWwliZx6pFSiO0t4Y=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A48k1F+XDMv017b4/BvgQ8UoyL5f6zzh9JQ8qIVSNLFNPdBv8vrkW4goRrD6xHvfG
-	 FUUH2/Zc4kYBys+BsbNyDgO/AZSau2oK0JzkDM6UN9xLUOmxbqcSO06rW9Sq7ytvi5
-	 IK2qQqBPiiS7gKTEXncTdvCQfwuZ7gUh4lMiVIqo=
+	b=Aehx4yZdjjt/lz6biizh9v8SvLSi1a1mNJWr8jdSa9YEaFYYeAlElhytrFaVjVZ6U
+	 Q9ypLOsKBuzuz7N/WNYoIBLkvtSSq0Qco9ThCPo82IxTLxse4fiPh+hJ/TpvgeecYA
+	 xz8fLpDVnAwPGuVefiY74kX/KgAyhBvyK1t3IeG8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sarthak Garg <sarthak.garg@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Adrian Hunter <adrian.hunter@intel.com>,
-	Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.15 277/554] mmc: sdhci-msm: Avoid early clock doubling during HS400 transition
+	Alexey Simakov <bigalex934@gmail.com>,
+	Mikulas Patocka <mpatocka@redhat.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 142/451] dm-raid: fix possible NULL dereference with undefined raid type
 Date: Thu, 15 Jan 2026 17:45:43 +0100
-Message-ID: <20260115164256.255501423@linuxfoundation.org>
+Message-ID: <20260115164236.054230262@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,126 +60,47 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
+From: Alexey Simakov <bigalex934@gmail.com>
 
-commit b1f856b1727c2eaa4be2c6d7cd7a8ed052bbeb87 upstream.
+[ Upstream commit 2f6cfd6d7cb165a7af8877b838a9f6aab4159324 ]
 
-According to the hardware programming guide, the clock frequency must
-remain below 52MHz during the transition to HS400 mode.
+rs->raid_type is assigned from get_raid_type_by_ll(), which may return
+NULL. This NULL value could be dereferenced later in the condition
+'if (!(rs_is_raid10(rs) && rt_is_raid0(rs->raid_type)))'.
 
-However,in the current implementation, the timing is set to HS400 (a
-DDR mode) before adjusting the clock. This causes the clock to double
-prematurely to 104MHz during the transition phase, violating the
-specification and potentially resulting in CRC errors or CMD timeouts.
+Add a fail-fast check to return early with an error if raid_type is NULL,
+similar to other uses of this function.
 
-This change ensures that clock doubling is avoided during intermediate
-transitions and is applied only when the card requires a 200MHz clock
-for HS400 operation.
+Found by Linux Verification Center (linuxtesting.org) with Svace.
 
-Signed-off-by: Sarthak Garg <sarthak.garg@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33e53f06850f ("dm raid: introduce extended superblock and new raid types to support takeover/reshaping")
+Signed-off-by: Alexey Simakov <bigalex934@gmail.com>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci-msm.c |   27 +++++++++++++++------------
- 1 file changed, 15 insertions(+), 12 deletions(-)
+ drivers/md/dm-raid.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/mmc/host/sdhci-msm.c
-+++ b/drivers/mmc/host/sdhci-msm.c
-@@ -340,41 +340,43 @@ static void sdhci_msm_v5_variant_writel_
- 	writel_relaxed(val, host->ioaddr + offset);
- }
+diff --git a/drivers/md/dm-raid.c b/drivers/md/dm-raid.c
+index 3c0960f294fb5..aa70f668b5cca 100644
+--- a/drivers/md/dm-raid.c
++++ b/drivers/md/dm-raid.c
+@@ -2259,6 +2259,8 @@ static int super_init_validation(struct raid_set *rs, struct md_rdev *rdev)
  
--static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host)
-+static unsigned int msm_get_clock_mult_for_bus_mode(struct sdhci_host *host,
-+						    unsigned int clock,
-+						    unsigned int timing)
- {
--	struct mmc_ios ios = host->mmc->ios;
- 	/*
- 	 * The SDHC requires internal clock frequency to be double the
- 	 * actual clock that will be set for DDR mode. The controller
- 	 * uses the faster clock(100/400MHz) for some of its parts and
- 	 * send the actual required clock (50/200MHz) to the card.
- 	 */
--	if (ios.timing == MMC_TIMING_UHS_DDR50 ||
--	    ios.timing == MMC_TIMING_MMC_DDR52 ||
--	    ios.timing == MMC_TIMING_MMC_HS400 ||
-+	if (timing == MMC_TIMING_UHS_DDR50 ||
-+	    timing == MMC_TIMING_MMC_DDR52 ||
-+	    (timing == MMC_TIMING_MMC_HS400 &&
-+	    clock == MMC_HS200_MAX_DTR) ||
- 	    host->flags & SDHCI_HS400_TUNING)
- 		return 2;
- 	return 1;
- }
+ 			mddev->reshape_position = le64_to_cpu(sb->reshape_position);
+ 			rs->raid_type = get_raid_type_by_ll(mddev->level, mddev->layout);
++			if (!rs->raid_type)
++				return -EINVAL;
+ 		}
  
- static void msm_set_clock_rate_for_bus_mode(struct sdhci_host *host,
--					    unsigned int clock)
-+					    unsigned int clock,
-+					    unsigned int timing)
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
--	struct mmc_ios curr_ios = host->mmc->ios;
- 	struct clk *core_clk = msm_host->bulk_clks[0].clk;
- 	unsigned long achieved_rate;
- 	unsigned int desired_rate;
- 	unsigned int mult;
- 	int rc;
- 
--	mult = msm_get_clock_mult_for_bus_mode(host);
-+	mult = msm_get_clock_mult_for_bus_mode(host, clock, timing);
- 	desired_rate = clock * mult;
- 	rc = dev_pm_opp_set_rate(mmc_dev(host->mmc), desired_rate);
- 	if (rc) {
- 		pr_err("%s: Failed to set clock at rate %u at timing %d\n",
--		       mmc_hostname(host->mmc), desired_rate, curr_ios.timing);
-+		       mmc_hostname(host->mmc), desired_rate, timing);
- 		return;
- 	}
- 
-@@ -393,7 +395,7 @@ static void msm_set_clock_rate_for_bus_m
- 	msm_host->clk_rate = desired_rate;
- 
- 	pr_debug("%s: Setting clock at rate %lu at timing %d\n",
--		 mmc_hostname(host->mmc), achieved_rate, curr_ios.timing);
-+		 mmc_hostname(host->mmc), achieved_rate, timing);
- }
- 
- /* Platform specific tuning */
-@@ -1235,7 +1237,7 @@ static int sdhci_msm_execute_tuning(stru
- 	 */
- 	if (host->flags & SDHCI_HS400_TUNING) {
- 		sdhci_msm_hc_select_mode(host);
--		msm_set_clock_rate_for_bus_mode(host, ios.clock);
-+		msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
- 		host->flags &= ~SDHCI_HS400_TUNING;
- 	}
- 
-@@ -1860,6 +1862,7 @@ static void sdhci_msm_set_clock(struct s
- {
- 	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
- 	struct sdhci_msm_host *msm_host = sdhci_pltfm_priv(pltfm_host);
-+	struct mmc_ios ios = host->mmc->ios;
- 
- 	if (!clock) {
- 		host->mmc->actual_clock = msm_host->clk_rate = 0;
-@@ -1868,7 +1871,7 @@ static void sdhci_msm_set_clock(struct s
- 
- 	sdhci_msm_hc_select_mode(host);
- 
--	msm_set_clock_rate_for_bus_mode(host, clock);
-+	msm_set_clock_rate_for_bus_mode(host, ios.clock, ios.timing);
- out:
- 	__sdhci_msm_set_clock(host, clock);
- }
+ 	} else {
+-- 
+2.51.0
+
 
 
 
