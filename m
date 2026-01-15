@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209682-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209306-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 961E3D271FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:07:22 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 80191D270CA
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:02:47 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2B4D433E3EF8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 016EA3051DD6
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:34:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5973C3D7263;
-	Thu, 15 Jan 2026 17:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 032B53C1967;
+	Thu, 15 Jan 2026 17:32:01 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Pkxa0fWm"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="pylJejsc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1C2793D2FE3;
-	Thu, 15 Jan 2026 17:49:51 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B7FF73AA1A8;
+	Thu, 15 Jan 2026 17:32:00 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499391; cv=none; b=G+Xa82zFzcgzcA6nTeNpz3yN38dMJOzHt2e+y3tgW/l7PHTm3i9/sETsjnDo3bwdSwiXzZ7dqumMdiB+H5yvbzTvEwp3Hiq+2AgyDvbkx+13Smdkgn4n2we8R9I0f0toJFvDgx1xT2JwC9WytUernLOGAKP0qSuAFgUlORLw7jw=
+	t=1768498320; cv=none; b=sT7RsLf2x4LBbKPJC6Qxyq/F1Q1Ow85XRdJ5BRKgEJXLVwFmltYPgIOaB4avWe2In5xbLx904WDgOZk0UqI7sC/SWBMi8ntt6vgL3R/tT16nlPNFQmG+aXqwhX0xwTUrWZV5CNW9370EP+q+a3DEwi9xy/kg5JgtOVKBx2jU/4U=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499391; c=relaxed/simple;
-	bh=NeK6aB+ntuhWbppWJ68SvEiHcLev3QKMEdk6hHXnJ9w=;
+	s=arc-20240116; t=1768498320; c=relaxed/simple;
+	bh=YTD+/xT2ku3rOzj6BOKtWUqM3pXfzMzR+5yLequa/eQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=D21lBmdgUKJs8zOFPK3Cu8j0/QFdv9lVZibhSsI0cCPAk/hDK5t1qipFMzugnsp46cwVyJL1TGAo7U7ugiRs8zL9bT7WotvvzVMmFAaRBRpJJjSFvP/awcrilSqjhb/qcGg7OditfpbMvINELNPvp67wbydyTYWuQRi87IaYa8A=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Pkxa0fWm; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F911C116D0;
-	Thu, 15 Jan 2026 17:49:50 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NDTmhXRw49PYho/UOXl208SOPPceI/vM/OFMVImbotZs2jX97g4CVX+3qC4in6i/8rqJsyL6Qyoy98tXA3WbE7D9AbnOFImGwKNGXpyGbwCDCXpaMZJwJW0zH7Nb2+vR5eiD5fbWHsvkdQdyY75j3RlLI/y4Cg/GHkXw2IiPeZc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=pylJejsc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 372A3C116D0;
+	Thu, 15 Jan 2026 17:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499391;
-	bh=NeK6aB+ntuhWbppWJ68SvEiHcLev3QKMEdk6hHXnJ9w=;
+	s=korg; t=1768498320;
+	bh=YTD+/xT2ku3rOzj6BOKtWUqM3pXfzMzR+5yLequa/eQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Pkxa0fWmbXSiia6eCkWY5M90k+jEohb3NK7ZsTqXPi9nn5mBMbzC/PxU4bk9D4/jU
-	 3jWpYnHj1dZ0Qg2K1Q7Rj/scuUZLhaP+MF3DKu2gp9EGrtEV/WLQtKofiXG8lcRObR
-	 vVmainnQCNuSQsXtEX+TMA44Xlf2s5kq0leYTgBc=
+	b=pylJejsc7C4FS+0ZoGXPE0HYIZ81At7jPZvAl0qQQj/nsBg6g3BFrVAhOJbNzS5WZ
+	 NEnQ16d7xwQCctzUSvIRcPqT04arcOWYJCh03uK7Ytsk1t4K/AyqsGUCTxH2bGl5Yi
+	 KVgMicKIDITa6Qg8HNM07T1Jbpiqmz4Oo8OhoZqU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Li Qiang <liqiang01@kylinos.cn>,
-	Guenter Roeck <linux@roeck-us.net>,
-	Wim Van Sebroeck <wim@linux-watchdog.org>,
+	Yuhao Jiang <danisjiang@gmail.com>,
+	Junrui Luo <moonafterrain@outlook.com>,
+	=?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 211/451] via_wdt: fix critical boot hang due to unnamed resource allocation
-Date: Thu, 15 Jan 2026 17:46:52 +0100
-Message-ID: <20260115164238.533725674@linuxfoundation.org>
+Subject: [PATCH 5.15 347/554] platform/x86: ibm_rtl: fix EBDA signature search pointer arithmetic
+Date: Thu, 15 Jan 2026 17:46:53 +0100
+Message-ID: <20260115164258.788623160@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,47 +59,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Li Qiang <liqiang01@kylinos.cn>
+From: Junrui Luo <moonafterrain@outlook.com>
 
-[ Upstream commit 7aa31ee9ec92915926e74731378c009c9cc04928 ]
+[ Upstream commit 15dd100349b8526cbdf2de0ce3e72e700eb6c208 ]
 
-The VIA watchdog driver uses allocate_resource() to reserve a MMIO
-region for the watchdog control register. However, the allocated
-resource was not given a name, which causes the kernel resource tree
-to contain an entry marked as "<BAD>" under /proc/iomem on x86
-platforms.
+The ibm_rtl_init() function searches for the signature but has a pointer
+arithmetic error. The loop counter suggests searching at 4-byte intervals
+but the implementation only advances by 1 byte per iteration.
 
-During boot, this unnamed resource can lead to a critical hang because
-subsequent resource lookups and conflict checks fail to handle the
-invalid entry properly.
+Fix by properly advancing the pointer by sizeof(unsigned int) bytes
+each iteration.
 
-Signed-off-by: Li Qiang <liqiang01@kylinos.cn>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Wim Van Sebroeck <wim@linux-watchdog.org>
+Reported-by: Yuhao Jiang <danisjiang@gmail.com>
+Reported-by: Junrui Luo <moonafterrain@outlook.com>
+Fixes: 35f0ce032b0f ("IBM Real-Time "SMI Free" mode driver -v7")
+Signed-off-by: Junrui Luo <moonafterrain@outlook.com>
+Link: https://patch.msgid.link/SYBPR01MB78812D887A92DE3802D0D06EAFA9A@SYBPR01MB7881.ausprd01.prod.outlook.com
+Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/watchdog/via_wdt.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/platform/x86/ibm_rtl.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/watchdog/via_wdt.c b/drivers/watchdog/via_wdt.c
-index eeb39f96e72e..c1ed3ce153cf 100644
---- a/drivers/watchdog/via_wdt.c
-+++ b/drivers/watchdog/via_wdt.c
-@@ -165,6 +165,7 @@ static int wdt_probe(struct pci_dev *pdev,
- 		dev_err(&pdev->dev, "cannot enable PCI device\n");
- 		return -ENODEV;
- 	}
-+	wdt_res.name = "via_wdt";
- 
- 	/*
- 	 * Allocate a MMIO region which contains watchdog control register
+diff --git a/drivers/platform/x86/ibm_rtl.c b/drivers/platform/x86/ibm_rtl.c
+index 5fc665f7d9b3..10cab7bdfe15 100644
+--- a/drivers/platform/x86/ibm_rtl.c
++++ b/drivers/platform/x86/ibm_rtl.c
+@@ -262,7 +262,7 @@ static int __init ibm_rtl_init(void) {
+ 	/* search for the _RTL_ signature at the start of the table */
+ 	for (i = 0 ; i < ebda_size/sizeof(unsigned int); i++) {
+ 		struct ibm_rtl_table __iomem * tmp;
+-		tmp = (struct ibm_rtl_table __iomem *) (ebda_map+i);
++		tmp = (struct ibm_rtl_table __iomem *) (ebda_map + i*sizeof(unsigned int));
+ 		if ((readq(&tmp->signature) & RTL_MASK) == RTL_SIGNATURE) {
+ 			phys_addr_t addr;
+ 			unsigned int plen;
 -- 
 2.51.0
 
