@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209736-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208761-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id E1346D2725D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 99851D26367
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:15 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 39ED331635DE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:37 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 84F7730B7AC4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:06:44 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 9F3BA3C1999;
-	Thu, 15 Jan 2026 17:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B310E3BF2F7;
+	Thu, 15 Jan 2026 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mAHAjAea"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="p0yhitkA"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 5F5673C1997;
-	Thu, 15 Jan 2026 17:52:25 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6AFE73BF2FD;
+	Thu, 15 Jan 2026 17:06:08 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499545; cv=none; b=mI/Rop4RcnfJqzT/9sI1hyd8ffON/+KxHk08RvAUNg+KTWtq8ZL/jjis3bKLtnKGzCBN3RxaY7ojoSWCygG0J0UCCj36HCUpU7NffyRYUSyBZK2u5PqmSu6hBOvHStmtOXZbrDBDj3bDn8/+VT48vqwX2OT/9vgN4OJRSgx4Z6I=
+	t=1768496768; cv=none; b=u6aYPqiHvnfHuBHczgL8nvXI9KHAonap778Uq5Mj/1b3By9ZVFH6d+kYtO9SbL4H9LSoKxSZdHdJCPFwwbIHGcS1f4beaQfiTGxR+yBh8rI/cuWTN8gTmp7xe67HTdhijFhzqRyqxGsqfsirt/i7fYn93leFGKnBGqL2GyOJNMY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499545; c=relaxed/simple;
-	bh=Wur3+XaQaKrJ4K3WAlihJl1MHcLKIbOk9ddHGULjgYc=;
+	s=arc-20240116; t=1768496768; c=relaxed/simple;
+	bh=cv3fDb0aNN8QZYXIOxICMe++yD6vjj+Za01SoMYXOKw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=PsrljYG+ReC0haeK75T5E/TC3+rx7Bw3+n4BHSJIWepr7Wv9POvsHX84MNYsGm4syBsH98ET0kr2/biZuTwirTmDZpFu+PgiOSRbDBdDuY7CxKnRVbvkrR+iB0CmMzVa42Q7znywC/WXOinYBWX7yJUL91aEAPteatodaLrp0LU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mAHAjAea; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFC09C116D0;
-	Thu, 15 Jan 2026 17:52:24 +0000 (UTC)
+	 MIME-Version; b=IlZnEt/PwWri699UHHkDkKYIC1hzc7Lrnn8azMomFEmAItJHflEJK38YM7ZycjO0FCiLtIkoMH0OqqmR5MJCdHOfDedkb4Txy+HroS1o1+zXV9+OXT9XSRLfp9WNOxVr9743+UIxmwK1YmJKHhBx94fuoY9rnmxVHqobroHa64Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=p0yhitkA; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6087C116D0;
+	Thu, 15 Jan 2026 17:06:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499545;
-	bh=Wur3+XaQaKrJ4K3WAlihJl1MHcLKIbOk9ddHGULjgYc=;
+	s=korg; t=1768496768;
+	bh=cv3fDb0aNN8QZYXIOxICMe++yD6vjj+Za01SoMYXOKw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mAHAjAeaNClEy/Zvvah1GBNJ8tFiKISX5rtC1Ab9wKxnheKrlAQV/u7NeRgBf0dQb
-	 c0bhoAQV2333U41tpJKhynDHLisf3/3z3MhsYynGCFUMLXxOyfYYcaGL+hkEC1Mtzx
-	 KmHS4bqCi2vowq9vH1GQkYUHG4RgT40eoWEItrFI=
+	b=p0yhitkA0DZevx1UyYhqZSeuVBYtlv2lds3qdJm9Pk9pMnh4Am8CTcedm/cVNWYXb
+	 uFxcJ/eSoNQIecQoJ7FM5QsInIr5B/O9l6HVarQc19Muk8uTehRr5RUB0tYwv2BVyt
+	 I15E+KWNq+sA9U+L8gc6bC2rx3YK50cJ2RT4XXEU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Harry Wentland <harry.wentland@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 5.10 263/451] drm/amd/display: Use GFP_ATOMIC in dc_create_plane_state()
+	Scott Mayhew <smayhew@redhat.com>,
+	Jeff Layton <jlayton@kernel.org>,
+	NeilBrown <neil@brown.name>,
+	Chuck Lever <chuck.lever@oracle.com>
+Subject: [PATCH 6.6 01/88] NFSD: Fix permission check for read access to executable-only files
 Date: Thu, 15 Jan 2026 17:47:44 +0100
-Message-ID: <20260115164240.399884319@linuxfoundation.org>
+Message-ID: <20260115164146.369101014@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,37 +61,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alex Deucher <alexander.deucher@amd.com>
+From: Scott Mayhew <smayhew@redhat.com>
 
-commit 3c41114dcdabb7b25f5bc33273c6db9c7af7f4a7 upstream.
+commit e901c7fce59e72d9f3c92733c379849c4034ac50 upstream.
 
-This can get called from an atomic context.
+Commit abc02e5602f7 ("NFSD: Support write delegations in LAYOUTGET")
+added NFSD_MAY_OWNER_OVERRIDE to the access flags passed from
+nfsd4_layoutget() to fh_verify().  This causes LAYOUTGET to fail for
+executable-only files, and causes xfstests generic/126 to fail on
+pNFS SCSI.
 
-Closes: https://gitlab.freedesktop.org/drm/amd/-/issues/4470
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit 8acdad9344cc7b4e7bc01f0dfea80093eb3768db)
-Cc: stable@vger.kernel.org
+To allow read access to executable-only files, what we really want is:
+1. The "permissions" portion of the access flags (the lower 6 bits)
+   must be exactly NFSD_MAY_READ
+2. The "hints" portion of the access flags (the upper 26 bits) can
+   contain any combination of NFSD_MAY_OWNER_OVERRIDE and
+   NFSD_MAY_READ_IF_EXEC
+
+Fixes: abc02e5602f7 ("NFSD: Support write delegations in LAYOUTGET")
+Cc: stable@vger.kernel.org # v6.6+
+Signed-off-by: Scott Mayhew <smayhew@redhat.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Reviewed-by: NeilBrown <neil@brown.name>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/core/dc_surface.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfsd/vfs.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-+++ b/drivers/gpu/drm/amd/display/dc/core/dc_surface.c
-@@ -104,7 +104,7 @@ void enable_surface_flip_reporting(struc
- struct dc_plane_state *dc_create_plane_state(struct dc *dc)
- {
- 	struct dc_plane_state *plane_state = kvzalloc(sizeof(*plane_state),
--							GFP_KERNEL);
-+							GFP_ATOMIC);
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -2474,8 +2474,8 @@ nfsd_permission(struct svc_rqst *rqstp,
  
- 	if (NULL == plane_state)
- 		return NULL;
+ 	/* Allow read access to binaries even when mode 111 */
+ 	if (err == -EACCES && S_ISREG(inode->i_mode) &&
+-	     (acc == (NFSD_MAY_READ | NFSD_MAY_OWNER_OVERRIDE) ||
+-	      acc == (NFSD_MAY_READ | NFSD_MAY_READ_IF_EXEC)))
++	     (((acc & NFSD_MAY_MASK) == NFSD_MAY_READ) &&
++	      (acc & (NFSD_MAY_OWNER_OVERRIDE | NFSD_MAY_READ_IF_EXEC))))
+ 		err = inode_permission(&nop_mnt_idmap, inode, MAY_EXEC);
+ 
+ 	return err? nfserrno(err) : 0;
 
 
 
