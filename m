@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-209346-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208862-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 423EBD26ABE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:44:04 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7FD18D2635D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C99DF30B325A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:04 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0818A302A859
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:56 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BC44C3BF305;
-	Thu, 15 Jan 2026 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0DC3ACA65;
+	Thu, 15 Jan 2026 17:10:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="0qHG6c+c"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNq+0GoC"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 7F8C027AC5C;
-	Thu, 15 Jan 2026 17:33:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF96B2D781B;
+	Thu, 15 Jan 2026 17:10:54 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498434; cv=none; b=pDJpa2eVG4vQIEByqyZm0d33l20oHYFlCmV9l5s4nOwO9Y6Wm16Pq0hHSKCqsJldff29HUQCSp2716ljhLvHpGczYDJO9yJs7PgNOOMUhrqMZfc/ufA0w2M0GnCe1oqgqX+SUq23pscr/62p+jb+cKti64cJn1QpcJR5Uwq6tZk=
+	t=1768497054; cv=none; b=jQD8/RJitdfoNGwDL2fR7G1eFuu2ccrTTW4QKZDbXEo2Mljj9u6pfzYbgy8NEZjE5Q2atvWOZHS9LB0K/ED0wFSgF+l+I60q1HBTvE6emPzJ5yNOS1PSCMkEAfUPV3uvdGQxQC9q8PAd0X+tOcnbdRaOi/nuBwKBCMAKFt6IWVc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498434; c=relaxed/simple;
-	bh=YbaAx77SzYNkKJ6aCuLC7nN6kudek81XA9f9ByDop5I=;
+	s=arc-20240116; t=1768497054; c=relaxed/simple;
+	bh=aRztpUxFCmHuC5ViI8MX5zlsYKECLMXnPmRnRsJJloc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=s94fohd/8WifVYroJK6snkhFi89wViInzCx4g53lfEqNo0btPkp6nMwVsazbF4wdyWM8ocFdcjQGYZ2eVSXXFy0tm3TWGG6UrVkVjP9dP6asArd9OglOvQdWWYfwYIIUivs3rObkRwqJrY0CShZbRZM84zhMba5NYJSDLQlI2ws=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=0qHG6c+c; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB8F1C19422;
-	Thu, 15 Jan 2026 17:33:53 +0000 (UTC)
+	 MIME-Version; b=XVtbmDXa9s1x+se/Dtg7Jw9koFs1l+URk7Pwe++nAYrjF/XjC5gAjHmJci63ery9IJ3jTJyOMWY4pG2sVuva/uoRCIGGq6J7CcnXC7s+gN9t5FK+7nueRrH5PgOAgieCp6VFddvRf0m4mHM+wHv1mZ9KqhF30ZkPATZrmt9aaYI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNq+0GoC; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A91BC16AAE;
+	Thu, 15 Jan 2026 17:10:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498434;
-	bh=YbaAx77SzYNkKJ6aCuLC7nN6kudek81XA9f9ByDop5I=;
+	s=korg; t=1768497054;
+	bh=aRztpUxFCmHuC5ViI8MX5zlsYKECLMXnPmRnRsJJloc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=0qHG6c+csxZCONHZqIuatdq5rfZmJUWx58lv8ppjDvjQhtwOOWHq+Zdgynye35dd9
-	 K2lPqAnyEy4PY3gtb+eHGXZpMFZAEY2ih5W2qwNbW4ImRf0j5/7PlnJYSIu+ONkqBd
-	 4KRMH8DHOmhkUez6sqt56JhmjRda7BYFFa2Xj/JE=
+	b=zNq+0GoCs0KiCo18ohEZUXtkzhV9keMH/weJvhttsOUIjKPOYTnO4s2FAKnBNxiON
+	 8s+MlimIWGlAeOvU6jR7CoFkqFEMCsv7FmsGWQwS8QNGa4SNFzg36EQOEYoxy6JK19
+	 A3OygnodUSTIZ1swxP7cv3nCAZBQsfRLjRB/l1ow=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ye Bin <yebin10@huawei.com>,
-	Baokun Li <libaokun1@huawei.com>,
-	"Darrick J. Wong" <djwong@kernel.org>,
-	Jan Kara <jack@suse.cz>,
-	Theodore Tso <tytso@mit.edu>,
-	stable@kernel.org,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 431/554] jbd2: fix the inconsistency between checksum and data in memory for journal sb
-Date: Thu, 15 Jan 2026 17:48:17 +0100
-Message-ID: <20260115164301.859766050@linuxfoundation.org>
+	Marek Szyprowski <m.szyprowski@samsung.com>,
+	Heiko Stuebner <heiko@sntech.de>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.1 08/72] gpio: rockchip: mark the GPIO controller as sleeping
+Date: Thu, 15 Jan 2026 17:48:18 +0100
+Message-ID: <20260115164143.793309054@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,96 +60,103 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 
-[ Upstream commit 6abfe107894af7e8ce3a2e120c619d81ee764ad5 ]
+commit 20cf2aed89ac6d78a0122e31c875228e15247194 upstream.
 
-Copying the file system while it is mounted as read-only results in
-a mount failure:
-[~]# mkfs.ext4 -F /dev/sdc
-[~]# mount /dev/sdc -o ro /mnt/test
-[~]# dd if=/dev/sdc of=/dev/sda bs=1M
-[~]# mount /dev/sda /mnt/test1
-[ 1094.849826] JBD2: journal checksum error
-[ 1094.850927] EXT4-fs (sda): Could not load journal inode
-mount: mount /dev/sda on /mnt/test1 failed: Bad message
+The GPIO controller is configured as non-sleeping but it uses generic
+pinctrl helpers which use a mutex for synchronization.
 
-The process described above is just an abstracted way I came up with to
-reproduce the issue. In the actual scenario, the file system was mounted
-read-only and then copied while it was still mounted. It was found that
-the mount operation failed. The user intended to verify the data or use
-it as a backup, and this action was performed during a version upgrade.
-Above issue may happen as follows:
-ext4_fill_super
- set_journal_csum_feature_set(sb)
-  if (ext4_has_metadata_csum(sb))
-   incompat = JBD2_FEATURE_INCOMPAT_CSUM_V3;
-  if (test_opt(sb, JOURNAL_CHECKSUM)
-   jbd2_journal_set_features(sbi->s_journal, compat, 0, incompat);
-    lock_buffer(journal->j_sb_buffer);
-    sb->s_feature_incompat  |= cpu_to_be32(incompat);
-    //The data in the journal sb was modified, but the checksum was not
-      updated, so the data remaining in memory has a mismatch between the
-      data and the checksum.
-    unlock_buffer(journal->j_sb_buffer);
+This can cause the following lockdep splat with shared GPIOs enabled on
+boards which have multiple devices using the same GPIO:
 
-In this case, the journal sb copied over is in a state where the checksum
-and data are inconsistent, so mounting fails.
-To solve the above issue, update the checksum in memory after modifying
-the journal sb.
+BUG: sleeping function called from invalid context at
+kernel/locking/mutex.c:591
+in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name:
+kworker/u16:0
+preempt_count: 1, expected: 0
+RCU nest depth: 0, expected: 0
+6 locks held by kworker/u16:0/12:
+  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0},
+at: process_one_work+0x18c/0x604
+  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at:
+process_one_work+0x1b4/0x604
+  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at:
+__device_attach+0x38/0x1b0
+  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at:
+gpiod_direction_output_raw_commit+0x0/0x360
+  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at:
+gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
+  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at:
+gpiod_direction_output_raw_commit+0x0/0x360
+irq event stamp: 81450
+hardirqs last  enabled at (81449): [<ffff8000813acba4>]
+_raw_spin_unlock_irqrestore+0x74/0x78
+hardirqs last disabled at (81450): [<ffff8000813abfb8>]
+_raw_spin_lock_irqsave+0x84/0x88
+softirqs last  enabled at (79616): [<ffff8000811455fc>]
+__alloc_skb+0x17c/0x1e8
+softirqs last disabled at (79614): [<ffff8000811455fc>]
+__alloc_skb+0x17c/0x1e8
+CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted
+6.19.0-rc4-next-20260105+ #11975 PREEMPT
+Hardware name: Hardkernel ODROID-M1 (DT)
+Workqueue: events_unbound deferred_probe_work_func
+Call trace:
+  show_stack+0x18/0x24 (C)
+  dump_stack_lvl+0x90/0xd0
+  dump_stack+0x18/0x24
+  __might_resched+0x144/0x248
+  __might_sleep+0x48/0x98
+  __mutex_lock+0x5c/0x894
+  mutex_lock_nested+0x24/0x30
+  pinctrl_get_device_gpio_range+0x44/0x128
+  pinctrl_gpio_direction+0x3c/0xe0
+  pinctrl_gpio_direction_output+0x14/0x20
+  rockchip_gpio_direction_output+0xb8/0x19c
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_direction_output+0x34/0xf8
+  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
+  gpiochip_direction_output+0x38/0x94
+  gpiod_direction_output_raw_commit+0x1d8/0x360
+  gpiod_direction_output_nonotify+0x7c/0x230
+  gpiod_configure_flags+0xbc/0x480
+  gpiod_find_and_request+0x1a0/0x574
+  gpiod_get_index+0x58/0x84
+  devm_gpiod_get_index+0x20/0xb4
+  devm_gpiod_get_optional+0x18/0x30
+  rockchip_pcie_probe+0x98/0x380
+  platform_probe+0x5c/0xac
+  really_probe+0xbc/0x298
 
-Fixes: 4fd5ea43bc11 ("jbd2: checksum journal superblock")
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Reviewed-by: Baokun Li <libaokun1@huawei.com>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Message-ID: <20251103010123.3753631-1-yebin@huaweicloud.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Cc: stable@kernel.org
-[ Changed jbd2_superblock_csum(sb) to jbd2_superblock_csum(journal, sb) ]
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
+Cc: stable@vger.kernel.org
+Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
+Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com/
+Acked-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lore.kernel.org/r/20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/journal.c |   14 ++++++++++++++
- 1 file changed, 14 insertions(+)
+ drivers/gpio/gpio-rockchip.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/fs/jbd2/journal.c
-+++ b/fs/jbd2/journal.c
-@@ -2390,6 +2390,12 @@ int jbd2_journal_set_features(journal_t
- 	sb->s_feature_compat    |= cpu_to_be32(compat);
- 	sb->s_feature_ro_compat |= cpu_to_be32(ro);
- 	sb->s_feature_incompat  |= cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
- 	unlock_buffer(journal->j_sb_buffer);
- 	journal->j_revoke_records_per_block =
- 				journal_revoke_records_per_block(journal);
-@@ -2420,9 +2426,17 @@ void jbd2_journal_clear_features(journal
+--- a/drivers/gpio/gpio-rockchip.c
++++ b/drivers/gpio/gpio-rockchip.c
+@@ -584,6 +584,7 @@ static int rockchip_gpiolib_register(str
+ 	gc->ngpio = bank->nr_pins;
+ 	gc->label = bank->name;
+ 	gc->parent = bank->dev;
++	gc->can_sleep = true;
  
- 	sb = journal->j_superblock;
- 
-+	lock_buffer(journal->j_sb_buffer);
- 	sb->s_feature_compat    &= ~cpu_to_be32(compat);
- 	sb->s_feature_ro_compat &= ~cpu_to_be32(ro);
- 	sb->s_feature_incompat  &= ~cpu_to_be32(incompat);
-+	/*
-+	 * Update the checksum now so that it is valid even for read-only
-+	 * filesystems where jbd2_write_superblock() doesn't get called.
-+	 */
-+	if (jbd2_journal_has_csum_v2or3(journal))
-+		sb->s_checksum = jbd2_superblock_csum(journal, sb);
-+	unlock_buffer(journal->j_sb_buffer);
- 	journal->j_revoke_records_per_block =
- 				journal_revoke_records_per_block(journal);
- }
+ 	ret = gpiochip_add_data(gc, bank);
+ 	if (ret) {
 
 
 
