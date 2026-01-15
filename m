@@ -1,58 +1,55 @@
-Return-Path: <stable+bounces-208838-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209399-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 86DD5D26739
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:29 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 56F7FD26B4B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 2DA8730C04A7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:47 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id BAD0E303B147
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE753B8BB1;
-	Thu, 15 Jan 2026 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 4B5CF3BF2F3;
+	Thu, 15 Jan 2026 17:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggN9NmaY"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="rwkMEB8F"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC762F619D;
-	Thu, 15 Jan 2026 17:09:46 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0E8C92D060B;
+	Thu, 15 Jan 2026 17:36:26 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496986; cv=none; b=W0laqvg3DWIb9/gkeoEXkbG3DVPDVMQVlWu4TIZoyBIwKpFuNCNOz9GoaQ8GZFpcLciYoHotaAMxRm/HGnUiHfT83YD0FLV3ZvzFRpeRmNF5RwJjhPYdyMbrmPq1VuaLKgLIive3Jr1DnSLxJDasSzl/+M9JtUkcLLKmzutd5os=
+	t=1768498586; cv=none; b=Yu0mbfJ8lqIkZBrxo2Mfz0ytMeJEWEGvRT1vic1hrPukhsQuPAYRxErgFni0ZF05SzJxH1dLsCFWgUpr7W5Q6ZNKFc6O7ozSTcP1sr61F2uViNbV/Klb3v7HNVV4+LtaWBZQBRRVSllF4FIvCSk09rDAWQk2Kpw7343vDSf7Z+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496986; c=relaxed/simple;
-	bh=pf7yvksPOpTdITZMqNrqlTk3+j6o+PMDYeI4goDdNJM=;
+	s=arc-20240116; t=1768498586; c=relaxed/simple;
+	bh=X6TBzOhQt3JCcf1dZkR5TsKi4cnTpxYRqWFHZwl3dcI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=CpBcSjp87Nsh3tnqQgzZqhItw5IJit8t+1trmWZsLIOAy0rhtrLtJKxpPaqDpeOkiPkZltxeDL6vxUnLCoy0agHeIPv/c8rqVmS7KxEd/H9ke/GpwKxRLK3Ti8/wpTqoNVOk3QP7zkZ1hVFNaxrzNSWh78nKbD3U4hL3OYWcroI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggN9NmaY; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C424C116D0;
-	Thu, 15 Jan 2026 17:09:45 +0000 (UTC)
+	 MIME-Version; b=T2aT63Sd9xPwYyqqAUA+m6pttx1XfwhZIkr2KDjgiXbGPUCK2R7qqH2d1ltnR3qbBEJBQQngNUNcLI4uxvqlic63fKZfrvqOiJyiyjpaoIZE2s4J+EeYg1DPKJX/QfrexzR2s8xUUhP23dxHa5qwKxS9T1aW1R+vG+Wma9vjyrc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=rwkMEB8F; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F86C116D0;
+	Thu, 15 Jan 2026 17:36:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496986;
-	bh=pf7yvksPOpTdITZMqNrqlTk3+j6o+PMDYeI4goDdNJM=;
+	s=korg; t=1768498585;
+	bh=X6TBzOhQt3JCcf1dZkR5TsKi4cnTpxYRqWFHZwl3dcI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ggN9NmaYBjfqv5qCAlZS+Q8wZwOGQqP7XeKQFub1E5pJWrM3hZmXrsZTtDPpxCJwj
-	 2dpWgwxNRZaj//PKwwLPeBSuuEoNtj1CY42mEUzynRq1AW5CXrQaPEd8uV1tEeBTv4
-	 8AmJwZv93Srj3LipjIkOVxNe6Ijq7c6szjjVxgko=
+	b=rwkMEB8FaEnOh+swzb0/qgiev3Y/54H8O3fl3a2kl/aG1yXGrha+mvpV4QnKBY+hu
+	 zJo8rC4Cr/zJcFGXjEq8Us26dYDHqrqN9JWx1Xlq1JPtYi72ODqnGX3hcSVQ/8dHOw
+	 bVdNXYUExkVPr08f5hLOZucX2RxSQFKfu5nl1oEo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	=?UTF-8?q?Michal=20R=C3=A1bek?= <mrabek@redhat.com>,
-	Tomas Henzl <thenzl@redhat.com>,
-	Changhui Zhong <czhong@redhat.com>,
-	"Ewan D. Milne" <emilne@redhat.com>,
-	John Meneghini <jmeneghi@redhat.com>,
-	"Martin K. Petersen" <martin.petersen@oracle.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 86/88] scsi: sg: Fix occasional bogus elapsed time that exceeds timeout
+	Andrzej Hajda <andrzej.hajda@intel.com>,
+	Andi Shyti <andi.shyti@linux.intel.com>,
+	Rodrigo Vivi <rodrigo.vivi@intel.com>,
+	Rajani Kantha <681739313@139.com>
+Subject: [PATCH 5.15 483/554] drm/i915/selftests: fix subtraction overflow bug
 Date: Thu, 15 Jan 2026 17:49:09 +0100
-Message-ID: <20260115164149.429167773@linuxfoundation.org>
+Message-ID: <20260115164303.794013994@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,157 +59,45 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michal Rábek <mrabek@redhat.com>
+From: Andrzej Hajda <andrzej.hajda@intel.com>
 
-[ Upstream commit 0e1677654259a2f3ccf728de1edde922a3c4ba57 ]
+[ Upstream commit ab3edc679c552a466e4bf0b11af3666008bd65a2 ]
 
-A race condition was found in sg_proc_debug_helper(). It was observed on
-a system using an IBM LTO-9 SAS Tape Drive (ULTRIUM-TD9) and monitoring
-/proc/scsi/sg/debug every second. A very large elapsed time would
-sometimes appear. This is caused by two race conditions.
+On some machines hole_end can be small enough to cause subtraction
+overflow. On the other side (addr + 2 * min_alignment) can overflow
+in case of mock tests. This patch should handle both cases.
 
-We reproduced the issue with an IBM ULTRIUM-HH9 tape drive on an x86_64
-architecture. A patched kernel was built, and the race condition could
-not be observed anymore after the application of this patch. A
-reproducer C program utilising the scsi_debug module was also built by
-Changhui Zhong and can be viewed here:
-
-https://github.com/MichaelRabek/linux-tests/blob/master/drivers/scsi/sg/sg_race_trigger.c
-
-The first race happens between the reading of hp->duration in
-sg_proc_debug_helper() and request completion in sg_rq_end_io().  The
-hp->duration member variable may hold either of two types of
-information:
-
- #1 - The start time of the request. This value is present while
-      the request is not yet finished.
-
- #2 - The total execution time of the request (end_time - start_time).
-
-If sg_proc_debug_helper() executes *after* the value of hp->duration was
-changed from #1 to #2, but *before* srp->done is set to 1 in
-sg_rq_end_io(), a fresh timestamp is taken in the else branch, and the
-elapsed time (value type #2) is subtracted from a timestamp, which
-cannot yield a valid elapsed time (which is a type #2 value as well).
-
-To fix this issue, the value of hp->duration must change under the
-protection of the sfp->rq_list_lock in sg_rq_end_io().  Since
-sg_proc_debug_helper() takes this read lock, the change to srp->done and
-srp->header.duration will happen atomically from the perspective of
-sg_proc_debug_helper() and the race condition is thus eliminated.
-
-The second race condition happens between sg_proc_debug_helper() and
-sg_new_write(). Even though hp->duration is set to the current time
-stamp in sg_add_request() under the write lock's protection, it gets
-overwritten by a call to get_sg_io_hdr(), which calls copy_from_user()
-to copy struct sg_io_hdr from userspace into kernel space. hp->duration
-is set to the start time again in sg_common_write(). If
-sg_proc_debug_helper() is called between these two calls, an arbitrary
-value set by userspace (usually zero) is used to compute the elapsed
-time.
-
-To fix this issue, hp->duration must be set to the current timestamp
-again after get_sg_io_hdr() returns successfully. A small race window
-still exists between get_sg_io_hdr() and setting hp->duration, but this
-window is only a few instructions wide and does not result in observable
-issues in practice, as confirmed by testing.
-
-Additionally, we fix the format specifier from %d to %u for printing
-unsigned int values in sg_proc_debug_helper().
-
-Signed-off-by: Michal Rábek <mrabek@redhat.com>
-Suggested-by: Tomas Henzl <thenzl@redhat.com>
-Tested-by: Changhui Zhong <czhong@redhat.com>
-Reviewed-by: Ewan D. Milne <emilne@redhat.com>
-Reviewed-by: John Meneghini <jmeneghi@redhat.com>
-Reviewed-by: Tomas Henzl <thenzl@redhat.com>
-Link: https://patch.msgid.link/20251212160900.64924-1-mrabek@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: e1c5f754067b59 ("drm/i915: Avoid overflow in computing pot_hole loop termination")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/3674
+Signed-off-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220624113528.2159210-1-andrzej.hajda@intel.com
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+[ Using I915_GTT_PAGE_SIZE instead of min_alignment due to 5.15 missing commit:87bd701ee268 ("drm/i915: enforce min GTT alignment for discrete cards")]
+Signed-off-by: Rajani Kantha <681739313@139.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/sg.c | 20 +++++++++++++-------
- 1 file changed, 13 insertions(+), 7 deletions(-)
+ drivers/gpu/drm/i915/selftests/i915_gem_gtt.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
-index 9258a1a8c23c1..0dd8b9f8d6717 100644
---- a/drivers/scsi/sg.c
-+++ b/drivers/scsi/sg.c
-@@ -731,6 +731,8 @@ sg_new_write(Sg_fd *sfp, struct file *file, const char __user *buf,
- 		sg_remove_request(sfp, srp);
- 		return -EFAULT;
- 	}
-+	hp->duration = jiffies_to_msecs(jiffies);
-+
- 	if (hp->interface_id != 'S') {
- 		sg_remove_request(sfp, srp);
- 		return -ENOSYS;
-@@ -815,7 +817,6 @@ sg_common_write(Sg_fd * sfp, Sg_request * srp,
- 		return -ENODEV;
- 	}
+--- a/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
++++ b/drivers/gpu/drm/i915/selftests/i915_gem_gtt.c
+@@ -715,7 +715,7 @@ static int pot_hole(struct i915_address_
+ 		u64 addr;
  
--	hp->duration = jiffies_to_msecs(jiffies);
- 	if (hp->interface_id != '\0' &&	/* v3 (or later) interface */
- 	    (SG_FLAG_Q_AT_TAIL & hp->flags))
- 		at_head = 0;
-@@ -1339,9 +1340,6 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
- 				      "sg_cmd_done: pack_id=%d, res=0x%x\n",
- 				      srp->header.pack_id, result));
- 	srp->header.resid = resid;
--	ms = jiffies_to_msecs(jiffies);
--	srp->header.duration = (ms > srp->header.duration) ?
--				(ms - srp->header.duration) : 0;
- 	if (0 != result) {
- 		struct scsi_sense_hdr sshdr;
- 
-@@ -1390,6 +1388,9 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
- 			done = 0;
- 	}
- 	srp->done = done;
-+	ms = jiffies_to_msecs(jiffies);
-+	srp->header.duration = (ms > srp->header.duration) ?
-+				(ms - srp->header.duration) : 0;
- 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
- 
- 	if (likely(done)) {
-@@ -2537,6 +2538,7 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
- 	const sg_io_hdr_t *hp;
- 	const char * cp;
- 	unsigned int ms;
-+	unsigned int duration;
- 
- 	k = 0;
- 	list_for_each_entry(fp, &sdp->sfds, sfd_siblings) {
-@@ -2574,13 +2576,17 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
- 			seq_printf(s, " id=%d blen=%d",
- 				   srp->header.pack_id, blen);
- 			if (srp->done)
--				seq_printf(s, " dur=%d", hp->duration);
-+				seq_printf(s, " dur=%u", hp->duration);
- 			else {
- 				ms = jiffies_to_msecs(jiffies);
--				seq_printf(s, " t_o/elap=%d/%d",
-+				duration = READ_ONCE(hp->duration);
-+				if (duration)
-+					duration = (ms > duration ?
-+						    ms - duration : 0);
-+				seq_printf(s, " t_o/elap=%u/%u",
- 					(new_interface ? hp->timeout :
- 						  jiffies_to_msecs(fp->timeout)),
--					(ms > hp->duration ? ms - hp->duration : 0));
-+					duration);
- 			}
- 			seq_printf(s, "ms sgat=%d op=0x%02x\n", usg,
- 				   (int) srp->data.cmd_opcode);
--- 
-2.51.0
-
+ 		for (addr = round_up(hole_start + I915_GTT_PAGE_SIZE, step) - I915_GTT_PAGE_SIZE;
+-		     addr <= round_down(hole_end - 2*I915_GTT_PAGE_SIZE, step) - I915_GTT_PAGE_SIZE;
++		     hole_end > addr && hole_end - addr >= 2 * I915_GTT_PAGE_SIZE;
+ 		     addr += step) {
+ 			err = i915_vma_pin(vma, 0, 0, addr | flags);
+ 			if (err) {
 
 
 
