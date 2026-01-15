@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-209557-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209134-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id BFB3BD27836
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:23 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 50239D268F3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:09 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 3565731DC60C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:43:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 0AC18307EEBC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:24:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0EE0C2D9ECB;
-	Thu, 15 Jan 2026 17:43:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6F8BF3BF2F7;
+	Thu, 15 Jan 2026 17:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x+Oe1WyM"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DIlSlrfU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C68402C0F83;
-	Thu, 15 Jan 2026 17:43:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 314B23A7E07;
+	Thu, 15 Jan 2026 17:23:50 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499035; cv=none; b=Jv7QqZ8fTLZbT3T2OwxmDtQ2My+BDA6+xCA/ENHvGE1bL7tWz57fqh94gn09emArUXo4jKKwK7FG2WY4INkub/5UJa3gRZfYWWedD98ZCaiFsAPO93PmSIEcB9jkeNwsIf5g+tTQWPDIsYC3e2zwpZbylvLwWcH5J2DsO/ppmyc=
+	t=1768497830; cv=none; b=UbVeQtgi5hx8YNWy60UKb8aJyfMNTQTy6gIIqO9XcZffrYBFsIfw8X18qeBaFUmS12RNfgAnTmTargDIoUPm6D3U+45KIV2zGX1yJr1mzHX1WPs6Gm+xUYYh52L2kKclhpvdun4uZFc8H5MqjzYlvUYdw8EQHP4LUXSkPhHxjo4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499035; c=relaxed/simple;
-	bh=kA3OqcCzohelUcNYnHo3u/EJ4fqffm5g/a/3BAT8AfQ=;
+	s=arc-20240116; t=1768497830; c=relaxed/simple;
+	bh=G0RGex1I7X87rXJpCZUXncGQzbOayH9gJR4yecfHqew=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version:Content-Type; b=a+rhJIJbKQ2kG9WJmCp/rUVpt463wZdAAdKopd5mSVncKOJBed3DHDpERJr+7Jp+Vm3YpBbYD3562e2FhN3Fo9vD9YlKrDwFDjhyibgDpR5+euqErqXkIiNN33be4T/dD/7n8OoHLH6w6qdEfsphhRjFmidxLmUuBzzQbt46Q60=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x+Oe1WyM; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5160AC116D0;
-	Thu, 15 Jan 2026 17:43:55 +0000 (UTC)
+	 MIME-Version; b=KEy2ugiDR/vkJx1rEXjKBWK52XIol2uyavzrQmAJjP71iszfsK6iL9MLj7KYSrxVEptZTR6bF7eobS8eXfdhIIqXDGKW+c9/4JfP94IkCwSIPIDRPYoaT7SADWzvYWZeCcL2+EAe7Nm4tbaRo3vlAAS7Z76tLQq6EyIPa0PTm8E=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DIlSlrfU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3B4CC116D0;
+	Thu, 15 Jan 2026 17:23:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499035;
-	bh=kA3OqcCzohelUcNYnHo3u/EJ4fqffm5g/a/3BAT8AfQ=;
+	s=korg; t=1768497830;
+	bh=G0RGex1I7X87rXJpCZUXncGQzbOayH9gJR4yecfHqew=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=x+Oe1WyM1ElqR7CPAbPpjdaSqUSUuDe6wlTQ3ilfTRULP8maYGExEHE9IYOkFBjU4
-	 FbbZESsu5AwaF7iQc1dUMEmFFpqU+isxsWgCvXCocUyLgS+2MauCEFx7u+GnlC/H4w
-	 B6PCM8gVJhnLxg7UV/oK6vne22g4Ywz7a6Qx7eOE=
+	b=DIlSlrfUPJ5s9R1MO+5HL/l2I+PqJF6m4kRLwTHCpi5PGLumUFt+A6cMvX0AVNjqt
+	 bR8PbjRNgAyR+B9eGrx4fVuKhnzZ7eKTLi3+Npss+50Cqmuhddx97v8tJQXU7/h66e
+	 cQulhDjOqTJUxwgNNu0Ps6wFxWxTC/Onj4myTNOU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lino Sanfilippo <LinoSanfilippo@gmx.de>,
-	=?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= <u.kleine-koenig@pengutronix.de>,
-	Thierry Reding <thierry.reding@gmail.com>,
+	syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Viacheslav Dubeyko <slava@dubeyko.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 084/451] pwm: bcm2835: Support apply function for atomic configuration
+Subject: [PATCH 5.15 219/554] hfsplus: Verify inode mode when loading from disk
 Date: Thu, 15 Jan 2026 17:44:45 +0100
-Message-ID: <20260115164233.954934453@linuxfoundation.org>
+Message-ID: <20260115164254.176087525@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,143 +59,109 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lino Sanfilippo <LinoSanfilippo@gmx.de>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 2f81b51d0d02074502ad27424c228ca760823668 ]
+[ Upstream commit 005d4b0d33f6b4a23d382b7930f7a96b95b01f39 ]
 
-Use the newer .apply function of pwm_ops instead of .config, .enable,
-.disable and .set_polarity. This guarantees atomic changes of the pwm
-controller configuration. It also reduces the size of the driver.
+syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
+the S_IFMT bits of the 16bits "mode" field loaded from disk are corrupted.
 
-Since now period is a 64 bit value, add an extra check to reject periods
-that exceed the possible max value for the 32 bit register.
+According to [1], the permissions field was treated as reserved in Mac OS
+8 and 9. According to [2], the reserved field was explicitly initialized
+with 0, and that field must remain 0 as long as reserved. Therefore, when
+the "mode" field is not 0 (i.e. no longer reserved), the file must be
+S_IFDIR if dir == 1, and the file must be one of S_IFREG/S_IFLNK/S_IFCHR/
+S_IFBLK/S_IFIFO/S_IFSOCK if dir == 0.
 
-This has been tested on a Raspberry PI 4.
-
-Signed-off-by: Lino Sanfilippo <LinoSanfilippo@gmx.de>
-Reviewed-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
-Signed-off-by: Thierry Reding <thierry.reding@gmail.com>
-Stable-dep-of: cda323dbda76 ("pwm: bcm2835: Make sure the channel is enabled after pwm_request()")
+Reported-by: syzbot <syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com>
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Link: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#HFSPlusPermissions [1]
+Link: https://developer.apple.com/library/archive/technotes/tn/tn1150.html#ReservedAndPadFields [2]
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Reviewed-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
+Link: https://lore.kernel.org/r/04ded9f9-73fb-496c-bfa5-89c4f5d1d7bb@I-love.SAKURA.ne.jp
+Signed-off-by: Viacheslav Dubeyko <slava@dubeyko.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pwm/pwm-bcm2835.c | 69 ++++++++++++++-------------------------
- 1 file changed, 24 insertions(+), 45 deletions(-)
+ fs/hfsplus/inode.c | 32 ++++++++++++++++++++++++++++----
+ 1 file changed, 28 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/pwm/pwm-bcm2835.c b/drivers/pwm/pwm-bcm2835.c
-index 6841dcfe27fc8..aec1a963f46e2 100644
---- a/drivers/pwm/pwm-bcm2835.c
-+++ b/drivers/pwm/pwm-bcm2835.c
-@@ -58,13 +58,15 @@ static void bcm2835_pwm_free(struct pwm_chip *chip, struct pwm_device *pwm)
- 	writel(value, pc->base + PWM_CONTROL);
- }
- 
--static int bcm2835_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
--			      int duty_ns, int period_ns)
-+static int bcm2835_pwm_apply(struct pwm_chip *chip, struct pwm_device *pwm,
-+			     const struct pwm_state *state)
- {
-+
- 	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
- 	unsigned long rate = clk_get_rate(pc->clk);
-+	unsigned long long period;
- 	unsigned long scaler;
--	u32 period;
-+	u32 val;
- 
- 	if (!rate) {
- 		dev_err(pc->dev, "failed to get clock rate\n");
-@@ -72,54 +74,34 @@ static int bcm2835_pwm_config(struct pwm_chip *chip, struct pwm_device *pwm,
- 	}
- 
- 	scaler = DIV_ROUND_CLOSEST(NSEC_PER_SEC, rate);
--	period = DIV_ROUND_CLOSEST(period_ns, scaler);
-+	/* set period */
-+	period = DIV_ROUND_CLOSEST_ULL(state->period, scaler);
- 
--	if (period < PERIOD_MIN)
-+	/* dont accept a period that is too small or has been truncated */
-+	if ((period < PERIOD_MIN) || (period > U32_MAX))
- 		return -EINVAL;
- 
--	writel(DIV_ROUND_CLOSEST(duty_ns, scaler),
--	       pc->base + DUTY(pwm->hwpwm));
- 	writel(period, pc->base + PERIOD(pwm->hwpwm));
- 
--	return 0;
--}
--
--static int bcm2835_pwm_enable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value |= PWM_ENABLE << PWM_CONTROL_SHIFT(pwm->hwpwm);
--	writel(value, pc->base + PWM_CONTROL);
-+	/* set duty cycle */
-+	val = DIV_ROUND_CLOSEST_ULL(state->duty_cycle, scaler);
-+	writel(val, pc->base + DUTY(pwm->hwpwm));
- 
--	return 0;
--}
-+	/* set polarity */
-+	val = readl(pc->base + PWM_CONTROL);
- 
--static void bcm2835_pwm_disable(struct pwm_chip *chip, struct pwm_device *pwm)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
--	value &= ~(PWM_ENABLE << PWM_CONTROL_SHIFT(pwm->hwpwm));
--	writel(value, pc->base + PWM_CONTROL);
--}
--
--static int bcm2835_set_polarity(struct pwm_chip *chip, struct pwm_device *pwm,
--				enum pwm_polarity polarity)
--{
--	struct bcm2835_pwm *pc = to_bcm2835_pwm(chip);
--	u32 value;
--
--	value = readl(pc->base + PWM_CONTROL);
-+	if (state->polarity == PWM_POLARITY_NORMAL)
-+		val &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
-+	else
-+		val |= PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm);
- 
--	if (polarity == PWM_POLARITY_NORMAL)
--		value &= ~(PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm));
-+	/* enable/disable */
-+	if (state->enabled)
-+		val |= PWM_ENABLE << PWM_CONTROL_SHIFT(pwm->hwpwm);
- 	else
--		value |= PWM_POLARITY << PWM_CONTROL_SHIFT(pwm->hwpwm);
-+		val &= ~(PWM_ENABLE << PWM_CONTROL_SHIFT(pwm->hwpwm));
- 
--	writel(value, pc->base + PWM_CONTROL);
-+	writel(val, pc->base + PWM_CONTROL);
- 
- 	return 0;
- }
-@@ -127,10 +109,7 @@ static int bcm2835_set_polarity(struct pwm_chip *chip, struct pwm_device *pwm,
- static const struct pwm_ops bcm2835_pwm_ops = {
- 	.request = bcm2835_pwm_request,
- 	.free = bcm2835_pwm_free,
--	.config = bcm2835_pwm_config,
--	.enable = bcm2835_pwm_enable,
--	.disable = bcm2835_pwm_disable,
--	.set_polarity = bcm2835_set_polarity,
-+	.apply = bcm2835_pwm_apply,
- 	.owner = THIS_MODULE,
+diff --git a/fs/hfsplus/inode.c b/fs/hfsplus/inode.c
+index 87bc222dc9062..98a80ec5faa91 100644
+--- a/fs/hfsplus/inode.c
++++ b/fs/hfsplus/inode.c
+@@ -181,13 +181,29 @@ const struct dentry_operations hfsplus_dentry_operations = {
+ 	.d_compare    = hfsplus_compare_dentry,
  };
  
+-static void hfsplus_get_perms(struct inode *inode,
+-		struct hfsplus_perm *perms, int dir)
++static int hfsplus_get_perms(struct inode *inode,
++			     struct hfsplus_perm *perms, int dir)
+ {
+ 	struct hfsplus_sb_info *sbi = HFSPLUS_SB(inode->i_sb);
+ 	u16 mode;
+ 
+ 	mode = be16_to_cpu(perms->mode);
++	if (dir) {
++		if (mode && !S_ISDIR(mode))
++			goto bad_type;
++	} else if (mode) {
++		switch (mode & S_IFMT) {
++		case S_IFREG:
++		case S_IFLNK:
++		case S_IFCHR:
++		case S_IFBLK:
++		case S_IFIFO:
++		case S_IFSOCK:
++			break;
++		default:
++			goto bad_type;
++		}
++	}
+ 
+ 	i_uid_write(inode, be32_to_cpu(perms->owner));
+ 	if ((test_bit(HFSPLUS_SB_UID, &sbi->flags)) || (!i_uid_read(inode) && !mode))
+@@ -213,6 +229,10 @@ static void hfsplus_get_perms(struct inode *inode,
+ 		inode->i_flags |= S_APPEND;
+ 	else
+ 		inode->i_flags &= ~S_APPEND;
++	return 0;
++bad_type:
++	pr_err("invalid file type 0%04o for inode %lu\n", mode, inode->i_ino);
++	return -EIO;
+ }
+ 
+ static int hfsplus_file_open(struct inode *inode, struct file *file)
+@@ -516,7 +536,9 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 		}
+ 		hfs_bnode_read(fd->bnode, &entry, fd->entryoffset,
+ 					sizeof(struct hfsplus_cat_folder));
+-		hfsplus_get_perms(inode, &folder->permissions, 1);
++		res = hfsplus_get_perms(inode, &folder->permissions, 1);
++		if (res)
++			goto out;
+ 		set_nlink(inode, 1);
+ 		inode->i_size = 2 + be32_to_cpu(folder->valence);
+ 		inode->i_atime = hfsp_mt2ut(folder->access_date);
+@@ -543,7 +565,9 @@ int hfsplus_cat_read_inode(struct inode *inode, struct hfs_find_data *fd)
+ 
+ 		hfsplus_inode_read_fork(inode, HFSPLUS_IS_RSRC(inode) ?
+ 					&file->rsrc_fork : &file->data_fork);
+-		hfsplus_get_perms(inode, &file->permissions, 0);
++		res = hfsplus_get_perms(inode, &file->permissions, 0);
++		if (res)
++			goto out;
+ 		set_nlink(inode, 1);
+ 		if (S_ISREG(inode->i_mode)) {
+ 			if (file->permissions.dev)
 -- 
 2.51.0
 
