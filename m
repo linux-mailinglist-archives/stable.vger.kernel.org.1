@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208663-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208533-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 716E0D260C3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:49 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6CDC5D25E7B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:55:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id BDBED3015DCA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:32 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 944E1300B6BC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:55:22 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 123C42D7DD7;
-	Thu, 15 Jan 2026 17:01:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A3F713BF2F9;
+	Thu, 15 Jan 2026 16:55:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="s51ADBZt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KCCAtZpe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CA2BF29ACDD;
-	Thu, 15 Jan 2026 17:01:31 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73D063BF2EF;
+	Thu, 15 Jan 2026 16:55:20 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496491; cv=none; b=WOOQZmFDE4TFy8dvY2wUqAZ+Hk2crVX/IzOOlERVbrO2G9eIleZ/JHKUavKtZ5iz4BuMZ9tAB8zD6A977eyhweAZ9nNGBw88n9qqL+GSq0PH9UDaz4nJqDgBp0AGE1JCgEnezuHid+k1WdSO99lEKYDUAgwXozbGyRF27TnXl/E=
+	t=1768496120; cv=none; b=dc0CuJ8Zpajtp4sJGm66Jsn8hXnteC6/YiMqGa0stx78qVCEQat1bVD8D9Qx/luDKOgF8dQdv0FexZyUq5lXXC80fn8XjVWcVfMS7ox/JTA1J2Au8pxM6PFPz5qyH7rbx2MEOeudPEd6xJkNCxHLT46p4bkoK6TE1sIZYCPvg8c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496491; c=relaxed/simple;
-	bh=rpjy90DfK8YXTEuBCzbj/YYGWTRfKTuA7HuleWp34jU=;
+	s=arc-20240116; t=1768496120; c=relaxed/simple;
+	bh=FNqC3S33neonoHjP5hUyNEs2CgxgkzGj1gwxgWn0LLc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=lAcJKgpkIs/+/F9mJAx5hRE7UtQFTXJnoOF0p+8eS1TyPmmu2YvxRCfYJy2OLr96wu1YJHf8qjx/PVzIMz9sb1S2VliJP/DQ53VN9R48XP/SFqM72CIbieCYDdDgxNrsGdTE8uv6RnY4a/xoYbt0d+scvB4asbg0MVJJgFa3ulM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=s51ADBZt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F64C116D0;
-	Thu, 15 Jan 2026 17:01:31 +0000 (UTC)
+	 MIME-Version; b=MES3BGLFLpZpFrP7u4Mfiw0W2jJ5BQ2I2N8cSnfQJnrt/A1dS04lp+iqbXgh1g2oZvU7s0qEZapS6sErj83efU1t+imn0eNyDYjkKkBgF4GcQ04nqKsqd+rYXQD92VFHHa+qEnTit0Uxa9GNVOQiAOTkKOYaPPWnJMDdWGbl7HM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KCCAtZpe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9996EC116D0;
+	Thu, 15 Jan 2026 16:55:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496491;
-	bh=rpjy90DfK8YXTEuBCzbj/YYGWTRfKTuA7HuleWp34jU=;
+	s=korg; t=1768496120;
+	bh=FNqC3S33neonoHjP5hUyNEs2CgxgkzGj1gwxgWn0LLc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=s51ADBZtytnr7RgsDijLXZzOF4Gqg30wA3KG5DiRToUhwy5XS4lZ0cLe5GQiTl5lt
-	 CmEZMKC1udhiM99eSDQz+8IdxaB75RbDOC2gXFeXr5/wBLyfoieFDmKQQ8lWq1Oc1g
-	 11PQLw+beAwhfwbog3nUNlcPV5rZiE6yMRCHdiTI=
+	b=KCCAtZpe6x6WbJphNeWnu9BlL4FgF6vtRSz/KiH6CN7oxdMEbebWSf1vRRels0FS/
+	 cCqXOvL1jC7lkEKrK84WeRxLnohaiQG5Yddn+C4Wm8w69yBvDvDBC0eQbZVWPBOqmS
+	 Kt5+EQAGU0Shx8KN0QCivS/qeYFgs2ksWgfPwJNE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	NeilBrown <neil@brown.name>,
-	Jeff Layton <jlayton@kernel.org>,
-	Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.12 006/119] NFSD: Remove NFSERR_EAGAIN
-Date: Thu, 15 Jan 2026 17:47:01 +0100
-Message-ID: <20260115164152.187620061@linuxfoundation.org>
+	Sherry Sun <sherry.sun@nxp.com>,
+	Frank Li <Frank.Li@nxp.com>,
+	Alexander Stein <alexander.stein@ew.tq-group.com>,
+	Shawn Guo <shawnguo@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 085/181] arm64: dts: imx8qm-ss-dma: correct the dma channels of lpuart
+Date: Thu, 15 Jan 2026 17:47:02 +0100
+Message-ID: <20260115164205.394114669@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,102 +62,71 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Sherry Sun <sherry.sun@nxp.com>
 
-commit c6c209ceb87f64a6ceebe61761951dcbbf4a0baa upstream.
+[ Upstream commit a988caeed9d918452aa0a68de2c6e94d86aa43ba ]
 
-I haven't found an NFSERR_EAGAIN in RFCs 1094, 1813, 7530, or 8881.
-None of these RFCs have an NFS status code that match the numeric
-value "11".
+The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
+order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
+update imx8qm-ss-dma.dtsi.
 
-Based on the meaning of the EAGAIN errno, I presume the use of this
-status in NFSD means NFS4ERR_DELAY. So replace the one usage of
-nfserr_eagain, and remove it from NFSD's NFS status conversion
-tables.
+The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
+dma-names") just simple add dma-names as binding doc requirement.
 
-As far as I can tell, NFSERR_EAGAIN has existed since the pre-git
-era, but was not actually used by any code until commit f4e44b393389
-("NFSD: delay unmount source's export after inter-server copy
-completed."), at which time it become possible for NFSD to return
-a status code of 11 (which is not valid NFS protocol).
+Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
+the FSL_EDMA_RX flag.
 
-Fixes: f4e44b393389 ("NFSD: delay unmount source's export after inter-server copy completed.")
-Cc: stable@vger.kernel.org
-Reviewed-by: NeilBrown <neil@brown.name>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 5a8e9b022e56 ("arm64: dts: imx8qm-ss-dma: Pass lpuart dma-names")
+Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
+Reviewed-by: Frank Li <Frank.Li@nxp.com>
+Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs_common/common.c   |    1 -
- fs/nfsd/nfs4proc.c       |    2 +-
- fs/nfsd/nfsd.h           |    1 -
- include/trace/misc/nfs.h |    2 --
- include/uapi/linux/nfs.h |    1 -
- 5 files changed, 1 insertion(+), 6 deletions(-)
+ arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/fs/nfs_common/common.c
-+++ b/fs/nfs_common/common.c
-@@ -17,7 +17,6 @@ static const struct {
- 	{ NFSERR_NOENT,		-ENOENT		},
- 	{ NFSERR_IO,		-EIO		},
- 	{ NFSERR_NXIO,		-ENXIO		},
--/*	{ NFSERR_EAGAIN,	-EAGAIN		}, */
- 	{ NFSERR_ACCES,		-EACCES		},
- 	{ NFSERR_EXIST,		-EEXIST		},
- 	{ NFSERR_XDEV,		-EXDEV		},
---- a/fs/nfsd/nfs4proc.c
-+++ b/fs/nfsd/nfs4proc.c
-@@ -1359,7 +1359,7 @@ try_again:
- 					(schedule_timeout(20*HZ) == 0)) {
- 				finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 				kfree(work);
--				return nfserr_eagain;
-+				return nfserr_jukebox;
- 			}
- 			finish_wait(&nn->nfsd_ssc_waitq, &wait);
- 			goto try_again;
---- a/fs/nfsd/nfsd.h
-+++ b/fs/nfsd/nfsd.h
-@@ -226,7 +226,6 @@ void		nfsd_lockd_shutdown(void);
- #define	nfserr_noent		cpu_to_be32(NFSERR_NOENT)
- #define	nfserr_io		cpu_to_be32(NFSERR_IO)
- #define	nfserr_nxio		cpu_to_be32(NFSERR_NXIO)
--#define	nfserr_eagain		cpu_to_be32(NFSERR_EAGAIN)
- #define	nfserr_acces		cpu_to_be32(NFSERR_ACCES)
- #define	nfserr_exist		cpu_to_be32(NFSERR_EXIST)
- #define	nfserr_xdev		cpu_to_be32(NFSERR_XDEV)
---- a/include/trace/misc/nfs.h
-+++ b/include/trace/misc/nfs.h
-@@ -16,7 +16,6 @@ TRACE_DEFINE_ENUM(NFSERR_PERM);
- TRACE_DEFINE_ENUM(NFSERR_NOENT);
- TRACE_DEFINE_ENUM(NFSERR_IO);
- TRACE_DEFINE_ENUM(NFSERR_NXIO);
--TRACE_DEFINE_ENUM(NFSERR_EAGAIN);
- TRACE_DEFINE_ENUM(NFSERR_ACCES);
- TRACE_DEFINE_ENUM(NFSERR_EXIST);
- TRACE_DEFINE_ENUM(NFSERR_XDEV);
-@@ -52,7 +51,6 @@ TRACE_DEFINE_ENUM(NFSERR_JUKEBOX);
- 		{ NFSERR_NXIO,			"NXIO" }, \
- 		{ ECHILD,			"CHILD" }, \
- 		{ ETIMEDOUT,			"TIMEDOUT" }, \
--		{ NFSERR_EAGAIN,		"AGAIN" }, \
- 		{ NFSERR_ACCES,			"ACCES" }, \
- 		{ NFSERR_EXIST,			"EXIST" }, \
- 		{ NFSERR_XDEV,			"XDEV" }, \
---- a/include/uapi/linux/nfs.h
-+++ b/include/uapi/linux/nfs.h
-@@ -49,7 +49,6 @@
- 	NFSERR_NOENT = 2,		/* v2 v3 v4 */
- 	NFSERR_IO = 5,			/* v2 v3 v4 */
- 	NFSERR_NXIO = 6,		/* v2 v3 v4 */
--	NFSERR_EAGAIN = 11,		/* v2 v3 */
- 	NFSERR_ACCES = 13,		/* v2 v3 v4 */
- 	NFSERR_EXIST = 17,		/* v2 v3 v4 */
- 	NFSERR_XDEV = 18,		/*    v3 v4 */
+diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+index d4856b8590e0c..e186c31bfd482 100644
+--- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
++++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
+@@ -171,25 +171,25 @@ &flexcan3 {
+ 
+ &lpuart0 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 13 0 0>, <&edma2 12 0 1>;
++	dmas = <&edma2 12 0 FSL_EDMA_RX>, <&edma2 13 0 0>;
+ 	dma-names = "rx","tx";
+ };
+ 
+ &lpuart1 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 15 0 0>, <&edma2 14 0 1>;
++	dmas = <&edma2 14 0 FSL_EDMA_RX>, <&edma2 15 0 0>;
+ 	dma-names = "rx","tx";
+ };
+ 
+ &lpuart2 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 17 0 0>, <&edma2 16 0 1>;
++	dmas = <&edma2 16 0 FSL_EDMA_RX>, <&edma2 17 0 0>;
+ 	dma-names = "rx","tx";
+ };
+ 
+ &lpuart3 {
+ 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
+-	dmas = <&edma2 19 0 0>, <&edma2 18 0 1>;
++	dmas = <&edma2 18 0 FSL_EDMA_RX>, <&edma2 19 0 0>;
+ 	dma-names = "rx","tx";
+ };
+ 
+-- 
+2.51.0
+
 
 
 
