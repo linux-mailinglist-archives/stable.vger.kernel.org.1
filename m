@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209354-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208633-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C102ED27126
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:04:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 3C3C7D26124
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:35 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D811E3054832
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:35:11 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id E374930B65DD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:00:05 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1D059399011;
-	Thu, 15 Jan 2026 17:34:17 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7C2242D6624;
+	Thu, 15 Jan 2026 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BqgPwpm+"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="x/Q5ipiH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D51CF34216C;
-	Thu, 15 Jan 2026 17:34:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3F9CB29D27A;
+	Thu, 15 Jan 2026 17:00:05 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498456; cv=none; b=Pr5ovapHO1svLsPLpwja5dtCEaBTExX8M+p51hduzEjFhCRG37s4CSrSIxqEzNmZydmLltt30ER6chvraSA13z5yeuXr7CCBsA2o1PtjnuP677d+1aL97nkIn8eMzP/mJRW7wvILIjF5GE6yEDH7plSNdrX9MjHUfFQlDmmirWM=
+	t=1768496405; cv=none; b=hDqcahXkdLa4B9mMZskSW3MiwQQsml2q6VD+g0cJOjlgdqokeh9gB/A+Ktgs5oIcJHHVuJzR4Zt0bpR1K2RpuXhKV46KQ7zYTXftiN3FB1tgX6ijcHm1neGgO0ltt+nd7yjAQS0mJoRjrRKq7v2QS/FW5ikd+uaOpWnc8ZcbSg0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498456; c=relaxed/simple;
-	bh=E4vAsc9W7ss6I+Ivk0bvvCcOibVDoaW5R7dLF23PRpc=;
+	s=arc-20240116; t=1768496405; c=relaxed/simple;
+	bh=9mUuDG2hCc+Ij0q0p1a06vXcluEb1qzF/Ubc1hFteKk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=R0M1wmH+XSP0Rwxq56pPb24mYMBuBtcn1kF3LA8NpRlfStdJWJ1pcCPsdYE+UvHyu2Tn5Hqi7m/1f8BZn0Bcx3xE7/X0updRskhzs4YYj8hZ3hpL5g6AtkYd7UR/d8ZhenpYHFQvjJzpqdnNT6SMM05Pl3h6KXkrlPpjKXng0jE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BqgPwpm+; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61E82C116D0;
-	Thu, 15 Jan 2026 17:34:16 +0000 (UTC)
+	 MIME-Version; b=KvFwxo0IgHvBb+3MQPRJseoy3KiBBfLUgJaP3g3XVrF5lt+zd/3HuUaP2hHGVVdVCyOf0pxwyci64UNh0v2lx3LOc5yb+XRzOx+g8rxrVj2Ps/P2lkRjbETUydgyXNVzKOgu6vtuui7tzcF8pjXQoO1TbwYa6JH+dGFSijq5txo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=x/Q5ipiH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9631FC116D0;
+	Thu, 15 Jan 2026 17:00:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498456;
-	bh=E4vAsc9W7ss6I+Ivk0bvvCcOibVDoaW5R7dLF23PRpc=;
+	s=korg; t=1768496405;
+	bh=9mUuDG2hCc+Ij0q0p1a06vXcluEb1qzF/Ubc1hFteKk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=BqgPwpm+WU7fElC1K1UVh4QzeODsvuk5OuOA2cvrmApn889rOR7uawS0L8P3e18Ka
-	 iDyHwpxg5TO6ii+HtfAa2A1+JkdGcvwwBij/2dQskJPrYYGwzbOfY/QRBFWUBeWjfn
-	 ENyGNtHTkS5mUmvR0Kd/UWEkQuD9OvEy5KSjGu5I=
+	b=x/Q5ipiHN4Jfm9M7SnPZonbsujWjIAOPGpJVBeLiq6Z//2fKiZEWJPhRJysR/wUI0
+	 NPZmLRrIVj6+sESynac7n9fq+r0ojQhkyzkpxPYEUiEPokxXg8E1tYGxQweHgUPm+h
+	 P0r0cerczyqyrJ1pez2+FUxkUw8HA/0ydHoFo8mE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	SeongJae Park <sj@kernel.org>,
-	Brendan Higgins <brendan.higgins@linux.dev>,
-	David Gow <davidgow@google.com>,
-	Kefeng Wang <wangkefeng.wang@huawei.com>,
-	Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 421/554] mm/damon/tests/core-kunit: handle alloc failures on damon_test_split_regions_of()
+	Petko Manolov <petkan@nucleusys.com>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 150/181] net: usb: pegasus: fix memory leak in update_eth_regs_async()
 Date: Thu, 15 Jan 2026 17:48:07 +0100
-Message-ID: <20260115164301.485295083@linuxfoundation.org>
+Message-ID: <20260115164207.729426195@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,73 +60,42 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: SeongJae Park <sj@kernel.org>
+From: Petko Manolov <petkan@nucleusys.com>
 
-commit eded254cb69044bd4abde87394ea44909708d7c0 upstream.
+[ Upstream commit afa27621a28af317523e0836dad430bec551eb54 ]
 
-damon_test_split_regions_of() is assuming all dynamic memory allocation in
-it will succeed.  Those are indeed likely in the real use cases since
-those allocations are too small to fail, but theoretically those could
-fail.  In the case, inappropriate memory access can happen.  Fix it by
-appropriately cleanup pre-allocated memory and skip the execution of the
-remaining tests in the failure cases.
+When asynchronously writing to the device registers and if usb_submit_urb()
+fail, the code fail to release allocated to this point resources.
 
-Link: https://lkml.kernel.org/r/20251101182021.74868-9-sj@kernel.org
-Fixes: 17ccae8bb5c9 ("mm/damon: add kunit tests")
-Signed-off-by: SeongJae Park <sj@kernel.org>
-Cc: Brendan Higgins <brendan.higgins@linux.dev>
-Cc: David Gow <davidgow@google.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: <stable@vger.kernel.org>	[5.15+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 323b34963d11 ("drivers: net: usb: pegasus: fix control urb submission")
+Signed-off-by: Petko Manolov <petkan@nucleusys.com>
+Link: https://patch.msgid.link/20260106084821.3746677-1-petko.manolov@konsulko.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/damon/core-test.h |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ drivers/net/usb/pegasus.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/mm/damon/core-test.h
-+++ b/mm/damon/core-test.h
-@@ -255,15 +255,36 @@ static void damon_test_split_regions_of(
- 	struct damon_target *t;
- 	struct damon_region *r;
- 
-+	if (!c)
-+		kunit_skip(test, "ctx alloc fail");
-+
- 	t = damon_new_target(42);
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "target alloc fail");
-+	}
- 	r = damon_new_region(0, 22);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_regions_of(c, t, 2);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 2u);
- 	damon_free_target(t);
- 
- 	t = damon_new_target(42);
-+	if (!t) {
-+		damon_destroy_ctx(c);
-+		kunit_skip(test, "second target alloc fail");
-+	}
- 	r = damon_new_region(0, 220);
-+	if (!r) {
-+		damon_destroy_ctx(c);
-+		damon_free_target(t);
-+		kunit_skip(test, "second region alloc fail");
-+	}
- 	damon_add_region(r, t);
- 	damon_split_regions_of(c, t, 4);
- 	KUNIT_EXPECT_LE(test, damon_nr_regions(t), 4u);
+diff --git a/drivers/net/usb/pegasus.c b/drivers/net/usb/pegasus.c
+index 81ca64debc5b9..c514483134f05 100644
+--- a/drivers/net/usb/pegasus.c
++++ b/drivers/net/usb/pegasus.c
+@@ -168,6 +168,8 @@ static int update_eth_regs_async(pegasus_t *pegasus)
+ 			netif_device_detach(pegasus->net);
+ 		netif_err(pegasus, drv, pegasus->net,
+ 			  "%s returned %d\n", __func__, ret);
++		usb_free_urb(async_urb);
++		kfree(req);
+ 	}
+ 	return ret;
+ }
+-- 
+2.51.0
+
 
 
 
