@@ -1,55 +1,55 @@
-Return-Path: <stable+bounces-208828-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208900-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 509D5D26216
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:07 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78CEBD265A1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:25:07 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 716D63009762
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:19 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 6D9BE30A146C
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 13DC62D781B;
-	Thu, 15 Jan 2026 17:09:19 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8802C3C1FCF;
+	Thu, 15 Jan 2026 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="t1dk+yMl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="FTO2boE+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 73C703BF2E6;
-	Thu, 15 Jan 2026 17:09:18 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1E7603D1CC9;
+	Thu, 15 Jan 2026 17:12:44 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496958; cv=none; b=QZn2XRgdUlKEr+8MreOlOWEfX3KchKtvaDnHmTEHvNx9f40oexTM1QOlrrI6/8AiFds2R7utiincxknnIC6Z/9xiNtAo9bML07PxVhLzJvoGUvF7RzXvzfnbJ4vbPvWEdv4giyLkWZzd2fkRynqRRL4L/PchgSpu37hnj3YglXE=
+	t=1768497164; cv=none; b=eyocnGYEsr1F1aJPTG99PCuupjSSnxjVwWQtDc8E4IHDUjRwMgtsgK0fSznVwihLTqqx2KFgYK7SAH0lwEDsgt0L6ib3glSTmJHsIEwOI4l8Vm+2ZfxAaXaCNXejsLOkzsDk7mmwkNaZSRq/9Jz6BbJD31iDiSXmUJybSahFOpk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496958; c=relaxed/simple;
-	bh=EXAIGNbjeJoNcXKoWO17xLj9LDDwdLUQRbTSac0dD68=;
+	s=arc-20240116; t=1768497164; c=relaxed/simple;
+	bh=BZq/YTjfB0pX9U0Q+gdkOnY6H+a9W2YGW6JI+3bCJSk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=ftDpEDJDx3ARjpZ/+usi+ZnOLAgOOA2SkqusM7dxe7OePZ3UtJ6ll3uQ50PSqHNbFrrIU6n0rVPlebkWReCgsKh039QxkYyNBy8ufqfaT1tXrpRrbh17lgldKA3S+jENI5VW0/2BTUU2h7cse5LVsJSMpbRWdhb38zhLUealAaE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=t1dk+yMl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98483C19423;
-	Thu, 15 Jan 2026 17:09:17 +0000 (UTC)
+	 MIME-Version:Content-Type; b=NuHn+tPXICX93zhD9DCBusY6G4/8Ponr6zYCqihs1pilnjyTeHD2IaZxpFX4G7TTHFhDBW4B+EqYrWTS/4RbC1FDXqatnhvX3Pbf2RTpwCOBpfcUMf726ZThepty7ea8hrsLJvWOUdIjvRU3LVFpZ+yRa4sWrntaEncAgexbW+I=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=FTO2boE+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92F2BC2BC87;
+	Thu, 15 Jan 2026 17:12:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496958;
-	bh=EXAIGNbjeJoNcXKoWO17xLj9LDDwdLUQRbTSac0dD68=;
+	s=korg; t=1768497163;
+	bh=BZq/YTjfB0pX9U0Q+gdkOnY6H+a9W2YGW6JI+3bCJSk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=t1dk+yMlpeqPFoHWc/yLSoQNWUN+COkxYyvAnGWuLt8Q39BzZg+dEkndyMxSxdnFK
-	 oFOM+kzpwca7PNMGcy2fzUTX4WpCqlTuwn5D8dCbgiw5hiIbzJ9tqXT9mrW7lyPIUc
-	 xvi8Ep0rdEY6zWlueVCdoviwyr2c4A+0gRbacNr0=
+	b=FTO2boE+6j9Ssjgc4L6aCl+qMlnbCqisQU3PY6HKXSQG9PqL8QXKSv0o1D40r1rKO
+	 NJ/gGQSLW3k4Mnh1/UTFQkHihSEn1vFOhYpOIrn6r+tKyExW9PoLYlJSRp0vmrW2Gs
+	 J2pAatfT9krn3EwjdNR8NsQvSthWNbI3xa2YOXa4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Vasut <marek.vasut@mailbox.org>,
-	Christoph Niedermaier <cniedermaier@dh-electronics.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 42/88] arm64: dts: imx8mp: Fix LAN8740Ai PHY reference clock on DH electronics i.MX8M Plus DHCOM
+	Ye Bin <yebin10@huawei.com>,
+	Jan Kara <jack@suse.cz>,
+	Theodore Tso <tytso@mit.edu>,
+	=?UTF-8?q?David=20Nystr=C3=B6m?= <david.nystrom@est.tech>
+Subject: [PATCH 6.1 15/72] ext4: introduce ITAIL helper
 Date: Thu, 15 Jan 2026 17:48:25 +0100
-Message-ID: <20260115164147.833812031@linuxfoundation.org>
+Message-ID: <20260115164144.044992831@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,48 +59,89 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marek.vasut@mailbox.org>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit c63749a7ddc59ac6ec0b05abfa0a21af9f2c1d38 ]
+[ Upstream commit 69f3a3039b0d0003de008659cafd5a1eaaa0a7a4 ]
 
-Add missing 'clocks' property to LAN8740Ai PHY node, to allow the PHY driver
-to manage LAN8740Ai CLKIN reference clock supply. This fixes sporadic link
-bouncing caused by interruptions on the PHY reference clock, by letting the
-PHY driver manage the reference clock and assure there are no interruptions.
+Introduce ITAIL helper to get the bound of xattr in inode.
 
-This follows the matching PHY driver recommendation described in commit
-bedd8d78aba3 ("net: phy: smsc: LAN8710/20: add phy refclk in support")
-
-Fixes: 8d6712695bc8 ("arm64: dts: imx8mp: Add support for DH electronics i.MX8M Plus DHCOM and PDK2")
-Signed-off-by: Marek Vasut <marek.vasut@mailbox.org>
-Tested-by: Christoph Niedermaier <cniedermaier@dh-electronics.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://patch.msgid.link/20250208063141.1539283-2-yebin@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: David Nyström <david.nystrom@est.tech>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ fs/ext4/xattr.c |   10 +++++-----
+ fs/ext4/xattr.h |    3 +++
+ 2 files changed, 8 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-index 2e93d922c8611..2ff47f6ec7979 100644
---- a/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8mp-dhcom-som.dtsi
-@@ -105,6 +105,7 @@ mdio {
- 		ethphy0f: ethernet-phy@0 { /* SMSC LAN8740Ai */
- 			compatible = "ethernet-phy-id0007.c110",
- 				     "ethernet-phy-ieee802.3-c22";
-+			clocks = <&clk IMX8MP_CLK_ENET_QOS>;
- 			interrupt-parent = <&gpio3>;
- 			interrupts = <19 IRQ_TYPE_LEVEL_LOW>;
- 			pinctrl-0 = <&pinctrl_ethphy0>;
--- 
-2.51.0
-
+--- a/fs/ext4/xattr.c
++++ b/fs/ext4/xattr.c
+@@ -599,7 +599,7 @@ ext4_xattr_ibody_get(struct inode *inode
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -744,7 +744,7 @@ ext4_xattr_ibody_list(struct dentry *den
+ 		return error;
+ 	raw_inode = ext4_raw_inode(&iloc);
+ 	header = IHDR(inode, raw_inode);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	error = xattr_check_inode(inode, header, end);
+ 	if (error)
+ 		goto cleanup;
+@@ -830,7 +830,7 @@ int ext4_get_inode_usage(struct inode *i
+ 			goto out;
+ 		raw_inode = ext4_raw_inode(&iloc);
+ 		header = IHDR(inode, raw_inode);
+-		end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++		end = ITAIL(inode, raw_inode);
+ 		ret = xattr_check_inode(inode, header, end);
+ 		if (ret)
+ 			goto out;
+@@ -2195,7 +2195,7 @@ int ext4_xattr_ibody_find(struct inode *
+ 	header = IHDR(inode, raw_inode);
+ 	is->s.base = is->s.first = IFIRST(header);
+ 	is->s.here = is->s.first;
+-	is->s.end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	is->s.end = ITAIL(inode, raw_inode);
+ 	if (ext4_test_inode_state(inode, EXT4_STATE_XATTR)) {
+ 		error = xattr_check_inode(inode, header, is->s.end);
+ 		if (error)
+@@ -2746,7 +2746,7 @@ retry:
+ 	 */
+ 
+ 	base = IFIRST(header);
+-	end = (void *)raw_inode + EXT4_SB(inode->i_sb)->s_inode_size;
++	end = ITAIL(inode, raw_inode);
+ 	min_offs = end - base;
+ 	total_ino = sizeof(struct ext4_xattr_ibody_header) + sizeof(u32);
+ 
+--- a/fs/ext4/xattr.h
++++ b/fs/ext4/xattr.h
+@@ -68,6 +68,9 @@ struct ext4_xattr_entry {
+ 		((void *)raw_inode + \
+ 		EXT4_GOOD_OLD_INODE_SIZE + \
+ 		EXT4_I(inode)->i_extra_isize))
++#define ITAIL(inode, raw_inode) \
++	((void *)(raw_inode) + \
++	 EXT4_SB((inode)->i_sb)->s_inode_size)
+ #define IFIRST(hdr) ((struct ext4_xattr_entry *)((hdr)+1))
+ 
+ /*
 
 
 
