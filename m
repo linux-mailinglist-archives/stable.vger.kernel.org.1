@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-209524-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209071-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E0F85D27A74
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:38:17 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id B8972D2660D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:27:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D3D7F306F911
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:42:39 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 82CDB3034062
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id C89333B8BA7;
-	Thu, 15 Jan 2026 17:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A25073B530F;
+	Thu, 15 Jan 2026 17:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ksLogmbD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="1krri+OR"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8BA9B2D73B4;
-	Thu, 15 Jan 2026 17:42:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 63E4A3AA1A8;
+	Thu, 15 Jan 2026 17:20:53 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498941; cv=none; b=H78g5/qTOwpy+DHLnvVpUYb+4oZs3eiVi+4j7qhfkBp1pG7cMTUGK2n6GhH6EjtKb9Kl62TjC2BnB6t20b94gnkcASUhYM0vu1bo8ttPGMeCFnhS/ul2x+QALjz9sa6U6rHJ+CWjDh3TO7KYlIpBJVh+NMm5UX7Fq6G/DSeHDpE=
+	t=1768497653; cv=none; b=Hduui+qN1Lbf+KWTgMCInw1USsVrTTpTWV/1yzETZl0G/c1MOA+8n5GBkp7NIf1QgOXp9nmBYicq/GOSVBgFd+9ISvxQg9viaOnFU2lo3K977DwCDmtU9AzDXSEczFhPddr39Tu7JH7H7GXsZFFELNodOHF+IbslUUOUF75v/7c=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498941; c=relaxed/simple;
-	bh=xwDhYAkfSdLQuPyKQQqUbnuw0Qx/hk7p+kEaJvT4w0s=;
+	s=arc-20240116; t=1768497653; c=relaxed/simple;
+	bh=sPYxnR+zoecQ+qQaherDm4vGV7MoX1DxfBdbP3XcWas=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=sWYx/9LCTozk+Lv/DJkJweyRPI+vP8xIcFlVRnj1n+Yy1deJXO4DqfmUNI5VoeAwNZWRQm5eOK0GiGwSCloIoW6n1Nrc8ORC+9VURkU09gUTdRaOpt+gbLz0TLFNNGmW+KkE/x9JQfESEP1v7RPHlUPZ6WPBBdfCkTOLMGoH+Dg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ksLogmbD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0FFEAC116D0;
-	Thu, 15 Jan 2026 17:42:20 +0000 (UTC)
+	 MIME-Version; b=ezDUVsNXYvwzROgQfhgQUQ+WPw71fcK9HZA0bwM1OnG8siD4fTWNg+VA+sKE2dZEVc2gqQcqpJpjRGleyfZSoY5XcK7R7ajuT5Apj8ZTnKHTHFvOnJR38AsLvBsMBrgomB4fp3rATpY8OwXr6b/2p18kItKQmqTXMyheJoGWDZQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=1krri+OR; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D2FC116D0;
+	Thu, 15 Jan 2026 17:20:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498941;
-	bh=xwDhYAkfSdLQuPyKQQqUbnuw0Qx/hk7p+kEaJvT4w0s=;
+	s=korg; t=1768497653;
+	bh=sPYxnR+zoecQ+qQaherDm4vGV7MoX1DxfBdbP3XcWas=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ksLogmbDjsdGGa/nLmHOjEI2Mj9O7Cj8u4C6Peu3mYAdoNAaWHzSaQQxyLPG/lzjM
-	 YzM3CDq17R6oyIL/MRJPWLfsSSmSOxnN8hpoZZmAtmwf1hXhYHcm23K03vHBZG/vI4
-	 v4qopjJHBEt5Iz+nf2Wl8l+MmMcRArnav0PvIP74=
+	b=1krri+OR8+PRJsqthoULjgBJCTc61VKdTqVknQgdbf2r0xybgIK6JyFaWP/xdFZnS
+	 69w09Y/fz+BCxcYKzitV94AhWqnaKeqAV/z3HwsrqVwmxCQWu7wWnwNTfy6V7tAYLW
+	 AAg80OeYVafQ+hQNbf8R9NOyjHqFnE1jWW6VXNcU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>,
-	Praveen Talari <praveen.talari@oss.qualcomm.com>,
-	Bjorn Andersson <andersson@kernel.org>,
-	Linus Walleij <linus.walleij@linaro.org>,
+	sparkhuang <huangshaobo3@xiaomi.com>,
+	Charles Keepax <ckeepax@opensource.cirrus.com>,
+	Mark Brown <broonie@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 020/451] pinctrl: qcom: msm: Fix deadlock in pinmux configuration
-Date: Thu, 15 Jan 2026 17:43:41 +0100
-Message-ID: <20260115164231.620122745@linuxfoundation.org>
+Subject: [PATCH 5.15 156/554] regulator: core: Protect regulator_supply_alias_list with regulator_list_mutex
+Date: Thu, 15 Jan 2026 17:43:42 +0100
+Message-ID: <20260115164251.911972296@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,49 +61,108 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Praveen Talari <praveen.talari@oss.qualcomm.com>
+From: sparkhuang <huangshaobo3@xiaomi.com>
 
-[ Upstream commit 1c2e70397b4125022dba80f6111271a37fb36bae ]
+[ Upstream commit 0cc15a10c3b4ab14cd71b779fd5c9ca0cb2bc30d ]
 
-Replace disable_irq() with disable_irq_nosync() in msm_pinmux_set_mux()
-to prevent deadlock when wakeup IRQ is triggered on the same
-GPIO being reconfigured.
+regulator_supply_alias_list was accessed without any locking in
+regulator_supply_alias(), regulator_register_supply_alias(), and
+regulator_unregister_supply_alias(). Concurrent registration,
+unregistration and lookups can race, leading to:
 
-The issue occurs when a wakeup IRQ is triggered on a GPIO and the IRQ
-handler attempts to reconfigure the same GPIO's pinmux. In this scenario,
-msm_pinmux_set_mux() calls disable_irq() which waits for the currently
-running IRQ handler to complete, creating a circular dependency that
-results in deadlock.
+1 use-after-free if an alias entry is removed while being read,
+2 duplicate entries when two threads register the same alias,
+3 inconsistent alias mappings observed by consumers.
 
-Using disable_irq_nosync() avoids waiting for the IRQ handler to
-complete, preventing the deadlock condition while still properly
-disabling the interrupt during pinmux reconfiguration.
+Protect all traversals, insertions and deletions on
+regulator_supply_alias_list with the existing regulator_list_mutex.
 
-Suggested-by: Prasad Sodagudi <prasad.sodagudi@oss.qualcomm.com>
-Signed-off-by: Praveen Talari <praveen.talari@oss.qualcomm.com>
-Reviewed-by: Bjorn Andersson <andersson@kernel.org>
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+Fixes: a06ccd9c3785f ("regulator: core: Add ability to create a lookup alias for supply")
+Signed-off-by: sparkhuang <huangshaobo3@xiaomi.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://patch.msgid.link/20251127025716.5440-1-huangshaobo3@xiaomi.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/qcom/pinctrl-msm.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/regulator/core.c | 32 ++++++++++++++++++++------------
+ 1 file changed, 20 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/pinctrl/qcom/pinctrl-msm.c b/drivers/pinctrl/qcom/pinctrl-msm.c
-index 049a34f0e13f7..f72a1598de28a 100644
---- a/drivers/pinctrl/qcom/pinctrl-msm.c
-+++ b/drivers/pinctrl/qcom/pinctrl-msm.c
-@@ -213,7 +213,7 @@ static int msm_pinmux_set_mux(struct pinctrl_dev *pctldev,
- 	 */
- 	if (d && i != gpio_func &&
- 	    !test_and_set_bit(d->hwirq, pctrl->disabled_for_mux))
--		disable_irq(irq);
-+		disable_irq_nosync(irq);
+diff --git a/drivers/regulator/core.c b/drivers/regulator/core.c
+index 6c5913a1a6821..af0218227a8c7 100644
+--- a/drivers/regulator/core.c
++++ b/drivers/regulator/core.c
+@@ -1933,6 +1933,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
+ {
+ 	struct regulator_supply_alias *map;
  
- 	raw_spin_lock_irqsave(&pctrl->lock, flags);
++	mutex_lock(&regulator_list_mutex);
+ 	map = regulator_find_supply_alias(*dev, *supply);
+ 	if (map) {
+ 		dev_dbg(*dev, "Mapping supply %s to %s,%s\n",
+@@ -1941,6 +1942,7 @@ static void regulator_supply_alias(struct device **dev, const char **supply)
+ 		*dev = map->alias_dev;
+ 		*supply = map->alias_supply;
+ 	}
++	mutex_unlock(&regulator_list_mutex);
+ }
+ 
+ static int regulator_match(struct device *dev, const void *data)
+@@ -2419,22 +2421,26 @@ int regulator_register_supply_alias(struct device *dev, const char *id,
+ 				    const char *alias_id)
+ {
+ 	struct regulator_supply_alias *map;
++	struct regulator_supply_alias *new_map;
+ 
+-	map = regulator_find_supply_alias(dev, id);
+-	if (map)
+-		return -EEXIST;
+-
+-	map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
+-	if (!map)
++	new_map = kzalloc(sizeof(struct regulator_supply_alias), GFP_KERNEL);
++	if (!new_map)
+ 		return -ENOMEM;
+ 
+-	map->src_dev = dev;
+-	map->src_supply = id;
+-	map->alias_dev = alias_dev;
+-	map->alias_supply = alias_id;
+-
+-	list_add(&map->list, &regulator_supply_alias_list);
++	mutex_lock(&regulator_list_mutex);
++	map = regulator_find_supply_alias(dev, id);
++	if (map) {
++		mutex_unlock(&regulator_list_mutex);
++		kfree(new_map);
++		return -EEXIST;
++	}
+ 
++	new_map->src_dev = dev;
++	new_map->src_supply = id;
++	new_map->alias_dev = alias_dev;
++	new_map->alias_supply = alias_id;
++	list_add(&new_map->list, &regulator_supply_alias_list);
++	mutex_unlock(&regulator_list_mutex);
+ 	pr_info("Adding alias for supply %s,%s -> %s,%s\n",
+ 		id, dev_name(dev), alias_id, dev_name(alias_dev));
+ 
+@@ -2454,11 +2460,13 @@ void regulator_unregister_supply_alias(struct device *dev, const char *id)
+ {
+ 	struct regulator_supply_alias *map;
+ 
++	mutex_lock(&regulator_list_mutex);
+ 	map = regulator_find_supply_alias(dev, id);
+ 	if (map) {
+ 		list_del(&map->list);
+ 		kfree(map);
+ 	}
++	mutex_unlock(&regulator_list_mutex);
+ }
+ EXPORT_SYMBOL_GPL(regulator_unregister_supply_alias);
  
 -- 
 2.51.0
