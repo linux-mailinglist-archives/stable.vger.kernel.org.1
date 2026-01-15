@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209107-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209562-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id D8A67D267FC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:54 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id B1931D2784F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:43 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id EAB0F3056D61
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:36 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BCC27322A3D1
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:10 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1DBA39B48E;
-	Thu, 15 Jan 2026 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 461DD2D9ECB;
+	Thu, 15 Jan 2026 17:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="CKuL9tNt"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ML/7R0YX"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 573732D6E72;
-	Thu, 15 Jan 2026 17:22:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 032472D541B;
+	Thu, 15 Jan 2026 17:44:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497753; cv=none; b=f6y32b6nsb4+ICeFUytNtnhLW49UkOOJY+11UJvKhQSYWXXa7d43yWf4CyUU5w32+Nlc2bcQJs+OeUS9N8eDDNtSVyQKG4FtJ1kc6CUgaaFwlXWq0AMvxZKxWJL9GVaLrHhQC18M7bpavJpl+hbm7Im4uZx5L4Dm/b9bTYS0H4g=
+	t=1768499050; cv=none; b=Zje0Ub9eOjQdfmfqUUs3nNFCcp//OqKONnJbNfcnAfSx7fRphXpPjg3mFPprx+xzxiCT3mm1FqMaKkXC2S/ElNvCqjQVJAiY4nAT2cci/QQ8dDyBX/Qj+l4U5Kz4OZsyCdd9ZFqLcQk5d16It55QMcKA/zQA+TRAE7gPssOlXRs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497753; c=relaxed/simple;
-	bh=98CVSM4ItNvCDY8ocAuPPYj/iUoSFJkP6g6cG738FJo=;
+	s=arc-20240116; t=1768499050; c=relaxed/simple;
+	bh=HDxpvgeiC+BOQvL0xgY5jYY/mf4NtGd/hEe13F2STNw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=DDGz+wxtFWhV5AWhmBnI4OxeU2XpirSr64XUB6G3yQXI6Kqvco2kieNlbtJaqC/sLmb6viIlFH2rj9ota2UmzT09ipPHwvj7Me5CkMBrA6jf7315qM344zq8QefqEOviTURGeE7aKxMt2obNYLrogDI4nSyDF4v3W/2THMkgvq0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=CKuL9tNt; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2D8BC116D0;
-	Thu, 15 Jan 2026 17:22:32 +0000 (UTC)
+	 MIME-Version; b=oYpbFIB3o2UYQkoec27hrFzfqmu6xfWXwDKYU4QeFDILYsGYNd1nANomdYA89vK5k8sRinv4wMKxiuB+EfbmeQ5nUisrsF1KDs+VAsT3qFggt9tl/9yunK/qLCcIt6AYbNCGkU2V5oeTPzC/JZy9XilwKb6lAd+Ja1CowritZik=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ML/7R0YX; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 834DDC116D0;
+	Thu, 15 Jan 2026 17:44:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497753;
-	bh=98CVSM4ItNvCDY8ocAuPPYj/iUoSFJkP6g6cG738FJo=;
+	s=korg; t=1768499049;
+	bh=HDxpvgeiC+BOQvL0xgY5jYY/mf4NtGd/hEe13F2STNw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=CKuL9tNtgp+dnZjzGFC98uoaKfDGhVlWBOndRgaXDQGnSSbEtAczyWE4UlH2cflVu
-	 kseKRuJS0zFVHF5ZEfkpELD/qou10bRTSlrxTg7PPjg4hqNODKPvd9Mw08hPuo9EeU
-	 bwZQyVWQDJtlmgzNMNuFilcY0wn/GwMKL1i0x+rA=
+	b=ML/7R0YXwxCYH9ebCGEXfhb2VChA8nYkstUNJ/wX6wxUig/A7xkiEaoyC9Om7Vug4
+	 QdSdYrs2h1dqKLsQVgM3yxsJojkBjDdrP8Y3HMPGNoVLOkHzi1lUhnnMbOPemsFZNK
+	 mddU3B2Fhg0Ukpx7jV6mITC+EFJ1Vdun/rHa+kcc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Xie Yuanbin <xieyuanbin1@huawei.com>,
-	Liyuan Pang <pangliyuan1@huawei.com>,
-	"Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
+	Eric Whitney <enwlinux@gmail.com>,
+	Theodore Tso <tytso@mit.edu>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 191/554] ARM: 9464/1: fix input-only operand modification in load_unaligned_zeropad()
-Date: Thu, 15 Jan 2026 17:44:17 +0100
-Message-ID: <20260115164253.172895652@linuxfoundation.org>
+Subject: [PATCH 5.10 057/451] ext4: minor defrag code improvements
+Date: Thu, 15 Jan 2026 17:44:18 +0100
+Message-ID: <20260115164232.961342225@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,68 +60,81 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liyuan Pang <pangliyuan1@huawei.com>
+From: Eric Whitney <enwlinux@gmail.com>
 
-[ Upstream commit edb924a7211c9aa7a4a415e03caee4d875e46b8e ]
+[ Upstream commit d412df530f77d0f61c41b83f925997452fc3944c ]
 
-In the inline assembly inside load_unaligned_zeropad(), the "addr" is
-constrained as input-only operand. The compiler assumes that on exit
-from the asm statement these operands contain the same values as they
-had before executing the statement, but when kernel page fault happened, the assembly fixup code "bic %2 %2, #0x3" modify the value of "addr", which may lead to an unexpected behavior.
+Modify the error returns for two file types that can't be defragged to
+more clearly communicate those restrictions to a caller.  When the
+defrag code is applied to swap files, return -ETXTBSY, and when applied
+to quota files, return -EOPNOTSUPP.  Move an extent tree search whose
+results are only occasionally required to the site always requiring them
+for improved efficiency.  Address a few typos.
 
-Use a temporary variable "tmp" to handle it, instead of modifying the
-input-only operand, just like what arm64's load_unaligned_zeropad()
-does.
-
-Fixes: b9a50f74905a ("ARM: 7450/1: dcache: select DCACHE_WORD_ACCESS for little-endian ARMv6+ CPUs")
-Co-developed-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Xie Yuanbin <xieyuanbin1@huawei.com>
-Signed-off-by: Liyuan Pang <pangliyuan1@huawei.com>
-Signed-off-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
+Signed-off-by: Eric Whitney <enwlinux@gmail.com>
+Link: https://lore.kernel.org/r/20220722163910.268564-1-enwlinux@gmail.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Stable-dep-of: a2e5a3cea4b1 ("ext4: correct the checking of quota files before moving extents")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/include/asm/word-at-a-time.h | 10 +++++-----
- 1 file changed, 5 insertions(+), 5 deletions(-)
+ fs/ext4/move_extent.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/arch/arm/include/asm/word-at-a-time.h b/arch/arm/include/asm/word-at-a-time.h
-index 352ab213520d2..2e6d0b4349f47 100644
---- a/arch/arm/include/asm/word-at-a-time.h
-+++ b/arch/arm/include/asm/word-at-a-time.h
-@@ -66,7 +66,7 @@ static inline unsigned long find_zero(unsigned long mask)
-  */
- static inline unsigned long load_unaligned_zeropad(const void *addr)
- {
--	unsigned long ret, offset;
-+	unsigned long ret, tmp;
+diff --git a/fs/ext4/move_extent.c b/fs/ext4/move_extent.c
+index 661a8544d7817..4cb1872c9af43 100644
+--- a/fs/ext4/move_extent.c
++++ b/fs/ext4/move_extent.c
+@@ -466,19 +466,17 @@ mext_check_arguments(struct inode *orig_inode,
+ 	if (IS_IMMUTABLE(donor_inode) || IS_APPEND(donor_inode))
+ 		return -EPERM;
  
- 	/* Load word from unaligned pointer addr */
- 	asm(
-@@ -74,9 +74,9 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"2:\n"
- 	"	.pushsection .text.fixup,\"ax\"\n"
- 	"	.align 2\n"
--	"3:	and	%1, %2, #0x3\n"
--	"	bic	%2, %2, #0x3\n"
--	"	ldr	%0, [%2]\n"
-+	"3:	bic	%1, %2, #0x3\n"
-+	"	ldr	%0, [%1]\n"
-+	"	and	%1, %2, #0x3\n"
- 	"	lsl	%1, %1, #0x3\n"
- #ifndef __ARMEB__
- 	"	lsr	%0, %0, %1\n"
-@@ -89,7 +89,7 @@ static inline unsigned long load_unaligned_zeropad(const void *addr)
- 	"	.align	3\n"
- 	"	.long	1b, 3b\n"
- 	"	.popsection"
--	: "=&r" (ret), "=&r" (offset)
-+	: "=&r" (ret), "=&r" (tmp)
- 	: "r" (addr), "Qo" (*(unsigned long *)addr));
+-	/* Ext4 move extent does not support swapfile */
++	/* Ext4 move extent does not support swap files */
+ 	if (IS_SWAPFILE(orig_inode) || IS_SWAPFILE(donor_inode)) {
+-		ext4_debug("ext4 move extent: The argument files should "
+-			"not be swapfile [ino:orig %lu, donor %lu]\n",
++		ext4_debug("ext4 move extent: The argument files should not be swap files [ino:orig %lu, donor %lu]\n",
+ 			orig_inode->i_ino, donor_inode->i_ino);
+-		return -EBUSY;
++		return -ETXTBSY;
+ 	}
  
- 	return ret;
+ 	if (ext4_is_quota_file(orig_inode) && ext4_is_quota_file(donor_inode)) {
+-		ext4_debug("ext4 move extent: The argument files should "
+-			"not be quota files [ino:orig %lu, donor %lu]\n",
++		ext4_debug("ext4 move extent: The argument files should not be quota files [ino:orig %lu, donor %lu]\n",
+ 			orig_inode->i_ino, donor_inode->i_ino);
+-		return -EBUSY;
++		return -EOPNOTSUPP;
+ 	}
+ 
+ 	/* Ext4 move extent supports only extent based file */
+@@ -626,11 +624,11 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		if (ret)
+ 			goto out;
+ 		ex = path[path->p_depth].p_ext;
+-		next_blk = ext4_ext_next_allocated_block(path);
+ 		cur_blk = le32_to_cpu(ex->ee_block);
+ 		cur_len = ext4_ext_get_actual_len(ex);
+ 		/* Check hole before the start pos */
+ 		if (cur_blk + cur_len - 1 < o_start) {
++			next_blk = ext4_ext_next_allocated_block(path);
+ 			if (next_blk == EXT_MAX_BLOCKS) {
+ 				o_start = o_end;
+ 				ret = -ENODATA;
+@@ -659,7 +657,7 @@ ext4_move_extents(struct file *o_filp, struct file *d_filp, __u64 orig_blk,
+ 		donor_page_index = d_start >> (PAGE_SHIFT -
+ 					       donor_inode->i_blkbits);
+ 		offset_in_page = o_start % blocks_per_page;
+-		if (cur_len > blocks_per_page- offset_in_page)
++		if (cur_len > blocks_per_page - offset_in_page)
+ 			cur_len = blocks_per_page - offset_in_page;
+ 		/*
+ 		 * Up semaphore to avoid following problems:
 -- 
 2.51.0
 
