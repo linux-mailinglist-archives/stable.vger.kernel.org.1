@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209494-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209059-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 13214D26C32
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:49:10 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 937ECD264A9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:20:51 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id CBEB530A77D5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:03 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 6897D303C12A
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 695573271F2;
-	Thu, 15 Jan 2026 17:40:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C9AE42D541B;
+	Thu, 15 Jan 2026 17:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UWX3O3ZP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="nShTAvpr"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 29B1F2D7DED;
-	Thu, 15 Jan 2026 17:40:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8A2642D73B4;
+	Thu, 15 Jan 2026 17:20:18 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498856; cv=none; b=DK5yKdwF3S89DA+y2+sIOKlRWpwod7x6UoMmen/AiJozgKv9mdS69i5wUGv0vKUH7eqG7X+g1PjgLsqVtwL0U2uKmH2AO21I6TU9VQ7A13LZ4eRodH1dm0aTMnIlOI7uxqTrPbVPmrcFcjhoZFo5C5gUQKChEb0nB3fsAd+3t+U=
+	t=1768497618; cv=none; b=Lt+SkYrn1G1GS7wTmmSoF+5Rz3ynxc9h+xCQmjGsuHq1MfUo1G4m2yDPFRaoJXmQaTyVJqFZEomqGlJ6XJK5nHUccjOdJ3sotT+UfBbeVbtuN+hWhrzi1KQFcJ7J0SYTmTY6pOcVBtyCVXZwVZl+qTDXNb96wwWKJy0T5dYmlc4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498856; c=relaxed/simple;
-	bh=+hB/jJm2VwlECYjvBrg1ul0bfPEp6svhyOlXItS0AC4=;
+	s=arc-20240116; t=1768497618; c=relaxed/simple;
+	bh=IuTnLQ1dNNNRpFQrigWgX5tq4plFG4Tvjv898i3wXZc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=iO04pmJTxyBi/63nwxflB+Phnufv5OQ8fcX/6RdAP3cW7gNw1rsFjn224ojMxvh8jt+XdnSYKdKitxaRVhq8iDMohxh7B4+zvYiJHfh9pcogmVM4oM1o9G1f37+yxR/E9kVXlv/FYPK2MZIAvg6Ty824Nop5pM7NxXKE7bLFmfY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UWX3O3ZP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62975C116D0;
-	Thu, 15 Jan 2026 17:40:55 +0000 (UTC)
+	 MIME-Version; b=pLv6DJ4wnReLI4wPOboGAI7Xfu04eMsoYKKrkzygwMliJ4PIUy3MTqSvorkfirixyMU5ctg2HEwcbU5IOcNROdoO9Wkuh13SRcRxYtaJm7e6WURLtsaPSbx5sXU7K9IaxKl8NPsJUL+N4f5JngGrvIjt0S40Sc2B76WYIjun0AM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=nShTAvpr; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14871C16AAE;
+	Thu, 15 Jan 2026 17:20:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498855;
-	bh=+hB/jJm2VwlECYjvBrg1ul0bfPEp6svhyOlXItS0AC4=;
+	s=korg; t=1768497618;
+	bh=IuTnLQ1dNNNRpFQrigWgX5tq4plFG4Tvjv898i3wXZc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=UWX3O3ZPodfRN4hOUrLJgAm5BidD0BzistfRux4SRaSvIsGl3FbGsDZNFkSFaCIUX
-	 K5h8Dk5eEDac/P79/XFViWKs0QhRTimaiKF9AaeCsWNanHEUd3VG7brN2DudOxlOH2
-	 opI39GQfh5QExbW55gYOUTPOfl07cY43ZI/POuTk=
+	b=nShTAvprOCzIi5MbcTPpyi/hCHmZPKytW234DpMI7HqAvZYN0WfLy/ymSnsElkdNp
+	 tUG6G4Qpp0LCk/0RYv2nrt2GkwCW5/alRxGEBSTmGLdztO09TGwnLeQGLg9NZvb8ia
+	 7ksCepcjE1ySnH1iS4A13dC5xYGlmLG053+CbUmY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Alexey Nepomnyashih <sdl@nppct.ru>,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.10 009/451] ext4: add i_data_sem protection in ext4_destroy_inline_data_nolock()
-Date: Thu, 15 Jan 2026 17:43:30 +0100
-Message-ID: <20260115164231.218662684@linuxfoundation.org>
+	Shengjiu Wang <shengjiu.wang@nxp.com>,
+	Mark Brown <broonie@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 145/554] ASoC: fsl_xcvr: clear the channel status control memory
+Date: Thu, 15 Jan 2026 17:43:31 +0100
+Message-ID: <20260115164251.507490123@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +60,44 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexey Nepomnyashih <sdl@nppct.ru>
+From: Shengjiu Wang <shengjiu.wang@nxp.com>
 
-commit 0cd8feea8777f8d9b9a862b89c688b049a5c8475 upstream.
+[ Upstream commit 73b97d46dde64fa184d47865d4a532d818c3a007 ]
 
-Fix a race between inline data destruction and block mapping.
+memset_io() writes memory byte by byte with __raw_writeb() on the arm
+platform if the size is word. but XCVR data RAM memory can't be accessed
+with byte address, so with memset_io() the channel status control memory
+is not really cleared, use writel_relaxed() instead.
 
-The function ext4_destroy_inline_data_nolock() changes the inode data
-layout by clearing EXT4_INODE_INLINE_DATA and setting EXT4_INODE_EXTENTS.
-At the same time, another thread may execute ext4_map_blocks(), which
-tests EXT4_INODE_EXTENTS to decide whether to call ext4_ext_map_blocks()
-or ext4_ind_map_blocks().
-
-Without i_data_sem protection, ext4_ind_map_blocks() may receive inode
-with EXT4_INODE_EXTENTS flag and triggering assert.
-
-kernel BUG at fs/ext4/indirect.c:546!
-EXT4-fs (loop2): unmounting filesystem.
-invalid opcode: 0000 [#1] PREEMPT SMP KASAN NOPTI
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.12.0-1 04/01/2014
-RIP: 0010:ext4_ind_map_blocks.cold+0x2b/0x5a fs/ext4/indirect.c:546
-
-Call Trace:
- <TASK>
- ext4_map_blocks+0xb9b/0x16f0 fs/ext4/inode.c:681
- _ext4_get_block+0x242/0x590 fs/ext4/inode.c:822
- ext4_block_write_begin+0x48b/0x12c0 fs/ext4/inode.c:1124
- ext4_write_begin+0x598/0xef0 fs/ext4/inode.c:1255
- ext4_da_write_begin+0x21e/0x9c0 fs/ext4/inode.c:3000
- generic_perform_write+0x259/0x5d0 mm/filemap.c:3846
- ext4_buffered_write_iter+0x15b/0x470 fs/ext4/file.c:285
- ext4_file_write_iter+0x8e0/0x17f0 fs/ext4/file.c:679
- call_write_iter include/linux/fs.h:2271 [inline]
- do_iter_readv_writev+0x212/0x3c0 fs/read_write.c:735
- do_iter_write+0x186/0x710 fs/read_write.c:861
- vfs_iter_write+0x70/0xa0 fs/read_write.c:902
- iter_file_splice_write+0x73b/0xc90 fs/splice.c:685
- do_splice_from fs/splice.c:763 [inline]
- direct_splice_actor+0x10f/0x170 fs/splice.c:950
- splice_direct_to_actor+0x33a/0xa10 fs/splice.c:896
- do_splice_direct+0x1a9/0x280 fs/splice.c:1002
- do_sendfile+0xb13/0x12c0 fs/read_write.c:1255
- __do_sys_sendfile64 fs/read_write.c:1323 [inline]
- __se_sys_sendfile64 fs/read_write.c:1309 [inline]
- __x64_sys_sendfile64+0x1cf/0x210 fs/read_write.c:1309
- do_syscall_x64 arch/x86/entry/common.c:51 [inline]
- do_syscall_64+0x35/0x80 arch/x86/entry/common.c:81
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Fixes: c755e251357a ("ext4: fix deadlock between inline_data and ext4_expand_extra_isize_ea()")
-Cc: stable@vger.kernel.org # v4.11+
-Signed-off-by: Alexey Nepomnyashih <sdl@nppct.ru>
-Message-ID: <20251104093326.697381-1-sdl@nppct.ru>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 28564486866f ("ASoC: fsl_xcvr: Add XCVR ASoC CPU DAI driver")
+Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
+Link: https://patch.msgid.link/20251126064509.1900974-1-shengjiu.wang@nxp.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/inline.c |    7 ++++++-
- 1 file changed, 6 insertions(+), 1 deletion(-)
+ sound/soc/fsl/fsl_xcvr.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/fs/ext4/inline.c
-+++ b/fs/ext4/inline.c
-@@ -443,9 +443,13 @@ static int ext4_destroy_inline_data_nolo
- 	if (!ei->i_inline_off)
- 		return 0;
- 
-+	down_write(&ei->i_data_sem);
-+
- 	error = ext4_get_inode_loc(inode, &is.iloc);
--	if (error)
-+	if (error) {
-+		up_write(&ei->i_data_sem);
- 		return error;
-+	}
- 
- 	error = ext4_xattr_ibody_find(inode, &i, &is);
- 	if (error)
-@@ -483,6 +487,7 @@ out:
- 	brelse(is.iloc.bh);
- 	if (error == -ENODATA)
- 		error = 0;
-+	up_write(&ei->i_data_sem);
- 	return error;
- }
- 
+diff --git a/sound/soc/fsl/fsl_xcvr.c b/sound/soc/fsl/fsl_xcvr.c
+index 3fee1aa03363b..8065fa5c95e10 100644
+--- a/sound/soc/fsl/fsl_xcvr.c
++++ b/sound/soc/fsl/fsl_xcvr.c
+@@ -1163,7 +1163,7 @@ static irqreturn_t irq0_isr(int irq, void *devid)
+ 						bitrev32(val);
+ 				}
+ 				/* clear CS control register */
+-				memset_io(reg_ctrl, 0, sizeof(val));
++				writel_relaxed(0, reg_ctrl);
+ 			}
+ 		}
+ 	}
+-- 
+2.51.0
+
 
 
 
