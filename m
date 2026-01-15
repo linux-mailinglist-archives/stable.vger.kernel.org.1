@@ -1,53 +1,58 @@
-Return-Path: <stable+bounces-209801-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208746-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 90D89D27439
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:43 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 78872D261C3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:08:52 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id F21C230736FD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:19 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id F195F306390B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:05:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A9E423BF30C;
-	Thu, 15 Jan 2026 17:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6355C3BF2F7;
+	Thu, 15 Jan 2026 17:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T3L8tEd9"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yAeU6Lj0"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6C79F3D2FE4;
-	Thu, 15 Jan 2026 17:55:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 245153BF2E1;
+	Thu, 15 Jan 2026 17:05:28 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499729; cv=none; b=WPeSdMBYY8Ch2eTb08GeX/Ym9kL7oTIV2p8ZVR6GM3pLzv/9mWUfrssqqpxnI+E+PYr/eaP6PU9huTzUMdNynBanxawAIbzpaco0NTDAkF7GQw2tclNe2D99t9xvY569g0AH6TQr+u+RonQeWHahG8k0zQmD4xxn7v801LfBlqI=
+	t=1768496728; cv=none; b=TANeEGGWWYKqvUHb/Bhrk6RD+Qdn+IJRi/KXG/Uv0hS1fSuxA7VPpucROfx8dMJLB4EQ/nCf8VA14VXlS3md7622PwGaHY/BgZFXZdMdwzxUGzoodxIHkVBDqa/+HrR8VWalPoR2/aP/OWKkC8QsAXXD5tibyaQgFwV2n8CHK1A=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499729; c=relaxed/simple;
-	bh=tqHYNrgN9Md66lX0Cx8LLKN3gV+uPR74Sb3t2djiCr0=;
+	s=arc-20240116; t=1768496728; c=relaxed/simple;
+	bh=wpCMpMMi59IJF0M12p+ipc2lvZsWEgCSb8FLQHz1OsY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=FW4kMyfFThEUW38YYZeiM3p49NCWpdnOnjjaWas06crxmj2T/dLG+CIZLmZTN+5jkj//BceI2kYpIqAyB6QxO2ffhoJLi3iiocytJaI5XmZX2hRSpJFETtj9KhbCkdPDWdg1axBH2+b5TWuyJOE4qs+1yBopvyXtbVOyoFE34ao=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T3L8tEd9; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0D5CC116D0;
-	Thu, 15 Jan 2026 17:55:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=FvAoCHHL8/DYEmhF5prJy5ncsZaIG74OArGFQMIWXDTAQ5SQjQeoiUJHFmbkmk9kWnroLkxVFXbI6gWV4chG8mHkjcpxsxQljjcvx9pA0wZmQtC4UaFYaO+UUDPA4Oi+90T4iXzEUt/+u+rmmNSyqvX9CTp3acpDdfVbR1EY3QQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yAeU6Lj0; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9067CC116D0;
+	Thu, 15 Jan 2026 17:05:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499729;
-	bh=tqHYNrgN9Md66lX0Cx8LLKN3gV+uPR74Sb3t2djiCr0=;
+	s=korg; t=1768496727;
+	bh=wpCMpMMi59IJF0M12p+ipc2lvZsWEgCSb8FLQHz1OsY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=T3L8tEd9/iVo45/pI2VkAwPvrfjBZ7fbvHVFzLXCWGRsui831U9SUWxXuiUgp/GlC
-	 Bfwxpuae1AJxnd8WZmyGfFhaGgSmdPgKl/hJaz0XTLtRhmDVIuXDFYZtyvUtD3a8Dk
-	 mv4GxNQDZHzWoUxosKO4/Jg6eaunFdvxIaGFS0tY=
+	b=yAeU6Lj02dXlsoekjTv7WPInAxDJ9Ky/BH3jZkqajETDDRgyH3HMGEYRsInjR9waC
+	 Ydy4wlNSkUMSNLf/j2PLRMuxkkyjB3+DppdDynSSUzBtb7/+LRYEl2irBhCsQM6Bvh
+	 ajhphszGx6eMiNqAT+ozZrIN3LrarkRzBpfhtrbk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+b0da83a6c0e2e2bddbd4@syzkaller.appspotmail.com,
-	Jason Gunthorpe <jgg@nvidia.com>
-Subject: [PATCH 5.10 329/451] RDMA/cm: Fix leaking the multicast GID table reference
+	=?UTF-8?q?Michal=20R=C3=A1bek?= <mrabek@redhat.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	Changhui Zhong <czhong@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 115/119] scsi: sg: Fix occasional bogus elapsed time that exceeds timeout
 Date: Thu, 15 Jan 2026 17:48:50 +0100
-Message-ID: <20260115164242.798604093@linuxfoundation.org>
+Message-ID: <20260115164156.111192469@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,58 +62,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Michal Rábek <mrabek@redhat.com>
 
-commit 57f3cb6c84159d12ba343574df2115fb18dd83ca upstream.
+[ Upstream commit 0e1677654259a2f3ccf728de1edde922a3c4ba57 ]
 
-If the CM ID is destroyed while the CM event for multicast creating is
-still queued the cancel_work_sync() will prevent the work from running
-which also prevents destroying the ah_attr. This leaks a refcount and
-triggers a WARN:
+A race condition was found in sg_proc_debug_helper(). It was observed on
+a system using an IBM LTO-9 SAS Tape Drive (ULTRIUM-TD9) and monitoring
+/proc/scsi/sg/debug every second. A very large elapsed time would
+sometimes appear. This is caused by two race conditions.
 
-   GID entry ref leak for dev syz1 index 2 ref=573
-   WARNING: CPU: 1 PID: 655 at drivers/infiniband/core/cache.c:809 release_gid_table drivers/infiniband/core/cache.c:806 [inline]
-   WARNING: CPU: 1 PID: 655 at drivers/infiniband/core/cache.c:809 gid_table_release_one+0x284/0x3cc drivers/infiniband/core/cache.c:886
+We reproduced the issue with an IBM ULTRIUM-HH9 tape drive on an x86_64
+architecture. A patched kernel was built, and the race condition could
+not be observed anymore after the application of this patch. A
+reproducer C program utilising the scsi_debug module was also built by
+Changhui Zhong and can be viewed here:
 
-Destroy the ah_attr after canceling the work, it is safe to call this
-twice.
+https://github.com/MichaelRabek/linux-tests/blob/master/drivers/scsi/sg/sg_race_trigger.c
 
-Link: https://patch.msgid.link/r/0-v1-4285d070a6b2+20a-rdma_mc_gid_leak_syz_jgg@nvidia.com
-Cc: stable@vger.kernel.org
-Fixes: fe454dc31e84 ("RDMA/ucma: Fix use-after-free bug in ucma_create_uevent")
-Reported-by: syzbot+b0da83a6c0e2e2bddbd4@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/all/68232e7b.050a0220.f2294.09f6.GAE@google.com
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The first race happens between the reading of hp->duration in
+sg_proc_debug_helper() and request completion in sg_rq_end_io().  The
+hp->duration member variable may hold either of two types of
+information:
+
+ #1 - The start time of the request. This value is present while
+      the request is not yet finished.
+
+ #2 - The total execution time of the request (end_time - start_time).
+
+If sg_proc_debug_helper() executes *after* the value of hp->duration was
+changed from #1 to #2, but *before* srp->done is set to 1 in
+sg_rq_end_io(), a fresh timestamp is taken in the else branch, and the
+elapsed time (value type #2) is subtracted from a timestamp, which
+cannot yield a valid elapsed time (which is a type #2 value as well).
+
+To fix this issue, the value of hp->duration must change under the
+protection of the sfp->rq_list_lock in sg_rq_end_io().  Since
+sg_proc_debug_helper() takes this read lock, the change to srp->done and
+srp->header.duration will happen atomically from the perspective of
+sg_proc_debug_helper() and the race condition is thus eliminated.
+
+The second race condition happens between sg_proc_debug_helper() and
+sg_new_write(). Even though hp->duration is set to the current time
+stamp in sg_add_request() under the write lock's protection, it gets
+overwritten by a call to get_sg_io_hdr(), which calls copy_from_user()
+to copy struct sg_io_hdr from userspace into kernel space. hp->duration
+is set to the start time again in sg_common_write(). If
+sg_proc_debug_helper() is called between these two calls, an arbitrary
+value set by userspace (usually zero) is used to compute the elapsed
+time.
+
+To fix this issue, hp->duration must be set to the current timestamp
+again after get_sg_io_hdr() returns successfully. A small race window
+still exists between get_sg_io_hdr() and setting hp->duration, but this
+window is only a few instructions wide and does not result in observable
+issues in practice, as confirmed by testing.
+
+Additionally, we fix the format specifier from %d to %u for printing
+unsigned int values in sg_proc_debug_helper().
+
+Signed-off-by: Michal Rábek <mrabek@redhat.com>
+Suggested-by: Tomas Henzl <thenzl@redhat.com>
+Tested-by: Changhui Zhong <czhong@redhat.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Reviewed-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://patch.msgid.link/20251212160900.64924-1-mrabek@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/cma.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/sg.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/infiniband/core/cma.c
-+++ b/drivers/infiniband/core/cma.c
-@@ -1840,6 +1840,7 @@ static void destroy_mc(struct rdma_id_pr
- 		ib_sa_free_multicast(mc->sa_mc);
- 
- 	if (rdma_protocol_roce(id_priv->id.device, id_priv->id.port_num)) {
-+		struct rdma_cm_event *event = &mc->iboe_join.event;
- 		struct rdma_dev_addr *dev_addr =
- 			&id_priv->id.route.addr.dev_addr;
- 		struct net_device *ndev = NULL;
-@@ -1862,6 +1863,8 @@ static void destroy_mc(struct rdma_id_pr
- 		dev_put(ndev);
- 
- 		cancel_work_sync(&mc->iboe_join.work);
-+		if (event->event == RDMA_CM_EVENT_MULTICAST_JOIN)
-+			rdma_destroy_ah_attr(&event->param.ud.ah_attr);
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 7260a1ebc03d3..53dd461508494 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -731,6 +731,8 @@ sg_new_write(Sg_fd *sfp, struct file *file, const char __user *buf,
+ 		sg_remove_request(sfp, srp);
+ 		return -EFAULT;
  	}
- 	kfree(mc);
- }
++	hp->duration = jiffies_to_msecs(jiffies);
++
+ 	if (hp->interface_id != 'S') {
+ 		sg_remove_request(sfp, srp);
+ 		return -ENOSYS;
+@@ -815,7 +817,6 @@ sg_common_write(Sg_fd * sfp, Sg_request * srp,
+ 		return -ENODEV;
+ 	}
+ 
+-	hp->duration = jiffies_to_msecs(jiffies);
+ 	if (hp->interface_id != '\0' &&	/* v3 (or later) interface */
+ 	    (SG_FLAG_Q_AT_TAIL & hp->flags))
+ 		at_head = 0;
+@@ -1339,9 +1340,6 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
+ 				      "sg_cmd_done: pack_id=%d, res=0x%x\n",
+ 				      srp->header.pack_id, result));
+ 	srp->header.resid = resid;
+-	ms = jiffies_to_msecs(jiffies);
+-	srp->header.duration = (ms > srp->header.duration) ?
+-				(ms - srp->header.duration) : 0;
+ 	if (0 != result) {
+ 		struct scsi_sense_hdr sshdr;
+ 
+@@ -1390,6 +1388,9 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
+ 			done = 0;
+ 	}
+ 	srp->done = done;
++	ms = jiffies_to_msecs(jiffies);
++	srp->header.duration = (ms > srp->header.duration) ?
++				(ms - srp->header.duration) : 0;
+ 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
+ 
+ 	if (likely(done)) {
+@@ -2535,6 +2536,7 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
+ 	const sg_io_hdr_t *hp;
+ 	const char * cp;
+ 	unsigned int ms;
++	unsigned int duration;
+ 
+ 	k = 0;
+ 	list_for_each_entry(fp, &sdp->sfds, sfd_siblings) {
+@@ -2572,13 +2574,17 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
+ 			seq_printf(s, " id=%d blen=%d",
+ 				   srp->header.pack_id, blen);
+ 			if (srp->done)
+-				seq_printf(s, " dur=%d", hp->duration);
++				seq_printf(s, " dur=%u", hp->duration);
+ 			else {
+ 				ms = jiffies_to_msecs(jiffies);
+-				seq_printf(s, " t_o/elap=%d/%d",
++				duration = READ_ONCE(hp->duration);
++				if (duration)
++					duration = (ms > duration ?
++						    ms - duration : 0);
++				seq_printf(s, " t_o/elap=%u/%u",
+ 					(new_interface ? hp->timeout :
+ 						  jiffies_to_msecs(fp->timeout)),
+-					(ms > hp->duration ? ms - hp->duration : 0));
++					duration);
+ 			}
+ 			seq_printf(s, "ms sgat=%d op=0x%02x\n", usg,
+ 				   (int) srp->data.cmd_opcode);
+-- 
+2.51.0
+
 
 
 
