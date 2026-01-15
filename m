@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209588-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209166-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 73EAED278AE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:58 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id E04CAD26795
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B338532890D2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:24 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 0BD523053520
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:11 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 633023BF2FA;
-	Thu, 15 Jan 2026 17:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 286F03BF301;
+	Thu, 15 Jan 2026 17:25:22 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="WW/vgnYH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KGg+SbqI"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 242A72C21F4;
-	Thu, 15 Jan 2026 17:45:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DEFB53BFE4C;
+	Thu, 15 Jan 2026 17:25:21 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499124; cv=none; b=Cxm3049hDpD+qTApkgAr3k6AYO+j/ewFAJk8OtDXjWLfXYE6ICaUSPZ6Eu0q3onLxodKJyVqR+ARCWN805KnqUoQPx0EyqXvw7Bo4i1i7Gs0z33Se/Wi6+BHIuWWIEbGuynuxB+frGzqO0b43zP/fEoYj0RNil+sAs3EpZrnXJU=
+	t=1768497921; cv=none; b=Iye5k/aCRmXhlyqHOzX/hffgR8xifuk6EmwUEyzV1N6mbSD02LLzqT7MfuXTYcC86BnmYPLoA3SUpmSscvcUf7PAvoi0G3EYnM2s+5kiAlXdMoW8a4v5slt5OwFW3ggTJlcroGFPr0+Wfun+T+o/DqFBQA8ADKGTzRHwlMDt6AM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499124; c=relaxed/simple;
-	bh=1JS631BzlddkNwQcyl3ytB0om5Z5qRKNwH7t+bX/M4s=;
+	s=arc-20240116; t=1768497921; c=relaxed/simple;
+	bh=/UXHNgLfGfw8rZLRKRhatg1EI/Ed6f+ydQIcO+ly0CI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nkR5hPSi2WCdfktcLbECXKy8uipk8NBKsH4IjG5Tj8OH+RakI3izKSkZU/dIXL8i23MlayZDQz1Apmkkq33AXEHydUTNlNxuSVY0SbnAOASjq0QNMODo9idEqfbGofdWumsHjgoAupn5gOf9osnqRSC9qqpTtDhN00sxWLntxI8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=WW/vgnYH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 974B0C116D0;
-	Thu, 15 Jan 2026 17:45:23 +0000 (UTC)
+	 MIME-Version; b=gVhfEIJESQ2e/6raAJuu4bWt7PjpF+Smbd2DLIH3eTcu1sKAy4lXHac/OUYmTdHJsql/30iez0r/wglVdH6iSntDJ+ZIeIc1froU9Z9MAlSDTas4S2MCln4IggjyL9DmZscwBY9mpIFRzmGX8rqsiRsTN3PoKz9yiY0AJ8VsqyM=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KGg+SbqI; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 663D7C116D0;
+	Thu, 15 Jan 2026 17:25:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499124;
-	bh=1JS631BzlddkNwQcyl3ytB0om5Z5qRKNwH7t+bX/M4s=;
+	s=korg; t=1768497921;
+	bh=/UXHNgLfGfw8rZLRKRhatg1EI/Ed6f+ydQIcO+ly0CI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=WW/vgnYHECnfiImcr6dvXlfdRRBZVDxT2CqyFgfHxTiZXy2c9Bt2P1n/L0RUMRGKk
-	 wBs+A/3uD6U16QYLVy0MJUP0tWpQXQx6TtCxvfcSwB0EnanKsrW/M6KeMOAVLVhPBE
-	 YVTv1uoShSOMVeJ6WNxiEL9w1l/maedHXhbU/hao=
+	b=KGg+SbqI9Wq5PoPzTaIU+tMpklbmsssRaomV17wz5f+C0wzHTR1pU1q6xG4oozKak
+	 HWry+pkaX6UzsrcFarfuYIsp6Yokru22gAi5OygTDyESXeSBKZILJMcNtYJPUEmkx8
+	 6Ro4Ksgc6Izm1qa1mUAx+Vcaog6jxlDbJvgEmDvU=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Ian Rogers <irogers@google.com>,
-	Namhyung Kim <namhyung@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 116/451] perf tools: Fix split kallsyms DSO counting
+	stable@bvger.kernel.org,
+	Jared Kangas <jkangas@redhat.com>,
+	Haibo Chen <haibo.chen@nxp.com>,
+	Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.15 251/554] mmc: sdhci-esdhc-imx: add alternate ARCH_S32 dependency to Kconfig
 Date: Thu, 15 Jan 2026 17:45:17 +0100
-Message-ID: <20260115164235.119725526@linuxfoundation.org>
+Message-ID: <20260115164255.323681592@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,46 +61,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namhyung Kim <namhyung@kernel.org>
+From: Jared Kangas <jkangas@redhat.com>
 
-[ Upstream commit ad0b9c4865b98dc37f4d606d26b1c19808796805 ]
+commit d3ecb12e2e04ce53c95f933c462f2d8b150b965b upstream.
 
-It's counted twice as it's increased after calling maps__insert().  I
-guess we want to increase it only after it's added properly.
+MMC_SDHCI_ESDHC_IMX requires ARCH_MXC despite also being used on
+ARCH_S32, which results in unmet dependencies when compiling strictly
+for ARCH_S32. Resolve this by adding ARCH_S32 as an alternative to
+ARCH_MXC in the driver's dependencies.
 
-Reviewed-by: Ian Rogers <irogers@google.com>
-Fixes: 2e538c4a1847291cf ("perf tools: Improve kernel/modules symbol lookup")
-Signed-off-by: Namhyung Kim <namhyung@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5c4f00627c9a ("mmc: sdhci-esdhc-imx: add NXP S32G2 support")
+Cc: stable@bvger.kernel.org
+Signed-off-by: Jared Kangas <jkangas@redhat.com>
+Reviewed-by: Haibo Chen <haibo.chen@nxp.com>
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/perf/util/symbol.c | 4 ++--
+ drivers/mmc/host/Kconfig |    4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/perf/util/symbol.c b/tools/perf/util/symbol.c
-index 33954835c8231..40e2362096d8c 100644
---- a/tools/perf/util/symbol.c
-+++ b/tools/perf/util/symbol.c
-@@ -893,11 +893,11 @@ static int maps__split_kallsyms(struct maps *kmaps, struct dso *dso, u64 delta,
- 			if (dso->kernel == DSO_SPACE__KERNEL_GUEST)
- 				snprintf(dso_name, sizeof(dso_name),
- 					"[guest.kernel].%d",
--					kernel_range++);
-+					kernel_range);
- 			else
- 				snprintf(dso_name, sizeof(dso_name),
- 					"[kernel].%d",
--					kernel_range++);
-+					kernel_range);
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -276,14 +276,14 @@ config MMC_SDHCI_ESDHC_MCF
  
- 			ndso = dso__new(dso_name);
- 			if (ndso == NULL)
--- 
-2.51.0
-
+ config MMC_SDHCI_ESDHC_IMX
+ 	tristate "SDHCI support for the Freescale eSDHC/uSDHC i.MX controller"
+-	depends on ARCH_MXC || COMPILE_TEST
++	depends on ARCH_MXC || ARCH_S32 || COMPILE_TEST
+ 	depends on MMC_SDHCI_PLTFM
+ 	depends on OF
+ 	select MMC_SDHCI_IO_ACCESSORS
+ 	select MMC_CQHCI
+ 	help
+ 	  This selects the Freescale eSDHC/uSDHC controller support
+-	  found on i.MX25, i.MX35 i.MX5x and i.MX6x.
++	  found on i.MX25, i.MX35, i.MX5x, i.MX6x, and S32G.
+ 
+ 	  If you have a controller with this interface, say Y or M here.
+ 
 
 
 
