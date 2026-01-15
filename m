@@ -1,56 +1,55 @@
-Return-Path: <stable+bounces-208688-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208794-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 2767FD26213
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:06 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4216FD261DD
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:16 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 173F9312B7F2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:44 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8EB1B302A808
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id E4B8A345758;
-	Thu, 15 Jan 2026 17:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D60A3BF2F8;
+	Thu, 15 Jan 2026 17:07:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="RHFnuPQJ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jXVYj4a4"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A895E2C028F;
-	Thu, 15 Jan 2026 17:02:43 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 006EC11CAF;
+	Thu, 15 Jan 2026 17:07:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496563; cv=none; b=kl4IYZWUmqTAsenjm1xBxTdBFk/c4uUZSZicFJpJbz0+NzXnhxV12fVdSQnN118VbSBVwc6Bq1KkFArMcdMia/454jFHMOVAipzi5uC+nkw4iOwz2yI+Z0Y88Spi+IsbpOoYG26B7iyNn2wwi+cvHV2XoNEj5wOB2EBbWAWGwtw=
+	t=1768496862; cv=none; b=I400r27/rA8MgADxFCw3BvySNrgvCKJ8H6WZLGECWLSJIhaIiD1jIZf6S+6f9h+idR5bHPR32drXi4hWMu9K8f2L7hvVY8bAOWLly2eFPlLIseF1bzw+RuTEUFx3DlAAULg4KPNBrowS1XvdDI/9jeLoYcfxX3ux93Gi7VTKAR8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496563; c=relaxed/simple;
-	bh=PFVfqIGrwVzk6//ZzBPeCGnuRAHBaa8Dvt19BdsD1sM=;
+	s=arc-20240116; t=1768496862; c=relaxed/simple;
+	bh=UceuCi290ssw8NClwBkmJEFabUAICk29mRI54WghpvA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=EmJ6vg/K227bGIHJhFQPBnckRPGuvMT//YE3F0TcCuPs8Ik8AoSPirbQjXu14sFHRH7pvKJrX814swwrH1ydOpWz5hSXkDfoclcA36CkGhKMnQi/27TB2f+8rPa0KnFxzLpcN37XzoBS4tUZ/U2c15xvTR4OO0ieEjUPJcvO8yE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=RHFnuPQJ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3643CC116D0;
-	Thu, 15 Jan 2026 17:02:43 +0000 (UTC)
+	 MIME-Version; b=NjiXKBMrkQxFLlRzJCH2eTDpHx+QL+9DiPFavPlsx6tPS9P1IZZaEv63nG52BGTp50QJ2JgvZy0I8iVCqN7SXMqHGE8vkF2LvnQd6JmoI5vkE0sCbuHf1wNAbLGyE1le7Nnze0gWhT3eUP4fAM+eqReeqerpw2yH69lJRfLR+5g=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jXVYj4a4; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35036C16AAE;
+	Thu, 15 Jan 2026 17:07:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496563;
-	bh=PFVfqIGrwVzk6//ZzBPeCGnuRAHBaa8Dvt19BdsD1sM=;
+	s=korg; t=1768496861;
+	bh=UceuCi290ssw8NClwBkmJEFabUAICk29mRI54WghpvA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=RHFnuPQJTy186KiFEUkbZpFMAhBcr1KhICy3g7akaNGzMlt6XMgUpiUpBVCJ+9ix2
-	 vc8i2Fm1zDRPb53vyR8c3g74TcjVUZAU/kJjKV2M9k0cKHqZysjnPqM+kY7QgvPV4q
-	 LNUvSH7oHzaVDkKE8T1pFFvJFX34M/EkrRlLfF2o=
+	b=jXVYj4a4cdST/X/joVLk2Hsy8WYw46nt6dIdvn9toJev8WpwElQVQFEpnawv/ARTP
+	 9/YCU9v7sc8baWMVILfJK+k4MUuNKr0ypa9d+zZRk2UZnnyT/K6s2w1txsxz/zOubs
+	 I8PeBRmbctZsr6gP4qtTiNxon3z0ieoquk6RuZ6Q=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sherry Sun <sherry.sun@nxp.com>,
-	Frank Li <Frank.Li@nxp.com>,
-	Alexander Stein <alexander.stein@ew.tq-group.com>,
-	Shawn Guo <shawnguo@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 056/119] arm64: dts: imx8qm-ss-dma: correct the dma channels of lpuart
-Date: Thu, 15 Jan 2026 17:47:51 +0100
-Message-ID: <20260115164153.980451626@linuxfoundation.org>
+	Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
+	Oleksij Rempel <o.rempel@pengutronix.de>,
+	William Breathitt Gray <wbg@kernel.org>
+Subject: [PATCH 6.6 09/88] counter: interrupt-cnt: Drop IRQF_NO_THREAD flag
+Date: Thu, 15 Jan 2026 17:47:52 +0100
+Message-ID: <20260115164146.656857985@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,71 +61,82 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Alexander Sverdlin <alexander.sverdlin@siemens.com>
 
-[ Upstream commit a988caeed9d918452aa0a68de2c6e94d86aa43ba ]
+commit 23f9485510c338476b9735d516c1d4aacb810d46 upstream.
 
-The commit 616effc0272b5 ("arm64: dts: imx8: Fix lpuart DMA channel
-order") swap uart rx and tx channel at common imx8-ss-dma.dtsi. But miss
-update imx8qm-ss-dma.dtsi.
+An IRQ handler can either be IRQF_NO_THREAD or acquire spinlock_t, as
+CONFIG_PROVE_RAW_LOCK_NESTING warns:
+=============================
+[ BUG: Invalid wait context ]
+6.18.0-rc1+git... #1
+-----------------------------
+some-user-space-process/1251 is trying to lock:
+(&counter->events_list_lock){....}-{3:3}, at: counter_push_event [counter]
+other info that might help us debug this:
+context-{2:2}
+no locks held by some-user-space-process/....
+stack backtrace:
+CPU: 0 UID: 0 PID: 1251 Comm: some-user-space-process 6.18.0-rc1+git... #1 PREEMPT
+Call trace:
+ show_stack (C)
+ dump_stack_lvl
+ dump_stack
+ __lock_acquire
+ lock_acquire
+ _raw_spin_lock_irqsave
+ counter_push_event [counter]
+ interrupt_cnt_isr [interrupt_cnt]
+ __handle_irq_event_percpu
+ handle_irq_event
+ handle_simple_irq
+ handle_irq_desc
+ generic_handle_domain_irq
+ gpio_irq_handler
+ handle_irq_desc
+ generic_handle_domain_irq
+ gic_handle_irq
+ call_on_irq_stack
+ do_interrupt_handler
+ el0_interrupt
+ __el0_irq_handler_common
+ el0t_64_irq_handler
+ el0t_64_irq
 
-The commit 5a8e9b022e569 ("arm64: dts: imx8qm-ss-dma: Pass lpuart
-dma-names") just simple add dma-names as binding doc requirement.
+... and Sebastian correctly points out. Remove IRQF_NO_THREAD as an
+alternative to switching to raw_spinlock_t, because the latter would limit
+all potential nested locks to raw_spinlock_t only.
 
-Correct lpuart0 - lpuart3 dma rx and tx channels, and use defines for
-the FSL_EDMA_RX flag.
-
-Fixes: 5a8e9b022e56 ("arm64: dts: imx8qm-ss-dma: Pass lpuart dma-names")
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Reviewed-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/20251117151314.xwLAZrWY@linutronix.de/
+Fixes: a55ebd47f21f ("counter: add IRQ or GPIO based counter")
+Signed-off-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
+Reviewed-by: Sebastian Andrzej Siewior <bigeasy@linutronix.de>
+Reviewed-by: Oleksij Rempel <o.rempel@pengutronix.de>
+Link: https://lore.kernel.org/r/20251118083603.778626-1-alexander.sverdlin@siemens.com
+Signed-off-by: William Breathitt Gray <wbg@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/counter/interrupt-cnt.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-index aa9f28c4431d0..f381e2636c3ad 100644
---- a/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-+++ b/arch/arm64/boot/dts/freescale/imx8qm-ss-dma.dtsi
-@@ -168,25 +168,25 @@ &flexcan3 {
+--- a/drivers/counter/interrupt-cnt.c
++++ b/drivers/counter/interrupt-cnt.c
+@@ -229,8 +229,7 @@ static int interrupt_cnt_probe(struct pl
  
- &lpuart0 {
- 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
--	dmas = <&edma2 13 0 0>, <&edma2 12 0 1>;
-+	dmas = <&edma2 12 0 FSL_EDMA_RX>, <&edma2 13 0 0>;
- 	dma-names = "rx","tx";
- };
+ 	irq_set_status_flags(priv->irq, IRQ_NOAUTOEN);
+ 	ret = devm_request_irq(dev, priv->irq, interrupt_cnt_isr,
+-			       IRQF_TRIGGER_RISING | IRQF_NO_THREAD,
+-			       dev_name(dev), counter);
++			       IRQF_TRIGGER_RISING, dev_name(dev), counter);
+ 	if (ret)
+ 		return ret;
  
- &lpuart1 {
- 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
--	dmas = <&edma2 15 0 0>, <&edma2 14 0 1>;
-+	dmas = <&edma2 14 0 FSL_EDMA_RX>, <&edma2 15 0 0>;
- 	dma-names = "rx","tx";
- };
- 
- &lpuart2 {
- 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
--	dmas = <&edma2 17 0 0>, <&edma2 16 0 1>;
-+	dmas = <&edma2 16 0 FSL_EDMA_RX>, <&edma2 17 0 0>;
- 	dma-names = "rx","tx";
- };
- 
- &lpuart3 {
- 	compatible = "fsl,imx8qm-lpuart", "fsl,imx8qxp-lpuart";
--	dmas = <&edma2 19 0 0>, <&edma2 18 0 1>;
-+	dmas = <&edma2 18 0 FSL_EDMA_RX>, <&edma2 19 0 0>;
- 	dma-names = "rx","tx";
- };
- 
--- 
-2.51.0
-
 
 
 
