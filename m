@@ -1,51 +1,52 @@
-Return-Path: <stable+bounces-209054-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209065-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 15BAFD26A19
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:12 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id A0A79D26A40
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:42:44 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id A35613163F3F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:04 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id BF5BA3128FFC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:20:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5816D2D73B4;
-	Thu, 15 Jan 2026 17:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 3D7A0258EC2;
+	Thu, 15 Jan 2026 17:20:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fqBsWwDi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MmlPqDqc"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1BBDE258EC2;
-	Thu, 15 Jan 2026 17:20:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 018B82C3268;
+	Thu, 15 Jan 2026 17:20:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497604; cv=none; b=NYLn1pY+7Sgh6n1uc6vmEPSTHdsJzs3+tCx0TG7/7882k4RRy4qIy8WCx7plB0FSOjqMQQPOW1wBjV4OyiPEGZj/dywpEGT0ZLkEoRA2qJq3WARNSnQmJxrH3/qfEs2zK2qvPgdGzMam4wJLA1uyiPfwMBveCOcn0hhQlUkYwUs=
+	t=1768497636; cv=none; b=WonlxJP6+7sd63z3Sd4NuLzJDTiZc8hzH7EquUw9gPcu0rfgup8DEdJPj9G4zuyBWoIj91qilIkIfzSGexuFjgCoOpx/7HJJp7oZgbxJrjcqMAVGWsQ7NCks7yIU7CceuknMEcz628kJ9Ta4Lpvx+3RAhqNgrkNkK2PbDwPCuhU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497604; c=relaxed/simple;
-	bh=IkDU48IR9BQ6q/QcrYZhFVPRbRpQonD06QWsXjIAj7A=;
+	s=arc-20240116; t=1768497636; c=relaxed/simple;
+	bh=N/I4+OL9DXIgT7/gOzEq+B2heW33m6rUPd3pCy8Xtac=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=MSY1NbSqaPQMVi0ZDJ4SnAKcdpK7bd02NU4fvEhB8B+VUymb1S5Ij5CUz/LJa177hxJbCvxNDITfu2hWxh9j6rpO5EuhSlsPBpKEswNDoWBQQv95H4OI/fvx2LaYVliLk6GLZWROK5amDmyP0ShyHr/VLJ9VOULWl+HhT0e+Q4Q=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fqBsWwDi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F3BFC116D0;
-	Thu, 15 Jan 2026 17:20:03 +0000 (UTC)
+	 MIME-Version; b=khyOdEln/jVU0FqiwdQ31nO7B+iVCxApBLbidpmel+f3WhlAvQA8IzyC/kHbvm9tBelK2c6x7PGzcM+7f9RcMFOkG/lcZFvXSapSVIXdjZvYgBO3jn2mamA/x1nejV3xsEG1dp2AA8iPt+uY7+s3SCyvFyw8pnbt4yrBRCcz0rk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MmlPqDqc; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 407B5C116D0;
+	Thu, 15 Jan 2026 17:20:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497604;
-	bh=IkDU48IR9BQ6q/QcrYZhFVPRbRpQonD06QWsXjIAj7A=;
+	s=korg; t=1768497635;
+	bh=N/I4+OL9DXIgT7/gOzEq+B2heW33m6rUPd3pCy8Xtac=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=fqBsWwDiRbVOTxlwcZpwzjITbOTjOJmQ7IIjj9PJpggTfAAVfUYtH1NY92RHtNIk9
-	 wAmjjrNBqIQZPWlvHiZb+lmJJk+Kg8WNghwKmlybkfxyyTyxoYvSe6MZ4k/jQ63p6z
-	 HvcygttljZ7FepH5HCjMKIYOLu2wPr0yHuEUrOCU=
+	b=MmlPqDqcipMpxOFuJ2DA4h127cIjOQKAKeNHphkw2iJCPDUtsaFYVV02UnCqYvsjX
+	 jM6ECbH1nyui74HUnjc8CzpVlLjmp9RHCyxn4NOQQhv67T57PHc9atw9AFuPtwXtw7
+	 ao6jHrdQO7o1T9AossDn6vFQCoezfDVJIUDOspMI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Herbert Xu <herbert@gondor.apana.org.au>,
+	Zilin Guan <zilin@seu.edu.cn>,
+	Lorenzo Bianconi <lorenzo@kernel.org>,
+	Felix Fietkau <nbd@nbd.name>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 132/554] crypto: ccree - Correctly handle return of sg_nents_for_len
-Date: Thu, 15 Jan 2026 17:43:18 +0100
-Message-ID: <20260115164251.028728977@linuxfoundation.org>
+Subject: [PATCH 5.15 133/554] mt76: mt7615: Fix memory leak in mt7615_mcu_wtbl_sta_add()
+Date: Thu, 15 Jan 2026 17:43:19 +0100
+Message-ID: <20260115164251.065317407@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -64,49 +65,43 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Zilin Guan <zilin@seu.edu.cn>
 
-[ Upstream commit 8700ce07c5c6bf27afa7b59a8d9cf58d783a7d5c ]
+[ Upstream commit 53d1548612670aa8b5d89745116cc33d9d172863 ]
 
-Fix error handling in cc_map_hash_request_update where sg_nents_for_len
-return value was assigned to u32, converting negative errors to large
-positive values before passing to sg_copy_to_buffer.
+In mt7615_mcu_wtbl_sta_add(), an skb sskb is allocated. If the
+subsequent call to mt76_connac_mcu_alloc_wtbl_req() fails, the function
+returns an error without freeing sskb, leading to a memory leak.
 
-Check sg_nents_for_len return value and propagate errors before
-assigning to areq_ctx->in_nents.
+Fix this by calling dev_kfree_skb() on sskb in the error handling path
+to ensure it is properly released.
 
-Fixes: b7ec8530687a ("crypto: ccree - use std api when possible")
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: 99c457d902cf9 ("mt76: mt7615: move mt7615_mcu_set_bmc to mt7615_mcu_ops")
+Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
+Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
+Link: https://patch.msgid.link/20251113062415.103611-1-zilin@seu.edu.cn
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/crypto/ccree/cc_buffer_mgr.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7615/mcu.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/crypto/ccree/cc_buffer_mgr.c b/drivers/crypto/ccree/cc_buffer_mgr.c
-index 6140e49273226..5754dc88c684c 100644
---- a/drivers/crypto/ccree/cc_buffer_mgr.c
-+++ b/drivers/crypto/ccree/cc_buffer_mgr.c
-@@ -1235,6 +1235,7 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	int rc = 0;
- 	u32 dummy = 0;
- 	u32 mapped_nents = 0;
-+	int sg_nents;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+index bde65af72feda..0776af7f74d94 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7615/mcu.c
+@@ -1045,8 +1045,10 @@ mt7615_mcu_wtbl_sta_add(struct mt7615_phy *phy, struct ieee80211_vif *vif,
+ 	wtbl_hdr = mt76_connac_mcu_alloc_wtbl_req(&dev->mt76, &msta->wcid,
+ 						  WTBL_RESET_AND_SET, NULL,
+ 						  &wskb);
+-	if (IS_ERR(wtbl_hdr))
++	if (IS_ERR(wtbl_hdr)) {
++		dev_kfree_skb(sskb);
+ 		return PTR_ERR(wtbl_hdr);
++	}
  
- 	dev_dbg(dev, " update params : curr_buff=%pK curr_buff_cnt=0x%X nbytes=0x%X src=%pK curr_index=%u\n",
- 		curr_buff, *curr_buff_cnt, nbytes, src, areq_ctx->buff_index);
-@@ -1248,7 +1249,10 @@ int cc_map_hash_request_update(struct cc_drvdata *drvdata, void *ctx,
- 	if (total_in_len < block_size) {
- 		dev_dbg(dev, " less than one block: curr_buff=%pK *curr_buff_cnt=0x%X copy_to=%pK\n",
- 			curr_buff, *curr_buff_cnt, &curr_buff[*curr_buff_cnt]);
--		areq_ctx->in_nents = sg_nents_for_len(src, nbytes);
-+		sg_nents = sg_nents_for_len(src, nbytes);
-+		if (sg_nents < 0)
-+			return sg_nents;
-+		areq_ctx->in_nents = sg_nents;
- 		sg_copy_to_buffer(src, areq_ctx->in_nents,
- 				  &curr_buff[*curr_buff_cnt], nbytes);
- 		*curr_buff_cnt += nbytes;
+ 	if (enable) {
+ 		mt76_connac_mcu_wtbl_generic_tlv(&dev->mt76, wskb, vif, sta,
 -- 
 2.51.0
 
