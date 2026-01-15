@@ -1,56 +1,56 @@
-Return-Path: <stable+bounces-208631-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208735-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 58B59D26117
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:19 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id E0594D26644
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id CB9D630B0EF5
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:59:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A61343088857
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:57 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 494533BC4E2;
-	Thu, 15 Jan 2026 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 23D7839B4BF;
+	Thu, 15 Jan 2026 17:04:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="y/OvmthA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TDRj8tMN"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 0CF0B3A7F43;
-	Thu, 15 Jan 2026 16:59:58 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DBC512C0285;
+	Thu, 15 Jan 2026 17:04:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496398; cv=none; b=TfG/E1hqgpJ6LnyIFJS8yWonfG1zY5SpWOAVwsRYHFFpp8wMieqo6qRnqM5Co9ov0p4T1eRX+8qT+eZf1v2on4edHEarZRUGNq56/zaUBmoa8yXuZAhsmwGs+hUZZ0E9hNljVx9GI48othh+AmTJdN1cGHBRrROwfoEoo7/5dGM=
+	t=1768496696; cv=none; b=llVM7hIeAee6o7u52H9fn6JyYP5iCyKI2Nn56wMmVoxJVc9unTCgZYy9iauqb4TzG7lNucZ24/7ESuIoPD+B8FKVhO/NH5a8/3J+2ePiB8zZfsGWsaZ2LHBqeNqZObgF78VO5fyvczNKs0/jEB0x1Rfr0OIlJNkRBMgKEABr/sc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496398; c=relaxed/simple;
-	bh=+3Sn9ja5GE7NWTap0cqbWhs8/CM1Rk8UW2IDbGI7O44=;
+	s=arc-20240116; t=1768496696; c=relaxed/simple;
+	bh=SNuow4mO4C6xrtT6fzzsnhSJHb/y83l3dXUteCQbqCI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=atBZj6KLd64HJnbmi27suA2lheasT+zrVcRtvsYshB0KQGWNYAI6uoO7TI5+D+H3F/nmMNvOznaHW3Yg/RfThwz+wHj/1XFKnfsmmXaJYfYWKqWc/U3rA87ChJh5T++4fehnuG+FWoMMllZc8qqRTQSCCsHtese+TkrMQYGX128=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=y/OvmthA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B996C116D0;
-	Thu, 15 Jan 2026 16:59:57 +0000 (UTC)
+	 MIME-Version; b=SJdXLDzSqkSyO4HzzL/ekorSCjVWudTKmHzlZtJG6tYhrUWSIyx32jImhDZRjqc5mSljmNA8PtLMk0cJjBmG7q/MjE3afCtzEE3D5kZFE1PlNKWjjS09dSruAm3LTY01Zhf9IxJIUwWqz4xgeQnFRGS6o/w9t8qVSEQ7rRreT8Q=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TDRj8tMN; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B58DC116D0;
+	Thu, 15 Jan 2026 17:04:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496397;
-	bh=+3Sn9ja5GE7NWTap0cqbWhs8/CM1Rk8UW2IDbGI7O44=;
+	s=korg; t=1768496696;
+	bh=SNuow4mO4C6xrtT6fzzsnhSJHb/y83l3dXUteCQbqCI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=y/OvmthAyEe6AtVTmOJLfNOaocRLn78dGA0UKL/UoFUXA/GOnQmdMAZRFXPj4mikI
-	 4FUmZwcvZhGUcMjvYA0uHPfXjKK20dTwj67TzgNmrtAJtuLl/4PsJTDRaWAQoiTWyI
-	 +Uw7hpWNh6oBGqzA6Jc/aCNVoEze4Pe07aUrlZMo=
+	b=TDRj8tMNIscKTsoKje25Jc7pgKFJSZ/1NRgtpvsbArwii7sumlSoKfVEe9Mtw15Dn
+	 N9jeMq9uOZ9L5YHmHkX+QiLUKD98HSqY2RSAHcsqNLxVKm0gKziJC2LGQW4p9Oo1pv
+	 71J12pYGDiI2t8O+yv7U3PfCbXkZyySxoGd4YJoY=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Benjamin Berg <benjamin.berg@intel.com>,
-	Ilan Peer <ilan.peer@intel.com>,
-	Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>,
-	Johannes Berg <johannes.berg@intel.com>,
+	Gal Pressman <gal@nvidia.com>,
+	Tariq Toukan <tariqt@nvidia.com>,
+	Mark Bloch <mbloch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.18 148/181] wifi: mac80211_hwsim: fix typo in frequency notification
+Subject: [PATCH 6.12 070/119] net/mlx5e: Dont print error message due to invalid module
 Date: Thu, 15 Jan 2026 17:48:05 +0100
-Message-ID: <20260115164207.657457443@linuxfoundation.org>
+Message-ID: <20260115164154.478625953@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
-References: <20260115164202.305475649@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,41 +62,51 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.18-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Berg <benjamin.berg@intel.com>
+From: Gal Pressman <gal@nvidia.com>
 
-[ Upstream commit 333418872bfecf4843f1ded7a4151685dfcf07d5 ]
+[ Upstream commit 144297e2a24e3e54aee1180ec21120ea38822b97 ]
 
-The NAN notification is for 5745 MHz which corresponds to channel 149
-and not 5475 which is not actually a valid channel. This could result in
-a NULL pointer dereference in cfg80211_next_nan_dw_notif.
+Dumping module EEPROM on newer modules is supported through the netlink
+interface only.
 
-Fixes: a37a6f54439b ("wifi: mac80211_hwsim: Add simulation support for NAN device")
-Signed-off-by: Benjamin Berg <benjamin.berg@intel.com>
-Reviewed-by: Ilan Peer <ilan.peer@intel.com>
-Reviewed-by: Miriam Rachel Korenblit <miriam.rachel.korenblit@intel.com>
-Link: https://patch.msgid.link/20260107143652.7dab2035836f.Iacbaf7bb94ed5c14a0928a625827e4137d8bfede@changeid
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Querying with old userspace ethtool (or other tools, such as 'lshw')
+which still uses the ioctl interface results in an error message that
+could flood dmesg (in addition to the expected error return value).
+The original message was added under the assumption that the driver
+should be able to handle all module types, but now that such flows are
+easily triggered from userspace, it doesn't serve its purpose.
+
+Change the log level of the print in mlx5_query_module_eeprom() to
+debug.
+
+Fixes: bb64143eee8c ("net/mlx5e: Add ethtool support for dump module EEPROM")
+Signed-off-by: Gal Pressman <gal@nvidia.com>
+Reviewed-by: Tariq Toukan <tariqt@nvidia.com>
+Signed-off-by: Mark Bloch <mbloch@nvidia.com>
+Link: https://patch.msgid.link/20251225132717.358820-5-mbloch@nvidia.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/virtual/mac80211_hwsim.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlx5/core/port.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/virtual/mac80211_hwsim.c b/drivers/net/wireless/virtual/mac80211_hwsim.c
-index 5903d82e1ab1e..2f263d89d2d69 100644
---- a/drivers/net/wireless/virtual/mac80211_hwsim.c
-+++ b/drivers/net/wireless/virtual/mac80211_hwsim.c
-@@ -4040,7 +4040,7 @@ mac80211_hwsim_nan_dw_start(struct hrtimer *timer)
- 			ieee80211_vif_to_wdev(data->nan_device_vif);
- 
- 		if (data->nan_curr_dw_band == NL80211_BAND_5GHZ)
--			ch = ieee80211_get_channel(hw->wiphy, 5475);
-+			ch = ieee80211_get_channel(hw->wiphy, 5745);
- 		else
- 			ch = ieee80211_get_channel(hw->wiphy, 2437);
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/port.c b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+index 389b34d56b751..79c477e05e46c 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/port.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/port.c
+@@ -430,7 +430,8 @@ int mlx5_query_module_eeprom(struct mlx5_core_dev *dev,
+ 		mlx5_qsfp_eeprom_params_set(&query.i2c_address, &query.page, &offset);
+ 		break;
+ 	default:
+-		mlx5_core_err(dev, "Module ID not recognized: 0x%x\n", module_id);
++		mlx5_core_dbg(dev, "Module ID not recognized: 0x%x\n",
++			      module_id);
+ 		return -EINVAL;
+ 	}
  
 -- 
 2.51.0
