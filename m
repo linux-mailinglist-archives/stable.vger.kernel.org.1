@@ -1,52 +1,51 @@
-Return-Path: <stable+bounces-209882-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209925-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id A4A17D27849
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:28:41 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 9F097D2756F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:19:21 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id DB4AD31592D6
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:07:58 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 5177430D1C8D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:36 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 201223DA7F1;
-	Thu, 15 Jan 2026 17:59:21 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id BF1E13C0085;
+	Thu, 15 Jan 2026 18:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DMZaNGnu"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="qHe4+1ip"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D603D3D34A2;
-	Thu, 15 Jan 2026 17:59:20 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 828B03B8BC0;
+	Thu, 15 Jan 2026 18:01:23 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499960; cv=none; b=ND5CmxvDuoCOUWJQXLRITgUdlV/6RMvNQg9RkCLD9TcqTxBz14UHUFHTqXSNdw0nyZLfpD/l/1QmCOJV6Idtx5veoPZFazCrU1zaQiq+Ch6gP/Ky+n3eBIHxoqDgforFTxfJgtw3zkta5IVlO6uvtFXnjGCi/FCfYLvPP4qUmN4=
+	t=1768500083; cv=none; b=sho/LEjqsq8FQZgsUa2j6tC9SO3RhL2e4/W2xoQragNKruNbaWnym9mDBx4gfBdozTCVDBrZEy6UExVn59acAHn55d+MqvMGD4ShT/OCTwZwc+tBEEwKqdWAOMxNYtm7wy70MupAUrnI1uI9GvTJw1OmdMvOlTXSvNhKY2tmsDM=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499960; c=relaxed/simple;
-	bh=MV8E4s/Ju6fKezwFctB4Z5pftQ3x3m6//SDBEEleXR8=;
+	s=arc-20240116; t=1768500083; c=relaxed/simple;
+	bh=4vmLit6E7ZQ2S+03y6XVYEzAq3HwxTk3F/Oz6SawP1c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=p6d3WGCdOx3beYUVnBaygTqTJ/oXosOLID5Rhb3Ku6xrVrNEac/9chWrutvGBn8qC/gzw0ZAITozxGGzd4PznoxAAtqiPjwPeZIr239lCiP276g0xTI00bE9qv/T4CqSHEIq1i/kKzaOkA7hE07c6TdK71dvbxPwaiVALa1K8qM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DMZaNGnu; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60E8EC116D0;
-	Thu, 15 Jan 2026 17:59:20 +0000 (UTC)
+	 MIME-Version; b=oNR3Q8k+1Na3S9B/5jOpU7drJDVE4FDJJ48+WqazhHSYubvFl7rkU/TBiDRQXi2RmeWoxWbDIcX1SOkPYJbPmFACRycrwsgXhNSPq1zpdQd2v/bICEk+koNsb0iMG2Vlywvn48gXCwXQGiMqzfy58ylFV8/1JoBKsB01JHHRV40=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=qHe4+1ip; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3750C116D0;
+	Thu, 15 Jan 2026 18:01:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499960;
-	bh=MV8E4s/Ju6fKezwFctB4Z5pftQ3x3m6//SDBEEleXR8=;
+	s=korg; t=1768500083;
+	bh=4vmLit6E7ZQ2S+03y6XVYEzAq3HwxTk3F/Oz6SawP1c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DMZaNGnuyJgTEQWOMKPd4ofwjs6StLe40tWnPE+Rc+85apHL0G97GDn5zXs8229bn
-	 3wb5uXHEUWGXIAzhUIsO1VOPmijHZbvF5gH3CGo3AwN7Qre0/bHsZaAzBFgSaDXbeC
-	 Qq0VnrRstpNN2LahjxJD6ZtyrX/rYAzbu/lJeXwc=
+	b=qHe4+1ip8sqrDE2r0Jbm1wghwuQKLtAkwdneAPLJJWE8ovzQe8aBZ6L2EPiLMmHJ3
+	 CVpFVUXCITrt/t9f4a6IxvQ5IW2w/cSzzbwCye512Mjl2k8H72JqOREvV0BqVD2jlK
+	 5UtGHrnWNDTawwErxamWu8o707n7hjCZg4bV36ng=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Su Hui <suhui@nfschina.com>,
-	Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-	Hariprasad Kelam <hkelam@marvell.com>,
-	Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 5.10 408/451] net: ethtool: fix the error condition in ethtool_get_phy_stats_ethtool()
-Date: Thu, 15 Jan 2026 17:50:09 +0100
-Message-ID: <20260115164245.700588159@linuxfoundation.org>
+	Ma Ke <make24@iscas.ac.cn>,
+	Johan Hovold <johan@kernel.org>,
+	Vladimir Zapolskiy <vz@mleia.com>
+Subject: [PATCH 5.10 409/451] usb: gadget: lpc32xx_udc: fix clock imbalance in error path
+Date: Thu, 15 Jan 2026 17:50:10 +0100
+Message-ID: <20260115164245.736754713@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -65,39 +64,103 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Su Hui <suhui@nfschina.com>
+From: Johan Hovold <johan@kernel.org>
 
-commit 0dcc53abf58d572d34c5313de85f607cd33fc691 upstream.
+commit 782be79e4551550d7a82b1957fc0f7347e6d461f upstream.
 
-Clang static checker (scan-build) warning:
-net/ethtool/ioctl.c:line 2233, column 2
-Called function pointer is null (null dereference).
+A recent change fixing a device reference leak introduced a clock
+imbalance by reusing an error path so that the clock may be disabled
+before having been enabled.
 
-Return '-EOPNOTSUPP' when 'ops->get_ethtool_phy_stats' is NULL to fix
-this typo error.
+Note that the clock framework allows for passing in NULL clocks so there
+is no risk for a NULL pointer dereference.
 
-Fixes: 201ed315f967 ("net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers")
-Signed-off-by: Su Hui <suhui@nfschina.com>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Hariprasad Kelam <hkelam@marvell.com>
-Link: https://lore.kernel.org/r/20240605034742.921751-1-suhui@nfschina.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Also drop the bogus I2C client NULL check added by the offending commit
+as the pointer has already been verified to be non-NULL.
+
+Fixes: c84117912bdd ("USB: lpc32xx_udc: Fix error handling in probe")
+Cc: stable@vger.kernel.org
+Cc: Ma Ke <make24@iscas.ac.cn>
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Reviewed-by: Vladimir Zapolskiy <vz@mleia.com>
+Link: https://patch.msgid.link/20251218153519.19453-2-johan@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ethtool/ioctl.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/gadget/udc/lpc32xx_udc.c |   19 +++++++++----------
+ 1 file changed, 9 insertions(+), 10 deletions(-)
 
---- a/net/ethtool/ioctl.c
-+++ b/net/ethtool/ioctl.c
-@@ -2089,7 +2089,7 @@ static int ethtool_get_phy_stats_ethtool
- 	const struct ethtool_ops *ops = dev->ethtool_ops;
- 	int n_stats, ret;
+--- a/drivers/usb/gadget/udc/lpc32xx_udc.c
++++ b/drivers/usb/gadget/udc/lpc32xx_udc.c
+@@ -3026,7 +3026,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	pdev->dev.dma_mask = &lpc32xx_usbd_dmamask;
+ 	retval = dma_set_coherent_mask(&pdev->dev, DMA_BIT_MASK(32));
+ 	if (retval)
+-		goto i2c_fail;
++		goto err_put_client;
  
--	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
-+	if (!ops || !ops->get_sset_count || !ops->get_ethtool_phy_stats)
- 		return -EOPNOTSUPP;
+ 	udc->board = &lpc32xx_usbddata;
  
- 	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
+@@ -3046,7 +3046,7 @@ static int lpc32xx_udc_probe(struct plat
+ 		udc->udp_irq[i] = platform_get_irq(pdev, i);
+ 		if (udc->udp_irq[i] < 0) {
+ 			retval = udc->udp_irq[i];
+-			goto i2c_fail;
++			goto err_put_client;
+ 		}
+ 	}
+ 
+@@ -3054,7 +3054,7 @@ static int lpc32xx_udc_probe(struct plat
+ 	if (IS_ERR(udc->udp_baseaddr)) {
+ 		dev_err(udc->dev, "IO map failure\n");
+ 		retval = PTR_ERR(udc->udp_baseaddr);
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Get USB device clock */
+@@ -3062,14 +3062,14 @@ static int lpc32xx_udc_probe(struct plat
+ 	if (IS_ERR(udc->usb_slv_clk)) {
+ 		dev_err(udc->dev, "failed to acquire USB device clock\n");
+ 		retval = PTR_ERR(udc->usb_slv_clk);
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Enable USB device clock */
+ 	retval = clk_prepare_enable(udc->usb_slv_clk);
+ 	if (retval < 0) {
+ 		dev_err(udc->dev, "failed to start USB device clock\n");
+-		goto i2c_fail;
++		goto err_put_client;
+ 	}
+ 
+ 	/* Setup deferred workqueue data */
+@@ -3171,9 +3171,10 @@ dma_alloc_fail:
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ i2c_fail:
+-	if (udc->isp1301_i2c_client)
+-		put_device(&udc->isp1301_i2c_client->dev);
+ 	clk_disable_unprepare(udc->usb_slv_clk);
++err_put_client:
++	put_device(&udc->isp1301_i2c_client->dev);
++
+ 	dev_err(udc->dev, "%s probe failed, %d\n", driver_name, retval);
+ 
+ 	return retval;
+@@ -3198,11 +3199,9 @@ static int lpc32xx_udc_remove(struct pla
+ 	dma_free_coherent(&pdev->dev, UDCA_BUFF_SIZE,
+ 			  udc->udca_v_base, udc->udca_p_base);
+ 
+-	if (udc->isp1301_i2c_client)
+-		put_device(&udc->isp1301_i2c_client->dev);
+-
+ 	clk_disable_unprepare(udc->usb_slv_clk);
+ 
++	put_device(&udc->isp1301_i2c_client->dev);
+ 	return 0;
+ }
+ 
 
 
 
