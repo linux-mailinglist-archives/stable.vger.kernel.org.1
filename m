@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-208655-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208551-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 1048BD2600E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:12 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4CEA4D25EBC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:56:14 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 48C8030051AF
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:11 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id A95F23004E07
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 16:56:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 7F8953BF2E7;
-	Thu, 15 Jan 2026 17:01:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0B6FD394487;
+	Thu, 15 Jan 2026 16:56:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="MolPb/VR"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="xq0q64fY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 405713BBA12;
-	Thu, 15 Jan 2026 17:01:08 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C333425228D;
+	Thu, 15 Jan 2026 16:56:10 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496469; cv=none; b=ODE4UIsusWUR5/+HucSq3ED+/4uaGj10yRSg18Qs7SPNwu84hKKTbtIlKvMYLUKwDPS8/Lqi9Es++Y0Zf5+Izj9vIl8h6KzoMfbkG4G66Wwt6pWtMaQE/zVFmPosWuvXFhpqT5i5TIb3Mp4FsO6HFz8LpFmSH6JfI30BQts5Qx8=
+	t=1768496170; cv=none; b=qlR454GaaF67m94Frn0w5Bnd2PfONUubMovFBc3PrSXiLhEN4VN1OncJUq1bolj3msk8TvxC8airA3mrzBX5rCJUdUh6NOzRhblAeawHSWoHKg3NzsHvbcqJEmBBup5fXlFZNFDFGmSsv3k4YUkokPqbAVzvPPhHRCuTHaTu9N4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496469; c=relaxed/simple;
-	bh=2K8ReMRAxRhkX98YenyvX3b2rytspL644da2vplD63U=;
+	s=arc-20240116; t=1768496170; c=relaxed/simple;
+	bh=FpZ6/Onc0PtPhONFqwgdmgJ0nmewL8rYhOoSbydX6rA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=uSZb1lTguKZiDdGIoruIdExa5ToX7OYucmZQdMgZkgqFm7DizSMb2WcWhynoQ4YSeYIf1v0FUVE1LY206MSjBtbTUOtcYVSAORO+AZ7G4m66VHmIvQGx6XYWnvgYiUGDDcFNWiLbPKT6Mpjk3WEiGm2hrDQAMEHaaKRyVVd95hQ=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=MolPb/VR; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78A0EC116D0;
-	Thu, 15 Jan 2026 17:01:08 +0000 (UTC)
+	 MIME-Version; b=VYT29Hiu6WqeNpDDrieHQzhU3nLhP/m0ja/Juh+a5rdkOu8GbDE3oQ+J+ms+XaECQIj73HS/kPYPNGO0cbaq+6c0THFA/yrhuoH4zjZiHFCuch4oJzVFDNK8AbKxYzM4lVF19O25GUOxRU9MuII/CFda+cCdYbzhqaD7gKzcWCQ=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=xq0q64fY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52F93C116D0;
+	Thu, 15 Jan 2026 16:56:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496468;
-	bh=2K8ReMRAxRhkX98YenyvX3b2rytspL644da2vplD63U=;
+	s=korg; t=1768496170;
+	bh=FpZ6/Onc0PtPhONFqwgdmgJ0nmewL8rYhOoSbydX6rA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=MolPb/VRmYOEs5Go9vmsU2UN4C6//Stwio5YvX9R4OakJb2cR5YdvFmt0YORk0lr4
-	 2LfO1ldF0ONQ0JLWAG0qK2J/nyiiHrBewIxVi1tvSfZb7E1eGCCQtAB6ftWTXAVsx1
-	 nIWoASDdz55rJ4B7XvIW9gQvqvgbVmso/Mj4sbt4=
+	b=xq0q64fY6e8w2BvfZcYUhCeKT1flETEbY6FgtJ13NYf2+MnlLZdVjWMqomip3a6ZK
+	 8sD/W1hNX8sHL4DRmy549/0dynZ88U4eYxsCy9RowpuiMRxC0tjNvqY5jBhr5Wi6Dj
+	 3RRVqkaiWwa0iTYHxw2Tm8Is/aN8bQ0gSn0w7kmk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	ziming zhang <ezrakiez@gmail.com>,
-	Ilya Dryomov <idryomov@gmail.com>
-Subject: [PATCH 6.12 023/119] libceph: replace overzealous BUG_ON in osdmap_apply_incremental()
+	Di Zhu <zhud@hygon.cn>,
+	Jakub Kicinski <kuba@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.18 101/181] netdev: preserve NETIF_F_ALL_FOR_ALL across TSO updates
 Date: Thu, 15 Jan 2026 17:47:18 +0100
-Message-ID: <20260115164152.798945919@linuxfoundation.org>
+Message-ID: <20260115164205.966181133@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164202.305475649@linuxfoundation.org>
+References: <20260115164202.305475649@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +60,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+6.18-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Di Zhu <zhud@hygon.cn>
 
-commit e00c3f71b5cf75681dbd74ee3f982a99cb690c2b upstream.
+[ Upstream commit 02d1e1a3f9239cdb3ecf2c6d365fb959d1bf39df ]
 
-If the osdmap is (maliciously) corrupted such that the incremental
-osdmap epoch is different from what is expected, there is no need to
-BUG.  Instead, just declare the incremental osdmap to be invalid.
+Directly increment the TSO features incurs a side effect: it will also
+directly clear the flags in NETIF_F_ALL_FOR_ALL on the master device,
+which can cause issues such as the inability to enable the nocache copy
+feature on the bonding driver.
 
-Cc: stable@vger.kernel.org
-Reported-by: ziming zhang <ezrakiez@gmail.com>
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The fix is to include NETIF_F_ALL_FOR_ALL in the update mask, thereby
+preventing it from being cleared.
+
+Fixes: b0ce3508b25e ("bonding: allow TSO being set on bonding master")
+Signed-off-by: Di Zhu <zhud@hygon.cn>
+Link: https://patch.msgid.link/20251224012224.56185-1-zhud@hygon.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ceph/osdmap.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ include/linux/netdevice.h | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/ceph/osdmap.c
-+++ b/net/ceph/osdmap.c
-@@ -1979,11 +1979,13 @@ struct ceph_osdmap *osdmap_apply_increme
- 			 sizeof(u64) + sizeof(u32), e_inval);
- 	ceph_decode_copy(p, &fsid, sizeof(fsid));
- 	epoch = ceph_decode_32(p);
--	BUG_ON(epoch != map->epoch+1);
- 	ceph_decode_copy(p, &modified, sizeof(modified));
- 	new_pool_max = ceph_decode_64(p);
- 	new_flags = ceph_decode_32(p);
+diff --git a/include/linux/netdevice.h b/include/linux/netdevice.h
+index 77c46a2823eca..c6c04cd0a6816 100644
+--- a/include/linux/netdevice.h
++++ b/include/linux/netdevice.h
+@@ -5299,7 +5299,8 @@ netdev_features_t netdev_increment_features(netdev_features_t all,
+ static inline netdev_features_t netdev_add_tso_features(netdev_features_t features,
+ 							netdev_features_t mask)
+ {
+-	return netdev_increment_features(features, NETIF_F_ALL_TSO, mask);
++	return netdev_increment_features(features, NETIF_F_ALL_TSO |
++					 NETIF_F_ALL_FOR_ALL, mask);
+ }
  
-+	if (epoch != map->epoch + 1)
-+		goto e_inval;
-+
- 	/* full map? */
- 	ceph_decode_32_safe(p, end, len, e_inval);
- 	if (len > 0) {
+ int __netdev_update_features(struct net_device *dev);
+-- 
+2.51.0
+
 
 
 
