@@ -1,52 +1,54 @@
-Return-Path: <stable+bounces-209918-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209932-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7C10CD27615
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:52 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 25102D278D4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:30:18 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id E9F503207187
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:27 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 77BA73209300
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 356CE3C1990;
-	Thu, 15 Jan 2026 18:01:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 43E3F3C199D;
+	Thu, 15 Jan 2026 18:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="hREn9R/d"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="UGZGj3ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EC49F3BFE49;
-	Thu, 15 Jan 2026 18:01:03 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 065493BC4D8;
+	Thu, 15 Jan 2026 18:01:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768500064; cv=none; b=jadDoSiprKgv4A7YGdb4DGspt7nMSbTXprOCazawkRnArPKQ2TDGwviD3MDwSENaNl8OSBUKO7Pwo1+9QCTAWfzFOLkyByoUIFvydpe3wl/zbpiCtoUKD+JvRMcmcKgjzN0+bP9emOc3yxuuOWuETuumP0yMVcktPa75X0LWfng=
+	t=1768500106; cv=none; b=C7fB9Y8LBL211iSoHErbpyl6tie2BMFVXwcLf0i0xJQz8DHDLC5ZRgbgrf87DgGywPU9E58JlJ6/OYc8ZxmtivjNEpRVXmm/pipf4ccVXRXouhbL1DzWVVHmoDYNz+r+RCbDpKHshXr+fDb+WCuS5ybpLTiKWrh4sR2VToxiIaU=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768500064; c=relaxed/simple;
-	bh=3Xj+AfzfX3PWYUmUJnnrBG/9LDaTqM7A/by5OnUBQOY=;
+	s=arc-20240116; t=1768500106; c=relaxed/simple;
+	bh=ebauwq0sqDbJSj/lX+R5m88938N7zfxm5Akb6RAJQ5w=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=bf0P/D54xnUBZNyEbiCEJCW3W1yC4C/INIYt0u62iw5GoxTfmfaxprSgv5NOcktbqEVuLiqPdWalgzqjOf69211v4a7CWcaQhZmagxLglzPuXqSVolqhnRX8Q2ruHoVN4I05vJlzpUGCzvW1yEbCOjCy62cZqtfUDQBCJweWc6o=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=hREn9R/d; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3216CC116D0;
-	Thu, 15 Jan 2026 18:01:03 +0000 (UTC)
+	 MIME-Version; b=XSu8+SG1Iz6LZD8kRfM893FWGk0jtYZIUkESYQQf4TvF6FEjPeBqoc+8lxZ2DrCPOW/VpgWikOKno5rWQ2QA80ZfJK2a6cdXFC4GO4ZDQcPFKckQWPeDW05m42CwdAq5furzitFdsuOvaGhwHjJEldNFdRIC6hXsJzMyXvIADt4=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=UGZGj3ML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85786C116D0;
+	Thu, 15 Jan 2026 18:01:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768500063;
-	bh=3Xj+AfzfX3PWYUmUJnnrBG/9LDaTqM7A/by5OnUBQOY=;
+	s=korg; t=1768500105;
+	bh=ebauwq0sqDbJSj/lX+R5m88938N7zfxm5Akb6RAJQ5w=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=hREn9R/drenCaIxmKUSInqYCrZq/r+MDZfMvKEyY6wrzq+6CNg0qAk8UQN8PGIDZm
-	 nroUX9Fq2EiqZNP9c8UxTwnZ+qwKsesyACJgXP8chiLl3HzuKTCQGicmzxGWQ+W3oj
-	 OK0XyfT+bQUMTXomcQBlg0u6e5ExPil+kT08xmFo=
+	b=UGZGj3MLIYQLIKh1KsceXdv9u/tyECUt5lACki0ALJANxG2V7PTZLKCQYHQWOfpR4
+	 CV8ct/7vYTvEp56bOiDjKKSm2HGV/wkEJP5y+UOAqaXVOOj/702S7INj8c7Om59htr
+	 rzCafadToN6ziWkQIpKo4EVvqaRFOmYEtQMUFUl4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+58b44a770a1585795351@syzkaller.appspotmail.com,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 444/451] arp: do not assume dev_hard_header() does not change skb->head
-Date: Thu, 15 Jan 2026 17:50:45 +0100
-Message-ID: <20260115164247.008085103@linuxfoundation.org>
+	Laibin Qiu <qiulaibin@huawei.com>,
+	Ming Lei <ming.lei@redhat.com>,
+	Jens Axboe <axboe@kernel.dk>,
+	Sasha Levin <sashal@kernel.org>,
+	Keerthana K <keerthana.kalyanasundaram@broadcom.com>,
+	Shivani Agarwal <shivani.agarwal@broadcom.com>
+Subject: [PATCH 5.10 445/451] blk-throttle: Set BIO_THROTTLED when bio has been throttled
+Date: Thu, 15 Jan 2026 17:50:46 +0100
+Message-ID: <20260115164247.044198897@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
 References: <20260115164230.864985076@linuxfoundation.org>
@@ -65,59 +67,153 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Laibin Qiu <qiulaibin@huawei.com>
 
-[ Upstream commit c92510f5e3f82ba11c95991824a41e59a9c5ed81 ]
+[ Upstream commit 5a011f889b4832aa80c2a872a5aade5c48d2756f ]
 
-arp_create() is the only dev_hard_header() caller
-making assumption about skb->head being unchanged.
+1.In current process, all bio will set the BIO_THROTTLED flag
+after __blk_throtl_bio().
 
-A recent commit broke this assumption.
+2.If bio needs to be throttled, it will start the timer and
+stop submit bio directly. Bio will submit in
+blk_throtl_dispatch_work_fn() when the timer expires.But in
+the current process, if bio is throttled. The BIO_THROTTLED
+will be set to bio after timer start. If the bio has been
+completed, it may cause use-after-free blow.
 
-Initialize @arp pointer after dev_hard_header() call.
+BUG: KASAN: use-after-free in blk_throtl_bio+0x12f0/0x2c70
+Read of size 2 at addr ffff88801b8902d4 by task fio/26380
 
-Fixes: db5b4e39c4e6 ("ip6_gre: make ip6gre_header() robust")
-Reported-by: syzbot+58b44a770a1585795351@syzkaller.appspotmail.com
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20260107212250.384552-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+ dump_stack+0x9b/0xce
+ print_address_description.constprop.6+0x3e/0x60
+ kasan_report.cold.9+0x22/0x3a
+ blk_throtl_bio+0x12f0/0x2c70
+ submit_bio_checks+0x701/0x1550
+ submit_bio_noacct+0x83/0xc80
+ submit_bio+0xa7/0x330
+ mpage_readahead+0x380/0x500
+ read_pages+0x1c1/0xbf0
+ page_cache_ra_unbounded+0x471/0x6f0
+ do_page_cache_ra+0xda/0x110
+ ondemand_readahead+0x442/0xae0
+ page_cache_async_ra+0x210/0x300
+ generic_file_buffered_read+0x4d9/0x2130
+ generic_file_read_iter+0x315/0x490
+ blkdev_read_iter+0x113/0x1b0
+ aio_read+0x2ad/0x450
+ io_submit_one+0xc8e/0x1d60
+ __se_sys_io_submit+0x125/0x350
+ do_syscall_64+0x2d/0x40
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Allocated by task 26380:
+ kasan_save_stack+0x19/0x40
+ __kasan_kmalloc.constprop.2+0xc1/0xd0
+ kmem_cache_alloc+0x146/0x440
+ mempool_alloc+0x125/0x2f0
+ bio_alloc_bioset+0x353/0x590
+ mpage_alloc+0x3b/0x240
+ do_mpage_readpage+0xddf/0x1ef0
+ mpage_readahead+0x264/0x500
+ read_pages+0x1c1/0xbf0
+ page_cache_ra_unbounded+0x471/0x6f0
+ do_page_cache_ra+0xda/0x110
+ ondemand_readahead+0x442/0xae0
+ page_cache_async_ra+0x210/0x300
+ generic_file_buffered_read+0x4d9/0x2130
+ generic_file_read_iter+0x315/0x490
+ blkdev_read_iter+0x113/0x1b0
+ aio_read+0x2ad/0x450
+ io_submit_one+0xc8e/0x1d60
+ __se_sys_io_submit+0x125/0x350
+ do_syscall_64+0x2d/0x40
+ entry_SYSCALL_64_after_hwframe+0x44/0xa9
+
+Freed by task 0:
+ kasan_save_stack+0x19/0x40
+ kasan_set_track+0x1c/0x30
+ kasan_set_free_info+0x1b/0x30
+ __kasan_slab_free+0x111/0x160
+ kmem_cache_free+0x94/0x460
+ mempool_free+0xd6/0x320
+ bio_free+0xe0/0x130
+ bio_put+0xab/0xe0
+ bio_endio+0x3a6/0x5d0
+ blk_update_request+0x590/0x1370
+ scsi_end_request+0x7d/0x400
+ scsi_io_completion+0x1aa/0xe50
+ scsi_softirq_done+0x11b/0x240
+ blk_mq_complete_request+0xd4/0x120
+ scsi_mq_done+0xf0/0x200
+ virtscsi_vq_done+0xbc/0x150
+ vring_interrupt+0x179/0x390
+ __handle_irq_event_percpu+0xf7/0x490
+ handle_irq_event_percpu+0x7b/0x160
+ handle_irq_event+0xcc/0x170
+ handle_edge_irq+0x215/0xb20
+ common_interrupt+0x60/0x120
+ asm_common_interrupt+0x1e/0x40
+
+Fix this by move BIO_THROTTLED set into the queue_lock.
+
+Signed-off-by: Laibin Qiu <qiulaibin@huawei.com>
+Reviewed-by: Ming Lei <ming.lei@redhat.com>
+Link: https://lore.kernel.org/r/20220301123919.2381579-1-qiulaibin@huawei.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[ Keerthana: Remove 'out' and handle return with reference to commit 81c7a63 ]
+Signed-off-by: Keerthana K <keerthana.kalyanasundaram@broadcom.com>
+Signed-off-by: Shivani Agarwal <shivani.agarwal@broadcom.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/arp.c | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ block/blk-throttle.c |   16 ++++++++++------
+ 1 file changed, 10 insertions(+), 6 deletions(-)
 
-diff --git a/net/ipv4/arp.c b/net/ipv4/arp.c
-index 6879e0b70c769..5f2788b87dfd5 100644
---- a/net/ipv4/arp.c
-+++ b/net/ipv4/arp.c
-@@ -542,7 +542,7 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
+--- a/block/blk-throttle.c
++++ b/block/blk-throttle.c
+@@ -2216,8 +2216,10 @@ bool blk_throtl_bio(struct bio *bio)
+ 	rcu_read_lock();
  
- 	skb_reserve(skb, hlen);
- 	skb_reset_network_header(skb);
--	arp = skb_put(skb, arp_hdr_len(dev));
-+	skb_put(skb, arp_hdr_len(dev));
- 	skb->dev = dev;
- 	skb->protocol = htons(ETH_P_ARP);
- 	if (!src_hw)
-@@ -550,12 +550,13 @@ struct sk_buff *arp_create(int type, int ptype, __be32 dest_ip,
- 	if (!dest_hw)
- 		dest_hw = dev->broadcast;
+ 	/* see throtl_charge_bio() */
+-	if (bio_flagged(bio, BIO_THROTTLED))
+-		goto out;
++	if (bio_flagged(bio, BIO_THROTTLED)) {
++		rcu_read_unlock();
++		return false;
++	}
  
--	/*
--	 *	Fill the device header for the ARP frame
-+	/* Fill the device header for the ARP frame.
-+	 * Note: skb->head can be changed.
- 	 */
- 	if (dev_hard_header(skb, dev, ptype, dest_hw, src_hw, skb->len) < 0)
- 		goto out;
+ 	if (!cgroup_subsys_on_dfl(io_cgrp_subsys)) {
+ 		blkg_rwstat_add(&tg->stat_bytes, bio->bi_opf,
+@@ -2225,8 +2227,10 @@ bool blk_throtl_bio(struct bio *bio)
+ 		blkg_rwstat_add(&tg->stat_ios, bio->bi_opf, 1);
+ 	}
  
-+	arp = arp_hdr(skb);
- 	/*
- 	 * Fill out the arp protocol part.
- 	 *
--- 
-2.51.0
-
+-	if (!tg->has_rules[rw])
+-		goto out;
++	if (!tg->has_rules[rw]) {
++		rcu_read_unlock();
++		return false;
++	}
+ 
+ 	spin_lock_irq(&q->queue_lock);
+ 
+@@ -2310,14 +2314,14 @@ again:
+ 	}
+ 
+ out_unlock:
+-	spin_unlock_irq(&q->queue_lock);
+-out:
+ 	bio_set_flag(bio, BIO_THROTTLED);
+ 
+ #ifdef CONFIG_BLK_DEV_THROTTLING_LOW
+ 	if (throttled || !td->track_bio_latency)
+ 		bio->bi_issue.value |= BIO_ISSUE_THROTL_SKIP_LATENCY;
+ #endif
++	spin_unlock_irq(&q->queue_lock);
++
+ 	rcu_read_unlock();
+ 	return throttled;
+ }
 
 
 
