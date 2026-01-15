@@ -1,53 +1,55 @@
-Return-Path: <stable+bounces-209726-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208671-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id B3601D27612
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:21:51 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 26A40D261E0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:09:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 3F55031D56B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:01:20 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 8D47231183B7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:01:55 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5783E3D3D1A;
-	Thu, 15 Jan 2026 17:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 692BE345758;
+	Thu, 15 Jan 2026 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="yokj8OgS"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="k6P3sQmq"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1B97C3D3D15;
-	Thu, 15 Jan 2026 17:51:56 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C6F029C338;
+	Thu, 15 Jan 2026 17:01:55 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499516; cv=none; b=UejnoyEjtxJckjDy7CwphBTmK7CWp7y0jrv1tPchgPoAksft1J/fgX3POkdaNnnGEkRLfDErvIbeRox1XP04mR1oumcZJIc6euiOnG2TezFy6c8Y7GalQADlnuz/E1LmhOBQqT87C1WCVB4/VBG3UaR1gq6lZL08oQTgdnfUvrk=
+	t=1768496515; cv=none; b=ixMwNUL5rf6/qqZNCj9nsM1ECL6GFuPWYopTImX7WQQnQhbt9HLXMiXwwA9xwgji7KZUgksiTr6fsBz1YNizFKWkzg7RScP7a/fGKzD7IE4VJnw2PLx8PMl8LvgMO5gBGYcHvVO/sT66JT5vKVBYHh8jYWeF5R6GItqJ9RQY68o=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499516; c=relaxed/simple;
-	bh=3kjzfLuR9A94iIcoUN89D1S7j2uxBM6YfVDqF116deQ=;
+	s=arc-20240116; t=1768496515; c=relaxed/simple;
+	bh=Uyq0JePWOByD7GeTpCzMdcnUe9yVs0RLv6/Ye5zb8Gw=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=kdgq6vj+JXsoh8gz5XMAqY2skN/J+0trM8TPaHB7gSJMyStRGDuIuEIuzcfXbteW2NZs/IG/PKorw3tVRhaaW57XhkP7aJnLJNCI8Kz+lq7Jmbbs8RbDMqhWLaHbj8qWY6XkTQ/uOC/oz89BSWnZOs2I6DTMnKORq9F1D3JcQm8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=yokj8OgS; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D6A7C116D0;
-	Thu, 15 Jan 2026 17:51:55 +0000 (UTC)
+	 MIME-Version; b=d/oOMBToT/0BIie9YL2r7ppQQ9qOIFUt5HK4YcYiuHcjQO0tvUfu5sqCpo35uby+RSWpWGkqHtreVOcbXNpVJkJOvgCsAB9YHrTrTWQfNS9+pOqNdLLxfSQu/Ry8Y9HperiO4Rb/KKtlQdhQDxB/usFl5VHYGfI6+WxvD/QHf6w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=k6P3sQmq; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A99C0C116D0;
+	Thu, 15 Jan 2026 17:01:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499516;
-	bh=3kjzfLuR9A94iIcoUN89D1S7j2uxBM6YfVDqF116deQ=;
+	s=korg; t=1768496515;
+	bh=Uyq0JePWOByD7GeTpCzMdcnUe9yVs0RLv6/Ye5zb8Gw=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=yokj8OgS4+mp8iL1062wBvpgfjsTuY3FHWn2g0THMV2rkANNTQGbs5s9Hzzfk+1Qn
-	 tD/mVllS3nvMa9Gx8lDhXBE5r0Ca7gLv6i482V05FTXjw5IeGkqQDYO6ytQtoAJYJU
-	 mQAZv2ICATW5hB3A/kQj9stLAlkGSaHhs7Kd3l30=
+	b=k6P3sQmqyhM+faKFyud2RlC+TPAZCdAdrCsx2GCgjx3wPb29IdXAQpUBsimgkOepY
+	 4Jr9Cfmku7Di0vvTxV6cwEMsDmYnOWZM2+shlqaTYsKA3rWxuzd+yu5EfIkvGB0Tox
+	 f09C7a5nM1QQBs5DqrL0Qv7hZjrMyWqyeJU8gVjE=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	fuqiang wang <fuqiang.wng@gmail.com>,
-	Sean Christopherson <seanjc@google.com>
-Subject: [PATCH 5.10 254/451] KVM: x86: Explicitly set new periodic hrtimer expiration in apic_timer_fn()
+	ChenXiaoSong <chenxiaosong@kylinos.cn>,
+	"Paulo Alcantara (Red Hat)" <pc@manguebit.org>,
+	Steve French <stfrench@microsoft.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 040/119] smb/client: fix NT_STATUS_DEVICE_DOOR_OPEN value
 Date: Thu, 15 Jan 2026 17:47:35 +0100
-Message-ID: <20260115164240.078268500@linuxfoundation.org>
+Message-ID: <20260115164153.406686476@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,43 +61,43 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: fuqiang wang <fuqiang.wng@gmail.com>
+From: ChenXiaoSong <chenxiaosong@kylinos.cn>
 
-commit 9633f180ce994ab293ce4924a9b7aaf4673aa114 upstream.
+[ Upstream commit b2b50fca34da5ec231008edba798ddf92986bd7f ]
 
-When restarting an hrtimer to emulate a the guest's APIC timer in periodic
-mode, explicitly set the expiration using the target expiration computed
-by advance_periodic_target_expiration() instead of adding the period to
-the existing timer.  This will allow making adjustments to the expiration,
-e.g. to deal with expirations far in the past, without having to implement
-the same logic in both advance_periodic_target_expiration() and
-apic_timer_fn().
+This was reported by the KUnit tests in the later patches.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: fuqiang wang <fuqiang.wng@gmail.com>
-[sean: split to separate patch, write changelog]
-Link: https://patch.msgid.link/20251113205114.1647493-3-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+See MS-ERREF 2.3.1 STATUS_DEVICE_DOOR_OPEN. Keep it consistent with the
+value in the documentation.
+
+Signed-off-by: ChenXiaoSong <chenxiaosong@kylinos.cn>
+Acked-by: Paulo Alcantara (Red Hat) <pc@manguebit.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/lapic.c |    2 +-
+ fs/smb/client/nterr.h | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/kvm/lapic.c
-+++ b/arch/x86/kvm/lapic.c
-@@ -2436,7 +2436,7 @@ static enum hrtimer_restart apic_timer_f
- 
- 	if (lapic_is_periodic(apic) && !WARN_ON_ONCE(!apic->lapic_timer.period)) {
- 		advance_periodic_target_expiration(apic);
--		hrtimer_add_expires_ns(&ktimer->timer, ktimer->period);
-+		hrtimer_set_expires(&ktimer->timer, ktimer->target_expiration);
- 		return HRTIMER_RESTART;
- 	} else
- 		return HRTIMER_NORESTART;
+diff --git a/fs/smb/client/nterr.h b/fs/smb/client/nterr.h
+index 7ce063a1dc3f6..d46d42559eea2 100644
+--- a/fs/smb/client/nterr.h
++++ b/fs/smb/client/nterr.h
+@@ -44,7 +44,7 @@ extern const struct nt_err_code_struct nt_errs[];
+ #define NT_STATUS_NO_DATA_DETECTED 0x8000001c
+ #define NT_STATUS_STOPPED_ON_SYMLINK 0x8000002d
+ #define NT_STATUS_DEVICE_REQUIRES_CLEANING 0x80000288
+-#define NT_STATUS_DEVICE_DOOR_OPEN 0x80000288
++#define NT_STATUS_DEVICE_DOOR_OPEN 0x80000289
+ #define NT_STATUS_UNSUCCESSFUL 0xC0000000 | 0x0001
+ #define NT_STATUS_NOT_IMPLEMENTED 0xC0000000 | 0x0002
+ #define NT_STATUS_INVALID_INFO_CLASS 0xC0000000 | 0x0003
+-- 
+2.51.0
+
 
 
 
