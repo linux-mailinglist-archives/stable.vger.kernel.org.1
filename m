@@ -1,56 +1,54 @@
-Return-Path: <stable+bounces-209297-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208690-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 6D631D26910
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:38:25 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 72802D26219
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:10 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id 54A7E3064FC0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:33:53 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id F067730C6861
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:02:49 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5FE083D34B0;
-	Thu, 15 Jan 2026 17:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 88BE5345758;
+	Thu, 15 Jan 2026 17:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="wD68tS+u"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ACXZYgXQ"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 22C373C1FF9;
-	Thu, 15 Jan 2026 17:31:35 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 490A42C028F;
+	Thu, 15 Jan 2026 17:02:49 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498295; cv=none; b=hOsRJxdbPqQo/5mlxBDoaIvEXST3sHcrlMwFskM2BxcXaVour9KMa94nafF5845XcctdujKcNgip1PnTj25tIi71YXKbAh8OzrNKG544V3hvpX93NLVp9x/tiwIB71sDlV54+eueq+NWZemthXXCqvQyMzWX9QfddHh080CZWbo=
+	t=1768496569; cv=none; b=UUomTNhYBxh6NodsbTJI+J63z815PipIF1qYD5T/WSrCUHQgA3bn40XDHfAbBIZUPLCGwbaCN9O0sV2cTr95+PlrbmCUw3SnhOJA/LdOlcq1RDNY+nSbkdfPogwkY+OiasQH57URU0ECMsg4Dy+0hqoWGUCXcHQAOsAmywUi2Q4=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498295; c=relaxed/simple;
-	bh=btSKtf+qUn5x9MhuOgsh0u1L1OprbAn8JsUd4W92vOo=;
+	s=arc-20240116; t=1768496569; c=relaxed/simple;
+	bh=74hBhalu1RK9MSRMGeiuxIHp+TcqW9d+yQ/ShBSSwIo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=LUEw3ZvaXR2D3MK7pmVITu06f0IsdSVuJgYiFdPhM0U8rpp+ulR3ZlxLMaaUuLNFlH18AJu3+ni2bxpy5F7TbOzeQbQATe1oF21d9GtkE9WFz+dKgocHD2N8qsbHyMQHbADKqNKLxHyYm2gR86TNoAen8gDwJyWkVprRSV2KLkY=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=wD68tS+u; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A40CCC116D0;
-	Thu, 15 Jan 2026 17:31:34 +0000 (UTC)
+	 MIME-Version; b=YmX3pwOhwGGSdlZXYRQ1Iie14TFufQBT9KVNYk4S5d5V5z8je6mHPCjN4sPk/qCLSyumcS30UOCXa6hdpC/h/V/JGqyztt1GmeN6GFfZVuYn0GTXIkSWku5qtxLLo2e8HDFNCmmiAUJbkD1ssr6FmcRaCrdGqTI5RqFKbwz2r5A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ACXZYgXQ; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA813C116D0;
+	Thu, 15 Jan 2026 17:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498295;
-	bh=btSKtf+qUn5x9MhuOgsh0u1L1OprbAn8JsUd4W92vOo=;
+	s=korg; t=1768496569;
+	bh=74hBhalu1RK9MSRMGeiuxIHp+TcqW9d+yQ/ShBSSwIo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=wD68tS+uDMLpf4EK94B336fF18BmZgPXgZVgghCUmFXKs9LlXL1dbXl/+hcKpxvmm
-	 nEO9EYEHNxTyzE8gQQ+uF81xRPcaLoKDr6MowbvYlPfKj2gkNZd44vxz3bJ5PTXhu6
-	 7/eh74ryqh0frRogYxQ8VMK0JqmbOF9CJRGfr1w0=
+	b=ACXZYgXQ/JyX/Zt50DoHkO0BAgMI3dwU2xSQ7n6GoG3STOx/Q17KmEKJNRCpu2m6C
+	 lsK0E6ji8PzeZHWJIXzsGSJoXp+BfZWLX5s+IqKxNUX4Jy/f9VNGeYXnW8g31ltdH6
+	 7EMRaM4IBi1HI6P1vwkzo9kfW8glKCkkiH0dd9qc=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Miaoqian Lin <linmq006@gmail.com>,
-	Robin Murphy <robin.murphy@arm.com>,
-	Thierry Reding <treding@nvidia.com>,
-	Johan Hovold <johan@kernel.org>,
-	Joerg Roedel <joerg.roedel@amd.com>
-Subject: [PATCH 5.15 380/554] iommu/tegra: fix device leak on probe_device()
+	Yang Li <yang.li85200@gmail.com>,
+	Guo Ren <guoren@kernel.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 031/119] csky: fix csky_cmpxchg_fixup not working
 Date: Thu, 15 Jan 2026 17:47:26 +0100
-Message-ID: <20260115164259.990554758@linuxfoundation.org>
+Message-ID: <20260115164153.085385266@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,48 +60,45 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan@kernel.org>
+From: Yang Li <yang.li85200@gmail.com>
 
-commit c08934a61201db8f1d1c66fcc63fb2eb526b656d upstream.
+[ Upstream commit 809ef03d6d21d5fea016bbf6babeec462e37e68c ]
 
-Make sure to drop the reference taken to the iommu platform device when
-looking up its driver data during probe_device().
+In the csky_cmpxchg_fixup function, it is incorrect to use the global
+variable csky_cmpxchg_stw to determine the address where the exception
+occurred.The global variable csky_cmpxchg_stw stores the opcode at the
+time of the exception, while &csky_cmpxchg_stw shows the address where
+the exception occurred.
 
-Note that commit 9826e393e4a8 ("iommu/tegra-smmu: Fix missing
-put_device() call in tegra_smmu_find") fixed the leak in an error path,
-but the reference is still leaking on success.
-
-Fixes: 891846516317 ("memory: Add NVIDIA Tegra memory controller support")
-Cc: stable@vger.kernel.org	# 3.19: 9826e393e4a8
-Cc: Miaoqian Lin <linmq006@gmail.com>
-Acked-by: Robin Murphy <robin.murphy@arm.com>
-Acked-by: Thierry Reding <treding@nvidia.com>
-Signed-off-by: Johan Hovold <johan@kernel.org>
-Signed-off-by: Joerg Roedel <joerg.roedel@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Yang Li <yang.li85200@gmail.com>
+Signed-off-by: Guo Ren <guoren@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/tegra-smmu.c |    5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ arch/csky/mm/fault.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/iommu/tegra-smmu.c
-+++ b/drivers/iommu/tegra-smmu.c
-@@ -808,10 +808,9 @@ static struct tegra_smmu *tegra_smmu_fin
- 		return NULL;
+diff --git a/arch/csky/mm/fault.c b/arch/csky/mm/fault.c
+index a885518ce1dd2..5226bc08c3360 100644
+--- a/arch/csky/mm/fault.c
++++ b/arch/csky/mm/fault.c
+@@ -45,8 +45,8 @@ static inline void csky_cmpxchg_fixup(struct pt_regs *regs)
+ 	if (trap_no(regs) != VEC_TLBMODIFIED)
+ 		return;
  
- 	mc = platform_get_drvdata(pdev);
--	if (!mc) {
--		put_device(&pdev->dev);
-+	put_device(&pdev->dev);
-+	if (!mc)
- 		return NULL;
--	}
- 
- 	return mc->smmu;
+-	if (instruction_pointer(regs) == csky_cmpxchg_stw)
+-		instruction_pointer_set(regs, csky_cmpxchg_ldw);
++	if (instruction_pointer(regs) == (unsigned long)&csky_cmpxchg_stw)
++		instruction_pointer_set(regs, (unsigned long)&csky_cmpxchg_ldw);
+ 	return;
  }
+ #endif
+-- 
+2.51.0
+
 
 
 
