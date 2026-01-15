@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209509-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209122-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D2B5AD27779
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 66D1DD2689B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:03 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id B1E633112D3E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id D90CB3099944
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:27 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5C30122D9F7;
-	Thu, 15 Jan 2026 17:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F543A1E86;
+	Thu, 15 Jan 2026 17:23:16 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jvk6UKIP"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSlE51uF"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 1FB474A3C;
-	Thu, 15 Jan 2026 17:41:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDFB2D73B4;
+	Thu, 15 Jan 2026 17:23:15 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498899; cv=none; b=N33h2+iEVhzdUwWe2qWB6/ufwTCKAkOwvWP1ITUOCbqJNJb2ZCwRvRNCEND4UOMmuCdBez+zR7ZJ6QoNovLxdM5azY4wP+i+KuurXCVOFTkMBA5oZf8Qx0GHVG4vMdsbW8NYvw229ngB5QGzhBXAhRJBfWC0JKliV4tjZyLXS7E=
+	t=1768497795; cv=none; b=g3x6e4hJcDYX3jk9K0zCgOkgnX6WQHpXlF5zLMwHGbk3GVRYcJI6IE3feRR0l9NIkCt0FlibUd43a5Dn6hoWBwKPe6uQ6/rkPaToBGn2vFdjp542mfMw2AgsCyHJrdyQn0EYWw/TVWxvC/cVu35CN67CpQzNTcdCqCnSqBRU2uA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498899; c=relaxed/simple;
-	bh=HMlLbiTCNPsUoFqXUWRYcdUsmEfkXgs2fpjGuFvJZQs=;
+	s=arc-20240116; t=1768497795; c=relaxed/simple;
+	bh=nuu/xn4mZaKWtStdrtw3nTLLpXYloQdCZ4IvmH+G2sQ=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=QXVzjsScHQ4S6WlN4OzK6sBGKuJbXW0zukHuMhZxmcS7ZkIXaYpcLBVi5jf5SSxn5GD3XMPSuyhfbnEDrTaPnCF9G9lTnA1JiHEIqrk3GCYSsn4r+BxNrjN+v24o4tQHTiNx4qIyWPqd94nF/4EdwO2OxySuKr3A6sj4YGTBUmw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jvk6UKIP; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DED6C116D0;
-	Thu, 15 Jan 2026 17:41:38 +0000 (UTC)
+	 MIME-Version; b=KCVRCaYUUKsH3Nsmnjb627k46W2bAxQYG4XOKCK8ZXJ+7YvdZc7R27S7UNsASpWtQclxZt+BWIQJtA/Gmxe+rHCOKMKbJTgjwSNN8pXuTnz6k98QA+N35kEb0xubwrIl7UYf+Oas9RY9LaQQN6t7ULPWSnhmF8xCdWt2gdHHWQ8=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSlE51uF; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE8AC116D0;
+	Thu, 15 Jan 2026 17:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498899;
-	bh=HMlLbiTCNPsUoFqXUWRYcdUsmEfkXgs2fpjGuFvJZQs=;
+	s=korg; t=1768497795;
+	bh=nuu/xn4mZaKWtStdrtw3nTLLpXYloQdCZ4IvmH+G2sQ=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jvk6UKIPITFO/O3bttLFfrWjebQ9nxcNkFNoXKkEkJcw3A3pbxVRyn1fAGSyVUCIv
-	 Z3UeI6FIAnAtCMKWXvbrm3zSjL6ZbpDHtSutPQKAof+L/aCeatC5mB4sZK4COSS1Tr
-	 TpbX2BFfl38O2HrUX2SYWxO3rXg5NDS6ZBAynUl8=
+	b=jSlE51uFD2sFC7HFZvHqiqs4vkcsLvrRbaya4FNzcnGN1f9s81p9/mX//6t+/8tlG
+	 deLxqN0zZMRBjO3bQvg+u6h6zVduc5E1wT0VFDO1hnSxRA3Zg8Pi/MimKCIb1CERDc
+	 njftTJWYnFtQJzlexkplQilWzBwHn8lZLUS+bQ3k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Francesco Lavra <flavra@baylibre.com>,
-	Lorenzo Bianconi <lorenzo@kernel.org>,
-	Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
+	Anna Schumaker <Anna.Schumaker@Netapp.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/451] iio: imu: st_lsm6dsx: Fix measurement unit for odr struct member
-Date: Thu, 15 Jan 2026 17:43:58 +0100
-Message-ID: <20260115164232.233931917@linuxfoundation.org>
+Subject: [PATCH 5.15 173/554] NFSv4: Add some support for case insensitive filesystems
+Date: Thu, 15 Jan 2026 17:43:59 +0100
+Message-ID: <20260115164252.529343096@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,39 +60,138 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Francesco Lavra <flavra@baylibre.com>
+From: Trond Myklebust <trond.myklebust@primarydata.com>
 
-[ Upstream commit c6d702f2b77194b62fb2098c63bb7f2a87da142d ]
+[ Upstream commit 1ab5be4ac5b1c9ce39ce1037c45b68d2ce6eede0 ]
 
-The `odr` field in struct st_lsm6dsx_sensor contains a data rate
-value expressed in mHz, not in Hz.
+Add capabilities to allow the NFS client to recognise when it is dealing
+with case insensitive and case preserving filesystems.
 
-Fixes: f8710f0357bc3 ("iio: imu: st_lsm6dsx: express odr in mHZ")
-Signed-off-by: Francesco Lavra <flavra@baylibre.com>
-Acked-by: Lorenzo Bianconi <lorenzo@kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Stable-dep-of: 518c32a1bc4f ("NFS: Initialise verifiers for visible dentries in nfs_atomic_open()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nfs/nfs4proc.c         |  8 +++++++-
+ fs/nfs/nfs4xdr.c          | 40 +++++++++++++++++++++++++++++++++++++++
+ include/linux/nfs_fs_sb.h |  2 ++
+ include/linux/nfs_xdr.h   |  2 ++
+ 4 files changed, 51 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-index 3c0ade6ab0d2e..f6df7ed86b4b9 100644
---- a/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-+++ b/drivers/iio/imu/st_lsm6dsx/st_lsm6dsx.h
-@@ -344,7 +344,7 @@ enum st_lsm6dsx_fifo_mode {
-  * @id: Sensor identifier.
-  * @hw: Pointer to instance of struct st_lsm6dsx_hw.
-  * @gain: Configured sensor sensitivity.
-- * @odr: Output data rate of the sensor [Hz].
-+ * @odr: Output data rate of the sensor [mHz].
-  * @samples_to_discard: Number of samples to discard for filters settling time.
-  * @watermark: Sensor watermark level.
-  * @decimator: Sensor decimation factor.
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 768433688cb2f..883e4106fbcd9 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -3887,7 +3887,9 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
+ 		     FATTR4_WORD0_FH_EXPIRE_TYPE |
+ 		     FATTR4_WORD0_LINK_SUPPORT |
+ 		     FATTR4_WORD0_SYMLINK_SUPPORT |
+-		     FATTR4_WORD0_ACLSUPPORT;
++		     FATTR4_WORD0_ACLSUPPORT |
++		     FATTR4_WORD0_CASE_INSENSITIVE |
++		     FATTR4_WORD0_CASE_PRESERVING;
+ 	if (minorversion)
+ 		bitmask[2] = FATTR4_WORD2_SUPPATTR_EXCLCREAT;
+ 
+@@ -3917,6 +3919,10 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
+ 			server->caps |= NFS_CAP_HARDLINKS;
+ 		if (res.has_symlinks != 0)
+ 			server->caps |= NFS_CAP_SYMLINKS;
++		if (res.case_insensitive)
++			server->caps |= NFS_CAP_CASE_INSENSITIVE;
++		if (res.case_preserving)
++			server->caps |= NFS_CAP_CASE_PRESERVING;
+ #ifdef CONFIG_NFS_V4_SECURITY_LABEL
+ 		if (res.attr_bitmask[2] & FATTR4_WORD2_SECURITY_LABEL)
+ 			server->caps |= NFS_CAP_SECURITY_LABEL;
+diff --git a/fs/nfs/nfs4xdr.c b/fs/nfs/nfs4xdr.c
+index 0ae9e06a0bba2..0b9fa58dd7cd7 100644
+--- a/fs/nfs/nfs4xdr.c
++++ b/fs/nfs/nfs4xdr.c
+@@ -3530,6 +3530,42 @@ static int decode_attr_aclsupport(struct xdr_stream *xdr, uint32_t *bitmap, uint
+ 	return 0;
+ }
+ 
++static int decode_attr_case_insensitive(struct xdr_stream *xdr, uint32_t *bitmap, uint32_t *res)
++{
++	__be32 *p;
++
++	*res = 0;
++	if (unlikely(bitmap[0] & (FATTR4_WORD0_CASE_INSENSITIVE - 1U)))
++		return -EIO;
++	if (likely(bitmap[0] & FATTR4_WORD0_CASE_INSENSITIVE)) {
++		p = xdr_inline_decode(xdr, 4);
++		if (unlikely(!p))
++			return -EIO;
++		*res = be32_to_cpup(p);
++		bitmap[0] &= ~FATTR4_WORD0_CASE_INSENSITIVE;
++	}
++	dprintk("%s: case_insensitive=%s\n", __func__, *res == 0 ? "false" : "true");
++	return 0;
++}
++
++static int decode_attr_case_preserving(struct xdr_stream *xdr, uint32_t *bitmap, uint32_t *res)
++{
++	__be32 *p;
++
++	*res = 0;
++	if (unlikely(bitmap[0] & (FATTR4_WORD0_CASE_PRESERVING - 1U)))
++		return -EIO;
++	if (likely(bitmap[0] & FATTR4_WORD0_CASE_PRESERVING)) {
++		p = xdr_inline_decode(xdr, 4);
++		if (unlikely(!p))
++			return -EIO;
++		*res = be32_to_cpup(p);
++		bitmap[0] &= ~FATTR4_WORD0_CASE_PRESERVING;
++	}
++	dprintk("%s: case_preserving=%s\n", __func__, *res == 0 ? "false" : "true");
++	return 0;
++}
++
+ static int decode_attr_fileid(struct xdr_stream *xdr, uint32_t *bitmap, uint64_t *fileid)
+ {
+ 	__be32 *p;
+@@ -4406,6 +4442,10 @@ static int decode_server_caps(struct xdr_stream *xdr, struct nfs4_server_caps_re
+ 		goto xdr_error;
+ 	if ((status = decode_attr_aclsupport(xdr, bitmap, &res->acl_bitmask)) != 0)
+ 		goto xdr_error;
++	if ((status = decode_attr_case_insensitive(xdr, bitmap, &res->case_insensitive)) != 0)
++		goto xdr_error;
++	if ((status = decode_attr_case_preserving(xdr, bitmap, &res->case_preserving)) != 0)
++		goto xdr_error;
+ 	if ((status = decode_attr_exclcreat_supported(xdr, bitmap,
+ 				res->exclcreat_bitmask)) != 0)
+ 		goto xdr_error;
+diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
+index 091fefc5e3615..6b770affcfb2f 100644
+--- a/include/linux/nfs_fs_sb.h
++++ b/include/linux/nfs_fs_sb.h
+@@ -273,6 +273,8 @@ struct nfs_server {
+ #define NFS_CAP_ACLS		(1U << 3)
+ #define NFS_CAP_ATOMIC_OPEN	(1U << 4)
+ #define NFS_CAP_LGOPEN		(1U << 5)
++#define NFS_CAP_CASE_INSENSITIVE	(1U << 6)
++#define NFS_CAP_CASE_PRESERVING	(1U << 7)
+ #define NFS_CAP_POSIX_LOCK	(1U << 14)
+ #define NFS_CAP_UIDGID_NOMAP	(1U << 15)
+ #define NFS_CAP_STATEID_NFSV41	(1U << 16)
+diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
+index 7fcd56c6ded65..7321a5a95087f 100644
+--- a/include/linux/nfs_xdr.h
++++ b/include/linux/nfs_xdr.h
+@@ -1202,6 +1202,8 @@ struct nfs4_server_caps_res {
+ 	u32				has_links;
+ 	u32				has_symlinks;
+ 	u32				fh_expire_type;
++	u32				case_insensitive;
++	u32				case_preserving;
+ };
+ 
+ #define NFS4_PATHNAME_MAXCOMPONENTS 512
 -- 
 2.51.0
 
