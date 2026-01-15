@@ -1,56 +1,53 @@
-Return-Path: <stable+bounces-208810-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209790-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5E2D263E8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:18:13 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 27175D276CE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 9F5A83173C17
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:27 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id E0B323056D43
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 57F5E3A7F5D;
-	Thu, 15 Jan 2026 17:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 15D483D6041;
+	Thu, 15 Jan 2026 17:54:59 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="mR8XVp7n"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="vnXtqYgj"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 07BAE2D5C9B;
-	Thu, 15 Jan 2026 17:08:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B73722C11EF;
+	Thu, 15 Jan 2026 17:54:58 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496907; cv=none; b=ln7uNws//nlbGhp2qqDDtSo9fqCWqsXc1Y+yigTlnnDShGrNCl8z4MJrGA9sWaI6ws0/0nLjtiDqrLg3/J2Kix7GkoAXF/Ej0BnrWitkFw2g98qnthfrCOw5TD05llFv/N1eD6zN9sHALZuFufBJgbybG9PkEqt4EvnryS2FlAE=
+	t=1768499698; cv=none; b=ZdIRIPHkVtD5jLIYgWlWORmxN/JtSZQTr6Wm4YhbsdKCI/wCldR6YqxgchDpdub2yhLphi6lXUj/QgP8ihnTp/66YM5H6bRQH4ZmDDyTDEfoS697JafVnZ687pGokT+VWx7KLLc3PZhoKyDgOVeDcFHGHeLroxUR/RYPzTeKvag=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496907; c=relaxed/simple;
-	bh=6gN1XKF5iEgm729SACStsqa5XK6CIf65cwmUTBog+VE=;
+	s=arc-20240116; t=1768499698; c=relaxed/simple;
+	bh=3tKNaUOwtp3kC2KGwCrx4dOuh4xL0y2n1fHfXhn3NAY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=u1mf9scyjxNBH23cDK6p1oc9e8g0ShQhPBgIxNRF3Agy/0fmAUm/L7mONMAeRm4skKmYeKD0fBsdHSAfL/eZ8bFa2WAS0UtOQuxtQeJdVRAAtso8Mcbp/kCek63lTjAJ8DaDP6bPWL6PbNdr+3fAvlDcJAV+akhTB273j42TD/I=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=mR8XVp7n; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E037C116D0;
-	Thu, 15 Jan 2026 17:08:26 +0000 (UTC)
+	 MIME-Version:Content-Type; b=hXO9zQB7+Bc+5TPWTBKZDM3HTzmk4m5Oh3h6v6JE8fRDwiZlqIea6AIURi5oTe08oKJcdks86SXLI6BWX7cnwIpEJlY3AgfPAO1AvhsKYmhH0U/mnmwuFNk8gwFzu5pqP/fIvR/F8bcSAAnDnvq9v07CJevPrQKheDUIG8atlOc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=vnXtqYgj; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17634C116D0;
+	Thu, 15 Jan 2026 17:54:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496906;
-	bh=6gN1XKF5iEgm729SACStsqa5XK6CIf65cwmUTBog+VE=;
+	s=korg; t=1768499698;
+	bh=3tKNaUOwtp3kC2KGwCrx4dOuh4xL0y2n1fHfXhn3NAY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=mR8XVp7nIdz26E5j3g31sLpZWNm4fWZyjfTp0oj2n5UYZ89JBhJrIWiS4hEvx1CUE
-	 wy35J7t1Q15rAE0FtrnL7ODBEemtevlDm1hzGEy3LMzOTzpLpLIurPMzpVj0pwmi4b
-	 cv5pPkBTEo3H1D4YV5B2EBuojRIHcw2Az5zyaaUw=
+	b=vnXtqYgjYlk72hyRghiT9DB8QRCSkOuxOlrqRr3sXFUdGduw9TquZ1R5Z/4xB6GGf
+	 /XjPxHUc7MWHN0GHjgNjm+9lb0EGKXT/BAMlHUiORaObhw6FUdlu0UUbWpJCUHRtvQ
+	 SrF1BIm6bqJeEOUt8agCb6RIaD1iEuutMVmRhj6E=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Jianhao Xu <jianhao.xu@seu.edu.cn>,
-	Zilin Guan <zilin@seu.edu.cn>,
-	Loic Poulain <loic.poulain@oss.qualcomm.com>,
-	Jakub Kicinski <kuba@kernel.org>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 57/88] net: wwan: iosm: Fix memory leak in ipc_mux_deinit()
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Helge Deller <deller@gmx.de>
+Subject: [PATCH 5.10 319/451] fbdev: gbefb: fix to use physical address instead of dma address
 Date: Thu, 15 Jan 2026 17:48:40 +0100
-Message-ID: <20260115164148.376540960@linuxfoundation.org>
+Message-ID: <20260115164242.439696485@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,61 +57,58 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zilin Guan <zilin@seu.edu.cn>
+From: Rene Rebe <rene@exactco.de>
 
-[ Upstream commit 92e6e0a87f6860a4710f9494f8c704d498ae60f8 ]
+commit e3f44742bbb10537fe53d83d20dea2a7c167674d upstream.
 
-Commit 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-allocated memory for pp_qlt in ipc_mux_init() but did not free it in
-ipc_mux_deinit(). This results in a memory leak when the driver is
-unloaded.
+While debuggigng why X would not start on mips64 Sgi/O2 I found the
+phys adress being off. Turns out the gbefb passed the internal
+dma_addr as phys. May be broken pre git history. Fix by converting
+dma_to_phys.
 
-Free the allocated memory in ipc_mux_deinit() to fix the leak.
-
-Fixes: 1f52d7b62285 ("net: wwan: iosm: Enable M.2 7360 WWAN card support")
-Co-developed-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Jianhao Xu <jianhao.xu@seu.edu.cn>
-Signed-off-by: Zilin Guan <zilin@seu.edu.cn>
-Reviewed-by: Loic Poulain <loic.poulain@oss.qualcomm.com>
-Link: https://patch.msgid.link/20251230071853.1062223-1-zilin@seu.edu.cn
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: René Rebe <rene@exactco.de>
+Cc: <stable@vger.kernel.org> # v4.0+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wwan/iosm/iosm_ipc_mux.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/video/fbdev/gbefb.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/wwan/iosm/iosm_ipc_mux.c b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-index fc928b298a984..b846889fcb099 100644
---- a/drivers/net/wwan/iosm/iosm_ipc_mux.c
-+++ b/drivers/net/wwan/iosm/iosm_ipc_mux.c
-@@ -456,6 +456,7 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 	struct sk_buff_head *free_list;
- 	union mux_msg mux_msg;
- 	struct sk_buff *skb;
-+	int i;
+--- a/drivers/video/fbdev/gbefb.c
++++ b/drivers/video/fbdev/gbefb.c
+@@ -12,6 +12,7 @@
+ #include <linux/delay.h>
+ #include <linux/platform_device.h>
+ #include <linux/dma-mapping.h>
++#include <linux/dma-direct.h>
+ #include <linux/errno.h>
+ #include <linux/gfp.h>
+ #include <linux/fb.h>
+@@ -65,7 +66,7 @@ struct gbefb_par {
+ static unsigned int gbe_mem_size = CONFIG_FB_GBE_MEM * 1024*1024;
+ static void *gbe_mem;
+ static dma_addr_t gbe_dma_addr;
+-static unsigned long gbe_mem_phys;
++static phys_addr_t gbe_mem_phys;
  
- 	if (!ipc_mux->initialized)
- 		return;
-@@ -479,5 +480,10 @@ void ipc_mux_deinit(struct iosm_mux *ipc_mux)
- 		ipc_mux->channel->dl_pipe.is_open = false;
+ static struct {
+ 	uint16_t *cpu;
+@@ -1189,7 +1190,7 @@ static int gbefb_probe(struct platform_d
+ 			goto out_release_mem_region;
+ 		}
+ 
+-		gbe_mem_phys = (unsigned long) gbe_dma_addr;
++		gbe_mem_phys = dma_to_phys(&p_dev->dev, gbe_dma_addr);
  	}
  
-+	if (ipc_mux->protocol != MUX_LITE) {
-+		for (i = 0; i < IPC_MEM_MUX_IP_SESSION_ENTRIES; i++)
-+			kfree(ipc_mux->ul_adb.pp_qlt[i]);
-+	}
-+
- 	kfree(ipc_mux);
- }
--- 
-2.51.0
-
+ 	par = info->par;
 
 
 
