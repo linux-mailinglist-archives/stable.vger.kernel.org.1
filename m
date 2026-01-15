@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209122-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209510-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 66D1DD2689B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:37:03 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 4024CD2777E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:13 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id D90CB3099944
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:23:27 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id CB13E31162C4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:43 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 19F543A1E86;
-	Thu, 15 Jan 2026 17:23:16 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 452212D94A7;
+	Thu, 15 Jan 2026 17:41:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="jSlE51uF"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="GHadsEk6"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFDFB2D73B4;
-	Thu, 15 Jan 2026 17:23:15 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E849D2D9ECB;
+	Thu, 15 Jan 2026 17:41:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497795; cv=none; b=g3x6e4hJcDYX3jk9K0zCgOkgnX6WQHpXlF5zLMwHGbk3GVRYcJI6IE3feRR0l9NIkCt0FlibUd43a5Dn6hoWBwKPe6uQ6/rkPaToBGn2vFdjp542mfMw2AgsCyHJrdyQn0EYWw/TVWxvC/cVu35CN67CpQzNTcdCqCnSqBRU2uA=
+	t=1768498902; cv=none; b=HI9RCeLHshCaFsqpoA+CdsX+JhKLc1HO0iy9gR21BY77vld/c+l1difSJGnTBqE3BcUKTX4P0V7OOd2SKwqConotHCgGnFCDv3LhtueiyrcrZ9SebnAeHvL5tg/0uXkUTLrelu7JiY67FKr3cE3eKjmIBR0tOXOp0zYZx2t8CZc=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497795; c=relaxed/simple;
-	bh=nuu/xn4mZaKWtStdrtw3nTLLpXYloQdCZ4IvmH+G2sQ=;
+	s=arc-20240116; t=1768498902; c=relaxed/simple;
+	bh=qOx1LIiKtvW5qb7091zDI3CdjRD9I55RX5pMUChATuY=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KCVRCaYUUKsH3Nsmnjb627k46W2bAxQYG4XOKCK8ZXJ+7YvdZc7R27S7UNsASpWtQclxZt+BWIQJtA/Gmxe+rHCOKMKbJTgjwSNN8pXuTnz6k98QA+N35kEb0xubwrIl7UYf+Oas9RY9LaQQN6t7ULPWSnhmF8xCdWt2gdHHWQ8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=jSlE51uF; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FE8AC116D0;
-	Thu, 15 Jan 2026 17:23:15 +0000 (UTC)
+	 MIME-Version; b=CfiBoTSZf5kYb/hn1379chkpb6+pp5fG+C/daqKXCQ/MzAZ/38S/KVxJBVPuX9uOV178c3CvMmLvbVw++R+aWnMO+/lVuygQ7S026peZrEq8Gp3EtaOUSZNnMknRMObiC74iEaT5cMXPXGshtJPWdW1tuPjjoDYj8zZReXVKK5w=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=GHadsEk6; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76E37C116D0;
+	Thu, 15 Jan 2026 17:41:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497795;
-	bh=nuu/xn4mZaKWtStdrtw3nTLLpXYloQdCZ4IvmH+G2sQ=;
+	s=korg; t=1768498901;
+	bh=qOx1LIiKtvW5qb7091zDI3CdjRD9I55RX5pMUChATuY=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=jSlE51uFD2sFC7HFZvHqiqs4vkcsLvrRbaya4FNzcnGN1f9s81p9/mX//6t+/8tlG
-	 deLxqN0zZMRBjO3bQvg+u6h6zVduc5E1wT0VFDO1hnSxRA3Zg8Pi/MimKCIb1CERDc
-	 njftTJWYnFtQJzlexkplQilWzBwHn8lZLUS+bQ3k=
+	b=GHadsEk6O1x9FOmMU7Kg9S9tMIpQB18ntbSqufe862OfKnJV4wc8NNdPUiPLotGO1
+	 7UpquIfvPbVGn/JDS3mWqoSLmr/deq4WI8BAtFcujR6/ZTk2w07pmR3ccO6w6cTFyj
+	 +LwTqK4cS7KhKtL/BVdhYub9TvvZf0Hj3Xd2kJNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Thorsten Blum <thorsten.blum@linux.dev>,
+	Lukas Wunner <lukas@wunner.de>,
+	Herbert Xu <herbert@gondor.apana.org.au>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 173/554] NFSv4: Add some support for case insensitive filesystems
+Subject: [PATCH 5.10 038/451] crypto: asymmetric_keys - prevent overflow in asymmetric_key_generate_id
 Date: Thu, 15 Jan 2026 17:43:59 +0100
-Message-ID: <20260115164252.529343096@linuxfoundation.org>
+Message-ID: <20260115164232.269904863@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,138 +61,64 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@primarydata.com>
+From: Thorsten Blum <thorsten.blum@linux.dev>
 
-[ Upstream commit 1ab5be4ac5b1c9ce39ce1037c45b68d2ce6eede0 ]
+[ Upstream commit df0845cf447ae1556c3440b8b155de0926cbaa56 ]
 
-Add capabilities to allow the NFS client to recognise when it is dealing
-with case insensitive and case preserving filesystems.
+Use check_add_overflow() to guard against potential integer overflows
+when adding the binary blob lengths and the size of an asymmetric_key_id
+structure and return ERR_PTR(-EOVERFLOW) accordingly. This prevents a
+possible buffer overflow when copying data from potentially malicious
+X.509 certificate fields that can be arbitrarily large, such as ASN.1
+INTEGER serial numbers, issuer names, etc.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: 518c32a1bc4f ("NFS: Initialise verifiers for visible dentries in nfs_atomic_open()")
+Fixes: 7901c1a8effb ("KEYS: Implement binary asymmetric key ID handling")
+Signed-off-by: Thorsten Blum <thorsten.blum@linux.dev>
+Reviewed-by: Lukas Wunner <lukas@wunner.de>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs4proc.c         |  8 +++++++-
- fs/nfs/nfs4xdr.c          | 40 +++++++++++++++++++++++++++++++++++++++
- include/linux/nfs_fs_sb.h |  2 ++
- include/linux/nfs_xdr.h   |  2 ++
- 4 files changed, 51 insertions(+), 1 deletion(-)
+ crypto/asymmetric_keys/asymmetric_type.c | 14 ++++++++++----
+ 1 file changed, 10 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 768433688cb2f..883e4106fbcd9 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -3887,7 +3887,9 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
- 		     FATTR4_WORD0_FH_EXPIRE_TYPE |
- 		     FATTR4_WORD0_LINK_SUPPORT |
- 		     FATTR4_WORD0_SYMLINK_SUPPORT |
--		     FATTR4_WORD0_ACLSUPPORT;
-+		     FATTR4_WORD0_ACLSUPPORT |
-+		     FATTR4_WORD0_CASE_INSENSITIVE |
-+		     FATTR4_WORD0_CASE_PRESERVING;
- 	if (minorversion)
- 		bitmask[2] = FATTR4_WORD2_SUPPATTR_EXCLCREAT;
- 
-@@ -3917,6 +3919,10 @@ static int _nfs4_server_capabilities(struct nfs_server *server, struct nfs_fh *f
- 			server->caps |= NFS_CAP_HARDLINKS;
- 		if (res.has_symlinks != 0)
- 			server->caps |= NFS_CAP_SYMLINKS;
-+		if (res.case_insensitive)
-+			server->caps |= NFS_CAP_CASE_INSENSITIVE;
-+		if (res.case_preserving)
-+			server->caps |= NFS_CAP_CASE_PRESERVING;
- #ifdef CONFIG_NFS_V4_SECURITY_LABEL
- 		if (res.attr_bitmask[2] & FATTR4_WORD2_SECURITY_LABEL)
- 			server->caps |= NFS_CAP_SECURITY_LABEL;
-diff --git a/fs/nfs/nfs4xdr.c b/fs/nfs/nfs4xdr.c
-index 0ae9e06a0bba2..0b9fa58dd7cd7 100644
---- a/fs/nfs/nfs4xdr.c
-+++ b/fs/nfs/nfs4xdr.c
-@@ -3530,6 +3530,42 @@ static int decode_attr_aclsupport(struct xdr_stream *xdr, uint32_t *bitmap, uint
- 	return 0;
- }
- 
-+static int decode_attr_case_insensitive(struct xdr_stream *xdr, uint32_t *bitmap, uint32_t *res)
-+{
-+	__be32 *p;
-+
-+	*res = 0;
-+	if (unlikely(bitmap[0] & (FATTR4_WORD0_CASE_INSENSITIVE - 1U)))
-+		return -EIO;
-+	if (likely(bitmap[0] & FATTR4_WORD0_CASE_INSENSITIVE)) {
-+		p = xdr_inline_decode(xdr, 4);
-+		if (unlikely(!p))
-+			return -EIO;
-+		*res = be32_to_cpup(p);
-+		bitmap[0] &= ~FATTR4_WORD0_CASE_INSENSITIVE;
-+	}
-+	dprintk("%s: case_insensitive=%s\n", __func__, *res == 0 ? "false" : "true");
-+	return 0;
-+}
-+
-+static int decode_attr_case_preserving(struct xdr_stream *xdr, uint32_t *bitmap, uint32_t *res)
-+{
-+	__be32 *p;
-+
-+	*res = 0;
-+	if (unlikely(bitmap[0] & (FATTR4_WORD0_CASE_PRESERVING - 1U)))
-+		return -EIO;
-+	if (likely(bitmap[0] & FATTR4_WORD0_CASE_PRESERVING)) {
-+		p = xdr_inline_decode(xdr, 4);
-+		if (unlikely(!p))
-+			return -EIO;
-+		*res = be32_to_cpup(p);
-+		bitmap[0] &= ~FATTR4_WORD0_CASE_PRESERVING;
-+	}
-+	dprintk("%s: case_preserving=%s\n", __func__, *res == 0 ? "false" : "true");
-+	return 0;
-+}
-+
- static int decode_attr_fileid(struct xdr_stream *xdr, uint32_t *bitmap, uint64_t *fileid)
+diff --git a/crypto/asymmetric_keys/asymmetric_type.c b/crypto/asymmetric_keys/asymmetric_type.c
+index 33e77d846caa8..ef0e56642a078 100644
+--- a/crypto/asymmetric_keys/asymmetric_type.c
++++ b/crypto/asymmetric_keys/asymmetric_type.c
+@@ -11,6 +11,7 @@
+ #include <crypto/public_key.h>
+ #include <linux/seq_file.h>
+ #include <linux/module.h>
++#include <linux/overflow.h>
+ #include <linux/slab.h>
+ #include <linux/ctype.h>
+ #include <keys/system_keyring.h>
+@@ -138,12 +139,17 @@ struct asymmetric_key_id *asymmetric_key_generate_id(const void *val_1,
+ 						     size_t len_2)
  {
- 	__be32 *p;
-@@ -4406,6 +4442,10 @@ static int decode_server_caps(struct xdr_stream *xdr, struct nfs4_server_caps_re
- 		goto xdr_error;
- 	if ((status = decode_attr_aclsupport(xdr, bitmap, &res->acl_bitmask)) != 0)
- 		goto xdr_error;
-+	if ((status = decode_attr_case_insensitive(xdr, bitmap, &res->case_insensitive)) != 0)
-+		goto xdr_error;
-+	if ((status = decode_attr_case_preserving(xdr, bitmap, &res->case_preserving)) != 0)
-+		goto xdr_error;
- 	if ((status = decode_attr_exclcreat_supported(xdr, bitmap,
- 				res->exclcreat_bitmask)) != 0)
- 		goto xdr_error;
-diff --git a/include/linux/nfs_fs_sb.h b/include/linux/nfs_fs_sb.h
-index 091fefc5e3615..6b770affcfb2f 100644
---- a/include/linux/nfs_fs_sb.h
-+++ b/include/linux/nfs_fs_sb.h
-@@ -273,6 +273,8 @@ struct nfs_server {
- #define NFS_CAP_ACLS		(1U << 3)
- #define NFS_CAP_ATOMIC_OPEN	(1U << 4)
- #define NFS_CAP_LGOPEN		(1U << 5)
-+#define NFS_CAP_CASE_INSENSITIVE	(1U << 6)
-+#define NFS_CAP_CASE_PRESERVING	(1U << 7)
- #define NFS_CAP_POSIX_LOCK	(1U << 14)
- #define NFS_CAP_UIDGID_NOMAP	(1U << 15)
- #define NFS_CAP_STATEID_NFSV41	(1U << 16)
-diff --git a/include/linux/nfs_xdr.h b/include/linux/nfs_xdr.h
-index 7fcd56c6ded65..7321a5a95087f 100644
---- a/include/linux/nfs_xdr.h
-+++ b/include/linux/nfs_xdr.h
-@@ -1202,6 +1202,8 @@ struct nfs4_server_caps_res {
- 	u32				has_links;
- 	u32				has_symlinks;
- 	u32				fh_expire_type;
-+	u32				case_insensitive;
-+	u32				case_preserving;
- };
- 
- #define NFS4_PATHNAME_MAXCOMPONENTS 512
+ 	struct asymmetric_key_id *kid;
+-
+-	kid = kmalloc(sizeof(struct asymmetric_key_id) + len_1 + len_2,
+-		      GFP_KERNEL);
++	size_t kid_sz;
++	size_t len;
++
++	if (check_add_overflow(len_1, len_2, &len))
++		return ERR_PTR(-EOVERFLOW);
++	if (check_add_overflow(sizeof(struct asymmetric_key_id), len, &kid_sz))
++		return ERR_PTR(-EOVERFLOW);
++	kid = kmalloc(kid_sz, GFP_KERNEL);
+ 	if (!kid)
+ 		return ERR_PTR(-ENOMEM);
+-	kid->len = len_1 + len_2;
++	kid->len = len;
+ 	memcpy(kid->data, val_1, len_1);
+ 	memcpy(kid->data + len_1, val_2, len_2);
+ 	return kid;
 -- 
 2.51.0
 
