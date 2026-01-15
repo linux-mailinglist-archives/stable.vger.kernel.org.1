@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209202-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209624-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 93296D2740C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:14:47 +0100 (CET)
+	by mail.lfdr.de (Postfix) with ESMTPS id 0B69ED26F83
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:20 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id BAF27318847A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:56 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 9C86230B3A71
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A590C3C198F;
-	Thu, 15 Jan 2026 17:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 6D05F3C1967;
+	Thu, 15 Jan 2026 17:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Ezgy13vA"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="r4V858ae"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 4DBC23BFE4F;
-	Thu, 15 Jan 2026 17:27:04 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2C1633BF2EA;
+	Thu, 15 Jan 2026 17:47:06 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498024; cv=none; b=X02aWv5NZqH3XiBptoNEECa9O1caInydMbhGAaz2qrd+0Aiu87c/o/478gsAmeie5rDqEGIMZiqV9ET9ok41tSnU+mo38stiCidHL4un2Ly4+h9rxv6vs6XwI5WDFciqT75hP38mhdf+fNZrSG7HYOLW3MD//LLWC2AKZYPDMiU=
+	t=1768499226; cv=none; b=QAxgJ91ZdE7fwLq33Ft6EoFHSo9MUQq+AiMYjp44uqpvXE4zLPxle/lrTJebzhgZEuNQiKNH/7Xli3NXNFXNQZtNpGBsTzkXzHVUIsRC/WsigBQfOlxtU5APm+CDJxSmxCsY544gvlSCjRZinzEO0pOPqZcK5388hK6EDEhpt6E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498024; c=relaxed/simple;
-	bh=6STqHyUlLRGKtSpYtsRIVNH9QHInNQMPQkIL45J47yY=;
+	s=arc-20240116; t=1768499226; c=relaxed/simple;
+	bh=KtcSZqt6GaGkfuYouRD2yPRKgoS3hR3OJztnMLtGNnA=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=BgW3qOT1J9WvpPUVKtg2ElrZME9ou/CDG+k1yLe2KhT1qZevWjOYD1uhAPbyZqO5dyOacHBrgPm8AYw6do5o17bDiOf8qwznztcFaEMS4L9mbnYrDmCyIWWP5lmI1jRbL9koDiOeVuIHRZomMf9f7Kb7SJEhoxEpA1xDnY0w738=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Ezgy13vA; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9413C116D0;
-	Thu, 15 Jan 2026 17:27:03 +0000 (UTC)
+	 MIME-Version; b=gKTfApSO6z2fhosK5ujtqGD0qqxtJf1CP4a1JLtoMCVLGZru0o6Bd9YApcmsjntFrrX2OKLh47KXPbDZfmfb2AV4qaLq90pnthw9T872KaQikzmLtYR2Hl/b56ae40oooFtEBU/5TIT7mimtxq6x8SlcWTNctPIzQToRgZEt9Ao=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=r4V858ae; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFB5AC19422;
+	Thu, 15 Jan 2026 17:47:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498024;
-	bh=6STqHyUlLRGKtSpYtsRIVNH9QHInNQMPQkIL45J47yY=;
+	s=korg; t=1768499226;
+	bh=KtcSZqt6GaGkfuYouRD2yPRKgoS3hR3OJztnMLtGNnA=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Ezgy13vA+6nahdgQkNBpNcL4RoewVWs4NrlqJH+RKF5StdgTT/JK84QAjtH0ZUzZx
-	 Q7n8+zndyqZ1CHQ0XrDhzI2dSNLLlKnjwBLf8Mw8K7z+xlxmJUNx8GzMxWUYttMOXF
-	 trxvCu8ImerghmZ09mb1jOIa8D8GfDdkW0+zHpxE=
+	b=r4V858aeMuBVy9lsUXELdpqMwMMc2SaRTXNiiJCZktG2TtNXJRXwSojhkPhJgSh9h
+	 x1eQ8/Pt1AmDTDEelvmo8fzrnncOMX7WeQAA12nu1qfQwCm6vNQqDLfjeP9NnIKQIp
+	 6yH57h/qp0wvHx2+l1x7yyACWwTeouYdeUaMdIYo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Byungchul Park <byungchul@sk.com>,
-	Jan Kara <jack@suse.cz>,
-	stable@kernel.org,
-	Theodore Tso <tytso@mit.edu>
-Subject: [PATCH 5.15 287/554] jbd2: use a weaker annotation in journal handling
+	Nicklas Bo Jensen <njensen@akamai.com>,
+	Florian Westphal <fw@strlen.de>,
+	Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 5.10 152/451] netfilter: nf_conncount: garbage collection is not skipped when jiffies wrap around
 Date: Thu, 15 Jan 2026 17:45:53 +0100
-Message-ID: <20260115164256.617971123@linuxfoundation.org>
+Message-ID: <20260115164236.412522445@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,54 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Byungchul Park <byungchul@sk.com>
+From: Nicklas Bo Jensen <njensen@akamai.com>
 
-commit 40a71b53d5a6d4ea17e4d54b99b2ac03a7f5e783 upstream.
+commit df08c94baafb001de6cf44bb7098bb557f36c335 upstream.
 
-jbd2 journal handling code doesn't want jbd2_might_wait_for_commit()
-to be placed between start_this_handle() and stop_this_handle().  So it
-marks the region with rwsem_acquire_read() and rwsem_release().
+nf_conncount is supposed to skip garbage collection if it has already
+run garbage collection in the same jiffy. Unfortunately, this is broken
+when jiffies wrap around which this patch fixes.
 
-However, the annotation is too strong for that purpose.  We don't have
-to use more than try lock annotation for that.
+The problem is that last_gc in the nf_conncount_list struct is an u32,
+but jiffies is an unsigned long which is 8 bytes on my systems. When
+those two are compared it only works until last_gc wraps around.
 
-rwsem_acquire_read() implies:
+See bug report: https://bugzilla.netfilter.org/show_bug.cgi?id=1778
+for more details.
 
-   1. might be a waiter on contention of the lock.
-   2. enter to the critical section of the lock.
-
-All we need in here is to act 2, not 1.  So trylock version of
-annotation is sufficient for that purpose.  Now that dept partially
-relies on lockdep annotaions, dept interpets rwsem_acquire_read() as a
-potential wait and might report a deadlock by the wait.
-
-Replace it with trylock version of annotation.
-
-Signed-off-by: Byungchul Park <byungchul@sk.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Cc: stable@kernel.org
-Message-ID: <20251024073940.1063-1-byungchul@sk.com>
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: d265929930e2 ("netfilter: nf_conncount: reduce unnecessary GC")
+Signed-off-by: Nicklas Bo Jensen <njensen@akamai.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/jbd2/transaction.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/netfilter/nf_conncount.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -461,7 +461,7 @@ repeat:
- 	read_unlock(&journal->j_state_lock);
- 	current->journal_info = handle;
+--- a/net/netfilter/nf_conncount.c
++++ b/net/netfilter/nf_conncount.c
+@@ -182,7 +182,7 @@ static int __nf_conncount_add(struct net
+ 		return -EEXIST;
+ 	}
  
--	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 0, _THIS_IP_);
-+	rwsem_acquire_read(&journal->j_trans_commit_map, 0, 1, _THIS_IP_);
- 	jbd2_journal_free_transaction(new_transaction);
- 	/*
- 	 * Ensure that no allocations done while the transaction is open are
+-	if (time_is_after_eq_jiffies((unsigned long)list->last_gc))
++	if ((u32)jiffies == list->last_gc)
+ 		goto add_new_node;
+ 
+ 	/* check the saved connections */
+@@ -288,7 +288,7 @@ bool nf_conncount_gc_list(struct net *ne
+ 	bool ret = false;
+ 
+ 	/* don't bother if we just did GC */
+-	if (time_is_after_eq_jiffies((unsigned long)READ_ONCE(list->last_gc)))
++	if ((u32)jiffies == READ_ONCE(list->last_gc))
+ 		return false;
+ 
+ 	/* don't bother if other cpu is already doing GC */
 
 
 
