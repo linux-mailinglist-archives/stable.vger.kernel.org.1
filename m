@@ -1,57 +1,54 @@
-Return-Path: <stable+bounces-208847-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209849-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 985BBD26767
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:56 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 479D7D275AE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:20:12 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 0938930C9E4F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:13 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id A3CDC31073AE
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B78A82D781B;
-	Thu, 15 Jan 2026 17:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 016643D3322;
+	Thu, 15 Jan 2026 17:57:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="DpMNSzYD"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BafioQSH"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 6BB1233993;
-	Thu, 15 Jan 2026 17:10:12 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B81803D1CD8;
+	Thu, 15 Jan 2026 17:57:45 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497012; cv=none; b=BEXmkmmPuhTqIy+dYSFqEmpfU6v1o2y8cQaS4Qw7R5p7VwHANNoqMc5vXxtGStZiI0jadOT4nCmgnhaiv1NTMp8UcaydnWeLHf8FzGZAM3574W9R1aj7R4Sc5l6GVn05siu4lYNHOOCPTVfr6K8yUNRGM3Z2sgf/FCYNnBhdEz4=
+	t=1768499865; cv=none; b=K3wkv+BNYI+eQtJt7bQUCMVffPf3d7QRRYgfCK4TcZPcvak+GV8O88sFJAyT7cVJ/w4dOGrHOpkDASYVb4fQgx3gEvZ2mddj6XaCnhZyMmbmTrrMjbvQL8YrzYFD1rtU6ZY998oj870foG/1hgpkrVXb3r/U6oYH5ZWLK/ZsV5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497012; c=relaxed/simple;
-	bh=F2Jm2qZm70peYvr5umZSdqfvjX944/1StPFrovCWzOA=;
+	s=arc-20240116; t=1768499865; c=relaxed/simple;
+	bh=Psrcn1SQeXh1xqMY/HpcZus42dkUn62RS3Y3Jtxdn8o=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Y2ohK7JvaNlR8Ag86HOd+Bbwc/iamCw9jiUi5qfxcqGI5+ezQ3cT3ysJFYoPvjUMKY4I/Lsl/A/tBijIE59ekrs+fpPkoRecjoyMVVTfY7Z+VAqgHMKpQMce/TmzSD9jU1wf5CC9GvbhSfK/iRKI3RvfVvz9V/rFdMZpxsj6ghM=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=DpMNSzYD; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA252C116D0;
-	Thu, 15 Jan 2026 17:10:11 +0000 (UTC)
+	 MIME-Version; b=jhFwISIoaswwAhGe+ef+zWBjEPqmaWgTJ7SvMv+/AcCT6XCiGkcS3y4sKgxc0rFKMyrvBzRYCAFRPSx0X95GV4vuNeai6VqVnH//lq3yt5wTOQdCqwFnTjA8wtu1pYbFNz50vdcbfJhsH/7zuZrbV5OwsYI5MWMBuuNavQnPhNE=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BafioQSH; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43E20C116D0;
+	Thu, 15 Jan 2026 17:57:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497012;
-	bh=F2Jm2qZm70peYvr5umZSdqfvjX944/1StPFrovCWzOA=;
+	s=korg; t=1768499865;
+	bh=Psrcn1SQeXh1xqMY/HpcZus42dkUn62RS3Y3Jtxdn8o=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=DpMNSzYDrtgLvJnLFiOV9+fiiOtBFY7iQ1Go0hXJPBTOxlPrFe/SulTK0Z1shkTSX
-	 h8/xzxF2YN95TnbSCOlkhaQMx15wkLcTPLzESgzo6N5QA8Byc9kmTMvD8RVhwitDUV
-	 All8Dyq9enHtPBt+cWEI7xwuqVykec+6VvR5oFa0=
+	b=BafioQSHGDRnrJNOOy/fyvlGRAReJ3st4xasxGuPgDqe2KxDh8yfLVx098AFUpQm8
+	 rpl5NvDgfkzzw4djbgihV6DJuc5PdNQbzP3FvFuGAAdLuoer+QD77IXeXYVlkBj1Y+
+	 531ox0bomaMuv29xDScyK7GBIG4oxBMpvDwt7aNg=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Swapnil Patel <swapnil.patel@amd.com>,
-	Charlene Liu <Charlene.Liu@amd.com>,
-	Chenyu Chen <chen-yu.chen@amd.com>,
-	Daniel Wheeler <daniel.wheeler@amd.com>,
-	Alex Deucher <alexander.deucher@amd.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 81/88] drm/amd/display: Fix DP no audio issue
+	Peilin Ye <yepeilin.cs@gmail.com>,
+	Daniel Vetter <daniel.vetter@ffwll.ch>,
+	Ben Hutchings <ben@decadent.org.uk>
+Subject: [PATCH 5.10 343/451] parisc/sticore: Avoid hard-coding built-in font charcount
 Date: Thu, 15 Jan 2026 17:49:04 +0100
-Message-ID: <20260115164149.248438626@linuxfoundation.org>
+Message-ID: <20260115164243.302820735@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,54 +60,70 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Charlene Liu <Charlene.Liu@amd.com>
+From: Peilin Ye <yepeilin.cs@gmail.com>
 
-[ Upstream commit 3886b198bd6e49c801fe9552fcfbfc387a49fbbc ]
+commit 4497364e5f61f9e8d4a6252bc6deb9597d68bbac upstream.
 
-[why]
-need to enable APG_CLOCK_ENABLE enable first
-also need to wake up az from D3 before access az block
+sti_select_fbfont() and sti_cook_fonts() are hard-coding the number of
+characters of our built-in fonts as 256. Recently, we included that
+information in our kernel font descriptor `struct font_desc`, so use
+`fbfont->charcount` instead of hard-coded values.
 
-Reviewed-by: Swapnil Patel <swapnil.patel@amd.com>
-Signed-off-by: Charlene Liu <Charlene.Liu@amd.com>
-Signed-off-by: Chenyu Chen <chen-yu.chen@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-(cherry picked from commit bf5e396957acafd46003318965500914d5f4edfa)
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Depends on patch "Fonts: Add charcount field to font_desc".
+
+Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
+Reviewed-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Link: https://patchwork.freedesktop.org/patch/msgid/037186fb50cf3d17bb7bc9482357635b9df6076e.1605169912.git.yepeilin.cs@gmail.com
+Cc: Ben Hutchings <ben@decadent.org.uk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c   | 8 ++++----
+ drivers/video/console/sticore.c |    8 ++++----
  1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-index d389eeb264a79..0172fede51b5b 100644
---- a/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dce110/dce110_hw_sequencer.c
-@@ -1097,13 +1097,13 @@ void dce110_enable_audio_stream(struct pipe_ctx *pipe_ctx)
- 			if (dc->current_state->res_ctx.pipe_ctx[i].stream_res.audio != NULL)
- 				num_audio++;
- 		}
-+		if (num_audio >= 1 && clk_mgr->funcs->enable_pme_wa) {
-+			/*wake AZ from D3 first before access az endpoint*/
-+			clk_mgr->funcs->enable_pme_wa(clk_mgr);
-+		}
+--- a/drivers/video/console/sticore.c
++++ b/drivers/video/console/sticore.c
+@@ -507,7 +507,7 @@ sti_select_fbfont(struct sti_cooked_rom
+ 			fbfont->width, fbfont->height, fbfont->name);
+ 			
+ 	bpc = ((fbfont->width+7)/8) * fbfont->height; 
+-	size = bpc * 256;
++	size = bpc * fbfont->charcount;
+ 	size += sizeof(struct sti_rom_font);
  
- 		pipe_ctx->stream_res.audio->funcs->az_enable(pipe_ctx->stream_res.audio);
+ 	nf = kzalloc(size, STI_LOWMEM);
+@@ -515,7 +515,7 @@ sti_select_fbfont(struct sti_cooked_rom
+ 		return NULL;
  
--		if (num_audio >= 1 && clk_mgr->funcs->enable_pme_wa)
--			/*this is the first audio. apply the PME w/a in order to wake AZ from D3*/
--			clk_mgr->funcs->enable_pme_wa(clk_mgr);
--
- 		link_hwss->enable_audio_packet(pipe_ctx);
+ 	nf->first_char = 0;
+-	nf->last_char = 255;
++	nf->last_char = fbfont->charcount - 1;
+ 	nf->width = fbfont->width;
+ 	nf->height = fbfont->height;
+ 	nf->font_type = STI_FONT_HPROMAN8;
+@@ -526,7 +526,7 @@ sti_select_fbfont(struct sti_cooked_rom
  
- 		if (pipe_ctx->stream_res.audio)
--- 
-2.51.0
-
+ 	dest = nf;
+ 	dest += sizeof(struct sti_rom_font);
+-	memcpy(dest, fbfont->data, bpc*256);
++	memcpy(dest, fbfont->data, bpc * fbfont->charcount);
+ 
+ 	cooked_font = kzalloc(sizeof(*cooked_font), GFP_KERNEL);
+ 	if (!cooked_font) {
+@@ -661,7 +661,7 @@ static int sti_cook_fonts(struct sti_coo
+ void sti_font_convert_bytemode(struct sti_struct *sti, struct sti_cooked_font *f)
+ {
+ 	unsigned char *n, *p, *q;
+-	int size = f->raw->bytes_per_char * 256 + sizeof(struct sti_rom_font);
++	int size = f->raw->bytes_per_char * (f->raw->last_char + 1) + sizeof(struct sti_rom_font);
+ 	struct sti_rom_font *old_font;
+ 
+ 	if (sti->wordmode)
 
 
 
