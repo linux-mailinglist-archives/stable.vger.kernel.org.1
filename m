@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-209814-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208728-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7633FD2771A
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:24:46 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 6ACB1D26321
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:14:41 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 6ACE230679FD
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:04:58 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 3D6A131960E2
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:04:37 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id B7B1F3D6684;
-	Thu, 15 Jan 2026 17:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 154613ACEFE;
+	Thu, 15 Jan 2026 17:04:37 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="NgYKNkhp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="arApJdJ3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 78E4B3D667A;
-	Thu, 15 Jan 2026 17:56:06 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CC51E396B7D;
+	Thu, 15 Jan 2026 17:04:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499766; cv=none; b=PNQXMD+sKUltVnxNWPLUAYaxsou3+sPcLkEUkfo+2YkyOAdrysplxLhUlsysAJtetJsF/3ySLT3xV2pi/sumt0n/BXUqJ19QWnh6iWqvGkDRrB19/5AFdgH2/tQqUo50fLUSo4ZNWpxUnJPUJbddocWHjlD61XCzYfaeLV9rdG0=
+	t=1768496676; cv=none; b=qbnJSq26EiWnjJmGiQxMXbchJL4DBkvZKAH0OuTWMDW1bMyysG/GpTxvOlPkO/eHxoQyMNIN41x66ThIDevSngu+umJyeLcIAtsZPc0Q2nex4BphaanvMLkKxJuttQ9oafnohm+6Mc/q3N7a5sNiUIIUB+hSL2P6CyIK/kuMl2g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499766; c=relaxed/simple;
-	bh=gToUPtLcosQ7D+MLrqo/u1R/qUQtPy8T5np/vDBpxVA=;
+	s=arc-20240116; t=1768496676; c=relaxed/simple;
+	bh=vAo3zPkJm+u9qkzJkqFdw6y+D8JoVwYZECYZ4KwvLX4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Q3r0Wyp/hcMJDMaeZnZ3g1ROmkvjegaNAZRnXhIRZd0DfIL0uZmyigYeT+TBZI/eaNBqls6QLQ0GH8yeeHWg+3ZzX3eOocgMiinnVJChpRG+HHRYl32ulry58o+3Ksyw+e920eDsQHZlr3ULYEocjn5JRjG5VIhVDjPkr2dgJzg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=NgYKNkhp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06CE6C116D0;
-	Thu, 15 Jan 2026 17:56:05 +0000 (UTC)
+	 MIME-Version; b=LqPqM9vmuvW+hhUNBsrhOCUNUb2Y0r93FHuhM5ormtZUJi+kwh5c+TdPyp74VC8/TeyaHLNFaB1Bp3d4q3g2e3rpzJvPA+vOs9eI9BIOyqDmSHeHUTkLW8zRBtGMJuRW2zV4y31XxfzOPqwIytRuYtphrVHJLFRxwksymkSPE1A=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=arApJdJ3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BB59C116D0;
+	Thu, 15 Jan 2026 17:04:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499766;
-	bh=gToUPtLcosQ7D+MLrqo/u1R/qUQtPy8T5np/vDBpxVA=;
+	s=korg; t=1768496676;
+	bh=vAo3zPkJm+u9qkzJkqFdw6y+D8JoVwYZECYZ4KwvLX4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=NgYKNkhpuxBIRHrrpGsIOnje/g8yqWUx4deK07MjP/1iC+i+4VeAlT5M+16SElF9P
-	 WiPHh6BndcnU2XC3+PNlMivKewqW4EU2k5oVNaMZ+nPKexul9y7bPpRLTjPvwq11HR
-	 ZWDP8OPVv4RxscdaAhBBnINBnwPPtVMpmOsOCk9Q=
+	b=arApJdJ3bLFDB0QiJabCibhRkurBrQuWmQcMISYLXU67hcx1M9tBfojDKuy8aJj4j
+	 NcBp7gmnVtRRUXHtjCV4EeTjS7GP1xYVDcwL7Qth3YeJLGNX51UsKLmJia4hOxtN6Q
+	 fmxKZIJD83R1WCq2DijMNyhe49TtY8wZaRYtRxd8=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Lukas Wunner <lukas@wunner.de>,
-	Bjorn Helgaas <bhelgaas@google.com>,
-	"Rafael J. Wysocki (Intel)" <rafael@kernel.org>
-Subject: [PATCH 5.10 309/451] PCI/PM: Reinstate clearing state_saved in legacy and !PM codepaths
+	Qu Wenruo <wqu@suse.com>,
+	Anand Jain <asj@kernel.org>,
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 095/119] btrfs: use variable for end offset in extent_writepage_io()
 Date: Thu, 15 Jan 2026 17:48:30 +0100
-Message-ID: <20260115164242.077635314@linuxfoundation.org>
+Message-ID: <20260115164155.381626858@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,93 +62,76 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lukas Wunner <lukas@wunner.de>
+From: Filipe Manana <fdmanana@suse.com>
 
-commit 894f475f88e06c0f352c829849560790dbdedbe5 upstream.
+[ Upstream commit 46a23908598f4b8e61483f04ea9f471b2affc58a ]
 
-When a PCI device is suspended, it is normally the PCI core's job to save
-Config Space and put the device into a low power state.  However drivers
-are allowed to assume these responsibilities.  When they do, the PCI core
-can tell by looking at the state_saved flag in struct pci_dev:  The flag
-is cleared before commencing the suspend sequence and it is set when
-pci_save_state() is called.  If the PCI core finds the flag set late in
-the suspend sequence, it refrains from calling pci_save_state() itself.
+Instead of repeating the expression "start + len" multiple times, store it
+in a variable and use it where needed.
 
-But there are two corner cases where the PCI core neglects to clear the
-flag before commencing the suspend sequence:
-
-* If a driver has legacy PCI PM callbacks, pci_legacy_suspend() neglects
-  to clear the flag.  The (stale) flag is subsequently queried by
-  pci_legacy_suspend() itself and pci_legacy_suspend_late().
-
-* If a device has no driver or its driver has no PCI PM callbacks,
-  pci_pm_freeze() neglects to clear the flag.  The (stale) flag is
-  subsequently queried by pci_pm_freeze_noirq().
-
-The flag may be set prior to suspend if the device went through error
-recovery:  Drivers commonly invoke pci_restore_state() + pci_save_state()
-to restore Config Space after reset.
-
-The flag may also be set if drivers call pci_save_state() on probe to
-allow for recovery from subsequent errors.
-
-The result is that pci_legacy_suspend_late() and pci_pm_freeze_noirq()
-don't call pci_save_state() and so the state that will be restored on
-resume is the one recorded on last error recovery or on probe, not the one
-that the device had on suspend.  If the two states happen to be identical,
-there's no problem.
-
-Reinstate clearing the flag in pci_legacy_suspend() and pci_pm_freeze().
-The two functions used to do that until commit 4b77b0a2ba27 ("PCI: Clear
-saved_state after the state has been restored") deemed it unnecessary
-because it assumed that it's sufficient to clear the flag on resume in
-pci_restore_state().  The commit seemingly did not take into account that
-pci_save_state() and pci_restore_state() are not only used by power
-management code, but also for error recovery.
-
-Devices without driver or whose driver has no PCI PM callbacks may be in
-runtime suspend when pci_pm_freeze() is called.  Their state has already
-been saved, so don't clear the flag to skip a pointless pci_save_state()
-in pci_pm_freeze_noirq().
-
-None of the drivers with legacy PCI PM callbacks seem to use runtime PM,
-so clear the flag unconditionally in their case.
-
-Fixes: 4b77b0a2ba27 ("PCI: Clear saved_state after the state has been restored")
-Signed-off-by: Lukas Wunner <lukas@wunner.de>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Rafael J. Wysocki (Intel) <rafael@kernel.org>
-Cc: stable@vger.kernel.org # v2.6.32+
-Link: https://patch.msgid.link/094f2aad64418710daf0940112abe5a0afdc6bce.1763483367.git.lukas@wunner.de
+Reviewed-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: Anand Jain <asj@kernel.org>
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Stable-dep-of: e9e3b22ddfa7 ("btrfs: fix beyond-EOF write handling")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/pci-driver.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/btrfs/extent_io.c |   10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/drivers/pci/pci-driver.c
-+++ b/drivers/pci/pci-driver.c
-@@ -584,6 +584,8 @@ static int pci_legacy_suspend(struct dev
- 	struct pci_dev *pci_dev = to_pci_dev(dev);
- 	struct pci_driver *drv = pci_dev->driver;
+--- a/fs/btrfs/extent_io.c
++++ b/fs/btrfs/extent_io.c
+@@ -1498,6 +1498,7 @@ static noinline_for_stack int extent_wri
+ 	unsigned long range_bitmap = 0;
+ 	bool submitted_io = false;
+ 	int found_error = 0;
++	const u64 end = start + len;
+ 	const u64 folio_start = folio_pos(folio);
+ 	const u64 folio_end = folio_start + folio_size(folio);
+ 	const unsigned int blocks_per_folio = btrfs_blocks_per_folio(fs_info, folio);
+@@ -1505,7 +1506,7 @@ static noinline_for_stack int extent_wri
+ 	int bit;
+ 	int ret = 0;
  
-+	pci_dev->state_saved = false;
-+
- 	if (drv && drv->suspend) {
- 		pci_power_t prev = pci_dev->current_state;
- 		int error;
-@@ -985,6 +987,8 @@ static int pci_pm_freeze(struct device *
+-	ASSERT(start >= folio_start && start + len <= folio_end);
++	ASSERT(start >= folio_start && end <= folio_end);
  
- 	if (!pm) {
- 		pci_pm_default_suspend(pci_dev);
-+		if (!pm_runtime_suspended(dev))
-+			pci_dev->state_saved = false;
- 		return 0;
+ 	ret = btrfs_writepage_cow_fixup(folio);
+ 	if (ret) {
+@@ -1515,7 +1516,7 @@ static noinline_for_stack int extent_wri
+ 		return 1;
  	}
  
+-	for (cur = start; cur < start + len; cur += fs_info->sectorsize)
++	for (cur = start; cur < end; cur += fs_info->sectorsize)
+ 		set_bit((cur - folio_start) >> fs_info->sectorsize_bits, &range_bitmap);
+ 	bitmap_and(&bio_ctrl->submit_bitmap, &bio_ctrl->submit_bitmap, &range_bitmap,
+ 		   blocks_per_folio);
+@@ -1544,7 +1545,7 @@ static noinline_for_stack int extent_wri
+ 			btrfs_put_ordered_extent(ordered);
+ 
+ 			btrfs_mark_ordered_io_finished(inode, folio, cur,
+-						       start + len - cur, true);
++						       end - cur, true);
+ 			/*
+ 			 * This range is beyond i_size, thus we don't need to
+ 			 * bother writing back.
+@@ -1553,8 +1554,7 @@ static noinline_for_stack int extent_wri
+ 			 * writeback the sectors with subpage dirty bits,
+ 			 * causing writeback without ordered extent.
+ 			 */
+-			btrfs_folio_clear_dirty(fs_info, folio, cur,
+-						start + len - cur);
++			btrfs_folio_clear_dirty(fs_info, folio, cur, end - cur);
+ 			break;
+ 		}
+ 		ret = submit_one_sector(inode, folio, cur, bio_ctrl, i_size);
 
 
 
