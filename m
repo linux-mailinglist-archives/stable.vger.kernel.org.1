@@ -1,52 +1,53 @@
-Return-Path: <stable+bounces-208938-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208982-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7D5AAD26508
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:22:05 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 19F0CD265D5
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:26:02 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 06124303CA30
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:15:28 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id A253531757EF
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:17:06 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id CDBA63C1972;
-	Thu, 15 Jan 2026 17:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 31F1E3BFE37;
+	Thu, 15 Jan 2026 17:16:39 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="o+v/t4Xr"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Cn9ckpCi"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 90F583BF303;
-	Thu, 15 Jan 2026 17:14:32 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E80153BC4F2;
+	Thu, 15 Jan 2026 17:16:38 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497272; cv=none; b=X6jsJfuRYndxZZ7DfOzU6W3AJ1BsK52vbegeANcpdV4yZyoAHrVPmw7h3rwJiXd4cOucTVnkSfUw6jedCSkUCw2UeQdNg8NyY5l+y2K05AFV3+V7dI9ae65VnIwrr8WVDMXZ8xLIWEGONjJY1F8cQJFfAERSQbgNcnstRDHu8Sg=
+	t=1768497399; cv=none; b=La3a/h5g7zjn2OO5ssgU0kNqb82N1eWqYMtP1Yp6OEqw7W+3CMLX5cjlQZ8hYpckkRWvC6DPI5dE6fwWxI2oZtZEC50saHxYNyrVxD0QVFh3I4Bc/PBDMlnIQsxDkIA9am0zOnWIDxbFD9SF7HrKpbkXcO2IfBO4Jgylr1Tc8+E=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497272; c=relaxed/simple;
-	bh=7TPGz3hvy/vQ1AZjhIShFKQB6N+7jI9le4Q1swbkV2c=;
+	s=arc-20240116; t=1768497399; c=relaxed/simple;
+	bh=Ce3/7tilmOaGB17pcXEu9G2Czo6i28AD00r4F9npUZ8=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=oJdRHSbmmwWa+v0pbr4me6HXdtdwdOPCOECObgzcEwNsgn9rha7jzrzKPy6QmVg9A7G7FGM2mt6XQlBccBvxuKggjKkAMsX5xZlBKOWNdoGZ5ewt80gsNp2ukQiddGTan8pat59bmITY+dM/VIok85zjqa4rGKXrsojhbPGVBFs=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=o+v/t4Xr; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C134C19422;
-	Thu, 15 Jan 2026 17:14:31 +0000 (UTC)
+	 MIME-Version; b=jPnDh/OPdZOqCNjDA5iq3J0P0kNy7eBq5ovw7XDkMLoxgAjbYF19uZzyanXc8vsXUZ4hwlpyC2KZO4iH32WKslYZ24CjoVuSsT29gqHXOlRsDVPnKtkk2M6RyfsVYw9cjCGgSYYmYt2l6gcHUjKT7ZLTN5dPtP9ES8z/VgJVtbw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Cn9ckpCi; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70F59C116D0;
+	Thu, 15 Jan 2026 17:16:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497272;
-	bh=7TPGz3hvy/vQ1AZjhIShFKQB6N+7jI9le4Q1swbkV2c=;
+	s=korg; t=1768497398;
+	bh=Ce3/7tilmOaGB17pcXEu9G2Czo6i28AD00r4F9npUZ8=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=o+v/t4XrFA4lVhgpWdIvexOsttIVU5W0bT2UTEo1mJA961s6ALJsSLdIIY2u7gGB9
-	 jD0rCfNb+3rXemjYfOdSzwVhKi5gbHNvazs35ggoKxHURTzd2BEirpxMX1mMLYCK3B
-	 HMKDSpBpmxDfeJI+DViEIFEmLj+rDaewiEV7TaQw=
+	b=Cn9ckpCiFqik3Gjr11Zc/Cp+QAd9zVH4MxHoLt2wqiBu6Drt0qmGbepq33vcIBW3H
+	 5hpw9axBF0u11D7FWqjo4KBmsmHS6IHpcOufoZJpIC0HZcbQexxVZA5zhHC+tHEpji
+	 3uf//DXOCHUTRIl4mioki+CNDznX3nu7WiXSYraA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Carlos Song <carlos.song@nxp.com>,
-	Robin Gong <yibin.gong@nxp.com>,
-	Mark Brown <broonie@kernel.org>,
+	syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com,
+	Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>,
+	Tigran Aivazian <aivazian.tigran@gmail.com>,
+	Christian Brauner <brauner@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 023/554] spi: imx: keep dma request disabled before dma transfer setup
-Date: Thu, 15 Jan 2026 17:41:29 +0100
-Message-ID: <20260115164247.080105873@linuxfoundation.org>
+Subject: [PATCH 5.15 024/554] bfs: Reconstruct file type when loading from disk
+Date: Thu, 15 Jan 2026 17:41:30 +0100
+Message-ID: <20260115164247.115490580@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
 In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
 References: <20260115164246.225995385@linuxfoundation.org>
@@ -65,67 +66,71 @@ Content-Transfer-Encoding: 8bit
 
 ------------------
 
-From: Robin Gong <yibin.gong@nxp.com>
+From: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
 
-[ Upstream commit 86d57d9c07d54e8cb385ffe800930816ccdba0c1 ]
+[ Upstream commit 34ab4c75588c07cca12884f2bf6b0347c7a13872 ]
 
-Since sdma hardware configure postpone to transfer phase, have to disable
-dma request before dma transfer setup because there is a hardware
-limitation on sdma event enable(ENBLn) as below:
+syzbot is reporting that S_IFMT bits of inode->i_mode can become bogus when
+the S_IFMT bits of the 32bits "mode" field loaded from disk are corrupted
+or when the 32bits "attributes" field loaded from disk are corrupted.
 
-"It is thus essential for the Arm platform to program them before any DMA
- request is triggered to the SDMA, otherwise an unpredictable combination
- of channels may be started."
+A documentation says that BFS uses only lower 9 bits of the "mode" field.
+But I can't find an explicit explanation that the unused upper 23 bits
+(especially, the S_IFMT bits) are initialized with 0.
 
-Signed-off-by: Carlos Song <carlos.song@nxp.com>
-Signed-off-by: Robin Gong <yibin.gong@nxp.com>
-Link: https://patch.msgid.link/20251024055320.408482-1-carlos.song@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Therefore, ignore the S_IFMT bits of the "mode" field loaded from disk.
+Also, verify that the value of the "attributes" field loaded from disk is
+either BFS_VREG or BFS_VDIR (because BFS supports only regular files and
+the root directory).
+
+Reported-by: syzbot+895c23f6917da440ed0d@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=895c23f6917da440ed0d
+Signed-off-by: Tetsuo Handa <penguin-kernel@I-love.SAKURA.ne.jp>
+Link: https://patch.msgid.link/fabce673-d5b9-4038-8287-0fd65d80203b@I-love.SAKURA.ne.jp
+Reviewed-by: Tigran Aivazian <aivazian.tigran@gmail.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/spi/spi-imx.c | 15 +++++++++++----
- 1 file changed, 11 insertions(+), 4 deletions(-)
+ fs/bfs/inode.c | 19 ++++++++++++++++++-
+ 1 file changed, 18 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/spi/spi-imx.c b/drivers/spi/spi-imx.c
-index f22b867b8c8a9..bcc31951a9925 100644
---- a/drivers/spi/spi-imx.c
-+++ b/drivers/spi/spi-imx.c
-@@ -498,9 +498,15 @@ static void mx51_ecspi_trigger(struct spi_imx_data *spi_imx)
- {
- 	u32 reg;
+diff --git a/fs/bfs/inode.c b/fs/bfs/inode.c
+index fd691e4815c56..fa4e002925852 100644
+--- a/fs/bfs/inode.c
++++ b/fs/bfs/inode.c
+@@ -60,7 +60,19 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
+ 	off = (ino - BFS_ROOT_INO) % BFS_INODES_PER_BLOCK;
+ 	di = (struct bfs_inode *)bh->b_data + off;
  
--	reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
--	reg |= MX51_ECSPI_CTRL_XCH;
--	writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
-+	if (spi_imx->usedma) {
-+		reg = readl(spi_imx->base + MX51_ECSPI_DMA);
-+		reg |= MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN;
-+		writel(reg, spi_imx->base + MX51_ECSPI_DMA);
+-	inode->i_mode = 0x0000FFFF & le32_to_cpu(di->i_mode);
++	/*
++	 * https://martin.hinner.info/fs/bfs/bfs-structure.html explains that
++	 * BFS in SCO UnixWare environment used only lower 9 bits of di->i_mode
++	 * value. This means that, although bfs_write_inode() saves whole
++	 * inode->i_mode bits (which include S_IFMT bits and S_IS{UID,GID,VTX}
++	 * bits), middle 7 bits of di->i_mode value can be garbage when these
++	 * bits were not saved by bfs_write_inode().
++	 * Since we can't tell whether middle 7 bits are garbage, use only
++	 * lower 12 bits (i.e. tolerate S_IS{UID,GID,VTX} bits possibly being
++	 * garbage) and reconstruct S_IFMT bits for Linux environment from
++	 * di->i_vtype value.
++	 */
++	inode->i_mode = 0x00000FFF & le32_to_cpu(di->i_mode);
+ 	if (le32_to_cpu(di->i_vtype) == BFS_VDIR) {
+ 		inode->i_mode |= S_IFDIR;
+ 		inode->i_op = &bfs_dir_inops;
+@@ -70,6 +82,11 @@ struct inode *bfs_iget(struct super_block *sb, unsigned long ino)
+ 		inode->i_op = &bfs_file_inops;
+ 		inode->i_fop = &bfs_file_operations;
+ 		inode->i_mapping->a_ops = &bfs_aops;
 +	} else {
-+		reg = readl(spi_imx->base + MX51_ECSPI_CTRL);
-+		reg |= MX51_ECSPI_CTRL_XCH;
-+		writel(reg, spi_imx->base + MX51_ECSPI_CTRL);
-+	}
- }
++		brelse(bh);
++		printf("Unknown vtype=%u %s:%08lx\n",
++		       le32_to_cpu(di->i_vtype), inode->i_sb->s_id, ino);
++		goto error;
+ 	}
  
- static void mx51_disable_dma(struct spi_imx_data *spi_imx)
-@@ -665,7 +671,6 @@ static void mx51_setup_wml(struct spi_imx_data *spi_imx)
- 	writel(MX51_ECSPI_DMA_RX_WML(spi_imx->wml - 1) |
- 		MX51_ECSPI_DMA_TX_WML(tx_wml) |
- 		MX51_ECSPI_DMA_RXT_WML(spi_imx->wml) |
--		MX51_ECSPI_DMA_TEDEN | MX51_ECSPI_DMA_RXDEN |
- 		MX51_ECSPI_DMA_RXTDEN, spi_imx->base + MX51_ECSPI_DMA);
- }
- 
-@@ -1422,6 +1427,8 @@ static int spi_imx_dma_transfer(struct spi_imx_data *spi_imx,
- 	reinit_completion(&spi_imx->dma_tx_completion);
- 	dma_async_issue_pending(master->dma_tx);
- 
-+	spi_imx->devtype_data->trigger(spi_imx);
-+
- 	transfer_timeout = spi_imx_calculate_timeout(spi_imx, transfer->len);
- 
- 	/* Wait SDMA to finish the data transfer.*/
+ 	BFS_I(inode)->i_sblock =  le32_to_cpu(di->i_sblock);
 -- 
 2.51.0
 
