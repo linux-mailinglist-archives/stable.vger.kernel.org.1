@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209203-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209626-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 69080D26B96
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:47:23 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 75A45D26F90
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:58:28 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id C9DEA316EDB4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:57 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7C1C7333F038
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:47:45 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 605F73C197D;
-	Thu, 15 Jan 2026 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1B8D03BF30C;
+	Thu, 15 Jan 2026 17:47:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aCUC8VSl"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oUMKGZ+Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 233683C008E;
-	Thu, 15 Jan 2026 17:27:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D371B3BFE20;
+	Thu, 15 Jan 2026 17:47:11 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498027; cv=none; b=QiglLoAEGbQHTPb4BK8i2VWSnPgnBnzJyHJhfZ8iXsWsfesxrLNBAYLDuHCus1G/1zXl7B0NU4B+nhNyiBvczIH+EY7o2B6GWOiultMkEv5TdLmk3edNsU6wKOsYx/fNUIrd0S8HB+dZMbwyoP9Ezfy4gA4j5XiR8R0nS6gmjmU=
+	t=1768499231; cv=none; b=rl5yR/2tsxNXnJfT1hWHK8rvJ7lVjoUdgou40TS74VRETZkdcHcn5m/6TV5Xn/bemhaL2APM1a2MocBXgcCEqK4NdHEDlOlqoAqToRPsb9AMnri3NC8RRidvUFsOPkc38Puq8CS5HJwp8Q6umSbA7r6ixvYcQb9YieAf7V7mhk0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498027; c=relaxed/simple;
-	bh=h3ZVyySazTKFlfUqisdUKxhZes3hzsckwqIpomhVfIM=;
+	s=arc-20240116; t=1768499231; c=relaxed/simple;
+	bh=gPR8SqMGkvG2pmo+BUC2b6jsGblITIfHHkA/06niQDg=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=IqGJhPnxY3XV5yvJltvjM0FLqyEXA4hlWaHUQQW8tCRy6mvR7NA7qAVH2411verkpeXuGzZLwrvH5FlmD8ha1CBmxGtbutIgrNEB85ty1/9kLS4mvIsOjV1wFEDDNaDC8yiHJ2H2q0Kiv1N2lZJn/Uz3zgyOmGlRjBY0/eOb5JU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aCUC8VSl; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A16B9C19423;
-	Thu, 15 Jan 2026 17:27:06 +0000 (UTC)
+	 MIME-Version; b=e8UNxkfErEvTNbxhefLnaqIW1QAyOzKyr+Z+xmqU/xX34jclSoL2+3e8+W0cZ//61Rn6R2T5IirnBAkmMwVe9E32phnBrIzfNC2/4UNFs4CdGIWrTLf5QPJA0wsljt+DAl5T7iroToBw3YsRdeBs8J4hAJJMQ5lLP5cVSBMJcXk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oUMKGZ+Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 607F2C116D0;
+	Thu, 15 Jan 2026 17:47:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498027;
-	bh=h3ZVyySazTKFlfUqisdUKxhZes3hzsckwqIpomhVfIM=;
+	s=korg; t=1768499231;
+	bh=gPR8SqMGkvG2pmo+BUC2b6jsGblITIfHHkA/06niQDg=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=aCUC8VSlRM28b8oSLpZMdrRYgiflVUdgTUz5HHZaMbn1NqHidRsmRrwXpqG7e+ln7
-	 m2jlheAmuHzWoxNJPKE7hdmxseteovwMT2uNbeaihq8P+L3pla1t9aij4vQYEQsI7F
-	 +hARPWZQ3Qa/oqKPsfk9foU3KXla2OD1tyqQQF3Q=
+	b=oUMKGZ+ZzUW3CWLO5E9C6g6np947HJ3EWuA3irU1V9U6m5FylbNjrTKagJK0whZ/g
+	 ONbtiNigg32okKogujDxuxhDMGdyzVDXRkcnsOdoZBe/kY1aqLxax5Hm+EFQrtt0MN
+	 PaQmaoOJxnBRpq11RdRyxd2sxpD1jFGp6sAxoi8k=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.15 288/554] media: v4l2-mem2mem: Fix outdated documentation
+	kernel test robot <lkp@intel.com>,
+	Alexandre Belloni <alexandre.belloni@bootlin.com>,
+	Jamie Iles <quic_jiles@quicinc.com>
+Subject: [PATCH 5.10 153/451] i3c: fix uninitialized variable use in i2c setup
 Date: Thu, 15 Jan 2026 17:45:54 +0100
-Message-ID: <20260115164256.653126370@linuxfoundation.org>
+Message-ID: <20260115164236.448671789@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,42 +60,50 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+From: Jamie Iles <quic_jiles@quicinc.com>
 
-commit 082b86919b7a94de01d849021b4da820a6cb89dc upstream.
+commit 6cbf8b38dfe3aabe330f2c356949bc4d6a1f034f upstream.
 
-Commit cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in
-v4l2_m2m_job_finish") deferred calls to .device_run() to a work queue to
-avoid recursive calls when a job is finished right away from
-.device_run(). It failed to update the v4l2_m2m_job_finish()
-documentation that still states the function must not be called from
-.device_run(). Fix it.
+Commit 31b9887c7258 ("i3c: remove i2c board info from i2c_dev_desc")
+removed the boardinfo from i2c_dev_desc to decouple device enumeration from
+setup but did not correctly lookup the i2c_dev_desc to store the new
+device, instead dereferencing an uninitialized variable.
 
-Fixes: cbd9463da1b1 ("media: v4l2-mem2mem: Avoid calling .device_run in v4l2_m2m_job_finish")
-Cc: stable@vger.kernel.org
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
+Lookup the device that has already been registered by address to store
+the i2c client device.
+
+Fixes: 31b9887c7258 ("i3c: remove i2c board info from i2c_dev_desc")
+Reported-by: kernel test robot <lkp@intel.com>
+Cc: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Signed-off-by: Jamie Iles <quic_jiles@quicinc.com>
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Link: https://lore.kernel.org/r/20220308134226.1042367-1-quic_jiles@quicinc.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/media/v4l2-mem2mem.h |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i3c/master.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/include/media/v4l2-mem2mem.h
-+++ b/include/media/v4l2-mem2mem.h
-@@ -185,8 +185,7 @@ void v4l2_m2m_try_schedule(struct v4l2_m
-  * other instances to take control of the device.
-  *
-  * This function has to be called only after &v4l2_m2m_ops->device_run
-- * callback has been called on the driver. To prevent recursion, it should
-- * not be called directly from the &v4l2_m2m_ops->device_run callback though.
-+ * callback has been called on the driver.
-  */
- void v4l2_m2m_job_finish(struct v4l2_m2m_dev *m2m_dev,
- 			 struct v4l2_m2m_ctx *m2m_ctx);
+--- a/drivers/i3c/master.c
++++ b/drivers/i3c/master.c
+@@ -2364,8 +2364,13 @@ static int i3c_master_i2c_adapter_init(s
+ 	 * We silently ignore failures here. The bus should keep working
+ 	 * correctly even if one or more i2c devices are not registered.
+ 	 */
+-	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node)
++	list_for_each_entry(i2cboardinfo, &master->boardinfo.i2c, node) {
++		i2cdev = i3c_master_find_i2c_dev_by_addr(master,
++							 i2cboardinfo->base.addr);
++		if (WARN_ON(!i2cdev))
++			continue;
+ 		i2cdev->dev = i2c_new_client_device(adap, &i2cboardinfo->base);
++	}
+ 
+ 	return 0;
+ }
 
 
 
