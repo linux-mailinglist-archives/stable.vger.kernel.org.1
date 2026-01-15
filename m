@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-208874-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208813-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 519EDD267B7
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:06 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAB87D266FC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:32 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 13A5631117A0
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:41 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 7360A3181AC4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:39 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD22FDC4D;
-	Thu, 15 Jan 2026 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 963213BF2EF;
+	Thu, 15 Jan 2026 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A67HQDXb"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Z6Tb5JEl"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DE12820C6;
-	Thu, 15 Jan 2026 17:11:29 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 59EE93BF2E8;
+	Thu, 15 Jan 2026 17:08:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497089; cv=none; b=RUv6mtPeNDiDsDLcsPpsTzFJzmYs089W4szrigmQBXMSnF0Mo3xj7begvpKe0gf0GfXq4bYcVcSAdwMxkR0MJKuClBW9JsfS1Fo+iKx0ABMkTJdBpQbpDtpkoQ0yoNaj9jaOpgeaYMXkB+/mCnuDFvqHFTvwcryxHKRo3cW0Cwo=
+	t=1768496915; cv=none; b=BRmPIdErk621XILbqkPpwo7psgj580MQAjFSuLD8StCp0HZ6p5y7KLQErWXjXg8e4gy+xk8TCk/R+TSCR3tU/JXHfyOsr7mwUfooXgGEzNAnGNGRb04BDJ9lr5KMgKOjIGKqQ7KaxDo0fk+0z+S5eOJn3mfr0A7lHs8krpjrveA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497089; c=relaxed/simple;
-	bh=q2dTxU3RXkJkvTGB7WtQVT9tKsMwUOU0mc5ILhvjo64=;
+	s=arc-20240116; t=1768496915; c=relaxed/simple;
+	bh=hq+bYEq0Lup/xFCawF4+2SDhjCDFmsKqniGJ6vSyFRk=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=KKIntY73wGNHiBJa8iAT6ISOox92nrr41xgN6YFdYJpBe0F9rZwM8cSw/sLG17CWWpB9IBUirDxDmHPy8Ssdh6xkSqMffKP8Up+OSf4QbPktzjBSRcRwwErHUqSEpqOUiwltiHPOrhz8n8OJS/FvJYpJRiKA9D1gcW/7hi3J2go=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A67HQDXb; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD188C116D0;
-	Thu, 15 Jan 2026 17:11:28 +0000 (UTC)
+	 MIME-Version:Content-Type; b=gChcwQSFlDhNVtiAFLwDv9v0KJ+CxIAwYnbFHo1MwChXLqW2k5S8CKFbmuW2h3Ml3by/ub5VkMH3xuPg5wEqFgeaSj6VriNVg1zTSfruJmKun1suaZlCjhWj1cfpsxgnAZt9XOnQMKH+jBc+B1qrrkGfYQWDfdOrd9921LiOwpY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Z6Tb5JEl; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA9A4C19423;
+	Thu, 15 Jan 2026 17:08:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497089;
-	bh=q2dTxU3RXkJkvTGB7WtQVT9tKsMwUOU0mc5ILhvjo64=;
+	s=korg; t=1768496915;
+	bh=hq+bYEq0Lup/xFCawF4+2SDhjCDFmsKqniGJ6vSyFRk=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=A67HQDXbcRhx7SsYkaofuPnHTkoXuF0rVYaQR23ys1ztzyJMocW4XzuxiX5txpI4I
-	 4zkjfWs1NTF36rIB29jLGkL5YU1Kvo9SzS3Uj4j7m9uvgUQtMo/P9JQDPP/zvLng05
-	 MQv0XUpfNTVv1Z8T+PXuEbmtNBmbzXUtRX1waX64=
+	b=Z6Tb5JElAcX2e/K3UTuoSP3GeKx/bE63RlmnY30vmj4D7ierPAKEpHrYy5ImgzLN7
+	 AoZVvgQezpHkzBWFiSaaO+6Ef0TmgBxBXkVqQaW4c+WJe5L5NGIPvIhGxwtticNfKx
+	 WPo08bm2Q+t8VfIVTKwosJlL0VP1+kqc6Ktyt45c=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Fernando Fernandez Mancera <fmancera@suse.de>,
-	Florian Westphal <fw@strlen.de>,
+	=?UTF-8?q?Ren=C3=A9=20Rebe?= <rene@exactco.de>,
+	Jiri Kosina <jkosina@suse.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 33/72] netfilter: nft_synproxy: avoid possible data-race on update operation
+Subject: [PATCH 6.6 60/88] HID: quirks: work around VID/PID conflict for appledisplay
 Date: Thu, 15 Jan 2026 17:48:43 +0100
-Message-ID: <20260115164144.695739060@linuxfoundation.org>
+Message-ID: <20260115164148.485667842@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,59 +58,49 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fernando Fernandez Mancera <fmancera@suse.de>
+From: René Rebe <rene@exactco.de>
 
-[ Upstream commit 36a3200575642846a96436d503d46544533bb943 ]
+[ Upstream commit c7fabe4ad9219866c203164a214c474c95b36bf2 ]
 
-During nft_synproxy eval we are reading nf_synproxy_info struct which
-can be modified on update operation concurrently. As nf_synproxy_info
-struct fits in 32 bits, use READ_ONCE/WRITE_ONCE annotations.
+For years I wondered why the Apple Cinema Display driver would not
+just work for me. Turns out the hidraw driver instantly takes it
+over. Fix by adding appledisplay VID/PIDs to hid_have_special_driver.
 
-Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
-Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Fixes: 069e8a65cd79 ("Driver for Apple Cinema Display")
+Signed-off-by: René Rebe <rene@exactco.de>
+Signed-off-by: Jiri Kosina <jkosina@suse.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_synproxy.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/hid/hid-quirks.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
-index a450f28a5ef60..0cc638553aef2 100644
---- a/net/netfilter/nft_synproxy.c
-+++ b/net/netfilter/nft_synproxy.c
-@@ -48,7 +48,7 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
- 				 struct tcphdr *_tcph,
- 				 struct synproxy_options *opts)
- {
--	struct nf_synproxy_info info = priv->info;
-+	struct nf_synproxy_info info = READ_ONCE(priv->info);
- 	struct net *net = nft_net(pkt);
- 	struct synproxy_net *snet = synproxy_pernet(net);
- 	struct sk_buff *skb = pkt->skb;
-@@ -79,7 +79,7 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
- 				 struct tcphdr *_tcph,
- 				 struct synproxy_options *opts)
- {
--	struct nf_synproxy_info info = priv->info;
-+	struct nf_synproxy_info info = READ_ONCE(priv->info);
- 	struct net *net = nft_net(pkt);
- 	struct synproxy_net *snet = synproxy_pernet(net);
- 	struct sk_buff *skb = pkt->skb;
-@@ -340,7 +340,7 @@ static void nft_synproxy_obj_update(struct nft_object *obj,
- 	struct nft_synproxy *newpriv = nft_obj_data(newobj);
- 	struct nft_synproxy *priv = nft_obj_data(obj);
- 
--	priv->info = newpriv->info;
-+	WRITE_ONCE(priv->info, newpriv->info);
- }
- 
- static struct nft_object_type nft_synproxy_obj_type;
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 2da21415e676c..192b8f63baaab 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -232,6 +232,15 @@ static const struct hid_device_id hid_quirks[] = {
+  * used as a driver. See hid_scan_report().
+  */
+ static const struct hid_device_id hid_have_special_driver[] = {
++#if IS_ENABLED(CONFIG_APPLEDISPLAY)
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9218) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9219) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921c) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x921d) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9222) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9226) },
++	{ HID_USB_DEVICE(USB_VENDOR_ID_APPLE, 0x9236) },
++#endif
+ #if IS_ENABLED(CONFIG_HID_A4TECH)
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_WCP32PU) },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_A4TECH, USB_DEVICE_ID_A4TECH_X5_005D) },
 -- 
 2.51.0
 
