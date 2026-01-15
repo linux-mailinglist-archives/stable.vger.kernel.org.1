@@ -1,54 +1,53 @@
-Return-Path: <stable+bounces-208783-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208857-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
-	by mail.lfdr.de (Postfix) with ESMTPS id 74AD7D2639B
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:17:04 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86899D2644B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:19:42 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 1EE0931757F4
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:07:15 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id EF29531AC45B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 644373BF2FA;
-	Thu, 15 Jan 2026 17:07:11 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E2B513A7F43;
+	Thu, 15 Jan 2026 17:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zN2bCsMK"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="fveHGaaS"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 420323A0E94;
-	Thu, 15 Jan 2026 17:07:10 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A4C513570AE;
+	Thu, 15 Jan 2026 17:10:40 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496830; cv=none; b=BaEKq+II9BWxAdaa4yky55W8eDrv9yfzYzp3lQyAX4P/YAYxZ1Y/UQGCtWpYeiCY/cgpP+O23y1jolQUC0HNGuLM+nHWhsQr8/P2n3q0jpOQADl5mJm55cvXXojJVgsQe+IDGw9HQpKUbLhA4UWcM2kiSmJEX1JKDK4JivzpcNQ=
+	t=1768497040; cv=none; b=Q2Y8pZl1I7PC/S9tjLwkMMPkvPFb16YGP4pPquuWKN9XuDPltLm+hrZ7YzIQyfdE3Fp8cSRyyeR+ah/Oym5IqjpGJf7pSRrkzAE1Evj9Nznkw5H3kykH45Fczmhw2ZFZGhnYCA3uHcf+RsBFMv2Wzeu57Cs3VB5c4P4/6q0/68g=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496830; c=relaxed/simple;
-	bh=maB+bXoG02GcPQ1dqhIHaM7qoU0LZ81THk6jUJOeZgk=;
+	s=arc-20240116; t=1768497040; c=relaxed/simple;
+	bh=ViPtRCLGZWf4PhdueZKfh4shSVuAYX+yfYd4yzjWrmc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=nOinmecRRqmglV4qFS5klnJB7DYr8oKnMLVjryVx5YCOgkeCABhjwLs83KljC8Cw1+7CTKq2LcMbuIuFZH/rv3DRZZ07DxtoEmMaThBZcxigysdOf75e+NFtyYXtVXgv7i6WshbNWb1iQXxEfSKPHSNRCLSPyUoX1437KgEWOx0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zN2bCsMK; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA68C116D0;
-	Thu, 15 Jan 2026 17:07:09 +0000 (UTC)
+	 MIME-Version; b=OK8IEt1mTkKDhn1q5NofE+S45NrCnqCZCEJtht2xBB0ZjwQYUqJ5g+uMsmLsaHPvXG/Z5e4shLlHrVU0wCaP1fzIk3TZ2OrIo+xLcIhmj/dcZiGTXB4LnW86VNvvej8ZKsu5hyFVyjUTm96/p9ccAax+tzF6C8TkCvFpKkIZxZk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=fveHGaaS; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 345F2C16AAE;
+	Thu, 15 Jan 2026 17:10:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496830;
-	bh=maB+bXoG02GcPQ1dqhIHaM7qoU0LZ81THk6jUJOeZgk=;
+	s=korg; t=1768497040;
+	bh=ViPtRCLGZWf4PhdueZKfh4shSVuAYX+yfYd4yzjWrmc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zN2bCsMKHqZQFzqZBLq2Lf/nzTfnftNIPwmBYecLH0V4gNupaOas52PG+WOMksQ6j
-	 0CrXS4CNoFn79ocOn6xcgxXTpt2MoZkXs6Llhm7shgMQRhQxfqpdnKAGLYHOSbf0Fn
-	 cnnaFZI+b74MC34no14a56wPGqnsInpAHEf3LmaE=
+	b=fveHGaaSjGribAcVtVYGFzu9b54P4R6IVyxnuumB0ccahkN1q4KLDqaiqtRXxbMM4
+	 sV/bXH7RI3GtogrLce7OYbijpitlh+CW6zbj7hkS24oSkE5sR+Xosh3r7q8DZZi8gI
+	 aB/O8Iow/ioOBvum5O4kauzGt4aqX/pUCTD4oYlA=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sam James <sam@gentoo.org>,
-	Magnus Lindholm <linmag7@gmail.com>,
-	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.6 30/88] alpha: dont reference obsolete termio struct for TC* constants
+	Filipe Manana <fdmanana@suse.com>,
+	David Sterba <dsterba@suse.com>
+Subject: [PATCH 6.1 03/72] btrfs: always detect conflicting inodes when logging inode refs
 Date: Thu, 15 Jan 2026 17:48:13 +0100
-Message-ID: <20260115164147.403174869@linuxfoundation.org>
+Message-ID: <20260115164143.612776536@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
-References: <20260115164146.312481509@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,54 +59,179 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.6-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sam James <sam@gentoo.org>
+From: Filipe Manana <fdmanana@suse.com>
 
-[ Upstream commit 9aeed9041929812a10a6d693af050846942a1d16 ]
+commit 7ba0b6461bc4edb3005ea6e00cdae189bcf908a5 upstream.
 
-Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
-drops the legacy termio struct, but the ioctls.h header still defines some
-TC* constants in terms of termio (via sizeof). Hardcode the values instead.
+After rename exchanging (either with the rename exchange operation or
+regular renames in multiple non-atomic steps) two inodes and at least
+one of them is a directory, we can end up with a log tree that contains
+only of the inodes and after a power failure that can result in an attempt
+to delete the other inode when it should not because it was not deleted
+before the power failure. In some case that delete attempt fails when
+the target inode is a directory that contains a subvolume inside it, since
+the log replay code is not prepared to deal with directory entries that
+point to root items (only inode items).
 
-This fixes building Python for example, which falls over like:
-  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
+1) We have directories "dir1" (inode A) and "dir2" (inode B) under the
+   same parent directory;
 
-Link: https://bugs.gentoo.org/961769
-Link: https://bugs.gentoo.org/962600
-Signed-off-by: Sam James <sam@gentoo.org>
-Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
-Link: https://lore.kernel.org/r/6ebd3451908785cad53b50ca6bc46cfe9d6bc03c.1764922497.git.sam@gentoo.org
-Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+2) We have a file (inode C) under directory "dir1" (inode A);
+
+3) We have a subvolume inside directory "dir2" (inode B);
+
+4) All these inodes were persisted in a past transaction and we are
+   currently at transaction N;
+
+5) We rename the file (inode C), so at btrfs_log_new_name() we update
+   inode C's last_unlink_trans to N;
+
+6) We get a rename exchange for "dir1" (inode A) and "dir2" (inode B),
+   so after the exchange "dir1" is inode B and "dir2" is inode A.
+   During the rename exchange we call btrfs_log_new_name() for inodes
+   A and B, but because they are directories, we don't update their
+   last_unlink_trans to N;
+
+7) An fsync against the file (inode C) is done, and because its inode
+   has a last_unlink_trans with a value of N we log its parent directory
+   (inode A) (through btrfs_log_all_parents(), called from
+   btrfs_log_inode_parent()).
+
+8) So we end up with inode B not logged, which now has the old name
+   of inode A. At copy_inode_items_to_log(), when logging inode A, we
+   did not check if we had any conflicting inode to log because inode
+   A has a generation lower than the current transaction (created in
+   a past transaction);
+
+9) After a power failure, when replaying the log tree, since we find that
+   inode A has a new name that conflicts with the name of inode B in the
+   fs tree, we attempt to delete inode B... this is wrong since that
+   directory was never deleted before the power failure, and because there
+   is a subvolume inside that directory, attempting to delete it will fail
+   since replay_dir_deletes() and btrfs_unlink_inode() are not prepared
+   to deal with dir items that point to roots instead of inodes.
+
+   When that happens the mount fails and we get a stack trace like the
+   following:
+
+   [87.2314] BTRFS info (device dm-0): start tree-log replay
+   [87.2318] BTRFS critical (device dm-0): failed to delete reference to subvol, root 5 inode 256 parent 259
+   [87.2332] ------------[ cut here ]------------
+   [87.2338] BTRFS: Transaction aborted (error -2)
+   [87.2346] WARNING: CPU: 1 PID: 638968 at fs/btrfs/inode.c:4345 __btrfs_unlink_inode+0x416/0x440 [btrfs]
+   [87.2368] Modules linked in: btrfs loop dm_thin_pool (...)
+   [87.2470] CPU: 1 UID: 0 PID: 638968 Comm: mount Tainted: G        W           6.18.0-rc7-btrfs-next-218+ #2 PREEMPT(full)
+   [87.2489] Tainted: [W]=WARN
+   [87.2494] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+   [87.2514] RIP: 0010:__btrfs_unlink_inode+0x416/0x440 [btrfs]
+   [87.2538] Code: c0 89 04 24 (...)
+   [87.2568] RSP: 0018:ffffc0e741f4b9b8 EFLAGS: 00010286
+   [87.2574] RAX: 0000000000000000 RBX: ffff9d3ec8a6cf60 RCX: 0000000000000000
+   [87.2582] RDX: 0000000000000002 RSI: ffffffff84ab45a1 RDI: 00000000ffffffff
+   [87.2591] RBP: ffff9d3ec8a6ef20 R08: 0000000000000000 R09: ffffc0e741f4b840
+   [87.2599] R10: ffff9d45dc1fffa8 R11: 0000000000000003 R12: ffff9d3ee26d77e0
+   [87.2608] R13: ffffc0e741f4ba98 R14: ffff9d4458040800 R15: ffff9d44b6b7ca10
+   [87.2618] FS:  00007f7b9603a840(0000) GS:ffff9d4658982000(0000) knlGS:0000000000000000
+   [87.2629] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+   [87.2637] CR2: 00007ffc9ec33b98 CR3: 000000011273e003 CR4: 0000000000370ef0
+   [87.2648] Call Trace:
+   [87.2651]  <TASK>
+   [87.2654]  btrfs_unlink_inode+0x15/0x40 [btrfs]
+   [87.2661]  unlink_inode_for_log_replay+0x27/0xf0 [btrfs]
+   [87.2669]  check_item_in_log+0x1ea/0x2c0 [btrfs]
+   [87.2676]  replay_dir_deletes+0x16b/0x380 [btrfs]
+   [87.2684]  fixup_inode_link_count+0x34b/0x370 [btrfs]
+   [87.2696]  fixup_inode_link_counts+0x41/0x160 [btrfs]
+   [87.2703]  btrfs_recover_log_trees+0x1ff/0x7c0 [btrfs]
+   [87.2711]  ? __pfx_replay_one_buffer+0x10/0x10 [btrfs]
+   [87.2719]  open_ctree+0x10bb/0x15f0 [btrfs]
+   [87.2726]  btrfs_get_tree.cold+0xb/0x16c [btrfs]
+   [87.2734]  ? fscontext_read+0x15c/0x180
+   [87.2740]  ? rw_verify_area+0x50/0x180
+   [87.2746]  vfs_get_tree+0x25/0xd0
+   [87.2750]  vfs_cmd_create+0x59/0xe0
+   [87.2755]  __do_sys_fsconfig+0x4f6/0x6b0
+   [87.2760]  do_syscall_64+0x50/0x1220
+   [87.2764]  entry_SYSCALL_64_after_hwframe+0x76/0x7e
+   [87.2770] RIP: 0033:0x7f7b9625f4aa
+   [87.2775] Code: 73 01 c3 48 (...)
+   [87.2803] RSP: 002b:00007ffc9ec35b08 EFLAGS: 00000246 ORIG_RAX: 00000000000001af
+   [87.2817] RAX: ffffffffffffffda RBX: 0000558bfa91ac20 RCX: 00007f7b9625f4aa
+   [87.2829] RDX: 0000000000000000 RSI: 0000000000000006 RDI: 0000000000000003
+   [87.2842] RBP: 0000558bfa91b120 R08: 0000000000000000 R09: 0000000000000000
+   [87.2854] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+   [87.2864] R13: 00007f7b963f1580 R14: 00007f7b963f326c R15: 00007f7b963d8a23
+   [87.2877]  </TASK>
+   [87.2882] ---[ end trace 0000000000000000 ]---
+   [87.2891] BTRFS: error (device dm-0 state A) in __btrfs_unlink_inode:4345: errno=-2 No such entry
+   [87.2904] BTRFS: error (device dm-0 state EAO) in do_abort_log_replay:191: errno=-2 No such entry
+   [87.2915] BTRFS critical (device dm-0 state EAO): log tree (for root 5) leaf currently being processed (slot 7 key (258 12 257)):
+   [87.2929] BTRFS info (device dm-0 state EAO): leaf 30736384 gen 10 total ptrs 7 free space 15712 owner 18446744073709551610
+   [87.2929] BTRFS info (device dm-0 state EAO): refs 3 lock_owner 0 current 638968
+   [87.2929]      item 0 key (257 INODE_ITEM 0) itemoff 16123 itemsize 160
+   [87.2929]              inode generation 9 transid 10 size 0 nbytes 0
+   [87.2929]              block group 0 mode 40755 links 1 uid 0 gid 0
+   [87.2929]              rdev 0 sequence 7 flags 0x0
+   [87.2929]              atime 1765464494.678070921
+   [87.2929]              ctime 1765464494.686606513
+   [87.2929]              mtime 1765464494.686606513
+   [87.2929]              otime 1765464494.678070921
+   [87.2929]      item 1 key (257 INODE_REF 256) itemoff 16109 itemsize 14
+   [87.2929]              index 4 name_len 4
+   [87.2929]      item 2 key (257 DIR_LOG_INDEX 2) itemoff 16101 itemsize 8
+   [87.2929]              dir log end 2
+   [87.2929]      item 3 key (257 DIR_LOG_INDEX 3) itemoff 16093 itemsize 8
+   [87.2929]              dir log end 18446744073709551615
+   [87.2930]      item 4 key (257 DIR_INDEX 3) itemoff 16060 itemsize 33
+   [87.2930]              location key (258 1 0) type 1
+   [87.2930]              transid 10 data_len 0 name_len 3
+   [87.2930]      item 5 key (258 INODE_ITEM 0) itemoff 15900 itemsize 160
+   [87.2930]              inode generation 9 transid 10 size 0 nbytes 0
+   [87.2930]              block group 0 mode 100644 links 1 uid 0 gid 0
+   [87.2930]              rdev 0 sequence 2 flags 0x0
+   [87.2930]              atime 1765464494.678456467
+   [87.2930]              ctime 1765464494.686606513
+   [87.2930]              mtime 1765464494.678456467
+   [87.2930]              otime 1765464494.678456467
+   [87.2930]      item 6 key (258 INODE_REF 257) itemoff 15887 itemsize 13
+   [87.2930]              index 3 name_len 3
+   [87.2930] BTRFS critical (device dm-0 state EAO): log replay failed in unlink_inode_for_log_replay:1045 for root 5, stage 3, with error -2: failed to unlink inode 256 parent dir 259 name subvol root 5
+   [87.2963] BTRFS: error (device dm-0 state EAO) in btrfs_recover_log_trees:7743: errno=-2 No such entry
+   [87.2981] BTRFS: error (device dm-0 state EAO) in btrfs_replay_log:2083: errno=-2 No such entry (Failed to recover log tr
+
+So fix this by changing copy_inode_items_to_log() to always detect if
+there are conflicting inodes for the ref/extref of the inode being logged
+even if the inode was created in a past transaction.
+
+A test case for fstests will follow soon.
+
+CC: stable@vger.kernel.org # 6.1+
+Signed-off-by: Filipe Manana <fdmanana@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/alpha/include/uapi/asm/ioctls.h | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/btrfs/tree-log.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
-index 971311605288f..a09d04b49cc65 100644
---- a/arch/alpha/include/uapi/asm/ioctls.h
-+++ b/arch/alpha/include/uapi/asm/ioctls.h
-@@ -23,10 +23,10 @@
- #define TCSETSW		_IOW('t', 21, struct termios)
- #define TCSETSF		_IOW('t', 22, struct termios)
+--- a/fs/btrfs/tree-log.c
++++ b/fs/btrfs/tree-log.c
+@@ -5940,10 +5940,8 @@ again:
+ 			 * and no keys greater than that, so bail out.
+ 			 */
+ 			break;
+-		} else if ((min_key->type == BTRFS_INODE_REF_KEY ||
+-			    min_key->type == BTRFS_INODE_EXTREF_KEY) &&
+-			   (inode->generation == trans->transid ||
+-			    ctx->logging_conflict_inodes)) {
++		} else if (min_key->type == BTRFS_INODE_REF_KEY ||
++			   min_key->type == BTRFS_INODE_EXTREF_KEY) {
+ 			u64 other_ino = 0;
+ 			u64 other_parent = 0;
  
--#define TCGETA		_IOR('t', 23, struct termio)
--#define TCSETA		_IOW('t', 24, struct termio)
--#define TCSETAW		_IOW('t', 25, struct termio)
--#define TCSETAF		_IOW('t', 28, struct termio)
-+#define TCGETA          0x40127417
-+#define TCSETA          0x80127418
-+#define TCSETAW         0x80127419
-+#define TCSETAF         0x8012741c
- 
- #define TCSBRK		_IO('t', 29)
- #define TCXONC		_IO('t', 30)
--- 
-2.51.0
-
 
 
 
