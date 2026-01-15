@@ -1,55 +1,57 @@
-Return-Path: <stable+bounces-209841-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208901-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C7480D277A3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:26:55 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id DAAF2D26868
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:36:17 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B14B1303F7CC
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:06:06 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2532231A151B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:14:35 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 10C0C3D3317;
-	Thu, 15 Jan 2026 17:57:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 5AC223D3013;
+	Thu, 15 Jan 2026 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ctFISuTQ"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iI/yHAi3"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C75D63C1FC3;
-	Thu, 15 Jan 2026 17:57:22 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 11F183BF2FE;
+	Thu, 15 Jan 2026 17:12:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499842; cv=none; b=LRPXJEAw1hLlL9SwuXQa3wkmv26Otz/CqK0JFSvtxtYRb1db5MILi2yvUGosC6DBPOuVe/5eAGB0I5KIVtu3l5WIkqm7IDLVi1rqxhdjMIB1SOnRufTFegs3dMggyjQHCc8Lwru2Go53PEXt6BuiPdPvbOCwnnMjpd3ULfmBsPQ=
+	t=1768497167; cv=none; b=ZCviLNVMtpCRRIbz9XJ548LGAaz/lzl6LbbP9G5OjBvuCG9DYN+1twdJaILG5/Cz1QeKiORSOfNN/IywcFOMl/XZSAFxg2fwyKuOZKB7AGEdU58LFC6AVYPBS8r6bvT/HIMH+omcJs6PKzf2pzorRabRgGPSODGme14uqXplSaQ=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499842; c=relaxed/simple;
-	bh=Bg732lv/b/7WOANzngCYpxh17lQLTfcuQC+50oIc6/A=;
+	s=arc-20240116; t=1768497167; c=relaxed/simple;
+	bh=NjVWU/Gs+4qTGmUQkvbA2PG5d299p7KBuNcfKAyIh+E=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=gVl+h8tGYuNFdYwpIFRiLSfJbMwL/+ARvdrMj9flkK7iFECYFxoRQblAV+xWBIpfJKshUg6AJWnv5b5HnD3UAPZzCsTJ0KZ2CpVCPu/U1k1kk5RtgArtimhpfSlpcC8xHcR1jBVJ1mQjNdrzbMnuOy0qNOKSBV0WSwE7KXlGg0Y=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ctFISuTQ; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 512D8C116D0;
-	Thu, 15 Jan 2026 17:57:22 +0000 (UTC)
+	 MIME-Version; b=oe5CGsl2dq4MhSzLQQBmGYxVM14k0KpnEGEOwYqto1Fj5zpiIQlMWzbTtLViMuAdQXNkuZdZ3Qs+14EoJUB6VjtRqNS7rS9Bc3VJ0VeqqICu1U30Jkv1iHEOJfkSb7Duo2Ox4JI3919a/291RJZHHxiIoxj/1VFVPMcnAbV1wKc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iI/yHAi3; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 60D72C116D0;
+	Thu, 15 Jan 2026 17:12:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499842;
-	bh=Bg732lv/b/7WOANzngCYpxh17lQLTfcuQC+50oIc6/A=;
+	s=korg; t=1768497166;
+	bh=NjVWU/Gs+4qTGmUQkvbA2PG5d299p7KBuNcfKAyIh+E=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=ctFISuTQgR2BQdBInPPM9Zyn9gNUTE/msnp4E+Az+Tc5gQUeP2jv+TsMqA1Z/Mff+
-	 Fn7wpd9gLBcLy0PaTLlF1ugMuEpaEviuYYUhBLgwrqkg3lmqOWz2Oswnpp+/naT+zM
-	 eYotURppl4Hwn9Duh0Mt+/WMf5lrULKFdBHOBqoI=
+	b=iI/yHAi3/IZxULMwfcAkdpAtvHsylSk2S1HNQQD1He86jwW46OrXNMiFMkLG5p0b3
+	 O5f330U0nb3gCXckVh4NH1ZBiW4ilZX4IhxduqayI+ZFIgSwUJvsuhJQnSBXvIPk4O
+	 mZpwnA7K8usifiBbXqjJCkpq2eb9ck2walulsyfI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Daniel Vetter <daniel@ffwll.ch>,
-	Peilin Ye <yepeilin.cs@gmail.com>,
-	Daniel Vetter <daniel.vetter@ffwll.ch>,
-	Ben Hutchings <ben@decadent.org.uk>
-Subject: [PATCH 5.10 341/451] console: Delete dummy con_font_set() and con_font_default() callback implementations
+	Val Packett <val@packett.cool>,
+	Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+	Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>,
+	Bjorn Andersson <andersson@kernel.org>,
+	Linus Walleij <linusw@kernel.org>,
+	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+Subject: [PATCH 6.1 52/72] pinctrl: qcom: lpass-lpi: mark the GPIO controller as sleeping
 Date: Thu, 15 Jan 2026 17:49:02 +0100
-Message-ID: <20260115164243.229839799@linuxfoundation.org>
+Message-ID: <20260115164145.379865648@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,99 +63,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peilin Ye <yepeilin.cs@gmail.com>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit 259a252c1f4e19045b06660f81014fb51e17f3f6 upstream.
+commit ebc18e9854e5a2b62a041fb57b216a903af45b85 upstream.
 
-.con_font_set and .con_font_default callbacks should not pass `struct
-console_font *` as a parameter, since `struct console_font` is a UAPI
-structure.
+The gpio_chip settings in this driver say the controller can't sleep
+but it actually uses a mutex for synchronization. This triggers the
+following BUG():
 
-We are trying to let them use our new kernel font descriptor, `struct
-font_desc` instead. To make that work slightly easier, first delete all of
-their no-op implementations used by dummy consoles.
+[    9.233659] BUG: sleeping function called from invalid context at kernel/locking/mutex.c:281
+[    9.233665] in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 554, name: (udev-worker)
+[    9.233669] preempt_count: 1, expected: 0
+[    9.233673] RCU nest depth: 0, expected: 0
+[    9.233688] Tainted: [W]=WARN
+[    9.233690] Hardware name: Dell Inc. Latitude 7455/0FK7MX, BIOS 2.10.1 05/20/2025
+[    9.233694] Call trace:
+[    9.233696]  show_stack+0x24/0x38 (C)
+[    9.233709]  dump_stack_lvl+0x40/0x88
+[    9.233716]  dump_stack+0x18/0x24
+[    9.233722]  __might_resched+0x148/0x160
+[    9.233731]  __might_sleep+0x38/0x98
+[    9.233736]  mutex_lock+0x30/0xd8
+[    9.233749]  lpi_config_set+0x2e8/0x3c8 [pinctrl_lpass_lpi]
+[    9.233757]  lpi_gpio_direction_output+0x58/0x90 [pinctrl_lpass_lpi]
+[    9.233761]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233772]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233779]  gpiod_direction_output+0x38/0xd0
+[    9.233786]  gpio_shared_proxy_direction_output+0xb8/0x2a8 [gpio_shared_proxy]
+[    9.233792]  gpiod_direction_output_raw_commit+0x110/0x428
+[    9.233799]  gpiod_direction_output_nonotify+0x234/0x358
+[    9.233806]  gpiod_configure_flags+0x2c0/0x580
+[    9.233812]  gpiod_find_and_request+0x358/0x4f8
+[    9.233819]  gpiod_get_index+0x7c/0x98
+[    9.233826]  devm_gpiod_get+0x34/0xb0
+[    9.233829]  reset_gpio_probe+0x58/0x128 [reset_gpio]
+[    9.233836]  auxiliary_bus_probe+0xb0/0xf0
+[    9.233845]  really_probe+0x14c/0x450
+[    9.233853]  __driver_probe_device+0xb0/0x188
+[    9.233858]  driver_probe_device+0x4c/0x250
+[    9.233863]  __driver_attach+0xf8/0x2a0
+[    9.233868]  bus_for_each_dev+0xf8/0x158
+[    9.233872]  driver_attach+0x30/0x48
+[    9.233876]  bus_add_driver+0x158/0x2b8
+[    9.233880]  driver_register+0x74/0x118
+[    9.233886]  __auxiliary_driver_register+0x94/0xe8
+[    9.233893]  init_module+0x34/0xfd0 [reset_gpio]
+[    9.233898]  do_one_initcall+0xec/0x300
+[    9.233903]  do_init_module+0x64/0x260
+[    9.233910]  load_module+0x16c4/0x1900
+[    9.233915]  __arm64_sys_finit_module+0x24c/0x378
+[    9.233919]  invoke_syscall+0x4c/0xe8
+[    9.233925]  el0_svc_common+0x8c/0xf0
+[    9.233929]  do_el0_svc+0x28/0x40
+[    9.233934]  el0_svc+0x38/0x100
+[    9.233938]  el0t_64_sync_handler+0x84/0x130
+[    9.233943]  el0t_64_sync+0x17c/0x180
 
-This will make KD_FONT_OP_SET and KD_FONT_OP_SET_DEFAULT ioctl() requests
-on dummy consoles start to fail and return `-ENOSYS`, which is intended,
-since no user should ever expect such operations to succeed on dummy
-consoles.
+Mark the controller as sleeping.
 
-Suggested-by: Daniel Vetter <daniel@ffwll.ch>
-Signed-off-by: Peilin Ye <yepeilin.cs@gmail.com>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Link: https://patchwork.freedesktop.org/patch/msgid/9952c7538d2a32bb1a82af323be482e7afb3dedf.1605169912.git.yepeilin.cs@gmail.com
-Cc: Ben Hutchings <ben@decadent.org.uk>
+Fixes: 6e261d1090d6 ("pinctrl: qcom: Add sm8250 lpass lpi pinctrl driver")
+Cc: stable@vger.kernel.org
+Reported-by: Val Packett <val@packett.cool>
+Closes: https://lore.kernel.org/all/98c0f185-b0e0-49ea-896c-f3972dd011ca@packett.cool/
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@oss.qualcomm.com>
+Reviewed-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Linus Walleij <linusw@kernel.org>
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/misc/sisusbvga/sisusb_con.c |   15 ---------------
- drivers/video/console/dummycon.c        |   14 --------------
- 2 files changed, 29 deletions(-)
+ drivers/pinctrl/qcom/pinctrl-lpass-lpi.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/misc/sisusbvga/sisusb_con.c
-+++ b/drivers/usb/misc/sisusbvga/sisusb_con.c
-@@ -1345,19 +1345,6 @@ static int sisusbdummycon_blank(struct v
- 	return 0;
- }
+--- a/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
++++ b/drivers/pinctrl/qcom/pinctrl-lpass-lpi.c
+@@ -435,7 +435,7 @@ int lpi_pinctrl_probe(struct platform_de
+ 	pctrl->chip.ngpio = data->npins;
+ 	pctrl->chip.label = dev_name(dev);
+ 	pctrl->chip.of_gpio_n_cells = 2;
+-	pctrl->chip.can_sleep = false;
++	pctrl->chip.can_sleep = true;
  
--static int sisusbdummycon_font_set(struct vc_data *vc,
--				   struct console_font *font,
--				   unsigned int flags)
--{
--	return 0;
--}
--
--static int sisusbdummycon_font_default(struct vc_data *vc,
--				       struct console_font *font, char *name)
--{
--	return 0;
--}
--
- static const struct consw sisusb_dummy_con = {
- 	.owner =		THIS_MODULE,
- 	.con_startup =		sisusbdummycon_startup,
-@@ -1370,8 +1357,6 @@ static const struct consw sisusb_dummy_c
- 	.con_scroll =		sisusbdummycon_scroll,
- 	.con_switch =		sisusbdummycon_switch,
- 	.con_blank =		sisusbdummycon_blank,
--	.con_font_set =		sisusbdummycon_font_set,
--	.con_font_default =	sisusbdummycon_font_default,
- };
+ 	mutex_init(&pctrl->lock);
  
- int
---- a/drivers/video/console/dummycon.c
-+++ b/drivers/video/console/dummycon.c
-@@ -124,18 +124,6 @@ static int dummycon_switch(struct vc_dat
- 	return 0;
- }
- 
--static int dummycon_font_set(struct vc_data *vc, struct console_font *font,
--			     unsigned int flags)
--{
--	return 0;
--}
--
--static int dummycon_font_default(struct vc_data *vc,
--				 struct console_font *font, char *name)
--{
--	return 0;
--}
--
- /*
-  *  The console `switch' structure for the dummy console
-  *
-@@ -154,7 +142,5 @@ const struct consw dummy_con = {
- 	.con_scroll =	dummycon_scroll,
- 	.con_switch =	dummycon_switch,
- 	.con_blank =	dummycon_blank,
--	.con_font_set =	dummycon_font_set,
--	.con_font_default =	dummycon_font_default,
- };
- EXPORT_SYMBOL_GPL(dummy_con);
 
 
 
