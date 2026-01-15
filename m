@@ -1,57 +1,53 @@
-Return-Path: <stable+bounces-209505-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209102-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id E21C2D27A3D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:37:20 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id D6A4ED26667
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:28:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id C646230D19B3
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:41:28 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 8D9FE3069028
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:22:20 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0C5E72D9488;
-	Thu, 15 Jan 2026 17:41:28 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8718E39B48E;
+	Thu, 15 Jan 2026 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="08mK2JGw"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="JHKgBi4z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B92A12D595B;
-	Thu, 15 Jan 2026 17:41:27 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 461082C027B;
+	Thu, 15 Jan 2026 17:22:19 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498887; cv=none; b=VxxjIx+az0oJuLF+zob/pX6VuCHT/nlip4txTMNOtE8owfKAEkZRGE3EloW2zGMR0k7VSSo6GRVjD961cX2btYhZO/edj95HK8z+E9uw5E1mibMZH/PDRKmGv9UWeOaa1a+IMGo2oA8NVt4jxeSieT8+CAtG4lRBHG6SucSOHMA=
+	t=1768497739; cv=none; b=IMWOwcpjhPkTUSrKzykdX0sDn2erT2/oxGjOUrYxIZPcihxZfGKT1VxzB02He4RWGIJiRak3pYjCCUG8N/606o9clUvs1TzDJrLYcQP/1oK1wATtqCymvtcvCMziCcym2ax1hZCgwywqwZzTPCktg9cJpnb1vCJG4xG98PMTri0=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498887; c=relaxed/simple;
-	bh=nevJNNS2VyINsZj6lcGbjI6Uqew0t9OBDbddpwpIE0Q=;
+	s=arc-20240116; t=1768497739; c=relaxed/simple;
+	bh=JNO6g6eT+QP+2Cq1ExekdTxpeTUFe5/yw+fV7XS6/eo=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=qL0J+D/JlWAJU+4ygGIMNJlomtjo7JIi4HlbNclsmLa7BZmMAGyXoGL/1W12mzP2VWIZTWF5dm9hsbpDJC+cXAE9xF6TKeOyaX+NsFPGAxkHJ98ncG7zyA+eDRp2PkVhp2Mp/1jA4vCath5CjSo+bRT9YhGDbA2xib3+QtbSwf8=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=08mK2JGw; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4398BC19422;
-	Thu, 15 Jan 2026 17:41:27 +0000 (UTC)
+	 MIME-Version; b=gU7Yu1y1m7pVzFQRJw8fbWGGDFU0cDzFno/vPtD8H6NGWs5QHTDuiDX8Uuo2EcuhhSLZBSVc0NOBxLhZ3H/fdH573LEnZSExISS4bRu76Z7phZPrSy6+QmRn4PuK+K/B24At4/gQ50FJZ08hX50tszJoPo7ovvCdZTOqDBMa5Bk=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=JHKgBi4z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C680AC116D0;
+	Thu, 15 Jan 2026 17:22:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498887;
-	bh=nevJNNS2VyINsZj6lcGbjI6Uqew0t9OBDbddpwpIE0Q=;
+	s=korg; t=1768497739;
+	bh=JNO6g6eT+QP+2Cq1ExekdTxpeTUFe5/yw+fV7XS6/eo=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=08mK2JGw68DlpfYTMlI9byVkT/zW2kFxfrYb4/3N/HsIFaSWHF39zCY64pMBtmQ7y
-	 00mz4CqFA0EmuzqXwLqppo1f9cqH4M8WcTth+ei9LnTgA93IlElwF1SH7d4eG1hmLk
-	 4xAiHj+9pboUQaQDBOgjtHOSDmgjU2UCEld4RE5M=
+	b=JHKgBi4z3bfxuF1IvUnv+1LXyRizA7rgAm+FQRzxbysjssRwYX7a3S/k/72KdFPtv
+	 tRaftH0NQQL9Bb5U5QQlOzRO/RysIGuPR8hxGY1umYpEHlq3jNeialVp9yRqr8k0Z5
+	 V//vJv3EmvXq8arvMTC8H76ROWJDcBc4lw7vn4Lo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Kuniyuki Iwashima <kuniyu@google.com>,
-	Jiayuan Chen <jiayuan.chen@linux.dev>,
-	Xuanqiang Luo <luoxuanqiang@kylinos.cn>,
-	Eric Dumazet <edumazet@google.com>,
-	Jakub Kicinski <kuba@kernel.org>,
+	Trond Myklebust <trond.myklebust@hammerspace.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 034/451] inet: Avoid ehash lookup race in inet_ehash_insert()
+Subject: [PATCH 5.15 169/554] NFS: Label the dentry with a verifier in nfs_rmdir() and nfs_unlink()
 Date: Thu, 15 Jan 2026 17:43:55 +0100
-Message-ID: <20260115164232.126674027@linuxfoundation.org>
+Message-ID: <20260115164252.384480774@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,96 +59,73 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
+From: Trond Myklebust <trond.myklebust@hammerspace.com>
 
-[ Upstream commit 1532ed0d0753c83e72595f785f82b48c28bbe5dc ]
+[ Upstream commit 9019fb391de02cbff422090768b73afe9f6174df ]
 
-Since ehash lookups are lockless, if one CPU performs a lookup while
-another concurrently deletes and inserts (removing reqsk and inserting sk),
-the lookup may fail to find the socket, an RST may be sent.
+After the success of an operation such as rmdir() or unlink(), we expect
+to add the dentry back to the dcache as an ordinary negative dentry.
+However in NFS, unless it is labelled with the appropriate verifier for
+the parent directory state, then nfs_lookup_revalidate will end up
+discarding that dentry and forcing a new lookup.
 
-The call trace map is drawn as follows:
-   CPU 0                           CPU 1
-   -----                           -----
-				inet_ehash_insert()
-                                spin_lock()
-                                sk_nulls_del_node_init_rcu(osk)
-__inet_lookup_established()
-	(lookup failed)
-                                __sk_nulls_add_node_rcu(sk, list)
-                                spin_unlock()
+The fix is to ensure that we relabel the dentry appropriately on
+success.
 
-As both deletion and insertion operate on the same ehash chain, this patch
-introduces a new sk_nulls_replace_node_init_rcu() helper functions to
-implement atomic replacement.
-
-Fixes: 5e0724d027f0 ("tcp/dccp: fix hashdance race for passive sessions")
-Reviewed-by: Kuniyuki Iwashima <kuniyu@google.com>
-Reviewed-by: Jiayuan Chen <jiayuan.chen@linux.dev>
-Signed-off-by: Xuanqiang Luo <luoxuanqiang@kylinos.cn>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Link: https://patch.msgid.link/20251015020236.431822-3-xuanqiang.luo@linux.dev
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Stable-dep-of: bd4928ec799b ("NFS: Avoid changing nlink when file removes and attribute updates race")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h         | 13 +++++++++++++
- net/ipv4/inet_hashtables.c |  8 ++++++--
- 2 files changed, 19 insertions(+), 2 deletions(-)
+ fs/nfs/dir.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index bfba1c312a553..4e5386cdb09cd 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -769,6 +769,19 @@ static inline bool sk_nulls_del_node_init_rcu(struct sock *sk)
- 	return rc;
+diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
+index 32c3d0c454b19..9dceb6cb10417 100644
+--- a/fs/nfs/dir.c
++++ b/fs/nfs/dir.c
+@@ -2212,6 +2212,18 @@ static void nfs_dentry_handle_enoent(struct dentry *dentry)
+ 		d_delete(dentry);
  }
  
-+static inline bool sk_nulls_replace_node_init_rcu(struct sock *old,
-+						  struct sock *new)
++static void nfs_dentry_remove_handle_error(struct inode *dir,
++					   struct dentry *dentry, int error)
 +{
-+	if (sk_hashed(old)) {
-+		hlist_nulls_replace_init_rcu(&old->sk_nulls_node,
-+					     &new->sk_nulls_node);
-+		__sock_put(old);
-+		return true;
++	switch (error) {
++	case -ENOENT:
++		d_delete(dentry);
++		fallthrough;
++	case 0:
++		nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
 +	}
-+
-+	return false;
 +}
 +
- static inline void __sk_add_node(struct sock *sk, struct hlist_head *list)
+ int nfs_rmdir(struct inode *dir, struct dentry *dentry)
  {
- 	hlist_add_head(&sk->sk_node, list);
-diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
-index ac2d185c04ef8..9b7c845245274 100644
---- a/net/ipv4/inet_hashtables.c
-+++ b/net/ipv4/inet_hashtables.c
-@@ -578,8 +578,11 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	spin_lock(lock);
- 	if (osk) {
- 		WARN_ON_ONCE(sk->sk_hash != osk->sk_hash);
--		ret = sk_nulls_del_node_init_rcu(osk);
--	} else if (found_dup_sk) {
-+		ret = sk_nulls_replace_node_init_rcu(osk, sk);
-+		goto unlock;
-+	}
-+
-+	if (found_dup_sk) {
- 		*found_dup_sk = inet_ehash_lookup_by_sk(sk, list);
- 		if (*found_dup_sk)
- 			ret = false;
-@@ -588,6 +591,7 @@ bool inet_ehash_insert(struct sock *sk, struct sock *osk, bool *found_dup_sk)
- 	if (ret)
- 		__sk_nulls_add_node_rcu(sk, list);
+ 	int error;
+@@ -2234,6 +2246,7 @@ int nfs_rmdir(struct inode *dir, struct dentry *dentry)
+ 		up_write(&NFS_I(d_inode(dentry))->rmdir_sem);
+ 	} else
+ 		error = NFS_PROTO(dir)->rmdir(dir, &dentry->d_name);
++	nfs_dentry_remove_handle_error(dir, dentry, error);
+ 	trace_nfs_rmdir_exit(dir, dentry, error);
  
-+unlock:
- 	spin_unlock(lock);
- 
- 	return ret;
+ 	return error;
+@@ -2303,9 +2316,8 @@ int nfs_unlink(struct inode *dir, struct dentry *dentry)
+ 	}
+ 	spin_unlock(&dentry->d_lock);
+ 	error = nfs_safe_remove(dentry);
+-	if (!error || error == -ENOENT) {
+-		nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
+-	} else if (need_rehash)
++	nfs_dentry_remove_handle_error(dir, dentry, error);
++	if (need_rehash)
+ 		d_rehash(dentry);
+ out:
+ 	trace_nfs_unlink_exit(dir, dentry, error);
 -- 
 2.51.0
 
