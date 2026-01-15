@@ -1,56 +1,57 @@
-Return-Path: <stable+bounces-208708-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209763-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id F32C8D26239
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:10:36 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 53490D272E9
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:10:25 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6202430D0959
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:41 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id C84DF30C45B8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:28 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id BB2DF345758;
-	Thu, 15 Jan 2026 17:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id C252A3D523E;
+	Thu, 15 Jan 2026 17:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="TSK513ru"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uNWWjL3u"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8045A2C028F;
-	Thu, 15 Jan 2026 17:03:40 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 57F203D1CA9;
+	Thu, 15 Jan 2026 17:53:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768496620; cv=none; b=YNqqPEwcHceLjlErWH/tceqMQnuW67UFiG1d9sTEy+rikhehX6GDCWuMo560yH2EQwZ3LWdcUZHrCF0XN2/9+muiZL0QXe92Spfvo+V2+IzRNJ8CDQMZgju2VNAFE+cJjOohtXoojJBLADQFoDqW6azZw/9tCUMuHU6pRQiJvAw=
+	t=1768499622; cv=none; b=DyLuz5ciUJ1ngSMOC0//sn+tKTgOoAwNAUfvcuJrplKvYJ4cVXqURT9D6mCp+jalsQQ9GSV4/WoEGBASLx+J3BJ7cCAeb9FrCXe9IVeT9ynEWebErha7YxN5xhOKAD5VAYKJtJZIPgmSvm5Pkg/FHFLFfshK3IgM67bd9fivX/Y=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768496620; c=relaxed/simple;
-	bh=ihXOHmgARmb48A9B5wTwQpkdZwZE9E/F8dVnj60jJIM=;
+	s=arc-20240116; t=1768499622; c=relaxed/simple;
+	bh=FGuS+zxAcxkBDycBcjFb5jaMW5CcmSDDRP4ZFshPQ80=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=NEmMDupjLESdT0c+q1T9vtobUCP5cTd7sp3JW5wMa4cu9eSq35LRY9XvXPwSQEN6ikfCLIW0DtAc0E10OH5rmY4v2o3Z5wqHf8WONSVbyIHglhJLmMGu7OqVEF4fMZ4ZMGYPqTFvd30DasbQoqhkRKRb8BUenebS1E1Riz6oid0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=TSK513ru; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BC3CC116D0;
-	Thu, 15 Jan 2026 17:03:39 +0000 (UTC)
+	 MIME-Version; b=hPeBWD4kgfaaazwkP1vrLOounOxa7Bi1K9P8ZngVcHB23aRuU5LYZLJNQU1mvKcE9WOIpLdPlS6BS1JQyii+YbqNWeu9WPeKYBhabwdISaZa+n+60yxoqz5sqN6KqAHdellZDLfrl9pnvwwuJ70MGITHZOVDlAlxw2tWfajKatw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uNWWjL3u; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BD6C116D0;
+	Thu, 15 Jan 2026 17:53:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768496620;
-	bh=ihXOHmgARmb48A9B5wTwQpkdZwZE9E/F8dVnj60jJIM=;
+	s=korg; t=1768499622;
+	bh=FGuS+zxAcxkBDycBcjFb5jaMW5CcmSDDRP4ZFshPQ80=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=TSK513ru/CbXDSNSJBXKF7BxbtPDypwTZx1RcwF3Va52/9pIfokrLekwb6AjyVTHB
-	 kGxYnrjUJvsz/tdqFKbQBaFdcoHrP7N4O7l4c08m/FlJD1Fm8DKk2CRv9WNjswyvKo
-	 t3JCYdCE/OGfAK0R0e8puTi1lio6DP4uzCJaEInk=
+	b=uNWWjL3uupAsm69kY1kCd6F4AYA7IqbsPkENeCZ5ZO1yeAmv8Rue6sp45etWyQKDC
+	 BooQG5bXf8xOLO9/6THrGqL0rlDgFAWQHu9oycITDh3yjt2kUok8GKhesPY5xj9DH2
+	 pUBJwYogEGAIFBNdQfneUNNY/b7WPNMAqS+sHlSI=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Emil Tantilov <emil.s.tantilov@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Samuel Salin <Samuel.salin@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
+	Tom Sela <tomsela@amazon.com>,
+	Yonatan Nachum <ynachum@amazon.com>,
+	Michael Margolin <mrgolin@amazon.com>,
+	Gal Pressman <gal.pressman@linux.dev>,
+	Jason Gunthorpe <jgg@nvidia.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.12 077/119] idpf: keep the netdev when a reset fails
+Subject: [PATCH 5.10 291/451] RDMA/efa: Remove possible negative shift
 Date: Thu, 15 Jan 2026 17:48:12 +0100
-Message-ID: <20260115164154.731137192@linuxfoundation.org>
+Message-ID: <20260115164241.408944320@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
-References: <20260115164151.948839306@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,109 +63,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.12-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Emil Tantilov <emil.s.tantilov@intel.com>
+From: Michael Margolin <mrgolin@amazon.com>
 
-[ Upstream commit 083029bd8b445595222a3cd14076b880781c1765 ]
+[ Upstream commit 85463eb6a46caf2f1e0e1a6d0731f2f3bab17780 ]
 
-During a successful reset the driver would re-allocate vport resources
-while keeping the netdevs intact. However, in case of an error in the
-init task, the netdev of the failing vport will be unregistered,
-effectively removing the network interface:
+The page size used for device might in some cases be smaller than
+PAGE_SIZE what results in a negative shift when calculating the number of
+host pages in PAGE_SIZE for a debug log. Remove the debug line together
+with the calculation.
 
-[  121.211076] idpf 0000:83:00.0: enabling device (0100 -> 0102)
-[  121.221976] idpf 0000:83:00.0: Device HW Reset initiated
-[  124.161229] idpf 0000:83:00.0 ens801f0: renamed from eth0
-[  124.163364] idpf 0000:83:00.0 ens801f0d1: renamed from eth1
-[  125.934656] idpf 0000:83:00.0 ens801f0d2: renamed from eth2
-[  128.218429] idpf 0000:83:00.0 ens801f0d3: renamed from eth3
-
-ip -br a
-ens801f0         UP
-ens801f0d1       UP
-ens801f0d2       UP
-ens801f0d3       UP
-echo 1 > /sys/class/net/ens801f0/device/reset
-
-[  145.885537] idpf 0000:83:00.0: resetting
-[  145.990280] idpf 0000:83:00.0: reset done
-[  146.284766] idpf 0000:83:00.0: HW reset detected
-[  146.296610] idpf 0000:83:00.0: Device HW Reset initiated
-[  211.556719] idpf 0000:83:00.0: Transaction timed-out (op:526 cookie:7700 vc_op:526 salt:77 timeout:60000ms)
-[  272.996705] idpf 0000:83:00.0: Transaction timed-out (op:502 cookie:7800 vc_op:502 salt:78 timeout:60000ms)
-
-ip -br a
-ens801f0d1       DOWN
-ens801f0d2       DOWN
-ens801f0d3       DOWN
-
-Re-shuffle the logic in the error path of the init task to make sure the
-netdevs remain intact. This will allow the driver to attempt recovery via
-subsequent resets, provided the FW is still functional.
-
-The main change is to make sure that idpf_decfg_netdev() is not called
-should the init task fail during a reset. The error handling is
-consolidated under unwind_vports, as the removed labels had the same
-cleanup logic split depending on the point of failure.
-
-Fixes: ce1b75d0635c ("idpf: add ptypes and MAC filter support")
-Signed-off-by: Emil Tantilov <emil.s.tantilov@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Tested-by: Samuel Salin <Samuel.salin@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 40909f664d27 ("RDMA/efa: Add EFA verbs implementation")
+Link: https://patch.msgid.link/r/20251210173656.8180-1-mrgolin@amazon.com
+Reviewed-by: Tom Sela <tomsela@amazon.com>
+Reviewed-by: Yonatan Nachum <ynachum@amazon.com>
+Signed-off-by: Michael Margolin <mrgolin@amazon.com>
+Reviewed-by: Gal Pressman <gal.pressman@linux.dev>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/idpf/idpf_lib.c | 17 ++++++-----------
- 1 file changed, 6 insertions(+), 11 deletions(-)
+ drivers/infiniband/hw/efa/efa_verbs.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/idpf/idpf_lib.c b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-index 173ddc2488678..568b57cb2298e 100644
---- a/drivers/net/ethernet/intel/idpf/idpf_lib.c
-+++ b/drivers/net/ethernet/intel/idpf/idpf_lib.c
-@@ -1500,6 +1500,10 @@ void idpf_init_task(struct work_struct *work)
- 		goto unwind_vports;
- 	}
+diff --git a/drivers/infiniband/hw/efa/efa_verbs.c b/drivers/infiniband/hw/efa/efa_verbs.c
+index 9cf051818725..d7fccffeeb58 100644
+--- a/drivers/infiniband/hw/efa/efa_verbs.c
++++ b/drivers/infiniband/hw/efa/efa_verbs.c
+@@ -1145,13 +1145,9 @@ static int umem_to_page_list(struct efa_dev *dev,
+ 			     u32 hp_cnt,
+ 			     u8 hp_shift)
+ {
+-	u32 pages_in_hp = BIT(hp_shift - PAGE_SHIFT);
+ 	struct ib_block_iter biter;
+ 	unsigned int hp_idx = 0;
  
-+	err = idpf_send_get_rx_ptype_msg(vport);
-+	if (err)
-+		goto unwind_vports;
-+
- 	index = vport->idx;
- 	vport_config = adapter->vport_config[index];
- 
-@@ -1512,15 +1516,11 @@ void idpf_init_task(struct work_struct *work)
- 	err = idpf_check_supported_desc_ids(vport);
- 	if (err) {
- 		dev_err(&pdev->dev, "failed to get required descriptor ids\n");
--		goto cfg_netdev_err;
-+		goto unwind_vports;
- 	}
- 
- 	if (idpf_cfg_netdev(vport))
--		goto cfg_netdev_err;
+-	ibdev_dbg(&dev->ibdev, "hp_cnt[%u], pages_in_hp[%u]\n",
+-		  hp_cnt, pages_in_hp);
 -
--	err = idpf_send_get_rx_ptype_msg(vport);
--	if (err)
--		goto handle_err;
-+		goto unwind_vports;
+ 	rdma_umem_for_each_dma_block(umem, &biter, BIT(hp_shift))
+ 		page_list[hp_idx++] = rdma_block_iter_dma_address(&biter);
  
- 	/* Once state is put into DOWN, driver is ready for dev_open */
- 	np = netdev_priv(vport->netdev);
-@@ -1558,11 +1558,6 @@ void idpf_init_task(struct work_struct *work)
- 
- 	return;
- 
--handle_err:
--	idpf_decfg_netdev(vport);
--cfg_netdev_err:
--	idpf_vport_rel(vport);
--	adapter->vports[index] = NULL;
- unwind_vports:
- 	if (default_vport) {
- 		for (index = 0; index < adapter->max_vports; index++) {
 -- 
 2.51.0
 
