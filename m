@@ -1,54 +1,54 @@
-Return-Path: <stable+bounces-209594-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209171-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
-	by mail.lfdr.de (Postfix) with ESMTPS id 9413BD26DFE
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:52:30 +0100 (CET)
+Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
+	by mail.lfdr.de (Postfix) with ESMTPS id 047F9D267A4
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:33:55 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by tor.lore.kernel.org (Postfix) with ESMTP id B22E73091BF8
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:43 +0000 (UTC)
+	by sto.lore.kernel.org (Postfix) with ESMTP id 470B1302DD43
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:26:30 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 700883BF31F;
-	Thu, 15 Jan 2026 17:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 333C43BF306;
+	Thu, 15 Jan 2026 17:25:36 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Rr8Bz0Nh"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="l+YQ9bQ+"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2EE322D73AB;
-	Thu, 15 Jan 2026 17:45:41 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id E89103A0E9A;
+	Thu, 15 Jan 2026 17:25:35 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499141; cv=none; b=YczYuS0TBl+7FY1jbI6WD/qJjC05qT0urCmUxVjTjijDgv/vTRGpb6RzbFtjkSGjBv7CJsGJkhmhG5qalSnBMIh8FJZd7CvVJmgTmvPKJ2U9q/W+SNZ9gSRVFCK15mpDESPDo/h7BRxdPUrHRi6zuUGdTUD3bLXrpIFHVQWBLXI=
+	t=1768497936; cv=none; b=pIwqKVJqbcjSjayXSaX/jOyVHySdV+3aZEHIXG0eVP5ZUfbvFs7Fgf00QG4peh0FPmqCDvyKPX4yRNDtFxqA22EihQCxsg6ADBKKg1w/gEZ026EZcsJcMawnwyRrgknL5Lf2/BaXiSfFYFY9DfJn6Xh8itzsZQalEzzTBS/l+Dk=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499141; c=relaxed/simple;
-	bh=WT0Bravw6lEAnBC4QgEJ9AaqshdV7Ql7KKCkE7VoPYU=;
+	s=arc-20240116; t=1768497936; c=relaxed/simple;
+	bh=2wMi27ImmayVSaTbtrpotrjBBUswQJD3bv4ehfLHZ+4=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=raKMyRy2hkM7CV9/LLVIPEpDhGxVIOr4K//RdLIEqSfH2kBZP8lpW5uMUvZ+dWhml97yhnRzgWYbx1khbREodazJo4zU6ax8hvt3Boa/QpfRXYh0ZkgARm0m079jELCHii9tDwaW4DQW4D8crDnJn1hILbngWAMYl5XB87SjHAc=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Rr8Bz0Nh; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE76DC116D0;
-	Thu, 15 Jan 2026 17:45:40 +0000 (UTC)
+	 MIME-Version; b=OfPyuThlYelwTqNehrHf5hAAuvb804FgO/Fdtb3/KTpskVl59REIdQP67xVw1b5eXX+KJAeVIKXHDvAa/HmO+GXOZZGeoT0JcWWWM+4YgAiTguc6Rw5icX3AZUBVZyo7ayQax/wC2dq2FnwxW8Kh1h1N4l6QWtSF0QqM7w26SQ0=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=l+YQ9bQ+; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73DC8C116D0;
+	Thu, 15 Jan 2026 17:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499141;
-	bh=WT0Bravw6lEAnBC4QgEJ9AaqshdV7Ql7KKCkE7VoPYU=;
+	s=korg; t=1768497935;
+	bh=2wMi27ImmayVSaTbtrpotrjBBUswQJD3bv4ehfLHZ+4=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=Rr8Bz0NhC1bCNpbnYwKj78k6lJwpZhWMt+rnGivB5QEO2r2msKtiHqGKBpvB/3IMm
-	 ae3wZAOAN0nwBPH/SjPH6ju/j8Kw+ny3k78+c1meyGBHYWfp/e9TAwYfJRAqd3RC06
-	 AfvBJoRRjImVUvVuelPql6/XSj32DyUH7gqZicO0=
+	b=l+YQ9bQ+XlBDvE1d6i4kinFyxFkxeqDspOIuLuvyV69pThp5c6CsQ+zNi/zP3iCyp
+	 Y16ufuO6phKxveweQTfnXPzu3vOYR7EkhwqGaDjMqTzLBkKJScd4Y7Wteuw7zGoJp6
+	 81ZUEisE4R9PZ51PK0BTPpLifJqGi9ca7iLUE824=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Trond Myklebust <trond.myklebust@hammerspace.com>,
-	Anna Schumaker <Anna.Schumaker@Netapp.com>,
+	Jinhui Guo <guojinhui.liam@bytedance.com>,
+	Corey Minyard <corey@minyard.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 121/451] NFS: Fix open coded versions of nfs_set_cache_invalid()
+Subject: [PATCH 5.15 256/554] ipmi: Fix the race between __scan_channels() and deliver_response()
 Date: Thu, 15 Jan 2026 17:45:22 +0100
-Message-ID: <20260115164235.301506503@linuxfoundation.org>
+Message-ID: <20260115164255.501457202@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,138 +60,92 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Jinhui Guo <guojinhui.liam@bytedance.com>
 
-[ Upstream commit ac46b3d768e4c2754f7b191b81e1bea582e11907 ]
+[ Upstream commit 936750fdba4c45e13bbd17f261bb140dd55f5e93 ]
 
-nfs_set_cache_invalid() has code to handle delegations, and other
-optimisations, so let's use it when appropriate.
+The race window between __scan_channels() and deliver_response() causes
+the parameters of some channels to be set to 0.
 
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
-Stable-dep-of: bd4928ec799b ("NFS: Avoid changing nlink when file removes and attribute updates race")
+1.[CPUA] __scan_channels() issues an IPMI request and waits with
+         wait_event() until all channels have been scanned.
+         wait_event() internally calls might_sleep(), which might
+         yield the CPU. (Moreover, an interrupt can preempt
+         wait_event() and force the task to yield the CPU.)
+2.[CPUB] deliver_response() is invoked when the CPU receives the
+         IPMI response. After processing a IPMI response,
+         deliver_response() directly assigns intf->wchannels to
+         intf->channel_list and sets intf->channels_ready to true.
+         However, not all channels are actually ready for use.
+3.[CPUA] Since intf->channels_ready is already true, wait_event()
+         never enters __wait_event(). __scan_channels() immediately
+         clears intf->null_user_handler and exits.
+4.[CPUB] Once intf->null_user_handler is set to NULL, deliver_response()
+         ignores further IPMI responses, leaving the remaining
+	 channels zero-initialized and unusable.
+
+CPUA                             CPUB
+-------------------------------  -----------------------------
+__scan_channels()
+ intf->null_user_handler
+       = channel_handler;
+ send_channel_info_cmd(intf,
+       0);
+ wait_event(intf->waitq,
+       intf->channels_ready);
+  do {
+   might_sleep();
+                                 deliver_response()
+                                  channel_handler()
+                                   intf->channel_list =
+				         intf->wchannels + set;
+                                   intf->channels_ready = true;
+                                   send_channel_info_cmd(intf,
+                                         intf->curr_channel);
+   if (condition)
+    break;
+   __wait_event(wq_head,
+          condition);
+  } while(0)
+ intf->null_user_handler
+       = NULL;
+                                 deliver_response()
+                                  if (!msg->user)
+                                   if (intf->null_user_handler)
+                                    rv = -EINVAL;
+                                  return rv;
+-------------------------------  -----------------------------
+
+Fix the race between __scan_channels() and deliver_response() by
+deferring both the assignment intf->channel_list = intf->wchannels
+and the flag intf->channels_ready = true until all channels have
+been successfully scanned or until the IPMI request has failed.
+
+Signed-off-by: Jinhui Guo <guojinhui.liam@bytedance.com>
+Message-ID: <20250930074239.2353-2-guojinhui.liam@bytedance.com>
+Signed-off-by: Corey Minyard <corey@minyard.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/dir.c    | 20 ++++++++++----------
- fs/nfs/inode.c  |  4 ++--
- fs/nfs/unlink.c |  6 +++---
- fs/nfs/write.c  |  8 ++++----
- 4 files changed, 19 insertions(+), 19 deletions(-)
+ drivers/char/ipmi/ipmi_msghandler.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/fs/nfs/dir.c b/fs/nfs/dir.c
-index e38ebe8bfb169..62a614f4a64b5 100644
---- a/fs/nfs/dir.c
-+++ b/fs/nfs/dir.c
-@@ -82,8 +82,9 @@ static struct nfs_open_dir_context *alloc_nfs_open_dir_context(struct inode *dir
- 		spin_lock(&dir->i_lock);
- 		if (list_empty(&nfsi->open_files) &&
- 		    (nfsi->cache_validity & NFS_INO_DATA_INVAL_DEFER))
--			nfsi->cache_validity |= NFS_INO_INVALID_DATA |
--				NFS_INO_REVAL_FORCED;
-+			nfs_set_cache_invalid(dir,
-+					      NFS_INO_INVALID_DATA |
-+						      NFS_INO_REVAL_FORCED);
- 		list_add(&ctx->list, &nfsi->open_files);
- 		spin_unlock(&dir->i_lock);
- 		return ctx;
-@@ -1500,10 +1501,9 @@ static void nfs_drop_nlink(struct inode *inode)
- 	if (inode->i_nlink > 0)
- 		drop_nlink(inode);
- 	NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
--	NFS_I(inode)->cache_validity |= NFS_INO_INVALID_CHANGE
--		| NFS_INO_INVALID_CTIME
--		| NFS_INO_INVALID_OTHER
--		| NFS_INO_REVAL_FORCED;
-+	nfs_set_cache_invalid(
-+		inode, NFS_INO_INVALID_CHANGE | NFS_INO_INVALID_CTIME |
-+			       NFS_INO_INVALID_OTHER | NFS_INO_REVAL_FORCED);
- 	spin_unlock(&inode->i_lock);
- }
+diff --git a/drivers/char/ipmi/ipmi_msghandler.c b/drivers/char/ipmi/ipmi_msghandler.c
+index af563ee827aa..98ccba19292a 100644
+--- a/drivers/char/ipmi/ipmi_msghandler.c
++++ b/drivers/char/ipmi/ipmi_msghandler.c
+@@ -3292,8 +3292,6 @@ channel_handler(struct ipmi_smi *intf, struct ipmi_recv_msg *msg)
+ 			intf->channels_ready = true;
+ 			wake_up(&intf->waitq);
+ 		} else {
+-			intf->channel_list = intf->wchannels + set;
+-			intf->channels_ready = true;
+ 			rv = send_channel_info_cmd(intf, intf->curr_channel);
+ 		}
  
-@@ -1515,7 +1515,7 @@ static void nfs_dentry_iput(struct dentry *dentry, struct inode *inode)
- {
- 	if (S_ISDIR(inode->i_mode))
- 		/* drop any readdir cache as it could easily be old */
--		NFS_I(inode)->cache_validity |= NFS_INO_INVALID_DATA;
-+		nfs_set_cache_invalid(inode, NFS_INO_INVALID_DATA);
- 
- 	if (dentry->d_flags & DCACHE_NFSFS_RENAMED) {
- 		nfs_complete_unlink(dentry, inode);
-@@ -2290,9 +2290,9 @@ int nfs_rename(struct inode *old_dir, struct dentry *old_dentry,
- 	if (error == 0) {
- 		spin_lock(&old_inode->i_lock);
- 		NFS_I(old_inode)->attr_gencount = nfs_inc_attr_generation_counter();
--		NFS_I(old_inode)->cache_validity |= NFS_INO_INVALID_CHANGE
--			| NFS_INO_INVALID_CTIME
--			| NFS_INO_REVAL_FORCED;
-+		nfs_set_cache_invalid(old_inode, NFS_INO_INVALID_CHANGE |
-+							 NFS_INO_INVALID_CTIME |
-+							 NFS_INO_REVAL_FORCED);
- 		spin_unlock(&old_inode->i_lock);
- 	}
- out:
-diff --git a/fs/nfs/inode.c b/fs/nfs/inode.c
-index e04739bf59261..6b800df1df29e 100644
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -1065,8 +1065,8 @@ void nfs_inode_attach_open_context(struct nfs_open_context *ctx)
- 	spin_lock(&inode->i_lock);
- 	if (list_empty(&nfsi->open_files) &&
- 	    (nfsi->cache_validity & NFS_INO_DATA_INVAL_DEFER))
--		nfsi->cache_validity |= NFS_INO_INVALID_DATA |
--			NFS_INO_REVAL_FORCED;
-+		nfs_set_cache_invalid(inode, NFS_INO_INVALID_DATA |
-+						     NFS_INO_REVAL_FORCED);
- 	list_add_tail_rcu(&ctx->list, &nfsi->open_files);
- 	spin_unlock(&inode->i_lock);
- }
-diff --git a/fs/nfs/unlink.c b/fs/nfs/unlink.c
-index b27ebdccef703..5fa11e1aca4c2 100644
---- a/fs/nfs/unlink.c
-+++ b/fs/nfs/unlink.c
-@@ -500,9 +500,9 @@ nfs_sillyrename(struct inode *dir, struct dentry *dentry)
- 		nfs_set_verifier(dentry, nfs_save_change_attribute(dir));
- 		spin_lock(&inode->i_lock);
- 		NFS_I(inode)->attr_gencount = nfs_inc_attr_generation_counter();
--		NFS_I(inode)->cache_validity |= NFS_INO_INVALID_CHANGE
--			| NFS_INO_INVALID_CTIME
--			| NFS_INO_REVAL_FORCED;
-+		nfs_set_cache_invalid(inode, NFS_INO_INVALID_CHANGE |
-+						     NFS_INO_INVALID_CTIME |
-+						     NFS_INO_REVAL_FORCED);
- 		spin_unlock(&inode->i_lock);
- 		d_move(dentry, sdentry);
- 		break;
-diff --git a/fs/nfs/write.c b/fs/nfs/write.c
-index 0b05a40a21f3d..a95a747fbc8df 100644
---- a/fs/nfs/write.c
-+++ b/fs/nfs/write.c
-@@ -260,9 +260,9 @@ static void nfs_set_pageerror(struct address_space *mapping)
- 	nfs_zap_mapping(mapping->host, mapping);
- 	/* Force file size revalidation */
- 	spin_lock(&inode->i_lock);
--	NFS_I(inode)->cache_validity |= NFS_INO_REVAL_FORCED |
--					NFS_INO_REVAL_PAGECACHE |
--					NFS_INO_INVALID_SIZE;
-+	nfs_set_cache_invalid(inode, NFS_INO_REVAL_FORCED |
-+					     NFS_INO_REVAL_PAGECACHE |
-+					     NFS_INO_INVALID_SIZE);
- 	spin_unlock(&inode->i_lock);
- }
- 
-@@ -1614,7 +1614,7 @@ static int nfs_writeback_done(struct rpc_task *task,
- 	/* Deal with the suid/sgid bit corner case */
- 	if (nfs_should_remove_suid(inode)) {
- 		spin_lock(&inode->i_lock);
--		NFS_I(inode)->cache_validity |= NFS_INO_INVALID_OTHER;
-+		nfs_set_cache_invalid(inode, NFS_INO_INVALID_OTHER);
- 		spin_unlock(&inode->i_lock);
- 	}
- 	return 0;
 -- 
 2.51.0
 
