@@ -1,57 +1,55 @@
-Return-Path: <stable+bounces-209572-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209154-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id C1ECCD2786F
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:10 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
+	by mail.lfdr.de (Postfix) with ESMTPS id F3879D26976
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:39:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 6BA81326F31E
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:44:39 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 02F4C30B4728
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:25:21 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 043CD274FE3;
-	Thu, 15 Jan 2026 17:44:39 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id B39D92C027B;
+	Thu, 15 Jan 2026 17:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="dyDrm3ZH"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="d7ZBqMVe"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id B8A202F619D;
-	Thu, 15 Jan 2026 17:44:38 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 770AF3BF2FF;
+	Thu, 15 Jan 2026 17:24:47 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499078; cv=none; b=jeDdHqy3CQbhIMUTp+B4oiUpFzaEL0uMQAY/yGcJ5aB43Gk/9CFK7a0id0yqg4yKwYLqEwiGEhLPKWTqmtYsXyHct90pO/wZ6w4YDFY3XU7X+c0rL8VvL2LU0eQe0vtPkAAUkGijCNITzG5LNFDLigCAavq0+b6Sr9iyT1Q4Wgs=
+	t=1768497887; cv=none; b=HDvHGgAOWvUr2+rHCpNMna4yulFGvA1nXquhWpIry6FNuB1aR3RBR0n3WW1V4s8fjB4Ze4rDdzcaDTBjp0/Lg90CPANXfVx/7viq34ooXUGnQlCBhEGQXSSrAWuQolwbrHINDAhiwyxDk2gNyA+YLpqa+bYaZdo/+e3MSCbdGXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499078; c=relaxed/simple;
-	bh=nnKlkzsZn1y4IZwWFUOlKgLB4UwrBAtHcayYxsX752w=;
+	s=arc-20240116; t=1768497887; c=relaxed/simple;
+	bh=jl4gEiGoL7PMsr4yxmYsDVnpYN2MjTt7Re1SZaB0q1Q=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VAAu5fO0JQ2jQnSyJ2zLNkXuxjLtRco1lgY2+3QDZgnHkq5nFjt+E7bpXuJAv3mpCkyz86+CfwYcIhJ4aOe70foqZOJOFeW+qomgFK8tBVCMZaIID+HKBxUspqK7kZmtePzh794RzG/fa+crmfpOf4HlKnurxKvcylBbRpEZaZo=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=dyDrm3ZH; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4493CC16AAE;
-	Thu, 15 Jan 2026 17:44:38 +0000 (UTC)
+	 MIME-Version; b=h4LRy5nV7GRE6TBhib4Umacf3czMaNm/Oggc/FDLCD/u/6q78yisdXQ4Z9zZgXI8P7aE911mZv2Hi5azOwpBvyA+5PwF4tNAFXGOfBlILqZCBTg50eefA5N5aMAFGyc2AAi+eJA2hRvcsi23KoAbBxMpnZaceOooyXKEDOOmdAw=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=d7ZBqMVe; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7E4FC116D0;
+	Thu, 15 Jan 2026 17:24:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499078;
-	bh=nnKlkzsZn1y4IZwWFUOlKgLB4UwrBAtHcayYxsX752w=;
+	s=korg; t=1768497887;
+	bh=jl4gEiGoL7PMsr4yxmYsDVnpYN2MjTt7Re1SZaB0q1Q=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=dyDrm3ZHizJXCRXKmaTBySAJL4v+9gZ6RH3JjpxuL7N10lsta3nUlgRyLNnYohQ/l
-	 mv1X978yMOyU7vNE39tI267PEiNRdd1MWiKpjldD5QLWircGoDzWWwYwBTpQ26PsNZ
-	 tvdGfq88TsRQTtjpxikJQTe1OGeYO2eGgTlwBLpw=
+	b=d7ZBqMVeQWovGJKBq4Yr+cKG+B4V8KKDH0Jz4gsUC+yW0b5sz6AsE20Z6J/TFCpfG
+	 hjsEkZSffOWPySujMdXCpFCp5IlQgR8XmU/TzHf4Us1FOP6Kt6TRtXPrO9yhsx4LAL
+	 dFB9rkUISGjba43WlPmhHvq9VPdnFUsq8c8VH400=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Luca Ceresoli <luca.ceresoli@bootlin.com>,
-	"Daniel Thompson (RISCstar)" <danielt@kernel.org>,
-	Herve Codina <herve.codina@bootlin.com>,
-	Alexander Sverdlin <alexander.sverdlin@siemens.com>,
-	Lee Jones <lee@kernel.org>,
+	Daniil Tatianin <d-tatianin@yandex-team.ru>,
+	Andrew Lunn <andrew@lunn.ch>,
+	"David S. Miller" <davem@davemloft.net>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 101/451] backlight: led-bl: Add devlink to supplier LEDs
-Date: Thu, 15 Jan 2026 17:45:02 +0100
-Message-ID: <20260115164234.572722593@linuxfoundation.org>
+Subject: [PATCH 5.15 237/554] net/ethtool/ioctl: split ethtool_get_phy_stats into multiple helpers
+Date: Thu, 15 Jan 2026 17:45:03 +0100
+Message-ID: <20260115164254.823646369@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -63,104 +61,170 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Daniil Tatianin <d-tatianin@yandex-team.ru>
 
-[ Upstream commit 9341d6698f4cfdfc374fb6944158d111ebe16a9d ]
+[ Upstream commit 201ed315f9676809cd5b20a39206e964106d4f27 ]
 
-LED Backlight is a consumer of one or multiple LED class devices, but
-devlink is currently unable to create correct supplier-producer links when
-the supplier is a class device. It creates instead a link where the
-supplier is the parent of the expected device.
+So that it's easier to follow and make sense of the branching and
+various conditions.
 
-One consequence is that removal order is not correctly enforced.
+Stats retrieval has been split into two separate functions
+ethtool_get_phy_stats_phydev & ethtool_get_phy_stats_ethtool.
+The former attempts to retrieve the stats using phydev & phy_ops, while
+the latter uses ethtool_ops.
 
-Issues happen for example with the following sections in a device tree
-overlay:
+Actual n_stats validation & array allocation has been moved into a new
+ethtool_vzalloc_stats_array helper.
 
-    // An LED driver chip
-    pca9632@62 {
-        compatible = "nxp,pca9632";
-        reg = <0x62>;
+This also fixes a potential NULL dereference of
+ops->get_ethtool_phy_stats where it was getting called in an else branch
+unconditionally without making sure it was actually present.
 
-	// ...
+Found by Linux Verification Center (linuxtesting.org) with the SVACE
+static analysis tool.
 
-        addon_led_pwm: led-pwm@3 {
-            reg = <3>;
-            label = "addon:led:pwm";
-        };
-    };
-
-    backlight-addon {
-        compatible = "led-backlight";
-        leds = <&addon_led_pwm>;
-        brightness-levels = <255>;
-        default-brightness-level = <255>;
-    };
-
-In this example, the devlink should be created between the backlight-addon
-(consumer) and the pca9632@62 (supplier). Instead it is created between the
-backlight-addon (consumer) and the parent of the pca9632@62, which is
-typically the I2C bus adapter.
-
-On removal of the above overlay, the LED driver can be removed before the
-backlight device, resulting in:
-
-    Unable to handle kernel NULL pointer dereference at virtual address 0000000000000010
-    ...
-    Call trace:
-     led_put+0xe0/0x140
-     devm_led_release+0x6c/0x98
-
-Another way to reproduce the bug without any device tree overlays is
-unbinding the LED class device (pca9632@62) before unbinding the consumer
-(backlight-addon):
-
-  echo 11-0062 >/sys/bus/i2c/drivers/leds-pca963x/unbind
-  echo ...backlight-dock >/sys/bus/platform/drivers/led-backlight/unbind
-
-Fix by adding a devlink between the consuming led-backlight device and the
-supplying LED device, as other drivers and subsystems do as well.
-
-Fixes: ae232e45acf9 ("backlight: add led-backlight driver")
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Daniel Thompson (RISCstar) <danielt@kernel.org>
-Reviewed-by: Herve Codina <herve.codina@bootlin.com>
-Tested-by: Alexander Sverdlin <alexander.sverdlin@siemens.com>
-Link: https://patch.msgid.link/20250519-led-backlight-add-devlink-to-supplier-class-device-v6-1-845224aeb2ce@bootlin.com
-Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Daniil Tatianin <d-tatianin@yandex-team.ru>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 7b07be1ff1cb ("ethtool: Avoid overflowing userspace buffer on stats query")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/led_bl.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/ethtool/ioctl.c | 102 ++++++++++++++++++++++++++++++--------------
+ 1 file changed, 69 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/video/backlight/led_bl.c b/drivers/video/backlight/led_bl.c
-index 0f4e4c3847b75..83e8d89cc4857 100644
---- a/drivers/video/backlight/led_bl.c
-+++ b/drivers/video/backlight/led_bl.c
-@@ -209,6 +209,19 @@ static int led_bl_probe(struct platform_device *pdev)
- 		return PTR_ERR(priv->bl_dev);
- 	}
+diff --git a/net/ethtool/ioctl.c b/net/ethtool/ioctl.c
+index 2ffd52d886cfc..33b5c3d8f2f7f 100644
+--- a/net/ethtool/ioctl.c
++++ b/net/ethtool/ioctl.c
+@@ -2056,23 +2056,8 @@ static int ethtool_get_stats(struct net_device *dev, void __user *useraddr)
+ 	return ret;
+ }
  
-+	for (i = 0; i < priv->nb_leds; i++) {
-+		struct device_link *link;
+-static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
++static int ethtool_vzalloc_stats_array(int n_stats, u64 **data)
+ {
+-	const struct ethtool_phy_ops *phy_ops = ethtool_phy_ops;
+-	const struct ethtool_ops *ops = dev->ethtool_ops;
+-	struct phy_device *phydev = dev->phydev;
+-	struct ethtool_stats stats;
+-	u64 *data;
+-	int ret, n_stats;
+-
+-	if (!phydev && (!ops->get_ethtool_phy_stats || !ops->get_sset_count))
+-		return -EOPNOTSUPP;
+-
+-	if (phydev && !ops->get_ethtool_phy_stats &&
+-	    phy_ops && phy_ops->get_sset_count)
+-		n_stats = phy_ops->get_sset_count(phydev);
+-	else
+-		n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
+ 	if (n_stats < 0)
+ 		return n_stats;
+ 	if (n_stats > S32_MAX / sizeof(u64))
+@@ -2080,31 +2065,82 @@ static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
+ 	if (WARN_ON_ONCE(!n_stats))
+ 		return -EOPNOTSUPP;
+ 
++	*data = vzalloc(array_size(n_stats, sizeof(u64)));
++	if (!*data)
++		return -ENOMEM;
 +
-+		link = device_link_add(&pdev->dev, priv->leds[i]->dev->parent,
-+				       DL_FLAG_AUTOREMOVE_CONSUMER);
-+		if (!link) {
-+			dev_err(&pdev->dev, "Failed to add devlink (consumer %s, supplier %s)\n",
-+				dev_name(&pdev->dev), dev_name(priv->leds[i]->dev->parent));
-+			backlight_device_unregister(priv->bl_dev);
-+			return -EINVAL;
-+		}
++	return 0;
++}
++
++static int ethtool_get_phy_stats_phydev(struct phy_device *phydev,
++					 struct ethtool_stats *stats,
++					 u64 **data)
++ {
++	const struct ethtool_phy_ops *phy_ops = ethtool_phy_ops;
++	int n_stats, ret;
++
++	if (!phy_ops || !phy_ops->get_sset_count || !phy_ops->get_stats)
++		return -EOPNOTSUPP;
++
++	n_stats = phy_ops->get_sset_count(phydev);
++
++	ret = ethtool_vzalloc_stats_array(n_stats, data);
++	if (ret)
++		return ret;
++
++	stats->n_stats = n_stats;
++	return phy_ops->get_stats(phydev, stats, *data);
++}
++
++static int ethtool_get_phy_stats_ethtool(struct net_device *dev,
++					  struct ethtool_stats *stats,
++					  u64 **data)
++{
++	const struct ethtool_ops *ops = dev->ethtool_ops;
++	int n_stats, ret;
++
++	if (!ops || !ops->get_sset_count || ops->get_ethtool_phy_stats)
++		return -EOPNOTSUPP;
++
++	n_stats = ops->get_sset_count(dev, ETH_SS_PHY_STATS);
++
++	ret = ethtool_vzalloc_stats_array(n_stats, data);
++	if (ret)
++		return ret;
++
++	stats->n_stats = n_stats;
++	ops->get_ethtool_phy_stats(dev, stats, *data);
++
++	return 0;
++}
++
++static int ethtool_get_phy_stats(struct net_device *dev, void __user *useraddr)
++{
++	struct phy_device *phydev = dev->phydev;
++	struct ethtool_stats stats;
++	u64 *data = NULL;
++	int ret = -EOPNOTSUPP;
++
+ 	if (copy_from_user(&stats, useraddr, sizeof(stats)))
+ 		return -EFAULT;
+ 
+-	stats.n_stats = n_stats;
++	if (phydev)
++		ret = ethtool_get_phy_stats_phydev(phydev, &stats, &data);
+ 
+-	data = vzalloc(array_size(n_stats, sizeof(u64)));
+-	if (!data)
+-		return -ENOMEM;
++	if (ret == -EOPNOTSUPP)
++		ret = ethtool_get_phy_stats_ethtool(dev, &stats, &data);
+ 
+-	if (phydev && !ops->get_ethtool_phy_stats &&
+-		phy_ops && phy_ops->get_stats) {
+-		ret = phy_ops->get_stats(phydev, &stats, data);
+-		if (ret < 0)
+-			goto out;
+-	} else {
+-		ops->get_ethtool_phy_stats(dev, &stats, data);
+-	}
++	if (ret)
++		goto out;
+ 
+-	ret = -EFAULT;
+-	if (copy_to_user(useraddr, &stats, sizeof(stats)))
++	if (copy_to_user(useraddr, &stats, sizeof(stats))) {
++		ret = -EFAULT;
+ 		goto out;
 +	}
 +
- 	for (i = 0; i < priv->nb_leds; i++) {
- 		mutex_lock(&priv->leds[i]->led_access);
- 		led_sysfs_disable(priv->leds[i]);
+ 	useraddr += sizeof(stats);
+-	if (copy_to_user(useraddr, data, array_size(n_stats, sizeof(u64))))
+-		goto out;
+-	ret = 0;
++	if (copy_to_user(useraddr, data, array_size(stats.n_stats, sizeof(u64))))
++		ret = -EFAULT;
+ 
+  out:
+ 	vfree(data);
 -- 
 2.51.0
 
