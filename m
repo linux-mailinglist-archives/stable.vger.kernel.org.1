@@ -1,58 +1,54 @@
-Return-Path: <stable+bounces-209251-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209705-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 32A2ED269F2
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:41:37 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [IPv6:2600:3c04:e001:36c::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 68531D273FB
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:14:19 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C0FEF30AE385
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:32:43 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id 95FDC3118280
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:59:16 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 67AB73D1CD5;
-	Thu, 15 Jan 2026 17:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 35BF93BF2FE;
+	Thu, 15 Jan 2026 17:50:57 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="uAI2Qtlp"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="aJmkM/ML"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 2A5391A5B9E;
-	Thu, 15 Jan 2026 17:29:24 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id EDC253ED10B;
+	Thu, 15 Jan 2026 17:50:56 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498164; cv=none; b=D4p4WPJFVU0wGwYxAHe7SLXNKDOlI7wqOa4B6h63tJcyO3wtsQ2gXajw2WpgQq9134ypAmw/CIJXAQzOMn0gtXPnwWg1EG8J/JfXnj/c0QXjUCGqklnhamcuOyxdL0pWUNVSIXUt8ENUebA6H8NVowqEt8j7n50BsBQ6OXODTyw=
+	t=1768499457; cv=none; b=XBNJ6jNwf3UKtKAFdXHyx9h/UcFMACfmjbrEHZZ55ozyWjl7VOmXuA8KWMzqvu60F3HYxac5oHIIBcJVxe8LbE0Fk7uJXjbHN4BzYuSAfYF0b3E0GL6rSCfrY721p+wa4tj2qgwOkIgVnYCCSAb+ju7GmM59uYG6JLl1e/efx5k=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498164; c=relaxed/simple;
-	bh=tbWKJ5f2Q46EoqLHA1DCtuXhnk8jQAnBfkdjYlu0NAI=;
+	s=arc-20240116; t=1768499457; c=relaxed/simple;
+	bh=5TUFtGb9oocDGWp0/YZ9m+goDCC88jauqpDslRpK6fI=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=CbwAobyBah2er8rmH4N0BUmfmpuzkgHa5bmUV0cG0zKqgegJsTIxHjJSFfiLlrQt3QhrsQhms82B3uiOUBTJhh46jEtrfIRe0fVLDtcm0nyCbYhIS2LO2RbWdVhiDvbC2mTRwcwuRLa/3zEi+/f46klorUjUQW0tk0U1lTZSrOE=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=uAI2Qtlp; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AACDEC116D0;
-	Thu, 15 Jan 2026 17:29:23 +0000 (UTC)
+	 MIME-Version; b=aBHHQZuy81KfAMYU+PjnXE1P1oRFPz3u5xsRm++xF9REibNRBID7yheet+fEbLxNfLg0u46grqV+XTspNU0OiOjDmH3k6yCiyf0ESp19u+nTYH1WOizKKx7rdDc5paEU5tF64fl0oMYpeVbkSey9yiWneWq8/0kJePXw6Qepu24=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=aJmkM/ML; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F611C16AAE;
+	Thu, 15 Jan 2026 17:50:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498164;
-	bh=tbWKJ5f2Q46EoqLHA1DCtuXhnk8jQAnBfkdjYlu0NAI=;
+	s=korg; t=1768499456;
+	bh=5TUFtGb9oocDGWp0/YZ9m+goDCC88jauqpDslRpK6fI=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=uAI2Qtlpj9YD+h0M3/KEqcrRiLV1oLBkdRI/jbfG2KZJ9NiD9UZ/XC6FXoIxUn6Qj
-	 H51fHrp5zkho7o7cvLROmoUi/aWnLrKho4YAxJqukOHgdeLKvTOxddOUVJmveKoCwM
-	 bblLlPmcfyP/VMKtdFOwz5FohGUGvOQQ2Fe71jyU=
+	b=aJmkM/MLa1AjOvp7P5DLampd8hdsE6gkG2tBTaxLFRNHdRxYD3vTmEaNpsUWQObxR
+	 p8QQfm76MciZIrYzqDx4zXTOrShU5XKyf3+ZVC3MudGx6b65JZpGyRESNrABy48TXR
+	 kKffAyh6oLUpUZpQ0GSQn5glVFA3JvzmhQ0rmQ6w=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Grzegorz Nitka <grzegorz.nitka@intel.com>,
-	Jacob Keller <jacob.e.keller@intel.com>,
-	Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-	Przemyslaw Korba <przemyslaw.korba@intel.com>,
-	Tony Nguyen <anthony.l.nguyen@intel.com>,
-	Sasha Levin <sashal@kernel.org>,
-	Rinitha S <sx.rinitha@intel.com>
-Subject: [PATCH 5.15 335/554] i40e: fix scheduling in set_rx_mode
+	Haotian Zhang <vulab@iscas.ac.cn>,
+	Takashi Iwai <tiwai@suse.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 200/451] ALSA: vxpocket: Fix resource leak in vxpocket_probe error path
 Date: Thu, 15 Jan 2026 17:46:41 +0100
-Message-ID: <20260115164258.356764107@linuxfoundation.org>
+Message-ID: <20260115164238.135693066@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,55 +60,49 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Przemyslaw Korba <przemyslaw.korba@intel.com>
+From: Haotian Zhang <vulab@iscas.ac.cn>
 
-[ Upstream commit be43abc5514167cc129a8d8e9727b89b8e1d9719 ]
+[ Upstream commit 2a03b40deacbd293ac9aed0f9b11197dad54fe5f ]
 
-Add service task schedule to set_rx_mode.
-In some cases there are error messages printed out in PTP application
-(ptp4l):
+When vxpocket_config() fails, vxpocket_probe() returns the error code
+directly without freeing the sound card resources allocated by
+snd_card_new(), which leads to a memory leak.
 
-ptp4l[13848.762]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.825]: port 1 (ens2f3np3): received SYNC without timestamp
-ptp4l[13848.887]: port 1 (ens2f3np3): received SYNC without timestamp
+Add proper error handling to free the sound card and clear the
+allocation bit when vxpocket_config() fails.
 
-This happens when service task would not run immediately after
-set_rx_mode, and we need it for setup tasks. This service task checks, if
-PTP RX packets are hung in firmware, and propagate correct settings such
-as multicast address for IEEE 1588 Precision Time Protocol.
-RX timestamping depends on some of these filters set. Bug happens only
-with high PTP packets frequency incoming, and not every run since
-sometimes service task is being ran from a different place immediately
-after starting ptp4l.
-
-Fixes: 0e4425ed641f ("i40e: fix: do not sleep in netdev_ops")
-Reviewed-by: Grzegorz Nitka <grzegorz.nitka@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Przemyslaw Korba <przemyslaw.korba@intel.com>
-Tested-by: Rinitha S <sx.rinitha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 15b99ac17295 ("[PATCH] pcmcia: add return value to _config() functions")
+Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
+Link: https://patch.msgid.link/20251215042652.695-1-vulab@iscas.ac.cn
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_main.c | 1 +
- 1 file changed, 1 insertion(+)
+ sound/pcmcia/vx/vxpocket.c | 8 +++++++-
+ 1 file changed, 7 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_main.c b/drivers/net/ethernet/intel/i40e/i40e_main.c
-index 4c50e18707c7..8f9cbbfec63e 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_main.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_main.c
-@@ -2216,6 +2216,7 @@ static void i40e_set_rx_mode(struct net_device *netdev)
- 		vsi->flags |= I40E_VSI_FLAG_FILTER_CHANGED;
- 		set_bit(__I40E_MACVLAN_SYNC_PENDING, vsi->back->state);
- 	}
-+	i40e_service_event_schedule(vsi->back);
+diff --git a/sound/pcmcia/vx/vxpocket.c b/sound/pcmcia/vx/vxpocket.c
+index afd30a90c807..16081c51b938 100644
+--- a/sound/pcmcia/vx/vxpocket.c
++++ b/sound/pcmcia/vx/vxpocket.c
+@@ -320,7 +320,13 @@ static int vxpocket_probe(struct pcmcia_device *p_dev)
+ 
+ 	vxp->p_dev = p_dev;
+ 
+-	return vxpocket_config(p_dev);
++	err = vxpocket_config(p_dev);
++	if (err < 0) {
++		card_alloc &= ~(1 << i);
++		snd_card_free(card);
++		return err;
++	}
++	return 0;
  }
  
- /**
+ static void vxpocket_detach(struct pcmcia_device *link)
 -- 
 2.51.0
 
