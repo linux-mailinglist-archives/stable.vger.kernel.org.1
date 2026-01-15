@@ -1,53 +1,54 @@
-Return-Path: <stable+bounces-209794-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208874-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [172.232.135.74])
-	by mail.lfdr.de (Postfix) with ESMTPS id 26B04D27419
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:15:13 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 519EDD267B7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:34:06 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B43830EBE96
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:03:49 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 13A5631117A0
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:11:41 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id F35AA3D2FF0;
-	Thu, 15 Jan 2026 17:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id A1FD22FDC4D;
+	Thu, 15 Jan 2026 17:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="iHQK1fCo"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="A67HQDXb"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id A84233D2FE6;
-	Thu, 15 Jan 2026 17:55:09 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 62DE12820C6;
+	Thu, 15 Jan 2026 17:11:29 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499709; cv=none; b=BaroNF0j9W6OFyWP5u9V/njlyUBy6i8V1XSu3Uiqwy1C/+AA7fFpkRls9TqR8/ZHO1oIceKFbXgW4JWKs0grfUJm70rtQpdSrGhXuQrID8fR9WRdZJih1NZA7HplQJV76VNOEa/RYo9s1avMg823UU4+vuDgpIcaap0Bokzy/dM=
+	t=1768497089; cv=none; b=RUv6mtPeNDiDsDLcsPpsTzFJzmYs089W4szrigmQBXMSnF0Mo3xj7begvpKe0gf0GfXq4bYcVcSAdwMxkR0MJKuClBW9JsfS1Fo+iKx0ABMkTJdBpQbpDtpkoQ0yoNaj9jaOpgeaYMXkB+/mCnuDFvqHFTvwcryxHKRo3cW0Cwo=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499709; c=relaxed/simple;
-	bh=xB06htfO3t48LXMupJtuk3SRnNx6xW/o0waUuFiNMj0=;
+	s=arc-20240116; t=1768497089; c=relaxed/simple;
+	bh=q2dTxU3RXkJkvTGB7WtQVT9tKsMwUOU0mc5ILhvjo64=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=GLUTuTHoLSmHWmPSclHvArCLR44QNmrkNe+xDLQQfQdJFKZgOLta3oxcj3MLZGjjH0j5T5ILYg1Zpjmp2K3M87TbQVMTYxD/1vOQ1zmX8HIzgjjDChgYuitJrrriTTtfHhXzGICkm6HWPrppqn6Hi20BFmyCFyd/jWimWFo1RN0=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=iHQK1fCo; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 361BDC116D0;
-	Thu, 15 Jan 2026 17:55:09 +0000 (UTC)
+	 MIME-Version; b=KKIntY73wGNHiBJa8iAT6ISOox92nrr41xgN6YFdYJpBe0F9rZwM8cSw/sLG17CWWpB9IBUirDxDmHPy8Ssdh6xkSqMffKP8Up+OSf4QbPktzjBSRcRwwErHUqSEpqOUiwltiHPOrhz8n8OJS/FvJYpJRiKA9D1gcW/7hi3J2go=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=A67HQDXb; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD188C116D0;
+	Thu, 15 Jan 2026 17:11:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499709;
-	bh=xB06htfO3t48LXMupJtuk3SRnNx6xW/o0waUuFiNMj0=;
+	s=korg; t=1768497089;
+	bh=q2dTxU3RXkJkvTGB7WtQVT9tKsMwUOU0mc5ILhvjo64=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=iHQK1fCoqn5fLrI7dgT0oGcZs3tExk+oO7eikOARFqyREPR/IDcKKqbn6/UFMD2my
-	 2yIppfmkra/qytxabDy9ZFuInss83IPhqRYMd0CAfBVsYYCH+3ZdHHTY4f7A8jcViY
-	 XYLh9QPzcvIk5N27m0Tm7VSzUU9WTpd7jK+yaQfM=
+	b=A67HQDXbcRhx7SsYkaofuPnHTkoXuF0rVYaQR23ys1ztzyJMocW4XzuxiX5txpI4I
+	 4zkjfWs1NTF36rIB29jLGkL5YU1Kvo9SzS3Uj4j7m9uvgUQtMo/P9JQDPP/zvLng05
+	 MQv0XUpfNTVv1Z8T+PXuEbmtNBmbzXUtRX1waX64=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Haotian Zhang <vulab@iscas.ac.cn>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 322/451] media: cec: Fix debugfs leak on bus_register() failure
+	Fernando Fernandez Mancera <fmancera@suse.de>,
+	Florian Westphal <fw@strlen.de>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 33/72] netfilter: nft_synproxy: avoid possible data-race on update operation
 Date: Thu, 15 Jan 2026 17:48:43 +0100
-Message-ID: <20260115164242.548419887@linuxfoundation.org>
+Message-ID: <20260115164144.695739060@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
+References: <20260115164143.482647486@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,40 +60,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Haotian Zhang <vulab@iscas.ac.cn>
+From: Fernando Fernandez Mancera <fmancera@suse.de>
 
-commit c43bcd2b2aa3c2ca9d2433c3990ecbc2c47d10eb upstream.
+[ Upstream commit 36a3200575642846a96436d503d46544533bb943 ]
 
-In cec_devnode_init(), the debugfs directory created with
-debugfs_create_dir() is not removed if bus_register() fails.
-This leaves a stale "cec" entry in debugfs and prevents
-proper module reloading.
+During nft_synproxy eval we are reading nf_synproxy_info struct which
+can be modified on update operation concurrently. As nf_synproxy_info
+struct fits in 32 bits, use READ_ONCE/WRITE_ONCE annotations.
 
-Fix this by removing the debugfs directory in the error path.
-
-Fixes: a56960e8b406 ("[media] cec: add HDMI CEC framework (core)")
-Cc: stable@vger.kernel.org
-Signed-off-by: Haotian Zhang <vulab@iscas.ac.cn>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: ee394f96ad75 ("netfilter: nft_synproxy: add synproxy stateful object support")
+Signed-off-by: Fernando Fernandez Mancera <fmancera@suse.de>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-core.c |    1 +
- 1 file changed, 1 insertion(+)
+ net/netfilter/nft_synproxy.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/media/cec/core/cec-core.c
-+++ b/drivers/media/cec/core/cec-core.c
-@@ -433,6 +433,7 @@ static int __init cec_devnode_init(void)
+diff --git a/net/netfilter/nft_synproxy.c b/net/netfilter/nft_synproxy.c
+index a450f28a5ef60..0cc638553aef2 100644
+--- a/net/netfilter/nft_synproxy.c
++++ b/net/netfilter/nft_synproxy.c
+@@ -48,7 +48,7 @@ static void nft_synproxy_eval_v4(const struct nft_synproxy *priv,
+ 				 struct tcphdr *_tcph,
+ 				 struct synproxy_options *opts)
+ {
+-	struct nf_synproxy_info info = priv->info;
++	struct nf_synproxy_info info = READ_ONCE(priv->info);
+ 	struct net *net = nft_net(pkt);
+ 	struct synproxy_net *snet = synproxy_pernet(net);
+ 	struct sk_buff *skb = pkt->skb;
+@@ -79,7 +79,7 @@ static void nft_synproxy_eval_v6(const struct nft_synproxy *priv,
+ 				 struct tcphdr *_tcph,
+ 				 struct synproxy_options *opts)
+ {
+-	struct nf_synproxy_info info = priv->info;
++	struct nf_synproxy_info info = READ_ONCE(priv->info);
+ 	struct net *net = nft_net(pkt);
+ 	struct synproxy_net *snet = synproxy_pernet(net);
+ 	struct sk_buff *skb = pkt->skb;
+@@ -340,7 +340,7 @@ static void nft_synproxy_obj_update(struct nft_object *obj,
+ 	struct nft_synproxy *newpriv = nft_obj_data(newobj);
+ 	struct nft_synproxy *priv = nft_obj_data(obj);
  
- 	ret = bus_register(&cec_bus_type);
- 	if (ret < 0) {
-+		debugfs_remove_recursive(top_cec_dir);
- 		unregister_chrdev_region(cec_dev_t, CEC_NUM_DEVICES);
- 		pr_warn("cec: bus_register failed\n");
- 		return -EIO;
+-	priv->info = newpriv->info;
++	WRITE_ONCE(priv->info, newpriv->info);
+ }
+ 
+ static struct nft_object_type nft_synproxy_obj_type;
+-- 
+2.51.0
+
 
 
 
