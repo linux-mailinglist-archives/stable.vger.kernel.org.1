@@ -1,54 +1,56 @@
-Return-Path: <stable+bounces-208862-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209770-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sin.lore.kernel.org (sin.lore.kernel.org [104.64.211.4])
-	by mail.lfdr.de (Postfix) with ESMTPS id 7FD18D2635D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:16:03 +0100 (CET)
+Received: from sin.lore.kernel.org (sin.lore.kernel.org [IPv6:2600:3c15:e001:75::12fc:5321])
+	by mail.lfdr.de (Postfix) with ESMTPS id 35B2BD2768F
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:23:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sin.lore.kernel.org (Postfix) with ESMTP id 0818A302A859
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:10:56 +0000 (UTC)
+	by sin.lore.kernel.org (Postfix) with ESMTP id 7D7A23051DF8
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:02:50 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 2D0DC3ACA65;
-	Thu, 15 Jan 2026 17:10:55 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id E49643D5DA9;
+	Thu, 15 Jan 2026 17:54:03 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zNq+0GoC"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="T49EJuLU"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id DF96B2D781B;
-	Thu, 15 Jan 2026 17:10:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 37C883D5D97;
+	Thu, 15 Jan 2026 17:54:02 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768497054; cv=none; b=jQD8/RJitdfoNGwDL2fR7G1eFuu2ccrTTW4QKZDbXEo2Mljj9u6pfzYbgy8NEZjE5Q2atvWOZHS9LB0K/ED0wFSgF+l+I60q1HBTvE6emPzJ5yNOS1PSCMkEAfUPV3uvdGQxQC9q8PAd0X+tOcnbdRaOi/nuBwKBCMAKFt6IWVc=
+	t=1768499642; cv=none; b=Tu6fq/j0HOfjkBXp1+D6i/DANavQRs82nUJH9SL4LCo+QczsUCU/7zLRHqGUJhopbvdaGY0UKOnlbhmKPsHDwoZG2Sb/WlGj5d9XyvG4GMRM+Hs/zvgqgXCUMUylCMzKERkbHzz4yjWDcQZVaGEoSxE7ryqsNiClTEJwpouDeXs=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768497054; c=relaxed/simple;
-	bh=aRztpUxFCmHuC5ViI8MX5zlsYKECLMXnPmRnRsJJloc=;
+	s=arc-20240116; t=1768499642; c=relaxed/simple;
+	bh=/L7vZP43AEtsAh9Po48Hfd6RWqT4Fr3rizQbFfnIXBE=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=XVtbmDXa9s1x+se/Dtg7Jw9koFs1l+URk7Pwe++nAYrjF/XjC5gAjHmJci63ery9IJ3jTJyOMWY4pG2sVuva/uoRCIGGq6J7CcnXC7s+gN9t5FK+7nueRrH5PgOAgieCp6VFddvRf0m4mHM+wHv1mZ9KqhF30ZkPATZrmt9aaYI=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zNq+0GoC; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A91BC16AAE;
-	Thu, 15 Jan 2026 17:10:54 +0000 (UTC)
+	 MIME-Version; b=EDkwfp79PH4kt2oVj+D4eLC9jPqCEKpTV1/B7acMUHnGqJMntzzOK9aIomU7MQlH96k9j33ULCIJo6X5FvCSy7ngdqkuohiH4PUGwq2YfHX7vPDlLJ0275vg70Fqz/E+rU2oiuVpGNc0F8AkZxo/b/Is8urmuB29/giRPRZoMXo=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=T49EJuLU; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 757F2C16AAE;
+	Thu, 15 Jan 2026 17:54:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768497054;
-	bh=aRztpUxFCmHuC5ViI8MX5zlsYKECLMXnPmRnRsJJloc=;
+	s=korg; t=1768499641;
+	bh=/L7vZP43AEtsAh9Po48Hfd6RWqT4Fr3rizQbFfnIXBE=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zNq+0GoCs0KiCo18ohEZUXtkzhV9keMH/weJvhttsOUIjKPOYTnO4s2FAKnBNxiON
-	 8s+MlimIWGlAeOvU6jR7CoFkqFEMCsv7FmsGWQwS8QNGa4SNFzg36EQOEYoxy6JK19
-	 A3OygnodUSTIZ1swxP7cv3nCAZBQsfRLjRB/l1ow=
+	b=T49EJuLUTNeCtTKAhv/DC+n5tQ0HeHOADWnuG6fFag8UZ8UtJWebm3TKS1Cerkdmq
+	 vtfCnh5efBfjhJtpvO0Wc0MlQuKDy9BOcxtraS6jQa1TQg0ol8O6duu+acnMef/dh7
+	 sF4dRFsKLg+zNJlTFr5f2lp57Z/C0+/qT0U+O0zQ=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Marek Szyprowski <m.szyprowski@samsung.com>,
-	Heiko Stuebner <heiko@sntech.de>,
-	Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Subject: [PATCH 6.1 08/72] gpio: rockchip: mark the GPIO controller as sleeping
+	"Steven Rostedt (Google)" <rostedt@goodmis.org>,
+	Yipeng Zou <zouyipeng@huawei.com>,
+	"Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+	Shuah Khan <skhan@linuxfoundation.org>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 297/451] selftests/ftrace: traceonoff_triggers: strip off names
 Date: Thu, 15 Jan 2026 17:48:18 +0100
-Message-ID: <20260115164143.793309054@linuxfoundation.org>
+Message-ID: <20260115164241.633893924@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164143.482647486@linuxfoundation.org>
-References: <20260115164143.482647486@linuxfoundation.org>
+In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
+References: <20260115164230.864985076@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,103 +62,93 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-commit 20cf2aed89ac6d78a0122e31c875228e15247194 upstream.
+[ Upstream commit b889b4fb4cbea3ca7eb9814075d6a51936394bd9 ]
 
-The GPIO controller is configured as non-sleeping but it uses generic
-pinctrl helpers which use a mutex for synchronization.
+The func_traceonoff_triggers.tc sometimes goes to fail
+on my board, Kunpeng-920.
 
-This can cause the following lockdep splat with shared GPIOs enabled on
-boards which have multiple devices using the same GPIO:
+[root@localhost]# ./ftracetest ./test.d/ftrace/func_traceonoff_triggers.tc -l fail.log
+=== Ftrace unit tests ===
+[1] ftrace - test for function traceon/off triggers     [FAIL]
+[2] (instance)  ftrace - test for function traceon/off triggers [UNSUPPORTED]
 
-BUG: sleeping function called from invalid context at
-kernel/locking/mutex.c:591
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 12, name:
-kworker/u16:0
-preempt_count: 1, expected: 0
-RCU nest depth: 0, expected: 0
-6 locks held by kworker/u16:0/12:
-  #0: ffff0001f0018d48 ((wq_completion)events_unbound#2){+.+.}-{0:0},
-at: process_one_work+0x18c/0x604
-  #1: ffff8000842dbdf0 (deferred_probe_work){+.+.}-{0:0}, at:
-process_one_work+0x1b4/0x604
-  #2: ffff0001f18498f8 (&dev->mutex){....}-{4:4}, at:
-__device_attach+0x38/0x1b0
-  #3: ffff0001f75f1e90 (&gdev->srcu){.+.?}-{0:0}, at:
-gpiod_direction_output_raw_commit+0x0/0x360
-  #4: ffff0001f46e3db8 (&shared_desc->spinlock){....}-{3:3}, at:
-gpio_shared_proxy_direction_output+0xd0/0x144 [gpio_shared_proxy]
-  #5: ffff0001f180ee90 (&gdev->srcu){.+.?}-{0:0}, at:
-gpiod_direction_output_raw_commit+0x0/0x360
-irq event stamp: 81450
-hardirqs last  enabled at (81449): [<ffff8000813acba4>]
-_raw_spin_unlock_irqrestore+0x74/0x78
-hardirqs last disabled at (81450): [<ffff8000813abfb8>]
-_raw_spin_lock_irqsave+0x84/0x88
-softirqs last  enabled at (79616): [<ffff8000811455fc>]
-__alloc_skb+0x17c/0x1e8
-softirqs last disabled at (79614): [<ffff8000811455fc>]
-__alloc_skb+0x17c/0x1e8
-CPU: 2 UID: 0 PID: 12 Comm: kworker/u16:0 Not tainted
-6.19.0-rc4-next-20260105+ #11975 PREEMPT
-Hardware name: Hardkernel ODROID-M1 (DT)
-Workqueue: events_unbound deferred_probe_work_func
-Call trace:
-  show_stack+0x18/0x24 (C)
-  dump_stack_lvl+0x90/0xd0
-  dump_stack+0x18/0x24
-  __might_resched+0x144/0x248
-  __might_sleep+0x48/0x98
-  __mutex_lock+0x5c/0x894
-  mutex_lock_nested+0x24/0x30
-  pinctrl_get_device_gpio_range+0x44/0x128
-  pinctrl_gpio_direction+0x3c/0xe0
-  pinctrl_gpio_direction_output+0x14/0x20
-  rockchip_gpio_direction_output+0xb8/0x19c
-  gpiochip_direction_output+0x38/0x94
-  gpiod_direction_output_raw_commit+0x1d8/0x360
-  gpiod_direction_output_nonotify+0x7c/0x230
-  gpiod_direction_output+0x34/0xf8
-  gpio_shared_proxy_direction_output+0xec/0x144 [gpio_shared_proxy]
-  gpiochip_direction_output+0x38/0x94
-  gpiod_direction_output_raw_commit+0x1d8/0x360
-  gpiod_direction_output_nonotify+0x7c/0x230
-  gpiod_configure_flags+0xbc/0x480
-  gpiod_find_and_request+0x1a0/0x574
-  gpiod_get_index+0x58/0x84
-  devm_gpiod_get_index+0x20/0xb4
-  devm_gpiod_get_optional+0x18/0x30
-  rockchip_pcie_probe+0x98/0x380
-  platform_probe+0x5c/0xac
-  really_probe+0xbc/0x298
+I look up the log, and it shows that the md5sum is different between csum1 and csum2.
 
-Fixes: 936ee2675eee ("gpio/rockchip: add driver for rockchip gpio")
-Cc: stable@vger.kernel.org
-Reported-by: Marek Szyprowski <m.szyprowski@samsung.com>
-Closes: https://lore.kernel.org/all/d035fc29-3b03-4cd6-b8ec-001f93540bc6@samsung.com/
-Acked-by: Heiko Stuebner <heiko@sntech.de>
-Link: https://lore.kernel.org/r/20260106090011.21603-1-bartosz.golaszewski@oss.qualcomm.com
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@oss.qualcomm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+++ cnt=611
+++ sleep .1
++++ cnt_trace
++++ grep -v '^#' trace
++++ wc -l
+++ cnt2=611
+++ '[' 611 -ne 611 ']'
++++ cat tracing_on
+++ on=0
+++ '[' 0 '!=' 0 ']'
++++ md5sum trace
+++ csum1='76896aa74362fff66a6a5f3cf8a8a500  trace'
+++ sleep .1
++++ md5sum trace
+++ csum2='ee8625a21c058818fc26e45c1ed3f6de  trace'
+++ '[' '76896aa74362fff66a6a5f3cf8a8a500  trace' '!=' 'ee8625a21c058818fc26e45c1ed3f6de  trace' ']'
+++ fail 'Tracing file is still changing'
+++ echo Tracing file is still changing
+Tracing file is still changing
+++ exit_fail
+++ exit 1
+
+So I directly dump the trace file before md5sum, the diff shows that:
+
+[root@localhost]# diff trace_1.log trace_2.log -y --suppress-common-lines
+dockerd-12285   [036] d.... 18385.510290: sched_stat | <...>-12285   [036] d.... 18385.510290: sched_stat
+dockerd-12285   [036] d.... 18385.510291: sched_swit | <...>-12285   [036] d.... 18385.510291: sched_swit
+<...>-740       [044] d.... 18385.602859: sched_stat | kworker/44:1-740 [044] d.... 18385.602859: sched_stat
+<...>-740       [044] d.... 18385.602860: sched_swit | kworker/44:1-740 [044] d.... 18385.602860: sched_swit
+
+And we can see that <...> filed be filled with names.
+
+We can strip off the names there to fix that.
+
+After strip off the names:
+
+kworker/u257:0-12 [019] d..2.  2528.758910: sched_stat | -12 [019] d..2.  2528.758910: sched_stat_runtime: comm=k
+kworker/u257:0-12 [019] d..2.  2528.758912: sched_swit | -12 [019] d..2.  2528.758912: sched_switch: prev_comm=kw
+<idle>-0          [000] d.s5.  2528.762318: sched_waki | -0  [000] d.s5.  2528.762318: sched_waking: comm=sshd pi
+<idle>-0          [037] dNh2.  2528.762326: sched_wake | -0  [037] dNh2.  2528.762326: sched_wakeup: comm=sshd pi
+<idle>-0          [037] d..2.  2528.762334: sched_swit | -0  [037] d..2.  2528.762334: sched_switch: prev_comm=sw
+
+Link: https://lore.kernel.org/r/20230818013226.2182299-1-zouyipeng@huawei.com
+Fixes: d87b29179aa0 ("selftests: ftrace: Use md5sum to take less time of checking logs")
+Suggested-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Acked-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-rockchip.c |    1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
---- a/drivers/gpio/gpio-rockchip.c
-+++ b/drivers/gpio/gpio-rockchip.c
-@@ -584,6 +584,7 @@ static int rockchip_gpiolib_register(str
- 	gc->ngpio = bank->nr_pins;
- 	gc->label = bank->name;
- 	gc->parent = bank->dev;
-+	gc->can_sleep = true;
+--- a/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
++++ b/tools/testing/selftests/ftrace/test.d/ftrace/func_traceonoff_triggers.tc
+@@ -90,9 +90,10 @@ if [ $on != "0" ]; then
+     fail "Tracing is not off"
+ fi
  
- 	ret = gpiochip_add_data(gc, bank);
- 	if (ret) {
+-csum1=`md5sum trace`
++# Cannot rely on names being around as they are only cached, strip them
++csum1=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ sleep $SLEEP_TIME
+-csum2=`md5sum trace`
++csum2=`cat trace | sed -e 's/^ *[^ ]*\(-[0-9][0-9]*\)/\1/' | md5sum`
+ 
+ if [ "$csum1" != "$csum2" ]; then
+     fail "Tracing file is still changing"
 
 
 
