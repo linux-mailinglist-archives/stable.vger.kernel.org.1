@@ -1,55 +1,54 @@
-Return-Path: <stable+bounces-209718-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208698-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id D5576D2728D
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:08:58 +0100 (CET)
+Received: from tor.lore.kernel.org (tor.lore.kernel.org [172.105.105.114])
+	by mail.lfdr.de (Postfix) with ESMTPS id 7E235D26107
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:05:57 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id C26603051F37
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:00:54 +0000 (UTC)
+	by tor.lore.kernel.org (Postfix) with ESMTP id C7185304350E
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:03:12 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 17FB53C1996;
-	Thu, 15 Jan 2026 17:51:34 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 425ED33F390;
+	Thu, 15 Jan 2026 17:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="oeCmvshi"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="Kdd/u218"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id CFB6C3C1987;
-	Thu, 15 Jan 2026 17:51:33 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 05ECD29C338;
+	Thu, 15 Jan 2026 17:03:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499493; cv=none; b=twQ5WmLD4N9hciMJbgq1vIH0nsdxmJNh30AjzIJnMDm01gu5Wd3NVAXC1eHx3bsOqRQm+Hx6p9t5oSs/k7rsQHRZVz1FxXqHFETvWHHAfGNm6ssHlPXZQE7BJAVUZ3dCGw/+ku+3n/e5BL+aFZ7hU3shnz+3TnrD6SVL+Q2anFY=
+	t=1768496592; cv=none; b=iGNyl3gqZbwDGR7UWZ2uUhP6/0rlFrpjcVE96LrtsKQNkHZkSSQDYhD7Bor1v50UEwLkCTRFXPdnclI/ai+KH39Rs9u43y4Qaq5oByvNSDzCrLDy4NtQh+wIgupNqWtGb0zKtqAhEWXcCJ45pIxEa9qWR6FAxkB8VtP5o8xhEcA=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499493; c=relaxed/simple;
-	bh=zM/Upa3ZlpCfrMrfe49Lg858Hf6H+iazElK1epBNBts=;
+	s=arc-20240116; t=1768496592; c=relaxed/simple;
+	bh=T3tUchiAgq/FFmnSwPY451cRf+nLKjHBFnnCd2COfY0=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=VES4ANvSXbqVSMqa616HAK0Bd/Dd7nn2w1nUJtUb357BDgDhGFfeVt+HGbh7TNnX/Yk1TLVnO6QlpzK6YD8t3u5yAh9epPk35OYdyLhMjG7XxRsOuD9WG3RosiQFoNqbpVAcr3/7ViE+3/dLUKmjH4yBGJzX72i0BZUjBx8E4Zg=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=oeCmvshi; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15FE2C116D0;
-	Thu, 15 Jan 2026 17:51:32 +0000 (UTC)
+	 MIME-Version; b=QCglcSCf2AOrIXKUHt+nN/Zyi/+8/F/h35E/fEzLawij9Ue2PcddsO3XBZ8ZJ3TWQcze2de2HDNZKFmiWCVe+J8bzhpbJ60izBpK/i26ehHQ+SaNH+kOxRubOnUS/u3T88fMQy71WqGHrg5/16uN7BSA4aozaY0iAQWw2kIoHuU=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=Kdd/u218; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB0DC116D0;
+	Thu, 15 Jan 2026 17:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499493;
-	bh=zM/Upa3ZlpCfrMrfe49Lg858Hf6H+iazElK1epBNBts=;
+	s=korg; t=1768496591;
+	bh=T3tUchiAgq/FFmnSwPY451cRf+nLKjHBFnnCd2COfY0=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=oeCmvshizw+jYn2SKc5z3ObiC8R/UuoFXgN2vhAnKY5zEXDqmqoQpmeKhhrx9x5Cx
-	 j8nbM+IwCxUanxCOn6GhiB3FqJWYYXZOu6gRgXW8Y2iET1FjQZNTLExmmJbKHuRJ5U
-	 Bu+Cvz2SiqnCVwqIky8Me4Yh2P4pJjWYaDZrsBCc=
+	b=Kdd/u218Jpw8PerilYPvLsNBGoyDNtY6iB5skEQ0wXwaEUwYxiosUU/t5+7tB86sV
+	 uUYFNaDWJSGowqg9z/YCaJntZhyVUyw0PLG7frWY+cyKWLEzzl93tm7psLq+LEfqep
+	 WAOT+aP9BiRAsH02s/AAyTyhadQQzYsA5eRTwuWk=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com,
-	Jeongjun Park <aha310510@gmail.com>,
-	Daniel Almeida <daniel.almeida@collabora.com>,
-	Hans Verkuil <hverkuil+cisco@kernel.org>
-Subject: [PATCH 5.10 247/451] media: vidtv: initialize local pointers upon transfer of memory ownership
+	Sam James <sam@gentoo.org>,
+	Magnus Lindholm <linmag7@gmail.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.12 033/119] alpha: dont reference obsolete termio struct for TC* constants
 Date: Thu, 15 Jan 2026 17:47:28 +0100
-Message-ID: <20260115164239.828101742@linuxfoundation.org>
+Message-ID: <20260115164153.156951101@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164151.948839306@linuxfoundation.org>
+References: <20260115164151.948839306@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -61,61 +60,54 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.12-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jeongjun Park <aha310510@gmail.com>
+From: Sam James <sam@gentoo.org>
 
-commit 98aabfe2d79f74613abc2b0b1cef08f97eaf5322 upstream.
+[ Upstream commit 9aeed9041929812a10a6d693af050846942a1d16 ]
 
-vidtv_channel_si_init() creates a temporary list (program, service, event)
-and ownership of the memory itself is transferred to the PAT/SDT/EIT
-tables through vidtv_psi_pat_program_assign(),
-vidtv_psi_sdt_service_assign(), vidtv_psi_eit_event_assign().
+Similar in nature to ab107276607af90b13a5994997e19b7b9731e251. glibc-2.42
+drops the legacy termio struct, but the ioctls.h header still defines some
+TC* constants in terms of termio (via sizeof). Hardcode the values instead.
 
-The problem here is that the local pointer where the memory ownership
-transfer was completed is not initialized to NULL. This causes the
-vidtv_psi_pmt_create_sec_for_each_pat_entry() function to fail, and
-in the flow that jumps to free_eit, the memory that was freed by
-vidtv_psi_*_table_destroy() can be accessed again by
-vidtv_psi_*_event_destroy() due to the uninitialized local pointer, so it
-is freed once again.
+This fixes building Python for example, which falls over like:
+  ./Modules/termios.c:1119:16: error: invalid application of 'sizeof' to incomplete type 'struct termio'
 
-Therefore, to prevent use-after-free and double-free vulnerability,
-local pointers must be initialized to NULL when transferring memory
-ownership.
-
-Cc: <stable@vger.kernel.org>
-Reported-by: syzbot+1d9c0edea5907af239e0@syzkaller.appspotmail.com
-Closes: https://syzkaller.appspot.com/bug?extid=1d9c0edea5907af239e0
-Fixes: 3be8037960bc ("media: vidtv: add error checks")
-Signed-off-by: Jeongjun Park <aha310510@gmail.com>
-Reviewed-by: Daniel Almeida <daniel.almeida@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil+cisco@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://bugs.gentoo.org/961769
+Link: https://bugs.gentoo.org/962600
+Signed-off-by: Sam James <sam@gentoo.org>
+Reviewed-by: Magnus Lindholm <linmag7@gmail.com>
+Link: https://lore.kernel.org/r/6ebd3451908785cad53b50ca6bc46cfe9d6bc03c.1764922497.git.sam@gentoo.org
+Signed-off-by: Magnus Lindholm <linmag7@gmail.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/test-drivers/vidtv/vidtv_channel.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/alpha/include/uapi/asm/ioctls.h | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/media/test-drivers/vidtv/vidtv_channel.c
-+++ b/drivers/media/test-drivers/vidtv/vidtv_channel.c
-@@ -461,12 +461,15 @@ int vidtv_channel_si_init(struct vidtv_m
+diff --git a/arch/alpha/include/uapi/asm/ioctls.h b/arch/alpha/include/uapi/asm/ioctls.h
+index 971311605288f..a09d04b49cc65 100644
+--- a/arch/alpha/include/uapi/asm/ioctls.h
++++ b/arch/alpha/include/uapi/asm/ioctls.h
+@@ -23,10 +23,10 @@
+ #define TCSETSW		_IOW('t', 21, struct termios)
+ #define TCSETSF		_IOW('t', 22, struct termios)
  
- 	/* assemble all programs and assign to PAT */
- 	vidtv_psi_pat_program_assign(m->si.pat, programs);
-+	programs = NULL;
+-#define TCGETA		_IOR('t', 23, struct termio)
+-#define TCSETA		_IOW('t', 24, struct termio)
+-#define TCSETAW		_IOW('t', 25, struct termio)
+-#define TCSETAF		_IOW('t', 28, struct termio)
++#define TCGETA          0x40127417
++#define TCSETA          0x80127418
++#define TCSETAW         0x80127419
++#define TCSETAF         0x8012741c
  
- 	/* assemble all services and assign to SDT */
- 	vidtv_psi_sdt_service_assign(m->si.sdt, services);
-+	services = NULL;
- 
- 	/* assemble all events and assign to EIT */
- 	vidtv_psi_eit_event_assign(m->si.eit, events);
-+	events = NULL;
- 
- 	m->si.pmt_secs = vidtv_psi_pmt_create_sec_for_each_pat_entry(m->si.pat,
- 								     m->pcr_pid);
+ #define TCSBRK		_IO('t', 29)
+ #define TCXONC		_IO('t', 30)
+-- 
+2.51.0
+
 
 
 
