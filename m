@@ -1,53 +1,56 @@
-Return-Path: <stable+bounces-209582-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-209194-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 209ACD27898
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 19:29:40 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id ED13ED26B7B
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:46:56 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 7653E328346C
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:45:08 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id C6AF2313BBD3
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:28:25 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 785083BC4D8;
-	Thu, 15 Jan 2026 17:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 1C3633C1965;
+	Thu, 15 Jan 2026 17:26:42 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="feXGHDp6"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="2rCT7lIw"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 3BA7E2D73AB;
-	Thu, 15 Jan 2026 17:45:07 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id D2B2C3C008D;
+	Thu, 15 Jan 2026 17:26:41 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768499107; cv=none; b=SFUEhs5AWptrMnX3QMp8AIq1SdtVqiOPmh72W+BAlAdLa1IrAzJyWcH2Uaj7nOQbIFaRtfewZ+ck+P/ipXisuh9xw0zTT/wwi5eO6hwntJGurfYTlrc+mPyZBXjVlQfB9L8AmX/mLZXBMc0fOqUtueOhItl9E5buBVOHFdedzYY=
+	t=1768498001; cv=none; b=We7TajhHK+7iLt/U8kX7QKSTLjxu8QqmusTUzHB9ogeF89hcwM27TJv/0K/M1RO0GY+s2H3K8PXg4ZaQsullKf37czT+mxUxvmTjG8mgiYT3lOuADpNHrQBcfoIulfa4WDqOMoMi2ACRI6Ec+7DK6ov0l9uoDs5UF15+Xf0FtmY=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768499107; c=relaxed/simple;
-	bh=jHFLeeaRb0huO+TlcIc/XJ8tMSZsT2770N8IwUeaADM=;
+	s=arc-20240116; t=1768498001; c=relaxed/simple;
+	bh=zvjiXceDCIltFsEssRh2iwEbNhJnFzzqcK0W4H92J2c=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=jz5fUniwjoWQ8HDX42tLHyM8ewKz4RJWMD88f5yqp9RkiCbsNDnUtYcE9+LNtTpHfKTZd1ff4tknXQ8oWeMdeF9x8tjIapY3KedIeU4QvfzZuY8OrQqgZab7nq4V964eLaOVTZ283TAbsoC9nwuU+jNKyJS85KdI9qWUxjIr0rw=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=feXGHDp6; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC413C116D0;
-	Thu, 15 Jan 2026 17:45:06 +0000 (UTC)
+	 MIME-Version; b=RhNS9C16791PxgJBo7MZaJwnIWF6xvt6PAYxEzgB4Pm494gG+0etfbis2P8/3/UEiRUno2dTzBUedCSG/AiPqI76pXpLOsufEr8wx5N4nzGRn+kbQfb1q7LNRnaIlai5BwUjcwMTJpjqNQPZaYeh1MO/PAkJdpwYqgBS5kbL8cY=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=2rCT7lIw; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1631BC116D0;
+	Thu, 15 Jan 2026 17:26:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768499107;
-	bh=jHFLeeaRb0huO+TlcIc/XJ8tMSZsT2770N8IwUeaADM=;
+	s=korg; t=1768498001;
+	bh=zvjiXceDCIltFsEssRh2iwEbNhJnFzzqcK0W4H92J2c=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=feXGHDp6pWzR8QhPZJKcCk0sqErOvfP8OK81K8yka9DCzq4XtRFKrMZrnVOCdUsOS
-	 oL0Cw98L0ATabQx51Y6Wot0gXvbvnjD7cpU4B0vNRraT4e4tWhnlUFZg5JfX3A3L02
-	 CU51RlTnxcpC75loUnlBMLQNkAEQ2qwq88adGERQ=
+	b=2rCT7lIwts2ztvijkRigLfd5Xqy/WiE62yB1/sGEeLP5HI9tvJYwYAHy5XCAF9E1Y
+	 PONmDDc66daA+cTUxDg5mvhdsDJvcwzbW3gwnv63RI2ttpfLTtlT1wG9rmPiUjKT8n
+	 89k3BuoZgeT3iJyIIOsW7j/wEDoyIKIOX99psWoo=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Pablo Neira Ayuso <pablo@netfilter.org>,
+	Jian Shen <shenjian15@huawei.com>,
+	Jijie Shao <shaojijie@huawei.com>,
+	Simon Horman <horms@kernel.org>,
+	Paolo Abeni <pabeni@redhat.com>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 110/451] netfilter: nft_connlimit: move stateful fields out of expression data
+Subject: [PATCH 5.15 245/554] net: hns3: add VLAN id validation before using
 Date: Thu, 15 Jan 2026 17:45:11 +0100
-Message-ID: <20260115164234.897738785@linuxfoundation.org>
+Message-ID: <20260115164255.110159313@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164230.864985076@linuxfoundation.org>
-References: <20260115164230.864985076@linuxfoundation.org>
+In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
+References: <20260115164246.225995385@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,106 +62,48 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Jian Shen <shenjian15@huawei.com>
 
-[ Upstream commit 37f319f37d9005693dff085bb72852eeebc803ef ]
+[ Upstream commit 6ef935e65902bfed53980ad2754b06a284ea8ac1 ]
 
-In preparation for the rule blob representation.
+Currently, the VLAN id may be used without validation when
+receive a VLAN configuration mailbox from VF. The length of
+vlan_del_fail_bmap is BITS_TO_LONGS(VLAN_N_VID). It may cause
+out-of-bounds memory access once the VLAN id is bigger than
+or equal to VLAN_N_VID.
 
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Stable-dep-of: 69894e5b4c5e ("netfilter: nft_connlimit: update the count if add was skipped")
+Therefore, VLAN id needs to be checked to ensure it is within
+the range of VLAN_N_VID.
+
+Fixes: fe4144d47eef ("net: hns3: sync VLAN filter entries when kill VLAN ID failed")
+Signed-off-by: Jian Shen <shenjian15@huawei.com>
+Signed-off-by: Jijie Shao <shaojijie@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://patch.msgid.link/20251211023737.2327018-4-shaojijie@huawei.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nft_connlimit.c | 26 ++++++++++++++++++--------
- 1 file changed, 18 insertions(+), 8 deletions(-)
+ drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/net/netfilter/nft_connlimit.c b/net/netfilter/nft_connlimit.c
-index 091457e5c260d..332f1b21084f8 100644
---- a/net/netfilter/nft_connlimit.c
-+++ b/net/netfilter/nft_connlimit.c
-@@ -14,7 +14,7 @@
- #include <net/netfilter/nf_conntrack_zones.h>
+diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+index 1dffd1532bd76..dd9d5df31905a 100644
+--- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
++++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
+@@ -10682,6 +10682,9 @@ int hclge_set_vlan_filter(struct hnae3_handle *handle, __be16 proto,
+ 	bool writen_to_tbl = false;
+ 	int ret = 0;
  
- struct nft_connlimit {
--	struct nf_conncount_list	list;
-+	struct nf_conncount_list	*list;
- 	u32				limit;
- 	bool				invert;
- };
-@@ -43,12 +43,12 @@ static inline void nft_connlimit_do_eval(struct nft_connlimit *priv,
- 		return;
- 	}
- 
--	if (nf_conncount_add(nft_net(pkt), &priv->list, tuple_ptr, zone)) {
-+	if (nf_conncount_add(nft_net(pkt), priv->list, tuple_ptr, zone)) {
- 		regs->verdict.code = NF_DROP;
- 		return;
- 	}
- 
--	count = priv->list.count;
-+	count = priv->list->count;
- 
- 	if ((count > priv->limit) ^ priv->invert) {
- 		regs->verdict.code = NFT_BREAK;
-@@ -76,7 +76,11 @@ static int nft_connlimit_do_init(const struct nft_ctx *ctx,
- 			invert = true;
- 	}
- 
--	nf_conncount_list_init(&priv->list);
-+	priv->list = kmalloc(sizeof(*priv->list), GFP_KERNEL);
-+	if (!priv->list)
-+		return -ENOMEM;
++	if (vlan_id >= VLAN_N_VID)
++		return -EINVAL;
 +
-+	nf_conncount_list_init(priv->list);
- 	priv->limit	= limit;
- 	priv->invert	= invert;
- 
-@@ -87,7 +91,8 @@ static void nft_connlimit_do_destroy(const struct nft_ctx *ctx,
- 				     struct nft_connlimit *priv)
- {
- 	nf_ct_netns_put(ctx->net, ctx->family);
--	nf_conncount_cache_free(&priv->list);
-+	nf_conncount_cache_free(priv->list);
-+	kfree(priv->list);
- }
- 
- static int nft_connlimit_do_dump(struct sk_buff *skb,
-@@ -200,7 +205,11 @@ static int nft_connlimit_clone(struct nft_expr *dst, const struct nft_expr *src,
- 	struct nft_connlimit *priv_dst = nft_expr_priv(dst);
- 	struct nft_connlimit *priv_src = nft_expr_priv(src);
- 
--	nf_conncount_list_init(&priv_dst->list);
-+	priv_dst->list = kmalloc(sizeof(*priv_dst->list), GFP_ATOMIC);
-+	if (priv_dst->list)
-+		return -ENOMEM;
-+
-+	nf_conncount_list_init(priv_dst->list);
- 	priv_dst->limit	 = priv_src->limit;
- 	priv_dst->invert = priv_src->invert;
- 
-@@ -212,7 +221,8 @@ static void nft_connlimit_destroy_clone(const struct nft_ctx *ctx,
- {
- 	struct nft_connlimit *priv = nft_expr_priv(expr);
- 
--	nf_conncount_cache_free(&priv->list);
-+	nf_conncount_cache_free(priv->list);
-+	kfree(priv->list);
- }
- 
- static bool nft_connlimit_gc(struct net *net, const struct nft_expr *expr)
-@@ -221,7 +231,7 @@ static bool nft_connlimit_gc(struct net *net, const struct nft_expr *expr)
- 	bool ret;
- 
- 	local_bh_disable();
--	ret = nf_conncount_gc_list(net, &priv->list);
-+	ret = nf_conncount_gc_list(net, priv->list);
- 	local_bh_enable();
- 
- 	return ret;
+ 	/* When device is resetting or reset failed, firmware is unable to
+ 	 * handle mailbox. Just record the vlan id, and remove it after
+ 	 * reset finished.
 -- 
 2.51.0
 
