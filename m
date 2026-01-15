@@ -1,54 +1,55 @@
-Return-Path: <stable+bounces-209367-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208805-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sea.lore.kernel.org (sea.lore.kernel.org [IPv6:2600:3c0a:e001:db::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 57931D26E63
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:53:56 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 5E58DD266DC
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:31:05 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sea.lore.kernel.org (Postfix) with ESMTP id 45DB831ED425
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:36:25 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 623F4307BD3D
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:08:13 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 02D392D0C79;
-	Thu, 15 Jan 2026 17:34:54 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id 0BE6E1A08AF;
+	Thu, 15 Jan 2026 17:08:13 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="zDkIwa8l"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="BalrG59Z"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id BA1031A2389;
-	Thu, 15 Jan 2026 17:34:53 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id C3CC733993;
+	Thu, 15 Jan 2026 17:08:12 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498493; cv=none; b=W2s9ahrP5YiNLpwzDLS80x28zKHjH/y+7DoYHhoAqgV41FprAMRD9KE8VdK+56HKxcwzNTvweQxbDgxMBsLBZonHTSvVvL+zvBsbEod4/8GPZhh1r8X4xHMO0jriEHdujG8LNy1Ct0eKx+3E1w6fj7StY2uXQy8YK2TDiSkdWkQ=
+	t=1768496892; cv=none; b=GK2IAkTrrDxiv4YugRi6MNayJFG5d/oRNO8z+8fD+myu1yoE4ZIHnuxtNCCM6cfhznrC+iSg4aJn4pKct8q6IZ5Jb+ITtlYAwKr3T1uKGAznFWEbHxbrF/PxZgO5RBicsKB3qbEvI5xd7AmoEWlPKKfkC0BJb93pgcZzn/B/rP8=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498493; c=relaxed/simple;
-	bh=AjwLnz9OTkm2IwF4lqmvDNSmdjIvGCHxl4hEKuqCxJQ=;
+	s=arc-20240116; t=1768496892; c=relaxed/simple;
+	bh=sXFCOfEcZJQ+uWFcKQPSIzIK99/dLo+HpUN+MznfeWc=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=Cmdi3OAWVU0yYXn8A7hWStBxKk6KhEyOVRzNuukzqFrlj1Dhn0ye00MFL21NdUzouhYYC8DBdIEGsuAnhLhBMhpZIsyc3dr4eYVUZ2WTQK1m2hupaj/uQ0K62JZdObE7/62iHCMGj/7sSzFojRLo3FCrmhDFFp/KfSjE4yT4Qho=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=zDkIwa8l; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B5EAC116D0;
-	Thu, 15 Jan 2026 17:34:53 +0000 (UTC)
+	 MIME-Version; b=l57b7tbqT443YKJGD7KVHV7ktP3+nYYSFz1Hamr+qSc20OGrzGDPTm8jAS0hvjb7GH8rCayRgyC1U7lv5G8ZewkwPxk9I7YF9bIGBtBlHUEWr9HgEr7ekr0UxAO9iHXwWebck/gbdwG2cqeCI1Wo8yl129fVi4h55XNo6LnbyUc=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=BalrG59Z; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52C95C116D0;
+	Thu, 15 Jan 2026 17:08:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498493;
-	bh=AjwLnz9OTkm2IwF4lqmvDNSmdjIvGCHxl4hEKuqCxJQ=;
+	s=korg; t=1768496892;
+	bh=sXFCOfEcZJQ+uWFcKQPSIzIK99/dLo+HpUN+MznfeWc=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=zDkIwa8lL6+AuPQpyx2Gf/WsVpef3jE4ThwrrY9tWjNrSesLV+37tVY3QpQJs+12t
-	 OuPqRgQzqR5M+JHbFGrrQMNSA5B+vVoaJ3h3W7Rjl73s52T4HQA2XWjUXKSkbJ3xI0
-	 FkRpyBGNYOnFqMH+4AFb+BimPlL+v5qVp2co+Ly4=
+	b=BalrG59ZOARwkXcxJmTQd5uU+s8X/3zZerhYIGzfG26Jj94LKKeqsGLuwJsoedXeN
+	 22lpOUC/JprMSFaI9cY5N39mkP2nWJcS3+JVixAXi61KQQUNDDl87ECT1eKoczMY2n
+	 KlE1n3XzM7Pbgvk3fdBQZTDinA3v8sU27PXYt6W4=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Nicolas Ferre <nicolas.ferre@microchip.com>,
-	Claudiu Beznea <claudiu.beznea@tuxon.dev>,
+	"yuan.gao" <yuan.gao@ucloud.cn>,
+	Ido Schimmel <idosch@nvidia.com>,
+	Jakub Kicinski <kuba@kernel.org>,
 	Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 450/554] ARM: dts: microchip: sama7g5: fix uart fifo size to 32
+Subject: [PATCH 6.6 53/88] inet: ping: Fix icmp out counting
 Date: Thu, 15 Jan 2026 17:48:36 +0100
-Message-ID: <20260115164302.559275981@linuxfoundation.org>
+Message-ID: <20260115164148.233877307@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,48 +61,60 @@ List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicolas Ferre <nicolas.ferre@microchip.com>
+From: yuan.gao <yuan.gao@ucloud.cn>
 
-[ Upstream commit 5654889a94b0de5ad6ceae3793e7f5e0b61b50b6 ]
+[ Upstream commit 4c0856c225b39b1def6c9a6bc56faca79550da13 ]
 
-On some flexcom nodes related to uart, the fifo sizes were wrong: fix
-them to 32 data.
+When the ping program uses an IPPROTO_ICMP socket to send ICMP_ECHO
+messages, ICMP_MIB_OUTMSGS is counted twice.
 
-Fixes: 7540629e2fc7 ("ARM: dts: at91: add sama7g5 SoC DT and sama7g5-ek")
-Cc: stable@vger.kernel.org # 5.15+
-Signed-off-by: Nicolas Ferre <nicolas.ferre@microchip.com>
-Link: https://lore.kernel.org/r/20251114103313.20220-2-nicolas.ferre@microchip.com
-Signed-off-by: Claudiu Beznea <claudiu.beznea@tuxon.dev>
+    ping_v4_sendmsg
+      ping_v4_push_pending_frames
+        ip_push_pending_frames
+          ip_finish_skb
+            __ip_make_skb
+              icmp_out_count(net, icmp_type); // first count
+      icmp_out_count(sock_net(sk), user_icmph.type); // second count
+
+However, when the ping program uses an IPPROTO_RAW socket,
+ICMP_MIB_OUTMSGS is counted correctly only once.
+
+Therefore, the first count should be removed.
+
+Fixes: c319b4d76b9e ("net: ipv4: add IPPROTO_ICMP socket kind")
+Signed-off-by: yuan.gao <yuan.gao@ucloud.cn>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Tested-by: Ido Schimmel <idosch@nvidia.com>
+Link: https://patch.msgid.link/20251224063145.3615282-1-yuan.gao@ucloud.cn
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/boot/dts/sama7g5.dtsi |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ net/ipv4/ping.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/arm/boot/dts/sama7g5.dtsi
-+++ b/arch/arm/boot/dts/sama7g5.dtsi
-@@ -375,7 +375,7 @@
- 				dma-names = "tx", "rx";
- 				atmel,use-dma-rx;
- 				atmel,use-dma-tx;
--				atmel,fifo-size = <16>;
-+				atmel,fifo-size = <32>;
- 				status = "disabled";
- 			};
- 		};
-@@ -400,7 +400,7 @@
- 				dma-names = "tx", "rx";
- 				atmel,use-dma-rx;
- 				atmel,use-dma-tx;
--				atmel,fifo-size = <16>;
-+				atmel,fifo-size = <32>;
- 				status = "disabled";
- 			};
- 		};
+diff --git a/net/ipv4/ping.c b/net/ipv4/ping.c
+index 5c848136bc266..47f2e7dd554ad 100644
+--- a/net/ipv4/ping.c
++++ b/net/ipv4/ping.c
+@@ -839,10 +839,8 @@ static int ping_v4_sendmsg(struct sock *sk, struct msghdr *msg, size_t len)
+ out_free:
+ 	if (free)
+ 		kfree(ipc.opt);
+-	if (!err) {
+-		icmp_out_count(sock_net(sk), user_icmph.type);
++	if (!err)
+ 		return len;
+-	}
+ 	return err;
+ 
+ do_confirm:
+-- 
+2.51.0
+
 
 
 
