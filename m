@@ -1,54 +1,58 @@
-Return-Path: <stable+bounces-209398-lists+stable=lfdr.de@vger.kernel.org>
+Return-Path: <stable+bounces-208838-lists+stable=lfdr.de@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
-Received: from sto.lore.kernel.org (sto.lore.kernel.org [IPv6:2600:3c09:e001:a7::12fc:5321])
-	by mail.lfdr.de (Postfix) with ESMTPS id 739BCD26B27
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:45:50 +0100 (CET)
+Received: from sea.lore.kernel.org (sea.lore.kernel.org [172.234.253.10])
+	by mail.lfdr.de (Postfix) with ESMTPS id 86DD5D26739
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 18:32:29 +0100 (CET)
 Received: from smtp.subspace.kernel.org (conduit.subspace.kernel.org [100.90.174.1])
-	by sto.lore.kernel.org (Postfix) with ESMTP id 1B8BB308C8FA
-	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:37:13 +0000 (UTC)
+	by sea.lore.kernel.org (Postfix) with ESMTP id 2DA8730C04A7
+	for <lists+stable@lfdr.de>; Thu, 15 Jan 2026 17:09:47 +0000 (UTC)
 Received: from localhost.localdomain (localhost.localdomain [127.0.0.1])
-	by smtp.subspace.kernel.org (Postfix) with ESMTP id 8E2DF3C1971;
-	Thu, 15 Jan 2026 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTP id CAE753B8BB1;
+	Thu, 15 Jan 2026 17:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org;
-	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="KIpAlT6i"
+	dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b="ggN9NmaY"
 X-Original-To: stable@vger.kernel.org
 Received: from smtp.kernel.org (aws-us-west-2-korg-mail-1.web.codeaurora.org [10.30.226.201])
 	(using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
 	(No client certificate requested)
-	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 503B63C1965;
-	Thu, 15 Jan 2026 17:36:23 +0000 (UTC)
+	by smtp.subspace.kernel.org (Postfix) with ESMTPS id 8EC762F619D;
+	Thu, 15 Jan 2026 17:09:46 +0000 (UTC)
 Authentication-Results: smtp.subspace.kernel.org; arc=none smtp.client-ip=10.30.226.201
 ARC-Seal:i=1; a=rsa-sha256; d=subspace.kernel.org; s=arc-20240116;
-	t=1768498583; cv=none; b=mm58jn9Fl/p2QJjvyGHzFqywKHY26KC32mrl0fCAXlKEdj12xZGiCEvQ0ZNpnCegOqDiOUU6dbPOCmgGfVQYR+a1Txm9LJtCYPyP87ohjRMij7dEygkFbni8EQc0nwLerI1H50UEg1Mn32JhlEmukVFfYf94eW4M7Du9fh1+VY0=
+	t=1768496986; cv=none; b=W0laqvg3DWIb9/gkeoEXkbG3DVPDVMQVlWu4TIZoyBIwKpFuNCNOz9GoaQ8GZFpcLciYoHotaAMxRm/HGnUiHfT83YD0FLV3ZvzFRpeRmNF5RwJjhPYdyMbrmPq1VuaLKgLIive3Jr1DnSLxJDasSzl/+M9JtUkcLLKmzutd5os=
 ARC-Message-Signature:i=1; a=rsa-sha256; d=subspace.kernel.org;
-	s=arc-20240116; t=1768498583; c=relaxed/simple;
-	bh=WCAgr9bdICRMkQjxucmrGC7id0MboqA0RoVUMd4aePU=;
+	s=arc-20240116; t=1768496986; c=relaxed/simple;
+	bh=pf7yvksPOpTdITZMqNrqlTk3+j6o+PMDYeI4goDdNJM=;
 	h=From:To:Cc:Subject:Date:Message-ID:In-Reply-To:References:
-	 MIME-Version; b=L6dpexgekPVsEeLpNxG8end/NMOU/2YJXD9UQ4rZFFZp4xxCL3PCZAlvx0SGC9W5f3H0XT3TcBdeLmECV+hDBsFqW8kehujzKvggNZ5vkViNnoF5HAm+bu+8YjBbPYl1sYMUi5SLxwkx9UcOr24YyWcEDr5uqCeYUjUrzPgyPzU=
-ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=KIpAlT6i; arc=none smtp.client-ip=10.30.226.201
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D026FC116D0;
-	Thu, 15 Jan 2026 17:36:22 +0000 (UTC)
+	 MIME-Version:Content-Type; b=CpBcSjp87Nsh3tnqQgzZqhItw5IJit8t+1trmWZsLIOAy0rhtrLtJKxpPaqDpeOkiPkZltxeDL6vxUnLCoy0agHeIPv/c8rqVmS7KxEd/H9ke/GpwKxRLK3Ti8/wpTqoNVOk3QP7zkZ1hVFNaxrzNSWh78nKbD3U4hL3OYWcroI=
+ARC-Authentication-Results:i=1; smtp.subspace.kernel.org; dkim=pass (1024-bit key) header.d=linuxfoundation.org header.i=@linuxfoundation.org header.b=ggN9NmaY; arc=none smtp.client-ip=10.30.226.201
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C424C116D0;
+	Thu, 15 Jan 2026 17:09:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-	s=korg; t=1768498583;
-	bh=WCAgr9bdICRMkQjxucmrGC7id0MboqA0RoVUMd4aePU=;
+	s=korg; t=1768496986;
+	bh=pf7yvksPOpTdITZMqNrqlTk3+j6o+PMDYeI4goDdNJM=;
 	h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-	b=KIpAlT6i/nQhJQKlQCD8FKRY+CFJ7i9q2WJuKjWgpevB0OUZkpUurwULzyV9SNqGh
-	 fSWYNHb1yCDx5uEJBdMKmhHGeDcKM0B/yS/QgPt/na0fg9Uj21p0/Cdx4nx2VBS1SO
-	 hbgiooXwYgNclnZZie1QmeG4naCvMTX+vsDFFEBg=
+	b=ggN9NmaYBjfqv5qCAlZS+Q8wZwOGQqP7XeKQFub1E5pJWrM3hZmXrsZTtDPpxCJwj
+	 2dpWgwxNRZaj//PKwwLPeBSuuEoNtj1CY42mEUzynRq1AW5CXrQaPEd8uV1tEeBTv4
+	 8AmJwZv93Srj3LipjIkOVxNe6Ijq7c6szjjVxgko=
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To: stable@vger.kernel.org
 Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
 	patches@lists.linux.dev,
-	Sergey Shtylyov <s.shtylyov@omp.ru>,
-	Ulf Hansson <ulf.hansson@linaro.org>,
-	Chen Yu <xnguchen@sina.cn>
-Subject: [PATCH 5.15 482/554] mmc: core: use sysfs_emit() instead of sprintf()
-Date: Thu, 15 Jan 2026 17:49:08 +0100
-Message-ID: <20260115164303.757368105@linuxfoundation.org>
+	=?UTF-8?q?Michal=20R=C3=A1bek?= <mrabek@redhat.com>,
+	Tomas Henzl <thenzl@redhat.com>,
+	Changhui Zhong <czhong@redhat.com>,
+	"Ewan D. Milne" <emilne@redhat.com>,
+	John Meneghini <jmeneghi@redhat.com>,
+	"Martin K. Petersen" <martin.petersen@oracle.com>,
+	Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.6 86/88] scsi: sg: Fix occasional bogus elapsed time that exceeds timeout
+Date: Thu, 15 Jan 2026 17:49:09 +0100
+Message-ID: <20260115164149.429167773@linuxfoundation.org>
 X-Mailer: git-send-email 2.52.0
-In-Reply-To: <20260115164246.225995385@linuxfoundation.org>
-References: <20260115164246.225995385@linuxfoundation.org>
+In-Reply-To: <20260115164146.312481509@linuxfoundation.org>
+References: <20260115164146.312481509@linuxfoundation.org>
 User-Agent: quilt/0.69
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,229 +62,157 @@ List-Id: <stable.vger.kernel.org>
 List-Subscribe: <mailto:stable+subscribe@vger.kernel.org>
 List-Unsubscribe: <mailto:stable+unsubscribe@vger.kernel.org>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.6-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Michal Rábek <mrabek@redhat.com>
 
-[ Upstream commit f5d8a5fe77ce933f53eb8f2e22bb7a1a2019ea11 ]
+[ Upstream commit 0e1677654259a2f3ccf728de1edde922a3c4ba57 ]
 
-sprintf() (still used in the MMC core for the sysfs output) is vulnerable
-to the buffer overflow.  Use the new-fangled sysfs_emit() instead.
+A race condition was found in sg_proc_debug_helper(). It was observed on
+a system using an IBM LTO-9 SAS Tape Drive (ULTRIUM-TD9) and monitoring
+/proc/scsi/sg/debug every second. A very large elapsed time would
+sometimes appear. This is caused by two race conditions.
 
-Found by Linux Verification Center (linuxtesting.org) with the SVACE static
-analysis tool.
+We reproduced the issue with an IBM ULTRIUM-HH9 tape drive on an x86_64
+architecture. A patched kernel was built, and the race condition could
+not be observed anymore after the application of this patch. A
+reproducer C program utilising the scsi_debug module was also built by
+Changhui Zhong and can be viewed here:
 
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/717729b2-d65b-c72e-9fac-471d28d00b5a@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Chen Yu <xnguchen@sina.cn>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+https://github.com/MichaelRabek/linux-tests/blob/master/drivers/scsi/sg/sg_race_trigger.c
+
+The first race happens between the reading of hp->duration in
+sg_proc_debug_helper() and request completion in sg_rq_end_io().  The
+hp->duration member variable may hold either of two types of
+information:
+
+ #1 - The start time of the request. This value is present while
+      the request is not yet finished.
+
+ #2 - The total execution time of the request (end_time - start_time).
+
+If sg_proc_debug_helper() executes *after* the value of hp->duration was
+changed from #1 to #2, but *before* srp->done is set to 1 in
+sg_rq_end_io(), a fresh timestamp is taken in the else branch, and the
+elapsed time (value type #2) is subtracted from a timestamp, which
+cannot yield a valid elapsed time (which is a type #2 value as well).
+
+To fix this issue, the value of hp->duration must change under the
+protection of the sfp->rq_list_lock in sg_rq_end_io().  Since
+sg_proc_debug_helper() takes this read lock, the change to srp->done and
+srp->header.duration will happen atomically from the perspective of
+sg_proc_debug_helper() and the race condition is thus eliminated.
+
+The second race condition happens between sg_proc_debug_helper() and
+sg_new_write(). Even though hp->duration is set to the current time
+stamp in sg_add_request() under the write lock's protection, it gets
+overwritten by a call to get_sg_io_hdr(), which calls copy_from_user()
+to copy struct sg_io_hdr from userspace into kernel space. hp->duration
+is set to the start time again in sg_common_write(). If
+sg_proc_debug_helper() is called between these two calls, an arbitrary
+value set by userspace (usually zero) is used to compute the elapsed
+time.
+
+To fix this issue, hp->duration must be set to the current timestamp
+again after get_sg_io_hdr() returns successfully. A small race window
+still exists between get_sg_io_hdr() and setting hp->duration, but this
+window is only a few instructions wide and does not result in observable
+issues in practice, as confirmed by testing.
+
+Additionally, we fix the format specifier from %d to %u for printing
+unsigned int values in sg_proc_debug_helper().
+
+Signed-off-by: Michal Rábek <mrabek@redhat.com>
+Suggested-by: Tomas Henzl <thenzl@redhat.com>
+Tested-by: Changhui Zhong <czhong@redhat.com>
+Reviewed-by: Ewan D. Milne <emilne@redhat.com>
+Reviewed-by: John Meneghini <jmeneghi@redhat.com>
+Reviewed-by: Tomas Henzl <thenzl@redhat.com>
+Link: https://patch.msgid.link/20251212160900.64924-1-mrabek@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/bus.c      |    9 +++++----
- drivers/mmc/core/bus.h      |    3 ++-
- drivers/mmc/core/mmc.c      |   16 ++++++++--------
- drivers/mmc/core/sd.c       |   27 +++++++++++++--------------
- drivers/mmc/core/sdio.c     |    5 +++--
- drivers/mmc/core/sdio_bus.c |    7 ++++---
- 6 files changed, 35 insertions(+), 32 deletions(-)
+ drivers/scsi/sg.c | 20 +++++++++++++-------
+ 1 file changed, 13 insertions(+), 7 deletions(-)
 
---- a/drivers/mmc/core/bus.c
-+++ b/drivers/mmc/core/bus.c
-@@ -15,6 +15,7 @@
- #include <linux/stat.h>
- #include <linux/of.h>
- #include <linux/pm_runtime.h>
-+#include <linux/sysfs.h>
- 
- #include <linux/mmc/card.h>
- #include <linux/mmc/host.h>
-@@ -34,13 +35,13 @@ static ssize_t type_show(struct device *
- 
- 	switch (card->type) {
- 	case MMC_TYPE_MMC:
--		return sprintf(buf, "MMC\n");
-+		return sysfs_emit(buf, "MMC\n");
- 	case MMC_TYPE_SD:
--		return sprintf(buf, "SD\n");
-+		return sysfs_emit(buf, "SD\n");
- 	case MMC_TYPE_SDIO:
--		return sprintf(buf, "SDIO\n");
-+		return sysfs_emit(buf, "SDIO\n");
- 	case MMC_TYPE_SD_COMBO:
--		return sprintf(buf, "SDcombo\n");
-+		return sysfs_emit(buf, "SDcombo\n");
- 	default:
+diff --git a/drivers/scsi/sg.c b/drivers/scsi/sg.c
+index 9258a1a8c23c1..0dd8b9f8d6717 100644
+--- a/drivers/scsi/sg.c
++++ b/drivers/scsi/sg.c
+@@ -731,6 +731,8 @@ sg_new_write(Sg_fd *sfp, struct file *file, const char __user *buf,
+ 		sg_remove_request(sfp, srp);
  		return -EFAULT;
  	}
---- a/drivers/mmc/core/bus.h
-+++ b/drivers/mmc/core/bus.h
-@@ -9,6 +9,7 @@
- #define _MMC_CORE_BUS_H
- 
- #include <linux/device.h>
-+#include <linux/sysfs.h>
- 
- struct mmc_host;
- struct mmc_card;
-@@ -17,7 +18,7 @@ struct mmc_card;
- static ssize_t mmc_##name##_show (struct device *dev, struct device_attribute *attr, char *buf)	\
- {										\
- 	struct mmc_card *card = mmc_dev_to_card(dev);				\
--	return sprintf(buf, fmt, args);						\
-+	return sysfs_emit(buf, fmt, args);					\
- }										\
- static DEVICE_ATTR(name, S_IRUGO, mmc_##name##_show, NULL)
- 
---- a/drivers/mmc/core/mmc.c
-+++ b/drivers/mmc/core/mmc.c
-@@ -12,6 +12,7 @@
- #include <linux/slab.h>
- #include <linux/stat.h>
- #include <linux/pm_runtime.h>
-+#include <linux/sysfs.h>
- 
- #include <linux/mmc/host.h>
- #include <linux/mmc/card.h>
-@@ -812,12 +813,11 @@ static ssize_t mmc_fwrev_show(struct dev
- {
- 	struct mmc_card *card = mmc_dev_to_card(dev);
- 
--	if (card->ext_csd.rev < 7) {
--		return sprintf(buf, "0x%x\n", card->cid.fwrev);
--	} else {
--		return sprintf(buf, "0x%*phN\n", MMC_FIRMWARE_LEN,
--			       card->ext_csd.fwrev);
--	}
-+	if (card->ext_csd.rev < 7)
-+		return sysfs_emit(buf, "0x%x\n", card->cid.fwrev);
-+	else
-+		return sysfs_emit(buf, "0x%*phN\n", MMC_FIRMWARE_LEN,
-+				  card->ext_csd.fwrev);
- }
- 
- static DEVICE_ATTR(fwrev, S_IRUGO, mmc_fwrev_show, NULL);
-@@ -830,10 +830,10 @@ static ssize_t mmc_dsr_show(struct devic
- 	struct mmc_host *host = card->host;
- 
- 	if (card->csd.dsr_imp && host->dsr_req)
--		return sprintf(buf, "0x%x\n", host->dsr);
-+		return sysfs_emit(buf, "0x%x\n", host->dsr);
- 	else
- 		/* return default DSR value */
--		return sprintf(buf, "0x%x\n", 0x404);
-+		return sysfs_emit(buf, "0x%x\n", 0x404);
- }
- 
- static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
---- a/drivers/mmc/core/sd.c
-+++ b/drivers/mmc/core/sd.c
-@@ -12,6 +12,7 @@
- #include <linux/slab.h>
- #include <linux/stat.h>
- #include <linux/pm_runtime.h>
-+#include <linux/sysfs.h>
- 
- #include <linux/mmc/host.h>
- #include <linux/mmc/card.h>
-@@ -707,18 +708,16 @@ MMC_DEV_ATTR(ocr, "0x%08x\n", card->ocr)
- MMC_DEV_ATTR(rca, "0x%04x\n", card->rca);
- 
- 
--static ssize_t mmc_dsr_show(struct device *dev,
--                           struct device_attribute *attr,
--                           char *buf)
--{
--       struct mmc_card *card = mmc_dev_to_card(dev);
--       struct mmc_host *host = card->host;
--
--       if (card->csd.dsr_imp && host->dsr_req)
--               return sprintf(buf, "0x%x\n", host->dsr);
--       else
--               /* return default DSR value */
--               return sprintf(buf, "0x%x\n", 0x404);
-+static ssize_t mmc_dsr_show(struct device *dev, struct device_attribute *attr,
-+			    char *buf)
-+{
-+	struct mmc_card *card = mmc_dev_to_card(dev);
-+	struct mmc_host *host = card->host;
++	hp->duration = jiffies_to_msecs(jiffies);
 +
-+	if (card->csd.dsr_imp && host->dsr_req)
-+		return sysfs_emit(buf, "0x%x\n", host->dsr);
-+	/* return default DSR value */
-+	return sysfs_emit(buf, "0x%x\n", 0x404);
- }
+ 	if (hp->interface_id != 'S') {
+ 		sg_remove_request(sfp, srp);
+ 		return -ENOSYS;
+@@ -815,7 +817,6 @@ sg_common_write(Sg_fd * sfp, Sg_request * srp,
+ 		return -ENODEV;
+ 	}
  
- static DEVICE_ATTR(dsr, S_IRUGO, mmc_dsr_show, NULL);
-@@ -734,9 +733,9 @@ static ssize_t info##num##_show(struct d
- 												\
- 	if (num > card->num_info)								\
- 		return -ENODATA;								\
--	if (!card->info[num-1][0])								\
-+	if (!card->info[num - 1][0])								\
- 		return 0;									\
--	return sprintf(buf, "%s\n", card->info[num-1]);						\
-+	return sysfs_emit(buf, "%s\n", card->info[num - 1]);					\
- }												\
- static DEVICE_ATTR_RO(info##num)
+-	hp->duration = jiffies_to_msecs(jiffies);
+ 	if (hp->interface_id != '\0' &&	/* v3 (or later) interface */
+ 	    (SG_FLAG_Q_AT_TAIL & hp->flags))
+ 		at_head = 0;
+@@ -1339,9 +1340,6 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
+ 				      "sg_cmd_done: pack_id=%d, res=0x%x\n",
+ 				      srp->header.pack_id, result));
+ 	srp->header.resid = resid;
+-	ms = jiffies_to_msecs(jiffies);
+-	srp->header.duration = (ms > srp->header.duration) ?
+-				(ms - srp->header.duration) : 0;
+ 	if (0 != result) {
+ 		struct scsi_sense_hdr sshdr;
  
---- a/drivers/mmc/core/sdio.c
-+++ b/drivers/mmc/core/sdio.c
-@@ -7,6 +7,7 @@
+@@ -1390,6 +1388,9 @@ sg_rq_end_io(struct request *rq, blk_status_t status)
+ 			done = 0;
+ 	}
+ 	srp->done = done;
++	ms = jiffies_to_msecs(jiffies);
++	srp->header.duration = (ms > srp->header.duration) ?
++				(ms - srp->header.duration) : 0;
+ 	write_unlock_irqrestore(&sfp->rq_list_lock, iflags);
  
- #include <linux/err.h>
- #include <linux/pm_runtime.h>
-+#include <linux/sysfs.h>
+ 	if (likely(done)) {
+@@ -2537,6 +2538,7 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
+ 	const sg_io_hdr_t *hp;
+ 	const char * cp;
+ 	unsigned int ms;
++	unsigned int duration;
  
- #include <linux/mmc/host.h>
- #include <linux/mmc/card.h>
-@@ -40,9 +41,9 @@ static ssize_t info##num##_show(struct d
- 												\
- 	if (num > card->num_info)								\
- 		return -ENODATA;								\
--	if (!card->info[num-1][0])								\
-+	if (!card->info[num - 1][0])								\
- 		return 0;									\
--	return sprintf(buf, "%s\n", card->info[num-1]);						\
-+	return sysfs_emit(buf, "%s\n", card->info[num - 1]);					\
- }												\
- static DEVICE_ATTR_RO(info##num)
- 
---- a/drivers/mmc/core/sdio_bus.c
-+++ b/drivers/mmc/core/sdio_bus.c
-@@ -14,6 +14,7 @@
- #include <linux/pm_runtime.h>
- #include <linux/pm_domain.h>
- #include <linux/acpi.h>
-+#include <linux/sysfs.h>
- 
- #include <linux/mmc/card.h>
- #include <linux/mmc/host.h>
-@@ -35,7 +36,7 @@ field##_show(struct device *dev, struct
- 	struct sdio_func *func;						\
- 									\
- 	func = dev_to_sdio_func (dev);					\
--	return sprintf(buf, format_string, args);			\
-+	return sysfs_emit(buf, format_string, args);			\
- }									\
- static DEVICE_ATTR_RO(field)
- 
-@@ -52,9 +53,9 @@ static ssize_t info##num##_show(struct d
- 												\
- 	if (num > func->num_info)								\
- 		return -ENODATA;								\
--	if (!func->info[num-1][0])								\
-+	if (!func->info[num - 1][0])								\
- 		return 0;									\
--	return sprintf(buf, "%s\n", func->info[num-1]);						\
-+	return sysfs_emit(buf, "%s\n", func->info[num - 1]);					\
- }												\
- static DEVICE_ATTR_RO(info##num)
- 
+ 	k = 0;
+ 	list_for_each_entry(fp, &sdp->sfds, sfd_siblings) {
+@@ -2574,13 +2576,17 @@ static void sg_proc_debug_helper(struct seq_file *s, Sg_device * sdp)
+ 			seq_printf(s, " id=%d blen=%d",
+ 				   srp->header.pack_id, blen);
+ 			if (srp->done)
+-				seq_printf(s, " dur=%d", hp->duration);
++				seq_printf(s, " dur=%u", hp->duration);
+ 			else {
+ 				ms = jiffies_to_msecs(jiffies);
+-				seq_printf(s, " t_o/elap=%d/%d",
++				duration = READ_ONCE(hp->duration);
++				if (duration)
++					duration = (ms > duration ?
++						    ms - duration : 0);
++				seq_printf(s, " t_o/elap=%u/%u",
+ 					(new_interface ? hp->timeout :
+ 						  jiffies_to_msecs(fp->timeout)),
+-					(ms > hp->duration ? ms - hp->duration : 0));
++					duration);
+ 			}
+ 			seq_printf(s, "ms sgat=%d op=0x%02x\n", usg,
+ 				   (int) srp->data.cmd_opcode);
+-- 
+2.51.0
+
 
 
 
